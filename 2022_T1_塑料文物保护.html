@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2022 英一 Text 1 · 塑料文物保护</title>
+<style>
+  :root{
+    --bg:#faf9f6; --card:#ffffff; --ink:#2b2b2b; --muted:#8a8578;
+    --accent:#8b5e34; --accent-soft:#f3e9dd; --line:#e8e3d8;
+    --hl:#fdf3d8; --hl-border:#e0b84d;
+    --green:#3e7a4e; --green-soft:#e8f2ea;
+    --red:#b04a3a; --red-soft:#f9e9e6;
+    --blue:#3d6a8a; --blue-soft:#e7eff5;
+    --purple:#6d5a8e; --purple-soft:#eeeaf5;
+    --serif:"Georgia","Songti SC",serif;
+    --sans:-apple-system,"PingFang SC","Helvetica Neue",sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#1c1a17; --card:#26231f; --ink:#e8e4dc; --muted:#9a948a;
+      --accent:#d0a06a; --accent-soft:#3a3127; --line:#3a362f;
+      --hl:#3d3520; --hl-border:#b08c3a;
+      --green:#7fb98d; --green-soft:#26362b;
+      --red:#d98876; --red-soft:#3d2a26;
+      --blue:#8ab3d0; --blue-soft:#26323d;
+      --purple:#a996c8; --purple-soft:#302a3d;
+    }
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;padding-bottom:120px}
+  .wrap{max-width:1100px;margin:0 auto;padding:24px 20px}
+  .back{font-size:.85rem;color:var(--muted);text-decoration:none}
+  .back:hover{color:var(--accent)}
+  header{margin:14px 0 28px}
+  header h1{font-family:var(--serif);font-size:1.7rem;line-height:1.3}
+  header .sub{color:var(--muted);margin-top:6px;font-size:.9rem}
+  .tags{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+  .tag{font-size:.75rem;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);border:1px solid var(--line)}
+
+  .layout{display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:start}
+  @media (max-width:900px){.layout{grid-template-columns:1fr}}
+
+  section.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:24px}
+  h2{font-size:1.05rem;letter-spacing:.05em;color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+  h2 .n{font-size:.72rem;background:var(--accent);color:var(--card);border-radius:6px;padding:1px 7px}
+
+  .para{margin-bottom:22px}
+  .para .en{font-family:var(--serif);font-size:1.06rem;line-height:1.9}
+  .pno{color:var(--muted);font-size:.75rem;user-select:none;margin-right:6px}
+  .tk{background:var(--hl);border-bottom:2px solid var(--hl-border);border-radius:3px;padding:0 2px;cursor:pointer;transition:filter .15s}
+  .tk:hover{filter:brightness(.93)}
+  .tk.active{outline:2px solid var(--hl-border)}
+  .ls{border-bottom:2px dotted var(--blue);cursor:pointer}
+  .para .zh{display:none;margin-top:10px;padding:10px 14px;background:var(--blue-soft);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:.93rem}
+  .para.showzh .zh{display:block}
+  .zbtn{float:right;margin-left:10px;font-size:.72rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:6px;padding:2px 9px;cursor:pointer}
+  .zbtn:hover{color:var(--accent);border-color:var(--accent)}
+  .allbtn{font-size:.78rem;border:1px solid var(--accent);background:none;color:var(--accent);border-radius:8px;padding:4px 12px;cursor:pointer;margin-left:auto}
+
+  aside{position:sticky;top:20px}
+  #panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;min-height:180px}
+  #panel .hint{color:var(--muted);font-size:.88rem;text-align:center;padding:30px 10px}
+  .wcard .head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .wcard .w{font-family:var(--serif);font-size:1.35rem;font-weight:bold}
+  .wcard .ipa{color:var(--muted);font-size:.85rem}
+  .wcard .pos{font-size:.72rem;color:var(--purple);background:var(--purple-soft);padding:1px 8px;border-radius:999px}
+  .wcard .badge{font-size:.7rem;padding:1px 8px;border-radius:999px}
+  .b-core{background:var(--red-soft);color:var(--red)}
+  .b-phrase{background:var(--blue-soft);color:var(--blue)}
+  .b-poly{background:var(--purple-soft);color:var(--purple)}
+  .b-write{background:var(--green-soft);color:var(--green)}
+  .wcard .cn{margin-top:8px;font-size:1rem;font-weight:600}
+  .wcard .en-def{color:var(--muted);font-size:.86rem;font-style:italic;margin-top:2px}
+  .wcard .row{margin-top:10px;font-size:.86rem;padding:8px 10px;border-radius:8px}
+  .wcard .row b{font-size:.72rem;display:block;margin-bottom:2px;letter-spacing:.06em}
+  .r-ex{background:var(--hl)} .r-ex b{color:var(--hl-border)}
+  .r-mem{background:var(--green-soft)} .r-mem b{color:var(--green)}
+  .r-syn{background:var(--blue-soft)} .r-syn b{color:var(--blue)}
+  .r-conf{background:var(--red-soft)} .r-conf b{color:var(--red)}
+  #panel .close{display:none}
+  @media (max-width:900px){
+    aside{position:fixed;left:0;right:0;bottom:0;z-index:50;padding:0 8px 8px}
+    #panel{box-shadow:0 -6px 24px rgba(0,0,0,.18);max-height:55vh;overflow-y:auto;display:none}
+    #panel.open{display:block}
+    #panel .close{display:block;float:right;border:none;background:var(--line);border-radius:8px;padding:2px 10px;cursor:pointer;color:var(--ink)}
+  }
+
+  .q{margin-bottom:22px;padding-bottom:18px;border-bottom:1px dashed var(--line)}
+  .q:last-child{border:none;margin-bottom:0;padding-bottom:0}
+  .q .stem{font-weight:600;font-family:var(--serif)}
+  .qt{font-size:.7rem;color:var(--blue);background:var(--blue-soft);border-radius:999px;padding:1px 8px;margin-right:6px;vertical-align:2px}
+  .opts{margin-top:10px;display:grid;gap:8px}
+  .opt{border:1px solid var(--line);border-radius:10px;padding:8px 12px;cursor:pointer;font-size:.93rem;font-family:var(--serif);transition:all .15s}
+  .opt:hover{border-color:var(--accent)}
+  .q.done .opt{cursor:default}
+  .opt.right{background:var(--green-soft);border-color:var(--green)}
+  .opt.wrong{background:var(--red-soft);border-color:var(--red)}
+  .expl{display:none;margin-top:12px;background:var(--accent-soft);border-radius:10px;padding:12px 14px;font-size:.9rem}
+  .q.done .expl{display:block}
+  .expl b{color:var(--accent)}
+  .expl .loc{font-family:var(--serif);font-style:italic;background:var(--hl);padding:1px 4px;border-radius:3px}
+
+  .sent{margin-bottom:20px}
+  .sent .src{font-family:var(--serif);font-size:1rem;background:var(--blue-soft);padding:12px 14px;border-radius:10px;border-left:3px solid var(--blue)}
+  .sent .anat{margin-top:8px;font-size:.9rem}
+  .sent .anat li{margin:4px 0 4px 18px}
+  .sent .tr{margin-top:8px;font-size:.92rem;color:var(--muted)}
+  .skel{color:var(--red);font-weight:600}
+
+  .filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+  .fbtn{font-size:.8rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:999px;padding:4px 14px;cursor:pointer}
+  .fbtn.on{background:var(--accent);color:var(--card);border-color:var(--accent)}
+  .vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
+  .vitem{border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer;transition:border-color .15s}
+  .vitem:hover{border-color:var(--accent)}
+  .vitem .w{font-family:var(--serif);font-weight:bold}
+  .vitem .cn{font-size:.85rem;color:var(--muted)}
+  .vitem .badges{float:right}
+
+  .wb{display:grid;gap:10px}
+  .wbi{border-left:3px solid var(--green);background:var(--green-soft);border-radius:0 10px 10px 0;padding:10px 14px;font-size:.92rem}
+  .wbi .p{font-family:var(--serif);font-weight:600}
+  .wbi .u{color:var(--muted);font-size:.85rem}
+
+  #yd{position:fixed;z-index:60;display:none;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:4px 12px;font-size:.8rem;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+  footer{color:var(--muted);font-size:.8rem;text-align:center;margin-top:30px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">◀ 返回英语复盘中心</a>
+  <header>
+    <h1>Plastics in Peril: 塑料文物保护</h1>
+    <div class="sub">2022 年英语（一）真题 · Text 1 · 约 390 词 · 建议做题 18 min · 话题：科技×文化保护（科普说明文）</div>
+    <div class="tags">
+      <span class="tag">正确答案：21A 22C 23D 24D 25B</span><span class="tag">题型：细节×3 + 观点细节 + 观点推断</span><span class="tag">难度：中等偏易（2022 四篇中最友好）</span>
+    </div>
+  </header>
+
+  <div class="layout">
+    <main>
+      <!-- ========== 原文精读 ========== -->
+      <section class="card">
+        <h2><span class="n">01</span>原文精读 <button class="allbtn" onclick="toggleAll()">全文译文 开/关</button></h2>
+        <p style="font-size:.8rem;color:var(--muted);margin-bottom:14px">🟡 黄色高亮 = 重难点词/短语，点击右侧出卡片 ｜ 蓝色虚线 = 长难句，点击跳到精析 ｜ 每段「译」= 段落译文 ｜ 选中任意其他单词浮出「查有道」</p>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">①</span>People often complain that plastics are too <span class="tk" data-w="durable">durable</span>. Water bottles, shopping bags, and other trash <span class="tk" data-w="litter">litter</span> the planet, from Mount Everest to the Mariana Trench, because plastics are everywhere and don't <span class="tk" data-w="breakdown">break down</span> easily. But some plastic materials change over time. They crack and frizzle. They "<span class="tk" data-w="weep">weep</span>" out additives. They melt into <span class="tk" data-w="sludge">sludge</span>. <span class="ls" onclick="go('s1')">All of which creates huge headaches for institutions, such as museums, trying to <span class="tk" data-w="preserve">preserve</span> culturally important objects.</span> The variety of plastic objects at risk is <span class="tk" data-w="dizzying">dizzying</span>: early radios, <span class="tk" data-w="avant">avant-garde</span> sculptures, celluloid animation stills from Disney films, the first <span class="tk" data-w="artificial">artificial</span> heart.</p>
+          <div class="zh">人们常抱怨塑料太耐用了。水瓶、购物袋等垃圾从珠峰到马里亚纳海沟弄脏了整个星球——塑料无处不在，还不易分解。但有些塑料材料会随时间变化：它们开裂、蜷缩，"渗出"添加剂，熔成泥浆。这一切给博物馆等试图保存文化珍品的机构带来巨大的头疼事。处于风险中的塑料物品五花八门得令人眼花缭乱：早期收音机、先锋派雕塑、迪士尼电影的赛璐珞动画定格片、第一颗人工心脏。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">②</span><span class="ls" onclick="go('s2')">Certain <span class="tk" data-w="artifact">artifacts</span> are especially <span class="tk" data-w="vulnerable">vulnerable</span> because some <span class="tk" data-w="pioneer">pioneers</span> in plastic art didn't always know how to mix <span class="tk" data-w="ingredient">ingredients</span> properly, says Thea van Oosten, a <span class="tk" data-w="polymer">polymer</span> chemist who, until retiring a few years ago, worked for decades at the Cultural Heritage Agency of the Netherlands.</span> "It's like baking a cake: If you don't have exact amounts, it goes wrong," she says. "The object you make is already a <span class="tk" data-w="timebomb">time bomb</span>."</p>
+          <div class="zh">聚合物化学家 Thea van Oosten 说，某些人工制品格外脆弱，因为塑料艺术的一些先驱并不总是知道如何正确调配原料。她几年前才退休，此前在荷兰文化遗产局工作了数十年。"这就像烤蛋糕：配料不精确就会失败，"她说，"你做出来的东西本身就已经是一颗定时炸弹。"</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">③</span>And sometimes, it's not the artist's <span class="tk" data-w="fault">fault</span>. In the 1960s, the Italian artist Piero Gilardi began to create hundreds of bright, colorful <span class="tk" data-w="foam">foam</span> pieces. Those pieces included small beds of roses and other items as well as a few dozen "nature carpets"—large rectangles decorated with foam pumpkins, cabbages, and watermelons. He wanted viewers to walk around on the carpets—which meant they had to be durable.</p>
+          <div class="zh">而有时这并不是艺术家的错。1960 年代，意大利艺术家 Piero Gilardi 开始创作数百件明亮多彩的泡沫作品，包括小玫瑰花坛等物件，还有几十张"自然地毯"——装饰着泡沫南瓜、卷心菜和西瓜的大长方形。他想让观众在地毯上来回走动——这意味着它们必须耐用。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">④</span>Unfortunately, the polyurethane foam he used is <span class="tk" data-w="inherently">inherently</span> unstable. It's especially vulnerable to light damage, and by the mid-1990s, Gilardi's pumpkins, roses, and other figures were <span class="tk" data-w="split">splitting</span> and <span class="tk" data-w="crumble">crumbling</span>. Museums locked some of them away in the dark.</p>
+          <div class="zh">不幸的是，他所用的聚氨酯泡沫先天就不稳定，尤其怕光。到 1990 年代中期，Gilardi 的南瓜、玫瑰等造型已经在开裂、碎裂。博物馆只好把其中一些锁进暗处。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">⑤</span>So van Oosten and her colleagues worked to preserve Gilardi's sculptures. They <span class="tk" data-w="infuse">infused</span> some with stabilizing and <span class="tk" data-w="consolidate">consolidating</span> chemicals. Van Oosten calls those chemicals "sunscreens" because their goal was to prevent further light damage and rebuild <span class="tk" data-w="worn">worn</span> polymer fibers. She is proud that several sculptures have even <span class="tk" data-w="display">gone on display</span> again, <span class="tk" data-w="albeit">albeit</span> sometimes beneath protective cases.</p>
+          <div class="zh">于是 van Oosten 和同事们着手保护 Gilardi 的雕塑。他们给一些作品注入了起稳定和加固作用的化学物质。van Oosten 称这些化学物质为"防晒霜"，因为其目的是防止进一步的光损伤、重建磨损的聚合物纤维。让她自豪的是，有几件雕塑甚至重新展出了——尽管有时得罩在保护罩里。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">⑥</span>Despite success stories like van Oosten's, preservation of plastics will likely get harder. Old objects continue to <span class="tk" data-w="deteriorate">deteriorate</span>. Worse, <span class="tk" data-w="biodegradable">biodegradable</span> plastics, designed to <span class="tk" data-w="disintegrate">disintegrate</span>, are increasingly common.</p>
+          <div class="zh">尽管有 van Oosten 这样的成功案例，塑料的保存工作大概率会越来越难：旧物件在继续劣化；更糟的是，天生被设计成会分解的可降解塑料正越来越普遍。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">⑦</span>And more is <span class="tk" data-w="stake">at stake</span> here than individual objects. <span class="ls" onclick="go('s3')">Joana Lia Ferreira, an assistant professor of <span class="tk" data-w="conservation">conservation</span> and <span class="tk" data-w="restoration">restoration</span> at the NOVA School of Science and Technology, notes that <span class="tk" data-w="archaeologist">archaeologists</span> first <span class="tk" data-w="define">defined</span> the great material ages of human history—Stone Age, Iron Age, and so on—after examining artifacts in museums.</span> We now live in an age of plastic, she says, "and what we decide to collect today, what we decide to preserve...will have a strong impact on how in the future we'll be seen."</p>
+          <div class="zh">而这里攸关的远不止一件件物品。NOVA 理工学院文物保护与修复专业助理教授 Joana Lia Ferreira 指出，考古学家正是在检视博物馆藏品之后，才划定了人类历史的各大"材料时代"——石器时代、铁器时代等等。她说，我们如今生活在塑料时代，"我们今天决定收藏什么、保存什么……将深刻影响未来的人如何看待我们。"</div>
+        </div>
+      </section>
+
+      <!-- ========== 题目 ========== -->
+      <section class="card">
+        <h2><span class="n">02</span>题目与解析（点选项即判 · 再看解析）</h2>
+
+        <div class="q" data-ans="0">
+          <p class="stem"><span class="qt">细节题</span>21. According to Paragraph 1, museums are faced with difficulties in ______.</p>
+          <div class="opts">
+            <div class="opt">[A] maintaining their plastic items</div>
+            <div class="opt">[B] obtaining durable plastic artifacts</div>
+            <div class="opt">[C] handling outdated plastic exhibits</div>
+            <div class="opt">[D] classifying their plastic collections</div>
+          </div>
+          <div class="expl"><b>答案 A</b>　定位①段中部：<span class="loc">All of which creates huge headaches for institutions, such as museums, trying to preserve culturally important objects</span>。塑料会开裂、渗出、熔化 → 给"试图保存"的博物馆制造大麻烦。同义替换：preserve → maintaining，huge headaches → difficulties。<br><b>干扰项：</b>B 偷换首句——"too durable"是大众对塑料垃圾的抱怨，不是博物馆想"获得"耐用制品；C "outdated（过时的）"无中生有，文中是"老化受损"不是"过时"；D "分类"无中生有（variety 是说种类多，不是分类难）。</div>
+        </div>
+
+        <div class="q" data-ans="2">
+          <p class="stem"><span class="qt">观点细节</span>22. Van Oosten believes that certain plastic objects are ______.</p>
+          <div class="opts">
+            <div class="opt">[A] immune to decay</div>
+            <div class="opt">[B] improperly shaped</div>
+            <div class="opt">[C] inherently flawed</div>
+            <div class="opt">[D] complex in structure</div>
+          </div>
+          <div class="expl"><b>答案 C</b>　定位②段：<span class="loc">pioneers ... didn't always know how to mix ingredients properly</span> + <span class="loc">The object you make is already a time bomb</span>。配方一开始就不对 → 从出生起就带着缺陷 = inherently flawed（先天有缺陷）。"time bomb"这个比喻就是"先天注定要出事"。<br><b>干扰项：</b>A 反向（immune to decay = 不会坏，恰恰相反）；B 偷换——问题在 ingredients（配方成分）不在 shape（造型）；D "结构复杂"无中生有。<br><b>技巧：</b>人物观点题先圈人名 van Oosten，她的话集中在②⑤段；比喻句（cake / time bomb）几乎必出题，要能"翻译"比喻背后的直义。</div>
+        </div>
+
+        <div class="q" data-ans="3">
+          <p class="stem"><span class="qt">细节因果</span>23. Museums stopped exhibiting some of Gilardi's artworks to ______.</p>
+          <div class="opts">
+            <div class="opt">[A] keep them from hurting visitors</div>
+            <div class="opt">[B] duplicate them for future display</div>
+            <div class="opt">[C] have their ingredients analyzed</div>
+            <div class="opt">[D] prevent them from further damage</div>
+          </div>
+          <div class="expl"><b>答案 D</b>　定位④段：<span class="loc">It's especially vulnerable to light damage ... Museums locked some of them away in the dark</span>。因为怕光损伤 → 锁进暗处 = 防止进一步损坏。⑤段 van Oosten 的"sunscreens"目标 <span class="loc">to prevent further light damage</span> 是同一逻辑的显性表达。<br><b>干扰项：</b>A "伤到观众"无中生有（作品自己碎，不伤人）；B "复制"无中生有；C 张冠李戴——分析成分是化学家的工作，不是博物馆锁起来的目的。<br><b>技巧：</b>问目的（to do）的题，找原文的因果链：怕光 →（所以）锁进黑暗。答案 = 原因的正向改写。</div>
+        </div>
+
+        <div class="q" data-ans="3">
+          <p class="stem"><span class="qt">作者态度</span>24. The author thinks that preservation of plastics is ______.</p>
+          <div class="opts">
+            <div class="opt">[A] costly</div>
+            <div class="opt">[B] unworthy</div>
+            <div class="opt">[C] unpopular</div>
+            <div class="opt">[D] challenging</div>
+          </div>
+          <div class="expl"><b>答案 D</b>　定位⑥段（作者自己发声的段落）：<span class="loc">preservation of plastics will likely get harder ... Worse, biodegradable plastics ... are increasingly common</span>。"会更难 + 更糟" = challenging（充满挑战）。①段的 huge headaches、②段的 time bomb 都在铺垫同一基调。<br><b>干扰项：</b>A 全文没谈钱；B 反向——⑦段专门论证保存塑料意义重大，绝非"不值得"；C "不受欢迎"无中生有。<br><b>技巧：</b>区分"作者认为"和"人物认为"：本题问 the author，⑥段没有引号、没有人名，正是作者直接评论的段落。</div>
+        </div>
+
+        <div class="q" data-ans="1">
+          <p class="stem"><span class="qt">观点推断</span>25. In Ferreira's opinion, preservation of plastic artifacts ______.</p>
+          <div class="opts">
+            <div class="opt">[A] will inspire future scientific research</div>
+            <div class="opt">[B] has profound historical significance</div>
+            <div class="opt">[C] will help us separate the material ages</div>
+            <div class="opt">[D] has an impact on today's cultural life</div>
+          </div>
+          <div class="expl"><b>答案 B</b>　定位⑦段：考古学家靠博物馆藏品划定了石器、铁器等"材料时代"；如今是塑料时代，<span class="loc">what we decide to preserve...will have a strong impact on how in the future we'll be seen</span> —— 今天保存的塑料 = 未来人认识我们这个时代的史料 → 历史意义深远（profound historical significance）。<br><b>干扰项：</b>C 偷换时态兼张冠李戴——"划定时代"是考古学家<em>过去</em>已完成的事，不是塑料保存<em>将来</em>的作用；D 偷换时间——影响的是 <em>in the future</em> 如何看我们，不是"今天的文化生活"；A "激发科研"无中生有。<br><b>技巧：</b>末段人物观点题 ≈ 全文升华题，答案往往是引语的"抽象一层"改写：具体（影响未来怎么看我们）→ 抽象（历史意义）。</div>
+        </div>
+      </section>
+
+      <!-- ========== 长难句 ========== -->
+      <section class="card" id="sents">
+        <h2><span class="n">03</span>长难句精析（正文蓝色虚线句）</h2>
+
+        <div class="sent" id="s1">
+          <div class="src">All of which <span class="skel">creates</span> huge headaches for institutions, <u>such as museums</u>, <u>trying to preserve culturally important objects</u>.</div>
+          <ul class="anat">
+            <li><span class="skel">特殊现象</span>：which 指代前面三个短句的全部内容（开裂/渗出/熔化），按语法本应接在逗号后，这里是外刊常见的<b>修辞性断句</b>（= And all of this creates...）</li>
+            <li>such as museums：插入举例，隔开了 institutions 和它的修饰语</li>
+            <li>trying to preserve...：现在分词短语作后置定语，修饰 institutions（"那些试图保存文化珍品的机构"）——21 题答案藏在这里</li>
+          </ul>
+          <div class="tr">译：这一切都给博物馆等试图保存文化珍品的机构带来巨大的麻烦。</div>
+        </div>
+
+        <div class="sent" id="s2">
+          <div class="src">Certain artifacts <span class="skel">are</span> especially vulnerable <u>because some pioneers in plastic art didn't always know how to mix ingredients properly</u>, <span class="skel">says Thea van Oosten</span>, <u>a polymer chemist</u> <u>who, until retiring a few years ago, worked for decades at the Cultural Heritage Agency of the Netherlands</u>.</div>
+          <ul class="anat">
+            <li><span class="skel">新闻体引语倒装</span>：整个前半句是说话内容，says Thea van Oosten 后置（= Thea van Oosten says that certain artifacts are...）</li>
+            <li>didn't always know：<b>部分否定</b>，"并不总是知道"，≠"总是不知道"</li>
+            <li>a polymer chemist：同位语，交代身份</li>
+            <li>who, <u>until retiring a few years ago</u>, worked...：定语从句中插入时间状语，隔开了 who 和 worked——还原：who worked for decades ... until retiring（工作数十年，直到几年前退休）</li>
+          </ul>
+          <div class="tr">译：聚合物化学家 Thea van Oosten 说，某些制品格外脆弱，因为塑料艺术的一些先驱并不总是知道如何正确调配原料；她几年前退休，此前在荷兰文化遗产局工作了数十年。</div>
+        </div>
+
+        <div class="sent" id="s3">
+          <div class="src">Joana Lia Ferreira, <u>an assistant professor of conservation and restoration at the NOVA School of Science and Technology</u>, <span class="skel">notes that</span> archaeologists first defined the great material ages of human history—<u>Stone Age, Iron Age, and so on</u>—<u>after examining artifacts in museums</u>.</div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：Ferreira notes that + 宾语从句；主语和谓语之间隔着长同位语（身份介绍）</li>
+            <li>破折号对：插入列举（石器时代、铁器时代等），阅读时可先跳过</li>
+            <li>after examining...：时间状语——<b>先</b>看博物馆藏品，<b>才</b>定义时代 → 藏品是划定历史的依据（25 题推理的根基）</li>
+            <li>配套引语：what we decide to collect today, what we decide to preserve... 两个 what 主语从句排比作主语；how in the future we'll be seen 中 in the future 插在 how 与主谓之间</li>
+          </ul>
+          <div class="tr">译：Ferreira 指出，考古学家是在检视博物馆藏品之后，才划定了人类历史的各大材料时代——石器时代、铁器时代等等。</div>
+        </div>
+      </section>
+
+      <!-- ========== 词汇复盘 ========== -->
+      <section class="card">
+        <h2><span class="n">04</span>词汇复盘（点卡片看详情）</h2>
+        <div class="filters">
+          <button class="fbtn on" data-f="all">全部</button>
+          <button class="fbtn" data-f="core">核心词</button>
+          <button class="fbtn" data-f="phrase">短语</button>
+          <button class="fbtn" data-f="poly">熟词僻义</button>
+          <button class="fbtn" data-f="write">写作可用</button>
+        </div>
+        <div class="vgrid" id="vgrid"></div>
+      </section>
+
+      <!-- ========== 写作素材 ========== -->
+      <section class="card">
+        <h2><span class="n">05</span>可搬进作文/翻译的素材</h2>
+        <div class="wb">
+          <div class="wbi"><div class="p">And more is at stake here than X</div><div class="u">"攸关的远不止X" —— 议论文升华段神句：More is at stake here than convenience; what hangs in the balance is our attention itself.</div></div>
+          <div class="wbi"><div class="p">albeit + 短语</div><div class="u">"尽管"的高级版（只接短语不接句子）：Progress has been made, albeit slowly. 阅卷人眼前一亮的小词。</div></div>
+          <div class="wbi"><div class="p">inherently + adj.</div><div class="u">"先天就……"：Social media is not inherently harmful; it depends on how we use it. 替换 naturally/in itself。</div></div>
+          <div class="wbi"><div class="p">The variety of X is dizzying: A, B, C...</div><div class="u">总起+列举的漂亮写法："种类多得令人眼花缭乱"，冒号后接三四个例子，图表作文描述多样性可用。</div></div>
+          <div class="wbi"><div class="p">X is already a time bomb</div><div class="u">比喻：定时炸弹——描述隐患类话题（食品安全、拖延、环境）通用。</div></div>
+          <div class="wbi"><div class="p">What we decide to X today will have a strong impact on how in the future we'll be seen</div><div class="u">排比 what 从句作主语 + 深远影响句式——文化传承/环保话题结尾段直接套用。</div></div>
+          <div class="wbi"><div class="p">deteriorate / preservation / cultural heritage</div><div class="u">话题词打包记：文物保护、环境恶化类文章的固定班底。</div></div>
+        </div>
+      </section>
+    </main>
+
+    <!-- ========== 侧栏词卡 ========== -->
+    <aside>
+      <div id="panel"><div class="hint">👆 点击正文里的<b>黄色高亮词</b><br>词卡会出现在这里</div></div>
+    </aside>
+  </div>
+
+  <footer>2022 英语一 Text 1 · 复盘页由 Claude 生成 · 解析为 Claude 独立完成（非 PDF 解析照搬）</footer>
+</div>
+
+<button id="yd">🔍 查有道</button>
+
+<script>
+const V = {
+  durable:{w:"durable",ipa:"/ˈdjʊərəbl/",pos:"adj.",tags:["core","write"],cn:"耐用的，持久的",en:"lasting a long time without breaking",ex:"plastics are too durable",mem:"词根 dur=持久：duration 时长、endure 忍耐、during 在…期间。durable goods 耐用品。",syn:"long-lasting / sturdy / enduring",conf:"durable(耐用) vs. curable(可治愈) vs. endurable(可忍受)"},
+  litter:{w:"litter",ipa:"/ˈlɪtə(r)/",pos:"v./n.",tags:["core","poly"],cn:"乱扔；（垃圾）散落于；n. 垃圾",en:"to make a place untidy with rubbish",ex:"trash litter the planet",mem:"⚠️此处是动词：'垃圾弄脏了星球'。No littering 禁止乱扔垃圾；cat litter 猫砂（僻义）。",syn:"scatter / strew",conf:"litter(乱扔) vs. glitter(闪光) vs. bitter(苦的)"},
+  breakdown:{w:"break down",ipa:"",pos:"v.短语",tags:["phrase","poly"],cn:"分解；（车）抛锚；（人）崩溃；（谈判）破裂",en:"to decompose; to stop working",ex:"don't break down easily",mem:"一词四义全高频：塑料分解/汽车抛锚/精神崩溃/谈判破裂——考研都考过。此处'（被）分解'。",syn:"decompose / degrade",conf:"break down(分解) vs. break up(分手;解散) vs. break out(爆发)"},
+  weep:{w:"weep",ipa:"/wiːp/",pos:"v.",tags:["poly"],cn:"哭泣；⚠️渗出（液体）",en:"to cry; to ooze liquid",ex:"They \"weep\" out additives",mem:"熟词僻义+拟人：塑料'哭'出添加剂=渗出。文中加引号提示比喻用法。weep-wept-wept。",syn:"ooze / seep / exude",conf:"weep(哭/渗) vs. sweep(扫) vs. weed(杂草)"},
+  sludge:{w:"sludge",ipa:"/slʌdʒ/",pos:"n.",tags:["core"],cn:"泥浆，淤渣",en:"thick, soft mud-like substance",ex:"melt into sludge",mem:"联想 slush（半融雪泥）、slime（黏液）——sl- 开头一族都'黏糊糊滑溜溜'。",syn:"slime / muck / mire",conf:"sludge(泥浆) vs. slug(鼻涕虫;子弹) vs. sledge(雪橇)"},
+  preserve:{w:"preserve",ipa:"/prɪˈzɜːv/",pos:"v.",tags:["core","write"],cn:"保存，保护",en:"to keep sth in its original state",ex:"trying to preserve culturally important objects",mem:"pre(预先)+serve(保持)→提前保管好→保存。本文题眼：preserve/preservation 出现 6 次，21 题 maintaining 就是它的替身。",syn:"conserve / maintain / safeguard",conf:"serve 三兄弟：preserve(保存) / reserve(预订;保留) / deserve(值得)"},
+  dizzying:{w:"dizzying",ipa:"/ˈdɪziɪŋ/",pos:"adj.",tags:["core","write"],cn:"令人眼花缭乱的",en:"making you feel confused by variety/speed",ex:"The variety ... is dizzying",mem:"dizzy(头晕的)+ing。写作亮点：a dizzying array of choices 令人眼花缭乱的选择。",syn:"bewildering / staggering / breathtaking",conf:"dizzy(头晕) vs. dazzling(耀眼的)——一个晕一个亮"},
+  avant:{w:"avant-garde",ipa:"/ˌævɒ̃ ˈɡɑːd/",pos:"adj./n.",tags:["core"],cn:"先锋派（的），前卫（的）",en:"new and experimental (in art)",ex:"avant-garde sculptures",mem:"法语借词：avant(前)+garde(卫)→前卫。英语同源词 vanguard 先锋队。",syn:"experimental / cutting-edge",conf:"avant-garde(前卫) vs. old-fashioned(过时)——反义配对记"},
+  artificial:{w:"artificial",ipa:"/ˌɑːtɪˈfɪʃl/",pos:"adj.",tags:["core"],cn:"人造的；做作的",en:"made by humans, not natural",ex:"the first artificial heart",mem:"art(技艺)+fic(做,词根 fac/fic：factory/fiction)→人'做'出来的。AI = artificial intelligence。",syn:"synthetic / man-made",conf:"-ficial 三兄弟：artificial(人造) / superficial(肤浅) / beneficial(有益)"},
+  artifact:{w:"artifact",ipa:"/ˈɑːtɪfækt/",pos:"n.",tags:["core"],cn:"人工制品；文物",en:"an object made by a person, esp. of historical interest",ex:"Certain artifacts are especially vulnerable",mem:"art+fact(做)→人做出来的东西。考古/博物馆语境高频；英式拼 artefact。",syn:"relic / antique / object",conf:"artifact(制品) vs. artifice(诡计) vs. artisan(工匠)"},
+  vulnerable:{w:"vulnerable",ipa:"/ˈvʌlnərəbl/",pos:"adj.",tags:["core","write"],cn:"易受伤害的，脆弱的",en:"easily harmed or damaged",ex:"especially vulnerable to light damage",mem:"vulner(伤)+able→能被伤到的。固定搭配 be vulnerable to（本文两次）。写作：the vulnerable groups 弱势群体。",syn:"susceptible / fragile / exposed",conf:"vulnerable(脆弱) vs. invulnerable(无懈可击) vs. venerable(德高望重的)——后者常考形近干扰"},
+  pioneer:{w:"pioneer",ipa:"/ˌpaɪəˈnɪə(r)/",pos:"n./v.",tags:["core"],cn:"先驱；开创",en:"one of the first people to do sth",ex:"some pioneers in plastic art",mem:"少先队员的'先锋'就是这个词。动词用法更亮：pioneer a new technique 开创新技术。",syn:"forerunner / trailblazer",conf:"pioneer(先驱) vs. engineer(工程师)——-eer 表'人'"},
+  ingredient:{w:"ingredient",ipa:"/ɪnˈɡriːdiənt/",pos:"n.",tags:["core"],cn:"成分，原料；要素",en:"one of the things used to make sth",ex:"how to mix ingredients properly",mem:"in+gred(走,词根 grad/gred：gradual/progress)→'走进去'的东西→成分。抽象用法：the key ingredient of success。",syn:"component / element / constituent",conf:"ingredient(配料) vs. gradient(坡度;梯度)——同根不同义"},
+  polymer:{w:"polymer",ipa:"/ˈpɒlɪmə(r)/",pos:"n.",tags:["core"],cn:"聚合物",en:"a chemical compound of repeated units",ex:"a polymer chemist",mem:"poly(多：polygon 多边形/polyglot 通多语者)+mer(单元)→多单元聚成→聚合物。塑料=聚合物，408 同学看到 poly 应该很亲切。",syn:"plastic / macromolecule",conf:"polymer(聚合物) vs. polygon(多边形) vs. monopoly(垄断,mono单+poly卖)"},
+  timebomb:{w:"time bomb",ipa:"",pos:"n.短语",tags:["phrase","write"],cn:"定时炸弹（喻隐患）",en:"a situation certain to cause trouble later",ex:"The object you make is already a time bomb",mem:"比喻考点：22 题 inherently flawed 的形象说法。写作可用：a ticking time bomb 一颗滴答作响的定时炸弹。",syn:"hidden danger / latent threat",conf:"引号/比喻句在阅读中≈出题信号，要会还原成直白义"},
+  fault:{w:"fault",ipa:"/fɔːlt/",pos:"n.",tags:["core","poly"],cn:"过错，责任；缺陷；⚠️断层",en:"responsibility for a mistake",ex:"it's not the artist's fault",mem:"at fault 有责任；find fault with 挑剔；地质'断层'是僻义。It's not sb's fault 不怪某人。",syn:"blame / defect / flaw",conf:"fault(过错/责任) vs. flaw(缺陷,22题选项用词) vs. default(默认;违约)"},
+  foam:{w:"foam",ipa:"/fəʊm/",pos:"n.",tags:["core"],cn:"泡沫（塑料）",en:"a soft light rubbery material; bubbles",ex:"bright, colorful foam pieces",mem:"泡沫箱、洗面奶泡沫都是 foam。本文指泡沫塑料（聚氨酯 polyurethane foam）。",syn:"froth / sponge(海绵)",conf:"foam(泡沫) vs. form(形式) vs. roam(漫游)"},
+  inherently:{w:"inherently",ipa:"/ɪnˈhɪərəntli/",pos:"adv.",tags:["core","write"],cn:"固有地，先天地",en:"as a basic and permanent quality",ex:"the polyurethane foam is inherently unstable",mem:"in+her(粘连,词根 hes/her：adhere 粘附/coherent 连贯)→'长'在里面的→固有的。22 题正确选项 inherently flawed 同源。",syn:"intrinsically / innately / by nature",conf:"inherent(固有的) vs. inherited(继承来的) vs. coherent(连贯的)"},
+  split:{w:"split",ipa:"/splɪt/",pos:"v.",tags:["core"],cn:"裂开，分裂",en:"to break into parts along a line",ex:"figures were splitting and crumbling",mem:"split-split-split 原形三态同形。split up 分手；split the bill AA 制。",syn:"crack / rupture / cleave",conf:"split(裂开) vs. spit(吐口水) vs. splint(夹板)"},
+  crumble:{w:"crumble",ipa:"/ˈkrʌmbl/",pos:"v.",tags:["core"],cn:"碎裂，坍塌；（势力）瓦解",en:"to break into small pieces",ex:"splitting and crumbling",mem:"crumb(面包屑)+le→碎成渣。抽象义：empires crumble 帝国崩塌。",syn:"disintegrate / fall apart / collapse",conf:"易混三连：crumble(碎裂) / crumple(揉皱纸团) / grumble(发牢骚)"},
+  infuse:{w:"infuse",ipa:"/ɪnˈfjuːz/",pos:"v.",tags:["core"],cn:"注入，灌输",en:"to fill sth with a substance/quality",ex:"infused some with stabilizing chemicals",mem:"in+fus(流,词根：refuse 拒绝/confuse 混淆/transfusion 输血)→流进去→注入。infuse A with B 给A注入B。",syn:"inject / instill / imbue",conf:"fus 家族：infuse(注入) / diffuse(扩散) / confuse(搞混) / refuse(拒绝)"},
+  consolidate:{w:"consolidate",ipa:"/kənˈsɒlɪdeɪt/",pos:"v.",tags:["core","write"],cn:"加固；巩固；合并",en:"to make stronger or more solid",ex:"stabilizing and consolidating chemicals",mem:"con(共同)+solid(固体)+ate→变结实→加固/巩固。写作：consolidate one's leading position 巩固领先地位。",syn:"strengthen / reinforce / fortify",conf:"consolidate(巩固) vs. console(安慰) vs. consolation(安慰赛=console的n.)"},
+  worn:{w:"worn",ipa:"/wɔːn/",pos:"adj.",tags:["core","poly"],cn:"磨损的，用旧的",en:"damaged by long use",ex:"rebuild worn polymer fibers",mem:"wear-wore-worn：wear 既是'穿戴'也是'磨损'（⚠️熟词僻义）。worn-out 破旧不堪的；精疲力竭的。",syn:"frayed / shabby / weathered",conf:"worn(磨损的) vs. warn(警告) vs. sworn(宣过誓的)"},
+  display:{w:"go on display",ipa:"",pos:"v.短语",tags:["phrase"],cn:"展出，公开陈列",en:"to be put in a public place for people to see",ex:"sculptures have even gone on display again",mem:"on display 处于展出状态；同款：on sale 在售 / on duty 值班 / on loan 出借中——'on+n.' 表状态一族。",syn:"be exhibited / be showcased",conf:"display(展示) vs. dismay(沮丧)——形近雷区"},
+  albeit:{w:"albeit",ipa:"/ˌɔːlˈbiːɪt/",pos:"conj.",tags:["core","write"],cn:"尽管，虽然（只接短语）",en:"although (followed by a phrase, not a clause)",ex:"albeit sometimes beneath protective cases",mem:"拆开记：al(though)+be+it→although it be→尽管如此。⚠️用法铁律：albeit 后只接短语/形容词/副词，不接完整句子；写作用它替换 though 是加分小词：a step forward, albeit a small one。",syn:"though / notwithstanding",conf:"albeit(接短语) vs. although(接句子)——用错反而扣分"},
+  deteriorate:{w:"deteriorate",ipa:"/dɪˈtɪəriəreɪt/",pos:"v.",tags:["core","write"],cn:"恶化，劣化",en:"to become progressively worse",ex:"Old objects continue to deteriorate",mem:"deterior(拉丁语'更坏')+ate。写作高频：health/environment/relations deteriorate。名词 deterioration。",syn:"worsen / degenerate / decay",conf:"deteriorate(恶化) vs. deter(威慑,吓住) vs. detour(绕道)"},
+  biodegradable:{w:"biodegradable",ipa:"/ˌbaɪəʊdɪˈɡreɪdəbl/",pos:"adj.",tags:["core"],cn:"可生物降解的",en:"able to decay naturally and harmlessly",ex:"biodegradable plastics, designed to disintegrate",mem:"构词法模板：bio(生物)+de(向下)+grad(走)+able(可)→能被生物一步步'走下来'→可降解。拆词能力比背词更重要。",syn:"decomposable / eco-friendly",conf:"degrade(降解;贬低) vs. upgrade(升级) vs. degree(度)——grad 家族"},
+  disintegrate:{w:"disintegrate",ipa:"/dɪsˈɪntɪɡreɪt/",pos:"v.",tags:["core"],cn:"解体，碎裂",en:"to break up into small parts",ex:"designed to disintegrate",mem:"dis(散开)+integr(完整,同 integrity 正直/integrate 整合)+ate→完整性散掉→解体。反义词就是 integrate。",syn:"crumble / fall apart / decompose",conf:"integrate(整合)⇄disintegrate(解体)：一对反义同根词"},
+  stake:{w:"at stake",ipa:"/steɪk/",pos:"prep.短语",tags:["phrase","write"],cn:"攸关成败的，处于风险中",en:"at risk; to be won or lost",ex:"more is at stake here than individual objects",mem:"stake 本义'赌注'→押上赌桌→'有输赢风险'。写作神句：What is at stake is nothing less than... 攸关的正是……",syn:"at risk / in jeopardy / hang in the balance",conf:"stake(桩;赌注) vs. steak(牛排)——同音不同词；a stake in 利害关系"},
+  conservation:{w:"conservation",ipa:"/ˌkɒnsəˈveɪʃn/",pos:"n.",tags:["core","write"],cn:"（文物/自然）保护",en:"the protection of nature or cultural objects",ex:"professor of conservation and restoration",mem:"conserve+ation。与 preservation 近义（本文互换使用）；环保话题标配：energy conservation 节能。",syn:"preservation / protection",conf:"⚠️拼写陷阱：conservation(保护) vs. conversation(交谈)——只差一个字母顺序"},
+  restoration:{w:"restoration",ipa:"/ˌrestəˈreɪʃn/",pos:"n.",tags:["core"],cn:"修复，复原",en:"returning sth to its original condition",ex:"conservation and restoration",mem:"re(重新)+store(储存/恢复)+ation→恢复原样。restore vt. 修复；the Restoration 英国王政复辟（文化背景）。",syn:"repair / renovation / revival",conf:"restore(修复) vs. store(储存) vs. restory(×不存在)"},
+  archaeologist:{w:"archaeologist",ipa:"/ˌɑːkiˈɒlədʒɪst/",pos:"n.",tags:["core"],cn:"考古学家",en:"a person who studies ancient societies from remains",ex:"archaeologists first defined the great material ages",mem:"archaeo(古老,同 archaic 古体的)+log(学科)+ist(人)。考研阅读考古题材常客。",syn:"—",conf:"archaeology(考古学) vs. architecture(建筑学)——都是 arch- 开头"},
+  define:{w:"define",ipa:"/dɪˈfaɪn/",pos:"v.",tags:["core","write"],cn:"定义；界定；成为…的标志",en:"to say what sth is; to characterize",ex:"defined the great material ages of human history",mem:"de+fin(界限,词根：final/finish/confine 限制)→划出界限→定义。高级用法：the defining feature of our age 我们时代的标志性特征。",syn:"delineate / characterize",conf:"define(定义) vs. defy(公然违抗,defy description 无法形容) vs. refine(提炼,精炼)"}
+};
+
+const panel=document.getElementById('panel');
+const isMobile=()=>window.innerWidth<=900;
+function badge(t){return {core:'<span class="badge b-core">核心词</span>',phrase:'<span class="badge b-phrase">短语</span>',poly:'<span class="badge b-poly">熟词僻义</span>',write:'<span class="badge b-write">写作✍︎</span>'}[t]||''}
+function showCard(k,el){
+  const d=V[k]; if(!d)return;
+  document.querySelectorAll('.tk.active').forEach(e=>e.classList.remove('active'));
+  if(el&&el.classList.contains('tk'))el.classList.add('active');
+  panel.innerHTML=`<button class="close" onclick="panel.classList.remove('open')">✕</button>
+  <div class="wcard">
+    <div class="head"><span class="w">${d.w}</span><span class="ipa">${d.ipa}</span><span class="pos">${d.pos}</span>${d.tags.map(badge).join('')}</div>
+    <div class="cn">${d.cn}</div><div class="en-def">${d.en}</div>
+    <div class="row r-ex"><b>原文语境</b>“…${d.ex}…”</div>
+    <div class="row r-mem"><b>怎么记</b>${d.mem}</div>
+    <div class="row r-syn"><b>同类词</b>${d.syn}</div>
+    <div class="row r-conf"><b>易混辨析</b>${d.conf}</div>
+  </div>`;
+  if(isMobile())panel.classList.add('open');
+}
+document.querySelectorAll('.tk').forEach(t=>t.addEventListener('click',e=>{e.stopPropagation();showCard(t.dataset.w,t)}));
+
+function tz(btn){btn.closest('.para').classList.toggle('showzh')}
+let allOn=false;
+function toggleAll(){allOn=!allOn;document.querySelectorAll('.para').forEach(p=>p.classList.toggle('showzh',allOn))}
+function go(id){document.getElementById(id).scrollIntoView({behavior:'smooth',block:'center'});const s=document.getElementById(id);s.style.transition='none';s.style.opacity=.3;setTimeout(()=>{s.style.transition='opacity .8s';s.style.opacity=1},80)}
+
+document.querySelectorAll('.q').forEach(q=>{
+  const ans=+q.dataset.ans;
+  q.querySelectorAll('.opt').forEach((o,i)=>o.addEventListener('click',()=>{
+    if(q.classList.contains('done'))return;
+    q.classList.add('done');
+    if(i!==ans)o.classList.add('wrong');
+    q.querySelectorAll('.opt')[ans].classList.add('right');
+  }));
+});
+
+const vg=document.getElementById('vgrid');
+function renderGrid(f){
+  vg.innerHTML='';
+  Object.keys(V).forEach(k=>{
+    const d=V[k];
+    if(f!=='all'&&!d.tags.includes(f))return;
+    const div=document.createElement('div');div.className='vitem';
+    div.innerHTML=`<span class="badges">${d.tags.map(badge).join('')}</span><div class="w">${d.w}</div><div class="cn">${d.cn}</div>`;
+    div.addEventListener('click',()=>{showCard(k,null);if(!isMobile())window.scrollTo({top:0,behavior:'smooth'})});
+    vg.appendChild(div);
+  });
+}
+renderGrid('all');
+document.querySelectorAll('.fbtn').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.fbtn').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderGrid(b.dataset.f);
+}));
+
+const yd=document.getElementById('yd');let sel='';
+document.addEventListener('selectionchange',()=>{
+  const s=window.getSelection();const t=s?s.toString().trim():'';
+  if(t&&/^[a-zA-Z' -]{2,40}$/.test(t)){
+    sel=t;
+    try{const r=s.getRangeAt(0).getBoundingClientRect();
+      yd.style.left=Math.min(r.left,window.innerWidth-110)+'px';
+      yd.style.top=(r.bottom+8)+'px';yd.style.display='block';}catch(e){}
+  }else{yd.style.display='none'}
+});
+yd.addEventListener('click',()=>{window.open('https://dict.youdao.com/result?word='+encodeURIComponent(sel)+'&lang=en');yd.style.display='none'});
+document.addEventListener('click',e=>{if(e.target!==yd&&!window.getSelection().toString())yd.style.display='none'});
+</script>
+</body>
+</html>

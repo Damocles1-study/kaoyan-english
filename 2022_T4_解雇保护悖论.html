@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2022 英一 Text 4 · 解雇保护悖论</title>
+<style>
+  :root{
+    --bg:#faf9f6; --card:#ffffff; --ink:#2b2b2b; --muted:#8a8578;
+    --accent:#8b5e34; --accent-soft:#f3e9dd; --line:#e8e3d8;
+    --hl:#fdf3d8; --hl-border:#e0b84d;
+    --green:#3e7a4e; --green-soft:#e8f2ea;
+    --red:#b04a3a; --red-soft:#f9e9e6;
+    --blue:#3d6a8a; --blue-soft:#e7eff5;
+    --purple:#6d5a8e; --purple-soft:#eeeaf5;
+    --serif:"Georgia","Songti SC",serif;
+    --sans:-apple-system,"PingFang SC","Helvetica Neue",sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#1c1a17; --card:#26231f; --ink:#e8e4dc; --muted:#9a948a;
+      --accent:#d0a06a; --accent-soft:#3a3127; --line:#3a362f;
+      --hl:#3d3520; --hl-border:#b08c3a;
+      --green:#7fb98d; --green-soft:#26362b;
+      --red:#d98876; --red-soft:#3d2a26;
+      --blue:#8ab3d0; --blue-soft:#26323d;
+      --purple:#a996c8; --purple-soft:#302a3d;
+    }
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;padding-bottom:120px}
+  .wrap{max-width:1100px;margin:0 auto;padding:24px 20px}
+  .back{font-size:.85rem;color:var(--muted);text-decoration:none}
+  .back:hover{color:var(--accent)}
+  header{margin:14px 0 28px}
+  header h1{font-family:var(--serif);font-size:1.7rem;line-height:1.3}
+  header .sub{color:var(--muted);margin-top:6px;font-size:.9rem}
+  .tags{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+  .tag{font-size:.75rem;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);border:1px solid var(--line)}
+  .layout{display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:start}
+  @media (max-width:900px){.layout{grid-template-columns:1fr}}
+  section.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:24px}
+  h2{font-size:1.05rem;letter-spacing:.05em;color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+  h2 .n{font-size:.72rem;background:var(--accent);color:var(--card);border-radius:6px;padding:1px 7px}
+  .para{margin-bottom:22px}
+  .para .en{font-family:var(--serif);font-size:1.06rem;line-height:1.9}
+  .pno{color:var(--muted);font-size:.75rem;user-select:none;margin-right:6px}
+  .tk{background:var(--hl);border-bottom:2px solid var(--hl-border);border-radius:3px;padding:0 2px;cursor:pointer;transition:filter .15s}
+  .tk:hover{filter:brightness(.93)}
+  .tk.active{outline:2px solid var(--hl-border)}
+  .ls{border-bottom:2px dotted var(--blue);cursor:pointer}
+  .para .zh{display:none;margin-top:10px;padding:10px 14px;background:var(--blue-soft);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:.93rem}
+  .para.showzh .zh{display:block}
+  .zbtn{float:right;margin-left:10px;font-size:.72rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:6px;padding:2px 9px;cursor:pointer}
+  .zbtn:hover{color:var(--accent);border-color:var(--accent)}
+  .allbtn{font-size:.78rem;border:1px solid var(--accent);background:none;color:var(--accent);border-radius:8px;padding:4px 12px;cursor:pointer;margin-left:auto}
+  aside{position:sticky;top:20px}
+  #panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;min-height:180px}
+  #panel .hint{color:var(--muted);font-size:.88rem;text-align:center;padding:30px 10px}
+  .wcard .head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .wcard .w{font-family:var(--serif);font-size:1.35rem;font-weight:bold}
+  .wcard .ipa{color:var(--muted);font-size:.85rem}
+  .wcard .pos{font-size:.72rem;color:var(--purple);background:var(--purple-soft);padding:1px 8px;border-radius:999px}
+  .wcard .badge{font-size:.7rem;padding:1px 8px;border-radius:999px}
+  .b-core{background:var(--red-soft);color:var(--red)}
+  .b-phrase{background:var(--blue-soft);color:var(--blue)}
+  .b-poly{background:var(--purple-soft);color:var(--purple)}
+  .b-write{background:var(--green-soft);color:var(--green)}
+  .wcard .cn{margin-top:8px;font-size:1rem;font-weight:600}
+  .wcard .en-def{color:var(--muted);font-size:.86rem;font-style:italic;margin-top:2px}
+  .wcard .row{margin-top:10px;font-size:.86rem;padding:8px 10px;border-radius:8px}
+  .wcard .row b{font-size:.72rem;display:block;margin-bottom:2px;letter-spacing:.06em}
+  .r-ex{background:var(--hl)} .r-ex b{color:var(--hl-border)}
+  .r-mem{background:var(--green-soft)} .r-mem b{color:var(--green)}
+  .r-syn{background:var(--blue-soft)} .r-syn b{color:var(--blue)}
+  .r-conf{background:var(--red-soft)} .r-conf b{color:var(--red)}
+  #panel .close{display:none}
+  @media (max-width:900px){
+    aside{position:fixed;left:0;right:0;bottom:0;z-index:50;padding:0 8px 8px}
+    #panel{box-shadow:0 -6px 24px rgba(0,0,0,.18);max-height:55vh;overflow-y:auto;display:none}
+    #panel.open{display:block}
+    #panel .close{display:block;float:right;border:none;background:var(--line);border-radius:8px;padding:2px 10px;cursor:pointer;color:var(--ink)}
+  }
+  .q{margin-bottom:22px;padding-bottom:18px;border-bottom:1px dashed var(--line)}
+  .q:last-child{border:none;margin-bottom:0;padding-bottom:0}
+  .q .stem{font-weight:600;font-family:var(--serif)}
+  .qt{font-size:.7rem;color:var(--blue);background:var(--blue-soft);border-radius:999px;padding:1px 8px;margin-right:6px;vertical-align:2px}
+  .opts{margin-top:10px;display:grid;gap:8px}
+  .opt{border:1px solid var(--line);border-radius:10px;padding:8px 12px;cursor:pointer;font-size:.93rem;font-family:var(--serif);transition:all .15s}
+  .opt:hover{border-color:var(--accent)}
+  .q.done .opt{cursor:default}
+  .opt.right{background:var(--green-soft);border-color:var(--green)}
+  .opt.wrong{background:var(--red-soft);border-color:var(--red)}
+  .expl{display:none;margin-top:12px;background:var(--accent-soft);border-radius:10px;padding:12px 14px;font-size:.9rem}
+  .q.done .expl{display:block}
+  .expl b{color:var(--accent)}
+  .expl .loc{font-family:var(--serif);font-style:italic;background:var(--hl);padding:1px 4px;border-radius:3px}
+  .sent{margin-bottom:20px}
+  .sent .src{font-family:var(--serif);font-size:1rem;background:var(--blue-soft);padding:12px 14px;border-radius:10px;border-left:3px solid var(--blue)}
+  .sent .anat{margin-top:8px;font-size:.9rem}
+  .sent .anat li{margin:4px 0 4px 18px}
+  .sent .tr{margin-top:8px;font-size:.92rem;color:var(--muted)}
+  .skel{color:var(--red);font-weight:600}
+  .filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+  .fbtn{font-size:.8rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:999px;padding:4px 14px;cursor:pointer}
+  .fbtn.on{background:var(--accent);color:var(--card);border-color:var(--accent)}
+  .vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
+  .vitem{border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer;transition:border-color .15s}
+  .vitem:hover{border-color:var(--accent)}
+  .vitem .w{font-family:var(--serif);font-weight:bold}
+  .vitem .cn{font-size:.85rem;color:var(--muted)}
+  .vitem .badges{float:right}
+  .wb{display:grid;gap:10px}
+  .wbi{border-left:3px solid var(--green);background:var(--green-soft);border-radius:0 10px 10px 0;padding:10px 14px;font-size:.92rem}
+  .wbi .p{font-family:var(--serif);font-weight:600}
+  .wbi .u{color:var(--muted);font-size:.85rem}
+  #yd{position:fixed;z-index:60;display:none;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:4px 12px;font-size:.8rem;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+  footer{color:var(--muted);font-size:.8rem;text-align:center;margin-top:30px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">◀ 返回英语复盘中心</a>
+  <header>
+    <h1>The Dismissal Paradox: 解雇保护的悖论</h1>
+    <div class="sub">2022 年英语（一）真题 · Text 4 · 约 470 词 · 建议做题 20 min · 话题：法律×经济（新西兰《雇佣关系法》）</div>
+    <div class="tags">
+      <span class="tag">正确答案：36D 37A 38D 39B 40C</span><span class="tag">题型：细节+细节+推断+因果+推断</span><span class="tag">难度：偏难（2022 最难篇，逻辑链长）</span>
+    </div>
+  </header>
+
+  <div class="layout">
+    <main>
+      <section class="card">
+        <h2><span class="n">01</span>原文精读 <button class="allbtn" onclick="toggleAll()">全文译文 开/关</button></h2>
+        <p style="font-size:.8rem;color:var(--muted);margin-bottom:14px">🟡 黄色高亮 = 重难点词/短语，点击右侧出卡片 ｜ 蓝色虚线 = 长难句，点击跳到精析 ｜ 每段「译」= 段落译文 ｜ 选中任意其他单词浮出「查有道」<br>💡 全文逻辑主线：保护普通工人的法律（②）→ 误伤企业（③④⑤）→ 反噬经理和工人自己（⑥）→ 拖累全社会（⑦）→ 澳新两国的补救尝试（⑧）</p>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">①</span>The personal <span class="tk" data-w="grievance">grievance</span> <span class="tk" data-w="provision">provisions</span> of New Zealand's <i>Employment Relations Act 2000</i> (ERA) prevent an employer from firing an employee without good cause. Instead, <span class="tk" data-w="dismissal">dismissals</span> must be <span class="tk" data-w="justify">justified</span>. Employers must both show cause and act in a <span class="tk" data-w="procedural">procedurally</span> fair way.</p>
+          <div class="zh">新西兰《2000 年雇佣关系法》（ERA）中的个人申诉条款禁止雇主无正当理由解雇员工。相反，解雇必须有正当依据：雇主既要说明理由，又要在程序上做到公平。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">②</span>Personal grievance procedures were designed to <span class="tk" data-w="guard">guard</span> the jobs of ordinary workers from "unjustified dismissals". The <span class="tk" data-w="premise">premise</span> was that the common law of contract lacked sufficient <span class="tk" data-w="safeguard">safeguards</span> for workers against <span class="tk" data-w="arbitrary">arbitrary</span> conduct by management. <span class="ls" onclick="go('s1')"><span class="tk" data-w="longgone">Long gone are the days</span> when a boss could simply give an employee contractual notice.</span></p>
+          <div class="zh">个人申诉程序的设计初衷，是保护普通工人的工作免遭"不正当解雇"。其前提是：普通合同法未能为工人提供足够保障，难以抵御管理层的专断行为。老板一纸合同通知就能打发员工走人的日子早已一去不返。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">③</span>But these provisions create difficulties for businesses when applied to highly paid managers and executives. <span class="ls" onclick="go('s2')">As countless boards and business owners will <span class="tk" data-w="attest">attest</span>, <span class="tk" data-w="constrain">constraining</span> firms from firing poorly performing, high-earning managers is a <span class="tk" data-w="handbrake">handbrake</span> on boosting productivity and overall performance.</span> The difference between C-grade and A-grade managers may very well be the difference between business success or failure. Between preserving the jobs of ordinary workers or losing them. Yet <span class="tk" data-w="mediocrity">mediocrity</span> is no longer enough to justify a dismissal.</p>
+          <div class="zh">但当这些条款用到高薪经理和高管身上时，就给企业制造了难题。正如无数董事会和企业主可以作证的：禁止公司解雇表现糟糕的高薪经理，就是拉住生产率和整体绩效提升的一记手刹。C 级经理和 A 级经理之差，很可能就是企业成败之差——也是普通工人保住饭碗还是丢掉饭碗之差。然而如今，"平庸"已不足以构成解雇的正当理由。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">④</span>Consequently—and <span class="tk" data-w="paradox">paradoxically</span>—laws introduced to protect the jobs of ordinary workers may be placing those jobs at risk.</p>
+          <div class="zh">于是——悖论出现了——为保护普通工人工作而出台的法律，可能恰恰在把这些工作置于险境。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">⑤</span><span class="ls" onclick="go('s3')">If not placing jobs at risk, <span class="tk" data-w="extent">to the extent</span> employment protection laws constrain business owners from dismissing underperforming managers, those laws act as a constraint on firm productivity and therefore on workers' wages.</span> Indeed, in "An International Perspective on New Zealand's Productivity Paradox" (2014), the Productivity Commission <span class="tk" data-w="singleout">singled out</span> the low quality of managerial capabilities as a cause of the country's poor productivity growth record.</p>
+          <div class="zh">即便不至于让岗位消失，只要雇佣保护法在多大程度上限制企业主解雇不称职的经理，它就在多大程度上约束着企业生产率，进而压制工人工资。事实上，生产率委员会在《新西兰生产率悖论的国际视角》（2014）中，就把管理能力低下单独点名为该国生产率增长记录糟糕的一个原因。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">⑥</span>Nor are highly paid managers themselves <span class="tk" data-w="immune">immune from</span> the harm caused by the ERA's unjustified dismissal procedures. Because employment protection laws make it <span class="tk" data-w="costlier">costlier</span> to fire an employee, employers are more cautious about hiring new staff. This makes it harder for the <span class="tk" data-w="marginal">marginal</span> manager to gain employment. And firms pay staff less because firms carry the <span class="tk" data-w="burden">burden</span> of the employment arrangement going wrong.</p>
+          <div class="zh">高薪经理们自己也无法幸免于 ERA 不正当解雇程序带来的伤害。由于雇佣保护法让解雇变得更昂贵，雇主招新人时会更加谨慎，这让处于录用边缘的经理更难找到工作。而且，因为"雇错人"的风险要企业自己扛，企业会普遍压低员工薪酬。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">⑦</span>Society also suffers from excessive employment protections. <span class="tk" data-w="stringent">Stringent</span> job dismissal regulations <span class="tk" data-w="adversely">adversely</span> affect productivity growth and <span class="tk" data-w="hamper">hamper</span> both <span class="tk" data-w="prosperity">prosperity</span> and overall <span class="tk" data-w="wellbeing">well-being</span>.</p>
+          <div class="zh">全社会也在为过度的雇佣保护买单：严苛的解雇规定不利于生产率增长，妨碍繁荣与整体福祉。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">⑧</span>Across the Tasman Sea, Australia deals with the unjustified dismissal <span class="tk" data-w="paradox2">paradox</span> by <span class="tk" data-w="exclude">excluding</span> employees earning above a specified "high-income threshold" from the protection of its unfair dismissal laws. In New Zealand, a 2016 private members' Bill tried to permit firms and high-income employees to <span class="tk" data-w="contractout">contract out</span> of the unjustified dismissal regime. However, the mechanisms proposed were <span class="tk" data-w="unwieldy">unwieldy</span> and the Bill was <span class="tk" data-w="votedown">voted down</span> following the change in government later that year.</p>
+          <div class="zh">在塔斯曼海对岸，澳大利亚的解法是：把收入超过特定"高收入门槛"的雇员排除在不公平解雇法的保护之外。在新西兰，2016 年一项议员私人法案曾试图允许企业与高收入雇员通过合同约定退出不正当解雇制度；然而所提机制笨重难行，加上当年晚些时候政府更迭，法案被否决了。</div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">02</span>题目与解析（点选项即判 · 再看解析）</h2>
+
+        <div class="q" data-ans="3">
+          <p class="stem"><span class="qt">细节</span>36. The personal grievance provisions of the ERA are intended to ______.</p>
+          <div class="opts">
+            <div class="opt">[A] punish dubious corporate practices</div>
+            <div class="opt">[B] improve traditional hiring procedures</div>
+            <div class="opt">[C] exempt employers from certain duties</div>
+            <div class="opt">[D] protect the rights of ordinary workers</div>
+          </div>
+          <div class="expl"><b>答案 D</b>　定位①②段：<span class="loc">prevent an employer from firing an employee without good cause</span> + <span class="loc">designed to guard the jobs of ordinary workers from "unjustified dismissals"</span>。intended to = designed to（题干与原文的信号词对接），guard → protect。<br><b>干扰项：</b>A 偷换——条款是"预防解雇"不是"惩罚企业"；B 张冠李戴——管的是解雇（dismissal）不是招聘（hiring）；C 反向——是给雇主<em>增加</em>义务（must show cause），不是免除。<br><b>技巧：</b>问立法目的 → 找 designed to / intended to / aim 后面的内容，通常在制度介绍段（前两段）。</div>
+        </div>
+
+        <div class="q" data-ans="0">
+          <p class="stem"><span class="qt">细节</span>37. It can be learned from Paragraph 3 that the provisions may ______.</p>
+          <div class="opts">
+            <div class="opt">[A] hinder business development</div>
+            <div class="opt">[B] undermine managers' authority</div>
+            <div class="opt">[C] affect the public image of the firms</div>
+            <div class="opt">[D] worsen labor-management relations</div>
+          </div>
+          <div class="expl"><b>答案 A</b>　③段首句 <span class="loc">create difficulties for businesses</span> + 比喻句 <span class="loc">a handbrake on boosting productivity and overall performance</span>（手刹=阻碍）+ <span class="loc">the difference between business success or failure</span> → 妨碍企业发展 = hinder business development。handbrake → hinder，比喻转直义。<br><b>干扰项：</b>B "削弱经理权威"无中生有（经理是被保护的对象）；C 公众形象未提；D 劳资关系未提。<br><b>技巧：</b>比喻词（handbrake）几乎必出题——答案是比喻的"翻译"（hinder/obstacle），不是比喻本身。与 T1 的 time bomb → inherently flawed 同理。</div>
+        </div>
+
+        <div class="q" data-ans="3">
+          <p class="stem"><span class="qt">推断</span>38. Which of the following measures would the Productivity Commission support?</p>
+          <div class="opts">
+            <div class="opt">[A] Imposing reasonable wage restraints.</div>
+            <div class="opt">[B] Enforcing employment protection laws.</div>
+            <div class="opt">[C] Limiting the powers of business owners.</div>
+            <div class="opt">[D] Dismissing poorly performing managers.</div>
+          </div>
+          <div class="expl"><b>答案 D</b>　推断链：⑤段 <span class="loc">the Productivity Commission singled out the low quality of managerial capabilities as a cause of the country's poor productivity growth</span> —— 既然该委员会认定"管理能力低下"拖累生产率，那么它自然支持"能把不行的经理换掉" = Dismissing poorly performing managers。<br><b>干扰项：</b>A "工资限制"无中生有（工资被压低是保护法的<em>恶果</em>，不是谁主张的措施）；B 反向——保护法正是全文批判的对象；C 反向——现状就是企业主权力被限（constrain business owners），委员会立场恰恰相反。<br><b>技巧：</b>"某机构会支持什么"型推断题：先找该机构的原文立场（一句话），再顺着立场推一步，不能推两步。</div>
+        </div>
+
+        <div class="q" data-ans="1">
+          <p class="stem"><span class="qt">因果细节</span>39. What might be an effect of ERA's unjustified dismissal procedures?</p>
+          <div class="opts">
+            <div class="opt">[A] Highly paid managers lose their jobs.</div>
+            <div class="opt">[B] Employees suffer from salary cuts.</div>
+            <div class="opt">[C] Society sees a rise in overall well-being.</div>
+            <div class="opt">[D] Employers need to hire new staff.</div>
+          </div>
+          <div class="expl"><b>答案 B</b>　⑥段因果链：解雇成本高 → 招聘更谨慎 → 边缘经理难就业 → <span class="loc">firms pay staff less because firms carry the burden of the employment arrangement going wrong</span> —— 企业把"雇错人"的风险成本转嫁成低工资 = Employees suffer from salary cuts（⑤段 <span class="loc">a constraint ... on workers' wages</span> 双重印证）。<br><b>干扰项：</b>A 反向——高薪经理是<em>难被解雇</em>也<em>难被雇</em>，不是"失业"；C 反向——⑦段 hamper well-being；D 反向——是 more cautious about hiring（更不敢招人）。<br><b>技巧：</b>问 effect 的题，沿着 Because.../This makes.../And... 的因果链走到底，答案常在链条末端。</div>
+        </div>
+
+        <div class="q" data-ans="2">
+          <p class="stem"><span class="qt">推断</span>40. It can be inferred that the "high-income threshold" in Australia ______.</p>
+          <div class="opts">
+            <div class="opt">[A] has secured managers' earnings</div>
+            <div class="opt">[B] has produced undesired results</div>
+            <div class="opt">[C] is beneficial to business owners</div>
+            <div class="opt">[D] is difficult to put into practice</div>
+          </div>
+          <div class="expl"><b>答案 C</b>　⑧段：澳洲把高收入雇员<span class="loc">排除</span>在不公平解雇法保护之外 → 企业主可以自由处置高薪经理 → 全文诟病的"手刹"被松开 → 对企业主有利 = beneficial to business owners（作者通篇站在生产率/企业效率一侧，把澳洲做法作为<em>正面解法</em>介绍）。<br><b>干扰项：</b>A 反向——门槛之上的经理<em>失去</em>保护，收入更没保障；B 无中生有——文中没说澳洲方案产生不良后果；D 张冠李戴——"难以推行"的是<em>新西兰</em> 2016 法案（unwieldy、被否决），不是澳洲的门槛制度。<br><b>技巧：</b>末段出现两个国家/两个方案时，必有一题考"张冠李戴"——把 NZ 的失败嫁接到澳洲头上，D 就是这么造出来的。</div>
+        </div>
+      </section>
+
+      <section class="card" id="sents">
+        <h2><span class="n">03</span>长难句精析（正文蓝色虚线句）</h2>
+
+        <div class="sent" id="s1">
+          <div class="src"><span class="skel">Long gone are the days</span> <u>when a boss could simply give an employee contractual notice</u>.</div>
+          <ul class="anat">
+            <li><span class="skel">完全倒装</span>：正常语序 The days when... are long gone；把表语 Long gone 提前，强调"一去不返"</li>
+            <li>when 定语从句修饰 the days</li>
+            <li>写作直接可搬的金句模板：Long gone are the days when + 旧现象</li>
+          </ul>
+          <div class="tr">译：老板一纸合同通知就能打发员工的日子，早已一去不复返。</div>
+        </div>
+
+        <div class="sent" id="s2">
+          <div class="src"><u>As countless boards and business owners will attest</u>, <span class="skel">constraining firms from firing poorly performing, high-earning managers</span> <span class="skel">is</span> a handbrake <u>on boosting productivity and overall performance</u>.</div>
+          <ul class="anat">
+            <li>As 引导非限定性定语从句（"正如……可以作证的"），attest 熟词：at+test 出庭作证→证实</li>
+            <li><span class="skel">主语是动名词短语</span>：constraining firms from firing...（禁止企业解雇……这件事）；firing 的宾语带两个前置定语 poorly performing（表现差的）+ high-earning（高薪的）</li>
+            <li>a handbrake on doing：手刹比喻，37 题考点——比喻转直义 = obstacle/hindrance</li>
+          </ul>
+          <div class="tr">译：正如无数董事会和企业主可以作证的：禁止企业解雇表现糟糕的高薪经理，就是拉住生产率与整体绩效提升的一记手刹。</div>
+        </div>
+
+        <div class="sent" id="s3">
+          <div class="src"><u>If not placing jobs at risk</u>, <u>to the extent (that) employment protection laws constrain business owners from dismissing underperforming managers</u>, those laws <span class="skel">act as</span> a constraint <u>on firm productivity</u> <u>and therefore on workers' wages</u>.</div>
+          <ul class="anat">
+            <li>If not placing jobs at risk：省略主语的条件短语（= even if they do not place jobs at risk），承接④段"置岗位于险境"的说法退一步</li>
+            <li>to the extent (that)...："在……的程度上/只要……"，that 被省略——本句最大读障</li>
+            <li><span class="skel">主干</span>：those laws act as a constraint on A and (therefore) on B——on 介词并列，therefore 插在中间表递进因果：约束生产率<em>进而</em>压工资</li>
+            <li>39 题 B（salary cuts）的第一处证据就在句尾</li>
+          </ul>
+          <div class="tr">译：即便不至于让岗位消失，只要雇佣保护法限制企业主解雇不称职经理，它就构成对企业生产率的约束，进而压制工人的工资。</div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">04</span>词汇复盘（点卡片看详情）</h2>
+        <div class="filters">
+          <button class="fbtn on" data-f="all">全部</button>
+          <button class="fbtn" data-f="core">核心词</button>
+          <button class="fbtn" data-f="phrase">短语</button>
+          <button class="fbtn" data-f="poly">熟词僻义</button>
+          <button class="fbtn" data-f="write">写作可用</button>
+        </div>
+        <div class="vgrid" id="vgrid"></div>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">05</span>可搬进作文/翻译的素材</h2>
+        <div class="wb">
+          <div class="wbi"><div class="p">Long gone are the days when ...</div><div class="u">"……的日子一去不返" —— 倒装开头，今昔对比类作文首段王牌：Long gone are the days when a diploma guaranteed a job.</div></div>
+          <div class="wbi"><div class="p">Consequently—and paradoxically—...</div><div class="u">"于是——而且悖论的是——" —— 双破折号插入评价，指出好心办坏事：Policies meant to help may—paradoxically—hurt.</div></div>
+          <div class="wbi"><div class="p">X is a handbrake on ...</div><div class="u">"X 是……的手刹" —— 比喻"阻碍"，替换 hinder/impede：Excessive homework is a handbrake on creativity.</div></div>
+          <div class="wbi"><div class="p">Nor are X themselves immune from ...</div><div class="u">"X 自己也不能幸免于……" —— Nor 倒装 + immune from，连锁影响论证利器：Nor are adults themselves immune from screen addiction.</div></div>
+          <div class="wbi"><div class="p">single out X as ...</div><div class="u">"把 X 单独点名为……" —— The report singled out inefficiency as the main cause. 替换 identify。</div></div>
+          <div class="wbi"><div class="p">hamper both prosperity and overall well-being</div><div class="u">"妨碍繁荣与整体福祉" —— hamper/adversely affect/stringent 一组负面政策评价词，社会类话题通用。</div></div>
+          <div class="wbi"><div class="p">Society also suffers from ...</div><div class="u">"全社会也为……付出代价" —— 论证升维句：个人→企业→社会，层层推进的第三层开头。</div></div>
+        </div>
+      </section>
+    </main>
+
+    <aside>
+      <div id="panel"><div class="hint">👆 点击正文里的<b>黄色高亮词</b><br>词卡会出现在这里</div></div>
+    </aside>
+  </div>
+
+  <footer>2022 英语一 Text 4 · 复盘页由 Claude 生成 · 解析为 Claude 独立完成</footer>
+</div>
+
+<button id="yd">🔍 查有道</button>
+
+<script>
+const V = {
+  grievance:{w:"grievance",ipa:"/ˈɡriːvəns/",pos:"n.",tags:["core"],cn:"委屈，不满；申诉",en:"a complaint about unfair treatment",ex:"personal grievance provisions",mem:"grieve(悲伤)+ance→心里憋着的委屈→(正式提出的)申诉。air grievances 倒苦水。法律语境=申诉。",syn:"complaint / grudge(私怨)",conf:"grievance(申诉) vs. grief(悲痛) vs. gravity(重力;严重性)"},
+  provision:{w:"provision",ipa:"/prəˈvɪʒn/",pos:"n.",tags:["core","poly"],cn:"⚠️（法律）条款；提供；储备",en:"a clause in a law; the act of providing",ex:"the personal grievance provisions of the ERA",mem:"熟词僻义：provide 的名词，考研法律类文章里十有八九是'条款'。provisions 复数还能指'给养物资'。",syn:"clause / stipulation / article(条文)",conf:"provision(条款) vs. providence(天意) vs. province(省)"},
+  dismissal:{w:"dismissal",ipa:"/dɪsˈmɪsl/",pos:"n.",tags:["core"],cn:"解雇；驳回；不予理会",en:"the act of removing sb from their job",ex:"dismissals must be justified",mem:"dismiss+al。词族串记：dismiss 解雇/驳回 → dismissal n. → dismissive 不屑的（DEMO 页态度词！）。本文题眼，出现 7 次。",syn:"firing / discharge / removal",conf:"dismissal(解雇) vs. dismissive(不屑的) vs. demise(消亡)"},
+  justify:{w:"justify",ipa:"/ˈdʒʌstɪfaɪ/",pos:"v.",tags:["core","write"],cn:"证明…正当，为…辩护",en:"to show that sth is right or reasonable",ex:"dismissals must be justified",mem:"just(公正)+ify(使)→使显得公正→证明正当。unjustified 不正当的（本文高频）。写作：The end does not justify the means. 目的不能为手段开脱。",syn:"warrant / legitimate / defend",conf:"justify(证明正当) vs. testify(作证) vs. verify(核实)——ify 司法三兄弟"},
+  procedural:{w:"procedurally",ipa:"/prəˈsiːdʒərəli/",pos:"adv.",tags:["core"],cn:"程序上地",en:"in terms of official procedure",ex:"act in a procedurally fair way",mem:"procedure(程序)+ally。'程序正义'= procedural fairness/justice——法律文章核心概念：不仅结果要对，流程也要对。",syn:"formally / by due process",conf:"procedure(程序,流程) vs. process(过程) vs. proceeding(诉讼程序)"},
+  guard:{w:"guard ... from",ipa:"/ɡɑːd/",pos:"v.短语",tags:["phrase"],cn:"保护…免受",en:"to protect sb/sth from harm",ex:"guard the jobs of ordinary workers from unjustified dismissals",mem:"同款结构串记：guard/protect/shield/defend + sb + from/against + 伤害。36 题 protect 就是它的替身。",syn:"protect from / shield from / safeguard against",conf:"guard from(保护) vs. guard against(提防,警惕)——微妙差别"},
+  premise:{w:"premise",ipa:"/ˈpremɪs/",pos:"n.",tags:["core","write"],cn:"前提，假定",en:"an idea on which reasoning is based",ex:"The premise was that the common law lacked...",mem:"pre(先)+mise(放,=mission派遣)→预先放好的命题→前提。逻辑写作高频：on the premise that 在…前提下。premises 复数=房屋场地(僻义)。",syn:"assumption / presupposition / basis",conf:"premise(前提) vs. promise(承诺) vs. premises(经营场所)——差一个字母天壤之别"},
+  safeguard:{w:"safeguard",ipa:"/ˈseɪfɡɑːd/",pos:"n./v.",tags:["core","write"],cn:"保障（措施）；保护",en:"a protection against loss or harm",ex:"lacked sufficient safeguards for workers",mem:"safe+guard 双保险。名词'保障措施'，动词'保护'：safeguard one's rights 维护权利（写作高频）。",syn:"protection / precaution / defense",conf:"safeguard(保障) vs. lifeguard(救生员) vs. vanguard(先锋,T3 avant-garde 词源!)"},
+  arbitrary:{w:"arbitrary",ipa:"/ˈɑːbɪtrəri/",pos:"adj.",tags:["core"],cn:"任意的，专断的",en:"based on personal whim, not reason",ex:"arbitrary conduct by management",mem:"arbiter(仲裁人)→仲裁人一个人说了算→专断的。记'阿彼特虽然裁'——他想咋裁咋裁。",syn:"random / capricious / high-handed(专横的)",conf:"arbitrary(专断的) vs. arbitration(仲裁) vs. orbit(轨道)"},
+  longgone:{w:"Long gone are the days when...",ipa:"",pos:"句型",tags:["phrase","write"],cn:"……的日子一去不返",en:"the days when ... are over",ex:"Long gone are the days when a boss could simply...",mem:"完全倒装金句：表语 Long gone 提前。写作今昔对比开头直接套：Long gone are the days when people wrote letters by hand.",syn:"The days of ... are over / no longer",conf:"gone are the days(一去不返) vs. those were the days(往日真好,怀旧)——情感方向相反"},
+  attest:{w:"attest",ipa:"/əˈtest/",pos:"v.",tags:["core"],cn:"证实，作证",en:"to show or confirm that sth is true",ex:"As countless boards and business owners will attest",mem:"at(去)+test(作证,=testify/testimony)→出庭作证→证实。as sb will attest 正如某人可以作证——引证据的漂亮说法。",syn:"testify / confirm / bear witness to",conf:"attest(证实) vs. attempt(尝试) vs. detest(憎恶)——test 家族分裂现场"},
+  constrain:{w:"constrain ... from",ipa:"/kənˈstreɪn/",pos:"v.",tags:["core"],cn:"约束，限制（不得做）",en:"to restrict or prevent from doing",ex:"constraining firms from firing ... managers",mem:"con+strain(拉紧,=strict/restrain)→紧紧拉住→约束。本文骨架词：constrain...from doing 出现两次，与 prevent...from 同构。",syn:"restrict / restrain / curb",conf:"constrain(约束) vs. restrain(克制) vs. strain(拉伤;压力)——strain 全家桶"},
+  handbrake:{w:"a handbrake on",ipa:"/ˈhændbreɪk/",pos:"n.比喻",tags:["phrase","write"],cn:"（比喻）对…的阻碍，'手刹'",en:"sth that stops progress",ex:"a handbrake on boosting productivity",mem:"手刹一拉车就走不动→政策一卡效率就上不去。37 题考点：比喻→hinder。写作亮点比喻，与 T1 的 time bomb 一样是'必出题信号'。",syn:"brake / drag / obstacle",conf:"handbrake(手刹) vs. handshake(握手) vs. breakthrough(突破)"},
+  mediocrity:{w:"mediocrity",ipa:"/ˌmiːdiˈɒkrəti/",pos:"n.",tags:["core"],cn:"平庸",en:"the state of being only average",ex:"mediocrity is no longer enough to justify a dismissal",mem:"medi(中间,=medium/middle)+ocr→卡在半山腰→平庸。mediocre adj. 平庸的。句意：'干得平庸'已不构成解雇理由——妙句。",syn:"averageness / ordinariness",conf:"mediocre(平庸的) vs. medieval(中世纪的) vs. meditate(冥想)——medi 家族"},
+  paradox:{w:"paradoxically",ipa:"/ˌpærəˈdɒksɪkli/",pos:"adv.",tags:["core","write"],cn:"自相矛盾地，悖论地",en:"in a way that seems contradictory",ex:"Consequently—and paradoxically—laws introduced to protect ... may be placing those jobs at risk",mem:"para(相反)+dox(观点,=orthodox正统)→与常识相反的观点→悖论。本文文眼：④段这句就是全文中心句。写作转折递进：and, paradoxically, ...",syn:"ironically / contradictorily",conf:"paradox(悖论) vs. paradigm(范式) vs. paradise(天堂)——para 三连"},
+  extent:{w:"to the extent (that)",ipa:"/ɪkˈstent/",pos:"conj.短语",tags:["phrase"],cn:"在…的程度上；只要",en:"in so far as; to the degree that",ex:"to the extent employment protection laws constrain...",mem:"⑤段最大读障：to the extent that ≈ '……到什么程度，就……到什么程度'。that 常省略——看到 to the extent + 完整句要能自动补 that。",syn:"insofar as / in so far as",conf:"to the extent that(在…程度上) vs. to some extent(在某种程度上)——一个引从句一个作状语"},
+  singleout:{w:"single out",ipa:"/ˈsɪŋɡl aʊt/",pos:"v.短语",tags:["phrase","write"],cn:"单独挑出，点名",en:"to choose one from a group for special attention",ex:"singled out the low quality of managerial capabilities as a cause",mem:"single(单个)+out(出来)→从一群里拎出一个。single out X as Y 把X点名为Y——38 题推断的立足点。写作引报告观点可用。",syn:"pick out / identify / highlight",conf:"single out(挑出) vs. rule out(排除) vs. stand out(突出)——out 短语三连"},
+  immune:{w:"immune from/to",ipa:"/ɪˈmjuːn/",pos:"adj.",tags:["core","phrase","write"],cn:"免于…的；对…免疫的",en:"protected from; not affected by",ex:"Nor are highly paid managers themselves immune from the harm",mem:"跨篇复现！T1 的 22 题选项 immune to decay 刚见过。immune to 病毒/批评（不受影响）；immune from 处罚/伤害（豁免）。immune system 免疫系统。",syn:"exempt from / protected from / resistant to",conf:"immune(免疫的) vs. immense(巨大的) vs. imminent(迫近的)——imm 三胞胎必辨"},
+  costlier:{w:"costly → costlier",ipa:"/ˈkɒstli/",pos:"adj.",tags:["core"],cn:"昂贵的，代价高的（比较级）",en:"expensive; involving great loss",ex:"make it costlier to fire an employee",mem:"⚠️costly 是形容词不是副词（-ly 陷阱词，同族：friendly/lively/lonely）！比较级 costlier。a costly mistake 代价高昂的错误。",syn:"expensive / dear / burdensome",conf:"costly(昂贵的,adj.!) vs. costing(成本核算) — 千万别当副词用"},
+  marginal:{w:"marginal",ipa:"/ˈmɑːdʒɪnl/",pos:"adj.",tags:["core","poly"],cn:"边缘的；⚠️（经济学）边际的",en:"at the edge; barely qualifying",ex:"harder for the marginal manager to gain employment",mem:"margin(页边空白;差额)+al。the marginal manager = 处于'要不要录用'边缘线上的经理——经济学'边际'思维。margin 另义：利润率/差距（win by a narrow margin 险胜）。",syn:"borderline / fringe",conf:"marginal(边缘的) vs. margin(页边;差额) vs. marginalize(边缘化,社会话题高频)"},
+  burden:{w:"carry the burden of",ipa:"/ˈbɜːdn/",pos:"n.短语",tags:["phrase","write"],cn:"承担…的负担/风险",en:"to bear the weight or cost of sth",ex:"firms carry the burden of the employment arrangement going wrong",mem:"carry/bear/shoulder the burden 三个动词随便换。注意后面 the employment arrangement going wrong 是动名词复合结构：'雇佣安排出岔子'这件事。",syn:"bear the cost / shoulder the responsibility",conf:"burden(负担) vs. burdensome(繁重的) vs. bundle(捆,一束)"},
+  stringent:{w:"stringent",ipa:"/ˈstrɪndʒənt/",pos:"adj.",tags:["core","write"],cn:"严苛的，严格的",en:"(of rules) very strict",ex:"Stringent job dismissal regulations",mem:"string(绳子)同源：strict/strain/stringent 都是'勒紧'家族——规则勒得紧=严苛。写作：stringent regulations/standards 严格规定/标准。",syn:"strict / rigorous / tough",conf:"stringent(严苛的) vs. astringent(收敛的,涩的) vs. strident(刺耳的)"},
+  adversely:{w:"adversely",ipa:"/ˈædvɜːsli/",pos:"adv.",tags:["core","write"],cn:"不利地，有害地",en:"in a harmful way",ex:"adversely affect productivity growth",mem:"ad+vers(转,=reverse/versus)→转到对立面→不利的。adversely affect 不利影响（写作高频负面动词组）；adversity 逆境（鸡汤词：thrive in adversity）。",syn:"negatively / harmfully / unfavorably",conf:"adverse(不利的) vs. averse(反感的,be averse to) vs. diverse(多样的)——考研经典三混"},
+  hamper:{w:"hamper",ipa:"/ˈhæmpə(r)/",pos:"v.",tags:["core","write"],cn:"妨碍，阻碍",en:"to prevent progress or movement",ex:"hamper both prosperity and overall well-being",mem:"名词义'带盖大篮子'→被罩进篮子里迈不开步→妨碍。写作负面动词组：hamper/hinder/impede 三连换着用。",syn:"hinder / impede / obstruct",conf:"hamper(妨碍) vs. hammer(锤子) vs. pamper(娇惯)——一字之差"},
+  prosperity:{w:"prosperity",ipa:"/prɒˈsperəti/",pos:"n.",tags:["core","write"],cn:"繁荣，兴旺",en:"the state of being economically successful",ex:"hamper both prosperity and overall well-being",mem:"pro(向前)+sper(希望)→一路向前有奔头→繁荣。prosper v. / prosperous adj.。写作：economic prosperity 经济繁荣（大作文万金油）。",syn:"affluence / wealth / boom",conf:"prosperity(繁荣) vs. property(财产) vs. propriety(得体)——p 开头三姐妹"},
+  wellbeing:{w:"well-being",ipa:"/ˌwel ˈbiːɪŋ/",pos:"n.",tags:["core","write"],cn:"福祉，健康幸福",en:"general health and happiness",ex:"overall well-being",mem:"well(好)+being(存在状态)→活得好的状态→福祉。写作高频：physical and mental well-being 身心健康——比 happiness 正式。",syn:"welfare / wellness / happiness",conf:"well-being(福祉) vs. welfare(福利,含救济义) vs. farewell(告别)"},
+  paradox2:{w:"paradox",ipa:"/ˈpærədɒks/",pos:"n.",tags:["core","write"],cn:"悖论，自相矛盾的事",en:"a situation with contradictory features",ex:"the unjustified dismissal paradox",mem:"本文标题级词汇：保护工人的法律反而害了工人=悖论。写作点题利器：Herein lies the paradox: ... 悖论正在于此。",syn:"contradiction / irony",conf:"paradox(悖论) vs. Productivity Paradox(⑤段报告名,生产率悖论——IT投入↑生产率不↑,408er 顺手记个梗)"},
+  exclude:{w:"exclude ... from",ipa:"/ɪkˈskluːd/",pos:"v.短语",tags:["phrase","core"],cn:"把…排除在…之外",en:"to deliberately not include",ex:"excluding employees earning above a threshold from the protection",mem:"ex(外)+clude(关,=include/conclude)→关在门外→排除。40 题解题句。include⇄exclude 一对反义同根。",syn:"leave out / bar from / rule out",conf:"clude 家族：include(包含)/exclude(排除)/conclude(得出结论)/preclude(杜绝)"},
+  contractout:{w:"contract out of",ipa:"/ˈkɒntrækt/",pos:"v.短语",tags:["phrase","poly"],cn:"（通过合同）退出（制度）",en:"to formally choose not to be part of a scheme",ex:"permit firms and high-income employees to contract out of the ... regime",mem:"法律术语：签合同声明'我不参加这个制度'。contract 熟词僻义提醒：n.合同 / v.收缩（肌肉）、感染（疾病 contract a virus）。",syn:"opt out of / withdraw from",conf:"contract out of(退出制度) vs. opt out(选择退出) vs. drop out(辍学;退赛)"},
+  unwieldy:{w:"unwieldy",ipa:"/ʌnˈwiːldi/",pos:"adj.",tags:["core"],cn:"笨重难用的，难操作的",en:"difficult to handle because of size or complexity",ex:"the mechanisms proposed were unwieldy",mem:"un(不)+wield(挥舞,wield power 行使权力)+y→挥不动的→笨重难用。形容制度/机器/组织臃肿难操作。",syn:"cumbersome / clumsy / impractical",conf:"unwieldy(笨重的) vs. wieldy(×几乎不用) vs. unyielding(不屈的,yield 让步)"},
+  votedown:{w:"vote down",ipa:"",pos:"v.短语",tags:["phrase"],cn:"投票否决",en:"to reject by voting",ex:"the Bill was voted down",mem:"vote(投票)+down(下去)→投下去→否决。同族：vote in 选上台 / vote out 选下台。Bill 熟词僻义：法案（不是账单也不是人名）！",syn:"reject / veto / turn down",conf:"vote down(否决) vs. veto(一票否决权) vs. turn down(拒绝;调小)"}
+};
+
+const panel=document.getElementById('panel');
+const isMobile=()=>window.innerWidth<=900;
+function badge(t){return {core:'<span class="badge b-core">核心词</span>',phrase:'<span class="badge b-phrase">短语</span>',poly:'<span class="badge b-poly">熟词僻义</span>',write:'<span class="badge b-write">写作✍︎</span>'}[t]||''}
+function showCard(k,el){
+  const d=V[k]; if(!d)return;
+  document.querySelectorAll('.tk.active').forEach(e=>e.classList.remove('active'));
+  if(el&&el.classList.contains('tk'))el.classList.add('active');
+  panel.innerHTML=`<button class="close" onclick="panel.classList.remove('open')">✕</button>
+  <div class="wcard">
+    <div class="head"><span class="w">${d.w}</span><span class="ipa">${d.ipa}</span><span class="pos">${d.pos}</span>${d.tags.map(badge).join('')}</div>
+    <div class="cn">${d.cn}</div><div class="en-def">${d.en}</div>
+    <div class="row r-ex"><b>原文语境</b>“…${d.ex}…”</div>
+    <div class="row r-mem"><b>怎么记</b>${d.mem}</div>
+    <div class="row r-syn"><b>同类词</b>${d.syn}</div>
+    <div class="row r-conf"><b>易混辨析</b>${d.conf}</div>
+  </div>`;
+  if(isMobile())panel.classList.add('open');
+}
+document.querySelectorAll('.tk').forEach(t=>t.addEventListener('click',e=>{e.stopPropagation();showCard(t.dataset.w,t)}));
+function tz(btn){btn.closest('.para').classList.toggle('showzh')}
+let allOn=false;
+function toggleAll(){allOn=!allOn;document.querySelectorAll('.para').forEach(p=>p.classList.toggle('showzh',allOn))}
+function go(id){document.getElementById(id).scrollIntoView({behavior:'smooth',block:'center'});const s=document.getElementById(id);s.style.transition='none';s.style.opacity=.3;setTimeout(()=>{s.style.transition='opacity .8s';s.style.opacity=1},80)}
+document.querySelectorAll('.q').forEach(q=>{
+  const ans=+q.dataset.ans;
+  q.querySelectorAll('.opt').forEach((o,i)=>o.addEventListener('click',()=>{
+    if(q.classList.contains('done'))return;
+    q.classList.add('done');
+    if(i!==ans)o.classList.add('wrong');
+    q.querySelectorAll('.opt')[ans].classList.add('right');
+  }));
+});
+const vg=document.getElementById('vgrid');
+function renderGrid(f){
+  vg.innerHTML='';
+  Object.keys(V).forEach(k=>{
+    const d=V[k];
+    if(f!=='all'&&!d.tags.includes(f))return;
+    const div=document.createElement('div');div.className='vitem';
+    div.innerHTML=`<span class="badges">${d.tags.map(badge).join('')}</span><div class="w">${d.w}</div><div class="cn">${d.cn}</div>`;
+    div.addEventListener('click',()=>{showCard(k,null);if(!isMobile())window.scrollTo({top:0,behavior:'smooth'})});
+    vg.appendChild(div);
+  });
+}
+renderGrid('all');
+document.querySelectorAll('.fbtn').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.fbtn').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderGrid(b.dataset.f);
+}));
+const yd=document.getElementById('yd');let sel='';
+document.addEventListener('selectionchange',()=>{
+  const s=window.getSelection();const t=s?s.toString().trim():'';
+  if(t&&/^[a-zA-Z' -]{2,40}$/.test(t)){
+    sel=t;
+    try{const r=s.getRangeAt(0).getBoundingClientRect();
+      yd.style.left=Math.min(r.left,window.innerWidth-110)+'px';
+      yd.style.top=(r.bottom+8)+'px';yd.style.display='block';}catch(e){}
+  }else{yd.style.display='none'}
+});
+yd.addEventListener('click',()=>{window.open('https://dict.youdao.com/result?word='+encodeURIComponent(sel)+'&lang=en');yd.style.display='none'});
+document.addEventListener('click',e=>{if(e.target!==yd&&!window.getSelection().toString())yd.style.display='none'});
+</script>
+</body>
+</html>

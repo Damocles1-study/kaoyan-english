@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>阅读复盘 · The Four-Day Week（DEMO）</title>
+<style>
+  :root{
+    --bg:#faf9f6; --card:#ffffff; --ink:#2b2b2b; --muted:#8a8578;
+    --accent:#8b5e34; --accent-soft:#f3e9dd; --line:#e8e3d8;
+    --hl:#fdf3d8; --hl-border:#e0b84d;
+    --green:#3e7a4e; --green-soft:#e8f2ea;
+    --red:#b04a3a; --red-soft:#f9e9e6;
+    --blue:#3d6a8a; --blue-soft:#e7eff5;
+    --purple:#6d5a8e; --purple-soft:#eeeaf5;
+    --serif:"Georgia","Songti SC",serif;
+    --sans:-apple-system,"PingFang SC","Helvetica Neue",sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#1c1a17; --card:#26231f; --ink:#e8e4dc; --muted:#9a948a;
+      --accent:#d0a06a; --accent-soft:#3a3127; --line:#3a362f;
+      --hl:#3d3520; --hl-border:#b08c3a;
+      --green:#7fb98d; --green-soft:#26362b;
+      --red:#d98876; --red-soft:#3d2a26;
+      --blue:#8ab3d0; --blue-soft:#26323d;
+      --purple:#a996c8; --purple-soft:#302a3d;
+    }
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;padding-bottom:120px}
+  .wrap{max-width:1100px;margin:0 auto;padding:24px 20px}
+  header{margin:20px 0 28px}
+  header h1{font-family:var(--serif);font-size:1.7rem;line-height:1.3}
+  header .sub{color:var(--muted);margin-top:6px;font-size:.9rem}
+  .tags{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+  .tag{font-size:.75rem;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);border:1px solid var(--line)}
+
+  .layout{display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:start}
+  @media (max-width:900px){.layout{grid-template-columns:1fr}}
+
+  section.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:24px}
+  h2{font-size:1.05rem;letter-spacing:.05em;color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+  h2 .n{font-size:.72rem;background:var(--accent);color:var(--card);border-radius:6px;padding:1px 7px}
+
+  /* passage */
+  .para{margin-bottom:22px}
+  .para .en{font-family:var(--serif);font-size:1.06rem;line-height:1.9}
+  .pno{color:var(--muted);font-size:.75rem;user-select:none;margin-right:6px}
+  .tk{background:var(--hl);border-bottom:2px solid var(--hl-border);border-radius:3px;padding:0 2px;cursor:pointer;transition:filter .15s}
+  .tk:hover{filter:brightness(.93)}
+  .tk.active{outline:2px solid var(--hl-border)}
+  .ls{border-bottom:2px dotted var(--blue);cursor:pointer}
+  .para .zh{display:none;margin-top:10px;padding:10px 14px;background:var(--blue-soft);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:.93rem}
+  .para.showzh .zh{display:block}
+  .zbtn{float:right;margin-left:10px;font-size:.72rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:6px;padding:2px 9px;cursor:pointer}
+  .zbtn:hover{color:var(--accent);border-color:var(--accent)}
+  .allbtn{font-size:.78rem;border:1px solid var(--accent);background:none;color:var(--accent);border-radius:8px;padding:4px 12px;cursor:pointer;margin-left:auto}
+
+  /* word panel */
+  aside{position:sticky;top:20px}
+  #panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;min-height:180px}
+  #panel .hint{color:var(--muted);font-size:.88rem;text-align:center;padding:30px 10px}
+  .wcard .head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .wcard .w{font-family:var(--serif);font-size:1.35rem;font-weight:bold}
+  .wcard .ipa{color:var(--muted);font-size:.85rem}
+  .wcard .pos{font-size:.72rem;color:var(--purple);background:var(--purple-soft);padding:1px 8px;border-radius:999px}
+  .wcard .badge{font-size:.7rem;padding:1px 8px;border-radius:999px}
+  .b-core{background:var(--red-soft);color:var(--red)}
+  .b-phrase{background:var(--blue-soft);color:var(--blue)}
+  .b-poly{background:var(--purple-soft);color:var(--purple)}
+  .b-write{background:var(--green-soft);color:var(--green)}
+  .wcard .cn{margin-top:8px;font-size:1rem;font-weight:600}
+  .wcard .en-def{color:var(--muted);font-size:.86rem;font-style:italic;margin-top:2px}
+  .wcard .row{margin-top:10px;font-size:.86rem;padding:8px 10px;border-radius:8px}
+  .wcard .row b{font-size:.72rem;display:block;margin-bottom:2px;letter-spacing:.06em}
+  .r-ex{background:var(--hl)} .r-ex b{color:var(--hl-border)}
+  .r-mem{background:var(--green-soft)} .r-mem b{color:var(--green)}
+  .r-syn{background:var(--blue-soft)} .r-syn b{color:var(--blue)}
+  .r-conf{background:var(--red-soft)} .r-conf b{color:var(--red)}
+  .r-note{background:var(--purple-soft)} .r-note b{color:var(--purple)}
+  #panel .close{display:none}
+  @media (max-width:900px){
+    aside{position:fixed;left:0;right:0;bottom:0;z-index:50;padding:0 8px 8px}
+    #panel{box-shadow:0 -6px 24px rgba(0,0,0,.18);max-height:55vh;overflow-y:auto;display:none}
+    #panel.open{display:block}
+    #panel .close{display:block;float:right;border:none;background:var(--line);border-radius:8px;padding:2px 10px;cursor:pointer;color:var(--ink)}
+  }
+
+  /* questions */
+  .q{margin-bottom:22px;padding-bottom:18px;border-bottom:1px dashed var(--line)}
+  .q:last-child{border:none;margin-bottom:0;padding-bottom:0}
+  .q .stem{font-weight:600;font-family:var(--serif)}
+  .opts{margin-top:10px;display:grid;gap:8px}
+  .opt{border:1px solid var(--line);border-radius:10px;padding:8px 12px;cursor:pointer;font-size:.93rem;font-family:var(--serif);transition:all .15s}
+  .opt:hover{border-color:var(--accent)}
+  .q.done .opt{cursor:default}
+  .opt.right{background:var(--green-soft);border-color:var(--green)}
+  .opt.wrong{background:var(--red-soft);border-color:var(--red)}
+  .expl{display:none;margin-top:12px;background:var(--accent-soft);border-radius:10px;padding:12px 14px;font-size:.9rem}
+  .q.done .expl{display:block}
+  .expl b{color:var(--accent)}
+  .expl .loc{font-family:var(--serif);font-style:italic;background:var(--hl);padding:1px 4px;border-radius:3px}
+
+  /* long sentences */
+  .sent{margin-bottom:20px}
+  .sent .src{font-family:var(--serif);font-size:1rem;background:var(--blue-soft);padding:12px 14px;border-radius:10px;border-left:3px solid var(--blue)}
+  .sent .anat{margin-top:8px;font-size:.9rem}
+  .sent .anat li{margin:4px 0 4px 18px}
+  .sent .tr{margin-top:8px;font-size:.92rem;color:var(--muted)}
+  .skel{color:var(--red);font-weight:600}
+
+  /* vocab list */
+  .filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+  .fbtn{font-size:.8rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:999px;padding:4px 14px;cursor:pointer}
+  .fbtn.on{background:var(--accent);color:var(--card);border-color:var(--accent)}
+  .vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
+  .vitem{border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer;transition:border-color .15s}
+  .vitem:hover{border-color:var(--accent)}
+  .vitem .w{font-family:var(--serif);font-weight:bold}
+  .vitem .cn{font-size:.85rem;color:var(--muted)}
+  .vitem .badges{float:right}
+
+  /* writing bank */
+  .wb{display:grid;gap:10px}
+  .wbi{border-left:3px solid var(--green);background:var(--green-soft);border-radius:0 10px 10px 0;padding:10px 14px;font-size:.92rem}
+  .wbi .p{font-family:var(--serif);font-weight:600}
+  .wbi .u{color:var(--muted);font-size:.85rem}
+
+  /* youdao float */
+  #yd{position:fixed;z-index:60;display:none;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:4px 12px;font-size:.8rem;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+  footer{color:var(--muted);font-size:.8rem;text-align:center;margin-top:30px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a href="index.html" style="font-size:.85rem;color:var(--muted);text-decoration:none">◀ 返回英语复盘中心</a>
+  <header>
+    <h1>The Four-Day Week: Liberation or Compression?</h1>
+    <div class="sub">阅读复盘页 · DEMO（文章为仿英一 Text 水准自撰，非真题）· 约 400 词 · 建议做题 18 min</div>
+    <div class="tags">
+      <span class="tag">话题：社会/职场</span><span class="tag">题型：细节+例证+推断+猜词+态度</span><span class="tag">生成日期 2026-07-18</span>
+    </div>
+  </header>
+
+  <div class="layout">
+    <main>
+      <!-- ========== 原文精读 ========== -->
+      <section class="card">
+        <h2><span class="n">01</span>原文精读 <button class="allbtn" onclick="toggleAll()">全文译文 开/关</button></h2>
+        <p style="font-size:.8rem;color:var(--muted);margin-bottom:14px">🟡 黄色高亮 = 重难点词/短语，点击右侧出卡片 ｜ 蓝色虚线 = 长难句，点击跳到精析 ｜ 每段「译」= 段落译文 ｜ 选中任意其他单词会浮出「查有道」按钮</p>
+
+        <div class="para" id="p1">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">①</span>In the summer of 2022, more than sixty British companies <span class="tk" data-w="embark">embarked on</span> what was then the world's largest <span class="tk" data-w="trial">trial</span> of a four-day working week. <span class="ls" onclick="go('s1')">Employees kept their full salaries while cutting their hours by a fifth, <span class="tk" data-w="condition">on the condition that</span> they maintained 100 percent of their <span class="tk" data-w="output">output</span>.</span> When the results were published, the enthusiasm was hard to contain: revenues held steady, <span class="tk" data-w="resignation">resignations</span> fell sharply, and the overwhelming majority of firms <span class="tk" data-w="vow">vowed</span> never to look back.</p>
+          <div class="zh">2022 年夏天，六十多家英国公司启动了当时全球最大规模的四天工作制试验。员工薪资不变、工时削减五分之一，条件是必须维持 100% 的产出。结果公布时，各方的热情几乎难以抑制：营收保持稳定，离职率大幅下降，绝大多数公司发誓再也不走回头路。</div>
+        </div>
+
+        <div class="para" id="p2">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">②</span>Such findings feed a <span class="tk" data-w="seductive">seductive</span> <span class="tk" data-w="narrative">narrative</span> — that the five-day week is merely a <span class="tk" data-w="relic">relic</span> of the industrial age, <span class="tk" data-w="ripe">ripe for</span> <span class="tk" data-w="abolition">abolition</span>. <span class="ls" onclick="go('s2')"><span class="tk" data-w="advocate">Advocates</span> point out that the two-day weekend was itself an invention, resisted fiercely by employers a century ago before becoming an unquestioned <span class="tk" data-w="norm">norm</span>.</span> If society could <span class="tk" data-w="compress">compress</span> six working days into five without economic collapse, they argue, compressing five into four is simply the next step in a long historical march toward less <span class="tk" data-w="toil">toil</span>.</p>
+          <div class="zh">这些发现喂养了一种极具诱惑力的论调——五天工作制不过是工业时代的遗物，早就该废除了。倡导者指出，双休日本身也是一项"发明"：一个世纪前曾遭雇主激烈抵制，后来才成为无人质疑的常规。他们主张，既然社会能把六个工作日压缩成五天而没有导致经济崩溃，那么五天压成四天不过是"减少辛劳"这场漫长历史进程中的下一步。</div>
+        </div>
+
+        <div class="para" id="p3">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">③</span>Yet <span class="tk" data-w="skeptic">skeptics</span> urge caution before declaring victory. The companies that volunteered for the trial were, <span class="tk" data-w="bydef">by definition</span>, those most confident of success: small, white-collar and digitally <span class="tk" data-w="nimble">nimble</span>. A hospital ward or an assembly line cannot <span class="tk" data-w="condense">condense</span> its schedule by merely <span class="tk" data-w="trim">trimming</span> meetings and silencing notifications. <span class="ls" onclick="go('s3')">For <span class="tk" data-w="sector">sectors</span> where output is tied to hours of physical presence, a shorter week means either hiring more staff or serving fewer people — both of which carry costs that someone must eventually <span class="tk" data-w="absorb">absorb</span>.</span></p>
+          <div class="zh">然而，怀疑者提醒：先别急着宣布胜利。自愿参加试验的公司，本质上就是那些最有把握成功的公司——规模小、白领型、数字化转身灵活。医院病房或流水线不可能靠"少开会、关通知"来压缩排班。对于产出与"人在场时长"直接挂钩的行业，一周变短意味着要么多雇人、要么少服务——两者都有代价，而这代价最终总得有人来承担。</div>
+        </div>
+
+        <div class="para" id="p4">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">④</span>There is also a <span class="tk" data-w="subtle">subtler</span> worry. Some researchers observed that employees in the trial, though happier on the whole, reported working at a noticeably <span class="tk" data-w="intensify">intensified</span> pace, <span class="tk" data-w="cram">cramming</span> five days of tasks into four. What is marketed as <span class="tk" data-w="liberation">liberation</span>, critics <span class="tk" data-w="contend">contend</span>, may in practice <span class="tk" data-w="amount">amount to</span> compression — the same burden squeezed into a narrower container, with the pressure merely <span class="tk" data-w="redistribute">redistributed</span> rather than <span class="tk" data-w="relieve">relieved</span>.</p>
+          <div class="zh">还有一个更隐蔽的担忧。有研究者观察到，试验中的员工虽然总体上更快乐，却报告说工作节奏明显加快——把五天的任务硬塞进四天。批评者主张：被包装成"解放"的东西，实际上可能只是"压缩"——同样的负担被挤进一个更窄的容器，压力只是被重新分配了，而非真正减轻。</div>
+        </div>
+
+        <div class="para" id="p5">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">⑤</span>The sensible conclusion is neither <span class="tk" data-w="utopian">utopian</span> nor <span class="tk" data-w="dismissive">dismissive</span>. The four-day week is not a universal <span class="tk" data-w="remedy">remedy</span>, but the trials have <span class="tk" data-w="puncture">punctured</span> the <span class="tk" data-w="assumption">assumption</span> that hours worked and value created move <span class="tk" data-w="lockstep">in lockstep</span>. <span class="ls" onclick="go('s4')">Whether other industries can follow will depend less on ideology than on a patient, sector-by-sector <span class="tk" data-w="reckoning">reckoning</span> with what work actually <span class="tk" data-w="consist">consists of</span> — a question the five-day week allowed us, for a century, to avoid asking.</span></p>
+          <div class="zh">明智的结论既不乌托邦式空想，也不一味否定。四天工作制不是万能药，但这些试验已经戳破了一个假设：工作时长与创造的价值同步变动。其他行业能否跟进，与其说取决于理念之争，不如说取决于一场耐心的、逐行业的审视——工作究竟由什么构成？这个问题，五天工作制让我们整整回避了一个世纪。</div>
+        </div>
+      </section>
+
+      <!-- ========== 题目 ========== -->
+      <section class="card">
+        <h2><span class="n">02</span>题目与解析（点选项即判 · 再看解析）</h2>
+
+        <div class="q" data-ans="1">
+          <p class="stem">21. According to Paragraph 1, the British trial of a four-day week ______.</p>
+          <div class="opts">
+            <div class="opt">[A] required employees to accept reduced salaries</div>
+            <div class="opt">[B] demanded that productivity remain undiminished</div>
+            <div class="opt">[C] was triggered by a sharp rise in resignations</div>
+            <div class="opt">[D] failed to keep company revenues stable</div>
+          </div>
+          <div class="expl"><b>细节题 · 答案 B</b>　定位①段：<span class="loc">on the condition that they maintained 100 percent of their output</span> —— "维持100%产出"= productivity remain undiminished（同义替换：output→productivity, maintained 100%→undiminished）。<br><b>干扰项：</b>A 反了（kept their full salaries）；C 因果倒置（离职率下降是<em>结果</em>不是起因）；D 反了（revenues held steady）。</div>
+        </div>
+
+        <div class="q" data-ans="0">
+          <p class="stem">22. Advocates mention the two-day weekend in order to show that ______.</p>
+          <div class="opts">
+            <div class="opt">[A] shortening work time has a historical precedent</div>
+            <div class="opt">[B] employers invariably stand in the way of progress</div>
+            <div class="opt">[C] the industrial age has definitively come to an end</div>
+            <div class="opt">[D] inventions are usually resisted before acceptance</div>
+          </div>
+          <div class="expl"><b>例证题 · 答案 A</b>　例证题问的永远是"例子服务于什么观点"。观点在例子前：<span class="loc">the five-day week is merely a relic... ripe for abolition</span>，双休日的例子是为了论证"工时缩短在历史上发生过、也成功过"→ 有先例（precedent）。<br><b>干扰项：</b>B "invariably"（一概如此）过于绝对；C 无中生有；D 把例子细节当观点——例证题最经典的坑：<em>就例子谈例子</em>。</div>
+        </div>
+
+        <div class="q" data-ans="0">
+          <p class="stem">23. Which of the following is a limitation of the trial according to Paragraph 3?</p>
+          <div class="opts">
+            <div class="opt">[A] Its participants were self-selected and unrepresentative.</div>
+            <div class="opt">[B] Hospitals and factories refused to release their data.</div>
+            <div class="opt">[C] It cut meetings without improving communication.</div>
+            <div class="opt">[D] It forced firms to hire more staff at high costs.</div>
+          </div>
+          <div class="expl"><b>细节/推断题 · 答案 A</b>　定位③段：<span class="loc">The companies that volunteered... were, by definition, those most confident of success: small, white-collar and digitally nimble</span> —— 自愿报名（volunteered→self-selected）且类型单一（→unrepresentative，样本偏差）。<br><b>干扰项：</b>B 原文说医院"无法压缩排班"，不是"拒绝交数据"（偷换）；C 拼接原文词语造句；D 是对<em>假设情形</em>的推演（means either...or...），不是试验本身的做法。</div>
+        </div>
+
+        <div class="q" data-ans="2">
+          <p class="stem">24. The word "compression" (Para. 4) most probably means ______.</p>
+          <div class="opts">
+            <div class="opt">[A] a cut in pay proportional to hours</div>
+            <div class="opt">[B] a decline in workers' overall happiness</div>
+            <div class="opt">[C] the same workload packed into less time</div>
+            <div class="opt">[D] the transfer of tasks to other employees</div>
+          </div>
+          <div class="expl"><b>猜词题 · 答案 C</b>　猜词看破折号后的同位解释：<span class="loc">the same burden squeezed into a narrower container</span> —— 同样的负担塞进更窄的容器 = 同样工作量装进更少时间。前文 <span class="loc">cramming five days of tasks into four</span> 也是同一意思的具体化。<br><b>技巧：</b>猜词题答案≈上下文的同义改写，破折号/冒号/即 that is 后面就是"官方解释"。</div>
+        </div>
+
+        <div class="q" data-ans="3">
+          <p class="stem">25. Which of the following best describes the author's attitude toward the four-day week?</p>
+          <div class="opts">
+            <div class="opt">[A] Enthusiastic endorsement</div>
+            <div class="opt">[B] Outright rejection</div>
+            <div class="opt">[C] Total indifference</div>
+            <div class="opt">[D] Reserved approval</div>
+          </div>
+          <div class="expl"><b>态度题 · 答案 D</b>　定位⑤段首句：<span class="loc">neither utopian nor dismissive</span>（既不空想也不否定）+ <span class="loc">not a universal remedy, but the trials have punctured the assumption...</span> —— 承认价值但有保留 = reserved approval（保留的赞同）。<br><b>态度题词库：</b>reserved/qualified approval 有保留的赞同（正确答案高频）；objective 客观；skeptical 怀疑 ｜ 基本不选：indifferent 漠不关心、biased 偏见、subjective 主观臆断。</div>
+        </div>
+      </section>
+
+      <!-- ========== 长难句 ========== -->
+      <section class="card" id="sents">
+        <h2><span class="n">03</span>长难句精析（正文蓝色虚线句）</h2>
+
+        <div class="sent" id="s1">
+          <div class="src">Employees <span class="skel">kept</span> their full salaries <u>while cutting their hours by a fifth</u>, <u>on the condition that they maintained 100 percent of their output</u>.</div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：Employees kept their full salaries（员工保有全薪）</li>
+            <li>while + doing：伴随状语，"同时削减工时五分之一"（by a fifth = by 20%，<b>by 表差额</b>）</li>
+            <li>on the condition that...：条件状语从句，"条件是……"——写作可直接搬用的句型</li>
+          </ul>
+          <div class="tr">译：员工薪资不变、工时削减五分之一，条件是维持 100% 的产出。</div>
+        </div>
+
+        <div class="sent" id="s2">
+          <div class="src">Advocates <span class="skel">point out that</span> the two-day weekend <span class="skel">was</span> itself an invention, <u>resisted fiercely by employers a century ago</u> <u>before becoming an unquestioned norm</u>.</div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：Advocates point out that + 宾语从句（the weekend was itself an invention）</li>
+            <li>resisted fiercely by...：过去分词短语作后置定语，修饰 an invention（曾被激烈抵制）</li>
+            <li>before becoming...：介词短语，"（先被抵制）而后才成为常规"——注意 before doing 的时间层次</li>
+          </ul>
+          <div class="tr">译：倡导者指出，双休日本身也是一项发明：一个世纪前曾遭雇主激烈抵制，后来才成为无人质疑的常规。</div>
+        </div>
+
+        <div class="sent" id="s3">
+          <div class="src"><u>For sectors where output is tied to hours of physical presence</u>, a shorter week <span class="skel">means</span> either hiring more staff or serving fewer people — <u>both of which carry costs</u> <u>that someone must eventually absorb</u>.</div>
+          <ul class="anat">
+            <li>For sectors [where...]：介词短语+where 定语从句限定范围（"对于产出和在场时长挂钩的行业"）</li>
+            <li><span class="skel">主干</span>：a shorter week means either A or B（means 后接两个动名词并列）</li>
+            <li>— both of which...：破折号+非限定性定语从句，指代前面 A、B 两件事；which 从句里又套一个 that 定语从句修饰 costs</li>
+          </ul>
+          <div class="tr">译：对产出与在场时长挂钩的行业，一周变短意味着要么多雇人、要么少服务——两者都有代价，而代价最终总得有人承担。</div>
+        </div>
+
+        <div class="sent" id="s4">
+          <div class="src"><u>Whether other industries can follow</u> <span class="skel">will depend</span> <u>less on ideology than on a patient, sector-by-sector reckoning with what work actually consists of</u> — <u>a question the five-day week allowed us, for a century, to avoid asking</u>.</div>
+          <ul class="anat">
+            <li>Whether... ：主语从句作全句主语</li>
+            <li><span class="skel">depend less on A than on B</span>："与其说取决于 A，不如说取决于 B"——<b>写作高分句型</b></li>
+            <li>reckoning with + what 宾语从句："对……的清算/审视"</li>
+            <li>— a question (that) ... ：同位语，that 被省略；插入语 for a century 隔开了 allowed us to avoid asking，还原：allowed us to avoid asking (this question) for a century</li>
+          </ul>
+          <div class="tr">译：其他行业能否跟进，与其说取决于理念，不如说取决于逐行业耐心审视"工作究竟由什么构成"——这个问题我们借着五天工作制回避了一个世纪。</div>
+        </div>
+      </section>
+
+      <!-- ========== 词汇复盘 ========== -->
+      <section class="card">
+        <h2><span class="n">04</span>词汇复盘（点卡片看详情）</h2>
+        <div class="filters">
+          <button class="fbtn on" data-f="all">全部</button>
+          <button class="fbtn" data-f="core">核心词</button>
+          <button class="fbtn" data-f="phrase">短语</button>
+          <button class="fbtn" data-f="poly">熟词僻义</button>
+          <button class="fbtn" data-f="write">写作可用</button>
+        </div>
+        <div class="vgrid" id="vgrid"></div>
+      </section>
+
+      <!-- ========== 写作素材 ========== -->
+      <section class="card">
+        <h2><span class="n">05</span>可搬进作文/翻译的素材</h2>
+        <div class="wb">
+          <div class="wbi"><div class="p">A depend less on X than on Y</div><div class="u">"与其说取决于X，不如说取决于Y" —— 大作文议论万能句型：Success depends less on talent than on sustained effort.</div></div>
+          <div class="wbi"><div class="p">on the condition that ...</div><div class="u">"条件是……" —— 比 if 更书面：I will lend it to you on the condition that you return it by Friday.</div></div>
+          <div class="wbi"><div class="p">X is not a universal remedy, but ...</div><div class="u">"X不是万能药，但……" —— 让步转折表观点，态度立显客观：Technology is not a universal remedy, but it has punctured the assumption that ...</div></div>
+          <div class="wbi"><div class="p">puncture the assumption that ...</div><div class="u">"戳破……的假设" —— 替换低级的 "prove ... wrong"，阅卷眼前一亮。</div></div>
+          <div class="wbi"><div class="p">What is marketed as X may in practice amount to Y</div><div class="u">"被包装成X的东西实际上可能等于Y" —— 批判性论证利器：What is marketed as convenience may in practice amount to dependence.</div></div>
+          <div class="wbi"><div class="p">neither utopian nor dismissive</div><div class="u">"既不空想也不否定" —— 结尾段表明理性立场；同款结构 neither ... nor ... 任意换词。</div></div>
+          <div class="wbi"><div class="p">a relic of the industrial age / an unquestioned norm</div><div class="u">名词短语积累："工业时代的遗物"/"无人质疑的常规" —— 科技、传统类话题都用得上。</div></div>
+        </div>
+      </section>
+    </main>
+
+    <!-- ========== 侧栏词卡 ========== -->
+    <aside>
+      <div id="panel"><div class="hint">👆 点击正文里的<b>黄色高亮词</b><br>词卡会出现在这里</div></div>
+    </aside>
+  </div>
+
+  <footer>DEMO · 由 Claude 生成的阅读复盘页 · 把真题正文+题目发给 Claude 即可生成同款</footer>
+</div>
+
+<button id="yd">🔍 查有道</button>
+
+<script>
+const V = {
+  embark:{w:"embark on",ipa:"/ɪmˈbɑːk/",pos:"v.短语",tags:["phrase","core"],cn:"着手，开始（重要的事）",en:"to start something new or important",ex:"companies embarked on the world's largest trial",mem:"em(进入)+bark(船桨→船)→上船出发→着手开始。写作可替换 start/begin。",syn:"launch / initiate / set about",conf:"embark(上船;开始) vs. embargo(禁运)"},
+  trial:{w:"trial",ipa:"/ˈtraɪəl/",pos:"n.",tags:["core","poly"],cn:"试验，试点；⚠️审判",en:"a test of quality or performance",ex:"the world's largest trial of a four-day week",mem:"熟词僻义：常见义'审判(on trial受审)'，此处是'试验'。try 的名词。trial and error 反复试错。",syn:"experiment / pilot (pilot scheme 试点项目)",conf:"trial(试验) vs. trail(小径;追踪)——拼写只差字母位置"},
+  condition:{w:"on the condition that",ipa:"",pos:"conj.短语",tags:["phrase","write"],cn:"条件是……，以……为条件",en:"only if; provided that",ex:"on the condition that they maintained 100% of their output",mem:"写作句型：比 if 正式。同义 provided that / on condition that。",syn:"provided that / as long as",conf:"注意与 in condition(状态好) / out of condition(状态差) 区分"},
+  output:{w:"output",ipa:"/ˈaʊtpʊt/",pos:"n.",tags:["core"],cn:"产出，产量",en:"the amount produced",ex:"maintained 100 percent of their output",mem:"out+put→'放出来的东西'→产出。反义 input 投入。",syn:"yield / production / productivity",conf:"output(产量) vs. outcome(结果) vs. outset(开端,at the outset)"},
+  resignation:{w:"resignation",ipa:"/ˌrezɪɡˈneɪʃn/",pos:"n.",tags:["core","poly"],cn:"辞职；⚠️听天由命",en:"the act of leaving a job; acceptance of sth unpleasant",ex:"resignations fell sharply",mem:"resign(辞职)+ation。僻义：with resignation 无可奈何地。",syn:"quit(v.) / departure",conf:"resignation(辞职) vs. designation(指定;称号)——首字母 r/d 之差"},
+  vow:{w:"vow",ipa:"/vaʊ/",pos:"v./n.",tags:["core"],cn:"发誓，郑重承诺",en:"to promise solemnly",ex:"firms vowed never to look back",mem:"三字母小词，婚礼誓词就叫 wedding vows。never look back：'再不回头'。",syn:"pledge / swear / commit to",conf:"vow(发誓) vs. avow(公开承认) vs. bow(鞠躬/baʊ/)"},
+  seductive:{w:"seductive",ipa:"/sɪˈdʌktɪv/",pos:"adj.",tags:["core"],cn:"诱人的，有吸引力的",en:"tempting and attractive",ex:"a seductive narrative",mem:"词根 duc/duct=引导：se(离开)+duc→把人引走→诱惑。同根：conduct指挥、introduce介绍、reduce减少。",syn:"tempting / alluring / appealing",conf:"seductive(诱人的) vs. productive(多产的) vs. deductive(演绎的)——都是 duc 家族"},
+  narrative:{w:"narrative",ipa:"/ˈnærətɪv/",pos:"n.",tags:["core","poly","write"],cn:"叙述；⚠️(流行的)论调、说法",en:"a story; a widely held account of events",ex:"feed a seductive narrative",mem:"外刊高频僻义：a narrative ≈ 一套(带立场的)说法。feed a narrative 助长某种论调。",syn:"account / storyline / discourse",conf:"narrative(论调) vs. initiative(倡议) vs. imperative(必要的事)"},
+  relic:{w:"relic",ipa:"/ˈrelɪk/",pos:"n.",tags:["core","write"],cn:"遗物，遗迹，残余",en:"something that survives from the past",ex:"a relic of the industrial age",mem:"re(向后)+lic(=leave留)→留下来的东西。作文金句：a relic of the past 过时之物。",syn:"remains / vestige / leftover",conf:"relic(遗物) vs. replica(复制品)"},
+  ripe:{w:"ripe for",ipa:"/raɪp/",pos:"adj.短语",tags:["phrase"],cn:"时机成熟的，该……的",en:"ready for (a change to happen)",ex:"ripe for abolition",mem:"本义水果'熟了'→引申'时机成熟'。ripe for reform 到了该改革的时候。",syn:"ready for / due for",conf:"ripe(成熟) vs. rife(盛行的,rife with corruption) vs. rip(撕)"},
+  abolition:{w:"abolition",ipa:"/ˌæbəˈlɪʃn/",pos:"n.",tags:["core"],cn:"废除，废止",en:"the official ending of a system or practice",ex:"ripe for abolition",mem:"abolish(废除)+tion。历史联想：the abolition of slavery 废奴。",syn:"elimination / repeal(废除法律)",conf:"abolish(废除制度) vs. demolish(拆毁建筑)——都含'毁'，对象不同"},
+  advocate:{w:"advocate",ipa:"/ˈædvəkeɪt/",pos:"n./v.",tags:["core","write"],cn:"提倡者；提倡，主张",en:"a person who publicly supports sth; to support publicly",ex:"Advocates point out that...",mem:"词根 voc=声音：ad(向)+voc→为某事发声→提倡。同根：vocal直言的、vocation天职、provoke激怒。写作高频：Advocates argue that...",syn:"proponent / champion(v.) / endorse",conf:"advocate 后直接接 doing/名词，不说 advocate to do"},
+  norm:{w:"norm",ipa:"/nɔːm/",pos:"n.",tags:["core","write"],cn:"常规，准则",en:"a standard or usual way of doing sth",ex:"an unquestioned norm",mem:"normal 的'词根本人'。become the norm 成为常态（写作高频）。",syn:"convention / standard / practice",conf:"norm(常规) vs. form(形式) vs. dorm(宿舍)"},
+  compress:{w:"compress",ipa:"/kəmˈpres/",pos:"v.",tags:["core"],cn:"压缩",en:"to press into less space/time",ex:"compress six working days into five",mem:"com(共同)+press(压)→压到一起。compress A into B 把A压缩进B。",syn:"condense / squeeze / cram",conf:"compress(压缩) vs. suppress(镇压;抑制) vs. oppress(压迫)——press 三兄弟"},
+  toil:{w:"toil",ipa:"/tɔɪl/",pos:"n./v.",tags:["core"],cn:"苦工，辛劳",en:"hard, tiring work",ex:"a long historical march toward less toil",mem:"联想 oil：干活干到浑身冒'油'→辛劳。",syn:"labor / drudgery / grind",conf:"toil(辛劳) vs. soil(土壤) vs. coil(线圈) vs. foil(挫败;箔)"},
+  skeptic:{w:"skeptic",ipa:"/ˈskeptɪk/",pos:"n.",tags:["core","write"],cn:"怀疑论者",en:"a person who doubts accepted claims",ex:"Yet skeptics urge caution",mem:"态度题核心词族：skeptical 怀疑的（正确选项高频词）。skeptics vs. advocates 是外刊议论文的标准对阵双方。",syn:"doubter / cynic(愤世者,更贬)",conf:"skeptical(怀疑的·中性) vs. suspicious(起疑心的·多疑)"},
+  bydef:{w:"by definition",ipa:"",pos:"adv.短语",tags:["phrase"],cn:"顾名思义，本质上必然",en:"because of what sth inherently is",ex:"were, by definition, those most confident of success",mem:"'从定义上讲'→自愿报名的公司当然是有把握的公司——逻辑上必然如此。",syn:"inherently / necessarily",conf:"注意不是'根据定义查词典'，而是'天然如此'"},
+  nimble:{w:"nimble",ipa:"/ˈnɪmbl/",pos:"adj.",tags:["core"],cn:"灵活的，敏捷的",en:"quick and agile in moving or thinking",ex:"small, white-collar and digitally nimble",mem:"digitally nimble 数字化转身快。谐音'柠檬吧'→柠檬猴上蹿下跳很敏捷。",syn:"agile / deft / adroit",conf:"nimble(敏捷) vs. humble(谦逊) vs. tumble(跌倒)"},
+  condense:{w:"condense",ipa:"/kənˈdens/",pos:"v.",tags:["core"],cn:"压缩，浓缩；冷凝",en:"to make shorter or denser",ex:"cannot condense its schedule",mem:"con+dense(稠密的)→变稠密→浓缩。condensed milk 炼乳。",syn:"compress / abridge / shorten",conf:"condense(浓缩) vs. condemn(谴责) vs. condone(纵容)——con 三连易混"},
+  trim:{w:"trim",ipa:"/trɪm/",pos:"v.",tags:["core"],cn:"修剪；削减",en:"to cut back slightly",ex:"trimming meetings",mem:"理发店场景：trim 修剪(头发/预算/会议)。削减程度：trim(修剪)＜cut(砍)＜slash(大砍)。",syn:"cut back / prune / pare down",conf:"trim(修剪) vs. tame(驯服) vs. brim(边缘,to the brim)"},
+  sector:{w:"sector",ipa:"/ˈsektə(r)/",pos:"n.",tags:["core","write"],cn:"部门，行业",en:"a distinct part of an economy",ex:"For sectors where output is tied to...",mem:"sect(切)+or→切出来的一块→部门。public/private sector 公/私营部门（写作高频）。",syn:"industry / field / domain",conf:"sector(行业) vs. section(部分,章节) vs. sect(教派)"},
+  absorb:{w:"absorb",ipa:"/əbˈzɔːb/",pos:"v.",tags:["core","poly"],cn:"吸收；⚠️承担、消化(成本)",en:"to take in; to bear (costs) without passing them on",ex:"costs that someone must eventually absorb",mem:"熟词僻义：absorb costs 消化成本（谁来买单）。be absorbed in 专心于。",syn:"bear / shoulder / take on (costs)",conf:"absorb(吸收) vs. absurd(荒谬的)——拼写形近"},
+  subtle:{w:"subtle",ipa:"/ˈsʌtl/",pos:"adj.",tags:["core"],cn:"微妙的，不易察觉的",en:"not obvious; delicate",ex:"a subtler worry",mem:"⚠️发音坑：b 不发音 /ˈsʌtl/。sub(在下面)→藏在下面看不清→微妙。",syn:"slight / imperceptible / understated",conf:"subtle(微妙) vs. shuttle(往返;航天飞机) vs. settle(解决)"},
+  intensify:{w:"intensify",ipa:"/ɪnˈtensɪfaɪ/",pos:"v.",tags:["core","write"],cn:"加剧，增强",en:"to become more intense",ex:"a noticeably intensified pace",mem:"intense(强烈的)+ify(使动后缀，如 simplify/purify)。写作可替换 increase：competition has intensified。",syn:"escalate / heighten / aggravate(恶化)",conf:"intense(强烈的) vs. intensive(密集的,intensive reading精读) vs. intent(意图)"},
+  cram:{w:"cram",ipa:"/kræm/",pos:"v.",tags:["core"],cn:"塞满，硬塞；突击备考",en:"to force into a small space; to study intensively at the last minute",ex:"cramming five days of tasks into four",mem:"考生本命词：cram for exams 临时抱佛脚，cram school 补习班。cram A into B 把A硬塞进B。",syn:"stuff / squeeze / jam",conf:"cram(塞) vs. cramp(抽筋) vs. clam(蛤蜊)"},
+  liberation:{w:"liberation",ipa:"/ˌlɪbəˈreɪʃn/",pos:"n.",tags:["core"],cn:"解放",en:"the act of setting free",ex:"What is marketed as liberation",mem:"词根 liber=自由：liberate解放、liberty自由、liberal开明的。",syn:"emancipation / freedom",conf:"liberation(解放) vs. liberalization(自由化,如贸易自由化)"},
+  contend:{w:"contend",ipa:"/kənˈtend/",pos:"v.",tags:["core","poly"],cn:"⚠️主张，认为；竞争",en:"to argue/claim; to compete",ex:"critics contend (that)...",mem:"熟词僻义：阅读里 sb contends that ≈ argues that（观点指示词，考态度题就找它）。另义'竞争'：contender 竞争者。",syn:"argue / maintain / assert / claim",conf:"contend(主张) vs. content(内容;满足的) vs. contempt(轻蔑)"},
+  amount:{w:"amount to",ipa:"",pos:"v.短语",tags:["phrase","write"],cn:"等同于，实际上是；总计达",en:"to be equal to in effect",ex:"may in practice amount to compression",mem:"'加起来达到'→实际上等于。写作利器：Such behavior amounts to cheating.",syn:"be tantamount to / add up to / equal",conf:"amount to(等同) vs. account for(解释;占比)——考研常年对考"},
+  redistribute:{w:"redistribute",ipa:"/ˌriːdɪˈstrɪbjuːt/",pos:"v.",tags:["core"],cn:"重新分配",en:"to share out in a different way",ex:"the pressure merely redistributed",mem:"词根 tribute=给予，三兄弟必辨：con-tribute 贡献 / at-tribute 归因于 / dis-tribute 分配。re+distribute=再分配。",syn:"reallocate / reapportion",conf:"attribute A to B(把A归因于B) vs. contribute to(促成) vs. distribute(分发)"},
+  relieve:{w:"relieve",ipa:"/rɪˈliːv/",pos:"v.",tags:["core","write"],cn:"缓解，减轻",en:"to make (pain/pressure) less severe",ex:"redistributed rather than relieved",mem:"词根 lev=轻：re+liev→再变轻→缓解。同根：alleviate缓解、elevate举起、lever杠杆。relieve stress 写作高频。",syn:"alleviate / ease / mitigate",conf:"relieve(v.缓解) vs. relief(n.宽慰) vs. believe(相信)——都是 ie，别拼成 ei"},
+  utopian:{w:"utopian",ipa:"/juːˈtəʊpiən/",pos:"adj.",tags:["core"],cn:"乌托邦式的，空想的",en:"idealistic but impractical",ex:"neither utopian nor dismissive",mem:"Utopia乌托邦(希腊语'不存在的地方')→utopian 不切实际的理想化。态度题词汇。",syn:"idealistic / unrealistic",conf:"utopian(空想乐观) vs. dystopian(反乌托邦的,《1984》那种)"},
+  dismissive:{w:"dismissive",ipa:"/dɪsˈmɪsɪv/",pos:"adj.",tags:["core","write"],cn:"不屑一顾的，否定的",en:"showing that you think sth is not worth considering",ex:"neither utopian nor dismissive",mem:"dismiss(解散;驳回;不理会)+ive。态度题高频选项：be dismissive of 对……不屑。",syn:"scornful / contemptuous",conf:"dismissive(不屑) vs. submissive(顺从的) vs. permissive(纵容的)——missive 三兄弟"},
+  remedy:{w:"remedy",ipa:"/ˈremədi/",pos:"n./v.",tags:["core","write"],cn:"药方；补救(办法)",en:"a cure; a way of solving a problem",ex:"not a universal remedy",mem:"词根 med=医治：remedy补救、medical医学的。写作亮点：not a panacea/universal remedy 不是万能药。",syn:"cure / solution / panacea(万能药)",conf:"remedy(补救) vs. ready(准备好) vs. melody(旋律)"},
+  puncture:{w:"puncture",ipa:"/ˈpʌŋktʃə(r)/",pos:"v./n.",tags:["core","write"],cn:"刺破，戳破",en:"to make a small hole in; to deflate (an idea)",ex:"punctured the assumption that...",mem:"词根 punct=点/刺：punctual准时(踩点)、punctuation标点、acupuncture针灸。puncture the assumption 戳破假设——写作高级替换。",syn:"deflate / debunk(揭穿) / explode (a myth)",conf:"puncture(刺破) vs. punctual(准时的) vs. punctuate(加标点;不时打断)"},
+  assumption:{w:"assumption",ipa:"/əˈsʌmpʃn/",pos:"n.",tags:["core","write"],cn:"假设，假定",en:"sth accepted as true without proof",ex:"the assumption that hours and value move in lockstep",mem:"assume(假定)+ption。阅读逻辑词：on the assumption that 基于……的假设。",syn:"presumption / premise / supposition",conf:"assumption(假定) vs. consumption(消费) vs. resumption(恢复)——sume 家族"},
+  lockstep:{w:"in lockstep",ipa:"/ˈlɒkstep/",pos:"adv.短语",tags:["phrase"],cn:"步调一致地，同步地",en:"moving exactly together",ex:"hours worked and value created move in lockstep",mem:"lock(锁)+step(步)→步伐像被锁住一样整齐→齐步走。外刊高频：move in lockstep with 与……同步变动。",syn:"in tandem / in sync / hand in hand",conf:"in lockstep(同步) vs. deadlock(僵局) vs. gridlock(大堵塞;僵局)"},
+  reckoning:{w:"reckoning",ipa:"/ˈrekənɪŋ/",pos:"n.",tags:["core"],cn:"清算，(慎重的)评估",en:"a time when one is forced to judge or settle sth",ex:"a sector-by-sector reckoning with what work consists of",mem:"reckon(计算;认为)→reckoning 算总账。day of reckoning 清算之日。a reckoning with X 对X的正面直视与评估。",syn:"assessment / settlement",conf:"reckon(认为≈think,英式口语) vs. recount(讲述;重数)"},
+  consist:{w:"consist of",ipa:"/kənˈsɪst/",pos:"v.短语",tags:["phrase"],cn:"由……构成",en:"to be made up of",ex:"what work actually consists of",mem:"⚠️三连辨析：consist of 由…组成(=be composed of) / consist in 在于(happiness consists in contentment) / be consistent with 与…一致。",syn:"be composed of / comprise / be made up of",conf:"comprise 主动态直接接宾语：The team comprises five members.（不加 of）"}
+};
+
+const panel=document.getElementById('panel');
+const isMobile=()=>window.innerWidth<=900;
+function badge(t){return {core:'<span class="badge b-core">核心词</span>',phrase:'<span class="badge b-phrase">短语</span>',poly:'<span class="badge b-poly">熟词僻义</span>',write:'<span class="badge b-write">写作✍︎</span>'}[t]||''}
+function showCard(k,el){
+  const d=V[k]; if(!d)return;
+  document.querySelectorAll('.tk.active').forEach(e=>e.classList.remove('active'));
+  if(el&&el.classList.contains('tk'))el.classList.add('active');
+  panel.innerHTML=`<button class="close" onclick="panel.classList.remove('open')">✕</button>
+  <div class="wcard">
+    <div class="head"><span class="w">${d.w}</span><span class="ipa">${d.ipa}</span><span class="pos">${d.pos}</span>${d.tags.map(badge).join('')}</div>
+    <div class="cn">${d.cn}</div><div class="en-def">${d.en}</div>
+    <div class="row r-ex"><b>原文语境</b>“…${d.ex}…”</div>
+    <div class="row r-mem"><b>怎么记</b>${d.mem}</div>
+    <div class="row r-syn"><b>同类词</b>${d.syn}</div>
+    <div class="row r-conf"><b>易混辨析</b>${d.conf}</div>
+  </div>`;
+  if(isMobile())panel.classList.add('open');
+}
+document.querySelectorAll('.tk').forEach(t=>t.addEventListener('click',e=>{e.stopPropagation();showCard(t.dataset.w,t)}));
+
+function tz(btn){btn.closest('.para').classList.toggle('showzh')}
+let allOn=false;
+function toggleAll(){allOn=!allOn;document.querySelectorAll('.para').forEach(p=>p.classList.toggle('showzh',allOn))}
+function go(id){document.getElementById(id).scrollIntoView({behavior:'smooth',block:'center'});const s=document.getElementById(id);s.style.transition='none';s.style.opacity=.3;setTimeout(()=>{s.style.transition='opacity .8s';s.style.opacity=1},80)}
+
+/* questions */
+document.querySelectorAll('.q').forEach(q=>{
+  const ans=+q.dataset.ans;
+  q.querySelectorAll('.opt').forEach((o,i)=>o.addEventListener('click',()=>{
+    if(q.classList.contains('done'))return;
+    q.classList.add('done');
+    if(i!==ans)o.classList.add('wrong');
+    q.querySelectorAll('.opt')[ans].classList.add('right');
+  }));
+});
+
+/* vocab grid */
+const vg=document.getElementById('vgrid');
+function renderGrid(f){
+  vg.innerHTML='';
+  Object.keys(V).forEach(k=>{
+    const d=V[k];
+    if(f!=='all'&&!d.tags.includes(f))return;
+    const div=document.createElement('div');div.className='vitem';
+    div.innerHTML=`<span class="badges">${d.tags.map(badge).join('')}</span><div class="w">${d.w}</div><div class="cn">${d.cn}</div>`;
+    div.addEventListener('click',()=>{showCard(k,null);if(!isMobile())window.scrollTo({top:0,behavior:'smooth'})});
+    vg.appendChild(div);
+  });
+}
+renderGrid('all');
+document.querySelectorAll('.fbtn').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.fbtn').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderGrid(b.dataset.f);
+}));
+
+/* youdao lookup for any selected word */
+const yd=document.getElementById('yd');let sel='';
+document.addEventListener('selectionchange',()=>{
+  const s=window.getSelection();const t=s?s.toString().trim():'';
+  if(t&&/^[a-zA-Z' -]{2,40}$/.test(t)){
+    sel=t;
+    try{const r=s.getRangeAt(0).getBoundingClientRect();
+      yd.style.left=Math.min(r.left,window.innerWidth-110)+'px';
+      yd.style.top=(r.bottom+8)+'px';yd.style.display='block';}catch(e){}
+  }else{yd.style.display='none'}
+});
+yd.addEventListener('click',()=>{window.open('https://dict.youdao.com/result?word='+encodeURIComponent(sel)+'&lang=en');yd.style.display='none'});
+document.addEventListener('click',e=>{if(e.target!==yd&&!window.getSelection().toString())yd.style.display='none'});
+</script>
+</body>
+</html>

@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2022 英一 Text 2 · Z世代与学位价值</title>
+<style>
+  :root{
+    --bg:#faf9f6; --card:#ffffff; --ink:#2b2b2b; --muted:#8a8578;
+    --accent:#8b5e34; --accent-soft:#f3e9dd; --line:#e8e3d8;
+    --hl:#fdf3d8; --hl-border:#e0b84d;
+    --green:#3e7a4e; --green-soft:#e8f2ea;
+    --red:#b04a3a; --red-soft:#f9e9e6;
+    --blue:#3d6a8a; --blue-soft:#e7eff5;
+    --purple:#6d5a8e; --purple-soft:#eeeaf5;
+    --serif:"Georgia","Songti SC",serif;
+    --sans:-apple-system,"PingFang SC","Helvetica Neue",sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#1c1a17; --card:#26231f; --ink:#e8e4dc; --muted:#9a948a;
+      --accent:#d0a06a; --accent-soft:#3a3127; --line:#3a362f;
+      --hl:#3d3520; --hl-border:#b08c3a;
+      --green:#7fb98d; --green-soft:#26362b;
+      --red:#d98876; --red-soft:#3d2a26;
+      --blue:#8ab3d0; --blue-soft:#26323d;
+      --purple:#a996c8; --purple-soft:#302a3d;
+    }
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;padding-bottom:120px}
+  .wrap{max-width:1100px;margin:0 auto;padding:24px 20px}
+  .back{font-size:.85rem;color:var(--muted);text-decoration:none}
+  .back:hover{color:var(--accent)}
+  header{margin:14px 0 28px}
+  header h1{font-family:var(--serif);font-size:1.7rem;line-height:1.3}
+  header .sub{color:var(--muted);margin-top:6px;font-size:.9rem}
+  .tags{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+  .tag{font-size:.75rem;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);border:1px solid var(--line)}
+  .layout{display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:start}
+  @media (max-width:900px){.layout{grid-template-columns:1fr}}
+  section.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:24px}
+  h2{font-size:1.05rem;letter-spacing:.05em;color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+  h2 .n{font-size:.72rem;background:var(--accent);color:var(--card);border-radius:6px;padding:1px 7px}
+  .para{margin-bottom:22px}
+  .para .en{font-family:var(--serif);font-size:1.06rem;line-height:1.9}
+  .pno{color:var(--muted);font-size:.75rem;user-select:none;margin-right:6px}
+  .tk{background:var(--hl);border-bottom:2px solid var(--hl-border);border-radius:3px;padding:0 2px;cursor:pointer;transition:filter .15s}
+  .tk:hover{filter:brightness(.93)}
+  .tk.active{outline:2px solid var(--hl-border)}
+  .ls{border-bottom:2px dotted var(--blue);cursor:pointer}
+  .para .zh{display:none;margin-top:10px;padding:10px 14px;background:var(--blue-soft);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:.93rem}
+  .para.showzh .zh{display:block}
+  .zbtn{float:right;margin-left:10px;font-size:.72rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:6px;padding:2px 9px;cursor:pointer}
+  .zbtn:hover{color:var(--accent);border-color:var(--accent)}
+  .allbtn{font-size:.78rem;border:1px solid var(--accent);background:none;color:var(--accent);border-radius:8px;padding:4px 12px;cursor:pointer;margin-left:auto}
+  aside{position:sticky;top:20px}
+  #panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;min-height:180px}
+  #panel .hint{color:var(--muted);font-size:.88rem;text-align:center;padding:30px 10px}
+  .wcard .head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .wcard .w{font-family:var(--serif);font-size:1.35rem;font-weight:bold}
+  .wcard .ipa{color:var(--muted);font-size:.85rem}
+  .wcard .pos{font-size:.72rem;color:var(--purple);background:var(--purple-soft);padding:1px 8px;border-radius:999px}
+  .wcard .badge{font-size:.7rem;padding:1px 8px;border-radius:999px}
+  .b-core{background:var(--red-soft);color:var(--red)}
+  .b-phrase{background:var(--blue-soft);color:var(--blue)}
+  .b-poly{background:var(--purple-soft);color:var(--purple)}
+  .b-write{background:var(--green-soft);color:var(--green)}
+  .wcard .cn{margin-top:8px;font-size:1rem;font-weight:600}
+  .wcard .en-def{color:var(--muted);font-size:.86rem;font-style:italic;margin-top:2px}
+  .wcard .row{margin-top:10px;font-size:.86rem;padding:8px 10px;border-radius:8px}
+  .wcard .row b{font-size:.72rem;display:block;margin-bottom:2px;letter-spacing:.06em}
+  .r-ex{background:var(--hl)} .r-ex b{color:var(--hl-border)}
+  .r-mem{background:var(--green-soft)} .r-mem b{color:var(--green)}
+  .r-syn{background:var(--blue-soft)} .r-syn b{color:var(--blue)}
+  .r-conf{background:var(--red-soft)} .r-conf b{color:var(--red)}
+  #panel .close{display:none}
+  @media (max-width:900px){
+    aside{position:fixed;left:0;right:0;bottom:0;z-index:50;padding:0 8px 8px}
+    #panel{box-shadow:0 -6px 24px rgba(0,0,0,.18);max-height:55vh;overflow-y:auto;display:none}
+    #panel.open{display:block}
+    #panel .close{display:block;float:right;border:none;background:var(--line);border-radius:8px;padding:2px 10px;cursor:pointer;color:var(--ink)}
+  }
+  .q{margin-bottom:22px;padding-bottom:18px;border-bottom:1px dashed var(--line)}
+  .q:last-child{border:none;margin-bottom:0;padding-bottom:0}
+  .q .stem{font-weight:600;font-family:var(--serif)}
+  .qt{font-size:.7rem;color:var(--blue);background:var(--blue-soft);border-radius:999px;padding:1px 8px;margin-right:6px;vertical-align:2px}
+  .opts{margin-top:10px;display:grid;gap:8px}
+  .opt{border:1px solid var(--line);border-radius:10px;padding:8px 12px;cursor:pointer;font-size:.93rem;font-family:var(--serif);transition:all .15s}
+  .opt:hover{border-color:var(--accent)}
+  .q.done .opt{cursor:default}
+  .opt.right{background:var(--green-soft);border-color:var(--green)}
+  .opt.wrong{background:var(--red-soft);border-color:var(--red)}
+  .expl{display:none;margin-top:12px;background:var(--accent-soft);border-radius:10px;padding:12px 14px;font-size:.9rem}
+  .q.done .expl{display:block}
+  .expl b{color:var(--accent)}
+  .expl .loc{font-family:var(--serif);font-style:italic;background:var(--hl);padding:1px 4px;border-radius:3px}
+  .sent{margin-bottom:20px}
+  .sent .src{font-family:var(--serif);font-size:1rem;background:var(--blue-soft);padding:12px 14px;border-radius:10px;border-left:3px solid var(--blue)}
+  .sent .anat{margin-top:8px;font-size:.9rem}
+  .sent .anat li{margin:4px 0 4px 18px}
+  .sent .tr{margin-top:8px;font-size:.92rem;color:var(--muted)}
+  .skel{color:var(--red);font-weight:600}
+  .filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+  .fbtn{font-size:.8rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:999px;padding:4px 14px;cursor:pointer}
+  .fbtn.on{background:var(--accent);color:var(--card);border-color:var(--accent)}
+  .vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
+  .vitem{border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer;transition:border-color .15s}
+  .vitem:hover{border-color:var(--accent)}
+  .vitem .w{font-family:var(--serif);font-weight:bold}
+  .vitem .cn{font-size:.85rem;color:var(--muted)}
+  .vitem .badges{float:right}
+  .wb{display:grid;gap:10px}
+  .wbi{border-left:3px solid var(--green);background:var(--green-soft);border-radius:0 10px 10px 0;padding:10px 14px;font-size:.92rem}
+  .wbi .p{font-family:var(--serif);font-weight:600}
+  .wbi .u{color:var(--muted);font-size:.85rem}
+  #yd{position:fixed;z-index:60;display:none;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:4px 12px;font-size:.8rem;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+  footer{color:var(--muted);font-size:.8rem;text-align:center;margin-top:30px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">◀ 返回英语复盘中心</a>
+  <header>
+    <h1>Is a Degree Still Worth It? Z 世代与学位价值</h1>
+    <div class="sub">2022 年英语（一）真题 · Text 2 · 约 420 词 · 建议做题 18 min · 话题：教育×职场（社论评述）</div>
+    <div class="tags">
+      <span class="tag">正确答案：26C 27B 28C 29D 30A</span><span class="tag">题型：建议+细节+例证+细节+推断结论</span><span class="tag">难度：中等（选项同义替换密集）</span>
+    </div>
+  </header>
+
+  <div class="layout">
+    <main>
+      <section class="card">
+        <h2><span class="n">01</span>原文精读 <button class="allbtn" onclick="toggleAll()">全文译文 开/关</button></h2>
+        <p style="font-size:.8rem;color:var(--muted);margin-bottom:14px">🟡 黄色高亮 = 重难点词/短语，点击右侧出卡片 ｜ 蓝色虚线 = 长难句，点击跳到精析 ｜ 每段「译」= 段落译文 ｜ 选中任意其他单词浮出「查有道」</p>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">①</span><span class="ls" onclick="go('s1')">As the latest <span class="tk" data-w="crop">crop</span> of students <span class="tk" data-w="pen">pen</span> their undergraduate application form and <span class="tk" data-w="weigh">weigh up</span> their options, it may be worth considering just how the point, purpose and value of a degree has changed and what Generation Z need to consider as they start the third stage of their educational journey.</span></p>
+          <div class="zh">当新一批学生填写本科申请表、权衡各自的选择时，值得思考的是：学位的意义、目的与价值已经发生了怎样的变化，以及 Z 世代在开启教育旅程第三阶段时需要考虑什么。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">②</span>Millennials were told that if you did well in school, got a decent degree, you would be <span class="tk" data-w="setup">set up for life</span>. But that promise has been <span class="tk" data-w="wanting">found wanting</span>. As degrees became <span class="tk" data-w="universal">universal</span>, they became <span class="tk" data-w="devalue">devalued</span>. Education was no longer a secure route of <span class="tk" data-w="mobility">social mobility</span>. Today, 28 per cent of graduates in the UK are in non-graduate roles, a percentage which is double the average among OECD countries.</p>
+          <div class="zh">千禧一代曾被告知：只要在学校表现好、拿个像样的学位，你这辈子就稳了。但这个承诺已被证明靠不住。随着学位的普及，它也随之贬值。教育不再是社会流动的可靠通道。如今，英国 28% 的毕业生从事的是不需要学位的岗位，这一比例是 OECD 国家平均水平的两倍。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">③</span><span class="ls" onclick="go('s2')">This is not to say that there is no point in getting a degree, but rather stress that a degree is not for everyone, that the switch from classroom to lecture hall is not an <span class="tk" data-w="inevitable">inevitable</span> one and that other options are available.</span></p>
+          <div class="zh">这并不是说读学位毫无意义，而是想强调：学位并不适合每个人，从（中学）教室走进（大学）阶梯教室并非必然之路，还有其他选择存在。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">④</span>Thankfully, there are signs that this is already happening, with Generation Z seeking to learn from their millennial <span class="tk" data-w="predecessor">predecessors</span>, even if parents and teachers tend to be still <span class="tk" data-w="setin">set in</span> the degree <span class="tk" data-w="mindset">mindset</span>. Employers have long seen the advantages of hiring <span class="tk" data-w="leaver">school leavers</span> who often prove themselves to be more <span class="tk" data-w="committed">committed</span> and loyal employees than graduates. Many too are seeing the advantages of <span class="tk" data-w="scrap">scrapping</span> a degree requirement for certain roles.</p>
+          <div class="zh">值得庆幸的是，有迹象表明这种转变已经在发生：Z 世代正试图从千禧一代前辈身上吸取教训——尽管父母和老师往往仍然固守"学位思维"。雇主们早就看到了雇用中学毕业生的好处：他们往往证明自己比大学毕业生更尽职、更忠诚。许多雇主还看到了取消某些岗位学位门槛的好处。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">⑤</span>For those for whom a degree is the desired route, consider that this may well be the first of many. In this age of <span class="tk" data-w="generalist">generalists</span>, <span class="tk" data-w="pays">it pays to</span> have specific knowledge or skills. <span class="tk" data-w="postgrad">Postgraduates</span> now earn 40 per cent more than graduates. When more and more of us have a degree, it makes sense to have two.</p>
+          <div class="zh">对于那些确实想走学位路线的人：要考虑到这可能只是许多个学位中的第一个。在这个通才遍地的时代，拥有专门的知识或技能是划算的。如今研究生比本科毕业生多挣 40%。当越来越多的人都有学位时，拥有两个学位才说得通。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">⑥</span>It is unlikely that Generation Z will be done with education at 18 or 21; they will need to be constantly <span class="tk" data-w="upskill">up-skilling</span> throughout their career to stay <span class="tk" data-w="employable">employable</span>. <span class="ls" onclick="go('s3')">It has been estimated that this generation, due to the pressures of technology, the wish for personal <span class="tk" data-w="fulfilment">fulfilment</span> and desire for diversity, will work for 17 different employers over the course of their working life and have five different careers.</span> Education, and not just knowledge gained on campus, will be a core part of Generation Z's career <span class="tk" data-w="trajectory">trajectory</span>.</p>
+          <div class="zh">Z 世代不太可能在 18 岁或 21 岁就与教育"两清"；为了保持就业能力，他们需要在整个职业生涯中不断提升技能。据估计，由于技术压力、对个人成就感的渴望和对多样性的追求，这代人一生将为 17 个不同的雇主工作、经历 5 种不同的职业。教育——而不仅仅是在校园里获得的知识——将成为 Z 世代职业轨迹的核心组成部分。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">⑦</span>Older generations often talk about their degree in the present and personal <span class="tk" data-w="tense">tense</span>: 'I am a geographer' or 'I am a classist'. Their sons or daughters would never say such a thing; it's as if they already know that their degree won't <span class="tk" data-w="define2">define</span> them in the same way.</p>
+          <div class="zh">老一辈谈起自己的学位时常用现在时、且与自我绑定："我是地理学者""我是古典学学者"。他们的子女绝不会这样说——仿佛他们早已明白，学位不会再以同样的方式定义他们。</div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">02</span>题目与解析（点选项即判 · 再看解析）</h2>
+
+        <div class="q" data-ans="2">
+          <p class="stem"><span class="qt">建议/主旨</span>26. The author suggests that Generation Z should ______.</p>
+          <div class="opts">
+            <div class="opt">[A] be careful in choosing a college</div>
+            <div class="opt">[B] be diligent at each educational stage</div>
+            <div class="opt">[C] reassess the necessity of college education</div>
+            <div class="opt">[D] postpone their undergraduate application</div>
+          </div>
+          <div class="expl"><b>答案 C</b>　定位①段 <span class="loc">it may be worth considering just how the point, purpose and value of a degree has changed</span> + ③段三连 that：<span class="loc">a degree is not for everyone / not an inevitable one / other options are available</span> —— 重新想清楚"要不要上大学" = reassess the necessity。<br><b>干扰项：</b>A 偷换——作者讨论的是"要不要读"，不是"选哪所"；B "每个阶段都努力"心灵鸡汤，无中生有；D "推迟申请"曲解 weigh up options（权衡≠延期）。<br><b>技巧：</b>问 author suggests 的题，去找作者施加"该做什么"语气的句子（worth considering / consider that / stress that）。</div>
+        </div>
+
+        <div class="q" data-ans="1">
+          <p class="stem"><span class="qt">细节</span>27. The percentage of UK graduates in non-graduate roles reflects ______.</p>
+          <div class="opts">
+            <div class="opt">[A] Millennials' opinions about work</div>
+            <div class="opt">[B] the shrinking value of a degree</div>
+            <div class="opt">[C] public discontent with education</div>
+            <div class="opt">[D] the desired route of social mobility</div>
+          </div>
+          <div class="expl"><b>答案 B</b>　数字必有用途：②段逻辑链 <span class="loc">As degrees became universal, they became devalued</span> → <span class="loc">no longer a secure route</span> → 28% 的数据就是"学位贬值"的证据。devalued → shrinking value，教科书级同义替换。<br><b>干扰项：</b>A 张冠李戴——"被告知会 set up for life"是千禧代听到的承诺，不是他们对工作的看法；C "公众不满"无中生有；D 反向——原文说教育<em>不再是</em> secure route。<br><b>技巧：</b>问"数据说明什么"→ 答案永远是数据<em>前后的观点句</em>，不是数据本身。</div>
+        </div>
+
+        <div class="q" data-ans="2">
+          <p class="stem"><span class="qt">细节</span>28. The author considers it a good sign that ______.</p>
+          <div class="opts">
+            <div class="opt">[A] Generation Z are seeking to earn a decent degree</div>
+            <div class="opt">[B] school leavers are willing to be skilled workers</div>
+            <div class="opt">[C] employers are taking a realistic attitude to degrees</div>
+            <div class="opt">[D] parents are changing their minds about education</div>
+          </div>
+          <div class="expl"><b>答案 C</b>　定位④段 Thankfully（好迹象信号词）：<span class="loc">Employers have long seen the advantages of hiring school leavers</span> + <span class="loc">the advantages of scrapping a degree requirement</span> —— 雇主不迷信学位、按岗位实际需要用人 = 对学位持务实态度（realistic attitude）。<br><b>干扰项：</b>A 反向——好迹象恰恰是 Z 世代明白学位<em>非必需</em>；B 偷换——是雇主爱雇 school leavers，不是他们自己"愿意当技术工人"；D 反向——父母 <span class="loc">still set in the degree mindset</span>（还没转变）。<br><b>技巧：</b>even if / 让步从句里的内容（父母老师没变）常被拿来做反向干扰项。</div>
+        </div>
+
+        <div class="q" data-ans="3">
+          <p class="stem"><span class="qt">细节</span>29. It is advised in Paragraph 5 that those with one degree should ______.</p>
+          <div class="opts">
+            <div class="opt">[A] make an early decision on their career</div>
+            <div class="opt">[B] attend on-the-job training programs</div>
+            <div class="opt">[C] team up with high-paid postgraduates</div>
+            <div class="opt">[D] further their studies in a specific field</div>
+          </div>
+          <div class="expl"><b>答案 D</b>　⑤段：<span class="loc">this may well be the first of many</span>（第一个学位而已）+ <span class="loc">it pays to have specific knowledge or skills</span> + <span class="loc">Postgraduates now earn 40 per cent more</span> + <span class="loc">it makes sense to have two</span> —— 继续读、往"专"里读 = further their studies in a specific field。<br><b>干扰项：</b>A "尽早定职业"无中生有；B 在职培训是⑥段的 up-skilling，<em>段落错位</em>（题干明确限定 Paragraph 5）；C 把"研究生多挣40%"曲解成"和高薪研究生组队"，搞笑项。<br><b>技巧：</b>题干限定段落时，其他段落的正确信息也是错误选项——29B 就是专门为不看题干限定的人挖的坑。</div>
+        </div>
+
+        <div class="q" data-ans="0">
+          <p class="stem"><span class="qt">推断结论</span>30. What can be concluded about Generation Z from the last two paragraphs?</p>
+          <div class="opts">
+            <div class="opt">[A] Lifelong learning will define them.</div>
+            <div class="opt">[B] They will make qualified educators.</div>
+            <div class="opt">[C] Degrees will no longer appeal to them.</div>
+            <div class="opt">[D] They will have a limited choice of jobs.</div>
+          </div>
+          <div class="expl"><b>答案 A</b>　⑥段 <span class="loc">constantly up-skilling throughout their career</span> + <span class="loc">Education ... will be a core part of Generation Z's career trajectory</span>，⑦段 <span class="loc">their degree won't define them in the same way</span> —— 合起来：定义他们的不再是一纸学位，而是贯穿一生的学习 = Lifelong learning will define them（A 与⑦段原文形成漂亮的呼应）。<br><b>干扰项：</b>B "成为合格的教育者"无中生有（education≠educator）；C 过度推断——⑤段还建议读第二个学位，学位并非"不再有吸引力"；D 反向——17 个雇主、5 种职业 = 选择更多不是更少。<br><b>技巧：</b>结论题选项常把原文关键词重组：B 用 education 变 educator 就是典型的"词形陷阱"。</div>
+        </div>
+      </section>
+
+      <section class="card" id="sents">
+        <h2><span class="n">03</span>长难句精析（正文蓝色虚线句）</h2>
+
+        <div class="sent" id="s1">
+          <div class="src"><u>As the latest crop of students pen their undergraduate application form and weigh up their options</u>, it <span class="skel">may be worth considering</span> <u>just how the point, purpose and value of a degree has changed</u> and <u>what Generation Z need to consider as they start the third stage of their educational journey</u>.</div>
+          <ul class="anat">
+            <li>As 引导时间状语从句，从句内 pen 和 weigh up 两个谓语并列（pen 在此是动词"填写"！）</li>
+            <li><span class="skel">it is worth doing</span>：it 形式主语 + worth 句型</li>
+            <li>considering 后接两个并列宾语从句：how...（学位价值如何变化）and what...（Z世代要考虑什么）——26 题题干就化用了这两个从句</li>
+            <li>the third stage：中学之后的"第三阶段"，即高等教育</li>
+          </ul>
+          <div class="tr">译：当新一批学生填写本科申请表、权衡选择时，值得思考：学位的意义、目的与价值已如何变化，以及 Z 世代开启教育第三阶段时需要考虑什么。</div>
+        </div>
+
+        <div class="sent" id="s2">
+          <div class="src">This <span class="skel">is not to say</span> <u>that there is no point in getting a degree</u>, <span class="skel">but rather stress</span> <u>that a degree is not for everyone</u>, <u>that the switch from classroom to lecture hall is not an inevitable one</u> and <u>that other options are available</u>.</div>
+          <ul class="anat">
+            <li><span class="skel">This is not to say A, but rather (to) stress B</span>：先排除误读再立论——写作与阅读都极高频的"让步-立论"结构</li>
+            <li>stress 后三个 that 从句排比：不是人人需要 / 并非必然 / 另有选择——26 题答案的完整证据链</li>
+            <li>the switch from classroom to lecture hall：借代——从中学教室到大学阶梯教室 = 上大学</li>
+          </ul>
+          <div class="tr">译：这不是说读学位毫无意义，而是要强调：学位不适合所有人，升入大学并非必然，其他选择依然存在。</div>
+        </div>
+
+        <div class="sent" id="s3">
+          <div class="src"><span class="skel">It has been estimated that</span> this generation, <u>due to the pressures of technology, the wish for personal fulfilment and desire for diversity</u>, <span class="skel">will work</span> for 17 different employers over the course of their working life <span class="skel">and have</span> five different careers.</div>
+          <ul class="anat">
+            <li><span class="skel">It has been estimated that</span>：it 形式主语 + 被动语态（"据估计"），写作图表描述可直接搬</li>
+            <li>due to 引出三个并列原因（技术压力 / 个人成就 / 多样性渴望），插入在主语和谓语之间——先跳过读主干</li>
+            <li>主干：this generation will work for 17 employers and have five careers</li>
+          </ul>
+          <div class="tr">译：据估计，由于技术压力、对个人成就感的渴望和对多样性的追求，这代人一生将为 17 个雇主工作、经历 5 种职业。</div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">04</span>词汇复盘（点卡片看详情）</h2>
+        <div class="filters">
+          <button class="fbtn on" data-f="all">全部</button>
+          <button class="fbtn" data-f="core">核心词</button>
+          <button class="fbtn" data-f="phrase">短语</button>
+          <button class="fbtn" data-f="poly">熟词僻义</button>
+          <button class="fbtn" data-f="write">写作可用</button>
+        </div>
+        <div class="vgrid" id="vgrid"></div>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">05</span>可搬进作文/翻译的素材</h2>
+        <div class="wb">
+          <div class="wbi"><div class="p">This is not to say that ..., but rather ...</div><div class="u">"这不是说……而是……" —— 议论文让步反驳神句，先堵住误读再亮观点：This is not to say technology is useless, but rather that it must be used wisely.</div></div>
+          <div class="wbi"><div class="p">But that promise has been found wanting.</div><div class="u">"这个承诺被证明靠不住" —— found wanting（发现有欠缺）替换 proved unreliable，短句转折有力。</div></div>
+          <div class="wbi"><div class="p">it pays to do ...</div><div class="u">"做……是划算的" —— It pays to plan ahead. 三词开头，简洁地道。</div></div>
+          <div class="wbi"><div class="p">It has been estimated that ...</div><div class="u">"据估计……" —— 图表作文引数据标配；同族：It is reported/predicted that...</div></div>
+          <div class="wbi"><div class="p">stay employable / up-skill / career trajectory</div><div class="u">就业话题词打包：保持就业能力 / 提升技能 / 职业轨迹——教育与就业类大作文的核心弹药。</div></div>
+          <div class="wbi"><div class="p">be set in the ... mindset</div><div class="u">"固守……思维" —— Many remain set in the exam-oriented mindset. 批判守旧观念可用。</div></div>
+          <div class="wbi"><div class="p">X won't define them</div><div class="u">"X 不会定义他们" —— 与 2022 T1 的 define 呼应：A single test score won't define who you are.（跨篇复现词优先记）</div></div>
+        </div>
+      </section>
+    </main>
+
+    <aside>
+      <div id="panel"><div class="hint">👆 点击正文里的<b>黄色高亮词</b><br>词卡会出现在这里</div></div>
+    </aside>
+  </div>
+
+  <footer>2022 英语一 Text 2 · 复盘页由 Claude 生成 · 解析为 Claude 独立完成</footer>
+</div>
+
+<button id="yd">🔍 查有道</button>
+
+<script>
+const V = {
+  crop:{w:"crop",ipa:"/krɒp/",pos:"n.",tags:["poly"],cn:"庄稼；⚠️一批（人/物）",en:"a group of people/things appearing at one time",ex:"the latest crop of students",mem:"熟词僻义：a crop of + 复数名词 = '新一茬/新一批'，把人比作庄稼，一茬一茬地来。",syn:"batch / group / cohort",conf:"crop(庄稼;一批) vs. corp(公司缩写) vs. crap(垃圾,慎用)"},
+  pen:{w:"pen",ipa:"/pen/",pos:"v.",tags:["poly"],cn:"⚠️写，撰写，填写",en:"to write",ex:"students pen their application form",mem:"熟词僻义：名词'钢笔'作动词='用笔写'。pen a letter 写信。另一僻义：围栏（sheep pen 羊圈）。",syn:"write / compose / draft",conf:"pen(写) vs. pin(别针;钉住) vs. pun(双关语)"},
+  weigh:{w:"weigh up",ipa:"/weɪ/",pos:"v.短语",tags:["phrase","write"],cn:"权衡，斟酌",en:"to consider carefully before deciding",ex:"weigh up their options",mem:"weigh 称重 → 把选项放在心里的天平上称一称 → 权衡。weigh the pros and cons 权衡利弊（写作高频）。",syn:"evaluate / assess / consider",conf:"weigh(称重;权衡) vs. weight(n.重量) vs. way(路)"},
+  setup:{w:"be set up for life",ipa:"",pos:"v.短语",tags:["phrase"],cn:"一生无忧，后半辈子稳了",en:"to have enough money/security for the rest of one's life",ex:"you would be set up for life",mem:"set up 安置好 + for life 管一辈子 → '这辈子就稳了'。②段的'承诺'具体内容就是它。",syn:"be financially secure",conf:"set up(安置;建立;陷害) 多义：be set up 也可指'被陷害'——看语境"},
+  wanting:{w:"be found wanting",ipa:"/ˈwɒntɪŋ/",pos:"adj.短语",tags:["phrase","poly","write"],cn:"被发现有欠缺、靠不住",en:"to be judged not good enough",ex:"that promise has been found wanting",mem:"⚠️熟词僻义：wanting 此处是形容词'欠缺的'（=lacking），不是'想要'！find/be found wanting 检验后发现不合格。写作替换 prove unreliable。",syn:"deficient / inadequate / lacking",conf:"wanting(欠缺的) vs. wanted(被通缉的;抢手的)——一字之差"},
+  universal:{w:"universal",ipa:"/ˌjuːnɪˈvɜːsl/",pos:"adj.",tags:["core","write"],cn:"普遍的，人人皆有的",en:"involving everyone",ex:"As degrees became universal",mem:"uni(一)+vers(转)→万物绕一个转→普遍的。universe 宇宙同根。写作：a universal truth 普遍真理。",syn:"widespread / ubiquitous / prevalent",conf:"universal(普遍) vs. universe(宇宙) vs. university(大学)——同根三件套"},
+  devalue:{w:"devalue",ipa:"/ˌdiːˈvæljuː/",pos:"v.",tags:["core"],cn:"（使）贬值；贬低",en:"to reduce the value of",ex:"they became devalued",mem:"de(向下)+value(价值)→价值向下→贬值。27 题 shrinking value 就是它的同义替换。",syn:"depreciate / cheapen / undermine",conf:"devalue(贬值) vs. evaluate(评估) vs. undervalue(低估)"},
+  mobility:{w:"social mobility",ipa:"/məʊˈbɪləti/",pos:"n.短语",tags:["phrase","write"],cn:"社会流动性",en:"movement between social classes",ex:"a secure route of social mobility",mem:"mob/mov=动：mobile 移动的 → mobility 流动性。'寒门出贵子'的社会学术语，教育公平话题必备。",syn:"upward movement / class movement",conf:"mobility(流动性) vs. motility(运动性,生物学) vs. nobility(贵族)"},
+  inevitable:{w:"inevitable",ipa:"/ɪnˈevɪtəbl/",pos:"adj.",tags:["core","write"],cn:"不可避免的，必然的",en:"certain to happen; unavoidable",ex:"not an inevitable one",mem:"in(不)+evit(避开,=evade)+able→避不开的。写作：an inevitable trend 必然趋势（但注意本文恰恰说上大学'不是'必然）。",syn:"unavoidable / inescapable / bound to happen",conf:"inevitable(不可避免) vs. invariable(不变的) vs. invaluable(无价的)——in-三胞胎"},
+  predecessor:{w:"predecessor",ipa:"/ˈpriːdɪsesə(r)/",pos:"n.",tags:["core"],cn:"前辈；前任；前身",en:"someone who came before you",ex:"learn from their millennial predecessors",mem:"pre(先)+de+cess(走,=proceed/process)+or→先走一步的人→前辈。反义词 successor 继任者。",syn:"forerunner / precursor",conf:"predecessor(前任) vs. successor(继任) vs. processor(处理器,408老朋友)"},
+  setin:{w:"be set in",ipa:"",pos:"v.短语",tags:["phrase"],cn:"固守于，深陷于（旧观念）",en:"to be fixed in (a way of thinking)",ex:"still set in the degree mindset",mem:"set 凝固的 → 思想'凝固'在旧模子里。be set in one's ways 积习难改。28 题 D 选项的反向证据。",syn:"be stuck in / be entrenched in",conf:"set in(固守;（坏天气）来临) vs. sit in(列席;静坐抗议)"},
+  mindset:{w:"mindset",ipa:"/ˈmaɪndset/",pos:"n.",tags:["core","write"],cn:"思维模式，心态定势",en:"a fixed way of thinking",ex:"the degree mindset",mem:"mind(头脑)+set(定型)→定了型的头脑→思维定势。写作高频：growth mindset 成长型思维 / exam-oriented mindset 应试思维。",syn:"mentality / way of thinking",conf:"mindset(思维定势) vs. headset(耳机) vs. onset(开始,疾病发作)"},
+  leaver:{w:"school leaver",ipa:"/ˈliːvə(r)/",pos:"n.",tags:["phrase"],cn:"（英）中学毕业即就业者",en:"a person who has just left secondary school (not going to university)",ex:"the advantages of hiring school leavers",mem:"英式概念：leave school 后直接工作的人，与 graduate（大学毕业生）相对——本文的对照组，28 题理解关键。",syn:"non-graduate",conf:"school leaver(中学毕业生) ≠ dropout(辍学者)——前者是完成学业"},
+  committed:{w:"committed",ipa:"/kəˈmɪtɪd/",pos:"adj.",tags:["core","write"],cn:"尽心尽力的，投入的",en:"loyal and hard-working",ex:"more committed and loyal employees",mem:"commit(承诺;投入)+ed。be committed to doing 致力于（写作万金油）。commit 另义：犯（罪）commit a crime。",syn:"dedicated / devoted / loyal",conf:"committed(尽职的) vs. commit(犯罪;承诺) vs. committee(委员会)——双m双t"},
+  scrap:{w:"scrap",ipa:"/skræp/",pos:"v.",tags:["core","poly"],cn:"废除，取消；n. 碎片，废料",en:"to get rid of; to cancel",ex:"scrapping a degree requirement",mem:"废纸=scrap paper → 把制度当废纸扔掉=废除。28 题 realistic attitude 的证据之一。",syn:"abolish / abandon / ditch",conf:"scrap(废除) vs. scrape(刮擦) vs. scratch(抓挠)——擦挂三兄弟"},
+  generalist:{w:"generalist",ipa:"/ˈdʒenrəlɪst/",pos:"n.",tags:["core"],cn:"通才，多面手",en:"a person with broad but not deep knowledge",ex:"In this age of generalists",mem:"general(全面的)+ist→啥都懂点的人。反义词 specialist 专才——句子逻辑：正因通才遍地，专门技能才'it pays'。",syn:"all-rounder / jack-of-all-trades",conf:"generalist(通才) vs. specialist(专才)——29 题 D 的 specific field 与此呼应"},
+  pays:{w:"it pays to do",ipa:"",pos:"句型",tags:["phrase","write"],cn:"做……是划算/值得的",en:"it brings advantage to do sth",ex:"it pays to have specific knowledge or skills",mem:"pay 的不及物用法'带来好处'。写作：It pays to be honest. 诚实是划算的。三个词就能起句。",syn:"it is worthwhile to / it benefits one to",conf:"it pays to do(划算) vs. pay for(付款;付出代价)"},
+  postgrad:{w:"postgraduate",ipa:"/ˌpəʊstˈɡrædʒuət/",pos:"n.",tags:["core"],cn:"研究生",en:"a student studying after their first degree",ex:"Postgraduates now earn 40 per cent more",mem:"post(之后)+graduate(本科毕业生)→毕业后继续读的人。你正在成为的人。英式 postgraduate = 美式 graduate student。",syn:"graduate student / master's student",conf:"post-三件套：postgraduate(研究生) / postpone(推迟,26D 出现) / postscript(附言 P.S.)"},
+  upskill:{w:"up-skill",ipa:"/ˈʌpskɪl/",pos:"v.",tags:["core","write"],cn:"提升技能",en:"to learn new skills",ex:"constantly up-skilling throughout their career",mem:"up(向上)+skill(技能)→技能升级。新造词，外刊高频；同族 reskill 转型学新技能。30 题 lifelong learning 的原文对应。",syn:"retrain / improve skills",conf:"up-skill(提升技能) vs. upscale(高档的) vs. uphill(上坡的;艰难的)"},
+  employable:{w:"employable",ipa:"/ɪmˈplɔɪəbl/",pos:"adj.",tags:["core","write"],cn:"有就业能力的，雇得出去的",en:"having skills that make sb likely to get a job",ex:"to stay employable",mem:"employ(雇用)+able(可被…的)→可被雇用的。stay employable 保持就业竞争力——就业话题写作直接用。",syn:"marketable / hirable",conf:"employable(可雇用的) vs. employed(在职的) vs. unemployed(失业的)"},
+  fulfilment:{w:"fulfilment",ipa:"/fʊlˈfɪlmənt/",pos:"n.",tags:["core","write"],cn:"成就感，满足感；实现",en:"a feeling of satisfaction from achieving sth",ex:"the wish for personal fulfilment",mem:"fulfil(履行;实现)+ment。personal fulfilment 个人成就感——幸福/职业选择话题高频词。美式拼 fulfillment。",syn:"satisfaction / gratification",conf:"fulfilment(成就感) vs. fulfilling(令人有成就感的,adj.) vs. filling(馅料)"},
+  trajectory:{w:"trajectory",ipa:"/trəˈdʒektəri/",pos:"n.",tags:["core","write"],cn:"轨迹，发展路径",en:"the path of development of sth",ex:"a core part of Generation Z's career trajectory",mem:"tra(横穿)+ject(投掷,=project/inject/reject)+ory→抛出去的路线→轨迹。career trajectory 职业轨迹（比 career path 更书面）。",syn:"path / course / arc",conf:"ject 家族：trajectory(轨迹) / inject(注入) / reject(拒绝) / project(投射;项目)"},
+  tense:{w:"tense",ipa:"/tens/",pos:"n.",tags:["poly"],cn:"⚠️（语法）时态；adj. 紧张的",en:"a verb form showing time; nervous",ex:"in the present and personal tense",mem:"熟词僻义：此处指'时态'——老一辈用现在时说 I am a geographer（学位=现在的我），子女不会（学位≠我）。一语双关，personal tense 是作者的文字游戏。",syn:"—",conf:"tense(时态;紧张) vs. tension(张力) vs. intense(强烈的)"},
+  define2:{w:"define",ipa:"/dɪˈfaɪn/",pos:"v.",tags:["core","write"],cn:"定义；成为…的标志",en:"to say what sth is; to characterize",ex:"their degree won't define them",mem:"跨篇复现！2022 T1 里 defined the great material ages，本篇 degree won't define them——同卷两次出现的词优先级最高。de+fin(界限)。",syn:"characterize / shape / determine",conf:"define(定义) vs. defy(违抗) vs. refine(提炼)——T1 词卡同款,复习一遍"}
+};
+
+const panel=document.getElementById('panel');
+const isMobile=()=>window.innerWidth<=900;
+function badge(t){return {core:'<span class="badge b-core">核心词</span>',phrase:'<span class="badge b-phrase">短语</span>',poly:'<span class="badge b-poly">熟词僻义</span>',write:'<span class="badge b-write">写作✍︎</span>'}[t]||''}
+function showCard(k,el){
+  const d=V[k]; if(!d)return;
+  document.querySelectorAll('.tk.active').forEach(e=>e.classList.remove('active'));
+  if(el&&el.classList.contains('tk'))el.classList.add('active');
+  panel.innerHTML=`<button class="close" onclick="panel.classList.remove('open')">✕</button>
+  <div class="wcard">
+    <div class="head"><span class="w">${d.w}</span><span class="ipa">${d.ipa}</span><span class="pos">${d.pos}</span>${d.tags.map(badge).join('')}</div>
+    <div class="cn">${d.cn}</div><div class="en-def">${d.en}</div>
+    <div class="row r-ex"><b>原文语境</b>“…${d.ex}…”</div>
+    <div class="row r-mem"><b>怎么记</b>${d.mem}</div>
+    <div class="row r-syn"><b>同类词</b>${d.syn}</div>
+    <div class="row r-conf"><b>易混辨析</b>${d.conf}</div>
+  </div>`;
+  if(isMobile())panel.classList.add('open');
+}
+document.querySelectorAll('.tk').forEach(t=>t.addEventListener('click',e=>{e.stopPropagation();showCard(t.dataset.w,t)}));
+function tz(btn){btn.closest('.para').classList.toggle('showzh')}
+let allOn=false;
+function toggleAll(){allOn=!allOn;document.querySelectorAll('.para').forEach(p=>p.classList.toggle('showzh',allOn))}
+function go(id){document.getElementById(id).scrollIntoView({behavior:'smooth',block:'center'});const s=document.getElementById(id);s.style.transition='none';s.style.opacity=.3;setTimeout(()=>{s.style.transition='opacity .8s';s.style.opacity=1},80)}
+document.querySelectorAll('.q').forEach(q=>{
+  const ans=+q.dataset.ans;
+  q.querySelectorAll('.opt').forEach((o,i)=>o.addEventListener('click',()=>{
+    if(q.classList.contains('done'))return;
+    q.classList.add('done');
+    if(i!==ans)o.classList.add('wrong');
+    q.querySelectorAll('.opt')[ans].classList.add('right');
+  }));
+});
+const vg=document.getElementById('vgrid');
+function renderGrid(f){
+  vg.innerHTML='';
+  Object.keys(V).forEach(k=>{
+    const d=V[k];
+    if(f!=='all'&&!d.tags.includes(f))return;
+    const div=document.createElement('div');div.className='vitem';
+    div.innerHTML=`<span class="badges">${d.tags.map(badge).join('')}</span><div class="w">${d.w}</div><div class="cn">${d.cn}</div>`;
+    div.addEventListener('click',()=>{showCard(k,null);if(!isMobile())window.scrollTo({top:0,behavior:'smooth'})});
+    vg.appendChild(div);
+  });
+}
+renderGrid('all');
+document.querySelectorAll('.fbtn').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.fbtn').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderGrid(b.dataset.f);
+}));
+const yd=document.getElementById('yd');let sel='';
+document.addEventListener('selectionchange',()=>{
+  const s=window.getSelection();const t=s?s.toString().trim():'';
+  if(t&&/^[a-zA-Z' -]{2,40}$/.test(t)){
+    sel=t;
+    try{const r=s.getRangeAt(0).getBoundingClientRect();
+      yd.style.left=Math.min(r.left,window.innerWidth-110)+'px';
+      yd.style.top=(r.bottom+8)+'px';yd.style.display='block';}catch(e){}
+  }else{yd.style.display='none'}
+});
+yd.addEventListener('click',()=>{window.open('https://dict.youdao.com/result?word='+encodeURIComponent(sel)+'&lang=en');yd.style.display='none'});
+document.addEventListener('click',e=>{if(e.target!==yd&&!window.getSelection().toString())yd.style.display='none'});
+</script>
+</body>
+</html>

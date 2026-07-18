@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2022 英一 Text 3 · 艺术与科学合作</title>
+<style>
+  :root{
+    --bg:#faf9f6; --card:#ffffff; --ink:#2b2b2b; --muted:#8a8578;
+    --accent:#8b5e34; --accent-soft:#f3e9dd; --line:#e8e3d8;
+    --hl:#fdf3d8; --hl-border:#e0b84d;
+    --green:#3e7a4e; --green-soft:#e8f2ea;
+    --red:#b04a3a; --red-soft:#f9e9e6;
+    --blue:#3d6a8a; --blue-soft:#e7eff5;
+    --purple:#6d5a8e; --purple-soft:#eeeaf5;
+    --serif:"Georgia","Songti SC",serif;
+    --sans:-apple-system,"PingFang SC","Helvetica Neue",sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#1c1a17; --card:#26231f; --ink:#e8e4dc; --muted:#9a948a;
+      --accent:#d0a06a; --accent-soft:#3a3127; --line:#3a362f;
+      --hl:#3d3520; --hl-border:#b08c3a;
+      --green:#7fb98d; --green-soft:#26362b;
+      --red:#d98876; --red-soft:#3d2a26;
+      --blue:#8ab3d0; --blue-soft:#26323d;
+      --purple:#a996c8; --purple-soft:#302a3d;
+    }
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;padding-bottom:120px}
+  .wrap{max-width:1100px;margin:0 auto;padding:24px 20px}
+  .back{font-size:.85rem;color:var(--muted);text-decoration:none}
+  .back:hover{color:var(--accent)}
+  header{margin:14px 0 28px}
+  header h1{font-family:var(--serif);font-size:1.7rem;line-height:1.3}
+  header .sub{color:var(--muted);margin-top:6px;font-size:.9rem}
+  .tags{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+  .tag{font-size:.75rem;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);border:1px solid var(--line)}
+  .layout{display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:start}
+  @media (max-width:900px){.layout{grid-template-columns:1fr}}
+  section.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:24px}
+  h2{font-size:1.05rem;letter-spacing:.05em;color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+  h2 .n{font-size:.72rem;background:var(--accent);color:var(--card);border-radius:6px;padding:1px 7px}
+  .para{margin-bottom:22px}
+  .para .en{font-family:var(--serif);font-size:1.06rem;line-height:1.9}
+  .pno{color:var(--muted);font-size:.75rem;user-select:none;margin-right:6px}
+  .tk{background:var(--hl);border-bottom:2px solid var(--hl-border);border-radius:3px;padding:0 2px;cursor:pointer;transition:filter .15s}
+  .tk:hover{filter:brightness(.93)}
+  .tk.active{outline:2px solid var(--hl-border)}
+  .ls{border-bottom:2px dotted var(--blue);cursor:pointer}
+  .para .zh{display:none;margin-top:10px;padding:10px 14px;background:var(--blue-soft);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:.93rem}
+  .para.showzh .zh{display:block}
+  .zbtn{float:right;margin-left:10px;font-size:.72rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:6px;padding:2px 9px;cursor:pointer}
+  .zbtn:hover{color:var(--accent);border-color:var(--accent)}
+  .allbtn{font-size:.78rem;border:1px solid var(--accent);background:none;color:var(--accent);border-radius:8px;padding:4px 12px;cursor:pointer;margin-left:auto}
+  aside{position:sticky;top:20px}
+  #panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;min-height:180px}
+  #panel .hint{color:var(--muted);font-size:.88rem;text-align:center;padding:30px 10px}
+  .wcard .head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .wcard .w{font-family:var(--serif);font-size:1.35rem;font-weight:bold}
+  .wcard .ipa{color:var(--muted);font-size:.85rem}
+  .wcard .pos{font-size:.72rem;color:var(--purple);background:var(--purple-soft);padding:1px 8px;border-radius:999px}
+  .wcard .badge{font-size:.7rem;padding:1px 8px;border-radius:999px}
+  .b-core{background:var(--red-soft);color:var(--red)}
+  .b-phrase{background:var(--blue-soft);color:var(--blue)}
+  .b-poly{background:var(--purple-soft);color:var(--purple)}
+  .b-write{background:var(--green-soft);color:var(--green)}
+  .wcard .cn{margin-top:8px;font-size:1rem;font-weight:600}
+  .wcard .en-def{color:var(--muted);font-size:.86rem;font-style:italic;margin-top:2px}
+  .wcard .row{margin-top:10px;font-size:.86rem;padding:8px 10px;border-radius:8px}
+  .wcard .row b{font-size:.72rem;display:block;margin-bottom:2px;letter-spacing:.06em}
+  .r-ex{background:var(--hl)} .r-ex b{color:var(--hl-border)}
+  .r-mem{background:var(--green-soft)} .r-mem b{color:var(--green)}
+  .r-syn{background:var(--blue-soft)} .r-syn b{color:var(--blue)}
+  .r-conf{background:var(--red-soft)} .r-conf b{color:var(--red)}
+  #panel .close{display:none}
+  @media (max-width:900px){
+    aside{position:fixed;left:0;right:0;bottom:0;z-index:50;padding:0 8px 8px}
+    #panel{box-shadow:0 -6px 24px rgba(0,0,0,.18);max-height:55vh;overflow-y:auto;display:none}
+    #panel.open{display:block}
+    #panel .close{display:block;float:right;border:none;background:var(--line);border-radius:8px;padding:2px 10px;cursor:pointer;color:var(--ink)}
+  }
+  .q{margin-bottom:22px;padding-bottom:18px;border-bottom:1px dashed var(--line)}
+  .q:last-child{border:none;margin-bottom:0;padding-bottom:0}
+  .q .stem{font-weight:600;font-family:var(--serif)}
+  .qt{font-size:.7rem;color:var(--blue);background:var(--blue-soft);border-radius:999px;padding:1px 8px;margin-right:6px;vertical-align:2px}
+  .opts{margin-top:10px;display:grid;gap:8px}
+  .opt{border:1px solid var(--line);border-radius:10px;padding:8px 12px;cursor:pointer;font-size:.93rem;font-family:var(--serif);transition:all .15s}
+  .opt:hover{border-color:var(--accent)}
+  .q.done .opt{cursor:default}
+  .opt.right{background:var(--green-soft);border-color:var(--green)}
+  .opt.wrong{background:var(--red-soft);border-color:var(--red)}
+  .expl{display:none;margin-top:12px;background:var(--accent-soft);border-radius:10px;padding:12px 14px;font-size:.9rem}
+  .q.done .expl{display:block}
+  .expl b{color:var(--accent)}
+  .expl .loc{font-family:var(--serif);font-style:italic;background:var(--hl);padding:1px 4px;border-radius:3px}
+  .sent{margin-bottom:20px}
+  .sent .src{font-family:var(--serif);font-size:1rem;background:var(--blue-soft);padding:12px 14px;border-radius:10px;border-left:3px solid var(--blue)}
+  .sent .anat{margin-top:8px;font-size:.9rem}
+  .sent .anat li{margin:4px 0 4px 18px}
+  .sent .tr{margin-top:8px;font-size:.92rem;color:var(--muted)}
+  .skel{color:var(--red);font-weight:600}
+  .filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+  .fbtn{font-size:.8rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:999px;padding:4px 14px;cursor:pointer}
+  .fbtn.on{background:var(--accent);color:var(--card);border-color:var(--accent)}
+  .vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
+  .vitem{border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer;transition:border-color .15s}
+  .vitem:hover{border-color:var(--accent)}
+  .vitem .w{font-family:var(--serif);font-weight:bold}
+  .vitem .cn{font-size:.85rem;color:var(--muted)}
+  .vitem .badges{float:right}
+  .wb{display:grid;gap:10px}
+  .wbi{border-left:3px solid var(--green);background:var(--green-soft);border-radius:0 10px 10px 0;padding:10px 14px;font-size:.92rem}
+  .wbi .p{font-family:var(--serif);font-weight:600}
+  .wbi .u{color:var(--muted);font-size:.85rem}
+  #yd{position:fixed;z-index:60;display:none;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:4px 12px;font-size:.8rem;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+  footer{color:var(--muted);font-size:.8rem;text-align:center;margin-top:30px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">◀ 返回英语复盘中心</a>
+  <header>
+    <h1>When Art Meets Science: 艺术×科学合作</h1>
+    <div class="sub">2022 年英语（一）真题 · Text 3 · 约 450 词 · 建议做题 18 min · 话题：文化×科研（评述文）</div>
+    <div class="tags">
+      <span class="tag">正确答案：31B 32A 33A 34B 35C</span><span class="tag">题型：细节+例证+观点+细节+末段主旨</span><span class="tag">难度：中等（34 题易错）</span>
+    </div>
+  </header>
+
+  <div class="layout">
+    <main>
+      <section class="card">
+        <h2><span class="n">01</span>原文精读 <button class="allbtn" onclick="toggleAll()">全文译文 开/关</button></h2>
+        <p style="font-size:.8rem;color:var(--muted);margin-bottom:14px">🟡 黄色高亮 = 重难点词/短语，点击右侧出卡片 ｜ 蓝色虚线 = 长难句，点击跳到精析 ｜ 每段「译」= 段落译文 ｜ 选中任意其他单词浮出「查有道」</p>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">①</span><span class="tk" data-w="enlightening">Enlightening</span>, challenging, <span class="tk" data-w="stimulating">stimulating</span>, fun. <span class="ls" onclick="go('s1')">These were some of the words that <i>Nature</i> readers used to describe their experiences of art-science <span class="tk" data-w="collaboration">collaborations</span> in a series of articles on partnerships between artists and researchers.</span> Nearly 40% of the roughly 350 people who responded to an <span class="tk" data-w="accompanying">accompanying</span> <span class="tk" data-w="poll">poll</span> said they had collaborated with artists; and almost all said they would consider doing so in future.</p>
+          <div class="zh">"有启发""有挑战""令人兴奋""有趣"——这些是《自然》杂志读者在一系列关于艺术家与研究者合作的文章中，描述艺科合作体验时用到的词。在随附的问卷调查中，约 350 名受访者里近 40% 表示曾与艺术家合作过；几乎所有人都表示未来会考虑这么做。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">②</span>Such an encouraging result is not surprising. Scientists are increasingly <span class="tk" data-w="seekout">seeking out</span> visual artists to help them communicate their work to new audiences. "Artists help scientists reach a broader audience and make emotional connections that <span class="tk" data-w="enhance">enhance</span> learning," one <span class="tk" data-w="respondent">respondent</span> said.</p>
+          <div class="zh">这样令人鼓舞的结果并不意外。科学家们正越来越多地寻找视觉艺术家，帮助他们向新受众传播自己的研究。一位受访者说："艺术家帮助科学家触达更广的受众，并建立起增进学习效果的情感联结。"</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">③</span>One example of how artists and scientists have together <span class="tk" data-w="rock">rocked</span> the senses came last month when the Sydney Symphony Orchestra performed a <span class="tk" data-w="rework">reworked</span> version of Antonio Vivaldi's <i>The Four Seasons</i>. They <span class="tk" data-w="reimagine">reimagined</span> the 300-year-old <span class="tk" data-w="score">score</span> by <span class="tk" data-w="inject">injecting</span> the latest climate prediction data for each season—provided by Monash University's Climate Change Communication Research Hub. The performance was a creative <span class="tk" data-w="calltoaction">call to action</span> <span class="tk" data-w="aheadof">ahead of</span> November's United Nations Climate Change Conference in Glasgow, UK.</p>
+          <div class="zh">艺术家与科学家携手"震撼感官"的一个例子发生在上个月：悉尼交响乐团演奏了改编版的维瓦尔第《四季》。他们把莫纳什大学气候变化传播研究中心提供的各季节最新气候预测数据"注入"这部 300 年前的乐谱，重新构想了它。这场演出是在 11 月英国格拉斯哥联合国气候变化大会之前发出的一次创造性行动号召。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">④</span>But a genuine partnership must be a <span class="tk" data-w="twoway">two-way street</span>. Fewer artists than scientists responded to the <i>Nature</i> poll; however, several respondents noted that artists do not simply assist scientists with their communication requirements. Nor should their work be considered only as an object of study. <span class="ls" onclick="go('s2')">The <span class="tk" data-w="alliance">alliances</span> are most valuable when scientists and artists have a shared <span class="tk" data-w="stake2">stake</span> in a project, are able to jointly design it and can <span class="tk" data-w="critique">critique</span> each other's work.</span> Such an approach can both <span class="tk" data-w="prompt">prompt</span> new research as well as result in powerful art.</p>
+          <div class="zh">但真正的合作必须是双向的。回应《自然》问卷的艺术家比科学家少；不过多位受访者指出，艺术家并不只是协助科学家满足其"传播需求"，他们的作品也不应仅仅被当作研究对象。只有当科学家和艺术家在项目中利益共担、能够共同设计、并能互相批评指正时，这种联盟才最有价值。这样的方式既能催生新研究，也能产出有力量的艺术。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">⑤</span>More than half a century ago, the Massachusetts Institute of Technology opened its Center for Advanced Visual Studies (CAVS) to explore the role of technology in culture. The founders <span class="tk" data-w="deliberately">deliberately</span> focused their projects around light—<span class="tk" data-w="hence">hence</span> the 'visual studies' in the name. Light was a something that both artists and scientists had an interest in, and therefore could form the basis of collaboration. <span class="ls" onclick="go('s3')">As science and technology progressed, and divided into more <span class="tk" data-w="subdiscipline">sub-disciplines</span>, the centre was <span class="tk" data-w="simultaneously">simultaneously</span> looking to a time when leading researchers could also be artists, writers and poets, and <span class="tk" data-w="viceversa">vice versa</span>.</span></p>
+          <div class="zh">半个多世纪前，麻省理工学院设立了高等视觉研究中心（CAVS），探索技术在文化中的角色。创始人有意把项目聚焦在"光"上——中心名字里的"视觉研究"正源于此。光是艺术家和科学家都感兴趣的东西，因此可以构成合作的基础。随着科学技术不断进步并分化出更多子学科，该中心同时也在展望这样一个时代：顶尖研究者也可以是艺术家、作家和诗人，反之亦然。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">⑥</span><i>Nature</i>'s poll findings suggest that this trend is as strong as ever, but, to make a collaboration work, both sides need to invest time, and <span class="tk" data-w="embrace">embrace</span> surprise and challenge. The reach of art-science <span class="tk" data-w="tieup">tie-ups</span> needs to go beyond the necessary purpose of research communication, and participants must not fall into the trap of <span class="tk" data-w="stereotype">stereotyping</span> each other. Artists and scientists <span class="tk" data-w="alike">alike</span> are <span class="tk" data-w="immerse">immersed</span> in discovery and invention, and challenge and critique are core to both, too.</p>
+          <div class="zh">《自然》的调查结果表明这一趋势有增无减。但要让合作真正奏效，双方都需要投入时间，并欣然接受意外与挑战。艺科合作的边界需要超越"科研传播"这一基本目的，参与者也决不能落入互贴刻板印象的陷阱。艺术家和科学家其实都沉浸于发现与创造之中，挑战与批评对两者同样是核心。</div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">02</span>题目与解析（点选项即判 · 再看解析）</h2>
+
+        <div class="q" data-ans="1">
+          <p class="stem"><span class="qt">细节</span>31. According to Paragraph 1, art-science collaborations have ______.</p>
+          <div class="opts">
+            <div class="opt">[A] caught the attention of critics</div>
+            <div class="opt">[B] received favourable responses</div>
+            <div class="opt">[C] promoted academic publishing</div>
+            <div class="opt">[D] sparked heated public disputes</div>
+          </div>
+          <div class="expl"><b>答案 B</b>　①段全是好评证据：<span class="loc">Enlightening, challenging, stimulating, fun</span>（四个褒义词开篇）+ 近 40% 合作过 + <span class="loc">almost all said they would consider doing so in future</span> → 反响良好 = favourable responses。<br><b>干扰项：</b>A "批评家的注意"无中生有（respondents 是读者不是 critics）；C "促进学术出版"偷换（a series of articles 是《自然》的报道，不是学术出版繁荣）；D "激烈争议"反向。<br><b>技巧：</b>首段开头的形容词群 = 全文情感基调，先给文章定调再做题。</div>
+        </div>
+
+        <div class="q" data-ans="0">
+          <p class="stem"><span class="qt">例证</span>32. The reworked version of <i>The Four Seasons</i> is mentioned to show that ______.</p>
+          <div class="opts">
+            <div class="opt">[A] art can offer audiences easy access to science</div>
+            <div class="opt">[B] science can help with the expression of emotions</div>
+            <div class="opt">[C] public participation in science has a promising future</div>
+            <div class="opt">[D] art is effective in facilitating scientific innovations</div>
+          </div>
+          <div class="expl"><b>答案 A</b>　例证题找例子<em>前面</em>的观点：②段 <span class="loc">Artists help scientists reach a broader audience and make emotional connections that enhance learning</span>，③段首句 <span class="loc">One example of...</span> 明示举例关系。把气候数据注入《四季》= 用艺术把科学传给大众 → art offers audiences easy access to science。<br><b>干扰项：</b>B 主客颠倒——是艺术帮科学传播，不是科学帮情感表达；C "公众参与科学"偷换主题（受众听音乐会≠参与科研）；D "促进科学创新"错位——这个例子展示的是<em>传播</em>；"催生新研究"是④段另一码事。<br><b>技巧：</b>例证题铁律：就例子谈例子的选项必错，答案永远是例子所服务的上位观点。</div>
+        </div>
+
+        <div class="q" data-ans="0">
+          <p class="stem"><span class="qt">观点</span>33. Some artists seem to worry that in the art-science partnership ______.</p>
+          <div class="opts">
+            <div class="opt">[A] their role may be underestimated</div>
+            <div class="opt">[B] their reputation may be impaired</div>
+            <div class="opt">[C] their creativity may be inhibited</div>
+            <div class="opt">[D] their work may be misguided</div>
+          </div>
+          <div class="expl"><b>答案 A</b>　定位④段：<span class="loc">artists do not simply assist scientists with their communication requirements. Nor should their work be considered only as an object of study</span> —— "不只是助手""不只是研究对象"，两个 not...only 都在抗议被<em>看轻</em> → 角色被低估 = underestimated。<br><b>干扰项：</b>B 名誉受损无中生有；C 创造力被抑制——貌似合理但原文谈的是"角色定位"不是"创造力发挥"，属于<em>偷换概念</em>；D 工作被误导无中生有。<br><b>技巧：</b>Nor 开头的倒装句 = 强调句，是出题热点；两个并列否定合并归纳，就是答案。</div>
+        </div>
+
+        <div class="q" data-ans="1">
+          <p class="stem"><span class="qt">细节</span>34. What does the author say about CAVS?</p>
+          <div class="opts">
+            <div class="opt">[A] It was headed alternately by artists and scientists.</div>
+            <div class="opt">[B] It exemplified valuable art-science alliances.</div>
+            <div class="opt">[C] Its projects aimed at advancing visual studies.</div>
+            <div class="opt">[D] Its founders sought to raise the status of artists.</div>
+          </div>
+          <div class="expl"><b>答案 B</b>　⑤段功能：紧接④段"什么样的联盟最有价值"，举出半世纪前的 CAVS——光是双方共同兴趣、<span class="loc">could form the basis of collaboration</span>、展望研究者兼艺术家的时代 → CAVS 是有价值艺科联盟的典范 = exemplified valuable alliances。<br><b>干扰项：</b>A "轮流领导"无中生有（原文只说展望 researchers could also be artists）；C 曲解——"visual studies"只是<em>名字的由来</em>（hence the name），不是项目的目标（目标是 explore the role of technology in culture）；D "提高艺术家地位"无中生有。<br><b>技巧：</b>本题最易错。C 用原文词 visual studies 造句——<em>原词复现≠正确</em>，重组原词的选项反而最可疑；B 用文外词 exemplify 概括段落功能——<em>概括性替换才是正确项的长相</em>。</div>
+        </div>
+
+        <div class="q" data-ans="2">
+          <p class="stem"><span class="qt">末段主旨</span>35. In the last paragraph, the author holds that art-science collaborations ______.</p>
+          <div class="opts">
+            <div class="opt">[A] are likely to go beyond public expectations</div>
+            <div class="opt">[B] will intensify interdisciplinary competition</div>
+            <div class="opt">[C] should do more than communicating science</div>
+            <div class="opt">[D] are becoming more popular than before</div>
+          </div>
+          <div class="expl"><b>答案 C</b>　定位⑥段中句：<span class="loc">The reach of art-science tie-ups needs to go beyond the necessary purpose of research communication</span> —— 合作的边界需要超越"科研传播"这个基本目的 = should do more than communicating science（needs to → should，go beyond → do more than，教科书级替换）。<br><b>干扰项：</b>A 偷换宾语——go beyond 的是 purpose（目的），不是 expectations（预期）；B "加剧学科竞争"无中生有（末句说 challenge and critique 是两者共同内核，不是互相竞争）；D "更受欢迎"是①段的事实且是过去时陈述，不是末段作者的主张（题干问 the author holds）。<br><b>技巧：</b>末段主旨题盯住 needs to / must / should 等情态词所在句，那是作者最后的"喊话"。</div>
+        </div>
+      </section>
+
+      <section class="card" id="sents">
+        <h2><span class="n">03</span>长难句精析（正文蓝色虚线句）</h2>
+
+        <div class="sent" id="s1">
+          <div class="src">These <span class="skel">were</span> some of the words <u>that Nature readers used to describe their experiences of art-science collaborations</u> <u>in a series of articles on partnerships between artists and researchers</u>.</div>
+          <ul class="anat">
+            <li>开篇先甩四个形容词（Enlightening, challenging, stimulating, fun）再用 These 回指——外刊"先声夺人"式开头，读到 These 才知道前面是引语</li>
+            <li>that 定语从句修饰 words；注意 used to describe 是"用来描述"（use sth to do），不是"过去常常"（used to do）！</li>
+            <li>in a series of articles... 状语说明出处；on = 关于（articles on partnerships）</li>
+          </ul>
+          <div class="tr">译：这些是《自然》读者在一系列关于艺术家与研究者合作的文章中，用来描述艺科合作体验的词。</div>
+        </div>
+
+        <div class="sent" id="s2">
+          <div class="src">The alliances <span class="skel">are most valuable</span> <u>when scientists and artists have a shared stake in a project, are able to jointly design it and can critique each other's work</u>.</div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：The alliances are most valuable + when 条件性时间从句</li>
+            <li>when 从句内三个并列谓语：have a shared stake（利益共担）/ are able to jointly design（共同设计）/ can critique（互相批评）——"真合作"的三个标准，34 题判断 CAVS 是否典范的依据</li>
+            <li>a shared stake：stake 又来了！2022 T1 是 at stake（攸关），这里是 have a stake in（在…中有利害关系）——同词跨篇复现</li>
+          </ul>
+          <div class="tr">译：只有当科学家和艺术家在项目中利益共担、能共同设计、并能互相批评指正时，这种联盟才最有价值。</div>
+        </div>
+
+        <div class="sent" id="s3">
+          <div class="src"><u>As science and technology progressed, and divided into more sub-disciplines</u>, the centre <span class="skel">was simultaneously looking to</span> a time <u>when leading researchers could also be artists, writers and poets, and vice versa</u>.</div>
+          <ul class="anat">
+            <li>As 时间从句，内含 progressed 和 divided 两个并列谓语（科技一边进步一边分科）</li>
+            <li><span class="skel">主干</span>：the centre was looking to a time（look to 展望，≠look at）</li>
+            <li>when 定语从句修饰 time；vice versa "反之亦然" = 顶尖艺术家也可以是研究者</li>
+            <li>句子的张力：科学越分越细（离散）vs 中心展望文理合一（融合）——正反对照</li>
+          </ul>
+          <div class="tr">译：随着科技进步并分化出更多子学科，该中心同时也在展望一个顶尖研究者亦可为艺术家、作家、诗人（反之亦然）的时代。</div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">04</span>词汇复盘（点卡片看详情）</h2>
+        <div class="filters">
+          <button class="fbtn on" data-f="all">全部</button>
+          <button class="fbtn" data-f="core">核心词</button>
+          <button class="fbtn" data-f="phrase">短语</button>
+          <button class="fbtn" data-f="poly">熟词僻义</button>
+          <button class="fbtn" data-f="write">写作可用</button>
+        </div>
+        <div class="vgrid" id="vgrid"></div>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">05</span>可搬进作文/翻译的素材</h2>
+        <div class="wb">
+          <div class="wbi"><div class="p">A genuine partnership must be a two-way street.</div><div class="u">"真正的合作必须是双向的" —— 沟通/合作/家庭教育话题通用金句，two-way street 比 mutual 生动得多。</div></div>
+          <div class="wbi"><div class="p">X and Y alike are ...</div><div class="u">"X 和 Y 都……" —— Artists and scientists alike are immersed in discovery. 替换 both...and，alike 后置显高级。</div></div>
+          <div class="wbi"><div class="p">fall into the trap of doing ...</div><div class="u">"落入……的陷阱" —— must not fall into the trap of stereotyping each other. 批判性论证常用。</div></div>
+          <div class="wbi"><div class="p">go beyond the necessary purpose of ...</div><div class="u">"超越……的基本目的" —— Education should go beyond the necessary purpose of exam preparation. 直接套用。</div></div>
+          <div class="wbi"><div class="p">embrace surprise and challenge</div><div class="u">"欣然接受意外与挑战" —— embrace 接抽象名词是外刊标配：embrace change / uncertainty / diversity。</div></div>
+          <div class="wbi"><div class="p">..., and vice versa</div><div class="u">"反之亦然" —— 两句话说完的事三个词收尾：Teachers learn from students, and vice versa.</div></div>
+          <div class="wbi"><div class="p">Such an encouraging result is not surprising.</div><div class="u">段落承接句：先评价（encouraging）再解释原因——图表作文第二段开头可直接化用。</div></div>
+        </div>
+      </section>
+    </main>
+
+    <aside>
+      <div id="panel"><div class="hint">👆 点击正文里的<b>黄色高亮词</b><br>词卡会出现在这里</div></div>
+    </aside>
+  </div>
+
+  <footer>2022 英语一 Text 3 · 复盘页由 Claude 生成 · 解析为 Claude 独立完成</footer>
+</div>
+
+<button id="yd">🔍 查有道</button>
+
+<script>
+const V = {
+  enlightening:{w:"enlightening",ipa:"/ɪnˈlaɪtnɪŋ/",pos:"adj.",tags:["core","write"],cn:"有启发的，使人开悟的",en:"giving you more understanding",ex:"Enlightening, challenging, stimulating, fun",mem:"en(使)+light(光)+ening→给头脑带来光→启发。the Enlightenment 启蒙运动（文化背景词）。",syn:"illuminating / instructive / eye-opening",conf:"enlightening(启发人的) vs. lightening(减轻;变亮) vs. lightning(闪电)"},
+  stimulating:{w:"stimulating",ipa:"/ˈstɪmjuleɪtɪŋ/",pos:"adj.",tags:["core","write"],cn:"令人兴奋的，激发思考的",en:"making you feel interested and full of ideas",ex:"stimulating, fun",mem:"stimulate(刺激,激励)+ing。词根 sti=刺：stimulus 刺激物（经济刺激方案 stimulus package）。",syn:"exciting / thought-provoking / inspiring",conf:"stimulate(激励) vs. simulate(模拟,408的仿真!) — 拼写只差一个t"},
+  collaboration:{w:"collaboration",ipa:"/kəˌlæbəˈreɪʃn/",pos:"n.",tags:["core","write"],cn:"合作，协作",en:"working together to create sth",ex:"art-science collaborations",mem:"col(共同)+labor(劳动)+ation→一起干活→合作。本文题眼词，出现 4 次。写作：in collaboration with 与…合作。",syn:"cooperation / partnership / alliance",conf:"collaboration(合作) vs. corroboration(证实)——形近但意思完全不同"},
+  accompanying:{w:"accompanying",ipa:"/əˈkʌmpəniɪŋ/",pos:"adj.",tags:["core"],cn:"随附的，伴随的",en:"appearing or provided together with sth",ex:"an accompanying poll",mem:"ac+company(陪伴)→陪着来的→随附的。accompany v. 陪伴；为…伴奏（音乐僻义）。",syn:"attached / accompanying / supplementary",conf:"accompany(陪伴) vs. accomplish(完成) vs. accumulate(积累)——ac-三兄弟"},
+  poll:{w:"poll",ipa:"/pəʊl/",pos:"n.",tags:["core"],cn:"民意调查，投票",en:"a survey of people's opinions",ex:"responded to an accompanying poll",mem:"本义'人头'→数人头→投票/调查。opinion poll 民调；polling station 投票站。",syn:"survey / questionnaire / ballot(投票)",conf:"poll(民调) vs. pole(杆;极点,the North Pole) — 同音异形"},
+  seekout:{w:"seek out",ipa:"/siːk/",pos:"v.短语",tags:["phrase"],cn:"（努力）找出，寻访",en:"to look for sb/sth actively",ex:"increasingly seeking out visual artists",mem:"seek(寻找)+out(彻底)→主动挖出来。比 look for 更强调'主动出击'。seek-sought-sought。",syn:"search for / hunt for / track down",conf:"seek out(找出) vs. seek to do(试图做)——考研两个用法都高频"},
+  enhance:{w:"enhance",ipa:"/ɪnˈhɑːns/",pos:"v.",tags:["core","write"],cn:"增强，提升",en:"to improve the quality or strength of",ex:"emotional connections that enhance learning",mem:"写作万能动词：enhance one's ability/awareness/efficiency。en(使)+hance(高)→使变高→提升。",syn:"improve / boost / strengthen",conf:"enhance(提升,及物) vs. advance(推进;进步) vs. enchant(使着迷)"},
+  respondent:{w:"respondent",ipa:"/rɪˈspɒndənt/",pos:"n.",tags:["core"],cn:"受访者，应答者",en:"a person who answers a survey",ex:"one respondent said",mem:"respond(回应)+ent(人)→回应问卷的人。图表作文描述调查数据必备：X% of respondents...",syn:"participant / interviewee",conf:"respondent(受访者) vs. correspondent(记者;通信者)——多个 cor 差很多"},
+  rock:{w:"rock",ipa:"/rɒk/",pos:"v.",tags:["poly"],cn:"⚠️震撼，摇动；n. 岩石",en:"to shake or shock strongly",ex:"rocked the senses",mem:"熟词僻义：名词'岩石/摇滚'人人熟，动词'摇撼/震撼'才是考点。rock the boat 捣乱；the news rocked the world 消息震惊世界。",syn:"shake / stun / stir",conf:"rock(摇撼) vs. rocket(火箭;飙升,prices rocketed)"},
+  rework:{w:"rework",ipa:"/ˌriːˈwɜːk/",pos:"v.",tags:["core"],cn:"改编，重做",en:"to change or improve sth already made",ex:"a reworked version of The Four Seasons",mem:"re(再)+work(加工)→再加工→改编。同族：remake 翻拍 / revise 修订 / adapt 改编（文学→影视多用 adapt）。",syn:"revise / adapt / recast",conf:"rework(改编) vs. overwork(过劳) vs. workout(健身)"},
+  reimagine:{w:"reimagine",ipa:"/ˌriːɪˈmædʒɪn/",pos:"v.",tags:["core","write"],cn:"重新构想",en:"to think about sth in a new creative way",ex:"reimagined the 300-year-old score",mem:"re+imagine→再想象。外刊高频新宠：reimagine education/the city 重新构想教育/城市——写作创新话题可用。",syn:"reinvent / reconceive / rethink",conf:"reimagine(重新构想) vs. reminisce(追忆往昔)"},
+  score:{w:"score",ipa:"/skɔː(r)/",pos:"n.",tags:["poly"],cn:"⚠️乐谱；分数；二十",en:"written music; points; twenty",ex:"the 300-year-old score",mem:"熟词僻义警报：此处'乐谱'！scores of 几十个/大量；four score and seven years ago（林肯演说：87年前）。动词还能表'划线;得分'。",syn:"sheet music(乐谱义)",conf:"score(乐谱/分数) vs. scope(范围) vs. scorn(轻蔑)"},
+  inject:{w:"inject",ipa:"/ɪnˈdʒekt/",pos:"v.",tags:["core","write"],cn:"注入，注射",en:"to add (a quality) into sth; to put liquid in with a needle",ex:"injecting the latest climate prediction data",mem:"in+ject(投,词根：project/reject/trajectory——T2 刚见过!)→投进去→注入。写作：inject vitality into 为…注入活力（万金油短语）。",syn:"infuse(T1词卡同款!) / instill / introduce",conf:"ject 家族四连：inject(注入)/reject(拒绝)/eject(弹出)/subject(使服从)"},
+  calltoaction:{w:"a call to action",ipa:"",pos:"n.短语",tags:["phrase","write"],cn:"行动号召",en:"a demand or appeal for people to act",ex:"a creative call to action",mem:"call(呼吁)+to action(去行动)。环保/公益话题作文结尾：This is a call to action for every one of us.",syn:"appeal / rallying cry",conf:"a call to action(号召) vs. a call for papers(征稿)——call to/for 搭配不同"},
+  aheadof:{w:"ahead of",ipa:"",pos:"prep.短语",tags:["phrase"],cn:"在…之前；领先于",en:"before; in front of",ex:"ahead of November's UN Climate Change Conference",mem:"时间'先于'（ahead of the meeting）+ 水平'领先'（ahead of one's time 超越时代）双义都高频。",syn:"prior to / before / in advance of",conf:"ahead of time(提前) vs. ahead of schedule(比计划早)——细分场景"},
+  twoway:{w:"a two-way street",ipa:"",pos:"n.短语",tags:["phrase","write"],cn:"双向的事，需要双方付出的关系",en:"a situation requiring effort from both sides",ex:"a genuine partnership must be a two-way street",mem:"本义'双向车道'→比喻'你来我往才成立的关系'。写作金句：Trust is a two-way street.",syn:"mutual / reciprocal (adj.)",conf:"two-way street(双向关系) vs. one-way ticket(单程票;不归路)"},
+  alliance:{w:"alliance",ipa:"/əˈlaɪəns/",pos:"n.",tags:["core"],cn:"联盟，同盟",en:"a group formed for mutual benefit",ex:"The alliances are most valuable when...",mem:"ally(盟友)+ance。词根 li=绑：ally 绑在一起的人；liable 被绑住的→有责任的。34 题正确项 B 用的就是它。",syn:"partnership / coalition / union",conf:"alliance(联盟) vs. appliance(家电) vs. compliance(遵从)——liance 三兄弟"},
+  stake2:{w:"a shared stake in",ipa:"/steɪk/",pos:"n.短语",tags:["phrase","write"],cn:"共同的利害关系",en:"a shared interest in the success of sth",ex:"have a shared stake in a project",mem:"stake 跨篇复现！T1 是 more is at stake（攸关），本篇 have a stake in（有利害关系）——赌注押在同一局，才会真心合作。",syn:"a common interest / joint investment",conf:"at stake(攸关) / have a stake in(有利害关系) / stakeholder(利益相关者)——一词三用全高频"},
+  critique:{w:"critique",ipa:"/krɪˈtiːk/",pos:"v./n.",tags:["core","write"],cn:"（专业地）评论，批评指正",en:"to give a detailed critical assessment",ex:"can critique each other's work",mem:"比 criticize 中性：critique 是学术性点评（论文互评就是 peer critique），criticize 偏指责。名动同形。",syn:"review / evaluate / comment on",conf:"critique(专业评论) vs. criticize(指责) vs. critic(评论家) vs. critical(批判性的;关键的)"},
+  prompt:{w:"prompt",ipa:"/prɒmpt/",pos:"v.",tags:["core","poly"],cn:"⚠️促发，引起；adj. 迅速的；n. 提示（词）",en:"to cause sth to happen",ex:"can both prompt new research",mem:"一词三用：v. 促使（prompt new research）/ adj. 及时的（a prompt reply）/ n. 提示——你天天喂给 AI 的 prompt 就是它。408 er 亲切度满分。",syn:"trigger / spur / give rise to",conf:"prompt(促发) vs. promote(促进,推广) vs. prominent(杰出的)"},
+  deliberately:{w:"deliberately",ipa:"/dɪˈlɪbərətli/",pos:"adv.",tags:["core"],cn:"故意地，有意地；从容地",en:"on purpose; intentionally",ex:"The founders deliberately focused their projects around light",mem:"de+liber(天平)→在天平上称过→深思熟虑的/故意的。deliberate adj. 蓄意的 v. 商议。",syn:"intentionally / on purpose / purposefully",conf:"deliberately(故意) vs. desperately(拼命地) vs. delicately(精巧地)"},
+  hence:{w:"hence",ipa:"/hens/",pos:"adv.",tags:["core","write"],cn:"因此；由此",en:"for this reason",ex:"hence the 'visual studies' in the name",mem:"hence + 名词短语的省略用法是亮点：hence the name（名字由此而来）——省去 comes。写作用它替换 so 立刻提档。",syn:"therefore / thus / consequently",conf:"hence(因此) vs. whence(从何处,古语) vs. henceforth(从今以后)"},
+  subdiscipline:{w:"sub-discipline",ipa:"/ˈsʌb ˈdɪsəplɪn/",pos:"n.",tags:["core","poly"],cn:"子学科",en:"a smaller field within a subject",ex:"divided into more sub-disciplines",mem:"sub(下)+discipline。⚠️discipline 双义都高频：学科（academic disciplines）/ 纪律、自律（self-discipline）。",syn:"branch / subfield",conf:"discipline(学科;纪律) vs. disciple(门徒)——门徒要守纪律,同源"},
+  simultaneously:{w:"simultaneously",ipa:"/ˌsɪmlˈteɪniəsli/",pos:"adv.",tags:["core"],cn:"同时地",en:"at the same time",ex:"was simultaneously looking to a time...",mem:"simul(相同,=similar)+taneous。408 并发编程的'同时执行'就是 simultaneous execution——专业课白送的单词。",syn:"concurrently / at the same time / in parallel",conf:"simultaneous(同时的) vs. spontaneous(自发的) vs. instantaneous(瞬间的)——taneous 三胞胎必辨"},
+  viceversa:{w:"vice versa",ipa:"/ˌvaɪs ˈvɜːsə/",pos:"adv.短语",tags:["phrase","write"],cn:"反之亦然",en:"the other way round",ex:"artists, writers and poets, and vice versa",mem:"拉丁语借词：vice(位置)+versa(翻转)→位置对调→反之亦然。写作省字神器：三个词顶一整句。",syn:"conversely / the other way around",conf:"vice versa(反之亦然) vs. vice president(副总统)——vice'副'是另一个词源"},
+  embrace:{w:"embrace",ipa:"/ɪmˈbreɪs/",pos:"v.",tags:["core","write"],cn:"拥抱；欣然接受",en:"to accept sth willingly",ex:"embrace surprise and challenge",mem:"em(进入)+brace(手臂)→抱进怀里→欣然接受。写作高频：embrace change/new technology 拥抱变化/新技术。",syn:"welcome / accept / adopt",conf:"embrace(拥抱) vs. brace(支撑;做好准备,brace for) vs. bracelet(手链)"},
+  tieup:{w:"tie-up",ipa:"/ˈtaɪ ʌp/",pos:"n.",tags:["phrase"],cn:"合作，联合",en:"a business or working connection",ex:"The reach of art-science tie-ups",mem:"tie(系)+up→绑到一起→联合。名词化的动词短语，外刊爱用：a tie-up between A and B。",syn:"partnership / collaboration / link-up",conf:"tie-up(合作) vs. tie up(系紧;占用,my hands are tied up)"},
+  stereotype:{w:"stereotype",ipa:"/ˈsteriətaɪp/",pos:"v./n.",tags:["core","write"],cn:"（对…有）刻板印象",en:"a fixed idea about a type of person",ex:"the trap of stereotyping each other",mem:"stereo(固定的)+type(型)→定了型的印象。写作社会话题必备：gender stereotypes 性别刻板印象。动词用法更高级：stereotype sb as...",syn:"pigeonhole / label / typecast",conf:"stereotype(刻板印象) vs. archetype(原型) vs. prototype(样机,工科生亲切)"},
+  alike:{w:"X and Y alike",ipa:"/əˈlaɪk/",pos:"adv.",tags:["phrase","write"],cn:"X 和 Y 都……",en:"both X and Y equally",ex:"Artists and scientists alike are immersed in...",mem:"alike 后置修饰前面两个名词='两者皆然'。写作句型：Teachers and students alike benefit from... 比 both 高一档。",syn:"both / equally",conf:"alike(都,后置) vs. like(像) vs. likewise(同样地,句首)"},
+  immerse:{w:"immerse",ipa:"/ɪˈmɜːs/",pos:"v.",tags:["core","write"],cn:"沉浸；使专注",en:"to involve yourself deeply in sth",ex:"are immersed in discovery and invention",mem:"im(进入)+merse(浸,=merge)→浸进去→沉浸。be immersed in / immerse oneself in 沉浸于——语言学习话题金句：immerse yourself in the language。",syn:"be absorbed in / be engrossed in",conf:"immerse(沉浸) vs. emerge(浮现) vs. merge(合并,数据库爱好者你好)——merg/mers 一家"}
+};
+
+const panel=document.getElementById('panel');
+const isMobile=()=>window.innerWidth<=900;
+function badge(t){return {core:'<span class="badge b-core">核心词</span>',phrase:'<span class="badge b-phrase">短语</span>',poly:'<span class="badge b-poly">熟词僻义</span>',write:'<span class="badge b-write">写作✍︎</span>'}[t]||''}
+function showCard(k,el){
+  const d=V[k]; if(!d)return;
+  document.querySelectorAll('.tk.active').forEach(e=>e.classList.remove('active'));
+  if(el&&el.classList.contains('tk'))el.classList.add('active');
+  panel.innerHTML=`<button class="close" onclick="panel.classList.remove('open')">✕</button>
+  <div class="wcard">
+    <div class="head"><span class="w">${d.w}</span><span class="ipa">${d.ipa}</span><span class="pos">${d.pos}</span>${d.tags.map(badge).join('')}</div>
+    <div class="cn">${d.cn}</div><div class="en-def">${d.en}</div>
+    <div class="row r-ex"><b>原文语境</b>“…${d.ex}…”</div>
+    <div class="row r-mem"><b>怎么记</b>${d.mem}</div>
+    <div class="row r-syn"><b>同类词</b>${d.syn}</div>
+    <div class="row r-conf"><b>易混辨析</b>${d.conf}</div>
+  </div>`;
+  if(isMobile())panel.classList.add('open');
+}
+document.querySelectorAll('.tk').forEach(t=>t.addEventListener('click',e=>{e.stopPropagation();showCard(t.dataset.w,t)}));
+function tz(btn){btn.closest('.para').classList.toggle('showzh')}
+let allOn=false;
+function toggleAll(){allOn=!allOn;document.querySelectorAll('.para').forEach(p=>p.classList.toggle('showzh',allOn))}
+function go(id){document.getElementById(id).scrollIntoView({behavior:'smooth',block:'center'});const s=document.getElementById(id);s.style.transition='none';s.style.opacity=.3;setTimeout(()=>{s.style.transition='opacity .8s';s.style.opacity=1},80)}
+document.querySelectorAll('.q').forEach(q=>{
+  const ans=+q.dataset.ans;
+  q.querySelectorAll('.opt').forEach((o,i)=>o.addEventListener('click',()=>{
+    if(q.classList.contains('done'))return;
+    q.classList.add('done');
+    if(i!==ans)o.classList.add('wrong');
+    q.querySelectorAll('.opt')[ans].classList.add('right');
+  }));
+});
+const vg=document.getElementById('vgrid');
+function renderGrid(f){
+  vg.innerHTML='';
+  Object.keys(V).forEach(k=>{
+    const d=V[k];
+    if(f!=='all'&&!d.tags.includes(f))return;
+    const div=document.createElement('div');div.className='vitem';
+    div.innerHTML=`<span class="badges">${d.tags.map(badge).join('')}</span><div class="w">${d.w}</div><div class="cn">${d.cn}</div>`;
+    div.addEventListener('click',()=>{showCard(k,null);if(!isMobile())window.scrollTo({top:0,behavior:'smooth'})});
+    vg.appendChild(div);
+  });
+}
+renderGrid('all');
+document.querySelectorAll('.fbtn').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.fbtn').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderGrid(b.dataset.f);
+}));
+const yd=document.getElementById('yd');let sel='';
+document.addEventListener('selectionchange',()=>{
+  const s=window.getSelection();const t=s?s.toString().trim():'';
+  if(t&&/^[a-zA-Z' -]{2,40}$/.test(t)){
+    sel=t;
+    try{const r=s.getRangeAt(0).getBoundingClientRect();
+      yd.style.left=Math.min(r.left,window.innerWidth-110)+'px';
+      yd.style.top=(r.bottom+8)+'px';yd.style.display='block';}catch(e){}
+  }else{yd.style.display='none'}
+});
+yd.addEventListener('click',()=>{window.open('https://dict.youdao.com/result?word='+encodeURIComponent(sel)+'&lang=en');yd.style.display='none'});
+document.addEventListener('click',e=>{if(e.target!==yd&&!window.getSelection().toString())yd.style.display='none'});
+</script>
+</body>
+</html>
