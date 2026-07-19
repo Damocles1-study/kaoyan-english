@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2022 英一 新题型 · 动物园之辩</title>
+<style>
+  :root{
+    --bg:#faf9f6; --card:#ffffff; --ink:#2b2b2b; --muted:#8a8578;
+    --accent:#8b5e34; --accent-soft:#f3e9dd; --line:#e8e3d8;
+    --hl:#fdf3d8; --hl-border:#e0b84d;
+    --green:#3e7a4e; --green-soft:#e8f2ea;
+    --red:#b04a3a; --red-soft:#f9e9e6;
+    --blue:#3d6a8a; --blue-soft:#e7eff5;
+    --purple:#6d5a8e; --purple-soft:#eeeaf5;
+    --serif:"Georgia","Songti SC",serif;
+    --sans:-apple-system,"PingFang SC","Helvetica Neue",sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#1c1a17; --card:#26231f; --ink:#e8e4dc; --muted:#9a948a;
+      --accent:#d0a06a; --accent-soft:#3a3127; --line:#3a362f;
+      --hl:#3d3520; --hl-border:#b08c3a;
+      --green:#7fb98d; --green-soft:#26362b;
+      --red:#d98876; --red-soft:#3d2a26;
+      --blue:#8ab3d0; --blue-soft:#26323d;
+      --purple:#a996c8; --purple-soft:#302a3d;
+    }
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;padding-bottom:120px}
+  .wrap{max-width:1100px;margin:0 auto;padding:24px 20px}
+  .back{font-size:.85rem;color:var(--muted);text-decoration:none}
+  .back:hover{color:var(--accent)}
+  header{margin:14px 0 28px}
+  header h1{font-family:var(--serif);font-size:1.7rem;line-height:1.3}
+  header .sub{color:var(--muted);margin-top:6px;font-size:.9rem}
+  .tags{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+  .tag{font-size:.75rem;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);border:1px solid var(--line)}
+  .layout{display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:start}
+  @media (max-width:900px){.layout{grid-template-columns:1fr}}
+  section.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:24px}
+  h2{font-size:1.05rem;letter-spacing:.05em;color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+  h2 .n{font-size:.72rem;background:var(--accent);color:var(--card);border-radius:6px;padding:1px 7px}
+  .para{margin-bottom:14px}
+  .para .en{font-family:var(--serif);font-size:1.03rem;line-height:1.9}
+  .tk{background:var(--hl);border-bottom:2px solid var(--hl-border);border-radius:3px;padding:0 2px;cursor:pointer;transition:filter .15s}
+  .tk:hover{filter:brightness(.93)}
+  .tk.active{outline:2px solid var(--hl-border)}
+  .clue{border-bottom:2px dotted var(--red)}
+  .para .zh{display:none;margin-top:8px;padding:10px 14px;background:var(--blue-soft);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:.92rem}
+  .showzh .zh{display:block}
+  .zbtn{float:right;margin-left:10px;font-size:.72rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:6px;padding:2px 9px;cursor:pointer}
+  .zbtn:hover{color:var(--accent);border-color:var(--accent)}
+  .allbtn{font-size:.78rem;border:1px solid var(--accent);background:none;color:var(--accent);border-radius:8px;padding:4px 12px;cursor:pointer;margin-left:auto}
+  aside{position:sticky;top:20px}
+  #panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;min-height:180px}
+  #panel .hint{color:var(--muted);font-size:.88rem;text-align:center;padding:30px 10px}
+  .wcard .head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .wcard .w{font-family:var(--serif);font-size:1.35rem;font-weight:bold}
+  .wcard .ipa{color:var(--muted);font-size:.85rem}
+  .wcard .pos{font-size:.72rem;color:var(--purple);background:var(--purple-soft);padding:1px 8px;border-radius:999px}
+  .wcard .badge{font-size:.7rem;padding:1px 8px;border-radius:999px}
+  .b-core{background:var(--red-soft);color:var(--red)}
+  .b-phrase{background:var(--blue-soft);color:var(--blue)}
+  .b-poly{background:var(--purple-soft);color:var(--purple)}
+  .b-write{background:var(--green-soft);color:var(--green)}
+  .wcard .cn{margin-top:8px;font-size:1rem;font-weight:600}
+  .wcard .en-def{color:var(--muted);font-size:.86rem;font-style:italic;margin-top:2px}
+  .wcard .row{margin-top:10px;font-size:.86rem;padding:8px 10px;border-radius:8px}
+  .wcard .row b{font-size:.72rem;display:block;margin-bottom:2px;letter-spacing:.06em}
+  .r-ex{background:var(--hl)} .r-ex b{color:var(--hl-border)}
+  .r-mem{background:var(--green-soft)} .r-mem b{color:var(--green)}
+  .r-syn{background:var(--blue-soft)} .r-syn b{color:var(--blue)}
+  .r-conf{background:var(--red-soft)} .r-conf b{color:var(--red)}
+  #panel .close{display:none}
+  @media (max-width:900px){
+    aside{position:fixed;left:0;right:0;bottom:0;z-index:50;padding:0 8px 8px}
+    #panel{box-shadow:0 -6px 24px rgba(0,0,0,.18);max-height:55vh;overflow-y:auto;display:none}
+    #panel.open{display:block}
+    #panel .close{display:block;float:right;border:none;background:var(--line);border-radius:8px;padding:2px 10px;cursor:pointer;color:var(--ink)}
+  }
+  /* 选项库 */
+  .optlib{display:grid;gap:8px}
+  .optitem{display:flex;gap:10px;border:1px solid var(--line);border-radius:10px;padding:8px 12px;font-size:.9rem}
+  .optitem .lt{font-weight:700;font-family:var(--serif);color:var(--accent);flex:0 0 18px}
+  .optitem.used{opacity:.45}
+  .optitem .zhx{color:var(--muted);font-size:.82rem}
+  /* 匹配题 */
+  .person{margin-bottom:26px;padding-bottom:20px;border-bottom:1px dashed var(--line)}
+  .person:last-child{border:none}
+  .pname{font-family:var(--serif);font-weight:700;font-size:1.1rem;margin-bottom:8px}
+  .pname .qn{color:var(--accent)}
+  .stance{font-size:.72rem;border-radius:999px;padding:1px 9px;margin-left:8px;vertical-align:2px}
+  .st-anti{background:var(--red-soft);color:var(--red)}
+  .st-pro{background:var(--green-soft);color:var(--green)}
+  .st-mid{background:var(--blue-soft);color:var(--blue)}
+  .chips{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0 4px}
+  .chips .ch{width:38px;height:34px;border:1px solid var(--line);border-radius:8px;background:none;font-family:var(--serif);font-weight:700;font-size:1rem;color:var(--ink);cursor:pointer;transition:all .15s}
+  .chips .ch:hover{border-color:var(--accent)}
+  .person.done .ch{cursor:default;opacity:.6}
+  .ch.right{background:var(--green-soft);border-color:var(--green);color:var(--green);opacity:1!important}
+  .ch.wrong{background:var(--red-soft);border-color:var(--red);color:var(--red);opacity:1!important}
+  .expl{display:none;margin-top:10px;background:var(--accent-soft);border-radius:10px;padding:12px 14px;font-size:.9rem}
+  .person.done .expl{display:block}
+  .expl b{color:var(--accent)}
+  .expl .loc{font-family:var(--serif);font-style:italic;background:var(--hl);padding:1px 4px;border-radius:3px}
+  .wb{display:grid;gap:10px}
+  .wbi{border-left:3px solid var(--green);background:var(--green-soft);border-radius:0 10px 10px 0;padding:10px 14px;font-size:.92rem}
+  .wbi .p{font-family:var(--serif);font-weight:600}
+  .wbi .u{color:var(--muted);font-size:.85rem}
+  #yd{position:fixed;z-index:60;display:none;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:4px 12px;font-size:.8rem;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+  footer{color:var(--muted);font-size:.8rem;text-align:center;margin-top:30px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">◀ 返回英语复盘中心</a>
+  <header>
+    <h1>The Zoo Debate: 动物园该被废除吗</h1>
+    <div class="sub">2022 年英语（一）真题 · Part B 新题型（观点匹配：5 人评论 ⇄ 7 个陈述选二余）· 建议做题 20 min · 话题：动物保护伦理</div>
+    <div class="tags">
+      <span class="tag">正确答案：41F 42C 43A 44D 45G（B、E 多余）</span><span class="tag">变体：人名-观点匹配</span><span class="tag">难度：中等（立场分类法可秒杀）</span>
+    </div>
+  </header>
+
+  <div class="layout">
+    <main>
+      <section class="card">
+        <h2><span class="n">00</span>解题方法论（先读这个再做题）</h2>
+        <p style="font-size:.92rem">背景：五位读者评论 Emma Marris 的文章《The Case Against Zoos》（反对动物园）。观点匹配题的正确姿势：</p>
+        <ol style="font-size:.92rem;margin:10px 0 0 20px;display:grid;gap:6px">
+          <li><b>先给每个人贴立场标签</b>：反对动物园 / 支持动物园 / 中间派——只看每段第一、二句就能定；</li>
+          <li><b>再给七个选项贴同样的标签</b>：F 是"该关"（反）；A/D/E/G 是"有价值"（支持）；B/C 带让步（中间）；</li>
+          <li><b>立场对上后，再用关键词复现锁定</b>：钱（bottom line ↔ moneymaking）、教育（major in ↔ path of sciences）、替人跑腿（travel to wild ↔ save trips）、研究被歪曲（misrepresent ↔ distort）；</li>
+          <li>多余的两项通常是：<b>无人提及的具体主张</b>（E 的"最佳替代方案"）和<b>偷换的极端说法</b>（B 的"少花钱"）。</li>
+        </ol>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">01</span>七个选项（A–G）</h2>
+        <div class="optlib" id="optlib"></div>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">02</span>五位评论者 · 点字母作答 <button class="allbtn" onclick="toggleAll()">译文 开/关</button></h2>
+        <p style="font-size:.8rem;color:var(--muted);margin-bottom:14px">🟡 高亮词可点出词卡 ｜ 红色虚线 = 与正确选项对应的<b>线索句</b> ｜ 每人下方点 A–G 作答，答后出线索链解析</p>
+
+        <div class="person" data-ans="F">
+          <div class="pname"><span class="qn">(41)</span> Teri Byrd <span class="stance st-anti">立场：反对动物园</span><button class="zbtn" onclick="tz(this)">译</button></div>
+          <p class="en para">I was a zoo and wildlife park employee for years. Both the wildlife park and zoo claimed to be operating for the benefit of the animals and for conservation purposes. This claim was false. Neither one of them actually participated in any contributions to animal research or conservation. <span class="clue">They are profitable institutions whose <span class="tk" data-w="bottomline">bottom line</span> is much more important than the condition of the animals.</span></p>
+          <p class="en para">Animals <span class="tk" data-w="despise">despise</span> being <span class="tk" data-w="captive">captives</span> in zoos. No matter how you "enhance" <span class="tk" data-w="enclosure">enclosures</span>, they do not allow for freedom, a natural diet or <span class="tk" data-w="adequate">adequate</span> exercise. Animals end up stressed and unhealthy or dead. <span class="clue">It's past time for <span class="tk" data-w="transparency">transparency</span> with these institutions, and it's past time to <span class="tk" data-w="eliminate">eliminate</span> zoos from our culture.</span></p>
+          <div class="zh">我当过多年动物园和野生动物园员工。两者都声称自己的运营是为了动物福利和保护目的——这是假话。它们没有真正为动物研究或保护做过任何贡献；它们是逐利机构，账本盈亏远比动物的状况重要。动物憎恶在动物园里被囚禁。不管你怎么"升级"围栏，都给不了自由、天然饮食和足量运动。动物最终不是紧张憔悴就是死亡。早就该让这些机构透明化了，也早就该把动物园从我们的文化中清除出去了。</div>
+          <div class="chips"></div>
+          <div class="expl"><b>41 → F</b>　线索链：<span class="loc">profitable institutions whose bottom line is much more important than the condition of the animals</span> ↔ F 的 <span class="loc">prioritize moneymaking over animals' well-being</span>（bottom line→moneymaking，condition→well-being）；<span class="loc">past time to eliminate zoos</span> ↔ <span class="loc">should have been closed down</span>（eliminate→close down，past time→should have been 的"早该"语气）。全场唯一喊"关掉"的人对应唯一喊"关掉"的选项。</div>
+        </div>
+
+        <div class="person" data-ans="C">
+          <div class="pname"><span class="qn">(42)</span> Karen R. Sime <span class="stance st-mid">立场：中间派（让步+肯定教育价值）</span><button class="zbtn" onclick="tz(this)">译</button></div>
+          <p class="en para">As a zoology professor, I agree with Emma Marris that zoo displays can be sad and cruel. But she <span class="tk" data-w="underestimate">underestimates</span> the educational value of zoos.</p>
+          <p class="en para"><span class="clue">The zoology program at my university attracts students for whom zoo visits were the crucial <span class="tk" data-w="formative">formative</span> experience that led them to major in biological sciences.</span> These are mostly students who had no opportunity as children to travel to wilderness areas, wildlife <span class="tk" data-w="refuge">refuges</span> or national parks. Although good TV shows can help <span class="tk" data-w="stir">stir</span> children's interest in conservation, they cannot replace the excitement of a zoo visit as an intense, <span class="tk" data-w="immersive">immersive</span> and interactive experience. Surely there must be some <span class="tk" data-w="middleground">middle ground</span> that balances zoos' treatment of animals with their educational potential.</p>
+          <div class="zh">作为动物学教授，我同意 Emma Marris 所说：动物园的展出可能悲哀而残忍。但她低估了动物园的教育价值。我所在大学的动物学专业吸引的学生，很多人正是因为儿时参观动物园的关键塑造性经历才选择主修生物科学。这些学生大多小时候没有机会去荒野、野生动物保护区或国家公园。好的电视节目虽有助于激发孩子的保护兴趣，却无法取代动物园之行那种强烈、沉浸、互动的体验。当然，一定存在某种中间地带，能在动物园对动物的对待与其教育潜力之间取得平衡。</div>
+          <div class="chips"></div>
+          <div class="expl"><b>42 → C</b>　线索链：C 前半 <span class="loc">While animals in captivity deserve sympathy</span> ↔ 她的让步 <span class="loc">I agree ... can be sad and cruel</span>；C 后半 <span class="loc">starting young people down the path of related sciences</span> ↔ <span class="loc">formative experience that led them to major in biological sciences</span>（path of related sciences→major in biological sciences）。While 让步结构与"agree...But..."的行文完美同构——立场标签法一步到位。</div>
+        </div>
+
+        <div class="person" data-ans="A">
+          <div class="pname"><span class="qn">(43)</span> Greg Newberry <span class="stance st-pro">立场：强烈支持动物园（斥责 Marris）</span><button class="zbtn" onclick="tz(this)">译</button></div>
+          <p class="en para">Emma Marris's article is an <span class="tk" data-w="insult">insult</span> and a <span class="tk" data-w="disservice">disservice</span> to the thousands of passionate, <span class="tk" data-w="dedicated">dedicated</span> people who work <span class="tk" data-w="tirelessly">tirelessly</span> to improve the lives of animals and protect our planet. She uses outdated research and decades-old examples to <span class="tk" data-w="undermine">undermine</span> the noble mission of organizations committed to connecting children to a world beyond their own.</p>
+          <p class="en para"><span class="clue">Zoos are at the <span class="tk" data-w="forefront">forefront</span> of conservation and constantly evolving to improve how they care for animals</span> and protect each species in its natural habitat. Are there tragedies? Of course. But they are the exception, not the norm that Ms. Marris implies. <span class="clue">A <span class="tk" data-w="distressed">distressed</span> animal in a zoo will get as good or better treatment than most of us at our local hospital.</span></p>
+          <div class="zh">Emma Marris 的文章是对成千上万满怀热情、兢兢业业改善动物生活、保护地球的人的侮辱和伤害。她用过时的研究和几十年前的旧例，来贬损那些致力于把孩子与更广阔世界相连的组织的崇高使命。动物园站在保护事业的最前沿，并在不断进化以改进对动物的照料、保护各物种的自然栖息地。有悲剧吗？当然有。但那是例外，不是 Marris 暗示的常态。动物园里一只状态不佳的动物得到的治疗，不会比我们大多数人在本地医院得到的差，甚至更好。</div>
+          <div class="chips"></div>
+          <div class="expl"><b>43 → A</b>　线索链：A 的 <span class="loc">spare no effort to take care of animals</span> ↔ <span class="loc">constantly evolving to improve how they care for animals</span> + <span class="loc">as good or better treatment than ... hospital</span>；A 的 <span class="loc">should not be subjected to unfair criticism</span> ↔ 整段对 Marris 的反击（insult / outdated research / undermine）——"文章是侮辱" = "批评不公正"。五人中骂得最狠的配语气最强的 A。</div>
+        </div>
+
+        <div class="person" data-ans="D">
+          <div class="pname"><span class="qn">(44)</span> Dean Gallea <span class="stance st-pro">立场：支持（环保者的实用主义辩护）</span><button class="zbtn" onclick="tz(this)">译</button></div>
+          <p class="en para">As a fellow environmentalist, animal-protection advocate and longtime vegetarian, I could properly be in the same <span class="tk" data-w="camp">camp</span> as Emma Marris on the issue of zoos. But I believe that well-run zoos, and the heroic animals that suffer their captivity, do serve a higher purpose. <span class="clue"><span class="tk" data-w="wereitnot">Were it not for</span> opportunities to observe these beautiful, wild creatures close to home, many more people would be driven by their <span class="tk" data-w="fascination">fascination</span> to travel to wild areas to seek out, disturb and even <span class="tk" data-w="huntdown">hunt them down</span>.</span></p>
+          <p class="en para">Zoos are, in that sense, similar to natural history and archaeology museums, serving to satisfy our need for contact with these living creatures <span class="clue">while leaving the vast majority <span class="tk" data-w="undisturbed">undisturbed</span> in their natural environments</span>.</p>
+          <div class="zh">作为同样的环保主义者、动物保护倡导者和多年素食者，在动物园问题上我本可以和 Emma Marris 站在同一阵营。但我相信，管理良好的动物园——以及忍受圈养之苦的英雄动物们——确实服务于一个更高的目的：若不是在家门口就有机会观察这些美丽的野生动物，会有更多人被好奇心驱使跑到野外去寻找、打扰甚至猎杀它们。在这个意义上，动物园类似自然历史博物馆和考古博物馆：既满足我们接触这些活物的需求，又让绝大多数动物在自然环境中不受打扰。</div>
+          <div class="chips"></div>
+          <div class="expl"><b>44 → D</b>　线索链：D 的 <span class="loc">save people trips to wilderness areas</span> ↔ <span class="loc">Were it not for opportunities to observe ... close to home, many more people would ... travel to wild areas</span>（虚拟语气反过来说 = 动物园省去了这些远行）；D 的 <span class="loc">contribute to wildlife conservation</span> ↔ <span class="loc">leaving the vast majority undisturbed in their natural environments</span>。⚠️ 别选 E——他说的是"就近观察替代远行"，不是"无法放归的动物的最佳去处"。</div>
+        </div>
+
+        <div class="person" data-ans="G">
+          <div class="pname"><span class="qn">(45)</span> John Fraser <span class="stance st-pro">立场：支持（被引用研究的作者亲自下场）</span><button class="zbtn" onclick="tz(this)">译</button></div>
+          <p class="en para"><span class="clue">Emma Marris <span class="tk" data-w="selectively">selectively</span> describes and <span class="tk" data-w="misrepresent">misrepresents</span> the findings of our research.</span> Our studies focused on the impact of zoo experiences on how people think about themselves and nature, and the data points extracted from our studies do not, in any way, <span class="tk" data-w="discount">discount</span> what is learned in a zoo visit.</p>
+          <p class="en para">Zoos are tools for thinking. <span class="clue">Our research provides strong support for the value of zoos in connecting people with animals and with nature.</span> Zoos provide a critical voice for conservation and environmental protection. They <span class="tk" data-w="afford">afford</span> an opportunity for people from all backgrounds to encounter a range of animals, from drone bees to springbok or salmon, to better understand the natural world we live in.</p>
+          <div class="zh">Emma Marris 有选择地描述并歪曲了我们研究的发现。我们的研究关注动物园经历如何影响人们看待自我与自然的方式，而从我们研究中提取的数据点绝不贬低动物园参观中学到的东西。动物园是思考的工具。我们的研究有力支持了动物园在连接人与动物、人与自然方面的价值。动物园为保护事业和环保发出关键声音，让各种背景的人都有机会接触从雄蜂到跳羚、鲑鱼的各类动物，从而更好地理解我们生活的自然世界。</div>
+          <div class="chips"></div>
+          <div class="expl"><b>45 → G</b>　线索链：G 的 <span class="loc">Marris distorts our findings</span> ↔ <span class="loc">selectively describes and misrepresents the findings of our research</span>（misrepresent→distort，教科书级替换）；G 的 <span class="loc">zoos serve as an indispensable link between man and nature</span> ↔ <span class="loc">the value of zoos in connecting people with animals and with nature</span>（connect→link）。"our research"是身份指纹——只有他是研究作者本人。</div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">03</span>两个多余项为什么不能选</h2>
+        <div class="wb">
+          <div class="wbi" style="border-color:var(--red);background:var(--red-soft)"><div class="p">B. To pressure zoos to spend less on their animals would lead to inhumane outcomes...</div><div class="u">"迫使动物园少花钱会导致不人道后果" —— <b>无中生有+偷换</b>：没有任何人讨论"给动物园施压让它少花钱"。Byrd 批评的是动物园赚钱不干实事，方向完全相反。典型的"用原文词造没人说过的话"。</div></div>
+          <div class="wbi" style="border-color:var(--red);background:var(--red-soft)"><div class="p">E. For wild animals that cannot be returned to their natural habitats, zoos offer the best alternative.</div><div class="u">"对无法放归野外的动物，动物园是最佳替代" —— <b>貌似合理但无人提及</b>：44 Gallea 说的是"就近看动物省得人跑去野外打扰"，主语是<em>人</em>的行程；E 的主语是<em>无法放归的动物</em>的去处。最强干扰项，专钓"感觉像"不核对主语的人。</div></div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">04</span>词汇复盘（点卡片看详情）</h2>
+        <div class="vgrid" id="vgrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px"></div>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">05</span>可搬进作文/翻译的素材</h2>
+        <div class="wb">
+          <div class="wbi"><div class="p">Were it not for ..., many more people would ...</div><div class="u">"若不是……，更多人将会……" —— 虚拟语气倒装（= If it were not for），写作提档神器：Were it not for public libraries, many children would have no access to books.</div></div>
+          <div class="wbi"><div class="p">They are the exception, not the norm.</div><div class="u">"那是例外，不是常态" —— 反驳以偏概全的万能句；norm 复现（T1 的 unquestioned norm）。</div></div>
+          <div class="wbi"><div class="p">Surely there must be some middle ground that balances A with B.</div><div class="u">"一定存在平衡 A 与 B 的中间地带" —— 议论文结尾中立立场句，balance A with B 搭配照抄。</div></div>
+          <div class="wbi"><div class="p">It's past time to do ...</div><div class="u">"早就该……了" —— 比 It's time to 更急迫；It's past time for transparency. 呼吁类话题可用。</div></div>
+          <div class="wbi"><div class="p">an insult and a disservice to ...</div><div class="u">"对……的侮辱和伤害" —— do sb a disservice 帮倒忙/有损于，反驳时的强语气组合。</div></div>
+          <div class="wbi"><div class="p">X is at the forefront of ...</div><div class="u">"X 站在……最前沿" —— China is at the forefront of renewable energy. 科技/发展话题高频。</div></div>
+        </div>
+      </section>
+    </main>
+
+    <aside>
+      <div id="panel"><div class="hint">👆 点击正文里的<b>黄色高亮词</b><br>词卡会出现在这里</div></div>
+    </aside>
+  </div>
+
+  <footer>2022 英语一 新题型 · 复盘页由 Claude 生成 · 解析为 Claude 独立盲做完成</footer>
+</div>
+
+<button id="yd">🔍 查有道</button>
+
+<script>
+const OPTS = {
+  A:["Zoos, which spare no effort to take care of animals, should not be subjected to unfair criticism.","不遗余力照顾动物的动物园，不应遭受不公正的批评。"],
+  B:["To pressure zoos to spend less on their animals would lead to inhumane outcomes for the precious creatures in their care.","迫使动物园在动物身上少花钱，会给它们照管的珍贵生灵带来不人道的后果。（多余项）"],
+  C:["While animals in captivity deserve sympathy, zoos play a significant role in starting young people down the path of related sciences.","圈养动物固然值得同情，但动物园在引导年轻人走上相关科学道路方面作用重大。"],
+  D:["Zoos save people trips to wilderness areas and thus contribute to wildlife conservation.","动物园省去了人们前往荒野的行程，因而有助于野生动物保护。"],
+  E:["For wild animals that cannot be returned to their natural habitats, zoos offer the best alternative.","对无法放归自然栖息地的野生动物来说，动物园是最佳替代方案。（多余项）"],
+  F:["Zoos should have been closed down as they prioritize moneymaking over animals' well-being.","动物园早该关门，因为它们把赚钱置于动物福祉之上。"],
+  G:["Marris distorts our findings, which actually prove that zoos serve as an indispensable link between man and nature.","Marris 歪曲了我们的研究发现——它们其实证明动物园是人与自然之间不可或缺的纽带。"]
+};
+const ANSWERS = {F:41,C:42,A:43,D:44,G:45};
+
+const V = {
+  bottomline:{w:"bottom line",ipa:"",pos:"n.短语",tags:["phrase","poly"],cn:"⚠️盈亏底线，净利润；要点",en:"profit; the most important point",ex:"whose bottom line is much more important than the animals",mem:"财报最底下一行=净利润→'账本盈亏'。另一义'关键点'：The bottom line is that... 说到底。41 题解题词。",syn:"profit / net income / the crux",conf:"bottom line(利润;要点) vs. deadline(截止线) vs. baseline(基准线)"},
+  despise:{w:"despise",ipa:"/dɪˈspaɪz/",pos:"v.",tags:["core"],cn:"鄙视，憎恶",en:"to hate or look down on",ex:"Animals despise being captives",mem:"de(向下)+spise(看,=spect 家族变体)→向下看→鄙视。despise doing 憎恶做某事。",syn:"loathe / detest / scorn",conf:"despise(鄙视) vs. despite(尽管,介词!)——一字母之差词性天壤"},
+  captive:{w:"captive / captivity",ipa:"/ˈkæptɪv/",pos:"n./adj.",tags:["core"],cn:"俘虏；被圈养的",en:"kept in a place and not free to leave",ex:"being captives in zoos / suffer their captivity",mem:"capt(抓,=capture/captain)+ive。in captivity 在圈养状态下（反义 in the wild）。本文题眼词族。",syn:"prisoner / confined",conf:"captive(被圈养) vs. captivate(迷住,美到'俘获'你) — 同根反差萌"},
+  enclosure:{w:"enclosure",ipa:"/ɪnˈkləʊʒə(r)/",pos:"n.",tags:["core"],cn:"围栏，圈地",en:"an area surrounded by a fence",ex:"No matter how you \"enhance\" enclosures",mem:"en(进)+clos(关,=close)+ure→关起来的地方→围栏。历史背景：英国'圈地运动'= the Enclosure Movement。",syn:"pen / cage / compound",conf:"enclosure(围栏) vs. closure(关闭;了结) vs. disclosure(披露)"},
+  adequate:{w:"adequate",ipa:"/ˈædɪkwət/",pos:"adj.",tags:["core","write"],cn:"足够的，合乎需要的",en:"enough for what is needed",ex:"a natural diet or adequate exercise",mem:"ad+equ(等,=equal)+ate→与需求相等→够用。写作：adequate resources/sleep。反义 inadequate 不足的。",syn:"sufficient / enough / satisfactory",conf:"adequate(足够) vs. delicate(精致/脆弱) vs. adequate to 胜任"},
+  transparency:{w:"transparency",ipa:"/trænsˈpærənsi/",pos:"n.",tags:["core","write"],cn:"透明（度），公开",en:"openness; being easy to see through",ex:"It's past time for transparency with these institutions",mem:"trans(穿过)+par(显现,=appear)+ency→光能穿过→透明。治理话题高频：increase transparency 提高透明度。",syn:"openness / accountability(问责)",conf:"transparent(透明的) vs. apparent(明显的) vs. transient(短暂的)"},
+  eliminate:{w:"eliminate",ipa:"/ɪˈlɪmɪneɪt/",pos:"v.",tags:["core","write"],cn:"消除，淘汰",en:"to remove or get rid of completely",ex:"eliminate zoos from our culture",mem:"e(出)+limin(门槛,=limit)+ate→赶出门槛→清除。eliminate A from B。体育'淘汰赛'= elimination round。",syn:"remove / abolish / eradicate",conf:"eliminate(消除) vs. illuminate(照亮)——考研经典形近对"},
+  underestimate:{w:"underestimate",ipa:"/ˌʌndərˈestɪmeɪt/",pos:"v.",tags:["core","write"],cn:"低估",en:"to think sth is smaller or less important than it is",ex:"she underestimates the educational value of zoos",mem:"under(低)+estimate(估计)。反义 overestimate 高估。42 题立场词：'低估教育价值'=让步后的转折点。",syn:"undervalue / underrate",conf:"underestimate(低估) vs. undermine(暗中削弱,43段出现) — under 双雄都高频"},
+  formative:{w:"formative",ipa:"/ˈfɔːmətɪv/",pos:"adj.",tags:["core","write"],cn:"塑造性的，影响成长的",en:"having a strong influence on development",ex:"the crucial formative experience",mem:"form(塑形)+ative→塑造人的。formative years 性格形成期（写作教育话题金词）。42 题解题词。",syn:"shaping / influential / developmental",conf:"formative(塑造的) vs. formal(正式的) vs. former(前者)"},
+  refuge:{w:"refuge",ipa:"/ˈrefjuːdʒ/",pos:"n.",tags:["core"],cn:"庇护所，避难处",en:"a place giving protection or shelter",ex:"wildlife refuges or national parks",mem:"re(回)+fug(逃,=fugitive 逃亡者)→逃回去的地方→避难所。wildlife refuge 野生动物保护区。take refuge in 躲进。",syn:"shelter / sanctuary / haven",conf:"refuge(避难所) vs. refugee(难民,人!) vs. refuse(拒绝/垃圾)"},
+  stir:{w:"stir",ipa:"/stɜː(r)/",pos:"v.",tags:["core","poly"],cn:"搅拌；⚠️激起（兴趣/情感）",en:"to mix; to excite (feelings)",ex:"help stir children's interest in conservation",mem:"熟词僻义：搅咖啡的 stir → 把情绪'搅'起来 → 激发。stir up trouble 挑事。stir interest/emotions 写作可用。",syn:"arouse / spark / kindle",conf:"stir(激起) vs. steer(掌舵,驾驶) vs. stern(严厉的)"},
+  immersive:{w:"immersive",ipa:"/ɪˈmɜːsɪv/",pos:"adj.",tags:["core","write"],cn:"沉浸式的",en:"seeming to surround you completely",ex:"an intense, immersive and interactive experience",mem:"immerse(沉浸,T3 词卡同款!)+ive。immersive experience 沉浸式体验——VR/教育话题时髦词，写作直接用。",syn:"engrossing / absorbing",conf:"immersive(沉浸式) vs. impressive(令人印象深刻) — 别看串"},
+  middleground:{w:"middle ground",ipa:"",pos:"n.短语",tags:["phrase","write"],cn:"中间立场，妥协点",en:"a position between two extremes",ex:"some middle ground that balances A with B",mem:"两个极端中间的'地带'。find/seek the middle ground 寻求折中——议论文结尾万能：Perhaps the middle ground lies in...",syn:"compromise / happy medium",conf:"middle ground(中间立场) vs. common ground(共同点)——一个折中一个共识"},
+  insult:{w:"insult",ipa:"/ɪnˈsʌlt/",pos:"n./v.",tags:["core"],cn:"侮辱",en:"a remark or action that offends",ex:"an insult and a disservice to the thousands of people",mem:"in(向)+sult(跳,=result)→跳到别人身上→冒犯。add insult to injury 雪上加霜（高频成语）。",syn:"offense / affront",conf:"insult(侮辱) vs. consult(咨询) vs. result(结果)——sult 三兄弟"},
+  disservice:{w:"do sb a disservice",ipa:"/ˌdɪsˈsɜːvɪs/",pos:"n.短语",tags:["phrase","write"],cn:"帮倒忙，有损于",en:"to harm sb or sth",ex:"an insult and a disservice to ... people",mem:"dis(负)+service(服务)→负服务→帮倒忙。写作反驳：Such policies do students a disservice. 43 题'不公正批评'的证据词。",syn:"harm / injustice",conf:"disservice(伤害) vs. deserve(值得) vs. dessert(甜点)——别拼混"},
+  dedicated:{w:"dedicated",ipa:"/ˈdedɪkeɪtɪd/",pos:"adj.",tags:["core","write"],cn:"尽心尽力的，专注的",en:"devoted to a task or purpose",ex:"passionate, dedicated people",mem:"dedicate(奉献)+ed。be dedicated to doing 致力于——与 T2 的 committed 同义打包记：committed/dedicated/devoted to。",syn:"committed / devoted / diligent",conf:"dedicated(尽职的) vs. delicate(脆弱精致的) vs. deliberate(故意的)"},
+  tirelessly:{w:"tirelessly",ipa:"/ˈtaɪələsli/",pos:"adv.",tags:["core","write"],cn:"不知疲倦地",en:"with a lot of energy, without stopping",ex:"work tirelessly to improve the lives of animals",mem:"tire(累)+less(不)+ly→累不垮地。work tirelessly 写作人物描写高频：Volunteers work tirelessly to...",syn:"industriously / relentlessly",conf:"tireless(不倦的) vs. tiresome(烦人的)——一褒一贬"},
+  undermine:{w:"undermine",ipa:"/ˌʌndəˈmaɪn/",pos:"v.",tags:["core","write"],cn:"暗中削弱，逐渐损害",en:"to make sth gradually weaker",ex:"undermine the noble mission of organizations",mem:"under(下面)+mine(挖矿)→在墙脚下挖矿→挖墙脚。写作：undermine confidence/trust/health。与 T2 27 题选项 undermine 复现。",syn:"weaken / sabotage / erode",conf:"undermine(削弱) vs. underline(强调,划线) — 挖墙脚 vs 划重点"},
+  forefront:{w:"at the forefront of",ipa:"/ˈfɔːfrʌnt/",pos:"n.短语",tags:["phrase","write"],cn:"在…的最前沿",en:"in a leading position in an activity",ex:"Zoos are at the forefront of conservation",mem:"fore(前)+front(前线)→最前线。写作：at the forefront of technological innovation 科技创新最前沿。",syn:"in the vanguard of / leading",conf:"forefront(前沿) vs. foreground(前景,图像) vs. foremost(最重要的)"},
+  distressed:{w:"distressed",ipa:"/dɪˈstrest/",pos:"adj.",tags:["core"],cn:"痛苦的，状态不佳的",en:"suffering; in a poor condition",ex:"A distressed animal in a zoo will get ... treatment",mem:"di+stress(压力)→压力拉满→痛苦的。distress n. 苦难：in distress 处于困境（船只遇险也用它）。",syn:"suffering / troubled / anguished",conf:"distressed(痛苦的) vs. stressed(有压力的) vs. destressed(减压后的,少见)"},
+  camp:{w:"camp",ipa:"/kæmp/",pos:"n.",tags:["poly"],cn:"⚠️阵营；营地",en:"a group with the same opinion; a place with tents",ex:"in the same camp as Emma Marris",mem:"熟词僻义：露营的 camp → 扎营站队 → '阵营'。in the same camp 同一阵营；两派论战 = two camps。观点类文章高频。",syn:"faction / side / bloc",conf:"camp(阵营) vs. campus(校园) vs. campaign(运动,战役)"},
+  wereitnot:{w:"Were it not for",ipa:"",pos:"虚拟句型",tags:["phrase","write"],cn:"若不是因为……（虚拟倒装）",en:"if it were not for",ex:"Were it not for opportunities to observe ... close to home",mem:"= If it were not for 的倒装（省 if 提 were）。对现在虚拟；对过去用 Had it not been for。44 题解题句+写作提档神器。",syn:"But for / Without",conf:"Were it not for(现在虚拟) vs. Had it not been for(过去虚拟)——时态配对"},
+  fascination:{w:"fascination",ipa:"/ˌfæsɪˈneɪʃn/",pos:"n.",tags:["core"],cn:"迷恋，强烈的好奇",en:"a very strong attraction or interest",ex:"driven by their fascination to travel to wild areas",mem:"fascinate(迷住)+ion。have a fascination with/for 对…着迷。driven by fascination 被好奇心驱使。",syn:"obsession / allure / charm",conf:"fascination(着迷) vs. facilitation(促进) — 形近雷区"},
+  huntdown:{w:"hunt down",ipa:"",pos:"v.短语",tags:["phrase"],cn:"追猎，追捕到底",en:"to search for until caught",ex:"seek out, disturb and even hunt them down",mem:"hunt(猎)+down(到底)→穷追到底。三连动词递进：seek out(找)→disturb(扰)→hunt down(猎杀)，even 标记程度顶点。",syn:"track down / chase down",conf:"hunt down(追猎) vs. turn down(拒绝) vs. run down(撞倒;贬低)"},
+  undisturbed:{w:"undisturbed",ipa:"/ˌʌndɪˈstɜːbd/",pos:"adj.",tags:["core"],cn:"不受打扰的",en:"not interrupted or interfered with",ex:"leaving the vast majority undisturbed in their natural environments",mem:"un+disturb+ed。leave sb/sth undisturbed 让…免受打扰——44 题'contribute to conservation'的原文对应。",syn:"untouched / unspoiled / intact",conf:"undisturbed(未受扰) vs. uninterested(不感兴趣) vs. undeterred(未被吓住)"},
+  selectively:{w:"selectively",ipa:"/sɪˈlektɪvli/",pos:"adv.",tags:["core"],cn:"有选择地，挑拣地",en:"choosing only some things, not all",ex:"selectively describes and misrepresents the findings",mem:"select+ive+ly。'选择性描述'=只挑对自己有利的说——学术批评高频指控。selective memory 选择性记忆。",syn:"partially / cherry-picking(挑樱桃=报喜不报忧)",conf:"selective(挑剔的) vs. subjective(主观的) vs. respective(各自的)"},
+  misrepresent:{w:"misrepresent",ipa:"/ˌmɪsreprɪˈzent/",pos:"v.",tags:["core","write"],cn:"歪曲，失实陈述",en:"to describe falsely",ex:"misrepresents the findings of our research",mem:"mis(错)+represent(呈现)→错误呈现→歪曲。45 题解题词：misrepresent → G 的 distort。mis 家族：mislead 误导/misinterpret 曲解。",syn:"distort / twist / falsify",conf:"misrepresent(歪曲) vs. represent(代表) vs. resent(怨恨)"},
+  discount:{w:"discount",ipa:"/dɪsˈkaʊnt/",pos:"v.",tags:["poly"],cn:"⚠️低估，不重视；打折",en:"to regard as unimportant; to reduce price",ex:"do not, in any way, discount what is learned in a zoo visit",mem:"熟词僻义警报：不是打折！dis(否)+count(算)→不算数→不重视/低估。discount a theory 对某理论不以为然。",syn:"dismiss / disregard / underrate",conf:"discount(v.低估/n.折扣)——动词义考研考过多次,见到先想'低估'"},
+  afford:{w:"afford",ipa:"/əˈfɔːd/",pos:"v.",tags:["poly"],cn:"⚠️提供，给予；负担得起",en:"to provide; to have enough money for",ex:"They afford an opportunity for people from all backgrounds",mem:"熟词僻义：afford an opportunity/view = 提供机会/视野（正式书面语）,不是'买得起'。afford sb sth 双宾结构。",syn:"provide / offer / grant",conf:"afford(提供;负担得起) vs. effort(努力) — 拼写别串"},
+  indispensable:{w:"indispensable",ipa:"/ˌɪndɪˈspensəbl/",pos:"adj.",tags:["core","write"],cn:"不可或缺的",en:"absolutely necessary",ex:"an indispensable link between man and nature (选项G)",mem:"in(不)+dispense(分发;免除)+able→不可免除的→必不可少。写作万金油：play an indispensable role in...",syn:"essential / vital / crucial",conf:"indispensable(不可少的) vs. dispensable(可有可无的) vs. disposable(一次性的)"}
+};
+
+/* 选项库渲染 */
+const lib=document.getElementById('optlib');
+lib.innerHTML=Object.keys(OPTS).map(k=>'<div class="optitem" id="opt-'+k+'"><span class="lt">'+k+'</span><span>'+OPTS[k][0]+'<br><span class="zhx">'+OPTS[k][1]+'</span></span></div>').join('');
+
+/* 匹配交互 */
+document.querySelectorAll('.person').forEach(p=>{
+  const ans=p.dataset.ans;
+  const chips=p.querySelector('.chips');
+  chips.innerHTML='ABCDEFG'.split('').map(l=>'<button class="ch" data-l="'+l+'">'+l+'</button>').join('');
+  chips.querySelectorAll('.ch').forEach(c=>c.addEventListener('click',()=>{
+    if(p.classList.contains('done'))return;
+    p.classList.add('done');
+    if(c.dataset.l!==ans)c.classList.add('wrong');
+    chips.querySelector('.ch[data-l="'+ans+'"]').classList.add('right');
+    document.getElementById('opt-'+ans).classList.add('used');
+  }));
+});
+
+const panel=document.getElementById('panel');
+const isMobile=()=>window.innerWidth<=900;
+function badge(t){return {core:'<span class="badge b-core">核心词</span>',phrase:'<span class="badge b-phrase">短语</span>',poly:'<span class="badge b-poly">熟词僻义</span>',write:'<span class="badge b-write">写作✍︎</span>'}[t]||''}
+function showCard(k,el){
+  const d=V[k]; if(!d)return;
+  document.querySelectorAll('.tk.active').forEach(e=>e.classList.remove('active'));
+  if(el&&el.classList.contains('tk'))el.classList.add('active');
+  panel.innerHTML=`<button class="close" onclick="panel.classList.remove('open')">✕</button>
+  <div class="wcard">
+    <div class="head"><span class="w">${d.w}</span><span class="ipa">${d.ipa}</span><span class="pos">${d.pos}</span>${d.tags.map(badge).join('')}</div>
+    <div class="cn">${d.cn}</div><div class="en-def">${d.en}</div>
+    <div class="row r-ex"><b>原文语境</b>“…${d.ex}…”</div>
+    <div class="row r-mem"><b>怎么记</b>${d.mem}</div>
+    <div class="row r-syn"><b>同类词</b>${d.syn}</div>
+    <div class="row r-conf"><b>易混辨析</b>${d.conf}</div>
+  </div>`;
+  if(isMobile())panel.classList.add('open');
+}
+document.querySelectorAll('.tk').forEach(t=>t.addEventListener('click',e=>{e.stopPropagation();showCard(t.dataset.w,t)}));
+function tz(btn){btn.closest('.person').classList.toggle('showzh')}
+let allOn=false;
+function toggleAll(){allOn=!allOn;document.querySelectorAll('.person').forEach(p=>p.classList.toggle('showzh',allOn))}
+
+const vg=document.getElementById('vgrid');
+Object.keys(V).forEach(k=>{
+  const d=V[k];
+  const div=document.createElement('div');div.className='vitem';
+  div.style.cssText='border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer';
+  div.innerHTML=`<span style="float:right">${d.tags.map(badge).join('')}</span><div style="font-family:var(--serif);font-weight:bold">${d.w}</div><div style="font-size:.85rem;color:var(--muted)">${d.cn}</div>`;
+  div.addEventListener('click',()=>{showCard(k,null);if(!isMobile())window.scrollTo({top:0,behavior:'smooth'})});
+  vg.appendChild(div);
+});
+
+const yd=document.getElementById('yd');let sel='';
+document.addEventListener('selectionchange',()=>{
+  const s=window.getSelection();const t=s?s.toString().trim():'';
+  if(t&&/^[a-zA-Z' -]{2,40}$/.test(t)){
+    sel=t;
+    try{const r=s.getRangeAt(0).getBoundingClientRect();
+      yd.style.left=Math.min(r.left,window.innerWidth-110)+'px';
+      yd.style.top=(r.bottom+8)+'px';yd.style.display='block';}catch(e){}
+  }else{yd.style.display='none'}
+});
+yd.addEventListener('click',()=>{window.open('https://dict.youdao.com/result?word='+encodeURIComponent(sel)+'&lang=en');yd.style.display='none'});
+document.addEventListener('click',e=>{if(e.target!==yd&&!window.getSelection().toString())yd.style.display='none'});
+</script>
+</body>
+</html>

@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2022 英一 翻译 · 拿破仑密码破译战</title>
+<style>
+  :root{
+    --bg:#faf9f6; --card:#ffffff; --ink:#2b2b2b; --muted:#8a8578;
+    --accent:#8b5e34; --accent-soft:#f3e9dd; --line:#e8e3d8;
+    --hl:#fdf3d8; --hl-border:#e0b84d;
+    --green:#3e7a4e; --green-soft:#e8f2ea;
+    --red:#b04a3a; --red-soft:#f9e9e6;
+    --blue:#3d6a8a; --blue-soft:#e7eff5;
+    --purple:#6d5a8e; --purple-soft:#eeeaf5;
+    --serif:"Georgia","Songti SC",serif;
+    --sans:-apple-system,"PingFang SC","Helvetica Neue",sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#1c1a17; --card:#26231f; --ink:#e8e4dc; --muted:#9a948a;
+      --accent:#d0a06a; --accent-soft:#3a3127; --line:#3a362f;
+      --hl:#3d3520; --hl-border:#b08c3a;
+      --green:#7fb98d; --green-soft:#26362b;
+      --red:#d98876; --red-soft:#3d2a26;
+      --blue:#8ab3d0; --blue-soft:#26323d;
+      --purple:#a996c8; --purple-soft:#302a3d;
+    }
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;padding-bottom:120px}
+  .wrap{max-width:1100px;margin:0 auto;padding:24px 20px}
+  .back{font-size:.85rem;color:var(--muted);text-decoration:none}
+  .back:hover{color:var(--accent)}
+  header{margin:14px 0 28px}
+  header h1{font-family:var(--serif);font-size:1.7rem;line-height:1.3}
+  header .sub{color:var(--muted);margin-top:6px;font-size:.9rem}
+  .tags{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+  .tag{font-size:.75rem;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);border:1px solid var(--line)}
+  .layout{display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:start}
+  @media (max-width:900px){.layout{grid-template-columns:1fr}}
+  section.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:24px}
+  h2{font-size:1.05rem;letter-spacing:.05em;color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+  h2 .n{font-size:.72rem;background:var(--accent);color:var(--card);border-radius:6px;padding:1px 7px}
+  .para{margin-bottom:16px}
+  .para .en{font-family:var(--serif);font-size:1.02rem;line-height:1.9}
+  .seg{background:var(--hl);border-bottom:2px solid var(--hl-border);border-radius:3px;padding:0 2px;cursor:pointer}
+  .seg:hover{filter:brightness(.94)}
+  .seg .no{font-size:.72rem;color:var(--accent);font-weight:700}
+  .tk{background:var(--hl);border-bottom:2px solid var(--hl-border);border-radius:3px;padding:0 2px;cursor:pointer}
+  .tk:hover{filter:brightness(.93)}
+  .tk.active{outline:2px solid var(--hl-border)}
+  .para .zh{display:none;margin-top:8px;padding:10px 14px;background:var(--blue-soft);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:.92rem}
+  .showzh .zh{display:block}
+  .allbtn{font-size:.78rem;border:1px solid var(--accent);background:none;color:var(--accent);border-radius:8px;padding:4px 12px;cursor:pointer;margin-left:auto}
+  aside{position:sticky;top:20px}
+  #panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;min-height:180px}
+  #panel .hint{color:var(--muted);font-size:.88rem;text-align:center;padding:30px 10px}
+  .wcard .head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .wcard .w{font-family:var(--serif);font-size:1.35rem;font-weight:bold}
+  .wcard .ipa{color:var(--muted);font-size:.85rem}
+  .wcard .pos{font-size:.72rem;color:var(--purple);background:var(--purple-soft);padding:1px 8px;border-radius:999px}
+  .wcard .badge{font-size:.7rem;padding:1px 8px;border-radius:999px}
+  .b-core{background:var(--red-soft);color:var(--red)}
+  .b-phrase{background:var(--blue-soft);color:var(--blue)}
+  .b-poly{background:var(--purple-soft);color:var(--purple)}
+  .b-write{background:var(--green-soft);color:var(--green)}
+  .wcard .cn{margin-top:8px;font-size:1rem;font-weight:600}
+  .wcard .en-def{color:var(--muted);font-size:.86rem;font-style:italic;margin-top:2px}
+  .wcard .row{margin-top:10px;font-size:.86rem;padding:8px 10px;border-radius:8px}
+  .wcard .row b{font-size:.72rem;display:block;margin-bottom:2px;letter-spacing:.06em}
+  .r-ex{background:var(--hl)} .r-ex b{color:var(--hl-border)}
+  .r-mem{background:var(--green-soft)} .r-mem b{color:var(--green)}
+  .r-syn{background:var(--blue-soft)} .r-syn b{color:var(--blue)}
+  .r-conf{background:var(--red-soft)} .r-conf b{color:var(--red)}
+  #panel .close{display:none}
+  @media (max-width:900px){
+    aside{position:fixed;left:0;right:0;bottom:0;z-index:50;padding:0 8px 8px}
+    #panel{box-shadow:0 -6px 24px rgba(0,0,0,.18);max-height:55vh;overflow-y:auto;display:none}
+    #panel.open{display:block}
+    #panel .close{display:block;float:right;border:none;background:var(--line);border-radius:8px;padding:2px 10px;cursor:pointer;color:var(--ink)}
+  }
+  /* 逐句 */
+  .sent{margin-bottom:30px;padding-bottom:24px;border-bottom:1px dashed var(--line)}
+  .sent:last-child{border:none}
+  .sent .qn{font-family:var(--serif);font-size:1.15rem;font-weight:700;color:var(--accent);margin-bottom:8px}
+  .sent .src{font-family:var(--serif);font-size:1.02rem;background:var(--blue-soft);padding:12px 14px;border-radius:10px;border-left:3px solid var(--blue)}
+  .skel{color:var(--red);font-weight:600}
+  .sent .anat{margin-top:10px;font-size:.9rem}
+  .sent .anat li{margin:4px 0 4px 18px}
+  .pts{display:grid;gap:8px;margin-top:12px}
+  .pt{display:flex;gap:10px;align-items:flex-start;font-size:.9rem;border:1px solid var(--line);border-radius:10px;padding:8px 12px}
+  .pt .half{flex:0 0 auto;font-size:.72rem;background:var(--green-soft);color:var(--green);border-radius:999px;padding:1px 8px;font-weight:700;margin-top:2px}
+  .pt .en2{font-family:var(--serif);font-weight:600}
+  .pt .how{color:var(--muted);font-size:.84rem}
+  .revealbtn{margin-top:12px;font-size:.85rem;border:1px solid var(--accent);background:none;color:var(--accent);border-radius:8px;padding:6px 14px;cursor:pointer}
+  .refzh{display:none;margin-top:10px;background:var(--green-soft);border-left:3px solid var(--green);border-radius:0 10px 10px 0;padding:12px 14px;font-size:.95rem}
+  .refzh.show{display:block}
+  .trap{margin-top:10px;background:var(--red-soft);border-left:3px solid var(--red);border-radius:0 10px 10px 0;padding:10px 14px;font-size:.87rem}
+  .trap b{color:var(--red)}
+  .wb{display:grid;gap:10px}
+  .wbi{border-left:3px solid var(--green);background:var(--green-soft);border-radius:0 10px 10px 0;padding:10px 14px;font-size:.92rem}
+  .wbi .p{font-family:var(--serif);font-weight:600}
+  .wbi .u{color:var(--muted);font-size:.85rem}
+  #yd{position:fixed;z-index:60;display:none;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:4px 12px;font-size:.8rem;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+  footer{color:var(--muted);font-size:.8rem;text-align:center;margin-top:30px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">◀ 返回英语复盘中心</a>
+  <header>
+    <h1>The Scovell Ciphers: 拿破仑战争密码破译战</h1>
+    <div class="sub">2022 年英语（一）真题 · Part C 翻译（46–50，每句 2 分共 10 分）· 建议做题 20 min · 话题：历史（半岛战争/密码战）</div>
+    <div class="tags">
+      <span class="tag">考点：插入语×2 · 定语从句×3 · 虚拟推测 · Just as...so... 句型</span><span class="tag">难度：中等（48 句最难）</span>
+    </div>
+  </header>
+
+  <div class="layout">
+    <main>
+      <section class="card">
+        <h2><span class="n">01</span>全文导读（黄色画线 = 五个翻译句，点击跳到精讲）<button class="allbtn" onclick="toggleAll()">背景译文 开/关</button></h2>
+        <div class="para showzh-init">
+          <p class="en">Between 1807 and 1814 the Iberian Peninsula (comprising Spain and Portugal) was the scene of a <span class="tk" data-w="titanic">titanic</span> and <span class="tk" data-w="merciless">merciless</span> struggle. It took place on many different planes: between Napoleon's French Army and the angry inhabitants; between the British, ever keen to <span class="tk" data-w="exacerbate">exacerbate</span> the emperor's difficulties, and the marshals sent from Paris to try to <span class="tk" data-w="keepincheck">keep them in check</span>; between new forces of science and <span class="tk" data-w="meritocracy">meritocracy</span> and old ones of conservatism and birth. <span class="seg" onclick="go('s46')"><span class="no">(46)</span> It was also, and this is unknown even to many people well read about the period, a battle between those who made codes and those who broke them.</span></p>
+          <div class="zh">1807 至 1814 年间，伊比利亚半岛（包括西班牙和葡萄牙）是一场巨大而无情斗争的舞台。这场斗争在许多不同层面展开：拿破仑的法军对愤怒的当地居民；一心想加剧皇帝困境的英国人对巴黎派来试图钳制他们的元帅们；科学与贤能主义的新势力对保守主义与门第出身的旧势力。<b>(46)</b>……</div>
+        </div>
+        <div class="para">
+          <p class="en">I first discovered the Napoleonic code-breaking battle a few years ago when I was reading Sir Charles Oman's epic <i>History of the Peninsular War</i>. In volume V he had attached an <span class="tk" data-w="appendix">appendix</span>, "The Scovell <span class="tk" data-w="cipher">Ciphers</span>". <span class="seg" onclick="go('s47')"><span class="no">(47)</span> It listed many documents in code that had been captured from the French Army of Spain, and whose secrets had been revealed by the work of one George Scovell, an officer in British headquarters.</span> Oman rated Scovell's significance highly, but at the same time, the general nature of his <i>History</i> meant that <span class="seg" onclick="go('s48')"><span class="no">(48)</span> he could not analyze carefully what this <span class="tk" data-w="obscure">obscure</span> officer may or may not have contributed to that great struggle between nations or indeed tell us anything much about the man himself.</span> Keen to read more, I was surprised to find that Oman's appendix, published in 1914, was the only <span class="tk" data-w="considered">considered</span> thing that had been written about this secret war.</p>
+          <div class="zh">几年前我读 Charles Oman 爵士的鸿篇巨制《半岛战争史》时，第一次发现了拿破仑时代的密码破译战。在第五卷他附了一个附录——《斯科维尔密码》。<b>(47)</b>……Oman 对 Scovell 的重要性评价很高，但同时，他那部《战争史》的通史性质意味着 <b>(48)</b>……。我渴望读到更多，却惊讶地发现 Oman 发表于 1914 年的附录，竟是关于这场秘密战争唯一经过深思的著述。</div>
+        </div>
+        <div class="para">
+          <p class="en">I became convinced that this story was every bit as exciting and significant as that of Enigma and the breaking of German codes in the Second World War. The question was, could it be told?</p>
+          <div class="zh">我渐渐确信，这个故事的精彩和重要程度丝毫不亚于二战中恩尼格玛密码机与德军密码破译的故事。问题是：它能被讲出来吗？</div>
+        </div>
+        <div class="para">
+          <p class="en">Studying Scovell's papers at the Public Record Office, London, I found that he had left an extensive journal and <span class="tk" data-w="copious">copious</span> notes about his work in the Peninsula. What was more, many original French <span class="tk" data-w="dispatch">dispatches</span> had been preserved in this collection, which, I realized, was <span class="tk" data-w="priceless">priceless</span>. <span class="seg" onclick="go('s49')"><span class="no">(49)</span> There may have been many spies and intelligence officers during the Napoleonic Wars, but it is usually extremely difficult to find the material they actually provided or worked on.</span></p>
+          <div class="zh">在伦敦公共档案馆研究 Scovell 的文件时，我发现他留下了大量日志和关于半岛工作的丰富笔记。更重要的是，许多法军原始快报也保存在这批档案里——我意识到，这批收藏无价。<b>(49)</b>……</div>
+        </div>
+        <div class="para">
+          <p class="en">As I researched Scovell's story, I found far more of interest besides his intelligence work. His status in Lord Wellington's headquarters and the recognition given to him for his work were <span class="tk" data-w="boundup">bound up with</span> the class politics of the Army at the time. His story of self-improvement and hard work would make a fascinating biography <span class="tk" data-w="ownright">in its own right</span>, but represents something more than that. <span class="seg" onclick="go('s50')"><span class="no">(50)</span> Just as the code-breaking has its wider relevance in the struggle for Spain, so his attempts to make his way up the promotion ladder speak volumes about British society.</span></p>
+          <div class="zh">研究 Scovell 的故事时，我发现除情报工作外还有更多有意思的东西。他在威灵顿勋爵司令部的地位、他的工作所获得的认可，都与当时军队的阶级政治紧密缠绕。他自我提升与努力奋斗的故事本身就足以写成一部精彩传记，但它的意义还不止于此。<b>(50)</b>……</div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">02</span>逐句精讲（先自己译，再点「参考译文」对照）</h2>
+
+        <div class="sent" id="s46">
+          <div class="qn">(46)　考点：双重插入语 + 定语从句</div>
+          <div class="src">It <span class="skel">was</span> also, <u>and this is unknown even to many people well read about the period</u>, <span class="skel">a battle</span> <u>between those who made codes and those who broke them</u>.</div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：It was also a battle between A and B（It 指上文"这场斗争"）——先跳过插入语抓主干</li>
+            <li>and this is unknown even to...：插入语整句，this 指主干这件事；well read about... 后置定语修饰 people（read 是过去分词，"熟读…的人"）</li>
+            <li>those who made codes / those who broke them：两个 who 定语从句对仗；them 指 codes</li>
+          </ul>
+          <div class="pts">
+            <div class="pt"><span class="half">0.5</span><div><div class="en2">It was also ... a battle</div><div class="how">它还是一场较量/战斗（it 译"这场斗争/它"，also 别丢）</div></div></div>
+            <div class="pt"><span class="half">0.5</span><div><div class="en2">and this is unknown even to many people</div><div class="how">插入语单独成小句："而这一点连许多……的人也不知道"——位置可前可后，硬塞进主句必乱</div></div></div>
+            <div class="pt"><span class="half">0.5</span><div><div class="en2">well read about the period</div><div class="how">熟读那段历史的（well read = 博览的，⚠️不是"好读"）</div></div></div>
+            <div class="pt"><span class="half">0.5</span><div><div class="en2">between those who made codes and those who broke them</div><div class="how">编制密码者与破译密码者之间（who 从句译"…的人"）</div></div></div>
+          </div>
+          <button class="revealbtn" onclick="this.nextElementSibling.classList.toggle('show')">参考译文 显示/隐藏</button>
+          <div class="refzh">它同时也是一场<b>编码者与破译者之间的较量</b>——而这一点，连许多熟读那段历史的人都不知道。</div>
+          <div class="trap"><b>常见扣分：</b>① well read 译成"读得好/善于阅读"（应为"熟读、博览"）；② 插入语强行塞在"是"和"较量"中间导致中文破碎；③ them 指代错译成"他们"（应指 codes→"破译密码的人"）。</div>
+        </div>
+
+        <div class="sent" id="s47">
+          <div class="qn">(47)　考点：that 与 whose 双定语从句 + one + 人名 + 同位语</div>
+          <div class="src">It <span class="skel">listed</span> many documents in code <u>that had been captured from the French Army of Spain</u>, and <u>whose secrets had been revealed by the work of one George Scovell</u>, <u>an officer in British headquarters</u>.</div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：It listed many documents in code（It = 那个附录；in code 密码写就的）</li>
+            <li>that.../whose... 两个定语从句并列修饰 documents：被缴获 / 秘密被破解——太长就<b>拆成两个分句</b>翻</li>
+            <li>one George Scovell：one + 人名 = "一位名叫……的人"（⚠️不是数字一）</li>
+            <li>an officer in British headquarters：同位语，交代身份</li>
+          </ul>
+          <div class="pts">
+            <div class="pt"><span class="half">0.5</span><div><div class="en2">It listed many documents in code</div><div class="how">它罗列了许多密码文件（in code 别丢：用密码写成的）</div></div></div>
+            <div class="pt"><span class="half">0.5</span><div><div class="en2">that had been captured from the French Army of Spain</div><div class="how">这些文件缴获自驻西班牙法军（被动可转主动"从…缴获"）</div></div></div>
+            <div class="pt"><span class="half">0.5</span><div><div class="en2">whose secrets had been revealed by the work of one George Scovell</div><div class="how">其中的秘密已被一位名叫乔治·斯科维尔的人的工作所揭开</div></div></div>
+            <div class="pt"><span class="half">0.5</span><div><div class="en2">an officer in British headquarters</div><div class="how">（此人是）英军司令部的一名军官——同位语补成小句</div></div></div>
+          </div>
+          <button class="revealbtn" onclick="this.nextElementSibling.classList.toggle('show')">参考译文 显示/隐藏</button>
+          <div class="refzh">它罗列了许多<b>缴获自驻西班牙法军的密码文件</b>，这些文件的秘密已被英军司令部一位名叫<b>乔治·斯科维尔</b>的军官破解。</div>
+          <div class="trap"><b>常见扣分：</b>① one George Scovell 译成"一个乔治"或漏掉"名叫"；② 两个定语从句都往 documents 前面堆，译成 60 字长定语（应拆句）；③ the French Army of Spain 译成"西班牙的法国军队"不通顺（= 驻西班牙法军）。</div>
+        </div>
+
+        <div class="sent" id="s48">
+          <div class="qn">(48)　考点：what 宾语从句 + may or may not have done 虚拟推测 + or 并列谓语（本套最难）</div>
+          <div class="src">he <span class="skel">could not analyze</span> carefully <u>what this obscure officer may or may not have contributed to that great struggle between nations</u> <span class="skel">or</span> indeed <span class="skel">tell</span> us anything much <u>about the man himself</u>.</div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：he could not analyze ... or (could not) tell ...——or 连接两个共享 could not 的谓语（⚠️第二个 tell 前省略了 could not）</li>
+            <li>what 从句作 analyze 的宾语；从句主语 this obscure officer（这位默默无闻的军官）</li>
+            <li>may or may not have contributed：对过去的推测，"可能作出、也可能没有作出（的贡献）"——不确定语气必须译出</li>
+            <li>anything much：没多少东西；the man himself：此人本身</li>
+          </ul>
+          <div class="pts">
+            <div class="pt"><span class="half">0.5</span><div><div class="en2">he could not analyze carefully what ...</div><div class="how">他无法仔细分析……（what 从句作宾语，译"……的情况/贡献"）</div></div></div>
+            <div class="pt"><span class="half">0.5</span><div><div class="en2">this obscure officer may or may not have contributed to</div><div class="how">这位不起眼的军官对……可能作出或可能没有作出（的贡献）——推测语气 0.5 分就在"可能…或未…"</div></div></div>
+            <div class="pt"><span class="half">0.5</span><div><div class="en2">that great struggle between nations</div><div class="how">那场国家之间的大斗争/大较量</div></div></div>
+            <div class="pt"><span class="half">0.5</span><div><div class="en2">or indeed tell us anything much about the man himself</div><div class="how">实际上也无法告诉我们多少关于此人自身的情况（补出被省略的"无法"）</div></div></div>
+          </div>
+          <button class="revealbtn" onclick="this.nextElementSibling.classList.toggle('show')">参考译文 显示/隐藏</button>
+          <div class="refzh">他无法仔细分析这位<b>默默无闻的军官</b>对那场国家间的大较量<b>可能作出或可能没有作出</b>的贡献，实际上也无法告诉我们多少有关此人自身的情况。</div>
+          <div class="trap"><b>常见扣分：</b>① may or may not 只译一半（"可能贡献了"）丢推测的双向性；② 没看出 or 后省略 could not，把 tell 译成肯定"告诉了我们"——<b>整句意思反转，最重的错</b>；③ obscure 译成"晦涩的"（人应为"默默无闻的"）。</div>
+        </div>
+
+        <div class="sent" id="s49">
+          <div class="qn">(49)　考点：There may have been 对过去的推测 + 省略 that 的定语从句</div>
+          <div class="src">There <span class="skel">may have been</span> many spies and intelligence officers during the Napoleonic Wars, <span class="skel">but</span> it <span class="skel">is</span> usually extremely difficult <u>to find the material (that) they actually provided or worked on</u>.</div>
+          <ul class="anat">
+            <li>There may have been：there be + 对过去的推测 = "当时或许有过……"</li>
+            <li>but 转折后：it 形式主语 + to find... 真主语</li>
+            <li>the material (that) they actually provided or worked on：定语从句省略 that；provided 和 worked on 并列（提供的 / 经手处理的）</li>
+          </ul>
+          <div class="pts">
+            <div class="pt"><span class="half">0.5</span><div><div class="en2">There may have been many spies and intelligence officers</div><div class="how">当时也许有过许多间谍和情报军官（"可能有过"的过去推测必须译出）</div></div></div>
+            <div class="pt"><span class="half">0.5</span><div><div class="en2">during the Napoleonic Wars</div><div class="how">在拿破仑战争期间（专名 Napoleonic 译"拿破仑"）</div></div></div>
+            <div class="pt"><span class="half">0.5</span><div><div class="en2">it is usually extremely difficult to find ...</div><div class="how">但通常极难找到……（it 形式主语不译"它"）</div></div></div>
+            <div class="pt"><span class="half">0.5</span><div><div class="en2">the material they actually provided or worked on</div><div class="how">他们实际提供过或经手处理过的材料（两个动作都要译）</div></div></div>
+          </div>
+          <button class="revealbtn" onclick="this.nextElementSibling.classList.toggle('show')">参考译文 显示/隐藏</button>
+          <div class="refzh">拿破仑战争期间<b>或许曾有过</b>许多间谍和情报军官，但通常极难找到<b>他们实际提供或经手处理过的材料</b>。</div>
+          <div class="trap"><b>常见扣分：</b>① may have been 译成现在时"可能有"（丢过去推测）；② worked on 漏译或译成"工作"（应为"处理/研究过的"）；③ it 译成"它"——形式主语永远不落地为代词。</div>
+        </div>
+
+        <div class="sent" id="s50">
+          <div class="qn">(50)　考点：Just as..., so... 句型 + speak volumes 习语</div>
+          <div class="src"><span class="skel">Just as</span> the code-breaking has its wider relevance in the struggle for Spain, <span class="skel">so</span> his attempts <u>to make his way up the promotion ladder</u> <span class="skel">speak volumes</span> about British society.</div>
+          <ul class="anat">
+            <li><span class="skel">Just as A, so B</span>：正如 A 一样，B 也……（so 不译"所以"！⚠️本句最大陷阱）</li>
+            <li>has its wider relevance in：在……中有其更广泛的意义</li>
+            <li>his attempts to make his way up the promotion ladder：他沿晋升阶梯向上攀爬的努力（make one's way up 一步步向上）</li>
+            <li>speak volumes about：习语，"充分说明、生动反映"（volumes 卷册→说出好几卷书的量）</li>
+          </ul>
+          <div class="pts">
+            <div class="pt"><span class="half">0.5</span><div><div class="en2">Just as ..., so ...</div><div class="how">正如……一样，……也……（句型分整整 0.5，so 译"所以"直接丢）</div></div></div>
+            <div class="pt"><span class="half">0.5</span><div><div class="en2">the code-breaking has its wider relevance in the struggle for Spain</div><div class="how">密码破译在西班牙争夺战中具有更广泛的意义</div></div></div>
+            <div class="pt"><span class="half">0.5</span><div><div class="en2">his attempts to make his way up the promotion ladder</div><div class="how">他沿着晋升阶梯步步上爬的努力/尝试</div></div></div>
+            <div class="pt"><span class="half">0.5</span><div><div class="en2">speak volumes about British society</div><div class="how">充分说明了/生动反映了英国社会（的面貌）</div></div></div>
+          </div>
+          <button class="revealbtn" onclick="this.nextElementSibling.classList.toggle('show')">参考译文 显示/隐藏</button>
+          <div class="refzh"><b>正如</b>密码破译对西班牙争夺战具有更广泛的意义<b>一样</b>，他沿晋升阶梯步步攀爬的努力<b>也充分折射出</b>英国社会的面貌。</div>
+          <div class="trap"><b>常见扣分：</b>① so 译成"所以"（Just as...so... 是并列类比不是因果）；② speak volumes 直译"说了很多卷"（习语=充分说明）；③ promotion ladder 译"促销梯子"——promotion 此处是"晋升"。</div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">03</span>本套翻译技巧总结（考研翻译四板斧）</h2>
+        <div class="wb">
+          <div class="wbi"><div class="p">① 插入语：摘出来单独成句（46）</div><div class="u">双逗号/双破折号夹的部分先跳过抓主干，译文里把插入语放句首或句尾独立成小句，千万别卡在主谓中间。</div></div>
+          <div class="wbi"><div class="p">② 长定语从句：拆句重复先行词（47）</div><div class="u">定语超过 15 字就拆："…的密码文件，这些文件…"。which/whose 从句几乎总是拆译。</div></div>
+          <div class="wbi"><div class="p">③ 推测语气：may (not) have done 必须译出"可能曾"（48/49）</div><div class="u">may have been=或许曾有；may or may not have done=可能做过也可能没做过——语气词是独立采分点。</div></div>
+          <div class="wbi"><div class="p">④ 并列省略：or/and 后补出被省略的助动词（48/49）</div><div class="u">could not analyze ... or (could not) tell——看到并列先问"共享了什么"，补不出来意思会反转。</div></div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">04</span>词汇复盘（点卡片看详情）</h2>
+        <div class="vgrid" id="vgrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px"></div>
+      </section>
+    </main>
+
+    <aside>
+      <div id="panel"><div class="hint">👆 点击导读里的<b>黄色高亮词</b><br>词卡会出现在这里</div></div>
+    </aside>
+  </div>
+
+  <footer>2022 英语一 翻译 · 复盘页由 Claude 生成 · 译文与采分点为 Claude 独立完成</footer>
+</div>
+
+<button id="yd">🔍 查有道</button>
+
+<script>
+const V = {
+  titanic:{w:"titanic",ipa:"/taɪˈtænɪk/",pos:"adj.",tags:["core"],cn:"巨大的，力量惊人的",en:"of exceptional strength or size",ex:"a titanic and merciless struggle",mem:"泰坦巨神 Titan→titanic 巨大的。泰坦尼克号就是'巨轮'之意——船名即词义。",syn:"colossal / gigantic / monumental",conf:"titanic(巨大的) vs. titanium(钛,金属) — 同源不同物"},
+  merciless:{w:"merciless",ipa:"/ˈmɜːsɪləs/",pos:"adj.",tags:["core"],cn:"无情的，残酷的",en:"showing no mercy",ex:"a titanic and merciless struggle",mem:"mercy(仁慈)+less(无)→无慈悲→无情。反义 merciful。at the mercy of 任…摆布（高频短语）。",syn:"ruthless / pitiless / cruel",conf:"merciless(无情) vs. mercilessly(adv.) vs. merchandise(商品)——merc 词根'交易'与 mercy 无关"},
+  exacerbate:{w:"exacerbate",ipa:"/ɪɡˈzæsəbeɪt/",pos:"v.",tags:["core","write"],cn:"使恶化，加剧",en:"to make a bad situation worse",ex:"keen to exacerbate the emperor's difficulties",mem:"ex(加强)+acerb(苦涩,=acid酸)→更苦→加剧。写作高级替换 worsen：exacerbate the problem/tension。",syn:"aggravate / worsen / intensify",conf:"exacerbate(加剧) vs. exaggerate(夸大)——考研经典形近对,一个更糟一个吹牛"},
+  keepincheck:{w:"keep ... in check",ipa:"",pos:"v.短语",tags:["phrase","write"],cn:"控制住，钳制",en:"to keep under control",ex:"the marshals sent from Paris to try to keep them in check",mem:"check 国际象棋'将军'→被将住动弹不得→受制。keep inflation in check 控制通胀（写作可用）。",syn:"restrain / contain / curb",conf:"in check(受控) vs. check in(登记入住) — 语序反义变"},
+  meritocracy:{w:"meritocracy",ipa:"/ˌmerɪˈtɒkrəsi/",pos:"n.",tags:["core"],cn:"贤能主义，精英统治",en:"a system where people succeed by ability",ex:"new forces of science and meritocracy",mem:"merit(才能功绩)+cracy(统治,=democracy)→按本事上位。与 old ones of conservatism and birth(保守与门第)对仗——拿破仑军队按战功提拔 vs 英军按出身。",syn:"—",conf:"meritocracy(贤能制) vs. democracy(民主制) vs. bureaucracy(官僚制)——cracy 家族"},
+  appendix:{w:"appendix",ipa:"/əˈpendɪks/",pos:"n.",tags:["core","poly"],cn:"附录；⚠️阑尾",en:"a section at the end of a book; a body organ",ex:"he had attached an appendix",mem:"append(附加,程序员的 append!)+ix→附在后面的东西：书的附录/身体的阑尾。复数 appendices。",syn:"supplement / addendum",conf:"appendix(附录/阑尾) vs. index(索引) vs. prefix(前缀)——书的部件一家"},
+  cipher:{w:"cipher",ipa:"/ˈsaɪfə(r)/",pos:"n.",tags:["core"],cn:"密码；暗号",en:"a secret system of writing",ex:"The Scovell Ciphers",mem:"计算机专业亲切词：加密算法就叫 cipher（Caesar cipher 凯撒密码）。in cipher 用密码写的 = in code。",syn:"code / cryptogram",conf:"cipher(密码) vs. decipher(破译,de-解开) — 408 密码学白送词"},
+  obscure:{w:"obscure",ipa:"/əbˈskjʊə(r)/",pos:"adj./v.",tags:["core","poly","write"],cn:"默默无闻的；晦涩的；v. 遮掩",en:"not well-known; hard to understand; to hide",ex:"this obscure officer",mem:"ob(上面)+scure(遮,=sky阴影)→被遮住→看不清。48 句采分点：形容人='不知名的'，形容文字='晦涩的'，动词='掩盖'。",syn:"unknown / little-known / vague",conf:"obscure(无名/晦涩) vs. obstacle(障碍) vs. obsolete(过时的)"},
+  considered:{w:"considered",ipa:"/kənˈsɪdəd/",pos:"adj.",tags:["poly"],cn:"⚠️经过深思的（前置定语）",en:"carefully thought about",ex:"the only considered thing that had been written",mem:"熟词僻义：considered 作定语='深思熟虑的'（a considered opinion 经过考虑的意见），不是'被考虑'。",syn:"well-thought-out / deliberate",conf:"considered(深思的) vs. considerable(相当大的) vs. considerate(体贴的)——考研必辨三胞胎!"},
+  copious:{w:"copious",ipa:"/ˈkəʊpiəs/",pos:"adj.",tags:["core"],cn:"大量的，丰富的",en:"in large amounts",ex:"an extensive journal and copious notes",mem:"copy 的亲戚：copi=丰富→能抄出很多份→大量。copious notes 海量笔记（学霸标配）。",syn:"abundant / plentiful / ample",conf:"copious(大量) vs. copyrighted(有版权的) vs. spacious(宽敞的)"},
+  dispatch:{w:"dispatch",ipa:"/dɪˈspætʃ/",pos:"n.",tags:["core","poly"],cn:"⚠️（军事/新闻）快报，急件；v. 派遣",en:"an official report or message; to send off",ex:"many original French dispatches had been preserved",mem:"dis+patch→派出去(送信)。名词'快件/战报'是本文义；动词'派遣'：dispatch troops。408 的进程调度 dispatcher 就是'派遣器'。",syn:"message / bulletin / send",conf:"dispatch(快报;派遣) vs. patch(补丁) vs. dispatcher(调度程序,OS 老朋友)"},
+  priceless:{w:"priceless",ipa:"/ˈpraɪsləs/",pos:"adj.",tags:["core","poly"],cn:"⚠️无价的（=极贵重）",en:"too valuable to be priced",ex:"this collection ... was priceless",mem:"⚠️反直觉：priceless 不是'没价值'而是'贵到无法标价'！同理 invaluable=极宝贵。真正'没价值'是 valueless/worthless。",syn:"invaluable / precious",conf:"priceless(无价之宝)≠valueless(一文不值)——less 后缀的世纪陷阱"},
+  boundup:{w:"be bound up with",ipa:"/baʊnd/",pos:"v.短语",tags:["phrase","write"],cn:"与…紧密关联",en:"closely connected with",ex:"were bound up with the class politics of the Army",mem:"bind-bound-bound 捆绑→被捆在一起→密不可分。写作：Economic growth is bound up with education.",syn:"be closely linked to / be intertwined with",conf:"bound up with(紧密相关) vs. be bound to do(必然会) vs. bound for(开往)——bound 三义全高频"},
+  ownright:{w:"in its own right",ipa:"",pos:"prep.短语",tags:["phrase","write"],cn:"凭其自身（就足以…）",en:"because of its own qualities, not others'",ex:"would make a fascinating biography in its own right",mem:"'凭它自己的权利'→本身就够格。写作：Chinese calligraphy is an art in its own right. 书法本身就是一门艺术。",syn:"independently / on its own merits",conf:"in its own right(凭自身) vs. rightly(正当地) vs. all right(没问题)"},
+  speakvolumes:{w:"speak volumes about",ipa:"",pos:"v.短语",tags:["phrase","write"],cn:"充分说明，生动反映",en:"to show or express sth very clearly",ex:"speak volumes about British society",mem:"一个举动'说出好几卷书'的信息量→充分说明。50 句采分点+写作金句：Her silence spoke volumes.",syn:"clearly demonstrate / be very telling",conf:"speak volumes(充分说明) vs. volume(音量;卷;体积)——一词三义,此处取'卷'"}
+};
+
+const panel=document.getElementById('panel');
+const isMobile=()=>window.innerWidth<=900;
+function badge(t){return {core:'<span class="badge b-core">核心词</span>',phrase:'<span class="badge b-phrase">短语</span>',poly:'<span class="badge b-poly">熟词僻义</span>',write:'<span class="badge b-write">写作✍︎</span>'}[t]||''}
+function showCard(k,el){
+  const d=V[k]; if(!d)return;
+  document.querySelectorAll('.tk.active').forEach(e=>e.classList.remove('active'));
+  if(el&&el.classList.contains('tk'))el.classList.add('active');
+  panel.innerHTML=`<button class="close" onclick="panel.classList.remove('open')">✕</button>
+  <div class="wcard">
+    <div class="head"><span class="w">${d.w}</span><span class="ipa">${d.ipa}</span><span class="pos">${d.pos}</span>${d.tags.map(badge).join('')}</div>
+    <div class="cn">${d.cn}</div><div class="en-def">${d.en}</div>
+    <div class="row r-ex"><b>原文语境</b>“…${d.ex}…”</div>
+    <div class="row r-mem"><b>怎么记</b>${d.mem}</div>
+    <div class="row r-syn"><b>同类词</b>${d.syn}</div>
+    <div class="row r-conf"><b>易混辨析</b>${d.conf}</div>
+  </div>`;
+  if(isMobile())panel.classList.add('open');
+}
+document.querySelectorAll('.tk').forEach(t=>t.addEventListener('click',e=>{e.stopPropagation();showCard(t.dataset.w,t)}));
+let allOn=false;
+function toggleAll(){allOn=!allOn;document.querySelectorAll('.para').forEach(p=>p.classList.toggle('showzh',allOn))}
+function go(id){document.getElementById(id).scrollIntoView({behavior:'smooth',block:'center'})}
+
+const vg=document.getElementById('vgrid');
+Object.keys(V).forEach(k=>{
+  const d=V[k];
+  const div=document.createElement('div');
+  div.style.cssText='border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer';
+  div.innerHTML=`<span style="float:right">${d.tags.map(badge).join('')}</span><div style="font-family:var(--serif);font-weight:bold">${d.w}</div><div style="font-size:.85rem;color:var(--muted)">${d.cn}</div>`;
+  div.addEventListener('click',()=>{showCard(k,null);if(!isMobile())window.scrollTo({top:0,behavior:'smooth'})});
+  vg.appendChild(div);
+});
+
+const yd=document.getElementById('yd');let sel='';
+document.addEventListener('selectionchange',()=>{
+  const s=window.getSelection();const t=s?s.toString().trim():'';
+  if(t&&/^[a-zA-Z' -]{2,40}$/.test(t)){
+    sel=t;
+    try{const r=s.getRangeAt(0).getBoundingClientRect();
+      yd.style.left=Math.min(r.left,window.innerWidth-110)+'px';
+      yd.style.top=(r.bottom+8)+'px';yd.style.display='block';}catch(e){}
+  }else{yd.style.display='none'}
+});
+yd.addEventListener('click',()=>{window.open('https://dict.youdao.com/result?word='+encodeURIComponent(sel)+'&lang=en');yd.style.display='none'});
+document.addEventListener('click',e=>{if(e.target!==yd&&!window.getSelection().toString())yd.style.display='none'});
+</script>
+</body>
+</html>
