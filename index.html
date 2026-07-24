@@ -87,6 +87,11 @@
   </section>
 
   <section class="card">
+    <h2>错因分布（借鉴 408 · 各阅读页勾的「错在哪」跨篇聚合）</h2>
+    <div id="faultbox"><p style="color:var(--muted);font-size:.88rem">还没标错因。进任意阅读页，答完题后点题目下方的「🏷 这题错在哪」标签，这里就有分布了。占比最大的那类＝你最该针对性补的短板。</p></div>
+  </section>
+
+  <section class="card">
     <h2>怎么用（复盘工作流）</h2>
     <div class="how">
       <div class="step"><div class="num">1</div><p><b>先自己限时做题</b>（阅读一篇 18 min），记下自己的答案和不确定的题。</p></div>
@@ -146,6 +151,22 @@ document.getElementById('stats').innerHTML=
   '<div class="stat"><div class="v">'+done+'</div><div class="k">已复盘</div></div>'+
   '<div class="stat"><div class="v">'+total+'</div><div class="k">总格子（20年×9项）</div></div>'+
   '<div class="stat"><div class="v">'+(total?((done/total*100).toFixed(1)+'%'):'0%')+'</div><div class="k">进度</div></div>';
+
+/* 错因分布：跨篇聚合各阅读页勾的错因标签（localStorage en_attr_v1，_fault_attr.js 写入） */
+(function(){
+  const PAL=['#b04a3a','#a5732a','#3e7a4e','#3d6a8a','#6d5a8e','#8b5e34','#8a8578'];
+  let store={};try{store=JSON.parse(localStorage.getItem('en_attr_v1'))||{};}catch(e){}
+  const cnt={};let tot=0;
+  Object.values(store).forEach(pg=>Object.values(pg).forEach(arr=>arr.forEach(t=>{cnt[t]=(cnt[t]||0)+1;tot++;})));
+  if(!tot)return;
+  const ents=Object.entries(cnt).sort((a,b)=>b[1]-a[1]);
+  let h='<div style="display:flex;height:22px;border-radius:6px;overflow:hidden;border:1px solid var(--line);margin:6px 0 12px">';
+  ents.forEach(([t,v],i)=>h+='<i style="display:block;flex:'+v+';background:'+PAL[i%PAL.length]+'" title="'+t+' '+v+'"></i>');
+  h+='</div><div style="display:flex;flex-wrap:wrap;gap:14px;font-size:.85rem">';
+  ents.forEach(([t,v],i)=>h+='<span><i style="display:inline-block;width:11px;height:11px;border-radius:3px;background:'+PAL[i%PAL.length]+';margin-right:6px;vertical-align:middle"></i>'+t+' '+v+'</span>');
+  h+='</div><div style="font-size:.82rem;color:var(--muted);margin-top:8px">占比最大的那类＝你最该针对性补的短板。对应打法见 <a href="套路库_阅读.html" style="color:var(--accent)">阅读套路库</a>。</div>';
+  document.getElementById('faultbox').innerHTML=h;
+})();
 </script>
 </body>
 </html>
