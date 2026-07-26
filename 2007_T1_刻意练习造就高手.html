@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2007 英一 Text 1 · 刻意练习造就高手</title>
+<style>
+  :root{
+    --bg:#faf9f6; --card:#ffffff; --ink:#2b2b2b; --muted:#8a8578;
+    --accent:#8b5e34; --accent-soft:#f3e9dd; --line:#e8e3d8;
+    --hl:#fdf3d8; --hl-border:#e0b84d;
+    --green:#3e7a4e; --green-soft:#e8f2ea;
+    --red:#b04a3a; --red-soft:#f9e9e6;
+    --blue:#3d6a8a; --blue-soft:#e7eff5;
+    --purple:#6d5a8e; --purple-soft:#eeeaf5;
+    --serif:"Georgia","Songti SC",serif;
+    --sans:-apple-system,"PingFang SC","Helvetica Neue",sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#1c1a17; --card:#26231f; --ink:#e8e4dc; --muted:#9a948a;
+      --accent:#d0a06a; --accent-soft:#3a3127; --line:#3a362f;
+      --hl:#3d3520; --hl-border:#b08c3a;
+      --green:#7fb98d; --green-soft:#26362b;
+      --red:#d98876; --red-soft:#3d2a26;
+      --blue:#8ab3d0; --blue-soft:#26323d;
+      --purple:#a996c8; --purple-soft:#302a3d;
+    }
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;padding-bottom:120px}
+  .wrap{max-width:1100px;margin:0 auto;padding:24px 20px}
+  .back{font-size:.85rem;color:var(--muted);text-decoration:none}
+  .back:hover{color:var(--accent)}
+  header{margin:14px 0 28px}
+  header h1{font-family:var(--serif);font-size:1.7rem;line-height:1.3}
+  header .sub{color:var(--muted);margin-top:6px;font-size:.9rem}
+  .tags{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+  .tag{font-size:.75rem;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);border:1px solid var(--line)}
+
+  .layout{display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:start}
+  @media (max-width:900px){.layout{grid-template-columns:1fr}}
+
+  section.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:24px}
+  h2{font-size:1.05rem;letter-spacing:.05em;color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+  h2 .n{font-size:.72rem;background:var(--accent);color:var(--card);border-radius:6px;padding:1px 7px}
+
+  .para{margin-bottom:22px}
+  .para .en{font-family:var(--serif);font-size:1.06rem;line-height:1.9}
+  .pno{color:var(--muted);font-size:.75rem;user-select:none;margin-right:6px}
+  .tk{background:var(--hl);border-bottom:2px solid var(--hl-border);border-radius:3px;padding:0 2px;cursor:pointer;transition:filter .15s}
+  .tk:hover{filter:brightness(.93)}
+  .tk.active{outline:2px solid var(--hl-border)}
+  .ls{border-bottom:2px dotted var(--blue);cursor:pointer}
+  .para .zh{display:none;margin-top:10px;padding:10px 14px;background:var(--blue-soft);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:.93rem}
+  .para.showzh .zh{display:block}
+  .zbtn{float:right;margin-left:10px;font-size:.72rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:6px;padding:2px 9px;cursor:pointer}
+  .zbtn:hover{color:var(--accent);border-color:var(--accent)}
+  .allbtn{font-size:.78rem;border:1px solid var(--accent);background:none;color:var(--accent);border-radius:8px;padding:4px 12px;cursor:pointer;margin-left:auto}
+
+  aside{position:sticky;top:20px}
+  #panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;min-height:180px}
+  #panel .hint{color:var(--muted);font-size:.88rem;text-align:center;padding:30px 10px}
+  .wcard .head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .wcard .w{font-family:var(--serif);font-size:1.35rem;font-weight:bold}
+  .wcard .ipa{color:var(--muted);font-size:.85rem}
+  .wcard .pos{font-size:.72rem;color:var(--purple);background:var(--purple-soft);padding:1px 8px;border-radius:999px}
+  .wcard .badge{font-size:.7rem;padding:1px 8px;border-radius:999px}
+  .b-core{background:var(--red-soft);color:var(--red)}
+  .b-phrase{background:var(--blue-soft);color:var(--blue)}
+  .b-poly{background:var(--purple-soft);color:var(--purple)}
+  .b-write{background:var(--green-soft);color:var(--green)}
+  .wcard .cn{margin-top:8px;font-size:1rem;font-weight:600}
+  .wcard .en-def{color:var(--muted);font-size:.86rem;font-style:italic;margin-top:2px}
+  .wcard .row{margin-top:10px;font-size:.86rem;padding:8px 10px;border-radius:8px}
+  .wcard .row b{font-size:.72rem;display:block;margin-bottom:2px;letter-spacing:.06em}
+  .r-ex{background:var(--hl)} .r-ex b{color:var(--hl-border)}
+  .r-mem{background:var(--green-soft)} .r-mem b{color:var(--green)}
+  .r-syn{background:var(--blue-soft)} .r-syn b{color:var(--blue)}
+  .r-conf{background:var(--red-soft)} .r-conf b{color:var(--red)}
+  #panel .close{display:none}
+  @media (max-width:900px){
+    aside{position:fixed;left:0;right:0;bottom:0;z-index:50;padding:0 8px 8px}
+    #panel{box-shadow:0 -6px 24px rgba(0,0,0,.18);max-height:55vh;overflow-y:auto;display:none}
+    #panel.open{display:block}
+    #panel .close{display:block;float:right;border:none;background:var(--line);border-radius:8px;padding:2px 10px;cursor:pointer;color:var(--ink)}
+  }
+
+  .q{margin-bottom:22px;padding-bottom:18px;border-bottom:1px dashed var(--line)}
+  .q:last-child{border:none;margin-bottom:0;padding-bottom:0}
+  .q .stem{font-weight:600;font-family:var(--serif)}
+  .qt{font-size:.7rem;color:var(--blue);background:var(--blue-soft);border-radius:999px;padding:1px 8px;margin-right:6px;vertical-align:2px}
+  .opts{margin-top:10px;display:grid;gap:8px}
+  .opt{border:1px solid var(--line);border-radius:10px;padding:8px 12px;cursor:pointer;font-size:.93rem;font-family:var(--serif);transition:all .15s}
+  .opt:hover{border-color:var(--accent)}
+  .q.done .opt{cursor:default}
+  .opt.right{background:var(--green-soft);border-color:var(--green)}
+  .opt.wrong{background:var(--red-soft);border-color:var(--red)}
+  .expl{display:none;margin-top:12px;background:var(--accent-soft);border-radius:10px;padding:12px 14px;font-size:.9rem}
+  .q.done .expl{display:block}
+  .expl b{color:var(--accent)}
+  .expl .loc{font-family:var(--serif);font-style:italic;background:var(--hl);padding:1px 4px;border-radius:3px}
+
+  .sent{margin-bottom:20px}
+  .sent .src{font-family:var(--serif);font-size:1rem;background:var(--blue-soft);padding:12px 14px;border-radius:10px;border-left:3px solid var(--blue)}
+  .sent .anat{margin-top:8px;font-size:.9rem}
+  .sent .anat li{margin:4px 0 4px 18px}
+  .sent .tr{margin-top:8px;font-size:.92rem;color:var(--muted)}
+  .skel{color:var(--red);font-weight:600}
+
+  .filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+  .fbtn{font-size:.8rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:999px;padding:4px 14px;cursor:pointer}
+  .fbtn.on{background:var(--accent);color:var(--card);border-color:var(--accent)}
+  .vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
+  .vitem{border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer;transition:border-color .15s}
+  .vitem:hover{border-color:var(--accent)}
+  .vitem .w{font-family:var(--serif);font-weight:bold}
+  .vitem .cn{font-size:.85rem;color:var(--muted)}
+  .vitem .badges{float:right}
+
+  .wb{display:grid;gap:10px}
+  .wbi{border-left:3px solid var(--green);background:var(--green-soft);border-radius:0 10px 10px 0;padding:10px 14px;font-size:.92rem}
+  .wbi .p{font-family:var(--serif);font-weight:600}
+  .wbi .u{color:var(--muted);font-size:.85rem}
+
+  .flow{display:grid;gap:8px;font-size:.92rem}
+  .flow .fi{border:1px solid var(--line);border-radius:10px;padding:9px 13px}
+  .flow .fi b{color:var(--accent)}
+
+  #yd{position:fixed;z-index:60;display:none;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:4px 12px;font-size:.8rem;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+  footer{color:var(--muted);font-size:.8rem;text-align:center;margin-top:30px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">◀ 返回英语复盘中心</a>
+  <header>
+    <h1>A Star Is Made：天才是造就的，不是生出来的</h1>
+    <div class="sub">2007 年英语（一）真题 · Text 1 · 426 词 · 建议做题 18 min · 话题：心理学×成功学（源自《纽约时报》2006-05-07《A Star Is Made: The Birth Month Soccer Anomaly》）</div>
+    <div class="tags">
+      <span class="tag">正确答案：21C 22B 23A 24D 25C</span><span class="tag">题型：写作目的 + 词义推理 + 事实细节 + 人物观点 + 谚语主旨</span><span class="tag">难度：文章好懂，22/25 两题拼词感与概括力</span><span class="tag">🆕 新增套路卡：词义题三步法 · 谚语主旨题</span>
+    </div>
+  </header>
+
+  <div class="layout">
+    <main>
+      <!-- ========== 全文脉络 ========== -->
+      <section class="card">
+        <h2><span class="n">00</span>读前一分钟 · 全文脉络（做完题再看也行）</h2>
+        <div class="flow">
+          <div class="fi"><b>①②段 引子</b>：世界杯球员的「生日怪象」——出色球员扎堆生在年头几个月。作者故意抛出四个猜测（星座 / 冬季婴儿血氧 / 春季受孕），前三个都是<b>先天派</b>解释，第四个是「以上都不是」。</div>
+          <div class="fi"><b>③段 转折人物</b>：心理学家 Ericsson 押注「以上都不是」，并用记忆实验开路：20 小时训练 → 记 20 位，200 小时 → 记 80 多位。</div>
+          <div class="fi"><b>④段 结论机制</b>：记忆不由基因决定 → 记忆是<b>认知活动</b>而非直觉活动 → 先天差异被「编码信息的水平」<b>压倒</b> → 学会有效编码的最佳途径＝<b>刻意练习</b>（明确目标 + 即时反馈 + 技术与结果并重）。</div>
+          <div class="fi"><b>⑤段 升华</b>：把结论推广到记忆、外科、芭蕾、编程等所有领域——<b>天赋被严重高估，高手几乎都是造就的，不是天生的</b>。这句就是 24、25 两题的题眼。</div>
+          <div class="fi" style="border-color:var(--accent)">📌 <b>一句话主旨</b>：借足球生日怪象引出「出色表现从何而来」，用 Ericsson 的研究回答——靠后天刻意练习，不靠天赋。<br>📌 <b>结构套路</b>：怪象引入 → 立靶子（先天说）→ 打靶子（实验+机制）→ 推广升华。首尾段各一句主旨句，读懂这两句就锁定 21、25。</div>
+        </div>
+      </section>
+
+      <!-- ========== 原文精读 ========== -->
+      <section class="card">
+        <h2><span class="n">01</span>原文精读 <button class="allbtn" onclick="toggleAll()">全文译文 开/关</button></h2>
+        <p style="font-size:.8rem;color:var(--muted);margin-bottom:14px">🟡 黄色高亮 = 重难点词/短语，点击右侧出卡片 ｜ 蓝色虚线 = 长难句，点击跳到精析 ｜ 每段「译」= 段落译文 ｜ 选中任意其他单词浮出「查有道」</p>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">①</span><span class="ls" onclick="go('s1')">If you were to examine the birth <span class="tk" data-w="certificate">certificates</span> of every soccer player in 2006's World Cup tournament, you would most likely find a noteworthy <span class="tk" data-w="quirk">quirk</span>: <span class="tk" data-w="elite">elite</span> soccer players are more likely to have been born in the earlier months of the year than in the later months.</span> If you then examined the European national youth teams that feed the World Cup and professional ranks, you would find this strange phenomenon to be even more <span class="tk" data-w="pronounced">pronounced</span>.</p>
+          <div class="zh">假如你去查一查 2006 年世界杯上每一名足球运动员的出生证明，你极可能发现一个值得注意的怪现象：顶尖球员出生在一年中头几个月的概率，要高于出生在后几个月。若你再去查一查为世界杯和职业球队输送人才的欧洲各国青年队，你会发现这个怪现象还要更加<b>明显</b>。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">②</span>What might <span class="tk" data-w="account">account for</span> this strange phenomenon? Here are a few guesses: a) certain <span class="tk" data-w="astrological">astrological</span> signs <span class="tk" data-w="confer">confer</span> <span class="tk" data-w="superior">superior</span> soccer skills; b) winter-born babies tend to have higher oxygen <span class="tk" data-w="capacity">capacity</span>, which increases soccer <span class="tk" data-w="stamina">stamina</span>; c) soccer-mad parents are more likely to <span class="tk" data-w="conceive">conceive</span> children in springtime, at the annual peak of soccer <span class="tk" data-w="mania">mania</span>; d) none of the above.</p>
+          <div class="zh">这一怪象可能作何解释？以下是几种猜测：a）某些星座赋予人超群的足球天赋；b）冬天出生的婴儿血氧容量较高，从而增强踢球的耐力；c）痴迷足球的父母更可能在春天孕育孩子，那正是一年中足球狂热的顶点；d）以上都不是。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">③</span>Anders Ericsson, a 58-year-old psychology professor at Florida State University, says he believes strongly in "none of the above." Ericsson grew up in Sweden, and studied nuclear engineering until he realized he would have more opportunity to conduct his own research if he switched to psychology. His first experiment, nearly 30 years ago, <span class="tk" data-w="involve">involved</span> memory: training a person to hear and then repeat a random series of numbers. "With the first <span class="tk" data-w="subject">subject</span>, after about 20 hours of training, his <span class="tk" data-w="span">digit span</span> had risen from 7 to 20," Ericsson <span class="tk" data-w="recall">recalls</span>. "He kept improving, and after about 200 hours of training he had risen to over 80 numbers."</p>
+          <div class="zh">佛罗里达州立大学 58 岁的心理学教授安德斯·艾利克森说，他坚信"以上都不是"。艾利克森在瑞典长大，原本学核工程，直到他意识到改行心理学能有更多机会做自己的研究。他大约 30 年前的第一个实验与记忆有关：训练一个人听完一串随机数字后复述出来。"第一位受试者，训练约 20 小时后，数字记忆广度就从 7 位升到了 20 位，"艾利克森回忆道，"他还在不断进步，训练约 200 小时后，已经能记住 80 多位数字。"</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">④</span><span class="ls" onclick="go('s2')">This success, <span class="tk" data-w="coupled">coupled with</span> later research showing that memory itself is not <span class="tk" data-w="genetically">genetically determined</span>, led Ericsson to conclude that the act of memorizing is more of a <span class="tk" data-w="cognitive">cognitive</span> exercise than an <span class="tk" data-w="intuitive">intuitive</span> one.</span> <span class="ls" onclick="go('s3')">In other words, whatever <span class="tk" data-w="inborn">inborn</span> differences two people may <span class="tk" data-w="exhibit">exhibit</span> in their abilities to memorize, those differences are <span class="tk" data-w="swamp">swamped</span> by how well each person "<span class="tk" data-w="encode">encodes</span>" the information.</span> And the best way to learn how to encode information meaningfully, Ericsson determined, was a process known as <span class="tk" data-w="deliberate">deliberate practice</span>. Deliberate practice <span class="tk" data-w="entail">entails</span> more than simply repeating a task. Rather, it involves setting specific goals, obtaining <span class="tk" data-w="feedback">immediate feedback</span> and concentrating as much on technique as on outcome.</p>
+          <div class="zh">这次成功，加上后来"记忆本身并非由基因决定"的研究，使艾利克森得出结论：记忆这一行为与其说是直觉活动，不如说是<b>认知活动</b>。换句话说，无论两个人在记忆能力上表现出怎样的先天差异，这些差异都会被"各人对信息的编码水平"所<b>压倒</b>。而艾利克森断定，学会有意义地编码信息的最佳途径，是一个叫作"<b>刻意练习</b>"的过程。刻意练习绝不只是简单重复一项任务，而是要设定明确目标、获得即时反馈，并且对技术和结果给予同等的专注。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">⑤</span>Ericsson and his colleagues have thus <span class="tk" data-w="taketo">taken to</span> studying expert performers in a wide range of <span class="tk" data-w="pursuit">pursuits</span>, including soccer. They gather all the data they can, not just performance statistics and <span class="tk" data-w="biographical">biographical</span> details but also the results of their own laboratory experiments with high achievers. Their work makes a rather <span class="tk" data-w="startling">startling</span> <span class="tk" data-w="assertion">assertion</span>: the <span class="tk" data-w="trait">trait</span> we commonly call talent is highly <span class="tk" data-w="overrated">overrated</span>. <span class="ls" onclick="go('s4')">Or, put another way, expert performers—whether in memory or surgery, ballet or computer programming—are nearly always made, not born.</span></p>
+          <div class="zh">于是艾利克森和同事们开始研究各行各业的杰出人物，足球也在其列。他们收集一切能收集到的数据：不只是成绩统计和生平细节，还有他们自己对高成就者所做的实验室实验结果。他们的研究给出了一个相当令人震惊的论断：我们通常称为"天赋"的那种特质被严重高估了。或者换个说法：杰出人物——无论是在记忆、外科手术、芭蕾还是计算机编程领域——几乎都是<b>后天造就的，而非天生的</b>。</div>
+        </div>
+      </section>
+
+      <!-- ========== 题目 ========== -->
+      <section class="card">
+        <h2><span class="n">02</span>题目与解析（点选项即判 · 再看解析）</h2>
+
+        <div class="q" data-ans="2" id="q21">
+          <p class="stem"><span class="qt">写作目的</span>21. The birthday phenomenon found among soccer players is mentioned to ______.</p>
+          <div class="opts">
+            <div class="opt">[A] stress the importance of professional training.</div>
+            <div class="opt">[B] spotlight the soccer superstars in the World Cup.</div>
+            <div class="opt">[C] introduce the topic of what makes expert performance.</div>
+            <div class="opt">[D] explain why some soccer teams play better than others.</div>
+          </div>
+          <div class="expl"><b>答案 C</b>　问的是「提这个现象<b>是为了什么</b>」，不是「这个现象是什么」。①②段抛出生日怪象＋三种先天式猜测，第四个选项 <span class="loc">d) none of the above</span> 直接把先天说全部推翻；③段起转入 Ericsson 的研究，全文落点在<span class="loc">expert performers ... are nearly always made, not born</span>。可见生日现象只是<b>引子</b>，引出的话题是「出色表现（expert performance）究竟由什么造就」。<br><b>干扰项：</b>A 词义偷换——首段的 professional ranks 是"职业球队/职业级别"，不是"专业训练"；且前两段一个字没论证训练的重要性。B 引子当考点——文章聚焦的是"生日分布"这个统计怪象，不是给球星打光。D 偷换比较对象——文中比的是"球员出生月份的早晚"，从头到尾没有比较"哪支球队踢得更好"。<br><b>技巧：</b>凡是 <span class="loc">X is mentioned to / the example of X is used to</span>，答案一律往<b>上一层</b>找：现象/例子本身永远不是答案，答案是它<b>服务的那个话题或观点</b>。首段现象题还有个快捷通道——<b>先扫末段主旨句</b>，主旨说的是什么，开篇现象就是为了引出什么。</div>
+        </div>
+
+        <div class="q" data-ans="1" id="q22">
+          <p class="stem"><span class="qt">词义推理</span>22. The word "mania" (Line 4, Paragraph 2) most probably means ______.</p>
+          <div class="opts">
+            <div class="opt">[A] fun.</div>
+            <div class="opt">[B] craze.</div>
+            <div class="opt">[C] hysteria.</div>
+            <div class="opt">[D] excitement.</div>
+          </div>
+          <div class="expl"><b>答案 B</b>　定位②段 c)：<span class="loc">soccer-<b>mad</b> parents are more likely to conceive children in springtime, at the annual peak of soccer <b>mania</b></span>。逗号后的 at the annual peak of... 是对 in springtime 的解释（春天＝球迷狂热的年度顶点），而句子主语已经给了同根提示词 <b>soccer-mad</b>（痴迷足球的）——mad 与 mania 本就同源，一处生词、一处熟词，互为注解。所以 mania ＝「（对足球的）狂热」＝ craze。<br><b>干扰项：</b>A fun「乐趣」——把 mad 的强度大幅稀释，痴迷≠好玩；D excitement「兴奋、激动」——同样是强度不足的稀释项（这两个是同一类错法，一起排）。C hysteria「歇斯底里」——强度过头且带贬义/病态色彩（情绪失控、举止异常），原文只写球迷狂热，没有"病态"这层。<br><b>技巧：</b><b>词义题三步法</b>：① 回原句看<b>标点提示</b>——逗号/破折号/冒号后常是对生词的解释；② 找<b>同根或同义复现</b>（mad ↔ mania）；③ 四个近义词摆一起时，比的不是"意思像不像"，而是<b>感情强度与褒贬</b>——太弱（fun / excitement）和太重（hysteria）同时排除，只留强度对得上的那个。切记：词义题考的是<b>语境义</b>，不是字典义，背过 mania＝躁狂症反而会掉进 C。</div>
+        </div>
+
+        <div class="q" data-ans="0" id="q23">
+          <p class="stem"><span class="qt">事实细节</span>23. According to Ericsson, good memory ______.</p>
+          <div class="opts">
+            <div class="opt">[A] depends on meaningful processing of information.</div>
+            <div class="opt">[B] results from intuitive rather than cognitive exercises.</div>
+            <div class="opt">[C] is determined by genetic rather than psychological factors.</div>
+            <div class="opt">[D] requires immediate feedback and a high degree of concentration.</div>
+          </div>
+          <div class="expl"><b>答案 A</b>　定位④段前三句。B、C 靠句①一句话即可秒杀：<span class="loc">memory itself is not genetically determined</span>（→ C 说反）、<span class="loc">more of a cognitive exercise than an intuitive one</span>（"与其说直觉不如说认知"，→ B 把主次调了个个儿）。A 来自句②③：先天差异 <span class="loc">are swamped by how well each person "encodes" the information</span>，而最佳途径是 <span class="loc">learn how to encode information meaningfully</span> —— "有意义地编码信息" 正是 A 的 meaningful processing of information，属于对两句的<b>合理概括改写</b>。<br><b>干扰项 D 是本篇最狠的坑：</b>immediate feedback 和 concentrating 确实<b>原封不动</b>出现在④段末句，但那句的主语 it 指的是 <b>deliberate practice</b>（刻意练习的三要素），不是题干问的 good memory。这是典型的<b>偷换主语＋原词复现</b>：把 A 的定义安到 B 头上。<br><b>技巧：</b>细节题的正确项往往是<b>归纳性改写</b>（换词不换意），干扰项反而<b>原词照抄</b>。所以看到某个选项和原文字面高度重合，第一反应不是"就是它"，而是回原句问一句：<b>这句话在说谁？</b>——主语对不上，词再像也是错的。</div>
+        </div>
+
+        <div class="q" data-ans="3" id="q24">
+          <p class="stem"><span class="qt">人物观点</span>24. Ericsson and his colleagues believe that ______.</p>
+          <div class="opts">
+            <div class="opt">[A] talent is a dominating factor for professional success.</div>
+            <div class="opt">[B] biographical data provide the key to excellent performance.</div>
+            <div class="opt">[C] the role of talent tends to be overlooked.</div>
+            <div class="opt">[D] high achievers owe their success mostly to nurture.</div>
+          </div>
+          <div class="expl"><b>答案 D</b>　定位⑤段末两句：<span class="loc">the trait we commonly call talent is highly overrated</span> + <span class="loc">expert performers ... are nearly always made, not born</span>。made ＝ 后天造就 ＝ owe their success mostly to <b>nurture</b>（nature 天性 / nurture 后天教养，是这类文章的固定术语对）。D 就是主旨句的同义改写。<br><b>干扰项：</b>A 完全反向（天赋是主导因素）。C 是<b>形近反义陷阱</b>——原文说 talent is <b>overrated</b>（被高<b>估</b>），C 说 <b>overlooked</b>（被<b>忽视</b>），一字之差，意思正相反：被高估意味着大家太看重天赋，被忽视意味着大家不够看重。B 张冠李戴——biographical details 出现在⑤段②句，那是研究者<b>收集的数据来源之一</b>，不是"决定卓越表现的关键"。<br><b>技巧：</b>over-/under- 家族（overrated 高估 / overlooked 忽视 / underestimated 低估 / overstated 夸大）是命题人最爱的形近对，读到原文里的这类词，<b>当场在旁边写下中文</b>，回来做题时就不会被绕晕。另外，本题问的是 Ericsson and his colleagues 的观点，而⑤段恰好是"他们的研究结论"段——<b>人名在哪段，答案就在哪段</b>。</div>
+        </div>
+
+        <div class="q" data-ans="2" id="q25">
+          <p class="stem"><span class="qt">谚语主旨</span>25. Which of the following proverbs is closest to the message the text tries to convey?</p>
+          <div class="opts">
+            <div class="opt">[A] "Faith will move mountains."（精诚所至，金石为开）</div>
+            <div class="opt">[B] "One reaps what one sows."（种瓜得瓜，种豆得豆）</div>
+            <div class="opt">[C] "Practice makes perfect."（熟能生巧）</div>
+            <div class="opt">[D] "Like father, like son."（有其父必有其子）</div>
+          </div>
+          <div class="expl"><b>答案 C</b>　先用一句话概括全文：<b>出色表现靠后天刻意练习，不靠天赋</b>。再看谚语的关键词能不能一一对上：<b>Practice</b> ↔ deliberate practice（④段核心概念），<b>perfect</b> ↔ expert performers / made（⑤段结论）。两个词都咬合，C 命中。<br><b>干扰项：</b>D 最好排——"有其父必有其子"讲的正是<b>遗传</b>，与全文结论（not born）完全相反。A 讲"信念/决心"（faith），文中一次也没谈信念，讲的是<b>练习的方法</b>（明确目标+即时反馈+技术并重），不是"心诚则灵"。B 最难排——"种瓜得瓜"看似也在讲付出与回报，但它的重心是<b>付出与结果的对应关系（善有善报）</b>，而本文的核心对立是<b>后天练习 vs. 先天天赋</b>；B 完全没有触碰"天赋"这一边，属于"沾边但没打到靶心"。<br><b>技巧：</b><b>谚语主旨题两步</b>：① 先自己写出一句话主旨（别急着看选项，否则会被谚语的漂亮说法带跑）；② 拿主旨句里的<b>核心对立</b>（这里是"练习 vs 天赋"）去卡每个谚语——<b>反向的（D）先排，与核心对立无关的（A、B）再排</b>，剩下的必须两个关键概念都对得上。谚语题的答案永远指向<b>首尾段主旨句</b>，不指向中间的实验细节。</div>
+        </div>
+      </section>
+
+      <!-- ========== 长难句 ========== -->
+      <section class="card" id="sents">
+        <h2><span class="n">03</span>长难句精析（正文蓝色虚线句）</h2>
+
+        <div class="sent" id="s1">
+          <div class="src">If you <span class="skel">were to examine</span> the birth certificates of every soccer player in 2006's World Cup tournament, you <span class="skel">would</span> most likely <span class="skel">find</span> a noteworthy quirk: <u>elite soccer players are more likely to have been born in the earlier months of the year than in the later months</u>.</div>
+          <ul class="anat">
+            <li><span class="skel">虚拟语气</span>：<b>If ... were to do, ... would do</b> —— 对将来的纯假设（"假如你去查一查……你就会发现"）。外刊常用它把读者拉进一个思想实验，语气比 if you examine 更"邀请"。同类：were to / should / did（错综时间条件句另说）</li>
+            <li><b>冒号</b>后是 quirk 的<b>同位解释</b>——怪在哪儿，冒号 ＝ "即"。读到冒号就知道后面是前一个抽象名词的展开</li>
+            <li><b>have been born</b>：不定式的<b>完成被动式</b>，表示"出生"这个动作发生在"发现"之前，不能写成 to be born</li>
+            <li>比较结构：more likely to ... <b>in the earlier months</b> than <b>in the later months</b>——比的是<b>同一批球员出生月份的早晚</b>，21 题 D 项正是在这里偷换成"球队之间的强弱比较"</li>
+          </ul>
+          <div class="tr">译：假如你去查一查 2006 年世界杯每名球员的出生证明，你极可能发现一个值得注意的怪现象：顶尖球员出生在年头几个月的概率高于年尾几个月。</div>
+        </div>
+
+        <div class="sent" id="s2">
+          <div class="src"><span class="skel">This success</span>, <u>coupled with later research showing that memory itself is not genetically determined</u>, <span class="skel">led</span> Ericsson <span class="skel">to conclude that</span> the act of memorizing is <u>more of a cognitive exercise than an intuitive one</u>.</div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：This success <b>led</b> Ericsson <b>to conclude that</b>... （lead sb to do：使某人得出/去做）</li>
+            <li><b>coupled with...</b>＝ together with，过去分词短语作状语插在主谓之间。⚠️ 它<b>不改变主语的单复数</b>——主语仍是单数的 This success，所以谓语是 led。同类"伪并列"还有 along with / as well as / in addition to，是语法单选的老考点</li>
+            <li>showing that... 是现在分词作 <b>research</b> 的后置定语（"表明……的研究"），从句里又套了一个 that 宾语从句</li>
+            <li><span class="skel">more of a A than a B</span>：<b>与其说是 B，不如说是 A</b> —— <b>舍后取前</b>。这里落点在 cognitive（认知），23 题 B 项就是把前后颠倒过来造的反向干扰</li>
+          </ul>
+          <div class="tr">译：这次成功，加上后来表明记忆本身并非由基因决定的研究，使艾利克森得出结论：记忆这一行为与其说是直觉活动，不如说是认知活动。</div>
+        </div>
+
+        <div class="sent" id="s3">
+          <div class="src">In other words, <u>whatever inborn differences two people may exhibit in their abilities to memorize</u>, <span class="skel">those differences are swamped by</span> <u>how well each person "encodes" the information</u>.</div>
+          <ul class="anat">
+            <li><span class="skel">让步状语从句</span>：<b>whatever + 名词 + 主语 + may + 动词</b>（无论……）。这里 whatever 修饰 inborn differences 并作 exhibit 的宾语；<b>may 是让步语气标志</b>，不是"可能"。还原语序：two people may exhibit whatever inborn differences...</li>
+            <li>主句主语 <b>those differences</b> 回指从句里的 differences——从句先铺"无论差异多大"，主句再说"这些差异被压倒"</li>
+            <li><span class="skel">be swamped by</span>：swamp 名词是"沼泽"，动词是"淹没、压倒"。<b>被 X 淹没 ＝ X 的作用远大于它</b>——这是全文最关键的逻辑跳板：先天差异 < 编码水平</li>
+            <li>by 后面接的是 <b>how well 引导的宾语从句</b>（"每个人编码信息的水平如何"）——不是接名词，读的时候别在 by 后面找名词找不到就卡住</li>
+            <li>引号里的 "encodes"：作者给日常词加引号 ＝ 提示这是<b>术语化用法</b>（信息加工意义上的"编码"）。<b>23 题 A 项的 meaningful processing of information 就是它的抽象改写</b></li>
+          </ul>
+          <div class="tr">译：换句话说，无论两个人在记忆能力上表现出怎样的先天差异，这些差异都会被各人"编码"信息的水平所压倒。</div>
+        </div>
+
+        <div class="sent" id="s4">
+          <div class="src">Or, <u>put another way</u>, <span class="skel">expert performers</span>—<u>whether in memory or surgery, ballet or computer programming</u>—<span class="skel">are nearly always made, not born</span>.</div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：expert performers <b>are made, not born</b>。破折号中间整段都是插入语，<b>阅读时先跨过去把主谓接上</b>，这是长难句提速的第一动作</li>
+            <li><b>put another way</b>：过去分词短语作插入语，＝ to put it another way / in other words（换句话说）。见到它就知道后面是<b>前一句的改写</b>——前句 talent is highly overrated，后句 made, not born，互为注解</li>
+            <li>whether A or B, C or D：让步插入，列举四个八竿子打不着的领域（记忆/外科/芭蕾/编程），作用是<b>把结论从足球推广到一切领域</b> —— 25 题谚语要概括的正是这个"普适性"</li>
+            <li><b>made, not born</b>：省略式对照（＝ are made rather than born），呼应西方 <b>nature vs. nurture</b> 之争。24 题 D 项的 nurture 就是 made 的学术版说法</li>
+          </ul>
+          <div class="tr">译：换句话说，杰出人物——无论是在记忆、外科手术、芭蕾还是计算机编程领域——几乎都是后天造就的，而不是天生的。</div>
+        </div>
+      </section>
+
+      <!-- ========== 词汇复盘 ========== -->
+      <section class="card">
+        <h2><span class="n">04</span>词汇复盘（点卡片看详情）</h2>
+        <div class="filters">
+          <button class="fbtn on" data-f="all">全部</button>
+          <button class="fbtn" data-f="core">核心词</button>
+          <button class="fbtn" data-f="phrase">短语</button>
+          <button class="fbtn" data-f="poly">熟词僻义</button>
+          <button class="fbtn" data-f="write">写作可用</button>
+        </div>
+        <div class="vgrid" id="vgrid"></div>
+      </section>
+
+      <!-- ========== 写作素材 ========== -->
+      <section class="card">
+        <h2><span class="n">05</span>可搬进作文/翻译的素材</h2>
+        <div class="wb">
+          <div class="wbi"><div class="p">Expert performers are made, not born.</div><div class="u">"高手是造就的，不是天生的"——教育/成功/努力类作文的<b>万能论点句</b>。变体：Champions are made, not born. 还可反用：Habits are made, not inherited.</div></div>
+          <div class="wbi"><div class="p">X is highly overrated / underrated</div><div class="u">"X 被严重高估/低估了"——立论时给传统看法下判决书：The role of natural talent is highly overrated; what really counts is sustained practice.</div></div>
+          <div class="wbi"><div class="p">It involves setting specific goals, obtaining immediate feedback and concentrating as much on A as on B.</div><div class="u">三个动名词并列，末尾用 as much on A as on B 收尾——"如何学好一件事"的<b>方法句模板</b>，直接改词就能用在学习/健身/技能类话题。</div></div>
+          <div class="wbi"><div class="p">more of a A than a B</div><div class="u">"与其说是 B，不如说是 A"——定性句神器：Procrastination is more of an emotional problem than a time-management one.</div></div>
+          <div class="wbi"><div class="p">A, coupled with B, leads sb to conclude that...</div><div class="u">"A 加上 B，使人得出……的结论"——论证段推进句，比 Because... 高一档。注意主语单复数由 A 决定。</div></div>
+          <div class="wbi"><div class="p">Those differences are swamped by how well one does X.</div><div class="u">"这些差异被……所压倒"——比较两个因素轻重时的高级表达，替换 far less important than。</div></div>
+          <div class="wbi"><div class="p">What might account for this phenomenon? Here are a few guesses: a)... d) none of the above.</div><div class="u"><b>设问＋自答的开篇法</b>：先抛现象、再列几种常见（错误）解释、最后一句 none of the above 掉头——图表/现象类作文的开头可以直接借这个节奏。</div></div>
+          <div class="wbi"><div class="p">not just A and B but also C</div><div class="u">"不仅……而且……"的地道变体（not just 比 not only 更口语更自然），列举证据时用。</div></div>
+          <div class="wbi"><div class="p">话题人物包：Anders Ericsson · deliberate practice · 10,000-hour rule</div><div class="u">这篇正是"一万小时定律"（Gladwell《异类》引用的原始研究）的源头。写"努力 vs 天赋""如何精通一项技能"时，可直接举：Psychologist Anders Ericsson found that expertise grows out of deliberate practice rather than innate gifts. <b>一个真人真事的论据顶三句空话。</b></div></div>
+        </div>
+      </section>
+    </main>
+
+    <!-- ========== 侧栏词卡 ========== -->
+    <aside>
+      <div id="panel"><div class="hint">👆 点击正文里的<b>黄色高亮词</b><br>词卡会出现在这里</div></div>
+    </aside>
+  </div>
+
+  <footer>2007 英语一 Text 1 · 复盘页由 Claude 生成 · 解析为 Claude 盲做后独立撰写，答案已与黄皮书精讲逐题交叉核对（21C 22B 23A 24D 25C，五题全一致）</footer>
+</div>
+
+<button id="yd">🔍 查有道</button>
+
+<script>
+const V = {
+  certificate:{w:"certificate",ipa:"/səˈtɪfɪkət/",pos:"n.",tags:["core"],cn:"证书，证明书",en:"an official document proving a fact",ex:"examine the birth certificates of every soccer player",mem:"cert(确定，同 certain/certify)+ficate→把事情确定下来的纸→证书。birth certificate 出生证；graduation certificate 毕业证。",syn:"document / diploma / credential",conf:"certificate(证书) vs. certification(认证行为) vs. certainty(确定性)"},
+  quirk:{w:"quirk",ipa:"/kwɜːk/",pos:"n.",tags:["core"],cn:"怪癖；反常之处；巧合",en:"an odd or unexpected feature",ex:"you would most likely find a noteworthy quirk",mem:"a quirk of fate 命运的捉弄；quirky adj. 古怪有趣的（形容人/设计，是褒义）。本文指数据里的'怪现象'。",syn:"oddity / peculiarity / anomaly",conf:"quirk(怪癖) vs. quirt(马鞭) vs. quark(夸克)——考研只考第一个"},
+  elite:{w:"elite",ipa:"/eɪˈliːt/",pos:"adj./n.",tags:["core","write"],cn:"顶尖的；精英（阶层）",en:"the best or most powerful group",ex:"elite soccer players",mem:"法语借词，来自 elect(选出)→被选出来的那批人。写作：elite universities 名校；the political elite 政治精英。",syn:"top / first-rate / cream of the crop",conf:"elite(精英) vs. elicit(引出，v.) vs. illicit(非法的)——三个都爱在完形出现"},
+  pronounced:{w:"pronounced",ipa:"/prəˈnaʊnst/",pos:"adj.",tags:["core","poly"],cn:"⚠️显著的，明显的（≠发音）",en:"very noticeable or marked",ex:"this strange phenomenon to be even more pronounced",mem:"熟词僻义典型：pronounce 除了'发音'还有'宣告'，宣告出来的→摆在明面上的→显著的。a pronounced tendency 明显的趋势。",syn:"marked / conspicuous / striking / evident",conf:"pronounced(显著的) vs. pronunciation(发音，⚠️没有 o) vs. announced(宣布的)"},
+  account:{w:"account for",ipa:"",pos:"v.短语",tags:["phrase","poly","write"],cn:"①解释，说明原因 ②占（比例）",en:"to explain; to make up (a proportion)",ex:"What might account for this strange phenomenon?",mem:"两义都高频：What accounts for X? 是什么造成了X（本文）；Renewables account for 30% of output 可再生能源占产出的30%（图表作文必备）。",syn:"explain / be responsible for / constitute",conf:"account for(解释/占比) vs. take into account(考虑在内) vs. on account of(由于)"},
+  astrological:{w:"astrological",ipa:"/ˌæstrəˈlɒdʒɪkl/",pos:"adj.",tags:["core"],cn:"占星术的",en:"relating to the study of stars' influence on people",ex:"certain astrological signs confer superior soccer skills",mem:"astro(星，同 astronaut 宇航员/astronomy 天文学)+logy(学)。⚠️ astrology 占星术(伪科学) ≠ astronomy 天文学(科学)，考研考过这组对比。astrological sign 就是星座。",syn:"zodiacal",conf:"astrology(占星术) vs. astronomy(天文学)——一个算命一个科学"},
+  confer:{w:"confer",ipa:"/kənˈfɜː(r)/",pos:"v.",tags:["core","write"],cn:"①授予（confer A on B）②商议",en:"to grant; to discuss with others",ex:"astrological signs confer superior soccer skills",mem:"con(共同)+fer(带来，同 transfer/refer/prefer)→把好处带给某人→授予。confer a degree on sb 授予学位；confer with sb 与某人商议。",syn:"grant / bestow / award",conf:"fer 家族：confer(授予) / infer(推断) / refer(提及) / defer(推迟；顺从)"},
+  superior:{w:"superior",ipa:"/suːˈpɪəriə(r)/",pos:"adj./n.",tags:["core","write"],cn:"更好的，优于……的；上级",en:"better in quality; higher in rank",ex:"confer superior soccer skills",mem:"⚠️用法铁律：superior <b>to</b>（不用 than）。同款'拉丁比较级'：inferior to / senior to / prior to / junior to。",syn:"better / finer / outstanding",conf:"superior(更优) ⇄ inferior(更差)；superior 还可作名词'上司'"},
+  capacity:{w:"capacity",ipa:"/kəˈpæsəti/",pos:"n.",tags:["core","write"],cn:"容量；能力；身份",en:"the amount sth can hold; ability",ex:"higher oxygen capacity",mem:"cap(拿，同 capture/capable)+acity→能装多少→容量/能力。in one's capacity as chairman 以主席身份（僻义）；production capacity 产能。",syn:"volume / ability / capability",conf:"capacity(容量/潜在能力) vs. ability(实际能力) vs. capability(可发挥的能力)"},
+  stamina:{w:"stamina",ipa:"/ˈstæmɪnə/",pos:"n.",tags:["core"],cn:"耐力，持久力",en:"the ability to keep going for a long time",ex:"which increases soccer stamina",mem:"体育/职场都用：build stamina 增强耐力；mental stamina 心理耐力。词源是纺织的'经线'→撑住整块布的那根线。",syn:"endurance / staying power",conf:"stamina(耐力) vs. stimulus(刺激) vs. stammer(口吃)——都是 st- 开头的易混"},
+  conceive:{w:"conceive",ipa:"/kənˈsiːv/",pos:"v.",tags:["core","poly"],cn:"①怀孕，孕育 ②构想，设想",en:"to become pregnant; to imagine or plan",ex:"more likely to conceive children in springtime",mem:"con+ceive(拿住，同 receive/perceive/deceive)→在体内'拿住'→怀上；在脑中'拿住'→构想。conceive of sth as... 把……设想为……；名词 conception 受孕/概念。",syn:"become pregnant / imagine / devise",conf:"ceive 家族：conceive(怀孕/构想) / perceive(察觉) / deceive(欺骗) / receive(收到)"},
+  mania:{w:"mania",ipa:"/ˈmeɪniə/",pos:"n.",tags:["core","poly"],cn:"狂热，热潮；（医）躁狂症",en:"extreme enthusiasm for sth",ex:"at the annual peak of soccer mania",mem:"⭐22 题考点：文中是<b>语境义「狂热」</b>，不是医学义「躁狂症」（选 hysteria 就掉坑）。同源 maniac 狂热者、-mania 后缀：Beatlemania 披头士狂热。原句已给同根提示 soccer-<b>mad</b>。",syn:"craze / fad / obsession / frenzy",conf:"强度阶梯：fun(乐趣) < excitement(兴奋) < <b>craze/mania(狂热)</b> < hysteria(歇斯底里,病态)——词义题就靠这把尺子"},
+  involve:{w:"involve",ipa:"/ɪnˈvɒlv/",pos:"v.",tags:["core","poly"],cn:"①涉及，包含 ②使参与",en:"to include as a necessary part",ex:"His first experiment ... involved memory",mem:"in+volv(卷，同 revolve 旋转/evolve 进化)→卷进去→涉及。be involved in 参与其中；involve doing 需要做某事（④段末句同款用法）。",syn:"entail / include / engage",conf:"involve(涉及/包含) vs. evolve(演化) vs. revolve(旋转)——volv 三兄弟"},
+  subject:{w:"subject",ipa:"/ˈsʌbdʒɪkt/",pos:"n./adj./v.",tags:["core","poly"],cn:"⚠️受试者；科目；主题；adj. 易受……的",en:"a person or thing being studied",ex:"With the first subject, after about 20 hours of training",mem:"熟词僻义：实验语境里 subject＝<b>受试者/实验对象</b>（不是'科目'）。另两个高频：be subject to 易受……影响/须服从；subject sb to sth 使某人遭受。",syn:"participant / test person / topic",conf:"subject(受试者/主题) vs. object(客体/宾语) vs. project(项目)——学术文常一起出现"},
+  span:{w:"digit span",ipa:"/ˈdɪdʒɪt spæn/",pos:"n.短语",tags:["phrase","core"],cn:"数字（记忆）广度",en:"the number of digits one can recall in order",ex:"his digit span had risen from 7 to 20",mem:"span 本义'跨度'：life span 寿命、attention span 注意力持续时间、a bridge spans the river 桥横跨河。digit 数字/手指（手指头就是最早的计数器）。",syn:"memory span / attention span(注意力跨度)",conf:"span(跨度) vs. spin(旋转) vs. spare(空余的)"},
+  recall:{w:"recall",ipa:"/rɪˈkɔːl/",pos:"v./n.",tags:["core","poly"],cn:"①回忆起 ②召回（产品/大使）",en:"to remember; to order the return of",ex:"Ericsson recalls",mem:"re(回)+call(叫)→把记忆叫回来→回忆；把产品叫回来→召回。product recall 产品召回（经济类文章高频）。⚠️ recall doing 记得做过某事。",syn:"recollect / remember / retrieve",conf:"recall(主动回忆起) vs. remind(提醒别人) vs. remember(记得)——recall 强调'调取'"},
+  coupled:{w:"coupled with",ipa:"",pos:"prep.短语",tags:["phrase","write"],cn:"加上，再加上",en:"together with; in addition to",ex:"This success, coupled with later research ..., led Ericsson to conclude",mem:"= together with / along with。⚠️语法考点：它<b>不改变主语单复数</b>，谓语只跟真正的主语走（本句主语 This success → led）。写作里替换 and，句子立刻有层次。",syn:"together with / along with / combined with",conf:"同类'伪并列'：as well as / in addition to / rather than —— 都不影响主谓一致"},
+  genetically:{w:"genetically determined",ipa:"/dʒəˈnetɪkli/",pos:"adj.短语",tags:["phrase","core"],cn:"由基因决定的",en:"caused by one's genes",ex:"memory itself is not genetically determined",mem:"gene 基因 → genetic 遗传的 → genetically 遗传上地。本文的靶子：先天派主张。同族：genetic engineering 基因工程、gene editing 基因编辑。",syn:"innate / inherited / hereditary",conf:"genetic(遗传的) vs. generic(通用的，generic drugs 仿制药)——只差一个字母，考研考过"},
+  cognitive:{w:"cognitive",ipa:"/ˈkɒɡnətɪv/",pos:"adj.",tags:["core","write"],cn:"认知的（与思维加工有关）",en:"connected with thinking and understanding",ex:"more of a cognitive exercise than an intuitive one",mem:"cogn(知道，同 recognize 认出/cognition 认知)+itive。心理学文章的招牌词：cognitive ability 认知能力、cognitive bias 认知偏差、cognitive decline 认知衰退。",syn:"mental / intellectual",conf:"cognitive(认知的，讲思维加工) ⇄ intuitive(直觉的，讲不假思索)——本文靠这对反义词出了 23 题 B 项"},
+  intuitive:{w:"intuitive",ipa:"/ɪnˈtjuːɪtɪv/",pos:"adj.",tags:["core","write"],cn:"直觉的；凭直觉的",en:"based on feelings rather than reasoning",ex:"than an intuitive one",mem:"in+tuit(看，同 tutor 导师'看顾')+ive→一眼看穿→直觉。名词 intuition 直觉；an intuitive interface 一看就会用的界面（科技文常见褒义）。",syn:"instinctive / gut(俚) / innate",conf:"intuitive(直觉的) vs. intuitional / vs. cognitive(认知的)——23 题 B 就是把这两个词的主次颠倒"},
+  inborn:{w:"inborn",ipa:"/ˌɪnˈbɔːn/",pos:"adj.",tags:["core","write"],cn:"天生的，先天的",en:"present from birth; natural",ex:"whatever inborn differences two people may exhibit",mem:"in+born→生下来就有的。同义梯队：inborn / innate / inherent / congenital(医学)。本文的核心对立：inborn(先天) vs. deliberate practice(后天)。",syn:"innate / inherent / natural / native",conf:"inborn(与生俱来) vs. unborn(未出生的) vs. inbound(入境的)"},
+  exhibit:{w:"exhibit",ipa:"/ɪɡˈzɪbɪt/",pos:"v./n.",tags:["core","poly"],cn:"①表现出（情感/特征）②展出；n. 展品",en:"to show a quality or feeling; to display",ex:"differences two people may exhibit in their abilities",mem:"熟词僻义：此处不是'展览'而是<b>'表现出（某种特性）'</b>＝ show/display。ex(外)+hib(拿住，同 prohibit 禁止)→拿出来给人看。",syn:"display / show / demonstrate / manifest",conf:"exhibit(表现/展出) vs. inhibit(抑制) vs. prohibit(禁止)——hib 三兄弟，完形高频"},
+  swamp:{w:"swamp",ipa:"/swɒmp/",pos:"v./n.",tags:["core","poly","write"],cn:"⚠️淹没，压倒，使应接不暇；n. 沼泽",en:"to overwhelm; a marsh",ex:"those differences are swamped by how well each person encodes",mem:"⭐23 题的逻辑跳板：名词'沼泽'→动词'淹没'→<b>被 X 淹没 ＝ X 的作用远大于它</b>。be swamped with work 被工作淹没（写作可用）。生词不慌：句内 whatever…让步结构已提示'先天差异不重要'。",syn:"overwhelm / inundate / outweigh(在重要性上超过)",conf:"swamp(淹没) vs. swap(交换) vs. sway(摇摆；影响)——三个都考过"},
+  encode:{w:"encode",ipa:"/ɪnˈkəʊd/",pos:"v.",tags:["core"],cn:"编码（把信息转成可存储的形式）",en:"to convert information into a form for storage",ex:"how well each person \"encodes\" the information",mem:"en(使)+code(代码)→变成代码→编码。⚠️原文加引号＝术语化用法，指记忆中的'信息加工'。23 题 A 的 meaningful processing 就是它的抽象说法。反义 decode 解码。",syn:"encrypt / convert / process",conf:"encode(编码) ⇄ decode(解码)；encode vs. record(记录) vs. recode(重新编码)"},
+  deliberate:{w:"deliberate practice",ipa:"/dɪˈlɪbərət/",pos:"n.短语",tags:["phrase","core","write"],cn:"刻意练习",en:"purposeful practice with goals and feedback",ex:"a process known as deliberate practice",mem:"⭐全文核心概念，也是'一万小时定律'的学术源头。deliberate adj. 蓄意的/不慌不忙的（a deliberate lie 有意撒谎）；v.(重音后移 /dɪˈlɪbəreɪt/) 仔细考虑、审议。三要素：specific goals + immediate feedback + technique as much as outcome。",syn:"purposeful practice / focused training",conf:"deliberate(蓄意的) vs. accidental(偶然的)；deliberate(v.审议) vs. liberate(解放)"},
+  entail:{w:"entail",ipa:"/ɪnˈteɪl/",pos:"v.",tags:["core","write"],cn:"需要，牵涉，使必然发生",en:"to make sth necessary; to involve",ex:"Deliberate practice entails more than simply repeating a task",mem:"en+tail(切割/限定)→限定出必须包含的部分→必然涉及。写作替换 need/require：This policy entails huge costs. ⚠️ entail doing（不接 to do）。",syn:"involve / require / necessitate",conf:"entail(必然涉及) vs. detail(细节) vs. retail(零售)——尾巴一族"},
+  feedback:{w:"immediate feedback",ipa:"",pos:"n.短语",tags:["phrase","write"],cn:"即时反馈",en:"an instant response telling you how you did",ex:"obtaining immediate feedback",mem:"⚠️23 题 D 的诱饵：它是 <b>deliberate practice</b> 的要素，不是 good memory 的定义。学习/管理类作文常用：timely feedback / constructive feedback 建设性反馈。",syn:"instant response / prompt comment",conf:"feedback(不可数!) —— ×a feedback / ×feedbacks，要说 a piece of feedback"},
+  taketo:{w:"take to (doing) sth",ipa:"",pos:"v.短语",tags:["phrase","poly"],cn:"开始（做）；渐渐喜欢上",en:"to begin doing sth as a habit; to start to like",ex:"have thus taken to studying expert performers",mem:"⚠️ to 是介词，后面接 -ing。两义都考：He has taken to jogging 他开始跑步了；She took to him at once 她一见就喜欢他。本文是'于是开始研究……'。",syn:"begin / start / develop a liking for",conf:"take to(开始/喜欢) vs. take on(承担；呈现) vs. take up(开始从事；占据) vs. take over(接管)"},
+  pursuit:{w:"pursuit",ipa:"/pəˈsjuːt/",pos:"n.",tags:["core","poly","write"],cn:"⚠️（业余）活动，事业；追求",en:"an activity one spends time on; the act of chasing",ex:"expert performers in a wide range of pursuits",mem:"熟词僻义：复数 pursuits 常指<b>各类活动/行当</b>（＝activities），不是'追求'。pursue v. 追求/从事：pursue a career。名句：the pursuit of happiness 追求幸福（美国独立宣言）。",syn:"activity / occupation / quest",conf:"pursuit(活动/追求) vs. pursue(v.) vs. persuade(说服)——拼写易混"},
+  biographical:{w:"biographical",ipa:"/ˌbaɪəˈɡræfɪkl/",pos:"adj.",tags:["core"],cn:"传记的，生平的",en:"about a person's life",ex:"not just performance statistics and biographical details",mem:"bio(生命)+graph(写)+ical→写生命的→传记的。⚠️24 题 B 的诱饵：文中它只是'研究收集的数据之一'，不是'卓越表现的关键'。autobiography 自传。",syn:"life-history",conf:"biography(传记) vs. autobiography(自传) vs. biology(生物学)"},
+  startling:{w:"startling",ipa:"/ˈstɑːtlɪŋ/",pos:"adj.",tags:["core","write"],cn:"令人震惊的，惊人的",en:"very surprising or shocking",ex:"a rather startling assertion",mem:"startle v. 使吓一跳（比 shock 轻，强调'突然'）。写作用它形容数据：a startling 40% increase 惊人的 40% 增长。",syn:"astonishing / striking / alarming",conf:"startling(令人吃惊) vs. starting(开始的) vs. starving(饥饿的)——只差一两个字母"},
+  assertion:{w:"assertion",ipa:"/əˈsɜːʃn/",pos:"n.",tags:["core","write"],cn:"断言，主张",en:"a confident statement that sth is true",ex:"Their work makes a rather startling assertion",mem:"assert v. 断言/维护(assert one's rights)。make an assertion 提出主张。学术写作常见：a bold assertion 大胆论断。⚠️断言≠事实，作者用 assertion 常暗含'尚待验证'。",syn:"claim / statement / contention",conf:"assertion(断言) vs. assertive(自信果断的) vs. assessment(评估)"},
+  trait:{w:"trait",ipa:"/treɪt/",pos:"n.",tags:["core","write"],cn:"（性格/品质）特点，特征",en:"a particular quality of a person",ex:"the trait we commonly call talent",mem:"专指<b>人的</b>特质：personality traits 性格特征、a genetic trait 遗传特征。与 feature(泛指特征/五官)、characteristic(特性) 常互换但 trait 最'人格化'。",syn:"characteristic / quality / attribute",conf:"trait(特质) vs. trace(痕迹) vs. treat(对待)——发音也别混：trait /treɪt/"},
+  overrated:{w:"overrated",ipa:"/ˌəʊvəˈreɪtɪd/",pos:"adj.",tags:["core","write"],cn:"被高估的",en:"considered better than it really is",ex:"the trait we commonly call talent is highly overrated",mem:"⭐24 题杀招：over<b>rated</b>(被高<b>估</b>) ≠ over<b>looked</b>(被<b>忽视</b>)——意思相反！over(过度)+rate(评价)。写作模板：X is overrated; what really matters is Y。",syn:"overvalued / overstated / exaggerated",conf:"一次背全：overrated 高估 / underrated 低估 / overlooked 忽视 / overstated 夸大 —— 命题人最爱的形近陷阱池"},
+  nurture:{w:"nurture",ipa:"/ˈnɜːtʃə(r)/",pos:"n./v.",tags:["core","write"],cn:"后天培养，养育；培育",en:"the care and training one receives, as opposed to nature",ex:"[24题D] high achievers owe their success mostly to nurture",mem:"⭐术语对：<b>nature vs. nurture</b>（先天 vs. 后天）——心理学/教育学文章的固定框架，本文正是站 nurture 这边。动词：nurture talent 培养人才。",syn:"upbringing / cultivation / nourish(v.滋养)",conf:"nurture(后天培养) ⇄ nature(天性)；nurture vs. nourish(提供营养) vs. nurse(护理)"}
+};
+
+const panel=document.getElementById('panel');
+const isMobile=()=>window.innerWidth<=900;
+function badge(t){return {core:'<span class="badge b-core">核心词</span>',phrase:'<span class="badge b-phrase">短语</span>',poly:'<span class="badge b-poly">熟词僻义</span>',write:'<span class="badge b-write">写作✍︎</span>'}[t]||''}
+function showCard(k,el){
+  const d=V[k]; if(!d)return;
+  document.querySelectorAll('.tk.active').forEach(e=>e.classList.remove('active'));
+  if(el&&el.classList.contains('tk'))el.classList.add('active');
+  panel.innerHTML=`<button class="close" onclick="panel.classList.remove('open')">✕</button>
+  <div class="wcard">
+    <div class="head"><span class="w">${d.w}</span><span class="ipa">${d.ipa}</span><span class="pos">${d.pos}</span>${d.tags.map(badge).join('')}</div>
+    <div class="cn">${d.cn}</div><div class="en-def">${d.en}</div>
+    <div class="row r-ex"><b>原文语境</b>“…${d.ex}…”</div>
+    <div class="row r-mem"><b>怎么记</b>${d.mem}</div>
+    <div class="row r-syn"><b>同类词</b>${d.syn}</div>
+    <div class="row r-conf"><b>易混辨析</b>${d.conf}</div>
+  </div>`;
+  if(isMobile())panel.classList.add('open');
+}
+document.querySelectorAll('.tk').forEach(t=>t.addEventListener('click',e=>{e.stopPropagation();showCard(t.dataset.w,t)}));
+
+function tz(btn){btn.closest('.para').classList.toggle('showzh')}
+let allOn=false;
+function toggleAll(){allOn=!allOn;document.querySelectorAll('.para').forEach(p=>p.classList.toggle('showzh',allOn))}
+function go(id){document.getElementById(id).scrollIntoView({behavior:'smooth',block:'center'});const s=document.getElementById(id);s.style.transition='none';s.style.opacity=.3;setTimeout(()=>{s.style.transition='opacity .8s';s.style.opacity=1},80)}
+
+document.querySelectorAll('.q').forEach(q=>{
+  const ans=+q.dataset.ans;
+  q.querySelectorAll('.opt').forEach((o,i)=>o.addEventListener('click',()=>{
+    if(q.classList.contains('done'))return;
+    q.classList.add('done');
+    if(i!==ans)o.classList.add('wrong');
+    q.querySelectorAll('.opt')[ans].classList.add('right');
+  }));
+});
+
+const vg=document.getElementById('vgrid');
+function renderGrid(f){
+  vg.innerHTML='';
+  Object.keys(V).forEach(k=>{
+    const d=V[k];
+    if(f!=='all'&&!d.tags.includes(f))return;
+    const div=document.createElement('div');div.className='vitem';
+    div.innerHTML=`<span class="badges">${d.tags.map(badge).join('')}</span><div class="w">${d.w}</div><div class="cn">${d.cn}</div>`;
+    div.addEventListener('click',()=>{showCard(k,null);if(!isMobile())window.scrollTo({top:0,behavior:'smooth'})});
+    vg.appendChild(div);
+  });
+}
+renderGrid('all');
+document.querySelectorAll('.fbtn').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.fbtn').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderGrid(b.dataset.f);
+}));
+
+const yd=document.getElementById('yd');let sel='';
+document.addEventListener('selectionchange',()=>{
+  const s=window.getSelection();const t=s?s.toString().trim():'';
+  if(t&&/^[a-zA-Z' -]{2,40}$/.test(t)){
+    sel=t;
+    try{const r=s.getRangeAt(0).getBoundingClientRect();
+      yd.style.left=Math.min(r.left,window.innerWidth-110)+'px';
+      yd.style.top=(r.bottom+8)+'px';yd.style.display='block';}catch(e){}
+  }else{yd.style.display='none'}
+});
+yd.addEventListener('click',()=>{window.open('https://dict.youdao.com/result?word='+encodeURIComponent(sel)+'&lang=en');yd.style.display='none'});
+document.addEventListener('click',e=>{if(e.target!==yd&&!window.getSelection().toString())yd.style.display='none'});
+</script>
+<script src="_fault_attr.js"></script>
+</body>
+</html>
