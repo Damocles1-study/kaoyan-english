@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2007 英一 Text 3 · 中产家庭的风险转嫁</title>
+<style>
+  :root{
+    --bg:#faf9f6; --card:#ffffff; --ink:#2b2b2b; --muted:#8a8578;
+    --accent:#8b5e34; --accent-soft:#f3e9dd; --line:#e8e3d8;
+    --hl:#fdf3d8; --hl-border:#e0b84d;
+    --green:#3e7a4e; --green-soft:#e8f2ea;
+    --red:#b04a3a; --red-soft:#f9e9e6;
+    --blue:#3d6a8a; --blue-soft:#e7eff5;
+    --purple:#6d5a8e; --purple-soft:#eeeaf5;
+    --serif:"Georgia","Songti SC",serif;
+    --sans:-apple-system,"PingFang SC","Helvetica Neue",sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#1c1a17; --card:#26231f; --ink:#e8e4dc; --muted:#9a948a;
+      --accent:#d0a06a; --accent-soft:#3a3127; --line:#3a362f;
+      --hl:#3d3520; --hl-border:#b08c3a;
+      --green:#7fb98d; --green-soft:#26362b;
+      --red:#d98876; --red-soft:#3d2a26;
+      --blue:#8ab3d0; --blue-soft:#26323d;
+      --purple:#a996c8; --purple-soft:#302a3d;
+    }
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;padding-bottom:120px}
+  .wrap{max-width:1100px;margin:0 auto;padding:24px 20px}
+  .back{font-size:.85rem;color:var(--muted);text-decoration:none}
+  .back:hover{color:var(--accent)}
+  header{margin:14px 0 28px}
+  header h1{font-family:var(--serif);font-size:1.7rem;line-height:1.3}
+  header .sub{color:var(--muted);margin-top:6px;font-size:.9rem}
+  .tags{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+  .tag{font-size:.75rem;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);border:1px solid var(--line)}
+  .tag.warn{background:var(--red-soft);color:var(--red);border-color:var(--red)}
+
+  .layout{display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:start}
+  @media (max-width:900px){.layout{grid-template-columns:1fr}}
+
+  section.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:24px}
+  h2{font-size:1.05rem;letter-spacing:.05em;color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+  h2 .n{font-size:.72rem;background:var(--accent);color:var(--card);border-radius:6px;padding:1px 7px}
+
+  .para{margin-bottom:22px}
+  .para .en{font-family:var(--serif);font-size:1.06rem;line-height:1.9}
+  .pno{color:var(--muted);font-size:.75rem;user-select:none;margin-right:6px}
+  .tk{background:var(--hl);border-bottom:2px solid var(--hl-border);border-radius:3px;padding:0 2px;cursor:pointer;transition:filter .15s}
+  .tk:hover{filter:brightness(.93)}
+  .tk.active{outline:2px solid var(--hl-border)}
+  .ls{border-bottom:2px dotted var(--blue);cursor:pointer}
+  .para .zh{display:none;margin-top:10px;padding:10px 14px;background:var(--blue-soft);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:.93rem}
+  .para.showzh .zh{display:block}
+  .zbtn{float:right;margin-left:10px;font-size:.72rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:6px;padding:2px 9px;cursor:pointer}
+  .zbtn:hover{color:var(--accent);border-color:var(--accent)}
+  .allbtn{font-size:.78rem;border:1px solid var(--accent);background:none;color:var(--accent);border-radius:8px;padding:4px 12px;cursor:pointer;margin-left:auto}
+
+  aside{position:sticky;top:20px}
+  #panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;min-height:180px}
+  #panel .hint{color:var(--muted);font-size:.88rem;text-align:center;padding:30px 10px}
+  .wcard .head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .wcard .w{font-family:var(--serif);font-size:1.35rem;font-weight:bold}
+  .wcard .ipa{color:var(--muted);font-size:.85rem}
+  .wcard .pos{font-size:.72rem;color:var(--purple);background:var(--purple-soft);padding:1px 8px;border-radius:999px}
+  .wcard .badge{font-size:.7rem;padding:1px 8px;border-radius:999px}
+  .b-core{background:var(--red-soft);color:var(--red)}
+  .b-phrase{background:var(--blue-soft);color:var(--blue)}
+  .b-poly{background:var(--purple-soft);color:var(--purple)}
+  .b-write{background:var(--green-soft);color:var(--green)}
+  .wcard .cn{margin-top:8px;font-size:1rem;font-weight:600}
+  .wcard .en-def{color:var(--muted);font-size:.86rem;font-style:italic;margin-top:2px}
+  .wcard .row{margin-top:10px;font-size:.86rem;padding:8px 10px;border-radius:8px}
+  .wcard .row>b:first-child{font-size:.72rem;display:block;margin-bottom:2px;letter-spacing:.06em}
+  .r-ex{background:var(--hl)} .r-ex b{color:var(--hl-border)}
+  .r-mem{background:var(--green-soft)} .r-mem b{color:var(--green)}
+  .r-syn{background:var(--blue-soft)} .r-syn b{color:var(--blue)}
+  .r-conf{background:var(--red-soft)} .r-conf b{color:var(--red)}
+  #panel .close{display:none}
+  @media (max-width:900px){
+    aside{position:fixed;left:0;right:0;bottom:0;z-index:50;padding:0 8px 8px}
+    #panel{box-shadow:0 -6px 24px rgba(0,0,0,.18);max-height:55vh;overflow-y:auto;display:none}
+    #panel.open{display:block}
+    #panel .close{display:block;float:right;border:none;background:var(--line);border-radius:8px;padding:2px 10px;cursor:pointer;color:var(--ink)}
+  }
+
+  .q{margin-bottom:22px;padding-bottom:18px;border-bottom:1px dashed var(--line)}
+  .q:last-child{border:none;margin-bottom:0;padding-bottom:0}
+  .q .stem{font-weight:600;font-family:var(--serif)}
+  .qt{font-size:.7rem;color:var(--blue);background:var(--blue-soft);border-radius:999px;padding:1px 8px;margin-right:6px;vertical-align:2px}
+  .opts{margin-top:10px;display:grid;gap:8px}
+  .opt{border:1px solid var(--line);border-radius:10px;padding:8px 12px;cursor:pointer;font-size:.93rem;font-family:var(--serif);transition:all .15s}
+  .opt:hover{border-color:var(--accent)}
+  .q.done .opt{cursor:default}
+  .opt.right{background:var(--green-soft);border-color:var(--green)}
+  .opt.wrong{background:var(--red-soft);border-color:var(--red)}
+  .expl{display:none;margin-top:12px;background:var(--accent-soft);border-radius:10px;padding:12px 14px;font-size:.9rem}
+  .q.done .expl{display:block}
+  .expl b{color:var(--accent)}
+  .expl .loc{font-family:var(--serif);font-style:italic;background:var(--hl);padding:1px 4px;border-radius:3px}
+  .fail{background:var(--red-soft);border:1px solid var(--red);border-radius:10px;padding:10px 13px;margin-bottom:10px;font-size:.89rem}
+  .fail b{color:var(--red)}
+
+  .sent{margin-bottom:20px}
+  .sent .src{font-family:var(--serif);font-size:1rem;background:var(--blue-soft);padding:12px 14px;border-radius:10px;border-left:3px solid var(--blue)}
+  .sent .anat{margin-top:8px;font-size:.9rem}
+  .sent .anat li{margin:4px 0 4px 18px}
+  .sent .tr{margin-top:8px;font-size:.92rem;color:var(--muted)}
+  .skel{color:var(--red);font-weight:600}
+
+  .filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+  .fbtn{font-size:.8rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:999px;padding:4px 14px;cursor:pointer}
+  .fbtn.on{background:var(--accent);color:var(--card);border-color:var(--accent)}
+  .vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
+  .vitem{border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer;transition:border-color .15s}
+  .vitem:hover{border-color:var(--accent)}
+  .vitem .w{font-family:var(--serif);font-weight:bold}
+  .vitem .cn{font-size:.85rem;color:var(--muted)}
+  .vitem .badges{float:right}
+
+  .wb{display:grid;gap:10px}
+  .wbi{border-left:3px solid var(--green);background:var(--green-soft);border-radius:0 10px 10px 0;padding:10px 14px;font-size:.92rem}
+  .wbi .p{font-family:var(--serif);font-weight:600}
+  .wbi .u{color:var(--muted);font-size:.85rem}
+
+  .flow{display:grid;gap:8px;font-size:.92rem}
+  .flow .fi{border:1px solid var(--line);border-radius:10px;padding:9px 13px}
+  .flow .fi b{color:var(--accent)}
+
+  .ctab{width:100%;border-collapse:collapse;font-size:.86rem;margin-top:8px}
+  .ctab th,.ctab td{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
+  .ctab th{background:var(--accent-soft);color:var(--accent);font-size:.8rem;white-space:nowrap}
+  .ctab code{background:var(--hl);padding:0 3px;border-radius:3px}
+  .tabwrap{overflow-x:auto}
+  .ok{color:var(--green);font-weight:700}
+  .no{color:var(--red);font-weight:700}
+
+  #yd{position:fixed;z-index:60;display:none;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:4px 12px;font-size:.8rem;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+  footer{color:var(--muted);font-size:.8rem;text-align:center;margin-top:30px}
+  .att{display:grid;gap:8px;margin-top:10px}
+  .atti{border:1px solid var(--line);border-radius:10px;padding:9px 13px;font-size:.9rem}
+  .atti b{font-family:var(--serif)}
+  .atti.no2{background:var(--red-soft);border-color:var(--red)}
+  .atti.yes{background:var(--green-soft);border-color:var(--green)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">◀ 返回英语复盘中心</a>
+  <header>
+    <h1>The Middle Class on the Precipice：风险是怎么被一层层甩到中产肩上的</h1>
+    <div class="sub">2007 年英语（一）真题 · Text 3 · 421 词 · 建议做题 18 min · 话题：社会经济×公共政策（源自《哈佛杂志》2006 年 Elizabeth Warren《The Middle Class on the Precipice—Rising Financial Risks for American Families》）</div>
+    <div class="tags">
+      <span class="tag">正确答案：31C 32B 33D 34C 35B</span><span class="tag">题型：因果事实 ×2 + 事实细节 + 推理引申 + 文章主旨（标题）</span><span class="tag">难度：题干全部朴素，坑全在「因果链接对没接对」</span><span class="tag warn">⚠️ Claude 盲做 4/5：31 题错选 A</span><span class="tag">🆕 新增套路卡：R14 支撑者≠被支撑者</span>
+    </div>
+    <div class="atti" style="margin-top:14px;background:var(--blue-soft);border:1px solid var(--blue);border-radius:10px;padding:10px 14px;font-size:.88rem">
+      📖 <b>本页与原卷配合看</b>：原文完整英文在你手上的原卷 <b>p7</b>（<code>按年份/2007/…图像保真版.pdf</code> 第 8 页），题目在原卷 <b>p8</b>。本页第 01 节按段给出<b>考点句原文 + 全段中译</b>，不重排整篇文章——做题时对着原卷读，复盘时对着本页看。
+    </div>
+  </header>
+
+  <div class="layout">
+    <main>
+      <!-- ========== 全文脉络 ========== -->
+      <section class="card">
+        <h2><span class="n">00</span>读前一分钟 · 全文脉络（做完题再看也行）</h2>
+        <div class="flow">
+          <div class="fi"><b>①段 总起（主旨句就在第一句）</b>：过去一代人里，那个「靠<b>努力工作 + 公平竞争</b>就能保住经济安全」的美国中产家庭，已<b>被经济风险和新的现实彻底改变</b>。第②句立刻给画面：<b>一张解雇通知、一份坏诊断、一个跑掉的配偶</b>——几个月就能把一个殷实中产打成新贫。<b>全文只有一个论点：中产家庭的经济风险大幅上升。</b></div>
+          <div class="fi"><b>②段 原因 A：家庭内部（双薪化的副作用）</b>　⭐31 题定位段。链条走四步：数百万母亲外出工作 → 预算按<b>两份收入</b>花到顶 → 一旦出事，<b>再没有「后备挣钱人」可以派上场</b>（过去这个人通常是妈妈）→ 家庭风险随之上升。作者点名说：大家都在争论「社会影响」，<b>没人看这个副作用</b>。</div>
+          <div class="fi"><b>③段 原因 B：外部制度（三笔账一起变坏）</b>　⭐32、33 题定位段。①<b>退休金</b>：布什社保改革，把「有保障的养老金」换成「看投资回报的钱」；②<b>医保</b>：绝对成本涨、家庭承担份额涨，新流行的<b>健康储蓄计划</b>还带来更高免赔额 + 一大笔新的投资风险；③<b>人口结构</b>：家里有体弱老人的几率，<b>一代人涨了八倍</b>。三笔账指向同一件事：风险从机构转到家庭。</div>
+          <div class="fi"><b>④段 收口 + 警告</b>　⭐34、35 题。从中产自己的角度看，这一切<b>不像「让你行使更多理财自主权的机会」，倒更像「把金融风险大规模甩到已经不堪重负的肩膀上」</b>。末句双 fallout 收尾：<b>经济上的不良后果已经开始，政治上的后果也不会太远了</b>——这是<b>向布什政府发出的警告</b>。</div>
+          <div class="fi" style="border-color:var(--accent)">📌 <b>一句话主旨</b>：美国中产家庭的经济风险正被大规模转嫁到自己肩上，经济稳定性已岌岌可危。<br>📌 <b>结构套路</b>：<b>亮现状（总起）→ 原因 A（家庭内部）→ 原因 B（公共政策）→ 表态 + 警告</b>。<br>⚠️ <b>全文没有一句解决方案</b>，它是一篇<b>警示文</b>——记住这个性质，35 题的「on the Cliff（悬崖<b>边上</b>）」为什么胜过「in Ruins（已成废墟）」就一目了然：<b>危险已到眼前，但还没坠下去。</b></div>
+        </div>
+      </section>
+
+      <!-- ========== 原文精读 ========== -->
+      <section class="card">
+        <h2><span class="n">01</span>原文精读 · 考点句 <button class="allbtn" onclick="toggleAll()">全段译文 开/关</button></h2>
+        <p style="font-size:.8rem;color:var(--muted);margin-bottom:14px">🟡 黄色高亮 = 重难点词/短语，点击右侧出卡片 ｜ 蓝色虚线 = 长难句，点击跳到精析 ｜ 每段「译」= 该段完整中译 ｜ 选中任意其他单词浮出「查有道」</p>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p style="font-size:.78rem;color:var(--accent);margin-bottom:6px">① 总起段 · 主旨句 · 35 题的定盘星</p>
+          <p class="en"><span class="pno">主旨句</span><span class="ls" onclick="go('s1')">During the past generation, the American middle-class family that once could count on <span class="tk" data-w="hardwork">hard work and fair play</span> to keep itself financially <span class="tk" data-w="secure">secure</span> has been <span class="tk" data-w="transform">transformed</span> by economic risk and new realities.</span></p>
+          <p class="en" style="margin-top:10px"><span class="pno">画面句</span>Now a <span class="tk" data-w="pinkslip">pink slip</span>, a bad <span class="tk" data-w="diagnosis">diagnosis</span>, or a disappearing <span class="tk" data-w="spouse">spouse</span> can <span class="tk" data-w="reduce">reduce</span> a family from <span class="tk" data-w="solidly">solidly middle class</span> to newly poor in a few months.</p>
+          <div class="zh"><b>①段全译：</b><b>在过去一代人的时间里，原本依靠努力工作和公平竞争便能保持自身经济安稳的美国中产阶级家庭，已被经济风险和新的现实彻底改变。</b>如今，一张粉红小纸条（解聘通知书）、一份糟糕的诊断结果或是配偶的离散，都可以使一个家庭在几个月内从殷实的中产阶级沦为新贫阶层。
+          <div style="margin-top:8px;font-size:.86rem">💡 <b>首段两句话把全文说完了</b>：第①句给<b>判断</b>（中产家庭已被风险改变），第②句给<b>证据的形状</b>（三件小事就能把你打落）。<b>考研阅读的首段十有八九是「现象/论点 + 具象化」这个双句结构</b>，读到第二句还在铺画面，就说明论点已经在第一句给完了，可以放心往下推进。<br>💡 <b>注意 <code>once could count on</code> 里的 once</b>（曾经）——它和后面的 <code>Now</code> 构成<b>今昔对照</b>，这是全文最主要的论证方式：<b>过去 vs 现在</b>，②③两段每一条论据都在重复这个对照。</div></div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p style="font-size:.78rem;color:var(--accent);margin-bottom:6px">② 原因 A：双薪化的副作用 · ⭐31 题定位段（全篇最坑的一段）</p>
+          <p class="en"><span class="pno">起因</span>In just one generation, millions of mothers have gone to work, transforming basic family economics.</p>
+          <p class="en" style="margin-top:10px"><span class="pno">⭐关键</span>Scholars, policymakers, and critics of <span class="tk" data-w="stripes">all stripes</span> have debated the social <span class="tk" data-w="implication">implications</span> of these changes, but few have looked at the <span class="tk" data-w="sideeffect">side effect</span>: family risk has risen as well.</p>
+          <p class="en" style="margin-top:10px"><span class="pno">⭐31题</span>Today's families have <span class="tk" data-w="budget">budgeted to the limits</span> of their new <span class="tk" data-w="paycheck">two-paycheck status</span>. <span class="ls" onclick="go('s2')">As a result, they have lost the <span class="tk" data-w="parachute">parachute</span> they once had in times of financial <span class="tk" data-w="setback">setback</span>—a <span class="tk" data-w="backup">back-up earner</span> (usually Mom) who could go into the workforce if the <span class="tk" data-w="primary">primary earner</span> got <span class="tk" data-w="layoff">laid off</span> or fell sick.</span></p>
+          <p class="en" style="margin-top:10px"><span class="pno">⚠️陷阱句</span><span class="ls" onclick="go('s3')">This "added-worker effect" could <span class="tk" data-w="support">support</span> the <span class="tk" data-w="safetynet">safety net</span> offered by unemployment insurance or disability insurance to help families <span class="tk" data-w="weather">weather</span> bad times.</span></p>
+          <p class="en" style="margin-top:10px"><span class="pno">收口</span>But today, a <span class="tk" data-w="disruption">disruption</span> to family fortunes can no longer be <span class="tk" data-w="makeup">made up</span> with extra income from an <span class="tk" data-w="otherwise">otherwise-stay-at-home</span> partner.</p>
+          <div class="zh"><b>②段全译：</b>在仅仅一代人的时间里，数百万母亲已出去工作，彻底改变了基本的家庭经济情况。各类学者、政策制定者及评论家都已讨论过这些变化可能造成的社会影响，<b>但鲜少有人仔细研究过其副作用：家庭风险也上升了。</b>如今家庭的预算开支已经达到两个人挣工资这一新经济状况的极限。<b>结果是，他们失去了在经济境况变糟的时期曾经拥有的「保护伞」——一个在家庭经济支柱失业或生病时可以加入劳动大军的后备赚钱者（通常是母亲）。</b>这种「附加的劳动者效应」<b>能够增强</b>失业保险和伤残保险所提供的安全保障网，帮助家庭渡过难关。但如今，家庭时运遭到的破坏再也不能通过原本赋闲在家的另一半的额外收入来弥补。
+          <div style="margin-top:8px;font-size:.86rem">⚠️ <b>本段有两样东西，千万别混成一个（31 题全靠它）：</b><br>
+          　　<b>① parachute / back-up earner「降落伞、后备挣钱人」</b> = 那位原本待在家的伴侣（通常是妈妈）。<b>双薪化之后，它没了。</b><br>
+          　　<b>② safety net「安全网」</b> = <span class="loc">the safety net <b>offered by unemployment insurance or disability insurance</b></span>，<b>由失业保险/伤残保险提供</b>。<b>它还在，只是失去了①的加持而被削弱。</b><br>
+          　　原文的关系是 <code>① could <b>support</b> ②</code>——<b>①是给②加力的，①不等于②</b>。31 题的 A 项就是把这两样并成一样，再把「被削弱」拉满成「已消失」。<b>Claude 盲做就栽在这里。</b><br>
+          💡 <b><code>but few have looked at the side effect:</code> 是本段的路标</b>：<code>few have looked at</code>（少有人注意）＝ 作者要讲的<b>新东西</b>就在冒号后面。<b>凡「大家都在谈 A，但很少有人注意 B」的句式，B 一定是本段乃至全文的论证重心，必出题。</b></div></div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p style="font-size:.78rem;color:var(--accent);margin-bottom:6px">③ 原因 B：三笔账（退休金 / 医保 / 人口）· ⭐32、33 题定位段</p>
+          <p class="en"><span class="pno">总起</span>During the same period, families have been asked to <span class="tk" data-w="absorb">absorb</span> much more risk in their retirement income.</p>
+          <p class="en" style="margin-top:10px"><span class="pno">铺垫</span>Steelworkers, airline employees, and now those in the auto industry are joining millions of families who must worry about interest rates, stock market <span class="tk" data-w="fluctuation">fluctuation</span>, and the <span class="tk" data-w="harsh">harsh reality</span> that they may <span class="tk" data-w="outlive">outlive</span> their retirement money.</p>
+          <p class="en" style="margin-top:10px"><span class="pno">⭐32题</span><span class="ls" onclick="go('s4')">For much of the past year, President Bush <span class="tk" data-w="campaign">campaigned</span> to move Social Security to a savings-account model, with retirees <span class="tk" data-w="trade">trading</span> much or all of their <span class="tk" data-w="guaranteed">guaranteed payments</span> for payments depending on investment returns.</span></p>
+          <p class="en" style="margin-top:10px"><span class="pno">⭐33题</span><span class="ls" onclick="go('s5')">Both the absolute cost of healthcare and the share of it <span class="tk" data-w="borne">borne by</span> families have risen—and newly fashionable <span class="tk" data-w="hsa">health-savings plans</span> are spreading from <span class="tk" data-w="legislative">legislative halls</span> to Wal-Mart workers, with much higher <span class="tk" data-w="deductible">deductibles</span> and a large new <span class="tk" data-w="dose">dose</span> of investment risk for families' future healthcare.</span></p>
+          <p class="en" style="margin-top:10px"><span class="pno">第三笔账</span><span class="ls" onclick="go('s6')">Even <span class="tk" data-w="demographics">demographics</span> are working against the middle class family, as the <span class="tk" data-w="odds">odds</span> of having a weak elderly parent—and all the <span class="tk" data-w="attendant">attendant</span> need for physical and financial assistance—have jumped <span class="tk" data-w="eightfold">eightfold</span> in just one generation.</span></p>
+          <div class="zh"><b>③段全译：</b>与此同时，家庭已被要求在退休收入方面承担（比以前）大得多的风险。钢铁工人、航空公司雇员以及现在汽车行业的员工，正在加入数百万家庭的行列，这些家庭必须担忧利率、股市波动，以及退休金不足以养老这一严酷现实。<b>去年的大半年中，布什总统领导了将社会保障体系变成储蓄账户模式的运动，（在这种模式下）退休人员的大部分或全部的有保障的（退休金）收入变成了由投资回报决定的收入。</b>对于较年轻的家庭来说，境况并没有好出丝毫。<b>医疗保健的绝对成本以及其中由家庭承担的份额都已提高——且新近流行的健康储蓄计划正从立法大厅蔓延到沃尔玛员工那里，对家庭未来的医疗保健而言，随之而来的是比过去高出许多的医疗保险免赔额以及大量最新增的投资风险。</b>甚至人口统计数据都对中产阶级家庭不利，因为（据统计）家庭中出现年老力衰的父亲或母亲的几率——以及所有随之而来的、对身体和经济援助方面的需求——在仅仅一代人的时间里就猛涨到原来的八倍。
+          <div style="margin-top:8px;font-size:.86rem">💡 <b>本段是「三笔账」并列，靠三个路标切开</b>：<code>retirement income</code>（退休金）→ <code>For younger families</code>（医保）→ <code>Even demographics</code>（人口结构）。<b>并列段落一定要先切块再做题</b>——32 题只在第一块里找，33 题只在第二块里找，切错块就会互相干扰（33 题的 C 项正是拿第一块的养老金来干扰第二块）。<br>💡 <b><code>Even</code> 是「递进到极端」的信号</b>：连人口结构这种看似跟政策无关的东西都在跟中产作对——<b>Even 后面往往是作者认为最有冲击力的一条</b>，读到就该重视。</div></div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p style="font-size:.78rem;color:var(--accent);margin-bottom:6px">④ 收口 + 警告段 · ⭐34、35 题定位段</p>
+          <p class="en"><span class="pno">⭐35题</span><span class="ls" onclick="go('s7')">From the middle-class family <span class="tk" data-w="perspective">perspective</span>, much of this, <span class="tk" data-w="understandably">understandably</span>, looks far less like an opportunity to <span class="tk" data-w="exercise">exercise</span> more financial responsibility, and a good deal more like a frightening <span class="tk" data-w="acceleration">acceleration</span> of the <span class="tk" data-w="wholesale">wholesale</span> shift of financial risk onto their already <span class="tk" data-w="overburdened">overburdened</span> shoulders.</span></p>
+          <p class="en" style="margin-top:10px"><span class="pno">⭐34题</span>The financial <span class="tk" data-w="fallout">fallout</span> has begun, and the political fallout may not be far behind.</p>
+          <div class="zh"><b>④段全译：</b><b>可以理解，从中产阶级家庭的角度看，上述许多现象看起来远不像是履行更多经济责任的机会，而更像是以骇人的增速将金融风险大规模转嫁到他们已经不堪重负的肩膀上。</b>经济上的不良后果已经显现，政治影响也不会太远了。
+          <div style="margin-top:8px;font-size:.86rem">💡 <b>末段两句 = 两道题</b>：第①句是<b>态度句</b>（作者站在中产一边，用 frightening 表明立场）→ 35 题的标题从这里定调；第②句是<b>警告句</b>（financial fallout → political fallout）→ 34 题的答案就是这句的言外之意。<br>💡 <b>末句是全文唯一一次提到「政治」</b>。<b>一个概念只在末句出现一次，几乎必然是「言外之意题」的考点</b>——因为作者是特意把它留到最后作为杀手锏的。</div></div>
+        </div>
+      </section>
+
+      <!-- ========== 题目 ========== -->
+      <section class="card">
+        <h2><span class="n">02</span>题目与解析（点选项即判 · 再看解析）</h2>
+
+        <div class="q" data-ans="2" id="q31">
+          <p class="stem"><span class="qt">因果事实</span>31. Today's double-income families are at greater financial risk in that ______.</p>
+          <div class="opts">
+            <div class="opt">[A] the safety net they used to enjoy has disappeared</div>
+            <div class="opt">[B] their chances of being laid off have greatly increased</div>
+            <div class="opt">[C] they are more vulnerable to changes in family economics</div>
+            <div class="opt">[D] they are deprived of unemployment or disability insurance</div>
+          </div>
+          <div class="expl">
+            <div class="fail">🩹 <b>Claude 盲做在这题上翻了车：我选了 A。</b>翻车的原因值得你抄下来——我在读②段时，把 <b>parachute（后备挣钱人）</b>和 <b>safety net（保险提供的安全网）</b>当成了同一个东西的两种说法，于是「降落伞没了」就顺理成章地读成了「安全网没了」。<b>而原文明明白白写着这两者是「谁支撑谁」的关系，不是等号关系。</b>下面把这条链拆开，这是本篇最值钱的三分钟。</div>
+            <b>答案 C</b>　题干问「今天的双薪家庭为什么面临<b>更大的</b>经济风险」，定位到②段。②段③至⑥句是一条完整的因果链：<br>
+            <span class="loc">Today's families have <b>budgeted to the limits</b> of their new two-paycheck status</span>（预算按两份收入花到顶）→ <span class="loc"><b>As a result</b>, they have <b>lost the parachute</b> they once had in times of financial setback</span>（失去了应对挫折时的降落伞）→ <span class="loc">a disruption to family fortunes <b>can no longer be made up</b> with extra income</span>（家庭时运一被打乱，<b>再也补不回来了</b>）。<br>
+            这条链合成一句话就是：<b>家庭经济状况稍有风吹草动，今天的双薪家庭就再也扛不住</b> ＝ C 的 <b>more vulnerable to changes in family economics</b>。C 看着「空」，其实是③—⑥句的<b>整体概括</b>——因果题的正确项经常长这样。<br>
+            <b>⭐ 干扰项（A 是本篇最狠的一项，务必吃透）：</b><br>
+            · <b>A</b> 犯了<b>两个错，叠在一起</b>：<br>
+            　<b>(1) 张冠李戴</b>——原文说的是 <span class="loc">This "added-worker effect" <b>could support</b> the safety net <b>offered by unemployment insurance or disability insurance</b></span>。请看清楚：<b>safety net 是「失业保险/伤残保险」提供的</b>，而「附加劳动者效应（后备挣钱人）」只是<b>支撑、增强</b>这张网的一股外力。<b>支撑者 ≠ 被支撑者。</b>消失的是<b>降落伞</b>（后备挣钱人），保险这张网并没有消失。<br>
+            　<b>(2) 程度升级</b>——就算退一步说「安全网受影响了」，原文的效果也只是<b>被削弱</b>（少了一股加持），A 却写成 <b>has disappeared</b>（已经消失）。<b>「削弱」→「消失」是最常见的程度造错法之一。</b><br>
+            · <b>B</b> <b>无中生有</b>：文中通篇没提「失业的概率变大了」。原文说的是 <span class="loc">if the primary earner <b>got laid off</b> or fell sick</span>——那只是<b>假设情境</b>（万一顶梁柱失业），不是在说失业率上升。<b>把「假设的触发条件」读成「已经发生的趋势」，是条件句最典型的误读。</b><br>
+            · <b>D</b> 错法和 A 同源，而且更露骨：原文里失业保险和伤残保险<b>好端端地在那儿提供着安全网</b>，家庭并没有「被剥夺保险」。<b>deprived of（被剥夺）</b>这种强动词在原文里毫无对应。<br>
+            <b>技巧 ⭐（本篇第一技巧，记进套路库 R14）：</b>读到 <code>A <b>support / complement / reinforce / add to</b> B</code> 这类句子，立刻在旁边标一句：<b>「A 不等于 B，A 只是给 B 加力的」</b>。命题人最爱在这种「一个东西托着另一个东西」的关系上做文章——<b>把托的人和被托的东西换掉，或者把「少了一股力」说成「整个塌了」</b>。<br>
+            <b>配套动作：</b>因果题选完之后，回头问自己一句——<b>「我选的这一项，主语到底是谁？原文里这个主语发生的是什么程度的变化？」</b>本题问完这两句，A 立刻就露馅了。
+          </div>
+        </div>
+
+        <div class="q" data-ans="1" id="q32">
+          <p class="stem"><span class="qt">因果事实</span>32. As a result of President Bush's reform, retired people may have ______.</p>
+          <div class="opts">
+            <div class="opt">[A] a higher sense of security</div>
+            <div class="opt">[B] less secured payments</div>
+            <div class="opt">[C] less chance to invest</div>
+            <div class="opt">[D] a guaranteed future</div>
+          </div>
+          <div class="expl"><b>答案 B</b>　<code>President Bush's reform</code> + <code>retired people</code> 两个关键词把定位钉死在③段③句：<span class="loc">President Bush campaigned to move Social Security to a savings-account model, <b>with retirees trading much or all of their guaranteed payments for payments depending on investment returns</b></span>。<br>
+          句尾的 <b>with 复合结构</b>就是「改革的结果」，核心是一个固定短语：<b><code>trade A for B</code>＝把 A 换成 B</b>。<br>
+          　　A ＝ <b>guaranteed payments</b>（<b>有保障的</b>钱）　→　B ＝ <b>payments depending on investment returns</b>（<b>看投资脸色的</b>钱）<br>
+          有保障 → 不保障，正是 B 项的 <b>less secured payments</b>（保障性变差的收入）。<b>投资有涨有跌，这一换，退休金的确定性就没了。</b><br>
+          <b>干扰项（四个选项全落在同一句上，靠的全是「方向」）：</b><br>
+          · <b>A 与 D 是同一种错：方向反了。</b>A 说「安全感更高」、D 说「有保障的未来」——正好是改革<b>之前</b>的状态。<b>D 尤其阴：它把原文里 <code>guaranteed payments</code>（改革前的养老金性质）原词搬过来，安到「改革之后」头上。</b>时间线一颠倒，原词复现就成了陷阱（R1）。<br>
+          · <b>C</b> 是<b>逻辑反推</b>：原文说退休金变成了「由投资回报决定的收入」，等于把退休人员<b>推进了投资</b>；C 却说「投资机会<b>减少</b>」——与原文相悖。<b>看到选项里的 less / more，先确认原文到底是哪个方向。</b><br>
+          <b>技巧：</b><b><code>with + 名词 + 现在分词</code>（with retirees trading…）＝ 独立主格式的伴随状语</b>，专门用来交代<b>「主句这件事带来的具体变化」</b>。<b>凡是题干问「X 的结果是什么」，先在 X 那句话后面找 with 结构、找分词、找破折号——结果通常就挂在那儿。</b><br>
+          <b>句内提速小技巧：</b>看到 <code>trading much or all of their <b>guaranteed</b> payments <b>for</b> payments <b>depending on investment returns</b></code>，不必逐词翻译，只需抓两个形容词性成分——<b>guaranteed（保障的）→ depending on investment returns（看投资的）</b>，方向就出来了。<b>trade A for B 型句子只需读懂 A 和 B 各自的「性质词」。</b></div>
+        </div>
+
+        <div class="q" data-ans="3" id="q33">
+          <p class="stem"><span class="qt">事实细节</span>33. According to the author, health-savings plans will ______.</p>
+          <div class="opts">
+            <div class="opt">[A] help reduce the cost of healthcare</div>
+            <div class="opt">[B] popularize among the middle class</div>
+            <div class="opt">[C] compensate for the reduced pensions</div>
+            <div class="opt">[D] increase the families' investment risk</div>
+          </div>
+          <div class="expl"><b>答案 D</b>　题干关键词 <code>health-savings plans</code> 直接定位③段⑤句：<span class="loc">newly fashionable health-savings plans are spreading from legislative halls to Wal-Mart workers, <b>with much higher deductibles and a large new dose of investment risk for families' future healthcare</b></span>。<br>
+          又是一个 <b>with 结构交代后果</b>（与 32 题同款！）：更高的<b>免赔额</b> + <b>一大笔新增的投资风险</b>。D ＝ <span class="loc">a large new dose of <b>investment risk</b> for families'</span> 的直接概括。<br>
+          ⭐<b>本题的关键动作是「绕开生词」</b>：<code>deductibles</code>（医保免赔额）是个不折不扣的生词，多数考生卡在这儿。但<b>它后面用 and 并列着另一个同向信息</b> <code>a large new dose of investment risk</code>——<b>and 连接的两项方向一致</b>，看不懂前一项，直接用后一项答题即可。<b>生僻词一般不会成为唯一解题线索，命题人总会留另一条路。</b><br>
+          <b>干扰项：</b><br>
+          · <b>A</b> <b>方向反了</b>：同句前半明说 <span class="loc">Both the absolute cost of healthcare and the share of it borne by families <b>have risen</b></span>（成本和家庭承担份额<b>都在涨</b>），A 却说「帮助<b>降低</b>医疗费用」。<b>同一句话里，前半句就把它否了。</b><br>
+          · <b>B</b> 有两处毛病。一是<b>范围偷换</b>：原文说计划在 <span class="loc">spreading <b>from legislative halls to Wal-Mart workers</b></span>（从立法机构蔓延到沃尔玛员工），B 缩成「在<b>中产阶级</b>中普及」，对象对不上。二是<b>感情色彩反了</b>：<b>popularize 含「受欢迎、被推崇」的褒义</b>，而作者写 spreading 时的语气是<b>负面的</b>（这是坏事在扩散）。<b>换词可以，换感情色彩不行——这是「同义替换」和「偷换」的分界线。</b><br>
+          · <b>C</b> 是<b>凭空造因果</b>：养老金减少（③段前三句）和健康储蓄计划（⑤句）在原文里是<b>两笔并列的坏账</b>，都是「风险转嫁到家庭」的表现，C 却把它们接成「后者<b>弥补</b>前者」的因果/补偿关系。<b>并列关系 ≠ 因果关系。</b>本段是三笔账并排列出，切块切清楚就不会上当。<br>
+          <b>技巧：</b>细节题遇到句中生词，别停。<b>先看这个生词所在的并列结构 / 同位语 / 破折号后面有没有「同向的第二条信息」</b>——有的话直接用它。本题 <code>much higher deductibles <b>and</b> a large new dose of investment risk</code>，两项都指向「家庭要多担风险」，认出一个就够了。</div>
+        </div>
+
+        <div class="q" data-ans="2" id="q34">
+          <p class="stem"><span class="qt">推理引申</span>34. It can be inferred from the last paragraph that ______.</p>
+          <div class="opts">
+            <div class="opt">[A] financial risks tend to outweigh political risks</div>
+            <div class="opt">[B] the middle class may face greater political challenges</div>
+            <div class="opt">[C] financial problems may bring about political problems</div>
+            <div class="opt">[D] financial responsibility is an indicator of political status</div>
+          </div>
+          <div class="expl"><b>答案 C</b>　末段末句：<span class="loc">The <b>financial fallout has begun</b>, and the <b>political fallout may not be far behind</b>.</span><br>
+          <b>fallout</b> 原指核爆之后的<b>放射性尘埃</b>，引申为「（某事引发的）<b>不良后果、连锁反应</b>」。这句的骨架是 <b>A has begun, and B may not be far behind</b>（A 已经开始，B 也不远了）——<b>时间上的先后 + 同一个词 fallout 的复现，暗示的正是因果承接</b>：<b>经济上的不良后果引发政治上的不良后果</b> ＝ C。注意 C 用 <b>may</b>，与原文 <b>may not be far behind</b> 的推测语气完全同频（R6：只推一步，语气对齐）。<br>
+          <b>干扰项：</b><br>
+          · <b>A</b> <b>凭空比较</b>：原文只说两种 fallout <b>一前一后</b>，从没比较过谁<b>更重</b>（outweigh）。<b>「先后」不等于「轻重」。</b>这是本卷第二次出现「凭空添加比较」的造错法（2007·T2·27 的 B 是同一路数）。<br>
+          · <b>B</b> <b>偷换承受主体</b>：末句里 political fallout 的<b>承受者是政府/执政者</b>（这是一句写给布什政府看的警告——你把风险甩给中产，政治上要付代价），B 却说「<b>中产阶级</b>可能面临更大的政治挑战」，把挨打的人和打人的人调了个个儿。<b>推理题一定要问：这句话是说给谁听的、谁倒霉？</b><br>
+          · <b>D</b> <b>杂糅 + 捏造</b>：它把末段①句的 <code>financial responsibility</code> 和②句的 <code>political fallout</code> 拼在一起，造出一个原文根本没有的判断（经济责任是政治地位的<b>指标</b>）。<b>「把相邻两句的词拼成一句新话」是最难识别的造错法——破解办法是回原文确认这两个词原本在不在同一个逻辑里。</b>本题里，financial responsibility 出现在「看起来<b>不像</b>是行使更多经济责任的机会」这个否定语境中，与 political status 毫无关系。<br>
+          <b>技巧 ⭐（末句言外之意题的通用动作）：</b><b>① 先把末句翻成大白话</b>（经济后果来了，政治后果也快了）；<b>② 问「作者说这句话是为了吓唬谁」</b>（→ 决策者，所以这是警告）；<b>③ 只推一步</b>（前后相继 → 因果承接，<b>不要再推出「谁更严重」「谁将取代谁」</b>）。<br>
+          <b>另一条：一个概念全文只出现一次、且出现在最后一句，它 99% 是考点。</b>本文通篇讲经济，「政治」只在末句露了一次面——它就是为 34 题准备的。</div>
+        </div>
+
+        <div class="q" data-ans="1" id="q35">
+          <p class="stem"><span class="qt">文章主旨（标题）</span>35. Which of the following is the best title for this text?</p>
+          <div class="opts">
+            <div class="opt">[A] The Middle Class on the Alert（保持警惕的中产阶级）</div>
+            <div class="opt">[B] The Middle Class on the Cliff（悬崖边上的中产阶级）</div>
+            <div class="opt">[C] The Middle Class in Conflict（矛盾之中的中产阶级）</div>
+            <div class="opt">[D] The Middle Class in Ruins（没落／已成废墟的中产阶级）</div>
+          </div>
+          <div class="expl"><b>答案 B</b>　四个选项主语相同（The Middle Class），<b>比的全是后半截那个介词短语</b>——所以本题实际上考的是：<b>你能不能把全文的「处境」精准定位在一个刻度上。</b><br>
+          全文的处境是：①段「曾经稳固的中产家庭已被风险改变」→ ②③段「风险从家庭内部和公共政策两头压过来」→ ④段「已经不堪重负，经济后果已现、政治后果在路上」。<b>危险已经到眼前，但还没有坠下去</b>——这正是 <b>on the Cliff（在悬崖边上）</b>。（原文标题就叫 <b>on the Precipice</b>，precipice 与 cliff 同义，B 是原标题的同义替换。）<br>
+          <b>干扰项（三项各错在一个维度，正好凑成一张「标题三查」表）：</b><br>
+          · <b>A 错在「谁在警惕」——张冠李戴。</b>on the Alert ＝ 中产阶级<b>自己保持警觉</b>。可末句的警告 <span class="loc">the political fallout may not be far behind</span> 是<b>说给政策制定者听的</b>（你再这么甩风险，政治上要出事），不是叫中产打起精神。<b>全文自始至终把中产写成「被动承受方」，不是「主动戒备方」。</b><br>
+          · <b>C 错在「跟谁矛盾」——曲解逻辑。</b>in Conflict 要求文中有<b>两方对立/中产内部撕裂</b>。可③段只是分别说了「较年长家庭（退休金）」和 <span class="loc">For younger families, the picture is <b>not any better</b></span>（较年轻家庭也一样糟）——<b>那是「两边都惨」，不是「两边打架」</b>。C 把并列关系读成了对立关系。<br>
+          · <b>D 错在「到了哪一步」——程度过头。</b>in Ruins ＝ 已经<b>塌了、毁了</b>。可原文说的是 <span class="loc">can reduce a family from solidly middle class to <b>newly poor</b></span>（沦为<b>新贫</b>）、<span class="loc">already <b>overburdened</b> shoulders</span>（肩膀已<b>不堪重负</b>）——<b>是「岌岌可危」，不是「已成废墟」；是「风险大增」，不是「阶级消亡」。</b><b>把趋势说成结局，是标题题最常见的错法。</b>（另注意：D 若成立，末句「政治后果<b>可能</b>不远了」这种<b>尚未发生</b>的推测就没有着落了。）<br>
+          <b>⭐ 技巧 · 标题题三查（补进套路库 R11）：</b>标题题不是「哪个听着最像」，而是逐项过三关——<br>
+          　　<b>① 查对象</b>：讨论的主角对不对？（本题四项主角相同，此关不区分）<br>
+          　　<b>② 查特点/关系</b>：它处在什么状态、跟谁发生关系？（A 把被动写成主动 ✗；C 把并列写成对立 ✗）<br>
+          　　<b>③ 查程度</b>：到哪一步了？（D 把「危险」写成「毁灭」✗）<br>
+          三关全过的只有 B。<b>写作/翻译里也用得上这套：给一段文字起小标题时，同样要同时对准「对象 + 关系 + 程度」。</b></div>
+        </div>
+      </section>
+
+      <!-- ========== 长难句 ========== -->
+      <section class="card" id="sents">
+        <h2><span class="n">03</span>长难句精析（正文蓝色虚线句）</h2>
+
+        <div class="sent" id="s1">
+          <div class="src">During the past generation, <u>the American middle-class family <b>that</b> once could count on hard work and fair play to keep itself financially secure</u> <span class="skel">has been transformed</span> by economic risk and new realities.</div>
+          <ul class="anat">
+            <li><span class="skel">主干只有五个词</span>：<b>the family has been transformed</b>（这个家庭已被改变）。主语和谓语之间硬塞了一个 <b>13 个词的定语从句</b>（that once could count on… secure），这就是本句唯一的难点。<br>⭐<b>提速动作</b>：看到 <code>名词 + that/which</code>，先<b>跳到从句结束</b>（本句到 secure 为止），把后面的谓语接上——<b>先接主干，再回填修饰</b>，这是长难句最基本、也最有效的读法。</li>
+            <li><span class="skel">count on</span>＝依靠、指望（＝ rely on / depend on）。<code>count on hard work and fair play <b>to keep</b> itself financially secure</code>：不定式作<b>目的状语</b>——依靠 A 和 B，<b>以便</b>让自己在经济上安稳。</li>
+            <li><span class="skel">once</span> 在这里是副词<b>「曾经」</b>，不是连词「一旦」。<b>它是全文今昔对照的开关</b>：<code>once could count on…</code>（曾经能靠）⇄ 下一句 <code><b>Now</b> a pink slip… can reduce a family…</code>（如今一张解雇通知就够了）。<b>看到 once…Now… 这组对照，就知道作者要论证「今不如昔」。</b></li>
+            <li><span class="skel">被动语态的用意</span>：<code>has been transformed <b>by</b> economic risk and new realities</code>——用被动是为了把<b>「中产家庭」摆在承受者的位置</b>上。<b>全文的立场从这一个被动语态就定了：中产是被动挨打的一方</b>（35 题 A 项「保持警惕」之所以错，根子就在这里）。</li>
+          </ul>
+          <div class="tr">译：在过去一代人的时间里，原本依靠努力工作和公平竞争便能保持自身经济安稳的美国中产阶级家庭，已被经济风险和新的现实彻底改变。</div>
+        </div>
+
+        <div class="sent" id="s2">
+          <div class="src">As a result, they <span class="skel">have lost</span> <u>the parachute <b>(that)</b> they once had in times of financial setback</u>—<span class="skel">a back-up earner (usually Mom)</span> <u><b>who</b> could go into the workforce <b>if</b> the primary earner got laid off or fell sick</u>.</div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：they have lost <b>the parachute</b>（他们失去了那把降落伞）。<code>they once had in times of financial setback</code> 是<b>省略了关系代词 that 的定语从句</b>——<b>两个名词/代词直接相邻（parachute + they）而中间没有连词，就说明省略了关系代词</b>，这是阅读里最常见的「隐形从句」。</li>
+            <li>⭐<span class="skel">破折号 = 同位语，专门解释比喻</span>：前面用了比喻词 <b>parachute</b>（降落伞），破折号后面立刻给出<b>直义</b>——<code>a back-up earner (usually Mom)</code>（一个后备挣钱人，通常是妈妈）。<b>比喻 + 破折号解释，是外刊的标准动作；比喻几乎必出题，而解释就在破折号后面等着你。</b>（同款：2022·T1 的 time bomb）</li>
+            <li><span class="skel">who 从句里还套了一个 if 条件句</span>：这位后备挣钱人 <b>could</b> go into the workforce <b>if</b> the primary earner got laid off or fell sick。<br>⚠️<b>31 题 B 项的坑就在这里</b>：<code>if the primary earner <b>got laid off</b></code> 是<b>假设的触发条件</b>（万一顶梁柱失业），<b>不是在说「失业概率上升了」</b>。<b>虚拟/条件语气里的内容是「设想」，不是「事实」——别把它当趋势读。</b></li>
+            <li><span class="skel">back-up earner ⇄ primary earner</span> 是一对术语：<b>后备挣钱人 / 主要挣钱人（顶梁柱）</b>。原文靠这一对词把家庭内部的角色分工说清楚，<b>31 题的整条因果链就架在这一对词上</b>。</li>
+            <li><code>in times of financial setback</code>＝在经济受挫的时期。<b>in times of + 名词</b> 是写作可直接用的时间状语模板：in times of crisis / uncertainty / hardship。</li>
+          </ul>
+          <div class="tr">译：结果是，他们失去了在经济境况变糟的时期曾经拥有的「保护伞」——一个在家庭经济支柱失业或生病时可以加入劳动大军的后备赚钱者（通常是母亲）。</div>
+        </div>
+
+        <div class="sent" id="s3">
+          <div class="src">This "added-worker effect" <span class="skel">could support</span> <u>the safety net <b>offered by</b> unemployment insurance or disability insurance</u> <b>to help</b> families weather bad times.</div>
+          <ul class="anat">
+            <li>⭐⭐<span class="skel">全篇最该慢读的一句，31 题的胜负手</span>。主干是 <b>A could support B</b>：<br>　<b>A ＝ the "added-worker effect"</b>（附加劳动者效应，即上一句那位后备挣钱人）<br>　<b>B ＝ the safety net offered by unemployment insurance or disability insurance</b>（<b>由失业保险/伤残保险提供的</b>安全网）<br><b>A 支撑 B，所以 A ≠ B。</b>双薪化让 A 消失了，B（保险）<b>还在，只是失去了 A 的加持</b>。<br>31 题的 A 项 <code>the safety net they used to enjoy <b>has disappeared</b></code> 正是把 A、B 并成一个，再把「削弱」拉满成「消失」。<b>读到 support / complement / reinforce / add to，一律在旁边写一句：「谁托着谁，别混。」</b></li>
+            <li><span class="skel">offered by …</span> 是<b>过去分词短语作后置定语</b>，修饰 safety net。<b>这个 by 就是「安全网的提供方」</b>——31 题 D 项（说家庭「被剥夺了保险」）之所以错，就是因为这个 by 后面的保险<b>从来没消失过</b>。<b>后置定语里的 by / from / of 常常交代「归属/来源」，是辨别张冠李戴的关键。</b></li>
+            <li><span class="skel">weather (v.)</span> ⚠️ 熟词僻义：<b>平安渡过（难关）</b>，不是「天气」。<code>weather bad times</code>＝渡过艰难时期；<b>写作高频</b>：weather the storm / weather the recession。<b>判断方法：它前面是 help families，宾语位置需要动词，只能是「渡过」。</b></li>
+            <li><code>could</code> 用的是<b>过去的能力/可能性</b>——「（在过去）本来是能够……的」，与后一句 <code><b>But today</b>, a disruption… can <b>no longer</b> be made up</code> 构成今昔对照。<b>情态动词的时态是隐形的时间标记，读的时候别滑过去。</b></li>
+          </ul>
+          <div class="tr">译：这种「附加的劳动者效应」能够增强失业保险和伤残保险所提供的安全保障网，帮助家庭渡过难关。</div>
+        </div>
+
+        <div class="sent" id="s4">
+          <div class="src">For much of the past year, President Bush <span class="skel">campaigned to move</span> Social Security to a savings-account model, <b>with</b> <u>retirees <b>trading</b> much or all of their guaranteed payments <b>for</b> payments depending on investment returns</u>.</div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：President Bush campaigned to move A to B（布什发起运动，要把社保<b>转成</b>储蓄账户模式）。<code>campaign</code> 在这里是<b>动词</b>「发起／领导运动、造势」，不是名词「战役」。</li>
+            <li>⭐<span class="skel">with + 名词 + 现在分词 = 独立主格作伴随状语</span>，专门交代<b>「主句这件事带来的后果/具体样貌」</b>。<b>32 题问「改革的结果」，答案就挂在这个 with 上。</b><br><b>通用规律：题干问「as a result of X」，就去 X 那句话的 with 结构 / 分词 / 破折号里找。</b>本篇 33 题也是同一个套路（见 s5）——<b>一篇文章里同一种结构连出两道题，说明命题人吃准了这个语法点。</b></li>
+            <li>⭐<span class="skel">trade A for B</span>＝<b>拿 A 换 B</b>（＝ exchange A for B）。<b>本句只需读两个「性质词」</b>：A 是 <b>guaranteed</b>（有保障的），B 是 <b>depending on investment returns</b>（看投资回报的）。<b>有保障 → 不保障，32 题的答案到此已经出来了</b>，中间的 much or all of 之类完全可以略过。</li>
+            <li><code>payments depending on investment returns</code>：现在分词短语后置修饰 payments。<b>注意这里不是 depend on 的谓语用法</b>——句子已经有 trading 了，depending 只能是定语。<b>「一个从句里不能有两个并列谓语而无连词」是判断分词身份的硬指标。</b></li>
+            <li>📌 <b>背景补一句</b>（不影响答题但帮理解）：美国 Social Security 原是<b>确定给付</b>（政府保证你每月拿多少）；改成储蓄账户模式后变成<b>确定缴费</b>（你自己投资，赚亏自负）。<b>本文全篇的主题就是这种「风险从机构转移到个人」的转变。</b></li>
+          </ul>
+          <div class="tr">译：去年的大半年中，布什总统领导了将社会保障体系变成储蓄账户模式的运动，（在这种模式下）退休人员的大部分或全部的有保障的收入变成了由投资回报决定的收入。</div>
+        </div>
+
+        <div class="sent" id="s5">
+          <div class="src"><u>Both the absolute cost of healthcare <b>and</b> the share of it <b>borne by</b> families</u> <span class="skel">have risen</span>—and newly fashionable health-savings plans <span class="skel">are spreading</span> from legislative halls to Wal-Mart workers, <b>with</b> <u>much higher deductibles <b>and</b> a large new dose of investment risk for families' future healthcare</u>.</div>
+          <ul class="anat">
+            <li><span class="skel">前半句：Both A and B have risen</span>。A ＝ 医疗保健的<b>绝对成本</b>，B ＝ <b>其中由家庭承担的份额</b>（the share <b>of it</b>，it 指 healthcare cost）。<b>两个都在涨 ＝ 蛋糕变大了，而且家庭要吃的那一块占比还变大了</b>——这是<b>双重打击</b>，写作里论证「负担加重」可直接借这个句式。<br>⚠️ <b>33 题 A 项「帮助降低医疗费用」就是被这半句直接否掉的。</b></li>
+            <li><code>borne by families</code>：<b>bear（承担）的过去分词是 borne</b>（不是 beared；表「出生」时才用 born）。过去分词短语后置修饰 the share。<b>bear the cost / bear the burden / bear responsibility 是一组写作高频搭配。</b></li>
+            <li>⭐<span class="skel">又是 with 结构交代后果</span>（与 s4 同款）：<code>with <b>much higher deductibles</b> and <b>a large new dose of investment risk</b></code>——<b>and 连接的两项方向一致，都是「家庭要多担」。</b><br>⭐<b>本句的解题动作</b>：<code>deductibles</code>（医保免赔额）是生词，<b>直接跳过</b>，用 and 后面那项 <code>a large new dose of investment risk</code> 答题即可 → 33 题 D。<b>生僻词很少是唯一线索，并列结构里总有一条你认识的路。</b></li>
+            <li><code>from legislative halls to Wal-Mart workers</code>：<b>from A to B 表「蔓延范围之广」</b>——从立法机构（政策源头）一路铺到沃尔玛的普通员工（最底层受影响者）。<b>这种「从最高处到最低处」的对举，是英文里表示「无处不在」的常用手法</b>（同款：from Wall Street to Main Street）。<b>33 题 B 项把这个范围缩成「中产阶级」，属于偷换对象。</b></li>
+            <li><code>a dose of</code>＝<b>一剂、一份</b>（本是药量单位）。<b>a large new dose of investment risk</b>＝新增的一大剂投资风险——<b>用药量作比喻，暗含「这是要人受的」</b>，作者的负面态度藏在这个词里。写作可用：a healthy dose of skepticism（一份恰到好处的怀疑）。</li>
+          </ul>
+          <div class="tr">译：医疗保健的绝对成本以及其中由家庭承担的份额都已提高——且新近流行的健康储蓄计划正从立法大厅蔓延到沃尔玛员工那里，对家庭未来的医疗保健而言，随之而来的是比过去高出许多的医疗保险免赔额以及大量最新增的投资风险。</div>
+        </div>
+
+        <div class="sent" id="s6">
+          <div class="src">Even demographics <span class="skel">are working against</span> the middle class family, <b>as</b> <u>the odds of having a weak elderly parent</u>—<b>and all the attendant need for physical and financial assistance</b>—<span class="skel">have jumped eightfold</span> in just one generation.</div>
+          <ul class="anat">
+            <li>⭐<span class="skel">主谓被破折号插入语拆开了</span>：从句的主语是 <b>the odds</b>，谓语是 <b>have jumped</b>，中间硬塞了一整段 <code>—and all the attendant need for physical and financial assistance—</code>。<br><b>提速动作：看到成对破折号，直接用眼睛把中间「抠掉」，先把主谓接上（the odds have jumped eightfold），再回头看抠掉的部分。</b><b>成对破折号 / 成对逗号 / 成对括号里的东西，语法上都是可以整块拿掉的。</b></li>
+            <li><span class="skel">as</span> 在这里是<b>原因状语连词「因为」</b>（＝ because），不是「当……时」，也不是「像」。<b>判断依据：主句是结论性判断（人口结构在与中产作对），从句给的是数据支撑——这是典型的因果关系。</b><b>as 表原因时语气比 because 弱，常用于「顺带给个理由」。</b></li>
+            <li><span class="skel">the odds of doing sth</span>＝做某事的<b>几率、可能性</b>（odds 恒用复数）。⚠️ 熟词僻义：<b>odd 是「奇怪的/奇数的」，odds 却是「几率、赔率」</b>。写作高频：The odds of success are slim. / against all odds（力排万难）。</li>
+            <li><span class="skel">attendant (adj.)</span>＝<b>伴随的、随之而来的</b>（≠ 名词「服务员」）。<code>all the attendant need for…</code>＝所有随之而来的（对身体照护与经济援助的）需求。<b>写作可用：the attendant risks / the attendant costs（随之而来的风险/成本），比 related 高一档。</b></li>
+            <li><span class="skel">-fold 后缀</span>＝<b>……倍</b>：eightfold 八倍、twofold 两倍/双重、manifold 多种多样的。<b>⚠️ 中英「倍数」表达差异</b>：<code>have jumped eightfold</code>＝<b>涨到原来的八倍</b>（黄皮书译文正是「猛涨到原来的八倍」）。翻译题里倍数是采分点，务必分清「增加了 N 倍」与「增加到 N 倍」。</li>
+          </ul>
+          <div class="tr">译：甚至人口统计数据都对中产阶级家庭不利，因为家庭中出现年老力衰的父亲或母亲的几率——以及所有随之而来的、对身体和经济援助方面的需求——在仅仅一代人的时间里就猛涨到原来的八倍。</div>
+        </div>
+
+        <div class="sent" id="s7">
+          <div class="src">From the middle-class family perspective, much of this, <b>understandably</b>, <span class="skel">looks</span> <u><b>far less like</b> an opportunity to exercise more financial responsibility</u>, <b>and</b> <u><b>a good deal more like</b> a frightening acceleration of the wholesale shift of financial risk onto their already overburdened shoulders</u>.</div>
+          <ul class="anat">
+            <li>⭐<span class="skel">核心结构：looks less like A … and more like B</span>＝<b>「看起来不像 A，倒更像 B」</b>。<b>这是英文里最优雅的「否定甲、肯定乙」句式，落点永远在 B。</b><br>本句 A ＝ <b>an opportunity to exercise more financial responsibility</b>（一个行使更多经济责任的<b>机会</b>——这是<b>官方/政策方的说法</b>，听着挺好听）；B ＝ <b>a frightening acceleration of the wholesale shift of financial risk</b>（金融风险<b>大规模转嫁</b>的骇人加速——这是<b>中产自己的感受</b>）。<br><b>作者用一个句式同时呈现了两种叙事，并明确站在 B 一边。全文的态度就在这一句。</b></li>
+            <li><code>far less</code> / <code>a good deal more</code> 都是<b>比较级的程度修饰</b>（远不如／大大更像）。<b>a good deal ＝ much，修饰比较级</b>；同类：a great deal more、far more、much less、considerably more。<b>写作里换着用能立刻显出层次。</b></li>
+            <li><span class="skel">understandably</span>（可以理解地）是<b>作者的评述性副词</b>——它不描述事实，而是<b>表明作者认可中产的这种感受</b>。<b>⭐ 找作者态度时，这类插在句中的副词是金矿</b>：understandably / unfortunately / surprisingly / rightly / arguably。<b>本篇 35 题定标题、判断作者站位，就靠它 + frightening 这两个词。</b></li>
+            <li><span class="skel">exercise (v.)</span> ⚠️ 熟词僻义：<b>行使、运用</b>（权利/责任），不是「锻炼」。exercise one's right 行使权利、exercise caution 保持谨慎、exercise more financial responsibility 承担更多理财责任。</li>
+            <li><span class="skel">wholesale (adj.)</span> ⚠️ 熟词僻义：<b>大规模的、全面的</b>（本义「批发的」）。<code>the wholesale shift of financial risk</code>＝金融风险的<b>全面转嫁</b>。同款：wholesale changes 全面变革。<b>这个词是作者用来强调「规模之大」的，35 题排除 in Conflict（局部矛盾）时它是旁证。</b></li>
+            <li><code>onto their already <b>overburdened</b> shoulders</code>：<b>already（已经）是关键</b>——它说明中产<b>在被转嫁之前就已经不堪重负</b>了。<b>这个 already 是判断 35 题「程度」的直接证据：肩膀快压垮了（on the Cliff），但还没垮（不是 in Ruins）。</b></li>
+          </ul>
+          <div class="tr">译：可以理解，从中产阶级家庭的角度看，上述许多现象看起来远不像是履行更多经济责任的机会，而更像是以骇人的增速将金融风险大规模转嫁到他们已经不堪重负的肩膀上。</div>
+        </div>
+      </section>
+
+      <!-- ========== 因果题专栏 ========== -->
+      <section class="card">
+        <h2><span class="n">03+</span>因果题专栏（31、32 题专项 · 通用工具）</h2>
+        <p style="font-size:.86rem;color:var(--muted);margin-bottom:12px">本篇五题里<b>两道</b>是因果题（31、32），这是 2007 年这套卷的特点，也是考研阅读的常客。因果题的全部功夫就三步，难在<b>第一步别站错边</b>。</p>
+
+        <div class="att">
+          <div class="atti yes"><b>第一步 · 分清题干给的是「因」还是「果」</b><br>
+          · <code>… in that ______ / because ______ / The reason is ______</code> → 题干给<b>果</b>，让你找<b>因</b>（本篇 <b>31 题</b>）。<br>
+          · <code><b>As a result of</b> X, … may have ______ / X leads to ______</code> → 题干给<b>因</b>，让你找<b>果</b>（本篇 <b>32 题</b>）。<br>
+          ⚠️ <b>站错边的后果</b>：会选中一个「把题干原话换个说法」的选项。这类选项读着最顺、最眼熟，<b>因为它就是题干本身</b>。<b>因果题里，凡与题干同义复述的选项，一律先排。</b>（标本：2007·T2·28 的 C 项）</div>
+
+          <div class="atti"><b>第二步 · 回原文找因果标志，锁定标志词的那一侧</b><br>
+          <b>显性标志（一眼可见）</b>：<code>because / since / as / for / due to / owing to / thanks to / therefore / thus / hence / consequently / <b>as a result</b> / lead to / result in / result from / bring about / give rise to / contribute to / stem from / attribute A to B</code><br>
+          <b>隐性标志（真正的难点）</b>：<br>
+          · <code><b>with</b> + 名词 + 分词</code>（伴随状语交代后果）——<b>本篇 32、33 两题连用</b>；<br>
+          · <code>the <b>side effect</b> / <b>implications</b> / <b>effects</b> of…</code>（本篇②段②句）；<br>
+          · <code>… <b>as well</b> / … <b>too</b></code>（前因带出后果：family risk has risen <b>as well</b>）；<br>
+          · <b>破折号、冒号</b>后的解释（本篇 s2 的破折号同位语）；<br>
+          · <code>A has begun, and B <b>may not be far behind</b></code>（时间先后暗示因果，本篇 34 题）；<br>
+          · <b>动词本身含因果</b>：transform / reduce A to B / work against / absorb。</div>
+
+          <div class="atti"><b>第三步 · 三查正确项</b>：① 信息本身在原文里<b>是真的</b>；② 它与题干<b>确有直接因果关系</b>（不是只在同一段出现）；③ <b>方向没反、程度没超</b>。</div>
+        </div>
+
+        <p style="font-size:.9rem;margin-top:16px;margin-bottom:6px"><b>⭐ 因果题四大造错法（全部用本卷实例）</b></p>
+        <div class="tabwrap">
+        <table class="ctab">
+          <tr><th>造错法</th><th>长相</th><th>本卷标本</th></tr>
+          <tr><td><b>同义复述题干</b></td><td>把「果」换个说法当成「因」，或反过来</td><td>2007·T2·28 的 C（把题干「高分不会再有」抄成「极端个案不会重演」）</td></tr>
+          <tr><td><b>张冠李戴</b><br>（含「支撑者≠被支撑者」）</td><td>A 提供的东西，说成 B 提供的；托着某物的东西，说成某物本身</td><td><b>本篇 31 的 A、D</b>：safety net 是<b>保险</b>给的，消失的却是<b>后备挣钱人</b>（它只是 support 这张网）</td></tr>
+          <tr><td><b>程度升级</b></td><td>削弱 → 消失；有缺陷 → 已淘汰；变糟 → 毁灭</td><td><b>本篇 31 的 A</b>（削弱→has disappeared）、<b>35 的 D</b>（岌岌可危→in Ruins）</td></tr>
+          <tr><td><b>凭空造因果</b></td><td>两条信息都在文中，但原文从没把它们连过线（常把<b>并列</b>读成<b>因果</b>）</td><td><b>本篇 33 的 C</b>（养老金减少 与 健康储蓄计划 是并排两笔坏账，不是「后者补偿前者」）；<b>31 的 B</b>（失业只是假设条件，不是趋势）</td></tr>
+        </table>
+        </div>
+        <p style="font-size:.86rem;margin-top:14px;padding:10px 14px;background:var(--accent-soft);border-radius:10px">
+        <b>做完因果题的最后一个动作（30 秒，能救回一道题）：</b>把选中的那项<b>读出主语</b>——「我选的这句话，主语是谁？原文里这个主语发生的是<b>什么程度</b>的变化？」<br>本篇 31 题问完这两句，A 的两个毛病（主语错 + 程度超）会同时暴露。<b>Claude 盲做时就是漏了这一步。</b></p>
+      </section>
+
+      <!-- ========== 词汇复盘 ========== -->
+      <section class="card">
+        <h2><span class="n">04</span>词汇复盘（点卡片看详情）</h2>
+        <div class="filters">
+          <button class="fbtn on" data-f="all">全部</button>
+          <button class="fbtn" data-f="core">核心词</button>
+          <button class="fbtn" data-f="phrase">短语</button>
+          <button class="fbtn" data-f="poly">熟词僻义</button>
+          <button class="fbtn" data-f="write">写作可用</button>
+        </div>
+        <div class="vgrid" id="vgrid"></div>
+      </section>
+
+      <!-- ========== 写作素材 ========== -->
+      <section class="card">
+        <h2><span class="n">05</span>可搬进作文/翻译的素材</h2>
+        <div class="wb">
+          <div class="wbi"><div class="p">X that once could count on A to keep itself Y has been transformed by Z.</div><div class="u"><b>「曾经靠 A 就能保住 Y 的 X，如今已被 Z 改变」</b>——今昔对照的开题句，写「传统行业受冲击」「读书改变命运是否还成立」都能直接改词。<b>once…now… 这组对照是议论文最省力的结构。</b></div></div>
+          <div class="wbi"><div class="p">Scholars and critics have debated A, but few have looked at the side effect: B.</div><div class="u"><b>「大家都在争论 A，却少有人注意副作用 B」</b>——<b>转入自己论点的黄金句式</b>：先承认主流讨论，再指出被忽视的角度，立刻显出思考层次。<b>比 However, I think… 高好几档。</b></div></div>
+          <div class="wbi"><div class="p">much of this looks far less like an opportunity to …, and a good deal more like a frightening …</div><div class="u"><b>「与其说是……的机会，不如说是骇人的……」</b>——<b>驳斥官方说法的最佳句式</b>，同时呈现两种叙事并表明站位。写「所谓的灵活就业」「所谓的个性化推荐」都能套。</div></div>
+          <div class="wbi"><div class="p">the wholesale shift of X onto their already overburdened shoulders</div><div class="u">「把 X 大规模转嫁到他们已经不堪重负的肩膀上」——<b>写「责任/成本被转嫁给个人」的画面句</b>。<code>already</code> 一词最关键：它说明对方<b>之前就已经扛不住了</b>。</div></div>
+          <div class="wbi"><div class="p">The financial fallout has begun, and the political fallout may not be far behind.</div><div class="u"><b>结尾警告句的天花板</b>：同一个词（fallout）复现两次，靠 A has begun / B may not be far behind 制造递进与悬念。模板：The environmental cost has begun to show, and the social cost may not be far behind.</div></div>
+          <div class="wbi"><div class="p">Both the absolute cost of X and the share of it borne by Y have risen.</div><div class="u"><b>「X 的绝对成本、以及其中由 Y 承担的份额，双双上升」</b>——论证「负担加重」的<b>双重打击句</b>，比 The cost has risen 精确得多。bear the cost / bear the burden 是配套搭配。</div></div>
+          <div class="wbi"><div class="p">A is spreading from legislative halls to Wal-Mart workers.</div><div class="u"><b>from 最高处 to 最低处 = 「无处不在」</b>。同款：from boardrooms to classrooms、from Wall Street to Main Street。<b>写「某现象已全面渗透」时一句顶三句。</b></div></div>
+          <div class="wbi"><div class="p">Even demographics are working against …, as the odds of … have jumped eightfold.</div><div class="u"><code>Even</code> 领起最有冲击力的一条论据；<code>work against sb</code>＝对某人不利；<code>the odds of … have jumped N-fold</code>＝……的几率涨到 N 倍。<b>三个零件都能单独拆出来用。</b></div></div>
+          <div class="wbi"><div class="p">a large new dose of investment risk / a healthy dose of skepticism</div><div class="u"><b>a dose of ＝ 一剂</b>，用药量作比喻，自带「这是要人受的」的情绪。比 a lot of 有画面得多。</div></div>
+          <div class="wbi"><div class="p">话题素材包：Elizabeth Warren · 风险转嫁（risk shift）· 中产脆弱性</div><div class="u">写「社会保障」「个人 vs 制度责任」「内卷与不安全感」可直接举：Harvard law professor Elizabeth Warren argues that American middle-class families have been asked to absorb risks once borne by institutions—in retirement, healthcare, and employment alike. <b>与 2007 T1（刻意练习）、T2（智力测试）合成本年素材群：能力不由天赋定（T1）、不由分数测（T2）、而人生的安全感也不再由努力工作保证（T3）——三篇可串成一篇「个人努力的边界」的作文。</b></div></div>
+        </div>
+      </section>
+    </main>
+
+    <!-- ========== 侧栏词卡 ========== -->
+    <aside>
+      <div id="panel"><div class="hint">👆 点击正文里的<b>黄色高亮词</b><br>词卡会出现在这里</div></div>
+    </aside>
+  </div>
+
+  <footer>2007 英语一 Text 3 · 复盘页由 Claude 生成 · 解析为 Claude 盲做后独立撰写，答案已与黄皮书精讲逐题交叉核对（31C 32B 33D 34C 35B）<br>⚠️ Claude 盲做 4/5，31 题错选 A——错因与拆解已完整写进 31 题解析，那是本页最该看的一段<br>原文出处：《哈佛杂志》2006 年 Elizabeth Warren《The Middle Class on the Precipice》，本页仅摘引考点句作分析用，完整原文见你手上的原卷 p7</footer>
+</div>
+
+<button id="yd">🔍 查有道</button>
+
+<script>
+const V = {
+  hardwork:{w:"hard work and fair play",ipa:"",pos:"n.短语",tags:["phrase","write"],cn:"努力工作与公平竞争",en:"diligence and fair competition",ex:"could count on hard work and fair play to keep itself financially secure",mem:"⭐<b>美国梦的标准配方</b>：只要肯干、规则公平，日子就稳。作者开篇搬出它，就是为了在后文<b>推翻它</b>。<b>fair play</b> 源自体育，指「按规则来、公平竞争」。写作可用：the promise of hard work and fair play（努力与公平的承诺）。",syn:"diligence and fairness / merit-based competition",conf:"fair play(公平竞争) vs. foul play(犯规；也指「不正当行为、他杀嫌疑」——新闻高频)"},
+  secure:{w:"financially secure",ipa:"/sɪˈkjʊə(r)/",pos:"adj.短语",tags:["phrase","write"],cn:"经济上安稳的、有保障的",en:"having enough money and no financial worries",ex:"to keep itself financially secure",mem:"secure adj. 安全的/牢固的；v. 获得、确保（secure a job 谋得一份工作）。<b>名词 security 兼有「安全」与「保障」二义</b>——本文的 Social <b>Security</b>（社会保障）正是这个义项。⭐<b>32 题 A 项的 a higher sense of security 就是从这个词根来的。</b>",syn:"financially stable / well-off / solvent",conf:"secure(有保障的) vs. secured(32题B: less secured payments 保障性较差的收入) vs. sure(确信的)"},
+  transform:{w:"transform",ipa:"/trænsˈfɔːm/",pos:"v.",tags:["core","write"],cn:"彻底改变，使改观",en:"to change sth completely",ex:"has been transformed by economic risk and new realities",mem:"trans(横跨、转变)+form(形状)→改变形状→<b>彻底改变</b>。<b>比 change 强得多</b>：change 可以是小改，transform 是脱胎换骨。写作高频：Technology has transformed the way we work.<b>②段①句也用了它</b>：transforming basic family economics（彻底改变了家庭经济基本盘）。",syn:"revolutionize / overhaul / reshape / remake",conf:"transform(改变形态) vs. transfer(转移，本文主题正是 the shift/transfer of risk) vs. transmit(传送)"},
+  pinkslip:{w:"a pink slip",ipa:"",pos:"n.短语",tags:["phrase","poly"],cn:"⚠️解聘通知书（不是「粉色纸条」）",en:"a notice of dismissal from a job",ex:"Now a pink slip, a bad diagnosis, or a disappearing spouse can reduce a family…",mem:"⭐<b>美式职场俚语</b>：旧时解雇通知印在粉色纸上，故名。<b>get/receive a pink slip＝被炒鱿鱼</b>。原文用它与 a bad diagnosis（坏诊断）、a disappearing spouse（配偶跑了）并列，<b>三个「小纸条式」的意外，就能把殷实中产打成新贫</b>——具象化的力量全在这个并列里。",syn:"dismissal notice / layoff notice / get the sack(英)",conf:"pink slip(解雇通知) vs. blue-collar(蓝领) vs. white paper(白皮书) vs. red tape(繁文缛节)——颜色类习语一起记"},
+  diagnosis:{w:"diagnosis",ipa:"/ˌdaɪəɡˈnəʊsɪs/",pos:"n.",tags:["core"],cn:"诊断（结果）",en:"the identification of an illness",ex:"a bad diagnosis",mem:"dia(穿过)+gno(知道，同 know/knowledge/recognize)→看穿病因→诊断。⚠️<b>复数是 diagnoses</b>（-is→-es，同 crisis/crises、analysis/analyses、basis/bases）。动词 diagnose：be diagnosed with cancer 被诊断出癌症。",syn:"medical assessment / prognosis(预后，指对病程的预测)",conf:"diagnosis(诊断，判断现在) vs. prognosis(预后，预测将来) vs. prescription(处方)"},
+  spouse:{w:"spouse",ipa:"/spaʊs/",pos:"n.",tags:["core"],cn:"配偶（丈夫或妻子）",en:"a husband or wife",ex:"a disappearing spouse",mem:"来自拉丁 spondere（承诺）→ 立约的人 → 配偶。<b>正式用词，填表格常见</b>（Name of spouse）。<code>a disappearing spouse</code> 在原文里指<b>离婚或伴侣出走</b>——单收入家庭瞬间少一半进项。",syn:"partner / husband / wife / significant other",conf:"spouse(配偶) vs. sponsor(赞助人，同源 spond-「承诺」) vs. spontaneous(自发的，无关)"},
+  reduce:{w:"reduce A from B to C",ipa:"/rɪˈdjuːs/",pos:"v.短语",tags:["poly","phrase"],cn:"⚠️使 A 从 B 沦落到 C（不是「减少」）",en:"to bring sb/sth to a worse state",ex:"can reduce a family from solidly middle class to newly poor",mem:"⭐<b>熟词僻义</b>：reduce 除了「减少」，还有<b>「使沦为、使陷入（更差的境地）」</b>。<b>reduce sb to tears</b> 把某人弄哭；<b>be reduced to begging</b> 沦落到乞讨。<b>判断方法：后面跟 from…to… 或 to + 状态名词时，一定是「沦为」。</b>",syn:"bring down to / degrade to / drive sb into",conf:"reduce(使沦为/减少) vs. deduce(推断) vs. induce(引起) vs. seduce(引诱)——duc 家族全在这儿"},
+  solidly:{w:"solidly middle class",ipa:"/ˈsɒlɪdli/",pos:"adj.短语",tags:["phrase","write"],cn:"殷实的中产、稳稳的中产",en:"firmly and securely in the middle class",ex:"from solidly middle class to newly poor",mem:"solid 结实的/稳固的 → solidly 稳稳地。<b>与 newly poor（新贫）形成强烈落差</b>：一个「稳」，一个「新」，中间只隔几个月。<b>写作可借这种「形容词对举」制造反差</b>：solidly employed → newly jobless。",syn:"firmly established in / comfortably middle-class",conf:"solid(稳固的) vs. sole(唯一的) vs. solemn(庄严的)"},
+  stripes:{w:"of all stripes",ipa:"/straɪps/",pos:"adj.短语",tags:["phrase","poly"],cn:"⚠️形形色色的、各种各样的",en:"of every kind or type",ex:"Scholars, policymakers, and critics of all stripes",mem:"⭐<b>熟词僻义</b>：stripe 本义「条纹」，<b>of all stripes ＝ 各种类型的</b>（源自军队用条纹标识不同军衔/派别）。<b>后置修饰前面的名词</b>：critics of all stripes＝形形色色的评论家。同款：politicians of all stripes 各党派的政客。",syn:"of every kind / of all kinds / of various persuasions",conf:"stripe(条纹) vs. strip(v.剥去/n.细条) vs. stride(大步走) vs. strike(罢工/打击)"},
+  implication:{w:"implication",ipa:"/ˌɪmplɪˈkeɪʃn/",pos:"n.",tags:["core","write"],cn:"影响，后果；含意，言外之意",en:"a possible effect or result; a suggested meaning",ex:"have debated the social implications of these changes",mem:"⭐<b>两个义项都高频，且都是隐性因果标志</b>：①<b>影响/后果</b>（the implications of…＝……带来的影响）——本文用的是这个；②<b>言外之意</b>（by implication 含蓄地）。动词 imply 暗示。<b>写作高频</b>：This has far-reaching implications for…（这对……有深远影响）。",syn:"consequence / effect / ramification / repercussion",conf:"implication(影响/含意) vs. application(应用) vs. complication(并发症/复杂化) vs. inference(推断——imply 是说话人暗示，infer 是听话人推断)"},
+  sideeffect:{w:"the side effect",ipa:"",pos:"n.短语",tags:["phrase","core"],cn:"副作用，附带后果",en:"an unintended secondary result",ex:"but few have looked at the side effect: family risk has risen as well",mem:"⭐<b>本段的路标词</b>：<code>but <b>few have looked at</b> the side effect<b>:</b></code>——「大家都在谈 A，<b>但少有人注意</b>副作用 B」，<b>冒号后面就是作者真正要讲的东西，必出题</b>。这个句式也是<b>写作里转入自己论点的黄金句式</b>。",syn:"by-product / unintended consequence / spillover",conf:"side effect(副作用) vs. aftereffect(后遗症) vs. net effect(净效果) vs. knock-on effect(连锁反应)"},
+  budget:{w:"budget to the limits",ipa:"/ˈbʌdʒɪt/",pos:"v.短语",tags:["poly","phrase"],cn:"⚠️（动词）把预算安排到极限",en:"to plan spending right up to the maximum",ex:"Today's families have budgeted to the limits of their new two-paycheck status",mem:"⭐<b>熟词僻义</b>：budget 常见是名词「预算」，这里是<b>动词「做预算、量入为出地安排开支」</b>。<code>budgeted <b>to the limits of</b> their two-paycheck status</code>＝<b>按着两份工资的上限来花钱</b>，一分余地不留。<b>这是 31 题因果链的第一环</b>：花到顶 → 没缓冲 → 一出事就崩。",syn:"plan spending / allocate funds",conf:"budget(预算，动/名词) vs. budge(挪动，won't budge 不肯让步)——差一个 t"},
+  paycheck:{w:"two-paycheck status",ipa:"/ˈpeɪtʃek/",pos:"n.短语",tags:["phrase","core"],cn:"双薪（两份工资）的状态",en:"the state of having two wage earners",ex:"the limits of their new two-paycheck status",mem:"paycheck＝<b>工资支票</b>（美式；英式 pay packet），引申为「工资、收入」。<b>live paycheck to paycheck</b>＝月光、勉强糊口（写作神句）。⭐<b>题干里的 double-income families 就是它的同义替换</b>——认出这个替换，31 题的定位段立刻锁定。",syn:"double income / dual-earner household",conf:"paycheck(工资) vs. payroll(工资名册/员工总数) vs. payoff(回报/贿赂) vs. payment(支付款)"},
+  parachute:{w:"parachute",ipa:"/ˈpærəʃuːt/",pos:"n.",tags:["core","poly"],cn:"降落伞；（喻）保护伞、应急退路",en:"a device that slows a fall; (fig.) a fallback protection",ex:"they have lost the parachute they once had in times of financial setback",mem:"⭐⭐<b>31 题的命门词</b>。para(防护，同 parasol 阳伞)+chute(落下)→防坠落的东西。<b>原文用它作比喻，破折号后立刻给直义：a back-up earner (usually Mom)</b>。<br>⚠️<b>千万别把它与 safety net 混成一个</b>：<b>parachute ＝ 后备挣钱人（双薪化后没了）；safety net ＝ 失业/伤残保险提供的网（还在）</b>。原文说前者 <b>support</b> 后者——<b>支撑者不等于被支撑者</b>。<b>Claude 盲做就是混了这两个词才选错 A。</b>商界还有 golden parachute（金色降落伞，高管离职补偿）。",syn:"fallback / cushion / buffer / backup plan",conf:"⭐<b>parachute vs. safety net</b>（本篇最重要的一对）：前者是家里的后备劳动力，后者是保险制度。二者是「谁给谁加力」的关系，不是同义词。"},
+  setback:{w:"financial setback",ipa:"/ˈsetbæk/",pos:"n.短语",tags:["phrase","write"],cn:"经济上的挫折／倒退",en:"a difficulty that delays or reverses progress",ex:"in times of financial setback",mem:"set back（把……往回推）→ setback 挫折、倒退。<b>suffer a setback</b> 遭遇挫折；<b>a major setback to the peace process</b> 和平进程的重大挫折。<code>in times of + 名词</code>＝在……的时期，写作模板：in times of crisis / uncertainty / hardship。",syn:"reversal / blow / hitch / stumbling block",conf:"setback(挫折) vs. drawback(缺点) vs. comeback(复出) vs. feedback(反馈)——back 家族"},
+  backup:{w:"a back-up earner",ipa:"",pos:"n.短语",tags:["phrase"],cn:"后备挣钱人（家里的第二劳动力）",en:"a second wage earner held in reserve",ex:"a back-up earner (usually Mom) who could go into the workforce",mem:"back up＝支援、备份 → back-up 后备的。<b>与 primary earner（主要挣钱人／顶梁柱）成对出现</b>，是②段整条因果链的骨架：<b>顶梁柱倒了，后备补位</b>——而今天后备已经上岗了，没人能补。<code>go into the workforce</code>＝进入劳动力市场、参加工作。",syn:"reserve earner / secondary breadwinner",conf:"back-up earner(后备挣钱人) vs. breadwinner(养家糊口的人，泛指) vs. primary earner(主要挣钱人)"},
+  primary:{w:"the primary earner",ipa:"/ˈpraɪməri/",pos:"n.短语",tags:["phrase"],cn:"主要收入来源者，家庭顶梁柱",en:"the main wage earner in a family",ex:"if the primary earner got laid off or fell sick",mem:"primary 首要的/初级的（primary school 小学、primary concern 首要关切）。⚠️<b>31 题 B 项的坑就在这个 if 从句里</b>：<code>if the primary earner <b>got laid off</b></code> 是<b>假设情境</b>（万一顶梁柱失业），<b>不是说「失业概率上升了」</b>——<b>条件句里的内容是设想，不是事实。</b>",syn:"main breadwinner / chief provider",conf:"primary(首要的) vs. prime(最好的/首要的，prime minister) vs. primitive(原始的)"},
+  layoff:{w:"lay off",ipa:"",pos:"v.短语",tags:["phrase","core"],cn:"解雇，裁员（尤指因经济原因）",en:"to dismiss workers, usually for economic reasons",ex:"if the primary earner got laid off or fell sick",mem:"⭐<b>与「开除」有区别</b>：<b>lay off ＝ 裁员</b>（公司经营问题，员工无过错，常有补偿）；<b>fire ＝ 因过错开除</b>；<b>dismiss</b> 正式的「解雇」。名词 layoffs 裁员（mass layoffs 大规模裁员）。<b>与本篇的 pink slip 是同一件事的两种说法。</b>",syn:"dismiss / make redundant(英) / let go",conf:"lay off(裁员) vs. lay out(布置/花钱) vs. lay down(制定规则) vs. lie(躺；lay-laid-laid ⇄ lie-lay-lain 是经典易混动词)"},
+  support:{w:"support (v.)",ipa:"/səˈpɔːt/",pos:"v.",tags:["core","poly"],cn:"⚠️支撑、增强（此处非「支持某观点」）",en:"to strengthen or hold up sth",ex:"This \"added-worker effect\" could support the safety net offered by insurance",mem:"⭐⭐<b>本篇最该警觉的一个动词</b>。sup(下面)+port(搬运)→在下面托着→支撑。<b>关键在于：A support B 意味着 A 和 B 是两样东西，A 给 B 加力。</b><br><b>31 题 A 项之所以错，就是把 support 前后两样东西当成了一样</b>——「后备挣钱人没了」被读成「安全网没了」。<b>凡见 support / complement / reinforce / add to / bolster，立刻在旁边写：「谁托着谁，别混。」</b>",syn:"reinforce / bolster / underpin / shore up / complement",conf:"⚠️<b>这三个词都是「加力」不是「等于」</b>：support(支撑) / complement(补充完善) / supplement(额外补充)。命题人最爱在这类关系上做张冠李戴。"},
+  safetynet:{w:"safety net",ipa:"",pos:"n.短语",tags:["phrase","write","core"],cn:"安全网，社会保障网",en:"a system that helps people who face difficulty",ex:"the safety net offered by unemployment insurance or disability insurance",mem:"⭐⭐<b>31 题的另一个命门</b>。本义马戏团高空表演下面的保护网 → 引申为<b>社会保障体系</b>。<b>务必看清 offered by：这张网是「失业保险/伤残保险」提供的</b>，不是那位后备挣钱人。所以<b>双薪化之后这张网还在，只是失去了 added-worker effect 的加持而被削弱</b>——A 项说它 has disappeared，既张冠李戴又程度超标。<b>写作高频</b>：a social safety net for the vulnerable。",syn:"social security system / welfare net / cushion",conf:"⭐<b>safety net（保险给的网）vs. parachute（家里的后备劳动力）</b>——本篇必须分清的一对；另 safety valve 安全阀（喻情绪宣泄口）"},
+  weather:{w:"weather (v.)",ipa:"/ˈweðə(r)/",pos:"v.",tags:["poly","write"],cn:"⚠️平安渡过（难关），经受住",en:"to come through a difficult period safely",ex:"to help families weather bad times",mem:"⭐<b>经典熟词僻义</b>：名词「天气」→ 动词「（船）经受风浪」→ <b>渡过难关</b>。<b>weather the storm</b>（渡过风暴／挺过难关）是写作神句；weather the recession 挺过衰退。<b>判断方法：help sb + 动词原形，这个位置只能是动词。</b>另有「（岩石）风化」义：weathered rock。",syn:"survive / ride out / come through / endure",conf:"同类「名词转动词」熟词僻义一起记：<b>weather</b>(渡过) / <b>field</b>(应对问题) / <b>table</b>(提交议案) / <b>floor</b>(难倒) / <b>house</b>(收容) / <b>author</b>(创作)"},
+  disruption:{w:"disruption",ipa:"/dɪsˈrʌpʃn/",pos:"n.",tags:["core","write"],cn:"扰乱，中断，（秩序的）破坏",en:"a serious interruption to the normal course of sth",ex:"a disruption to family fortunes can no longer be made up",mem:"dis(分开)+rupt(断裂，同 interrupt 打断/bankrupt 破产/erupt 爆发)→打断→扰乱。<code>a disruption <b>to</b> family fortunes</code>＝家庭境遇遭到的<b>打击</b>（fortunes 复数＝<b>命运、时运</b>，不是「财富」）。<b>写作高频</b>：technological disruption 技术颠覆。",syn:"upheaval / interruption / dislocation",conf:"disruption(扰乱) vs. corruption(腐败) vs. eruption(爆发) vs. interruption(打断)——rupt 家族一网打尽"},
+  makeup:{w:"be made up with",ipa:"",pos:"v.短语",tags:["phrase","poly"],cn:"被弥补、被补上",en:"to be compensated for",ex:"can no longer be made up with extra income from a stay-at-home partner",mem:"⭐<b>make up 是超级多义短语，本处＝「弥补、补足」</b>（＝ compensate for / make up for）。其他义项：组成（make up 60% of）、编造（make up a story）、化妆（makeup n.）、和解（make up with sb）。<b>本句是隐性因果标志</b>：「再也补不上」＝ 31 题因果链的最后一环，直接推出 C「更脆弱」。",syn:"compensate for / offset / cover",conf:"make up for(弥补) vs. make out(辨认出/进展) vs. make do with(将就) vs. make of(理解为)"},
+  otherwise:{w:"an otherwise-stay-at-home partner",ipa:"/ˈʌðəwaɪz/",pos:"adj.短语",tags:["phrase","poly"],cn:"本来／原本待在家里的伴侣",en:"a partner who would otherwise stay at home",ex:"extra income from an otherwise-stay-at-home partner",mem:"⭐<b>otherwise 在这里＝「在其他情况下、本来」</b>，不是「否则」。整个短语加连字符后作定语，意思是<b>「若非如此本会待在家的那位伴侣」</b>——言下之意<b>现在她已经出去工作了</b>。<b>otherwise 作「本来、在别的方面」讲是考研高频</b>：an otherwise excellent essay（一篇其他方面都很出色的文章）。",syn:"a normally stay-at-home partner",conf:"otherwise 三义：①否则(Hurry, otherwise…) ②在其他方面(otherwise excellent) ③本来会/以别的方式(an otherwise-stay-at-home partner)——考研常考②③"},
+  absorb:{w:"absorb risk",ipa:"/əbˈzɔːb/",pos:"v.短语",tags:["phrase","write"],cn:"承担／吸收（风险）",en:"to take on and bear a cost or risk",ex:"families have been asked to absorb much more risk",mem:"absorb 吸收（absorb nutrients）→ <b>承担（成本/风险/冲击）</b>：absorb the cost 消化成本、absorb the shock 吸收冲击。⭐<b>注意被动语态 have been <b>asked</b> to absorb</b>——「<b>被要求</b>承担」，主语是承受方，<b>作者的立场（中产是被动的一方）又一次藏在被动语态里</b>。另义：be absorbed in 全神贯注于。",syn:"take on / shoulder / bear / assume",conf:"absorb(吸收/承担) vs. adsorb(吸附，化学术语) vs. absorbing(引人入胜的) vs. absorbed(专注的)"},
+  fluctuation:{w:"fluctuation",ipa:"/ˌflʌktʃuˈeɪʃn/",pos:"n.",tags:["core","write"],cn:"波动，起伏",en:"an irregular rising and falling in amount",ex:"interest rates, stock market fluctuation",mem:"flu/flux(流动，同 fluid 液体/influence 影响/fluent 流利)→像水一样起落→波动。动词 fluctuate：Prices fluctuate wildly. <b>经济类文章高频三件套</b>：interest rates（利率）、stock market fluctuation（股市波动）、inflation（通胀）。",syn:"volatility / swing / oscillation / variation",conf:"fluctuation(波动) vs. flotation(上市/漂浮) vs. friction(摩擦)"},
+  harsh:{w:"the harsh reality",ipa:"/hɑːʃ/",pos:"n.短语",tags:["phrase","write"],cn:"严酷的现实",en:"an unpleasant truth that must be faced",ex:"the harsh reality that they may outlive their retirement money",mem:"harsh 严酷的/刺耳的（harsh criticism 严厉批评、harsh climate 恶劣气候）。<b>the harsh reality that + 同位语从句</b>——<b>写作可直接用的高级结构</b>：We must face the harsh reality that resources are finite. <b>比 The fact is… 有力得多。</b>",syn:"grim truth / stark reality / brutal fact",conf:"harsh(严酷的) vs. hash(混杂/剁碎) vs. rash(轻率的/皮疹) vs. hoarse(嘶哑的)"},
+  outlive:{w:"outlive",ipa:"/ˌaʊtˈlɪv/",pos:"v.",tags:["core","write"],cn:"比……活得久；比……存在得久",en:"to live or last longer than",ex:"the harsh reality that they may outlive their retirement money",mem:"⭐<b>本句的画面感全在这个词上</b>：out(超过)+live(活)→<b>活得比……久</b>。<code>outlive their retirement money</code>＝<b>人还活着，退休金却花光了</b>——这就是「长寿风险」。<b>out- 前缀＝超过</b>，成组记：outnumber(数量超过)、outweigh(重要性超过，⭐34 题 A 项)、outperform(表现优于)、outlast(比……持久)、outdo(胜过)。",syn:"survive / outlast",conf:"outlive(活得更久) vs. outlaw(使非法/歹徒) vs. outline(概述) vs. overlive(不存在这个词)"},
+  campaign:{w:"campaign (v.)",ipa:"/kæmˈpeɪn/",pos:"v.",tags:["poly","core"],cn:"⚠️（动词）发起运动，造势推动",en:"to lead an organized effort to achieve sth",ex:"President Bush campaigned to move Social Security to a savings-account model",mem:"名词「运动、战役」大家都认识，<b>这里是动词</b>：campaign <b>to do</b> sth / campaign <b>for/against</b> sth＝为（反对）某事奔走造势。<b>判断方法：主语 President Bush 后面需要谓语。</b>词源 campus/camp（原野→战场）→ 战役 → 有组织的行动。",syn:"crusade for / push for / lobby for / advocate",conf:"campaign(运动) vs. company(公司/同伴) vs. companion(同伴)——camp/pan 词根别混"},
+  trade:{w:"trade A for B",ipa:"/treɪd/",pos:"v.短语",tags:["phrase","core"],cn:"用 A 换 B，拿 A 交换 B",en:"to exchange A for B",ex:"retirees trading much or all of their guaranteed payments for payments depending on investment returns",mem:"⭐⭐<b>32 题的全部答案就在这个结构里</b>。只需读两个「性质词」：<b>A ＝ guaranteed（有保障的）→ B ＝ depending on investment returns（看投资脸色的）</b>，方向立现：<b>保障性变差</b> ＝ 32 题 B。<b>trade A for B 型句子永远只需抓 A、B 各自的性质，中间的量词（much or all of）可以略过。</b>同款：trade quality for speed（牺牲质量换速度）。",syn:"exchange A for B / swap A for B / sacrifice A for B",conf:"trade A for B(拿A换B，A是失去的) vs. trade in(以旧换新) vs. trade off(权衡取舍；名词 trade-off 取舍)"},
+  guaranteed:{w:"guaranteed payments",ipa:"/ˌɡærənˈtiːd/",pos:"adj.短语",tags:["phrase","core"],cn:"有保障的（退休金）收入",en:"payments that are certain to be received",ex:"trading much or all of their guaranteed payments for…",mem:"guarantee v./n. 保证（a two-year guarantee 两年保修）。⭐<b>32 题 D 项的陷阱就用这个词做的</b>：D 说「a guaranteed future（有保障的未来）」——把<b>改革前</b>的性质原词搬到<b>改革后</b>。<b>原词复现 + 时间线颠倒 ＝ 高频造错法（R1）。</b>",syn:"assured / secured / fixed payments",conf:"guaranteed(有保障的，改革前) ⇄ depending on investment returns(看投资的，改革后)——32 题的整条轴就是这一对"},
+  borne:{w:"borne by",ipa:"/bɔːn/",pos:"v.过去分词",tags:["poly","write"],cn:"由……承担（bear 的过去分词）",en:"carried or paid by",ex:"the share of it borne by families have risen",mem:"⚠️<b>bear-bore-borne</b>（承担）；<b>表「出生」时用 born</b>（I was born in 2004）——<b>拼写差一个 e，考研写作常错</b>。搭配群：<b>bear the cost / bear the burden / bear responsibility / bear in mind</b>（记住）。本处是<b>过去分词作后置定语</b>修饰 the share（由家庭承担的那一份）。",syn:"shouldered by / paid by / assumed by",conf:"borne(承担的过去分词) vs. born(出生的) vs. bore(v.钻孔/使厌烦；bear 的过去式) vs. barn(谷仓)"},
+  hsa:{w:"health-savings plans",ipa:"",pos:"n.短语",tags:["phrase"],cn:"健康储蓄计划（美国医保制度）",en:"savings accounts used to pay medical expenses",ex:"newly fashionable health-savings plans are spreading",mem:"⭐<b>33 题的题干关键词</b>。简单说：<b>你自己存一个账户来付医疗费</b>，保费低但<b>免赔额高</b>（小病自己掏），且账户里的钱要拿去投资 → <b>风险从保险公司转到家庭</b>。<b>不必懂细节，认出它属于「风险转嫁」这条主线即可。</b><code>newly fashionable</code>（新近流行的）＋ <code>spreading</code>（正在蔓延）——<b>作者用的都是负面语气词，33 题 B 的 popularize（含褒义）因此出局。</b>",syn:"HSA / medical savings account",conf:"health-savings plan(健康储蓄计划) vs. health insurance(医疗保险) vs. Social Security(社会保障/养老)——③段三笔账别串"},
+  legislative:{w:"legislative halls",ipa:"/ˈledʒɪslətɪv/",pos:"n.短语",tags:["phrase","core"],cn:"立法机构（国会/议会）",en:"the places where laws are made",ex:"spreading from legislative halls to Wal-Mart workers",mem:"legis(法律)+lat(拿来)→立法的。成组记：<b>legislative 立法的 / executive 行政的 / judicial 司法的</b>（三权分立必背）；legislation n. 立法、法规；legitimate adj. 合法的。<code>from legislative halls <b>to</b> Wal-Mart workers</code>＝<b>从政策源头一路铺到最底层员工</b>，from A to B 表「无处不在」。",syn:"congress / parliament / lawmaking bodies",conf:"legislative(立法的) vs. legitimate(合法的/正当的) vs. legible(字迹清晰的) vs. eligible(有资格的)"},
+  deductible:{w:"deductible",ipa:"/dɪˈdʌktəbl/",pos:"n.",tags:["core"],cn:"（保险）免赔额，自付额",en:"the amount you must pay yourself before insurance pays",ex:"with much higher deductibles and a large new dose of investment risk",mem:"⭐<b>本篇最生僻的词，但它恰恰不必认识</b>——deduct(扣除)+ible→可扣除的→<b>免赔额</b>（先自己掏这么多，超出部分保险才管；<b>免赔额越高＝自己承担越多</b>）。<br><b>解题动作</b>：它后面用 <b>and</b> 并列着 <code>a large new dose of investment risk</code>，方向相同，<b>看不懂前一项直接用后一项答题</b>（33 题 D）。<b>生僻词很少是唯一线索——这是考场上最实用的心法之一。</b>",syn:"excess(英式说法) / out-of-pocket amount",conf:"deductible(免赔额) vs. deduction(扣除/演绎推理) vs. deduce(推断)——同根不同用"},
+  dose:{w:"a dose of",ipa:"/dəʊs/",pos:"n.短语",tags:["phrase","write"],cn:"一剂，一份（药量作比喻）",en:"an amount of sth, esp. sth unpleasant",ex:"a large new dose of investment risk",mem:"本义药物的<b>剂量</b>（take the medicine in small doses）→ 比喻<b>「一份、一剂」</b>。<b>a large new dose of investment risk</b>＝新增的一大剂投资风险——<b>用药量作比喻，自带「这是要人受的」的负面情绪</b>。<b>写作神搭配</b>：a healthy dose of skepticism（一份恰到好处的怀疑）、a dose of reality（当头一盆冷水）。",syn:"an amount of / a measure of / a shot of",conf:"dose(剂量) vs. doze(打盹) vs. does(do 的三单)——发音全不同：/dəʊs/ /dəʊz/ /dʌz/"},
+  demographics:{w:"demographics",ipa:"/ˌdeməˈɡræfɪks/",pos:"n.",tags:["core","write"],cn:"人口统计（数据）；人口结构",en:"statistical data about a population",ex:"Even demographics are working against the middle class family",mem:"demo(人民，同 democracy 民主)+graph(记录)+ics→人口统计学。<b>Even 领起，说明这是作者认为最有冲击力的一条论据</b>——连人口结构这种「跟政策无关」的东西都在与中产作对。<b>work against sb</b>＝对某人不利（⇄ work in sb's favour 对某人有利）。<b>写作高频</b>：an ageing demographic 老龄化人口结构。",syn:"population data / population structure",conf:"demographics(人口统计) vs. demographic(adj.人口的/n.某人群) vs. democracy(民主) vs. demonstrate(证明/示威)"},
+  odds:{w:"the odds of",ipa:"/ɒdz/",pos:"n.",tags:["poly","write"],cn:"⚠️几率，可能性；胜算（恒用复数）",en:"the probability that sth will happen",ex:"the odds of having a weak elderly parent have jumped eightfold",mem:"⭐<b>熟词僻义</b>：odd 是「奇怪的/奇数的」，<b>odds 却是「几率、赔率」</b>（源自赌博）。<b>写作高频三连</b>：The odds are that…（很可能……）／The odds are slim（希望渺茫）／<b>against all odds</b>（力排万难、逆境求胜）。⚠️ 恒用复数、谓语用复数（本句 have jumped）。另有 be at odds with（与……不一致）。",syn:"probability / chances / likelihood",conf:"odds(几率) vs. odd(奇怪的/奇数) vs. oddity(怪事) vs. at odds with(与……相左)——一个词四种用法"},
+  attendant:{w:"attendant (adj.)",ipa:"/əˈtendənt/",pos:"adj.",tags:["poly","write"],cn:"⚠️伴随的，随之而来的（非「服务员」）",en:"accompanying; occurring with sth",ex:"and all the attendant need for physical and financial assistance",mem:"⭐<b>熟词僻义</b>：名词「服务员」（flight attendant 空乘）大家都认识，<b>形容词义是「伴随的」</b>＝ accompanying。<b>写作高频</b>：the attendant risks / the attendant costs / with all its attendant problems（及其带来的一切问题）——<b>比 related、connected 高一档</b>。动词 attend 出席；attend to 处理、照料。",syn:"accompanying / associated / concomitant / consequent",conf:"attendant(伴随的) vs. attentive(专心的/体贴的) vs. attendance(出席率) vs. tendency(倾向)"},
+  eightfold:{w:"eightfold",ipa:"/ˈeɪtfəʊld/",pos:"adv./adj.",tags:["core"],cn:"八倍地；八倍的",en:"eight times as much",ex:"have jumped eightfold in just one generation",mem:"<b>-fold 后缀＝……倍</b>：twofold 两倍/双重、threefold、manifold（多种多样的）、a tenfold increase 十倍的增长。<br>⚠️<b>翻译采分点</b>：<code>have jumped <b>eightfold</b></code>＝<b>涨到原来的八倍</b>（黄皮书译文「猛涨到原来的八倍」）。中文里「增加了八倍」与「增加到八倍」相差一倍，<b>翻译题里这是硬性扣分点，务必分清</b>。",syn:"eight times / by a factor of eight",conf:"-fold(倍数) vs. fold(折叠) vs. unfold(展开/事情发展) vs. manifold(多种的)"},
+  perspective:{w:"from … perspective",ipa:"/pəˈspektɪv/",pos:"n.短语",tags:["phrase","write"],cn:"从……的角度看",en:"from a particular point of view",ex:"From the middle-class family perspective, much of this…",mem:"per(透过)+spect(看，同 inspect/respect/spectacle)→透过某个位置看→视角。<b>写作万能开头</b>：From an economic/environmental/student's perspective…；<b>put sth in perspective</b>＝正确看待某事。⭐<b>本句用它是有讲究的</b>：作者特意声明「<b>这是从中产的角度看</b>」，再加上 understandably（可以理解地）表示<b>认可</b>——态度就这样既表明了又留了余地。",syn:"standpoint / viewpoint / angle / vantage point",conf:"perspective(视角) vs. prospective(未来的/潜在的) vs. prospect(前景) vs. respective(各自的)——考研四大易混之一"},
+  understandably:{w:"understandably",ipa:"/ˌʌndəˈstændəbli/",pos:"adv.",tags:["core","write"],cn:"可以理解地（作者的评述性副词）",en:"in a way that is easy to understand or justify",ex:"much of this, understandably, looks far less like an opportunity…",mem:"⭐<b>找作者态度时的金矿词</b>。它不描述事实，而是<b>表明作者认可这种感受</b>——「中产会这么看，是可以理解的」＝<b>我站他们这边</b>。<br><b>评述性副词一组</b>：understandably（可理解地）／unfortunately（遗憾地）／surprisingly（令人惊讶地）／rightly（正确地）／arguably（可以说）／admittedly（诚然）。<b>这些词插在句中，就是作者在句子里「探头说话」，态度题、主旨题都靠它们。</b>",syn:"naturally / not surprisingly / reasonably enough",conf:"understandably(可以理解地，作者评述) vs. understandingly(体谅地，描述方式) vs. admittedly(诚然，用于让步)"},
+  exercise:{w:"exercise (v.)",ipa:"/ˈeksəsaɪz/",pos:"v.",tags:["poly","write"],cn:"⚠️行使，运用（权利/责任），非「锻炼」",en:"to use a power, right or quality",ex:"an opportunity to exercise more financial responsibility",mem:"⭐<b>熟词僻义</b>：<b>exercise one's right</b> 行使权利、<b>exercise caution/restraint</b> 保持谨慎/克制、<b>exercise control over</b> 对……施加控制。<b>判断方法：宾语是抽象名词（权利、责任、影响力）时，一定是「行使/运用」。</b><br>📌 <b>本句里它属于「官方话术」</b>：政策方说这是「让你<b>行使</b>更多理财责任的<b>机会</b>」，作者随即用 less like…more like… 把它推翻。",syn:"exert / wield / employ / apply",conf:"exercise(行使/锻炼) vs. exert(施加，exert pressure/influence) vs. exorcise(驱魔)"},
+  acceleration:{w:"acceleration",ipa:"/əkˌseləˈreɪʃn/",pos:"n.",tags:["core","write"],cn:"加速，加快",en:"an increase in speed or rate",ex:"a frightening acceleration of the wholesale shift of financial risk",mem:"ac+celer(快速，同 celerity 敏捷)+ation→加速。动词 accelerate（⇄ decelerate 减速）。<b>写作高频</b>：the acceleration of climate change / an accelerating pace of life。⭐<b>注意作者给它配的形容词 frightening（骇人的）</b>——<b>这是全文态度最外露的一处，35 题定标题时它是主要依据。</b>",syn:"speeding-up / quickening / escalation",conf:"acceleration(加速) vs. accession(加入/就任) vs. excel(擅长)"},
+  wholesale:{w:"wholesale (adj.)",ipa:"/ˈhəʊlseɪl/",pos:"adj.",tags:["poly","write"],cn:"⚠️大规模的，全面的（本义「批发的」）",en:"done on a large scale; complete and indiscriminate",ex:"the wholesale shift of financial risk onto their shoulders",mem:"⭐<b>熟词僻义</b>：whole(整)+sale(卖)→整批卖→批发 → 引申为<b>「成批的、大规模的、不加区分的」</b>，<b>常带贬义</b>：wholesale changes 全面变革、wholesale destruction 大规模破坏、wholesale adoption 不加甄别地全盘照搬。<b>35 题排除 in Conflict（局部矛盾）时，这个词是旁证——风险转嫁是「全面的」，不是「局部对立」。</b>",syn:"large-scale / sweeping / across-the-board / indiscriminate",conf:"wholesale(批发的/大规模的) vs. retail(零售的) vs. wholesome(有益健康的) vs. wholly(完全地)"},
+  overburdened:{w:"overburdened",ipa:"/ˌəʊvəˈbɜːdnd/",pos:"adj.",tags:["core","write"],cn:"负担过重的，不堪重负的",en:"having too much to carry or cope with",ex:"onto their already overburdened shoulders",mem:"over(过度)+burden(负担)+ed。⭐<b>关键在前面那个 already（已经）</b>：说明中产<b>在被转嫁之前就已经扛不住了</b>——<b>35 题判断「程度」的直接证据：肩膀快压垮了（on the Cliff 悬崖边），但还没垮（不是 in Ruins 废墟）。</b><b>写作可用</b>：an overburdened healthcare system / overburdened with debt。",syn:"overloaded / overstretched / weighed down",conf:"overburdened(不堪重负) vs. overwhelmed(被压垮/不知所措) vs. burdensome(繁重的)"},
+  fallout:{w:"fallout",ipa:"/ˈfɔːlaʊt/",pos:"n.",tags:["core","poly","write"],cn:"（核爆的）放射性尘埃；（喻）不良后果、连锁反应",en:"radioactive dust; (fig.) the bad results of an event",ex:"The financial fallout has begun, and the political fallout may not be far behind",mem:"⭐⭐<b>34 题的核心词</b>。本义核爆后飘落的<b>放射性尘埃</b> → 引申为<b>「（某事引发的）不良后果、余波」</b>，<b>比喻里自带「灾难性、扩散性、后知后觉」三重意味</b>。<br><b>末句结构 <code>A has begun, and B may not be far behind</code></b>＝A 已经开始，B 也不远了——<b>同一个词复现两次 + 时间先后，暗示的正是因果承接</b>（34 题 C）。<b>写作神句</b>：The environmental cost has begun to show, and the social cost may not be far behind.",syn:"aftermath / repercussions / consequences / backlash",conf:"fallout(后果/余波) vs. falling-out(争吵闹翻) vs. downfall(垮台) vs. shortfall(缺口/不足)"},
+  vulnerable:{w:"vulnerable to",ipa:"/ˈvʌlnərəbl/",pos:"adj.短语",tags:["core","write"],cn:"易受……伤害的，脆弱的",en:"easily harmed or affected by",ex:"[31题C] they are more vulnerable to changes in family economics",mem:"⭐<b>31 题正确答案的核心词</b>。vulner(伤口)+able→容易受伤的。<b>固定搭配 be vulnerable <b>to</b> sth</b>。<b>写作高频</b>：the most vulnerable groups in society（社会最弱势群体）／vulnerable to economic shocks。<br>📌 <b>为什么 C 是答案</b>：它是②段③—⑥句<b>整条因果链的概括</b>（预算花到顶 → 没了后备 → 一出事再也补不上 ＝ 稍有风吹草动就扛不住）。<b>因果题的正确项常常「看起来很空」，因为它概括的是一整串句子。</b>",syn:"susceptible to / exposed to / at risk of / defenceless",conf:"vulnerable(易受伤的) vs. venerable(德高望重的) vs. valuable(有价值的)——拼写极像，考研常考"},
+  outweigh:{w:"outweigh",ipa:"/ˌaʊtˈweɪ/",pos:"v.",tags:["core","write"],cn:"（重要性/分量上）超过，胜过",en:"to be greater or more important than",ex:"[34题A] financial risks tend to outweigh political risks",mem:"out(超过)+weigh(称重)→分量上压过。<b>写作神句</b>：<b>The benefits far outweigh the drawbacks.</b>（利远大于弊）——议论文结论段万能句。<br>⚠️<b>34 题 A 项的坑</b>：原文只说两种 fallout <b>一前一后</b>（has begun / may not be far behind），<b>从没比较过谁更重</b>。<b>「先后」不等于「轻重」——凭空添加比较，是本卷第二次出现的造错法（另一处：2007·T2·27 的 B）。</b>",syn:"exceed / surpass / override / take precedence over",conf:"out- 家族一起记：outweigh(重要性超过) / outnumber(数量超过) / outlive(活得更久) / outperform(表现更好) / outlast(更持久)"},
+  compensate:{w:"compensate for",ipa:"/ˈkɒmpenseɪt/",pos:"v.短语",tags:["phrase","write"],cn:"弥补，补偿",en:"to make up for sth bad",ex:"[33题C] compensate for the reduced pensions",mem:"com(共同)+pens(称量、支付，同 expense/pension/pending)+ate→称平→补偿。<b>compensate for a loss</b> 弥补损失；<b>compensate sb for sth</b> 因某事补偿某人。名词 compensation（赔偿金）。<br>⚠️<b>33 题 C 项的坑</b>：养老金减少（③段前三句）与健康储蓄计划（⑤句）在原文里是<b>并排的两笔坏账</b>，都属于「风险转嫁」的表现，<b>C 却把并列关系读成了「后者弥补前者」的补偿关系</b>。<b>并列 ≠ 因果，这是本篇第二次出现的造错法（另一处：31 题 B）。</b>",syn:"make up for / offset / counterbalance / redress",conf:"compensate(补偿) vs. compete(竞争) vs. complement(补充完善) vs. compliment(赞美)"},
+  cliff:{w:"cliff / precipice",ipa:"/klɪf/ /ˈpresəpɪs/",pos:"n.",tags:["core","write"],cn:"悬崖，峭壁；（喻）危险边缘",en:"a steep rock face; (fig.) the brink of disaster",ex:"[35题B] The Middle Class on the Cliff",mem:"⭐<b>35 题的答案词，也是原文标题词</b>（原标题 The Middle Class on the <b>Precipice</b>，precipice 与 cliff 同义，B 是它的同义替换）。<br><b>核心是「位置」二字</b>：<b>on the cliff / on the brink of＝在边缘上——危险已到眼前，但还没坠下去。</b>这正是全文的处境（<code>already overburdened</code> 但尚未崩塌），所以 B 胜过 <b>in Ruins</b>（已成废墟，程度过头）。<b>写作可用</b>：on the brink of collapse／a fiscal cliff（财政悬崖，经济类高频）。",syn:"precipice / brink / edge / verge",conf:"⭐<b>35 题四个介词短语的刻度</b>：on the Alert(自己警惕着——主动) / on the Cliff(在悬崖边——危险但未坠) / in Conflict(处于对立中) / in Ruins(已成废墟——已毁灭)。<b>标题题比的就是这种「刻度」。</b>"},
+  ruins:{w:"in ruins",ipa:"/ˈruːɪnz/",pos:"n.短语",tags:["phrase"],cn:"成为废墟；（喻）彻底毁掉",en:"destroyed or severely damaged",ex:"[35题D] The Middle Class in Ruins",mem:"ruin v. 毁掉 / n. 废墟（恒用复数 ruins 表遗迹：the ruins of Rome）。<b>lie in ruins</b> 沦为废墟；His career is in ruins. 他的事业毁了。<br>⚠️<b>35 题 D 的错法＝程度升级</b>：原文说的是 <code>reduce a family… to <b>newly poor</b></code>（沦为<b>新贫</b>）、<code><b>already overburdened</b> shoulders</code>（<b>已不堪重负</b>）——<b>是「岌岌可危」，不是「已成废墟」；是「风险大增」，不是「阶级消亡」。把趋势说成结局，是标题题最常见的错法。</b>",syn:"in tatters / destroyed / devastated",conf:"in ruins(成废墟) vs. ruinous(毁灭性的/昂贵得吓人) vs. ruin(毁掉) vs. rain/reign/rein(同音异形三兄弟)"}
+};
+
+const panel=document.getElementById('panel');
+const isMobile=()=>window.innerWidth<=900;
+function badge(t){return {core:'<span class="badge b-core">核心词</span>',phrase:'<span class="badge b-phrase">短语</span>',poly:'<span class="badge b-poly">熟词僻义</span>',write:'<span class="badge b-write">写作✍︎</span>'}[t]||''}
+function showCard(k,el){
+  const d=V[k]; if(!d)return;
+  document.querySelectorAll('.tk.active').forEach(e=>e.classList.remove('active'));
+  if(el&&el.classList.contains('tk'))el.classList.add('active');
+  panel.innerHTML=`<button class="close" onclick="panel.classList.remove('open')">✕</button>
+  <div class="wcard">
+    <div class="head"><span class="w">${d.w}</span><span class="ipa">${d.ipa}</span><span class="pos">${d.pos}</span>${d.tags.map(badge).join('')}</div>
+    <div class="cn">${d.cn}</div><div class="en-def">${d.en}</div>
+    <div class="row r-ex"><b>原文语境</b>“…${d.ex}…”</div>
+    <div class="row r-mem"><b>怎么记</b>${d.mem}</div>
+    <div class="row r-syn"><b>同类词</b>${d.syn}</div>
+    <div class="row r-conf"><b>易混辨析</b>${d.conf}</div>
+  </div>`;
+  if(isMobile())panel.classList.add('open');
+}
+document.querySelectorAll('.tk').forEach(t=>t.addEventListener('click',e=>{e.stopPropagation();showCard(t.dataset.w,t)}));
+
+function tz(btn){btn.closest('.para').classList.toggle('showzh')}
+let allOn=false;
+function toggleAll(){allOn=!allOn;document.querySelectorAll('.para').forEach(p=>p.classList.toggle('showzh',allOn))}
+function go(id){document.getElementById(id).scrollIntoView({behavior:'smooth',block:'center'});const s=document.getElementById(id);s.style.transition='none';s.style.opacity=.3;setTimeout(()=>{s.style.transition='opacity .8s';s.style.opacity=1},80)}
+
+document.querySelectorAll('.q').forEach(q=>{
+  const ans=+q.dataset.ans;
+  q.querySelectorAll('.opt').forEach((o,i)=>o.addEventListener('click',()=>{
+    if(q.classList.contains('done'))return;
+    q.classList.add('done');
+    if(i!==ans)o.classList.add('wrong');
+    q.querySelectorAll('.opt')[ans].classList.add('right');
+  }));
+});
+
+const vg=document.getElementById('vgrid');
+function renderGrid(f){
+  vg.innerHTML='';
+  Object.keys(V).forEach(k=>{
+    const d=V[k];
+    if(f!=='all'&&!d.tags.includes(f))return;
+    const div=document.createElement('div');div.className='vitem';
+    div.innerHTML=`<span class="badges">${d.tags.map(badge).join('')}</span><div class="w">${d.w}</div><div class="cn">${d.cn}</div>`;
+    div.addEventListener('click',()=>{showCard(k,null);if(!isMobile())window.scrollTo({top:0,behavior:'smooth'})});
+    vg.appendChild(div);
+  });
+}
+renderGrid('all');
+document.querySelectorAll('.fbtn').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.fbtn').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderGrid(b.dataset.f);
+}));
+
+const yd=document.getElementById('yd');let sel='';
+document.addEventListener('selectionchange',()=>{
+  const s=window.getSelection();const t=s?s.toString().trim():'';
+  if(t&&/^[a-zA-Z' -]{2,40}$/.test(t)){
+    sel=t;
+    try{const r=s.getRangeAt(0).getBoundingClientRect();
+      yd.style.left=Math.min(r.left,window.innerWidth-110)+'px';
+      yd.style.top=(r.bottom+8)+'px';yd.style.display='block';}catch(e){}
+  }else{yd.style.display='none'}
+});
+yd.addEventListener('click',()=>{window.open('https://dict.youdao.com/result?word='+encodeURIComponent(sel)+'&lang=en');yd.style.display='none'});
+document.addEventListener('click',e=>{if(e.target!==yd&&!window.getSelection().toString())yd.style.display='none'});
+</script>
+<script src="_fault_attr.js"></script>
+</body>
+</html>

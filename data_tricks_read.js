@@ -58,12 +58,22 @@ window.TRICK_READ = [
 {id:'R5', tier:'🟡', qt:'目的 / 因果题', title:'沿「因果链」走到末端，别停在半路',
  trig:['to ___（问目的）','why / because','designed to / intended to / aim','the effect of'],
  flow:'问<b>目的</b> → 找 <code>designed to / intended to / aim</code> 后面的内容（立法/制度题常在<b>制度介绍段</b>）；'
-     +'问<b>结果/影响</b> → 沿 <code>Because… / This makes… / And…</code> 的因果链<b>走到最后一环</b>，答案常在链条末端。',
- tmpl:'答案 = 原因的<b>正向改写</b>（怕光损伤 →〈所以〉锁进黑暗 = 防止进一步损坏）。',
+     +'问<b>结果/影响</b> → 沿 <code>Because… / This makes… / And…</code> 的因果链<b>走到最后一环</b>，答案常在链条末端。<br>'
+     +'<b>⭐三步定因果</b>：① 先分清题干给的是<b>因</b>还是<b>果</b>（<code>… in that ___ / because ___</code>＝给果求因；<code><b>As a result of</b> X, … may have ___</code>＝给因求果）；'
+     +'② 回原文找因果标志；③ 只锁定标志的<b>那一侧</b>。',
+ tmpl:'答案 = 原因的<b>正向改写</b>（怕光损伤 →〈所以〉锁进黑暗 = 防止进一步损坏）。<br>'
+     +'<b>⭐因果标志分两类，隐性的才是难点：</b><br>'
+     +'· <b>显性</b>：<code>because / since / as / due to / owing to / therefore / thus / consequently / as a result / lead to / result in / result from / bring about / give rise to / stem from / attribute A to B</code>；<br>'
+     +'· <b>隐性</b>：<code><b>with</b> + 名词 + 分词</code>（伴随状语交代后果，<b>2007·T3 的 32、33 两题连用同一结构</b>）、'
+     +'<code>the <b>side effect</b> / implications / effects of…</code>、<code>… <b>as well</b></code>（前因带出后果）、<b>破折号与冒号后的解释</b>、'
+     +'<code>A has begun, and B <b>may not be far behind</b></code>（时间先后暗示因果，2007·T3·34）、以及<b>动词自带因果</b>（transform / reduce A to B / work against）。<br>'
+     +'<b>正确项三查</b>：① 信息本身为真；② 与题干<b>确有直接因果关系</b>（不是只在同一段出现）；③ <b>方向没反、程度没超</b>。',
  traps:['只走一半因果链就选，会选到中间环节而非最终结果。',
         '<b>「同义复述题干」的选项一律排除</b>：因果题里，题干给了「果」，把这个果换个说法再抄一遍的选项永远是错的（2007·T2·28 的 C「莎凡特是不会重演的极端个案」＝题干本身，不是原因）。',
-        '<b>三步定因果</b>：① 先分清题干给的是<b>因</b>还是<b>果</b>；② 回原文找因果标志词（because / since / due to / as a result of / lead to）；③ 只锁定标志词的<b>那一侧</b>。'],
- refs:[{p:'2022_T1_塑料文物保护.html',q:'q23',label:'T1·23'},{p:'2022_T4_解雇保护悖论.html',q:'q36',label:'T4·36'},{p:'2022_T4_解雇保护悖论.html',q:'q39',label:'T4·39'},{p:'2007_T2_智力测试的边界.html',q:'q28',label:'2007·T2·28'}]},
+        '<b>把「并列」读成「因果」</b>：两条信息都在文中，但原文从没把它们连过线。2007·T3·33 的 C——养老金减少与健康储蓄计划是<b>并排的两笔坏账</b>（都属于「风险转嫁」的表现），不是「后者补偿前者」。<b>并列段落先切块，再按块答题。</b>',
+        '<b>把「假设的触发条件」读成「已发生的趋势」</b>：2007·T3·31 的 B——原文 <code>if the primary earner <b>got laid off</b></code> 只是假设情境（万一顶梁柱失业），不是说失业概率上升。<b>条件句里的内容是设想，不是事实。</b>',
+        '<b>⭐做完的最后一个动作（30 秒，能救回一道题）</b>：把选中的那项<b>读出主语</b>——「我选的这句话，主语是谁？原文里这个主语发生的是<b>什么程度</b>的变化？」2007·T3·31 问完这两句，A 的两个毛病（主语错 + 程度超）会同时暴露。'],
+ refs:[{p:'2007_T3_中产家庭的风险转嫁.html',q:'q31',label:'2007·T3·31'},{p:'2007_T3_中产家庭的风险转嫁.html',q:'q32',label:'2007·T3·32'},{p:'2022_T1_塑料文物保护.html',q:'q23',label:'T1·23'},{p:'2022_T4_解雇保护悖论.html',q:'q39',label:'T4·39'},{p:'2007_T2_智力测试的边界.html',q:'q28',label:'2007·T2·28'}]},
 
 {id:'R6', tier:'🟡', qt:'推断 / 结论题', title:'只推一步 + 防「词形陷阱」',
  trig:['infer / conclude / It can be learned','某机构会支持/反对什么','末段升华'],
@@ -98,7 +108,8 @@ window.TRICK_READ = [
      +'<tr><td><b>张冠李戴</b></td><td>把 A 的事安到 B 头上</td><td>T1·23C 化学家的活安给博物馆；2007·T1·23D 把「刻意练习」的三要素安给「好记忆」</td></tr>'
      +'<tr><td><b>过度推断</b></td><td>顺着原文多推一步</td><td>T2·30C 推两步；2007·T2·29C 以偏概全</td></tr>'
      +'<tr><td><b>杂糅</b>（第六类·最难）</td><td>把<b>相邻两句</b>的成分拼成一句</td><td>2007·T2·29B 把④句的「IQ⇄领导力相关」和⑤句的「SAT」拼成「IQ 与 SAT 高度相关」</td></tr>'
-     +'<tr><td><b>凭空比较</b></td><td>原文无比较对象，选项加比较级</td><td>2007·T2·27B 的 <b>More</b> versions——比谁多？原文没给</td></tr></table>'
+     +'<tr><td><b>凭空比较</b></td><td>原文无比较对象，选项加比较级</td><td>2007·T2·27B 的 <b>More</b> versions——比谁多？原文没给；2007·T3·34A 的 <b>outweigh</b>——原文只说两种 fallout 一前一后，从没比过轻重（<b>「先后」≠「轻重」</b>）</td></tr>'
+     +'<tr><td><b>程度升级</b>（第八类）</td><td>削弱→消失；有缺陷→已淘汰；变糟→毁灭；趋势→结局</td><td>2007·T3·31A 把「安全网被削弱」拉满成 <b>has disappeared</b>；2007·T3·35D 把「岌岌可危」说成 <b>in Ruins</b>（已成废墟）；2007·T2·29D 把「有局限」说成「过时」</td></tr></table>'
      +'<p style="margin-top:8px"><b>反向提醒</b>：干扰项爱<b>原词照抄</b>，正确项常是<b>归纳性改写</b>。'
      +'看到某项与原文字面高度重合，先回原句问一句「<b>这句在说谁</b>」——主语对不上，词再像也是错的。</p>',
  traps:['一个选项可能同时踩两类（偷换+张冠李戴），命中任一类即可排除。',
@@ -133,11 +144,18 @@ window.TRICK_READ = [
      +'② 找出主旨里的<b>核心对立</b>（练习 vs 天赋）；'
      +'③ 拿这组对立去卡每个谚语：<b>说反的先排</b> → <b>与核心对立无关的再排</b> → 剩下的必须<b>两个关键概念都对得上</b>。',
  tmpl:'关键词咬合法：<code>Practice</code> ↔ deliberate practice、<code>perfect</code> ↔ expert performers/made —— 两个词都咬住才算命中。'
-     +'主旨句只在<b>首尾段</b>找，绝不在中间的实验细节里找。',
+     +'主旨句只在<b>首尾段</b>找，绝不在中间的实验细节里找。<br>'
+     +'<b>⭐标题题三查（四项主语相同、只差后半截时尤其好用）：</b><br>'
+     +'· <b>① 查对象</b>：讨论的主角对不对？<br>'
+     +'· <b>② 查特点/关系</b>：它处在什么状态、跟谁发生关系？（2007·T3·35 的 A <code>on the Alert</code> 把<b>被动挨打</b>写成<b>主动戒备</b> ✗；C <code>in Conflict</code> 把<b>并列</b>——「老家庭惨，年轻家庭也 <code>not any better</code>」——写成<b>对立</b> ✗）<br>'
+     +'· <b>③ 查程度</b>：到哪一步了？（同题 D <code>in Ruins</code> 把「岌岌可危」说成「已成废墟」✗；正解 B <code>on the Cliff</code>＝<b>危险已到眼前但尚未坠落</b>，正对原文 <code><b>already</b> overburdened shoulders</code> 与 <code>may not be far behind</code> 的未然语气）<br>'
+     +'三关全过的才是答案。<b>写作里给段落起小标题同理：对象 + 关系 + 程度三者都要对准。</b>',
  traps:['<b>「沾边但没打到靶心」最难排</b>：2007·T1·25 的 B「种瓜得瓜」重心是「付出与回报的对应」，完全没触碰「天赋」这一边 → 错。',
         '反向谚语反而好排：同题 D「有其父必有其子」讲遗传，与 made, not born 正相反。',
-        '把某段的细节当主旨：谚语题问的是全文 message，不是某个实验说明了什么。'],
- refs:[{p:'2007_T1_刻意练习造就高手.html',q:'q25',label:'2007·T1·25'},{p:'2022_T1_塑料文物保护.html',q:'q25',label:'T1·25'}]},
+        '把某段的细节当主旨：谚语题问的是全文 message，不是某个实验说明了什么。',
+        '<b>把趋势说成结局</b>是标题题最常见的错法（2007·T3·35D）。判断依据看原文的<b>未然语气</b>：<code>may / already but not yet / on the brink</code> 都表示「还没到最后一步」。',
+        '<b>警告是说给谁听的，决定标题的主语状态</b>：2007·T3 末句「政治后果不远了」是<b>写给政策制定者的警告</b>，全文把中产写成<b>被动承受方</b>（首句用被动语态 <code>has been transformed by</code>），所以「中产自己保持警惕」的 A 项从一开始就站错了位。'],
+ refs:[{p:'2007_T3_中产家庭的风险转嫁.html',q:'q35',label:'2007·T3·35'},{p:'2007_T1_刻意练习造就高手.html',q:'q25',label:'2007·T1·25'},{p:'2022_T1_塑料文物保护.html',q:'q25',label:'T1·25'}]},
 
 {id:'R12', tier:'🔴', qt:'作者态度题（专项）', title:'态度词强度尺：先定方向，再定强度',
  trig:['What is the author’s attitude towards X?','The author’s tone can be described as','四个选项都是单个形容词'],
@@ -168,12 +186,32 @@ window.TRICK_READ = [
  traps:['<b>凭空添加比较级</b>：原文只说「随处可见」，选项加个 <b>More</b>（更多）——比谁多？原文一个比较对象都没给。同类还有 better / faster / the most。',
         '<b>「使用频率下降」≠「地位被废」</b>：<code>tests are not given as often as they used to be</code> 只是让步，主句 <code>still seems to be the defining term</code> 才是要点。<b>even though 让步句里的内容常被拿去造反向干扰项。</b>',
         '<b>括号里的信息也受题干段落限定约束</b>：先确认这个括号在不在题干指定的那一段（配合 R7 用）。'],
- refs:[{p:'2007_T2_智力测试的边界.html',q:'q27',label:'2007·T2·27'},{p:'2022_T2_Z世代与学位.html',q:'q29',label:'T2·29'}]}
+ refs:[{p:'2007_T2_智力测试的边界.html',q:'q27',label:'2007·T2·27'},{p:'2022_T2_Z世代与学位.html',q:'q29',label:'T2·29'}]},
+
+{id:'R14', tier:'🔴', qt:'细节题 / 因果题 · 近义陷阱', title:'支撑者 ≠ 被支撑者：见 support 就标「谁托着谁」',
+ trig:['A support / complement / reinforce / bolster / add to B','原文出现两个意思相近的比喻词','选项说某样东西「消失了 / 被剥夺了」'],
+ flow:'<b>① 读到 <code>A support B</code> 型句子，立刻在旁边写一句：「A 不等于 B，A 只是给 B 加力的。」</b>'
+     +'命题人最爱在这种「一个东西托着另一个东西」的关系上做文章。<br>'
+     +'<b>② 顺着 by / from / of 找「归属」。</b>后置定语里的这几个介词专门交代<b>某样东西是谁提供的</b>，是识破张冠李戴的钥匙。<br>'
+     +'<b>③ 出事的到底是 A 还是 B？受到的是「消失」还是「削弱」？</b>两问答完，错项自己掉出来。',
+ tmpl:'<b>⭐标本题（Claude 盲做在此翻车，务必吃透）2007·T3·31</b>：<br>'
+     +'原文 <code>This “added-worker effect” could <b>support</b> the safety net <b>offered by</b> unemployment insurance or disability insurance</code>。<br>'
+     +'· <b>parachute / back-up earner</b>（后备挣钱人，通常是妈妈）＝ 双薪化之后<b>消失了</b>的那样东西；<br>'
+     +'· <b>safety net</b>（安全网）＝ <b>失业/伤残保险</b>提供的，它<b>还在</b>，只是失去了前者的加持而<b>被削弱</b>。<br>'
+     +'A 项 <code>the safety net they used to enjoy <b>has disappeared</b></code> 一口气踩了两个雷：'
+     +'<b>(1) 张冠李戴</b>（把支撑者当成被支撑者）＋ <b>(2) 程度升级</b>（削弱→消失）。'
+     +'D 项 <code>deprived of insurance</code> 同源而更露骨——保险从头到尾好端端地在那儿。<br>'
+     +'正解 C <code>more vulnerable to changes in family economics</code> 是②段③—⑥句<b>整条因果链的概括</b>：'
+     +'预算花到顶 → 没了后备 → 一出事再也补不上。<b>因果题的正确项常常「看起来很空」，因为它概括的是一整串句子。</b>',
+ traps:['<b>比喻词与制度词长得像，但绝不是一回事</b>：parachute（家里的后备劳动力）vs. safety net（保险制度）。原文用破折号同位语给比喻配了直义（<code>—a back-up earner (usually Mom)</code>），<b>比喻的直义就在破折号后面等着你</b>。',
+        '<b>这三个词都是「加力」不是「等于」</b>：support（支撑）/ complement（补充完善）/ supplement（额外补充）/ reinforce（强化）/ bolster（支持加固）。',
+        '<b>配套排查「程度」</b>：原文是「少了一股力」，选项写成「整个塌了」——这就是程度升级（见 R8 第八类）。'],
+ refs:[{p:'2007_T3_中产家庭的风险转嫁.html',q:'q31',label:'2007·T3·31'},{p:'2007_T3_中产家庭的风险转嫁.html',q:'s3',label:'2007·T3 长难句 s3'}]}
 
 ];
 
 window.TRICK_READ_META = {
   subject:'英语一 · 阅读',
-  source:'2022 Text 1–4 · 2007 Text 1–2',
+  source:'2022 Text 1–4 · 2007 Text 1–3',
   note:'提炼自本复盘中心各篇阅读真题复盘页的技巧/干扰项分析，随复盘页增长。'
 };
