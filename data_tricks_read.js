@@ -19,8 +19,10 @@ window.TRICK_READ = [
  tmpl:'<b>正确项＝换词不换意</b>；<b>错误项爱「原词复现」</b>——用原文出现过的词造一个意思不同的句子。'
      +'见到选项和原文<b>字面高度重合</b>反而要警惕。',
  traps:['原词复现 ≠ 正确：T3·34 用原文词 visual studies 造错项，正确的 B 反而用文外词 exemplify 做概括性替换。',
-        '定位要定到「句」，别只定到「段」——同段里常埋反向/偷换干扰。'],
- refs:[{p:'2022_T1_塑料文物保护.html',q:'q21',label:'T1·21'},{p:'2022_T3_艺术与科学.html',q:'q34',label:'T3·34'},{p:'2022_T4_解雇保护悖论.html',q:'q36',label:'T4·36'}]},
+        '定位要定到「句」，别只定到「段」——同段里常埋反向/偷换干扰。',
+        '<b>四个选项全落在同一句附近时</b>，靠「眼熟」分不出来，必须逐项核对三件事：<b>①谁做的　②做的是哪个动作　③这句是陈述还是质疑</b>。'
+        +'2007·T2·26 三种错法各来一个：B 错在动作（<code>envision</code> 想象折剪后的样子 → 说成真去动手折剪）、C 错在主体（读者提的问题 → 说成测试的题目）、A 错在语气（作者的<b>反问质疑</b> → 说成测试的内容）。'],
+ refs:[{p:'2022_T1_塑料文物保护.html',q:'q21',label:'T1·21'},{p:'2022_T3_艺术与科学.html',q:'q34',label:'T3·34'},{p:'2022_T4_解雇保护悖论.html',q:'q36',label:'T4·36'},{p:'2007_T2_智力测试的边界.html',q:'q26',label:'2007·T2·26'}]},
 
 {id:'R2', tier:'🔴', qt:'人物观点题', title:'先圈人名，再把「比喻句」翻成直义',
  trig:['X believes / notes / says','题干出现人名','In Ferreira’s opinion'],
@@ -48,16 +50,20 @@ window.TRICK_READ = [
  flow:'① <b>作者发声段＝没有引号、没有人名</b>的段落（那是作者自己评论，不是转述人物）；'
      +'② <b>首段形容词群</b>＝全文情感基调，先定调；③ <b>末段</b>盯 <code>needs to / must / should</code> 等情态词所在句＝作者最后的喊话。',
  tmpl:'问 the author → 只看作者发声段；问某人 → 只看那人的话。两者混用就是最大的坑。',
- traps:['拿人物的话当作者态度：T1·24 问 the author，答案在无引号的⑥段，不是 van Oosten 的话。'],
- refs:[{p:'2022_T1_塑料文物保护.html',q:'q24',label:'T1·24'},{p:'2022_T2_Z世代与学位.html',q:'q26',label:'T2·26'},{p:'2022_T3_艺术与科学.html',q:'q35',label:'T3·35'}]},
+ traps:['拿人物的话当作者态度：T1·24 问 the author，答案在无引号的⑥段，不是 van Oosten 的话。',
+        '<b>把「现状陈述段」当「作者立场段」</b>：2007·T2 第三段陈述「IQ 分数仍是衡量标准」，那是<b>被批判的靶子</b>，不是作者赞同——30 题 A 项专坑读错这一段的人。',
+        '<b>句末的 <code>, argues X.</code> 是身份标签</b>：引述倒装把说话人甩到句末，一看到就要意识到「这一整句是 X 说的，不是作者说的」。'],
+ refs:[{p:'2022_T1_塑料文物保护.html',q:'q24',label:'T1·24'},{p:'2022_T2_Z世代与学位.html',q:'q26',label:'T2·26'},{p:'2022_T3_艺术与科学.html',q:'q35',label:'T3·35'},{p:'2007_T2_智力测试的边界.html',q:'q30',label:'2007·T2·30'}]},
 
 {id:'R5', tier:'🟡', qt:'目的 / 因果题', title:'沿「因果链」走到末端，别停在半路',
  trig:['to ___（问目的）','why / because','designed to / intended to / aim','the effect of'],
  flow:'问<b>目的</b> → 找 <code>designed to / intended to / aim</code> 后面的内容（立法/制度题常在<b>制度介绍段</b>）；'
      +'问<b>结果/影响</b> → 沿 <code>Because… / This makes… / And…</code> 的因果链<b>走到最后一环</b>，答案常在链条末端。',
  tmpl:'答案 = 原因的<b>正向改写</b>（怕光损伤 →〈所以〉锁进黑暗 = 防止进一步损坏）。',
- traps:['只走一半因果链就选，会选到中间环节而非最终结果。'],
- refs:[{p:'2022_T1_塑料文物保护.html',q:'q23',label:'T1·23'},{p:'2022_T4_解雇保护悖论.html',q:'q36',label:'T4·36'},{p:'2022_T4_解雇保护悖论.html',q:'q39',label:'T4·39'}]},
+ traps:['只走一半因果链就选，会选到中间环节而非最终结果。',
+        '<b>「同义复述题干」的选项一律排除</b>：因果题里，题干给了「果」，把这个果换个说法再抄一遍的选项永远是错的（2007·T2·28 的 C「莎凡特是不会重演的极端个案」＝题干本身，不是原因）。',
+        '<b>三步定因果</b>：① 先分清题干给的是<b>因</b>还是<b>果</b>；② 回原文找因果标志词（because / since / due to / as a result of / lead to）；③ 只锁定标志词的<b>那一侧</b>。'],
+ refs:[{p:'2022_T1_塑料文物保护.html',q:'q23',label:'T1·23'},{p:'2022_T4_解雇保护悖论.html',q:'q36',label:'T4·36'},{p:'2022_T4_解雇保护悖论.html',q:'q39',label:'T4·39'},{p:'2007_T2_智力测试的边界.html',q:'q28',label:'2007·T2·28'}]},
 
 {id:'R6', tier:'🟡', qt:'推断 / 结论题', title:'只推一步 + 防「词形陷阱」',
  trig:['infer / conclude / It can be learned','某机构会支持/反对什么','末段升华'],
@@ -68,15 +74,19 @@ window.TRICK_READ = [
      +'一次背全这池子：overrated 高估 / underrated 低估 / overlooked 忽视 / overstated 夸大 / underestimated 低估。',
  traps:['过度推断（推两步）：T2·30 的 C 从「建议读第二学位」推出「学位不再有吸引力」，推过头。',
         '机构立场题：先定该机构的原文立场，再推一步，不能凭常识脑补。',
-        '读到原文里的 over-/under- 词，<b>当场在旁边写下中文</b>，回来做题就不会被形近项绕晕。'],
- refs:[{p:'2022_T2_Z世代与学位.html',q:'q30',label:'T2·30'},{p:'2022_T4_解雇保护悖论.html',q:'q38',label:'T4·38'},{p:'2022_T1_塑料文物保护.html',q:'q25',label:'T1·25'},{p:'2007_T1_刻意练习造就高手.html',q:'q24',label:'2007·T1·24'}]},
+        '读到原文里的 over-/under- 词，<b>当场在旁边写下中文</b>，回来做题就不会被形近项绕晕。',
+        '<b>以偏概全</b>（过度推断的变体）：从<b>一个具体技巧点</b>跨到<b>对整类事物的判断</b>——2007·T2·29 的 C 由「知道何时该猜是 SAT 应试技巧之一」推成「测试包含大量猜测行为」。',
+        '<b>「有缺陷」≠「该淘汰」</b>：同题 D「传统测试已过时」——原文只列局限，且前文明说 IQ 分数<b>仍是</b>定义性术语、SAT/GRE <b>现行在用</b>。两者之间隔着好几步，作者一步都没走。',
+        '<b>部分否定别读成全盘否定</b>：<code>may not assess <u>all</u></code>、<code>do <u>not necessarily</u> predict</code> ＝「未必全部」，不是「完全不能」。not + all/both/every/always/necessarily 一律是部分否定。'],
+ refs:[{p:'2022_T2_Z世代与学位.html',q:'q30',label:'T2·30'},{p:'2022_T4_解雇保护悖论.html',q:'q38',label:'T4·38'},{p:'2022_T1_塑料文物保护.html',q:'q25',label:'T1·25'},{p:'2007_T1_刻意练习造就高手.html',q:'q24',label:'2007·T1·24'},{p:'2007_T2_智力测试的边界.html',q:'q29',label:'2007·T2·29'}]},
 
 {id:'R7', tier:'🟡', qt:'细节题（题干限定段落）', title:'题干限定第 N 段，别处的「对信息」也是错项',
  trig:['In Paragraph 5','According to Para X','题干明确点段号'],
  flow:'题干限定段落时，<b>只在该段找</b>；其他段落里即使有说得对的信息，放进选项也是<b>错的</b>——专为「不看限定」的人挖的坑。',
  tmpl:'答对此类题的动作：先在原文<b>圈出题干指定的段号</b>，答案定位不出这一段。',
- traps:['段落错位：T2·29 的 B 是⑥段的 up-skilling，题干却限定 Paragraph 5 → 错。'],
- refs:[{p:'2022_T2_Z世代与学位.html',q:'q29',label:'T2·29'}]},
+ traps:['段落错位：T2·29 的 B 是⑥段的 up-skilling，题干却限定 Paragraph 5 → 错。',
+        '2007·T2·27 限定 Paragraph 3，D 项却取材于末段的 important elements，且与第二段的<b>设问句</b>（「智力有多少<b>能够</b>被明确？」＝尚无定论）正相反。'],
+ refs:[{p:'2022_T2_Z世代与学位.html',q:'q29',label:'T2·29'},{p:'2007_T2_智力测试的边界.html',q:'q27',label:'2007·T2·27'}]},
 
 {id:'R8', tier:'🔴', qt:'通用 · 排除选项', title:'五大干扰项类型：认出类型就秒排',
  trig:['排除三个错误选项时','拿不准该选哪个'],
@@ -86,7 +96,9 @@ window.TRICK_READ = [
      +'<tr><td><b>偷换</b></td><td>换概念/主宾/时态/段落</td><td>T1·21B 偷换首句、T2·30C 换时态</td></tr>'
      +'<tr><td><b>反向</b></td><td>把原文意思说反</td><td>T2·28D、T4 多处</td></tr>'
      +'<tr><td><b>张冠李戴</b></td><td>把 A 的事安到 B 头上</td><td>T1·23C 化学家的活安给博物馆；2007·T1·23D 把「刻意练习」的三要素安给「好记忆」</td></tr>'
-     +'<tr><td><b>过度推断</b></td><td>顺着原文多推一步</td><td>T2·30C 推两步</td></tr></table>'
+     +'<tr><td><b>过度推断</b></td><td>顺着原文多推一步</td><td>T2·30C 推两步；2007·T2·29C 以偏概全</td></tr>'
+     +'<tr><td><b>杂糅</b>（第六类·最难）</td><td>把<b>相邻两句</b>的成分拼成一句</td><td>2007·T2·29B 把④句的「IQ⇄领导力相关」和⑤句的「SAT」拼成「IQ 与 SAT 高度相关」</td></tr>'
+     +'<tr><td><b>凭空比较</b></td><td>原文无比较对象，选项加比较级</td><td>2007·T2·27B 的 <b>More</b> versions——比谁多？原文没给</td></tr></table>'
      +'<p style="margin-top:8px"><b>反向提醒</b>：干扰项爱<b>原词照抄</b>，正确项常是<b>归纳性改写</b>。'
      +'看到某项与原文字面高度重合，先回原句问一句「<b>这句在说谁</b>」——主语对不上，词再像也是错的。</p>',
  traps:['一个选项可能同时踩两类（偷换+张冠李戴），命中任一类即可排除。',
@@ -125,12 +137,43 @@ window.TRICK_READ = [
  traps:['<b>「沾边但没打到靶心」最难排</b>：2007·T1·25 的 B「种瓜得瓜」重心是「付出与回报的对应」，完全没触碰「天赋」这一边 → 错。',
         '反向谚语反而好排：同题 D「有其父必有其子」讲遗传，与 made, not born 正相反。',
         '把某段的细节当主旨：谚语题问的是全文 message，不是某个实验说明了什么。'],
- refs:[{p:'2007_T1_刻意练习造就高手.html',q:'q25',label:'2007·T1·25'},{p:'2022_T1_塑料文物保护.html',q:'q25',label:'T1·25'}]}
+ refs:[{p:'2007_T1_刻意练习造就高手.html',q:'q25',label:'2007·T1·25'},{p:'2022_T1_塑料文物保护.html',q:'q25',label:'T1·25'}]},
+
+{id:'R12', tier:'🔴', qt:'作者态度题（专项）', title:'态度词强度尺：先定方向，再定强度',
+ trig:['What is the author’s attitude towards X?','The author’s tone can be described as','四个选项都是单个形容词'],
+ flow:'<b>四步定态度：</b><br>'
+     +'① <b>只看作者发声句</b>——无引号、无人名的句子才是作者本人（引述倒装 <code>, argues X.</code> 一出现，那句就归 X 不归作者）；<br>'
+     +'② <b>数「评述性语句」</b>——转折词 / 否定表达 / 情态保留（<code>may not</code>、<code>seems to</code>、<code>not obvious</code>、<code>a bit confusing</code>、<code>fail to</code>）；<br>'
+     +'③ 给态度定 <b>方向（褒 / 中 / 贬）＋ 强度（轻 / 重）</b>，两者都对上才选；<br>'
+     +'④ <b>用其他题的答案反验</b>——2007·T2 的 29 题已选「分数不可靠」，作者绝无可能是 supportive。',
+ tmpl:'<b>⭐强度尺（背下来，年年用）：</b><br>'
+     +'<code>supportive / positive 支持</code>（要有<b>明确肯定句</b>）　←　<code>objective / impartial / neutral 中立</code>（要<b>两边都说</b>）　→　'
+     +'<code>cautious 谨慎</code>　→　<code>skeptical / doubtful 怀疑</code>（<b>软性否定 + 讲证据</b>）　→　<code>critical 批评</code>（直接指责、要求改变）　→　<code>biased / prejudiced 偏见</code>。<br>'
+     +'<b>两条铁律：</b>(1) <b>biased / indifferent / subjective 几乎从不是答案</b>——考研选文都出自正规刊物，作者再不满也是<b>讲证据的怀疑</b>，不是撒泼；'
+     +'「漠不关心」更是<b>逻辑自否</b>（都写了这篇文章还能不关心？）。(2) <b>impartial 只在作者真的两边都说了时才选</b>。',
+ traps:['<b>把「现状陈述段」当「作者立场段」</b>（第一大坑）：2007·T2 第三段陈述「IQ 分数仍是衡量标准」，那是第四段要打的<b>靶子</b>；30 题 A 项就是给读错这段的人准备的。注意 <code>still <b>seems to be</b></code> 本身就是保留语气。',
+        '<b>「先扬后抑」不是中立</b>：<code>tests <u>best assess</u> analytical skills <b>but</b> <u>fail to measure</u> creativity</code>——前半句只是为托出后半句的落差，<b>转折后才是重点</b>。拿它当「有褒有贬」就会误选 impartial。',
+        '<b>怀疑 ≠ 偏见</b>：skeptical 是「我有理由不信」（引研究、引专家、摆数据），biased 是「我不讲理由就是不信」。'],
+ refs:[{p:'2007_T2_智力测试的边界.html',q:'q30',label:'2007·T2·30'},{p:'2022_T1_塑料文物保护.html',q:'q24',label:'T1·24'},{p:'2022_T3_艺术与科学.html',q:'q35',label:'T3·35'}]},
+
+{id:'R13', tier:'🟡', qt:'推理引申题 / 通用 · 找考点', title:'括号与同位语藏考点，缓和语气常是答案',
+ trig:['原文出现 ( … ) / 破折号 / 同位语','推理题四选项都不好排','infer / can be learned'],
+ flow:'<b>① 读的时候：给「顺带信息」画圈。</b>括号、破折号、同位语里的内容<b>看着像补充，其实是命题人埋点的首选</b>——因为它最容易被一扫而过。<br>'
+     +'2007·T2·27 的正确答案 C 就藏在一个括号里：两大量表 <code>(both come in adult and children’s version)</code> → 推一步 → 成人与儿童的<b>测试内容和形式可能不同</b>。<br>'
+     +'<b>② 做题的时候：比选项的「语气强度」。</b>',
+ tmpl:'<b>语气强度筛选法（备选重点，不是答题依据）：</b>推理题四项摆一起时——<br>'
+     +'· <b>带缓和词的往往是正确项</b>：<code>may / might / tend to / some / can be</code>（2007·T2·27 的 C 用 <b>may be different</b>）；<br>'
+     +'· <b>语气绝对的往往是错项</b>：<code>no longer / never / have defined / all / More</code>（同题 A「不再使用」、D「已经界定」、B「更多版本」全军覆没）。<br>'
+     +'<b>⚠️ 这条只用来排序检查顺序、时间紧时押注，必须回原文核实过才能定答案。</b>',
+ traps:['<b>凭空添加比较级</b>：原文只说「随处可见」，选项加个 <b>More</b>（更多）——比谁多？原文一个比较对象都没给。同类还有 better / faster / the most。',
+        '<b>「使用频率下降」≠「地位被废」</b>：<code>tests are not given as often as they used to be</code> 只是让步，主句 <code>still seems to be the defining term</code> 才是要点。<b>even though 让步句里的内容常被拿去造反向干扰项。</b>',
+        '<b>括号里的信息也受题干段落限定约束</b>：先确认这个括号在不在题干指定的那一段（配合 R7 用）。'],
+ refs:[{p:'2007_T2_智力测试的边界.html',q:'q27',label:'2007·T2·27'},{p:'2022_T2_Z世代与学位.html',q:'q29',label:'T2·29'}]}
 
 ];
 
 window.TRICK_READ_META = {
   subject:'英语一 · 阅读',
-  source:'2022 Text 1–4 · 2007 Text 1',
+  source:'2022 Text 1–4 · 2007 Text 1–2',
   note:'提炼自本复盘中心各篇阅读真题复盘页的技巧/干扰项分析，随复盘页增长。'
 };

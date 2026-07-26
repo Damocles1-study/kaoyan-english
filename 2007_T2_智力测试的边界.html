@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2007 英一 Text 2 · 智力测试的边界</title>
+<style>
+  :root{
+    --bg:#faf9f6; --card:#ffffff; --ink:#2b2b2b; --muted:#8a8578;
+    --accent:#8b5e34; --accent-soft:#f3e9dd; --line:#e8e3d8;
+    --hl:#fdf3d8; --hl-border:#e0b84d;
+    --green:#3e7a4e; --green-soft:#e8f2ea;
+    --red:#b04a3a; --red-soft:#f9e9e6;
+    --blue:#3d6a8a; --blue-soft:#e7eff5;
+    --purple:#6d5a8e; --purple-soft:#eeeaf5;
+    --serif:"Georgia","Songti SC",serif;
+    --sans:-apple-system,"PingFang SC","Helvetica Neue",sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#1c1a17; --card:#26231f; --ink:#e8e4dc; --muted:#9a948a;
+      --accent:#d0a06a; --accent-soft:#3a3127; --line:#3a362f;
+      --hl:#3d3520; --hl-border:#b08c3a;
+      --green:#7fb98d; --green-soft:#26362b;
+      --red:#d98876; --red-soft:#3d2a26;
+      --blue:#8ab3d0; --blue-soft:#26323d;
+      --purple:#a996c8; --purple-soft:#302a3d;
+    }
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;padding-bottom:120px}
+  .wrap{max-width:1100px;margin:0 auto;padding:24px 20px}
+  .back{font-size:.85rem;color:var(--muted);text-decoration:none}
+  .back:hover{color:var(--accent)}
+  header{margin:14px 0 28px}
+  header h1{font-family:var(--serif);font-size:1.7rem;line-height:1.3}
+  header .sub{color:var(--muted);margin-top:6px;font-size:.9rem}
+  .tags{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+  .tag{font-size:.75rem;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);border:1px solid var(--line)}
+
+  .layout{display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:start}
+  @media (max-width:900px){.layout{grid-template-columns:1fr}}
+
+  section.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:24px}
+  h2{font-size:1.05rem;letter-spacing:.05em;color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+  h2 .n{font-size:.72rem;background:var(--accent);color:var(--card);border-radius:6px;padding:1px 7px}
+
+  .para{margin-bottom:22px}
+  .para .en{font-family:var(--serif);font-size:1.06rem;line-height:1.9}
+  .pno{color:var(--muted);font-size:.75rem;user-select:none;margin-right:6px}
+  .tk{background:var(--hl);border-bottom:2px solid var(--hl-border);border-radius:3px;padding:0 2px;cursor:pointer;transition:filter .15s}
+  .tk:hover{filter:brightness(.93)}
+  .tk.active{outline:2px solid var(--hl-border)}
+  .ls{border-bottom:2px dotted var(--blue);cursor:pointer}
+  .para .zh{display:none;margin-top:10px;padding:10px 14px;background:var(--blue-soft);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:.93rem}
+  .para.showzh .zh{display:block}
+  .zbtn{float:right;margin-left:10px;font-size:.72rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:6px;padding:2px 9px;cursor:pointer}
+  .zbtn:hover{color:var(--accent);border-color:var(--accent)}
+  .allbtn{font-size:.78rem;border:1px solid var(--accent);background:none;color:var(--accent);border-radius:8px;padding:4px 12px;cursor:pointer;margin-left:auto}
+
+  aside{position:sticky;top:20px}
+  #panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;min-height:180px}
+  #panel .hint{color:var(--muted);font-size:.88rem;text-align:center;padding:30px 10px}
+  .wcard .head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .wcard .w{font-family:var(--serif);font-size:1.35rem;font-weight:bold}
+  .wcard .ipa{color:var(--muted);font-size:.85rem}
+  .wcard .pos{font-size:.72rem;color:var(--purple);background:var(--purple-soft);padding:1px 8px;border-radius:999px}
+  .wcard .badge{font-size:.7rem;padding:1px 8px;border-radius:999px}
+  .b-core{background:var(--red-soft);color:var(--red)}
+  .b-phrase{background:var(--blue-soft);color:var(--blue)}
+  .b-poly{background:var(--purple-soft);color:var(--purple)}
+  .b-write{background:var(--green-soft);color:var(--green)}
+  .wcard .cn{margin-top:8px;font-size:1rem;font-weight:600}
+  .wcard .en-def{color:var(--muted);font-size:.86rem;font-style:italic;margin-top:2px}
+  .wcard .row{margin-top:10px;font-size:.86rem;padding:8px 10px;border-radius:8px}
+  .wcard .row>b:first-child{font-size:.72rem;display:block;margin-bottom:2px;letter-spacing:.06em}
+  .r-ex{background:var(--hl)} .r-ex b{color:var(--hl-border)}
+  .r-mem{background:var(--green-soft)} .r-mem b{color:var(--green)}
+  .r-syn{background:var(--blue-soft)} .r-syn b{color:var(--blue)}
+  .r-conf{background:var(--red-soft)} .r-conf b{color:var(--red)}
+  #panel .close{display:none}
+  @media (max-width:900px){
+    aside{position:fixed;left:0;right:0;bottom:0;z-index:50;padding:0 8px 8px}
+    #panel{box-shadow:0 -6px 24px rgba(0,0,0,.18);max-height:55vh;overflow-y:auto;display:none}
+    #panel.open{display:block}
+    #panel .close{display:block;float:right;border:none;background:var(--line);border-radius:8px;padding:2px 10px;cursor:pointer;color:var(--ink)}
+  }
+
+  .q{margin-bottom:22px;padding-bottom:18px;border-bottom:1px dashed var(--line)}
+  .q:last-child{border:none;margin-bottom:0;padding-bottom:0}
+  .q .stem{font-weight:600;font-family:var(--serif)}
+  .qt{font-size:.7rem;color:var(--blue);background:var(--blue-soft);border-radius:999px;padding:1px 8px;margin-right:6px;vertical-align:2px}
+  .opts{margin-top:10px;display:grid;gap:8px}
+  .opt{border:1px solid var(--line);border-radius:10px;padding:8px 12px;cursor:pointer;font-size:.93rem;font-family:var(--serif);transition:all .15s}
+  .opt:hover{border-color:var(--accent)}
+  .q.done .opt{cursor:default}
+  .opt.right{background:var(--green-soft);border-color:var(--green)}
+  .opt.wrong{background:var(--red-soft);border-color:var(--red)}
+  .expl{display:none;margin-top:12px;background:var(--accent-soft);border-radius:10px;padding:12px 14px;font-size:.9rem}
+  .q.done .expl{display:block}
+  .expl b{color:var(--accent)}
+  .expl .loc{font-family:var(--serif);font-style:italic;background:var(--hl);padding:1px 4px;border-radius:3px}
+
+  .sent{margin-bottom:20px}
+  .sent .src{font-family:var(--serif);font-size:1rem;background:var(--blue-soft);padding:12px 14px;border-radius:10px;border-left:3px solid var(--blue)}
+  .sent .anat{margin-top:8px;font-size:.9rem}
+  .sent .anat li{margin:4px 0 4px 18px}
+  .sent .tr{margin-top:8px;font-size:.92rem;color:var(--muted)}
+  .skel{color:var(--red);font-weight:600}
+
+  .filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+  .fbtn{font-size:.8rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:999px;padding:4px 14px;cursor:pointer}
+  .fbtn.on{background:var(--accent);color:var(--card);border-color:var(--accent)}
+  .vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
+  .vitem{border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer;transition:border-color .15s}
+  .vitem:hover{border-color:var(--accent)}
+  .vitem .w{font-family:var(--serif);font-weight:bold}
+  .vitem .cn{font-size:.85rem;color:var(--muted)}
+  .vitem .badges{float:right}
+
+  .wb{display:grid;gap:10px}
+  .wbi{border-left:3px solid var(--green);background:var(--green-soft);border-radius:0 10px 10px 0;padding:10px 14px;font-size:.92rem}
+  .wbi .p{font-family:var(--serif);font-weight:600}
+  .wbi .u{color:var(--muted);font-size:.85rem}
+
+  .flow{display:grid;gap:8px;font-size:.92rem}
+  .flow .fi{border:1px solid var(--line);border-radius:10px;padding:9px 13px}
+  .flow .fi b{color:var(--accent)}
+
+  #yd{position:fixed;z-index:60;display:none;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:4px 12px;font-size:.8rem;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+  footer{color:var(--muted);font-size:.8rem;text-align:center;margin-top:30px}
+  .att{display:grid;gap:8px;margin-top:10px}
+  .atti{border:1px solid var(--line);border-radius:10px;padding:9px 13px;font-size:.9rem}
+  .atti b{font-family:var(--serif)}
+  .atti.no{background:var(--red-soft);border-color:var(--red)}
+  .atti.yes{background:var(--green-soft);border-color:var(--green)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">◀ 返回英语复盘中心</a>
+  <header>
+    <h1>Intelligence Considered：智力测试量不出的那部分</h1>
+    <div class="sub">2007 年英语（一）真题 · Text 2 · 453 词 · 建议做题 18 min · 话题：心理学×测量学（源自《科学美国人》1998-01-20《Intelligence Considered》）</div>
+    <div class="tags">
+      <span class="tag">正确答案：26D 27C 28A 29A 30B</span><span class="tag">题型：事实细节 + 推理引申 + 因果细节 + 概括推理 + 作者态度</span><span class="tag">难度：题干朴素、坑在选项，30 题态度是全篇总账</span><span class="tag">🆕 新增套路卡：作者态度四词尺 · 括号与缓和语气</span>
+    </div>
+    <div class="atti" style="margin-top:14px;background:var(--blue-soft);border:1px solid var(--blue);border-radius:10px;padding:10px 14px;font-size:.88rem">
+      📖 <b>本页与原卷配合看</b>：原文完整英文在你手上的原卷 <b>p5</b>（<code>按年份/2007/…图像保真版.pdf</code> 第 6 页），本页第 01 节按段给出<b>考点句原文 + 全段中译</b>，不重排整篇文章——做题时对着原卷读，复盘时对着本页看。
+    </div>
+  </header>
+
+  <div class="layout">
+    <main>
+      <!-- ========== 全文脉络 ========== -->
+      <section class="card">
+        <h2><span class="n">00</span>读前一分钟 · 全文脉络（做完题再看也行）</h2>
+        <div class="flow">
+          <div class="fi"><b>①段 引子（现象＋质疑）</b>：报纸专栏「问问玛丽莲」——IQ 高达 228 的 vos Savant 回答普通人的提问。但 IQ 测试考的是<b>类推、空间想象、数列推导</b>，而读者问的是「爱与喜欢有何区别」「运气与巧合的本质」。作者当场点出违和：<b>会想象折纸，凭什么就能答连诗人哲学家都答不上的问题？</b></div>
+          <div class="fi"><b>②段 亮观点＋抛问题</b>：<b>Clearly, intelligence encompasses more than a score on a test.</b>——全文<b>唯一一句作者直白表态</b>，也是 30 题的定盘星。随后连抛两问：什么叫聪明？智力有多少能被明确？</div>
+          <div class="fi"><b>③段 交代现状（非作者立场！）</b>：介绍 IQ 测试的<b>现实地位</b>——仍是定义性术语、两大量表（各有成人版与儿童版）、几百美元、心理学家施测、改编版遍布书店与网络；<b>计分方式已改</b>（同龄人口统计分布 ⇄ 旧的心理年龄÷生理年龄×100），所以 228 那种超高分不可能再有；SAT/GRE 也体现 IQ 测试的主要特点。<b>这一段是「社会现象」，不是作者认可。</b></div>
+          <div class="fi"><b>④段 打靶（借 Sternberg 之口）</b>：标准化测试的<b>三条缺陷</b>——(1) 只擅测分析与语言能力，<b>测不出创造力与实践知识</b>；(2) 人群或情境一变就<b>预测不准</b>（低压下 IQ 预示领导力，高压下<b>负相关</b>）；(3) <b>应试技巧</b>也在得分里（何时该猜、哪题该跳）。</div>
+          <div class="fi" style="border-color:var(--accent)">📌 <b>一句话主旨</b>：智商分数远不等于智力，标准化测试量不出真正决定成败的那部分能力。<br>📌 <b>结构套路</b>：<b>违和现象引入 → 作者亮观点 → 陈述现状（立靶子）→ 借专家打靶</b>。⚠️ 第三段最容易被误读成「作者支持 IQ 测试」——它只是<b>把现状摆出来当批判对象</b>，30 题 A 项就是专为读错这一段的人准备的。</div>
+        </div>
+      </section>
+
+      <!-- ========== 原文精读 ========== -->
+      <section class="card">
+        <h2><span class="n">01</span>原文精读 · 考点句 <button class="allbtn" onclick="toggleAll()">全段译文 开/关</button></h2>
+        <p style="font-size:.8rem;color:var(--muted);margin-bottom:14px">🟡 黄色高亮 = 重难点词/短语，点击右侧出卡片 ｜ 蓝色虚线 = 长难句，点击跳到精析 ｜ 每段「译」= 该段完整中译 ｜ 选中任意其他单词浮出「查有道」</p>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p style="font-size:.78rem;color:var(--accent);margin-bottom:6px">① 引子段 · 26 题定位段</p>
+          <p class="en"><span class="pno">考点句</span>IQ tests ask you to complete verbal and visual <span class="tk" data-w="analogy">analogies</span>, to <span class="tk" data-w="envision">envision</span> paper after it has been folded and cut, and to <span class="tk" data-w="deduce">deduce</span> numerical <span class="tk" data-w="sequence">sequences</span>, among other similar tasks.</p>
+          <p class="en" style="margin-top:10px"><span class="pno">考点句</span><span class="ls" onclick="go('s1')">So it is a bit confusing when vos Savant <span class="tk" data-w="field">fields</span> such queries from <span class="tk" data-w="joe">the average Joe</span> (whose IQ is 100) as, What's the difference between love and <span class="tk" data-w="fondness">fondness</span>?</span></p>
+          <p class="en" style="margin-top:10px"><span class="pno">考点句</span><span class="ls" onclick="go('s2')">It's not obvious how the capacity to visualize objects and to figure out numerical patterns <span class="tk" data-w="suit">suits</span> one to answer questions that have <span class="tk" data-w="elude">eluded</span> some of the best poets and philosophers.</span></p>
+          <div class="zh"><b>①段全译：</b>过去几年里，周日报纸增刊《大观》开了一个名叫「问问玛丽莲」的专栏，邀请读者向玛丽莲·沃斯·莎凡特提问——她 10 岁时测得的心理水平相当于 23 岁左右的人，智商由此高达 228，是有记录以来的最高分。<b>IQ 测试要你做的是：完成语言类比和视觉类比，想象纸张折叠剪裁之后的形状，推导数列，以及其他类似的任务。</b>所以，当莎凡特应对智商 100 的普通人提出的这类问题——「爱与喜欢有什么区别？」「运气和巧合的本质是什么？」——就有点让人费解了。<b>想象物体形状、看出数字规律的能力，凭什么就使一个人适合去回答那些连最优秀的诗人和哲学家都未能解答的问题，这一点并不明显。</b>
+          <div style="margin-top:8px;font-size:.86rem">💡 <b>这一段的两个动作</b>：先用<b>并列不定式</b>把 IQ 测试的考查内容列全（26 题四个选项全从这里取材），再用 <code>a bit confusing</code> / <code>not obvious</code> 两处<b>软性否定</b>埋下作者的怀疑——30 题的态度，从第①段就开始渗。</div></div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p style="font-size:.78rem;color:var(--accent);margin-bottom:6px">② 作者亮观点段 · 30 题定盘星</p>
+          <p class="en"><span class="pno">主旨句</span>Clearly, intelligence <span class="tk" data-w="encompass">encompasses</span> more than a score on a test.</p>
+          <p class="en" style="margin-top:10px"><span class="pno">设问</span>Just what does it mean to be smart? How much of intelligence can be <span class="tk" data-w="specify">specified</span>, and how much can we learn about it from <span class="tk" data-w="neurology">neurology</span>, genetics, computer science and other fields?</p>
+          <div class="zh"><b>②段全译：</b><b>显然，智力所涵盖的远不止某项测试上的一个分数。</b>究竟什么才叫「聪明」？智力中有多大比例可以被明确界定，我们又能从神经学、遗传学、计算机科学等领域了解到多少关于它的东西？
+          <div style="margin-top:8px;font-size:.86rem">💡 <b>全篇最短的一段，含金量最高。</b><code>Clearly</code>（显然）＝ 作者<b>不加引号、不借人名</b>的直接发声；<code>more than a score</code> ＝「分数不等于智力」。<b>作者态度题（30）的第一落点就在这句</b>——记住 R4：<b>没有引号、没有人名的句子才是作者本人</b>。</div></div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p style="font-size:.78rem;color:var(--accent);margin-bottom:6px">③ 现状陈述段（≠作者立场）· 27、28 题定位段</p>
+          <p class="en"><span class="pno">考点句</span>The <span class="tk" data-w="defining">defining term</span> of intelligence in humans still seems to be the IQ score, even though IQ tests are not given as often as they used to be.</p>
+          <p class="en" style="margin-top:10px"><span class="pno">⭐27题</span>The test comes primarily in two forms: the Stanford-Binet Intelligence Scale and the Wechsler Intelligence Scales <b>(both come in adult and children's version)</b>. Generally costing several hundred dollars, they are usually given only by psychologists, although <span class="tk" data-w="variation">variations</span> of them <span class="tk" data-w="populate">populate</span> bookstores and the World Wide Web.</p>
+          <p class="en" style="margin-top:10px"><span class="pno">⭐28题</span><span class="ls" onclick="go('s3')">Superhigh scores like vos Savant's are no longer possible, because scoring is now based on a <span class="tk" data-w="distribution">statistical population distribution</span> among <span class="tk" data-w="peer">age peers</span>, rather than simply dividing the mental age by the <span class="tk" data-w="chronological">chronological</span> age and multiplying by 100.</span></p>
+          <p class="en" style="margin-top:10px"><span class="pno">考点句</span>Other standardized tests, such as the Scholastic Assessment Test (SAT) and the Graduate Record Exam (GRE), <span class="tk" data-w="capture">capture</span> the main aspects of IQ tests.</p>
+          <div class="zh"><b>③段全译：</b>尽管如今 IQ 测试已不像以前那样频繁使用，但 IQ 分数似乎仍是人类智力的定义性术语。测试主要有两种形式：斯坦福-比奈智力量表和韦克斯勒智力量表（<b>二者都有成人版和儿童版</b>）。它们通常花费几百美元，一般只由心理学家施测，不过它们的改编版本在书店和互联网上随处可见。<b>像莎凡特那样的超高分数不可能再出现了，因为现在的计分是以同龄群体在统计学意义上的人口分布为基础，而不再是简单地用心理年龄除以生理年龄再乘以 100。</b>其他标准化测试，比如学术评估测试（SAT）和研究生入学考试（GRE），也体现了 IQ 测试的主要特点。
+          <div style="margin-top:8px;font-size:.86rem">💡 <b>括号是隐藏考点</b>：<code>(both come in adult and children's version)</code> 看着像顺手一提，27 题的正确答案 C 就藏在这个括号里。<b>凡是括号、破折号、同位语里的「顺带信息」，都要当考点标记一下</b>。<br>💡 <b>本段是「靶子」不是「立场」</b>：它陈述的是社会现实（IQ 分数仍是衡量标准），第④段整段就是来打这个靶子的。30 题 A 项正是把这段当成了作者的赞同。</div></div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p style="font-size:.78rem;color:var(--accent);margin-bottom:6px">④ 打靶段 · 29 题定位段</p>
+          <p class="en"><span class="pno">⭐29题</span><span class="ls" onclick="go('s4')">Such standardized tests may not <span class="tk" data-w="assess">assess</span> all the important elements necessary to succeed in school and in life, <span class="tk" data-w="argue">argues</span> Robert J. Sternberg.</span></p>
+          <p class="en" style="margin-top:10px"><span class="pno">缺陷①</span><span class="ls" onclick="go('s5')">Sternberg notes that traditional tests best assess <span class="tk" data-w="analytical">analytical</span> and verbal skills but <span class="tk" data-w="failto">fail to measure</span> creativity and practical knowledge, components also <span class="tk" data-w="critical">critical to</span> problem solving and life success.</span></p>
+          <p class="en" style="margin-top:10px"><span class="pno">缺陷②</span>Moreover, IQ tests do <span class="tk" data-w="necessarily">not necessarily</span> predict so well once populations or situations change. <span class="ls" onclick="go('s6')">Research has found that IQ predicted leadership skills when the tests were given under low-stress conditions, but under high-stress conditions, IQ was <span class="tk" data-w="correlate">negatively correlated</span> with leadership—that is, it predicted the opposite.</span></p>
+          <p class="en" style="margin-top:10px"><span class="pno">缺陷③</span>Anyone who has <span class="tk" data-w="toil">toiled through</span> SAT will <span class="tk" data-w="testify">testify</span> that test-taking skill also matters, whether it's knowing when to guess or what questions to <span class="tk" data-w="skip">skip</span>.</p>
+          <div class="zh"><b>④段全译：</b><b>罗伯特·J·斯特恩伯格认为，这类标准化测试也许无法评估在学业和生活中取得成功所必需的全部重要因素。</b>在《智力测试有多智能？》一文中，斯特恩伯格指出，<b>传统测试最擅长评估分析能力和语言能力，却测不出创造力和实践知识——而这两者对解决问题和人生成功同样至关重要。</b>此外，一旦受试群体或情境发生变化，IQ 测试也未必能做出那么准确的预测。研究发现：在低压力条件下施测时，IQ 能预示领导能力；<b>但在高压力条件下，IQ 与领导能力呈负相关——也就是说，它预示出的恰恰相反。</b>任何熬过 SAT 的人都能作证：应试技巧同样重要，无论是知道何时该猜，还是知道哪些题该跳过。
+          <div style="margin-top:8px;font-size:.86rem">💡 <b>三条缺陷＝29 题的三块砖</b>：测不全（内部局限）＋ 换情境就失灵（外部效度）＋ 掺着应试技巧（噪声）。三条指向同一个结论：<b>分数不能可靠地反映一个人的真实能力</b>。<br>💡 <b>本段无主旨句</b>（末段主旨句缺席），所以 29 题必须<b>自己归纳</b>——把三条缺陷合并成一句话，就是答案 A。</div></div>
+        </div>
+      </section>
+
+      <!-- ========== 题目 ========== -->
+      <section class="card">
+        <h2><span class="n">02</span>题目与解析（点选项即判 · 再看解析）</h2>
+
+        <div class="q" data-ans="3" id="q26">
+          <p class="stem"><span class="qt">事实细节</span>26. Which of the following may be required in an intelligence test?</p>
+          <div class="opts">
+            <div class="opt">[A] Answering philosophical questions.</div>
+            <div class="opt">[B] Folding or cutting paper into different shapes.</div>
+            <div class="opt">[C] Telling the differences between certain concepts.</div>
+            <div class="opt">[D] Choosing words or graphs similar to the given ones.</div>
+          </div>
+          <div class="expl"><b>答案 D</b>　题干问「智力测试里<b>可能要你做什么</b>」，唯一的答案来源是①段那句罗列句：<span class="loc">IQ tests ask you to complete verbal and visual analogies, to envision paper after it has been folded and cut, and to deduce numerical sequences</span>。<br>D ＝ <b>complete verbal and visual analogies</b> 的同义改写：类比题就是「给你一组词/图，让你选出关系相似的另一组」——words 对 verbal，graphs 对 visual，similar 对 analogies，三处咬合。<br><b>干扰项（三个都从同一句附近取材，全是精准偷换）：</b><br>· <b>A</b> 出自①段末句 <span class="loc">questions that have eluded some of the best poets and philosophers</span>。但那句是作者的<b>质疑</b>——「凭什么会折纸就能答哲学问题」，哲学问题恰恰是 IQ 测试<b>没在考</b>的。选项把「作者的反问」曲解成「测试的内容」。<br>· <b>B</b> 是本题最狠的一项，只差一个动作：原文是 <span class="loc"><b>envision</b> paper <b>after it has been folded and cut</b></span>——「<b>想象</b>纸被折过剪过<b>之后</b>的样子」，考的是<b>空间想象力</b>；B 说的是 <b>Folding or cutting paper</b>——真去动手折、动手剪，成了<b>手工能力</b>。<b>一个是脑内操作，一个是手上操作。</b><br>· <b>C</b> 出自①段④句 <span class="loc">What's the difference between love and fondness?</span>——那是<b>读者向 vos Savant 提的问题</b>，不是 IQ 测试的题目。典型<b>张冠李戴</b>：把专栏读者的提问安到测试头上。<br><b>技巧：</b>细节题的四个选项常常<b>全部落在同一段甚至同一句附近</b>，此时靠「有没有见过这个词」根本分不出来，必须逐项回原句核对<b>三件事</b>：<b>①谁做的　②做的是哪个动作　③这句话是陈述还是质疑</b>。本题 B 错在动作（想象 vs 动手）、C 错在主体（读者 vs 测试）、A 错在语气（质疑 vs 陈述）——三种错法各来一个，非常典型。</div>
+        </div>
+
+        <div class="q" data-ans="2" id="q27">
+          <p class="stem"><span class="qt">推理引申</span>27. What can be inferred about intelligence testing from Paragraph 3?</p>
+          <div class="opts">
+            <div class="opt">[A] People no longer use IQ scores as an indicator of intelligence.</div>
+            <div class="opt">[B] More versions of IQ tests are now available on the Internet.</div>
+            <div class="opt">[C] The test contents and formats for adults and children may be different.</div>
+            <div class="opt">[D] Scientists have defined the important elements of human intelligence.</div>
+          </div>
+          <div class="expl"><b>答案 C</b>　题干限定<b>第三段</b>（R7：只在这一段找）。C 的依据是那个<b>括号</b>：<span class="loc">the Stanford-Binet ... and the Wechsler Intelligence Scales <b>(both come in adult and children's version)</b></span>——既然量表分成人版和儿童版，那么<b>针对成人和儿童的测试内容与形式「可能」有所不同</b>，这是从括号推一步（R6：只推一步）。同段后文 <span class="loc">scoring is now based on a statistical population distribution among <b>age peers</b></span>（按<b>同龄</b>人口分布计分）反向印证：既然要按年龄分组比较，成人卷与儿童卷自然不是同一套。<br><b>干扰项：</b><br>· <b>A</b> 与本段首句<b>正相反</b>：原文说 <span class="loc">The defining term of intelligence in humans <b>still seems to be</b> the IQ score</span>（仍然是），A 说「不再用」。注意原文让步的只是「测试<b>做得</b>不如从前频繁」，不是「分数<b>不再算数</b>」——<b>使用频率下降 ≠ 地位被废</b>。<br>· <b>B</b> 无中生有一个<b>比较</b>：原文只说改编版 <span class="loc">populate bookstores and the World Wide Web</span>（书店和网上<b>随处可见</b>），B 加了 <b>More</b>——比谁多？比书店多？比过去多？原文一个比较对象都没给。<b>凭空添加比较级</b>是高频造错法。<br>· <b>D</b> 与②段<b>正相反</b>且跨段：②段作者问的是 <span class="loc">How much of intelligence <b>can be specified</b>?</span>（有多少<b>能够</b>被明确？）——问句意味着<b>还没定论</b>；D 说科学家<b>已经</b>界定了。另外它取材于④段的 important elements，也违反了题干的「Paragraph 3」限定。<br><b>技巧（本题最值钱的一条）：</b><b>括号 / 破折号 / 同位语里的「顺带信息」是命题人的最爱</b>——读的时候容易一扫而过，出题时正好考。看到括号，就在旁边画个圈。<br><b>另附一条应急小技巧</b>：推理题的四个选项摆在一起时，<b>语气严谨、带缓和词（may / tend to / some）的往往是正确项</b>；语气绝对的（no longer、have defined、More）往往是错项。本题 C 带 <b>may be different</b>，A/B/D 全是斩钉截铁——时间不够时可以先押 C 再回原文验证。<b>⚠️ 这是「备选重点」不是「答题依据」，必须回原文核实过才能定。</b></div>
+        </div>
+
+        <div class="q" data-ans="0" id="q28">
+          <p class="stem"><span class="qt">因果细节</span>28. People nowadays can no longer achieve IQ scores as high as vos Savant's because ______.</p>
+          <div class="opts">
+            <div class="opt">[A] the scores are obtained through different computational procedures</div>
+            <div class="opt">[B] creativity rather than analytical skills is emphasized now</div>
+            <div class="opt">[C] vos Savant's case is an extreme one that will not repeat</div>
+            <div class="opt">[D] the defining characteristic of IQ tests has changed</div>
+          </div>
+          <div class="expl"><b>答案 A</b>　题干里的 <b>no longer</b> + <b>as high as vos Savant's</b> + <b>because</b> 三个词直接把定位钉死在③段那句：<span class="loc">Superhigh scores like vos Savant's are no longer possible, <b>because</b> scoring is <b>now</b> based on a statistical population distribution among age peers, <b>rather than</b> simply dividing the mental age by the chronological age and multiplying by 100.</span><br>because 后面是一个 <b>X rather than Y</b> 取舍结构：<b>现在</b>按同龄人口的统计分布算，<b>过去</b>是心理年龄÷生理年龄×100。两种算法并置 ＝ <b>计分方式变了</b> ＝ A 的 <b>different computational procedures</b>。<br><b>干扰项：</b><br>· <b>C 是最像的一项</b>，也是最典型的坑：它把 <span class="loc">Superhigh scores like vos Savant's are no longer possible</span> 换了个说法（「极端个案不会重演」）——<b>但那是题干本身的内容，是「果」不是「因」</b>。题干问 because，你却把结论又抄了一遍。<b>因果题里，「同义复述题干」的选项一律排除。</b><br>· <b>D</b> 偷换③段首句：原文是 <span class="loc">The <b>defining term</b> of intelligence still seems to be the IQ score</span>（智力的<b>定义性术语</b>仍是 IQ 分数——<b>没变</b>），D 说「IQ 测试的<b>定义性特征发生了改变</b>」，既篡改了原意，也和高分消失没有因果关系。<b>变的是算法，不是定义。</b><br>· <b>B</b> 取材于④段 <span class="loc">traditional tests best assess analytical ... but fail to measure creativity</span>，但那是<b>批评测试的缺陷</b>，且原文从没说「现在更强调创造力」；更关键的是，它与「高分为何消失」<b>毫无因果关系</b>。<br><b>技巧：</b>因果题的三步——<b>①先分清题干给的是「因」还是「果」</b>（本题给了果，问因）；<b>②回原文找因果标志词</b>（because / since / due to / as a result of / lead to）；<b>③锁定标志词的那一侧</b>。做到这一步，B、C、D 会自己掉出来：C 站在「果」那一侧，B、D 根本不在这条因果链上。<br><b>句内提速小技巧</b>：<code>is now X rather than Y</code> 这种结构，遇到看不懂的长名词（statistical population distribution among age peers）不必纠结准确含义——只要认出「<b>现在用 X 不用 Y</b>」这个骨架，就能推出「<b>做法变了</b>」，答案已经出来了。<b>长难句不必字字读懂，抓住逻辑骨架就够答题。</b></div>
+        </div>
+
+        <div class="q" data-ans="0" id="q29">
+          <p class="stem"><span class="qt">概括推理</span>29. We can conclude from the last paragraph that ______.</p>
+          <div class="opts">
+            <div class="opt">[A] test scores may not be reliable indicators of one's ability</div>
+            <div class="opt">[B] IQ scores and SAT results are highly correlated</div>
+            <div class="opt">[C] testing involves a lot of guesswork</div>
+            <div class="opt">[D] traditional tests are out of date</div>
+          </div>
+          <div class="expl"><b>答案 A</b>　末段<b>没有主旨句</b>，必须自己把三句话归并。三条缺陷分属两个方向：<br><b>内部局限</b>——<span class="loc">may not assess all the important elements</span>／<span class="loc">fail to measure creativity and practical knowledge</span>（该测的没测到）；<br><b>外部失效</b>——<span class="loc">do not necessarily predict so well once populations or situations change</span>／高压下 <span class="loc">negatively correlated</span>（换个场景就反了）；再加上 <span class="loc">test-taking skill also matters</span>（分数里还掺着应试技巧这层噪声）。<br>三条合起来只指向一句话：<b>测试分数不能可靠地反映一个人的真实能力</b> ＝ A。注意 A 用了 <b>may not</b>，与原文 <b>may not / not necessarily</b> 的缓和语气完全同频。<br><b>干扰项：</b><br>· <b>B</b> 把末段④句的「IQ 与领导能力的相关性」和⑤句的「SAT」<b>杂糅</b>成「IQ 与 SAT 高度相关」。原文里 correlated 的两端是 <b>IQ 与 leadership</b>，SAT 出现在下一句、说的是应试技巧，两者从未连过线。<b>杂糅（把相邻两句的成分拼成一句）是难度最高的造错法，破解办法是回原句看「相关」的两端到底是谁和谁」。</b>（另：③段说 SAT <span class="loc">capture the main aspects of IQ tests</span>，但那是「体现主要特点」，与统计学上的 highly correlated 也不是一回事，且不在末段。）<br>· <b>C</b> 以偏概全：末句只说「知道<b>何时</b>该猜」是 SAT 应试技巧<b>之一</b>，C 却推成「测试<b>包含大量</b>猜测行为」——从一个技巧点跨到对所有测试的整体判断，推过头了（R6）。<br>· <b>D</b> 偷换 + 过度：末段②句批的是 <b>traditional tests</b> 的局限，但「有局限」≠「<b>过时</b>」；而且③段明说 IQ 分数<b>仍是</b>定义性术语、SAT/GRE <b>现行广泛使用</b>——说它们过时，与前文直接冲突。<b>「有缺陷」和「该淘汰」之间隔着好几步，作者一步都没走。</b><br><b>技巧：</b>末段概括题的标准动作——<b>①先给末段分句群</b>（本段：一句总起 + 三条缺陷）；<b>②借逻辑词看叠加关系</b>（<code>Moreover</code>、<code>also</code> 表明是<b>并列叠加</b>，不是转折，所以三条指向同一个方向）；<b>③把三条合并成一句话</b>，再去选项里找它的同义改写；<b>④用全文主旨（②段 more than a score）验一遍方向</b>。四步做完，A 稳。</div>
+        </div>
+
+        <div class="q" data-ans="1" id="q30">
+          <p class="stem"><span class="qt">作者态度</span>30. What is the author's attitude towards IQ tests?</p>
+          <div class="opts">
+            <div class="opt">[A] Supportive.（支持的）</div>
+            <div class="opt">[B] Skeptical.（怀疑的）</div>
+            <div class="opt">[C] Impartial.（公正中立的）</div>
+            <div class="opt">[D] Biased.（带有偏见的）</div>
+          </div>
+          <div class="expl"><b>答案 B</b>　态度题看<b>全文</b>，把作者<b>自己说的话</b>（无引号、无人名）串起来，怀疑贯穿始终：<br>①段 <span class="loc">So it is <b>a bit confusing</b> when...</span>／<span class="loc"><b>It's not obvious how</b> the capacity to visualize objects ... suits one to answer questions that have eluded ... poets and philosophers</span>——<b>软性否定，质疑高分与真本事之间的联系</b>；<br>②段 <span class="loc"><b>Clearly</b>, intelligence encompasses <b>more than</b> a score on a test</span>——<b>明确表态：分数装不下智力</b>；<br>④段整段借 Sternberg 之口列出三条缺陷，<span class="loc">may not assess all</span>／<span class="loc">fail to measure</span>／<span class="loc">do not necessarily predict so well</span>——<b>否定表达一路叠加</b>。<br>全程<b>没有一句肯定 IQ 测试的话</b>，但也没有谩骂或情绪化用词 → 正是 <b>skeptical（怀疑）</b>。<br><b>干扰项（四个态度词逐个卡）：</b><br>· <b>A Supportive</b> 的唯一「依据」是③段首句 <span class="loc">The defining term ... <b>still seems to be</b> the IQ score</span>——但这是<b>陈述社会现状</b>（大家仍在用），不是作者点赞；而且 <code>seems to</code> 本身就是<b>保留语气</b>。<b>把「现状描述段」当成「作者立场段」，是态度题第一大坑。</b><br>· <b>C Impartial</b>（公正、不偏不倚）看着最像「稳妥答案」，实则不然：<b>impartial 要求作者两边都说、不站队</b>。可全文<b>只列缺点不列优点</b>，②段还直接下了判断。有人拿④段②句 <span class="loc">traditional tests <b>best assess</b> analytical and verbal skills <b>but fail to measure</b>...</span> 当「有褒有贬」——但那句的重心在 <b>but</b> 之后（R：<b>转折后才是重点</b>），前半句只是为了托出后半句的落差。<b>「先扬后抑」不是中立，是委婉的抑。</b><br>· <b>D Biased</b>（带偏见的）方向对但<b>程度过头且变贬义</b>：biased 指作者<b>掺入个人成见、不讲证据</b>。可本文通篇<b>引他人观点、举研究数据</b>（Sternberg 的文章、低压/高压实验），论证是有依据的。<b>怀疑 ≠ 偏见：一个是「我有理由不信」，一个是「我不讲理由就是不信」。</b><br><b>技巧 · 态度题四步：</b><b>①只看作者发声句</b>（无引号、无人名）；<b>②数「评述性语句」</b>——转折词、否定表达、情态保留（may / seems / not obvious / a bit confusing）；<b>③给态度定「方向 + 强度」</b>：先判褒/贬/中，再判轻/重；<b>④用其他题的答案反验</b>（本篇 29 题选了「分数不可靠」，作者显然不可能是 supportive）。<br><b>⭐态度词强度尺（考研阅读通用，务必背下）：</b><br><code>supportive / positive 支持</code> ← <code>objective / impartial / neutral 中立</code> → <code>skeptical / doubtful 怀疑</code> → <code>critical 批评</code> → <code>biased / prejudiced 偏见</code>。<br><b>两条铁律：</b>(1) <b>biased、indifferent（漠不关心）、subjective 几乎从不做正确答案</b>——考研文章都是正规刊物，作者再不满也是<b>讲证据的怀疑</b>，不是撒泼；(2) <b>impartial / objective 只在作者「真的两边都说了」时才选</b>，只列缺点的一律是 skeptical 或 critical。</div>
+        </div>
+      </section>
+
+      <!-- ========== 长难句 ========== -->
+      <section class="card" id="sents">
+        <h2><span class="n">03</span>长难句精析（正文蓝色虚线句）</h2>
+
+        <div class="sent" id="s1">
+          <div class="src">So <span class="skel">it is a bit confusing</span> <u>when vos Savant fields <b>such</b> queries from the average Joe (whose IQ is 100) <b>as</b>, What's the difference between love and fondness?</u></div>
+          <ul class="anat">
+            <li><span class="skel">it 是形式主语</span>，真主语是后面的 <b>when 从句</b>（＝「莎凡特应对……这件事」）。这里的 when 不是「什么时候」，而是<b>「当……时（这一情形）」</b>——读成时间状语也不影响理解，但它其实撑起了整句的主语位。</li>
+            <li><span class="skel">such ... as ... 被拆开了</span>：完整形态是 <b>such queries as A or B</b>（「诸如 A 或 B 这样的问题」），中间硬塞进 <code>from the average Joe (whose IQ is 100)</code> 一大坨。<b>分隔结构是长难句最主要的绊脚石</b>——看到 such 就要往后<b>找 as</b>，找不到就说明中间被插了东西。同类：so ... that ... 被隔开、the same ... as ... 被隔开。</li>
+            <li><span class="skel">fields</span> ⚠️ 熟词僻义：这里是<b>动词</b>「应对、接（问题/球）」——源自棒球「接球」。看到 <code>vos Savant fields</code> 别翻译成「领域」，主语后面跟的是谓语。<b>判断方法：句中已有 it is 的主句，when 从句需要自己的谓语，那这个位置只能是动词。</b></li>
+            <li><code>(whose IQ is 100)</code> 括号里的定语从句：作者用它<b>制造反差</b>——IQ 100 的普通人 vs. IQ 228 的天才，两人却在讨论同一个连哲学家都答不出的问题。<b>这个反差就是全文质疑的起点。</b></li>
+            <li>问句 <code>What's the difference between love and fondness?</code> 直接嵌进句中作 as 的宾语（未加引号，是外刊常见的自由直接引语）——<b>26 题 C 项的取材处</b>：这是<b>读者提的问题</b>，不是 IQ 测试的题目。</li>
+          </ul>
+          <div class="tr">译：所以，当莎凡特应对智商 100 的普通人提出的这类问题——「爱与喜欢有什么区别？」——就有点让人费解了。</div>
+        </div>
+
+        <div class="sent" id="s2">
+          <div class="src"><span class="skel">It's not obvious</span> <u>how the capacity <b>to visualize</b> objects and <b>to figure out</b> numerical patterns</u> <span class="skel">suits</span> one <span class="skel">to answer</span> <u>questions that have eluded some of the best poets and philosophers</u>.</div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：It's not obvious <b>how ...</b> —— it 形式主语，真主语是 <b>how 引导的主语从句</b>（「……是如何……的，这一点并不明显」）。<b>「It is + adj. + how/that/whether 从句」是外刊表态的标准句型</b>，形容词位置就是作者的态度（not obvious＝存疑）。</li>
+            <li><span class="skel">从句内部主干</span>：<b>the capacity ... suits one to answer questions</b>。主语 the capacity 后面挂了两个并列不定式定语（<code>to visualize objects</code> ＋ <code>to figure out numerical patterns</code>），把主语和谓语 suits 拉开了<b>十来个词</b>——<b>读时先跳过 to 引导的修饰，把 capacity 和 suits 接上</b>，这是长难句提速的核心动作。</li>
+            <li><span class="skel">suit sb to do sth</span>：使某人<b>适合于</b>做某事（≠「适合某人」）。这个搭配是本句的<b>逻辑枢纽</b>：作者质疑的正是「空间/数字能力」与「回答人文问题」之间<b>是否真有适配关系</b>。</li>
+            <li><span class="skel">elude</span>：（问题）<b>使……难解、躲开某人</b>。<code>questions that have eluded ... philosophers</code>＝「连最优秀的诗人和哲学家都未能解答的问题」。<b>完成时 have eluded 强调「长期悬而未决」。</b>同款：The answer eludes me.（我想不出来。）</li>
+            <li>📌 <b>本句是 30 题（作者态度）的第一块砖</b>：<code>not obvious</code> 是典型的<b>软性否定</b>——不直接说「这不合理」，而说「看不出怎么就合理了」，<b>怀疑而不失分寸，正是 skeptical 的语气标本</b>。</li>
+          </ul>
+          <div class="tr">译：想象物体形状、看出数字规律的能力，凭什么就使一个人适合去回答那些连最优秀的诗人和哲学家都未能解答的问题，这一点并不明显。</div>
+        </div>
+
+        <div class="sent" id="s3">
+          <div class="src">Superhigh scores like vos Savant's <span class="skel">are no longer possible</span>, <span class="skel">because</span> scoring <span class="skel">is now based on</span> <u>a statistical population distribution among age peers</u>, <span class="skel">rather than</span> <u>simply dividing the mental age by the chronological age and multiplying by 100</u>.</div>
+          <ul class="anat">
+            <li><span class="skel">骨架</span>：<b>X is now A rather than B</b>（现在靠 A，不再靠 B）—— <b>28 题的全部答案就在这个骨架里</b>：A 与 B 并置 ＝ <b>做法变了</b>。<br>⭐<b>提速技巧</b>：A、B 两坨都是长名词短语，<b>不必字字读懂</b>；认出 <code>now ... rather than ...</code> 这个取舍框架，就已经得出「计分方式改变」，可以直接选 A。<b>长难句只需读出逻辑骨架，细节留给需要时再回看。</b></li>
+            <li><code>vos Savant's</code> 是<b>名词性物主代词</b>（＝ vos Savant's <s>scores</s>），后面省略了 scores。外刊爱用这种省略，别被撇号 s 卡住。</li>
+            <li><b>rather than</b> 后面接的是<b>动名词</b>（dividing ... and multiplying），与前面的 <code>a ... distribution</code> 在语法上并不完全对称——<b>rather than 允许这种不严格对称</b>，只要意义上是两个「计分办法」在对比即可。</li>
+            <li>⭐<b>术语对</b>：<b>mental age（心理年龄）÷ chronological age（生理/实际年龄）× 100</b> ＝ 旧式智商公式（比率智商），这正是①段「10 岁测出 23 岁水平 → IQ 228」的算法（23÷10×100≈230）。<b>读到这里回头看首段，数字就闭环了</b>——新算法按同龄人分布给分，分数被压在正态分布里，自然再也出不了 228。</li>
+            <li><code>among age peers</code>：在<b>同龄人</b>之中。peer 熟词僻义：同龄人 / 同辈（peer pressure 同辈压力、peer review 同行评议）。<b>27 题 C 的旁证也在这里</b>——既要按年龄分组比，成人卷与儿童卷当然不同。</li>
+          </ul>
+          <div class="tr">译：像莎凡特那样的超高分数不可能再出现了，因为现在的计分是以同龄群体在统计学意义上的人口分布为基础，而不再是简单地用心理年龄除以生理年龄再乘以 100。</div>
+        </div>
+
+        <div class="sent" id="s4">
+          <div class="src"><u>Such standardized tests <b>may not</b> assess all the important elements necessary to succeed in school and in life</u>, <span class="skel">argues Robert J. Sternberg</span>.</div>
+          <ul class="anat">
+            <li><span class="skel">引述倒装</span>：<b>「观点内容 + 逗号 + 谓语 + 说话人」</b>——正常语序是 <code>Robert J. Sternberg argues that such tests may not...</code>。新闻/科普英语极爱把说话人<b>甩到句末</b>，先让观点抢眼。同款动词：<code>argues / notes / says / adds / explains / warns</code>。<br>⚠️<b>阅读警报</b>：一旦看到句末冒出 <code>, argues X.</code>，立刻意识到<b>这一整句是 X 说的，不是作者说的</b>——R4 的分辨动作全靠它。</li>
+            <li><span class="skel">may not assess <b>all</b></span> ＝ <b>部分否定</b>！「未必能评估<b>全部</b>」≠「完全不能评估」。<b>all / both / every / always 与 not 同现时一律是部分否定</b>，考研常在此设「全盘否定」的反向干扰（本篇 29 题 D「传统测试已经过时」就是把部分否定读成了全盘否定）。</li>
+            <li><code>necessary to succeed in school and in life</code> 是<b>形容词短语作后置定语</b>，修饰 elements（＝「在学业和生活中取得成功所必需的那些因素」）。<b>形容词带了自己的补足语（to do）就只能后置</b>，同款：a book <u>worth reading</u>、students <u>eager to learn</u>。</li>
+            <li>📌 <b>29 题的题眼句</b>：三条缺陷的<b>总起</b>。注意它用 <code>may not</code> 而非 <code>cannot</code>——正确答案 A 也用 <b>may not</b>，<b>语气强度对齐</b>是选项匹配的重要一环。</li>
+          </ul>
+          <div class="tr">译：罗伯特·J·斯特恩伯格认为，这类标准化测试也许无法评估在学业和生活中取得成功所必需的全部重要因素。</div>
+        </div>
+
+        <div class="sent" id="s5">
+          <div class="src">Sternberg notes <span class="skel">that</span> traditional tests <b>best assess</b> analytical and verbal skills <span class="skel">but</span> <b>fail to measure</b> creativity and practical knowledge, <u>components also critical to problem solving and life success</u>.</div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：Sternberg notes <b>that</b> [tests <u>best assess</u> A <b>but</b> <u>fail to measure</u> B]。一个 that 宾语从句，从句内部是 <b>but 的正反对照</b>：<b>擅长测 A（分析+语言）／测不出 B（创造力+实践知识）</b>。</li>
+            <li>⭐<span class="skel">but 之后才是重点</span>：前半句 <code>best assess</code> 是<b>让步式铺垫</b>（先承认它有强项），落点全在 <code>fail to measure</code>。<b>30 题 C 项 impartial 就是拿前半句当「作者也说了好话」——先扬后抑不是中立，是委婉的抑。</b></li>
+            <li><span class="skel">components also critical to ...</span> 是 <b>creativity and practical knowledge 的同位语</b>（＝「而这两者也是……的关键要素」）。同位语本身又被形容词短语 <code>critical to...</code> 后置修饰。<br><b>为什么这个同位语重要</b>：它把「测不出」升级成「测不出的<b>恰恰是要紧的东西</b>」——<b>缺陷的严重性靠它建立</b>，29 题 A「分数不可靠」的分量正来自这里。</li>
+            <li><code>be critical to</code>＝对……至关重要（＝ be vital/essential to）。<b>写作高频</b>：Practical knowledge is critical to career success.</li>
+          </ul>
+          <div class="tr">译：斯特恩伯格指出，传统测试最擅长评估分析能力和语言能力，却测不出创造力和实践知识——而这两者对解决问题和人生成功同样至关重要。</div>
+        </div>
+
+        <div class="sent" id="s6">
+          <div class="src">Research has found <span class="skel">that</span> IQ predicted leadership skills <u>when the tests were given under low-stress conditions</u>, <span class="skel">but</span> <u>under high-stress conditions</u>, IQ <span class="skel">was negatively correlated with</span> leadership—<b>that is</b>, it predicted the opposite.</div>
+          <ul class="anat">
+            <li><span class="skel">对照结构</span>：<b>under low-stress conditions</b> ⇄ <b>under high-stress conditions</b>——两个条件、两个相反结果。<b>凡是「同一变量在两种条件下结果相反」，必是出题点</b>（R9 信号灯）：本句支撑的正是④段第二条缺陷「情境一变就失灵」。</li>
+            <li><span class="skel">be negatively correlated with</span>＝与……<b>呈负相关</b>（一个升另一个降）。<b>不是「没有关系」！</b>负相关是<b>有强关系但方向相反</b>——所以作者才补一句 <code>it predicted the opposite</code>（它预测出的正好相反），比「测不准」更狠。<br>一次背全：<code>positively correlated 正相关 / negatively correlated 负相关 / uncorrelated 不相关 / causation 因果</code>。⚠️<b>correlation ≠ causation</b>（相关不等于因果）是社科类文章的常识考点。</li>
+            <li><span class="skel">that is</span>（＝ that is to say / in other words）：<b>解释性插入语，后面是前面的通俗版改写</b>。<b>读到 that is 可以直接看它后面那句——那是作者替你翻译好的结论。</b>本句里 <code>it predicted the opposite</code> 就是 negatively correlated 的大白话版。同款信号词：namely、i.e.、in other words、put another way。</li>
+            <li>时态细节：主句 <code>has found</code>（现在完成，研究结论至今有效），从句用一般过去 <code>predicted / was</code>（描述当时实验中观察到的结果）。<b>「完成时报结论 + 过去时述实验」是科普文的固定时态搭配。</b></li>
+            <li>⚠️ <b>29 题 B 项的造坑处</b>：correlated 的两端在原文里是 <b>IQ 与 leadership</b>；B 项偷偷换成「IQ 与 SAT」（SAT 出现在<b>下一句</b>，说的是应试技巧）。<b>看到 correlated，一定回原句确认「谁和谁相关」。</b></li>
+          </ul>
+          <div class="tr">译：研究发现：在低压力条件下施测时，IQ 能预示领导能力；但在高压力条件下，IQ 与领导能力呈负相关——也就是说，它预示出的恰恰相反。</div>
+        </div>
+      </section>
+
+      <!-- ========== 态度词专栏 ========== -->
+      <section class="card">
+        <h2><span class="n">03+</span>作者态度词 · 强度尺（30 题专项，通用工具）</h2>
+        <p style="font-size:.86rem;color:var(--muted);margin-bottom:12px">态度题每年必考 1–2 道。四个选项摆出来时，比的不是「像不像」，而是<b>方向（褒/中/贬）＋ 强度</b>。下表按强度排，从上到下由挺到批：</p>
+        <div class="att">
+          <div class="atti yes"><b>supportive / positive / approving</b>　支持、赞成　→ 要求文中有<b>明确的肯定句</b>（this is a welcome move / rightly so）。本篇：<b>一句都没有</b>，A 排除。</div>
+          <div class="atti"><b>objective / impartial / neutral / detached</b>　客观中立　→ 要求作者<b>两边都说、不下判断</b>。⚠️「先扬后抑」不算中立。本篇②段已直接下判断（more than a score），C 排除。</div>
+          <div class="atti"><b>cautious / reserved</b>　谨慎、保留　→ 大量 may / might / it remains to be seen，<b>不表态但也不否定</b>。</div>
+          <div class="atti yes" style="border-width:2px"><b>⭐ skeptical / doubtful / questioning</b>　怀疑　→ <b>软性否定 + 讲证据</b>：not obvious、a bit confusing、may not、fail to。<b>本篇正解</b>。</div>
+          <div class="atti"><b>critical / disapproving / negative</b>　批评、否定　→ 比 skeptical 更进一步：直接指责、要求改变（should be abandoned）。本篇没到这一步。</div>
+          <div class="atti no"><b>biased / prejudiced / subjective</b>　带偏见、主观　→ <b>几乎永不为正确答案</b>：正规刊物作者再不满也是<b>讲证据的怀疑</b>，不是撒泼。本篇通篇引研究、引专家，D 排除。</div>
+          <div class="atti no"><b>indifferent / apathetic / dismissive</b>　漠不关心、不屑　→ <b>同样几乎永不选</b>：作者既然写了这篇文章，就不可能「不关心」。<b>这是逻辑自否，见到即排。</b></div>
+        </div>
+        <p style="font-size:.86rem;margin-top:14px;padding:10px 14px;background:var(--accent-soft);border-radius:10px">
+        <b>四步定态度：</b>① 只看<b>作者发声句</b>（无引号、无人名）→ ② 数<b>评述性语句</b>（转折词 / 否定表达 / 情态保留）→ ③ 定<b>方向 + 强度</b> → ④ 用<b>其他题的答案反验</b>（本篇 29 题已选「分数不可靠」，作者绝不可能 supportive）。<br>
+        <b>两条铁律：</b>(1) biased / indifferent / subjective 见到基本可排；(2) impartial 只在「真的两边都说了」时才选。</p>
+      </section>
+
+      <!-- ========== 词汇复盘 ========== -->
+      <section class="card">
+        <h2><span class="n">04</span>词汇复盘（点卡片看详情）</h2>
+        <div class="filters">
+          <button class="fbtn on" data-f="all">全部</button>
+          <button class="fbtn" data-f="core">核心词</button>
+          <button class="fbtn" data-f="phrase">短语</button>
+          <button class="fbtn" data-f="poly">熟词僻义</button>
+          <button class="fbtn" data-f="write">写作可用</button>
+        </div>
+        <div class="vgrid" id="vgrid"></div>
+      </section>
+
+      <!-- ========== 写作素材 ========== -->
+      <section class="card">
+        <h2><span class="n">05</span>可搬进作文/翻译的素材</h2>
+        <div class="wb">
+          <div class="wbi"><div class="p">Clearly, X encompasses more than a score on a test.</div><div class="u">「X 远不止是一个分数」——<b>教育/评价/成功类作文的万能反驳句</b>。变体：A person's worth encompasses far more than a number on a transcript. 反用：Success encompasses more than a salary figure.</div></div>
+          <div class="wbi"><div class="p">A best assesses X and Y, but fails to measure Z.</div><div class="u">「A 最擅长评估 X 和 Y，却测不出 Z」——<b>指出某种评价体系局限性的标准句</b>。写「唯分数论」「唯 KPI 论」直接改词就能用。</div></div>
+          <div class="wbi"><div class="p">…, components also critical to problem solving and life success</div><div class="u">名词同位语收尾，给前面的概念<b>补上分量</b>。模板：…creativity and empathy, qualities also essential to teamwork and long-term growth. <b>比再起一句「这很重要」高一档。</b></div></div>
+          <div class="wbi"><div class="p">X does not necessarily predict so well once conditions change.</div><div class="u">「一旦条件变化，X 未必还能准确预测」——<b>限定结论适用范围的谨慎表达</b>，议论文里用来给自己的论点上保险，也用来拆对方的论点。</div></div>
+          <div class="wbi"><div class="p">Under low-stress conditions A predicted B, but under high-stress conditions, A was negatively correlated with B.</div><div class="u"><b>「同一变量、两种情境、相反结果」的对照句式</b>，是论证「不能一概而论」最有说服力的写法。注意 correlated with 的固定搭配。</div></div>
+          <div class="wbi"><div class="p">It's not obvious how A suits one to do B.</div><div class="u">「看不出 A 凭什么就使人适合做 B」——<b>软性质疑句</b>，比 A is useless 委婉得多也高级得多，适合驳论段开头。</div></div>
+          <div class="wbi"><div class="p">Anyone who has toiled through X will testify that…</div><div class="u">「任何熬过 X 的人都能作证……」——<b>诉诸共同经验的论据句</b>，写「考试压力」「加班文化」时代入感极强。toil through 比 go through 更带苦味。</div></div>
+          <div class="wbi"><div class="p">may not / do not necessarily / fail to</div><div class="u"><b>软性否定三件套</b>：既表明立场，又留有余地。学术写作与议论文的分寸感全在这几个词上——把 cannot 换成 may not，文章的成熟度立刻不同。</div></div>
+          <div class="wbi"><div class="p">话题人物包：Robert J. Sternberg · 三元智力理论 · nature of intelligence</div><div class="u">写「分数能否衡量一个人」「什么是真正的能力」时可直接举：Psychologist Robert J. Sternberg argues that standardized tests measure analytical skills well but overlook creativity and practical knowledge. <b>与 2007 Text 1 的 Ericsson「刻意练习」是同一话题群——两篇可合成一组素材：能力既非天赋决定（T1），也非分数可测（T2）。</b></div></div>
+        </div>
+      </section>
+    </main>
+
+    <!-- ========== 侧栏词卡 ========== -->
+    <aside>
+      <div id="panel"><div class="hint">👆 点击正文里的<b>黄色高亮词</b><br>词卡会出现在这里</div></div>
+    </aside>
+  </div>
+
+  <footer>2007 英语一 Text 2 · 复盘页由 Claude 生成 · 解析为 Claude 盲做后独立撰写，答案已与黄皮书精讲逐题交叉核对（26D 27C 28A 29A 30B，五题全一致）<br>原文出处：《科学美国人》1998-01-20《Intelligence Considered》，本页仅摘引考点句作分析用，完整原文见你手上的原卷 p5</footer>
+</div>
+
+<button id="yd">🔍 查有道</button>
+
+<script>
+const V = {
+  analogy:{w:"analogy",ipa:"/əˈnælədʒi/",pos:"n.",tags:["core","write"],cn:"类比，类推；相似",en:"a comparison between similar features of two things",ex:"complete verbal and visual analogies",mem:"⭐26 题答案来源：<b>verbal/visual analogies</b>＝语言类比题/视觉类比题（给一组关系，选出关系相同的另一组）＝ D 项的 choosing words or graphs similar to the given ones。ana(按照)+log(比例)+y→按同一比例→类比。写作：draw an analogy between A and B 把 A 与 B 作类比。",syn:"comparison / parallel / similarity",conf:"analogy(类比) vs. analysis(分析) vs. anatomy(解剖)；形容词 analogous to 与……类似的"},
+  envision:{w:"envision",ipa:"/ɪnˈvɪʒn/",pos:"v.",tags:["core","write"],cn:"想象，设想（在脑中看见）",en:"to picture sth in your mind",ex:"to envision paper after it has been folded and cut",mem:"⭐26 题 B 的分界点：en(使)+vision(视觉)→在脑中看见→<b>想象</b>。原文考的是「<b>想象</b>纸折剪后的样子」＝空间想象力，B 项 folding or cutting paper 说成了<b>真去动手折剪</b>＝手工能力。<b>一个脑内、一个手上。</b>",syn:"visualize / imagine / picture / conceive",conf:"envision(设想) vs. envisage(英式同义) vs. envy(嫉妒)；vision 家族：visual/visible/revise"},
+  deduce:{w:"deduce",ipa:"/dɪˈdjuːs/",pos:"v.",tags:["core","write"],cn:"推断，演绎（由已知推出结论）",en:"to reach a conclusion from known facts",ex:"to deduce numerical sequences",mem:"de(向下)+duc(引导，同 conduct/introduce/reduce)→由前提往下引出结论→推断。名词 deduction 演绎/推论（也是「扣除」）。⚠️ 演绎 deduction（由一般到个别）⇄ 归纳 induction（由个别到一般）。",syn:"infer / conclude / reason out",conf:"deduce(推断) vs. deduct(扣除，deduct tax) vs. induce(诱导/引起)——duc 家族别混"},
+  sequence:{w:"numerical sequence",ipa:"/ˈsiːkwəns/",pos:"n.短语",tags:["phrase","core"],cn:"数列，数字序列",en:"a set of numbers in a fixed order",ex:"to deduce numerical sequences",mem:"sequ(跟随，同 consequence 后果/subsequent 随后的)+ence→一个跟一个→序列。in sequence 按顺序；a sequence of events 一连串事件。numerical 数字的（← number）。",syn:"series / succession / order",conf:"sequence(序列) vs. consequence(后果) vs. frequency(频率)"},
+  field:{w:"field (v.)",ipa:"/fiːld/",pos:"v.",tags:["poly","core"],cn:"⚠️应对，接（问题/来电）；≠领域",en:"to deal with questions or calls",ex:"when vos Savant fields such queries",mem:"⭐<b>本篇第一熟词僻义</b>：来自棒球术语「<b>接球</b>」→引申为「接问题、应对提问」。field questions from reporters 应对记者提问。<b>判断方法</b>：句中 when 从句需要谓语，这个位置只能是动词，不可能是名词「领域」。",syn:"handle / deal with / answer / respond to",conf:"同类「名词转动词」熟词僻义：table(v.提交议案) / floor(v.难倒) / weather(v.平安渡过) / house(v.收容) —— 考研阅读常客"},
+  joe:{w:"the average Joe",ipa:"",pos:"n.短语",tags:["phrase"],cn:"普通人，寻常百姓",en:"an ordinary, typical person",ex:"such queries from the average Joe (whose IQ is 100)",mem:"Joe 是英语里最常见的男名，加 the average 就成了「张三李四」。同款：the man in the street 街头百姓、Joe Public、ordinary folks。<b>原文用它与 IQ 228 的天才形成反差</b>——反差正是作者质疑的起点。",syn:"ordinary person / layman / the man in the street",conf:"the average Joe(普通人) vs. GI Joe(美国大兵玩偶) vs. a good Joe(好人，口语)"},
+  fondness:{w:"fondness",ipa:"/ˈfɒndnəs/",pos:"n.",tags:["core"],cn:"喜爱，钟爱（程度弱于 love）",en:"a liking or affection for sb/sth",ex:"the difference between love and fondness",mem:"fond adj. 喜爱的：<b>be fond of</b> 喜欢（高频搭配）；a fond memory 美好的回忆。<b>强度尺</b>：like &lt; fondness &lt; affection &lt; love——原文正是拿这组细微差别举例，说明这类问题<b>不是 IQ 测试能回答的</b>。",syn:"affection / liking / attachment",conf:"fondness(喜爱) vs. fondle(抚摸) vs. fund(资金)"},
+  suit:{w:"suit sb to do",ipa:"/suːt/",pos:"v.",tags:["poly","phrase"],cn:"使某人适合于（做某事）",en:"to make sb suitable for sth",ex:"how the capacity ... suits one to answer questions",mem:"⚠️ 不是「适合某人」（那是 sth suits sb），而是<b>「使某人具备做某事的资格/适配性」</b>。be suited to/for 适合于（被动更常见）：He is well suited to the job.<b>本句的逻辑枢纽</b>——作者质疑的正是这层「适配」是否成立。",syn:"qualify / fit / equip",conf:"suit(使适合) vs. suite(套房/套件，读 /swiːt/) vs. sue(起诉)"},
+  elude:{w:"elude",ipa:"/iˈluːd/",pos:"v.",tags:["core","write"],cn:"（问题）使人难解；躲避，避开",en:"to fail to be understood or achieved by sb; to escape from",ex:"questions that have eluded some of the best poets and philosophers",mem:"e(出)+lud(玩，同 illusion 幻觉/ludicrous 荒唐的)→玩着躲开→逃避/难倒。<b>两个高频用法</b>：The answer eludes me. 我想不出答案；elude capture 逃脱追捕。形容词 elusive 难以捉摸的（an elusive concept）。",syn:"escape / evade / baffle / defy",conf:"elude(躲避/难倒) vs. allude to(暗指) vs. delude(欺骗) vs. include(包括)——lud 家族"},
+  encompass:{w:"encompass",ipa:"/ɪnˈkʌmpəs/",pos:"v.",tags:["core","write"],cn:"包含，涵盖；包围",en:"to include a wide range of things",ex:"intelligence encompasses more than a score on a test",mem:"⭐<b>全文主旨句的动词</b>，也是 30 题的定盘星：en(使)+compass(圆规/范围)→画个圈把……圈进来→涵盖。<b>写作神句</b>：X encompasses far more than Y（X 远不止是 Y）——评价类作文的万能反驳句。",syn:"cover / include / embrace / span",conf:"encompass(涵盖) vs. compass(指南针/圆规) vs. compose(组成)"},
+  specify:{w:"specify",ipa:"/ˈspesɪfaɪ/",pos:"v.",tags:["core","write"],cn:"明确说明，具体指定",en:"to state sth clearly and exactly",ex:"How much of intelligence can be specified",mem:"speci(种类，同 species 物种/special 特殊的)+fy(使)→分门别类说清楚→明确指定。名词 specification 规格说明（技术文件的 spec）；形容词 specific 具体的。<b>⚠️27 题 D 的反证</b>：原文是<b>疑问句</b>「有多少<b>能够</b>被明确」→ 说明尚无定论，D 说「科学家<b>已经</b>界定了」正相反。",syn:"state / define / stipulate / pinpoint",conf:"specify(明确说明) vs. classify(分类) vs. justify(证明正当)"},
+  neurology:{w:"neurology",ipa:"/njʊəˈrɒlədʒi/",pos:"n.",tags:["core"],cn:"神经学，神经病学",en:"the study of the nervous system",ex:"learn about it from neurology, genetics, computer science",mem:"neuro(神经)+logy(学)。<b>neuro- 家族在科普阅读里成串出现</b>：neuron 神经元、neural network 神经网络（AI 文章高频）、neuroscience 神经科学、neurotic 神经质的。",syn:"neuroscience(神经科学，范围更广)",conf:"neurology(神经学) vs. psychology(心理学) vs. physiology(生理学)——科普文常并列出现"},
+  defining:{w:"the defining term",ipa:"/dɪˈfaɪnɪŋ/",pos:"n.短语",tags:["phrase","write"],cn:"定义性术语，界定标准",en:"the term that defines sth",ex:"The defining term of intelligence in humans still seems to be the IQ score",mem:"defining adj. <b>决定性的、起界定作用的</b>：a defining moment 决定性时刻（写作好词）、the defining feature 最本质的特征。<b>⚠️28 题 D 的坑</b>：原文说 defining term <b>仍是</b> IQ 分数（没变），D 却说「定义性特征<b>变了</b>」——<b>变的是算法（scoring），不是定义</b>。",syn:"the benchmark / the yardstick / the criterion",conf:"defining(界定性的) vs. defined(被界定的) vs. definitive(权威的/最终的)"},
+  variation:{w:"variation",ipa:"/ˌveəriˈeɪʃn/",pos:"n.",tags:["core"],cn:"变体，改编版；变化，差异",en:"a version that differs from the standard one",ex:"variations of them populate bookstores and the World Wide Web",mem:"vary v. 变化 → variation 变体/变化 → various 各种各样的 → variable 变量。<b>⚠️27 题 B 的取材处</b>：原文只说改编版「随处可见」，B 加了个 <b>More</b>（更多版本）——<b>凭空添加比较级</b>，原文一个比较对象都没给。",syn:"version / variant / modification",conf:"variation(变体/变化) vs. variety(多样性；a variety of 各种各样的) vs. variable(变量)"},
+  populate:{w:"populate",ipa:"/ˈpɒpjuleɪt/",pos:"v.",tags:["poly","core"],cn:"⚠️遍布，充斥于；居住于",en:"to fill or occupy a place in large numbers",ex:"variations of them populate bookstores and the World Wide Web",mem:"<b>熟词僻义</b>：由 population（人口）联想到「居住」，但这里主语是<b>物</b>（测试的改编版），意思是<b>「大量出现在、充斥着」</b>。同款：Cafés populate the old town. be densely/sparsely populated 人口稠密/稀疏。",syn:"fill / occupy / be found throughout / inhabit",conf:"populate(充斥/居住) vs. popular(流行的) vs. populous(人口稠密的)——三个同源但词性词义都不同"},
+  distribution:{w:"statistical population distribution",ipa:"/ˌdɪstrɪˈbjuːʃn/",pos:"n.短语",tags:["phrase","core"],cn:"统计学上的人口分布",en:"how scores are spread across a population",ex:"scoring is now based on a statistical population distribution among age peers",mem:"⭐28 题的题眼：<b>新算法</b>＝把你的分数放到<b>同龄人群的分布</b>里定位（本质是正态分布排名），所以再也出不了 228。distribute v. 分发/分布；population 这里是<b>统计学的「总体」</b>，不只是「人口」。",syn:"spread / dispersion / normal distribution(正态分布)",conf:"⚠️ 术语对：<b>比率智商</b>(mental age÷chronological age×100，旧) ⇄ <b>离差智商</b>(按同龄分布定位，新)——读懂这组对比，28 题秒选"},
+  peer:{w:"age peers",ipa:"/pɪə(r)/",pos:"n.短语",tags:["phrase","poly"],cn:"同龄人，同辈",en:"people of the same age",ex:"a statistical population distribution among age peers",mem:"<b>熟词僻义</b>：peer 作名词是<b>同龄人/同等地位的人</b>（不是「凝视」，那是 peer v.）。高频搭配：<b>peer pressure</b> 同辈压力、<b>peer review</b> 同行评议（学术文章必考）、peer group 同龄群体。<b>⚠️27 题 C 的旁证</b>：既然按年龄分组比较，成人卷与儿童卷自然不同。",syn:"contemporary / equal / age-mate",conf:"peer(n.同龄人 / v.凝视) vs. pier(码头) vs. peel(剥皮)——发音相同的 peer/pier 最爱考"},
+  chronological:{w:"chronological age",ipa:"/ˌkrɒnəˈlɒdʒɪkl/",pos:"n.短语",tags:["phrase","core"],cn:"实际年龄，生理年龄（按出生算）",en:"a person's actual age in years",ex:"dividing the mental age by the chronological age and multiplying by 100",mem:"chron(时间，同 chronic 慢性的/synchronize 同步)+logical。⭐<b>术语对</b>：<b>mental age 心理年龄 ⇄ chronological age 实际年龄</b>——旧智商公式就是前者÷后者×100（①段「10 岁测出 23 岁水平」→ 23÷10×100≈230，与 228 闭环）。in chronological order 按时间顺序（写作可用）。",syn:"actual age / calendar age",conf:"chronological(按时间的) vs. chronic(慢性的/长期的) vs. chronicle(编年史)"},
+  capture:{w:"capture",ipa:"/ˈkæptʃə(r)/",pos:"v.",tags:["poly","write"],cn:"⚠️体现，抓住（本质/精髓）；捕获",en:"to express or represent sth accurately",ex:"SAT and GRE capture the main aspects of IQ tests",mem:"<b>熟词僻义</b>：不是「捕获」而是<b>「抓住/体现某物的要点」</b>＝ reflect/embody。写作高频：This phrase captures the essence of the problem. capture attention 吸引注意；capture market share 占据市场份额。",syn:"reflect / embody / encapsulate / convey",conf:"capture(体现/捕获) vs. capital(资本/首都) vs. captive(俘虏)；cap(拿住)家族：capable/capacity"},
+  assess:{w:"assess",ipa:"/əˈses/",pos:"v.",tags:["core","write"],cn:"评估，评定（价值/能力/数额）",en:"to judge the quality, value or ability of sth",ex:"Such standardized tests may not assess all the important elements",mem:"⭐全篇出现三次，是本文的<b>关键动词</b>。名词 assessment 评估（SAT ＝ Scholastic <b>Assessment</b> Test）。⚠️注意 <b>may not assess <u>all</u></b> ＝<b>部分否定</b>「未必能评估<b>全部</b>」≠「完全不能评估」。",syn:"evaluate / appraise / gauge / measure",conf:"assess(评估价值/能力) vs. access(接近/访问，n.) vs. asset(资产)——拼写只差一点，完形高频"},
+  argue:{w:"argues (引述倒装)",ipa:"/ˈɑːɡjuː/",pos:"v.",tags:["poly","write"],cn:"⚠️主张，认为（≠争吵）",en:"to state one's view with reasons",ex:"..., argues Robert J. Sternberg.",mem:"<b>学术语境里 argue ＝「论证、主张」</b>，不是吵架。⭐注意这里的<b>引述倒装</b>：观点在前、说话人甩到句末（<code>..., argues X.</code>）。<b>一看到这个结构就要意识到：这一整句是 X 说的，不是作者说的</b>——态度题分辨「谁在说话」全靠它。同款：notes / says / adds / warns / explains。",syn:"contend / maintain / assert / hold",conf:"argue(主张) vs. argue with sb(与人争论) vs. argument(论点/争论)；名词 arguable 有争议的"},
+  analytical:{w:"analytical skills",ipa:"/ˌænəˈlɪtɪkl/",pos:"n.短语",tags:["phrase","write"],cn:"分析能力",en:"the ability to examine things logically",ex:"traditional tests best assess analytical and verbal skills",mem:"analyze v. → analysis n.（复数 analyses）→ analytical adj.。⭐<b>本文的核心对立</b>：测试<b>测得出</b>的 analytical + verbal skills ⇄ 测<b>不出</b>的 creativity + practical knowledge。<b>29 题的全部逻辑就架在这组对比上。</b>",syn:"reasoning ability / logical thinking",conf:"analytical(分析的) vs. analogous(类似的) vs. anatomical(解剖的)"},
+  failto:{w:"fail to do",ipa:"",pos:"v.短语",tags:["phrase","write"],cn:"未能做到，不能做（客观陈述，不带责备）",en:"to be unable to do sth",ex:"but fail to measure creativity and practical knowledge",mem:"⚠️<b>不等于「失败」</b>，只是「没做到」，语气中性。<b>写作里是 cannot 的高级替换</b>：Current policies fail to address the root cause. 同族：failure to comply 未能遵守；never fail to 从不会不（She never fails to impress.）。",syn:"be unable to / neglect to / fall short of",conf:"⭐<b>软性否定三件套</b>：may not（也许不）/ do not necessarily（未必）/ fail to（未能）——本文态度题的语言证据全在这三个上"},
+  critical:{w:"be critical to",ipa:"/ˈkrɪtɪkl/",pos:"adj.短语",tags:["phrase","poly","write"],cn:"⚠️对……至关重要（≠批评的）",en:"extremely important for sth",ex:"components also critical to problem solving and life success",mem:"<b>熟词僻义</b>：critical 有两义——<b>①至关重要的（critical to/for）②批评的（critical of）</b>。<b>靠介词分辨：to/for ＝ 重要；of ＝ 批评。</b>写作：Practical knowledge is critical to career success. 名词 a critical moment 关键时刻。",syn:"vital / essential / crucial / indispensable",conf:"critical to(至关重要) vs. critical of(批评的) vs. crucial(关键的) vs. critic(n.评论家)"},
+  necessarily:{w:"not necessarily",ipa:"/ˌnesəˈserəli/",pos:"adv.短语",tags:["phrase","write"],cn:"未必，不一定（部分否定）",en:"not in every case; not always",ex:"IQ tests do not necessarily predict so well",mem:"⭐<b>部分否定家族</b>（考研年年考）：not + <b>all / both / every / always / necessarily / entirely</b> ＝「并非全都」，<b>不是全盘否定</b>。本篇两处都是：<code>may not assess <b>all</b></code>、<code>do <b>not necessarily</b> predict</code>。<b>29 题 D「传统测试已过时」就是把部分否定读成了全盘否定。</b>",syn:"not always / not in all cases",conf:"not necessarily(未必) vs. unnecessarily(不必要地) vs. necessarily(必然地)"},
+  correlate:{w:"be negatively correlated with",ipa:"/ˈkɒrəleɪt/",pos:"v.短语",tags:["phrase","write"],cn:"与……呈负相关",en:"to have an inverse statistical relationship with",ex:"IQ was negatively correlated with leadership",mem:"⚠️<b>负相关 ≠ 无关！</b>是「有强关系但方向相反」（一升一降），所以作者才补一句 <code>it predicted the opposite</code>。一次背全：<b>positively correlated 正相关 / negatively correlated 负相关 / uncorrelated 不相关</b>。<b>⚠️社科文常识考点：correlation ≠ causation（相关不等于因果）。</b>",syn:"be inversely related to / vary inversely with",conf:"⚠️<b>29 题 B 的坑</b>：原文 correlated 的两端是 <b>IQ 与 leadership</b>，B 项偷换成「IQ 与 SAT」——<b>看到 correlated 必须回原句确认「谁和谁相关」</b>"},
+  toil:{w:"toil through",ipa:"/tɔɪl/",pos:"v.短语",tags:["phrase","write"],cn:"辛苦地熬过，费力地做完",en:"to work through sth with great effort",ex:"Anyone who has toiled through SAT will testify that...",mem:"toil n./v. 苦干、辛劳（比 work 苦、比 struggle 长）：toil away 埋头苦干；after years of toil 多年辛劳之后。<b>写作代入感极强</b>：Anyone who has toiled through graduate entrance exams will testify that…（写考试压力直接套）。",syn:"labor through / struggle through / slog through",conf:"toil(辛劳) vs. tool(工具) vs. till(直到；耕作)——发音注意 toil /tɔɪl/"},
+  testify:{w:"testify",ipa:"/ˈtestɪfaɪ/",pos:"v.",tags:["core","write"],cn:"证明，作证；表明",en:"to give evidence; to serve as proof",ex:"Anyone who has toiled through SAT will testify that...",mem:"test(证明)+ify(使)→给出证据。两个用法：<b>testify that + 从句</b>（作证说……）／<b>testify to sth</b>（证明某事，The results testify to his hard work）。名词 testimony 证词。<b>写作里用它把「大家都知道」写得有分量。</b>",syn:"attest / bear witness / confirm / vouch",conf:"testify(作证) vs. certify(证明/认证) vs. verify(核实) vs. justify(证明正当)——fy 四兄弟一起背"},
+  skip:{w:"skip",ipa:"/skɪp/",pos:"v.",tags:["core","write"],cn:"跳过，略过；蹦跳",en:"to leave sth out; to omit",ex:"knowing when to guess or what questions to skip",mem:"考场语境：<b>skip a question</b> 跳过一题（本文的应试技巧之一）；skip breakfast 不吃早饭；skip class 逃课。<b>本篇里它和 guess 并列，共同构成第三条缺陷「分数里掺着应试技巧」。</b>",syn:"omit / pass over / leave out / bypass",conf:"skip(跳过) vs. slip(滑倒/失误) vs. sip(小口喝)"},
+  attitude:{w:"态度词四选项包",ipa:"",pos:"n.",tags:["core","write"],cn:"supportive / skeptical / impartial / biased",en:"the four attitude options in Q30",ex:"[30题] What is the author's attitude towards IQ tests?",mem:"⭐<b>30 题四选项一次背全</b>：<b>supportive</b> 支持的（需要明确肯定句）／<b>impartial</b> 公正中立的（需要作者两边都说）／<b>skeptical</b> 怀疑的（软性否定 + 讲证据，<b>本题正解</b>）／<b>biased</b> 带偏见的（不讲证据的主观成见，<b>几乎永不选</b>）。<b>强度尺</b>：supportive ← neutral/impartial → skeptical → critical → biased。",syn:"objective 客观的 / doubtful 存疑的 / critical 批评的 / indifferent 漠不关心的",conf:"⚠️<b>两条铁律</b>：(1) biased / indifferent / subjective 见到基本可排——正规刊物作者是<b>讲证据的怀疑</b>，不是撒泼、也不可能「不关心」（写了文章还不关心？逻辑自否）；(2) impartial 只在「真的两边都说了」时才选，<b>先扬后抑不算中立</b>"},
+  indicator:{w:"indicator",ipa:"/ˈɪndɪkeɪtə(r)/",pos:"n.",tags:["core","write"],cn:"指标，衡量标准；迹象",en:"a sign that shows the state or level of sth",ex:"[29题A] test scores may not be reliable indicators of one's ability",mem:"⭐<b>29 题正确答案的核心词</b>：indicate v. 表明 → indicator 指标。<b>写作高频</b>：GDP is not a reliable indicator of well-being.（GDP 不是幸福感的可靠指标）——评价体系类作文万能句。同族：economic indicators 经济指标、a leading indicator 先行指标。",syn:"index / measure / gauge / yardstick / benchmark",conf:"indicator(指标) vs. indication(迹象) vs. indicative(表明的；be indicative of 表明)"},
+  reliable:{w:"reliable",ipa:"/rɪˈlaɪəbl/",pos:"adj.",tags:["core","write"],cn:"可靠的，可信赖的",en:"that can be trusted to be accurate",ex:"[29题A] may not be reliable indicators",mem:"rely on 依靠 → reliable 可靠的 → reliability 可靠性（科研文高频：the reliability of the test 测试的信度）。<b>⚠️测量学术语对</b>：<b>reliability 信度</b>（测得<b>稳不稳</b>）⇄ <b>validity 效度</b>（测得<b>对不对</b>）——本文批的其实两样都有。",syn:"dependable / trustworthy / credible / sound",conf:"reliable(可靠的) vs. reliant(依赖的；be reliant on) vs. relative(相对的)"},
+  guesswork:{w:"guesswork",ipa:"/ˈɡeswɜːk/",pos:"n.",tags:["core"],cn:"猜测，臆测（不可数）",en:"the process of guessing without full information",ex:"[29题C] testing involves a lot of guesswork",mem:"guess + work → 靠猜的活儿。<b>⚠️29 题 C 的以偏概全</b>：末句只说「知道<b>何时</b>该猜」是 SAT 应试技巧<b>之一</b>，C 却推成「测试<b>包含大量</b>猜测行为」——<b>从一个技巧点跨到对所有测试的整体判断，推过头了</b>。take the guesswork out of X 让 X 不再靠猜（写作可用）。",syn:"speculation / conjecture / surmise",conf:"guesswork(猜测,不可数) vs. guess(n.可数,a wild guess)"},
+  procedure:{w:"computational procedure",ipa:"/prəˈsiːdʒə(r)/",pos:"n.短语",tags:["phrase","core"],cn:"计算方法／程序",en:"the method by which sth is calculated",ex:"[28题A] the scores are obtained through different computational procedures",mem:"⭐<b>28 题正确答案</b>，是原文 <code>scoring is now based on A rather than B</code> 的<b>抽象概括改写</b>——原文没出现 computational 这个词，正确项<b>换词不换意</b>（R1）。procedure 程序/步骤（follow the proper procedures 按程序办）；compute v. 计算 → computational 计算的。",syn:"method / formula / algorithm / calculation",conf:"procedure(程序/步骤) vs. proceeding(诉讼/会议记录) vs. process(过程)"}
+};
+
+const panel=document.getElementById('panel');
+const isMobile=()=>window.innerWidth<=900;
+function badge(t){return {core:'<span class="badge b-core">核心词</span>',phrase:'<span class="badge b-phrase">短语</span>',poly:'<span class="badge b-poly">熟词僻义</span>',write:'<span class="badge b-write">写作✍︎</span>'}[t]||''}
+function showCard(k,el){
+  const d=V[k]; if(!d)return;
+  document.querySelectorAll('.tk.active').forEach(e=>e.classList.remove('active'));
+  if(el&&el.classList.contains('tk'))el.classList.add('active');
+  panel.innerHTML=`<button class="close" onclick="panel.classList.remove('open')">✕</button>
+  <div class="wcard">
+    <div class="head"><span class="w">${d.w}</span><span class="ipa">${d.ipa}</span><span class="pos">${d.pos}</span>${d.tags.map(badge).join('')}</div>
+    <div class="cn">${d.cn}</div><div class="en-def">${d.en}</div>
+    <div class="row r-ex"><b>原文语境</b>“…${d.ex}…”</div>
+    <div class="row r-mem"><b>怎么记</b>${d.mem}</div>
+    <div class="row r-syn"><b>同类词</b>${d.syn}</div>
+    <div class="row r-conf"><b>易混辨析</b>${d.conf}</div>
+  </div>`;
+  if(isMobile())panel.classList.add('open');
+}
+document.querySelectorAll('.tk').forEach(t=>t.addEventListener('click',e=>{e.stopPropagation();showCard(t.dataset.w,t)}));
+
+function tz(btn){btn.closest('.para').classList.toggle('showzh')}
+let allOn=false;
+function toggleAll(){allOn=!allOn;document.querySelectorAll('.para').forEach(p=>p.classList.toggle('showzh',allOn))}
+function go(id){document.getElementById(id).scrollIntoView({behavior:'smooth',block:'center'});const s=document.getElementById(id);s.style.transition='none';s.style.opacity=.3;setTimeout(()=>{s.style.transition='opacity .8s';s.style.opacity=1},80)}
+
+document.querySelectorAll('.q').forEach(q=>{
+  const ans=+q.dataset.ans;
+  q.querySelectorAll('.opt').forEach((o,i)=>o.addEventListener('click',()=>{
+    if(q.classList.contains('done'))return;
+    q.classList.add('done');
+    if(i!==ans)o.classList.add('wrong');
+    q.querySelectorAll('.opt')[ans].classList.add('right');
+  }));
+});
+
+const vg=document.getElementById('vgrid');
+function renderGrid(f){
+  vg.innerHTML='';
+  Object.keys(V).forEach(k=>{
+    const d=V[k];
+    if(f!=='all'&&!d.tags.includes(f))return;
+    const div=document.createElement('div');div.className='vitem';
+    div.innerHTML=`<span class="badges">${d.tags.map(badge).join('')}</span><div class="w">${d.w}</div><div class="cn">${d.cn}</div>`;
+    div.addEventListener('click',()=>{showCard(k,null);if(!isMobile())window.scrollTo({top:0,behavior:'smooth'})});
+    vg.appendChild(div);
+  });
+}
+renderGrid('all');
+document.querySelectorAll('.fbtn').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.fbtn').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderGrid(b.dataset.f);
+}));
+
+const yd=document.getElementById('yd');let sel='';
+document.addEventListener('selectionchange',()=>{
+  const s=window.getSelection();const t=s?s.toString().trim():'';
+  if(t&&/^[a-zA-Z' -]{2,40}$/.test(t)){
+    sel=t;
+    try{const r=s.getRangeAt(0).getBoundingClientRect();
+      yd.style.left=Math.min(r.left,window.innerWidth-110)+'px';
+      yd.style.top=(r.bottom+8)+'px';yd.style.display='block';}catch(e){}
+  }else{yd.style.display='none'}
+});
+yd.addEventListener('click',()=>{window.open('https://dict.youdao.com/result?word='+encodeURIComponent(sel)+'&lang=en');yd.style.display='none'});
+document.addEventListener('click',e=>{if(e.target!==yd&&!window.getSelection().toString())yd.style.display='none'});
+</script>
+<script src="_fault_attr.js"></script>
+</body>
+</html>
