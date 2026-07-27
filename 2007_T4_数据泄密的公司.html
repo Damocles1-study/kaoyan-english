@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2007 英一 Text 4 · 数据泄密的公司</title>
+<style>
+  :root{
+    --bg:#faf9f6; --card:#ffffff; --ink:#2b2b2b; --muted:#8a8578;
+    --accent:#8b5e34; --accent-soft:#f3e9dd; --line:#e8e3d8;
+    --hl:#fdf3d8; --hl-border:#e0b84d;
+    --green:#3e7a4e; --green-soft:#e8f2ea;
+    --red:#b04a3a; --red-soft:#f9e9e6;
+    --blue:#3d6a8a; --blue-soft:#e7eff5;
+    --purple:#6d5a8e; --purple-soft:#eeeaf5;
+    --serif:"Georgia","Songti SC",serif;
+    --sans:-apple-system,"PingFang SC","Helvetica Neue",sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#1c1a17; --card:#26231f; --ink:#e8e4dc; --muted:#9a948a;
+      --accent:#d0a06a; --accent-soft:#3a3127; --line:#3a362f;
+      --hl:#3d3520; --hl-border:#b08c3a;
+      --green:#7fb98d; --green-soft:#26362b;
+      --red:#d98876; --red-soft:#3d2a26;
+      --blue:#8ab3d0; --blue-soft:#26323d;
+      --purple:#a996c8; --purple-soft:#302a3d;
+    }
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;padding-bottom:120px}
+  .wrap{max-width:1100px;margin:0 auto;padding:24px 20px}
+  .back{font-size:.85rem;color:var(--muted);text-decoration:none}
+  .back:hover{color:var(--accent)}
+  header{margin:14px 0 28px}
+  header h1{font-family:var(--serif);font-size:1.7rem;line-height:1.3}
+  header .sub{color:var(--muted);margin-top:6px;font-size:.9rem}
+  .tags{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+  .tag{font-size:.75rem;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);border:1px solid var(--line)}
+  .tag.warn{background:var(--red-soft);color:var(--red);border-color:var(--red)}
+  .tag.ok{background:var(--green-soft);color:var(--green);border-color:var(--green)}
+
+  .layout{display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:start}
+  @media (max-width:900px){.layout{grid-template-columns:1fr}}
+
+  section.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:24px}
+  h2{font-size:1.05rem;letter-spacing:.05em;color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+  h2 .n{font-size:.72rem;background:var(--accent);color:var(--card);border-radius:6px;padding:1px 7px}
+
+  .para{margin-bottom:22px}
+  .para .en{font-family:var(--serif);font-size:1.06rem;line-height:1.9}
+  .pno{color:var(--muted);font-size:.75rem;user-select:none;margin-right:6px}
+  .tk{background:var(--hl);border-bottom:2px solid var(--hl-border);border-radius:3px;padding:0 2px;cursor:pointer;transition:filter .15s}
+  .tk:hover{filter:brightness(.93)}
+  .tk.active{outline:2px solid var(--hl-border)}
+  .ls{border-bottom:2px dotted var(--blue);cursor:pointer}
+  .para .zh{display:none;margin-top:10px;padding:10px 14px;background:var(--blue-soft);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:.93rem}
+  .para.showzh .zh{display:block}
+  .zbtn{float:right;margin-left:10px;font-size:.72rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:6px;padding:2px 9px;cursor:pointer}
+  .zbtn:hover{color:var(--accent);border-color:var(--accent)}
+  .allbtn{font-size:.78rem;border:1px solid var(--accent);background:none;color:var(--accent);border-radius:8px;padding:4px 12px;cursor:pointer;margin-left:auto}
+
+  aside{position:sticky;top:20px}
+  #panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;min-height:180px}
+  #panel .hint{color:var(--muted);font-size:.88rem;text-align:center;padding:30px 10px}
+  .wcard .head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .wcard .w{font-family:var(--serif);font-size:1.35rem;font-weight:bold}
+  .wcard .ipa{color:var(--muted);font-size:.85rem}
+  .wcard .pos{font-size:.72rem;color:var(--purple);background:var(--purple-soft);padding:1px 8px;border-radius:999px}
+  .wcard .badge{font-size:.7rem;padding:1px 8px;border-radius:999px}
+  .b-core{background:var(--red-soft);color:var(--red)}
+  .b-phrase{background:var(--blue-soft);color:var(--blue)}
+  .b-poly{background:var(--purple-soft);color:var(--purple)}
+  .b-write{background:var(--green-soft);color:var(--green)}
+  .wcard .cn{margin-top:8px;font-size:1rem;font-weight:600}
+  .wcard .en-def{color:var(--muted);font-size:.86rem;font-style:italic;margin-top:2px}
+  .wcard .row{margin-top:10px;font-size:.86rem;padding:8px 10px;border-radius:8px}
+  .wcard .row>b:first-child{font-size:.72rem;display:block;margin-bottom:2px;letter-spacing:.06em}
+  .r-ex{background:var(--hl)} .r-ex b{color:var(--hl-border)}
+  .r-mem{background:var(--green-soft)} .r-mem b{color:var(--green)}
+  .r-syn{background:var(--blue-soft)} .r-syn b{color:var(--blue)}
+  .r-conf{background:var(--red-soft)} .r-conf b{color:var(--red)}
+  #panel .close{display:none}
+  @media (max-width:900px){
+    aside{position:fixed;left:0;right:0;bottom:0;z-index:50;padding:0 8px 8px}
+    #panel{box-shadow:0 -6px 24px rgba(0,0,0,.18);max-height:55vh;overflow-y:auto;display:none}
+    #panel.open{display:block}
+    #panel .close{display:block;float:right;border:none;background:var(--line);border-radius:8px;padding:2px 10px;cursor:pointer;color:var(--ink)}
+  }
+
+  .q{margin-bottom:22px;padding-bottom:18px;border-bottom:1px dashed var(--line)}
+  .q:last-child{border:none;margin-bottom:0;padding-bottom:0}
+  .q .stem{font-weight:600;font-family:var(--serif)}
+  .qt{font-size:.7rem;color:var(--blue);background:var(--blue-soft);border-radius:999px;padding:1px 8px;margin-right:6px;vertical-align:2px}
+  .opts{margin-top:10px;display:grid;gap:8px}
+  .opt{border:1px solid var(--line);border-radius:10px;padding:8px 12px;cursor:pointer;font-size:.93rem;font-family:var(--serif);transition:all .15s}
+  .opt:hover{border-color:var(--accent)}
+  .q.done .opt{cursor:default}
+  .opt.right{background:var(--green-soft);border-color:var(--green)}
+  .opt.wrong{background:var(--red-soft);border-color:var(--red)}
+  .expl{display:none;margin-top:12px;background:var(--accent-soft);border-radius:10px;padding:12px 14px;font-size:.9rem}
+  .q.done .expl{display:block}
+  .expl b{color:var(--accent)}
+  .expl .loc{font-family:var(--serif);font-style:italic;background:var(--hl);padding:1px 4px;border-radius:3px}
+  .fail{background:var(--red-soft);border:1px solid var(--red);border-radius:10px;padding:10px 13px;margin-bottom:10px;font-size:.89rem}
+  .fail b{color:var(--red)}
+  .waver{background:var(--hl);border:1px solid var(--hl-border);border-radius:10px;padding:10px 13px;margin-bottom:10px;font-size:.89rem}
+
+  .sent{margin-bottom:20px}
+  .sent .src{font-family:var(--serif);font-size:1rem;background:var(--blue-soft);padding:12px 14px;border-radius:10px;border-left:3px solid var(--blue)}
+  .sent .anat{margin-top:8px;font-size:.9rem}
+  .sent .anat li{margin:4px 0 4px 18px}
+  .sent .tr{margin-top:8px;font-size:.92rem;color:var(--muted)}
+  .skel{color:var(--red);font-weight:600}
+
+  .filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+  .fbtn{font-size:.8rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:999px;padding:4px 14px;cursor:pointer}
+  .fbtn.on{background:var(--accent);color:var(--card);border-color:var(--accent)}
+  .vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
+  .vitem{border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer;transition:border-color .15s}
+  .vitem:hover{border-color:var(--accent)}
+  .vitem .w{font-family:var(--serif);font-weight:bold}
+  .vitem .cn{font-size:.85rem;color:var(--muted)}
+  .vitem .badges{float:right}
+
+  .wb{display:grid;gap:10px}
+  .wbi{border-left:3px solid var(--green);background:var(--green-soft);border-radius:0 10px 10px 0;padding:10px 14px;font-size:.92rem}
+  .wbi .p{font-family:var(--serif);font-weight:600}
+  .wbi .u{color:var(--muted);font-size:.85rem}
+
+  .flow{display:grid;gap:8px;font-size:.92rem}
+  .flow .fi{border:1px solid var(--line);border-radius:10px;padding:9px 13px}
+  .flow .fi b{color:var(--accent)}
+
+  .ctab{width:100%;border-collapse:collapse;font-size:.86rem;margin-top:8px}
+  .ctab th,.ctab td{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
+  .ctab th{background:var(--accent-soft);color:var(--accent);font-size:.8rem;white-space:nowrap}
+  .ctab code{background:var(--hl);padding:0 3px;border-radius:3px}
+  .tabwrap{overflow-x:auto}
+  .ok{color:var(--green);font-weight:700}
+  .no{color:var(--red);font-weight:700}
+
+  #yd{position:fixed;z-index:60;display:none;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:4px 12px;font-size:.8rem;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+  footer{color:var(--muted);font-size:.8rem;text-align:center;margin-top:30px}
+  .att{display:grid;gap:8px;margin-top:10px}
+  .atti{border:1px solid var(--line);border-radius:10px;padding:9px 13px;font-size:.9rem}
+  .atti b{font-family:var(--serif)}
+  .atti.no2{background:var(--red-soft);border-color:var(--red)}
+  .atti.yes{background:var(--green-soft);border-color:var(--green)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">◀ 返回英语复盘中心</a>
+  <header>
+    <h1>The Leaky Corporation：数据不安全怎么就爬上了老板的议程表第一行</h1>
+    <div class="sub">2007 年英语（一）真题 · Text 4 · 416 词 · 建议做题 18 min · 话题：公司治理×数据安全（源自《经济学人》2005 年 6 月 23 日 <i>Information Security—The Leaky Corporation</i>）</div>
+    <div class="tags">
+      <span class="tag">正确答案：36D 37A 38B 39A 40D</span><span class="tag">题型：写作目的 ×2 + 事实细节 ×2 + 推理引申</span><span class="tag ok">✅ Claude 盲做 5/5</span><span class="tag warn">⚠️ 40 题在 C/D 之间真犹豫过——判断依据写在解析里</span><span class="tag">🆕 新增套路卡：R15 选项定位法 · R16 写作目的题三步</span>
+    </div>
+    <div class="atti" style="margin-top:14px;background:var(--blue-soft);border:1px solid var(--blue);border-radius:10px;padding:10px 14px;font-size:.88rem">
+      📖 <b>本页与原卷配合看</b>：原文完整英文在你手上的原卷 <b>p9</b>（<code>按年份/2007/…图像保真版.pdf</code> 第 10 页），题目在原卷 <b>p10</b>。本页第 01 节按段给出<b>考点句原文 + 全段中译</b>，不重排整篇文章——做题时对着原卷读，复盘时对着本页看。
+    </div>
+    <div class="atti" style="margin-top:10px;background:var(--accent-soft);border:1px solid var(--accent);font-size:.88rem">
+      🎯 <b>本篇最该带走的一件事</b>：五道题里<b>两道</b>是<b>写作目的题</b>（36 引谚语为了什么、38 提 GASP 为了什么）。这类题的答案<b>从来不是那个引言/概念本身</b>，而是它<b>服务的那句论点</b>——和「例证题铁律」（套路库 R3）是同一条法则的三个变体：<b>例子、谚语、概念，都只是配角。</b>
+    </div>
+  </header>
+
+  <div class="layout">
+    <main>
+      <!-- ========== 全文脉络 ========== -->
+      <section class="card">
+        <h2><span class="n">00</span>读前一分钟 · 全文脉络（做完题再看也行）</h2>
+        <div class="flow">
+          <div class="fi"><b>①段 提出问题（谚语开场 + 冒号点题）</b>　⭐36 题定位段。<b>It never rains but it pours</b>（不雨则已，雨则倾盆＝祸不单行）：老板们刚把<b>会计、合规、公司治理</b>这些烂账收拾完，<b>一个新麻烦又来了</b>——冒号后面就是它的名字：<b>data insecurity（数据不安全）</b>。末句给出今昔对照：这事<b>过去</b>丢给临时的低级 IT 员工去修、被当成银行电信这类「数据大户」才操心的事；<b>现在</b>各行各业的老板都把它摆在议程表最前面。</div>
+          <div class="fi"><b>②段 问题有多真（独句段 = 事实举证）</b>　⭐37 题定位段。今年好几起大泄露——时代华纳、国防承包商 SAIC、连加州大学伯克利分校都中招——<b>逼得管理者慌忙细查自家错综复杂的 IT 系统与业务流程，to 寻找潜在漏洞</b>。<b>独句成段 = 命题人最爱下手的地方（本段一句话就出了一道题）。</b></div>
+          <div class="fi"><b>③段 分析问题之一：这是「管理问题」（两位教授发声）</b>　⭐38 题定位段。孟德尔森：<b>数据已成资产，得像别的资产一样看守；护住客户数据是市值的关键，董事会要为股东负这个责</b>。诺姆接着递进（<code>Indeed</code>）：<b>既然有通用会计准则 GAAP，也该有通用安全准则 GASP</b>；末句给出全段的落点——<b>安全投资标准是「管理问题」，不是「技术问题」。</b></div>
+          <div class="fi"><b>④段 分析问题之二：作者自己开口（唯一的态度段）</b>　⭐39 题定位段。<b>The mystery is that…</b>（令人不解的是）——<b>这居然还能让老板们吃惊？</b>再笨的管理者也该知道：<b>信任是最有价值的经济资产，毁起来容易、修起来极贵</b>；而<b>最毁信任的事，莫过于公司让敏感个人数据落进不该落的手里</b>。<b>这一段没有引号、没有人名，是全篇唯一的作者发声段（R4）。</b></div>
+          <div class="fi"><b>⑤段 解决问题：靠法律推着走</b>　⭐40 题定位段。四步：①现状之所以被<b>助长</b>，是因为<b>美国（而非欧洲）缺乏针对泄露的法律惩处</b>——但作者补一句 <code>though not justified</code>（不等于说得过去）；②<b>加州刚立法之前</b>，美国公司数据被盗<b>连受害者都不用告知</b>；③这快要变了，<b>大量数据安全法案正在华盛顿流转</b>；④与此同时，4000 万信用卡账户失窃案<b>盖过了</b>前一天 FTC 那个「保护不力就要动手」的重大决定的风头。</div>
+          <div class="fi" style="border-color:var(--accent)">📌 <b>一句话主旨</b>：数据保护已不是 IT 小事，而是关乎公司存亡的<b>管理问题</b>，而推着企业往前走的力量是<b>法律惩处</b>。<br>📌 <b>结构套路</b>：<b>提出问题（①②段）→ 分析问题（③④段）→ 解决问题（⑤段）</b>——这是外刊社评最标准的三段式，<b>认出来就知道每段该出什么题</b>：提出问题段出「引言目的」，分析段出「概念目的 / 作者态度」，解决段出「段落推理」。<br>⚠️ <b>本篇没有反方观点、没有两国对照</b>，通篇一个调子：企业该重视、监管该发力。<b>所以任何「有人认为不必大惊小怪」式的选项都是凭空造的。</b></div>
+        </div>
+      </section>
+
+      <!-- ========== 原文精读 ========== -->
+      <section class="card">
+        <h2><span class="n">01</span>原文精读 · 考点句 <button class="allbtn" onclick="toggleAll()">全段译文 开/关</button></h2>
+        <p style="font-size:.8rem;color:var(--muted);margin-bottom:14px">🟡 黄色高亮 = 重难点词/短语，点击右侧出卡片 ｜ 蓝色虚线 = 长难句，点击跳到精析 ｜ 每段「译」= 该段完整中译 ｜ 选中任意其他单词浮出「查有道」</p>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p style="font-size:.78rem;color:var(--accent);margin-bottom:6px">① 提出问题段 · 谚语开场 · ⭐36 题定位段</p>
+          <p class="en"><span class="pno">谚语</span><span class="tk" data-w="rains">It never rains but it pours.</span></p>
+          <p class="en" style="margin-top:10px"><span class="pno">⭐36题</span><span class="ls" onclick="go('s1')">Just as bosses and boards have finally <span class="tk" data-w="sortout">sorted out</span> their worst accounting and <span class="tk" data-w="compliance">compliance</span> troubles, and improved their <span class="tk" data-w="feeble">feeble</span> <span class="tk" data-w="governance">corporation governance</span>, a new problem threatens to <span class="tk" data-w="earn">earn</span> them—especially in America—the sort of <span class="tk" data-w="nasty">nasty headlines</span> that <span class="tk" data-w="inevitably">inevitably</span> lead to <span class="tk" data-w="heads">heads rolling in the executive suite</span>: <span class="tk" data-w="insecurity">data insecurity</span>.</span></p>
+          <p class="en" style="margin-top:10px"><span class="pno">今昔对照</span><span class="ls" onclick="go('s2')"><span class="tk" data-w="leftto">Left</span>, until now, to <span class="tk" data-w="odd">odd</span>, low-level IT staff to <span class="tk" data-w="putright">put right</span>, and seen as a concern only of <span class="tk" data-w="datarich">data-rich industries</span> such as banking, <span class="tk" data-w="telecoms">telecoms</span> and air travel, information protection is now <span class="tk" data-w="agenda">high on the boss's agenda</span> in businesses of <span class="tk" data-w="variety">every variety</span>.</span></p>
+          <div class="zh"><b>①段全译：</b>不雨则已，雨则倾盆。正值老板、董事们终于解决了最为棘手的财务和合规问题、并且改善了乏力的公司治理之际，<b>一个新的问题又可能为他们招致——尤其是在美国——那种不可避免地导致管理层人头落地的负面头条，这个问题就是：数据不安全。</b>此前，数据保护一直是丢给临时的、低级别的 IT 员工去处理，并且被看作只是银行、电信、航空旅行这类拥有大量数据的行业才关注的问题，<b>而现在它却高居各行各业老板的议程表之首。</b>
+          <div style="margin-top:8px;font-size:.86rem">💡 <b>谚语 + 冒号 = 送分结构</b>：谚语只负责<b>造势</b>（麻烦一个接一个来），<b>真正的信息在冒号后面那个词</b>——<code>data insecurity</code>。<b>36 题问「引这句谚语为了引出什么」，答案就是冒号后那件事（数据泄露之严重），不是谚语本身的字面意思。</b><br>💡 <b>末句是「过去 vs 现在」的标准对照</b>：<code>Left, until now, to… low-level IT staff</code>（过去：小人物的活）⇄ <code>is <b>now</b> high on the boss's agenda</code>（现在：老板的头等事）。<b>今昔对照句在考研阅读里出题率极高，因为它天然自带「变了」这个判断。</b><br>💡 <b>顺手数一下主题词出现次数</b>：data insecurity / information protection / data leakage / data security ——<b>同一件事换了四个说法反复出现，这就是全文主题（也是 36 题选 D 的第二条依据）。</b></div></div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p style="font-size:.78rem;color:var(--accent);margin-bottom:6px">② 举证段（独句成段）· ⭐37 题定位段</p>
+          <p class="en"><span class="pno">⭐37题</span><span class="ls" onclick="go('s3')">Several massive <span class="tk" data-w="leakage">leakages</span> of customer and employee data this year—from organizations <span class="tk" data-w="diverse">as diverse as</span> Time Warner, the American <span class="tk" data-w="contractor">defense contractor</span> Science Applications International Corp and even the University of California, Berkeley—have left managers <span class="tk" data-w="hurriedly">hurriedly</span> <span class="tk" data-w="peer">peering into</span> their <span class="tk" data-w="intricate">intricate</span> IT systems and business processes <span class="tk" data-w="insearch">in search of</span> potential <span class="tk" data-w="vulnerability">vulnerabilities</span>.</span></p>
+          <div class="zh"><b>②段全译：</b>今年几起客户和员工数据的重大泄露事件——发生在各类机构里，如时代华纳公司、美国国防项目承包商科学应用国际公司，甚至是加州大学伯克利分校——<b>使得管理者们慌忙细查他们错综复杂的信息技术（IT）系统和业务流程，以寻找潜在的漏洞。</b>
+          <div style="margin-top:8px;font-size:.86rem">💡 <b>独句成段，必是考点</b>：全篇只有这一段是一句话。<b>命题人挑定位句时最喜欢独句段——因为它「一句就是一段」，题干只要说 According to Paragraph 2，你就无处可逃。</b><br>💡 <b>本句的信息骨架是「A 使得 B 做 C 以求 D」</b>：泄露事件（A）→ 让管理者（B）→ 细查系统（C）→ <b>为了找漏洞（D）</b>。<b>37 题问的是 D（check their systems <u>to find out</u> ______），所以答案落在 <code>in search of potential vulnerabilities</code> 上。</b><br>⚠️ <b>三个机构名（Time Warner / SAIC / UC Berkeley）不必认识、也不会考</b>——它们由 <code>as diverse as</code> 串起来，作用只有一个：<b>证明「什么行业都在漏」</b>。<b>看到 as diverse as / ranging from…to…，就知道这串名字是「广度证据」，扫过即可。</b></div></div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p style="font-size:.78rem;color:var(--accent);margin-bottom:6px">③ 分析问题（一）：两位教授说「这是管理问题」· ⭐38 题定位段</p>
+          <p class="en"><span class="pno">教授1</span>"Data is becoming an <span class="tk" data-w="asset">asset</span> which needs to be <span class="tk" data-w="guard">guarded</span> as much as any other asset," says Haim Mendelson of Stanford University's business school.</p>
+          <p class="en" style="margin-top:10px"><span class="pno">⚠️38题A/D来源</span>"The ability to guard customer data is <span class="tk" data-w="keyto">the key to</span> <span class="tk" data-w="marketvalue">market value</span>, which the board is responsible for <span class="tk" data-w="onbehalf">on behalf of</span> shareholders."</p>
+          <p class="en" style="margin-top:10px"><span class="pno">⭐38题</span><span class="ls" onclick="go('s4')"><span class="tk" data-w="indeed">Indeed</span>, just as there is the concept of <span class="tk" data-w="gaap">Generally Accepted Accounting Principles</span> (GAAP), perhaps <span class="tk" data-w="timefor">it is time for</span> GASP, Generally Accepted Security Practices, <span class="tk" data-w="suggest">suggested</span> Eli Noam of New York's Columbia Business School.</span></p>
+          <p class="en" style="margin-top:10px"><span class="pno">落点句</span>"Setting the proper <span class="tk" data-w="investlevel">investment level</span> for security, <span class="tk" data-w="redundancy">redundancy</span>, and recovery is <span class="tk" data-w="mgmtissue">a management issue, not a technical one</span>," he says.</p>
+          <div class="zh"><b>③段全译：</b>斯坦福大学商学院的海姆·孟德尔森说：「数据正在变成一种资产，与任何其他资产一样，它也需要受到保护。」<b>「保护客户数据的能力是（保证）市场价值的关键，而董事会应当为了股东的利益对市场价值负责。」</b>的确，正如有通用会计准则（GAAP）这个概念一样，<b>或许现在是该有 GASP（通用安全准则）的时候了</b>，纽约哥伦比亚大学商学院的伊莱·诺姆这样建议道。他指出：<b>「为（数据）安全、冗余备份以及数据恢复设定恰当的投资标准，是个管理问题，而不是技术问题。」</b>
+          <div style="margin-top:8px;font-size:.86rem">💡 <b><code>Indeed</code> 是本段的枢纽词</b>：它把③句（GASP）和①②句（数据是资产、要看守）<b>连成同一个意群</b>——「的确，既然会计有准则，安全也该有准则」。<b>38 题问「提 GASP 意在说明什么」，答案就得在这个意群的主旨里找：数据保护应当受到（与会计同等的）足够重视。</b><br>💡 <b>末句 <code>he says</code> 回指的是③句的诺姆</b>，所以<b>③④两句是一个人的一段话</b>，得合起来读：GASP 的落点是 <b>a management issue, not a technical one</b>——<b>「不是技术问题」正好呼应①段的「过去丢给低级 IT 员工」，全文在这里闭环。</b><br>⚠️ <b>本段有两个漂亮的名词短语，专门用来做干扰项</b>：<code>market value</code>（38 题 D 拿去用了）、<code>on behalf of shareholders</code>（38 题 A 拿去用了）。<b>它们都是②句里的「附带成分」——一个说市值靠什么保、一个说董事会替谁负责，都不是 GASP 那句话的目的。</b></div></div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p style="font-size:.78rem;color:var(--accent);margin-bottom:6px">④ 分析问题（二）：全篇唯一的作者发声段 · ⭐39 题定位段</p>
+          <p class="en"><span class="pno">⭐39题</span>The <span class="tk" data-w="mystery">mystery is that</span> this should <span class="tk" data-w="comeas">come as a surprise</span> to any boss.</p>
+          <p class="en" style="margin-top:10px"><span class="pno">原因句</span><span class="ls" onclick="go('s5')"><span class="tk" data-w="surely">Surely</span> it should be obvious to <span class="tk" data-w="dim">the dimmest executive</span> that <span class="tk" data-w="trust">trust</span>, that most valuable of economic assets, is easily destroyed and hugely expensive to <span class="tk" data-w="restore">restore</span>—and that <span class="tk" data-w="fewthings">few things are more likely to destroy trust than</span> a company letting <span class="tk" data-w="sensitive">sensitive personal data</span> <span class="tk" data-w="wronghands">get into the wrong hands</span>.</span></p>
+          <div class="zh"><b>④段全译：</b><b>令人不解的是，这件事居然还会让任何一位老板感到意外。</b>无疑，即便是最愚笨的管理人员也应该清楚：<b>信任——经济资产中最有价值的那一样——极易被破坏，而修复起来代价高昂；而且没有什么比公司任由敏感个人信息落入别有用心之人手中更能破坏信任的了。</b>
+          <div style="margin-top:8px;font-size:.86rem">⭐ <b>这一段是本篇的「作者发声段」</b>：没有引号、没有人名（③段全是教授在说话）。<b>凡问 the author（想什么/不解什么/态度如何），只在这类段里找</b>（套路库 R4）。<br>⭐ <b>39 题的因果关系是隐性的，得靠意群推</b>：<code>The mystery is that this should come as a surprise</code>（怪的是这居然让人吃惊）→ <b>为什么怪？</b>第②句给出理由：<code>Surely it should be obvious…that trust… is easily destroyed…and that few things are more likely to destroy trust than 泄露数据</code>。<b>把两句连起来：老板们「竟然」没意识到「数据泄露 = 毁掉信任」这层关系——这就是作者不解之处（39 题 A）。</b><br>💡 <b><code>should</code> 在这两句里各是一个考点</b>：①句的 should 表<b>「竟然」</b>（含惊讶/不以为然），②句的 should 表<b>「理应」</b>。<b>同一个词、两种语气，全靠上下文分——这也是本段读起来别扭的原因。</b><br>💡 <b><code>that most valuable of economic assets</code> 是插在 trust 后面的同位语</b>，用眼睛抠掉它，主干立刻现形：<code>trust is easily destroyed and hugely expensive to restore</code>。<b>成对逗号里的东西一律可以先拿掉（R13：括号与同位语藏考点，但读主干时先抠掉）。</b></div></div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p style="font-size:.78rem;color:var(--accent);margin-bottom:6px">⑤ 解决问题段：靠立法推着走 · ⭐40 题定位段</p>
+          <p class="en"><span class="pno">⭐40题D</span>The <span class="tk" data-w="affairs">current state of affairs</span> may have been <span class="tk" data-w="encourage">encouraged</span>—<span class="tk" data-w="justify">though not justified</span>—by the <span class="tk" data-w="penalty">lack of legal penalty</span> (in America, but not Europe) for <span class="tk" data-w="dataleak">data leakage</span>.</p>
+          <p class="en" style="margin-top:10px"><span class="pno">⚠️40题C</span>Until California recently passed a law, American firms did not have to tell anyone, even the victim, when data <span class="tk" data-w="astray">went astray</span>.</p>
+          <p class="en" style="margin-top:10px"><span class="pno">趋势句</span>That may change fast: lots of <span class="tk" data-w="proposed">proposed</span> data-security <span class="tk" data-w="legislation">legislation</span> is now <span class="tk" data-w="rounds">doing the rounds</span> in Washington, D.C.</p>
+          <p class="en" style="margin-top:10px"><span class="pno">⚠️40题B</span><span class="ls" onclick="go('s6')"><span class="tk" data-w="meanwhile">Meanwhile</span>, the <span class="tk" data-w="theft">theft</span> of information about some 40 million credit-card accounts in America, <span class="tk" data-w="disclose">disclosed</span> on June 17th, <span class="tk" data-w="overshadow">overshadowed</span> a hugely important decision a day earlier by America's Federal Trade Commission (FTC) that <span class="tk" data-w="onnotice">puts corporate America on notice</span> that <span class="tk" data-w="regulator">regulators</span> will act if firms fail to provide <span class="tk" data-w="adequate">adequate</span> data security.</span></p>
+          <div class="zh"><b>⑤段全译：</b><b>（在美国，而不是在欧洲）缺乏针对数据泄露的法律惩处，这种情况可能助长了目前的局面——尽管这并不能为其辩解。</b>加州最近通过了一项法律，在此之前，美国公司在数据被盗时无需告知任何人，甚至连受害者本人都不必告知。<b>这种情况可能不久就会改变：大量有关数据安全的法律提案正在华盛顿流转（等待审议）。</b>与此同时，美国 6 月 17 日披露的一起涉及大约四千万信用卡账户的信息失窃案，<b>使得前一天（16 日）美国联邦贸易委员会（FTC）做出的一项极为重大的决定黯然失色</b>——该决定正式警告美国企业界：如果公司不能提供充分的数据安全保障，监管机构就会采取行动。
+          <div style="margin-top:8px;font-size:.86rem">⭐ <b>本段的主线只有一条，读的时候要抓住它</b>：<b>没有法律惩处 → 局面被助长（①句）；加州立了法 → 情况开始变（②句）；国会一堆法案在走 → 还会更快变（③句）</b>。<b>三句都在讲「法律的有无决定企业行为」——这条主线就是 40 题选 D 的依据。</b><br>⚠️ <b>④句的 <code>overshadowed</code> 是一个语气坑</b>：FTC 那个决定<b>虽然「hugely important」，却被一桩窃案盖过了风头</b>——<b>言外之意是它的实际作用有限</b>。40 题 B 说「FTC 的决定对数据安全<b>至关重要</b>（essential）」，恰好和 overshadowed 的语气相反。<b>作者用了一个「被盖过」的动词，就等于给这个决定打了折。</b><br>⚠️ <b><code>though not justified</code> 这个让步插入语别漏</b>：作者一边说「缺法律惩处<b>可能助长</b>了这种局面」，一边立刻声明「<b>但这不能拿来当借口</b>」。<b>它保住了作者的立场：企业本来就该自己重视（呼应④段），不是「没人罚我我就可以漏」。</b></div></div>
+        </div>
+      </section>
+
+      <!-- ========== 题目 ========== -->
+      <section class="card">
+        <h2><span class="n">02</span>题目与解析（点选项即判 · 再看解析）</h2>
+
+        <div class="q" data-ans="3" id="q36">
+          <p class="stem"><span class="qt">写作目的（引言）</span>36. The statement "It never rains but it pours" is used to introduce ______.</p>
+          <div class="opts">
+            <div class="opt">[A] the fierce business competition</div>
+            <div class="opt">[B] the feeble boss-board relations</div>
+            <div class="opt">[C] the threat from news reports</div>
+            <div class="opt">[D] the severity of data leakage</div>
+          </div>
+          <div class="expl">
+            <b>答案 D</b>　题干问的是<b>「引这句谚语是为了引出什么」——写作目的题，不是词义题</b>。所以不要去纠结谚语本身怎么翻译，<b>要看它紧接着引出了什么</b>。<br>
+            ①段②句：<span class="loc">Just as bosses and boards have finally sorted out their worst accounting and compliance troubles…, <b>a new problem</b> threatens to earn them… the sort of nasty headlines that inevitably lead to heads rolling in the executive suite: <b>data insecurity</b>.</span><br>
+            拆成大白话：<b>旧麻烦刚收拾完（会计、合规、公司治理）→ 新麻烦又来了 → 冒号点名：数据不安全 → 而且严重到「高管要人头落地」。</b>谚语「不雨则已，雨则倾盆」（＝祸不单行）就是为这个「又来一件、而且更凶」造势的。<b>它引出的正是 D：数据泄露之严重。</b><br>
+            <b>⭐ 两条独立的判定通道（考场上任何一条够用）：</b><br>
+            · <b>通道一 · 抓谚语紧接之后的内容</b>：冒号后 <code>data insecurity</code>、下一句主语 <code>information protection</code> —— <b>两句的讨论重心都是「数据安全」，只有 D 落在这上面。</b><br>
+            · <b>通道二 · 抓全文高频词</b>：data insecurity / information protection / data leakage / data security 反复出现＝主题词。<b>引言的作用永远是引出主题，所以选项里含主题词的那个天然占优。</b><br>
+            <b>干扰项（三项各是一种典型造错法）：</b><br>
+            · <b>A 无中生有</b>：全文<b>一次都没提「商业竞争」</b>。①段末句只说「<b>各行各业</b>的老板都开始重视数据保护」（businesses of every variety），那是说<b>范围广</b>，不是说<b>竞争激烈</b>。<b>看到选项里的抽象名词（competition / cooperation / innovation），先问一句「原文哪儿有」。</b><br>
+            · <b>B 偷换修饰对象</b>：原文是 <code>improved their <b>feeble corporation governance</b></code>——feeble（乏力的）修饰的是<b>「公司治理」</b>；B 把它挪去修饰<b>「老板与董事会之间的关系」</b>。<b>形容词还在、被修饰的对象换了，这是最难察觉的一种偷换。</b>而且这件事在原文里属于「<b>已经解决掉的旧麻烦</b>」，根本不是要引出的新问题。<br>
+            · <b>C 杂糅（碎片拼装）</b>：它把 <code>threatens</code>（威胁）和 <code>nasty headlines</code>（负面头条）两个碎片拼成「来自新闻报道的威胁」。<b>原文里这两个词是为了说明「数据不安全有多严重」（严重到会上负面头条、严重到高管要下台）——新闻只是后果的<b>温度计</b>，不是威胁的<b>来源</b>。</b><b>因果一颠倒，原词全在也是错的。</b><br>
+            <b>技巧 ⭐（记进套路库 R16）：开篇引言/谚语的写作目的题，两步走——</b><br>
+            　　<b>① 谚语后面第一个「实义信息」是什么</b>（本题：冒号后的 data insecurity）；<br>
+            　　<b>② 全文反复出现的词是什么</b>（本题：data 系列）。<b>两步指向同一个答案时，可以不回头。</b><br>
+            <b>配套动作：</b>做这类题时<b>把选项里的名词圈出来，逐个回原文查「有没有、是不是这段在谈」</b>——A 查无此词、B 词在但修饰对象不对、C 词在但因果反了、D 完全对上。
+          </div>
+        </div>
+
+        <div class="q" data-ans="0" id="q37">
+          <p class="stem"><span class="qt">事实细节</span>37. According to Paragraph 2, some organizations check their systems to find out ______.</p>
+          <div class="opts">
+            <div class="opt">[A] whether there is any weak point</div>
+            <div class="opt">[B] what sort of data has been stolen</div>
+            <div class="opt">[C] who is responsible for the leakage</div>
+            <div class="opt">[D] how the potential spies can be located</div>
+          </div>
+          <div class="expl"><b>答案 A</b>　②段是<b>独句段</b>，题干 <code>check their systems</code> 对应的是句子<b>后半截</b>：<span class="loc">have left managers hurriedly <b>peering into</b> their intricate IT systems and business processes <b>in search of potential vulnerabilities</b></span>。<br>
+          题干结构是 <b><code>do X to find out ___</code>（做 X 是为了查明什么）</b>——所以要找的是<b>「细查系统」这个动作的目的</b>，而 <code>in search of…</code>（为寻找……）正是目的状语。<b>potential vulnerabilities（潜在的漏洞）＝ A 的 any weak point，纯同义替换。</b><br>
+          ⭐<b>本题的关键动作是「绕开生词」</b>：<code>vulnerabilities</code>（漏洞、脆弱之处）如果不认识，也有两条路推出来——<br>
+          　<b>路一 · 靠上文推</b>：①段刚说「数据保护现在是老板的头等事」，②段说几起泄露<b>逼得管理者慌忙细查系统</b>——<b>慌着查系统当然是查「哪儿会漏」。</b><br>
+          　<b>路二 · 靠词根推</b>：<code>vulner-</code> 是「伤口」（vulnerable 易受伤的）→ vulnerabilities ＝ <b>容易受伤的地方 ＝ 薄弱环节</b>。<br>
+          <b>（这和 2007·T3·33 的 <code>deductibles</code> 是同一个心法：生僻词几乎从不是唯一线索，命题人总留了第二条路。）</b><br>
+          <b>干扰项（三项都是拿本句碎片捏造出来的，且全都把「向前查隐患」改成了「向后查已发生的事」）：</b><br>
+          · <b>B 已知换未知</b>：<b>被泄露的数据是什么，原文开头就交代了</b>——<code>leakages of <b>customer and employee data</b></code>（客户和员工数据）。<b>已经写明的东西，不会是「要去查明」的东西。</b>这类干扰项专坑「只读后半句、不看前半句」的人。<br>
+          · <b>C 捏造对象</b>：由 <code>have left managers hurriedly…</code>（管理者慌忙……）联想出「追查泄露责任人」。<b>原文管理者查的是「系统和业务流程」（物），不是「人」</b>；全文自始至终没有追责这条线。<br>
+          · <b>D 碎片拼装 + 概念升级</b>：把 <code>potential</code> 和 <code>peering</code> 两个词拼成「找出潜在的间谍」。<b>potential 修饰的是 vulnerabilities（漏洞），不是 spies（间谍）</b>；而且「间谍」是外部人，原文查的是<b>自家系统的内部弱点</b>。<b>凡选项把「查自己」改成「抓别人」，方向就已经错了。</b><br>
+          <b>技巧：</b>题干含 <code>to find out / in order to / so as to</code> 这类<b>目的成分</b>时，回原文<b>专门去找目的标记</b>：<code>in search of / in an attempt to / to do / for</code>。<b>本句的 <code>in search of</code> 就是唯一的答案位置，找到它，四个选项一秒分胜负。</b>
+          </div>
+        </div>
+
+        <div class="q" data-ans="1" id="q38">
+          <p class="stem"><span class="qt">写作目的（概念）</span>38. In bringing up the concept of GASP the author is making the point that ______.</p>
+          <div class="opts">
+            <div class="opt">[A] shareholders' interests should be properly attended to</div>
+            <div class="opt">[B] information protection should be given due attention</div>
+            <div class="opt">[C] businesses should enhance their level of accounting security</div>
+            <div class="opt">[D] the market value of customer data should be emphasized</div>
+          </div>
+          <div class="expl"><b>答案 B</b>　题干 <code>the concept of GASP</code> 把定位钉在③段③句：<span class="loc"><b>Indeed</b>, just as there is the concept of Generally Accepted <b>Accounting</b> Principles (GAAP), perhaps it is time for GASP, Generally Accepted <b>Security</b> Practices</span>。<br>
+          ⭐<b>这一句自己是「说不清」的</b>——只说「该有个安全准则了」，可<b>为什么该有？</b>得靠 <code><b>Indeed</b></code>（的确／确实如此）往前接。Indeed 是<b>递进/印证</b>词，它把③句和①②句焊成一个意群：<br>
+          　①②句：<b>数据已成资产，得像别的资产一样看守；护住客户数据是市值的关键，董事会要为股东负这个责。</b><br>
+          　③句：<b>的确，会计有 GAAP，安全也该有 GASP。</b><br>
+          <b>整个意群只在讲一件事：数据/信息保护应当被当成正事，受到与会计同级别的重视</b>＝ B 的 <code>information protection should be given <b>due attention</b></code>（应受到应有的重视）。<b>再加末句 <code>a management issue, not a technical one</code>（这是管理问题，不是技术问题）——把「重视」的级别抬到了管理层，B 更稳。</b><br>
+          <b>干扰项（A、C、D 都是本段的真词，但都不是 GASP 那句话的目的）：</b><br>
+          · <b>A 张冠李戴（重心偏移）</b>：<code>on behalf of shareholders</code> 确实在②句里，但它只是个<b>附带说明</b>——<b>董事会「为了股东的利益」对市值负责</b>。原句的重心是<b>「董事会有责任保护客户数据」</b>，A 却把重心挪到<b>「维护股东利益很重要」</b>。<b>句子成分的地位不能换：状语不能当主张。</b><br>
+          · <b>C 偷换概念（最像的一项）</b>：原文提 <b>Accounting</b> Principles 只是<b>用来打比方的参照物</b>（「就像会计有准则一样」），要立的是 <b>Security</b> Practices。C 说「公司应提高<b>财会安全</b>水平」——<b>把类比的甲方当成了论述的乙方</b>，而且原文<b>通篇没有「财会安全」这回事</b>。<b>⚠️ 凡 <code>just as A…, so B…</code> 的类比句，答案永远在 B 上，A 只是借来铺路的。</b><br>
+          · <b>D 偷换主体 + 张冠李戴</b>：原文是 <b>「保护客户数据的能力」是「（公司）市场价值」的关键</b>；D 拧成 <b>「客户数据的市场价值」应受重视</b>——<b>市值是公司的市值，不是数据的市值。</b>「A 的能力是 B 的关键」被改成「A 的 B 很重要」，偷换的是两个名词之间的关系。<br>
+          <b>技巧 ⭐（写作目的题三步法，记进套路库 R16）：</b><br>
+          　　<b>① 定位到「提这个东西」的那句话</b>（本题③段③句）；<br>
+          　　<b>② 找这句话所在的「意群」</b>——顺着 <code>Indeed / Similarly / Moreover / In other words / he says</code> 这类连接词把前后句并进来（本题 Indeed 往前连①②句，<code>he says</code> 往后连④句）；<br>
+          　　<b>③ 答案 = 这个意群的主旨，不是那句话的字面。</b><br>
+          <b>为什么必须走这三步：</b>命题人挑来考「写作目的」的句子，<b>本身往往说不清、看不出观点</b>（本句只是个提议），<b>观点在它的邻居那儿</b>。<b>只读定位句就选，必被 C 或 D 骗走。</b><br>
+          📌 <b>横向串一下</b>：36 题（引谚语的目的）、38 题（提概念的目的）、以及套路库 R3 的例证题（举例子的目的）——<b>三者是同一条法则：配角只负责引出/支撑主角，答案永远是主角。</b>
+          </div>
+        </div>
+
+        <div class="q" data-ans="0" id="q39">
+          <p class="stem"><span class="qt">事实细节（隐性因果）</span>39. According to Paragraph 4, what puzzles the author is that some bosses fail to ______.</p>
+          <div class="opts">
+            <div class="opt">[A] see the link between trust and data protection</div>
+            <div class="opt">[B] perceive the sensitivity of personal data</div>
+            <div class="opt">[C] realize the high cost of data restoration</div>
+            <div class="opt">[D] appreciate the economic value of trust</div>
+          </div>
+          <div class="expl"><b>答案 A</b>　④段只有两句，得<b>合起来读</b>：<br>
+          ①句：<span class="loc">The <b>mystery</b> is that <b>this</b> should come as a surprise to any boss.</span>（令人不解的是，<b>这件事</b>竟然还会让老板吃惊。）<br>
+          ②句：<span class="loc"><b>Surely</b> it should be obvious to the dimmest executive <b>that</b> trust… is easily destroyed and hugely expensive to restore—<b>and that</b> few things are more likely to destroy trust than a company letting sensitive personal data get into the wrong hands.</span><br>
+          ⭐<b>这道题的因果标志是隐性的（原文没有一个 because）</b>，靠<b>句意逻辑</b>推：①句说「怪」，<b>②句就是在解释「为什么怪」</b>——因为「<b>信任极易被毁、修复极贵</b>」＋「<b>最毁信任的莫过于泄露敏感数据</b>」这两件事，<b>连最笨的管理者都该看得明白</b>。<b>老板们没看明白的，正是「数据泄露 → 信任崩塌」这条链</b>＝ A 的 <code>the link between trust and data protection</code>（信任与数据保护之间的关联）。<br>
+          <b>为什么 A 那个「link」是关键字：</b>②句用了两个 that 从句，<b>第一个讲 trust，第二个讲 data</b>，而连接它们的正是 <code>few things are more likely to <b>destroy trust</b> than a company letting <b>sensitive personal data</b> get into the wrong hands</code>——<b>这句话本身就是一根「把数据和信任焊在一起」的链条。</b><b>选项里只有 A 提到了「关联」。</b><br>
+          <b>干扰项（四个选项全落在②句上，比的全是「摘哪一段」）：</b><br>
+          · <b>B 摘错落点</b>：②句提 <code>sensitive personal data</code>，是为了说明<b>「泄露这种数据最毁信任」</b>，不是在强调<b>「个人数据很敏感」</b>这个属性本身。<b>敏感是前提，不是作者要说的话。</b><br>
+          · <b>C 偷换宾语（一字之差）</b>：原文说 <code><b>trust</b>… is easily destroyed and hugely expensive to <b>restore</b></code>——贵在<b>修复「信任」</b>；C 说「<b>数据</b>恢复成本高」。<b>restore 的宾语被换掉了。</b>（⚠️ 这种「同一个动词、换掉宾语」的造错法极常见，读长句时务必确认<b>每个动词的宾语到底是谁</b>。）<br>
+          · <b>D 把「前提」当「结论」</b>：<code>trust, <b>that most valuable of economic assets</b></code>——「信任是最有价值的经济资产」是原文用<b>同位语顺带交代的公认前提</b>（作者说的是「这谁都该知道」），<b>不是老板们没意识到的东西</b>。老板们缺的不是「知道信任值钱」，<b>而是「知道泄露数据会毁掉它」这一步</b>。<b>D 少了那根链条，就成了半截答案——半截答案是本题最有杀伤力的干扰项。</b><br>
+          <b>技巧 ⭐：题干出现 <code>puzzles the author / the mystery is / surprisingly / oddly enough</code> 时，动作是固定的——</b><br>
+          　　<b>① 找到「怪」的那句话，问它 <code>this</code> 指什么</b>（本题 this ＝ ③段那个「数据保护是管理问题」的论断）；<br>
+          　　<b>② 紧接的下一句一定在解释「为什么怪」</b>（Surely / After all / It is obvious that 是这类解释句的标志）；<br>
+          　　<b>③ 把「该明白却没明白的那件事」原样翻出来</b>，那就是答案。<br>
+          <b>另一条（本篇专用）：④段没有引号、没有人名，是全篇唯一的作者发声段</b>（③段全是两位教授在说话）。<b>凡问 the author，先扫一眼哪段没引号（套路库 R4）——本题的定位范围一秒锁定。</b>
+          </div>
+        </div>
+
+        <div class="q" data-ans="3" id="q40">
+          <p class="stem"><span class="qt">推理引申（段落）</span>40. It can be inferred from Paragraph 5 that ______.</p>
+          <div class="opts">
+            <div class="opt">[A] data leakage is more severe in Europe</div>
+            <div class="opt">[B] FTC's decision is essential to data security</div>
+            <div class="opt">[C] California takes the lead in security legislation</div>
+            <div class="opt">[D] legal penalty is a major solution to data leakage</div>
+          </div>
+          <div class="expl">
+            <div class="waver">🤔 <b>Claude 盲做时在 C 和 D 之间真犹豫过</b>——C 有原文依据（加州「recently passed a law」，别人还没有，看着确实是「率先」），D 却没有任何一句原话直接对应。<b>最后定 D 的依据不是某个词，而是「这一段整体在讲什么」。</b>这个判断过程比答案本身有用，写在下面。</div>
+            <b>答案 D</b>　⑤段前三句是一条完整的主线：<br>
+            <span class="loc">The current state of affairs may have been <b>encouraged</b>—though not justified—by the <b>lack of legal penalty</b>… for data leakage.</span>（<b>没有法律惩处 → 助长了目前这种「不上心」的局面</b>）<br>
+            → <span class="loc"><b>Until California recently passed a law</b>, American firms did not have to tell anyone, even the victim, when data went astray.</span>（<b>之前连告知义务都没有</b>）<br>
+            → <span class="loc"><b>That may change fast</b>: lots of proposed data-security legislation is now doing the rounds in Washington, D.C.</span>（<b>立法一来，这就要变了</b>）<br>
+            三句连起来的逻辑是：<b>缺惩处 → 企业不上心；有了法 → 局面开始变；法案更多 → 变得更快。</b><b>反过来推一步就是：法律惩处是解决数据泄露的主要办法之一</b>＝ D。<b>注意 D 用的是 a major solution（主要办法「之一」），不是 the only solution——语气与原文的 may 完全同频（R6：只推一步，语气对齐）。</b><br>
+            <b>⭐ 本题真正该学的是「定位范围太大怎么办」：</b>题干只说 <code>Paragraph 5</code>，整段五句话都在范围内，<b>没法像细节题那样钉死一句</b>。这时改用<b>「选项定位法」</b>——<b>拿每个选项的关键词回原文找对应句，一一比对</b>：<br>
+            <div class="tabwrap">
+            <table class="ctab">
+              <tr><th>选项</th><th>关键词回文定位</th><th>原文怎么说</th><th>判</th></tr>
+              <tr><td>A</td><td>Europe → ①句括号</td><td><code>lack of legal penalty (<b>in America, but not Europe</b>)</code>：<b>欧洲不缺</b>法律惩处</td><td><span class="no">✗ 正相反</span>（欧洲有罚则 → 泄露该更轻，不是更重）</td></tr>
+              <tr><td>B</td><td>FTC → ④句末</td><td>那个决定虽 hugely important，却被一桩窃案 <code><b>overshadowed</b></code>（盖过风头）</td><td><span class="no">✗ 语气不符</span>（作者恰恰在说它<b>作用有限</b>，谈不上 essential）</td></tr>
+              <tr><td>C</td><td>California → ②句</td><td><code>Until <b>California</b> recently passed <b>a law</b></code>（一部关于「数据被盗要告知」的法）</td><td><span class="no">✗ 泛化两处</span>（见下）</td></tr>
+              <tr><td>D</td><td>legal penalty、data leakage → ①句<b>原词复现</b></td><td>①②③句共同指向「法律推着企业往前走」</td><td><span class="ok">✓</span></td></tr>
+            </table>
+            </div>
+            <b>⭐ C 到底错在哪（本题最值钱的一条）：</b>它<b>连着泛化了两次</b>——<br>
+            　<b>(1) 范围泛化</b>：②句最多只能推出「<b>加州是美国首个</b>就数据泄露立法的州」；C 说 <code>takes <b>the lead</b></code>（率先/领先），语境上就成了<b>全世界领先</b>。可①句括号明说 <b>欧洲早有法律惩处</b>——<b>加州连「世界第一」都轮不上。</b><br>
+            　<b>(2) 概念泛化</b>：加州那部法管的是<b>「数据被盗要不要告知」</b>这一件具体的事；C 说的是 <code><b>security legislation</b></code>（安全立法，一个大得多的类别）。<b>「某一部具体的法」→「一整类立法领域的领先者」，这一步跨太远。</b><br>
+            <b>💡 从「小 → 大」的偷换是推理题最常见的错法</b>：一部法 → 一类立法；一个州 → 全世界；一个技巧 → 整个行为（2007·T2·29 的 C 同款）。<b>看到 the lead / the first / the most / all / always 这类「唯一性/全体性」词汇，立刻回原文数一数范围。</b><br>
+            <b>技巧 ⭐（记进套路库 R15）：题干只给段号、段又长时，别硬啃全段 —— 反向操作：</b><br>
+            　　<b>① 先把四个选项的「独特名词」圈出来</b>（本题：Europe / FTC / California / legal penalty）；<br>
+            　　<b>② 拿它们回段里找对应句</b>（四个词恰好分别落在①句括号、④句末、②句、①句——命题人就是这么设计的）；<br>
+            　　<b>③ 逐项比「方向、语气、范围」</b>三项，错一项即排。<br>
+            <b>为什么它比正着读更快</b>：<b>推理题的四个选项本身就是命题人给的四个定位坐标</b>。正着读要读五句话并自己归纳；反着走只需比对四处，且每处都有明确的判据。<br>
+            📌 <b>最后一条经验</b>：<b>当某选项有「一句原话」支撑、另一选项只有「整段主线」支撑，优先选后者</b>——段落推理题问的是「这一段让你推出什么」，<b>考的是段落主旨方向，不是某句话的字面延伸</b>。C 和 D 的胜负就在这里。
+          </div>
+        </div>
+      </section>
+
+      <!-- ========== 长难句 ========== -->
+      <section class="card" id="sents">
+        <h2><span class="n">03</span>长难句精析（正文蓝色虚线句）</h2>
+
+        <div class="sent" id="s1">
+          <div class="src"><b>Just as</b> bosses and boards have finally sorted out their worst accounting and compliance troubles, and improved their feeble corporation governance, <u>a new problem</u> <span class="skel">threatens to earn</span> them—especially in America—<u>the sort of nasty headlines <b>that</b> inevitably lead to heads rolling in the executive suite</u>: <span class="skel">data insecurity</span>.</div>
+          <ul class="anat">
+            <li>⭐<span class="skel">先把主干挖出来</span>：<b>a new problem threatens to earn them the sort of nasty headlines</b>（一个新问题可能给他们招来那种负面头条）。<b>主干是 earn sb sth 双宾语结构</b>，中间被 <code>—especially in America—</code> 这对破折号硬生生撑开了。<b>成对破折号里的东西先抠掉，双宾语立刻接上。</b></li>
+            <li><span class="skel">Just as A…, B…</span>＝<b>「正当 A 之际，B 就……」</b>（as 表时间）。<b>这个句式天生用来制造「祸不单行」的效果</b>——旧麻烦刚平（accounting / compliance / corporation governance 三样），新麻烦即起。<b>它和开头那句谚语是一套动作：谚语造势，这句话落地。</b></li>
+            <li>⭐<span class="skel">冒号是本句的答案位</span>：<code>: data insecurity</code>——把冒号前面那一大串的<b>「新问题」到底是什么</b>点名。<b>36 题的答案就是这个冒号后的词。</b><b>长句里的冒号 ＝ 前面说了半天的东西，答案在这儿；考研阅读里冒号后的内容出题率极高。</b></li>
+            <li><span class="skel">earn</span> ⚠️ 熟词僻义：不只是「挣钱」，还有<b>「（因某行为）招致、赢得（多为坏东西）」</b>：<code>earn them nasty headlines</code>＝给他们招来负面头条。同款：earn a reputation for（落下……的名声）、earn sb's respect。<b>判断方法：宾语是「坏东西」时，一定是「招致」。</b></li>
+            <li>⭐<span class="skel">heads rolling in the executive suite</span>＝<b>高管层人头落地</b>（＝一批高管被免职）。<b>典型的英美报刊习语</b>：<code>heads will roll</code>（有人要掉脑袋了／要有人被撤）源自断头台的画面；<b>executive suite</b>＝高管办公层，代指<b>公司最高管理层</b>。<b>本句用它来说明「数据泄露有多严重」——严重到 CEO 保不住位子。这就是 36 题 D 项 severity 的来处。</b></li>
+            <li><code>compliance</code>（合规）+ <code>corporation governance</code>（公司治理）+ <code>accounting</code>（会计）＝<b>公司治理三件套</b>。<b>它们在本句里的身份是「已经解决掉的旧麻烦」</b>——<b>36 题 B 项拿 feeble 去修饰别的东西，就是在这堆旧麻烦里做手脚。</b></li>
+          </ul>
+          <div class="tr">译：正值老板、董事们终于解决了最为棘手的财务和合规问题、并且改善了乏力的公司治理之际，一个新的问题又可能为他们招致——尤其是在美国——那种不可避免地导致管理层人头落地的负面头条，这个问题就是：数据不安全。</div>
+        </div>
+
+        <div class="sent" id="s2">
+          <div class="src"><u><b>Left</b>, until now, to odd, low-level IT staff to put right</u>, <b>and</b> <u><b>seen as</b> a concern only of data-rich industries such as banking, telecoms and air travel</u>, <span class="skel">information protection is now high on the boss's agenda</span> in businesses of every variety.</div>
+          <ul class="anat">
+            <li>⭐⭐<span class="skel">这是本篇最值得练的一个句型：句首两个过去分词短语并列作状语，真正的主语被推到了后面。</span><br>
+            读法：看到句子<b>以 -ed 分词开头</b>（Left…），<b>立刻意识到「这不是主语，主语还在后面」</b>——<b>先跳到逗号后找真主语</b>：<code><b>information protection</b> is now high on the boss's agenda</code>。主干只有这一句，前面全是修饰。<br>
+            <b>还原成从句就好懂了</b>：<code><b>Although it was</b> left to low-level IT staff… <b>and (was) seen as</b> a concern only of…, information protection <b>is now</b> high on…</code>——<b>分词是被动的，逻辑主语正是后面的 information protection。</b></li>
+            <li><span class="skel">and 连接的是两个分词，不是两个句子</span>：<b>Left…</b> 和 <b>seen as…</b> 并列，共用同一个逻辑主语。<b>判断依据：seen 后面没有主语、也没有助动词，只能挂在前一个分词上。</b></li>
+            <li>⭐<span class="skel">全句靠一个 now 完成今昔翻转</span>：<code><b>until now</b>… left to <b>odd, low-level</b> IT staff</code>（过去：丢给临时的、低级别的 IT 人员）⇄ <code>is <b>now</b> <b>high on the boss's</b> agenda</code>（现在：老板议程表的头几行）。<b>「谁负责这件事」的高低变化，就是「这件事重要性」的变化——英文常用「归谁管」来表达「有多要紧」。</b></li>
+            <li><span class="skel">odd</span> ⚠️ 熟词僻义：这里不是「奇怪的」，而是<b>「零散的、临时的、不固定的」</b>（同 odd jobs 零工、at odd moments 抽空）。<code>odd, low-level IT staff</code>＝<b>临时凑数的低级别 IT 人员</b>——<b>三个贬义修饰堆在一起，作者在说「过去根本没人重视」。</b></li>
+            <li><span class="skel">put right</span>＝<b>纠正、修好</b>（＝put sth right / set sth right / fix）。<code>left… to sb to put right</code>＝<b>丢给某人去处理</b>。<b>写作可用</b>：put things right（把事情理顺）。</li>
+            <li><span class="skel">high on the agenda</span>＝<b>在议事日程上位置很靠前 ＝ 极受重视</b>。<b>写作神搭配</b>：<code>be high on the agenda / top the agenda / be on the agenda</code>；反面 <code>be low on the priority list</code>。<b>本篇末尾的 <code>businesses of every variety</code>（各行各业）也顺手把范围拉满——一句话里同时说清「多重视」和「多普遍」。</b></li>
+          </ul>
+          <div class="tr">译：此前，数据保护一直是丢给临时的、低级别的 IT 员工去处理，并且被看作只是银行、电信、航空旅行这类拥有大量数据的行业才关注的问题，而现在它却高居各行各业老板的议程表之首。</div>
+        </div>
+
+        <div class="sent" id="s3">
+          <div class="src"><u>Several massive leakages of customer and employee data this year</u>—<b>from organizations as diverse as</b> Time Warner, the American defense contractor Science Applications International Corp and even the University of California, Berkeley—<span class="skel">have left</span> managers hurriedly <b>peering into</b> their intricate IT systems and business processes <b>in search of</b> potential vulnerabilities.</div>
+          <ul class="anat">
+            <li>⭐<span class="skel">主谓又被成对破折号劈开了</span>（与①段 s1 同款，本篇连用两次）：主语 <b>Several massive leakages…this year</b>，谓语 <b>have left</b>。<b>中间那串机构名整块抠掉，句子立刻清爽。</b><br><b>提速动作：读到破折号先找它的另一半，把两根破折号之间的内容当成「括号」跳过去，一口气读完主谓宾，再回头补。</b></li>
+            <li>⭐<span class="skel">leave sb doing sth</span>＝<b>使某人（一直）处于做某事的状态</b>——<code>have left managers <b>peering into</b>…</code>＝<b>让管理者们（不得不）细查……</b>。<b>这是 leave 的高频用法</b>：leave sb wondering（让人纳闷）、leave the door open（留有余地）。<b>注意它自带因果：泄露（因）→ 管理者忙着查（果）。</b></li>
+            <li>⭐<span class="skel">in search of ＝ 目的状语，也就是 37 题的答案位</span>：<code>peering into their systems… <b>in search of potential vulnerabilities</b></code>（细查系统<b>以寻找潜在漏洞</b>）。<b>题干说 <code>check their systems <u>to find out</u> ___</code>，问的就是这个 in search of 后面的东西 → A（是否存在薄弱环节）。</b><br><b>通用规律：题干含「为了/目的」，就回原文找 in search of / in an attempt to / to do / with a view to。</b></li>
+            <li><span class="skel">as diverse as</span>＝<b>（举例）像……这样各不相同的</b>。<code>organizations as diverse as A, B and even C</code>＝<b>从 A 到 B 甚至连 C 都有的各类机构</b>。<b>它的功能是「证明范围之广」</b>——媒体公司、国防承包商、大学，<b>连大学都漏，说明什么行业都躲不过</b>（even 是这里的力度词）。<b>这类专有名词串一律不考，扫过即可。</b></li>
+            <li><span class="skel">peer into</span>＝<b>仔细察看、端详</b>（peer 作动词是「凝视」，与名词 peer「同龄人/同行」是两个词）。<code>hurriedly peering into</code>＝<b>慌忙细查</b>——<b>hurriedly（慌忙）这个副词是作者埋的态度</b>：他们不是从容治理，而是<b>出事之后才临时抱佛脚</b>，正好为④段「这居然还让你吃惊？」埋下伏笔。</li>
+            <li><span class="skel">intricate</span>＝错综复杂的（in+tric「缠绕」，同 trick）。<b>写作可用</b>：the intricate web of…（错综复杂的……网络）。<b>本句用它是有作用的：系统越复杂 → 漏洞越难找 → 越说明这事得管理层出面（③段的落点）。</b></li>
+          </ul>
+          <div class="tr">译：今年几起客户和员工数据的重大泄露事件——发生在时代华纳、美国国防项目承包商科学应用国际公司、甚至加州大学伯克利分校这类各不相同的机构里——使得管理者们慌忙细查他们错综复杂的 IT 系统和业务流程，以寻找潜在的漏洞。</div>
+        </div>
+
+        <div class="sent" id="s4">
+          <div class="src"><b>Indeed</b>, <b>just as</b> <u>there is the concept of Generally Accepted <b>Accounting</b> Principles (GAAP)</u>, <span class="skel">perhaps it is time for GASP</span>, Generally Accepted <b>Security</b> Practices, <span class="skel">suggested</span> Eli Noam of New York's Columbia Business School.</div>
+          <ul class="anat">
+            <li>⭐<span class="skel">just as A, B ＝ 类比句，落点永远在 B</span>：<b>A ＝ GAAP（会计准则，人所共知的参照物）</b>，<b>B ＝ GASP（安全准则，作者/专家真正要立的东西）</b>。<br><b>⚠️ 38 题 C 项的坑就在这里</b>：它把注意力放在 A（accounting security）上。<b>类比句里的 A 只是借来铺路的桥，答案在桥那头的 B。</b></li>
+            <li>⭐<span class="skel">GAAP 与 GASP 是一对精心设计的缩写</span>：Generally Accepted <b>Accounting Principles</b> ⇄ Generally Accepted <b>Security Practices</b>——<b>只换了中间两个词，读音也只差一个字母</b>（gasp 本身还是「（惊得）喘气」的意思，作者玩了个双关）。<b>作者造这个词的用意只有一个：安全应当和会计一样，有一套人人遵守的通行准则 ＝ 应受到同等重视（38 题 B）。</b></li>
+            <li><span class="skel">Indeed</span>＝<b>的确、确实如此</b>（递进/印证），<b>它把本句和上文①②句焊成一个意群</b>。<b>⭐ 这是 38 题的解题钥匙</b>：定位句本身只是个提议（「或许该有 GASP 了」），<b>说不出观点；观点在 Indeed 前面那两句里</b>（数据是资产、要像别的资产一样看守）。<b>写作目的题必须读意群，不能只读定位句。</b></li>
+            <li><span class="skel">it is time for sth / it is time to do / it is (high) time sb did sth</span>＝<b>是该……的时候了</b>。⚠️ 第三种用法后面<b>要用虚拟语气过去式</b>：It is high time we <b>took</b> action.（我们该行动了。）<b>写作里这是发出呼吁的现成句式。</b></li>
+            <li><span class="skel">句末 <code>suggested Eli Noam of…</code> 是引述倒装</span>——<b>把说话人甩到句尾</b>（同③段②句前的 <code>says Haim Mendelson</code>）。<br>⭐<b>看到句末这种 <code>said / says / suggested + 人名</code>，立刻反应两件事</b>：①<b>这一整句是「那个人说的」，不是作者说的</b>（作者自己发声在④段）；②<b>题干若问 the author，得当心；若问某人观点，范围就锁在这句</b>（套路库 R4）。<br>📌 <b>本题题干偏偏写的是 <code>the author is making the point that</code></b>——因为<b>作者引用专家的话，就是在借他的话表达自己的主张</b>，两者在这里同向，不冲突。</li>
+          </ul>
+          <div class="tr">译：的确，正如有通用会计准则（GAAP）这一概念一样，或许现在是该有 GASP（通用安全准则）的时候了，纽约哥伦比亚大学商学院的伊莱·诺姆这样建议道。</div>
+        </div>
+
+        <div class="sent" id="s5">
+          <div class="src"><b>Surely</b> <span class="skel">it should be obvious</span> to the dimmest executive <u><b>that</b> trust, <b>that most valuable of economic assets</b>, is easily destroyed and hugely expensive to restore</u>—<b>and</b> <u><b>that</b> few things are more likely to destroy trust than a company <b>letting</b> sensitive personal data get into the wrong hands</u>.</div>
+          <ul class="anat">
+            <li>⭐<span class="skel">it 是形式主语，真正的主语是后面两个并列 that 从句</span>：<code>It should be obvious… <b>that</b> ①… —and <b>that</b> ②…</code>。<br><b>读法：看到 It is/should be + adj. + that…，先把 it 当空壳跳过，直接读 that 从句。</b><b>本句有两个 that，说明「显而易见」的事情有两件——39 题的答案要靠这两件事「合起来」才成立。</b><br>　<b>第一件</b>：信任极易被毁、修复极贵；<b>第二件</b>：最毁信任的莫过于公司泄露敏感个人数据。<b>①＋② ＝ 泄露数据会毁掉最贵的资产 ＝ 数据保护与信任是一根链条（39 题 A）。</b></li>
+            <li>⭐<span class="skel">trust, that most valuable of economic assets,</span> 是<b>成对逗号里的同位语</b>——<b>读主干时先抠掉</b>，剩下 <code>trust is easily destroyed and hugely expensive to restore</code>，一秒看懂。<br><b>⚠️ 但抠掉不等于不考</b>：<b>39 题 D 项就是拿这个同位语造的</b>（「信任的经济价值」）。<b>同位语的身份是「大家公认的前提」，不是「作者要论证的新话」——这个身份差别就是 D 项错的全部原因。</b><br><b>另注意这个结构本身很地道</b>：<code>that most valuable <b>of</b> economic assets</code>＝「经济资产中最有价值的那一样」（＝the most valuable of economic assets，用 that 更有强调/感慨味）。</li>
+            <li>⭐<span class="skel">few things are more likely to A than B ＝ 比较级表最高级</span>：<b>「没什么比 B 更可能 A 了」＝ B 是最容易 A 的</b>。<br><b>本句 ＝ 泄露敏感数据是最毁信任的事。</b><b>写作神句式，一组背下来</b>：<code>Few things are more important than…</code>／<code>Nothing is more X than…</code>／<code>No one knows better than…</code>。<b>⚠️ 阅读里见到 few / nothing + 比较级，先在旁边写「＝最」，否则容易读反。</b></li>
+            <li><span class="skel">a company letting sensitive personal data get into the wrong hands</span>：<b>动名词复合结构</b>（company 是 letting 的逻辑主语）＝「公司任由敏感个人数据落入不该落的手里」。<code>let sth <b>get</b> into…</code>——<b>let 后面接不带 to 的不定式</b>（get），这里的 get into 表「进入某种境地」。</li>
+            <li><span class="skel">the dimmest executive</span>：<b>dim</b> ⚠️ 熟词僻义＝<b>愚笨的、迟钞的</b>（本义「昏暗的」）。<code>obvious to the dimmest executive</code>＝<b>连最笨的管理者都该一眼看明白</b>——<b>这是作者在挖苦</b>，力度比 obvious to everyone 强得多。<b>Surely（无疑、想必）同样是作者的语气词，带着「这还要我说？」的不耐烦。两个词合起来，作者对老板们的态度就写在脸上了。</b></li>
+          </ul>
+          <div class="tr">译：无疑，即便是最愚笨的管理人员也应该清楚：信任——经济资产中最有价值的那一样——极易被破坏，而修复起来代价高昂；而且没有什么比公司任由敏感个人信息落入别有用心之人手中更能破坏信任的了。</div>
+        </div>
+
+        <div class="sent" id="s6">
+          <div class="src">Meanwhile, <u>the theft of information about some 40 million credit-card accounts in America, <b>disclosed on June 17th</b>,</u> <span class="skel">overshadowed</span> <u>a hugely important decision <b>a day earlier</b> by America's Federal Trade Commission (FTC)</u> <b>that</b> puts corporate America <b>on notice</b> <b>that</b> regulators will act <b>if</b> firms fail to provide adequate data security.</div>
+          <ul class="anat">
+            <li>⭐<span class="skel">先把这句话的骨头找出来：A overshadowed B。</span><br>　<b>A（主语）＝ the theft of information about some 40 million credit-card accounts</b>（4000 万信用卡账户的信息失窃案），中间插了 <code>, disclosed on June 17th,</code>（<b>过去分词短语作后置定语</b>，成对逗号，抠掉）；<br>　<b>B（宾语）＝ a hugely important decision a day earlier by the FTC</b>（FTC 前一天做的一个极重要的决定）。<br><b>主谓宾一共就三个词组，其余全是修饰。长句的解法永远是「先找主干」。</b></li>
+            <li>⭐<span class="skel">overshadow</span>＝<b>使……相形失色／盖过……的风头</b>（over+shadow，把阴影投在别的东西上）。<br><b>⚠️ 40 题 B 项的成败全在这个词</b>：FTC 那个决定<b>虽然重要，却被一桩窃案抢走了所有注意力</b>——<b>作者是在说它「没起到应有的声势/作用有限」</b>，所以 B 的 <code>essential to data security</code>（对数据安全至关重要）与原文语气正相反。<b>一个动词就能给整句话定褒贬，读的时候别只翻字面。</b></li>
+            <li>⭐<span class="skel">that 引导的定语从句修饰的是 decision，不是 FTC</span>：<code>a decision… by the FTC <b>that puts</b> corporate America on notice…</code>——<b>判断依据：谓语是单数 <code>puts</code>，而且「做出通告」的逻辑主体是「决定」这件事。</b><b>定语从句被 <code>a day earlier</code> 和 <code>by the FTC</code> 两个修饰语挤到了离先行词很远的地方，这是长句里最容易接错的地方——认准单复数就不会错。</b></li>
+            <li>⭐<span class="skel">put sb on notice that…</span>＝<b>正式警告/告知某人……（让其知晓并有所准备）</b>。<code>puts <b>corporate America</b> on notice that regulators will act…</code>＝<b>正式警告美国企业界：监管机构将会出手</b>。<br><b>corporate America</b>＝<b>美国企业界（整体）</b>——<b>这种「形容词 + 国名」的集体名词很地道</b>：corporate Japan、middle America（美国中产阶层）、official Washington。<b>写作里可用来指代一个国家的某个群体。</b></li>
+            <li><span class="skel">第二个 that 是同位语从句</span>，解释 notice 的内容（警告的是什么）；<b>从句里还套了一个 if 条件句</b>（<code>if firms fail to provide adequate data security</code>）。<b>整句的层次是：警告 → 内容（监管会动手）→ 条件（如果保护不力）。</b><b>三层套下来还能一口气读完，靠的就是先抓主干、再逐层挂。</b></li>
+            <li><code>some 40 million</code> 里的 <b>some ＝ 大约</b>（＝about/roughly，用于数字前），不是「一些」。<b>考研阅读里 some + 数字 出现频率很高，别读成「一些四千万」。</b></li>
+          </ul>
+          <div class="tr">译：与此同时，美国 6 月 17 日披露的一起涉及约四千万信用卡账户的信息失窃案，使得前一天美国联邦贸易委员会（FTC）做出的一项极为重大的决定黯然失色——该决定正式警告美国企业界：如果公司不能提供充分的数据安全保障，监管机构就会采取行动。</div>
+        </div>
+      </section>
+
+      <!-- ========== 专栏 ========== -->
+      <section class="card">
+        <h2><span class="n">03+</span>写作目的题专栏（36、38 题专项）＋ 选项定位法（40 题）</h2>
+        <p style="font-size:.86rem;color:var(--muted);margin-bottom:12px">本篇五题里<b>两道</b>是写作目的题（36 引谚语、38 提概念），这是 2007 年这套卷 Text 4 的特点。这类题<b>年年考、年年有人栽</b>，栽的原因几乎总是同一个：<b>只读了被问的那句话。</b></p>
+
+        <div class="att">
+          <div class="atti yes"><b>第一步 · 认出这是写作目的题（题干长这样）</b><br>
+          · <code>The statement "…" is used to <b>introduce</b> ______</code>（本篇 <b>36 题</b>）<br>
+          · <code>In <b>bringing up</b> the concept of X the author is <b>making the point that</b> ______</code>（本篇 <b>38 题</b>）<br>
+          · <code>The example of X is used <b>to</b> ______ / X is <b>mentioned to</b> ______ / The author quotes Y <b>in order to</b> ______</code><br>
+          ⚠️ <b>与词义题划清界限</b>：问 <code>is used to introduce</code>＝问<b>作用</b>；问 <code>most probably means</code>＝问<b>意思</b>。<b>36 题不是让你翻译谚语</b>——把「不雨则已雨则倾盆」翻得再准，也选不出答案。</div>
+
+          <div class="atti"><b>第二步 · 定位「那个东西」在哪一句，然后<u>往外扩一层</u>找意群</b><br>
+          扩的方向靠<b>连接词</b>指路：<br>
+          · <code><b>冒号 / 破折号</b></code> → 答案常在<b>紧接其后</b>（36 题：<code>: data insecurity</code>）；<br>
+          · <code><b>Indeed / In fact / Similarly / Moreover</b></code> → 与<b>前文</b>同向递进，把前一两句拉进来（38 题：Indeed 把③句和①②句连成一体）；<br>
+          · <code><b>he says / argues X</b></code>（引述倒装）→ 说明<b>相邻几句是同一个人的话</b>，一并读（38 题：末句 <code>he says</code> 回指诺姆）；<br>
+          · <code><b>just as A…, B…</b></code>（类比）→ <b>答案一定在 B 侧</b>，A 只是参照物（38 题 C 项就是栽在 A 侧）。</div>
+
+          <div class="atti"><b>第三步 · 答案 = 意群主旨，一律「往上抽一层」</b><br>
+          <b>引言、例子、概念、数据、比喻，全都是「配角」</b>——它们存在的唯一理由是<b>引出或支撑某个论点</b>。<b>凡选项还停在配角本身（谚语说了啥、这个概念叫啥、这个例子多有趣），一律排除。</b><br>
+          📌 这条法则在套路库里已经有过一个版本：<b>R3 例证题铁律「答案是例子服务的观点，不是例子本身」</b>。<b>本篇把它扩到了「谚语」和「概念」两个新变体上——三者同源。</b></div>
+        </div>
+
+        <p style="font-size:.9rem;margin-top:16px;margin-bottom:6px"><b>⭐ 写作目的题的四种造错法（全部用本篇实例）</b></p>
+        <div class="tabwrap">
+        <table class="ctab">
+          <tr><th>造错法</th><th>长相</th><th>本篇标本</th></tr>
+          <tr><td><b>停在配角身上</b></td><td>只解释引言/概念/例子本身，不往上抽</td><td><b>36 的 C</b>：拿 <code>threatens</code>+<code>nasty headlines</code> 拼出「新闻报道的威胁」——新闻只是「严重」的<b>表现</b>，不是被引出的<b>话题</b></td></tr>
+          <tr><td><b>偷换修饰对象</b></td><td>形容词还是原文那个，被修饰的名词换了</td><td><b>36 的 B</b>：<code>feeble <b>corporation governance</b></code>（乏力的公司治理）→ 说成「乏力的<b>老板与董事会关系</b>」</td></tr>
+          <tr><td><b>抓类比的错一侧</b></td><td><code>just as A…, B…</code> 里，答案在 B，却选了 A</td><td><b>38 的 C</b>：GAAP（会计）只是参照物，要立的是 GASP（安全）→「提高<b>财会</b>安全水平」全错</td></tr>
+          <tr><td><b>把状语/附带成分当主张</b></td><td>句子里地位低的成分被抬成中心</td><td><b>38 的 A</b>（<code>on behalf of shareholders</code> 只是状语）、<b>38 的 D</b>（把「保护数据的能力是市值的关键」拧成「客户数据的市场价值」）</td></tr>
+        </table>
+        </div>
+
+        <p style="font-size:.9rem;margin-top:20px;margin-bottom:6px"><b>⭐ 另一件工具：题干只给段号、段又长时用「选项定位法」（40 题）</b></p>
+        <div class="att">
+          <div class="atti"><b>什么时候切换到这个方法</b><br>
+          题干是 <code>It can be inferred from Paragraph 5 that…</code> 这种<b>只给段号、不给任何关键词</b>的推理题——<b>定位范围就是整段，正着读要读完五句再自己归纳，慢且容易漏。</b></div>
+          <div class="atti yes"><b>怎么做（反着走）</b><br>
+          <b>① 圈出四个选项各自的「独特名词」</b>（40 题：Europe / FTC / California / legal penalty）；<br>
+          <b>② 拿这些词回段里找对应句</b>——<b>命题人给的四个选项，本身就是四个定位坐标</b>（本题恰好分别落在①句括号、④句末、②句、①句）；<br>
+          <b>③ 每处只比三件事：方向对不对、语气合不合、范围有没有被放大。</b><br>
+          <b>④ 若两项都像，问一句：哪一项是「整段主线」，哪一项只是「某句话的延伸」</b>——<b>段落推理题考的是段落方向，选主线那个。</b>（40 题 C 有原话支撑、D 只有主线支撑，答案是 D。）</div>
+          <div class="atti no2"><b>⚠️ 本题最该记住的错法：从「小」偷换到「大」</b><br>
+          40 题 C <code>California takes the lead in <b>security legislation</b></code> 连泛化两次：<b>一部「数据被盗须告知」的法 → 一整类「安全立法」</b>；<b>美国首个州 → 全世界领先</b>（而①句括号明说<b>欧洲早有</b>罚则）。<br>
+          <b>看到 the lead / the first / the most / all / always / never 这类唯一性、全体性词汇，立刻回原文数范围。</b>同类标本：2007·T2·29 的 C（一个应试技巧 → 整个测试充满猜测）。</div>
+        </div>
+        <p style="font-size:.86rem;margin-top:14px;padding:10px 14px;background:var(--accent-soft);border-radius:10px">
+        <b>本篇一句话总结：</b>五道题里有<b>三道</b>（36、38、40）都不能只读定位句——<b>36 要往后看一个冒号，38 要往前看两句，40 要看整段主线。</b><br>
+        <b>2007 年这四篇的能力侧重，到此正好凑齐一套</b>：T1 考「例子服务谁」、T2 考「态度强度」、T3 考「因果接对没接对」、<b>T4 考「配角与主角」</b>。<b>四篇合起来，就是考研阅读的四种主要读法。</b></p>
+      </section>
+
+      <!-- ========== 词汇复盘 ========== -->
+      <section class="card">
+        <h2><span class="n">04</span>词汇复盘（点卡片看详情）</h2>
+        <div class="filters">
+          <button class="fbtn on" data-f="all">全部</button>
+          <button class="fbtn" data-f="core">核心词</button>
+          <button class="fbtn" data-f="phrase">短语</button>
+          <button class="fbtn" data-f="poly">熟词僻义</button>
+          <button class="fbtn" data-f="write">写作可用</button>
+        </div>
+        <div class="vgrid" id="vgrid"></div>
+      </section>
+
+      <!-- ========== 写作素材 ========== -->
+      <section class="card">
+        <h2><span class="n">05</span>可搬进作文/翻译的素材</h2>
+        <div class="wb">
+          <div class="wbi"><div class="p">Just as A had finally sorted out …, a new problem threatens to earn them …: X.</div><div class="u"><b>「正当 A 刚把旧麻烦收拾干净，新麻烦又来了：X」</b>——<b>开题句里最有张力的一种</b>，天然自带「祸不单行」的紧迫感。<code>冒号点题</code>是它的配套动作：先铺半句，再一词落地。写「刚解决了甲问题，乙问题又冒出来」都能套。</div></div>
+          <div class="wbi"><div class="p">Left, until now, to low-level staff to put right, and seen as a concern only of …, X is now high on the agenda in …</div><div class="u"><b>「过去丢给小角色去修、被当成某行业才操心的事，如今已高居议程之首」</b>——<b>今昔对照的高阶写法</b>：句首两个过去分词并列作状语，主语推到后面。<b>用「归谁管」来表达「有多重要」，比 becomes more important 高好几档。</b></div></div>
+          <div class="wbi"><div class="p">X needs to be guarded as much as any other asset.</div><div class="u">「X 需要像任何其他资产一样受到守护」——<b>把抽象事物「资产化」的经典说法</b>（数据、信任、注意力、时间都能填）。配套：<code>the ability to guard X is the key to Y</code>。</div></div>
+          <div class="wbi"><div class="p">Just as there is the concept of GAAP, perhaps it is time for GASP.</div><div class="u"><b>「既然 A 领域有通行准则，B 领域也该有了」</b>——<b>类比式呼吁句</b>，写「网络该有规则」「AI 该有伦理准则」直接改词。<code>it is time for sth / it is high time we <b>took</b> action</code>（虚拟过去式）是发出呼吁的现成句式。</div></div>
+          <div class="wbi"><div class="p">Setting the proper investment level for X is a management issue, not a technical one.</div><div class="u"><b>「这是管理问题，不是技术问题」</b>——<b>A is a … issue, not a … one</b> 是<b>重新定性一件事</b>的万能句式（不是钱的问题而是态度问题、不是能力问题而是意愿问题）。<b>议论文里用来把话题拉到自己想谈的层面。</b></div></div>
+          <div class="wbi"><div class="p">Surely it should be obvious to the dimmest executive that …</div><div class="u"><b>「连最笨的人都该明白……」</b>——<b>反讽式强调</b>，比 Everyone knows that 有力得多。<b>⚠️ 考场慎用挖苦语气写人</b>，但 <code>Surely it should be obvious that…</code>（去掉 dimmest）是安全好用的强调句。</div></div>
+          <div class="wbi"><div class="p">Trust is easily destroyed and hugely expensive to restore.</div><div class="u"><b>「毁易修难」的黄金对照句</b>：easily destroyed ⇄ hugely expensive to restore。可换主语：Reputation / Confidence / Public trust。<b>写诚信、环保、网络暴力都能一句到位。</b></div></div>
+          <div class="wbi"><div class="p">Few things are more likely to destroy trust than …</div><div class="u"><b>比较级表最高级</b>＝「没什么比……更能毁掉信任了」。一组背下来：<code>Few things are more important than…</code>／<code>Nothing is more X than…</code>／<code>No one knows better than…</code>。<b>用来给自己的论点加最高级力度，又不显得绝对。</b></div></div>
+          <div class="wbi"><div class="p">The current state of affairs may have been encouraged—though not justified—by …</div><div class="u"><b>「这种局面可能是被……助长的，尽管这并不能为其辩解」</b>——<b>让步插入语的教科书用法</b>：既承认外部原因，又不放过当事人。<b>写「制度缺失≠个人可以不作为」时一句就把立场站稳了。</b></div></div>
+          <div class="wbi"><div class="p">That may change fast: lots of proposed legislation is now doing the rounds in Washington.</div><div class="u"><code>do the rounds</code>＝（提案/消息）<b>四处流转、传阅</b>。<b>「趋势句」模板</b>：先说现状要变，冒号后给证据。写政策类话题可直接改成 doing the rounds in the legislature。</div></div>
+          <div class="wbi"><div class="p">The decision puts corporate America on notice that regulators will act if firms fail to …</div><div class="u"><code>put sb on notice that…</code>＝<b>正式警告某方：若……就将……</b>。<code>corporate America</code>＝美国企业界（「形容词+国名」型集体名词：corporate Japan / official Washington / middle America）。<b>写监管、问责话题的高阶表达。</b></div></div>
+          <div class="wbi"><div class="p">话题素材包：数据安全 · 隐私泄露 · 平台责任</div><div class="u">写「个人信息保护」「平台该不该被监管」「技术问题还是管理问题」可直接举：<b>As early as 2005, The Economist warned that information protection had ceased to be a matter for low-level IT staff and become a management issue—trust, the most valuable of economic assets, is easily destroyed and hugely expensive to restore.</b> 再补一句机制：<b>Where legal penalties are absent, negligence is quietly encouraged.</b><br><b>与本年另三篇合成 2007 素材群</b>：T1「高手是练出来的」、T2「分数量不出全部能力」、T3「风险被转嫁到个人肩上」、<b>T4「信任毁易修难，制度得跟上」——四篇正好可串成一篇「个人努力 × 制度责任」的作文。</b></div></div>
+        </div>
+      </section>
+    </main>
+
+    <!-- ========== 侧栏词卡 ========== -->
+    <aside>
+      <div id="panel"><div class="hint">👆 点击正文里的<b>黄色高亮词</b><br>词卡会出现在这里</div></div>
+    </aside>
+  </div>
+
+  <footer>2007 英语一 Text 4 · 复盘页由 Claude 生成 · 解析为 Claude 盲做后独立撰写，答案已与黄皮书精讲逐题交叉核对（36D 37A 38B 39A 40D）<br>✅ Claude 盲做 5/5；40 题曾在 C/D 之间犹豫，判断过程与依据完整写在 40 题解析里<br>原文出处：《经济学人》2005 年 6 月 23 日 <i>Information Security—The Leaky Corporation</i>，本页仅摘引考点句作分析用，完整原文见你手上的原卷 p9</footer>
+</div>
+
+<button id="yd">🔍 查有道</button>
+
+<script>
+const V = {
+  rains:{w:"It never rains but it pours",ipa:"",pos:"谚语",tags:["phrase","write"],cn:"不雨则已，雨则倾盆；祸不单行",en:"troubles never come singly",ex:"It never rains but it pours.",mem:"⭐<b>36 题的题眼</b>。句型是古英语的 <code>never…but…</code>＝<b>「一……就必定……」</b>（but 相当于 without / unless）：<b>要么不下雨，一下就是倾盆</b> → 引申为<b>坏事总是成堆来</b>。<br><b>做题时要记住：谚语只负责造势，真信息在它后面。</b>本篇谚语后紧跟「旧麻烦刚平、新麻烦又起」，冒号点名 data insecurity —— 36 题选 D（数据泄露之严重）。<b>写作可用</b>：作为议论文开头引出「问题接连出现」。",syn:"Misfortunes never come alone. / When it rains, it pours.",conf:"⚠️ 别把它理解成「祸不单行 ＝ 竞争激烈」（36 题 A 的思路）——谚语只说「麻烦成堆」，没有任何「竞争」含义"},
+  sortout:{w:"sort out",ipa:"",pos:"v.短语",tags:["phrase","write"],cn:"解决（问题）；整理，分类",en:"to deal with a problem successfully; to organize",ex:"bosses and boards have finally sorted out their worst accounting and compliance troubles",mem:"sort（分类）+ out（清出去）→ <b>把乱七八糟的东西理清 → 解决</b>。<b>sort out a problem / sort out the mess</b> 是英式高频口语。<br>📌 <b>本句里它决定了「时间线」</b>：会计、合规、公司治理这些麻烦是<b>已经解决掉的旧账</b>——<b>36 题 B 项拿旧账当「要引出的新问题」，一开始就错了。</b>",syn:"resolve / straighten out / clear up / iron out",conf:"sort out(解决/整理) vs. sort of(有几分) vs. out of sorts(身体不适/心情不好)"},
+  compliance:{w:"compliance",ipa:"/kəmˈplaɪəns/",pos:"n.",tags:["core","write"],cn:"合规，遵从（规章制度）",en:"the practice of obeying rules or requests",ex:"their worst accounting and compliance troubles",mem:"动词 comply <b>with</b>（遵守）→ compliance。<b>商业与法律高频词</b>：regulatory compliance 监管合规、in compliance with the law 符合法律规定。形容词 compliant（顺从的/合规的）。<b>与 accounting（会计）、corporate governance（公司治理）合成「公司治理三件套」，本篇①段用它们代表「老板刚收拾完的旧麻烦」。</b>",syn:"conformity / adherence / obedience",conf:"compliance(合规) vs. complaisance(殷勤/顺从) vs. complacence(自满)——三个词长得像，意思差很远；<b>complacent（自满的）</b>是考研更常考的那个"},
+  feeble:{w:"feeble",ipa:"/ˈfiːbl/",pos:"adj.",tags:["core"],cn:"虚弱的；（论据/措施）乏力的、无说服力的",en:"weak and ineffective",ex:"improved their feeble corporation governance",mem:"⚠️<b>36 题 B 项的坑就在它修饰谁</b>：原文 <code>feeble <b>corporation governance</b></code>＝<b>乏力的「公司治理」</b>；B 项把 feeble 挪去修饰「老板与董事会之间的关系（boss-board relations）」。<b>形容词照抄、被修饰的名词换掉，这是最难察觉的偷换。</b><br>常见搭配：a feeble excuse（站不住脚的借口）、a feeble attempt（无力的尝试）。",syn:"weak / ineffective / flimsy / lame",conf:"feeble(乏力的) vs. futile(徒劳的) vs. fragile(易碎的) vs. frail(体弱的)"},
+  governance:{w:"corporation / corporate governance",ipa:"/ˈɡʌvənəns/",pos:"n.短语",tags:["phrase","core"],cn:"公司治理（董事会、监督与问责机制）",en:"the system by which a company is directed and controlled",ex:"improved their feeble corporation governance",mem:"govern（治理）→ governance（治理体系，<b>不可数</b>）。⚠️<b>与 government（政府）区别</b>：governance 指<b>「治理这件事/这套机制」</b>，不指机构。<br>📌 <b>背景一句</b>：本文写于 2005 年，正是安然（Enron）丑闻后美国大改公司治理与合规的年头——<b>所以①段说「老板们终于把会计、合规、治理的烂账收拾完了」，读者当年一看就懂。</b>",syn:"corporate oversight / board governance",conf:"governance(治理机制) vs. government(政府) vs. governor(州长/主管)"},
+  earn:{w:"earn sb sth",ipa:"/ɜːn/",pos:"v.",tags:["poly","write"],cn:"⚠️（因某行为）为某人招致、赢得（常是坏东西）",en:"to cause sb to get sth, esp. sth unwelcome",ex:"a new problem threatens to earn them…the sort of nasty headlines",mem:"⭐<b>熟词僻义</b>：不只是「挣钱」。<b>earn ＝ 因自己的行为而得到</b>，<b>好坏都能接</b>：earn sb's respect（赢得尊重）／earn a reputation for carelessness（落下粗心的名声）／<b>earn them nasty headlines（给他们招来负面头条）</b>。<br><b>判断方法：宾语是「坏东西」时，一律翻成「招致」。</b>本句是双宾语：earn <b>them</b>（人）+ <b>the sort of nasty headlines</b>（物），中间被破折号撑开。",syn:"bring sb sth / win sb sth / incur",conf:"earn(因行为而得到) vs. gain(获得，泛指) vs. deserve(应得) vs. incur(招致，多接 cost/debt/anger)"},
+  nasty:{w:"nasty headlines",ipa:"/ˈnɑːsti/",pos:"n.短语",tags:["phrase","core"],cn:"负面（难听的）新闻头条",en:"very unpleasant press coverage",ex:"the sort of nasty headlines that inevitably lead to heads rolling",mem:"nasty＝令人厌恶的、恶劣的（a nasty smell / a nasty surprise / turn nasty 变糟）。<code>headline</code>＝头条标题，<b>hit the headlines / make headlines</b>＝上头条、引起轰动。<br>⚠️<b>36 题 C 项拿这个词做诱饵</b>：原文提负面头条，是为了说明「数据泄露有多严重」（严重到高管下台），<b>不是说「威胁来自新闻报道」</b>。<b>后果 ≠ 来源。</b>",syn:"damaging press / bad publicity / negative coverage",conf:"nasty(恶劣的) vs. naughty(顽皮的) vs. nasty piece of work(讨厌的人)"},
+  inevitably:{w:"inevitably",ipa:"/ɪnˈevɪtəbli/",pos:"adv.",tags:["core","write"],cn:"不可避免地，必然地",en:"in a way that cannot be avoided",ex:"headlines that inevitably lead to heads rolling in the executive suite",mem:"in(不)+evit(避开，同 avoid)+able→不可避免的。<b>写作高频</b>：Inevitably, some jobs will be lost.／an inevitable consequence（必然结果）。<br>📌 <b>本句里它是「严重性」的加强器</b>：负面头条<b>必然</b>导致高管走人——<b>作者用一个副词把后果钉死，36 题 D 的 severity 就是这么来的。</b>",syn:"unavoidably / necessarily / as a matter of course",conf:"inevitable(不可避免的) vs. invaluable(极宝贵的) vs. inevitably vs. eventually(最终)——考场易看串"},
+  heads:{w:"heads rolling in the executive suite",ipa:"",pos:"n.短语",tags:["phrase","poly"],cn:"⚠️高管层「人头落地」（一批高管被免职）",en:"senior executives being dismissed",ex:"headlines that inevitably lead to heads rolling in the executive suite",mem:"⭐<b>报刊习语</b>：<code><b>heads will roll</b></code> 源自断头台的画面 → <b>「要有人掉脑袋了」＝要有人被撤职问责</b>。<b>executive suite</b>＝高管办公层，<b>代指公司最高管理层</b>（同类：the corner office 指老板办公室/最高职位）。<br><b>本句是 36 题 D 的直接依据</b>：一件事严重到 CEO 保不住位子，这就是 <b>severity</b>（严重性）。",syn:"executives being fired / a management shake-up",conf:"heads roll(人头落地/被撤职) vs. roll with the punches(随机应变) vs. on a roll(手气正旺)——roll 系习语"},
+  insecurity:{w:"data insecurity",ipa:"/ˌɪnsɪˈkjʊərəti/",pos:"n.短语",tags:["phrase","core"],cn:"数据不安全（数据缺乏保护）",en:"the state of data being poorly protected",ex:"…lead to heads rolling in the executive suite: data insecurity.",mem:"⭐⭐<b>36 题的答案位</b>：它出现在<b>冒号后面</b>——冒号前铺陈了一整句「新麻烦有多可怕」，冒号后一词点名。<b>长句里的冒号 ＝ 答案在这儿。</b><br><b>本词与 information protection / data leakage / data security 是同一主题的四种说法，全篇反复出现 ＝ 主题词。</b><b>36 题 D 的 data leakage 正是它的近义改写。</b>",syn:"data vulnerability / poor data security",conf:"insecurity(不安全) vs. instability(不稳定) vs. insufficiency(不足)；<b>data insecurity ⇄ information protection</b> 是同一件事的正反两面说法"},
+  leftto:{w:"be left to sb to do sth",ipa:"",pos:"v.短语",tags:["phrase","core"],cn:"被丢给某人去做（某事由某人负责处理）",en:"to be given to sb as their responsibility",ex:"Left, until now, to odd, low-level IT staff to put right",mem:"⭐<b>本句以过去分词 Left 开头，是「分词短语作状语前置」</b>——<b>看到句首 -ed 就知道主语还在后面</b>（真主语是 information protection）。还原：<code>Although it <b>had been left</b> to low-level IT staff…</code>。<br><b>leave sth to sb</b>＝把某事交给某人：Leave it to me.（交给我吧。）<b>be left to sb 常含「被撇下、没人重视」的味道</b>——正是本句要的效果。",syn:"be handed over to / be entrusted to / be dumped on",conf:"be left to sb(交给某人处理) vs. be left with sth(剩下某物) vs. leave sb doing sth(使某人处于某状态，见 s3 的 have left managers peering)"},
+  odd:{w:"odd (adj.)",ipa:"/ɒd/",pos:"adj.",tags:["poly"],cn:"⚠️零散的、临时的、不固定的（非「奇怪的」）",en:"occasional; not regular",ex:"left…to odd, low-level IT staff to put right",mem:"⭐<b>熟词僻义</b>：本句的 odd <b>不是「奇怪」</b>，而是<b>「零星的、打杂的、临时的」</b>——同 <code>odd jobs</code>（零工）、<code>at odd moments</code>（抽空）、<code>the odd occasion</code>（偶尔）。<br><code>odd, low-level IT staff</code>＝<b>临时凑数的低级别 IT 人员</b>。<b>三个贬义修饰堆一起，说明「过去根本没人当正事」——这是①段今昔对照的「昔」。</b><br>⚠️ 另记 <b>odds（复数）＝几率</b>（2007·T3 考过）。",syn:"occasional / casual / miscellaneous",conf:"odd 三义：①奇怪的(an odd habit) ②奇数的(odd numbers) ③<b>零散的/临时的(odd jobs)</b>；odds(几率) 又是另一回事"},
+  putright:{w:"put right",ipa:"",pos:"v.短语",tags:["phrase","write"],cn:"纠正，修好，把（问题）处理好",en:"to correct or repair sth",ex:"left…to odd, low-level IT staff to put right",mem:"put sth right ＝ set sth right ＝ <b>把出问题的东西弄好</b>。<b>写作可用</b>：put things right（把事情理顺）、set the record straight（纠正误解）。<br>📌 <b>本句的语气很关键</b>：数据保护过去只是「让低级 IT 员工去 put right」的<b>修修补补的活</b>——与③段「这是 a management issue（管理问题）」形成对照。<b>全文的转变就是从「修东西」升级到「做管理」。</b>",syn:"correct / fix / remedy / rectify",conf:"put right(纠正) vs. put up with(忍受) vs. put off(推迟) vs. put forward(提出)"},
+  datarich:{w:"data-rich industries",ipa:"",pos:"n.短语",tags:["phrase"],cn:"数据密集型行业（掌握大量数据的行业）",en:"industries that hold large amounts of data",ex:"seen as a concern only of data-rich industries such as banking, telecoms and air travel",mem:"<code>X-rich</code>＝<b>富含 X 的</b>：oil-rich countries（产油国）、protein-rich food（高蛋白食物）、<b>data-rich</b>（数据量大的）。<b>这种「名词+rich」的复合形容词写作里很好用。</b><br>📌 <b>本处的作用是「划出旧范围」</b>：过去以为只有银行、电信、航空才要操心 → 末句 <code>in businesses of <b>every variety</b></code> 把范围拉满。<b>「小范围 → 全范围」也是一种今昔对照。</b>",syn:"data-intensive sectors",conf:"data-rich(数据多的) vs. resource-rich(资源丰富的) vs. cash-rich(现金充裕的)"},
+  telecoms:{w:"telecoms",ipa:"/ˈtelɪkɒmz/",pos:"n.",tags:["core"],cn:"电信（业）",en:"the telecommunications industry",ex:"data-rich industries such as banking, telecoms and air travel",mem:"telecommunications 的<b>缩略口语形式</b>（英式常用 telecoms，美式 telecom）。tele(远)+communication(通信)。同类缩略：maths、stats、econ。<b>本词与 banking、air travel 并列，只是举例，不考。</b>",syn:"telecommunications / the telecom sector",conf:"telecoms(电信业) vs. telegram(电报) vs. telescope(望远镜)——tele「远」词族"},
+  agenda:{w:"high on the agenda",ipa:"/əˈdʒendə/",pos:"n.短语",tags:["phrase","write"],cn:"在议事日程上位置靠前 → 极受重视",en:"regarded as a top priority",ex:"information protection is now high on the boss's agenda",mem:"⭐<b>写作神搭配</b>：<code>be high on the agenda / top the agenda / be on the agenda / set the agenda（设定议题）</code>；反面 <code>be low on the priority list</code>。agenda 本是「议程」（会议要讨论的事项表）。<br>📌 <b>英文常用「归谁管、排第几」来表达「有多重要」</b>——本句 <code>left to low-level IT staff</code>（过去）⇄ <code>high on the boss's agenda</code>（现在），<b>一句话完成重要性的翻转。</b>",syn:"a top priority / at the top of the list",conf:"agenda(议程；恒作单数用) vs. schedule(时间表) vs. addenda(附录，addendum 的复数)"},
+  variety:{w:"of every variety",ipa:"/vəˈraɪəti/",pos:"n.短语",tags:["phrase","write"],cn:"各种各样的，形形色色的",en:"of all kinds",ex:"high on the boss's agenda in businesses of every variety",mem:"<code>of every variety</code>＝<b>各行各业的</b>（后置修饰 businesses）。同款后置结构：<code>of all kinds / of all stripes（2007·T3 考过）/ of every description</code>。<br>📌 <b>36 题 A 项（商业竞争激烈）的错源就在这里</b>：本处说的是<b>范围广</b>（什么行业都在重视数据保护），<b>不是竞争激烈</b>。<b>把「普遍性」读成「竞争性」，是凭空添加。</b>",syn:"of all kinds / of all sorts / across all sectors",conf:"of every variety(各种各样) vs. a variety of(种种，作主语时谓语随后面名词) vs. variety show(综艺节目)"},
+  leakage:{w:"leakage / leak",ipa:"/ˈliːkɪdʒ/",pos:"n.",tags:["core","write"],cn:"泄露（数据、消息、液体）",en:"an escape of data, information or liquid",ex:"Several massive leakages of customer and employee data this year",mem:"leak v./n. 漏、泄露 → leakage n.（泄露<b>这件事/量</b>）。<b>新闻高频</b>：a data leak / leak sensitive information to the press / a leaked document（泄露的文件）。<br>📌 <b>本词与 data insecurity、information protection、data security 同属主题词群</b>，<b>36 题正确项 D 用的正是 data leakage</b>——<b>选项里出现主题词，天然占优。</b>",syn:"leak / breach（data breach 数据泄露事件，更常用于安全语境）/ disclosure",conf:"leakage(泄露) vs. linkage(联系) vs. leverage(杠杆/影响力)"},
+  diverse:{w:"as diverse as",ipa:"/daɪˈvɜːs/",pos:"adj.短语",tags:["phrase","write"],cn:"像……这样各不相同的（用于举例，强调范围广）",en:"used to show that examples are very different from each other",ex:"from organizations as diverse as Time Warner, …and even the University of California, Berkeley",mem:"⭐<b>看到它就知道后面是「广度证据」</b>：媒体公司、国防承包商、大学——<b>连大学都漏，说明什么机构都躲不过</b>（<code>even</code> 是力度词）。<b>这类专有名词串一律不考，扫过即可。</b><br><b>写作可用</b>：Fields as diverse as medicine and finance are being reshaped by AI. 同款：<code>ranging from A to B</code>。",syn:"ranging from…to… / as different as",conf:"diverse(多样的) vs. adverse(不利的) vs. averse(厌恶的) vs. diverge(分歧)——考研四连易混"},
+  contractor:{w:"defense contractor",ipa:"/kənˈtræktə(r)/",pos:"n.短语",tags:["phrase"],cn:"国防（军工）承包商",en:"a company that supplies the military under contract",ex:"the American defense contractor Science Applications International Corp",mem:"contract（合同）→ contractor（承包商、承包方）。<b>defense contractor</b>＝<b>替军方干活的公司</b>（如洛克希德·马丁）。<br>📌 <b>作者挑这个例子是有讲究的</b>：连<b>国防承包商</b>都会漏数据——<b>把「泄露之普遍」推到极致</b>。同句 <code>even the University of California</code> 也是这个用意。<b>例子不考，但要看懂它在证明什么。</b>",syn:"military supplier / arms contractor",conf:"contractor(承包商) vs. contraction(收缩) vs. contract(合同/收缩) vs. subcontractor(分包商)"},
+  hurriedly:{w:"hurriedly",ipa:"/ˈhʌrɪdli/",pos:"adv.",tags:["core"],cn:"匆忙地，慌忙地",en:"in a rushed, hasty way",ex:"have left managers hurriedly peering into their intricate IT systems",mem:"hurry → hurried（匆忙的）→ hurriedly。<br>📌 <b>这个副词是作者埋的态度</b>：管理者不是从容治理，而是<b>出事之后才临时抱佛脚</b>——<b>它为④段那句挖苦（「这居然还让你吃惊？」）埋下伏笔</b>。<b>读长句时别把副词滑过去，作者的情绪常藏在副词里</b>（同款：2007·T3 的 understandably、frightening）。",syn:"hastily / in haste / frantically",conf:"hurriedly(匆忙地) vs. hardly(几乎不) vs. heartily(尽情地)"},
+  peer:{w:"peer into",ipa:"/pɪə(r)/",pos:"v.短语",tags:["phrase","poly"],cn:"仔细察看，端详（往里细看）",en:"to look closely or carefully into sth",ex:"peering into their intricate IT systems and business processes",mem:"⚠️<b>与名词 peer（同龄人、同行）同形不同义</b>：<b>动词 peer ＝ 费力地看、凝视</b>（peer at the screen / peer through the fog）。<code>peer <b>into</b></code>＝往里头细看 → <b>细查、审视</b>。<br><b>本句 <code>peering into… in search of…</code> 就是 37 题的答案位</b>：细查系统<b>是为了</b>找漏洞。",syn:"look closely into / scrutinize / examine",conf:"peer(v.凝视 / n.同龄人；peer review 同行评议) vs. pear(梨) vs. pier(码头)——同音三兄弟"},
+  intricate:{w:"intricate",ipa:"/ˈɪntrɪkət/",pos:"adj.",tags:["core","write"],cn:"错综复杂的，精细复杂的",en:"very complicated or detailed",ex:"their intricate IT systems and business processes",mem:"in+tric（缠绕，同 trick）→ 缠在一起的 → 复杂精细。<b>写作可用</b>：the intricate web of social relations（错综复杂的社会关系网）、intricate patterns（精细的图案）。<br>📌 <b>本句用它是有逻辑作用的</b>：系统越复杂 → 漏洞越难找 → <b>越说明这事得管理层出面（③段落点）</b>。<b>形容词也参与论证。</b>",syn:"complex / complicated / elaborate / convoluted",conf:"intricate(错综复杂的) vs. intrinsic(内在的) vs. intricacy(复杂性) vs. intrigue(阴谋/使好奇)"},
+  insearch:{w:"in search of",ipa:"",pos:"prep.短语",tags:["phrase","write"],cn:"为寻找……，为了找到……",en:"trying to find sth",ex:"peering into their IT systems…in search of potential vulnerabilities",mem:"⭐⭐<b>37 题的答案位就在这个短语后面</b>。题干 <code>check their systems <b>to find out</b> ___</code> 问的是<b>目的</b>，而 in search of 正是<b>目的状语</b>。<br><b>通用规律：题干含「为了/目的」，回原文找这一串</b>：<code>in search of / in an attempt to / in order to / with a view to / so as to / to do</code>。<b>找到目的标记，四个选项一秒分胜负。</b><br><b>写作可用</b>：in search of a better life（为寻求更好的生活）。",syn:"looking for / in pursuit of / in quest of",conf:"in search of(寻找) vs. in the search for(在对…的搜寻中) vs. research(研究) vs. search for(搜寻)"},
+  vulnerability:{w:"vulnerability",ipa:"/ˌvʌlnərəˈbɪləti/",pos:"n.",tags:["core","write"],cn:"（可被攻击的）漏洞，薄弱环节；脆弱性",en:"a weakness that can be exploited",ex:"in search of potential vulnerabilities",mem:"⭐<b>37 题的关键词，也是本篇最该会推的生词</b>。vulner（伤口）+able → vulnerable（易受伤的）→ vulnerability（<b>易受伤的地方 ＝ 薄弱环节/漏洞</b>）。<b>网络安全语境里就是「安全漏洞」。</b><br><b>不认识也能做对</b>：①靠词根推；②靠上文推（几起泄露逼得管理者慌查系统，当然是查「哪儿会漏」）。<b>A 项 any weak point 就是它的同义替换。</b><b>（同款心法：2007·T3·33 的 deductibles。）</b>",syn:"weak point / weakness / loophole / security hole",conf:"vulnerability(漏洞) vs. vulnerable to(易受…影响的，2007·T3·31 的答案词) vs. venerable(德高望重的)"},
+  asset:{w:"asset",ipa:"/ˈæset/",pos:"n.",tags:["core","write"],cn:"资产；有价值的东西/人才",en:"sth valuable that a person or company owns",ex:"Data is becoming an asset which needs to be guarded as much as any other asset",mem:"⭐<b>本篇的核心比喻</b>：<b>数据 ＝ 资产 → 得像别的资产一样看守</b>；④段又说 <b>trust 是「最有价值的经济资产」</b>。<b>「把抽象事物资产化」是外刊常用论证法</b>，写作可直接借：Attention has become the scarcest asset of our time.<br>另义：<b>人也可以是 asset</b>（She is a great asset to the team.）；反面 liability（负债/累赘）。",syn:"resource / property / holdings / valuable",conf:"asset(资产) ⇄ liability(负债/不利因素)；assets(复数=全部财产) vs. assess(评估)"},
+  guard:{w:"guard (v.)",ipa:"/ɡɑːd/",pos:"v.",tags:["core","write"],cn:"守护，看守，保护",en:"to protect sth from danger or loss",ex:"an asset which needs to be guarded as much as any other asset",mem:"<code>guard <b>against</b> sth</code>＝防范（guard against complacency 防止自满）；<code>be on one's guard</code>＝提防着；<code>let one's guard down</code>＝放松警惕。<br>📌 <b>③段用 guard 两次</b>（guarded as much as any other asset / the ability to guard customer data），<b>这个动词就是全段的动作核心：保护数据</b>——<b>38 题正确项 B 的 information protection 正是它的名词化。</b>",syn:"protect / safeguard / shield / watch over",conf:"guard(看守) vs. safeguard(保障措施/保护) vs. guarantee(保证)——都含「保」，但 safeguard 多作名词用「防护措施」"},
+  keyto:{w:"the key to",ipa:"",pos:"n.短语",tags:["phrase","write"],cn:"……的关键（to 后接名词/动名词）",en:"the most important factor in achieving sth",ex:"The ability to guard customer data is the key to market value",mem:"⚠️<b>介词是 to，后面接名词或动名词</b>：the key to success / the key to solving the problem（<b>不是 to solve</b>）。<b>写作高频</b>：Cooperation is the key to progress.<br>📌 <b>38 题 D 项的偷换就发生在这个结构上</b>：原文是「<b>保护客户数据的能力</b>是<b>（公司）市值</b>的关键」；D 拧成「<b>客户数据的市场价值</b>应受重视」——<b>把「A 的能力是 B 的关键」改成了「A 的 B 很重要」，两个名词的关系被换掉了。</b>",syn:"crucial to / essential to / the secret to",conf:"the key to + n./doing ✅ vs. the key to do ❌；同类必背：the solution to / the answer to / the approach to / access to + doing"},
+  marketvalue:{w:"market value",ipa:"",pos:"n.短语",tags:["phrase","core"],cn:"市场价值，市值（公司在市场上的价值）",en:"the value of a company or asset on the market",ex:"The ability to guard customer data is the key to market value",mem:"📌 <b>38 题 D 项的诱饵</b>。原文说的是<b>公司的市值</b>（董事会替股东对它负责），<b>不是「数据的市场价值」</b>。<b>读的时候确认一句：这个「市值」是谁的市值？</b><br>逻辑链是：<b>护住客户数据 → 保住公司市值 → 董事会对股东有责</b>。<b>38 题问的是「提 GASP 的目的」，而这条链只是铺垫，落点仍是「数据保护要受重视」。</b>",syn:"market capitalisation（市值，缩写 market cap）/ valuation",conf:"market value(市值) vs. market share(市场份额) vs. face value(面值/表面价值) vs. added value(附加值)"},
+  onbehalf:{w:"on behalf of",ipa:"/bɪˈhɑːf/",pos:"prep.短语",tags:["phrase","write"],cn:"代表……；为了……的利益",en:"as the representative of; in the interest of",ex:"market value, which the board is responsible for on behalf of shareholders",mem:"两义都高频：①<b>代表</b>（I speak on behalf of my colleagues.）②<b>为了……的利益</b>（本句：董事会<b>为了股东的利益</b>对市值负责）。<br>⚠️<b>38 题 A 项的坑</b>：这个短语在原句里只是<b>状语</b>（交代「替谁负责」），A 却把它抬成主张（「股东利益应得到妥善维护」）。<b>状语不能当论点——句子成分的地位不能换。</b>",syn:"for / in the name of / in the interest of",conf:"on behalf of(代表/为了…利益) vs. on the part of(就…而言) vs. in place of(代替) vs. behave(行为举止)"},
+  indeed:{w:"Indeed",ipa:"/ɪnˈdiːd/",pos:"adv.",tags:["core","write"],cn:"的确，确实（递进/印证前文）",en:"used to confirm or strengthen what has just been said",ex:"Indeed, just as there is the concept of GAAP, perhaps it is time for GASP",mem:"⭐⭐<b>38 题的解题钥匙</b>。Indeed <b>不是转折，是印证与递进</b>——它把③句（GASP）与①②句（数据是资产、要看守）<b>焊成同一个意群</b>。<br><b>写作目的题的定位句往往「自己说不清」</b>（本句只是个提议），<b>观点在它的邻居那儿</b>；<b>Indeed / In fact / Similarly / Moreover 就是把邻居拉进来的绳子。</b><br><b>写作可用</b>：作递进过渡词，比 What's more 更书面。",syn:"in fact / certainly / to be sure",conf:"Indeed(的确，同向递进) vs. However(转折) vs. In deed(在行动上，与 in word 相对)——⚠️ 别把 Indeed 当转折读，方向一错整题就错"},
+  gaap:{w:"Generally Accepted Accounting Principles (GAAP)",ipa:"",pos:"n.短语",tags:["phrase"],cn:"通用会计准则",en:"the standard framework of accounting rules",ex:"just as there is the concept of GAAP, perhaps it is time for GASP",mem:"⭐<b>它在本篇的身份是「类比的参照物」，不是论述对象</b>。作者的意思：<b>会计有人人遵守的通行准则，安全为什么不能有？</b><br>⚠️<b>38 题 C 项就栽在这里</b>：C 说「公司应提高<b>财会</b>安全水平」——<b>把类比的甲方当成了论述的乙方</b>。<b>凡 <code>just as A…, B…</code> 的类比句，答案永远在 B（GASP／安全），A 只是借来铺路的桥。</b>",syn:"accounting standards",conf:"<b>GAAP（会计准则）⇄ GASP（安全准则）</b>：只换了中间两词，读音也只差一个字母——<b>作者故意造词，还顺手玩了 gasp「（惊得）喘气」的双关</b>"},
+  timefor:{w:"it is time for sth / it is high time sb did sth",ipa:"",pos:"句型",tags:["phrase","write"],cn:"是该……的时候了",en:"used to say sth should happen now",ex:"perhaps it is time for GASP, Generally Accepted Security Practices",mem:"三种形式：<code>It is time <b>for</b> action.</code>／<code>It is time <b>to</b> act.</code>／⚠️<code>It is (high) time we <b>took</b> action.</code>——<b>第三种从句里要用虚拟语气过去式</b>（考研语法常考点）。<br><b>写作可用</b>：发出呼吁的现成句式，配 perhaps 可软化语气（本句作者就用了 perhaps，因为 GASP 只是个提议）。",syn:"It is high time that… / The time has come for…",conf:"It is time we <b>did</b> ✅（虚拟过去式）vs. It is time we <b>do</b> ❌；对比 It is time <b>to do</b> ✅"},
+  suggest:{w:"suggested Eli Noam（引述倒装）",ipa:"/səˈdʒest/",pos:"v.",tags:["core","write"],cn:"建议，提出（此处为句末引述倒装）",en:"to put forward an idea",ex:"…perhaps it is time for GASP…, suggested Eli Noam of New York's Columbia Business School",mem:"⭐<b>句末的 <code>said / says / suggested / argues + 人名</code> 是身份标签</b>：<b>这一整句是「那个人说的」</b>（同③段前面的 <code>says Haim Mendelson</code>）。<b>看到它立刻反应：问 the author 要当心，问某人观点则范围锁在这句</b>（套路库 R4）。<br>📌 <b>38 题题干偏偏写 the author is making the point</b>——<b>因为作者引专家的话，就是在借他的话表达自己的主张</b>，两者同向不冲突。<br>⚠️ <b>suggest 表「建议」时，宾语从句用虚拟</b>：He suggested that we <b>(should) start</b> early.",syn:"propose / put forward / recommend",conf:"suggest(建议/暗示) vs. imply(暗示，说话人) vs. infer(推断，听话人)——考研经典三连"},
+  investlevel:{w:"set the proper investment level for",ipa:"",pos:"v.短语",tags:["phrase","write"],cn:"为……设定恰当的投入标准/水平",en:"to decide how much to invest in sth",ex:"Setting the proper investment level for security, redundancy, and recovery",mem:"<b>动名词作主语</b>（Setting… is a management issue）——<b>写作里用动名词短语作主语，比 It is… 更凝练</b>：Setting clear priorities is half the battle.<br>📌 <b>本句是③段的落点句</b>：<b>「投多少钱在安全上」这件事，是管理层该定的事，不是技术员该定的事</b>——<b>与①段「过去丢给低级 IT 员工」首尾呼应，全文在此闭环。</b>",syn:"decide the right level of investment in",conf:"investment level(投入水平) vs. investment return(投资回报) vs. divest(撤资/剥离)"},
+  redundancy:{w:"redundancy",ipa:"/rɪˈdʌndənsi/",pos:"n.",tags:["poly","core"],cn:"⚠️（技术）冗余备份；（英式）裁员；（语言）赘余",en:"backup capacity; (BrE) job loss; wordiness",ex:"the proper investment level for security, redundancy, and recovery",mem:"⭐<b>三义都考过，本句是第①义</b>：<b>系统冗余 ＝ 多留一套备份，坏了还能顶上</b>（与 recovery 恢复并列，都是数据安全的技术投入项）。<br>②英式<b>裁员</b>：be made redundant（被裁）、voluntary redundancy（自愿离职）；③<b>语言赘余</b>（形容词 redundant 多余的）。<b>判断方法：与 security / recovery 并列时是技术义；与 jobs / workers 同现时是裁员义。</b>",syn:"backup / duplication；(裁员) layoff / dismissal",conf:"redundancy(冗余/裁员) vs. abundance(充裕) vs. redundant(多余的/被裁的)"},
+  mgmtissue:{w:"a management issue, not a technical one",ipa:"",pos:"句型",tags:["phrase","write"],cn:"这是管理问题，而不是技术问题",en:"a matter for managers rather than technicians",ex:"Setting the proper investment level…is a management issue, not a technical one",mem:"⭐⭐<b>③段的落点，也是全文的论点</b>。<code>A is a … issue, <b>not a … one</b></code>（one 替代 issue 避免重复）是<b>「重新定性」的万能句式</b>：<b>把一件事从一个层面拉到另一个层面</b>。<br><b>写作可直接用</b>：Climate change is a political issue, not merely a scientific one.／This is not a money problem but an attitude problem.<br>📌 <b>它与①段「过去丢给低级 IT 员工去 put right」正面对撞</b>——<b>38 题选 B（信息保护应受足够重视）的第二条依据就是它：重视的级别被抬到了管理层。</b>",syn:"a matter of management rather than technology",conf:"issue(议题/问题) vs. matter(事情) vs. problem(有待解决的难题)——issue 更偏「需要讨论决策的议题」，本句用它正合适"},
+  mystery:{w:"The mystery is that…",ipa:"/ˈmɪstri/",pos:"n.",tags:["core","write"],cn:"令人不解的是……；奇怪的是……",en:"what is puzzling is that…",ex:"The mystery is that this should come as a surprise to any boss.",mem:"⭐⭐<b>39 题的题眼</b>：题干 <code>what <b>puzzles</b> the author</code> 就是从 mystery 来的。<br><b>这个句型是作者表达「不可思议/不满」的标准动作</b>，同类还有：<code>The puzzle is that… / Oddly enough, … / What is surprising is that…</code>。<br><b>做题动作：看到它，先问「this 指什么」，再看紧接的下一句——下一句一定在解释「为什么怪」</b>（本篇是 <code>Surely it should be obvious…</code>）。<b>39 题的答案就在那句解释里。</b>",syn:"The puzzle is that… / What baffles me is that…",conf:"mystery(不解之谜) vs. misery(痛苦) vs. mastery(精通)——拼写近似，含义全不同"},
+  comeas:{w:"come as a surprise to sb",ipa:"",pos:"v.短语",tags:["phrase","write"],cn:"让某人感到意外/惊讶",en:"to be unexpected for sb",ex:"this should come as a surprise to any boss",mem:"<code>come as a surprise / shock / relief / no surprise to sb</code>——<b>一组固定搭配</b>：It came as no surprise that…（不出所料）。<br>⭐<b>本句的 <code>should</code> 表「竟然」</b>（含惊讶、不以为然）：<b>这居然还能让老板吃惊？</b>——<b>与下一句 <code>it <b>should</b> be obvious</code>（理应显而易见）里的 should 是两种用法</b>。<b>同一个词、两种语气，全靠上下文分，这也是④段读起来别扭的原因。</b>",syn:"be unexpected / take sb by surprise / catch sb off guard",conf:"come as a surprise(让人意外) vs. by surprise(突然袭击：take sb by surprise) vs. to one's surprise(令某人惊讶的是)"},
+  surely:{w:"Surely",ipa:"/ˈʃʊəli/",pos:"adv.",tags:["poly","write"],cn:"⚠️（表强烈认定/反问语气）想必、无疑，这还要说吗",en:"used to express strong belief or mild indignation",ex:"Surely it should be obvious to the dimmest executive that…",mem:"⭐<b>不等于 certainly 那种中性的「确实」</b>：句首的 Surely 常带<b>「这不明摆着吗？」的不耐烦</b>，是<b>作者情绪的外露</b>。<br><b>⭐ 找作者态度时，这类词是金矿</b>（同款：2007·T3 的 understandably、frightening；本句还有 the dimmest 的挖苦）。<b>④段没有引号、没有人名，全靠 Surely + dimmest 两个词让人听出作者的火气。</b>",syn:"certainly / no doubt / obviously",conf:"Surely(想必/难道不是吗) vs. certainly(确实) vs. securely(牢固地) vs. surely enough(果然)"},
+  dim:{w:"the dimmest executive",ipa:"/dɪm/",pos:"adj.",tags:["poly"],cn:"⚠️最愚笨的管理者（dim ＝ 笨的，非「昏暗的」）",en:"the least intelligent manager",ex:"it should be obvious to the dimmest executive that…",mem:"⭐<b>熟词僻义</b>：dim 本义「昏暗的」（dim light）→ 引申<b>「（人）迟钝的、笨的」</b>（口语 a bit dim ＝ 有点笨）。<br><code>obvious to the dimmest executive</code>＝<b>连最笨的管理者都该一眼看明白</b>——<b>比 obvious to everyone 力度大得多，且带挖苦</b>。<b>这是全篇作者语气最重的地方，也是 39 题「作者为什么觉得不可思议」的情绪依据。</b><br><b>写作慎用（挖苦人不宜出现在考场作文里），但要能读出来。</b>",syn:"the least bright / the most obtuse",conf:"dim 三义：①昏暗的(a dim room) ②<b>愚笨的(a bit dim)</b> ③模糊的(a dim memory)；vs. dime(一角硬币) vs. grim(严峻的)"},
+  trust:{w:"trust, that most valuable of economic assets",ipa:"/trʌst/",pos:"n.",tags:["core","write"],cn:"信任（经济资产中最有价值的一样）",en:"confidence in sb's reliability; here framed as an economic asset",ex:"trust, that most valuable of economic assets, is easily destroyed and hugely expensive to restore",mem:"⭐⭐<b>39 题的核心词</b>。<code>that most valuable <b>of</b> economic assets</code>＝「经济资产中最有价值的那一样」（＝the most valuable of…，用 that 更带强调/感慨）——<b>它是成对逗号里的同位语，读主干时先抠掉。</b><br>⚠️<b>但抠掉不等于不考</b>：<b>39 题 D 项（信任的经济价值）正是拿这个同位语造的</b>。<b>同位语的身份是「大家公认的前提」，不是「作者要论证的新话」——老板们缺的不是「知道信任值钱」，而是「知道泄露数据会毁掉它」。</b><br><b>写作可用</b>：Trust, once broken, is hard to rebuild.",syn:"confidence / credibility / faith",conf:"trust(信任) vs. entrust(委托：entrust sb with sth) vs. trustworthy(值得信赖的) vs. antitrust(反垄断的——经济类高频)"},
+  restore:{w:"restore",ipa:"/rɪˈstɔː(r)/",pos:"v.",tags:["core","write"],cn:"恢复，修复，重建（信任/秩序/建筑）",en:"to bring back to a former condition",ex:"trust…is easily destroyed and hugely expensive to restore",mem:"re(重新)+store(存放/建立)→恢复原状。<b>搭配群</b>：restore <b>trust / confidence / order / one's reputation</b>；restore a painting（修复画作）；名词 restoration。<br>⚠️<b>39 题 C 项的偷换就在这个词的宾语上</b>：原文贵在<b>修复「信任」</b>（trust… expensive to restore）；C 说「<b>数据</b>恢复成本高」。<b>同一个动词、换掉宾语——读长句时务必确认每个动词的宾语到底是谁。</b>",syn:"rebuild / regain / reinstate / repair",conf:"restore(恢复) vs. store(储存) vs. restorative(恢复性的) vs. reserve(保留)"},
+  fewthings:{w:"few things are more likely to A than B",ipa:"",pos:"句型",tags:["phrase","write"],cn:"没什么比 B 更容易 A 了（比较级表最高级）",en:"B is the most likely thing to A",ex:"few things are more likely to destroy trust than a company letting sensitive personal data get into the wrong hands",mem:"⭐⭐<b>比较级表最高级的经典结构</b>：<code>few / nothing / no one + 比较级 + than</code>＝<b>「……是最……的」</b>。<br><b>本句 ＝ 泄露敏感数据是最毁信任的事。</b>⚠️<b>阅读里见到 few/nothing + 比较级，先在旁边写「＝最」，否则容易读反。</b><br><b>写作神句式，一组背下来</b>：<code>Few things are more important than…</code>／<code>Nothing is more X than…</code>／<code>No one knows better than…</code>——<b>既有最高级的力度，又不显得绝对。</b>",syn:"Nothing destroys trust more than… / …is the surest way to destroy trust",conf:"few(几乎没有，否定) vs. a few(有几个，肯定)；little / a little 同理——考研常在这一字之差上做题"},
+  sensitive:{w:"sensitive personal data",ipa:"/ˈsensətɪv/",pos:"n.短语",tags:["phrase","core"],cn:"敏感个人数据（信息）",en:"personal information that must be kept private",ex:"a company letting sensitive personal data get into the wrong hands",mem:"sensitive 三义：①<b>敏感的、机密的</b>（sensitive information / a sensitive issue）②（人）敏感易受伤的 ③（仪器）灵敏的。<b>本处是第①义。</b><br>⚠️<b>39 题 B 项的坑</b>：原文提这个词，是为了说<b>「泄露它最毁信任」</b>，<b>不是在强调「个人数据很敏感」这个属性</b>。<b>敏感是前提，不是作者要说的话。</b>",syn:"confidential data / private information",conf:"sensitive(敏感的/机密的) vs. sensible(明智的) vs. sensual(感官的) vs. susceptible(易受影响的)——考研四连易混"},
+  wronghands:{w:"get into the wrong hands",ipa:"",pos:"v.短语",tags:["phrase","write"],cn:"落入不该落的人手里（被别有用心者获得）",en:"to be obtained by people who should not have it",ex:"a company letting sensitive personal data get into the wrong hands",mem:"<code>fall / get into the wrong hands</code>＝<b>落到坏人手里</b>（反面：in safe hands 交给可靠的人）。<b>hand 系习语一起记</b>：change hands（易主）、at first hand（第一手）、get out of hand（失控）、have one's hands full（忙得不可开交）。<br><code>let sth <b>get</b> into…</code>：<b>let 后接不带 to 的不定式</b>；<code>a company letting…</code> 是<b>动名词复合结构</b>（company 是 letting 的逻辑主语）。<b>写作可用</b>：if such technology falls into the wrong hands。",syn:"fall into the wrong hands / be leaked to outsiders",conf:"in the wrong hands(在坏人手里) vs. out of hand(失控/立刻) vs. on hand(在手边) vs. by hand(手工)"},
+  affairs:{w:"the current state of affairs",ipa:"/əˈfeə(r)z/",pos:"n.短语",tags:["phrase","write"],cn:"目前的状况/局面",en:"the present situation",ex:"The current state of affairs may have been encouraged…by the lack of legal penalty",mem:"<code>state of affairs</code>＝<b>事态、局面</b>（a sorry state of affairs 糟糕的局面）。<b>affairs（复数）＝事务、局势</b>：foreign affairs 外交事务、current affairs 时事。<br>📌 <b>本句是⑤段的总起</b>：「目前这种局面（企业不上心）<b>可能是被</b>法律缺位<b>助长的</b>」——<b>40 题选 D 的第一环就在这里。</b><b>写作可用</b>：This state of affairs cannot continue.",syn:"the present situation / the status quo",conf:"state of affairs(局面) vs. affair(事件/风流韵事) vs. current affairs(时事) vs. state of the art(最先进水平)"},
+  encourage:{w:"encourage (v.)",ipa:"/ɪnˈkʌrɪdʒ/",pos:"v.",tags:["poly","core"],cn:"⚠️助长，促成（此处非「鼓励」的褒义）",en:"to make sth more likely to happen",ex:"The current state of affairs may have been encouraged—though not justified—by the lack of legal penalty",mem:"⭐<b>本处是中性/贬义的「助长」</b>：<b>缺乏罚则「助长」了企业不上心</b>。encourage 的宾语是坏事时，一律译「助长、纵容」（同 breed / foster / fuel）。<br>📌 <b>40 题选 D 的逻辑起点</b>：<b>「没有惩处 → 助长了乱局」，反过来推一步就是「惩处能治乱局」</b>＝ legal penalty is a major solution。<b>作者虽然没说「法律是解决办法」，但这句话的反面就是它。</b>",syn:"foster / breed / fuel / promote",conf:"encourage(鼓励/助长) vs. discourage(阻止/使泄气) vs. condone(宽恕纵容) vs. justify(为…辩解，见下条)"},
+  justify:{w:"though not justified",ipa:"/ˈdʒʌstɪfaɪ/",pos:"v.",tags:["core","write"],cn:"（虽）不能为其辩解／说不过去",en:"to show sth is right or reasonable",ex:"may have been encouraged—though not justified—by the lack of legal penalty",mem:"⭐<b>这个让步插入语千万别漏</b>。just(公正)+ify→证明正当。<code>justify sth / be justified in doing sth</code>＝有正当理由；名词 justification。<br>📌 <b>作者的立场全靠它保住</b>：一边承认「缺罚则<b>助长</b>了这种局面」，一边立刻声明「<b>但这不能拿来当借口</b>」——<b>呼应④段：企业本来就该自己重视，不是「没人罚我我就可以漏」。</b><br><b>写作可用</b>：The end does not justify the means.（目的不能为手段开脱。）",syn:"warrant / excuse / defend / vindicate",conf:"justify(证明正当) vs. rectify(纠正) vs. verify(核实) vs. testify(作证)——-ify 家族"},
+  penalty:{w:"legal penalty",ipa:"/ˈpenlti/",pos:"n.短语",tags:["phrase","core"],cn:"法律惩处（罚款、处罚）",en:"a punishment imposed by law",ex:"the lack of legal penalty (in America, but not Europe) for data leakage",mem:"⭐⭐<b>40 题正确项 D 的原词</b>（<code>legal penalty</code> + <code>data leakage</code> 在本句<b>原词复现</b>——这是「选项定位法」里最容易对上的一项）。<br><code>impose a penalty on sb</code>＝对某人处罚；<code>pay the penalty for</code>＝为……付出代价；<b>death penalty</b> 死刑。<br>⚠️<b>括号里的 <code>(in America, but not Europe)</code> 是 40 题 A 项的判据</b>：<b>欧洲不缺罚则</b> → 泄露该更轻，而不是「在欧洲更严重」。<b>括号里的信息也是考点（R13）。</b>",syn:"punishment / sanction / fine",conf:"penalty(处罚) vs. penalty of(…的代价) vs. penal(刑罚的) vs. penalize(处罚)"},
+  dataleak:{w:"data leakage",ipa:"",pos:"n.短语",tags:["phrase","core"],cn:"数据泄露",en:"the escape of data to unauthorized parties",ex:"the lack of legal penalty…for data leakage",mem:"📌 <b>本篇主题词的第四种说法</b>（前面还有 data insecurity①段 / information protection①段 / data security⑤段末）。<b>同一件事换四个说法反复出现 ＝ 主题</b>——<b>36 题 D 正是用 data leakage 来指代它。</b><br><b>做题启示：把全文的「主题词群」在脑子里并成一个，选项里凡出现该词群成员的，天然占优。</b>",syn:"data breach / information leak",conf:"data leakage(数据泄露) vs. data breach(数据泄露事件，安全语境更常用) vs. data mining(数据挖掘) vs. data protection(数据保护)"},
+  astray:{w:"go astray",ipa:"/əˈstreɪ/",pos:"v.短语",tags:["phrase","poly"],cn:"（东西）丢失、下落不明；（人）走上歧路",en:"to become lost; to go wrong",ex:"American firms did not have to tell anyone, even the victim, when data went astray",mem:"a+stray（走失、迷路）→ 偏离正道。两义：①<b>（信件、物品、数据）丢了、不知去向</b>（本句：<b>数据不知流到哪儿去了 ＝ 数据被盗/泄露</b>）；②<b>（人）走上邪路</b>（lead sb astray 把某人引入歧途）。<br>📌 <b>本句是 40 题 C 项的定位处</b>：加州立法之前，<b>美国公司数据丢了连受害者都不用通知</b>——<b>它只能推出「加州是美国首个（就此立法）的州」，撑不起「率先制定安全法规」这么大的话。</b>",syn:"go missing / be lost / go wrong",conf:"go astray(丢失/走歧路) vs. stray(v.走失 / adj.走失的：a stray dog) vs. astronomy(无关，别看串)"},
+  proposed:{w:"proposed legislation",ipa:"/prəˈpəʊzd/",pos:"adj.短语",tags:["phrase","core"],cn:"提案中的（尚未通过的）立法",en:"laws that have been put forward but not yet passed",ex:"lots of proposed data-security legislation is now doing the rounds",mem:"propose（提出）→ proposed（被提出的、拟议中的）：the proposed merger（拟议中的合并）、the proposed reforms。<br>⚠️<b>注意时态与状态</b>：这些法案<b>还在走流程、没通过</b>——所以作者说的是 <code>That <b>may</b> change fast</code>（<b>可能</b>很快就变），<b>不是「已经变了」</b>。<b>40 题 D 用 a major solution（主要办法之一）而非 the solution，语气正好对齐（R6：只推一步，语气对齐）。</b>",syn:"draft legislation / pending bills",conf:"proposed(拟议中的) vs. imposed(强加的) vs. supposed(据称的) vs. exposed(暴露的)"},
+  legislation:{w:"legislation",ipa:"/ˌledʒɪsˈleɪʃn/",pos:"n.",tags:["core","write"],cn:"法律，法规；立法（不可数）",en:"laws considered collectively; the process of making laws",ex:"lots of proposed data-security legislation is now doing the rounds in Washington, D.C.",mem:"legis(法律)+lat(拿来)→立法。⚠️<b>不可数</b>：<code>lots of legislation <b>is</b>…</code>（本句谓语用单数！）。一组背：<b>legislation 法规 / legislature 立法机构 / legislative 立法的 / legitimate 合法的</b>。<br>⚠️<b>40 题 C 项的第二处泛化就在这个词上</b>：加州那部法只管「数据被盗要告知」<b>一件具体的事</b>，C 却说 <code><b>security legislation</b></code>（安全立法，一整个类别）——<b>「一部法 → 一类立法」是典型的概念泛化。</b>",syn:"laws / statutes / regulation",conf:"legislation(法规，不可数) vs. legislature(立法机构) vs. legislator(立法者) vs. litigation(诉讼)"},
+  rounds:{w:"do the rounds",ipa:"",pos:"v.短语",tags:["phrase","write"],cn:"（消息/提案）四处流传、被传阅；巡回走一遍",en:"to circulate; to be passed from person to person",ex:"lots of proposed data-security legislation is now doing the rounds in Washington, D.C.",mem:"本义医生「巡房」（make/do the rounds）→ 引申<b>「（东西/说法）在圈子里转一圈」</b>。<code>doing the rounds in Washington</code>＝<b>各种数据安全法案正在华盛顿（国会）流转、等待审议</b>。<br><b>写作可用</b>：A rumour is doing the rounds that…（有传言正在流传……）。<b>本句是⑤段的「趋势句」：现状要变，证据就是一堆法案在走。</b>",syn:"circulate / be passed around / be under consideration",conf:"do the rounds(流传) vs. round of talks(一轮会谈) vs. all-round(全面的) vs. around(周围)"},
+  meanwhile:{w:"Meanwhile",ipa:"/ˈmiːnwaɪl/",pos:"adv.",tags:["core","write"],cn:"与此同时；另一方面（转入相关的另一件事）",en:"at the same time; in contrast",ex:"Meanwhile, the theft of information about some 40 million credit-card accounts…",mem:"两个作用：①<b>时间上「同时」</b>；②<b>话题上「另一方面」</b>（＝by contrast，转入一个略带对照的新事实）。<b>本句是第②种</b>：前面说立法在推进（好消息），这里说一桩窃案把 FTC 的重要决定盖了过去（<b>反差</b>）。<br><b>写作可用</b>：作段内过渡词，比 At the same time 更简洁；<code>in the meantime</code> 是它的名词形式。",syn:"in the meantime / at the same time / by contrast",conf:"meanwhile(同时/另一方面) vs. meantime(in the meantime 期间) vs. whereas(然而，正式对比连词)"},
+  theft:{w:"theft",ipa:"/θeft/",pos:"n.",tags:["core"],cn:"偷窃（行为），盗窃案",en:"the crime of stealing",ex:"the theft of information about some 40 million credit-card accounts in America",mem:"thief（小偷，复数 thieves）／steal（偷）→ <b>theft（偷窃这件事）</b>。<b>identity theft</b>＝身份信息盗用（数据安全高频词）。<br>📌 <b>注意本句的主语有多长</b>：<code>the theft of information about some 40 million credit-card accounts in America, <b>disclosed on June 17th</b>,</code>——<b>成对逗号里的分词定语抠掉，主语就是 the theft</b>，谓语是 overshadowed。<b>长主语是长难句的第一道关。</b><br>⚠️ <code>some 40 million</code> 里的 <b>some ＝ 大约</b>，不是「一些」。",syn:"stealing / larceny / robbery(抢劫，含暴力)",conf:"theft(盗窃) vs. thief(小偷) vs. burglary(入室盗窃) vs. robbery(抢劫)"},
+  disclose:{w:"disclose",ipa:"/dɪsˈkləʊz/",pos:"v.",tags:["core","write"],cn:"披露，公开（信息）",en:"to make sth known publicly",ex:"the theft…, disclosed on June 17th, overshadowed a hugely important decision",mem:"dis(打开)+close(关闭)→<b>把封着的打开 → 公开</b>。名词 disclosure（信息披露——<b>公司治理高频词</b>：financial disclosure 财务披露）。<br>📌 <b>与本篇主题呼应</b>：⑤段②句说加州立法前，公司<b>连受害者都不必告知</b>（no duty to disclose）；本句这桩窃案则是<b>被披露出来的</b>。<b>「要不要披露」正是这段的制度焦点。</b>",syn:"reveal / make public / divulge / release",conf:"disclose(披露) vs. enclose(随信附上/围住) vs. discourse(话语) vs. close(关闭)"},
+  overshadow:{w:"overshadow",ipa:"/ˌəʊvəˈʃædəʊ/",pos:"v.",tags:["core","write"],cn:"使……相形失色，盖过……的风头；给……蒙上阴影",en:"to make sth seem less important; to cast gloom over",ex:"the theft…overshadowed a hugely important decision a day earlier by America's FTC",mem:"⭐⭐<b>40 题 B 项的成败全在这个词</b>。over(在上面)+shadow(阴影)→<b>把阴影投在别的东西上 → 抢走注意力、使显得不重要</b>。<br><b>原文语气</b>：FTC 那个决定<b>虽然 hugely important，却被一桩窃案盖过了风头</b> → <b>作者是在说它「声势/实效有限」</b>。所以 B 的 <code>essential to data security</code>（至关重要）<b>与原文语气正相反</b>。<b>一个动词就能给整句话定褒贬。</b><br><b>写作可用</b>：His achievements were overshadowed by the scandal.",syn:"eclipse / outshine / dwarf / steal the limelight from",conf:"overshadow(盖过风头) vs. overlook(忽视) vs. overrate(高估) vs. overwhelm(压倒)——over- 家族一起记（2007·T1·24 考过 overrated/overlooked 之别）"},
+  onnotice:{w:"put sb on notice that…",ipa:"",pos:"v.短语",tags:["phrase","write"],cn:"正式警告/告知某方……（使其知晓并准备）",en:"to formally warn sb that sth will happen",ex:"a decision…that puts corporate America on notice that regulators will act if firms fail to provide adequate data security",mem:"⭐<b>本句的核心短语</b>：<code>put sb on notice</code>＝<b>正式打招呼、事先警告</b>（法律/商业语境常见）；相关：<code>give notice</code>（预先通知/辞职通知）、<code>at short notice</code>（临时通知）、<code>until further notice</code>（另行通知前）。<br><b>corporate America</b>＝<b>美国企业界（整体）</b>——「形容词+国名」型集体名词：corporate Japan、official Washington、middle America。<b>写作里可用来指代一国的某个群体。</b><br>📌 <b>本句的三层结构</b>：警告（put on notice）→ 内容（that 监管会动手）→ 条件（if 保护不力）。",syn:"formally warn / serve notice on",conf:"put sb on notice(正式警告) vs. take notice of(注意到) vs. notice board(公告板) vs. noticeable(显著的)"},
+  regulator:{w:"regulators",ipa:"/ˈreɡjuleɪtə(r)/",pos:"n.",tags:["core","write"],cn:"监管机构（人员）",en:"official bodies that supervise an industry",ex:"regulators will act if firms fail to provide adequate data security",mem:"regulate（管制/调节）→ regulator（<b>监管方</b>，如 FTC、证监会）。一组背：<b>regulation</b> 法规/管制、<b>deregulation</b> 放松管制、<b>regulatory</b> 监管的（regulatory compliance 监管合规——与①段的 compliance 呼应）。<br>📌 <b>本篇的解决方案就落在它身上</b>：<b>监管会出手（本句）+ 法案在推进（③句）＝ 法律力量在推着企业走 → 40 题 D。</b>",syn:"watchdog（监管机构，常用）/ supervisory authority",conf:"regulator(监管者) vs. regulation(规章) vs. deregulate(放松管制) vs. regular(定期的)"},
+  adequate:{w:"adequate",ipa:"/ˈædɪkwət/",pos:"adj.",tags:["core","write"],cn:"充分的，足够的（达到所需标准）",en:"enough in quantity or good enough in quality",ex:"if firms fail to provide adequate data security",mem:"ad+equ(相等)+ate→与需要相当的 → <b>够用的</b>（<b>注意语气：只是「够」，不是「优」</b>——an adequate performance 尚可的表现，暗含「不出色」）。副词 adequately；反义 inadequate。<br><code>fail to provide adequate data security</code>＝<b>未能提供充分的数据安全保障</b>——<b>这是 FTC 出手的触发条件。</b><b>写作可用</b>：adequate funding / adequate protection。",syn:"sufficient / enough / satisfactory",conf:"adequate(足够的) vs. equate(等同) vs. adept(擅长的) vs. adopt(采纳)"},
+  severity:{w:"severity",ipa:"/sɪˈverəti/",pos:"n.",tags:["core","write"],cn:"严重性；严厉，严酷",en:"the fact of being very bad or serious",ex:"[36题D] the severity of data leakage",mem:"⭐<b>36 题正确项的核心词</b>。severe（严重的/严厉的/（天气）恶劣的）→ severity。<br><b>为什么它对得上原文</b>：①段②句说这个新问题会招来「<b>必然导致高管人头落地</b>」的负面头条——<b>严重到 CEO 保不住位子，这就是 severity</b>。<b>原文没有 severity 这个词，正确项是「归纳性改写」；干扰项 B、C 反而在用原文的词（feeble、headlines）。这就是 R8 的反向提醒。</b><br><b>写作可用</b>：the severity of the crisis / depending on the severity of…",syn:"seriousness / gravity / harshness",conf:"severity(严重性) vs. security(安全) vs. sincerity(真诚) vs. scarcity(稀缺)——考场看串是真的会发生"},
+  dueattention:{w:"be given due attention",ipa:"/djuː/",pos:"adj.短语",tags:["phrase","write"],cn:"受到应有的重视",en:"be given the attention it deserves",ex:"[38题B] information protection should be given due attention",mem:"⭐<b>38 题正确项的核心词</b>。<b>due</b> ＝<b>应有的、恰当的</b>（with due respect 恕我直言／in due course 到时候／due to 由于）。<code>give sth due attention / due consideration</code>＝给予应有的重视/考虑。<br><b>为什么它是答案</b>：③段整个意群（数据是资产要看守 → 的确该像会计一样有准则 → 这是管理问题）说的就是<b>「数据保护应当被当成正事」</b>。<b>「due（应有的）」这个词恰好承载了「与会计同级别」的分量。</b><br><b>写作可用</b>：Environmental costs must be given due weight in policymaking.",syn:"deserved attention / proper consideration",conf:"due attention(应有的重视) vs. undue(过分的：undue pressure) vs. duly(适时地/正式地) vs. dues(会费)"},
+  attendto:{w:"attend to",ipa:"",pos:"v.短语",tags:["phrase","poly"],cn:"处理，照料，关注",en:"to deal with or take care of",ex:"[38题A] shareholders' interests should be properly attended to",mem:"⚠️<b>attend 的三个用法要分清</b>：<code>attend a meeting</code>（出席，及物）／<code>attend <b>to</b> sth</code>（<b>处理、照料</b>）／<code>attend <b>to</b> sb</code>（照顾某人）。<br>📌 <b>38 题 A 项本身的英文没毛病，错在「地位」</b>：<code>on behalf of shareholders</code> 在原文里只是个<b>状语</b>（董事会「为了股东的利益」对市值负责），A 把它抬成主张。<b>句子成分的地位不能换：状语不能当论点。</b>",syn:"see to / deal with / take care of",conf:"attend to(处理) vs. attend(出席) vs. attendant(伴随的，2007·T3 考过) vs. tend to(倾向于/照料)"},
+  appreciate:{w:"appreciate",ipa:"/əˈpriːʃieɪt/",pos:"v.",tags:["poly","write"],cn:"⚠️认识到、理解（此义最常考）；感激；升值",en:"to recognize the full worth of sth; to be grateful; to rise in value",ex:"[39题D] appreciate the economic value of trust",mem:"⭐<b>熟词僻义三连</b>：①<b>充分认识到、领会</b>（I appreciate the difficulty of the task.）——<b>考研阅读里最常考这个</b>；②感激（I'd appreciate it if…）；③（资产）<b>增值</b>（⇄ depreciate 贬值/折旧）。<br>📌 <b>39 题 D 项之所以错，不在这个词，而在宾语</b>：老板们缺的不是「知道信任值钱」（这是原文用同位语交代的<b>公认前提</b>），<b>而是「知道泄露数据会毁掉它」这一步</b>。<b>半截答案是最有杀伤力的干扰项。</b>",syn:"recognize / realize / grasp / value",conf:"appreciate(认识到/感激/升值) vs. depreciate(贬值) vs. apprehend(逮捕/理解) vs. appropriate(适当的/挪用)"},
+  takelead:{w:"take the lead in",ipa:"",pos:"v.短语",tags:["phrase","write"],cn:"在……方面领先、率先做（某事）",en:"to be the first or most active in doing sth",ex:"[40题C] California takes the lead in security legislation",mem:"⭐<b>40 题 C 项的「唯一性词汇」，也是本题最该警觉的地方</b>。<code>take the lead in doing sth</code>＝率先、领先（同 be in the lead / lead the way）。<br>⚠️<b>看到 the lead / the first / the most / all / always / never 这类唯一性、全体性词汇，立刻回原文数范围</b>：②句只能推出「<b>加州是美国首个</b>就数据泄露立法的州」，而①句括号明说<b>欧洲早有罚则</b>——<b>加州连「世界领先」都轮不上；而且那部法只管「被盗要告知」，撑不起「security legislation」这个大类。</b><b>连着泛化两次，必错。</b><br><b>写作可用</b>：China has taken the lead in renewable energy.",syn:"lead the way in / pioneer / be at the forefront of",conf:"take the lead(领先) vs. take a lead(带头) vs. follow suit(跟着做) vs. lag behind(落后)"},
+  essential:{w:"essential to",ipa:"/ɪˈsenʃl/",pos:"adj.短语",tags:["phrase","write"],cn:"对……必不可少的，极其重要的",en:"absolutely necessary for",ex:"[40题B] FTC's decision is essential to data security",mem:"essence（本质）→ essential（<b>本质上不可缺的</b>）。<code>be essential to / for sth</code>；名词 essentials（要点、必需品）。<br>⚠️<b>40 题 B 项错在「语气不符」</b>：原文说 FTC 那个决定虽 hugely important，却被一桩窃案 <code><b>overshadowed</b></code>（盖过风头）——<b>作者恰恰在暗示它作用有限</b>。<b>选项用了一个比原文更强、方向还相反的形容词，直接出局。</b><b>做推理题时，形容词的强度也要对齐（R6）。</b>",syn:"vital to / crucial to / indispensable to",conf:"essential(必不可少的) vs. essentially(本质上/其实) vs. sensational(轰动的) vs. potential(潜在的)"}
+};
+
+const panel=document.getElementById('panel');
+const isMobile=()=>window.innerWidth<=900;
+function badge(t){return {core:'<span class="badge b-core">核心词</span>',phrase:'<span class="badge b-phrase">短语</span>',poly:'<span class="badge b-poly">熟词僻义</span>',write:'<span class="badge b-write">写作✍︎</span>'}[t]||''}
+function showCard(k,el){
+  const d=V[k]; if(!d)return;
+  document.querySelectorAll('.tk.active').forEach(e=>e.classList.remove('active'));
+  if(el&&el.classList.contains('tk'))el.classList.add('active');
+  panel.innerHTML=`<button class="close" onclick="panel.classList.remove('open')">✕</button>
+  <div class="wcard">
+    <div class="head"><span class="w">${d.w}</span><span class="ipa">${d.ipa}</span><span class="pos">${d.pos}</span>${d.tags.map(badge).join('')}</div>
+    <div class="cn">${d.cn}</div><div class="en-def">${d.en}</div>
+    <div class="row r-ex"><b>原文语境</b>“…${d.ex}…”</div>
+    <div class="row r-mem"><b>怎么记</b>${d.mem}</div>
+    <div class="row r-syn"><b>同类词</b>${d.syn}</div>
+    <div class="row r-conf"><b>易混辨析</b>${d.conf}</div>
+  </div>`;
+  if(isMobile())panel.classList.add('open');
+}
+document.querySelectorAll('.tk').forEach(t=>t.addEventListener('click',e=>{e.stopPropagation();showCard(t.dataset.w,t)}));
+
+function tz(btn){btn.closest('.para').classList.toggle('showzh')}
+let allOn=false;
+function toggleAll(){allOn=!allOn;document.querySelectorAll('.para').forEach(p=>p.classList.toggle('showzh',allOn))}
+function go(id){document.getElementById(id).scrollIntoView({behavior:'smooth',block:'center'});const s=document.getElementById(id);s.style.transition='none';s.style.opacity=.3;setTimeout(()=>{s.style.transition='opacity .8s';s.style.opacity=1},80)}
+
+document.querySelectorAll('.q').forEach(q=>{
+  const ans=+q.dataset.ans;
+  q.querySelectorAll('.opt').forEach((o,i)=>o.addEventListener('click',()=>{
+    if(q.classList.contains('done'))return;
+    q.classList.add('done');
+    if(i!==ans)o.classList.add('wrong');
+    q.querySelectorAll('.opt')[ans].classList.add('right');
+  }));
+});
+
+const vg=document.getElementById('vgrid');
+function renderGrid(f){
+  vg.innerHTML='';
+  Object.keys(V).forEach(k=>{
+    const d=V[k];
+    if(f!=='all'&&!d.tags.includes(f))return;
+    const div=document.createElement('div');div.className='vitem';
+    div.innerHTML=`<span class="badges">${d.tags.map(badge).join('')}</span><div class="w">${d.w}</div><div class="cn">${d.cn}</div>`;
+    div.addEventListener('click',()=>{showCard(k,null);if(!isMobile())window.scrollTo({top:0,behavior:'smooth'})});
+    vg.appendChild(div);
+  });
+}
+renderGrid('all');
+document.querySelectorAll('.fbtn').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.fbtn').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderGrid(b.dataset.f);
+}));
+
+const yd=document.getElementById('yd');let sel='';
+document.addEventListener('selectionchange',()=>{
+  const s=window.getSelection();const t=s?s.toString().trim():'';
+  if(t&&/^[a-zA-Z' -]{2,40}$/.test(t)){
+    sel=t;
+    try{const r=s.getRangeAt(0).getBoundingClientRect();
+      yd.style.left=Math.min(r.left,window.innerWidth-110)+'px';
+      yd.style.top=(r.bottom+8)+'px';yd.style.display='block';}catch(e){}
+  }else{yd.style.display='none'}
+});
+yd.addEventListener('click',()=>{window.open('https://dict.youdao.com/result?word='+encodeURIComponent(sel)+'&lang=en');yd.style.display='none'});
+document.addEventListener('click',e=>{if(e.target!==yd&&!window.getSelection().toString())yd.style.display='none'});
+</script>
+<script src="_fault_attr.js"></script>
+</body>
+</html>

@@ -37,7 +37,8 @@ window.TRICK_READ = [
 {id:'R3', tier:'🔴', qt:'例证题 / 开篇现象引入题', title:'例证题铁律：答案是例子「服务的观点」，不是例子本身',
  flow:'例子是用来<b>证明某个上位观点</b>的 → 到例子<b>前后</b>找那句观点句，那才是答案。<br>'
      +'<b>变体·开篇现象引入题</b>（题干 <code>X is mentioned to</code>、现象在首段）：现象是<b>引子</b>，答案是它<b>引出的话题</b> —— '
-     +'快捷通道是<b>先扫末段主旨句</b>，主旨说什么，开篇现象就是为了引出什么。',
+     +'快捷通道是<b>先扫末段主旨句</b>，主旨说什么，开篇现象就是为了引出什么。<br>'
+     +'<b>同源变体还有两个：引言/谚语的作用、某概念的作用</b>——法则完全一样（<b>配角只负责引出主角</b>），操作细则见 <b>R16</b>（2007·T4 一篇里连考了这两个）。',
  trig:['the example of … is used to','illustrate / demonstrate','X is mentioned to（现象/事例在首段）','以 X 为例'],
  tmpl:'<b>就例子谈例子的选项必错</b>；答案永远是「例子往上抽一层」的那句话。',
  traps:['主客颠倒：T3·32 选项 B 把「艺术帮科学传播」说成「科学帮情感表达」，方向反了。',
@@ -98,9 +99,9 @@ window.TRICK_READ = [
         '2007·T2·27 限定 Paragraph 3，D 项却取材于末段的 important elements，且与第二段的<b>设问句</b>（「智力有多少<b>能够</b>被明确？」＝尚无定论）正相反。'],
  refs:[{p:'2022_T2_Z世代与学位.html',q:'q29',label:'T2·29'},{p:'2007_T2_智力测试的边界.html',q:'q27',label:'2007·T2·27'}]},
 
-{id:'R8', tier:'🔴', qt:'通用 · 排除选项', title:'五大干扰项类型：认出类型就秒排',
+{id:'R8', tier:'🔴', qt:'通用 · 排除选项', title:'干扰项类型总纲（十一类）：认出类型就秒排',
  trig:['排除三个错误选项时','拿不准该选哪个'],
- flow:'考研阅读的错误项<b>几乎都能归进这五类</b>，认出是哪一类，排除就快且稳：',
+ flow:'考研阅读的错误项<b>几乎都能归进下面这几类</b>（前五类最常见，后面几类是本复盘中心逐篇补上的），认出是哪一类，排除就快且稳：',
  tmpl:'<table class="tk"><tr><th>类型</th><th>长相</th><th>例</th></tr>'
      +'<tr><td><b>无中生有</b></td><td>文中根本没提</td><td>T1·24A「谈钱」全文没有</td></tr>'
      +'<tr><td><b>偷换</b></td><td>换概念/主宾/时态/段落</td><td>T1·21B 偷换首句、T2·30C 换时态</td></tr>'
@@ -109,7 +110,10 @@ window.TRICK_READ = [
      +'<tr><td><b>过度推断</b></td><td>顺着原文多推一步</td><td>T2·30C 推两步；2007·T2·29C 以偏概全</td></tr>'
      +'<tr><td><b>杂糅</b>（第六类·最难）</td><td>把<b>相邻两句</b>的成分拼成一句</td><td>2007·T2·29B 把④句的「IQ⇄领导力相关」和⑤句的「SAT」拼成「IQ 与 SAT 高度相关」</td></tr>'
      +'<tr><td><b>凭空比较</b></td><td>原文无比较对象，选项加比较级</td><td>2007·T2·27B 的 <b>More</b> versions——比谁多？原文没给；2007·T3·34A 的 <b>outweigh</b>——原文只说两种 fallout 一前一后，从没比过轻重（<b>「先后」≠「轻重」</b>）</td></tr>'
-     +'<tr><td><b>程度升级</b>（第八类）</td><td>削弱→消失；有缺陷→已淘汰；变糟→毁灭；趋势→结局</td><td>2007·T3·31A 把「安全网被削弱」拉满成 <b>has disappeared</b>；2007·T3·35D 把「岌岌可危」说成 <b>in Ruins</b>（已成废墟）；2007·T2·29D 把「有局限」说成「过时」</td></tr></table>'
+     +'<tr><td><b>程度升级</b>（第八类）</td><td>削弱→消失；有缺陷→已淘汰；变糟→毁灭；趋势→结局</td><td>2007·T3·31A 把「安全网被削弱」拉满成 <b>has disappeared</b>；2007·T3·35D 把「岌岌可危」说成 <b>in Ruins</b>（已成废墟）；2007·T2·29D 把「有局限」说成「过时」</td></tr>'
+     +'<tr><td><b>偷换修饰对象</b>（第九类·极隐蔽）</td><td>形容词照抄原文，<b>被修饰的名词换掉</b></td><td>2007·T4·36B：<code>feeble <b>corporation governance</b></code>（乏力的公司治理）→ 说成「乏力的<b>老板与董事会关系</b>」</td></tr>'
+     +'<tr><td><b>已知换未知</b></td><td>把原文<b>已经交代清楚</b>的东西，说成「有待查明/尚不知道」的东西</td><td>2007·T4·37B：被泄露的数据是什么，句首就写明了（<code>customer and employee data</code>）——已知的东西不会是「要去查明」的东西</td></tr>'
+     +'<tr><td><b>泛化 / 扩大范围</b></td><td>一部具体的法 → 一整类立法；一个州 → 全世界；一个技巧 → 整类行为</td><td>2007·T4·40C：加州那部「数据被盗须告知」的法 → <b>security legislation</b>；美国首个州 → <b>takes the lead</b>（而欧洲早有罚则）</td></tr></table>'
      +'<p style="margin-top:8px"><b>反向提醒</b>：干扰项爱<b>原词照抄</b>，正确项常是<b>归纳性改写</b>。'
      +'看到某项与原文字面高度重合，先回原句问一句「<b>这句在说谁</b>」——主语对不上，词再像也是错的。</p>',
  traps:['一个选项可能同时踩两类（偷换+张冠李戴），命中任一类即可排除。',
@@ -206,12 +210,57 @@ window.TRICK_READ = [
  traps:['<b>比喻词与制度词长得像，但绝不是一回事</b>：parachute（家里的后备劳动力）vs. safety net（保险制度）。原文用破折号同位语给比喻配了直义（<code>—a back-up earner (usually Mom)</code>），<b>比喻的直义就在破折号后面等着你</b>。',
         '<b>这三个词都是「加力」不是「等于」</b>：support（支撑）/ complement（补充完善）/ supplement（额外补充）/ reinforce（强化）/ bolster（支持加固）。',
         '<b>配套排查「程度」</b>：原文是「少了一股力」，选项写成「整个塌了」——这就是程度升级（见 R8 第八类）。'],
- refs:[{p:'2007_T3_中产家庭的风险转嫁.html',q:'q31',label:'2007·T3·31'},{p:'2007_T3_中产家庭的风险转嫁.html',q:'s3',label:'2007·T3 长难句 s3'}]}
+ refs:[{p:'2007_T3_中产家庭的风险转嫁.html',q:'q31',label:'2007·T3·31'},{p:'2007_T3_中产家庭的风险转嫁.html',q:'s3',label:'2007·T3 长难句 s3'}]},
+
+{id:'R15', tier:'🟡', qt:'段落推理题（题干只给段号）', title:'选项定位法：拿选项的关键词回文，一一比对',
+ trig:['It can be inferred from Paragraph N that','题干只给段号、不给任何关键词','该段有四五句话，正着读读不出结论'],
+ flow:'<b>正着读要读完整段再自己归纳，慢且容易漏。改成反着走：</b><br>'
+     +'<b>① 圈出四个选项各自的「独特名词」</b>——命题人给的四个选项，本身就是<b>四个定位坐标</b>；<br>'
+     +'<b>② 拿这些词回段里找对应句</b>（通常一项对一句，分布得很整齐）；<br>'
+     +'<b>③ 每处只比三件事：方向对不对、语气合不合、范围有没有被放大</b>，错一项即排；<br>'
+     +'<b>④ 若两项都像，问一句：哪一项是「整段主线」，哪一项只是「某句话的字面延伸」——段落推理题考的是段落方向，选主线那个。</b>',
+ tmpl:'<b>⭐标本题 2007·T4·40（Claude 盲做时在 C/D 之间真犹豫过）</b>：题干只说 Paragraph 5，全段五句都在范围内。四项一一回文：<br>'
+     +'<table class="tk"><tr><th>选项</th><th>定位</th><th>原文怎么说</th><th>判</th></tr>'
+     +'<tr><td>A data leakage is more severe in <b>Europe</b></td><td>①句括号</td><td><code>(in America, <b>but not Europe</b>)</code>：欧洲<b>不缺</b>罚则</td><td>✗ 正相反</td></tr>'
+     +'<tr><td>B <b>FTC</b>\'s decision is essential</td><td>④句末</td><td>那个决定虽 hugely important，却被窃案 <code><b>overshadowed</b></code>（盖过风头）</td><td>✗ 语气反（作者在说它作用有限）</td></tr>'
+     +'<tr><td>C <b>California</b> takes the lead in security legislation</td><td>②句</td><td>只能推出「加州是<b>美国首个</b>就<b>数据被盗须告知</b>立法的州」</td><td>✗ 连泛化两次</td></tr>'
+     +'<tr><td>D <b>legal penalty</b> is a major solution</td><td>①句原词复现</td><td>①②③句共同指向「法律推着企业往前走」</td><td>✓</td></tr></table>'
+     +'<p style="margin-top:8px"><b>D 为什么对</b>：<code>缺罚则 → 助长了企业不上心</code>（①句 encouraged）＋<code>加州立了法 → 情况开始变</code>（②句）＋<code>一堆法案在走 → 还会更快变</code>（③句），'
+     +'<b>反过来推一步就是「法律惩处是解决泄露的主要办法之一」</b>。注意 D 用 <b>a major solution</b>（之一）而非 the only，语气与原文的 may 对齐（配合 R6 用）。</p>',
+ traps:['<b>⭐从「小」偷换到「大」（本卡第一大坑）</b>：一部具体的法 → 一整类立法领域；美国首个州 → 全世界领先。'
+        +'<b>看到 the lead / the first / the most / all / always / never 这类唯一性、全体性词汇，立刻回原文数范围。</b>同类标本：2007·T2·29 的 C（一个应试技巧 → 整个测试充满猜测）。',
+        '<b>「有原话支撑」不等于「是答案」</b>：C 有一句原文可指，D 一句都没有——但段落推理题问的是<b>整段让你推出什么</b>。<b>只有某句话的延伸 vs. 整段的主线，选主线。</b>',
+        '<b>动词的褒贬也要比</b>：overshadowed（被盖过风头）＝作者在给这个决定打折，选项却说它 essential（至关重要）。<b>一个动词就能给整句定褒贬，别只翻字面。</b>',
+        '<b>括号里的信息同样是判据</b>：40 题 A 的生死全在①句那个 <code>(in America, but not Europe)</code>（配合 R13 用）。'],
+ refs:[{p:'2007_T4_数据泄密的公司.html',q:'q40',label:'2007·T4·40'},{p:'2007_T2_智力测试的边界.html',q:'q29',label:'2007·T2·29'}]},
+
+{id:'R16', tier:'🔴', qt:'写作目的题（引言 / 概念 / 例子）', title:'配角只负责引出主角：定位句往外扩一层找意群',
+ trig:['The statement “…” is used to introduce ______','In bringing up the concept of X the author is making the point that','X is mentioned to / The author quotes Y in order to','题干问某句话、某概念、某例子的「作用」'],
+ flow:'<b>① 先认出这是「问作用」不是「问意思」</b>：<code>is used to introduce / is making the point that / is mentioned to</code>＝问<b>作用</b>；<code>most probably means</code>＝问<b>意思</b>（那是 R10）。<br>'
+     +'<b>② 定位到「那个东西」的那句话，然后<u>往外扩一层</u></b>，扩的方向靠连接词指路：<br>'
+     +'　· <b>冒号 / 破折号</b> → 答案常在<b>紧接其后</b>；<br>'
+     +'　· <b>Indeed / In fact / Similarly / Moreover</b> → 与<b>前文</b>同向递进，把前一两句拉进来；<br>'
+     +'　· <b>he says / argues X</b>（引述倒装）→ 相邻几句是<b>同一个人的话</b>，一并读；<br>'
+     +'　· <b>just as A…, B…</b>（类比）→ <b>答案一定在 B 侧</b>，A 只是参照物。<br>'
+     +'<b>③ 答案 = 这个意群的主旨，一律往上抽一层。</b>',
+ tmpl:'<b>⭐两个标本都在 2007·T4（一篇里连出两道，说明命题人吃准了这个考法）</b>：<br>'
+     +'· <b>36 题 · 引言/谚语</b>：<code>It never rains but it pours</code> 之后<b>冒号点名 <b>data insecurity</b></code>，下一句主语又是 information protection → 答案 D <b>the severity of data leakage</b>。'
+     +'<b>两条独立通道任一够用</b>：①抓谚语紧接之后的实义信息；②抓全文高频词（data insecurity / information protection / data leakage / data security 反复出现＝主题）。<br>'
+     +'· <b>38 题 · 概念</b>：定位句 <code>perhaps it is time for <b>GASP</b></code> 本身<b>只是个提议、说不出观点</b>；靠 <code><b>Indeed</b></code> 往前接①②句（数据是资产、要像别的资产一样看守），靠句末 <code>he says</code> 往后接④句（<code>a management issue, not a technical one</code>）→ '
+     +'整个意群只在讲<b>「数据保护应受到足够重视」</b>＝答案 B <b>information protection should be given due attention</b>。<br>'
+     +'<p style="margin-top:8px">📌 <b>本卡与 R3（例证题铁律）同源</b>：<b>例子、谚语、概念、数据、比喻，全都是配角</b>，存在的唯一理由是引出或支撑某个论点。'
+     +'<b>凡选项还停在配角本身（谚语说了啥、概念叫什么、例子多有趣），一律排除。</b></p>',
+ traps:['<b>停在配角身上</b>：2007·T4·36 的 C 拿 <code>threatens</code>+<code>nasty headlines</code> 拼出「新闻报道的威胁」——负面头条只是「严重」的<b>后果/温度计</b>，不是被引出的<b>话题</b>。<b>后果 ≠ 来源。</b>',
+        '<b>偷换修饰对象（最难察觉）</b>：2007·T4·36 的 B——原文 <code>feeble <b>corporation governance</b></code>（乏力的<b>公司治理</b>），选项挪成「乏力的<b>老板与董事会关系</b>」。<b>形容词照抄、被修饰的名词换掉。</b>而且这件事在原文里属于<b>已经解决掉的旧麻烦</b>，本就不是要引出的新问题。',
+        '<b>抓类比的错一侧</b>：2007·T4·38 的 C——<code>just as there is GAAP（会计准则）, perhaps it is time for GASP（安全准则）</code>，答案在 B 侧（安全），C 却说「提高<b>财会</b>安全水平」。<b>类比句里的 A 只是借来铺路的桥。</b>',
+        '<b>把状语/附带成分当主张</b>：2007·T4·38 的 A（<code>on behalf of shareholders</code> 只是交代「替谁负责」的状语）、D（把「保护客户数据的<b>能力</b>是<b>公司市值</b>的关键」拧成「<b>客户数据的市场价值</b>应受重视」）。<b>句子成分的地位不能换。</b>',
+        '<b>只读定位句就选，必被骗</b>：命题人挑来考「写作目的」的句子，<b>本身往往看不出观点</b>——观点在它的邻居那儿。'],
+ refs:[{p:'2007_T4_数据泄密的公司.html',q:'q36',label:'2007·T4·36'},{p:'2007_T4_数据泄密的公司.html',q:'q38',label:'2007·T4·38'},{p:'2007_T1_刻意练习造就高手.html',q:'q21',label:'2007·T1·21'}]}
 
 ];
 
 window.TRICK_READ_META = {
   subject:'英语一 · 阅读',
-  source:'2022 Text 1–4 · 2007 Text 1–3',
+  source:'2022 Text 1–4 · 2007 Text 1–4',
   note:'提炼自本复盘中心各篇阅读真题复盘页的技巧/干扰项分析，随复盘页增长。'
 };
