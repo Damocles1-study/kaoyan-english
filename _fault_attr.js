@@ -5,7 +5,11 @@
    错因分类贴合阅读实战（对应套路库_阅读.html 的五大干扰项 + 阅读特有失误）。 */
 (function(){
   const LS='en_attr_v1';
-  const TAGS=['没定位到/定位错','同义替换没认出','被原词复现骗','过度推断（推两步）','混淆作者/人物','生词卡住','时间不够/蒙的'];
+  /* 阅读页与完形页失误类型不同：页面里出现完形空格(.bk)就切到完形那套标签。
+     两套标签同存一个 localStorage，index 的「错因分布」照常聚合。 */
+  const TAGS_READ=['没定位到/定位错','同义替换没认出','被原词复现骗','过度推断（推两步）','混淆作者/人物','生词卡住','时间不够/蒙的'];
+  const TAGS_CLOZE=['逻辑关系没看出','固定搭配不会','近义词分不清','词性/成分没先定','没往后读（复现没抓）','并列/对比方向填反','生词卡住','蒙的'];
+  const TAGS=document.querySelector('.bk')?TAGS_CLOZE:TAGS_READ;
   const key=(function(){try{return decodeURIComponent((location.pathname.split('/').pop()||'page').replace(/\.html$/,''));}catch(e){return 'page';}})();
   function load(){try{return JSON.parse(localStorage.getItem(LS))||{};}catch(e){return {};}}
   function save(o){try{localStorage.setItem(LS,JSON.stringify(o));}catch(e){}}
