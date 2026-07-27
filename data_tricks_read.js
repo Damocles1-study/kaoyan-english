@@ -255,12 +255,48 @@ window.TRICK_READ = [
         '<b>抓类比的错一侧</b>：2007·T4·38 的 C——<code>just as there is GAAP（会计准则）, perhaps it is time for GASP（安全准则）</code>，答案在 B 侧（安全），C 却说「提高<b>财会</b>安全水平」。<b>类比句里的 A 只是借来铺路的桥。</b>',
         '<b>把状语/附带成分当主张</b>：2007·T4·38 的 A（<code>on behalf of shareholders</code> 只是交代「替谁负责」的状语）、D（把「保护客户数据的<b>能力</b>是<b>公司市值</b>的关键」拧成「<b>客户数据的市场价值</b>应受重视」）。<b>句子成分的地位不能换。</b>',
         '<b>只读定位句就选，必被骗</b>：命题人挑来考「写作目的」的句子，<b>本身往往看不出观点</b>——观点在它的邻居那儿。'],
- refs:[{p:'2007_T4_数据泄密的公司.html',q:'q36',label:'2007·T4·36'},{p:'2007_T4_数据泄密的公司.html',q:'q38',label:'2007·T4·38'},{p:'2007_T1_刻意练习造就高手.html',q:'q21',label:'2007·T1·21'}]}
+ refs:[{p:'2007_T4_数据泄密的公司.html',q:'q36',label:'2007·T4·36'},{p:'2007_T4_数据泄密的公司.html',q:'q38',label:'2007·T4·38'},{p:'2007_T1_刻意练习造就高手.html',q:'q21',label:'2007·T1·21'}]},
+
+{id:'R17', tier:'🔴', qt:'新题型 · 段落-标题匹配', title:'先自写段落主旨再配标题：复现词最猛的那项，通常是陷阱',
+ trig:['Choose a heading from the list A–G that best fits the meaning of each numbered part','七个选项全是短标题（祈使句 / 名词短语）','正文段落被编号 41–45，首末段不编号'],
+ flow:'<b>① 先数框位。</b>标题框排在<b>段落之前</b>（2007）还是之后？首段末段不编号 —— <b>错位一格全盘皆输，动笔前数一遍。</b><br>'
+     +'<b>② 看七个标题的「句式共性」，反推每段写什么。</b>2007 七项全是「动词+宾语」祈使句（Set / Build / Place / Talk / Help / Help / Build），主语默认是家长 ⇒ <b>每段＝家长该做的一件事</b>；'
+     +'再对上首段那句 <code>Here are a few <b>measures</b> that parents can take</code>，结构就锁死了。<br>'
+     +'<b>③ 给每个标题划定位关键词 + 预测段落内容</b>（Good Example / Work Skills / Time Limits+Leisure / Future+Regular / Coping Strategies / Who They Are / Sense of Responsibility）。<br>'
+     +'<b>④ ⭐逐段先自己写一句中文主旨，写完再看选项。</b>这一步不能省 —— 先看选项再读段，眼睛只会去找复现词，正中下怀。<br>'
+     +'<b>⑤ 用「标题要罩得住整段」验证</b>：只罩首句、或只罩中间某句的，一律是陷阱。<br>'
+     +'<b>⑥ 五段定完，回头把两个没用上的标题挨段试一遍</b>，确认无处安放才收工。',
+ tmpl:'<b>⭐标本 2007 新题型（Claude 盲做 5/5）——把答案分布统计一下，命题人的心思就露出来了：</b><br>'
+     +'<table class="tk"><tr><th>题</th><th>答案</th><th>原文有没有标题的原词</th><th>靠什么判</th></tr>'
+     +'<tr><td>41</td><td>F Figure Out Who They Are</td><td><b>零原词</b></td><td>strengths and weaknesses + interests ＝ 自我画像</td></tr>'
+     +'<tr><td>42</td><td>D Talk About the Future on a Regular Basis</td><td>regular / future 原词复现</td><td>Talk·Future·Regular <b>三词全有实锤</b></td></tr>'
+     +'<tr><td>43</td><td>B Build Your Kids\' Work Skills</td><td>how to <b>work</b> / organizational <b>skills</b></td><td><b>首句＋末句</b>把 work 和 skills 拼齐</td></tr>'
+     +'<tr><td>44</td><td>C Place Time Limits on Leisure Activities</td><td><b>零原词</b></td><td>三件娱乐上位概括＋hours of / long stretches <b>反向引申出「限时」</b></td></tr>'
+     +'<tr><td>45</td><td>E Help Kids Develop Coping Strategies</td><td><b>零原词</b></td><td>deal with / solve / resolve 概括为 cope</td></tr>'
+     +'<tr><td>多余</td><td><b>A</b> Set a Good Example</td><td>role models（近义呼应）</td><td>—— 反而<b>是错的</b></td></tr>'
+     +'<tr><td>多余</td><td><b>G</b> Sense of Responsibility</td><td>responsible / responsibilities <b>连续复现两次</b></td><td>—— 反而<b>是错的</b></td></tr></table>'
+     +'<p style="margin-top:8px"><b>结论一句话：正确的 5 项里有 3 项在原文一个原词都没有，错误的 2 项反而都有词面呼应。</b>'
+     +'标题匹配考的是<b>「你会不会概括段落主旨」</b>，不是<b>「你会不会找词」</b>。'
+     +'<b>看到复现最猛的那个选项，先假设它是错的，再去找证据推翻这个假设</b>——这个先验能救分。</p>',
+ traps:['<b>⭐首句陷阱（2007·42 的 A）</b>：段落首句 <code>Kids need a range of authentic <b>role models</b></code>，A 项 <b>Set a Good Example</b> 看上去天经地义。'
+        +'但 ① <b>谁是榜样</b>——原文是 <code>people the family knows</code>，不是家长本人；② <b>做什么</b>——全段动词是 discuss / talk，不是「以身作则」；'
+        +'③ <b>罩不罩得住</b>——选 A 则段落后半（阻止说「我不知道」、别对未来只有 foggy view）三句全落空。<b>首句有词、后半没词 ＝ 首句陷阱。</b>',
+        '<b>⭐问一句「谁的责任」（2007·43 的 G）</b>：段里 responsible / responsibilities 连出两次，是全篇复现密度最高处 —— 恰恰因为太顺手，它是设计好的诱饵。'
+        +'原文 <code>Teachers are responsible … parents should be responsible …</code> 说的是<b>老师与家长的职责分工</b>，主语<b>根本不是孩子</b>，与「孩子的责任感」无关。'
+        +'<b>见到 responsible / duty / obligation 这类词，先定「谁的」，再判段落主旨。</b>',
+        '<b>手段 ≠ 目的</b>：<code>Assign responsibilities around the house</code> 与「盯作业 deadline」「做兼职」并列，共同服务于末句的 <b>organizational skills</b>。'
+        +'<b>并列举措之一 只能撑起一个手段级标题，撑不起段落主旨；首末主旨句 &gt; 中间的例举句。</b>',
+        '<b>反向引申：段落只写危害，标题写对策（2007·44）</b>。第五段通篇讲电子游戏/电视/耳机的害处，一个祈使句都没有，正确标题 <b>Place Time Limits</b> 要你自己从 <code>hours of</code>、<code>for long stretches</code> 两处「时间太长」补出来。'
+        +'<b>全篇唯一没有祈使句的那段，标题必须靠你补。</b>',
+        '<b>代词回指要先还原（2007·45）</b>：末句 <code>help them apply <b>these skills</b></code> 又把 skills 送到眼前，很像 B 项 Work Skills。但 these skills 回指前两句的抗挫/解决问题/批判性思考，且原文自己点明 <code>everyday life situations</code>。'
+        +'<b>看到 these / such / it + 名词，先回头找它指谁，再判主旨。</b>',
+        '<b>一段一项、不重复</b>：撞车时（44 与 43 都能扯上 skills）回去比<b>哪一段的证据更硬</b>，硬的那段留住选项。'],
+ refs:[{p:'2007_新题型_家长如何帮孩子.html',q:'q42',label:'2007·新题型·42（首句陷阱）'},{p:'2007_新题型_家长如何帮孩子.html',q:'q43',label:'2007·新题型·43（复现陷阱）'},{p:'2007_新题型_家长如何帮孩子.html',q:'q44',label:'2007·新题型·44（反向引申）'},{p:'2022_新题型_动物园之辩.html',q:'',label:'2022·新题型（观点匹配对照）'}]}
 
 ];
 
 window.TRICK_READ_META = {
   subject:'英语一 · 阅读',
-  source:'2022 Text 1–4 · 2007 Text 1–4',
+  source:'2022 Text 1–4 · 2007 Text 1–4 · 2007/2022 新题型',
   note:'提炼自本复盘中心各篇阅读真题复盘页的技巧/干扰项分析，随复盘页增长。'
 };
