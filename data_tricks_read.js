@@ -106,7 +106,7 @@ window.TRICK_READ = [
      +'<tr><td><b>无中生有</b></td><td>文中根本没提</td><td>T1·24A「谈钱」全文没有</td></tr>'
      +'<tr><td><b>偷换</b></td><td>换概念/主宾/时态/段落</td><td>T1·21B 偷换首句、T2·30C 换时态</td></tr>'
      +'<tr><td><b>反向</b></td><td>把原文意思说反</td><td>T2·28D、T4 多处</td></tr>'
-     +'<tr><td><b>张冠李戴</b></td><td>把 A 的事安到 B 头上</td><td>T1·23C 化学家的活安给博物馆；2007·T1·23D 把「刻意练习」的三要素安给「好记忆」</td></tr>'
+     +'<tr><td><b>张冠李戴</b></td><td>把 A 的事安到 B 头上；<b>对比型段落里最猖獗——把对照组的特征词贴到目标组头上</b></td><td>T1·23C 化学家的活安给博物馆；2007·T1·23D 把「刻意练习」的三要素安给「好记忆」；<b>2008·T1·23 的 B、D 两项</b>把描述<b>男性</b>压力的 <code>random</code>（偶发）、<code>violence</code> 直接搬去描述<b>女性</b>（原文女性栏是 <code>chronic or repeated</code>）</td></tr>'
      +'<tr><td><b>过度推断</b></td><td>顺着原文多推一步</td><td>T2·30C 推两步；2007·T2·29C 以偏概全</td></tr>'
      +'<tr><td><b>杂糅</b>（第六类·最难）</td><td>把<b>相邻两句</b>的成分拼成一句</td><td>2007·T2·29B 把④句的「IQ⇄领导力相关」和⑤句的「SAT」拼成「IQ 与 SAT 高度相关」</td></tr>'
      +'<tr><td><b>凭空比较</b></td><td>原文无比较对象，选项加比较级</td><td>2007·T2·27B 的 <b>More</b> versions——比谁多？原文没给；2007·T3·34A 的 <b>outweigh</b>——原文只说两种 fallout 一前一后，从没比过轻重（<b>「先后」≠「轻重」</b>）</td></tr>'
@@ -149,17 +149,25 @@ window.TRICK_READ = [
      +'③ 拿这组对立去卡每个谚语：<b>说反的先排</b> → <b>与核心对立无关的再排</b> → 剩下的必须<b>两个关键概念都对得上</b>。',
  tmpl:'关键词咬合法：<code>Practice</code> ↔ deliberate practice、<code>perfect</code> ↔ expert performers/made —— 两个词都咬住才算命中。'
      +'主旨句只在<b>首尾段</b>找，绝不在中间的实验细节里找。<br>'
-     +'<b>⭐标题题三查（四项主语相同、只差后半截时尤其好用）：</b><br>'
-     +'· <b>① 查对象</b>：讨论的主角对不对？<br>'
+     +'<b>⭐标题题四查（四项主语相同、只差后半截时尤其好用）：</b><br>'
+     +'· <b>① 查对象</b>：讨论的主角对不对？<b>正确标题必须含全文高频关键词</b>（2008·T1：women + stress，<b>A、C 两项都缺 women</b> ✗）<br>'
      +'· <b>② 查特点/关系</b>：它处在什么状态、跟谁发生关系？（2007·T3·35 的 A <code>on the Alert</code> 把<b>被动挨打</b>写成<b>主动戒备</b> ✗；C <code>in Conflict</code> 把<b>并列</b>——「老家庭惨，年轻家庭也 <code>not any better</code>」——写成<b>对立</b> ✗）<br>'
      +'· <b>③ 查程度</b>：到哪一步了？（同题 D <code>in Ruins</code> 把「岌岌可危」说成「已成废墟」✗；正解 B <code>on the Cliff</code>＝<b>危险已到眼前但尚未坠落</b>，正对原文 <code><b>already</b> overburdened shoulders</code> 与 <code>may not be far behind</code> 的未然语气）<br>'
-     +'三关全过的才是答案。<b>写作里给段落起小标题同理：对象 + 关系 + 程度三者都要对准。</b>',
+     +'· <b>④ 查立场</b>（<b>2008·T1 新增，因为在这一查上栽了</b>）：作者是<b>中立论述</b>还是<b>有偏向</b>？<b>中性标题配偏向文章 ＝ 错。</b>'
+     +'三种立场标记去原文找：<b>反语词</b>（褒义词配贬义语境，如 <code>way ahead</code> + <code>undesirable</code>）｜<b>情感副词</b>（删了不影响语法的插入词，如 <code>unfortunately</code>）｜<b>末段建议给了谁</b>（只给一方提建议＝立场在这一方）。'
+     +'2008·T1·25：正解 <code>Gender <b>Inequality</b></code>（带倾向）胜过 <code>Gender <b>Difference</b></code>（中性）✅<br>'
+     +'· <b>覆盖检查（配合 ②）</b>：把候选标题<b>挨段念一遍</b>，问「这段是在讲它吗」。2008·T1 的 B <code>Responses to Stress</code> 只罩得住①②段（③④⑤段谈的是<b>压力本身</b>的量与质，不是「对压力的反应」）⟹ 出局。<b>只需 30 秒，能拦下大部分「首段陷阱」型错误。</b><br>'
+     +'四关全过的才是答案。<b>写作里给段落起小标题同理：对象 + 关系 + 程度 + 立场四者都要对准。</b>',
  traps:['<b>「沾边但没打到靶心」最难排</b>：2007·T1·25 的 B「种瓜得瓜」重心是「付出与回报的对应」，完全没触碰「天赋」这一边 → 错。',
         '反向谚语反而好排：同题 D「有其父必有其子」讲遗传，与 made, not born 正相反。',
         '把某段的细节当主旨：谚语题问的是全文 message，不是某个实验说明了什么。',
         '<b>把趋势说成结局</b>是标题题最常见的错法（2007·T3·35D）。判断依据看原文的<b>未然语气</b>：<code>may / already but not yet / on the brink</code> 都表示「还没到最后一步」。',
-        '<b>警告是说给谁听的，决定标题的主语状态</b>：2007·T3 末句「政治后果不远了」是<b>写给政策制定者的警告</b>，全文把中产写成<b>被动承受方</b>（首句用被动语态 <code>has been transformed by</code>），所以「中产自己保持警惕」的 A 项从一开始就站错了位。'],
- refs:[{p:'2007_T3_中产家庭的风险转嫁.html',q:'q35',label:'2007·T3·35'},{p:'2007_T1_刻意练习造就高手.html',q:'q25',label:'2007·T1·25'},{p:'2022_T1_塑料文物保护.html',q:'q25',label:'T1·25'}]},
+        '<b>警告是说给谁听的，决定标题的主语状态</b>：2007·T3 末句「政治后果不远了」是<b>写给政策制定者的警告</b>，全文把中产写成<b>被动承受方</b>（首句用被动语态 <code>has been transformed by</code>），所以「中产自己保持警惕」的 A 项从一开始就站错了位。',
+        '⚠️⚠️ <b>「文章通篇在做 A 与 B 的对比」≠「文章的主题是 A 与 B 的差异」</b>（<b>2008·T1·25 我就栽在这上面</b>）。对比可以只是<b>论证手段</b>：2008·T1 全篇用「与男性相比」来<b>衬托女性之惨</b>，男性始终只是参照系（雄鼠、战场），从来不是被讨论的对象。'
+        +'<b>判据：把 B 方从文章里删掉，文章还成立吗？</b>删掉男性后「女性压力大、成因有二、应当疏解」照样成立 ⟹ <b>男性只是参照系 ⟹ 标题的主语只能是女性</b>，含 <code>Gender Difference</code> 的中性标题出局。',
+        '<b>别用自己对某个词的刻板印象排选项</b>：我排 <code>Gender Inequality</code> 的理由是「这是个社会学词，本文讲心理与生理，不搭」——<b>这是拿印象做题，不是回原文验证</b>。正确顺序永远是：<b>先从原文读出作者立场，再看哪个标题装得下这个立场。</b>',
+        '<b>写主旨句时要带感情色彩</b>：写成「本文比较了男女面对压力的差异」（中立）必然把你导向中性标题；写成「作者认为女性在压力上吃了大亏、这不公平、应当被看见」（有立场），才选得对。'],
+ refs:[{p:'2007_T3_中产家庭的风险转嫁.html',q:'q35',label:'2007·T3·35'},{p:'2007_T1_刻意练习造就高手.html',q:'q25',label:'2007·T1·25'},{p:'2008_T1_女性与压力.html',q:'q25',label:'2008·T1·25（第四查·立场）'},{p:'2022_T1_塑料文物保护.html',q:'q25',label:'T1·25'}]},
 
 {id:'R12', tier:'🔴', qt:'作者态度题（专项）', title:'态度词强度尺：先定方向，再定强度',
  trig:['What is the author’s attitude towards X?','The author’s tone can be described as','四个选项都是单个形容词'],
@@ -189,8 +197,13 @@ window.TRICK_READ = [
      +'<b>⚠️ 这条只用来排序检查顺序、时间紧时押注，必须回原文核实过才能定答案。</b>',
  traps:['<b>凭空添加比较级</b>：原文只说「随处可见」，选项加个 <b>More</b>（更多）——比谁多？原文一个比较对象都没给。同类还有 better / faster / the most。',
         '<b>「使用频率下降」≠「地位被废」</b>：<code>tests are not given as often as they used to be</code> 只是让步，主句 <code>still seems to be the defining term</code> 才是要点。<b>even though 让步句里的内容常被拿去造反向干扰项。</b>',
-        '<b>括号里的信息也受题干段落限定约束</b>：先确认这个括号在不在题干指定的那一段（配合 R7 用）。'],
- refs:[{p:'2007_T2_智力测试的边界.html',q:'q27',label:'2007·T2·27'},{p:'2022_T2_Z世代与学位.html',q:'q29',label:'T2·29'}]},
+        '<b>括号里的信息也受题干段落限定约束</b>：先确认这个括号在不在题干指定的那一段（配合 R7 用）。',
+        '⭐ <b>「纠正型句式」是同族的另一个埋点，答案永远在后半句</b>：<code>It’s <b>not necessarily that</b> A. It’s <b>just that</b> B.</code>——<b>先否掉人们通常以为的解释 A，再把真因指向 B</b>。'
+        +'2008·T1·22：被否掉的 A＝「女性应对能力差」（<b>B 项 limited capacity 正是它，还照抄了原词</b>），真因 B＝「要应对的事太多」⟹ 正解 D。'
+        +'<b>同族一起记</b>：<code>It’s not that A, it’s that B</code>／<code>The problem is not A but B</code>／<code>not so much A as B</code>／<code>less a matter of A than of B</code>。'
+        +'<b>见到就画一个箭头指向后半句——前半句是命题人给干扰项预留的仓库。</b>',
+        '<b>插入语不只藏信息，也藏态度</b>：删掉之后<b>语法毫无损失</b>的那个词（2008·T1 的 <code>by, <b>unfortunately</b>, parents…</code>）是作者的立场，不是信息——判标题/态度时要用（见 R18）。'],
+ refs:[{p:'2007_T2_智力测试的边界.html',q:'q27',label:'2007·T2·27'},{p:'2008_T1_女性与压力.html',q:'q22',label:'2008·T1·22（纠正型句式）'},{p:'2022_T2_Z世代与学位.html',q:'q29',label:'T2·29'}]},
 
 {id:'R14', tier:'🔴', qt:'细节题 / 因果题 · 近义陷阱', title:'支撑者 ≠ 被支撑者：见 support 就标「谁托着谁」',
  trig:['A support / complement / reinforce / bolster / add to B','原文出现两个意思相近的比喻词','选项说某样东西「消失了 / 被剥夺了」'],
@@ -291,12 +304,59 @@ window.TRICK_READ = [
         '<b>代词回指要先还原（2007·45）</b>：末句 <code>help them apply <b>these skills</b></code> 又把 skills 送到眼前，很像 B 项 Work Skills。但 these skills 回指前两句的抗挫/解决问题/批判性思考，且原文自己点明 <code>everyday life situations</code>。'
         +'<b>看到 these / such / it + 名词，先回头找它指谁，再判主旨。</b>',
         '<b>一段一项、不重复</b>：撞车时（44 与 43 都能扯上 skills）回去比<b>哪一段的证据更硬</b>，硬的那段留住选项。'],
- refs:[{p:'2007_新题型_家长如何帮孩子.html',q:'q42',label:'2007·新题型·42（首句陷阱）'},{p:'2007_新题型_家长如何帮孩子.html',q:'q43',label:'2007·新题型·43（复现陷阱）'},{p:'2007_新题型_家长如何帮孩子.html',q:'q44',label:'2007·新题型·44（反向引申）'},{p:'2022_新题型_动物园之辩.html',q:'',label:'2022·新题型（观点匹配对照）'}]}
+ refs:[{p:'2007_新题型_家长如何帮孩子.html',q:'q42',label:'2007·新题型·42（首句陷阱）'},{p:'2007_新题型_家长如何帮孩子.html',q:'q43',label:'2007·新题型·43（复现陷阱）'},{p:'2007_新题型_家长如何帮孩子.html',q:'q44',label:'2007·新题型·44（反向引申）'},{p:'2022_新题型_动物园之辩.html',q:'',label:'2022·新题型（观点匹配对照）'}]},
+
+{id:'R18', tier:'🔴', qt:'标题题 / 主旨题 / 态度题 · 立场判定', title:'先判作者站没站队：反语、情感副词、末段建议给了谁',
+ trig:['best title for the text','the author’s attitude','选项里同时有中性词（difference/change）与倾向词（inequality/threat）','读完觉得「作者只是在客观陈述」'],
+ flow:'<b>选标题/判主旨之前，先花 20 秒确认一件事：这篇是<u>中立论述</u>还是<u>有偏向</u>？</b>'
+     +'去原文找下面三种标记，<b>命中任意一条，就不能选中性词的选项</b>：<br>'
+     +'· <b>① 反语</b>：<b>褒义词出现在负面语境里</b>（或反过来）。2008·T1 首句 <code>women appear to be <b>way ahead</b> in at least one <b>undesirable</b> category</code>——「遥遥领先」＋「不受欢迎的类别」一撞就翻面，<b>作者在替女性叫屈，不是在客观记录</b>。<br>'
+     +'· <b>② 情感副词/形容词（插入语最典型）</b>：<b>删掉之后语法毫无损失的那个词，一定是态度不是信息</b>。2008·T1 第四段 <code>by, <b>unfortunately</b>, parents or other family members</code>——硬塞在介词与宾语之间。<br>'
+     +'· <b>③ 末段建议给了谁</b>：<b>只给一方提建议 ＝ 立场在这一方</b>。2008·T1 末段通篇 <code><b>most women</b> today are coping with…</code>，一个字没提男性。',
+ tmpl:'<b>常见反语信号</b>：<code>way ahead / lead the way / enjoy the privilege</code> 等褒义说法 + <code>undesirable / dubious / unenviable</code> 等贬义限定；'
+     +'<b>加引号的普通名词</b>（2008·T1 的 <code>"opportunities" for stress</code>——不是好机会，是「遭遇压力的场合」）；<b>加引号的 so-called</b>。<br>'
+     +'<b>态度副词清单（见到就在旁边打钩）</b>：unfortunately / sadly / regrettably（惋惜）｜ironically（讽刺）｜alarmingly（警觉）｜surprisingly（意外）｜understandably（可以理解）｜tellingly（很说明问题）。<br>'
+     +'<b>⚠️ 引号在英文里的三种功能都要认得</b>：① 直接引语　② <b>反语／所谓的</b>　③ 强调词本身。<b>②③两种都是命题人埋考点的地方（与 R13 的括号/同位语同族）。</b>',
+ traps:['<b>最大的坑是「觉得作者很客观」</b>——科普文体自带冷静语气，容易让人以为没有立场。<b>可语气冷静 ≠ 没有立场</b>：2008·T1 通篇引专家、摆实验，却在三处露出偏向。<b>不要用文体去推立场，要用上面三种标记去查。</b>',
+        '<b>反语一旦读成字面，会连错两道题</b>：2008·T1 把 <code>way ahead</code> 顺读成「更擅长」→ 21 题错选 C（女性更有应对经验）；把全文读成「中立比较」→ 25 题错选 B（Gender Difference）。<b>一个反语开关管两道题。</b>',
+        '<b>反过来也要防</b>：如果三种标记一条都找不到，那就<b>别自作多情地选倾向词</b>——真中立的文章选中性标题才对。<b>这一卡的用法是「查」，不是「一律选倾向词」。</b>'],
+ refs:[{p:'2008_T1_女性与压力.html',q:'q25',label:'2008·T1·25（三种标记齐全）'},{p:'2008_T1_女性与压力.html',q:'q21',label:'2008·T1·21（反语放倒 C 项）'},{p:'2007_T2_智力测试的边界.html',q:'q30',label:'2007·T2·30（态度题）'}]},
+
+{id:'R19', tier:'🟡', qt:'特征题（选项为 X and Y 结构）', title:'两个词都要验；对比段先给每个特征词标主语',
+ trig:['the stress women confront tends to be ______','四个选项都是「形容词 and 形容词」','原文段落在对比 A 与 B 两类人/两种东西'],
+ flow:'① <b>看选项形状</b>：四项都是 <code>X and Y</code> ⟹ 这是特征题，<b>命题人的标准做法是只换其中一个词</b>，让你看到对的那半就点。<br>'
+     +'② <b>回原文找同结构</b>：2008·T1 第四段 <code>in more of a <b>chronic or repeated</b> nature</code> ⟹ 正解 <code><b>durable and frequent</b></code>（chronic→durable、repeated→frequent），<b>纯同义替换</b>。<br>'
+     +'③ <b>逐项验两个词，一个不对整项作废</b>。',
+ tmpl:'<b>⭐ 对比型段落的必做动作：读的时候在旁边画两栏，给每个特征词标「这是 A 的还是 B 的」。</b><br>'
+     +'2008·T1 第四段的两栏：<br>'
+     +'<table class="tk"><tr><th>　</th><th>原文特征词</th><th>被哪个干扰项偷走</th></tr>'
+     +'<tr><td><b>男性</b></td><td><code>war / combat stress</code>、<code><b>random</b> physical violence</code></td><td><b>B 的 violent、D 的 random 全部来自这一栏</b></td></tr>'
+     +'<tr><td><b>女性</b></td><td><code>chronic or repeated</code>、<code>domestic</code>、<code>not one-shot deals</code>、<code>longer relationships</code></td><td>正解 C 在这一栏；<b>A 只偷对了半个（domestic ✓ + temporary ✗）</b></td></tr></table>'
+     +'<b>另一个快筛：拿作者的语气强度卡形容词。</b>本段收口句是 <code>can be quite <b>devastating</b></code>（摧毁人），所以 D 的 <code>trivial</code>（琐碎的）当场出局。'
+     +'<b>凡选项出现贬低性形容词（trivial / minor / negligible / insignificant），先回原文量语气。</b>',
+ traps:['<b>半对半错最骗人</b>：2008·T1·23A 的 <code>domestic</code> 确实是原文女性栏的词 ✅，但 <code>temporary</code> 与 <code>chronic</code> 正面冲突 ❌。<b>看到第一个词对就点，正好中招。</b>',
+        '<b>反义对要成对记</b>：chronic（长期）⇄ acute（急性）｜chronic ⇄ temporary / one-shot（一次性）｜repeated（反复，有规律）⇄ random / irregular（偶发，无规律）。<b>2008·T1·23 的四个干扰项全建立在这两组反义上。</b>',
+        '<b>原文用 tend to be 的，正确项也应是倾向性描述</b>；选项里出现 always / never / all，先扣一分。'],
+ refs:[{p:'2008_T1_女性与压力.html',q:'q23',label:'2008·T1·23（两栏对照标本）'}]},
+
+{id:'R20', tier:'🔴', qt:'句意推理题（题干引一句话问 shows that）', title:'句意题三步：先判逻辑关系，再取紧邻上下文，最后用主题检验',
+ trig:['The sentence "…" (Line X, Para. Y) shows that','By saying "…", the author means','被考句是比喻、习语或特殊表达'],
+ flow:'<b>被考句几乎必是长难句、比喻或习语——命题人考的是「你能不能靠上下文把它翻出来」，不是「你背没背过」。所以第一动作永远是看它前后各一句。</b><br>'
+     +'· <b>第一步 · 判逻辑关系</b>：被考句与上一句之间<b>有没有转折词</b>？有 but/however/yet ⟹ 方向翻转；<b>没有 ⟹ 顺承，方向与上文一致</b>。<br>'
+     +'· <b>第二步 · 从紧邻上文取意</b>：2008·T1·24 的上一句是 <code>take care of a teenager, <b>have a job</b>, <b>pay</b> the rent, <b>pay</b> the car payment, and <b>pay</b> the debt</code>——<b>三个 pay 连用，全在往外掏钱</b>；顺着说下去，末句只能是「收入被吃干净」⟹ B（工资勉强够家庭开支）。<br>'
+     +'· <b>第三步 · 用全文主题检验</b>：全文讲女性压力之大，「经济上入不敷出」正是压力的一种，严丝合缝。<br>'
+     +'<b>三步都指向同一项时，认不认识那个习语已经无所谓了。</b>',
+ tmpl:'<b>⭐ 同一个动词连出三次 ＝ 作者在强调「量」</b>，别逐项去记内容，要读出那股压迫感（本篇三个 pay；2007·T4 的三个数据泄露机构同理）。<br>'
+     +'<b>经济压力四件套（本篇顺手背走）</b>：<code>live from paycheck to paycheck</code>（月光）｜<code>live from hand to mouth</code>（勉强糊口）｜<code>make ends meet</code>（收支相抵）｜<code>live beyond one’s means</code>（入不敷出）。',
+ traps:['<b>咬文嚼字式误读</b>：2008·T1·24D 把 <code>paycheck</code> 里的 check 读成「支票（付款方式）」。<b>paycheck 是一个整词＝薪水，指的是<u>收入</u>。</b>判据很简单：该段列的全是<b>支出项目</b>，<b>全段没有一个字谈「怎么付」</b>。<b>凡选项把话题偏到一个<u>无人讨论的维度</u>，一律排除。</b>',
+        '<b>细节直接冲突要一眼看出</b>：同题 C 说 <code>paychecks from <b>different jobs</b></code>，原文写的是 <code>have <b>a job</b></code>（一份工作）；而且它把重心从「钱不够花」偏到「钱从哪来」。',
+        '<b>绝对化表述先扣分</b>：同题 A 的 <code>cared about <b>nothing but</b> making money</code>——而前文明说她拼命是为了 <code>get the college degree</code>、<code>that was my <b>escape</b></code>（上学是摆脱困境的出口）。'],
+ refs:[{p:'2008_T1_女性与压力.html',q:'q24',label:'2008·T1·24'},{p:'2007_T4_数据泄密的公司.html',q:'q40',label:'2007·T4·40（段落主线优先）'}]}
 
 ];
 
 window.TRICK_READ_META = {
   subject:'英语一 · 阅读',
-  source:'2022 Text 1–4 · 2007 Text 1–4 · 2007/2022 新题型',
+  source:'2022 Text 1–4 · 2007 Text 1–4 · 2008 Text 1 · 2007/2022 新题型',
   note:'提炼自本复盘中心各篇阅读真题复盘页的技巧/干扰项分析，随复盘页增长。'
 };
