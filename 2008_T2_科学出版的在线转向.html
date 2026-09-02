@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2008 英一 Text 2 · 科学出版的在线转向</title>
+<style>
+  :root{
+    --bg:#faf9f6; --card:#ffffff; --ink:#2b2b2b; --muted:#8a8578;
+    --accent:#8b5e34; --accent-soft:#f3e9dd; --line:#e8e3d8;
+    --hl:#fdf3d8; --hl-border:#e0b84d;
+    --green:#3e7a4e; --green-soft:#e8f2ea;
+    --red:#b04a3a; --red-soft:#f9e9e6;
+    --blue:#3d6a8a; --blue-soft:#e7eff5;
+    --purple:#6d5a8e; --purple-soft:#eeeaf5;
+    --serif:"Georgia","Songti SC",serif;
+    --sans:-apple-system,"PingFang SC","Helvetica Neue",sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#1c1a17; --card:#26231f; --ink:#e8e4dc; --muted:#9a948a;
+      --accent:#d0a06a; --accent-soft:#3a3127; --line:#3a362f;
+      --hl:#3d3520; --hl-border:#b08c3a;
+      --green:#7fb98d; --green-soft:#26362b;
+      --red:#d98876; --red-soft:#3d2a26;
+      --blue:#8ab3d0; --blue-soft:#26323d;
+      --purple:#a996c8; --purple-soft:#302a3d;
+    }
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;padding-bottom:120px}
+  .wrap{max-width:1100px;margin:0 auto;padding:24px 20px}
+  .back{font-size:.85rem;color:var(--muted);text-decoration:none}
+  .back:hover{color:var(--accent)}
+  header{margin:14px 0 28px}
+  header h1{font-family:var(--serif);font-size:1.7rem;line-height:1.3}
+  header .sub{color:var(--muted);margin-top:6px;font-size:.9rem}
+  .tags{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+  .tag{font-size:.75rem;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);border:1px solid var(--line)}
+  .tag.warn{background:var(--red-soft);color:var(--red);border-color:var(--red)}
+  .tag.ok{background:var(--green-soft);color:var(--green);border-color:var(--green)}
+
+  .layout{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:24px;align-items:start}
+  main{min-width:0}
+  @media (max-width:900px){.layout{grid-template-columns:minmax(0,1fr)}}
+
+  section.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:24px}
+  h2{font-size:1.05rem;letter-spacing:.05em;color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+  h2 .n{font-size:.72rem;background:var(--accent);color:var(--card);border-radius:6px;padding:1px 7px}
+  h3{font-size:.95rem;color:var(--accent);margin:18px 0 10px}
+
+  .para{margin-bottom:22px}
+  .para .en{font-family:var(--serif);font-size:1.06rem;line-height:1.9}
+  .pno{color:var(--muted);font-size:.75rem;user-select:none;margin-right:6px}
+  .tk{background:var(--hl);border-bottom:2px solid var(--hl-border);border-radius:3px;padding:0 2px;cursor:pointer;transition:filter .15s}
+  .tk:hover{filter:brightness(.93)}
+  .tk.active{outline:2px solid var(--hl-border)}
+  .ls{border-bottom:2px dotted var(--blue);cursor:pointer}
+  .para .zh{display:none;margin-top:10px;padding:10px 14px;background:var(--blue-soft);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:.93rem}
+  .para.showzh .zh{display:block}
+  .zbtn{float:right;margin-left:10px;font-size:.72rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:6px;padding:2px 9px;cursor:pointer}
+  .zbtn:hover{color:var(--accent);border-color:var(--accent)}
+  .allbtn{font-size:.78rem;border:1px solid var(--accent);background:none;color:var(--accent);border-radius:8px;padding:4px 12px;cursor:pointer;margin-left:auto}
+
+  aside{position:sticky;top:20px}
+  #panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;min-height:180px}
+  #panel .hint{color:var(--muted);font-size:.88rem;text-align:center;padding:30px 10px}
+  .wcard .head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .wcard .w{font-family:var(--serif);font-size:1.35rem;font-weight:bold}
+  .wcard .ipa{color:var(--muted);font-size:.85rem}
+  .wcard .pos{font-size:.72rem;color:var(--purple);background:var(--purple-soft);padding:1px 8px;border-radius:999px}
+  .wcard .badge{font-size:.7rem;padding:1px 8px;border-radius:999px}
+  .b-core{background:var(--red-soft);color:var(--red)}
+  .b-phrase{background:var(--blue-soft);color:var(--blue)}
+  .b-poly{background:var(--purple-soft);color:var(--purple)}
+  .b-write{background:var(--green-soft);color:var(--green)}
+  .wcard .cn{margin-top:8px;font-size:1rem;font-weight:600}
+  .wcard .en-def{color:var(--muted);font-size:.86rem;font-style:italic;margin-top:2px}
+  .wcard .row{margin-top:10px;font-size:.86rem;padding:8px 10px;border-radius:8px}
+  .wcard .row>b:first-child{font-size:.72rem;display:block;margin-bottom:2px;letter-spacing:.06em}
+  .r-ex{background:var(--hl)} .r-ex b{color:var(--hl-border)}
+  .r-mem{background:var(--green-soft)} .r-mem b{color:var(--green)}
+  .r-syn{background:var(--blue-soft)} .r-syn b{color:var(--blue)}
+  .r-conf{background:var(--red-soft)} .r-conf b{color:var(--red)}
+  #panel .close{display:none}
+  @media (max-width:900px){
+    aside{position:fixed;left:0;right:0;bottom:0;z-index:50;padding:0 8px 8px}
+    #panel{box-shadow:0 -6px 24px rgba(0,0,0,.18);max-height:55vh;overflow-y:auto;display:none}
+    #panel.open{display:block}
+    #panel .close{display:block;float:right;border:none;background:var(--line);border-radius:8px;padding:2px 10px;cursor:pointer;color:var(--ink)}
+  }
+
+  .q{margin-bottom:22px;padding-bottom:18px;border-bottom:1px dashed var(--line)}
+  .q:last-child{border:none;margin-bottom:0;padding-bottom:0}
+  .q .stem{font-weight:600;font-family:var(--serif)}
+  .qt{font-size:.7rem;color:var(--blue);background:var(--blue-soft);border-radius:999px;padding:1px 8px;margin-right:6px;vertical-align:2px}
+  .opts{margin-top:10px;display:grid;gap:8px}
+  .opt{border:1px solid var(--line);border-radius:10px;padding:8px 12px;cursor:pointer;font-size:.93rem;font-family:var(--serif);transition:all .15s}
+  .opt:hover{border-color:var(--accent)}
+  .q.done .opt{cursor:default}
+  .opt.right{background:var(--green-soft);border-color:var(--green)}
+  .opt.wrong{background:var(--red-soft);border-color:var(--red)}
+  .expl{display:none;margin-top:12px;background:var(--accent-soft);border-radius:10px;padding:12px 14px;font-size:.9rem}
+  .q.done .expl{display:block}
+  .expl b{color:var(--accent)}
+  .expl .loc{font-family:var(--serif);font-style:italic;background:var(--hl);padding:1px 4px;border-radius:3px}
+  .fail{background:var(--red-soft);border:1px solid var(--red);border-radius:10px;padding:10px 13px;margin-bottom:10px;font-size:.89rem}
+  .fail b{color:var(--red)}
+  .waver{background:var(--hl);border:1px solid var(--hl-border);border-radius:10px;padding:10px 13px;margin-bottom:10px;font-size:.89rem}
+
+  .sent{margin-bottom:20px}
+  .sent .src{font-family:var(--serif);font-size:1rem;background:var(--blue-soft);padding:12px 14px;border-radius:10px;border-left:3px solid var(--blue)}
+  .sent .anat{margin-top:8px;font-size:.9rem}
+  .sent .anat li{margin:4px 0 4px 18px}
+  .sent .tr{margin-top:8px;font-size:.92rem;color:var(--muted)}
+  .skel{color:var(--red);font-weight:600}
+
+  .filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+  .fbtn{font-size:.8rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:999px;padding:4px 14px;cursor:pointer}
+  .fbtn.on{background:var(--accent);color:var(--card);border-color:var(--accent)}
+  .vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
+  .vitem{border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer;transition:border-color .15s}
+  .vitem:hover{border-color:var(--accent)}
+  .vitem .w{font-family:var(--serif);font-weight:bold}
+  .vitem .cn{font-size:.85rem;color:var(--muted)}
+  .vitem .badges{float:right}
+
+  .wb{display:grid;gap:10px}
+  .wbi{border-left:3px solid var(--green);background:var(--green-soft);border-radius:0 10px 10px 0;padding:10px 14px;font-size:.92rem}
+  .wbi .p{font-family:var(--serif);font-weight:600}
+  .wbi .u{color:var(--muted);font-size:.85rem}
+
+  .flow{display:grid;gap:8px;font-size:.92rem}
+  .flow .fi{border:1px solid var(--line);border-radius:10px;padding:9px 13px}
+  .flow .fi b{color:var(--accent)}
+
+  .ctab{width:100%;border-collapse:collapse;font-size:.86rem;margin-top:8px}
+  .ctab th,.ctab td{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
+  .ctab th{background:var(--accent-soft);color:var(--accent);font-size:.8rem;white-space:nowrap}
+  .ctab code{background:var(--hl);padding:0 3px;border-radius:3px}
+  .tabwrap{overflow-x:auto}
+  .ok{color:var(--green);font-weight:700}
+  .no{color:var(--red);font-weight:700}
+  .tl{display:grid;gap:10px;margin-top:6px}
+  .tli{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:start;border:1px solid var(--line);border-radius:10px;padding:10px 13px}
+  .tli .mark{font-family:var(--serif);font-weight:700;color:var(--accent);background:var(--accent-soft);border-radius:8px;padding:4px 10px;white-space:nowrap;font-size:.85rem}
+
+  #yd{position:fixed;z-index:60;display:none;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:4px 12px;font-size:.8rem;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+  footer{color:var(--muted);font-size:.8rem;text-align:center;margin-top:30px}
+  .att{display:grid;gap:8px;margin-top:10px}
+  .atti{border:1px solid var(--line);border-radius:10px;padding:9px 13px;font-size:.9rem}
+  .atti b{font-family:var(--serif)}
+  .atti.no2{background:var(--red-soft);border-color:var(--red)}
+  .atti.yes{background:var(--green-soft);border-color:var(--green)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">◀ 返回英语复盘中心</a>
+  <header>
+    <h1>It used to be so straightforward：一场把「守门人」换掉的出版革命</h1>
+    <div class="sub">2008 年英语（一）真题 · Text 2 · 412 词 · 建议做题 18 min · 话题：学术出版 × 开放获取 × 同行评议（源自 <i>The Economist</i>《经济学人》2005-09-22 <i>Scientific Publishing—The Paperless Library</i>）</div>
+    <div class="tags">
+      <span class="tag">正确答案：26D 27C 28A 29A 30B</span><span class="tag">题型：段落主旨 + 事实细节 ×2 + 因果细节 + 全文主旨</span><span class="tag ok">✅ Claude 盲做 5/5</span><span class="tag">🆕 套路库 20→23 卡：新增 R21 主体校验 / R22 题干词无原词 / R23 今昔对比型</span><span class="tag">⭐ 熟词僻义 14 处，全卷之最</span>
+    </div>
+    <div class="atti" style="margin-top:14px;background:var(--blue-soft);border:1px solid var(--blue);border-radius:10px;padding:10px 14px;font-size:.88rem">
+      📖 <b>本页与原卷配合看</b>：原文完整英文在原卷 <b>p5</b>（<code>按年份/2008/…图像保真版.pdf</code> 第 6 页），题目在原卷 <b>p6</b>（PDF 第 7 页）。本页第 01 节<b>按段给出全部考点句原文 + 全段中译</b>——做题时对着原卷读，复盘时对着本页看。
+    </div>
+    <div class="atti yes" style="margin-top:10px;font-size:.88rem">
+      🎯 <b>本篇最该带走的一件事（这一篇我全做对了，价值不在答案上，在下面这把刀）</b>：五道题共 15 个干扰项，<b>其中五个是同一把刀砍出来的——偷换主体</b>。<br>
+      27A 把「靠限制获取牟利的<b>商业出版商</b>」换成「<b>政府资助的研究</b>」；28B 把赚钱的 <b>publishers</b> 换成 <b>researchers</b>；29B 把订阅的「<b>其他研究者</b>」换成「<b>论文作者</b>」；29C 把免费开放面向的「<b>所有想看的人</b>」换成「<b>其他期刊</b>」；30A 把威胁来源的「<b>科研成果易获取的新趋势</b>」换成「<b>网络</b>」。<br>
+      ⟹ <b>正确项三问：谁 / 对谁 / 做了什么。</b>这就是新立的套路卡 <b>R21 主体校验</b>，完整推演见第 02+ 节。
+    </div>
+  </header>
+
+  <div class="layout">
+    <main>
+      <!-- ========== 全文脉络 ========== -->
+      <section class="card">
+        <h2><span class="n">00</span>读前一分钟 · 全文脉络（做完题再看也行）</h2>
+        <div class="flow">
+          <div class="fi"><b>①段 旧事物 · 传统期刊出版全流程</b>　⭐26 题定位段。首句 <code>It used to be so straightforward.</code>（它曾经如此简单直接）—— <b>主语 It 指代不明，是整段的悬念</b>，②至⑤句依次交代：实验室团队<b>投稿</b> → 编辑<b>抹去作者姓名与所属机构、送同行评审</b> → 依评审意见<b>录用或拒稿</b> → <b>版权归期刊出版商，想看结果的研究者必须订阅</b>。<br>⚠️ <b>全段的时态标记是 <code>used to</code> 和四个 <code>would</code></b>（过去的习惯做法）——<b>这是 26 题正确项里 <code>traditional</code> 一词的全部依据。</b></div>
+          <div class="fi"><b>②段 新事物登场 · 两句话的转折</b>　⭐27 题定位段，⭐28 题定位段之一。<code>No longer.</code>（情形不再如此）两个词独立成句。<b>互联网 ＋ 资助机构的压力</b>（它们质疑：凭什么商业出版商靠<b>限制获取</b>政府出钱做的研究来赚钱）正在让<b>科研成果的获取成为现实</b>。OECD 刚发布报告阐述这一变化的深远影响：<b>报告让至今赚得盆满钵满的出版商「读起来心情沉重」</b>；<b>但影响不止于此——它标志着科学事业中一个迄今为止的关键要素正在改变。</b></div>
+          <div class="fi"><b>③段 插入背景 · 这是一门大生意</b>　⚠️ 28 题 C、D 两个干扰项的产地。<b>知识的价值与公共科研投资的回报，「部分」取决于广泛传播与便捷获取</b>；随后三级数据砸下来：美国核心科学出版市场 <b>70 亿–110 亿美元</b>、全球 <b>2000 多家</b>专业出版商、每年在约 <b>1.6 万种</b>期刊上发 <b>120 多万篇</b>论文。<br>💡 <b>这一段不出正面考点，作用是「垫体量」</b>——先说明这门生意有多大，下一段的「正在改变」才有分量。</div>
+          <div class="fi"><b>④段 新事物详述 · 三种模式 + 一种混合体</b>　⭐29 题定位段，⭐28 题定位段之二。<code>This is now changing.</code> 又是一个短句起段：约 <b>75%</b> 学术期刊已在线，<b>全新的商业模式正在涌现</b>，报告作者点出三种主流——<br>　　<b>① 大订单（big deal）</b>：机构订户按站点许可协议，买一大批在线期刊的阅读权；<br>　　<b>② 开放存取出版（open-access publishing）</b>：通常靠<b>作者或其雇主</b>付费发表；⭐29 题答案就在这一句；<br>　　<b>③ 开放存取归档库（open-access archives）</b>：大学或国际实验室资助的机构知识库；<br>　　<b>④ 混合体</b>，如<b>延迟开放存取</b>——前六个月只给订户看，之后向所有想看的人免费开放。<br>末句收口：<b>这一切都可能改变传统的同行评议程序</b>（至少就论文发表而言）。</div>
+          <div class="fi" style="border-color:var(--accent)">📌 <b>一句话主旨</b>：互联网与资助方的压力正在瓦解「订阅制 + 出版商垄断」的传统学术出版，<b>全新的在线出版模式正在涌现</b>，连同行评议都可能随之改变。<br>
+          📌 <b>结构套路</b>：<b>旧（①）→ 转折与新（②）→ 垫体量（③）→ 详述新（④）</b>。<b>这是说明文里最常见的「今昔对比 / 新旧交替」型。</b><br>
+          ⭐ <b>三个时间标志全在段首，且全是短句</b>：<code>It used to be so straightforward.</code>｜<code>No longer.</code>｜<code>This is now changing.</code><br><b>把这三句连起来读，全文骨架就出来了——这也是 30 题（全文主旨）的解法。</b><br>
+          ⚠️ <b>本文没有反方观点，但有「受损方」</b>：出版商。<b>别把「出版商受冲击」当成主旨</b>——它只是新趋势的一个后果（30 题 A 就是这么设的坑）。<br>
+          ⭐ <b>五题定位段 = ① ｜ ② ｜ ②④ ｜ ④ ｜ 全文</b>，<b>同序原则基本适用</b>，28 题跨两段是唯一的例外（因为它的题干关键词全文没有原词，见 02++ 节）。</div>
+        </div>
+      </section>
+
+      <!-- ========== 原文精读 ========== -->
+      <section class="card">
+        <h2><span class="n">01</span>原文精读 · 考点句 <button class="allbtn" onclick="toggleAll()">全段译文 开/关</button></h2>
+        <p style="font-size:.8rem;color:var(--muted);margin-bottom:14px">🟡 黄色高亮 = 重难点词/短语，点击右侧出卡片 ｜ 蓝色虚线 = 长难句，点击跳到精析 ｜ 每段「译」= 该段完整中译 ｜ 选中任意其他单词浮出「查有道」</p>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p style="font-size:.78rem;color:var(--accent);margin-bottom:6px">① 旧事物段 · 时态标记 used to / would · ⭐26 题定位段</p>
+          <p class="en"><span class="pno">⭐首句·主语指代不明</span>It used to be so <span class="tk" data-w="straightforward">straightforward</span>.</p>
+          <p class="en" style="margin-top:10px"><span class="pno">流程①投稿</span>A team of researchers working together in the laboratory would <span class="tk" data-w="submit">submit</span> the results of their research to a <span class="tk" data-w="journal">journal</span>.</p>
+          <p class="en" style="margin-top:10px"><span class="pno">流程②匿名送审</span>A journal editor would then remove the authors' names and <span class="tk" data-w="affiliation">affiliations</span> from the paper and send it to their <span class="tk" data-w="peer">peers</span> for review.</p>
+          <p class="en" style="margin-top:10px"><span class="pno">流程③录用或退稿</span><span class="tk" data-w="dependingon">Depending on</span> the comments received, the editor would accept the paper for publication or <span class="tk" data-w="decline">decline</span> it.</p>
+          <p class="en" style="margin-top:10px"><span class="pno">⭐流程④版权与订阅</span><span class="tk" data-w="copyright">Copyright</span> <span class="tk" data-w="restwith">rested with</span> the journal publisher, and researchers seeking knowledge of the results would have to <span class="tk" data-w="subscribe">subscribe to</span> the journal.</p>
+          <div class="zh"><b>①段全译：</b>它曾经是如此简单直接。在实验室里合作研究的一组研究人员将其研究成果投递给期刊。之后该期刊的编辑会隐去论文上作者的名字和所属机构，并送交同行专家进行评审。该编辑会根据收到的评审意见来决定：接受或者拒绝发表该论文。<b>论文的版权归属于期刊出版商，想了解该研究成果的研究者必须订阅该期刊。</b>
+          <div style="margin-top:8px;font-size:.86rem">⭐⭐ <b>首句 <code>It used to be so straightforward.</code> 是一个「悬念式主旨句」</b>：<b>说了「曾经很简单」，却没说「什么很简单」</b>——主语 It 的指代对象要靠后面四句<b>合并同类项</b>才能得出。<br><b>26 题问的正是「作者在第一段论述的是什么」，答案 D「传统的期刊出版过程」就是这四句的合并结果。凡选项只覆盖其中一句（如「编辑工作」「作者与出版商的关系」），一律是干扰项。</b><br>
+          ⭐ <b><code>used to</code> ＋ 四个 <code>would</code> 是全段最醒目的语法标记</b>：<b>would 在这里不是「将要」，而是「过去反复发生的习惯动作」</b>（＝used to）。<b>整段读下来只有一个信息：这是「从前的做法」。</b><br><b>D 项里 <code>traditional</code>（传统的）就是对这个时态的翻译；B 项缺了任何时间限定词，光凭这一点就该出局。</b><br>
+          💡 <b>本段是「熟词僻义密度」最高的一段</b>：<code>straightforward</code>（不是「直率的」是<b>「简单明了的」</b>）、<code>affiliations</code>（<b>所属机构</b>）、<code>peers</code>（不是「同龄人」是<b>「同行专家」</b>）、<code>decline</code>（不是「下降」是<b>「拒稿」</b>）、<code>rested with</code>（不是「休息」是<b>「归属于」</b>）——<b>五个词全在四句话里，逐个点开右侧词卡。</b><br>
+          💡 <b>顺手记住学术出版的英文流程词</b>：<code>submit</code>（投稿）→ <code>peer review</code>（同行评议）→ <code>accept / decline</code>（录用/退稿）→ <code>publication</code>（发表）→ <code>subscribe</code>（订阅）。<b>这五个词在④段会以「新模式」的面貌再出现一次，是本篇的贯穿词。</b></div></div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p style="font-size:.78rem;color:var(--accent);margin-bottom:6px">② 转折段 · 新事物登场 · ⭐27 题定位段 · ⭐28 题定位段之一</p>
+          <p class="en"><span class="pno">⭐转折标志</span>No longer.</p>
+          <p class="en" style="margin-top:10px"><span class="pno">⭐28题A·全篇第一难句</span><span class="ls" onclick="go('s1')">The Internet—and pressure from <span class="tk" data-w="fundingagency">funding agencies</span>, who are <span class="tk" data-w="question">questioning</span> why <span class="tk" data-w="commercial">commercial</span> publishers are making money from <span class="tk" data-w="govfunded">government-funded</span> research by <span class="tk" data-w="restrict">restricting access to</span> it—is <span class="tk" data-w="makereality">making access to scientific results a reality</span>.</span></p>
+          <p class="en" style="margin-top:10px"><span class="pno">报告登场</span>The Organization for Economic Co-operation and Development (<span class="tk" data-w="oecd">OECD</span>) has just <span class="tk" data-w="issue">issued</span> a report describing the <span class="tk" data-w="farreaching">far-reaching consequences</span> of this.</p>
+          <p class="en" style="margin-top:10px"><span class="pno">⭐⭐27题命脉</span><span class="ls" onclick="go('s2')">The report, by John Houghton of Victoria University in Australia and Graham Vickery of the OECD, <span class="tk" data-w="heavyreading">makes heavy reading</span> for publishers who have, <span class="tk" data-w="sofar">so far</span>, made <span class="tk" data-w="handsome">handsome profits</span>.</span></p>
+          <p class="en" style="margin-top:10px"><span class="pno">递进</span>But it <span class="tk" data-w="gofurther">goes further than that</span>.</p>
+          <p class="en" style="margin-top:10px"><span class="pno">⚠️27题D来源</span><span class="ls" onclick="go('s3')">It <span class="tk" data-w="signal">signals</span> a change in what has, until now, been a <span class="tk" data-w="keyelement">key element</span> of scientific <span class="tk" data-w="endeavor">endeavor</span>.</span></p>
+          <div class="zh"><b>②段全译：</b>情形不再如此。<b>互联网——以及来自资助机构的压力（这些机构正在质疑：为什么商业出版商能够通过限制科研成果的获取，从政府资助的研究项目中赚取利润）——正在使获取科研成果成为现实。</b>最近，经济合作与发展组织（OECD）发布了一份报告，阐述了这一变化的深远影响。<b>这篇由澳大利亚维多利亚大学的约翰·霍顿和 OECD 的格雷厄姆·维克利共同撰写的报告，让那些迄今为止赚取了丰厚利润的出版商读起来心情沉重。</b>但其影响不止于此，<b>它还标志着：科学事业中到目前为止一直存在的一个关键因素发生了变化。</b>
+          <div style="margin-top:8px;font-size:.86rem">⭐⭐ <b><code>makes heavy reading for publishers</code> 是 27 题的全部命脉</b>，也是本篇最难的一处词义。<code>heavy reading</code> 字面「沉重的读物」，实际＝<b>「读起来让人心情沉重、不好受」</b>。<br><b>三条互相印证的钥匙，任一条都能把它推出来：</b><br>① <b><code>so far</code>（迄今为止）</b>——加了这个限定，等于说「赚大钱的日子<b>到此为止</b>」；<br>② <b>②句的反向对立</b>：报告支持的是「方便获取科研成果」，出版商靠的是「限制获取以牟利」，<b>两者天然对立</b>，那报告对出版商必然是坏消息；<br>③ <b>转折词 But</b>：⑤句说「不止于此」，说明④句已经讲了一层影响（对出版商的直接冲击）。<br><b>⟹ C 项 <code>It upsets profit-making journal publishers</code> 是这半句的逐词同义改写：upsets ← makes heavy reading，profit-making ← have made handsome profits。</b><br>
+          ⭐ <b><code>signals a change</code> 是个中性词组</b>（标志着一种变化），<b>没有任何褒贬</b>。<b>27 题 D 把它换成 <code>benefits scientific research considerably</code>（使科研受益匪浅）——中性词 → 强烈褒义词，这是本卷反复出现的造错法。</b><br>⚠️ <b>对照 2008 T1·25：那道题的坑是「偏向的文章配中性的标题」，这道题的坑是「中性的原文配褒义的选项」——<b>同一年两道题，把「感情色彩」这把尺子正着量了一遍、反着量了一遍。</b></b><br>
+          💡 <b>破折号插入语长达 26 个词，把主语 The Internet 和谓语 is making 撕得很开</b>（详见长难句 s1）。<b>考场读法：见到破折号先整段跳过，找到谓语后再回头填。</b>⚠️ 注意谓语是<b>单数 is</b>——<b>破折号里的成分不计入主语</b>，这是判断句子主干的硬证据。<br>
+          💡 <b>资助机构那句质疑，是一个可以直接搬进作文的句式</b>：<code>Why should A make money from B by restricting access to it?</code>（凭什么 A 能靠限制获取 B 来牟利？）——<b>公共资源私有化、知识付费、开源这类话题的现成论证句。</b></div></div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p style="font-size:.78rem;color:var(--accent);margin-bottom:6px">③ 背景段 · 垫体量 · ⚠️ 28 题 C、D 两个干扰项的产地</p>
+          <p class="en"><span class="pno">⚠️28题C/D来源</span><span class="ls" onclick="go('s4')">The value of knowledge and the <span class="tk" data-w="return">return</span> on the <span class="tk" data-w="publicinvest">public investment</span> in research depends, <span class="tk" data-w="inpart">in part</span>, upon wide <span class="tk" data-w="distribution">distribution</span> and <span class="tk" data-w="ready">ready access</span>.</span></p>
+          <p class="en" style="margin-top:10px"><span class="pno">体量①</span>It is <span class="tk" data-w="bigbusiness">big business</span>. In America, the core scientific publishing market is <span class="tk" data-w="estimate">estimated at</span> between $7 billion and $11 billion.</p>
+          <p class="en" style="margin-top:10px"><span class="pno">体量②③</span>The International <span class="tk" data-w="association">Association</span> of Scientific, Technical and Medical Publishers says that there are more than 2,000 publishers worldwide <span class="tk" data-w="specialize">specializing in</span> these <span class="tk" data-w="subject">subjects</span>. They publish more than 1.2 million <span class="tk" data-w="article">articles</span> each year in some 16,000 journals.</p>
+          <div class="zh"><b>③段全译：</b><b>知识的价值以及公共投资在科研方面的回报，在某种程度上取决于其广泛的传播和方便的获取。</b>这是一项大产业。在美国，核心的科学出版市场估值在 70 亿到 110 亿美元之间。国际科学、技术和医学出版商协会称，全球有超过 2000 家出版商专门从事这些学科（科学、技术和医学）的出版。它们每年在近 1.6 万种期刊上发表超过 120 万篇论文。
+          <div style="margin-top:8px;font-size:.86rem">⚠️⚠️ <b>首句是本段唯一会出题的句子，而且是以「干扰项产地」的身份出题的。</b><br><b>原文的因果方向是：广泛传播 + 便捷获取 →（才能实现）知识的价值 +（才能提高）公共投资的回报。</b><br>· <b>28 题 C</b>「在线出版<b>强调</b>了科学知识的关键作用」——原文说的是<b>怎样才能实现</b>知识的价值，不是「强调其重要性」；<b>而且传统出版方式同样强调知识的重要性，只是实现得不好</b>，这个说法根本不构成「在线出版的意义」。<br>· <b>28 题 D</b>「在线出版<b>便利了公共科研投资</b>」——把「投资的<b>回报</b>」偷换成「<b>投资</b>」本身，<b>因果链条整个倒过来了</b>。<br><b>⟹ 记住这个手法：拿一句「A 取决于 B」的话，造出「B 促进了 A 的上游」或「B 强调了 A」这类看似沾边、实则移位的选项。</b><br>
+          ⭐ <b><code>in part</code>（部分地）是一个不起眼但要命的限定词</b>：原文只说「<b>部分</b>取决于」，<b>凡选项写成「完全取决于 / 唯一决定因素」就该扣分</b>。<b>与之同族的还有 <code>somehow</code>、<code>to some extent</code>、<code>largely</code>——考研阅读里这类限定词几乎从不白给。</b><br>
+          💡 <b><code>ready access</code> 里的 <code>ready</code> 不是「准备好的」，而是「便捷的、随时可得的」</b>（＝easily available）——<b>这是本段的熟词僻义之王</b>，也正是 28 题 A 里 <code>easier access</code> 的来源。<br>
+          💡 <b>本段的三级数据是「说明一件事体量很大」的标准写法</b>：<b>市场规模（$7–11 billion）→ 从业机构数（2,000+ publishers）→ 年产出量（1.2 million articles / 16,000 journals）</b>。<b>作文里想说明某行业/某现象规模巨大，照这个顺序写三句即可。</b><br>
+          ⚠️ <b><code>these subjects</code> 里的 <code>subject</code> ＝「学科」不是「主题」</b>，指代前面的 Scientific, Technical and Medical；<code>titles</code>（④段）＝「（一)种期刊」不是「标题」。<b>这两个词是学术出版语境的固定用法。</b></div></div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p style="font-size:.78rem;color:var(--accent);margin-bottom:6px">④ 详述段 · 三种模式 + 一种混合体 · ⭐29 题定位段 · ⭐28 题定位段之二 · ⭐30 题关键句</p>
+          <p class="en"><span class="pno">⭐第三个时间标志</span>This is now changing. According to the OECD report, some 75% of <span class="tk" data-w="scholarly">scholarly</span> journals are now online.</p>
+          <p class="en" style="margin-top:10px"><span class="pno">⭐⭐30题B命脉</span>Entirely new <span class="tk" data-w="businessmodel">business models</span> are <span class="tk" data-w="emerge">emerging</span>; three main ones were <span class="tk" data-w="identify">identified</span> by the report's authors.</p>
+          <p class="en" style="margin-top:10px"><span class="pno">模式①大订单</span>There is the <span class="tk" data-w="socalled">so-called</span> <span class="tk" data-w="bigdeal">big deal</span>, where <span class="tk" data-w="institutional">institutional</span> <span class="tk" data-w="subscriber">subscribers</span> pay for access to a <span class="tk" data-w="collection">collection</span> of online journal <span class="tk" data-w="title">titles</span> through <span class="tk" data-w="sitelicensing">site-licensing agreements</span>.</p>
+          <p class="en" style="margin-top:10px"><span class="pno">⭐⭐29题答案句</span>There is <span class="tk" data-w="openaccess">open-access publishing</span>, <span class="tk" data-w="typically">typically</span> supported by asking the author (or his <span class="tk" data-w="employer">employer</span>) to pay for the paper to be published.</p>
+          <p class="en" style="margin-top:10px"><span class="pno">模式③归档库</span>Finally, there are open-access <span class="tk" data-w="archive">archives</span>, where organizations such as universities or international laboratories <span class="tk" data-w="support">support</span> institutional <span class="tk" data-w="repository">repositories</span>.</p>
+          <p class="en" style="margin-top:10px"><span class="pno">⚠️29题C来源·后置定语</span><span class="ls" onclick="go('s5')">Other models exist that are <span class="tk" data-w="hybrid">hybrids</span> of these three, such as <span class="tk" data-w="delayed">delayed open-access</span>, where journals allow only subscribers to read a paper for the first six months, before making it <span class="tk" data-w="freely">freely available</span> to everyone who wishes to see it.</span></p>
+          <p class="en" style="margin-top:10px"><span class="pno">⚠️29题D来源·末句</span>All this could change the traditional form of the <span class="tk" data-w="peerreview">peer-review process</span>, at least for the <span class="tk" data-w="publication">publication</span> of papers.</p>
+          <div class="zh"><b>④段全译：</b>这一情形如今正在改变。根据 OECD 的这份报告，目前已有约 75% 的学术期刊可在线获取。<b>全新的商业模式正在涌现，报告作者指出了三种主要的模式。</b>第一种是所谓的「大订单」模式，即机构订户通过网站许可协议，购买一大批网络期刊的阅读权限。<b>第二种是开放存取出版模式，通常依靠作者（或其所属机构）支付论文出版费用。</b>最后一种是开放存取的数据归档库，即由大学或国际实验室这样的组织资助（建立）的、以机构形式存在的知识库。也存在由上述三种模式混合的其他模式，例如延迟开放存取模式，即期刊（出版后）前六个月只允许订阅者阅读论文，之后才免费向其他希望查阅该论文的读者开放。<b>所有这一切都可能会改变传统的同行评议程序，至少对论文的发表而言是如此。</b>
+          <div style="margin-top:8px;font-size:.86rem">⭐⭐ <b>本段是「多模式并列段」，考研阅读的绝对命题点</b>——一段之内塞进 <b>四种</b>模式，命题人只需<b>把 A 模式的特点安到 B 模式头上</b>，就能造出一堆「有原文出处」的干扰项。<b>29 题的 B、C 两项正是这么造的。</b><br><b>⟹ 读到这种段落，考场上花 20 秒在草稿纸上画一张三列小表：<code>模式名 ｜ 谁付钱 ｜ 谁能看</code>。</b><br>
+          <div class="tabwrap"><table class="ctab">
+            <tr><th>模式</th><th>谁付钱</th><th>谁能看</th></tr>
+            <tr><td><b>传统订阅</b>（①段）</td><td>想读的<b>其他研究者</b></td><td>订阅者</td></tr>
+            <tr><td><b>大订单</b> big deal</td><td><b>机构订户</b>（图书馆等）</td><td>该机构的人</td></tr>
+            <tr><td><b>开放存取出版</b> ⭐29 题</td><td><b>论文作者或其雇主</b></td><td>所有人</td></tr>
+            <tr><td><b>开放存取归档库</b></td><td>大学 / 国际实验室<b>资助</b></td><td>所有人</td></tr>
+            <tr><td><b>延迟开放存取</b>（混合体）</td><td>前六个月：订阅者</td><td>六个月后：<b>所有想看的人</b></td></tr>
+          </table></div>
+          <b>表一画出来，29 题的四个选项当场清算完毕：A 在「开放存取出版」这一行，B 抄的是「传统订阅」行（且主体从「其他研究者」错成「作者」），C 抄的是「延迟开放存取」行（且把「所有想看的人」错成「其他期刊」），D 在表里根本没有对应格。</b><br>
+          ⭐ <b><code>Entirely new business models are emerging</code> 是 30 题的命脉</b>：<b>new（新旧关系）+ models（新事物）+ emerging（正在进行）</b>，<b>B 项 <code>A new mode of publication is emerging</code> 三个要素一个不差。</b><br>
+          ⚠️ <b>末句 <code>could change the traditional form of the peer-review process</code> 只说了「可能改变」，没说「改成什么」</b>。<b>29 题 D 由此臆断出「先评议、后投稿」的新顺序——原文半个字都没提新流程的步骤。凡选项给出了原文没有的「具体做法」，一律排除。</b><br>
+          💡 <b><code>support</code> 在这里是「资助（建立）」不是「支持」</b>；<code>archives</code>（归档库）与 <code>repositories</code>（知识库/仓储库）是学术出版的两个专有名词，<b>2008 年考它们算超纲词，但靠 <code>where</code> 从句的解释完全能读懂——这正是「长难句里的定语从句常常是生词的免费注释」。</b></div></div>
+        </div>
+      </section>
+      <!-- ========== 题目与解析 ========== -->
+      <section class="card">
+        <h2><span class="n">02</span>题目与解析（点选项即判 · 再看解析）</h2>
+
+        <div class="q" data-ans="3" id="q26">
+          <p class="stem"><span class="qt">段落主旨</span>26. In the first paragraph, the author discusses</p>
+          <div class="opts">
+            <div class="opt">[A] the background information of journal editing.</div>
+            <div class="opt">[B] the publication routine of laboratory reports.</div>
+            <div class="opt">[C] the relations of authors with journal publishers.</div>
+            <div class="opt">[D] the traditional process of journal publication.</div>
+          </div>
+          <div class="expl">
+            <b>答案 D</b>　题干 <code>In the first paragraph</code> 定位到首段，<code>the author discusses</code> 表明<b>考的是段落主旨</b>。<br>
+            首句 <span class="loc">It used to be so straightforward.</span> 是一句<b>高度概括却主语指代不明</b>的话——「它」是什么？只能由②至⑤句反推：<b>投稿 → 匿名送审 → 录用或退稿 → 版权归出版商、他人须订阅</b>。<b>四句合并同类项，得到的就是「传统的期刊出版流程」，正是 D。</b><br>
+            ⭐ <b>D 的两个词各有落点，缺一不可</b>：<code>journal publication</code> 对应②至⑤句这条完整链条；<b><code>traditional</code> 对应 <code>used to</code> 与四个 <code>would</code> 这组「过去习惯」的时态标记</b>。<b>「时间」和「主体」双双契合的只有 D 一项。</b><br>
+            <b>干扰项（三项踩的是同一类坑的三种变体：只覆盖一部分）：</b><br>
+            · <b>A 同源词陷阱 · 偷换动作</b>：原文出现了 <code>a journal</code>、<code>A journal editor</code>，A 项就拿同源词 <code>journal editing</code>（对期刊进行编辑）来钓鱼。<b>可编辑在文中做的事是「送审 + 决定录用或拒稿」，这是「出版流程的管理」，不是「编辑加工」。</b>而且 <code>background information</code>（背景知识）也与「流程」不是一回事。<br>
+            · <b>B 窄化 + 缺时间标记</b>：两处错。①把 <code>the results of their research</code>（研究成果）窄化成 <code>laboratory reports</code>（实验报告）——<b>实验室里得出的研究成果，包含但不等于「实验报告」</b>；②<code>routine</code> 侧重「例行程式」，<b>且整个选项没有任何时间限定词</b>，接不住本段最醒目的 <code>used to</code>。<br>
+            · <b>C 杂糅 + 覆盖不足</b>：把③句的 <code>the authors' names</code> 和⑤句的 <code>the journal publisher</code> 拼在一起造出「作者与出版商的关系」，<b>可这只罩得住第⑤句（版权归属）</b>，②③④三句的投稿、送审、录用全落空。<br>
+            💡 <b>本题的通用解法（写进套路库 R22 的兄弟条）</b>：<b>当段落首句是「主语指代不明的概括句」时，答案 ＝ 对下文所有句子做一次合并同类项。</b>凡选项只集中在其中某一句上，无论用词多眼熟，都是干扰项。
+          </div>
+        </div>
+
+        <div class="q" data-ans="2" id="q27">
+          <p class="stem"><span class="qt">事实细节</span>27. Which of the following is true of the OECD report?</p>
+          <div class="opts">
+            <div class="opt">[A] It criticizes government-funded research.</div>
+            <div class="opt">[B] It introduces an effective means of publication.</div>
+            <div class="opt">[C] It upsets profit-making journal publishers.</div>
+            <div class="opt">[D] It benefits scientific research considerably.</div>
+          </div>
+          <div class="expl">
+            <b>答案 C</b>　定位到②段③至⑥句（关于报告的四句话）。命脉是第④句：<span class="loc">The report… <b>makes heavy reading</b> for publishers who have, <b>so far</b>, made <b>handsome profits</b>.</span><br>
+            <b>C 是这半句的逐词同义改写</b>：<code>upsets</code> ← <code>makes heavy reading</code>（读起来令人心情沉重）；<code>profit-making publishers</code> ← <code>publishers who have made handsome profits</code>。<br>
+            ⭐⭐ <b>难点在 <code>heavy reading</code> 是个不常见搭配</b>（不是「大量阅读」，也不是「厚重的读物」，而是<b>「读来沉重、令人不快」</b>）。<b>就算不认识，也有三条独立的路把它推出来：</b><br>
+            ① <b><code>so far</code>（迄今为止）</b>：给「赚了丰厚利润」加上这个限定，就是在说<b>「好日子到此为止」</b>；<br>
+            ② <b>②句的反向对立</b>：报告支持的方向是「让科研成果易于获取」，而出版商赚钱靠的是「<b>限制</b>获取」——<b>两者天然对立，报告对出版商必然是坏消息</b>；<br>
+            ③ <b>⑤句的 <code>But it goes further than that</code></b>：既然说「不止于此」，那第④句已经讲了一层影响，而且是<b>对出版商的直接冲击</b>。<br>
+            <b>干扰项：</b><br>
+            · <b>A ⚠️ 偷换主体（本篇第一次亮刀）</b>：②句里资助机构质疑的对象是<b>「靠限制获取政府资助研究来赚钱的<u>商业出版商</u>」</b>，A 项把矛头挪到了<b>「政府资助的研究」本身</b>。<b>同一句话里出现两个名词，命题人就在这两个之间做手脚——见第 02+ 节。</b><br>
+            · <b>B 窜改报告的内容</b>：报告的核心是<b>「阐述这一变化的深远影响」</b>（describing the far-reaching consequences），不是「提出了一种有效的出版方式」。<b>而且文中既没说报告是首个介绍新模式的文件，也从没评价新模式「有效」。</b><br>
+            · <b>D 中性 → 褒义</b>：末句 <code>It <b>signals a change</b> in… a key element of scientific endeavor</code>（标志着一个关键要素的变化）是<b>纯中性表述</b>，D 把它改成 <code>benefits scientific research <b>considerably</b></code>（使科研<b>受益匪浅</b>）。<br>
+            ⚠️ <b>与 2008 T1·25 对照着记</b>：T1 那道题的坑是<b>「偏向的文章 → 配了中性的标题」</b>，本题的坑是<b>「中性的原文 → 配了褒义的选项」</b>。<b>同一年两道题，把「感情色彩」这把尺子正着量了一遍、反着量了一遍——凡选项与原文的<u>色彩</u>不一致，无论内容多沾边都是错的。</b>
+          </div>
+        </div>
+
+        <div class="q" data-ans="0" id="q28">
+          <p class="stem"><span class="qt">因果细节</span>28. According to the text, online publication is significant in that</p>
+          <div class="opts">
+            <div class="opt">[A] it provides an easier access to scientific results.</div>
+            <div class="opt">[B] it brings huge profits to scientific researchers.</div>
+            <div class="opt">[C] it emphasizes the crucial role of scientific knowledge.</div>
+            <div class="opt">[D] it facilitates public investment in scientific research.</div>
+          </div>
+          <div class="expl">
+            <b>答案 A</b>　⚠️⚠️ <b>本题最大的坎在题干本身：<code>online publication</code> 在全文一个原词都没有。</b><br>
+            <b>解法两步走（这就是新立的套路卡 R22）：</b><br>
+            <b>第一步 · 把题干词翻译成「文中的说法」</b>：online publication ＝ 本文通篇在讲的那件新事物 ＝「<b>科学期刊的在线出版</b>」，在文中的对应表述是②段的 <code>The Internet… is making access to scientific results a reality</code> 和④段的 <code>some 75% of scholarly journals are now online</code>。<br>
+            <b>第二步 · 到这两处找「它的意义」</b>：②段②句直接给出 <span class="loc">is making access to scientific results a reality</span>（让科研成果的获取成为现实）；④段整段的 open-access 各模式，讲的也全是<b>「谁都能看到」</b>。<b>两处合起来 ⟹ A：提供了更便捷的科研成果获取渠道。</b><br>
+            💡 <b>A 里的 <code>easier access</code> 还有第三处呼应</b>：③段首句的 <code>ready access</code>（便捷获取）——<b><code>ready</code> 在这里不是「准备好的」而是「便捷的、随时可得的」，是本篇的熟词僻义之王。</b><br>
+            <b>干扰项：</b><br>
+            · <b>B ⚠️ 偷换主体（第二次亮刀）</b>：<code>made handsome profits</code> 的主体是<b>出版商 publishers</b>，B 把它换成<b>科研人员 scientific researchers</b>。<b>文中确实说了在线出版让科研人员受益（能方便地拿到成果），但「受益」≠「拿到巨额利润」——受益的方式也被换掉了。</b><br>
+            · <b>C 移位</b>：拿③段首句 <code>The value of knowledge… depends… upon wide distribution and ready access</code> 做文章。<b>原文说的是「怎样才能<u>实现</u>知识的价值」，C 说成「在线出版<u>强调</u>了科学知识的重要性」。</b><b>更致命的是：传统出版方式同样强调知识的重要性，只是实现得不好——凡是「新旧两方都成立」的说法，都不可能是「新事物的意义」。</b><br>
+            · <b>D 因果倒置</b>：同一句里，原文是「广泛传播与便捷获取 → 提高公共科研投资的<b>回报</b>」，D 把「投资的<b>回报</b>」偷换成「<b>投资</b>」本身，说成「在线出版便利了公共科研投资」。<b>回报是产出端，投资是投入端，方向反了。</b><br>
+            ⭐ <b>本题的一般规律</b>：<b>凡「今 vs 昔」型文章问「新事物的意义/优势」，答案必落在<u>只有新事物才做得到、旧事物做不到</u>的那一点上。</b>本篇里，旧模式的死穴写在①段末句——<b><code>researchers… would have to subscribe to the journal</code>（想看就得订阅）</b>；那么新事物的意义自然就是<b>「不订阅也能看到」＝ easier access</b>。<b>拿这条去卡，A 一秒出线。</b>
+          </div>
+        </div>
+
+        <div class="q" data-ans="0" id="q29">
+          <p class="stem"><span class="qt">事实细节</span>29. With the open-access publishing model, the author of a paper is required to</p>
+          <div class="opts">
+            <div class="opt">[A] cover the cost of its publication.</div>
+            <div class="opt">[B] subscribe to the journal publishing it.</div>
+            <div class="opt">[C] allow other online journals to use it freely.</div>
+            <div class="opt">[D] complete the peer-review before submission.</div>
+          </div>
+          <div class="expl">
+            <b>答案 A</b>　题干关键词 <code>open-access publishing model</code> 精确定位到④段⑤句：<span class="loc">There is open-access publishing, typically supported by <b>asking the author (or his employer) to pay for the paper to be published</b>.</span><br>
+            <b>A 是它的同义改写</b>：<code>cover the cost of its publication</code>（承担出版费用）← <code>pay for the paper to be published</code>。<b>本题是「事实细节题」的绝对标准形态——正确项不含任何推理，只是换词。</b><br>
+            ⚠️⚠️ <b>本题真正的难点是：④段一口气给了四种模式，命题人只需把 A 模式的特点安到 B 模式头上，就能造出「句句有原文出处」的干扰项。</b>回到第 01 节④段那张<b>「模式 ｜ 谁付钱 ｜ 谁能看」三列表</b>，四个选项当场清算：<br>
+            <b>干扰项：</b><br>
+            · <b>B 抄的是「传统订阅」那一行，而且主体也错（第三次亮刀）</b>：订阅是<b>①段旧模式</b>的特点，与 open-access（免费获取）正好相反；<b>更关键的是，旧模式里订阅的主体是「想了解成果的<u>其他研究者</u>」，而不是「论文作者」</b>——<b>让作者去订阅发表自己论文的期刊，文中从未有过这种说法。</b><br>
+            · <b>C 抄的是「延迟开放存取」那一行，且换掉了受众（第四次亮刀）</b>：⑦句 <code>making it freely available to <b>everyone who wishes to see it</b></code>——免费开放的对象是<b>「所有想看的人（广大读者/研究者）</b>」，C 换成了「<b>其他网络期刊</b>」。<b>「人」被换成了「机构」。</b><br>
+            · <b>D 无中生有的「具体做法」</b>：末句只说 <code>All this <b>could change</b> the traditional form of the peer-review process</code>（<b>可能改变</b>传统的同行评议程序），<b>压根没说改成什么</b>；D 却臆断出一个具体新顺序「先完成同行评议，再提交论文」。<br>
+            ⭐ <b>拿走一条硬判据</b>：<b>原文只说「某事可能变」而没说「变成什么」时，任何描述了「变成什么」的选项都是编的。</b>这一条在整个考研阅读里通用。
+          </div>
+        </div>
+
+        <div class="q" data-ans="1" id="q30">
+          <p class="stem"><span class="qt">全文主旨</span>30. Which of the following best summarizes the text?</p>
+          <div class="opts">
+            <div class="opt">[A] The Internet is posing a threat to publishers.</div>
+            <div class="opt">[B] A new mode of publication is emerging.</div>
+            <div class="opt">[C] Authors welcome the new channel for publication.</div>
+            <div class="opt">[D] Publication is rendered easier by online service.</div>
+          </div>
+          <div class="expl">
+            <b>答案 B</b>　主旨题定位全文。<b>最快的解法是把三个段首短句连起来读</b>：<span class="loc">It used to be so straightforward.</span>（①段）→ <span class="loc">No longer.</span>（②段）→ <span class="loc">This is now changing.</span>（④段）。<br>
+            <b>这条时间线说的就是一件事：出版方式正在从旧变新。</b>再对上④段③句 <code>Entirely new business models are <b>emerging</b></code>，<b>B 项 <code>A new mode of publication is emerging</code> 三个要素一个不差：new（新旧关系）＋ mode of publication（新事物）＋ emerging（正在进行）。</b><br>
+            ⭐ <b>本题四个选项全都提到了「新事物」</b>（网络 / 新出版方式 / 新出版渠道 / 网络服务），<b>所以分水岭不在「有没有讲新事物」，而在「新旧关系摆得对不对」</b>——这正是「今昔对比型」主旨题的固定考法（见第 02++ 节）。<br>
+            <b>干扰项：</b><br>
+            · <b>A ⚠️ 偷换主体 + 偏离重心（第五次亮刀）</b>：②段里让出版商难受的，是<b>「科研成果易于获取的新趋势」</b>（互联网只是其中一个推手，另一个是资助机构的压力）；A 把威胁的来源单说成 <code>The Internet</code>。<b>更要命的是重心：全文关注的是「出版方式怎么变」，不是「出版商的处境」——出版商受冲击只是新趋势的一个后果，被写在②段的半句话里。</b><br>
+            · <b>C 推断即使成立也不是重心</b>：由「广泛传播有助于实现知识价值」<b>可以</b>推出作者大概乐意接受在线出版，<b>但文中从未直接论述过论文作者的态度</b>。<b>主旨题的正确项必须是文章「写了什么」，不是「能推出什么」。</b><br>
+            · <b>D 窜改因果链条的环节</b>：文中说的是「网络让<b>科研成果的获取</b>更容易」（access to scientific results），D 说成「网络服务让<b>出版</b>更容易」。<b>「获取更容易」和「出版更容易」是两个环节：前者是读者端，后者是作者端；而文中恰恰说作者端还多了一笔钱（open-access 要作者付费），根本没说出版变容易了。</b><br>
+            💡 <b>提速心法</b>：<b>主旨题做完，回头用它检验前四题</b>——本篇主旨是「出版方式在变」，那么 26 题答「传统流程」（旧）、28 题答「获取更便捷」（新的优势）、29 题答「作者付费」（新模式的细则），四道题全在同一条主线上。<b>凡有一道题的答案与主旨对不上，那道题多半选错了。</b>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========== 专栏 1 · 主体校验 ========== -->
+      <section class="card" id="subjcol">
+        <h2><span class="n">02+</span>专栏 · 五个干扰项、同一把刀：偷换主体（本页最值钱的一节）</h2>
+        <p style="font-size:.9rem;margin-bottom:12px">本篇我盲做 5/5，所以这一节的价值不在「我错在哪」，而在<b>「命题人在这一篇里把同一个手法用了五遍」</b>。<b>五个干扰项句句有原文出处、用词全部眼熟，错的只是一件事：<u>谁</u>对<u>谁</u>做了<u>什么</u> 里的那个「谁」。</b></p>
+        <div class="tabwrap"><table class="ctab">
+          <tr><th>题·项</th><th>原文里的主体是谁</th><th>选项换成了谁</th><th>一句话点破</th></tr>
+          <tr>
+            <td><b>27 A</b></td>
+            <td>资助机构质疑的是<b>「靠限制获取政府资助研究来牟利的<u>商业出版商</u>」</b></td>
+            <td>变成批评<b>「政府资助的研究」本身</b></td>
+            <td>同一句里有两个名词，把矛头从后者挪到了前者</td>
+          </tr>
+          <tr>
+            <td><b>28 B</b></td>
+            <td><code>made handsome profits</code> 的主体是 <b>publishers</b></td>
+            <td>变成 <b>scientific researchers</b> 拿到巨额利润</td>
+            <td>科研人员确实受益，但受益方式是「拿得到成果」不是「赚到钱」</td>
+          </tr>
+          <tr>
+            <td><b>29 B</b></td>
+            <td>旧模式里订阅的是<b>「想了解成果的<u>其他研究者</u>」</b></td>
+            <td>变成<b>「论文作者」</b>要订阅发表自己论文的期刊</td>
+            <td>模式抄错了（旧模式），主体也抄错了</td>
+          </tr>
+          <tr>
+            <td><b>29 C</b></td>
+            <td>免费开放的对象是<b>「所有想看的人」</b>（everyone who wishes to see it）</td>
+            <td>变成<b>「其他网络期刊」</b>可免费使用</td>
+            <td><b>「人」被换成了「机构」</b></td>
+          </tr>
+          <tr>
+            <td><b>30 A</b></td>
+            <td>让出版商难受的是<b>「科研成果易获取的新趋势」</b>（互联网只是推手之一）</td>
+            <td>变成<b>「网络」</b>对出版商构成威胁</td>
+            <td>把「趋势」偷换成「推手」，顺带把全文重心偏到出版商身上</td>
+          </tr>
+        </table></div>
+
+        <h3>⟹ 由此立一条通用判据：正确项三问</h3>
+        <div class="flow">
+          <div class="fi"><b>第一问 · 谁（施动者）</b>　这句话是<b>谁</b>做的、<b>谁</b>说的、<b>谁</b>拥有这个属性？<br>⚠️ 高发地带：<b>一个句子里出现两个及以上名词时</b>（如「商业出版商 从 政府资助的研究 中赚钱」——两个名词，命题人在它们之间做手脚）。</div>
+          <div class="fi"><b>第二问 · 对谁（受动者/受众）</b>　这个动作<b>作用在谁身上</b>？<br>⚠️ 高发地带：<b>「人」和「机构」的互换</b>（29C 把 everyone 换成 other journals），<b>「某一群人」和「所有人」的互换</b>。</div>
+          <div class="fi"><b>第三问 · 做了什么（动作与方式）</b>　动作本身对不对？<b>受益的方式、赚钱的方式、改变的方式</b>有没有被换掉？<br>⚠️ 28B 的错法就在这一问上：<b>「受益」是对的，「以巨额利润的形式受益」是错的。</b></div>
+          <div class="fi" style="border-color:var(--accent)">📌 <b>三问全对才算命中。</b>只要有一问对不上，无论这个选项用了多少原文原词，都是干扰项。<br>
+          📌 <b>什么时候必须启动这三问？</b>——<b>当四个选项都「看着像对的」、都能在原文找到出处时。</b>这种情况下靠「眼熟」永远选不出来，只能逐项拆主谓宾。<br>
+          📌 <b>与套路库既有卡的关系</b>：R1 讲的是「同义替换 vs 原词复现」（<b>词</b>的层面），R8 干扰项总纲里的「张冠李戴」是它的雏形；<b>本卡 R21 把它升级到<u>句子成分</u>的层面——不是比词，是比句子骨架。</b></div>
+        </div>
+      </section>
+
+      <!-- ========== 专栏 2 · 今昔对比型 ========== -->
+      <section class="card" id="timecol">
+        <h2><span class="n">02++</span>专栏 · 今昔对比型说明文：三个短句钉住全文</h2>
+        <p style="font-size:.9rem;margin-bottom:12px">本篇的结构是考研阅读里出现频率最高的说明文骨架之一。<b>它的标志极其醒目——三个「短到不像话」的句子，全在段首。</b></p>
+        <div class="tl">
+          <div class="tli"><div class="mark">昔<br>①段首</div><div><code>It used to be so straightforward.</code>　<b>（它曾经如此简单直接。）</b><br>⚠️ <b>主语 It 指代不明是故意的</b>——它逼你读完整段再回来定义它。<b>26 题考的就是这个「回来定义」的动作。</b></div></div>
+          <div class="tli"><div class="mark">转<br>②段首</div><div><code>No longer.</code>　<b>（情形不再如此。）</b><br>⚠️ <b>两个词、一个句号，是全文的转折点。</b>它后面紧跟的就是作者真正要谈的新事物（互联网 + 资助方压力 → 成果可获取）。<b>27、28 两题都落在这一段。</b></div></div>
+          <div class="tli"><div class="mark">垫<br>③段</div><div>没有时间标志，整段在<b>说明这门生意的体量</b>（市场规模 → 机构数 → 年产出量）。<br>💡 <b>这类「垫体量」段落一般不出正面考点，但极易被拿来造干扰项</b>——本篇 28 题的 C、D 就产自本段首句。<b>读的时候要标一句：「这段是背景，不是论点。」</b></div></div>
+          <div class="tli"><div class="mark">今<br>④段首</div><div><code>This is now changing.</code>　<b>（这一情形如今正在改变。）</b><br>⚠️ <b>全文的重心段</b>：75% 期刊已在线 + 三种新模式 + 一种混合体 + 同行评议可能随之改变。<b>29 题（细则）与 30 题（主旨）都靠这一段。</b></div></div>
+        </div>
+
+        <h3>三条可以直接搬走的做题结论</h3>
+        <div class="flow">
+          <div class="fi"><b>① 重心永远在「今」，不在「昔」。</b>　<code>No longer</code> / <code>This is now changing</code> / <code>But that has changed</code> 之后的内容，才是作者关注的对象。<b>「昔」只是参照系。</b><br>⚠️ 对照 <b>2008 T1</b> 的判据「<b>把 B 方删掉文章还成立吗</b>」——那是<b>空间上</b>的对比（男 vs 女），这是<b>时间上</b>的对比（昔 vs 今），<b>处理方法完全一样：删掉参照系，看主角是谁。</b></div>
+          <div class="fi"><b>② 主旨题的正确项必须同时装下「新事物」和「新旧关系」。</b>　本篇 B 项 <code>A <b>new</b> mode of publication is <b>emerging</b></code>：<code>new</code> 是新旧关系，<code>mode of publication</code> 是新事物，<code>emerging</code> 是「正在进行」的时态。<b>四个选项都提到了新事物，只有 B 把关系也摆对了。</b></div>
+          <div class="fi"><b>③ 「昔」的死穴，就是「今」的意义所在。</b>　①段末句写明旧模式的死穴：<b>想看成果就得订阅</b>（<code>would have to subscribe</code>）。<b>那么「新事物的意义」必然是「不订阅也能看到」——28 题 A 的 <code>easier access</code> 就这样被反推出来，甚至不需要回②④段找原文。</b><br>⭐ <b>这一条是本篇效率最高的技巧：读到「昔」的段落时，顺手在旁边写一句「它的毛病是＿＿」，后面问「新事物好在哪」的题就白送了。</b></div>
+        </div>
+      </section>
+      <!-- ========== 长难句 ========== -->
+      <section class="card" id="sents">
+        <h2><span class="n">03</span>长难句精析（正文蓝色虚线句）</h2>
+        <p style="font-size:.8rem;color:var(--muted);margin-bottom:14px">本篇五句难句里，<b>有三句是同一种手法：插入语把「主语和谓语」或「一个固定搭配」撑开</b>。认出这一点，本篇的语法难度立刻减半。</p>
+
+        <div class="sent" id="s1">
+          <p class="src">The Internet—and pressure from funding agencies, who are questioning why commercial publishers are making money from government-funded research by restricting access to it—is making access to scientific results a reality.</p>
+          <div class="anat">
+            <ul>
+              <li><b>主干</b>：<span class="skel">The Internet … is making access to scientific results a reality.</span>（互联网正在使获取科研成果成为现实）——<b><code>make + 宾语 + 宾补</code></b> 结构：make <u>access</u> <u>a reality</u>。</li>
+              <li><b>破折号插入语（26 个词）</b>：<code>and pressure from funding agencies, who are questioning why…</code>，补充说明「除了互联网，还有资助机构的压力」。</li>
+              <li>插入语内部还有<b>三层嵌套</b>：<code>who</code> 定语从句修饰 funding agencies → 从句里 <code>why…</code> 是 questioning 的宾语从句 → 宾语从句里 <code>by restricting access to it</code> 是方式状语（it 指代 government-funded research）。</li>
+              <li>⚠️⚠️ <b>谓语是单数 <code>is</code>，不是 are</b>——这是判断主干的硬证据：<b>破折号里的成分不计入主语</b>，主语只有 The Internet 一个。<b>考场读法：见到破折号，先整块跳过，找到谓语再回头填。</b></li>
+            </ul>
+          </div>
+          <div class="tr">译：互联网——以及来自资助机构的压力（这些机构正在质疑：为什么商业出版商能够通过限制科研成果的获取，从政府资助的研究项目中赚取利润）——正在使获取科研成果成为现实。</div>
+        </div>
+
+        <div class="sent" id="s2">
+          <p class="src">The report, by John Houghton of Victoria University in Australia and Graham Vickery of the OECD, makes heavy reading for publishers who have, so far, made handsome profits.</p>
+          <div class="anat">
+            <ul>
+              <li><b>主干</b>：<span class="skel">The report … makes heavy reading for publishers …</span>（这份报告让出版商读起来心情沉重）。</li>
+              <li><b>第一处撑开</b>：主语 The report 与谓语 makes 之间，插入了 <code>by 作者信息</code>（相当于一个后置定语，＝ written by…）。</li>
+              <li><b>第二处撑开</b>：定语从句 <code>who have made handsome profits</code> 里，<code>so far</code> 被插进 have 与 made 之间。<b>同一个句子里，用同一种手法拆了两次。</b></li>
+              <li>⭐ <b>本句是 27 题的答案句</b>：<code>makes heavy reading</code>（读来沉重、令人不快）＋ <code>so far</code>（迄今为止，暗示到此为止）＝ 报告对出版商是个坏消息。</li>
+            </ul>
+          </div>
+          <div class="tr">译：这篇由澳大利亚维多利亚大学的约翰·霍顿和 OECD 的格雷厄姆·维克利共同撰写的报告，让那些迄今为止赚取了丰厚利润的出版商读起来心情沉重。</div>
+        </div>
+
+        <div class="sent" id="s3">
+          <p class="src">It signals a change in what has, until now, been a key element of scientific endeavor.</p>
+          <div class="anat">
+            <ul>
+              <li><b>主干</b>：<span class="skel">It signals a change in …</span>（它标志着……方面的一个变化）。</li>
+              <li>介词 <code>in</code> 的宾语是一个 <b>what 引导的名词性从句</b>：<code>what has been a key element of scientific endeavor</code>（＝「一直是科学事业关键要素的<b>那个东西</b>」）。</li>
+              <li><b>第三处撑开</b>：<code>until now</code> 插在 has 与 been 之间，把现在完成时拆成两半。<b>与 s2 的 <code>so far</code> 是同一个手法、同一个意思。</b></li>
+              <li>💡 <b><code>what</code> 从句最简的翻法：先译成「……的东西/那件事」，读完全文再回来指认它是什么。</b>本句里它指的就是<b>「同行评议 + 订阅制」这套沿用已久的机制</b>（④段末句 <code>the traditional form of the peer-review process</code> 才把它点破）。</li>
+              <li>⚠️ <b><code>signals a change</code> 是中性表述</b>，27 题 D 把它换成 benefits…considerably（强褒义）就是错的。</li>
+            </ul>
+          </div>
+          <div class="tr">译：它还标志着：科学事业中到目前为止一直存在的一个关键因素发生了变化。</div>
+        </div>
+
+        <div class="sent" id="s4">
+          <p class="src">The value of knowledge and the return on the public investment in research depends, in part, upon wide distribution and ready access.</p>
+          <div class="anat">
+            <ul>
+              <li><b>主干</b>：<span class="skel">The value … and the return … depends upon wide distribution and ready access.</span>（知识的价值与公共科研投资的回报，取决于广泛传播和便捷获取）。</li>
+              <li><b>并列主语</b>：<code>The value of knowledge</code> ＋ <code>the return on the public investment in research</code>，各带一串介词短语，读起来很像句子已经结束了。<b>看到 depends 才知道前面全是主语。</b></li>
+              <li><b>第四处撑开</b>：固定搭配 <code>depend upon</code> 被 <code>in part</code> 拆开。<b>本篇第四次用插入语拆结构，此时应该已经习惯了。</b></li>
+              <li>⚠️⚠️ <b><code>in part</code>（部分地）是要命的限定词</b>：原文只说「<b>部分</b>取决于」。<b>凡选项写成「完全取决于 / 唯一决定因素」，一律排除。</b>同族限定词：<code>somehow</code>、<code>to some extent</code>、<code>largely</code>、<code>tend to</code>。</li>
+              <li>💡 <code>return on investment</code>（投资回报）是<b>经济类文章的固定搭配</b>，缩写 ROI；<code>ready access</code> 的 ready ＝ <b>easily available</b>（便捷可得的），不是「准备好的」。</li>
+            </ul>
+          </div>
+          <div class="tr">译：知识的价值以及公共投资在科研方面的回报，在某种程度上取决于其广泛的传播和方便的获取。</div>
+        </div>
+
+        <div class="sent" id="s5">
+          <p class="src">Other models exist that are hybrids of these three, such as delayed open-access, where journals allow only subscribers to read a paper for the first six months, before making it freely available to everyone who wishes to see it.</p>
+          <div class="anat">
+            <ul>
+              <li><b>主干</b>：<span class="skel">Other models exist …</span>（还存在其他模式）。</li>
+              <li>⭐ <b>定语从句被谓语隔开</b>：<code>that are hybrids of these three</code> 修饰的是 <b>Other models</b>，却放在了谓语 exist 之后。<b>原因是「头重脚轻」——若写成 Other models that are hybrids of these three exist，主语会长到读不下去。</b><b>这是英文里非常常见的「定语后置」，见到 <code>名词 + 动词 + that 从句</code> 而语义不通时，就该想到它修饰的是前面的主语。</b></li>
+              <li><code>where</code> 从句修饰 <code>delayed open-access</code>（此处 where 不表地点，<b>表「在这种模式中」</b>——修饰抽象名词时的常见用法）。</li>
+              <li>⚠️ <b><code>before making it freely available…</code> 的翻译陷阱</b>：字面「在免费开放<b>之前</b>」，顺译要调整为「<b>……之后，才免费开放</b>」。<b><code>A before B</code> 在中文里常常要说成「先 A，然后才 B」。</b></li>
+              <li>⭐ <b>本句是 29 题 C 的产地</b>：免费开放的对象是 <code>everyone who wishes to see it</code>（<b>所有想看的人</b>），C 换成了「其他网络期刊」。</li>
+            </ul>
+          </div>
+          <div class="tr">译：也存在由上述三种模式混合的其他模式，例如延迟开放存取模式，即期刊（出版后）前六个月只允许订阅者阅读论文，之后才免费向其他希望查阅该论文的读者开放。</div>
+        </div>
+      </section>
+
+      <!-- ========== 熟词僻义清算表 ========== -->
+      <section class="card" id="polycol">
+        <h2><span class="n">03+</span>熟词僻义清算表 · 14 处（本篇的真正难度在这里）</h2>
+        <p style="font-size:.9rem;margin-bottom:12px">本篇语法其实不难（五句难句里四句是同一个手法），<b>真正的门槛是熟词僻义——而且全是四级词汇里最眼熟的那批词。</b>凡是「每个词都认识、连起来读不懂」的段落，八成就是它们在作怪。</p>
+        <div class="tabwrap"><table class="ctab">
+          <tr><th>词</th><th>你以为的意思</th><th>本篇的意思</th><th>原文语境</th></tr>
+          <tr><td><code>straightforward</code></td><td>直率的（评价人）</td><td><b>简单明了的</b>（评价事情）</td><td>It used to be so straightforward.</td></tr>
+          <tr><td><code>affiliation</code></td><td>加入、联系</td><td><b>所属机构</b>（论文署名里的单位）</td><td>remove the authors' names and affiliations</td></tr>
+          <tr><td><code>peers</code></td><td>同龄人</td><td><b>同行专家</b>（peer review 同行评议）</td><td>send it to their peers for review</td></tr>
+          <tr><td><code>decline</code></td><td>下降、衰退</td><td><b>拒绝</b>（此处＝退稿）</td><td>accept the paper for publication or decline it</td></tr>
+          <tr><td><code>rest with</code></td><td>休息</td><td><b>（权利/责任）归属于</b></td><td>Copyright rested with the journal publisher</td></tr>
+          <tr><td><code>question</code>（v.）</td><td>提问</td><td><b>质疑</b>（带否定色彩）</td><td>who are questioning why…</td></tr>
+          <tr><td><code>issue</code>（v.）</td><td>问题、期号</td><td><b>发布</b></td><td>has just issued a report</td></tr>
+          <tr><td><code>heavy</code>（reading）</td><td>重的、大量的</td><td><b>令人沉重的、读来不快的</b> ⭐27 题命脉</td><td>makes heavy reading for publishers</td></tr>
+          <tr><td><code>handsome</code></td><td>英俊的</td><td><b>（数额）可观的</b></td><td>made handsome profits 丰厚利润</td></tr>
+          <tr><td><code>signal</code>（v.）</td><td>名词「信号」</td><td><b>标志着、预示</b>（中性）</td><td>It signals a change in…</td></tr>
+          <tr><td><code>endeavor</code></td><td>努力（动词）</td><td><b>事业</b></td><td>a key element of scientific endeavor</td></tr>
+          <tr><td><code>return</code>（n.）</td><td>返回</td><td><b>回报</b>（return on investment）</td><td>the return on the public investment</td></tr>
+          <tr><td><code>ready</code>（access）</td><td>准备好的</td><td><b>便捷的、随时可得的</b> ⭐28 题 A 的来源</td><td>wide distribution and ready access</td></tr>
+          <tr><td><code>title</code>（n.）</td><td>标题</td><td><b>（一）种期刊、刊物</b></td><td>a collection of online journal titles</td></tr>
+        </table></div>
+        <p style="font-size:.9rem;margin-top:14px">另有两个<b>不算生僻但极易读偏</b>的：<code>subject</code>（<b>学科</b>，指前文的 Scientific/Technical/Medical，不是「主题」）、<code>support</code>（<b>资助（建立）</b>，organizations support institutional repositories，不是泛泛的「支持」）。</p>
+        <div class="atti no2" style="margin-top:14px">
+          ⚠️⚠️ <b>跨篇对照，这一条值得单独记</b>：<code>deal</code> 这个词，在 <b>2008 T1</b> 是 <code>not one-shot <b>deals</b></code>（不是<b>一回事</b>／一次了事）；在<b>本篇</b>是 <code>the so-called <b>big deal</b></code>（<b>大订单／一揽子采购协议</b>）。<br>
+          <b>同一年、相邻两篇文章，同一个词两个完全不同的义项。</b>⟹ <b>熟词僻义没法靠背词表解决，只能靠「读到不通顺就停下来换个义项试」的习惯。判据很简单：<u>把你熟悉的那个意思代入，句子读起来别扭，就一定是僻义。</u></b>
+        </div>
+      </section>
+
+      <!-- ========== 词汇 ========== -->
+      <section class="card">
+        <h2><span class="n">04</span>词汇复盘（点卡片看详情）</h2>
+        <div class="filters">
+          <button class="fbtn on" data-f="all">全部</button>
+          <button class="fbtn" data-f="core">核心词</button>
+          <button class="fbtn" data-f="phrase">短语</button>
+          <button class="fbtn" data-f="poly">熟词僻义</button>
+          <button class="fbtn" data-f="write">写作可用</button>
+        </div>
+        <div class="vgrid" id="vgrid"></div>
+      </section>
+
+      <!-- ========== 写作素材 ========== -->
+      <section class="card">
+        <h2><span class="n">05</span>可搬进作文/翻译的素材</h2>
+        <div class="wb">
+          <div class="wbi"><div class="p">The value of knowledge and the return on the public investment in research depends, in part, upon wide distribution and ready access.</div><div class="u">知识的价值与公共投资的回报，部分取决于广泛的传播与便捷的获取。<br>⟹ <b>「资源共享 / 知识付费 / 开源 / 数字鸿沟」类作文的现成中心句</b>。把 knowledge 换成 education、technology、medical resources 均可直接套用。</div></div>
+          <div class="wbi"><div class="p">Why should commercial companies make money from publicly funded research by restricting access to it?</div><div class="u">凭什么商业机构能靠限制获取公共资助的研究成果来牟利？<br>⟹ <b>质疑句式：<code>Why should A profit from B by restricting access to it?</code></b>　讨论「公共资源私有化」「垄断」「付费墙」时，一句反问顶三句陈述。</div></div>
+          <div class="wbi"><div class="p">It used to be so straightforward. / No longer. / This is now changing.</div><div class="u">新旧交替三件套。<br>⟹ <b>短句起段，是英文说明文最干净的转折手法</b>。写「某现象今昔之变」的段落（网购取代实体店、线上办公取代通勤、移动支付取代现金），照这三句的位置放，段落骨架立刻清楚。</div></div>
+          <div class="wbi"><div class="p">In America, the core market is estimated at between $7 billion and $11 billion. … there are more than 2,000 publishers worldwide … They publish more than 1.2 million articles each year in some 16,000 journals.</div><div class="u">三级数据说明体量：<b>市场规模 → 从业机构数 → 年产出量</b>。<br>⟹ <b>想说明某个行业/现象「规模巨大」，照这个顺序写三句即可</b>，比空喊 very important 有力得多。可用句式：<code>be estimated at</code>、<code>more than…worldwide</code>、<code>specialize in</code>。</div></div>
+          <div class="wbi"><div class="p">makes heavy reading for publishers who have, so far, made handsome profits</div><div class="u">让迄今赚得盆满钵满的出版商读起来心情沉重。<br>⟹ <b><code>so far</code> 放进现在完成时里，等于暗示「好日子到此为止」</b>——一个词就把立场表达完了。写作里想含蓄地表示「某种局面即将终结」，这是最省字的办法。</div></div>
+          <div class="wbi"><div class="p">Entirely new business models are emerging.</div><div class="u">全新的商业模式正在涌现。<br>⟹ <b><code>emerge</code> 比 appear 高级、比 rise 准确</b>，专指「（新事物）逐渐显现、崭露头角」。搭配：<code>emerging markets</code>（新兴市场）、<code>an emerging trend</code>（新兴趋势）、<code>it emerges that…</code>（（后来）真相是……）。</div></div>
+          <div class="wbi"><div class="p">All this could change the traditional form of the peer-review process, at least for the publication of papers.</div><div class="u">这一切都可能改变传统的同行评议程序，至少就论文发表而言。<br>⟹ <b>学会用 <code>at least for…</code> 给自己的论断划边界</b>。议论文里下大判断时补一句限定范围，既严谨又显水平（对照本篇的 <code>in part</code>、<code>typically</code>、<code>could</code>——<b>这篇文章通篇都在给自己留余地，这是《经济学人》的典型笔法</b>）。</div></div>
+        </div>
+      </section>
+    </main>
+
+    <aside>
+      <div id="panel"><div class="hint">👆 点击正文里的<b>黄色高亮词</b><br>词卡会出现在这里</div></div>
+    </aside>
+  </div>
+
+  <footer>2008 英语一 Text 2 · 复盘页由 Claude 生成 · 解析为 Claude 盲做后独立撰写，答案已与黄皮书精讲逐题交叉核对（26D 27C 28A 29A 30B）<br>✅ Claude 盲做 5/5 · 本页的价值在第 02+ 节「五个干扰项、同一把刀：偷换主体」与第 03+ 节「熟词僻义清算表 14 处」<br>原文出处：<i>The Economist</i>《经济学人》2005-09-22 <i>Scientific Publishing—The Paperless Library</i>（412 词），本页仅摘引考点句作分析用，完整原文见原卷 p5</footer>
+</div>
+
+<button id="yd">🔍 查有道</button>
+<script>
+const V = {
+  straightforward:{w:"straightforward",ipa:"/ˌstreɪtˈfɔːwəd/",pos:"adj.",tags:["poly","core","write"],cn:"简单明了的；（人）坦率的",en:"easy to understand or do; honest and open",ex:"It used to be so straightforward.",mem:"straight（直）+ forward（向前）→ 一直往前、不拐弯 → <b>①（事情）简单直接、不复杂　②（人）坦率的</b>。<br>📌 <b>本篇取的是义项①</b>，评价的是<b>「事情」</b>（旧的出版流程）。<b>判据：主语是 It / the process / the answer 这类事物时，一律取「简单明了」；主语是人时才取「坦率」。</b><br>✍️ 写作可用：<code>a straightforward solution</code>（简单直接的解决办法）比 easy 更书面。",syn:"simple / uncomplicated / clear-cut ｜（人）frank / candid",conf:"straightforward（简单的/坦率的）vs. straight（直的）vs. forthright（直言不讳，语气更冲）"},
+  submit:{w:"submit",ipa:"/səbˈmɪt/",pos:"v.",tags:["core","write"],cn:"提交，呈递；屈服，顺从",en:"to give a document to sb in authority for them to consider",ex:"would submit the results of their research to a journal",mem:"sub（在下面）+ mit（送）→ 送到（上级）手下 → <b>①提交（文件、申请）　②屈服于（submit to sb）</b>。<br>📌 <b>学术语境的固定动词</b>：<code>submit a paper to a journal</code>（向期刊投稿）。名词 <code>submission</code>（投稿；屈服）。<br>✍️ 写作可用：<code>submit an application / a proposal / a report</code>。",syn:"hand in / present / put forward ｜（屈服）yield / give in",conf:"submit（提交，正式）vs. hand in（交上去，口语）vs. commit（犯（错）／承诺）——<b>sub-mit 与 com-mit 只差前缀，别写混</b>"},
+  journal:{w:"journal",ipa:"/ˈdʒɜːnl/",pos:"n.",tags:["core"],cn:"（学术）期刊；日志",en:"a serious magazine on a specialist subject",ex:"submit the results of their research to a journal",mem:"jour（法语「日」，同 journey 一天的行程）→ ①日志、日记　②<b>定期出版的学术期刊</b>。<br>📌 <b>学术出版四件套</b>：<code>journal</code>（期刊）· <code>paper / article</code>（论文）· <code>publisher</code>（出版商）· <code>editor</code>（编辑）。<b>本篇全篇围绕这四个词转。</b>",syn:"periodical / publication ｜（日志）diary / log",conf:"journal（专业学术期刊）vs. magazine（大众杂志）vs. newspaper（报纸）——<b>考研阅读的出处里，journal 一定是学术性的</b>"},
+  affiliation:{w:"affiliation",ipa:"/əˌfɪliˈeɪʃn/",pos:"n.",tags:["poly","core"],cn:"所属机构；隶属关系",en:"a connection with a political party or religion, or with a larger organization",ex:"remove the authors' names and affiliations from the paper",mem:"来自 <code>affiliate</code>（v. 使隶属于；n. 分支机构）。<br>📌 <b>本篇是学术论文的专门用法：作者姓名下面那一行「单位」</b>（某某大学某某学院）。<b>为什么要连它一起抹掉？因为知道单位就等于猜出作者——这一句话正是「匿名评审」（blind review）的全部含义。</b><br>💡 <b>读到这里若能反应出「匿名」二字，26 题的段落主旨就已经拿到一半。</b>",syn:"institution / organization / association",conf:"affiliation（所属机构）vs. affinity（亲近感、亲和力）vs. filiation（血缘关系）"},
+  peer:{w:"peer / peer review",ipa:"/pɪə(r)/",pos:"n. / v.",tags:["poly","core"],cn:"同行，同等地位的人；（v.）凝视",en:"a person who is the same age or has the same social status as you; an expert of equal standing",ex:"send it to their peers for review",mem:"考研最常见的两个义项：<b>①同龄人（peer pressure 同辈压力）　②<u>同行、同等专业地位的人</u></b>。<br>📌 <b>本篇取②</b>：<code>peer review</code>＝<b>同行评议</b>，学术出版的核心机制，也是本文末句说「可能被改变」的那个东西。<br>💡 动词 <code>peer at</code>＝<b>凝视、费力地看</b>（与名词毫无关系，是同形异义词）。",syn:"colleague / counterpart / equal",conf:"peer（同行/同龄人）vs. pear（梨）vs. peel（削皮）——<b>三个词发音相近，听力里常混</b>"},
+  dependingon:{w:"depending on",ipa:"",pos:"prep.短语",tags:["phrase","write"],cn:"依据……而定，取决于",en:"according to; influenced by",ex:"Depending on the comments received, the editor would accept…",mem:"由 <code>depend on</code> 变来的<b>独立分词结构</b>，作状语，相当于 according to。<br>✍️ <b>写作里非常好用的连接手段</b>：<code>Depending on the circumstances, …</code>（视情况而定，……）。<br>📌 注意本句里 <code>the comments received</code> 是<b>过去分词作后置定语</b>（＝ the comments that were received，收到的评审意见）。",syn:"according to / in accordance with / based on",conf:"depend on（取决于，不及物，<b>on 不能省</b>）vs. rely on（依赖）vs. It depends.（视情况而定，口语固定说法）"},
+  decline:{w:"decline",ipa:"/dɪˈklaɪn/",pos:"v. / n.",tags:["poly","core","write"],cn:"拒绝；下降，衰退",en:"to refuse politely; to become smaller, fewer or less",ex:"accept the paper for publication or decline it",mem:"de（向下）+ cline（倾斜，同 incline 倾斜）→ 向下倾 → <b>①（数量/质量）下降、衰退　②（婉言）拒绝</b>。<br>📌 <b>本篇取②</b>：与前面的 accept 构成一对 —— <b>accept the paper（录用）／decline it（退稿）</b>。<b>凡出现 accept…or…，后面那个词必是「拒绝」义，靠对举就能判定。</b><br>✍️ 写作可用：<code>a sharp decline in…</code>（……大幅下降）是图表作文的必备句。",syn:"（拒绝）reject / turn down / refuse ｜（下降）drop / fall / diminish",conf:"decline（婉拒，客气）vs. refuse（明确拒绝）vs. reject（否决，语气最重）——<b>本篇用 decline 而非 reject，也透着出版界的客气</b>"},
+  copyright:{w:"copyright",ipa:"/ˈkɒpiraɪt/",pos:"n.",tags:["core"],cn:"版权，著作权",en:"the legal right to be the only person who may publish a work",ex:"Copyright rested with the journal publisher",mem:"copy（复制）+ right（权利）→ <b>复制权 ＝ 版权</b>。<br>📌 <b>这一句是①段旧模式的要害</b>：<b>版权归出版商而不是作者</b>——所以想看论文的人必须掏钱订阅。<b>②段资助机构的质疑（凭什么靠限制获取政府出钱的研究来赚钱），矛头正对着这个安排。</b><br>💡 相关词：<code>patent</code>（专利）· <code>trademark</code>（商标）· <code>intellectual property</code>（知识产权）。",syn:"intellectual property rights",conf:"copyright（版权，作品）vs. patent（专利，发明）vs. license（许可，使用权）"},
+  restwith:{w:"rest with sb",ipa:"",pos:"v.短语",tags:["poly","phrase"],cn:"（权利、责任、决定权）属于……，取决于……",en:"if a decision or responsibility rests with sb, they are responsible for it",ex:"Copyright rested with the journal publisher",mem:"⚠️ <b>rest 在这里不是「休息」</b>。<code>rest</code> 的本义是「搁置、安放」（<code>rest one's hand on the table</code> 把手放在桌上）→ 引申为 <b>「（权利/责任）落在谁身上 ＝ 归属于谁」</b>。<br>📌 <b>同族高频短语</b>：<code>The decision rests with you.</code>（这事由你定。）· <code>rest on / upon</code>（依赖于，＝depend on，<b>2007 翻译真题考过</b>）· <code>rest assured</code>（尽管放心）。<br>💡 <b>判据：rest 后面跟 with / on / upon 且主语是抽象名词（decision、responsibility、copyright、argument）时，一律不是「休息」。</b>",syn:"belong to / lie with / be vested in",conf:"rest with（归属于）vs. rest on（依赖于、以……为基础）vs. rest（休息）——<b>介词决定义项</b>"},
+  subscribe:{w:"subscribe to",ipa:"/səbˈskraɪb/",pos:"v.短语",tags:["core","phrase"],cn:"订阅；赞同（某观点）",en:"to pay money regularly to receive a publication; to agree with an idea",ex:"researchers… would have to subscribe to the journal",mem:"sub（在下面）+ scribe（写）→ 在下面签名 → <b>①订阅（签名订购）　②赞同某观点（subscribe to a view，在这份主张下签名）</b>。<br>📌 <b>这个词是全篇新旧对立的支点</b>：<b>旧模式＝想看就得 subscribe；新模式（open-access）＝不 subscribe 也能看。</b><b>28 题问「在线出版的意义」，答案 easier access 就是从这个词反推出来的。</b><br>名词 <code>subscriber</code>（订阅者）· <code>subscription</code>（订阅费/订阅）。",syn:"（订阅）take out a subscription ｜（赞同）endorse / agree with",conf:"subscribe to a journal（订阅期刊）vs. subscribe to a view（赞同观点）——<b>后者在议论文里很常用：I do not subscribe to this view.</b>"},
+  fundingagency:{w:"funding agency",ipa:"",pos:"n.短语",tags:["phrase","write"],cn:"（科研）资助机构",en:"an organization that provides money for research",ex:"pressure from funding agencies, who are questioning why…",mem:"<code>funding</code>（资金、拨款）+ <code>agency</code>（机构）。<b>指用公共财政给科研出钱的机构</b>（如美国 NSF、中国自然科学基金委）。<br>📌 <b>它是本篇「压力」的来源方，立场很好懂</b>：<b>钱是我出的（纳税人的），凭什么成果被出版商圈起来收费？</b><br>✍️ 写作可用：<code>funding</code> 是「经费」的地道说法 —— <code>secure funding for…</code>（为……争取到经费）、<code>cut funding</code>（削减经费）。",syn:"funding body / grant-making organization / sponsor",conf:"funding（资金，不可数）vs. fund（n. 基金 / v. 资助）vs. found（v. 创立，过去式 founded）——<b>found 的过去式与 find 的过去式同形，是常考写作错误点</b>"},
+  question:{w:"question",ipa:"/ˈkwestʃən/",pos:"v.",tags:["poly","core","write"],cn:"质疑，对……表示怀疑",en:"to express doubt about sth; to have or express doubts",ex:"funding agencies, who are questioning why commercial publishers are making money…",mem:"⚠️ <b>动词 question 不是「提问」那么中性，它带明确的否定倾向 ＝ 质疑、怀疑</b>（＝ doubt / challenge）。<br>📌 <b>本句里它是判断立场的路标</b>：资助机构在 question 出版商的做法 ⟹ <b>它们不认可现状</b> ⟹ OECD 报告站在它们一边 ⟹ <b>27 题「报告让出版商不快」由此得到印证。</b><br>✍️ 写作可用：<code>Many people question whether…</code>（许多人质疑是否……）是引出反方观点的标准句式。",syn:"challenge / doubt / dispute / call into question",conf:"question（质疑）vs. ask（提问，中性）vs. inquire（询问，正式中性）——<b>选择题里把 question 读成「提问」，立场就判反了</b>"},
+  commercial:{w:"commercial",ipa:"/kəˈmɜːʃl/",pos:"adj.",tags:["core","write"],cn:"商业的，以营利为目的的",en:"connected with the buying and selling of goods and services; making a profit",ex:"why commercial publishers are making money from government-funded research",mem:"commerce（商业）+ -ial。<br>📌 <b>这个词在本句里是「立场标记」</b>：作者不写 publishers 而写 <b>commercial</b> publishers，就是在提醒你 —— <b>它们是营利机构，与「政府资助（公共出资）」形成对照。</b><b>一个形容词，把整句的矛盾点立了起来。</b><br>💡 <b>阅读中凡出现 commercial / for-profit / private 与 public / government-funded / non-profit 的对照，几乎必有考点。</b>",syn:"for-profit / business-oriented",conf:"commercial（商业的）vs. economic（经济的，宏观）vs. financial（财务的，钱）——<b>三个词在阅读里常被互换设错项</b>"},
+  govfunded:{w:"government-funded",ipa:"",pos:"adj.",tags:["phrase","write"],cn:"政府资助的",en:"paid for by the government",ex:"making money from government-funded research",mem:"<b>「名词 + 过去分词」构成的复合形容词</b>，是英文最经济的表达方式之一。<br>✍️ <b>照这个模子可以自己造词</b>：<code>state-owned</code>（国有的）· <code>market-driven</code>（市场驱动的）· <code>technology-based</code>（以技术为基础的）· <code>evidence-based</code>（有实证依据的）· <code>time-consuming</code>（耗时的）。<b>作文里用一个这样的复合词，抵得上一个从句。</b><br>📌 本篇的对立面就是上一格的 <code>commercial</code>。",syn:"publicly funded / state-funded / taxpayer-funded",conf:"government-funded（政府出钱）vs. government-run（政府运营）vs. government-owned（政府所有）——<b>出钱、运营、所有是三件事</b>"},
+  restrict:{w:"restrict access to",ipa:"/rɪˈstrɪkt/",pos:"v.短语",tags:["phrase","core"],cn:"限制（对……的）获取／使用权",en:"to limit who can obtain or use sth",ex:"by restricting access to it",mem:"restrict（限制）+ access to（对……的获取权）。<br>📌 <b>这个短语是全文的「反面」</b>：<b>旧模式靠 restrict access 赚钱，新趋势是 making access… a reality。</b><b>整篇文章就在这一对反义之间运转。</b><br>📌 <b><code>access</code> 是本篇的第一高频词</b>（出现 5 次以上），四种搭配都要认得：<code>access to sth</code>（获取……的途径）· <code>easier access</code>（更便捷的获取）· <code>ready access</code>（便捷获取）· <code>open-access</code>（开放存取）。<br>💡 <b>27、28、29、30 四道题的答案都与 access 有关——高频词就是主旨词。</b>",syn:"limit access / block access ｜反义 grant access / open up access",conf:"access（n. 获取权，<b>不可数</b>，to 是固定介词）vs. assess（v. 评估）vs. excess（n. 过量）——<b>三个词拼写极近，写作里高频出错</b>"},
+  makereality:{w:"make sth a reality",ipa:"",pos:"v.短语",tags:["phrase","write"],cn:"使……成为现实",en:"to cause sth to actually happen",ex:"is making access to scientific results a reality",mem:"<b><code>make + 宾语 + 宾语补足语</code></b> 结构：make <u>access to scientific results</u>（宾语）<u>a reality</u>（宾补）。<br>⚠️ <b>本句的宾语长达 5 个词，很容易读丢</b>——考场读法：看到 make 就往后找那个「光秃秃的名词」（a reality），中间的全是宾语。<br>✍️ 写作可用：<code>turn a dream into reality</code> / <code>make it a reality</code>；同族结构 <code>make it possible for sb to do sth</code>。<br>📌 <b>28 题 A 的原文依据就是这一句。</b>",syn:"turn sth into reality / bring sth about / realize",conf:"make sth a reality（使成为现实）vs. realize（①实现②意识到）——<b>realize 的「意识到」义在阅读里更常见</b>"},
+  oecd:{w:"the OECD",ipa:"",pos:"n.",tags:["core"],cn:"经济合作与发展组织",en:"the Organization for Economic Co-operation and Development",ex:"The Organization for Economic Co-operation and Development (OECD) has just issued a report",mem:"由发达国家组成的国际经济组织，<b>常年是考研阅读的「数据与报告发布方」</b>。<br>📌 <b>遇到长机构名不必背，抓括号里的缩写即可</b>——原文一旦给出缩写，后文一律用缩写指代（本篇后面三次都写 the OECD report）。<b>把它当成一个代号，题干里出现它就回来找这个代号。</b><br>💡 <b>考研常客机构名</b>：OECD · WHO（世卫）· IMF（货基）· UN · NASA · MIT。",syn:"—",conf:"⚠️ <b>27 题问的是 the OECD <u>report</u>（这份报告），不是 OECD 这个组织</b>——题干里的限定词要看清"},
+  issue:{w:"issue",ipa:"/ˈɪʃuː/",pos:"v. / n.",tags:["poly","core"],cn:"（v.）发布，颁发；（n.）问题；（期刊的）期",en:"to formally make sth known; a problem; one of a regular series of a magazine",ex:"has just issued a report describing…",mem:"⚠️ <b>issue 的名词义「问题」太熟，很容易把动词义读丢。</b><br>📌 <b>动词 issue ＝ 正式发布、颁发</b>：<code>issue a report / a statement / a warning / a passport</code>。<br>📌 <b>第三个义项在本篇语境里也该知道</b>：期刊的「<b>期</b>」（the latest issue 最新一期）——与 <code>volume</code>（卷）配套。<br>💡 <b>判据很简单：issue 后面直接跟名词宾语（a report）就是动词「发布」；前面有 the / an 就是名词。</b>",syn:"（发布）release / publish / put out ｜（问题）problem / matter",conf:"issue（发布/问题）vs. release（发布，更常用于消息、影片）vs. publish（出版，用于书刊）"},
+  farreaching:{w:"far-reaching",ipa:"",pos:"adj.",tags:["write","core"],cn:"深远的，影响广泛的",en:"likely to influence many people or things",ex:"a report describing the far-reaching consequences of this",mem:"far（远）+ reaching（够到）→ <b>够得很远 ＝ 影响深远</b>。<br>✍️ <b>写作高分词</b>：<code>far-reaching consequences / implications / effects / changes</code>。比 big influence 高级得多。<br>📌 <b>同族「复合形容词」一起背</b>：<code>long-lasting</code>（持久的）· <code>wide-ranging</code>（广泛的）· <code>deep-rooted</code>（根深蒂固的）· <code>hard-won</code>（来之不易的）。<br>💡 本句里的 <code>this</code> 指代的是<b>整个②段②句所讲的变化</b>——<b>this / it 的指代对象常常是「上一整句话」而不是某个名词。</b>",syn:"profound / extensive / sweeping / wide-ranging",conf:"far-reaching（影响范围广、深远）vs. far-fetched（牵强附会的）——<b>两个词只差一点，意思毫不相干</b>"},
+  heavyreading:{w:"make heavy reading",ipa:"",pos:"v.短语",tags:["poly","phrase"],cn:"读起来令人沉重／不好受",en:"to be unpleasant or depressing to read",ex:"The report… makes heavy reading for publishers who have, so far, made handsome profits.",mem:"⭐⭐ <b>本篇最难的一处词义，也是 27 题的全部命脉。</b><br><code>heavy</code> 在这里不是「重的」也不是「大量的」，而是 <b>「沉重的、令人不快的」</b>（同 heavy news 坏消息、a heavy heart 沉重的心情）。<b>整个短语＝「（这份报告）对……来说读起来很不是滋味」。</b><br>📌 <b>就算不认识，也有三条路推出来</b>：① <code>so far</code>（迄今为止）暗示「好日子到此为止」；② 报告支持「方便获取」，出版商靠「限制获取」牟利，<b>天然对立</b>；③ 下一句 <code>But it goes further than that</code> 说明这一句已经讲了一层影响。<br>💡 <b>同族</b>：<code>light reading</code>（轻松读物）· <code>compulsory reading</code>（必读）· <code>a good read</code>（一本好书）。",syn:"be depressing / disturbing / unwelcome reading",conf:"make heavy reading（读来沉重）vs. heavy reading（大量阅读，字面）——<b>本篇是前者，判据是后面跟了 for publishers（对谁而言）</b>"},
+  sofar:{w:"so far",ipa:"",pos:"adv.短语",tags:["phrase","write"],cn:"迄今为止；到目前为止",en:"until now",ex:"publishers who have, so far, made handsome profits",mem:"📌 <b>本篇里它不只是时间状语，还是<u>立场标记</u></b>：给「赚了丰厚利润」加上 <b>so far</b>，等于说「<b>到此为止了</b>」。<b>一个短语就暗示了「好日子快结束」——27 题的答案由此得到第二重印证。</b><br>💡 <b>同族「暗示转折将至」的时间词</b>：<code>until now</code>（本篇⑥句也用了）· <code>traditionally</code> · <code>for decades</code> · <code>in the past</code>。<b>凡见到它们与现在完成时连用，下文十有八九要说「但现在变了」。</b><br>✍️ 写作：<code>So far, little attention has been paid to…</code>（迄今为止，……鲜有人关注）是引出问题的好开头。",syn:"until now / up to now / to date / thus far",conf:"so far（迄今为止）vs. so far as（就……而言，＝as far as）vs. by far（……得多，修饰最高级）"},
+  handsome:{w:"handsome",ipa:"/ˈhænsəm/",pos:"adj.",tags:["poly","write"],cn:"（数额）可观的，丰厚的；英俊的",en:"（of an amount of money）large; good-looking",ex:"publishers who have… made handsome profits",mem:"⚠️ <b>「英俊的」是最熟的义项，本篇取的却是「（钱）数额可观的」。</b><br>📌 <b>固定搭配</b>：<code>handsome profits</code>（丰厚利润）· <code>a handsome sum</code>（一大笔钱）· <code>handsome rewards</code>（丰厚回报）。<b>判据：handsome 后面跟的是钱（profit / sum / salary / reward）就一定取「可观」义。</b><br>✍️ <b>写作可用</b>：想说「赚了大钱」，<code>reap handsome profits</code> 比 earn a lot of money 高级两个档次。",syn:"（钱）substantial / considerable / generous ｜（人）good-looking",conf:"handsome（钱可观／人英俊）vs. hands-on（亲自动手的）vs. handy（方便的、就手的）"},
+  gofurther:{w:"go further than that",ipa:"",pos:"v.短语",tags:["phrase","write"],cn:"（影响/意义）不止于此，走得更远",en:"to have effects beyond what has just been mentioned",ex:"But it goes further than that.",mem:"📌 <b>这是一个「递进信号句」</b>：说明上一句已经讲了一层意思，<b>下一句还有更重要的一层</b>。<br>⭐ <b>它在本篇的结构价值极大</b>：正因为有这句 But，我们才能确认<b>④句（让出版商心情沉重）确实是在讲报告的一层影响</b> —— <b>27 题的答案由此得到第三重印证。</b><br>💡 <b>同族递进信号</b>：<code>What is more</code> · <code>More importantly</code> · <code>Beyond that</code> · <code>Nor is that all</code>。<b>阅读里见到它们，就在旁边画个向上的箭头：后面比前面重要。</b>",syn:"go beyond that / do more than that / have wider implications",conf:"go further（更进一步）vs. go too far（做过头了，贬义）——<b>加了 too 就变成负面评价</b>"},
+  signal:{w:"signal",ipa:"/ˈsɪɡnəl/",pos:"v.",tags:["poly","core","write"],cn:"标志着，预示；示意",en:"to be a sign that sth exists or is going to happen",ex:"It signals a change in what has, until now, been a key element…",mem:"⚠️ <b>名词「信号」太熟，动词义容易读丢。</b><b>动词 signal ＝ 标志着、预示（＝ mark / indicate）</b>，<b>色彩中性</b>。<br>📌 <b>27 题 D 的错法就在这里</b>：把中性的 <code>signals a change</code>（标志着一个变化）换成强褒义的 <code>benefits… considerably</code>（受益匪浅）。<b>⚠️ 中性词 → 褒/贬词，是本卷反复使用的造错法。</b><br>✍️ 写作可用：<code>This signals a fundamental shift in…</code>（这标志着……的根本性转变），比 This shows 有力得多。",syn:"mark / indicate / herald / point to",conf:"signal（标志着，中性）vs. benefit（使受益，褒义）vs. threaten（威胁，贬义）——<b>27 题 D 与 30 题 A 各踩了后两个</b>"},
+  keyelement:{w:"a key element of",ipa:"",pos:"n.短语",tags:["write","phrase"],cn:"……的一个关键要素",en:"an essential part of sth",ex:"a key element of scientific endeavor",mem:"📌 <b>本句里它指的是什么？原文没直说</b>——<b>要读到④段末句 <code>the traditional form of the peer-review process</code> 才能回填：就是「同行评议 + 订阅制」这套沿用已久的机制。</b><br>⭐ <b>这是英文说明文的常见铺陈方式：先用抽象说法吊着（a key element），最后才点破。</b><b>读到抽象名词而心里没底时，不要停下来死磕，往后读，作者一定会揭晓。</b><br>✍️ 写作可用：<code>a key element / a crucial factor / an integral part / the cornerstone of…</code>。",syn:"a crucial factor / an essential component / the cornerstone",conf:"element（要素，构成部分）vs. factor（因素，起作用的原因）vs. aspect（方面，观察角度）"},
+  endeavor:{w:"endeavor (endeavour)",ipa:"/ɪnˈdevə(r)/",pos:"n. / v.",tags:["poly","write"],cn:"（n.）事业，努力；（v.）力图，努力",en:"an attempt to do sth new or difficult; effort",ex:"a key element of scientific endeavor",mem:"⚠️ <b>动词义「努力」最熟，但本篇是名词，且译成「努力」会读不通。</b><br>📌 <b><code>scientific endeavor</code> ＝ 科学事业／科学探索活动</b>（指整个科研这件事，不是某个人的努力）。<b>同族用法：<code>human endeavor</code>（人类的事业）· <code>a joint endeavor</code>（共同的事业）。</b><br>✍️ 写作可用（动词）：<code>endeavor to do sth</code> ＝ 竭力做某事，比 try 正式。<b>注意拼写：美式 endeavor，英式 endeavour，考研两种都出现过。</b>",syn:"（事业）undertaking / pursuit / enterprise ｜（努力）strive / attempt",conf:"endeavor（事业/努力）vs. venture（（有风险的）事业、冒险）vs. enterprise（企业；事业心）"},
+  return:{w:"return (on investment)",ipa:"/rɪˈtɜːn/",pos:"n.",tags:["poly","core","write"],cn:"回报，收益",en:"the amount of profit that you get from an investment",ex:"the return on the public investment in research",mem:"⚠️ <b>「返回」太熟，此处是经济学固定义：<u>回报、收益</u>。</b><br>📌 <b>固定搭配 <code>return on investment</code>（投资回报，缩写 ROI）</b>，介词只能用 <b>on</b>。<b>本句是「公共投资在科研上的回报」。</b><br>⚠️ <b>28 题 D 的错法</b>：把「投资的<b>回报</b>」（产出端）偷换成「<b>投资</b>」本身（投入端）—— <b>一个介词短语的中心词被换掉，因果方向就反了。</b><br>💡 同族：<code>a high return</code>（高回报）· <code>diminishing returns</code>（收益递减）· <code>in return for</code>（作为……的交换）。",syn:"profit / yield / gain / payoff",conf:"return on（投资回报）vs. return to（返回到）vs. in return（作为回报）——<b>介词一变，义项全变</b>"},
+  publicinvest:{w:"public investment",ipa:"",pos:"n.短语",tags:["write","phrase"],cn:"公共投资（财政投入）",en:"money invested by the government on behalf of taxpayers",ex:"the return on the public investment in research",mem:"📌 <b>这个词组把全文的伦理立场点明了</b>：科研的钱是<b>公众（纳税人）</b>出的 ⟹ 成果理应让公众更容易拿到 ⟹ <b>出版商用付费墙把它圈起来，才成了一个问题。</b><br>✍️ <b>写作可用</b>：讨论公共资源、教育投入、基建时，<code>public investment in…</code> 是准确说法；反义是 <code>private investment</code>。<br>💡 <b>同族表达</b>：<code>taxpayer-funded</code>（纳税人出资的）· <code>at public expense</code>（由公款支付）· <code>public interest</code>（公共利益）。",syn:"government spending / public expenditure / state funding",conf:"investment in sth（对……的投资，介词 in）vs. invest in sth（投资于……）——<b>介词都是 in，别写成 invest to</b>"},
+  inpart:{w:"in part",ipa:"",pos:"adv.短语",tags:["phrase","write"],cn:"部分地，在某种程度上",en:"partly; to some extent",ex:"depends, in part, upon wide distribution and ready access",mem:"⚠️⚠️ <b>不起眼但要命的限定词。</b>原文只说「<b>部分</b>取决于」，<b>凡选项写成「完全取决于 / 唯一的决定因素」就该扣分。</b><br>📌 <b>考研阅读里的限定词从不白给，要成组记</b>：<code>in part</code>（部分地）· <code>to some extent</code>（在一定程度上）· <code>somehow</code>（以某种方式）· <code>largely</code>（很大程度上）· <code>tend to</code>（倾向于）· <code>could / may</code>（可能）。<br>⭐ <b>本篇通篇都在给自己留余地</b>（in part / typically / could change / at least for…）——<b>这是《经济学人》的典型笔法，也意味着任何绝对化的选项都可以先扣一分。</b>",syn:"partly / partially / to some degree",conf:"in part（部分地）vs. take part in（参加）vs. for the most part（大体上，＝mostly）"},
+  distribution:{w:"distribution",ipa:"/ˌdɪstrɪˈbjuːʃn/",pos:"n.",tags:["core","write"],cn:"传播，分发；分布",en:"the act of sharing sth out or spreading it; the way sth is spread over an area",ex:"depends… upon wide distribution and ready access",mem:"dis（分开）+ tribute（给予）→ 分给大家 → <b>①分发、传播　②分布</b>。<br>📌 <b>本篇取①</b>，与 <code>ready access</code> 并列，共同构成「知识价值得以实现」的两个条件：<b>传得广（供给侧）＋ 取得便（需求侧）</b>。<br>✍️ 写作可用：<code>the distribution of wealth / resources</code>（财富/资源的分配）· <code>uneven distribution</code>（分布不均）——<b>是讨论公平、区域差距的核心词。</b>",syn:"circulation / dissemination / spread",conf:"distribution（分发/分布）vs. contribution（贡献）vs. attribution（归因）——<b>三个 -tribution 结尾的词要分清</b>"},
+  ready:{w:"ready (access)",ipa:"/ˈredi/",pos:"adj.",tags:["poly","core"],cn:"便捷的，随时可得的",en:"easily available; within reach",ex:"wide distribution and ready access",mem:"⭐ <b>本篇的熟词僻义之王。</b><br>⚠️ <b>不是「准备好的」</b>。<code>ready</code> 修饰<b>物</b>时常表示 <b>「现成的、便捷的、随手可得的」</b>：<code>ready access</code>（便捷获取）· <code>ready money / cash</code>（现金）· <code>a ready supply of…</code>（充足现成的供应）· <code>have a ready answer</code>（对答如流）。<br>📌 <b>28 题 A 的 <code>easier access</code> 正是从这里来的</b>——<b>ready ≈ easy to obtain。</b><br>💡 <b>判据：ready 后面跟的是「物/资源」而不是「人 + to do」，就要考虑僻义。</b>",syn:"easily available / accessible / at hand / on hand",conf:"ready access（便捷获取）vs. be ready to do（准备好做）vs. already（已经）"},
+  bigbusiness:{w:"big business",ipa:"",pos:"n.短语",tags:["phrase","write"],cn:"一门大生意；大企业（集团）",en:"an activity that makes a lot of money; large commercial firms",ex:"It is big business.",mem:"📌 <b>本句在文中的作用是「垫体量」</b>：先说「这是门大生意」，再用三级数据砸实（市场规模 → 机构数 → 年产出量）。<b>下一段说「这一切正在改变」，分量才够。</b><br>✍️ <b>写作可用</b>：<code>Online education has become big business.</code>（在线教育已成为一门大生意。）<b>用一个短句起段，再跟数据，是最干净的说明文写法。</b><br>💡 注意 <code>It is big business.</code> <b>不加冠词</b>——此处 business 是不可数名词（生意、行业），加了 a 就变成「一家企业」。",syn:"a lucrative industry / a multi-billion-dollar industry",conf:"big business（大生意/大企业）vs. a big business（一家大公司）——<b>冠词决定词义，是常考语法点</b>"},
+  estimate:{w:"be estimated at",ipa:"/ˈestɪmeɪt/",pos:"v.短语",tags:["phrase","write"],cn:"被估计为（某数值）",en:"to be judged to be a particular amount",ex:"the core scientific publishing market is estimated at between $7 billion and $11 billion",mem:"📌 <b>数据类句子的标准句式</b>：<code>sth is estimated at + 数值</code>。<b>介词是 at，不是 as / to。</b><br>✍️ <b>图表作文与说明文的高频句式</b>：<code>The figure is estimated at around 30%.</code>；同族 <code>be expected to reach…</code>（预计达到）· <code>account for…</code>（占……比例）· <code>range from A to B</code>（从 A 到 B 不等）。<br>💡 <b>阅读里遇到具体数字不必细记</b>，只需标注「这是在说<b>体量大</b>」——<b>本段三个数字共同服务于一个判断，不会单独出细节题。</b>",syn:"be put at / be valued at / be reckoned at",conf:"estimate（估计）vs. evaluate（评价、评估价值）vs. assess（评定，常指正式评定）"},
+  association:{w:"association",ipa:"/əˌsəʊsiˈeɪʃn/",pos:"n.",tags:["core","write"],cn:"协会；联系，联想",en:"an official group of people who have joined together for a purpose; a connection",ex:"The International Association of Scientific, Technical and Medical Publishers",mem:"associate（v. 联合；联想）+ -ation。两个常考义项：<b>①协会、社团　②联系、关联</b>。<br>📌 <b>本篇取①</b>，是数据的<b>信源</b>。<b>⭐ 读到「某某协会称……」时，要意识到这是<u>引用来源</u>，作用是给数据背书，本身不是观点，不会成为主旨。</b><br>💡 学术阅读常考的第二义项：<code>an association between A and B</code>（A 与 B 之间的关联）——<b>注意 association ≠ causation（关联不等于因果），这是科普类阅读的经典考点。</b>",syn:"（协会）society / organization / union ｜（联系）connection / link / correlation",conf:"association（关联，未必有因果）vs. causation（因果关系）——<b>科普阅读的分水岭，选项常在这里偷换</b>"},
+  specialize:{w:"specialize in",ipa:"/ˈspeʃəlaɪz/",pos:"v.短语",tags:["phrase","write"],cn:"专门从事，专攻",en:"to become an expert in a particular area of work or study",ex:"more than 2,000 publishers worldwide specializing in these subjects",mem:"special（专门的）+ -ize。<b>介词固定用 in。</b><br>📌 本句里 <code>specializing in these subjects</code> 是<b>现在分词作后置定语</b>，修饰 publishers（＝ that specialize in…）。<br>✍️ 写作可用：<code>a firm specializing in…</code>（一家专营……的公司）· <code>He specializes in modern history.</code><br>💡 <b>名词形式两个都常考</b>：<code>specialty / speciality</code>（专长、特色菜）· <code>specialization</code>（专业化，是社会分工类作文的关键词）。",syn:"focus on / concentrate on / be devoted to",conf:"specialize in（专攻，介词 in）vs. major in（（大学）主修，介词 in）vs. be expert at（擅长，介词 at）"},
+  subject:{w:"subject",ipa:"/ˈsʌbdʒɪkt/",pos:"n.",tags:["poly","core"],cn:"学科；主题；（实验）对象",en:"an area of knowledge studied in a school or university; a topic; a person being studied",ex:"more than 2,000 publishers… specializing in these subjects",mem:"⚠️ <b>本篇取「学科」义</b>：<code>these subjects</code> 回指上文的 <b>Scientific, Technical and Medical</b>（科学、技术、医学三大学科）。<br>📌 <b>考研三个常考义项都要认</b>：<b>①学科</b>（school subjects）· <b>②主题、话题</b>（the subject of the article）· <b>③受试者、实验对象</b>（<code>the subjects of the experiment</code>，<b>科普类文章高频，2008 T1 讲小鼠实验时用的就是这个义项体系</b>）。<br>💡 形容词短语 <code>be subject to</code>＝<b>易受……影响的／须服从于</b>（另一个高频考点，与名词义无关）。",syn:"（学科）discipline / field ｜（主题）topic / theme ｜（受试者）participant",conf:"subject（学科/主题/受试者）vs. object（物体/宾语/反对）vs. topic（话题，范围更小）"},
+  article:{w:"article",ipa:"/ˈɑːtɪkl/",pos:"n.",tags:["poly","core"],cn:"（学术）论文；文章；条款；冠词",en:"a piece of writing in a journal; a separate clause in a legal document",ex:"They publish more than 1.2 million articles each year",mem:"📌 <b>本篇 article ＝ paper ＝ 学术论文</b>（与①段的 <code>the paper</code>、④段的 <code>a paper</code> 同指一物）。<br>⭐ <b>本篇的「同义替换网」值得整体记住</b>：<code>the results of their research</code> → <code>the paper</code> → <code>an article</code> —— <b>同一个东西，三种说法。26 题 B 之所以错，正是因为它把这张网里的 research results 换成了网外的 laboratory reports。</b><br>💡 其他义项：法律条款（Article 5 第五条）· 语法冠词（the definite article）· 物品（articles of clothing）。",syn:"paper / study / publication / piece",conf:"article（论文/文章）vs. essay（（学生写的）文章、随笔）vs. thesis（学位论文）vs. dissertation（（英）博士论文）"},
+  scholarly:{w:"scholarly",ipa:"/ˈskɒləli/",pos:"adj.",tags:["core","write"],cn:"学术的；博学的",en:"connected with academic study; showing great knowledge",ex:"some 75% of scholarly journals are now online",mem:"scholar（学者）+ -ly。<b>注意：以 -ly 结尾但它是形容词不是副词</b>（同类：friendly、likely、lively、costly）。<br>📌 <code>scholarly journals</code> ＝ 学术期刊，与①段的 journal 同指，<b>是本篇的又一处同义替换。</b><br>✍️ 写作可用：<code>scholarly research / a scholarly approach</code>（严谨治学的方法）。<br>💡 <b>同族词一起背</b>：<code>scholar</code>（学者）· <code>scholarship</code>（①奖学金 ②学术研究，<b>第二个义项是熟词僻义</b>）· <code>academic</code>（学术的；学院的）。",syn:"academic / learned / erudite",conf:"scholarly（学术的，褒义）vs. academic（学术的；<b>也可指「纯理论而不实用的」，带轻微贬义</b>：a purely academic question 纯属空谈的问题）"},
+  businessmodel:{w:"business model",ipa:"",pos:"n.短语",tags:["write","phrase"],cn:"商业模式，盈利模式",en:"the way a company organizes itself to make money",ex:"Entirely new business models are emerging",mem:"📌 <b>本句是 30 题的命脉</b>：<code>Entirely <b>new</b> business <b>models</b> are <b>emerging</b></code> —— <b>「新」+「（出版）模式」+「正在涌现」，正确项 B 三个要素一个不差。</b><br>⭐ <b>选项 B 用的是 <code>mode</code>，原文用的是 <code>model</code></b> —— <b>这就是同义替换：mode（方式）与 model（模式）在此可换。别因为「词不一样」就排掉它。</b><br>✍️ 写作可用：<code>a sustainable business model</code>（可持续的商业模式）· <code>disrupt the traditional business model</code>（颠覆传统商业模式）。",syn:"revenue model / commercial model / mode of operation",conf:"model（模式、模型、模特）vs. mode（方式、模式）vs. module（模块）——<b>三个词形近，本篇原文与选项各用一个</b>"},
+  emerge:{w:"emerge",ipa:"/iˈmɜːdʒ/",pos:"v.",tags:["core","write"],cn:"涌现，兴起；（真相）显露",en:"to appear or become known; to come out from a place",ex:"Entirely new business models are emerging",mem:"e（出）+ merge（沉没，同 submerge 潜入水下）→ <b>从水下浮出来 ＝ 显现、涌现</b>。<br>📌 <b>本篇取「（新事物）逐渐兴起」</b>，是 30 题正确项里保留的核心动词。<b>进行时 are emerging 强调「正在发生、尚未完成」——这正是本文的时间立场。</b><br>✍️ <b>写作高分词</b>：<code>emerging markets</code>（新兴市场）· <code>an emerging trend</code>（新兴趋势）· <code>It emerges that…</code>（（后来）真相是……）· <code>emerge as a leader</code>（崭露头角成为领军者）。",syn:"appear / arise / come into being / spring up",conf:"emerge（浮现、兴起，自然而然）vs. merge（合并）vs. immerse（沉浸）——<b>e-/沉出，im-/沉入，词根同源方向相反</b>"},
+  identify:{w:"identify",ipa:"/aɪˈdentɪfaɪ/",pos:"v.",tags:["core","write"],cn:"识别出，确认；指出",en:"to recognize sb/sth and be able to say who or what they are",ex:"three main ones were identified by the report's authors",mem:"📌 本句是<b>被动语态</b>：<code>three main ones were identified by…</code>（三种主要模式被报告作者指出）。<b>其中 <code>ones</code> 指代 <code>business models</code>——one/ones 的指代对象一定在上一句。</b><br>✍️ <b>学术写作的标准动词</b>：<code>The study identified three key factors.</code>（该研究指出了三个关键因素。）<br>💡 同族：<code>identity</code>（身份）· <code>identical</code>（完全相同的）· <code>identify with sb</code>（<b>认同、与……有共鸣</b>，这是熟词僻义）。",syn:"recognize / pinpoint / single out / determine",conf:"identify（识别出，客观）vs. classify（分类）vs. specify（明确说明，指定）"},
+  socalled:{w:"so-called",ipa:"",pos:"adj.",tags:["poly","write"],cn:"所谓的（①通称为　②未必名副其实）",en:"used to show that sth is commonly called this; used to show you think the name is wrong",ex:"There is the so-called big deal",mem:"⚠️ <b>两种语气，靠上下文分辨</b>：<b>①中性——「业内通称为……」；②贬义——「所谓的（其实不然）」，常带引号。</b><br>📌 <b>本篇是义项①</b>：作者只是在引入一个行业术语（big deal 是业内的正式叫法），<b>没有讽刺意味</b>。<b>判据：后文用平实的 where 从句作了客观解释，没有任何贬抑的措辞。</b><br>⚠️ <b>对照 2008 T1 的 <code>increased &quot;opportunities&quot; for stress</code>——那个引号是<u>反语</u>标记。同样是「加了标记的词」，一个中性一个讽刺，只能靠上下文判。</b>",syn:"known as / referred to as / what is called",conf:"so-called（所谓的）vs. as it were（可以说是）vs. supposedly（据称，<b>贬义更明显</b>）"},
+  bigdeal:{w:"the big deal",ipa:"",pos:"n.短语",tags:["poly","phrase"],cn:"「大订单」模式（一揽子采购协议）",en:"a publishing model where institutions buy access to a large bundle of online journals",ex:"There is the so-called big deal, where institutional subscribers pay for access to a collection of online journal titles",mem:"📌 <b>本篇的行业术语</b>：图书馆等机构<b>一次性打包购买</b>一大批在线期刊的阅读权（<b>不是单本订阅，而是整批</b>）。<br>⚠️⚠️ <b>跨篇对照，本卷最值得记的一处熟词僻义</b>：<code>deal</code> 在 <b>2008 T1</b> 里是 <code>not one-shot <b>deals</b></code>（不是<b>一回事</b>／一次了事）；在<b>本篇</b>是 <b>「（一揽子）交易、订单」</b>。<b>同一年、相邻两篇，同一个词两个义项——熟词僻义只能靠语境定，背词表没用。</b><br>💡 其他常见用法：<code>It's no big deal.</code>（没什么大不了。）· <code>strike / cut a deal</code>（达成交易）· <code>a great deal of</code>（大量的）。",syn:"bundled subscription / package deal",conf:"big deal（①大订单 ②「多大点事」）vs. a great deal of（大量的）vs. deal with（处理、应对，<b>2008 T1 高频</b>）"},
+  institutional:{w:"institutional",ipa:"/ˌɪnstɪˈtjuːʃənl/",pos:"adj.",tags:["core"],cn:"机构的，团体的",en:"connected with a large organization such as a university or hospital",ex:"institutional subscribers pay for access…; support institutional repositories",mem:"institution（机构、制度）+ -al。<br>📌 <b>本篇出现两次，都指「以机构为单位」</b>：<code>institutional subscribers</code>（机构订户，如大学图书馆，<b>区别于个人订户</b>）· <code>institutional repositories</code>（机构知识库）。<br>⚠️ <b>「机构 vs 个人」这条线在 29 题里很关键</b>：big deal 的付费方是<b>机构</b>，open-access publishing 的付费方是<b>作者个人（或其雇主）</b> —— <b>两种模式的分界就在「谁掏钱」。</b><br>💡 <code>institution</code> 的第二义项<b>「制度」</b>（the institution of marriage 婚姻制度）也是常考点。",syn:"organizational / corporate / official",conf:"institutional（机构的）vs. institutionalized（制度化的；被收容的）vs. constitutional（宪法的；体质的）"},
+  subscriber:{w:"subscriber",ipa:"/səbˈskraɪbə(r)/",pos:"n.",tags:["core"],cn:"订阅者，订户",en:"a person or organization that pays to receive a publication or service",ex:"institutional subscribers pay for access…; journals allow only subscribers to read a paper",mem:"subscribe（订阅）+ -er。<br>⚠️⚠️ <b>29 题 B 的错法全在这个词的<u>主体</u>上</b>：文中订阅的是<b>机构</b>（big deal）或<b>想看成果的其他研究者</b>（①段旧模式），<b>从来不是「论文作者」</b>。<b>让作者去订阅发表自己论文的期刊，全文没有一个字支持。</b><br>📌 <b>把本篇的四种身份分清楚，29 题就是白给的</b>：<b>author</b>（写论文的）· <b>publisher</b>（出版商）· <b>subscriber</b>（订户）· <b>editor</b>（编辑）。<b>命题人玩的就是这四个身份的排列组合。</b>",syn:"paying reader / member",conf:"subscriber（订户）vs. author（作者）vs. publisher（出版商）——<b>本篇 29、30 两题都在这三个身份间做手脚</b>"},
+  collection:{w:"a collection of",ipa:"/kəˈlekʃn/",pos:"n.短语",tags:["poly","phrase"],cn:"一批，一套（同类事物）",en:"a group of similar things that have been gathered together",ex:"pay for access to a collection of online journal titles",mem:"⚠️ <b>不是「收藏品/募捐」</b>，此处就是<b>「一大批、一整套」</b>的意思——<b>这正是 big deal 模式的特点：不是买单本，而是买<u>一整批</u>期刊的权限。</b><br>📌 <b>与「捆绑销售」是同一回事</b>：现实中的对应词是 <code>bundle</code>（打包）。<br>💡 <code>collection</code> 的其他常考义项：收藏品（an art collection）· 募捐（take up a collection）· （垃圾）收运（refuse collection）。",syn:"a bundle of / a set of / an array of / a package of",conf:"a collection of（一批）vs. a couple of（两三个）vs. a collective（集体，n.）"},
+  title:{w:"title",ipa:"/ˈtaɪtl/",pos:"n.",tags:["poly","core"],cn:"（一）种期刊／书；标题；头衔",en:"a book or magazine considered as a product; the name of a book, film, etc.",ex:"a collection of online journal titles",mem:"⭐ <b>出版业的专门用法：<code>title</code> ＝「一种（刊物/书）」，是<u>计数单位</u>。</b><br><code>online journal titles</code> ＝ <b>一批在线期刊（若干「种」期刊）</b>，<b>不是「期刊的标题」</b>。<b>判据：前面有 a collection of（一批），后面接的必然是可数的「刊物」而非抽象的「标题」。</b><br>💡 出版业同族计量词：<code>title</code>（种）· <code>volume</code>（卷）· <code>issue</code>（期）· <code>edition</code>（版）· <code>copy</code>（册）。<b>五个词各有分工，读学术出版类文章时会同时出现。</b><br>📌 其他义项：头衔（a job title）· 所有权（title to the land）。",syn:"publication / book / periodical",conf:"title（一种刊物／标题）vs. heading（（文中的）小标题）vs. caption（图片说明）"},
+  sitelicensing:{w:"site-licensing agreement",ipa:"",pos:"n.短语",tags:["phrase"],cn:"（整站）许可使用协议",en:"a contract allowing everyone at an institution to use a resource",ex:"pay for access… through site-licensing agreements",mem:"<code>site</code>（场所、单位）+ <code>licensing</code>（授权许可）→ <b>按「单位」而不是按「人头」授权</b>：一所大学签一份协议，全校师生都能读。<br>📌 <b>2008 年这算超纲词，但完全不影响做题</b>——<b>where 从句已经把它解释清楚了（institutional subscribers pay for access…）。</b><br>⭐ <b>这就是长难句里定语从句的隐藏价值：它常常是生词的<u>免费注释</u>。遇到不认识的专业名词，先别慌，看它后面有没有跟着 where / which / that 从句。</b>",syn:"institutional licence / campus-wide licence",conf:"license（v. 许可；n. 美式拼写）vs. licence（n. 英式拼写）——<b>英式里名词 licence、动词 license，考研两种拼写都出现过</b>"},
+  openaccess:{w:"open-access (publishing)",ipa:"",pos:"adj. / n.",tags:["core","phrase"],cn:"开放存取（出版）",en:"a model in which research papers are freely available to all readers",ex:"There is open-access publishing, typically supported by asking the author… to pay",mem:"⭐ <b>全篇的核心概念，也是 29 题的题眼。</b><br>📌 <b>它的定义只有一句话：<u>读者免费，作者（或其雇主）付费</u></b> —— <b>把传统模式的付费方从「读者端」挪到了「作者端」。</b><b>29 题 A（作者承担出版成本）就是这句定义的同义改写。</b><br>📌 <b>本篇出现的两种 open-access 形态要分清</b>：<b>open-access publishing</b>（作者付费发表）· <b>open-access archives</b>（大学/实验室资助的知识库）。<b>再加一种混合体 delayed open-access（前六个月只给订户看）。</b><br>💡 <code>access</code> 是本篇第一高频词，<b>四道题的答案都与它有关——高频词就是主旨词。</b>",syn:"free access / unrestricted access ｜反义 subscription-based / paywalled",conf:"open-access（开放存取，专有概念）vs. easy access（容易获取，泛指）vs. free access（免费获取）"},
+  typically:{w:"typically",ipa:"/ˈtɪpɪkli/",pos:"adv.",tags:["write","core"],cn:"通常，一般来说",en:"used to say what usually happens",ex:"open-access publishing, typically supported by asking the author… to pay",mem:"📌 <b>又一个「留余地」的限定词</b>（本篇第三个，前两个是 <code>in part</code> 和 <code>could</code>）：<b>「通常是这样」＝ 也有例外。</b><br>⚠️ <b>它给 29 题上了一道保险</b>：题干问 <code>is required to</code>，原文说 typically —— <b>四个选项里只有 A 与这句话对得上，所以即便措辞强弱有别也不影响选择。但反过来，如果某个选项写成 <code>must always</code>，就该扣分。</b><br>✍️ 写作可用：<code>Typically, students who…</code>（一般来说，……的学生）——比 usually 更书面。",syn:"usually / generally / as a rule / more often than not",conf:"typically（通常，指常态）vs. specifically（具体地说）vs. particularly（尤其）"},
+  employer:{w:"employer",ipa:"/ɪmˈplɔɪə(r)/",pos:"n.",tags:["core"],cn:"雇主，用人单位",en:"a person or company that pays people to work for them",ex:"asking the author (or his employer) to pay for the paper to be published",mem:"employ（雇用）+ -er（施动方）。<b>-er 是雇主，-ee 是雇员（employee）。</b><br>📌 <b>本句括号里的 <code>or his employer</code> 很重要</b>：作者的雇主 ＝ <b>他所在的大学或研究机构</b>。<b>也就是说，open-access 的费用未必真由作者个人掏，但<u>付费方在「作者一侧」</u>，与「读者付费」的旧模式相反。</b><br>⚠️ <b>29 题 A 说 <code>the author… cover the cost</code>，与括号并不矛盾</b>——<b>括号是补充说明，不是改写主语。读到括号别慌，它通常只是「或者更宽泛地说」。</b>",syn:"boss / hiring organization ｜对应 employee（雇员）",conf:"employer（雇主）vs. employee（雇员）vs. employment（就业）——<b>-er/-ee 的施受关系是四六级到考研的固定考点：interviewer/interviewee、trainer/trainee</b>"},
+  archive:{w:"archive",ipa:"/ˈɑːkaɪv/",pos:"n. / v.",tags:["core"],cn:"档案库，归档库；（v.）存档",en:"a collection of historical documents or records; to store data",ex:"there are open-access archives",mem:"📌 本篇指<b>存放论文的公共数据库</b>（如 arXiv、PubMed Central）：<b>由大学或国际实验室出钱建，谁都能免费下载。</b><br>⭐ <b>它与 open-access publishing 的区别在「谁出钱」</b>：<b>publishing 是作者付费，archives 是机构资助。</b><b>29 题的干扰项就靠这两者的混淆来造。</b><br>💡 现代常用义：<b>（网站/邮件的）存档</b>——<code>archive an email</code>（把邮件归档）。<b>发音注意：ch 读 /k/，重音在第一音节。</b>",syn:"repository / database / records",conf:"archive（档案库，偏「历史保存」）vs. repository（存储库，偏「集中存放」）vs. library（图书馆）"},
+  support:{w:"support",ipa:"/səˈpɔːt/",pos:"v.",tags:["poly","core"],cn:"资助，出资维持；支持",en:"to provide money for sth to continue; to help or encourage",ex:"organizations such as universities… support institutional repositories",mem:"⚠️ <b>此处不是泛泛的「支持、赞成」，而是「<u>出钱维持</u>」＝ fund / finance。</b><br>📌 <b>判据：support 的宾语是「一个需要花钱运转的东西」（机构、项目、家庭）时，一律取「资助、供养」义。</b><code>support a family</code>（养家）· <code>government-supported programs</code>（政府资助的项目）。<br>⚠️ <b>上一句的 <code>typically <u>supported by</u> asking the author to pay</code> 也是这个义项</b>——<b>「靠向作者收费来<u>维持运转</u>」，不是「靠请求作者付费来<u>支持</u>」。一句话里两个 support 都取僻义，是本段的隐形难点。</b>",syn:"fund / finance / subsidize / sustain",conf:"support（①出资维持 ②支持 ③支撑 ④证实（support a theory））——<b>四个义项在考研阅读里都出现过，靠宾语判断</b>"},
+  repository:{w:"repository",ipa:"/rɪˈpɒzətri/",pos:"n.",tags:["core"],cn:"（知识/资料的）存储库，仓库",en:"a place where things are stored in large quantities",ex:"support institutional repositories",mem:"re（回）+ posit（放置，同 position、deposit）+ -ory（表地点）→ <b>把东西放回去的地方 ＝ 存储库</b>。<br>📌 <b>本篇的 <code>institutional repositories</code> ＝ 大学自建的论文知识库</b>：本校师生的论文都存在里面，对外免费开放。<b>这就是 open-access archives 的具体形态。</b><br>💡 <b>-ory / -ary 结尾的「地点名词」一起记</b>：<code>laboratory</code>（实验室）· <code>observatory</code>（天文台）· <code>dormitory</code>（宿舍）· <code>library</code>（图书馆）· <code>granary</code>（粮仓）。",syn:"archive / storehouse / database / depository",conf:"repository（存储库）vs. suppository（栓剂，医学词）vs. depository（存放处，两者常可互换）"},
+  hybrid:{w:"hybrid",ipa:"/ˈhaɪbrɪd/",pos:"n. / adj.",tags:["core","write"],cn:"混合体，杂交种；混合的",en:"sth that is the product of mixing two or more different things",ex:"Other models exist that are hybrids of these three",mem:"📌 本篇指<b>把前三种模式揉在一起的模式</b>（如延迟开放存取 ＝ 先订阅制、后开放存取）。<br>✍️ <b>写作高频词</b>：<code>a hybrid of A and B</code>（A 与 B 的混合体）· <code>hybrid working</code>（混合办公，<b>这是近年作文的热点话题</b>）· <code>hybrid cars</code>（混合动力汽车）。<br>💡 <b>本句的语法点比词义更值钱</b>：<code>Other models exist <b>that</b> are hybrids…</code> —— <b>定语从句被谓语 exist 隔开，修饰的是主语 Other models</b>（为避免头重脚轻）。见长难句 s5。",syn:"mixture / blend / combination / cross",conf:"hybrid（混合体，强调「两种以上事物的结合」）vs. mixture（混合物，泛指）vs. compromise（折中方案，强调「让步」）"},
+  delayed:{w:"delayed open-access",ipa:"/dɪˈleɪd/",pos:"n.短语",tags:["phrase"],cn:"延迟开放存取",en:"a model where papers become free only after an embargo period",ex:"such as delayed open-access, where journals allow only subscribers to read a paper for the first six months",mem:"📌 <b>规则只有一句：<u>前六个月只给订户看，之后向所有人免费开放</u>。</b><b>它是「订阅制」与「开放存取」的时间上的折中。</b><br>⚠️⚠️ <b>29 题 C 就产自这一句</b>：原文说之后免费开放给 <code>everyone who wishes to see it</code>（<b>所有想看的人</b>），C 项换成了「<b>其他网络期刊</b>」—— <b>「人」被换成了「机构」。</b><br>💡 现实中这个「六个月」叫 <b>embargo period</b>（禁售期/禁止公开期）。<b>本篇不考这个词，但知道概念能读得更快。</b>",syn:"embargoed access / deferred open access",conf:"delayed（延迟的）vs. denied（被拒绝的）vs. deferred（推迟的，正式）"},
+  freely:{w:"freely available",ipa:"",pos:"adj.短语",tags:["phrase","write"],cn:"可免费（自由）获取的",en:"able to be obtained by anyone without payment or restriction",ex:"before making it freely available to everyone who wishes to see it",mem:"📌 <b>这是全文「新模式」的落脚点</b>：<b>free 在这里同时含「免费」和「不受限制」两层意思</b>，正对着①段旧模式的 <code>would have to subscribe</code>（想看就得掏钱）。<br>⭐ <b>28 题 A 的 <code>easier access</code> 与本短语、与 <code>ready access</code>、与 <code>making access… a reality</code> 是<u>同一件事的四种说法</u></b> —— <b>一篇文章反复用不同措辞说同一件事，那件事就是主旨。</b><br>✍️ 写作可用：<code>make sth freely available to the public</code>（向公众免费开放）。",syn:"free of charge / open to all / unrestricted",conf:"freely available（免费/自由获取）vs. readily available（现成可得，强调「方便」）——<b>本篇两个都出现了（ready access）</b>"},
+  peerreview:{w:"peer-review process",ipa:"",pos:"n.短语",tags:["core","phrase"],cn:"同行评议程序",en:"the process in which experts in the same field assess a paper before publication",ex:"All this could change the traditional form of the peer-review process",mem:"⭐ <b>全篇的首尾呼应就靠这个词</b>：①段②③句描述的匿名送审流程 ＝ peer review；<b>末句说「这一切可能改变传统的同行评议程序」，正是回到开头。</b><br>📌 <b>②段⑥句那个含糊的 <code>a key element of scientific endeavor</code>（科学事业的一个关键要素），到这里才被点破——就是它。</b><br>⚠️ <b>29 题 D 的错法</b>：原文只说 <code><b>could change</b></code>（可能改变），<b>完全没说改成什么</b>；D 却编出「先评议后投稿」的新顺序。<b>凡选项给出了原文没有的「具体做法」，一律排除。</b>",syn:"refereeing / expert review",conf:"peer review（同行评议）vs. proofreading（校对）vs. editing（编辑加工）——<b>26 题 A 玩的就是 review 与 editing 的混淆</b>"},
+  publication:{w:"publication",ipa:"/ˌpʌblɪˈkeɪʃn/",pos:"n.",tags:["core","write"],cn:"发表，出版；出版物",en:"the act of publishing sth; a book, magazine, etc. that has been published",ex:"accept the paper for publication…; at least for the publication of papers",mem:"publish（出版）+ -ation。<b>两个义项都在本篇出现</b>：<b>①发表这个行为</b>（accept the paper for publication）· <b>②出版物</b>（泛指书刊）。<br>📌 <b>本篇的第一高频词根</b>：<code>publish</code>（v.）· <code>publisher</code>（出版商）· <code>publication</code>（发表/出版物）· <code>public</code>（公众的）· <code>publicly funded</code>（公共资助的）。<b>五个词共享 publ- 词根「公开、公众」——把研究成果「公之于众」，正是本篇讨论的全部内容。</b><br>✍️ 写作可用：<code>upon publication</code>（一经发表）· <code>publication date</code>（出版日期）。",syn:"（行为）release / issuance ｜（物）periodical / journal / book",conf:"publication（发表/出版物）vs. publicity（宣传、知名度）vs. publishing（出版业）"}
+};
+
+const panel=document.getElementById('panel');
+const isMobile=()=>window.innerWidth<=900;
+function badge(t){return {core:'<span class="badge b-core">核心词</span>',phrase:'<span class="badge b-phrase">短语</span>',poly:'<span class="badge b-poly">熟词僻义</span>',write:'<span class="badge b-write">写作✍︎</span>'}[t]||''}
+function showCard(k,el){
+  const d=V[k];if(!d)return;
+  document.querySelectorAll('.tk.active').forEach(x=>x.classList.remove('active'));
+  if(el)el.classList.add('active');
+  panel.innerHTML=`<button class="close" onclick="panel.classList.remove('open')">收起</button>
+  <div class="wcard">
+    <div class="head"><span class="w">${d.w}</span><span class="ipa">${d.ipa}</span><span class="pos">${d.pos}</span>${d.tags.map(badge).join('')}</div>
+    <div class="cn">${d.cn}</div><div class="en-def">${d.en}</div>
+    <div class="row r-ex"><b>原文语境</b>“…${d.ex}…”</div>
+    <div class="row r-mem"><b>怎么记</b>${d.mem}</div>
+    <div class="row r-syn"><b>同类词</b>${d.syn}</div>
+    <div class="row r-conf"><b>易混辨析</b>${d.conf}</div>
+  </div>`;
+  if(isMobile())panel.classList.add('open');
+}
+document.querySelectorAll('.tk').forEach(t=>t.addEventListener('click',e=>{e.stopPropagation();showCard(t.dataset.w,t)}));
+
+function tz(btn){btn.closest('.para').classList.toggle('showzh')}
+let allOn=false;
+function toggleAll(){allOn=!allOn;document.querySelectorAll('.para').forEach(p=>p.classList.toggle('showzh',allOn))}
+function go(id){document.getElementById(id).scrollIntoView({behavior:'smooth',block:'center'});const s=document.getElementById(id);s.style.transition='none';s.style.opacity=.3;setTimeout(()=>{s.style.transition='opacity .8s';s.style.opacity=1},80)}
+
+document.querySelectorAll('.q').forEach(q=>{
+  const ans=+q.dataset.ans;
+  q.querySelectorAll('.opt').forEach((o,i)=>o.addEventListener('click',()=>{
+    if(q.classList.contains('done'))return;
+    q.classList.add('done');
+    if(i!==ans)o.classList.add('wrong');
+    q.querySelectorAll('.opt')[ans].classList.add('right');
+  }));
+});
+
+const vg=document.getElementById('vgrid');
+function renderGrid(f){
+  vg.innerHTML='';
+  Object.keys(V).forEach(k=>{
+    const d=V[k];
+    if(f!=='all'&&!d.tags.includes(f))return;
+    const div=document.createElement('div');div.className='vitem';
+    div.innerHTML=`<span class="badges">${d.tags.map(badge).join('')}</span><div class="w">${d.w}</div><div class="cn">${d.cn}</div>`;
+    div.addEventListener('click',()=>{showCard(k,null);if(!isMobile())window.scrollTo({top:0,behavior:'smooth'})});
+    vg.appendChild(div);
+  });
+}
+renderGrid('all');
+document.querySelectorAll('.fbtn').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.fbtn').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderGrid(b.dataset.f);
+}));
+
+const yd=document.getElementById('yd');let sel='';
+document.addEventListener('selectionchange',()=>{
+  const s=window.getSelection();const t=s?s.toString().trim():'';
+  if(t&&/^[a-zA-Z' -]{2,40}$/.test(t)){
+    sel=t;
+    try{const r=s.getRangeAt(0).getBoundingClientRect();
+      yd.style.left=Math.min(r.left,window.innerWidth-110)+'px';
+      yd.style.top=(r.bottom+8)+'px';yd.style.display='block';}catch(e){}
+  }else{yd.style.display='none'}
+});
+yd.addEventListener('click',()=>{window.open('https://dict.youdao.com/result?word='+encodeURIComponent(sel)+'&lang=en');yd.style.display='none'});
+document.addEventListener('click',e=>{if(e.target!==yd&&!window.getSelection().toString())yd.style.display='none'});
+</script>
+<script src="_fault_attr.js"></script>
+</body>
+</html>
