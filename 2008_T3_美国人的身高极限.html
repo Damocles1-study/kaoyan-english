@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2008 英一 Text 3 · 美国人的身高已达基因极限</title>
+<style>
+  :root{
+    --bg:#faf9f6; --card:#ffffff; --ink:#2b2b2b; --muted:#8a8578;
+    --accent:#8b5e34; --accent-soft:#f3e9dd; --line:#e8e3d8;
+    --hl:#fdf3d8; --hl-border:#e0b84d;
+    --green:#3e7a4e; --green-soft:#e8f2ea;
+    --red:#b04a3a; --red-soft:#f9e9e6;
+    --blue:#3d6a8a; --blue-soft:#e7eff5;
+    --purple:#6d5a8e; --purple-soft:#eeeaf5;
+    --serif:"Georgia","Songti SC",serif;
+    --sans:-apple-system,"PingFang SC","Helvetica Neue",sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#1c1a17; --card:#26231f; --ink:#e8e4dc; --muted:#9a948a;
+      --accent:#d0a06a; --accent-soft:#3a3127; --line:#3a362f;
+      --hl:#3d3520; --hl-border:#b08c3a;
+      --green:#7fb98d; --green-soft:#26362b;
+      --red:#d98876; --red-soft:#3d2a26;
+      --blue:#8ab3d0; --blue-soft:#26323d;
+      --purple:#a996c8; --purple-soft:#302a3d;
+    }
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;padding-bottom:120px}
+  .wrap{max-width:1100px;margin:0 auto;padding:24px 20px}
+  .back{font-size:.85rem;color:var(--muted);text-decoration:none}
+  .back:hover{color:var(--accent)}
+  header{margin:14px 0 28px}
+  header h1{font-family:var(--serif);font-size:1.7rem;line-height:1.3}
+  header .sub{color:var(--muted);margin-top:6px;font-size:.9rem}
+  .tags{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+  .tag{font-size:.75rem;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);border:1px solid var(--line)}
+  .tag.warn{background:var(--red-soft);color:var(--red);border-color:var(--red)}
+  .tag.ok{background:var(--green-soft);color:var(--green);border-color:var(--green)}
+
+  .layout{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:24px;align-items:start}
+  main{min-width:0}
+  @media (max-width:900px){.layout{grid-template-columns:minmax(0,1fr)}}
+
+  section.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:24px}
+  h2{font-size:1.05rem;letter-spacing:.05em;color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+  h2 .n{font-size:.72rem;background:var(--accent);color:var(--card);border-radius:6px;padding:1px 7px}
+  h3{font-size:.95rem;color:var(--accent);margin:18px 0 10px}
+
+  .para{margin-bottom:22px}
+  .para .en{font-family:var(--serif);font-size:1.06rem;line-height:1.9}
+  .pno{color:var(--muted);font-size:.75rem;user-select:none;margin-right:6px}
+  .tk{background:var(--hl);border-bottom:2px solid var(--hl-border);border-radius:3px;padding:0 2px;cursor:pointer;transition:filter .15s}
+  .tk:hover{filter:brightness(.93)}
+  .tk.active{outline:2px solid var(--hl-border)}
+  .ls{border-bottom:2px dotted var(--blue);cursor:pointer}
+  .para .zh{display:none;margin-top:10px;padding:10px 14px;background:var(--blue-soft);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:.93rem}
+  .para.showzh .zh{display:block}
+  .zbtn{float:right;margin-left:10px;font-size:.72rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:6px;padding:2px 9px;cursor:pointer}
+  .zbtn:hover{color:var(--accent);border-color:var(--accent)}
+  .allbtn{font-size:.78rem;border:1px solid var(--accent);background:none;color:var(--accent);border-radius:8px;padding:4px 12px;cursor:pointer;margin-left:auto}
+
+  aside{position:sticky;top:20px}
+  #panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;min-height:180px}
+  #panel .hint{color:var(--muted);font-size:.88rem;text-align:center;padding:30px 10px}
+  .wcard .head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .wcard .w{font-family:var(--serif);font-size:1.35rem;font-weight:bold}
+  .wcard .ipa{color:var(--muted);font-size:.85rem}
+  .wcard .pos{font-size:.72rem;color:var(--purple);background:var(--purple-soft);padding:1px 8px;border-radius:999px}
+  .wcard .badge{font-size:.7rem;padding:1px 8px;border-radius:999px}
+  .b-core{background:var(--red-soft);color:var(--red)}
+  .b-phrase{background:var(--blue-soft);color:var(--blue)}
+  .b-poly{background:var(--purple-soft);color:var(--purple)}
+  .b-write{background:var(--green-soft);color:var(--green)}
+  .wcard .cn{margin-top:8px;font-size:1rem;font-weight:600}
+  .wcard .en-def{color:var(--muted);font-size:.86rem;font-style:italic;margin-top:2px}
+  .wcard .row{margin-top:10px;font-size:.86rem;padding:8px 10px;border-radius:8px}
+  .wcard .row>b:first-child{font-size:.72rem;display:block;margin-bottom:2px;letter-spacing:.06em}
+  .r-ex{background:var(--hl)} .r-ex b{color:var(--hl-border)}
+  .r-mem{background:var(--green-soft)} .r-mem b{color:var(--green)}
+  .r-syn{background:var(--blue-soft)} .r-syn b{color:var(--blue)}
+  .r-conf{background:var(--red-soft)} .r-conf b{color:var(--red)}
+  #panel .close{display:none}
+  @media (max-width:900px){
+    aside{position:fixed;left:0;right:0;bottom:0;z-index:50;padding:0 8px 8px}
+    #panel{box-shadow:0 -6px 24px rgba(0,0,0,.18);max-height:55vh;overflow-y:auto;display:none}
+    #panel.open{display:block}
+    #panel .close{display:block;float:right;border:none;background:var(--line);border-radius:8px;padding:2px 10px;cursor:pointer;color:var(--ink)}
+  }
+
+  .q{margin-bottom:22px;padding-bottom:18px;border-bottom:1px dashed var(--line)}
+  .q:last-child{border:none;margin-bottom:0;padding-bottom:0}
+  .q .stem{font-weight:600;font-family:var(--serif)}
+  .qt{font-size:.7rem;color:var(--blue);background:var(--blue-soft);border-radius:999px;padding:1px 8px;margin-right:6px;vertical-align:2px}
+  .opts{margin-top:10px;display:grid;gap:8px}
+  .opt{border:1px solid var(--line);border-radius:10px;padding:8px 12px;cursor:pointer;font-size:.93rem;font-family:var(--serif);transition:all .15s}
+  .opt:hover{border-color:var(--accent)}
+  .q.done .opt{cursor:default}
+  .opt.right{background:var(--green-soft);border-color:var(--green)}
+  .opt.wrong{background:var(--red-soft);border-color:var(--red)}
+  .expl{display:none;margin-top:12px;background:var(--accent-soft);border-radius:10px;padding:12px 14px;font-size:.9rem}
+  .q.done .expl{display:block}
+  .expl b{color:var(--accent)}
+  .expl .loc{font-family:var(--serif);font-style:italic;background:var(--hl);padding:1px 4px;border-radius:3px}
+  .fail{background:var(--red-soft);border:1px solid var(--red);border-radius:10px;padding:10px 13px;margin-bottom:10px;font-size:.89rem}
+  .fail b{color:var(--red)}
+  .waver{background:var(--hl);border:1px solid var(--hl-border);border-radius:10px;padding:10px 13px;margin-bottom:10px;font-size:.89rem}
+
+  .sent{margin-bottom:20px}
+  .sent .src{font-family:var(--serif);font-size:1rem;background:var(--blue-soft);padding:12px 14px;border-radius:10px;border-left:3px solid var(--blue)}
+  .sent .anat{margin-top:8px;font-size:.9rem}
+  .sent .anat li{margin:4px 0 4px 18px}
+  .sent .tr{margin-top:8px;font-size:.92rem;color:var(--muted)}
+  .skel{color:var(--red);font-weight:600}
+
+  .filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+  .fbtn{font-size:.8rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:999px;padding:4px 14px;cursor:pointer}
+  .fbtn.on{background:var(--accent);color:var(--card);border-color:var(--accent)}
+  .vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
+  .vitem{border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer;transition:border-color .15s}
+  .vitem:hover{border-color:var(--accent)}
+  .vitem .w{font-family:var(--serif);font-weight:bold}
+  .vitem .cn{font-size:.85rem;color:var(--muted)}
+  .vitem .badges{float:right}
+
+  .wb{display:grid;gap:10px}
+  .wbi{border-left:3px solid var(--green);background:var(--green-soft);border-radius:0 10px 10px 0;padding:10px 14px;font-size:.92rem}
+  .wbi .p{font-family:var(--serif);font-weight:600}
+  .wbi .u{color:var(--muted);font-size:.85rem}
+
+  .flow{display:grid;gap:8px;font-size:.92rem}
+  .flow .fi{border:1px solid var(--line);border-radius:10px;padding:9px 13px}
+  .flow .fi b{color:var(--accent)}
+
+  .ctab{width:100%;border-collapse:collapse;font-size:.86rem;margin-top:8px}
+  .ctab th,.ctab td{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
+  .ctab th{background:var(--accent-soft);color:var(--accent);font-size:.8rem;white-space:nowrap}
+  .ctab code{background:var(--hl);padding:0 3px;border-radius:3px}
+  .tabwrap{overflow-x:auto}
+  .ok{color:var(--green);font-weight:700}
+  .no{color:var(--red);font-weight:700}
+  .tl{display:grid;gap:10px;margin-top:6px}
+  .tli{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:start;border:1px solid var(--line);border-radius:10px;padding:10px 13px}
+  .tli .mark{font-family:var(--serif);font-weight:700;color:var(--accent);background:var(--accent-soft);border-radius:8px;padding:4px 10px;white-space:nowrap;font-size:.85rem}
+
+  #yd{position:fixed;z-index:60;display:none;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:4px 12px;font-size:.8rem;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+  footer{color:var(--muted);font-size:.8rem;text-align:center;margin-top:30px}
+  .att{display:grid;gap:8px;margin-top:10px}
+  .atti{border:1px solid var(--line);border-radius:10px;padding:9px 13px;font-size:.9rem}
+  .atti b{font-family:var(--serif)}
+  .atti.no2{background:var(--red-soft);border-color:var(--red)}
+  .atti.yes{background:var(--green-soft);border-color:var(--green)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">◀ 返回英语复盘中心</a>
+  <header>
+    <h1>The trend in sports may be obscuring an unrecognized reality：一个被 NBA 掩盖的反向事实</h1>
+    <div class="sub">2008 年英语（一）真题 · Text 3 · 438 词 · 建议做题 18 min · 话题：人类身高 × 基因极限 × 营养与生长（源自 <i>Scientific American</i>《科学美国人》2001-07 <i>Napoleon's Revenge—In the U.S., Height Hits its Head on the Genetic Ceiling</i>「拿破仑的复仇——在美国，身高已撞上基因天花板」）</div>
+    <div class="tags">
+      <span class="tag">正确答案：31A 32C 33B 34D 35C</span><span class="tag">题型：开篇例证 + 事实概括 + 作者观点 + 段落推理 + 全文主旨</span><span class="tag warn">⚠️ Claude 盲做 4/5，33 题错选 A</span><span class="tag">🆕 套路库 23→26 卡：新增 R24 范围校验 / R25 作者观点题 / R26 就事论事 vs 上升主旨</span><span class="tag">⭐ 熟词僻义 17 处</span>
+    </div>
+    <div class="atti" style="margin-top:14px;background:var(--blue-soft);border:1px solid var(--blue);border-radius:10px;padding:10px 14px;font-size:.88rem">
+      📖 <b>本页与原卷配合看</b>：原文完整英文在原卷 <b>p7</b>（<code>按年份/2008/…图像保真版.pdf</code> 第 8 页），题目在原卷 <b>p8</b>（PDF 第 9 页）。本页第 01 节<b>按段给出全部考点句原文 + 全段中译</b>——做题时对着原卷读，复盘时对着本页看。
+    </div>
+    <div class="atti no2" style="margin-top:10px;font-size:.88rem">
+      🎯 <b>本篇最该带走的一件事（我在这一篇栽了一题，价值全在这里）</b>：<b>33 题我选了 A，正确答案是 B。</b><br>
+      A 项 <code>Non-Americans add to the average height of <b>the nation</b></code>（非美国人拉高了<b>这个国家</b>的平均身高）——<b>我的推理链条其实是对的</b>：②段末句说 NBA 球员变高是因为<b>全球招募</b>，②段插入语又特意写了<b>「尤其是那些出生于已在美国生活好几代的家庭的人」</b>达到极限，言外之意就是「新来的还没到顶」。<br>
+      <b>可推理成立的范围只有 NBA 那几十个人，选项写的却是三亿人的国家平均身高。</b>推理对了，<b>范围塌了</b>。<br>
+      ⟹ <b>「言外之意」型选项要过两道关：①推理链对不对　②推理成立的范围与选项陈述的范围是否<u>等宽</u>。</b>这就是新立的套路卡 <b>R24 范围校验</b>，完整复盘见第 02+ 节。<br>
+      ⚠️ 更扎心的是：<b>这个坑我自己在 2007·T4 就写进过套路库</b>（R8 第十一类「泛化 / 扩大范围」），<b>写过 ≠ 会用</b>。
+    </div>
+  </header>
+
+  <div class="layout">
+    <main>
+      <!-- ========== 全文脉络 ========== -->
+      <section class="card">
+        <h2><span class="n">00</span>读前一分钟 · 全文脉络（做完题再看也行）</h2>
+        <div class="flow">
+          <div class="fi"><b>①段 开篇事例 · NBA 球员越长越高</b>　⭐31 题定位段。1960 年代初，张伯伦是 NBA 里<b>仅有三名</b>「身高七英尺以上」球员之一；<b>假如他打上个赛季，会是 42 名之一</b>（虚拟语气）。③句把镜头拉开：<b>职业运动员的身材多年来变化显著，经理们乐得把队服越改越大</b>。<br>⭐ <b>「3 → 42」这个数字对比，就是 31 题答案 A（说明 NBA 球员身高的变化）的全部依据。</b></div>
+          <div class="fi"><b>②段 ⚠️ 反转 · 这个事例其实是障眼法</b>　⭐全文主旨段，⚠️ 33 题 A 的产地。首句 <code>The trend in sports, <b>though</b>, may be <b>obscuring</b> an unrecognized reality: <b>Americans have generally stopped growing.</b></code>——<b>一个 though ＋ 一个 obscuring（掩盖），当场把①段掀翻</b>：体育界的身高趋势<b>掩盖</b>了一个没被认识到的事实：<b>美国人总体上已经停止长高了。</b><br>②句：虽比 140 年前高约两英寸，<b>今天的人——尤其是那些出生于已在美国生活好几代的家庭的人——在 1960 年代初就到顶了</b>；③句：以后也不太可能再高。④句人类学家 Chumlea 引语：<b>在现有的基因与环境水平下，我们几乎已经走到尽头</b>。<br>⑤句<b>专门回来收拾①段</b>：<b>NBA 球员长高，看来是「从世界各地招募球员」这一日益普遍的做法造成的</b>——<b>不是美国人长高了，是队里的外国人多了。</b></div>
+          <div class="fi"><b>③段 原因之一 · 营养与健康（这一段解释「过去为什么长高」）</b>　⭐32 题定位段。生长（很少持续到 20 岁以后）需要<b>热量与营养——尤其是蛋白质</b>；20 世纪初<b>营养不良和儿童传染病</b>挡了路；<b>但随着饮食与健康状况改善</b>，儿童青少年<b>平均每 20 年长高约一英寸半</b>，这一模式叫作<b>身高的长期趋势（the secular trend in height）</b>。<br>末句 <code>Yet</code> 转折：据美国疾控中心，<b>平均身高（男 5′9″、女 5′4″）自 1960 年以来并未真正变过。</b></div>
+          <div class="fi"><b>④段 原因之二 · 基因为什么要设上限</b>　⭐⭐33 题定位段（我错的那题）。<b>从基因角度讲，避免身材过高是有好处的</b>：①分娩时<b>大婴儿更难通过产道</b>；②<b>尽管人类已直立行走几百万年，我们的脚和背仍在与双足姿势相抗衡，无法轻易承受过大肢体反复施加的压力</b>。人类学家 Leonard 引语收口：<b>个体有机体的基因结构设定了一些真正的限制。</b><br>⭐ <b>③句 ＋ ④句连读，才是 33 题 B 的答案</b>：基因之所以给身高设限，正是为了<b>迁就直立行走</b>。</div>
+          <div class="fi"><b>⑤段 展望 · 近期不用改数据</b>　⭐34 题定位段。首句让步转折：<b>基因上限可能会变，但别指望很快发生。</b>陆军研究中心的 Gordon 保证 <b>90% 的军服与工作台无需改动就适合新兵</b>；她说<b>与篮球队服不同，军服尺寸已有一段时间没变过</b>；末句：如果你要预测近期人类身高来设计装备，<b>「你可以使用当前数据，并且相当有把握」</b>。</div>
+          <div class="fi" style="border-color:var(--accent)">📌 <b>一句话主旨</b>：<b>美国人的身高已经达到基因设定的极限</b>——体育界越长越高只是全球招募造成的假象，营养改善带来的长期增长在 1960 年代就停了，而基因给身高设限是为了迁就分娩与直立行走；<b>这个上限近期不会变。</b><br>
+          📌 <b>结构套路</b>：<b>事例引入（①）→ 揭示相反的事实（②）→ 解释原因：外部营养（③）＋ 内部基因（④）→ 重申并展望（⑤）</b>。<b>这是说明文里的「现象—原因—展望」型，与 2008·T2 的「今昔对比」型是两套骨架。</b><br>
+          ⭐⭐ <b>本篇的结构眼是②段首句的两个词</b>：<code>though</code>（转折）＋ <code>obscuring</code>（掩盖）。<b>凡开篇事例后面跟着这两类词，就说明「开篇事例是要被推翻的」——事例不是论据，是靶子。</b><br>
+          ⚠️⚠️ <b>而 33 题 A 正是拿这个「已经被②段⑤句拆掉的事例」造出来的干扰项</b>：作者花一句话把「NBA 变高 ≠ 美国人变高」切开，选项又把它粘回去，还顺手从「NBA 队伍」放大到「the nation」。<b>被开篇事例骗到的人，会在这里第二次被骗。</b><br>
+          ⭐ <b>五题定位段 = ① ｜ ③ ｜ ④ ｜ ⑤ ｜ 全文</b>，<b>同序原则百分之百适用</b>（这一点与 2008·T1 相同、与 2008·T2 相反）。<b>⟹ 33 题的答案只该在④段找；A 项的出处在②段——「出处落在本题定位段之外」本身就是一记警报。</b></div>
+        </div>
+      </section>
+
+      <!-- ========== 原文精读 ========== -->
+      <section class="card">
+        <h2><span class="n">01</span>原文精读 · 考点句 <button class="allbtn" onclick="toggleAll()">全段译文 开/关</button></h2>
+        <p style="font-size:.8rem;color:var(--muted);margin-bottom:14px">🟡 黄色高亮 = 重难点词/短语，点击右侧出卡片 ｜ 蓝色虚线 = 长难句，点击跳到精析 ｜ 每段「译」= 该段完整中译 ｜ 选中任意其他单词浮出「查有道」</p>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p style="font-size:.78rem;color:var(--accent);margin-bottom:6px">① 开篇事例段 · 3 → 42 的数字对比 · ⭐31 题定位段</p>
+          <p class="en"><span class="pno">事例·1960 年代</span>In the early 1960s Wilt Chamberlain was one of the only three players in the National Basketball Association (NBA) <span class="tk" data-w="listed">listed at</span> over seven feet.</p>
+          <p class="en" style="margin-top:10px"><span class="pno">⭐虚拟语气·今昔对比</span><span class="ls" onclick="go('s1')">If he had played last season, however, he would have been one of 42.</span></p>
+          <p class="en" style="margin-top:10px"><span class="pno">⭐由点及面</span>The bodies playing <span class="tk" data-w="major">major</span> professional sports have changed <span class="tk" data-w="dramatically">dramatically</span> over the years, and managers have been <span class="tk" data-w="morethan">more than willing</span> to <span class="tk" data-w="adjust">adjust</span> team uniforms to fit the growing numbers of bigger, longer <span class="tk" data-w="frames">frames</span>.</p>
+          <div class="zh"><b>①段全译：</b>20 世纪 60 年代初，威尔特·张伯伦是美国职业篮球协会（NBA）中仅有的跻身「身高超过七英尺」这一名单的三名球员之一。然而，假如上个赛季他还在打球的话，他就会是 42 名这样的球员中的一员了。多年来，从事主要职业运动的运动员身材发生了显著变化，经理们一直在欣然调整队服，以适应越来越多更大更高的身躯。
+          <div style="margin-top:8px;font-size:.86rem">⭐⭐ <b>本段的全部信息量就是一个数字对比：<code>三名之一</code> → <code>42 名之一</code>，中间隔了大约四十年。</b>而这个对比是靠<b>虚拟语气</b>架起来的（详见长难句 s1）：<code>If he <b>had played</b>…, he <b>would have been</b>…</code>——<b>与过去事实相反</b>，事实是他没打上个赛季。<br><b>⟹ 31 题问「以张伯伦为例旨在」，A 项 <code>illustrate the change of height of NBA players</code>（说明 NBA 球员身高的变化）就是这个数字对比的直译。</b><br>
+          ⭐ <b>①②句是「点」，③句是「面」</b>：前两句只说 NBA 一个联盟，第③句把范围扩到 <code>major professional sports</code>（主要职业运动）。<b>正确项 A 恰好能同时罩住这两层——这正是黄皮书说的「事例本身的主要内容 + 能和下文顺接」。</b><br>
+          ⚠️ <b>C 项 <code>compare different generations of NBA players</code>（比较几代 NBA 球员）是本题最像的干扰项</b>，它<b>确实</b>抓到了「今昔对比」这个动作，但<b>丢掉了对比的内容——身高</b>。<b>「比较不同年代的球员」可以比工资、比战绩、比球风，太宽了。</b><br><b>⟹ 判据：例证题的正确项必须同时答对「拿什么做对比」和「对比出了什么」，只答对动作不算。</b><br>
+          ⚠️ <b>D 项 <code>assess the achievements</code>（评估成就）踩的是「读者的常识」而不是原文</b>：张伯伦是 NBA 历史级巨星，读者一见人名就想到「成就」；<b>可原文对他只有一句纯客观的身高描述，一个字都没提战绩。</b><b>⟹ 凡选项调动的是你对这个人/这件事的<u>课外知识</u>，一律警惕。</b><br>
+          💡 <b><code>frames</code> 在这里是「身躯、体格」不是「框架」</b>；<code>listed at over seven feet</code> 的 list 是动词「（在名单上）列为」。<b>七英尺 ≈ 213 cm。</b></div></div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p style="font-size:.78rem;color:var(--accent);margin-bottom:6px">② ⚠️ 反转段 · 全文主旨句在这里 · ⚠️⚠️ 33 题 A 的产地</p>
+          <p class="en"><span class="pno">⭐⭐全文主旨句</span>The <span class="tk" data-w="trend">trend</span> in sports, though, may be <span class="tk" data-w="obscure">obscuring</span> an <span class="tk" data-w="unrecognized">unrecognized</span> reality: Americans have generally stopped growing.</p>
+          <p class="en" style="margin-top:10px"><span class="pno">⚠️33题A的言外之意</span><span class="ls" onclick="go('s2')">Though <span class="tk" data-w="typically">typically</span> about two inches taller now than 140 years ago, today's people—especially those <span class="tk" data-w="bornto">born to</span> families who have lived in the U.S. for many <span class="tk" data-w="generation">generations</span>—<span class="tk" data-w="apparently">apparently</span> reached their <span class="tk" data-w="limit">limit</span> in the early 1960s.</span></p>
+          <p class="en" style="margin-top:10px"><span class="pno">重申</span>And they aren't <span class="tk" data-w="likely">likely</span> to get any taller.</p>
+          <p class="en" style="margin-top:10px"><span class="pno">⭐35题命脉·专家引语</span>「In the <span class="tk" data-w="general">general population</span> today, at this genetic, environmental level, we've pretty much <span class="tk" data-w="asfaras">gone as far as we can go</span>,」 says <span class="tk" data-w="anthropologist">anthropologist</span> William Cameron Chumlea of Wright State University.</p>
+          <p class="en" style="margin-top:10px"><span class="pno">⚠️⚠️33题A原文出处</span><span class="tk" data-w="inthecase">In the case of</span> NBA players, their increase in height appears to <span class="tk" data-w="resultfrom">result from</span> the <span class="tk" data-w="increasingly">increasingly</span> common <span class="tk" data-w="practice">practice</span> of <span class="tk" data-w="recruitv">recruiting</span> players from all over the world.</p>
+          <div class="zh"><b>②段全译：</b><b>然而，体育界的这种趋势可能正在掩盖一个未被注意到的事实：美国人的身高总体上已停止增长。</b>尽管比 140 年前普遍高约两英寸，但现在的美国人——尤其是那些出生于已在美国生活了好几代的家庭中的美国人——在 20 世纪 60 年代初似乎就已达到了身高的极限。他们不可能再长高了。莱特州立大学的人类学家威廉·卡梅隆·查姆利称：「就当今人口的总体情况而言，在现有的基因和环境水平下，我们的身高几乎已达到极限。」<b>至于 NBA 球员，他们身高的增长则似乎是从世界各地招募球员这种日益普遍的做法的结果。</b>
+          <div style="margin-top:8px;font-size:.86rem">⭐⭐ <b>首句是全文的结构眼，两个词决定了整篇文章怎么读</b>：<br>· <code><b>though</b></code>（然而）——插在主语后面，位置不显眼，但它宣告①段是要被推翻的；<br>· <code><b>obscuring</b></code>（<b>掩盖</b>，不是形容词「模糊的」）——直接给①段定性：<b>那是障眼法。</b><br><b>⟹ 冒号后面那句 <code>Americans have generally stopped growing</code> 就是全文主旨，35 题的答案 C 是它的同义改写。</b><br>
+          ⚠️⚠️⚠️ <b>本段是 33 题 A 的全部原料，也是我栽跟头的地方，值得逐层拆开看：</b><br>
+          <b>原料一（②句的破折号插入语）</b>：<code>especially those born to families who have lived in the U.S. for <b>many generations</b></code>——<b>作者特意把「世代居美的家庭」单拎出来说「他们到顶了」，言下之意就是「新来的移民不在此列」。</b>这是一处<b>非常精巧的暗示</b>，读到时我就把它记下来了。<br>
+          <b>原料二（⑤句）</b>：<b>NBA 球员长高是因为「从世界各地招募球员」。</b>言外之意＝<b>外国球员拉高了 NBA 的队伍平均身高。</b><br>
+          <b>两条原料一拼，看起来就得到了 A 项「非美国人拉高了这个国家的平均身高」。可是——</b><br>
+          <b>⛔ 原料二成立的范围只有「NBA 球员」这几十个人</b>；A 项写的是 <code>the <b>nation</b></code>，是三亿人的国家平均身高。<b>NBA ⊂ 美国人，把子集的结论直接搬给全集，就是「以偏概全」。</b><br>
+          <b>⛔ 原料一根本没说「新移民更高」</b>，只说「世代居美者已到顶」——<b>没到顶 ≠ 更高</b>，也<b>没说他们多到能把全国均值抬起来</b>。<br>
+          <b>⟹ 这一段最要命的地方在于：作者写⑤句的目的，恰恰是<u>把 NBA 和「美国人」切开</u>（因为①段那个反例必须被处理掉）；而 A 项做的事，是<u>把它们重新粘回去</u>。看懂了作者为什么写这句话，就不会选 A。</b>完整复盘见第 02+ 节。<br>
+          ⭐ <b><code>at this genetic, environmental level</code> 这个状语是 35 题的护栏</b>：专家说的是「<b>在现有的基因与环境水平下</b>」我们到顶了 —— <b>C 项 <code>genetic growth limit</code>（基因增长极限）里的 genetic 就是从这里来的</b>，同时它也堵住了 D 项（基因模式已改变）。<br>
+          💡 <b><code>appears to</code> / <code>apparently</code> / <code>may be</code> / <code>pretty much</code> 在本段连出四次</b>——<b>《科学美国人》这类科普文的标志性笔法：给每一个判断都留余地。</b><b>做题时它们是「作者不把话说满」的证据，凡选项写得比原文更绝对，就该扣分（35 题 D 就是这么错的）。</b></div></div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p style="font-size:.78rem;color:var(--accent);margin-bottom:6px">③ 原因之一 · 外部条件（营养与健康）· ⭐32 题定位段</p>
+          <p class="en"><span class="pno">⭐32题命脉·生长要什么</span><span class="ls" onclick="go('s3')">Growth, which <span class="tk" data-w="rarely">rarely</span> continues <span class="tk" data-w="beyond">beyond</span> the age of 20, <span class="tk" data-w="demand">demands</span> <span class="tk" data-w="calorie">calories</span> and <span class="tk" data-w="nutrient">nutrients</span>—<span class="tk" data-w="notably">notably</span>, <span class="tk" data-w="protein">protein</span>—to <span class="tk" data-w="feed">feed</span> <span class="tk" data-w="expand">expanding</span> <span class="tk" data-w="tissue">tissues</span>.</span></p>
+          <p class="en" style="margin-top:10px"><span class="pno">⭐对比·过去的阻碍</span>At the start of the 20th century, <span class="tk" data-w="undernutrition">under-nutrition</span> and childhood <span class="tk" data-w="infection">infections</span> <span class="tk" data-w="gotintheway">got in the way</span>.</p>
+          <p class="en" style="margin-top:10px"><span class="pno">⭐⭐32题答案句</span><span class="ls" onclick="go('s4')">But as diet and health improved, children and <span class="tk" data-w="adolescent">adolescents</span> have, <span class="tk" data-w="onaverage">on average</span>, increased in height by about an inch and a half every 20 years, a <span class="tk" data-w="pattern">pattern</span> known as the <span class="tk" data-w="secular">secular trend</span> in height.</span></p>
+          <p class="en" style="margin-top:10px"><span class="pno">⭐转折·但已停止</span>Yet according to the <span class="tk" data-w="cdc">Centers for Disease Control and Prevention</span>, average height—5'9" for men, 5'4" for women—hasn't really changed since 1960.</p>
+          <div class="zh"><b>③段全译：</b><b>身高增长很少会持续到 20 岁以后，它需要热量和营养——尤其是蛋白质——以满足人体组织扩展的需求。</b>20 世纪初，营养不足和儿童传染病阻碍了身高增长。<b>然而，随着日常饮食和健康状况的改善，儿童和青少年的身高平均每 20 年增长约 1.5 英寸，这种模式被称为身高（增长）的长期趋势。</b>然而根据疾病控制与预防中心的数据，平均身高——男性 5 英尺 9 英寸，女性 5 英尺 4 英寸——自 1960 年以来并未真正改变过。
+          <div style="margin-top:8px;font-size:.86rem">⭐⭐ <b>32 题（下面哪一项在身高增长中起关键作用）是一道<u>事实概括题</u>：正确项在全文一个原词都没有。</b><br><b>本段的做法叫「数语义场」——把同一类的词圈出来数一数：</b><code>calories</code>（热量）· <code>nutrients</code>（营养）· <code>protein</code>（蛋白质）· <code>under-nutrition</code>（营养不足）· <code>childhood infections</code>（儿童传染病）· <code>diet and health</code>（饮食与健康）。<b>六个词，两类东西：吃得好不好 ＋ 病得多不多。</b><br><b>⟹ 这两类的上位概括就是 C <code>Living standards</code>（生活水平）。</b><b>「living standards」这个短语全文没出现过——正确项是「一群同类词的上位词」，不是任何一句的同义替换。</b><br>
+          ⭐ <b>本段的论证是「一正一反」两句夹出来的</b>：②句<b>反</b>（营养不良 + 传染病 → 挡住了增长）、③句<b>正</b>（饮食健康改善 → 每 20 年长 1.5 英寸）。<b>同一个变量正反各演一遍，这就是「关键作用」四个字的实锤。</b><b>⟹ 见到「A 缺失时 X 不行 / A 改善后 X 就行」的正反对照，A 就是答案。</b><br>
+          ⚠️ <b>B 项 <code>Natural environment</code>（自然环境）是最像的干扰项</b>，它的钩子在②段④句的 <code>at this genetic, <b>environmental</b> level</code>。<b>可结合本段就能看出：文中的 environmental 指的是「营养、卫生、医疗」这类<u>生活环境</u>，不是「气候、地理」这类<u>自然环境</u>。</b><b>⟹ 一个形容词的确切所指，要靠<u>相邻段落的具体内容</u>去圈定，不能靠中文对译。</b><br>
+          ⚠️ <b>A 项 <code>Genetic modification</code>（基因改造）用的是「同源词偷换」</b>：全文 genetic 出现三次（②段 genetic level、④段 Genetically speaking / genetic architecture、⑤段 Genetic maximums），<b>但全部都在说「基因<u>限定</u>了身高」，没有一处提「改造基因」。</b><b>⟹ genetic ≠ genetic modification，中间隔着一整个「人为干预」。</b><br>
+          ⚠️ <b>D 项 <code>Daily exercise</code>（日常锻炼）是纯粹的无中生有</b>，唯一的钩子是①段满篇的体育词（NBA、professional sports）。<b>⟹ 「话题相关」不等于「文中提过」。</b><br>
+          💡 <b><code>secular</code> 是本篇的熟词僻义之王</b>：它不是「世俗的」，在人口/统计学里指<b>「长期的、跨世纪的」</b>。<code>the secular trend in height</code>＝<b>身高的长期增长趋势</b>，是一个正式术语。<b>好在原文用 <code>a pattern known as…</code>（一种被称为……的模式）现场给了定义——这就是「同位语是生词的免费注释」。</b><br>
+          💡 <b>末句的 <code>Yet</code> 才是本段真正的落点</b>：营养改善带来的长期趋势<b>已经停了</b>（1960 年至今没变）。<b>③段回答的是「过去为什么长高」，末句回答「为什么现在不长了」——不是营养不够了，是<u>另有天花板</u>，于是④段的基因解释才顺理成章。</b></div></div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p style="font-size:.78rem;color:var(--accent);margin-bottom:6px">④ 原因之二 · 内部限制（基因为什么设上限）· ⭐⭐33 题定位段（我错的那题）</p>
+          <p class="en"><span class="pno">⭐段落主旨句</span><span class="tk" data-w="genetically">Genetically speaking</span>, there are <span class="tk" data-w="advantage">advantages to</span> <span class="tk" data-w="avoid">avoiding</span> <span class="tk" data-w="substantial">substantial</span> height.</p>
+          <p class="en" style="margin-top:10px"><span class="pno">⚠️33题D来源·理由一</span>During <span class="tk" data-w="childbirth">childbirth</span>, larger babies have more difficulty passing through the <span class="tk" data-w="birthcanal">birth canal</span>.</p>
+          <p class="en" style="margin-top:10px"><span class="pno">⭐⭐33题B答案句上半</span><span class="ls" onclick="go('s5')">Moreover, even though humans have been <span class="tk" data-w="upright">upright</span> for millions of years, our feet and back continue to <span class="tk" data-w="struggle">struggle with</span> <span class="tk" data-w="bipedal">bipedal</span> <span class="tk" data-w="posture">posture</span> and cannot easily <span class="tk" data-w="withstand">withstand</span> repeated <span class="tk" data-w="strain">strain</span> <span class="tk" data-w="impose">imposed by</span> <span class="tk" data-w="oversize">oversize</span> <span class="tk" data-w="limb">limbs</span>.</span></p>
+          <p class="en" style="margin-top:10px"><span class="pno">⭐⭐33题B答案句下半</span>「There are some real <span class="tk" data-w="constraint">constraints</span> that are set by the genetic <span class="tk" data-w="architecture">architecture</span> of the individual <span class="tk" data-w="organism">organism</span>,」 says anthropologist William Leonard of Northwestern University.</p>
+          <div class="zh"><b>④段全译：</b><b>从基因角度来讲，避免身材过高是有好处的。</b>分娩过程中，较大的婴儿更难通过产道。<b>此外，尽管人类已经直立行走了几百万年，但两脚和背部仍继续同双足行走的姿势相抗衡，（因而）难以轻易承受过大、过长的肢体反复施加的压力。</b>西北大学人类学家威廉·伦纳德称：<b>「对身高的一些真正限制是由个体有机体的基因结构所设定的。」</b>
+          <div style="margin-top:8px;font-size:.86rem">⭐⭐⭐ <b>33 题的答案 B <code>Human height is conditioned by the upright posture</code>（人类身高受直立姿势的制约）就出在这一段，而且它<u>不是任何单独一句的同义改写，要靠③④两句连读才能合成</u>：</b><br>
+          <div class="tabwrap"><table class="ctab">
+            <tr><th>句</th><th>说了什么</th><th>合起来的意思</th></tr>
+            <tr><td>③句</td><td>脚和背仍在与<b>双足姿势</b>抗衡，<b>承受不了过大肢体</b>反复施加的压力</td><td rowspan="2"><b>身高不能无限长，是因为要迁就直立行走的身体结构；而这个「不能」，被写进了基因。</b><br>⟹ <b>height is conditioned by the upright posture</b></td></tr>
+            <tr><td>④句</td><td>身高的真正限制，由个体的<b>基因结构</b>设定</td></tr>
+          </table></div>
+          <b>⟹ 这就是作者观点题最典型的正确项长相：<u>把相邻两句的因果关系合成一句</u>。</b><b>如果你只在原文里找「哪一句能对上 B」，会一句都找不到，然后就把 B 排掉了——我就是这么排掉的。</b><br>
+          ⚠️ <b>我当时排 B 的理由是「原文说的是基因限制，直立姿势只是<u>顺带提到的一个理由</u>，说 <code>conditioned by</code>（受制约）太重了」。这个理由错在哪？</b><br><b>错在没读懂整段的功能。</b>本段的主旨句是①句<b>「从基因角度讲，避免过高是有<u>好处</u>的」——整段是在回答「基因<u>为什么</u>要给身高设上限」</b>，而它给出的<b>生理机制只有两条：分娩（②句）和直立行走（③句）</b>。<b>直立姿势不是「顺带提到」，它是这一段给出的两个核心答案之一，而且是被 <code>Moreover</code> 引出、篇幅最长、并被④句的专家引语总结收口的那一条。</b><br>
+          ⚠️ <b>D 项 <code>Larger babies tend to become taller in adulthood</code>（较大的婴儿成年后往往更高）是「强加关联」</b>：②句只说<b>大婴儿难通过产道</b>，一个字都没提他们长大后多高。<b>⟹ 原文说 A 有个麻烦，选项说 A 会导致 B——两句之间那根因果线是命题人自己画的。</b><br>
+          💡 <b><code>advantages to avoiding substantial height</code> 这个短语值得单拎出来</b>：<code>advantage <b>to</b> doing sth</code>（做某事的好处），介词是 to 不是 of；<code>substantial</code> 在这里不是「实质的」而是<b>「（数量/程度）相当大的」</b>。<b>整句话是一个反常识判断——「长得矮反而有基因上的好处」，这正是本段存在的理由。</b><br>
+          💡 <b><code>even though</code> 引导的让步从句是本句的读法路标</b>：<b>让步的内容（人类直立几百万年了）越充分，主句的转折（脚和背仍然吃不消）就越有分量。</b><b>⟹ 见到 even though / although，答案九成在主句而不在从句。</b></div></div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p style="font-size:.78rem;color:var(--accent);margin-bottom:6px">⑤ 展望段 · 近期不用改数据 · ⭐34 题定位段</p>
+          <p class="en"><span class="pno">⭐段落主旨·让步转折</span>Genetic <span class="tk" data-w="maximum">maximums</span> can change, but don't expect this to happen soon.</p>
+          <p class="en" style="margin-top:10px"><span class="pno">⚠️34题A来源</span>Claire C. Gordon, <span class="tk" data-w="senior">senior</span> anthropologist at the Army Research Center in Natick, Mass., <span class="tk" data-w="ensure">ensures</span> that 90 percent of the uniforms and <span class="tk" data-w="workstation">workstations</span> fit <span class="tk" data-w="recruitn">recruits</span> without <span class="tk" data-w="alteration">alteration</span>.</p>
+          <p class="en" style="margin-top:10px"><span class="pno">⚠️34题B来源·length 不是 design</span>She says that, <span class="tk" data-w="unlike">unlike</span> those for basketball, the <span class="tk" data-w="length">length</span> of military uniforms has not changed for some time.</p>
+          <p class="en" style="margin-top:10px"><span class="pno">⭐⭐34题答案句·全文收口</span><span class="ls" onclick="go('s6')">And if you need to <span class="tk" data-w="predict">predict</span> human height in the near future to design a piece of <span class="tk" data-w="equipment">equipment</span>, Gordon says that <span class="tk" data-w="byandlarge">by and large</span>, 「you could use today's data and feel <span class="tk" data-w="fairly">fairly</span> <span class="tk" data-w="confident">confident</span>.」</span></p>
+          <div class="zh"><b>⑤段全译：</b><b>基因最大值可能会改变，但别期望它很快就会发生。</b>马萨诸塞州内蒂克陆军研究中心的资深人类学家克莱尔·C. 戈登保证，90% 的制服和工作台适合新兵，无需改动。她说，和篮球运动员的队服不同，军服尺寸一段时间以来从未改动。<b>她还说，如果你需要预测短期内人类的身高以设计一件装备，那基本上「你可以非常有把握地使用当前数据」。</b>
+          <div style="margin-top:8px;font-size:.86rem">⭐⭐ <b>34 题（从末段可知，在不久的将来……）的正确项 D <code>the existing data of human height will still be applicable</code>（现有的人类身高数据将来仍然适用）就是末句的同义改写</b>：<code>today's data</code> → <code>the existing data</code>，<code>feel fairly confident</code> → <code>still be applicable</code>。<br>
+          ⚠️⚠️ <b>但本题真正值钱的是 B 与 D 的取舍，这是一条通用判据：</b><br>
+          <div class="tabwrap"><table class="ctab">
+            <tr><th></th><th>B 军服的设计将保持不变</th><th>D 现有身高数据仍然适用</th></tr>
+            <tr><td><b>与主旨的关系</b></td><td>同向（也在说「不变」）</td><td>同向（也在说「不变」）</td></tr>
+            <tr><td><b>层级</b></td><td><span class="no">就事论事</span>——军服只是③句举的<b>一个例子</b></td><td><span class="ok">上升到主旨</span>——「身高不变」这件事本身</td></tr>
+            <tr><td><b>另有硬伤</b></td><td><span class="no">有</span>：原文说的是 <code><b>length</b></code>（<b>尺寸/长度</b>）没变，B 说的是 <code><b>design</b></code>（<b>设计</b>）——<b>偷换修饰对象</b></td><td>无</td></tr>
+          </table></div>
+          <b>⟹ 两个选项都与主旨同向时，选<u>上升到主旨高度</u>的那个，不选就事论事的那个。</b>这条已立成套路卡 <b>R26</b>。<b>更省事的是：B 还带着 length→design 的硬伤，光凭这一点就能直接排除，根本不用比层级。<u>先找硬伤，找不到再比层级</u>。</b><br>
+          ⚠️ <b>A 项 <code>the garment industry will reconsider the uniform size</code> 是<u>反向</u>＋<u>范围偏移</u>双错</b>：②句说 90% 的军服<b>无需改动</b>，A 说要<b>重新考虑尺码</b>（反向）；而且原文谈的是 <code>military uniforms</code>（军服），A 说的是 <code>the garment industry</code>（整个服装业）——<b>又一次「以偏概全」，与 33 题 A 是同一把刀。</b><br>
+          ⚠️ <b>C 项 <code>genetic testing will be employed in selecting sportsmen</code>（基因检测将用于选拔运动员）是「关键词杂糅」的典型</b>：拿①句的 <code>Genetic</code> ＋ ③句的 <code>basketball</code> 拼出一个全文没有的新概念。<b>⟹ 选项里出现「两个不同句子的关键词被凑到一起，还带上了原文没有的动作」，直接排除。</b><br>
+          💡 <b>首句 <code>can change, but don't expect this to happen soon</code> 是「让步 + 转折」的判断句</b>：<b>让步半句（可能会变）是给 35 题 D 挖的坑</b>——D 说「美国人的基因模式<b>已经</b>改变」，把「<b>可能会</b>变」读成「<b>已经</b>变了」，还漏掉了 but 之后才是重点。<b>⟹ 凡 <code>A, but B</code> 的句子，B 才是作者的语义重心；只抱着 A 造的选项一律排除。</b><br>
+          💡 <b><code>recruits</code> 在本段是名词「新兵」</b>，而②段的 <code>recruiting players</code> 是动词「招募」。<b>同一篇文章里同一个词的两个词性两个意思，是本篇最容易读错的一处。</b><b>判据：前面有 fit（适合）这个及物动词，后面这个 recruits 只能是名词宾语。</b><br>
+          💡 <b><code>by and large</code>（总的来说）与 <code>fairly</code>（相当地，<b>不是「公平地」</b>）又是两个「留余地」的词</b>——<b>连全文最乐观的这句结论，作者都不肯说满。</b></div></div>
+        </div>
+      </section>
+
+      <!-- ========== 题目与解析 ========== -->
+      <section class="card">
+        <h2><span class="n">02</span>题目与解析（点选项即判 · 再看解析）</h2>
+
+        <div class="q" data-ans="0" id="q31">
+          <p class="stem"><span class="qt">开篇例证</span>31. Wilt Chamberlain is cited as an example to</p>
+          <div class="opts">
+            <div class="opt">[A] illustrate the change of height of NBA players.</div>
+            <div class="opt">[B] show the popularity of NBA players in the U.S..</div>
+            <div class="opt">[C] compare different generations of NBA players.</div>
+            <div class="opt">[D] assess the achievements of famous NBA players.</div>
+          </div>
+          <div class="expl">
+            <b>答案 A</b>　题干 <code>is cited as an example to</code>（被引作例子是为了）＝<b>例证题 / 写作目的题</b>，人名 Wilt Chamberlain 定位到第①段。<br>
+            ①②句给的是一个纯粹的数字对比：<span class="loc">one of the only three players … listed at over seven feet</span> → <span class="loc">he would have been one of 42</span>，<b>四十年间从 3 人变成 42 人</b>；③句把这个「点」扩成「面」：<span class="loc">The bodies playing major professional sports have changed dramatically over the years</span>（职业运动员的身材多年来变化显著）。<br>
+            <b>⟹ 事例本身讲的是「身高」，下文承接的也是「身材变化」，A 项 <code>illustrate the change of height of NBA players</code> 两头都接得住。</b><br>
+            <b>干扰项：</b><br>
+            · <b>C 抓到了动作，丢掉了内容</b>（本题最像的一项）：①②句<b>确实</b>在比较不同年代的 NBA 球员，<b>可 <code>compare different generations</code> 没说比的是什么</b>——比工资、比战绩、比球风都能套进去。<b>例证题的正确项必须同时答对「拿什么对比」和「对比出了什么」，只答对动作不给分。</b><br>
+            · <b>B 无中生有 + 误读③句</b>：③句 <code>managers have been more than willing to adjust team uniforms</code> 说的是<b>经理乐于改队服</b>（对身材变化的因应），<b>不是「球员受欢迎」</b>。<code>popularity</code> 全文无落点。<br>
+            · <b>D 调动的是课外知识不是原文</b>：张伯伦是 NBA 历史级巨星，看到人名就想到「成就」——<b>可原文对他只有一句客观的身高描述，战绩一个字没提。</b><b>凡选项要靠你对这个人/这件事的背景了解才成立，一律警惕。</b><br>
+            💡 <b>本题的通用解法（补进套路库 R3）</b>：<b>开篇事例本身几乎从不是作者的关注点</b>，它的作用是「<b>以点带面</b>」引出更大的现象。<b>解法＝找出事例里发生变化的那个量（本篇是<u>身高</u>：3→42），再看下一句把它扩到了哪个范围（<u>职业运动</u>）——同时罩住这两层的那一项就是答案。</b>
+          </div>
+        </div>
+
+        <div class="q" data-ans="2" id="q32">
+          <p class="stem"><span class="qt">事实概括</span>32. Which of the following plays a key role in body growth according to the text?</p>
+          <div class="opts">
+            <div class="opt">[A] Genetic modification.</div>
+            <div class="opt">[B] Natural environment.</div>
+            <div class="opt">[C] Living standards.</div>
+            <div class="opt">[D] Daily exercise.</div>
+          </div>
+          <div class="expl">
+            <b>答案 C</b>　题干关键词 <code>a key role in body growth</code> 定位第③段（<span class="loc">Growth … demands calories and nutrients</span>）。<br>
+            <b>本题是「事实概括题」——正确项 <code>Living standards</code>（生活水平）在全文一个原词都没有</b>，要靠<b>数语义场</b>做出来：<br>
+            ③段短短四句里，同一类的词密集出现六个——<code>calories</code>（热量）· <code>nutrients</code>（营养）· <code>protein</code>（蛋白质）· <code>under-nutrition</code>（营养不足）· <code>childhood infections</code>（儿童传染病）· <code>diet and health</code>（饮食与健康）。<b>归成两类：吃得好不好 ＋ 病得多不多。它们的上位词就是「生活水平」。</b><br>
+            ⭐ <b>而且本段是「一正一反」两句把 C 夹死的</b>：②句<b>反</b>——<span class="loc">under-nutrition and childhood infections got in the way</span>（营养不良与传染病<b>挡住了</b>增长）；③句<b>正</b>——<span class="loc">as diet and health improved, … increased in height by about an inch and a half every 20 years</span>（饮食健康<b>改善后</b>每 20 年长 1.5 英寸）。<b>同一个变量正反各演一遍，这就是 <code>key role</code> 的实锤。</b><br>
+            <b>干扰项：</b><br>
+            · <b>B 是最像的一项，钩子在②段④句的 <code>at this genetic, <b>environmental</b> level</code></b>。可结合③段就能看出：<b>文中的 environmental 指的是营养、卫生、医疗这类<u>生活环境</u>，而 <code>natural environment</code> 是气候、地理这类<u>自然环境</u>。</b><b>一个形容词的确切所指，要靠相邻段落的具体内容去圈定，不能按中文对译认领。</b><br>
+            · <b>A 同源词偷换</b>：全文 genetic 出现三次，但<b>全部在说「基因<u>限定</u>身高」（②段 genetic level、④段 genetic architecture、⑤段 Genetic maximums），没有一处提「<u>改造</u>基因」。</b>genetic ≠ genetic modification，中间隔着一整个「人为干预」。<br>
+            · <b>D 无中生有</b>：唯一的钩子是①段满篇的体育词（NBA、professional sports）。<b>「话题相关」不等于「文中提过」——全文没有一句讨论运动与身高的关系。</b><br>
+            💡 <b>与 2008·T2·28 是一对镜像</b>：T2·28 的难点是<b>题干词</b>全文无原词（<code>online publication</code>，见 R22）；本题的难点是<b>正确项</b>全文无原词。<b>⟹ 无论哪一头没有原词，做法都一样：<u>先把它翻译成「文中的说法」，或者反过来，把文中一群同类词概括成一个上位词</u>。</b>
+          </div>
+        </div>
+
+        <div class="q" data-ans="1" id="q33">
+          <p class="stem"><span class="qt">作者观点</span>33. On which of the following statements would the author most probably agree?</p>
+          <div class="opts">
+            <div class="opt">[A] Non-Americans add to the average height of the nation.</div>
+            <div class="opt">[B] Human height is conditioned by the upright posture.</div>
+            <div class="opt">[C] Americans are the tallest on average in the world.</div>
+            <div class="opt">[D] Larger babies tend to become taller in adulthood.</div>
+          </div>
+          <div class="expl">
+            <div class="fail">
+              ❌ <b>Claude 盲做在此翻车：我选了 A，正确答案是 B。</b>这是本页最值钱的一段，完整复盘见下面的 <a href="#rangecol" style="color:var(--red);font-weight:700">02+ 专栏</a>。<br>
+              <b>我的推理链条其实没错</b>：②段插入语特意写「<b>尤其是</b>那些出生于已在美国生活好几代的家庭的人」到顶了 ⟹ 暗示新移民不在此列；②段末句又说 NBA 球员变高源于<b>全球招募</b> ⟹ 外国人拉高了队伍身高。<b>两条一拼，看着就是 A。</b><br>
+              <b>可 A 的病不在推理，在<u>范围</u></b>：这条推理成立的地盘只有 <b>NBA 那几十个人</b>，A 项写的却是 <code>the <b>nation</b></code>——<b>三亿人的国家平均身高。子集的结论直接搬给全集，就是以偏概全。</b><br>
+              <b>而我排掉 B 的理由是「直立姿势只是顺带提到的一个理由，说 conditioned by 太重了」——这是没读懂④段的功能。</b>
+            </div>
+            <b>答案 B</b>　题干 <code>the author most probably agree</code> ＝<b>作者观点题</b>；按同序原则（31→①、32→③），本题应落在<b>第④段</b>。<br>
+            <b>B 的依据是④段③④两句<u>连读合成</u>的，不是任何单独一句的同义改写：</b><br>
+            · ③句：<span class="loc">our feet and back continue to struggle with bipedal posture and cannot easily withstand repeated strain imposed by oversize limbs</span>——<b>脚和背仍在与双足姿势抗衡，承受不了过大肢体反复施加的压力</b>；<br>
+            · ④句：<span class="loc">There are some real constraints that are set by the genetic architecture of the individual organism</span>——<b>身高的真正限制，由基因结构设定</b>。<br>
+            <b>⟹ 合起来：身高之所以有上限，是因为要迁就直立行走的身体结构，而这个限制被写进了基因 ＝ <code>Human height is conditioned by the upright posture</code>。</b><br>
+            ⭐ <b>整段的主旨句①句 <code>Genetically speaking, there are advantages to avoiding substantial height</code> 已经把话说明白了：这一段是在回答「基因<u>为什么</u>要给身高设上限」，而它给出的生理机制只有两条——分娩（②句）与直立行走（③句）。</b><b>直立姿势不是「顺带提到」，它是两个核心答案之一，由 <code>Moreover</code> 引出、篇幅最长、并被专家引语收口。</b><br>
+            <b>干扰项（三项三种错法，值得逐个记住）：</b><br>
+            · <b>A ── 以偏概全（我踩的坑）</b>：原文只说 <b>NBA 球员</b>的身高增长源于全球招募，言外之意是「外国球员拉高了<b>NBA 队伍</b>的平均身高」；<b>A 把它扩成「非美国人拉高了<u>整个国家</u>的平均身高」</b>。<b>更要命的是：作者写这句话的<u>目的</u>恰恰是把 NBA 和「美国人」<u>切开</u>（因为①段那个反例必须被处理掉），而 A 做的事是把它们<u>粘回去</u>。</b><br>
+            · <b>C ── 纵向对比读成横向对比</b>：②段②③句是<b>美国人跟自己的过去比</b>（比 140 年前高两英寸、1960 年代到顶）；<b>C 说「美国人是全世界平均身高最高的」，把时间轴上的自比换成了国家间的横比</b>——全文<b>从未与任何其他国家比过身高</b>。<br>
+            · <b>D ── 强加因果</b>：④段②句只说<b>大婴儿更难通过产道</b>，一个字没提他们成年后多高。<b>原文说 A 有个麻烦，选项说 A 会导致 B——那根因果线是命题人自己画的。</b><br>
+            💡 <b>本题的通用解法（新立套路卡 R25）</b>：<b>作者观点题不要去找「作者说过的话」，而要把四个选项各自回原文定位，逐项判「曲解 / 夸大 / 强加关联」。</b><b>正确项常常没有单句出处，需要合并相邻两句的因果；干扰项反而句句都有原词。</b><b>⟹ 「找不到一句能直接对上」不是排除的理由，是提示你该合并着读了。</b>
+          </div>
+        </div>
+
+        <div class="q" data-ans="3" id="q34">
+          <p class="stem"><span class="qt">段落推理</span>34. We learn from the last paragraph that in the near future</p>
+          <div class="opts">
+            <div class="opt">[A] the garment industry will reconsider the uniform size.</div>
+            <div class="opt">[B] the design of military uniforms will remain unchanged.</div>
+            <div class="opt">[C] genetic testing will be employed in selecting sportsmen.</div>
+            <div class="opt">[D] the existing data of human height will still be applicable.</div>
+          </div>
+          <div class="expl">
+            <b>答案 D</b>　题干 <code>the last paragraph</code> 定位末段，<code>We learn … that</code> ＝<b>段落推理题</b>。<br>
+            末句是本题的答案句：<span class="loc">if you need to predict human height in the near future to design a piece of equipment, … you could use today's data and feel fairly confident</span>——<b>要预测近期身高来设计装备，用今天的数据就行、而且相当有把握。</b><br>
+            <b>⟹ D <code>the existing data of human height will still be applicable</code> 是逐词同义改写</b>：<code>today's data</code> → <code>the existing data</code>，<code>feel fairly confident</code> → <code>still be applicable</code>；题干的 <code>in the near future</code> 也在原句里原样出现。<br>
+            ⚠️⚠️ <b>本题真正值钱的是 B 与 D 的取舍——这是一条能带走的通用判据：</b><br>
+            <div class="tabwrap"><table class="ctab">
+              <tr><th></th><th>B　军服的设计将保持不变</th><th>D　现有身高数据将来仍然适用</th></tr>
+              <tr><td><b>与主旨的关系</b></td><td>同向（也在说「不变」）</td><td>同向（也在说「不变」）</td></tr>
+              <tr><td><b>层级</b></td><td><span class="no">就事论事</span>——军服只是③句用来说明主旨的<b>一个例子</b></td><td><span class="ok">上升到主旨</span>——「人的身高不再变」这件事本身</td></tr>
+              <tr><td><b>另有硬伤？</b></td><td><span class="no">有</span>：原文说的是 <code><b>length</b></code>（尺寸/长度）没变，B 说的是 <code><b>design</b></code>（设计）——<b>偷换修饰对象</b></td><td>无</td></tr>
+            </table></div>
+            <b>⟹ 两项都与主旨同向时，选<u>上升到主旨高度</u>的那个，不选就事论事的那个（新立套路卡 R26）。</b><b>不过更省事的顺序是：<u>先找硬伤，找不到再比层级</u>——B 带着 length→design 的硬伤，光凭这一点就能直接排除。</b><br>
+            <b>其余干扰项：</b><br>
+            · <b>A 反向 + 范围偏移双错</b>：②句说 90% 的军服<b>无需改动</b>（<code>without alteration</code>），A 却说要<b>重新考虑尺码</b>——方向反了；且原文谈的是 <code>military uniforms</code>（军服），A 说的是 <code>the garment industry</code>（整个服装业）——<b>又一次以偏概全，与 33 题 A 是同一把刀，一篇之内考了两次。</b><br>
+            · <b>C 关键词杂糅</b>：拿①句的 <code>Genetic</code> ＋ ③句的 <code>basketball</code> 拼出一个全文没有的新概念「基因检测选拔运动员」。<b>③句的 <code>those for basketball</code> 指的是「篮球队服」，与选拔运动员毫无关系。</b><b>⟹ 选项把两个不同句子的关键词凑到一起，还带上原文没有的动作，直接排除。</b>
+          </div>
+        </div>
+
+        <div class="q" data-ans="2" id="q35">
+          <p class="stem"><span class="qt">全文主旨</span>35. The text intends to tell us that</p>
+          <div class="opts">
+            <div class="opt">[A] the change of human height follows a cyclic pattern.</div>
+            <div class="opt">[B] human height is becoming even more predictable.</div>
+            <div class="opt">[C] Americans have reached their genetic growth limit.</div>
+            <div class="opt">[D] the genetic pattern of Americans has altered.</div>
+          </div>
+          <div class="expl">
+            <b>答案 C</b>　题干 <code>The text intends to tell us</code> ＝<b>全文主旨题</b>，定位全篇。<br>
+            <b>主旨题的正确项＝「对象 ＋ 结论」两件都对。</b>本篇的对象是 <b>Americans（美国人的身高）</b>，结论是 <b>已达基因极限、不再增长</b>。<br>
+            ⭐⭐ <b>最硬的证据是「同一个意思被换着说了七遍」</b>——把这些同义复现数一遍，主旨自然浮出来：<br>
+            <span class="loc">Americans have generally stopped growing</span>（②段①句）· <span class="loc">apparently reached their limit in the early 1960s</span>（②段②句）· <span class="loc">aren't likely to get any taller</span>（②段③句）· <span class="loc">we've pretty much gone as far as we can go</span>（②段④句）· <span class="loc">hasn't really changed since 1960</span>（③段末句）· <span class="loc">fit recruits without alteration</span>（⑤段②句）· <span class="loc">has not changed for some time</span>（⑤段③句）。<br>
+            <b>⟹ C <code>Americans have reached their genetic growth limit</code> 正是这七句的概括。</b>其中 <code>genetic</code> 一词也有落点：②段④句的 <code>at this <b>genetic</b>, environmental level</code>、④段的 <code>genetic architecture</code>、⑤段的 <code>Genetic maximums</code>。<br>
+            ⭐ <b>C 还顺应了全文的论证结构「揭示事实（①–③）→ 说明原因（④）→ 重申并展望（⑤）」</b>——<b>主旨题的正确项应当是那个「三段都能盖住」的说法。</b><br>
+            <b>干扰项：</b><br>
+            · <b>A 「循环模式」是无中生有 + 曲解</b>：钩子是③段③句的 <code>a <b>pattern</b> known as the secular trend</code>。<b>可原文说的是「慢 → 快 → 停」的单向历程（20 世纪初受阻 → 饮食改善后每 20 年长 1.5 英寸 → 1960 后停止），这是一条<u>有终点的线</u>，不是<u>循环</u>。</b>而且这只是历史片段，算不上「整体趋势」。<br>
+            · <b>B 偷换重心</b>：钩子是末句的 <code>predict</code>。<b>可末句要强调的是「身高<u>不再变了</u>」（所以旧数据够用），B 却把它换成「身高<u>越来越可预测</u>」——把结论偷换成了这个结论的<u>一个副产品</u>，还加了原文没有的比较级 <code>even more</code>（比谁更可预测？原文没给对象，这是 R8 里的「凭空比较」）。</b><br>
+            · <b>D 只抱住让步半句</b>：⑤段①句 <code>Genetic maximums <b>can</b> change, <b>but</b> don't expect this to happen soon.</code>——<b>D 把「<u>可能会</u>变」读成「<u>已经</u>变了」，还整个丢掉了 but 之后的转折。</b><b>凡 <code>A, but B</code> 的句子，B 才是语义重心；只抱着 A 造的选项一律排除。</b><br>
+            💡 <b>做完主旨题回头检验前四题</b>：主旨是「美国人已达基因极限」，于是 31 答「NBA 身高的变化」（被主旨推翻的引子）、32 答「生活水平」（过去增长的外因）、33 答「受直立姿势制约」（停止增长的内因）、34 答「现有数据仍适用」（极限近期不变）。<b>五道题全在一条主线上——有一道对不上，那道多半选错了。</b>（而我错的 33 题，选 A 的话恰恰<u>与主旨相悖</u>：主旨说「美国人没长高」，A 却说「有人把美国人的平均身高拉高了」。<b>这道检验我当时没做。</b>）
+          </div>
+        </div>
+      </section>
+
+      <!-- ========== 专栏 1 · 范围校验 ========== -->
+      <section class="card" id="rangecol">
+        <h2><span class="n">02+</span>专栏 · 我错的那道题：推理对了，范围塌了（本页最值钱的一节）</h2>
+        <p style="font-size:.92rem;margin-bottom:14px">33 题我选 A、正确答案是 B。<b>这道题的价值不在于「我不认识哪个词」，而在于它暴露了一种很难自查的错法：<u>推理链条完全正确，但推理成立的范围比选项小一圈</u>。</b>这种错法读起来毫无违和感，因为每一步都有原文支撑。</p>
+
+        <h3>① 先把我的推理过程原样摆出来</h3>
+        <div class="tl">
+          <div class="tli"><div class="mark">线索 1</div><div>②段②句插入语：<code>especially those born to families who have lived in the U.S. for <b>many generations</b></code>（<b>尤其是</b>那些出生于已在美国生活好几代的家庭的人）。<br>⟹ <b>「尤其是」这个限定是作者主动加的，加了就一定有用意</b>：世代居美者到顶了 ⟹ <b>言外之意，新来的还没到顶。</b>　<span class="ok">✔ 这一步没错</span></div></div>
+          <div class="tli"><div class="mark">线索 2</div><div>②段⑤句：<code>In the case of NBA players, their increase in height appears to result from … <b>recruiting players from all over the world</b></code>。<br>⟹ <b>NBA 球员变高，是因为招了外国人。言外之意：外国球员拉高了 NBA 队伍的平均身高。</b>　<span class="ok">✔ 这一步也没错</span></div></div>
+          <div class="tli" style="border-color:var(--red)"><div class="mark" style="color:var(--red);background:var(--red-soft)">合成</div><div>「非美国人拉高了平均身高」⟹ 选 A。<br><span class="no">✘ 就塌在这一步</span>——<b>线索 2 成立的地盘只有 <u>NBA 球员</u>（几十人），A 项写的是 <code>the nation</code>（<u>三亿人</u>的国家平均身高）。</b></div></div>
+        </div>
+
+        <h3>② 病灶：范围不等宽</h3>
+        <div class="tabwrap"><table class="ctab">
+          <tr><th></th><th>原文依据句在说谁</th><th>A 项在说谁</th><th>等宽？</th></tr>
+          <tr><td>线索 2</td><td><code>NBA players</code>　一个联盟的几十名球员</td><td><code>the nation</code>　整个美国的人口均值</td><td><span class="no">✘ 差了四个数量级</span></td></tr>
+          <tr><td>线索 1</td><td>只说「世代居美者<b>已到顶</b>」</td><td>说「非美国人<b>拉高了</b>均值」</td><td><span class="no">✘ 没到顶 ≠ 更高；且未说他们的人数足以抬起均值</span></td></tr>
+        </table></div>
+        <p style="font-size:.92rem;margin-top:10px">⚠️⚠️ <b>还有一记警报我当时完全忽略了</b>：本篇<b>同序原则百分之百适用</b>（31→① · 32→③ · 34→⑤ · 35→全文），33 题夹在 32 与 34 之间，<b>本该落在第④段</b>。<br><b>而 A 项的原文出处在<u>第②段</u>——「一个选项的出处落在本题定位段之外，而且是个例、是已经被作者处理掉的反例」，这本身就该拉响警报。</b></p>
+
+        <h3>③ 更扎心的一点：这个坑我自己写进过套路库</h3>
+        <div class="atti no2">
+          2007·T4·40 那道题的复盘里，我给干扰项总纲（<b>R8</b>）加了<b>第十一类「泛化 / 扩大范围」</b>，原话是：<b>「一部具体的法 → 一整类立法；一个州 → 全世界；一个技巧 → 整类行为」</b>。<br>
+          <b>本题就是它的第四种形态：一个联盟 → 一个国家。</b><br>
+          ⟹ <b>写过 ≠ 会用。</b>套路卡真正生效的前提，是<b>做题时有一个固定动作去触发它</b>——所以这次不再只补一条类型，而是立成一张<b>带动作</b>的卡：<b>R24 范围校验</b>。
+        </div>
+
+        <h3>④ 立成套路卡 R24 · 范围校验（「言外之意」型选项的两道关）</h3>
+        <div class="tabwrap"><table class="ctab">
+          <tr><th>关</th><th>问自己什么</th><th>本题的答案</th></tr>
+          <tr><td><b>第一关 · 推理链</b></td><td>这个言外之意，是原文哪一句推出来的？<b>推理步数超过两步就要警惕。</b></td><td><span class="ok">✔ 过</span>　②段②句 + ⑤句，两步</td></tr>
+          <tr><td><b>第二关 · 范围</b></td><td><b>把「依据句的主语」和「选项的主语」并排写下来，是不是同一个集合？</b></td><td><span class="no">✘ 塌</span>　NBA players vs. the nation</td></tr>
+        </table></div>
+        <p style="font-size:.92rem;margin-top:10px"><b>⟹ 动作只有一个：把两个主语并排写在草稿纸上。</b>不是「感觉一下范围对不对」，是<b>真的写出来两个名词，然后问「左边这个是不是右边这个的一小块」</b>。<b>是一小块 ⟹ 排除。</b></p>
+        <p style="font-size:.92rem;margin-top:10px">📌 <b>R24 与 <a href="套路库_阅读.html" style="color:var(--accent)">R21 主体校验</a>（2008·T2 立的卡）是姐妹卡</b>，配合起来就是一套完整的「主语体检」：<br>
+        · <b>R21 问「<u>是谁</u>」</b>——把商业出版商说成政府资助的研究（<b>换了个人</b>）；<br>
+        · <b>R24 问「<u>有多大</u>」</b>——把 NBA 球员说成整个国家（<b>还是那批人，但被放大了</b>）。<br>
+        <b>⟹ 拿到一个选项，先答这两问：谁？多大？　然后才轮到「做了什么」。</b></p>
+
+        <h3>⑤ 顺带一提：本篇里「以偏概全」考了两次</h3>
+        <p style="font-size:.92rem">34 题的 A 项 <code>the <b>garment industry</b> will reconsider the uniform size</code> 用的是同一把刀：<b>原文谈的是 <code>military uniforms</code>（军服，一个行业里的一个门类），选项换成了整个服装业。</b><br>
+        <b>⟹ 一套题里同一种错法出现两次，不是巧合，是命题人这一年偏爱的手法。做完一篇要回头数一数：哪种错法出现了不止一次？下次遇到同源年份的题，那把刀多半还在。</b></p>
+      </section>
+
+      <!-- ========== 专栏 2 · 现象—原因—展望 ========== -->
+      <section class="card" id="strucol">
+        <h2><span class="n">02++</span>专栏 · 「现象—原因—展望」型说明文：开篇事例是靶子，不是论据</h2>
+        <p style="font-size:.92rem;margin-bottom:14px">2008 年这三篇阅读，<b>结构一篇一个样，值得并排记</b>：T1 是<b>对比型</b>（男 vs 女），T2 是<b>今昔对比型</b>（昔 → 今），本篇是<b>现象—原因—展望型</b>。骨架不同，读法就不同。</p>
+
+        <h3>① 本篇的五段骨架</h3>
+        <div class="tabwrap"><table class="ctab">
+          <tr><th>段</th><th>功能</th><th>路标词</th><th>出什么题</th></tr>
+          <tr><td>①</td><td><b>开篇事例（靶子）</b>　NBA 球员越长越高</td><td>数字对比 3 → 42 ＋ 虚拟语气</td><td><b>例证题</b>（31）</td></tr>
+          <tr><td>②</td><td><b>⚠️ 反转 + 亮出主旨</b>　美国人其实停止长高了</td><td><code><b>though</b></code> ＋ <code><b>obscuring</b></code> ＋ 冒号</td><td>主旨题的答案源（35）；<b>干扰项高产地</b>（33A）</td></tr>
+          <tr><td>③</td><td><b>原因之一 · 外因</b>　营养与健康</td><td><code>At the start of… / But as… / Yet…</code></td><td><b>事实概括题</b>（32）</td></tr>
+          <tr><td>④</td><td><b>原因之二 · 内因</b>　基因为何设上限</td><td><code>Genetically speaking / Moreover</code></td><td><b>作者观点题</b>（33）</td></tr>
+          <tr><td>⑤</td><td><b>展望</b>　近期不会变，用今天的数据就行</td><td><code>can change, <b>but</b> don't expect…</code></td><td><b>段落推理题</b>（34）</td></tr>
+        </table></div>
+
+        <h3>② 结构眼：②段首句的两个词</h3>
+        <div class="atti yes">
+          <code>The trend in sports, <b>though</b>, may be <b>obscuring</b> an unrecognized reality: Americans have generally stopped growing.</code><br>
+          <b>· <code>though</code>（然而）</b>——插在主语之后，位置极不显眼，却宣告①段要被推翻；<br>
+          <b>· <code>obscuring</code>（掩盖）</b>——直接给①段定性：<b>那是障眼法，不是论据。</b><br>
+          <b>⟹ 通用信号：开篇事例之后若出现 <code>though / however / but</code> ＋ <code>obscure / mask / hide / conceal / belie</code> 这类「掩盖」义动词，就说明<u>事例是要被推翻的靶子</u>，全文重心在冒号/转折之后。</b>
+        </div>
+
+        <h3>③ 作者是怎么「处理掉」那个反例的</h3>
+        <p style="font-size:.92rem">一篇讲「美国人停止长高」的文章，开头却举了个「运动员越来越高」的例子——<b>这是个刺眼的反例，作者必须处理掉，否则文章立不住。</b><br>
+        处理动作就在<b>②段⑤句</b>：<code>In the case of NBA players, their increase in height appears to result from … recruiting players from all over the world.</code><br>
+        <b>⟹ 一句话把 NBA 从「美国人」里摘出去：他们变高不是因为美国人变高了，是因为队里的外国人多了。</b><br>
+        ⚠️⚠️ <b>而 33 题 A 恰恰是拿这句「摘出去」的话，反过来造的「粘回来」的选项。</b><b>看懂了作者<u>为什么</u>写这一句，就不会选 A。</b><b>⟹ 读到一句专门用来消解反例的句子时，顺手在旁边写一个字：「切」。它十有八九会被命题人拿去造干扰项。</b></p>
+
+        <h3>④ 与 2008 另外两篇并排</h3>
+        <div class="tabwrap"><table class="ctab">
+          <tr><th></th><th>2008·T1 女性与压力</th><th>2008·T2 科学出版</th><th>2008·T3 本篇</th></tr>
+          <tr><td><b>骨架</b></td><td>对比型（男 vs 女）</td><td>今昔对比型（昔 → 今）</td><td><b>现象—原因—展望型</b></td></tr>
+          <tr><td><b>路标</b></td><td>男女两栏的特征词</td><td>三个段首短句</td><td><b>though ＋ obscuring ＋ 冒号</b></td></tr>
+          <tr><td><b>主旨怎么定</b></td><td><b>把 B 方删掉文章还成立吗</b>（删男性仍成立 ⟹ 主角是女性）</td><td><b>重心永远在「今」</b>；正确项要装下新事物 + 新旧关系</td><td><b>数同义复现</b>：stopped growing / reached their limit / aren't likely to get any taller / gone as far as we can go / hasn't really changed / without alteration / has not changed —— <b>七处</b></td></tr>
+          <tr><td><b>本篇的坑</b></td><td>中性标题 vs 有立场的标题（我错在这）</td><td>偷换主体，一篇五连</td><td><b>以偏概全，一篇两次</b>（33A / 34A）（我又错在这）</td></tr>
+        </table></div>
+        <p style="font-size:.92rem;margin-top:12px">⭐ <b>三篇的主旨判据其实是同一件事的三种形态：<u>先找出「谁是主角、谁是参照系」，再看选项有没有把参照系当主角</u>。</b><br>
+        T1 的参照系是<b>男性</b>，T2 的参照系是<b>过去</b>，本篇的参照系是<b>NBA 球员</b>。<b>三道题的干扰项，全都是把参照系抬成了主角。</b></p>
+      </section>
+
+      <!-- ========== 长难句 ========== -->
+      <section class="card" id="sents">
+        <h2><span class="n">03</span>长难句精析（正文蓝色虚线句）</h2>
+        <p style="font-size:.8rem;color:var(--muted);margin-bottom:14px">本篇的语法难点很集中：<b>一句虚拟语气 ＋ 三句「插入成分把主谓撑开」＋ 两句「让步从句 + 后置修饰」</b>。认出这三种，全篇没有读不通的句子。</p>
+
+        <div class="sent" id="s1">
+          <p class="src">If he had played last season, however, he would have been one of 42.</p>
+          <div class="anat">
+            <ul>
+              <li><b>句型</b>：<span class="skel">If + 主语 + had done…, 主语 + would have done…</span>——<b>与<u>过去</u>事实相反的虚拟语气</b>。</li>
+              <li><b>⟹ 事实是</b>：他<b>没有</b>打上个赛季（张伯伦 1973 年就退役了）。<b>作者用虚拟语气做了一次跨越四十年的「换算」：把 1960 年代的张伯伦放到今天，他不再稀奇。</b></li>
+              <li><b>这句话的信息量全在两个数字上</b>：<code>one of the only <b>three</b></code>（①句）→ <code>one of <b>42</b></code>。<b>「only」这个词也别放过——它强调「仅有三人」，把对比拉得更开。</b></li>
+              <li>💡 <b>考场读法</b>：见到 <code>had done … would have done</code> 就在旁边写「<b>假的</b>」两个字，然后把它翻成陈述句去理解——<b>「如果他今天还在打，就是 42 人之一」＝「今天有 42 个七英尺球员」。</b></li>
+            </ul>
+          </div>
+          <div class="tr">译：然而，假如上个赛季他还在打球的话，他就会是 42 名这样的球员中的一员了。</div>
+        </div>
+
+        <div class="sent" id="s2">
+          <p class="src">Though typically about two inches taller now than 140 years ago, today's people—especially those born to families who have lived in the U.S. for many generations—apparently reached their limit in the early 1960s.</p>
+          <div class="anat">
+            <ul>
+              <li><b>主干</b>：<span class="skel">today's people … apparently reached their limit in the early 1960s.</span>（今天的人似乎在 1960 年代初就到顶了）</li>
+              <li><b>难点一 · 让步状语从句的省略</b>：<code>Though typically about two inches taller now than 140 years ago</code>——<b>Though 后面直接跟形容词短语，省略了 <code>they are</code></b>（＝ Though <u>they are</u> typically about two inches taller…）。<b>这是英语里非常常见的省略：从句主语与主句主语一致时，「主语 + be」可以整体省掉。</b></li>
+              <li><b>难点二 · 破折号插入语把主语和谓语撑开</b>：主语 <code>today's people</code> 与谓语 <code>reached</code> 之间插了 <b>15 个词</b>。<b>与 2008·T2 的第一难句是同一个手法。考场读法：见到破折号先整块跳过，找到谓语再回头填。</b></li>
+              <li><b>难点三 · 插入语内部还有一层定语从句</b>：<code>those born to families <b>who have lived in the U.S. for many generations</b></code>——<code>who</code> 修饰 families；<code>born to families</code> 本身是过去分词作后置定语修饰 those（＝ those <u>who were</u> born to families）。<b>一个插入语里套了两层修饰。</b></li>
+              <li>⚠️⚠️ <b>这个插入语就是 33 题 A 的「言外之意」来源</b>：作者特意用 <code>especially</code> 把「世代居美的家庭」单拎出来说他们到顶了 ⟹ 暗示新移民不在此列。<b>但请注意它只说了「谁到顶了」，<u>没说</u>「谁更高」，更没说「谁抬高了全国均值」——推理只能走到这里，再往前一步就掉进 A 的坑里了。</b></li>
+            </ul>
+          </div>
+          <div class="tr">译：尽管比 140 年前普遍高约两英寸，但现在的美国人——尤其是那些出生于已在美国生活了好几代的家庭中的美国人——在 20 世纪 60 年代初似乎就已达到了身高的极限。</div>
+        </div>
+
+        <div class="sent" id="s3">
+          <p class="src">Growth, which rarely continues beyond the age of 20, demands calories and nutrients—notably, protein—to feed expanding tissues.</p>
+          <div class="anat">
+            <ul>
+              <li><b>主干</b>：<span class="skel">Growth … demands calories and nutrients … to feed expanding tissues.</span>（生长需要热量和营养，以供养正在扩展的组织）</li>
+              <li><b>两处撑开，位置不同</b>：①<b>非限制性定语从句</b> <code>which rarely continues beyond the age of 20</code> 撑开<u>主语和谓语</u>；②<b>破折号插入</b> <code>—notably, protein—</code> 撑开<u>宾语和目的状语</u>。<b>一句话里连用两次，这就是本篇的招牌手法。</b></li>
+              <li><b><code>demand</code> 在这里是「需要、需求」不是「要求」</b>——主语是抽象概念 Growth 而非人。<b>判据：demand 的主语不是人时，一律取「需要」义。</b></li>
+              <li><b><code>notably</code>＝「尤其是」（＝ especially），不是「显著地」</b>。它引出的 <code>protein</code> 是 <code>nutrients</code> 的<b>举例</b>，不是并列成分。</li>
+              <li>💡 <b>这句话是 32 题语义场的第一批材料</b>：calories / nutrients / protein 三个词一次给齐，再加上下一句的 under-nutrition、第三句的 diet and health，六个词指向同一个上位概念 —— <b>Living standards</b>。</li>
+            </ul>
+          </div>
+          <div class="tr">译：身高增长很少会持续到 20 岁以后，它需要热量和营养——尤其是蛋白质——以满足人体组织扩展的需求。</div>
+        </div>
+
+        <div class="sent" id="s4">
+          <p class="src">But as diet and health improved, children and adolescents have, on average, increased in height by about an inch and a half every 20 years, a pattern known as the secular trend in height.</p>
+          <div class="anat">
+            <ul>
+              <li><b>主干</b>：<span class="skel">children and adolescents have … increased in height by about an inch and a half every 20 years</span>（儿童和青少年平均每 20 年长高约 1.5 英寸）</li>
+              <li><b>第三次撑开</b>：<code>on average</code> 插在助动词 have 与过去分词 increased 之间。<b>与 2008·T2 那句 <code>publishers who have, so far, made handsome profits</code> 是完全相同的位置——「插在 have 与 done 之间」是英美报刊的标准笔法。</b></li>
+              <li>⭐ <b>句末 <code>a pattern known as the secular trend in height</code> 是<u>同位语</u>，为前面<u>整句话</u>命名</b>（不是修饰 20 years）。<b>结构：名词 + known as + 术语名 ＝「这种……被称为 X」。</b></li>
+              <li>⭐⭐ <b>这个同位语是生词 <code>secular</code> 的免费注释</b>：你不必知道 secular 在人口学里是「长期的、跨世纪的」，<b>只要看出「前面整句话 ＝ 这个术语」，就知道它指的是「每 20 年长 1.5 英寸的那种长期增长」。</b><b>⟹ 通用技巧：<u>长难句里的同位语和定语从句，常常就是生词的现场定义</u>。</b></li>
+              <li><b><code>increase in height by X</code>：<code>in</code> 引出「在哪方面增加」，<code>by</code> 引出「增加的幅度」。</b>写作里的图表描述句式：<code>increase in sales <b>by</b> 20% <b>to</b> 3 million</code>（增长 20% 至 300 万）——<b>in 哪方面 / by 增幅 / to 终值，三个介词各司其职。</b></li>
+            </ul>
+          </div>
+          <div class="tr">译：然而，随着日常饮食和健康状况的改善，儿童和青少年的身高平均每 20 年增长约 1.5 英寸，这种模式被称为身高（增长）的长期趋势。</div>
+        </div>
+
+        <div class="sent" id="s5">
+          <p class="src">Moreover, even though humans have been upright for millions of years, our feet and back continue to struggle with bipedal posture and cannot easily withstand repeated strain imposed by oversize limbs.</p>
+          <div class="anat">
+            <ul>
+              <li><b>主干</b>：<span class="skel">our feet and back continue to struggle with … and cannot easily withstand …</span>——<b>一个主语带两个并列谓语</b>（continue / cannot withstand），用 and 连接。</li>
+              <li><b>让步从句</b>：<code>even though humans have been upright for millions of years</code>（尽管人类已直立行走几百万年）。<b>让步的内容越充分，主句的转折越有分量：都几百万年了，脚和背还是吃不消。</b></li>
+              <li><b>后置定语</b>：<code>repeated strain <b>imposed by oversize limbs</b></code>——过去分词短语修饰 strain（＝ strain <u>that is</u> imposed by…），<b>「过大的肢体反复施加的压力」</b>。</li>
+              <li>⭐⭐⭐ <b>本句是 33 题正确项 B 的上半个依据，也是我看漏的地方。</b>它与下一句的专家引语 <code>constraints … set by the genetic architecture</code> 连读，才合成 <code>Human height is <b>conditioned by the upright posture</b></code>：<br><b>脚和背扛不住大肢体（本句）＋ 这个限制被写进基因（下句）＝ 身高受直立姿势制约。</b></li>
+              <li>⚠️ <b>教训</b>：<b>作者观点题的正确项常常「在原文里找不到对应的一句」——因为它是两句合成的。</b><b>「找不到单句出处」不是排除的理由，是提示你该合并着读了。</b></li>
+              <li>💡 <b><code>struggle with</code> 在这里不是「奋斗」而是「与……较劲、难以应付」</b>；<code>bipedal</code>（双足的）是超纲词，<b>但 bi-（二）+ ped-（脚，同 pedal 脚踏板 / pedestrian 行人）拆开就能猜</b>，何况前半句 <code>humans have been <b>upright</b></code> 已经把意思给了。</li>
+            </ul>
+          </div>
+          <div class="tr">译：此外，尽管人类已经直立行走了几百万年，但两脚和背部仍继续同双足行走的姿势相抗衡，（因而）难以轻易承受过大、过长的肢体反复施加的压力。</div>
+        </div>
+
+        <div class="sent" id="s6">
+          <p class="src">And if you need to predict human height in the near future to design a piece of equipment, Gordon says that by and large, "you could use today's data and feel fairly confident."</p>
+          <div class="anat">
+            <ul>
+              <li><b>主干</b>：<span class="skel">Gordon says that … you could use today's data and feel fairly confident.</span>（Gordon 说，你可以用今天的数据，并且相当有把握）</li>
+              <li><b>句首是一整个条件状语从句</b> <code>if you need to predict human height in the near future to design a piece of equipment</code>，从句里还套了一个<b>目的状语</b> <code>to design a piece of equipment</code>（为了设计一件装备）。<b>从句这么长，主句被推到句子后半段——考场读法：先跳到 says that 之后拿结论，再回头看条件。</b></li>
+              <li>⭐ <b>题干的 <code>in the near future</code> 就原样出现在这个从句里</b>——<b>34 题的定位可以说是白给的。</b></li>
+              <li><b>插入语 <code>by and large</code>（总的来说）夹在 that 与引语之间</b>，又是一次「撑开」。<b><code>fairly</code>＝「相当地」不是「公平地」</b>。<b>两个词都是在给结论留余地。</b></li>
+              <li>💡 <b>本句是全文的收口句，也是 34 题的答案句</b>：<code>today's data</code> → 选项的 <code>the existing data</code>；<code>feel fairly confident</code> → <code>still be applicable</code>。<b>主旨（身高不再变）在这里落到了一个最实用的结论上：设计装备不用换数据。</b></li>
+            </ul>
+          </div>
+          <div class="tr">译：她还说，如果你需要预测短期内人类的身高以设计一件装备，那基本上「你可以非常有把握地使用当前数据」。</div>
+        </div>
+      </section>
+
+      <!-- ========== 熟词僻义清算表 ========== -->
+      <section class="card" id="polycol">
+        <h2><span class="n">03+</span>熟词僻义清算表 · 17 处</h2>
+        <p style="font-size:.9rem;margin-bottom:12px">本篇的生词其实不多（bipedal、canal 这类靠构词法和上下文都能猜），<b>真正会让人读偏的是下面这些「每个字母都认识」的词。</b>凡是「句子读起来别扭」的地方，先把熟悉的那个意思换掉试试。</p>
+        <div class="tabwrap"><table class="ctab">
+          <tr><th>词</th><th>你以为的意思</th><th>本篇的意思</th><th>原文语境</th></tr>
+          <tr><td><code>list</code>（v.）</td><td>名词「列表」</td><td><b>（在名单上）列为、登记为</b></td><td>players … listed at over seven feet</td></tr>
+          <tr><td><code>frame</code></td><td>框架、边框</td><td><b>身躯、体格</b></td><td>bigger, longer frames 更大更高的身躯</td></tr>
+          <tr><td><code>obscure</code>（v.）</td><td>形容词「模糊的、晦涩的」</td><td><b>掩盖、遮蔽</b> ⭐全文结构眼</td><td>may be obscuring an unrecognized reality</td></tr>
+          <tr><td><code>born to</code></td><td>「天生要去做……」（born to do）</td><td><b>出生于（某类家庭）</b>　born <b>to</b> families</td><td>those born to families who have lived in the U.S.</td></tr>
+          <tr><td><code>in the case of</code></td><td>「万一、如果」（in case of）</td><td><b>至于、就……而言</b>（<b>多一个 the，意思全变</b>）</td><td>In the case of NBA players, …</td></tr>
+          <tr><td><code>practice</code></td><td>练习、实践</td><td><b>做法、惯例</b></td><td>the increasingly common practice of recruiting</td></tr>
+          <tr><td><code>recruit</code> ⭐</td><td>动词「招募」</td><td><b>本篇两个词性都用了</b>：②段 <code>recruit<b>ing</b> players</code>＝招募（v.）；⑤段 <code>fit <b>recruits</b></code>＝<b>新兵</b>（n.）</td><td>recruiting players from all over the world ／ fit recruits without alteration</td></tr>
+          <tr><td><code>demand</code>（v.）</td><td>要求（人对人）</td><td><b>需要</b>（主语是抽象概念时）</td><td>Growth … demands calories and nutrients</td></tr>
+          <tr><td><code>notably</code></td><td>显著地、引人注目地</td><td><b>尤其是</b>（＝especially，引出举例）</td><td>nutrients—notably, protein—</td></tr>
+          <tr><td><code>feed</code></td><td>喂养（动物）</td><td><b>供养、满足（……的需要）</b></td><td>to feed expanding tissues 满足组织扩展的需求</td></tr>
+          <tr><td><code>get in the way</code></td><td>「在路上」</td><td><b>妨碍、阻碍</b>（＝hinder）</td><td>under-nutrition and childhood infections got in the way</td></tr>
+          <tr><td><code>secular</code> ⭐</td><td>世俗的（与宗教相对）</td><td><b>长期的、跨世纪的</b>（人口/统计学术语）</td><td>the secular trend in height 身高的长期趋势</td></tr>
+          <tr><td><code>substantial</code></td><td>实质的、真实的</td><td><b>（数量/程度）相当大的</b></td><td>advantages to avoiding substantial height</td></tr>
+          <tr><td><code>strain</code>（n.）</td><td>拉伤、扭伤</td><td><b>压力、负荷</b></td><td>repeated strain imposed by oversize limbs</td></tr>
+          <tr><td><code>architecture</code></td><td>建筑、建筑学</td><td><b>结构、构造</b>（genetic architecture 基因结构）</td><td>constraints set by the genetic architecture</td></tr>
+          <tr><td><code>alteration</code></td><td>改变（泛指）</td><td><b>（衣服的）改动、修改</b></td><td>fit recruits without alteration 无需改动</td></tr>
+          <tr><td><code>fairly</code></td><td>公平地</td><td><b>相当地、颇为</b>（程度副词）</td><td>feel fairly confident 相当有把握</td></tr>
+        </table></div>
+        <p style="font-size:.9rem;margin-top:14px">另有三个<b>不算僻义但极易读快漏掉</b>的：<code>ensure</code>（<b>确保</b>，不是 assure「向某人保证」也不是 insure「投保」）、<code>length</code>（<b>尺寸/长度</b>，34 题 B 把它偷换成了 design）、<code>by and large</code>（<b>总的来说</b>，固定短语，与 large 的大小无关）。</p>
+        <div class="atti no2" style="margin-top:14px">
+          ⚠️⚠️ <b>2008 这三篇，每篇都埋了一个「同词两面」，正好凑成一组</b>：<br>
+          · <b>T1</b>：<code>way</code>＝<b>副词「远远地」</b>（way ahead），不是名词「方式」；<code>deal</code>＝<b>「一回事」</b>（one-shot deals）。<br>
+          · <b>T2</b>：<code>deal</code>＝<b>「大订单」</b>（the big deal）——<b>与 T1 的 deal 是同一年相邻两篇里的两个义项</b>。<br>
+          · <b>T3（本篇）</b>：<code>recruit</code> <b>在同一篇文章里当了两次不同的词</b>——②段是动词「招募」，⑤段是名词「新兵」。<br>
+          <b>⟹ 判据永远只有一条：<u>把你熟悉的那个意思代进去，句子读着别扭，就一定是僻义（或者换了词性）。</u></b><b>本篇 ⑤段那句 <code>fit recruits</code>，前面是及物动词 fit，后面必须是名词宾语——<u>词性一判，义项就定了</u>。</b>
+        </div>
+      </section>
+
+      <!-- ========== 词汇 ========== -->
+      <section class="card">
+        <h2><span class="n">04</span>词汇复盘（点卡片看详情）</h2>
+        <div class="filters">
+          <button class="fbtn on" data-f="all">全部</button>
+          <button class="fbtn" data-f="core">核心词</button>
+          <button class="fbtn" data-f="phrase">短语</button>
+          <button class="fbtn" data-f="poly">熟词僻义</button>
+          <button class="fbtn" data-f="write">写作可用</button>
+        </div>
+        <div class="vgrid" id="vgrid"></div>
+      </section>
+
+      <!-- ========== 写作素材 ========== -->
+      <section class="card">
+        <h2><span class="n">05</span>可搬进作文/翻译的素材</h2>
+        <div class="wb">
+          <div class="wbi"><div class="p">The trend in sports, though, may be obscuring an unrecognized reality: …</div><div class="u">然而，体育界的这种趋势可能正在掩盖一个未被注意到的事实：……<br>⟹ <b>「表象 vs 真相」的万能开篇转折句</b>。把 The trend in sports 换成 The rapid growth of X / The popularity of Y，冒号后面直接抛出你的论点。<b>议论文最省力的「先抑后扬」结构：第一段描述人人都看见的现象，第二段用这一句掀翻它。</b></div></div>
+          <div class="wbi"><div class="p">we've pretty much gone as far as we can go</div><div class="u">我们几乎已经走到了能走的尽头。<br>⟹ <b>表达「已达极限」的地道说法</b>，比 reach the limit 更口语、更有画面。同族：<code>hit a ceiling</code>（撞上天花板，正是本文原标题里的 <i>Height Hits its Head on the Genetic Ceiling</i>）· <code>reach a plateau</code>（进入平台期）。</div></div>
+          <div class="wbi"><div class="p">There are some real constraints that are set by the genetic architecture of the individual organism.</div><div class="u">个体有机体的基因结构设定了一些真正的限制。<br>⟹ <b>讨论「人的能力/发展有没有天花板」时的现成句式</b>：<code>There are real constraints set by X.</code>　把 genetic architecture 换成 physical conditions / social structures / limited resources 即可。<b>与「刻意练习」（2007·T1）那篇正好构成一对：一篇讲后天可以练出来，一篇讲先天有硬边界。写「努力 vs 天赋」的作文，两篇的语料可以直接对打。</b></div></div>
+          <div class="wbi"><div class="p">Genetic maximums can change, but don't expect this to happen soon.</div><div class="u">基因最大值可能会改变，但别指望它很快发生。<br>⟹ <b>「让步 + 转折」的判断句模板</b>：<code>X can change, but don't expect this to happen soon.</code>　既承认了可能性、又守住了自己的立场，<b>比一口咬定「不可能」显得成熟得多</b>。议论文里下判断时非常好用。</div></div>
+          <div class="wbi"><div class="p">as diet and health improved, children and adolescents have, on average, increased in height by about an inch and a half every 20 years</div><div class="u">随着饮食与健康状况改善，儿童青少年平均每 20 年长高约 1.5 英寸。<br>⟹ <b>图表作文的标准描述句</b>：<code>increase <b>in</b> 哪方面 <b>by</b> 增幅 <b>every</b> 时间单位</code>。三个介词各司其职，再配上 <code>on average</code>（平均而言）、<code>a pattern known as…</code>（这种模式被称为……），一句话就能把趋势 + 幅度 + 命名说完。</div></div>
+          <div class="wbi"><div class="p">even though humans have been upright for millions of years, our feet and back continue to struggle with bipedal posture</div><div class="u">尽管人类已直立行走几百万年，脚和背仍在与双足姿势相抗衡。<br>⟹ <b>「时间很久 ≠ 已经适应」的反差句式</b>：<code>even though … for millions of years, … still struggle with …</code>　写「技术发展快于人类适应速度」「制度早已存在却仍不完善」这类题时可直接套。<b>struggle with 比 have trouble with 高级。</b></div></div>
+          <div class="wbi"><div class="p">In the early 1960s … one of the only three players … If he had played last season, he would have been one of 42.</div><div class="u">用<b>虚拟语气 + 两个数字</b>做今昔对比。<br>⟹ <b>开篇引例的高级写法</b>：不直接说「现在的球员更高了」，而是把旧人物放进新时代做换算。句式：<code>If he/she had lived today, he/she would have been just one of many.</code>　<b>写「时代变迁」「标准水涨船高」类作文，开头一段照这个模子写，比堆形容词有力得多。</b></div></div>
+          <div class="wbi"><div class="p">by and large, you could use today's data and feel fairly confident</div><div class="u">总的来说，你可以使用当前数据并且相当有把握。<br>⟹ <b>本文通篇都在「给自己留余地」，这是《科学美国人》一类科普文的标准笔法</b>，值得整套搬走：<code>may be</code>（可能）· <code>apparently</code>（似乎）· <code>appears to</code>（看来）· <code>pretty much</code>（差不多）· <code>generally</code>（总体上）· <code>typically</code>（通常）· <code>by and large</code>（大体上）· <code>fairly</code>（相当）。<b>议论文里每下一个大判断，配一个这样的限定词，立刻从「口号」变成「论证」。</b></div></div>
+        </div>
+      </section>
+    </main>
+
+    <aside>
+      <div id="panel"><div class="hint">👆 点击正文里的<b>黄色高亮词</b><br>词卡会出现在这里</div></div>
+    </aside>
+  </div>
+
+  <footer>2008 英语一 Text 3 · 复盘页由 Claude 生成 · 解析为 Claude 盲做后独立撰写，答案已与黄皮书精讲逐题交叉核对（31A 32C 33B 34D 35C）<br>⚠️ Claude 盲做 4/5，<b>33 题错选 A</b>（推理链对、范围塌了：NBA 球员 → the nation）· 本页的价值在第 02+ 节「推理对了，范围塌了」与第 02++ 节「开篇事例是靶子」<br>原文出处：<i>Scientific American</i>《科学美国人》2001-07 <i>Napoleon's Revenge—In the U.S., Height Hits its Head on the Genetic Ceiling</i>（438 词），本页仅摘引考点句作分析用，完整原文见原卷 p7</footer>
+</div>
+
+<button id="yd">🔍 查有道</button>
+<script>
+const V = {
+  listed:{w:"list (v.)",ipa:"/lɪst/",pos:"v.",tags:["poly","core"],cn:"（在名单上）列为，登记为；列出",en:"to include sb/sth in a list; to be recorded as",ex:"one of the only three players in the NBA listed at over seven feet",mem:"⚠️ <b>list 最常见的是名词「列表」，这里是动词的被动用法</b>：<code>be listed at + 数值</code>＝<b>（在名册上）被列为……</b>。<br>📌 本句的完整意思是：NBA 官方名册上「身高七英尺以上」这一栏里，只有三个人，张伯伦是其中之一。<b>七英尺 ≈ 213 cm。</b><br>💡 同类用法：<code>be listed as endangered</code>（被列为濒危物种）· <code>listed company</code>（上市公司）。",syn:"be recorded as / be registered as / be classified as",conf:"list（列出/列为）vs. enlist（应征入伍；争取到支持）vs. enroll（注册入学）"},
+  major:{w:"major",ipa:"/ˈmeɪdʒə(r)/",pos:"adj. / n. / v.",tags:["core","write"],cn:"主要的，重大的；主修（专业）",en:"important, serious or significant",ex:"The bodies playing major professional sports have changed dramatically",mem:"拉丁语 major（更大的）→ <b>①主要的、重大的（adj.）　②主修，major in（v.）　③专业（n.）</b>。<br>📌 <b>本句里 <code>major professional sports</code>＝主要的职业运动项目</b>——这个形容词把范围从 NBA 一个联盟扩到了整个职业体育界，<b>正是①段「由点及面」的那一步。</b><br>✍️ 写作可用：<code>a major cause / a major concern / play a major role in</code>。",syn:"main / principal / leading / significant",conf:"major（主要的，程度）vs. main（主要的，中性）vs. primary（首要的，排序）—— <b>major 常带「规模大、重要」的意味</b>"},
+  dramatically:{w:"dramatically",ipa:"/drəˈmætɪkli/",pos:"adv.",tags:["core","write"],cn:"显著地，剧烈地",en:"suddenly and to a large degree",ex:"The bodies … have changed dramatically over the years",mem:"drama（戏剧）+ -tic + -ally → 像戏剧一样有张力 → <b>（变化）剧烈地、显著地</b>。<br>✍️ <b>图表作文的高频副词</b>，用来修饰变化幅度：<code>increase / drop / change dramatically</code>。同族强度梯队：<b>slightly（略微）＜ moderately（适度）＜ significantly（显著）＜ dramatically（剧烈）＜ drastically（急剧，常含负面）</b>。",syn:"sharply / markedly / significantly / drastically",conf:"dramatically（幅度大）vs. dramatic（adj. 戏剧性的/引人注目的）vs. drastically（急剧且常带负面色彩，如 drastically cut）"},
+  morethan:{w:"more than willing to",ipa:"",pos:"短语",tags:["phrase","write"],cn:"非常乐意，巴不得",en:"very willing indeed; only too glad to",ex:"managers have been more than willing to adjust team uniforms",mem:"<code>more than + 形容词</code>＝<b>「非常……、不止是……」</b>，是一种<b>用比较级表强调</b>的手法（不是真的在比较）。<br>📌 <b>本句里它透着一点戏谑</b>：经理们不是「勉强同意」改队服，而是<b>巴不得</b>——因为球员越高越好用。<br>✍️ 同族：<code>more than happy to help</code>（非常乐意帮忙）· <code>more than enough</code>（绰绰有余）· <code>none other than</code>（正是）。<br>⚠️ <b>注意与 <code>no more than</code>（仅仅）、<code>not more than</code>（不超过）区分，三者意思完全不同。</b>",syn:"only too glad to / perfectly happy to / eager to",conf:"more than willing（非常乐意）vs. <b>no more than</b>（只不过）vs. <b>not more than</b>（至多）——<b>差一个否定词，意思天翻地覆</b>"},
+  adjust:{w:"adjust",ipa:"/əˈdʒʌst/",pos:"v.",tags:["core","write"],cn:"调整，调节；适应",en:"to change sth slightly to make it more suitable; to get used to a new situation",ex:"willing to adjust team uniforms to fit the growing numbers of bigger frames",mem:"ad-（朝向）+ just（正确的）→ 弄到正确的样子 → <b>①调整（及物）　②适应（adjust to sth，不及物）</b>。<br>📌 <b>本句是义项①</b>：调整队服尺寸。<b>⑤段的 <code>without alteration</code>（无需改动）正是它的反面——两处呼应，34 题就靠这一对。</b><br>✍️ 写作可用：<code>adjust <b>to</b> a new environment</code>（适应新环境）· <code>make adjustments to…</code>（对……作出调整）。",syn:"adapt / modify / alter / fine-tune",conf:"adjust（微调，使更合适）vs. adapt（适应/改编，强调变化以配合环境）vs. alter（改动，中性）vs. amend（修正，多用于法律文本）"},
+  frames:{w:"frame",ipa:"/freɪm/",pos:"n.",tags:["poly","core"],cn:"身躯，体格；框架，边框",en:"the structure of a person's body, especially with reference to size",ex:"to fit the growing numbers of bigger, longer frames",mem:"⚠️ <b>frame 在这里不是「框架」而是「身躯、体格」</b>——把人体想象成一副骨架（frame ＝ 骨架/支架），引申指整个身材。<br>📌 <b>判据：frame 前面带 big / small / slender / muscular 这类描述身材的形容词时，一律指人的体格。</b><code>a man of large frame</code>（身材魁梧的男子）。<br>💡 本句 <code>bigger, longer frames</code> 与①句的 <code>over seven feet</code> 是同一件事的两种说法，<b>属于同义复现</b>。",syn:"build / physique / body / stature",conf:"frame（体格；框架）vs. framework（框架、体系，抽象）vs. figure（身材，多指外形曲线）"},
+  trend:{w:"trend",ipa:"/trend/",pos:"n.",tags:["core","write"],cn:"趋势，倾向",en:"a general direction in which a situation is changing or developing",ex:"The trend in sports, though, may be obscuring an unrecognized reality",mem:"📌 <b>本篇有两个 trend，指的不是一回事，别混</b>：<br>· ②段 <code>The trend <b>in sports</b></code>＝<b>体育界（运动员越来越高）的趋势</b>——这是要被推翻的；<br>· ③段 <code>the <b>secular</b> trend in height</code>＝<b>身高的长期增长趋势</b>——这是已经停掉的。<br>✍️ 写作高频：<code>a growing / worrying / worldwide trend</code>· <code>reverse a trend</code>（扭转趋势）· <code>buck the trend</code>（逆势而行）。",syn:"tendency / movement / direction / current",conf:"trend（趋势，中性）vs. fashion（时尚，短期）vs. fad（一阵风的热潮，贬义）—— <b>2007·T1 考过 craze/fad 这一族的强度尺</b>"},
+  obscure:{w:"obscure",ipa:"/əbˈskjʊə(r)/",pos:"v. / adj.",tags:["poly","core","write"],cn:"（v.）掩盖，使模糊；（adj.）晦涩的，鲜为人知的",en:"to prevent sth from being seen or understood",ex:"The trend in sports may be obscuring an unrecognized reality",mem:"⭐⭐ <b>本篇的结构眼，也是最典型的一处熟词僻义</b>：考研里 obscure 多以形容词「晦涩难懂的、无名的」出现，<b>这里是动词「掩盖、遮蔽」</b>。<br>📌 <b>它给①段定了性：NBA 球员越长越高这个现象，是一层<u>遮挡物</u>，挡住了后面那个真相。</b><b>读到这个词就该意识到：开篇事例是靶子不是论据。</b><br>💡 <b>同族「掩盖」义动词，见到任一个都要拉警报</b>：<code>mask</code>· <code>conceal</code>· <code>hide</code>· <code>veil</code>· <code>belie</code>（掩饰，给人错误印象）。<br>✍️ 写作可用：<code>These averages obscure huge regional differences.</code>（这些平均数掩盖了巨大的地区差异。）",syn:"（v.）conceal / mask / cloud / blur ｜（adj.）unclear / little-known",conf:"obscure（掩盖 / 晦涩的）vs. obscene（淫秽的）vs. absurd（荒谬的）—— <b>拼写相近，义项无关</b>"},
+  unrecognized:{w:"unrecognized",ipa:"/ʌnˈrekəɡnaɪzd/",pos:"adj.",tags:["core"],cn:"未被认识到的，未被承认的",en:"not noticed or acknowledged",ex:"may be obscuring an unrecognized reality",mem:"un-（否定）+ recognize（认出、承认）+ -ed。<br>📌 <b>这个词是作者的态度标记</b>：他不说 <code>a reality</code>，而说 <code>an <b>unrecognized</b> reality</code>——<b>暗示「大家都被表象骗了，只有我要来揭穿」。</b><b>议论文里想说「一个被忽视的事实」，这个搭配很地道。</b><br>💡 同族：<code>unnoticed</code>（未被注意的）· <code>overlooked</code>（被忽视的）· <code>underestimated</code>（被低估的）。",syn:"unnoticed / overlooked / unacknowledged",conf:"unrecognized（未被认识到）vs. unrecognizable（认不出来的，指外形变化太大）"},
+  typically:{w:"typically",ipa:"/ˈtɪpɪkli/",pos:"adv.",tags:["core","write"],cn:"通常，一般而言；典型地",en:"usually; in most cases",ex:"Though typically about two inches taller now than 140 years ago",mem:"📌 <b>本篇「留余地」词群的一员</b>（与 generally / apparently / pretty much / by and large / fairly 同族）。<b>作者从不把话说满，这既是科普文的笔法，也是命题人设「绝对化选项」的土壤。</b><br>✍️ 写作可用：<code>Typically, students spend…</code>（一般来说，学生会花……）——比 usually 书面。",syn:"usually / generally / as a rule / on the whole",conf:"typically（通常，频率）vs. typical of（是……的典型，性质）—— <b>后者是 be typical <u>of</u>，介词别丢</b>"},
+  bornto:{w:"born to (families)",ipa:"",pos:"短语",tags:["poly","phrase"],cn:"出生于（某类家庭）",en:"having a specified kind of family or origin at birth",ex:"those born to families who have lived in the U.S. for many generations",mem:"⚠️ <b>别读成 <code>born to do sth</code>（天生就该做某事）</b>——那个 to 后面跟动词，本句 to 后面跟名词 families，是介词。<br>📌 <b>完整结构</b>：<code>those <u>（who were）</u> born to families <u>who have lived in the U.S. for many generations</u></code>——<b>过去分词后置定语 + 定语从句，两层套一起。</b><br>⚠️⚠️ <b>这个短语所在的插入语，是 33 题 A 的「言外之意」来源</b>：作者用 <code>especially</code> 特意把「世代居美的家庭」拎出来 ⟹ 暗示新移民不在此列。<b>但它只说了「谁到顶了」，没说「谁更高」。</b>",syn:"be born into a family of… ／ come from",conf:"born <b>to</b> + 名词（出生于……家庭）vs. born <b>to</b> + 动词（天生注定要……）vs. born <b>into</b>（生于某阶层/环境，可换用）"},
+  generation:{w:"generation",ipa:"/ˌdʒenəˈreɪʃn/",pos:"n.",tags:["core","write"],cn:"一代人；（产品的）一代；产生",en:"all the people born at about the same time; the production of energy",ex:"families who have lived in the U.S. for many generations",mem:"generate（产生）+ -ion → <b>①一代人　②产生（power generation 发电）</b>。<br>📌 <b>本句 <code>for many generations</code>＝好几代人的时间</b>，用来界定「老美国人家庭」。<b>31 题的干扰项 C 里也有这个词（<code>different generations of NBA players</code>），但那里指的是「不同年代的球员」——同一个词在题与文里指的不是一批人。</b><br>✍️ 写作可用：<code>the younger generation</code>· <code>generation gap</code>（代沟）· <code>from generation to generation</code>（世代相传）。",syn:"age group / cohort ｜（产生）production",conf:"generation（一代人）vs. generalization（概括、泛化）—— <b>后者正是本篇 33 题 A 犯的毛病</b>"},
+  apparently:{w:"apparently",ipa:"/əˈpærəntli/",pos:"adv.",tags:["poly","core","write"],cn:"看来，似乎（据说如此，但未必确凿）",en:"according to what you have heard or read, though you are not certain it is true",ex:"apparently reached their limit in the early 1960s",mem:"⚠️ <b>apparently 不是「显然地」</b>（那是 obviously / evidently）。<b>它恰恰表示「看上去是这样，但我不打包票」</b>——语气是<b>弱</b>的不是强的。<br>📌 <b>本篇「留余地」词群里最容易被读反的一个。</b>本句里它给「1960 年代到顶」这个判断留了余地；②段⑤句的 <code>appears to</code> 是它的同义手足。<br>✍️ 写作可用：引述未证实的说法时用 <code>Apparently, …</code>，比 <code>It is said that…</code> 简洁。",syn:"seemingly / it seems that / by all accounts",conf:"<b>apparently（看似，语气弱）vs. obviously / evidently（显然，语气强）</b>—— <b>这一对读反了，作者的确信程度就判反了</b>；apparent（adj.）则兼有「明显的」和「表面上的」两义"},
+  limit:{w:"limit",ipa:"/ˈlɪmɪt/",pos:"n. / v.",tags:["core","write"],cn:"极限，限度；限制",en:"the greatest amount of sth that is possible or allowed",ex:"apparently reached their limit in the early 1960s",mem:"📌 <b>本篇的核心名词之一</b>，与 ④段 <code>constraints</code>（限制）、⑤段 <code>maximums</code>（最大值）构成<b>同义复现三件套</b>——<b>35 题正确项 C 的 <code>growth limit</code> 就是靠这三处撑起来的。</b><br>✍️ 写作可用：<code>reach the limit</code>（达到极限）· <code>push the limits</code>（挑战极限）· <code>set a limit on…</code>（对……设限）· <code>within limits</code>（在一定范围内）。",syn:"maximum / ceiling / boundary / cap",conf:"limit（极限，中性）vs. constraint（约束，强调外力）vs. restriction（限制，多为规定）vs. ceiling（上限，比喻用法，如 glass ceiling 玻璃天花板）"},
+  likely:{w:"be likely to",ipa:"/ˈlaɪkli/",pos:"短语",tags:["phrase","write"],cn:"可能会……",en:"probable; expected to happen",ex:"And they aren't likely to get any taller.",mem:"📌 <b>本句 <code>aren't likely to get <u>any</u> taller</code> 里的 <code>any</code> 是加强否定</b>：<b>「一点也不会再高了」</b>，不是「不太可能高很多」。<b>any + 比较级用在否定句里 ＝ 完全否定。</b><br>✍️ 写作可用：<code>be likely to</code> 比 <code>maybe</code> 正式得多，是议论文表推测的首选：<code>Such policies are likely to backfire.</code>",syn:"be apt to / be prone to / stand a good chance of",conf:"be likely to do（客观可能性）vs. be liable to do（易于/有……倾向，常含不良后果）vs. be prone to（易患/易于，多用于缺点）"},
+  general:{w:"the general population",ipa:"",pos:"n.短语",tags:["phrase"],cn:"一般人群，普通民众（相对于特殊群体）",en:"ordinary people, as opposed to a particular group",ex:"In the general population today, at this genetic, environmental level, …",mem:"⭐⭐ <b>这个短语是 33 题 A 的<u>反证</u>，非常值得单独记。</b><br>📌 专家 Chumlea 说的是「<b>就<u>一般人群</u>而言</b>我们到顶了」——<b>他明确把话限定在普通人群，而 NBA 球员恰恰是「特殊群体」。</b><b>⟹ 原文自己已经把「一般人 / 运动员」这两个圈子划开了，A 项却把运动员那个小圈子的结论套到 <code>the nation</code> 头上。</b><br>💡 <b>阅读中凡出现 <code>the general public / the general population / on the whole</code> 这类「范围界定语」，都要顺手在旁边画个圈——它们常是「以偏概全」型干扰项的照妖镜。</b>",syn:"the general public / ordinary people / the populace",conf:"the general population（一般人群）vs. the whole population（全部人口）—— <b>前者带「相对于特殊群体」的对比含义</b>"},
+  asfaras:{w:"go as far as one can go",ipa:"",pos:"短语",tags:["phrase","write"],cn:"走到（能走的）尽头，达到极限",en:"to reach the maximum possible extent",ex:"we've pretty much gone as far as we can go",mem:"✍️ <b>表达「已达极限」的地道口语说法</b>，比 reach the limit 有画面感。<br>📌 <b>本句还有一个 <code>pretty much</code>（差不多、几乎）在打折</b>——又是「留余地」。<br>💡 同族好句：<code>hit a ceiling</code>（撞上天花板，<b>本文原标题 <i>Height Hits its Head on the Genetic Ceiling</i> 用的就是它</b>）· <code>reach a plateau</code>（进入平台期）· <code>run out of room to grow</code>（没有增长空间了）。",syn:"reach the limit / hit a ceiling / max out",conf:"as far as（就……而言 / 远至）vs. so far（迄今为止）vs. by far（……得多，修饰最高级）—— <b>三个 far 短语在阅读里都高频</b>"},
+  anthropologist:{w:"anthropologist",ipa:"/ˌænθrəˈpɒlədʒɪst/",pos:"n.",tags:["core"],cn:"人类学家",en:"an expert in the study of the human race",ex:"says anthropologist William Cameron Chumlea",mem:"anthropo-（人）+ -logy（学科）+ -ist（人）→ <b>人类学家</b>。<br>📌 <b>本篇引了两位人类学家（Chumlea 与 Leonard）＋ 一位陆军人类学家（Gordon），三段专家引语分别收口②④⑤段。</b><b>⟹ 见到 <code>says + 头衔 + 人名</code> 这种<u>引述倒装</u>，就知道前面整句是这个人说的，不是作者说的。</b><br>💡 词根 anthropo- 同族：<code>anthropology</code>（人类学）· <code>philanthropist</code>（慈善家，phil- 爱 + anthropo- 人）· <code>misanthrope</code>（厌世者）。",syn:"—",conf:"anthropologist（人类学家）vs. archaeologist（考古学家）vs. sociologist（社会学家）"},
+  inthecase:{w:"in the case of",ipa:"",pos:"prep.短语",tags:["poly","phrase"],cn:"至于……，就……而言",en:"as regards; concerning",ex:"In the case of NBA players, their increase in height appears to result from…",mem:"⚠️⚠️ <b>与 <code>in case of</code>（万一、以防）只差一个 the，意思完全不同</b>：<br>· <code><b>in the case of</b> X</code>＝<b>就 X 而言、至于 X</b>（引出话题）；<br>· <code><b>in case of</b> fire</code>＝<b>万一失火</b>（引出条件）。<br>📌 <b>本句里它是一个明确的「范围切换」信号</b>：前面几句谈的是「美国人」，这里作者切到「NBA 球员」这个<u>特殊群体</u>。<b>⟹ 读到 in the case of，就该在旁边写「换圈子了」——33 题 A 正是把这两个圈子重新混在了一起。</b>",syn:"as for / as regards / when it comes to",conf:"<b>in the case of（至于）vs. in case of（万一）vs. in case（以防，后接从句）vs. in any case（无论如何）</b>—— 四个 case 短语，考研全考过"},
+  resultfrom:{w:"result from",ipa:"",pos:"v.短语",tags:["phrase","write"],cn:"由……造成，起因于",en:"to be caused by sth",ex:"their increase in height appears to result from the … practice of recruiting players",mem:"⭐ <b>因果方向的判定题里最要命的一对</b>：<br>· <code>A <b>results from</b> B</code>＝<b>A 由 B 造成</b>（<b>B 是原因</b>）；<br>· <code>A <b>results in</b> B</code>＝<b>A 导致 B</b>（<b>A 是原因</b>）。<br>📌 <b>本句：NBA 球员长高（结果）← 全球招募（原因）。</b><b>读反了就会以为「招募是因为球员高」。</b><br>✍️ 写作可用：<code>lead to / bring about / give rise to</code>（导致）· <code>stem from / arise from / be attributable to</code>（源于）。",syn:"stem from / arise from / be caused by / be attributable to",conf:"<b>result from（源于，后面是原因）vs. result in（导致，后面是结果）</b>—— <b>一个介词决定因果方向，务必背死</b>"},
+  increasingly:{w:"increasingly",ipa:"/ɪnˈkriːsɪŋli/",pos:"adv.",tags:["core","write"],cn:"越来越……，日益",en:"more and more all the time",ex:"the increasingly common practice of recruiting players from all over the world",mem:"✍️ <b>议论文里替换 <code>more and more</code> 的首选</b>，且能直接修饰形容词：<code>increasingly common / important / difficult / popular</code>。<br>📌 <b>本句 <code>the increasingly common practice of…</code>＝「日益普遍的做法」</b>——<b>这个「日益」是重要信息：它说明外籍球员是<u>近年来</u>才多起来的，正好解释了 3 → 42 这个变化。</b>",syn:"more and more / progressively / ever more",conf:"increasingly（越来越，修饰形容词）vs. increased（adj. 增加了的）vs. on the increase（在增长中，作表语）"},
+  practice:{w:"practice",ipa:"/ˈpræktɪs/",pos:"n.",tags:["poly","core","write"],cn:"做法，惯例；练习；开业",en:"a way of doing sth that is common or habitual",ex:"the increasingly common practice of recruiting players",mem:"⚠️ <b>本句不是「练习」而是「做法、惯例」</b>——<b>判据：前面带 common / standard / widespread / accepted 这类形容词时，一律取「做法」义。</b><br>📌 三个常考义项：<b>①做法、惯例</b>（本篇）<b>②练习</b>（practice makes perfect）<b>③（医生/律师的）执业</b>（a medical practice 诊所）。<br>✍️ 写作可用：<code>common practice</code>（惯常做法）· <code>put sth into practice</code>（付诸实践）· <code>in practice</code>（实际上，与 in theory 相对）。",syn:"custom / convention / routine / procedure",conf:"practice（英式名词 / 美式通用）vs. practise（英式动词）—— <b>英式拼写里 -ce 是名词、-se 是动词</b>（同 advice/advise）"},
+  recruitv:{w:"recruit (v.)",ipa:"/rɪˈkruːt/",pos:"v.",tags:["core","write"],cn:"招募，招收（新成员）",en:"to find new people to join a company, an organization, the armed forces, etc.",ex:"the … practice of recruiting players from all over the world",mem:"⭐⭐ <b>本篇里 recruit 用了两次，词性和意思都不同，是最值得记的一处</b>：<br>· <b>②段（本卡）</b>：<code>recruit<b>ing</b> players</code>＝<b>动词，招募球员</b>；<br>· <b>⑤段</b>：<code>fit <b>recruits</b> without alteration</code>＝<b>名词，新兵</b>（见 recruits 卡）。<br>📌 <b>这句话是全篇最关键的「切割动作」</b>：NBA 球员变高，是因为招了外国人，<b>不是因为美国人变高了</b>。<b>33 题 A 就是把这个切口又粘了回去。</b><br>✍️ 写作可用：<code>recruit talent</code>（招揽人才）· <code>recruitment</code>（招聘，n.）· <code>a recruitment drive</code>（招聘活动）。",syn:"enlist / enroll / take on / hire",conf:"recruit（招募，强调「找新人加入组织」）vs. hire（雇佣，商业）vs. employ（雇用，正式）vs. enlist（应征入伍）"},
+  rarely:{w:"rarely",ipa:"/ˈreəli/",pos:"adv.",tags:["core","write"],cn:"很少，难得",en:"not very often",ex:"Growth, which rarely continues beyond the age of 20, …",mem:"📌 <b>本句里它给「生长」划了时间边界：20 岁以后基本停止。</b><b>这一句是③段的前提——正因为生长有窗口期，营养才在童年和青春期起关键作用（32 题）。</b><br>✍️ <b>rarely / seldom / hardly 放句首要<u>部分倒装</u></b>：<code><b>Rarely does</b> a policy satisfy everyone.</code>（一项政策很少能让所有人满意。）——<b>作文里用一次倒装，句式分立刻上去。</b>",syn:"seldom / hardly ever / infrequently",conf:"rarely（频率低）vs. hardly（几乎不，程度）vs. scarcely（几乎不，与 hardly 近义）—— <b>三者都是「半否定词」，句中已含否定，不能再加 not</b>"},
+  beyond:{w:"beyond",ipa:"/bɪˈjɒnd/",pos:"prep.",tags:["core","write"],cn:"超过，越出；在……之外",en:"later than a particular time; more than",ex:"Growth … rarely continues beyond the age of 20",mem:"📌 <b>本句取「（时间上）超过、迟于」义</b>：生长很少持续到 20 岁以后。<br>✍️ <b>写作里最好用的几个搭配</b>：<code>beyond doubt</code>（毋庸置疑）· <code>beyond one's control</code>（非某人所能控制）· <code>beyond repair</code>（无法修复）· <code>go beyond</code>（超出、超越）。<br>💡 <b>2008·T2 里也出现过同族表达 <code>it goes further than that</code>（不止于此）</b>——<b>「超出某个界限」这个概念，英文里有一整套说法。</b>",syn:"past / after / over / more than",conf:"beyond（超出某个界限）vs. above（在……之上，位置/数值）vs. over（超过，数量或覆盖）"},
+  demand:{w:"demand (v.)",ipa:"/dɪˈmɑːnd/",pos:"v. / n.",tags:["poly","core","write"],cn:"需要（主语为事物）；要求（主语为人）",en:"to need sth as necessary or essential",ex:"Growth … demands calories and nutrients … to feed expanding tissues",mem:"⚠️ <b>demand 有两副面孔，靠主语区分</b>：<br>· <b>主语是人</b>：<code>He demanded an apology.</code>＝<b>（强硬地）要求</b>；<br>· <b>主语是事物/抽象概念</b>：<code>The job demands patience.</code>＝<b>需要（＝require）</b>。<br>📌 <b>本句主语是 Growth（生长），所以是「需要」。</b><b>判据一句话：demand 的主语不是人时，一律译「需要」。</b><br>✍️ 名词搭配：<code>meet the demand</code>（满足需求）· <code>be in great demand</code>（需求量大）· <code>supply and demand</code>（供求）。<br>⚠️ <b>demand 作「要求」时，宾语从句用<u>虚拟语气</u></b>：<code>demand that he (should) leave</code>。",syn:"require / call for / necessitate / entail",conf:"demand（需要/要求，语气强）vs. require（需要，中性正式）vs. request（请求，客气）—— <b>三者语气从强到弱</b>"},
+  calorie:{w:"calorie",ipa:"/ˈkæləri/",pos:"n.",tags:["core"],cn:"卡路里，热量（单位）",en:"a unit for measuring how much energy food will produce",ex:"demands calories and nutrients—notably, protein—",mem:"📌 <b>32 题语义场的成员之一</b>：calories（热量）· nutrients（营养）· protein（蛋白质）· under-nutrition（营养不足）· diet and health（饮食与健康）—— <b>五个词一起指向「生活水平」这个上位概念。</b><br>💡 <b>做题动作：把这类同类词圈起来数一数，数量最多的那一类就是答案的方向。</b>",syn:"energy unit ｜（口语）calories＝热量",conf:"calorie（卡路里）vs. carbohydrate（碳水化合物）vs. cholesterol（胆固醇）—— <b>健康类文章的三个高频词</b>"},
+  nutrient:{w:"nutrient",ipa:"/ˈnjuːtriənt/",pos:"n.",tags:["core"],cn:"营养物，养分",en:"a substance that is needed to keep a living thing alive and to help it grow",ex:"demands calories and nutrients … to feed expanding tissues",mem:"nutri-（滋养，同 nurse 哺育 / nurture 养育）+ -ent（物质）。<br>📌 <b>同族词在本段连出两次</b>：<code>nutrients</code>（养分）与 <code>under-nutrition</code>（营养不足）—— <b>一正一反，正是 32 题「正反对照」论证的载体。</b><br>💡 词根 nutri- 同族：<code>nutrition</code>（营养<u>状况</u>）· <code>nutritious</code>（有营养的）· <code>malnutrition</code>（营养不良，mal- ＝ 坏）。",syn:"nourishment / nutriment",conf:"nutrient（营养<b>物质</b>，可数）vs. nutrition（营养<b>状况/学</b>，不可数）vs. nutritious（<b>形容词</b>，有营养的）"},
+  notably:{w:"notably",ipa:"/ˈnəʊtəbli/",pos:"adv.",tags:["poly","core","write"],cn:"尤其是，特别是；显著地",en:"especially; in particular",ex:"calories and nutrients—notably, protein—to feed expanding tissues",mem:"⚠️ <b>本句里不是「显著地」而是「尤其是」（＝especially）</b>，作用是<b>从上位类别里拎出一个最重要的例子</b>：nutrients（养分）→ <b>notably</b> → protein（蛋白质）。<br>📌 <b>判据：notably 后面跟的是一个具体的名词/例子时，一律取「尤其是」。</b>跟形容词或修饰动词时才是「显著地」。<br>✍️ 写作可用：<code>Several countries, notably Japan and Germany, …</code>（若干国家，尤其是日本和德国，……）—— <b>举例时比 for example 更紧凑。</b>",syn:"especially / in particular / above all / particularly",conf:"notably（尤其是）vs. noticeably（明显地，可察觉地）vs. notoriously（臭名昭著地）—— <b>三个 not- 开头的副词，意思毫不相干</b>"},
+  protein:{w:"protein",ipa:"/ˈprəʊtiːn/",pos:"n.",tags:["core"],cn:"蛋白质",en:"a substance found in food such as meat, eggs and beans, essential for growth",ex:"nutrients—notably, protein—to feed expanding tissues",mem:"📌 本段把它单拎出来（<code>notably, protein</code>），是因为<b>蛋白质是「组织扩展」最直接的原料</b>——<b>这个细节让「营养 → 长高」的因果链更实。</b><br>💡 <b>32 题的做法就是把 calories / nutrients / protein 这三个并列词一起收进「生活水平」这个上位概念，而不是纠结哪个更关键。</b>",syn:"—",conf:"protein（蛋白质）vs. proton（质子）vs. protest（抗议）—— <b>拼写接近，义项无关</b>"},
+  feed:{w:"feed",ipa:"/fiːd/",pos:"v.",tags:["poly","core"],cn:"供养，满足（……的需要）；喂养",en:"to provide sth with what is needed to grow or function",ex:"to feed expanding tissues 满足组织扩展的需求",mem:"⚠️ <b>这里的宾语是 <code>tissues</code>（人体组织）不是人或动物</b>，所以不能译「喂养」，要译<b>「供养、满足……的需要」</b>。<br>📌 <b>判据：feed 的宾语是抽象或非生命体时，取引申义。</b><code>feed a machine</code>（给机器供料）· <code>feed data into a computer</code>（把数据输入电脑）· <code>feed one's curiosity</code>（满足好奇心）。<br>✍️ 短语：<code>feed on</code>（以……为食）· <code>be fed up with</code>（受够了）。",syn:"nourish / sustain / supply / support",conf:"feed（供养/输入）vs. breed（繁殖/饲养）vs. feed <b>on</b>（以……为食，不及物）"},
+  expand:{w:"expand",ipa:"/ɪkˈspænd/",pos:"v.",tags:["core","write"],cn:"扩展，膨胀；扩大",en:"to become greater in size, number or importance",ex:"to feed expanding tissues 正在扩展的（人体）组织",mem:"ex-（向外）+ pand（伸展，同 spread）→ <b>向外伸展 ＝ 扩张</b>。<br>📌 本句里 <code>expanding</code> 是现在分词作定语：<b>正在扩展中的组织</b>——<b>「正在长」这个进行意味，正好呼应 <code>Growth</code>（生长）。</b><br>✍️ 写作可用：<code>expand the market</code>（拓展市场）· <code>expand on a point</code>（详述某一点）· 名词 <code>expansion</code>。",syn:"enlarge / extend / broaden / grow",conf:"expand（体积/规模变大，可三维）vs. extend（长度/时间延长，线性）vs. enlarge（放大，多用于图像/尺寸）—— <b>写作里最常被混用的一组</b>"},
+  tissue:{w:"tissue",ipa:"/ˈtɪʃuː/",pos:"n.",tags:["poly","core"],cn:"（生物）组织；纸巾",en:"a collection of cells that form the different parts of a living thing",ex:"to feed expanding tissues",mem:"⚠️ <b>考研里 tissue 几乎都是生物学义「（人体）组织」</b>，不是日常的「纸巾」。<br>📌 <b>层级要清楚</b>：<code>cell</code>（细胞）→ <code>tissue</code>（组织）→ <code>organ</code>（器官）→ <code>organism</code>（有机体，<b>④段出现</b>）。<b>本篇一篇文章里用到了这条链的两端。</b><br>💡 <code>a tissue of lies</code>＝一派谎言（tissue 的本义是「织物」，引申为「（谎言的）编织物」）。",syn:"（生物）body tissue ｜（纸巾）paper handkerchief",conf:"tissue（组织，生物）vs. issue（问题/发布）vs. texture（质地）"},
+  undernutrition:{w:"under-nutrition",ipa:"/ˌʌndə njuːˈtrɪʃn/",pos:"n.",tags:["core"],cn:"营养不足",en:"a condition of not having enough food or nutrients",ex:"under-nutrition and childhood infections got in the way",mem:"under-（不足）+ nutrition（营养）。<b>前缀 under- 表「不够、低于标准」是英语最能产的前缀之一</b>：<code>underestimate</code>（低估）· <code>underdeveloped</code>（不发达的）· <code>underpaid</code>（报酬过低的）· <code>undermine</code>（暗中破坏）。<br>📌 <b>本词与下一句的 <code>diet and health improved</code> 构成 32 题的「一反一正」</b>：营养不足时长不高，营养改善后每 20 年长 1.5 英寸。<b>同一变量正反各演一遍 ＝ 关键作用的实锤。</b>",syn:"malnutrition / nutritional deficiency",conf:"under-nutrition（吃得不够）vs. malnutrition（营养不良，<b>包括吃得不对、营养失衡</b>）—— <b>后者范围更大</b>"},
+  infection:{w:"infection",ipa:"/ɪnˈfekʃn/",pos:"n.",tags:["core"],cn:"感染，传染病",en:"the act of making sb ill with a disease; an illness caused by bacteria or a virus",ex:"under-nutrition and childhood infections got in the way",mem:"in-（进入）+ fect（做，同 effect / affect）+ -ion → <b>（病原体）进入体内 ＝ 感染</b>。<br>📌 <b>本句 <code>childhood infections</code>＝儿童传染病</b>，与 under-nutrition 并列，同属「20 世纪初阻碍长高的两大因素」。<b>⟹ 32 题把这两者概括成 <code>Living standards</code>（生活水平）——它同时包含「吃得好」和「病得少」两层。</b><br>💡 同族：<code>infectious</code>（传染性的）· <code>contagious</code>（接触传染的）· <code>epidemic</code>（流行病）· <code>immune</code>（免疫的）。",syn:"disease / illness / contagion",conf:"infection（感染，泛指）vs. infectious（adj. 传染的）vs. inflection（语调/词形变化）—— <b>拼写只差一个字母</b>"},
+  gotintheway:{w:"get in the way",ipa:"",pos:"v.短语",tags:["poly","phrase","write"],cn:"妨碍，挡道，成为障碍",en:"to prevent sb from doing sth; to be an obstacle",ex:"under-nutrition and childhood infections got in the way",mem:"⚠️ <b>字面「挡在路上」，实际是抽象的「妨碍」</b>——本句里挡的不是路，是<b>身高增长</b>。<br>📌 <b>常见变体</b>：<code>get in the way <b>of</b> sth</code>（妨碍某事）· <code>stand in the way of</code>（阻挡）· <code>out of the way</code>（不碍事了 / 偏远的）。<br>✍️ 写作可用：<code>Nothing should get in the way of a child's education.</code>（任何事都不该妨碍孩子受教育。）—— <b>比 prevent 更口语、更有力。</b>",syn:"hinder / hamper / impede / obstruct",conf:"get in the way（妨碍）vs. <b>on the way</b>（在途中）vs. <b>by the way</b>（顺便一提）vs. <b>in a way</b>（在某种程度上）—— <b>way 短语一族，四个都高频</b>"},
+  adolescent:{w:"adolescent",ipa:"/ˌædəˈlesnt/",pos:"n. / adj.",tags:["core"],cn:"青少年；青春期的",en:"a young person who is developing from a child into an adult",ex:"children and adolescents have, on average, increased in height",mem:"来自拉丁语 adolescere（长大）→ <b>青春期的人（约 12–18 岁）</b>。<br>📌 <b>本句用 <code>children and adolescents</code> 而不是 people，是有讲究的</b>：<b>③段①句刚说过生长「很少持续到 20 岁以后」，所以谈长高只能谈这两个年龄段。</b><b>⟹ 前后两句是严丝合缝的。</b><br>💡 名词 <code>adolescence</code>（青春期）—— <b>注意 -ence 结尾是抽象名词，-ent 结尾是人。</b>",syn:"teenager / youth / juvenile",conf:"adolescent（青少年，12–18）vs. infant（婴幼儿）vs. juvenile（少年，多用于法律语境 juvenile delinquency 少年犯罪）"},
+  onaverage:{w:"on average",ipa:"",pos:"短语",tags:["phrase","write"],cn:"平均而言",en:"taking into consideration the good and bad aspects; typically",ex:"children and adolescents have, on average, increased in height by…",mem:"📌 <b>本句里它插在助动词 have 与过去分词 increased 之间</b>——<b>这是英美报刊的标准插入位置</b>，与 2008·T2 那句 <code>publishers who have, <b>so far</b>, made handsome profits</code> 完全同构。<b>考场读法：见到 have + 逗号 + 副词 + 逗号，先把逗号里的东西跳过。</b><br>✍️ 写作/图表必备：<code>on average</code>· <code>the average of…</code>· <code>above / below average</code>· <code>average out at</code>（平均为）。<br>⚠️ <b>注意是 on average（无 the），不是 on the average</b>（后者是美式旧用法）。",syn:"typically / generally / as a rule",conf:"on average（平均而言，副词短语）vs. average（adj. 平均的 / n. 平均数）vs. mean（数学上的「平均值」，更专业）"},
+  pattern:{w:"pattern",ipa:"/ˈpætn/",pos:"n.",tags:["core","write"],cn:"模式，规律；花样",en:"the regular way in which sth happens or is done",ex:"a pattern known as the secular trend in height",mem:"📌 <b>本句里 <code>a pattern known as…</code> 是<u>同位语</u>，为前面<u>整句话</u>命名</b>（不是修饰 20 years）。<b>结构：句子 + 逗号 + 名词 + known as + 术语 ＝「这种情况被称为 X」。</b><br>⚠️ <b>35 题 A 项 <code>the change of human height follows a <b>cyclic</b> pattern</code>（循环模式）就是拿这个词做的钩子</b>——<b>可原文描述的是「受阻 → 增长 → 停止」的单向历程，是一条有终点的线，不是循环。</b><br>✍️ 写作可用：<code>follow a similar pattern</code>· <code>a pattern of behaviour</code>· <code>break the pattern</code>（打破惯例）。",syn:"trend / regularity / model / mode",conf:"pattern（模式，含规律性）vs. mode（方式，2008·T2·30 的正确项用的是它）vs. cycle（循环，有往复）"},
+  secular:{w:"secular",ipa:"/ˈsekjələ(r)/",pos:"adj.",tags:["poly","core"],cn:"（人口/统计学）长期的，跨世纪的；世俗的",en:"（statistics）occurring over a long period ｜ not connected with religion",ex:"a pattern known as the secular trend in height",mem:"⭐⭐ <b>本篇最典型的一处熟词僻义</b>：考研里 secular 通常是「世俗的（与宗教相对）」，<b>但在人口学、统计学里 <code>secular trend</code> 是固定术语 ＝「长期趋势」</b>（源自拉丁语 saeculum「世纪、一代人」）。<br>📌 <b>好消息是你不必认识它</b>：原文用 <code>a pattern known as…</code> 现场给了定义——<b>「每 20 年长 1.5 英寸的那种模式」就是它的意思。</b><br>💡 <b>通用技巧：长难句里的<u>同位语和定语从句，常常就是生词的免费注释</u>。</b>遇到生词先别慌，往后读一句往往就有解释。",syn:"long-term / long-run ｜（世俗的）non-religious / worldly",conf:"secular（长期的 / 世俗的）vs. circular（循环的）vs. singular（单数的/非凡的）—— <b>35 题 A 的 cyclic 正是想让你把 secular 读成 circular</b>"},
+  cdc:{w:"the Centers for Disease Control and Prevention",ipa:"",pos:"专有名词",tags:["core"],cn:"（美国）疾病控制与预防中心（CDC）",en:"the U.S. national public health agency",ex:"according to the Centers for Disease Control and Prevention, average height … hasn't really changed since 1960",mem:"📌 <b>它在本篇的作用是「权威数据源」</b>：作者要论证「身高不再变了」，光靠专家一句话不够，还要搬出官方统计——<b>男 5 英尺 9 英寸（约 175 cm）、女 5 英尺 4 英寸（约 163 cm），自 1960 年起没变。</b><br>⭐ <b>这是 35 题「同义复现」链条上的第五处</b>，也是全文唯一的硬数据。<br>💡 <b>阅读中见到 <code>according to + 机构名</code>，就知道后面是不容置疑的事实句——这类句子几乎必被出题。</b>",syn:"—",conf:"CDC（疾控中心，美国）vs. WHO（世界卫生组织）vs. FDA（食品药品监督管理局）—— <b>科普类文章的三个常客</b>"},
+  genetically:{w:"genetically speaking",ipa:"",pos:"短语",tags:["phrase","write"],cn:"从基因（遗传）角度来讲",en:"as far as genes are concerned",ex:"Genetically speaking, there are advantages to avoiding substantial height.",mem:"📌 <b><code>…speaking</code> 是一个万能的「视角限定」独立结构</b>：<code>generally speaking</code>（一般来说）· <code>strictly speaking</code>（严格地说）· <code>economically speaking</code>（从经济角度看）· <code>frankly speaking</code>（坦率地说）。<br>⭐ <b>本句是④段的主旨句，也是全篇最反常识的一句</b>：<b>「从基因角度讲，避免长得太高是有<u>好处</u>的」</b>——<b>正因为有好处，基因才要给身高设上限，这就是④段存在的理由，也是 33 题的地基。</b><br>✍️ <b>作文里想从某个特定角度切入论证，句首放一个 <code>Economically / Environmentally speaking, …</code>，立刻显出层次。</b>",syn:"from a genetic point of view / in genetic terms",conf:"genetically speaking（从基因角度）vs. genetically modified（转基因的，<b>32 题 A 的 genetic modification 就是这个概念</b>）—— <b>两者天差地别</b>"},
+  advantage:{w:"advantages to doing sth",ipa:"/ədˈvɑːntɪdʒ/",pos:"n.短语",tags:["phrase","write"],cn:"做某事的好处",en:"the benefits of doing sth",ex:"there are advantages to avoiding substantial height",mem:"⚠️ <b>介词是 <code>to</code>，不是 of</b>：<code>there are advantages <b>to</b> doing sth</code>（做某事有好处）。<b>写作里极易写错。</b><br>📌 <b>本句的反常识感正是考点</b>：一般人想「长得高有好处」，作者说<b>「长不高才有基因上的好处」</b>——<b>议论文里这种「反直觉判断句」几乎必被出题，读到要停一下。</b><br>✍️ 同族：<code>take advantage of</code>（利用）· <code>have an advantage over sb</code>（比某人占优）· <code>to one's advantage</code>（对某人有利）。",syn:"benefits of / merits of / the upside of",conf:"advantage <b>to</b> doing（做某事的好处）vs. advantage <b>over</b> sb（相对某人的优势）vs. advantage <b>of</b> sth（某物的优点）—— <b>三个介词三种搭配</b>"},
+  avoid:{w:"avoid",ipa:"/əˈvɔɪd/",pos:"v.",tags:["core","write"],cn:"避免，回避",en:"to prevent sth bad from happening",ex:"there are advantages to avoiding substantial height",mem:"⚠️ <b>avoid 后面只能跟名词或<u>动名词</u>，不能跟不定式</b>：<code>avoid <b>doing</b> sth</code>（✔）／<code>avoid to do</code>（✘）。<b>同类只跟 -ing 的动词：mind / enjoy / finish / practice / suggest / consider / risk。</b><br>✍️ 写作可用：<code>avoid the risk of…</code>· <code>unavoidable</code>（不可避免的）· <code>at all costs, avoid…</code>。",syn:"prevent / evade / steer clear of / refrain from",conf:"avoid（避免，主动躲开）vs. prevent（阻止，不让发生）vs. evade（逃避，常含贬义，如 evade tax 逃税）"},
+  substantial:{w:"substantial",ipa:"/səbˈstænʃl/",pos:"adj.",tags:["poly","core","write"],cn:"（数量、程度）相当大的；结实的",en:"large in amount, value or importance",ex:"advantages to avoiding substantial height 避免身材过高",mem:"⚠️ <b>substance 是「物质、实质」，但 substantial 在考研里九成是「数量可观的、相当大的」</b>，不是「实质的」（那是 <code>substantive</code>）。<br>📌 <b>本句 <code>substantial height</code>＝「过高的身高」。</b><br>✍️ 写作可用：<code>a substantial increase / improvement / amount of money</code>—— <b>比 big、large 书面。</b>副词 <code>substantially</code>（大幅地）。",syn:"considerable / significant / sizeable / ample",conf:"<b>substantial（数量大的）vs. substantive（实质性的，如 substantive talks 实质性会谈）</b>—— <b>形近义不同，常考</b>；另与 subsistence（生存，subsistence level 温饱线）拼写相近"},
+  childbirth:{w:"childbirth",ipa:"/ˈtʃaɪldbɜːθ/",pos:"n.",tags:["core"],cn:"分娩，生产",en:"the process of giving birth to a baby",ex:"During childbirth, larger babies have more difficulty passing through the birth canal",mem:"child + birth，直白的复合词。<br>📌 <b>本句是④段给出的第一条「为什么基因不让人长太高」的理由</b>：<b>婴儿太大，分娩困难</b>——这是<b>演化上的硬约束</b>（难产会直接影响繁衍）。<br>⚠️⚠️ <b>33 题 D 项就是拿这句造的</b>：原文只说「大婴儿难通过产道」，D 却说「大婴儿成年后往往更高」——<b>原文说 A 有个麻烦，选项说 A 会导致 B，那根因果线是命题人自己画的（强加关联）。</b>",syn:"delivery / labour / giving birth",conf:"childbirth（分娩过程）vs. birth rate（出生率）vs. birthplace（出生地）"},
+  birthcanal:{w:"birth canal",ipa:"/ˈbɜːθ kənæl/",pos:"n.短语",tags:["core"],cn:"产道",en:"the passage through which a baby passes during birth",ex:"larger babies have more difficulty passing through the birth canal",mem:"<code>canal</code> 本义「运河、管道」（Panama Canal 巴拿马运河）→ 医学上指人体的管道。<b>birth canal ＝ 产道。</b><br>💡 <b>这类专业名词不必事先认识</b>：本句里 <code>passing through</code>（通过）＋ <code>During childbirth</code>（分娩时）两个上下文一夹，意思自明。<b>⟹ 阅读中遇到生僻名词，先看它周围的动词和介词短语，往往能直接读出功能。</b>",syn:"—",conf:"canal（人工管道/运河）vs. channel（自然水道/频道/渠道）vs. tunnel（隧道）"},
+  upright:{w:"upright",ipa:"/ˈʌpraɪt/",pos:"adj. / adv.",tags:["core"],cn:"直立的，竖直的；正直的",en:"standing or sitting with the back straight; honest and responsible",ex:"even though humans have been upright for millions of years",mem:"up（向上）+ right（直的）→ <b>①直立的（本篇）　②（人品）正直的</b>。<br>📌 <b><code>humans have been upright for millions of years</code>＝人类直立行走已有数百万年</b>——<b>这是让步从句，让步内容越硬，主句的转折越有力：都几百万年了，脚和背还是吃不消。</b><br>⭐ <b>33 题正确项 B 里的 <code>upright posture</code>（直立姿势）就是这个词 ＋ 本句 <code>bipedal posture</code> 的合并。</b>",syn:"vertical / erect / straight ｜（正直）honest / honourable",conf:"upright（直立的）vs. uptight（紧张兮兮的）vs. outright（彻底的，adv. 直截了当地）—— <b>三个 up/out 开头的词，义项完全无关</b>"},
+  struggle:{w:"struggle with",ipa:"/ˈstrʌɡl/",pos:"v.短语",tags:["poly","phrase","write"],cn:"与……较劲，难以应付；与……搏斗",en:"to try hard to deal with sth difficult",ex:"our feet and back continue to struggle with bipedal posture",mem:"⚠️ <b>本句不是「奋斗」而是「难以应付、与……相抗衡」</b>——主语是「脚和背」，不是人，<b>说的是身体结构一直没能很好地适应直立行走。</b><br>📌 <b>三个搭配意思不同，务必分清</b>：<code>struggle <b>with</b> sth</code>（吃力应付某事）· <code>struggle <b>against</b> sth</code>（与……抗争）· <code>struggle <b>to do</b> sth</code>（艰难地努力做某事）。<br>✍️ 写作可用：<code>Many students struggle with academic writing.</code>—— <b>比 have difficulty in 更自然。</b>",syn:"grapple with / wrestle with / have trouble with",conf:"struggle with（吃力应对）vs. cope with（成功应对）vs. deal with（处理，中性）—— <b>三者的成败含义不同：struggle 偏「没搞定」，cope 偏「搞定了」</b>"},
+  bipedal:{w:"bipedal",ipa:"/baɪˈpiːdl/",pos:"adj.",tags:["core"],cn:"双足的，用两条腿行走的",en:"using only two legs for walking",ex:"our feet and back continue to struggle with bipedal posture",mem:"<b>超纲词，但完全可以拆出来</b>：<code>bi-</code>（二，同 bicycle 自行车 / bilingual 双语的）+ <code>ped-</code>（脚，同 pedal 脚踏板 / pedestrian 行人 / pedicure 修脚）+ <code>-al</code> → <b>两只脚的</b>。<br>📌 <b>而且不拆也能懂</b>：前半句 <code>humans have been <b>upright</b></code> 已经把「直立行走」的意思给足了。<b>⟹ 阅读遇到生词的两条路：①拆词根　②看上下文的同义复现。本词两条路都通。</b>",syn:"two-legged / on two feet",conf:"bipedal（双足的）vs. quadrupedal（四足的）vs. impede（阻碍，ped- 在这里是「脚」→ 绊住脚）"},
+  posture:{w:"posture",ipa:"/ˈpɒstʃə(r)/",pos:"n.",tags:["core"],cn:"姿势，体态；（对问题的）态度立场",en:"the position in which you hold your body; an attitude towards sth",ex:"struggle with bipedal posture 与双足行走的姿势相抗衡",mem:"post-（放置）+ -ure → 身体被放置的样子 → <b>①姿势、体态（本篇）　②（抽象）立场、姿态</b>（<code>adopt a tough posture</code> 摆出强硬姿态）。<br>⭐ <b>33 题正确项 B 的 <code>the upright posture</code> 就是这个词</b>——<b>题目用的是 upright（④段③句前半），原文用的是 bipedal（同句后半），一句话里的两个说法被拆开分给了原文和选项。</b><b>⟹ 这就是「同义替换」的典型做法：正确项换词不换意。</b>",syn:"stance / position / bearing ｜（立场）attitude / stand",conf:"posture（体态/姿态）vs. gesture（手势）vs. pose（摆姿势，v./n.）"},
+  withstand:{w:"withstand",ipa:"/wɪðˈstænd/",pos:"v.",tags:["core","write"],cn:"承受，经受住，抵挡",en:"to be strong enough not to be hurt or damaged by sth",ex:"cannot easily withstand repeated strain imposed by oversize limbs",mem:"with-（<b>古义「对抗」</b>，不是「和」）+ stand（站住）→ <b>顶住、经受住</b>。<b>同族 withhold</b>（with- 对抗 + hold 拿住 → 扣留、拒绝给予）· <code>withdraw</code>（撤回）—— <b>这三个 with- 词里的 with 都不是「和」。</b><br>📌 <b>本句的 <code>cannot easily withstand</code> 是 33 题的核心信息</b>：脚和背<b>承受不住</b>过大肢体的反复压力 ⟹ 所以基因要给身高设上限。<br>✍️ 写作可用：<code>withstand pressure / criticism / the test of time</code>（经受住时间的检验）。",syn:"endure / resist / stand up to / bear",conf:"withstand（承受住外力，强调「没被摧毁」）vs. tolerate（容忍，主观）vs. sustain（维持；遭受（损失））"},
+  strain:{w:"strain (n.)",ipa:"/streɪn/",pos:"n. / v.",tags:["poly","core","write"],cn:"压力，负荷；拉伤；（v.）拉紧，竭力",en:"the pressure or force put on sth; an injury caused by using a muscle too much",ex:"repeated strain imposed by oversize limbs",mem:"⚠️ <b>本句是「（物理）压力、负荷」不是「拉伤」</b>——<b>判据：strain 后面跟 imposed by / on 时，一律是抽象的「压力」。</b><br>📌 <b>三个常考义项</b>：①（身心/物体的）压力 <code>under great strain</code>②肌肉拉伤 <code>a back strain</code>③（细菌/病毒的）品系 <code>a new strain of flu</code>。<br>✍️ 写作可用：<code>put a strain on…</code>（给……造成压力）· <code>ease the strain</code>（缓解压力）—— <b>与 2008·T1 那篇讲 stress 的文章是同一个语义场，两篇的词可以互相搬。</b>",syn:"pressure / stress / burden / tension",conf:"strain（压力/拉伤/品系）vs. sprain（扭伤）vs. stress（压力，心理为主）—— <b>strain 偏「持续负荷」，stress 偏「精神紧张」</b>"},
+  impose:{w:"impose (sth) on",ipa:"/ɪmˈpəʊz/",pos:"v.",tags:["core","write"],cn:"施加，强加（于）；征收",en:"to force sth to be accepted or dealt with by sb/sth",ex:"repeated strain imposed by oversize limbs 过大肢体所施加的反复压力",mem:"im-（在……之上）+ pose（放置）→ <b>压在……上面 ＝ 强加</b>。<br>📌 <b>本句是过去分词作后置定语</b>：<code>strain <u>that is</u> imposed by oversize limbs</code>。<b>考场读法：名词后面直接跟 -ed 分词，先在心里补一个「被……的」。</b><br>✍️ 写作高频：<code>impose a ban / a tax / restrictions <b>on</b>…</code>（对……实施禁令/征税/设限）· <code>impose one's views on others</code>（把观点强加于人）。",syn:"place on / inflict on / enforce / levy",conf:"impose（强加，含「不情愿接受」）vs. apply（应用）vs. expose（暴露）vs. compose（组成）—— <b>-pose 词族，前缀决定意思</b>"},
+  oversize:{w:"oversize",ipa:"/ˌəʊvəˈsaɪz/",pos:"adj.",tags:["core"],cn:"过大的，超大号的",en:"bigger than the normal size",ex:"repeated strain imposed by oversize limbs 过大、过长的肢体",mem:"over-（过度）+ size（尺寸）。<b>前缀 over- 表「过度」是高产前缀</b>：<code>overestimate</code>（高估）· <code>overwhelm</code>（压倒）· <code>overlook</code>（忽视）· <code>overdue</code>（过期的）。<br>📌 <b>本句用 oversize 而不用 large，语气就带上了「超出合理范围」的贬义</b>——<b>正好呼应④段主旨「避免过高有好处」。</b><b>⟹ 形容词的<u>感情色彩</u>常常就是作者的态度。</b>",syn:"outsized / excessively large / overlarge",conf:"oversize（过大的，含贬义）vs. large（大的，中性）vs. substantial（相当大的，本篇同段出现，偏中性）"},
+  limb:{w:"limb",ipa:"/lɪm/",pos:"n.",tags:["core"],cn:"肢，（人的）臂或腿；树枝",en:"an arm or a leg; a large branch of a tree",ex:"strain imposed by oversize limbs 过大肢体施加的压力",mem:"⚠️ <b>b 不发音</b>（同 climb / comb / thumb / debt）。<br>📌 <b>本句里 <code>oversize limbs</code>＝又长又大的胳膊腿</b>——<b>这正是「身高」在生理学上的实质：身高高，就意味着四肢长，杠杆变长，脚和背受的力就更大。</b><b>⟹ 这一层物理逻辑，是 33 题 B 成立的关键。</b><br>💡 短语 <code>out on a limb</code>＝处境孤立、冒险（爬到树枝末端）。",syn:"arm / leg / extremity ｜（树）branch / bough",conf:"limb（肢/大树枝）vs. limp（v. 跛行 / adj. 无力的）vs. climb（攀爬）—— <b>三个词都有不发音字母</b>"},
+  constraint:{w:"constraint",ipa:"/kənˈstreɪnt/",pos:"n.",tags:["core","write"],cn:"限制，约束（条件）",en:"a thing that limits or restricts sth",ex:"There are some real constraints that are set by the genetic architecture",mem:"con-（共同、加强）+ strain（拉紧）→ <b>拉紧、勒住 ＝ 约束</b>。<b>注意它和上文的 <code>strain</code>（压力）同根——这不是巧合，两个词在本段前后脚出现。</b><br>📌 <b>本词是本篇「极限」语义场的第三个成员</b>：②段 <code>limit</code>· 本段 <code>constraints</code>· ⑤段 <code>maximums</code>。<b>三处同义复现，共同撑起 35 题正确项里的 <code>growth limit</code>。</b><br>✍️ 写作高频：<code>financial / time constraints</code>（资金/时间限制）· <code>under severe constraints</code>· <code>impose constraints on…</code>（<b>与本段的 impose 正好可以连用</b>）。",syn:"limitation / restriction / restraint / limit",conf:"constraint（客观约束条件）vs. restraint（克制；约束，可指自我克制）vs. restriction（规定性的限制）"},
+  architecture:{w:"architecture",ipa:"/ˈɑːkɪtektʃə(r)/",pos:"n.",tags:["poly","core","write"],cn:"（内在）结构，构造；建筑（学）",en:"the structure of sth; the art of designing buildings",ex:"constraints that are set by the genetic architecture of the individual organism",mem:"⚠️ <b>本句不是「建筑」而是「结构、构造」</b>——<code>genetic architecture</code>＝<b>基因结构</b>。<br>📌 <b>判据：architecture 前面带一个「非建筑领域」的形容词时（genetic / computer / financial / information），一律取「架构、结构」义。</b>计算机领域的 <code>system architecture</code>（系统架构）也是同一用法—— <b>408 组成原理里天天见。</b><br>✍️ <b>议论文里想把某种深层的、设计好的结构说清楚，用 architecture 比 structure 更有「被设计出来的」意味。</b>",syn:"structure / framework / makeup / design",conf:"architecture（（抽象的）架构 / 建筑学）vs. structure（结构，最通用）vs. construction（建造过程）"},
+  organism:{w:"organism",ipa:"/ˈɔːɡənɪzəm/",pos:"n.",tags:["core"],cn:"有机体，生物体",en:"a living thing, especially one that is extremely small",ex:"the genetic architecture of the individual organism",mem:"organ（器官）+ -ism → <b>由器官组成的东西 ＝ 生物体</b>。<br>📌 <b>本篇用到了生物学层级链的两端</b>：③段的 <code>tissues</code>（组织）与本段的 <code>organism</code>（有机体）。完整链条：<b>cell（细胞）→ tissue（组织）→ organ（器官）→ organism（有机体）</b>。<br>💡 <b><code>the individual organism</code>（个体有机体）这个说法是有分量的</b>：专家强调限制是<b>写在每一个个体身上</b>的，不是社会性的、可以靠努力突破的——<b>这就是全文最硬的那句结论。</b>",syn:"living thing / creature / life form",conf:"organism（生物体）vs. organ（器官）vs. organization（组织、机构）—— <b>三个 organ- 词，层级完全不同</b>"},
+  maximum:{w:"maximum",ipa:"/ˈmæksɪməm/",pos:"n. / adj.",tags:["core","write"],cn:"最大值，最大限度",en:"the greatest amount, size or degree that is possible or recorded",ex:"Genetic maximums can change, but don't expect this to happen soon.",mem:"📌 <b>本词是「极限」语义场的第三处同义复现</b>（limit / constraints / maximums），<b>也是⑤段首句的主语。</b><br>⚠️⚠️ <b>整句是「让步 + 转折」结构</b>：<code>Genetic maximums <b>can</b> change, <b>but</b> don't expect this to happen soon.</code>——<b>35 题 D 项「美国人的基因模式<u>已经</u>改变」只抱住了让步半句，把「可能会变」读成「已经变了」，还丢掉了 but 之后的重心。</b><b>⟹ 凡 A, but B 的句子，B 才是作者的语义重心。</b><br>💡 复数两种写法都可以：<code>maximums</code>（本篇）／<code>maxima</code>（拉丁复数）。",syn:"ceiling / upper limit / peak / cap",conf:"maximum（最大值）vs. minimum（最小值）vs. optimum（最佳值）—— <b>三个 -um 结尾的词常一起考</b>"},
+  senior:{w:"senior",ipa:"/ˈsiːniə(r)/",pos:"adj. / n.",tags:["core","write"],cn:"资深的，高级的；年长的",en:"of a high rank or status; older",ex:"Claire C. Gordon, senior anthropologist at the Army Research Center",mem:"📌 <b>本篇用它来给引语「加权」</b>：不是随便一个研究员，而是 <b>senior anthropologist</b>（资深人类学家）——<b>作者引用权威时习惯把头衔写全，这是科普文的标配。</b><br>⚠️ <b>senior to sb</b>（职位高于某人）用 <b>to</b> 不用 than —— <b>拉丁语来的比较级（senior / junior / superior / inferior / prior）一律接 to。</b><br>✍️ 写作可用：<code>senior management</code>（高层管理者）· <code>a senior official</code>（高级官员）。",syn:"high-ranking / veteran / experienced",conf:"senior（资深/年长）vs. junior（资浅/年幼）—— <b>两者都接 to；美式里 senior 还指「大四学生 / 老年人（senior citizen）」</b>"},
+  ensure:{w:"ensure",ipa:"/ɪnˈʃʊə(r)/",pos:"v.",tags:["core","write"],cn:"确保，保证（某事发生）",en:"to make sure that sth happens or is definitely true",ex:"ensures that 90 percent of the uniforms and workstations fit recruits without alteration",mem:"⚠️ <b>三个形近词分工明确，考研写作最常错</b>：<br>· <code><b>ensure</b> that…</code>＝<b>确保（某事会发生）</b>，宾语是<b>事</b>；<br>· <code><b>assure</b> sb of sth</code>＝<b>向某人保证</b>（让人放心），宾语是<b>人</b>；<br>· <code><b>insure</b> against…</code>＝<b>投保</b>（买保险）。<br>📌 本句里 Gordon 的工作就是「<b>确保</b> 90% 的军服无需改动就合身」——<b>这是一个职业化的、需要用到身高数据的岗位，所以她的判断才有分量（34 题的可信度就建在这上面）。</b><br>✍️ 写作可用：<code>ensure that everyone has access to…</code>",syn:"guarantee / make certain / secure",conf:"<b>ensure（确保事）vs. assure（安抚人）vs. insure（投保）</b>—— <b>务必背死这三个</b>"},
+  workstation:{w:"workstation",ipa:"/ˈwɜːksteɪʃn/",pos:"n.",tags:["core"],cn:"工作台，工位；（计算机）工作站",en:"the desk and equipment where a person works",ex:"90 percent of the uniforms and workstations fit recruits",mem:"work + station（站、台）。<br>📌 <b>本句里它与 uniforms 并列，指军队里的<u>操作台/工位</u></b>——<b>为什么工作台也要「合身」？因为台面高度、座椅距离都要按人的身材设计，这正是「人体工程学」。</b><b>⟹ 这个细节把「身高数据」和「装备设计」勾在了一起，是末句 <code>design a piece of equipment</code> 的伏笔。</b>",syn:"work area / desk / console",conf:"workstation（工位/工作站）vs. workshop（车间；研讨会）vs. workforce（劳动力）"},
+  recruitn:{w:"recruits (n.)",ipa:"/rɪˈkruːts/",pos:"n.",tags:["poly","core"],cn:"新兵；新成员",en:"a person who has recently joined the armed forces or an organization",ex:"90 percent of the uniforms and workstations fit recruits without alteration",mem:"⭐⭐ <b>本篇最容易读错的一个词，因为②段刚出现过它的动词形态。</b><br>· ②段：<code>the practice of <b>recruiting</b> players</code>＝<b>动词，招募</b>；<br>· ⑤段（本卡）：<code>fit <b>recruits</b></code>＝<b>名词，新兵</b>。<br>📌 <b>判据靠词性不靠词义</b>：<code>fit</code> 是及物动词（合身、适合），后面必须跟名词宾语 ⟹ <b>recruits 只能是名词。</b><br>💡 <b>语境也在帮你</b>：句子发生在 <code>the Army Research Center</code>（陆军研究中心），军队里的 recruits 就是新兵。<b>⟹ 同一篇里同一个词换了词性，是熟词僻义之外的另一类「读偏点」。</b>",syn:"new soldier / newcomer / new member / trainee",conf:"recruit（n. 新兵 / v. 招募）vs. recruiter（招聘者）vs. recruitment（招聘，n.）"},
+  alteration:{w:"alteration",ipa:"/ˌɔːltəˈreɪʃn/",pos:"n.",tags:["poly","core","write"],cn:"（尤指衣服的）改动；改变",en:"a change, especially a small one; a change made to a garment to make it fit",ex:"fit recruits without alteration 无需改动就合身",mem:"来自 <code>alter</code>（改变）。<br>📌 <b>本句里是服装业的专门用法：把衣服「改一改」（改长短、改肥瘦）。</b><b><code>without alteration</code>＝不用改就合身 ⟹ 说明新兵的身材尺寸没变 ⟹ 说明人的身高没变。</b><b>这是 35 题「同义复现」链条上的第六处。</b><br>⚠️ <b>34 题 A 项 <code>reconsider the uniform size</code>（重新考虑尺码）正是把这句反着说</b>——原文说<b>不用改</b>，选项说<b>要改</b>。<br>✍️ 写作可用：<code>make alterations to…</code>· 动词 <code>alter</code> 比 change 正式。",syn:"modification / adjustment / change",conf:"alteration（改动，多为局部）vs. alternation（交替，两者轮流）vs. alternative（n. 替代方案）—— <b>三个 alter- 词拼写极近，意思完全不同，常考</b>"},
+  unlike:{w:"unlike",ipa:"/ˌʌnˈlaɪk/",pos:"prep.",tags:["core","write"],cn:"与……不同；不像",en:"different from; in contrast to",ex:"unlike those for basketball, the length of military uniforms has not changed",mem:"📌 <b>这个介词在本句里是一记对比信号</b>：<code>unlike <b>those</b> for basketball</code> —— <b><code>those</code> 指代前面的 uniforms（篮球队服）</b>，意思是「和篮球队服不同」。<br>⭐ <b>它把①段和⑤段接上了</b>：①段说篮球队服<b>一直在改大</b>，⑤段说军服<b>一直没变</b>——<b>作者用一个 unlike 完成了首尾呼应，同时再次强调「运动员是特例，普通人才是常态」。</b><br>⚠️ <b>34 题 C 项就是拿这句里的 <code>basketball</code> 与①句的 <code>Genetic</code> 拼出「基因检测选运动员」的——两个不同句子的关键词被凑到一起，是典型的杂糅。</b>",syn:"in contrast to / as opposed to / different from",conf:"unlike（介词，后接名词）vs. <b>不同于</b> dislike（v. 不喜欢）vs. unlikely（adj. 不太可能的）—— <b>三个词形近，词性与词义全不同</b>"},
+  length:{w:"length",ipa:"/leŋθ/",pos:"n.",tags:["poly","core"],cn:"长度，尺寸；时长",en:"the measurement of sth from end to end",ex:"the length of military uniforms has not changed for some time",mem:"⚠️⚠️ <b>这个词是 34 题 B 项的死穴</b>：原文说的是军服的 <b><code>length</code>（尺寸/长度）</b>没变，B 项说的是军服的 <b><code>design</code>（设计）</b>不变——<b>偷换修饰对象（R8 第九类）。</b><br>📌 <b>为什么是致命的？因为文章关心的是「人的身材有没有变」，只有 length 能反映身材；design（款式）跟身高毫无关系，它是审美和军规的事。</b><br>✍️ 短语：<code>at length</code>（详尽地；终于）· <code>go to great lengths to do sth</code>（不遗余力地做某事）。",syn:"size / measurement / dimension",conf:"length（长度）vs. lengthy（adj. 冗长的）vs. at length（详尽地/终于）—— <b>注意 length 的形容词是 long，lengthy 专指「啰嗦冗长」</b>"},
+  predict:{w:"predict",ipa:"/prɪˈdɪkt/",pos:"v.",tags:["core","write"],cn:"预测，预言",en:"to say that sth will happen in the future",ex:"if you need to predict human height in the near future",mem:"pre-（预先）+ dict（说，同 dictate 口述 / dictionary 词典 / contradict 反驳）→ <b>预先说出 ＝ 预测</b>。<br>⚠️ <b>35 题 B 项 <code>human height is becoming even more <u>predictable</u></code> 就是拿这个词做的钩子</b>——<b>末句要强调的是「身高<u>不再变了</u>」（所以旧数据够用），B 却把它换成「越来越可预测」，还加了原文没有的比较级 <code>even more</code>（比谁更可预测？没给对象 ⟹ 凭空比较）。</b><br>✍️ 写作可用：<code>predict / forecast / anticipate</code>· 名词 <code>prediction</code>· 形容词 <code>predictable</code>（可预测的，<b>也可作贬义「老套的」</b>）。",syn:"forecast / foresee / anticipate / project",conf:"predict（预测，基于推断）vs. forecast（预报，多用于天气/经济数据）vs. anticipate（预期并做准备）"},
+  equipment:{w:"equipment",ipa:"/ɪˈkwɪpmənt/",pos:"n.",tags:["core","write"],cn:"设备，装备",en:"the things that are needed for a particular purpose or activity",ex:"to design a piece of equipment 设计一件装备",mem:"⚠️ <b>不可数名词</b>，<b>没有复数形式</b>，要数就用 <code><b>a piece of</b> equipment</code>（本句正是如此）。<b>同类不可数名词：information / advice / furniture / luggage / news / progress / research。</b><b>作文里写成 equipments 是硬伤。</b><br>📌 <b>本句把全文的抽象结论落到了一个非常具体的用途上</b>：设计装备要用身高数据 ⟹ 身高不变 ⟹ 旧数据够用。<b>这就是 34 题答案 D 的完整逻辑。</b><br>💡 <b>2007 翻译真题里 <code>equipment</code> 考过引申义「（知识/能力）素养」</b>—— 本篇是本义。",syn:"gear / apparatus / kit / facilities",conf:"equipment（不可数）vs. device（可数，装置）vs. instrument（仪器）vs. facilities（设施，常复数）"},
+  byandlarge:{w:"by and large",ipa:"",pos:"短语",tags:["phrase","write"],cn:"总的来说，大体上",en:"generally; on the whole",ex:"Gordon says that by and large, you could use today's data…",mem:"📌 <b>固定短语，与 large 的「大小」无关</b>（源自航海术语）。<b>作用是给后面的结论打个折——本篇「留余地」词群的最后一员。</b><br>✍️ <b>议论文里用来收束观点非常好用</b>，同族一整套：<code>by and large</code>· <code>on the whole</code>· <code>all in all</code>· <code>broadly speaking</code>· <code>for the most part</code>。<b>⟹ 想显得客观，就在大判断前面放一个。</b><br>⚠️ <b>本篇通篇的限定词值得整套背走</b>：may be / apparently / appears to / pretty much / generally / typically / by and large / fairly。<b>八个限定词，一篇 438 词的文章——这就是科普文的笔法。</b>",syn:"on the whole / generally / for the most part",conf:"by and large（总的来说）vs. at large（逍遥法外的；整体的，如 the public at large）vs. by far（……得多）"},
+  fairly:{w:"fairly",ipa:"/ˈfeəli/",pos:"adv.",tags:["poly","core","write"],cn:"相当地，颇为；公平地",en:"to some degree but not very; in a just way",ex:"you could use today's data and feel fairly confident",mem:"⚠️ <b>本句是程度副词「相当、颇为」，不是「公平地」。</b><b>判据：fairly 后面直接跟形容词/副词时，一律是程度义。</b><br>📌 <b>程度强度尺（务必记牢，作文和阅读都用得上）</b>：<br><code>a little（一点）＜ <b>fairly</b>（还算，偏保守）＜ <b>quite</b>（相当）＜ <b>rather</b>（相当，常带负面）＜ very（非常）＜ extremely（极其）</code>。<br>⭐ <b><code>fairly confident</code> 是「有把握，但没到十足」</b>——<b>连全文最乐观的这个结论，作者都不肯说满。</b>",syn:"quite / rather / reasonably / pretty",conf:"<b>fairly（还算，偏正面且保守）vs. rather（相当，常用于不如意的事：rather difficult）</b>—— <b>两者强度和感情色彩都不同，是四级以来的经典辨析</b>"},
+  confident:{w:"confident",ipa:"/ˈkɒnfɪdənt/",pos:"adj.",tags:["core","write"],cn:"有把握的，确信的；自信的",en:"feeling certain that sth will happen in the way you want",ex:"you could use today's data and feel fairly confident",mem:"con-（完全）+ fid（信任，同 fidelity 忠诚 / confide 吐露信任）+ -ent → <b>完全信得过 ＝ 有把握的</b>。<br>📌 <b>两个搭配要分清</b>：<code>be confident <b>of</b> sth / <b>that</b>…</code>（对……有把握）· <code>be confident <b>in</b> sb</code>（对某人有信心）。<br>⭐ <b>本句是全文的最后一个词，也是全文结论的落点</b>：<b>「用今天的数据，相当有把握」＝ 身高数据不会过时 ＝ 34 题的 <code>still be applicable</code>。</b><br>✍️ 名词 <code>confidence</code>（信心；机密）· <code>confidential</code>（机密的）。",syn:"certain / sure / assured / positive",conf:"confident（有信心的）vs. confidant（n. 知己，注意无 e）vs. confidential（机密的）—— <b>三个词同根，词性词义全不同</b>"}
+};
+
+const panel=document.getElementById('panel');
+const isMobile=()=>window.innerWidth<=900;
+function badge(t){const m={core:'核心',phrase:'短语',poly:'僻义',write:'写作'};return `<span class="badge b-${t}">${m[t]}</span>`}
+function showCard(k,el){
+  const d=V[k];if(!d)return;
+  document.querySelectorAll('.tk.active').forEach(x=>x.classList.remove('active'));
+  if(el)el.classList.add('active');
+  panel.innerHTML=`<div class="wcard"><button class="close" onclick="panel.classList.remove('open')">收起</button>
+    <div class="head"><span class="w">${d.w}</span><span class="ipa">${d.ipa}</span><span class="pos">${d.pos}</span>${d.tags.map(badge).join('')}</div>
+    <div class="cn">${d.cn}</div><div class="en-def">${d.en}</div>
+    <div class="row r-ex"><b>原文语境</b>“…${d.ex}…”</div>
+    <div class="row r-mem"><b>怎么记</b>${d.mem}</div>
+    <div class="row r-syn"><b>同类词</b>${d.syn}</div>
+    <div class="row r-conf"><b>易混辨析</b>${d.conf}</div>
+  </div>`;
+  if(isMobile())panel.classList.add('open');
+}
+document.querySelectorAll('.tk').forEach(t=>t.addEventListener('click',e=>{e.stopPropagation();showCard(t.dataset.w,t)}));
+
+function tz(btn){btn.closest('.para').classList.toggle('showzh')}
+let allOn=false;
+function toggleAll(){allOn=!allOn;document.querySelectorAll('.para').forEach(p=>p.classList.toggle('showzh',allOn))}
+function go(id){document.getElementById(id).scrollIntoView({behavior:'smooth',block:'center'});const s=document.getElementById(id);s.style.transition='none';s.style.opacity=.3;setTimeout(()=>{s.style.transition='opacity .8s';s.style.opacity=1},80)}
+
+document.querySelectorAll('.q').forEach(q=>{
+  const ans=+q.dataset.ans;
+  q.querySelectorAll('.opt').forEach((o,i)=>o.addEventListener('click',()=>{
+    if(q.classList.contains('done'))return;
+    q.classList.add('done');
+    if(i!==ans)o.classList.add('wrong');
+    q.querySelectorAll('.opt')[ans].classList.add('right');
+  }));
+});
+
+const vg=document.getElementById('vgrid');
+function renderGrid(f){
+  vg.innerHTML='';
+  Object.keys(V).forEach(k=>{
+    const d=V[k];
+    if(f!=='all'&&!d.tags.includes(f))return;
+    const div=document.createElement('div');div.className='vitem';
+    div.innerHTML=`<span class="badges">${d.tags.map(badge).join('')}</span><div class="w">${d.w}</div><div class="cn">${d.cn}</div>`;
+    div.addEventListener('click',()=>{showCard(k,null);if(!isMobile())window.scrollTo({top:0,behavior:'smooth'})});
+    vg.appendChild(div);
+  });
+}
+renderGrid('all');
+document.querySelectorAll('.fbtn').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.fbtn').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderGrid(b.dataset.f);
+}));
+
+const yd=document.getElementById('yd');let sel='';
+document.addEventListener('selectionchange',()=>{
+  const s=window.getSelection();const t=s?s.toString().trim():'';
+  if(t&&/^[a-zA-Z' -]{2,40}$/.test(t)){
+    sel=t;
+    try{const r=s.getRangeAt(0).getBoundingClientRect();
+      yd.style.left=Math.min(r.left,window.innerWidth-110)+'px';
+      yd.style.top=(r.bottom+8)+'px';yd.style.display='block';}catch(e){}
+  }else{yd.style.display='none'}
+});
+yd.addEventListener('click',()=>{window.open('https://dict.youdao.com/result?word='+encodeURIComponent(sel)+'&lang=en');yd.style.display='none'});
+document.addEventListener('click',e=>{if(e.target!==yd&&!window.getSelection().toString())yd.style.display='none'});
+</script>
+<script src="_fault_attr.js"></script>
+</body>
+</html>
