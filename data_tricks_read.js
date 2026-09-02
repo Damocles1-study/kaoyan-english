@@ -40,6 +40,8 @@ window.TRICK_READ = [
      +'快捷通道是<b>先扫末段主旨句</b>，主旨说什么，开篇现象就是为了引出什么。<br>'
      +'<b>同源变体还有两个：引言/谚语的作用、某概念的作用</b>——法则完全一样（<b>配角只负责引出主角</b>），操作细则见 <b>R16</b>（2007·T4 一篇里连考了这两个）。<br>'
      +'<b>⚠️ 还有一种更狠的变体：开篇事例是<u>靶子</u>，不是论据</b>（2008·T3）。<b>信号＝事例之后紧跟 <code>though / however / but</code> ＋ <code>obscure / mask / conceal / hide / belie</code> 这类「掩盖」义动词</b>——<code>The trend in sports, <b>though</b>, may be <b>obscuring</b> an unrecognized reality: …</code>。<b>见到这一组，就知道开篇现象是要被推翻的，全文重心在冒号/转折之后。</b><br>'
+     +'<b>⚠️ 第三种变体：开篇事例是<u>反差铺垫</u></b>（2008·T4）。<b>信号＝第二段首句是一句反差句</b>（<code>That’s a <b>far different image from</b> the cherry-tree-chopping George most people remember</code>）——'
+     +'<b>此时事例不是引子也不是靶子，而是「反例本身」，写作目的落在<u>事例主角本身</u>（揭示不为人知的一面）。判引入方向的完整操作见 <a href="#R27">R27</a>。</b><br>'
      +'<b>解法（对事例题本身）：找出事例里发生变化的那个<u>量</u>，再看下一句把它扩到了哪个<u>范围</u>——同时罩住这两层的那一项才是答案。</b>2008·T3·31：变化的量是<b>身高</b>（3 → 42），下一句扩到<b>整个职业体育</b> ⟹ 选 <code>illustrate the change of <b>height</b> of NBA players</code>。',
  trig:['the example of … is used to','illustrate / demonstrate','X is mentioned to（现象/事例在首段）','以 X 为例'],
  tmpl:'<b>就例子谈例子的选项必错</b>；答案永远是「例子往上抽一层」的那句话。',
@@ -48,7 +50,7 @@ window.TRICK_READ = [
         '偷换比较对象：2007·T1·21 的 D 把「球员出生月份的早晚之比」换成「球队之间的强弱之比」。',
         '<b>只答对「动作」不算——必须连「对比的内容」一起答对。</b>2008·T3·31 的 C <code>compare different generations of NBA players</code> 确实抓到了「今昔对比」这个动作，<b>却丢掉了对比的东西是<u>身高</u></b>——比工资、比战绩、比球风都能套进这个选项，太宽了。',
         '<b>凡选项要调动你的<u>课外知识</u>才成立，一律警惕。</b>2008·T3·31 的 D <code>assess the achievements of famous NBA players</code> 靠的是读者「张伯伦是历史级巨星」这个常识——<b>原文对他只有一句客观的身高描述，战绩一个字没提。</b>'],
- refs:[{p:'2022_T3_艺术与科学.html',q:'q32',label:'T3·32'},{p:'2007_T1_刻意练习造就高手.html',q:'q21',label:'2007·T1·21'},{p:'2008_T3_美国人的身高极限.html',q:'q31',label:'2008·T3·31（事例即靶子）'}]},
+ refs:[{p:'2022_T3_艺术与科学.html',q:'q32',label:'T3·32'},{p:'2007_T1_刻意练习造就高手.html',q:'q21',label:'2007·T1·21'},{p:'2008_T3_美国人的身高极限.html',q:'q31',label:'2008·T3·31（事例即靶子）'},{p:'2008_T4_开国元勋与奴隶制.html',q:'q36',label:'2008·T4·36（事例即反差）'}]},
 
 {id:'R4', tier:'🔴', qt:'作者态度 / 主旨 / 末段主旨', title:'先分清「谁在说话」，再抓情态词喊话句',
  trig:['the author thinks / suggests','末段','It can be concluded'],
@@ -72,13 +74,19 @@ window.TRICK_READ = [
      +'· <b>隐性</b>：<code><b>with</b> + 名词 + 分词</code>（伴随状语交代后果，<b>2007·T3 的 32、33 两题连用同一结构</b>）、'
      +'<code>the <b>side effect</b> / implications / effects of…</code>、<code>… <b>as well</b></code>（前因带出后果）、<b>破折号与冒号后的解释</b>、'
      +'<code>A has begun, and B <b>may not be far behind</b></code>（时间先后暗示因果，2007·T3·34）、以及<b>动词自带因果</b>（transform / reduce A to B / work against）。<br>'
+     +'<b>⭐⭐ 先看题干动词，它决定你要在因果链上停在哪一格（2008·T4·40 立）：</b><br>'
+     +'· <code><b>originate from / stem from / result from / be rooted in / arise from / spring from</b></code> ⟹ <b>往上游追到「根」</b>；<br>'
+     +'· <code><b>lead to / result in / contribute to / give rise to / bring about</b></code> ⟹ <b>往下游走到「果」</b>；<br>'
+     +'· <code><b>be based on / due to / because of</b></code> ⟹ 取<b>直接原因</b>，不必追根。<br>'
+     +'<b>2008·T4·40 的标本</b>：一句话里写了三格——<code>observing the bravery of the black soldiers</code>（军事经历）→ <code>had begun to believe that all men were created equal</code>（道德认知）→ <code>overcame the opposition to grant his slaves their freedom</code>（决定本身）。'
+     +'<b>题干问 <code>originated from</code> ⟹ 要第一格（B military experience）；选 A moral considerations 就是停在了中间那一格。</b><b>命题人把三格塞进同一句，就是在等你停错地方。</b><br>'
      +'<b>正确项三查</b>：① 信息本身为真；② 与题干<b>确有直接因果关系</b>（不是只在同一段出现）；③ <b>方向没反、程度没超</b>。',
  traps:['只走一半因果链就选，会选到中间环节而非最终结果。',
         '<b>「同义复述题干」的选项一律排除</b>：因果题里，题干给了「果」，把这个果换个说法再抄一遍的选项永远是错的（2007·T2·28 的 C「莎凡特是不会重演的极端个案」＝题干本身，不是原因）。',
         '<b>把「并列」读成「因果」</b>：两条信息都在文中，但原文从没把它们连过线。2007·T3·33 的 C——养老金减少与健康储蓄计划是<b>并排的两笔坏账</b>（都属于「风险转嫁」的表现），不是「后者补偿前者」。<b>并列段落先切块，再按块答题。</b>',
         '<b>把「假设的触发条件」读成「已发生的趋势」</b>：2007·T3·31 的 B——原文 <code>if the primary earner <b>got laid off</b></code> 只是假设情境（万一顶梁柱失业），不是说失业概率上升。<b>条件句里的内容是设想，不是事实。</b>',
         '<b>⭐做完的最后一个动作（30 秒，能救回一道题）</b>：把选中的那项<b>读出主语</b>——「我选的这句话，主语是谁？原文里这个主语发生的是<b>什么程度</b>的变化？」2007·T3·31 问完这两句，A 的两个毛病（主语错 + 程度超）会同时暴露。'],
- refs:[{p:'2007_T3_中产家庭的风险转嫁.html',q:'q31',label:'2007·T3·31'},{p:'2007_T3_中产家庭的风险转嫁.html',q:'q32',label:'2007·T3·32'},{p:'2022_T1_塑料文物保护.html',q:'q23',label:'T1·23'},{p:'2022_T4_解雇保护悖论.html',q:'q39',label:'T4·39'},{p:'2007_T2_智力测试的边界.html',q:'q28',label:'2007·T2·28'}]},
+ refs:[{p:'2007_T3_中产家庭的风险转嫁.html',q:'q31',label:'2007·T3·31'},{p:'2007_T3_中产家庭的风险转嫁.html',q:'q32',label:'2007·T3·32'},{p:'2022_T1_塑料文物保护.html',q:'q23',label:'T1·23'},{p:'2022_T4_解雇保护悖论.html',q:'q39',label:'T4·39'},{p:'2007_T2_智力测试的边界.html',q:'q28',label:'2007·T2·28'},{p:'2008_T4_开国元勋与奴隶制.html',q:'q40',label:'2008·T4·40（追根 vs 中间环）'}]},
 
 {id:'R6', tier:'🟡', qt:'推断 / 结论题', title:'只推一步 + 防「词形陷阱」',
  trig:['infer / conclude / It can be learned','某机构会支持/反对什么','末段升华'],
@@ -117,13 +125,14 @@ window.TRICK_READ = [
      +'<tr><td><b>程度升级</b>（第八类）</td><td>削弱→消失；有缺陷→已淘汰；变糟→毁灭；趋势→结局</td><td>2007·T3·31A 把「安全网被削弱」拉满成 <b>has disappeared</b>；2007·T3·35D 把「岌岌可危」说成 <b>in Ruins</b>（已成废墟）；2007·T2·29D 把「有局限」说成「过时」</td></tr>'
      +'<tr><td><b>偷换修饰对象</b>（第九类·极隐蔽）</td><td>形容词照抄原文，<b>被修饰的名词换掉</b></td><td>2007·T4·36B：<code>feeble <b>corporation governance</b></code>（乏力的公司治理）→ 说成「乏力的<b>老板与董事会关系</b>」</td></tr>'
      +'<tr><td><b>已知换未知</b></td><td>把原文<b>已经交代清楚</b>的东西，说成「有待查明/尚不知道」的东西</td><td>2007·T4·37B：被泄露的数据是什么，句首就写明了（<code>customer and employee data</code>）——已知的东西不会是「要去查明」的东西</td></tr>'
-     +'<tr><td><b>泛化 / 扩大范围</b></td><td>一部具体的法 → 一整类立法；一个州 → 全世界；一个技巧 → 整类行为</td><td>2007·T4·40C：加州那部「数据被盗须告知」的法 → <b>security legislation</b>；美国首个州 → <b>takes the lead</b>（而欧洲早有罚则）。<b>2008·T3 一篇里考了两次</b>：33A 把 <code>NBA players</code>（几十人）放大成 <code>the nation</code>（三亿人）、34A 把 <code>military uniforms</code> 放大成 <code>the garment industry</code>——<b>操作动作见 R24 范围校验</b></td></tr></table>'
+     +'<tr><td><b>泛化 / 扩大范围</b></td><td>一部具体的法 → 一整类立法；一个州 → 全世界；一个技巧 → 整类行为</td><td>2007·T4·40C：加州那部「数据被盗须告知」的法 → <b>security legislation</b>；美国首个州 → <b>takes the lead</b>（而欧洲早有罚则）。<b>2008·T3 一篇里考了两次</b>：33A 把 <code>NBA players</code>（几十人）放大成 <code>the nation</code>（三亿人）、34A 把 <code>military uniforms</code> 放大成 <code>the garment industry</code>。<b>2008·T4 又考了两次</b>：36C 把 <code>the lives of the founding generation</code>（开国一代人）放大成 <code>the U.S. history</code>（整部国史）、37D 把 <code>the nation’s early leaders</code> 放大成 <code>throughout the U.S. history</code>——<b>操作动作见 <a href="#R24">R24</a> 范围校验</b></td></tr>'
+     +'<tr><td><b>常识陷阱</b>（第十二类·2008·T4 立）</td><td>选项<b>在现实中完全正确</b>，但<b>文章从没说过</b>。你越有背景知识越容易中招</td><td>2008·T4·39B <code>Slaves in the old days did not have the right to vote</code>——历史上千真万确，<b>可原文只谈「分配国会席位时把奴隶算作五分之三个人」，一个字没提投票权</b>。<b>判据：<code>according to the text</code> 只问「文章说过没有」，不问「这句话对不对」；凡不读文章就知道它是真的选项，先按无中生有处理</b></td></tr></table>'
      +'<p style="margin-top:8px"><b>反向提醒</b>：干扰项爱<b>原词照抄</b>，正确项常是<b>归纳性改写</b>。'
      +'看到某项与原文字面高度重合，先回原句问一句「<b>这句在说谁</b>」——主语对不上，词再像也是错的。</p>',
  traps:['一个选项可能同时踩两类（偷换+张冠李戴），命中任一类即可排除。',
         '<b>四个选项全都「看着像对的」时，说明这一题考的不是词而是句子骨架</b>——立刻切到 <b>R21 的三问（谁 / 对谁 / 做了什么）</b>，逐项拆主谓宾，别再靠眼熟。',
         '「偷换主语」是最隐蔽的一种偷换：2007·T1·23 的 D 把原文 it（指 deliberate practice）悄悄换成题干问的 good memory。'],
- refs:[{p:'2022_T1_塑料文物保护.html',q:'q21',label:'T1·21'},{p:'2022_T2_Z世代与学位.html',q:'q28',label:'T2·28'},{p:'2022_T1_塑料文物保护.html',q:'q23',label:'T1·23'},{p:'2007_T1_刻意练习造就高手.html',q:'q23',label:'2007·T1·23'}]},
+ refs:[{p:'2022_T1_塑料文物保护.html',q:'q21',label:'T1·21'},{p:'2022_T2_Z世代与学位.html',q:'q28',label:'T2·28'},{p:'2022_T1_塑料文物保护.html',q:'q23',label:'T1·23'},{p:'2007_T1_刻意练习造就高手.html',q:'q23',label:'2007·T1·23'},{p:'2008_T4_开国元勋与奴隶制.html',q:'q39',label:'2008·T4·39（常识陷阱）'}]},
 
 {id:'R9', tier:'🟢', qt:'通用 · 信号灯', title:'两国家/两方案 &amp; 让步从句 = 出题信号灯',
  trig:['末段出现两个国家/两个方案','even if / although','Nor + 倒装'],
@@ -260,7 +269,10 @@ window.TRICK_READ = [
      +'　· <b>Indeed / In fact / Similarly / Moreover</b> → 与<b>前文</b>同向递进，把前一两句拉进来；<br>'
      +'　· <b>he says / argues X</b>（引述倒装）→ 相邻几句是<b>同一个人的话</b>，一并读；<br>'
      +'　· <b>just as A…, B…</b>（类比）→ <b>答案一定在 B 侧</b>，A 只是参照物。<br>'
-     +'<b>③ 答案 = 这个意群的主旨，一律往上抽一层。</b>',
+     +'<b>③ 答案 = 这个意群的主旨，一律往上抽一层。</b><br>'
+     +'<b>⚠️⚠️ 但「往外扩一层」的<u>一层</u>是有边界的（2008·T4·36 的翻车教训）：扩到<u>第一个能给这个事例定性的句子</u>为止，遇到 <code>But / However / Yet</code> 就停——那是「上一件事说完了、换话题」的标志。</b>'
+     +'<b>把「扩一层」做成「扩到全文主旨」，必然选出一个「大而正确」的选项，那往往正是命题人准备的那一个。</b><br>'
+     +'<b>⟹ 首段是纯事例时，先用 <a href="#R27">R27</a> 判引入方向（反向引入 ⟹ 目的落在事例主角本身；正向引入 ⟹ 落在下文大主题），再谈扩几层。</b>',
  tmpl:'<b>⭐两个标本都在 2007·T4（一篇里连出两道，说明命题人吃准了这个考法）</b>：<br>'
      +'· <b>36 题 · 引言/谚语</b>：<code>It never rains but it pours</code> 之后<b>冒号点名 <code>data insecurity</code></b>，下一句主语又是 information protection → 答案 D <b>the severity of data leakage</b>。'
      +'<b>两条独立通道任一够用</b>：①抓谚语紧接之后的实义信息；②抓全文高频词（data insecurity / information protection / data leakage / data security 反复出现＝主题）。<br>'
@@ -273,7 +285,7 @@ window.TRICK_READ = [
         '<b>抓类比的错一侧</b>：2007·T4·38 的 C——<code>just as there is GAAP（会计准则）, perhaps it is time for GASP（安全准则）</code>，答案在 B 侧（安全），C 却说「提高<b>财会</b>安全水平」。<b>类比句里的 A 只是借来铺路的桥。</b>',
         '<b>把状语/附带成分当主张</b>：2007·T4·38 的 A（<code>on behalf of shareholders</code> 只是交代「替谁负责」的状语）、D（把「保护客户数据的<b>能力</b>是<b>公司市值</b>的关键」拧成「<b>客户数据的市场价值</b>应受重视」）。<b>句子成分的地位不能换。</b>',
         '<b>只读定位句就选，必被骗</b>：命题人挑来考「写作目的」的句子，<b>本身往往看不出观点</b>——观点在它的邻居那儿。'],
- refs:[{p:'2007_T4_数据泄密的公司.html',q:'q36',label:'2007·T4·36'},{p:'2007_T4_数据泄密的公司.html',q:'q38',label:'2007·T4·38'},{p:'2007_T1_刻意练习造就高手.html',q:'q21',label:'2007·T1·21'}]},
+ refs:[{p:'2007_T4_数据泄密的公司.html',q:'q36',label:'2007·T4·36'},{p:'2007_T4_数据泄密的公司.html',q:'q38',label:'2007·T4·38'},{p:'2007_T1_刻意练习造就高手.html',q:'q21',label:'2007·T1·21'},{p:'2008_T4_开国元勋与奴隶制.html',q:'q36',label:'2008·T4·36（扩过了头）'}]},
 
 {id:'R17', tier:'🔴', qt:'新题型 · 段落-标题匹配', title:'先自写段落主旨再配标题：复现词最猛的那项，通常是陷阱',
  trig:['Choose a heading from the list A–G that best fits the meaning of each numbered part','七个选项全是短标题（祈使句 / 名词短语）','正文段落被编号 41–45，首末段不编号'],
@@ -371,13 +383,16 @@ window.TRICK_READ = [
      +'<tr><td><b>29 B</b></td><td>旧模式下订阅的是<b>想看成果的其他研究者</b> → <b>论文作者</b>（模式抄错了，主体也抄错了）</td></tr>'
      +'<tr><td><b>29 C</b></td><td>免费开放给 <code>everyone who wishes to see it</code>（<b>所有想看的人</b>）→ <b>其他网络期刊</b>（<b>「人」换成了「机构」</b>）</td></tr>'
      +'<tr><td><b>30 A</b></td><td>让出版商难受的是<b>科研成果易获取的新趋势</b> → <b>网络</b>（把「趋势」换成「推手」，顺带把全文重心偏到出版商身上）</td></tr></table>'
+     +'<p style="margin-top:8px"><b>⭐ 2008·T4·36C 是「第一问」的另一种形态：不是换了个<u>人</u>，是换了个<u>范畴</u>。</b>'
+     +'原文 <code>the roles <b>slavery</b> played</code>（<b>奴隶制</b>，一种<b>制度</b>）→ 选项 <code>the role of <b>slaves</b></code>（<b>奴隶</b>，一群<b>人</b>）。'
+     +'<b>单复数 + 一个词尾之差，制度变成了人群。见到 -ism / -ery / -ship / -hood 这类抽象后缀被抹掉，当场停下来比一比。</b></p>'
      +'<p style="margin-top:8px"><b>与既有卡的分工</b>：<b>R1</b> 比的是<b>词</b>（同义替换 vs 原词复现），<b>R8</b> 的「张冠李戴」是本卡的雏形；'
      +'<b>本卡把校验升级到<u>句子成分</u>层面——不比词，比骨架。</b>凡遇到「读了四遍还是觉得每个都对」，就是该启动三问的时刻。</p>',
  traps:['<b>高发地带一：一句话里出现两个名词。</b>「<b>商业出版商</b>从<b>政府资助的研究</b>中赚钱」——命题人就在这两个之间做手脚（2008·T2·27A）。<b>读到这种句子，当场在心里标出「谁是主语」。</b>',
         '<b>高发地带二：身份多的文章。</b>2008·T2 里有四种身份——<b>author（作者）/ publisher（出版商）/ subscriber（订户）/ editor（编辑）</b>，29、30 两题都在这四个之间做排列组合。<b>身份一多，读的时候就该在草稿上列一张身份表。</b>',
         '<b>高发地带三：并列多模式/多方案的段落。</b>把 A 方案的特点安到 B 方案头上，是最省力的造错法（2008·T2·29 的 B、C 两项）。<b>解法：画一张「方案名 ｜ 谁付钱 ｜ 谁受益」三列小表。</b>',
         '<b>「受益」对了不等于选项对了</b>：2008·T2·28B 里科研人员确实受益，但受益的<b>方式</b>被换成了「拿到巨额利润」——<b>第三问漏了就会栽在这里。</b>'],
- refs:[{p:'2008_T2_科学出版的在线转向.html',q:'q27',label:'2008·T2·27（同句两名词）'},{p:'2008_T2_科学出版的在线转向.html',q:'q29',label:'2008·T2·29（多模式并列）'},{p:'2008_T2_科学出版的在线转向.html',q:'q30',label:'2008·T2·30（趋势 vs 推手）'},{p:'2007_T1_刻意练习造就高手.html',q:'q23',label:'2007·T1·23（偷换主语）'}]},
+ refs:[{p:'2008_T2_科学出版的在线转向.html',q:'q27',label:'2008·T2·27（同句两名词）'},{p:'2008_T2_科学出版的在线转向.html',q:'q29',label:'2008·T2·29（多模式并列）'},{p:'2008_T2_科学出版的在线转向.html',q:'q30',label:'2008·T2·30（趋势 vs 推手）'},{p:'2007_T1_刻意练习造就高手.html',q:'q23',label:'2007·T1·23（偷换主语）'},{p:'2008_T4_开国元勋与奴隶制.html',q:'q36',label:'2008·T4·36（制度 vs 人群）'}]},
 
 {id:'R22', tier:'🔴', qt:'细节题 / 因果细节题', title:'题干关键词在文中<u>没有原词</u>时：先把它翻译成「文中的说法」',
  trig:['题干出现一个全文没出现过的名词（online publication、the new approach…）','According to the text… is significant in that','扫读全文找不到题干那个词'],
@@ -422,7 +437,10 @@ window.TRICK_READ = [
  tmpl:'<table class="tk"><tr><th></th><th>原文依据句在说谁</th><th>选项在说谁</th></tr>'
      +'<tr><td><b>2008·T3·33A</b></td><td><code>NBA players</code>　一个联盟几十人</td><td><code>the nation</code>　三亿人的国家均值</td></tr>'
      +'<tr><td><b>2008·T3·34A</b></td><td><code>military uniforms</code>　军服</td><td><code>the garment industry</code>　整个服装业</td></tr>'
+     +'<tr><td><b>2008·T4·36C</b></td><td><code>the lives of the <b>founding generation</b></code>　开国那一代人的生活</td><td><code>the <b>U.S. history</b></code>　整部美国史</td></tr>'
+     +'<tr><td><b>2008·T4·37D</b></td><td><code>the nation’s <b>early leaders</b></code>　早期领袖</td><td><code><b>throughout</b> the U.S. history</code>　贯穿整部美国史</td></tr>'
      +'<tr><td><b>2007·T4·40C</b></td><td>加州一部「数据被盗须告知」的法</td><td><code>security legislation</code>　一整类立法</td></tr></table>'
+     +'<p style="margin-top:8px"><b>⚠️⚠️ 触发时机（比「记住有这个坑」有用得多）：凡选项里出现 <code>the U.S. history</code>· <code>the nation</code>· <code>the industry</code>· <code>society</code>· <code>the public</code> 这类<u>全集名词</u>，一律先查范围，再谈别的。</b></p>'
      +'<p style="margin-top:8px"><b>⭐ 与 <a href="#R21">R21 主体校验</a> 是姐妹卡，合起来是一套完整的「主语体检」：</b><br>'
      +'· <b>R21 问「<u>是谁</u>」</b>——把商业出版商说成政府资助的研究（<b>换了个人</b>）；<br>'
      +'· <b>R24 问「<u>有多大</u>」</b>——把 NBA 球员说成整个国家（<b>还是那批人，但被放大了</b>）。<br>'
@@ -430,8 +448,10 @@ window.TRICK_READ = [
  traps:['<b>动作要「写出来」，不能靠「感觉一下」。</b>范围偏移读起来毫无违和感，因为每一步都有原文支撑——<b>只有把两个名词并排写在纸上，大小差异才会跳出来。</b>',
         '<b>原文自己常常已经把圈子划好了</b>，别把它们混回去：2008·T3 里专家说的是 <code>In <b>the general population</b> today…</code>（就<b>一般人群</b>而言），而 NBA 球员恰恰是<b>特殊群体</b>——<b>凡见到 the general public / the general population / in the case of X 这类范围界定语，顺手画个圈。</b>',
         '<b>「一句专门用来消解反例的话」，几乎必被拿去造干扰项。</b>2008·T3 的②段末句写 NBA 变高源于全球招募，<b>作者的目的是把 NBA 从「美国人」里<u>切</u>出去</b>；33A 干的事恰恰是把它<b>粘回来</b>。<b>读到这种「切」的句子，旁边写个「切」字。</b>',
-        '<b>同序原则也是一记警报</b>：2008·T3 五题严格同序，33 题本该落在④段，<b>而 A 项的出处在②段——「出处落在本题定位段之外，而且是个例」，这本身就该拉响警报。</b>'],
- refs:[{p:'2008_T3_美国人的身高极限.html',q:'q33',label:'2008·T3·33（我错的那题）'},{p:'2008_T3_美国人的身高极限.html',q:'q34',label:'2008·T3·34（同一把刀第二次）'},{p:'2007_T4_数据泄密的公司.html',q:'q40',label:'2007·T4·40'}]},
+        '<b>同序原则也是一记警报</b>：2008·T3 五题严格同序，33 题本该落在④段，<b>而 A 项的出处在②段——「出处落在本题定位段之外，而且是个例」，这本身就该拉响警报。</b>',
+        '⚠️⚠️ <b>这把刀已经砍中三次，时间线值得记一下</b>：2007·T4 立 R8 第十一类「泛化」→ 2008·T3·33 又栽、升级成本卡 → <b>2008·T4·36 第三次栽</b>。'
+     +'<b>结论：「知道有这个坑」「甚至亲手写过这张卡」都不管用，只有把它绑成一个每题必做的<u>固定动作</u>才生效——落笔前把两个主语并排<u>写下来</u>。</b>'],
+ refs:[{p:'2008_T3_美国人的身高极限.html',q:'q33',label:'2008·T3·33（我错的那题）'},{p:'2008_T3_美国人的身高极限.html',q:'q34',label:'2008·T3·34（同一把刀第二次）'},{p:'2007_T4_数据泄密的公司.html',q:'q40',label:'2007·T4·40'},{p:'2008_T4_开国元勋与奴隶制.html',q:'q36',label:'2008·T4·36（第三次栽）'},{p:'2008_T4_开国元勋与奴隶制.html',q:'q37',label:'2008·T4·37（同篇第二次）'}]},
 
 {id:'R25', tier:'🔴', qt:'作者观点题（which statement would the author agree）', title:'作者观点题：正确项常常没有单句出处，要合并相邻两句',
  trig:['On which of the following statements would the author most probably agree?','The author would agree that…','四个选项都能在原文找到「像」的句子'],
@@ -466,11 +486,76 @@ window.TRICK_READ = [
         '<b>关键词杂糅</b>：2008·T3·34C 拿①句的 <code>Genetic</code> ＋ ③句的 <code>basketball</code> 拼出「基因检测选拔运动员」这个全文没有的概念。<b>两个不同句子的关键词被凑到一起、还带上原文没有的动作 ⟹ 直接排除。</b>',
         '<b>反向 + 范围偏移常常一起出现</b>：同题 A 项既把「无需改动」说反成「要重新考虑尺码」，又把 military uniforms 放大成 the garment industry（见 <a href="#R24">R24</a>）。'],
  refs:[{p:'2008_T3_美国人的身高极限.html',q:'q34',label:'2008·T3·34'},{p:'2008_T3_美国人的身高极限.html',q:'q35',label:'2008·T3·35（对照：全文主旨题）'}]}
+,
+
+{id:'R27', tier:'🔴', qt:'写作目的题（首段是纯事例 / 轶事）', title:'先判引入方向：反差句 ⟹ 目的落在事例主角本身',
+ trig:['X is mentioned to / is cited as an example to（且 X 在<b>第一段</b>）','首段整段只讲一件事，一句观点都没有','第二段首句以 That’s / But / Contrary to 开头'],
+ flow:'⚠️ <b>这是 2008·T4·36 的翻车卡。</b>我用对了 <a href="#R16">R16</a>（往外扩一层），<b>却把方向做反了</b>——方法对、方向错，比不知道方法更难自查，因为每一步都「有道理」。<br>'
+     +'<b>首段是纯事例时，答案的方向由<u>第二段第一句</u>决定，只有两种：</b><br>'
+     +'<table class="tk"><tr><th>第二段首句长什么样</th><th>方向</th><th>写作目的落在哪</th></tr>'
+     +'<tr><td><b>反差句 / 否定句</b><br><code>That’s a <b>far different image from</b>…</code>· <code>Contrary to popular belief…</code>· <code>But that’s only half the story.</code>· <code>The reality is rather different.</code></td>'
+     +'<td><b>反向引入</b><br>（用特例反衬公众印象）</td><td><b>事例主角<u>本身</u></b>——揭示不为人知的一面、打破成见</td></tr>'
+     +'<tr><td><b>顺承句 / 概括句</b><br><code>This is just one example of…</code>· <code>Such cases are increasingly common.</code>· <code>X is not alone.</code></td>'
+     +'<td><b>正向引入</b><br>（由点扩到面）</td><td><b>下文的大主题</b>——事例只是引子</td></tr></table>'
+     +'<p style="margin-top:8px"><b>⟹ 动作只有一个：读完首段事例，先把第二段第一句读完再看选项。</b>两秒钟的事，方向定了，四个选项立刻分成两堆。</p>',
+ tmpl:'<b>2008·T4·36 标本</b>：①段讲华盛顿从奴隶嘴里拔牙移植到自己颌骨上；②段①句 <code>That’s a far different image from the cherry-tree-chopping George most people remember from their history books.</code><br>'
+     +'<b>⟹ 反差句 ⟹ 反向引入 ⟹ 主角是<u>华盛顿</u>，不是奴隶制</b> ⟹ 答案 D <code>reveal some unknown aspect of his life</code>（<code>a far different image</code> ↔ <code>unknown aspect</code>，<code>most people remember</code> ↔ <code>unknown</code>）。<br>'
+     +'<b>我选的 C <code>stress the role of slaves in the U.S. history</code> 错在<u>三处</u>，任查一处都能拦下</b>：'
+     +'① <b>结算句抓错</b>——我扩到了②段<u>②</u>句（<code>But recently, many historians have begun to focus on…</code>），<b>可 <code>But</code> 是换话题的标志，②句服务的是下面四段，不是①段</b>；'
+     +'② <b>主体偷换</b>（<a href="#R21">R21</a>）——原文 <code>the roles <b>slavery</b> played</code>（制度）→ 选项 <code>the role of <b>slaves</b></code>（人群）；'
+     +'③ <b>范围放大</b>（<a href="#R24">R24</a>）——原文 <code>in the lives of the <b>founding generation</b></code> → 选项 <code>the <b>U.S. history</b></code>。',
+ traps:['<b>「往外扩一层」的<u>一层</u>是有边界的：扩到第一个能给这个事例<u>定性</u>的句子为止，遇到 <code>But / However / Yet</code> 就停。</b>把「扩一层」做成「扩到全文主旨」，必然选出一个「大而正确」的选项——<b>那往往正是命题人准备的那一个。</b>',
+        '<b>你读事例时的情绪反应不是证据。</b>2008·T4·36 的 B <code>demonstrate the cruelty of slavery</code>——从奴隶嘴里拔牙<b>确实残忍</b>，这是最有感觉的一项；<b>可②段①句接的是「形象反差」，不是「制度残忍」。写作目的题的答案由<u>下文</u>决定，不由你的感受决定。</b>',
+        '<b>选项里出现原文从未使用过的<u>评价性形容词</u>，先按无中生有处理。</b>同题 A <code>primitive medical practice</code>（原始的医疗实践）——原文只写了牙医和移植，<b>一个字没评价技术水平</b>。<b>「做法残忍」≠「医术原始」。</b>',
+        '<b>反向引入的事例，末尾常有一个「抖包袱」的结构</b>（破折号 / 分号 / 句末从句）。2008·T4①段 <code>…transplant nine teeth into his jaw<b>—having extracted them from the mouths of his slaves</b></code>——<b>前半句平淡，最后五个词才是刀。见到这种「延迟揭露」，基本就是反向引入。</b>'],
+ refs:[{p:'2008_T4_开国元勋与奴隶制.html',q:'q36',label:'2008·T4·36（我错的那题）'},{p:'2007_T4_数据泄密的公司.html',q:'q36',label:'2007·T4·36（对照：正向引入）'},{p:'2008_T3_美国人的身高极限.html',q:'q31',label:'2008·T3·31（对照：事例即靶子）'}]},
+
+{id:'R28', tier:'🔴', qt:'人物信息综合题（What do we learn about X?）', title:'题干只给人名不给段号：先把这个人列成一张表，再拿选项去「盖」',
+ trig:['What do we learn about X?','Which of the following is true of X?','题干只有一个人名，没有段号、没有引语'],
+ flow:'<b>题干只给人名 ⟹ 这是<u>跨段</u>的信息综合题，天生不受同序原则约束，别试图定位到某一段。</b><br>'
+     +'<b>① 扫全文，把这个人出现的每一处标上段号，一处一行写下来（三到五行）；</b><br>'
+     +'<b>② 拿四个选项逐个去「盖」这张表</b>——<b>盖不住全部 ＝ 以偏概全；盖得住但加了原文没有的动词（改变 / 导致 / 玷污）＝ 强加因果；</b><br>'
+     +'<b>③ 正确项常常「看起来什么都没说」</b>——因为它必须同时罩住互相矛盾的几行，<b>只能弱、不能具体。这种「弱」正是它的强。</b>',
+ tmpl:'<b>2008·T4·38 标本</b>（杰斐逊在②③⑤⑥四段都出现）：'
+     +'<table class="tk"><tr><th>段</th><th>关于他的事实</th><th>指向</th></tr>'
+     +'<tr><td>②③句</td><td>DNA 证据显示他与女奴赫明斯育有至少一子</td><td>私生活与奴隶制深度纠缠</td></tr>'
+     +'<tr><td>③②句</td><td><b>私下</b>反感奴隶制，但也明白它是国家的政治经济<b>基石</b></td><td>反感 ＋ 离不开</td></tr>'
+     +'<tr><td>⑤②③句</td><td>靠五分之三方案<b>险胜</b>大选；上任后用路易斯安那购地案<b>扩大</b>了奴隶制</td><td>不但没反对，还得益并扩大</td></tr>'
+     +'<tr><td>⑥①句</td><td>解放了赫明斯的孩子，<b>但没解放她本人和另外约 150 名奴隶</b></td><td>补救了，但只补救了一点点</td></tr></table>'
+     +'<p style="margin-top:8px"><b>⟹ 四行只有一个词装得下：<code>complex</code>（复杂）。</b>三个干扰项各只罩一行，还都罩歪了：'
+     +'<b>A</b> 强加因果（原文从没说他的态度<u>变</u>过）· <b>B</b> 范围偷换（<code>Hemings’s children</code> 几个人 → <code>the child slaves</code> 一类人，而且原文紧接着就否掉了这个方向）· <b>D</b> 无中生有（原文没提这段关系对他<u>名声</u>的影响）。</p>'
+     +'<p style="margin-top:8px"><b>⭐ 与 <a href="#R23">R23</a>（2008·T2·26 主旨题）是同一套骨架</b>：那题要求正确项同时装下「新事物」和「新旧关系」，本题要求同时装下四行互相矛盾的事实。<b>「能不能全罩住」永远比「有没有原词」优先。</b></p>',
+ traps:['<b>最像的干扰项，往往是把「几个人」写成「一类人」。</b>2008·T4·38B：<code>Hemings’s children</code>（他自己的孩子，几个人）→ <code>the child slaves</code>（儿童奴隶，一类人）。<b>与 <a href="#R24">R24</a> 是同一把刀，只是发生在人物题里。</b>',
+        '<b>历史人物 + 私生活 ⟹ 极易脑补出「名声受损」这类后果。</b>但<b>「文章提到了 X」不等于「文章评价了 X 的影响」</b>（2008·T4·38D）。',
+        '<b>凡选项里出现「改变了 / 促使 / 导致」这类<u>及物动词</u>，回文查一句：原文有没有真的把这两件事连过线？</b>2008·T4·38A 把「他的政治生涯<b>得益于</b>奴隶制」（客观事实）拧成「他的政治观点<b>改变了</b>他对奴隶制的态度」——<b>那根因果线是命题人自己画的。</b>',
+        '<b>这类题目的正确项通常是形容词性的概括（complex / cautious / ambivalent），不是具体事件。</b>看到四个选项里三个都在讲具体事、一个在讲「他这个人怎么样」，<b>后者的嫌疑最大（当然仍要回表验证）。</b>'],
+ refs:[{p:'2008_T4_开国元勋与奴隶制.html',q:'q38',label:'2008·T4·38'},{p:'2008_T2_科学出版的在线转向.html',q:'q26',label:'2008·T2·26（同骨架：全罩住优先）'},{p:'2022_T2_Z世代与学位.html',q:'q28',label:'T2·28'}]},
+
+{id:'R29', tier:'🟡', qt:'通用 · 信号灯（引号 / 比喻 / 委婉语）', title:'引号的三种功能：引用 / 反语 / 排斥——它是作者不出面的表态',
+ trig:['原文里某个词或短语被打上引号','句中出现 like / as if / a kind of 的比喻','带定冠词 the 的引号短语（the “peculiar institution”）'],
+ flow:'<b>引号是英语议论文里最省力的「态度标记」，也因此是命题人最爱的取材地。</b>2008 这三篇正好把三种功能考了个遍。<b>识别顺序固定：</b><br>'
+     +'<b>第一问 · 引号里是不是某人说的原话？</b>（句中有 <code>says X</code> / <code>according to X</code>）⟹ <b>功能①引用</b>：只可作为「<u>某人</u>的观点」使用，<b>且若是比喻，必须先翻成直义再比选项</b>。<br>'
+     +'<b>第二问 · 引号里的词，字面意思在这个语境下成立吗？</b>不成立 ⟹ <b>功能②反语</b>：取其反义。<br>'
+     +'<b>第三问 · 引号里是不是一个「名称」，而且前面带 the？</b>是 ⟹ <b>功能③排斥</b>：<b>那是别人的叫法，不是作者的判断。</b><br>'
+     +'<b>三问都过不了的引号（纯粹强调某个词），才可以按字面读。</b>',
+ tmpl:'<table class="tk"><tr><th>功能</th><th>标本</th><th>命题人怎么用</th></tr>'
+     +'<tr><td><b>①引用（含比喻）</b></td><td><b>2008·T4④段</b>：<code>Owning slaves was “like having a large bank account,” <b>says Wiencek</b></code></td>'
+     +'<td>39C <code>Slave owners usually had large savings accounts</code>——<b>把喻体当本体</b>。<b>见到 like / as if / the equivalent of，先翻直义。</b></td></tr>'
+     +'<tr><td><b>②反语（讽刺）</b></td><td><b>2008·T1①段</b>：<code>increased “<b>opportunities</b>” for stress</code>（增加的压力「机会」）</td>'
+     +'<td>会让你以为作者认为女性得到了更多机会。<b>判据：褒义词配负面语境 ＝ 反语。</b>见 <a href="#R18">R18</a>。</td></tr>'
+     +'<tr><td><b>③排斥（他人的称谓）</b></td><td><b>2008·T4④段</b>：<code>protections for <b>the</b> “<b>peculiar institution</b>”</code>（当年南方对奴隶制的委婉说辞）</td>'
+     +'<td>39D <code>Slavery was regarded as a peculiar institution</code>——<b>把他人的委婉称谓升格成文中的客观判断</b>。<b>问一句「这个称呼是谁给的」。</b></td></tr></table>'
+     +'<p style="margin-top:8px"><b>⭐ 委婉语（euphemism）在英美报刊里几乎总带引号，且作者的态度基本都是「我不这么认为」</b>：<code>“collateral damage”</code>（附带损伤 ＝ 平民伤亡）· <code>“downsizing”</code>（精简 ＝ 裁员）· <code>“peculiar institution”</code>（特殊制度 ＝ 奴隶制）。</p>'
+     +'<p style="margin-top:8px"><b>⭐⭐ 同族的「作者不出面的表态方式」还有两个，一并记</b>：<b>斜体</b>（2008·T4⑥段 <code><i>all</i> men were created equal</code> 里的 <i>all</i> 在原卷上是斜体——写下这句话的人自己蓄着 150 名奴隶）· <b>破折号</b>（把最刺眼的信息甩到句末，如①段的 <code>—having extracted them from the mouths of his slaves</code>）。</p>',
+ traps:['<b>比喻句的三种误用</b>：①字面直译（39C）②扩大适用范围 ③<b>当成作者本人的观点</b>（其实是 Wiencek 说的）。',
+        '<b>带引号的委婉语一旦出现，往往<u>整段</u>都在它周围出题。</b>2008·T4④段短短三句造出了 39 题的三个干扰项：比喻 → C、引号 → D、条款细节 → B。<b>见到引号密集的段落，做题时多花十秒。</b>',
+        '<b>反语与排斥容易混，判据在「引号里是形容词还是名称」</b>：形容词/褒义词被打引号 ⟹ 多半是<b>反语</b>；一个完整的<b>称谓/专名</b>被打引号且带 the ⟹ 多半是<b>排斥</b>。'],
+ refs:[{p:'2008_T4_开国元勋与奴隶制.html',q:'q39',label:'2008·T4·39（引用 + 排斥）'},{p:'2008_T1_女性与压力.html',q:'q21',label:'2008·T1（反语 opportunities）'},{p:'2022_T4_解雇保护悖论.html',q:'q36',label:'T4·36（比喻 time bomb）'}]}
 
 ];
 
 window.TRICK_READ_META = {
   subject:'英语一 · 阅读',
-  source:'2022 Text 1–4 · 2007 Text 1–4 · 2008 Text 1–3 · 2007/2022 新题型',
+  source:'2022 Text 1–4 · 2007 Text 1–4 · 2008 Text 1–4 · 2007/2022 新题型',
   note:'提炼自本复盘中心各篇阅读真题复盘页的技巧/干扰项分析，随复盘页增长。'
 };

@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2008 英一 Text 4 · 开国元勋们对奴隶制的复杂态度</title>
+<style>
+  :root{
+    --bg:#faf9f6; --card:#ffffff; --ink:#2b2b2b; --muted:#8a8578;
+    --accent:#8b5e34; --accent-soft:#f3e9dd; --line:#e8e3d8;
+    --hl:#fdf3d8; --hl-border:#e0b84d;
+    --green:#3e7a4e; --green-soft:#e8f2ea;
+    --red:#b04a3a; --red-soft:#f9e9e6;
+    --blue:#3d6a8a; --blue-soft:#e7eff5;
+    --purple:#6d5a8e; --purple-soft:#eeeaf5;
+    --serif:"Georgia","Songti SC",serif;
+    --sans:-apple-system,"PingFang SC","Helvetica Neue",sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#1c1a17; --card:#26231f; --ink:#e8e4dc; --muted:#9a948a;
+      --accent:#d0a06a; --accent-soft:#3a3127; --line:#3a362f;
+      --hl:#3d3520; --hl-border:#b08c3a;
+      --green:#7fb98d; --green-soft:#26362b;
+      --red:#d98876; --red-soft:#3d2a26;
+      --blue:#8ab3d0; --blue-soft:#26323d;
+      --purple:#a996c8; --purple-soft:#302a3d;
+    }
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;padding-bottom:120px}
+  .wrap{max-width:1100px;margin:0 auto;padding:24px 20px}
+  .back{font-size:.85rem;color:var(--muted);text-decoration:none}
+  .back:hover{color:var(--accent)}
+  header{margin:14px 0 28px}
+  header h1{font-family:var(--serif);font-size:1.7rem;line-height:1.3}
+  header .sub{color:var(--muted);margin-top:6px;font-size:.9rem}
+  .tags{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+  .tag{font-size:.75rem;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);border:1px solid var(--line)}
+  .tag.warn{background:var(--red-soft);color:var(--red);border-color:var(--red)}
+  .tag.ok{background:var(--green-soft);color:var(--green);border-color:var(--green)}
+
+  .layout{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:24px;align-items:start}
+  main{min-width:0}
+  @media (max-width:900px){.layout{grid-template-columns:minmax(0,1fr)}}
+
+  section.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:24px}
+  h2{font-size:1.05rem;letter-spacing:.05em;color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+  h2 .n{font-size:.72rem;background:var(--accent);color:var(--card);border-radius:6px;padding:1px 7px}
+  h3{font-size:.95rem;color:var(--accent);margin:18px 0 10px}
+
+  .para{margin-bottom:22px}
+  .para .en{font-family:var(--serif);font-size:1.06rem;line-height:1.9}
+  .pno{color:var(--muted);font-size:.75rem;user-select:none;margin-right:6px}
+  .tk{background:var(--hl);border-bottom:2px solid var(--hl-border);border-radius:3px;padding:0 2px;cursor:pointer;transition:filter .15s}
+  .tk:hover{filter:brightness(.93)}
+  .tk.active{outline:2px solid var(--hl-border)}
+  .ls{border-bottom:2px dotted var(--blue);cursor:pointer}
+  .para .zh{display:none;margin-top:10px;padding:10px 14px;background:var(--blue-soft);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:.93rem}
+  .para.showzh .zh{display:block}
+  .zbtn{float:right;margin-left:10px;font-size:.72rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:6px;padding:2px 9px;cursor:pointer}
+  .zbtn:hover{color:var(--accent);border-color:var(--accent)}
+  .allbtn{font-size:.78rem;border:1px solid var(--accent);background:none;color:var(--accent);border-radius:8px;padding:4px 12px;cursor:pointer;margin-left:auto}
+
+  aside{position:sticky;top:20px}
+  #panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;min-height:180px}
+  #panel .hint{color:var(--muted);font-size:.88rem;text-align:center;padding:30px 10px}
+  .wcard .head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .wcard .w{font-family:var(--serif);font-size:1.35rem;font-weight:bold}
+  .wcard .ipa{color:var(--muted);font-size:.85rem}
+  .wcard .pos{font-size:.72rem;color:var(--purple);background:var(--purple-soft);padding:1px 8px;border-radius:999px}
+  .wcard .badge{font-size:.7rem;padding:1px 8px;border-radius:999px}
+  .b-core{background:var(--red-soft);color:var(--red)}
+  .b-phrase{background:var(--blue-soft);color:var(--blue)}
+  .b-poly{background:var(--purple-soft);color:var(--purple)}
+  .b-write{background:var(--green-soft);color:var(--green)}
+  .wcard .cn{margin-top:8px;font-size:1rem;font-weight:600}
+  .wcard .en-def{color:var(--muted);font-size:.86rem;font-style:italic;margin-top:2px}
+  .wcard .row{margin-top:10px;font-size:.86rem;padding:8px 10px;border-radius:8px}
+  .wcard .row>b:first-child{font-size:.72rem;display:block;margin-bottom:2px;letter-spacing:.06em}
+  .r-ex{background:var(--hl)} .r-ex b{color:var(--hl-border)}
+  .r-mem{background:var(--green-soft)} .r-mem b{color:var(--green)}
+  .r-syn{background:var(--blue-soft)} .r-syn b{color:var(--blue)}
+  .r-conf{background:var(--red-soft)} .r-conf b{color:var(--red)}
+  #panel .close{display:none}
+  @media (max-width:900px){
+    aside{position:fixed;left:0;right:0;bottom:0;z-index:50;padding:0 8px 8px}
+    #panel{box-shadow:0 -6px 24px rgba(0,0,0,.18);max-height:55vh;overflow-y:auto;display:none}
+    #panel.open{display:block}
+    #panel .close{display:block;float:right;border:none;background:var(--line);border-radius:8px;padding:2px 10px;cursor:pointer;color:var(--ink)}
+  }
+
+  .q{margin-bottom:22px;padding-bottom:18px;border-bottom:1px dashed var(--line)}
+  .q:last-child{border:none;margin-bottom:0;padding-bottom:0}
+  .q .stem{font-weight:600;font-family:var(--serif)}
+  .qt{font-size:.7rem;color:var(--blue);background:var(--blue-soft);border-radius:999px;padding:1px 8px;margin-right:6px;vertical-align:2px}
+  .opts{margin-top:10px;display:grid;gap:8px}
+  .opt{border:1px solid var(--line);border-radius:10px;padding:8px 12px;cursor:pointer;font-size:.93rem;font-family:var(--serif);transition:all .15s}
+  .opt:hover{border-color:var(--accent)}
+  .q.done .opt{cursor:default}
+  .opt.right{background:var(--green-soft);border-color:var(--green)}
+  .opt.wrong{background:var(--red-soft);border-color:var(--red)}
+  .expl{display:none;margin-top:12px;background:var(--accent-soft);border-radius:10px;padding:12px 14px;font-size:.9rem}
+  .q.done .expl{display:block}
+  .expl b{color:var(--accent)}
+  .expl .loc{font-family:var(--serif);font-style:italic;background:var(--hl);padding:1px 4px;border-radius:3px}
+  .fail{background:var(--red-soft);border:1px solid var(--red);border-radius:10px;padding:10px 13px;margin-bottom:10px;font-size:.89rem}
+  .fail b{color:var(--red)}
+  .waver{background:var(--hl);border:1px solid var(--hl-border);border-radius:10px;padding:10px 13px;margin-bottom:10px;font-size:.89rem}
+
+  .sent{margin-bottom:20px}
+  .sent .src{font-family:var(--serif);font-size:1rem;background:var(--blue-soft);padding:12px 14px;border-radius:10px;border-left:3px solid var(--blue)}
+  .sent .anat{margin-top:8px;font-size:.9rem}
+  .sent .anat li{margin:4px 0 4px 18px}
+  .sent .tr{margin-top:8px;font-size:.92rem;color:var(--muted)}
+  .skel{color:var(--red);font-weight:600}
+
+  .filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+  .fbtn{font-size:.8rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:999px;padding:4px 14px;cursor:pointer}
+  .fbtn.on{background:var(--accent);color:var(--card);border-color:var(--accent)}
+  .vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
+  .vitem{border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer;transition:border-color .15s}
+  .vitem:hover{border-color:var(--accent)}
+  .vitem .w{font-family:var(--serif);font-weight:bold}
+  .vitem .cn{font-size:.85rem;color:var(--muted)}
+  .vitem .badges{float:right}
+
+  .wb{display:grid;gap:10px}
+  .wbi{border-left:3px solid var(--green);background:var(--green-soft);border-radius:0 10px 10px 0;padding:10px 14px;font-size:.92rem}
+  .wbi .p{font-family:var(--serif);font-weight:600}
+  .wbi .u{color:var(--muted);font-size:.85rem}
+
+  .flow{display:grid;gap:8px;font-size:.92rem}
+  .flow .fi{border:1px solid var(--line);border-radius:10px;padding:9px 13px}
+  .flow .fi b{color:var(--accent)}
+
+  .ctab{width:100%;border-collapse:collapse;font-size:.86rem;margin-top:8px}
+  .ctab th,.ctab td{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
+  .ctab th{background:var(--accent-soft);color:var(--accent);font-size:.8rem;white-space:nowrap}
+  .ctab code{background:var(--hl);padding:0 3px;border-radius:3px}
+  .tabwrap{overflow-x:auto}
+  .ok{color:var(--green);font-weight:700}
+  .no{color:var(--red);font-weight:700}
+  .tl{display:grid;gap:10px;margin-top:6px}
+  .tli{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:start;border:1px solid var(--line);border-radius:10px;padding:10px 13px}
+  .tli .mark{font-family:var(--serif);font-weight:700;color:var(--accent);background:var(--accent-soft);border-radius:8px;padding:4px 10px;white-space:nowrap;font-size:.85rem}
+
+  #yd{position:fixed;z-index:60;display:none;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:4px 12px;font-size:.8rem;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+  footer{color:var(--muted);font-size:.8rem;text-align:center;margin-top:30px}
+  .att{display:grid;gap:8px;margin-top:10px}
+  .atti{border:1px solid var(--line);border-radius:10px;padding:9px 13px;font-size:.9rem}
+  .atti b{font-family:var(--serif)}
+  .atti.no2{background:var(--red-soft);border-color:var(--red)}
+  .atti.yes{background:var(--green-soft);border-color:var(--green)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">◀ 返回英语复盘中心</a>
+  <header>
+    <h1>They knew slavery was wrong—and yet most did little to fight it：开国元勋们的知与行</h1>
+    <div class="sub">2008 年英语（一）真题 · Text 4 · 407 词 · 建议做题 18 min · 话题：美国开国元勋 × 奴隶制 × 历史学的新视角（源自 <i>US News &amp; World Report</i>《美国新闻与世界报道》2004-01-12 <i>The Sorry Legacy of the Founders</i>「开国元勋们令人遗憾的遗产」）</div>
+    <div class="tags">
+      <span class="tag">正确答案：36D 37B 38C 39A 40B</span><span class="tag">题型：写作目的 + 段落推理 + 人物综合 + 事实综合 + 因果事实</span><span class="tag warn">⚠️ Claude 盲做 4/5，36 题错选 C</span><span class="tag">🆕 套路库 26→29 卡：新增 R27 引入方向 / R28 人物综合题 / R29 引号三功能</span><span class="tag">⭐ 熟词僻义 16 处 · 美国史背景 7 条</span>
+    </div>
+    <div class="atti" style="margin-top:14px;background:var(--blue-soft);border:1px solid var(--blue);border-radius:10px;padding:10px 14px;font-size:.88rem">
+      📖 <b>本页与原卷配合看</b>：原文完整英文在原卷 <b>p9</b>（<code>按年份/2008/…图像保真版.pdf</code> 第 10 页），题目在原卷 <b>p10</b>（PDF 第 11 页），黄皮书精讲在同一 PDF 的 <b>p49–56</b>。本页第 01 节<b>按段给出全部考点句原文 + 全段中译</b>——做题时对着原卷读，复盘时对着本页看。
+    </div>
+    <div class="atti no2" style="margin-top:10px;font-size:.88rem">
+      🎯 <b>本篇最该带走的一件事（我又在这一篇栽了一题，而且是同一把刀的第三次）</b>：<b>36 题我选了 C，正确答案是 D。</b><br>
+      C 项 <code>stress the role of <b>slaves</b> in <b>the U.S. history</b></code>（强调奴隶在美国历史上的作用）——我是照着「写作目的题＝往外扩一层找主题」做的，<b>可这一扩就同时犯了两处错</b>：<br>
+      · <b>主体换了</b>：原文 ②段②句是 <code>the roles <b>slavery</b> played</code>（<b>奴隶制</b>扮演的角色），C 说的是 <code>the role of <b>slaves</b></code>（<b>奴隶这群人</b>的作用）——<b>制度 ≠ 人群</b>；<br>
+      · <b>范围塌了</b>：原文限定在 <code>in the lives of the <b>founding generation</b></code>（开国那一代人的生活里），C 放大成 <code>the <b>U.S. history</b></code>（整部美国史）。<br>
+      <b>而真正的病根在方向</b>：①段整段只讲一个事例，<b>②段首句 <code>That's a far different image from…</code> 是一句<u>反差句</u></b> ⟹ 作者是拿「人们<u>不知道</u>的华盛顿」去反衬「人们<u>熟知</u>的华盛顿」，<b>事例的绝对主角是华盛顿本人</b>，而不是下文的大主题。<b>这叫「反向引入」，我按「正向引入」做了。</b><br>
+      ⟹ 新立套路卡 <b>R27 引入方向</b>（完整复盘见第 02+ 节）。<br>
+      ⚠️⚠️ <b>更该记住的是这条时间线</b>：2007·T4 我立了 R8 第十一类「泛化 / 扩大范围」→ 2008·T3 我又栽一次、把它升级成带动作的 <b>R24 范围校验</b> → <b>本篇第三次栽在同一处</b>。<b>⟹ 说明「知道有这个坑」根本不管用，必须把它绑在一个<u>固定动作</u>上：每道题落笔前，把选项主语和依据句主语并排写下来。</b>
+    </div>
+  </header>
+
+  <div class="layout">
+    <main>
+      <!-- ========== 全文脉络 ========== -->
+      <section class="card">
+        <h2><span class="n">00</span>读前一分钟 · 全文脉络（做完题再看也行）</h2>
+        <div class="flow">
+          <div class="fi"><b>①段 开篇轶事 · 华盛顿的假牙</b>　⭐36 题定位段。1784 年，成为总统的五年前，<b>52 岁的华盛顿几乎掉光了牙</b>；他雇了个牙医往自己颌骨上移植九颗牙——<b>破折号甩出最后一刀：这些牙是从他的奴隶嘴里拔下来的。</b><br>⭐ <b>全段只有两句话，信息量全在破折号之后。</b>这是典型的「先给平常事、末尾抖包袱」写法。</div>
+          <div class="fi"><b>②段 ⚠️ 由轶事转入正题 · 历史学界的新视角</b>　⭐37 题定位段，也是全文主旨段。<br>①句 <code>That's a <b>far different image</b> from the cherry-tree-chopping George most people remember</code>——<b>这与大多数人从历史书里记得的「砍樱桃树的乔治」形象大不相同</b>（那个诚实小男孩的典故，见 01+ 背景）。<br>②句转入正题：<b>许多历史学家开始关注奴隶制在开国那一代人生活中扮演的角色</b>；③句：他们<b>部分</b>是受 1998 年 DNA 证据的推动（几乎确证杰斐逊与女奴萨莉·赫明斯至少育有一子）；④句：<b>只是在最近三十年</b>，学者才开始「自下而上」研究历史（<b>only 引起部分倒装</b>）；⑤句：数位史家的著作揭示了<b>早期领袖所作的道德妥协</b>与<b>建国初期的脆弱性</b>；⑥句 <code>More significantly</code>：<b>许多开国元勋明知奴隶制不义，却几乎没人采取行动去反对它。</b><br>⭐ <b>⑥句就是全文论点，也是标题里那句话。后面四段全在解释「为什么明知不义还不行动」。</b></div>
+          <div class="fi"><b>③段 总原因 · 时代文化的束缚</b>　⭐38 题的第一条依据。<code>More than anything, the founders were <b>hampered by the culture of their time</b></code>（最重要的是，开国元勋受到所处时代文化的<b>束缚</b>）。<br>②句 While 让步：<b>华盛顿和杰斐逊私下表达过对奴隶制的反感，但他们也明白它是这个国家政治与经济的基石。</b><br>⭐ <b>这一句话里同时装着「反感」和「离不开」——38 题 C 项 <code>complex</code>（复杂）的第一块砖。</b></div>
+          <div class="fi"><b>④段 原因之一 · 经济上离不开</b>　⭐39 题 B/C/D 三个干扰项的产地。<code>For one thing</code>（一方面）：南方<b>承担不起放弃奴隶的后果</b>；温瑟克说，<b>拥有奴隶「就如同拥有一个大额银行账户」</b>（⚠️ 这是<b>比喻</b>）；③句：<b>若没有针对这种「特殊制度」的保护条款，南方各州当初根本不会签署宪法</b>——条款之一便是<b>在分配国会代表席位时把一名奴隶算作五分之三个人</b>。</div>
+          <div class="fi"><b>⑤段 原因之二 · 政治上离不开</b>　⭐39 题正确项 A 的唯一出处。<code>And the statesmen's <b>political lives depended on slavery</b></code>（政治家的政治生涯也依赖奴隶制）。<br>②句：<b>五分之三方案在选举人团中虚增了南方各州的选票，把 1800 年大选的险胜「送到」了杰斐逊手里</b>；③句：<b>一上任，杰斐逊就用 1803 年的路易斯安那购地案扩大了奴隶制</b>——新土地被划成 13 个州，其中三个是蓄奴州。</div>
+          <div class="fi"><b>⑥段 ⚠️ 转折收尾 · 他们也做过努力</b>　⭐⭐40 题定位段。<code><b>Still</b></code>（尽管如此）：<b>杰斐逊解放了赫明斯的孩子们——但没有解放她本人，也没有解放他另外约 150 名奴隶</b>；②句（本篇最长的一句）：<b>华盛顿在目睹独立战争中黑人士兵的英勇后开始相信「人人生而平等」，最终顶住亲属的强烈反对，在<u>遗嘱</u>中给予了奴隶自由</b>；③句：<b>仅仅十年前，这样的行为还需要弗吉尼亚州立法机构的批准。</b><br>⭐ <b>末句是在衬托「这一步有多难、时代刚刚开了个口子」，不是在讲法律程序。</b></div>
+          <div class="fi" style="border-color:var(--accent)">📌 <b>一句话主旨</b>：<b>开国元勋们对奴隶制的态度是矛盾而复杂的</b>——他们私下知道它不义，却因为时代文化的束缚、南方的经济命脉与自己的政治生涯而几乎无所作为；<b>直到晚年才各自作出有限的补救。</b><br>
+          📌 <b>结构套路</b>：<b>轶事引入（①）→ 亮出论点：知而不行（②）→ 总原因：时代束缚（③）→ 分原因：经济（④）＋ 政治（⑤）→ 转折补充：也做过努力（⑥）</b>。<br>
+          ⭐⭐ <b>本篇的结构眼是三个「路标短语」，每一个都开一段</b>：<code><b>More than anything</b></code>（③，给总原因）→ <code><b>For one thing</b></code>（④，给第一条分原因）→ <code><b>And</b> the statesmen's political lives…</code>（⑤，给第二条分原因）→ <code><b>Still</b></code>（⑥，转折）。<b>四个词把后四段的关系全交代了，比读完整段快得多。</b><br>
+          ⚠️ <b>特别注意 <code>For one thing</code> 后面<u>没有</u> <code>for another</code></b>——第二条原因是靠 <code>And</code> 接上的。<b>别因为等不到 for another 就以为④⑤是一段。</b><br>
+          ⭐ <b>五题定位段 ＝ ① ｜ ② ｜ ②③⑤⑥ ｜ ④⑤ ｜ ⑥</b>。<b>36/37/40 严格同序；38/39 是「事实综合题」，天生跨段，不受同序原则约束</b>——<b>看到 <code>What do we learn about X?</code> 和 <code>Which of the following is true?</code> 就该预判「这题要翻全文」，不要试图定位到一段。</b></div>
+        </div>
+      </section>
+
+      <!-- ========== 原文精读 ========== -->
+      <section class="card">
+        <h2><span class="n">01</span>原文精读 · 考点句 <button class="allbtn" onclick="toggleAll()">全段译文 开/关</button></h2>
+        <p style="font-size:.8rem;color:var(--muted);margin-bottom:14px">🟡 黄色高亮 = 重难点词/短语，点击右侧出卡片 ｜ 蓝色虚线 = 长难句，点击跳到精析 ｜ 每段「译」= 该段完整中译 ｜ 选中任意其他单词浮出「查有道」</p>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p style="font-size:.78rem;color:var(--accent);margin-bottom:6px">① 开篇轶事段 · 只有两句 · ⭐36 题定位段</p>
+          <p class="en"><span class="pno">时间状语前置</span>In 1784, five years before he became president of the United States, George Washington, 52, was nearly <span class="tk" data-w="toothless">toothless</span>.</p>
+          <p class="en" style="margin-top:10px"><span class="pno">⭐破折号抖包袱</span><span class="ls" onclick="go('s1')">So he hired a dentist to <span class="tk" data-w="transplant">transplant</span> nine teeth into his jaw—having <span class="tk" data-w="extract">extracted</span> them from the mouths of his slaves.</span></p>
+          <div class="zh"><b>①段全译：</b>1784 年，也就是乔治·华盛顿成为美国总统的五年前，52 岁的他牙齿几乎掉光了。于是他雇用一名牙医移植了九颗牙齿到自己的颌骨上——这些牙齿是从他的奴隶们口中拔出来的。
+          <div style="margin-top:8px;font-size:.86rem">⭐⭐ <b>整段的杀伤力全在破折号后面那半句。</b>前半句读起来只是个「老人补牙」的生活细节，破折号一转，牙的来源才被抖出来——<b>作者用的是「延迟揭露」的写法：先让你放松，再给你一击。</b><br>
+          ⚠️ <b>而这正是 36 题的陷阱来源</b>：读到「从奴隶嘴里拔牙」，最自然的反应是「好残忍」（B）或者「奴隶为美国做了贡献」（C）。<b>可作者的落点在②段首句——它讲的是「这个华盛顿和你在历史书里认识的那个不一样」。</b><br>
+          📌 <b>语法上要认出 <code>having extracted</code></b>：<b>完成式分词短语作状语，表示这个动作<u>先于</u>主句动作</b>（先拔、后移植），详见长难句 s1。</div></div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p style="font-size:.78rem;color:var(--accent);margin-bottom:6px">② 主旨段 · 历史学界的新视角 · ⭐36 题的答案在①句 · ⭐37 题定位段</p>
+          <p class="en"><span class="pno">⭐⭐36 题钥匙·反差句</span><span class="ls" onclick="go('s2')">That's a <span class="tk" data-w="far">far</span> different <span class="tk" data-w="image">image</span> from the <span class="tk" data-w="cherry">cherry-tree-chopping</span> George most people remember from their history books.</span></p>
+          <p class="en" style="margin-top:10px"><span class="pno">⭐全文话题句</span>But recently, many historians have begun to focus on the roles <span class="tk" data-w="slavery">slavery</span> played in the lives of the <span class="tk" data-w="founding">founding generation</span>.</p>
+          <p class="en" style="margin-top:10px"><span class="pno">⭐37A 的死穴：in part</span><span class="ls" onclick="go('s3')">They have been <span class="tk" data-w="spur">spurred</span> <span class="tk" data-w="inpart">in part</span> by DNA evidence made available in 1998, which almost certainly proved Thomas Jefferson had <span class="tk" data-w="father">fathered</span> at least one child with his slave Sally Hemings.</span></p>
+          <p class="en" style="margin-top:10px"><span class="pno">⭐only 引起部分倒装</span><span class="ls" onclick="go('s4')">And only over the past 30 years have scholars examined history <span class="tk" data-w="bottomup">from the bottom up</span>.</span></p>
+          <p class="en" style="margin-top:10px"><span class="pno">⭐⭐37B 的出处</span><span class="tk" data-w="works">Works</span> of several historians reveal the moral <span class="tk" data-w="compromise">compromises</span> made by the nation's early leaders and the <span class="tk" data-w="fragile">fragile</span> nature of the country's <span class="tk" data-w="infancy">infancy</span>.</p>
+          <p class="en" style="margin-top:10px"><span class="pno">⭐⭐全文论点</span>More <span class="tk" data-w="significantly">significantly</span>, they argue that many of the Founding Fathers knew slavery was wrong—and yet most did little to <span class="tk" data-w="fight">fight</span> it.</p>
+          <div class="zh"><b>②段全译：</b>这一形象与大多数人从历史书中所记得的「砍樱桃树的乔治」大为不同。但最近，许多历史学家开始关注奴隶制在开国那一代人的生活中所扮演的角色。他们在某种程度上是受到了 1998 年获得的 DNA 证据的鼓舞，该证据几乎可以确证托马斯·杰斐逊曾与其女奴萨莉·赫明斯至少育有一个孩子。而且只是在最近三十年间，学者们才开始「自下而上」地研究历史。数位历史学家的著作揭示了美国早期领袖所作的道德妥协以及建国初期的脆弱性。更为重要的是，他们提出，许多开国元勋明知奴隶制是不义的——然而大部分人却极少采取行动去反对它。
+          <div style="margin-top:8px;font-size:.86rem">⭐⭐ <b>①句是 36 题的全部依据，而且是「反过来」用的</b>：这句话的骨架是「<b>A 与 B 大不相同</b>」——A ＝ ①段那个从奴隶嘴里拔牙的华盛顿，B ＝ 历史书里砍樱桃树的诚实小乔治。<b>作者写①段那个轶事，就是为了造出这个反差，让你看到「你不认识的华盛顿」。</b>⟹ 36 题选 D <code>reveal some unknown aspect of his life</code>。<br>
+          ⚠️ <b>②句才是全文话题句，但它<u>不是</u> 36 题的答案</b>——两句之间隔着一个 <code>But</code>，<b>①句结算的是①段，②句开启的是下文</b>。<b>写作目的题问的是「①段为什么存在」，答案在紧挨着它的那一句，不在再往后一句。</b><br>
+          📌 <b>③句的 <code>in part</code>（部分地）是 37A 的死穴</b>：作者只说 DNA 证据「<b>部分地</b>」推动了这股风潮，<b>一个字没说 DNA 技术在史学研究里用得有多广</b>。<b>凡限定词（in part / to some extent / partly）出现在因果句里，就是命题人埋好的量级开关。</b><br>
+          📌 <b>⑤句是 37B 的出处</b>：<code>moral compromises</code>（道德妥协）＋ <code>the fragile nature of the country's <b>infancy</b></code>（建国<b>初期</b>的脆弱性）⟹ 选项 <code>in its <b>early days</b> the U.S. was confronted with <b>delicate</b> situations</code>：<b>early days ↔ infancy，delicate ↔ fragile，两处同义替换，一句对一句。</b><br>
+          ⭐ <b>⑥句 <code>knew slavery was wrong—and yet most did little to fight it</code> 是全文论点</b>，破折号 + and yet 的转折把「知」与「行」劈成两半。<b>后面③④⑤⑥四段全部在回答一个问题：为什么知道了却不做？</b></div></div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p style="font-size:.78rem;color:var(--accent);margin-bottom:6px">③ 总原因 · 时代文化的束缚 · ⭐38C 的第一块砖</p>
+          <p class="en"><span class="pno">总原因</span>More than anything, the historians say, the founders were <span class="tk" data-w="hamper">hampered</span> by the culture of their time.</p>
+          <p class="en" style="margin-top:10px"><span class="pno">⭐⭐矛盾态度同句并存</span><span class="ls" onclick="go('s5')">While Washington and Jefferson privately expressed <span class="tk" data-w="distaste">distaste</span> for slavery, they also understood that it was part of the political and economic <span class="tk" data-w="bedrock">bedrock</span> of the country they helped to create.</span></p>
+          <div class="zh"><b>③段全译：</b>历史学家表示，最为重要的是，开国元勋们受到了他们所处时代文化的束缚。尽管华盛顿和杰斐逊私下表达过对奴隶制的反感，但他们也明白，奴隶制是他们帮助创建的这个国家的政治与经济基石的一部分。
+          <div style="margin-top:8px;font-size:.86rem">⭐⭐ <b>②句是全篇最重要的一句话，因为它把「复杂态度」压缩进了一个 While 让步句里</b>：<br>
+          · <b>让步部分</b>（次要信息）：privately expressed distaste ⟹ <b>他们反感</b>；<br>
+          · <b>主句部分</b>（重点信息）：also understood it was part of the bedrock ⟹ <b>他们也清楚离不开它</b>。<br>
+          <b>⟹ 一个人同时持有这两种认知，就叫 <code>complex</code>（复杂）。这是 38 题 C 项的第一块砖。</b><br>
+          📌 <b>注意 <code>privately</code> 这个副词</b>：<b>「私下」反感 ⟹ 公开场合并不反对</b>。<b>一个副词就把「知」和「行」的裂缝写出来了，与②段⑥句的论点严丝合缝。</b><br>
+          ⚠️ <b>「先让步再主句」是本篇（也是 2008 全年）最爱的信息包装法</b>：While…, they also… ｜ Still, …—though not… ｜ …can change, but…（T3）。<b>永远记住：让步在前，重点在后。</b></div></div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p style="font-size:.78rem;color:var(--accent);margin-bottom:6px">④ 分原因一 · 经济命脉 · ⚠️ 39 题三个干扰项的产地</p>
+          <p class="en"><span class="pno">路标：第一条原因</span>For one thing, the South could not <span class="tk" data-w="afford">afford</span> to <span class="tk" data-w="partwith">part with</span> its slaves.</p>
+          <p class="en" style="margin-top:10px"><span class="pno">⚠️比喻·39C 的来源</span>Owning slaves was <span class="tk" data-w="bankacct">&quot;like having a large bank account,&quot;</span> says Wiencek, author of <i>An Imperfect God: George Washington, His Slaves, and the Creation of America</i>.</p>
+          <p class="en" style="margin-top:10px"><span class="pno">⭐含蓄虚拟·39B/39D 的来源</span><span class="ls" onclick="go('s6')">The southern states would not have signed the Constitution without protections for the <span class="tk" data-w="peculiar">&quot;peculiar institution,&quot;</span> including a <span class="tk" data-w="clause">clause</span> that counted a slave as three fifths of a man for purposes of congressional <span class="tk" data-w="representation">representation</span>.</span></p>
+          <div class="zh"><b>④段全译：</b>一方面，南方承担不起放弃奴隶的后果。《不完美的偶像：乔治·华盛顿、他的奴隶和美利坚合众国的创立》一书的作者温瑟克说，拥有奴隶就「如同拥有一个大额银行账户」。如果没有针对这种「特殊制度」的保护条款——其中包括一项在分配国会代表席位时将一名奴隶算作五分之三个自由人的条款——南方各州当时便不会签署宪法。
+          <div style="margin-top:8px;font-size:.86rem">⚠️⚠️ <b>本段短短三句，却造出了 39 题的三个干扰项，而且三种错法各不相同</b>：<br>
+          · <b>②句的比喻 → 39C</b>：<code>「like having a large bank account」</code> 是<b>明喻</b>，意思是「奴隶是一笔巨大的财产」，<b>不是说奴隶主真的有大额存款</b>。⟹ <b>比喻句绝不能字面直译成事实。</b><br>
+          · <b>③句的引号 → 39D</b>：<code>the 「peculiar institution」</code> 带着<b>定冠词 the ＋ 引号</b>——<b>这是当年南方各州对奴隶制的<u>委婉说辞</u>，作者在转述，并不认同</b>（详见 02++ 专栏）。⟹ D「奴隶制被视为一种特殊制度」把他人的称谓当成了文中的判断。<br>
+          · <b>③句的条款 → 39B</b>：把一名奴隶算作五分之三个人，说的是<b>分配国会席位时怎么计人口</b>，<b>与「奴隶有没有选举权」是两回事</b>。⟹ B 用的是<b>你的历史常识</b>，不是原文。<br>
+          📌 <b>③句还是一个「含蓄虚拟语气」</b>：<code>would not have signed … <b>without</b> …</code>＝ 与过去事实相反，<b>事实是「有了保护条款，所以他们签了」</b>。详见长难句 s6。</div></div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p style="font-size:.78rem;color:var(--accent);margin-bottom:6px">⑤ 分原因二 · 政治生涯 · ⭐39 题正确项 A 的唯一出处</p>
+          <p class="en"><span class="pno">⭐⭐39A 的第一句依据</span>And the statesmen's political lives <span class="tk" data-w="dependon">depended on</span> slavery.</p>
+          <p class="en" style="margin-top:10px"><span class="pno">⭐⭐39A 的例证句</span><span class="ls" onclick="go('s7')">The three-fifths <span class="tk" data-w="formula">formula</span> <span class="tk" data-w="hand">handed</span> Jefferson his <span class="tk" data-w="narrow">narrow</span> victory in the presidential election of 1800 by <span class="tk" data-w="inflate">inflating</span> the votes of the southern states in the <span class="tk" data-w="electoral">Electoral College</span>.</span></p>
+          <p class="en" style="margin-top:10px"><span class="pno">⭐38C 的第二块砖</span>Once <span class="tk" data-w="inoffice">in office</span>, Jefferson <span class="tk" data-w="extend">extended</span> slavery with the <span class="tk" data-w="louisiana">Louisiana Purchase</span> in 1803; the new land was <span class="tk" data-w="carve">carved</span> into 13 states, including three slave states.</p>
+          <div class="zh"><b>⑤段全译：</b>而且这些政治家的政治生涯也依赖于奴隶制。五分之三方案使选举人团中南方各州的选票数得以激增，从而把 1800 年总统大选的险胜送到了杰斐逊手里。一上任，杰斐逊便通过 1803 年的路易斯安那购地案扩大了奴隶制的范围；这片新土地被划分成 13 个州，其中包括三个蓄奴州。
+          <div style="margin-top:8px;font-size:.86rem">⭐⭐ <b>①②句是「观点 ＋ 例证」的标准配对，也是 39A 的完整依据</b>：<br>
+          · <b>①句给观点</b>：<code>the <b>statesmen's</b> political lives <b>depended on</b> slavery</code>（政治家的政治生涯依赖奴隶制）；<br>
+          · <b>②句给例证</b>：五分之三方案<b>把大选的险胜「递到」了杰斐逊手里</b>。<br>
+          <b>⟹ 合成 39A：<code>Some <b>Founding Fathers</b> benefit <b>politically</b> from slavery</code>。</b><b>statesmen → Founding Fathers、political lives depended on → benefit politically，两处同义替换。</b><br>
+          ⭐ <b>注意选项里的 <code>Some</code></b>——原文只举了杰斐逊一个人，选项用 <b>Some</b>（一些）承接，<b>不多不少刚好等宽</b>。<b>这与 36C 把「开国那一代」放大成「整部美国史」正好是一组反面对照：<u>看到 some / certain / a few 这类弱量词，不要急着排，它们往往正是「等宽」的标志。</u></b><br>
+          📌 <b>③句是 38 题 C 项的第二块砖</b>：<b>他私下反感（③段），上台后却扩大了奴隶制（本段）</b>——<b>「说」与「做」的背离，正是 <code>complex</code> 的实证。</b></div></div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p style="font-size:.78rem;color:var(--accent);margin-bottom:6px">⑥ 转折收尾 · 他们也做过努力 · ⭐⭐40 题定位段</p>
+          <p class="en"><span class="pno">⭐让步式公允评价</span><span class="tk" data-w="still">Still</span>, Jefferson <span class="tk" data-w="free">freed</span> Hemings's children—though not Hemings herself or his <span class="tk" data-w="approximately">approximately</span> 150 other slaves.</p>
+          <p class="en" style="margin-top:10px"><span class="pno">⭐⭐40 题全部依据·33 词从句撑开主谓</span><span class="ls" onclick="go('s8')">Washington, who had begun to believe that <i>all</i> men were created equal after observing the <span class="tk" data-w="bravery">bravery</span> of the black soldiers during the <span class="tk" data-w="revwar">Revolutionary War</span>, <span class="tk" data-w="overcome">overcame</span> the strong <span class="tk" data-w="opposition">opposition</span> of his relatives to <span class="tk" data-w="grant">grant</span> his slaves their freedom in his <span class="tk" data-w="will">will</span>.</span></p>
+          <p class="en" style="margin-top:10px"><span class="pno">⭐虚拟语气作衬托</span><span class="ls" onclick="go('s9')">Only a decade earlier, such an <span class="tk" data-w="act">act</span> would have required <span class="tk" data-w="legislative">legislative approval</span> in Virginia.</span></p>
+          <div class="zh"><b>⑥段全译：</b>尽管如此，杰斐逊还是解放了赫明斯的孩子们——然而并未解放她本人以及他大约 150 名其他奴隶。华盛顿在目睹独立战争中黑人士兵的英勇表现后，开始相信人人生而平等，从而克服了亲属的强烈反对，在遗嘱中给予了他的奴隶自由民地位。仅在（华盛顿解放奴隶的）十年前，这种行为在弗吉尼亚州原本还需得到立法机构的批准。
+          <div style="margin-top:8px;font-size:.86rem">⭐⭐ <b>②句是本篇最长的句子，也是 40 题的全部依据，关键在于读出<u>三段时间链</u></b>：<br>
+          <code>observing the bravery</code>（<b>最早</b>：独立战争期间目睹黑人士兵英勇）→ <code>had begun to believe</code>（<b>其次</b>：开始相信人人生而平等，<b>过去完成时</b>）→ <code>overcame … to grant … in his will</code>（<b>最后</b>：立遗嘱解放奴隶，<b>一般过去时</b>）。<br>
+          <b>⟹ 40 题问 <code>originated from</code>（源于），问的是这条链的<u>起点</u>，不是中间那一环。起点是「目睹黑人士兵英勇」＝ 军事经历（B）。</b><br>
+          ⚠️ <b>A 项 <code>moral considerations</code> 之所以错，还有一条更硬的理由</b>：全文唯一出现 <code>moral</code> 的地方是②段⑤句的 <code>moral <b>compromises</b></code>（道德<b>妥协</b>）——<b>说的是「他们在道德上作了让步」，与「出于道德考虑而解放奴隶」正好相反。</b><br>
+          📌 <b>①句 <code>Still, …—though not…</code> 是一句非常值得学的评价句</b>：<b>先给肯定（他确实解放了那几个孩子），再用破折号立刻打折（但没放另外 150 人）。</b>一句话里既不抹杀也不吹捧——<b>写人物评价段落时照这个模子写，比堆形容词有力得多。</b><br>
+          📌 <b>③句用虚拟语气做衬托</b>：<b>仅仅十年前这还需要立法机构批准 ⟹ 言外之意，华盛顿这一步在当时几乎是不可能的。</b><b>这句话不是在讲法律程序，是在给上一句加分量。</b></div></div>
+        </div>
+      </section>
+
+      <!-- ========== 背景 ========== -->
+      <section class="card" id="bgcol">
+        <h2><span class="n">01+</span>本篇的七条美国史背景（帮你读懂，但绝不用来选答案）</h2>
+        <p style="font-size:.92rem;margin-bottom:12px">这是一篇<b>背景知识密度很高</b>的文章：短短 407 词里塞了七个只有美国人才自动懂的名词。<b>不认识它们，②④⑤三段会读得很吃力；但认识它们之后，紧接着就会掉进另一个坑——拿常识去选答案。</b>先看背景，再看警告。</p>
+        <div class="tabwrap"><table class="ctab">
+          <tr><th>词</th><th>背景</th><th>在本篇里的作用</th></tr>
+          <tr><td><code>cherry-tree-chopping George</code></td><td><b>「砍樱桃树的乔治」</b>：美国家喻户晓的儿童故事——小华盛顿砍了父亲的樱桃树，父亲问起时他答「<b>我不能撒谎</b>」。<b>这个故事其实是传记作者虚构的</b>，但它塑造了华盛顿「诚实、正直」的国民形象。</td><td>⭐⭐ <b>36 题的钥匙</b>。它代表「大多数人记忆里的华盛顿」，与①段那个华盛顿形成反差。</td></tr>
+          <tr><td><code>the Founding Fathers</code> / <code>the founding generation</code></td><td><b>开国元勋 / 开国那一代</b>：参与独立战争、起草《独立宣言》与宪法的那批人，华盛顿、杰斐逊、富兰克林等。<b>在美国话语里近乎神圣。</b></td><td>本文的批判对象——正因为他们被神化，「他们也蓄奴」才有冲击力。<b>注意范围：是「那一代人」，不是「整部美国史」（36C 就错在这）。</b></td></tr>
+          <tr><td><code>all men were created equal</code></td><td>《独立宣言》开篇名句「<b>人人生而平等</b>」，执笔者正是<b>杰斐逊本人</b>。</td><td>⭐ 原文给 <code><i>all</i></code> 加了<b>斜体</b>——这是作者在提醒：这句话是写给「所有人」的，<b>而写下它的人自己蓄着 150 多名奴隶。</b>斜体就是作者的态度。</td></tr>
+          <tr><td><code>the 「peculiar institution」</code></td><td><b>「特殊制度」</b>：19 世纪美国南方对<b>奴隶制</b>的委婉称呼，用来回避 slavery 这个刺眼的词。</td><td>⭐⭐ <b>39D 的钥匙</b>。<b>带引号 ＝ 作者在转述别人的说法，并不认同</b>（详见 02++）。</td></tr>
+          <tr><td><code>three fifths of a man</code></td><td><b>「五分之三妥协」</b>：1787 年制宪会议的产物——分配国会席位与税额时，<b>一名奴隶按五分之三个自由人计入人口</b>。南方要人口多好多拿席位，北方不愿承认奴隶为人。</td><td>⭐ <b>39B 的钥匙</b>。它解决的是<b>「怎么数人头」</b>，<b>完全没涉及奴隶的投票权</b>——奴隶不投票，是奴隶主替他们「赚」到了席位。</td></tr>
+          <tr><td><code>the Electoral College</code></td><td><b>选举人团</b>：美国总统由各州的选举人票选出，而各州选举人数 ＝ 该州国会议员数。<b>⟹ 人口算得多，选举人票就多。</b></td><td>⭐⭐ <b>39A 的完整逻辑闭环</b>：五分之三条款 → 南方人口算得多 → 选举人票多 → 杰斐逊 1800 年险胜。<b>不懂这个链条，就看不出「政治上得益于奴隶制」是怎么落地的。</b></td></tr>
+          <tr><td><code>the Louisiana Purchase</code> / <code>the Revolutionary War</code></td><td><b>路易斯安那购地案</b>（1803，杰斐逊从法国手中买下路易斯安那，国土面积近乎翻倍）· <b>独立战争</b>（1775–1783，华盛顿任大陆军总司令，<b>黑人士兵参战</b>）。</td><td>前者是 38C「说一套做一套」的实证；后者是 <b>40 题答案 B「军事经历」的所在</b>。</td></tr>
+        </table></div>
+        <div class="atti no2" style="margin-top:14px">
+          ⚠️⚠️ <b>警告：背景知识只用来「读懂句子」，不用来「判断选项」。本篇的 39B 就是专门为「懂美国史的人」设计的陷阱。</b><br>
+          39B <code>Slaves in the old days did not have the right to vote</code>（过去的奴隶没有选举权）——<b>这在历史上千真万确</b>，任何学过一点美国史的人都会点头。<b>可题干写的是 <code>according to the text</code>：原文只谈了「分配国会席位时把奴隶算作五分之三个人」，一个字没提投票权。</b><br>
+          ⟹ <b>常识陷阱的判据只有一条：<u>「这句话是真的吗」和「文章说过这句话吗」是两个问题，考研阅读只问后一个。</u></b><b>凡是你不需要读文章就知道对的选项，先按「无中生有」处理，回文找到原句才敢选。</b><b>（已补进套路库 R8 干扰项总纲，扩为十二类。）</b>
+        </div>
+      </section>
+
+      <!-- ========== 题目 ========== -->
+      <section class="card">
+        <h2><span class="n">02</span>题目与解析（点选项即判 · 再看解析）</h2>
+
+        <div class="q" data-ans="3" id="q36">
+          <p class="stem"><span class="qt">写作目的</span>36. George Washington's dental surgery is mentioned to</p>
+          <div class="opts">
+            <div class="opt">[A] show the primitive medical practice in the past.</div>
+            <div class="opt">[B] demonstrate the cruelty of slavery in his days.</div>
+            <div class="opt">[C] stress the role of slaves in the U.S. history.</div>
+            <div class="opt">[D] reveal some unknown aspect of his life.</div>
+          </div>
+          <div class="expl">
+            <div class="fail">
+              ❌ <b>Claude 盲做在此翻车：我选了 C，正确答案是 D。</b>完整复盘见下面的 <a href="#dircol" style="color:var(--red);font-weight:700">02+ 专栏</a>。<br>
+              <b>我的思路是对的一半</b>：写作目的题不能停在事例本身，要往外扩一层去找它服务的观点（这是我自己在 2007·T4 立的 <b>R16</b>）。<br>
+              <b>可我扩过了头，一路扩到②段②句的话题句去了</b>——而<b>①段的结算句是②段①句，不是②句</b>，两句之间还隔着一个 <code>But</code>。<br>
+              <b>而且就算真要用②句，C 也对不上</b>：原文是 <code>the roles <u>slavery</u> played in the lives of the <u>founding generation</u></code>（<b>奴隶制</b>在<b>开国那一代人</b>生活中的角色），C 写的是 <code>the role of <u>slaves</u> in <u>the U.S. history</u></code>（<b>奴隶</b>在<b>整部美国史</b>上的作用）——<b>主体从「制度」换成了「人群」，范围从「一代人」放大到「一部国史」，两处全错。</b>
+            </div>
+            <b>答案 D</b>　题干 <code>is mentioned to</code>（提到……是为了）＝<b>写作目的题</b>，<code>dental surgery</code> 定位第①段。<br>
+            <b>①段整段都在讲事例，本身不含观点，所以目的必须到下文去找——而下文的第一句就是它的结算句</b>：<br>
+            <span class="loc">That's a far different image from the cherry-tree-chopping George most people remember from their history books.</span>（这一形象与大多数人从历史书里记得的那个「砍樱桃树的乔治」大为不同。）<br>
+            <b>⟹ 这句话把①段定性为「一个与公众印象相反的华盛顿」。<code>a far different image</code> ↔ 选项的 <code>some unknown aspect</code>，<code>most people remember</code> ↔ <code>unknown</code>（大家记得的那个 ≠ 这个，所以这个是「不为人知的」）。一句对一句。</b><br>
+            <b>干扰项：</b><br>
+            · <b>C ── 主体偷换 + 范围放大（我踩的坑，本题最像的一项）</b>：见上。<b>另外还有一层：①段那个细节里，奴隶是<u>被拔牙的一方</u>，是受害者；说它在「强调奴隶的作用（role）」，连褒贬方向都反了。</b><br>
+            · <b>B ── 停在事例本身，没往外走</b>：从奴隶嘴里拔牙<b>确实残忍</b>，可<b>②段①句根本没往「残忍/制度」这个方向接</b>，接的是「形象反差」。<b>写作目的题的答案永远由<u>下文</u>决定，不由你读事例时的感受决定。</b><br>
+            · <b>A ── 无中生有 + 偷换重点</b>：唯一的钩子是 <code>transplant / dentist</code>，可原文<b>一个字没评价这项手术的技术水平</b>。<b>「做法残忍」≠「医术原始」，中间隔着一整套评价体系。</b><br>
+            💡 <b>本题的通用解法（新立套路卡 R27）</b>：<b>首段是纯事例时，先看第二段首句是「反差句」还是「顺承句」，据此判引入方向</b>——<br>
+            · <b>反差句</b>（That's a far different image from… / Contrary to popular belief… / But that's only half the story）⟹ <b>反向引入</b>，目的落在<b>事例主角本身</b>（揭示不为人知的一面、打破成见）；<br>
+            · <b>顺承句</b>（This is just one example of… / Such cases are increasingly common）⟹ <b>正向引入</b>，目的落在<b>下文的大主题</b>。<br>
+            <b>本篇是反向引入，所以事件的绝对主角是<u>华盛顿</u>，不是奴隶制。</b>
+          </div>
+        </div>
+
+        <div class="q" data-ans="1" id="q37">
+          <p class="stem"><span class="qt">段落推理</span>37. We may infer from the second paragraph that</p>
+          <div class="opts">
+            <div class="opt">[A] DNA technology has been widely applied to history research.</div>
+            <div class="opt">[B] in its early days the U.S. was confronted with delicate situations.</div>
+            <div class="opt">[C] historians deliberately made up some stories of Jefferson's life.</div>
+            <div class="opt">[D] political compromises are easily found throughout the U.S. history.</div>
+          </div>
+          <div class="expl">
+            <b>答案 B</b>　题干限定<b>第②段</b>，用 <b>R15 选项定位法</b>（拿四个选项各自的独特名词回②段一一比对）最快。<br>
+            <b>B 的出处是⑤句</b>：<span class="loc">Works of several historians reveal the moral compromises made by the nation's early leaders and the <b>fragile</b> nature of the country's <b>infancy</b></span>。<br>
+            <b>两处同义替换严丝合缝</b>：<code>infancy</code>（婴儿期 → <b>建国初期</b>）↔ <code>in its <b>early days</b></code>；<code><b>fragile</b> nature</code>（脆弱）↔ <code><b>delicate</b> situations</code>（微妙、棘手的处境）。<br>
+            <b>再看下文佐证</b>：④段说「没有保护奴隶制的条款，南方各州根本不会签宪法」——<b>一个新生国家要靠向不义制度让步才能存续，这就是 delicate（微妙而棘手）。</b><br>
+            <b>干扰项（四项里有三项都在「量级」上做手脚，值得并排看）：</b><br>
+            · <b>A ── 限定词被吃掉</b>：③句原文是 <span class="loc">have been spurred <b>in part</b> by DNA evidence</span>（<b>部分地</b>受到 DNA 证据推动），只是<b>一次</b>具体应用；A 说 <code><b>widely</b> applied to history research</code>（<b>广泛</b>应用于史学研究）。<b>「用过一次」→「广泛应用」，这一步跨了两个量级。</b><br>
+            · <b>D ── 名词对了，范围塌了</b>：<code>compromises</code> 确实是原词，但原文限定 <code>made by the nation's <b>early leaders</b></code>（早期领袖所作的），D 写成 <code><b>throughout the U.S. history</b></code>（贯穿整部美国史）。<b>⚠️ 这跟我在 36 题踩的是同一个坑——本篇的「范围放大」考了两次（36C / 37D），命题人这一年偏爱这把刀。</b><br>
+            · <b>C ── 方向反了</b>：③句说的是 DNA 证据「几乎确证」（<code>almost certainly <b>proved</b></code>）杰斐逊与女奴育有一子——<b>史学家是拿着科学证据下结论，不是 <code>deliberately made up</code>（故意编造）</b>。<b>「证实」被读成「编造」，这是最粗暴的一类反向。</b><br>
+            💡 <b>本题的价值在于：四个干扰项里有两个（A/D）用的是同一种手法——<u>原文有限定词，选项把限定词摘掉</u>。</b><b>⟹ 做②段这类「信息密集段」的推理题，先在原文的每个因果句上圈出限定词：<code>in part</code>· <code>only over the past 30 years</code>· <code>many of</code>· <code>most</code>。这些词一个都不能丢。</b>
+          </div>
+        </div>
+
+        <div class="q" data-ans="2" id="q38">
+          <p class="stem"><span class="qt">人物综合</span>38. What do we learn about Thomas Jefferson?</p>
+          <div class="opts">
+            <div class="opt">[A] His political view changed his attitude towards slavery.</div>
+            <div class="opt">[B] His status as a father made him free the child slaves.</div>
+            <div class="opt">[C] His attitude towards slavery was complex.</div>
+            <div class="opt">[D] His affair with a slave stained his prestige.</div>
+          </div>
+          <div class="expl">
+            <b>答案 C</b>　题干只给了一个人名，没给段号 ⟹ <b>人物信息综合题</b>，杰斐逊在<b>②③⑤⑥四段</b>都出现过，必须<b>先把他的全部信息列成一张表，再选那个「装得下所有行」的选项</b>。<br>
+            <div class="tabwrap"><table class="ctab" style="margin:10px 0">
+              <tr><th>段</th><th>关于杰斐逊的事实</th><th>指向</th></tr>
+              <tr><td>②③句</td><td>DNA 证据显示他与女奴赫明斯育有至少一子</td><td>私生活与奴隶制深度纠缠</td></tr>
+              <tr><td>③②句</td><td><b>私下</b>表达过对奴隶制的<b>反感</b>，但也明白它是国家的政治经济<b>基石</b></td><td><b>反感 ＋ 离不开</b></td></tr>
+              <tr><td>⑤②③句</td><td>靠五分之三方案<b>险胜</b>大选；上任后用路易斯安那购地案<b>扩大</b>了奴隶制</td><td><b>不但没反对，还得益并扩大</b></td></tr>
+              <tr><td>⑥①句</td><td>解放了赫明斯的孩子们，<b>但没解放她本人和另外约 150 名奴隶</b></td><td><b>补救了，但只补救了一点点</b></td></tr>
+            </table></div>
+            <b>⟹ 反感却依赖、得益却又扩大、最后解放却只解放一小部分——这四行只有一个词装得下：<code>complex</code>（复杂）。</b><br>
+            ⭐ <b>C 的「弱」正是它的强</b>：它不给任何具体细节，因而<b>不可能与任何一行冲突</b>。<b>人物综合题的正确项常常「看起来什么都没说」，那是因为它必须同时罩住互相矛盾的几行。</b><br>
+            <b>干扰项（三项各只罩一行，而且都罩歪了）：</b><br>
+            · <b>A ── 强加因果 + 无中生有</b>：⑤段说的是<b>他的政治生涯得益于奴隶制</b>（客观事实），<b>没有一个字说他的态度<u>变</u>过</b>。<b>「A 与 B 有关」被写成「A 改变了 B」，因果线是命题人画的。</b><br>
+            · <b>B ── 范围偷换（最像的一项）</b>：⑥段说他解放了 <code>Hemings's children</code>（<b>赫明斯的孩子们</b>，也就是他自己的孩子），B 说他解放了 <code>the child slaves</code>（<b>儿童奴隶</b>，泛指所有小奴隶）。<b>几个人 → 一类人。</b>而且原文<b>紧接着就否掉了这个方向</b>：<code>though not Hemings herself or his approximately 150 other slaves</code>。<br>
+            · <b>D ── 无中生有</b>：②段③句只说 DNA 证实了这段关系，<b>这是史学家的新发现，原文没提它对杰斐逊的<u>名声</u>有任何影响</b>。<code>stained his prestige</code>（玷污名声）是读者的联想。<br>
+            💡 <b>本题的通用解法（新立套路卡 R28）</b>：<b>题干只给人名不给段号 ⟹ 先扫全文把这个人的所有出现处标上序号，一行一句写下来，再逐个选项去「盖」这张表。</b><b>盖不住全部 ＝ 以偏概全；盖得住但加了原文没有的动词（改变 / 导致 / 玷污）＝ 强加因果。</b><br>
+            ⭐ <b>与 2008·T2·26 的主旨题是同一套骨架</b>：那题要求正确项<b>同时装下「新事物」和「新旧关系」</b>，本题要求正确项<b>同时装下四行互相矛盾的事实</b>——<b>「能不能全罩住」永远比「有没有原词」优先。</b>
+          </div>
+        </div>
+
+        <div class="q" data-ans="0" id="q39">
+          <p class="stem"><span class="qt">事实综合</span>39. Which of the following is true according to the text?</p>
+          <div class="opts">
+            <div class="opt">[A] Some Founding Fathers benefit politically from slavery.</div>
+            <div class="opt">[B] Slaves in the old days did not have the right to vote.</div>
+            <div class="opt">[C] Slave owners usually had large savings accounts.</div>
+            <div class="opt">[D] Slavery was regarded as a peculiar institution.</div>
+          </div>
+          <div class="expl">
+            <b>答案 A</b>　题干 <code>according to the text</code> 不给任何定位线索 ⟹ <b>用 R15 选项定位法</b>：拿四个选项各自的独特名词回文找。<b>本题四个选项恰好落在④⑤两段，扎堆在一起。</b><br>
+            <b>A 的依据是⑤段①②两句的「观点 + 例证」配对</b>：<span class="loc">the <b>statesmen's political lives depended on</b> slavery</span> ＋ <span class="loc">The three-fifths formula <b>handed Jefferson his narrow victory</b> in the presidential election of 1800</span>。<br>
+            <b>⟹ statesmen ↔ Founding Fathers、political lives depended on ↔ benefit politically，且原文只举了杰斐逊一人，选项用 <code>Some</code> 承接——不多不少，等宽。</b><br>
+            <b>干扰项（三项三种错法，全是本页 02++ 专栏要讲的东西）：</b><br>
+            · <b>C ── 比喻当事实</b>：④段②句 <span class="loc">Owning slaves was 「like having a large bank account」</span> 是<b>明喻</b>（有 like 为证），说的是「奴隶是一笔巨大的财产」。<b>C 把它读成「奴隶主真的存款很多」——把喻体当本体。</b><br>
+            · <b>D ── 引号里的话不是作者的话</b>：④段③句的 <code>the 「peculiar institution」</code> 带<b>定冠词 the ＋ 引号</b>，<b>这是当年南方各州对奴隶制的委婉说辞，作者只是转述、并不认同</b>。<b>D 说「奴隶制<u>被视为</u>一种特殊制度」，把一个带引号的委婉称谓升格成了文中的客观判断。</b>（详见 <a href="#quotecol" style="color:var(--accent);font-weight:700">02++ 专栏</a>）<br>
+            · <b>B ── 常识陷阱</b>：<b>这句话在历史上完全正确</b>，但④段③句谈的是<b>分配国会席位时怎么计算人口</b>（把一名奴隶算作五分之三个自由人），<b>与投票权无关</b>。<b>⚠️ 这一项专门为「懂美国史」的考生设计——你越懂，越容易不回原文就点下去。</b><br>
+            💡 <b>本题最该记住的一句话：<code>according to the text</code> 只问「文章说过没有」，不问「这句话对不对」。</b><b>凡是不读文章就知道它是真的选项，一律先按「无中生有」处理，找到原句才敢选。</b>（已补进 R8，干扰项总纲扩为十二类）
+          </div>
+        </div>
+
+        <div class="q" data-ans="1" id="q40">
+          <p class="stem"><span class="qt">因果事实</span>40. Washington's decision to free slaves originated from his</p>
+          <div class="opts">
+            <div class="opt">[A] moral considerations.</div>
+            <div class="opt">[B] military experience.</div>
+            <div class="opt">[C] financial conditions.</div>
+            <div class="opt">[D] political stand.</div>
+          </div>
+          <div class="expl">
+            <div class="waver">
+              🤔 <b>这道题我在 A 与 B 之间犹豫过</b>——「相信人人生而平等」听上去就是 <code>moral considerations</code>（道德考虑）。<b>最后选 B 靠的是题干那个动词：<code>originated from</code>（源于）问的是<u>链条的起点</u>，不是最靠近结果的那一环。</b>
+            </div>
+            <b>答案 B</b>　题干定位⑥段②句，这句话里埋着一条<b>三段时间链</b>（详见长难句 s8）：<br>
+            <div class="tl" style="margin:10px 0">
+              <div class="tli"><div class="mark">最早</div><div><code>after <b>observing the bravery of the black soldiers</b> during the Revolutionary War</code>　目睹独立战争中黑人士兵的英勇　⟹ <b>军事经历</b></div></div>
+              <div class="tli"><div class="mark">其次</div><div><code><b>had begun to believe</b> that <i>all</i> men were created equal</code>　开始相信人人生而平等（<b>过去完成时</b>，早于主句）</div></div>
+              <div class="tli"><div class="mark">最后</div><div><code><b>overcame</b> the strong opposition … <b>to grant</b> his slaves their freedom <b>in his will</b></code>　顶住亲属反对，在遗嘱中给予奴隶自由（<b>一般过去时</b>，即「决定」本身）</div></div>
+            </div>
+            <b>⟹ 「决定」的源头在第一环：<code>military experience</code>（军事经历）。</b><br>
+            <b>干扰项：</b><br>
+            · <b>A ── 最像的一项，但方向是反的</b>：「相信人人生而平等」确实是道德认知，<b>可它是链条的<u>中间环</u>，不是起点</b>；更硬的一条理由是——<b>全文唯一出现 <code>moral</code> 的地方是②段⑤句的 <code>moral <u>compromises</u></code>（道德<u>妥协</u>），说的是「他们在道德上作了让步」，与「出于道德考虑而解放奴隶」正好相反。</b><br>
+            · <b>D ── 张冠李戴 + 方向反</b>：⑤段说的是<b>杰斐逊</b>的政治生涯依赖奴隶制（<b>人错了</b>），而且从政治角度看，<b>维护</b>奴隶制才对开国元勋有利——<b>政治立场是解放奴隶的<u>阻力</u>，不是<u>动力</u>。</b><br>
+            · <b>C ── 张冠李戴 + 方向反</b>：④段的「大额银行账户」讲的是<b>南方奴隶主</b>舍不得放弃奴隶的<b>经济</b>原因——<b>经济考虑只会让人<u>留住</u>奴隶，绝不会促成释放。</b><br>
+            💡 <b>本题的通用解法（补进套路库 R5）：因果题先看题干动词往哪个方向走。</b><br>
+            · <code><b>originate from / stem from / result from / be rooted in / arise from</b></code> ⟹ <b>往上游追到<u>根</u></b>（本题）；<br>
+            · <code><b>lead to / result in / contribute to / give rise to</b></code> ⟹ <b>往下游走到<u>果</u></b>（2022·T4 那道）；<br>
+            · <code><b>be based on / due to / because of</b></code> ⟹ 取<b>直接原因</b>，不必追根。<br>
+            <b>⟹ 一个动词决定你在链条上停在哪一格。原文把三格都写进了同一句话，就是在等你停错地方。</b>
+          </div>
+        </div>
+      </section>
+      <!-- ========== 专栏 1 · 引入方向 ========== -->
+      <section class="card" id="dircol">
+        <h2><span class="n">02+</span>专栏 · 我错的那道题：写作目的题走反了方向（本页最值钱的一节）</h2>
+        <p style="font-size:.92rem;margin-bottom:14px">36 题我选 C、正确答案是 D。<b>这道题的价值在于：我用的<u>方法</u>是对的（写作目的题要往外扩一层），<u>方向</u>却是反的。</b>方法对、方向错，比方法不知道更难自查——因为过程中每一步都「有道理」。</p>
+
+        <h3>① 先把我的推理过程原样摆出来</h3>
+        <div class="tl">
+          <div class="tli"><div class="mark">第一步</div><div>认出题型：<code>is mentioned to</code> ＝ 写作目的题 ⟹ 调用我自己在 2007·T4 立的 <b>R16</b>：<b>「配角只负责引出主角，定位句往外扩一层找意群主旨」</b>。　<span class="ok">✔ 这一步没错</span></div></div>
+          <div class="tli"><div class="mark">第二步</div><div>①段整段是纯事例、不含观点 ⟹ 目的必须到下文找。　<span class="ok">✔ 这一步也没错</span></div></div>
+          <div class="tli" style="border-color:var(--red)"><div class="mark" style="color:var(--red);background:var(--red-soft)">第三步</div><div>往下扩 ⟹ 我一路扩到了②段<b>②</b>句那个话题句 <code>many historians have begun to focus on the roles slavery played…</code>，据此选了 C。<br><span class="no">✘ 就塌在这一步</span>——<b>①段的结算句是②段<u>①</u>句，两句之间还隔着一个 <code>But</code>。<code>But</code> 是「上一件事说完了、换话题」的标志，我却跨过它继续往下扩。</b></div></div>
+        </div>
+
+        <h3>② 病灶一：结算句在 <code>But</code> 之前，不在之后</h3>
+        <div class="tabwrap"><table class="ctab">
+          <tr><th>句</th><th>原文</th><th>它在干什么</th></tr>
+          <tr><td>②段①句</td><td><code><b>That's</b> a far different image from the cherry-tree-chopping George…</code></td><td><b>回指①段（That's）＋ 给①段定性</b>　⟹ <b>这才是①段的结算句</b></td></tr>
+          <tr><td>②段②句</td><td><code><b>But</b> recently, many historians have begun to focus on…</code></td><td><b>But 换话题，开启全文正题</b>　⟹ 它服务的是<b>下面四段</b>，不是①段</td></tr>
+        </table></div>
+        <p style="font-size:.92rem;margin-top:10px">⟹ <b>「往外扩一层」的<u>一层</u>是有边界的：扩到<u>第一个能给这个事例定性的句子</u>为止，遇到 <code>But / However / Yet</code> 就停。</b><b>把「扩一层」做成「扩到主旨」，就必然选出一个「大而正确」的选项——它往往正是命题人准备的那一个。</b></p>
+
+        <h3>③ 病灶二：就算真用②句，C 也对不上（同一句话里两处错）</h3>
+        <div class="tabwrap"><table class="ctab">
+          <tr><th></th><th>原文（②段②句）</th><th>C 项</th><th>等宽？</th></tr>
+          <tr><td><b>主体</b></td><td><code>the roles <b>slavery</b> played</code>　<b>奴隶制</b>（一种制度）</td><td><code>the role of <b>slaves</b></code>　<b>奴隶</b>（一群人）</td><td><span class="no">✘ 制度 ≠ 人群</span></td></tr>
+          <tr><td><b>范围</b></td><td><code>in the lives of the <b>founding generation</b></code>　开国那一代人的生活</td><td><code>in <b>the U.S. history</b></code>　整部美国史</td><td><span class="no">✘ 一代人 → 一部国史</span></td></tr>
+          <tr><td><b>褒贬</b></td><td>①段里奴隶是<b>被拔牙的一方</b>（受害者）</td><td><code>stress the <b>role</b></code>　暗示奴隶起了<b>作用</b>（贡献）</td><td><span class="no">✘ 方向也反了</span></td></tr>
+        </table></div>
+        <p style="font-size:.92rem;margin-top:10px"><b>⟹ 三道校验（<a href="套路库_阅读.html" style="color:var(--accent)">R21 主体</a> / <a href="套路库_阅读.html" style="color:var(--accent)">R24 范围</a> / R18 立场）任意一道认真做一遍，都能把 C 拦下来。我一道都没做——因为「感觉它很对」。</b></p>
+
+        <h3>④ 立成套路卡 R27 · 引入方向（首段纯事例的写作目的题）</h3>
+        <div class="tabwrap"><table class="ctab">
+          <tr><th>第二段首句长什么样</th><th>引入方向</th><th>写作目的落在哪</th><th>本篇</th></tr>
+          <tr><td><b>反差句 / 否定句</b><br><code>That's a far different image from…</code>· <code>Contrary to popular belief…</code>· <code>But that's only half the story.</code>· <code>The reality is rather different.</code></td><td><b>反向引入</b><br>（从特例引到<b>相反</b>的公众印象）</td><td><b>事例主角<u>本身</u></b><br>揭示不为人知的一面 / 打破成见</td><td><span class="ok">✔ 本篇</span><br>⟹ 主角是<b>华盛顿</b></td></tr>
+          <tr><td><b>顺承句 / 概括句</b><br><code>This is just one example of…</code>· <code>Such cases are increasingly common.</code>· <code>X is not alone.</code></td><td><b>正向引入</b><br>（由点扩到面）</td><td><b>下文的大主题</b><br>事例只是引子</td><td>2007·T4 引谚语属此类</td></tr>
+        </table></div>
+        <p style="font-size:.92rem;margin-top:10px"><b>⟹ 动作只有一个：读完首段事例，<u>先把第二段第一句读完再看选项</u>，判断它是「反差」还是「顺承」。</b>两秒钟的事，方向定了，四个选项立刻分成两堆。</p>
+
+        <h3>⑤ 最扎心的一点：这是同一把刀的第三次</h3>
+        <div class="atti no2">
+          <b>2007·T4</b>：复盘 40 题时，我给干扰项总纲 <b>R8</b> 加了第十一类「<b>泛化 / 扩大范围</b>」——「一部具体的法 → 一整类立法；一个州 → 全世界」。<br>
+          <b>2008·T3</b>：33 题我又栽了（NBA 球员 → the nation），于是把它升级成<b>带动作</b>的 <b>R24 范围校验</b>——「把两个主语并排写下来」。<br>
+          <b>2008·T4（本篇）</b>：<b>36 题第三次栽在同一处</b>（founding generation → the U.S. history）。<br>
+          ⟹ <b>结论很难听但必须写下来：「知道有这个坑」「甚至亲手写过这张卡」都不管用。</b><b>只有把它绑在一个每题必做的<u>固定动作</u>上才生效——落笔前，把选项主语和依据句主语并排写在草稿纸上，问一句「左边是不是右边的一小块」。</b><br>
+          <b>本篇给这个动作又加了一个触发时机：<u>凡是选项里出现 <code>the U.S. history</code>· <code>the nation</code>· <code>the industry</code>· <code>society</code> 这类「全集名词」，一律先查范围。</u></b>
+        </div>
+
+        <h3>⑥ 顺带一提：本篇「范围放大」考了两次</h3>
+        <p style="font-size:.92rem">37 题的 D 项 <code>political compromises are easily found <b>throughout the U.S. history</b></code> 用的是同一把刀：<b>原文限定 <code>made by the nation's <u>early leaders</u></code>（早期领袖），选项扩成「贯穿整部美国史」——连扩大的目标词都和 36C 一模一样（<code>the U.S. history</code>）。</b><br>
+        <b>⟹ 与 2008·T3 的规律完全吻合：一套题里同一种错法出现两次，不是巧合。做完一篇要回头数一数「哪种错法出现了不止一次」——那把刀多半在同年的其他篇目里还会再出现一次。</b><br>
+        <b>2008 三篇的「重复错法」统计：T2 ＝ 偷换主体五连 · T3 ＝ 以偏概全两次（33A / 34A）· T4 ＝ 范围放大两次（36C / 37D）。三篇全中。</b></p>
+      </section>
+
+      <!-- ========== 专栏 2 · 引号 ========== -->
+      <section class="card" id="quotecol">
+        <h2><span class="n">02++</span>专栏 · 引号的三种语用功能：引用 / 反语 / 排斥（跨 2008 三篇）</h2>
+        <p style="font-size:.92rem;margin-bottom:14px">39 题的 C 和 D 两个干扰项，<b>都产自④段里带引号的两处文字</b>。这不是巧合——<b>引号是英语议论文里最省力的「态度标记」，也因此是命题人最爱的取材地</b>。2008 这三篇正好把引号的三种功能考了个遍，值得并排记住。</p>
+
+        <div class="tabwrap"><table class="ctab">
+          <tr><th>功能</th><th>长什么样</th><th>作者的态度</th><th>命题人怎么用</th></tr>
+          <tr><td><b>① 引用</b><br>（含比喻）</td><td>引号内是<b>某人说的原话</b>，句中常有 <code>says X</code> / <code>according to X</code>。<br>本篇：<code>Owning slaves was &quot;like having a large bank account,&quot; <b>says Wiencek</b></code></td><td><b>中立转述</b>。作者借他人之口给出一个<b>形象化</b>的说法。</td><td><b>把喻体当本体</b>。<br>⟹ 39C：「奴隶主<b>真的</b>有大额存款」。<br><b>判据：见到 like / as if / a kind of，一律翻译成直义再比选项。</b></td></tr>
+          <tr><td><b>② 反语</b><br>（讽刺）</td><td>引号里的词<b>本身是褒义或中性的</b>，但放在上下文里明显不成立。<br>2008·T1：<code>increased &quot;<b>opportunities</b>&quot; for stress</code>（增加的压力「机会」）</td><td><b>否定 / 挖苦</b>。<b>引号 ＝ 我不认为这真是「机会」。</b></td><td><b>把反语读成正话</b>。<br>⟹ 会让你以为作者认为女性得到了更多机会。<br><b>判据：褒义词配着一个负面语境，就是反语。</b></td></tr>
+          <tr><td><b>③ 排斥</b><br>（他人的称谓）</td><td>引号里是<b>一个专有称呼 / 委婉说辞</b>，常带<b>定冠词 the</b>。<br>本篇：<code>protections for <b>the</b> &quot;<b>peculiar institution</b>&quot;</code></td><td><b>转述并保持距离</b>。<b>the ＋ 引号 ＝ 「他们当年管它叫『特殊制度』」，作者本人并不认可这个说法。</b></td><td><b>把他人的称谓升格成文中的判断</b>。<br>⟹ 39D：「奴隶制<b>被视为</b>一种特殊制度」。<br><b>判据：问一句「这个称呼是谁给的」——不是作者给的，就不能当作者的观点。</b></td></tr>
+        </table></div>
+
+        <div class="atti yes" style="margin-top:14px">
+          ⭐ <b>三种功能的通用识别顺序（新立套路卡 R29）</b>：<br>
+          <b>第一问：引号里是不是某人说的原话？</b>　是 ⟹ 功能①，只可作为「某人的观点」使用，且要把比喻翻成直义。<br>
+          <b>第二问：引号里的词，字面意思在这个语境下成立吗？</b>　不成立 ⟹ 功能②反语，取其反义。<br>
+          <b>第三问：引号里是不是一个「名称」，而且前面带 the？</b>　是 ⟹ 功能③排斥，<b>它是别人的叫法，不是作者的判断</b>。<br>
+          <b>⟹ 三问都过不了的引号（纯粹为了强调某个词），才可以按字面读。</b>
+        </div>
+
+        <h3>本篇 39 题的四个选项，恰好是四种不同的「真」</h3>
+        <div class="tabwrap"><table class="ctab">
+          <tr><th>项</th><th>这句话本身对吗</th><th>文中说过吗</th><th>判定</th></tr>
+          <tr><td><b>A</b> 一些开国元勋在政治上得益于奴隶制</td><td><span class="ok">✔ 对</span></td><td><span class="ok">✔ ⑤段①②句</span></td><td><b>正确项</b></td></tr>
+          <tr><td><b>B</b> 过去的奴隶没有选举权</td><td><span class="ok">✔ 历史上完全正确</span></td><td><span class="no">✘ 文中只谈计人口，没谈投票权</span></td><td><b>常识陷阱</b>　⚠️ 最危险的一项</td></tr>
+          <tr><td><b>C</b> 奴隶主常常拥有大笔存款</td><td><span class="no">✘ 不一定</span></td><td><span class="no">✘ 只有比喻</span></td><td><b>比喻当事实</b></td></tr>
+          <tr><td><b>D</b> 奴隶制被视为一种特殊制度</td><td>△ 当年南方确实这么叫</td><td><span class="no">✘ 那是他人的委婉说辞，作者加了引号</span></td><td><b>引号功能③被无视</b></td></tr>
+        </table></div>
+        <p style="font-size:.92rem;margin-top:12px">⭐⭐ <b>这张表就是 <code>according to the text</code> 类题目的全部要义：<u>「对不对」和「说没说」是两栏，本题只看第二栏。</u></b><br>
+        <b>B 项之所以最危险，是因为它在第一栏是满分</b>——<b>你越有背景知识，越容易只看第一栏就交卷</b>。⟹ 已补进 R8 干扰项总纲，作为<b>第十二类「常识陷阱」</b>。</p>
+      </section>
+
+      <!-- ========== 长难句 ========== -->
+      <section class="card" id="sents">
+        <h2><span class="n">03</span>长难句精析（正文蓝色虚线句）</h2>
+        <p style="font-size:.8rem;color:var(--muted);margin-bottom:14px">本篇的语法点非常集中，只有四类：<b>①分词短语作状语/定语（3 处）　②省略关系代词的定语从句（2 处）　③虚拟语气（2 处，其中一处是含蓄虚拟）　④only 引起的部分倒装（1 处）</b>。<br><b>⭐ 与同年另外三篇并排看，会发现 2008 全年的语法主干就这么四样</b>：T1 考了<b>部分倒装 + 完全倒装 + 插入语</b>，T2 四句<b>全是插入语撑开主谓</b>，T3 是<b>虚拟语气 + 插入语 + 让步</b>，本篇是<b>分词 + 省略 + 虚拟 + 倒装</b>。<b>把这四样认全，2008 整年没有读不通的句子。</b></p>
+
+        <div class="sent" id="s1">
+          <p class="src">So he hired a dentist to transplant nine teeth into his jaw—having extracted them from the mouths of his slaves.</p>
+          <div class="anat">
+            <ul>
+              <li><b>主干</b>：<span class="skel">he hired a dentist to transplant nine teeth</span>——他雇了个牙医来移植九颗牙。</li>
+              <li><b>破折号之后</b>：<code><b>having</b> extracted them from…</code>＝<b>完成式分词短语作状语</b>。<b>用 having done 而不是 doing，就是要表明这个动作<u>先于</u>主句发生</b>——先从奴隶嘴里拔出来，再移植进自己颌骨。</li>
+              <li><b>逻辑主语的坑</b>：分词的逻辑主语按规则应与主句主语一致（he ＝ 华盛顿），<b>但实际动手拔牙的是牙医</b>。这是英语里常见的宽松用法，<b>翻译时不必纠结「谁拔的」，重点是「牙从哪来」。</b></li>
+              <li>⭐ <b>为什么作者要用破折号把这半句甩到最后？</b>因为<b>前半句读起来只是「老人补牙」的生活琐事，最后五个词才是刀</b>。<b>这种「延迟揭露」的写法，本身就是①段的全部用意——制造一个与公众印象相反的华盛顿。</b></li>
+            </ul>
+            <p class="tr"><b>译文</b>：于是他雇用了一名牙医，把九颗牙齿移植到自己的颌骨上——而这些牙齿，是从他的奴隶们口中拔出来的。</p>
+          </div>
+        </div>
+
+        <div class="sent" id="s2">
+          <p class="src">That's a far different image from the cherry-tree-chopping George most people remember from their history books.</p>
+          <div class="anat">
+            <ul>
+              <li><b>骨架</b>：<span class="skel">That's a … image <u>from</u> the … George …</span>——<code>different <b>from</b></code> 是固定搭配，中间被 <code>far</code> 和 <code>image</code> 隔开了，<b>读的时候要把 from 和 different 接回去</b>。</li>
+              <li><b>far</b>：<b>副词「远远地、大大地」修饰形容词 different</b>，不是「远方的」。<b>⚠️ 与 2008·T1 的 <code>way ahead</code>（way ＝ 远远地）是同一类用法</b>——<b>这类「小词当程度副词」是 2008 年的偏好。</b></li>
+              <li><b><code>the cherry-tree-chopping George</code></b>：<b>连字符复合形容词作定语</b>（砍樱桃树的）＋ 专有名词。<b>整体指「传说里那个诚实的小乔治」</b>（见 01+ 背景）。</li>
+              <li><b>省略</b>：George 后面<b>省略了关系代词 that/whom</b>，<code>most people remember from their history books</code> 是定语从句修饰 George。<b>判据：两个名词性成分直接相邻（George ＋ most people），中间必有省略的关系词。</b></li>
+              <li>⭐⭐ <b>本句是 36 题的全部依据</b>：骨架是「A 与 B 大不相同」，<b>A ＝ ①段那个华盛顿，B ＝ 教科书里的华盛顿 ⟹ ①段展示的是「你不认识的那一面」。</b></li>
+            </ul>
+            <p class="tr"><b>译文</b>：这一形象，与大多数人从历史书中所记得的那个「砍樱桃树的乔治」大不相同。</p>
+          </div>
+        </div>
+
+        <div class="sent" id="s3">
+          <p class="src">They have been spurred in part by DNA evidence made available in 1998, which almost certainly proved Thomas Jefferson had fathered at least one child with his slave Sally Hemings.</p>
+          <div class="anat">
+            <ul>
+              <li><b>主干</b>：<span class="skel">They have been spurred … by DNA evidence</span>——他们（部分地）受到 DNA 证据的推动。</li>
+              <li><b>三层修饰全挂在 evidence 后面</b>：①<code>made available in 1998</code> ＝ <b>过去分词短语作后置定语</b>（1998 年公布的）；②<code>which almost certainly proved…</code> ＝ <b>非限制性定语从句</b>；③从句里 proved 后面<b>省略了 that</b>，接宾语从句 <code>Thomas Jefferson had fathered…</code>。</li>
+              <li><b><code>in part</code>（部分地）是本句最值钱的两个词</b>：<b>37A 就死在这里</b>——作者只说 DNA 证据「部分地」推动了这股风潮，<b>丝毫没说 DNA 技术在史学界用得有多广</b>。</li>
+              <li><b><code>father</code> 在这里是动词</b>：「生（孩子）、当……的生父」。<b>判据：had + 过去分词的位置只能放动词。</b>⚠️ <b>38B 就是拿这个名词义（his status as a father）造的钩子。</b></li>
+            </ul>
+            <p class="tr"><b>译文</b>：他们在某种程度上是受到了 1998 年公布的 DNA 证据的鼓舞，该证据几乎可以确证托马斯·杰斐逊曾与其女奴萨莉·赫明斯至少育有一个孩子。</p>
+          </div>
+        </div>
+
+        <div class="sent" id="s4">
+          <p class="src">And only over the past 30 years have scholars examined history from the bottom up.</p>
+          <div class="anat">
+            <ul>
+              <li><b>部分倒装</b>：<code><b>only</b> + 状语</code>置于句首时，主句要<b>部分倒装</b>——<b>把助动词提到主语前面</b>：<span class="skel">have scholars examined</span>（正常语序 ＝ scholars have examined）。</li>
+              <li><b>还原</b>：<code>Scholars have examined history from the bottom up only over the past 30 years.</code></li>
+              <li><b>只有 only 修饰状语时才倒装</b>：<code>Only then did I realize…</code> · <code>Only in this way can we…</code>。<b>⚠️ 但 only 修饰主语时<u>不倒装</u></b>：<code>Only he knows the answer.</code>（不是 does he know）。</li>
+              <li><b><code>from the bottom up</code></b>：<b>自下而上</b>——史学界的术语，指<b>从普通人（奴隶、妇女、工匠）的视角研究历史</b>，而不是只写帝王将相。<b>它解释了「为什么最近才有人关注开国元勋的奴隶」。</b></li>
+              <li>⭐ <b>2008 年的倒装扎堆</b>：本句是 only 部分倒装；T1 有 <code>than <b>do males</b></code>（比较状语从句里的倒装）和 <code>Adding to A, <b>are</b> B</code>（表语前置的完全倒装）。<b>见到句首是状语而主谓「顺序不对」，第一反应就是倒装，不要怀疑自己看错。</b></li>
+            </ul>
+            <p class="tr"><b>译文</b>：而且只是在最近三十年间，学者们才开始「自下而上」地研究历史。</p>
+          </div>
+        </div>
+
+        <div class="sent" id="s5">
+          <p class="src">While Washington and Jefferson privately expressed distaste for slavery, they also understood that it was part of the political and economic bedrock of the country they helped to create.</p>
+          <div class="anat">
+            <ul>
+              <li><b>While ＝ 尽管</b>（让步），不是「当……的时候」。<b>判据：前后两个分句意思<u>相反</u>时，While 一律译「尽管」。</b></li>
+              <li><b>骨架</b>：<span class="skel">While A, they also understood that B</span>——<b>让步在前（次要），主句在后（重点）。</b></li>
+              <li><b>又一处省略关系代词</b>：<code>the country <b>(that)</b> they helped to create</code>——他们帮助创建的这个国家。<b>同样是「两个名词性成分直接相邻」的信号。</b></li>
+              <li>⭐⭐ <b>本句把「复杂态度」压进了一个句子</b>：<b>反感（privately expressed distaste）＋ 明知离不开（part of the bedrock）</b>。<b>这是 38 题 C 项 <code>complex</code> 的第一块砖。</b></li>
+              <li><b><code>privately</code> 这个副词千万别读快</b>：<b>「私下」反感 ⟹ 公开场合并不反对</b>——一个副词就把②段⑥句的论点（知而不行）落到了具体的人身上。</li>
+            </ul>
+            <p class="tr"><b>译文</b>：尽管华盛顿和杰斐逊私下里表达过对奴隶制的反感，但他们也明白，奴隶制是他们帮助创建的这个国家的政治与经济基石的一部分。</p>
+          </div>
+        </div>
+
+        <div class="sent" id="s6">
+          <p class="src">The southern states would not have signed the Constitution without protections for the "peculiar institution," including a clause that counted a slave as three fifths of a man for purposes of congressional representation.</p>
+          <div class="anat">
+            <ul>
+              <li><b>含蓄虚拟语气</b>：主句是 <span class="skel">would not have signed</span>（与<b>过去</b>事实相反），<b>条件不由 if 引出，而藏在介词 <code>without</code> 里</b>——<code>without ＝ if it had not been for</code>。</li>
+              <li><b>⟹ 事实是</b>：<b>有了这些保护条款，所以南方各州<u>签了</u>宪法。</b><b>虚拟语气一律要反着读出事实，这一步不能省。</b></li>
+              <li><b>含蓄虚拟的常见「藏身处」</b>：<code>without</code> · <code>but for</code>（要不是）· <code>otherwise</code> · <code>or</code> · 介词短语 <code>in that case</code>。<b>见到句子里有 would have done 却找不到 if，就往这些词上找。</b></li>
+              <li><b><code>including a clause that…</code></b>：现在分词短语作补充说明，<b>that 引导定语从句修饰 clause</b>。<code>count A as B</code>＝把 A 算作 B。</li>
+              <li>⚠️⚠️ <b>本句一句造出 39 题两个干扰项</b>：<code>the &quot;peculiar institution&quot;</code>（带 the ＋ 引号的委婉说辞）→ 39D；<code>counted a slave as three fifths of a man for purposes of <b>congressional representation</b></code>（分配<b>国会席位</b>时怎么计人口）→ 39B 的常识陷阱。</li>
+            </ul>
+            <p class="tr"><b>译文</b>：如果没有针对这种「特殊制度」的保护条款——其中包括一项在分配国会代表席位时把一名奴隶算作五分之三个自由人的条款——南方各州当时便不会签署宪法。</p>
+          </div>
+        </div>
+
+        <div class="sent" id="s7">
+          <p class="src">The three-fifths formula handed Jefferson his narrow victory in the presidential election of 1800 by inflating the votes of the southern states in the Electoral College.</p>
+          <div class="anat">
+            <ul>
+              <li><b>双宾语结构</b>：<span class="skel">handed <u>Jefferson</u> <u>his narrow victory</u></span>——<code>hand sb sth</code>＝<b>把某物递给某人</b>。<b>这里用得极妙：胜利不是他自己挣来的，是制度「递到他手上」的。</b></li>
+              <li><b><code>by + doing</code> 表方式</b>：靠 <b>虚增（inflating）</b> 南方各州在选举人团中的选票数。</li>
+              <li><b>三个熟词僻义挤在一句</b>：<code>formula</code>（方案，不是「公式」）· <code>narrow victory</code>（<b>险胜</b>，不是「狭窄的胜利」）· <code>inflate</code>（<b>虚增、使膨胀</b>，不是「充气」）。</li>
+              <li>⭐⭐ <b>本句是 39A 的例证句</b>，但要读懂它必须补一条背景（见 01+）：<b>五分之三条款让南方人口「算得多」→ 选举人票就多 → 杰斐逊险胜。</b><b>不懂选举人团，这句话只是一堆专有名词；懂了，39A 的因果链才闭合。</b></li>
+            </ul>
+            <p class="tr"><b>译文</b>：五分之三方案通过虚增南方各州在选举人团中的选票数，把 1800 年总统大选的险胜送到了杰斐逊手中。</p>
+          </div>
+        </div>
+
+        <div class="sent" id="s8">
+          <p class="src">Washington, who had begun to believe that all men were created equal after observing the bravery of the black soldiers during the Revolutionary War, overcame the strong opposition of his relatives to grant his slaves their freedom in his will.</p>
+          <div class="anat">
+            <ul>
+              <li>⭐⭐ <b>本篇最长的句子（37 词），也是 40 题的全部依据。</b><b>主谓被一个 <u>29 词</u>的非限制性定语从句彻底撑开</b>：<span class="skel">Washington … overcame the strong opposition … to grant …</span>。<b>读法：先跳过两个逗号之间的全部内容，把主谓接上，再回头读从句。</b></li>
+              <li><b>从句内部还有三级嵌套</b>：<code>who had begun to believe</code> → <code>[that all men were created equal]</code>（宾语从句）→ <code>[after observing the bravery … during the Revolutionary War]</code>（时间状语）。</li>
+              <li>⭐⭐ <b>三段时间链（40 题的命脉）</b>：<br>
+              <code><b>observing the bravery</b></code>（最早，after 引导）→ <code><b>had begun to believe</b></code>（<b>过去完成时</b>，早于主句）→ <code><b>overcame … to grant</b></code>（<b>一般过去时</b>，即「决定」本身）。<br>
+              <b>⟹ 题干问 <code>originated from</code>（源于）＝ 问链条的<u>起点</u> ⟹ 军事经历（B），而不是中间那一环的「道德认知」（A）。</b></li>
+              <li><b><code>had begun</code> 这个过去完成时是路标</b>：它明确告诉你「相信人人平等」发生在「解放奴隶」<b>之前</b>；而 <code>after observing</code> 又告诉你「目睹英勇」在「相信」<b>之前</b>。<b>两个时间标记把三件事排成了唯一的顺序。</b></li>
+              <li><b><code>all</code> 在原文里是<u>斜体</u></b>（<i>all</i> men were created equal）——<b>这是作者的态度标记</b>：《独立宣言》说的是「<b>所有</b>人」，而写下这句话的那一代人自己蓄着奴隶。<b>斜体、引号、破折号，都是作者不出面的表态方式。</b></li>
+              <li><b><code>will</code> ＝ 遗嘱</b>（名词），不是「意志」也不是助动词。<b>⟹ 华盛顿是<u>死后</u>才让奴隶获得自由的——这个细节本身就在给「知而不行」补最后一笔。</b></li>
+            </ul>
+            <p class="tr"><b>译文</b>：华盛顿在目睹独立战争中黑人士兵的英勇表现后，开始相信人人生而平等，于是克服了亲属的强烈反对，在遗嘱中给予了他的奴隶自由。</p>
+          </div>
+        </div>
+
+        <div class="sent" id="s9">
+          <p class="src">Only a decade earlier, such an act would have required legislative approval in Virginia.</p>
+          <div class="anat">
+            <ul>
+              <li><b>又一处虚拟语气</b>（与过去事实相反）：<span class="skel">would have required</span>——<b>条件藏在时间状语 <code>Only a decade earlier</code> 里</b>（如果早十年的话）。</li>
+              <li><b>⟹ 事实是</b>：<b>华盛顿立遗嘱的时候，已经<u>不再</u>需要立法机构批准了</b>——弗吉尼亚的法律刚刚松动。</li>
+              <li>⭐ <b>这句话的功能是「衬托」，不是「补充法律知识」</b>：<b>仅仅十年之差，这件事从「几乎不可能」变成了「可能但要顶住家人反对」。</b><b>作者用它给上一句的分量加码：华盛顿做的这件事，在当时有多难。</b></li>
+              <li><b>⚠️ 注意本句<u>没有</u>倒装</b>：虽然句首也是 <code>Only + 状语</code>，但 <b>only 引起倒装的前提是它修饰的状语属于<u>主句</u>且句子是陈述语序</b>——这里是虚拟语气的 would have done 结构，<b>助动词 would 本就在主语后</b>，教材上常见的说法是<b>此类句子可倒可不倒，本句选择了不倒装</b>。<b>做题时不必纠结，读懂「早十年就不行」即可。</b></li>
+            </ul>
+            <p class="tr"><b>译文</b>：仅仅在十年之前，这样的举动在弗吉尼亚州还需要得到立法机构的批准。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========== 熟词僻义 ========== -->
+      <section class="card" id="polycol">
+        <h2><span class="n">03+</span>熟词僻义清算表 · 16 处</h2>
+        <p style="font-size:.9rem;margin-bottom:12px">本篇的<b>纯生词很少</b>（toothless、bedrock、infancy 靠构词法就能猜），<b>真正的门槛是两样：一是下面这批「每个字母都认识」的词，二是 01+ 那七条美国史背景。</b>凡是「句子读起来别扭」的地方，先把熟悉的那个意思换掉试试。</p>
+        <div class="tabwrap"><table class="ctab">
+          <tr><th>词</th><th>你以为的意思</th><th>本篇的意思</th><th>原文语境</th></tr>
+          <tr><td><code>father</code>（v.）⭐⭐</td><td>名词「父亲」</td><td><b>动词：生（孩子）、当……的生父</b></td><td>Jefferson had <b>fathered</b> at least one child　⚠️ 38B 拿名词义造钩子</td></tr>
+          <tr><td><code>far</code></td><td>「遥远的」（形容词）</td><td><b>副词：远远地、大大地</b>（修饰形容词）</td><td>a <b>far</b> different image　⚠️ 与 T1 的 way ahead 同类</td></tr>
+          <tr><td><code>image</code></td><td>图像、影像</td><td><b>形象（公众眼中的印象）</b></td><td>a far different image from…</td></tr>
+          <tr><td><code>spur</code>（v.）</td><td>名词「马刺」</td><td><b>激励、推动</b></td><td>They have been <b>spurred</b> in part by DNA evidence</td></tr>
+          <tr><td><code>works</code></td><td>工作（work 的复数）</td><td><b>著作、作品</b>（可数名词，必带复数）</td><td><b>Works</b> of several historians reveal…</td></tr>
+          <tr><td><code>infancy</code></td><td>婴儿期</td><td><b>（国家/事业的）初创期</b></td><td>the fragile nature of the country's <b>infancy</b>　⭐37B 的钥匙</td></tr>
+          <tr><td><code>fight</code>（v.）</td><td>打架、打仗</td><td><b>反对、与……作斗争</b>（及物）</td><td>most did little to <b>fight</b> it　⭐全文论点句</td></tr>
+          <tr><td><code>hamper</code>（v.）</td><td>名词「（有盖的）大篮子」</td><td><b>阻碍、束缚</b>（＝hinder）</td><td>the founders were <b>hampered</b> by the culture of their time</td></tr>
+          <tr><td><code>bedrock</code></td><td>床 + 岩石？</td><td><b>基石、根基</b>（bed 床基 + rock 岩 ⟹ 基岩）</td><td>the political and economic <b>bedrock</b> of the country</td></tr>
+          <tr><td><code>part with</code> ⭐</td><td>「参与」；part of（……的一部分）</td><td><b>放弃、割舍（所有物）</b>　<b>差一个介词，意思完全不同</b></td><td>could not afford to <b>part with</b> its slaves</td></tr>
+          <tr><td><code>peculiar</code> ⭐</td><td>奇怪的、古怪的</td><td><b>特有的、独特的</b>（peculiar to ＝ ……所特有的）</td><td>the &quot;<b>peculiar</b> institution&quot;　⭐39D 的钥匙</td></tr>
+          <tr><td><code>institution</code> ⭐</td><td>机构、院校</td><td><b>制度、体制</b></td><td>the &quot;peculiar <b>institution</b>&quot;</td></tr>
+          <tr><td><code>representation</code> ⭐</td><td>表现、表示；代表作</td><td><b>代表权、代表席位</b>（政治学术语）</td><td>for purposes of congressional <b>representation</b>　⭐39B 的钥匙</td></tr>
+          <tr><td><code>hand</code>（v.）＋ <code>narrow</code></td><td>「手」；「狭窄的」</td><td><b>hand sb sth ＝ 把……递给某人</b>；<b>narrow victory ＝ 险胜</b></td><td><b>handed</b> Jefferson his <b>narrow</b> victory</td></tr>
+          <tr><td><code>inflate</code> + <code>carve</code></td><td>「充气」；「雕刻」</td><td><b>inflate ＝ 虚增、使膨胀</b>；<b>carve into ＝ 划分成</b></td><td><b>inflating</b> the votes ／ the new land was <b>carved</b> into 13 states</td></tr>
+          <tr><td><code>will</code>（n.）⭐⭐</td><td>助动词「将要」；意志</td><td><b>遗嘱</b></td><td>grant his slaves their freedom in his <b>will</b>　⭐40 题定位句</td></tr>
+        </table></div>
+        <p style="font-size:.9rem;margin-top:14px">另有三个<b>不算僻义但极易读快漏掉</b>的：<code>in part</code>（<b>部分地</b>，37A 的死穴）· <code>in office</code>（<b>在任、执政</b>，不是「在办公室」）· <code>Still</code>（<b>句首＝尽管如此</b>，转折副词，不是「仍然」——⑥段就是靠它转弯的）。</p>
+        <div class="atti no2" style="margin-top:14px">
+          ⚠️⚠️ <b>2008 四篇的「熟词僻义」已经能总结出规律了</b>：<br>
+          · <b>T1</b>：<code>way</code>（副词「远远地」）· <code>deal</code>（一回事）· <code>observe</code>（评论）；<br>
+          · <b>T2</b>：<code>deal</code>（大订单，<b>与 T1 不同义项</b>）· <code>title</code>（一种期刊）· <code>rest with</code>（归属于）；<br>
+          · <b>T3</b>：<code>recruit</code>（<b>同一篇里动词「招募」与名词「新兵」两个词性</b>）· <code>secular</code>（长期的）· <code>list</code>（列为）；<br>
+          · <b>T4（本篇）</b>：<code>father</code>（<b>名词转动词</b>）· <code>will</code>（遗嘱）· <code>works</code>（著作）· <code>hand</code>（递给）。<br>
+          <b>⟹ 四篇合起来只有一条规律：<u>考的几乎全是「名词↔动词转换」和「小词当副词」，而不是生僻的大词。</u></b><b>判据永远是——把你熟悉的那个意思代进去，句子读着别扭，就一定是换了义项或换了词性；而<u>词性一判，义项就定了</u>（本篇 <code>had fathered</code> 只能是动词，<code>in his will</code> 只能是名词）。</b>
+        </div>
+      </section>
+      <!-- ========== 词汇 ========== -->
+      <section class="card">
+        <h2><span class="n">04</span>词汇复盘（点卡片看详情）</h2>
+        <div class="filters">
+          <button class="fbtn on" data-f="all">全部</button>
+          <button class="fbtn" data-f="core">核心词</button>
+          <button class="fbtn" data-f="phrase">短语</button>
+          <button class="fbtn" data-f="poly">熟词僻义</button>
+          <button class="fbtn" data-f="write">写作可用</button>
+        </div>
+        <div class="vgrid" id="vgrid"></div>
+      </section>
+
+      <!-- ========== 写作素材 ========== -->
+      <section class="card">
+        <h2><span class="n">05</span>可搬进作文/翻译的素材</h2>
+        <div class="wb">
+          <div class="wbi"><div class="p">many of the Founding Fathers knew slavery was wrong—and yet most did little to fight it</div><div class="u">许多开国元勋明知奴隶制不义——然而大部分人却极少采取行动去反对它。<br>⟹ <b>「知行不一」的万能句式</b>：<code>Many people know X is wrong—and yet most do little to fight it.</code>　写<b>环保、拖延、过度消费、手机成瘾</b>这类题时，第一段抛现象后直接上这一句，比 &quot;we should pay attention to&quot; 高出一个档次。<b>破折号 + and yet 的转折比 but 更有力量。</b></div></div>
+          <div class="wbi"><div class="p">the founders were hampered by the culture of their time</div><div class="u">开国元勋们受到了他们所处时代文化的束缚。<br>⟹ <b>评价历史人物 / 过去做法的标准句式</b>：<code>X was hampered by the culture of his time.</code>　<b>它比「他做错了」公允得多——既指出了局限，又归因于时代而非个人。</b>写「如何看待传统 / 如何评价前人」类题目时非常好用。同族：<code>a product of his time</code>（时代的产物）。</div></div>
+          <div class="wbi"><div class="p">While X privately expressed distaste for Y, they also understood that it was part of the bedrock of…</div><div class="u">尽管 X 私下表达过对 Y 的反感，但他们也明白它是……的基石之一。<br>⟹ <b>写「明知有问题却离不开」的复杂关系</b>：应试教育、社交媒体、外卖与塑料包装、AI 与就业……都能套。<b>句式的价值在于「让步 + 主句」把矛盾装进了一句话，读起来立刻显得辩证。</b><code>bedrock</code>（基石）比 foundation 更硬、更有画面。</div></div>
+          <div class="wbi"><div class="p">Still, Jefferson freed Hemings's children—though not Hemings herself or his approximately 150 other slaves.</div><div class="u">尽管如此，杰斐逊还是解放了赫明斯的孩子们——然而并未解放她本人和另外约 150 名奴隶。<br>⟹ <b>本篇最该学的一句「公允评价句」</b>：<b>先用 Still 给一个肯定，再用破折号 + though not 立刻打折。</b>一句话里既不抹杀也不吹捧。<br><b>模板</b>：<code>Still, X did A—though not B or C.</code>　写人物评价、政策评价、技术评价的收尾段，照这个模子写，比堆形容词有力得多。</div></div>
+          <div class="wbi"><div class="p">overcame the strong opposition of his relatives to grant his slaves their freedom</div><div class="u">克服了亲属的强烈反对，给予他的奴隶自由。<br>⟹ <b>「顶住阻力做成一件事」的地道表达</b>：<code>overcome the strong opposition of…</code>· <code>in the face of fierce resistance</code>· <code>at the cost of…</code>。<b>议论文举例论证时，「阻力」这一层如果不写，例子的说服力会掉一半——有了阻力，行为才显得可贵。</b></div></div>
+          <div class="wbi"><div class="p">only over the past 30 years have scholars examined history from the bottom up</div><div class="u">只是在最近三十年间，学者们才开始「自下而上」地研究历史。<br>⟹ <b>两个东西可以搬走</b>：①<b>倒装句式</b> <code>Only over the past X years have we…</code>——<b>作文里用一次倒装，语法分立刻上去</b>；②<b>视角词</b> <code>from the bottom up</code>（自下而上）／ <code>top-down</code>（自上而下）。写「关注普通人 / 基层声音 / 用户视角」时是现成的表达。</div></div>
+          <div class="wbi"><div class="p">the moral compromises made by the nation's early leaders and the fragile nature of the country's infancy</div><div class="u">早期领袖所作的道德妥协，以及建国初期的脆弱性。<br>⟹ <b>抽象名词化的范本</b>：不说 &quot;they compromised morally&quot; 而说 <code>moral compromises</code>，不说 &quot;the country was fragile at first&quot; 而说 <code>the fragile nature of the country's infancy</code>。<b>英语议论文的书面感，一大半来自这种「把动词/形容词压成名词短语」的能力。</b>同族可套：<code>the fragile nature of X</code>· <code>the complex nature of X</code>。</div></div>
+          <div class="wbi"><div class="p">He had begun to believe that all men were created equal after observing the bravery of…</div><div class="u">在目睹……的英勇之后，他开始相信人人生而平等。<br>⟹ <b>「亲眼所见改变了观念」的叙事句式</b>：<code>It was only after observing/experiencing X that he came to believe Y.</code>　<b>写「实践出真知」「读万卷书不如行万里路」「志愿服务改变了我」这类题时，比空喊口号有力得多——观念的转变必须有一个具体的触发事件。</b><br>⚠️ <b>本篇 40 题考的就是这个触发事件</b>：<b>观念是中间环，事件才是起点。</b>写作文时也一样，<b>把触发事件写出来，段落才立得住。</b></div></div>
+        </div>
+      </section>
+    </main>
+
+    <aside>
+      <div id="panel"><div class="hint">👆 点击正文里的<b>黄色高亮词</b><br>词卡会出现在这里</div></div>
+    </aside>
+  </div>
+
+  <footer>2008 英语一 Text 4 · 复盘页由 Claude 生成 · 解析为 Claude 盲做后独立撰写，答案已与黄皮书精讲逐题交叉核对（36D 37B 38C 39A 40B）<br>⚠️ Claude 盲做 4/5，<b>36 题错选 C</b>（写作目的题走反了方向：①段是「反向引入」，目的落在华盛顿本人；且 C 同时犯了主体偷换 slavery→slaves 与范围放大 founding generation→U.S. history）· 本页的价值在第 02+ 节「引入方向」与第 02++ 节「引号的三种语用功能」<br>原文出处：<i>US News &amp; World Report</i>《美国新闻与世界报道》2004-01-12 <i>The Sorry Legacy of the Founders</i>（407 词），本页仅摘引考点句作分析用，完整原文见原卷 p9</footer>
+</div>
+
+<button id="yd">🔍 查有道</button>
+<script>
+const V = {
+  toothless:{w:"toothless",ipa:"/ˈtuːθləs/",pos:"adj.",tags:["core"],cn:"没有牙齿的；（引申）无实权的",en:"having no teeth; lacking real power",ex:"George Washington, 52, was nearly toothless",mem:"tooth（牙）+ -less（无……的）→ <b>没牙的</b>。<br>📌 <b>-less 是最高产的否定后缀之一</b>，考研高频：<code>seamless</code>（无缝的）· <code>relentless</code>（不懈的）· <code>ruthless</code>（无情的）· <code>priceless</code>（无价的，⚠️ 不是「没价值」）· <code>invaluable</code>（同样是「无价的」，⚠️ in- 在这里也不表否定）。<br>✍️ <b>引申义很好用</b>：<code>a toothless regulator</code>＝<b>没有牙齿的监管机构</b>（有名无实、罚不了人）。<b>写「制度形同虚设」时是极地道的比喻。</b>",syn:"ineffective / powerless（引申义）",conf:"toothless（没牙的/无实权的）vs. ruthless（无情的）—— <b>拼写相近，常被看串</b>"},
+  transplant:{w:"transplant",ipa:"/trænsˈplɑːnt/",pos:"v. / n.",tags:["core"],cn:"移植（器官、植物）；迁移",en:"to move an organ or tissue from one body to another",ex:"he hired a dentist to transplant nine teeth into his jaw",mem:"trans-（跨越，同 transfer 转移 / translate 翻译 / transmit 传送）+ plant（种植）→ <b>换个地方种下去 ＝ 移植</b>。<br>📌 <b>动词重音在后（/trænsˈplɑːnt/），名词重音在前（/ˈtrænsplɑːnt/）</b>——这是英语里「名前动后」的重音规律，同族：<code>record</code>· <code>increase</code>· <code>conduct</code>· <code>present</code>。<br>✍️ 搭配：<code>a heart transplant</code>（心脏移植手术）· <code>transplant A into B</code>。",syn:"implant / graft / relocate",conf:"transplant（移植，整体搬过去）vs. implant（植入，如植入假牙/芯片）vs. transfer（转移，泛指）"},
+  extract:{w:"extract",ipa:"/ɪkˈstrækt/",pos:"v. / n.",tags:["core","write"],cn:"拔出，提取；（n.）摘录，提取物",en:"to remove or take out sth, especially by force",ex:"having extracted them from the mouths of his slaves",mem:"ex-（向外）+ tract（拉，同 attract 吸引 / contract 收缩 / distract 分心）→ <b>往外拉 ＝ 拔出、提取</b>。<br>📌 <b>本篇是最本义的用法：拔牙</b>。<code>extract a tooth</code>＝拔牙（比 pull out 正式）。<br>✍️ <b>学术写作高频</b>：<code>extract information/data from…</code>（从……中提取信息）· <code>extract a conclusion</code>· 名词 <code>an extract from his diary</code>（他日记里的一段摘录）。<br>💡 同根家族值得整组记：<b>tract ＝ 拉</b> ⟹ attract（吸引）· distract（分散注意）· subtract（减去）· abstract（抽象的，「抽离」出来的）· contract（合同/收缩）。",syn:"pull out / remove / draw out / derive",conf:"extract（拔出/提取，含用力）vs. exert（施加，exert pressure）vs. exempt（免除）"},
+  cherry:{w:"cherry-tree-chopping George",ipa:"",pos:"文化背景",tags:["phrase"],cn:"「砍樱桃树的乔治」——诚实的小华盛顿",en:"the legendary honest young Washington who confessed to chopping the cherry tree",ex:"a far different image from the cherry-tree-chopping George most people remember",mem:"⭐⭐ <b>本篇 36 题的钥匙，也是全篇唯一一处「不懂背景就读不出味道」的地方。</b><br>📌 <b>典故</b>：小华盛顿砍了父亲的樱桃树，父亲问起时他答「我不能撒谎」。<b>这个故事其实是传记作者 Parson Weems 虚构的</b>，却成了美国人从小听到大的诚实教育范本。<br>⟹ <b>它代表「大多数人记忆里的华盛顿：诚实、正直、道德楷模」，与①段那个「从奴隶嘴里拔牙的华盛顿」形成尖锐反差。</b><br>📌 <b>语法</b>：<code>cherry-tree-chopping</code> 是<b>连字符复合形容词</b>作定语。<b>这类临时造词在英美报刊里极常见</b>：<code>a hard-to-please customer</code>· <code>a never-say-die spirit</code>。<b>读法：整体当一个形容词，别逐词拆。</b>",syn:"（无同义词，专有典故）",conf:"⚠️ <b>别把它当成人名的一部分</b>——George 才是人名，前面一长串是修饰语"},
+  far:{w:"far (adv.)",ipa:"/fɑː(r)/",pos:"adv.",tags:["poly","core"],cn:"（修饰形容词）远远地，大大地",en:"by a great amount or degree",ex:"That's a far different image from…",mem:"⚠️ <b>这里不是「遥远的」，而是<u>程度副词</u>修饰形容词 different</b>：<code>far different</code>＝<b>大不相同</b>。<br>📌 <b>far 作程度副词的三种搭配</b>：<code>far better / far more important</code>（修饰比较级）· <code>far different / far removed from</code>（修饰形容词）· <code>by far the best</code>（修饰最高级）。<br>⭐⭐ <b>跨篇对照：2008·T1 考过同类用法的 <code>way</code></b>——<code>women are way ahead of men</code> 里的 way 也是「远远地」。<b>⟹ 2008 年偏爱「小词当程度副词」，见到 far / way / well / much 突然出现在形容词前面，先按程度副词读。</b>",syn:"much / considerably / significantly",conf:"far（程度：大大地）vs. farther/further（更远/进一步）—— <b>further 还可作「促进」的动词</b>"},
+  image:{w:"image",ipa:"/ˈɪmɪdʒ/",pos:"n.",tags:["poly","core","write"],cn:"（公众心目中的）形象；图像",en:"the general impression that a person or organization gives to the public",ex:"That's a far different image from the cherry-tree-chopping George",mem:"⚠️ <b>本句不是「图像」而是「形象、印象」</b>——<b>判据：image 前后出现 public / brand / national / different from 这类词时，一律取「形象」义。</b><br>✍️ <b>写作高频搭配</b>：<code>improve / damage one's image</code>（改善／损害形象）· <code>a positive public image</code>· <code>image-building</code>（形象塑造）。<br>📌 <b>本篇里它撑起了 36 题的整个逻辑</b>：<code>a far different image from X</code>＝「与 X 大不相同的形象」⟹ ①段展示的是「你不熟悉的那个华盛顿」⟹ 选项的 <code>unknown aspect</code>。",syn:"impression / reputation / perception / persona",conf:"image（形象，外界的感知）vs. identity（身份，自我认知）vs. imagination（想象力）"},
+  slavery:{w:"slavery",ipa:"/ˈsleɪvəri/",pos:"n.",tags:["core"],cn:"奴隶制；奴役状态",en:"the system of having slaves; the state of being a slave",ex:"the roles slavery played in the lives of the founding generation",mem:"slave（奴隶）+ -ry（表制度/状态的名词后缀）→ <b>奴隶「制」</b>。<br>⚠️⚠️ <b>这是 36 题的第一处陷阱</b>：原文说的是 <code>the roles <b>slavery</b> played</code>（<b>奴隶制</b>扮演的角色，一种<b>制度</b>），干扰项 C 写的是 <code>the role of <b>slaves</b></code>（<b>奴隶</b>的作用，一群<b>人</b>）。<b>制度 ≠ 人群，一个字母之差。</b><br>📌 <b>-ry / -ery 这个后缀专门造「制度、行业、集合」</b>：<code>bribery</code>（贿赂行为）· <code>machinery</code>（机器总称）· <code>chemistry</code>· <code>robbery</code>。<b>见到它就想「这是抽象的一整套，不是具体的个体」。</b>",syn:"bondage / servitude / enslavement",conf:"<b>slavery（奴隶制，抽象制度）vs. slave（奴隶，具体的人）</b>—— <b>36C 就死在这一字之差上</b>"},
+  founding:{w:"the founding generation / the Founding Fathers",ipa:"",pos:"n. 短语",tags:["phrase","core"],cn:"开国那一代人 / 开国元勋",en:"the leaders who founded the United States",ex:"the roles slavery played in the lives of the founding generation",mem:"found（v. 创立，⚠️ 不是 find 的过去式）+ -ing → <b>创建的、开国的</b>。<br>📌 <b>the Founding Fathers</b>＝参与独立战争、起草《独立宣言》与宪法的那批人（华盛顿、杰斐逊、富兰克林、亚当斯……），<b>在美国话语里近乎神圣</b>——正因如此，「他们也蓄奴」才具有冲击力。<br>⚠️⚠️ <b>36C 的第二处陷阱就在这个词的<u>范围</u></b>：原文限定 <code>in the lives of the founding <b>generation</b></code>（<b>开国那一代人</b>的生活里），C 项放大成 <code>in the U.S. history</code>（<b>整部美国史</b>）。<b>一代人 ≠ 一部国史。</b><br>💡 <b>found 的三态：found - founded - founded</b>（创立）；<b>find - found - found</b>（找到）。<b>两个 found 长得一样，靠句子结构区分。</b>",syn:"the founders / the framers（制宪者）",conf:"<b>found（创立，规则动词）vs. found（find 的过去式）</b>—— <b>考研完形与阅读都设过这个坑</b>"},
+  spur:{w:"spur",ipa:"/spɜː(r)/",pos:"v. / n.",tags:["poly","core","write"],cn:"激励，推动；（n.）马刺，刺激因素",en:"to encourage sb to do sth or encourage sth to happen faster",ex:"They have been spurred in part by DNA evidence",mem:"<b>本义是骑马时用的「马刺」</b>——扎一下马就跑得快 ⟹ <b>引申为「刺激、推动」</b>。这个画面记住了就不会忘。<br>✍️ <b>写作高频，比 promote 更有力</b>：<code>spur economic growth</code>（刺激经济增长）· <code>spur sb to do sth</code>（激励某人做某事）· <code>a spur to innovation</code>（创新的推动力）。<br>📌 <b>固定短语</b>：<code>on the spur of the moment</code>＝<b>一时冲动地、临时起意</b>。<br>💡 同类「推动」动词强度梯队：<code>encourage ＜ prompt ＜ spur ＜ propel ＜ catapult</code>。",syn:"stimulate / prompt / propel / galvanize",conf:"spur（激励，含「加速」意味）vs. inspire（启发，偏精神）vs. impel（迫使，含强制）"},
+  inpart:{w:"in part",ipa:"",pos:"短语",tags:["phrase","poly"],cn:"部分地，在某种程度上",en:"to some extent but not completely",ex:"They have been spurred in part by DNA evidence made available in 1998",mem:"⭐⭐ <b>本篇最贵的两个词，37A 就死在这里。</b><br>📌 原文只说史学界的新风潮「<b>部分地</b>」受 DNA 证据推动 ⟹ <b>这是一次具体应用</b>；A 项却写 <code>DNA technology has been <b>widely applied</b> to history research</code>（<b>广泛应用</b>于史学研究）。<b>「用过一次」→「广泛应用」，跨了两个量级。</b><br>⚠️⚠️ <b>通用规律：因果句里的限定词就是命题人的量级开关</b>。见到 <code>in part</code>· <code>partly</code>· <code>to some extent</code>· <code>one of the reasons</code>· <code>among others</code>，<b>立刻在原文上圈出来</b>——错误选项十有八九就是把它摘掉。<br>💡 同族：<code>in large part</code>（很大程度上）· <code>for the most part</code>（大体上）· <code>in no small part</code>（相当大程度上）。",syn:"partly / to some degree / in some measure",conf:"in part（部分地）vs. <b>on the part of</b>（就……而言，表某方）vs. <b>take part in</b>（参加）"},
+  father:{w:"father (v.)",ipa:"/ˈfɑːðə(r)/",pos:"v.",tags:["poly","core"],cn:"生（孩子），当……的生父；创立",en:"to become the father of a child by making a woman pregnant",ex:"Thomas Jefferson had fathered at least one child with his slave Sally Hemings",mem:"⭐⭐ <b>本篇最典型的熟词僻义：名词转动词。</b><b>判据：<code>had + 过去分词</code> 这个位置只能放动词，father 在这里没有第二种可能。</b><br>📌 <b>英语里「亲属名词转动词」是一整族</b>：<code>father</code>（生育；创立，如 <i>He fathered modern physics</i> 他开创了现代物理）· <code>mother</code>（溺爱地照顾）· <code>parent</code>（v. 养育）· <code>child</code>（v. 生育，罕见）。<br>⚠️⚠️ <b>38 题 B 项 <code>His <u>status as a father</u> made him free the child slaves</code> 就是拿它的名词义造的钩子</b>——把「他生了孩子」偷换成「他作为父亲的身份促使他解放儿童奴隶」，<b>一个词性变化，造出一个完整的假因果。</b>",syn:"sire（正式/用于动物）/ beget（古旧）",conf:"<b>father（v. 生育）vs. father（n. 父亲）</b>—— <b>本篇考的正是这个转换，38B 的陷阱</b>"},
+  bottomup:{w:"from the bottom up",ipa:"",pos:"短语",tags:["phrase","write"],cn:"自下而上地",en:"starting from the lowest level or from ordinary people",ex:"only over the past 30 years have scholars examined history from the bottom up",mem:"📌 <b>史学术语</b>：<b>「自下而上」的历史研究</b>＝从<b>普通人</b>（奴隶、妇女、工匠、士兵）的视角写历史，而不是只写帝王将相。<br>⟹ <b>它解释了「为什么最近三十年才有人关注开国元勋的奴隶」</b>——不是史料新出现了，是<b>看历史的角度换了</b>。<br>✍️ <b>写作可用，管理学/社会学高频</b>：<code>a bottom-up approach</code>（自下而上的路径，强调基层参与）vs. <code>a top-down approach</code>（自上而下，强调高层设计）。<b>写「政策落地」「企业改革」「教育改革」时是现成的对立框架。</b>",syn:"grassroots（草根的）/ from below",conf:"bottom-up（自下而上）vs. bottom line（底线；最终结果）vs. at bottom（本质上）"},
+  works:{w:"works",ipa:"/wɜːks/",pos:"n.",tags:["poly","core"],cn:"著作，作品（可数）",en:"books, paintings or pieces of music produced by an artist or writer",ex:"Works of several historians reveal the moral compromises…",mem:"⚠️ <b>work 作「工作」时<u>不可数</u>（没有 works），作「作品、著作」时<u>可数</u>。</b><b>⟹ 见到 <code>works</code> 带复数 s，基本可以断定是「作品」。</b><br>📌 本句 <code>Works of several historians</code>＝<b>数位历史学家的著作</b>（不是「几位史学家的工作」）。<br>💡 <b>work 的可数/不可数是四级以来的经典考点</b>：<code>a work of art</code>（一件艺术品）· <code>the complete works of Shakespeare</code>（莎士比亚全集）· <code>public works</code>（公共工程）· <b>但</b> <code>much work</code>· <code>a lot of work</code>（工作，不可数）。",syn:"writings / publications / oeuvre",conf:"works（作品；工厂；机件）vs. work（工作，不可数）vs. workings（运作方式，如 the workings of the mind）"},
+  compromise:{w:"compromise",ipa:"/ˈkɒmprəmaɪz/",pos:"n. / v.",tags:["core","write"],cn:"妥协，折中；（v.）妥协；损害（名誉/安全）",en:"an agreement made between two sides who each give up some demands",ex:"the moral compromises made by the nation's early leaders",mem:"com-（共同）+ promise（承诺）→ <b>双方各让一步的共同承诺 ＝ 妥协</b>。<br>📌 <b>本篇 <code>moral compromises</code>＝道德上的妥协/让步</b>——<b>这是理解全文态度的关键词：作者不是说他们「不道德」，而是说他们「在道德上打了折」。</b><br>⚠️⚠️ <b>40 题 A 项就死在这个词上</b>：全文唯一的 <code>moral</code> 出现在这里，说的是「道德妥协」，<b>与「出于道德考虑而解放奴隶」正好相反</b>。<br>✍️ <b>动词还有一个高频义项</b>：<code>compromise one's principles / safety / reputation</code>＝<b>损害、危及</b>（不是妥协）。<b>这个义项考研考过多次。</b><br>💡 搭配：<code>reach / make a compromise</code>· <code>a compromise between A and B</code>。",syn:"（n.）concession / trade-off ｜（v.）undermine / jeopardize",conf:"<b>compromise（妥协 / 损害）vs. comprise（由……组成）vs. compress（压缩）</b>—— <b>三个词开头一模一样，务必分清</b>"},
+  fragile:{w:"fragile",ipa:"/ˈfrædʒaɪl/",pos:"adj.",tags:["core","write"],cn:"脆弱的，易碎的；（局势）不稳固的",en:"easily broken or damaged; not strong or secure",ex:"the fragile nature of the country's infancy",mem:"frag-（打碎，同 fragment 碎片 / fracture 骨折）+ -ile（易于……的）→ <b>易碎的</b>。<br>⭐⭐ <b>37B 的钥匙</b>：原文 <code><b>fragile</b> nature of the country's infancy</code>（建国初期的<b>脆弱</b>性）⟹ 选项 <code>the U.S. was confronted with <b>delicate</b> situations</code>（面临<b>微妙棘手</b>的处境）。<b>fragile ↔ delicate，一处同义替换。</b><br>✍️ <b>写作可用</b>：<code>a fragile economy / a fragile peace / a fragile ecosystem</code>。名词 <code>fragility</code>。<br>💡 <b>-ile 后缀家族</b>：<code>agile</code>（敏捷的）· <code>hostile</code>（敌对的）· <code>versatile</code>（多才多艺的）· <code>volatile</code>（易变的）。",syn:"delicate / vulnerable / precarious / brittle",conf:"fragile（易碎的，物理或局势）vs. vulnerable（易受伤害的，强调防御弱）vs. delicate（微妙的；精致的；娇弱的）"},
+  infancy:{w:"infancy",ipa:"/ˈɪnfənsi/",pos:"n.",tags:["poly","core","write"],cn:"（事物的）初创期，初期；婴儿期",en:"the early stage of development of sth",ex:"the fragile nature of the country's infancy",mem:"infant（婴儿，来自拉丁 in-「不」+ fant「说话」＝<b>还不会说话的人</b>）+ -cy → <b>婴儿期 → 引申：任何事物的初创阶段</b>。<br>⭐ <b>37B 的另一半钥匙</b>：<code>the country's infancy</code>＝<b>建国初期</b> ⟹ 选项的 <code>in its <b>early days</b></code>。<br>✍️ <b>写作高频固定说法</b>：<code>The technology is still <b>in its infancy</b>.</code>（该技术尚处于起步阶段。）<b>写 AI、新能源、太空旅游这类题时，这是最地道的「还很不成熟」的说法</b>，比 &quot;not developed enough&quot; 高一个档次。<br>💡 <b>「阶段」词族</b>：<code>infancy</code>（起步）→ <code>adolescence</code>（成长期）→ <code>maturity</code>（成熟期）→ <code>decline</code>（衰退期）。",syn:"early stage / beginning / genesis",conf:"infancy（初期）vs. infamy（臭名昭著）—— <b>只差一个字母，词义天差地别</b>"},
+  significantly:{w:"More significantly",ipa:"",pos:"短语",tags:["phrase","write"],cn:"更重要的是",en:"more importantly",ex:"More significantly, they argue that many of the Founding Fathers knew slavery was wrong",mem:"⭐⭐ <b>本篇最重要的一个路标词——它后面那句就是全文论点。</b><br>📌 <b>「更重要的是」这类递进标记，在考研阅读里几乎等于「答案在此」</b>：<code>More significantly</code>· <code>More important(ly)</code>· <code>What is more</code>· <code>Above all</code>· <code>Most crucially</code>。<b>见到就画线。</b><br>⚠️ <b>注意与「转折标记」区分</b>：递进标记是「同方向加码」，转折标记（but / yet / however）是「反方向掉头」。<b>两类都是出题点，但用法不同：递进后面是重点，转折后面也是重点——共同点是<u>前面那句往往是用来垫的</u>。</b><br>✍️ 作文里用 <code>More significantly</code> 起第三段，比 <code>Besides</code> 有分量得多。",syn:"more importantly / what is more / above all",conf:"significantly（重要地；显著地）—— <b>两个义项都常考</b>：修饰句子＝「重要的是」，修饰动词＝「显著地」"},
+  fight:{w:"fight (v.)",ipa:"/faɪt/",pos:"v.",tags:["poly","core","write"],cn:"（及物）反对，与……作斗争",en:"to try hard to stop or oppose sth",ex:"many of the Founding Fathers knew slavery was wrong—and yet most did little to fight it",mem:"⚠️ <b>这里不是「打架」，而是<u>及物动词</u>「反对、抵制」。判据：fight 后面直接跟抽象名词（it ＝ slavery）而不是人。</b><br>📌 <b>本句是全文论点</b>：<code>knew slavery was wrong—and yet most did little to <b>fight</b> it</code>（明知不义，却极少采取行动去<b>反对</b>它）。<b>「知」与「行」的裂缝，就靠这个动词划开。</b><br>✍️ <b>写作可用，比 oppose 有力</b>：<code>fight corruption / fight climate change / fight discrimination</code>· <code>fight <b>for</b> equality</code>（<b>为</b>平等而斗争，注意加 for 方向就反了）· <code>fight <b>against</b> injustice</code>。<br>💡 <b>本篇同义表达链</b>：fight it（反对它）↔ ⑥段的 <code>overcame the strong opposition</code>（克服反对）——<b>同一个 oppose 词根，一处是「他们没做」，一处是「华盛顿做了」。</b>",syn:"combat / oppose / resist / tackle",conf:"<b>fight for（为……而战，支持）vs. fight against（与……作斗争，反对）</b>—— <b>介词决定立场，一定要看</b>"},
+  hamper:{w:"hamper",ipa:"/ˈhæmpə(r)/",pos:"v.",tags:["poly","core","write"],cn:"阻碍，妨碍，束缚",en:"to prevent sb from easily doing or achieving sth",ex:"the founders were hampered by the culture of their time",mem:"⚠️ <b>名词 hamper ＝「（野餐用的）有盖大篮子」，与动词义毫无关系</b>——<b>考研只考动词义「阻碍」。</b><br>📌 <b>本句是③段的总原因句</b>：开国元勋<b>受到时代文化的束缚</b> ⟹ 这是全文对「为什么知而不行」给出的<b>总答案</b>，后面④⑤段是它的两条分解。<br>✍️ <b>「阻碍」动词族（写作可轮换，避免重复）</b>：<code>hamper</code>· <code>hinder</code>· <code>impede</code>· <code>obstruct</code>· <code>inhibit</code>· <code>stifle</code>（扼杀）· <code>get in the way of</code>（2008·T3 考过）。<b>其中 hamper / hinder / impede 语气与用法几乎可互换，是最安全的三个。</b>",syn:"hinder / impede / obstruct / constrain",conf:"hamper（阻碍，使做事困难）vs. prevent（阻止，使完全不发生）vs. prohibit（明令禁止）—— <b>强度依次递增</b>"},
+  distaste:{w:"distaste",ipa:"/dɪsˈteɪst/",pos:"n.",tags:["core","write"],cn:"厌恶，反感",en:"a feeling of dislike for sth that you consider unpleasant",ex:"Washington and Jefferson privately expressed distaste for slavery",mem:"dis-（否定）+ taste（品味、喜好）→ <b>不合口味 ＝ 反感</b>。<br>📌 <b>注意搭配：<code>distaste <u>for</u> sth</code></b>。<br>⭐ <b>本词是 38 题 C 项的第一块砖</b>：<b>私下「反感」＋ 明知「离不开」＝ complex（复杂）。</b><br>📌 <b>而修饰它的副词 <code>privately</code> 同样重要</b>：<b>「私下」反感 ⟹ 公开场合并不反对</b>——<b>一个副词就把②段的论点（知而不行）落到了具体的人身上。</b><br>💡 <b>「厌恶」强度尺</b>：<code>dislike（不喜欢）＜ distaste（反感）＜ aversion（厌恶）＜ repugnance / loathing（极度厌恶）＜ abhorrence（憎恶）</code>。<b>写作里 distaste 是很得体的中等强度词。</b>",syn:"aversion / dislike / repugnance",conf:"distaste（反感，偏理性的不认同）vs. disgust（恶心，偏生理反应）vs. disdain（轻蔑，含居高临下）"},
+  bedrock:{w:"bedrock",ipa:"/ˈbedrɒk/",pos:"n.",tags:["poly","core","write"],cn:"基石，根基；（地质）基岩",en:"the basic principle or fact on which sth is based",ex:"it was part of the political and economic bedrock of the country",mem:"bed（底层、河床）+ rock（岩石）→ <b>地质学的「基岩」＝ 覆盖层之下的坚硬岩层 → 引申：根基、基石</b>。<br>⭐ <b>本词的分量要读出来</b>：作者不说 slavery is <i>important</i>，而说它是 <b>bedrock</b>（基岩）——<b>意思是「拿掉它，上面全塌」。这就是开国元勋「明知不义也不敢动」的原因。</b><br>✍️ <b>写作可用，比 foundation 更有力</b>：<code>the bedrock of democracy / of our economy / of trust</code>。<b>写「某物是某体系的根本」时，用 bedrock 立刻显得有分量。</b><br>💡 同族比喻词：<code>cornerstone</code>（基石，强调「关键的一块」）· <code>backbone</code>（支柱、脊梁）· <code>lifeblood</code>（命脉）。",syn:"foundation / cornerstone / basis",conf:"bedrock（根基，强调最底层不可动摇）vs. cornerstone（基石，强调最关键的一块）vs. milestone（里程碑，强调阶段性成就）"},
+  afford:{w:"can not afford to",ipa:"/əˈfɔːd/",pos:"v. 短语",tags:["phrase","write"],cn:"承担不起（后果）；负担不起",en:"to be unable to bear the consequences of doing sth",ex:"the South could not afford to part with its slaves",mem:"📌 <b>afford 有两个层次，本篇用的是第二个</b>：<br>· <b>钱层面</b>：<code>can't afford a car</code>（买不起车）；<br>· <b>后果层面</b>（本篇）：<code>can't afford <b>to do</b> sth</code>＝<b>承担不起这么做的后果、经不起</b>。<b>南方不是「买不起」，是「放弃了就活不下去」。</b><br>✍️ <b>议论文里极好用的强调句式</b>：<code>We cannot afford to ignore this problem.</code>（我们承担不起忽视这个问题的后果。）<b>比 &quot;We should not ignore…&quot; 有力得多，因为它把「不做的代价」摆了出来。</b><br>💡 <b>afford 还有一个正式义项</b>：<code>afford sb an opportunity</code>＝<b>提供</b>（＝provide）。",syn:"can not bear / can not risk / be unable to sustain",conf:"afford to do（承担得起做某事）vs. afford sth（买得起某物）vs. afford sb sth（向某人提供某物）—— <b>三种搭配三种意思</b>"},
+  partwith:{w:"part with",ipa:"",pos:"短语",tags:["phrase","poly"],cn:"放弃，割舍（尤指不舍得的东西）",en:"to give sth to sb else, especially sth you would prefer to keep",ex:"the South could not afford to part with its slaves",mem:"⚠️⚠️ <b>本篇最容易读错的短语。</b><code>part</code> 在这里是<b>动词</b>「分离」，<code>part with sth</code>＝<b>与某物分开 ＝ 舍弃、割舍</b>，<b>而且通常暗含「舍不得」。</b><br>📌 <b>三个 part 短语务必分清</b>：<br>· <code>part <b>with</b> sth</code>＝<b>放弃某物</b>（本篇）；<br>· <code>part <b>from</b> sb</code>＝<b>与某人分别</b>；<br>· <code>take part <b>in</b> sth</code>＝<b>参加</b>；<br>· <code>part <b>of</b> sth</code>＝<b>……的一部分</b>（名词，③段的 <code>part of the bedrock</code> 就是这个）。<br>⭐ <b>本篇④段①句和③段②句里 part 的两种用法紧挨着出现，正好可以对照记。</b>",syn:"give up / relinquish / let go of",conf:"<b>part with（放弃物）vs. part from（与人分别）vs. part of（一部分）</b>—— <b>介词一变，词性和意思全变</b>"},
+  bankacct:{w:"like having a large bank account",ipa:"",pos:"比喻",tags:["phrase","poly"],cn:"（比喻）如同拥有一大笔存款——指奴隶是巨额财产",en:"a simile: slaves were a huge financial asset",ex:"Owning slaves was &quot;like having a large bank account,&quot; says Wiencek",mem:"⚠️⚠️ <b>39C 的产地，也是「比喻当事实」这一类干扰项的标准样本。</b><br>📌 <b>这是明喻</b>（有 <code>like</code> 为证），意思是：<b>拥有奴隶 ＝ 拥有一笔巨大的财产</b>。<b>它<u>没有</u>说奴隶主真的有大额银行存款。</b><br>⟹ <b>39C <code>Slave owners usually had large savings accounts</code>（奴隶主常常拥有大笔存款）＝ 把喻体当本体。</b><br>⭐ <b>通用判据（补进 R2 / R29）：见到 <code>like</code>· <code>as if</code>· <code>a kind of</code>· <code>the equivalent of</code>，先把比喻<u>翻译成直义</u>再去比选项。</b><b>2022·T4 的 <code>time bomb</code>（＝先天注定出事）、2007·T3 的 <code>parachute</code>（＝后备挣钱人）考的都是同一件事。</b><br>💡 <b>本句同时也是「引号功能①：引用他人原话」的样本</b>——句末的 <code>says Wiencek</code> 就是标记。",syn:"（比喻，无同义词）",conf:"⚠️ <b>比喻句的三种误用</b>：①字面直译（39C）②扩大适用范围 ③当成作者本人的观点（其实是 Wiencek 说的）"},
+  peculiar:{w:"peculiar",ipa:"/pɪˈkjuːliə(r)/",pos:"adj.",tags:["poly","core"],cn:"特有的，独特的；奇怪的",en:"belonging or relating only to a particular place, person or thing",ex:"protections for the &quot;peculiar institution&quot;",mem:"⚠️ <b>考研常考的是「特有的」而不是「奇怪的」。</b><b>判据：<code>peculiar <u>to</u> sth</code>＝……所特有的</b>（<code>a custom peculiar to this region</code>）。<br>⭐⭐ <b>the &quot;peculiar institution&quot;（「特殊制度」）是 19 世纪美国南方对<u>奴隶制</u>的委婉称呼</b>，用来回避 slavery 这个刺眼的词。<br>⚠️⚠️ <b>39D 的钥匙全在<u>引号</u>上</b>：<b>定冠词 the ＋ 引号 ＝ 作者在转述别人的叫法，并不认同。</b>⟹ D 项「奴隶制<b>被视为</b>一种特殊制度」把他人的委婉说辞升格成了文中的客观判断。<br>💡 <b>委婉语（euphemism）在英美报刊里很常见，且几乎总带引号</b>：<code>&quot;collateral damage&quot;</code>（附带损伤 ＝ 平民伤亡）· <code>&quot;downsizing&quot;</code>（精简 ＝ 裁员）。<b>见到带引号的委婉语，作者的态度基本都是「我不这么认为」。</b>",syn:"distinctive / characteristic / unique（特有的）｜odd / strange（奇怪的）",conf:"peculiar（特有的/奇怪的）vs. particular（特定的）vs. specific（具体的）—— <b>三者都能译「特定」，但 peculiar 独有「专属于某方」的意味</b>"},
+  clause:{w:"clause",ipa:"/klɔːz/",pos:"n.",tags:["core"],cn:"（法律文件的）条款；（语法）从句",en:"an item in a legal document; a group of words with a subject and a verb",ex:"including a clause that counted a slave as three fifths of a man",mem:"📌 <b>两个义项都是考研常客</b>：<b>①法律条款</b>（本篇）· <b>②语法上的「从句/分句」</b>（relative clause 定语从句）。<br>💡 <b>本篇这个 clause 指的就是著名的「五分之三妥协」</b>：1787 年制宪会议规定，<b>分配国会席位与税额时，一名奴隶按五分之三个自由人计入人口</b>。<br>⚠️⚠️ <b>39B 的钥匙</b>：这个条款解决的是<b>「怎么数人头」</b>，<b>完全不涉及奴隶的投票权</b>——奴隶不投票，是奴隶主替他们「赚」到了席位。<b>你的历史常识在这里帮不上忙，反而会害你。</b>",syn:"provision / stipulation / article / term",conf:"clause（条款/从句）vs. cause（原因）vs. clue（线索）—— <b>拼写相近</b>"},
+  representation:{w:"representation",ipa:"/ˌreprɪzenˈteɪʃn/",pos:"n.",tags:["poly","core"],cn:"代表权，代表席位；表现，描绘",en:"the fact of having representatives who speak for you in a parliament",ex:"for purposes of congressional representation",mem:"⚠️ <b>本篇不是「表现、描绘」，而是政治学义「代表权 / 代表席位」。</b><b>判据：与 congressional / parliamentary / political 连用时一律取此义。</b><br>📌 <code>congressional representation</code>＝<b>国会代表席位</b>。各州在众议院的席位数按<b>人口</b>分配 ⟹ <b>人口算得多，席位就多</b> ⟹ 这就是南方非要把奴隶算进人口的原因。<br>⭐ <b>美国独立战争的著名口号</b>：<code>No taxation without representation.</code>（无代表，不纳税。）<b>这句话正是 representation 这个义项的最佳记忆锚点。</b><br>💡 词族：<code>represent</code>（代表；描绘）· <code>representative</code>（n. 代表；adj. 有代表性的）· <code>the House of Representatives</code>（众议院）。",syn:"delegation / voice / seats（席位）",conf:"representation（代表权；表现）vs. reputation（名声）vs. presentation（呈现，演示）"},
+  dependon:{w:"depend on",ipa:"",pos:"短语",tags:["phrase","core"],cn:"依赖，取决于",en:"to rely on sb/sth in order to survive or be successful",ex:"the statesmen's political lives depended on slavery",mem:"⭐⭐ <b>39A 的第一句依据</b>：<code>the <b>statesmen's political lives</b> depended on slavery</code>（政治家的<b>政治生涯</b>依赖奴隶制）⟹ 选项 <code>Some Founding Fathers <b>benefit politically</b> from slavery</code>。<b>「依赖」被改写成「得益」，是一处方向一致的同义替换。</b><br>📌 <b>注意 <code>political lives</code> 不是「政治生命体」，是「政治生涯」</b>（＝political careers）。<br>💡 <b>「依赖」词族</b>：<code>depend on</code>（中性）· <code>rely on</code>（信赖）· <code>count on</code>（指望）· <code>be contingent on</code>（正式，取决于）· <code>hinge on</code>（关键取决于）。<br>✍️ 名词 <code>dependence on</code>（依赖）· 形容词 <code>dependent on</code>（⚠️ 名词是 -ence，形容词是 -ent，拼写别混）。",syn:"rely on / hinge on / be contingent upon",conf:"dependent（adj. 依赖的）vs. dependant（n. 受抚养者，英式）vs. dependence（n. 依赖）"},
+  formula:{w:"formula",ipa:"/ˈfɔːmjələ/",pos:"n.",tags:["poly","core"],cn:"方案，办法；公式，配方",en:"a plan or method for dealing with a problem",ex:"The three-fifths formula handed Jefferson his narrow victory",mem:"⚠️ <b>这里不是数学「公式」，而是<u>政治方案</u>。</b><code>the three-fifths formula</code>＝<b>「五分之三方案」</b>，指制宪会议上南北双方达成的那个折中办法。<br>📌 <b>formula 的三个常见义项</b>：<b>①方案、办法</b>（a peace formula 和平方案）· <b>②公式</b>（a mathematical formula）· <b>③配方</b>（the secret formula of Coca-Cola）。<b>本篇是①。</b><br>💡 <b>复数有两个</b>：<code>formulas</code>（一般用法）· <code>formulae</code>（数学/科学语境的正式复数）。<br>✍️ <code>there is no magic formula for success</code>（成功没有魔法配方）—— <b>作文里很好用的谦抑说法。</b>",syn:"scheme / arrangement / method / recipe",conf:"formula（方案/公式）vs. format（格式）vs. formation（形成）"},
+  hand:{w:"hand (v.) sb sth",ipa:"/hænd/",pos:"v.",tags:["poly","core","write"],cn:"把……递给（某人）；轻易地给予",en:"to pass sth to sb with your hand; to give sb sth easily",ex:"The three-fifths formula handed Jefferson his narrow victory",mem:"⚠️ <b>本句是动词，双宾语结构 <code>hand sb sth</code>＝把某物递给某人。</b><br>⭐⭐ <b>用得极妙：胜利不是杰斐逊自己挣来的，是制度「<u>递到</u>他手上」的。</b><b>一个动词就把作者的态度写出来了——这比直接说「他不配」高明得多。</b><br>✍️ <b>写作可迁移</b>：<code>hand sb a victory / an advantage / an excuse</code>＝<b>白白送给某人一个胜利/优势/借口</b>，<b>暗含「不劳而获」的贬义。</b>例：<code>The scandal handed his opponents a ready-made excuse.</code><br>💡 <b>hand 的高频短语</b>：<code>hand in</code>（上交）· <code>hand out</code>（分发）· <code>hand down</code>（传承；宣判）· <code>hand over</code>（移交）· <code>on the other hand</code>（另一方面）· <code>at hand</code>（在手边/临近）。",syn:"give / pass / deliver / present",conf:"hand sb sth（递给，含「轻易给出」意味）vs. grant（正式给予，含权力）vs. award（授予，含评定）"},
+  narrow:{w:"narrow victory",ipa:"/ˈnærəʊ/",pos:"adj.",tags:["poly","phrase"],cn:"险胜，勉强获胜",en:"a victory won by a very small margin",ex:"handed Jefferson his narrow victory in the presidential election of 1800",mem:"⚠️ <b>narrow 在这里不是「狭窄的」，而是「差距很小的」。</b><code>a narrow victory / a narrow margin / a narrow escape</code>＝<b>险胜 / 微弱优势 / 死里逃生</b>。<br>📌 <b>这个词是 39A 的隐性支撑</b>：<b>正因为是「险胜」，五分之三方案多出来的那几张选举人票才能起决定作用</b>——<b>如果是大胜，就谈不上「得益于奴隶制」了。</b><b>一个形容词撑起了整条因果链。</b><br>✍️ 相关表达：<code>win by a narrow margin</code>（以微弱优势获胜）· <code>a landslide victory</code>（压倒性胜利，反义）· <code>a narrow-minded person</code>（心胸狭隘的人，另一个义项）。",syn:"slim / slender / marginal / close",conf:"a narrow victory（险胜）vs. a landslide（压倒性胜利）—— <b>一对反义，考研考过</b>"},
+  inflate:{w:"inflate",ipa:"/ɪnˈfleɪt/",pos:"v.",tags:["poly","core","write"],cn:"使膨胀，虚增；给……充气",en:"to make sth appear larger or more important than it really is",ex:"by inflating the votes of the southern states in the Electoral College",mem:"in-（进入）+ flate（吹，同 flatulence）→ <b>吹进气 ＝ 充气 → 引申：虚增、夸大</b>。<br>📌 <b>本句是引申义</b>：<b>五分之三条款让南方各州的选票数「虚胖」了</b>——<b>并不是真有那么多人投票，而是人口基数被算大了。</b><b>这个词本身就带贬义，作者的态度藏在里面。</b><br>✍️ <b>写作可用</b>：<code>inflated prices</code>（虚高的价格）· <code>inflated claims</code>（夸大的说法）· <code>an inflated sense of self-importance</code>（膨胀的自我重要感）。<br>💡 词族：<code>inflation</code>（通货膨胀）· <code>deflate</code>（放气；使泄气）· <code>deflation</code>（通货紧缩）。<b>经济类阅读必备。</b>",syn:"exaggerate / overstate / boost artificially",conf:"inflate（虚增/充气）vs. inflict（施加痛苦）vs. influx（涌入）"},
+  electoral:{w:"the Electoral College",ipa:"/ɪˈlektərəl/",pos:"n. 专有",tags:["phrase","core"],cn:"（美国）选举人团",en:"the body of people who formally elect the U.S. president",ex:"inflating the votes of the southern states in the Electoral College",mem:"⭐⭐ <b>不懂这个制度，39A 的因果链就闭不上。</b><br>📌 <b>机制</b>：美国总统不由全民直选产生，而由各州的<b>选举人</b>投票选出；<b>各州的选举人数 ＝ 该州的国会议员数（众议员 + 参议员）</b>，而众议员数<b>按人口分配</b>。<br>⟹ <b>完整链条</b>：五分之三条款把奴隶按 0.6 人计入人口 → <b>南方人口算得多</b> → <b>众议员席位多</b> → <b>选举人票多</b> → <b>杰斐逊 1800 年险胜</b>。<br>💡 <code>college</code> 在这里不是「大学」，而是<b>「团、社」</b>（一群有共同职责的人）——同类用法：<code>the College of Cardinals</code>（枢机团）。<b>又一个熟词僻义。</b>",syn:"（专有名词，无同义词）",conf:"electoral（选举的）vs. electric（电的）vs. eclectic（兼收并蓄的）—— <b>三个词形近，考研都出现过</b>"},
+  inoffice:{w:"in office",ipa:"",pos:"短语",tags:["phrase","poly"],cn:"在任，执政",en:"holding an official position, especially in government",ex:"Once in office, Jefferson extended slavery with the Louisiana Purchase",mem:"⚠️ <b>不是「在办公室里」（那是 <code>in the office</code>，多一个 the）。</b><b>⟹ 零冠词的 <code>in office</code>＝在职、执政。</b><br>📌 <b>这类「有无冠词意思全变」的短语是考研固定考点，务必整组记</b>：<br>· <code>in office</code>（执政）vs. <code>in the office</code>（在办公室）<br>· <code>in prison</code>（服刑）vs. <code>in the prison</code>（在监狱建筑里）<br>· <code>in hospital</code>（住院）vs. <code>in the hospital</code>（在医院里）<br>· <code>at table</code>（在吃饭）vs. <code>at the table</code>（在桌旁）<br>· <code>go to school</code>（上学）vs. <code>go to the school</code>（去学校那个地方）<br>· <b>2008·T3 还考过 <code>in case of</code>（万一）vs. <code>in the case of</code>（至于）</b>。<br>⭐ <b>本句的 <code>Once in office</code>（一上任）是 38 题的关键时间标记</b>：<b>上任<u>前</u>私下反感，上任<u>后</u>扩大奴隶制——态度的复杂性就在这个前后对比里。</b>",syn:"in power / holding office / serving a term",conf:"<b>in office（执政）vs. in the office（在办公室）</b>—— <b>差一个 the，差一整个义项</b>"},
+  extend:{w:"extend",ipa:"/ɪkˈstend/",pos:"v.",tags:["core","write"],cn:"扩大（范围）；延长；给予",en:"to make sth larger in area or range; to make sth last longer",ex:"Jefferson extended slavery with the Louisiana Purchase in 1803",mem:"ex-（向外）+ tend（伸展，同 tendency 倾向 / intend 打算）→ <b>向外伸 ＝ 扩展</b>。<br>📌 <b>本句是「扩大范围」义</b>：杰斐逊<b>把奴隶制的地盘扩大了</b>（新买的土地里划出三个蓄奴州）。<br>⭐ <b>38 题 C 项的第二块砖就在这里</b>：<b>他私下反感奴隶制（③段），上台后却亲手扩大了它（本段）——「说」与「做」的背离，就是 complex 的实证。</b><br>✍️ <b>三个常用义项</b>：<code>extend the deadline</code>（延长期限）· <code>extend one's influence</code>（扩大影响）· <code>extend an invitation / one's thanks</code>（<b>发出邀请 / 表示感谢</b>，正式用法，作文里很好用）。<br>💡 词族：<code>extensive</code>（广泛的）· <code>extent</code>（程度，<code>to some extent</code>）· <code>extension</code>（延伸；分机）。",syn:"expand / enlarge / broaden / prolong",conf:"extend（延伸/延长，一维或范围）vs. expand（扩张，体积或规模）vs. extent（n. 程度，⚠️ 不是动词）"},
+  louisiana:{w:"the Louisiana Purchase",ipa:"",pos:"n. 专有",tags:["phrase"],cn:"路易斯安那购地案（1803）",en:"the 1803 purchase of the Louisiana territory from France",ex:"Jefferson extended slavery with the Louisiana Purchase in 1803",mem:"📌 <b>1803 年，杰斐逊政府以约 1500 万美元从法国（拿破仑）手中买下路易斯安那地区</b>，<b>美国国土面积近乎翻倍</b>，是美国史上最著名的一笔土地交易。<br>⭐ <b>在本篇里它只承担一个功能：证明杰斐逊「说一套做一套」</b>——<b>新土地被划成 13 个州，其中<u>三个是蓄奴州</b></u>。<b>私下反感奴隶制的人，亲手把它扩张到了新领土上。</b><br>💡 <code>purchase</code> 在这里是<b>名词「购买、购地」</b>（不是动词）。<b>作文里 <code>make a purchase</code> 比 <code>buy something</code> 正式；<code>purchasing power</code>＝购买力，经济类文章高频。</b>",syn:"（专有名词）",conf:"purchase（n./v. 购买，正式）vs. buy（口语）vs. acquire（收购，商业语境）"},
+  carve:{w:"carve",ipa:"/kɑːv/",pos:"v.",tags:["poly","core","write"],cn:"划分；雕刻；切（肉）",en:"to divide sth into separate parts; to cut a shape out of wood or stone",ex:"the new land was carved into 13 states",mem:"⚠️ <b>本句不是「雕刻」，而是「（把土地）划分」。</b><code>be carved into N parts</code>＝<b>被划分成 N 块</b>——<b>这个词自带画面：像切一块肉那样把土地切开，很有殖民时代的味道。</b><br>✍️ <b>写作可用的高级搭配</b>：<code>carve out a niche / a career</code>＝<b>开创出一片天地 / 闯出一番事业</b>（<b>议论文写个人奋斗时非常地道</b>）· <code>carve up</code>（瓜分，含贬义）。<br>💡 <b>「分割」动词群</b>：<code>divide</code>（中性）· <code>split</code>（劈开）· <code>carve</code>（切分，含刀感）· <code>partition</code>（分割，政治语境如印巴分治）· <code>segment</code>（分段，商业语境）。",syn:"divide / split / partition",conf:"carve（切分/雕刻）vs. curve（曲线）vs. crave（渴望）—— <b>三个词形近音近</b>"},
+  still:{w:"Still (句首)",ipa:"/stɪl/",pos:"adv. 连接副词",tags:["poly","phrase","write"],cn:"（句首）尽管如此，然而",en:"despite what has just been said; nevertheless",ex:"Still, Jefferson freed Hemings's children—though not Hemings herself",mem:"⚠️ <b>放在句首、后面跟逗号的 Still ＝ 转折连接副词「尽管如此」</b>，<b>不是「仍然」。</b><br>⭐⭐ <b>这是⑥段的转弯标志，也是全文结构的最后一个路标</b>：③④⑤三段一路在说「他们为什么不行动」，<b>Still 一转：他们也不是什么都没做。</b><br>📌 <b>本篇四个段首路标连起来看，全文结构一目了然</b>：<code>More than anything</code>（③总因）→ <code>For one thing</code>（④分因一）→ <code>And</code>（⑤分因二）→ <code><b>Still</b></code>（⑥转折）。<b>四个词读完，比读完四段还清楚。</b><br>✍️ <b>「尽管如此」词族（作文轮换用）</b>：<code>Still</code>· <code>Nevertheless</code>· <code>Nonetheless</code>· <code>Even so</code>· <code>That said</code>· <code>All the same</code>。",syn:"nevertheless / nonetheless / even so / yet",conf:"<b>Still（句首＝尽管如此）vs. still（句中＝仍然）</b>—— <b>位置决定词义，这是判据</b>"},
+  free:{w:"free (v.)",ipa:"/friː/",pos:"v.",tags:["poly","core"],cn:"释放，解放；使摆脱",en:"to let sb leave prison or slavery; to release",ex:"Jefferson freed Hemings's children",mem:"⚠️ <b>形容词转动词</b>：<code>free sb</code>＝<b>解放/释放某人</b>。<b>判据：freed 带 -ed 且后接宾语，只能是动词。</b><br>📌 <b>本篇的两处「解放」用了不同的词，值得对照</b>：<br>· ⑥段①句 <code><b>freed</b> Hemings's children</code>（直接给自由）；<br>· ⑥段②句 <code><b>grant</b> his slaves <b>their freedom</b></code>（<b>正式地「给予」自由</b>，用的是 grant + 名词 freedom）。<br><b>⟹ 后者更正式、更庄重，因为它发生在<u>遗嘱</u>里，是一个法律行为。作者用词的分寸感就在这里。</b><br>✍️ <code>free sb from sth</code>（使某人摆脱……）· <code>free up resources</code>（腾出资源）· <code>a free hand</code>（自由裁量权）。",syn:"release / liberate / emancipate（尤指解放奴隶）",conf:"free（释放，通用）vs. <b>emancipate</b>（解放奴隶/使获得政治权利，正式）vs. liberate（解放，多用于国土/群体）"},
+  approximately:{w:"approximately",ipa:"/əˈprɒksɪmətli/",pos:"adv.",tags:["core","write"],cn:"大约，近似地",en:"used to show that sth is almost, but not completely, accurate",ex:"though not Hemings herself or his approximately 150 other slaves",mem:"ad-（朝向）+ proxim（接近，同 proximity 邻近 / approach 接近）→ <b>接近于 ＝ 大约</b>。<br>📌 <b>本句的 <code>approximately 150</code>（约 150 名）这个数字很关键</b>：<b>杰斐逊只解放了赫明斯的几个孩子，另外一百五十人一个没放。</b><b>数字对比就是作者的评价——他不需要写一个形容词。</b><br>✍️ <b>「大约」词族（写作/图表作文轮换）</b>：<code>approximately</code>（最正式）· <code>roughly</code>· <code>about</code>· <code>around</code>· <code>some</code>（<code>some 150 slaves</code>，⚠️ some 加数字也表「大约」）· <code>or so</code>（150 or so）· <code>in the region of</code>。<br>💡 词族：<code>proximity</code>（邻近）· <code>approximate</code>（adj. 近似的 / v. 接近）。",syn:"roughly / about / around / some",conf:"approximately（大约，正式）vs. approach（接近）vs. appropriate（恰当的）—— <b>三个 app- 词常被看串</b>"},
+  bravery:{w:"bravery",ipa:"/ˈbreɪvəri/",pos:"n.",tags:["core","write"],cn:"英勇，勇敢",en:"the quality of being brave",ex:"after observing the bravery of the black soldiers during the Revolutionary War",mem:"brave（勇敢的）+ -ry（名词后缀）→ <b>勇敢（这一品质）</b>。<br>⭐⭐ <b>40 题答案的落点就在这个词所在的短语</b>：<code>after <b>observing the bravery of the black soldiers</b> during the Revolutionary War</code>＝<b>目睹独立战争中黑人士兵的英勇</b> ⟹ <b>这是华盛顿观念转变的触发事件 ＝ <code>military experience</code>（军事经历）。</b><br>📌 <b>注意 <code>after observing</code> 这个时间标记</b>：<b>它把「目睹」放在「开始相信」之前，从而确立了链条的起点。</b><b>题干问 <code>originated from</code>（源于），要的就是这个起点。</b><br>✍️ <b>「勇气」词族</b>：<code>bravery</code>（勇敢，行为层面）· <code>courage</code>（勇气，含道德意味，如 moral courage）· <code>valor</code>（英勇，多用于战场，文学色彩）· <code>audacity</code>（大胆，可褒可贬）· <code>guts</code>（口语：胆量）。",syn:"courage / valor / gallantry / fearlessness",conf:"bravery（勇敢，多指具体行为）vs. courage（勇气，可指内心力量）—— <b>moral courage 只能用 courage</b>"},
+  revwar:{w:"the Revolutionary War",ipa:"",pos:"n. 专有",tags:["phrase"],cn:"（美国）独立战争（1775–1783）",en:"the American War of Independence",ex:"the bravery of the black soldiers during the Revolutionary War",mem:"📌 <b>美国人叫它 the Revolutionary War（革命战争），英国人叫它 the American War of Independence（美国独立战争）</b>——<b>同一场战争，两个名字，取决于谁在说。</b><br>⭐ <b>本篇的关键背景</b>：<b>华盛顿是大陆军总司令</b>，战争期间<b>有约 5000 名黑人（包括奴隶）参战</b>。<b>他正是在这场战争里亲眼看到黑人士兵的英勇，才开始相信「人人生而平等」。</b><br>⟹ <b>40 题 B 项 <code>military experience</code>（军事经历）就是对这个短语的概括</b>：<b>选项不用 war 这个原词，而用 military experience 这个上位词——这是典型的同义替换。</b><br>💡 <code>revolutionary</code> 还有形容词义「革命性的、创新的」：<code>a revolutionary technology</code>。<b>作文里比 innovative 更有冲击力。</b>",syn:"the American War of Independence",conf:"revolutionary（革命的/革命性的）vs. revolutionize（v. 彻底变革）vs. evolutionary（进化的）"},
+  overcome:{w:"overcome",ipa:"/ˌəʊvəˈkʌm/",pos:"v.",tags:["core","write"],cn:"克服，战胜；（被动）压倒，使不知所措",en:"to succeed in dealing with or controlling a problem",ex:"overcame the strong opposition of his relatives",mem:"over（越过）+ come（来）→ <b>越过障碍 ＝ 克服</b>。<b>三态：overcome - overcame - overcome</b>（⚠️ 过去分词与原形同形，容易看错时态）。<br>✍️ <b>写作高频，几乎万能</b>：<code>overcome difficulties / obstacles / prejudice / fear / the language barrier</code>。<br>📌 <b>还有一个被动的高频义</b>：<code>be overcome <b>with/by</b> emotion / grief / fatigue</code>＝<b>（情绪）压倒、不能自持</b>。<code>She was overcome by emotion.</code><br>⭐ <b>本句里它承担的是「叙事分量」</b>：<b>不写 overcame，华盛顿就只是「立了个遗嘱」；写了 overcame the strong opposition，这件事才显出代价。</b><b>⟹ 作文举例时，「阻力」这一层不能省。</b>",syn:"conquer / surmount / get over / prevail over",conf:"overcome（克服困难）vs. overtake（超越/赶超）vs. overwhelm（压倒，强调数量或情绪上的淹没）"},
+  opposition:{w:"opposition",ipa:"/ˌɒpəˈzɪʃn/",pos:"n.",tags:["core","write"],cn:"反对，抵制；反对派",en:"strong disagreement with a plan or policy",ex:"overcame the strong opposition of his relatives",mem:"op-（against 相对）+ posit（放置，同 position 位置 / deposit 存放）→ <b>放到对立面 ＝ 反对</b>。<br>📌 <b>搭配</b>：<code>opposition <b>to</b> sth</code>（对……的反对）· <code>meet with / face strong opposition</code>（遭遇强烈反对）· <code>in opposition to</code>（与……相对）。<br>⭐ <b>本篇的一处巧妙呼应</b>：②段说开国元勋们 <code>did little to <b>fight</b> it</code>（几乎没反抗奴隶制），⑥段说华盛顿 <code><b>overcame</b> the strong <b>opposition</b></code>（克服了亲属的反对）。<b>同一个「对抗」主题，一处是「没做」，一处是「做了」——全文的评价分寸就在这一组对照里。</b><br>💡 <b>政治语境</b>：<code>the Opposition</code>（大写＝议会里的反对党）。",syn:"resistance / objection / dissent / pushback",conf:"opposition（反对，名词）vs. opposite（相反的/对面）vs. proposition（主张/命题）"},
+  grant:{w:"grant",ipa:"/ɡrɑːnt/",pos:"v. / n.",tags:["core","write"],cn:"（正式）给予，准予；（n.）拨款，助学金",en:"to agree to give sb what they ask for, especially formal permission",ex:"to grant his slaves their freedom in his will",mem:"📌 <b>grant 是「有权者给予」，比 give 正式、庄重</b>——<b>本句用它而不用 give，正因为这是遗嘱里的一个法律行为。</b><br>✍️ <b>三个高频搭配</b>：<code>grant sb sth</code>（双宾语，本句）· <code>be granted permission / a visa / asylum</code>（被准予……）· <code>take sth <b>for granted</b></code>＝<b>把……视为理所当然</b>（<b>考研与作文超高频</b>）。<br>📌 <b>名词义也常考</b>：<code>a research grant</code>（科研拨款）· <code>a student grant</code>（助学金，⚠️ 不用还，与 loan 贷款相对）——<b>2008·T2 那篇讲科学出版，government-funded research 的钱就是 grant。</b><br>💡 <code>granted that…</code>＝<b>诚然、就算……（让步）</b>，作文里用来起让步段非常地道。",syn:"bestow / confer / accord / award",conf:"grant（准予，上对下）vs. grand（宏大的）vs. warrant（v. 使有必要；n. 授权令）"},
+  will:{w:"will (n.)",ipa:"/wɪl/",pos:"n.",tags:["poly","core"],cn:"遗嘱；意志，意愿",en:"a legal document saying what is to happen to your property after you die",ex:"to grant his slaves their freedom in his will",mem:"⭐⭐ <b>本篇最容易读漏的熟词僻义，也是 40 题定位句里的词。</b><b>判据：<code>in his will</code> 前有介词、前有物主代词 ⟹ 只能是名词。</b><br>📌 <b>三个义项</b>：<b>①遗嘱</b>（本篇）· <b>②意志</b>（<code>the will to win</code> 求胜意志、<code>free will</code> 自由意志）· <b>③意愿</b>（<code>against one's will</code> 违背意愿）。<br>⭐⭐ <b>「在遗嘱中」这个细节本身就是一记评价</b>：<b>华盛顿是在<u>死后</u>才让奴隶获得自由的</b>——<b>连全篇唯一一个正面例子，都还留着一点余味。这与②段「知而不行」的论点是一脉相承的。</b><br>💡 <code>make/draw up a will</code>（立遗嘱）· <code>where there's a will, there's a way</code>（有志者事竟成，这里是「意志」义）。",syn:"testament（遗嘱，正式：last will and testament）",conf:"<b>will（n. 遗嘱/意志）vs. will（aux. 将要）</b>—— <b>看有没有冠词或物主代词：有就是名词</b>"},
+  act:{w:"act (n.)",ipa:"/ækt/",pos:"n.",tags:["core"],cn:"行为，举动；（大写）法案",en:"a thing that sb does; a law passed by a parliament",ex:"Only a decade earlier, such an act would have required legislative approval",mem:"📌 <b>本句是「行为、举动」义</b>：<code>such an act</code> 回指上一句「立遗嘱解放奴隶」这件事。<br>⚠️ <b>但要留意另一个高频义：大写的 Act ＝ 法案/法令</b>（<code>the Civil Rights Act</code> 民权法案）。<b>2007·T4 那篇讲信息安全，考的就是这个义项（一部「被盗须告知」的法）。</b><br>💡 <b>act 的短语群</b>：<code>an act of kindness</code>（善举）· <code>catch sb in the act</code>（当场抓获）· <code>act on</code>（按……行事）· <code>act as</code>（充当）· <code>get one's act together</code>（振作起来，口语）。<br>📌 <b>本句还是一处虚拟语气</b>：<code>would have required</code>＝与过去事实相反 ⟹ <b>事实是：华盛顿立遗嘱时已经不需要立法批准了。</b>",syn:"deed / action / move（行为）｜statute / law（法案）",conf:"act（行为，单个动作）vs. action（行动，可泛指）vs. activity（活动）—— <b>an act of 后面接抽象名词是固定搭配</b>"},
+  legislative:{w:"legislative approval",ipa:"/ˈledʒɪslətɪv/",pos:"adj. + n.",tags:["phrase","core"],cn:"立法机构的批准",en:"approval by a law-making body",ex:"such an act would have required legislative approval in Virginia",mem:"legis（法律，同 legal 合法的 / legitimate 正当的）+ lat（携带）+ -ive → <b>与制定法律有关的 ＝ 立法的</b>。<br>📌 <b>三权分立的三个形容词，一起记</b>：<code><b>legislative</b></code>（立法的，国会）· <code><b>executive</b></code>（行政的，总统）· <code><b>judicial</b></code>（司法的，法院）。<b>美国社会类文章高频。</b><br>⭐ <b>本句的作用是「衬托」</b>：<b>仅仅十年之前，弗吉尼亚州还要求奴隶主释放奴隶必须经立法机构批准</b> ⟹ <b>言外之意：华盛顿这一步在当时几乎是不可能的，是法律刚刚松动才做成的。</b><b>这不是在讲法律程序，是在给上一句加分量。</b>",syn:"lawmakers' consent / statutory approval",conf:"legislative（立法的）vs. legitimate（正当的/合法的）vs. legible（字迹清楚的）—— <b>三个 leg- 词常混</b>"},
+  primitive:{w:"primitive",ipa:"/ˈprɪmətɪv/",pos:"adj.",tags:["core"],cn:"原始的，简陋的；早期的",en:"belonging to an early stage of development; simple and old-fashioned",ex:"36A: show the primitive medical practice in the past",mem:"prim-（第一，同 primary 首要的 / prime 首要的）+ -itive → <b>处于最早阶段的 ＝ 原始的</b>。<br>⚠️ <b>36A 就是拿这个词造的干扰项</b>：<code>show the <b>primitive</b> medical practice in the past</code>（展现过去原始的医疗实践）。<b>①段确实提到了牙医和移植手术，但原文<u>一个字没评价这项手术的技术水平</u>。</b><br>⭐ <b>本题的通用教训：<u>「做法残忍」≠「技术原始」</u>，两者中间隔着一整套评价体系。</b><b>选项里出现一个原文从未使用过的<u>评价性形容词</u>时，先按「无中生有」处理。</b>",syn:"primeval / crude / rudimentary / basic",conf:"primitive（原始的，含落后意味）vs. primary（首要的/初级的）vs. prime（最好的；黄金的，prime time 黄金时段）"},
+  cruelty:{w:"cruelty",ipa:"/ˈkruːəlti/",pos:"n.",tags:["core"],cn:"残忍，残酷（行为）",en:"behaviour that causes pain or suffering deliberately",ex:"36B: demonstrate the cruelty of slavery in his days",mem:"cruel（残忍的）+ -ty → <b>残忍</b>。<br>⚠️⚠️ <b>36B 是本题最「有感觉」的干扰项</b>：从奴隶嘴里拔牙<b>确实残忍</b>，读到这里的第一反应就是它。<br><b>但写作目的题的答案由<u>下文</u>决定，不由你读事例时的感受决定</b>——<b>②段①句接的是「形象反差」，不是「制度残忍」。</b><br>⭐ <b>这就是写作目的题最核心的一条纪律：<u>你的情绪反应不是证据，紧跟着的那一句才是。</u></b><br>💡 词族：<code>cruel</code>· <code>cruelty-free</code>（未经动物实验的，商品标签常见）· <code>cruel to be kind</code>（狠心是为了对方好）。",syn:"brutality / barbarity / inhumanity",conf:"cruelty（残忍）vs. crudity（粗糙）vs. curiosity（好奇心）"},
+  reveal:{w:"reveal",ipa:"/rɪˈviːl/",pos:"v.",tags:["core","write"],cn:"揭示，透露，展现",en:"to make sth known that was previously secret or unknown",ex:"36D: reveal some unknown aspect of his life",mem:"re-（back 反向）+ veal（veil 面纱）→ <b>把面纱掀回去 ＝ 揭开、揭示</b>。<b>这个词源画面记住了就不会忘。</b><br>⭐⭐ <b>36 题正确项的动词</b>：<code><b>reveal</b> some <b>unknown</b> aspect of his life</code>（揭示他生活中某个<b>不为人知</b>的方面）。<br>📌 <b>它与原文的对应关系</b>：原文 <code>a far different image from the George <b>most people remember</b></code>（与大多数人记得的那个乔治大不相同）⟹ <b>大家记得的 ≠ 这个 ⟹ 这个是「不为人知的」（unknown）。</b><b>一处不带原词的同义替换，正是正确项的典型长相。</b><br>✍️ <b>学术写作高频</b>：<code>The study reveals that…</code>· <code>reveal a trend / a gap / a pattern</code>。②段⑤句的 <code>Works of several historians <b>reveal</b>…</code> 用的也是它。",syn:"disclose / uncover / expose / unveil",conf:"reveal（揭示，中性）vs. expose（曝光，常含揭露丑闻）vs. disclose（披露，正式，常用于信息公开）"},
+  deliberately:{w:"deliberately",ipa:"/dɪˈlɪbərətli/",pos:"adv.",tags:["core","write"],cn:"故意地，蓄意地；从容地",en:"done on purpose rather than by accident",ex:"37C: historians deliberately made up some stories of Jefferson's life",mem:"de-（完全）+ liber（weigh 权衡）+ -ate → <b>反复权衡过的 ＝ 深思熟虑的 → 故意的</b>。<br>⚠️ <b>37C 就是靠这个副词把方向<u>整个掉转</u>的</b>：原文说 DNA 证据 <code>almost certainly <b>proved</b></code>（几乎<b>确证</b>）杰斐逊与女奴育有一子——<b>史学家是拿着科学证据下结论</b>；C 却说他们 <code><b>deliberately made up</b></code>（<b>故意编造</b>）。<b>「证实」被读成「编造」，这是最粗暴的一类反向干扰。</b><br>📌 <b>做题提示：选项里出现带<u>负面动机</u>的副词（deliberately / intentionally / knowingly）时，回原文查一下作者有没有给出这种动机</b>——十有八九没有。<br>💡 形容词 <code>deliberate</code> 有两义：<b>①故意的　②不慌不忙的</b>（<code>a slow, deliberate voice</code>）。",syn:"intentionally / on purpose / knowingly",conf:"deliberately（故意地）vs. accidentally（意外地）vs. inadvertently（无意中）"},
+  affair:{w:"affair",ipa:"/əˈfeə(r)/",pos:"n.",tags:["core"],cn:"（婚外）暧昧关系；事务，事件",en:"a sexual relationship between two people, usually secret; a matter or event",ex:"38D: His affair with a slave stained his prestige",mem:"📌 <b>两个义项</b>：<b>①（不正当的）暧昧关系</b>（<code>have an affair with sb</code>，本题）· <b>②事务、事件</b>（<code>current affairs</code> 时事、<code>foreign affairs</code> 外交事务、<code>a family affair</code> 家事）。<br>⚠️ <b>38D 是无中生有</b>：②段③句只说 DNA 证实了杰斐逊与赫明斯育有一子——<b>这是史学家的新发现，原文没提它对杰斐逊的名声有任何影响。</b><code>stained his prestige</code>（玷污名声）完全是读者的联想。<br>⭐ <b>本题给的教训：历史人物 + 私生活 ⟹ 很容易脑补出「名声受损」这类后果。<u>但「文章提到了 X」不等于「文章评价了 X 的影响」。</u></b>",syn:"（暧昧）liaison / romance ｜（事务）matter / business",conf:"affair（事务/暧昧）vs. affect（v. 影响）vs. effect（n. 效果）—— <b>affair 与 affect 只差两个字母</b>"},
+  prestige:{w:"prestige",ipa:"/preˈstiːʒ/",pos:"n.",tags:["core","write"],cn:"声望，威信",en:"the respect and admiration that sb/sth has because of their status or achievements",ex:"38D: His affair with a slave stained his prestige",mem:"📌 <b>注意发音：/preˈstiːʒ/，重音在后，结尾是 /ʒ/（法语借词）。</b>形容词 <code>prestigious</code> /preˈstɪdʒəs/ ＝<b>有声望的、久负盛名的</b>。<br>✍️ <b>作文高频</b>：<code>a prestigious university / journal / award</code>（名校 / 名刊 / 大奖）· <code>enhance / damage one's prestige</code>。<br>⭐ <b>2008·T2 那篇讲科学出版时的核心逻辑就靠这个词</b>：<b>研究者投顶刊图的是 prestige（声望）而不是钱</b>——<b>两篇可以串起来记。</b><br>💡 <code>stain</code>（v. 玷污；n. 污渍）在本选项里也是个好词：<code>stain one's reputation</code>＝玷污名声。<b>同族：<code>tarnish</code>（使失去光泽 → 玷污）· <code>taint</code>（污染，含道德意味）。</b>",syn:"reputation / standing / status / renown",conf:"prestige（声望，偏正面且含仰慕）vs. reputation（名声，可好可坏）vs. fame（名气，偏知名度）"},
+  moral:{w:"moral",ipa:"/ˈmɒrəl/",pos:"adj. / n.",tags:["core","write"],cn:"道德的，道义上的；（n.）寓意，品行",en:"concerned with principles of right and wrong behaviour",ex:"the moral compromises made by the nation's early leaders",mem:"⚠️⚠️ <b>40 题 A 项的陷阱全在这个词的<u>唯一一次</u>出现处</b>：全文 <code>moral</code> 只出现在②段⑤句的 <code>moral <b>compromises</b></code>（道德<b>妥协</b>）里——<b>说的是「他们在道德上打了折」，与 A 项「出于道德考虑而解放奴隶」正好相反。</b><br>⭐ <b>做题动作：选项给出一个抽象名词（moral / political / financial）时，回文数一数这个词根出现过几次、每次是褒是贬。</b><b>本篇一数就知道 A 站不住。</b><br>✍️ <b>写作词族</b>：<code>moral obligation</code>（道德义务）· <code>moral dilemma</code>（道德困境）· <code>moral high ground</code>（道德制高点）· <code>morale</code>（⚠️ 多一个 e ＝ 士气，读音也不同 /məˈrɑːl/）。",syn:"ethical / principled / righteous",conf:"<b>moral（道德的）vs. morale（士气）vs. mortal（终有一死的/致命的）</b>—— <b>三个词形近，考研全考过</b>"},
+  statesmen:{w:"statesman",ipa:"/ˈsteɪtsmən/",pos:"n.",tags:["poly","core","write"],cn:"政治家（褒义，有远见的）",en:"an experienced politician who is respected for their wisdom",ex:"And the statesmen's political lives depended on slavery",mem:"⭐⭐ <b>39A 的同义替换点</b>：原文 <code>the <b>statesmen's</b> political lives</code> ⟹ 选项 <code>Some <b>Founding Fathers</b></code>。<b>statesman 在本篇具体指的就是华盛顿、杰斐逊这批开国元勋。</b><br>📌 <b>务必与 politician 分清，这是英语里一组著名的褒贬对立</b>：<br>· <code><b>statesman</b></code>＝<b>政治家</b>（褒义，有远见、以国家利益为重）；<br>· <code><b>politician</b></code>＝<b>政客</b>（常含贬义，钻营、只顾选票）。<br>⭐ <b>有句名言可作记忆锚点</b>：<i>A politician thinks of the next election; a statesman, of the next generation.</i>（政客想着下一次选举，政治家想着下一代人。）<br>✍️ <b>写作里评价人物时，选哪个词就是在表态度。</b>",syn:"leader / elder statesman",conf:"<b>statesman（政治家，褒）vs. politician（政客，多贬）</b>—— <b>考研阅读里这组词的褒贬差别常被用来设态度题</b>"},
+  constitution:{w:"the Constitution",ipa:"/ˌkɒnstɪˈtjuːʃn/",pos:"n.",tags:["core"],cn:"宪法；构成，体质",en:"the system of laws and basic principles that a state is governed by",ex:"The southern states would not have signed the Constitution without protections…",mem:"con-（共同）+ stitut（建立，同 institute 设立 / substitute 替代）+ -ion → <b>共同确立的东西 ＝ 宪法</b>。<br>📌 <b>大写的 the Constitution 特指某国宪法</b>（本篇＝美国宪法，1787 年制宪会议通过）。<br>⭐ <b>本句是含蓄虚拟语气</b>：<code>would not have signed … <b>without</b> protections</code>＝<b>要不是有这些保护条款，南方各州当初根本不会签</b> ⟹ <b>事实是：签了，因为条款给了。</b><b>这一句把「奴隶制是建国的交换条件」写得再清楚不过——也正是②段所谓「道德妥协」的具体所指。</b><br>💡 <b>另外两个义项也常考</b>：<code>a strong constitution</code>（体质好）· <code>the constitution of the committee</code>（委员会的构成）。",syn:"charter / basic law",conf:"constitution（宪法/构成）vs. institution（制度/机构）vs. constituent（选民；组成部分）"},
+  victory:{w:"victory",ipa:"/ˈvɪktəri/",pos:"n.",tags:["core","write"],cn:"胜利",en:"success in a game, election, war, etc.",ex:"handed Jefferson his narrow victory in the presidential election of 1800",mem:"vict-（征服，同 victor 胜利者 / convict 定罪 / evict 驱逐）+ -ory。<br>📌 <b>搭配</b>：<code>win / claim a victory</code>· <code>a narrow victory</code>（险胜，本篇）· <code>a landslide victory</code>（压倒性胜利）· <code>a Pyrrhic victory</code>（<b>惨胜</b>——得不偿失的胜利，作文里很有分量的一个典故词）。<br>⭐ <b>本篇用词的分寸感值得学</b>：作者不说 Jefferson <i>won</i> a victory（他<b>赢得</b>了胜利），而说 the formula <b>handed</b> him his victory（那个方案<b>把</b>胜利<b>递给</b>了他）。<b>主语一换，褒贬立刻就变了。</b><br>💡 词族：<code>victorious</code>（adj.）· <code>victor</code>（n. 胜利者）· <code>defeat</code>（反义：失败/击败）。",syn:"triumph / win / conquest",conf:"victory（胜利，名词）vs. victim（受害者）vs. victorious（胜利的）"},
+  approval:{w:"approval",ipa:"/əˈpruːvl/",pos:"n.",tags:["core","write"],cn:"批准，认可；赞成",en:"official permission; a positive opinion of sb/sth",ex:"such an act would have required legislative approval in Virginia",mem:"ap-（朝向）+ prove（证明，同 proof 证据）→ <b>证明它是好的 ＝ 认可、批准</b>。<br>📌 <b>两个义项都常考</b>：<b>①官方批准</b>（本篇：立法机构的批准）· <b>②赞许</b>（<code>a nod of approval</code> 赞许的点头、<code>seek sb's approval</code> 寻求某人的认可）。<br>✍️ <b>搭配</b>：<code>subject to approval</code>（须经批准）· <code>win / gain approval</code>· 反义 <code>disapproval</code>（不赞成）。<br>⭐ <b>本句的虚拟语气要读出言外之意</b>：<code>Only a decade earlier, such an act <b>would have required</b> legislative approval</code>＝<b>早十年就得批，而华盛顿立遗嘱时已经不用了</b> ⟹ <b>时代刚刚开了一道口子。这句话是在给华盛顿那个举动加分量，不是在讲法律程序。</b>",syn:"consent / authorization / endorsement / sanction",conf:"approval（批准/赞成）vs. approach（方法/接近）vs. appraisal（评估）—— <b>三个 app- 词形近</b>"},
+};
+
+const panel=document.getElementById('panel');
+const isMobile=()=>window.innerWidth<=900;
+function badge(t){const m={core:'核心',phrase:'短语',poly:'僻义',write:'写作'};return `<span class="badge b-${t}">${m[t]}</span>`}
+function showCard(k,el){
+  const d=V[k];if(!d)return;
+  document.querySelectorAll('.tk.active').forEach(x=>x.classList.remove('active'));
+  if(el)el.classList.add('active');
+  panel.innerHTML=`<div class="wcard"><button class="close" onclick="panel.classList.remove('open')">收起</button>
+    <div class="head"><span class="w">${d.w}</span><span class="ipa">${d.ipa}</span><span class="pos">${d.pos}</span>${d.tags.map(badge).join('')}</div>
+    <div class="cn">${d.cn}</div><div class="en-def">${d.en}</div>
+    <div class="row r-ex"><b>原文语境</b>“…${d.ex}…”</div>
+    <div class="row r-mem"><b>怎么记</b>${d.mem}</div>
+    <div class="row r-syn"><b>同类词</b>${d.syn}</div>
+    <div class="row r-conf"><b>易混辨析</b>${d.conf}</div>
+  </div>`;
+  if(isMobile())panel.classList.add('open');
+}
+document.querySelectorAll('.tk').forEach(t=>t.addEventListener('click',e=>{e.stopPropagation();showCard(t.dataset.w,t)}));
+
+function tz(btn){btn.closest('.para').classList.toggle('showzh')}
+let allOn=false;
+function toggleAll(){allOn=!allOn;document.querySelectorAll('.para').forEach(p=>p.classList.toggle('showzh',allOn))}
+function go(id){document.getElementById(id).scrollIntoView({behavior:'smooth',block:'center'});const s=document.getElementById(id);s.style.transition='none';s.style.opacity=.3;setTimeout(()=>{s.style.transition='opacity .8s';s.style.opacity=1},80)}
+
+document.querySelectorAll('.q').forEach(q=>{
+  const ans=+q.dataset.ans;
+  q.querySelectorAll('.opt').forEach((o,i)=>o.addEventListener('click',()=>{
+    if(q.classList.contains('done'))return;
+    q.classList.add('done');
+    if(i!==ans)o.classList.add('wrong');
+    q.querySelectorAll('.opt')[ans].classList.add('right');
+  }));
+});
+
+const vg=document.getElementById('vgrid');
+function renderGrid(f){
+  vg.innerHTML='';
+  Object.keys(V).forEach(k=>{
+    const d=V[k];
+    if(f!=='all'&&!d.tags.includes(f))return;
+    const div=document.createElement('div');div.className='vitem';
+    div.innerHTML=`<span class="badges">${d.tags.map(badge).join('')}</span><div class="w">${d.w}</div><div class="cn">${d.cn}</div>`;
+    div.addEventListener('click',()=>{showCard(k,null);if(!isMobile())window.scrollTo({top:0,behavior:'smooth'})});
+    vg.appendChild(div);
+  });
+}
+renderGrid('all');
+document.querySelectorAll('.fbtn').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.fbtn').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderGrid(b.dataset.f);
+}));
+
+const yd=document.getElementById('yd');let sel='';
+document.addEventListener('selectionchange',()=>{
+  const s=window.getSelection();const t=s?s.toString().trim():'';
+  if(t&&/^[a-zA-Z' -]{2,40}$/.test(t)){
+    sel=t;
+    try{const r=s.getRangeAt(0).getBoundingClientRect();
+      yd.style.left=Math.min(r.left,window.innerWidth-110)+'px';
+      yd.style.top=(r.bottom+8)+'px';yd.style.display='block';}catch(e){}
+  }else{yd.style.display='none'}
+});
+yd.addEventListener('click',()=>{window.open('https://dict.youdao.com/result?word='+encodeURIComponent(sel)+'&lang=en');yd.style.display='none'});
+document.addEventListener('click',e=>{if(e.target!==yd&&!window.getSelection().toString())yd.style.display='none'});
+</script>
+<script src="_fault_attr.js"></script>
+</body>
+</html>
