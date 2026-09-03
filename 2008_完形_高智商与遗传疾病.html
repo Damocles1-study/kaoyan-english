@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2008 英一 完形 · 高智商与遗传疾病</title>
+<style>
+  :root{
+    --bg:#faf9f6; --card:#ffffff; --ink:#2b2b2b; --muted:#8a8578;
+    --accent:#8b5e34; --accent-soft:#f3e9dd; --line:#e8e3d8;
+    --hl:#fdf3d8; --hl-border:#e0b84d;
+    --green:#3e7a4e; --green-soft:#e8f2ea;
+    --red:#b04a3a; --red-soft:#f9e9e6;
+    --blue:#3d6a8a; --blue-soft:#e7eff5;
+    --purple:#6d5a8e; --purple-soft:#eeeaf5;
+    --serif:"Georgia","Songti SC",serif;
+    --sans:-apple-system,"PingFang SC","Helvetica Neue",sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#1c1a17; --card:#26231f; --ink:#e8e4dc; --muted:#9a948a;
+      --accent:#d0a06a; --accent-soft:#3a3127; --line:#3a362f;
+      --hl:#3d3520; --hl-border:#b08c3a;
+      --green:#7fb98d; --green-soft:#26362b;
+      --red:#d98876; --red-soft:#3d2a26;
+      --blue:#8ab3d0; --blue-soft:#26323d;
+      --purple:#a996c8; --purple-soft:#302a3d;
+    }
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;padding-bottom:120px}
+  .wrap{max-width:1100px;margin:0 auto;padding:24px 20px}
+  .back{font-size:.85rem;color:var(--muted);text-decoration:none}
+  .back:hover{color:var(--accent)}
+  header{margin:14px 0 28px}
+  header h1{font-family:var(--serif);font-size:1.7rem;line-height:1.3}
+  header .sub{color:var(--muted);margin-top:6px;font-size:.9rem}
+  .tags{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+  .tag{font-size:.75rem;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);border:1px solid var(--line)}
+  .tag.spoiler{cursor:pointer;background:var(--card);color:var(--muted)}
+  .tag.spoiler .hid{filter:blur(5px)}
+  .tag.spoiler.open .hid{filter:none;color:var(--accent)}
+
+  .layout{display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:start}
+  @media (max-width:900px){.layout{grid-template-columns:1fr}}
+
+  section.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:24px}
+  h2{font-size:1.05rem;letter-spacing:.05em;color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  h2 .n{font-size:.72rem;background:var(--accent);color:var(--card);border-radius:6px;padding:1px 7px}
+  .note{font-size:.82rem;color:var(--muted);margin-bottom:14px}
+
+  .para{margin-bottom:22px}
+  .para .en{font-family:var(--serif);font-size:1.06rem;line-height:2.15}
+  .pno{color:var(--muted);font-size:.75rem;user-select:none;margin-right:6px}
+  .tk{background:var(--hl);border-bottom:2px solid var(--hl-border);border-radius:3px;padding:0 2px;cursor:pointer;transition:filter .15s}
+  .tk:hover{filter:brightness(.93)}
+  .tk.active{outline:2px solid var(--hl-border)}
+  .ls{border-bottom:2px dotted var(--blue);cursor:pointer}
+  .para .zh{display:none;margin-top:10px;padding:10px 14px;background:var(--blue-soft);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:.93rem}
+  .para.showzh .zh{display:block}
+  .zbtn{float:right;margin-left:10px;font-size:.72rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:6px;padding:2px 9px;cursor:pointer}
+  .zbtn:hover{color:var(--accent);border-color:var(--accent)}
+  .allbtn{font-size:.78rem;border:1px solid var(--accent);background:none;color:var(--accent);border-radius:8px;padding:4px 12px;cursor:pointer}
+
+  /* 完形空格 */
+  .bk{display:inline-block;min-width:64px;text-align:center;background:var(--hl);border-bottom:2px solid var(--hl-border);border-radius:4px;padding:0 6px;cursor:pointer;font-weight:600;color:var(--accent);transition:all .15s;font-family:var(--sans);font-size:.95rem}
+  .bk:hover{filter:brightness(.93)}
+  .bk.filled{background:var(--green-soft);border-bottom-color:var(--green);color:var(--green);font-family:var(--serif)}
+  .bk.miss{background:var(--red-soft);border-bottom-color:var(--red);color:var(--red);font-family:var(--serif)}
+  .bk.active{outline:2px solid var(--hl-border)}
+  .bk .idx{font-size:.7rem;color:var(--muted);margin-right:3px}
+
+  aside{position:sticky;top:20px}
+  #panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;min-height:180px}
+  #panel .hint{color:var(--muted);font-size:.88rem;text-align:center;padding:30px 10px}
+  .wcard .head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .wcard .w{font-family:var(--serif);font-size:1.35rem;font-weight:bold}
+  .wcard .ipa{color:var(--muted);font-size:.85rem}
+  .wcard .pos{font-size:.72rem;color:var(--purple);background:var(--purple-soft);padding:1px 8px;border-radius:999px}
+  .wcard .badge{font-size:.7rem;padding:1px 8px;border-radius:999px}
+  .b-core{background:var(--red-soft);color:var(--red)}
+  .b-phrase{background:var(--blue-soft);color:var(--blue)}
+  .b-poly{background:var(--purple-soft);color:var(--purple)}
+  .b-write{background:var(--green-soft);color:var(--green)}
+  .wcard .cn{margin-top:8px;font-size:1rem;font-weight:600}
+  .wcard .en-def{color:var(--muted);font-size:.86rem;font-style:italic;margin-top:2px}
+  .wcard .row{margin-top:10px;font-size:.86rem;padding:8px 10px;border-radius:8px}
+  .wcard .row>b:first-child{font-size:.72rem;display:block;margin-bottom:2px;letter-spacing:.06em}
+  .r-ex{background:var(--hl)} .r-ex b{color:var(--hl-border)}
+  .r-mem{background:var(--green-soft)} .r-mem b{color:var(--green)}
+  .r-syn{background:var(--blue-soft)} .r-syn b{color:var(--blue)}
+  .r-conf{background:var(--red-soft)} .r-conf b{color:var(--red)}
+  #panel .close{display:none}
+  @media (max-width:900px){
+    aside{position:fixed;left:0;right:0;bottom:0;z-index:50;padding:0 8px 8px}
+    #panel{box-shadow:0 -6px 24px rgba(0,0,0,.18);max-height:55vh;overflow-y:auto;display:none}
+    #panel.open{display:block}
+    #panel .close{display:block;float:right;border:none;background:var(--line);border-radius:8px;padding:2px 10px;cursor:pointer;color:var(--ink)}
+  }
+
+  /* 逐空精解 */
+  .q{margin-bottom:22px;padding-bottom:18px;border-bottom:1px dashed var(--line);scroll-margin-top:20px}
+  .q:last-child{border:none;margin-bottom:0;padding-bottom:0}
+  .q .stem{font-family:var(--serif);font-size:.98rem;background:var(--hl);border-radius:8px;padding:8px 12px;display:block}
+  .q .stem em{font-style:normal;font-weight:700;color:var(--accent);border-bottom:2px solid var(--hl-border);padding:0 4px}
+  .qhead{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+  .qno{font-family:var(--serif);font-size:1.2rem;font-weight:700;color:var(--accent)}
+  .qt{font-size:.7rem;border-radius:999px;padding:1px 9px}
+  .c-logic{background:var(--blue-soft);color:var(--blue)}
+  .c-collo{background:var(--green-soft);color:var(--green)}
+  .c-word{background:var(--red-soft);color:var(--red)}
+  .c-context{background:var(--purple-soft);color:var(--purple)}
+  .qpos{font-size:.7rem;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:1px 9px}
+  .opts{margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  @media (max-width:640px){.opts{grid-template-columns:1fr}}
+  .opt{border:1px solid var(--line);border-radius:10px;padding:7px 12px;cursor:pointer;font-size:.92rem;font-family:var(--serif);transition:all .15s}
+  .opt .gl{font-family:var(--sans);font-size:.8rem;color:var(--muted);margin-left:6px}
+  .opt:hover{border-color:var(--accent)}
+  .q.done .opt{cursor:default}
+  .opt.right{background:var(--green-soft);border-color:var(--green)}
+  .opt.wrong{background:var(--red-soft);border-color:var(--red)}
+  .expl{display:none;margin-top:12px;background:var(--accent-soft);border-radius:10px;padding:12px 14px;font-size:.9rem}
+  .q.done .expl{display:block}
+  .expl b{color:var(--accent)}
+  .expl .lbl{font-size:.74rem;letter-spacing:.06em;color:var(--muted);display:block;margin:10px 0 2px}
+  .expl .lbl:first-child{margin-top:0}
+  .expl code{font-family:var(--serif);background:var(--hl);border-radius:4px;padding:1px 5px}
+  .wrongs{margin-top:6px;display:grid;gap:5px}
+  .wr{font-size:.86rem;background:var(--card);border-radius:8px;padding:6px 10px;border-left:3px solid var(--red)}
+  .wr .l{font-family:var(--serif);font-weight:700;color:var(--red);margin-right:5px}
+
+  /* 计分条 */
+  .score{display:flex;gap:14px;flex-wrap:wrap;align-items:center;background:var(--hl);border-radius:12px;padding:10px 16px;margin-bottom:18px;font-size:.88rem}
+  .score .v{font-family:var(--serif);font-size:1.25rem;font-weight:700;color:var(--accent);margin-right:4px}
+  .score .rst{margin-left:auto;font-size:.78rem;border:1px solid var(--line);background:var(--card);color:var(--muted);border-radius:8px;padding:3px 10px;cursor:pointer}
+
+  /* 考点统计 */
+  .catbar{display:flex;height:26px;border-radius:8px;overflow:hidden;margin:10px 0 16px;border:1px solid var(--line)}
+  .catseg{display:flex;align-items:center;justify-content:center;font-size:.72rem;color:#fff;font-weight:600}
+  .catlegend{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px}
+  .cl{display:flex;gap:8px;align-items:center;font-size:.85rem;cursor:pointer;padding:6px 8px;border-radius:8px;border:1px solid var(--line)}
+  .cl:hover{border-color:var(--accent)}
+  .dot{width:12px;height:12px;border-radius:3px;flex:0 0 12px}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+  .chip{font-size:.78rem;background:var(--accent-soft);color:var(--accent);border-radius:6px;padding:2px 8px;cursor:pointer}
+  .chip:hover{filter:brightness(.94)}
+
+  /* 打法 / 搭配 */
+  .flow{display:grid;gap:10px;font-size:.92rem}
+  .flow .fi{border:1px solid var(--line);border-radius:10px;padding:10px 14px}
+  .flow .fi b{color:var(--accent)}
+  .flow .fi .ev{display:block;margin-top:4px;font-size:.85rem;color:var(--muted);border-left:3px solid var(--hl-border);padding-left:9px}
+  .wb{display:grid;gap:10px}
+  .wbi{border-left:3px solid var(--green);background:var(--green-soft);border-radius:0 10px 10px 0;padding:10px 14px;font-size:.92rem}
+  .wbi .p{font-family:var(--serif);font-weight:600}
+  .wbi .u{color:var(--muted);font-size:.85rem}
+
+  /* 长难句 */
+  .sent{margin-bottom:20px}
+  .sent .src{font-family:var(--serif);font-size:1rem;background:var(--blue-soft);padding:12px 14px;border-radius:10px;border-left:3px solid var(--blue)}
+  .sent .anat{margin-top:8px;font-size:.9rem}
+  .sent .anat li{margin:4px 0 4px 18px}
+  .sent .tr{margin-top:8px;font-size:.92rem;color:var(--muted)}
+  .skel{color:var(--red);font-weight:600}
+
+  /* 80词表 */
+  .otab{width:100%;border-collapse:collapse;font-size:.86rem}
+  .otab th,.otab td{border:1px solid var(--line);padding:5px 8px;vertical-align:top}
+  .otab th{background:var(--accent-soft);color:var(--accent);font-size:.78rem}
+  .otab td.n{text-align:center;font-family:var(--serif);color:var(--muted);width:38px}
+  .otab .ow{font-family:var(--serif)}
+  .otab .oc{color:var(--muted);font-size:.82rem;display:block}
+  .otab td.hit{background:var(--green-soft)}
+  .otab td.hit .ow{color:var(--green);font-weight:700}
+  .hidecn .oc{filter:blur(4px);cursor:pointer}
+  .hidecn .oc.show{filter:none}
+  .tabwrap{overflow-x:auto}
+
+  #yd{position:fixed;z-index:60;display:none;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:4px 12px;font-size:.8rem;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+  .fail{background:var(--red-soft);border:1px solid var(--red);border-radius:10px;padding:10px 13px;margin-bottom:10px;font-size:.89rem;line-height:1.75}
+  .fail b{color:var(--red)}
+  .expl .fail{margin-top:0}
+  footer{color:var(--muted);font-size:.8rem;text-align:center;margin-top:30px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">◀ 返回英语复盘中心</a>
+  <header>
+    <h1>高智商与遗传疾病：一个不敢说出名字的假说</h1>
+    <div class="sub">2008 年英语（一）真题 · Section I 完形填空（Use of English）· 276 词 · 建议 15–18 min · 话题：科学/进化（源自 <i>The Economist</i> 2005-06-02 <i>The Evolution of Intelligence: Natural Genius?</i>）</div>
+    <div class="tags">
+      <span class="tag spoiler" onclick="this.classList.toggle('open')">🙈 答案（点击显示）：<span class="hid">1B 2D 3A 4C 5C 6A 7B 8D 9B 10C 11B 12D 13A 14C 15D 16D 17C 18A 19B 20A</span></span>
+      <span class="tag">难度：中上（生词不多，但六道考实义动词的搭配与主语适配）</span>
+      <span class="tag">Claude 盲做：19/20（错 13 题）</span>
+      <span class="tag">⚠️ 本页最值钱的一段在 13 题</span>
+    </div>
+  </header>
+
+  <div class="layout">
+    <main>
+
+      <!-- ========== 00 脉络 ========== -->
+      <section class="card">
+        <h2><span class="n">00</span>读前一分钟 · 全文脉络（完形先读首句，再看结构）</h2>
+        <p class="note">完形的<b>首句从不设空</b>——它是白送的定位坐标。本文首句 <i>The idea that some groups of people may be more intelligent than others is one of those hypotheses that dare not speak its name.</i> 一句话给全篇定了三件事：<b>话题</b>（某些族群是否更聪明）、<b>性质</b>（一个没人敢公开说的假说）、<b>语气</b>（禁忌、有争议）。后面每个空都必须服从这个大背景。</p>
+        <div class="flow">
+          <div class="fi"><b>① 段一 · 人物出场</b>：介绍 Gregory Cochran 是谁——一个<b>敢碰禁忌</b>的、<b>不隶属任何机构</b>的科学家，<b>有前科</b>（曾推动一个当年同样引发争议的观点）。
+            <span class="ev">1–4 空全部围绕「<b>此人敢为人先、特立独行</b>」这一条人物线：prepared（打算说）／rare（罕见的那种人）／of（独立于机构之外）／previously（以前的错误认知）。</span></div>
+          <div class="fi"><b>② 段二 · 论文亮相</b>：即将发表的论文<b>不仅提出结论，还解释成因</b>；点明研究对象（源自中欧的一个特定族群）与机制（自然选择）。
+            <span class="ev">5–8 空全部往「<b>这件事有多重</b>」上填：Even（连他都发怵）／thought（一想到就战栗）／suggests（论文表明）／question（所谈及的这一族群）。</span></div>
+          <div class="fi"><b>③ 段三 · 两个事实 → 一条新解释</b>：先摆两个<b>看似无关</b>的事实（智商高、易患遗传病），再说人们以前<b>各自归因</b>，最后亮出 Cochran 的观点——<b>两者其实是同一个进化过程的两面</b>。
+            <span class="ev">9–20 空共十二个，是全篇的主战场。<b>结构一眼可见：事实（9–13）→ 转折（14）→ 旧解释一对（15/16 与 17）→ 新解释（18）→ 机制（19）→ 收口（20）。</b></span></div>
+        </div>
+        <p class="note" style="margin-top:14px">📌 <b>完形不是 20 道独立小题，是一条语义链。</b>本篇的链条尤其干净：<b>人 → 论文 → 证据 → 旧解释 → 新解释</b>。方向定死，四选一里立刻能砍掉两个。</p>
+        <p class="note">🎭 <b>花絮（不影响做题，但能一秒定语气）</b>：首句的 <code>hypotheses that dare not speak its name</code> 化用的是 Lord Alfred Douglas 的名句 <i>“the love that dare not speak its name”</i>（不敢说出自己名字的爱）——维多利亚时代对同性恋的委婉指称，因王尔德受审而广为人知。《经济学人》拿它形容「族群智商差异」这个<b>学界禁忌话题</b>。</p>
+      </section>
+
+      <!-- ========== 01 正文 ========== -->
+      <section class="card">
+        <h2><span class="n">01</span>完形正文（20 空 · 点空格跳到该题）
+          <button class="allbtn" onclick="toggleAll()" style="margin-left:auto">译文 开/关</button>
+          <button class="allbtn" onclick="revealAll()">显示全部答案</button>
+        </h2>
+        <p class="note">🟨 点<b>空格</b>＝跳到下面对应的解析卡（先自己选，再看解析）｜ 🟡 黄底词＝生词卡，点开看词根/辨析 ｜ 蓝色虚线＝长难句 ｜ 选中任意单词浮出「查有道」</p>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">①</span>The idea that some groups of people may be more intelligent than others is one of those <span class="tk" data-w="hypothesis">hypotheses</span> that <span class="tk" data-w="darespeak">dare not speak its name</span>. But Gregory Cochran is <span class="bk" data-n="1"><span class="idx">1</span>___</span> to say it anyway. He is that <span class="bk" data-n="2"><span class="idx">2</span>___</span> <span class="tk" data-w="bird">bird</span>, a scientist who works <span class="tk" data-w="independently">independently</span> <span class="bk" data-n="3"><span class="idx">3</span>___</span> any <span class="tk" data-w="institution">institution</span>. <span class="ls" onclick="go('s1')">He helped <span class="tk" data-w="popularize">popularize</span> the idea that some diseases not <span class="bk" data-n="4"><span class="idx">4</span>___</span> thought to have a <span class="tk" data-w="bacterial">bacterial</span> cause were actually <span class="tk" data-w="infection">infections</span>, which <span class="tk" data-w="arouse">aroused</span> much <span class="tk" data-w="controversy">controversy</span> when it was first suggested.</span></p>
+          <div class="zh">「某些族群的智商可能高于其他族群」——这一观点是无人敢明说的假说之一。但格雷戈里·科克伦还是<b>打算</b>说出这一观点。他就是那种<b>罕见的</b>人物：一位独立<b>于</b>任何机构<b>之外</b>工作的科学家。他曾推动普及了这样一种观点：一些<b>以前</b>被认为不是由细菌引起的疾病，实际上是传染病——该观点首次被提出时曾引发极大的争议。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">②</span><span class="bk" data-n="5"><span class="idx">5</span>___</span> he, however, might <span class="tk" data-w="tremble">tremble</span> at the <span class="bk" data-n="6"><span class="idx">6</span>___</span> of what he is about to do. <span class="ls" onclick="go('s2')">Together with another two scientists, he is publishing a <span class="tk" data-w="paper">paper</span> which not only <span class="bk" data-n="7"><span class="idx">7</span>___</span> that one group of <span class="tk" data-w="humanity">humanity</span> is more intelligent than the others, but explains the process that has brought this about.</span> The group in <span class="bk" data-n="8"><span class="idx">8</span>___</span> are a particular people <span class="tk" data-w="originate">originated</span> from central Europe. The process is <span class="tk" data-w="naturalselection">natural selection</span>.</p>
+          <div class="zh">然而，<b>即便</b>是他，<b>一想到</b>自己即将要做的事，也可能会战栗。他将与另外两位科学家一起发表一篇论文，这篇论文不仅<b>表明</b>人类中某一族群比其他族群更聪明，而且还阐明了造成这一现象的过程。论文中<b>所谈及的</b>这一族群，是起源于中欧的一个特定民族。这一过程就是自然选择。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">③</span><span class="ls" onclick="go('s3')">This group generally do well in IQ test, <span class="bk" data-n="9"><span class="idx">9</span>___</span> 12–15 points above the <span class="bk" data-n="10"><span class="idx">10</span>___</span> value of 100, and have contributed <span class="bk" data-n="11"><span class="idx">11</span>___</span> to the intellectual and cultural life of the West, as the <span class="bk" data-n="12"><span class="idx">12</span>___</span> of their <span class="tk" data-w="elite">elites</span>, including several <span class="tk" data-w="renowned">world-renowned</span> scientists, <span class="bk" data-n="13"><span class="idx">13</span>___</span>.</span> They also suffer more often than most people from a number of <span class="tk" data-w="nasty">nasty</span> <span class="tk" data-w="genetic">genetic</span> diseases, such as breast cancer. These facts, <span class="bk" data-n="14"><span class="idx">14</span>___</span>, have previously been thought <span class="tk" data-w="unrelated">unrelated</span>. The <span class="tk" data-w="formerlatter">former</span> has been <span class="bk" data-n="15"><span class="idx">15</span>___</span> to social effects, such as a strong tradition of <span class="bk" data-n="16"><span class="idx">16</span>___</span> education. The latter was seen as a (an) <span class="bk" data-n="17"><span class="idx">17</span>___</span> of genetic <span class="tk" data-w="isolation">isolation</span>. Dr. Cochran suggests that the intelligence and diseases are <span class="tk" data-w="intimately">intimately</span> <span class="bk" data-n="18"><span class="idx">18</span>___</span>. <span class="ls" onclick="go('s4')">His argument is that the unusual history of these people has <span class="bk" data-n="19"><span class="idx">19</span>___</span> them to unique <span class="tk" data-w="evolutionary">evolutionary</span> pressures that have resulted in this <span class="bk" data-n="20"><span class="idx">20</span>___</span> <span class="tk" data-w="stateofaffairs">state of affairs</span>.</span></p>
+          <div class="zh">这一族群在智商（IQ）测试中普遍表现良好，<b>得分</b>比<b>平均</b>值 100 高出 12 至 15 分；而且他们对西方的精神文化生活做出了<b>极大（与其人数不成比例）的</b>贡献——正如他们当中的精英人物（包括几位世界知名的科学家）的<b>事业成就</b>所<b>证实</b>的那样。他们也比大多数人更容易罹患多种严重的遗传疾病，比如乳腺癌。<b>然而</b>，人们以前一直认为这些事实之间并无联系：前者被<b>归因于</b>社会影响，比如<b>重视</b>教育的深厚传统；后者则被看作遗传隔离的<b>结果</b>。科克伦博士认为，智商和疾病密切<b>相关</b>。他的观点是：这些人不同寻常的历史，<b>使</b>他们<b>承受</b>了独特的进化压力，进而导致了这种<b>看似矛盾的</b>局面。</div>
+        </div>
+      </section>
+      <!-- ========== 02 逐空精解 ========== -->
+      <section class="card">
+        <h2><span class="n">02</span>逐空精解（点选项即判 · 再看解析）</h2>
+        <div class="score">
+          <span><span class="v" id="sDone">0</span>/20 已答</span>
+          <span><span class="v" id="sRight">0</span> 对</span>
+          <span>折合 <span class="v" id="sPt">0</span> 分 / 10</span>
+          <button class="rst" onclick="location.reload()">↺ 重做</button>
+        </div>
+        <p class="note">每空 0.5 分。<b>先在心里说出「这个空要填什么词性、什么方向」再点选项</b>——完形做完不复盘方向，只对答案，等于白做。本篇有<b>六道</b>考实义动词/动词短语（7·9·13·15·18·19），做到这几空时<b>先问「主语是人还是物」</b>。</p>
+
+        <div class="q" id="q1" data-ans="1">
+          <div class="qhead"><span class="qno">1</span><span class="qt c-word">词义辨析 · 形容词</span><span class="qpos">be ___ to do</span></div>
+          <span class="stem">…is one of those hypotheses that dare not speak its name. But Gregory Cochran is <em>1</em> to say it anyway.</span>
+          <div class="opts">
+            <div class="opt">A selected<span class="gl">被选定的</span></div>
+            <div class="opt">B prepared<span class="gl">打算；乐意</span></div>
+            <div class="opt">C obliged<span class="gl">被迫；有义务</span></div>
+            <div class="opt">D pleased<span class="gl">高兴的</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span><code>is ___ to say</code>，四个选项都是过去分词/形容词，四个搭配都成立 ⟹ <b>纯靠语义与心态定</b>。
+            <span class="lbl">🔗 线索（句间转折）</span>前一句：这是个<b>无人敢明说</b>的假说；本句 <code>But…anyway</code>（但……还是要说）＝<b>明确的转折</b>。空格要传达的是<b>「别人不敢，他偏要」的主动、敢为人先</b>，与首句的 <code>dare not</code> 正好相反。
+            <span class="lbl">✅ B prepared</span><code>be prepared to do sth</code>＝<b>打算做；乐意做</b>，其中 do 尤指<b>难做的或通常不做的事</b>——这个"尤指"正好卡在本文的语境上（说一件禁忌的事）。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>be selected to do＝<b>被选定做某事</b>，指从一组人中<b>被挑出来</b>。「说出一个观点」这件事根本不涉及遴选，而且<b>被动</b>意味与「敢为人先的主动」相悖。</div>
+              <div class="wr"><span class="l">C</span>be obliged to do＝<b>（依法律或道义）被迫做；不得不做</b>。说出这个观点<b>不是任何人的义务</b>，且同样是<b>被动</b>。</div>
+              <div class="wr"><span class="l">D</span>be pleased to do 有两义：①「欣喜于某事」，后常接 hear/see/know；②「乐意效劳」，多用于礼貌寒暄（be pleased to accept the invitation）。<b>本句的转折点是「敢不敢」而非「高不高兴」</b>，且下段首句 <code>tremble</code>（战栗）明说他心情<b>并不愉快</b>——D 与全文冲突。</div>
+            </div>
+            <span class="lbl">💡 迁移</span><b>be ＋ 形容词 ＋ to do 一族按「主动 / 被动」先切一刀</b>：prepared、willing、eager、determined＝主动；selected、obliged、compelled、forced＝被动。<b>先定主被动，四选一立刻变二选一。</b>
+          </div>
+        </div>
+
+        <div class="q" id="q2" data-ans="3">
+          <div class="qhead"><span class="qno">2</span><span class="qt c-collo">固定搭配 · 形容词</span><span class="qpos">that ___ bird</span></div>
+          <span class="stem">He is that <em>2</em> bird, a scientist who works independently <em>3</em> any institution.</span>
+          <div class="opts">
+            <div class="opt">A unique<span class="gl">唯一的；独一无二的</span></div>
+            <div class="opt">B particular<span class="gl">特定的；特别的</span></div>
+            <div class="opt">C special<span class="gl">特殊的；特设的</span></div>
+            <div class="opt">D rare<span class="gl">稀少的；罕见的</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span><code>He is that ___ bird</code> 是<b>主系表</b>；<b>bird 在这里是熟词僻义</b>——口语里的「人，家伙」，整个短语是<b>比喻</b>：「他就是那种……的人」。后面 <code>a scientist who…</code> 是<b>同位语</b>，专门解释他"那种"在哪里。
+            <span class="lbl">🔗 线索</span>限定词 <code>that</code>（那种）＝承前总结，往回指第 1 空那句「别人不敢说，他偏说」。所以空格要装的是<b>「敢为人先、特立独行、与众不同」</b>。
+            <span class="lbl">✅ D rare</span><code>a rare bird</code> 是<b>固定搭配</b>（源自拉丁语 <i>rara avis</i>「珍禽」），喻指<b>不寻常的人、罕见的人物</b>。既承接上句的敢言，又被同位语「独立于任何机构的科学家」坐实。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>unique＝独一无二的，<b>含最高级意味</b>。但第二段第二句就说他「与另外两名科学家<b>一起</b>发表论文」，可见他<b>不至于独一无二</b>；且上下文重心是「为真理而不从众」，不是「优秀得无与伦比」。</div>
+              <div class="wr"><span class="l">B</span>particular①「特定的」（＝certain/specific）——可上文已经点名了具体人物「科克伦」，<code>that ___ bird</code> 是在<b>描述他的特点</b>而非特指某人；②「特别的、格外的」多修饰 attention/concern/interest 等<b>抽象名词，不修饰人</b>。</div>
+              <div class="wr"><span class="l">C</span>special①「特殊的」修饰人时强调<b>此人格外重要、受特殊关照</b>，文中没这层意思；②「（身份或工作）特设的、起专门作用的」，如 a special correspondent（特派记者）——可同位语里明说他是<b>独立工作</b>的科学家，<b>并非任职于某个特设岗位</b>。</div>
+            </div>
+            <span class="lbl">💡 迁移</span><b>比喻性的表语（that ___ bird / a ___ animal）后面必有同位语解释</b>，答案就藏在同位语里。<b>做题动作：先读同位语，再回填。</b>
+          </div>
+        </div>
+
+        <div class="q" id="q3" data-ans="0">
+          <div class="qhead"><span class="qno">3</span><span class="qt c-collo">固定搭配 · 介词</span><span class="qpos">independently ___</span></div>
+          <span class="stem">…a scientist who works independently <em>3</em> any institution.</span>
+          <div class="opts">
+            <div class="opt">A of<span class="gl">独立于…之外</span></div>
+            <div class="opt">B with<span class="gl">和…一起</span></div>
+            <div class="opt">C in<span class="gl">在…之内</span></div>
+            <div class="opt">D against<span class="gl">与…作对</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>介词。<b>关键在于看清它跟谁搭</b>：介词紧跟在副词 <code>independently</code> 之后，应与它<b>一起</b>构成副词短语修饰 works，<b>而不是直接修饰 works</b>。这一步定死了，B/C 就出局了。
+            <span class="lbl">🔗 线索</span>主句说他是「那种罕见的人」，同位语从人与做事两个角度补充说明<b>特立独行</b>——空格要指向<b>独立行事的工作方式</b>。
+            <span class="lbl">✅ A of</span><b>of 与某些形容词/副词/动词搭配时可表「免除、分离、剥去」</b>：<code>The tree is bare of leaf.</code>（树光秃秃的）；<code>independently of…</code>＝<b>独立于……之外</b>。代入＝「他独立于任何机构之外工作」，即不隶属任何机构。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>with 利用常见用法 <code>work with…</code>（和某人一起工作）设置干扰。<b>但语法上介词跟在 independently 之后</b>，且语义上 with 表「共同」与 independently 表「独立」<b>自相矛盾</b>。</div>
+              <div class="wr"><span class="l">C</span>in 同样利用 <code>work in…</code>（在某地工作）设干扰，语法症结同 B；语义上 in 表<b>包含关系</b>，与「独立性」相斥——「他独立地在任何一家机构中工作」不成句。</div>
+              <div class="wr"><span class="l">D</span>against＝与……作对。<b>看似能体现"不与机构合作"，但 against 不与 independently 搭配</b>；且语义过于绝对，文中只说他不依附机构，<b>没说他反对所有机构</b>。</div>
+            </div>
+            <span class="lbl">💡 迁移</span><b>介词题第一步永远是「这个介词跟谁走」</b>——跟前面的形容词/副词，还是跟前面的动词？跟错了，四个选项都能"讲得通"。<b>本题三个错项全是因为把介词硬拉去跟 works。</b>
+          </div>
+        </div>
+
+        <div class="q" id="q4" data-ans="2">
+          <div class="qhead"><span class="qno">4</span><span class="qt c-word">词义辨析 · 时间副词</span><span class="qpos">插在主谓之间的后置定语里</span></div>
+          <span class="stem">He helped popularize the idea that some diseases not <em>4</em> thought to have a bacterial cause were actually infections, which aroused much controversy…</span>
+          <div class="opts">
+            <div class="opt">A subsequently<span class="gl">随后；后来</span></div>
+            <div class="opt">B presently<span class="gl">目前；不久</span></div>
+            <div class="opt">C previously<span class="gl">以前，先前</span></div>
+            <div class="opt">D lately<span class="gl">最近，不久前</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span><b>先把句子拆开</b>：<code>the idea that ▸ some diseases ▸ (not ___ thought to have a bacterial cause) ▸ were actually infections</code>。括号里是<b>过去分词短语作后置定语</b>，插在从句主语与谓语之间。空格是<b>时间副词</b>，说的是「人们<u>在什么时候</u>不这么认为」。
+            <span class="lbl">🔗 线索（两个词指路）</span><code>actually</code>（实际上）用于<b>纠正</b>某事以强调事实；<code>controversy</code>（争议）说明这是个<b>历时很久的争论</b>。两词合起来指出句中存在<b>两种观点的先后更替</b>：<b>旧的错误认知（不是细菌引起 ⟹ 不是传染病）→ 科克伦的新观点（实际上是传染病）</b>。空格要标出<b>旧认知在前</b>。
+            <span class="lbl">✅ C previously</span>「以前；先前」，指事情发生在<b>当前时间或过去某一时间之前</b>，常用于一般过去时或过去完成时。代入＝「一些<b>以前</b>被认为不是由细菌引起的疾病，实际上是传染病」，正好体现「错误认知 → 事实普及」的时间先后。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>subsequently＝<b>随后；后来</b>，把时间线<b>整个倒过来</b>：变成「先有科克伦的正确观点普及，后有人们的错误认知」，与常理相反。</div>
+              <div class="wr"><span class="l">B</span>presently①＝目前、现在（＝now）——可「帮助普及（正确）观念」是<b>已成行之事</b>，与「人们此刻正在错误认知」不可能同时发生；②＝不久、一会儿（＝soon）——变成「他普及了正确观念，人们不久之后便有了错误认知」，逻辑更荒谬。</div>
+              <div class="wr"><span class="l">D</span>lately＝<b>最近；不久前</b>，指与现在<b>距离很近</b>的过去，常用于完成时，<b>与文中的一般过去时时态不符</b>；且「人们不久前的错误认知被推翻」与文中「首次提出时引发很大争议、但依然被普及」所蕴含的<b>历经较长时间</b>不符。</div>
+            </div>
+            <span class="lbl">💡 迁移</span><b>时间副词题＝画时间轴</b>：把句中两个事件（旧认知、新事实）标在轴上，再问空格填的词把谁放在了前面。<b>四个时间副词各占一格，画完轴基本无争议。</b>
+          </div>
+        </div>
+
+        <div class="q" id="q5" data-ans="2">
+          <div class="qhead"><span class="qno">5</span><span class="qt c-logic">逻辑关系 · 强调副词</span><span class="qpos">⭐ 句中已有 however</span></div>
+          <span class="stem"><em>5</em> he, however, might tremble at the <em>6</em> of what he is about to do.</span>
+          <div class="opts">
+            <div class="opt">A Only<span class="gl">只有；仅仅</span></div>
+            <div class="opt">B So<span class="gl">因此，所以</span></div>
+            <div class="opt">C Even<span class="gl">甚至；即使</span></div>
+            <div class="opt">D Hence<span class="gl">因此，由此</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>句首，句子主干完整（he might tremble at…）⟹ 空格是<b>状语</b>。
+            <span class="lbl">⭐ 本篇最精巧的一处设计</span><b>句中已经有 however 了。</b>转折关系<b>已经被 however 承担</b>，空格<b>不可能再是第二个逻辑连接词</b>——它只能是一个<b>与 however 共存、并把转折再推一把</b>的强调副词。<b>没看见这个 however 的人，才会去 So / Hence 里挑。</b>
+            <span class="lbl">🔗 线索</span>上文：科克伦特立独行、准备说出世人不敢说的话（＝<b>无畏</b>）。本句：然而他也会战栗（＝<b>害怕</b>）。要的是<b>「连这样的人都……」的意外感</b>。
+            <span class="lbl">✅ C Even</span>「甚至；即使」，强调某事出乎意料。代入＝「（他一向敢言）然而，<b>甚至连他</b>对即将要做的事也会感到害怕」，把转折强度顶到最高。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>Only＝只有、仅仅，用于限定数量或条件。代入＝「然而，<b>只有</b>科克伦会感到害怕」——与首段「世人都不敢说/都感到害怕」直接相悖。</div>
+              <div class="wr"><span class="l">B</span>So＝因此，引出自然而然的结果。<b>但 however 已经把段间关系钉成转折</b>，再填因果就成了「他一向敢言，<u>所以</u>然而他害怕」，逻辑打架。</div>
+              <div class="wr"><span class="l">D</span>Hence＝因此、由此，比 So 更正式，<b>错法与 B 完全相同</b>——两个因果词同时出现在选项里，恰恰说明它们都不是答案（<b>同类项互相排除</b>）。</div>
+            </div>
+            <span class="lbl">💡 迁移</span><b>两条可直接背走的判据</b>：<br>① <b>做逻辑空前先扫一遍本句有没有现成的连接词</b>（however / but / therefore / though）。有了，空格填的多半是 <b>even / still / indeed / only</b> 这类强调限定副词。<br>② <b>选项里出现两个同义词（So 与 Hence），它俩一定同时错</b>——单选题不可能有两个正确答案。<b>这条能在三秒内砍掉一半。</b>
+          </div>
+        </div>
+
+        <div class="q" id="q6" data-ans="0">
+          <div class="qhead"><span class="qno">6</span><span class="qt c-collo">固定搭配 · 名词</span><span class="qpos">at the ___ of…</span></div>
+          <span class="stem">Even he, however, might tremble at the <em>6</em> of what he is about to do.</span>
+          <div class="opts">
+            <div class="opt">A thought<span class="gl">想法；一想到</span></div>
+            <div class="opt">B sight<span class="gl">看见；景象</span></div>
+            <div class="opt">C cost<span class="gl">代价</span></div>
+            <div class="opt">D risk<span class="gl">风险</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span><code>at the ___ of ＋ what 从句</code>：介词短语作状语，说明 tremble（战栗）<b>由什么引起</b>。四个选项都能组成 <code>at the … of</code>，<b>所以本题考的不是"有没有这个搭配"，而是"这个搭配后面能接什么"</b>。
+            <span class="lbl">🔑 决定性线索</span><code>what he is <b>about to do</b></code>——<b>事情尚未发生</b>。这一条直接判掉 B 和 C。
+            <span class="lbl">✅ A thought</span><code>at the thought of…</code>＝<b>一想到……（就）</b>，常用于描述某人在产生某一心理活动时的情绪反应。既能引出<b>未来情形</b>，又能与后文一起说明战栗的原因（at 常用在表情感的形容词/动词后引出反应的原因）。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>at the sight of…＝<b>一看见……（就）</b>。<b>可事情尚未发生，看不见</b>，直接出局。</div>
+              <div class="wr"><span class="l">C</span>at the cost of…＝以……为代价，<b>其后必须是「代价本身（已有之物）」</b>，如 at the cost of one's life。「即将要做的事」是<b>尚不存在之物</b>，不能充当代价。</div>
+              <div class="wr"><span class="l">D</span>at the risk of…＝冒着……的风险，<b>其后必须是「风险本身」</b>，如 at the risk of war。而「某人即将要做的事」是<b>个人主观意愿</b>，不是无法避免的风险。另外 <code>at the risk of doing sth</code> 还有一个语用限制：常用于引出<b>可能听上去愚蠢或冒犯的话</b>（at the risk of sounding stupid 恕我愚昧），与本文语境也不符。</div>
+            </div>
+            <span class="lbl">💡 迁移</span><b>「同一介词 ＋ 不同名词」型搭配题，判据不是词义而是「of 后面必须接什么」</b>：<br>thought → 任何念头（含未发生）｜ sight → 看得见的实物/场景｜ cost → 已有之物（生命、健康、金钱）｜ risk → 客观风险。<b>把 of 后面那块内容归类，答案自动落地。</b>
+          </div>
+        </div>
+
+        <div class="q" id="q7" data-ans="1">
+          <div class="qhead"><span class="qno">7</span><span class="qt c-word">词义辨析 · 动词</span><span class="qpos">not only ___ … but explains…</span></div>
+          <span class="stem">…he is publishing a paper which not only <em>7</em> that one group of humanity is more intelligent than the others, but explains the process that has brought this about.</span>
+          <div class="opts">
+            <div class="opt">A advises<span class="gl">建议；劝告</span></div>
+            <div class="opt">B suggests<span class="gl">（物作主语）表明，显示</span></div>
+            <div class="opt">C protests<span class="gl">反对；抗议；坚称</span></div>
+            <div class="opt">D objects<span class="gl">反对；抗辩</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份 · 先找主语</span>空格在 <code>which</code> 定语从句里，与 <code>explains</code> 是<b>并列谓语</b>。<b>which 回指 a paper（一篇论文）——主语是「物」不是「人」。</b>这一条直接判掉 A、C、D 三个"以人作主语"的动词。
+            <span class="lbl">🔗 线索（递进逻辑）</span><code>not only … but …</code> 连接的两部分必须<b>同性质且递进</b>：<b>介绍论文的内容（某族群智商更高）→ 阐明内容的成因（这一现象是怎么来的）</b>。空格词要与 explains 对应，引出<b>论文的结论</b>。
+            <span class="lbl">✅ B suggests</span>熟词僻义：①建议（错同 A）；②<b>（以物作主语）表明、显示</b>，用于引出调查、研究、数据所显示的内容。代入＝「论文不仅<b>表明</b>某族群智商更高，还阐明了引发这一现象的过程」，递进链完整。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>advises＝建议、劝告，<b>须以人作主语</b>。且论文所述是<b>研究发现/论点</b>（首段首句 The idea 也印证了这一点），不是科克伦借论文提出的建议。</div>
+              <div class="wr"><span class="l">C</span>protests①「反对、抗议」，常以人作主语；代入后成了「科克伦通过论文<u>反对</u>某观点」，无法与 explains 递进（既然不认同某族群智商更高，为何还要解释其成因？），也与上段「他准备说出/公开认同这一观点」矛盾。②「坚称；申明」也须人作主语，且首段首句已说明<b>他人未必不相信此理论，只是不敢公开谈论</b>。</div>
+              <div class="wr"><span class="l">D</span>objects＝反对、抗辩，<b>错法与 C 的第一义完全相同</b>——又一组"同类项互相排除"。</div>
+            </div>
+            <span class="lbl">💡 迁移</span><b>动词辨析题第一动作永远是「找主语，问它是人还是物」。</b>本题四个选项里三个只能带人主语，一个可带物主语——<b>这一步就是答案</b>，词义辨析都不用做。（本篇六道动词题，有四道靠这一招。）
+          </div>
+        </div>
+
+        <div class="q" id="q8" data-ans="3">
+          <div class="qhead"><span class="qno">8</span><span class="qt c-collo">固定搭配 · 熟词僻义</span><span class="qpos">The group in ___</span></div>
+          <span class="stem">The group in <em>8</em> are a particular people originated from central Europe.</span>
+          <div class="opts">
+            <div class="opt">A progress<span class="gl">进行中的</span></div>
+            <div class="opt">B fact<span class="gl">事实上</span></div>
+            <div class="opt">C need<span class="gl">需要帮助的；困难的</span></div>
+            <div class="opt">D question<span class="gl">所讨论的；谈及的</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>介词短语 <code>in ___</code> 位于主语之后、系动词之前 ⟹ <b>作后置定语</b>，修饰/限定主语 The group。<b>能作后置定语修饰人，是本题的第一道筛子。</b>
+            <span class="lbl">🔗 线索</span>The group 回指上句的 <code>one group of humanity</code>（论文中智商更高的那个族群）。空格所在的介词短语要<b>把这层回指关系再明确一次</b>，即「论文中<b>所特指的、提及的</b>那个族群」。
+            <span class="lbl">✅ D question</span>熟词僻义：<code>in question</code>＝<b>讨论中的；谈及的</b>，作后置定语，可修饰人或物。代入＝「（论文中）谈及的这一族群」，完美承接上句。<b>⚠️ 与 <code>out of the question</code>（不可能的）只差一个词，意思天差地别，两个都要背。</b>
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>in progress＝进行中的。语法上可作表语或后置定语，<b>但不用于修饰人</b>；语义上「进行中的这一族群」表意不明。</div>
+              <div class="wr"><span class="l">B</span>in fact＝事实上。<b>只能作状语</b>（补充细节以强调前话，或转承上文以强调实情），<b>不能作后置定语修饰人</b>。若硬按中文思路理解成「其实这一族群是起源于中欧的一个特定民族」会形成较强干扰——<b>但作者只是在明确论文中提及的两个研究要素（The group ↔ one group of humanity、The process ↔ the process），并非在纠正或强调实情</b>。</div>
+              <div class="wr"><span class="l">C</span>in need＝需要帮助的；困窘的，可作后置定语修饰人，但指人在食物、金钱等方面短缺。文中的"这一群体"仅涉及智商水平，<b>与生活状况无关</b>。</div>
+            </div>
+            <span class="lbl">💡 迁移</span><b>in ＋ 名词构成的后置定语一族，一次背全</b>：in question（所讨论的）｜ in need（困窘的）｜ in charge（负责的）｜ in doubt（存疑的）｜ in trouble（有麻烦的）。<b>做题时先问「它能不能修饰人」，再问「意思对不对」。</b>
+          </div>
+        </div>
+
+        <div class="q" id="q9" data-ans="1">
+          <div class="qhead"><span class="qno">9</span><span class="qt c-word">词义辨析 · 动词</span><span class="qpos">现在分词作伴随状语</span></div>
+          <span class="stem">This group generally do well in IQ test, <em>9</em> 12–15 points above the <em>10</em> value of 100, and have contributed…</span>
+          <div class="opts">
+            <div class="opt">A attaining<span class="gl">达到（某水平）</span></div>
+            <div class="opt">B scoring<span class="gl">（测试中）得分</span></div>
+            <div class="opt">C reaching<span class="gl">达到，增加到</span></div>
+            <div class="opt">D calculating<span class="gl">计算，核算</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>本句有<b>两个并列谓语</b>（do well… and have contributed…），空格所在的 <code>___ 12–15 points above…100</code> 插在两者之间，是<b>现在分词短语作伴随状语</b>，解释第一个谓语 do well in IQ test 的<b>具体表现</b>。<b>逻辑主语 = This group。</b>
+            <span class="lbl">🔑 决定性线索</span><code>12–15 points <b>above</b> the mean value of 100</code>——注意这是一个<b>差值/区间</b>（高出 12 至 15 分），<b>不是一个到达的绝对值</b>。这一条直接判掉 A 和 C。
+            <span class="lbl">✅ B scoring</span>「（在测试、竞赛中）得分，评分」，其后<b>既可接具体分值，也可接某一区间范围</b>。代入＝「得分比 100 分高出 12 至 15 分」，正好说明智商测试中的量化结果。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>attaining＝达到（某年龄、水平、状况）。<b>attain 后须接所达到的<u>具体度量值</u></b>，如 attain a height of 20 feet（达到 20 英尺高），<b>不接差值/区间</b>。命题人正是拿它的中文释义「达到比 100 分高出 12 至 15 分的水平」设的坑。</div>
+              <div class="wr"><span class="l">C</span>reaching＝达到、增加到（某水平、速度等），<b>错因与 A 完全相同</b>——reach 后须接所达到的具体度量值，如 reach 18（达到 18 岁），不接差值或变化量。<b>又一组同类项互相排除。</b></div>
+              <div class="wr"><span class="l">D</span>calculating＝计算、核算，后常接质量、数量、面积等名词，<b>不接数字来引出计算结果</b>。且逻辑主语是 This group——<b>这一族群不可能自己测算自己的智商分数</b>；代入后偏向"数值运算的结果"，而非测试的表现。</div>
+            </div>
+            <span class="lbl">💡 迁移</span><b>「达到」类动词的分水岭：后面跟的是<u>绝对值</u>还是<u>差值</u>。</b>跟绝对值 → attain / reach；跟差值或区间 → score / run / come in（at）。<b>看到 above / below / more than ＋ 数字，先把 attain、reach 划掉。</b>
+          </div>
+        </div>
+
+        <div class="q" id="q10" data-ans="2">
+          <div class="qhead"><span class="qno">10</span><span class="qt c-word">熟词僻义 · 形容词</span><span class="qpos">the ___ value of 100</span></div>
+          <span class="stem">This group generally do well in IQ test, scoring 12–15 points above the <em>10</em> value of 100…</span>
+          <div class="opts">
+            <div class="opt">A normal<span class="gl">正常的；标准的</span></div>
+            <div class="opt">B common<span class="gl">常见的；共同的</span></div>
+            <div class="opt">C mean<span class="gl">⚠️ 平均的</span></div>
+            <div class="opt">D total<span class="gl">总的；全部的</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>形容词，与后置定语 <code>of 100</code> 一起修饰 value，说明这个 100 是<b>什么性质的数值</b>。
+            <span class="lbl">🔗 线索（两条）</span>① <code><b>generally</b> do well</code>——generally（普遍地）提示本句在比较<b>不同族群智商的大体情况</b>，参照物应是「一般水平」；② 常识：<b>智商测试的常模就是把普通人群的平均分定为 100</b>。
+            <span class="lbl">✅ C mean</span><b>熟词僻义</b>：作形容词时取「平均的；介于中间的」，<code>mean value</code>＝<b>平均值</b>，是反映数据集中趋势的指标。代入＝「这一族群的得分比平均值 100 高出 12 至 15 分」，与 generally 呼应。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>normal value＝<b>正常值；标准值</b>，指在某个特定范围内被认为正常/健康的<b>数值区间</b>，而非某个确定数值。代入＝「100 这一正常值」，会<b>暗示其他分值均属智商不正常</b>，明显不合常理。</div>
+              <div class="wr"><span class="l">B</span>common value＝<b>共同价值观</b>，指群体或社会中被广泛接受的观念。而文中讨论的是<b>智商水平（数值）</b>，选项偏离语境。</div>
+              <div class="wr"><span class="l">D</span>total value＝<b>总值；总价</b>，指总括合计的数目。<b>代入后与 above 直接打架</b>：既然 100 是总分/最大值，怎么可能再高出 12 至 15 分？</div>
+            </div>
+            <span class="lbl">💡 迁移</span><b>mean 是完形与阅读的双料熟词僻义</b>：v. 意味着｜ adj. ①<b>平均的</b>（mean value / mean temperature）②卑鄙的、吝啬的｜ n. 平均数（the arithmetic mean）；复数 means＝手段。<b>见到 mean 修饰数字，一律先按"平均"读。</b>
+          </div>
+        </div>
+        <div class="q" id="q11" data-ans="1">
+          <div class="qhead"><span class="qno">11</span><span class="qt c-word">词义辨析 · 副词</span><span class="qpos">修饰 have contributed</span></div>
+          <span class="stem">…and have contributed <em>11</em> to the intellectual and cultural life of the West, as the <em>12</em> of their elites, including several world-renowned scientists, <em>13</em>.</span>
+          <div class="opts">
+            <div class="opt">A unconsciously<span class="gl">无意识地；不知不觉地</span></div>
+            <div class="opt">B disproportionately<span class="gl">不成比例地（太大或太小）</span></div>
+            <div class="opt">C indefinitely<span class="gl">不明确地；无限期地</span></div>
+            <div class="opt">D unaccountably<span class="gl">莫名其妙地；难以解释地</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>副词作状语，修饰 <code>have contributed</code>，说明<b>贡献的程度</b>。
+            <span class="lbl">🔗 线索（顺承逻辑）</span>句中两个并列谓语以 and 相连、构成<b>顺承</b>：第一部分说这一族群<b>智商普遍偏高</b>，第二部分说他们<b>对西方精神文化生活做出了贡献</b>。既然前半在讲"高"，后半的空格自然要讲<b>"大"</b>。此外后文的 <code>several world-renowned scientists</code>（几位世界知名科学家）也印证了这一点。
+            <span class="lbl">✅ B disproportionately</span>「不成比例地；太大（或太小）地」。代入后真正表达的是：<b>该族群虽人口有限，做出的贡献却大到与其人数不成比例</b>——用一个"比例"的说法把"贡献极大"讲得既克制又有力。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>unconsciously＝无意识地、不知不觉地。<b>常识判据</b>：做出贡献、取得成就离不开自我精进与主动投入，不可能在无意中完成；此外后文的 <code>world-renowned</code>（世界知名的）说明<b>不论该族群自身还是他人，都清楚地意识到了这一贡献</b>。</div>
+              <div class="wr"><span class="l">C</span>indefinitely①「不明确地」，强调细节模糊、<b>总体为负面导向</b>，与句中 contributed、world-renowned 的正向肯定意味相反；②「无限期地」强调时间遥遥无期，但此处是<b>完成时</b>（have contributed…），强调过去的事对现在的影响，不涉及遥远未来。</div>
+              <div class="wr"><span class="l">D</span>unaccountably＝莫名其妙地、难以解释地，用于说明某情况<b>令人奇怪、原因不明</b>。而文中第一个谓语「智商高于均值」实际上<b>已经为该族群的文化贡献提供了合理性</b>，并非出人意料、无法解释。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>本题四个选项<b>全是"un-/in- + 形容词 + ly"的长副词</b>，看着都陌生——<b>做法是拆词根</b>：dis-proportion-ately（比例）｜ un-conscious-ly（意识）｜ in-definite-ly（明确/期限）｜ un-account-ably（解释）。<b>拆完再问「哪个词根跟'贡献大'搭得上」，一秒定 B。</b>
+          </div>
+        </div>
+
+        <div class="q" id="q12" data-ans="3">
+          <div class="qhead"><span class="qno">12</span><span class="qt c-word">词义辨析 · 名词</span><span class="qpos">as 从句的主语</span></div>
+          <span class="stem">…have contributed disproportionately to the intellectual and cultural life of the West, as the <em>12</em> of their elites, including several world-renowned scientists, <em>13</em>.</span>
+          <div class="opts">
+            <div class="opt">A missions<span class="gl">任务；使命</span></div>
+            <div class="opt">B fortunes<span class="gl">⚠️ 财富；时运</span></div>
+            <div class="opt">C interests<span class="gl">兴趣；利益</span></div>
+            <div class="opt">D careers<span class="gl">（事业上的）成就，成功</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>整个 <code>as ＋ sth ＋ v.</code> 是<b>非限制性定语从句</b>（as 指代主句内容），补充说明第二个并列谓语部分。空格是<b>该从句的主语中心名词</b>。
+            <span class="lbl">🔗 线索</span>空格前说这一族群<b>对西方精神文化生活做出了极大贡献</b>；as 从句要给出<b>这一贡献的证据或表现</b>。所以空格应<b>与杰出人士的贡献/成就有关</b>。
+            <span class="lbl">✅ D careers</span>「（事业上的）成功、成就」。代入＝「正如他们中精英人物的<b>事业成就</b>……的那样」——正是"该族群做出巨大贡献"的<b>例证</b>，契合句内例证说明的语义逻辑。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>missions①（政治、商业、军事等的）任务，常指官方派遣的<b>客观硬性任务</b>；②（人生的）职责、天职，常指<b>个人主观认定</b>的使命。<b>两个义项都只说"要做什么"，不说"做成了没有"</b>——体现不出贡献巨大。</div>
+              <div class="wr"><span class="l">B</span>fortunes①「财富、巨额」；②「时运、运气」。<b>两义都不足以证明贡献巨大</b>；且空格后 <code>including several world-renowned scientists</code> 点明这些精英是<b>科学家</b>——<b>他们的贡献靠的不是资产或运势</b>。</div>
+              <div class="wr"><span class="l">C</span>interests①「兴趣、爱好」——<b>感兴趣 ≠ 有能力/有成就</b>；②「利益、好处」——代入后指精英人物自身获得的利益，而非他们给国家或公众带来的利益，且"有利益"也不等于"贡献大"。</div>
+            </div>
+            <span class="lbl">💡 迁移</span><b>「证据类」名词的挑选标准是「它能不能证明前一句」</b>。前句说贡献大 → 证据必须是<b>已经做成的事</b>（careers / achievements / records / track record），而不是意图（missions）、条件（fortunes）或倾向（interests）。<b>把选项逐个代进"正如……所证实的"里念一遍，念不通的就不是。</b>
+          </div>
+        </div>
+
+        <div class="q" id="q13" data-ans="0">
+          <div class="qhead"><span class="qno">13</span><span class="qt c-word">词义辨析 · 动词</span><span class="qpos">⚠️ Claude 在这翻车</span></div>
+          <span class="stem">…as the careers of their elites, including several world-renowned scientists, <em>13</em>.</span>
+          <div class="opts">
+            <div class="opt">A affirm<span class="gl">证实；确认</span></div>
+            <div class="opt">B witness<span class="gl">是…的证据；目击</span></div>
+            <div class="opt">C observe<span class="gl">看到；注意到</span></div>
+            <div class="opt">D approve<span class="gl">批准；赞成</span></div>
+          </div>
+          <div class="expl">
+            <div class="fail"><b>⚠️ Claude 盲做错选 B witness（全篇唯一一错，19/20）。</b><br>
+              我的推理：「as … witness」是「正如……所证明的」，选 B。<br>
+              <b>错在哪：我记住的是 <code>as witness X</code>（倒装的旧式用法，如 <i>as witness his recent book</i>），而文中是 <code>as X witness</code>（主语在前）。语序一反，这个搭配就不存在了。</b><br>
+              这属于<b>「搭配幻觉」——记得有这么个说法，却没核对语序和句式</b>。<br>
+              <b>⟹ 立一条规矩：凡是靠"我记得有这个搭配"选出来的答案，必须能把整个搭配<u>原样默写出来</u>才算数。</b>默写不出语序（是 <code>as witness X</code> 还是 <code>as X witness</code>？是 <code>witnessed by</code> 还是 <code>witness to</code>？），就说明这不是你的搭配，只是一个印象。</div>
+            <span class="lbl">🧭 空格身份 · 先把插入语划掉</span>这句的主谓被一整个插入语隔开了，<b>划掉它，骨架立刻现形</b>：<br>
+            <code>as the careers <s>, including several world-renowned scientists,</s> ___</code><br>
+            ⟹ <b>主语是 the careers（物），不是 scientists（人）。</b><b>那个插入语就是专门为了制造"人作主语"的错觉而摆在那里的。</b>
+            <span class="lbl">🔗 语义</span>空格所在的 as 从句以「精英人士的事业成就」作论据，来证明「该族群的巨大贡献」——空格词要表<b>"证实、证明"</b>之意，且宾语就是 as 所指代的主句。
+            <span class="lbl">✅ A affirm</span>「证实；确认」，内涵为<b>根据客观事实或主观确信来证明/断言某事属实</b>。及物，可带物主语。代入＝「该族群做出了巨大贡献，正如他们中精英人物的成就所<b>证实</b>的那样」，语义通顺。
+            <span class="lbl">❌ 另外三个错在哪 —— 三种不同的"不能用"</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span><b>词义对，句式错。</b>witness 确含「证明」之意，但：作<b>及物</b>动词时常用于 <code>…, as witnessed by sth</code>（从某事物可以看出……）；作<b>不及物</b>动词时常用于 <code>sth witness to…</code>（某事物证明了……）。<b>两种都与文中的 <code>as ＋ sth ＋ v.</code> 结构不符。</b></div>
+              <div class="wr"><span class="l">C</span><b>主语错。</b>observe＝看到、注意到，<b>须以人作主语</b>。空格前正好是 scientists，极易形成"正如一些科学家所看到的那样"的幻觉——<b>但那是插入语</b>，真主语 the careers 是物，物不能"观察"。</div>
+              <div class="wr"><span class="l">D</span><b>主语＋句式双错。</b>approve＝批准、赞成，常以人或机构作主语；作及物动词时宾语多为计划、要求，作不及物动词时须 <code>approve of</code>。代入＝「正如他们精英人物的事业成就所批准/赞成的那样」，语义不通。</div>
+            </div>
+            <span class="lbl">💡 迁移（两条，都能直接搬走）</span>
+            <b>① as 从句里选动词，先把两个逗号之间的插入语整段划掉</b>，让「主语 ＋ 空格」贴到一起再判。本题划完就只剩「careers ___」，C、D 当场出局。<br>
+            <b>② 动词辨析的判据有三层，按顺序过</b>：<b>主语能不能带（人 / 物）→ 句式对不对（及物 / 不及物 / 固定结构）→ 词义合不合</b>。<b>本题四个选项的词义都沾"证明/看到/认可"的边，胜负全在前两层。</b>
+          </div>
+        </div>
+
+        <div class="q" id="q14" data-ans="2">
+          <div class="qhead"><span class="qno">14</span><span class="qt c-logic">逻辑关系 · 连接副词</span><span class="qpos">These facts, ___, have…</span></div>
+          <span class="stem">They also suffer more often than most people from a number of nasty genetic diseases… These facts, <em>14</em>, have previously been thought unrelated.</span>
+          <div class="opts">
+            <div class="opt">A moreover<span class="gl">此外；而且</span></div>
+            <div class="opt">B therefore<span class="gl">因此；所以</span></div>
+            <div class="opt">C however<span class="gl">但是；然而</span></div>
+            <div class="opt">D meanwhile<span class="gl">与此同时；对比之下</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>空格句结构完整（These facts…have been thought unrelated），无需句内衔接词 ⟹ 空格是<b>关联词作状语</b>，体现<b>空格句与前文的逻辑关系</b>。
+            <span class="lbl">🔗 线索（关键在一个 also）</span>前两句：这一族群<b>智商超出常人</b>、对文化贡献巨大；他们<b>也（also）</b>比常人更容易罹患严重遗传病。<b>also 表明这两个事实"同时存在于同一群人身上"，已经在暗中透露两者可能有关联</b>；而第三句的 <code>unrelated</code>（无关联）却说人们以前认为两者<b>并无关联</b>。<b>暗示有关 ↔ 认为无关 ⟹ 转折。</b>
+            <span class="lbl">✅ C however</span>「但是；然而」，引出与前述内容语义相反的信息。代入＝「（智商更高的族群患病概率也更大，两者之间似乎该有联系，）<b>然而</b>人们以前一直认为这些事实之间并无联系」。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>moreover＝此外、而且，表<b>递进</b>，用于引出新信息以补充或支撑前述内容。而空格处的「智商与疾病<b>并无</b>联系」与前述「智商更高、患病概率也更大」<b>语义方向相反</b>，不是同向补充。</div>
+              <div class="wr"><span class="l">B</span>therefore＝因此，表<b>因果</b>，引出根据前述内容得出的结论。可根据"智商更高、患病概率也更大"这些事实，<b>理应得出"两者存在联系"</b>，绝无法推出"两者无关"。</div>
+              <div class="wr"><span class="l">D</span>meanwhile①「与此同时」，表<b>共时</b>关系——可空格句说的是人们<b>以往</b>的认知（previously），前两句是科克伦研究发现的<b>新事实</b>，显然不是共时；②「对比之下」，要求比较<b>同一情形的两个相反方面</b>（如 <i>Stress can be damaging to your health. Exercise, meanwhile, can reduce its effects.</i>）——而"族群的情况"与"人们的认知"<b>不是可以对比的两个方面</b>。</div>
+            </div>
+            <span class="lbl">💡 迁移</span><b>逻辑关系题的通用做法：把空格前后各压成一个词，再看方向。</b>本题＝「暗示有关」vs「认为无关」→ 反向 → 转折。<b>另记一条本篇专属的：全篇 20 空只有 5、14 两道逻辑题，其中 5 题的句子里已经有 however 了——所以真正的"填连接词"只有 14 这一道。</b>
+          </div>
+        </div>
+
+        <div class="q" id="q15" data-ans="3">
+          <div class="qhead"><span class="qno">15</span><span class="qt c-collo">固定搭配 · 动词短语</span><span class="qpos">⭐ 与 17 题连体</span></div>
+          <span class="stem">The former has been <em>15</em> to social effects, such as a strong tradition of <em>16</em> education.</span>
+          <div class="opts">
+            <div class="opt">A given up<span class="gl">交给；让与</span></div>
+            <div class="opt">B got over<span class="gl">向（某人）讲清某事</span></div>
+            <div class="opt">C carried on<span class="gl">继续做；开展</span></div>
+            <div class="opt">D put down<span class="gl">把…归因于（+to）</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span><code>has been ___ to</code>：空格词与 to 搭配构成<b>短语动词</b>，在句中作<b>被动谓语</b>，把 The former（前一事实）和 social effects（社会影响）连起来。<b>问的是：这两者之间是什么关系？</b>
+            <span class="lbl">⭐ 15 与 17 是一对连体空</span><span class="lbl">🔗 线索</span>本句与下句构成<b>同一个骨架的两次填空</b>：<br>
+            <code>The <b>former</b> has been <b>[15]</b> to social effects…</code>（前者＝智商更高）<br>
+            <code>The <b>latter</b> was seen as a(n) <b>[17]</b> of genetic isolation.</code>（后者＝易患遗传病）<br>
+            两句共同解释上一句的 <code>unrelated</code>——<b>人们过去把这两个事实各自归到两个毫不相干的原因上</b>。所以两空都必须表<b>「（因果）关联」</b>，<b>且方向一致：原因在后，结果在前。</b>
+            <span class="lbl">✅ D put down (to…)</span><code>put A down to B</code>＝<b>把 A 归因于 B</b>。代入＝「前一事实被<b>归因于</b>社会影响」，顺畅衔接上下文。
+            <span class="lbl">❌ 另外三个错在哪 —— 三个都栽在介词 to 后面接什么</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>give up to sb＝把……交给/让与某人，<b>to 后常接人</b>（give my seat up to an elderly person）。而文中 to 后是<b>事物</b>（social effects），语法不符；代入＝「前一事实被交给社会影响」，语义不通。</div>
+              <div class="wr"><span class="l">B</span>get sth over to sb＝向某人讲清某事，<b>to 后同样常接人</b>（get his meaning over to the audience）。代入＝「前一事实被清楚地传递给社会影响」，语法语义双不合。</div>
+              <div class="wr"><span class="l">C</span>carry on <b>通常不与 to 搭配</b>，而是 <code>carry on with sth</code> / <code>carry on doing sth</code>，表"（迎着困难）继续做"。语法上就不合要求。</div>
+            </div>
+            <span class="lbl">💡 迁移</span><b>见到 The former … The latter …，两空一起判方向</b>——一个定了，另一个只能同向。<b>17 题的两个错项（origin、instrument）恰恰就是把因果方向倒过来的。</b><br>
+            另外背一组<b>「归因于」的同义家族</b>：put A down to B｜ attribute A to B｜ ascribe A to B｜ owe A to B｜ blame A on B（贬义）。<b>写作里 attribute 最稳，阅读里 put down to 最常被考。</b>
+          </div>
+        </div>
+
+        <div class="q" id="q16" data-ans="3">
+          <div class="qhead"><span class="qno">16</span><span class="qt c-word">熟词僻义 · 动名词</span><span class="qpos">a strong tradition of ___</span></div>
+          <span class="stem">The former has been put down to social effects, such as a strong tradition of <em>16</em> education.</span>
+          <div class="opts">
+            <div class="opt">A assessing<span class="gl">评估；评定</span></div>
+            <div class="opt">B supervising<span class="gl">监督；管理</span></div>
+            <div class="opt">C administering<span class="gl">管理；治理</span></div>
+            <div class="opt">D valuing<span class="gl">⚠️ 重视；珍重</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span><code>such as a strong tradition of ___ education</code> 是对 social effects 的<b>举例说明</b>。空格是<b>动名词</b>，其逻辑主语是<b>该高智商族群</b>，宾语是 education。
+            <span class="lbl">🔗 线索（因果链必须闭合）</span>本句主干说：该族群智商更高<b>被归因于</b>社会因素。所以举例给出的这一"社会因素"必须<b>能直接导致"他们智商更高"</b>。<b>验收标准很硬：把选项代进去念一句"因为该族群有 ___ 教育的传统，所以他们智商更高"，念不通的就出局。</b>
+            <span class="lbl">✅ D valuing</span>「重视；珍重」。代入＝「（该族群）<b>重视</b>教育的传统」——长久以来重视对孩子的培养，在这种社会传统的影响下，整个族群及其后代普遍智商更高。<b>因果链闭合。</b>
+            <span class="lbl">❌ 另外三个错在哪 —— 全是同一种错法</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>assessing＝评估、评定，指从专业角度对能力或质量进行评定。文中并未说该族群是教育领域的评估专家；且"族群对自己的教育水平进行评估"<b>无法直接导致"他们智商更高"</b>。</div>
+              <div class="wr"><span class="l">B</span>supervising＝监督、管理，指从管理者角度对任务/活动进行监督。文中并未限定该族群的身份为管理者；且"族群内部对教育进行监管"<b>同样导不出"智商更高"</b>。</div>
+              <div class="wr"><span class="l">C</span>administering＝管理、治理，常指对公司或组织的运行进行管理。<b>错法与 B 完全一致</b>——身份不符 ＋ 因果链断裂。<b>三个错项都是"对教育做某种管理动作"，只有 D 是"对教育持某种态度"。</b></div>
+            </div>
+            <span class="lbl">💡 迁移</span><b>举例空的验收方法：把它代回主句，看因果链能不能闭合。</b>本题主句是"社会因素导致高智商"，那么例子必须是<b>能提升智商的社会因素</b>——只有"重视教育"这一<b>态度</b>算数，三个"管理动作"都算不上。<b>态度 vs 动作，是本题真正的分界线。</b>
+          </div>
+        </div>
+
+        <div class="q" id="q17" data-ans="2">
+          <div class="qhead"><span class="qno">17</span><span class="qt c-context">上下文语义 · 名词</span><span class="qpos">⭐ 与 15 题连体 · 因果方向</span></div>
+          <span class="stem">The latter was seen as a (an) <em>17</em> of genetic isolation.</span>
+          <div class="opts">
+            <div class="opt">A development<span class="gl">发展；（培育的）结果</span></div>
+            <div class="opt">B origin<span class="gl">起源；起因</span></div>
+            <div class="opt">C consequence<span class="gl">结果；后果</span></div>
+            <div class="opt">D instrument<span class="gl">促成某事的手段/因素</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span><code>A was seen as B</code>，空格是介词结构中的名词，作主语补足语，说明人们对 The latter（后一事实＝易患遗传病）的<b>看法</b>。
+            <span class="lbl">🔗 线索（与 15 题平行）</span>空格前句与本句<b>结构平行</b>：<code>The former ↔ The latter</code>、<code>social effects ↔ genetic isolation</code>。由此可推知 <code>was seen as a(n) ___ of</code> 对应上句的 <code>has been put down to</code>，同样表<b>因果关系</b>——<b>空格架起"原因（genetic isolation）→ 结果（The latter）"</b>。<b>方向必须是：遗传隔离 ⟹ 易患病。</b>
+            <span class="lbl">✅ C consequence</span><code>a consequence of…</code>＝<b>……的结果</b>。代入＝「该族群易患遗传疾病<b>被认为是</b>遗传隔离<b>的结果</b>」——遗传隔离导致遗传病基因集中于该族群，进而使该族群更易患病，方向正确。
+            <span class="lbl">❌ 另外三个错在哪 —— 一个错在"同源"，两个错在"方向倒了"</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>development＝发展；（培育的）结果。<b>它确实暗含因果，但那种因果发生在"同源的两种事物"之间</b>，强调由一种情况<b>线性演变</b>为另一种，如 <i>This new rose is a development from a very old kind of rose.</i>（这一玫瑰新品种是由一个很老的品种培育而成的）。而文中 The latter（易患遗传疾病）是一种<b>趋势</b>，遗传隔离是一种<b>机制/因素</b>，<b>两者不在一条线上</b>，不存在谁发展成谁。</div>
+              <div class="wr"><span class="l">B</span>origin＝起源、源头。<code>an origin of…</code>＝……的起因，代入＝「后一事实（易患遗传疾病）被认为是遗传隔离的<b>起因</b>」——<b>因果颠倒</b>。且据常识可知，遗传隔离（不同种群的基因无法重组产生后代）是一种<b>自然机制</b>，难以被患病倾向干扰；相反，遗传隔离造成某些基因集中于某一群体，反倒更有可能<b>导致</b>该群体易患病。</div>
+              <div class="wr"><span class="l">D</span>instrument＝促成某事的人或物、手段。<code>an instrument of…</code>＝促成……的手段/因素，与 B 类似，<b>同样把因果关系颠倒了</b>——"易患疾病是促成遗传隔离的因素"不成立。</div>
+            </div>
+            <span class="lbl">💡 迁移</span><b>「A is a(n) ___ of B」型因果名词，一次背清方向</b>：<br><b>结果在前</b>（A 是 B 造成的）：a consequence / result / outcome / product / by-product of B<br><b>原因在前</b>（A 造成了 B）：the origin / cause / source / root / instrument of B<br><b>做题动作：先判"谁造成谁"，再从对应那一栏里取词。</b>本题两个错项都在另一栏。
+          </div>
+        </div>
+
+        <div class="q" id="q18" data-ans="0">
+          <div class="qhead"><span class="qno">18</span><span class="qt c-context">上下文语义 · 动词</span><span class="qpos">与 unrelated 反向照应</span></div>
+          <span class="stem">Dr. Cochran suggests that the intelligence and diseases are intimately <em>18</em>.</span>
+          <div class="opts">
+            <div class="opt">A linked<span class="gl">联系；相关联</span></div>
+            <div class="opt">B integrated<span class="gl">使合并；融为一体</span></div>
+            <div class="opt">C woven<span class="gl">编织；编造</span></div>
+            <div class="opt">D combined<span class="gl">（使）结合；兼有</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>宾语从句为被动态简单句，空格词与 are 构成被动谓语，说明主语 <code>the intelligence and diseases</code> 所受的动作/影响。
+            <span class="lbl">🔗 线索（一个词定死答案）</span>上文介绍人们<b>之前</b>的看法：「高智商」与「易患病」这些事实<b>并无关联</b>（<code><b>unrelated</b></code>），它们分别由社会影响和遗传隔离导致。空格句引出<b>科克伦的观点</b>，与前人的看法<b>相对立</b> ⟹ 空格词应与 <code>unrelated</code> <b>正好相反</b>，表「有关联的」。
+            <span class="lbl">✅ A linked</span>「联系；相关联」，内涵为两个事物之间<b>有相互作用/关联</b>，并非各自独立、脱节。<code>un<b>related</b></code> ↔ <code><b>linked</b></code>，构词与语义都直接对上。
+            <span class="lbl">❌ 另外三个错在哪 —— 三个都是"关系太紧"</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>integrated①「使合并、使结合」，内涵为把两个及以上事物<b>融为一个整体</b>以变得更高效，强调功能上的整体性——「智商和疾病」显然无法整合为一体；②「融入（群体或社会）；（种族）融合」，因貌似和空格前句的 genetic isolation 意思相反而形成干扰，<b>但文中指的并不是族群间的融合</b>，主语是"智商和疾病"，它们无法融入群体或社会。</div>
+              <div class="wr"><span class="l">C</span>woven＝编织、编造，内涵为交织或组合不同的元素或细节，使之成为完整的作品，<b>动作对象一般为手工制品、故事、书籍</b>。「智商和疾病」无法被紧密编织在一起。</div>
+              <div class="wr"><span class="l">D</span>combined①「（使）结合、组合」，内涵是把不同事物<b>组合或混合为一体</b>，强调物理上的结合——智商和疾病无法组合；②「兼有、兼备」，内涵是同时具备不同的特点或品质。文中"（高）智商和（易）患病"确实是某一族群同时具备的特点，<b>但 combine 取此义项时通常以主动态明确兼备不同特性的主体，且不用 intimately 修饰</b>，"密切地兼备不同特点"不合逻辑。</div>
+            </div>
+            <span class="lbl">💡 迁移</span><b>「有关联」的强度梯度，一次排清</b>：<b>related / linked / associated / connected</b>（松：只说有关系）→ <b>correlated</b>（统计相关）→ <b>combined / merged / integrated / fused</b>（紧：合成一体）。<b>本题只要"有关系"，不要"合成一体"</b>——<b>而 intimately（密切地）修饰的是"关系有多紧密"，不是"合并得有多彻底"，别被它带跑。</b>
+          </div>
+        </div>
+
+        <div class="q" id="q19" data-ans="1">
+          <div class="qhead"><span class="qno">19</span><span class="qt c-collo">固定搭配 · 动词短语</span><span class="qpos">___ sb to sth</span></div>
+          <span class="stem">His argument is that the unusual history of these people has <em>19</em> them to unique evolutionary pressures that have resulted in this <em>20</em> state of affairs.</span>
+          <div class="opts">
+            <div class="opt">A limited<span class="gl">把…限定在…内</span></div>
+            <div class="opt">B subjected<span class="gl">⚠️ 使…遭受/承受</span></div>
+            <div class="opt">C converted<span class="gl">使…皈依/转变</span></div>
+            <div class="opt">D directed<span class="gl">指引…到…</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>表语从句主干可简化为 <code>X has ___ them to Y</code>（X＝the unusual history of these people，Y＝unique evolutionary pressures）。空格是从句谓语，与 to 构成 <code>~ sb to sth</code> 的搭配。
+            <span class="lbl">🔗 线索</span>空格前刚摆出科克伦的论点：智商和疾病密切相关。本句给出论据/理由——<b>这些人不寻常的历史，使他们……独特的进化压力</b>。此外空格后的 <code>evolutionary pressures</code>（进化压力）呼应第二段末句的 <code>natural selection</code>（自然选择），提示本句从<b>历史根源</b>解释该族群所经受的进化压力。<b>空格整体要表达"该族群<u>经受/承受</u>进化压力"。</b>
+            <span class="lbl">✅ B subjected</span><code>subject sb to sth</code>＝<b>使某人遭受/承受……</b>，暗含因果关系。代入＝「该族群不同寻常的历史<b>使他们承受了</b>独特的进化压力」，契合文意。<b>⚠️ 熟词僻义：subject 作动词时重音在后 /səbˈdʒekt/，与名词"主题、科目" /ˈsʌbdʒɪkt/ 不同。</b>
+            <span class="lbl">❌ 另外三个错在哪 —— 三个都栽在 to 后面接什么</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span><code>limit sb to sth</code>＝把某人限定在……内，强调对<b>数量、范围、选择、发展</b>的限制。代入＝「不同寻常的历史限制他们只受到独特的进化压力」，<b>过于绝对</b>——文中虽只谈到影响智商和疾病的进化压力，但这并不意味着该族群只受这类压力的制约。</div>
+              <div class="wr"><span class="l">C</span><code>convert sb to sth</code>＝使某人皈依/转变，<b>介词 to 后常接"转而接受的信仰、看法、习惯"</b>等内容，而文中的宾语"进化压力"显然不属于此类。</div>
+              <div class="wr"><span class="l">D</span><code>direct sb to sth</code>＝指引某人到……，<b>介词 to 后常接"表地点或方位的词语"</b>，而"进化压力"不属于此类，无法合理搭配。</div>
+            </div>
+            <span class="lbl">💡 迁移</span><b>「V + sb + to + sth」一族按 to 后面的东西归类背</b>：<br>subject sb to <b>压力/审查/羞辱</b>（负面遭遇）｜ expose sb to <b>风险/信息/环境</b>（接触）｜ limit / confine sb to <b>范围</b>｜ convert sb to <b>信仰/看法</b>｜ direct / guide sb to <b>地点</b>｜ introduce sb to <b>人/新事物</b>。<b>先看 to 后面那个名词属于哪一类，动词自动落地。</b>
+          </div>
+        </div>
+
+        <div class="q" id="q20" data-ans="0">
+          <div class="qhead"><span class="qno">20</span><span class="qt c-context">上下文语义 · 形容词</span><span class="qpos">⭐ 末空回扣全文</span></div>
+          <span class="stem">…has subjected them to unique evolutionary pressures that have resulted in this <em>20</em> state of affairs.</span>
+          <div class="opts">
+            <div class="opt">A paradoxical<span class="gl">自相矛盾的；似非而是的</span></div>
+            <div class="opt">B incompatible<span class="gl">不相容的；不能共存的</span></div>
+            <div class="opt">C inevitable<span class="gl">不可避免的；必然的</span></div>
+            <div class="opt">D continuous<span class="gl">连续的；持续的</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>定语从句 <code>that (＝unique evolutionary pressures) have resulted in this ___ state of affairs</code> 中的形容词，说明前文所述<b>某种情况的特点</b>。
+            <span class="lbl">🔗 线索（this 回指哪一句）</span><code>this ___ state of affairs</code> 里的 <b>this 回指上一句</b>：<b>（更高的）智商与（更易患）遗传疾病密切相关</b>——<b>一个是优势，一个是劣势，二者并存</b>。空格词要描述这种情况的特点，还要<b>能暗示它的真实性</b>（毕竟这是科克伦论证出来的结论）。
+            <span class="lbl">✅ A paradoxical</span>「自相矛盾的；<b>似非而是的</b>」——表示某情况<b>看起来矛盾却很可能为真</b>。契合文中"高智商却也易患病"这一<b>看似荒谬实则为真</b>的情况；代入后整句形成完整的因果链条：<b>不平常的历史 → 独特的进化压力 → 高智商且易患病这一看似矛盾的情况</b>。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>incompatible＝<b>不相容的；不能共存的</b>，表示观点或事实不能同时为真。<b>它也体现"矛盾"，但绝对化了</b>——文中"高智商和易患病<b>共存于一个族群</b>"是<b>已知事实</b>，选它等于否认这个事实。<b>这是本题最值钱的一个干扰项：方向对，强度错。</b></div>
+              <div class="wr"><span class="l">C</span>inevitable＝<b>不可避免的；必然发生的</b>。文中虽提到"智商与疾病紧密相关，是进化压力导致的结果"，<b>但这并不意味着该族群中每个高智商的人都一定会患病</b>，文中没有强调这种必然性。</div>
+              <div class="wr"><span class="l">D</span>continuous＝<b>连续的；持续的</b>，强调时间或顺序上的不间断。而文中"智商与疾病紧密相关"是该族群在受特殊进化压力的过程中出现的情况，<b>可能此前并不存在</b>，也不能判定它不会因其他因素而中断，无法得出"具有连续性"的结论。</div>
+            </div>
+            <span class="lbl">💡 迁移</span><b>完形的末空常是全文的收口</b>：卡住时不要盯着这一句看，<b>把全文一句话总结出来再选</b>。本文一句话＝「一个族群同时拥有高智商和高患病率，这看似矛盾，其实同源」——<b>总结句里的"看似矛盾"就是答案</b>。<br>
+            🔁 与 <a href="2007_完形_拉美独立后的理想与分歧.html" style="color:var(--accent)">2007 完形</a> 的第 20 空（unprepared for）是<b>同一个考法</b>：都要回头看全文才能定。
+          </div>
+        </div>
+      </section>
+      <!-- ========== 03 考点统计 ========== -->
+      <section class="card">
+        <h2><span class="n">03</span>考点分类（完形不背单个空，要看「这题在考什么」）</h2>
+        <div class="catbar" id="catbar"></div>
+        <div class="catlegend" id="catlegend"></div>
+        <p class="note" style="margin-top:14px">点某一类 → 下方列出该类所有空、正文里同步高亮 → 点小格跳到解析卡。</p>
+        <div class="chips" id="chips"></div>
+        <div class="flow" style="margin-top:16px">
+          <div class="fi"><b>⭐ 本篇最重要的结构性事实：逻辑关系题只有 2 道（5、14），而其中 5 题所在的句子里<u>已经有 however</u> 了。</b>
+            <span class="ev">对照 <a href="2007_完形_拉美独立后的理想与分歧.html" style="color:var(--accent)">2007 完形</a>（逻辑关系 4 道，靠 however / While / Generally 这类连接词吃分）：<b>2008 把分值压在了实义动词与动词短语上</b>——7 suggests · 9 scoring · 13 affirm · 15 put down to · 18 linked · 19 subjected，<b>整整六道</b>。</span></div>
+          <div class="fi"><b>⟹ 完形不存在"万能重心"。</b>开考先花十秒扫一遍 20 组选项：
+            <span class="ev">四个选项若多是<b>连接词/副词</b> → 这年考逻辑，先画段落方向图；若多是<b>实义动词</b> → 这年考搭配与主语适配，先练"找主语、问人还是物"。<b>本篇属于后者。</b></span></div>
+          <div class="fi"><b>另有 5 处熟词僻义直接决定答案</b>：2 bird（人）· 8 question（in question 所讨论的）· 10 mean（平均的）· 12 careers（事业成就）· 16 valuing（重视）；
+            <span class="ev">再加两个藏在<b>干扰项</b>里的：13 witness（是…的证据）· 12 fortunes（时运）。<b>完形的熟词僻义密度高于阅读，因为它必须在 80 个词里制造区分度。</b></span></div>
+        </div>
+      </section>
+
+      <!-- ========== 04 打法 ========== -->
+      <section class="card">
+        <h2><span class="n">04</span>完形六大打法（本篇取证）</h2>
+        <div class="flow">
+          <div class="fi"><b>① 首句不设空 → 先定三要素</b>：话题、性质、语气。全篇任何一个空都不能违背首句给的大背景。
+            <span class="ev">本篇首句 <code>one of those hypotheses that dare not speak its name</code> 直接锁死 1 空（<b>别人不敢说，他偏要说 → prepared</b>）和 5 空（<b>世人都害怕，所以不可能是"只有他害怕"→ 排除 Only</b>）。</span></div>
+          <div class="fi"><b>② 动词题第一动作：找主语，问它是人还是物</b>。这一步纯语法、零推理，却是本篇的主力打法。
+            <span class="ev"><b>7 题</b>主语是 a paper（物）→ advises/protests/objects 三个"人主语动词"同时出局，只剩 suggests。<b>13 题</b>主语是 the careers（物）→ observe/approve 出局。<b>两道题加起来 1 分，全靠这一招。</b></span></div>
+          <div class="fi"><b>③ 插入语是障眼法，先划掉再判</b>：两个逗号之间的成分（including… / such as… / , however, ）先整段划掉，让主语和空格贴到一起。
+            <span class="ev"><b>13 题就是靠插入语翻的车</b>：<code>the careers of their elites<u>, including several world-renowned scientists,</u> ___</code>——不划掉它，眼睛会自动把 scientists 当主语，从而误选 observe 或 witness。<b>我就是在这里错的。</b></span></div>
+          <div class="fi"><b>④ 逻辑空之前，先扫本句有没有现成的连接词</b>：已经有 however / but / though 了，空格填的多半是 <b>even / still / indeed / only</b> 这类强调限定副词，而不是第二个连接词。
+            <span class="ev"><b>5 题</b>：<code>___ he, <b>however</b>, might tremble…</code>——转折已由 however 承担，So / Hence 再填因果就打架，答案只能是加强转折的 <b>Even</b>。<b>这是本篇设计最精巧的一处。</b></span></div>
+          <div class="fi"><b>⑤ 平行结构成对做</b>：The former…The latter…／not only…but…／and 连接的两个并列谓语，两边必须同性质、同方向。
+            <span class="ev"><b>15 与 17</b> 是一对连体空（都要表"因果关联"，且都是"原因在后"）；<b>17 题的两个错项 origin、instrument 恰恰是把方向倒过来的</b>。<b>9 与 11</b> 分挂两个并列谓语（"分高"与"贡献大"同向）。</span></div>
+          <div class="fi"><b>⑥ 末空回头看全文</b>：完形最后一空常是全文的收口，卡住时把全文一句话总结出来再选。
+            <span class="ev"><b>20 题</b>：全文一句话＝「一个族群同时拥有高智商和高患病率，看似矛盾，其实同源」——<b>"看似矛盾"就是 paradoxical</b>。与 2007 完形的第 20 空（unprepared for，要回看第 2 空的 hopefully）是同一个考法。</span></div>
+        </div>
+        <p class="note" style="margin-top:14px">🔁 <b>三年完形对照</b>：<a href="2022_完形_植物意识.html" style="color:var(--accent)">2022</a> 靠 nonetheless / However 这类<b>明信号词</b>解逻辑题；<a href="2007_完形_拉美独立后的理想与分歧.html" style="color:var(--accent)">2007</a> 靠 less agreement / most…some… / except 这类<b>结构性信号</b>；<b>2008 则基本不给信号，靠"动词能不能带这个主语"</b>。<b>三种都要会认。</b></p>
+      </section>
+
+      <!-- ========== 05 搭配库 ========== -->
+      <section class="card">
+        <h2><span class="n">05</span>固定搭配 & 熟词僻义（这些是死记就得分的）</h2>
+        <div class="wb">
+          <div class="wbi"><div class="p">be prepared to do sth　打算/乐意做某事（1 题）</div><div class="u">其中 do <b>尤指难做的或通常不做的事</b>——这个"尤指"正好卡在本文语境上。同族一次切开：<b>主动</b> prepared / willing / eager / determined ｜ <b>被动</b> selected / obliged / compelled / forced。<b>先定主被动，四选一立刻变二选一。</b></div></div>
+          <div class="wbi"><div class="p">that rare bird ＋ 同位语　那种罕见的人物（2 题）</div><div class="u">源自拉丁语 <i>rara avis</i>（珍禽）。<b>bird 熟词僻义＝（口）人、家伙。</b>规律：比喻性表语后面<b>必有同位语解释他"那种"在哪里</b>——答案就藏在同位语里。<b>做题动作：先读同位语，再回填。</b></div></div>
+          <div class="wbi"><div class="p">independently of　独立于…之外（3 题）</div><div class="u"><b>of 与某些形容词/副词搭配时表「免除、分离」</b>：be bare of leaf（光秃秃的）｜ be free of charge｜ regardless of｜ irrespective of。<b>介词题第一步永远是"这个介词跟谁走"</b>——本题三个错项全是因为把介词硬拉去跟 works。</div></div>
+          <div class="wbi"><div class="p">at the thought of ＋ 尚未发生的事　一想到…就（6 题）</div><div class="u">同一介词 ＋ 不同名词，判据是 <b>of 后面必须接什么</b>：<b>thought</b> → 任何念头（含未发生）｜ <b>sight</b> → 看得见的实物/场景｜ <b>cost</b> → 已有之物（生命、健康、金钱）｜ <b>risk</b> → 客观风险，且 at the risk of doing 常引出"恕我冒昧"的话。</div></div>
+          <div class="wbi"><div class="p">in question　所讨论的，谈及的（8 题）</div><div class="u">作<b>后置定语</b>，可修饰人或物。⚠️ <b>与 out of the question（不可能的）只差一个词，意思天差地别。</b>同族一次背全：in need（困窘的）｜ in charge（负责的）｜ in doubt（存疑的）｜ in trouble（有麻烦的）。<b>做题先问"它能不能修饰人"。</b></div></div>
+          <div class="wbi"><div class="p">score ＋ 分差 ＋ above/below　得分高出/低于…（9 题）</div><div class="u"><b>分水岭：后面跟的是绝对值还是差值。</b>跟<b>绝对值</b> → attain / reach（attain a height of 20 feet）；跟<b>差值或区间</b> → score / run / come in at。<b>看到 above / below / more than ＋ 数字，先把 attain、reach 划掉。</b></div></div>
+          <div class="wbi"><div class="p">as ＋ 主语 ＋ 动词　正如…所证实的那样（13 题 ⚠️ 本篇错题）</div><div class="u"><b>as 引导的非限制性定语从句后置，as 指代整个主句。</b>能用在这个坑里的动词必须：<b>①可带物主语　②及物（宾语就是 as 所指代的主句）</b>。<b>affirm ✅｜ witness ✗（只能 as witnessed by sth / sth witness to sth）｜ observe ✗（须人作主语）｜ approve ✗（须人作主语，且不及物时须 approve of）。</b></div></div>
+          <div class="wbi"><div class="p">put A down to B　把 A 归因于 B（15 题）</div><div class="u">「归因于」家族一次背全：<b>put A down to B｜ attribute A to B｜ ascribe A to B｜ owe A to B｜ blame A on B（贬义）</b>。<b>写作里 attribute 最稳，阅读里 put down to 最常被考。</b>本题三个错项全栽在"to 后面接人还是接物"上。</div></div>
+          <div class="wbi"><div class="p">a consequence of　…的结果（17 题）</div><div class="u"><b>「A is a(n) ___ of B」型因果名词，方向要背死：</b><br><b>结果在前</b>（A 是 B 造成的）：a <b>consequence / result / outcome / product / by-product</b> of B<br><b>原因在前</b>（A 造成了 B）：the <b>origin / cause / source / root / instrument</b> of B<br>本题两个错项（origin、instrument）都在另一栏。</div></div>
+          <div class="wbi"><div class="p">subject sb to sth　使某人遭受/承受…（19 题）</div><div class="u"><b>「V + sb + to + sth」一族按 to 后面的东西归类背</b>：subject sb to <b>压力/审查/羞辱</b>｜ expose sb to <b>风险/信息/环境</b>｜ limit / confine sb to <b>范围</b>｜ convert sb to <b>信仰/看法</b>｜ direct / guide sb to <b>地点</b>｜ introduce sb to <b>人/新事物</b>。<b>⚠️ subject 作动词重音在后 /səbˈdʒekt/。</b></div></div>
+          <div class="wbi"><div class="p">🔑 熟词僻义清单（本篇 9 处，全部与答案或干扰项直接相关）</div><div class="u"><div class="tabwrap"><table class="otab"><tr><th>词</th><th>常见义</th><th>本篇义</th><th>出处</th></tr>
+            <tr><td><span class="ow">bird</span></td><td>鸟</td><td><b>（口）人，家伙</b></td><td>2 题答案</td></tr>
+            <tr><td><span class="ow">question</span></td><td>问题</td><td><b>in question ＝ 所讨论的</b></td><td>8 题答案</td></tr>
+            <tr><td><span class="ow">mean</span></td><td>卑鄙的；意味着</td><td><b>adj. 平均的</b></td><td>10 题答案</td></tr>
+            <tr><td><span class="ow">careers</span></td><td>职业</td><td><b>（事业上的）成就</b></td><td>12 题答案</td></tr>
+            <tr><td><span class="ow">suggest</span></td><td>建议</td><td><b>（物作主语）表明</b></td><td>7 题答案</td></tr>
+            <tr><td><span class="ow">valuing</span></td><td>估价</td><td><b>重视，珍重</b></td><td>16 题答案</td></tr>
+            <tr><td><span class="ow">subject</span></td><td>主题；科目</td><td><b>v. 使遭受</b></td><td>19 题答案</td></tr>
+            <tr><td><span class="ow">witness</span></td><td>目击者</td><td>v. 是…的证据</td><td>13 题干扰项 ⚠️</td></tr>
+            <tr><td><span class="ow">nasty</span></td><td>讨厌的</td><td><b>（病）严重的，恶性的</b></td><td>③段原文</td></tr>
+          </table></div></div></div>
+        </div>
+      </section>
+
+      <!-- ========== 06 80 词表 ========== -->
+      <section class="card">
+        <h2><span class="n">06</span>80 个选项词速查（完形的真正词汇量）
+          <button class="allbtn" id="btnHide" style="margin-left:auto" onclick="toggleHide()">✍️ 默写模式</button>
+        </h2>
+        <p class="note">完形一篇＝<b>80 个高频词的辨析现场</b>，绿底是正确项。<b>默写模式</b>会糊住中文释义（借鉴 408 算法手册的默写模式）——先自己说出意思，点单个格子可单独揭开。<b>把这 80 个词过一遍，比只记 20 个答案划算四倍。</b></p>
+        <div class="tabwrap"><table class="otab" id="otab"></table></div>
+      </section>
+
+      <!-- ========== 07 长难句 ========== -->
+      <section class="card">
+        <h2><span class="n">07</span>长难句精析（正文蓝色虚线句）</h2>
+
+        <div class="sent" id="s1">
+          <div class="src"><span class="skel">He helped popularize the idea</span> that some diseases <span class="skel">(not previously thought to have a bacterial cause)</span> were actually infections, which aroused much controversy when it was first suggested.</div>
+          <div class="anat">
+            <ul>
+              <li><b>主干</b>：<span class="skel">He helped popularize the idea</span>（他曾帮助普及这一观点）。<code>help (to) do</code> 中间的 to 可省。</li>
+              <li><b>the idea that…</b>：<b>同位语从句</b>，解释 idea 的具体内容（that 不作成分、从句完整）。<b>同位语从句常跟在 idea / fact / belief / hypothesis / news / doubt 之后，是完形和翻译的双料考点。</b></li>
+              <li>⚠️ <b>最容易读错的地方</b>：从句主语 <code>some diseases</code> 与谓语 <code>were</code> 之间插了一整个<b>过去分词短语作后置定语</b>——<code>not previously thought to have a bacterial cause</code>（以前不被认为有细菌病因的）。<b>4 题就藏在这个被插入的定语里。</b>还原成两句就是：<i>Some diseases were not previously thought to have a bacterial cause. In fact they were infections.</i></li>
+              <li><b>which aroused much controversy</b>：非限定性定语从句，<b>which 回指的是整件事</b>（"这些病其实是传染病"这个说法），不是单个名词。</li>
+            </ul>
+          </div>
+          <div class="tr">译：他曾推动普及了这样一种观点——一些以前被认为不是由细菌引起的疾病，实际上是传染病；该观点首次被提出时曾引发极大的争议。</div>
+        </div>
+
+        <div class="sent" id="s2">
+          <div class="src">Together with another two scientists, <span class="skel">he is publishing a paper</span> which <span class="skel">not only suggests</span> that one group of humanity is more intelligent than the others, <span class="skel">but explains</span> the process that has brought this about.</div>
+          <div class="anat">
+            <ul>
+              <li><b>主干只有五个词</b>：<span class="skel">he is publishing a paper</span>。句首 <code>Together with…</code> 是<b>伴随状语</b>（注意：它<b>不影响谓语单复数</b>，主语仍是 he）。</li>
+              <li><b>which 定语从句</b>修饰 a paper，从句内部是 <code>not only ___ …, but explains…</code> <b>两个并列谓语</b>——<b>7 题考的就是"与 explains 并列的那个动词"，而它们的主语是 which＝a paper（物）。</b></li>
+              <li><b>三层嵌套</b>：定语从句（which…）→ 里面套宾语从句（that one group…）→ 后半句再套定语从句（that has brought this about 修饰 the process）。<b>看到 that 先判它引导什么：后面成分缺 → 定语从句；成分全 → 宾语/同位语从句。</b></li>
+              <li>💡 <code>bring sth about</code>＝<b>导致、引起</b>（＝cause），this 回指前半句"某族群更聪明"这件事。</li>
+            </ul>
+          </div>
+          <div class="tr">译：他将与另外两位科学家一起发表一篇论文，这篇论文不仅表明人类中某一族群比其他族群更聪明，而且还阐明了造成这一现象的过程。</div>
+        </div>
+
+        <div class="sent" id="s3">
+          <div class="src"><span class="skel">This group generally do well</span> in IQ test, <i>scoring 12–15 points above the mean value of 100</i>, and <span class="skel">have contributed disproportionately</span> to the intellectual and cultural life of the West, <b>as the careers of their elites</b><i>, including several world-renowned scientists,</i> <b>affirm</b>.</div>
+          <div class="anat">
+            <ul>
+              <li>⚠️ <b>全篇最难的一句，一句话吃掉 9、10、11、12、13 五个空。</b>结构上有<b>三重干扰</b>。</li>
+              <li><b>干扰一 · 两个并列谓语</b>：<span class="skel">This group do well … and have contributed …</span>。中间隔了一整个分词短语，很容易把 and 读成连接别的成分。</li>
+              <li><b>干扰二 · 现在分词作伴随状语</b>：<code>scoring 12–15 points above…</code>，逻辑主语是 This group，解释"do well"具体好在哪。<b>9、10 两空在这里。</b></li>
+              <li><b>干扰三 · as 从句的主谓被插入语劈开</b>（⭐ <b>13 题的坑</b>）：<code>as the careers of their elites<u>, including several world-renowned scientists,</u> affirm</code>。<b>划掉插入语，骨架是 as the careers … affirm——主语是物，不是人。</b>不划掉就会误选 observe（须人作主语）或 witness（语序不对）。</li>
+              <li><b>as 在这里是非限制性定语从句的关系代词，指代整个主句</b>，可译作"正如……的那样"。同类：<i>as is often the case</i>（正如常有的情况）、<i>as we all know</i>。</li>
+            </ul>
+          </div>
+          <div class="tr">译：这一族群在智商测试中普遍表现良好，得分比平均值 100 高出 12 至 15 分；而且他们对西方的精神文化生活做出了极大（与其人数不成比例）的贡献——正如他们当中的精英人物（包括几位世界知名的科学家）的事业成就所证实的那样。</div>
+        </div>
+
+        <div class="sent" id="s4">
+          <div class="src"><span class="skel">His argument is</span> that the unusual history of these people <span class="skel">has subjected them to</span> unique evolutionary pressures that have resulted in this paradoxical state of affairs.</div>
+          <div class="anat">
+            <ul>
+              <li><b>主干</b>：<span class="skel">His argument is that…</span>——<b>表语从句</b>。</li>
+              <li>表语从句内部：主语 <code>the unusual history of these people</code>，谓语 <code>has subjected … to …</code>，<b>19 题就在这个动词短语上</b>。</li>
+              <li>末尾 <code>that have resulted in…</code> 是<b>定语从句</b>修饰 unique evolutionary pressures（谓语 have 是复数，可确认先行词是 pressures 而非 history）。<b>20 题在这里。</b></li>
+              <li>⭐ <b>this ___ state of affairs 里的 this 回指的是<u>上一句</u></b>（智商与疾病密切相关），不是本句。<b>这是 20 题必须跨句才能做的原因。</b></li>
+              <li>💡 <b>整句是一条完整的因果链</b>：不寻常的历史 → 独特的进化压力 → 高智商且易患病这一看似矛盾的局面。<b>把链条画出来，19、20 两空同时落地。</b></li>
+            </ul>
+          </div>
+          <div class="tr">译：他的观点是：这些人不同寻常的历史，使他们承受了独特的进化压力，而这些压力进而导致了这种看似矛盾的局面。</div>
+        </div>
+      </section>
+
+      <!-- ========== 08 写作素材 ========== -->
+      <section class="card">
+        <h2><span class="n">08</span>可搬进作文/翻译的表达</h2>
+        <div class="wb">
+          <div class="wbi"><div class="p">be prepared to do sth　愿意/打算做（尤指难做的事）</div><div class="u">比 be willing to 更书面，且自带"这事不好做"的分量：<i>Few are prepared to admit their own bias.</i>（很少有人愿意承认自己的偏见。）</div></div>
+          <div class="wbi"><div class="p">X has long been put down to Y.　X 一直被归因于 Y</div><div class="u"><b>议论文反驳段的标准起手式</b>——先摆旧解释，再推翻：<i>Youth unemployment has long been put down to a lack of skills; the real cause may lie elsewhere.</i></div></div>
+          <div class="wbi"><div class="p">A and B are intimately linked.　A 与 B 密切相关</div><div class="u">比 A is related to B 高一档，且 intimately 一词就把"关系有多紧"说清了：<i>Physical health and mental well-being are intimately linked.</i></div></div>
+          <div class="wbi"><div class="p">X has contributed disproportionately to Y.　X 对 Y 的贡献之大与其规模不成比例</div><div class="u">用一个"比例"把"贡献极大"讲得既克制又有力，写"小群体大影响"类话题直接可用：<i>A handful of open-source projects have contributed disproportionately to modern computing.</i></div></div>
+          <div class="wbi"><div class="p">a strong tradition of valuing education　重视教育的深厚传统</div><div class="u">教育类话题的现成表达。可替换：a deep-rooted respect for learning｜ a culture that prizes knowledge。<b>注意"重视"用 value / prize / cherish，别用 attach importance to 一路写到底。</b></div></div>
+          <div class="wbi"><div class="p">This has subjected them to unique pressures.　这使他们承受了独特的压力</div><div class="u">写"某群体处境"时比 they are under great pressure 更有因果感：<i>The rise of social media has subjected teenagers to pressures no earlier generation faced.</i></div></div>
+          <div class="wbi"><div class="p">a paradoxical state of affairs　一种看似矛盾的局面</div><div class="u"><b>现象描述段的收口神句</b>：<i>The result is a paradoxical state of affairs: we are more connected than ever, yet lonelier than ever.</i>（冒号后再展开，是图表/漫画作文第二段的稳定框架。）</div></div>
+          <div class="wbi"><div class="p">Even he might tremble at the thought of…　一想到…连他都会战栗</div><div class="u"><code>at the thought of</code> 是能直接搬的框架；<code>Even ＋ 主语</code> 用来把程度顶到极致：<i>Even seasoned investors tremble at the thought of another crash.</i></div></div>
+          <div class="wbi"><div class="p">the ＋ 名词 ＋ in question　所讨论的那个…</div><div class="u">正式文体里指代前文提过的事物，比 this / that 精确：<i>The policy in question was introduced only last year.</i> ⚠️ 别写成 out of the question（那是"不可能"）。</div></div>
+        </div>
+      </section>
+
+    </main>
+
+    <aside>
+      <div id="panel"><div class="hint">👆 点正文里的<b>黄底词</b><br>词卡会出现在这里<br><br>点<b>空格</b>则跳到对应解析卡</div></div>
+    </aside>
+  </div>
+
+  <footer>2008 英语一 · 完形填空复盘页 · 答案与解析由 Claude 独立盲做后写成（盲做 19/20，13 题错选 witness，错因已写进该题解析），并与黄皮书精讲逐题交叉核对 · 生词卡、打法总纲为自撰</footer>
+</div>
+
+<button id="yd">🔍 查有道</button>
+
+<script>
+/* ============ 词汇卡 ============ */
+const V = {
+  hypothesis:{w:"hypothesis / hypotheses",ipa:"/haɪˈpɒθəsɪs/",pos:"n.（复 -theses）",tags:["core","write"],cn:"假说，假设",en:"an idea put forward as a starting point for reasoning",ex:"one of those hypotheses that dare not speak its name",mem:"hypo(在下面，同 hypodermic 皮下的)+thesis(论点)→放在论点下面当地基的东西→假说。<b>复数变 -es 为 -es：hypothesis → hypotheses /haɪˈpɒθəsiːz/</b>，同型的还有 analysis/analyses、thesis/theses、crisis/crises。",syn:"assumption / supposition / conjecture / premise",conf:"hypothesis(假说，待验证) vs. theory(理论，已被广泛接受) vs. thesis(论文；论点)"},
+  darespeak:{w:"dare not speak its name",ipa:"—",pos:"习语",tags:["phrase"],cn:"不敢说出自己的名字（＝禁忌话题）",en:"too taboo to be openly discussed",ex:"one of those hypotheses that dare not speak its name",mem:"⭐ 化用 Lord Alfred Douglas 的名句 <i>“the love that dare not speak its name”</i>（不敢说出自己名字的爱）——维多利亚时代对同性恋的委婉指称，因王尔德受审而广为人知。《经济学人》拿它形容「族群智商差异」这一<b>学界禁忌</b>。<b>dare 在此作情态动词，故用 dare not 而非 doesn't dare。</b>",syn:"a taboo subject / the elephant in the room",conf:"dare 作情态动词（dare not do）vs. 作实义动词（doesn't dare to do）——两种都对，别改错"},
+  bird:{w:"bird",ipa:"/bɜːd/",pos:"n.",tags:["core","poly"],cn:"⚠️（口）人，家伙；鸟",en:"(informal) a person of a specified kind",ex:"He is that rare bird, a scientist who…",mem:"⭐ 2 题的钥匙。<code>a rare bird</code> 源自拉丁语 <i>rara avis</i>（珍禽），喻指<b>不寻常的人物</b>。同类拿动物指人的：a queer fish（怪人）｜ a lame duck（跛脚鸭）｜ an old fox（老狐狸）。<b>规律：这类比喻性表语后面必跟同位语解释他「那种」在哪里。</b>",syn:"person / fellow / character / type",conf:"a rare bird(罕见的人物) vs. a bird's-eye view(鸟瞰) vs. kill two birds with one stone(一举两得)"},
+  independently:{w:"independently (of)",ipa:"/ˌɪndɪˈpendəntli/",pos:"adv.",tags:["core","phrase"],cn:"独立地；<b>independently of ＝ 独立于…之外</b>",en:"without being influenced or controlled by",ex:"a scientist who works independently of any institution",mem:"⭐ 3 题的钥匙。<b>of 与某些形容词/副词搭配时表「免除、分离、剥去」</b>：be bare of leaf（光秃秃的）｜ be free of charge｜ regardless of｜ irrespective of。<b>介词题第一步：这个介词跟谁走？</b>本题它跟 independently，不跟 works。",syn:"autonomously / on one's own / separately from",conf:"independently of(独立于…之外) vs. independent from(脱离…而独立，多用于国家) vs. work with(与…共事)"},
+  institution:{w:"institution",ipa:"/ˌɪnstɪˈtjuːʃn/",pos:"n.",tags:["core","poly","write"],cn:"①机构，团体 ②制度，惯例",en:"an organization; an established custom or law",ex:"a scientist who works independently of any institution",mem:"institute v. 设立/n. 学院 → institution。<b>⚠️ 熟词僻义「制度」高频</b>：the institution of marriage（婚姻制度）；2008 T4 阅读里的 <code>the “peculiar institution”</code> 就是当年南方对<b>奴隶制</b>的委婉说法。",syn:"organization / establishment / body / custom",conf:"institution(机构/制度) vs. institute(研究所；创立) vs. constitution(宪法；体质)"},
+  popularize:{w:"popularize",ipa:"/ˈpɒpjələraɪz/",pos:"v.",tags:["core","write"],cn:"使普及，推广；使通俗化",en:"to make sth widely known or accepted",ex:"He helped popularize the idea that…",mem:"popular(流行的)+ize(使…)→使流行→普及。<b>写作可用</b>：popularize scientific knowledge（普及科学知识）。近亲 popularity n. 受欢迎程度、populace n. 民众、populous adj. 人口稠密的。",syn:"spread / promote / disseminate / propagate",conf:"popularize(普及，中性/褒义) vs. propagate(传播，常带宣传色彩) vs. publicize(宣传，为出名)"},
+  bacterial:{w:"bacterial / bacteria",ipa:"/bækˈtɪəriəl/",pos:"adj. / n.复",tags:["core"],cn:"细菌的 / 细菌（单数 bacterium）",en:"caused by or relating to bacteria",ex:"some diseases not previously thought to have a bacterial cause",mem:"<b>bacteria 本身就是复数</b>（单数 bacterium），谓语用复数——与 data/datum、criteria/criterion、phenomena/phenomenon 同族，<b>这一组是完形与写作的常见语法坑</b>。",syn:"microbial / germ-related",conf:"bacterial(细菌的) vs. viral(病毒的) vs. fungal(真菌的)——医学类文章三兄弟"},
+  infection:{w:"infection / infectious",ipa:"/ɪnˈfekʃn/",pos:"n. / adj.",tags:["core"],cn:"传染病；感染 / 传染性的",en:"a disease caused by germs entering the body",ex:"…were actually infections",mem:"in(进入)+fect(做，同 effect/perfect)→做进身体里→感染。<b>⚠️ 本文的因果链</b>：以前认为「非细菌病因」⟹「不是传染病」；科克伦说「实际上是传染病」⟹ 暗示有细菌病因。<b>4 题的时间轴就架在这条链上。</b>",syn:"contagion / disease",conf:"infectious(传染性的，经空气/水传播) vs. contagious(接触传染的) vs. inflection(词形变化)"},
+  arouse:{w:"arouse",ipa:"/əˈraʊz/",pos:"v.",tags:["core","write"],cn:"引起，激起（情绪、兴趣、争议）",en:"to cause a feeling or reaction",ex:"which aroused much controversy",mem:"a+rouse(唤醒)。<b>宾语多为情绪类抽象名词</b>：arouse suspicion / interest / anger / controversy。<b>写作可用</b>：<i>The proposal aroused widespread concern.</i>",syn:"provoke / stir up / trigger / spark",conf:"arouse(及物，激起情绪) vs. arise(不及物，出现/发生) vs. rise(不及物，上升) vs. raise(及物，举起/提高)——四个动词年年考"},
+  controversy:{w:"controversy / controversial",ipa:"/ˈkɒntrəvɜːsi/",pos:"n. / adj.",tags:["core","write"],cn:"（公开的、历时较久的）争议 / 有争议的",en:"public disagreement over a long period",ex:"which aroused much controversy when it was first suggested",mem:"contro(相反，同 contrary)+vers(转，同 reverse/version)→转向相反面→争论。<b>⭐ 4 题的线索之一</b>：controversy 蕴含「历时很久的争论」，从而暗示旧认知在前、新观点在后。<b>写作高频：a controversial issue。</b>",syn:"dispute / debate / disagreement",conf:"controversy(公开争议) vs. conflict(冲突) vs. contradiction(自相矛盾)——20 题的 paradoxical 说的正是 contradiction 那一层"},
+  tremble:{w:"tremble",ipa:"/ˈtrembl/",pos:"v./n.",tags:["core","write"],cn:"发抖，战栗；（因恐惧而）担忧",en:"to shake slightly, esp. from fear or excitement",ex:"Even he might tremble at the thought of what he is about to do",mem:"⭐ 1 题的反证：既然他会「战栗」，说明他心情<b>并不愉快</b>，故 1 空不能填 pleased。<b>搭配 tremble at the thought of…</b>（一想到就发抖）。近亲 trembling adj. 颤抖的。",syn:"shiver / quiver / shudder / quake",conf:"tremble(轻微发抖，恐惧/激动) vs. shiver(冷得发抖) vs. shudder(因厌恶而抖一下)"},
+  paper:{w:"paper",ipa:"/ˈpeɪpə(r)/",pos:"n.",tags:["core","poly","write"],cn:"⚠️（学术）论文；报纸；纸",en:"an academic article; a newspaper",ex:"he is publishing a paper which not only suggests…",mem:"<b>学术语境里 paper ＝ 论文</b>（publish a paper 发表论文），这是考研阅读的常见义。同族：a term paper 学期论文｜ a call for papers 征稿｜ peer-reviewed paper 同行评议论文（2008 T2 阅读整篇都在讲这个）。",syn:"article / study / essay / thesis",conf:"paper(论文，泛指) vs. thesis(学位论文) vs. dissertation(博士论文，英美用法相反要注意)"},
+  humanity:{w:"humanity",ipa:"/hjuːˈmænəti/",pos:"n.",tags:["core","poly","write"],cn:"①人类（全体）②人性，仁慈 ③（复）人文学科",en:"the human race; kindness; the arts subjects",ex:"one group of humanity is more intelligent than the others",mem:"human+ity。<b>本文取义①「人类」</b>，one group of humanity＝人类中的某一族群。<b>三个义项都考过</b>：crimes against humanity（反人类罪）｜ treat sb with humanity（人道地对待）｜ the humanities（人文学科，<b>必加 the 与 s</b>）。",syn:"mankind / the human race / compassion",conf:"humanity(人类/人性) vs. humility(谦逊) vs. humidity(湿度)——三个只差几个字母，年年混"},
+  originate:{w:"originate (from/in)",ipa:"/əˈrɪdʒɪneɪt/",pos:"v.",tags:["core","write"],cn:"起源于，发源于",en:"to begin to exist in a particular place or time",ex:"a particular people originated from central Europe",mem:"origin(起源)+ate。<b>⭐ 与 17 题的 origin 是同源词</b>——记住 <code>the origin of B</code>＝B 的<b>起因</b>（原因在前），而 <code>a consequence of B</code>＝B 的<b>结果</b>（结果在前）。<b>两个方向千万别记反。</b>",syn:"stem from / derive from / arise from",conf:"originate from(起源于) vs. originality n.独创性 vs. original adj.最初的/原创的"},
+  naturalselection:{w:"natural selection",ipa:"/ˌnætʃrəl sɪˈlekʃn/",pos:"n.短语",tags:["phrase","core"],cn:"自然选择，物竞天择",en:"the process by which better-adapted organisms survive",ex:"The process is natural selection.",mem:"达尔文进化论核心概念。<b>⭐ 与 19 空的 evolutionary pressures 首尾呼应</b>——第二段末句埋下 natural selection，第三段末句用 evolutionary pressures 接住，<b>19 题就靠这条呼应线定方向</b>。相关：survival of the fittest 适者生存｜ adapt to 适应｜ mutation 突变。",syn:"survival of the fittest / Darwinian selection",conf:"natural selection(自然选择) vs. artificial selection(人工选择) vs. selection bias(选择偏差)"},
+  elite:{w:"elite / elites",ipa:"/eɪˈliːt/",pos:"n./adj.",tags:["core","write"],cn:"精英（阶层）；一流的",en:"the most powerful or talented people in a group",ex:"as the careers of their elites … affirm",mem:"法语借词，<b>重音在后 /eɪˈliːt/</b>。elitist adj. 精英主义的｜ elitism n. 精英主义（2007 T2 阅读考过）。<b>写作可用</b>：an elite university｜ the intellectual elite。",syn:"the upper crust / the cream / the establishment",conf:"elite(精英) vs. elect(选举) vs. eligible(有资格的)——都来自 leg/lect「挑选」词根"},
+  renowned:{w:"world-renowned / renowned",ipa:"/rɪˈnaʊnd/",pos:"adj.",tags:["core","write"],cn:"著名的，享有盛誉的",en:"famous and admired for a special skill",ex:"including several world-renowned scientists",mem:"re(再)+nown(名字，同 name)→名字被反复提起→有名的。<b>常搭 be renowned for sth</b>（以…闻名）。<b>写作替换 famous 的首选</b>：a world-renowned expert。<b>⭐ 11 题的线索</b>：既然精英是「世界知名」的，贡献自然「大到不成比例」。",syn:"celebrated / eminent / distinguished / illustrious",conf:"renowned(享有盛誉，褒义) vs. notorious(臭名昭著，贬义) vs. renewed(重新开始的)"},
+  nasty:{w:"nasty",ipa:"/ˈnɑːsti/",pos:"adj.",tags:["core","poly"],cn:"⚠️（疾病、伤口）严重的，恶性的；讨厌的",en:"(of an illness) serious or unpleasant",ex:"a number of nasty genetic diseases",mem:"<b>熟词僻义</b>：修饰疾病、伤口、事故时＝<b>严重的、厉害的</b>（a nasty cut 一道深口子），不是「讨厌的」。另义：a nasty smell（难闻的）｜ a nasty piece of work（讨厌鬼）。",syn:"severe / serious / grave / malignant",conf:"nasty(严重的/讨厌的) vs. naughty(淘气的) vs. nasal(鼻音的)"},
+  genetic:{w:"genetic / gene / genetics",ipa:"/dʒəˈnetɪk/",pos:"adj. / n.",tags:["core","write"],cn:"基因的，遗传的 / 基因 / 遗传学",en:"relating to genes or heredity",ex:"a number of nasty genetic diseases … genetic isolation",mem:"gen(产生，同 generate/generation)+etic。<b>本文两个关键组合</b>：genetic diseases（遗传病）｜ <b>genetic isolation（遗传隔离）</b>——不同种群的基因无法重组，导致某些致病基因在一个族群里集中。<b>17 题的因果方向就靠这条常识：隔离 ⟹ 易患病，不是反过来。</b>",syn:"hereditary / inherited / congenital",conf:"genetic(基因的) vs. generic(通用的；无商标的) vs. genuine(真正的)——拼写极易混"},
+  unrelated:{w:"unrelated",ipa:"/ˌʌnrɪˈleɪtɪd/",pos:"adj.",tags:["core"],cn:"无关联的；无亲缘关系的",en:"not connected with each other",ex:"These facts, however, have previously been thought unrelated",mem:"⭐ <b>18 题的钥匙</b>：科克伦的观点与前人看法相对立，所以 18 空要填 unrelated 的<b>反义</b>——<code>linked</code>。<b>构词与语义都直接对上（un-<u>related</u> ↔ <u>linked</u>）。</b><b>完形常用「前后两句反义呼应」来定答案，这是最省力的一类线索。</b>",syn:"unconnected / independent / irrelevant",conf:"unrelated(无关联的) vs. irrelevant(不相干的，多指与话题无关) vs. unrelenting(不松懈的)"},
+  formerlatter:{w:"the former … the latter …",ipa:"/ˈfɔːmə/ /ˈlætə/",pos:"代词",tags:["phrase","write"],cn:"前者……后者……",en:"the first-mentioned … the second-mentioned",ex:"The former has been put down to… The latter was seen as…",mem:"⭐ <b>15 与 17 是一对连体空</b>：两句是同一个骨架的两次填空（〔某一事实〕被认为 ← 〔某个原因〕），<b>两空必须同向</b>（都是「原因在后」）。<b>见到 The former…The latter…，两空一起判方向。</b><b>写作可用</b>：用来避免重复前文两个名词。",syn:"the first … the second …",conf:"the former(前者) vs. formerly(以前) vs. the latter(后者) vs. the latest(最新的) vs. later(后来)"},
+  intimately:{w:"intimately / intimate",ipa:"/ˈɪntɪmətli/",pos:"adv. / adj.",tags:["core","write"],cn:"密切地；亲密地",en:"very closely",ex:"the intelligence and diseases are intimately linked",mem:"⚠️ <b>18 题的陷阱在这里</b>：intimately 修饰的是<b>「关系有多紧密」</b>，不是「合并得有多彻底」——所以答案是 linked（有关系）而非 combined/integrated（合成一体）。<b>写作可用</b>：<i>be intimately connected with</i>。",syn:"closely / tightly / inextricably",conf:"intimately(密切地) vs. ultimately(最终) vs. imitate(模仿)——发音相近，听力/拼写双坑"},
+  isolation:{w:"isolation / isolate",ipa:"/ˌaɪsəˈleɪʃn/",pos:"n. / v.",tags:["core","write"],cn:"隔离，孤立",en:"the state of being separated from others",ex:"The latter was seen as a consequence of genetic isolation",mem:"isol(岛，同 island/insular)+ation→变成孤岛→隔离。<b>写作可用</b>：in isolation（孤立地）｜ social isolation（社会隔离，社会类话题高频）。<b>⭐ 17 题：遗传隔离是<u>原因</u>，易患病是<u>结果</u>——方向别倒。</b>",syn:"separation / seclusion / segregation",conf:"isolation(隔离) vs. insulation(绝缘/隔热) vs. desolation(荒凉)"},
+  evolutionary:{w:"evolutionary / evolution / evolve",ipa:"/ˌiːvəˈluːʃənri/",pos:"adj. / n. / v.",tags:["core","write"],cn:"进化的，演变的",en:"relating to gradual development over time",ex:"has subjected them to unique evolutionary pressures",mem:"e(出)+volu(卷，同 volume/revolve)+tion→展开→演变。<b>⭐ evolutionary pressures 呼应第二段末句的 natural selection</b>，这条呼应线是 19 题定方向的依据。<b>写作可用</b>：an evolutionary process｜ evolve into。",syn:"developmental / progressive / gradual",conf:"evolution(进化，渐进) vs. revolution(革命，剧变) —— 只差一个 r，方向天差地别"},
+  stateofaffairs:{w:"state of affairs",ipa:"/steɪt əv əˈfeəz/",pos:"n.短语",tags:["phrase","write"],cn:"状况，局面，事态",en:"a situation or set of circumstances",ex:"resulted in this paradoxical state of affairs",mem:"⭐ <b>20 题的落脚点</b>：<code>this ___ state of affairs</code> 里的 this <b>回指上一句</b>（智商与疾病密切相关），所以 20 空必须跨句才能做。<b>写作可用</b>：<i>The result is a paradoxical state of affairs: we are more connected than ever, yet lonelier than ever.</i>（现象段收口神句）",syn:"situation / circumstances / scenario / status quo",conf:"state of affairs(局面) vs. affair(事件；风流韵事) vs. the status quo(现状)"}
+};
+
+const panel=document.getElementById('panel');
+const isMobile=()=>window.innerWidth<=900;
+function badge(t){return {core:'<span class="badge b-core">核心词</span>',phrase:'<span class="badge b-phrase">短语</span>',poly:'<span class="badge b-poly">熟词僻义</span>',write:'<span class="badge b-write">写作✍︎</span>'}[t]||''}
+function showCard(k,el){
+  const d=V[k]; if(!d)return;
+  document.querySelectorAll('.tk.active').forEach(e=>e.classList.remove('active'));
+  if(el&&el.classList.contains('tk'))el.classList.add('active');
+  panel.innerHTML='<button class="close" onclick="panel.classList.remove(\'open\')">✕</button>'+
+  '<div class="wcard"><div class="head"><span class="w">'+d.w+'</span><span class="ipa">'+d.ipa+'</span><span class="pos">'+d.pos+'</span>'+d.tags.map(badge).join('')+'</div>'+
+  '<div class="cn">'+d.cn+'</div><div class="en-def">'+d.en+'</div>'+
+  '<div class="row r-ex"><b>原文语境</b>「…'+d.ex+'…」</div>'+
+  '<div class="row r-mem"><b>怎么记</b>'+d.mem+'</div>'+
+  '<div class="row r-syn"><b>同类词</b>'+d.syn+'</div>'+
+  '<div class="row r-conf"><b>易混辨析</b>'+d.conf+'</div></div>';
+  if(isMobile())panel.classList.add('open');
+}
+document.querySelectorAll('.tk').forEach(t=>t.addEventListener('click',e=>{e.stopPropagation();showCard(t.dataset.w,t)}));
+
+/* ============ 译文开关 ============ */
+function tz(btn){btn.closest('.para').classList.toggle('showzh')}
+let allOn=false;
+function toggleAll(){allOn=!allOn;document.querySelectorAll('.para').forEach(p=>p.classList.toggle('showzh',allOn))}
+function go(id){const s=document.getElementById(id);if(!s)return;s.scrollIntoView({behavior:'smooth',block:'center'});s.style.transition='none';s.style.opacity=.3;setTimeout(function(){s.style.transition='opacity .8s';s.style.opacity=1},80)}
+
+/* ============ 20 空数据（类别 + 正确词） ============ */
+const CAT={
+  logic:{name:"逻辑关系",cls:"c-logic",color:"#3d6a8a"},
+  collo:{name:"固定搭配",cls:"c-collo",color:"#3e7a4e"},
+  word:{name:"词义辨析",cls:"c-word",color:"#b04a3a"},
+  context:{name:"上下文语义",cls:"c-context",color:"#6d5a8e"}
+};
+const B={
+  1:{w:"prepared",cat:"word"},          2:{w:"rare",cat:"collo"},
+  3:{w:"of",cat:"collo"},               4:{w:"previously",cat:"word"},
+  5:{w:"Even",cat:"logic"},             6:{w:"thought",cat:"collo"},
+  7:{w:"suggests",cat:"word"},          8:{w:"question",cat:"collo"},
+  9:{w:"scoring",cat:"word"},           10:{w:"mean",cat:"word"},
+  11:{w:"disproportionately",cat:"word"},12:{w:"careers",cat:"word"},
+  13:{w:"affirm",cat:"word"},           14:{w:"however",cat:"logic"},
+  15:{w:"put down",cat:"collo"},        16:{w:"valuing",cat:"word"},
+  17:{w:"consequence",cat:"context"},   18:{w:"linked",cat:"context"},
+  19:{w:"subjected",cat:"collo"},       20:{w:"paradoxical",cat:"context"}
+};
+
+/* ============ 点空格 → 跳到解析卡 ============ */
+document.querySelectorAll('.bk').forEach(function(b){
+  b.addEventListener('click',function(){
+    document.querySelectorAll('.bk.active').forEach(function(e){e.classList.remove('active')});
+    b.classList.add('active');
+    go('q'+b.dataset.n);
+  });
+});
+function fillBlank(n,ok){
+  const el=document.querySelector('.bk[data-n="'+n+'"]');
+  if(!el)return;
+  el.classList.remove('miss');
+  el.classList.add(ok===false?'miss':'filled');
+  el.innerHTML='<span class="idx">'+n+'</span>'+B[n].w;
+}
+
+/* ============ 即点即判 + 计分 ============ */
+let done=0,right=0;
+function updScore(){
+  document.getElementById('sDone').textContent=done;
+  document.getElementById('sRight').textContent=right;
+  document.getElementById('sPt').textContent=(right*0.5).toFixed(1);
+}
+document.querySelectorAll('.q').forEach(function(q){
+  const ans=+q.dataset.ans, n=q.id.replace('q','');
+  q.querySelectorAll('.opt').forEach(function(o,i){
+    o.addEventListener('click',function(){
+      if(q.classList.contains('done'))return;
+      q.classList.add('done');
+      const ok=(i===ans);
+      if(!ok)o.classList.add('wrong');
+      q.querySelectorAll('.opt')[ans].classList.add('right');
+      done++; if(ok)right++; updScore();
+      fillBlank(n,ok);
+    });
+  });
+});
+function revealAll(){
+  document.querySelectorAll('.q').forEach(function(q){
+    const n=q.id.replace('q','');
+    if(!q.classList.contains('done')){
+      q.classList.add('done');
+      q.querySelectorAll('.opt')[+q.dataset.ans].classList.add('right');
+      done++; updScore();
+    }
+    fillBlank(n,true);
+  });
+  document.querySelectorAll('.bk.miss').forEach(function(e){e.classList.remove('miss');e.classList.add('filled')});
+}
+
+/* ============ 考点统计 ============ */
+const counts={};Object.keys(B).forEach(function(k){counts[B[k].cat]=(counts[B[k].cat]||0)+1});
+const order=["word","collo","context","logic"];
+document.getElementById('catbar').innerHTML=order.map(function(k){
+  return '<div class="catseg" style="flex:'+counts[k]+';background:'+CAT[k].color+'">'+CAT[k].name+' '+counts[k]+'</div>'}).join('');
+const legend=document.getElementById('catlegend');
+legend.innerHTML=order.map(function(k){
+  return '<div class="cl" data-cat="'+k+'"><span class="dot" style="background:'+CAT[k].color+'"></span>'+CAT[k].name+' · '+counts[k]+' 题</div>'}).join('');
+const chips=document.getElementById('chips');
+function renderChips(cat){
+  chips.innerHTML=Object.keys(B).filter(function(n){return !cat||B[n].cat===cat})
+    .map(function(n){return '<span class="chip" data-n="'+n+'">'+n+'. '+B[n].w+'</span>'}).join('');
+  chips.querySelectorAll('.chip').forEach(function(c){
+    c.addEventListener('click',function(){go('q'+c.dataset.n)});
+  });
+}
+renderChips(null);
+legend.querySelectorAll('.cl').forEach(function(l){
+  l.addEventListener('click',function(){
+    const cat=l.dataset.cat;
+    document.querySelectorAll('.cl').forEach(function(x){x.style.borderColor=''});
+    l.style.borderColor=CAT[cat].color;
+    renderChips(cat);
+    document.querySelectorAll('.bk').forEach(function(b){
+      b.style.outline=(B[b.dataset.n].cat===cat?'2px solid '+CAT[cat].color:'')});
+  });
+});
+
+/* ============ 80 选项词表 ============ */
+const OPTS={
+ 1:[["selected","被选定的"],["prepared","打算；乐意"],["obliged","被迫；有义务"],["pleased","高兴的"]],
+ 2:[["unique","唯一的；独一无二的"],["particular","特定的；特别的"],["special","特殊的；特设的"],["rare","稀少的；罕见的"]],
+ 3:[["of","（分离）独立于…之外"],["with","和…一起"],["in","在…之内"],["against","与…作对"]],
+ 4:[["subsequently","随后；后来"],["presently","目前；不久"],["previously","以前，先前"],["lately","最近，不久前"]],
+ 5:[["Only","只有；仅仅"],["So","因此，所以"],["Even","甚至；即使"],["Hence","因此，由此"]],
+ 6:[["thought","一想到（未发生）"],["sight","一看见（看得见）"],["cost","以…为代价（已有之物）"],["risk","冒着…风险"]],
+ 7:[["advises","建议（人作主语）"],["suggests","（物作主语）表明"],["protests","反对；坚称"],["objects","反对；抗辩"]],
+ 8:[["progress","in progress 进行中的"],["fact","in fact 事实上（作状语）"],["need","in need 困窘的"],["question","in question 所讨论的"]],
+ 9:[["attaining","达到（接绝对值）"],["scoring","得分（可接差值）"],["reaching","达到（接绝对值）"],["calculating","计算，核算"]],
+ 10:[["normal","正常值（区间）"],["common","共同价值观"],["mean","⚠️平均的"],["total","总值；总价"]],
+ 11:[["unconsciously","无意识地"],["disproportionately","不成比例地（太大）"],["indefinitely","不明确地；无限期地"],["unaccountably","莫名其妙地"]],
+ 12:[["missions","任务；使命"],["fortunes","⚠️财富；时运"],["interests","兴趣；利益"],["careers","（事业上的）成就"]],
+ 13:[["affirm","证实；确认"],["witness","⚠️是…的证据（须 as witnessed by）"],["observe","看到（须人作主语）"],["approve","批准（须人作主语）"]],
+ 14:[["moreover","此外（递进）"],["therefore","因此（因果）"],["however","但是（转折）"],["meanwhile","与此同时；对比之下"]],
+ 15:[["given up","交给（to 接人）"],["got over","讲清（to 接人）"],["carried on","继续（不与 to 搭）"],["put down","归因于（+to）"]],
+ 16:[["assessing","评估；评定"],["supervising","监督；管理"],["administering","管理；治理"],["valuing","⚠️重视；珍重"]],
+ 17:[["development","（同源的）发展结果"],["origin","起因（方向相反）"],["consequence","结果；后果"],["instrument","促成的手段（方向相反）"]],
+ 18:[["linked","相关联（松）"],["integrated","融为一体（紧）"],["woven","编织（对象须是制品）"],["combined","组合；兼备（紧）"]],
+ 19:[["limited","限定在…内"],["subjected","⚠️使遭受/承受"],["converted","使皈依（to 接信仰）"],["directed","指引（to 接地点）"]],
+ 20:[["paradoxical","似非而是的；看似矛盾的"],["incompatible","不能共存的（绝对化）"],["inevitable","必然的"],["continuous","连续的"]]
+};
+const ANS={1:1,2:3,3:0,4:2,5:2,6:0,7:1,8:3,9:1,10:2,11:1,12:3,13:0,14:2,15:3,16:3,17:2,18:0,19:1,20:0};
+(function(){
+  let h='<tr><th>空</th><th>A</th><th>B</th><th>C</th><th>D</th></tr>';
+  for(let n=1;n<=20;n++){
+    h+='<tr><td class="n">'+n+'</td>';
+    OPTS[n].forEach(function(o,i){
+      h+='<td'+(i===ANS[n]?' class="hit"':'')+'><span class="ow">'+o[0]+'</span><span class="oc">'+o[1]+'</span></td>';
+    });
+    h+='</tr>';
+  }
+  document.getElementById('otab').innerHTML=h;
+  document.querySelectorAll('#otab .oc').forEach(function(c){
+    c.addEventListener('click',function(){c.classList.toggle('show')});
+  });
+})();
+function toggleHide(){
+  const t=document.getElementById('otab');
+  const on=t.classList.toggle('hidecn');
+  document.getElementById('btnHide').textContent=on?'👁 显示释义':'✍️ 默写模式';
+  if(!on)t.querySelectorAll('.oc.show').forEach(function(c){c.classList.remove('show')});
+}
+
+/* ============ 查有道 ============ */
+const yd=document.getElementById('yd');let sel='';
+document.addEventListener('selectionchange',function(){
+  const s=window.getSelection();const t=s?s.toString().trim():'';
+  if(t&&/^[a-zA-Z' -]{2,40}$/.test(t)){
+    sel=t;
+    try{const r=s.getRangeAt(0).getBoundingClientRect();
+      yd.style.left=Math.min(r.left,window.innerWidth-110)+'px';
+      yd.style.top=(r.bottom+8)+'px';yd.style.display='block';}catch(e){}
+  }else{yd.style.display='none'}
+});
+yd.addEventListener('click',function(){window.open('https://dict.youdao.com/result?word='+encodeURIComponent(sel)+'&lang=en');yd.style.display='none'});
+document.addEventListener('click',function(e){if(e.target!==yd&&!window.getSelection().toString())yd.style.display='none'});
+</script>
+<script src="_fault_attr.js"></script>
+</body>
+</html>
