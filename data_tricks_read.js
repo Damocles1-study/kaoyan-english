@@ -757,9 +757,19 @@ window.TRICK_READ = [
  traps:['<b>与 R34 是兄弟刀，别混成一张</b>：<b>R34 概念嫁接</b>＝<b>定语跑到了别的中心词头上</b>（American belief system → American thinking mode）；'
         +'<b>R39 原词拼接</b>＝<b>两个不相干的并列成分被粘住了</b>（patented and … evaluation → patent evaluation）。'
         +'<b>共同点：单个词全都能核上，整体核不上。</b>',
+'⭐⭐ <b>2009·T3 把这把刀的跨度拉大了一级</b>：T2 的拼接发生在<b>同一句的两个并列表语</b>之间，'
+        +'<b>T3 的拼接跨到了两个句子之外</b>——<code>requires <b>sufficient labor force</b></code>（32D，<code>enough people</code> 在①❸句指学生、<code>workers</code> 在①❹句）· '
+        +'<code>does not depend on <b>economic performance</b></code>（35B，<code>not a sufficient</code> 与 <code>economic performance</code> <b>隔着整整一个从句</b>）· '
+        +'<code>cannot <b>afford political changes</b></code>（35D，<code>afford</code> 在⑤❷句、<code>political changes</code> 在⑤❹句）。'
+        +'<b>跨度越大越难查——两个词回文都能找到，只是不在一起。</b>'
+        +'⟹ <b>动作要具体到：搜到第一个词，就顺着往后读到句末，看第二个词有没有跟它组成一个短语。没有，就是假的。</b>',
+        '<b>还有一种变体：原词被<u>反着</u>用。</b>2009·T3·34D <code>as a result of <b>pressure on government</b></code> 取自 '
+        +'<code>even when governments <b>don’t force</b> it</code>——<b>原文说政府「不必出手」，选项说「政府被施压」，方向完全相反。</b>',
         '⚠️ <b>标题题里尤其要查</b>：标题若含原文出现过的词，<b>一定回原文核它当时的搭配对象</b>——同一个词换个搭配就是另一个意思。'],
  refs:[{p:'2009_T2_DNA检测与伪精确.html',q:'q29',label:'2009·T2·29（D 项 patent evaluation）'},
-       {p:'2009_T2_DNA检测与伪精确.html',q:'col2',label:'2009·T2 · 02++ 专栏「词都在，组合不在」'}]},
+       {p:'2009_T2_DNA检测与伪精确.html',q:'col2',label:'2009·T2 · 02++ 专栏「词都在，组合不在」'},
+       {p:'2009_T3_教育与经济增长的真实关系.html',q:'col4',label:'2009·T3 · 02++++ 专栏（四处拼接，跨句级）'},
+       {p:'2009_T3_教育与经济增长的真实关系.html',q:'q35',label:'2009·T3·35（B、D 两个拼接项）'}]},
 
 {id:'R40', tier:'🟡', qt:'标题题 / 全文主旨题', title:'标题题三查：覆盖度 → 褒贬度 → 原词义项',
  trig:['An appropriate title for the text is most likely to be','Which of the following is the best title','四个标题看着都沾边'],
@@ -782,11 +792,96 @@ window.TRICK_READ = [
         '<b>与 R18（先判作者站没站队）配合用</b>：R18 定<b>方向</b>，R40 定<b>范围与力度</b>。'],
  refs:[{p:'2009_T2_DNA检测与伪精确.html',q:'q30',label:'2009·T2·30'},
        {p:'2008_T1_女性与压力.html',q:'q25',label:'2008·T1·25（中性标题 vs 有立场的标题）'}]}
+,
+
+{id:'R41', tier:'🔴', qt:'举例目的题 / 写作目的题', title:'举例题的答案不在例子里，在例子服务的那句论点里',
+ trig:['The author quotes the example of X to show that','The story of X shows that','X is mentioned to illustrate','The author cites … in order to','例子内部好几个细节都能对上选项'],
+ flow:'① <b>先别看例子。</b>回头找<b>例子前面那句论点</b>——它才是例子要证明的东西；'
+     +'② <b>拿论点去筛选项</b>，只留能当论点<b>同义改写或子命题</b>的那一项；'
+     +'③ <b>例子内部的细节全是素材，不是结论</b>——它们出现在选项里，恰恰因为「在原文里」而「不是原文的意思」。',
+ tmpl:'<p><b>路标词（看到就知道下面是为上一句服务的）</b>：<code>After all</code> · <code>That is how…</code> · <code>Consider…</code> · '
+     +'<code>Take X for example</code> · <code>For instance</code> · 冒号。<b>其中 <code>After all</code> 最硬：它引出的内容永远是在给<u>前面那句话</u>找理由。</b></p>'
+     +'<table class="tk"><tr><th>2009·T3·34 的段落结构</th><th>作用</th></tr>'
+     +'<tr><td>❷ <code>continuing <b>economic growth</b> promotes the development of education</code></td><td><b>论点 ⟹ 答案从这里取</b></td></tr>'
+     +'<tr><td>❸ <code><b>After all</b>, that is how education got started.</code></td><td><b>路标（往回指）</b></td></tr>'
+     +'<tr><td>❹❺ 祖先没时间／<code>Only when</code> 更高效获取食物才有时间</td><td><b>素材，不是结论</b></td></tr></table>'
+     +'<p style="margin-top:8px"><b>例子内部还自带一条三环因果链</b>：<b>更高效获取食物 ⟶ 才有时间 ⟶ 教育产生</b>。'
+     +'<b>正确项 C（no longer went hungry）截的是<u>起点</u>，干扰项 A（had enough time）截的是<u>中间那一环</u>。</b>'
+     +'选起点的理由：<b>只有起点接得回「经济增长」这个论点</b>。</p>',
+ traps:['⚠️⚠️ <b>「段内最像」不等于「服务于论点」。</b>2009·T3·34 的 A 项用了原词 <code>time</code>（原文 <code>was there time</code>），'
+        +'<b>字面重合度最高，却是错的</b>——Claude 盲做就栽在这里。<b>举例目的题里，含原词的选项要重点怀疑。</b>',
+        '⚠️ <b>原文只说 <code>was there time</code>，没有 <code>enough</code></b>；且 <code>time for <b>other things</b></code> 并不直接等于 education——'
+        +'<b>A 的链条到「有时间」就断了，还得再走一步。选项自己缺一环，也是排除依据。</b>',
+        '<b>与 R43 配合用</b>：本题的❺句是 <code>Only when A, 倒装B</code>，<b>被 Only 罩住的 A 才是条件</b>——'
+        +'<b>语法判据（R43）与论点判据（R41）指向同一个答案，互为交叉验证。</b>'],
+ refs:[{p:'2009_T3_教育与经济增长的真实关系.html',q:'q34',label:'2009·T3·34（Claude 唯一错题）'},
+       {p:'2009_T3_教育与经济增长的真实关系.html',q:'col2',label:'2009·T3 · 02++ 专栏「错题解剖」'},
+       {p:'2008_T4_开国元勋与奴隶制.html',q:'q39',label:'2008·T4·39（写作目的题 · 引入方向）'}]},
+
+{id:'R42', tier:'🔴', qt:'驳论型文章 · 通篇通用', title:'驳论文只有一支箭头：读完第一段就把方向画在卷边，后面每题先过这道闸',
+ trig:['is widely misunderstood','the conventional view that … is wrong','Contrary to popular belief','It is commonly assumed that … But','第一段出现明确的否定词'],
+ flow:'① <b>认出立靶句</b>（上面那些信号词）；'
+     +'② <b>把两支箭头都写下来</b>——靶子的方向、作者的方向，两行字写在卷子边上；'
+     +'③ <b>每道题先用箭头过一遍闸</b>：凡选项的因果方向与作者的箭头<b>相反</b>、或把箭头<b>砍断</b>，不必细究措辞就能排掉。',
+ tmpl:'<table class="tk"><tr><th>2009·T3 的两支箭头</th><th>出处</th></tr>'
+     +'<tr><td><b>靶子</b>：正规教育 ⟶ 经济增长（教育应当优先）</td><td>①❷句 <code>the conventional view … <b>is wrong</b></code> 一句判死</td></tr>'
+     +'<tr><td><b>作者</b>：生产力提高 ⟶ 有余暇 ⟶ 教育发展</td><td>④❷句立、⑤❻句收</td></tr></table>'
+     +'<p style="margin-top:8px"><b>本篇 5 个干扰项里有 4 个在动这支箭头</b>：'
+     +'31C <b>方向反了</b>（传统上是抬高不是低估）· 34B <b>先后颠倒</b>（先教育后温饱）· '
+     +'35A <b>起点换人＋抹掉中间环节</b>（加了 directly）· 35B <b>把箭头砍断</b> · 35D <b>又反一次</b>。</p>'
+     +'<p><b>拆靶子的两块砖也要认出来</b>：靶子成立的前提是「学历低 ⟹ 生产力低」，'
+     +'②段证「教育水平低的<b>国家</b>也能高产」（美国工厂做到日本的 95%），③段证「教育水平低的<b>个人</b>也能高产」（不识字的墨西哥工人达标）。'
+     +'<b>两段合起来才把那个连接掐断。</b></p>',
+ traps:['⚠️ <b>边界：这一招只在作者立场明确的驳论文里好用。</b>若文章是<b>中立说明文</b>（如 2009·T2 前四段的客观介绍），没有箭头可画，得换别的招。'
+        +'<b>判据：第一段有没有一个明确的褒贬／否定词？</b>',
+        '<b>不出题的段落别跳读</b>：2009·T3 的③段一道题都不出，却是④⑤段立论的地基——<b>跳过它，末两段的结论就成了无源之水。</b>',
+        '<b>末段推理题可直接用它收尾</b>：题干若问的是全文讨论对象之一，<b>捷径就是「选与全文主旨相符的选项」</b>（35 题即是）。'],
+ refs:[{p:'2009_T3_教育与经济增长的真实关系.html',q:'col1',label:'2009·T3 · 02+ 专栏「一支箭头」'},
+       {p:'2009_T3_教育与经济增长的真实关系.html',q:'q31',label:'2009·T3·31（C 把方向掉了个头）'},
+       {p:'2009_T3_教育与经济增长的真实关系.html',q:'q35',label:'2009·T3·35（A/B/D 各动一次箭头）'},
+       {p:'2009_T1_习惯与创新.html',q:'q21',label:'2009·T1·21（同年另一篇驳论文：习惯从敌人改判为工具）'}]},
+
+{id:'R43', tier:'🟡', qt:'细节题 / 举例目的题（原文含倒装句时）', title:'Only when A, 倒装B：被 Only 罩住的 A 才是重心',
+ trig:['原文出现句首 Only 而主句语序古怪','Not until … did …','Only by doing … can …','题目问「X 在什么时候／什么条件下才出现」'],
+ flow:'① <b>先把倒装还原</b>：<code>Only when A <b>was there</b> B</code> ⟹ <code>… there was B</code>；'
+     +'② <b>认逻辑重心</b>：<code>Only when</code> 强调的是<b>条件的唯一性</b>（非得等到 A 不可）⟹ <b>作者要你记住的是 A</b>，B 只是随之而来的结果；'
+     +'③ <b>答题</b>：问「X 在什么条件下才出现」⟹ <b>答被 Only 罩住的 A</b>。<b>把 B 写成答案，就是把结果当条件。</b>',
+ tmpl:'<table class="tk"><tr><th>句式</th><th>重心（作者要你记的）</th></tr>'
+     +'<tr><td><code>Only when A, 倒装B</code></td><td><b>A ＝ 条件</b></td></tr>'
+     +'<tr><td><code>Not until A did B</code></td><td><b>A ＝ 分界时点</b></td></tr>'
+     +'<tr><td><code>Only by doing A can B</code></td><td><b>A ＝ 唯一途径</b></td></tr>'
+     +'<tr><td><code>No sooner had A than B</code></td><td><b>A ＝ 触发事件</b></td></tr></table>'
+     +'<p style="margin-top:8px"><b>一句话记住</b>：<b>倒装是语法上的「重音」——句子把语序拧过来，就是为了让你注意<u>没被拧的那半</u>（前置的条件）。</b></p>'
+     +'<p><b>写作也能用</b>：<code>Only when the economy grows can education develop.</code> 比 '
+     +'<code>Education develops when the economy grows.</code> 有力得多，<b>作文里用一次倒装是很划算的加分动作。</b></p>',
+ traps:['⚠️ <b>2009·T3·34 的 A 项就是「把结果当条件」</b>：原文 <code>Only when humanity began to get its food in a more productive way <b>was there time</b></code>，'
+        +'A 项答的是倒装主句里的 <code>time</code>（结果），正确项 C 答的是 Only 从句里的条件。',
+        '<b>与 R41 交叉验证</b>：R43 是<b>语法判据</b>，R41 是<b>论点判据</b>——<b>两条指向同一个答案时，可以放心落笔。</b>'],
+ refs:[{p:'2009_T3_教育与经济增长的真实关系.html',q:'s6',label:'2009·T3 · 长难句 s6'},
+       {p:'2009_T3_教育与经济增长的真实关系.html',q:'col3',label:'2009·T3 · 02+++ 专栏「Only when 倒装」'}]},
+
+{id:'R44', tier:'🟢', qt:'通用 · 选项筛选顺序（作者观点题最常用）', title:'四个选项里若有一对矛盾项，先集中判这一对',
+ trig:['两个选项读起来意思正相反','一对选项是同一维度的高／低、增／减、支持／反对'],
+ flow:'① 扫一遍四个选项，<b>找有没有两项构成「同一维度的两个反向值」</b>；'
+     +'② 有的话，<b>先集中精力判这两项</b>——正确答案通常就在这一对里，常常判完就收工；'
+     +'③ <b>回原文验证</b>后再落笔。',
+ tmpl:'<table class="tk"><tr><th>2009·T3·31 的四个选项</th><th>维度</th></tr>'
+     +'<tr><td><code>is conventionally <b>downgraded</b></code>（C）</td><td rowspan="2"><b>传统观点对「教育重要性」的估价：偏低 vs 偏高</b> ⟹ <b>矛盾对</b></td></tr>'
+     +'<tr><td><code>has been <b>overestimated</b></code>（D）✔</td></tr>'
+     +'<tr><td><code>is subject to groundless doubts</code>（A）</td><td>质疑有无根据 ——<b>不同维度，不参与这个对子</b></td></tr>'
+     +'<tr><td><code>has fallen victim of bias</code>（B）</td><td>评价是否失真 ——<b>不同维度</b></td></tr></table>',
+ traps:['⚠️⚠️ <b>这是排序策略，不是判据。</b>① 最终仍要<b>回原文验证</b>，不能因为「它俩相反」就随手挑一个；'
+        +'② <b>只在两项确实是同一维度的对立时才成立</b>——若只是「看着相反」而维度不同，不适用。',
+        '<b>反过来也能用</b>：<b>若有两个选项都指向原文从未讨论过的维度，正确答案基本在剩下两个里</b>。'
+        +'2009·T3·33 的 A（纪律性）与 D（组织性）全文零提及 ⟹ <b>只需在 B、C 之间判。</b>'],
+ refs:[{p:'2009_T3_教育与经济增长的真实关系.html',q:'q31',label:'2009·T3·31（C 低估 / D 高估）'},
+       {p:'2009_T3_教育与经济增长的真实关系.html',q:'col4',label:'2009·T3 · 02++++ 专栏附「矛盾选项优先法」'},
+       {p:'2009_T3_教育与经济增长的真实关系.html',q:'q33',label:'2009·T3·33（A/D 凭空造维度 ⟹ 反向用法）'}]}
 
 ];
 
 window.TRICK_READ_META = {
   subject:'英语一 · 阅读',
-  source:'2022 Text 1–4 · 2007 Text 1–4 · 2008 Text 1–4 · 2009 Text 1–2 · 2007/2008/2022 新题型 · 2008 完形',
+  source:'2022 Text 1–4 · 2007 Text 1–4 · 2008 Text 1–4 · 2009 Text 1–3 · 2007/2008/2022 新题型 · 2008 完形',
   note:'提炼自本复盘中心各篇阅读真题复盘页的技巧/干扰项分析，随复盘页增长。'
 };
