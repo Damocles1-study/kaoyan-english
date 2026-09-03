@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2009 英一 Text 2 · DNA 检测及其存在的问题：走出实验室之后的伪精确</title>
+<style>
+  :root{
+    --bg:#faf9f6; --card:#ffffff; --ink:#2b2b2b; --muted:#8a8578;
+    --accent:#8b5e34; --accent-soft:#f3e9dd; --line:#e8e3d8;
+    --hl:#fdf3d8; --hl-border:#e0b84d;
+    --green:#3e7a4e; --green-soft:#e8f2ea;
+    --red:#b04a3a; --red-soft:#f9e9e6;
+    --blue:#3d6a8a; --blue-soft:#e7eff5;
+    --purple:#6d5a8e; --purple-soft:#eeeaf5;
+    --serif:"Georgia","Songti SC",serif;
+    --sans:-apple-system,"PingFang SC","Helvetica Neue",sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#1c1a17; --card:#26231f; --ink:#e8e4dc; --muted:#9a948a;
+      --accent:#d0a06a; --accent-soft:#3a3127; --line:#3a362f;
+      --hl:#3d3520; --hl-border:#b08c3a;
+      --green:#7fb98d; --green-soft:#26362b;
+      --red:#d98876; --red-soft:#3d2a26;
+      --blue:#8ab3d0; --blue-soft:#26323d;
+      --purple:#a996c8; --purple-soft:#302a3d;
+    }
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;padding-bottom:120px}
+  .wrap{max-width:1100px;margin:0 auto;padding:24px 20px}
+  .back{font-size:.85rem;color:var(--muted);text-decoration:none}
+  .back:hover{color:var(--accent)}
+  header{margin:14px 0 28px}
+  header h1{font-family:var(--serif);font-size:1.7rem;line-height:1.3}
+  header .sub{color:var(--muted);margin-top:6px;font-size:.9rem}
+  .tags{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+  .tag{font-size:.75rem;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);border:1px solid var(--line)}
+  .tag.warn{background:var(--red-soft);color:var(--red);border-color:var(--red)}
+  .tag.ok{background:var(--green-soft);color:var(--green);border-color:var(--green)}
+
+  .layout{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:24px;align-items:start}
+  main{min-width:0}
+  @media (max-width:900px){.layout{grid-template-columns:minmax(0,1fr)}}
+
+  section.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:24px}
+  h2{font-size:1.05rem;letter-spacing:.05em;color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+  h2 .n{font-size:.72rem;background:var(--accent);color:var(--card);border-radius:6px;padding:1px 7px}
+  h3{font-size:.95rem;color:var(--accent);margin:18px 0 10px}
+
+  .para{margin-bottom:22px}
+  .para .en{font-family:var(--serif);font-size:1.06rem;line-height:1.9}
+  .pno{color:var(--muted);font-size:.75rem;user-select:none;margin-right:6px}
+  .tk{background:var(--hl);border-bottom:2px solid var(--hl-border);border-radius:3px;padding:0 2px;cursor:pointer;transition:filter .15s}
+  .tk:hover{filter:brightness(.93)}
+  .tk.active{outline:2px solid var(--hl-border)}
+  .ls{border-bottom:2px dotted var(--blue);cursor:pointer}
+  .para .zh{display:none;margin-top:10px;padding:10px 14px;background:var(--blue-soft);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:.93rem}
+  .para.showzh .zh{display:block}
+  .zbtn{float:right;margin-left:10px;font-size:.72rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:6px;padding:2px 9px;cursor:pointer}
+  .zbtn:hover{color:var(--accent);border-color:var(--accent)}
+  .allbtn{font-size:.78rem;border:1px solid var(--accent);background:none;color:var(--accent);border-radius:8px;padding:4px 12px;cursor:pointer;margin-left:auto}
+
+  aside{position:sticky;top:20px}
+  #panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;min-height:180px}
+  #panel .hint{color:var(--muted);font-size:.88rem;text-align:center;padding:30px 10px}
+  .wcard .head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .wcard .w{font-family:var(--serif);font-size:1.35rem;font-weight:bold}
+  .wcard .ipa{color:var(--muted);font-size:.85rem}
+  .wcard .pos{font-size:.72rem;color:var(--purple);background:var(--purple-soft);padding:1px 8px;border-radius:999px}
+  .wcard .badge{font-size:.7rem;padding:1px 8px;border-radius:999px}
+  .b-core{background:var(--red-soft);color:var(--red)}
+  .b-phrase{background:var(--blue-soft);color:var(--blue)}
+  .b-poly{background:var(--purple-soft);color:var(--purple)}
+  .b-write{background:var(--green-soft);color:var(--green)}
+  .wcard .cn{margin-top:8px;font-size:1rem;font-weight:600}
+  .wcard .en-def{color:var(--muted);font-size:.86rem;font-style:italic;margin-top:2px}
+  .wcard .row{margin-top:10px;font-size:.86rem;padding:8px 10px;border-radius:8px}
+  .wcard .row>b:first-child{font-size:.72rem;display:block;margin-bottom:2px;letter-spacing:.06em}
+  .r-ex{background:var(--hl)} .r-ex b{color:var(--hl-border)}
+  .r-mem{background:var(--green-soft)} .r-mem b{color:var(--green)}
+  .r-syn{background:var(--blue-soft)} .r-syn b{color:var(--blue)}
+  .r-conf{background:var(--red-soft)} .r-conf b{color:var(--red)}
+  #panel .close{display:none}
+  @media (max-width:900px){
+    aside{position:fixed;left:0;right:0;bottom:0;z-index:50;padding:0 8px 8px}
+    #panel{box-shadow:0 -6px 24px rgba(0,0,0,.18);max-height:55vh;overflow-y:auto;display:none}
+    #panel.open{display:block}
+    #panel .close{display:block;float:right;border:none;background:var(--line);border-radius:8px;padding:2px 10px;cursor:pointer;color:var(--ink)}
+  }
+
+  .q{margin-bottom:22px;padding-bottom:18px;border-bottom:1px dashed var(--line)}
+  .q:last-child{border:none;margin-bottom:0;padding-bottom:0}
+  .q .stem{font-weight:600;font-family:var(--serif)}
+  .qt{font-size:.7rem;color:var(--blue);background:var(--blue-soft);border-radius:999px;padding:1px 8px;margin-right:6px;vertical-align:2px}
+  .opts{margin-top:10px;display:grid;gap:8px}
+  .opt{border:1px solid var(--line);border-radius:10px;padding:8px 12px;cursor:pointer;font-size:.93rem;font-family:var(--serif);transition:all .15s}
+  .opt:hover{border-color:var(--accent)}
+  .q.done .opt{cursor:default}
+  .opt.right{background:var(--green-soft);border-color:var(--green)}
+  .opt.wrong{background:var(--red-soft);border-color:var(--red)}
+  .expl{display:none;margin-top:12px;background:var(--accent-soft);border-radius:10px;padding:12px 14px;font-size:.9rem}
+  .q.done .expl{display:block}
+  .expl b{color:var(--accent)}
+  .expl .loc{font-family:var(--serif);font-style:italic;background:var(--hl);padding:1px 4px;border-radius:3px}
+  .fail{background:var(--red-soft);border:1px solid var(--red);border-radius:10px;padding:10px 13px;margin-bottom:10px;font-size:.89rem}
+  .fail b{color:var(--red)}
+  .waver{background:var(--hl);border:1px solid var(--hl-border);border-radius:10px;padding:10px 13px;margin-bottom:10px;font-size:.89rem}
+
+  .sent{margin-bottom:20px}
+  .sent .src{font-family:var(--serif);font-size:1rem;background:var(--blue-soft);padding:12px 14px;border-radius:10px;border-left:3px solid var(--blue)}
+  .sent .anat{margin-top:8px;font-size:.9rem}
+  .sent .anat li{margin:4px 0 4px 18px}
+  .sent .tr{margin-top:8px;font-size:.92rem;color:var(--muted)}
+  .skel{color:var(--red);font-weight:600}
+
+  .filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+  .fbtn{font-size:.8rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:999px;padding:4px 14px;cursor:pointer}
+  .fbtn.on{background:var(--accent);color:var(--card);border-color:var(--accent)}
+  .vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
+  .vitem{border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer;transition:border-color .15s}
+  .vitem:hover{border-color:var(--accent)}
+  .vitem .w{font-family:var(--serif);font-weight:bold}
+  .vitem .cn{font-size:.85rem;color:var(--muted)}
+  .vitem .badges{float:right}
+
+  .wb{display:grid;gap:10px}
+  .wbi{border-left:3px solid var(--green);background:var(--green-soft);border-radius:0 10px 10px 0;padding:10px 14px;font-size:.92rem}
+  .wbi .p{font-family:var(--serif);font-weight:600}
+  .wbi .u{color:var(--muted);font-size:.85rem}
+
+  .flow{display:grid;gap:8px;font-size:.92rem}
+  .flow .fi{border:1px solid var(--line);border-radius:10px;padding:9px 13px}
+  .flow .fi b{color:var(--accent)}
+
+  .ctab{width:100%;border-collapse:collapse;font-size:.86rem;margin-top:8px}
+  .ctab th,.ctab td{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
+  .ctab th{background:var(--accent-soft);color:var(--accent);font-size:.8rem;white-space:nowrap}
+  .ctab code{background:var(--hl);padding:0 3px;border-radius:3px}
+  .tabwrap{overflow-x:auto}
+  .ok{color:var(--green);font-weight:700}
+  .no{color:var(--red);font-weight:700}
+  .tl{display:grid;gap:10px;margin-top:6px}
+  .tli{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:start;border:1px solid var(--line);border-radius:10px;padding:10px 13px}
+  .tli .mark{font-family:var(--serif);font-weight:700;color:var(--accent);background:var(--accent-soft);border-radius:8px;padding:4px 10px;white-space:nowrap;font-size:.85rem}
+
+  #yd{position:fixed;z-index:60;display:none;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:4px 12px;font-size:.8rem;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+  footer{color:var(--muted);font-size:.8rem;text-align:center;margin-top:30px}
+  .att{display:grid;gap:8px;margin-top:10px}
+  .atti{border:1px solid var(--line);border-radius:10px;padding:9px 13px;font-size:.9rem}
+  .atti b{font-family:var(--serif)}
+  .atti.no2{background:var(--red-soft);border-color:var(--red)}
+  .atti.yes{background:var(--green-soft);border-color:var(--green)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">◀ 返回英语复盘中心</a>
+  <header>
+    <h1>Who's Your Daddy？答案在药店：DNA 检测走出实验室之后</h1>
+    <div class="sub">2009 年英语（一）真题 · Text 2 · 401 词 · 6 段 · 建议做题 18 min · 话题：基因检测商业化 × 伪精确 × 数据可信度（源自 <i>Scientific American</i>《科学美国人》2008-11-14 <i>Who's Your Daddy? The Answer May Be at the Drugstore</i>「谁是你的父亲？答案可能就在药店里」）</div>
+    <div class="tags">
+      <span class="tag">正确答案：26A 27C 28D 29A 30B</span><span class="tag">题型：段群主旨 + 事实细节 + 观点态度 + 事实细节 + 标题</span><span class="tag ok">✅ Claude 盲做 5/5 全对（继 2008·T2 之后第二次满分）</span><span class="tag">🆕 套路库 36→40 卡：R37 客观⟹主观 / R38 种 vs 属 / R39 原词拼接 / R40 标题覆盖度</span><span class="tag">⭐ 熟词僻义 22 处 · 长难句 9 句 · 词卡 50 张 · 作文素材 7 组</span>
+    </div>
+    <div class="atti" style="margin-top:14px;background:var(--blue-soft);border:1px solid var(--blue);border-radius:10px;padding:10px 14px;font-size:.88rem">
+      📖 <b>本页与原卷配合看</b>：原文完整英文在原卷 <b>p5</b>（<code>按年份/2009/…图像保真版.pdf</code> 第 <b>6</b> 页），题目在原卷 <b>p6</b>（PDF 第 <b>7</b> 页），参考答案在 PDF 第 <b>16</b> 页，黄皮书精讲在同一 PDF 的 <b>p37–p43</b>。本页第 01 节<b>逐段给出全部原文 ＋ 全段中译 ＋ 就地批注</b>。
+    </div>
+    <div class="atti yes" style="margin-top:10px;font-size:.88rem">
+      🎯 <b>本篇最该带走的一件事：五道题全对，但四个最险的干扰项走的是<u>同一条路</u>——把原文的「客观事实」悄悄换成「主观评价」。</b><br>
+      26 题 <code>successful <b>promotion</b></code>（推销成功）和 <code><b>popularity</b> with households</code>（受家庭欢迎）都只有一条依据：<b>「6 万多人购买」</b>。可这是一个<u>光秃秃的数字</u>——6 万算多吗？<b>原文没给任何参照系</b>；更要命的是，②①句用 <code><b>since</b> they first became available without prescriptions</code> <b>已经把这 6 万人的原因归给了「无需处方」这个政策变化</b>，与推销手段无关。<br>
+      28 题的 <code>fully <b>use</b> genetic information</code> 是同一把刀的另一面：原文动词是 <code><b>reveal</b></code>（<b>能揭示出多少</b>＝能力上限），选项换成 <code>use</code>（<b>没有充分利用</b>＝主观没做好）——<b>归因从「做不到」滑到了「没做好」。</b><br>
+      ⟹ 由此立 <b>R37</b>：<b>选项里出现 popular / successful / effective / fully / properly 这类<u>带评价色彩</u>的词，而定位句只给了一个数字或一句事实时，问一句「从这条事实走到这个评价，中间还缺什么？」</b>——缺参照系、缺归因、缺主观意图，就排掉。完整解剖见第 <a href="#col1" style="color:var(--green);font-weight:700">02+ 节</a>。
+    </div>
+    <div class="atti no2" style="margin-top:10px;font-size:.88rem">
+      ⚠️ <b>第二把刀同样值钱，而且它是 2009·T1 那张 R34「概念嫁接」的<u>兄弟刀</u></b>：<br>
+      29 题 D <code>lack of <b>patent evaluation</b></code>——<code>patent</code> 和 <code>evaluation</code> <b>两个词确实都在末段④句里</b>，可原文写的是 <code>may be <b>patented</b> <u>and</u> not subject to peer review or outside <b>evaluation</b></code>：<b>它们分属 <code>and</code> 连接的<u>两个并列表语</u>，根本不是一个短语。</b>缺的是<b>外界评估</b>，不是「对专利的评估」。<br>
+      30 题 C <code>DNA Testing <b>Outside</b> the Lab</code> 也是同一手：<code>outside</code> 在原文里的搭配是 <code><b>outside</b> evaluation</code>（<b>外界</b>评估），跟「实验室外」毫无关系。<br>
+      ⟹ <b>R39 原词拼接型干扰：把选项里的短语当<u>整体</u>回原文搜；两个词若被 and／逗号／不同介词隔开、分属两个语法单位，就是焊出来的假短语。</b>
+    </div>
+  </header>
+
+  <div class="layout">
+    <main>
+      <!-- ========== 全文脉络 ========== -->
+      <section class="card">
+        <h2><span class="n">00</span>读前一分钟 · 全文脉络（做完题再看也行）</h2>
+        <div class="flow">
+          <div class="fi"><b>①段 引入 · 谚语开篇 ＋ 30 美元的亲子鉴定</b>　⭐26 题定位段之一，也是 <b>27 题真正的定义句所在</b>。<br>①句用谚语起笔：<code>It is a wise father that knows his own child</code>（<b>再聪明的父亲也未必了解自己的孩子</b>），<b>but</b> 今天男人可以提升为人父的智慧——<b>或者至少确认自己就是孩子的爹</b>。②句：他要做的全部事情，就是在<b>当地药店</b>花 30 美元买一套亲子鉴定工具包（PTK），再花 120 美元拿结果。<br>⚠️⚠️ <b>第一句是全文第一个坑，而且是语法层面的</b>：<code>It is a + adj. + n. + that…</code> 这个句式<b>长得像强调句，意思却完全相反</b>（详见 <a href="#s1" onclick="go('s1');return false">s1</a>）。<br>⭐ <b>「in his local drugstore」「$30」这两个细节不是背景，是 26 题的第一条证据。</b></div>
+          <div class="fi"><b>②段 数据 · 6 万套、24 家公司、无需处方</b>　⭐⭐26 题的<b>主战场</b>。①句：自去年<b>无需处方即可购买</b>以来，已有超过 6 万人买了 PTK（Identigene 首席运营官 Doug Fogg 语，该公司生产这种<b>非处方</b>工具包）。②句：<b>超过 24 家公司</b>直接向<b>公众</b>销售 DNA 检测，价格从几百美元到 2500 多美元不等。<br>⭐⭐ <b>前两段一共给了四处指向同一件事的说法</b>：<code>at his local drugstore</code>（就在家门口药店）· <code>available <b>without prescriptions</b></code>（无需处方）· <code>the <b>over-the-counter</b> kits</code>（非处方式）· <code>sell DNA tests <b>directly to the public</b></code>（直接卖给公众）。<b>四处深层同义复现 ⟹ 语义重心只有一个：<u>获取便利</u> ⟹ 26 A。</b><br>⚠️ <b>而 <code>since</code> 这个词把 C 项判了死刑</b>：6 万人购买的原因，原文<b>已经给了</b>——政策从「要处方」变成「不要处方」，<b>不是因为推销做得好。</b></div>
+          <div class="fi"><b>③段 用途 · 亲子与亲属鉴定最受欢迎，兼做寻根生意</b>　⭐27 题定位段。①句<b>完全倒装</b>：最受欢迎的是<b>亲子与亲属关系鉴定</b>——被领养的孩子可以用它找到血亲，家庭可以用它<b>追查被送养的孩子的下落</b>。②句：DNA 检测在狂热的<b>系谱学家</b>中也正当红，并支撑起了「<b>寻根问祖</b>」的生意。<br>⚠️⚠️ <b>本段是 27 题的定位段，却<u>不是</u> 27 题的答案句。</b>本段讲的是 <b>DNA testing（上位类）</b> 的各种用途，而题干问的是 <b>PTK（其中一种具体产品）</b>。<b>把「属」的功能安给「种」，就掉进 A 项 <code>locate one's birth place</code> 里了</b>——寻根是系谱业务，不是 PTK 干的活。<b>PTK 的定义句在①①句：confirm that he's the kid's dad。</b>（⟹ R38）</div>
+          <div class="fi"><b>④段 流程 · 棉签取唾液，且必须有对照者</b>　本段<b>零命题</b>，但②句是理解⑤段的前提：<b>所有检测都需要一个<u>可供比对的潜在对照者</u></b>（<code>a potential candidate with whom to compare DNA</code>）。<br>⭐ <b>为什么这句重要</b>：它已经埋下了⑥段的批评——<b>没有比对对象，DNA 检测什么也说明不了</b>；而⑥段正是说「用来比对的<b>参考数据库</b>本身有问题」。<b>④段 ＋ ⑥段 ＝ 一个完整的逻辑闭环，命题人没在这里出题，但读文章时要把这两段连起来。</b></div>
+          <div class="fi"><b>⑤段 ⚠️ 全文转折 · 观察家：这是「伪精确」</b>　⭐28 题定位段。①句 <code><b>But</b> some observers are skeptical.</code>——<b>全文的分水岭，前四段是介绍，从这里开始是质疑。</b>②句引纽约大学社会学家 Troy Duster：「<b>那些声称在做家谱检测的人，兜售的是一种<u>伪精确</u>。</b>」③句：每个人的祖先<b>数以百计</b>（只上溯几百年就是这个量级）。④句：<b>然而</b>多数家谱检测<b>只考虑单一谱系</b>——要么是父系的 Y 染色体，要么是只从母亲传下来的线粒体 DNA。⑤句：这种 DNA <b>只能揭示一两位祖先</b>的基因信息，可上溯三代你还有另外 6 位曾祖、上溯四代还有另外 14 位高祖。<br>⭐⭐ <b>28 题的答案就是②句那个形容词</b>：<code><b>false</b> precision</code> ＋ <code><b>claiming</b></code> ⟹ 「<b>达不到所宣称的精确度</b>」。<b>③④⑤三句全是证据，不是答案。</b><br>⚠️ <b>注意批评的<u>维度</u>是「数量」不是「远近」</b>：几百位祖先里只查一两位。A 项 <code>trace <b>distant</b> ancestors</code> 把数量维偷换成了时间维——<b>单一谱系恰恰能上溯得很远。</b></div>
+          <div class="fi"><b>⑥段 批评之二 · 数据库不靠谱 ＋ 程序不受审</b>　⭐29 题定位段，<b>由 <code>In addition</code> 一分为二</b>。<br><b>前半（①②③句）：数据库。</b>①句：商业基因检测的水准<b>完全取决于</b>用来比对的参考数据库（<code>only as good as</code>）。②句：某些公司的数据库<b>并非系统收集</b>，而是把不同研究项目的信息<b>胡乱堆在一起</b>。③句：因此某些地区数据一大堆、别的地区没有，<b>同一个人在不同公司会得到不同结果</b>。<br><b>后半（④句）：程序。</b>公司用来判定亲属关系的计算机程序<b>可能受专利保护，因而不接受同行评审或外界评估</b>。<br>⭐⭐ <b>29 题只考前半</b>：三处同义复现 <code>reference collections</code> · <code>Databases</code> · <code>DNA database</code> 把重心钉在「数据库」上，而②句的取舍结构 <code><b>don't</b> rely on data collected <b>systematically</b> <b>but rather</b> lump together…</code> 就是 A 项 <code>disorganized data collection</code> 的正源。</div>
+          <div class="fi" style="border-color:var(--accent)">📌 <b>一句话主旨</b>：<b>DNA 检测已经走出实验室、进入药店和市场（①–④段），但它的精确性与数据基础都站不住脚（⑤⑥段）。</b>⟹ <b>30 题 B「DNA 检测及其存在的问题」。</b><br>
+          📌 <b>结构套路：这是一篇最标准的「先介绍、后质疑」两段式说明文</b>——<code>①②③④ 客观介绍</code> ｜ <code><b>But</b> some observers are skeptical</code>（⑤①，<b>全文唯一的结构转折句</b>）｜ <code><b>Critics also</b> argue</code>（⑥①，第二条批评）。<b>两个批评者、两条批评，前后并列。</b><br>
+          ⭐⭐ <b>认出这个结构，30 题就是送分</b>：标题必须<b>同时装下</b>「介绍」和「质疑」两半。<b>A（Fors and Againsts）少了前四段的客观介绍、C（Outside the Lab）少了后两段的问题、D（Lies）褒贬过重且同样少了前四段——只有 B 两半都盖住。</b>（⟹ R40）<br>
+          ⭐ <b>五题定位段 ＝ ①② ｜ ③(＋①) ｜ ⑤ ｜ ⑥ ｜ 全文</b>。<b>严格同序，一段一题往下走</b>——<b>与同年 Text 1 一样「乖」，可以放心读一段做一题。</b><br>
+          ⚠️ <b>唯一需要跨段的是 27 题</b>：定位段在③，但真正的答案句在①①。<b>凡题干主语是缩写或专有产品名，先回文找它的定义句。</b></div>
+        </div>
+      </section>
+      <!-- ========== 原文精读 ========== -->
+      <section class="card">
+        <h2><span class="n">01</span>原文精读 · 全文六段 <button class="allbtn" onclick="toggleAll()">全段译文 开/关</button></h2>
+        <p style="font-size:.8rem;color:var(--muted);margin-bottom:14px">🟡 黄色高亮 = 重难点词/短语，点击右侧出卡片 ｜ 蓝色虚线 = 长难句，点击跳到精析 ｜ 每段「译」= 该段完整中译 ｜ 选中任意其他单词浮出「查有道」</p>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p style="font-size:.78rem;color:var(--accent);margin-bottom:6px">① 引入段 · 谚语 ＋ 30 美元的亲子鉴定 · ⭐26 题证据之一 · ⭐⭐27 题的定义句</p>
+          <p class="en"><span class="pno">⚠️全文第一坑·让步谚语</span><span class="ls" onclick="go('s1')">It is a <span class="tk" data-w="wisefather">wise father</span> that knows his own child</span>, but today a man can <span class="tk" data-w="boost">boost</span> his <span class="tk" data-w="paternal">paternal</span> (fatherly) wisdom—or at least confirm that he's the kid's dad.</p>
+          <p class="en" style="margin-top:10px"><span class="pno">⭐26A 的第一条证据</span>All he needs to do is <span class="tk" data-w="shellout">shell out</span> $30 for a paternity testing <span class="tk" data-w="kit">kit</span> (PTK) at his local <span class="tk" data-w="drugstore">drugstore</span>—and another $120 to get the results.</p>
+          <div class="zh"><b>①段全译：</b>再聪明的父亲也未必了解自己的孩子，但现在男性能够提升其为人父的智慧——或者说，至少能确认自己就是孩子的父亲。他唯一需要做的事情就是在当地药店花 30 美元购买一份亲子关系鉴定工具包（PTK）——再花上 120 美元获取检测结果。
+          <div style="margin-top:8px;font-size:.86rem">⚠️⚠️ <b>①句是全文最容易读反的一句，而且坑在语法层面</b>：<code>It is a wise father <b>that</b>…</code> 长得和强调句一模一样，但它是<b>谚语专用的让步句式</b>，意思是「<b>再……的……也未必……</b>」（出自莎士比亚《威尼斯商人》）。<b>判据是后半句那个 <code>but</code></b>：如果按强调句译成「知道自己孩子的才是聪明父亲」，那么 but 后面的「今天男人可以确认自己是孩子的爹」就完全接不上——<b>只有译成「再聪明的父亲也未必了解自己的孩子」，but 才转得动。</b>（详见 <a href="#s1" onclick="go('s1');return false">s1</a>）<br>
+          ⭐⭐ <b>②句是 27 题的真正答案句，虽然 27 题的定位段在③段。</b><code>confirm that <b>he's the kid's dad</b></code>＝确认亲子关系 ⟹ <b>C identify parent-child kinship</b>。<b>命题人拿第三段的 DNA testing（上位类）设题，却把题干主语写成 PTK（下位的具体产品）——答案要回首段的定义句取。</b>（⟹ R38）<br>
+          ⭐ <b>26 题的证据从这一句就开始了</b>：<code>at his <b>local drugstore</b></code>（就在家门口的药店）＋ 只要 $30 ⟹ <b>获取便利</b>。<b>注意这里只有 $30 是 PTK 的售价，$120 是出结果的钱——B 项「定价灵活」连这两个价格都盖不住。</b></div></div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p style="font-size:.78rem;color:var(--accent);margin-bottom:6px">② 数据段 · 6 万套 / 24 家公司 / 无需处方 · ⭐⭐26 题主战场</p>
+          <p class="en"><span class="pno">⭐⭐26 题四条证据的第二三条</span><span class="ls" onclick="go('s2')">More than 60,000 people have purchased the PTKs since they first became available without <span class="tk" data-w="prescription">prescriptions</span> last year, according to Doug Fogg, <span class="tk" data-w="coo">chief operating officer</span> of Identigene, which makes the <span class="tk" data-w="otc">over-the-counter</span> kits.</span></p>
+          <p class="en" style="margin-top:10px"><span class="pno">⭐第四条证据·⚠️B 项产地</span>More than <span class="tk" data-w="twodozen">two dozen</span> companies sell DNA tests <span class="tk" data-w="directly">directly to the public</span>, <span class="tk" data-w="rangeprice">ranging in price</span> from a few hundred dollars to more than $2,500.</p>
+          <div class="zh"><b>②段全译：</b>据 Identigene（一家生产这种非处方工具包的公司）首席运营官道格·福格说，自去年亲子关系鉴定工具包无需医师处方即可购买以来，购买人数已超 6 万人。超过 24 家公司直接向公众售卖 DNA 检测，价格从几百美元到 2500 多美元不等。
+          <div style="margin-top:8px;font-size:.86rem">⭐⭐ <b>把前两段的四处说法并排，26 题就自动出来了</b>：<code>at his local drugstore</code> · <code>available <b>without prescriptions</b></code> · <code>the <b>over-the-counter</b> kits</code> · <code>sell DNA tests <b>directly to the public</b></code>。<b>四处说的是同一件事——<u>不用找医生、不用进实验室，随手就能买到</u> ⟹ A easy availability。</b><br>
+          ⚠️⚠️ <b><code>since</code> 是本段最该圈出来的一个词</b>：它把「6 万人购买」的原因<b>明确归给了「无需处方」这个政策变化</b>。<b>原因既然已经给了，C 项「推销成功」就没有落脚点</b>——而且前两段一个字都没提推销手段。<br>
+          ⚠️ <b>D 项 <code>popularity with households</code> 有两处硬伤</b>：① <b>「6 万人」是个客观数字，没有任何参照系</b>——6 万在三亿人口里算多吗？原文不提供判断依据，<b>而 popularity 是一个主观评价</b>；② <code>people</code> ≠ <code>households</code>，<b>买家不一定是家庭</b>（由后文可知还可能是系谱学家、企业）。<b>⟹ 这两处正是 R37「客观事实 ⟹ 主观评价」的标准长相。</b><br>
+          📌 <b>B 项 <code>flexibility in pricing</code> 的产地是②句的价格区间</b>，但那是<b>超过 24 家公司各自的定价</b>，<b>不是一家公司按需求灵活调价</b>——<b>「不同卖家价格不同」和「同一卖家定价灵活」是两回事。</b><br>
+          📌 <b>语法提醒</b>：句末 <code>which makes the over-the-counter kits</code> 的先行词是 <b>Identigene（公司）</b>，不是紧挨着的 <b>officer（人）</b>——<b>能「生产工具包」的只能是公司。</b>（详见 <a href="#s2" onclick="go('s2');return false">s2</a>）</div></div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p style="font-size:.78rem;color:var(--accent);margin-bottom:6px">③ 用途段 · 亲子/亲属鉴定最热 ＋ 寻根生意 · ⭐27 题定位段（⚠️但不是答案段）</p>
+          <p class="en"><span class="pno">⚠️完全倒装＋一个 which 带两套主谓</span><span class="ls" onclick="go('s3')">Among the most popular: paternity and <span class="tk" data-w="kinship">kinship</span> testing, which <span class="tk" data-w="adopted">adopted</span> children can use to find their <span class="tk" data-w="biorel">biological relatives</span> and families can use to <span class="tk" data-w="trackdown">track down</span> kids <span class="tk" data-w="putup">put up for adoption</span>.</span></p>
+          <p class="en" style="margin-top:10px"><span class="pno">⚠️27A 的产地</span>DNA testing is also the latest <span class="tk" data-w="rage">rage</span> among passionate <span class="tk" data-w="genealogist">genealogists</span>—and supports businesses that offer to search for a family's geographic <span class="tk" data-w="roots">roots</span>.</p>
+          <div class="zh"><b>③段全译：</b>其中，最受欢迎的是亲子关系和亲属关系鉴定：被领养的孩子可利用它来找寻血亲，家庭可利用它来追踪到被领养的孩子。DNA 检测最近还在极富热情的系谱学家当中风靡一时——也为提供寻根问祖业务的企业提供支持。
+          <div style="margin-top:8px;font-size:.86rem">⚠️⚠️ <b>本段是 27 题的定位段，却<u>不是</u>答案段——这是本篇最值得记住的一个结构。</b>题干问的是 <b>PTK</b>（一种具体产品），本段讲的是 <b>DNA testing</b>（上位类）的<b>各种</b>用途。<b>把「属」的功能安到「种」头上，就中了 A 项。</b><br>
+          ⚠️ <b>A 项 <code>locate one's birth place</code> 的两处偷渡</b>：① 本段的 <code>find</code> / <code>track down</code> 找的是<b>血亲和孩子（人）</b>，不是<b>地点</b>；② ②句的 <code>a family's <b>geographic roots</b></code> 是<b>家族的发源地</b>，与<b>某个人的出生地</b>不是一回事（<b>你祖上从哪来 ≠ 你在哪出生</b>）。<b>⟹ 两个词都在原文，绑定关系被换了 ⟹ R39。</b><br>
+          📌 <b>B 项 <code>promote genetic research</code> 的两处硬伤</b>：<code>genealogists</code>（<b>系谱学家</b>，研究家族世系）≠ <code>genetic research</code>（<b>基因研究</b>）；而且原文只说 DNA 检测在他们中间 <code>rage</code>（<b>流行</b>），<b>「在某群人中流行」推不出「推动了该领域的研究」</b>。<br>
+          📌 <b>D 项 <code>choose children for adoption</code> 是方向反了</b>：原文是 <code>track down kids <b>put up for</b> adoption</code>——<b>追查<u>已经被送养出去</u>的孩子的下落</b>，不是「挑选自己要领养哪个孩子」。<br>
+          ⭐ <b>①句的语法值得单独看</b>：<code>Among the most popular:</code> 是<b>完全倒装＋冒号</b>（正常语序＝ Paternity and kinship testing is among the most popular），而后面<b>一个 which 带了两套主谓</b>（adopted children can use / families can use），which 是<b>两个 use 共同的宾语</b>。（详见 <a href="#s3" onclick="go('s3');return false">s3</a>）</div></div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p style="font-size:.78rem;color:var(--accent);margin-bottom:6px">④ 流程段 · 棉签取唾液 ＋ 必须有对照者 · 零命题，但是⑥段的前提</p>
+          <p class="en"><span class="pno">流程</span>Most tests require collecting cells by <span class="tk" data-w="swab">swabbing</span> <span class="tk" data-w="saliva">saliva</span> in the mouth and sending it to the company for testing.</p>
+          <p class="en" style="margin-top:10px"><span class="pno">⭐⑥段批评的前提</span><span class="ls" onclick="go('s4')">All tests require a potential <span class="tk" data-w="candidate">candidate</span> with whom to compare DNA.</span></p>
+          <div class="zh"><b>④段全译：</b>大多数检测都需要用棉签蘸取口中唾液采集细胞，并将其送到指定公司进行检测。所有的检测都需要一位潜在对照者，以便进行 DNA 比对。
+          <div style="margin-top:8px;font-size:.86rem">📌 <b>本段五道题一题都没考，但它<u>不是废段</u></b>：②句 <code>All tests require a potential <b>candidate with whom to compare DNA</b></code>（所有检测都需要一个可供比对的对象）<b>是⑥段那条批评的前提</b>——<b>既然一切结论都来自「比对」，那么「拿来比对的东西（参考数据库）靠不靠谱」就成了要害。</b><b>④段与⑥段合起来才是一个完整的逻辑闭环。</b><br>
+          ⭐ <b><code>candidate</code> 在这里是熟词僻义</b>：不是「候选人」，是<b>「可供比对的对象／人选」</b>。<br>
+          📌 <b>语法</b>：<code>a potential candidate <b>with whom to compare</b> DNA</code> ＝「介词＋whom＋不定式」作定语，还原成从句是 <code>with whom one can compare DNA</code>。（详见 <a href="#s4" onclick="go('s4');return false">s4</a>）</div></div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p style="font-size:.78rem;color:var(--accent);margin-bottom:6px">⑤ ⚠️ 全文转折段 · 观察家：这是「伪精确」 · ⭐28 题定位段</p>
+          <p class="en"><span class="pno">⚠️⚠️全文唯一的结构转折句</span>But some observers are <span class="tk" data-w="skeptical">skeptical</span>.</p>
+          <p class="en" style="margin-top:10px"><span class="pno">⭐⭐28 题答案句</span><span class="ls" onclick="go('s5')">“There's a kind of <span class="tk" data-w="precision">false precision</span> being <span class="tk" data-w="hawk">hawked</span> by people <span class="tk" data-w="claim">claiming</span> they are doing ancestry testing,” says Troy Duster, a New York University <span class="tk" data-w="sociologist">sociologist</span>.</span></p>
+          <p class="en" style="margin-top:10px"><span class="pno">证据一·祖先数以百计</span>He <span class="tk" data-w="notev">notes</span> that each individual has many ancestors—<span class="tk" data-w="numberv">numbering</span> in the hundreds just a few centuries back.</p>
+          <p class="en" style="margin-top:10px"><span class="pno">⚠️证据二·只查单一谱系</span><span class="ls" onclick="go('s6')">Yet most ancestry testing only considers a single <span class="tk" data-w="lineage">lineage</span>, either the Y <span class="tk" data-w="chromosome">chromosome</span> <span class="tk" data-w="inherit">inherited</span> through men in a father's line or <span class="tk" data-w="mitochondrial">mitochondrial</span> DNA, which is <span class="tk" data-w="passdown">passed down</span> only from mothers.</span></p>
+          <p class="en" style="margin-top:10px"><span class="pno">⚠️28C 的产地·reveal 不是 use</span><span class="ls" onclick="go('s7')">This DNA can <span class="tk" data-w="reveal">reveal</span> genetic information about only one or two ancestors, even though, for example, just three generations back people also have six other <span class="tk" data-w="greatgrand">great-grandparents</span> or, four generations back, 14 other great-great-grandparents.</span></p>
+          <div class="zh"><b>⑤段全译：</b>但一些观察家持怀疑态度。纽约大学社会学家特洛伊·达斯特说：「那些声称正在从事家谱检测工作的人所宣扬的（其实）是一种伪精确。」他指出，每个人都有许多位祖先——仅上溯几百年就数以百计。然而大部分家谱检测只考虑单一的谱系，要么是同一父系男性遗传的 Y 染色体，要么是仅通过母亲传递给子女的线粒体 DNA。这种 DNA 只能揭示一两位祖先的基因信息，尽管，譬如，仅上溯三代，每个人还有另外六位曾祖，上溯四代，还有另外十四位高祖。
+          <div style="margin-top:8px;font-size:.86rem">⭐⭐ <b>28 题的答案就在②句的一个形容词里</b>：<code><b>false</b> precision</code>（伪精确）＋ <code>people <b>claiming</b> they are doing…</code>（<b>声称</b>）⟹ 题干＋D 项 <code>fails to achieve <b>the claimed accuracy</b></code> 正是这句的<b>逐词同义改写</b>：<b>fails to achieve ↔ false，the claimed accuracy ↔ precision being hawked by people claiming…</b><br>
+          ⭐ <b>可迁移打法（人物观点题）</b>：先靠 <code>says</code> 找到观点句，<b>再在观点句里找那个带感情色彩的词</b>（false / mere / only / so-called）——<b>正确项通常就是那个词的展开，后面的句子全是证据不是答案。</b><br>
+          ⚠️ <b>A 项 <code>trace <b>distant</b> ancestors</code> 是维度偷换</b>：观察家批的是<b>「几百位祖先里只查一两位」——数量维</b>；而单一谱系<b>恰恰能上溯几百年，追远祖没问题</b>。<b>把「查得少」偷换成「追不远」。</b><br>
+          ⚠️⚠️ <b>C 项 <code>fully <b>use</b> genetic information</code> 是本题最险的干扰，也是本篇主刀的第三刀</b>：⑤句原文的动词是 <code><b>reveal</b></code>——<b>「这种 DNA <u>能揭示</u>出多少信息」，说的是<u>客观能力上限</u></b>；选项换成 <code>use</code>——<b>「没有充分<u>利用</u>」，说的是<u>主观没做好</u></b>。<b>一个是「做不到」，一个是「没做够」，归因完全不同。</b>（⟹ R37）<br>
+          📌 <b>B 项 <code>rebuild reliable bloodlines</code></b>：原文说的是<b>「只考虑单一谱系 ⟹ 只能揭示一两位祖先」＝揭示不全</b>，与「重建谱系可不可靠」不是一个话题——<b>reveal（揭示）≠ rebuild（重建）。</b><br>
+          ⚠️ <b>③句的 <code>numbering</code> 极易读漏</b>：这里 number 是<b>动词「数量达到」</b>，<code>numbering in the hundreds</code>＝<b>数以百计</b>，是现在分词作定语补充说明 many ancestors。<b>把它当名词读，整句就散了。</b></div></div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p style="font-size:.78rem;color:var(--accent);margin-bottom:6px">⑥ 批评之二 · 数据库不靠谱 ＋ 程序不受审 · ⭐29 题定位段</p>
+          <p class="en"><span class="pno">⚠️only as good as＝取决于</span><span class="ls" onclick="go('s8')">Critics also argue that commercial genetic testing is <span class="tk" data-w="onlyasgoodas">only as good as</span> the <span class="tk" data-w="refcoll">reference collections</span> to which a sample is compared.</span></p>
+          <p class="en" style="margin-top:10px"><span class="pno">⭐⭐29A 的正源·取舍结构</span><span class="ls" onclick="go('s9')">Databases used by some companies don't <span class="tk" data-w="relyon">rely on</span> data collected <span class="tk" data-w="systematically">systematically</span> but rather <span class="tk" data-w="lump">lump together</span> information from different research projects.</span></p>
+          <p class="en" style="margin-top:10px"><span class="pno">⚠️29B 的产地·是地区不均不是重复</span>This means that a DNA database may have a lot of data from some regions and not others, so a person's test results may <span class="tk" data-w="differ">differ</span> <span class="tk" data-w="dependon">depending on</span> the company that <span class="tk" data-w="processv">processes</span> the results.</p>
+          <p class="en" style="margin-top:10px"><span class="pno">⚠️⚠️29D 的产地·两个并列表语</span>In addition, the computer programs a company uses to <span class="tk" data-w="estimate">estimate</span> relationships may be <span class="tk" data-w="patented">patented</span> and not <span class="tk" data-w="subjectto">subject to</span> <span class="tk" data-w="peerreview">peer review</span> or outside <span class="tk" data-w="evaluation">evaluation</span>.</p>
+          <div class="zh"><b>⑥段全译：</b>批评者还指出，商业基因检测的结果只取决于用于样本比对的参考数据库的准确性。某些公司使用的数据库并不依赖于系统化收集的数据，而是将不同研究项目的信息混在一起。这意味着某个 DNA 数据库可能有来自某些地区的大量数据，但缺乏其他地区的数据，因此同一个人的检测结果会随着处理研究结果的公司不同而存在差异。另外，公司用于判定亲属关系的计算机程序可能受专利保护，因而不接受同行评审或外界评估。
+          <div style="margin-top:8px;font-size:.86rem">⭐⭐ <b>先用 <code>In addition</code> 把本段切成两半</b>：<b>前半（①②③句）＝数据库，后半（④句）＝计算机程序。</b>再靠三处同义复现 <code>reference collections</code> → <code>Databases</code> → <code>DNA database</code> 判断<b>重心在前半的数据库</b>——<b>29 题的四个选项里有两个（A、B）都指向数据库，重心一定，范围就缩到两项。</b><br>
+          ⭐⭐ <b>②句的取舍结构就是 A 项的正源</b>：<code><b>don't</b> rely on data collected <b>systematically</b> <b>but rather</b> lump together information from different research projects</code>——<b>「不是 X 而是 Y」的句式里，作者的判断永远在 Y 上</b>；<code>lump together</code>（胡乱堆在一起）＋ <code>not systematically</code> ⟹ <b>A disorganized data collection</b>。<br>
+          ⚠️ <b>B 项 <code>overlapping database building</code> 错在③句</b>：③句说的是<b>数据的<u>地区来源不均</u></b>（某些地区一大堆、其他地区没有），<b>不是「多个数据库内容重复」</b>。<b>lump together（把不同项目的信息堆到一起）≠ overlapping（重叠、重复建设）。</b><br>
+          ⚠️ <b>C 项 <code>excessive sample comparison</code> 错在张冠李戴</b>：①句的 <code>sample…compared</code> 是在说<b>参考数据库对检测有多重要</b>，<b>不是批评「样本比对做得太多」</b>；③句的 <code>a lot of</code> 修饰的是<b>某些地区的数据多</b>，不是「比对次数多」。<br>
+          ⚠️⚠️ <b>D 项 <code>lack of patent evaluation</code> 是本篇第二把主刀的样本</b>：<code>patent</code> 与 <code>evaluation</code> <b>两个词确实都在④句里</b>，可原文写的是 <code>may be <b>patented</b> <u>and</u> not subject to peer review or outside <b>evaluation</b></code>——<b>它们分属 <code>and</code> 连接的<u>两个并列表语</u>，不是一个短语。</b>缺的是<b>外界评估</b>，不是「对专利的评估」。<b>另外 <code>be patented</code> 是被动，意为「<u>已经</u>受专利保护」，不是「没申请专利」。</b>（⟹ R39）<br>
+          ⭐ <b><code>only as good as</code> 是①句的命门</b>：<code>X is only as good as Y</code> <b>不是「X 和 Y 一样好」这种中性比较，而是「X 的水准<u>完全由 Y 决定</u>，Y 不行 X 就不行」</b>，自带贬抑。<b>读不出这层，整段的批评力度就丢了。</b><br>
+          ⭐ <b>跨篇联动</b>：<code>peer review</code>（同行评审）正是 <b>2008·T2「科学出版的在线转向」</b>那篇的核心概念。<b>那篇把同行评审当作科学出版的制度支柱，本篇则用它当照妖镜——商业公司靠专利<u>躲开</u>了它。</b><b>同一个概念，两篇里一个当制度、一个当标尺。</b></div></div>
+        </div>
+      </section>
+      <!-- ========== 题目与解析 ========== -->
+      <section class="card">
+        <h2><span class="n">02</span>题目与解析（点选项即判 · 再看解析）</h2>
+        <div class="waver" style="margin-bottom:18px">✅ <b>本篇 Claude 盲做 5/5 全对</b>（前一次满分是 2008·T2）。<b>但「全对」不等于「没有惊险」</b>——26 题的 C/D、28 题的 C、29 题的 D、30 题的 C，<b>五个干扰项每一个都有明确的原文出处</b>。下面每题的解析都写明「<b>这个干扰项是从哪句话、用什么手法造出来的</b>」，这比记住答案有用得多。</div>
+
+        <div class="q" data-ans="0" id="q26">
+          <p class="stem"><span class="qt">段群主旨</span>26. In Paragraphs 1 and 2, the text shows PTK's</p>
+          <div class="opts">
+            <div class="opt">[A] easy availability.</div>
+            <div class="opt">[B] flexibility in pricing.</div>
+            <div class="opt">[C] successful promotion.</div>
+            <div class="opt">[D] popularity with households.</div>
+          </div>
+          <div class="expl">
+            <b>✅ A · 定位①②两段（题干已经把范围划死了）</b><br>
+            <b>题型识别</b>：题干形如细节题，<b>实则考「前两段的段群主旨」</b>——问的不是某一句，是<b>这两段合起来在说 PTK 的什么</b>。<b>做法：先在段群里找反复出现的同向信息，归纳出语义重心，再拿四个选项的重心去比。</b><br>
+            <b>四处深层同义复现</b>：<span class="loc">at his local drugstore</span>（家门口药店）· <span class="loc">available without prescriptions</span>（无需处方）· <span class="loc">the over-the-counter kits</span>（非处方式）· <span class="loc">sell DNA tests directly to the public</span>（直接卖给公众）⟹ <b>四处指向同一件事：获取便利 ⟹ A。</b><br>
+            <div style="margin-top:8px">
+            <b>[B] flexibility in pricing</b>：产地是②②句的价格区间，但那是<b>超过 24 家公司各自的定价</b>；<b>「不同卖家价格不同」≠「同一卖家定价灵活」</b>（flexibility 指一家公司按需求／成本／竞争调整自身定价）。此外首段虽给了 $30 与 $120 两个价格，<b>只有前者是 PTK 的售价</b>，同样得不出「定价灵活」。<br>
+            <b>[C] successful promotion ⚠️</b>：唯一依据是「6 万人购买」，<b>但②①句的 <code>since</code> 已经把原因交代了——「自去年<u>无需处方</u>即可购买以来」，即<u>医药政策变化</u>，与推销手段无关</b>；前两段一个字未提促销、广告、营销。<b>⟹ 客观事实（数字）→ 主观评价（推销成功），中间缺了归因。</b><br>
+            <b>[D] popularity with households ⚠️ 两处硬伤</b>：① <b>「6 万人」是个没有参照系的数字</b>——多不多？原文不提供判断依据，<b>而 popularity 是评价</b>；② <code>people</code> ≠ <code>households</code>，<b>买家未必是家庭</b>（由后文可知还有系谱学家、企业）。
+            </div>
+            <div class="waver" style="margin-top:10px">⭐ <b>可迁移打法（段群主旨题）</b>：题干限定 <b>Paragraphs X and Y</b> 时，<b>不要去找「某个选项在哪句话有出处」</b>——四个选项<b>全都</b>有出处，那不解决问题。<b>正确动作是：先把这几段里<u>反复说的同一件事</u>找出来（本题四处），把它写成一句中文，再去挑最像它的那个选项。</b></div>
+          </div>
+        </div>
+
+        <div class="q" data-ans="2" id="q27">
+          <p class="stem"><span class="qt">事实细节</span>27. PTK is used to</p>
+          <div class="opts">
+            <div class="opt">[A] locate one's birth place.</div>
+            <div class="opt">[B] promote genetic research.</div>
+            <div class="opt">[C] identify parent-child kinship.</div>
+            <div class="opt">[D] choose children for adoption.</div>
+          </div>
+          <div class="expl">
+            <b>✅ C · 定位段是③段，<u>答案句却在①①句</u></b><br>
+            <b>⚠️ 本题的结构是全篇最该学的一处</b>：题干主语是 <b>PTK（一种具体产品）</b>，而③段讲的是 <b>DNA testing（上位类）</b> 的各种用途。<b>命题人拿「属」的段落设题，却把题干主语写成「种」——属的功能不能自动归给种。</b><br>
+            <b>两条路都能到 C</b>：① ③①句 <span class="loc">paternity and kinship testing</span>（亲子与亲属关系鉴定），PTK ＝ <b>p</b>aternity <b>t</b>esting <b>k</b>it，字面就是它；② <b>更稳的一条：回①①句的定义句</b> <span class="loc">confirm that he's the kid's dad</span>（确认自己就是孩子的爹）⟹ <b>identify parent-child kinship</b>。<br>
+            <div style="margin-top:8px">
+            <b>[A] locate one's birth place ⚠️ 最险</b>：③段的 <code>find</code> / <code>track down</code> 找的是<b>血亲和孩子（人）</b>，不是地点；②句的 <code>a family's <b>geographic roots</b></code> 是<b>家族发源地</b>，<b>与「某个人的出生地」是两回事</b>（祖上从哪来 ≠ 你在哪出生）。而且<b>寻根是「支撑的生意」，不是 PTK 的用途</b>。<br>
+            <b>[B] promote genetic research</b>：<code>genealogists</code>（<b>系谱学家</b>，研究家族世系）≠ <code>genetic research</code>（基因研究）；且原文只说 DNA 检测在他们中间 <code>rage</code>（<b>流行</b>），<b>「在某群人中流行」推不出「推动了该领域的研究」</b>——<b>即便不确定 genealogist 是什么，光凭 promote 一词就可判它夸大了文意。</b><br>
+            <b>[D] choose children for adoption</b>：方向反了。原文是 <code>track down kids <b>put up for</b> adoption</code>＝<b>追查<u>已经被送养出去</u>的孩子的下落</b>，不是「挑选自己要领养的孩子」。
+            </div>
+            <div class="waver" style="margin-top:10px">⭐ <b>可迁移打法（题干主语的层级校准）</b>：<b>题干主语若是缩写、专有产品名或某个具体工具</b>（PTK、the Act、the program），<b>先问一句：定位段讲的是它本身，还是它所属的那一大类？</b>如果是后者，<b>立刻回文找「给这个专名下定义的那一句」</b>——它常常在<b>第一次出现该名词的地方</b>，而不是在定位段里。<b>本题的定义句离定位段隔了两段。</b>（⟹ 套路卡 R38）</div>
+          </div>
+        </div>
+
+        <div class="q" data-ans="3" id="q28">
+          <p class="stem"><span class="qt">观点态度</span>28. Skeptical observers believe that ancestry testing fails to</p>
+          <div class="opts">
+            <div class="opt">[A] trace distant ancestors.</div>
+            <div class="opt">[B] rebuild reliable bloodlines.</div>
+            <div class="opt">[C] fully use genetic information.</div>
+            <div class="opt">[D] achieve the claimed accuracy.</div>
+          </div>
+          <div class="expl">
+            <b>✅ D · 定位⑤①②句（观点句，不是后面的证据句）</b><br>
+            <b>三步走</b>：① 靠 <span class="loc">says</span> 找到观点句；② 在观点句里找<b>带感情色彩的那个词</b>——<span class="loc">a kind of <b>false</b> precision</span> ＋ <span class="loc">people <b>claiming</b> they are doing ancestry testing</span>；③ 拿它去比选项：<b>fails to achieve ↔ false，the claimed accuracy ↔ precision being hawked by people claiming…</b>⟹ <b>D 是这句话的逐词同义改写。</b><br>
+            <b>⑤③④⑤三句全是证据不是答案</b>：祖先数以百计 → 只查单一谱系 → 只能揭示一两位。<b>它们解释「为什么是伪精确」，但题干问的是观察家「认为它做不到什么」。</b><br>
+            <div style="margin-top:8px">
+            <b>[A] trace distant ancestors</b>：<b>维度偷换</b>。批评的是<b>数量</b>（<code>only ... a single</code> / <code>only one or two</code>），不是<b>远近</b>；<b>单一谱系恰恰能上溯几百年，追远祖没问题。</b><br>
+            <b>[B] rebuild reliable bloodlines</b>：原文说<b>「只考虑单一谱系 ⟹ 只能<u>揭示</u>一两位祖先」＝揭示不全</b>，与「重建谱系可不可靠」不是一个话题。<b>reveal（揭示）≠ rebuild（重建）</b>，且 <code>bloodlines</code> 对应 lineage 只是原词复现。<br>
+            <b>[C] fully use genetic information ⚠️⚠️ 本题最险</b>：⑤⑤句的动词是 <code><b>reveal</b></code>——<b>「这种 DNA <u>能揭示</u>出多少信息」，讲的是<u>客观能力上限</u></b>；选项换成 <code>use</code>——<b>「没有充分<u>利用</u>」，讲的是<u>主观没做够</u></b>。<b>一个是「做不到」，一个是「没做好」，归因完全不同。</b>
+            </div>
+            <div class="waver" style="margin-top:10px">⭐ <b>可迁移打法（人物观点题）</b>：<b>观点句里那个形容词，往往就是答案的种子</b>——<code><b>false</b> precision</code> · <code><b>mere</b> speculation</code> · <code><b>so-called</b> reform</code> · <code><b>only</b> a single</code>。<b>找到它，正确项就是把它展开成一句话；后面所有的数字与例子都是证据，别去那里找答案。</b></div>
+          </div>
+        </div>
+
+        <div class="q" data-ans="0" id="q29">
+          <p class="stem"><span class="qt">事实细节</span>29. In the last paragraph, a problem commercial genetic testing faces is</p>
+          <div class="opts">
+            <div class="opt">[A] disorganized data collection.</div>
+            <div class="opt">[B] overlapping database building.</div>
+            <div class="opt">[C] excessive sample comparison.</div>
+            <div class="opt">[D] lack of patent evaluation.</div>
+          </div>
+          <div class="expl">
+            <b>✅ A · 定位末段②句（取舍结构那一句）</b><br>
+            <b>两步锁定重心</b>：① 用 <span class="loc">In addition</span> 把末段切两半——<b>前半（①②③句）＝数据库，后半（④句）＝计算机程序</b>；② 前半三处同义复现 <span class="loc">reference collections</span> → <span class="loc">Databases</span> → <span class="loc">DNA database</span>，<b>说明本段的批判重心在数据库</b>。<br>
+            <b>正源＝②句的取舍结构</b>：<span class="loc">don't rely on data collected <b>systematically</b> <b>but rather</b> lump together information from different research projects</span>——<b>「不是 X 而是 Y」的句式里，作者的判断永远落在 Y 上</b>；<code>lump together</code>（胡乱堆在一起）＋ <code>not systematically</code> ⟹ <b>A disorganized data collection</b>（<code>disorganized</code> 正是这两点的合并概括）。<br>
+            <div style="margin-top:8px">
+            <b>[B] overlapping database building</b>：③句说的是<b>数据的<u>地区来源不均</u></b>（某些地区一大堆、其他地区没有），<b>不是「多个数据库内容重复／重复建设」</b>。<b>lump together（把不同项目的信息堆到一起）≠ overlapping（重叠）。</b><br>
+            <b>[C] excessive sample comparison</b>：①句的 <code>sample…compared</code> 是在说<b>参考数据库对检测有多重要</b>，不是批评「比对做得过多」；③句的 <code>a lot of</code> 修饰的是<b>某些地区的数据多</b>，与「样本比对」无关。<br>
+            <b>[D] lack of patent evaluation ⚠️⚠️ 两个词都在原文，绑定关系却是假的</b>：④句写的是 <span class="loc">may be <b>patented</b> <u>and</u> not subject to peer review or outside <b>evaluation</b></span>——<code>patented</code> 与 <code>evaluation</code> <b>分属 <code>and</code> 连接的两个并列表语，根本不是一个短语</b>。缺的是<b>外界评估</b>，不是「对专利的评估」。<b>此外 <code>be patented</code> 是被动，意为「<u>已经</u>受专利保护」，不是「没申请专利」——选项里的 <code>lack of</code> 连否定对象都找错了。</b>
+            </div>
+            <div class="waver" style="margin-top:10px">⭐ <b>可迁移打法（长段落里的细节题）</b>：<b>先找逻辑连接词把段落切块</b>（本段是 <code>In addition</code>），<b>再用同义复现判断哪一块是重心</b>，最后<b>只在重心那一块里比选项</b>。本题四个选项里 A、B 都指向数据库，<b>重心一定，范围立刻从四缩到二。</b></div>
+          </div>
+        </div>
+
+        <div class="q" data-ans="1" id="q30">
+          <p class="stem"><span class="qt">标题（主旨）</span>30. An appropriate title for the text is most likely to be</p>
+          <div class="opts">
+            <div class="opt">[A] Fors and Againsts of DNA Testing.</div>
+            <div class="opt">[B] DNA Testing and Its Problems.</div>
+            <div class="opt">[C] DNA Testing Outside the Lab.</div>
+            <div class="opt">[D] Lies Behind DNA Testing.</div>
+          </div>
+          <div class="expl">
+            <b>✅ B · 定位全文（本文只有两半：①–④介绍 ｜ ⑤⑥质疑）</b><br>
+            <b>做法：把标题拆成两半，分别去「盖」文章的两半。</b><br>
+            <code>DNA Testing</code> 盖①–④段（PTK 引入 → 市场规模 → 用途 → 检测要求）· <code>Its Problems</code> 盖⑤⑥段（<code>false precision</code> / <code>don't rely on…</code> / <code>not subject to…</code>）⟹ <b>B 是唯一同时盖住两半的选项。</b><br>
+            <b>另一条捷径</b>：<b>纵观其余四题的题干</b>——26 <code>shows PTK's ___</code>、27 <code>PTK is used to</code> 考的是<b>特点与用途</b>；28 <code>fails to</code>、29 <code>a problem ... faces</code> 考的是<b>弊端</b>。<b>四道题恰好把「DNA 检测 ＋ 它的问题」两块都点了一遍，标题自然是 B。</b><br>
+            <div style="margin-top:8px">
+            <b>[A] Fors and Againsts of DNA Testing</b>：<code>Againsts</code> 有（⑤⑥段），<b><code>Fors</code> 没有</b>——③段的「最受欢迎」「风靡一时」是<b>客观事实介绍</b>，<b>不是有人站出来为 DNA 检测辩护</b>。<b>「事实上很流行」≠「有支持方在论证」。</b><br>
+            <b>[C] DNA Testing Outside the Lab ⚠️ 最险</b>：<code>outside</code> 是原词复现，<b>但它在原文里的搭配是 <code>outside <b>evaluation</b></code>（<u>外界</u>评估），与「实验室之外」毫无关系</b>。退一步说，即便按「走出实验室、进入商业领域」理解，<b>它也只盖得住前四段，装不下后两段的问题</b>。<br>
+            <b>[D] Lies Behind DNA Testing</b>：<b>褒贬过重</b>——后两段只质疑<b>准确性与数据基础</b>，从未指控它是<b>谎言</b>（<code>false precision</code> 说的是「精确度是伪的」，不是「整件事是骗局」）；<b>而且它同样盖不住前四段的客观介绍。</b>
+            </div>
+            <div class="waver" style="margin-top:10px">⭐ <b>可迁移打法（标题题三查）</b>：<b>①查覆盖度</b>——把标题拆成成分，逐一去盖文章的各个板块，<b>只盖住一半的一律排除</b>（本题排掉 A、C、D 各一半）；<b>②查褒贬度</b>——标题的感情色彩不能比原文更狠（<code>Lies</code> 就狠过头了）；<b>③查原词义项</b>——标题里若有原文出现过的词，<b>回原文核它当时的搭配</b>（<code>outside</code> 是「外界」不是「实验室外」）。<b>三查过一遍，标题题基本不会错。</b>（⟹ 套路卡 R40）</div>
+          </div>
+        </div>
+      </section>
+      <!-- ========== 专栏一 ========== -->
+      <section class="card" id="col1">
+        <h2><span class="n">02+</span>专栏 · 本篇的主刀：把「客观事实」偷换成「主观评价」（一篇里连发三次）</h2>
+        <p style="font-size:.92rem;margin-bottom:12px">本篇五道题全对，<b>但四个最险的干扰项里有三个走的是同一条路</b>。它们的共同长相是：<b>原文给的是一个<u>数字</u>或一句<u>事实陈述</u>，选项给的却是一个<u>带评价色彩</u>的词。</b>把它们并排放，这把刀的形状就很清楚了。</p>
+        <div class="tabwrap"><table class="ctab">
+          <tr><th>题</th><th>原文（客观）</th><th>干扰项（主观）</th><th>中间被偷走了什么</th></tr>
+          <tr><td><b>26 C</b></td><td><code>More than 60,000 people have <b>purchased</b></code><br><span style="color:var(--muted)">——一个购买量</span></td><td><code>successful <b>promotion</b></code><br><span style="color:var(--muted)">——推销做得成功</span></td><td><b>归因</b>。而且原文<u>已经把原因给了</u>：<code><b>since</b> they first became available <b>without prescriptions</b></code>——是<b>政策变化</b>，不是推销。<b>原因既然写明了，就轮不到你替它补一个。</b></td></tr>
+          <tr><td><b>26 D</b></td><td>同上，<code>60,000 people</code></td><td><code><b>popularity</b> with households</code><br><span style="color:var(--muted)">——受家庭欢迎</span></td><td><b>参照系</b>（6 万在三亿人口里算多吗？原文不给判断依据）＋ <b>主体</b>（<code>people</code> ≠ <code>households</code>，买家可能是系谱学家、企业）</td></tr>
+          <tr><td><b>28 C</b></td><td><code>This DNA can <b>reveal</b> genetic information about only one or two ancestors</code><br><span style="color:var(--muted)">——<b>能揭示多少</b>＝客观能力上限</span></td><td><code>fails to <b>fully use</b> genetic information</code><br><span style="color:var(--muted)">——<b>没有充分利用</b>＝主观没做够</span></td><td><b>归因的性质</b>：从「<b>做不到</b>」滑到「<b>没做好</b>」。<b>做不到是技术边界，没做好是态度问题——两者在原文里没有任何桥。</b></td></tr>
+        </table></div>
+        <div class="atti no2" style="margin-top:14px">
+          ⭐⭐ <b>五秒判据（R37）</b>：选项里出现 <code>popular / successful / effective / widespread / fully / properly / welcomed</code> 这类<b>带评价色彩的词</b>，而定位句给的只是<b>一个数字或一句事实</b>时，问一句：<br>
+          <b>「从这条事实，走到这个评价，中间还缺什么？」</b><br>
+          缺 <b>参照系</b>（多少才算多）· 缺 <b>归因</b>（是不是这个原因造成的）· 缺 <b>主观意图</b>（做不到 ≠ 不想做）——<b>缺任何一样，都排掉。</b><br>
+          ⚠️ <b>反过来也要记住</b>：<b>正确项从不做这种升格</b>。本题的 A 项 <code>easy availability</code> 说的仍然是<b>一件事实</b>（买得到），没有对这件事做任何褒贬评价——<b>「正确项比干扰项更平淡」在主旨题里是常态。</b>
+        </div>
+        <div class="atti" style="margin-top:10px;background:var(--blue-soft);border-color:var(--blue)">
+          📌 <b>这把刀与前几篇的关系</b>：<br>
+          · <b>2008·T2</b> 立的 <b>R21 主体校验</b>（谁 / 对谁 / 做了什么）管的是<b>「主语换没换」</b>——本篇 26D 的 <code>people → households</code> 正是它的一个实例；<br>
+          · <b>2008·T3/T4</b> 立的 <b>R24 范围校验</b>管的是<b>「范围大小对不对」</b>；<br>
+          · <b>2009·T1</b> 立的 <b>R35</b> 管的是<b>「所指对象是谁」</b>；<br>
+          · <b>本篇新立的 R37</b> 管的是<b>「事实与评价之间那道坎」</b>——<b>前三把刀都在问「说的是不是同一个东西」，R37 问的是「这句话的<u>性质</u>变了没有」。</b><br>
+          ⟹ <b>四把刀合起来，就是「选项与原文之间可能出的四种错位」：主体 · 范围 · 所指 · 性质。</b>
+        </div>
+      </section>
+
+      <!-- ========== 专栏二 ========== -->
+      <section class="card" id="col2">
+        <h2><span class="n">02++</span>专栏 · 第二把刀：「词都在，组合不在」——原词拼接型干扰</h2>
+        <p style="font-size:.92rem;margin-bottom:12px">这是本篇另外三个险项的共同手法：<b>选项里的两个词<u>确实都能在原文里找到</u>，但它们在原文中<u>分属两个不同的语法单位</u></b>——被 <code>and</code> 隔开、被逗号分开、或者跟的是完全不同的搭配。<b>拿单个词回文核，三项全都「核得上」；拿整个短语回文核，三项全都「核不上」。</b></p>
+        <div class="tabwrap"><table class="ctab">
+          <tr><th>题 / 干扰项</th><th>原文里这两个词的真实关系</th><th>怎么一眼识破</th></tr>
+          <tr><td><b>29 D</b><br><code>lack of <b>patent evaluation</b></code></td><td><code>the computer programs … may be <b>patented</b> <u>and</u> not subject to peer review or outside <b>evaluation</b></code><br><b>两个词分属 <code>and</code> 连接的<u>两个并列表语</u></b>：一个说「受专利保护」，一个说「不接受评估」。</td><td>缺的是<b>外界评估</b>，不是「对专利的评估」。<b>且 <code>be patented</code> 是被动＝<u>已经</u>受专利保护，不是「没申请专利」——<code>lack of</code> 连否定对象都找错了。</b></td></tr>
+          <tr><td><b>30 C</b><br><code>DNA Testing <b>Outside the Lab</b></code></td><td><code>not subject to peer review or <b>outside</b> evaluation</code><br><b><code>outside</code> 在原文里修饰的是 <code>evaluation</code>（外界评估）</b>，与「实验室」没有任何关系；全文压根没出现过 <code>lab</code>。</td><td><b>标题里若有原文出现过的词，一律回原文核它当时的搭配对象。</b>本例中 <code>outside</code> 换了义项：<b>「外部的（人／机构）」而不是「在……之外」。</b></td></tr>
+          <tr><td><b>27 A</b><br><code>locate one's <b>birth place</b></code></td><td><code>search for <b>a family's geographic roots</b></code><br><b>原文的中心词是 <code>a family's</code>（家族的）</b>，选项换成了 <code>one's</code>（个人的）。</td><td><b>家族发源地 ≠ 个人出生地</b>（祖上从哪来 ≠ 你在哪出生）。这一项同时也是<b>「属的功能安给种」</b>——寻根是系谱生意，不是 PTK 的用途。</td></tr>
+        </table></div>
+        <div class="atti no2" style="margin-top:14px">
+          ⭐⭐ <b>操作动作（R39）</b>：<b>把选项里那个短语当<u>整体</u>回原文搜（默读一遍原句，看这两个词是不是挨着、是不是一个成分）。</b><br>
+          <b>· 两个词在原文里被 <code>and</code> / 逗号 / 不同介词隔开 ⟹ 分属两个语法单位 ⟹ 焊出来的假短语。</b><br>
+          <b>· 两个词挨着但中心词被换了（<code>a family's</code> → <code>one's</code>）⟹ 同样是假的。</b><br>
+          ⚠️ <b>这一步之所以值得做，是因为它比走推理链快得多</b>：29D 只要在原句里看见那个 <code>and</code>，一秒就能排掉；而如果去想「专利到底该不该被评估」，就会越想越像。
+        </div>
+        <div class="atti" style="margin-top:10px;background:var(--purple-soft);border-color:var(--purple)">
+          ⭐ <b>R39 与 2009·T1 立的 R34 是<u>兄弟刀</u>，别把它们混成一张</b>：<br>
+          · <b>R34 概念嫁接</b>：<b>定语被挪到了<u>别的中心词</u>头上</b>——原文只有 <code>the American <b>belief system</b></code>，选项造出 <code>the American <b>thinking mode</b></code>。<b>动作：把「定语＋中心词」当整体回搜。</b><br>
+          · <b>R39 原词拼接</b>：<b>两个原本<u>不相干的并列成分</u>被焊成一个短语</b>——原文是 <code>patented <u>and</u> … evaluation</code>，选项造出 <code>patent evaluation</code>。<b>动作：回原句看这两个词之间有没有 and／逗号。</b><br>
+          ⟹ <b>一句话记住：R34 是「定语跑错了名词」，R39 是「两个成分被粘住了」。两者的共同点是——<u>单个词全都能核上，整体核不上。</u></b>
+        </div>
+      </section>
+
+      <!-- ========== 专栏三 ========== -->
+      <section class="card" id="col3">
+        <h2><span class="n">02+++</span>专栏 · 「介绍 ＋ 质疑」两段式说明文：认出分水岭，五道题的分工就定了</h2>
+        <p style="font-size:.92rem;margin-bottom:12px">本篇的结构简单到近乎裸露，<b>而正因为简单，它是学「结构决定题目分工」的最好样本</b>。全文只有<b>一个</b>结构转折句：<code>⑤① <b>But some observers are skeptical.</b></code>——它前面是<b>介绍</b>，后面是<b>质疑</b>。</p>
+        <div class="tl">
+          <div class="tli"><span class="mark">①–④段<br>介绍</span><div><b>写的全是「事实」</b>：价格、销量、公司数量、用途、检测流程。<b>这四段里作者<u>一个评价词都没用</u>。</b><br>⟹ <b>命题人在这四段只能出「事实细节题」和「段群主旨题」</b>：26（前两段说明了 PTK 的什么）· 27（PTK 用来做什么）。<br>⚠️ <b>正因为作者不评价，26 题的 C/D 那种「评价型选项」才必然是错的</b>——<b>作者没给出的判断，选项不能替他给。</b></div></div>
+          <div class="tli" style="border-color:var(--red)"><span class="mark" style="background:var(--red-soft);color:var(--red)">⑤①<br>分水岭</span><div><code><b>But</b> some observers are skeptical.</code><br><b>全文唯一的结构转折句，只有六个词。</b>⟹ <b>读到这里就该在卷子上画一道横线：上面记事实，下面记判断。</b></div></div>
+          <div class="tli"><span class="mark">⑤⑥段<br>质疑</span><div><b>写的全是「判断」</b>，而且是<b>两位不同批评者的两条并列批评</b>：<br>· ⑤段 <b>Troy Duster（社会学家）</b>：<code>false precision</code>——<b>检测本身的精确性是伪的</b>；<br>· ⑥段 <b>Critics also argue</b>：<code>only as good as the reference collections</code>——<b>它依赖的数据基础不可靠</b>。<br>⟹ <b>命题人在这两段出的是「观点态度题」和「细节题」</b>：28（观察家认为它做不到什么）· 29（末段指出的一个问题）。</div></div>
+          <div class="tli" style="border-color:var(--accent)"><span class="mark" style="background:var(--accent);color:var(--card)">全文<br>标题</span><div><b>30 题必须同时装下两半。</b>⟹ <b>B（DNA Testing ＋ Its Problems）是唯一的两半式标题</b>，其余三项各自只盖一半。</div></div>
+        </div>
+        <div class="atti yes" style="margin-top:14px">
+          ⭐⭐ <b>可迁移的读法（说明文通用）</b>：开考读文章时，<b>只做一件事——把那个「结构转折句」找出来并画线</b>。它通常长这样：<code>But some observers are skeptical.</code> · <code>Not everyone agrees.</code> · <code>This is now changing.</code> · <code>Critics, however, point out…</code><br>
+          <b>找到它，你就同时得到了三样东西</b>：① <b>文章分几块</b>；② <b>每块该出什么题型</b>（事实块出细节题，判断块出观点题）；③ <b>标题题的形状</b>（必须两半都装）。<br>
+          ⚠️ <b>与 2008·T2 立的 R23「今昔对比型说明文」是同一族</b>：那篇的钉子是三个段首短句（<code>It used to be so straightforward.</code> / <code>No longer.</code> / <code>This is now changing.</code>），<b>重心永远在「今」</b>；本篇的钉子只有一个 <code>But</code>，<b>重心在「质疑」。</b>⟹ <b>两篇合起来：说明文的重心，永远在转折之后。</b>
+        </div>
+      </section>
+      <!-- ========== 长难句 ========== -->
+      <section class="card">
+        <h2><span class="n">03</span>长难句精析 · 9 句</h2>
+        <p style="font-size:.9rem;margin-bottom:14px">本篇 401 词 6 段，<b>句子并不长</b>，难点集中在五样东西：<b>谚语句式</b>（s1，长得像强调句意思却相反）· <b>定语从句的先行词被隔开</b>（s2）· <b>完全倒装 ＋ 一个关系词带两套主谓</b>（s3）· <b>「介词＋whom＋不定式」</b>（s4）· <b>固定句式的隐含贬义</b>（s8 的 <code>only as good as</code>）。<b>⟹ 与同年 Text 1 一样，这是一篇「语法陷阱型」而非「长度陷阱型」的文章。</b></p>
+
+        <div class="sent" id="s1">
+          <div class="src"><span class="skel">It is</span> a wise father <span class="skel">that</span> knows his own child, <span class="skel">but</span> today a man can boost his paternal (fatherly) wisdom—or at least confirm that he's the kid's dad.</div>
+          <div class="anat"><ul>
+            <li>⚠️⚠️ <b>本篇最大的一个坑，而且是纯语法的坑</b>：<code>It is a + 形容词 + 名词 + that…</code> 这个句式<b>长得和强调句一模一样</b>，但在谚语里它是<b>让步句式</b>，意思是「<b>再……的……也未必／也难免……</b>」。</li>
+            <li><b>本句直译</b>：「再聪明的父亲也未必了解自己的孩子。」（出自莎士比亚《威尼斯商人》第二幕。）<b>若按强调句读成「知道自己孩子的才是聪明的父亲」，意思正好反过来。</b></li>
+            <li>⭐ <b>怎么判断是哪一种？看后半句接不接得上。</b>本句后面是 <code><b>but</b> today a man <b>can</b> … confirm that he's the kid's dad</code>（<b>但今天男人能确认自己是孩子的爹</b>）——<b>只有前半句是「未必知道」，这个 but 才转得动。</b><b>让 but 转得起来，就是唯一的判据。</b></li>
+            <li>📌 <b>同族谚语</b>：<code>It is a good horse that never stumbles.</code>（<b>再好的马也有失蹄的时候</b>，不是「从不失蹄的才是好马」）· <code>It is a long lane that has no turning.</code>（<b>路必有弯／否极泰来</b>）。<b>特征：主句是 It is a + 褒义形容词 + 名词，从句一律是一般现在时的泛指。</b></li>
+            <li>📌 <code>paternal (fatherly)</code>：括号是<b>原文自带的同义解释</b>——命题人把生词的意思直接写在括号里了，<b>这类括号是白送的，读到要立刻用上。</b></li>
+          </ul></div>
+          <div class="tr">译：再聪明的父亲也未必了解自己的孩子，但现在男性能够提升其为人父的智慧——或者说，至少能确认自己就是孩子的父亲。</div>
+        </div>
+
+        <div class="sent" id="s2">
+          <div class="src">More than 60,000 people have purchased the PTKs <span class="skel">since</span> they first became available without prescriptions last year, <span class="skel">according to</span> Doug Fogg, chief operating officer of Identigene, <span class="skel">which</span> makes the over-the-counter kits.</div>
+          <div class="anat"><ul>
+            <li><b>骨架</b>：<code>More than 60,000 people have purchased the PTKs</code>（主谓宾），后面挂了三样东西：<b>since 时间状语从句</b> ＋ <b>according to 引出信息来源</b> ＋ <b>同位语 chief operating officer of Identigene</b> ＋ <b>which 定语从句</b>。</li>
+            <li>⚠️ <b>难点：<code>which</code> 的先行词是 <u>Identigene（公司）</u>，不是紧挨着的 <u>officer（人）</u>。</b>判据有二：① <b>which 不指人</b>；② <b>能「生产工具包」的只能是公司</b>。</li>
+            <li>⭐⭐ <b><code>since</code> 是 26 题的胜负手</b>：它把「6 万人购买」这个结果<b>明确归因给「无需处方」这个政策变化</b>。<b>原因既然已经写明，C 项「推销成功」就无处落脚。</b><b>⟹ 读到 since / because / as a result of，顺手在旁边标一个「因」字，后面十有八九有一道题在等它。</b></li>
+            <li>📌 <code>available without prescriptions</code>（无需处方即可买到）与句末的 <code>over-the-counter</code>（非处方的）<b>是同一件事的两次说法</b>——<b>这种「一句话里自带同义复现」是段群主旨题最爱的取材点。</b></li>
+          </ul></div>
+          <div class="tr">译：据 Identigene（一家生产这种非处方工具包的公司）首席运营官道格·福格说，自去年亲子关系鉴定工具包无需医师处方即可购买以来，购买人数已超过 6 万人。</div>
+        </div>
+
+        <div class="sent" id="s3">
+          <div class="src"><span class="skel">Among the most popular:</span> paternity and kinship testing, <span class="skel">which</span> adopted children can use to find their biological relatives <span class="skel">and</span> families can use to track down kids <span class="skel">put up</span> for adoption.</div>
+          <div class="anat"><ul>
+            <li><b>① 完全倒装 ＋ 冒号</b>：正常语序是 <code>Paternity and kinship testing <b>is among the most popular</b>.</code>——<b>把表语提到句首、用冒号代替系动词，是新闻体的常见写法</b>，目的是<b>先亮出「最受欢迎」这个判断，再揭晓是什么。</b></li>
+            <li>⚠️ <b>② 一个 <code>which</code> 带了<u>两套</u>主谓</b>：<code>which <b>adopted children can use</b> to find… <b>and</b> <b>families can use</b> to track down…</code>——<b>which 是两个 use 共同的宾语</b>（还原：children can use <b>it</b> to find… / families can use <b>it</b> to track down…）。<b>初读极易把 <code>and families…</code> 当成新的一句而找不到谓语。</b></li>
+            <li>📌 <b>③ <code>kids put up for adoption</code> 是过去分词后置定语</b>＝ kids <b>who are</b> put up for adoption（<b>被送养的孩子</b>）。<b>put up for adoption ＝「挂出来待领养」，是被动的。</b></li>
+            <li>⚠️ <b>27 题 D 项就死在这个被动上</b>：原文是<b>「追查<u>已被送养出去</u>的孩子」</b>，不是「挑选要领养的孩子」。<b>分词的主动被动一读错，方向就反。</b></li>
+          </ul></div>
+          <div class="tr">译：其中，最受欢迎的是亲子关系和亲属关系鉴定：被领养的孩子可利用它来找寻血亲，家庭可利用它来追踪到被送养的孩子。</div>
+        </div>
+
+        <div class="sent" id="s4">
+          <div class="src">All tests require a potential candidate <span class="skel">with whom to compare</span> DNA.</div>
+          <div class="anat"><ul>
+            <li><b>结构：「介词 ＋ whom ＋ 不定式」作后置定语</b>，还原成从句是 <code>a potential candidate <b>with whom one can compare</b> DNA</code>（<b>一个可以拿来跟他比对 DNA 的人</b>）。</li>
+            <li>📌 <b>这个结构的常见形态</b>：<code>a house <b>in which to live</b></code>（可住的房子）· <code>a topic <b>on which to write</b></code>（可写的题目）· <code>no one <b>with whom to talk</b></code>（没人可说话）。<b>特征是「介词＋关系代词＋to do」，中间不出现主语和情态动词。</b></li>
+            <li>⭐ <code>candidate</code> 在这里<b>不是「候选人」而是「可供比对的对象」</b>——熟词僻义。</li>
+            <li>⭐⭐ <b>这句话看着平淡，却是⑥段那条批评的前提</b>：<b>既然一切结论都来自「拿样本去比对」，那么「用来比对的东西（参考数据库）靠不靠谱」就直接决定检测有没有意义。</b><b>④段与⑥段要连起来读。</b></li>
+          </ul></div>
+          <div class="tr">译：所有的检测都需要一位潜在的对照者，以便与之进行 DNA 比对。</div>
+        </div>
+
+        <div class="sent" id="s5">
+          <div class="src">“There's a kind of false precision <span class="skel">being hawked</span> by people <span class="skel">claiming</span> they are doing ancestry testing,” <span class="skel">says</span> Troy Duster, a New York University sociologist.</div>
+          <div class="anat"><ul>
+            <li><b>骨架</b>：<code>There's a kind of false precision</code>（存在句）＋ 两层后置定语 ＋ 引语后的<b>倒装</b> <code>says Troy Duster</code>（说话人放在谓语后，是引语的常规写法）。</li>
+            <li><b>第一层定语：<code>being hawked by people</code>（现在分词的被动式）</b>＝ <code>which is being hawked by people</code>（<b>正被人兜售的</b>）。<b>用进行被动，强调「此刻正在发生」。</b></li>
+            <li><b>第二层定语：<code>claiming they are doing ancestry testing</code>（现在分词主动式）</b>修饰 people ＝ <code>people <b>who claim</b> that they are doing ancestry testing</code>（<b>那些声称自己在做家谱检测的人</b>）。</li>
+            <li>⭐⭐ <b>28 题的答案就在这句的两个词上</b>：<code><b>false</b></code>（伪的）＋ <code><b>claiming</b></code>（声称）⟹ <b>「达不到<u>所宣称</u>的精确度」＝ D achieve <u>the claimed</u> accuracy</b>。<b>claiming 这个分词不是装饰，它就是选项里 claimed 的来源。</b></li>
+            <li>📌 <code>hawk</code> 作动词＝<b>兜售、叫卖</b>（自带贬义，暗示夸大其词），与名词「鹰」同形。<b>本句用 hawk 而不用 sell，态度已经写在词里了。</b></li>
+          </ul></div>
+          <div class="tr">译：纽约大学社会学家特洛伊·达斯特说：「那些声称正在从事家谱检测工作的人所兜售的，是一种伪精确。」</div>
+        </div>
+
+        <div class="sent" id="s6">
+          <div class="src"><span class="skel">Yet</span> most ancestry testing only considers a single lineage, <span class="skel">either</span> the Y chromosome <span class="skel">inherited</span> through men in a father's line <span class="skel">or</span> mitochondrial DNA, <span class="skel">which</span> is passed down only from mothers.</div>
+          <div class="anat"><ul>
+            <li><b>骨架</b>：<code>most ancestry testing only considers <b>a single lineage</b></code>，逗号后的 <code>either A or B</code> <b>是 a single lineage 的同位语</b>——<b>解释「单一谱系」具体指哪两种可能。</b></li>
+            <li><b>A 与 B 结构对称，各带一个定语</b>：<br>A ＝ <code>the Y chromosome <b>inherited through men in a father's line</b></code>（过去分词定语：<b>经父系男性遗传的</b>Y 染色体）<br>B ＝ <code>mitochondrial DNA, <b>which is passed down only from mothers</b></code>（非限制性定语从句：<b>只从母亲传下来的</b>线粒体 DNA）</li>
+            <li>⭐ <b>读懂这句的关键是 <code>either…or…</code> 的性质</b>：它说的是<b>「二选一」</b>——<b>每次检测只查父系<u>或</u>母系中的一条，不是两条都查。</b><b>这正是「只能揭示一两位祖先」的原因。</b></li>
+            <li>⚠️ <code><b>Yet</b></code> 在句首＝ <b>however（然而）</b>，是转折连词，不是「还没」。<b>它把③句的「祖先数以百计」和本句的「只查一条谱系」对立起来——28 题批评的<u>数量落差</u>就在这个 Yet 上。</b></li>
+          </ul></div>
+          <div class="tr">译：然而大部分家谱检测只考虑单一的谱系，要么是经由父系男性遗传的 Y 染色体，要么是仅由母亲传递下来的线粒体 DNA。</div>
+        </div>
+
+        <div class="sent" id="s7">
+          <div class="src">This DNA can <span class="skel">reveal</span> genetic information about only one or two ancestors, <span class="skel">even though</span>, for example, just three generations back people also have six other great-grandparents <span class="skel">or</span>, four generations back, 14 other great-great-grandparents.</div>
+          <div class="anat"><ul>
+            <li><b>骨架</b>：<code>This DNA can reveal … about only one or two ancestors</code> ＋ <code><b>even though</b></code> 让步状语从句。</li>
+            <li>⚠️ <b>让步从句内部有两处插入和一处省略，是本句唯一的难点</b>：<br><code>even though, <b>for example</b>, just three generations back people also have six other great-grandparents <b>or</b>, <b>four generations back</b>, 14 other great-great-grandparents</code><br>——<b><code>or</code> 后面省略了 <code>people also have</code></b>，补全即 <code>or, four generations back, <b>people also have</b> 14 other great-great-grandparents</code>。</li>
+            <li>📌 <b><code>three generations back</code> 是名词短语作状语</b>＝「上溯三代」（back 表示往回数）。<b>同类：<code>a few centuries back</code>（上溯几百年，见③句）。</b></li>
+            <li>⭐⭐ <b>28 题 C 项的分水岭就是这句的动词 <code>reveal</code></b>：<b>「这种 DNA <u>能揭示</u>出多少信息」——讲的是<u>客观能力上限</u></b>；C 项把它改成 <code>fully <b>use</b></code>（<b>没有充分<u>利用</u></b>）——<b>讲的是主观没做够。</b><b>读长难句时，主句的那个实义动词一定要盯住，选项常常只动它一个词。</b></li>
+          </ul></div>
+          <div class="tr">译：这种 DNA 只能揭示一两位祖先的基因信息，尽管，譬如说，仅上溯三代，每个人还有另外六位曾祖；上溯四代，还有另外十四位高祖。</div>
+        </div>
+
+        <div class="sent" id="s8">
+          <div class="src">Critics also argue <span class="skel">that</span> commercial genetic testing is <span class="skel">only as good as</span> the reference collections <span class="skel">to which</span> a sample is compared.</div>
+          <div class="anat"><ul>
+            <li>⚠️⚠️ <b><code>X is only as good as Y</code> 是固定句式，不是普通的同级比较</b>：它<b>不表示「X 和 Y 一样好」</b>，而表示 <b>「X 的水准<u>完全由 Y 的水准决定</u>——Y 不行，X 就不行」</b>，<b>自带贬抑与警告。</b></li>
+            <li>📌 <b>常见变体</b>：<code>A chain is only as strong as its weakest link.</code>（<b>一条链子的强度取决于最弱的一环</b>）· <code>A model is only as good as the data it is trained on.</code>（<b>模型的水平取决于训练数据</b>——这句可以直接搬进作文写 AI）。</li>
+            <li><b>定语从句 <code>to which a sample is compared</code></b>：介词前置，还原成正常语序是 <code>a sample is compared <b>to</b> the reference collections</code>（<b>把样本拿去与参考数据库比对</b>）。<b>compare A <u>to</u> B 这个搭配决定了介词只能是 to。</b></li>
+            <li>⭐ <b>这句是⑥段的<u>总起句</u></b>：先说「检测的水准取决于参考数据库」，后面两句才展开说数据库<b>怎么</b>不行。<b>29 题的正确项对应的是展开句（②句），不是这句总起句——但没有这句总起，②句的批评就没有落点。</b></li>
+          </ul></div>
+          <div class="tr">译：批评者还指出，商业基因检测的水准，完全取决于用来与样本比对的参考数据库。</div>
+        </div>
+
+        <div class="sent" id="s9">
+          <div class="src">Databases <span class="skel">used by some companies</span> <span class="skel">don't</span> rely on data <span class="skel">collected systematically</span> <span class="skel">but rather</span> lump together information from different research projects.</div>
+          <div class="anat"><ul>
+            <li><b>骨架</b>：<code><b>Databases</b> … <b>don't rely on</b> … <b>but rather lump together</b> …</code>——<b>主语后面被一个过去分词定语撑开，谓语是「不是 X 而是 Y」的取舍结构。</b></li>
+            <li><b>两个过去分词定语，位置不同、作用不同</b>：<br>· <code>Databases <b>used by some companies</b></code>（<b>某些公司使用的</b>数据库）——修饰主语；<br>· <code>data <b>collected systematically</b></code>（<b>系统收集的</b>数据）——修饰宾语。<b>注意 systematically 是被否定的那一半。</b></li>
+            <li>⭐⭐ <b><code>don't X but rather Y</code> 是 29 题的命脉</b>：<b>这种取舍结构里，作者的判断永远落在 <code>but rather</code> 后面的 Y 上</b>——<code>lump together information from different research projects</code>（<b>把不同研究项目的信息胡乱堆在一起</b>）。<b>「不系统」＋「胡乱堆」＝ A 项的 <code>disorganized</code>。</b></li>
+            <li>📌 <code>lump together</code>：lump 本义「团块」，动词＝<b>把……不加区分地归到一起</b>，<b>自带贬义</b>（暗示粗糙、没标准）。<b>与前半句的 <code>systematically</code> 正好构成一对反义。</b></li>
+            <li>⭐ <b>可迁移</b>：<b>凡见到 <code>not X but Y</code> / <code>don't X but rather Y</code> / <code>rather than X, Y</code>，先在 Y 下面画线——那是作者真正想说的话，也是命题人取材的地方。</b></li>
+          </ul></div>
+          <div class="tr">译：某些公司使用的数据库并不依赖系统收集的数据，而是把来自不同研究项目的信息胡乱堆在一起。</div>
+        </div>
+      </section>
+      <!-- ========== 熟词僻义 ========== -->
+      <section class="card">
+        <h2><span class="n">03+</span>熟词僻义清算表 · 22 处</h2>
+        <p style="font-size:.9rem;margin-bottom:12px">本篇有一批<b>真·生词</b>（chromosome、mitochondrial、genealogist、lineage），但它们<b>一个都不是考点</b>——都能靠上下文或构词法猜个大概，猜不出也不影响做题。<b>真正决定成败的仍然是下面这批「每个字母都认识」的小词。</b>判据还是那一条：<b>把你熟悉的意思代进去，句子读着别扭，就一定是换了义项或换了词性。</b></p>
+        <div class="tabwrap"><table class="ctab">
+          <tr><th>词 / 句式</th><th>你以为的意思</th><th>本篇的意思</th><th>原文语境</th></tr>
+          <tr><td><code>It is a … that …</code> ⭐⭐</td><td>强调句</td><td><b>谚语让步句式：再……也未必……</b></td><td><b>It is</b> a wise father <b>that</b> knows his own child　⚠️全文第一句就埋雷</td></tr>
+          <tr><td><code>boost</code></td><td>（经济）拉动、提振</td><td><b>提升、增强（智慧、信心）</b></td><td><b>boost</b> his paternal wisdom</td></tr>
+          <tr><td><code>shell out</code></td><td>剥壳</td><td><b>掏钱、破费</b>（口语，常含「不情愿」）</td><td><b>shell out</b> $30 for a paternity testing kit</td></tr>
+          <tr><td><code>prescription</code></td><td>规定、处方（药方）</td><td><b>处方</b>；<code>without ~</code> ＝ <b>非处方</b></td><td>available without <b>prescriptions</b>　⭐26 题证据</td></tr>
+          <tr><td><code>over-the-counter</code> ⭐</td><td>柜台上的</td><td><b>非处方的（OTC，无需医生开方即可买）</b></td><td>the <b>over-the-counter</b> kits　⭐26 题证据</td></tr>
+          <tr><td><code>two dozen</code></td><td>两打</td><td><b>24（家）</b>——<code>dozen</code> 前有数词时<b>不加 s</b></td><td>more than <b>two dozen</b> companies</td></tr>
+          <tr><td><code>rage</code> ⭐⭐</td><td>暴怒、狂怒</td><td><b>风靡一时的事物、时尚</b>（the latest rage ＝ 最新的流行）</td><td>DNA testing is also the latest <b>rage</b>　⚠️27B 的产地</td></tr>
+          <tr><td><code>roots</code> ⭐</td><td>树根、根部</td><td><b>祖籍、家族根源</b>（复数）</td><td>search for a family's geographic <b>roots</b>　⚠️27A 的产地</td></tr>
+          <tr><td><code>put up for adoption</code> ⭐</td><td>举起来、张贴</td><td><b>（被）送养、挂出待人领养</b></td><td>track down kids <b>put up for adoption</b>　⚠️27D 的产地</td></tr>
+          <tr><td><code>track down</code></td><td>沿轨道走</td><td><b>追查到、找到（下落）</b></td><td><b>track down</b> kids put up for adoption</td></tr>
+          <tr><td><code>swab</code></td><td>（名）棉签、拖把</td><td><b>动词：用棉签擦取（样本）</b></td><td>collecting cells by <b>swabbing</b> saliva</td></tr>
+          <tr><td><code>candidate</code> ⭐</td><td>候选人、应试者</td><td><b>可供比对的对象、人选</b></td><td>a potential <b>candidate</b> with whom to compare DNA</td></tr>
+          <tr><td><code>hawk</code> ⭐⭐</td><td>鹰；主战派</td><td><b>动词：兜售、叫卖（贬义，暗示夸大）</b></td><td>false precision being <b>hawked</b> by people　⭐⭐28 题答案句</td></tr>
+          <tr><td><code>claim</code> ⭐</td><td>索取、认领</td><td><b>声称（未必属实）</b></td><td>people <b>claiming</b> they are doing ancestry testing　⭐28D 的 claimed 就来自这里</td></tr>
+          <tr><td><code>note</code>（v.）⭐</td><td>笔记、便条</td><td><b>动词：指出、特别提到</b></td><td>He <b>notes</b> that each individual has many ancestors</td></tr>
+          <tr><td><code>number</code>（v.）⭐⭐</td><td>数字、号码</td><td><b>动词：数量达到</b>（number in the hundreds ＝ 数以百计）</td><td>many ancestors—<b>numbering</b> in the hundreds</td></tr>
+          <tr><td><code>line</code> / <code>lineage</code></td><td>线、排队</td><td><b>血统、世系</b>（a father's line ＝ 父系）</td><td>a single <b>lineage</b> … in a father's <b>line</b></td></tr>
+          <tr><td><code>pass down</code></td><td>递下去</td><td><b>（一代代）传下来</b></td><td>which is <b>passed down</b> only from mothers</td></tr>
+          <tr><td><code>only as good as</code> ⭐⭐</td><td>「和……一样好」</td><td><b>好不过……＝水准完全取决于……</b>（自带贬抑）</td><td>is <b>only as good as</b> the reference collections　⭐⭐⑥段总起句</td></tr>
+          <tr><td><code>lump together</code> ⭐</td><td>肿块、疙瘩</td><td><b>把……不加区分地堆在一起</b>（贬）</td><td><b>lump together</b> information from different projects　⭐⭐29A 的正源</td></tr>
+          <tr><td><code>be subject to</code> ⭐⭐</td><td>主题；科目</td><td><b>接受、经受（约束／审查）</b></td><td>not <b>subject to</b> peer review or outside evaluation</td></tr>
+          <tr><td><code>patented</code> ⭐</td><td>「申请专利」</td><td><b>被动：已受专利保护</b>（不是「没申请」）</td><td>may be <b>patented</b> and not subject to…　⚠️⚠️29D 的产地</td></tr>
+          <tr><td><code>process</code>（v.）</td><td>过程、进程</td><td><b>动词：处理、加工</b></td><td>the company that <b>processes</b> the results</td></tr>
+        </table></div>
+        <p style="font-size:.9rem;margin-top:14px">另有三个<b>看着吓人、其实不必细究</b>的专业词：<code>chromosome</code>（染色体）· <code>mitochondrial DNA</code>（线粒体 DNA）· <code>genealogist</code>（系谱学家，gene 族 ＋ logy 学）。<b>本篇没有任何一道题需要你知道线粒体是什么</b>——⑤段只要读懂 <code>either … or …</code>（二选一）和 <code>only one or two</code>（只有一两位）就够了。<b>⟹ 见到生僻的专业名词先别慌，看它在句子里承担什么成分：本句里它俩只是 <code>a single lineage</code> 的同位语，纯属举例。</b></p>
+        <div class="atti no2" style="margin-top:14px">
+          ⭐⭐ <b>把 2008 四篇 ＋ 2009 两篇合起来，规律更硬了</b>：<br>
+          · <b>2009·T1</b>：direct（形→动）· jump（不及物→及物）· wonder（动→名）· approach（名→动）· but（连词→介词）；<br>
+          · <b>2009·T2（本篇）</b>：<b>note（名→动）· number（名→动）· swab（名→动）· hawk（名→动）· process（名→动）</b>——<b>本篇五个考点词全是「名词转动词」，一种词性转换连考五次。</b><br>
+          <b>⟹ 读法照旧：遇到「认识但在这句里说不通」的词，第一反应不是查义项，是先问它在这句里<u>是什么词性</u>。</b><b>本篇只要判出「它在这里是动词」，五个词的意思全都能从名词义推出来</b>（笔记→记下→指出 · 数字→数到→数量达到 · 棉签→用棉签擦 · 鹰→像小贩一样叫卖 · 过程→使经过流程→处理）。<br>
+          ⚠️ <b>另一条跨篇线索</b>：<code>peer review</code>（同行评审）在 <b>2008·T2「科学出版的在线转向」</b>里是<b>制度支柱</b>，在本篇末段里是<b>照妖镜</b>（商业公司靠专利躲开它）。<b>同一个概念在两篇里扮演相反角色——这正是为什么复盘要按<u>概念</u>横向串，而不是按篇孤立地记。</b>
+        </div>
+      </section>
+      <!-- ========== 词汇 ========== -->
+      <section class="card">
+        <h2><span class="n">04</span>词汇复盘（点卡片看详情）</h2>
+        <div class="filters">
+          <button class="fbtn on" data-f="all">全部</button>
+          <button class="fbtn" data-f="core">核心词</button>
+          <button class="fbtn" data-f="phrase">短语</button>
+          <button class="fbtn" data-f="poly">熟词僻义</button>
+          <button class="fbtn" data-f="write">写作可用</button>
+        </div>
+        <div class="vgrid" id="vgrid"></div>
+      </section>
+
+      <!-- ========== 写作素材 ========== -->
+      <section class="card">
+        <h2><span class="n">05</span>可搬进作文的素材 · 7 组</h2>
+        <p style="font-size:.9rem;margin-bottom:12px">本篇的话题——<b>技术商业化 · 数据可信度 · 科学透明 vs 商业机密</b>——正好压在英语一大作文近年最爱的「<b>科技与生活</b>」母题上。<b>而且本篇有一个别篇少有的优势：它提供了两个<u>可以直接套任何主题</u>的高级句式（第 1、2 组）。</b></p>
+        <div class="wb">
+          <div class="wbi"><div class="p">X is only as good as Y.</div><div class="u">X 的水准完全取决于 Y。<br>⟹ <b>本篇第一号素材，也是全篇最值钱的一个句式</b>——它把「取决于」写得又短又有力，<b>远胜 <code>X depends on Y</code></b>。可套任何主题：<code>A model is only as good as the data it is trained on.</code>（AI）· <code>A policy is only as good as its enforcement.</code>（制度）· <code>A school is only as good as its teachers.</code>（教育）。<b>同族名句：<code>A chain is only as strong as its weakest link.</code></b></div></div>
+          <div class="wbi"><div class="p">There's a kind of false precision being hawked by people claiming they are doing X.</div><div class="u">那些声称在做 X 的人，兜售的是一种伪精确。<br>⟹ <b>「伪精确」（false precision）是一个极高级的批判概念</b>，专门用来批「<b>看着很准、其实靠不住</b>」的东西：大数据画像、各类排行榜、AI 生成的答案、体检指标。<b>写科技类作文时，用它替代平庸的 <code>not accurate</code>，档次立刻不同。</b>可简化为：<code>What is sold as precision is often mere guesswork.</code></div></div>
+          <div class="wbi"><div class="p">Databases don't rely on data collected systematically but rather lump together information from different sources.</div><div class="u">数据库并非系统收集数据，而是把不同来源的信息胡乱堆在一起。<br>⟹ <b>批评「数据来源杂乱」的现成句</b>，可迁移到<b>网络信息、AI 训练语料、舆论调查</b>。<b>骨架 <code>don't X but rather Y</code> 本身就是个好用的取舍句式</b>：<code>We don't need more information but rather better judgment.</code></div></div>
+          <div class="wbi"><div class="p">The computer programs may be patented and not subject to peer review or outside evaluation.</div><div class="u">这些计算机程序可能受专利保护，因而不接受同行评审或外界评估。<br>⟹ <b>科技伦理类作文的高级论据：商业机密 vs 科学透明的冲突。</b>今天写「算法黑箱」几乎可以照抄：<code>Algorithms that decide who gets a loan may be patented and not subject to outside evaluation.</code><b>搭配 <code>be subject to</code>（接受审查）值得单独背。</b></div></div>
+          <div class="wbi"><div class="p">A database may have a lot of data from some regions and not others, so results may differ depending on the company that processes them.</div><div class="u">数据库可能某些地区数据一大堆、其他地区没有，因此结果会因处理机构不同而不同。<br>⟹ <b>「数据偏差 / 算法公平」的现成论据</b>，可直接迁移到 AI 训练数据的地域与人群偏差。<b>句式 <code>differ depending on…</code>（因……而异）比 <code>be different</code> 高级。</b></div></div>
+          <div class="wbi"><div class="p">All he needs to do is shell out $30 at his local drugstore. ／ sell … directly to the public</div><div class="u">他只需在家门口药店掏 30 美元。／ 直接卖给公众。<br>⟹ <b>描写「技术平民化」的两个地道表达</b>——从实验室走进药店。写「科技如何改变生活」时，<b>用一个具体价格和一个具体地点，比空喊 <code>technology is developing fast</code> 有力得多。</b><b>这也是一种可迁移的写法：抽象趋势用具体细节落地。</b></div></div>
+          <div class="wbi"><div class="p">It is a wise father that knows his own child.</div><div class="u">再聪明的父亲也未必了解自己的孩子。<br>⟹ <b>谚语开篇</b>，适用于「亲子沟通 / 了解他人 / 自知之明」类题目。<b>⚠️ 用之前务必确认自己译对了——它是让步句式，不是「知道自己孩子的才算聪明父亲」。</b>同族可用：<code>It is a good horse that never stumbles.</code>（再好的马也有失蹄时）。<b>若怕用错，改写成安全版：<code>Even the wisest father may not truly know his own child.</code></b></div></div>
+        </div>
+        <div class="atti yes" style="margin-top:14px">
+          ⭐ <b>本篇与前几篇可以打包成一个完整的「科技双刃剑」论证段</b>：<b>2008·T2</b> 的「科学出版转向线上、同行评审是制度支柱」＋ <b>本篇</b> 的「商业检测靠专利躲开同行评审」＋ 本篇的 <code>only as good as</code>，<b>三段连起来正好是「技术便利化 → 监管缺位 → 可信度存疑」的完整链条</b>，写<b>任何</b>「新技术该不该欢呼」的题目都能直接落卷面。
+        </div>
+      </section>
+    </main>
+
+    <aside>
+      <div id="panel"><div class="hint">点击正文里的<b>黄色高亮词</b>，或下方词汇卡片，这里会显示词条详情。</div></div>
+    </aside>
+  </div>
+
+  <footer>2009 英语（一）Text 2 · DNA 检测及其存在的问题 ｜ 答案 26A 27C 28D 29A 30B ｜ ✅ Claude 盲做 5/5 全对 ｜ 熟词僻义 22 处 · 长难句 9 句 · 词卡 50 张 · 作文素材 7 组 ｜ 套路库新增 R37–R40</footer>
+</div>
+<button id="yd">查有道</button>
+<script>
+const V={
+  wisefather:{w:"It is a wise father that…",ipa:"/…/",pos:"句式",tags:["poly","write"],cn:"<b>再聪明的父亲也未必了解自己的孩子</b>（谚语让步句式）",en:"proverbial concessive pattern: even the wisest father may not know his own child",ex:"It is a wise father that knows his own child, but today…",mem:"⭐⭐ <b>本篇第一个坑，纯语法坑。</b><code>It is a + 褒义形容词 + 名词 + that…</code> 在谚语里<b>不是强调句</b>，而是<b>让步</b>：「再……的……也未必／也难免……」。<br>📌 <b>判据只有一条：看后半句的转折接不接得上。</b>本句后接 <code>but today a man can confirm…</code>，只有前半译成「未必了解」，but 才转得动。",syn:"Even the wisest father may not know his own child.",conf:"⚠️ 同族：<code>It is a good horse that never stumbles.</code>（<b>再好的马也有失蹄时</b>）· <code>It is a long lane that has no turning.</code>（<b>路必有弯</b>）。<b>自己写作文时若怕用错，改写成 Even the wisest… 更保险。</b>"},
+  boost:{w:"boost",ipa:"/buːst/",pos:"v./n.",tags:["core","write"],cn:"提升，增强；推动",en:"to make sth increase, or become better or more successful",ex:"a man can boost his paternal wisdom",mem:"boost ＝ <b>从下往上顶一把</b>（本义是「托举」，帮人翻墙时托一把就叫 give sb a boost）⟹ 提振、增强。",syn:"enhance · lift · strengthen · give a lift to",conf:"⭐ <b>作文高频搭配</b>：<code>boost confidence / efficiency / the economy</code>。比 improve 更有力度，适合写「显著提升」。"},
+  paternal:{w:"paternal",ipa:"/pəˈtɜːnl/",pos:"adj.",tags:["core"],cn:"父亲的，父亲般的；父系的",en:"connected with being a father; related through the father",ex:"boost his paternal (fatherly) wisdom",mem:"pater-（拉丁语「父」）＋ -al。<b>原文括号里直接给了同义词 fatherly——这是命题人白送的解释。</b><br>📌 同族：<b>paternity</b>（父亲身份 ⟹ paternity testing 亲子鉴定）· <b>maternal</b>（母亲的）· <b>fraternal</b>（兄弟的）· <b>patron</b>（赞助人）。",syn:"fatherly",conf:"⚠️ <b>paternal grandfather</b> ＝ 爷爷（父系）· <b>maternal grandfather</b> ＝ 外公（母系）。本篇⑤段的 <code>a father's line</code> 说的就是 paternal line。"},
+  shellout:{w:"shell out",ipa:"/ʃel aʊt/",pos:"phr. v.",tags:["phrase","poly"],cn:"<b>掏钱，破费</b>（口语，常含不情愿）",en:"to pay money for sth, especially unwillingly",ex:"All he needs to do is shell out $30",mem:"shell 本义「壳」⟹ <b>把壳剥开、把钱抖出来</b>。<br>📌 <b>语体标记</b>：这是个口语词，作者用它而不用 pay，暗含<b>「不过就是掏三十块钱的事」</b>的轻松语气——<b>和 26 题的「获取便利」是同一个调子。</b>",syn:"fork out · cough up · pay out",conf:"⚠️ <b>shell out（掏钱）vs shell（v. 炮轰）</b>：<code>The city was shelled for days.</code> 完全不同的义项。"},
+  kit:{w:"kit",ipa:"/kɪt/",pos:"n.",tags:["core"],cn:"成套工具，配套元件；（检测）包",en:"a set of tools or equipment that you use for a particular purpose",ex:"a paternity testing kit (PTK)",mem:"<b>PTK ＝ Paternity Testing Kit</b>——<b>27 题只要拆开这个缩写就能选出 C。</b><br>📌 常见搭配：<code>first-aid kit</code>（急救包）· <code>tool kit</code> · <code>test kit</code>（检测试剂盒）。",syn:"set · pack · outfit",conf:"⭐ <b>本篇的 kit 与 test 是两个层级</b>：<code>PTK</code>（一种具体产品）⊂ <code>DNA testing</code>（一整类检测）。<b>27 题的全部难点就在这个层级差上。</b>"},
+  drugstore:{w:"drugstore",ipa:"/ˈdrʌɡstɔː(r)/",pos:"n.",tags:["core"],cn:"药店（美式，兼卖日用品）",en:"a shop that sells medicines and also other goods (US)",ex:"at his local drugstore",mem:"⭐ <b>26 题的第一条证据</b>：<code>at his <b>local</b> drugstore</code>＝<b>家门口的药店</b>，不用去医院、不用找医生 ⟹ <b>获取便利</b>。<br>📌 英式说法是 <b>chemist's</b>；<b>pharmacy</b> 两边都用。",syn:"pharmacy · chemist's",conf:"⭐ <b>本文标题就用了它</b>：<i>Who's Your Daddy? The Answer May Be at the Drugstore</i>——<b>「答案在药店」这个说法本身就是在强调「随手可得」。</b>"},
+  prescription:{w:"prescription",ipa:"/prɪˈskrɪpʃn/",pos:"n.",tags:["core"],cn:"处方，药方；（喻）对策",en:"a written instruction from a doctor for a patient to get a medicine",ex:"available without prescriptions last year",mem:"pre-（预先）＋ scrib/script（写）⟹ <b>医生预先写下的东西</b>。<br>⭐⭐ <b>26 题的胜负手在 <code>without prescriptions</code></b>：<b>去年起买 PTK 不再需要医生开方 ⟹ 门槛降低 ⟹ 获取便利。</b>",syn:"doctor's order · script（口语）",conf:"⚠️ <b>prescription drugs（处方药）vs over-the-counter drugs（非处方药）</b>——<b>本篇②段一句话里两种说法都出现了，是自带的同义复现。</b>"},
+  coo:{w:"chief operating officer",ipa:"/tʃiːf ˈɒpəreɪtɪŋ ˈɒfɪsə/",pos:"n.",tags:["core"],cn:"首席运营官（COO）",en:"the person in a company responsible for day-to-day operations",ex:"Doug Fogg, chief operating officer of Identigene",mem:"📌 <b>一串 C-level 头衔一起记</b>：<b>CEO</b> 执行官 · <b>COO</b> 运营官 · <b>CFO</b> 财务官 · <b>CTO</b> 技术官 · <b>CIO</b> 信息官。<br>⭐ 本句里它是<b>同位语</b>，说明 Doug Fogg 是谁——<b>同位语常常是句子里最容易跳过、也最容易被出题的部分。</b>",syn:"operations chief",conf:"⚠️ <b>句末 <code>which makes the over-the-counter kits</code> 的先行词是 Identigene（公司）不是 officer（人）</b>——which 不指人，且能生产工具包的只能是公司。"},
+  otc:{w:"over-the-counter",ipa:"/ˌəʊvə ðə ˈkaʊntə(r)/",pos:"adj.",tags:["core","poly"],cn:"<b>非处方的（OTC）</b>；场外交易的",en:"(of medicines) able to be bought without a prescription",ex:"which makes the over-the-counter kits",mem:"字面「<b>越过柜台</b>」⟹ 直接从柜台上拿走，<b>不用医生签字</b>。<br>⭐⭐ <b>它与前半句的 <code>available without prescriptions</code> 是同一件事的两次说法</b>——<b>一句话里自带同义复现，正是段群主旨题最爱的取材点。</b>",syn:"non-prescription · OTC",conf:"📌 金融语境里 <b>over-the-counter</b> 指<b>场外交易（OTC 市场）</b>，与交易所内交易相对。本篇是医药义。"},
+  twodozen:{w:"two dozen",ipa:"/tuː ˈdʌzn/",pos:"num.",tags:["core"],cn:"两打，24（个）",en:"twenty-four",ex:"More than two dozen companies sell DNA tests",mem:"⚠️ <b>dozen 前面有具体数词时<u>不加 s</u></b>：<code>two dozen eggs</code>（24 个鸡蛋）；<b>而 <code>dozens of</code>（几十个）才加 s 且带 of</b>。<br>📌 同规则：<code>hundred / thousand / million</code>——<code>two hundred people</code> vs <code>hundreds of people</code>。",syn:"24 · a couple of dozen",conf:"⭐ 本篇⑤段还有一个 <code>numbering in the hundreds</code>（数以百计），<b>正是 hundreds of 那一族的用法，可以对照记。</b>"},
+  directly:{w:"sell directly to the public",ipa:"/dəˈrektli/",pos:"phr.",tags:["phrase","core"],cn:"直接向公众销售（绕过中间环节）",en:"to sell to consumers without going through intermediaries",ex:"More than two dozen companies sell DNA tests directly to the public",mem:"⭐⭐ <b>26 题四条证据的最后一条</b>：<b>不经医院、不经实验室、不经医生，直接卖给普通人 ⟹ 获取便利。</b><br>📌 今天的商业术语叫 <b>DTC（direct-to-consumer）</b>，本篇写于 2008 年，正是 DTC 基因检测的起点。",syn:"direct-to-consumer · without middlemen",conf:"⭐ <b>把这四条并排看</b>：<code>at his local drugstore</code> ｜ <code>without prescriptions</code> ｜ <code>over-the-counter</code> ｜ <code>directly to the public</code>——<b>四处深层同义复现，语义重心只有一个。</b>"},
+  rangeprice:{w:"range in price from A to B",ipa:"/reɪndʒ/",pos:"phr.",tags:["phrase","write"],cn:"价格从 A 到 B 不等",en:"to vary in price between A and B",ex:"ranging in price from a few hundred dollars to more than $2,500",mem:"range 作动词＝<b>（在某范围内）变动、涵盖</b>。<br>⭐ <b>作文可用</b>：<code>Views on this issue range from total support to outright rejection.</code>（对此事的看法从完全支持到断然拒绝不等。）<b>写「观点多样」时比 There are many different views 高级。</b>",syn:"vary from … to … · run from … to …",conf:"⚠️⚠️ <b>26 题 B 项 flexibility in pricing 就产自这里</b>，但原文说的是<b>「超过 24 家公司<u>各自</u>的定价不同」</b>，<b>不是「同一家公司灵活调价」</b>——<b>卖家不同价格不同 ≠ 定价灵活。</b>"},
+  kinship:{w:"kinship",ipa:"/ˈkɪnʃɪp/",pos:"n.",tags:["core"],cn:"亲属关系；（情感上的）亲近感",en:"the fact of being related in a family; a feeling of being close",ex:"paternity and kinship testing",mem:"kin（<b>亲属，家族</b>，古英语词根）＋ -ship（关系、状态）。<br>📌 同族：<b>next of kin</b>（最近的亲属，法律文书常见）· <b>kinsman</b>（族人）。<br>⭐⭐ <b>27 题正确项 C 里的 kinship 就是原词复现</b>——但要注意它前面的限定 <code>parent-child</code>。",syn:"family relationship · blood ties",conf:"⭐ <b>本题的正确项也用了原词，这不违反「原词复现是陷阱」的规律</b>：<b>规律说的是「光靠原词不能定答案」，不是「有原词就一定错」。</b>C 项之所以对，是因为它<b>整体</b>（parent-child kinship）与首段定义句吻合。"},
+  adopted:{w:"adopted / adoption",ipa:"/əˈdɒptɪd/",pos:"adj./n.",tags:["core"],cn:"被领养的；领养，收养",en:"(of a child) taken permanently into another family",ex:"which adopted children can use to find their biological relatives",mem:"ad-（朝向）＋ opt（选择）⟹ <b>选进自己家 ＝ 领养</b>。<br>⚠️ <b>本篇里 adoption 出现了两次，方向相反</b>：<code><b>adopted</b> children</code>（<b>已被领养的</b>孩子，去找亲生父母）· <code>kids <b>put up for</b> adoption</code>（<b>被送出去待领养的</b>孩子，被亲生家庭追查）。<b>一进一出，正好是两条相向而行的寻亲路。</b>",syn:"fostered（寄养，程度更轻）",conf:"⚠️ <b>27 题 D 项 choose children for adoption</b> 把「追查被送养的孩子」说成「挑选要领养的孩子」——<b>把被动写成了主动，方向反了。</b>"},
+  biorel:{w:"biological relatives",ipa:"/ˌbaɪəˈlɒdʒɪkl ˈrelətɪvz/",pos:"n.",tags:["phrase","core"],cn:"血亲，生物学上的亲属",en:"people related to you by birth rather than by adoption",ex:"adopted children can use to find their biological relatives",mem:"⭐ <b>biological 在亲属语境里 ＝「亲生的」</b>：<code>biological parents</code>（亲生父母，与 adoptive parents 养父母相对）· <code>biological father</code>。<br>📌 <b>本篇整篇都在处理「谁和谁有血缘」这件事</b>——biological relatives（③段）· ancestors（⑤段）· relationships（⑥段），<b>三个词层层放大。</b>",syn:"blood relatives · birth family",conf:"⚠️ <b>27 题 A 项把这里的「找人」偷换成了「找地方」</b>：<code>find their biological <b>relatives</b></code>（找<b>人</b>）→ <code>locate one's <b>birth place</b></code>（找<b>地点</b>）。"},
+  trackdown:{w:"track down",ipa:"/træk daʊn/",pos:"phr. v.",tags:["phrase"],cn:"追查到，找到（下落）",en:"to find sb/sth after searching for them",ex:"families can use to track down kids put up for adoption",mem:"track 本义「足迹、追踪」＋ down（<b>到手、拿下</b>，表结果）⟹ <b>一路追到找着为止</b>。<br>📌 同族 down 结尾表「结果」的短语：<b>hunt down</b>（搜捕到）· <b>narrow down</b>（缩小到）· <b>pin down</b>（确定下来）· <b>nail down</b>（敲定）。",syn:"hunt down · locate · trace",conf:"⚠️ <b>与⑤段的 <code>trace</code> 要区分</b>：28 题 A 项用的是 <code>trace distant ancestors</code>（追溯远祖）——<b>trace 强调「沿线索上溯」，track down 强调「找到具体下落」。</b>"},
+  putup:{w:"put up for adoption",ipa:"/pʊt ʌp/",pos:"phr.",tags:["phrase","poly"],cn:"<b>（被）送养，挂出待人领养</b>",en:"to make a child available to be adopted by another family",ex:"track down kids put up for adoption",mem:"put up 本义「<b>挂出来、摆出来</b>」（put up for sale ＝ 挂牌出售）⟹ <b>put up for adoption ＝ 挂出来等人领养</b>。<br>⚠️ <b>本篇里它是<u>过去分词作后置定语</u></b>：<code>kids <b>(who are) put up</b> for adoption</code>——<b>被动，说的是「已经被送出去的孩子」。</b>",syn:"give up for adoption · place for adoption",conf:"⚠️⚠️ <b>27 题 D 项 <code>choose children for adoption</code> 就死在这个被动上</b>：原文是<b>家庭去「追查已送养的孩子」</b>，不是<b>「挑选自己要领养谁」</b>。<b>分词的主动被动读反，方向就反。</b>"},
+  rage:{w:"rage",ipa:"/reɪdʒ/",pos:"n./v.",tags:["poly","core"],cn:"<b>风靡一时的事物，时尚</b>；暴怒；（战火、疫情）肆虐",en:"sth that is very popular for a short time; violent anger",ex:"DNA testing is also the latest rage among passionate genealogists",mem:"⭐⭐ <b>本篇最典型的熟词僻义</b>：<code>the latest <b>rage</b></code> ＝ <b>最新的热潮</b>（＝ the latest craze / fad）。<br>📌 判据：<b>前面有 the latest / all the，后面接 among 某群人 ⟹ 一定是「流行」义</b>，与「愤怒」无关。<br>📌 第三义：<code>The debate <b>rages</b> on.</code>（争论激烈地进行着。）",syn:"craze · fad · the in thing · all the rage",conf:"⚠️⚠️ <b>27 题 B 项 promote genetic research 部分产自这里</b>：<b>「在系谱学家中流行」推不出「推动了基因研究」</b>——<b>流行 ≠ 推动；而且 genealogist（系谱学家）≠ genetic research（基因研究）。</b>"},
+  genealogist:{w:"genealogist / genealogy",ipa:"/ˌdʒiːniˈælədʒɪst/",pos:"n.",tags:["core"],cn:"系谱学家；家谱学，家族史研究",en:"a person who studies family history and lines of descent",ex:"the latest rage among passionate genealogists",mem:"gene（<b>族、种</b>）＋ -logy（学）⟹ <b>研究家族世系的学问</b>。<br>⭐ <b>本篇里它与 ancestry testing（家谱检测）是配套的</b>：⑤段的批评对象正是这项业务。<br>📌 <b>即使完全不认识这个词也不影响做题</b>——它在句中只是 among 的宾语，说明「在哪群人里流行」。",syn:"family historian",conf:"⚠️⚠️ <b>与 <code>geneticist</code>（遗传学家）只差几个字母，意思完全不同。</b><b>27 题 B 项就是拿这个形近差别做的陷阱：genealogists ≠ genetic research。</b>"},
+  roots:{w:"roots",ipa:"/ruːts/",pos:"n.",tags:["poly","write"],cn:"<b>祖籍，家族根源</b>；根",en:"a person's family origins",ex:"businesses that offer to search for a family's geographic roots",mem:"⭐ <b>复数 roots 专指「家族的根、出身来历」</b>：<code>search for one's roots</code>（寻根）· <code>put down roots</code>（扎根定居）。<br>⭐ <b>作文可用</b>：<code>No matter how far we travel, we should never forget our roots.</code>",syn:"origins · ancestry · heritage",conf:"⚠️⚠️ <b>27 题 A 项的产地</b>：原文是 <code><b>a family's</b> geographic roots</code>（<b>家族的</b>发源地），选项写成 <code><b>one's</b> birth place</code>（<b>个人的</b>出生地）——<b>祖上从哪来 ≠ 你在哪出生</b>，中心词被换了。（⟹ R39）"},
+  swab:{w:"swab",ipa:"/swɒb/",pos:"v./n.",tags:["poly","core"],cn:"<b>用棉签擦取（样本）</b>；棉签，药签",en:"to clean or take a sample with a piece of soft material",ex:"collecting cells by swabbing saliva in the mouth",mem:"📌 <b>名转动的又一例</b>：swab 本是名词「棉签」⟹ 动词「用棉签取样」。<b>疫情期间人人都熟悉的 <code>nasal swab</code>（鼻拭子）、<code>swab test</code>（拭子检测）就是它。</b>",syn:"wipe · take a sample from",conf:"⭐ <b>本篇五个考点词全是「名词转动词」</b>：swab · note · number · hawk · process。<b>遇到读不通的词，先判词性，义项自然落地。</b>"},
+  saliva:{w:"saliva",ipa:"/səˈlaɪvə/",pos:"n.",tags:["core"],cn:"唾液，口水",en:"the liquid produced in the mouth",ex:"swabbing saliva in the mouth",mem:"📌 <b>纯生词，但零门槛</b>：后面紧跟 <code>in the mouth</code>（在嘴里），<b>语境已经把意思限定死了。</b><br>⭐ <b>这类词的正确处理方式是「知道它是身体里的某种东西」就够了</b>，不必精确到「唾液」也能读懂整句。",syn:"spit（口语）",conf:"⭐ <b>由此可提炼一个读法</b>：<b>生词后面若紧跟一个介词短语限定它的位置或范围（in the mouth / from mothers），那这个介词短语往往就是命题人留的解释。</b>"},
+  candidate:{w:"candidate",ipa:"/ˈkændɪdət/",pos:"n.",tags:["poly","core"],cn:"<b>可供比对的对象，人选</b>；候选人；考生",en:"a person or thing regarded as suitable for a particular purpose",ex:"All tests require a potential candidate with whom to compare DNA",mem:"⭐ <b>本篇取的是最泛的一义：「适合做某事的对象」。</b>这里指<b>拿来和你比对 DNA 的那个人</b>（比如你怀疑是父亲的那位）。<br>📌 <b>判据</b>：后面跟着 <code>with whom to compare DNA</code>，用途已经写明了，与选举、考试无关。",syn:"match · reference person · comparison subject",conf:"⭐⭐ <b>这句话是⑥段批评的前提</b>：<b>既然所有结论都来自「比对」，那么「用来比对的东西靠不靠谱」就直接决定检测有没有意义。</b><b>④段与⑥段要连起来读。</b>"},
+  skeptical:{w:"skeptical",ipa:"/ˈskeptɪkl/",pos:"adj.",tags:["core","write"],cn:"持怀疑态度的，不轻信的",en:"having doubts that a claim or statement is true",ex:"But some observers are skeptical.",mem:"⭐⭐ <b>全文的分水岭就是这一句</b>（六个词）：<code>But some observers are skeptical.</code>——<b>前面是介绍，后面是质疑。读到它就该在卷面上画一道横线。</b><br>📌 英式拼写 <b>sceptical</b>，同一个词。",syn:"doubtful · dubious · unconvinced",conf:"⭐ <b>态度词强度尺（写作者态度题必备）</b>：<b>supportive（支持）→ neutral（中立）→ <u>skeptical</u>（怀疑）→ critical（批评）→ dismissive（不屑）</b>。<b>skeptical 是「有保留但没全盘否定」，正对应 30 题排掉 D 项 Lies 的理由。</b>"},
+  precision:{w:"false precision",ipa:"/prɪˈsɪʒn/",pos:"n.",tags:["phrase","write"],cn:"<b>伪精确</b>（看着精确、其实靠不住）",en:"an appearance of accuracy that the evidence does not justify",ex:"There's a kind of false precision being hawked by people…",mem:"⭐⭐⭐ <b>28 题的答案就是这两个词</b>：<code><b>false</b> precision</code> ⟹ <b>D「达不到所宣称的精确度」</b>。<br>⭐ <b>可迁移打法</b>：<b>人物观点句里那个带感情色彩的形容词，往往就是答案的种子</b>（false / mere / so-called / only）。<b>后面的数字与例子全是证据，别去那里找答案。</b>",syn:"illusory accuracy · spurious precision",conf:"⭐ <b>作文金词</b>：写大数据、排行榜、AI 生成内容时，<code>false precision</code> 比 <code>not accurate</code> 高一个档次。可用：<code>What is sold as precision is often mere guesswork.</code>"},
+  hawk:{w:"hawk",ipa:"/hɔːk/",pos:"v./n.",tags:["poly","core"],cn:"<b>动词：兜售，叫卖（贬义）</b>；鹰；主战派",en:"to try to sell goods, especially by going from place to place",ex:"false precision being hawked by people claiming…",mem:"⭐⭐ <b>名转动的典型</b>。作动词时自带<b>「街头小贩夸大其词地叫卖」</b>的意味 ⟹ <b>作者用 hawked 而不用 sold，态度已经写在词里了。</b><br>📌 <b>被动进行式 <code>being hawked</code></b> 作后置定语＝「<b>正被人兜售的</b>」。",syn:"peddle · tout · push",conf:"📌 名词义：<b>hawk</b>（鹰）在政治语境里指<b>主战派</b>，与 <b>dove</b>（鸽派）相对。本篇是动词义。<br>⭐ <b>凡见到 hawk / peddle / tout 作动词，作者一定是在贬。</b>"},
+  claim:{w:"claim",ipa:"/kleɪm/",pos:"v./n.",tags:["poly","core"],cn:"<b>声称（未必属实）</b>；索取；主张",en:"to say that sth is true without giving proof",ex:"people claiming they are doing ancestry testing",mem:"⭐⭐ <b>claim 是一个「不承诺真实性」的动词</b>——用 claim 就等于作者在暗示「<b>他们自己说的，我可不信</b>」。<br>⭐⭐ <b>28 题 D 项的 <code>the <u>claimed</u> accuracy</code>（所宣称的精确度）就直接来自这个分词。</b>",syn:"assert · profess · allege · purport",conf:"⭐ <b>一组「态度动词」的可信度尺</b>：<b>show / demonstrate（作者认可）＞ argue / suggest（中性）＞ <u>claim</u> / allege / purport（作者存疑）</b>。<b>阅读时看到 claim，就该预期后面有反驳。</b>"},
+  sociologist:{w:"sociologist",ipa:"/ˌsəʊsiˈɒlədʒɪst/",pos:"n.",tags:["core"],cn:"社会学家",en:"a person who studies human society",ex:"says Troy Duster, a New York University sociologist",mem:"socio-（社会）＋ -logist（……学家）。<br>⭐ <b>这个同位语的价值在于「身份即立场」</b>：<b>说这话的是社会学家，不是遗传学家</b>——<b>他质疑的不是技术本身，而是「把技术当精确答案卖给公众」这件事。</b>",syn:"social scientist",conf:"⭐ <b>阅读中人物的头衔从来不是装饰</b>：⑤段的批评者是<b>社会学家</b>（批销售话术），⑥段的批评者是笼统的 <b>Critics</b>（批数据与程序）——<b>两位批评者、两条批评，构成⑤⑥两段的并列。</b>"},
+  notev:{w:"note (v.)",ipa:"/nəʊt/",pos:"v.",tags:["poly","write"],cn:"<b>指出，特别提到；注意到</b>",en:"to mention sth because it is important",ex:"He notes that each individual has many ancestors",mem:"📌 <b>名转动</b>：note（笔记）⟹ <b>记下来 ⟹ 特意提出来说</b>。<br>⭐ <b>写作可用</b>：<code>It should be noted that…</code>（<b>值得注意的是……</b>）是引出重要论点的好开头，比 <code>We should notice that</code> 地道得多。",syn:"point out · remark · observe",conf:"⭐ <b>一组「说」的动词，考研阅读几乎年年考</b>：<b>note（指出）· observe（评论）· hold（认为）· maintain（坚持认为）· contend（主张）· concede（承认）</b>。<b>2008·T1 考过 observe ＝「评论」这个僻义。</b>"},
+  numberv:{w:"number (v.)",ipa:"/ˈnʌmbə(r)/",pos:"v.",tags:["poly"],cn:"<b>数量达到，共计</b>",en:"to amount to a particular total",ex:"many ancestors—numbering in the hundreds just a few centuries back",mem:"📌 <b>又一个名转动</b>：<code>number in the hundreds</code> ＝ <b>数以百计</b>；<code>The crowd numbered over 5,000.</code>（人群超过五千。）<br>⚠️ <b>本句里是现在分词作定语</b>，补充说明 many ancestors 到底有多少 ⟹ <b>它就是 28 题「数量」这条批评线的第一个证据。</b>",syn:"total · amount to · add up to",conf:"⚠️ <b>把 numbering 当名词读，整句就散架了</b>——破折号后面既没有动词也没有主语，只能是分词短语。<b>破折号后若是一个 -ing 开头的片段，先按分词定语处理。</b>"},
+  lineage:{w:"lineage",ipa:"/ˈlɪniɪdʒ/",pos:"n.",tags:["core"],cn:"血统，世系，家系",en:"the series of families that sb comes from originally",ex:"most ancestry testing only considers a single lineage",mem:"line（线、家系）＋ -age（名词后缀）⟹ <b>一条往上追的血脉线</b>。<b>同段还有 <code>in a father's <b>line</b></code>（父系）——同根词就地复现。</b><br>⭐⭐ <b>28 题的要害在限定词 <code>a <u>single</u> lineage</code></b>：<b>只查一条线，而你有几百位祖先 ⟹ 这就是「伪精确」。</b>",syn:"ancestry · descent · bloodline · pedigree",conf:"⚠️ <b>28 题 B 项用 <code>bloodlines</code> 做原词复现的诱饵</b>，但原文批的是<b>「揭示不全」（reveal）</b>，不是<b>「重建不可靠」（rebuild）</b>。"},
+  chromosome:{w:"chromosome",ipa:"/ˈkrəʊməsəʊm/",pos:"n.",tags:["core"],cn:"染色体",en:"a structure in cells carrying genetic information",ex:"the Y chromosome inherited through men in a father's line",mem:"chromo-（<b>颜色</b>，因易被染料着色而得名）＋ -some（体）⟹ <b>染色体</b>。<br>📌 <b>本篇完全不需要生物学知识</b>：只要读出 <code>either <b>the Y chromosome</b>（父系）or <b>mitochondrial DNA</b>（母系）</code> 是<b>二选一</b>，⑤段就通了。",syn:"—",conf:"⭐ <b>处理生僻专业词的正确姿势</b>：<b>先看它在句中的成分</b>。本句里它只是 <code>a single lineage</code> 的<b>同位语（举例）</b>，<b>不认识也不影响判断「只查一条线」这个关键信息。</b>"},
+  inherit:{w:"inherit",ipa:"/ɪnˈherɪt/",pos:"v.",tags:["core","write"],cn:"继承（财产、特征）；经遗传获得",en:"to receive money, property or qualities from sb who has died or from parents",ex:"the Y chromosome inherited through men in a father's line",mem:"in-（进入）＋ herit（继承，同 heir 继承人）⟹ <b>接过来</b>。<br>📌 <b>两种用法</b>：<code>inherit a fortune</code>（继承遗产）· <code>inherit one's mother's eyes</code>（遗传了母亲的眼睛）。本篇是后者。",syn:"be passed down to · come into",conf:"⭐ <b>本句里是过去分词作定语</b>：<code>the Y chromosome <b>inherited through men</b></code>＝<b>经男性遗传下来的</b>Y 染色体。<b>与下半句的定语从句 <code>which is passed down only from mothers</code> 结构对称，一个用分词、一个用从句。</b>"},
+  mitochondrial:{w:"mitochondrial DNA",ipa:"/ˌmaɪtəˈkɒndriəl/",pos:"n.",tags:["core"],cn:"线粒体 DNA（只从母系遗传）",en:"DNA found in mitochondria, inherited only from the mother",ex:"or mitochondrial DNA, which is passed down only from mothers",mem:"📌 <b>句子已经把它解释完了</b>：<code>which is <b>passed down only from mothers</b></code>——<b>非限制性定语从句就是原文自带的注释。</b><br>⭐ <b>读法</b>：见到超纲专业词，<b>先往后看有没有逗号＋which／that 的解释</b>，作者通常知道读者不懂。",syn:"mtDNA",conf:"⭐ <b>父系 Y 染色体 ＋ 母系线粒体 DNA ＝ 两条互不相交的单线</b>。<b>正因为只能二选一走一条线，才「只能揭示一两位祖先」——这是⑤段整段论证的支点。</b>"},
+  passdown:{w:"pass down",ipa:"/pɑːs daʊn/",pos:"phr. v.",tags:["phrase","write"],cn:"（一代代）传下来，传承",en:"to give sth to sb who is younger or belongs to a later generation",ex:"mitochondrial DNA, which is passed down only from mothers",mem:"📌 <b>一组「传」的短语</b>：<b>pass down</b>（往下传给后代）· <b>pass on</b>（转交、传给别人）· <b>hand down</b>（传下来，多用于传统／判决）· <b>pass away</b>（去世，委婉语）。<br>⭐ <b>作文可用</b>：<code>traditions passed down from generation to generation</code>（代代相传的传统）。",syn:"hand down · transmit · bequeath",conf:"⚠️ <b>pass down（传给后代）vs pass out（分发；晕倒）vs pass off（蒙混过关）</b>——<b>pass 系短语义项极散，必须靠语境定。</b>"},
+  reveal:{w:"reveal",ipa:"/rɪˈviːl/",pos:"v.",tags:["core","write"],cn:"揭示，显露；透露",en:"to make sth known that was previously secret or unknown",ex:"This DNA can reveal genetic information about only one or two ancestors",mem:"re-（反）＋ veal（veil 面纱）⟹ <b>把面纱掀开</b>。<br>⭐⭐⭐ <b>28 题 C 项的分水岭就是这个动词</b>：<code>can <b>reveal</b> … about only one or two</code> 讲的是<b>客观能力上限（能揭示多少）</b>；C 项换成 <code>fully <b>use</b></code>（没有充分利用）讲的是<b>主观没做够</b>。<b>做不到 ≠ 没做好。</b>",syn:"disclose · uncover · show · unveil",conf:"⚠️⚠️ <b>这是本篇「客观 ⟹ 主观」主刀的第三刀</b>（另两刀在 26 题的 C、D）。<b>读长难句时，主句的那个实义动词一定要盯住——选项常常只动它一个词。</b>（⟹ R37）"},
+  greatgrand:{w:"great-grandparents",ipa:"/ˌɡreɪt ˈɡrænpeərənts/",pos:"n.",tags:["core"],cn:"曾祖父母（再加一个 great ＝ 高祖父母）",en:"the parents of one's grandparents",ex:"six other great-grandparents … 14 other great-great-grandparents",mem:"📌 <b>数一遍就懂⑤段的算术</b>：上溯 3 代共 <b>8</b> 位曾祖辈（父系母系各 4），<b>其中只有 1 位在父系单线上、1 位在母系单线上，剩下 6 位查不到</b>——这就是原文 <code>six <b>other</b></code> 的来历；上溯 4 代共 16 位，同理剩 <b>14</b> 位。<br>⭐ <b>把这个算术走一遍，「伪精确」这个批评就变得极其具体。</b>",syn:"—",conf:"⭐ <b>28 题 A 项 <code>trace <u>distant</u> ancestors</code> 恰恰被这组数字排除</b>：<b>原文批的是「同一代里查不到的那 6 位、14 位」——是<u>数量</u>不是<u>远近</u>。</b>"},
+  onlyasgoodas:{w:"be only as good as",ipa:"/əz ɡʊd əz/",pos:"phr.",tags:["phrase","write","poly"],cn:"<b>水准完全取决于……（……不行它就不行）</b>",en:"to be limited in quality by the quality of sth else",ex:"commercial genetic testing is only as good as the reference collections…",mem:"⭐⭐⭐ <b>本篇第一号写作素材，也是⑥段的总起句。</b>⚠️ <b>它不是中性的同级比较「和……一样好」</b>，而是<b>带贬抑的限定：好不过它所依赖的东西。</b><br>⭐ <b>万能套用</b>：<code>A model is only as good as the data it is trained on.</code>（AI）· <code>A policy is only as good as its enforcement.</code>（制度）· <code>A school is only as good as its teachers.</code>（教育）",syn:"depend entirely on · be limited by",conf:"⭐ <b>同族名句</b>：<code>A chain is only as strong as its weakest link.</code>（一条链子的强度取决于最弱的一环。）<b>写「短板效应」直接用。</b>"},
+  refcoll:{w:"reference collections",ipa:"/ˈrefrəns kəˈlekʃnz/",pos:"n.",tags:["phrase","core"],cn:"参考数据库，参照样本集",en:"sets of samples or data used as a standard for comparison",ex:"the reference collections to which a sample is compared",mem:"⭐ <b>29 题锁定重心靠的就是它</b>：<code>reference <b>collections</b></code> → <code><b>Databases</b></code> → <code>a DNA <b>database</b></code>，<b>三处同义复现把末段前半的重心钉在「数据库」上。</b><br>📌 <code>to which a sample is compared</code> 是介词前置的定语从句，还原＝ <code>a sample is compared <b>to</b> the collections</code>。",syn:"reference database · benchmark set",conf:"⚠️ <b>29 题 C 项 excessive sample comparison 的产地就是这句</b>，但这句是在说<b>数据库对检测有多重要</b>，<b>不是批评「比对做得太多」。</b>"},
+  relyon:{w:"rely on",ipa:"/rɪˈlaɪ ɒn/",pos:"phr. v.",tags:["phrase"],cn:"依赖，依靠；指望",en:"to need or depend on sb/sth",ex:"Databases … don't rely on data collected systematically",mem:"📌 <b>本句是取舍结构的前半</b>：<code><b>don't</b> rely on X <b>but rather</b> Y</code>——<b>作者的判断永远落在 but rather 后面的 Y 上。</b><br>⭐ 同义：<b>depend on · count on · draw on · be based on</b>。",syn:"depend on · count on · be based on",conf:"⭐ <b>可迁移</b>：<b>凡见 <code>not X but Y</code> / <code>don't X but rather Y</code> / <code>rather than X, Y</code>，先在 Y 下画线</b>——<b>那是作者真正想说的，也是命题人取材的地方。</b>本篇 29 题正是如此。"},
+  systematically:{w:"systematically",ipa:"/ˌsɪstəˈmætɪkli/",pos:"adv.",tags:["core","write"],cn:"系统地，有条理地",en:"in a way that is done according to a fixed plan or method",ex:"don't rely on data collected systematically",mem:"⚠️⚠️ <b>注意它是被否定的那一半</b>：<code><b>don't</b> rely on data collected <b>systematically</b></code>＝<b>数据不是系统收集的</b>。<b>它与后半句的 <code>lump together</code> 构成一对反义 ⟹ 合起来就是 29A 的 <code>disorganized</code>。</b>",syn:"methodically · in an organized way",conf:"⭐ <b>作文可用</b>：<code>collect data systematically</code>（系统地收集数据）· <code>systematically ignore</code>（一贯地无视）。<b>注意 systematic（有系统的）与 systemic（系统性的、全局的）不是一个词</b>：<code>systemic risk</code> ＝ 系统性风险。"},
+  lump:{w:"lump together",ipa:"/lʌmp təˈɡeðə(r)/",pos:"phr. v.",tags:["phrase","poly"],cn:"<b>把……不加区分地堆在一起，混为一谈</b>",en:"to put different people or things together in the same group without considering the differences",ex:"but rather lump together information from different research projects",mem:"lump 本义「<b>团块、疙瘩</b>」⟹ 动词「<b>揉成一团</b>」⟹ <b>不分青红皂白地归到一起（贬义）</b>。<br>⭐⭐ <b>29 题正确项 A 的正源</b>：<code>lump together</code>（胡乱堆）＋ <code>not systematically</code>（不系统）＝ <b>disorganized data collection</b>。",syn:"throw together · bundle together · conflate",conf:"⭐ <b>作文可用</b>：<code>We should not lump all young people together.</code>（不该把所有年轻人一概而论。）<b>写「反对刻板印象」时很好用。</b><br>⚠️ <b>29 题 B 项 <code>overlapping</code>（重叠、重复建设）≠ lump together（把不同来源堆到一起）。</b>"},
+  differ:{w:"differ",ipa:"/ˈdɪfə(r)/",pos:"v.",tags:["core"],cn:"不同，有差异；意见不一",en:"to be different from sth; to disagree",ex:"a person's test results may differ depending on the company",mem:"📌 <b>differ 是动词，different 是形容词</b>——中国学生最爱写成 <code>may be differ</code>。<b>正确：<code>Results may differ.</code> ／ <code>Results may be different.</code></b><br>⭐ 短语：<b>differ from</b>（与……不同）· <b>differ in</b>（在……方面不同）· <b>I beg to differ.</b>（恕我不敢苟同。）",syn:"vary · diverge",conf:"⭐⭐ <b>这句话是⑥段前半最狠的一击</b>：<b>同一个人的样本，送到不同公司会得到不同结果</b>——<b>这才是「数据库不靠谱」的直接后果。</b><b>批评类文章里，「后果句」往往比「事实句」更能定题。</b>"},
+  dependon:{w:"depending on",ipa:"/dɪˈpendɪŋ ɒn/",pos:"prep.",tags:["phrase","write"],cn:"取决于……，视……而定",en:"according to; influenced by",ex:"results may differ depending on the company that processes the results",mem:"⭐ <b>作文可用</b>：<code>The answer varies depending on the context.</code>（答案因语境而异。）<b>比 <code>It depends.</code> 正式得多，且能直接接名词，写议论文很顺手。</b>",syn:"according to · subject to · in line with",conf:"📌 <b>注意与 <code>only as good as</code> 的分工</b>：<b><code>depending on</code> 是中性的「视……而定」</b>，<b><code>only as good as</code> 带贬抑</b>。<b>⑥段先用后者定调（①句），再用前者说后果（③句）——同一层意思，两种力度。</b>"},
+  processv:{w:"process (v.)",ipa:"/ˈprəʊses/",pos:"v.",tags:["poly","core"],cn:"<b>处理，加工（数据、申请、样本）</b>",en:"to deal with data or materials officially or by a system",ex:"the company that processes the results",mem:"📌 <b>又一个名转动</b>：process（过程）⟹ <b>让某物走完流程 ＝ 处理</b>。<br>⭐ 高频搭配：<code>process data / an application / a claim</code>（处理数据／申请／索赔）· <code>data processing</code>（数据处理）· <code>food processing</code>（食品加工）。",syn:"handle · deal with · treat",conf:"⭐ <b>本篇五个名转动的词</b>：swab · note · number · hawk · process。<b>它们的意思全都能从名词义推出来</b>（过程 → 使经过流程 → 处理）。<b>词性一判，义项自动落地。</b>"},
+  estimate:{w:"estimate",ipa:"/ˈestɪmeɪt/",pos:"v./n.",tags:["core","write"],cn:"估算，判定；估计（值）",en:"to form an idea of the cost, size or value of sth",ex:"the computer programs a company uses to estimate relationships",mem:"⭐ <b>本句里 estimate 的宾语是 relationships（亲属关系）</b>——<b>「判定谁和谁有血缘」本质上是一个<u>概率估算</u>，而不是一个确定答案。</b><b>这个词本身就在呼应⑤段的「伪精确」。</b><br>📌 <b>本句有一个省略了 that 的定语从句</b>：<code>the computer programs <b>(that) a company uses</b> to estimate relationships</code> ——<b>主谓被撑开了六个词。</b>",syn:"calculate · gauge · assess · reckon",conf:"⭐ <b>作文可用</b>：<code>It is estimated that…</code>（据估计……）是引出数据的稳妥句式；<b>underestimate / overestimate</b>（低估／高估）也是高频词。"},
+  patented:{w:"patented",ipa:"/ˈpætntɪd/",pos:"adj./v.",tags:["poly","core"],cn:"<b>已获专利保护的</b>（被动）",en:"protected by a patent",ex:"the computer programs … may be patented and not subject to peer review",mem:"⚠️⚠️ <b>29 题 D 项的产地，也是本篇第二把刀的样本。</b><br><b>①<code>be patented</code> 是被动＝「<u>已经</u>受专利保护」，不是「没申请专利」；</b><br><b>②它与句末的 <code>evaluation</code> 分属 <code>and</code> 连接的<u>两个并列表语</u>，根本不是 <code>patent evaluation</code> 这个短语。</b>",syn:"protected by patent · proprietary",conf:"⭐⭐ <b>操作动作（R39）</b>：<b>把选项里的短语当<u>整体</u>回原文搜。</b>两个词若被 <code>and</code>／逗号／不同介词隔开，<b>就是焊出来的假短语</b>。<b>本项只要在原句里看见那个 and，一秒即可排除。</b>"},
+  subjectto:{w:"be subject to",ipa:"/ˈsʌbdʒɪkt tə/",pos:"phr.",tags:["phrase","poly","write"],cn:"<b>接受，经受（审查／约束）；易受……影响</b>",en:"likely to be affected by sth; under the authority of sth",ex:"not subject to peer review or outside evaluation",mem:"⚠️ <b>与名词 subject（主题、科目、学科）完全不同</b>，这里 subject 是形容词。<br>📌 <b>三个常用义</b>：① <b>受……管辖／须经……</b>（<code>subject to approval</code> 须经批准）· ② <b>易遭受</b>（<code>subject to change</code> 可能变动）· ③ <b>以……为条件</b>。",syn:"liable to · open to · governed by",conf:"⭐ <b>作文高级搭配</b>：<code>Algorithms should be subject to public scrutiny.</code>（算法应接受公众审查。）<b>写科技监管类题目直接可用。</b>"},
+  peerreview:{w:"peer review",ipa:"/pɪə rɪˈvjuː/",pos:"n.",tags:["phrase","write"],cn:"同行评审（学界的质量把关制度）",en:"evaluation of scientific work by others working in the same field",ex:"not subject to peer review or outside evaluation",mem:"peer（<b>同行、同辈</b>）＋ review（审查）。<b>学术论文发表前须由同领域专家匿名审阅，这是科学界的质量底线。</b><br>⭐⭐ <b>跨篇复现</b>：<code>peer review</code> 正是 <b>2008·T2「科学出版的在线转向」</b>那篇的核心概念。<b>那篇把它当制度支柱，本篇用它当照妖镜——商业公司靠专利<u>躲开</u>了它。</b>",syn:"peer evaluation · refereeing",conf:"⭐⭐ <b>这正是「复盘要按概念横向串、而不是按篇孤立记」的最好例证</b>：<b>同一个词在两篇里扮演相反的角色，只有把两篇放在一起，这个概念才真正立体。</b>"},
+  evaluation:{w:"outside evaluation",ipa:"/ɪˌvæljuˈeɪʃn/",pos:"n.",tags:["phrase","core"],cn:"外界评估（由无利益关联的第三方进行）",en:"assessment carried out by people not connected with the organization",ex:"not subject to peer review or outside evaluation",mem:"⚠️⚠️ <b>30 题 C 项的产地</b>：<code><b>outside</b></code> 在这里修饰 <code>evaluation</code>，意为<b>「外部的（人／机构）」</b>——<b>与「实验室之外」毫无关系</b>（全文压根没出现过 lab）。<br>⭐ <b>标题题第三查：标题里若有原文出现过的词，回原文核它当时的搭配对象。</b>",syn:"external assessment · independent review",conf:"⭐⭐ <b>末段④句的两个否定对象要分清</b>：缺的是 <b>peer review</b> 和 <b>outside evaluation</b>（<u>评估</u>），<b>不是「对专利的评估」</b>。<b>29D 与 30C 是同一句话上造出来的两个陷阱。</b>"}
+};
+
+const panel=document.getElementById('panel');
+const isMobile=()=>window.innerWidth<=900;
+function badge(t){const m={core:'核心',phrase:'短语',poly:'僻义',write:'写作'};return `<span class="badge b-${t}">${m[t]}</span>`}
+function showCard(k,el){
+  const d=V[k];if(!d)return;
+  document.querySelectorAll('.tk.active').forEach(x=>x.classList.remove('active'));
+  if(el)el.classList.add('active');
+  panel.innerHTML=`<div class="wcard"><button class="close" onclick="panel.classList.remove('open')">收起</button>
+    <div class="head"><span class="w">${d.w}</span><span class="ipa">${d.ipa}</span><span class="pos">${d.pos}</span>${d.tags.map(badge).join('')}</div>
+    <div class="cn">${d.cn}</div><div class="en-def">${d.en}</div>
+    <div class="row r-ex"><b>原文语境</b>“…${d.ex}…”</div>
+    <div class="row r-mem"><b>怎么记</b>${d.mem}</div>
+    <div class="row r-syn"><b>同类词</b>${d.syn}</div>
+    <div class="row r-conf"><b>易混辨析</b>${d.conf}</div>
+  </div>`;
+  if(isMobile())panel.classList.add('open');
+}
+document.querySelectorAll('.tk').forEach(t=>t.addEventListener('click',e=>{e.stopPropagation();showCard(t.dataset.w,t)}));
+
+function tz(btn){btn.closest('.para').classList.toggle('showzh')}
+let allOn=false;
+function toggleAll(){allOn=!allOn;document.querySelectorAll('.para').forEach(p=>p.classList.toggle('showzh',allOn))}
+function go(id){document.getElementById(id).scrollIntoView({behavior:'smooth',block:'center'});const s=document.getElementById(id);s.style.transition='none';s.style.opacity=.3;setTimeout(()=>{s.style.transition='opacity .8s';s.style.opacity=1},80)}
+
+document.querySelectorAll('.q').forEach(q=>{
+  const ans=+q.dataset.ans;
+  q.querySelectorAll('.opt').forEach((o,i)=>o.addEventListener('click',()=>{
+    if(q.classList.contains('done'))return;
+    q.classList.add('done');
+    if(i!==ans)o.classList.add('wrong');
+    q.querySelectorAll('.opt')[ans].classList.add('right');
+  }));
+});
+
+const vg=document.getElementById('vgrid');
+function renderGrid(f){
+  vg.innerHTML='';
+  Object.keys(V).forEach(k=>{
+    const d=V[k];
+    if(f!=='all'&&!d.tags.includes(f))return;
+    const div=document.createElement('div');div.className='vitem';
+    div.innerHTML=`<span class="badges">${d.tags.map(badge).join('')}</span><div class="w">${d.w}</div><div class="cn">${d.cn}</div>`;
+    div.addEventListener('click',()=>{showCard(k,null);if(!isMobile())window.scrollTo({top:0,behavior:'smooth'})});
+    vg.appendChild(div);
+  });
+}
+renderGrid('all');
+document.querySelectorAll('.fbtn').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.fbtn').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderGrid(b.dataset.f);
+}));
+
+const yd=document.getElementById('yd');let sel='';
+document.addEventListener('selectionchange',()=>{
+  const s=window.getSelection();const t=s?s.toString().trim():'';
+  if(t&&/^[a-zA-Z' -]{2,40}$/.test(t)){
+    sel=t;
+    try{const r=s.getRangeAt(0).getBoundingClientRect();
+      yd.style.left=Math.min(r.left,window.innerWidth-110)+'px';
+      yd.style.top=(r.bottom+8)+'px';yd.style.display='block';}catch(e){}
+  }else{yd.style.display='none'}
+});
+yd.addEventListener('click',()=>{window.open('https://dict.youdao.com/result?word='+encodeURIComponent(sel)+'&lang=en');yd.style.display='none'});
+document.addEventListener('click',e=>{if(e.target!==yd&&!window.getSelection().toString())yd.style.display='none'});
+</script>
+<script src="_fault_attr.js"></script>
+</body>
+</html>

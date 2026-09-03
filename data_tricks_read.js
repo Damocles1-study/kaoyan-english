@@ -127,13 +127,13 @@ window.TRICK_READ = [
      +'<tr><td><b>已知换未知</b></td><td>把原文<b>已经交代清楚</b>的东西，说成「有待查明/尚不知道」的东西</td><td>2007·T4·37B：被泄露的数据是什么，句首就写明了（<code>customer and employee data</code>）——已知的东西不会是「要去查明」的东西</td></tr>'
      +'<tr><td><b>泛化 / 扩大范围</b></td><td>一部具体的法 → 一整类立法；一个州 → 全世界；一个技巧 → 整类行为</td><td>2007·T4·40C：加州那部「数据被盗须告知」的法 → <b>security legislation</b>；美国首个州 → <b>takes the lead</b>（而欧洲早有罚则）。<b>2008·T3 一篇里考了两次</b>：33A 把 <code>NBA players</code>（几十人）放大成 <code>the nation</code>（三亿人）、34A 把 <code>military uniforms</code> 放大成 <code>the garment industry</code>。<b>2008·T4 又考了两次</b>：36C 把 <code>the lives of the founding generation</code>（开国一代人）放大成 <code>the U.S. history</code>（整部国史）、37D 把 <code>the nation’s early leaders</code> 放大成 <code>throughout the U.S. history</code>——<b>操作动作见 <a href="#R24">R24</a> 范围校验</b></td></tr>'
      +'<tr><td><b>偷换语义重心</b>（第十三类·2009·T1 立）</td><td>选项挑的词<b>确实在原文里</b>，但它是那句话的<b>被定义项</b>而非<b>特征</b>——挑的是不承重的那个词</td><td>2009·T1·21B <code>familiar</code>：<code>familiar routine</code> 是 habit 的<b>另一种说法</b>，本句语义重心压在 <code>mindlessly / unconscious</code> 上 ⟹ 正确项是 <b>mechanical</b>。<b>判据：把候选词从句子里删掉，若句子的核心断言不变，它就不承重</b></td></tr>'
-     +'<tr><td><b>常识陷阱</b>（第十二类·2008·T4 立）</td><td>选项<b>在现实中完全正确</b>，但<b>文章从没说过</b>。你越有背景知识越容易中招</td><td>2008·T4·39B <code>Slaves in the old days did not have the right to vote</code>——历史上千真万确，<b>可原文只谈「分配国会席位时把奴隶算作五分之三个人」，一个字没提投票权</b>。<b>判据：<code>according to the text</code> 只问「文章说过没有」，不问「这句话对不对」；凡不读文章就知道它是真的选项，先按无中生有处理</b></td></tr></table>'
+     +'<tr><td><b>常识陷阱</b>（第十二类·2008·T4 立）</td><td>选项<b>在现实中完全正确</b>，但<b>文章从没说过</b>。你越有背景知识越容易中招</td><td>2008·T4·39B <code>Slaves in the old days did not have the right to vote</code>——历史上千真万确，<b>可原文只谈「分配国会席位时把奴隶算作五分之三个人」，一个字没提投票权</b>。<b>判据：<code>according to the text</code> 只问「文章说过没有」，不问「这句话对不对」；凡不读文章就知道它是真的选项，先按无中生有处理</b></td></tr><tr><td><b>客观⟹主观</b>（第十四类·2009·T2 立）</td><td>原文给的是<b>一个数字或一句事实</b>，选项给的是<b>一个带评价色彩的词</b></td><td>2009·T2·26 的 <b>C、D 双杀</b>：靠「6 万人购买」推出 <code>successful <b>promotion</b></code>／<code><b>popularity</b> with households</code>——<b>缺参照系、缺归因</b>（原文的 <code>since … without prescriptions</code> 已把原因归给政策变化）；28C 把 <code><b>reveal</b></code>（能揭示多少＝客观上限）换成 <code>fully <b>use</b></code>（没充分利用＝主观没做够）。<b>判据：问一句「从这条事实走到这个评价，中间还缺什么？」</b>——见 <a href="#R37">R37</a></td></tr><tr><td><b>原词拼接</b>（第十五类·2009·T2 立）</td><td>两个词<b>都在原文</b>，却<b>分属两个并列成分</b>，被焊成一个原文没有的短语</td><td>2009·T2·29D <code>lack of <b>patent evaluation</b></code>：原文是 <code>may be <b>patented</b> <u>and</u> not subject to … <b>evaluation</b></code>，<b>被 and 隔开的两个表语</b>；30C <code><b>Outside</b> the Lab</code> 里的 <code>outside</code> 在原文是 <code>outside <b>evaluation</b></code>（外界评估）。<b>判据：把短语当整体回搜，看两词之间有没有 and／逗号</b>——见 <a href="#R39">R39</a></td></tr></table>'
      +'<p style="margin-top:8px"><b>反向提醒</b>：干扰项爱<b>原词照抄</b>，正确项常是<b>归纳性改写</b>。'
      +'看到某项与原文字面高度重合，先回原句问一句「<b>这句在说谁</b>」——主语对不上，词再像也是错的。</p>',
  traps:['一个选项可能同时踩两类（偷换+张冠李戴），命中任一类即可排除。',
         '<b>四个选项全都「看着像对的」时，说明这一题考的不是词而是句子骨架</b>——立刻切到 <b>R21 的三问（谁 / 对谁 / 做了什么）</b>，逐项拆主谓宾，别再靠眼熟。',
         '「偷换主语」是最隐蔽的一种偷换：2007·T1·23 的 D 把原文 it（指 deliberate practice）悄悄换成题干问的 good memory。'],
- refs:[{p:'2022_T1_塑料文物保护.html',q:'q21',label:'T1·21'},{p:'2022_T2_Z世代与学位.html',q:'q28',label:'T2·28'},{p:'2022_T1_塑料文物保护.html',q:'q23',label:'T1·23'},{p:'2007_T1_刻意练习造就高手.html',q:'q23',label:'2007·T1·23'},{p:'2008_T4_开国元勋与奴隶制.html',q:'q39',label:'2008·T4·39（常识陷阱）'},{p:'2009_T1_习惯与创新.html',q:'q21',label:'2009·T1·21（偷换语义重心）'}]},
+ refs:[{p:'2022_T1_塑料文物保护.html',q:'q21',label:'T1·21'},{p:'2022_T2_Z世代与学位.html',q:'q28',label:'T2·28'},{p:'2022_T1_塑料文物保护.html',q:'q23',label:'T1·23'},{p:'2007_T1_刻意练习造就高手.html',q:'q23',label:'2007·T1·23'},{p:'2008_T4_开国元勋与奴隶制.html',q:'q39',label:'2008·T4·39（常识陷阱）'},{p:'2009_T1_习惯与创新.html',q:'q21',label:'2009·T1·21（偷换语义重心）'},{p:'2009_T2_DNA检测与伪精确.html',q:'q26',label:'2009·T2·26（客观⟹主观）'},{p:'2009_T2_DNA检测与伪精确.html',q:'q29',label:'2009·T2·29（原词拼接）'}]},
 
 {id:'R9', tier:'🟢', qt:'通用 · 信号灯', title:'两国家/两方案 &amp; 让步从句 = 出题信号灯',
  trig:['末段出现两个国家/两个方案','even if / although','Nor + 倒装'],
@@ -694,11 +694,99 @@ window.TRICK_READ = [
  traps:['<b>本卡救的是「差点被误排的正确项」</b>，与大多数套路卡（教你怎么排错项）方向相反——因为它对应的失误是「排得太狠」。',
         '同段若还有一个<b>词面更像原文</b>的选项，它往往才是陷阱（复现概念、扭曲关系）。2009·T1·24 的 B、C 两项都是这么造的。'],
  refs:[{p:'2009_T1_习惯与创新.html',q:'q24',label:'2009·T1·24 正确项 D'}]}
+,
+
+{id:'R37', tier:'🔴', qt:'通用 · 排除选项（主旨题 / 细节题 / 观点题皆可用）', title:'客观事实 ⟹ 主观评价：数字推不出「受欢迎」，做不到不等于没做好',
+ trig:['选项里出现 popular / successful / effective / widespread / welcomed','选项里出现 fully / properly / adequately + 动词',
+       '定位句给的只是一个数字或一句事实陈述','四个选项都能在原文里找到出处'],
+ flow:'① 找到该选项的<b>定位句</b>，判断它给的是<b>事实</b>（数字、动作、能力）还是<b>评价</b>（好不好、成不成功）；'
+     +'② 若原文是事实、选项是评价，问一句：<b>「从这条事实走到这个评价，中间还缺什么？」</b>；'
+     +'③ 缺 <b>参照系</b>（多少才算多）／缺 <b>归因</b>（是不是这个原因造成的）／缺 <b>主观意图</b>（做不到 ≠ 不想做）——<b>缺任何一样就排掉</b>。',
+ tmpl:'<table class="tk"><tr><th>原文（客观）</th><th>干扰项（主观）</th></tr>'
+     +'<tr><td><code>More than 60,000 people have <b>purchased</b></code>（一个购买量）</td>'
+     +'<td><code>successful <b>promotion</b></code> ✘ 缺归因——原文的 <code><b>since</b> they first became available <b>without prescriptions</b></code> 已把原因给了政策变化</td></tr>'
+     +'<tr><td>同上</td><td><code><b>popularity</b> with households</code> ✘ 缺参照系（6 万算多吗？）＋ 换主体（people ≠ households）</td></tr>'
+     +'<tr><td><code>can <b>reveal</b> … about only one or two ancestors</code>（能揭示多少＝客观上限）</td>'
+     +'<td><code>fails to <b>fully use</b> genetic information</code> ✘ 把「<b>做不到</b>」滑成「<b>没做够</b>」</td></tr></table>'
+     +'<p style="margin-top:8px"><b>反向提醒</b>：<b>正确项从不做这种升格。</b>2009·T2·26 的正确项 <code>easy availability</code> 说的仍是<u>一件事实</u>（买得到），'
+     +'没有任何褒贬——<b>「正确项比干扰项更平淡」在主旨题里是常态。</b></p>',
+ traps:['⚠️ <b>最难防的是「原因已经写明」这一种</b>：题干句里若出现 <code>since / because / as a result of</code>，'
+        +'<b>原文已经替你归好因了，选项再补一个原因就是错的</b>。读到这三个词顺手标一个「因」字。',
+        '⚠️ <b>动词层面的滑动最隐蔽</b>：<code>reveal → use</code> · <code>cannot → does not</code> · <code>fail to work → refuse to work</code>——'
+        +'<b>只动一个动词，归因的性质就从「能力」变成了「态度」。读长难句时把主句的实义动词圈出来。</b>',
+        '<b>本卡与三把老刀是一组</b>：<b>R21</b> 管「主体换没换」· <b>R24</b> 管「范围大小对不对」· <b>R35</b> 管「所指对象是谁」· '
+        +'<b>R37 管「这句话的<u>性质</u>变了没有」</b>。⟹ 选项与原文之间的四种错位：<b>主体 · 范围 · 所指 · 性质</b>。'],
+ refs:[{p:'2009_T2_DNA检测与伪精确.html',q:'q26',label:'2009·T2·26（C、D 双杀）'},
+       {p:'2009_T2_DNA检测与伪精确.html',q:'q28',label:'2009·T2·28（C 项 reveal→use）'},
+       {p:'2009_T2_DNA检测与伪精确.html',q:'col1',label:'2009·T2 · 02+ 专栏「主刀三连」'}]},
+
+{id:'R38', tier:'🔴', qt:'事实细节题（题干主语是缩写 / 专名 / 具体产品）', title:'题干主语的层级校准：问的是「种」还是「属」？——属的性质不能归给种',
+ trig:['题干主语是一个缩写（PTK / GDP / the Act）或专有产品名','定位段讲的是一整类事物，题干问的却是其中一种',
+       '选项里出现的用途在原文有，但主语对不上'],
+ flow:'① 先问一句：<b>题干主语是「这一大类」还是「其中一种」？</b>'
+     +'② 若定位段讲的是<b>上位类</b>（DNA testing），而题干问的是<b>下位的具体产品</b>（PTK），'
+     +'<b>立刻回文找「第一次出现这个专名并给它下定义的那一句」</b>——它常常不在定位段里；'
+     +'③ 用那句定义句去比选项，定位段里属于「属」的其他功能一律不算。',
+ tmpl:'<table class="tk"><tr><th>层级</th><th>原文怎么说</th></tr>'
+     +'<tr><td><b>属</b>：DNA testing（③段）</td><td>亲子鉴定 · 寻血亲 · 追送养儿童 · <b>系谱寻根</b>（geographic roots）</td></tr>'
+     +'<tr><td><b>种</b>：PTK（①段定义句）</td><td><code>confirm that <b>he’s the kid’s dad</b></code> ⟹ 只做<b>亲子关系确认</b></td></tr></table>'
+     +'<p style="margin-top:8px"><b>2009·T2·27 的 A 项 <code>locate one’s birth place</code> 就是把「属」的寻根功能安给了「种」</b>——'
+     +'寻根是系谱生意，不是 PTK 干的活；而且 <code>a family’s geographic roots</code>（家族发源地）≠ <code>one’s birth place</code>（个人出生地）。</p>',
+ traps:['⚠️ <b>定位段 ≠ 答案段</b>。本题定位在③段，答案句却在①段——<b>隔了两段</b>。',
+        '⚠️ <b>缩写本身常常就是答案</b>：<b>P</b>aternity <b>T</b>esting <b>K</b>it 拆开就写着「亲子鉴定」。<b>题干里的缩写第一时间还原成全称。</b>',
+        '<b>反过来也成立</b>：题干问的是「属」而定位句只讲了「某一种」时，同样不能把种的特性放大成属的特性——那就是 <b>R24 范围校验</b> 的活。'],
+ refs:[{p:'2009_T2_DNA检测与伪精确.html',q:'q27',label:'2009·T2·27（定位③段，答案在①段）'}]},
+
+{id:'R39', tier:'🔴', qt:'通用 · 排除选项（标题题 / 细节题最常用）', title:'原词拼接：两个词都在原文，却分属两个并列成分——把短语当整体回搜',
+ trig:['选项是一个两词短语，两个词单独回文都能找到','拿不准时越读越像对的','标题题里出现原文出现过的词'],
+ flow:'① 把选项里那个短语当<b>整体</b>回原文默读一遍：<b>这两个词在原文里挨着吗？是同一个语法成分吗？</b>'
+     +'② 若它们被 <b>and ／ 逗号 ／ 不同介词</b> 隔开，<b>分属两个并列成分 ⟹ 是焊出来的假短语</b>；'
+     +'③ 若它们挨着但<b>中心词或定语被换了</b>（a family’s → one’s），同样是假的。',
+ tmpl:'<table class="tk"><tr><th>干扰项</th><th>原文里的真实关系</th></tr>'
+     +'<tr><td><code>lack of <b>patent evaluation</b></code>（29D）</td>'
+     +'<td><code>may be <b>patented</b> <u>and</u> not subject to peer review or outside <b>evaluation</b></code>'
+     +'——<b>分属 and 连接的两个并列表语</b>；缺的是<b>外界评估</b>，不是「对专利的评估」。'
+     +'且 <code>be patented</code> 是被动＝<b>已受专利保护</b>，不是「没申请专利」</td></tr>'
+     +'<tr><td><code>DNA Testing <b>Outside the Lab</b></code>（30C）</td>'
+     +'<td><code>or <b>outside</b> evaluation</code>——<code>outside</code> 修饰的是 <b>evaluation（外界评估）</b>，'
+     +'全文压根没出现过 <code>lab</code></td></tr>'
+     +'<tr><td><code>locate one’s <b>birth place</b></code>（27A）</td>'
+     +'<td><code>search for <b>a family’s</b> geographic roots</code>——<b>中心词从「家族的」换成了「个人的」</b></td></tr></table>'
+     +'<p style="margin-top:8px"><b>为什么值得先做这一步</b>：29D 只要在原句里看见那个 <code>and</code>，<b>一秒就能排</b>；'
+     +'而去想「专利到底该不该被评估」，就会越想越像。<b>形式判据永远比内容推理快。</b></p>',
+ traps:['<b>与 R34 是兄弟刀，别混成一张</b>：<b>R34 概念嫁接</b>＝<b>定语跑到了别的中心词头上</b>（American belief system → American thinking mode）；'
+        +'<b>R39 原词拼接</b>＝<b>两个不相干的并列成分被粘住了</b>（patented and … evaluation → patent evaluation）。'
+        +'<b>共同点：单个词全都能核上，整体核不上。</b>',
+        '⚠️ <b>标题题里尤其要查</b>：标题若含原文出现过的词，<b>一定回原文核它当时的搭配对象</b>——同一个词换个搭配就是另一个意思。'],
+ refs:[{p:'2009_T2_DNA检测与伪精确.html',q:'q29',label:'2009·T2·29（D 项 patent evaluation）'},
+       {p:'2009_T2_DNA检测与伪精确.html',q:'col2',label:'2009·T2 · 02++ 专栏「词都在，组合不在」'}]},
+
+{id:'R40', tier:'🟡', qt:'标题题 / 全文主旨题', title:'标题题三查：覆盖度 → 褒贬度 → 原词义项',
+ trig:['An appropriate title for the text is most likely to be','Which of the following is the best title','四个标题看着都沾边'],
+ flow:'① <b>查覆盖度</b>：先把文章分成几块（本篇只有两块：①–④介绍 ｜ ⑤⑥质疑），'
+     +'再把每个标题<b>拆成成分</b>逐一去盖——<b>只盖住一半的一律排除</b>；'
+     +'② <b>查褒贬度</b>：标题的感情色彩<b>不能比原文更狠</b>；'
+     +'③ <b>查原词义项</b>：标题里若有原文出现过的词，<b>回原文核它当时的搭配</b>。',
+ tmpl:'<table class="tk"><tr><th>选项</th><th>三查的结果</th></tr>'
+     +'<tr><td><code>Fors and Againsts of DNA Testing</code></td>'
+     +'<td>✘ <b>覆盖度</b>：Againsts 有（⑤⑥段），<b>Fors 没有</b>——③段的「最受欢迎」是<b>客观事实</b>，不是有人在辩护</td></tr>'
+     +'<tr><td><code>DNA Testing and Its Problems</code> ✔</td>'
+     +'<td><code>DNA Testing</code> 盖①–④段，<code>Its Problems</code> 盖⑤⑥段——<b>唯一同时盖住两半的</b></td></tr>'
+     +'<tr><td><code>DNA Testing Outside the Lab</code></td>'
+     +'<td>✘ <b>原词义项</b>：<code>outside</code> 在原文是 <code>outside <b>evaluation</b></code>（外界评估），与实验室无关；且只盖前四段</td></tr>'
+     +'<tr><td><code>Lies Behind DNA Testing</code></td>'
+     +'<td>✘ <b>褒贬度</b>：后两段只质疑<b>准确性</b>（false precision），未指控是<b>谎言</b>；且盖不住前四段</td></tr></table>'
+     +'<p style="margin-top:8px"><b>捷径</b>：<b>纵观其余四道题的题干</b>也能反推标题——26/27 考<b>特点与用途</b>，28/29 考<b>弊端</b>，'
+     +'<b>两块都被点到 ⟹ 标题必然是「事物 ＋ 它的问题」这种两半式。</b></p>',
+ traps:['⚠️ <b>「文章里确实很流行」≠「有支持方在论证」</b>——事实陈述不能当成一方的立场，这是 Fors 类选项的通病。',
+        '<b>与 R18（先判作者站没站队）配合用</b>：R18 定<b>方向</b>，R40 定<b>范围与力度</b>。'],
+ refs:[{p:'2009_T2_DNA检测与伪精确.html',q:'q30',label:'2009·T2·30'},
+       {p:'2008_T1_女性与压力.html',q:'q25',label:'2008·T1·25（中性标题 vs 有立场的标题）'}]}
 
 ];
 
 window.TRICK_READ_META = {
   subject:'英语一 · 阅读',
-  source:'2022 Text 1–4 · 2007 Text 1–4 · 2008 Text 1–4 · 2009 Text 1 · 2007/2008/2022 新题型 · 2008 完形',
+  source:'2022 Text 1–4 · 2007 Text 1–4 · 2008 Text 1–4 · 2009 Text 1–2 · 2007/2008/2022 新题型 · 2008 完形',
   note:'提炼自本复盘中心各篇阅读真题复盘页的技巧/干扰项分析，随复盘页增长。'
 };
