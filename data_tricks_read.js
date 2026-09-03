@@ -111,7 +111,7 @@ window.TRICK_READ = [
         '2007·T2·27 限定 Paragraph 3，D 项却取材于末段的 important elements，且与第二段的<b>设问句</b>（「智力有多少<b>能够</b>被明确？」＝尚无定论）正相反。'],
  refs:[{p:'2022_T2_Z世代与学位.html',q:'q29',label:'T2·29'},{p:'2007_T2_智力测试的边界.html',q:'q27',label:'2007·T2·27'}]},
 
-{id:'R8', tier:'🔴', qt:'通用 · 排除选项', title:'干扰项类型总纲（十一类）：认出类型就秒排',
+{id:'R8', tier:'🔴', qt:'通用 · 排除选项', title:'干扰项类型总纲（十三类）：认出类型就秒排',
  trig:['排除三个错误选项时','拿不准该选哪个'],
  flow:'考研阅读的错误项<b>几乎都能归进下面这几类</b>（前五类最常见，后面几类是本复盘中心逐篇补上的），认出是哪一类，排除就快且稳：',
  tmpl:'<table class="tk"><tr><th>类型</th><th>长相</th><th>例</th></tr>'
@@ -126,13 +126,14 @@ window.TRICK_READ = [
      +'<tr><td><b>偷换修饰对象</b>（第九类·极隐蔽）</td><td>形容词照抄原文，<b>被修饰的名词换掉</b></td><td>2007·T4·36B：<code>feeble <b>corporation governance</b></code>（乏力的公司治理）→ 说成「乏力的<b>老板与董事会关系</b>」</td></tr>'
      +'<tr><td><b>已知换未知</b></td><td>把原文<b>已经交代清楚</b>的东西，说成「有待查明/尚不知道」的东西</td><td>2007·T4·37B：被泄露的数据是什么，句首就写明了（<code>customer and employee data</code>）——已知的东西不会是「要去查明」的东西</td></tr>'
      +'<tr><td><b>泛化 / 扩大范围</b></td><td>一部具体的法 → 一整类立法；一个州 → 全世界；一个技巧 → 整类行为</td><td>2007·T4·40C：加州那部「数据被盗须告知」的法 → <b>security legislation</b>；美国首个州 → <b>takes the lead</b>（而欧洲早有罚则）。<b>2008·T3 一篇里考了两次</b>：33A 把 <code>NBA players</code>（几十人）放大成 <code>the nation</code>（三亿人）、34A 把 <code>military uniforms</code> 放大成 <code>the garment industry</code>。<b>2008·T4 又考了两次</b>：36C 把 <code>the lives of the founding generation</code>（开国一代人）放大成 <code>the U.S. history</code>（整部国史）、37D 把 <code>the nation’s early leaders</code> 放大成 <code>throughout the U.S. history</code>——<b>操作动作见 <a href="#R24">R24</a> 范围校验</b></td></tr>'
+     +'<tr><td><b>偷换语义重心</b>（第十三类·2009·T1 立）</td><td>选项挑的词<b>确实在原文里</b>，但它是那句话的<b>被定义项</b>而非<b>特征</b>——挑的是不承重的那个词</td><td>2009·T1·21B <code>familiar</code>：<code>familiar routine</code> 是 habit 的<b>另一种说法</b>，本句语义重心压在 <code>mindlessly / unconscious</code> 上 ⟹ 正确项是 <b>mechanical</b>。<b>判据：把候选词从句子里删掉，若句子的核心断言不变，它就不承重</b></td></tr>'
      +'<tr><td><b>常识陷阱</b>（第十二类·2008·T4 立）</td><td>选项<b>在现实中完全正确</b>，但<b>文章从没说过</b>。你越有背景知识越容易中招</td><td>2008·T4·39B <code>Slaves in the old days did not have the right to vote</code>——历史上千真万确，<b>可原文只谈「分配国会席位时把奴隶算作五分之三个人」，一个字没提投票权</b>。<b>判据：<code>according to the text</code> 只问「文章说过没有」，不问「这句话对不对」；凡不读文章就知道它是真的选项，先按无中生有处理</b></td></tr></table>'
      +'<p style="margin-top:8px"><b>反向提醒</b>：干扰项爱<b>原词照抄</b>，正确项常是<b>归纳性改写</b>。'
      +'看到某项与原文字面高度重合，先回原句问一句「<b>这句在说谁</b>」——主语对不上，词再像也是错的。</p>',
  traps:['一个选项可能同时踩两类（偷换+张冠李戴），命中任一类即可排除。',
         '<b>四个选项全都「看着像对的」时，说明这一题考的不是词而是句子骨架</b>——立刻切到 <b>R21 的三问（谁 / 对谁 / 做了什么）</b>，逐项拆主谓宾，别再靠眼熟。',
         '「偷换主语」是最隐蔽的一种偷换：2007·T1·23 的 D 把原文 it（指 deliberate practice）悄悄换成题干问的 good memory。'],
- refs:[{p:'2022_T1_塑料文物保护.html',q:'q21',label:'T1·21'},{p:'2022_T2_Z世代与学位.html',q:'q28',label:'T2·28'},{p:'2022_T1_塑料文物保护.html',q:'q23',label:'T1·23'},{p:'2007_T1_刻意练习造就高手.html',q:'q23',label:'2007·T1·23'},{p:'2008_T4_开国元勋与奴隶制.html',q:'q39',label:'2008·T4·39（常识陷阱）'}]},
+ refs:[{p:'2022_T1_塑料文物保护.html',q:'q21',label:'T1·21'},{p:'2022_T2_Z世代与学位.html',q:'q28',label:'T2·28'},{p:'2022_T1_塑料文物保护.html',q:'q23',label:'T1·23'},{p:'2007_T1_刻意练习造就高手.html',q:'q23',label:'2007·T1·23'},{p:'2008_T4_开国元勋与奴隶制.html',q:'q39',label:'2008·T4·39（常识陷阱）'},{p:'2009_T1_习惯与创新.html',q:'q21',label:'2009·T1·21（偷换语义重心）'}]},
 
 {id:'R9', tier:'🟢', qt:'通用 · 信号灯', title:'两国家/两方案 &amp; 让步从句 = 出题信号灯',
  trig:['末段出现两个国家/两个方案','even if / although','Nor + 倒装'],
@@ -628,12 +629,76 @@ window.TRICK_READ = [
         +'拿“概括段落主旨”的手感去做选句填空 ⟹ 忽略指代与照应，43/44 这种连体空必翻车。',
         '<b>三种变体的多余项造法各不相同</b>：标题匹配用<b>段内局部信息</b>做标题；观点匹配造一句<b>没人说过的话</b>；'
         +'选句填空则是<b>内容对但没有它的坑</b>（阶段错位）或<b>与正确项共用专名</b>。'],
- refs:[{p:'2008_新题型_如何写作初稿.html',q:'',label:'2008 · 选句填空（含三方对照表）'},{p:'2007_新题型_家长如何帮孩子.html',q:'',label:'2007 · 标题匹配'},{p:'2022_新题型_动物园之辩.html',q:'',label:'2022 · 观点匹配'}]}
+ refs:[{p:'2008_新题型_如何写作初稿.html',q:'',label:'2008 · 选句填空（含三方对照表）'},{p:'2007_新题型_家长如何帮孩子.html',q:'',label:'2007 · 标题匹配'},{p:'2022_新题型_动物园之辩.html',q:'',label:'2022 · 观点匹配'}]},
+{id:'R33', tier:'🔴', qt:'推理题 / 段末收口句', title:'「This is where X comes in」是反向诊断句——它在说 X 此刻正缺席',
+ trig:['段末出现 This is where … comes in','That’s where … comes in','Enter X.','This is where X becomes important'],
+ flow:'① 见到这类<b>登场句</b>，先别当成「X 很有用」的正面表扬；'
+     +'② <b>反过来读</b>：作者说某样东西「该出场了」，等于承认它<b>此刻正缺席</b>；'
+     +'③ 再往前看一句——<b>让它缺席的，就是紧挨着前面刚被批判的那个东西</b>；'
+     +'④ 把这个因果接上全文主线，正确项通常就是「<b>前面那个东西 阻碍了 X</b>」。',
+ tmpl:'<table class="tk"><tr><th>你读到的</th><th>该推出的</th></tr>'
+     +'<tr><td><code>This is where developing new habits comes in.</code></td><td>此刻新习惯<b>没能形成</b>，需要它来救</td></tr>'
+     +'<tr><td>紧挨着的上文：标准化测试压掉了创新与协作思维</td><td><b>正是标准化测试挡住了新习惯</b></td></tr>'
+     +'<tr><td>全文主线：新习惯 ⇄ 创新，相融相生</td><td>⟹ <b>测试阻碍新习惯的形成</b>（2009·T1·25 正确项 A）</td></tr></table>'
+     +'<p style="margin-top:8px"><b>注意正确项是「推理项」，原文没有任何一句直说</b>——但题干写的是 <code>Ryan’s comments <b>suggest</b> that…</code>，'
+     +'<code>suggest / imply / indicate</code> 就是明牌告诉你这是推理题。<b>看到这三个词，就该把「文中没直说」从排除理由里划掉。</b></p>',
+ traps:['<b>最容易的错法是把登场句读成对 X 的表扬</b>，于是去找「X 有什么好处」的选项——而正确项问的是「谁挡住了 X」。',
+        '这类句子几乎总出现在<b>段末或文末</b>，位置本身就是信号：它是<b>收口</b>，负责把整段的问题接到解决方案上。'],
+ refs:[{p:'2009_T1_习惯与创新.html',q:'q25',label:'2009·T1·25（Claude 在此翻车）'}]},
+
+{id:'R34', tier:'🔴', qt:'通用 · 排除选项', title:'概念嫁接：定语被安到了别的名词头上——把「定语＋中心词」当整体回搜',
+ trig:['选项里的每个词都眼熟，合起来却说不上哪里怪','选项出现一个带国名/领域名的定语（American / medical / legal …）'],
+ flow:'① 把选项里的<b>「定语 ＋ 中心词」当成一个<u>整体</u></b>回原文搜；'
+     +'② 单个词都能找到、<b>组合起来找不到</b> ⟹ 判为<b>概念嫁接</b>，直接排；'
+     +'③ 这个动作只要五秒，<b>比走完推理链快得多，而且对所有题型都有效</b>。',
+ tmpl:'<table class="tk"><tr><th></th><th>原文真实存在的组合</th><th>选项写的组合</th></tr>'
+     +'<tr><td>定语</td><td><code>American</code></td><td><code>American</code></td></tr>'
+     +'<tr><td>中心词</td><td><code>belief system</code>（信仰体系）</td><td><code>thinking mode</code>（思维方式）</td></tr>'
+     +'<tr><td>整体</td><td><code>the American belief system</code> ✔ 原文有</td><td><code>the American thinking mode</code> ✘ <b>原文从未出现</b></td></tr></table>'
+     +'<p style="margin-top:8px"><b>与 R8 第九类「偷换修饰对象」是同一族，但方向相反</b>：'
+     +'第九类是<b>形容词照抄、名词换掉</b>（2007·T4·36B）；本卡是<b>把原文某处的定语搬到另一处的名词上</b>，'
+     +'两处词都真实存在，所以更难查——<b>唯一可靠的判据就是「整体搜不到」</b>。</p>',
+ traps:['带国名、领域名的定语最容易被搬（American / Chinese / medical / legal / academic），因为它们在文章里往往只出现一两次，读者对它没有位置记忆。',
+        '<b>别用「这个词原文有」来给选项背书</b>——原文有的是<u>词</u>，不是<u>词组</u>。'],
+ refs:[{p:'2009_T1_习惯与创新.html',q:'q25',label:'2009·T1·25 的 C 项'},{p:'2007_T4_数据泄密的公司.html',q:'q36',label:'2007·T4·36B（第九类对照）'}]},
+
+{id:'R35', tier:'🔴', qt:'通用 · 排除选项', title:'「本源词」的定义常在上一段——inherent / innate / natural 一律跨段追',
+ trig:['选项出现 inherent / innate / natural / original / born with / by nature','选项出现 the inherent X'],
+ flow:'① 见到这类<b>本源词</b>，<b>不要在定位段里就地理解它</b>；'
+     +'② 回原文找<b>真正给「本源」下定义</b>的那一句——<b>它经常在上一段，而且往往带一个数字或范围</b>；'
+     +'③ 把那个数字/范围与选项并排比，<b>动词（maintain / change / reduce）是不是对的，一比就出来</b>。',
+ tmpl:'<table class="tk"><tr><th>句</th><th>原文</th><th>推出</th></tr>'
+     +'<tr><td>⑥②（<b>定义句·上一段</b>）</td><td><code>humans are <b>born with</b> the capacity … in <b>four</b> primary ways</code></td><td>与生俱来的是<b>四种</b></td></tr>'
+     +'<tr><td>⑥③</td><td><code>the brain <b>shuts down half</b> of that capacity</code></td><td>后来只剩<b>一半</b></td></tr>'
+     +'<tr><td>⑦①（<b>定位句</b>）</td><td>标准化测试强调分析与程序</td><td>它<b>改变／削减</b>了本源，<b>不是「维持」</b></td></tr></table>'
+     +'<p style="margin-top:8px">⚠️ 还要看<b>词性</b>：⑦①句的 <code>inherently</code> 是<b>副词修饰动词 use</b>（本能地使用），'
+     +'选项把它变成名词短语里的<b>定语</b> <code>the inherent … mode</code>——<b>词性一换，所指就漂了</b>。</p>'
+     +'<p style="margin-top:6px"><b>与 <a href="#R24">R24 范围校验</a> 是兄弟刀</b>：R24 问「<b>大小</b>对不对」，本卡问「<b>指的是谁</b>」。'
+     +'查过范围不等于安全。</p>',
+ traps:['<b>就地取材是最容易犯的错，因为读起来一切都很顺</b>——定位段里那个本源词的上下文完全自洽，你根本不会想到要往回翻。',
+        '本源词常与「数字」绑定（四种能力 / 两类人 / 三个阶段）。<b>凡定义句里带数字，正确项与错误项的分界几乎一定在那个数字上。</b>'],
+ refs:[{p:'2009_T1_习惯与创新.html',q:'q25',label:'2009·T1·25（C 项死于「四种」）'}]},
+
+{id:'R36', tier:'🟡', qt:'人物观点 / 细节题', title:'必要条件句可以合法转写成「X 激发 Y」——别因为词面对不上就排掉',
+ trig:['原文出现 The first thing needed for Y is X','Y requires X','Without X there is no Y','X is essential/vital to Y'],
+ flow:'① 认出原文是一句<b>「X 是 Y 的必要条件」</b>；'
+     +'② 选项若写成 <b>「X 激发／促成／推动 Y」</b>（activates / fosters / drives / gives rise to），<b>本质一致，是合法同义转述</b>；'
+     +'③ <b>不要用「原文没有 activates 这个词」当排除理由</b>——正确项从不承诺有原词，只承诺有逻辑等价。',
+ tmpl:'<table class="tk"><tr><th>原文</th><th>选项</th></tr>'
+     +'<tr><td><code>The first thing <b>needed for</b> innovation <b>is</b> a fascination with wonder</code></td>'
+     +'<td><code>curiosity <b>activates</b> creative minds</code> ✔</td></tr>'
+     +'<tr><td>同义替换：<code>a fascination with wonder</code> ↔ curiosity</td><td><code>innovational thinker</code> ↔ creative minds</td></tr></table>'
+     +'<p style="margin-top:8px"><b>反过来也要警惕</b>：把「必要条件」写成「<b>充分条件</b>」就是错的——'
+     +'<code>X is needed for Y</code>（没有 X 就没有 Y）≠ <code>X guarantees Y</code>（有 X 就一定有 Y）。'
+     +'<b>看到 guarantees / ensures / always leads to 这类词，反而要回头核。</b></p>',
+ traps:['<b>本卡救的是「差点被误排的正确项」</b>，与大多数套路卡（教你怎么排错项）方向相反——因为它对应的失误是「排得太狠」。',
+        '同段若还有一个<b>词面更像原文</b>的选项，它往往才是陷阱（复现概念、扭曲关系）。2009·T1·24 的 B、C 两项都是这么造的。'],
+ refs:[{p:'2009_T1_习惯与创新.html',q:'q24',label:'2009·T1·24 正确项 D'}]}
 
 ];
 
 window.TRICK_READ_META = {
   subject:'英语一 · 阅读',
-  source:'2022 Text 1–4 · 2007 Text 1–4 · 2008 Text 1–4 · 2007/2008/2022 新题型 · 2008 完形',
+  source:'2022 Text 1–4 · 2007 Text 1–4 · 2008 Text 1–4 · 2009 Text 1 · 2007/2008/2022 新题型 · 2008 完形',
   note:'提炼自本复盘中心各篇阅读真题复盘页的技巧/干扰项分析，随复盘页增长。'
 };
