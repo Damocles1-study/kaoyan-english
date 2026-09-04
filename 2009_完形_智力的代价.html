@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2009 英一 完形 · 智力的代价</title>
+<style>
+  :root{
+    --bg:#faf9f6; --card:#ffffff; --ink:#2b2b2b; --muted:#8a8578;
+    --accent:#8b5e34; --accent-soft:#f3e9dd; --line:#e8e3d8;
+    --hl:#fdf3d8; --hl-border:#e0b84d;
+    --green:#3e7a4e; --green-soft:#e8f2ea;
+    --red:#b04a3a; --red-soft:#f9e9e6;
+    --blue:#3d6a8a; --blue-soft:#e7eff5;
+    --purple:#6d5a8e; --purple-soft:#eeeaf5;
+    --serif:"Georgia","Songti SC",serif;
+    --sans:-apple-system,"PingFang SC","Helvetica Neue",sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#1c1a17; --card:#26231f; --ink:#e8e4dc; --muted:#9a948a;
+      --accent:#d0a06a; --accent-soft:#3a3127; --line:#3a362f;
+      --hl:#3d3520; --hl-border:#b08c3a;
+      --green:#7fb98d; --green-soft:#26362b;
+      --red:#d98876; --red-soft:#3d2a26;
+      --blue:#8ab3d0; --blue-soft:#26323d;
+      --purple:#a996c8; --purple-soft:#302a3d;
+    }
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;padding-bottom:120px}
+  .wrap{max-width:1100px;margin:0 auto;padding:24px 20px}
+  .back{font-size:.85rem;color:var(--muted);text-decoration:none}
+  .back:hover{color:var(--accent)}
+  header{margin:14px 0 28px}
+  header h1{font-family:var(--serif);font-size:1.7rem;line-height:1.3}
+  header .sub{color:var(--muted);margin-top:6px;font-size:.9rem}
+  .tags{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+  .tag{font-size:.75rem;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);border:1px solid var(--line)}
+  .tag.spoiler{cursor:pointer;background:var(--card);color:var(--muted)}
+  .tag.spoiler .hid{filter:blur(5px)}
+  .tag.spoiler.open .hid{filter:none;color:var(--accent)}
+
+  .layout{display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:start}
+  @media (max-width:900px){.layout{grid-template-columns:1fr}}
+
+  section.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:24px}
+  h2{font-size:1.05rem;letter-spacing:.05em;color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  h2 .n{font-size:.72rem;background:var(--accent);color:var(--card);border-radius:6px;padding:1px 7px}
+  .note{font-size:.82rem;color:var(--muted);margin-bottom:14px}
+
+  .para{margin-bottom:22px}
+  .para .en{font-family:var(--serif);font-size:1.06rem;line-height:2.15}
+  .pno{color:var(--muted);font-size:.75rem;user-select:none;margin-right:6px}
+  .tk{background:var(--hl);border-bottom:2px solid var(--hl-border);border-radius:3px;padding:0 2px;cursor:pointer;transition:filter .15s}
+  .tk:hover{filter:brightness(.93)}
+  .tk.active{outline:2px solid var(--hl-border)}
+  .ls{border-bottom:2px dotted var(--blue);cursor:pointer}
+  .para .zh{display:none;margin-top:10px;padding:10px 14px;background:var(--blue-soft);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:.93rem}
+  .para.showzh .zh{display:block}
+  .zbtn{float:right;margin-left:10px;font-size:.72rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:6px;padding:2px 9px;cursor:pointer}
+  .zbtn:hover{color:var(--accent);border-color:var(--accent)}
+  .allbtn{font-size:.78rem;border:1px solid var(--accent);background:none;color:var(--accent);border-radius:8px;padding:4px 12px;cursor:pointer}
+
+  /* 完形空格 */
+  .bk{display:inline-block;min-width:64px;text-align:center;background:var(--hl);border-bottom:2px solid var(--hl-border);border-radius:4px;padding:0 6px;cursor:pointer;font-weight:600;color:var(--accent);transition:all .15s;font-family:var(--sans);font-size:.95rem}
+  .bk:hover{filter:brightness(.93)}
+  .bk.filled{background:var(--green-soft);border-bottom-color:var(--green);color:var(--green);font-family:var(--serif)}
+  .bk.miss{background:var(--red-soft);border-bottom-color:var(--red);color:var(--red);font-family:var(--serif)}
+  .bk.active{outline:2px solid var(--hl-border)}
+  .bk .idx{font-size:.7rem;color:var(--muted);margin-right:3px}
+
+  aside{position:sticky;top:20px}
+  #panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;min-height:180px}
+  #panel .hint{color:var(--muted);font-size:.88rem;text-align:center;padding:30px 10px}
+  .wcard .head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .wcard .w{font-family:var(--serif);font-size:1.35rem;font-weight:bold}
+  .wcard .ipa{color:var(--muted);font-size:.85rem}
+  .wcard .pos{font-size:.72rem;color:var(--purple);background:var(--purple-soft);padding:1px 8px;border-radius:999px}
+  .wcard .badge{font-size:.7rem;padding:1px 8px;border-radius:999px}
+  .b-core{background:var(--red-soft);color:var(--red)}
+  .b-phrase{background:var(--blue-soft);color:var(--blue)}
+  .b-poly{background:var(--purple-soft);color:var(--purple)}
+  .b-write{background:var(--green-soft);color:var(--green)}
+  .wcard .cn{margin-top:8px;font-size:1rem;font-weight:600}
+  .wcard .en-def{color:var(--muted);font-size:.86rem;font-style:italic;margin-top:2px}
+  .wcard .row{margin-top:10px;font-size:.86rem;padding:8px 10px;border-radius:8px}
+  .wcard .row>b:first-child{font-size:.72rem;display:block;margin-bottom:2px;letter-spacing:.06em}
+  .r-ex{background:var(--hl)} .r-ex b{color:var(--hl-border)}
+  .r-mem{background:var(--green-soft)} .r-mem b{color:var(--green)}
+  .r-syn{background:var(--blue-soft)} .r-syn b{color:var(--blue)}
+  .r-conf{background:var(--red-soft)} .r-conf b{color:var(--red)}
+  #panel .close{display:none}
+  @media (max-width:900px){
+    aside{position:fixed;left:0;right:0;bottom:0;z-index:50;padding:0 8px 8px}
+    #panel{box-shadow:0 -6px 24px rgba(0,0,0,.18);max-height:55vh;overflow-y:auto;display:none}
+    #panel.open{display:block}
+    #panel .close{display:block;float:right;border:none;background:var(--line);border-radius:8px;padding:2px 10px;cursor:pointer;color:var(--ink)}
+  }
+
+  /* 逐空精解 */
+  .q{margin-bottom:22px;padding-bottom:18px;border-bottom:1px dashed var(--line);scroll-margin-top:20px}
+  .q:last-child{border:none;margin-bottom:0;padding-bottom:0}
+  .q .stem{font-family:var(--serif);font-size:.98rem;background:var(--hl);border-radius:8px;padding:8px 12px;display:block}
+  .q .stem em{font-style:normal;font-weight:700;color:var(--accent);border-bottom:2px solid var(--hl-border);padding:0 4px}
+  .qhead{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+  .qno{font-family:var(--serif);font-size:1.2rem;font-weight:700;color:var(--accent)}
+  .qt{font-size:.7rem;border-radius:999px;padding:1px 9px}
+  .c-logic{background:var(--blue-soft);color:var(--blue)}
+  .c-collo{background:var(--green-soft);color:var(--green)}
+  .c-word{background:var(--red-soft);color:var(--red)}
+  .c-context{background:var(--purple-soft);color:var(--purple)}
+  .qpos{font-size:.7rem;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:1px 9px}
+  .opts{margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  @media (max-width:640px){.opts{grid-template-columns:1fr}}
+  .opt{border:1px solid var(--line);border-radius:10px;padding:7px 12px;cursor:pointer;font-size:.92rem;font-family:var(--serif);transition:all .15s}
+  .opt .gl{font-family:var(--sans);font-size:.8rem;color:var(--muted);margin-left:6px}
+  .opt:hover{border-color:var(--accent)}
+  .q.done .opt{cursor:default}
+  .opt.right{background:var(--green-soft);border-color:var(--green)}
+  .opt.wrong{background:var(--red-soft);border-color:var(--red)}
+  .expl{display:none;margin-top:12px;background:var(--accent-soft);border-radius:10px;padding:12px 14px;font-size:.9rem}
+  .q.done .expl{display:block}
+  .expl b{color:var(--accent)}
+  .expl .lbl{font-size:.74rem;letter-spacing:.06em;color:var(--muted);display:block;margin:10px 0 2px}
+  .expl .lbl:first-child{margin-top:0}
+  .expl code{font-family:var(--serif);background:var(--hl);border-radius:4px;padding:1px 5px}
+  .wrongs{margin-top:6px;display:grid;gap:5px}
+  .wr{font-size:.86rem;background:var(--card);border-radius:8px;padding:6px 10px;border-left:3px solid var(--red)}
+  .wr .l{font-family:var(--serif);font-weight:700;color:var(--red);margin-right:5px}
+
+  /* 计分条 */
+  .score{display:flex;gap:14px;flex-wrap:wrap;align-items:center;background:var(--hl);border-radius:12px;padding:10px 16px;margin-bottom:18px;font-size:.88rem}
+  .score .v{font-family:var(--serif);font-size:1.25rem;font-weight:700;color:var(--accent);margin-right:4px}
+  .score .rst{margin-left:auto;font-size:.78rem;border:1px solid var(--line);background:var(--card);color:var(--muted);border-radius:8px;padding:3px 10px;cursor:pointer}
+
+  /* 考点统计 */
+  .catbar{display:flex;height:26px;border-radius:8px;overflow:hidden;margin:10px 0 16px;border:1px solid var(--line)}
+  .catseg{display:flex;align-items:center;justify-content:center;font-size:.72rem;color:#fff;font-weight:600}
+  .catlegend{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px}
+  .cl{display:flex;gap:8px;align-items:center;font-size:.85rem;cursor:pointer;padding:6px 8px;border-radius:8px;border:1px solid var(--line)}
+  .cl:hover{border-color:var(--accent)}
+  .dot{width:12px;height:12px;border-radius:3px;flex:0 0 12px}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+  .chip{font-size:.78rem;background:var(--accent-soft);color:var(--accent);border-radius:6px;padding:2px 8px;cursor:pointer}
+  .chip:hover{filter:brightness(.94)}
+
+  /* 打法 / 搭配 */
+  .flow{display:grid;gap:10px;font-size:.92rem}
+  .flow .fi{border:1px solid var(--line);border-radius:10px;padding:10px 14px}
+  .flow .fi b{color:var(--accent)}
+  .flow .fi .ev{display:block;margin-top:4px;font-size:.85rem;color:var(--muted);border-left:3px solid var(--hl-border);padding-left:9px}
+  .wb{display:grid;gap:10px}
+  .wbi{border-left:3px solid var(--green);background:var(--green-soft);border-radius:0 10px 10px 0;padding:10px 14px;font-size:.92rem}
+  .wbi .p{font-family:var(--serif);font-weight:600}
+  .wbi .u{color:var(--muted);font-size:.85rem}
+
+  /* 长难句 */
+  .sent{margin-bottom:20px}
+  .sent .src{font-family:var(--serif);font-size:1rem;background:var(--blue-soft);padding:12px 14px;border-radius:10px;border-left:3px solid var(--blue)}
+  .sent .anat{margin-top:8px;font-size:.9rem}
+  .sent .anat li{margin:4px 0 4px 18px}
+  .sent .tr{margin-top:8px;font-size:.92rem;color:var(--muted)}
+  .skel{color:var(--red);font-weight:600}
+
+  /* 80词表 */
+  .otab{width:100%;border-collapse:collapse;font-size:.86rem}
+  .otab th,.otab td{border:1px solid var(--line);padding:5px 8px;vertical-align:top}
+  .otab th{background:var(--accent-soft);color:var(--accent);font-size:.78rem}
+  .otab td.n{text-align:center;font-family:var(--serif);color:var(--muted);width:38px}
+  .otab .ow{font-family:var(--serif)}
+  .otab .oc{color:var(--muted);font-size:.82rem;display:block}
+  .otab td.hit{background:var(--green-soft)}
+  .otab td.hit .ow{color:var(--green);font-weight:700}
+  .hidecn .oc{filter:blur(4px);cursor:pointer}
+  .hidecn .oc.show{filter:none}
+  .tabwrap{overflow-x:auto}
+
+  #yd{position:fixed;z-index:60;display:none;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:4px 12px;font-size:.8rem;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+  .fail{background:var(--red-soft);border:1px solid var(--red);border-radius:10px;padding:10px 13px;margin-bottom:10px;font-size:.89rem;line-height:1.75}
+  .fail b{color:var(--red)}
+  .expl .fail{margin-top:0}
+  footer{color:var(--muted);font-size:.8rem;text-align:center;margin-top:30px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">◀ 返回英语复盘中心</a>
+  <header>
+    <h1>智力的代价：如果动物来研究人类</h1>
+    <div class="sub">2009 年英语（一）真题 · Section I 完形填空（Use of English）· 275 词 · 建议 15–18 min · 话题：动物智力/进化（源自 <i>The New York Times</i> 2008-05-07 社论 <i>The Cost of Smarts</i>）</div>
+    <div class="tags">
+      <span class="tag spoiler" onclick="this.classList.toggle('open')">🙈 答案（点击显示）：<span class="hid">1B 2A 3D 4B 5C 6A 7D 8C 9B 10D 11D 12B 13C 14D 15A 16C 17B 18A 19A 20C</span></span>
+      <span class="tag">难度：中（几乎没有生词，难在语用功能与比喻）</span>
+      <span class="tag">Claude 盲做：20/20</span>
+      <span class="tag">⚠️ 本页最值钱的两段：「偶然词三连」与 18/19 连体空</span>
+    </div>
+  </header>
+
+  <div class="layout">
+    <main>
+
+      <!-- ========== 00 脉络 ========== -->
+      <section class="card">
+        <h2><span class="n">00</span>读前一分钟 · 全文脉络（完形先读首句，再看结构）</h2>
+        <p class="note">完形的<b>首句从不设空</b>——它是白送的定位坐标。本文首句 <i>Research on animal intelligence always makes us wonder just how smart humans are.</i> 一句话给全篇定了三件事：<b>话题</b>（拿动物智力反照人类智力）、<b>性质</b>（报纸社论，不是科普实验报告）、<b>语气</b>（自省、带点自嘲）。后面每个空都必须服从这个大背景。</p>
+        <p class="note" style="margin-top:10px">⭐⭐ <b>而本篇真正的结构信号，是第四段首句<u>原样复现了第一段首句</u></b>：<code>Research on animal intelligence <b>also</b> makes us wonder…</code>。<b>见到「首句被再说一遍」，就把文章对半切</b>——两半各管一批空，读第二半时前提已经换了。</p>
+        <div class="flow">
+          <div class="fi"><b>① 段一 · 第一次 wonder：人到底有多聪明</b>——摆实验（果蝇越聪明越短命），当场做推论（暗灯泡更耐用 ⟹ 不太亮/不太聪明是一种优势）。
+            <span class="ev">1–4 空全部挂在<b>一条灯泡比喻</b>上：Consider（引出例证）／tended（规律性趋势）／dimmer（反向类比）／advantage（褒义收口）。</span></div>
+          <div class="fi"><b>② 段二 · 智力为什么贵</b>——把智力比作汽车的<b>高价选装配置</b>：更费保养、更耗油、起步慢；因为它靠后天学习而非本能。末句反讽：别的物种也会学，只是<b>懂得何时停下</b>。
+            <span class="ev">5–8 空：turns out（段际总结）／off the starting line（汽车比喻的第三件）／gradual（与 instinct 反向）／stop（反讽收口）。<b>option、upkeep、fuel、starting line 四个词是同一套比喻，认出来这一段就通了。</b></span></div>
+          <div class="fi"><b>③ 段三 · 把问题掉转过来</b>——新研究问的不是「别的物种有多笨」，而是<b>我们自己的智力真正的代价是什么</b>；末句先埋下视角反转的引信（这问题一直挂在每只动物心上）。
+            <span class="ev">9–12 空：limited（回指①段的 not being too bright）／backward（靠 left in the dust 定方向）／costs（②段 high-priced·upkeep·fuel 的同义复现）／on（be on one's mind）。</span></div>
+          <div class="fi"><b>④ 段四 · 第二次 wonder：如果动物来研究人类</b>——整段是<b>虚拟语气</b>，四个 <code>would</code> 并排；动物的三个研究目的<b>层层递进</b>：测极限 → 测用途 → 测本质。末句一句话收口：<b>到目前为止，结果尚无定论。</b>
+            <span class="ev">13–20 空占了全篇的 40%，是主战场。<b>结构一眼可见：假设（13–15）→ 目的一（16）→ 目的二（17）→ 递进到目的三（18–19）→ 收口（20）。</b></span></div>
+        </div>
+        <p class="note" style="margin-top:14px">📌 <b>完形不是 20 道独立小题，是一条语义链。</b>本篇的链条是<b>两条并行的暗线</b>：一条<b>比喻线</b>（灯泡 → 汽车 → 实验室），一条<b>视角线</b>（人看动物 → 人看自己 → 动物看人）。<b>方向定死，四选一里立刻能砍掉两个。</b></p>
+        <p class="note">🎭 <b>花絮（不影响做题，但值得知道）</b>：本篇源自《纽约时报》<b>2008-05-07</b> 的社论 <i>The Cost of Smarts</i>；而同卷 <a href="2009_T1_习惯与创新.html" style="color:var(--accent)">Text 1《习惯与创新》</a>源自《纽约时报》<b>2008-05-04</b> 的 <i>Can You Become a Creature of New Habits?</i>——<b>两篇相隔三天，出自同一份报纸的同一周。</b>文中提到的 Carl Zimmer 是《纽约时报》科学版（Science Times）的科普作者，果蝇实验的报道就出自他笔下——<b>所以 1 空不可能填「假想一下」，那是一件已经见报的事。</b></p>
+      </section>
+
+      <!-- ========== 01 正文 ========== -->
+      <section class="card">
+        <h2><span class="n">01</span>完形正文（20 空 · 点空格跳到该题）
+          <button class="allbtn" onclick="toggleAll()" style="margin-left:auto">译文 开/关</button>
+          <button class="allbtn" onclick="revealAll()">显示全部答案</button>
+        </h2>
+        <p class="note">🟨 点<b>空格</b>＝跳到下面对应的解析卡（先自己选，再看解析）｜ 🟡 黄底词＝生词卡，点开看词根/辨析 ｜ 蓝色虚线＝长难句 ｜ 选中任意单词浮出「查有道」</p>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">①</span>Research on animal intelligence always makes us <span class="tk" data-w="wonder">wonder</span> just how smart humans are. <span class="bk" data-n="1"><span class="idx">1</span>___</span> the fruit-fly experiments described by <span class="tk" data-w="zimmer">Carl Zimmer</span> in the <i>Science Times</i>. Fruit flies who were taught to be smarter than the <span class="tk" data-w="average">average</span> fruit fly <span class="bk" data-n="2"><span class="idx">2</span>___</span> to live shorter lives. This <span class="tk" data-w="suggest">suggests</span> that <span class="bk" data-n="3"><span class="idx">3</span>___</span> <span class="tk" data-w="bulb">bulbs</span> <span class="tk" data-w="burn">burn</span> longer, that there is a(n) <span class="bk" data-n="4"><span class="idx">4</span>___</span> in not being too <span class="tk" data-w="bright">bright</span>.</p>
+          <div class="zh">对动物智力的研究，总让我们想知道人类到底有多聪明。<b>不妨想想</b>卡尔·齐默在《科学时报》上描述的那些果蝇实验：那些被训练得比普通果蝇更聪明的果蝇，寿命<b>往往</b>更短。这表明：<b>更暗的</b>灯泡反而燃得更久——不那么明亮（不那么聪明），其实是一种<b>优势</b>。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">②</span>Intelligence, it <span class="bk" data-n="5"><span class="idx">5</span>___</span>, is a <span class="tk" data-w="option">high-priced option</span>. <span class="ls" onclick="go('s2')">It takes more <span class="tk" data-w="upkeep">upkeep</span>, burns more <span class="tk" data-w="fuel">fuel</span> and is slow <span class="bk" data-n="6"><span class="idx">6</span>___</span> the <span class="tk" data-w="startingline">starting line</span> because it depends on learning—a(n) <span class="bk" data-n="7"><span class="idx">7</span>___</span> process—instead of <span class="tk" data-w="instinct">instinct</span>.</span> Plenty of other <span class="tk" data-w="species">species</span> are able to learn, and one of the things they've <span class="tk" data-w="apparently">apparently</span> learned is when to <span class="bk" data-n="8"><span class="idx">8</span>___</span>.</p>
+          <div class="zh"><b>原来</b>，智力是一种价格高昂的<b>选装配置</b>：它需要更多保养，消耗更多燃料，而且<b>起步</b>很慢——因为它依靠的是学习（一个<b>循序渐进的</b>过程），而不是本能。许多其他物种也有学习能力，而它们显然学会的事情之一，就是何时<b>停下来</b>。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">③</span>Is there an <span class="tk" data-w="adaptive">adaptive value</span> to <span class="bk" data-n="9"><span class="idx">9</span>___</span> intelligence? That's the question behind this new research. <span class="ls" onclick="go('s1')">Instead of casting a <span class="tk" data-w="wistful">wistful</span> <span class="tk" data-w="castglance">glance</span> <span class="bk" data-n="10"><span class="idx">10</span>___</span> at all the species we've <span class="tk" data-w="dust">left in the dust</span> <span class="tk" data-w="wise">I.Q.-wise</span>, it <span class="tk" data-w="implicitly">implicitly</span> asks what the real <span class="bk" data-n="11"><span class="idx">11</span>___</span> of our own intelligence might be.</span> This is <span class="bk" data-n="12"><span class="idx">12</span>___</span> the <span class="tk" data-w="mind">mind</span> of every animal we've ever met.</p>
+          <div class="zh"><b>有限的</b>智力是否具有适应性价值？这正是这项新研究背后的问题。它没有惆怅地<b>回头</b>瞥一眼那些在智商上被我们远远甩在身后的物种，而是含蓄地追问：我们自己的智力，真正的<b>代价</b>会是什么？这个问题，<b>一直挂在</b>我们所遇见的每一只动物的<b>心上</b>。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">④</span><span class="ls" onclick="go('s4')">Research on animal intelligence also makes us wonder what experiments animals would <span class="bk" data-n="13"><span class="idx">13</span>___</span> on humans if they had the chance.</span> Every cat with an owner, <span class="bk" data-n="14"><span class="idx">14</span>___</span>, is running a <span class="tk" data-w="smallscale">small-scale</span> study in <span class="tk" data-w="operant">operant conditioning</span>. <span class="ls" onclick="go('s3')">We believe that <span class="bk" data-n="15"><span class="idx">15</span>___</span> animals <span class="tk" data-w="run">ran</span> the labs, they would test us to <span class="bk" data-n="16"><span class="idx">16</span>___</span> the limits of our patience, our <span class="tk" data-w="faithfulness">faithfulness</span>, our memory for locations.</span> They would try to decide what intelligence in humans is really <span class="bk" data-n="17"><span class="idx">17</span>___</span>, not merely how much of it there is. <span class="bk" data-n="18"><span class="idx">18</span>___</span>, they would hope to study a(n) <span class="bk" data-n="19"><span class="idx">19</span>___</span> question: Are humans actually <span class="tk" data-w="aware">aware</span> of the world they live in? <span class="bk" data-n="20"><span class="idx">20</span>___</span> the results are <span class="tk" data-w="inconclusive">inconclusive</span>.</p>
+          <div class="zh">对动物智力的研究还让我们想知道：如果动物有机会，它们会对人类<b>做</b>什么样的实验。<b>比如说</b>，每一只有主人的猫，都在进行一项小规模的操作性条件反射研究。我们认为，<b>假如</b>是动物掌管实验室，它们会对我们进行测试，以<b>查明</b>我们的耐性、忠诚度以及方位记忆力的极限。它们会试着判定人类的智力究竟<b>有什么用</b>，而不仅仅是判定人类有多少智力。<b>最重要的是</b>，它们希望研究一个<b>根本性的</b>问题：人类真的意识到自己所生活的这个世界吗？<b>到目前为止</b>，结果尚无定论。</div>
+        </div>
+      </section>
+      <!-- ========== 02 逐空精解 ========== -->
+      <section class="card">
+        <h2><span class="n">02</span>逐空精解（点选项即判 · 再看解析）</h2>
+        <div class="score">
+          <span><span class="v" id="sDone">0</span>/20 已答</span>
+          <span><span class="v" id="sRight">0</span> 对</span>
+          <span>折合 <span class="v" id="sPt">0</span> 分 / 10</span>
+          <button class="rst" onclick="location.reload()">↺ 重做</button>
+        </div>
+        <p class="note">每空 0.5 分。<b>先在心里说出「这个空要填什么词性、什么方向」再点选项</b>——完形做完不复盘方向，只对答案，等于白做。本篇有<b>五道纯语法题</b>（5·13·15·17，加半道 12），<b>读都不用读语义，看形态就能定</b>；另有<b>三道</b>栽在同一个坑上（2·14·20），做到时先问「这是科研语境吗」。</p>
+
+        <div class="q" id="q1" data-ans="1">
+          <div class="qhead"><span class="qno">1</span><span class="qt c-logic">逻辑关系 · 语用引例</span><span class="qpos">祈使句 ＋ 名词短语</span></div>
+          <span class="stem">Research on animal intelligence always makes us wonder just how smart humans are. <em>1</em> the fruit-fly experiments described by Carl Zimmer in the <i>Science Times</i>.</span>
+          <div class="opts">
+            <div class="opt">A Suppose<span class="gl">假定；设想</span></div>
+            <div class="opt">B Consider<span class="gl">细想一下；不妨想想</span></div>
+            <div class="opt">C Observe<span class="gl">观察；注意到</span></div>
+            <div class="opt">D Imagine<span class="gl">想象；虚构</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>第二句<b>没有主语</b>、以动词开头 ⟹ <b>祈使句的谓语</b>。四个选项都是动词原形，语法上都能开头 ⟹ <b>靠「语用功能」定，不是靠词义定</b>。
+            <span class="lbl">🔗 线索（句间关系）</span>首句是<b>一句总说</b>（动物智力研究让我们反思人类智力），第三句给出<b>果蝇实验的结果</b> ⟹ 夹在中间的第二句只可能承担一个功能：<b>引出例证</b>。
+            <span class="lbl">✅ B Consider</span><code>Consider ＋ 名词短语</code> 是英文议论文<b>引出例子的标准套路</b>（＝Take … for example）。且它接的是名词短语（the fruit-fly experiments），不是从句。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>Suppose 用于祈使时，引出的是<b>假设情境</b>，其后<b>须接宾语从句</b>（<i>Suppose a fire broke out. How would we escape?</i>）。而本句空格后是<b>名词短语</b>，语法就不合；更要命的是果蝇实验<b>已经做完、已经见报</b>（described by … in the <i>Science Times</i>），<b>不能"假定"</b>。</div>
+              <div class="wr"><span class="l">C</span>Observe 表"（科学）观察"时，观察者要能<b>直接看到</b>；而 <code>described by Carl Zimmer in the Science Times</code> 说明读者只能<b>从报道里间接了解</b>这个实验。且 observe 没有"引出例证"的语用功能。</div>
+              <div class="wr"><span class="l">D</span>Imagine 错法同 A：后接从句、且内容须是<b>不存在的情景</b>。已发表的实验不是想象的对象。</div>
+            </div>
+            <span class="lbl">💡 迁移</span><b>祈使句开头的空，先看它后面跟的是名词还是从句</b>：<br>跟<b>名词短语</b> ⟹ Consider / Take (… for example) / Look at（<b>引出真实例子</b>）；<br>跟<b>从句</b>且内容不真实 ⟹ Suppose / Imagine / Say（<b>引出假设</b>）。<b>这一刀下去，四选一当场变二选一。</b><br>⭐ <b>本篇「引例」考了两次</b>：这里是祈使句形态，<b>14 题</b>是插入语形态（for instance）。
+          </div>
+        </div>
+
+        <div class="q" id="q2" data-ans="0">
+          <div class="qhead"><span class="qno">2</span><span class="qt c-word">词义辨析 · 动词</span><span class="qpos">___ to do</span></div>
+          <span class="stem">Fruit flies who were taught to be smarter than the average fruit fly <em>2</em> to live shorter lives. This suggests that…</span>
+          <div class="opts">
+            <div class="opt">A tended<span class="gl">往往会；倾向于</span></div>
+            <div class="opt">B feared<span class="gl">害怕；恐怕</span></div>
+            <div class="opt">C happened<span class="gl">碰巧；恰好</span></div>
+            <div class="opt">D threatened<span class="gl">威胁（要做）；预示恶兆</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>主句谓语（主语＝Fruit flies who were taught…），后接 <code>to live shorter lives</code>。四个选项都能接 to do ⟹ <b>又是靠语义定</b>。
+            <span class="lbl">🔗 线索（这是一句实验结论）</span>下一句 <code>This <b>suggests</b> that…</code>（据此可以推论）——<b>能被拿来推论的，必须是规律，不能是偶然</b>。
+            <span class="lbl">✅ A tended to do</span>＝<b>往往会、倾向于</b>，表<b>普遍存在的倾向</b>，正是实验结论该有的语气。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>feared to do＝<b>害怕做</b>——昆虫是否具备"害怕短命"这种复杂情感，显然不是一个果蝇实验能回答的；若取"恐怕（表推测）"义，则须用 <code>sb fears that…</code>，<b>不与 to do 连用</b>。</div>
+              <div class="wr"><span class="l">C</span>happened to do＝<b>碰巧</b>。⚠️ <b>科学实验发现的应该是规律，不是巧合</b>——本篇这个错法<b>一共考了三次</b>（见下方迁移）。</div>
+              <div class="wr"><span class="l">D</span>threatened to do 的主语必须是<b>人（发出威胁）</b>或<b>坏事/危险局面（预示恶兆）</b>，如 <i>The incident threatens to ruin his chances.</i> 果蝇两者都不是。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐⭐ <b>本篇最值钱的一条跨空规律：科研语境不填偶然词。</b><br><b>2 题</b> happened to（碰巧）✗ ｜ <b>14 题</b> by chance（碰巧）✗ ｜ <b>20 题</b> By accident（偶然地）✗ ——<b>同一个错法，命题人在一篇里摆了三次</b>。<br><b>凡"实验/研究/发现"语境，谓语与状语一律往「趋势·规律·阶段性」上填</b>：tend to / be likely to / be prone to / so far / in general。
+          </div>
+        </div>
+
+        <div class="q" id="q3" data-ans="3">
+          <div class="qhead"><span class="qno">3</span><span class="qt c-word">词义辨析 · 形容词比较级</span><span class="qpos">___ bulbs burn longer</span></div>
+          <span class="stem">Fruit flies … tended to live <b>shorter</b> lives. This suggests that <em>3</em> bulbs burn <b>longer</b>, that there is an advantage in not being too <b>bright</b>.</span>
+          <div class="opts">
+            <div class="opt">A thinner<span class="gl">更薄的；更细的</span></div>
+            <div class="opt">B stabler<span class="gl">更稳定的</span></div>
+            <div class="opt">C lighter<span class="gl">更亮的；更轻的</span></div>
+            <div class="opt">D dimmer<span class="gl">更暗的；更愚笨的</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>形容词比较级作定语（___ bulbs）。<b>四个选项全是比较级，说明命题人要你做的是「类比」，不是「描述灯泡」。</b>
+            <span class="lbl">🔗 线索（反向类比）</span>上句：<b>smarter</b>（更聪明）→ <b>shorter</b> lives（更短命）。<br>本句：<b>___</b> bulbs → burn <b>longer</b>（燃得更久）。<br><code>longer</code> 与 <code>shorter</code> <b>反向对应</b> ⟹ 空格必须与 <code>smarter</code> <b>反向对应</b>。
+            <span class="lbl">✅ D dimmer</span>＝更暗的。<code>dim bulb</code> 在英语里本身就是<b>「笨脑瓜」</b>的谑称，与后半句 <code>not being too bright</code>（不太亮／不太聪明）严丝合缝。
+            <span class="lbl">⭐ 全篇枢纽：bright 是这条比喻的「接口词」</span>句末的 <code>bright</code> <b>一词双关</b>——既是灯泡的<b>亮</b>，又是人的<b>聪明</b>。<b>正因为英语里 bright 双关，作者才能拿灯泡来打这个比方。</b>找到接口词，比喻的两端（灯泡／智力）就能一一对应，3、4 两空一起落地。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>thinner 只涉及灯泡的<b>粗细造型</b>，而灯泡寿命取决于内部灯丝，与外形无关；更关键的是它<b>与 smarter 构不成任何对应</b>。</div>
+              <div class="wr"><span class="l">B</span>stabler：「性能稳定的灯泡更耐用」符合常识——<b>但常识对不等于逻辑对</b>。上句说的是「聪明↔短命」，本句必须是它的<b>反向类比</b>，而"稳定"与"聪明"没有反义关系。</div>
+              <div class="wr"><span class="l">C</span>lighter：<b>方向正好反了</b>（更亮＝更聪明＝该短命才对）。另有词法证据：light 表"明亮"时多指<b>天色、房间等因自然光而明亮</b>，<b>不用于说发光体本身亮</b>。</div>
+            </div>
+            <span class="lbl">💡 迁移</span><b>比喻句先找「接口词」</b>——本体与喻体共用的那个双关词。找不到接口就说明还没看懂这个比喻，别急着选。<b>找到之后按「A之于B ＝ C之于D」列成两栏，缺的那一格就是答案。</b>
+          </div>
+        </div>
+
+        <div class="q" id="q4" data-ans="1">
+          <div class="qhead"><span class="qno">4</span><span class="qt c-context">上下文语义 · 名词</span><span class="qpos">there is a(n) ___ in doing</span></div>
+          <span class="stem">This suggests that dimmer bulbs burn longer, that there is a(n) <em>4</em> in not being too bright.</span>
+          <div class="opts">
+            <div class="opt">A tendency<span class="gl">倾向；趋势</span></div>
+            <div class="opt">B advantage<span class="gl">优势；有利因素</span></div>
+            <div class="opt">C inclination<span class="gl">倾向；意愿</span></div>
+            <div class="opt">D priority<span class="gl">优先事项；优先权</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>there be 句型的主语中心词，后接方面状语 <code>in not being too bright</code>（在"不太聪明"这件事上）。
+            <span class="lbl">🔗 线索（并列同向）</span>本句是 suggests 后<b>两个并列的 that 从句</b>：<br>① 暗灯泡<b>燃得更久</b>（＝好事）｜ ② 不太亮／不太聪明<b>有 ___</b>。<br><b>并列的两个 that 从句是同一个推论的两种说法，方向必须一致</b> ⟹ 空格必为<b>褒义</b>。<br>再加一个跨段内证：下段首句 <code>Intelligence … is a <b>high-priced</b> option</code>（智力是高价选项）——<b>聪明既然贵，不聪明就是省，方向对上了。</b>
+            <span class="lbl">✅ B advantage</span>＝优势、好处。<b>an advantage in doing sth</b> 是标准搭配。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>tendency：⚠️ <b>看似"复现"上一句的 tended，其实是假朋友</b>。<code>a tendency in…</code> 引出的是<b>趋势的主体/领域</b>（a tendency <u>in education research</u> 教育研究领域的一种趋势），而 <code>not being too bright</code> 是一种<b>状态</b>，不是趋势发生的场域。<b>而且它不是褒义，方向不对。</b></div>
+              <div class="wr"><span class="l">C</span>inclination（倾向、意愿）：错法同 A，且更偏"人的主观意愿"。</div>
+              <div class="wr"><span class="l">D</span>priority＝优先事项，<code>a priority in…</code>＝"在这件事上应优先考虑某问题"，是<b>行动建议</b>；而作者在这里是对一种客观状况<b>作评价</b>，不是叫谁去做什么。</div>
+            </div>
+            <span class="lbl">💡 迁移</span><b>见到 that…, that… 两个并列从句，先判方向再挑词。</b>命题人最爱在第二个从句设空，因为第一个从句已经把方向写死了——<b>方向一定，褒贬先砍一半</b>。
+          </div>
+        </div>
+
+        <div class="q" id="q5" data-ans="2">
+          <div class="qhead"><span class="qno">5</span><span class="qt c-collo">固定搭配 · 插入语动词</span><span class="qpos">it ___（插入语）</span></div>
+          <span class="stem">Intelligence, it <em>5</em>, is a high-priced option. It takes more upkeep, burns more fuel…</span>
+          <div class="opts">
+            <div class="opt">A insists on<span class="gl">坚持说；坚决要求</span></div>
+            <div class="opt">B sums up<span class="gl">总结；概括</span></div>
+            <div class="opt">C turns out<span class="gl">结果是；原来是</span></div>
+            <div class="opt">D puts forward<span class="gl">提出；提议</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份（这题是纯语法题）</span><code>it ___</code> 是<b>插入语</b>。把它提到句首还原，整句就是：<br><code>It ___ (that) intelligence is a high-priced option.</code><br>⟹ <b>空格里的动词必须能接 that 从句。</b>这一条一亮，三个选项当场出局。
+            <span class="lbl">🔗 线索（段际总结）</span>上段：实验结果（越聪明越短命）→ 推论（不太聪明有优势）。本段首句是对上段的<b>总结性结论</b>：<b>原来</b>智力是一种高价选项。
+            <span class="lbl">✅ C turns out</span><code>it turns out (that)…</code>＝<b>结果是、原来是</b>，专用于"经历或实验之后最终发现……"，既能作插入语，又刚好承接上段的"实验→结论"。
+            <span class="lbl">❌ 另外三个错在哪（全部死于语法）</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>insist 接从句时<b>不加 on</b>（insist that… ✓ / insist on that… ✗）；且"坚持认为"含"别人不信我偏要说"的对抗意味，不合客观科普语气。</div>
+              <div class="wr"><span class="l">B</span>sum up 的宾语应当是<b>被总结的对象</b>（sum up the argument），而不是总结出来的<b>结论</b>；且 sum up <b>后不能直接接 that 从句</b>。</div>
+              <div class="wr"><span class="l">D</span>put forward 虽能引出"观点"，但宾语只能是 ideas / principles / proposals / plans 这类<b>"想法"名词</b>，<b>其后同样不接 that 从句</b>。</div>
+            </div>
+            <span class="lbl">💡 迁移</span><b>插入语型动词题，第一动作是「把插入语还原成主句」</b>：<code>X, it ___, is Y</code> ⟹ <code>It ___ that X is Y</code>。<b>一还原，能不能接 that 从句立刻见分晓，语义都不用读。</b><br>能这么用的一族：it turns out / it seems / it appears / it happens / it follows。
+          </div>
+        </div>
+
+        <div class="q" id="q6" data-ans="0">
+          <div class="qhead"><span class="qno">6</span><span class="qt c-collo">固定搭配 · 介词</span><span class="qpos">is slow ___ the starting line</span></div>
+          <span class="stem">It takes more upkeep, burns more fuel and is slow <em>6</em> the starting line because it depends on learning—a gradual process—instead of instinct.</span>
+          <div class="opts">
+            <div class="opt">A off<span class="gl">离开；（起步）脱离</span></div>
+            <div class="opt">B behind<span class="gl">在…后面</span></div>
+            <div class="opt">C over<span class="gl">在…上方；越过</span></div>
+            <div class="opt">D along<span class="gl">沿着</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>介词，与 slow 一起构成 <code>is slow ___ the starting line</code>。
+            <span class="lbl">🔗 线索（三个并列谓语是同一套比喻）</span>本句主干＝ It <b>takes more upkeep</b>（更费保养）、<b>burns more fuel</b>（更耗油）、<b>is slow ___ the starting line</b>（起步慢）。<br>⭐ <b>三个都是汽车比喻</b>——承接上句的 high-priced <b>option</b>（option 的本义就是汽车的<b>高价选装配置</b>）。<b>认出这一套比喻，本段就通了。</b><br>再看 because 后面的解释：智力靠<b>后天学习</b>而非本能 ⟹ 它<b>起效慢</b>，不是"停在起跑线某个方位"。
+            <span class="lbl">✅ A off</span><code>be slow off the starting line</code>（也说 slow off the mark）＝<b>起步慢、起跑反应慢</b>。off 表"<b>离开</b>起跑线"，是<b>动态</b>的，正好喻指"起效慢"。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>behind＝在起跑线<b>后方</b>——只有静态方位，没有"起步"这层动态含义，也解释不了 because 后面的因果。</div>
+              <div class="wr"><span class="l">C</span>over＝在起跑线<b>上方</b>／越过，方位怪异。</div>
+              <div class="wr"><span class="l">D</span>along＝<b>沿着</b>起跑线（横着走），不合逻辑。</div>
+            </div>
+            <span class="lbl">💡 迁移</span><b>介词题第一步永远是「这个介词跟谁走」</b>——本题跟 <b>slow</b>（slow off…），不是跟 line。三个错项全是因为把介词硬拉去跟 the starting line 配方位。<br>顺手记一族"起跑"表达：<b>off the starting line ｜ off the mark ｜ out of the gate</b>（美式）。
+          </div>
+        </div>
+
+        <div class="q" id="q7" data-ans="3">
+          <div class="qhead"><span class="qno">7</span><span class="qt c-word">词义辨析 · 形容词</span><span class="qpos">a(n) ___ process（同位语）</span></div>
+          <span class="stem">…is slow off the starting line because it depends on <b>learning</b>—a(n) <em>7</em> process—<b>instead of instinct</b>.</span>
+          <div class="opts">
+            <div class="opt">A incredible<span class="gl">极好的；难以置信的</span></div>
+            <div class="opt">B spontaneous<span class="gl">自发的；不假思索的</span></div>
+            <div class="opt">C inevitable<span class="gl">必然的；不可避免的</span></div>
+            <div class="opt">D gradual<span class="gl">逐步的；循序渐进的</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>两个破折号之间是 <code>learning</code> 的<b>同位语</b>——即"用一个形容词概括 learning 的性质"。
+            <span class="lbl">🔗 线索（instead of 两侧必反向）</span>句内是一组对比：<code>depends on <b>learning</b> … <b>instead of</b> <b>instinct</b></code>。<br><b>做法：把 instinct 的特征列出来</b>——天生的、瞬时可用的、不用学的；<b>空格填它的反面</b>——后天的、缓慢的、要练的。<br>另一条约束：空格还要能<b>解释前面的 is slow</b>。
+            <span class="lbl">✅ D gradual</span>＝逐步的、循序渐进的。<b>一箭双雕</b>：既解释了 slow，又与 instinct 反向。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>⚠️ <b>最狠的干扰项</b>：spontaneous（自发的、不假思索的）<b>恰恰是 instinct 那一栏的特征词</b>，被搬到了 learning 这一栏 ⟹ <b>与 instead of 提示的相反逻辑直接矛盾</b>。<b>凡对比句里出现"另一侧的特征词"，一律是陷阱。</b></div>
+              <div class="wr"><span class="l">A</span>incredible 是<b>价值评判</b>（极好的），而 instead of instinct 谈的是<b>性质差别</b>，与好坏无关——天分不比学习"差"。</div>
+              <div class="wr"><span class="l">C</span>inevitable 强调"必然发生、躲不掉"，而 learning 显然是一种<b>可选择</b>的活动，不是必然过程。</div>
+            </div>
+            <span class="lbl">💡 迁移</span><b>instead of / rather than / not…but… 两侧必须反向。</b>操作固定成两步：<b>①把已知那一侧的词的特征列成三条 ②空格填它的反面。</b>比在四个选项里"感觉哪个顺"可靠得多。
+          </div>
+        </div>
+
+        <div class="q" id="q8" data-ans="2">
+          <div class="qhead"><span class="qno">8</span><span class="qt c-context">上下文语义 · 动词</span><span class="qpos">when to ___</span></div>
+          <span class="stem">Plenty of other species are able to learn, and one of the things they've apparently learned is when to <em>8</em>.</span>
+          <div class="opts">
+            <div class="opt">A fight<span class="gl">战斗；克制（情感）</span></div>
+            <div class="opt">B doubt<span class="gl">怀疑；不信任</span></div>
+            <div class="opt">C stop<span class="gl">停止；中断</span></div>
+            <div class="opt">D think<span class="gl">想；思考</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span><code>when to ___</code> 中的动词原形，是 things 的定语从句 <code>they've apparently learned</code> 的<b>具体内容</b>。
+            <span class="lbl">🔗 线索（这是一句反讽）</span>本段主旨＝<b>智力代价高昂</b>；①段结论＝<b>不太聪明反而是优势</b>。<br>本句说：<b>许多别的物种也会学习</b>，而它们显然学会的事情之一就是<b>何时 ___</b>。<br>⟹ 语气是：<b>动物比人明白事理——它们懂得适可而止，不像人类无止境地把智力往上堆。</b>
+            <span class="lbl">✅ C stop</span>＝（学习到某个程度就）<b>停下来</b>。与"智力是高价选项""不太聪明是一种优势"完全同向。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>doubt：「动物懂得何时质疑」＝<b>在夸动物智力高</b>，恰恰背离全文"高智力未必好"的立意。</div>
+              <div class="wr"><span class="l">D</span>think：错法同 B——"懂得何时思考"仍然是在往上加智力。</div>
+              <div class="wr"><span class="l">A</span>fight（战斗／克制情感）：与"学习—智力—代价"这条主线<b>毫无关系</b>，代入后整句读不通。</div>
+            </div>
+            <span class="lbl">💡 迁移</span><b>反讽句的空格一律填「往回收」的词，不填「往上加」的词。</b>判据只有一句话：<b>全文若在质疑 X 的价值，空格就不可能是"更多的 X"。</b><br>本篇这条规矩在 <b>4 空</b>（不太聪明是<b>优势</b>）、<b>9 空</b>（<b>有限的</b>智力）上反复生效——<b>三个空，同一个立场。</b>
+          </div>
+        </div>
+
+        <div class="q" id="q9" data-ans="1">
+          <div class="qhead"><span class="qno">9</span><span class="qt c-context">上下文语义 · 形容词</span><span class="qpos">adaptive value to ___ intelligence</span></div>
+          <span class="stem">Is there an adaptive value to <em>9</em> intelligence? That's the question behind this new research.</span>
+          <div class="opts">
+            <div class="opt">A invisible<span class="gl">看不见的；隐形的</span></div>
+            <div class="opt">B limited<span class="gl">有限的；不太大的</span></div>
+            <div class="opt">C indefinite<span class="gl">不明确的；无限期的</span></div>
+            <div class="opt">D different<span class="gl">不同的；各种的</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>形容词作定语，限定 intelligence；整句是<b>疑问句</b>，且是本段的<b>论题句</b>。
+            <span class="lbl">🔗 线索（跨段回指，两组对应同时成立）</span><table class="otab" style="margin-top:6px"><tr><th>①②段说过的</th><th>本句</th></tr><tr><td><code>an <b>advantage</b> in not being too bright</code></td><td><code>an <b>adaptive value</b> to…</code></td></tr><tr><td><code><b>not being too bright</b></code>（不太聪明）</td><td><code><b>___</b> intelligence</code></td></tr></table><b>右栏第一格已经与左栏对上了，第二格只能跟着对</b> ⟹ 空格＝"不太聪明"的同义形容词。
+            <span class="lbl">✅ B limited</span>＝有限的。<code>limited intelligence</code> ↔ <code>not being too bright</code>，且反向呼应②段首句"高智力代价昂贵"。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>invisible：文章讨论的是智力的<b>高低</b>，从头到尾没有涉及智力"看不看得见"。</div>
+              <div class="wr"><span class="l">C</span>indefinite：与 <b>infinite</b>（无限的）<b>形近致误</b>——indefinite 强调"没有确切限定"，与数量多少无关；退一步说，即便当"无限的"讲，"无限的智力有无适应价值"也与全文立意（高智力有代价）相悖。</div>
+              <div class="wr"><span class="l">D</span>different：由"动物与人的智力不同"编造而来，偏离全文主旨。</div>
+            </div>
+            <span class="lbl">💡 迁移</span><b>问句型的空格，几乎一定是把上文的结论换个词再问一遍。</b>操作：<b>先把上文的结论写成一句中文，再去四个选项里找它的同义词</b>——不要就着问句本身猜。
+          </div>
+        </div>
+
+        <div class="q" id="q10" data-ans="3">
+          <div class="qhead"><span class="qno">10</span><span class="qt c-word">词义辨析 · 副词方向</span><span class="qpos">casting a glance ___</span></div>
+          <span class="stem">Instead of casting a wistful glance <em>10</em> at all the species we've <b>left in the dust</b> I.Q.-wise, it implicitly asks…</span>
+          <div class="opts">
+            <div class="opt">A upward<span class="gl">向上</span></div>
+            <div class="opt">B forward<span class="gl">向前；提前</span></div>
+            <div class="opt">C afterward<span class="gl">以后，后来</span></div>
+            <div class="opt">D backward<span class="gl">向后；朝反方向</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>副词，修饰 <code>casting a wistful glance</code>（惆怅地瞥一眼）这个动作。<b>四个选项后缀都是 -ward（向……），说明考的是"方向"。</b>
+            <span class="lbl">🔗 线索（原文自带一个位置词）</span>瞥的对象是 <code>all the species we've <b>left in the dust</b> I.Q.-wise</code>——<b>leave sb in the dust ＝ 把某人远远甩在身后</b>。<b>既然被甩在"身后"，瞥过去的方向当然朝后。</b>
+            <span class="lbl">✅ D backward</span>＝向后、朝反方向，与 left in the dust 的空间方位完全一致。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>forward：<b>方向正相反</b>。（forward 既可表空间"向前"，也可表时间"提前"，两义都不合。）</div>
+              <div class="wr"><span class="l">A</span>upward：被甩下的物种不在<b>上方</b>，方位不符。</div>
+              <div class="wr"><span class="l">C</span>afterward：⚠️ <b>-ward 家族里唯一的时间副词</b>（＝以后、后来），而这里需要的是<b>空间方向</b>，且上下文并无先后事件。<b>这一项专门用来考"你分不分得清 -ward 里哪个管时间"。</b></div>
+            </div>
+            <span class="lbl">💡 迁移</span><b>方向副词题只需在原文里找一个「位置词」</b>：left behind / in the dust / ahead of / above / beneath / at the bottom。<b>找到它，方向就定了，不用读全句。</b><br>⚠️ 顺手把这一族切开：<b>afterward ＝ 时间</b>；<b>upward / forward / backward / inward / outward ＝ 空间</b>。
+          </div>
+        </div>
+        <div class="q" id="q11" data-ans="3">
+          <div class="qhead"><span class="qno">11</span><span class="qt c-context">上下文语义 · 名词</span><span class="qpos">the real ___ of our own intelligence</span></div>
+          <span class="stem">…it implicitly asks what the real <em>11</em> of our own intelligence might be.</span>
+          <div class="opts">
+            <div class="opt">A features<span class="gl">特色；特点</span></div>
+            <div class="opt">B influences<span class="gl">影响；作用</span></div>
+            <div class="opt">C results<span class="gl">结果；后果</span></div>
+            <div class="opt">D costs<span class="gl">成本；代价</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>名词，在 asks 的宾语从句里作主语（<code>what the real ___ … might be</code>，主系表结构）。
+            <span class="lbl">🔗 线索（同义复现链，本篇最干净的一道）</span>②段已经把"代价"这个概念说了<b>三遍</b>，只是换了三个词：<br><code>a <b>high-priced</b> option</code>（价格高昂的选项）→ <code>takes more <b>upkeep</b></code>（更费保养）→ <code>burns more <b>fuel</b></code>（更耗燃料）。<br>再加句内的方向指示：<code><b>Instead of</b> casting a wistful glance backward at…</code>（不是回头怜悯别的物种）<code>, it implicitly asks…</code>（而是反过来追问<b>我们自己</b>）——<b>由"看别人"转向"看自己亏在哪"，空格必须带负面语义。</b>
+            <span class="lbl">✅ D costs</span>＝代价、成本。（黄皮书给本篇拟的标题就叫<b>《智力的代价》</b>，原文标题正是 <i>The Cost of Smarts</i>。）
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>features＝特征。把研究方向说成"人类智力有何特征"，等于回到"人和动物哪里不一样"，<b>正是本句用 Instead of 否定掉的那条路</b>。</div>
+              <div class="wr"><span class="l">B</span>influences：⚠️ <b>中文的"影响"常含贬义，英文的 influence 却是中性的</b>——既可指好影响也可指坏影响，<b>撑不起"我们自己的智力其实亏在哪"这层负面语义</b>。</div>
+              <div class="wr"><span class="l">C</span>results：同 B，中性无方向。</div>
+            </div>
+            <span class="lbl">💡 迁移</span><b>抽象名词空（the real ___ of X）＝上文某个概念的同义复现。</b>操作：<b>回扫上一段，找那个已经被换着说了两三遍的概念</b>。<b>完形的答案很少是全新概念</b>——它更像是给已经说过的东西换一件衣服。<br>⚠️ 顺带把这一族的方向感背死：<b>cost / price / penalty ＝ 负</b>；<b>benefit / advantage / merit ＝ 正</b>；<b>influence / result / effect / consequence ＝ 中性</b>（要靠上下文给方向）。
+          </div>
+        </div>
+
+        <div class="q" id="q12" data-ans="1">
+          <div class="qhead"><span class="qno">12</span><span class="qt c-collo">固定搭配 · 介词</span><span class="qpos">is ___ the mind of…</span></div>
+          <span class="stem">…it implicitly asks what the real costs of our own intelligence might be. This is <em>12</em> the mind of every animal we've ever met.</span>
+          <div class="opts">
+            <div class="opt">A outside<span class="gl">在…外面</span></div>
+            <div class="opt">B on<span class="gl">在…上（挂心上）</span></div>
+            <div class="opt">C by<span class="gl">由…；经由</span></div>
+            <div class="opt">D across<span class="gl">横过；从一边到另一边</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>介词，与后面的 <code>the mind of every animal</code> 构成介宾结构作表语。<b>指示代词 This 回指上一句的那个问题</b>（我们自己的智力真正的代价是什么）。
+            <span class="lbl">🔗 线索（这是视角反转的引信）</span>本句是③段末句，紧接着④段就正式反转（<b>如果动物来研究人类</b>）。所以本句要说的是：<b>这个问题，其实早就挂在我们见过的每一只动物的心上了</b>——动物比我们更早在想这件事。
+            <span class="lbl">✅ B on</span><b><code>be on sb's mind</code> ＝ 挂在心上、惦记着</b>（固定搭配）。与②段末"许多物种显然懂得何时停止学习"、④段"动物会对人做实验"三处呼应，全篇立场一致。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>outside＝在头脑<b>之外</b>，意思成了"动物根本想不到这个问题"——<b>与②段末、④段首两处直接冲突</b>。<b>方向填反，是完形最贵的一种错。</b></div>
+              <div class="wr"><span class="l">C</span>by one's mind＝"由……的思想而来"，是<b>因果/来源</b>关系；而"这一疑问由动物的思想产生"于文无据。</div>
+              <div class="wr"><span class="l">D</span>across：⚠️ <code>across one's mind</code> <b>必须与动作动词连用</b>——flash / come / go across one's mind（<i>The idea suddenly flashed across my mind.</i>），<b>不能用 be across one's mind</b>。<b>这是纯搭配错，与语义无关。</b></div>
+            </div>
+            <span class="lbl">💡 迁移</span><b>mind 的介词搭配一次背死</b>：<br><b>on</b> one's mind（挂在心上，惦记）｜ <b>in</b> one's mind（在脑海里，记着）｜ <b>out of</b> one's mind（发疯）｜ <b>cross / flash across</b> one's mind（念头闪过，<b>须动作动词</b>）｜ <b>bear/keep in mind</b>（牢记）。<br>⭐ <b>完形每年必有一两道"名词固定搭配"题</b>，mind / question / doubt / effect / question 是重灾区。
+          </div>
+        </div>
+
+        <div class="q" id="q13" data-ans="2">
+          <div class="qhead"><span class="qno">13</span><span class="qt c-collo">固定搭配 · 动宾</span><span class="qpos">___ experiments on sb</span></div>
+          <span class="stem">Research on animal intelligence also makes us wonder what <b>experiments</b> animals would <em>13</em> <b>on humans</b> if they had the chance.</span>
+          <div class="opts">
+            <div class="opt">A deliver<span class="gl">发表；递送；解救</span></div>
+            <div class="opt">B carry<span class="gl">搬运；携带</span></div>
+            <div class="opt">C perform<span class="gl">做；实施；履行</span></div>
+            <div class="opt">D apply<span class="gl">应用；申请</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份（先把语序还原）</span>这是 wonder 的宾语从句，<b>宾语 what experiments 被提到了句首</b>。还原成陈述语序：<br><code>animals would <b>___ experiments on humans</b></code><br>⟹ <b>考的就是"做实验"这个动宾搭配。</b>
+            <span class="lbl">🔗 线索</span>下文全部在讲动物会怎样测试人类（test us to determine… / try to decide… / hope to study…）——都是"做实验"的展开。
+            <span class="lbl">✅ C perform</span><code>perform / do / conduct / carry out an experiment on sb</code>＝<b>对某人做实验</b>。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>⚠️ <b>"搭配幻觉"的标准形态</b>：你记住的是 <code>carry <u>out</u> experiments</code>，于是在<b>没有 out 的地方</b>也选了 carry。<b>光秃秃的 carry ＝ 搬运、携带</b>，不等于"实施"。<br>⟹ 复用 <a href="2008_完形_高智商与遗传疾病.html#q13" style="color:var(--accent)">2008 完形 13 题</a>立下的规矩：<b>凡靠"我记得有这个搭配"选出来的答案，必须能把整个搭配原样默写出来才算数</b>——默写不出 out，就说明那只是印象。</div>
+              <div class="wr"><span class="l">A</span>deliver 的宾语主要是<b>言论</b>（deliver a speech）、<b>货物/邮件</b>（deliver the mail）、<b>被解救者</b>（deliver sb from slavery），与 experiments 配不上。</div>
+              <div class="wr"><span class="l">D</span>apply sth to sth＝把某物<b>应用</b>于某处（apply the new technology to farming）。"做实验"≠"把实验应用到人身上"。</div>
+            </div>
+            <span class="lbl">💡 迁移</span><b>动词题先把宾语拉到眼前。</b>本题的宾语因为 what 引导从句而被提到了句首，<b>最容易看漏</b>——凡遇 <code>what + 名词 + 主语 + would ___</code> 的语序，先在草稿上把它还原成陈述句。<b>动宾一配，四选一常常只剩一个。</b>
+          </div>
+        </div>
+
+        <div class="q" id="q14" data-ans="3">
+          <div class="qhead"><span class="qno">14</span><span class="qt c-logic">逻辑关系 · 句间例证</span><span class="qpos">插入语</span></div>
+          <span class="stem">…what experiments <b>animals</b> would perform on humans… Every <b>cat</b> with an owner, <em>14</em>, is running <b>a small-scale study</b> in operant conditioning.</span>
+          <div class="opts">
+            <div class="opt">A by chance<span class="gl">碰巧；偶然</span></div>
+            <div class="opt">B in contrast<span class="gl">相比之下；相反</span></div>
+            <div class="opt">C as usual<span class="gl">像往常一样</span></div>
+            <div class="opt">D for instance<span class="gl">例如；比如说</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>两个逗号之间的<b>插入语</b>，承担<b>句间关系</b>的功能（不是句子成分）。
+            <span class="lbl">🔗 线索（靠上下义词判"举例"，不靠语感）</span><table class="otab" style="margin-top:6px"><tr><th>上句（总说）</th><th>本句（具体）</th></tr><tr><td><b>animals</b>（动物）</td><td><b>Every cat with an owner</b>（每只有主人的猫）</td></tr><tr><td><b>experiments</b>（实验）</td><td><b>a small-scale study in operant conditioning</b>（小规模的操作性条件反射研究）</td></tr></table><b>两组都从上义词换成了下义词/具体形态 ⟹ 句间关系是「总说 → 举例」，没有第二种可能。</b>
+            <span class="lbl">✅ D for instance</span>＝例如。且这个例子本身就是全文<b>视角反转</b>的一记妙笔：<b>是猫在拿人做操作性条件反射实验（喵一声就有饭吃），不是人在研究猫。</b>
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>in contrast＝相比之下。⚠️ <b>对比要求两方平行且相反</b>；而猫<b>属于</b>动物，两者是<b>从属</b>关系，谈不上对比，更没有相反的意思。</div>
+              <div class="wr"><span class="l">A</span>by chance＝碰巧。⚠️ <b>科研语境不填偶然词（本篇第二次）</b>——上句是"提出假设"，本句是"摆出已经在发生的事实"，与"偶然"无关。</div>
+              <div class="wr"><span class="l">C</span>as usual＝像往常一样，需要"以往也如此"的前提，文中<b>没有任何时间对照</b>。</div>
+            </div>
+            <span class="lbl">💡 迁移</span><b>判"举例"有一条硬判据：看上下义词。</b>上句出现的词（animals / experiments），在本句是否被换成了它的<b>下义词或具体形态</b>（cat / a small-scale study）？是，就是举例，不用凭感觉。<br>⭐ <b>本篇「引例」考了两次</b>：<a href="#q1" style="color:var(--accent)">1 题</a>是祈使句形态（Consider），本题是插入语形态（for instance）。<b>同一个功能，两副面孔。</b>
+          </div>
+        </div>
+
+        <div class="q" id="q15" data-ans="0">
+          <div class="qhead"><span class="qno">15</span><span class="qt c-logic">逻辑关系 · 虚拟条件</span><span class="qpos">___ animals ran…, they would…</span></div>
+          <span class="stem">We believe that <em>15</em> animals <b>ran</b> the labs, they <b>would test</b> us to determine the limits of our patience…</span>
+          <div class="opts">
+            <div class="opt">A if<span class="gl">如果（引导条件）</span></div>
+            <div class="opt">B unless<span class="gl">除非</span></div>
+            <div class="opt">C as<span class="gl">因为；当…时</span></div>
+            <div class="opt">D lest<span class="gl">以免；免得</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份（纯语法题，读都不用读语义）</span>看两处形态就够了：<br>从句用<b>一般过去时</b> <code>ran</code>　＋　主句用 <b>would ＋ 动词原形</b> <code>would test</code><br>⟹ 这是<b>与现在事实相反的虚拟条件句</b>（动物当然没在管实验室）。<b>能引导虚拟条件从句的连词只有 if。</b>
+            <span class="lbl">🔗 线索（还有一条内证）</span>④段首句已经假设过一次：<code>… <b>if they had the chance</b></code>（如果动物有机会）。<b>本句是那句话的展开，连词自然还是 if。</b>
+            <span class="lbl">✅ A if</span>
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>unless＝除非，用于引出"某事不会发生的唯一情形"。代入后成了"动物会测试我们，除非它们掌管实验室"——<b>逻辑当场拧成一团</b>。</div>
+              <div class="wr"><span class="l">C</span>as＝因为／当……时，引导的是<b>真实</b>的因果或时间关系，<b>不用于虚拟语气</b>。</div>
+              <div class="wr"><span class="l">D</span>lest＝以免、免得，两处不合：①从句须用 <code>(should ＋) 动词原形</code>，与 ran 的过去式形态<b>直接冲突</b>；②"动物测试我们"显然不是为了"避免动物掌管实验室"。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>虚拟语气题是完形里最快的一道</b>：<b>主句 would/could/might ＋ 动词原形、从句一般过去时 ⟹ 连词只能是 if。</b>看形态，不读语义，五秒解决。<br>顺手把三档背清：<b>与现在相反</b>（if did, would do）｜ <b>与过去相反</b>（if had done, would have done）｜ <b>与将来相反</b>（if were to do / should do, would do）。
+          </div>
+        </div>
+
+        <div class="q" id="q16" data-ans="2">
+          <div class="qhead"><span class="qno">16</span><span class="qt c-word">词义辨析 · 动词</span><span class="qpos">test us to ___ the limits</span></div>
+          <span class="stem">…they would <b>test</b> us to <em>16</em> the limits of our patience, our faithfulness, our memory for locations.</span>
+          <div class="opts">
+            <div class="opt">A moderate<span class="gl">缓和；使适中</span></div>
+            <div class="opt">B overcome<span class="gl">克服；战胜</span></div>
+            <div class="opt">C determine<span class="gl">查明；测定</span></div>
+            <div class="opt">D reach<span class="gl">达到（某水平）</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>不定式，作 <code>test us</code> 的<b>目的状语</b>（测试我们，是为了 ___ 我们在耐性、忠诚度、方位记忆上的极限）。
+            <span class="lbl">🔗 线索（三条，任取一条都够）</span>① <b>常识</b>：测试的目的天然就是"<b>弄清楚</b>"某件事；<br>② <b>上句</b>：猫做操作性条件反射研究，靠的是通过自己的行为<b>摸清</b>主人的脾气（什么时候会心软、会喂饭）；<br>③ ⭐ <b>下文的平行句</b>：<code>they would try to <b>decide</b> what intelligence is really for</code> … <code>they would hope to <b>study</b> a fundamental question</code>——<b>三句结构完全平行，动词必然同族</b>：determine / decide / study。
+            <span class="lbl">✅ C determine</span>＝<b>（通过刻意的行为或实验）查明、测定</b>，与 test 的语义严丝合缝。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>moderate＝缓和、使适中。代入后成了"让人类的耐性极限有所下降"——变成<b>动物在帮人类调节</b>，脱离语境；且 moderate 后一般接<b>涉及程度的事物</b>（moderate one's tone），<b>不接 limits 这种"程度本身"</b>。</div>
+              <div class="wr"><span class="l">B</span>overcome＝克服／战胜。两处不通：①表"克服困难"时，<b>动作的发出者与承受者应是同一方</b>（人自己克服自己的极限），而这里是动物去克服人类的极限；②表"战胜"时须双方是<b>竞争/敌对</b>关系，而全文并没有把人与动物对立起来。</div>
+              <div class="wr"><span class="l">D</span>reach＝达到某一水平。由"动物智力落后于人类"编造出"动物想追上人类的极限"——<b>与本文立意（借动物视角自省）无关</b>。</div>
+            </div>
+            <span class="lbl">💡 迁移</span><b>目的状语空看下文的平行句。</b>本篇 <code>test to <b>determine</b></code> / <code>try to <b>decide</b></code> / <code>hope to <b>study</b></code> 三句骨架完全一样，<b>互为答案</b>。<br><b>凡见到连续三句同结构，就把它们竖着排在草稿上比对</b>——完形里这是最省力的一种取证。
+          </div>
+        </div>
+
+        <div class="q" id="q17" data-ans="1">
+          <div class="qhead"><span class="qno">17</span><span class="qt c-collo">固定搭配 · 介词（句尾）</span><span class="qpos">what … is really ___</span></div>
+          <span class="stem">They would try to decide what intelligence in humans is really <em>17</em>, <b>not merely how much of it there is</b>.</span>
+          <div class="opts">
+            <div class="opt">A at<span class="gl">在（地点/位置）</span></div>
+            <div class="opt">B for<span class="gl">为了；用于（问用途）</span></div>
+            <div class="opt">C after<span class="gl">在…之后；追求</span></div>
+            <div class="opt">D with<span class="gl">和…在一起；伴随</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份（先把介词挪回去）</span>介词落在句尾，与 what 遥相呼应。<b>还原成 <code>for what</code>（为了什么）再读，语义立刻清楚。</b>从句正常语序＝ <code>intelligence in humans is really ___ what</code>，主系表结构。
+            <span class="lbl">🔗 线索（对举：质 vs 量）</span>后半句 <code><b>not merely how much</b> of it there is</code>（而不仅仅是它有<b>多少</b>）——<b>"多少"是量，那么空格问的就是"质"</b>：智力究竟<b>有什么用</b>。<br>再看全文主线：a high-priced option（贵）→ the real costs（代价）→ <b>到底值不值、有什么用</b>。<b>方向完全一致。</b>
+            <span class="lbl">✅ B for</span><b><code>what … is for</code> ＝ ……是干什么用的、有什么用</b>，专门问<b>用途与价值</b>。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>at：<code>at what</code> 不成语——at 后须跟具体范畴才能成立（at what <b>cost</b> / at what <b>point</b>）；单独的 at what 语义约等于 when/where，"人类智力在什么时间／地点"读不通。</div>
+              <div class="wr"><span class="l">C</span>after 表"追求"时（<i>a man after information</i>），<b>主语必须是追求者（人）</b>；而本句主语是 intelligence（智力本身），<b>智力不会去"追求"什么</b>。</div>
+              <div class="wr"><span class="l">D</span>with 表伴随，"人类智力到底伴随着什么"——偏离"用途/价值"这个讨论中心。</div>
+            </div>
+            <span class="lbl">💡 迁移</span><b>介词在句尾时，一律先挪回 what 前面还原。</b>这一族四个一起背：<br><code>what … is <b>for</b></code>（有什么用）｜ <code>what … is <b>about</b></code>（是关于什么的）｜ <code>what … is <b>like</b></code>（是什么样的）｜ <code>what … is <b>worth</b></code>（值多少）。
+          </div>
+        </div>
+
+        <div class="q" id="q18" data-ans="0">
+          <div class="qhead"><span class="qno">18</span><span class="qt c-logic">逻辑关系 · 句际递进</span><span class="qpos">句首状语</span></div>
+          <span class="stem">…they would test us to determine <b>the limits</b>… They would try to decide <b>what intelligence is really for</b>… <em>18</em>, they would hope to study a fundamental <b>question</b>: Are humans actually aware of the world they live in?</span>
+          <div class="opts">
+            <div class="opt">A Above all<span class="gl">最重要的是；尤其是</span></div>
+            <div class="opt">B After all<span class="gl">毕竟；终究</span></div>
+            <div class="opt">C However<span class="gl">然而（转折）</span></div>
+            <div class="opt">D Otherwise<span class="gl">否则；除此之外</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>句首状语，用逗号与后文隔开，<b>修饰整个句子</b>，承担句际逻辑。
+            <span class="lbl">🔗 线索（把三个目的竖着排，看是不是在爬坡）</span><table class="otab" style="margin-top:6px"><tr><th>顺序</th><th>动物想弄清的东西</th><th>深度</th></tr><tr><td>①</td><td>the <b>limits</b> of our patience…（人的耐性极限）</td><td>浅：测<b>量</b></td></tr><tr><td>②</td><td>what intelligence is really <b>for</b>（智力有什么用）</td><td>中：测<b>用途</b></td></tr><tr><td>③</td><td>Are humans actually <b>aware</b> of the world…（人有没有自觉）</td><td>深：测<b>本质</b></td></tr></table><b>一层比一层深 ⟹ 递进，不是转折。</b>
+            <span class="lbl">✅ A Above all</span>＝<b>最重要的是</b>，专门用来引出"所有内容当中最重的那一项"。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>After all＝毕竟／终究，传达的是<b>转折</b>（出乎意料）或<b>因果</b>（提醒对方考虑某个既有事实）。三句之间既没有意外也没有因果。</div>
+              <div class="wr"><span class="l">C</span>However＝然而。三句<b>都在讲动物做实验的目的，方向完全一致</b>，不存在任何转折。</div>
+              <div class="wr"><span class="l">D</span>Otherwise 两义都不合：①"否则"要引出"不做某事就会导致的后果"；②"除此之外"要求前后内容<b>相对独立、可以并列</b>，而这里是<b>层层加深</b>。</div>
+            </div>
+            <span class="lbl">💡 迁移</span><b>判递进不靠语感，靠"列竖行"</b>：把相邻几句的<b>谓语＋宾语</b>抄成一竖行，看程度是不是在爬坡。爬坡＝递进（Above all / Most important / What is more / Better still），持平＝并列，掉头＝转折。<br>⭐ <b>本题与 19 题是一对连体空</b>，接着往下看。
+          </div>
+        </div>
+
+        <div class="q" id="q19" data-ans="0">
+          <div class="qhead"><span class="qno">19</span><span class="qt c-word">词义辨析 · 形容词</span><span class="qpos">a(n) ___ question:（冒号同位语）</span></div>
+          <span class="stem">Above all, they would hope to study a(n) <em>19</em> question: <b>Are humans actually aware of the world they live in?</b></span>
+          <div class="opts">
+            <div class="opt">A fundamental<span class="gl">根本的；最重要的</span></div>
+            <div class="opt">B comprehensive<span class="gl">全面的；无所不包的</span></div>
+            <div class="opt">C equivalent<span class="gl">同等的；相等的</span></div>
+            <div class="opt">D hostile<span class="gl">充满敌意的</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>形容词修饰 question；<b>冒号后面就是这个 question 的同位语</b>——冒号的作用是"对前面的内容作具体说明"，<b>所以答案必须能概括冒号后那句话的性质</b>。
+            <span class="lbl">🔗 线索（两条，且第一条是决定性的）</span>⭐ <b>① 18 题已经把档位定死了</b>：既然用了 <code>Above all</code>（最重要的是），那么这个 question 就必须是<b>与"最重要"同档</b>的形容词。<br>② 冒号后的问题是"<b>人类是否真的意识到自己所生活的世界</b>"——这是关于<b>意识本质</b>的追问，比"极限有多大""智力有什么用"更靠<b>底层</b>。
+            <span class="lbl">✅ A fundamental</span>＝根本的、最重要的。与递进链的最后一环严丝合缝。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>comprehensive＝全面的、无所不包的。命题人拿句中的 <code>the world</code> 一词设障——"问题关乎整个世界，那应该是无所不包的吧"。<b>但冒号后的问题只聚焦一点：人有没有自觉（aware of）</b>，一点也不"全面"。<b>⟹ 凡形容词空，先读冒号/破折号后面的同位语，别读句子里最大的那个名词。</b></div>
+              <div class="wr"><span class="l">C</span>equivalent＝同等的。两处毛病：①表"同等重要"须与表重要性的词搭配（of equivalent <b>importance</b>），而空格处没有这类词；②<b>"同等重要"与递进逻辑直接冲突</b>——三个问题恰恰是<b>一个比一个重</b>。</div>
+              <div class="wr"><span class="l">D</span>hostile＝充满敌意的。由 <code>actually</code> 的<b>反讽语气</b>编造出"动物敌视人类"；但全文是<b>借动物的视角自省</b>，从没把人与动物摆成敌对关系。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐⭐ <b>18 与 19 是一对连体空：先定功能词的方向，再定形容词的档位。</b>做法：<b>看到句首的递进/转折词是空的，先做它；它一旦落定，本句里那个形容词空就只剩一个能与之同档的选项。</b><br>同族设计一路可查：<a href="2008_完形_高智商与遗传疾病.html#q5" style="color:var(--accent)">2008 完形 5 题</a>（句中已有 however ⟹ 空格只能填加强转折的 Even）、<a href="2008_完形_高智商与遗传疾病.html#q17" style="color:var(--accent)">2008 完形 15/17</a>（The former…The latter… 同骨架）、2007 完形 2↔20（首尾呼应）。
+          </div>
+        </div>
+
+        <div class="q" id="q20" data-ans="2">
+          <div class="qhead"><span class="qno">20</span><span class="qt c-logic">逻辑关系 · 全文收口</span><span class="qpos">句首状语（末空）</span></div>
+          <span class="stem">…Are humans actually aware of the world they live in? <em>20</em> the results are <b>inconclusive</b>.</span>
+          <div class="opts">
+            <div class="opt">A By accident<span class="gl">偶然地；意外地</span></div>
+            <div class="opt">B In time<span class="gl">及时；最终，迟早</span></div>
+            <div class="opt">C So far<span class="gl">到目前为止</span></div>
+            <div class="opt">D Better still<span class="gl">更妙的是</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>句首状语，修饰整句；<b>这是全文最后一句</b>，功能是<b>收口</b>。
+            <span class="lbl">🔗 线索（末空一律先回头看全文）</span>上句抛出终极问题（人类是否真的意识到自己所处的世界），本句给出回答：<b>结果尚无定论</b>（are inconclusive，否定性陈述）。<br>作者要表达的是：<b>到现在还没答案</b>——带一点自嘲，也留一点余地（<b>言下之意：以后或许会有</b>）。
+            <span class="lbl">✅ C So far</span>＝到目前为止。<b>其语用功能正是"用于否定陈述，说明某情况到目前为止是如此"，同时暗示未来可能有变</b>——与全文收尾"总结现状 ＋ 展望"的需求完全吻合。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>By accident＝偶然地。⚠️ <b>科研语境不填偶然词（本篇第三次，也是最后一次）</b>——"尚无定论"是一种客观确定的状况，不存在"偶不偶然"。</div>
+              <div class="wr"><span class="l">B</span>In time 两义都反：①"及时"（来得及做某事）与"有无定论"无关；②"最终、迟早"（＝eventually，<i>In time you'll learn everything.</i>）<b>恰恰表示"该研究终究会有定论"，与 inconclusive 正相反</b>。<b>这是本题最像的一项。</b></div>
+              <div class="wr"><span class="l">D</span>Better still＝更妙的是，用于引出<b>比上文更好的选项</b>（<i>Go for a walk around the building, or better still around the block.</i>）。而上文是"想研究的问题"、本句是"没有结论"，<b>两者之间无优劣可比</b>。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>完形末空一律先回头看全文再选，三年三次无一例外</b>：<br>2007 的 <code>unprepared</code> 要回看第 2 空的 hopefully（首尾呼应）｜ <a href="2008_完形_高智商与遗传疾病.html#q20" style="color:var(--accent)">2008 的 <code>paradoxical</code></a> 要回看上一句的 this（跨句回指）｜ <b>2009 的 <code>So far</code> 要回看整段那个悬而未决的问句</b>。<br><b>末空是全文的最后一块拼图，它服务的是整篇，不是它自己那一行。</b>
+          </div>
+        </div>
+      </section>
+      <!-- ========== 03 考点分类 ========== -->
+      <section class="card">
+        <h2><span class="n">03</span>考点分类（完形不背单个空，要看「这题在考什么」）</h2>
+        <div class="catbar" id="catbar"></div>
+        <div class="catlegend" id="catlegend"></div>
+        <p class="note" style="margin-top:14px">点某一类 → 下方列出该类所有空、正文里同步高亮 → 点小格跳到解析卡。（分类依据不是"空格里填的是什么词"，而是<b>"解这一题你得做什么动作"</b>。）</p>
+        <div class="chips" id="chips"></div>
+        <div class="flow" style="margin-top:16px">
+          <div class="fi"><b>⭐ 本篇最重要的结构性事实：这是三年里<u>最均匀</u>的一篇完形。</b>
+            <span class="ev"><div class="tabwrap"><table class="otab"><tr><th>年份</th><th>词义辨析</th><th>固定搭配</th><th>逻辑关系</th><th>上下文语义</th><th>偏科程度</th></tr>
+            <tr><td>2007</td><td>9</td><td>5</td><td>4</td><td>2</td><td>重（词义占 45%）</td></tr>
+            <tr><td>2008</td><td>9</td><td>6</td><td><b>2</b></td><td>3</td><td>重（逻辑仅 2 道）</td></tr>
+            <tr><td><b>2009</b></td><td><b>6</b></td><td><b>5</b></td><td><b>5</b></td><td><b>4</b></td><td><b>几乎持平</b></td></tr></table></div>
+            ⟹ <b>再次坐实「完形没有万能重心」</b>。<a href="2008_完形_高智商与遗传疾病.html" style="color:var(--accent)">2008</a> 把分值压在六道实义动词上，<a href="2007_完形_拉美独立后的理想与分歧.html" style="color:var(--accent)">2007</a> 压在词义辨析上，<b>2009 哪儿都没压——四类都得会</b>。</span></div>
+          <div class="fi"><b>⟹ 开考先花十秒扫一遍 20 组选项，判断这一年把分压在哪。</b>
+            <span class="ev">四个选项多是<b>连接词/副词</b> → 考逻辑，先画段落方向图；多是<b>实义动词</b> → 考搭配与主语适配；多是<b>同词性形容词</b> → 考词义细分。<b>本篇扫下来会发现四种都有，那就老老实实顺着读，别指望一招通吃。</b></span></div>
+          <div class="fi"><b>本篇有五道题「读都不用读语义」——纯靠形态就能定（占全卷 2.5 分）。</b>
+            <span class="ev"><b>5</b>（插入语还原成 It ___ that… ⟹ 只有 turns out 能接从句）· <b>13</b>（还原语序 ⟹ perform experiments on）· <b>15</b>（ran ＋ would ⟹ 只能是 if）· <b>17</b>（介词挪回 what 前 ⟹ what … is for）· <b>12</b>（be on one's mind，across 须配动作动词）。<br><b>⟹ 完形不是"语感题"。凡能靠语法定的空，一律先用语法定，省下来的时间留给真正要读上下文的那几道。</b></span></div>
+          <div class="fi"><b>⚠️ 而全篇最值钱的一条跨空规律：科研语境不填偶然词，一篇里考了三次。</b>
+            <span class="ev"><b>2</b> happened to（碰巧）✗ ｜ <b>14</b> by chance（碰巧）✗ ｜ <b>20</b> By accident（偶然地）✗ —— <b>三个空、三个不同位置、同一个错法</b>。<b>凡"实验/研究/发现"语境，谓语与状语一律往「趋势·规律·阶段性」上填。</b></span></div>
+        </div>
+      </section>
+
+      <!-- ========== 04 打法 ========== -->
+      <section class="card">
+        <h2><span class="n">04</span>完形六大打法（本篇取证）</h2>
+        <div class="flow">
+          <div class="fi"><b>① 首句不设空 → 先定三要素</b>：话题、性质、语气。全篇任何一个空都不能违背首句给的大背景。
+            <span class="ev">本篇首句 <code>Research on animal intelligence always makes us wonder just how smart humans are.</code> 一句定死语气＝<b>自省、带自嘲</b> ⟹ <b>4 空</b>（不太聪明是<b>优势</b>）、<b>8 空</b>（动物懂得何时<b>停下</b>）、<b>9 空</b>（<b>有限的</b>智力）三个空全部服从它。<b>凡"往上加智力"的选项，一律不对。</b></span></div>
+          <div class="fi"><b>② ⭐ 首句若被复现，就把文章对半切</b>（本篇独有的一条）。
+            <span class="ev">第四段首句 <code>Research on animal intelligence <b>also</b> makes us wonder…</code> <b>原样复现了第一段首句</b> ⟹ 全文＝<b>两次 wonder</b>：前半"人到底有多聪明"（1–12 空），后半<b>视角反转</b>"如果动物来研究人"（13–20 空）。<b>读到这句就该意识到：后 8 个空的前提已经换了，别再拿前半的语境去套。</b></span></div>
+          <div class="fi"><b>③ 比喻句先找「接口词」</b>——本体与喻体共用的那个双关词，找到它，比喻的两端一起落地。
+            <span class="ev">本篇的接口是 <code><b>bright</b></code>（灯泡<b>亮</b> ／ 人<b>聪明</b>）。有了它，<code>smarter → shorter lives</code> 与 <code>dimmer bulbs → burn longer</code> 就能两栏对齐，<b>3、4 两空同时解决</b>。<b>②段的 option / upkeep / fuel / starting line 是同一手法的第二套比喻（汽车）</b>——认出比喻，整段就通了。</span></div>
+          <div class="fi"><b>④ 对比结构两侧必反向</b>：instead of / rather than / not…but… 出现时，把已知那一侧的特征列三条，空格填它的反面。
+            <span class="ev"><b>7 题</b>：<code>depends on <b>learning</b> … instead of <b>instinct</b></code>——instinct ＝天生、瞬时、不用学 ⟹ 空格＝后天、缓慢（<b>gradual</b>）。<b>而干扰项 spontaneous 恰恰是 instinct 那一栏的特征词被搬过来了。凡对比句里出现"另一侧的特征词"，一律是陷阱。</b></span></div>
+          <div class="fi"><b>⑤ 平行结构成对做 / 连体空先做功能词</b>：并列谓语、The former…The latter…、三句同骨架，两边必须同性质同方向。
+            <span class="ev"><b>16 题</b>靠下文两句平行句取证（test to <b>determine</b> ／ try to <b>decide</b> ／ hope to <b>study</b>，三句同骨架，互为答案）；<b>18 与 19 是一对连体空</b>——先定 18 的方向（<b>递进</b>，Above all），19 就只剩一个能与之同档的形容词（<b>fundamental</b>）。<b>顺序反了会两道一起丢。</b></span></div>
+          <div class="fi"><b>⑥ 末空回头看全文</b>：完形最后一空常是全文的收口，卡住时把全文一句话总结出来再选。
+            <span class="ev"><b>20 题</b>：全文一句话＝「智力代价高昂，那么人到底有没有真正认识自己所处的世界？<b>目前还没有答案</b>」——<b>So far 就是这句话的最后四个字母</b>。三年三次无一例外：2007 的 unprepared（回看第 2 空）· <a href="2008_完形_高智商与遗传疾病.html#q20" style="color:var(--accent)">2008 的 paradoxical</a>（回看上一句的 this）· 2009 的 So far（回看那个悬而未决的问句）。</span></div>
+        </div>
+        <p class="note" style="margin-top:14px">🔁 <b>四年完形对照</b>：<a href="2022_完形_植物意识.html" style="color:var(--accent)">2022</a> 靠 nonetheless / However 这类<b>明信号词</b>解逻辑题；<a href="2007_完形_拉美独立后的理想与分歧.html" style="color:var(--accent)">2007</a> 靠 less agreement / most…some… / except 这类<b>结构性信号</b>；<a href="2008_完形_高智商与遗传疾病.html" style="color:var(--accent)">2008</a> 基本不给信号，靠"动词能不能带这个主语"；<b>2009 则靠<u>语用功能</u>——引例、递进、收口，考的是"这句话在文章里干什么活"。四种都要会认。</b></p>
+      </section>
+
+      <!-- ========== 05 搭配库 ========== -->
+      <section class="card">
+        <h2><span class="n">05</span>固定搭配 &amp; 熟词僻义（这些是死记就得分的）</h2>
+        <div class="wb">
+          <div class="wbi"><div class="p">Consider ＋ 名词短语　（不妨）想想…（1 题）</div><div class="u"><b>引出真实例子</b>的祈使句套路，＝ Take … for example。<b>一刀切判据：祈使句后面跟名词还是跟从句。</b>跟<b>名词</b>＝ Consider / Take / Look at（真实例子）；跟<b>从句</b>且内容不真实＝ Suppose / Imagine / Say（假设情境）。</div></div>
+          <div class="wbi"><div class="p">tend to do sth　往往会，倾向于（2 题）</div><div class="u"><b>科研语境的标配谓语</b>。同族：be likely to / be prone to / be inclined to。<b>⚠️ 与它对立的一整族「偶然词」在完形里基本必错</b>：happen to do｜ by chance｜ by accident｜ as it happens。<b>本篇 2、14、20 三题连着考了这条。</b></div></div>
+          <div class="wbi"><div class="p">it turns out (that)…　结果是；原来是（5 题）</div><div class="u">插入语用法：<code>X, it turns out, is Y</code> ⟹ 还原＝ <code>It turns out that X is Y</code>。<b>判据是"能不能接 that 从句"</b>：能接的一族＝ it turns out / it seems / it appears / it happens / it follows；<b>不能接的</b>＝ insist on（insist 接从句不要 on）· sum up · put forward（宾语只能是 ideas/plans）。</div></div>
+          <div class="wbi"><div class="p">be slow off the starting line　起步慢（6 题）</div><div class="u">也说 <b>slow off the mark</b>；美式还有 out of the gate。<b>off 表"离开起跑线"，是动态的</b>，behind/over/along 都只有静态方位。<b>介词题第一步永远是"这个介词跟谁走"</b>——本题跟 slow，不跟 line。</div></div>
+          <div class="wbi"><div class="p">高价选装配置：option / upkeep / fuel / starting line（②段一整套汽车比喻）</div><div class="u"><code>a high-priced <b>option</b></code> 里的 option <b>本义就是汽车的"选装配置"</b>（加钱才有的功能）；接着 <b>upkeep</b>（保养费）· <b>burns more fuel</b>（更耗油）· <b>slow off the starting line</b>（起步慢）三件全在这套比喻里。<b>认出比喻，②段四个空一起松动。</b></div></div>
+          <div class="wbi"><div class="p">be on sb's mind　挂在心上，惦记着（12 题）</div><div class="u"><b>mind 的介词一次背死</b>：<b>on</b> one's mind（挂心上）｜ <b>in</b> one's mind（在脑海里）｜ <b>out of</b> one's mind（发疯）｜ <b>cross / flash across</b> one's mind（念头闪过，<b>必须配动作动词</b>，不能 be across）｜ bear / keep in mind（牢记）。</div></div>
+          <div class="wbi"><div class="p">perform / conduct / carry out an experiment on sb　对某人做实验（13 题）</div><div class="u">⚠️ <b>"搭配幻觉"高发处</b>：记得的是 <code>carry <u>out</u></code>，就在没有 out 的地方也选 carry。<b>规矩（2008 完形 13 题立）：凡靠"我记得有这个搭配"选出来的答案，必须能把整个搭配原样默写出来才算数。</b>另记：deliver a speech / the mail｜ apply sth to sth。</div></div>
+          <div class="wbi"><div class="p">if ＋ 过去式，主句 would ＋ 原形　与现在事实相反的虚拟（15 题）</div><div class="u"><b>看形态不看语义，五秒解决。</b>三档一起背：<b>与现在相反</b> if did, would do｜ <b>与过去相反</b> if had done, would have done｜ <b>与将来相反</b> if were to do / should do, would do。<b>⚠️ lest 从句须用 (should＋)动词原形，as 不用于虚拟——两项都死在形态上。</b></div></div>
+          <div class="wbi"><div class="p">what … is for　……是干什么用的（17 题）</div><div class="u"><b>介词落在句尾时，一律先挪回 what 前面还原</b>（for what＝为了什么）。四个一起背：what … is <b>for</b>（有什么用）｜ is <b>about</b>（关于什么）｜ is <b>like</b>（什么样）｜ is <b>worth</b>（值多少）。本题与后半句 <code>not merely how much</code> 构成<b>「质 vs 量」的对举</b>。</div></div>
+          <div class="wbi"><div class="p">Above all　最重要的是（18 题）· So far　到目前为止（20 题）</div><div class="u"><b>Above all</b> 引出<b>递进链的最后一环</b>（同族：Most important / What is more）；<b>So far</b> 的语用功能是<b>用于否定陈述中，说明某情况到目前为止如此，并暗示未来或有变化</b>——所以它天然适合当收口句。<br>⚠️ <b>In time 是本篇最像的干扰项</b>：它＝ eventually（迟早、最终），<b>恰恰表示"终究会有定论"，与 inconclusive 相反</b>。</div></div>
+          <div class="wbi"><div class="p">🔑 熟词僻义清单（本篇 10 处，密度不高但双关最狠）</div><div class="u"><div class="tabwrap"><table class="otab"><tr><th>词</th><th>常见义</th><th>本篇义</th><th>出处</th></tr>
+            <tr><td><span class="ow">bright</span></td><td>明亮的</td><td><b>聪明的</b>（⭐ 双关，比喻链的接口）</td><td>①段末</td></tr>
+            <tr><td><span class="ow">dim</span></td><td>昏暗的</td><td><b>笨的</b>（dim bulb ＝ 笨脑瓜）</td><td>3 题答案</td></tr>
+            <tr><td><span class="ow">burn</span></td><td>燃烧</td><td><b>（灯泡）持续发光，耐用</b></td><td>3 题所在句</td></tr>
+            <tr><td><span class="ow">option</span></td><td>选择</td><td><b>（汽车的）选装配置</b></td><td>②段首</td></tr>
+            <tr><td><span class="ow">upkeep</span></td><td>—</td><td><b>保养维护费用</b> n.</td><td>②段</td></tr>
+            <tr><td><span class="ow">run</span></td><td>跑</td><td><b>掌管，经营</b></td><td>15 题所在句</td></tr>
+            <tr><td><span class="ow">-wise</span></td><td>—</td><td><b>后缀：在……方面</b>（I.Q.-wise）</td><td>③段</td></tr>
+            <tr><td><span class="ow">dust</span></td><td>灰尘</td><td><b>leave sb in the dust ＝ 远远甩开</b></td><td>10 题线索</td></tr>
+            <tr><td><span class="ow">for</span></td><td>为了</td><td><b>what … is for ＝ 有什么用</b></td><td>17 题答案</td></tr>
+            <tr><td><span class="ow">apparently</span></td><td>显然</td><td><b>看上去（未必属实）</b></td><td>②段末</td></tr>
+          </table></div></div></div>
+        </div>
+      </section>
+
+      <!-- ========== 06 80 词表 ========== -->
+      <section class="card">
+        <h2><span class="n">06</span>80 个选项词速查（完形的真正词汇量）
+          <button class="allbtn" id="btnHide" style="margin-left:auto" onclick="toggleHide()">✍️ 默写模式</button>
+        </h2>
+        <p class="note">完形一篇＝<b>80 个高频词的辨析现场</b>，绿底是正确项。<b>默写模式</b>会糊住中文释义（借鉴 408 算法手册的默写模式）——先自己说出意思，点单个格子可单独揭开。<b>把这 80 个词过一遍，比只记 20 个答案划算四倍。</b></p>
+        <div class="tabwrap"><table class="otab" id="otab"></table></div>
+      </section>
+
+      <!-- ========== 07 长难句 ========== -->
+      <section class="card">
+        <h2><span class="n">07</span>长难句精析（正文蓝色虚线句）</h2>
+
+        <div class="sent" id="s1">
+          <div class="src"><i>Instead of casting a wistful glance backward at all the species (that) we've left in the dust I.Q.-wise,</i> <span class="skel">it implicitly asks</span> what the real costs of our own intelligence might be.</div>
+          <div class="anat">
+            <ul>
+              <li><b>主干只有三个词</b>：<span class="skel">it implicitly asks</span> ＋ 宾语从句。<b>主语 it 指代上句的 this new research</b>（这项新研究），不是随便一个 it。</li>
+              <li><b>句首 Instead of ＋ 动名词短语作状语</b>，长达 20 个词——<b>它整段是被否定掉的那条路</b>（不是回头怜悯别的物种）。<b>凡 Instead of 开头的长状语，先整段跳过读主干，读完再回来看它否定了什么。</b></li>
+              <li><code>all the species <u>we've left in the dust</u></code>：<b>省略了关系代词 that 的定语从句</b>（species 是 left 的宾语）。<b>10 题的方向就锁在这里</b>——被甩在 in the dust（尘土里、身后），所以瞥的方向只能是 backward。</li>
+              <li>💡 <code>I.Q.-wise</code>：<b>-wise 作后缀＝"在……方面"</b>（money-wise 在钱这方面、weather-wise 就天气而言）。<b>⚠️ 别与 wise（明智的）混淆</b>，它在这里不是形容词。</li>
+              <li><b>宾语从句用陈述语序</b>：<code>what the real costs of our own intelligence <b>might be</b></code>（不是 might be what）。<b>11 题就在这个从句的主语位置上。</b></li>
+            </ul>
+          </div>
+          <div class="tr">译：它没有惆怅地回头瞥一眼那些在智商上被我们远远甩在身后的物种，而是含蓄地追问：我们自己的智力，真正的代价可能是什么。</div>
+        </div>
+
+        <div class="sent" id="s2">
+          <div class="src"><span class="skel">It takes more upkeep, burns more fuel and is slow off the starting line</span> <i>because it depends on learning—a gradual process—instead of instinct.</i></div>
+          <div class="anat">
+            <ul>
+              <li><b>三个并列谓语</b>：<span class="skel">takes … / burns … / is slow …</span>，主语都是 It（＝intelligence）。<b>并列的三项必须同性质——三个都在讲"代价"，而且三个都是汽车比喻。</b></li>
+              <li><b>破折号中间是同位语</b>：<code>learning<b>—a gradual process—</b>instead of instinct</code>。<b>7 题就在这个同位语里。</b><b>⚠️ 读的时候要能一眼看出破折号是在解释 learning，而不是在插入一个新成分</b>——把两个破折号之间整段划掉，句子仍然完整（depends on learning instead of instinct），这就是同位语的判据。</li>
+              <li><b>instead of 两侧反向</b>：learning（后天、缓慢、要练）↔ instinct（天生、瞬时、不用学）。<b>划掉同位语之后，这组对比才看得清楚。</b></li>
+              <li>💡 <code>upkeep</code>（保养维护费）· <code>fuel</code>（燃料）· <code>starting line</code>（起跑线）——<b>三个词都属于同一套比喻，是上句 high-priced <b>option</b>（汽车的高价选装件）的延伸。6 题的答案就藏在"这是汽车比喻"这个认知里。</b></li>
+            </ul>
+          </div>
+          <div class="tr">译：它需要更多保养，消耗更多燃料，而且起步很慢——因为它依靠的是学习（一个循序渐进的过程），而不是本能。</div>
+        </div>
+
+        <div class="sent" id="s3">
+          <div class="src"><span class="skel">We believe</span> that <i>if animals ran the labs,</i> <span class="skel">they would test us</span> to determine <b>the limits of</b> our patience, our faithfulness, our memory for locations.</div>
+          <div class="anat">
+            <ul>
+              <li><b>三层嵌套</b>：主句 We believe → <b>宾语从句</b>（that…）→ 从句内部再套一个<b>虚拟条件句</b>（if…, they would…）。<b>15 题考的就是最里面那层的连词。</b></li>
+              <li><b>虚拟语气的形态信号</b>：从句 <code>ran</code>（一般过去时）＋ 主句 <code>would test</code>（would ＋ 原形）⟹ <b>与现在事实相反</b>。<b>看形态就能定 if，不必读语义。</b></li>
+              <li><code>to determine…</code> 是 <b>test us 的目的状语</b>（16 题）。<b>它后面挂着三个并列的宾语</b>：the limits of <b>①our patience ②our faithfulness ③our memory for locations</b>——<b>三项共享一个 the limits of</b>，别读成三个独立成分。</li>
+              <li>⚠️ <b>本句的 run 是熟词僻义</b>：<code>animals ran the labs</code> 的 run ＝<b>掌管、经营</b>（run a company / run the country），不是"跑"。</li>
+              <li>💡 <b>与下文两句构成三连平行</b>：they would <b>test us to determine</b>… / They would <b>try to decide</b>… / they would <b>hope to study</b>…。<b>16 题的答案就是从这条平行线上取的证。</b></li>
+            </ul>
+          </div>
+          <div class="tr">译：我们认为，假如是动物掌管实验室，它们会对我们进行测试，以查明我们的耐性、忠诚度以及方位记忆力的极限。</div>
+        </div>
+
+        <div class="sent" id="s4">
+          <div class="src"><span class="skel">Research on animal intelligence also makes us wonder</span> <b>what experiments</b> animals would perform on humans <i>if they had the chance.</i></div>
+          <div class="anat">
+            <ul>
+              <li>⭐ <b>全文的折点</b>：这一句<b>原样复现了第一段首句</b>（只多一个 also）——<b>见到"首句被再说一遍"，就把文章对半切。</b>前半问"人有多聪明"，后半反转为"动物会怎么研究人"。</li>
+              <li><b>make sb do</b>（不带 to 的不定式）＋ wonder 的<b>宾语从句</b>。</li>
+              <li>⚠️ <b>最容易读漏的地方</b>：<code>what experiments</code> 不是"什么样的实验"这么一个笼统状语，它是 <b>perform 的宾语，被整体提到了从句句首</b>。还原语序＝ <code>animals would perform <b>what experiments</b> on humans</code>。<b>13 题就死在这个语序上——不还原，就看不出这里在考"做实验"的动宾搭配。</b></li>
+              <li><code>if they had the chance</code>：<b>又一处虚拟</b>（与现在事实相反），为下文整段的 would 定调。<b>④段一共四个 would，全部由这一句管着。</b></li>
+            </ul>
+          </div>
+          <div class="tr">译：对动物智力的研究还让我们想知道：如果动物有机会，它们会对人类做什么样的实验。</div>
+        </div>
+      </section>
+
+      <!-- ========== 08 写作素材 ========== -->
+      <section class="card">
+        <h2><span class="n">08</span>可搬进作文/翻译的表达</h2>
+        <div class="wb">
+          <div class="wbi"><div class="p">X, it turns out, is a high-priced option.　原来，X 是一种代价高昂的选择</div><div class="u"><b>插入语 it turns out 是最省力的"提升书面感"手段</b>——把结论句一分为二，语气立刻从"我认为"变成"事实表明"：<i>Convenience, it turns out, is a high-priced option.</i></div></div>
+          <div class="wbi"><div class="p">There is an advantage in not being too …　不那么…其实是一种优势</div><div class="u"><b>反直觉观点的标准起手式</b>，图表/漫画作文第二段可直接套：<i>There is an advantage in not being too busy: it leaves room for second thoughts.</i></div></div>
+          <div class="wbi"><div class="p">It takes more upkeep and burns more fuel.　它更费保养、更耗燃料</div><div class="u"><b>把抽象的"成本高"具体化成两件看得见的事</b>——比 it is costly 生动得多。<b>写作里凡遇"代价大"，先想能不能换成两个具体开销。</b></div></div>
+          <div class="wbi"><div class="p">A depends on learning—a gradual process—instead of instinct.　A 靠的是学习（一个循序渐进的过程），而非本能</div><div class="u"><b>破折号同位语＝免费的解释位</b>：一个名词后面加一对破折号，就能在不另起一句的情况下把它讲清楚。<b>这是让长句显得有层次的最简手法。</b></div></div>
+          <div class="wbi"><div class="p">Instead of casting a wistful glance backward at …, it asks …　它没有惆怅地回望…，而是追问…</div><div class="u"><b>"不是……而是……"的高级写法</b>：用 Instead of ＋ 动名词把被否定的那条路写具体，再用主句给出真正的主张。<b>议论文转折段可整句迁移。</b></div></div>
+          <div class="wbi"><div class="p">This is on the mind of every … we've ever met.　这是每一个…都在惦记的事</div><div class="u">比 Everyone is concerned about… 有画面感：<i>Job security is on the mind of every graduate we've ever met.</i> ⚠️ <b>介词只能用 on</b>。</div></div>
+          <div class="wbi"><div class="p">Above all, they would hope to study a fundamental question: …　最重要的是，…</div><div class="u"><b>Above all ＋ 冒号</b>是收束段落的稳定组合：先用 Above all 宣告"这是最重的一项"，再用冒号把问题原样抛出来。<b>比"Last but not least"高一档，且不落俗套。</b></div></div>
+          <div class="wbi"><div class="p">So far the results are inconclusive.　到目前为止，结果尚无定论</div><div class="u"><b>结尾留白的万能句</b>：既承认现状未定，又暗示未来可期。<b>凡不想把话说死的结尾，都可以用它收口</b>：<i>Whether AI will replace such jobs — so far the results are inconclusive.</i></div></div>
+          <div class="wbi"><div class="p">…, I.Q.-wise / money-wise / time-wise　就智商／金钱／时间而言</div><div class="u"><b>-wise 后缀是英美报刊里极常见的省力手段</b>，一个后缀顶一个介词短语（in terms of…）。<b>⚠️ 书面正式文体里少用，口语和评论文体里最自然。</b></div></div>
+        </div>
+      </section>
+
+    </main>
+
+    <aside>
+      <div id="panel"><div class="hint">👆 点正文里的<b>黄底词</b><br>词卡会出现在这里<br><br>点<b>空格</b>则跳到对应解析卡</div></div>
+    </aside>
+  </div>
+
+  <footer>2009 英语一 · 完形填空复盘页 · 答案与解析由 Claude 独立盲做后写成（盲做 20/20），并与黄皮书精讲逐题交叉核对 · 生词卡、打法总纲、四年完形对照表为自撰</footer>
+</div>
+
+<button id="yd">🔍 查有道</button>
+<script>
+/* ============ 词汇卡 ============ */
+const V = {
+  wonder:{w:"wonder",ipa:"/ˈwʌndə(r)/",pos:"v. / n.",tags:["core","write"],cn:"①想知道，纳闷 ②惊奇；奇迹",en:"to want to know sth; to feel surprise",ex:"Research on animal intelligence always makes us wonder just how smart humans are.",mem:"⭐ <b>本篇的骨架词</b>：第一段与第四段的首句都用 makes us wonder 开头，<b>「首句被再说一遍」正是全文对半切的信号</b>。<br><b>wonder ＋ 特殊疑问词从句</b>（wonder just how smart… / wonder what experiments…）是它最常见的用法，<b>从句一律用陈述语序</b>。",syn:"be curious about / ask oneself / marvel",conf:"wonder（想知道）vs. wander（漫步，注意拼写）vs. no wonder（难怪）"},
+  zimmer:{w:"Carl Zimmer / Science Times",ipa:"—",pos:"专名",tags:["poly"],cn:"卡尔·齐默 ／《科学时报》",en:"a science writer; the science section of the NYT",ex:"the fruit-fly experiments described by Carl Zimmer in the Science Times",mem:"Carl Zimmer 是《纽约时报》科学版（<b>Science Times</b>，每周二出的科学专刊）的科普作者。<br>⭐ <b>这个信息直接决定 1 题</b>：果蝇实验是<b>已经做完、已经见报</b>的事 ⟹ 不能用 Suppose／Imagine（那是引出假设的），只能用 Consider（引出真实例子）。",syn:"—",conf:"the Science Times（报纸的科学专版）≠ Science（《科学》杂志）"},
+  average:{w:"average",ipa:"/ˈævərɪdʒ/",pos:"adj. / n. / v.",tags:["core"],cn:"①一般的，普通的 ②平均的；平均数",en:"typical or ordinary; the result of adding several amounts",ex:"smarter than the average fruit fly",mem:"<b>the average ＋ 单数名词</b>＝「一般的、普通的那个」（the average student 普通学生），<b>这里不是「平均的果蝇」</b>。<br>💡 对照 <a href='2008_完形_高智商与遗传疾病.html' style='color:var(--accent)'>2008 完形 10 题</a>：那里的 <code>the <b>mean</b> value of 100</code> 才是「平均值」的正式说法——<b>average 偏日常，mean 偏统计</b>。",syn:"typical / ordinary / normal / mean",conf:"average（一般的/平均的）vs. mean（统计学的平均数；卑鄙的）vs. medium（中等的）vs. median（中位数）"},
+  suggest:{w:"suggest",ipa:"/səˈdʒest/",pos:"v.",tags:["core","poly","write"],cn:"⚠️（物作主语）表明，说明；（人作主语）建议",en:"to show that sth is probably true",ex:"This suggests that dimmer bulbs burn longer…",mem:"⭐ <b>熟词僻义常考点</b>：<b>主语是物（数据、研究、结果）时，suggest ＝ 表明</b>，后接从句用<b>陈述语气</b>；主语是人、表「建议」时，从句才用 <code>(should) do</code> 的虚拟形式。<br>⟹ <a href='2008_完形_高智商与遗传疾病.html#q7' style='color:var(--accent)'>2008 完形 7 题</a>考的就是这一条（主语 a paper 是物 ⟹ 只能 suggests）。<b>两年连考，务必记死。</b>",syn:"indicate / show / imply / point to",conf:"suggest（表明/建议）vs. imply（暗示，更间接）vs. propose（正式提议）"},
+  bulb:{w:"bulb",ipa:"/bʌlb/",pos:"n.",tags:["core","poly"],cn:"①灯泡 ②球茎（郁金香等）",en:"the glass part of an electric lamp",ex:"This suggests that dimmer bulbs burn longer…",mem:"⭐ <b>本篇比喻的喻体</b>。英语里 <code><b>a dim bulb</b></code> 是现成的谑称，指<b>「笨脑瓜、不太灵光的人」</b>；反过来 <code>a bright bulb</code> 就是聪明人。<br><b>正因为 bright 一词双关（灯泡亮／人聪明），作者才能拿灯泡打这个比方</b>——<b>3、4 两空全靠这条比喻链。</b>",syn:"lamp / light",conf:"bulb（灯泡）vs. bubble（气泡）vs. bull（公牛）——拼写形近"},
+  burn:{w:"burn",ipa:"/bɜːn/",pos:"v.",tags:["core","poly"],cn:"⚠️①（灯）持续发光，燃着 ②燃烧；消耗（燃料）",en:"to produce light or heat by burning; to use up fuel",ex:"dimmer bulbs burn longer … burns more fuel",mem:"<b>本篇两处 burn，两个义项，都要认</b>：<br>① <code>bulbs <b>burn</b> longer</code>＝灯泡<b>亮得更久、更耐用</b>（不是「烧得更久」）；<br>② <code><b>burns</b> more fuel</code>＝<b>消耗</b>更多燃料（汽车比喻的第二件）。<br>💡 派生：burnout（倦怠；烧毁）· a slow burn（慢慢积累的怒火）。",syn:"glow / give off light / consume",conf:"burn out（烧坏；累垮）vs. burn up（烧尽）vs. burn down（烧毁房屋）"},
+  bright:{w:"bright",ipa:"/braɪt/",pos:"adj.",tags:["core","poly"],cn:"⚠️①聪明的 ②明亮的 ③（前景）光明的",en:"clever; giving out a lot of light",ex:"there is an advantage in not being too bright",mem:"⭐⭐ <b>全篇枢纽——这是比喻链的「接口词」</b>：bright 同时表<b>灯泡亮</b>与<b>人聪明</b>，两个意思都在场，比喻才能成立。<br><b>做题动作：比喻句先找本体与喻体共用的那个双关词。</b>找到 bright，就能把两栏对齐：<br><code>smarter → shorter lives</code> ｜ <code>dimmer → burn longer</code>。",syn:"clever / smart / intelligent / brilliant",conf:"bright（聪明的，中性偏口语）vs. brilliant（才华横溢）vs. sharp（敏锐）｜ 反义 dim / dull / slow"},
+  option:{w:"high-priced option",ipa:"/ˈɒpʃn/",pos:"n.短语",tags:["poly","phrase","write"],cn:"⚠️价格高昂的（选装）配置",en:"an extra feature you pay more for",ex:"Intelligence, it turns out, is a high-priced option.",mem:"⭐ <b>option 在这里不是泛泛的「选择」，而是汽车销售用语「选装配置」</b>（加钱才有的功能，如天窗、真皮座椅）。<br><b>认出这一点，②段整套比喻就打通了</b>：option（选装件）→ <b>upkeep</b>（保养费）→ <b>burns more fuel</b>（更耗油）→ <b>slow off the starting line</b>（起步慢）。<b>6 题的答案就藏在「这是汽车比喻」这个认知里。</b>",syn:"add-on / extra / feature",conf:"option（可选项/选装件）vs. choice（选择行为）vs. alternative（二者择一的替代方案）"},
+  upkeep:{w:"upkeep",ipa:"/ˈʌpkiːp/",pos:"n.[U]",tags:["core","write"],cn:"保养；维护费用",en:"the cost of keeping sth in good condition",ex:"It takes more upkeep, burns more fuel…",mem:"keep up（维持）→ 名词倒过来写＝ upkeep（维持所需的开销）。同构词：<b>outbreak</b>（break out 爆发）· <b>outcome</b>（come out 结果）· <b>breakthrough</b>· <b>input/output</b>。<br><b>写作可用</b>：the upkeep of public facilities（公共设施的维护）。",syn:"maintenance / running costs / preservation",conf:"upkeep（维护费用，不可数）vs. maintenance（维护，泛用）vs. repair（修理，已坏才修）"},
+  fuel:{w:"fuel",ipa:"/ˈfjuːəl/",pos:"n. / v.",tags:["core","write"],cn:"①燃料 ②v. 给…加油；<b>加剧，助长</b>",en:"material that produces heat or power; to make sth stronger",ex:"It takes more upkeep, burns more fuel…",mem:"<b>动词义在写作里最好用</b>：<code>fuel <b>fears / speculation / demand / inflation</b></code>＝加剧恐慌／助长猜测／刺激需求。<br>💡 还有一个成语：<code>add fuel to the flames</code>＝火上浇油。",syn:"petrol / energy source｜ v. stoke / stimulate / intensify",conf:"fuel（燃料/助长）vs. feed（喂养/供给）vs. fire（点燃/解雇）"},
+  startingline:{w:"(be slow) off the starting line",ipa:"—",pos:"习语",tags:["phrase"],cn:"起步慢，起跑反应慢",en:"slow to begin or react",ex:"…and is slow off the starting line because it depends on learning",mem:"⭐ <b>6 题答案</b>。<b>off 表「离开起跑线」，是动态的</b>；behind／over／along 都只有静态方位，所以全错。<br><b>介词题第一步永远是「这个介词跟谁走」</b>——本题跟 <b>slow</b>，不跟 line。<br>同族：<code>slow off the mark</code>（反应慢）· <code>out of the gate</code>（美式：一开始就…）。",syn:"slow to start / a slow starter",conf:"off the mark（起步/偏离目标，两义）vs. on the mark（准确）vs. off the record（不供发表）"},
+  instinct:{w:"instinct",ipa:"/ˈɪnstɪŋkt/",pos:"n.",tags:["core","write"],cn:"本能，天性；直觉",en:"a natural tendency to behave in a particular way",ex:"…depends on learning—a gradual process—instead of instinct",mem:"in（内）+stinct（刺，同 distinct/extinct 的词根）→ 内在的驱使 → 本能。<br>⭐ <b>7 题的解题基点</b>：把 instinct 的特征列三条——<b>天生的、瞬时的、不用学的</b>；空格（形容 learning）就填它的反面——<b>后天的、缓慢的、要练的</b> ⟹ gradual。<br>⚠️ <b>干扰项 spontaneous（自发的、不假思索的）恰恰是 instinct 这一栏的词</b>。",syn:"intuition / gut feeling / innate drive",conf:"instinct（本能，与生俱来）vs. intuition（直觉，可含经验）vs. impulse（一时冲动）"},
+  species:{w:"species",ipa:"/ˈspiːʃiːz/",pos:"n.（单复数同形）",tags:["core"],cn:"物种",en:"a group of animals or plants that can breed together",ex:"Plenty of other species are able to learn…",mem:"⚠️ <b>单复数同形</b>（one species / many species），谓语按语境定。同族「单复同形」名词：<b>series</b>（系列）· <b>means</b>（手段）· <b>headquarters</b>· <b>crossroads</b>。<br>💡 生物学层级由大到小：kingdom → phylum → class → order → family → genus → <b>species</b>。",syn:"kind / type / breed",conf:"species（物种）vs. specimen（标本）vs. specific（具体的）——同根 speci-（种类、外观）"},
+  apparently:{w:"apparently",ipa:"/əˈpærəntli/",pos:"adv.",tags:["core","poly"],cn:"⚠️①看上去（未必属实） ②显然",en:"according to what you have heard, though you are not certain",ex:"one of the things they've apparently learned is when to stop",mem:"⭐ <b>熟词僻义</b>：中文一看就想成「显然」，<b>但它更常表「据说／看上去是这样（我不担保）」</b>——<b>作者用它来给一句半开玩笑的话留余地</b>（动物「显然」学会了适可而止）。<br><b>判据：句中若带调侃、转述、不确定的语气，就取「看上去」义。</b>",syn:"seemingly / by all accounts / evidently",conf:"apparently（看上去/据说）vs. obviously（确凿无疑）vs. transparently（明显地，含贬义）"},
+  adaptive:{w:"adaptive value",ipa:"/əˈdæptɪv/",pos:"n.短语",tags:["core","phrase"],cn:"适应性价值（生物学）",en:"how much a trait helps an organism survive and reproduce",ex:"Is there an adaptive value to limited intelligence?",mem:"进化生物学术语：某个性状<b>对生存与繁殖的贡献</b>。<br>⭐ <b>9 题的对应线索</b>：<code>an <b>adaptive value</b> to ___ intelligence</code> ↔ ①段的 <code>an <b>advantage</b> in not being too bright</code>——<b>左边对上了，右边（limited ↔ not being too bright）只能跟着对</b>。",syn:"survival advantage / fitness benefit",conf:"adaptive（适应性的）vs. adaptable（人/物有适应能力的）vs. adept（熟练的）"},
+  wistful:{w:"wistful",ipa:"/ˈwɪstfl/",pos:"adj.",tags:["core","write"],cn:"惆怅的；渴望而略带伤感的",en:"thinking sadly about sth you want but cannot have",ex:"casting a wistful glance backward at all the species…",mem:"<b>情绪的分寸感很重要</b>：wistful ＝ 想要却知道要不到，因而怅然——<b>不是难过，也不是羡慕，是「怀念着回望」</b>。<br>⭐ 这个词把作者的语气标了出来：<b>人类回头看那些「不如自己聪明」的物种时，居然是带着一丝羡慕的</b>——全文反讽的底色。",syn:"nostalgic / longing / plaintive",conf:"wistful（惆怅怀念）vs. mournful（哀伤）vs. envious（嫉妒，含负面）"},
+  castglance:{w:"cast a glance (at)",ipa:"/kɑːst/",pos:"v.短语",tags:["phrase","write"],cn:"（朝…）瞥一眼，投去一瞥",en:"to look quickly at sth",ex:"Instead of casting a wistful glance backward at…",mem:"<b>cast 的「投」义一族一次背全</b>：cast a glance（投去一瞥）· cast a shadow over（给…蒙上阴影）· cast doubt on（使人怀疑）· cast light on（阐明）· cast a vote（投票）。<br><b>写作里 cast doubt on 与 cast light on 是最高频的两个。</b>",syn:"glance at / take a look at / steal a look",conf:"cast（投；铸造，过去式仍是 cast）vs. caste（种姓）vs. forecast（预报）"},
+  dust:{w:"leave sb in the dust",ipa:"/dʌst/",pos:"习语",tags:["phrase","poly"],cn:"把某人远远甩在身后",en:"to leave sb far behind; to outdo sb completely",ex:"all the species we've left in the dust I.Q.-wise",mem:"⭐ <b>10 题的方向锁</b>：被甩在「尘土里」＝在<b>后方</b> ⟹ 瞥过去的方向只能是 <b>backward</b>。<br><b>凡方向副词题，先在原文找一个「位置词」</b>：in the dust / behind / ahead of / above / at the bottom。<br>💡 画面来自赛跑或赛马：领先者扬起的尘土扑了后面的人一脸。",syn:"outstrip / leave behind / outpace",conf:"in the dust（被甩下）vs. bite the dust（垮台、完蛋）vs. dust off（掸灰；重新启用）"},
+  wise:{w:"-wise（后缀）",ipa:"/waɪz/",pos:"后缀",tags:["poly","write"],cn:"⚠️在……方面，就……而言",en:"as far as … is concerned",ex:"all the species we've left in the dust I.Q.-wise",mem:"⭐ <b>别当成 wise（明智的）</b>。<code>I.Q.-wise</code>＝<b>就智商而言</b>。同族：money-wise（钱方面）· weather-wise（就天气而言）· time-wise · career-wise。<br><b>一个后缀顶一个介词短语（in terms of…），是英美报刊里极常见的省力手段</b>；⚠️ <b>正式书面文体里少用。</b>",syn:"in terms of / as regards / speaking of",conf:"-wise（在…方面）vs. clockwise（顺时针，方式义）vs. likewise（同样地）——同一个后缀的三种用法"},
+  implicitly:{w:"implicitly",ipa:"/ɪmˈplɪsɪtli/",pos:"adv.",tags:["core","write"],cn:"含蓄地，不明说地",en:"in a way that is suggested but not stated directly",ex:"it implicitly asks what the real costs of our own intelligence might be",mem:"im(向内)+plic(折叠，同 complicated/duplicate)+it → 折在里面没摊开 → 含蓄的。<br><b>反义 explicitly（明确地）＝ ex(向外)+plic(折) → 摊开来说。</b><br>⭐ 这个词标出了本文的写法：<b>研究本身没说「人类智力有代价」，是作者替它把这层意思读出来的</b>。",syn:"indirectly / tacitly / by implication",conf:"implicit（含蓄的）vs. explicit（明确的）vs. implicated（被牵连的，词根同但语义远）"},
+  mind:{w:"be on sb's mind",ipa:"/maɪnd/",pos:"习语",tags:["phrase"],cn:"挂在心上，惦记着",en:"to be worrying or occupying sb's thoughts",ex:"This is on the mind of every animal we've ever met.",mem:"⭐ <b>12 题答案</b>。<b>mind 的介词一次背死</b>：<br><b>on</b> one's mind（挂心上）｜ <b>in</b> one's mind（在脑海里，记着）｜ <b>out of</b> one's mind（发疯）｜ <b>cross / flash <u>across</u></b> one's mind（念头闪过，<b>必须配动作动词，不能 be across</b>）｜ bear / keep in mind（牢记）。",syn:"weigh on sb / preoccupy sb / trouble sb",conf:"on my mind（惦记着，多含忧虑）vs. in my mind（在我看来/记忆里）vs. to my mind（依我看）"},
+  smallscale:{w:"small-scale",ipa:"/ˌsmɔːl ˈskeɪl/",pos:"adj.",tags:["core","write"],cn:"小规模的",en:"limited in size or extent",ex:"is running a small-scale study in operant conditioning",mem:"<b>scale 家族在写作与图表作文里高频</b>：on a large/small scale（大/小规模地）· scale up/down（扩大/缩减规模）· economies of scale（规模经济）。<br>💡 <b>连字符复合形容词作定语时不加复数</b>：a small-scale <b>study</b>、a three-year <b>plan</b>。",syn:"limited / modest / miniature",conf:"small-scale（规模小）vs. large-scale（大规模）vs. full-scale（全面的；实物大小的）"},
+  operant:{w:"operant conditioning",ipa:"/ˈɒpərənt/",pos:"n.短语",tags:["core"],cn:"操作性条件反射",en:"learning in which behaviour is shaped by rewards or punishments",ex:"Every cat with an owner is running a small-scale study in operant conditioning.",mem:"心理学术语（斯金纳）：<b>靠奖励与惩罚来塑造行为</b>——按杠杆就有食物，于是老鼠越按越勤。<br>⭐ <b>本句是全文最妙的一记反讽</b>：<b>猫喵一声主人就去开罐头 ⟹ 是猫在拿人做操作性条件反射实验，不是人在研究猫。</b>「动物研究人类」这个假设，其实每天都在客厅里发生。",syn:"behaviour conditioning / reinforcement learning",conf:"operant conditioning（操作性条件反射，主动行为）vs. classical conditioning（经典条件反射，巴甫洛夫的狗，被动联结）"},
+  run:{w:"run",ipa:"/rʌn/",pos:"v.",tags:["core","poly","write"],cn:"⚠️①掌管，经营 ②跑 ③运行",en:"to be in charge of and control sth",ex:"if animals ran the labs, they would test us…",mem:"⭐ <b>熟词僻义</b>：<code>run <b>the labs / a company / the country / a program</b></code>＝<b>掌管、经营</b>。本句若读成「动物在实验室里跑」，整段就散了。<br>💡 run 是英语里义项最多的动词之一，考研高频的三个：<b>经营</b>（run a business）· <b>运转/运行</b>（the engine runs）· <b>刊登</b>（run a story）。",syn:"manage / operate / be in charge of",conf:"run（经营，日常）vs. administer（管理，偏行政）vs. supervise（监督）"},
+  faithfulness:{w:"faithfulness",ipa:"/ˈfeɪθflnəs/",pos:"n.",tags:["core"],cn:"忠诚，忠实",en:"the quality of being loyal",ex:"the limits of our patience, our faithfulness, our memory for locations",mem:"faith（信念）→ faithful（忠诚的）→ faithfulness。<br>⭐ <b>注意这三项是从「动物看人」的角度列的</b>：耐性、忠诚度、方位记忆力——<b>全是人类平时用来评价<u>宠物</u>的指标</b>。<b>作者把测评表原样掉了个头，这就是本篇的幽默所在。</b>",syn:"loyalty / fidelity / devotion",conf:"faithfulness（忠诚）vs. fidelity（忠贞；保真度）vs. faithfully（Yours faithfully 书信结尾）"},
+  aware:{w:"be aware of",ipa:"/əˈweə(r)/",pos:"adj.短语",tags:["core","write"],cn:"意识到，知道",en:"knowing that sth exists or is true",ex:"Are humans actually aware of the world they live in?",mem:"⭐ <b>19 题的落点</b>：冒号后的这个问题只聚焦一点——<b>人有没有「自觉」</b>；所以形容词只能是 fundamental（根本的），<b>不能是 comprehensive（无所不包的）</b>。<br>💡 <b>三个近义要分层</b>：<b>aware of</b>（意识到，最轻）→ <b>conscious of</b>（清醒地意识到）→ <b>cognizant of</b>（正式用语）。",syn:"conscious of / mindful of / alive to",conf:"aware of（意识到某事存在）vs. know（知道具体内容）vs. realize（意识到并想明白）"},
+  inconclusive:{w:"inconclusive",ipa:"/ˌɪnkənˈkluːsɪv/",pos:"adj.",tags:["core","write"],cn:"无定论的，非决定性的",en:"not leading to a definite decision or result",ex:"So far the results are inconclusive.",mem:"in(不)+conclusive(决定性的，来自 conclude) → 得不出结论的。<br>⭐ <b>20 题的判据全在这个词上</b>：既然「尚无定论」，就只能配 <b>So far</b>（到目前为止，暗示以后或许有）；<b>而 In time（＝eventually 迟早、终究）恰恰表示「终会有定论」，方向相反。</b><br><b>写作可用</b>：The evidence remains inconclusive.（现有证据尚不足以定论。）",syn:"indecisive / open-ended / unresolved",conf:"inconclusive（无定论）vs. conclusive（决定性的、确凿的）vs. concluding（最后的，如 concluding remarks）"}
+};
+const panel=document.getElementById('panel');
+const isMobile=()=>window.innerWidth<=900;
+function badge(t){return {core:'<span class="badge b-core">核心词</span>',phrase:'<span class="badge b-phrase">短语</span>',poly:'<span class="badge b-poly">熟词僻义</span>',write:'<span class="badge b-write">写作✍︎</span>'}[t]||''}
+function showCard(k,el){
+  const d=V[k]; if(!d)return;
+  document.querySelectorAll('.tk.active').forEach(e=>e.classList.remove('active'));
+  if(el&&el.classList.contains('tk'))el.classList.add('active');
+  panel.innerHTML='<button class="close" onclick="panel.classList.remove(\'open\')">✕</button>'+
+  '<div class="wcard"><div class="head"><span class="w">'+d.w+'</span><span class="ipa">'+d.ipa+'</span><span class="pos">'+d.pos+'</span>'+d.tags.map(badge).join('')+'</div>'+
+  '<div class="cn">'+d.cn+'</div><div class="en-def">'+d.en+'</div>'+
+  '<div class="row r-ex"><b>原文语境</b>「…'+d.ex+'…」</div>'+
+  '<div class="row r-mem"><b>怎么记</b>'+d.mem+'</div>'+
+  '<div class="row r-syn"><b>同类词</b>'+d.syn+'</div>'+
+  '<div class="row r-conf"><b>易混辨析</b>'+d.conf+'</div></div>';
+  if(isMobile())panel.classList.add('open');
+}
+document.querySelectorAll('.tk').forEach(t=>t.addEventListener('click',e=>{e.stopPropagation();showCard(t.dataset.w,t)}));
+
+/* ============ 译文开关 ============ */
+function tz(btn){btn.closest('.para').classList.toggle('showzh')}
+let allOn=false;
+function toggleAll(){allOn=!allOn;document.querySelectorAll('.para').forEach(p=>p.classList.toggle('showzh',allOn))}
+function go(id){const s=document.getElementById(id);if(!s)return;s.scrollIntoView({behavior:'smooth',block:'center'});s.style.transition='none';s.style.opacity=.3;setTimeout(function(){s.style.transition='opacity .8s';s.style.opacity=1},80)}
+
+/* ============ 20 空数据（类别 + 正确词） ============ */
+const CAT={
+  logic:{name:"逻辑关系",cls:"c-logic",color:"#3d6a8a"},
+  collo:{name:"固定搭配",cls:"c-collo",color:"#3e7a4e"},
+  word:{name:"词义辨析",cls:"c-word",color:"#b04a3a"},
+  context:{name:"上下文语义",cls:"c-context",color:"#6d5a8e"}
+};
+const B={
+  1:{w:"Consider",cat:"logic"},         2:{w:"tended",cat:"word"},
+  3:{w:"dimmer",cat:"word"},            4:{w:"advantage",cat:"context"},
+  5:{w:"turns out",cat:"collo"},        6:{w:"off",cat:"collo"},
+  7:{w:"gradual",cat:"word"},           8:{w:"stop",cat:"context"},
+  9:{w:"limited",cat:"context"},        10:{w:"backward",cat:"word"},
+  11:{w:"costs",cat:"context"},         12:{w:"on",cat:"collo"},
+  13:{w:"perform",cat:"collo"},         14:{w:"for instance",cat:"logic"},
+  15:{w:"if",cat:"logic"},              16:{w:"determine",cat:"word"},
+  17:{w:"for",cat:"collo"},             18:{w:"Above all",cat:"logic"},
+  19:{w:"fundamental",cat:"word"},      20:{w:"So far",cat:"logic"}
+};
+
+/* ============ 点空格 → 跳到解析卡 ============ */
+document.querySelectorAll('.bk').forEach(function(b){
+  b.addEventListener('click',function(){
+    document.querySelectorAll('.bk.active').forEach(function(e){e.classList.remove('active')});
+    b.classList.add('active');
+    go('q'+b.dataset.n);
+  });
+});
+function fillBlank(n,ok){
+  const el=document.querySelector('.bk[data-n="'+n+'"]');
+  if(!el)return;
+  el.classList.remove('miss');
+  el.classList.add(ok===false?'miss':'filled');
+  el.innerHTML='<span class="idx">'+n+'</span>'+B[n].w;
+}
+
+/* ============ 即点即判 + 计分 ============ */
+let done=0,right=0;
+function updScore(){
+  document.getElementById('sDone').textContent=done;
+  document.getElementById('sRight').textContent=right;
+  document.getElementById('sPt').textContent=(right*0.5).toFixed(1);
+}
+document.querySelectorAll('.q').forEach(function(q){
+  const ans=+q.dataset.ans, n=q.id.replace('q','');
+  q.querySelectorAll('.opt').forEach(function(o,i){
+    o.addEventListener('click',function(){
+      if(q.classList.contains('done'))return;
+      q.classList.add('done');
+      const ok=(i===ans);
+      if(!ok)o.classList.add('wrong');
+      q.querySelectorAll('.opt')[ans].classList.add('right');
+      done++; if(ok)right++; updScore();
+      fillBlank(n,ok);
+    });
+  });
+});
+function revealAll(){
+  document.querySelectorAll('.q').forEach(function(q){
+    const n=q.id.replace('q','');
+    if(!q.classList.contains('done')){
+      q.classList.add('done');
+      q.querySelectorAll('.opt')[+q.dataset.ans].classList.add('right');
+      done++; updScore();
+    }
+    fillBlank(n,true);
+  });
+  document.querySelectorAll('.bk.miss').forEach(function(e){e.classList.remove('miss');e.classList.add('filled')});
+}
+
+/* ============ 考点统计 ============ */
+const counts={};Object.keys(B).forEach(function(k){counts[B[k].cat]=(counts[B[k].cat]||0)+1});
+const order=["word","collo","context","logic"];
+document.getElementById('catbar').innerHTML=order.map(function(k){
+  return '<div class="catseg" style="flex:'+counts[k]+';background:'+CAT[k].color+'">'+CAT[k].name+' '+counts[k]+'</div>'}).join('');
+const legend=document.getElementById('catlegend');
+legend.innerHTML=order.map(function(k){
+  return '<div class="cl" data-cat="'+k+'"><span class="dot" style="background:'+CAT[k].color+'"></span>'+CAT[k].name+' · '+counts[k]+' 题</div>'}).join('');
+const chips=document.getElementById('chips');
+function renderChips(cat){
+  chips.innerHTML=Object.keys(B).filter(function(n){return !cat||B[n].cat===cat})
+    .map(function(n){return '<span class="chip" data-n="'+n+'">'+n+'. '+B[n].w+'</span>'}).join('');
+  chips.querySelectorAll('.chip').forEach(function(c){
+    c.addEventListener('click',function(){go('q'+c.dataset.n)});
+  });
+}
+renderChips(null);
+legend.querySelectorAll('.cl').forEach(function(l){
+  l.addEventListener('click',function(){
+    const cat=l.dataset.cat;
+    document.querySelectorAll('.cl').forEach(function(x){x.style.borderColor=''});
+    l.style.borderColor=CAT[cat].color;
+    renderChips(cat);
+    document.querySelectorAll('.bk').forEach(function(b){
+      b.style.outline=(B[b.dataset.n].cat===cat?'2px solid '+CAT[cat].color:'')});
+  });
+});
+
+/* ============ 80 选项词表 ============ */
+const OPTS={
+ 1:[["Suppose","假定；设想（后接从句）"],["Consider","细想；不妨想想（引例）"],["Observe","观察；注意到"],["Imagine","想象；虚构（后接从句）"]],
+ 2:[["tended","往往会；倾向于"],["feared","害怕；恐怕（须 fear that）"],["happened","⚠️碰巧（科研语境必错）"],["threatened","威胁要；预示恶兆"]],
+ 3:[["thinner","更薄的；更细的"],["stabler","更稳定的"],["lighter","更亮的；更轻的（方向反）"],["dimmer","更暗的；更愚笨的"]],
+ 4:[["tendency","倾向；趋势（引出主体）"],["advantage","优势；有利因素"],["inclination","倾向；意愿"],["priority","优先事项（行动建议）"]],
+ 5:[["insists on","坚持说（接从句不要 on）"],["sums up","总结（不接 that 从句）"],["turns out","结果是；原来是"],["puts forward","提出（宾语须是想法）"]],
+ 6:[["off","离开（起跑线）＝起步"],["behind","在…后面（静态）"],["over","在…上方；越过"],["along","沿着"]],
+ 7:[["incredible","极好的；难以置信的"],["spontaneous","⚠️自发的（是 instinct 的特征）"],["inevitable","必然的；不可避免的"],["gradual","逐步的；循序渐进的"]],
+ 8:[["fight","战斗；克制（情感）"],["doubt","怀疑（等于夸智力）"],["stop","停止；适可而止"],["think","思考（等于夸智力）"]],
+ 9:[["invisible","看不见的；隐形的"],["limited","有限的；不太大的"],["indefinite","不明确的（≠infinite）"],["different","不同的；各种的"]],
+ 10:[["upward","向上"],["forward","向前；提前（方向反）"],["afterward","⚠️以后（时间副词）"],["backward","向后；朝反方向"]],
+ 11:[["features","特色；特点"],["influences","影响（中性无方向）"],["results","结果（中性无方向）"],["costs","成本；代价"]],
+ 12:[["outside","在…外面（意思相反）"],["on","be on one's mind 挂在心上"],["by","由…；经由"],["across","须配动作动词 flash across"]],
+ 13:[["deliver","发表；递送；解救"],["carry","⚠️搬运（须 carry out）"],["perform","做；实施（perform an experiment）"],["apply","应用（apply sth to sth）"]],
+ 14:[["by chance","⚠️碰巧（科研语境必错）"],["in contrast","相比之下（须平行且相反）"],["as usual","像往常一样"],["for instance","例如；比如说"]],
+ 15:[["if","如果（引导虚拟条件）"],["unless","除非"],["as","因为；当…时（不用于虚拟）"],["lest","以免（从句须用原形）"]],
+ 16:[["moderate","缓和；使适中"],["overcome","克服；战胜"],["determine","查明；测定"],["reach","达到（某水平）"]],
+ 17:[["at","在（at what 不成语）"],["for","what…is for 有什么用"],["after","追求（主语须是人）"],["with","和…在一起；伴随"]],
+ 18:[["Above all","最重要的是（递进）"],["After all","毕竟；终究（转折/因果）"],["However","然而（转折）"],["Otherwise","否则；除此之外"]],
+ 19:[["fundamental","根本的；最重要的"],["comprehensive","全面的；无所不包的"],["equivalent","同等的（与递进冲突）"],["hostile","充满敌意的"]],
+ 20:[["By accident","⚠️偶然地（科研语境必错）"],["In time","迟早；最终（方向相反）"],["So far","到目前为止"],["Better still","更妙的是（须有优劣可比）"]]
+};
+const ANS={1:1,2:0,3:3,4:1,5:2,6:0,7:3,8:2,9:1,10:3,11:3,12:1,13:2,14:3,15:0,16:2,17:1,18:0,19:0,20:2};
+(function(){
+  let h='<tr><th>空</th><th>A</th><th>B</th><th>C</th><th>D</th></tr>';
+  for(let n=1;n<=20;n++){
+    h+='<tr><td class="n">'+n+'</td>';
+    OPTS[n].forEach(function(o,i){
+      h+='<td'+(i===ANS[n]?' class="hit"':'')+'><span class="ow">'+o[0]+'</span><span class="oc">'+o[1]+'</span></td>';
+    });
+    h+='</tr>';
+  }
+  document.getElementById('otab').innerHTML=h;
+  document.querySelectorAll('#otab .oc').forEach(function(c){
+    c.addEventListener('click',function(){c.classList.toggle('show')});
+  });
+})();
+function toggleHide(){
+  const t=document.getElementById('otab');
+  const on=t.classList.toggle('hidecn');
+  document.getElementById('btnHide').textContent=on?'👁 显示释义':'✍️ 默写模式';
+  if(!on)t.querySelectorAll('.oc.show').forEach(function(c){c.classList.remove('show')});
+}
+
+/* ============ 查有道 ============ */
+const yd=document.getElementById('yd');let sel='';
+document.addEventListener('selectionchange',function(){
+  const s=window.getSelection();const t=s?s.toString().trim():'';
+  if(t&&/^[a-zA-Z' -]{2,40}$/.test(t)){
+    sel=t;
+    try{const r=s.getRangeAt(0).getBoundingClientRect();
+      yd.style.left=Math.min(r.left,window.innerWidth-110)+'px';
+      yd.style.top=(r.bottom+8)+'px';yd.style.display='block';}catch(e){}
+  }else{yd.style.display='none'}
+});
+yd.addEventListener('click',function(){window.open('https://dict.youdao.com/result?word='+encodeURIComponent(sel)+'&lang=en');yd.style.display='none'});
+document.addEventListener('click',function(e){if(e.target!==yd&&!window.getSelection().toString())yd.style.display='none'});
+</script>
+<script src="_fault_attr.js"></script>
+</body>
+</html>

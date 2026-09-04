@@ -609,10 +609,10 @@ window.TRICK_READ = [
         '<b>做完 5 个空必须回头验多余项</b>：把没用上的两项拿回去，逐个空确认放不下，才收工。'],
  refs:[{p:'2008_新题型_如何写作初稿.html',q:'q45',label:'2008·新题型·45（E vs F 专名撞车）'},{p:'2007_新题型_家长如何帮孩子.html',q:'q42',label:'2007·新题型·42（首句陷阱）'},{p:'2022_新题型_动物园之辩.html',q:'',label:'2022·新题型（无人提及型多余项）'}]},
 
-{id:'R32', tier:'🟢', qt:'新题型 · 元套路', title:'开考先读 Directions 那三行：Part B 有三种变体，认错变体比读不懂文章更致命',
+{id:'R32', tier:'🟢', qt:'新题型 · 元套路', title:'开考先读 Directions 那三行：Part B 有四种变体，认错变体比读不懂文章更致命',
  trig:['翻到 Part B 的第一秒','看到 A–G 七个选项但不确定它们是标题、观点还是段落'],
- flow:'<b>Part B 只考三种变体，Directions 的一个词就能认出来</b>；认出后再决定用哪套手感、给多少时间。'
-     +'三种的共同铁律只有三条：① <b>一项一空、不重复</b>；② <b>定完 5 个必须回头验多余项</b>；'
+ flow:'<b>Part B 常考四种变体，Directions 的一个词就能认出来</b>；认出后再决定用哪套手感、给多少时间。'
+     +'四种的共同铁律只有三条：① <b>一项一空、不重复</b>；② <b>定完 5 个必须回头验多余项</b>；'
      +'③ <b>证据必须落到具体的词或句，“感觉像”不算证据</b>。',
  tmpl:'<table class="tk"><tr><th>变体</th><th>认它的信号 · 第一步做什么</th><th>主战场 · 用时</th></tr>'
      +'<tr><td><b>标题匹配</b><br>（2007）</td>'
@@ -621,12 +621,12 @@ window.TRICK_READ = [
      +'<tr><td><b>观点匹配</b><br>（2022）</td>'
      +'<td>Directions 里出现 <code>match each person with his/her statement</code>。<b>第一步：给每个人贴立场标签</b>（支持/反对/中间），只看每段前两句。</td>'
      +'<td><b>立场 ＋ 同义替换</b>；最大坑是<b>主语偷换</b>。<b>8–10 min</b>，立场可复核。</td></tr>'
-     +'<tr><td><b>选句填空</b><br>（2008）</td>'
+     +'<tr><td><b>选句填空</b><br>（2008 · <b>2009</b>）</td>'
      +'<td>Directions 里出现 <code>some segments have been removed</code>。<b>第一步：给每个空定位形态</b>（段首/段中/段末）。</td>'
-     +'<td><b>衔接与连贯</b>；正确项必带<b>唯一词</b>。<b>6–8 min</b>，<b>唯一能自查</b>（填完通读验接缝）。</td></tr></table>'
-     +'<p style="margin-top:8px">详细三方对照见 <a href="2008_新题型_如何写作初稿.html">2008 新题型页 · 04 节</a>。</p>',
+     +'<td><b>衔接与连贯</b>；正确项必带<b>唯一词</b>或<b>硬指代</b>。<b>6–9 min</b>，<b>唯一能自查</b>（填完通读验接缝）。</td></tr>'+'<tr><td><b>排序题</b><br>（英一另一变体，本中心尚未遇到）</td>'+'<td>Directions 里出现 <code>choose the most suitable paragraphs… to fill in each numbered box</code>。<b>第一步：先定首尾两段</b>。</td>'+'<td><b>篇章顺序</b>；靠时间词、代词、序数词、复现链串。用时最长。</td></tr></table>'
+     +'<p style="margin-top:8px">详细四方对照见 <a href="2009_新题型_文化人类学理论.html">2009 新题型页 · 04 节</a>；三方对照的原表在 <a href="2008_新题型_如何写作初稿.html">2008 新题型页 · 04 节</a>。</p>',
  traps:['<b>用错手感是 Part B 最贵的失误</b>：拿“找复现词”的手感去做标题匹配 ⟹ 掉进复现陷阱（2007 的 A、G 两个多余项都有词面呼应）；'
-        +'拿“概括段落主旨”的手感去做选句填空 ⟹ 忽略指代与照应，43/44 这种连体空必翻车。',
+        +'拿“概括段落主旨”的手感去做选句填空 ⟹ 忽略指代与照应，43/44 这种连体空必翻车（<b>2009 我正是这么翻的，见 <a href="#R55">R55</a></b>）。',
         '<b>三种变体的多余项造法各不相同</b>：标题匹配用<b>段内局部信息</b>做标题；观点匹配造一句<b>没人说过的话</b>；'
         +'选句填空则是<b>内容对但没有它的坑</b>（阶段错位）或<b>与正确项共用专名</b>。'],
  refs:[{p:'2008_新题型_如何写作初稿.html',q:'',label:'2008 · 选句填空（含三方对照表）'},{p:'2007_新题型_家长如何帮孩子.html',q:'',label:'2007 · 标题匹配'},{p:'2022_新题型_动物园之辩.html',q:'',label:'2022 · 观点匹配'}]},
@@ -876,12 +876,244 @@ window.TRICK_READ = [
         +'2009·T3·33 的 A（纪律性）与 D（组织性）全文零提及 ⟹ <b>只需在 B、C 之间判。</b>'],
  refs:[{p:'2009_T3_教育与经济增长的真实关系.html',q:'q31',label:'2009·T3·31（C 低估 / D 高估）'},
        {p:'2009_T3_教育与经济增长的真实关系.html',q:'col4',label:'2009·T3 · 02++++ 专栏附「矛盾选项优先法」'},
-       {p:'2009_T3_教育与经济增长的真实关系.html',q:'q33',label:'2009·T3·33（A/D 凭空造维度 ⟹ 反向用法）'}]}
+       {p:'2009_T3_教育与经济增长的真实关系.html',q:'q33',label:'2009·T3·33（A/D 凭空造维度 ⟹ 反向用法）'}]},
+
+{id:'R45', tier:'🔴', qt:'细节 / 推理 / 写作目的（凡题干主语是文中人物）', title:'叙述者的动作，不是人物的动作——主语被一个小词偷走',
+ trig:['定位句里出现 our / we / one / it is obvious that','选项的关键词一字不差地在原文里，但读着别扭','题干问「文中某群人／某个人怎么样」'],
+ flow:'① 回原文找到定位句后，<b>先圈这句话的主语</b>，再看内容——<b>关键词是名词，主语才决定这句话是谁的</b>；'
+     +'② 主语若是 <code>we／our／us</code>（作者自称）、<code>one</code>（泛指人们）、<code>it is obvious／clear that</code>（作者下判断）、<code>One wonders／We should not forget</code>（作者对读者说话）'
+     +' ⟹ 判定为<b>「叙述者层」</b>——它只能回答「<b>作者怎么安排、怎么评价</b>」，<b>不能</b>回答「文中人物做了什么、想了什么」；'
+     +'③ 题干主语若是文中人物，而选项的唯一出处在叙述者层 ⟹ <b>直接排，不必再纠结语义</b>。',
+ tmpl:'<table class="tk"><tr><th>原文（主语是谁）</th><th>干扰项（主语被换成谁）</th></tr>'
+     +'<tr><td>2009·T4·②❷ <code>in keeping with <b>our</b> examination of southern intellectual life</code><br>主语＝<b>our（作者）</b>：考察南方的是「我们」</td>'
+     +'<td><b>37C</b> <code><b>New Englanders</b> paid little attention to southern intellectual life</code><br>安给了<b>新英格兰人</b>，还多加一个原文没有的判断</td></tr>'
+     +'<tr><td>2009·T4·④❻ <code><b>One wonders</b> what Dane thought of the careful sermons</code><br>主语＝<b>One（人们／读者）</b>：纳闷的是我们</td>'
+     +'<td><b>39C</b> <code><b>Dane</b> was puzzled by church sermons</code><br>安给了<b>丹奈</b>，把「我们想知道他怎么想」写成「他很困惑」</td></tr></table>'
+     +'<b>口诀：先圈主语，再读内容；主语是 we／one，答案就不是人物的。</b>',
+ traps:['<b>这刀之所以砍得中，是因为「关键词全在」。</b>37C 的 <code>southern intellectual life</code> 是一字不差的原词串，39C 的 <code>sermons</code>＋<code>Puritan churches</code> 也都在原句里。'
+        +'<b>习惯用「关键词能不能回文找到」判对错的人，这两项都会亮绿灯。</b>',
+        '<b>别矫枉过正：主语是 we 不等于这句话不能用。</b>2009·T4·37B 的正源同样以 we 开头（<code><b>we</b> may consider the original Puritans as carriers of European culture</code>），'
+        +'<b>但它的宾语从句在描述清教徒本身</b> ⟹ 合法可用。<b>判据是「这句话最终在说谁」，不是「句子以谁开头」。</b>',
+        '<b>与 R21 的分工</b>：R21「主体校验」抓的是<b>两个被谈论对象之间</b>的偷换（谁对谁做了什么）；R45 抓的是<b>叙述者与被叙述者之间</b>那道界线。<b>R21 在文章之内，R45 在文章内外。</b>'],
+ refs:[{p:'2009_T4_新英格兰早期的精神文化生活.html',q:'q37',label:'2009·T4·37C（our examination 被安给新英格兰人）'},
+       {p:'2009_T4_新英格兰早期的精神文化生活.html',q:'q39',label:'2009·T4·39C（One wonders 被安给丹奈）'},
+       {p:'2009_T4_新英格兰早期的精神文化生活.html',q:'col2',label:'2009·T4 · 02++ 专栏（同一把刀一篇连发两次）'}]},
+
+{id:'R46', tier:'🔴', qt:'全局题 / 群体特征题', title:'先问「问的是整体，还是其中一类」——层级不对，内容全对也没用',
+ trig:['The text suggests that + 全文反复出现的那个群体','题干不给段号','四个选项各自都能在原文找到出处，却互不相干'],
+ flow:'① <b>判层级</b>：看题干主语<b>有没有限定语</b>——<code>early settlers</code>（整体）vs <code><b>less well-educated</b> New Englanders</code>（一类）；'
+     +'② <b>若问整体</b>，先删「只涉及某一类细节」的选项；<b>若问某一类</b>，反过来警惕「概括全体」的选项（可能盖得太宽）；'
+     +'③ 在剩下的里挑「<b>概括合理、且与各段中心都不冲突</b>」的那个。',
+ tmpl:'<table class="tk"><tr><th>2009·T4·40 的选项</th><th>它盖住了谁</th></tr>'
+     +'<tr><td><code>[A] mostly engaged in political activities</code></td><td>只盖③段那一小撮<b>政治领袖</b>　✘</td></tr>'
+     +'<tr><td><code>[B] motivated by an illusory prospect</code></td><td>只盖④段的<b>丹奈一个人</b>　✘</td></tr>'
+     +'<tr><td><code>[C] came from different intellectual backgrounds</code></td><td><b>③＋④＋⑤ 三类全盖</b>　✔</td></tr>'
+     +'<tr><td><code>[D] left few formal records for later reference</code></td><td>只盖④段的<b>工匠、农民、仆役</b>　✘</td></tr></table>'
+     +'<b>本篇 39 与 40 恰好是一对</b>：39 问<b>一类</b>（less well-educated），40 问<b>整体</b>（early settlers）——<b>两道题必须用相反的尺子量。</b>',
+ traps:['<b>这刀的威力在于：它不需要判断选项本身的对错。</b>2009·T4 的 A、B、D 三项<b>就其覆盖的那一类而言全都是对的</b>——'
+        +'政治领袖确实从事政治活动、丹奈确实被《圣经》的许诺推动、工匠农民确实没留下作品。<b>它们错的不是内容，是范围。</b><b>抠字眼抠不出这种错，只有对齐层级才能。</b>',
+        '<b>反证常常就在别的段里</b>：40D 说「早期移民很少留下正式记录」，而③❸句明说受过教育的那群人 <code>wrote and published <b>extensively</b></code> ⟹ <b>选项用一类人的事实覆盖全体，正好把另一类的反证抹掉了。</b>',
+        '<b>与 R24／R38 的分工</b>：R24 抓「推理对了但范围<b>放大</b>」，R38 抓「问的是<b>种</b>还是<b>属</b>」，R46 是这两把刀在<b>全局题</b>上的专用形态——<b>先看题干主语的限定语，再决定找覆盖全体的还是只针对这一类的。</b>'],
+ refs:[{p:'2009_T4_新英格兰早期的精神文化生活.html',q:'q40',label:'2009·T4·40（整体 ⟹ 只有 C 盖住三类）'},
+       {p:'2009_T4_新英格兰早期的精神文化生活.html',q:'q39',label:'2009·T4·39（同一批人，但问的是其中一类）'},
+       {p:'2009_T4_新英格兰早期的精神文化生活.html',q:'col3',label:'2009·T4 · 02+++ 专栏（四选项贴到三类人上）'}]},
+
+{id:'R47', tier:'🟡', qt:'元套路 · 读文章前先判文体', title:'看第二段：讲「谁错了」是驳论文，讲「我打算怎么看」是分类描述型',
+ trig:['首段连用 According to… 转述学界定论','第二段主语是 we／our，在交代研究方法','其后各段各起一个人或一群人，彼此并列不冲突'],
+ flow:'① <b>读完首段先判文体</b>：首段是「现象＋质疑」（<code>is widely misunderstood</code>／<code>the conventional view … is wrong</code>）⟹ <b>驳论文</b>；'
+     +'首段是「研究综述」（连用 <code>According to…</code>，语气接受而非反驳）⟹ <b>分类描述型</b>；'
+     +'② <b>再看第二段</b>：讲「谁错了」⟹ 驳论文，<b>读法＝先把箭头方向画在卷边</b>（R42）；讲「我打算怎么看」⟹ 分类描述型，<b>读法＝在每段边上写「这段是第几类人」</b>；'
+     +'③ <b>分类描述型的最后一题几乎必是全局题</b>，而全局题的答案＝<b>把各段的「类」加起来</b>（⟹ 转 R46）。',
+ tmpl:'<table class="tk"><tr><th>文体（2009 四篇正好四种）</th><th>读法</th></tr>'
+     +'<tr><td><b>驳论文</b>（T3 教育与经济增长）</td><td>先画箭头方向，后面每个选项先过这道闸（R42）</td></tr>'
+     +'<tr><td><b>论说文·改判型</b>（T1 习惯与创新）</td><td>先找作者把什么<b>改判</b>了（敌人⟹工具）</td></tr>'
+     +'<tr><td><b>说明＋批评</b>（T2 DNA 检测）</td><td>先分清哪句是<b>事实</b>、哪句是<b>评价</b>（R37）</td></tr>'
+     +'<tr><td><b>分类描述型</b>（T4 新英格兰）</td><td>在段边标「第几类」，末题就是<b>数类</b>（R46）</td></tr></table>',
+ traps:['<b>用错读法会白费力气。</b>在 2009·T4 里到处找「作者反对什么」只会一无所获——<b>本文作者不反对任何人，他只是在给一群人分类。</b>',
+        '<b>三个信号一起看才准</b>：① 首段是研究综述不是立靶；② 第二段两个 <code>we</code> 开头的句子说的全是作者自己的方法选择；'
+        +'③ 其后各段各起一个人／一群人，<b>没有一组是用来反驳另一组的</b>（驳论文里的两组材料必然对立，分类文里的各组只是并列）。',
+        '<b>第二段读成「人物怎么样」是最贵的错</b>：2009·T4·②段一旦读成「新英格兰人怎么样」，37 题就会掉进 C（⟹ R45）。'],
+ refs:[{p:'2009_T4_新英格兰早期的精神文化生活.html',q:'col1',label:'2009·T4 · 02+ 专栏（五段＝一对象＋一视角＋三类人）'},
+       {p:'2009_T4_新英格兰早期的精神文化生活.html',q:'col4',label:'2009·T4 · 02++++ 专栏（2009 四篇四种文体总账）'},
+       {p:'2009_T3_教育与经济增长的真实关系.html',q:'col1',label:'2009·T3 · 02+ 专栏（驳论文的一支箭头，对照组）'}]},
+
+{id:'R48', tier:'🟢', qt:'细节题 · 选项窄化', title:'半截复现：选项只截了并列成分的一半',
+ trig:['原文出现 both A and B / A as well as B / not only A but also B','选项里只出现其中一项，另一项被悄悄丢掉','选项读着「句句有出处」却总觉得少了点什么'],
+ flow:'① 回原文定位后，<b>把定位句里的并列结构完整圈出来</b>（both…and…／A, B, and C）；'
+     +'② 逐项核对：<b>选项是否把并列项<u>全部</u>覆盖</b>——只留一半的，是<b>窄化</b>，不是转述；'
+     +'③ 窄化项常常还<b>顺手改一个动词或形容词</b>（把事实换成评价），两处毛病叠在一起。',
+ tmpl:'<table class="tk"><tr><th>原文 vs 选项</th><th>毛病</th></tr>'
+     +'<tr><td>原文：<code>reaching <b>both New World and Old World</b> audiences</code></td><td>两地读者都触及到了</td></tr>'
+     +'<tr><td>选项 2009·T4·38A：<code>were famous <b>in the New World</b> for their writings</code></td>'
+     +'<td><b>①半截复现</b>（丢掉 Old World，把「影响面广」缩成「在新大陆」）<br><b>②事实⟹评价</b>（reaching audiences 是事实，famous 是评价，⟹ R37）</td></tr></table>',
+ traps:['<b>与 R24 是一对</b>：R24「范围校验」抓的是选项<b>放大</b>（把一个人的结论推给一群人），R48 抓的是选项<b>缩小</b>（把两项并列砍成一项）。'
+        +'<b>做题时两个方向都要量，别只防放大。</b>',
+        '<b>窄化最难察觉，因为它不制造矛盾。</b>「他们在新大陆有名」与原文并不冲突——<b>它只是没把话说全</b>。'
+        +'<b>判据只能靠回原文数并列项的个数</b>，靠语感一定漏。',
+        '<b>并列结构的三种常见形态都要盯</b>：<code>both A and B</code>（本例）· <code>A, B, and C</code>（2009·T4·④❺句性困惑／经济挫折／宗教期望，被 39B 拆开拼接）· <code>not only… but also…</code>。'],
+ refs:[{p:'2009_T4_新英格兰早期的精神文化生活.html',q:'q38',label:'2009·T4·38A（both New World and Old World 被砍一半）'},
+       {p:'2009_T4_新英格兰早期的精神文化生活.html',q:'q39',label:'2009·T4·39B（三项并列被拆开拼接，对照 R39）'},
+       {p:'2008_T3_美国人的身高极限.html',q:'q33',label:'2008·T3·33（R24 范围放大，反方向的对照）'}]},
+
+{id:'R49', tier:'🔴', qt:'完形 · 比喻/类比句（阅读的比喻句同理）', title:'比喻链：先找「接口词」，比喻的两端一起落地',
+ trig:['原文突然冒出一个与话题无关的具体名词（bulbs / fuel / starting line）','上下两句结构对称，却换了主语','出现一个天然双关的形容词：bright / dim / sharp / heavy'],
+ flow:'① <b>先认出这是比喻</b>：喻体的名词与话题毫不相干（讲智力，却讲起了灯泡）；<br>'
+     +'② <b>找「接口词」——本体与喻体共用的那个双关词</b>。<b>找不到接口，就说明还没看懂这个比喻，别急着选</b>；<br>'
+     +'③ 把两栏<b>对齐成一张表</b>（本体的形容词 ↔ 喻体的形容词）；<br>'
+     +'④ 按「A之于B ＝ C之于D」<b>补缺的那一格</b>，注意上下句是<b>正向</b>还是<b>反向</b>类比。',
+ tmpl:'<table class="tk"><tr><th>本体（智力）</th><th>喻体（灯泡）</th></tr>'
+     +'<tr><td><code>smarter</code> flies → live <code>shorter</code> lives</td><td><code>___</code> bulbs → burn <code>longer</code></td></tr>'
+     +'<tr><td colspan="2"><b>接口词 ＝ bright</b>（灯泡<b>亮</b>／人<b>聪明</b>）——<b>正因为它双关，这个比喻才成立</b>。'
+     +'longer 反 shorter ⟹ 空格反 smarter ⟹ <b>dimmer</b>（dim bulb 在英语里就是「笨脑瓜」）</td></tr></table>'
+     +'<b>同一篇里往往不止一套比喻</b>：2009 完形②段还有一整套<b>汽车比喻</b>——<code>a high-priced <b>option</b></code>（选装配置）→ <code><b>upkeep</b></code>（保养费）→ <code>burns more <b>fuel</b></code> → <code>slow off the <b>starting line</b></code>。<b>认出比喻，整段四个空一起松动。</b>',
+ traps:['<b>常识对 ≠ 逻辑对。</b>2009 完形 3 题的 stabler（更稳定的灯泡更耐用）完全符合常识，<b>但它与上句的「聪明↔短命」构不成类比关系</b>——比喻题只认对应，不认常识。',
+        '<b>方向填反。</b>同题的 lighter（更亮的）方向正好相反；另有词法证据：light 表「明亮」多指天色、房间因自然光而亮，<b>不用于说发光体本身亮</b>。',
+        '<b>喻体那一栏的特征词被搬到本体栏。</b>2009 完形 7 题的 spontaneous（自发的、不假思索的）<b>恰恰是 instinct 的特征</b>，被摆到了形容 learning 的位置上——<b>凡对比句里出现「另一侧的特征词」，一律是陷阱。</b>'],
+ refs:[{p:'2009_完形_智力的代价.html',q:'q3',label:'2009·完形·3（dimmer，接口词 bright）'},
+       {p:'2009_完形_智力的代价.html',q:'q4',label:'2009·完形·4（并列 that 从句同向）'},
+       {p:'2009_完形_智力的代价.html',q:'q6',label:'2009·完形·6（汽车比喻的第三件）'},
+       {p:'2008_完形_高智商与遗传疾病.html',q:'q2',label:'2008·完形·2（that rare bird，比喻性表语必带同位语）'}]},
+
+{id:'R50', tier:'🔴', qt:'完形 · 连体空（一句里两个空 / 相邻两句各一个空）', title:'连体空先做功能词：方向一定，形容词的档位只剩一个',
+ trig:['句首的递进/转折词是空的，而同句或下句还有一个形容词空','The former… The latter… 同骨架','相邻三句结构完全平行','句中已经有一个现成的连接词（however / but），空格却还在句首'],
+ flow:'① <b>先做功能词那个空</b>（句首状语、连接词、副词）——它决定<b>方向</b>：递进 / 转折 / 并列 / 因果；<br>'
+     +'② 方向一旦落定，同句那个<b>形容词/名词空就必须与它同档</b>，四个选项里通常只剩一个能配上；<br>'
+     +'③ <b>判递进不靠语感，靠「列竖行」</b>：把相邻几句的<b>谓语＋宾语</b>抄成一竖行，看程度是不是在爬坡。<br>'
+     +'<b>爬坡＝递进（Above all / Most important / What is more）｜ 持平＝并列 ｜ 掉头＝转折。</b>',
+ tmpl:'<table class="tk"><tr><th>2009 完形④段的三个目的</th><th>深度</th></tr>'
+     +'<tr><td>test us to determine <b>the limits</b> of our patience…</td><td>浅：测<b>量</b></td></tr>'
+     +'<tr><td>try to decide what intelligence is really <b>for</b></td><td>中：测<b>用途</b></td></tr>'
+     +'<tr><td><b>18 Above all</b>, hope to study a <b>19 fundamental</b> question: are humans <b>aware</b>…</td><td>深：测<b>本质</b></td></tr></table>'
+     +'<b>18 定了「这是最重的一项」，19 就只能是 fundamental</b>；错项 equivalent（同等重要）<b>与递进逻辑直接冲突</b>，comprehensive 则是拿句中最大的那个名词（the world）编的。',
+ traps:['<b>顺序反了会两道一起丢。</b>先猜形容词、再回头配副词，等于把唯一的硬约束丢掉。',
+        '<b>句中已有连接词时，句首那个空就不再是连接词。</b>2008 完形 5 题 <code>___ he, <b>however</b>, might tremble…</code>——转折已由 however 承担，So/Hence 再填因果就打架，答案只能是加强转折的 <b>Even</b>。',
+        '<b>形容词空要读冒号/破折号后面的同位语，别读句子里最大的那个名词。</b>2009 完形 19 题的 comprehensive 就是拿 the world 编出来的，而冒号后的问题只聚焦一点：人有没有自觉。'],
+ refs:[{p:'2009_完形_智力的代价.html',q:'q18',label:'2009·完形·18（Above all，递进链末环）'},
+       {p:'2009_完形_智力的代价.html',q:'q19',label:'2009·完形·19（fundamental，与 18 同档）'},
+       {p:'2009_完形_智力的代价.html',q:'q16',label:'2009·完形·16（三句平行句互为答案）'},
+       {p:'2008_完形_高智商与遗传疾病.html',q:'q5',label:'2008·完形·5（句中已有 however ⟹ 填 Even）'}]},
+
+{id:'R51', tier:'🟡', qt:'完形 · 抽象名词空 / 形容词空', title:'抽象名词空＝上文某个概念的同义复现，答案很少是新概念',
+ trig:['the real ___ of X','there is a(n) ___ in doing sth','an adaptive value to ___ intelligence','空格前后没有任何搭配或语法限制，四个选项词性相同'],
+ flow:'① <b>先别看选项</b>，回扫<b>上一段</b>，找那个<b>已经被换着说了两三遍的概念</b>；<br>'
+     +'② 把它写成一个中文词（本篇＝「代价」），再去四个选项里<b>找它的同义词</b>；<br>'
+     +'③ 若空格在<b>问句</b>里，几乎一定是把上文的结论<b>换个词再问一遍</b>——先把上文结论写成一句话，别就着问句猜。',
+ tmpl:'<table class="tk"><tr><th>上文说了三遍的概念</th><th>空格</th></tr>'
+     +'<tr><td>a <b>high-priced</b> option ／ takes more <b>upkeep</b> ／ burns more <b>fuel</b></td><td><code>the real <b>costs</b> of our own intelligence</code></td></tr>'
+     +'<tr><td>an <b>advantage</b> in <b>not being too bright</b></td><td><code>an adaptive value to <b>limited</b> intelligence</code>（两组对应同时成立）</td></tr></table>'
+     +'<b>方向感一起背死</b>：cost / price / penalty ＝<b>负</b>；benefit / advantage / merit ＝<b>正</b>；influence / result / effect / consequence ＝<b>中性</b>（须靠上下文给方向）。',
+ traps:['<b>中性词撑不起有方向的语境。</b>2009 完形 11 题的 influences / results 都能说得通字面，<b>却给不出「我们自己的智力亏在哪」这层负面语义</b>——中文的「影响」常含贬义，英文的 influence 是中性的。',
+        '<b>看似复现上文原词的选项，往往是假朋友。</b>同篇 4 题的 tendency 复现了上一句的 tended，<b>但 a tendency in… 引出的是趋势的主体，不是趋势的内容</b>。',
+        '<b>被 Instead of 否定掉的那条路，常被做成选项。</b>11 题的 features（人类智力有何特征）正是本句用 <code>Instead of casting a glance backward…</code> 明确排除掉的方向。'],
+ refs:[{p:'2009_完形_智力的代价.html',q:'q11',label:'2009·完形·11（costs ← high-priced/upkeep/fuel）'},
+       {p:'2009_完形_智力的代价.html',q:'q9',label:'2009·完形·9（limited ← not being too bright）'},
+       {p:'2009_完形_智力的代价.html',q:'q4',label:'2009·完形·4（advantage，方向由并列从句定）'}]},
+
+{id:'R52', tier:'🟢', qt:'元套路 · 完形与阅读通用（读文章时用）', title:'首句被复现 ⟹ 把文章对半切，两半各管一批题',
+ trig:['某一段的首句与第一段首句几乎一模一样，只多了一个 also / again / too','同一个句式在文章中段再次出现','段首重复出现同一个主语＋同一个谓语'],
+ flow:'① 读到「这句话刚才好像说过」时<b>停一秒</b>，回头核对第一段首句；<br>'
+     +'② 一旦确认是复现，<b>就在那里画一刀，把文章切成两半</b>；<br>'
+     +'③ <b>后半的前提已经变了</b>（本篇是视角从「人看动物」反转为「动物看人」），<b>别再拿前半的语境去套后半的空/题</b>。',
+ tmpl:'<table class="tk"><tr><th>2009 完形</th><th>管哪些空</th></tr>'
+     +'<tr><td>①段首 <code>Research on animal intelligence <b>always</b> makes us wonder just how smart humans are.</code></td><td>1–12（人到底有多聪明）</td></tr>'
+     +'<tr><td>④段首 <code>Research on animal intelligence <b>also</b> makes us wonder what experiments animals would perform on humans.</code></td><td>13–20（<b>如果动物来研究人</b>）</td></tr></table>'
+     +'<b>切开之后，后半整段是虚拟语气（四个 would 并排），13–20 的每一个空都服从「这是一个假设」这个前提。</b>',
+ traps:['<b>复现句里那个不起眼的小词，往往就是切口。</b>本篇是 <code>also</code>（还／也）——它宣告「这是第二次 wonder」，不是重复。',
+        '<b>别把复现读成「文章在绕圈子」。</b>议论文的首句复现基本都是<b>结构信号</b>：要么开启平行的第二部分，要么在结尾回扣首段（首尾呼应）。',
+        '<b>阅读里同样管用</b>：主旨题/标题题若发现文章有这种对称结构，正确项必须<b>同时罩住两半</b>；只覆盖其中一半的选项，是范围塌陷（对照 <a href="#R24">R24</a>）。'],
+ refs:[{p:'2009_完形_智力的代价.html',q:'q13',label:'2009·完形·13（④段首句＝折点，宾语被提前）'},
+       {p:'2009_完形_智力的代价.html',q:'q14',label:'2009·完形·14（后半的第一个例子：猫在研究人）'},
+       {p:'2009_完形_智力的代价.html',q:'q20',label:'2009·完形·20（末空收口，回扣整段问句）'}]},
+
+{id:'R53', tier:'🔴', qt:'新题型 · 选句填空', title:'代词开头的选项：先行词必须在<u>紧邻的上一句</u>——先数距离，再谈内容',
+ trig:['某个选项以 he / she / they / this / these / his / their 开头或第一小句就用代词','两个空都能装同一个选项，词面上分不出高下','空格上一句的主语是个<b>理论/现象/抽象名词</b>，而人名在再上一句'],
+ flow:'① 七个选项扫一遍，<b>把以代词开头的先挑出来</b>——它们自带最硬的约束，是突破口；<br>'
+     +'② 对每个候选空，只看<b>紧邻的上一句的主语</b>：是不是这个代词要指的人/物？<br>'
+     +'③ <b>隔了一句就判死</b>：英语在主语已经换过一轮的位置会<b>重提全名</b>，不会继续用代词；<br>'
+     +'④ 填完通读时<b>专查代词</b>：每个 he / they / this 都要能在紧邻上句里指到东西。',
+ tmpl:'<b>2009 新题型 43/44 就是靠这一条分开的（两个空都能装 A 和 B）：</b>'
+     +'<table class="tk"><tr><th>空</th><th>紧邻上一句的主语</th><th>B 项（he became skilled…）能不能进</th></tr>'
+     +'<tr><td><b>43</b></td><td><code>Historical particularism</code>（理论，不是人；Boas 在<b>再上一句</b>）</td><td><b>不能</b> ⟹ 43 只能给 A</td></tr>'
+     +'<tr><td><b>44</b></td><td><code>Boas felt that…</code>（就是那个人）</td><td><b>能</b>，且是全篇距离最短的一处</td></tr></table>'
+     +'<p style="margin-top:8px;font-size:.85rem">旁证：第四段开头写的是 <code>Boas felt…</code> 而不是 <code>He felt…</code>——'
+     +'<b>作者自己在这个位置就放弃了代词，说明这个位置的代词指代不成立</b>。</p>',
+ traps:['<b>词面呼应会把人骗死。</b>2009 的 B 项开头 <code>particular cultures</code> 与第三段的 <code>historical particularism</code> 是全篇最扎眼的呼应，'
+        +'我据此把 B 锁进 43 ⟹ <b>43、44 一起错，丢 4 分</b>。',
+        '<b>选句填空的错误天然成对</b>：一次判断失误，两个空同时报废。所以宁可在一对连体空上多花两分钟。',
+        '<b>指示代词同理</b>：this / these / such 也要求先行词紧邻（2008 的 <code>These printouts</code> 就是靠这一条锁死 C 项）。'],
+ refs:[{p:'2009_新题型_文化人类学理论.html',q:'q43',label:'2009·新题型·43（我在这翻的车）'},
+       {p:'2009_新题型_文化人类学理论.html',q:'q44',label:'2009·新题型·44（零距离先行词）'},
+       {p:'2009_新题型_文化人类学理论.html',q:'q41',label:'2009·新题型·41（He argued 紧贴 Spencer argued）'},
+       {p:'2008_新题型_如何写作初稿.html',q:'q44',label:'2008·新题型·44（These printouts）'}]},
+
+{id:'R54', tier:'🔴', qt:'新题型 · 选句填空', title:'术语的定义句必须早于它的裸用——「This theory was known as X」是个站位标记',
+ trig:['某个选项里出现 <code>This theory/idea was known as X</code>、<code>X, or Y,</code>、<code>what we call X</code> 这类<b>命名句</b>','正文后面某处直接使用一个专业术语却不作解释','文章是学说史/概念史，一段引入一个术语'],
+ flow:'① 在正文里找<b>第一次不加解释就直接使用</b>该术语的地方（本篇是第五段 <code>in favor of diffusionism</code> / <code>according to diffusionists</code>）；<br>'
+     +'② <b>带命名句的那个选项，必须站在这个位置之前</b>；<br>'
+     +'③ 若有多个空都在它之前，再用 R53（指代）与行文结构（总—分—分）二次筛。',
+ tmpl:'<b>2009 新题型 43 的第二条证据：</b>'
+     +'<table class="tk"><tr><th>位置</th><th>文本</th><th>说明</th></tr>'
+     +'<tr><td>43 空（A 项末句）</td><td><code>This theory was known as diffusionism.</code></td><td><b>首次命名</b></td></tr>'
+     +'<tr><td>第五段②③句</td><td><code>in favor of diffusionism</code> / <code>according to diffusionists</code></td><td><b>裸用、不再解释</b></td></tr></table>'
+     +'<p style="margin-top:8px;font-size:.85rem">同一段还并提了 <code>historical particularism</code>，两个对立术语在同一段点名 ⟹ 第三段是「总」，第四、五段各是一「分」。'
+     +'<b>把 A 挪到 44，行文就成了「讲特殊论→接着讲特殊论→冒出传播论→又回去总结特殊论→再讲传播论」的穿插跳跃。</b></p>',
+ traps:['<b>别只顾着找「意思像」的落点</b>：命名句的价值不在内容，在<b>站位</b>——它是文章给读者发的通行证，发得晚了后文就读不懂。',
+        '<b>反向也成立</b>：某个空之后立刻出现某术语的裸用，那这个空多半就该填带命名句的那一项。'],
+ refs:[{p:'2009_新题型_文化人类学理论.html',q:'q43',label:'2009·新题型·43（diffusionism 的命名句）'},
+       {p:'2009_新题型_文化人类学理论.html',q:'q45',label:'2009·新题型·45（For example 要求上句是被举例的观点）'}]},
+
+{id:'R55', tier:'🔴', qt:'新题型 · 元套路（选句填空专用）', title:'判据有优先级：形式在前、内容在后；两空互相牵制时先做「有硬排除」的那个',
+ trig:['两个选项都塞得进同一个空','靠“哪个更像”已经分不出来','手上有一对连体空'],
+ flow:'<b>把判据按可靠性排队，从上往下用；<u>下面的永远不能推翻上面的</u>：</b><br>'
+     +'　<b>① 指代距离</b>（he/they/this/these 的先行词是否紧邻）＝ 最硬，见 <a href="#R53">R53</a>；<br>'
+     +'　<b>② 术语首现</b>（命名句必须早于裸用）＝ 次硬，见 <a href="#R54">R54</a>；<br>'
+     +'　<b>③ 例证词</b>（For example / such as 之前必须有被举例的观点）；<br>'
+     +'　<b>④ 连接词</b>（Thus 要上句是刚说完的观点；Other/But 要上句是被对照的一方）；<br>'
+     +'　<b>⑤ 内容相似</b>（唯一词、同义改写）＝ <b>最弱，最后才用</b>。<br>'
+     +'<b>再加一条分配原则</b>：五空七项是<b>一次整体匹配</b>，不是五道独立的题。'
+     +'两个空互相牵制时，<b>先落定那个「对某一项有硬排除」的空</b>，剩下的自动落位。',
+ tmpl:'<b>2009 与 2008 同为选句填空，钥匙完全不同：</b>'
+     +'<table class="tk"><tr><th></th><th>2008《如何写作初稿》</th><th>2009《文化人类学理论》</th></tr>'
+     +'<tr><td><b>文章是什么线</b></td><td>流程线（每段一个步骤）</td><td>人物线（每段一位学者）</td></tr>'
+     +'<tr><td><b>主刀判据</b></td><td>唯一词（第 ⑤ 条就够）</td><td>指代与站位（必须用第 ①②③ 条）</td></tr>'
+     +'<tr><td><b>盲做结果</b></td><td>5/5</td><td><b>3/5</b>（43↔44 对调）</td></tr></table>'
+     +'<p style="margin-top:8px;font-size:.85rem"><b>为什么人物线文章里唯一词法必然失灵</b>：同一位学者名下的话题词会在他的<b>所有</b>段落反复出现'
+     +'（Boas 那两段里 particularism / particular cultures / uniqueness / unique history 是一团互相呼应的词云），'
+     +'词面根本分不出哪一段。<b>而形式约束是唯一的：he 只有一个合法落点。</b></p>',
+ traps:['<b>认出变体只是第一步（<a href="#R32">R32</a>），还要再认一次「文章是什么线」</b>——变体相同 ≠ 打法相同。',
+        '<b>贪心地先定「我觉得最像的那个空」，是连体空翻车的标准姿势。</b>正确顺序是先找硬排除，让约束传播。',
+        '<b>套路库早就写过这一条却没用上</b>：R32 的第一条陷阱原话是「拿概括段落主旨的手感去做选句填空 ⟹ 忽略指代与照应，43/44 这种连体空必翻车」——'
+        +'2009 我正是这么翻的。<b>写下来不等于调用得出来，考前要把「代词先数距离」做成动作，不是知识。</b>'],
+ refs:[{p:'2009_新题型_文化人类学理论.html',q:'',label:'2009·新题型（00 节判据优先级表 · 02+ 错题标本）'},
+       {p:'2008_新题型_如何写作初稿.html',q:'',label:'2008·新题型（唯一词五连）'}]},
+
+{id:'R56', tier:'🟡', qt:'新题型 · 多余项', title:'学说史/人物线文章：一段一位学者，先给七项分区——没有空的那一区就是多余项',
+ trig:['文章每段引入一位学者/一种理论/一个流派（Spencer、Morgan、Boas、Durkheim）','选项里出现 Other anthropologists / Supporters of the theory / They also 这类<b>群体主语</b>','段落之间靠年代推进（in the 1860s / in the late 1800s / in the early 1900s）'],
+ flow:'① 读完先在卷边给每一段写一个<b>人名或理论名</b>（这就是文章的分区图）；<br>'
+     +'② 给七个选项也各贴一个区；<br>'
+     +'③ <b>数一数：哪个区没有空？那个区的选项直接划掉。</b>剩下的再逐空匹配。',
+ tmpl:'<b>2009 新题型的分区图（六区五空）：</b>'
+     +'<table class="tk"><tr><th>区</th><th>内容</th><th>空 / 候选项</th></tr>'
+     +'<tr><td>①Spencer</td><td>进化论 · 万物趋向完美</td><td>41 ⟸ <b>C</b></td></tr>'
+     +'<tr><td>②Morgan</td><td>文化各方面随社会进化共变</td><td>42 ⟸ <b>E</b></td></tr>'
+     +'<tr><td>③Boas 总</td><td>特殊论登场，<b>并提</b>对立的传播论</td><td>43 ⟸ <b>A</b>（B 被指代规则排除）</td></tr>'
+     +'<tr><td>④Boas 分</td><td>每种文化＝独特历史的产物</td><td>44 ⟸ <b>B</b></td></tr>'
+     +'<tr><td>⑤传播论</td><td>成就源于少数天才民族、随后扩散</td><td>45 ⟸ <b>G</b></td></tr>'
+     +'<tr><td>⑥功能论</td><td>Durkheim · 宗教强化社会团结</td><td><b>没有空</b> ⟹ <b>D、F 多余</b></td></tr></table>'
+     +'<p style="margin-top:8px;font-size:.85rem">与 <a href="#R31">R31</a>（流程型文章按时间线分格）是同一把刀的两种握法：'
+     +'<b>流程线按「步骤」分格，人物线按「学者」分区</b>，多余项都藏在<b>没有坑的那一格/那一区</b>。</p>',
+ traps:['<b>多余项可以成对来自同一区</b>：2008 的两个多余项死法各不相同（阶段错位 / 专名撞车），2009 的 D、F 却是同一区一起死。',
+        '<b>最像的干扰项是「万能壳＋专属瓤」</b>：F 项的壳 <code>Supporters of the theory</code> 能挂在任何理论后面，'
+        +'瓤却是功能论的定义（各部分协同维持社会运转）。<b>判完壳一定要再判瓤。</b>',
+        '<b>群体主语并不天然指向前一句</b>：D 项的 <code>They also focused on</code> 表面能接上第五段的 Some (anthropologists)，'
+        +'但传播论者关注的是起源与扩散，不是仪式。'],
+ refs:[{p:'2009_新题型_文化人类学理论.html',q:'',label:'2009·新题型（01 节分区表 · 03 节两个多余项）'},
+       {p:'2008_新题型_如何写作初稿.html',q:'',label:'2008·新题型（流程线的时间线分格）'}]}
 
 ];
 
 window.TRICK_READ_META = {
   subject:'英语一 · 阅读',
-  source:'2022 Text 1–4 · 2007 Text 1–4 · 2008 Text 1–4 · 2009 Text 1–3 · 2007/2008/2022 新题型 · 2008 完形',
+  source:'2022 Text 1–4 · 2007 Text 1–4 · 2008 Text 1–4 · 2009 Text 1–4 · 2007/2008/2009/2022 新题型 · 2008/2009 完形',
   note:'提炼自本复盘中心各篇阅读真题复盘页的技巧/干扰项分析，随复盘页增长。'
 };
