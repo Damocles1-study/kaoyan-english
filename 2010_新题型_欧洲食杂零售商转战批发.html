@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2010 英一 新题型 · 欧洲食品杂货商向批发转型</title>
+<style>
+  :root{
+    --bg:#faf9f6; --card:#ffffff; --ink:#2b2b2b; --muted:#8a8578;
+    --accent:#8b5e34; --accent-soft:#f3e9dd; --line:#e8e3d8;
+    --hl:#fdf3d8; --hl-border:#e0b84d;
+    --green:#3e7a4e; --green-soft:#e8f2ea;
+    --red:#b04a3a; --red-soft:#f9e9e6;
+    --blue:#3d6a8a; --blue-soft:#e7eff5;
+    --purple:#6d5a8e; --purple-soft:#eeeaf5;
+    --serif:"Georgia","Songti SC",serif;
+    --sans:-apple-system,"PingFang SC","Helvetica Neue",sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#1c1a17; --card:#26231f; --ink:#e8e4dc; --muted:#9a948a;
+      --accent:#d0a06a; --accent-soft:#3a3127; --line:#3a362f;
+      --hl:#3d3520; --hl-border:#b08c3a;
+      --green:#7fb98d; --green-soft:#26362b;
+      --red:#d98876; --red-soft:#3d2a26;
+      --blue:#8ab3d0; --blue-soft:#26323d;
+      --purple:#a996c8; --purple-soft:#302a3d;
+    }
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;padding-bottom:120px}
+  .wrap{max-width:1100px;margin:0 auto;padding:24px 20px}
+  .back{font-size:.85rem;color:var(--muted);text-decoration:none}
+  .back:hover{color:var(--accent)}
+  header{margin:14px 0 28px}
+  header h1{font-family:var(--serif);font-size:1.7rem;line-height:1.3}
+  header .sub{color:var(--muted);margin-top:6px;font-size:.9rem}
+  .tags{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+  .tag{font-size:.75rem;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);border:1px solid var(--line)}
+  .tag.bad{background:var(--red-soft);color:var(--red)}
+  .layout{display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:start}
+  .layout > main{min-width:0}
+  @media (max-width:900px){.layout{grid-template-columns:1fr}}
+  section.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:24px}
+  h2{font-size:1.05rem;letter-spacing:.05em;color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+  h2 .n{font-size:.72rem;background:var(--accent);color:var(--card);border-radius:6px;padding:1px 7px}
+  h3.sh{font-size:.95rem;color:var(--ink);margin:18px 0 8px;padding-left:9px;border-left:3px solid var(--accent)}
+  .para{margin-bottom:14px}
+  .en{font-family:var(--serif);font-size:1.03rem;line-height:1.95}
+  .tk{background:var(--hl);border-bottom:2px solid var(--hl-border);border-radius:3px;padding:0 2px;cursor:pointer;transition:filter .15s}
+  .tk:hover{filter:brightness(.93)}
+  .tk.active{outline:2px solid var(--hl-border)}
+  .clue{border-bottom:2px dotted var(--red)}
+  .zh{display:none;margin-top:8px;padding:10px 14px;background:var(--blue-soft);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:.92rem}
+  .showzh .zh{display:block}
+  .zbtn{float:right;margin-left:10px;font-size:.72rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:6px;padding:2px 9px;cursor:pointer}
+  .zbtn:hover{color:var(--accent);border-color:var(--accent)}
+  .allbtn{font-size:.78rem;border:1px solid var(--accent);background:none;color:var(--accent);border-radius:8px;padding:4px 12px;cursor:pointer;margin-left:auto}
+  aside{position:sticky;top:20px}
+  #panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;min-height:180px}
+  #panel .hint{color:var(--muted);font-size:.88rem;text-align:center;padding:30px 10px}
+  .wcard .head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .wcard .w{font-family:var(--serif);font-size:1.35rem;font-weight:bold}
+  .wcard .ipa{color:var(--muted);font-size:.85rem}
+  .wcard .pos{font-size:.72rem;color:var(--purple);background:var(--purple-soft);padding:1px 8px;border-radius:999px}
+  .wcard .badge{font-size:.7rem;padding:1px 8px;border-radius:999px}
+  .b-core{background:var(--red-soft);color:var(--red)}
+  .b-phrase{background:var(--blue-soft);color:var(--blue)}
+  .b-poly{background:var(--purple-soft);color:var(--purple)}
+  .b-write{background:var(--green-soft);color:var(--green)}
+  .wcard .cn{margin-top:8px;font-size:1rem;font-weight:600}
+  .wcard .en-def{color:var(--muted);font-size:.86rem;font-style:italic;margin-top:2px}
+  .wcard .row{margin-top:10px;font-size:.86rem;padding:8px 10px;border-radius:8px}
+  .wcard .row b{font-size:.72rem;display:block;margin-bottom:2px;letter-spacing:.06em}
+  .r-ex{background:var(--hl)} .r-ex b{color:var(--hl-border)}
+  .r-mem{background:var(--green-soft)} .r-mem b{color:var(--green)}
+  .r-syn{background:var(--blue-soft)} .r-syn b{color:var(--blue)}
+  .r-conf{background:var(--red-soft)} .r-conf b{color:var(--red)}
+  #panel .close{display:none}
+  @media (max-width:900px){
+    aside{position:fixed;left:0;right:0;bottom:0;z-index:50;padding:0 8px 8px}
+    #panel{box-shadow:0 -6px 24px rgba(0,0,0,.18);max-height:55vh;overflow-y:auto;display:none}
+    #panel.open{display:block}
+    #panel .close{display:block;float:right;border:none;background:var(--line);border-radius:8px;padding:2px 10px;cursor:pointer;color:var(--ink)}
+  }
+  /* 选项库 */
+  .optlib{display:grid;gap:8px}
+  .optitem{display:flex;gap:10px;border:1px solid var(--line);border-radius:10px;padding:9px 12px;font-size:.9rem}
+  .optitem .lt{font-weight:700;font-family:var(--serif);color:var(--accent);flex:0 0 18px}
+  .optitem.used{opacity:.45}
+  .optitem.extra{border-color:var(--red);background:var(--red-soft)}
+  .optitem .oen{font-family:var(--serif);font-size:.92rem;line-height:1.75}
+  .optitem .zhx{display:block;color:var(--muted);font-size:.82rem;margin-top:3px}
+  .optitem .kw{display:block;font-size:.78rem;color:var(--blue);margin-top:3px}
+  .optitem .stg{display:inline-block;font-size:.72rem;background:var(--purple-soft);color:var(--purple);border-radius:999px;padding:1px 9px;margin-top:5px}
+  /* 空格题 */
+  .person{margin-bottom:26px;padding-bottom:20px;border-bottom:1px dashed var(--line)}
+  .person:last-child{border:none}
+  .pname{font-family:var(--serif);font-weight:700;font-size:1.05rem;margin-bottom:8px}
+  .pname .qn{color:var(--accent)}
+  .stance{font-size:.72rem;border-radius:999px;padding:1px 9px;margin-left:8px;vertical-align:2px;font-family:var(--sans);font-weight:400}
+  .st-anti{background:var(--red-soft);color:var(--red)}
+  .st-pro{background:var(--green-soft);color:var(--green)}
+  .st-mid{background:var(--blue-soft);color:var(--blue)}
+  .slot{display:inline;background:var(--accent-soft);border-bottom:2px solid var(--accent);border-radius:3px;padding:0 6px;color:var(--accent);font-weight:700;font-family:var(--sans);font-size:.88rem}
+  .slot.filled{background:var(--green-soft);border-color:var(--green);color:var(--ink);font-weight:400;font-family:var(--serif);font-size:1.03rem}
+  .slot.filled .fl{font-family:var(--sans);font-size:.78rem;font-weight:700;color:var(--green);margin-right:5px}
+  .chips{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0 4px}
+  .chips .ch{width:38px;height:34px;border:1px solid var(--line);border-radius:8px;background:none;font-family:var(--serif);font-weight:700;font-size:1rem;color:var(--ink);cursor:pointer;transition:all .15s}
+  .chips .ch:hover{border-color:var(--accent)}
+  .person.done .ch{cursor:default;opacity:.6}
+  .ch.right{background:var(--green-soft);border-color:var(--green);color:var(--green);opacity:1!important}
+  .ch.wrong{background:var(--red-soft);border-color:var(--red);color:var(--red);opacity:1!important}
+  .expl{display:none;margin-top:10px;background:var(--accent-soft);border-radius:10px;padding:12px 14px;font-size:.9rem}
+  .person.done .expl{display:block}
+  .expl b{color:var(--accent)}
+  .loc{font-family:var(--serif);font-style:italic;background:var(--hl);padding:1px 4px;border-radius:3px}
+  .expl .line{margin-top:8px;padding-top:8px;border-top:1px dashed var(--line)}
+  .expl .mine{margin-top:8px;padding:8px 10px;background:var(--red-soft);border-radius:8px;color:var(--red);font-size:.86rem}
+  .wb{display:grid;gap:10px}
+  .wbi{border-left:3px solid var(--green);background:var(--green-soft);border-radius:0 10px 10px 0;padding:10px 14px;font-size:.92rem}
+  .wbi .p{font-family:var(--serif);font-weight:600}
+  .wbi .u{color:var(--muted);font-size:.85rem}
+  /* 表格 */
+  .tbwrap{overflow-x:auto}
+  table.gt{border-collapse:collapse;width:100%;min-width:600px;font-size:.86rem}
+  table.gt th,table.gt td{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
+  table.gt th{background:var(--accent-soft);color:var(--accent);font-weight:600;font-size:.8rem}
+  table.gt td.c{text-align:center;font-family:var(--serif);font-weight:700}
+  table.gt tr.bad td{background:var(--red-soft)}
+  /* 分区带 */
+  .zone{display:grid;grid-template-columns:118px 1fr;gap:12px;padding:9px 0;border-bottom:1px dashed var(--line);font-size:.9rem}
+  .zone:last-child{border:none}
+  .zone .zn{font-size:.82rem;color:var(--accent);font-weight:600}
+  .zone.empty{background:var(--red-soft);border-radius:8px;padding-left:10px}
+  .zone.empty .zn{color:var(--red)}
+  /* 长难句 */
+  .ls{border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:14px}
+  .ls .s{font-family:var(--serif);font-size:.98rem;line-height:1.85}
+  .ls .an{margin-top:10px;font-size:.88rem}
+  .ls .an div{margin-top:4px}
+  .ls .tr{margin-top:8px;padding:8px 12px;background:var(--blue-soft);border-radius:8px;font-size:.88rem}
+  .mk{color:var(--red);font-weight:600}
+  .mk2{color:var(--blue);font-weight:600}
+  .mk3{color:var(--green);font-weight:600}
+  .box{border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:0 10px 10px 0;padding:12px 14px;margin:12px 0;font-size:.92rem;background:var(--accent-soft)}
+  .box.red{border-left-color:var(--red);background:var(--red-soft)}
+  .box.green{border-left-color:var(--green);background:var(--green-soft)}
+  .box .bt{font-weight:700;color:var(--accent);display:block;margin-bottom:6px}
+  .box.red .bt{color:var(--red)} .box.green .bt{color:var(--green)}
+  .en,.zh,.expl,.wbi,.optitem,.ls,.zone,.bd,figcaption,p,li,td,th{overflow-wrap:anywhere}
+  footer{color:var(--muted);font-size:.8rem;text-align:center;margin-top:30px}
+  #yd{position:fixed;z-index:60;display:none;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:4px 12px;font-size:.8rem;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+</style>
+<style>
+  /* —— 2010 排序题专用 —— */
+  main,aside{min-width:0}
+  .chainbar{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:16px 0 4px;padding:12px;background:var(--accent-soft);border-radius:12px}
+  .chainbar .cb{min-width:44px;height:36px;display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--accent);border-radius:8px;font-family:var(--serif);font-weight:700;color:var(--accent);background:var(--card)}
+  .chainbar .cb.given{background:var(--green-soft);border-color:var(--green);color:var(--green)}
+  .chainbar .ar{color:var(--muted)}
+  .ctx{font-size:.84rem;color:var(--muted);background:var(--blue-soft);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;padding:7px 12px;margin-bottom:10px}
+  .ctx i{font-family:var(--serif)}
+  .para{margin-bottom:22px;padding-bottom:16px;border-bottom:1px dashed var(--line)}
+  .para:last-of-type{border-bottom:none}
+  .person .en{margin-bottom:4px}
+  .optitem .oen{display:block}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">◀ 返回英语复盘中心</a>
+  <header>
+    <h1>A Wholesale Shift in European Groceries　欧洲食品杂货商向批发转型</h1>
+    <div class="sub">2010 年英语（一）真题 · Part B 新题型（<b>段落排序</b>：七段选五段填进 41→42→43→44→[E]→45，一段多余）· 建议做题 <b>8–10 min</b> · 话题：欧洲食品饮料零售业的困境与出路 · 545 words · 源自《麦肯锡季刊》<i>The McKinsey Quarterly</i> 2003 年第 1 期 <i>A Wholesale Shift in European Groceries</i></div>
+    <div class="tags">
+      <span class="tag">正确答案：41 B　42 F　43 D　44 G　45 A（C 多余）</span>
+      <span class="tag">全文顺序：B — F — D — G — E — A</span>
+      <span class="tag">变体：<b>排序题</b>（本中心第一次遇到 ⟹ Part B 四种变体至此全部实做过）</span>
+      <span class="tag">✅ Claude 盲做：<b>5/5</b>（新题型四篇：2007 5/5 · 2008 5/5 · 2009 3/5 · 2010 5/5）</span>
+    </div>
+  </header>
+
+  <div class="layout">
+    <main>
+      <section class="card">
+        <h2><span class="n">00</span>先看这个：排序题第一次登场 —— 它跟前三种变体都不一样</h2>
+        <p style="font-size:.92rem">2007 是<b>标题匹配</b>（考概括）、2022 是<b>观点匹配</b>（考立场）、2008 与 2009 是<b>选句填空</b>（考句间衔接）。本篇是英语一 Part B 的第四种变体 ——<b>段落排序</b>：七段完整的段落，按顺序填进 <span class="loc">41 → 42 → 43 → 44 → [E] → 45</span> 六个格子，<b>E 已经放好，一段多余</b>。<span class="mk">证据从「句子级」升到「段落级」，但判据反而更集中：全长在<u>段首</u>和<u>段尾</u>。</span></p>
+
+        <div class="chainbar">
+          <span class="cb">41</span><span class="ar">→</span><span class="cb">42</span><span class="ar">→</span><span class="cb">43</span><span class="ar">→</span><span class="cb">44</span><span class="ar">→</span><span class="cb given">E</span><span class="ar">→</span><span class="cb">45</span>
+        </div>
+
+        <h3 class="sh">① 做题顺序不是 41 → 45，而是「先啃硬的，再让约束往两边传」</h3>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:600px">
+          <tr><th style="width:8%">步</th><th style="width:30%">做什么</th><th>为什么这一步最划算（本篇实况）</th></tr>
+          <tr><td class="c">1</td><td><b>先做被「已给定段」夹住的空</b></td><td>E 固定在第 5 位，它只有<b>一个</b>邻居（45）。E 末句 <span class="loc">mask <b>two opposing trends</b></span> ⟹ 下一段必须逐个数出这两个趋势 ⟹ 只有 A 以 <span class="loc"><b>The first</b> and more important is…</span> 开头。<b>全篇最硬的一处，五秒锁死。</b></td></tr>
+          <tr><td class="c">2</td><td><b>再定首段：查「回头看的词」</b></td><td>首段的特征是<b>不需要上文</b>。逐项看段首有没有回指词／逻辑词／省略成分，<b>有一个就出局</b> ⟹ A、C、D、F、G 全部出局，<b>只剩 B</b>。<span class="mk">这一步完全不用读懂内容。</span></td></tr>
+          <tr><td class="c">3</td><td><b>沿链条正推中间三个</b></td><td>B 尾抛论断 ⟹ F 首 <span class="loc">For example</span>；F 列完清单 ⟹ D 首 <span class="loc">All in all</span>；D 尾抛「要求」 ⟹ G 首 <span class="loc">these requirements</span>。<b>一环扣一环，没有分叉。</b></td></tr>
+          <tr><td class="c">4</td><td><b>通读验闭合</b></td><td>B—F—D—G—E—A ＝ 问题 → 论据 → 总结与条件 → 打消顾虑 → 市场构成 → 趋势之一。<b>读不出磕绊才算完。</b></td></tr>
+          <tr><td class="c">5</td><td><b>回头验多余项</b></td><td>把剩下的 C 逐个接缝试一遍，全部装不进去 ⟹ 反向确认前四步没错。<span class="mk">多余项验不过，说明前面某一步排错了。</span></td></tr>
+        </table>
+        </div>
+
+        <h3 class="sh">② 排序题的证据只长在两个地方</h3>
+        <div class="box">
+          <span class="bt">🚩 段首＝指向上文的路标　段尾＝指向下文的预告</span>
+          七段一共只有 <b>14 个接口</b>（7 个段首 ＋ 7 个段尾）。<b>时间紧的时候，七段只精读首末两句，中间一律扫读</b>——本篇 545 词，真正决定五个答案的不超过 60 词。
+          <br><span class="mk">这也是排序题与选句填空最大的手感差别：选句填空要「读懂空格前后那两句」，排序题要「读懂每段的头和尾」。</span>
+        </div>
+
+        <h3 class="sh">③ 三类段首路标（见到就知道它不是首段）</h3>
+        <ol style="font-size:.92rem;margin:0 0 0 20px;display:grid;gap:6px">
+          <li><b>回指词</b>：<span class="loc">such variations</span>（C）· <span class="loc">this…market</span>（D）· <span class="loc">these requirements</span>（G）—— 指着上文某个具体东西。</li>
+          <li><b>逻辑连接词</b>：<span class="loc">For example</span>（F 例证）· <span class="loc">All in all</span>（D 总结）· <span class="loc">However</span>（G 转折）· <span class="loc">Despite…</span>（E 让步）。</li>
+          <li><b>省略成分</b>：<span class="loc">The first and more important <u>is</u>…</span>（A）—— <b>第一个「什么」？中心词被省了，必须去上文捡</b>。<span class="mk">这一类最容易被忽略，因为它没有任何「像连接词的词」。</span></li>
+        </ol>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">01</span>七段选项 A–G · 先给每一项标出「头路标 / 尾预示」</h2>
+        <p style="font-size:.8rem;color:var(--muted);margin-bottom:12px">🔑 一行 ＝ 这一项的两个接口 ｜ 紫色标签 ＝ 它最终落在哪一环（<b>作答后</b>对应项会自动置灰）｜ 红框 ＝ 多余项</p>
+        <div class="optlib" id="optlib"></div>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">02</span>链条作答 · 点字母 <button class="allbtn" onclick="toggleAll()">译文 开/关</button></h2>
+        <p style="font-size:.8rem;color:var(--muted);margin-bottom:14px">每格下方点 A–G 作答，<b>答后格子会就地补全成整段原文</b>，并出线索链解析 ＋ 错因标签。<span class="mk">建议按 45 → 41 → 42 → 43 → 44 的顺序做，理由见 00 节。</span></p>
+
+        <div class="person q" id="q41" data-ans="B">
+          <div class="pname"><span class="qn">(41)</span> 链条第 1 格 · <b>首段</b><span class="stance st-mid">证据 ＝ 其余六项的段首路标全部出局</span><button class="zbtn" onclick="tz(this)">译</button></div>
+          <p class="ctx">↑ 上文：<b>无</b>（全文开头，没有邻居可依靠）　↓ 下文：42</p>
+          <p class="en"><span class="slot" data-n="41">(41) ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿</span></p>
+          <div class="zh"><b>（41）</b>欧洲最大市场的食品饮料零售销售陷入停滞，使得欧洲食品杂货零售商渴求增长机会。多数主要零售商已经尝试过电子商务（收效甚微）和海外扩张。但几乎所有零售商都忽视了自家后院里那个巨大而有利可图的机会：食品饮料批发业——它似乎正是零售商所需要的那种市场。</div>
+          <div class="chips"></div>
+          <div class="expl"><b>41 → B　Retail sales of food and drink in Europe’s largest markets are at a standstill…</b>
+            <div class="line">🔗 <b>决定性一击（纯排除，不读内容）</b>：首段的定义是「<b>不需要上文就能读懂</b>」。逐项查段首——A 省略了中心词（<span class="loc">The first and more important</span> 的「第一个什么」在上文）· C 有 <span class="loc">such variations</span> · D 有 <span class="loc">All in all</span> ＋ <span class="loc">this</span> · F 有 <span class="loc">For example</span> · G 有 <span class="loc">However</span> ＋ <span class="loc">these requirements</span> · E 有 <span class="loc">Despite variations in detail</span>。<span class="mk">六项六个路标，一个不剩，只有 B 的段首是干净的。</span></div>
+            <div class="line">🔗 <b>B 的正面理由：它是议论文最标准的开篇模子</b>——① <b>背景</b>（零售停滞）→ ② <b>已试过的路都不通</b>（电商收效甚微、海外扩张）→ ③ <b>But 抛出真正的机会</b>（自家后院的批发业）。<b>三句话走完「问题 ⟹ 观点」，正是全文的论述中心。</b></div>
+            <div class="line">🔮 <b>它的段尾预告了 42</b>：<span class="loc">the wholesale food and drink trade, <b>which appears to be just the kind of market retailers need</b></span> —— 这是一句<b>还没有任何证据的断言</b>（appears to be），<span class="mk">下一段必然是来给它作证的。</span></div>
+            <div class="line">📌 <b>可迁移的判据</b>：<b>首段不一定「最像开头」，但一定「最不需要上文」。</b>别去找哪一段读起来最有气势，去数哪一段的段首没有回头看的词。</div>
+          </div>
+        </div>
+
+        <div class="person q" id="q42" data-ans="F">
+          <div class="pname"><span class="qn">(42)</span> 链条第 2 格<span class="stance st-pro">证据 ＝ 上一段末句是「待证的论断」</span><button class="zbtn" onclick="tz(this)">译</button></div>
+          <p class="ctx">↑ 上文（41＝B）末句：<i>…the wholesale food and drink trade, which <b>appears to be</b> just the kind of market retailers need.</i>　↓ 下文：43</p>
+          <p class="en"><span class="slot" data-n="42">(42) ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿</span></p>
+          <div class="zh"><b>（42）</b>例如，2000 年法国、德国、意大利、西班牙和英国的食品饮料批发销售额达 2 680 亿美元——超过零售销售额的 40%。此外，批发业的平均总利润率高于零售业；随着越来越多的欧洲人更频繁地外出就餐，来自食品服务渠道的批发需求正在快速增长；而且，这一碎片化行业竞争态势的变化，终于使批发商的整合成为可能。</div>
+          <div class="chips"></div>
+          <div class="expl"><b>42 → F　For example, wholesale food and drink sales came to $268 billion…</b>
+            <div class="line">🔗 <b>决定性一击（例证词）</b>：<span class="loc"><b>For example</b></span> 是最直白的一类路标——<b>它要求紧邻的上文是一句「还没举证的论断」</b>。B 末句「批发业<u>似乎</u>正是零售商需要的市场」正是这样一句。<span class="mk">整个链条里只有这一处「论断」在等例子。</span></div>
+            <div class="line">🔗 <b>内容上严丝合缝</b>：B 说「<b>big, profitable</b> opportunity」，F 就按这两个形容词逐个作证 —— <b>big</b>：销售额 2 680 亿美元、<b>超过零售的 40%</b>；<b>profitable</b>：<span class="loc">average overall margins are <b>higher</b> in wholesale than in retail</span>。<b>再补两条前景（需求快涨、可整合），一共四条。</b></div>
+            <div class="line">🔮 <b>它的段尾预告了 43</b>：<span class="loc">…and <b>changes</b> in the competitive dynamics of this fragmented industry are at last making it feasible for wholesalers to consolidate.</span> —— 一段清单列到这里已经<b>攒够了论据，等一个总结</b>。</div>
+            <div class="line">🚫 <b>为什么不是 D</b>：D 首句 <span class="loc">All in all</span>（总而言之）具有<b>总结</b>意味，它的上文必须是<b>一串具体论述</b>；而 B 只抛了个观点、没有任何展开 —— <b>B 与 D 之间缺了「举证」这一环</b>。<span class="mk">这就是黄皮书说的「二者之间明显缺少一个环节」。</span></div>
+          </div>
+        </div>
+
+        <div class="person q" id="q43" data-ans="D">
+          <div class="pname"><span class="qn">(43)</span> 链条第 3 格<span class="stance st-pro">证据 ＝ 总结词 All in all ＋ 指代 this…market</span><button class="zbtn" onclick="tz(this)">译</button></div>
+          <p class="ctx">↑ 上文（42＝F）：一段四条论据的清单，末句谈 <i>changes… making it feasible for wholesalers to consolidate</i>　↓ 下文：44</p>
+          <p class="en"><span class="slot" data-n="43">(43) ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿</span></p>
+          <div class="zh"><b>（43）</b>总而言之，这显然是一个大型零售商可以有利可图地施展身手的市场：它们可以运用自己庞大的规模、现有的基础设施，以及在产品系列管理、物流和营销情报方面久经检验的技能。那些掌握了欧洲批发业复杂门道的零售商，很可能因此赚得丰厚利润。至少，整体看上去是这样。进一步考察却会发现，各大国市场之间存在重大差异，尤其是在客户细分与批发结构上，以及单个食品饮料品类的竞争态势上。大型零售商必须先弄清这些差异，才能确定在欧洲批发业的哪些细分领域里，自己的特殊能力可以把规模更小但根基已深的竞争对手挤下去。新技能和陌生的商业模式也同样必需。</div>
+          <div class="chips"></div>
+          <div class="expl"><b>43 → D　All in all, this clearly seems to be a market in which big retailers could profitably apply…</b>
+            <div class="line">🔗 <b>决定性一击（总结词＋指代）</b>：<span class="loc"><b>All in all</b>, <b>this</b>… market</span> —— 两重约束叠在一起：<b>All in all 要求上文是一串论据</b>（F 恰好是四条），<b>this…market 要求上文刚刚出现过一个市场</b>（F 末句 <span class="loc">this <b>fragmented industry</b></span>）。</div>
+            <div class="line">🏗 <b>段内还有一次自转折，别读丢</b>：D 不是一段到底的乐观。<span class="loc">At least, that is how it looks <b>as a whole</b>. <b>Closer inspection reveals</b> important differences…</span> —— <b>「整体看是这样，细看却有差异」</b>。<span class="mk">Closer inspection 是英语说明文标准的转折装置：前半给整体印象，它一出现就要翻细节。</span></div>
+            <div class="line">🔮 <b>它的段尾预告了 44</b>：<span class="loc"><b>New skills and unfamiliar business models are needed</b>, too.</span> —— 连同上一句的「必须先弄清差异」，本段末尾一共抛出了<b>三项要求</b>（摸透复杂门道 · 弄清各国差异 · 学会新技能与新模式）。<b>下一段只要出现「这些要求」，就必然接在这里。</b></div>
+            <div class="line">🚫 <b>为什么不是 C</b>：C 的段首 <span class="loc">such variations</span> 单看形式也能回指 F 的 <span class="loc">changes in the…industry</span>，<b>形式上过关</b>；但 C 谈的是「市场结构会不会变」「买家还是卖家说了算」，<b>整段不含 retailer / wholesaler 这条主线</b>。<span class="mk">形式对了还要过内容这一关——这是本篇唯一需要两道判据的地方。</span></div>
+          </div>
+        </div>
+
+        <div class="person q" id="q44" data-ans="G">
+          <div class="pname"><span class="qn">(44)</span> 链条第 4 格<span class="stance st-pro">证据 ＝ 回指 these requirements（双重接缝）</span><button class="zbtn" onclick="tz(this)">译</button></div>
+          <p class="ctx">↑ 上文（43＝D）末句：<i>New skills and unfamiliar business models are <b>needed</b>, too.</i>　↓ 下文：已给定的 E</p>
+          <p class="en"><span class="slot" data-n="44">(44) ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿</span></p>
+          <div class="zh"><b>（44）</b>然而，这些要求都不应阻止大型零售商（甚至一些大型食品生产商和现有批发商）一试身手，因为那些掌握了欧洲批发业复杂门道的商家很可能获得可观收益。</div>
+          <div class="chips"></div>
+          <div class="expl"><b>44 → G　However, none of these requirements should deter large retailers … from trying their hand…</b>
+            <div class="line">🔗 <b>决定性一击（回指＋概括名词）</b>：<span class="loc">these <b>requirements</b></span> 是一个<b>概括名词</b>，它要求上文<b>刚刚列出了若干条要求</b>。D 段末尾三句正是「必须理解差异 / 需要新技能 / 需要陌生的商业模式」。<span class="mk">概括名词回指（requirements / factors / concerns / trends）是排序题第二常见的钩子，仅次于逻辑连接词。</span></div>
+            <div class="line">🔗 <b>第二重证据：原词整串复现</b>。D 有 <span class="loc">Retailers that <b>master the intricacies of wholesaling in Europe</b> may well expect to <b>rake in substantial profits</b></span>，G 有 <span class="loc">those that <b>master the intricacies of wholesaling in Europe</b> <b>stand to reap considerable gains</b></span> —— <b>前半是七个词一字不差的复现，后半是近义替换</b>。<span class="mk">同一对相邻段同时用两种缝法，这在真题里不多见，值得单记。</span></div>
+            <div class="line">🧭 <b>转折 However 的方向要读对</b>：G 不是在否定 D，而是<b>先承认要求高、再说别被吓退</b>（<span class="loc">none of these requirements should <b>deter</b>…</span>）。<b>这是一段「安抚 ＋ 收口」的过渡段</b>——正因为它是收口，才轮到 E 从头介绍市场构成。</div>
+            <div class="line">📌 <b>顺带一条语法坑</b>：<span class="loc">deter … from</span> 中间被 19 个词的括号插入语撑开（<span class="loc">(and even some large food producers and existing wholesalers)</span>），<b>末尾的 <span class="loc">for</span> 是并列连词「因为」，不是介词</b>。详见 05 节 s5。</div>
+          </div>
+        </div>
+
+        <div class="person q" id="q45" data-ans="A">
+          <div class="pname"><span class="qn">(45)</span> 链条第 6 格 · <b>紧跟已给定的 E</b><span class="stance st-mid">全篇最硬的一处，建议第一个做</span><button class="zbtn" onclick="tz(this)">译</button></div>
+          <p class="ctx">↑ 上文（已给定的 E）末句：<i>…but the figures, when added together, mask <b>two opposing trends</b>.</i>　↓ 下文：<b>无</b>（全文结尾）</p>
+          <p class="en"><span class="slot" data-n="45">(45) ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿</span></p>
+          <div class="zh"><b>（45）</b>第一个、同时也是更重要的（趋势）是消费者越来越喜欢外出就餐：在家以外的地方，食品饮料消费占总消费的比例已从 1995 年的约 32% 升至 2000 年的 35%，预计到 2005 年将接近 38%。这一趋势正推动整个欧洲食品服务渠道的批发需求每年增长 4%–5%，相比之下零售需求年增长仅 1%–2%。与此同时，随着经济衰退日益逼近，人们变得焦虑不安，往往把钱包捂得更紧，并把在家吃饭视为一个切合实际的选择。</div>
+          <div class="chips"></div>
+          <div class="expl"><b>45 → A　The first and more important is the consumer’s growing preference for eating out…</b>
+            <div class="line">🔗 <b>决定性一击（序数词补中心词）</b>：A 的首句是<b>残缺的</b>——<span class="loc">The first and more important <b>is</b>…</span>，「第一个<u>什么</u>」被省掉了。<b>整篇七段里，只有 E 的末句给出了可以补进去的那个复数名词</b>：<span class="loc">two opposing <b>trends</b></span>。<span class="mk">序数词（first / second / another）开头的段落，先行项一定紧贴在上一段末句，这是排序题最刚性的一条。</span></div>
+            <div class="line">🔗 <b>数字也在对齐</b>：E 说「批发市场与零售市场增速<b>一样缓慢</b>」，A 立刻给出两个方向相反的分项——外出就餐推高<b>批发</b>需求 <span class="loc">4 to 5 percent a year</span>，而零售需求只有 <span class="loc">1 to 2 percent</span>。<b>「加总后看不出、拆开才看得见」正是 mask 这个动词的意思。</b></div>
+            <div class="line">🤔 <b>我盲做时唯一的犹豫（结果它是题眼，不是破绽）</b>：A 段首句说外出就餐<b>上升</b>，段尾却说衰退之下人们<span class="loc">consider eating at home a realistic alternative</span>（在家吃饭），读起来像<b>自相矛盾</b>，我一度怀疑 A 是被改造过的多余项。
+              <br>其实这正是「<b>两个相反的趋势</b>」的落地：<b>① 外出就餐 ↑ ⟹ 撑起批发（食品服务渠道）；② 衰退回家吃饭 ⟹ 撑起零售。</b>两股力量叠加，才让总数看上去「一样缓慢」。<span class="mk">⟹ 通用教训：选项内部的「自相矛盾」，先回头问一句「上文是不是刚说了『有两种相反的东西』」——如果是，这个矛盾就是答案本身。</span></div>
+            <div class="line">📌 <b>末格不必是「总结段」</b>：本篇最后一格填的是<b>两个趋势中的第一个</b>，文章到这里戛然而止（真题节选常如此）。<b>别拿「结尾该有总结感」去挑段落</b>——排序题只认接缝，不认语感。</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">02+</span>首段判据：六个「回头看的词」，一个都没有的那项就是首段</h2>
+        <p style="font-size:.92rem">这是本篇<b>最省时的一步</b>，也是排序题独有的红利：<b>不读内容也能做</b>。把七项的<u>第一句</u>并排，只查一件事——<b>它有没有依赖上文的成分</b>。</p>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:620px">
+          <tr><th style="width:8%">项</th><th style="width:42%">段首原文（只看第一句的开头）</th><th>依赖上文的成分 ⟹ 判定</th></tr>
+          <tr class="bad"><td class="c">A</td><td><i>The first and more important <b>is</b>…</i></td><td><b>省略中心词</b>：第一个「什么」？⟹ 出局</td></tr>
+          <tr class="bad"><td class="c">C</td><td><i>Will <b>such variations</b> bring about a change…?</i></td><td><b>回指词 such</b> ⟹ 出局</td></tr>
+          <tr class="bad"><td class="c">D</td><td><i><b>All in all</b>, <b>this</b> clearly seems to be a market…</i></td><td><b>总结词 ＋ 指代 this</b> ⟹ 出局</td></tr>
+          <tr class="bad"><td class="c">E</td><td><i><b>Despite variations in detail</b>,…</i></td><td><b>让步状语</b>预设上文谈过差异 ⟹ 出局（且已给定）</td></tr>
+          <tr class="bad"><td class="c">F</td><td><i><b>For example</b>, wholesale food and drink sales…</i></td><td><b>例证词</b> ⟹ 出局</td></tr>
+          <tr class="bad"><td class="c">G</td><td><i><b>However</b>, none of <b>these requirements</b>…</i></td><td><b>转折词 ＋ 回指</b>（双重）⟹ 出局</td></tr>
+          <tr><td class="c"><b>B</b></td><td><i>Retail sales of food and drink in Europe’s largest markets are at a standstill…</i></td><td><b>干净</b>：无回指、无连接词、无省略 ⟹ <b>首段</b></td></tr>
+        </table>
+        </div>
+        <div class="box green">
+          <span class="bt">✅ 把它做成一个固定动作</span>
+          翻到排序题 ⟹ <b>先只读七个段首的前五个词</b> ⟹ 划掉所有带「回指词 / 逻辑连接词 / 省略成分」的项 ⟹ 剩一个就是首段，剩两个再比内容。
+          <b>本篇这一步单独就值 2 分，用时不到一分钟。</b>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">02++</span>五个接缝、五种缝法（排序题的证据总表）</h2>
+        <p style="font-size:.92rem">链条排好后，<b>相邻两段之间一定存在一处可以指着说的证据</b>。本篇五个接缝恰好各用一种缝法，可当成排序题的证据清单来背：</p>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:640px">
+          <tr><th style="width:12%">接缝</th><th style="width:20%">缝法</th><th>证据原文</th></tr>
+          <tr><td class="c">B → F</td><td><b>例证词</b></td><td>上：<span class="loc">which <b>appears to be</b> just the kind of market retailers need</span>（未证的论断）｜下：<span class="loc"><b>For example</b>, …$268 billion…</span></td></tr>
+          <tr><td class="c">F → D</td><td><b>总结词＋指代</b></td><td>上：四条论据的清单，末句 <span class="loc">this <b>fragmented industry</b></span>｜下：<span class="loc"><b>All in all</b>, <b>this</b>…market</span></td></tr>
+          <tr><td class="c">D → G</td><td><b>概括名词回指</b></td><td>上：<span class="loc">New skills and unfamiliar business models are <b>needed</b></span>｜下：<span class="loc">none of <b>these requirements</b></span></td></tr>
+          <tr><td class="c">D → G<br>（第二重）</td><td><b>原词整串复现<br>＋ 近义替换</b></td><td>上：<span class="loc"><b>master the intricacies of wholesaling in Europe</b> … <b>rake in substantial profits</b></span>｜下：<span class="loc"><b>master the intricacies of wholesaling in Europe</b> … <b>reap considerable gains</b></span></td></tr>
+          <tr><td class="c">E → A</td><td><b>序数词补中心词</b></td><td>上：<span class="loc">mask <b>two opposing trends</b></span>｜下：<span class="loc">The <b>first</b> and more important is…</span></td></tr>
+        </table>
+        </div>
+        <div class="box">
+          <span class="bt">📐 五种缝法的强弱排序（本篇实测）</span>
+          <b>序数词 / 概括名词回指（硬）＞ 例证词、总结词（较硬）＞ 原词复现（软，可能是陷阱）＞ 话题相近（不算证据）。</b>
+          <br><span class="mk">注意最后两档：本篇复现词最多的一项恰恰是多余项 C（见 03 节）。原词复现只能<u>加固</u>已经成立的接缝，不能单独用来定位。</span>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">03</span>多余项 C：全篇词面呼应最多的一项，偏偏是它</h2>
+        <p class="en" style="font-size:.98rem"><span class="tk" data-w="bringabout">Will such variations <b>bring about</b> a change</span> in the overall structure of the food and drink market? Definitely not. The functioning of the market is based on flexible trends dominated by potential buyers. In other words, it is up to the buyer, rather than the seller, to decide what to buy. <span class="tk" data-w="atanyrate">At any rate</span>, this change will ultimately be <span class="tk" data-w="acclaim">acclaimed</span> by an ever-growing number of both domestic and international consumers, regardless of how long the current consumer pattern will <span class="tk" data-w="takehold">take hold</span>.</p>
+        <div class="box red" style="margin-top:14px">
+          <span class="bt">🎣 它的钩子造得很像：段首段尾各放一个回指词</span>
+          <b>段首 <span class="loc">such variations</span></b> 能挂上 E 的 <span class="loc">variations in detail</span>、D 的 <span class="loc">important differences</span>、F 的 <span class="loc">changes in the competitive dynamics</span>；
+          <b>段尾 <span class="loc">this change</span></b> 再回指一次。<b>单看形式，C 几乎能插进链条的任何一处。</b>
+        </div>
+        <h3 class="sh">三条把它踢出去的理由（按可靠度排）</h3>
+        <ol style="font-size:.92rem;margin:0 0 0 20px;display:grid;gap:8px">
+          <li><b>① 关键词不在线上（最硬）。</b>全文的主线名词是 <b>retailers / wholesale market / grocery</b>，<b>C 通篇一个都没有</b>；它谈的是「市场整体结构」和「买家还是卖家说了算（<span class="loc">up to the buyer, rather than the seller</span>）」——<span class="mk">这是一个换了话题的段落，不是一个换了说法的段落。</span></li>
+          <li><b>② 段内自相矛盾。</b>先自问自答 <span class="loc">Will such variations bring about a change…? <b>Definitely not.</b></span>（肯定不会有变化），末句却说 <span class="loc"><b>this change</b> will ultimately be acclaimed</span>（这一变化终将受到欢迎）—— <b>前脚否认有变化，后脚给这个变化叫好</b>。<span class="mk">自撰的多余项常有这种「两头不搭」，可作为第二判据。</span></li>
+          <li><b>③ 接缝一个都对不上。</b>放 42？上文 B 没有任何「variations」。放 43？它接不住 F 的四条论据，也交不出 G 要的「requirements」。放 45？E 要的是「两个趋势里的第一个」，C 只给了一句「肯定不会变」。<b>五个格子逐个试完，全不成立。</b></li>
+        </ol>
+        <div class="box">
+          <span class="bt">📊 四篇新题型的多余项造法（跨年统计）</span>
+          <b>2007 标题匹配</b>：两个多余项 A、G <b>都有词面呼应</b>（见套路库 R17）· <b>2008 选句填空</b>：阶段错位 ／ 与正确项撞专名 ·
+          <b>2009 选句填空</b>：整整一区（功能论）没有空，两项一起死 · <b>2010 排序题</b>：<b>复现词最多、话题却偏离</b>。
+          <br>⟹ <b>四篇里有两篇的多余项是靠「词面呼应」钓鱼的，占一半。「哪一项和上文最像」这个直觉，在 Part B 里是<u>负资产</u>。</b>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">03+</span>复原后的全文（B — F — D — G — E — A）· 逐段精读 <button class="allbtn" onclick="toggleAll()">译文 开/关</button></h2>
+        <p style="font-size:.8rem;color:var(--muted);margin-bottom:14px">🟡 高亮词可点出词卡（右侧／底部）｜ 排完序一定要通读一遍：<b>读得顺 ＝ 五个接缝都成立</b>，读到磕绊处就回去查那一处接缝</p>
+
+        <div class="para">
+          <div class="pname"><span class="qn">① ＝ B（41）</span>提出问题：零售停滞，机会在自家后院<button class="zbtn" onclick="tz(this)">译</button></div>
+          <p class="en">Retail sales of food and drink in Europe’s largest markets are <span class="tk" data-w="standstill">at a standstill</span>, leaving European grocery retailers <span class="tk" data-w="hungryfor">hungry for</span> opportunities to grow. Most leading retailers have already tried e-commerce, with limited success, and expansion abroad. But almost all have ignored the big, profitable opportunity <span class="tk" data-w="backyard">in their own backyard</span>: the <span class="tk" data-w="wholesale">wholesale</span> food and drink trade, which appears to be just the kind of market retailers need.</p>
+          <div class="zh">欧洲最大市场的食品饮料零售销售陷入停滞，使得欧洲食品杂货零售商渴求增长机会。多数主要零售商已经尝试过电子商务（收效甚微）和海外扩张。但几乎所有零售商都忽视了自家后院里那个巨大而有利可图的机会：食品饮料批发业——它似乎正是零售商所需要的那种市场。</div>
+        </div>
+
+        <div class="para">
+          <div class="pname"><span class="qn">② ＝ F（42）</span>举证：四条数据说明批发有钱可赚<button class="zbtn" onclick="tz(this)">译</button></div>
+          <p class="en">For example, wholesale food and drink sales came to $268 billion in France, Germany, Italy, Spain, and the United Kingdom in 2000—more than 40 percent of retail sales. Moreover, average overall <span class="tk" data-w="margin">margins</span> are higher in wholesale than in retail; wholesale demand from the food service sector is growing quickly as more Europeans eat out more often; and changes in the competitive <span class="tk" data-w="dynamics">dynamics</span> of this <span class="tk" data-w="fragmented">fragmented</span> industry are at last making it <span class="tk" data-w="feasible">feasible</span> for wholesalers to <span class="tk" data-w="consolidate">consolidate</span>.</p>
+          <div class="zh">例如，2000 年法国、德国、意大利、西班牙和英国的食品饮料批发销售额达 2 680 亿美元——超过零售销售额的 40%。此外，批发业的平均总利润率高于零售业；随着越来越多的欧洲人更频繁地外出就餐，来自食品服务渠道的批发需求正在快速增长；而且，这一碎片化行业竞争态势的变化，终于使批发商的整合成为可能。</div>
+        </div>
+
+        <div class="para">
+          <div class="pname"><span class="qn">③ ＝ D（43）</span>总结＋泼冷水：优势明显，但差异重重<button class="zbtn" onclick="tz(this)">译</button></div>
+          <p class="en"><span class="tk" data-w="allinall">All in all</span>, this clearly seems to be a market in which big retailers could profitably apply their <span class="tk" data-w="gigantic">gigantic</span> scale, existing <span class="tk" data-w="infrastructure">infrastructure</span>, and <span class="tk" data-w="proven">proven</span> skills in the management of product ranges, logistics, and <span class="tk" data-w="intelligence">marketing intelligence</span>. Retailers that master the <span class="tk" data-w="intricacies">intricacies</span> of wholesaling in Europe may well expect to <span class="tk" data-w="rakein">rake in</span> substantial profits <span class="tk" data-w="thereby">thereby</span>. At least, that is how it looks as a whole. <span class="tk" data-w="inspection">Closer inspection</span> reveals important differences among the biggest national markets, especially in their customer segments and wholesale structures, as well as the competitive dynamics of individual food and drink categories. Big retailers must understand these differences before they can identify the <span class="tk" data-w="segment">segments</span> of European wholesaling in which their particular abilities might <span class="tk" data-w="unseat">unseat</span> smaller but <span class="tk" data-w="entrenched">entrenched</span> competitors. New skills and unfamiliar business models are needed too.</p>
+          <div class="zh">总而言之，这显然是一个大型零售商可以有利可图地施展身手的市场：它们可以运用自己庞大的规模、现有的基础设施，以及在产品系列管理、物流和营销情报方面久经检验的技能。那些掌握了欧洲批发业复杂门道的零售商，很可能因此赚得丰厚利润。至少，整体看上去是这样。进一步考察却会发现，各大国市场之间存在重大差异，尤其是在客户细分与批发结构上，以及单个食品饮料品类的竞争态势上。大型零售商必须先弄清这些差异，才能确定在欧洲批发业的哪些细分领域里，自己的特殊能力可以把规模更小但根基已深的竞争对手挤下去。新技能和陌生的商业模式也同样必需。</div>
+        </div>
+
+        <div class="para">
+          <div class="pname"><span class="qn">④ ＝ G（44）</span>安抚：门槛虽高，别被吓退<button class="zbtn" onclick="tz(this)">译</button></div>
+          <p class="en">However, none of these requirements should <span class="tk" data-w="deter">deter</span> large retailers (and even some large food producers and existing wholesalers) from <span class="tk" data-w="tryhand">trying their hand</span>, for those that master the intricacies of wholesaling in Europe <span class="tk" data-w="standto">stand to</span> <span class="tk" data-w="reap">reap</span> considerable gains.</p>
+          <div class="zh">然而，这些要求都不应阻止大型零售商（甚至一些大型食品生产商和现有批发商）一试身手，因为那些掌握了欧洲批发业复杂门道的商家很可能获得可观收益。</div>
+        </div>
+
+        <div class="para">
+          <div class="pname"><span class="qn">⑤ ＝ E（已给定）</span>市场构成：两个需求来源 ＋ 一句钩子<button class="zbtn" onclick="tz(this)">译</button></div>
+          <p class="en">Despite <span class="tk" data-w="variation">variations</span> in detail, wholesale markets in the countries that have been closely examined—France, Germany, Italy and Spain—are made out of the same <span class="tk" data-w="buildingblocks">building blocks</span>. Demand comes mainly from two sources: independent <span class="tk" data-w="momandpop">mom-and-pop</span> grocery stores which, unlike large retail chains, are too small to buy <span class="tk" data-w="straight">straight from</span> producers, and food service operators that <span class="tk" data-w="caterto">cater to</span> consumers when they don’t eat at home. Such food service operators <span class="tk" data-w="rangefrom">range from</span> snack machines to large institutional catering <span class="tk" data-w="venture">ventures</span>, but most of these businesses are known in the trade as <span class="tk" data-w="horeca">“horeca”</span>: hotels, restaurants, and cafés. Overall, Europe’s wholesale market for food and drink is growing at the same <span class="tk" data-w="sluggish">sluggish</span> pace as the retail market, but the figures, when added together, <span class="tk" data-w="mask">mask</span> <span class="clue"><span class="tk" data-w="opposing">two opposing trends</span></span>.</p>
+          <div class="zh">尽管细节上有所不同，被仔细考察过的那些国家——法国、德国、意大利和西班牙——的批发市场却由相同的基本构成要素组成。需求主要来自两个来源：一是独立的夫妻杂货店，与大型零售连锁不同，它们规模太小，无法直接从生产商那里进货；二是食品服务经营商，它们满足消费者不在家就餐时的需求。这类食品服务经营商小到快餐自动售货机，大到大型公共餐饮企业，但业内多把它们统称为「horeca」：酒店、餐馆和咖啡馆。总体上，欧洲食品饮料批发市场的增速与零售市场一样缓慢，但两类数字加在一起，掩盖了两种相反的趋势。</div>
+        </div>
+
+        <div class="para">
+          <div class="pname"><span class="qn">⑥ ＝ A（45）</span>展开：两个相反趋势的第一个（外出就餐）<button class="zbtn" onclick="tz(this)">译</button></div>
+          <p class="en"><span class="clue">The first and more important is the consumer’s <span class="tk" data-w="preference">growing preference for</span> eating out</span>: the consumption of food and drink in places other than homes has risen from about 32 percent of total consumption in 1995 to 35 percent in 2000 and is expected to <span class="tk" data-w="approach">approach</span> 38 percent by 2005. This development is <span class="tk" data-w="boost">boosting</span> wholesale demand from the food service segment by 4 to 5 percent a year across Europe, compared with growth in retail demand of 1 to 2 percent. Meanwhile, as the recession is <span class="tk" data-w="loomlarge">looming large</span>, people are getting anxious. They tend to <span class="tk" data-w="purse">keep a tighter hold on their purse</span> and consider eating at home a <span class="tk" data-w="alternative">realistic alternative</span>.</p>
+          <div class="zh">第一个、同时也是更重要的（趋势）是消费者越来越喜欢外出就餐：在家以外的地方，食品饮料消费占总消费的比例已从 1995 年的约 32% 升至 2000 年的 35%，预计到 2005 年将接近 38%。这一趋势正推动整个欧洲食品服务渠道的批发需求每年增长 4%–5%，相比之下零售需求年增长仅 1%–2%。与此同时，随着经济衰退日益逼近，人们变得焦虑不安，往往把钱包捂得更紧，并把在家吃饭视为一个切合实际的选择。</div>
+        </div>
+
+        <div class="box green">
+          <span class="bt">🧩 通读后的骨架（一句话记住这篇文章）</span>
+          <b>零售不动了（B）→ 批发有钱赚，四条数据为证（F）→ 大零售商正好有本钱进场，但各国差异大（D）→ 门槛别怕（G）→ 批发市场长什么样：两类客户（E）→ 增速数字掩盖的两个相反趋势之一：外出就餐（A）。</b>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">04</span>Part B 四种变体：至此全部实做过一遍</h2>
+        <p style="font-size:.92rem">2007 标题匹配 · 2022 观点匹配 · 2008／2009 选句填空 · <b>2010 排序题</b> —— 本篇之后，套路库 <a href="套路库_阅读.html#R32">R32</a> 里「排序题（本中心尚未遇到）」这一行可以换成实战口径了。</p>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:680px">
+          <tr><th style="width:13%">变体</th><th style="width:22%">Directions 里的认领词</th><th style="width:27%">第一步做什么</th><th>主战场 · 战绩</th></tr>
+          <tr><td><b>标题匹配</b><br>2007</td><td><code>choose the most suitable <b>heading</b></code></td><td>看七个标题的<b>共同句式</b>，推出每段在写什么</td><td>段落<b>主旨概括</b>；正确项常是原文<b>没出现</b>的上位词 · <b>5/5</b></td></tr>
+          <tr><td><b>观点匹配</b><br>2022</td><td><code>match each <b>person</b> with his/her statement</code></td><td>给每个人贴<b>立场标签</b>（支持／反对／中间）</td><td><b>立场 ＋ 同义替换</b>；最大坑是主语偷换 · <b>5/5</b></td></tr>
+          <tr class="bad"><td><b>选句填空</b><br>2008 · 2009</td><td><code>some <b>segments</b> have been removed</code></td><td>给每个空<b>定形态</b>（段首／段中／段末）</td><td><b>句间衔接</b>；正确项必带唯一词或硬指代 · 2008 <b>5/5</b>、<b>2009 3/5（连体空对调）</b></td></tr>
+          <tr><td><b>排序题</b><br><b>2010</b></td><td><code>choose the most suitable <b>paragraphs</b> … fill them into the numbered <b>boxes</b></code></td><td><b>先做被已给定段夹住的空，再用段首排除法定首段</b></td><td><b>段落顺序</b>；证据全在段首段尾 · <b>5/5</b></td></tr>
+        </table>
+        </div>
+        <div class="box">
+          <span class="bt">🔀 排序题 vs 选句填空：手感差在哪</span>
+          <b>选句填空</b>是「把句子塞回句子中间」——要读<b>空格前后那两句</b>，判据是指代距离、唯一词、时态；
+          <b>排序题</b>是「把段落串成链」——只读<b>每段的头和尾</b>，判据是段首路标与段尾预告。
+          <br><span class="mk">两者最大的共同点：<b>都能自查</b>（填完通读一遍验接缝）。这在 Part B 四种变体里是独一份的红利，做完务必花一分钟通读——标题匹配和观点匹配想验都没得验。</span>
+        </div>
+        <div class="box green">
+          <span class="bt">⏱ 建议用时</span>
+          <b>排序题 8–10 min</b>：读七段首末句 3 min ＋ 定首段与末格 1 min ＋ 串链 3 min ＋ 通读验证 2 min。
+          <b>本篇 545 词是四种变体里最长的一篇，但真正要精读的不到 60 词</b>——把时间花在接缝上，不要从头到尾细读。
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">05</span>长难句精析（5 句 · 本篇黄皮书无此栏目，全部原创）</h2>
+
+        <div class="ls" id="s1">
+          <div class="s"><b>s1｜B 段首句</b>　Retail sales of food and drink in Europe’s largest markets are at a standstill, <span class="mk">leaving</span> European grocery retailers <span class="mk2">hungry for opportunities to grow</span>.</div>
+          <div class="an">
+            <div>▸ <b>主干</b>：Retail sales … <b>are at a standstill</b>（主 ＋ 系表）。</div>
+            <div>▸ <span class="mk">leaving…</span> 是<b>现在分词作结果状语</b>——不是伴随，而是「<b>因此使得</b>」。<b>凡 A, leaving B + 形容词/分词，翻成「A 发生了，于是 B 变成……」。</b></div>
+            <div>▸ <span class="mk2">hungry for opportunities</span> 是形容词短语作 <b>宾语补足语</b>（leave sb + adj.）。</div>
+          </div>
+          <div class="tr">译：欧洲最大市场的食品饮料零售销售陷入停滞，<b>使得</b>欧洲食品杂货零售商渴求增长的机会。</div>
+        </div>
+
+        <div class="ls" id="s2">
+          <div class="s"><b>s2｜F 段②句（三并列 ＋ 形式宾语）</b>　Moreover, average overall margins are higher in wholesale than in retail<span class="mk">;</span> wholesale demand from the food service sector is growing quickly as more Europeans eat out more often<span class="mk">; and</span> changes in the competitive dynamics of this fragmented industry are at last <span class="mk2">making it feasible for wholesalers to consolidate</span>.</div>
+          <div class="an">
+            <div>▸ <b>两个分号 ＋ 一个 and，串起三个并列分句</b>：① 利润率更高 ② 需求快涨 ③ 整合成为可能。<b>加上上一句的销售额，本段一共四条理由。</b></div>
+            <div>▸ <span class="mk2">make <b>it</b> feasible <b>for sb to do</b></span>：<b>it 是形式宾语</b>，真正的宾语是后面的不定式；for wholesalers 是不定式的逻辑主语。</div>
+            <div>▸ <b>分号在英语说明文里等于「同一层级的并列」</b>——见到分号就知道<b>还没换话题</b>，可以放心往下读到句号为止。</div>
+          </div>
+          <div class="tr">译：此外，批发业的平均总利润率高于零售业；随着越来越多欧洲人更频繁外出就餐，来自食品服务渠道的批发需求正快速增长；而且这一碎片化行业竞争态势的变化，终于<b>使</b>批发商的整合<b>成为可能</b>。</div>
+        </div>
+
+        <div class="ls" id="s3">
+          <div class="s"><b>s3｜D 段④句（三项并列被两个连接件串着）</b>　Closer inspection reveals important differences among the biggest national markets, <span class="mk">especially in</span> their customer segments <span class="mk">and</span> wholesale structures, <span class="mk2">as well as</span> the competitive dynamics of individual food and drink categories.</div>
+          <div class="an">
+            <div>▸ <b>差异体现在三处</b>：customer segments ＋ wholesale structures ＋ competitive dynamics。<b>前两项由 and 连，第三项由 as well as 挂上</b>——<span class="mk">换了连接件，容易只数到两项。</span></div>
+            <div>▸ <b>Closer inspection reveals…</b> 是标准的<b>转折装置</b>：上一句刚说 <i>that is how it looks as a whole</i>（整体看是这样），它一出现就翻细节。<b>做题时凡见 closer inspection / on closer examination，后面必是与前文相反的一层。</b></div>
+          </div>
+          <div class="tr">译：进一步考察会发现，各大国市场之间存在重大差异，<b>尤其体现在</b>客户细分与批发结构上，<b>以及</b>单个食品饮料品类的竞争态势上。</div>
+        </div>
+
+        <div class="ls" id="s4">
+          <div class="s"><b>s4｜D 段⑤句（in which 定语从句）</b>　Big retailers must understand these differences <span class="mk2">before</span> they can identify the segments of European wholesaling <span class="mk">in which</span> their particular abilities might unseat smaller but entrenched competitors.</div>
+          <div class="an">
+            <div>▸ <span class="mk">in which</span> 引导定语从句修饰 <b>the segments</b>（＝ in the segments，介词提到关系代词前）。<b>先行词离从句有五个词（of European wholesaling）隔着，别把 Europe 当先行词。</b></div>
+            <div>▸ <span class="mk2">must … before they can …</span>：<b>「必须先 A，才能 B」</b>——这个句型本身就是本段的逻辑：先弄清差异，才谈得上进场。</div>
+            <div>▸ <b>smaller but entrenched</b>：比较级 ＋ 转折形容词并列，「<b>更小、但根基已深</b>」。<span class="mk">这个 but 是全句最容易读丢的一个词，丢了就把对手读成了「又小又弱」，正好读反。</span></div>
+          </div>
+          <div class="tr">译：大型零售商必须先弄清这些差异，<b>才能</b>确定在欧洲批发业的哪些细分领域里，自己的特殊能力可以把<b>规模更小但根基已深</b>的竞争对手挤下去。</div>
+        </div>
+
+        <div class="ls" id="s5">
+          <div class="s"><b>s5｜G 段整段（本篇头号难句）</b>　However, none of these requirements should <span class="mk">deter</span> large retailers <span class="mk3">(and even some large food producers and existing wholesalers)</span> <span class="mk">from</span> trying their hand, <span class="mk2">for</span> those that master the intricacies of wholesaling in Europe stand to reap considerable gains.</div>
+          <div class="an">
+            <div>▸ <b>三个坑叠在一起</b>：① 固定搭配 <span class="mk">deter … from …</span> 被 <span class="mk3">括号里 9 个词</span>撑开；② <span class="mk2">for</span> 在这里是<b>并列连词「因为」</b>（前面有逗号、后接完整句子），<b>不是介词</b>；③ 从句主语 <b>those that master…</b> 与谓语 <b>stand to reap</b> 之间隔了 7 个词。</div>
+            <div>▸ <b>none of … should deter …</b> 是双重否定式的鼓励：「没有一条要求<u>应当</u>阻止……」＝ <b>尽管去试</b>。<span class="mk">把 none 读成「这些要求不重要」就错了——作者承认要求存在，只是说别被它吓退。</span></div>
+            <div>▸ <b>try one’s hand</b> 后省略了 <b>at wholesaling</b>；<b>stand to do ＝ 很可能会</b>（不是「站着做」）。</div>
+          </div>
+          <div class="tr">译：然而，这些要求都不应阻止大型零售商（甚至一些大型食品生产商和现有批发商）一试身手，<b>因为</b>那些掌握了欧洲批发业复杂门道的商家很可能获得可观收益。</div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">06</span>可搬进作文的素材（本篇是「商业 / 经济 / 趋势描述」三个话题的弹药库）</h2>
+        <div class="wb">
+          <div class="wbi"><div class="p">Sales are at a standstill, leaving companies hungry for opportunities to grow.</div><div class="u">销售陷入停滞，使企业渴求增长机会。—— <b>描述行业困境的开篇句</b>，把 sales 换成 enrollment / demand 即可迁移。</div></div>
+          <div class="wbi"><div class="p">Almost all have ignored the big, profitable opportunity in their own backyard.</div><div class="u">几乎所有人都忽视了自家后院里那个巨大而有利可图的机会。—— <b>「灯下黑」的地道说法</b>，可用于「与其舍近求远，不如立足本土 / 珍惜身边资源」。</div></div>
+          <div class="wbi"><div class="p">They could profitably apply their gigantic scale, existing infrastructure, and proven skills.</div><div class="u">它们可以有利可图地运用庞大规模、现有基础设施与久经检验的技能。—— <b>论「发挥既有优势」的三件套排比</b>。</div></div>
+          <div class="wbi"><div class="p">None of these requirements should deter us from trying our hand.</div><div class="u">这些要求都不应阻止我们一试身手。—— <b>论「别被门槛吓退」的万能句</b>，也可换成 <i>Difficulties should not deter young people from…</i></div></div>
+          <div class="wbi"><div class="p">The figures, when added together, mask two opposing trends.</div><div class="u">这些数字加总之后，掩盖了两种相反的趋势。—— <b>图表作文的高分句</b>：总量看不出问题，拆开才见分化。</div></div>
+          <div class="wbi"><div class="p">Consumption in places other than homes rose from 32 percent in 1995 to 35 percent in 2000 and is expected to approach 38 percent by 2005.</div><div class="u">现成的<b>三点式趋势描述</b>（起点 → 中点 → 预测），<b>rise from … to … and be expected to approach …</b> 可直接套进任何图表作文。</div></div>
+          <div class="wbi"><div class="p">As the recession is looming large, people tend to keep a tighter hold on their purse.</div><div class="u">经济衰退逼近，人们把钱包捂得更紧。—— <b>论消费降级 / 理性消费</b>的现成语料。</div></div>
+          <div class="wbi"><div class="p">Changes in the competitive dynamics of this fragmented industry are at last making it feasible to consolidate.</div><div class="u">碎片化行业的竞争态势变化，终于使整合成为可能。—— <b>make it feasible for sb to do</b> 是「使……成为可能」的高级替换。</div></div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">07</span>词汇复盘（点卡片看详情 · 共 <span id="vcount"></span> 张，含 <b>12 处熟词僻义</b>）</h2>
+        <p style="font-size:.8rem;color:var(--muted);margin-bottom:12px">⭐ 本篇熟词僻义的共同规律：<b>考的全是「商业语境里的第二义项」</b>——margin 利润率 · intelligence 情报 · mask 掩盖 · segment 细分市场 · dynamics 态势 · venture 企业 · take hold 确立 · approach 接近某数值 · straight 直接地 · building blocks 构成要素 · backyard 自家地盘 · in the trade 业内。<b>不是生词，是熟词换了行当。</b></p>
+        <div id="vgrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px"></div>
+      </section>
+
+      <footer>2010 英语（一）Part B · 欧洲食品杂货商向批发转型 ｜ 答案 41B 42F 43D 44G 45A（C 多余）· 全文顺序 B—F—D—G—E—A ｜ ✅ Claude 盲做 5/5 ｜ 本页解析为独立盲做后撰写，黄皮书精讲仅作交叉复核</footer>
+    </main>
+
+    <aside>
+      <div id="panel"><div class="hint">&#128070; 点正文里的<b>黄色高亮词</b>，或下方词汇卡，这里出详解<br><br>选中任意英文可弹出「查词」按钮</div></div>
+    </aside>
+  </div>
+</div>
+<button id="yd">&#128269; 有道查词</button>
+
+<script>
+const OPTS = {
+  A:["The first and more important is the consumer’s growing preference for eating out: the consumption of food and drink in places other than homes has risen from about 32 percent of total consumption in 1995 to 35 percent in 2000 and is expected to approach 38 percent by 2005. This development is boosting wholesale demand from the food service segment by 4 to 5 percent a year across Europe, compared with growth in retail demand of 1 to 2 percent. Meanwhile, as the recession is looming large, people are getting anxious. They tend to keep a tighter hold on their purse and consider eating at home a realistic alternative.",
+     "第一个、同时也是更重要的（趋势）是消费者越来越喜欢外出就餐：在家以外的地方，食品饮料消费占总消费的比例已从 1995 年的约 32% 升至 2000 年的 35%，预计到 2005 年将接近 38%。这一趋势正推动整个欧洲食品服务渠道的批发需求每年增长 4%–5%，相比之下零售需求年增长仅 1%–2%。与此同时，随着经济衰退日益逼近，人们变得焦虑不安，往往把钱包捂得更紧，并把在家吃饭视为一个切合实际的选择。",
+     "头：<b>The first and more important is…</b> —— <b>省略了中心词</b>（第一个「什么」？）⟹ 上文必须刚说完「有若干个 X」｜段内 <b>Meanwhile</b> 引出第二个趋势",
+     "⟹ 归位 45（E 之后）· 它把 E 末句的 two opposing trends 一次展开两个"],
+  B:["Retail sales of food and drink in Europe’s largest markets are at a standstill, leaving European grocery retailers hungry for opportunities to grow. Most leading retailers have already tried e-commerce, with limited success, and expansion abroad. But almost all have ignored the big, profitable opportunity in their own backyard: the wholesale food and drink trade, which appears to be just the kind of market retailers need.",
+     "欧洲最大市场的食品饮料零售销售陷入停滞，使得欧洲食品杂货零售商渴求增长机会。多数主要零售商已经尝试过电子商务（收效甚微）和海外扩张。但几乎所有零售商都忽视了自家后院里那个巨大而有利可图的机会：食品饮料批发业——它似乎正是零售商所需要的那种市场。",
+     "头：<b>没有任何路标</b> —— 无回指词、无逻辑连接词、无省略成分（七项里唯一一项）｜尾：抛出观点「批发正是零售商需要的市场」，<b>等着被举证</b>",
+     "⟹ 归位 41（首段）· 由「六项全部出局」的排除法定死"],
+  C:["Will such variations bring about a change in the overall structure of the food and drink market? Definitely not. The functioning of the market is based on flexible trends dominated by potential buyers. In other words, it is up to the buyer, rather than the seller, to decide what to buy. At any rate, this change will ultimately be acclaimed by an ever-growing number of both domestic and international consumers, regardless of how long the current consumer pattern will take hold.",
+     "这些变化会带来食品饮料市场整体结构的改变吗？肯定不会。市场的运转基于由潜在买家主导的灵活趋势。换言之，买什么由买家而不是卖家说了算。无论如何，不管现在的消费模式还会延续多久，这一变化最终都将受到越来越多国内外消费者的欢迎。",
+     "头：<b>such variations</b>（回指某些变化）｜尾：<b>this change</b>（再回指一次）—— <b>全篇词面呼应最多的一项，偏偏是多余项</b>",
+     "⟹ 多余项 · 谈的是「市场结构」与「买卖双方谁说了算」，不是本文的零售商／批发市场"],
+  D:["All in all, this clearly seems to be a market in which big retailers could profitably apply their gigantic scale, existing infrastructure, and proven skills in the management of product ranges, logistics, and marketing intelligence. Retailers that master the intricacies of wholesaling in Europe may well expect to rake in substantial profits thereby. At least, that is how it looks as a whole. Closer inspection reveals important differences among the biggest national markets, especially in their customer segments and wholesale structures, as well as the competitive dynamics of individual food and drink categories. Big retailers must understand these differences before they can identify the segments of European wholesaling in which their particular abilities might unseat smaller but entrenched competitors. New skills and unfamiliar business models are needed too.",
+     "总而言之，这显然是一个大型零售商可以有利可图地施展身手的市场：它们可以运用自己庞大的规模、现有的基础设施，以及在产品系列管理、物流和营销情报方面久经检验的技能。那些掌握了欧洲批发业复杂门道的零售商，很可能因此赚得丰厚利润。至少，整体看上去是这样。进一步考察却会发现，各大国市场之间存在重大差异，尤其是在客户细分与批发结构上，以及单个食品饮料品类的竞争态势上。大型零售商必须先弄清这些差异，才能确定在欧洲批发业的哪些细分领域里，自己的特殊能力可以把规模更小但根基已深的竞争对手挤下去。新技能和陌生的商业模式也同样必需。",
+     "头：<b>All in all</b>（总结词）＋ <b>this…market</b>（回指）⟹ 上文必是一串具体论据｜尾：<b>New skills and unfamiliar business models are needed too</b> —— 抛出「<b>要求</b>」",
+     "⟹ 归位 43 · 承上是总结、启下是「条件/要求」"],
+  E:["Despite variations in detail, wholesale markets in the countries that have been closely examined—France, Germany, Italy and Spain—are made out of the same building blocks. Demand comes mainly from two sources: independent mom-and-pop grocery stores which, unlike large retail chains, are too small to buy straight from producers, and food service operators that cater to consumers when they don’t eat at home. Such food service operators range from snack machines to large institutional catering ventures, but most of these businesses are known in the trade as “horeca”: hotels, restaurants, and cafés. Overall, Europe’s wholesale market for food and drink is growing at the same sluggish pace as the retail market, but the figures, when added together, mask two opposing trends.",
+     "尽管细节上有所不同，被仔细考察过的那些国家——法国、德国、意大利和西班牙——的批发市场却由相同的基本构成要素组成。需求主要来自两个来源：一是独立的夫妻杂货店，与大型零售连锁不同，它们规模太小，无法直接从生产商那里进货；二是食品服务经营商，它们满足消费者不在家就餐时的需求。这类食品服务经营商小到快餐自动售货机，大到大型公共餐饮企业，但业内多把它们统称为「horeca」：酒店、餐馆和咖啡馆。总体上，欧洲食品饮料批发市场的增速与零售市场一样缓慢，但两类数字加在一起，掩盖了两种相反的趋势。",
+     "<b>题目已给定，固定在第 5 位</b>｜头：<b>Despite variations in detail</b>（预示上文提过差异）｜尾：<b>mask two opposing trends</b> —— <b>下一段必须讲「第一个趋势」</b>",
+     "已给定 · 它的尾句是全篇最硬的一处钩子"],
+  F:["For example, wholesale food and drink sales came to $268 billion in France, Germany, Italy, Spain, and the United Kingdom in 2000—more than 40 percent of retail sales. Moreover, average overall margins are higher in wholesale than in retail; wholesale demand from the food service sector is growing quickly as more Europeans eat out more often; and changes in the competitive dynamics of this fragmented industry are at last making it feasible for wholesalers to consolidate.",
+     "例如，2000 年法国、德国、意大利、西班牙和英国的食品饮料批发销售额达 2 680 亿美元——超过零售销售额的 40%。此外，批发业的平均总利润率高于零售业；随着越来越多的欧洲人更频繁地外出就餐，来自食品服务渠道的批发需求正在快速增长；而且，这一碎片化行业竞争态势的变化，终于使批发商的整合成为可能。",
+     "头：<b>For example</b>（例证词）⟹ 上文必是一句<b>待证的论断</b>｜尾：<b>changes</b> in the competitive dynamics —— 预示下文谈「变化 / 局面」",
+     "⟹ 归位 42 · 一段四条数据，全部在给 B 的末句作证"],
+  G:["However, none of these requirements should deter large retailers (and even some large food producers and existing wholesalers) from trying their hand, for those that master the intricacies of wholesaling in Europe stand to reap considerable gains.",
+     "然而，这些要求都不应阻止大型零售商（甚至一些大型食品生产商和现有批发商）一试身手，因为那些掌握了欧洲批发业复杂门道的商家很可能获得可观收益。",
+     "头：<b>However</b>（转折）＋ <b>these requirements</b>（回指「这些要求」）⟹ 上文末尾必须刚列出若干「要求」｜尾：收口句",
+     "⟹ 归位 44 · 与 D 之间有「原词整串复现 ＋ 近义替换」双重接缝"]
+};
+const EXTRA = ["C"];
+
+const V = {
+  standstill:{w:"at a standstill",ipa:"/ˈstændstɪl/",pos:"n.",tags:["poly","phrase","write"],cn:"停滞不前，陷入僵局",en:"a situation in which all activity or movement has stopped",ex:"Retail sales of food and drink in Europe’s largest markets are at a standstill",mem:"stand（站住）＋ still（不动）＝ 站着不动 ⟹ <b>停滞</b>。<b>本文第一句就是它，一个词定下全篇的出发点：零售不动了，所以要找新出路。</b>写作里是「增长停滞」的地道说法：<i>Negotiations came to a standstill.</i>",syn:"come to a halt / stagnate / be at a deadlock",conf:"standstill（完全不动）vs. slowdown（放慢但仍在动）vs. sluggish（迟缓的，本文 E 段用它形容增速）"},
+  hungryfor:{w:"hungry for",ipa:"/ˈhʌŋɡri/",pos:"adj.",tags:["phrase","write"],cn:"渴求，急切想要",en:"having a strong desire for something",ex:"leaving European grocery retailers hungry for opportunities to grow",mem:"字面「饿」引申为<b>强烈渴求</b>；本文与 food/drink 同现，是作者的<b>双关</b>（做食品的人「饿」了）。写作可用：<i>young graduates hungry for opportunities</i>。",syn:"eager for / desperate for / craving",conf:"hungry for（渴求，褒贬中性）vs. greedy for（贪求，贬义）"},
+  backyard:{w:"in one’s own backyard",ipa:"/ˈbækjɑːd/",pos:"n.",tags:["poly","phrase"],cn:"（比喻）自家门口，眼皮底下的地盘",en:"in or near the place where you live or operate",ex:"almost all have ignored the big, profitable opportunity in their own backyard",mem:"后院＝<b>离自己最近却最容易被忽视的地方</b>，正是「灯下黑」。<b>这个比喻是 B 段末句的情绪重心：机会不在海外、不在电商，就在脚边。</b>",syn:"on one’s doorstep / close to home",conf:"in one’s backyard（近在咫尺）vs. NIMBY（not in my backyard 邻避效应，指嫌恶设施别建在我家附近）"},
+  wholesale:{w:"wholesale",ipa:"/ˈhəʊlseɪl/",pos:"n./adj.",tags:["core"],cn:"批发（业）；批发的",en:"the business of selling goods in large quantities to shops",ex:"the wholesale food and drink trade",mem:"whole（整批）＋ sale ⟹ <b>整批地卖</b>＝批发。<b>本文的关键词，全篇出现十余次，与 retail 构成唯一的一对轴</b>。另有形容词义「大规模的」：<i>wholesale changes</i> 全面变革。",syn:"bulk selling / distribution / trade",conf:"wholesale（批发，卖给店家）vs. retail（零售，卖给消费者）—— <b>本篇所有数字都要先分清这两个口径</b>"},
+  margin:{w:"margin",ipa:"/ˈmɑːdʒɪn/",pos:"n.",tags:["poly","core"],cn:"利润率，利润空间",en:"the difference between the cost of producing something and the price it is sold for",ex:"average overall margins are higher in wholesale than in retail",mem:"熟义是「页边空白 / 边缘」，<b>商业语境里一律读作「利润率」</b>。<b>F 段四条理由中的第二条就是它</b>。另有 by a narrow margin（以微弱优势）。",syn:"profit margin / mark-up / return",conf:"margin（利润率，比例）vs. profit（利润，绝对额）vs. revenue（收入）—— 三者是三个层次，选项里最爱互换"},
+  fragmented:{w:"fragmented",ipa:"/frægˈmentɪd/",pos:"adj.",tags:["core","write"],cn:"分散的，碎片化的",en:"broken into many separate small parts",ex:"changes in the competitive dynamics of this fragmented industry",mem:"fragment（碎片）＋ ed。<b>行业「碎片化」＝ 没有寡头、玩家众多 ⟹ 正因为碎，才有整合（consolidate）的空间</b>——F 段这两个词是一对因果。",syn:"scattered / splintered / dispersed",conf:"fragmented（碎片化的，中性描述结构）vs. divided（分裂的，常含对立）"},
+  consolidate:{w:"consolidate",ipa:"/kənˈsɒlɪdeɪt/",pos:"v.",tags:["core","write"],cn:"整合，合并；巩固",en:"to combine several companies into one; to make something stronger",ex:"making it feasible for wholesalers to consolidate",mem:"con-（一起）＋ solid（坚实）⟹ 合成一个更坚实的整体。<b>商业＝并购整合；抽象＝巩固（consolidate one’s position 巩固地位）</b>，写作两义都能用。",syn:"merge / integrate / strengthen",conf:"consolidate（合并成一体）vs. cooperate（合作，仍是两家）vs. expand（扩张，不涉及合并）"},
+  feasible:{w:"feasible",ipa:"/ˈfiːzəbl/",pos:"adj.",tags:["core","write"],cn:"可行的，办得到的",en:"possible to do easily or conveniently",ex:"are at last making it feasible for wholesalers to consolidate",mem:"记搭配 <b>make it feasible for sb to do</b>（形式宾语 it）—— 写作里是「使……成为可能」的高级替换。",syn:"viable / practicable / workable",conf:"feasible（可操作，讲可行性）vs. possible（有可能，讲概率）vs. plausible（听上去可信，讲说服力）"},
+  dynamics:{w:"dynamics",ipa:"/daɪˈnæmɪks/",pos:"n.",tags:["poly","core"],cn:"（力量对比的）态势、格局、动态",en:"the way in which people or things behave and react to each other",ex:"the competitive dynamics of individual food and drink categories",mem:"熟义「动力学」。<b>competitive dynamics ＝ 竞争格局</b>；同族 group dynamics 群体互动。<b>本文出现两次（F 段与 D 段），是把 F 与 D 缝在一起的复现词之一。</b>",syn:"landscape / interplay / balance of forces",conf:"dynamics（态势，名词复数）vs. dynamic（adj. 有活力的；n. 一股力量）"},
+  allinall:{w:"all in all",ipa:"/ˌɔːl ɪn ˈɔːl/",pos:"phr.",tags:["phrase","write"],cn:"总而言之",en:"considering everything",ex:"All in all, this clearly seems to be a market in which big retailers could…",mem:"<b>排序题里它不是「修辞」，是路标</b>：凡以 All in all / In short / To sum up 开头的段落，<b>上一段必然是一串具体论据</b>。写作里可替换 in conclusion。",syn:"in short / on the whole / to sum up",conf:"all in all（总结全部）vs. after all（毕竟，用于补充理由）vs. above all（最重要的是）—— <b>三个 all 短语意思完全不同，最爱在完形里互换</b>"},
+  gigantic:{w:"gigantic",ipa:"/dʒaɪˈɡæntɪk/",pos:"adj.",tags:["core","write"],cn:"庞大的，巨大的",en:"extremely large",ex:"big retailers could profitably apply their gigantic scale",mem:"giant（巨人）＋ -ic。<b>gigantic scale ＝ 规模优势</b>，与 existing infrastructure、proven skills 并列成「大企业的三件武器」，写作论「规模效应」直接搬。",syn:"enormous / colossal / immense",conf:"gigantic（体量巨大）vs. significant（重要的，不谈体量）"},
+  infrastructure:{w:"infrastructure",ipa:"/ˈɪnfrəstrʌktʃə/",pos:"n.",tags:["core","write"],cn:"基础设施（此处指仓储、配送等既有体系）",en:"the basic systems and structures that a company or country needs to work properly",ex:"their gigantic scale, existing infrastructure, and proven skills",mem:"infra-（下面）＋ structure ⟹ <b>底层结构</b>。企业语境＝已建成的仓储物流网络；国家语境＝路桥水电。",syn:"facilities / networks / backbone",conf:"infrastructure（体系、设施）vs. structure（结构）vs. institution（制度、机构）"},
+  proven:{w:"proven",ipa:"/ˈpruːvn/",pos:"adj.",tags:["core","write"],cn:"经过检验的，行之有效的",en:"tested and shown to be true or effective",ex:"proven skills in the management of product ranges, logistics, and marketing intelligence",mem:"prove 的过去分词作定语。<b>proven skills / a proven track record（过往业绩）</b>是履历与议论文的高频搭配。",syn:"tried and tested / established / demonstrated",conf:"proven（已被证明有效）vs. promising（有前景但未验证）—— 一个看过去，一个看将来"},
+  intelligence:{w:"marketing intelligence",ipa:"/ɪnˈtelɪdʒəns/",pos:"n.",tags:["poly"],cn:"营销情报（对市场信息的收集与分析）",en:"information collected about a market and competitors",ex:"proven skills in the management of product ranges, logistics, and marketing intelligence",mem:"⚠️ <b>此处不是「智力」，是「情报」</b>（同 intelligence agency 情报机构）。<b>与 product ranges、logistics 并列，三项都是「运营能力」，一望即知不可能是智力。</b>",syn:"market research / business insight / data analytics",conf:"intelligence（情报／智力，靠搭配区分）vs. information（一般信息，无「经分析」之义）"},
+  intricacies:{w:"intricacies",ipa:"/ˈɪntrɪkəsiz/",pos:"n.",tags:["core"],cn:"错综复杂之处，门道",en:"the complicated details of something",ex:"Retailers that master the intricacies of wholesaling in Europe",mem:"intricate（错综复杂的）的名词。<b>master the intricacies of X ＝ 摸透 X 的门道</b>。<b>这个整串短语在 D、G 两段原样复现，是本篇最硬的一条接缝证据。</b>",syn:"complexities / subtleties / ins and outs",conf:"intricacies（复杂细节，中性）vs. obstacles（障碍，含负面）"},
+  rakein:{w:"rake in",ipa:"/reɪk/",pos:"v.",tags:["phrase","poly"],cn:"大量赚取（钱）",en:"to earn a lot of money",ex:"may well expect to rake in substantial profits thereby",mem:"rake 本义「耙子／用耙子搂」⟹ <b>像搂树叶一样把钱大把搂进来</b>，口语色彩浓、画面感强。<b>它与 G 段的 reap considerable gains 是一对近义替换，正是 D→G 相邻的第二重证据。</b>",syn:"reap / haul in / pocket",conf:"rake in（大量赚取，非正式）vs. earn（中性）vs. profit from（从……获利）"},
+  thereby:{w:"thereby",ipa:"/ˌðeəˈbaɪ/",pos:"adv.",tags:["write"],cn:"由此，因此",en:"as a result of the action just mentioned",ex:"may well expect to rake in substantial profits thereby",mem:"there（那件事）＋ by（凭借）＝ <b>凭借前面那件事</b>。写作里常接分词：<i>…, thereby reducing costs</i>，比 so 正式。",syn:"thus / hence / as a result",conf:"thereby（因此，指前述行为的结果）vs. therefore（因此，指逻辑推论）"},
+  inspection:{w:"closer inspection",ipa:"/ɪnˈspekʃn/",pos:"n.",tags:["phrase","write"],cn:"进一步细看，仔细考察",en:"a careful examination of something",ex:"At least, that is how it looks as a whole. Closer inspection reveals important differences…",mem:"<b>On/Closer inspection ＝ 「细看之下」，是英语文章标准的<u>转折装置</u></b>：前面给整体印象，它一出现就要翻出细节里的问题。<b>D 段正是靠它从「一片大好」拐到「差异重重」。</b>",syn:"on closer examination / a second look",conf:"inspection（细看、检查）vs. inspiration（灵感）—— 拼写近，别看串"},
+  segment:{w:"segment",ipa:"/ˈseɡmənt/",pos:"n.",tags:["poly","core"],cn:"细分市场，（行业的）板块、环节",en:"a part of a market or an industry",ex:"identify the segments of European wholesaling in which their particular abilities might unseat…",mem:"熟义「一段、一块」（橘子的一瓣）。<b>商业语境＝细分市场</b>；本文出现三次（food service segment / customer segments / segments of European wholesaling）。",syn:"sector / niche / category",conf:"segment（按客户或品类切出的一块）vs. sector（更大的行业门类）vs. share（份额，是比例不是块）"},
+  unseat:{w:"unseat",ipa:"/ˌʌnˈsiːt/",pos:"v.",tags:["core"],cn:"把……挤下位，取代",en:"to remove someone from a position of power",ex:"their particular abilities might unseat smaller but entrenched competitors",mem:"un-（去掉）＋ seat（座位）⟹ <b>把人从位子上掀下来</b>；原用于选举（unseat the incumbent 击败在任者），商业里指抢占对手地位。",syn:"oust / displace / dethrone",conf:"unseat（把在位者拉下来，强调对手原本坐得稳）vs. defeat（击败，中性）"},
+  entrenched:{w:"entrenched",ipa:"/ɪnˈtrentʃt/",pos:"adj.",tags:["core","write"],cn:"根深蒂固的，地位牢固的",en:"firmly established and difficult to change",ex:"smaller but entrenched competitors",mem:"trench（战壕）⟹ <b>挖好战壕蹲着，不易赶走</b>。<b>smaller but entrenched 是个精彩的对照：小，却难撼动。</b>写作：<i>entrenched prejudice</i> 根深蒂固的偏见。",syn:"deep-rooted / well-established / ingrained",conf:"entrenched（牢固到难以改变，多含负面或中性）vs. dominant（占主导，强调份额大）"},
+  deter:{w:"deter sb from doing",ipa:"/dɪˈtɜː/",pos:"v.",tags:["core","phrase","write"],cn:"阻止某人做某事，使打消念头",en:"to make someone decide not to do something",ex:"none of these requirements should deter large retailers … from trying their hand",mem:"de-（离开）＋ ter（吓）⟹ <b>吓退</b>。<b>固定搭配 deter A from doing B，本句括号里塞了 19 个词把 deter 与 from 撑开——考的就是你能不能把它接回去。</b>",syn:"discourage / dissuade / put sb off",conf:"deter sb from doing（阻止去做）vs. detain（拘留）vs. deteriorate（恶化）—— 三个 de- 词形近义远"},
+  tryhand:{w:"try one’s hand",ipa:"/traɪ/",pos:"phr.",tags:["phrase","write"],cn:"（初次）尝试一下，试身手",en:"to attempt an activity for the first time",ex:"should deter large retailers … from trying their hand",mem:"字面「试手」。<b>本句里它省略了 at wholesaling</b>（完整式 try one’s hand at sth），<b>省略后更要靠上下文补出「试什么」——排序题里这正是回指的一部分。</b>",syn:"have a go / give it a try / venture into",conf:"try one’s hand（首次尝试）vs. try one’s best（尽力）—— 只差一个词，意思完全不同"},
+  reap:{w:"reap",ipa:"/riːp/",pos:"v.",tags:["core","write"],cn:"收获，获得（收益）",en:"to obtain something as a result of your own actions",ex:"stand to reap considerable gains",mem:"本义「收割庄稼」⟹ <b>reap the benefits/rewards/gains 收获回报</b>，是写作里替换 get 的高分动词。谚：<i>As you sow, so shall you reap.</i>",syn:"harvest / gain / obtain",conf:"reap（收获成果，褒义）vs. rake in（大把捞钱，口语）—— <b>本文这一对是 D→G 的近义替换证据</b>"},
+  standto:{w:"stand to do",ipa:"/stænd/",pos:"phr.",tags:["phrase","poly"],cn:"很可能会（得到或失去）",en:"to be likely to gain or lose something",ex:"those that master the intricacies … stand to reap considerable gains",mem:"⚠️ <b>不是「站着做某事」</b>。固定用法 <b>stand to gain / stand to lose</b>（很可能获益／受损），语气比 will 弱、比 may 强。",syn:"be likely to / be in line to",conf:"stand to do（很可能）vs. stand for（代表）vs. stand by（支持／待命）"},
+  variation:{w:"variation",ipa:"/ˌveəriˈeɪʃn/",pos:"n.",tags:["core"],cn:"差异，变化（形式）",en:"a difference in amount or level between similar things",ex:"Despite variations in detail, wholesale markets … are made out of the same building blocks",mem:"vary（变化）的名词。<b>本词是全篇最重要的「诱饵」：多余项 C 的段首 such variations 就是靠它假装能接在 E 之后。</b>记 <i>Despite variations in detail</i>（尽管细节各异）这一让步句式。",syn:"difference / divergence / discrepancy",conf:"variation（同类事物之间的差别）vs. variety（种类多样）vs. variable（变量）"},
+  buildingblocks:{w:"building blocks",ipa:"/ˈbɪldɪŋ blɒks/",pos:"n.",tags:["poly","write"],cn:"基本构成要素（比喻）",en:"the basic parts that something is made of",ex:"are made out of the same building blocks",mem:"字面「积木」⟹ <b>比喻「基本构件」</b>。<b>E 段用它一句话概括「各国市场长得一样」，随后才展开两个 sources</b>。写作：<i>Trust is the building block of cooperation.</i>",syn:"basic components / fundamentals / elements",conf:"building blocks（构成要素）vs. cornerstone（基石，强调最关键的那一块）"},
+  momandpop:{w:"mom-and-pop store",ipa:"/ˌmɒm ən ˈpɒp/",pos:"n.",tags:["phrase"],cn:"夫妻店，小本经营的家庭店铺",en:"a small family-owned shop",ex:"independent mom-and-pop grocery stores which … are too small to buy straight from producers",mem:"妈妈和爸爸开的店 ⟹ <b>小到只有一家人</b>。<b>它在本文的作用是给出批发需求的第一个来源：小店进不了大货，只能找批发商。</b>",syn:"family-run shop / corner shop",conf:"mom-and-pop store（个体小店）vs. retail chain（连锁零售，本文用 unlike large retail chains 明确对照）"},
+  straight:{w:"straight from",ipa:"/streɪt/",pos:"adv.",tags:["poly"],cn:"直接（从……）",en:"directly, without anything in between",ex:"are too small to buy straight from producers",mem:"⚠️ 此处 straight 是<b>副词「直接地」</b>（＝directly），不是形容词「直的」。<b>这一个小词撑起整条商业逻辑：小店不能<u>直接</u>向生产商进货 ⟹ 批发商才有存在的必要。</b>",syn:"directly / firsthand",conf:"straight from（直接从）vs. straightforward（简单明了的）vs. straightaway（立刻）"},
+  caterto:{w:"cater to",ipa:"/ˈkeɪtə/",pos:"v.",tags:["phrase","write"],cn:"迎合，满足（某类人的需求）",en:"to provide what is wanted by a particular group",ex:"food service operators that cater to consumers when they don’t eat at home",mem:"cater 本义「供应饮食」（catering 餐饮业）⟹ 引申为<b>满足某类需求</b>。写作：<i>courses catering to working adults</i>。",syn:"serve / meet the needs of / appeal to",conf:"cater to（迎合，可含贬义「一味迎合」）vs. cater for（英式，为……提供服务，中性）"},
+  rangefrom:{w:"range from A to B",ipa:"/reɪndʒ/",pos:"v.",tags:["phrase","write"],cn:"从 A 到 B 不等，涵盖……范围",en:"to vary between two limits",ex:"Such food service operators range from snack machines to large institutional catering ventures",mem:"<b>写作里描述「跨度」的万能句式</b>：<i>The applicants range from fresh graduates to senior engineers.</i> <b>本句用它一笔画出食品服务商的两端，最小到自动售货机，最大到公共餐饮企业。</b>",syn:"vary from … to … / span",conf:"range from A to B（跨度）vs. range over（涉及范围）vs. arrange（安排）"},
+  venture:{w:"venture",ipa:"/ˈventʃə/",pos:"n./v.",tags:["poly","write"],cn:"（有风险的）企业、事业；冒险去做",en:"a new business activity that involves risk",ex:"large institutional catering ventures",mem:"名词＝企业（joint venture 合资企业）；动词＝冒险涉足（venture into a new market）。<b>本文是名词义「餐饮企业」。</b>",syn:"enterprise / undertaking / business",conf:"venture（含风险的事业）vs. adventure（冒险经历）—— 少一个 ad 意思大不同"},
+  horeca:{w:"horeca",ipa:"/ˈhɒrekə/",pos:"n.",tags:["poly"],cn:"酒店-餐馆-咖啡馆（业内统称）",en:"the trade term for hotels, restaurants and cafés",ex:"most of these businesses are known in the trade as “horeca”: hotels, restaurants, and cafés",mem:"<b>HO</b>tels ＋ <b>RE</b>staurants ＋ <b>CA</b>fés 的首字母缩合。<b>考场上不需要认识它——冒号后面就是解释</b>：<b>凡遇到引号里的行业黑话，答案一定紧跟在冒号或破折号之后。</b>",syn:"the hospitality trade",conf:"注意 <b>in the trade ＝ 在业内</b>（不是「在贸易中」），这是本句第二个熟词僻义"},
+  sluggish:{w:"sluggish",ipa:"/ˈslʌɡɪʃ/",pos:"adj.",tags:["core","write"],cn:"缓慢的，萎靡不振的",en:"moving or growing more slowly than normal",ex:"growing at the same sluggish pace as the retail market",mem:"slug（鼻涕虫）＋ ish ⟹ <b>像鼻涕虫一样慢</b>。<b>经济类文章描述增长乏力的高频词</b>：<i>a sluggish economy / sluggish sales</i>。",syn:"slow / lethargic / stagnant",conf:"sluggish（慢，仍在动）vs. standstill（完全停住，B 段首句用它）—— <b>本文一头一尾各用一个，程度不同</b>"},
+  mask:{w:"mask",ipa:"/mɑːsk/",pos:"v.",tags:["poly","core","write"],cn:"掩盖，遮蔽（真相）",en:"to hide a feeling, smell or fact",ex:"the figures, when added together, mask two opposing trends",mem:"⚠️ 名词「面具」是熟义，<b>此处是动词「掩盖」</b>。<b>本词是全篇最关键的动词：它宣布「总数没问题」是假象，从而逼出下一段的两个相反趋势——45 题的钩子就挂在这句上。</b>写作：<i>Averages often mask huge disparities.</i>",syn:"conceal / disguise / obscure",conf:"mask（掩盖，使人看不见）vs. reveal（揭示）—— <b>选项里最常把这一对互换</b>；另见 D 段的 Closer inspection <b>reveals</b>，两处正好对照"},
+  opposing:{w:"opposing trends",ipa:"/əˈpəʊzɪŋ/",pos:"adj.",tags:["core"],cn:"相反的、对立的趋势",en:"trends that move in contrary directions",ex:"the figures, when added together, mask two opposing trends",mem:"oppose（反对）的现在分词作定语。<b>「two opposing trends」这五个字是本篇最贵的一处线索</b>：它要求下一段必须<b>逐个数出这两个趋势</b>，于是 A 段的 <i>The first and more important…</i> 只能紧跟其后。",syn:"contrary / conflicting / contrasting",conf:"opposing（方向相反）vs. opposite（位置或性质相对）vs. opposed to（反对某事）"},
+  preference:{w:"a growing preference for",ipa:"/ˈprefrəns/",pos:"n.",tags:["phrase","write"],cn:"越来越偏好……",en:"an increasing tendency to like one thing more than another",ex:"the consumer’s growing preference for eating out",mem:"<b>图表作文描述趋势的现成句式</b>：<i>a growing preference for online shopping</i>。注意搭配是 <b>preference for</b>（介词 for），不是 to。",syn:"a growing tendency to / an increasing inclination toward",conf:"preference for（偏好）vs. prefer A to B（动词搭配用 to）—— 名词与动词的介词不一样，最爱考"},
+  approach:{w:"approach",ipa:"/əˈprəʊtʃ/",pos:"v.",tags:["poly","write"],cn:"接近（某个数值）",en:"to come close to a particular level or amount",ex:"is expected to approach 38 percent by 2005",mem:"熟义是名词「方法」与动词「靠近」。<b>数据句里 approach ＝ 逼近某个数字（尚未达到）</b>，图表作文可直接用：<i>The figure approached 40 percent in 2005.</i>",syn:"near / come close to / verge on",conf:"approach 38 percent（接近 38%，未到）vs. reach 38 percent（达到）—— <b>一字之差，图表题就错</b>"},
+  boost:{w:"boost",ipa:"/buːst/",pos:"v./n.",tags:["core","write"],cn:"推动，提高",en:"to increase or improve something",ex:"This development is boosting wholesale demand from the food service segment by 4 to 5 percent a year",mem:"<b>boost … by ＋ 百分数 ＝ 使……提高了多少</b>（by 表增量），写作里替换 increase。名词：<i>give a boost to the economy</i>。",syn:"lift / spur / drive up",conf:"boost by 5%（提高了 5 个百分点／幅度）vs. boost to 5%（提高到 5%）—— <b>by 与 to 的区别是数据题的送分点</b>"},
+  loomlarge:{w:"loom large",ipa:"/luːm/",pos:"v.",tags:["phrase","poly"],cn:"（威胁）逼近，显得突出而令人不安",en:"to seem important or threatening and about to happen",ex:"as the recession is looming large, people are getting anxious",mem:"loom 本义「隐约显现（庞大身影）」⟹ <b>坏事在前方越逼越近</b>，几乎只搭配负面事物（recession / deadline / crisis）。",syn:"be imminent / hang over / draw near",conf:"loom large（威胁逼近）vs. bloom（开花）—— 拼写近，语义相反"},
+  purse:{w:"keep a tighter hold on one’s purse",ipa:"/pɜːs/",pos:"phr.",tags:["phrase","write"],cn:"把钱包捂得更紧，节制开支",en:"to spend less money than before",ex:"They tend to keep a tighter hold on their purse",mem:"钱包攥紧 ⟹ <b>削减开支</b>。同族 <b>purse strings</b>（钱袋口）：<i>tighten the purse strings</i> 收紧开支，是经济下行类作文的现成表达。",syn:"tighten one’s belt / cut back on spending",conf:"keep a hold on one’s purse（省钱）vs. hold the purse strings（掌握财权）—— 一个是省，一个是管"},
+  alternative:{w:"a realistic alternative",ipa:"/ɔːlˈtɜːnətɪv/",pos:"n.",tags:["write"],cn:"一个切合实际的替代选择",en:"a choice that is practical and possible",ex:"consider eating at home a realistic alternative",mem:"<b>consider ＋ 宾语 ＋ 名词</b>（省略 as）是本句的结构。<b>alternative 强调「二选一里的另一个」</b>，写作里比 choice 更精确：<i>Public transport is a realistic alternative to driving.</i>",syn:"option / substitute / a viable choice",conf:"alternative（替代方案，含「代替原方案」之义）vs. option（一般选项）"},
+  acclaim:{w:"acclaim",ipa:"/əˈkleɪm/",pos:"v./n.",tags:["core"],cn:"称赞，喝彩",en:"to praise someone or something publicly",ex:"this change will ultimately be acclaimed by an ever-growing number of … consumers",mem:"ac-（朝向）＋ claim（喊）⟹ <b>朝着某人欢呼</b>。<b>它出现在多余项 C 里：C 先说「肯定不会有变化」，末句却说「这一变化终将受到欢迎」——前否后肯，段内自相矛盾，这是判它出局的第二条理由。</b>",syn:"applaud / hail / praise",conf:"acclaim（公开称赞）vs. exclaim（惊呼）vs. proclaim（宣布）—— 三个 -claim 词形近"},
+  takehold:{w:"take hold",ipa:"/həʊld/",pos:"phr.",tags:["poly","phrase"],cn:"确立下来，站稳脚跟，开始生效",en:"to become established and strong",ex:"regardless of how long the current consumer pattern will take hold",mem:"⚠️ <b>不是「拿住」</b>：主语通常是抽象事物（趋势、观念、习惯），意为<b>「扎下根」</b>。<i>The habit took hold quickly.</i>",syn:"become established / set in / catch on",conf:"take hold（扎根、确立）vs. hold on（抓紧／等一下）vs. get hold of（弄到手）"},
+  atanyrate:{w:"at any rate",ipa:"/reɪt/",pos:"phr.",tags:["phrase","poly"],cn:"无论如何；至少",en:"whatever happens; at least",ex:"At any rate, this change will ultimately be acclaimed by…",mem:"⚠️ <b>与「速率」无关</b>。作用有二：① 无论如何（推进结论）；② 至少（缩小范围）。<b>在多余项 C 里它被用来强行拐弯，正是自撰段落常见的「硬转折」痕迹。</b>",syn:"in any case / anyway / at least",conf:"at any rate（无论如何）vs. at the rate of（以……的速度）—— 加不加 the 意思完全不同"},
+  bringabout:{w:"bring about",ipa:"/brɪŋ/",pos:"v.",tags:["phrase","write"],cn:"带来，导致（变化）",en:"to cause something to happen",ex:"Will such variations bring about a change in the overall structure…?",mem:"<b>bring about ＋ change / reform / improvement</b> 是写作里表达「引发变革」的稳妥搭配（比 cause 更书面、比 lead to 更主动）。",syn:"cause / give rise to / result in",conf:"bring about（带来变化）vs. bring up（提出／抚养）vs. bring out（推出／使显现）"}
+};
+
+const lib=document.getElementById('optlib');
+lib.innerHTML=Object.keys(OPTS).map(k=>
+  '<div class="optitem'+(EXTRA.indexOf(k)>=0?' extra':'')+'" id="opt-'+k+'"><span class="lt">'+k+'</span><span>'
+  +'<span class="oen">'+OPTS[k][0]+'</span>'
+  +'<span class="zhx">'+OPTS[k][1]+'</span>'
+  +'<span class="kw">🔑 '+OPTS[k][2]+'</span>'
+  +'<span class="stg">'+OPTS[k][3]+'</span></span></div>').join('');
+
+/* 作答交互：答后就地把空格补全成原文 */
+document.querySelectorAll('.person').forEach(p=>{
+  const ans=p.dataset.ans; if(!ans)return;
+  const chips=p.querySelector('.chips');
+  chips.innerHTML='ABCDEFG'.split('').map(l=>'<button class="ch" data-l="'+l+'">'+l+'</button>').join('');
+  chips.querySelectorAll('.ch').forEach(c=>c.addEventListener('click',()=>{
+    if(p.classList.contains('done'))return;
+    p.classList.add('done');
+    if(c.dataset.l!==ans)c.classList.add('wrong');
+    chips.querySelector('.ch[data-l="'+ans+'"]').classList.add('right');
+    const oi=document.getElementById('opt-'+ans); if(oi)oi.classList.add('used');
+    const slot=p.querySelector('.slot');
+    if(slot){slot.classList.add('filled');slot.innerHTML='<span class="fl">['+ans+']</span>'+OPTS[ans][0];}
+  }));
+});
+
+const panel=document.getElementById('panel');
+const isMobile=()=>window.innerWidth<=900;
+function badge(t){return {core:'<span class="badge b-core">核心词</span>',phrase:'<span class="badge b-phrase">短语</span>',poly:'<span class="badge b-poly">熟词僻义</span>',write:'<span class="badge b-write">写作✍︎</span>'}[t]||''}
+function showCard(k,el){
+  const d=V[k]; if(!d)return;
+  document.querySelectorAll('.tk.active').forEach(e=>e.classList.remove('active'));
+  if(el&&el.classList.contains('tk'))el.classList.add('active');
+  panel.innerHTML='<button class="close" onclick="panel.classList.remove(\'open\')">✕</button>'
+  +'<div class="wcard">'
+  +'<div class="head"><span class="w">'+d.w+'</span><span class="ipa">'+d.ipa+'</span><span class="pos">'+d.pos+'</span>'+d.tags.map(badge).join('')+'</div>'
+  +'<div class="cn">'+d.cn+'</div><div class="en-def">'+d.en+'</div>'
+  +'<div class="row r-ex"><b>原文语境</b>“…'+d.ex+'…”</div>'
+  +'<div class="row r-mem"><b>怎么记</b>'+d.mem+'</div>'
+  +'<div class="row r-syn"><b>同类词</b>'+d.syn+'</div>'
+  +'<div class="row r-conf"><b>易混辨析</b>'+d.conf+'</div>'
+  +'</div>';
+  if(isMobile())panel.classList.add('open');
+}
+document.addEventListener('click',function(e){
+  const t=e.target.closest?e.target.closest('.tk'):null;
+  if(t){e.stopPropagation();showCard(t.dataset.w,t);}
+});
+function tz(btn){btn.closest('.person,.para').classList.toggle('showzh')}
+let allOn=false;
+function toggleAll(){allOn=!allOn;document.querySelectorAll('.person,.para').forEach(p=>p.classList.toggle('showzh',allOn))}
+
+const vg=document.getElementById('vgrid');
+Object.keys(V).forEach(k=>{
+  const d=V[k];
+  const div=document.createElement('div');div.className='vitem';
+  div.style.cssText='border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer';
+  div.innerHTML='<span style="float:right">'+d.tags.map(badge).join('')+'</span>'
+   +'<div style="font-family:var(--serif);font-weight:bold">'+d.w+'</div>'
+   +'<div style="font-size:.85rem;color:var(--muted)">'+d.cn+'</div>';
+  div.addEventListener('click',()=>{showCard(k,null);if(!isMobile())window.scrollTo({top:0,behavior:'smooth'})});
+  vg.appendChild(div);
+});
+document.getElementById('vcount').textContent=Object.keys(V).length;
+
+const yd=document.getElementById('yd');let sel='';
+document.addEventListener('selectionchange',()=>{
+  const s=window.getSelection();const t=s?s.toString().trim():'';
+  if(t&&/^[a-zA-Z' -]{2,40}$/.test(t)){
+    sel=t;
+    try{const r=s.getRangeAt(0).getBoundingClientRect();
+      yd.style.left=Math.min(r.left,window.innerWidth-110)+'px';
+      yd.style.top=(r.bottom+8)+'px';yd.style.display='block';}catch(e){}
+  }else{yd.style.display='none'}
+});
+yd.addEventListener('click',()=>{window.open('https://dict.youdao.com/result?word='+encodeURIComponent(sel)+'&lang=en');yd.style.display='none'});
+document.addEventListener('click',e=>{if(e.target!==yd&&!window.getSelection().toString())yd.style.display='none'});
+</script>
+
+<script src="_fault_attr.js"></script>
+</body>
+</html>

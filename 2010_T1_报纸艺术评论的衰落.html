@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2010 英一 Text 1 · 报纸艺术评论的衰落：四个特征词，考的却是它们各自贴在谁身上</title>
+<style>
+  :root{
+    --bg:#faf9f6; --card:#ffffff; --ink:#2b2b2b; --muted:#8a8578;
+    --accent:#8b5e34; --accent-soft:#f3e9dd; --line:#e8e3d8;
+    --hl:#fdf3d8; --hl-border:#e0b84d;
+    --green:#3e7a4e; --green-soft:#e8f2ea;
+    --red:#b04a3a; --red-soft:#f9e9e6;
+    --blue:#3d6a8a; --blue-soft:#e7eff5;
+    --purple:#6d5a8e; --purple-soft:#eeeaf5;
+    --serif:"Georgia","Songti SC",serif;
+    --sans:-apple-system,"PingFang SC","Helvetica Neue",sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#1c1a17; --card:#26231f; --ink:#e8e4dc; --muted:#9a948a;
+      --accent:#d0a06a; --accent-soft:#3a3127; --line:#3a362f;
+      --hl:#3d3520; --hl-border:#b08c3a;
+      --green:#7fb98d; --green-soft:#26362b;
+      --red:#d98876; --red-soft:#3d2a26;
+      --blue:#8ab3d0; --blue-soft:#26323d;
+      --purple:#a996c8; --purple-soft:#302a3d;
+    }
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;padding-bottom:120px}
+  .wrap{max-width:1100px;margin:0 auto;padding:24px 20px}
+  .back{font-size:.85rem;color:var(--muted);text-decoration:none}
+  .back:hover{color:var(--accent)}
+  header{margin:14px 0 28px}
+  header h1{font-family:var(--serif);font-size:1.7rem;line-height:1.3}
+  header .sub{color:var(--muted);margin-top:6px;font-size:.9rem}
+  .tags{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+  .tag{font-size:.75rem;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);border:1px solid var(--line)}
+  .tag.warn{background:var(--red-soft);color:var(--red);border-color:var(--red)}
+  .tag.ok{background:var(--green-soft);color:var(--green);border-color:var(--green)}
+
+  .layout{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:24px;align-items:start}
+  main{min-width:0}
+  @media (max-width:900px){.layout{grid-template-columns:minmax(0,1fr)}}
+
+  section.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:24px}
+  h2{font-size:1.05rem;letter-spacing:.05em;color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+  h2 .n{font-size:.72rem;background:var(--accent);color:var(--card);border-radius:6px;padding:1px 7px}
+  h3{font-size:.95rem;color:var(--accent);margin:18px 0 10px}
+
+  .para{margin-bottom:22px}
+  .para .en{font-family:var(--serif);font-size:1.06rem;line-height:1.9}
+  .pno{color:var(--muted);font-size:.75rem;user-select:none;margin-right:6px}
+  .tk{background:var(--hl);border-bottom:2px solid var(--hl-border);border-radius:3px;padding:0 2px;cursor:pointer;transition:filter .15s}
+  .tk:hover{filter:brightness(.93)}
+  .tk.active{outline:2px solid var(--hl-border)}
+  .ls{border-bottom:2px dotted var(--blue);cursor:pointer}
+  .para .zh{display:none;margin-top:10px;padding:10px 14px;background:var(--blue-soft);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:.93rem}
+  .para.showzh .zh{display:block}
+  .zbtn{float:right;margin-left:10px;font-size:.72rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:6px;padding:2px 9px;cursor:pointer}
+  .zbtn:hover{color:var(--accent);border-color:var(--accent)}
+  .allbtn{font-size:.78rem;border:1px solid var(--accent);background:none;color:var(--accent);border-radius:8px;padding:4px 12px;cursor:pointer;margin-left:auto}
+
+  aside{position:sticky;top:20px}
+  #panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;min-height:180px}
+  #panel .hint{color:var(--muted);font-size:.88rem;text-align:center;padding:30px 10px}
+  .wcard .head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .wcard .w{font-family:var(--serif);font-size:1.35rem;font-weight:bold}
+  .wcard .ipa{color:var(--muted);font-size:.85rem}
+  .wcard .pos{font-size:.72rem;color:var(--purple);background:var(--purple-soft);padding:1px 8px;border-radius:999px}
+  .wcard .badge{font-size:.7rem;padding:1px 8px;border-radius:999px}
+  .b-core{background:var(--red-soft);color:var(--red)}
+  .b-phrase{background:var(--blue-soft);color:var(--blue)}
+  .b-poly{background:var(--purple-soft);color:var(--purple)}
+  .b-write{background:var(--green-soft);color:var(--green)}
+  .wcard .cn{margin-top:8px;font-size:1rem;font-weight:600}
+  .wcard .en-def{color:var(--muted);font-size:.86rem;font-style:italic;margin-top:2px}
+  .wcard .row{margin-top:10px;font-size:.86rem;padding:8px 10px;border-radius:8px}
+  .wcard .row>b:first-child{font-size:.72rem;display:block;margin-bottom:2px;letter-spacing:.06em}
+  .r-ex{background:var(--hl)} .r-ex b{color:var(--hl-border)}
+  .r-mem{background:var(--green-soft)} .r-mem b{color:var(--green)}
+  .r-syn{background:var(--blue-soft)} .r-syn b{color:var(--blue)}
+  .r-conf{background:var(--red-soft)} .r-conf b{color:var(--red)}
+  #panel .close{display:none}
+  @media (max-width:900px){
+    aside{position:fixed;left:0;right:0;bottom:0;z-index:50;padding:0 8px 8px}
+    #panel{box-shadow:0 -6px 24px rgba(0,0,0,.18);max-height:55vh;overflow-y:auto;display:none}
+    #panel.open{display:block}
+    #panel .close{display:block;float:right;border:none;background:var(--line);border-radius:8px;padding:2px 10px;cursor:pointer;color:var(--ink)}
+  }
+
+  .q{margin-bottom:22px;padding-bottom:18px;border-bottom:1px dashed var(--line)}
+  .q:last-child{border:none;margin-bottom:0;padding-bottom:0}
+  .q .stem{font-weight:600;font-family:var(--serif)}
+  .qt{font-size:.7rem;color:var(--blue);background:var(--blue-soft);border-radius:999px;padding:1px 8px;margin-right:6px;vertical-align:2px}
+  .opts{margin-top:10px;display:grid;gap:8px}
+  .opt{border:1px solid var(--line);border-radius:10px;padding:8px 12px;cursor:pointer;font-size:.93rem;font-family:var(--serif);transition:all .15s}
+  .opt:hover{border-color:var(--accent)}
+  .q.done .opt{cursor:default}
+  .opt.right{background:var(--green-soft);border-color:var(--green)}
+  .opt.wrong{background:var(--red-soft);border-color:var(--red)}
+  .expl{display:none;margin-top:12px;background:var(--accent-soft);border-radius:10px;padding:12px 14px;font-size:.9rem}
+  .q.done .expl{display:block}
+  .expl b{color:var(--accent)}
+  .expl .loc{font-family:var(--serif);font-style:italic;background:var(--hl);padding:1px 4px;border-radius:3px}
+  .fail{background:var(--red-soft);border:1px solid var(--red);border-radius:10px;padding:10px 13px;margin-bottom:10px;font-size:.89rem}
+  .fail b{color:var(--red)}
+  .waver{background:var(--hl);border:1px solid var(--hl-border);border-radius:10px;padding:10px 13px;margin-bottom:10px;font-size:.89rem}
+
+  .sent{margin-bottom:20px}
+  .sent .src{font-family:var(--serif);font-size:1rem;background:var(--blue-soft);padding:12px 14px;border-radius:10px;border-left:3px solid var(--blue)}
+  .sent .anat{margin-top:8px;font-size:.9rem}
+  .sent .anat li{margin:4px 0 4px 18px}
+  .sent .tr{margin-top:8px;font-size:.92rem;color:var(--muted)}
+  .skel{color:var(--red);font-weight:600}
+
+  .filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+  .fbtn{font-size:.8rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:999px;padding:4px 14px;cursor:pointer}
+  .fbtn.on{background:var(--accent);color:var(--card);border-color:var(--accent)}
+  .vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
+  .vitem{border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer;transition:border-color .15s}
+  .vitem:hover{border-color:var(--accent)}
+  .vitem .w{font-family:var(--serif);font-weight:bold}
+  .vitem .cn{font-size:.85rem;color:var(--muted)}
+  .vitem .badges{float:right}
+
+  .wb{display:grid;gap:10px}
+  .wbi{border-left:3px solid var(--green);background:var(--green-soft);border-radius:0 10px 10px 0;padding:10px 14px;font-size:.92rem}
+  .wbi .p{font-family:var(--serif);font-weight:600}
+  .wbi .u{color:var(--muted);font-size:.85rem}
+
+  .flow{display:grid;gap:8px;font-size:.92rem}
+  .flow .fi{border:1px solid var(--line);border-radius:10px;padding:9px 13px}
+  .flow .fi b{color:var(--accent)}
+
+  .ctab{width:100%;border-collapse:collapse;font-size:.86rem;margin-top:8px}
+  .ctab th,.ctab td{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
+  .ctab th{background:var(--accent-soft);color:var(--accent);font-size:.8rem;white-space:nowrap}
+  .ctab code{background:var(--hl);padding:0 3px;border-radius:3px}
+  .tabwrap{overflow-x:auto}
+  .ok{color:var(--green);font-weight:700}
+  .no{color:var(--red);font-weight:700}
+  .tl{display:grid;gap:10px;margin-top:6px}
+  .tli{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:start;border:1px solid var(--line);border-radius:10px;padding:10px 13px}
+  .tli .mark{font-family:var(--serif);font-weight:700;color:var(--accent);background:var(--accent-soft);border-radius:8px;padding:4px 10px;white-space:nowrap;font-size:.85rem}
+
+  .arrow{display:grid;gap:8px;margin-top:8px}
+  .arrow .ai{border:1px solid var(--line);border-radius:10px;padding:10px 13px;font-size:.9rem}
+  .arrow .ai.old{background:var(--red-soft);border-color:var(--red)}
+  .arrow .ai.new{background:var(--green-soft);border-color:var(--green)}
+  .chain{font-family:var(--serif);font-size:.95rem;background:var(--hl);border:1px solid var(--hl-border);border-radius:10px;padding:10px 14px;margin:8px 0;overflow-x:auto}
+
+  #yd{position:fixed;z-index:60;display:none;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:4px 12px;font-size:.8rem;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+  footer{color:var(--muted);font-size:.8rem;text-align:center;margin-top:30px}
+  .att{display:grid;gap:8px;margin-top:10px}
+  .atti{border:1px solid var(--line);border-radius:10px;padding:9px 13px;font-size:.9rem}
+  .atti b{font-family:var(--serif)}
+  .atti.no2{background:var(--red-soft);border-color:var(--red)}
+  .atti.yes{background:var(--green-soft);border-color:var(--green)}
+  .atti,.expl,.wbi,.zh,.fi,.ai,figcaption,p{overflow-wrap:anywhere}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">◀ 返回英语复盘中心</a>
+  <header>
+    <h1>报纸艺术评论的衰落：一段话四个特征词，考的却是它们各自「贴在谁身上」</h1>
+    <div class="sub">2010 年英语（一）真题 · Text 1 · 430 词 · 5 段 · 建议做题 18 min · 话题：文化批评 × 报业变迁 × 一位被遗忘的乐评家（源自《评论》<i>Commentary</i> 2007 年 11 月文章 <i>The Amateur as Critic</i>「业余评论家」）</div>
+    <div class="tags">
+      <span class="tag">正确答案：21B 22A 23D 24A 25B</span><span class="tag">题型：跨段推理 + 事实细节（特征） + 人物观点 + 事实细节（末两段） + 文章标题</span><span class="tag ok">✅ Claude 盲做 5/5 全对（2010 开年第一篇）</span><span class="tag">🆕 套路库 56→60 卡：R57 特征词与载体双查 / R58 引语里的两层态度 / R59 细节题两步切入 / R60 引语打断的 so…that</span><span class="tag">⭐ 熟词僻义 29 处 · 长难句 9 句 · 词卡 43 张 · 作文素材 7 组</span>
+    </div>
+    <div class="atti" style="margin-top:14px;background:var(--blue-soft);border:1px solid var(--blue);border-radius:10px;padding:10px 14px;font-size:.88rem">
+      📖 <b>本页与原卷配合看</b>：原文完整英文在原卷 <b>p3</b>（<code>按年份/2010/…图像保真版.pdf</code> 第 <b>4</b> 页），题目在原卷 <b>p4</b>（PDF 第 <b>5</b> 页），黄皮书精讲在同一 PDF 的 <b>p13–p19</b>（PDF 第 <b>29–35</b> 页）。本页第 01 节<b>逐段给出全部原文 ＋ 全段中译 ＋ 就地批注</b>，不必来回翻书。
+    </div>
+    <div class="atti yes" style="margin-top:10px;font-size:.88rem">
+      ✅ <b>本篇盲做 5/5 全对（21B 22A 23D 24A 25B）——2010 开年第一篇即满分。</b>但满分不等于没东西可拿：<b>本篇二十个选项里，有四个是用一把我此前没写下来过的刀造的。</b><br>
+      🎯 <b>本篇最该带走的一件事：<u>特征词在文中有据，不等于它贴的那个东西也有据。</u></b><br>
+      ▸ <b>22 题四个选项，恰好对应第三段的四个词</b>：<code>free themes</code>←<code>unfocused</code>（❶句）· <code>casual style</code>←<code>stylish</code>（❶句）· <code>elaborate layout</code>←<code>in detail and at length</code>（❷句）· <code>radical viewpoints</code>←<code>a serious business</code>（❸句）。<b>四个特征词全都能在原文找到出处，所以「有没有出处」这条判据在本题上是完全失效的。</b><br>
+      ▸ <b>真正的分界线在后半截名词</b>：C 项 <code>elaborate</code>（精心的、详尽的）确实对得上 <code>in detail and at length</code>，<b>但原文详尽的是「写的内容」，C 却把它贴到了 <code>layout</code>（版面布局）上</b>——原文一个字没提排版。<br>
+      ⟹ <b>判据：选项若长成「形容词 ＋ 名词」，要分两次核——①这个形容词文中有据吗？②它在文中修饰的<u>那个名词</u>，和选项里的名词是同一个东西吗？<u>第二问才是本题的胜负手。</u></b>（⟹ 新卡 <b>R57</b>，完整解剖见第 <a href="#col1" style="color:var(--green);font-weight:700">02+ 节</a>）
+    </div>
+    <div class="atti" style="margin-top:10px;font-size:.88rem;background:var(--red-soft);border-color:var(--red)">
+      ⚠️ <b>第二件事：引语里的态度分两层——说话人自己的态度，和他<u>转述并讥讽</u>的第三方态度。</b><br>
+      纽曼原话：<code>"…that I am tempted to define 'journalism' as 'a term of <b>contempt</b> applied <b>by writers who are not read</b> to writers who are'."</code><br>
+      ▸ 这里的 <b>contempt（轻蔑）是「<u>不被读的作家</u>」对「<u>被读的作家</u>」的轻蔑</b>——是纽曼<b>拿来挖苦别人</b>的一种态度，<b>不是纽曼自己的态度</b>。<br>
+      ▸ <b>23B <code>It is contemptible for writers to be journalists</code>（作家去做记者是可耻的）恰恰把这层挖苦当成了纽曼的主张，正好读反。</b><br>
+      ⟹ <b>判据：引语里出现态度词（contempt / ridiculous / absurd…），先问一句「这个态度是谁发出的、冲谁去的」。凡是说话人<u>引来当靶子</u>的态度，一律不能算作他本人的观点。</b>（⟹ 新卡 <b>R58</b>）<br>
+      🔗 <b>这与 2009 T4 立的 <b>R45「叙述者的动作 ≠ 人物的动作」</b>是同一族的第二把刀</b>：R45 分的是<b>作者 vs 文中人物</b>，R58 分的是<b>同一个人嘴里的「我的态度」vs「我转述的态度」</b>——<b>后者更隐蔽，因为两层话装在同一对引号里。</b>
+    </div>
+    <div class="atti" style="margin-top:10px;font-size:.88rem">
+      🔗 <b>第三件事：这是一篇标准的「今昔对比型说明文」，四道题的干扰项有三道产自同一个动作——把信息在「今」与「昔」之间挪位置。</b><br>
+      ▸ <b>21A</b> <code>has <b>disappeared</b></code>：原文只说 <code>decline</code>（衰落，还在进行），A 把它推到了终点。<b>衰落 ≠ 消亡。</b><br>
+      ▸ <b>21D</b> <code>young readers <b>doubt</b> the suitability</code>：原文②❸句是「<b>今人惊叹于（marvel at）昔日竟认为它适合登在大众日报上</b>」——<b>惊叹</b>被改成了<b>怀疑</b>，一个褒一个贬，正好相反。<br>
+      ▸ <b>25A</b> <code>Newspapers of the Good Old Days</code>：只写了「昔」的辉煌，<b>把全文真正的落点「今之衰落」整个丢掉了</b>。<br>
+      ⟹ <b>今昔对比文的重心永远在「今」（⟹ 已有卡 <b>R23</b>）；本篇再补一条：<u>干扰项最爱做的就是把两端的信息互换，或把「正在衰落」推成「已经消亡」。</u></b>
+    </div>
+  </header>
+
+  <div class="layout">
+    <main>
+      <!-- ========== 全文脉络 ========== -->
+      <section class="card">
+        <h2><span class="n">00</span>读前一分钟 · 全文脉络（做完题再看也行）</h2>
+        <div class="flow">
+          <div class="fi"><b>① 亮结论（一句话主旨）</b>：过去二十五年英文报纸最深远的变化 ＝ <b>艺术报道的「范围」与「严肃性」不可遏止地衰落</b>。<span style="color:var(--muted)">⟹ 主题词 <code>arts coverage</code> 在第一句就钉死了：是<b>艺术评论</b>，不是「报纸」，更不是「新闻业」。25 题的 A 与 C 都死在这里。</span></div>
+          <div class="fi"><b>② 昔·第一层（美国）</b>：四十岁以下的人已难以想象大都市报纸上曾有高质量艺术评论；可 20 世纪最重要的评论文集，大半就是<b>报纸评论</b>结集而成。<span style="color:var(--muted)">⟹ 21 题定位段。</span></div>
+          <div class="fi"><b>③ 昔·第二层（英国，更远）</b>：二战前的英国报纸评论<b>题材不限（unfocused）、文体讲究（stylish）、写得详尽（in detail and at length）、态度严肃（a serious business）</b>；萧伯纳与纽曼是代表，他们把撰稿视为<b>天职（a calling）</b>。<span style="color:var(--muted)">⟹ 22 与 23 题定位段。<b>这一段的四个特征词，就是 22 题的四个选项。</b></span></div>
+          <div class="fi"><b>④ 今·个案（卡达斯的落差）</b>：这些评论家几乎被遗忘。卡达斯生前是英国顶尖乐评家、1967 年受封爵士；如今只剩一本书在印，乐评作品<b>除专业人士外无人知晓</b>。<span style="color:var(--muted)">⟹ 24 题定位段之一。</span></div>
+          <div class="fi"><b>⑤ 今·断根（复兴无望）</b>：新闻品味早已改变，后现代读者<b>不喜欢</b>他那种华丽的维多利亚—爱德华时期散文；而且乐评界的<b>业余传统正在迅速溃退</b>。<span style="color:var(--muted)">⟹ 24 题正解 A 的正源。<b>末段两句给的是「复兴无望」的两条理由：读者变了 ＋ 传统断了。</b></span></div>
+        </div>
+        <div class="atti" style="margin-top:14px">
+          🧭 <b>一句话骨架</b>：<b>「艺术评论在报纸上衰落了（①）→ 昔日美国如此（②）→ 昔日英国更甚（③）→ 以卡达斯为例看落差（④）→ 复兴无望（⑤）」。</b><br>
+          📌 <b>读到第 ④ 段要立刻反应过来：卡达斯不是本文的主角，他是<u>论据</u>。</b>把他当主角，25 题就会去选 D <code>Prominent Critics in Memory</code>。
+        </div>
+      </section>
+
+      <!-- ========== 原文精读 ========== -->
+      <section class="card">
+        <h2><span class="n">01</span>原文精读 · 全文五段 <button class="allbtn" onclick="toggleAll()">全段译文 开/关</button></h2>
+        <p style="font-size:.8rem;color:var(--muted);margin-bottom:14px">🟡 黄色高亮 = 重难点词/短语，点击右侧出卡片 ｜ 蓝色虚线 = 长难句，点击跳到精析 ｜ 每段「译」= 该段完整中译 ｜ 选中任意其他单词浮出「查有道」</p>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p style="font-size:.78rem;color:var(--accent);margin-bottom:6px">① 立主旨段 · 一句话把全文钉死 · ⭐21 题与 25 题共用定位段</p>
+          <p class="en"><span class="pno">⭐⭐全文主旨句</span><span class="ls" onclick="go('s1')">Of all the changes that have taken place in English-language newspapers during the past quarter-century, perhaps the most <span class="tk" data-w="farreaching">far-reaching</span> has been the <span class="tk" data-w="inexorable">inexorable</span> decline in the <span class="tk" data-w="scope">scope</span> and <span class="tk" data-w="seriousness">seriousness</span> of their <span class="tk" data-w="artscoverage">arts coverage</span>.</span></p>
+          <div class="zh"><b>①段全译：</b>在过去二十五年间英文报纸所发生的全部变化中，影响最为深远的或许就是：它们的艺术报道，其范围与严肃程度已呈不可遏止的衰落之势。
+          <div style="margin-top:8px;font-size:.86rem">⭐⭐ <b>这一句同时决定了 25 题的两个必选要素</b>：<b>①论述对象 ＝ <code>arts coverage</code>（艺术报道／评论）；②发生了什么 ＝ <code>inexorable decline</code>（不可遏止的衰落）。</b><b>标题题只要把这两样凑齐，B 项 <code>The Lost Horizon in Newspapers</code>（Horizon 喻「视野／范围」＝ scope，Lost 喻「无法挽回的失去」＝ inexorable decline）就是唯一齐备的一个。</b><br>
+          ⚠️⚠️ <b>25C <code>Mournful Decline of Journalism</code> 就死在第一个要素上</b>：<b>decline 对了，对象却从 arts coverage（艺术报道）放大成了 journalism（整个新闻业）。</b><b>本文通篇没有说新闻业在衰落——衰落的是新闻里的「艺术评论」这一块。</b>（⟹ 已有卡 <b>R39 原词拼接</b>与 <b>R40 标题题三查</b>之「覆盖度」）<br>
+          📌 <b>结构提醒：<code>Of all the changes…, perhaps the most far-reaching has been…</code> 中，<code>the most far-reaching</code> 后省略了 <code>change</code></b>。主句其实是 <b><code>the most far-reaching (change) has been the decline</code></b>——<b>Of 短语是状语前置，不是主语。</b>（详见 <a href="#s1" onclick="go('s1');return false">s1</a>）<br>
+          ⚠️ <b>21A 的产地也在这个词上</b>：原文是 <code>decline</code>（<b>衰落，仍在进行</b>），A 却写 <code>has <b>disappeared</b></code>（已经消失）。<b>「正在衰落」与「已经消亡」隔着整整一个终点，这是本篇最粗的一刀。</b></div></div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p style="font-size:.78rem;color:var(--accent);margin-bottom:6px">② 昔·第一层（美国） · ⭐21 题正源，也是 21D 的产地</p>
+          <p class="en"><span class="pno">❶今人已难以想象</span><span class="ls" onclick="go('s2')">It is difficult <span class="tk" data-w="topoint">to the point of impossibility</span> for the average reader under the age of forty to imagine a time when high-quality arts criticism could be found in most big-city newspapers.</span></p>
+          <p class="en" style="margin-top:10px"><span class="pno">⭐21B 命脉·Yet 转折给出「昔」</span>Yet a considerable number of the most significant collections of criticism published in the 20th century <span class="tk" data-w="consistin">consisted in large part of</span> newspaper reviews.</p>
+          <p class="en" style="margin-top:10px"><span class="pno">⚠️21D 的产地·marvel 不是 doubt</span><span class="ls" onclick="go('s3')">To read such books today is to <span class="tk" data-w="marvelat">marvel at</span> the fact that their <span class="tk" data-w="learned">learned</span> contents were once <span class="tk" data-w="deemed">deemed</span> suitable for publication in <span class="tk" data-w="generalcirc">general-circulation dailies</span>.</span></p>
+          <div class="zh"><b>②段全译：</b>对于四十岁以下的普通读者而言，要想象一个能在大多数大都市报纸上读到高质量艺术评论的年代，是难到近乎不可能的。然而，20 世纪出版的那些影响最为深远的评论文集中，有相当多的一部分主要就是由报纸评论结集而成。如今再读这些文集，会让你惊叹于这样一个事实：它们那些精深的内容，竟然曾经被认为适合刊登在面向大众发行的日报上。
+          <div style="margin-top:8px;font-size:.86rem">⭐⭐ <b>21B 的完整推理链（两段合读才成立）</b>：①段说<b>艺术报道的范围在衰落</b>（今） ＋ ②段说<b>昔日大多数大都市报纸上都能读到高质量艺术评论</b>（昔）＋ <b>20 世纪最重要的评论文集大半由报纸评论构成</b> ⟹ <b>英文报纸过去刊载的艺术评论比现在多。</b>这正是 B 项 <code>used to carry <b>more</b> arts reviews</code>。<br>
+          📌 <b>题干只说「第一、二段表明」，不给方向词——这类题的做法是：先看四个选项的<u>时态标记</u>。</b>本题 <b>A（has disappeared）／B（used to）看的是过去，C（retain）／D（doubt）说的是当下</b>；把四项各自定位回原文，再逐一比对<b>决定正误的那一个词</b>（disappeared / more / retain / doubt）。<br>
+          ⚠️⚠️ <b>21D 的刀口极窄，就在 <code>marvel at</code> 这一个短语上</b>：原文说今天的读者<b>惊叹（marvel at）</b>于「昔日竟认为它适合登日报」——<b>这是带着敬意的感慨</b>；D 却说年轻读者<b>怀疑（doubt）</b>评论文章是否适合登在日报上——<b>把赞叹改成了质疑，方向完全相反。</b><br>
+          ⚠️ <b>21C <code>high-quality newspapers retain a large body of readers</code> 是「碎片拼接」</b>：<code>high-quality</code> 来自②❶句（修饰的是 <b>arts criticism</b>，不是 newspapers），<code>reader</code> 也来自②❶句，两个词各自都在，<b>拼出来的这句话原文却从没说过</b>——而且<b>本文谈的是「艺术评论的质量」，不是「报纸的质量」。</b>（⟹ <b>R39</b>）<br>
+          📌 <b>三个词当场校准</b>：<code>learned</code> 在这里是<b>形容词 /ˈlɜːnɪd/「精深的、有学问的」</b>，不是 learn 的过去式；<code>deemed</code> ＝ <b>被认为</b>；<code>general-circulation dailies</code> ＝ <b>面向大众发行的日报</b>（circulation ＝ 发行量）。</div></div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p style="font-size:.78rem;color:var(--accent);margin-bottom:6px">③ 昔·第二层（英国，更远） · ⭐⭐本篇最重的一段：22 题四个选项 ＋ 23 题全在这里</p>
+          <p class="en"><span class="pno">⭐22A 正源·unfocused 就是 free themes</span><span class="ls" onclick="go('s4')">We are even farther removed from the <span class="tk" data-w="unfocused">unfocused</span> newspaper reviews published in England between the turn of the 20th century and the eve of World War II, at a time when newsprint was <span class="tk" data-w="dirtcheap">dirt-cheap</span> and <span class="tk" data-w="stylish">stylish</span> arts criticism was considered an <span class="tk" data-w="ornament">ornament</span> to the publications in which it appeared.</span></p>
+          <p class="en" style="margin-top:10px"><span class="pno">⚠️22C 的产地·详尽的是「内容」不是「版面」</span>In those <span class="tk" data-w="faroff">far-off</span> days, it was <span class="tk" data-w="takengranted">taken for granted</span> that the critics of major papers would write in detail and <span class="tk" data-w="atlength">at length</span> about the events they covered.</p>
+          <p class="en" style="margin-top:10px"><span class="pno">⚠️22B／22D 的产地·serious 说的是态度</span><span class="ls" onclick="go('s5')"><span class="tk" data-w="theirs">Theirs</span> was a serious business, and even those reviewers who <span class="tk" data-w="worelearning">wore their learning lightly</span>, like George Bernard Shaw and Ernest Newman, could be trusted to <span class="tk" data-w="knowabout">know what they were about</span>.</span></p>
+          <p class="en" style="margin-top:10px"><span class="pno">⭐人物观点第一句</span>These men believed in journalism as a <span class="tk" data-w="calling">calling</span>, and were proud to be published in the daily press.</p>
+          <p class="en" style="margin-top:10px"><span class="pno">⭐⭐23 题命脉·本篇头号难句</span><span class="ls" onclick="go('s6')">"So few authors have brains enough or literary gift enough to <span class="tk" data-w="keependup">keep their own end up</span> in journalism," Newman wrote, "that I am <span class="tk" data-w="tempted">tempted</span> to define 'journalism' as 'a term of <span class="tk" data-w="contempt">contempt</span> applied by writers who are <span class="tk" data-w="notread">not read</span> to writers who are'."</span></p>
+          <div class="zh"><b>③段全译：</b>至于英国在 20 世纪初至二战前夕出版的那些漫无主题的报纸评论，我们就更是与之无缘了。当时新闻用纸价廉如土，而风格独特的艺术评论被看作是对它所在刊物的一种装饰。在那个遥远的年代，各大报的评论家会对他们所报道的重大事件撰写详尽入微的评论，这被视为理所当然。他们从事的是严肃的工作；而即便是那些以深入浅出的方式展现自身学问的评论家，如萧伯纳和欧内斯特·纽曼，人们也相信他们知道自己在做什么。这些人坚信为报刊撰稿是他们的天职，并为自己的文章能够发表在日报上而感到自豪。纽曼写道：「智慧或文学天赋足以胜任撰稿工作的作家如此之少，我都禁不住想要把『报刊撰稿工作』解释成『没读者的作家对有读者的作家的轻蔑之辞』了。」
+          <div style="margin-top:8px;font-size:.86rem">⭐⭐⭐ <b>22 题的全部四个选项，就产自这一段的四个词——先把对应关系摆出来</b>：<br>
+          　　▸ <b>A <code>free themes</code>（主题自由） ← ❶句 <code>unfocused</code>（漫无主题的）</b>：un-（否定前缀）＋ focused（集中的）⟹ <b>评论涵盖的内容包罗万象、不设限</b>。<b>✅ 特征词有据，载体（评论的选题）也对。</b><br>
+          　　▸ <b>B <code>casual style</code>（风格随意） ← ❶句 <code>stylish</code></b>：<b>stylish ＝ 文体讲究、有格调，恰恰是「不随意」；❸句 <code>Theirs was a serious business</code> 更是直接反证。</b><b>❌ 特征词有据，但把它读反了。</b><br>
+          　　▸ <b>C <code>elaborate layout</code>（布局精心） ← ❷句 <code>in detail and at length</code></b>：<b>elaborate（详尽的、精心的）确实对得上，可原文详尽的是<u>评论家写的内容</u>，C 却把它安到了 <code>layout</code>（版面布局）上——全文一个字没提排版。</b><b>❌ 特征词有据，载体错了。⟸ 这就是本篇最该带走的那一刀（R57）。</b><br>
+          　　▸ <b>D <code>radical viewpoints</code>（观点激进） ← ❸句 <code>a serious business</code></b>：<b>serious 说的是<u>工作态度</u>严肃认真，与他们<u>持什么观点</u>无关。</b><b>❌ 特征词有据，维度错了（态度 ⟹ 观点）。</b><br>
+          ⟹ <b>四项全都「在文中找得到出处」，所以本题不能靠「有没有出处」来选；胜负全在<u>特征词修饰的那个东西对不对</u>。</b><br>
+          📌 <b>A 项还有一个内证</b>：①段说衰落的是 <code>the <b>scope</b> and seriousness of their arts coverage</code>——<b>scope（范围）在衰落，反过来正说明昔日「范围广」</b>，与 <code>unfocused</code> 首尾呼应。<b>一个选项能同时被两段支持，基本可以直接定。</b><br>
+          ⚠️⚠️ <b>❺句（纽曼引语）是本篇头号难句，三个坑叠在一起</b>（完整拆解见 <a href="#s6" onclick="go('s6');return false">s6</a>）：<br>
+          　　① <b><code>So…that…</code> 被 <code>Newman wrote</code> 和引号切成了两半</b>——so 在前引号里，that 在后引号里，<b>它们是同一个结构</b>；<br>
+          　　② <b><code>applied <u>by</u> writers who are not read <u>to</u> writers who are</code>：<code>applied … to …</code> 这个搭配被 by 短语整个撑开了</b>，读的时候必须把 <code>applied to writers who are (read)</code> 接回去；<br>
+          　　③ <b>句末 <code>writers who are</code> 后面省略了 <code>read</code></b>（＝ writers who are read，有人读的作家）。<br>
+          ⟹ <b>全句直义：能胜任报刊撰稿的作家太少了，少到我都想把「新闻写作」定义成「<u>没人读的作家</u>扔给<u>有人读的作家</u>的一句骂人话」。</b><br>
+          ⚠️⚠️ <b>23B 就死在这句里的 contempt 上</b>：<b>这份轻蔑是「没读者的作家」发出的，纽曼是<u>引来讥讽的</u>，不是他自己的主张。</b>B 把它当成纽曼的观点，正好读反。（⟹ 新卡 <b>R58</b>）<br>
+          ⚠️ <b>23C <code>Writers are likely to be tempted into journalism</code> 偷的是 <code>I am <b>tempted</b> to define</code></b>：<b>这个 tempted 的主语是纽曼、宾语是「下定义」这个动作</b>，与「作家被新闻业吸引」毫无关系。<b>而且按纽曼的意思，撰稿门槛高、能胜任者寥寥，作家反而可能望而却步。</b>（⟹ <b>R39 原词拼接</b>）<br>
+          ⚠️ <b>23A <code>It is writers' <b>duty</b> to fulfill journalistic goals</code> 动的是❹句</b>：原文是 <code>believed in journalism as a <b>calling</b></code>——<b>calling 是「自己认定的天职」，属于<u>主观意愿</u>；duty 是「客观职责」。</b><b>把「我愿意」改写成「我应该」，是本篇的第四把小刀。</b></div></div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p style="font-size:.78rem;color:var(--accent);margin-bottom:6px">④ 今·个案（卡达斯的落差） · ⭐24 题定位段之一 · 24B／24C 的产地</p>
+          <p class="en"><span class="pno">❶转向「今」</span>Unfortunately, these critics are <span class="tk" data-w="virtually">virtually</span> forgotten.</p>
+          <p class="en" style="margin-top:10px"><span class="pno">⚠️24B 的产地·主谓被从句撑开</span><span class="ls" onclick="go('s7')">Neville Cardus, who wrote for the <i>Manchester Guardian</i> from 1917 until shortly before his death in 1975, is now known <span class="tk" data-w="solely">solely</span> as a writer of essays on the game of cricket.</span></p>
+          <p class="en" style="margin-top:10px"><span class="pno">⭐昔日的荣耀·so…that</span><span class="ls" onclick="go('s8')">During his lifetime, though, he was also one of England's <span class="tk" data-w="foremost">foremost</span> classical-music critics, and a <span class="tk" data-w="stylist">stylist</span> so widely admired that his <i>Autobiography</i> (1947) became a best-seller.</span></p>
+          <p class="en" style="margin-top:10px"><span class="pno">⭐荣耀的顶点</span>He was <span class="tk" data-w="knighted">knighted</span> in 1967, the first music critic to be so honored.</p>
+          <p class="en" style="margin-top:10px"><span class="pno">⚠️⚠️24C 的产地·save ＝ except</span>Yet only one of his books is now <span class="tk" data-w="inprint">in print</span>, and his <span class="tk" data-w="vastbody">vast body of</span> writings on music is unknown <span class="tk" data-w="savetospec">save to specialists</span>.</p>
+          <div class="zh"><b>④段全译：</b>遗憾的是，这些评论家几乎都被遗忘了。内维尔·卡达斯——一位从 1917 年直到 1975 年去世前不久一直为《曼彻斯特卫报》供稿的评论家——如今仅仅以板球比赛短评撰写者的身份为人所知。然而在他的一生之中，他也是英国最优秀的古典音乐评论家之一，同时还是一位广受赞誉的文体家，其 1947 年出版的《自传》更是成为畅销书。1967 年，他受封爵士，是第一位获此殊荣的音乐评论家。然而他的著作中只有一本如今仍在出售，他的大量乐评作品除了专业人士之外，无人知晓。
+          <div style="margin-top:8px;font-size:.86rem">⭐ <b>这一段的写法是「先说今之凋零，再倒叙昔之辉煌，最后回到今」——❶今 → ❷今 → ❸❹昔 → ❺今。</b><b>落差感是作者刻意造的，但落差本身不是观点，别把它读成「争议」。</b><br>
+          ⚠️⚠️ <b>24B <code>His reputation as a music critic has long been <u>in dispute</u></code>（声誉长期饱受争议）就是把这个「落差」曲解成了「争议」</b>：<b>原文说的是「他被<u>遗忘</u>了」（forgotten / unknown），不是「人们对他<u>褒贬不一</u>」。</b><b>被遗忘 ＝ 没人谈论；有争议 ＝ 很多人在谈论，谈得还很热闹——两者恰恰互斥。</b><br>
+          ⚠️⚠️ <b>24C <code>His style <u>caters largely to</u> modern specialists</code>（他的风格主要迎合现代专业人士）动的是❺句 <code>unknown <b>save to</b> specialists</code></b>：<br>
+          　　▸ <b><code>save</code> 在这里是<u>介词</u>「除了」（＝ except），不是动词「拯救」</b> ⟹ 原句 ＝ <b>「除专业人士之外无人知晓」</b>，这是一个<b>客观现状</b>；<br>
+          　　▸ C 却把它改成了<b>卡达斯<u>主观上</u>去迎合专家</b>。<b>「只有专家还知道他」与「他专门写给专家看」是两回事——前者是结果，后者是动机。</b><br>
+          　　▸ 何况⑤❸句说他擅长的是<b>维多利亚—爱德华时期的华丽散文</b>，那是<b>旧</b>风格，与 <code>modern</code> 也对不上。<br>
+          📌 <b>结构提醒：❷句是「主语 ＋ 一整条非限定定语从句 ＋ 谓语」</b>——<code>Neville Cardus, <b>who wrote … in 1975,</b> is now known…</code>，<b>主谓之间被撑开了 14 个词</b>。<b>这正是 2009 翻译（杜威）整篇的那把刀「成分被撑开」，在阅读里同样会出现。</b>读法只有一条：<b>先跳过两个逗号之间的部分，把主谓接上，再回头补从句。</b>（详见 <a href="#s7" onclick="go('s7');return false">s7</a>）</div></div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p style="font-size:.78rem;color:var(--accent);margin-bottom:6px">⑤ 今·断根（复兴无望） · ⭐⭐24A 正源 · 24D 的产地</p>
+          <p class="en"><span class="pno">❶自问</span>Is there any chance that Cardus's criticism will enjoy a <span class="tk" data-w="revival">revival</span>?</p>
+          <p class="en" style="margin-top:10px"><span class="pno">❷自答·remote ＝ 渺茫</span>The prospect seems <span class="tk" data-w="remote">remote</span>.</p>
+          <p class="en" style="margin-top:10px"><span class="pno">⭐⭐24A 正源·理由一：读者变了</span><span class="ls" onclick="go('s9')">Journalistic <span class="tk" data-w="tastes">tastes</span> had changed long before his death, and postmodern readers <span class="tk" data-w="littleuse">have little use for</span> the richly <span class="tk" data-w="upholstered">upholstered</span> <span class="tk" data-w="vicwardian">Vicwardian</span> <span class="tk" data-w="prose">prose</span> in which he specialized.</span></p>
+          <p class="en" style="margin-top:10px"><span class="pno">⚠️24D 的产地·理由二：传统断了</span>Moreover, the <span class="tk" data-w="amateurtrad">amateur tradition</span> in music criticism has been in <span class="tk" data-w="headlong">headlong retreat</span>.</p>
+          <div class="zh"><b>⑤段全译：</b>卡达斯的评论还有再度盛行的可能吗？可能性似乎微乎其微。早在他去世前，对新闻的品味就已经改变；他所擅长的极其华丽的维多利亚—爱德华时期风格的散文，后现代的读者不怎么喜欢了。此外，音乐评论领域的业余传统已经迅速走向衰落。
+          <div style="margin-top:8px;font-size:.86rem">⭐⭐ <b>24A 的正源就是 <code>have little use for</code> 这个短语</b>：<b>字面「用不上」，实义是「<u>不怎么喜欢、看不上</u>」</b> ⟹ 选项 <code>may <b>not appeal to</b> readers today</code>（对当今读者可能已没什么吸引力）<b>是同义改写，且把「后现代读者」概括成「今天的读者」也完全合法。</b><br>
+          ⚠️ <b>24D <code>His writings fail to follow the amateur tradition</code>（他的文章未能遵循业余传统）把❹句读反了</b>：❹句说的是<b>「业余传统正在溃退」——这是卡达斯难以复兴的<u>第二条理由</u></b>，言下之意 <b>卡达斯本人恰恰属于这个业余传统</b>（文章标题就叫 <i>The Amateur as Critic</i>）；<b>D 却说他没遵循它，正好相反。</b><br>
+          📌 <b>末段两句是并列的两条理由，用 <code>and</code> 与 <code>Moreover</code> 串起来</b>：<b>理由一在<u>读者端</u>（品味变了），理由二在<u>行业端</u>（传统断了）。</b><b>24 题四个选项恰好在问四个不同的对象</b>——A 问 <b>readers</b>、B 问 <b>reputation</b>、C 问 <b>specialists</b>、D 问 <b>amateur tradition</b>——<b>所以本题不能只盯着「卡达斯」找，要顺着每个选项自己的主语回原文。</b>（⟹ 新卡 <b>R59</b>，见第 <a href="#col3" style="color:var(--accent);font-weight:700">02+++ 节</a>）<br>
+          ⚠️ <b>两个熟词僻义当场校准</b>：<code>remote</code> 在这里是<b>「（可能性）渺茫的」</b>不是「遥远的地方」；<code>tastes</code> 是<b>「品味、爱好」</b>不是「味道」。</div></div>
+        </div>
+      </section>
+      <!-- ========== 题目与解析 ========== -->
+      <section class="card">
+        <h2><span class="n">02</span>题目与解析（点选项即判 · 再看解析）</h2>
+        <div class="waver" style="margin-bottom:18px">✅ <b>本篇 Claude 盲做 5/5 全对</b>（21B 22A 23D 24A 25B）——<b>2010 开年第一篇即满分</b>。<br>
+        <b>但「全对」不代表这篇没有可学的。</b>本篇二十个选项里，<b>有四个是用同一把此前没写下来过的刀造的</b>：<b>22C 的 <code>elaborate layout</code>、23B 的 <code>contemptible</code>、24C 的 <code>caters to specialists</code>、25C 的 <code>Journalism</code>——四刀的共同点是「<u>词都在原文里，但它挂在了另一个东西身上</u>」。</b><br>
+        <b>下面每题都写明「这个干扰项是从哪句话、用什么手法造出来的」，四个专栏把三把新刀拆开讲。</b></div>
+
+        <div class="q" data-ans="1" id="q21">
+          <p class="stem"><span class="qt">跨段推理（细节概括）</span>21. It is indicated in Paragraphs 1 and 2 that ______.</p>
+          <div class="opts">
+            <div class="opt">[A] arts criticism has disappeared from big-city newspapers.</div>
+            <div class="opt">[B] English-language newspapers used to carry more arts reviews.</div>
+            <div class="opt">[C] high-quality newspapers retain a large body of readers.</div>
+            <div class="opt">[D] young readers doubt the suitability of criticism on dailies.</div>
+          </div>
+          <div class="expl">
+            <b>✅ B · 定位①句 ＋ ②❶句（<u>两段合读</u>才成立）</b><br>
+            <b>题型识别</b>：<code>It is indicated in Paragraphs 1 and 2 that…</code> ⟹ <b>题干只圈定了搜索范围（第一、二段），却<u>不给任何方向词</u></b>。这类题不能顺着题干找，只能<b>从选项入手</b>。<br>
+            <b>两步走</b>：<b>①先看四项的时态标记</b>——A（<code>has disappeared</code>）与 B（<code>used to</code>）说的是<b>过去</b>，C（<code>retain</code>）与 D（<code>doubt</code>）说的是<b>当下</b>；<b>②把四项各自定位回原文，再找出决定正误的<u>那一个词</u></b>（disappeared / more / retain / doubt）。<br>
+            <b>正源</b>：①句 <span class="loc">the inexorable <b>decline</b> in the <b>scope</b> and seriousness of their arts coverage</span> ＋ ②❶句 <span class="loc">a time when high-quality arts criticism could be found in <b>most</b> big-city newspapers</span> ＋ ②❷句 <span class="loc">the most significant collections of criticism … consisted <b>in large part of newspaper reviews</b></span> ⟹ <b>昔日报纸上的艺术评论又多又好，如今范围在缩 ⟹ 过去刊载得更多（B）。</b><br>
+            <div style="margin-top:8px">
+            <b>[A] arts criticism has <u>disappeared</u> ⚠️ 把「衰落」推成「消亡」</b>：原文用的是 <code>decline</code>（仍在进行的衰落），A 直接送到了终点。<b>而且②❶句只说「难以想象<u>大多数</u>大都市报纸上都有」，并没有说一家都没有了。</b><b>见到 disappear／never／no longer 这类绝对词，先回原文核程度。</b><br>
+            <b>[B] English-language newspapers used to carry <u>more</u> arts reviews ✔</b>：<b>「范围与严肃性在衰落」＋「昔日大多数大报都有高质量评论」＝「过去刊载得更多」。</b><b>这是两段共同指向的概括，不是任何单句的复述——这正是「Paragraphs 1 <u>and</u> 2」这个题干的用意。</b><br>
+            <b>[C] high-quality newspapers retain a large body of readers ⚠️ 原词拼接 ＋ 换对象</b>：<code>high-quality</code> 与 <code>reader</code> 两个词都在②❶句里，<b>但 high-quality 修饰的是 <u>arts criticism</u>（评论的质量），不是 newspapers（报纸的质量）</b>；「读者留存」更是原文从未提及。<b>全文谈的是「艺术评论的质量」，一次也没谈过「报纸的质量」。</b>（⟹ <b>R39 原词拼接</b>）<br>
+            <b>[D] young readers <u>doubt</u> the suitability ⚠️ 反向干扰（褒 ⟹ 贬）</b>：②❸句是 <span class="loc">To read such books today is to <b>marvel at</b> the fact that their learned contents were once deemed <b>suitable</b> for publication in general-circulation dailies</span>——<b>今人是「惊叹」于昔日竟认为它适合登日报</b>，这是<b>带敬意的感慨</b>；D 却说年轻人「怀疑其是否适合」。<b>suitability 这个词确实来自这句，但句子的情感方向被整个翻了过来。</b>
+            </div>
+            <div class="waver" style="margin-top:10px">⭐ <b>可迁移打法（题干只圈范围、不给方向）</b>：<b>看到「It is indicated in Paragraph(s) X that」而题干里没有任何实词可搜</b>，一律改走两步——<b>①按选项的时态／情态给四项分堆（讲过去的一堆、讲现在的一堆），②每项挑一个「最不可能是随手写的词」回文定位</b>。本题这个词分别是 disappeared、more、retain、doubt，<b>四个词一核，胜负立判。</b><br>
+            📌 <b>题干写 Paragraphs 1 <u>and</u> 2（复数）就是提示：答案要靠两段合起来才推得出，任何只用一段就能验证的选项都要多一分警惕。</b></div>
+          </div>
+        </div>
+
+        <div class="q" data-ans="0" id="q22">
+          <p class="stem"><span class="qt">事实细节（群体特征）</span>22. Newspaper reviews in England before World War II were characterized by ______.</p>
+          <div class="opts">
+            <div class="opt">[A] free themes.</div>
+            <div class="opt">[B] casual style.</div>
+            <div class="opt">[C] elaborate layout.</div>
+            <div class="opt">[D] radical viewpoints.</div>
+          </div>
+          <div class="expl">
+            <b>✅ A · 定位③❶句 <span class="loc">the <b>unfocused</b> newspaper reviews published in England … the eve of World War II</span></b><br>
+            <b>题型识别</b>：<code>were characterized by</code> ⟹ <b>特征题</b>。<b>本题是全篇最值得单独立卡的一道</b>——<b>四个选项各对应第三段的一个词，四个词全都真在原文里</b>：<br>
+            <div class="tabwrap"><table class="ctab">
+              <tr><th>选项</th><th>它的原文出处</th><th>特征词有据吗</th><th>它贴的那个名词对吗</th><th>判</th></tr>
+              <tr><td><b>[A] free themes</b></td><td>③❶ <code>unfocused</code></td><td><span class="ok">✔ 有</span>（un- 否定前缀 ＋ focused ⟹ 不聚焦、题材不限）</td><td><span class="ok">✔ 对</span>：unfocused 修饰的就是 <code>newspaper reviews</code> 本身，说的正是<b>选题</b></td><td class="ok">✅ 正确</td></tr>
+              <tr><td><b>[B] casual style</b></td><td>③❶ <code>stylish</code></td><td><span class="ok">✔ 有</span></td><td><span class="no">✘ 反了</span>：stylish ＝ <b>文体讲究、有格调</b>，与「随意」相反；③❸ <code>Theirs was a serious business</code> 再补一刀</td><td class="no">❌</td></tr>
+              <tr><td><b>[C] elaborate layout</b></td><td>③❷ <code>in detail and at length</code></td><td><span class="ok">✔ 有</span>（elaborate ＝ 详尽的、精心的，对得上）</td><td><span class="no">✘ 换了</span>：原文详尽的是<b>评论家写的内容</b>，C 贴到了 <code>layout</code>（<b>版面布局</b>）上——<b>全文一个字没提排版</b></td><td class="no">❌</td></tr>
+              <tr><td><b>[D] radical viewpoints</b></td><td>③❸ <code>a serious business</code></td><td><span class="ok">✔ 有</span></td><td><span class="no">✘ 换维度</span>：serious 说的是<b>工作态度</b>严肃，与他们<b>持什么观点</b>（激进／保守）无关</td><td class="no">❌</td></tr>
+            </table></div>
+            <div style="margin-top:8px">⟹ <b>「这个词在不在原文里」这条最常用的判据，在本题上四项全部通过，也就是<u>完全失效</u>。</b><b>真正的分界线是后半截名词：特征词修饰的那个对象，与选项里的名词是不是同一个东西。</b>（⟹ 新卡 <b>R57</b>，完整解剖见第 <a href="#col1">02+ 节</a>）</div>
+            <div class="waver" style="margin-top:10px">📌 <b>A 项还有一个来自别段的内证</b>：①句说衰落的是 <code>the <b>scope</b> and seriousness of their arts coverage</code>——<b>「范围」在缩，反过来正说明昔日「范围广」</b>，与 unfocused 首尾呼应。<b>一个选项能同时被两段支持，可以直接定，不必犹豫。</b><br>
+            ⚠️ <b>本题不要被 <code>unfocused</code> 的字面吓住</b>。猜义有两条路：<b>①构词法</b>（un- ＋ focused ⟹ 不集中 ⟹ 内容包罗万象）；<b>②与首段呼应</b>（decline in <b>scope</b> 暗示昔日范围广、如今范围窄）。<b>两条路指向同一个意思，就可以放心用。</b></div>
+          </div>
+        </div>
+
+        <div class="q" data-ans="3" id="q23">
+          <p class="stem"><span class="qt">人物观点</span>23. Which of the following would Shaw and Newman most probably agree on?</p>
+          <div class="opts">
+            <div class="opt">[A] It is writers' duty to fulfill journalistic goals.</div>
+            <div class="opt">[B] It is contemptible for writers to be journalists.</div>
+            <div class="opt">[C] Writers are likely to be tempted into journalism.</div>
+            <div class="opt">[D] Not all writers are capable of journalistic writing.</div>
+          </div>
+          <div class="expl">
+            <b>✅ D · 定位③❺句前半 <span class="loc">"<b>So few authors</b> have brains enough or literary gift enough to keep their own end up in journalism"</span></b><br>
+            <b>题型识别</b>：题干出现<b>两个人名</b> ⟹ <b>人物观点题</b>。<b>先圈人：萧伯纳与纽曼在③❸句才首次出现，但❸句里他们是<u>被举例的对象</u>；❹❺两句才把他们当主语</b>（<code>These men <b>believed</b> in…</code> / <code>Newman <b>wrote</b></code>），<b>且带 believed、wrote 这类观点标识词——分析重心在❹❺，不在❸。</b>（⟹ <b>R2</b>）<br>
+            <b>正源</b>：<code>So <b>few</b> authors have brains enough or literary gift enough to keep their own end up in journalism</code> ⟹ <b>「能胜任报刊撰稿的作家极少」＝「并非所有作家都写得了新闻」（D）。</b><b>Not all ↔ So few 是同义改写，capable 一词概括了 have brains enough or literary gift enough。</b><br>
+            <div style="margin-top:8px">
+            <b>[A] It is writers' <u>duty</u> to fulfill journalistic goals ⚠️ 主观意愿 ⟹ 客观职责</b>：③❹句原文是 <span class="loc">These men believed in journalism as a <b>calling</b></span>——<b>calling ＝ 自己认定的天职、使命，是「我愿意」；duty ＝ 客观职责，是「我应该」。</b>而且 A 把「以撰稿为天职」<b>夸大成了「实现新闻工作的目标是作家的职责」</b>（从「这几个人这么想」放大到「作家都该这样」）。<br>
+            <b>[B] It is <u>contemptible</u> for writers to be journalists ⚠️⚠️ 把「他转述的态度」当成「他自己的态度」</b>：<b>❺句里的 <code>a term of contempt</code> 是「<u>没读者的作家</u>」扔给「<u>有读者的作家</u>」的一句骂人话——纽曼是<u>引来挖苦</u>的，不是他本人的主张。</b><b>❹句刚说完「这些人以撰稿为荣（proud）」，与「做记者可耻」正相反。</b>（⟹ 新卡 <b>R58</b>）<br>
+            <b>[C] Writers are likely to be <u>tempted</u> into journalism ⚠️ 原词拼接 ＋ 主语偷换</b>：<code>tempted</code> 只出现在 <code>I am tempted to define</code> 里——<b>主语是纽曼，宾语是「下定义」这个动作</b>，与「作家被新闻业吸引」毫无关系。<b>照纽曼的原意，撰稿门槛高、能胜任者寥寥，作家反而更可能望而却步。</b>（⟹ <b>R39</b>）<br>
+            <b>[D] Not all writers are capable of journalistic writing ✔</b>：❺句前半的直接同义改写。<b>而且它与❸句 <code>could be trusted to know what they were about</code>（连深入浅出的那几位也确实心里有数）同向——本领是门槛，这是全段一致的调子。</b>
+            </div>
+            <div class="waver" style="margin-top:10px">⭐ <b>可迁移打法（引语题的两问）</b>：读到人物的<b>直接引语</b>，问两句话——<b>①这句话的主语是谁？②句子里的态度词是他<u>本人的</u>，还是他<u>引来当靶子的</u>？</b><br>
+            <b>本题四个选项恰好覆盖了三种错法</b>：A 偷<b>情态</b>（愿意 ⟹ 应该）、B 偷<b>态度的归属</b>（第三方的轻蔑 ⟹ 纽曼的主张）、C 偷<b>主语</b>（纽曼想下定义 ⟹ 作家被吸引）。<b>只有 D 老老实实转写了句子的主干。</b></div>
+          </div>
+        </div>
+
+        <div class="q" data-ans="0" id="q24">
+          <p class="stem"><span class="qt">事实细节（末两段）</span>24. What can be learned about Cardus according to the last two paragraphs?</p>
+          <div class="opts">
+            <div class="opt">[A] His music criticism may not appeal to readers today.</div>
+            <div class="opt">[B] His reputation as a music critic has long been in dispute.</div>
+            <div class="opt">[C] His style caters largely to modern specialists.</div>
+            <div class="opt">[D] His writings fail to follow the amateur tradition.</div>
+          </div>
+          <div class="expl">
+            <b>✅ A · 定位⑤❸句 <span class="loc">postmodern readers <b>have little use for</b> the richly upholstered Vicwardian prose in which he specialized</span></b><br>
+            <b>题型识别</b>：<code>What can be learned about X according to the last two paragraphs?</code> ⟹ <b>范围给死（末两段）、对象给死（卡达斯），但同样不给方向词。</b><br>
+            <b>⭐ 本题的答题顺序值得单独记（⟹ 新卡 <b>R59</b>）</b>：<br>
+            <b>第一步「以卡达斯为中心」</b>——四项的切入点分别是 <code>music criticism</code>／<code>reputation</code>／<code>style</code>／<code>writings</code>，回文一找会发现<b>只有 reputation 这条线能给出<u>明确判据</u></b>（原文说他<b>被遗忘</b>，B 说他<b>有争议</b>，直接排 B），<b>另外三条线在原文里都没有以卡达斯为主语的对应句</b>。<br>
+            <b>第二步「改以各选项自己的真主语为中心」</b>——A 的真主语是 <code>readers today</code>、C 的是 <code>modern specialists</code>、D 的是 <code>the amateur tradition</code>。<b>顺着这三个对象回文，才找得到判据：⑤❸句谈 readers、④❺句谈 specialists、⑤❹句谈 amateur tradition。</b><br>
+            <div style="margin-top:8px">
+            <b>[A] His music criticism may not <u>appeal to</u> readers today ✔</b>：<code>have little use for</code> 字面「用不上」、实义<b>「不怎么喜欢、看不上」</b> ⟹ <code>may not appeal to</code> 是标准同义改写；<b>把「后现代读者」概括成「今天的读者」也完全合法。</b><br>
+            <b>[B] His reputation … has long been <u>in dispute</u> ⚠️ 把「落差」曲解成「争议」</b>：④段造的是<b>「昔日荣耀 ↔ 今日凋零」的落差</b>（英国顶尖乐评家、受封爵士 ↔ 只剩板球随笔为人所知）。<b>但原文的词是 forgotten / unknown（<u>被遗忘</u>），不是 disputed（<u>有争议</u>）。</b><b>被遗忘 ＝ 没人谈；有争议 ＝ 很多人在谈、还谈得挺凶——两者恰恰互斥。</b><br>
+            <b>[C] His style <u>caters largely to</u> modern specialists ⚠️⚠️ 客观现状 ⟹ 主观迎合，且 modern 也对不上</b>：④❺句 <code>unknown <b>save to</b> specialists</code> 中的 <b>save 是<u>介词</u>「除了」（＝ except），不是动词</b> ⟹ 原句 ＝ <b>「除专业人士外无人知晓」，这是<u>结果</u></b>；C 说成他<b>专门写给专家看</b>，那是<b>动机</b>。<b>而且⑤❸句说他擅长的是维多利亚—爱德华时期的<u>旧</u>华丽文风，与 modern 直接相悖。</b><br>
+            <b>[D] His writings <u>fail to follow</u> the amateur tradition ⚠️ 读反</b>：⑤❹句 <code>the amateur tradition in music criticism has been in headlong retreat</code> 是「复兴无望」的<b>第二条理由</b>，言下之意<b>卡达斯本人正属于这个业余传统</b>（原文出处的标题就是 <i>The Amateur as Critic</i>「业余评论家」）；<b>传统溃退了，所以他这一路评论后继无人</b>。D 却说他没遵循它，方向反了。
+            </div>
+            <div class="waver" style="margin-top:10px">⭐ <b>可迁移打法</b>：<b>题干问「关于 X，能知道什么」时，四个选项的<u>语法主语</u>虽然都是 X（His …），但它们各自的<u>真正论述对象</u>常常不是 X</b>——本题 A 论 readers、C 论 specialists、D 论 amateur tradition。<br>
+            <b>所以顺序是：先以 X 为中心扫一遍（能排掉的先排），扫不出判据的，就把每个选项里<u>除 X 之外那个最实的名词</u>拎出来当检索词，回文找它与 X 的关系。</b><b>本题若死盯 Cardus 找，A、C、D 会一直悬着。</b></div>
+          </div>
+        </div>
+
+        <div class="q" data-ans="1" id="q25">
+          <p class="stem"><span class="qt">文章标题</span>25. What would be the best title for the text?</p>
+          <div class="opts">
+            <div class="opt">[A] Newspapers of the Good Old Days</div>
+            <div class="opt">[B] The Lost Horizon in Newspapers</div>
+            <div class="opt">[C] Mournful Decline of Journalism</div>
+            <div class="opt">[D] Prominent Critics in Memory</div>
+          </div>
+          <div class="expl">
+            <b>✅ B · 定位全文（重心在①句）</b><br>
+            <b>题型识别</b>：<code>the best title</code> ⟹ <b>标题题。标题必须同时答上两问：<u>①论述的对象是什么？②这个对象发生了什么？</u></b>（⟹ <b>R40 标题题三查</b>）<br>
+            <b>把两问的答案先自己写出来</b>：<b>对象 ＝ arts coverage / arts criticism（报纸上的艺术评论）；发生了什么 ＝ inexorable decline（不可遏止地衰落）。</b>拿这两条去卡四个选项：<br>
+            <div class="tabwrap"><table class="ctab">
+              <tr><th>选项</th><th>对象答对了吗</th><th>「发生了什么」答上了吗</th><th>判</th></tr>
+              <tr><td>[A] Newspapers of the Good Old Days<br><span style="color:var(--muted)">报纸令人追忆的美好时代</span></td><td><span class="no">✘</span> 对象成了「报纸」，不是「艺术评论」</td><td><span class="no">✘</span> 只写了「昔日辉煌」，<b>全文真正的落点「今之衰落」整个丢了</b></td><td class="no">❌ 两问全丢</td></tr>
+              <tr><td>[B] The Lost Horizon in Newspapers<br><span style="color:var(--muted)">报纸上逝去的视域</span></td><td><span class="ok">✔</span> Horizon（视野／范围）喻 <code>the <b>scope</b> … of arts coverage</code></td><td><span class="ok">✔</span> Lost（无法挽回地失去）概括 <code>inexorable decline</code> 与 <code>in headlong retreat</code></td><td class="ok">✅ 两问齐备</td></tr>
+              <tr><td>[C] Mournful Decline of Journalism<br><span style="color:var(--muted)">新闻业令人悲哀的衰落</span></td><td><span class="no">✘</span> <b>对象被放大了</b>：从 arts criticism 扩到整个 journalism</td><td><span class="ok">✔</span> Decline 是对的</td><td class="no">❌ 半对即错</td></tr>
+              <tr><td>[D] Prominent Critics in Memory<br><span style="color:var(--muted)">记忆中杰出的评论家</span></td><td><span class="no">✘</span> 卡达斯、萧伯纳、纽曼是<b>论据</b>，不是论题</td><td><span class="no">✘</span> 没有「衰落」这一层</td><td class="no">❌ 把论据当论题</td></tr>
+            </table></div>
+            <div class="waver" style="margin-top:10px">⚠️⚠️ <b>C 是本题唯一有杀伤力的干扰项，它错得非常轻——只错了一个词的范围。</b><b>全文通篇没有说「新闻业」在衰落；衰落的是新闻里的「艺术评论」这一块。</b><b>本文里 journalism 一词只出现在③段纽曼的引语里，讲的是「撰稿这门活计」，与「新闻业整体的兴衰」无关。</b>（⟹ <b>R39 原词拼接</b>：词在原文里，但它所属的那个语境完全不同。）<br>
+            📌 <b>D 是本题的第二个提醒：<u>末两段占了全文近一半篇幅，写的却全是论据。</u></b><b>篇幅长 ≠ 主旨所在。</b>判断办法：<b>把④⑤两段整个删掉，①②③三段仍然把话说完整了；反过来只留④⑤，读者根本不知道文章要说什么。</b><b>删得掉的是论据，删不掉的是论题。</b></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========== 专栏 1 ========== -->
+      <section class="card" id="col1">
+        <h2><span class="n">02+</span>专栏 · 本篇最贵的一条：<u>特征词有据 ≠ 载体有据</u>（22 题 · 新卡 R57）</h2>
+        <p>22 题是我做过的所有真题里，<b>「原文有没有这个词」这条判据失效得最彻底的一道</b>：四个选项的<b>形容词</b>全都能在同一段里找到出处，而且黄皮书自己也承认「<b>四项分别对应文中的 unfocused、stylish、in detail and at length、serious</b>」。</p>
+
+        <h3>第一步：看清选项的结构——每一项都是「形容词 ＋ 名词」</h3>
+        <div class="chain">free <b>themes</b> ｜ casual <b>style</b> ｜ elaborate <b>layout</b> ｜ radical <b>viewpoints</b></div>
+        <p style="font-size:.9rem">⟹ <b>形容词说的是「什么样的特征」，名词说的是「这个特征贴在谁身上」。</b>命题人可以在<b>任意一半</b>动手脚，本题四项恰好把三种动法演全了：</p>
+        <div class="arrow">
+          <div class="ai new"><b>A free themes ✅ 两半都对</b>：unfocused 修饰的就是 reviews 本身，说的正是<b>选题范围</b>——形容词有据，载体也对。</div>
+          <div class="ai old"><b>B casual style ❌ 动的是<u>前半</u></b>：载体 style 没错（原文 stylish 说的确实是文体），<b>但把 stylish（讲究、有格调）读成了 casual（随意）——形容词的<u>方向</u>被翻了。</b></div>
+          <div class="ai old"><b>C elaborate layout ❌ 动的是<u>后半</u>（本篇最贵的一刀）</b>：形容词 elaborate 完全对得上 in detail and at length，<b>可原文详尽的是「写的<u>内容</u>」，C 把它挪到了「<u>版面布局</u>」上</b>——<b>全文没有任何一句话谈过排版。</b></div>
+          <div class="ai old"><b>D radical viewpoints ❌ 动的是<u>维度</u></b>：serious 讲的是<b>工作态度</b>（a serious business ＝ 他们从事的是严肃的工作），<b>D 却把它换算成了「所持观点激进」——态度与观点是两个维度，不能互推。</b></div>
+        </div>
+
+        <h3>第二步：这把刀为什么容易砍中人</h3>
+        <p style="font-size:.9rem">因为<b>我们平时最信赖的那条判据（「这个词原文里有没有」）在这里给出的是四个「有」。</b>如果只做这一步，四个选项在手感上是齐平的，接下来就只能靠「哪个读着最顺」——<b>而「读着顺」恰恰是命题人设计出来的。</b><br>
+        <b>C 项尤其阴险</b>：它同时具备「形容词有据」与「读着像那么回事」（详尽的评论配上精心的版面，符合常识想象），<b>唯一的破绽是原文压根没谈过版面</b>——<b>破绽在「原文没说什么」，而不在「原文说错了什么」。</b></p>
+
+        <h3>第三步：可执行的三步动作（R57）</h3>
+        <div class="tl">
+          <div class="tli"><div class="mark">① 拆</div><div>把选项拆成「<b>特征词</b>」＋「<b>载体名词</b>」两半（形容词＋名词、副词＋动词都算）。</div></div>
+          <div class="tli"><div class="mark">② 核前半</div><div>特征词在原文有没有出处？<b>有出处还要再问方向对不对</b>（stylish ⟹ casual 就是方向反了）。</div></div>
+          <div class="tli"><div class="mark">③ 核后半</div><div><b>回原文看这个特征词修饰的是<u>哪个名词</u></b>，和选项里的名词是不是同一个东西。<b>不同 ⟹ 直接排，不必再纠结前半有多像。</b></div></div>
+        </div>
+        <div class="waver" style="margin-top:12px">📌 <b>与已有卡的分工</b>：<b>R21「主体校验三问：谁 / 对谁 / 做了什么」</b>管的是<b>动作句</b>（谁做了什么）；<b>R57 管的是<u>特征句</u>（什么东西是什么样的）</b>。<b>两张卡加在一起，覆盖了「选项与原文对不上」的两大类：动作错位 与 特征错位。</b><br>
+        ⚠️ <b>本卡的适用信号</b>：题干出现 <code>be characterized by</code> / <code>features of</code> / <code>What is true of X</code>，<b>而四个选项都是「形容词＋名词」的短语（不是完整句子）</b> ⟹ 一律走 R57 的三步。</div>
+      </section>
+
+      <!-- ========== 专栏 2 ========== -->
+      <section class="card" id="col2">
+        <h2><span class="n">02++</span>专栏 · 引语里的两层态度：他<u>自己的</u>，与他<u>引来当靶子的</u>（23 题 · 新卡 R58）</h2>
+        <p>③❺句是本篇的头号难句，也是 23 题唯一的正源。先把它拆开：</p>
+        <div class="chain">"So few authors have brains enough or literary gift enough to keep their own end up in journalism," Newman wrote, "that I am tempted to define 'journalism' as 'a term of contempt applied by writers who are not read to writers who are'."</div>
+        <div class="tabwrap"><table class="ctab">
+          <tr><th>层</th><th>这一层的内容</th><th>态度归属</th></tr>
+          <tr><td><b>第 1 层（纽曼本人的判断）</b></td><td><code>So few authors have brains enough or literary gift enough to keep their own end up in journalism</code>　⟹ 能胜任报刊撰稿的作家太少了</td><td class="ok">✔ <b>这是纽曼的观点</b> ⟹ <b>23D 的正源</b></td></tr>
+          <tr><td><b>第 2 层（纽曼<u>引来挖苦</u>的第三方态度）</b></td><td><code>'a term of <b>contempt</b> applied by writers who are not read to writers who are'</code>　⟹「新闻写作」这个词，是<b>没读者的作家</b>扔给<b>有读者的作家</b>的一句骂人话</td><td class="no">✘ <b>这是被讥讽者的态度，不是纽曼的主张</b> ⟹ <b>23B 的产地</b></td></tr>
+        </table></div>
+
+        <h3>为什么这刀比 R45 更隐蔽</h3>
+        <p style="font-size:.9rem"><b>2009 T4 立的 R45（叙述者的动作 ≠ 人物的动作）</b>，分的是<b>两个人</b>——作者说的话 vs 文中人物说的话，<b>两者在版面上是分开的</b>（一个在正文里，一个在引号里）。<br>
+        <b>R58 分的却是<u>同一个人嘴里的两层话</u>，而且两层都装在同一对引号内。</b>版面上没有任何分界，只能靠<b>语义</b>去切：<b>「我认为 X」与「我想把 Y 定义成『某些人骂人的话』」——后半句里的贬义，属于那些骂人的人，不属于我。</b></p>
+
+        <h3>三个可执行的信号词</h3>
+        <div class="arrow">
+          <div class="ai"><b>信号一：<code>define A as B</code> / <code>call it B</code> / <code>describe it as B</code></b> —— <b>B 是一个「说法」，不是说话人的判断</b>。说话人只是在告诉你「有人这么说」。</div>
+          <div class="ai"><b>信号二：<code>a term of contempt</code> / <code>a dirty word</code> / <code>what people call…</code></b> —— <b>凡是把某个词本身当成谈论对象的表达</b>，其中的褒贬一律属于<b>使用那个词的人</b>。</div>
+          <div class="ai"><b>信号三：<code>I am tempted to…</code> / <code>one might say…</code> / <code>it is fashionable to say…</code></b> —— <b>带自嘲或戏谑口吻的框架句</b>，后面跟的往往是<b>说话人半开玩笑地借用的说法</b>，不是他的正式立场。</div>
+        </div>
+
+        <h3>本题的上下文还给了双保险</h3>
+        <p style="font-size:.9rem">③❹句 <code>These men believed in journalism as a <b>calling</b>, and were <b>proud</b> to be published in the daily press.</code>——<b>紧挨着的上一句刚说完他们「以撰稿为天职、以见报为荣」</b>，下一句就得出「做记者可耻」，<b>逻辑上根本接不上</b>。<br>
+        ⟹ <b>判据可以再退一步：观点题选出的答案，必须能与<u>紧邻的上下文</u>接得上气。接不上，就是切错层了。</b></p>
+      </section>
+
+      <!-- ========== 专栏 3 ========== -->
+      <section class="card" id="col3">
+        <h2><span class="n">02+++</span>专栏 · 细节题的两步切入：先以题干主角为心，再以各选项的真主语为心（24 题 · 新卡 R59）</h2>
+        <p>24 题题干把范围与对象都给死了（<b>末两段 ＋ 卡达斯</b>），可四个选项<u>没有一个</u>是以卡达斯为真正论述对象的：</p>
+        <div class="tabwrap"><table class="ctab">
+          <tr><th>选项</th><th>语法主语</th><th><b>真正的论述对象</b></th><th>回文该找哪一句</th></tr>
+          <tr><td>[A] <code>His music criticism may not appeal to <b>readers today</b></code></td><td>His music criticism</td><td class="ok"><b>今天的读者</b></td><td>⑤❸ <code>postmodern <b>readers</b> have little use for…</code></td></tr>
+          <tr><td>[B] <code>His <b>reputation</b> … has long been in dispute</code></td><td>His reputation</td><td><b>他的声誉本身</b>（唯一真以卡达斯为心的一项）</td><td>④❶❷❺ <code>forgotten / known solely as / unknown</code></td></tr>
+          <tr><td>[C] <code>His style caters largely to <b>modern specialists</b></code></td><td>His style</td><td class="ok"><b>专业人士</b></td><td>④❺ <code>unknown save to <b>specialists</b></code></td></tr>
+          <tr><td>[D] <code>His writings fail to follow <b>the amateur tradition</b></code></td><td>His writings</td><td class="ok"><b>业余传统</b></td><td>⑤❹ <code>the <b>amateur tradition</b> … in headlong retreat</code></td></tr>
+        </table></div>
+
+        <h3>所以答题顺序应该是两步，不是一步</h3>
+        <div class="tl">
+          <div class="tli"><div class="mark">第一步<br>以主角为心</div><div>把题干那个人（Cardus）当检索词扫一遍末两段，<b>能当场排掉的先排掉</b>。本题这一步只解决了 B：<b>原文说他<u>被遗忘</u>（forgotten / unknown），选项说他<u>有争议</u>（in dispute）——被遗忘意味着没人谈，有争议意味着很多人在谈，两者互斥。</b></div></div>
+          <div class="tli"><div class="mark">第二步<br>以选项的真主语为心</div><div>剩下的三项，<b>各自把「除主角外最实的那个名词」拎出来当检索词</b>：readers today ⟹ ⑤❸；modern specialists ⟹ ④❺；amateur tradition ⟹ ⑤❹。<b>三条线一拉，A 的同义改写成立、C 的「结果 ⟹ 动机」和 D 的读反当场现形。</b></div></div>
+        </div>
+
+        <div class="waver" style="margin-top:12px">⚠️ <b>只做第一步会怎样</b>：A、C、D 三项在原文里都找不到「以卡达斯为主语」的对应句，<b>于是三项会一直悬着，最后只能靠语感二选一。</b><b>本题的难点不在读懂，而在<u>知道该拿哪个词回去找</u>。</b><br>
+        📌 <b>本卡的适用信号</b>：题干是 <code>What can be learned about X…</code> / <code>Which of the following is true of X…</code>，<b>而四个选项的主语全都写成 <code>His/Its/Their + 名词</code> 的形式</b> ⟹ <b>主语被统一成了 X 的所有物，真正的论述对象却藏在宾语或介词短语里。</b><br>
+        🔗 <b>与 <b>R1</b>（先定位再比同义替换）的关系</b>：R1 解决「找到句子之后怎么比」，<b>R59 解决更前一步的「该拿什么词去找」</b>。<b>本题若拿错了检索词，R1 再熟也用不上。</b></div>
+      </section>
+
+      <!-- ========== 专栏 4 ========== -->
+      <section class="card" id="col4">
+        <h2><span class="n">02++++</span>专栏 · 本篇总账：五道题、二十个选项，用了几把刀</h2>
+        <div class="tabwrap"><table class="ctab">
+          <tr><th>题</th><th>正解</th><th>用的刀</th><th>三个干扰项各自的造法</th></tr>
+          <tr><td><b>21</b></td><td>B</td><td>两段合读 ＋ 时态分堆</td><td>A <b>程度推到终点</b>（decline ⟹ disappeared）· C <b>原词拼接 ＋ 换对象</b>（评论的质量 ⟹ 报纸的质量）· D <b>情感翻向</b>（marvel at ⟹ doubt）</td></tr>
+          <tr><td><b>22</b></td><td>A</td><td class="ok"><b>R57 特征词与载体双查</b>（🆕）</td><td>B <b>特征词方向反</b>（stylish ⟹ casual）· C <b>载体被换</b>（内容 ⟹ 版面）· D <b>维度被换</b>（态度 ⟹ 观点）</td></tr>
+          <tr><td><b>23</b></td><td>D</td><td class="ok"><b>R58 引语里的两层态度</b>（🆕）</td><td>A <b>情态偷换</b>（calling 天职 ⟹ duty 职责）· B <b>态度归属错</b>（第三方的轻蔑 ⟹ 纽曼的主张）· C <b>原词拼接 ＋ 主语偷换</b>（I am tempted ⟹ writers are tempted）</td></tr>
+          <tr><td><b>24</b></td><td>A</td><td class="ok"><b>R59 两步切入</b>（🆕）</td><td>B <b>落差 ⟹ 争议</b>（forgotten ⟹ in dispute）· C <b>结果 ⟹ 动机</b>（save to specialists ⟹ caters to specialists）· D <b>读反</b>（他属于业余传统 ⟹ 他没遵循它）</td></tr>
+          <tr><td><b>25</b></td><td>B</td><td>R40 标题题（对象 ＋ 发生了什么）</td><td>A <b>只写「昔」丢了「今」</b>· C <b>对象被放大</b>（arts criticism ⟹ journalism）· D <b>把论据当论题</b></td></tr>
+        </table></div>
+
+        <h3>三件可以带走的结论</h3>
+        <div class="arrow">
+          <div class="ai new"><b>① 本篇二十个选项里，没有一个是「原文完全没提过的东西」。</b>十五个干扰项<b>全部由原文的词造成</b>，区别只在于：<b>词被挪了位置（载体／主语／对象）、翻了方向（褒贬／因果）、或被推过了头（程度）。</b>⟹ <b>「这词原文有没有」这条判据，在成熟的真题里几乎不再单独可用。</b></div>
+          <div class="ai new"><b>② 本篇的三把新刀（R57／R58／R59）指向同一件事：<u>先确定「这句话说的是谁／是什么东西」，再比内容像不像。</u></b>R57 查载体、R58 查态度的归属、R59 查该拿谁当检索词——<b>全是「对象」层面的功课，不是「意思」层面的功课。</b><br>🔗 <b>这与 2009 全年总结的那句话完全一致：<u>先用硬判据（位置、距离、词性、对象），再用软判据（内容像不像）。</u></b></div>
+          <div class="ai new"><b>③ 本篇再次验证「今昔对比文的重心永远在今」（R23）。</b>五段里 ①④⑤ 三段讲「今」，②③ 两段讲「昔」；<b>而 25 题的 A 项之所以出局，正是因为它只认了「昔」。</b>⟹ <b>读今昔对比文时，在每段边上标一个「今」或「昔」，主旨题与标题题就是数标记。</b></div>
+        </div>
+      </section>
+      <!-- ========== 长难句 ========== -->
+      <section class="card">
+        <h2><span class="n">03</span>长难句精析 · 9 句</h2>
+        <p style="font-size:.88rem;color:var(--muted);margin-bottom:14px">本篇的难点集中在<b>四类</b>：① <b>主干被撑开</b>（s1 的 Of 短语前置＋省略、s7 的主谓间插入整条定语从句）；② <b>结构被引号／插入语切成两半</b>（s6 的 so…that 跨引号——<b>本篇头号难句</b>）；③ <b>成对搭配被撑开</b>（s6 的 <code>applied … to …</code> 中间塞进七个词）；④ <b>名词性物主代词与省略</b>（s5 的 Theirs、s6 句末的 who are ＋ 省略 read）。<br><b>五道题的命脉句全部在下面。</b></p>
+
+        <div class="sent" id="s1">
+          <div class="src">Of all the changes that have taken place in English-language newspapers during the past quarter-century, perhaps <b>the most far-reaching</b> <b>has been</b> the inexorable decline in the scope and seriousness of their arts coverage.</div>
+          <ul class="anat">
+            <li><b class="skel">骨架</b>：<code>the most far-reaching (change) <b>has been</b> the inexorable decline…</code> —— <b>主语 ＝ the most far-reaching（后面省略了 change）</b>，系动词 ＝ has been，<b>表语 ＝ the decline in…</b>。</li>
+            <li><b class="skel">前置状语</b>：<code>Of all the changes that have taken place…</code> 是 <b>「在所有……当中」的范围状语</b>，<b>不是主语</b>。它自带一条定语从句 <code>that have taken place in English-language newspapers during the past quarter-century</code>。<br><b>判据</b>：<b>句首 <code>Of all + 复数名词</code> ＋ 后面出现最高级 ⟹ 必是「在所有 X 里，最……的那个是 Y」的框架。</b></li>
+            <li><b class="skel">省略</b>：<code>the most far-reaching</code> 后省略 change。<b>英语里最高级后可以直接省掉已出现过的名词</b>（<code>Of all the students, the tallest is Tom.</code>）。</li>
+            <li><b class="skel">考点</b>：⭐⭐ <b>全文主旨句，25 题的两个必选要素都在这里</b>——<b>对象 ＝ arts coverage，发生了什么 ＝ inexorable decline</b>。<b>21A 的 <code>disappeared</code> 也在这里被否掉：原文是「衰落」不是「消亡」。</b></li>
+          </ul>
+          <div class="tr"><b>译</b>：在过去二十五年间英文报纸所发生的全部变化中，影响最为深远的或许就是：它们的艺术报道，其范围与严肃程度已呈不可遏止的衰落之势。</div>
+        </div>
+
+        <div class="sent" id="s2">
+          <div class="src"><b>It is</b> difficult <b>to the point of impossibility</b> for the average reader under the age of forty <b>to imagine</b> a time <b>when</b> high-quality arts criticism could be found in most big-city newspapers.</div>
+          <ul class="anat">
+            <li><b class="skel">骨架</b>：<code><b>It is</b> difficult … <b>for</b> sb <b>to do</b> sth.</code> —— <b>It 是形式主语，真正的主语是后面的不定式 <code>to imagine a time…</code></b>，<code>for the average reader…</code> 是不定式的逻辑主语。</li>
+            <li><b class="skel">插入</b>：<code>to the point of impossibility</code> 插在 difficult 与 for 之间，<b>是修饰 difficult 的程度状语</b>：<b>难到了「不可能」的地步</b>。<br><b>句型可背</b>：<code>形容词 + to the point of + 名词</code> ＝ 「……到了……的程度」（<code>frank to the point of rudeness</code> 坦率到近乎无礼）。</li>
+            <li><b class="skel">从句</b>：<code>when high-quality arts criticism could be found…</code> 是修饰 <b>a time</b> 的定语从句（先行词是时间名词，用 when）。</li>
+            <li><b class="skel">考点</b>：⭐ <b>21 题的第一块拼图</b>：<b>「四十岁以下的人已经难以想象<u>那个年代</u>」——反过来说，那个年代确实存在过，而且是 <code>most</code> big-city newspapers 都有。</b><b>21A 想把它推成「一家都没有了」，与 most 这个词矛盾。</b></li>
+          </ul>
+          <div class="tr"><b>译</b>：对于四十岁以下的普通读者而言，要想象一个能在大多数大都市报纸上读到高质量艺术评论的年代，是难到近乎不可能的。</div>
+        </div>
+
+        <div class="sent" id="s3">
+          <div class="src"><b>To read</b> such books today <b>is to marvel at</b> the fact <b>that</b> their learned contents were once deemed suitable for publication in general-circulation dailies.</div>
+          <ul class="anat">
+            <li><b class="skel">骨架</b>：<code><b>To read</b> such books today <b>is to marvel at</b> the fact…</code> —— <b>不定式作主语，不定式作表语</b>，即「做 A 就等于做 B」。<br><b>这是很地道的书面句式</b>：<code>To see is to believe.</code>（眼见为实）</li>
+            <li><b class="skel">同位语从句</b>：<code>that their learned contents were once deemed suitable…</code> 说明 <b>the fact</b> 的内容。<b>判据：the fact / the idea / the news 后面的 that 从句，that 不作成分 ⟹ 同位语从句，不是定语从句。</b></li>
+            <li><b class="skel">熟词僻义</b>：<code>learned</code> 在这里读 <b>/ˈlɜːnɪd/</b>，是<b>形容词「精深的、有学问的」</b>，不是 learn 的过去式。<b>判据：它处在「所有格 + ___ + 名词」的位置上（their ___ contents），只能是形容词。</b></li>
+            <li><b class="skel">考点</b>：⚠️⚠️ <b>21D 的产地。</b><code>marvel at</code> ＝ <b>惊叹于</b>（带敬意的感慨）；D 却说 <code>doubt the <b>suitability</b></code>（怀疑其是否适合）。<b>suitable 这个词确实来自本句，但整句的情感方向被翻了过来。</b></li>
+          </ul>
+          <div class="tr"><b>译</b>：如今再读这些文集，会让你惊叹于这样一个事实：它们那些精深的内容，竟然曾经被认为适合刊登在面向大众发行的日报上。</div>
+        </div>
+
+        <div class="sent" id="s4">
+          <div class="src">We are even farther removed from the <b>unfocused</b> newspaper reviews <b>published in England between</b> the turn of the 20th century <b>and</b> the eve of World War II, <b>at a time when</b> newsprint was dirt-cheap and <b>stylish</b> arts criticism was considered an ornament to the publications <b>in which</b> it appeared.</div>
+          <ul class="anat">
+            <li><b class="skel">骨架</b>：<code>We are even farther removed from the … reviews …</code> —— <b>主干只有九个字</b>，后面全是修饰。<br><code>be removed from</code> ＝ <b>与……相隔遥远、与……无缘</b>（<code>farther removed</code> ＝ 隔得更远，承接第②段的「已难以想象」再退一步）。</li>
+            <li><b class="skel">后置定语</b>：<code>published in England <b>between</b> A <b>and</b> B</code> 是过去分词短语修饰 reviews；<b>between…and… 之间夹的是两个时间点</b>（20 世纪之交 ／ 二战前夕），<b>中间隔了十个词，容易读断。</b></li>
+            <li><b class="skel">同位时间状语</b>：<code>at a time when…</code> 回指前面的时间段，其中套了<b>两个并列分句</b>（newsprint was dirt-cheap ／ stylish arts criticism was considered an ornament），<b>第二个分句末尾还挂着一条 <code>in which it appeared</code>（it ＝ 那些艺术评论）</b>。</li>
+            <li><b class="skel">考点</b>：⭐⭐ <b>22 题的四个特征词，有两个在这一句里</b>——<code><b>unfocused</b></code>（⟹ 正解 A <code>free themes</code>）与 <code><b>stylish</b></code>（⟹ 干扰项 B <code>casual style</code>，方向被读反了）。<b>unfocused 的猜义走构词法：un- ＋ focused ⟹ 不聚焦 ⟹ 题材不设限。</b></li>
+          </ul>
+          <div class="tr"><b>译</b>：至于英国在 20 世纪初至二战前夕出版的那些漫无主题的报纸评论，我们就更是与之无缘了。当时新闻用纸价廉如土，而风格独特的艺术评论被看作是对它所在刊物的一种装饰。</div>
+        </div>
+
+        <div class="sent" id="s5">
+          <div class="src"><b>Theirs</b> was a serious business, and even those reviewers <b>who wore their learning lightly</b>, like George Bernard Shaw and Ernest Newman, <b>could be trusted to know what they were about</b>.</div>
+          <ul class="anat">
+            <li><b class="skel">骨架</b>：<code><b>Theirs</b> was a serious business</code> ＋ <code>even those reviewers … <b>could be trusted to</b> know…</code> —— 两个并列分句。</li>
+            <li><b class="skel">名词性物主代词</b>：<b><code>Theirs</code> ＝ their business／their work</b>（他们所从事的事）。<b>判据：Theirs 直接作主语、后面没有名词 ⟹ 它自己就是「他们的那样东西」，须回上文找它替代的是什么。</b></li>
+            <li><b class="skel">习语</b>：<code>wear one's learning lightly</code> ＝ <b>把学问「轻轻地穿在身上」⟹ 不掉书袋、深入浅出</b>；<code>know what one is about</code> ＝ <b>心里有数、知道自己在干什么</b>（<b>不是「知道关于什么」</b>）。</li>
+            <li><b class="skel">让步逻辑</b>：<code><b>even</b> those reviewers who…</code> ——「<b>连</b>那些举重若轻的评论家<b>也</b>被信任是内行的」，<b>言下之意：其余那些一本正经的更不必说。</b><b>这条让步链是「态度严肃」这一特征的加固。</b></li>
+            <li><b class="skel">考点</b>：⚠️ <b>22B 与 22D 的产地。</b><code>a serious business</code> 说的是<b>工作态度</b>——它同时否掉了 B（casual 随意）与 D（radical 观点激进：serious 与「观点激不激进」是两个维度）。</li>
+          </ul>
+          <div class="tr"><b>译</b>：他们从事的是严肃的工作；而即便是那些以深入浅出的方式展现自身学问的评论家，如萧伯纳和欧内斯特·纽曼，人们也相信他们知道自己在做什么。</div>
+        </div>
+
+        <div class="sent" id="s6">
+          <div class="src">"<b>So</b> few authors have brains enough or literary gift enough to keep their own end up in journalism," Newman wrote, "<b>that</b> I am tempted to define 'journalism' as 'a term of contempt <b>applied by</b> writers who are not read <b>to</b> writers who are'."</div>
+          <ul class="anat">
+            <li><b class="skel">⭐⭐ 头号难点：<code>So … that …</code> 被切成了两半</b>。<b>so 在前引号里，that 在后引号里，中间隔着 <code>Newman wrote</code> 这个「引述插入语」——它们是同一个结构</b>：<b>「如此……以至于……」</b>。<br><b>还原</b>：<code>So few authors have brains enough … <b>that</b> I am tempted to define 'journalism' as…</code><br><b>判据：引语被 <code>X said／wrote</code> 从中间切开时，先把两段引文接起来当一句读，再找结构词。</b>见到孤零零的 so 或 that，第一反应是「另一半在引号的另一边」。</li>
+            <li><b class="skel">⭐ 第二难点：<code>applied … to …</code> 被撑开了</b>。完整搭配是 <b><code>apply A to B</code>（把 A 用在 B 身上）</b>，这里是过去分词作定语：<code>a term of contempt <b>applied</b> <u>by writers who are not read</u> <b>to</b> writers who are</code>。<br><b>中间插进了七个词的 by 短语（施动者），把 applied 与 to 拆开了。</b><br>🔗 <b>这正是 2009 翻译（杜威）通篇的那把刀「成分被撑开」，在阅读里同样会出现</b>——<b>读法一致：先把成对的搭配接回去，再补中间的修饰。</b></li>
+            <li><b class="skel">第三难点：句末省略</b>。<code>to writers who are</code> 后面省略了 <b><code>read</code></b>（＝ writers who are <b>read</b>，有人读的作家），<b>与前面的 <code>writers who are not read</code> 构成对照。</b><b>判据：并列结构的后一半只保留到助动词为止 ⟹ 必是承前省略，把前一半的动词补回去。</b></li>
+            <li><b class="skel">习语</b>：<code>keep one's end up</code> ＝ <b>尽到自己那一份、不落下风、撑得住场面</b>（源自板球，守住自己那一端的球门）。<b>整句前半 ＝ 有本事在报刊撰稿这行当里站得住脚的作家太少了。</b></li>
+            <li><b class="skel">考点</b>：⭐⭐ <b>23 题的全部四个选项都产自这一句</b>。<b>正解 D 来自前半句（So few ⟹ Not all … are capable）</b>；<b>B 来自 contempt（但那是被讥讽者的态度）</b>；<b>C 来自 tempted（但主语是纽曼、宾语是「下定义」）</b>；A 来自上一句的 calling。</li>
+          </ul>
+          <div class="tr"><b>译</b>：纽曼写道：「智慧或文学天赋足以胜任撰稿工作的作家如此之少，我都禁不住想要把『报刊撰稿工作』解释成『没读者的作家对有读者的作家的轻蔑之辞』了。」</div>
+        </div>
+
+        <div class="sent" id="s7">
+          <div class="src">Neville Cardus, <b>who wrote for the Manchester Guardian from 1917 until shortly before his death in 1975,</b> <b>is</b> now <b>known solely as</b> a writer of essays on the game of cricket.</div>
+          <ul class="anat">
+            <li><b class="skel">骨架</b>：<code>Neville Cardus … <b>is</b> now <b>known solely as</b> a writer of essays on cricket.</code> —— <b>主谓之间被一整条非限定定语从句撑开了 14 个词。</b></li>
+            <li><b class="skel">读法</b>：<b>先跳过两个逗号之间的部分，把主语与谓语接上</b>（Cardus … is known as …），<b>读通了再回头补从句</b>。<br>🔗 <b>这是 2009 翻译整篇的头号刀法在阅读里的原样重现</b>：<b>看见「专有名词 ＋ 逗号 ＋ who／which…，」，先找逗号的另一半，中间整段先不读。</b></li>
+            <li><b class="skel">短语</b>：<code>known solely as X</code> ＝ <b>仅仅以 X 的身份为人所知</b>。<b>solely 这个词是本句的重量所在</b>——<b>「只剩下」这一层意思，正是④段落差感的来源。</b></li>
+            <li><b class="skel">考点</b>：⚠️ <b>24B 的产地。</b>本句说的是<b>他如今<u>只</u>以板球随笔作者的身份为人所知</b>（＝ 乐评家的身份<b>被遗忘</b>了），<b>不是「他的乐评家声誉有争议」。</b></li>
+          </ul>
+          <div class="tr"><b>译</b>：内维尔·卡达斯——一位从 1917 年直到 1975 年去世前不久一直为《曼彻斯特卫报》供稿的评论家——如今仅仅以板球比赛短评撰写者的身份为人所知。</div>
+        </div>
+
+        <div class="sent" id="s8">
+          <div class="src">During his lifetime, though, he was also one of England's foremost classical-music critics, and a stylist <b>so</b> widely admired <b>that</b> his Autobiography (1947) became a best-seller.</div>
+          <ul class="anat">
+            <li><b class="skel">骨架</b>：<code>he was <b>also</b> one of … critics, <b>and</b> a stylist …</code> —— <b>两个并列表语</b>（他既是顶尖乐评家，又是文体家）。</li>
+            <li><b class="skel">so…that</b>：<code>a stylist <b>so</b> widely admired <b>that</b> his Autobiography became a best-seller</code> ——<b>这次 so…that 没被切开，正好与 s6 形成对照</b>：<b>同一个结构，一处完整、一处被引号劈成两半，本篇一句里考一次。</b></li>
+            <li><b class="skel">插入语 though</b>：<code>During his lifetime, <b>though</b>, …</code> —— <b>though 作副词「然而」置于句中，用逗号隔开</b>，语气比句首的 However 轻。<b>它承担的是④段「今 ⟹ 昔」的转折</b>。<br>⭐ <b>作文可用</b>：把 However 换成句中的 though，行文更自然。</li>
+            <li><b class="skel">考点</b>：⭐ <b>本句与下一句（受封爵士）合起来构成「昔日荣耀」，与❶❷❺句的「今日凋零」形成落差。</b><b>24B 就是把这个<u>落差</u>误读成了<u>争议</u>。</b></li>
+          </ul>
+          <div class="tr"><b>译</b>：然而在他的一生之中，他也是英国最优秀的古典音乐评论家之一，同时还是一位广受赞誉的文体家，其 1947 年出版的《自传》更是成为畅销书。</div>
+        </div>
+
+        <div class="sent" id="s9">
+          <div class="src">Journalistic tastes <b>had changed</b> long before his death, and postmodern readers <b>have little use for</b> the richly upholstered Vicwardian prose <b>in which</b> he specialized.</div>
+          <ul class="anat">
+            <li><b class="skel">骨架</b>：两个并列分句，<b>时态一前一后</b>：<code>had changed</code>（过去完成，<b>早在他去世<u>之前</u>就已改变</b>）＋ <code>have little use for</code>（现在完成／一般现在，<b>说的是当下</b>）。<br><b>这组时态差本身就是信息</b>：<b>品味的改变早于他的死亡 ⟹ 他晚年就已经被时代甩下了。</b></li>
+            <li><b class="skel">习语</b>：<code>have little use for sth.</code> ＝ <b>不怎么喜欢、看不上、觉得没什么用</b>（<b>不是「很少使用」</b>）。<b>这是 24A 的正源，也是本篇最值钱的一个短语。</b></li>
+            <li><b class="skel">定语从句</b>：<code>the … prose <b>in which</b> he specialized</code> —— <b><code>specialize <u>in</u> sth.</code> 的 in 被提到了关系代词前</b>，还原 ＝ <code>he specialized <b>in</b> the prose</code>。<b>判据：见到「介词 + which」，先把介词还给从句里的那个动词。</b></li>
+            <li><b class="skel">造词</b>：<code>Vicwardian</code> ＝ <b>Vic</b>torian（维多利亚时期）＋ Ed<b>wardian</b>（爱德华时期）<b>的合成词</b>，<b>不必查词典，拆开就能懂</b>；<code>richly upholstered</code> 本义「（家具）铺着厚软垫的」，<b>比喻文风<u>华丽繁复、堆砌厚重</u></b>。</li>
+            <li><b class="skel">考点</b>：⭐⭐ <b>24A 的正源</b>：<code>have little use for</code> ⟹ <code>may not appeal to readers today</code>，标准的同义改写。<b>同时它也否掉了 24C：他擅长的是<u>旧</u>时代的华丽文风，与 <code>modern</code> 对不上。</b></li>
+          </ul>
+          <div class="tr"><b>译</b>：早在他去世前，对新闻的品味就已经改变；他所擅长的极其华丽的维多利亚—爱德华时期风格的散文，后现代的读者不怎么喜欢了。</div>
+        </div>
+      </section>
+
+      <!-- ========== 熟词僻义 ========== -->
+      <section class="card">
+        <h2><span class="n">03+</span>熟词僻义清算表 · 29 处</h2>
+        <p style="font-size:.9rem;margin-bottom:12px">本篇是<b>文化评论文体</b>，用词偏英式、偏典雅，<b>不少词的「教材第一义项」在这里完全用不上</b>；更麻烦的是它有<b>五个英式习语</b>（keep one's end up／wear one's learning lightly／know what one is about／have little use for／in print），<b>这类习语查单词表是查不出来的，只能整条记。</b><b>下表左边写「你以为」，中间写本篇的<u>实际义项</u>——凡带 ⭐ 的都直接影响做题或读懂句子。</b></p>
+        <div class="tabwrap"><table class="ctab">
+          <tr><th>词 / 短语</th><th>你以为</th><th>本篇的义项</th><th>语境</th></tr>
+          <tr><td><code>far-reaching</code></td><td>够得很远</td><td><b>影响深远的</b></td><td>the most <b>far-reaching</b>（change）</td></tr>
+          <tr><td><code>inexorable</code> ⭐</td><td>（生词）</td><td><b>不可阻挡的、无法遏止的</b></td><td>the <b>inexorable</b> decline（21A 的反证：仍在进行，未到终点）</td></tr>
+          <tr><td><code>scope</code> ⭐</td><td>望远镜、示波器</td><td><b>范围、涵盖面</b></td><td>the <b>scope</b> and seriousness of their arts coverage（25B 的 Horizon 对应此词）</td></tr>
+          <tr><td><code>coverage</code> ⭐</td><td>覆盖、保险额度</td><td><b>（新闻的）报道</b></td><td>their arts <b>coverage</b>（艺术报道 ＝ 全文主题词）</td></tr>
+          <tr><td><code>to the point of</code></td><td>指向某点</td><td><b>到了……的程度</b></td><td>difficult <b>to the point of</b> impossibility（难到近乎不可能）</td></tr>
+          <tr><td><code>consist in large part of</code></td><td>在很大程度上包含</td><td><b>主要由……构成</b></td><td>collections … <b>consisted in large part of</b> newspaper reviews（21B 正源）</td></tr>
+          <tr><td><code>marvel at</code> ⭐⭐</td><td>奇迹、漫威</td><td><b>惊叹于（动词，带敬意）</b></td><td>To read such books today is to <b>marvel at</b> the fact…（21D 把它改成了 doubt）</td></tr>
+          <tr><td><code>learned</code> ⭐⭐</td><td>learn 的过去式</td><td><b>形容词 /ˈlɜːnɪd/：精深的、有学问的</b></td><td>their <b>learned</b> contents（那些精深的内容）</td></tr>
+          <tr><td><code>deem</code></td><td>（生词）</td><td><b>认为、视为</b>（＝ consider）</td><td>were once <b>deemed</b> suitable for publication</td></tr>
+          <tr><td><code>circulation</code> ⭐</td><td>血液循环</td><td><b>（报刊的）发行量</b></td><td>general-<b>circulation</b> dailies（面向大众发行的日报）</td></tr>
+          <tr><td><code>be removed from</code> ⭐</td><td>被移走</td><td><b>与……相隔遥远、与……无缘</b></td><td>We are even farther <b>removed from</b> the … reviews</td></tr>
+          <tr><td><code>unfocused</code> ⭐⭐</td><td>没对上焦</td><td><b>漫无主题的、题材不设限的</b></td><td>the <b>unfocused</b> newspaper reviews（<b>22A 正源</b>）</td></tr>
+          <tr><td><code>dirt-cheap</code></td><td>脏而便宜</td><td><b>极其便宜（价贱如土）</b></td><td>newsprint was <b>dirt-cheap</b></td></tr>
+          <tr><td><code>stylish</code> ⭐</td><td>时髦的</td><td><b>文体讲究的、有格调的</b></td><td><b>stylish</b> arts criticism（<b>22B 的产地：不是 casual</b>）</td></tr>
+          <tr><td><code>ornament</code></td><td>圣诞挂饰</td><td><b>装饰、点缀（此处为抽象义）</b></td><td>considered an <b>ornament</b> to the publications</td></tr>
+          <tr><td><code>at length</code> ⭐⭐</td><td>最后、终于</td><td><b>详尽地、长篇大论地</b></td><td>write in detail and <b>at length</b>（<b>22C 的产地</b>）</td></tr>
+          <tr><td><code>Theirs</code> ⭐</td><td>他们的（后接名词）</td><td><b>名词性物主代词：他们所从事的那件事</b></td><td><b>Theirs</b> was a serious business</td></tr>
+          <tr><td><code>wear one's learning lightly</code> ⭐</td><td>轻轻穿着学问</td><td><b>不掉书袋、深入浅出</b></td><td>those reviewers who <b>wore their learning lightly</b></td></tr>
+          <tr><td><code>know what one is about</code> ⭐⭐</td><td>知道是关于什么的</td><td><b>心里有数、知道自己在干什么（内行）</b></td><td>could be trusted to <b>know what they were about</b></td></tr>
+          <tr><td><code>calling</code> ⭐⭐</td><td>打电话</td><td><b>天职、使命感（名词）</b></td><td>believed in journalism as a <b>calling</b>（<b>23A 把它换成了 duty</b>）</td></tr>
+          <tr><td><code>keep one's end up</code> ⭐</td><td>把一头举起来</td><td><b>尽到本分、撑得住场面、不落下风</b>（源自板球）</td><td>brains enough … to <b>keep their own end up</b> in journalism</td></tr>
+          <tr><td><code>a term of contempt</code> ⭐⭐</td><td>轻蔑的期限</td><td><b>一句骂人的话／轻蔑之辞</b>（term ＝ 说法、用语）</td><td>define 'journalism' as 'a <b>term of contempt</b>…'（<b>23B 的产地</b>）</td></tr>
+          <tr><td><code>read</code>（被动） ⭐</td><td>阅读</td><td><b>被人读、有读者</b></td><td>writers who are <b>not read</b> to writers who <b>are</b>（省略了 read）</td></tr>
+          <tr><td><code>in print</code> ⭐</td><td>正在印刷中</td><td><b>（书）仍在发行、买得到</b>（反义 out of print 绝版）</td><td>only one of his books is now <b>in print</b></td></tr>
+          <tr><td><code>save</code>（介词） ⭐⭐</td><td>拯救、节省</td><td><b>介词：除了……之外</b>（＝ except）</td><td>unknown <b>save to</b> specialists（<b>24C 的产地</b>）</td></tr>
+          <tr><td><code>remote</code> ⭐</td><td>遥远的、遥控器</td><td><b>（可能性）微乎其微的</b></td><td>The prospect seems <b>remote</b></td></tr>
+          <tr><td><code>have little use for</code> ⭐⭐</td><td>很少使用</td><td><b>不喜欢、看不上</b></td><td>readers <b>have little use for</b> the … prose（<b>24A 正源</b>）</td></tr>
+          <tr><td><code>upholstered</code> ⭐</td><td>（生词）</td><td><b>（本义）装了厚软垫的 ⟹ 喻文风华丽繁复</b></td><td>the richly <b>upholstered</b> Vicwardian prose</td></tr>
+          <tr><td><code>headlong retreat</code></td><td>头朝下后退</td><td><b>迅速溃退、一路败退</b></td><td>the amateur tradition … has been in <b>headlong retreat</b></td></tr>
+        </table></div>
+        <div class="waver" style="margin-top:12px">⭐⭐ <b>本表最该背的五条（直接决定四道题）</b>：<code>unfocused</code>（22A）· <code>at length</code>（22C 的诱饵）· <code>a term of contempt</code>（23B）· <code>save to</code>（24C）· <code>have little use for</code>（24A）。<br>
+        📌 <b>五个英式习语的共同特征：字面全都读得懂，合起来的意思却完全另一回事。</b><b>判据很简单——「字面意思放进句子里读不通」就是信号</b>（「很少使用那种散文」在句子里说不通，「不喜欢那种散文」才通）。<b>读不通就停下来，别硬往下推。</b></div>
+      </section>
+
+      <!-- ========== 词汇 ========== -->
+      <section class="card">
+        <h2><span class="n">04</span>词汇复盘（点卡片看详情）</h2>
+        <div class="filters">
+          <button class="fbtn on" data-f="all">全部</button>
+          <button class="fbtn" data-f="core">核心词</button>
+          <button class="fbtn" data-f="phrase">短语</button>
+          <button class="fbtn" data-f="poly">熟词僻义</button>
+          <button class="fbtn" data-f="write">写作可用</button>
+        </div>
+        <div class="vgrid" id="vgrid"></div>
+      </section>
+
+      <!-- ========== 写作素材 ========== -->
+      <section class="card">
+        <h2><span class="n">05</span>可搬进作文的素材 · 7 组</h2>
+        <p style="font-size:.9rem;margin-bottom:12px">本篇是<b>英式文化评论</b>，句式典雅、转折讲究，最值得搬的是它<b>「谈一件事情的衰落」</b>的那套写法——<b>英语一大作文里「传统技艺无人继承」「纸质阅读式微」「手写字消失」这类题，用得上的正是这套句式。</b><b>第 1、2 组可套任何主题，优先背这两条。</b></p>
+        <div class="wb">
+          <div class="wbi"><div class="p">Of all the changes that have taken place in X over the past decade, perhaps the most far-reaching has been …</div><div class="u">在过去十年 X 所经历的全部变化中，影响最深远的或许是……<br>⟹ <b>本篇第一号素材，一个句子就把「范围 ＋ 最高级 ＋ 主张」三件事说完</b>，用作大作文第二段的首句极稳。<b>比 With the development of… 高出一整档。</b><br>可套：<code>Of all the changes that have taken place in campus life over the past decade, perhaps the most far-reaching has been the quiet disappearance of face-to-face conversation.</code>　📌 <b>the most far-reaching 后面直接省掉 change，别再写一遍。</b></div></div>
+          <div class="wbi"><div class="p">It is difficult to the point of impossibility for sb to imagine a time when …</div><div class="u">对某人来说，要想象一个……的年代，几乎是不可能的。<br>⟹ <b>「今昔对比」的开场白</b>：不直接说「过去如何」，而是说「今人已想象不出过去如何」，<b>落差感一下就出来了</b>。<br>可套：<code>It is difficult to the point of impossibility for a child born after 2010 to imagine a time when one had to memorize a friend's phone number.</code>　📌 <code>形容词 + to the point of + 名词</code> 是可以拆出来单用的句型（<code>polite to the point of coldness</code>）。</div></div>
+          <div class="wbi"><div class="p">In those far-off days, it was taken for granted that …</div><div class="u">在那个遥远的年代，……被视为理所当然。<br>⟹ <b>专门用来写「昔日的常态」</b>，<code>it was taken for granted that</code> 这个被动式<b>不必指出是谁认为</b>，正好写社会共识。<br>可套：<code>In those far-off days, it was taken for granted that a craftsman would spend ten years learning a single skill.</code></div></div>
+          <div class="wbi"><div class="p">X is now known solely as … ; yet during his/its lifetime, X was also …</div><div class="u">X 如今仅仅以……为人所知；然而在当年，X 还曾是……<br>⟹ <b>「落差句式」的模板</b>：先给今日的窄，再给昔日的宽，<b>中间用 yet / though 一转</b>。<b>写「某种传统被简化、被误解」时极好用。</b><br>可套：<code>Calligraphy is now known solely as a hobby for the retired; yet for centuries it was also the very measure of a scholar's cultivation.</code>　📌 <b>solely 比 only 正式，且强调「只剩这一项」。</b></div></div>
+          <div class="wbi"><div class="p">A has little use for B</div><div class="u">A 不喜欢 B／看不上 B／觉得 B 没什么用。<br>⟹ <b>比 dislike 委婉、比 be not interested in 有力</b>，而且<b>自带「时代变了」的味道</b>（说的不是个人好恶，是一整代人的取向）。<br>可套：<code>A generation raised on short videos has little use for the patience that a long novel demands.</code>　⚠️ <b>little 前不加 a</b>（a little use 就成肯定了）。</div></div>
+          <div class="wbi"><div class="p">The prospect seems remote. / Is there any chance that …?</div><div class="u">前景似乎渺茫。／……还有可能吗？<br>⟹ <b>「自问 ＋ 自答」的两句式</b>，本篇⑤段开头就是这么写的：<b>先抛一个问句制造停顿，再用一个极短的句子给出判断。</b><b>长句堆多了之后插这么一组，节奏立刻活过来。</b><br>可套：<code>Is there any chance that handwriting will regain its old place in daily life? The prospect seems remote.</code></div></div>
+          <div class="wbi"><div class="p">Moreover, X has been in headlong retreat.</div><div class="u">此外，X 已迅速走向衰落。<br>⟹ <b>收尾加码的一句</b>：前面给了第一条理由，用 Moreover 再补第二条，<b>而 in headlong retreat 这个比喻（一路溃退）比 declining 生动得多。</b><br>可套：<code>Moreover, the habit of reading a book from cover to cover has been in headlong retreat.</code>　📌 <b>同族表达：<code>on the wane</code>（走下坡路）· <code>losing ground</code>（节节失守）。</b></div></div>
+        </div>
+      </section>
+
+      <footer>2010 英语（一）Text 1 · 报纸艺术评论的衰落 · 由 Claude 逐句精读并复盘 · 素材取自原卷 p3–p4 与黄皮书精讲 p13–p19</footer>
+    </main>
+    <aside>
+      <div id="panel">
+        <button class="close" onclick="document.getElementById('panel').classList.remove('open')">收起</button>
+        <div class="hint">点正文里的<b>黄色高亮词</b>，或下方词汇卡片，这里出详情。</div>
+      </div>
+    </aside>
+  </div>
+</div>
+<button id="yd">查有道</button>
+
+<script>
+const V={
+  farreaching:{w:"far-reaching",ipa:"/ˌfɑː ˈriːtʃɪŋ/",pos:"adj.",tags:["core","write"],cn:"影响深远的，波及广泛的",en:"having a great influence or effect",ex:"perhaps the most far-reaching has been the inexorable decline…",mem:"⭐ <b>本篇的第一个考点就藏在它后面的省略里</b>：<code>the most far-reaching</code> 后省略了 <b>change</b>，主语其实是「最深远的那个<b>变化</b>」。<br>📌 <b>句首 <code>Of all + 复数名词</code> ＋ 最高级 ⟹ 固定框架「在所有 X 里，最……的是 Y」。</b>",syn:"profound · sweeping · wide-ranging",conf:"⭐ <b>作文可用</b>：<code>a far-reaching impact on society</code>。⚠️ 别与 <code>long-reaching</code>（不存在的搭配）混。"},
+  inexorable:{w:"inexorable",ipa:"/ɪnˈeksərəbl/",pos:"adj.",tags:["core"],cn:"<b>不可阻挡的，无法遏止的</b>",en:"impossible to stop or prevent",ex:"the inexorable decline in the scope and seriousness of their arts coverage",mem:"in-（否定）＋ exorable（可劝动的，来自 exorare 恳求）⟹ <b>求也没用 ⟹ 挡不住</b>。<br>⭐ <b>它修饰的是 decline，说的是「衰落挡不住」，<u>不是「已经衰落完了」</u>。</b>",syn:"relentless · unstoppable · irreversible",conf:"⚠️⚠️ <b>21A 就死在这个区别上</b>：<code>inexorable <b>decline</b></code>（不可遏止的<b>衰落</b>，仍在进行）≠ <code>has <b>disappeared</b></code>（已经消失）。<b>见到 decline / diminish / fade 这类词，选项若换成 disappear / vanish / be gone，一律是「程度推到终点」。</b>"},
+  scope:{w:"scope",ipa:"/skəʊp/",pos:"n.",tags:["poly","write"],cn:"<b>范围，涵盖面</b>；（另义）机会、余地",en:"the range of things that a subject or activity deals with",ex:"the decline in the scope and seriousness of their arts coverage",mem:"⭐⭐ <b>25B 的正源之一</b>：<code>scope</code>（范围）⟹ 标题里的 <code><b>Horizon</b></code>（视域、眼界所及的范围）。<b>两个词在「所能覆盖的疆域」这一点上是同一个比喻。</b>",syn:"range · breadth · extent",conf:"⚠️ <b>别按「望远镜（telescope）／示波器」去理解。</b>📌 另一个高频义是<b>「余地」</b>：<code>There is scope for improvement.</code>（尚有改进余地）⭐ 作文可用。"},
+  seriousness:{w:"seriousness",ipa:"/ˈsɪəriəsnəs/",pos:"n.",tags:["core"],cn:"严肃性，分量",en:"the quality of being important and deserving attention",ex:"the scope and seriousness of their arts coverage",mem:"⭐ <b>与 scope 并列，构成本文衡量「艺术报道」的两个维度</b>：<b>范围（写多少）＋ 严肃性（写多深）。</b><br>📌 <b>③段那四个特征词正好分头对应这两个维度</b>：unfocused 对应<b>范围</b>，in detail and at length ／ a serious business 对应<b>严肃性</b>。",syn:"gravity · weightiness · depth",conf:"⚠️ <b>22D 把「严肃」与「激进」搞混了</b>：<code>a serious business</code> 说的是<b>工作态度认真</b>，与「持什么观点」无关。"},
+  artscoverage:{w:"arts coverage",ipa:"/ɑːts ˈkʌvərɪdʒ/",pos:"n.",tags:["core","poly"],cn:"<b>艺术报道（报纸上关于艺术的版面与评论）</b>",en:"the reporting of the arts in a newspaper",ex:"the inexorable decline in the scope and seriousness of their arts coverage",mem:"⭐⭐⭐ <b>全文主题词，第一句就钉死了。</b><code>coverage</code> 在新闻语境里 ＝ <b>报道</b>（动词 cover ＝ 采访报道，③❷句 <code>the events they <b>covered</b></code> 正是这个义）。",syn:"arts reporting · arts criticism（本文两词互换使用）",conf:"⚠️⚠️ <b>25 题的 A 与 C 都死在这个词上</b>：<b>A 把对象换成了「报纸（Newspapers）」，C 把对象放大成了「新闻业（Journalism）」。</b><b>本文衰落的既不是报纸也不是新闻业，是报纸里的「艺术评论」这一块。</b>"},
+  topoint:{w:"to the point of",ipa:"/tə ðə pɔɪnt əv/",pos:"phr.",tags:["phrase","write"],cn:"<b>到了……的程度</b>",en:"to such a degree that it becomes…",ex:"It is difficult to the point of impossibility for…",mem:"⭐ <b>结构 ＝ 形容词 ＋ to the point of ＋ 名词</b>：先给一个形容词，再用一个名词把程度推到极点。<br>本句 ＝ <b>难到了「不可能」的地步</b>。",syn:"almost to the extent of · verging on",conf:"⭐ <b>作文可用</b>：<code>frank to the point of rudeness</code>（坦率到近乎无礼）· <code>simple to the point of crudeness</code>。📌 <b>后面接名词，不接形容词</b>（impossibility 不是 impossible）。"},
+  consistin:{w:"consist in large part of",ipa:"/kənˈsɪst/",pos:"phr.",tags:["phrase","poly"],cn:"<b>大部分由……构成</b>",en:"to be mostly made up of",ex:"collections of criticism … consisted in large part of newspaper reviews",mem:"⭐⭐ <b>21B 的正源之一</b>：20 世纪最重要的评论文集<b>大半由报纸评论构成</b> ⟹ 昔日报纸上的艺术评论既多又好。<br>📌 <code>consist <b>of</b></code> ＝ 由……组成（<code>in large part</code> 是插在中间的程度状语）。",syn:"be made up largely of · be composed mainly of",conf:"⚠️⚠️ <b>高危形近</b>：<code>consist <b>of</b></code>（由……组成）≠ <code>consist <b>in</b></code>（在于、存在于，＝ lie in）。<b>本句是 consist of 被 in large part 撑开了，不是 consist in。</b>"},
+  marvelat:{w:"marvel at",ipa:"/ˈmɑːvl/",pos:"v.",tags:["poly","core"],cn:"<b>惊叹于，对……感到惊奇</b>（带敬意）",en:"to be very surprised and admire sth",ex:"To read such books today is to marvel at the fact that…",mem:"⭐⭐ <b>21D 的产地，全篇最窄的一刀。</b>原文说今人<b>惊叹</b>于「昔日竟认为它适合登日报」——<b>这是仰慕、感慨</b>；D 却写成 <code><b>doubt</b> the suitability</code>（怀疑是否合适）。<br>📌 <b>marvel 作动词是「惊叹」，作名词是「奇迹」。</b>",syn:"be amazed at · wonder at",conf:"⚠️ <b>方向词校验</b>：marvel at ／ admire ／ be struck by 都是<b>正向</b>；doubt ／ question ／ be skeptical of 是<b>负向</b>。<b>做题时先给定位句标一个「＋」或「－」，选项方向不对直接排。</b>"},
+  learned:{w:"learned",ipa:"/ˈlɜːnɪd/",pos:"adj.",tags:["poly","core"],cn:"<b>精深的，有学问的</b>（⚠️ 不是 learn 的过去式）",en:"having or showing a lot of knowledge from study",ex:"their learned contents were once deemed suitable for publication",mem:"⭐⭐ <b>读音就是判据</b>：形容词读 <b>/ˈlɜːnɪd/</b>（两个音节，-ed 发 /ɪd/），动词过去式读 /lɜːnd/。<br>📌 <b>位置判据更快：它处在「所有格 ＋ ___ ＋ 名词」的槽里（their ___ contents），只能是形容词。</b><br>同类：<code>aged</code> /ˈeɪdʒɪd/ · <code>beloved</code> /bɪˈlʌvɪd/ · <code>blessed</code> /ˈblesɪd/。",syn:"erudite · scholarly · profound",conf:"⚠️ <b>读成过去式会怎样</b>：<code>their learned contents were…</code> 会被读成「他们学过的内容」，虽然勉强通，但<b>与「竟然适合登在大众日报上」这句感慨接不上</b>——<b>要有「内容很深」这一层，「竟然」才有着落。</b>"},
+  deemed:{w:"deem",ipa:"/diːm/",pos:"v.",tags:["core","write"],cn:"认为，视为",en:"to consider or judge sth in a particular way",ex:"were once deemed suitable for publication",mem:"⭐ <b>正式书面语，＝ consider，常用被动式 <code>be deemed + 形容词/名词</code>。</b><br>📌 本句 ＝ 曾经<b>被认为</b>适合刊登。",syn:"consider · regard as · judge",conf:"⭐ <b>作文可用</b>：<code>Such behaviour is widely deemed unacceptable.</code>（比 is considered 更正式）"},
+  generalcirc:{w:"general-circulation dailies",ipa:"/ˌsɜːkjuˈleɪʃn/",pos:"n.",tags:["poly"],cn:"<b>面向大众发行的日报</b>",en:"newspapers published daily for the general public",ex:"suitable for publication in general-circulation dailies",mem:"⭐ <b>circulation 在报刊语境里 ＝ 发行量／发行范围</b>，不是「血液循环」。<br>📌 <code>general-circulation</code> ＝ 面向普通大众（相对于「专业期刊」）；<code>dailies</code> ＝ 日报（名词复数，daily 作名词）。",syn:"mass-market newspapers · popular dailies",conf:"📌 <b>这个词组是②❸句「惊叹」的落点</b>：那么精深的内容，居然登在<b>给普通人看的日报</b>上——<b>反差全在「general-circulation」这个定语上。</b>"},
+  unfocused:{w:"unfocused",ipa:"/ʌnˈfəʊkəst/",pos:"adj.",tags:["poly","core"],cn:"<b>漫无主题的，题材不设限的</b>",en:"not concentrated on one particular subject",ex:"the unfocused newspaper reviews published in England",mem:"⭐⭐⭐ <b>22A 的正源，本篇最该猜对的一个词。</b>两条猜义路径：<br>① <b>构词法</b>：un-（否定）＋ focused（集中的）⟹ 不聚焦 ⟹ <b>内容包罗万象</b>；<br>② <b>与首段呼应</b>：①句说衰落的是 <code>the <b>scope</b> of arts coverage</code>（范围），<b>反推昔日「范围广」</b>。<br><b>两条路指向同一个意思 ⟹ 可以放心用。</b>",syn:"wide-ranging · not restricted in theme",conf:"⚠️ <b>别按摄影的「没对上焦」去理解</b>。⭐ <b>选项 <code>free themes</code>（主题自由）就是它的抽象概括</b>——<b>这类「原文用具体词、选项用抽象词」的对应，正是正确项的常见长相。</b>"},
+  dirtcheap:{w:"dirt-cheap",ipa:"/ˌdɜːt ˈtʃiːp/",pos:"adj.",tags:["phrase","write"],cn:"<b>极其便宜的（价贱如土）</b>",en:"very cheap indeed",ex:"newsprint was dirt-cheap",mem:"dirt（泥土）＋ cheap ⟹ <b>便宜得跟土一样</b>。<br>📌 <b>这句是在解释「为什么昔日评论能写得又长又多」——纸便宜，版面不值钱。</b>",syn:"very cheap · costing next to nothing",conf:"⭐ <b>作文可用</b>：<code>Data storage has become dirt-cheap.</code>　📌 同族的「名词＋形容词」复合词：<code>ice-cold</code> · <code>rock-solid</code> · <code>razor-sharp</code>。"},
+  stylish:{w:"stylish",ipa:"/ˈstaɪlɪʃ/",pos:"adj.",tags:["poly","core"],cn:"<b>文体讲究的，有格调的</b>",en:"written with elegance and distinctive style",ex:"stylish arts criticism was considered an ornament to the publications",mem:"⚠️⚠️ <b>22B 的产地。</b><b>stylish ＝ 有风格、讲究；casual ＝ 随意、不讲究——两者相反。</b><br>📌 <b>③❸句 <code>Theirs was a serious business</code> 再补一刀</b>：他们从事的是严肃的工作，怎么会「风格随意」。",syn:"elegant · polished · well-crafted",conf:"⚠️ <b>日常义「时髦的」在这里用不上</b>（<code>a stylish coat</code> 一件时髦大衣）。<b>修饰 writing / prose / criticism 时，一律落在「文笔讲究」上。</b>"},
+  ornament:{w:"ornament",ipa:"/ˈɔːnəmənt/",pos:"n.",tags:["poly","write"],cn:"<b>装饰，点缀</b>（此处为抽象义：为刊物增色的东西）",en:"a person or thing that adds beauty or distinction to sth",ex:"considered an ornament to the publications in which it appeared",mem:"⭐ <b>抽象用法要注意搭配：<code>an ornament <u>to</u> sth</code>（为某物增色的东西）</b>，不是 of。<br>📌 <b>这句在说昔日艺术评论的地位：不是可有可无的填充，而是<u>刊物的门面</u>。</b>",syn:"adornment · embellishment · credit to",conf:"⭐ <b>作文可用</b>：<code>He is an ornament to his profession.</code>（他为这一行增光）📌 形容词 <code>ornamental</code>（装饰性的）· 动词 <code>ornament</code>（装饰，＝ decorate）。"},
+  faroff:{w:"far-off",ipa:"/ˌfɑːr ˈɒf/",pos:"adj.",tags:["core"],cn:"遥远的（时间或空间）",en:"distant in time or space",ex:"In those far-off days…",mem:"⭐ <b>这里说的是<u>时间</u>上的遥远</b>：那个遥远的年代。<br>📌 <b>它是③段的时间锚</b>——<b>凡见 In those days / at that time / then，就要标一个「昔」。</b>",syn:"distant · long-past · bygone",conf:"⭐ <b>作文可用</b>：<code>in those far-off days when…</code>（在那个……的遥远年代）——<b>今昔对比型作文的现成开头。</b>"},
+  takengranted:{w:"take sth for granted",ipa:"/ɡrɑːntɪd/",pos:"phr.",tags:["phrase","write"],cn:"<b>认为……理所当然</b>",en:"to assume sth is true or will happen without questioning it",ex:"it was taken for granted that the critics … would write in detail and at length",mem:"⭐ <b>本句用的是被动 ＋ 形式主语：<code>it was taken for granted <u>that</u> …</code></b>——<b>不必说是谁认为，正好写「当年的社会共识」。</b>",syn:"assume as a matter of course · regard as self-evident",conf:"⭐⭐ <b>作文可用（高频）</b>：<code>We often take clean air for granted.</code>（我们常把洁净空气当作理所当然）· <code>It is taken for granted that…</code>（人们理所当然地认为……）"},
+  atlength:{w:"at length",ipa:"/ət leŋθ/",pos:"phr.",tags:["poly","phrase"],cn:"<b>详尽地，长篇大论地</b>；（另义）终于",en:"in detail and taking a lot of time",ex:"would write in detail and at length about the events they covered",mem:"⚠️⚠️ <b>22C 的诱饵就在这里。</b><code>in detail and at length</code> ＝ <b>写得又细又长</b> ⟹ 选项 <code><b>elaborate</b></code>（详尽的）确实对得上……<br>⭐ <b>但原文详尽的是「<u>写的内容</u>」，C 却把它贴到了 <code>layout</code>（版面布局）上——全文没有一句话谈过排版。</b>",syn:"in depth · extensively · at great length",conf:"⚠️ <b>另一义「终于、最终」</b>（<code>At length he agreed.</code>）在本篇用不上，<b>判据是它与 in detail 并列 ⟹ 必是「详尽地」。</b>"},
+  theirs:{w:"Theirs",ipa:"/ðeəz/",pos:"pron.",tags:["poly"],cn:"<b>他们所从事的那件事（名词性物主代词）</b>",en:"the thing(s) belonging to them",ex:"Theirs was a serious business",mem:"⭐ <b>判据：Theirs 直接作主语、后面不接名词 ⟹ 它自己代表「他们的那样东西」，须回上文找它替代什么。</b><br>本句 ＝ <code>Their <b>business/work</b> was a serious business.</code> ⟹ <b>他们从事的是严肃的工作。</b>",syn:"Their work · What they did",conf:"⚠️ <b>别读成 There is</b>（拼写只差一个字母，句首大写时尤其容易看花）。<b>判据：Theirs 后面直接跟动词，There 后面跟的是 be 加名词。</b>"},
+  worelearning:{w:"wear one's learning lightly",ipa:"/weə ... ˈlɜːnɪŋ/",pos:"phr.",tags:["phrase","poly"],cn:"<b>不掉书袋，深入浅出</b>",en:"to be very knowledgeable without showing it off",ex:"those reviewers who wore their learning lightly, like Shaw and Newman",mem:"⭐ <b>字面「把学问轻轻地穿在身上」⟹ 有学问但不端着</b>。<br>📌 <b>本句的让步逻辑很重要</b>：<code><b>even</b> those reviewers who…</code>——「<b>连</b>这些举重若轻的人<b>也</b>被信任是内行的」，<b>言下之意：那些一本正经的更不必说。</b>",syn:"be unpretentious about one's knowledge",conf:"⚠️ <b>别读成「学得很轻松」。</b>📌 <b>learning 在这里是名词「学问、学识」</b>，不是动名词。⭐ <b>作文可用</b>：<code>a scholar who wears his learning lightly</code>。"},
+  knowabout:{w:"know what one is about",ipa:"/nəʊ wɒt/",pos:"phr.",tags:["phrase","poly"],cn:"<b>心里有数，知道自己在干什么（内行）</b>",en:"to be competent and know exactly what one is doing",ex:"could be trusted to know what they were about",mem:"⚠️⚠️ <b>不是「知道自己关于什么」。</b>这里的 <code>be about</code> ＝ <b>正在忙的事、干的勾当</b>（同源：<code>What are you about?</code> 你在搞什么）。<br>⭐ <b>整句 ＝ 人们相信他们是内行、拿捏得住。</b>",syn:"know one's stuff · know one's business",conf:"⚠️ <b>典型的「字面读得懂、合起来不对」的英式习语。</b><b>判据：把字面意思代进句子——「人们相信他们知道自己是关于什么的」读不通 ⟹ 必是习语。读不通就是信号。</b>"},
+  calling:{w:"calling",ipa:"/ˈkɔːlɪŋ/",pos:"n.",tags:["poly","core"],cn:"<b>天职，使命（自己认定要做的事）</b>",en:"a strong urge or sense of duty to do a particular job",ex:"These men believed in journalism as a calling",mem:"⭐⭐ <b>23A 的产地。</b><b>calling ＝ 内心的召唤、自愿担起的天职（<u>主观意愿</u>）</b>；<b>duty ＝ 客观职责（<u>外部要求</u>）</b>。<br>📌 <b>A 项还顺手把「这几个人这么想」放大成了「作家都该这样」——一句话动了两处。</b>",syn:"vocation · mission · life's work",conf:"⚠️ <b>别按「打电话」理解</b>。⭐ <b>作文可用</b>：<code>Teaching, for her, was never a job but a calling.</code>（教书对她从来不是工作，而是天职）"},
+  keependup:{w:"keep one's end up",ipa:"/kiːp ... end ʌp/",pos:"phr.",tags:["phrase","poly"],cn:"<b>尽到自己那一份，撑得住场面，不落下风</b>",en:"to perform one's part adequately, especially under pressure",ex:"brains enough or literary gift enough to keep their own end up in journalism",mem:"⭐ <b>源自板球</b>：守住自己那一端的球门 ⟹ <b>在这行里站得住脚</b>。<br>⟹ <b>整句前半 ＝ 「有本事在报刊撰稿这行当里撑得住的作家太少了」，这就是 23D 的正源。</b>",syn:"hold one's own · pull one's weight",conf:"⚠️ <b>字面「把一头举起来」完全不通 ⟹ 必是习语。</b>📌 <b>本篇一共五个这类英式习语</b>（另有 wear one's learning lightly · know what one is about · have little use for · in print），<b>它们的共同点是：单词全认识，合起来是另一回事。</b>"},
+  tempted:{w:"be tempted to do",ipa:"/ˈtemptɪd/",pos:"phr.",tags:["poly","phrase"],cn:"<b>禁不住想要做（某事）</b>",en:"to feel a strong urge to do sth",ex:"I am tempted to define 'journalism' as…",mem:"⚠️⚠️ <b>23C 的产地。</b><b>这个 tempted 的主语是<u>纽曼</u>，宾语是「<u>下定义</u>」这个动作</b>——他说的是「我都忍不住想把新闻写作定义成……」。<br><b>C 却写成 <code>Writers are likely to be tempted <u>into journalism</u></code>（作家会被新闻业吸引），主语和宾语全换了。</b>",syn:"feel inclined to · can hardly resist",conf:"⚠️ <b>典型的「原词拼接」</b>（⟹ R39）：<b>tempted 与 journalism 两个词都在原文里，但分属两个完全不同的成分。</b><b>做法：把短语当整体回搜——原文里有 <code>tempted to define</code>，没有 <code>tempted into journalism</code>。</b>"},
+  contempt:{w:"a term of contempt",ipa:"/kənˈtempt/",pos:"n.",tags:["poly","core"],cn:"<b>一句骂人的话，轻蔑之辞</b>（term ＝ 说法、用语）",en:"a word used to express scorn",ex:"'a term of contempt applied by writers who are not read to writers who are'",mem:"⭐⭐⭐ <b>23B 的产地，本篇第二贵的一刀。</b><b>这份轻蔑是「<u>没读者的作家</u>」对「<u>有读者的作家</u>」的——纽曼是<u>引来挖苦</u>的，不是他自己的主张。</b><br>📌 <b>判据：见到 <code>define A as B</code> / <code>a term of…</code> 这类「把某个说法当成谈论对象」的框架，其中的褒贬属于<u>使用那个说法的人</u>，不属于说话人。</b>",syn:"a term of abuse · a slur",conf:"⚠️ <b>上下文还有双保险</b>：紧邻的上一句刚说完这些人「以撰稿为天职、以见报为<b>荣</b>（proud）」，<b>下一句就得出「做记者可耻」，逻辑接不上。</b><b>观点题的答案必须与紧邻上下文接得上气。</b>"},
+  notread:{w:"writers who are not read",ipa:"/riːd/",pos:"结构",tags:["poly"],cn:"<b>没有人读的作家（read 的被动 ＝ 被读、有读者）</b>",en:"writers whose books nobody reads",ex:"applied by writers who are not read to writers who are",mem:"⭐ <b>两个难点叠在一起</b>：<br>① <b><code>read</code> 的被动义 ＝ 「被人读、有读者」</b>（<code>a widely read author</code> 一位读者众多的作家）；<br>② <b>句末 <code>writers who are</code> 后省略了 <code>read</code></b>——<b>并列结构的后一半只留到助动词为止，就是承前省略的信号。</b>",syn:"unread authors ↔ widely read authors",conf:"⚠️ <b>还有第三个难点：<code>applied … to …</code> 被中间七个词的 by 短语撑开了。</b><b>读法：先把 <code>applied to writers who are (read)</code> 接回去，再补中间的 by 短语。</b>🔗 <b>这与 2009 翻译（杜威）整篇的那把刀「成分被撑开」是同一把。</b>"},
+  virtually:{w:"virtually",ipa:"/ˈvɜːtʃuəli/",pos:"adv.",tags:["core","write"],cn:"几乎，差不多",en:"almost or very nearly",ex:"these critics are virtually forgotten",mem:"⭐ <b>它是个「留余地」的词</b>：<b>几乎被遗忘 ≠ 完全被遗忘</b>。<br>📌 <b>本文这类限定词很多</b>（virtually / most / in large part / little），<b>它们正是干扰项最爱抹掉的东西</b>（21A 抹掉了 decline 的「进行中」，就成了 disappeared）。",syn:"almost · practically · nearly",conf:"⭐ <b>作文可用</b>：<code>virtually every student</code>（几乎每个学生）。⚠️ <b>别与 <code>virtual</code>（虚拟的）的名词义混</b>——副词 virtually 绝大多数时候是「几乎」。"},
+  solely:{w:"solely",ipa:"/ˈsəʊlli/",pos:"adv.",tags:["core","write"],cn:"<b>仅仅，唯一地</b>",en:"only; not involving anything else",ex:"is now known solely as a writer of essays on the game of cricket",mem:"⭐⭐ <b>本句的重量全在这个词上</b>：<b>他如今「<u>只</u>剩下」板球随笔作者这一个身份为人所知</b>——<b>乐评家的身份被遗忘了。</b><br>📌 <b>④段的落差感就是靠 solely（今）与 one of England's foremost（昔）这一对词造出来的。</b>",syn:"only · exclusively · purely",conf:"⚠️⚠️ <b>24B 就是把这个「落差」误读成了「争议」</b>：<b>原文的词是 forgotten / unknown（<u>被遗忘</u>），不是 disputed（<u>有争议</u>）。被遗忘 ＝ 没人谈；有争议 ＝ 很多人在谈——两者互斥。</b>"},
+  foremost:{w:"foremost",ipa:"/ˈfɔːməʊst/",pos:"adj.",tags:["core","write"],cn:"最重要的，最杰出的",en:"most famous or important",ex:"one of England's foremost classical-music critics",mem:"fore（前）＋ most（最）⟹ <b>站在最前面的</b>。<br>📌 <b>本句是④段「昔日荣耀」的第一笔</b>，与下一句「受封爵士，第一位获此殊荣的音乐评论家」一起，把落差垫到最高。",syn:"leading · pre-eminent · most distinguished",conf:"⭐ <b>作文可用</b>：<code>first and foremost</code>（首先且最重要的是）——<b>比 first of all 更有力，适合放在段首。</b>"},
+  stylist:{w:"stylist",ipa:"/ˈstaɪlɪst/",pos:"n.",tags:["poly"],cn:"<b>文体家（文笔讲究的作者）</b>；（另义）造型师",en:"a writer with a distinctive and admired style",ex:"a stylist so widely admired that his Autobiography became a best-seller",mem:"⭐ <b>本句的 so…that 是完整的</b>，正好与③❺句被引号劈成两半的 so…that 形成对照——<b>同一个结构，本篇一处完整、一处切开。</b>",syn:"a fine prose writer · a master of style",conf:"⚠️ <b>别按美发／时尚的「造型师」理解</b>。<b>判据：与 critics、writer 这类词并列出现 ⟹ 必是「文体家」。</b>"},
+  knighted:{w:"knight",ipa:"/naɪt/",pos:"v.",tags:["core"],cn:"<b>封为爵士（动词）</b>",en:"to give sb the rank of knight",ex:"He was knighted in 1967, the first music critic to be so honored",mem:"⭐ <b>k 不发音</b>（同 knee / knife / know）。<br>📌 <code>the first music critic <b>to be so honored</b></code> 是<b>同位语 ＋ 不定式作定语</b>，<code>so</code> 回指 knighted ＝ <b>第一位获此殊荣的音乐评论家。</b>",syn:"be made a knight · receive a knighthood",conf:"📌 <b>这是④段荣耀的顶点</b>，紧接着❺句就是「如今只剩一本书在印」——<b>作者把最高点与最低点贴在一起写，落差是刻意造的。</b>"},
+  inprint:{w:"in print",ipa:"/ɪn prɪnt/",pos:"phr.",tags:["poly","phrase"],cn:"<b>（书）仍在发行，还买得到</b>",en:"（of a book）still available from the publisher",ex:"only one of his books is now in print",mem:"⚠️ <b>不是「正在印刷中」。</b><b>反义 <code>out of print</code> ＝ 绝版</b>——<b>这一对词是判据：既然有 out of print 表示绝版，in print 自然表示「还在发行」。</b>",syn:"still available · still published",conf:"⚠️ <b>本篇第五个「字面读得懂、合起来另一回事」的英式习语。</b>📌 <b>它与 <code>unknown save to specialists</code> 一起，把「今日凋零」写实了。</b>"},
+  vastbody:{w:"a vast body of",ipa:"/vɑːst ˈbɒdi/",pos:"phr.",tags:["phrase","write"],cn:"<b>大量的（作品／证据／文献）</b>",en:"a large collection or quantity of sth",ex:"his vast body of writings on music",mem:"⭐ <b><code>body</code> 在这里 ＝ 「一批、一大宗」</b>，不是「身体」。<br>📌 <b>常见搭配</b>：<code>a body of evidence</code>（大量证据）· <code>a body of research</code>（一批研究）· <code>a body of water</code>（水域）。",syn:"a large amount of · an extensive collection of",conf:"⭐⭐ <b>作文可用（高频学术腔）</b>：<code>A growing body of evidence suggests that…</code>（越来越多的证据表明……）——<b>比 Many studies show 高一档。</b>"},
+  savetospec:{w:"save (prep.)",ipa:"/seɪv/",pos:"prep.",tags:["poly","core"],cn:"<b>除了……之外（＝ except）</b>",en:"except for",ex:"his vast body of writings on music is unknown save to specialists",mem:"⚠️⚠️ <b>24C 的产地。</b><b>save 在这里是<u>介词</u>「除了」，不是动词「拯救／节省」</b> ⟹ 原句 ＝ <b>「除专业人士之外无人知晓」，这是一个<u>客观现状</u>。</b><br><b>C 却改成 <code>caters largely <b>to</b> modern specialists</code>（主要迎合现代专家）——把<u>结果</u>说成了<u>动机</u>。</b>",syn:"except · but · apart from",conf:"⚠️ <b>判据：save 后面直接跟介词短语（save to / save for）或名词，且句子已有谓语动词 ⟹ 必是介词。</b>📌 同族：<code>save for a few errors</code>（除了几处错误）· <code>all save one</code>（除一人之外全部）。<br>⭐ <b>C 项还有第二处漏洞：他擅长的是维多利亚—爱德华时期的<u>旧</u>文风，与 <code>modern</code> 也对不上。</b>"},
+  revival:{w:"revival",ipa:"/rɪˈvaɪvl/",pos:"n.",tags:["core","write"],cn:"复兴，重新流行",en:"the process of becoming popular or active again",ex:"Is there any chance that Cardus's criticism will enjoy a revival?",mem:"re-（再）＋ viv（活，同 survive／vivid）＋ -al。<br>⭐ <b><code>enjoy a revival</code> 是固定搭配</b>：「重新流行起来」。<br>📌 <b>⑤❶句是自问，❷句 <code>The prospect seems remote.</code> 是自答——「自问＋自答」的两句式很值得搬进作文。</b>",syn:"comeback · resurgence · renaissance",conf:"⭐ <b>作文可用</b>：<code>Traditional crafts are enjoying a modest revival.</code>（传统手艺正在小幅复兴）"},
+  remote:{w:"remote",ipa:"/rɪˈməʊt/",pos:"adj.",tags:["poly","core"],cn:"<b>（可能性）微乎其微的</b>；（另义）遥远的",en:"（of a possibility）very slight",ex:"The prospect seems remote.",mem:"⭐ <b>判据：remote 修饰 chance / possibility / prospect / likelihood 时，一律是「渺茫的」。</b><br>📌 本句 ＝ <b>复兴的前景似乎微乎其微</b>——<b>这是⑤段的总判断，后面两句给理由。</b>",syn:"slim · faint · negligible",conf:"⚠️ <b>别按「遥控器 / 偏远地区」理解。</b>📌 常用搭配：<code>a remote chance</code>（一线渺茫的机会）· <code>not the remotest idea</code>（一点头绪也没有）。"},
+  tastes:{w:"tastes",ipa:"/teɪsts/",pos:"n. (pl.)",tags:["poly","write"],cn:"<b>品味，爱好</b>；（另义）味道",en:"the kind of things sb likes",ex:"Journalistic tastes had changed long before his death",mem:"⭐ <b>本句的时态差本身就是信息</b>：<code><b>had changed</b></code>（过去完成）＋ <code>long before his death</code> ⟹ <b>品味的改变早于他去世 ⟹ 他晚年就已被时代甩下。</b>",syn:"preferences · fashions · sensibilities",conf:"⭐ <b>作文可用</b>：<code>Public tastes have shifted dramatically.</code>　📌 <b>单数 taste 才多指「味觉／鉴赏力」</b>（<code>a man of taste</code> 有品位的人）。"},
+  littleuse:{w:"have little use for",ipa:"/juːs/",pos:"phr.",tags:["poly","phrase"],cn:"<b>不喜欢，看不上，觉得没什么用</b>",en:"to dislike sb/sth or think they are of no value",ex:"postmodern readers have little use for the richly upholstered Vicwardian prose",mem:"⭐⭐⭐ <b>24A 的正源，本篇最值钱的一个短语。</b><br><b>字面「很少使用」代进句子读不通</b>（读者怎么「使用」散文？）<b>⟹ 必是习语 ⟹ 「不怎么喜欢」。</b><br>⟹ 选项 <code>may <b>not appeal to</b> readers today</code> 是标准同义改写。",syn:"dislike · have no time for · think little of",conf:"⚠️ <b><code>little</code> 前不能加 a</b>：<code>have <b>little</b> use for</code> ＝ 否定（看不上）；<code>have <b>a little</b> use for</code> ＝ 肯定（还有点用）。<b>一个冠词决定褒贬。</b><br>⭐ <b>作文可用</b>：<code>A generation raised on short videos has little use for the patience a long novel demands.</code>"},
+  upholstered:{w:"richly upholstered",ipa:"/ʌpˈhəʊlstəd/",pos:"adj.",tags:["poly"],cn:"<b>（本义）铺着厚软垫的 ⟹ 喻文风华丽繁复、堆砌厚重</b>",en:"（of prose）ornate and heavily decorated",ex:"the richly upholstered Vicwardian prose in which he specialized",mem:"⭐ <b>upholster 本义是给沙发、椅子装软垫包面料</b>——<b>用来形容散文，就是「铺得又厚又华丽」。</b><br>📌 <b>这个比喻是负面的</b>：太厚重、太堆砌，所以后现代读者不买账。",syn:"ornate · florid · overwrought",conf:"📌 <b>猜义路径：不认识没关系，看它修饰的对象与上下文的态度</b>——<b>读者「不喜欢」它，且它属于旧时代 ⟹ 必是「过于繁复」这一路的贬义。</b>"},
+  vicwardian:{w:"Vicwardian",ipa:"/vɪkˈwɔːdiən/",pos:"adj.",tags:["poly"],cn:"<b>维多利亚—爱德华时期风格的（合成造词）</b>",en:"blending Victorian and Edwardian（a coined word）",ex:"the richly upholstered Vicwardian prose",mem:"⭐⭐ <b>查不到也不用查：<b>Vic</b>torian ＋ Ed<b>wardian</b> 拼出来的</b>——<b>指 19 世纪末至 20 世纪初那种华丽繁复的英式文风。</b><br>📌 <b>考场遇到造词，一律拆词根 ＋ 看上下文，别停下来纠结。</b>",syn:"late-Victorian and Edwardian in style",conf:"⭐ <b>同类的合成造词</b>：<code>brunch</code>（breakfast ＋ lunch）· <code>smog</code>（smoke ＋ fog）· <code>Brexit</code>。<b>判据：一个词看着眼熟却拼不出词根，试着从中间劈开。</b>"},
+  prose:{w:"prose",ipa:"/prəʊz/",pos:"n.",tags:["core"],cn:"散文，散体文字（与韵文 verse 相对）",en:"written language in its ordinary form, not poetry",ex:"the … prose in which he specialized",mem:"📌 <code>the prose <b>in which</b> he specialized</code>：<b><code>specialize <u>in</u> sth</code> 的 in 被提到关系代词前</b>，还原 ＝ <code>he specialized <b>in</b> the prose</code>。<br><b>判据：见到「介词 ＋ which」，先把介词还给从句里的那个动词。</b>",syn:"written style · writing",conf:"⚠️ <b>别与 <code>pros</code>（pro 的复数，优点／职业选手）混形</b>：<code>the pros and cons</code>（利与弊）。"},
+  amateurtrad:{w:"the amateur tradition",ipa:"/ˈæmətə/",pos:"n.",tags:["core","poly"],cn:"<b>业余传统（非科班出身的评论传统）</b>",en:"the tradition of criticism written by non-professionals",ex:"the amateur tradition in music criticism has been in headlong retreat",mem:"⭐⭐ <b>24D 的产地。</b>⑤❹句说的是<b>「业余传统正在溃退」——这是卡达斯难以复兴的<u>第二条理由</u></b>，<b>言下之意：卡达斯本人正属于这个传统</b>（<b>原文出处的标题就叫 <i>The Amateur as Critic</i>「业余评论家」</b>）。<br><b>D 却说他「未能遵循业余传统」，正好读反。</b>",syn:"non-professional criticism",conf:"⚠️ <b>amateur 在本文<u>不是贬义</u></b>（不是「水平业余」），<b>而是「非科班、凭爱好与修养写作」</b>——萧伯纳、纽曼、卡达斯都是这一路。<b>贬义的「外行」要用 amateurish。</b>"},
+  headlong:{w:"in headlong retreat",ipa:"/ˈhedlɒŋ rɪˈtriːt/",pos:"phr.",tags:["phrase","write"],cn:"<b>迅速溃退，一路败退</b>",en:"retreating rapidly and without control",ex:"the amateur tradition … has been in headlong retreat",mem:"headlong ＝ 头朝前地、莽撞地 ⟹ <b>顾不上章法地往后退</b>。<br>⭐ <b>这个比喻比 declining 生动得多</b>，且与首段的 <code>inexorable decline</code> 首尾呼应——<b>一头一尾两个「挡不住的衰落」，25B 的 <code>Lost</code> 概括的正是这条线。</b>",syn:"in rapid decline · losing ground fast · on the wane",conf:"⭐ <b>作文可用</b>：<code>Moreover, the habit of reading a book from cover to cover has been in headlong retreat.</code>　📌 <b>同族：<code>on the wane</code>（走下坡路）· <code>losing ground</code>（节节失守）。</b>"}
+};
+
+const panel=document.getElementById('panel');
+const isMobile=()=>window.innerWidth<=900;
+function badge(t){const m={core:'核心',phrase:'短语',poly:'僻义',write:'写作'};return `<span class="badge b-${t}">${m[t]}</span>`}
+function showCard(k,el){
+  const d=V[k];if(!d)return;
+  document.querySelectorAll('.tk.active').forEach(x=>x.classList.remove('active'));
+  if(el)el.classList.add('active');
+  panel.innerHTML=`<button class="close" onclick="document.getElementById('panel').classList.remove('open')">收起</button>
+    <div class="wcard">
+      <div class="head"><span class="w">${d.w}</span><span class="ipa">${d.ipa}</span><span class="pos">${d.pos}</span>${d.tags.map(badge).join('')}</div>
+      <div class="cn">${d.cn}</div><div class="en-def">${d.en}</div>
+      <div class="row r-ex"><b>原文</b>${d.ex}</div>
+      <div class="row r-mem"><b>怎么记 / 考点</b>${d.mem}</div>
+      <div class="row r-syn"><b>同义 / 同族</b>${d.syn}</div>
+      <div class="row r-conf"><b>易混 / 提醒</b>${d.conf}</div>
+    </div>`;
+  if(isMobile())panel.classList.add('open');
+}
+document.querySelectorAll('.tk').forEach(t=>t.addEventListener('click',e=>{e.stopPropagation();showCard(t.dataset.w,t)}));
+
+function tz(btn){btn.closest('.para').classList.toggle('showzh')}
+let allOn=false;
+function toggleAll(){allOn=!allOn;document.querySelectorAll('.para').forEach(p=>p.classList.toggle('showzh',allOn))}
+function go(id){const s=document.getElementById(id);if(!s)return;s.scrollIntoView({behavior:'smooth',block:'center'});s.style.transition='none';s.style.opacity=.3;setTimeout(()=>{s.style.transition='opacity .8s';s.style.opacity=1},80)}
+
+document.querySelectorAll('.q').forEach(q=>{
+  const ans=+q.dataset.ans;
+  q.querySelectorAll('.opt').forEach((o,i)=>o.addEventListener('click',()=>{
+    if(q.classList.contains('done'))return;
+    q.classList.add('done');
+    if(i!==ans)o.classList.add('wrong');
+    q.querySelectorAll('.opt')[ans].classList.add('right');
+  }));
+});
+
+const vg=document.getElementById('vgrid');
+function renderGrid(f){
+  vg.innerHTML='';
+  Object.keys(V).forEach(k=>{
+    const d=V[k];
+    if(f!=='all'&&!d.tags.includes(f))return;
+    const div=document.createElement('div');div.className='vitem';
+    div.innerHTML=`<span class="badges">${d.tags.map(badge).join('')}</span><div class="w">${d.w}</div><div class="cn">${d.cn}</div>`;
+    div.addEventListener('click',()=>{showCard(k,null);if(!isMobile())window.scrollTo({top:0,behavior:'smooth'})});
+    vg.appendChild(div);
+  });
+}
+renderGrid('all');
+document.querySelectorAll('.fbtn').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.fbtn').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderGrid(b.dataset.f);
+}));
+
+const yd=document.getElementById('yd');let sel='';
+document.addEventListener('selectionchange',()=>{
+  const s=window.getSelection();const t=s?s.toString().trim():'';
+  if(t&&/^[a-zA-Z' -]{2,40}$/.test(t)){
+    sel=t;
+    try{const r=s.getRangeAt(0).getBoundingClientRect();
+      yd.style.left=Math.min(r.left,window.innerWidth-110)+'px';
+      yd.style.top=(r.bottom+8)+'px';yd.style.display='block';}catch(e){}
+  }else{yd.style.display='none'}
+});
+yd.addEventListener('click',()=>{window.open('https://dict.youdao.com/result?word='+encodeURIComponent(sel)+'&lang=en');yd.style.display='none'});
+document.addEventListener('click',e=>{if(e.target!==yd&&!window.getSelection().toString())yd.style.display='none'});
+</script>
+<script src="_fault_attr.js"></script>
+</body>
+</html>

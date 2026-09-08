@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2010 英一 完形 · “霍桑效应”遭到质疑</title>
+<style>
+  :root{
+    --bg:#faf9f6; --card:#ffffff; --ink:#2b2b2b; --muted:#8a8578;
+    --accent:#8b5e34; --accent-soft:#f3e9dd; --line:#e8e3d8;
+    --hl:#fdf3d8; --hl-border:#e0b84d;
+    --green:#3e7a4e; --green-soft:#e8f2ea;
+    --red:#b04a3a; --red-soft:#f9e9e6;
+    --blue:#3d6a8a; --blue-soft:#e7eff5;
+    --purple:#6d5a8e; --purple-soft:#eeeaf5;
+    --serif:"Georgia","Songti SC",serif;
+    --sans:-apple-system,"PingFang SC","Helvetica Neue",sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#1c1a17; --card:#26231f; --ink:#e8e4dc; --muted:#9a948a;
+      --accent:#d0a06a; --accent-soft:#3a3127; --line:#3a362f;
+      --hl:#3d3520; --hl-border:#b08c3a;
+      --green:#7fb98d; --green-soft:#26362b;
+      --red:#d98876; --red-soft:#3d2a26;
+      --blue:#8ab3d0; --blue-soft:#26323d;
+      --purple:#a996c8; --purple-soft:#302a3d;
+    }
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;padding-bottom:120px}
+  .wrap{max-width:1100px;margin:0 auto;padding:24px 20px}
+  .back{font-size:.85rem;color:var(--muted);text-decoration:none}
+  .back:hover{color:var(--accent)}
+  header{margin:14px 0 28px}
+  header h1{font-family:var(--serif);font-size:1.7rem;line-height:1.3}
+  header .sub{color:var(--muted);margin-top:6px;font-size:.9rem}
+  .tags{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+  .tag{font-size:.75rem;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);border:1px solid var(--line)}
+  .tag.spoiler{cursor:pointer;background:var(--card);color:var(--muted)}
+  .tag.spoiler .hid{filter:blur(5px)}
+  .tag.spoiler.open .hid{filter:none;color:var(--accent)}
+
+  .layout{display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:start}
+  @media (max-width:900px){.layout{grid-template-columns:1fr}}
+
+  section.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:24px}
+  h2{font-size:1.05rem;letter-spacing:.05em;color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  h2 .n{font-size:.72rem;background:var(--accent);color:var(--card);border-radius:6px;padding:1px 7px}
+  .note{font-size:.82rem;color:var(--muted);margin-bottom:14px}
+
+  .para{margin-bottom:22px}
+  .para .en{font-family:var(--serif);font-size:1.06rem;line-height:2.15}
+  .pno{color:var(--muted);font-size:.75rem;user-select:none;margin-right:6px}
+  .tk{background:var(--hl);border-bottom:2px solid var(--hl-border);border-radius:3px;padding:0 2px;cursor:pointer;transition:filter .15s}
+  .tk:hover{filter:brightness(.93)}
+  .tk.active{outline:2px solid var(--hl-border)}
+  .ls{border-bottom:2px dotted var(--blue);cursor:pointer}
+  .para .zh{display:none;margin-top:10px;padding:10px 14px;background:var(--blue-soft);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:.93rem}
+  .para.showzh .zh{display:block}
+  .zbtn{float:right;margin-left:10px;font-size:.72rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:6px;padding:2px 9px;cursor:pointer}
+  .zbtn:hover{color:var(--accent);border-color:var(--accent)}
+  .allbtn{font-size:.78rem;border:1px solid var(--accent);background:none;color:var(--accent);border-radius:8px;padding:4px 12px;cursor:pointer}
+
+  /* 完形空格 */
+  .bk{display:inline-block;min-width:64px;text-align:center;background:var(--hl);border-bottom:2px solid var(--hl-border);border-radius:4px;padding:0 6px;cursor:pointer;font-weight:600;color:var(--accent);transition:all .15s;font-family:var(--sans);font-size:.95rem}
+  .bk:hover{filter:brightness(.93)}
+  .bk.filled{background:var(--green-soft);border-bottom-color:var(--green);color:var(--green);font-family:var(--serif)}
+  .bk.miss{background:var(--red-soft);border-bottom-color:var(--red);color:var(--red);font-family:var(--serif)}
+  .bk.active{outline:2px solid var(--hl-border)}
+  .bk .idx{font-size:.7rem;color:var(--muted);margin-right:3px}
+
+  aside{position:sticky;top:20px}
+  #panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;min-height:180px}
+  #panel .hint{color:var(--muted);font-size:.88rem;text-align:center;padding:30px 10px}
+  .wcard .head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .wcard .w{font-family:var(--serif);font-size:1.35rem;font-weight:bold}
+  .wcard .ipa{color:var(--muted);font-size:.85rem}
+  .wcard .pos{font-size:.72rem;color:var(--purple);background:var(--purple-soft);padding:1px 8px;border-radius:999px}
+  .wcard .badge{font-size:.7rem;padding:1px 8px;border-radius:999px}
+  .b-core{background:var(--red-soft);color:var(--red)}
+  .b-phrase{background:var(--blue-soft);color:var(--blue)}
+  .b-poly{background:var(--purple-soft);color:var(--purple)}
+  .b-write{background:var(--green-soft);color:var(--green)}
+  .wcard .cn{margin-top:8px;font-size:1rem;font-weight:600}
+  .wcard .en-def{color:var(--muted);font-size:.86rem;font-style:italic;margin-top:2px}
+  .wcard .row{margin-top:10px;font-size:.86rem;padding:8px 10px;border-radius:8px}
+  .wcard .row>b:first-child{font-size:.72rem;display:block;margin-bottom:2px;letter-spacing:.06em}
+  .r-ex{background:var(--hl)} .r-ex b{color:var(--hl-border)}
+  .r-mem{background:var(--green-soft)} .r-mem b{color:var(--green)}
+  .r-syn{background:var(--blue-soft)} .r-syn b{color:var(--blue)}
+  .r-conf{background:var(--red-soft)} .r-conf b{color:var(--red)}
+  #panel .close{display:none}
+  @media (max-width:900px){
+    aside{position:fixed;left:0;right:0;bottom:0;z-index:50;padding:0 8px 8px}
+    #panel{box-shadow:0 -6px 24px rgba(0,0,0,.18);max-height:55vh;overflow-y:auto;display:none}
+    #panel.open{display:block}
+    #panel .close{display:block;float:right;border:none;background:var(--line);border-radius:8px;padding:2px 10px;cursor:pointer;color:var(--ink)}
+  }
+
+  /* 逐空精解 */
+  .q{margin-bottom:22px;padding-bottom:18px;border-bottom:1px dashed var(--line);scroll-margin-top:20px}
+  .q:last-child{border:none;margin-bottom:0;padding-bottom:0}
+  .q .stem{font-family:var(--serif);font-size:.98rem;background:var(--hl);border-radius:8px;padding:8px 12px;display:block}
+  .q .stem em{font-style:normal;font-weight:700;color:var(--accent);border-bottom:2px solid var(--hl-border);padding:0 4px}
+  .qhead{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+  .qno{font-family:var(--serif);font-size:1.2rem;font-weight:700;color:var(--accent)}
+  .qt{font-size:.7rem;border-radius:999px;padding:1px 9px}
+  .c-logic{background:var(--blue-soft);color:var(--blue)}
+  .c-collo{background:var(--green-soft);color:var(--green)}
+  .c-word{background:var(--red-soft);color:var(--red)}
+  .c-context{background:var(--purple-soft);color:var(--purple)}
+  .qpos{font-size:.7rem;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:1px 9px}
+  .opts{margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  @media (max-width:640px){.opts{grid-template-columns:1fr}}
+  .opt{border:1px solid var(--line);border-radius:10px;padding:7px 12px;cursor:pointer;font-size:.92rem;font-family:var(--serif);transition:all .15s}
+  .opt .gl{font-family:var(--sans);font-size:.8rem;color:var(--muted);margin-left:6px}
+  .opt:hover{border-color:var(--accent)}
+  .q.done .opt{cursor:default}
+  .opt.right{background:var(--green-soft);border-color:var(--green)}
+  .opt.wrong{background:var(--red-soft);border-color:var(--red)}
+  .expl{display:none;margin-top:12px;background:var(--accent-soft);border-radius:10px;padding:12px 14px;font-size:.9rem}
+  .q.done .expl{display:block}
+  .expl b{color:var(--accent)}
+  .expl .lbl{font-size:.74rem;letter-spacing:.06em;color:var(--muted);display:block;margin:10px 0 2px}
+  .expl .lbl:first-child{margin-top:0}
+  .expl code{font-family:var(--serif);background:var(--hl);border-radius:4px;padding:1px 5px}
+  .wrongs{margin-top:6px;display:grid;gap:5px}
+  .wr{font-size:.86rem;background:var(--card);border-radius:8px;padding:6px 10px;border-left:3px solid var(--red)}
+  .wr .l{font-family:var(--serif);font-weight:700;color:var(--red);margin-right:5px}
+
+  /* 计分条 */
+  .score{display:flex;gap:14px;flex-wrap:wrap;align-items:center;background:var(--hl);border-radius:12px;padding:10px 16px;margin-bottom:18px;font-size:.88rem}
+  .score .v{font-family:var(--serif);font-size:1.25rem;font-weight:700;color:var(--accent);margin-right:4px}
+  .score .rst{margin-left:auto;font-size:.78rem;border:1px solid var(--line);background:var(--card);color:var(--muted);border-radius:8px;padding:3px 10px;cursor:pointer}
+
+  /* 考点统计 */
+  .catbar{display:flex;height:26px;border-radius:8px;overflow:hidden;margin:10px 0 16px;border:1px solid var(--line)}
+  .catseg{display:flex;align-items:center;justify-content:center;font-size:.72rem;color:#fff;font-weight:600}
+  .catlegend{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px}
+  .cl{display:flex;gap:8px;align-items:center;font-size:.85rem;cursor:pointer;padding:6px 8px;border-radius:8px;border:1px solid var(--line)}
+  .cl:hover{border-color:var(--accent)}
+  .dot{width:12px;height:12px;border-radius:3px;flex:0 0 12px}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+  .chip{font-size:.78rem;background:var(--accent-soft);color:var(--accent);border-radius:6px;padding:2px 8px;cursor:pointer}
+  .chip:hover{filter:brightness(.94)}
+
+  /* 打法 / 搭配 */
+  .flow{display:grid;gap:10px;font-size:.92rem}
+  .flow .fi{border:1px solid var(--line);border-radius:10px;padding:10px 14px}
+  .flow .fi b{color:var(--accent)}
+  .flow .fi .ev{display:block;margin-top:4px;font-size:.85rem;color:var(--muted);border-left:3px solid var(--hl-border);padding-left:9px}
+  .wb{display:grid;gap:10px}
+  .wbi{border-left:3px solid var(--green);background:var(--green-soft);border-radius:0 10px 10px 0;padding:10px 14px;font-size:.92rem}
+  .wbi .p{font-family:var(--serif);font-weight:600}
+  .wbi .u{color:var(--muted);font-size:.85rem}
+
+  /* 长难句 */
+  .sent{margin-bottom:20px}
+  .sent .src{font-family:var(--serif);font-size:1rem;background:var(--blue-soft);padding:12px 14px;border-radius:10px;border-left:3px solid var(--blue)}
+  .sent .anat{margin-top:8px;font-size:.9rem}
+  .sent .anat li{margin:4px 0 4px 18px}
+  .sent .tr{margin-top:8px;font-size:.92rem;color:var(--muted)}
+  .skel{color:var(--red);font-weight:600}
+
+  /* 80词表 */
+  .otab{width:100%;border-collapse:collapse;font-size:.86rem}
+  .otab th,.otab td{border:1px solid var(--line);padding:5px 8px;vertical-align:top}
+  .otab th{background:var(--accent-soft);color:var(--accent);font-size:.78rem}
+  .otab td.n{text-align:center;font-family:var(--serif);color:var(--muted);width:38px}
+  .otab .ow{font-family:var(--serif)}
+  .otab .oc{color:var(--muted);font-size:.82rem;display:block}
+  .otab td.hit{background:var(--green-soft)}
+  .otab td.hit .ow{color:var(--green);font-weight:700}
+  .hidecn .oc{filter:blur(4px);cursor:pointer}
+  .hidecn .oc.show{filter:none}
+  .tabwrap{overflow-x:auto}
+
+  #yd{position:fixed;z-index:60;display:none;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:4px 12px;font-size:.8rem;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+  .fail{background:var(--red-soft);border:1px solid var(--red);border-radius:10px;padding:10px 13px;margin-bottom:10px;font-size:.89rem;line-height:1.75}
+  .fail b{color:var(--red)}
+  .expl .fail{margin-top:0}
+  footer{color:var(--muted);font-size:.8rem;text-align:center;margin-top:30px}
+  /* 修：.layout 是 grid，grid 项默认 min-width:auto ⟹ 06 的 80 词表（min-content 425px）会把整个左栏撑到 475px，
+     窄屏下页面 scrollWidth 超出视口（2007–2009 三篇完形页同源、同病）。min-width:0 后 .tabwrap 才真正接管横滚。 */
+  main,aside{min-width:0}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">◀ 返回英语复盘中心</a>
+  <header>
+    <h1>“霍桑效应”遭到质疑：一个被数据推翻的经典结论</h1>
+    <div class="sub">2010 年英语（一）真题 · Section I 完形填空（Use of English）· 282 词 · 建议 15–18 min · 话题：社会学/管理学经典理论的证伪（源自 <i>The Economist</i>《经济学人》2009-06-04 <i>Light Work: Questioning the Hawthorne Effect</i>）</div>
+    <div class="tags">
+      <span class="tag spoiler" onclick="this.classList.toggle('open')">🙈 答案（点击显示）：<span class="hid">1A 2B 3C 4B 5C 6B 7D 8A 9C 10D 11C 12A 13A 14D 15B 16A 17D 18C 19B 20D</span></span>
+      <span class="tag">难度：中偏易（无生僻话题，难在副词与形容词的“方向”）</span>
+      <span class="tag">Claude 盲做：20/20</span>
+      <span class="tag">⚠️ 本页最值钱的两段：8/9/10「定义句的第二次说法」与 16 空「三缺一分组法」</span>
+    </div>
+  </header>
+
+  <div class="layout">
+    <main>
+
+      <!-- ========== 00 脉络 ========== -->
+      <section class="card">
+        <h2><span class="n">00</span>读前一分钟 · 全文脉络（完形先读首句，再看结构）</h2>
+        <p class="note">完形的<b>首句从不设空</b>。本篇首句 <i>In 1924 America's National Research Council sent two engineers to supervise a series of experiments at a telephone-parts factory called the Hawthorne Plant near Chicago.</i> 一口气砸下<b>三个专有名词坐标</b>（1924 · 国家科学研究委员会 · 芝加哥附近的霍桑工厂）——<b>专名越密，越说明这是一篇“讲一件真事”的叙事文</b>。<b>由此定死一条前提：全篇所有空都服从“这是已经发生的事实”</b>，凡“假设／预期／可能”类选项一律优先怀疑（<b>8 空的 expectation 正是死在这条上</b>）。</p>
+        <p class="note" style="margin-top:10px">⭐⭐ <b>而本篇真正的骨架，是<u>三次反转</u>，而且命题人<u>在每一次反转上都设了空</u></b>：<code><b>Instead</b>, the studies ended <b>2</b> …</code>（本想查照明 ⟹ 查出了“霍桑效应”）→ <code>another <b>surprise</b> in store. <b>12</b> the descriptions on record…</code>（当年的结论 ⟹ 几十年后重算数据）→ <code><b>18</b>, a comparison with data for weeks when there was no experimentation…</code>（做实验时 ⟹ 不做实验时）。<b>叙事型完形，开考先把转折点标出来，那几个空是白送的。</b></p>
+        <div class="flow">
+          <div class="fi"><b>① 段一 · 起因与命名</b>——1924 年两名工程师去霍桑工厂查“车间照明与生产效率的关系”；<b>结果没查出照明，反倒查出了一个以工厂命名的效应</b>：仅仅“被实验”这件事本身就改变了受试者的行为。
+            <span class="ev">1–3 空全部挂在<b>同一句 Instead 的落差</b>上：affected（原本要查的关系）／ended up（意料之外的收场）／act（“被实验”这一<b>行为</b>本身）。<b>①段末这句定义，是后面 8、9、10 三个空的答案源。</b></span></div>
+          <div class="fi"><b>② 段二 · 效应是怎么被“看”出来的</b>——照明<b>调亮</b>产量升，照明<b>调暗</b>产量也升；做了什么不重要，<b>只要有变化</b>产量就升。末句把这个现象重新命名一遍：<b>单单是“意识到自己在被实验”，就足以改变行为。</b>
+            <span class="ev">4–10 空占七个，是主战场。<b>结构极清楚：现象（4–5）→ 现象的归纳（6–7）→ 归纳的再命名（8–10）。</b>而 8–10 这三个空<b>不需要新信息</b>——它们是①段末定义句的<b>第二次说法</b>，逐成分对齐就能一次落地（见 02 卡与右边专栏）。</span></div>
+          <div class="fi"><b>③ 段三 · 几十年后，同一批数据被重算</b>——用计量经济学方法一算，<b>与当年记录的描述相反，根本找不到系统性证据说明产量与照明变化有关</b>。
+            <span class="ev">11–13 空。<b>本段只有三句，却是全文的转轴</b>：<code>After several decades</code>（时间轴的第二个刻度）＋ <code>another surprise in store</code>（预告词）＝ <b>12 空的方向被这两处同时锁死</b>，只能填“与……相反”。</span></div>
+          <div class="fi"><b>④ 段四 · 那当年为什么会看错</b>——因为实验方式本身有毛病：<b>照明总在周日改</b>，周一复工产量当然升；<b>可是把没做实验的那些周拿来一比，产量照样每逢周一就升</b>。工人本来就是一周头几天勤快，之后进入稳定期、再往后就懈怠。所谓“霍桑效应”，很难说得清。
+            <span class="ev">14–20 空。<b>本段的暗线是“对照组”</b>：③段说“重算的结果相反”，④段负责解释<b>相反在哪</b>——<b>18 空的 However 就是“实验组 vs 对照组”这条对照关系的接缝</b>。末句 <code>hard to pin down</code> 收口，与首段的“极具影响力的观点”遥相打脸。</span></div>
+        </div>
+        <p class="note" style="margin-top:14px">📌 <b>本篇的第二条强线索是时间轴</b>：<code>In 1924</code> → <code>After several decades</code> → <code>It turns out</code>，把文章切成“<b>当年做实验（①②）— 几十年后重算（③）— 重算后的解释（④）</b>”三块。<b>11（数据被拿去做分析）与 12（与记录相反）两个空正好落在时间轴的折点上。</b></p>
+        <p class="note">🎭 <b>背景（不影响做题，但读懂了心里有底）</b>：“<b>霍桑效应</b>”是社会学、管理学、心理学里最著名的概念之一——<b>观察行为本身就会改变被观察者</b>。本文出自《经济学人》2009 年的一篇短评，标题 <i>Light Work</i> 是双关（<b>照明的活儿 ／ 轻松的活儿</b>）。<b>文章的立场从头到尾是“质疑”</b>：①②段越是把这个效应说得influential（极具影响力），③④段的推翻就越有力——<b>先扬后抑是这类证伪文的标准结构，读到 ③段的 surprise 就该预感到后面要翻盘。</b></p>
+      </section>
+
+      <!-- ========== 01 正文 ========== -->
+      <section class="card">
+        <h2><span class="n">01</span>完形正文（20 空 · 点空格跳到该题）
+          <button class="allbtn" onclick="toggleAll()" style="margin-left:auto">译文 开/关</button>
+          <button class="allbtn" onclick="revealAll()">显示全部答案</button>
+        </h2>
+        <p class="note">🟨 点<b>空格</b>＝跳到下面对应的解析卡（先自己选，再看解析）｜ 🟡 黄底词＝生词卡，点开看词根/辨析 ｜ 蓝色虚线＝长难句 ｜ 选中任意单词浮出「查有道」</p>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">①</span>In 1924 America's National Research Council sent two engineers to <span class="tk" data-w="supervise">supervise</span> a series of experiments at a telephone-parts factory called the Hawthorne <span class="tk" data-w="plant">Plant</span> near Chicago. It hoped they would learn how <span class="tk" data-w="shopfloor">shop-floor</span> lighting <span class="bk" data-n="1"><span class="idx">1</span>___</span> workers' <span class="tk" data-w="productivity">productivity</span>. <span class="ls" onclick="go('s1')">Instead, the studies ended <span class="bk" data-n="2"><span class="idx">2</span>___</span> giving their name to the “Hawthorne effect,” the extremely <span class="tk" data-w="influential">influential</span> idea that the <span class="tk" data-w="very">very</span> <span class="bk" data-n="3"><span class="idx">3</span>___</span> of being experimented upon changed <span class="tk" data-w="subjects">subjects'</span> behavior.</span></p>
+          <div class="zh">1924 年，美国国家科学研究委员会派了两名工程师，到芝加哥附近一家名为“霍桑工厂”的电话配件厂去指导一系列实验。委员会希望他们能弄清楚：车间照明是如何<b>影响</b>工人生产效率的。<b>然而恰恰相反</b>，这些研究<b>最终</b>把自己的名字给了“霍桑效应”——这一极具影响力的观点认为：<b>正是“被实验”这一行为本身</b>，改变了受试者的行为方式。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">②</span>The idea <span class="tk" data-w="arise">arose</span> because of the <span class="bk" data-n="4"><span class="idx">4</span>___</span> behavior of the women in the plant. According to <span class="bk" data-n="5"><span class="idx">5</span>___</span> of the experiments, their hourly <span class="tk" data-w="output">output</span> rose when lighting was increased, but also when it was <span class="tk" data-w="dim">dimmed</span>. <span class="ls" onclick="go('s2')">It did not <span class="bk" data-n="6"><span class="idx">6</span>___</span> what was done in the experiment; <span class="bk" data-n="7"><span class="idx">7</span>___</span> something was changed, productivity rose.</span> <span class="ls" onclick="go('s3')">A(n) <span class="bk" data-n="8"><span class="idx">8</span>___</span> that they were being experimented upon seemed to be <span class="bk" data-n="9"><span class="idx">9</span>___</span> to <span class="tk" data-w="alter">alter</span> workers' behavior <span class="bk" data-n="10"><span class="idx">10</span>___</span> itself.</span></p>
+          <div class="zh">这个观点之所以出现，是因为厂内女工<b>令人费解的</b>行为。根据实验的<b>描述</b>，照明增强时，她们每小时的产量增加；照明减弱时，产量同样增加。实验中做了什么<b>并不要紧</b>；<b>只要</b>发生了某种变化，生产效率就会上升。<b>单单是“意识到”</b>自己正被当作实验对象，似乎<b>就足以</b>改变工人的行为——<b>仅凭这一点本身</b>。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">③</span>After several <span class="tk" data-w="decade">decades</span>, the same data were <span class="bk" data-n="11"><span class="idx">11</span>___</span> to <span class="tk" data-w="econometric">econometric</span> analysis. The Hawthorne experiments had another surprise <span class="tk" data-w="instore">in store</span>. <span class="ls" onclick="go('s4')"><span class="bk" data-n="12"><span class="idx">12</span>___</span> the descriptions <span class="tk" data-w="onrecord">on record</span>, no <span class="tk" data-w="systematic">systematic</span> <span class="bk" data-n="13"><span class="idx">13</span>___</span> was found that levels of productivity were <span class="tk" data-w="related">related to</span> changes in lighting.</span></p>
+          <div class="zh">几十年后，研究者对同一批实验数据<b>进行了</b>计量经济学分析。霍桑实验还留下了另一个等待发掘的惊人发现：<b>与</b>记录在案的描述<b>相反</b>，人们并没有找到系统性<b>证据</b>来证明生产效率的水平与照明的变化有关。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">④</span>It <span class="tk" data-w="turnout">turns out</span> that the <span class="tk" data-w="peculiar">peculiar</span> way of <span class="tk" data-w="conduct">conducting</span> the experiments may have led to <span class="bk" data-n="14"><span class="idx">14</span>___</span> <span class="tk" data-w="interpretation">interpretations</span> of what happened. <span class="bk" data-n="15"><span class="idx">15</span>___</span>, lighting was always changed on a Sunday. When work started again on Monday, output <span class="bk" data-n="16"><span class="idx">16</span>___</span> rose compared with the <span class="tk" data-w="previous">previous</span> Saturday and <span class="bk" data-n="17"><span class="idx">17</span>___</span> to rise for the next <span class="tk" data-w="couple">couple of</span> days. <span class="bk" data-n="18"><span class="idx">18</span>___</span>, a comparison with data for weeks when there was no <span class="tk" data-w="experimentation">experimentation</span> showed that output always went up on Mondays. <span class="ls" onclick="go('s5')">Workers <span class="bk" data-n="19"><span class="idx">19</span>___</span> to be <span class="tk" data-w="diligent">diligent</span> for the first few days of the week <span class="tk" data-w="inanycase">in any case</span>, before <span class="bk" data-n="20"><span class="idx">20</span>___</span> a <span class="tk" data-w="plateau">plateau</span> and then <span class="tk" data-w="slacken">slackening off</span>.</span> This suggests that the <span class="tk" data-w="alleged">alleged</span> “Hawthorne effect” is hard to <span class="tk" data-w="pindown">pin down</span>.</p>
+          <div class="zh">结果发现，进行这些实验的特殊方式，可能导致了对当时情况<b>具有误导性的</b>解读。<b>例如</b>，照明条件总是在周日更改。周一重新开工时，产量与上周六相比<b>如期</b>上升了，并在接下来的几天里<b>持续</b>上升。<b>然而</b>，把这些数据与没有进行实验的那几周作比较后发现，产量每逢周一都会上升。无论如何，工人<b>往往</b>会在一周的头几天勤奋工作，之后就<b>达到</b>一个稳定期，然后懈怠下来。这表明，所谓的“霍桑效应”是很难说清楚的。</div>
+        </div>
+      </section>
+      <!-- ========== 02 逐空精解 ========== -->
+      <section class="card">
+        <h2><span class="n">02</span>逐空精解（点选项即判 · 再看解析）</h2>
+        <div class="score">
+          <span><span class="v" id="sDone">0</span>/20 已答</span>
+          <span><span class="v" id="sRight">0</span> 对</span>
+          <span>折合 <span class="v" id="sPt">0</span> 分 / 10</span>
+          <button class="rst" onclick="location.reload()">↺ 重做</button>
+        </div>
+        <p class="note">每空 0.5 分。<b>先在心里说出「这个空要填什么词性、什么方向」再点选项</b>——完形做完不复盘方向，只对答案，等于白做。本篇有<b>三道题读都不用读语义</b>（<b>2</b> 靠同句的 Instead · <b>17</b> 靠 and 的同向 · <b>12</b> 靠上句的 surprise），另有<b>两道</b>栽在同一把刀上（<b>16</b> 与 <b>19</b>，四个选项按方向一分组就出答案）。</p>
+
+        <div class="q" id="q1" data-ans="0">
+          <div class="qhead"><span class="qno">1</span><span class="qt c-word">词义辨析 · 动词</span><span class="qpos">宾语从句的谓语</span></div>
+          <span class="stem">It hoped they would learn how shop-floor lighting <em>1</em> workers' productivity.</span>
+          <div class="opts">
+            <div class="opt">A affected<span class="gl">影响</span></div>
+            <div class="opt">B achieved<span class="gl">达到（目标）</span></div>
+            <div class="opt">C extracted<span class="gl">提取（from）</span></div>
+            <div class="opt">D restored<span class="gl">恢复（到先前状态）</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span><code>how</code> 引导的宾语从句里的<b>谓语</b>，主语 shop-floor lighting（物）、宾语 workers' productivity（物）⟹ 空格词要表达<b>「照明」与「生产效率」之间的一种关系</b>。
+            <span class="lbl">🔗 线索</span>整个第二句是在交代<b>实验的目的</b>；紧接着第三句用 <code>changed subjects' behavior</code> 点题——<b>全篇的核心动词就是「改变／影响」</b>。第一空考的其实是<b>全文中心关系</b>，不是某个僻义。
+            <span class="lbl">✅ A affected</span>影响。代入后＝「车间照明如何<b>影响</b>工人的生产效率」，恰好把①段三句话串成一条线：开展实验 → <b>原想弄清照明如何影响效率</b> → 却得出了“霍桑效应”。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>achieve 的宾语多是<b>具体、特定的目标</b>（achieve the target of less than 3% inflation），而 workers' productivity 是个<b>含糊的量</b>，构不成合理动宾。且 achieve 的主语通常是<b>行为主体</b>，照明不会“达到”什么。</div>
+              <div class="wr"><span class="l">C</span>extract 的标配是 <code>extract X <b>from</b> Y</code>，X、Y 之间是<b>包含与被包含</b>的关系（从矿石里提取金属）。照明与生产效率显然不是这层关系——<b>搭配先死，语义都不用比。</b></div>
+              <div class="wr"><span class="l">D</span>restore＝<b>恢复到先前的某种状态</b>，它自带一个预设：<b>之前曾经降低过</b>。可本段从头到尾没有“效率下降”这个前提。</div>
+            </div>
+            <span class="lbl">💡 迁移</span><b>动词空先问三件事：①主语是人还是物　②宾语要不要“特定”　③这个词自带什么介词、自带什么预设。</b><br>本题里 extract 自带 <code>from</code>、restore 自带“曾经有过”——<b>凡自带预设的词，上文没铺垫过那个预设，一律排除。</b>这一刀比比较词义快得多。
+          </div>
+        </div>
+
+        <div class="q" id="q2" data-ans="1">
+          <div class="qhead"><span class="qno">2</span><span class="qt c-collo">固定搭配 · 动词小品词</span><span class="qpos">ended ___ ＋ doing</span></div>
+          <span class="stem"><b>Instead</b>, the studies ended <em>2</em> giving their name to the “Hawthorne effect,” …</span>
+          <div class="opts">
+            <div class="opt">A at<span class="gl">在（时间/地点）结束</span></div>
+            <div class="opt">B up<span class="gl">最终成为；最终落得</span></div>
+            <div class="opt">C with<span class="gl">以（某内容）收尾</span></div>
+            <div class="opt">D off<span class="gl">结束掉；以…作结</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>谓语 ended 后的<b>小品词</b>，与 ended 一起构成动词短语；<b>空格后面紧跟的是 V-ing（giving）</b>——这是本题最硬的形式判据。
+            <span class="lbl">🔗 线索（信号词就贴在空格前七个词）</span>句首的 <code><b>Instead</b></code>：上一句说“<b>本想</b>弄清照明与效率的关系”，本句说“<b>结果却</b>…” ⟹ 空格词必须承载<b>“出人意料的收场”</b>这层语义。
+            <span class="lbl">✅ B ended up doing</span><code>end up doing sth</code>＝<b>最终以…收场（且往往出人意料）</b>，与 Instead 完全同向。代入后＝「研究最终却把自己的名字送给了『霍桑效应』」。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>end at 后面接的是<b>时间或地点</b>（the meeting ended at six），而 giving 是动名词，与“时间／地点”无关。</div>
+              <div class="wr"><span class="l">C</span>end with sth＝<b>以（某项内容／形式）结尾</b>，表示自然而然的收尾（The concert ended with a folk song），<b>不含“意外”</b>，接不上 Instead。</div>
+              <div class="wr"><span class="l">D</span>常见结构是 <code>end sth off</code>／<code>end off with sth</code>，主语得是行为者。“研究结束了给自己命名”“研究以给自己命名作结”都不成句。</div>
+            </div>
+            <span class="lbl">💡 迁移</span><b>小品词题看两件事：①空格后面跟的是什么词形（本题跟 V-ing，四个里只有 up 能直接接）　②同句有没有信号词。</b><br>⭐ <b>本篇的三次反转，命题人每一次都设了空</b>：这里的 <code>Instead</code>（2 空）· ③段的 <code>another surprise</code>（12 空）· ④段的对照组（18 空）。<b>叙事型完形，开考先把转折点标出来。</b>
+          </div>
+        </div>
+
+        <div class="q" id="q3" data-ans="2">
+          <div class="qhead"><span class="qno">3</span><span class="qt c-context">上下文语义 · 名词</span><span class="qpos">the very ___ of doing</span></div>
+          <span class="stem">…the extremely influential idea that the <b>very</b> <em>3</em> of being experimented upon changed subjects' behavior.</span>
+          <div class="opts">
+            <div class="opt">A truth<span class="gl">真相（强调真假）</span></div>
+            <div class="opt">B sight<span class="gl">看见（瞬时动作）</span></div>
+            <div class="opt">C act<span class="gl">行为，举动</span></div>
+            <div class="opt">D proof<span class="gl">证明（待证之事）</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>同位语从句 <code>that…</code> 的<b>主语中心词</b>：前被 <code>the very</code> 强调、后被 <code>of being experimented upon</code> 修饰，谓语是 changed。<b>三重限制同时压在这一个词上。</b>
+            <span class="lbl">🔗 线索</span>这句话是在给“霍桑效应”下<b>定义</b>：<b>被实验</b>这件事本身就改变了受试者。<code>of</code> 在这里表<b>同位</b>（这一行为＝被实验），所以空格词必须能<b>概指“被实验”这个被动动作</b>，并且能充当“改变行为”的主语。
+            <span class="lbl">✅ C act</span><code>the very act of doing sth</code>＝<b>做某事这一行为本身</b>，既能被“受试”具体化，又能概指一个动作。代入＝「正是<b>受试这一行为本身</b>改变了受试者的行为」。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>truth 强调<b>真假之分</b>，而“正在被实验”是<b>客观事实</b>，不存在真假问题。</div>
+              <div class="wr"><span class="l">B</span>sight 强调“<b>眼睛看到</b>”这一瞬时动作，可行为改变是<b>持续过程</b>，“一看到就改变”不合实际；且 <code>the very sight of being experimented upon</code> <b>缺少受试的行为主体</b>（要说也得是 the very sight of one's being…）。</div>
+              <div class="wr"><span class="l">D</span>proof 后接 of 引出的是<b>待证明的事</b>，可“被实验”是已然事实、无需证明；而且“证据”不会改变工人的行为。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <code><b>the very ＋ 名词</b></code>＝<b>正是……本身</b>，是完形与阅读的高频强调结构。<b>它一出现，就意味着“仅此一点、别无其他”</b>——所以它天然与后文的 <code>enough</code>／<code>by itself</code> 配套。<b>本篇 3、9、10 三个空正是被这一个 very 串起来的（见 8 题的迁移栏）。</b>
+          </div>
+        </div>
+
+        <div class="q" id="q4" data-ans="1">
+          <div class="qhead"><span class="qno">4</span><span class="qt c-word">词义辨析 · 形容词</span><span class="qpos">原因状语内的前置定语</span></div>
+          <span class="stem">The idea arose because of the <em>4</em> behavior of the women in the plant. <span style="color:var(--muted)">（下句：灯亮产量升，灯暗产量<b>也</b>升）</span></span>
+          <div class="opts">
+            <div class="opt">A controversial<span class="gl">有争议的（要有两方交锋）</span></div>
+            <div class="opt">B perplexing<span class="gl">令人费解的（因果说不通）</span></div>
+            <div class="opt">C mischievous<span class="gl">恶作剧的；有害的</span></div>
+            <div class="opt">D ambiguous<span class="gl">模棱两可的（表述含混）</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span><code>because of</code> 引出的原因状语内，修饰 behavior 的<b>前置定语</b>。<b>这是一道典型的“先读后文再回填”的跨句空。</b>
+            <span class="lbl">🔗 线索（在下一句，不在本句）</span>下句给出这个行为的具体内容：<b>照明增强产量升，照明减弱产量也升</b>——而研究者事先的预期是“照明<b>影响</b>效率”。<b>怎么变都升＝等于没关系</b>，这一点<b>说不通</b>，所以研究者困惑。
+            <span class="lbl">✅ B perplexing</span>令人费解的，暗含“<b>不知如何处置／解释不了</b>”。正对上“无论照明怎么变，效率都提高”给研究者带来的困惑。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>controversial 要求存在<b>正反两方的交锋</b>，可全文没有任何人对“女工行为”提出过不同看法。</div>
+              <div class="wr"><span class="l">C</span>mischievous＝（行为/事情）<b>造成伤害或麻烦的</b>，可下文完全不涉及女工的表现有伤害性。</div>
+              <div class="wr"><span class="l">D</span>ambiguous 指“<b>因不明确、含混不清而难以理解</b>”，可女工的行为<b>本身相当明确</b>（产量升就是升，数据清清楚楚）——<b>难解的是原因，不是表述。</b></div>
+            </div>
+            <span class="lbl">💡 迁移</span><b>四个形容词都能译成“难理解”时，先问“难在哪一层”</b>：<br>难在<b>表述含糊</b> ⟹ ambiguous／obscure；难在<b>因果说不通</b> ⟹ perplexing／puzzling／baffling；难在<b>有人反对</b> ⟹ controversial／disputable。<b>中文重合、英文分工完全不同的一族，值得整组背。</b>
+          </div>
+        </div>
+
+        <div class="q" id="q5" data-ans="2">
+          <div class="qhead"><span class="qno">5</span><span class="qt c-word">词义辨析 · 名词</span><span class="qpos">According to ___ of…</span></div>
+          <span class="stem">According to <em>5</em> of the experiments, their hourly output rose when lighting was increased, but also when it was dimmed.</span>
+          <div class="opts">
+            <div class="opt">A requirements<span class="gl">要求；必要条件（常配 for）</span></div>
+            <div class="opt">B explanations<span class="gl">解释（给原因）</span></div>
+            <div class="opt">C accounts<span class="gl">记述，描述（熟词僻义）</span></div>
+            <div class="opt">D assessments<span class="gl">评估，评价（他人看法）</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span><code>According to</code> 的<b>宾语中心词</b>，后接后置定语 of the experiments。<b>四个都是名词复数，只能靠“空格后那句话是什么性质”来定。</b>
+            <span class="lbl">🔗 线索（读逗号后面那一句）</span>逗号后是<b>纯客观的现象陈述</b>：产量在两种相反条件下都上升——<b>只说“是什么”，没说“为什么”，也没有任何人的评价。</b>
+            <span class="lbl">✅ C accounts</span>account 的熟词僻义＝<b>记述、描述</b>（不是“账户”）。代入＝「<b>根据实验的记述</b>，…」，且它与下文构成“<b>概括实验 → 详述现象</b>”的自然衔接。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>requirement 表“所需事物／（校方、雇主的）要求”，<b>其后介词一般用 for</b>；而主干内容是实验<b>现象</b>，与“实验所需条件”无关。</div>
+              <div class="wr"><span class="l">B</span>explanation 是<b>对已发生情况给出原因</b>，可第二句只陈述了现象，<b>一个字没解释成因</b>——真正的解释要到④段才出现。</div>
+              <div class="wr"><span class="l">D</span>assessment 是<b>他人对某事的看法或评价</b>，而“照明增强、小时产量增加”是实验中<b>观察到的客观数据</b>，不是谁的评价。</div>
+            </div>
+            <span class="lbl">💡 迁移</span><b>「According to ＋ 空」这个位置常年考同一件事：后面跟的是事实、原因，还是评价。</b><br>跟<b>事实</b> ⟹ accounts／reports／records／descriptions；跟<b>原因</b> ⟹ explanations；跟<b>评价</b> ⟹ assessments／reviews／estimates。<b>一刀切判据：读空格后那句，是“是什么”还是“为什么”。</b>
+          </div>
+        </div>
+
+        <div class="q" id="q6" data-ans="1">
+          <div class="qhead"><span class="qno">6</span><span class="qt c-word">词义辨析 · 动词</span><span class="qpos">形式主语 It ＋ 谓语</span></div>
+          <span class="stem">It did not <em>6</em> what was done in the experiment<b>;</b> <em>7</em> something was changed, productivity rose.</span>
+          <div class="opts">
+            <div class="opt">A conclude<span class="gl">得出结论；推断</span></div>
+            <div class="opt">B matter<span class="gl">要紧，重要</span></div>
+            <div class="opt">C indicate<span class="gl">显示，表明</span></div>
+            <div class="opt">D work<span class="gl">起作用，奏效</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>分句 1 的谓语。<b>关键结构：<code>It</code> 是形式主语，真正的主语是后面的 <code>what was done in the experiment</code></b>（还原＝ What was done in the experiment did not <b>___</b>）。
+            <span class="lbl">🔗 线索（分号是免费的答案）</span>分号后半句：<b>“只要有变化，产量就升”</b>——这是同一个意思的正面说法。反过来说就是：<b>做了什么并不重要</b>。<b>分号两侧讲同一件事，一侧已知就能反推另一侧。</b>
+            <span class="lbl">✅ B matter</span>matter 作动词＝<b>要紧、重要</b>，常用于 <code>it doesn't matter who/why/what…</code> 句式。代入＝「实验中做了什么<b>不重要</b>；只要有变化，效率就提高」，分号前后语义一致、逻辑通顺。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>代入＝“没有得出‘实验中做了什么’的结论”，可上句<b>明确写了实验的具体操作</b>（改变照明灯光），“做了什么”指的是<b>实验条件</b>，不是某种结论。</div>
+              <div class="wr"><span class="l">C</span>indicate 同理：“没有表明实验中做了什么”与上句“照明增强／减弱”的明确描述<b>直接相悖</b>。</div>
+              <div class="wr"><span class="l">D</span>最像的一个：“实验中做了什么并没有起作用”字面通顺——<b>但两处不成立</b>：①分句 2 说“只要有变化产量就升”，说明<b>条件变化在当时被认为确实影响了结果</b>；②<code>it doesn't work</code> 里的 it 是<b>真正主语</b>（指某事物），而本句的 It 是<b>形式主语</b>，指代后面的 what 从句——<b>结构上就不兼容。</b></div>
+            </div>
+            <span class="lbl">💡 迁移</span><b>见到分号，先把两侧各归纳成一句中文，看它们是“同义重述”还是“转折”。</b>本篇是同义重述 ⟹ 6 与 7 两个空<b>互为答案</b>：先做出哪个都行，做完回头验另一个。<br>⚠️ <b>另记一条结构判据</b>：<code>It ＋ 动词 ＋ what/that 从句</code> 时，先判 It 是<b>形式主语</b>还是<b>真正的代词</b>——很多“语义上说得通”的选项，就死在这一步。
+          </div>
+        </div>
+
+        <div class="q" id="q7" data-ans="3">
+          <div class="qhead"><span class="qno">7</span><span class="qt c-logic">逻辑关系 · 条件连词</span><span class="qpos">分句首（状语从句引导词）</span></div>
+          <span class="stem">It did not matter what was done in the experiment; <em>7</em> something was changed, productivity rose.</span>
+          <div class="opts">
+            <div class="opt">A as far as<span class="gl">就……而言（引出观点）</span></div>
+            <div class="opt">B for fear that<span class="gl">以免，唯恐（引出目的）</span></div>
+            <div class="opt">C in case that<span class="gl">以防万一；假使</span></div>
+            <div class="opt">D so long as<span class="gl">只要（充分条件）</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>分句 2 里<b>状语从句的引导词</b>（从句 something was changed ＋ 主句 productivity rose）。<b>空格在分句句首 ⟹ 几乎一定考逻辑。</b>
+            <span class="lbl">🔗 线索</span>从句“某物被改变了”是因，主句“生产效率上升”是果，而且由分句 1 可知<b>改变的具体内容无关紧要</b> ⟹ 两者之间是<b>充分条件</b>关系：<b>只要有变化，就一定升。</b>
+            <span class="lbl">✅ D so long as</span>＝as long as，<b>只要</b>，专门引出<b>充分条件</b>。代入＝「只要有某种变化，生产效率就会上升」，与分句 1 的“做什么不要紧”严丝合缝。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>as far as 引出<b>某人的观点、意见或评价范围</b>（as far as I can tell 依我看）。可主句 productivity rose 是<b>客观事实</b>，不是谁的看法。</div>
+              <div class="wr"><span class="l">B</span>for fear that＝<b>以免、唯恐</b>，引出的是<b>目的</b>，后常接虚拟语气。可“效率上升”是实验得出的<b>客观结果</b>，不是为了避免某事而做的主观行为。</div>
+              <div class="wr"><span class="l">C</span>两义都不成立：①“以防万一”同 B，把结果说成了目的；②“假使”表<b>假设情形</b>，而“照明条件发生改变”是<b>真实存在的实验事实</b>，不是假设。</div>
+            </div>
+            <span class="lbl">💡 迁移</span><b>条件类连词四选一，先判“这是充分条件、必要条件，还是目的”</b>：<br><b>只要</b>＝so long as／as long as｜<b>除非</b>＝unless｜<b>以免</b>＝for fear that／lest｜<b>万一</b>＝in case｜<b>就……而言</b>＝as far as。<b>中文都能说成“只要／万一”，英文的逻辑角色完全不同。</b>
+          </div>
+        </div>
+
+        <div class="q" id="q8" data-ans="0">
+          <div class="qhead"><span class="qno">8</span><span class="qt c-context">上下文语义 · 名词</span><span class="qpos">主语中心词 ＋ 同位语从句</span></div>
+          <span class="stem">A(n) <em>8</em> that they were being experimented upon seemed to be <em>9</em> to alter workers' behavior <em>10</em> itself.</span>
+          <div class="opts">
+            <div class="opt">A awareness<span class="gl">意识（到某事的存在）</span></div>
+            <div class="opt">B expectation<span class="gl">预期（对未来）；期望</span></div>
+            <div class="opt">C sentiment<span class="gl">（带感情的）观感、意见</span></div>
+            <div class="opt">D illusion<span class="gl">错觉；幻想</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>本句主语的中心词，后接 <code>that</code> <b>同位语从句</b>（从句成分完整，是在解释这个名词的内容）。
+            <span class="lbl">🔗 线索</span>⭐⭐ <b>这一句是①段末定义句的“第二次说法”</b>——<code>being experimented upon</code> 在这里<b>原词复现</b>，把两句抄下来逐成分对齐：
+            <div class="tabwrap"><table class="otab">
+              <tr><th>①段末（定义句）</th><th>②段末（改写句）</th><th>空</th></tr>
+              <tr><td>the very <b>act</b> of being experimented upon</td><td>A(n) <b>___</b> that they were being experimented upon</td><td><b>8</b></td></tr>
+              <tr><td>the <b>very</b>（仅仅这一点）</td><td>be <b>___</b> … <b>___</b> itself</td><td><b>9 / 10</b></td></tr>
+              <tr><td><b>changed</b></td><td><b>alter</b>（已给，同义替换的锚点）</td><td>—</td></tr>
+              <tr><td>subjects' behavior</td><td>workers' behavior</td><td>—</td></tr>
+            </table></div>
+            <b>「受试这一行为」作用于人的方式是什么？——工人<u>知道</u>自己正在被实验。</b>
+            <span class="lbl">✅ A awareness</span>＝<b>意识（到某事的存在及其重要性）</b>。灯光变亮或变暗，都让女工<b>知道</b>自己正身处实验之中 ⟹ 行为随之改变。这正是“霍桑效应”的机制。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>两义都不成立：①“预期”是<b>对未来情况的预料</b>，与从句的 <code>were being experimented</code>（<b>过去进行时，正在发生</b>）时态不匹配；②“期望”是主观盼望，可“他们正被当作实验对象”是<b>真实情况</b>，不是工人所盼望的事。</div>
+              <div class="wr"><span class="l">C</span>sentiment 是<b>基于情感的观点、感想</b>，可 that 从句是对<b>客观事实</b>的陈述，不涉及个人情感或主观看法。</div>
+              <div class="wr"><span class="l">D</span>illusion＝<b>错觉、幻想</b>，可他们<b>确实</b>在被实验——这是真事，不是错觉。<b>（回扣首句的三个专名坐标：这是一篇讲真事的叙事文。）</b></div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐⭐ <b>本页第一条主刀套路：完形里出现“概念定义句”后，后文几乎必有一次同义改写；把两句逐成分对齐，改写句里的空全部由定义句的对应成分反推。</b><br>本篇 <b>8、9、10 三个空是同一句话的第二次说法，对齐一次就落地 1.5 分</b>。<b>而这三个空如果一个个孤立地读，反而每个都很像“凭语感选”。</b>
+          </div>
+        </div>
+
+        <div class="q" id="q9" data-ans="2">
+          <div class="qhead"><span class="qno">9</span><span class="qt c-context">上下文语义 · 形容词</span><span class="qpos">系动词 seemed to be 的表语</span></div>
+          <span class="stem">An awareness that they were being experimented upon seemed to be <em>9</em> to alter workers' behavior <em>10</em> itself.</span>
+          <div class="opts">
+            <div class="opt">A suitable<span class="gl">适合的（针对某情况）</span></div>
+            <div class="opt">B excessive<span class="gl">过多的，过度的（贬义）</span></div>
+            <div class="opt">C enough<span class="gl">足够的（足以做某事）</span></div>
+            <div class="opt">D abundant<span class="gl">丰富的，充裕的（数量多）</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span><code>主语 ＋ seem to be ＋ 表语</code> 结构里的<b>表语</b>，后接不定式 <code>to alter…</code>。
+            <span class="lbl">🔗 线索（两头都在指同一件事：充分性）</span>往前看：①段的 <code>the <b>very</b> act</code>（仅仅这一行为）· ②段的“做什么不要紧，<b>只要</b>有变化就升”；往后看：紧跟着就是 <code>___ <b>itself</b></code>（10 空）。<b>前后夹击，指向的都是「单单这一点就够了」。</b>
+            <span class="lbl">✅ C enough</span><code>be enough to do</code>＝<b>足以做某事</b>，与后面的 by itself 首尾呼应，把充分条件关系说完整：<b>「工人单单是意识到自己正在受试，这一点就足以改变他们的行为。」</b>
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>suitable 表“<b>针对某情况的恰当性、适合性</b>”，可“意识”与“改变行为”之间根本不是“适不适用”的关系。</div>
+              <div class="wr"><span class="l">B</span>excessive 多含<b>贬义</b>，指“数量或程度<b>超出</b>合理值”。而本句强调的是这种意识具有<b>正面／能动的作用</b>，不是说它“过头了”。</div>
+              <div class="wr"><span class="l">D</span>abundant 表“<b>数量充裕</b>”，暗示可喜的丰富。可文章不在说“造成改变的因素<b>够多</b>”，恰恰在说“<b>仅这一个因素就够</b>”——<b>方向正好拧了。</b></div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>9 与 10 是一对连体空，说的是同一件事：充分性。</b><br>若 9 填了 excessive／abundant（那是在谈“<b>量的多少</b>”），10 空的 <code>by itself</code>（单凭它自己）<b>就没有着落</b>。<b>连体空互为验算——两个空填完，要能拼成一句完整、不别扭的话。</b>（承 <a href="套路库_阅读.html#R50" style="color:var(--accent)">R50</a>：连体空先做那个方向已定的。）
+          </div>
+        </div>
+
+        <div class="q" id="q10" data-ans="3">
+          <div class="qhead"><span class="qno">10</span><span class="qt c-collo">固定搭配 · 介词 ＋ 反身代词</span><span class="qpos">结果状语内</span></div>
+          <span class="stem">An awareness … seemed to be enough to alter workers' behavior <em>10</em> <b>itself</b>.</span>
+          <div class="opts">
+            <div class="opt">A about<span class="gl">关于</span></div>
+            <div class="opt">B for<span class="gl">为了</span></div>
+            <div class="opt">C on<span class="gl">在……之上（陷阱项）</span></div>
+            <div class="opt">D by<span class="gl">by itself 单独地，仅凭其本身</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>与 itself 一起构成<b>固定短语</b>，共同修饰不定式 to alter，说明“改变工人行为”的<b>方式</b>。
+            <span class="lbl">🔗 线索（先数一下 itself 指谁）</span><b>itself 是单数，只能回指单数的主语 An awareness</b>——<b>不可能指代复数的 workers</b>。这一步是硬判据，比读语义快十倍。<br>语义上：由 9 空的 enough 可知本句在讲<b>充分性</b>（只要这一个条件就够）。
+            <span class="lbl">✅ D by itself</span>＝<b>单独地、独自地、仅凭其本身</b>。代入＝「<b>单单凭这种意识本身</b>就能改变工人的行为」，与 enough 呼应，把①段的 <code>the very</code> 落到了实处。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>about itself＝“关于这种意识”，无法体现文中“<b>只需这一点就能起作用</b>”的侧重点。</div>
+              <div class="wr"><span class="l">B</span>for itself＝“为了这种意识”，同样给不出“仅仅凭借”的意思。</div>
+              <div class="wr"><span class="l">C</span><b>最阴的一个，是冲着“改变工人<u>自身</u>的行为”造的</b>——可它<b>两层都不成立</b>：①<b>itself 是单数，指的是 An awareness，根本指不到复数的 workers</b>；②英语里 <code>alter … on oneself</code> 不是惯用表达，<b>on oneself 一般不独立使用</b>。</div>
+            </div>
+            <span class="lbl">💡 迁移</span><b>反身代词题，第一步永远是“数一下它指谁”</b>——<b>单复数是硬判据</b>。<br>四个一次背死：<b>by oneself</b>（独自，靠自己）｜<b>for oneself</b>（为自己；亲自）｜<b>in itself</b>（就其本身而言，本质上）｜<b>of itself</b>（自动地，自行）。
+          </div>
+        </div>
+
+        <div class="q" id="q11" data-ans="2">
+          <div class="qhead"><span class="qno">11</span><span class="qt c-collo">固定搭配 · 被动短语</span><span class="qpos">were ___ to ＋ 名词</span></div>
+          <span class="stem">After several decades, the same data were <em>11</em> to econometric analysis.</span>
+          <div class="opts">
+            <div class="opt">A compared<span class="gl">be compared to 被比作/相比</span></div>
+            <div class="opt">B shown<span class="gl">be shown to 被展示给</span></div>
+            <div class="opt">C subjected<span class="gl">be subjected to 使经受，遭受</span></div>
+            <div class="opt">D conveyed<span class="gl">be conveyed to 被传送到</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>被动谓语里的<b>过去分词</b>，与系动词 were 构成被动语态，说明主语 the same data 与 econometric analysis 之间的关系。<b>注意：这里的 to 是介词（后接名词），不是不定式符号。</b>
+            <span class="lbl">🔗 线索</span>常识即可推：<b>数据一般是“分析”的对象</b> ⟹ 空格要传递“数据<b>被拿去做</b>分析”。<b>本空还是时间轴的折点</b>（After several decades ＝ 几十年后的重新审视）。
+            <span class="lbl">✅ C subjected</span><code>subject sb/sth <b>to</b> sth</code>＝让某人／某物<b>经受</b>某种行为；to 后常接 analysis／testing／review／examination。代入＝“数据成为被分析的对象”，正是“研究者对数据做了计量经济学分析”。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>compare 用于<b>同类事物</b>相比，或把一物比作另一物（两者要有相似处）。而“实验数据”（客观内容）与“计量经济分析”（研究行为）<b>既非同类，也不相似</b>。</div>
+              <div class="wr"><span class="l">B</span><b>先给 to 定性</b>：<code>be shown <b>to do</b></code>（不定式）才是“被证明是……”；本句 to 是<b>介词</b>，show 只能取“展示、出示”义，而 <code>be shown to</code> 后面应接<b>被展示的对象（人/地点）</b>——“数据被展示给分析”不成立。</div>
+              <div class="wr"><span class="l">D</span>convey to 的 to 后一般接<b>信息或物体的接收方</b>（人或地点），而“计量经济分析”是研究过程，<b>没法充当接收方</b>。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>「过去分词 ＋ to」的四选一，第一步是给每个选项的 to 定性（介词还是不定式符号）。</b><br><code>be shown to do</code>（被证明）≠ <code>be shown to sb</code>（被展示给某人）；<code>be subjected to sth</code>（经受）≠ <code>be subject to sth</code>（易受……影响／须服从）。<b>定错性，后面比多少遍语义都白搭。</b>
+          </div>
+        </div>
+
+        <div class="q" id="q12" data-ans="0">
+          <div class="qhead"><span class="qno">12</span><span class="qt c-logic">逻辑关系 · 状语引导短语</span><span class="qpos">句首（后接名词短语）</span></div>
+          <span class="stem">The Hawthorne experiments had another <b>surprise</b> in store. <em>12</em> the descriptions on record, no systematic evidence was found that…</span>
+          <div class="opts">
+            <div class="opt">A Contrary to<span class="gl">与……相反</span></div>
+            <div class="opt">B Consistent with<span class="gl">与……一致</span></div>
+            <div class="opt">C Parallel with<span class="gl">与……平行/类似</span></div>
+            <div class="opt">D Peculiar to<span class="gl">为……所特有</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>句首<b>状语的引导词</b>（四个选项都是介词短语），与主句由逗号隔开。<b>空格在句首 ⟹ 考逻辑，先定方向再看词义。</b>
+            <span class="lbl">🔗 线索（上一句就是钥匙）</span><code>another <b>surprise</b> in store</code>——<b>“惊人发现”这个预告词已经把方向定死了</b>：新算出来的结果必须与旧记录<b>相左</b>；而本句主干 <code>no systematic evidence was found</code> 本身又是个<b>否定</b>，把当年“效率与照明有关”的结论直接推翻。
+            <span class="lbl">✅ A Contrary to</span>＝与……相反。代入＝“<b>与记录在案的描述相反</b>，并未发现系统性证据…”，与 surprise 透露的“另一个惊人发现”完全吻合。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>Consistent with＝与……一致。“与记录中的描述一致”与上句 another surprise 传递的“<b>出人意料</b>”<b>直接打架</b>。</div>
+              <div class="wr"><span class="l">C</span>Parallel with 体现两事物的<b>相似性、可比拟性</b>，同样违背“前后结论不同”的语境。</div>
+              <div class="wr"><span class="l">D</span>Peculiar to＝<b>为……所特有</b>（a species of bird peculiar to Asia），它只讲<b>一方的特性</b>，<b>压根不是两方对比的关系</b>。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>凡出现 surprise／paradox／twist／another story 这类“预告词”，紧随其后的空一律填反向。</b><br>本题<b>连主句都不用读完</b>——看到 surprise，四个选项里只有 A 是“相反”，直接落笔，把时间省给 16 那种真正要想的空。
+          </div>
+        </div>
+
+        <div class="q" id="q13" data-ans="0">
+          <div class="qhead"><span class="qno">13</span><span class="qt c-word">词义辨析 · 名词</span><span class="qpos">主语中心词（后接被隔开的同位语从句）</span></div>
+          <span class="stem">…no systematic <em>13</em> <u>was found</u> <b>that</b> levels of productivity were related to changes in lighting.</span>
+          <div class="opts">
+            <div class="opt">A evidence<span class="gl">证据</span></div>
+            <div class="opt">B guidance<span class="gl">指导，指引</span></div>
+            <div class="opt">C implication<span class="gl">暗指；言外之意</span></div>
+            <div class="opt">D source<span class="gl">来源；根源</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>主句的<b>主语中心词</b>。⚠️ <b>本句的难点是结构</b>：解释它的 <code>that</code> 从句被谓语 <code>was found</code> <b>挤到了后面</b>（no systematic ___ <u>was found</u> <b>that</b>…）——<b>同位语从句与它所解释的名词被分隔</b>。<br>判据：that 从句<b>成分完整、不缺主宾</b> ⟹ 同位语从句（解释内容），不是定语从句。
+            <span class="lbl">🔗 线索</span>that 从句的内容“生产效率的水平与照明变化<b>有关</b>”正是<b>当年的旧结论</b>；本句用 <code>no…was found</code> 否定它 ⟹ 空格词要能被“找到／找不到”，并且能<b>证明</b>一个结论。
+            <span class="lbl">✅ A evidence</span>＝证据。代入＝“<b>没有找到系统性证据证明</b>生产效率与照明变化有关”，与上题的 Contrary to 一起构成③段的完整推翻。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>guidance＝<b>提供给某人的帮助或建议</b>，而从句“效率与照明变化存在关联”显然不是“建议”。</div>
+              <div class="wr"><span class="l">C</span>implication＝<b>暗指、未直接言明的内容</b>。可“效率与照明有关”是当年<b>直接得出的结论</b>（①段说它 extremely influential），<b>不涉及什么深层内涵</b>。</div>
+              <div class="wr"><span class="l">D</span>source＝来源／根源。从句说的是<b>一种关联</b>，不是“某情况的来源或根源”。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⚠️ <b>“名词 ＋ 谓语 ＋ that 从句”的分隔式同位语，是完形与阅读共有的高频难点</b>（<code>evidence／proof／fact／news／idea ＋ was found／emerged／came ＋ that…</code>）。<b>读到孤零零一个 that 从句时，先往前找那个抽象名词，而不是找最近的名词。</b>（对照①段的 <code>the … idea <b>that</b> the very act…</code>——同一篇里出现了两次同位语从句，一次紧贴、一次被隔开。）
+          </div>
+        </div>
+
+        <div class="q" id="q14" data-ans="3">
+          <div class="qhead"><span class="qno">14</span><span class="qt c-word">词义辨析 · 形容词</span><span class="qpos">主语从句内的前置定语</span></div>
+          <span class="stem">It turns out that the peculiar way of conducting the experiments <b>may have led to</b> <em>14</em> interpretations of what happened.</span>
+          <div class="opts">
+            <div class="opt">A disputable<span class="gl">有争议的；值得商榷的</span></div>
+            <div class="opt">B enlightening<span class="gl">有启发性的</span></div>
+            <div class="opt">C reliable<span class="gl">真实可信的</span></div>
+            <div class="opt">D misleading<span class="gl">误导性的，使人误信的</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>主语从句里修饰 interpretations 的<b>前置定语</b>。<code>may have led to</code>（情态动词＋完成时）表示<b>对过去情况的推测</b>，<code>what happened</code> 提示这是<b>今人回看当年</b>。
+            <span class="lbl">🔗 线索（在上一段，不在本句）</span>③段末刚刚说完“<b>没有系统性证据表明效率与照明有关</b>”＝当年的结论<b>是错的</b>。本段负责解释<b>错在哪</b> ⟹ 空格必须体现<b>对旧结论的否定性定性</b>。
+            <span class="lbl">✅ D misleading</span>＝误导性的。代入＝“实验方式的特殊，可能导致了对当时情况的<b>误导性解读</b>”，与上段“旧结论有误”严丝合缝，构成“<b>先给结论 → 后解释成因</b>”的段际衔接。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>enlightening（有启发的）是<b>认可</b>原先的解读，而上段末已经把它推翻了——<b>方向反了。</b></div>
+              <div class="wr"><span class="l">C</span>reliable（真实可信的）错法同 B，同样是对旧结论的<b>肯定</b>。</div>
+              <div class="wr"><span class="l">A</span><b>最像的一个，也是最值得记的一个</b>：disputable＝有争议的。可<b>当年人们并没有争议</b>——恰恰相反，①段写得清清楚楚：这是个 <code>extremely <b>influential</b> idea</code>（<b>极具影响力、被广泛接受</b>），还以工厂命名。<b>“有争议”是几十年后的事，把它塞进当年，时间错位。</b></div>
+            </div>
+            <span class="lbl">💡 迁移</span><b>褒贬方向题，不要只盯空格所在句，要先问“上一段的结论是什么”。</b><br>本题三个错项里<b>两个方向反了（B、C），一个时间错位（A）</b> ⟹ <b>先判方向（褒还是贬），再判程度与时间，两步砍到只剩一个。</b>
+          </div>
+        </div>
+
+        <div class="q" id="q15" data-ans="1">
+          <div class="qhead"><span class="qno">15</span><span class="qt c-logic">逻辑关系 · 句间连接</span><span class="qpos">句首状语</span></div>
+          <span class="stem">…may have led to misleading interpretations of what happened. <em>15</em>, lighting was always changed on a Sunday.</span>
+          <div class="opts">
+            <div class="opt">A In contrast<span class="gl">与……相反；相比之下</span></div>
+            <div class="opt">B For example<span class="gl">例如</span></div>
+            <div class="opt">C In consequence<span class="gl">因此；结果</span></div>
+            <div class="opt">D As usual<span class="gl">照旧；像往常一样</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>句首的<b>逻辑连接词</b>；本句主谓成分完整，所以空格只负责“<b>上下两句什么关系</b>”。
+            <span class="lbl">🔗 线索（一抽象一具体，就是总分）</span>上句是<b>总述结论</b>（特殊的实验方式导致了误读），本句起是<b>具体做法</b>（照明总在周日改；周一复工产量升…）——<b>下句突然出现具体的时间细节，这就是总—分的标志。</b>
+            <span class="lbl">✅ B For example</span>用来引出<b>一个或多个例子</b>来支持前面的论述。代入＝“…导致了误导性解读。<b>例如</b>，照明条件总是在周日更改。”
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>In contrast 要求前后<b>形成鲜明反差</b>，可“周日改照明”是对上句的<b>展开</b>，不是与之对立的另一面。</div>
+              <div class="wr"><span class="l">C</span>In consequence 表<b>结果</b>。可上句是<b>结论</b>、本句是<b>实验设定的条件</b>——<b>结论推不出条件，因果方向反了。</b></div>
+              <div class="wr"><span class="l">D</span>As usual＝“像往常一样”，指某事按<b>通常的方式或习惯</b>进行。可“周日更改照明”正对应上句的 <code><b>peculiar</b> way of conducting the experiments</code>（<b>特殊做法</b>），<b>而不是车间的原有惯例。</b></div>
+            </div>
+            <span class="lbl">💡 迁移</span><b>总—分是完形最常考的一种句间关系，标志固定：上句抽象（结论/评价），下句突然出现具体的时间、地点、数字或人名。</b><br>看到这个落差，<b>先把 For example／For instance 摆上去试</b>，通了就走，能省下十几秒给难空。（对照 <a href="2009_完形_智力的代价.html#q14" style="color:var(--accent)">2009 完形 14 题</a>——同一个“引例”考点，那年考的是<b>插入语</b>形态 <code>for instance</code>，位置在句中而非句首。<b>一个功能，两种形态，两年都考了。</b>）
+          </div>
+        </div>
+
+        <div class="q" id="q16" data-ans="0">
+          <div class="qhead"><span class="qno">16</span><span class="qt c-word">词义辨析 · 副词</span><span class="qpos">主语与谓语之间的状语</span></div>
+          <span class="stem">…lighting was <b>always</b> changed on a Sunday. When work started again on Monday, output <em>16</em> rose compared with the previous Saturday…</span>
+          <div class="opts">
+            <div class="opt">A duly<span class="gl">如期地，按时地（＝as expected）</span></div>
+            <div class="opt">B accidentally<span class="gl">偶然地；意外地</span></div>
+            <div class="opt">C unpredictably<span class="gl">不可预测地</span></div>
+            <div class="opt">D suddenly<span class="gl">突然地，忽然</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>位于主语与谓语之间，<b>作状语修饰 rose</b>。四个都是副词——<b>词性分不出高下，只能靠“方向”。</b>
+            <span class="lbl">🔗 线索（上一句的 always 是全题的钥匙）</span><code>lighting was <b>always</b> changed on a Sunday</code>——always 已经把“周日改照明”定成了<b>常态</b>；而按霍桑效应的逻辑，“<b>照明一变，产量就升</b>”本身就在<b>预期之中</b>。⟹ 周一产量上升是一个<b>规律性、意料之中</b>的结果。
+            <span class="lbl">✅ A duly</span>＝<b>正如预期地；按时地</b>。代入＝“与上周六相比，工人的产量<b>每到周一就会如期上升</b>”，与上句形成“周日照明（总是）改变 → 周一产量（总是如期）上升”的<b>因果链条</b>。
+            <span class="lbl">❌ 另外三个错在哪（⭐ 它们三个是<u>同一栏</u>的）</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>accidentally＝<b>偶然地</b>。与前句 always 体现的“常态变化”、以及②段“只要照明有变化，产量就上升”体现的<b>规律性</b>相悖。</div>
+              <div class="wr"><span class="l">C</span>unpredictably＝<b>不可预测地</b>。可首段就写明实验预期“照明强度应与工人产量相关”，产量随照明而升<b>正是研究者意料之中、希望看到的结果</b>。</div>
+              <div class="wr"><span class="l">D</span>suddenly＝<b>突然地</b>，强调不规律性；错因同 B、C，与结论背后的“<b>常态性、可预料性</b>”相冲。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐⭐ <b>本页第二条主刀套路：三缺一分组法。</b><br><b>把四个选项按“方向／极性”分组，若分成 3+1，先赌那个孤立的 1。</b>本题 accidentally／unpredictably／suddenly <b>三个都在“意外·不规律”栏</b>，只有 duly 在“如期·规律”栏 ⟹ <b>不必逐个代入，直接落 A。</b><br>⚠️ <b>使用条件：必须按<u>极性</u>分组，不能按词性分</b>（本题四个都是副词，按词性一个也分不出来）。<b>本篇一篇里用了两次——19 题是同一把刀。</b><br>⭐ 另：accidentally 属于<b>“偶然词族”</b>。<a href="2009_完形_智力的代价.html#q2" style="color:var(--accent)">2009 完形</a>连着考了三次（2 happened to ✗ · 14 by chance ✗ · 20 By accident ✗），<b>本题是跨年第四次</b> ⟹ <b>科研／常态语境不填偶然词，见到先划掉。</b>
+          </div>
+        </div>
+
+        <div class="q" id="q17" data-ans="3">
+          <div class="qhead"><span class="qno">17</span><span class="qt c-word">词义辨析 · 动词</span><span class="qpos">and 连接的第二个并列谓语</span></div>
+          <span class="stem">…output duly <b>rose</b> compared with the previous Saturday <b>and</b> <em>17</em> to rise for the next couple of days.</span>
+          <div class="opts">
+            <div class="opt">A failed<span class="gl">未能（做到）</span></div>
+            <div class="opt">B ceased<span class="gl">停止</span></div>
+            <div class="opt">C started<span class="gl">开始</span></div>
+            <div class="opt">D continued<span class="gl">继续</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span><code>and</code> 连接的<b>第二个并列谓语</b>（rose … and ___ to rise…），主语同为 output。
+            <span class="lbl">🔗 线索（and 就是答案）</span><b>and 是同向连词</b>：前半“产量上升”，后半必须<b>同向</b>。<b>这道题连语义都不用读——看见 and，就只在“同向”那一栏里挑。</b>
+            <span class="lbl">✅ D continued</span>continued to rise＝<b>继续上升</b>。“产量（已经）上升 → 产量继续上升”与 and 提示的“前后一致”完全匹配。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>failed to rise＝<b>未能上升</b>，句内变成“上升→未能上升”的<b>转折</b>，要用 but 才接得上，与 and 相悖。</div>
+              <div class="wr"><span class="l">B</span>ceased to rise＝<b>停止上升</b>，同样是由升转停的<b>转折</b>，也与 and 不匹配。</div>
+              <div class="wr"><span class="l">C</span>started to rise＝开始上升——<b>违背事理</b>：产量在周一<b>已经</b>升了，不可能到接下来几天才“开始”升。</div>
+            </div>
+            <span class="lbl">💡 迁移</span><b>and／but 是免费的方向指示器，一秒解题</b>：<b>and 两侧同向｜but、yet、however 两侧反向｜or 两侧择一</b>。<br>⭐ <b>本篇三个“方向题”正好分三层</b>：<b>17 是句内方向</b>（靠 and）· <b>12 是跨句方向</b>（靠上句的 surprise）· <b>18 是跨段落式的对照方向</b>（靠“对照组”这一整套设计）。<b>三种都要能一眼认出来。</b>
+          </div>
+        </div>
+
+        <div class="q" id="q18" data-ans="2">
+          <div class="qhead"><span class="qno">18</span><span class="qt c-logic">逻辑关系 · 句间连接</span><span class="qpos">句首状语</span></div>
+          <span class="stem"><em>18</em>, a comparison with data for weeks <b>when there was no experimentation</b> showed that output <b>always</b> went up on Mondays.</span>
+          <div class="opts">
+            <div class="opt">A Therefore<span class="gl">因此（引出结果）</span></div>
+            <div class="opt">B Furthermore<span class="gl">此外（补充支持）</span></div>
+            <div class="opt">C However<span class="gl">然而（转折）</span></div>
+            <div class="opt">D Meanwhile<span class="gl">同时；（比较两方面）另一方面</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>句首的<b>逻辑连接词</b>；从句、主句成分都完整，空格只管句间关系。
+            <span class="lbl">🔗 线索（这是全篇的“对照组接缝”）</span>前两句讲的是<b>实验期</b>：周日改照明 ⟹ 周一产量升（看起来“照明改变导致产量上升”）。<br>本句讲的是<b>非实验期</b>：<code>data for weeks <b>when there was no experimentation</b></code>（<b>没有做实验的那些周</b>）——结果<b>产量照样每逢周一就升</b>。⟹ <b>前面那条因果链被釜底抽薪。</b>
+            <span class="lbl">✅ C However</span>用于引出<b>令人吃惊或形成对比</b>的话。代入＝“做实验时→周一产量升；<b>然而</b>，不做实验时→周一产量<b>照样</b>升”，正是上下文之间的反差。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>Therefore 要求前面是因、后面是果。可“<b>不做实验也涨</b>”并不是“<b>做实验涨</b>”导致的结果——两句之间<b>没有因果关联</b>。</div>
+              <div class="wr"><span class="l">B</span>Furthermore 是<b>补充或支持</b>前面的说法。可本句恰恰是<b>对前两句解释的否定</b>（周一涨与实验无关），<b>不是补充，是拆台。</b></div>
+              <div class="wr"><span class="l">D</span>两义都不成立：①“同时”——两种情形<b>并非同时发生</b>（先说实验期，后说非实验期）；②“相比之下”——meanwhile 表此义时尤指“<b>完全相反且同时存在</b>的两面”，而本文比的是“做实验 vs 不做实验”这一<b>前提差异</b>，<b>两边的结果其实一样（都涨）</b>。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>凡科学类文章出现 <code>a comparison with data … when there was <u>no</u> X</code>（与没有 X 的那些情况相比），这句一定是来拆前面那条因果的</b>——<b>这就是对照组</b>。接缝处只能填转折。<br>📌 <b>而这条“对照组”思维本身就是本文的中心</b>：霍桑实验之所以站不住，正是因为<b>当年没有设对照组</b>。<b>读懂了这一点，14（misleading）、18（However）、19（tended）三个空一起顺下来。</b>
+          </div>
+        </div>
+
+        <div class="q" id="q19" data-ans="1">
+          <div class="qhead"><span class="qno">19</span><span class="qt c-word">词义辨析 · 动词</span><span class="qpos">末句主干谓语</span></div>
+          <span class="stem">Workers <em>19</em> to be diligent for the first few days of the week <b>in any case</b>, before <em>20</em> a plateau and then slackening off.</span>
+          <div class="opts">
+            <div class="opt">A attempted<span class="gl">尝试，努力做（主观意图）</span></div>
+            <div class="opt">B tended<span class="gl">往往会，倾向于（客观惯常）</span></div>
+            <div class="opt">C chose<span class="gl">选择（主动决定）</span></div>
+            <div class="opt">D intended<span class="gl">打算（有意识的计划）</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>末句的<b>主干谓语</b>（本句状语极多：for…the week、before…off、in any case，<b>先把状语全划掉，主干只剩 Workers ___ to be diligent</b>）。
+            <span class="lbl">🔗 线索（in any case 就是判据）</span><code><b>in any case</b></code>＝<b>不管在什么情况下</b>——强调这是一种<b>不因“做不做实验”而改变的惯性行为</b>。上文刚说“无论是否进行实验，产量总在周一上升”，本句是在给出<b>原因层面的普遍规律</b>。
+            <span class="lbl">✅ B tended</span><code>tend to do sth</code>＝<b>往往会……</b>，既满足语法（后接不定式），又体现 in any case 所强调的<b>惯常表现</b>：“做实验时周一涨，不做实验时也涨 ⟹ <b>工人本来就往往在一周头几天勤奋</b>。”
+            <span class="lbl">❌ 另外三个错在哪（⭐ 又是三缺一）</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>attempt to do 强调<b>主体的意图或主动努力</b>，与 in any case 透露的“客观惯常行为”相悖。</div>
+              <div class="wr"><span class="l">C</span>choose to do 表示“<b>面临选择时主动决定去做</b>”，强调由个体因素驱动的决策过程，无法体现上文现象的惯常性。</div>
+              <div class="wr"><span class="l">D</span>intend to do＝<b>计划、打算</b>，强调个体<b>有意识</b>的决定；错因同 A、C。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>三缺一分组法，一篇里的第二次</b>：attempted／chose／intended <b>三个全在“主观意图”栏</b>，只有 tended 在“<b>客观倾向</b>”栏 ⟹ 直接落 B。（第一次是 16 题的“意外 vs 如期”。）<br>⭐⭐ <b>而 <code>tend to do</code> 在 <a href="2009_完形_智力的代价.html#q2" style="color:var(--accent)">2009 完形 2 题</a>也是正确答案——两年连着当答案。</b>它是<b>科研／统计语境的标配谓语</b>：同族还有 be likely to／be prone to／be inclined to。<b>背到能默写。</b>
+          </div>
+        </div>
+
+        <div class="q" id="q20" data-ans="3">
+          <div class="qhead"><span class="qno">20</span><span class="qt c-collo">固定搭配 · 熟词僻义</span><span class="qpos">介词 before 的宾语（动名词）</span></div>
+          <span class="stem">Workers tended to be diligent for the first few days of the week in any case, <b>before</b> <em>20</em> a <b>plateau</b> <b>and then</b> slackening off.</span>
+          <div class="opts">
+            <div class="opt">A breaking<span class="gl">突破，打破</span></div>
+            <div class="opt">B climbing<span class="gl">攀登（尚未到达）</span></div>
+            <div class="opt">C surpassing<span class="gl">超越，胜过</span></div>
+            <div class="opt">D hitting<span class="gl">hit a plateau 进入平台期（熟词僻义）</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>介词 <code>before</code> 的<b>宾语（动名词）</b>，并与 <code>and then slackening off</code> 构成<b>顺承递进</b>。
+            <span class="lbl">🔗 线索（把三个阶段抄成一条线）</span>本句用 <code>for the first few days</code>（一开始）→ <code>before</code>（继而）→ <code>and then</code>（然后）<b>顺序串起工人一周的三种状态</b>：<br><b>勤奋　→　___ 一个 plateau（稳定期）　→　懈怠下来</b><br>⟹ 这是一条<b>倒 U 形曲线：升 → 平 → 降</b>。空格填的是<b>“到达那个平段”的动作</b>。
+            <span class="lbl">✅ D hitting</span>hit 的熟词僻义＝<b>达到（某水平／某阶段）</b>；<code>hit a plateau</code> 是固定搭配＝<b>达到停滞期／稳定阶段</b>。三段连读＝“一开始勤奋 → 达到稳定状态 → 然后懈怠”，句内语义完整。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>breaking a plateau＝<b>突破稳定状态</b>。那条曲线就变成“升 → 突破 → 降”的<b>倒 V 形，中间没有“平”这一段</b>——可 <code>plateau</code> 这个词本身的意思就是“<b>平</b>”，自相矛盾。</div>
+              <div class="wr"><span class="l">B</span>climbing a plateau 表示“<b>仍在起点、尚未攀上高地</b>”，那工人的状态就成了“勤奋 → 准备攀登 → 懈怠”，<b>顺序混乱</b>。</div>
+              <div class="wr"><span class="l">C</span>surpass 表“<b>比……更好</b>”，前后须是<b>可比的两方</b>。而 workers 与 a plateau 是<b>不同类的东西</b>，没法比——真要比，也只能是“产量值 vs 瓶颈值”。</div>
+            </div>
+            <span class="lbl">💡 迁移</span><b>末句多阶段的空，把这句话的几个阶段抄成一条线再选</b>——本题空格填的是曲线<b>中段</b>的动作，方向由左右两端（勤奋／懈怠）夹出来。<br>📌 顺带把 plateau 的高频搭配一次背死：<b>reach／hit a plateau</b>（进入平台期）· <b>plateau out</b>（趋于平稳）· <b>a plateau in sales</b>（销量停滞）。<b>写作里“增长放缓”的最地道说法就是它。</b>
+          </div>
+        </div>
+      </section>
+      <!-- ========== 03 考点分类 ========== -->
+      <section class="card">
+        <h2><span class="n">03</span>考点分类（完形不背单个空，要看「这题在考什么」）</h2>
+        <div class="catbar" id="catbar"></div>
+        <div class="catlegend" id="catlegend"></div>
+        <p class="note" style="margin-top:14px">点某一类 → 下方列出该类所有空、正文里同步高亮 → 点小格跳到解析卡。（分类依据不是“空格里填的是什么词”，而是<b>“解这一题你得做什么动作”</b>。）</p>
+        <div class="chips" id="chips"></div>
+        <div class="flow" style="margin-top:16px">
+          <div class="fi"><b>⭐ 四年对照：2010 回到了“词义偏重”型，与 2009 的均匀型正相反。</b>
+            <span class="ev"><div class="tabwrap"><table class="otab"><tr><th>年份</th><th>词义辨析</th><th>固定搭配</th><th>逻辑关系</th><th>上下文语义</th><th>这一年压在哪</th></tr>
+            <tr><td>2007</td><td>9</td><td>5</td><td>4</td><td>2</td><td>词义（占 45%）</td></tr>
+            <tr><td>2008</td><td>9</td><td>6</td><td><b>2</b></td><td>3</td><td>六道实义动词的主语适配</td></tr>
+            <tr><td>2009</td><td>6</td><td>5</td><td>5</td><td>4</td><td>四类几乎持平</td></tr>
+            <tr><td><b>2010</b></td><td><b>9</b></td><td><b>4</b></td><td><b>4</b></td><td><b>3</b></td><td><b>形容词与副词的“方向”</b></td></tr></table></div>
+            ⟹ <b>四年四种分布，第四次坐实「完形没有万能重心」。</b>而 2010 的九道词义题里，<b>有六道是形容词或副词</b>（4 perplexing · 14 misleading · 16 duly · 5 accounts · 6 matter · 17 continued · 19 tended · 1 affected · 13 evidence）——<b>它们全都不考“认不认识”，只考“朝哪个方向”。</b></span></div>
+          <div class="fi"><b>⟹ 开考先花十秒扫一遍 20 组选项，判断这一年把分压在哪。</b>
+            <span class="ev">四个选项多是<b>连接词／副词</b> → 考逻辑，先画段落方向图；多是<b>实义动词</b> → 考搭配与主语适配；多是<b>同词性形容词</b> → 考褒贬与程度。<b>本篇扫下来会看见大量形容词、副词四连（4 / 9 / 14 / 16 / 19），这就是信号：这一年主要靠“方向”得分，不是靠词汇量。</b></span></div>
+          <div class="fi"><b>本篇有三道题「读都不用读语义」——靠一个结构词就能定（占全卷 1.5 分）。</b>
+            <span class="ev"><b>2</b>（同句句首的 <code>Instead</code> ⟹ 只有 ended <b>up</b> 收“出人意料的结局”）· <b>17</b>（<code>and</code> 同向 ⟹ 只能 continued）· <b>12</b>（上句的 <code>another <b>surprise</b></code> ⟹ 只能 Contrary to）。<br><b>⟹ 完形不是“语感题”。凡能靠结构词定的空，一律先定，省下来的时间留给 16 那种真要想的。</b></span></div>
+          <div class="fi"><b>⚠️ 而全篇最值钱的一条跨空规律：8、9、10 是一个整体，不是三道题。</b>
+            <span class="ev">它们是①段末“霍桑效应”<b>定义句的第二次说法</b>：<code>the very <b>act</b> of being experimented upon <b>changed</b> subjects' behavior</code> ⟹ <code>An <b>awareness</b> that they were being experimented upon seemed to be <b>enough</b> to <b>alter</b> workers' behavior <b>by itself</b></code>。<b>逐成分对齐，1.5 分一次落地</b>（详见 <a href="#q8" style="color:var(--accent)">8 题</a>）。<b>孤立地读，每个空都像“凭语感”；对齐了读，三个空都是硬判据。</b></span></div>
+          <div class="fi"><b>📐 线索位置统计（我自己数的，判据＝线索是否落在同一个句号之内）：句内自足 13 空 ／ 跨句 7 空。</b>
+            <span class="ev"><b>句内自足（13）</b>：1 · 2 · 3 · 5 · 6 · 7 · 9 · 10 · 11 · 13 · 17 · 19 · 20 ——线索就在本句里（信号词、分号、and、before…and then、固定搭配）。<br><b>跨句（7）</b>：4（下一句）· 8（回指①段末）· 12（上一句的 surprise）· 14（上一段末）· 15（上一句）· 16（上一句的 always）· 18（前两句 vs 本句）。<br>⟹ <b>考场策略：第一遍只做句内空（占 65%），第二遍再回头处理那七个跨句的。</b>先把能拿的 6.5 分锁住，心态和时间都稳。</span></div>
+        </div>
+      </section>
+
+      <!-- ========== 04 打法 ========== -->
+      <section class="card">
+        <h2><span class="n">04</span>完形六大打法（本篇取证）</h2>
+        <div class="flow">
+          <div class="fi"><b>① 首句不设空 → 先定三要素</b>：话题、性质、语气。
+            <span class="ev">本篇首句一口气给了<b>三个专有名词坐标</b>（1924 · America's National Research Council · the Hawthorne Plant near Chicago）⟹ <b>专名越密，越是“讲一件真事”的叙事文</b>。<b>由此定死前提：全篇所有空都服从“这是已经发生的事实”</b>——<b>8 空的 <code>expectation</code>（对未来的预期）、<code>illusion</code>（错觉）两个干扰项，就是死在这条前提上。</b></span></div>
+          <div class="fi"><b>② ⭐ 叙事型完形：开考先标转折点，命题人一定在那儿设空</b>（本篇独有的一条）。
+            <span class="ev">全篇三次反转，<b>三次都设了空</b>：<code><b>Instead</b>, the studies ended <b>2</b>…</code>（本想查照明 ⟹ 查出了效应）· <code>another <b>surprise</b> in store. <b>12</b> the descriptions on record…</code>（当年结论 ⟹ 几十年后重算）· <code><b>18</b>, a comparison with data for weeks when there was <b>no</b> experimentation…</code>（实验期 ⟹ 非实验期）。<br><b>三个转折点的信号词全部落在空格的<u>紧邻上文或同句</u>，一个都不用远读。</b></span></div>
+          <div class="fi"><b>③ ⭐⭐ 定义句与它的改写句，逐成分对齐</b>——完形里“概念定义句”出现后，后文几乎必有一次同义改写。
+            <span class="ev">本篇①段末给“霍桑效应”下定义，②段末<b>整句重说了一遍</b>（<code>being experimented upon</code> 原词复现是识别标志）⟹ 把两句抄成两栏，<b>8（act→awareness）· 9（very→enough）· 10（very→by itself）三个空由定义句的对应成分反推</b>。<b>这是本页第一条主刀套路。</b></span></div>
+          <div class="fi"><b>④ ⭐⭐ 三缺一分组法</b>：把四个选项按<b>方向／极性</b>分组，若分成 3+1，先赌那个孤立的 1。
+            <span class="ev"><b>16 题</b>：accidentally／unpredictably／suddenly <b>三个都在“意外·不规律”栏</b>，只有 duly 在“如期·规律”栏 ⟹ 直接落 A。<br><b>19 题</b>：attempted／chose／intended <b>三个都在“主观意图”栏</b>，只有 tended 在“客观倾向”栏 ⟹ 直接落 B。<br>⚠️ <b>使用条件：必须按<u>极性</u>分组，不能按词性分</b>（这两题四个选项分别都是同词性，按词性一个也分不出来）。<b>一篇里用了两次，值 1 分。</b></span></div>
+          <div class="fi"><b>⑤ 结构词是免费的方向指示器</b>：and 同向｜but/however 反向｜分号两侧互为解释｜before…and then 表顺承。
+            <span class="ev"><b>17 题</b>靠 <code>and</code>（rose and ___ to rise ⟹ continued）· <b>6/7 题</b>靠<b>分号</b>（“做什么不要紧”与“只要有变化就升”互为答案，做完一个能验另一个）· <b>20 题</b>靠 <code>before … <b>and then</b></code>（勤奋 → ___ → 懈怠，倒 U 曲线的中段只能是 hitting a plateau）。<b>这三处都是“读都不用读语义”的空。</b></span></div>
+          <div class="fi"><b>⑥ 末空回头看全文</b>：完形最后一空常是全文的收口。
+            <span class="ev">⚠️ <b>本篇是个例外，值得单记</b>：20 空不是收口，<b>收口句 <code>This suggests that the alleged “Hawthorne effect” is hard to pin down.</code> 没有设空</b>——命题人把它<b>留成了白送的总结</b>。⟹ <b>做到最后一空发现它不是总结句时，别慌</b>，往后再读一句，那句没设空的收口往往正是你验算前面若干空的最后一道保险（本篇它同时验了 12、14、18 三个空的方向）。<br>四年对照：2007 unprepared（回看第 2 空）· 2008 paradoxical（回看上一句的 this）· 2009 So far（回看那个悬而未决的问句）· <b>2010 hitting（曲线中段，收口句反而不设空）。</b></span></div>
+        </div>
+        <p class="note" style="margin-top:14px">🔁 <b>四年完形信号类型对照</b>：<a href="2022_完形_植物意识.html" style="color:var(--accent)">2022</a> 靠 nonetheless／However 这类<b>明信号词</b>；<a href="2007_完形_拉美独立后的理想与分歧.html" style="color:var(--accent)">2007</a> 靠 less agreement／most…some…／except 这类<b>结构性信号</b>；<a href="2008_完形_高智商与遗传疾病.html" style="color:var(--accent)">2008</a> 基本不给信号，靠“动词能不能带这个主语”；<a href="2009_完形_智力的代价.html" style="color:var(--accent)">2009</a> 靠<b>语用功能</b>（引例、递进、收口）；<b>2010 则靠<u>叙事的方向</u>——三次反转、一个对照组、两组三缺一。<u>五种都要会认。</u></b></p>
+      </section>
+
+      <!-- ========== 05 搭配库 ========== -->
+      <section class="card">
+        <h2><span class="n">05</span>固定搭配 &amp; 熟词僻义（这些是死记就得分的）</h2>
+        <div class="wb">
+          <div class="wbi"><div class="p">end up doing sth　最终以…收场（2 题）</div><div class="u"><b>专收“出人意料的结局”</b>，所以它天然与 Instead／But 同现。<b>一族一起背</b>：end up doing（最终落得）｜ end up <b>with</b> sth（最后剩下/得到）｜ end <b>at</b> ＋时间/地点｜ end <b>with</b> sth（以某内容自然收尾，<b>不含意外</b>）。<b>判据：空格后跟 V-ing，四个小品词里只有 up 接得上。</b></div></div>
+          <div class="wbi"><div class="p">the very ＋ 名词　正是……本身（3 题）</div><div class="u"><b>very 在这里是形容词不是副词</b>，表强调：<code>the very act of doing</code>＝做某事这一行为本身。<b>它一出现就意味着“仅此一点、别无其他”</b>，所以天然与 <code>enough</code>／<code>by itself</code>／<code>alone</code> 配套。<b>本篇 3、9、10 三个空正是被这一个 very 串起来的。</b></div></div>
+          <div class="wbi"><div class="p">it doesn't matter what/who/why…　……并不重要（6 题）</div><div class="u"><b>It 是形式主语</b>，真正的主语是后面的 what 从句。<b>⚠️ 与 it doesn't work 的区别就在这</b>：work 句里的 it 是<b>真正的代词</b>（指某个事物），所以“It did not work what was done…”结构上直接不成立。<b>凡 It ＋ 动词 ＋ what/that 从句，先判 It 是形式主语还是代词。</b></div></div>
+          <div class="wbi"><div class="p">so long as　只要（充分条件）（7 题）</div><div class="u"><b>条件连词一次分清</b>：<b>只要</b>＝so long as／as long as｜<b>除非</b>＝unless｜<b>以免</b>＝for fear that／lest（后接虚拟）｜<b>万一、假使</b>＝in case｜<b>就……而言</b>＝as far as（引出观点，不引出事实）。<b>中文都能说成“只要／万一”，英文的逻辑角色完全不同。</b></div></div>
+          <div class="wbi"><div class="p">be enough to do ＋ by itself　单凭这一点就足以……（9、10 题）</div><div class="u"><b>这是一对连体搭配</b>，两个空说的是同一件事：<b>充分性</b>。<br><b>反身代词四个一起背</b>：<b>by oneself</b>（独自，靠自己）｜<b>for oneself</b>（为自己；亲自）｜<b>in itself</b>（就其本身而言）｜<b>of itself</b>（自动地）。<b>⚠️ 做反身代词题第一步永远是“数一下它指谁”——本篇 itself 是单数，指 An awareness，指不到复数的 workers。</b></div></div>
+          <div class="wbi"><div class="p">be subjected to sth　使经受，遭受（11 题）</div><div class="u">to 后常接 <b>analysis／testing／review／examination／criticism</b>。<br>⚠️ <b>与 be subject to 差一个 -ed，意思两样</b>：<code>be subject<b>ed</b> to</code>＝（被动地）经受了某个行为；<code>be subject to</code>＝<b>易受……影响／须服从</b>（Prices are subject to change）。<b>另：过去分词 ＋ to 的题，第一步是给 to 定性（介词 or 不定式）</b>——be shown <b>to do</b>（被证明）≠ be shown <b>to sb</b>（被展示给）。</div></div>
+          <div class="wbi"><div class="p">contrary to　与……相反（12 题）· in store　即将到来（③段）</div><div class="u"><b>四个“对比类”介词短语一起背</b>：contrary to（相反）｜ consistent with（一致）｜ parallel with（类似、平行）｜ peculiar to（<b>为……所特有</b>，只讲一方，不构成对比）。<br><code>have sth <b>in store</b></code>＝<b>（好事或坏事）即将到来、还留着一手</b>——它是本篇 12 空的钥匙：<b>“另一个惊人发现”这个预告词，把后面的方向锁死为“反向”。</b></div></div>
+          <div class="wbi"><div class="p">no evidence was found that…　没有找到证据证明……（13 题）</div><div class="u">⚠️ <b>分隔式同位语从句</b>：解释 evidence 的 that 从句被谓语 <code>was found</code> 挤到了后面。<b>判据：that 从句成分完整（不缺主宾）＝同位语从句；缺成分＝定语从句。</b><br><b>常与同位语从句搭伴的抽象名词</b>：evidence／proof／fact／idea／news／conclusion／possibility。<b>本篇①段的 <code>the … idea that the very act…</code> 是紧贴式，③段这句是分隔式——同一篇里两种形态各考一次。</b></div></div>
+          <div class="wbi"><div class="p">duly　如期地，按时地（16 题）· in any case　不管怎样（19 题）</div><div class="u"><b>这两个词是本篇“常态 vs 偶然”这条暗线的两个路标。</b><br><b>duly</b>＝as expected，正如所料地；<b>in any case</b>＝无论如何、不管出现什么情况，专门标记<b>不因外部条件而改变的惯性</b>。<br>⚠️ <b>与它们对立的“偶然词族”在完形里基本必错</b>：accidentally｜ by chance｜ by accident｜ happen to do｜ as it happens。<b><a href="2009_完形_智力的代价.html" style="color:var(--accent)">2009</a> 一篇里考了三次，2010 又考一次——跨年第四次。</b></div></div>
+          <div class="wbi"><div class="p">tend to do sth　往往会，倾向于（19 题）</div><div class="u"><b>科研／统计语境的标配谓语</b>，<b>2009 完形 2 题与 2010 完形 19 题连着两年都是正确答案</b>。同族：be likely to｜ be prone to｜ be inclined to｜ have a tendency to。<b>与它对立的一整族是“主观意图”词</b>：attempt／choose／intend／mean to——<b>见到 in any case、always、generally 这类惯常性标记，主观意图词一律先划掉。</b></div></div>
+          <div class="wbi"><div class="p">hit a plateau　达到平台期／停滞期（20 题）</div><div class="u"><b>写作里“增长放缓”最地道的说法。</b>一组背下来：<b>reach／hit a plateau</b>（进入平台期）｜ <b>plateau out</b>（趋于平稳，plateau 可作动词）｜ <b>a plateau in sales</b>（销量停滞）｜ <b>slacken off</b>（松懈下来）。<b>⚠️ hit 在这里是熟词僻义＝“达到（某水平/阶段）”</b>：hit a record high（创新高）· hit rock bottom（跌到谷底）。</div></div>
+          <div class="wbi"><div class="p">🔑 熟词僻义清单（本篇 14 处，是四篇完形里密度最高的一篇）</div><div class="u"><div class="tabwrap"><table class="otab"><tr><th>词</th><th>常见义</th><th>本篇义</th><th>出处</th></tr>
+            <tr><td><span class="ow">plant</span></td><td>植物</td><td><b>工厂</b>（⭐ 与 <a href="2022_完形_植物意识.html" style="color:var(--accent)">2022 完形《植物意识》</a>的 plant 一词两义，两年两个意思）</td><td>①段首句</td></tr>
+            <tr><td><span class="ow">shop-floor</span></td><td>商店地板</td><td><b>车间（的）</b>；shop＝作坊、车间</td><td>1 题所在句</td></tr>
+            <tr><td><span class="ow">subject</span></td><td>主题；科目</td><td>①<b>受试者 n.</b>（subjects' behavior）②<b>be subjected to 使经受 v.</b></td><td>①段末／11 题</td></tr>
+            <tr><td><span class="ow">account</span></td><td>账户</td><td><b>记述，描述 n.</b></td><td>5 题答案</td></tr>
+            <tr><td><span class="ow">matter</span></td><td>事情 n.</td><td><b>要紧，重要 v.</b></td><td>6 题答案</td></tr>
+            <tr><td><span class="ow">dim</span></td><td>昏暗的 adj.</td><td><b>把（灯）调暗 v.</b>（was dimmed）</td><td>②段</td></tr>
+            <tr><td><span class="ow">store</span></td><td>商店</td><td><b>in store ＝ 即将到来；还留着一手</b></td><td>③段（12 题的钥匙）</td></tr>
+            <tr><td><span class="ow">record</span></td><td>记录 v.</td><td><b>on record ＝ 有记录在案的</b></td><td>12 题所在句</td></tr>
+            <tr><td><span class="ow">duly</span></td><td>—</td><td><b>如期地，按时地</b>（＝as expected）</td><td>16 题答案</td></tr>
+            <tr><td><span class="ow">hit</span></td><td>打，击</td><td><b>达到（某水平/阶段）</b>，hit a plateau</td><td>20 题答案</td></tr>
+            <tr><td><span class="ow">plateau</span></td><td>高原</td><td><b>平台期，停滞期</b></td><td>④段末</td></tr>
+            <tr><td><span class="ow">slacken off</span></td><td>—</td><td><b>松懈下来，放慢</b></td><td>④段末</td></tr>
+            <tr><td><span class="ow">alleged</span></td><td>—</td><td><b>所谓的（含怀疑，作者不认账）</b></td><td>④段末</td></tr>
+            <tr><td><span class="ow">pin down</span></td><td>用针别住</td><td><b>确切说明；把……说清楚</b></td><td>④段末</td></tr>
+          </table></div></div></div>
+        </div>
+      </section>
+
+      <!-- ========== 06 80 词表 ========== -->
+      <section class="card">
+        <h2><span class="n">06</span>80 个选项词速查（完形的真正词汇量）
+          <button class="allbtn" id="btnHide" style="margin-left:auto" onclick="toggleHide()">✍️ 默写模式</button>
+        </h2>
+        <p class="note">完形一篇＝<b>80 个高频词的辨析现场</b>，绿底是正确项。<b>默写模式</b>会糊住中文释义（借鉴 408 算法手册的默写模式）——先自己说出意思，点单个格子可单独揭开。<b>把这 80 个词过一遍，比只记 20 个答案划算四倍。</b></p>
+        <div class="tabwrap"><table class="otab" id="otab"></table></div>
+      </section>
+
+      <!-- ========== 07 长难句 ========== -->
+      <section class="card">
+        <h2><span class="n">07</span>长难句精析（正文蓝色虚线句）</h2>
+
+        <div class="sent" id="s1">
+          <div class="src">Instead, <span class="skel">the studies ended up giving their name to the “Hawthorne effect,”</span> <i>the extremely influential idea that the very act of being experimented upon changed subjects' behavior.</i></div>
+          <div class="anat">
+            <ul>
+              <li><b>主干七个词</b>：<span class="skel">the studies ended up giving their name to the “Hawthorne effect”</span>。<b>逗号后面那一长串全是同位语</b>，负责解释引号里的术语。</li>
+              <li><b>两层同位语套在一起</b>：<code>the “Hawthorne effect”</code> ← <code>the extremely influential <b>idea</b></code>（第一层，名词短语作同位语）← <code><b>that</b> the very act … changed subjects' behavior</code>（第二层，<b>that 引导的同位语从句</b>解释 idea 的内容）。<b>凡见到“术语 ＋ 逗号 ＋ the idea that…”，后面就是这个术语的定义。</b></li>
+              <li>⭐ <b>这句话是全篇的“答案源”</b>：②段末整句把它重说了一遍，<b>8、9、10 三个空全部由这里反推</b>（见 <a href="#q8" style="color:var(--accent)">8 题</a>的对齐表）。</li>
+              <li>💡 <code>give one's name to sth</code>＝<b>把自己的名字给了某物（某物以其命名）</b>。这里带着反讽：<b>两名工程师本是去查照明的，最后“留名”的方式却是留下一个与照明无关的效应。</b></li>
+              <li>⚠️ <b>be experimented <u>upon</u></b>：experiment 作不及物动词，须借 on／upon 带宾语 ⟹ 被动时 upon 必须留在动词后面（<code>being experimented upon</code>）。<b>这类“被动 ＋ 悬空介词”是完形与翻译的共同高发点。</b></li>
+            </ul>
+          </div>
+          <div class="tr">译：然而恰恰相反，这些研究最终把自己的名字给了“霍桑效应”——这一极具影响力的观点认为：正是“被实验”这一行为本身，改变了受试者的行为方式。</div>
+        </div>
+
+        <div class="sent" id="s2">
+          <div class="src"><span class="skel">It did not matter</span> <i>what was done in the experiment</i>; <i>so long as something was changed,</i> <span class="skel">productivity rose.</span></div>
+          <div class="anat">
+            <ul>
+              <li><b>分号两侧是两个独立分句，讲的是同一件事的两面</b>：左边说“做什么<b>不</b>重要”，右边说“只要<b>有变化</b>就升”。<b>⟹ 6 与 7 两个空互为答案，做完一个能验另一个。</b></li>
+              <li><b>左分句：It 是形式主语</b>，真正的主语是 <code>what was done in the experiment</code>（what 引导的主语从句）。还原＝ <i>What was done in the experiment did not matter.</i> <b>⚠️ 这一步是 6 题排除 work 的硬判据</b>（it doesn't work 里的 it 是真正的代词，不能带主语从句）。</li>
+              <li><b>右分句：so long as 引导条件状语从句</b>，从句 something was changed 是<b>充分条件</b>，主句 productivity rose 是结果。</li>
+              <li>💡 <b>写作可迁移</b>：<code>It did not matter what…; so long as…, …</code> 是一组很省力的<b>“无关—只要”句式</b>，用来强调唯一起作用的变量。</li>
+            </ul>
+          </div>
+          <div class="tr">译：实验中做了什么并不要紧；只要发生了某种变化，生产效率就会上升。</div>
+        </div>
+
+        <div class="sent" id="s3">
+          <div class="src"><span class="skel">An awareness</span> <i>that they were being experimented upon</i> <span class="skel">seemed to be enough to alter workers' behavior</span> <i>by itself</i>.</div>
+          <div class="anat">
+            <ul>
+              <li><b>主干只有五个词</b>：<span class="skel">An awareness seemed to be enough</span>。中间那一长串 <code>that they were being experimented upon</code> 是<b>同位语从句</b>（解释 awareness 的内容），<b>把主语和系动词劈成了两半</b>——<b>读长句第一件事就是把这类插在中间的从句整段划掉。</b></li>
+              <li><b>三个空排成一条语义链</b>：<code>An <b>8</b>（意识）… be <b>9</b>（足以）to alter … <b>10</b> itself（仅凭其本身）</code>。<b>它们讲的是同一件事：充分性。</b>任何一个填错，另外两个都会别扭。</li>
+              <li>⭐ <b>与①段末定义句逐成分对齐</b>：the very <b>act</b> ↔ An <b>awareness</b>｜the <b>very</b> ↔ <b>enough</b> … <b>by itself</b>｜<b>changed</b> ↔ <b>alter</b>｜<b>subjects'</b> behavior ↔ <b>workers'</b> behavior。<b>四对成分，两句话，一次落地三个空。</b></li>
+              <li>⚠️ <b>were being experimented upon ＝ 过去进行时的被动语态</b>（当时正在被实验）。<b>8 题排除 expectation（对未来的预期）的判据就在这个时态上。</b></li>
+            </ul>
+          </div>
+          <div class="tr">译：单单是意识到自己正被当作实验对象，似乎就足以改变工人的行为——仅凭这一点本身。</div>
+        </div>
+
+        <div class="sent" id="s4">
+          <div class="src"><i>Contrary to the descriptions on record,</i> <span class="skel">no systematic evidence was found</span> <i>that levels of productivity were related to changes in lighting.</i></div>
+          <div class="anat">
+            <ul>
+              <li>⚠️⚠️ <b>本篇结构上最难的一句：同位语从句被谓语挤到了后面。</b><code>no systematic <b>evidence</b> <u>was found</u> <b>that</b> levels of productivity were related…</code>——<b>解释 evidence 的 that 从句，与 evidence 之间隔着整个谓语。</b></li>
+              <li><b>怎么判它是同位语从句而不是定语从句</b>：把 that 从句单拎出来看，<code>levels of productivity were related to changes in lighting</code> <b>主谓宾齐全、不缺任何成分</b> ⟹ that 只是引导词（同位语从句），不充当成分。若是定语从句，从句里必定缺主语或宾语。</li>
+              <li><b>否定范围要看清</b>：<code>no … evidence was found <b>that</b> A</code> ＝ <b>没找到证据证明 A</b>，<b>不等于“证明了 A 不成立”</b>。⟹ ④段末因此只敢说 <code>hard to <b>pin down</b></code>（很难说清），而不是“霍桑效应不存在”。<b>这个分寸感正是本文的态度。</b></li>
+              <li>💡 <code>on record</code>＝<b>有记录在案的</b>（≠ off the record 不供发表的）；<code>systematic</code>＝<b>成系统的</b>（⚠️ 与 <code>systemic</code> 系统性的／全身的 只差两个字母，含义不同）。</li>
+            </ul>
+          </div>
+          <div class="tr">译：与记录在案的描述相反，人们并没有找到系统性的证据来证明：生产效率的水平与照明的变化有关。</div>
+        </div>
+
+        <div class="sent" id="s5">
+          <div class="src"><span class="skel">Workers tended to be diligent</span> <i>for the first few days of the week</i> <i>in any case,</i> <i>before hitting a plateau and then slackening off.</i></div>
+          <div class="anat">
+            <ul>
+              <li><b>本句状语极多，主干只有四个词</b>：<span class="skel">Workers tended to be diligent</span>。<b>三个状语</b>：for…the week（时间段）· in any case（让步/范围）· before…off（时间顺承）。<b>把状语全划掉再选谓语，19 题当场明朗。</b></li>
+              <li><b>before 的宾语是两个并列动名词</b>：<code>before <b>hitting</b> a plateau and then <b>slackening</b> off</code>。<b>and then 提示顺承</b>，两个动作有先后。</li>
+              <li>⭐ <b>整句是一条倒 U 形曲线</b>：勤奋（升）→ hit a plateau（平）→ slacken off（降）。<b>20 空填的是曲线中段的动作</b>，方向由左右两端夹出来——<b>这就是为什么 breaking（会把曲线变成倒 V，没有“平”段）必错。</b></li>
+              <li>💡 <code>in any case</code>＝<b>无论如何，不管出现什么情况</b>，专门标记“<b>不因外部条件改变的惯性</b>”。<b>它是 19 题的判据，也是整段结论的落点</b>：产量周一上涨与实验无关，是工人本来的作息节律。</li>
+            </ul>
+          </div>
+          <div class="tr">译：无论如何，工人往往会在一周的头几天勤奋工作，之后便进入一个稳定期，然后就懈怠下来。</div>
+        </div>
+      </section>
+
+      <!-- ========== 08 写作素材 ========== -->
+      <section class="card">
+        <h2><span class="n">08</span>可搬进作文/翻译的表达</h2>
+        <div class="wb">
+          <div class="wbi"><div class="p">The very act of being observed changes the behavior of those observed.　仅仅“被观察”这一行为本身，就改变了被观察者的行为</div><div class="u"><b>“霍桑效应”本身就是一条极好用的作文论据</b>——凡写<b>监督、考核、直播、打卡、数据统计</b>类话题都能用：<i>Once employees know they are being measured, the very act of measurement changes what it measures.</i></div></div>
+          <div class="wbi"><div class="p">It did not matter what was done; so long as something was changed, X rose.　做什么并不要紧；只要有所改变，X 就上升</div><div class="u"><b>“无关—只要”句式</b>，用来把众多变量一笔排除、只留一个：<i>It did not matter which method they chose; so long as they practised daily, their fluency improved.</i></div></div>
+          <div class="wbi"><div class="p">An awareness that … is enough to alter behavior by itself.　单单意识到……，就足以改变行为</div><div class="u"><b>“单一因素充分性”的标准写法</b>：<code>be enough to do … by itself</code>。比 “X is very important” 有力得多，且自带学术腔：<i>An awareness that one's screen time is being logged is enough to cut it by itself.</i></div></div>
+          <div class="wbi"><div class="p">Contrary to the descriptions on record, no systematic evidence was found that …　与记录在案的说法相反，并未发现系统性证据表明……</div><div class="u"><b>反驳段的万能起手式</b>，且分寸把握得极好：<b>它否定的是“证据”，不是“事实”</b>——留了余地，不把话说死。<b>议论文写反方观点时最稳的一句。</b></div></div>
+          <div class="wbi"><div class="p">A comparison with data for periods when there was no X showed that …　与没有 X 的那些时期作比较后发现……</div><div class="u"><b>“对照组”思维的一句话表达</b>，是本文的方法论核心。写<b>论证严谨性、数据可信度</b>类话题的杀手锏：<i>A comparison with weeks when no campaign was running showed the same rise in sales.</i></div></div>
+          <div class="wbi"><div class="p">Workers tend to be diligent for the first few days of the week in any case.　无论如何，工人往往在一周头几天更勤奋</div><div class="u"><code>tend to do … in any case</code>＝<b>“本来就……”</b>，用来指出对方把<b>固有规律</b>误当成了<b>干预效果</b>。<b>这是一种很高级的反驳姿势</b>：不否认现象，只否认归因。</div></div>
+          <div class="wbi"><div class="p">…, before hitting a plateau and then slackening off.　……随后进入平台期，继而放缓</div><div class="u"><b>描述趋势变化的三段式</b>，图表作文（若考图表）与数据描述直接可用：<i>Sales climbed sharply through March, before hitting a plateau and then slackening off.</i> <b>比 “increased and then decreased” 高好几档。</b></div></div>
+          <div class="wbi"><div class="p">The alleged X is hard to pin down.　所谓的 X 很难说清楚</div><div class="u"><b>结尾留白的万能句</b>：<code>alleged</code> 一词就表明作者<b>不认账</b>，<code>hard to pin down</code> 又不把话说死。<b>凡想“质疑而不下断言”的收口，都可以用它</b>：<i>The alleged link between the two remains hard to pin down.</i></div></div>
+          <div class="wbi"><div class="p">The same data were subjected to econometric analysis.　同一批数据被拿去做了计量经济学分析</div><div class="u"><code>be subjected to ＋ analysis／testing／review</code> 是<b>学术写作的标配被动式</b>，比 “were analysed” 正式。<b>⚠️ 别与 be subject to（易受……影响）混用。</b></div></div>
+        </div>
+      </section>
+
+    </main>
+
+    <aside>
+      <div id="panel"><div class="hint">👆 点正文里的<b>黄底词</b><br>词卡会出现在这里<br><br>点<b>空格</b>则跳到对应解析卡</div></div>
+    </aside>
+  </div>
+
+  <footer>2010 英语一 · 完形填空复盘页 · 答案与解析由 Claude 独立盲做后写成（盲做 20/20），并与黄皮书精讲逐题交叉核对 · 生词卡、打法总纲、四年完形对照表、线索位置统计为自撰</footer>
+</div>
+
+<button id="yd">🔍 查有道</button>
+<script>
+/* ============ 词汇卡 ============ */
+const V = {
+  supervise:{w:"supervise",ipa:"/ˈsuːpəvaɪz/",pos:"v.",tags:["core","write"],cn:"监督，指导；管理（工作、人员）",en:"to be in charge of sb/sth and make sure things are done correctly",ex:"…sent two engineers to supervise a series of experiments…",mem:"<b>super-（在上面）＋ vise（＝ vid/vis 看）</b>＝从上往下看着 ⟹ 监督。<b>同族一次看清</b>：super<b>vis</b>or 主管｜re<b>vis</b>e 重看＝修订｜<b>vis</b>ible 看得见的｜e<b>vid</b>ence 摆在眼前的东西＝证据（本篇 13 题答案）。",syn:"oversee / be in charge of / monitor",conf:"supervise（负责地监督，含管理权）vs. monitor（持续监测，未必有权）vs. observe（旁观，不干预）——<b>本篇两名工程师是被派去 supervise，不是 observe</b>，这也暗示实验是有人在场的。"},
+
+  plant:{w:"plant",ipa:"/plɑːnt/",pos:"n. / v.",tags:["poly","core"],cn:"①<b>工厂</b>（尤指大型的、有重型设备的）②植物 ③种植",en:"a factory or place where power is produced or an industrial process happens",ex:"…a telephone-parts factory called the Hawthorne Plant near Chicago.",mem:"⭐ <b>本篇的第一个熟词僻义，就在首句</b>：the Hawthorne <b>Plant</b> ＝ 霍桑<b>工厂</b>。判据很硬——前面已经说了 <code>a telephone-parts factory called…</code>，后面的 Plant 只能是这家工厂的名字。<br>⭐⭐ <b>跨年趣味</b>：<a href='2022_完形_植物意识.html' style='color:var(--accent)'>2022 完形</a>整篇讲的是 plant＝<b>植物</b>的意识，本篇的 plant＝<b>工厂</b>——<b>同一个词，两年两个意思。</b>",syn:"factory / works / mill",conf:"plant（大型工厂，尤指发电厂 power plant、化工厂 chemical plant）vs. factory（一般工厂）vs. mill（磨坊、纺织厂、钢厂）。<b>②段的 the women in the plant 也是「厂里的女工」。</b>"},
+
+  shopfloor:{w:"shop-floor",ipa:"/ˌʃɒp ˈflɔː(r)/",pos:"n.",tags:["poly"],cn:"（工厂的）<b>车间</b>；（相对于管理层的）一线工人",en:"the part of a factory where the machines are and where ordinary workers work",ex:"…how shop-floor lighting affected workers' productivity.",mem:"<b>shop 在这里不是「商店」而是「作坊、车间」</b>（同 workshop 车间、machine shop 机加工车间）。<b>shop-floor lighting ＝ 车间照明</b>，正是这场实验唯一的自变量。<br>💡 引申义也常考：<code>shop-floor workers</code>＝<b>一线工人</b>（与 management 管理层相对）。",syn:"workshop / production line / factory floor",conf:"shop（车间/商店）· shopfront（店面）· shop around（货比三家）· talk shop（三句不离本行）——<b>shop 这个小词的僻义比它的本义更常考。</b>"},
+
+  productivity:{w:"productivity",ipa:"/ˌprɒdʌkˈtɪvəti/",pos:"n.",tags:["core","write"],cn:"生产效率，生产率",en:"the rate at which goods are produced, especially in relation to the time and money needed",ex:"…how shop-floor lighting affected workers' productivity.",mem:"<b>本篇的因变量</b>，全文出现三次（1 题、7 题所在句、13 题所在句）——<b>凡出现三次以上的实词，就是这篇文章的骨架词</b>。<br>词根 <b>product-（生产）＋ -ivity（性质、程度）</b>：productive 高产的 → productivity 生产率。",syn:"efficiency / output per worker / yield",conf:"productivity（<b>效率</b>，单位投入的产出）vs. <b>output</b>（<b>产量</b>，总量，②④段用的都是它）——<b>本篇两个词交替使用，指的是同一件事的两个侧面。</b>"},
+
+  influential:{w:"influential",ipa:"/ˌɪnfluˈenʃl/",pos:"adj.",tags:["core","write"],cn:"有影响力的；有说服力的",en:"having a lot of influence on sb/sth",ex:"…the extremely influential idea that the very act of being experimented upon changed subjects' behavior.",mem:"⭐ <b>这个词是 14 题的排除依据</b>：①段说这个观点 <code>extremely influential</code>＝<b>被广泛接受、极具影响力</b>，说明当年<b>没有争议</b> ⟹ 14 题的 disputable（有争议的）时间错位、必错。<br><b>写作可用</b>：<code>an extremely influential idea</code> 是介绍一个概念时最省力的抬升句式。",syn:"powerful / weighty / far-reaching",conf:"influential（<b>有影响力的</b>，中性偏褒）vs. <b>influence</b>（n./v. 影响，<b>中性</b>，不像中文的「影响」自带贬义）vs. affect（v. 影响，本篇 1 题答案）。"},
+
+  very:{w:"very",ipa:"/ˈveri/",pos:"adj. （此处非副词）",tags:["poly","core"],cn:"<b>正是这个；仅仅这……本身</b>（用于名词前表强调）",en:"used to emphasize a noun: exactly the thing mentioned and nothing more",ex:"…the idea that the very act of being experimented upon changed subjects' behavior.",mem:"⭐⭐ <b>本篇的枢纽词。</b><code>the very ＋ 名词</code>里的 very 是<b>形容词</b>不是副词，意思是「<b>正是……本身</b>」——<b>它一出现就意味着「仅此一点、别无其他」</b>。<br><b>所以它天然与 <code>enough</code>／<code>by itself</code>／<code>alone</code> 配套</b>：②段末把这层意思重说了一遍（be <b>enough</b> … <b>by itself</b>）⟹ <b>3、9、10 三个空是被这一个 very 串起来的。</b>",syn:"the mere / the exact / precisely this",conf:"the very act（正是这一行为）· the very idea（一想到就……）· at the very beginning（一开头）· the very man I need（我要找的正是这个人）——<b>凡 very 直接贴名词，一律按「正是/仅仅」理解，别当「非常」。</b>"},
+
+  subjects:{w:"subject",ipa:"/ˈsʌbdʒɪkt/",pos:"n. / v.",tags:["poly","core"],cn:"①<b>受试者，实验对象</b> ②主题；科目 ③<b>subject sth to：使经受</b>",en:"a person or animal being used in an experiment",ex:"…the very act of being experimented upon changed subjects' behavior.",mem:"⭐ <b>本篇同一个词考了两处，词性还不同</b>：①段末的 <code>subjects' behavior</code>＝<b>受试者</b>（名词）；③段 11 题的 <code>data were <b>subjected</b> to analysis</code>＝<b>使经受</b>（动词，重音后移读 /səbˈdʒekt/）。<br><b>心理学、医学论文里的 subjects 一律是「被试」</b>，不是「主题」。",syn:"participant / test subject / respondent",conf:"⚠️ <b>be subject<u>ed</u> to</b>（被动地经受了某行为：数据<b>被拿去</b>分析）vs. <b>be subject to</b>（<b>易受……影响／须服从</b>：Prices are subject to change）——<b>差一个 -ed，意思两样，11 题就考这个。</b>"},
+
+  arise:{w:"arise",ipa:"/əˈraɪz/",pos:"v.",tags:["core","write"],cn:"（问题、想法、情况）出现，产生；由…引起",en:"to happen or start to exist, especially a problem or situation",ex:"The idea arose because of the perplexing behavior of the women in the plant.",mem:"<b>arise 是不及物动词，没有宾语</b>；表原因时用 <code>arise <b>from</b>／<b>out of</b></code>（由…引起）。本句用的是 <code>arose <b>because of</b></code>。<br><b>三态：arise – arose – arisen</b>（与 rise – rose – risen 平行，比它多一个 a-）。",syn:"emerge / come about / originate",conf:"⚠️ <b>四个长得像的一次分清</b>：<b>arise</b>（不及物，抽象事物出现）｜<b>rise</b>（不及物，上升，本篇 output <b>rose</b>）｜<b>raise</b>（<b>及物</b>，提高、抚养、提出）｜<b>arouse</b>（<b>及物</b>，唤起某种情绪）。<b>本篇 arise 与 rise 同段出现，正好对照。</b>"},
+
+  output:{w:"output",ipa:"/ˈaʊtpʊt/",pos:"n.",tags:["core","write"],cn:"产量，产出；（计算机）输出",en:"the amount of sth that a person, machine or organization produces",ex:"…their hourly output rose when lighting was increased, but also when it was dimmed.",mem:"<b>本篇的核心数据词</b>，与 productivity 交替使用：<b>output ＝ 产量（总量）· productivity ＝ 效率（单位投入的产出）</b>。<br>④段的 <code>output <b>duly</b> rose</code>（16 题）与 <code>output always <b>went up</b> on Mondays</code>（18 题所在句）是本篇最关键的一组对照——<b>同一个 output，一处有实验、一处没实验，结果一样。</b>",syn:"production / yield / volume",conf:"output（产出量）vs. input（投入）vs. throughput（吞吐量）vs. outcome（<b>结果</b>，不是产量）。"},
+
+  dim:{w:"dim",ipa:"/dɪm/",pos:"v. / adj.",tags:["poly"],cn:"①<b>把（灯光）调暗 v.</b> ②昏暗的；模糊的 adj. ③（人）迟钝的",en:"to make a light less bright, or to become less bright",ex:"…their hourly output rose when lighting was increased, but also when it was dimmed.",mem:"<b>本篇用的是动词的被动式</b>：<code>when it was <b>dimmed</b></code>＝当照明<b>被调暗</b>时。与前半句的 <code>was increased</code>（被增强）构成一组反义对照——<b>这一对反义词正是 4 题「令人费解」的全部依据：怎么变都涨。</b><br>⭐ 跨年联系：<a href='2009_完形_智力的代价.html' style='color:var(--accent)'>2009 完形</a>的 3 题答案就是 <b>dimmer</b>（更暗的灯泡／更笨的），<b>两年都考这个词，一次考动词、一次考形容词的双关。</b>",syn:"darken / lower / turn down",conf:"dim（调暗，可及物可不及物）· dimmer（调光器 n.／更暗的 adj.）· <b>a dim view of sth</b>（对某事不以为然）· <b>dim-witted</b>（愚钝的）。"},
+
+  alter:{w:"alter",ipa:"/ˈɔːltə(r)/",pos:"v.",tags:["core","write"],cn:"改变，更改（通常指部分的、细微的改变）",en:"to become different; to make sb/sth different",ex:"An awareness … seemed to be enough to alter workers' behavior by itself.",mem:"⭐ <b>本篇把它放在这里，是同义替换的「锚点」</b>：①段末定义句用的是 <code><b>changed</b> subjects' behavior</code>，②段末改写成 <code><b>alter</b> workers' behavior</code>——<b>change ⟹ alter、subjects ⟹ workers 都已经替你换好了，剩下的三个空（8/9/10）就该照这个规律反推。</b><br>词根 <b>alter＝other（其他）</b>：alternative 另一个选择｜alternate 交替｜alien 外来的。",syn:"change / modify / adjust",conf:"alter（<b>局部改动</b>，衣服改尺寸就是 alter）vs. change（<b>整体换掉</b>）vs. transform（<b>彻底改变形态</b>）vs. vary（<b>反复变动</b>）。"},
+
+  decade:{w:"decade",ipa:"/ˈdekeɪd/",pos:"n.",tags:["core"],cn:"十年，十年期",en:"a period of ten years",ex:"After several decades, the same data were subjected to econometric analysis.",mem:"<b>dec-＝十</b>：<b>dec</b>ade 十年｜<b>Dec</b>ember（古罗马历的第十个月）｜<b>dec</b>imal 十进制的。<br>⭐ <b>本篇的时间轴由三个刻度构成</b>：<code>In 1924</code> → <code>After several <b>decades</b></code> → <code>It turns out</code>。<b>这三个时间标记把文章切成「当年做实验／几十年后重算／重算后的解释」三块</b>——<b>11、12 两空正落在第二个刻度上。</b>",syn:"ten years / a ten-year span",conf:"decade（十年）· century（百年）· millennium（千年）· <b>score</b>（二十，古语，four score and seven years ago）。"},
+
+  econometric:{w:"econometric",ipa:"/ɪˌkɒnəˈmetrɪk/",pos:"adj.",tags:["core"],cn:"计量经济学的（用统计与数学方法分析经济数据）",en:"relating to the use of mathematics and statistics to analyse economic data",ex:"…the same data were subjected to econometric analysis.",mem:"<b>econo-（经济）＋ metric（测量）</b>——<b>-metric/-meter 一族全是「量」</b>：thermo<b>meter</b> 温度计｜baro<b>meter</b> 气压计｜sym<b>metr</b>y 对称｜geo<b>metry</b> 几何。<br>💡 <b>不认识这个词也不影响做题</b>：11 题只要知道「数据是被分析的对象」就够了。<b>完形里的长学术词多半是布景，不是考点。</b>",syn:"statistical / quantitative",conf:"economic（经济的）· economical（<b>节约的</b>）· economics（经济学）· econometrics（计量经济学）——<b>economic 与 economical 是历年高频辨析对。</b>"},
+
+  instore:{w:"in store",ipa:"/ɪn stɔː(r)/",pos:"phr.",tags:["phrase","poly"],cn:"<b>即将发生；储备着（好事或坏事）</b>",en:"about to happen or waiting to happen to sb",ex:"The Hawthorne experiments had another surprise in store.",mem:"⭐ <b>本篇 12 题的钥匙。</b><code>have sth <b>in store</b></code>＝<b>还留着一手；某事即将到来</b>。这句 <code>another <b>surprise</b> in store</code> 是一个<b>预告词</b>：既然是「另一个惊人发现」，那么下一句必然与旧记录<b>相反</b> ⟹ 12 题直接落 Contrary to，<b>连主句都不用读完。</b><br>📌 <b>通用规律：凡出现 surprise／paradox／twist／another story 这类预告词，紧随其后的空一律填反向。</b>",syn:"in the offing / on the way / ahead",conf:"in store（即将到来）· <b>set store by sth</b>（重视某事）· in stock（有现货）· store up（储存、积攒）。"},
+
+  onrecord:{w:"on record",ipa:"/ɒn ˈrekɔːd/",pos:"phr.",tags:["phrase","poly"],cn:"有记录在案的；公开表态的",en:"officially written down or documented",ex:"Contrary to the descriptions on record, no systematic evidence was found…",mem:"<b>本句里 the descriptions <b>on record</b> ＝ 当年记录在案的实验描述</b>，也就是被推翻的那一方。<br>⚠️ <b>与它只差一个介词、意思相反的是 <code>off the record</code></b>＝<b>不供发表的、私下说的</b>（记者采访时最常见）。<b>on/off 一字之差，是完形与阅读都爱考的一对。</b>",syn:"documented / recorded / in the records",conf:"on record（有案可查）· off the record（私下的）· <b>go on record as saying</b>（公开表态说）· a matter of record（有据可查的事）。"},
+
+  systematic:{w:"systematic",ipa:"/ˌsɪstəˈmætɪk/",pos:"adj.",tags:["core","write"],cn:"成体系的，有系统的；有条理的",en:"done according to a system or plan, in a thorough and efficient way",ex:"…no systematic evidence was found that levels of productivity were related to changes in lighting.",mem:"⚠️ <b>这个词在本句里很关键</b>：<code>no <b>systematic</b> evidence</code>＝没有<b>成系统的</b>证据（零星迹象可能有，但不成体系）——<b>正因为加了这个限定，作者才只敢说「hard to pin down」，而不敢说「霍桑效应不存在」。分寸感全在这一个形容词上。</b>",syn:"methodical / thorough / well-organized",conf:"⚠️ <b>systematic（成体系的、有条理的）vs. systemic（<u>系统性的</u>、全身的、体制性的）</b>——只差两个字母，含义不同：systemic risk 系统性风险｜systemic disease 全身性疾病。<b>写作里别写错。</b>"},
+
+  related:{w:"be related to",ipa:"/rɪˈleɪtɪd/",pos:"phr.",tags:["phrase","core"],cn:"与……有关联；与……有亲缘关系",en:"connected with sth in some way",ex:"…that levels of productivity were related to changes in lighting.",mem:"<b>这个短语所在的 that 从句，就是被推翻的那条旧结论</b>：「效率水平与照明变化<b>有关</b>」。<br>⚠️ <b>注意否定的范围</b>：<code>no evidence was found <b>that</b> A</code>＝<b>没找到证据证明 A</b>，<b>不等于「已证明 A 不成立」</b>——<b>这正是 13 题选 evidence 而不选 source 的语义要求：能被「找到／找不到」的只有证据。</b>",syn:"be connected with / be linked to / be associated with",conf:"be related to（有关联，中性）· <b>correlate with</b>（统计上相关）· <b>result from</b>（由…造成）——<b>「相关」不等于「因果」，这正是本文要说的道理。</b>"},
+
+  turnout:{w:"it turns out (that)",ipa:"/tɜːnz aʊt/",pos:"phr.",tags:["phrase","write"],cn:"结果是……；原来是……",en:"used to say what is eventually known to be the case",ex:"It turns out that the peculiar way of conducting the experiments may have led to misleading interpretations…",mem:"<b>④段的开门句，也是全文时间轴的第三个刻度</b>（＝今人回看的最终判断）。<br>⭐ 跨年联系：<a href='2009_完形_智力的代价.html' style='color:var(--accent)'>2009 完形 5 题</a>考的就是它的<b>插入语形态</b>——<code>Intelligence, <b>it turns out</b>, is a high-priced option</code>。<b>两年都考，一次在句首带 that 从句，一次作插入语。</b><br>💡 <b>写作里是最省力的「提升书面感」手段</b>：把结论句一分为二，语气从「我认为」变成「事实表明」。",syn:"it emerges that / as it happens / in the end",conf:"turn out（结果是；生产；出席）· turn up（出现；调大）· turn down（拒绝；调小）· turn in（上交）——<b>turn 系动词短语一次背全。</b>"},
+
+  peculiar:{w:"peculiar",ipa:"/pɪˈkjuːliə(r)/",pos:"adj.",tags:["core","poly"],cn:"①<b>奇特的，不寻常的</b> ②<b>peculiar to：为……所特有的</b>",en:"strange or unusual, especially in a way that is unpleasant or worrying",ex:"…the peculiar way of conducting the experiments may have led to misleading interpretations…",mem:"⭐ <b>一词两考，而且两处答案相反</b>：<br>④段首句 <code>the <b>peculiar</b> way</code>＝<b>特殊的、不寻常的做法</b>（这是正文，也是 15 题排除 As usual 的依据——<b>周日改照明是「特殊做法」，不是「原有惯例」</b>）；<br>而 12 题的干扰项 <code><b>Peculiar to</b></code>＝<b>为……所特有</b>，<b>只讲一方的特性，构不成两方对比</b>，所以必错。<b>同一个词，一处是答案的依据，一处是干扰项的产地。</b>",syn:"odd / unusual / distinctive",conf:"peculiar（奇特的；特有的）· particular（特定的）· specific（具体的）· <b>peculiar to ＝ unique to</b>（为某方所独有）。"},
+
+  conduct:{w:"conduct",ipa:"/kənˈdʌkt/ v. /ˈkɒndʌkt/ n.",tags:["core","write"],pos:"v. / n.",cn:"①<b>进行，实施（实验、调查）v.</b> ②行为，举止 n. ③指挥；传导",en:"to organize and carry out a particular activity",ex:"…the peculiar way of conducting the experiments may have led to…",mem:"<b>做实验的三个标配动词一起背</b>：<b>conduct</b>／<b>carry out</b>／<b>perform</b> an experiment。<br>⭐ 跨年联系：<a href='2009_完形_智力的代价.html' style='color:var(--accent)'>2009 完形 13 题</a>考的正是 <code><b>perform</b> experiments on sb</code>，当时的陷阱是「记得有 carry <b>out</b>，就在没有 out 的地方也选 carry」——<b>凡靠「我记得有这个搭配」选出来的答案，必须能把整个搭配原样默写出来才算数。</b>",syn:"carry out / perform / undertake",conf:"conduct（v. 实施 / n. 行为，<b>重音位置不同</b>）· conductor（指挥；导体；售票员）· conducive to（有助于）。"},
+
+  interpretation:{w:"interpretation",ipa:"/ɪnˌtɜːprəˈteɪʃn/",pos:"n.",tags:["core","write"],cn:"解释，解读；（对作品的）演绎；口译",en:"the particular way in which sth is understood or explained",ex:"…may have led to misleading interpretations of what happened.",mem:"⭐ <b>14 题的空就修饰它。</b>注意这个词是<b>中性</b>的——「解读」可以对也可以错，<b>所以四个形容词（misleading／enlightening／reliable／disputable）在语法上都能修饰它，胜负全在「上一段的结论是什么」</b>。<br>⟹ <b>褒贬方向题不要只盯本句，要先读上一段的落点。</b>",syn:"reading / understanding / account",conf:"interpretation（解读，可对可错）· explanation（解释成因）· translation（笔译）· <b>interpreter</b>（口译员）vs. translator（笔译员）。"},
+
+  previous:{w:"previous",ipa:"/ˈpriːviəs/",pos:"adj.",tags:["core"],cn:"先前的，上一个的",en:"happening or existing before the event or object that you are talking about",ex:"…output duly rose compared with the previous Saturday…",mem:"<b>pre-（前）＋ vi（＝ via 路）＋ -ous</b>＝走在前面的。<br>💡 <b>本句的比较基准值得注意</b>：拿周一与「<b>上一个周六</b>」比，而不是与上一个周一比——<b>这正是这场实验设计上的毛病之一，也是④段整段要说的事。</b>",syn:"prior / preceding / former",conf:"previous（时间上在前的）· former（<b>两者中前一个</b>；前任的）· prior（正式，prior to＝在…之前）· preceding（紧接在前的）。"},
+
+  couple:{w:"a couple of",ipa:"/ˈkʌpl/",pos:"phr.",tags:["phrase"],cn:"两个；<b>几个（口语中泛指两三个）</b>",en:"two, or a small number of people or things",ex:"…and continued to rise for the next couple of days.",mem:"<b>英式与美式口语里 a couple of 常不严格指「两个」，而是「两三个、几个」</b>——本句 <code>the next couple of days</code>＝<b>接下来的那几天</b>（与后文的 <code>the first few days of the week</code> 呼应）。<br>💡 <b>这个短语在阅读里很少设考点，但在完形与翻译里一旦出现，译成「两天」还是「几天」会影响整句的分寸。</b>",syn:"a few / two or three / several",conf:"a couple of（两三个）· a pair of（成对的两个，鞋、手套）· a dozen（十二个）· <b>couple 作动词＝连接、结合</b>（coupled with 加上）。"},
+
+  experimentation:{w:"experimentation",ipa:"/ɪkˌsperɪmenˈteɪʃn/",pos:"n.",tags:["core"],cn:"实验（活动）；试验的过程",en:"the activity of doing experiments in order to test sth",ex:"…a comparison with data for weeks when there was no experimentation showed that output always went up on Mondays.",mem:"⭐⭐ <b>本句是全篇的方法论核心，也是 18 题的全部依据</b>：<code>data for weeks when there was <b>no</b> experimentation</code>＝<b>没有做实验的那些周的数据</b>——<b>这就是「对照组」。</b><br><b>霍桑实验之所以站不住脚，正是因为当年没有设对照组</b>；作者用一句话补上了这个对照，结论当场翻盘。<b>凡科学类文章出现「与没有 X 的情况相比」，这句一定是来拆前面那条因果的。</b>",syn:"testing / trials / trial and error",conf:"experiment（一次实验，可数）· experimentation（实验这项活动，不可数）· experimental（实验性的）· <b>experiment on／upon sb</b>（对某人做实验，本篇①②段两次用 upon）。"},
+
+  diligent:{w:"diligent",ipa:"/ˈdɪlɪdʒənt/",pos:"adj.",tags:["core","write"],cn:"勤奋的，用功的；（工作）认真细致的",en:"showing care and effort in your work or duties",ex:"Workers tended to be diligent for the first few days of the week in any case…",mem:"<b>本句是全篇的收官解释</b>：产量周一上涨与实验无关，<b>是工人本来的作息节律</b>（头几天勤快 → 稳定期 → 懈怠）。<br>💡 <b>写作高频褒义词</b>，可替换 hardworking，但更书面：<code>a diligent student</code>｜<code>diligent research</code>｜副词 <b>diligently</b>。",syn:"hardworking / industrious / conscientious",conf:"diligent（勤奋，强调持续用心）· industrious（勤劳，强调忙碌）· <b>due diligence</b>（法律/商业术语：尽职调查）——<b>这个搭配在经济类阅读里很常见。</b>"},
+
+  inanycase:{w:"in any case",ipa:"/ɪn ˈeni keɪs/",pos:"phr.",tags:["phrase","core"],cn:"<b>无论如何；不管怎样</b>（表示某事不因外部条件而改变）",en:"whatever happens or may have happened",ex:"Workers tended to be diligent for the first few days of the week in any case…",mem:"⭐ <b>19 题的判据就是这个短语。</b>它专门标记「<b>不因外部条件（做不做实验）而改变的惯性行为</b>」⟹ 空格必须是<b>客观倾向</b>（tended），不能是<b>主观意图</b>（attempted／chose／intended）。<br>📌 <b>惯常性标记词一族</b>：in any case｜always｜generally｜as a rule｜by default——<b>见到它们，主观意图类动词一律先划掉。</b>",syn:"anyway / at any rate / regardless",conf:"in any case（无论如何）· in case（万一，7 题的干扰项）· in that case（既然那样）· in no case（决不，<b>置于句首要倒装</b>）。"},
+
+  plateau:{w:"plateau",ipa:"/ˈplætəʊ/",pos:"n. / v.",tags:["poly","write"],cn:"①<b>平台期，停滞期（增长趋平的阶段）</b> ②高原 ③v. 趋于平稳",en:"a state of little or no change following a period of activity or progress",ex:"…before hitting a plateau and then slackening off.",mem:"⭐ <b>20 题的答案就挂在它身上。</b>plateau 这个词本身的意思就是「<b>平</b>」——所以 <code><b>breaking</b> a plateau</code>（突破平台期）会把曲线变成没有平段的倒 V，<b>与词义自相矛盾</b>，必错。<br><b>一组搭配一次背死</b>：<b>reach／hit a plateau</b>（进入平台期）｜<b>plateau out</b>（趋于平稳）｜<b>a plateau in sales</b>（销量停滞）。<b>写作里「增长放缓」最地道的说法。</b>",syn:"levelling off / standstill / stagnation",conf:"plateau（平台期，<b>平</b>）· peak（顶点，<b>尖</b>）· ceiling（上限）· bottleneck（瓶颈）——<b>四个描述趋势的名词，形状各不相同。</b>"},
+
+  slacken:{w:"slacken off",ipa:"/ˈslækən ɒf/",pos:"phr. v.",tags:["phrase"],cn:"松懈下来；（速度、力度）减弱、放慢",en:"to become slower, weaker or less active",ex:"…before hitting a plateau and then slackening off.",mem:"<b>slack＝松弛的</b>（slack rope 松垮的绳子）→ slacken 使松弛 → slacken <b>off</b> 松懈下来。<br>⭐ <b>它是 20 题那条倒 U 曲线的最后一段</b>：勤奋（升）→ hit a plateau（平）→ <b>slacken off（降）</b>。<b>把三段抄成一条线，中间那个空的动作就被两端夹出来了。</b>",syn:"ease off / let up / taper off / slow down",conf:"slacken off（松懈、放缓）· <b>slack off</b>（同义，更口语）· <b>cut sb some slack</b>（对某人宽容些）· slacker（懒鬼）。"},
+
+  alleged:{w:"alleged",ipa:"/əˈledʒd/",pos:"adj.",tags:["core","write"],cn:"<b>所谓的；据称的</b>（说话人并不认可）",en:"stated as a fact but without any proof",ex:"This suggests that the alleged “Hawthorne effect” is hard to pin down.",mem:"⭐ <b>末句的态度全在这一个词上。</b>作者不写 the Hawthorne effect，而写 <b>the <u>alleged</u> Hawthorne effect</b>＝<b>所谓的霍桑效应</b>——<b>一个词就把「我不认账」写清楚了。</b><br>📌 <b>「打折扣」的词族一起记</b>：alleged（所谓的）｜so-called（号称的）｜supposed（据说的）｜claimed（声称的）｜apparent（表面上的）。<b>这一族出现在名词前，就是作者态度的开关。</b>",syn:"so-called / supposed / claimed / purported",conf:"alleged（<b>形容词，修饰名词</b>：the alleged effect）· allegedly（<b>副词</b>：He allegedly said…）· allegation（指控）——<b>新闻英语里出现率极高，因为记者不能替未定罪的事下结论。</b>"},
+
+  pindown:{w:"pin down",ipa:"/pɪn daʊn/",pos:"phr. v.",tags:["phrase","poly"],cn:"①<b>确切说明；把（问题）说清楚</b> ②使明确表态 ③按住",en:"to explain or understand sth exactly",ex:"…the alleged “Hawthorne effect” is hard to pin down.",mem:"⭐ <b>全文收口句，而且这一句没有设空</b>——命题人把它留成了白送的总结。<br><code>hard to pin down</code>＝<b>难以确切说清</b>。⚠️ <b>注意作者的分寸</b>：他说的是「说不清」，<b>不是「不存在」</b>（因为③段的原文也只是「没找到<u>系统性证据</u>」）。<b>这份分寸感同时验了 12、14、18 三个空的方向——做完最后一空，回头拿这句话对一遍。</b>",syn:"define precisely / put one's finger on / determine",conf:"pin down（说清楚；使表态）· pin sth on sb（把责任推给某人）· <b>be pinned down</b>（被困住）· pinpoint（精确指出，v.）。"}
+};
+const panel=document.getElementById('panel');
+const isMobile=()=>window.innerWidth<=900;
+function badge(t){return {core:'<span class="badge b-core">核心词</span>',phrase:'<span class="badge b-phrase">短语</span>',poly:'<span class="badge b-poly">熟词僻义</span>',write:'<span class="badge b-write">写作✍︎</span>'}[t]||''}
+function showCard(k,el){
+  const d=V[k]; if(!d)return;
+  document.querySelectorAll('.tk.active').forEach(e=>e.classList.remove('active'));
+  if(el&&el.classList.contains('tk'))el.classList.add('active');
+  panel.innerHTML='<button class="close" onclick="panel.classList.remove(\'open\')">✕</button>'+
+  '<div class="wcard"><div class="head"><span class="w">'+d.w+'</span><span class="ipa">'+d.ipa+'</span><span class="pos">'+d.pos+'</span>'+d.tags.map(badge).join('')+'</div>'+
+  '<div class="cn">'+d.cn+'</div><div class="en-def">'+d.en+'</div>'+
+  '<div class="row r-ex"><b>原文语境</b>「…'+d.ex+'…」</div>'+
+  '<div class="row r-mem"><b>怎么记</b>'+d.mem+'</div>'+
+  '<div class="row r-syn"><b>同类词</b>'+d.syn+'</div>'+
+  '<div class="row r-conf"><b>易混辨析</b>'+d.conf+'</div></div>';
+  if(isMobile())panel.classList.add('open');
+}
+document.querySelectorAll('.tk').forEach(t=>t.addEventListener('click',e=>{e.stopPropagation();showCard(t.dataset.w,t)}));
+
+/* ============ 译文开关 ============ */
+function tz(btn){btn.closest('.para').classList.toggle('showzh')}
+let allOn=false;
+function toggleAll(){allOn=!allOn;document.querySelectorAll('.para').forEach(p=>p.classList.toggle('showzh',allOn))}
+function go(id){const s=document.getElementById(id);if(!s)return;s.scrollIntoView({behavior:'smooth',block:'center'});s.style.transition='none';s.style.opacity=.3;setTimeout(function(){s.style.transition='opacity .8s';s.style.opacity=1},80)}
+
+/* ============ 20 空数据（类别 + 正确词） ============ */
+const CAT={
+  logic:{name:"逻辑关系",cls:"c-logic",color:"#3d6a8a"},
+  collo:{name:"固定搭配",cls:"c-collo",color:"#3e7a4e"},
+  word:{name:"词义辨析",cls:"c-word",color:"#b04a3a"},
+  context:{name:"上下文语义",cls:"c-context",color:"#6d5a8e"}
+};
+const B={
+  1:{w:"affected",cat:"word"},          2:{w:"up",cat:"collo"},
+  3:{w:"act",cat:"context"},            4:{w:"perplexing",cat:"word"},
+  5:{w:"accounts",cat:"word"},          6:{w:"matter",cat:"word"},
+  7:{w:"so long as",cat:"logic"},       8:{w:"awareness",cat:"context"},
+  9:{w:"enough",cat:"context"},         10:{w:"by",cat:"collo"},
+  11:{w:"subjected",cat:"collo"},       12:{w:"Contrary to",cat:"logic"},
+  13:{w:"evidence",cat:"word"},         14:{w:"misleading",cat:"word"},
+  15:{w:"For example",cat:"logic"},     16:{w:"duly",cat:"word"},
+  17:{w:"continued",cat:"word"},        18:{w:"However",cat:"logic"},
+  19:{w:"tended",cat:"word"},           20:{w:"hitting",cat:"collo"}
+};
+
+/* ============ 点空格 → 跳到解析卡 ============ */
+document.querySelectorAll('.bk').forEach(function(b){
+  b.addEventListener('click',function(){
+    document.querySelectorAll('.bk.active').forEach(function(e){e.classList.remove('active')});
+    b.classList.add('active');
+    go('q'+b.dataset.n);
+  });
+});
+function fillBlank(n,ok){
+  const el=document.querySelector('.bk[data-n="'+n+'"]');
+  if(!el)return;
+  el.classList.remove('miss');
+  el.classList.add(ok===false?'miss':'filled');
+  el.innerHTML='<span class="idx">'+n+'</span>'+B[n].w;
+}
+
+/* ============ 即点即判 + 计分 ============ */
+let done=0,right=0;
+function updScore(){
+  document.getElementById('sDone').textContent=done;
+  document.getElementById('sRight').textContent=right;
+  document.getElementById('sPt').textContent=(right*0.5).toFixed(1);
+}
+document.querySelectorAll('.q').forEach(function(q){
+  const ans=+q.dataset.ans, n=q.id.replace('q','');
+  q.querySelectorAll('.opt').forEach(function(o,i){
+    o.addEventListener('click',function(){
+      if(q.classList.contains('done'))return;
+      q.classList.add('done');
+      const ok=(i===ans);
+      if(!ok)o.classList.add('wrong');
+      q.querySelectorAll('.opt')[ans].classList.add('right');
+      done++; if(ok)right++; updScore();
+      fillBlank(n,ok);
+    });
+  });
+});
+function revealAll(){
+  document.querySelectorAll('.q').forEach(function(q){
+    const n=q.id.replace('q','');
+    if(!q.classList.contains('done')){
+      q.classList.add('done');
+      q.querySelectorAll('.opt')[+q.dataset.ans].classList.add('right');
+      done++; updScore();
+    }
+    fillBlank(n,true);
+  });
+  document.querySelectorAll('.bk.miss').forEach(function(e){e.classList.remove('miss');e.classList.add('filled')});
+}
+
+/* ============ 考点统计 ============ */
+const counts={};Object.keys(B).forEach(function(k){counts[B[k].cat]=(counts[B[k].cat]||0)+1});
+const order=["word","collo","context","logic"];
+document.getElementById('catbar').innerHTML=order.map(function(k){
+  return '<div class="catseg" style="flex:'+counts[k]+';background:'+CAT[k].color+'">'+CAT[k].name+' '+counts[k]+'</div>'}).join('');
+const legend=document.getElementById('catlegend');
+legend.innerHTML=order.map(function(k){
+  return '<div class="cl" data-cat="'+k+'"><span class="dot" style="background:'+CAT[k].color+'"></span>'+CAT[k].name+' · '+counts[k]+' 题</div>'}).join('');
+const chips=document.getElementById('chips');
+function renderChips(cat){
+  chips.innerHTML=Object.keys(B).filter(function(n){return !cat||B[n].cat===cat})
+    .map(function(n){return '<span class="chip" data-n="'+n+'">'+n+'. '+B[n].w+'</span>'}).join('');
+  chips.querySelectorAll('.chip').forEach(function(c){
+    c.addEventListener('click',function(){go('q'+c.dataset.n)});
+  });
+}
+renderChips(null);
+legend.querySelectorAll('.cl').forEach(function(l){
+  l.addEventListener('click',function(){
+    const cat=l.dataset.cat;
+    document.querySelectorAll('.cl').forEach(function(x){x.style.borderColor=''});
+    l.style.borderColor=CAT[cat].color;
+    renderChips(cat);
+    document.querySelectorAll('.bk').forEach(function(b){
+      b.style.outline=(B[b.dataset.n].cat===cat?'2px solid '+CAT[cat].color:'')});
+  });
+});
+
+/* ============ 80 选项词表 ============ */
+const OPTS={
+ 1:[["affected","影响"],["achieved","达到（须接特定目标）"],["extracted","提取（extract X from Y）"],["restored","恢复（预设「曾降低过」）"]],
+ 2:[["at","end at ＋时间/地点"],["up","end up doing 最终落得（含意外）"],["with","end with 以…自然收尾"],["off","end sth off 把某事结束掉"]],
+ 3:[["truth","真相（强调真假之分）"],["sight","看见（瞬时动作）"],["act","行为，举动"],["proof","证明（引出待证之事）"]],
+ 4:[["controversial","有争议的（须有两方交锋）"],["perplexing","令人费解的（因果说不通）"],["mischievous","恶作剧的；有害的"],["ambiguous","模棱两可的（表述含混）"]],
+ 5:[["requirements","要求；必要条件（常配 for）"],["explanations","解释（给原因）"],["accounts","记述，描述（熟词僻义）"],["assessments","评估，评价（他人看法）"]],
+ 6:[["conclude","得出结论；推断"],["matter","要紧，重要（v.）"],["indicate","显示，表明"],["work","起作用（其 it 是真主语）"]],
+ 7:[["as far as","就……而言（引出观点）"],["for fear that","以免，唯恐（引出目的）"],["in case that","以防万一；假使"],["so long as","只要（充分条件）"]],
+ 8:[["awareness","意识（到某事的存在）"],["expectation","⚠️预期（对未来，时态不合）"],["sentiment","（带感情的）观感、意见"],["illusion","错觉（但被实验是真事）"]],
+ 9:[["suitable","适合的（针对某情况）"],["excessive","过多的，过度的（贬义）"],["enough","足够的（be enough to do）"],["abundant","丰富的（讲量多，方向反）"]],
+ 10:[["about","关于"],["for","为了"],["on","⚠️陷阱：alter…on oneself 不成立"],["by","by itself 仅凭其本身"]],
+ 11:[["compared","be compared to 相比/比作"],["shown","be shown to sb 被展示给"],["subjected","be subjected to 使经受"],["conveyed","be conveyed to 被传送给（接收方）"]],
+ 12:[["Contrary to","与……相反"],["Consistent with","与……一致（方向反）"],["Parallel with","与……类似（方向反）"],["Peculiar to","为……所特有（只讲一方）"]],
+ 13:[["evidence","证据"],["guidance","指导，建议"],["implication","暗指；言外之意"],["source","来源；根源"]],
+ 14:[["disputable","有争议的（时间错位）"],["enlightening","有启发性的（方向反）"],["reliable","真实可信的（方向反）"],["misleading","误导性的"]],
+ 15:[["In contrast","相比之下（须有反差）"],["For example","例如（总—分）"],["In consequence","因此（因果方向反）"],["As usual","照旧（但这是特殊做法）"]],
+ 16:[["duly","如期地，按时地（＝as expected）"],["accidentally","⚠️偶然地（偶然词族）"],["unpredictably","不可预测地"],["suddenly","突然地（强调不规律）"]],
+ 17:[["failed","未能（反向，须配 but）"],["ceased","停止（反向）"],["started","开始（违背事理）"],["continued","继续（and 同向）"]],
+ 18:[["Therefore","因此（无因果关联）"],["Furthermore","此外（这是拆台不是补充）"],["However","然而（对照组接缝）"],["Meanwhile","同时；另一方面"]],
+ 19:[["attempted","尝试（主观意图）"],["tended","往往会（客观倾向）"],["chose","选择（主观决定）"],["intended","打算（有意识计划）"]],
+ 20:[["breaking","突破（曲线会没有「平」段）"],["climbing","攀登（尚未到达，顺序乱）"],["surpassing","超越（人与稳定期不可比）"],["hitting","hit a plateau 达到平台期"]]
+};
+const ANS={1:0,2:1,3:2,4:1,5:2,6:1,7:3,8:0,9:2,10:3,11:2,12:0,13:0,14:3,15:1,16:0,17:3,18:2,19:1,20:3};
+(function(){
+  let h='<tr><th>空</th><th>A</th><th>B</th><th>C</th><th>D</th></tr>';
+  for(let n=1;n<=20;n++){
+    h+='<tr><td class="n">'+n+'</td>';
+    OPTS[n].forEach(function(o,i){
+      h+='<td'+(i===ANS[n]?' class="hit"':'')+'><span class="ow">'+o[0]+'</span><span class="oc">'+o[1]+'</span></td>';
+    });
+    h+='</tr>';
+  }
+  document.getElementById('otab').innerHTML=h;
+  document.querySelectorAll('#otab .oc').forEach(function(c){
+    c.addEventListener('click',function(){c.classList.toggle('show')});
+  });
+})();
+function toggleHide(){
+  const t=document.getElementById('otab');
+  const on=t.classList.toggle('hidecn');
+  document.getElementById('btnHide').textContent=on?'👁 显示释义':'✍️ 默写模式';
+  if(!on)t.querySelectorAll('.oc.show').forEach(function(c){c.classList.remove('show')});
+}
+
+/* ============ 查有道 ============ */
+const yd=document.getElementById('yd');let sel='';
+document.addEventListener('selectionchange',function(){
+  const s=window.getSelection();const t=s?s.toString().trim():'';
+  if(t&&/^[a-zA-Z' -]{2,40}$/.test(t)){
+    sel=t;
+    try{const r=s.getRangeAt(0).getBoundingClientRect();
+      yd.style.left=Math.min(r.left,window.innerWidth-110)+'px';
+      yd.style.top=(r.bottom+8)+'px';yd.style.display='block';}catch(e){}
+  }else{yd.style.display='none'}
+});
+yd.addEventListener('click',function(){window.open('https://dict.youdao.com/result?word='+encodeURIComponent(sel)+'&lang=en');yd.style.display='none'});
+document.addEventListener('click',function(e){if(e.target!==yd&&!window.getSelection().toString())yd.style.display='none'});
+</script>
+<script src="_fault_attr.js"></script>
+</body>
+</html>
