@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2011 英一 新题型 · 知识与人才的专业化困境</title>
+<style>
+  :root{
+    --bg:#faf9f6; --card:#ffffff; --ink:#2b2b2b; --muted:#8a8578;
+    --accent:#8b5e34; --accent-soft:#f3e9dd; --line:#e8e3d8;
+    --hl:#fdf3d8; --hl-border:#e0b84d;
+    --green:#3e7a4e; --green-soft:#e8f2ea;
+    --red:#b04a3a; --red-soft:#f9e9e6;
+    --blue:#3d6a8a; --blue-soft:#e7eff5;
+    --purple:#6d5a8e; --purple-soft:#eeeaf5;
+    --serif:"Georgia","Songti SC",serif;
+    --sans:-apple-system,"PingFang SC","Helvetica Neue",sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#1c1a17; --card:#26231f; --ink:#e8e4dc; --muted:#9a948a;
+      --accent:#d0a06a; --accent-soft:#3a3127; --line:#3a362f;
+      --hl:#3d3520; --hl-border:#b08c3a;
+      --green:#7fb98d; --green-soft:#26362b;
+      --red:#d98876; --red-soft:#3d2a26;
+      --blue:#8ab3d0; --blue-soft:#26323d;
+      --purple:#a996c8; --purple-soft:#302a3d;
+    }
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;padding-bottom:120px}
+  .wrap{max-width:1100px;margin:0 auto;padding:24px 20px}
+  .back{font-size:.85rem;color:var(--muted);text-decoration:none}
+  .back:hover{color:var(--accent)}
+  header{margin:14px 0 28px}
+  header h1{font-family:var(--serif);font-size:1.7rem;line-height:1.3}
+  header .sub{color:var(--muted);margin-top:6px;font-size:.9rem}
+  .tags{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+  .tag{font-size:.75rem;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);border:1px solid var(--line)}
+  .tag.bad{background:var(--red-soft);color:var(--red)}
+  .layout{display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:start}
+  .layout > main{min-width:0}
+  @media (max-width:900px){.layout{grid-template-columns:1fr}}
+  section.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:24px}
+  h2{font-size:1.05rem;letter-spacing:.05em;color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+  h2 .n{font-size:.72rem;background:var(--accent);color:var(--card);border-radius:6px;padding:1px 7px}
+  h3.sh{font-size:.95rem;color:var(--ink);margin:18px 0 8px;padding-left:9px;border-left:3px solid var(--accent)}
+  .para{margin-bottom:14px}
+  .en{font-family:var(--serif);font-size:1.03rem;line-height:1.95}
+  .tk{background:var(--hl);border-bottom:2px solid var(--hl-border);border-radius:3px;padding:0 2px;cursor:pointer;transition:filter .15s}
+  .tk:hover{filter:brightness(.93)}
+  .tk.active{outline:2px solid var(--hl-border)}
+  .clue{border-bottom:2px dotted var(--red)}
+  .zh{display:none;margin-top:8px;padding:10px 14px;background:var(--blue-soft);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:.92rem}
+  .showzh .zh{display:block}
+  .zbtn{float:right;margin-left:10px;font-size:.72rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:6px;padding:2px 9px;cursor:pointer}
+  .zbtn:hover{color:var(--accent);border-color:var(--accent)}
+  .allbtn{font-size:.78rem;border:1px solid var(--accent);background:none;color:var(--accent);border-radius:8px;padding:4px 12px;cursor:pointer;margin-left:auto}
+  aside{position:sticky;top:20px}
+  #panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;min-height:180px}
+  #panel .hint{color:var(--muted);font-size:.88rem;text-align:center;padding:30px 10px}
+  .wcard .head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .wcard .w{font-family:var(--serif);font-size:1.35rem;font-weight:bold}
+  .wcard .ipa{color:var(--muted);font-size:.85rem}
+  .wcard .pos{font-size:.72rem;color:var(--purple);background:var(--purple-soft);padding:1px 8px;border-radius:999px}
+  .wcard .badge{font-size:.7rem;padding:1px 8px;border-radius:999px}
+  .b-core{background:var(--red-soft);color:var(--red)}
+  .b-phrase{background:var(--blue-soft);color:var(--blue)}
+  .b-poly{background:var(--purple-soft);color:var(--purple)}
+  .b-write{background:var(--green-soft);color:var(--green)}
+  .wcard .cn{margin-top:8px;font-size:1rem;font-weight:600}
+  .wcard .en-def{color:var(--muted);font-size:.86rem;font-style:italic;margin-top:2px}
+  .wcard .row{margin-top:10px;font-size:.86rem;padding:8px 10px;border-radius:8px}
+  .wcard .row b{font-size:.72rem;display:block;margin-bottom:2px;letter-spacing:.06em}
+  .r-ex{background:var(--hl)} .r-ex b{color:var(--hl-border)}
+  .r-mem{background:var(--green-soft)} .r-mem b{color:var(--green)}
+  .r-syn{background:var(--blue-soft)} .r-syn b{color:var(--blue)}
+  .r-conf{background:var(--red-soft)} .r-conf b{color:var(--red)}
+  #panel .close{display:none}
+  @media (max-width:900px){
+    aside{position:fixed;left:0;right:0;bottom:0;z-index:50;padding:0 8px 8px}
+    #panel{box-shadow:0 -6px 24px rgba(0,0,0,.18);max-height:55vh;overflow-y:auto;display:none}
+    #panel.open{display:block}
+    #panel .close{display:block;float:right;border:none;background:var(--line);border-radius:8px;padding:2px 10px;cursor:pointer;color:var(--ink)}
+  }
+  /* 选项库 */
+  .optlib{display:grid;gap:8px}
+  .optitem{display:flex;gap:10px;border:1px solid var(--line);border-radius:10px;padding:9px 12px;font-size:.9rem}
+  .optitem .lt{font-weight:700;font-family:var(--serif);color:var(--accent);flex:0 0 18px}
+  .optitem.used{opacity:.45}
+  .optitem.extra{border-color:var(--red);background:var(--red-soft)}
+  .optitem .oen{font-family:var(--serif);font-size:.92rem;line-height:1.75}
+  .optitem .zhx{display:block;color:var(--muted);font-size:.82rem;margin-top:3px}
+  .optitem .kw{display:block;font-size:.78rem;color:var(--blue);margin-top:3px}
+  .optitem .stg{display:inline-block;font-size:.72rem;background:var(--purple-soft);color:var(--purple);border-radius:999px;padding:1px 9px;margin-top:5px}
+  /* 空格题 */
+  .person{margin-bottom:26px;padding-bottom:20px;border-bottom:1px dashed var(--line)}
+  .person:last-child{border:none}
+  .pname{font-family:var(--serif);font-weight:700;font-size:1.05rem;margin-bottom:8px}
+  .pname .qn{color:var(--accent)}
+  .stance{font-size:.72rem;border-radius:999px;padding:1px 9px;margin-left:8px;vertical-align:2px;font-family:var(--sans);font-weight:400}
+  .st-anti{background:var(--red-soft);color:var(--red)}
+  .st-pro{background:var(--green-soft);color:var(--green)}
+  .st-mid{background:var(--blue-soft);color:var(--blue)}
+  .slot{display:inline;background:var(--accent-soft);border-bottom:2px solid var(--accent);border-radius:3px;padding:0 6px;color:var(--accent);font-weight:700;font-family:var(--sans);font-size:.88rem}
+  .slot.filled{background:var(--green-soft);border-color:var(--green);color:var(--ink);font-weight:400;font-family:var(--serif);font-size:1.03rem}
+  .slot.filled .fl{font-family:var(--sans);font-size:.78rem;font-weight:700;color:var(--green);margin-right:5px}
+  .chips{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0 4px}
+  .chips .ch{width:38px;height:34px;border:1px solid var(--line);border-radius:8px;background:none;font-family:var(--serif);font-weight:700;font-size:1rem;color:var(--ink);cursor:pointer;transition:all .15s}
+  .chips .ch:hover{border-color:var(--accent)}
+  .person.done .ch{cursor:default;opacity:.6}
+  .ch.right{background:var(--green-soft);border-color:var(--green);color:var(--green);opacity:1!important}
+  .ch.wrong{background:var(--red-soft);border-color:var(--red);color:var(--red);opacity:1!important}
+  .expl{display:none;margin-top:10px;background:var(--accent-soft);border-radius:10px;padding:12px 14px;font-size:.9rem}
+  .person.done .expl{display:block}
+  .expl b{color:var(--accent)}
+  .loc{font-family:var(--serif);font-style:italic;background:var(--hl);padding:1px 4px;border-radius:3px}
+  .expl .line{margin-top:8px;padding-top:8px;border-top:1px dashed var(--line)}
+  .expl .mine{margin-top:8px;padding:8px 10px;background:var(--red-soft);border-radius:8px;color:var(--red);font-size:.86rem}
+  .wb{display:grid;gap:10px}
+  .wbi{border-left:3px solid var(--green);background:var(--green-soft);border-radius:0 10px 10px 0;padding:10px 14px;font-size:.92rem}
+  .wbi .p{font-family:var(--serif);font-weight:600}
+  .wbi .u{color:var(--muted);font-size:.85rem}
+  /* 表格 */
+  .tbwrap{overflow-x:auto}
+  table.gt{border-collapse:collapse;width:100%;min-width:600px;font-size:.86rem}
+  table.gt th,table.gt td{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
+  table.gt th{background:var(--accent-soft);color:var(--accent);font-weight:600;font-size:.8rem}
+  table.gt td.c{text-align:center;font-family:var(--serif);font-weight:700}
+  table.gt tr.bad td{background:var(--red-soft)}
+  /* 分区带 */
+  .zone{display:grid;grid-template-columns:118px 1fr;gap:12px;padding:9px 0;border-bottom:1px dashed var(--line);font-size:.9rem}
+  .zone:last-child{border:none}
+  .zone .zn{font-size:.82rem;color:var(--accent);font-weight:600}
+  .zone.empty{background:var(--red-soft);border-radius:8px;padding-left:10px}
+  .zone.empty .zn{color:var(--red)}
+  /* 长难句 */
+  .ls{border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:14px}
+  .ls .s{font-family:var(--serif);font-size:.98rem;line-height:1.85}
+  .ls .an{margin-top:10px;font-size:.88rem}
+  .ls .an div{margin-top:4px}
+  .ls .tr{margin-top:8px;padding:8px 12px;background:var(--blue-soft);border-radius:8px;font-size:.88rem}
+  .mk{color:var(--red);font-weight:600}
+  .mk2{color:var(--blue);font-weight:600}
+  .mk3{color:var(--green);font-weight:600}
+  .box{border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:0 10px 10px 0;padding:12px 14px;margin:12px 0;font-size:.92rem;background:var(--accent-soft)}
+  .box.red{border-left-color:var(--red);background:var(--red-soft)}
+  .box.green{border-left-color:var(--green);background:var(--green-soft)}
+  .box .bt{font-weight:700;color:var(--accent);display:block;margin-bottom:6px}
+  .box.red .bt{color:var(--red)} .box.green .bt{color:var(--green)}
+  .en,.zh,.expl,.wbi,.optitem,.ls,.zone,.bd,figcaption,p,li,td,th{overflow-wrap:anywhere}
+  footer{color:var(--muted);font-size:.8rem;text-align:center;margin-top:30px}
+  #yd{position:fixed;z-index:60;display:none;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:4px 12px;font-size:.8rem;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+</style>
+<style>
+  /* —— 2010 排序题专用 —— */
+  main,aside{min-width:0}
+  .chainbar{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:16px 0 4px;padding:12px;background:var(--accent-soft);border-radius:12px}
+  .chainbar .cb{min-width:44px;height:36px;display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--accent);border-radius:8px;font-family:var(--serif);font-weight:700;color:var(--accent);background:var(--card)}
+  .chainbar .cb.given{background:var(--green-soft);border-color:var(--green);color:var(--green)}
+  .chainbar .ar{color:var(--muted)}
+  .ctx{font-size:.84rem;color:var(--muted);background:var(--blue-soft);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;padding:7px 12px;margin-bottom:10px}
+  .ctx i{font-family:var(--serif)}
+  .para{margin-bottom:22px;padding-bottom:16px;border-bottom:1px dashed var(--line)}
+  .para:last-of-type{border-bottom:none}
+  .person .en{margin-bottom:4px}
+  .optitem .oen{display:block}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">◀ 返回英语复盘中心</a>
+  <header>
+    <h1>Professionalising the Professor　知识与人才的专业化，把人文学科逼进了死角</h1>
+    <div class="sub">2011 年英语（一）真题 · Part B 新题型（<b>段落排序</b>：七段填进 G→41→42→[E]→43→44→45，<b>G 与 E 已给定，零多余项</b>）· 建议做题 <b>8–10 min</b> · 话题：美国大学的学科专业化与人文学科困境 · 581 words · 源自《经济学人》<i>The Economist</i> 2010 年 2 月 25 日 <i>University Education in America: Professionalising the Professor</i>（书评）</div>
+    <div class="tags">
+      <span class="tag">正确答案：41 B　42 D　43 A　44 C　45 F（<b>七项全部用上</b>）</span>
+      <span class="tag">全文顺序：G — B — D — E — A — C — F</span>
+      <span class="tag">变体：<b>排序题</b>（第二次遇到 · 但形态与 2010 不同）</span>
+      <span class="tag">✅ Claude 盲做：<b>5/5</b>（Part B 六篇：2007 5/5 · 2022 5/5 · 2008 5/5 · <b>2009 3/5</b> · 2010 5/5 · 2011 5/5）</span>
+    </div>
+  </header>
+
+  <div class="layout">
+    <main>
+      <section class="card">
+        <h2><span class="n">00</span>开考第一件事：数格子 —— 这一年<b>没有多余项</b></h2>
+
+        <div class="chainbar">
+          <span class="cb given">G</span><span class="ar">→</span><span class="cb">41</span><span class="ar">→</span><span class="cb">42</span><span class="ar">→</span><span class="cb given">E</span><span class="ar">→</span><span class="cb">43</span><span class="ar">→</span><span class="cb">44</span><span class="ar">→</span><span class="cb">45</span>
+        </div>
+
+        <p style="font-size:.92rem">同样是<b>段落排序</b>，2010 与 2011 的形态并不一样，而这件事<b>三秒钟就能查清、却直接决定打法</b>：</p>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:600px">
+          <tr><th style="width:14%">年份</th><th style="width:20%">格子数（含已给定）</th><th style="width:16%">选项数</th><th>结论</th></tr>
+          <tr><td class="c"><b>2010</b></td><td class="c">6（41–45 ＋ E）</td><td class="c">7（A–G）</td><td><b>有 1 个多余项</b>（实为 C）⟹ 最后一格仍有两个候选，<b>必须靠正向证据</b>收口</td></tr>
+          <tr><td class="c"><b>2011</b></td><td class="c"><b>7</b>（41–45 ＋ G ＋ E）</td><td class="c">7（A–G）</td><td><b>零多余项</b>，七项全部要用上</td></tr>
+        </table>
+        </div>
+
+        <div class="box green">
+          <span class="bt">🎁 零多余项的三条红利</span>
+          ① <b>排除法可以做满</b>——每定下一个空，候选池就少一项，<b>最后一格是白送的</b>（本篇做完 41 42 43 44，45 直接落 F）。<br>
+          ② <b>通读验闭合是<u>充分</u>检验</b>——七项全用上且读得顺，几乎不可能是错的；有多余项时通读只能算必要条件。<br>
+          ③ <b>「这一项放哪儿都不像」不再是排除理由</b>，反而说明你还没找到它的位置。
+        </div>
+        <div class="box red">
+          <span class="bt">⚠️ 同一枚硬币的背面：错误会成对发生</span>
+          零多余项意味着<b>每一项都占着别人的坑</b>——把 A 放错一格，被它挤掉的那一项也必然错位，<b>一次判断失误 ＝ 丢 4 分</b>。
+          <span class="mk">这与 2009 选句填空 43↔44 对调的翻车机制完全相同（见套路库 R55）。</span>所以<b>省下来的那一格时间，要花回通读上。</b>
+        </div>
+
+        <h3 class="sh">① 五步：先拼块，再排块</h3>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:620px">
+          <tr><th style="width:8%">步</th><th style="width:30%">做什么</th><th>本篇实况</th></tr>
+          <tr><td class="c">1</td><td><b>数格子</b>，判有没有多余项</td><td>7 格 7 项 ⟹ <b>零多余</b>，全用上。<span class="mk">顺手记下已给定段的邻居数：G 只有 1 个邻居（41），E 有 2 个（42、43）。</span></td></tr>
+          <tr><td class="c">2</td><td><b>从已给定段的邻居下手</b>（邻居越少越先做）</td><td>G 末句刚点出 <span class="loc">Louis Menand, a professor of English at Harvard</span> ⟹ 41 必是以 <span class="loc"><b>His</b> concern</span> 开头的 B。<b>代词紧邻，一秒锁死。</b></td></tr>
+          <tr><td class="c">3</td><td><b>把成串的段落先粘成「块」</b></td><td>A 尾 <span class="loc">Not surprisingly</span> ⟷ C 首 <span class="loc">Equally unsurprisingly</span>，粘死；B 尾抛难题、D 首答难题，粘死。<b>七项瞬间压成 <span class="loc">G ｜[B–D]｜ E ｜[A–C]｜ F</span> 五块。</b></td></tr>
+          <tr><td class="c">4</td><td><b>把块摆进链条</b></td><td>[B–D] 只能进 41–42（D 尾的 <span class="loc">kept separate</span> 正好接 E 首的 <span class="loc">this separation</span>）；[A–C] 只能进 43–44；<b>剩下 F 自动落 45</b>。</td></tr>
+          <tr><td class="c">5</td><td><b>通读验闭合</b></td><td>G—B—D—E—A—C—F ＝ 荐书 → 他关心人文 → 通识难办 → 分离催生教授专业化 → 人文最卷 → 博士没出路 → 该怎么改。<b>七项全用上，读不出磕绊 ⟹ 收工。</b></td></tr>
+        </table>
+        </div>
+
+        <h3 class="sh">② 「先拼块」为什么比「逐格填」快</h3>
+        <div class="box">
+          <span class="bt">🧱 块 ＝ 两段之间存在<u>不可拆</u>的证据</span>
+          排序题的难点从来不是「这一段讲什么」，而是<b>五个空的排列组合</b>。而<b>成对的段落一旦粘住，排列数就崩塌</b>：
+          本篇五个待填项若逐格试，是 5! ＝ <b>120 种</b>；粘成 [B–D]、[A–C]、F 三块之后，只剩 3! ＝ <b>6 种</b>，再加一个 E 的位置约束，答案唯一。
+          <br><span class="mk">粘块的四种标志：<b>副词呼应</b>（Not surprisingly / Equally unsurprisingly）· <b>序数词</b>（The first…／The second…）· <b>同一批人的数字接力</b>（一半退学 → 剩下的只有一半留校）· <b>一问一答</b>（抛出难题 → One reason why…）。</span>
+        </div>
+
+        <h3 class="sh">③ 认出文体，等于免费拿到首尾两格</h3>
+        <div class="box">
+          <span class="bt">📚 本篇是<u>书评</u>，书评有固定的四格骨架</span>
+          <b>① 引出书并推荐（G，已给定）→ ② 介绍书中观点／问题（B D E A C）→ ③ 给出书中建议（F）→ ④ 指出该书的局限（F 末句）。</b>
+          <br>⟹ F 段同时带着<b>两个末段标记</b>：<span class="loc"><b>concludes</b> Mr Menand</span>（总结）＋ <span class="loc">Yet quite how that happens, Mr Menand <b>does not say</b></span>（指出该书未尽之处）。
+          <b>书评的收尾就长这样</b>，见到就不必再犹豫。
+          <br><span class="mk">对照 2010 的商业分析文：那一篇的末格填的是「两个趋势里的第一个」，文章戛然而止（真题是节选）—— <b>「结尾该有总结感」这条直觉在 2010 是错的、在 2011 是对的，所以它不能当规则用；能当规则用的是<u>文体</u>。</b></span>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">01</span>七项 A–G · 先给每一项标出「头路标 / 尾预示」</h2>
+        <p style="font-size:.8rem;color:var(--muted);margin-bottom:12px">🔑 一行 ＝ 这一项的两个接口 ｜ 紫色标签 ＝ 它最终落在哪一环（<b>作答后</b>对应项会自动置灰）｜ 本篇<b>没有红框</b>——七项全部有归宿</p>
+        <div class="optlib" id="optlib"></div>
+        <div class="box" style="margin-top:14px">
+          <span class="bt">🚩 七个段首，六个带路标 —— 但这一次「唯一干净的那个」是<u>已给定</u>的 G</span>
+          A <span class="loc">No disciplines…as much as the humanities</span>（隐含比较基准，上文须先谈「专业化」）· B <span class="loc"><b>His</b> concern</span>（代词）· C <span class="loc"><b>Equally</b> unsurprisingly</span>（副词呼应）＋ <span class="loc">only about half</span>（<b>省略中心词</b>）· D <span class="loc">One reason <b>why</b>…<b>such</b> courses</span>（回指）· E <span class="loc">by <b>this</b> separation</span>（指示代词）· F <span class="loc">The key to reforming…</span>（须先有问题）· <b>G</b> <span class="loc">The subtle and intelligent little book…</span>（<b>零路标</b>）。
+          <br>⟹ <b>2010 那套「查段首路标定首段」的排除法在本篇省掉了</b>——题目把首段直接给了你。<span class="mk">但这套查法没有白学：它换了个用途，变成了<u>粘块</u>的依据（见 00 节第②条）。</span>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">02</span>链条作答 · 点字母 <button class="allbtn" onclick="toggleAll()">译文 开/关</button></h2>
+        <p style="font-size:.8rem;color:var(--muted);margin-bottom:14px">每格下方点 A–G 作答，<b>答后格子会就地补全成整段原文</b>，并出线索链解析 ＋ 错因标签。<span class="mk">建议按 41 → 42 → 43 → 44 → 45 的顺序做（本篇正好正推，理由见 00 节第①步）。</span></p>
+
+        <div class="person q" id="q41" data-ans="B">
+          <div class="pname"><span class="qn">(41)</span> 链条第 2 格 · 紧跟已给定的首段 G<span class="stance st-pro">证据 ＝ 代词紧邻回指（最硬的一类）</span><button class="zbtn" onclick="tz(this)">译</button></div>
+          <p class="ctx">↑ 上文：<b>G（已给定）</b>——荐书，并点名作者 Louis Menand　↓ 下文：42</p>
+          <p class="en"><span class="slot" data-n="41">(41) ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿</span></p>
+          <div class="zh"><b>（41）</b>他主要关注的是人文学科：文学、语言、哲学等。这些学科越来越不受欢迎：如今 22% 的美国大学毕业生主修商学，相比之下只有 2% 主修历史、4% 主修英语。然而，很多美国一流大学都希望本科生对「每一位受过教育的人都应具备的基本思想经典」有基本的认知。但多数学校很难就「通识教育」该是什么样子达成共识。梅南德指出，在哈佛，「之所以要读经典著作，是因为这些著作一直以来都被人阅读」——它们成了一种社会黏合剂。</div>
+          <div class="chips"></div>
+          <div class="expl"><b>41 → B　His concern is mainly with the humanities: literature, languages, philosophy and so on.</b>
+            <div class="line">🔗 <b>决定性一击</b>：G 的最后一句刚刚第一次点出 <span class="loc">Louis Menand, <b>a professor of English at Harvard University</b></span>，B 张口就是 <span class="loc"><b>His</b> concern</span>。<b>人称代词的先行词必须在紧邻的上一句</b>（套路库 <a href="套路库_阅读.html#R53">R53</a>）——全篇只有 G 末句能供得起这个 His。</div>
+            <div class="line">🔗 <b>第二重证据：话题第一次落地。</b>G 说的是「美国大学里出了<u>某种</u>奇怪的事」（<span class="loc">something curious</span>），一个字没说是什么事；B 首句冒号后立刻给出范围（<span class="loc">the humanities: literature, languages, philosophy</span>）。<b>「悬念句 → 落地句」是全文最自然的第二环。</b></div>
+            <div class="line">🔮 <b>它的段尾预告了 42</b>：<span class="loc">most find it <b>difficult to agree on</b> what a "general education" should look like</span> —— <b>抛出一个没解释原因的难题</b>，下一段必然来接。</div>
+            <div class="line">✂️ <b>为什么不是 A／C／F</b>：三者都要求上文已经在谈「专业化（professionalism）」这件事，而 G 只谈「有件怪事」，<b>话题还没铺开</b>。<span class="mk">尤其 C 的 <span class="loc">only about half</span> 省略了中心词（一半的<u>谁</u>？），放在这里根本无从填补。</span></div>
+          </div>
+        </div>
+
+        <div class="person q" id="q42" data-ans="D">
+          <div class="pname"><span class="qn">(42)</span> 链条第 3 格 · <b>被已给定的 E 夹在下方</b><span class="stance st-pro">证据 ＝ 同源词换词性 ＋ 指示代词（双钩）</span><button class="zbtn" onclick="tz(this)">译</button></div>
+          <p class="ctx">↑ 上文：41（＝B）——通识教育难以达成共识　↓ 下文：<b>E（已给定）</b>——由这种分离，教授也被专业化了</p>
+          <p class="en"><span class="slot" data-n="42">(42) ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿</span></p>
+          <div class="zh"><b>（42）</b>这类课程难以设计和讲授，原因之一是它们违背了美国顶尖大学一贯坚持的原则：人文教育与专业教育应该保持分离，在不同的学院讲授。很多学生其实两种教育都经历过。尽管超过半数的哈佛本科生最终进入法律、医学或商界，但这些未来的医生和律师在攻读专业资格之前，必须先修一个非专业的人文学科学位。</div>
+          <div class="chips"></div>
+          <div class="expl"><b>42 → D　One reason why it is hard to design and teach such courses…</b>
+            <div class="line">🔗 <b>向上的钩</b>：B 末段说「多数学校<span class="loc">难以就通识教育达成共识</span>」，D 开口就是「<span class="loc"><b>One reason why</b> it is <b>hard to</b> design and teach <b>such courses</b></span>」。<b>结果 → 原因</b>，且 <span class="loc">such courses</span> 是<b>概括名词回指</b>（套路库 <a href="套路库_阅读.html#R83">R83</a>），指的正是 B 说的 "general education"。</div>
+            <div class="line">🔗 <b>向下的钩（本篇最硬的一处）</b>：D 末尾说两种教育 <span class="loc">should be <b>kept separate</b>, taught in different schools</span>；已给定的 E 第一句是 <span class="loc">Besides professionalising the professions by <b>this separation</b></span>。<b>separate（形容词）→ separation（名词）＝ 同源词换词性，再加一个 this</b>——<span class="mk">指示代词只告诉你「上文有个东西」，同源词还告诉你<u>是哪个东西</u>。两把钩叠在一起，D 的位置不可动摇。</span></div>
+            <div class="line">🧭 <b>这一格是全篇的「支点」</b>：它上下两端都有硬证据，<b>即使你没看出 41 的 His，从 E 往上倒推也能把 D 锁死，再顺势逼出 41</b>。这正是黄皮书的作答顺序（先 42 后 41）。</div>
+            <div class="line">✂️ <b>为什么不是 A</b>：A 也谈专业化，但它的落点是「人文学科最热衷专业化」，与 E 首句的 <span class="loc">this separation</span> 对不上——<b>A 里根本没有「分离」这回事</b>。</div>
+          </div>
+        </div>
+
+        <div class="person q" id="q43" data-ans="A">
+          <div class="pname"><span class="qn">(43)</span> 链条第 5 格 · <b>紧跟已给定的 E</b><span class="stance st-pro">证据 ＝ 原词复现 ＋ 从总到分</span><button class="zbtn" onclick="tz(this)">译</button></div>
+          <p class="ctx">↑ 上文：<b>E（已给定）</b>——各学科对知识生产及知识生产者的培养形成垄断　↓ 下文：44</p>
+          <p class="en"><span class="slot" data-n="43">(43) ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿</span></p>
+          <div class="zh"><b>（43）</b>没有哪个学科像人文学科那样热切地专注于专业化。梅南德指出，你可以在三年内成为一名律师、四年内成为一名医生；但攻读人文学科的博士学位通常要花九年时间。难怪多达半数的英语专业博士生还没拿到学位就退学了。</div>
+          <div class="chips"></div>
+          <div class="expl"><b>43 → A　No disciplines have seized on professionalism with as much enthusiasm as the humanities.</b>
+            <div class="line">🔗 <b>原词复现</b>：E 末句 <span class="loc">So <b>disciplines</b> acquire a monopoly…</span>（各学科形成垄断）／ A 首句 <span class="loc"><b>No disciplines</b> have seized on <b>professionalism</b>…</span>。<b>disciplines ＋ professionalism 两个主线词同时接上。</b></div>
+            <div class="line">🔗 <b>更重要的是逻辑层级：从总到分。</b>E 讲的是<b>所有学科</b>的专业化后果，A 一上来就用最高级句式挑出<b>其中最极端的一个</b>（<span class="loc">with <b>as much enthusiasm as</b> the humanities</span>）。<span class="mk">而全文前两段（G、B）早就说明白 Menand 关心的是人文学科 ⟹ 从大环境收回到本题，顺理成章。</span></div>
+            <div class="line">🔮 <b>它的段尾预告了 44</b>：<span class="loc"><b>Not surprisingly</b>, up to <b>half</b> of all doctoral students in English <b>drop out</b></span> —— 这句话给下一段留了两个接口：<b>「不足为奇」这个态度</b>，和<b>「一半」这个数字</b>。</div>
+            <div class="line">✂️ <b>为什么不是 C</b>：C 首句 <span class="loc">Equally unsurprisingly</span> 里的 <b>Equally</b> 要求上文<u>刚刚</u>说过一次「不足为奇」，而 E 末句没有；<b>且 C 的 <span class="loc">only about half</span> 省略的中心词（博士生）也必须由 A 来提供。C 只能待在 A 后面。</b></div>
+          </div>
+        </div>
+
+        <div class="person q" id="q44" data-ans="C">
+          <div class="pname"><span class="qn">(44)</span> 链条第 6 格<span class="stance st-pro">证据 ＝ 副词呼应 ＋ 数字接力（全篇最显眼）</span><button class="zbtn" onclick="tz(this)">译</button></div>
+          <p class="ctx">↑ 上文：43（＝A）——人文博士读九年，一半人中途退学　↓ 下文：45（末格）</p>
+          <p class="en"><span class="slot" data-n="44">(44) ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿</span></p>
+          <div class="zh"><b>（44）</b>同样不足为奇的是，为了当上教授而进入研究生院的人当中，最终只有约一半真的获得了教授职位。（教授）职位实在太少了。部分原因在于大学不断培养出越来越多的博士，但愿意学人文学科的学生却在减少：英语系在 1970—1971 年授予的学士学位比 20 年后还多。学生少了，需要的教师也就少了。于是，在结束了长达十年的论文写作之后，许多人文学科的学生离开本行，去做一些自己从未受过训练的工作。</div>
+          <div class="chips"></div>
+          <div class="expl"><b>44 → C　Equally unsurprisingly, only about half end up with professorships…</b>
+            <div class="line">🔗 <b>副词呼应（一眼可见）</b>：A 末句 <span class="loc"><b>Not surprisingly</b></span> ／ C 首句 <span class="loc"><b>Equally unsurprisingly</b></span>。<b>Equally 是个只对上文负责的词</b>——它要求前面刚刚出现过一个「不足为奇」的结论。全篇仅此一处。</div>
+            <div class="line">🔗 <b>数字接力（本篇独有的一种缝法）</b>：A 说 <span class="loc">up to <b>half</b> … drop out</span>（一半人退学），C 接着数<span class="loc">剩下的人里 only about <b>half</b> end up with professorships</span>。<b>两个「一半」说的是同一批人的前后两道关口</b>：一半死在毕业前，剩下的一半又死在求职上。<span class="mk">⚠️ C 首句的 <b>half</b> 后面省略了中心词（half of <u>whom</u>？）——这是 R79 的第Ⅲ类路标「省略成分」，<b>它没有任何长得像连接词的词，最容易漏</b>。</span></div>
+            <div class="line">🔮 <b>它的段尾预告了 45</b>：<span class="loc">many humanities students <b>leave the profession</b> to do something <b>for which they have not been trained</b></span> —— 全文的困境到此收口到最惨的一句，<b>下一段只能是「那该怎么办」。</b></div>
+            <div class="line">🧩 <b>[A–C] 是一个不可拆的块</b>：把它整体当成一段来摆，43／44 两格是一次判断而不是两次。<span class="mk">这也是为什么本篇不必担心「一步错丢 4 分」——粘成块以后，成对错位的概率反而被压掉了。</span></div>
+          </div>
+        </div>
+
+        <div class="person q" id="q45" data-ans="F">
+          <div class="pname"><span class="qn">(45)</span> 链条第 7 格 · <b>末段</b><span class="stance st-mid">证据 ＝ 书评体收尾 ＋ 排除法收口（零多余项的红利）</span><button class="zbtn" onclick="tz(this)">译</button></div>
+          <p class="ctx">↑ 上文：44（＝C）——博士出路断绝，十年论文白写　↓ 下文：<b>无</b>（全文结束）</p>
+          <p class="en"><span class="slot" data-n="45">(45) ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿</span></p>
+          <div class="zh"><b>（45）</b>梅南德总结道，改革高等教育的关键在于改变「知识生产者的培养方式」。否则，大学教师的思维将继续危险地趋同，与他们所研究、调查和批判的社会日益脱节。「学术探究，至少在某些领域，可能需要少一些排外性、多一些整体性。」然而这究竟该如何实现，梅南德先生并未言明。</div>
+          <div class="chips"></div>
+          <div class="expl"><b>45 → F　The key to reforming higher education, concludes Mr Menand, is to alter the way…</b>
+            <div class="line">🔗 <b>问题 → 建议</b>：C 末句把困境写到底（十年论文写完却离开本行），F 第一句就是 <span class="loc">The key to <b>reforming</b> higher education</span>。<b>全文唯一一段给方案的，只能放在所有问题都摆完之后。</b></div>
+            <div class="line">🔗 <b>两个末段标记同时出现</b>：① <span class="loc"><b>concludes</b> Mr Menand</span>（总结标志词，与前文的 <span class="loc">points out</span>／<span class="loc">notes</span>／<span class="loc">argues</span> 形成收束）；② 末句 <span class="loc">Yet quite how that happens, Mr Menand <b>does not say</b></span> —— <b>指出所评之书的未尽之处，这是书评的标准收尾动作。</b></div>
+            <div class="line">🔗 <b>加固（但不能当定位用）</b>：F 首句引号里的 <span class="loc">"the <b>producers of knowledge</b> are produced"</span> 与 E 末句的 <span class="loc">the production of the <b>producers of knowledge</b></span> 是一处<b>七词级的原词复现</b>。<span class="mk">⚠️ 但它<u>隔了 A、C 两段</u>——这正是我盲做时唯一停顿的地方（一度怀疑 F 该紧贴 E）。<b>跨段复现只能加固，不能定位</b>：真要把 F 提到 E 后面，A—C 这对被 Equally 粘死的段落就无处安放了。</span></div>
+            <div class="line">🎁 <b>零多余项在这里发力</b>：做完 41–44，候选池里只剩 F 一项，<b>45 是白送的</b>。<span class="mk">反过来这也是一次免费的自检——如果剩下的那一项读着别扭，说明前面某一格排错了，回去重排。</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">02+</span>两条起手式：我走的路 vs 黄皮书走的路（都对，但一条更稳）</h2>
+        <p style="font-size:.92rem">本篇有意思的地方在于，<b>两条完全不同的起手式都能一路推到底</b>，而且它们第一步落的格子还不一样：</p>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:640px">
+          <tr><th style="width:16%">路径</th><th style="width:20%">第一格</th><th>推进方式</th></tr>
+          <tr><td><b>我盲做时</b><br>「找最硬的钩」</td><td class="c"><b>41 ＝ B</b></td><td>G 末句刚点名 Menand ⟹ B 的 <span class="loc">His</span> 无处可逃。再顺推 42（B 抛难题 ⟹ D 答难题）→ 撞上 E 的 <span class="loc">this separation</span> 得到二次确认 → A/C 靠 Equally 粘成块 → F 收尾。</td></tr>
+          <tr><td><b>黄皮书</b><br>「从已定段入手」</td><td class="c"><b>42 ＝ D</b></td><td>先看已给定的 E：它的上文必须能供出 <span class="loc">this separation</span> ⟹ 只有 D 说了 <span class="loc">kept separate</span>。定下 42 之后，再回头看 41 与 G 的衔接（His ⟹ B）。然后 43 A、44 C、45 F 依次落定，最后<b>通读检验</b>。</td></tr>
+        </table>
+        </div>
+        <div class="box green">
+          <span class="bt">🏁 为什么「已定段起手」更该当默认动作</span>
+          已给定的段落是全卷<b>唯一免费的锚</b>——命题人把它固定住，就等于承诺「它的邻居一定有硬证据」。
+          而「最硬的钩」是要<b>先读完七段才能发现</b>的，且它可能落在链条中段，逼你再折回来接两头。
+          <br>⟹ <b>套路库 <a href="套路库_阅读.html#R78">R78</a>（先做被已给定段夹住的空）第二次验证有效。</b><span class="mk">补一条本篇学到的细则：<b>已给定段有好几个时，先做邻居少的那个</b>——G 只有一个邻居（41），E 有两个（42、43），所以 G 那一侧的判断更不容易走岔。</span>
+        </div>
+        <div class="box">
+          <span class="bt">⏱ 建议用时 8–10 min</span>
+          数格子 ＋ 扫七段首末句 <b>3 min</b> ／ 粘块 <b>2 min</b> ／ 摆块并落格 <b>2 min</b> ／ <b>通读验闭合 2–3 min</b>。
+          <span class="mk">581 词是 Part B 六篇里最长的一篇，但真正决定五个答案的证据不到 <b>70 词</b>，全部长在段首段尾。中间的数据（22%／4%／九年／1970–71）一个都不用细读。</span>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">02++</span>六个接缝、六种缝法（排序题的证据总表）</h2>
+        <p style="font-size:.92rem">链条排好后，<b>相邻两段之间一定存在一处可以指着说的证据</b>。本篇六个接缝恰好各用一种缝法，且强弱分明：</p>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:660px">
+          <tr><th style="width:12%">接缝</th><th style="width:22%">缝法</th><th>证据原文</th></tr>
+          <tr><td class="c">G → B</td><td><b>代词紧邻回指</b></td><td>上：<span class="loc"><b>Louis Menand</b>, a professor of English at Harvard University</span>｜下：<span class="loc"><b>His</b> concern is mainly with the humanities</span></td></tr>
+          <tr><td class="c">B → D</td><td><b>概括名词回指<br>＋ 结果→原因</b></td><td>上：<span class="loc">most find it <b>difficult to agree on</b> what a "general education" should look like</span>｜下：<span class="loc"><b>One reason why</b> it is <b>hard to</b> design and teach <b>such courses</b></span></td></tr>
+          <tr><td class="c">D → E<br>（最硬）</td><td><b>同源词换词性<br>＋ 指示代词</b></td><td>上：<span class="loc">should be <b>kept separate</b>, taught in different schools</span>｜下：<span class="loc">Besides professionalising the professions by <b>this separation</b></span></td></tr>
+          <tr><td class="c">E → A</td><td><b>原词复现<br>＋ 从总到分</b></td><td>上：<span class="loc">So <b>disciplines</b> acquire a monopoly…</span>｜下：<span class="loc"><b>No disciplines</b> have seized on <b>professionalism</b> with as much enthusiasm as the humanities</span></td></tr>
+          <tr><td class="c">A → C<br>（最显眼）</td><td><b>副词呼应<br>＋ 数字接力</b></td><td>上：<span class="loc"><b>Not surprisingly</b>, up to <b>half</b> … drop out</span>｜下：<span class="loc"><b>Equally unsurprisingly</b>, only about <b>half</b> end up with professorships</span></td></tr>
+          <tr><td class="c">C → F</td><td><b>问题→建议<br>＋ 总结标志词</b></td><td>上：<span class="loc">leave the profession to do something for which they have not been trained</span>｜下：<span class="loc">The key to <b>reforming</b> higher education, <b>concludes</b> Mr Menand</span></td></tr>
+        </table>
+        </div>
+        <div class="box">
+          <span class="bt">📐 缝法强弱（两年排序题合并实测）</span>
+          <b>同源词换词性 ＋ 指代（硬）≈ 代词紧邻回指 ＞ 序数词补中心词 ／ 概括名词回指 ＞ 副词呼应 ／ 例证词 ／ 总结词 ＞ 跨段原词复现（只能加固）＞ 话题相近（不算证据）。</b>
+          <br><span class="mk">注意<b>「原词复现」在这张表里出现了两次，档位却不同</b>：E→A 的 <b>disciplines</b> 是<u>相邻</u>复现（可用），E→F 的 <b>producers of knowledge</b> 隔着两段（只能加固）。<b>判据不是「有没有复现」，而是「隔了几段」。</b>2010 那一篇的多余项 C 正是靠密集复现钓鱼的。</span>
+        </div>
+        <div class="box red">
+          <span class="bt">⚠️ 一个反直觉：本篇最长的原词复现，恰恰是最不能用的那条证据</span>
+          <span class="loc">the production of the <b>producers of knowledge</b></span>（E 末句）⟷ <span class="loc">"the <b>producers of knowledge are produced</b>"</span>（F 首句）——七个词几乎原样搬过来，比任何一处接缝都醒目。
+          <b>但它们之间隔着 A、C 两段。</b><span class="mk">命题人不是为了给你线索才这样写的，而是因为 F 在总结 E 提出的核心概念——<b>总结句与被总结句之间天然会隔开一段距离。</b>把它当接缝用，就会把 F 提到第 5 格，连累 A、C 全盘错位。</span>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">03</span>这一年<b>没有多余项</b> —— 顺便把四年的多余项造法一次数清</h2>
+        <p style="font-size:.92rem">Part B 六篇里，本篇是<b>第一篇「全部选项都要用上」的题</b>。<span class="mk">这不是命题人手软：它把「排除掉一个干扰项」的分值，换成了「排列本身不能出错」的压力。</span>先看历年多余项都是怎么造出来的——<b>这些造法在零多余项的年份并没有消失，它们变成了「摆错位置」的诱饵</b>：</p>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:640px">
+          <tr><th style="width:14%">年份 · 变体</th><th style="width:20%">多余项</th><th>造法</th></tr>
+          <tr><td><b>2007</b> 标题匹配</td><td class="c">A、G</td><td><b>两项都有词面呼应</b>（A↔role models 首句、G↔responsible 连出两次），而正确的三项在原文一个原词都没有</td></tr>
+          <tr><td><b>2008</b> 选句填空</td><td class="c">两项</td><td><b>阶段错位</b>（说的是写作的另一个阶段）／ <b>与正确项撞专名</b></td></tr>
+          <tr class="bad"><td><b>2009</b> 选句填空</td><td class="c">D、F</td><td><b>整整一区（功能论）没有设空，两项一起死</b> ⟹ 这一年我 3/5，43↔44 对调</td></tr>
+          <tr><td><b>2010</b> 排序题</td><td class="c">C</td><td><b>复现词最多（段首 such variations ＋ 段尾 this change），话题却偏离主线</b></td></tr>
+          <tr><td><b>2011</b> 排序题</td><td class="c"><b>无</b></td><td><b>零多余项</b>：压力从「认出假的」转移到「排对真的」</td></tr>
+        </table>
+        </div>
+        <div class="box">
+          <span class="bt">📊 一句话总账</span>
+          <b>五篇里有两篇的多余项是靠「词面呼应」钓鱼的（2007、2010），占了一半。</b>
+          ⟹ <b>「哪一项和上文最像」这个直觉，在 Part B 里始终是负资产</b>；而本篇更进一步说明：<b>就算没有多余项，最醒目的那处复现（E↔F）依然是个坑。</b>
+          <span class="mk">真正可靠的永远是那些「不指望你注意、却在语法上非有不可」的东西：His 找不到人就读不通、this separation 找不到「分离」就读不通、half 找不到中心词就读不通。</span>
+        </div>
+        <div class="box green">
+          <span class="bt">✅ 零多余项年份的收尾动作（比有多余项时更重要）</span>
+          有多余项时，末步是「把多余项逐个接缝试一遍，装不进去 ⟹ 反证前面没错」；
+          <b>零多余项时没有这个反证工具</b>，只能靠<b>整链通读</b>：G—B—D—E—A—C—F 一路读下来，
+          每个接缝都要能<u>指着说出</u>是哪个词把两段缝上的（六处见 02++ 表）。
+          <b>指不出来的那一处，就是你排错的地方。</b>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">03+</span>复原后的全文（G — B — D — E — A — C — F）· 逐段精读 <button class="allbtn" onclick="toggleAll()">译文 开/关</button></h2>
+        <p style="font-size:.8rem;color:var(--muted);margin-bottom:14px">🟡 高亮词可点出词卡（右侧／底部）｜ <b>蓝框 ＝ 与下一段的接缝</b>｜ 排完序务必通读一遍：<b>读得顺 ＋ 六个接缝都指得出来 ＝ 全对</b></p>
+
+        <div class="para">
+          <div class="pname"><span class="qn">① ＝ G（已给定 · 首段）</span>荐书：想读博的人都该看看这本书<button class="zbtn" onclick="tz(this)">译</button></div>
+          <p class="en">The <span class="tk" data-w="subtle">subtle</span> and intelligent little book <i>The Marketplace of Ideas: Reform and Resistance in the American University</i> should be read by every student <span class="tk" data-w="thinkingof">thinking of applying</span> to take a <span class="tk" data-w="doctoral">doctoral degree</span>. They may then decide to <span class="tk" data-w="goelsewhere">go elsewhere</span>. <span class="clue">For something <span class="tk" data-w="curious">curious</span> has been happening in American universities, and <b>Louis Menand, a professor of English at Harvard University</b>, <span class="tk" data-w="captured">captured</span> it skillfully.</span></p>
+          <div class="zh">每位正在考虑申请博士学位的学生，都应该读一读《观念的市场：美国大学的改革与阻力》这本精辟而睿智的小书。读完之后，他们可能会决定另谋出路。因为美国的大学里一直在发生某些奇怪的事情，而哈佛大学的英语教授路易斯·梅南德巧妙地描绘了这一现象。</div>
+          <div class="box" style="margin-top:8px"><span class="bt">🔗 接缝 G → B</span>末句第一次点出<b>人名</b> ⟹ 下一段的 <span class="loc">His</span> 只能指他；同时 <span class="loc">something curious</span> 是个悬念（怪事是什么？），<b>逼出一个落地段</b>。</div>
+        </div>
+
+        <div class="para">
+          <div class="pname"><span class="qn">② ＝ B（41）</span>落地：他关心的是正在没落的人文学科<button class="zbtn" onclick="tz(this)">译</button></div>
+          <p class="en"><span class="clue">His concern is mainly with the humanities: literature, languages, philosophy and so on.</span> These are <span class="tk" data-w="discipline">disciplines</span> that are <span class="tk" data-w="outofstyle">going out of style</span>: 22% of American college graduates now <span class="tk" data-w="majorin">major in</span> business compared with only 2% in history and 4% in English. However, many leading American universities want their undergraduates to have a <span class="tk" data-w="grounding">grounding</span> in the basic <span class="tk" data-w="canon">canon</span> of ideas that every educated person should <span class="tk" data-w="possess">possess</span>. <span class="clue">But most find it difficult to agree on what a "general education" should look like.</span> At Harvard, Mr Menand <span class="tk" data-w="notes">notes</span>, "the great books are read because they have been read"—they form a sort of social <span class="tk" data-w="glue">glue</span>.</p>
+          <div class="zh">他主要关注的是人文学科：文学、语言、哲学等。这些学科越来越不受欢迎：如今 22% 的美国大学毕业生主修商学，相比之下只有 2% 主修历史、4% 主修英语。然而，很多美国一流大学都希望本科生对「每一位受过教育的人都应具备的基本思想经典」有基本的认知。但多数学校很难就「通识教育」该是什么样子达成共识。梅南德指出，在哈佛，「之所以要读经典著作，是因为这些著作一直以来都被人阅读」——它们成了一种社会黏合剂。</div>
+          <div class="box" style="margin-top:8px"><span class="bt">🔗 接缝 B → D</span>末尾抛出一个<b>没有解释原因的难题</b>（通识教育难以达成共识）⟹ 下一段以 <span class="loc">One reason why…such courses</span> 接住。<span class="mk">本段内部是「双重转折」：However（客观没落 ⟷ 主观期许）、But（想改革 ⟷ 改不动）。</span></div>
+        </div>
+
+        <div class="para">
+          <div class="pname"><span class="qn">③ ＝ D（42）</span>原因：通识课违背了「文理与专业分家」的老规矩<button class="zbtn" onclick="tz(this)">译</button></div>
+          <p class="en"><span class="clue">One reason why it is hard to design and teach such courses is that they <span class="tk" data-w="cutacross">cut across</span> the <span class="tk" data-w="insistence">insistence</span> by top American universities that <span class="tk" data-w="liberalarts">liberal-arts education</span> and professional education should be <span class="tk" data-w="keptseparate">kept separate</span>, taught in different schools.</span> Many students experience both <span class="tk" data-w="varieties">varieties</span>. Although more than half of Harvard undergraduates <span class="tk" data-w="endupin">end up in</span> law, medicine or business, future doctors and lawyers must study a <span class="tk" data-w="nonspecialist">non-specialist</span> liberal-arts degree before <span class="tk" data-w="embarkon">embarking on</span> a professional <span class="tk" data-w="qualification">qualification</span>.</p>
+          <div class="zh">这类课程难以设计和讲授，原因之一是它们违背了美国顶尖大学一贯坚持的原则：人文教育与专业教育应该保持分离，在不同的学院讲授。很多学生其实两种教育都经历过。尽管超过半数的哈佛本科生最终进入法律、医学或商界，但这些未来的医生和律师在攻读专业资格之前，必须先修一个非专业的人文学科学位。</div>
+          <div class="box" style="margin-top:8px"><span class="bt">🔗 接缝 D → E（全篇最硬）</span><span class="loc">kept <b>separate</b></span>（形容词）⟹ 下一段 <span class="loc">by this <b>separation</b></span>（名词）。<b>同源词换词性 ＋ 指示代词，两把钩叠在一起。</b></div>
+        </div>
+
+        <div class="para">
+          <div class="pname"><span class="qn">④ ＝ E（已给定 · 第 4 段）</span>升级：这种分离，把教授本身也专业化了<button class="zbtn" onclick="tz(this)">译</button></div>
+          <p class="en"><span class="clue">Besides <span class="tk" data-w="professionalise">professionalising</span> the professions by this separation, top American universities have professionalised the professor.</span> The growth in public money for academic research has <span class="tk" data-w="speeded">speeded</span> the process: <span class="tk" data-w="federal">federal</span> research <span class="tk" data-w="grant">grants</span> rose <span class="tk" data-w="fourfold">fourfold</span> between 1960 and 1990, but <span class="tk" data-w="faculty">faculty</span> teaching hours fell by half as research <span class="tk" data-w="tooktoll">took its toll</span>. Professionalism has turned the <span class="tk" data-w="acquisition">acquisition</span> of a doctoral degree into a <span class="tk" data-w="prerequisite">prerequisite</span> for a successful academic career: <span class="tk" data-w="aslateas">as late as</span> 1969 a third of American professors did not possess one. But the key idea behind professionalisation, <span class="tk" data-w="argues">argues</span> Mr Menand, is that "the knowledge and skills needed for a particular <span class="tk" data-w="specialisation">specialisation</span> are <span class="tk" data-w="transmissible">transmissible but not transferable</span>." <span class="clue">So disciplines acquire a <span class="tk" data-w="monopoly">monopoly</span> not just over the production of knowledge, but also over the production of the producers of knowledge.</span></p>
+          <div class="zh">通过这种分离，美国顶尖大学不仅使各专业更加专业化，而且还使教授也专业化了。用于学术研究的公共资金的增长加速了这一过程：1960 至 1990 年间，联邦科研经费增长了三倍（＝增至四倍），但教师的教学时间却因科研的挤占而减半。专业化使获得博士学位成为学术生涯成功的一个必要前提：直至 1969 年，仍有三分之一的美国教授没有博士学位。不过梅南德指出，专业化背后的关键思想是「从事某一特定专业所需的知识和技能，可以传授，但不可转用」。因此，各个学科不仅垄断了知识的生产，还垄断了知识生产者的培养。</div>
+          <div class="box" style="margin-top:8px"><span class="bt">🔗 接缝 E → A</span>末句谈的是<b>所有学科</b>（disciplines）的垄断 ⟹ 下一段用最高级句式挑出<b>最极端的那个学科</b>：<span class="loc"><b>No disciplines</b> … as much as the humanities</span>。<b>从总到分。</b></div>
+        </div>
+
+        <div class="para">
+          <div class="pname"><span class="qn">⑤ ＝ A（43）</span>聚焦：人文学科最热衷专业化，代价是九年与一半的退学率<button class="zbtn" onclick="tz(this)">译</button></div>
+          <p class="en"><span class="clue">No disciplines have <span class="tk" data-w="seizeon">seized on</span> professionalism with as much <span class="tk" data-w="enthusiasm">enthusiasm</span> as the humanities.</span> You can, Mr Menand <span class="tk" data-w="pointsout">points out</span>, become a lawyer in three years and a medical doctor in four. But the <span class="tk" data-w="regular">regular</span> time it takes to get a doctoral degree in the humanities is nine years. <span class="clue">Not surprisingly, up to half of all doctoral students in English <span class="tk" data-w="dropout">drop out</span> before getting their degrees.</span></p>
+          <div class="zh">没有哪个学科像人文学科那样热切地专注于专业化。梅南德指出，你可以在三年内成为一名律师、四年内成为一名医生；但攻读人文学科的博士学位通常要花九年时间。难怪多达半数的英语专业博士生还没拿到学位就退学了。</div>
+          <div class="box" style="margin-top:8px"><span class="bt">🔗 接缝 A → C（最显眼）</span><span class="loc">Not surprisingly</span> ＋ <span class="loc">up to <b>half</b>…drop out</span> ⟹ 下一段 <span class="loc"><b>Equally</b> unsurprisingly</span> ＋ <span class="loc">only about <b>half</b> end up…</span>。<b>副词呼应 ＋ 同一批人的数字接力，两段被粘死成一个块。</b></div>
+        </div>
+
+        <div class="para">
+          <div class="pname"><span class="qn">⑥ ＝ C（44）</span>后果：熬到毕业的那一半，也没有教职在等他们<button class="zbtn" onclick="tz(this)">译</button></div>
+          <p class="en"><span class="clue">Equally unsurprisingly, only about half end up with <span class="tk" data-w="professorship">professorships</span> for which they entered graduate school.</span> There are simply too few <span class="tk" data-w="post">posts</span>. This is <span class="tk" data-w="partlybecause">partly because</span> universities continue to produce <span class="tk" data-w="evermore">ever more</span> PhDs. But fewer students want to study humanities subjects: English departments <span class="tk" data-w="award">awarded</span> more bachelor's degrees in 1970–71 than they did 20 years later. Fewer students <span class="tk" data-w="require">require</span> fewer teachers. <span class="clue">So, at the end of a decade of <span class="tk" data-w="thesiswriting">thesis-writing</span>, many humanities students <span class="tk" data-w="leaveprofession">leave the profession</span> to do something for which they have not been <span class="tk" data-w="trained">trained</span>.</span></p>
+          <div class="zh">同样不足为奇的是，为了当上教授而进入研究生院的人当中，最终只有约一半真的获得了教授职位。（教授）职位实在太少了。部分原因在于大学不断培养出越来越多的博士，但愿意学人文学科的学生却在减少：英语系在 1970—1971 年授予的学士学位比 20 年后还多。学生少了，需要的教师也就少了。于是，在结束了长达十年的论文写作之后，许多人文学科的学生离开本行，去做一些自己从未受过训练的工作。</div>
+          <div class="box" style="margin-top:8px"><span class="bt">🔗 接缝 C → F</span>问题在此收口到最惨的一句（十年论文写完却改行）⟹ 下一段只能是<b>「那该怎么改」</b>：<span class="loc">The key to <b>reforming</b>…, <b>concludes</b> Mr Menand</span>。</div>
+        </div>
+
+        <div class="para">
+          <div class="pname"><span class="qn">⑦ ＝ F（45 · 末段）</span>建议与保留：该改培养方式，但怎么改他没说<button class="zbtn" onclick="tz(this)">译</button></div>
+          <p class="en"><span class="clue">The key to <span class="tk" data-w="reform">reforming</span> higher education, <span class="tk" data-w="concludes">concludes</span> Mr Menand, is to <span class="tk" data-w="alter">alter</span> the way in which "the producers of knowledge are produced."</span> <span class="tk" data-w="otherwise">Otherwise</span>, academics will continue to think dangerously <span class="tk" data-w="alike">alike</span>, increasingly <span class="tk" data-w="detached">detached from</span> the societies which they study, <span class="tk" data-w="investigate">investigate</span> and criticise. "Academic <span class="tk" data-w="inquiry">inquiry</span>, at least in some fields, may need to become less <span class="tk" data-w="exclusionary">exclusionary</span> and more <span class="tk" data-w="holistic">holistic</span>." <span class="clue">Yet <span class="tk" data-w="quitehow">quite how</span> that happens, Mr Menand does not say.</span></p>
+          <div class="zh">梅南德总结道，改革高等教育的关键在于改变「知识生产者的培养方式」。否则，大学教师的思维将继续危险地趋同，与他们所研究、调查和批判的社会日益脱节。「学术探究，至少在某些领域，可能需要少一些排外性、多一些整体性。」然而这究竟该如何实现，梅南德先生并未言明。</div>
+          <div class="box" style="margin-top:8px"><span class="bt">🏁 末段的两个标记</span><span class="loc">concludes</span>（总结）＋ <span class="loc">does not say</span>（指出所评之书的未尽之处）。<b>书评就这么收尾</b>——先给建议，再留一句「作者也没答上来」。</div>
+        </div>
+
+        <div class="box green">
+          <span class="bt">🧩 通读后的骨架（一句话记住这篇文章）</span>
+          <b>荐书（G）→ 他关心正在没落的人文（B）→ 想办通识却办不成，因为文理与专业分了家（D）→ 分家还顺带把教授也专业化了，学科垄断了「学者的生产」（E）→ 人文学科在这条路上跑得最远：读九年、一半退学（A）→ 熬出来的一半也没教职，改行（C）→ 该改的是「怎么培养知识生产者」，但怎么改，作者没说（F）。</b>
+          <br><span class="mk">七段其实是一条<b>因果链</b>：分家 → 专业化 → 学科垄断 → 人文最卷 → 出路断绝 → 呼吁改革。<b>排序题排的从来不是「话题相近」，而是这条链。</b></span>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">04</span>Part B 分诊：四种变体 ＋ 排序题内部的两种形态</h2>
+        <p style="font-size:.92rem">2007 标题匹配 · 2022 观点匹配 · 2008／2009 选句填空 · 2010／<b>2011</b> 排序题 —— 六篇做完，<a href="套路库_阅读.html#R32">R32</a>「开考先认变体」要再加一层：<b>认完变体，还要认形态。</b></p>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:680px">
+          <tr><th style="width:13%">变体</th><th style="width:24%">Directions 里的认领词</th><th style="width:26%">第一步做什么</th><th>战绩</th></tr>
+          <tr><td><b>标题匹配</b><br>2007</td><td><code>choose the most suitable <b>heading</b></code></td><td>看七个标题的<b>共同句式</b>，推出每段在写什么</td><td>5/5</td></tr>
+          <tr><td><b>观点匹配</b><br>2022</td><td><code>match each <b>person</b> with his/her statement</code></td><td>给每个人贴<b>立场标签</b></td><td>5/5</td></tr>
+          <tr class="bad"><td><b>选句填空</b><br>2008 · 2009</td><td><code>some <b>segments</b> have been removed</code></td><td>给每个空<b>定形态</b>（段首／段中／段末）</td><td>5/5 · <b>3/5</b></td></tr>
+          <tr><td><b>排序题</b><br>2010 · <b>2011</b></td><td><code>reorganize … into a coherent text … <b>numbered boxes</b></code></td><td><b>数格子</b> ⟹ 判有没有多余项；再从<b>已给定段的邻居</b>下手</td><td>5/5 · <b>5/5</b></td></tr>
+        </table>
+        </div>
+        <h3 class="sh">排序题的两种形态（同一变体，打法不同）</h3>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:620px">
+          <tr><th style="width:16%">形态</th><th style="width:24%">怎么认</th><th>打法差异</th></tr>
+          <tr><td><b>有多余项</b><br>2010</td><td><b>格子数 &lt; 选项数</b><br>（6 格 7 项）</td><td>末步是<b>验多余项</b>：把剩下的那项逐个接缝试，装不进去才算收工。<b>最后一格不能靠排除，必须有正向证据。</b></td></tr>
+          <tr><td><b>零多余项</b><br><b>2011</b></td><td><b>格子数 ＝ 选项数</b><br>（7 格 7 项）</td><td>末格<b>白送</b>；但没有多余项可验，<b>只能靠整链通读</b>，且<b>一处错必然连累第二处</b>（错位成对发生）。</td></tr>
+        </table>
+        </div>
+        <div class="box">
+          <span class="bt">🔀 排序题 vs 选句填空：手感差在哪</span>
+          <b>选句填空</b>是「把句子塞回句子中间」——读<b>空格前后那两句</b>，判据是指代距离、唯一词、时态；
+          <b>排序题</b>是「把段落串成链」——只读<b>每段的头和尾</b>，判据是段首路标与段尾预告。
+          <br><span class="mk">最大的共同点：<b>都能自查</b>。这在四种变体里是独一份的红利——2009 那次 3/5 就是没把通读做完（43↔44 对调，通读本该读出来）。</span>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">05</span>长难句精析（6 句 · 本篇黄皮书无此栏目，全部原创）</h2>
+
+        <div class="ls" id="s1">
+          <div class="s"><b>s1｜D 段①句（本篇头号难句 · 四层嵌套）</b>　<b>One reason</b> <span class="mk">why it is hard to design and teach such courses</span> <b>is</b> <span class="mk2">that they cut across the insistence by top American universities</span> <span class="mk3">that liberal-arts education and professional education should be kept separate</span>, <span class="mk">taught in different schools</span>.</div>
+          <div class="an">
+            <div>▸ <b>主干只有三个词</b>：<b>One reason … is that …</b>（主 ＋ 系 ＋ 表语从句）。</div>
+            <div>▸ <span class="mk">why…courses</span> 是<b>定语从句修饰 reason</b>（reason 后面接 why 是固定用法，别当疑问句读）。</div>
+            <div>▸ <span class="mk3">that liberal-arts…separate</span> 是 <b>the insistence 的同位语从句</b>——<span class="mk">名词 insistence / idea / belief / fact 后面的 that 从句一律是同位语，用来说明「坚持的<u>内容</u>是什么」</span>。⚠️ 它前面隔着 <b>by top American universities</b>，很容易被误读成定语从句的宾语。</div>
+            <div>▸ 末尾 <span class="mk">taught in different schools</span> 是<b>过去分词作定语</b>，补充说明 kept separate 的具体做法。</div>
+            <div>▸ 熟词僻义：<b>cut across ＝ 违背、与……相抵触</b>（不是「穿过」）。<span class="mk">这是本篇最贵的一个词——读成「贯穿」，整句的因果关系就反了。</span></div>
+          </div>
+          <div class="tr">译：这类课程之所以难以设计和讲授，原因之一在于它们<b>违背</b>了美国顶尖大学一贯坚持的主张：人文教育与专业教育应当彼此分离、在不同的学院讲授。</div>
+        </div>
+
+        <div class="ls" id="s2">
+          <div class="s"><b>s2｜E 段④句（插入语劈开主谓 ＋ 引号内后置定语）</b>　But the key idea behind professionalisation, <span class="mk3">argues Mr Menand</span>, <b>is that</b> "the knowledge and skills <span class="mk">needed for a particular specialisation</span> <b>are</b> transmissible but not transferable."</div>
+          <div class="an">
+            <div>▸ <span class="mk3">argues Mr Menand</span> 是<b>插入语</b>，且用了<b>倒装</b>（动词在前、主语在后）。<span class="mk">英语新闻体里 <b>says / notes / argues / concludes ＋ 人名</b> 的倒装插入语极常见，读时直接括起来跳过。</span></div>
+            <div>▸ 引号内：主语 <b>the knowledge and skills</b>，<span class="mk">needed for…</span> 是<b>过去分词后置定语</b>（＝ that are needed for…），真正的谓语是 <b>are transmissible but not transferable</b>。</div>
+            <div>▸ ⭐ <b>本篇论点的核心一对</b>：<b>transmissible</b>（可传授——能教给下一代学生）<b>but not transferable</b>（不可转用——带不到别的学科去）。<span class="mk">同一个词根 trans- 造出两个只差后缀的反义概念，正是「学科壁垒」的精确表达。</span></div>
+          </div>
+          <div class="tr">译：但梅南德认为，专业化背后的关键理念在于：「从事某一特定专业所需的知识与技能，<b>可以传授，却无法转用</b>。」</div>
+        </div>
+
+        <div class="ls" id="s3">
+          <div class="s"><b>s3｜E 段⑤句（not just over A, but also over B）</b>　So disciplines acquire a monopoly <span class="mk">not just over</span> the production of knowledge, <span class="mk">but also over</span> the production of <b>the producers of knowledge</b>.</div>
+          <div class="an">
+            <div>▸ <b>not just … but also …</b> 并列的是<b>两个介词短语</b>（over A / over B），不是两个句子。<span class="mk2">介词 over 重复出现，是判断并列成分边界的路标。</span></div>
+            <div>▸ ⭐ <b>the production of the producers of knowledge</b> ＝ 「知识生产者的生产」＝ <b>培养学者的那套机制（博士教育）</b>。<span class="mk">这个绕口的说法是全文的题眼——末段 F 把它加引号原样搬了过去（<span class="loc">"the producers of knowledge are produced"</span>）。</span></div>
+            <div>▸ ⚠️ 但正因为它太醒目，<b>它不能用来定位 F 的位置</b>——E 与 F 之间隔着 A、C 两段（见 02++）。</div>
+          </div>
+          <div class="tr">译：于是，各学科不仅垄断了知识的生产，<b>还垄断了「知识生产者」的生产</b>。</div>
+        </div>
+
+        <div class="ls" id="s4">
+          <div class="s"><b>s4｜B 段③句（want sb to do ＋ 双层定语）</b>　However, many leading American universities <b>want their undergraduates to have</b> a grounding in <span class="mk">the basic canon of ideas</span> <span class="mk2">that every educated person should possess</span>.</div>
+          <div class="an">
+            <div>▸ <span class="mk2">that…possess</span> 是<b>定语从句</b>，修饰的是 <span class="mk">the basic canon of ideas</span> 整体（不是只修饰 ideas）。</div>
+            <div>▸ 熟词僻义：<b>canon ＝ 经典著作总集</b>（⚠️ 不是 cannon 大炮）；<b>a grounding in ＝ 对……的基本功／基本认知</b>。</div>
+            <div>▸ <b>However 在这里管的是段内转折</b>：上一句说人文学科没落（客观），本句说名校仍希望学生读经典（主观期许）——<span class="mk">两句一对比，才逼出下一句的 But（想做却做不成）。<b>一段之内两次转折，是本段的骨架。</b></span></div>
+          </div>
+          <div class="tr">译：然而，许多美国名校仍希望本科生具备一种基本功——<b>对每一位受过教育的人都应掌握的那套基本思想经典有所认知</b>。</div>
+        </div>
+
+        <div class="ls" id="s5">
+          <div class="s"><b>s5｜F 段②句（Otherwise ＋ 分词状语 ＋ 三动词共用一个 which）</b>　<span class="mk">Otherwise</span>, academics will continue to think dangerously <b>alike</b>, <span class="mk2">increasingly detached from</span> the societies <span class="mk3">which they study, investigate and criticise</span>.</div>
+          <div class="an">
+            <div>▸ <span class="mk">Otherwise</span> ＝ <b>反向假设「如果不这么改的话」</b>，它本身就证明上一句是个<b>建议</b>。<span class="mk">见到 Otherwise，先回头确认前一句是不是「该做什么」——这是判断段落功能最省事的一个标记。</span></div>
+            <div>▸ <span class="mk2">increasingly detached from…</span> 是<b>过去分词短语作状语</b>，与 think dangerously alike 并列描述 academics 的状态。</div>
+            <div>▸ <span class="mk3">which they study, investigate and criticise</span>：<b>三个动词共用一个关系代词 which</b>，先行词是 the societies。<span class="mk2">⚠️ 读到第三个动词时容易忘了宾语是谁——「他们所研究、调查、批判的<u>那个社会</u>」，而学者恰恰在脱离它，这是全句的讽刺所在。</span></div>
+            <div>▸ <b>alike 在这里是副词</b>（think alike ＝ 想法趋同），不是形容词「相似的」。<b>dangerously alike ＝ 危险地趋同</b>。</div>
+          </div>
+          <div class="tr">译：<b>否则</b>，学者们将继续危险地趋同思考，与他们所研究、调查和批判的那个社会<b>日益脱节</b>。</div>
+        </div>
+
+        <div class="ls" id="s6">
+          <div class="s"><b>s6｜C 段①句（省略 ＋ 介词提前的定语从句）</b>　Equally unsurprisingly, only about <b>half</b> <span class="mk3">［of them］</span> end up with professorships <span class="mk">for which</span> they entered graduate school.</div>
+          <div class="an">
+            <div>▸ ⭐ <b>half 后面省掉了中心词</b>（of the doctoral students who did finish）。<span class="mk2">这正是排序题第Ⅲ类段首路标「省略成分」——<b>它没有任何长得像连接词的词，却死死拴在上文</b>：不知道是「谁的一半」，这句话就读不成立。</span></div>
+            <div>▸ <span class="mk">for which they entered graduate school</span> ＝ they entered graduate school <b>for</b> the professorships（<b>介词提到关系代词之前</b>）。译作「他们当初正是<b>为了</b>这些教职才读研的」。</div>
+            <div>▸ <b>end up with ＝ 最终得到</b>（⟷ 上一段的 <b>drop out</b> 中途退出）。<span class="mk">同一批人，两个结局动词，正好构成 A→C 的数字接力。</span></div>
+          </div>
+          <div class="tr">译：同样不足为奇的是，（读完的人里）<b>只有约一半</b>最终得到了教授职位——<b>而他们当初正是为了这个才进研究生院的</b>。</div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">06</span>可搬进作文的素材（本篇是「教育 / 学历 / 就业」三个话题的现成弹药库）</h2>
+        <div class="wb">
+          <div class="wbi"><div class="p">Universities continue to produce ever more PhDs, but there are simply too few posts.</div><div class="u">大学不断培养出越来越多的博士，而职位实在太少。—— <b>论学历贬值与供需错配，本篇最好用的一组</b></div></div>
+          <div class="wbi"><div class="p">At the end of a decade of study, many students leave the profession to do something for which they have not been trained.</div><div class="u">十年寒窗之后，许多学生离开本行，去做自己从未受过训练的工作。—— <b>论「所学非所用」</b></div></div>
+          <div class="wbi"><div class="p">These are disciplines that are going out of style.</div><div class="u">这些学科正在变得不再吃香。—— <b>论冷门专业的处境，可直接接一句反问</b></div></div>
+          <div class="wbi"><div class="p">Every educated person should have a grounding in the basic canon of ideas.</div><div class="u">每个受过教育的人都应对基本思想经典有所认知。—— <b>论通识教育／经典阅读的价值</b></div></div>
+          <div class="wbi"><div class="p">The great books are read because they have been read—they form a sort of social glue.</div><div class="u">经典之所以被读，是因为它们一直被读——它们构成了一种社会黏合剂。—— <b>论文化认同，句式漂亮，可仿写</b></div></div>
+          <div class="wbi"><div class="p">The knowledge and skills needed for a particular specialisation are transmissible but not transferable.</div><div class="u">某一专业所需的知识与技能可以传授，却无法转用。—— <b>论专业壁垒／通才与专才之争</b></div></div>
+          <div class="wbi"><div class="p">Academics think dangerously alike, increasingly detached from the societies which they study.</div><div class="u">学者们的思维危险地趋同，与他们所研究的社会日益脱节。—— <b>论学术脱离实际／象牙塔</b></div></div>
+          <div class="wbi"><div class="p">Academic inquiry may need to become less exclusionary and more holistic.</div><div class="u">学术探究或许需要少一些排外、多一些整体视野。—— <b>论跨学科，可直接做大作文结尾的建议句</b></div></div>
+        </div>
+        <div class="box green">
+          <span class="bt">✍️ 一个可迁移的写作结构（本篇全文的骨架）</span>
+          <b>某种做法（专业化）→ 它带来的连锁后果（教师减课、学位成为门槛、学科垄断）→ 最极端的受害者（人文学科）→ 数字佐证（九年、两个一半）→ 提出改革方向 ＋ 承认自己也没有答案。</b>
+          <span class="mk">最后那半句「承认没有完美答案」在议论文结尾非常好用——比空喊口号真诚得多。</span>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">07</span>词汇复盘（点卡片看详情 · 共 <span id="vcount"></span> 张，含 <b>14 处熟词僻义</b>）</h2>
+        <p style="font-size:.8rem;color:var(--muted);margin-bottom:12px">⭐ 本篇熟词僻义的共同规律：<b>考的全是「学界／教育语境里的第二义项」</b>——cut across 违背 · discipline 学科 · faculty 教师 · post 职位 · canon 经典 · glue 黏合剂 · award 授予学位 · varieties 类型 · subtle 精辟 · capture 描绘 · take its toll 造成损耗 · seize on 热衷 · alike 副词趋同 · notes 指出。<b>与 2010 那篇「商业语境第二义项」同构：不是生词，是熟词换了行当。</b></p>
+        <div id="vgrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px"></div>
+      </section>
+
+      <footer>2011 英语（一）Part B · 知识与人才的专业化困境 ｜ 答案 41B 42D 43A 44C 45F（<b>零多余项</b>）· 全文顺序 G—B—D—E—A—C—F ｜ ✅ Claude 盲做 5/5 ｜ 本页解析为 Claude 盲做后独立撰写，与黄皮书精讲交叉核对，<b>未发现书误</b></footer>
+    </main>
+
+    <aside>
+      <div id="panel"><div class="hint">&#128070; 点正文里的<b>黄色高亮词</b>，或下方词汇卡，这里出详解<br><br>选中任意英文可弹出「查词」按钮</div></div>
+    </aside>
+  </div>
+</div>
+<button id="yd">&#128269; 有道查词</button>
+
+<script>
+const OPTS = {
+  A:["No disciplines have seized on professionalism with as much enthusiasm as the humanities. You can, Mr Menand points out, become a lawyer in three years and a medical doctor in four. But the regular time it takes to get a doctoral degree in the humanities is nine years. Not surprisingly, up to half of all doctoral students in English drop out before getting their degrees.",
+     "没有哪个学科像人文学科那样热切地专注于专业化。梅南德指出，你可以在三年内成为一名律师、四年内成为一名医生；但攻读人文学科的博士学位通常要花九年时间。难怪多达半数的英语专业博士生还没拿到学位就退学了。",
+     "头：<b>No disciplines … as much as the humanities</b> —— 最高级比较，<b>上文必须已在谈「专业化」这件事</b>｜尾：<b>Not surprisingly ＋ up to half … drop out</b>（一个态度 ＋ 一个数字，两个接口）",
+     "⟹ 归位 43（紧跟已给定的 E）· 从「所有学科」收到「最极端的人文学科」"],
+  B:["His concern is mainly with the humanities: literature, languages, philosophy and so on. These are disciplines that are going out of style: 22% of American college graduates now major in business compared with only 2% in history and 4% in English. However, many leading American universities want their undergraduates to have a grounding in the basic canon of ideas that every educated person should possess. But most find it difficult to agree on what a “general education” should look like. At Harvard, Mr Menand notes, “the great books are read because they have been read”—they form a sort of social glue.",
+     "他主要关注的是人文学科：文学、语言、哲学等。这些学科越来越不受欢迎：如今 22% 的美国大学毕业生主修商学，相比之下只有 2% 主修历史、4% 主修英语。然而，很多美国一流大学都希望本科生对「每一位受过教育的人都应具备的基本思想经典」有基本的认知。但多数学校很难就「通识教育」该是什么样子达成共识。梅南德指出，在哈佛，「之所以要读经典著作，是因为这些著作一直以来都被人阅读」——它们成了一种社会黏合剂。",
+     "头：<b>His concern</b> —— <b>人称代词，先行词必须在紧邻的上一句</b>（全篇只有 G 末句供得起）｜尾：抛出一个<b>没解释原因的难题</b>（通识教育难达成共识）",
+     "⟹ 归位 41（紧跟已给定的首段 G）· 代词紧邻回指，一秒锁死"],
+  C:["Equally unsurprisingly, only about half end up with professorships for which they entered graduate school. There are simply too few posts. This is partly because universities continue to produce ever more PhDs. But fewer students want to study humanities subjects: English departments awarded more bachelor’s degrees in 1970–71 than they did 20 years later. Fewer students require fewer teachers. So, at the end of a decade of thesis-writing, many humanities students leave the profession to do something for which they have not been trained.",
+     "同样不足为奇的是，为了当上教授而进入研究生院的人当中，最终只有约一半真的获得了教授职位。（教授）职位实在太少了。部分原因在于大学不断培养出越来越多的博士，但愿意学人文学科的学生却在减少：英语系在 1970—1971 年授予的学士学位比 20 年后还多。学生少了，需要的教师也就少了。于是，在结束了长达十年的论文写作之后，许多人文学科的学生离开本行，去做一些自己从未受过训练的工作。",
+     "头：<b>Equally unsurprisingly</b>（副词呼应，要求上文刚说过一次「不足为奇」）＋ <b>only about half</b>（<b>省略中心词</b>：一半的谁？）｜尾：困境收口到最惨的一句（十年论文写完却改行）",
+     "⟹ 归位 44（与 A 粘成不可拆的一块）· 副词呼应 ＋ 数字接力"],
+  D:["One reason why it is hard to design and teach such courses is that they cut across the insistence by top American universities that liberal-arts education and professional education should be kept separate, taught in different schools. Many students experience both varieties. Although more than half of Harvard undergraduates end up in law, medicine or business, future doctors and lawyers must study a non-specialist liberal-arts degree before embarking on a professional qualification.",
+     "这类课程难以设计和讲授，原因之一是它们违背了美国顶尖大学一贯坚持的原则：人文教育与专业教育应该保持分离，在不同的学院讲授。很多学生其实两种教育都经历过。尽管超过半数的哈佛本科生最终进入法律、医学或商界，但这些未来的医生和律师在攻读专业资格之前，必须先修一个非专业的人文学科学位。",
+     "头：<b>One reason why … such courses</b> —— 概括名词回指 ＋「结果→原因」，接的是上文那个没解释的难题｜尾：<b>kept separate</b>（分离）—— 正好供出已给定段 E 的 <b>this separation</b>",
+     "⟹ 归位 42（被已给定的 E 夹在下方）· <b>本篇的支点：上下两端都有硬钩</b>"],
+  E:["Besides professionalising the professions by this separation, top American universities have professionalised the professor. The growth in public money for academic research has speeded the process: federal research grants rose fourfold between 1960 and 1990, but faculty teaching hours fell by half as research took its toll. Professionalism has turned the acquisition of a doctoral degree into a prerequisite for a successful academic career: as late as 1969 a third of American professors did not possess one. But the key idea behind professionalisation, argues Mr Menand, is that “the knowledge and skills needed for a particular specialisation are transmissible but not transferable.” So disciplines acquire a monopoly not just over the production of knowledge, but also over the production of the producers of knowledge.",
+     "通过这种分离，美国顶尖大学不仅使各专业更加专业化，而且还使教授也专业化了。用于学术研究的公共资金的增长加速了这一过程：1960 至 1990 年间，联邦科研经费增长了三倍（＝增至四倍），但教师的教学时间却因科研的挤占而减半。专业化使获得博士学位成为学术生涯成功的一个必要前提：直至 1969 年，仍有三分之一的美国教授没有博士学位。不过梅南德指出，专业化背后的关键思想是「从事某一特定专业所需的知识和技能，可以传授，但不可转用」。因此，各个学科不仅垄断了知识的生产，还垄断了知识生产者的培养。",
+     "头：<b>by this separation</b> —— 指示代词 ＋ 同源词，指向上文的 kept separate｜尾：<b>disciplines acquire a monopoly</b>（所有学科）＋ 题眼短语 the producers of knowledge",
+     "⟹ <b>题目已固定为第 4 格</b>· 它同时是 42 与 43 两格的判据来源"],
+  F:["The key to reforming higher education, concludes Mr Menand, is to alter the way in which “the producers of knowledge are produced.” Otherwise, academics will continue to think dangerously alike, increasingly detached from the societies which they study, investigate and criticise. “Academic inquiry, at least in some fields, may need to become less exclusionary and more holistic.” Yet quite how that happens, Mr Menand does not say.",
+     "梅南德总结道，改革高等教育的关键在于改变「知识生产者的培养方式」。否则，大学教师的思维将继续危险地趋同，与他们所研究、调查和批判的社会日益脱节。「学术探究，至少在某些领域，可能需要少一些排外性、多一些整体性。」然而这究竟该如何实现，梅南德先生并未言明。",
+     "头：<b>The key to reforming …, concludes Mr Menand</b> —— 给方案，且带总结标志词｜尾：<b>Mr Menand does not say</b>（指出所评之书的未尽之处）＝ <b>书评的标准收尾</b>",
+     "⟹ 归位 45（末段）· 两个末段标记 ＋ 零多余项下的排除法收口"],
+  G:["The subtle and intelligent little book The Marketplace of Ideas: Reform and Resistance in the American University should be read by every student thinking of applying to take a doctoral degree. They may then decide to go elsewhere. For something curious has been happening in American universities, and Louis Menand, a professor of English at Harvard University, captured it skillfully.",
+     "每位正在考虑申请博士学位的学生，都应该读一读《观念的市场：美国大学的改革与阻力》这本精辟而睿智的小书。读完之后，他们可能会决定另谋出路。因为美国的大学里一直在发生某些奇怪的事情，而哈佛大学的英语教授路易斯·梅南德巧妙地描绘了这一现象。",
+     "头：<b>零路标</b>（七项里唯一一个不需要上文的段首）｜尾：第一次点出<b>人名</b>，并留下悬念 <b>something curious</b>（怪事是什么？）",
+     "⟹ <b>题目已固定为首段</b>· 它把「本文是书评」这个信息直接送给了你"],
+};
+
+const EXTRA = [];
+
+const V = {
+  subtle:{w:"subtle",ipa:"/ˈsʌtl/",pos:"adj.",tags:["poly","core","write"],cn:"（见解）精辟的、敏锐的；（差别）细微的",en:"showing a delicate and clever understanding; not obvious",ex:"The subtle and intelligent little book … should be read by every student",mem:"⚠️ <b>b 不发音</b>。中文常译「微妙的」，但修饰<b>书、论证、观察</b>时是褒义的<b>「精辟、有洞察力」</b>——这里与 intelligent 并列，褒义已经写在脸上。",syn:"perceptive · penetrating · nuanced",conf:"subtle（精辟／细微）≠ subtitle（字幕）；<b>a subtle difference</b> 细微差别 vs <b>a subtle mind</b> 敏锐的头脑"},
+  thinkingof:{w:"think of doing",ipa:"/θɪŋk/",pos:"phr.",tags:["phrase","write"],cn:"考虑做某事，打算做某事",en:"to consider doing something",ex:"every student thinking of applying to take a doctoral degree",mem:"<b>think of ＋ 动名词</b>＝正在考虑；本句里 thinking of… 是<b>现在分词作后置定语</b>修饰 student（＝ who is thinking of…）。",syn:"consider doing · contemplate doing",conf:"think of doing（考虑做）≠ think about sth（思考某事）≠ <b>think much of sb</b>（看得起某人）"},
+  doctoral:{w:"doctoral degree",ipa:"/ˈdɒktərəl/",pos:"n.",tags:["core","write"],cn:"博士学位",en:"the highest university degree",ex:"every student thinking of applying to take a doctoral degree",mem:"doctor（博士）＋ -al。<b>本篇的三级学位词一次考全</b>：bachelor’s（学士）· master’s（硕士）· doctoral／PhD（博士）。",syn:"PhD · doctorate",conf:"doctoral degree（学位）vs <b>doctorate</b>（同义名词）vs doctor（医生／博士，本篇 medical doctor 是医生）"},
+  goelsewhere:{w:"go elsewhere",ipa:"/ˌelsˈweə/",pos:"phr.",tags:["phrase","write"],cn:"另谋出路，去别处",en:"to go to a different place instead",ex:"They may then decide to go elsewhere.",mem:"<b>本篇最含蓄的一句评价</b>：读完这本书，你可能就不读博了。<span class=mk>书评里「劝退」不明说，用 go elsewhere 一笔带过。</span>",syn:"look elsewhere · take another path",conf:"elsewhere 是<b>副词</b>，前面不加介词（说 go elsewhere，不说 go to elsewhere）"},
+  curious:{w:"curious",ipa:"/ˈkjʊəriəs/",pos:"adj.",tags:["core","write"],cn:"（此处）奇怪的，蹊跷的；好奇的",en:"strange or unusual",ex:"For something curious has been happening in American universities",mem:"两个义项看<b>修饰谁</b>：修饰<b>人</b>＝好奇的（a curious child）；修饰<b>事</b>＝奇怪的（a curious thing）。<b>本句修饰 something ⟹ 奇怪。</b>",syn:"odd · peculiar · strange",conf:"⚠️ 句首的 <b>For</b> 在这里是<b>并列连词「因为」</b>（书面语），不是介词——这是本段唯一的语法陷阱"},
+  captured:{w:"capture",ipa:"/ˈkæptʃə/",pos:"v.",tags:["poly","core","write"],cn:"（准确地）描绘、刻画、抓住（本质）",en:"to succeed in showing or describing something accurately",ex:"Louis Menand … captured it skillfully",mem:"熟义「俘获、捕捉」；<b>宾语是抽象事物（现象、气氛、精神）时＝「精准地写出／画出」</b>。<b>capture the essence／mood／spirit</b> 是写作高频搭配。",syn:"depict · portray · convey",conf:"capture（描绘出来）vs grasp（自己理解了）—— <b>capture 一定要有作品，grasp 只在脑子里</b>"},
+  discipline:{w:"discipline",ipa:"/ˈdɪsəplɪn/",pos:"n.",tags:["poly","core","write"],cn:"（此处）学科，专业领域",en:"an area of knowledge or study, e.g. history or physics",ex:"No disciplines have seized on professionalism … / These are disciplines that are going out of style",mem:"⚠️ <b>本篇的主线名词，出现 4 次，一次「纪律」都不是。</b>判据：与 humanities／subject／field 并列或互指时，一律是<b>学科</b>。",syn:"field · subject · branch of study",conf:"discipline 纪律（school discipline）／学科（academic discipline）／训练（self-discipline）—— <b>看有没有定语 academic／humanities</b>"},
+  outofstyle:{w:"go out of style",ipa:"/staɪl/",pos:"phr.",tags:["phrase","write"],cn:"过时，不再吃香",en:"to stop being popular or fashionable",ex:"These are disciplines that are going out of style",mem:"style 本义「时尚」⟹ 走出时尚 ＝ 过时。<b>写「冷门专业／传统行业衰落」的现成短语。</b>反过来 <b>come into style</b> ＝ 开始流行。",syn:"fall out of favour · become unfashionable",conf:"go out of style（不再流行）≠ out of place（不合时宜）≠ out of order（坏了）"},
+  majorin:{w:"major in",ipa:"/ˈmeɪdʒə/",pos:"v.",tags:["phrase","write"],cn:"主修（某专业）",en:"to study something as your main subject at university",ex:"22% of American college graduates now major in business",mem:"<b>major in ＋ 专业</b>（主修）／ <b>minor in</b>（辅修）。<span class=mk>本句的数字对比是全篇唯一一处「趋势数据」：商学 22% vs 历史 2%、英语 4%。</span>",syn:"specialise in · take … as one’s major",conf:"major 作形容词＝主要的（a major reason）；作名词＝专业／专业学生；作动词必须带 <b>in</b>"},
+  grounding:{w:"a grounding in",ipa:"/ˈɡraʊndɪŋ/",pos:"n.",tags:["core","write"],cn:"（对某领域的）基本功、基础认知",en:"basic knowledge of a subject",ex:"want their undergraduates to have a grounding in the basic canon of ideas",mem:"ground（地基）＋ -ing ⟹ <b>打地基</b>。固定搭配 <b>have／give sb a (good／solid) grounding in sth</b>，写「基础教育／通识教育」必备。",syn:"foundation · basic training",conf:"grounding（基础知识）≠ background（背景经历）≠ ground（理由，on the ground that…）"},
+  canon:{w:"canon",ipa:"/ˈkænən/",pos:"n.",tags:["poly","core"],cn:"经典著作总集；（学科的）正典",en:"the group of literary works that are generally accepted as the most important",ex:"a grounding in the basic canon of ideas that every educated person should possess",mem:"⚠️ <b>一个 n</b>。原指教会认定的正典经文 ⟹ 引申为「公认必读的经典」。<b>the literary canon ＝ 文学经典书目。</b>",syn:"the classics · the great books",conf:"⚠️ <b>canon</b>（经典）vs <b>cannon</b>（大炮，两个 n）—— 拼写只差一个字母，词义天差地别"},
+  possess:{w:"possess",ipa:"/pəˈzes/",pos:"v.",tags:["core","write"],cn:"拥有，具备",en:"to have or own something",ex:"ideas that every educated person should possess / a third of American professors did not possess one",mem:"<b>本篇出现两次</b>：一次宾语是「思想」（应当具备），一次宾语是「博士学位」（尚未拥有）。<b>possess 比 have 正式，写作里替换 have 的首选。</b>",syn:"own · hold · be in possession of",conf:"possess（拥有，静态，无进行时）vs obtain／acquire（获得，动态过程）"},
+  notes:{w:"note",ipa:"/nəʊt/",pos:"v.",tags:["poly","write"],cn:"（此处动词）指出，特别提到",en:"to mention something because it is important",ex:"At Harvard, Mr Menand notes, “the great books are read because they have been read”",mem:"⚠️ 熟义是名词「笔记」。<b>本篇引述动词考了四个，语气各不相同</b>：<b>points out</b>（指出事实）· <b>notes</b>（顺带提到）· <b>argues</b>（主张，含立场）· <b>concludes</b>（总结，<u>标志末段</u>）。",syn:"observe · remark · point out",conf:"note（中性提到）vs argue（有立场的主张）vs conclude（收尾性的断言）—— <b>排序题里 concludes 的位置价值最高</b>"},
+  glue:{w:"social glue",ipa:"/ɡluː/",pos:"n.",tags:["poly","write"],cn:"社会黏合剂（比喻）",en:"something that holds a society together",ex:"they form a sort of social glue",mem:"⚠️ 熟义「胶水」。<b>a sort of ＋ 比喻名词</b> 是英语给比喻打的预告标签，见到就知道后面这个词<u>不能按字面译</u>。<b>写「文化认同／共同记忆」可直接搬。</b>",syn:"bond · cement · common ground",conf:"social glue（黏合作用）vs social fabric（社会结构）—— 前者强调「把人黏住」，后者强调「织成一张网」"},
+  cutacross:{w:"cut across",ipa:"/kʌt/",pos:"v.",tags:["poly","phrase","write"],cn:"（此处）违背，与……相抵触",en:"to go against or conflict with something",ex:"they cut across the insistence by top American universities that …",mem:"⭐ <b>本篇最贵的一个短语。</b>字面「横切过去」⟹ 与既定的线<b>拧着来</b>。<span class=mk>读成「贯穿」，整句因果就反了：课程不是「贯穿」了名校的主张，而是<b>撞上并违背</b>了它。</span>另有一义「超越（界限）」：an issue that cuts across party lines。",syn:"go against · run counter to · conflict with",conf:"cut across（违背／超越界限）vs cut through（穿过／砍断）vs cut down（削减）"},
+  insistence:{w:"insistence",ipa:"/ɪnˈsɪstəns/",pos:"n.",tags:["core","write"],cn:"坚持（的主张）",en:"the act of demanding or saying something firmly",ex:"the insistence by top American universities that … should be kept separate",mem:"insist（坚持）的名词。⚠️ <b>后面的 that 从句是同位语从句</b>（说明「坚持的内容」），且从句谓语用<b>虚拟语气 should ＋ 动词原形</b>——insist／demand／suggest 一族的固定用法。",syn:"demand · assertion",conf:"insistence on sth（坚持某事）· insistence that … should do（坚持应当……）；<b>别把 that 从句读成定语从句</b>"},
+  liberalarts:{w:"liberal-arts education",ipa:"/ˈlɪbərəl ɑːts/",pos:"n.",tags:["core","write"],cn:"人文（博雅）教育，通识教育",en:"education in subjects such as literature, history and philosophy rather than in a profession",ex:"liberal-arts education and professional education should be kept separate",mem:"liberal 本义「自由的」⟹ 古希腊「自由人应受的教育」。<b>本篇的核心对立</b>：liberal-arts（通才）⟷ professional（专才）。",syn:"the humanities · general education",conf:"⚠️ 与政治上的 liberal（自由派）无关；<b>liberal arts ＝ 文理博雅，不是「艺术」</b>"},
+  keptseparate:{w:"keep sth separate",ipa:"/ˈseprət/",pos:"phr.",tags:["phrase","core"],cn:"使……保持分离／彼此分开",en:"to make sure two things do not mix",ex:"should be kept separate, taught in different schools",mem:"⭐ <b>本篇最硬的一处解题证据</b>：形容词 <b>separate</b> 在 D 段末尾，名词 <b>separation</b> 在 E 段开头 —— <b>同源词换词性 ＋ this，两把钩叠在一起。</b>",syn:"keep apart · segregate",conf:"separate 形容词读 /ˈseprət/、动词读 /ˈsepəreɪt/；<b>separation</b>（分离）≠ <b>separatism</b>（分离主义）"},
+  varieties:{w:"varieties",ipa:"/vəˈraɪətiz/",pos:"n.",tags:["poly","core"],cn:"（此处）（两种）类型、类别",en:"different types of the same thing",ex:"Many students experience both varieties.",mem:"⚠️ 熟义「多样性／品种」。<b>此处 both varieties ＝ 上一句刚说的两种教育</b>（通识 ＋ 专业）—— <b>它自己就是一个回指词</b>，读到它必须能立刻指出「哪两种」。",syn:"types · kinds · categories",conf:"a variety of（各种各样的，后接复数）vs varieties（可数的「种类」）vs variation（差异／变体）"},
+  endupin:{w:"end up in／with",ipa:"/end/",pos:"phr.",tags:["phrase","write"],cn:"最终进入……；最终得到……",en:"to finally be in a particular situation or place",ex:"more than half of Harvard undergraduates end up in law, medicine or business",mem:"<b>本篇出现两次，都在讲「结局」</b>：end up <b>in</b> 三大行业（D 段）／ end up <b>with</b> professorships（C 段）。<b>end up 后面接的永远是没打算好的、或与预期不同的结果。</b>",syn:"wind up · finish up",conf:"end up in ＋ 领域／地点 · end up with ＋ 得到的东西 · end up doing ＋ 最终做了某事"},
+  nonspecialist:{w:"non-specialist",ipa:"/ˌnɒn ˈspeʃəlɪst/",pos:"adj.",tags:["core"],cn:"非专业的，面向普通人的",en:"not limited to one particular subject or profession",ex:"must study a non-specialist liberal-arts degree",mem:"non- ＋ specialist。<b>本篇的构词一族</b>：special → specialist → specialisation → non-specialist，四个词全出现过。",syn:"general · broad-based",conf:"non-specialist（非专业的，中性）≠ unprofessional（不专业的，贬义）"},
+  embarkon:{w:"embark on",ipa:"/ɪmˈbɑːk/",pos:"v.",tags:["phrase","write"],cn:"着手，开始（重要或长期的事）",en:"to start something new, important or difficult",ex:"before embarking on a professional qualification",mem:"bark 是「小船」⟹ 上船启航 ⟹ <b>开始一段长征</b>。<b>宾语必须是「大事」</b>：embark on a career／journey／reform。<b>写作里替换 begin 的高分词。</b>",syn:"set out on · launch into · undertake",conf:"embark on（开始一件大事）vs start（泛用）；<b>embark 后必须有 on／upon</b>"},
+  qualification:{w:"qualification",ipa:"/ˌkwɒlɪfɪˈkeɪʃn/",pos:"n.",tags:["core","write"],cn:"（专业）资格，学历证书",en:"an official record showing that you have finished a training course",ex:"before embarking on a professional qualification",mem:"qualify（使合格）＋ -ation。⚠️ 英式英语里指<b>学历／资格证</b>（academic qualifications ＝ 学历）；另有一义「限定条件」（accept with qualification 有保留地接受）。",syn:"credential · certificate",conf:"qualification（资格证书）vs quality（品质）vs qualified（合格的，adj.）"},
+  professionalise:{w:"professionalise",ipa:"/prəˈfeʃənəlaɪz/",pos:"v.",tags:["core","write"],cn:"使专业化／职业化",en:"to make an activity into a profession requiring formal training",ex:"Besides professionalising the professions by this separation … have professionalised the professor",mem:"⭐ <b>本篇的题眼动词</b>，一句之内用了两次，宾语一次是 the professions（各行各业）、一次是 the professor（教授本人）——<b>「连培养人的人也被专业化了」是全文论点的转折点。</b>英式拼写 -ise，美式 -ize。",syn:"formalise · institutionalise",conf:"professionalism（专业化现象／专业精神）· professionalisation（专业化过程）· professional（专业的）—— <b>本篇三个形态全出现</b>"},
+  speeded:{w:"speed the process",ipa:"/spiːd/",pos:"v.",tags:["phrase","write"],cn:"加快这一进程",en:"to make something happen faster",ex:"The growth in public money for academic research has speeded the process",mem:"<b>speed up ／ speed the process ／ accelerate</b> 三选一，写「加速」类因果句必备。⚠️ 及物用法过去式可写 speeded（英式）或 sped（多用于「疾驰」）。",syn:"accelerate · hasten · speed up",conf:"speed（加快）vs spread（传播）—— 拼写只差一个 r，考场手写要分清"},
+  federal:{w:"federal",ipa:"/ˈfedərəl/",pos:"adj.",tags:["core"],cn:"联邦（政府）的",en:"relating to the central government of a country like the USA",ex:"federal research grants rose fourfold between 1960 and 1990",mem:"美国语境里 <b>federal ＝ 联邦（中央）政府的</b>，与 state（州的）相对。<b>federal funding／grants／government</b> 是读美国题材文章的高频组合。",syn:"national · central",conf:"federal（联邦的）vs national（全国的）vs state（州的）—— 在美国文章里三者层级不同，不可混译"},
+  grant:{w:"grant",ipa:"/ɡrɑːnt/",pos:"n./v.",tags:["core","write"],cn:"（名）拨款、助学金；（动）授予、准予",en:"an amount of money given for a particular purpose, especially research",ex:"federal research grants rose fourfold",mem:"<b>research grant ＝ 科研经费</b>（本篇义）。动词义在 2008 真题里考过（grant freedom 给予自由）；另有 <b>take sth for granted</b>（视为理所当然）这个高频短语。",syn:"funding · subsidy · award (n.)",conf:"grant（拨款，多为科研／助学）vs loan（贷款，要还）vs scholarship（奖学金，按成绩）"},
+  fourfold:{w:"fourfold",ipa:"/ˈfɔːfəʊld/",pos:"adv./adj.",tags:["core"],cn:"四倍地（＝增至四倍）",en:"four times as much or as many",ex:"federal research grants rose fourfold between 1960 and 1990",mem:"⚠️ <b>倍数陷阱</b>：<b>rise fourfold ＝ 增至四倍 ＝ 增长了三倍</b>。同族：twofold／threefold／tenfold。<span class=mk>数字题里「增长了 N 倍」与「增长到 N 倍」差一倍，中文一定要写清楚。</span>",syn:"quadruple · four times",conf:"rise fourfold（增至 4 倍）vs rise by 400%（增至 5 倍）—— <b>by 后面跟的是增量</b>"},
+  faculty:{w:"faculty",ipa:"/ˈfæklti/",pos:"n.",tags:["poly","core"],cn:"（此处）全体教师（集合名词）",en:"all the teachers in a university or college",ex:"faculty teaching hours fell by half as research took its toll",mem:"⚠️ <b>三个义项按语境切</b>：① 全体教师（美式，本篇义，<b>faculty teaching hours ＝ 教师的教学课时</b>）② 院系（the Faculty of Law）③ 能力、官能（the faculty of speech）。",syn:"teaching staff · academic staff",conf:"faculty（美式：全体教师／英式：院系）vs department（系）vs staff（全体职员，含行政）"},
+  tooktoll:{w:"take its toll",ipa:"/təʊl/",pos:"phr.",tags:["poly","phrase","write"],cn:"造成损耗／带来负面影响（常指长期消耗）",en:"to have a bad effect on something over a period of time",ex:"faculty teaching hours fell by half as research took its toll",mem:"toll 本义「过路费」⟹ <b>凡事都要付代价</b>。<b>take a heavy toll on sth</b> ＝ 对……造成沉重打击。<span class=mk>本句的 as 是「随着／由于」，整句因果＝科研挤占了教学。</span>",syn:"take a heavy toll on · eat into",conf:"take its toll（造成损耗）≠ toll（伤亡人数，death toll）≠ tow（拖车）"},
+  acquisition:{w:"acquisition",ipa:"/ˌækwɪˈzɪʃn/",pos:"n.",tags:["core","write"],cn:"获得，取得（过程）",en:"the act of getting something, especially knowledge or a skill",ex:"turned the acquisition of a doctoral degree into a prerequisite",mem:"acquire（获得）的名词。<b>language acquisition ＝ 语言习得</b>，是这个词最常见的学术搭配。<b>turn A into B ＝ 把 A 变成 B</b>，是本句的主干句型。",syn:"obtaining · attainment",conf:"acquisition（获得的过程／收购）vs requisition（征用）vs inquisition（审讯）—— 三个词只差词头"},
+  prerequisite:{w:"prerequisite",ipa:"/ˌpriːˈrekwəzɪt/",pos:"n.",tags:["core","write"],cn:"（必备的）先决条件，前提",en:"something that must exist or happen before something else is possible",ex:"a prerequisite for a successful academic career",mem:"pre-（预先）＋ requisite（必需之物）。<b>固定搭配 a prerequisite for／of sth</b>。<span class=mk>写「必要条件」时比 condition 精确得多，是议论文高分词。</span>",syn:"precondition · requirement",conf:"prerequisite（先决条件，必须先有）vs requirement（要求，泛指）vs perquisite（额外津贴，＝perk）"},
+  aslateas:{w:"as late as",ipa:"/leɪt/",pos:"phr.",tags:["phrase","write"],cn:"迟至……（还／仍然）",en:"used to emphasise that something happened surprisingly recently",ex:"as late as 1969 a third of American professors did not possess one",mem:"⭐ <b>这是一个带态度的时间状语</b>：它在说「都到了 1969 年，居然还……」。<b>对应的另一头是 as early as</b>（早在……就）。<span class=mk>见到它就知道作者在表示惊讶，考「作者态度」时是现成的证据。</span>",syn:"even in · not until as recently as",conf:"as late as（迟至，惊讶）vs at the latest（最迟，期限）vs lately（最近，副词）"},
+  argues:{w:"argue",ipa:"/ˈɑːɡjuː/",pos:"v.",tags:["core","write"],cn:"（此处）主张，认为（并给出理由）",en:"to state your opinion and give reasons for it",ex:"the key idea behind professionalisation, argues Mr Menand, is that …",mem:"⚠️ 不是「吵架」。<b>argue that ＋ 从句 ＝ 主张……</b>，是学术写作最常用的引述动词，<b>比 think／believe 更有分量</b>（含「有论据」之意）。本句用了<b>倒装插入语</b>（动词在前、主语在后）。",syn:"contend · maintain · hold",conf:"argue with sb（与人争论）· argue about sth（争论某事）· <b>argue that…（主张）</b>—— 三种搭配三种意思"},
+  specialisation:{w:"specialisation",ipa:"/ˌspeʃəlaɪˈzeɪʃn/",pos:"n.",tags:["core","write"],cn:"专业化；专业领域",en:"the process of becoming an expert in one particular subject",ex:"the knowledge and skills needed for a particular specialisation",mem:"<b>本篇的构词家族</b>：special → specialist → specialise → specialisation ⟷ 反面的 non-specialist。<b>写「分工细化」类作文可整族搬用。</b>",syn:"expertise · field of expertise",conf:"specialisation（专业化／专攻领域）vs speciality（特长、特产）vs specialty（美式拼写）"},
+  transmissible:{w:"transmissible but not transferable",ipa:"/trænzˈmɪsəbl/",pos:"adj.",tags:["core","write"],cn:"可传授、但不可转用",en:"able to be passed on to others, but not able to be moved to another field",ex:"the knowledge and skills … are transmissible but not transferable",mem:"⭐⭐ <b>全文论点的核心一对，也是最漂亮的一处措辞</b>：同一个词根 trans-，<b>-missible</b>（可传下去，师传徒）＋ <b>-ferable</b>（可搬过去，换个学科用）。<span class=mk>正因为「传得下去、搬不出去」，学科才形成垄断。</span>",syn:"teachable but not portable",conf:"transmissible（可传播／传授，也用于疾病）vs transferable（可转让／可迁移，transferable skills ＝ 可迁移技能）"},
+  monopoly:{w:"monopoly",ipa:"/məˈnɒpəli/",pos:"n.",tags:["core","write"],cn:"垄断（权）",en:"complete control of the supply of something",ex:"disciplines acquire a monopoly not just over the production of knowledge",mem:"mono-（单一）＋ poly（卖）。<b>固定搭配 a monopoly over／on sth</b>。<span class=mk>本句用 not just over A but also over B，把垄断从「知识」推到「生产知识的人」，是全文最狠的一句。</span>",syn:"exclusive control · domination",conf:"monopoly（独家垄断）vs oligopoly（寡头垄断）vs monotony（单调乏味）"},
+  seizeon:{w:"seize on／upon",ipa:"/siːz/",pos:"v.",tags:["poly","phrase","write"],cn:"热衷于，一把抓住（并大加利用）",en:"to take eager advantage of something; to become very interested in it",ex:"No disciplines have seized on professionalism with as much enthusiasm as the humanities",mem:"⚠️ 熟义只是「抓住」。<b>seize on ＋ 抽象名词 ＝ 抓住不放、热切采纳</b>，常带「过分投入」的意味——<span class=mk>本句正是讽刺：人文学科在专业化上跑得比谁都快，结果把自己坑了。</span>",syn:"latch onto · embrace eagerly",conf:"seize on（热衷于某想法）vs seize（夺取，seize power）vs cease（停止，读音相同 /siːs/ 与 /siːz/ 仅清浊之别）"},
+  enthusiasm:{w:"with as much enthusiasm as",ipa:"/ɪnˈθjuːziæzəm/",pos:"n.",tags:["core","write"],cn:"像……一样热切地",en:"with the same eagerness as",ex:"seized on professionalism with as much enthusiasm as the humanities",mem:"<b>句型才是重点</b>：<b>No X … as much as Y ＝ 没有谁比 Y 更……＝ Y 是最……的</b>（否定 ＋ 比较 ＝ 最高级）。<span class=mk>排序题里这个句式是<u>路标</u>：它要求上文已经把「比较的那件事」（专业化）说过了。</span>",syn:"eagerness · zeal · fervour",conf:"enthusiasm for sth（对某事的热情）· enthusiastic about（形容词搭配 about）"},
+  pointsout:{w:"point out",ipa:"/pɔɪnt/",pos:"v.",tags:["phrase","write"],cn:"指出（事实）",en:"to tell someone a fact they had not noticed",ex:"You can, Mr Menand points out, become a lawyer in three years",mem:"<b>插入语位置很刁</b>：它被塞在 You can 和 become 之间，把情态动词和实义动词劈开。<span class=mk>遇到 <b>主语 ＋ 情态动词 ,插入语, ＋ 动词原形</b> 的结构，先把插入语括掉再读。</span>",syn:"note · observe · remark",conf:"point out（指出事实，中性）vs point to（指向、表明趋势）vs argue（有立场的主张）"},
+  regular:{w:"the regular time",ipa:"/ˈreɡjələ/",pos:"adj.",tags:["core"],cn:"通常的，正常情况下的",en:"usual or normal",ex:"the regular time it takes to get a doctoral degree in the humanities is nine years",mem:"此处 ＝ <b>通常／标准情形下</b>（不是「有规律的」）。<b>句型 the time it takes to do sth</b>＝做某事所需的时间（it takes… 是省略了 that 的定语从句）。",syn:"usual · standard · normal",conf:"regular（通常的／定期的）vs regulate（管制）vs rigorous（严格的）"},
+  dropout:{w:"drop out",ipa:"/drɒp/",pos:"v.",tags:["phrase","write"],cn:"中途退学，半途退出",en:"to leave a school or course before finishing it",ex:"up to half of all doctoral students in English drop out before getting their degrees",mem:"<b>drop out（动词）／ dropout（名词：辍学者）／ dropout rate（辍学率）</b>。<span class=mk>与下一段的 <b>end up with</b>（最终得到）构成本篇的「结局动词对」：一半人退学，剩下的一半也没等到教职。</span>",syn:"quit · withdraw",conf:"drop out of school（辍学）vs drop by（顺道拜访）vs drop off（下降／送某人）"},
+  professorship:{w:"professorship",ipa:"/prəˈfesəʃɪp/",pos:"n.",tags:["core"],cn:"教授职位（教职）",en:"the position or job of a professor",ex:"only about half end up with professorships for which they entered graduate school",mem:"professor ＋ <b>-ship（职位／身份）</b>。同族构词：membership（会员身份）· leadership（领导地位）· apprenticeship（学徒期）。",syn:"academic post · faculty position",conf:"professorship（职位）vs professionalism（专业化）—— 本篇两个词长得像，别看串行"},
+  post:{w:"post",ipa:"/pəʊst/",pos:"n.",tags:["poly","core"],cn:"（此处）职位，岗位",en:"a job, especially an important one in an organisation",ex:"There are simply too few posts.",mem:"⚠️ 熟义「邮寄／帖子／柱子」。<b>英式英语里 post ＝ 职位</b>（＝ position），常见搭配 <b>hold a post</b>（担任职务）· <b>apply for a post</b>。<span class=mk>本句 simply ＝ 简直、实在（加强语气），不是「简单地」。</span>",syn:"position · vacancy · job",conf:"post（职位／邮寄）· postpone（推迟）· <b>simply</b>（实在＝加强语气 vs 简单地）"},
+  partlybecause:{w:"partly because",ipa:"/ˈpɑːtli/",pos:"phr.",tags:["phrase","write"],cn:"部分原因在于",en:"one of several reasons is that",ex:"This is partly because universities continue to produce ever more PhDs.",mem:"⭐ <b>它是一个「还有下文」的信号</b>：既然是「部分原因」，后面必然还有别的原因——本段紧接着就用 <b>But</b> 给出了第二条（学生变少）。<span class=mk>写作里用 partly because … and partly because … 显得论证周全。</span>",syn:"in part because · one reason is that",conf:"partly because（部分原因）vs mainly because（主要因为）vs <b>in part</b>（部分地，2008 真题考过）"},
+  evermore:{w:"ever more",ipa:"/ˈevə/",pos:"adv.",tags:["write"],cn:"越来越多的，不断增加的",en:"continually increasing",ex:"universities continue to produce ever more PhDs",mem:"<b>ever ＋ 比较级 ＝ 越来越……</b>（ever more／ever larger／ever-growing）。<span class=mk>写「持续增长」时比 more and more 简洁高级，且可直接作定语：an ever-growing number of…</span>",syn:"increasingly · more and more",conf:"ever more（越来越多）vs evermore（永远，一个词）vs whatever more（无此说法）"},
+  award:{w:"award",ipa:"/əˈwɔːd/",pos:"v.",tags:["poly","core"],cn:"（此处）授予（学位、奖项）",en:"to officially give someone a degree or prize",ex:"English departments awarded more bachelor’s degrees in 1970–71 than they did 20 years later",mem:"⚠️ 熟义是名词「奖项」。<b>award sb sth ／ award sth to sb</b>＝正式授予。<span class=mk>本句藏着一个比较陷阱：<b>1970–71 授予的比 20 年后还多</b> ⟹ 人文学科在<u>萎缩</u>，不是增长。</span>",syn:"confer · grant · bestow",conf:"award（授予，多指正式表彰）vs reward（酬劳，回报付出）vs rewarding（有益的、值得的）"},
+  require:{w:"require",ipa:"/rɪˈkwaɪə/",pos:"v.",tags:["core","write"],cn:"需要（≠ 要求）",en:"to need something",ex:"Fewer students require fewer teachers.",mem:"⚠️ <b>此处等于 need</b>，不是「要求」。<span class=mk>整句只有四个词却是一条完整因果：<b>学生少了 ⟹ 需要的老师也少了</b>。这种「比较级主语 ＋ 比较级宾语」的极简句是本篇的文风特点。</span>",syn:"need · call for · demand",conf:"require sth（需要）· require sb to do（要求某人做）· <b>requirement</b>（要求／必备条件）"},
+  thesiswriting:{w:"thesis-writing",ipa:"/ˈθiːsɪs/",pos:"n.",tags:["core"],cn:"（学位）论文写作",en:"the work of writing a long piece of academic research",ex:"at the end of a decade of thesis-writing",mem:"⚠️ <b>复数是 theses /ˈθiːsiːz/</b>（不规则）。<b>a decade of thesis-writing ＝ 十年论文</b>——与前文「九年学位 ＋ 一半退学」构成本篇最刺眼的时间账。",syn:"dissertation · doctoral research",conf:"thesis（论文／论点）vs hypothesis（假设）vs synthesis（综合）—— 三个词同源不同义"},
+  leaveprofession:{w:"leave the profession",ipa:"/prəˈfeʃn/",pos:"phr.",tags:["phrase","write"],cn:"离开本行，改行",en:"to stop working in the field one was trained for",ex:"many humanities students leave the profession to do something for which they have not been trained",mem:"⭐ <b>本篇最好用的作文素材句</b>：读十年，最后去做<b>没受过训练的工作</b>（for which they have not been trained ＝ 介词提前的定语从句）。<span class=mk>论「所学非所用」「学历与就业错配」直接搬。</span>",syn:"change careers · quit the field",conf:"the profession（本行／行业）vs a profession（一种职业）vs professor（教授）"},
+  trained:{w:"be trained for／in",ipa:"/treɪnd/",pos:"v.",tags:["phrase","write"],cn:"受过（某方面的）训练",en:"to have been taught the skills for a particular job",ex:"to do something for which they have not been trained",mem:"<b>for which ＝ they have not been trained <u>for</u> it</b>（介词提到关系代词前）。<span class=mk>这个结构在本篇出现了<b>两次</b>：C 段首句的 professorships <b>for which</b> they entered graduate school，与本句——<b>同一段内前后呼应，正好写「当初为了什么、最后干了什么」的反差。</b></span>",syn:"be qualified for · be prepared for",conf:"be trained for a job（为某工作受训）vs be trained in a skill（在某技能上受训）"},
+  reform:{w:"reform",ipa:"/rɪˈfɔːm/",pos:"v./n.",tags:["core","write"],cn:"改革",en:"to improve a system by making changes to it",ex:"The key to reforming higher education … is to alter the way …",mem:"re-（重新）＋ form（形成）。<b>the key to ＋ 动名词</b>（to 是介词！）是本句主干，写建议段的万能开头：<b>The key to solving this problem lies in…</b>",syn:"overhaul · restructure",conf:"⚠️ <b>the key to doing</b>（to 是介词，后接动名词）vs the key to the door（钥匙）；reform（改革）vs conform（遵从）vs perform（表演）"},
+  concludes:{w:"conclude",ipa:"/kənˈkluːd/",pos:"v.",tags:["core","write"],cn:"总结说，得出结论",en:"to decide or say something after considering all the information",ex:"The key to reforming higher education, concludes Mr Menand, is to alter the way …",mem:"⭐ <b>排序题里价值最高的引述动词</b>：它自带「这是最后的话」的位置信息。<span class=mk>本篇四个引述动词的排序价值：points out ＜ notes ＜ argues ＜ <b>concludes（指向末段）</b>。</span>",syn:"sum up · wind up by saying",conf:"conclude（总结／缔结条约）vs include（包括）vs exclude（排除）· <b>in conclusion</b>（作文结尾语）"},
+  alter:{w:"alter",ipa:"/ˈɔːltə/",pos:"v.",tags:["core","write"],cn:"改变，改动",en:"to change something, usually slightly",ex:"is to alter the way in which “the producers of knowledge are produced”",mem:"<b>the way in which ＋ 从句 ＝ ……的方式</b>（也可写 the way that／the way，三种都对）。<span class=mk>alter 比 change 正式，且暗示「局部调整」而非推倒重来——与全文「改革而非革命」的调子一致。</span>",syn:"modify · adjust · amend",conf:"alter（改变）vs altar（祭坛，同音）vs alternative（替代方案）vs alternate（交替）"},
+  otherwise:{w:"otherwise",ipa:"/ˈʌðəwaɪz/",pos:"adv.",tags:["core","write"],cn:"否则，不然的话",en:"used to say what will happen if something is not done",ex:"Otherwise, academics will continue to think dangerously alike",mem:"⭐ <b>它是一个「反向假设」标记，能反证上一句是<u>建议</u></b>。<span class=mk>排序题里见到段中的 Otherwise，可以直接判定本段是「方案段」——本篇 F 正是靠这个坐实末段身份。</span>另有一义「在其他方面」（otherwise excellent 其他方面都很好）。",syn:"or else · if not · failing that",conf:"otherwise（否则）vs on the other hand（另一方面）vs nevertheless（尽管如此）—— 三者常被混用，逻辑方向完全不同"},
+  alike:{w:"alike",ipa:"/əˈlaɪk/",pos:"adv.",tags:["poly","core"],cn:"（此处副词）相似地，一个样",en:"in a similar way",ex:"academics will continue to think dangerously alike",mem:"⚠️ 熟义是形容词「相似的」（they look alike）。<b>此处修饰动词 think ⟹ 副词</b>：<b>think alike ＝ 想法趋同</b>。<span class=mk>dangerously alike ＝ 危险地趋同——两个词就把「学术圈近亲繁殖」写完了。</span>另有 <b>A and B alike</b>（A 和 B 都）这个用法。",syn:"similarly · in the same way",conf:"alike（副词／表语形容词，<b>不能作定语</b>：不说 alike ideas）vs similar（可作定语：similar ideas）vs likewise（同样地，句子副词）"},
+  detached:{w:"detached from",ipa:"/dɪˈtætʃt/",pos:"adj.",tags:["core","write"],cn:"脱离的，超然的",en:"not connected with or influenced by something",ex:"increasingly detached from the societies which they study",mem:"de-（去掉）＋ attach（附着）⟹ 拆下来。<b>本句是过去分词短语作状语</b>。<span class=mk>写「学术脱离实际／精英脱离群众」的现成短语：increasingly detached from…</span>",syn:"disconnected from · isolated from",conf:"detached（脱离的／冷静客观的，a detached view）vs attached to（依恋／附属于）vs detachment（超然／分遣队）"},
+  investigate:{w:"study, investigate and criticise",ipa:"/ɪnˈvestɪɡeɪt/",pos:"v.",tags:["write"],cn:"研究、调查并批判",en:"to examine something carefully in order to find out the truth",ex:"the societies which they study, investigate and criticise",mem:"⚠️ <b>三个动词共用一个关系代词 which</b>，先行词是 the societies。<span class=mk>读到第三个动词时最容易忘掉宾语是谁——<b>学者研究、调查、批判的正是他们正在脱离的那个社会</b>，全句的讽刺就在这里。</span>",syn:"examine · look into · probe",conf:"investigate（调查，中性／官方）vs inspect（检查）vs explore（探索）"},
+  inquiry:{w:"academic inquiry",ipa:"/ɪnˈkwaɪəri/",pos:"n.",tags:["core","write"],cn:"（学术）探究、研究",en:"the process of asking questions in order to gain knowledge",ex:"“Academic inquiry, at least in some fields, may need to become less exclusionary …”",mem:"英式 inquiry／美式 enquiry。<b>academic inquiry ＝ 学术探究</b>（不是「询问」）。<span class=mk>句中的 <b>at least in some fields</b> 是作者引用时保留的限定语——<b>学者说话留余地，这本身也是「他没给出答案」的伏笔。</b></span>",syn:"investigation · research · scholarly enquiry",conf:"inquiry（探究／质询）vs enquiry（询问，英式区分）vs acquire（获得，拼写相近）"},
+  exclusionary:{w:"exclusionary",ipa:"/ɪkˈskluːʒənəri/",pos:"adj.",tags:["core"],cn:"排外的，排斥他者的",en:"tending to keep others out",ex:"may need to become less exclusionary and more holistic",mem:"exclude（排除）→ exclusion → exclusionary。<b>与 holistic 构成本篇最后一组对立</b>：<b>less exclusionary（少一点画地为牢）＋ more holistic（多一点整体视野）＝ 呼吁跨学科。</b>",syn:"exclusive · insular · closed-off",conf:"exclusionary（排他的，贬义）vs exclusive（独家的／高档的，常为褒义）—— 后缀一变，褒贬就变"},
+  holistic:{w:"holistic",ipa:"/həʊˈlɪstɪk/",pos:"adj.",tags:["core","write"],cn:"整体的，全局的（考虑各部分之间的联系）",en:"considering the whole of something rather than just its parts",ex:"may need to become less exclusionary and more holistic",mem:"whole（整体）的同源词。<b>a holistic approach ＝ 整体性的方法</b>，是写「跨学科／系统思维」的高分词。<span class=mk>本篇结尾的建议句可整句搬进大作文。</span>",syn:"comprehensive · integrated · all-round",conf:"holistic（整体的）vs holy（神圣的）vs wholesome（有益健康的）—— 拼写相近词义无关"},
+  quitehow:{w:"quite how",ipa:"/kwaɪt/",pos:"phr.",tags:["phrase"],cn:"究竟如何（强调「具体怎么做」）",en:"exactly how",ex:"Yet quite how that happens, Mr Menand does not say.",mem:"⭐ <b>本句是全文最后一击，也是宾语前置</b>：正常语序＝ Mr Menand does not say quite how that happens。<span class=mk>把「究竟怎么实现」提到句首 ＝ 强调这正是作者没答上来的地方。<b>书评的收尾动作：先肯定，再点出未尽之处。</b></span>",syn:"exactly how · just how",conf:"quite how（究竟如何）vs quite a few（相当多）vs quite good（英式常为「还行」，美式偏「相当好」）"},
+};
+
+const lib=document.getElementById('optlib');
+lib.innerHTML=Object.keys(OPTS).map(k=>
+  '<div class="optitem'+(EXTRA.indexOf(k)>=0?' extra':'')+'" id="opt-'+k+'"><span class="lt">'+k+'</span><span>'
+  +'<span class="oen">'+OPTS[k][0]+'</span>'
+  +'<span class="zhx">'+OPTS[k][1]+'</span>'
+  +'<span class="kw">🔑 '+OPTS[k][2]+'</span>'
+  +'<span class="stg">'+OPTS[k][3]+'</span></span></div>').join('');
+
+/* 作答交互：答后就地把空格补全成原文 */
+document.querySelectorAll('.person').forEach(p=>{
+  const ans=p.dataset.ans; if(!ans)return;
+  const chips=p.querySelector('.chips');
+  chips.innerHTML='ABCDEFG'.split('').map(l=>'<button class="ch" data-l="'+l+'">'+l+'</button>').join('');
+  chips.querySelectorAll('.ch').forEach(c=>c.addEventListener('click',()=>{
+    if(p.classList.contains('done'))return;
+    p.classList.add('done');
+    if(c.dataset.l!==ans)c.classList.add('wrong');
+    chips.querySelector('.ch[data-l="'+ans+'"]').classList.add('right');
+    const oi=document.getElementById('opt-'+ans); if(oi)oi.classList.add('used');
+    const slot=p.querySelector('.slot');
+    if(slot){slot.classList.add('filled');slot.innerHTML='<span class="fl">['+ans+']</span>'+OPTS[ans][0];}
+  }));
+});
+
+const panel=document.getElementById('panel');
+const isMobile=()=>window.innerWidth<=900;
+function badge(t){return {core:'<span class="badge b-core">核心词</span>',phrase:'<span class="badge b-phrase">短语</span>',poly:'<span class="badge b-poly">熟词僻义</span>',write:'<span class="badge b-write">写作✍︎</span>'}[t]||''}
+function showCard(k,el){
+  const d=V[k]; if(!d)return;
+  document.querySelectorAll('.tk.active').forEach(e=>e.classList.remove('active'));
+  if(el&&el.classList.contains('tk'))el.classList.add('active');
+  panel.innerHTML='<button class="close" onclick="panel.classList.remove(\'open\')">✕</button>'
+  +'<div class="wcard">'
+  +'<div class="head"><span class="w">'+d.w+'</span><span class="ipa">'+d.ipa+'</span><span class="pos">'+d.pos+'</span>'+d.tags.map(badge).join('')+'</div>'
+  +'<div class="cn">'+d.cn+'</div><div class="en-def">'+d.en+'</div>'
+  +'<div class="row r-ex"><b>原文语境</b>“…'+d.ex+'…”</div>'
+  +'<div class="row r-mem"><b>怎么记</b>'+d.mem+'</div>'
+  +'<div class="row r-syn"><b>同类词</b>'+d.syn+'</div>'
+  +'<div class="row r-conf"><b>易混辨析</b>'+d.conf+'</div>'
+  +'</div>';
+  if(isMobile())panel.classList.add('open');
+}
+document.addEventListener('click',function(e){
+  const t=e.target.closest?e.target.closest('.tk'):null;
+  if(t){e.stopPropagation();showCard(t.dataset.w,t);}
+});
+function tz(btn){btn.closest('.person,.para').classList.toggle('showzh')}
+let allOn=false;
+function toggleAll(){allOn=!allOn;document.querySelectorAll('.person,.para').forEach(p=>p.classList.toggle('showzh',allOn))}
+
+const vg=document.getElementById('vgrid');
+Object.keys(V).forEach(k=>{
+  const d=V[k];
+  const div=document.createElement('div');div.className='vitem';
+  div.style.cssText='border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer';
+  div.innerHTML='<span style="float:right">'+d.tags.map(badge).join('')+'</span>'
+   +'<div style="font-family:var(--serif);font-weight:bold">'+d.w+'</div>'
+   +'<div style="font-size:.85rem;color:var(--muted)">'+d.cn+'</div>';
+  div.addEventListener('click',()=>{showCard(k,null);if(!isMobile())window.scrollTo({top:0,behavior:'smooth'})});
+  vg.appendChild(div);
+});
+document.getElementById('vcount').textContent=Object.keys(V).length;
+
+const yd=document.getElementById('yd');let sel='';
+document.addEventListener('selectionchange',()=>{
+  const s=window.getSelection();const t=s?s.toString().trim():'';
+  if(t&&/^[a-zA-Z' -]{2,40}$/.test(t)){
+    sel=t;
+    try{const r=s.getRangeAt(0).getBoundingClientRect();
+      yd.style.left=Math.min(r.left,window.innerWidth-110)+'px';
+      yd.style.top=(r.bottom+8)+'px';yd.style.display='block';}catch(e){}
+  }else{yd.style.display='none'}
+});
+yd.addEventListener('click',()=>{window.open('https://dict.youdao.com/result?word='+encodeURIComponent(sel)+'&lang=en');yd.style.display='none'});
+document.addEventListener('click',e=>{if(e.target!==yd&&!window.getSelection().toString())yd.style.display='none'});
+</script>
+
+<script src="_fault_attr.js"></script>
+</body>
+</html>

@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2011 英一 Text 3 · 五种媒介的家谱：干扰项的主力是术语串门</title>
+<style>
+  :root{
+    --bg:#faf9f6; --card:#ffffff; --ink:#2b2b2b; --muted:#8a8578;
+    --accent:#8b5e34; --accent-soft:#f3e9dd; --line:#e8e3d8;
+    --hl:#fdf3d8; --hl-border:#e0b84d;
+    --green:#3e7a4e; --green-soft:#e8f2ea;
+    --red:#b04a3a; --red-soft:#f9e9e6;
+    --blue:#3d6a8a; --blue-soft:#e7eff5;
+    --purple:#6d5a8e; --purple-soft:#eeeaf5;
+    --serif:"Georgia","Songti SC",serif;
+    --sans:-apple-system,"PingFang SC","Helvetica Neue",sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#1c1a17; --card:#26231f; --ink:#e8e4dc; --muted:#9a948a;
+      --accent:#d0a06a; --accent-soft:#3a3127; --line:#3a362f;
+      --hl:#3d3520; --hl-border:#b08c3a;
+      --green:#7fb98d; --green-soft:#26362b;
+      --red:#d98876; --red-soft:#3d2a26;
+      --blue:#8ab3d0; --blue-soft:#26323d;
+      --purple:#a996c8; --purple-soft:#302a3d;
+    }
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;padding-bottom:120px}
+  .wrap{max-width:1100px;margin:0 auto;padding:24px 20px}
+  .back{font-size:.85rem;color:var(--muted);text-decoration:none}
+  .back:hover{color:var(--accent)}
+  header{margin:14px 0 28px}
+  header h1{font-family:var(--serif);font-size:1.7rem;line-height:1.3}
+  header .sub{color:var(--muted);margin-top:6px;font-size:.9rem}
+  .tags{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+  .tag{font-size:.75rem;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);border:1px solid var(--line)}
+  .tag.warn{background:var(--red-soft);color:var(--red);border-color:var(--red)}
+  .tag.ok{background:var(--green-soft);color:var(--green);border-color:var(--green)}
+
+  .layout{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:24px;align-items:start}
+  main{min-width:0}
+  @media (max-width:900px){.layout{grid-template-columns:minmax(0,1fr)}}
+
+  section.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:24px}
+  h2{font-size:1.05rem;letter-spacing:.05em;color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+  h2 .n{font-size:.72rem;background:var(--accent);color:var(--card);border-radius:6px;padding:1px 7px}
+  h3{font-size:.95rem;color:var(--accent);margin:18px 0 10px}
+
+  .para{margin-bottom:22px}
+  .para .en{font-family:var(--serif);font-size:1.06rem;line-height:1.9}
+  .pno{color:var(--muted);font-size:.75rem;user-select:none;margin-right:6px}
+  .tk{background:var(--hl);border-bottom:2px solid var(--hl-border);border-radius:3px;padding:0 2px;cursor:pointer;transition:filter .15s}
+  .tk:hover{filter:brightness(.93)}
+  .tk.active{outline:2px solid var(--hl-border)}
+  .ls{border-bottom:2px dotted var(--blue);cursor:pointer}
+  .para .zh{display:none;margin-top:10px;padding:10px 14px;background:var(--blue-soft);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:.93rem}
+  .para.showzh .zh{display:block}
+  .zbtn{float:right;margin-left:10px;font-size:.72rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:6px;padding:2px 9px;cursor:pointer}
+  .zbtn:hover{color:var(--accent);border-color:var(--accent)}
+  .allbtn{font-size:.78rem;border:1px solid var(--accent);background:none;color:var(--accent);border-radius:8px;padding:4px 12px;cursor:pointer;margin-left:auto}
+
+  aside{position:sticky;top:20px}
+  #panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;min-height:180px}
+  #panel .hint{color:var(--muted);font-size:.88rem;text-align:center;padding:30px 10px}
+  .wcard .head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .wcard .w{font-family:var(--serif);font-size:1.35rem;font-weight:bold}
+  .wcard .ipa{color:var(--muted);font-size:.85rem}
+  .wcard .pos{font-size:.72rem;color:var(--purple);background:var(--purple-soft);padding:1px 8px;border-radius:999px}
+  .wcard .badge{font-size:.7rem;padding:1px 8px;border-radius:999px}
+  .b-core{background:var(--red-soft);color:var(--red)}
+  .b-phrase{background:var(--blue-soft);color:var(--blue)}
+  .b-poly{background:var(--purple-soft);color:var(--purple)}
+  .b-write{background:var(--green-soft);color:var(--green)}
+  .wcard .cn{margin-top:8px;font-size:1rem;font-weight:600}
+  .wcard .en-def{color:var(--muted);font-size:.86rem;font-style:italic;margin-top:2px}
+  .wcard .row{margin-top:10px;font-size:.86rem;padding:8px 10px;border-radius:8px}
+  .wcard .row>b:first-child{font-size:.72rem;display:block;margin-bottom:2px;letter-spacing:.06em}
+  .r-ex{background:var(--hl)} .r-ex b{color:var(--hl-border)}
+  .r-mem{background:var(--green-soft)} .r-mem b{color:var(--green)}
+  .r-syn{background:var(--blue-soft)} .r-syn b{color:var(--blue)}
+  .r-conf{background:var(--red-soft)} .r-conf b{color:var(--red)}
+  #panel .close{display:none}
+  @media (max-width:900px){
+    aside{position:fixed;left:0;right:0;bottom:0;z-index:50;padding:0 8px 8px}
+    #panel{box-shadow:0 -6px 24px rgba(0,0,0,.18);max-height:55vh;overflow-y:auto;display:none}
+    #panel.open{display:block}
+    #panel .close{display:block;float:right;border:none;background:var(--line);border-radius:8px;padding:2px 10px;cursor:pointer;color:var(--ink)}
+  }
+
+  .q{margin-bottom:22px;padding-bottom:18px;border-bottom:1px dashed var(--line)}
+  .q:last-child{border:none;margin-bottom:0;padding-bottom:0}
+  .q .stem{font-weight:600;font-family:var(--serif)}
+  .qt{font-size:.7rem;color:var(--blue);background:var(--blue-soft);border-radius:999px;padding:1px 8px;margin-right:6px;vertical-align:2px}
+  .opts{margin-top:10px;display:grid;gap:8px}
+  .opt{border:1px solid var(--line);border-radius:10px;padding:8px 12px;cursor:pointer;font-size:.93rem;font-family:var(--serif);transition:all .15s}
+  .opt:hover{border-color:var(--accent)}
+  .q.done .opt{cursor:default}
+  .opt.right{background:var(--green-soft);border-color:var(--green)}
+  .opt.wrong{background:var(--red-soft);border-color:var(--red)}
+  .expl{display:none;margin-top:12px;background:var(--accent-soft);border-radius:10px;padding:12px 14px;font-size:.9rem}
+  .q.done .expl{display:block}
+  .expl b{color:var(--accent)}
+  .expl .loc{font-family:var(--serif);font-style:italic;background:var(--hl);padding:1px 4px;border-radius:3px}
+  .fail{background:var(--red-soft);border:1px solid var(--red);border-radius:10px;padding:10px 13px;margin-bottom:10px;font-size:.89rem}
+  .fail b{color:var(--red)}
+  .waver{background:var(--hl);border:1px solid var(--hl-border);border-radius:10px;padding:10px 13px;margin-bottom:10px;font-size:.89rem}
+
+  .sent{margin-bottom:20px}
+  .sent .src{font-family:var(--serif);font-size:1rem;background:var(--blue-soft);padding:12px 14px;border-radius:10px;border-left:3px solid var(--blue)}
+  .sent .anat{margin-top:8px;font-size:.9rem}
+  .sent .anat li{margin:4px 0 4px 18px}
+  .sent .tr{margin-top:8px;font-size:.92rem;color:var(--muted)}
+  .skel{color:var(--red);font-weight:600}
+
+  .filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+  .fbtn{font-size:.8rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:999px;padding:4px 14px;cursor:pointer}
+  .fbtn.on{background:var(--accent);color:var(--card);border-color:var(--accent)}
+  .vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
+  .vitem{border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer;transition:border-color .15s}
+  .vitem:hover{border-color:var(--accent)}
+  .vitem .w{font-family:var(--serif);font-weight:bold}
+  .vitem .cn{font-size:.85rem;color:var(--muted)}
+  .vitem .badges{float:right}
+
+  .wb{display:grid;gap:10px}
+  .wbi{border-left:3px solid var(--green);background:var(--green-soft);border-radius:0 10px 10px 0;padding:10px 14px;font-size:.92rem}
+  .wbi .p{font-family:var(--serif);font-weight:600}
+  .wbi .u{color:var(--muted);font-size:.85rem}
+
+  .flow{display:grid;gap:8px;font-size:.92rem}
+  .flow .fi{border:1px solid var(--line);border-radius:10px;padding:9px 13px}
+  .flow .fi b{color:var(--accent)}
+
+  .ctab{width:100%;border-collapse:collapse;font-size:.86rem;margin-top:8px}
+  .ctab th,.ctab td{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
+  .ctab th{background:var(--accent-soft);color:var(--accent);font-size:.8rem;white-space:nowrap}
+  .ctab code{background:var(--hl);padding:0 3px;border-radius:3px}
+  .tabwrap{overflow-x:auto}
+  .ok{color:var(--green);font-weight:700}
+  .no{color:var(--red);font-weight:700}
+  .tl{display:grid;gap:10px;margin-top:6px}
+  .tli{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:start;border:1px solid var(--line);border-radius:10px;padding:10px 13px}
+  .tli .mark{font-family:var(--serif);font-weight:700;color:var(--accent);background:var(--accent-soft);border-radius:8px;padding:4px 10px;white-space:nowrap;font-size:.85rem}
+
+  .arrow{display:grid;gap:8px;margin-top:8px}
+  .arrow .ai{border:1px solid var(--line);border-radius:10px;padding:10px 13px;font-size:.9rem}
+  .arrow .ai.old{background:var(--red-soft);border-color:var(--red)}
+  .arrow .ai.new{background:var(--green-soft);border-color:var(--green)}
+  .chain{font-family:var(--serif);font-size:.95rem;background:var(--hl);border:1px solid var(--hl-border);border-radius:10px;padding:10px 14px;margin:8px 0;overflow-x:auto}
+
+  #yd{position:fixed;z-index:60;display:none;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:4px 12px;font-size:.8rem;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+  footer{color:var(--muted);font-size:.8rem;text-align:center;margin-top:30px}
+  .att{display:grid;gap:8px;margin-top:10px}
+  .atti{border:1px solid var(--line);border-radius:10px;padding:9px 13px;font-size:.9rem}
+  .atti b{font-family:var(--serif)}
+  .atti.no2{background:var(--red-soft);border-color:var(--red)}
+  .atti.yes{background:var(--green-soft);border-color:var(--green)}
+  .atti,.expl,.wbi,.zh,.fi,.ai,figcaption,p{overflow-wrap:anywhere}
+</style>
+
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">◀ 返回英语复盘中心</a>
+  <header>
+    <h1>五种媒介的家谱：<u>干扰项的主力是「术语串门」</u></h1>
+    <div class="sub">2011 年英语（一）真题 · Text 3 · 443 词 · 4 段 · 建议做题 18 min · 话题：营销传播已超越传统付费媒介，衍生出赢得／自有／售出／劫持四种新媒介（源自《麦肯锡季刊》<i>McKinsey Quarterly</i> 2010 年 11 月 1 日文章 <i>Beyond Paid Media: Marketing's New Vocabulary</i>）</div>
+    <div class="tags">
+      <span class="tag">正确答案：31D 32C 33B 34A 35A</span><span class="tag">题型：事实细节 + 事实概括 + 细节概括 + 例证目的 + 全文主旨</span><span class="tag ok">✅ Claude 盲做 <b>5/5</b> —— 2011 年连续第三篇满分</span><span class="tag">🆕 套路库 92→96 卡：R93 术语串门 / R94 定义句 vs 例证句 / R95 一体两面 / R96 应对≠利用</span><span class="tag">⭐ 熟词僻义清算表 57 行 · 长难句 10 句 · 词卡 76 张 · 作文素材 8 组</span>
+    </div>
+    <div class="atti" style="margin-top:14px;background:var(--blue-soft);border:1px solid var(--blue);border-radius:10px;padding:10px 14px;font-size:.88rem">
+      📖 <b>本页与原卷配合看</b>：原文在原卷 <b>p7</b>、题目在 <b>p8</b>（<code>按年份/2011/…图像保真版.pdf</code> 第 <b>8–9</b> 页），答案在第 <b>16</b> 页，黄皮书精讲在同一 PDF 的第 <b>45–51</b> 页（书页 p29–p35，<b>换算：输出 ＝ 书页 ＋ 16</b>）。本页第 01 节<b>逐段给出全部原文 ＋ 全段中译 ＋ 就地批注</b>，不必来回翻书。<br>
+      ⚠️ <b>黄皮书本篇仍然只有「总体分析＋考题速览＋英汉对译及试题精解」三块，没有长难句／词汇栏目</b> ⟹ <b>本页第 03、03+、04、05 四节 100% 原创，无官方文本可交叉参考</b>（<b>自 2010 T2 起已连续七篇如此</b>）。<br>
+      ✅ 五道题与十五个干扰项已与黄皮书精讲逐项交叉核对，<b>未发现书误</b>。
+    </div>
+    <div class="atti yes" style="margin-top:10px;font-size:.88rem">
+      🎯 <b>先说结果：本篇盲做 <u>5/5</u>（31D 32C 33B 34A 35A），2011 年连续第三篇满分。</b>但真正值钱的是——<b>这一篇是一种全新的文体，前面六年一次都没遇到过。</b><br>
+      ⭐⭐ <b>它是一篇「<u>造词文</u>」：全文从头到尾在干一件事——给五个新术语下定义。</b><code>paid media</code>（付费媒介）· <code>earned media</code>（赢得／口碑媒介）· <code>owned media</code>（自有媒介）· <code>sold media</code>（售出媒介）· <code>hijacked media</code>（劫持媒介）。<b>原标题 <i>Marketing's New Vocabulary</i>（营销的新词汇）已经把话挑明了。</b><br>
+      ⭐⭐ <b>而这五个术语最要命的性质是：<u>它们互相之间可以转化</u>。</b><b>甲的自有媒介 ＝ 乙的付费媒介（②❸）· 售出媒介 ＝ 访问量巨大的自有媒介（②❹）· 劫持媒介 ＝ 赢得媒介的反面（③❷）。</b><br>
+      ⟹ <b>由此长出本篇干扰项的主力工艺：<u>术语串门</u>——把<u>甲术语</u>的定义、载体或细节，安到<u>乙术语</u>头上。</b><b>15 个干扰项里有 5 个是这么造的</b>（31A · 31B · 33A · 33D · 35B）。<b>最干净的是 31B：<code>inspired by product-promoting e-mails</code>——那是「自有媒介」的定义原封不动搬来，而题干问的是「赢得媒介」。</b><br>
+      ⟹ <b>五秒动作：读完文章先在卷边画一张「术语关系表」（谁控制 / 怎么产生 / 跟哪个术语有血缘）。</b><b>画完，31、33、35 三题的一半干扰项自动出局。</b>（⟹ 新卡 <b>R93</b>，见第 <a href="#col1" style="color:var(--green);font-weight:700">02+ 节</a>）
+    </div>
+    <div class="atti" style="margin-top:10px;font-size:.88rem">
+      🎯 <b>第二件事：32 题拆出一条<u>可以直接迁移</u>的取材规则——问「某一类事物的特征」，答案只能取自<u>定义句</u>。</b><br>
+      ▸ ②段的结构是「<b>定义句（❹ We define such sold media as …）</b> → <b>趋势句（❺）</b> → <b>for example ＋ 一家公司（❻❼）</b>」。<b>正确项 C <code>strong user traffic</code> 来自定义句 ❹；而 A、B、D 三个干扰项<u>全部</u>从 <code>for example</code> 之后的 BabyCenter 个例里造。</b><br>
+      ⟹ <b>题干问 <code>sold media feature ______</code>（这一<u>类</u>媒介有什么特征），<u>一家公司的做法</u>再真实也不是<u>一类事物的特征</u>。</b><b>见到 <code>feature(s)</code> / <code>be characterized by</code> / <code>typical of</code>，先在卷边把定位段切成「定义区」和「例证区」，答案只准在定义区里找。</b>（⟹ 新卡 <b>R94</b>，见第 <a href="#col2" style="color:var(--green);font-weight:700">02++ 节</a>）<br>
+      📌 <b>这条与旧卡 R41 正好是一对镜像</b>：<b>R41 说「问<u>例子的目的</u>，答案不在例子里，在它服务的论点里」；R94 说「问<u>整类的特征</u>，答案也不在例子里，在定义句里」——<u>两头都不在例子里</u>。</b><b>例子在阅读题里几乎从不直接充当答案，它只负责当诱饵。</b>
+    </div>
+    <div class="atti" style="margin-top:10px;font-size:.88rem">
+      🎯 <b>第三件事：33 题是全篇最难的一道，因为<u>题干问的东西，在定位段里只露了一次面，而且是以「对立面」的身份露的</u>。</b><br>
+      ▸ 题干问 <b>第三段的 <code>earned media</code></b>，可第三段通篇在讲 <code>hijacked media</code>，<code>earned media</code> 只在 ③❷ 出现一次：<code>Such hijacked media are <b>the opposite of</b> earned media</code>。<br>
+      ⟹ <b>这句话不是在说「有两样东西」，而是在说「<u>同一样东西的两面</u>」</b>：<b>同一批热情消费者（①❹ 创造赢得媒介 ／ ③❶ 发表破坏性言论）· 同一个载体（③❸ <code>hijack media to apply pressure on the businesses that <u>originally created them</u></code>——被劫持的正是企业自己最初造出来的那些媒介）。</b><br>
+      ⟹ <b>所以答案是<u>算</u>出来的：讲 <code>hijacked</code> 的那些话，取个负号就是 <code>earned</code> 的另一面 ⟹ B <code>can be used to produce negative effects in marketing</code>。</b><b>它在原文里没有一句现成的对应句。</b>（⟹ 新卡 <b>R95</b>，见第 <a href="#col3" style="color:var(--green);font-weight:700">02+++ 节</a>）<br>
+      🔗 <b>与 2011 T1 的 R87 是同一族的两种形态</b>：<b>R87 是「作者给对方的主张打负号」，R95 是「作者给两个概念之间打负号」。</b><b>共同点：正确项在原文里<u>一个对应词都找不到</u>，只能算。</b>
+    </div>
+    <div class="atti" style="margin-top:10px;font-size:.88rem">
+      🎯 <b>第四件事（也是最容易顺手丢分的一处）：34 题的 D 项 <code>taking advantage of hijacked media</code>——<u>方向反了</u>。</b><br>
+      ▸ 原文 ④❸ <code>Toyota Motor … <b>alleviated some of the damage</b> from its recall crisis … with a relatively quick and well-orchestrated social-media response campaign</code>——<b>丰田是<u>挨了打之后止损</u>（减轻了部分损失），不是<u>借这股风获利</u>。</b><br>
+      ⟹ <b>凡见到 <code>take advantage of</code> / <code>capitalize on</code> / <code>exploit</code> / <code>benefit from</code> 这一族「获利」动词，先回原文问一句：<u>这个主体在这件事里是受损方还是受益方？</u></b><b>受损方只能配 <code>respond to</code> / <code>cope with</code> / <code>address</code> / <code>contain</code>。</b>（⟹ 新卡 <b>R96</b>，见第 <a href="#col4" style="color:var(--green);font-weight:700">02++++ 节</a>）<br>
+      ⚠️ <b>同题的 B <code>persuading customers into boycotting products</code> 是另一把老刀：<u>动作主语被偷</u></b>——④❶ 里劝人抵制的是<b>热情消费者</b>，选项把它安给了<b>丰田</b>。<b>丰田若真在劝顾客抵制自家产品，这句话自己就荒谬了。</b>（⟹ 旧卡 <b>R21</b>）
+    </div>
+    <div class="atti" style="margin-top:10px;font-size:.88rem">
+      🧭 <b>第五件事，一条<u>元判断的当场验证</u>。</b><b>上一篇（T2）收尾时立过一条：「作者出不出面，决定这篇出什么题——亲自表态的出态度题，躲在引语后面的改出标题题。」本篇立刻给了它一次检验，而且逼出了一处<u>必须补上的精细化</u>：</b><br>
+      ▸ <b>本篇<u>有</u>第一人称</b>：②❹ <code><b>We define</b> such sold media as …</code> · ②❺ <code>This trend, <b>which we believe</b> is still in its infancy, …</code>。<b>但全卷 <u>零</u>态度题。</b><br>
+      ⟹ <b>补一刀：第一人称有两种，只有一种会长出态度题。</b><br>
+      　▸ <b>【表态的第一人称】</b><code>For my part, I have no idea whether …</code>（2011 T1 ③❶）——<b>作者在对一件有争议的事<u>选边</u> ⟹ 必出态度题。</b><br>
+      　▸ <b>【下定义的第一人称】</b><code>We define X as …</code> / <code>which we believe is still in its infancy</code>（本篇）——<b>作者在<u>行使术语命名权</u>，不是在褒贬 ⟹ 不出态度题，出的是定义题、特征题、主旨题。</b><br>
+      ⟹ <b>判据一秒可下：<code>we</code> 后面跟的是 <u>think / believe 一个有争议的判断</u>，还是 <u>define / call / term 一个新名字</u>。</b>
+    </div>
+  </header>
+
+  <div class="layout">
+    <main>
+      <!-- ========== 全文脉络 ========== -->
+      <section class="card">
+        <h2><span class="n">00</span>读前一分钟 · 全文脉络（做完题再看也行）</h2>
+        <div class="flow">
+          <div class="fi"><b>① 旧规则失效，三个术语一次登场</b>：营销成功的大致准则<b>曾经</b>是「一分钱一分货」。<b>如今不再如此</b>。虽然传统的「<b>付费</b>」媒介——如电视广告和平面广告——依然发挥主要作用，但企业今天可以利用许多<b>替代性的媒介形式</b>：热衷于某一产品的消费者可以通过<b>自愿把它推荐给朋友</b>来创造「<b>赢得</b>（口碑）」媒介；企业则可以通过<b>给在其网站注册的顾客发送产品与促销的邮件提醒</b>来充分利用「<b>自有</b>」媒介。<b>消费者如今做出购买决策的方式意味着：营销的影响力来自超越传统付费媒介的众多因素。</b><span style="color:var(--muted)">⟹ <b>31 题定位段，同时 ❺ 句就是 35 题的主旨句。⭐ 一段之内三个术语并排下定义——干扰项的原料库就是在这里备好的。</b></span></div>
+          <div class="fi"><b>② 控制权 → 转化 → 第四个术语「售出媒介」</b>：付费与自有媒介由推销自家产品的<b>营销者掌控</b>；对赢得媒介而言，营销者充当的是<b>用户反应的发起者</b>。<b>但在某些情况下，一个营销者的自有媒介会变成另一个营销者的付费媒介</b>——比如电商零售商在自家网站上出售广告位时。<b>我们把这样的售出媒介定义为「访问量大到其他机构愿意把内容或电商引擎放进这一环境」的自有媒介。</b>这一趋势<b>仍处起步阶段</b>，实际上始于零售商与航空公司、酒店等旅游服务商，且势必进一步发展。例如强生创建了<b>宝宝中心</b>（BabyCenter），一项独立运营的媒体资产，用于推广互补性乃至竞争性的产品。<b>除了创收之外</b>，其他营销者的存在还<b>使网站显得客观</b>、<b>让企业有机会了解别家营销的吸引力所在</b>、并<b>可能帮所有相关企业扩大用户访问量</b>。<span style="color:var(--muted)">⟹ <b>32 题定位段。⭐⭐ 请把这一段切成两半：❹ 是<u>定义句</u>（答案区），❻❼ 是 <code>for example</code> 之后的<u>个例区</u>（干扰项区，A/B/D 三项全部产自这里）。</b></span></div>
+          <div class="fi"><b>③ 硬币的另一面：第五个术语「劫持媒介」</b>：<b>同样是这些重大技术变革</b>，在给营销者带来更多（也更多样）的传播选择的同时，<b>也放大了一个风险：狂热的消费者会以更快、更显眼、破坏力大得多的方式发表意见</b>。<b>这种劫持媒介是赢得媒介的对立面</b>：一项资产或一场宣传活动<b>成为消费者、其他利益相关方或激进分子的人质</b>，这些人对某个品牌或产品发表负面言论。例如，社交网络用户正在意识到，<b>他们可以劫持媒介，向<u>最初创造这些媒介的企业</u>施压</b>。<span style="color:var(--muted)">⟹ <b>33 题定位段。⚠️ 全段只在 ❷ 出现一次 <code>earned media</code>，而且是作为「对立面」出现的——这正是本题难点所在（⟹ R95）。⭐ ❸ 句 <code>originally created them</code> 是「一体两面」的硬证据。</b></span></div>
+          <div class="fi"><b>④ 那怎么办：丰田的样本</b>：<b>这种情况一旦发生</b>，狂热的消费者会努力说服别人<b>抵制产品</b>，把目标公司的<b>声誉置于风险之中</b>。在这种情况下，<b>公司的回应可能不够迅速或不够周密，而且学习曲线一直很陡峭</b>（＝时间紧、任务重）。<b>例如丰田汽车</b>，就凭借一场<b>相对迅速且组织有序的社交媒体回应行动</b>——包括在推特和社会新闻网站 Digg 上与消费者直接互动的努力——<b>减轻了今年早些时候召回危机所造成的部分损失</b>。<span style="color:var(--muted)">⟹ <b>34 题定位段。⭐ ❷ 是论点句（正话反说：公司通常反应不够快），❸ 的丰田是「做到了这件难事」的正面例证。⚠️ 丰田是<u>受害者止损</u>，不是<u>获利者借势</u>（⟹ R96）。</b></span></div>
+        </div>
+        <div class="atti" style="margin-top:14px">
+          🧭 <b>一句话骨架</b>：<b>「旧的『一分钱一分货』失效了（①）→ 新词表：付费／赢得／自有，再加一个由自有长出来的售出（②）→ 但同一批技术也长出了它的反面：劫持（③）→ 挨了劫持怎么办：丰田（④）」。</b><br>
+          📌 <b>本篇的题目分布是本复盘中心至今<u>最规整</u>的一篇</b>：<b>①段→31 · ②段→32 · ③段→33 · ④段→34 · 全文→35。<u>一段一题，严格同序，一个都不错位</u>。</b><br>
+          　▸ <b>而且四道细节题的题干<u>全都明说了段号或专名</u></b>（<code>Paragraph 2</code> · <code>Paragraph 3</code> · <code>Toyota Motor</code>）——<b>这意味着本篇不考「定位」，全部的分都压在<u>定位之后</u>的那一步：从这一段里挑出<u>哪一句</u>才是答案的取材处。</b><br>
+          　▸ <b>⚠️ 对照 2008 T2 的 28 题</b>（题干词 <code>online publication</code> 全文零原词、定位段跨两段）——<b>那是「定位难、取材易」；本篇正相反，是「定位免费、取材要命」。</b><b>拿到卷子先判自己面对的是哪一种。</b><br>
+          ⭐ <b>本篇的段落功能高度对称，可以当模板背</b>：<b>①总（列术语）→ ②分之一（好的一面：售出媒介带来收益）→ ③分之二（坏的一面：劫持媒介带来风险）→ ④对策（一个正面样本）。</b><b>「总—利—弊—策」四段式，是英语一说明文最常见的骨架之一。</b><br>
+          🔗 <b>与本卷 T1、T2 并排看，2011 这一份卷子的三篇是<u>三种完全不同的干扰项工艺</u></b>：<b>T1 动「<u>极性与归属</u>」（摘掉否定词、把甲的话安给乙）· T2 动「<u>解释</u>」（把行为换成人品与动机）· T3 动「<u>术语关系</u>」（把甲术语的定义安到乙头上、把个例当整类）。</b><b>⟹ 同一份卷子不重复用刀，所以「押考法」没有意义，能练的只有「每种刀各有一个五秒动作」。</b>
+        </div>
+      </section>
+      <!-- ========== 原文精读 ========== -->
+      <section class="card">
+        <h2><span class="n">01</span>原文精读 · 全文四段 <button class="allbtn" onclick="toggleAll()">全段译文 开/关</button></h2>
+        <p style="font-size:.8rem;color:var(--muted);margin-bottom:14px">🟡 黄色高亮 = 重难点词/短语，点击右侧出卡片 ｜ 蓝色虚线 = 长难句，点击跳到精析 ｜ 每段「译」= 该段完整中译 ｜ 选中任意其他单词浮出「查有道」</p>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p style="font-size:.78rem;color:var(--accent);margin-bottom:6px">① 旧规则失效 ＋ 三个术语一次登场 · 31 题定位段 · ⭐ ❺ 句同时是 35 题的主旨句</p>
+          <p class="en"><span class="pno">❶</span>The <span class="tk" data-w="roughguide">rough guide</span> to marketing success <span class="tk" data-w="usedtobe">used to be</span> that <span class="tk" data-w="gotwhatpaid">you got what you paid for</span>.</p>
+          <p class="en" style="margin-top:10px"><span class="pno">❷⭐ 全文的转折点，只有两个词</span>No longer.</p>
+          <p class="en" style="margin-top:10px"><span class="pno">❸</span><span class="ls" onclick="go('s1')">While traditional 「<span class="tk" data-w="paidmedia">paid</span>」 media—such as television <span class="tk" data-w="commercial">commercials</span> and print advertisements—still play a major role, companies today can <span class="tk" data-w="exploit">exploit</span> many <span class="tk" data-w="alternative">alternative</span> forms of media.</span></p>
+          <p class="en" style="margin-top:10px"><span class="pno">❹⭐⭐ 31D 正源（前半）＋ 31B 诱饵（后半）</span><span class="ls" onclick="go('s2')">Consumers <span class="tk" data-w="passionate">passionate</span> about a product may create 「<span class="tk" data-w="earnedmedia">earned</span>」 media by <span class="tk" data-w="willingly">willingly</span> <span class="tk" data-w="promoteto">promoting it to friends</span>, and a company may <span class="tk" data-w="leverage">leverage</span> 「<span class="tk" data-w="ownedmedia">owned</span>」 media by sending e-mail <span class="tk" data-w="alert">alerts</span> about products and sales to customers <span class="tk" data-w="registered">registered</span> with its Web site.</span></p>
+          <p class="en" style="margin-top:10px"><span class="pno">❺⭐⭐⭐ 35A 正源（全文主旨句）</span><span class="ls" onclick="go('s3')">The way consumers now <span class="tk" data-w="approach">approach</span> the process of making purchase decisions means that marketing's impact <span class="tk" data-w="stemfrom">stems from</span> a <span class="tk" data-w="broadrange">broad range of factors</span> <span class="tk" data-w="beyondconv">beyond conventional paid media</span>.</span></p>
+          <div class="zh"><b>①段全译：</b>营销成功的大致准则曾经是：一分钱一分货。如今不再如此。虽然传统的「付费」媒介——如电视广告和平面广告——依然发挥着主要作用，但今天的企业可以利用许多替代性的媒介形式。热衷于某一产品的消费者，可以通过自愿把它推荐给朋友来创造「赢得（口碑）」媒介；企业则可以通过给在其网站注册的顾客发送有关产品与促销的邮件提醒，来充分利用「自有」媒介。消费者如今做出购买决策的方式意味着：营销的影响力来自超越传统付费媒介的众多因素。</div>
+          <div class="atti" style="margin-top:12px;font-size:.86rem">
+            ⭐⭐ <b>这一段是全篇的<u>原料库</u>：三个术语在同一段里下定义，而 31 题的四个选项就是从这三个定义里拆出来重拼的。</b><br>
+            <b>把 ❹ 句拆成两半，31 题就做完了</b>：<br>
+            　▸ <b>前半（赢得媒介）</b>：<code>Consumers <b>passionate about a product</b> … <b>willingly promoting it to friends</b></code> ⟹ <b>D <code>enthusiastic about recommending their favorite products</code>。</b><b><code>passionate</code>→<code>enthusiastic</code>、<code>a product 他热衷的</code>→<code>favorite products</code>、<code>promoting to friends</code>→<code>recommending</code>，三处同义替换全部对得上。</b><br>
+            　▸ <b>后半（自有媒介）</b>：<code>a company may leverage 「owned」 media by <b>sending e-mail alerts about products and sales</b></code> ⟹ <b>这正是 31B <code>inspired by product-promoting e-mails sent to them</code> 的出处。</b><b>选项一个字都没编，只是把它从「自有媒介」搬到了「赢得媒介」的名下——这就是「术语串门」最干净的一个样本。</b><br>
+            ⚠️ <b>C 项 <code>eager to help their friends promote quality products</code> 有两处被动了手脚，而且都极细</b>：<br>
+            　▸ <b>① 介词方向</b>：原文是 <code>promoting it <b>to</b> friends</code>（我推给朋友，<b>我是推的人</b>）；选项是 <code>help their friends <b>promote</b></code>（<b>朋友才是推的人</b>，我只是帮忙）。<b>一个介词，施动方就换了人。</b><br>
+            　▸ <b>② 主观偏好 → 客观品质</b>：原文说的是消费者<b>热衷于</b>某产品（<code>passionate about</code>，我喜欢），选项写的是 <code><b>quality</b> products</code>（东西好）。<b>「我喜欢」推不出「它质量好」。</b>（⟹ 旧卡 <b>R37</b> 的镜像用法）<br>
+            ⚠️ <b>A 项 <code>obsessed with online shopping at certain Web sites</code> 是把两个术语的碎片拌在一起</b>：<code>Web site</code> 来自后半句（自有媒介的载体），<code>passionate/obsessed</code> 来自前半句（赢得媒介的条件）。<b>更硬的一条：原文热衷的对象是「<u>一件产品</u>」，不是「<u>网购这件事</u>」。</b><br>
+            🧭 <b>❷ 句 <code>No longer.</code> 只有两个词，却是全文的分水岭</b>——<b>它宣布「一分钱一分货」这条旧准则作废，后面三段全是在写「取而代之的是什么」。</b><b>见到这种极短的独立句，一律在卷边画个三角：它多半是主旨题的半个答案。</b>（⟹ 旧卡 <b>R23</b>「今昔对比型说明文」，2008 T2 立）
+          </div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p style="font-size:.78rem;color:var(--accent);margin-bottom:6px">② 控制权 → 术语之间的转化 → 第四个术语「售出媒介」 · 32 题定位段 · ⭐⭐ 请把本段切成「定义区 ❹」与「个例区 ❻❼」</p>
+          <p class="en"><span class="pno">❶⭐ 控制权分界线</span>Paid and owned media are controlled by <span class="tk" data-w="marketer">marketers</span> promoting their own products.</p>
+          <p class="en" style="margin-top:10px"><span class="pno">❷</span>For earned media, such marketers act as the <span class="tk" data-w="initiator">initiator</span> for users' <span class="tk" data-w="response">responses</span>.</p>
+          <p class="en" style="margin-top:10px"><span class="pno">❸⭐⭐ 术语可以互相转化的第一处证据</span>But in some cases, one marketer's owned media become another marketer's paid media—for instance, when an <span class="tk" data-w="ecommerce">e-commerce</span> <span class="tk" data-w="retailer">retailer</span> sells <span class="tk" data-w="adspace">ad space</span> on its Web site.</p>
+          <p class="en" style="margin-top:10px"><span class="pno">❹⭐⭐⭐ 32C 唯一正源 · 定义句</span><span class="ls" onclick="go('s4')">We <span class="tk" data-w="define">define</span> such <span class="tk" data-w="soldmedia">sold media</span> as owned media whose <span class="tk" data-w="traffic">traffic</span> is <span class="tk" data-w="sothat">so strong that</span> other <span class="tk" data-w="organization">organizations</span> <span class="tk" data-w="place">place</span> their content or e-commerce <span class="tk" data-w="engine">engines</span> within that <span class="tk" data-w="environment">environment</span>.</span></p>
+          <p class="en" style="margin-top:10px"><span class="pno">❺</span><span class="ls" onclick="go('s5')">This trend, which we believe is still in its <span class="tk" data-w="infancy">infancy</span>, <span class="tk" data-w="effectively">effectively</span> began with retailers and travel <span class="tk" data-w="provider">providers</span> such as airlines and hotels and will <span class="tk" data-w="nodoubt">no doubt</span> go further.</span></p>
+          <p class="en" style="margin-top:10px"><span class="pno">❻⚠️ 个例区起点 · 32B 的诱饵</span>Johnson &amp; Johnson, for example, has created BabyCenter, a <span class="tk" data-w="standalone">stand-alone</span> media <span class="tk" data-w="property">property</span> that promotes <span class="tk" data-w="complementary">complementary</span> and even <span class="tk" data-w="competitive">competitive</span> products.</p>
+          <p class="en" style="margin-top:10px"><span class="pno">❼⚠️ 32A／32D 的诱饵</span><span class="ls" onclick="go('s6')">Besides <span class="tk" data-w="generate">generating</span> income, the <span class="tk" data-w="presence">presence</span> of other marketers makes the site seem <span class="tk" data-w="objective">objective</span>, gives companies opportunities to learn valuable information about the <span class="tk" data-w="appeal">appeal</span> of other companies' marketing, and may help <span class="tk" data-w="expand">expand</span> user traffic for all companies <span class="tk" data-w="concerned">concerned</span>.</span></p>
+          <div class="zh"><b>②段全译：</b>付费媒介与自有媒介，由推销自家产品的营销者掌控。而对赢得媒介来说，这些营销者充当的是用户反应的发起者。但在某些情况下，一个营销者的自有媒介会变成另一个营销者的付费媒介——比如，当一家电商零售商在自己的网站上出售广告位时。我们把这样的售出媒介定义为：访问量大到其他机构愿意把自己的内容或电商引擎放进这一环境的自有媒介。我们认为这一趋势仍处于起步阶段，它实际上始于零售商以及航空公司、酒店这类旅游服务提供商，并且势必会进一步发展。例如，强生公司创建了宝宝中心（BabyCenter），这是一项独立运营的媒体资产，用于推广互补性乃至竞争性的产品。除了创造收入之外，其他营销者的存在还使该网站显得客观，让各公司有机会了解别家公司营销的吸引力所在，并且可能帮助所有相关公司扩大用户访问量。</div>
+          <div class="atti" style="margin-top:12px;font-size:.86rem">
+            ⭐⭐⭐ <b>本段是全篇结构最讲究的一段，也是 32 题的全部战场。把它切成三块，答案位置就一目了然：</b><br>
+            　<b>【第一块 ❶❷ 控制权】</b>：<b>付费＋自有＝营销者<u>掌控</u>；赢得＝营销者只当<u>发起者</u>。</b><b>这是五个术语的第一条分类轴。</b><br>
+            　<b>【第二块 ❸❹❺ 定义区】</b>：<b>❸ 先给现象（甲的自有＝乙的付费），❹ 给<u>定义</u>，❺ 给发展阶段。<u>32 题的答案只可能在这里</u>。</b><br>
+            　<b>【第三块 ❻❼ 个例区】</b>：<b><code>for example</code> 一出现，从这里到段末全是<u>强生一家公司</u>的事。</b><b>而 32 题的 A、B、D 三个干扰项，<u>无一例外</u>全从这三行里造。</b>（⟹ 新卡 <b>R94</b>）<br>
+            ⭐ <b>❹ 句的定义只挂了一个条件：<code>whose traffic is <b>so strong that</b> …</code>（访问量大到……）。</b><b>一个 <code>so…that</code> 就把「售出媒介」与普通「自有媒介」区分开了 ⟹ C <code>strong user traffic</code> 是把定义句的限定条件原样搬出来，连词都没换。</b><br>
+            ⚠️ <b>三个干扰项的具体产地</b>：<br>
+            　▸ <b>B <code>random competition</code></b> ⟸ ❻ 的 <code>competitive products</code>（推广竞争性产品）。<b>两处错：<code>random</code>（随机）全文无据；「推竞品」是<u>强生一家</u>的做法，不是<u>这一类</u>媒介的特征。</b><br>
+            　▸ <b>D <code>flexibility in organization</code></b> ⟸ ❹ 的 <code>other <b>organizations</b></code> ＋ ❼ 的三个并列谓语。<b><code>organization</code> 在❹里是「<u>机构、团体</u>」（可数名词，前面有 other），不是「<u>组织形式</u>」——一词两义被拿来做文章。</b><br>
+            　▸ <b>A <code>a safe business environment</code></b> ⟸ ❹ 末尾的 <code>within that <b>environment</b></code>。<b><code>environment</code> 在原文指的是「那个网站环境」，是中性的；<code>safe</code>（安全）是选项自己加的。</b><br>
+            🔗 <b>❸ 句是全篇「术语可以互相转化」的第一处硬证据</b>：<code>one marketer's <b>owned</b> media become another marketer's <b>paid</b> media</code>——<b>同一块广告位，站在甲的角度是自有，站在乙的角度是付费。</b><b>五个术语分的不是「东西」，是「<u>视角</u>」。</b><b>认清这一点，31B 那种「把定义搬个家」的干扰项就再也骗不到人。</b>（⟹ 新卡 <b>R93</b>）
+          </div>
+        </div>
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p style="font-size:.78rem;color:var(--accent);margin-bottom:6px">③ 硬币的另一面：第五个术语「劫持媒介」 · 33 题定位段 · ⚠️ 题干问的 earned media 全段只露一次面</p>
+          <p class="en"><span class="pno">❶⭐ 全篇最长的一句</span><span class="ls" onclick="go('s7')">The same <span class="tk" data-w="dramatic">dramatic</span> technological changes that have provided marketers with more (and more <span class="tk" data-w="diverse">diverse</span>) communications choices have also increased the risk that passionate consumers will <span class="tk" data-w="voice">voice</span> their opinions in quicker, more <span class="tk" data-w="visible">visible</span>, and much more <span class="tk" data-w="damaging">damaging</span> ways.</span></p>
+          <p class="en" style="margin-top:10px"><span class="pno">❷⭐⭐⭐ 33B 的唯一支点 · 也是 33C／33D 的诱饵</span><span class="ls" onclick="go('s8')">Such <span class="tk" data-w="hijack">hijacked</span> media are <span class="tk" data-w="opposite">the opposite of</span> earned media: an <span class="tk" data-w="asset">asset</span> or <span class="tk" data-w="campaign">campaign</span> becomes <span class="tk" data-w="hostage">hostage</span> to consumers, other <span class="tk" data-w="stakeholder">stakeholders</span>, or <span class="tk" data-w="activist">activists</span> who make negative <span class="tk" data-w="allegation">allegations</span> about a brand or product.</span></p>
+          <p class="en" style="margin-top:10px"><span class="pno">❸⭐⭐「一体两面」的硬证据</span>Members of social networks, for instance, are learning that they can hijack media to <span class="tk" data-w="applypressure">apply pressure on</span> the businesses that <span class="tk" data-w="originally">originally created them</span>.</p>
+          <div class="zh"><b>③段全译：</b>同样是这些重大的技术变革，在给营销者带来更多（也更多样）的传播渠道选择的同时，也增加了一种风险：狂热的消费者会以更快、更公开可见、破坏力大得多的方式发表他们的观点。这种「劫持」媒介是赢得（口碑）媒介的对立面：一项资产或一场宣传活动会成为消费者、其他利益相关方或激进分子的人质，这些人对某一品牌或产品发表负面言论。例如，社交网络的成员正在意识到，他们可以劫持媒介，向最初创造这些媒介的企业施加压力。</div>
+          <div class="atti" style="margin-top:12px;font-size:.86rem">
+            ⭐⭐⭐ <b>33 题之所以是全篇最难的一道，原因只有一个：<u>题干问 earned media，而这一段几乎不谈 earned media</u>。</b><b>它只在 ❷ 句露了一次面，还是以「<u>被对照的那一方</u>」的身份露的。</b><br>
+            ⟹ <b>正确的读法是：<code>A are the opposite of B</code> 不是在介绍<u>两样东西</u>，而是在说<u>同一样东西的两面</u>。</b><b>本段给了三条证据，条条都指向「同一批人、同一个载体」：</b><br>
+            　▸ <b>① 同一批技术</b>：❶ 开头 <code><b>The same</b> dramatic technological changes</code>——<b>「同样是这些技术」，既给了机会，也带来了风险。</b><b>一个 <code>same</code> 就把③段和②段焊在了一起。</b><br>
+            　▸ <b>② 同一批人</b>：①❹ 创造赢得媒介的是 <code><b>Consumers passionate</b> about a product</code>；③❶ 制造风险的还是 <code><b>passionate consumers</b></code>。<b>原文连形容词都没换。</b><br>
+            　▸ <b>③ 同一个载体</b>：❸ <code>they can hijack media to apply pressure on the businesses that <b>originally created them</b></code>——<b><code>them</code> 指的就是 media：<u>被劫持的，正是企业自己最初造出来的那些媒介</u>。</b><br>
+            ⟹ <b>三条合起来 ⟹ B <code>can be used to produce negative effects in marketing</code>（赢得媒介<u>可能被用来</u>制造负面的营销效应）。</b><b>⚠️ 注意 B 用的是 <code>can be used</code>（可能被用来）这种<u>留有余地</u>的说法——这正是它能成立的原因。</b>（⟹ 新卡 <b>R95</b>）<br>
+            ⚠️ <b>三个干扰项各踩一个坑</b>：<br>
+            　▸ <b>A <code>invite constant conflicts with passionate consumers</code></b>：<b>冲突的<u>对象</u>被换了</b>——原文是狂热消费者对<b>品牌／产品</b>发难，选项写成了「赢得媒介<u>与狂热消费者</u>起冲突」；<b>而且狂热消费者本来就是赢得媒介的<u>创造者</u>，不是它的对手。</b><b>再加 <code>constant</code>（不断的）绝对化。</b><br>
+            　▸ <b>C <code>may be responsible for fiercer competition</code></b>：<b>栽在一个熟词僻义上</b>——❷ 句里的 <code>campaign</code> 是「<u>宣传活动</u>」（与 asset 并列，都是企业的营销资产），<b>不是「竞选、竞赛」</b>。<b>把 campaign 读成「竞争」，再脑补一步「竞争加剧」，两步全错。</b>（⟹ 旧卡 <b>R10</b>）<br>
+            　▸ <b>D <code>deserve all the negative comments about them</code></b>：<b>评论的<u>靶子</u>被换了</b>——原文是对 <code>a brand or product</code>（品牌或产品）发表负面言论，选项换成了「对<u>赢得媒介本身</u>的负面评论」；<b>再加一个 <code>deserve all</code>（理应受到<u>所有</u>），把中性叙述升级成了价值判断。</b><b>作者全文没有对任何一种媒介下过褒贬。</b>
+          </div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p style="font-size:.78rem;color:var(--accent);margin-bottom:6px">④ 那怎么办：丰田的样本 · 34 题定位段 · ⭐ ❷ 是论点句（正话反说），❸ 是例证</p>
+          <p class="en"><span class="pno">❶⚠️ 34B 的诱饵（做这个动作的是消费者）</span>If that happens, passionate consumers would try to persuade others to <span class="tk" data-w="boycott">boycott</span> products, putting the <span class="tk" data-w="reputation">reputation</span> of the target company <span class="tk" data-w="atrisk">at risk</span>.</p>
+          <p class="en" style="margin-top:10px"><span class="pno">❷⭐⭐ 论点句 · 正话反说 · 34A 的真正靠山</span><span class="ls" onclick="go('s9')">In such a case, the company's response may not be <span class="tk" data-w="sufficiently">sufficiently</span> quick or <span class="tk" data-w="thoughtful">thoughtful</span>, and the <span class="tk" data-w="learningcurve">learning curve</span> has been <span class="tk" data-w="steep">steep</span>.</span></p>
+          <p class="en" style="margin-top:10px"><span class="pno">❸⭐⭐⭐ 34A 正源 · 也是 34D 的诱饵</span><span class="ls" onclick="go('s10')">Toyota Motor, for example, <span class="tk" data-w="alleviate">alleviated</span> some of the <span class="tk" data-w="damage">damage</span> from its <span class="tk" data-w="recall">recall</span> <span class="tk" data-w="crisis">crisis</span> earlier this year with a relatively quick and <span class="tk" data-w="orchestrate">well-orchestrated</span> social-media response campaign, which included efforts to <span class="tk" data-w="engagewith">engage with</span> consumers directly on sites such as Twitter and the <span class="tk" data-w="socialnews">social-news</span> site Digg.</span></p>
+          <div class="zh"><b>④段全译：</b>这种情况一旦发生，狂热的消费者就会努力说服他人抵制产品，从而把目标公司的声誉置于危险之中。在这种情况下，公司的回应可能不够迅速、不够周密，而且学习曲线一直很陡峭（＝留给它学会应对的时间很短）。例如，丰田汽车公司就凭借一场相对迅速且组织有序的社交媒体回应行动——其中包括在推特和社会新闻网站 Digg 等平台上与消费者直接互动的努力——减轻了今年早些时候召回危机所造成的部分损失。</div>
+          <div class="atti" style="margin-top:12px;font-size:.86rem">
+            ⭐ <b>本段是标准的「论点 ＋ 例证」两件套，而 34 题问的是例证的<u>目的</u> ⟹ 答案必须回到 ❷ 句这个论点上去取。</b>（⟹ 旧卡 <b>R41</b>／<b>R3</b>）<br>
+            ⚠️ <b>但 ❷ 句是<u>正话反说</u>，这是本题唯一的坎</b>：<code>the company's response <b>may not be</b> sufficiently quick or thoughtful, and the learning curve <b>has been steep</b></code>——<b>字面说的是「公司通常做不好」，而丰田却是个<u>做得不错</u>的例子。</b><br>
+            ⟹ <b>两种读法都能到 A，任选一条走得通即可</b>：<br>
+            　▸ <b>【读懂论点句】</b>公司面对劫持媒介时<b>难以又快又周密地回应</b> ⟹ 举丰田，是为了说明<b>「快速而有组织的回应真的能减损」</b> ⟹ <code>responding effectively to hijacked media</code>。<br>
+            　▸ <b>【读不懂论点句时的保底走法】</b>直接从例子里抽核心词：<code>alleviated some of the damage</code>（减轻了损失）＋ <code>relatively quick</code>（相对迅速）＋ <code>well-orchestrated</code>（组织有序）⟹ <b>「有效应对」</b>。<b>三个词全指向 A。</b><br>
+            ⚠️⚠️ <b>D <code>taking advantage of hijacked media</code> 是本题最像的一个，也是本篇最值得记的一处方向陷阱</b>：<b><code>take advantage of</code> ＝ 利用……获利，主体是<u>受益方</u>；而丰田在这件事里是<u>受害方</u>——它做的是 <code>alleviate the damage</code>（减轻损失），是<u>止损</u>不是<u>获利</u>。</b>（⟹ 新卡 <b>R96</b>）<br>
+            ⚠️ <b>B <code>persuading customers into boycotting products</code> 是「动作主语被偷」</b>：❶ 句里 <code>persuade others to boycott</code> 的主语是 <code>passionate consumers</code>，选项把它安给了丰田。<b>五秒反证：一家公司劝顾客抵制自己的产品，这话本身就不成立。</b>（⟹ 旧卡 <b>R21</b>）<br>
+            ⚠️ <b>C <code>cooperating with supportive consumers</code> 的破绽在一个形容词上</b>：原文是 <code>engage with consumers <b>directly</b></code>（<u>直接</u>与消费者互动），<b>而那些消费者恰恰是正在闹的一方</b>；<code>supportive</code>（给予支持的）是选项自己加的。<b>⟹ 见到选项里出现一个原文没有的<u>褒义形容词</u>，先回去看这个群体在原文里站哪一边。</b><br>
+            🔤 <b>本段两个熟词僻义值 2 分</b>：<code>recall</code> ＝ <b>（产品）召回</b>（不是「回忆」）· <code>learning curve has been steep</code> ＝ <b>学习曲线陡峭</b>，即<b>必须在很短时间内学会应对</b>（不是「学习很难」）。
+          </div>
+        </div>
+      </section>
+      <!-- ========== 题目与解析 ========== -->
+      <section class="card">
+        <h2><span class="n">02</span>题目与解析（点选项即判 · 再看解析）</h2>
+        <div class="atti yes" style="margin-bottom:18px">✅ <b>本篇 Claude 盲做 <u>5/5</u></b>（31D 32C 33B 34A 35A，与标准答案完全一致）。<br>
+        <b>本篇十五个干扰项的主力工艺是<u>「术语串门」</u>：把甲术语的定义、载体或细节，安到乙术语头上</b>（31A · 31B · 33A · 33D · 35B，共 5 个）；<b>第二主力是<u>「个例当整类」</u></b>（32B · 32D，外加 32A 对定义句尾的过度解读）。<br>
+        四个专栏分别拆四把新刀（R93–R96），末尾给出<b>十五个干扰项的产地总账表</b>。</div>
+
+        <div class="q" data-ans="3" id="q31">
+          <p class="stem"><span class="qt">事实细节题（术语的生成条件 · 定位首段）</span>31. Consumers may create 「earned」 media when they are ______.</p>
+          <div class="opts">
+            <div class="opt">[A] obsessed with online shopping at certain Web sites.</div>
+            <div class="opt">[B] inspired by product-promoting e-mails sent to them.</div>
+            <div class="opt">[C] eager to help their friends promote quality products.</div>
+            <div class="opt">[D] enthusiastic about recommending their favorite products.</div>
+          </div>
+          <div class="expl">
+            <b>✅ D · 定位①❹ 前半句</b><br>
+            <b>正源</b>：<span class="loc">Consumers <b>passionate about a product</b> may create 「earned」 media by <b>willingly promoting it to friends</b></span><br>
+            ▸ <b>三处同义替换全部对得上</b>：<code>passionate about</code> → <code>enthusiastic about</code>（热衷于）· <code>a product（他所热衷的那件）</code> → <code>their favorite products</code>（自己最喜欢的产品）· <code>promoting it to friends</code> → <code>recommending</code>（推荐）。<br>
+            ⭐ <b>本题的题干本身就写明了考点：<code>when they are ______</code>——问的是「消费者处在<u>什么状态</u>时」才会创造赢得媒介。</b><b>原文的答案只有一个词：<code>passionate</code>（热衷）。四个选项就是四种「状态」，逐个和它比即可。</b>
+            <div style="margin-top:8px">
+            <b>[A] obsessed with online shopping at certain Web sites（着迷于在某些网站上网购）⚠️ 两个术语的碎片拌在一起</b>：<code>Web site</code> 来自①❹ <u>后半句</u>（那是「自有媒介」的载体），<code>obsessed</code> 蹭的是前半句的 <code>passionate</code>。<br>
+            　▸ <b>更硬的一条：原文热衷的对象是「<u>一件产品</u>」（a product），不是「<u>网购这件事</u>」。</b><b>热衷对象一换，整句就作废。</b><br>
+            <b>[B] inspired by product-promoting e-mails sent to them（受到发给他们的产品促销邮件的启发）⚠️⚠️ 本篇最干净的一个「术语串门」</b>：<br>
+            　▸ <b>这句话在原文里<u>逐字对应</u>①❹ 的后半句</b>：<code>a company may leverage 「<b>owned</b>」 media by <b>sending e-mail alerts about products and sales</b></code>。<b>可那是「<u>自有</u>媒介」的定义，题干问的是「<u>赢得</u>媒介」。</b><br>
+            　▸ <b>选项一个字都没编造，只是把一段定义<u>搬了个家</u>——这正是本篇干扰项的头号工艺。</b>（⟹ 新卡 <b>R93</b>，见第 <a href="#col1" style="color:var(--green);font-weight:700">02+ 节</a>）<br>
+            　▸ <b>而且方向也反了</b>：赢得媒介是<b>消费者主动</b>推荐（<code>willingly</code>），B 却是<b>消费者被企业的邮件推动</b>——<b>主动变被动，正是「赢得」与「自有」的分界线。</b><br>
+            <b>[C] eager to help their friends promote quality products（渴望帮助朋友推销优质产品）⚠️ 两处极细的手脚</b>：<br>
+            　▸ <b>① 介词方向变了</b>：原文 <code>promoting it <b>to</b> friends</code>（<b>我</b>推给朋友）vs 选项 <code>help their friends <b>promote</b></code>（<b>朋友</b>才是推的人，我只是帮忙）。<b>一个介词换掉了施动方。</b><br>
+            　▸ <b>② 主观偏好 → 客观品质</b>：原文是消费者<code>passionate about</code>（我喜欢），选项写 <code><b>quality</b> products</code>（东西质量好）。<b>「我热衷」推不出「它优质」。</b>（⟹ 旧卡 <b>R37</b>）<br>
+            <b>[D] enthusiastic about recommending their favorite products ✔</b><br>
+            ⭐ <b>本题最省力的做法：<u>先给四个选项各标一个术语归属</u></b>——<b>A＝网购（无归属）· B＝自有媒介 · C＝赢得媒介（但主客颠倒）· D＝赢得媒介。</b><b>标完只剩 C、D 两个，再比一个介词就完事，全程不用通读全段。</b>
+            </div>
+          </div>
+        </div>
+
+        <div class="q" data-ans="2" id="q32">
+          <p class="stem"><span class="qt">事实概括题（问「某一类」的特征 · 限定第 2 段）</span>32. According to Paragraph 2, sold media feature ______.</p>
+          <div class="opts">
+            <div class="opt">[A] a safe business environment.</div>
+            <div class="opt">[B] random competition.</div>
+            <div class="opt">[C] strong user traffic.</div>
+            <div class="opt">[D] flexibility in organization.</div>
+          </div>
+          <div class="expl">
+            <b>✅ C · 定位②❹（定义句）</b><br>
+            <b>正源</b>：<span class="loc">We define such sold media as owned media <b>whose traffic is so strong that</b> other organizations place their content or e-commerce engines within that environment.</span><br>
+            ▸ <b>整个定义只挂了一个限定条件：<code>traffic is so strong</code>（访问量足够大）。</b><b>C <code>strong user traffic</code> 就是把这个条件原样搬出来——连形容词都没换。</b><br>
+            ⭐⭐ <b>本题的价值不在这个答案，而在<u>它教会你在哪一行取材</u>。</b><b>②段的后半段结构极其典型：</b><br>
+            　<b>❹ <u>定义句</u>（We define X as …）→ ❺ 趋势句 → ❻ <code><b>for example</b></code> ＋ 强生 BabyCenter → ❼ 这家公司的三条好处</b><br>
+            　▸ <b>正确项来自 ❹；A、B、D 三个干扰项<u>全部</u>来自 <code>for example</code> 之后。</b><b>题干问的是 <code>sold media feature ______</code>（这一<u>类</u>媒介有什么特征），而 <u>一家公司的做法不是一类事物的特征</u>。</b>（⟹ 新卡 <b>R94</b>，见第 <a href="#col2" style="color:var(--green);font-weight:700">02++ 节</a>）
+            <div style="margin-top:8px">
+            <b>[A] a safe business environment（安全的商业环境）⚠️ 对定义句尾巴的过度解读</b>：诱饵是 ❹ 末尾的 <code>within that <b>environment</b></code>。<br>
+            　▸ <b><code>that environment</code> 指的是「（访问量大的）那个网站环境」，是<u>中性</u>的描述；<code>safe</code>（安全）全文无据。</b><b>凡是「原文名词 ＋ 选项自己加的褒义形容词」，一律先怀疑。</b><br>
+            <b>[B] random competition（随机的竞争）⚠️ 把个例特点当整类特征（第一处）</b>：诱饵是 ❻ 的 <code>promotes complementary and even <b>competitive</b> products</code>。<br>
+            　▸ <b>两处错</b>：<b>① <code>random</code>（随机的）全文无据</b>；<b>② 「推广竞争性产品」是<u>强生 BabyCenter 一家</u>的做法，不是<u>所有售出媒介</u>的共有特征。</b><br>
+            <b>[C] strong user traffic ✔</b><br>
+            <b>[D] flexibility in organization（组织形式灵活）⚠️ 把个例特点当整类特征（第二处）＋ 一词两义</b>：诱饵是 ❹ 的 <code>other <b>organizations</b></code> 与 ❼ 的三个并列谓语（makes / gives / may help）。<br>
+            　▸ <b><code>organization</code> 在 ❹ 里是可数名词「<u>机构、团体</u>」（前面有 other、后面接 place their content），<u>不是</u>「组织形式、组织方式」。</b><br>
+            　▸ <b>而 ❼ 那三条讲的是「售出媒介给营销者带来<u>哪些好处</u>」，不是「它的组织方式多灵活」。</b><br>
+            ⭐ <b>一条可迁移的取材规则</b>：<b>题干里出现 <code>feature(s)</code> / <code>be characterized by</code> / <code>typical of</code> / <code>What is true of X</code> 时，先在定位段里找 <u>「定义 / 判据 / 前提」句</u>，答案八成就在那一句里；<code>for example</code>、<code>such as</code>、<code>for instance</code> 之后的内容只提供干扰项。</b>
+            </div>
+          </div>
+        </div>
+
+        <div class="q" data-ans="1" id="q33">
+          <p class="stem"><span class="qt">细节概括题（题干主语在定位段只以「对立面」出现 · 全篇最难）</span>33. The author indicates in Paragraph 3 that earned media ______.</p>
+          <div class="opts">
+            <div class="opt">[A] invite constant conflicts with passionate consumers.</div>
+            <div class="opt">[B] can be used to produce negative effects in marketing.</div>
+            <div class="opt">[C] may be responsible for fiercer competition.</div>
+            <div class="opt">[D] deserve all the negative comments about them.</div>
+          </div>
+          <div class="expl">
+            <b>✅ B · 支点在③❷，但答案要靠<u>反推</u></b><br>
+            <b>支点句</b>：<span class="loc">Such hijacked media are <b>the opposite of</b> earned media: an asset or campaign becomes hostage to consumers … who make <b>negative allegations</b> about a brand or product.</span><br>
+            ⚠️⚠️ <b>本题的全部难点在于：<u>题干问 earned media，而第三段通篇在讲 hijacked media</u>。</b><b><code>earned media</code> 全段只出现一次，还是作为「被对照的那一方」。</b><br>
+            ⟹ <b>正确的读法：<code>A are the opposite of B</code> 说的不是「有两样东西」，而是「<u>同一样东西的两面</u>」。三条证据都在本段：</b><br>
+            　▸ <b>① 同一批技术</b>：❶ <code><b>The same</b> dramatic technological changes</code>——既带来选择，也带来风险。<br>
+            　▸ <b>② 同一批人</b>：①❹ 创造赢得媒介的是 <code>consumers <b>passionate</b> about a product</code>，③❶ 制造风险的还是 <code><b>passionate</b> consumers</code>，<b>连形容词都没换。</b><br>
+            　▸ <b>③ 同一个载体</b>：❸ <code>hijack media to apply pressure on the businesses that <b>originally created them</b></code>——<b>被劫持的正是企业自己造出来的那些媒介。</b><br>
+            ⟹ <b>所以正解是「算」出来的：讲劫持媒介的那些话取个负号，就是赢得媒介的另一面 ⟹ B「赢得媒介<u>可能被用来</u>制造负面的营销效应」。</b>（⟹ 新卡 <b>R95</b>，见第 <a href="#col3" style="color:var(--green);font-weight:700">02+++ 节</a>）<br>
+            ⭐ <b>B 之所以站得住，还有一处措辞上的功劳：<code>can be used to</code>（<u>可能被用来</u>）是一种留有余地的说法。</b><b>若它写成 <code>always produce</code>（总是造成），立刻就错了。</b><b>凡遇到必须「反推」才能得出的选项，先看它有没有给自己留余地——留了余地的那个，通常就是答案。</b>
+            <div style="margin-top:8px">
+            <b>[A] invite constant conflicts with passionate consumers（招致与狂热消费者的不断冲突）⚠️ 冲突的对象被换了</b>：<br>
+            　▸ <b>原文里狂热消费者是<u>对品牌／产品</u>发难（<code>negative allegations about a brand or product</code>），不是「<u>与赢得媒介</u>起冲突」。</b><br>
+            　▸ <b>而且狂热消费者恰恰是赢得媒介的<u>创造者</u>（①❹），把他们说成赢得媒介的对手，正好读反了关系。</b><b>再加一个 <code>constant</code>（不断的）绝对化。</b><br>
+            <b>[B] can be used to produce negative effects in marketing ✔</b><br>
+            <b>[C] may be responsible for fiercer competition（可能是竞争愈演愈烈的原因）⚠️ 栽在一个熟词僻义上</b>：<br>
+            　▸ <b>❷ 句的 <code>campaign</code> 是「<u>宣传活动</u>」（与 <code>asset</code> 并列，都是企业手里的营销资产），<u>不是</u>「竞选、竞赛」。</b><br>
+            　▸ <b>把 campaign 读成「竞争」，再脑补一步「竞争加剧」——两步都是自己走的，原文全段不谈竞争。</b>（⟹ 旧卡 <b>R10</b> 词义题三步法）<br>
+            <b>[D] deserve all the negative comments about them（理应受到所有针对它们的负面评论）⚠️ 靶子被换 ＋ 价值判断</b>：<br>
+            　▸ <b>① 负面言论是冲着 <code>a brand or product</code> 去的，不是冲着「赢得媒介本身」；</b><br>
+            　▸ <b>② <code>deserve all</code>（理应受到<u>全部</u>）是一句道德评判，而本文作者<u>从未</u>对任何一种媒介下过褒贬——他在客观地介绍新术语。</b>（⟹ 旧卡 <b>R37</b>：客观叙述 ⟹ 主观评价，一律排）
+            </div>
+          </div>
+        </div>
+
+        <div class="q" data-ans="0" id="q34">
+          <p class="stem"><span class="qt">例证目的题（问例子服务于哪个论点）</span>34. Toyota Motor's experience is cited as an example of ______.</p>
+          <div class="opts">
+            <div class="opt">[A] responding effectively to hijacked media.</div>
+            <div class="opt">[B] persuading customers into boycotting products.</div>
+            <div class="opt">[C] cooperating with supportive consumers.</div>
+            <div class="opt">[D] taking advantage of hijacked media.</div>
+          </div>
+          <div class="expl">
+            <b>✅ A · 定位④❷（论点）＋④❸（例证）</b><br>
+            <b>论点句</b>：<span class="loc">In such a case, the company's response <b>may not be sufficiently quick or thoughtful</b>, and the <b>learning curve has been steep</b>.</span><br>
+            <b>例证句</b>：<span class="loc">Toyota Motor … <b>alleviated some of the damage</b> from its recall crisis … with a <b>relatively quick and well-orchestrated</b> social-media response campaign.</span><br>
+            ▸ <b>例证题的铁律：答案不在例子里，在例子<u>服务的那个论点</u>里。</b>（⟹ 旧卡 <b>R41</b>／<b>R3</b>）<b>论点是「面对劫持媒介时，公司往往难以又快又周密地回应」⟹ 举丰田，正是为了说明<u>做到了这件难事</u>是什么样子 ⟹ A「有效回应劫持媒介」。</b><br>
+            ⚠️ <b>唯一的坎是 ❷ 句<u>正话反说</u></b>（字面说「公司通常做不好」，例子却是个做得不错的）。<b>读不通也有保底走法：直接从例句抽三个核心词——<code>alleviated some of the damage</code>（减轻了损失）＋ <code>relatively quick</code>（相对迅速）＋ <code>well-orchestrated</code>（组织有序）——三个词一齐指向「有效应对」。</b>
+            <div style="margin-top:8px">
+            <b>[A] responding effectively to hijacked media ✔</b><br>
+            <b>[B] persuading customers into boycotting products（说服顾客抵制产品）⚠️ 动作主语被偷</b>：④❶ 里 <code>persuade others to boycott products</code> 的主语是 <code><b>passionate consumers</b></code>，选项把这个动作安给了丰田。<br>
+            　▸ <b>五秒反证：一家公司劝顾客抵制自家产品，这句话自己就荒谬。</b><b>凡选项动作与常识相悖，先回原文数主语。</b>（⟹ 旧卡 <b>R21</b>：谁／对谁／做了什么）<br>
+            <b>[C] cooperating with supportive consumers（与给予支持的消费者合作）⚠️ 破绽在一个形容词上</b>：原文是 <code>engage with consumers <b>directly</b></code>（<u>直接</u>与消费者互动），<b>而这些消费者恰恰是正在闹的一方</b>；<code>supportive</code>（给予支持的）是选项自己加的。<br>
+            　▸ <b>见到选项里冒出一个原文没有的<u>褒义形容词</u>，先回去看这个群体在原文里站哪一边。</b><br>
+            <b>[D] taking advantage of hijacked media（利用劫持媒介）⚠️⚠️ 本题最像的一个：<u>方向反了</u></b>：<br>
+            　▸ <b><code>take advantage of</code> ＝ 利用……为自己获利，主体是<u>受益方</u>；</b><b>而丰田在这件事里是<u>受害方</u>——它做的是 <code>alleviate <u>some of</u> the damage</code>（减轻<u>部分</u>损失），是止损，不是获利。</b><br>
+            　▸ <b><code>some of</code> 这两个词也在提醒你：损失并没有被消除，只是减少了一部分。<u>一个还在流血的人，谈不上「利用」这场危机。</u></b>（⟹ 新卡 <b>R96</b>，见第 <a href="#col4" style="color:var(--green);font-weight:700">02++++ 节</a>）
+            </div>
+          </div>
+        </div>
+
+        <div class="q" data-ans="0" id="q35">
+          <p class="stem"><span class="qt">全文主旨题</span>35. Which of the following is the text mainly about?</p>
+          <div class="opts">
+            <div class="opt">[A] Alternatives to conventional paid media.</div>
+            <div class="opt">[B] Conflict between hijacked and earned media.</div>
+            <div class="opt">[C] Dominance of hijacked media.</div>
+            <div class="opt">[D] Popularity of owned media.</div>
+          </div>
+          <div class="expl">
+            <b>✅ A · 定位①❺（主旨句）＋ 全文四段的分工</b><br>
+            <b>主旨句</b>：<span class="loc">…marketing's impact stems from a <b>broad range of factors beyond conventional paid media</b>.</span>（①❺）<br>
+            ▸ <b>A <code>Alternatives to conventional paid media</code>（传统付费媒介的替代选择）几乎是这半句的逐词改写</b>：<code>beyond conventional paid media</code> → <code>Alternatives to conventional paid media</code>；<b>而①❸ 也早已埋好同一个词：<code>companies today can exploit many <b>alternative</b> forms of media</code>。</b><br>
+            ⭐⭐ <b>但本题真正可迁移的判据是一条<u>可以预判正确项长相</u>的规则：</b><br>
+            　▸ <b>看四个选项的主语：<code>hijacked and earned media</code>（B）· <code>hijacked media</code>（C）· <code>owned media</code>（D）——<u>三个都点了某个具体术语的名</u>；只有 A 说的是「<u>传统付费媒介的替代品</u>」，也就是这<u>一整类</u>。</b><br>
+            　▸ <b>而本文写了<u>四种</u>新媒介（赢得／自有／售出／劫持），一段一种。</b><b>凡文章平行铺开若干子类，主旨题的正解必然是<u>那个不点名任何单个子类的选项</u>——点了名的，都犯以偏概全。</b>（⟹ 新卡 <b>R93</b> 的第三条用法）
+            <div style="margin-top:8px">
+            <b>[A] Alternatives to conventional paid media ✔</b><br>
+            <b>[B] Conflict between hijacked and earned media（劫持媒介与赢得媒介的冲突）⚠️ 关系读错 ＋ 以偏概全</b>：<br>
+            　▸ <b>③❷ 说的是 <code>the <b>opposite</b> of</code>（对立面、一体两面），不是 <code>conflict</code>（互相冲突）。</b><b>「A 是 B 的反面」讲的是两个概念的<u>定义关系</u>，不是两方在<u>打架</u>。</b><br>
+            　▸ <b>而且它只覆盖③段，①②④三段全落在外面。</b><br>
+            <b>[C] Dominance of hijacked media（劫持媒介的支配地位）⚠️ 以偏概全 ＋ 程度无据</b>：劫持媒介只占③④两段；<b><code>dominance</code>（支配地位）全文无据——原文只说它是一种<u>风险</u>，从没说它<u>占了主导</u>。</b><br>
+            <b>[D] Popularity of owned media（自有媒介的流行）⚠️ 以偏概全 ＋ 程度无据</b>：自有媒介只在①②两段作为定义出现，③④两段完全没提；<b><code>popularity</code>（流行度）同样无据——原文只下定义，不评价它火不火。</b><br>
+            ⭐ <b>顺带记一条<u>反向</u>用法：<code>alternative</code> 这个词在①❸ 就出现了，而正确项直接用了它的名词形式 <code>alternatives</code>。</b><b>主旨题的正确项常常「借用首段的一个关键词」——先扫首段有没有一个被后文反复兑现的概括词，它十有八九会出现在正解里。</b>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- ========== 专栏一 ========== -->
+      <section class="card" id="col1">
+        <h2><span class="n">02+</span>专栏 · 本篇最贵的一条：<u>造词型文章的干扰项主力是「术语串门」</u>（31、33、35 题 · 新卡 R93）</h2>
+        <p style="font-size:.9rem;margin-bottom:12px">本篇原标题就叫 <i>Marketing's New Vocabulary</i>（营销的新词汇）——<b>它是一篇「造词文」：全文从头到尾在给五个新术语下定义。</b><br><b>而这类文章的干扰项工艺高度固定：<u>不改词、不编造，只把甲术语的定义、载体或细节，搬到乙术语名下</u>。</b><b>15 个干扰项里有 5 个是这么造的。</b></p>
+
+        <h2 style="margin-top:20px"><span class="n">🗺️</span>第一步：读完先画这张表（考场上写在卷边，40 秒）</h2>
+        <div class="tabwrap"><table class="ctab">
+          <tr><th>术语</th><th>谁在动手</th><th>怎么产生的（定义句）</th><th>与别的术语什么血缘</th></tr>
+          <tr><td><b>paid</b> media 付费媒介</td><td>营销者<b>掌控</b></td><td>电视广告、平面广告（①❸）</td><td>旧世界的主角，<b>如今仍在，但不再唯一</b></td></tr>
+          <tr><td><b>earned</b> media 赢得媒介</td><td>营销者只是<b>发起者</b>，动手的是消费者</td><td><b>热衷某产品的消费者<u>自愿</u>推荐给朋友</b>（①❹前半）</td><td><b>劫持媒介的正面</b>（③❷）</td></tr>
+          <tr><td><b>owned</b> media 自有媒介</td><td>营销者<b>掌控</b></td><td><b>企业给已注册顾客发产品与促销的邮件提醒</b>（①❹后半）</td><td>访问量做大之后 ⟹ <b>变成售出媒介</b></td></tr>
+          <tr><td><b>sold</b> media 售出媒介</td><td>两个营销者<b>共用</b></td><td><b>访问量大到别的机构愿意把内容放进来的自有媒介</b>（②❹）</td><td><b>＝甲的自有 ＝ 乙的付费</b>（②❸）</td></tr>
+          <tr><td><b>hijacked</b> media 劫持媒介</td><td>消费者／利益相关方／激进分子<b>夺走</b></td><td><b>资产或宣传活动成为人质，被发负面言论</b>（③❷）</td><td><b>赢得媒介的反面</b>（同一批人、同一个载体）</td></tr>
+        </table></div>
+        <p style="font-size:.86rem;margin-top:10px">⭐ <b>画这张表的收益是立竿见影的</b>：<b>31B 的出处在第 3 行（自有媒介）而题干问第 2 行 ⟹ 秒排；35 题四个选项里有三个只写着表里的<u>某一行</u> ⟹ 秒排。</b></p>
+
+        <h2 style="margin-top:26px"><span class="n">🔎</span>第二步：认出五个「术语串门」型干扰项</h2>
+        <div class="tabwrap"><table class="ctab">
+          <tr><th>干扰项</th><th>它抄的是哪个术语</th><th>题干问的是哪个术语</th></tr>
+          <tr><td><b>31B</b> inspired by product-promoting <b>e-mails</b> sent to them</td><td><b>自有媒介</b>（①❹后半 <code>sending e-mail alerts</code>）</td><td><b>赢得媒介</b> ⟹ 串门，<b>且主动变被动</b></td></tr>
+          <tr><td><b>31A</b> obsessed with online shopping at certain <b>Web sites</b></td><td><b>自有媒介</b>的载体（<code>registered with its Web site</code>）</td><td><b>赢得媒介</b> ⟹ 两个术语的碎片拌在一起</td></tr>
+          <tr><td><b>33A</b> invite constant conflicts <b>with passionate consumers</b></td><td>把<b>赢得媒介的创造者</b>写成了它的<b>对手</b></td><td>关系整个读反</td></tr>
+          <tr><td><b>33D</b> deserve all the negative comments <b>about them</b></td><td>负面言论的靶子本是 <b>brand or product</b></td><td>被搬到<b>赢得媒介</b>头上</td></tr>
+          <tr><td><b>35B</b> <b>Conflict</b> between hijacked and earned media</td><td>③❷ 说的是 <b>the opposite of</b>（一体两面）</td><td>被读成了两方<b>打架</b></td></tr>
+        </table></div>
+
+        <div class="atti" style="margin-top:16px">
+          🔑 <b>R93 的三条用法（按考场顺序）</b><br>
+          <b>① 读文章时</b>：<b>凡看到 <code>We define X as …</code> / <code>such X</code> / 给新词打引号 / <code>X is the opposite of Y</code>，就在卷边补一行表。</b><b>造词文的段落分工几乎总是「一段一个新术语」。</b><br>
+          <b>② 做细节题时</b>：<b>先给<u>每个选项</u>标一个术语归属，再看它和题干的术语对不对得上。</b><b>对不上的，内容再真也直接排——这一步比逐字回原文快五倍。</b><br>
+          <b>③ 做主旨题时</b>：<b>若文章平行铺开若干子类，正解必然是<u>那个不点名任何单个子类</u>的选项。</b><b>本篇 35 题：B/C/D 分别点名 hijacked、hijacked、owned，只有 A 说的是「传统付费媒介的<u>替代品</u>」这一整类。</b><br>
+          ⚠️ <b>反向提醒：<u>不要因为一个术语在文中出现次数多，就以为它是主题</u>。</b><b><code>hijacked media</code> 独占③④两段（全文一半篇幅），可它只是「替代性媒介」里的一种，35C 就是拿这个骗人的。</b><b>篇幅 ≠ 主题，<u>分类轴才是主题</u>。</b><br>
+          🔗 <b>与旧卡的分工</b>：<b>R38</b>（种与属）管的是「同一条线上的层级」；<b>R93</b> 管的是「<u>并列的几个新术语之间互相搬家</u>」。<b>判据：文中若出现三个以上带引号／被下定义的新名词，用 R93。</b>
+        </div>
+      </section>
+
+      <!-- ========== 专栏二 ========== -->
+      <section class="card" id="col2">
+        <h2><span class="n">02++</span>专栏 · 问「某一类的特征」，答案只能取自<u>定义句</u>，不能取自 <code>for example</code> 之后（32 题 · 新卡 R94）</h2>
+        <p style="font-size:.9rem;margin-bottom:12px">②段后半段是一条极其规整的流水线：<b>定义句 → 趋势句 → <code>for example</code> ＋ 一家公司 → 这家公司的三条好处。</b><br><b>32 题的正确项来自<u>定义句</u>，而 A、B、D 三个干扰项<u>全部</u>来自 <code>for example</code> 之后。命题人把整段切成了「答案区」和「陷阱区」两块。</b></p>
+        <div class="tabwrap"><table class="ctab">
+          <tr><th>②段的位置</th><th>原文写了什么</th><th>它在本题里的角色</th></tr>
+          <tr><td><b>❹ 定义句</b><br><code>We define such sold media as …</code></td><td>owned media <b>whose traffic is so strong that</b> other organizations place their content…</td><td><b>✔ 唯一的答案区</b>　⟹ <b>32C</b> strong user traffic</td></tr>
+          <tr><td><b>❹ 定义句的尾巴</b></td><td>…within that <b>environment</b></td><td>⚠️ <b>32A</b> 从这里过度解读出 <code>safe</code></td></tr>
+          <tr><td><b>❻ 个例</b><br><code>Johnson &amp; Johnson, <b>for example</b></code></td><td>BabyCenter 推广 complementary and even <b>competitive</b> products</td><td>⚠️ <b>32B</b> 把一家的做法当整类特征，还加了个无据的 <code>random</code></td></tr>
+          <tr><td><b>❼ 个例的好处</b></td><td>makes the site seem objective / gives … opportunities / may help expand traffic</td><td>⚠️ <b>32D</b> 杂糅 ❹ 的 <code>organizations</code>（机构）＋ ❼ 三条好处 ⟹ 造出「组织形式灵活」</td></tr>
+        </table></div>
+
+        <div class="atti" style="margin-top:16px">
+          🔑 <b>R94 的判据：题干问的是「<u>一类</u>」还是「<u>一个</u>」？</b><br>
+          <b>题干里出现这些词，问的就是「一类」</b>：<code>feature(s)</code> · <code>be characterized by</code> · <code>typical of</code> · <code>What is true of X</code> · <code>X are described as</code>。<br>
+          <b>⟹ 答案只准在<u>定义 / 判据 / 前提</u>句里取</b>：<code>We define X as …</code> · <code>X refers to …</code> · <code>X is / are …</code> · <code>whose … is so … that …</code> · <code>only when …</code>。<br>
+          <b>⟹ 而 <code>for example</code> / <code>such as</code> / <code>for instance</code> / <code>take X</code> 之后的一切，<u>只提供干扰项</u>。</b><br>
+          ⚡ <b>三秒动作：在定位段里找到 <code>for example</code>，画一条竖线。<u>线右边的所有名词、形容词，做本题时一律不看</u>。</b><b>本题画完这条线，A、B、D 三项同时出局，只剩 C。</b><br>
+          📌 <b>与旧卡 R41 是一对镜像，值得并排背</b>：<br>
+          　▸ <b>R41</b>：问<u>例子的目的</u> ⟹ 答案不在例子里，在它<b>服务的论点</b>里（⟵ 往<u>上</u>找）。<br>
+          　▸ <b>R94</b>：问<u>整类的特征</u> ⟹ 答案也不在例子里，在<b>定义句</b>里（⟵ 往<u>上</u>找）。<br>
+          　▸ <b>合成一句话：<u>例子在阅读题里几乎从不直接充当答案，它只负责当诱饵。</u></b><b>两种题型都要求你从例子往回走。</b><br>
+          🔗 <b>与 R46（整体 vs 其中一类）的分工</b>：<b>R46 管「题干问的层级」</b>（问全体却给你一个子群），<b>R94 管「答案的取材位置」</b>（问全类却给你一家公司）。<b>本题两条同时成立，所以 B、D 错得特别彻底。</b>
+        </div>
+      </section>
+
+      <!-- ========== 专栏三 ========== -->
+      <section class="card" id="col3">
+        <h2><span class="n">02+++</span>专栏 · 「A is the opposite of B」＝<u>同一样东西的两面</u>：问 B 而定位段全在讲 A（33 题 · 新卡 R95）</h2>
+        <p style="font-size:.9rem;margin-bottom:12px">33 题是全篇最难的一道，难点不在词，在<b>题干与段落的错位</b>：<b>题干问 <code>earned media</code>，可第三段通篇在讲 <code>hijacked media</code>，<code>earned media</code> 全段只出现一次，还是作为「被对照的那一方」。</b><br><b>⟹ 这种题只有一种解法：确认两者是「一体两面」，然后把讲 A 的话<u>取负号</u>，得到 B。</b></p>
+        <div class="tabwrap"><table class="ctab">
+          <tr><th>要素</th><th>赢得媒介（earned）</th><th>劫持媒介（hijacked）</th></tr>
+          <tr><td><b>谁在动手</b></td><td><b>consumers passionate</b> about a product（①❹）</td><td><b>passionate consumers</b>（③❶）　⟹ <b>同一批人，形容词都没换</b></td></tr>
+          <tr><td><b>动的是什么</b></td><td>把产品<b>推荐</b>给朋友</td><td>把资产或宣传活动<b>扣为人质</b></td></tr>
+          <tr><td><b>载体</b></td><td>企业自己的媒介</td><td><b>the businesses that <u>originally created them</u></b>（③❸）　⟹ <b>同一个载体</b></td></tr>
+          <tr><td><b>推动力</b></td><td colspan="2"><b>The <u>same</u> dramatic technological changes</b>（③❶）　⟹ <b>同一批技术，一句话把②段与③段焊死</b></td></tr>
+          <tr><td><b>结果</b></td><td>正面口碑</td><td>负面言论 ⟹ <b>取负号回推 ⟹ 33B「赢得媒介<u>可能被用来</u>制造负面效应」</b></td></tr>
+        </table></div>
+
+        <div class="atti" style="margin-top:16px">
+          🔑 <b>R95 的启动信号（见到就知道要「算」而不是「找」）</b><br>
+          <code>A is the opposite of B</code> · <code>A is the reverse of B</code> · <code>the flip side of</code> · <code>the other side of the coin</code> · <code>A, unlike B, …</code> · <code>Far from being B, A …</code>。<br>
+          <b>⟹ 这些句式在说：<u>作者只打算正面写一个，另一个靠你自己反推</u>。</b><br>
+          ⚡ <b>三步动作</b>：<b>① 先确认「一体两面」</b>——找有没有「同一批人 / 同一个载体 / 同一个成因」的证据（本段三条全给了）；<b>② 把讲 A 的关键句<u>取负号</u></b>；<b>③ 用「留余地」筛选项</b>。<br>
+          ⭐ <b>第③步是最容易被忽略、却最好用的一步</b>：<b>凡靠反推得出的结论，正确项几乎一定带一个软化词</b>——<code><b>can be</b> used to</code>（33B）· <code>may</code> · <code>is likely to</code> · <code>in some cases</code>。<b>因为反推出来的结论本就不是原文的直接断言，命题人不敢写死。</b><b>反过来，A 的 <code>constant</code>（不断的）与 D 的 <code>deserve all</code>（理应受到全部）都写死了，也就都错了。</b><br>
+          🔗 <b>与 2011 T1 的 R87 是同一族的两种形态，一起记</b>：<br>
+          　▸ <b>R87</b>：<code>are missing the point</code> 型 ⟹ 正解 ＝ <b>对方主张 × 作者的负号</b>（<u>作者对观点打负号</u>）。<br>
+          　▸ <b>R95</b>：<code>the opposite of</code> 型 ⟹ 正解 ＝ <b>另一个概念 × 负号</b>（<u>两个概念之间打负号</u>）。<br>
+          　▸ <b>共同点：<u>正确项在原文里一个对应词都找不到</u>。</b><b>做到这种题时，「回原文搜关键词」这一招会完全失灵——搜不到不代表选项错，代表这题要算。</b><br>
+          ⚠️ <b>本题还留了一个容易忽略的教训</b>：<b>题干指定了 <code>Paragraph 3</code>，但答案的三条证据里有两条在①段和②段</b>（同一批人、同一批技术）。<b>「题干限定段落」限的是<u>取材段</u>，不限<u>佐证段</u>——限定段里读不出来时，往回翻两段找同源句。</b>（对照旧卡 <b>R7</b>：别处的「对信息」也是错项——两条要一起用，别只记一条。）
+        </div>
+      </section>
+
+      <!-- ========== 专栏四 ========== -->
+      <section class="card" id="col4">
+        <h2><span class="n">02++++</span>专栏 · 应对 ≠ 利用：先判这个主体是<u>受损方</u>还是<u>受益方</u>（34 题 · 新卡 R96）＋ 十五个干扰项产地总账</h2>
+        <p style="font-size:.9rem;margin-bottom:12px">34D <code>taking advantage of hijacked media</code> 是本题最像的一个：<b>宾语（hijacked media）完全正确，主体（丰田）完全正确，段落（第四段）完全正确——<u>唯一被动的是动词的方向</u>。</b><br><b>丰田做的是 <code>alleviated <u>some of</u> the damage</code>（减轻了<u>部分</u>损失）：这是<u>止损</u>，不是<u>获利</u>。</b></p>
+        <div class="tabwrap"><table class="ctab">
+          <tr><th>动词族</th><th>它暗示主体是</th><th>常见词</th></tr>
+          <tr><td><b>止损 / 应对</b></td><td><b>受损方</b>（被动挨打，事后补救）</td><td><code>respond to</code> · <code>cope with</code> · <code>deal with</code> · <code>address</code> · <code>contain</code> · <code>alleviate</code> · <code>mitigate</code> · <code>defuse</code> · <code>weather</code></td></tr>
+          <tr><td><b>获利 / 利用</b></td><td><b>受益方</b>（主动出手，从中得好处）</td><td><code>take advantage of</code> · <code>capitalize on</code> · <code>exploit</code> · <code>leverage</code> · <code>benefit from</code> · <code>cash in on</code> · <code>turn … to one's advantage</code></td></tr>
+          <tr><td><b>预防 / 拦截</b></td><td><b>尚未受损</b>（事前）</td><td><code>prevent</code> · <code>avert</code> · <code>head off</code> · <code>guard against</code> · <code>preempt</code></td></tr>
+        </table></div>
+        <p style="font-size:.86rem;margin-top:10px">⚡ <b>五秒动作：先在原文里给主体贴一个标签（受损／受益／未损），再看选项动词属于哪一族——<u>不同族的直接排，不用比宾语</u>。</b><br>
+        ⚠️ <b>本篇有一处极妙的互证：<code>leverage</code>（利用）在①❹ 出现过一次，主语是<u>企业</u>、宾语是<u>自有媒介</u>——那才是真正的「利用」（主动、获利）。</b><b>同一篇文章里，「利用」长什么样、「止损」长什么样，各给了一个样本。</b></p>
+
+        <h2 style="margin-top:26px"><span class="n">📊</span>十五个干扰项 · 产地总账</h2>
+        <div class="tabwrap"><table class="ctab">
+          <tr><th>族（工艺）</th><th>数量</th><th>是哪几个</th><th>五秒识别动作</th></tr>
+          <tr><td><b>① 术语串门</b>（R93）</td><td><b>5</b></td><td>31A 碎片拌合 · 31B 自有搬到赢得 · 33A 创造者当对手 · 33D 靶子搬家 · 35B 对立读成冲突</td><td>给<b>每个选项标一个术语归属</b>，与题干的术语对不上就排</td></tr>
+          <tr><td><b>② 个例当整类</b>（R94）</td><td><b>3</b></td><td>32B（BabyCenter 推竞品）· 32D（杂糅个例三条好处）· 32A（过度解读定义句尾）</td><td>在定位段的 <code>for example</code> 处<b>画一条竖线</b>，右边不看</td></tr>
+          <tr><td><b>③ 以偏概全</b>（R40 覆盖度）</td><td><b>3</b></td><td>35B（只覆盖③段）· 35C（只覆盖③④段）· 35D（只覆盖①②段）</td><td>主旨题先<b>数选项覆盖了几段</b></td></tr>
+          <tr><td><b>④ 主体／角色偷换</b>（R21、R96）</td><td><b>3</b></td><td>34B 动作主语被偷 · 34D 受损方说成受益方 · 31C 介词方向（我推给朋友 ⟹ 帮朋友推）</td><td><b>谁 / 对谁 / 做了什么</b>，三问全对才算命中</td></tr>
+          <tr><td><b>⑤ 熟词僻义读错</b>（R10）</td><td><b>2</b></td><td>33C <code>campaign</code> 读成「竞赛」· 32D <code>organization</code> 读成「组织形式」</td><td>一词多义的小词，<b>看它在句中和谁并列</b></td></tr>
+          <tr><td><b>⑥ 凭空添加的形容词</b>（R37）</td><td><b>4</b></td><td>32A <code>safe</code> · 32B <code>random</code> · 34C <code>supportive</code> · 31C <code>quality</code></td><td>选项里的形容词<b>逐个回原文找出处</b>，找不到就排</td></tr>
+          <tr><td><b>⑦ 绝对化 / 价值判断</b>（R12）</td><td><b>3</b></td><td>33A <code>constant</code> · 33D <code>deserve all</code> · 35C <code>dominance</code>（＋35D <code>popularity</code>）</td><td>见 <code>all / constant / only / must</code> <b>先扣一分再看</b></td></tr>
+        </table></div>
+        <p style="font-size:.86rem;color:var(--muted);margin-top:8px">（合计大于 15，因为多数干扰项<b>同时踩两族</b>——例如 32B 既是「个例当整类」又是「凭空添加形容词」，35B 既是「术语串门」又是「以偏概全」。<b>这也正是它们像的原因：一个干扰项通常只被动一处，但那一处能被两种口径同时指认。</b>）</p>
+
+        <div class="atti" style="margin-top:16px">
+          ⭐⭐ <b>一条继续验证的跨篇结论：十五个干扰项里，仍然没有一个是「原文完全没提过的东西」——<u>连续第七篇</u>同一结论</b>（2010 T1／T2／T3／T4 各一次，2011 T1／T2 各一次）。<br>
+          　▸ <b>被动手脚的永远只有四样：<u>归属</u>（这段话属于哪个术语）· <u>范围</u>（一家还是一类）· <u>方向</u>（谁对谁、止损还是获利）· <u>程度</u>（凭空加的形容词与绝对化）。</b><br>
+          　▸ <b>⟹ 「原文有没有这个词」只能用来<u>定位</u>，永远不能用来<u>判分</u>。</b><b>本篇 15 个干扰项的名词几乎全是原文原词。</b><br>
+          ⭐⭐ <b>第二条：2011 这一份卷子的三篇，是三种完全不同的干扰项工艺</b>——<b>T1 动「<u>极性与归属</u>」· T2 动「<u>解释</u>」· T3 动「<u>术语关系</u>」。</b><b>同一份卷子不重复用刀 ⟹ 押考法没有意义，能练的只有「每种刀配一个五秒动作」。</b><br>
+          🧭 <b>第三条（元判断的当场验证与修正）</b>：<b>T2 收尾时立过「作者出不出面，决定这篇出什么题」。本篇有第一人称 <code>We define</code> / <code>we believe</code>，却<u>零态度题</u> ⟹ 必须补一刀：</b><br>
+          　▸ <b>【表态的第一人称】</b><code>For my part, I have no idea whether…</code>（T1）——作者对有争议的事<b>选边</b> ⟹ <b>必出态度题</b>。<br>
+          　▸ <b>【下定义的第一人称】</b><code>We define X as …</code>（本篇）——作者在<b>行使命名权</b> ⟹ <b>不出态度题，出定义题、特征题、主旨题</b>。<br>
+          　▸ <b>判据一秒可下：<code>we</code> 后面跟的是 <u>think / believe 一个有争议的判断</u>，还是 <u>define / call / term 一个新名字</u>。</b>
+        </div>
+      </section>
+      <!-- ========== 长难句 ========== -->
+      <section class="card">
+        <h2><span class="n">03</span>长难句精析 · 10 句</h2>
+        <p style="font-size:.88rem;color:var(--muted);margin-bottom:14px">⚠️ <b>黄皮书本篇没有长难句栏目，以下 10 句全为原创拆解</b>（自 2010 T2 起已连续七篇如此）。<br><b>本篇的句子有一个共同长相：<u>主语后面挂一大串修饰，把主谓撑得很开</u></b>（s3 的 <code>The way</code> ＋ 省略关系词的定语从句 · s7 的 <code>changes</code> ＋ 13 词定语从句 · s6 的 <code>the presence of…</code> ＋ 三个并列谓语）。<b>另外两个难点：<u>并列成分的辖域</u></b>（s5 两个 <code>and</code> 各连什么、s9 的 <code>not … quick <u>or</u> thoughtful</code>）<b>与 <u>两个 that 的性质不同</u></b>（s7）。<br><b>命脉句</b>：<b>s2 管 31 · s4 管 32 · s8 管 33 · s9/s10 管 34 · s3 管 35。</b></p>
+
+        <div class="sent" id="s1">
+          <div class="src"><u>While traditional 「paid」 media—such as television commercials and print advertisements—still play a major role</u>, <b>companies today can exploit many alternative forms of media</b>.</div>
+          <ul class="anat">
+            <li><b class="skel">骨架</b>：<code><b>While A, B</b></code> —— <b>句首的 <code>While</code> ＝「虽然」（让步），不是「当……时候」。</b><b>重心永远在逗号之后的主句 B 上。</b></li>
+            <li><b class="skel">⭐ 破折号插入 8 个词，把主语与谓语撑开</b>：主语是 <code>media</code>，谓语是 <code>play</code>，中间塞了 <code>—such as television commercials and print advertisements—</code>。<b>读长句先跳插入语，句子立刻变成 <code>While traditional media still play a major role, …</code>。</b></li>
+            <li><b class="skel">⚠️ 一个可以当判据用的细节</b>：谓语是 <code>play</code> 不是 <code>plays</code> ⟹ <b><code>media</code> 在这里是<u>复数</u></b>（单数是 <code>medium</code>）。<b>全文所有 <code>media</code> 都按复数处理，这也是为什么 33 题选项写的是 <code>earned media <b>can be</b> used</code> 而不是 <code>can it be</code>。</b></li>
+            <li><b class="skel">词</b>：<code>exploit</code> <b>v. 利用、开发</b>（此处<u>中性</u>，不是「剥削」）· <code>commercial</code> <b>n. 电视／广播广告</b>（不是形容词「商业的」）· <code>alternative</code> <b>adj. 替代性的</b>。</li>
+            <li><b class="skel">考点</b>：<b><code>alternative</code> 是 35A 正确项 <code>Alternatives to conventional paid media</code> 的词源。</b><b>主旨题的正解常常借用首段的一个概括词——这里就是活样本。</b></li>
+          </ul>
+          <div class="tr"><b>译</b>：虽然传统的「付费」媒介——如电视广告和平面广告——依然发挥着主要作用，但今天的企业可以利用许多替代性的媒介形式。</div>
+        </div>
+
+        <div class="sent" id="s2">
+          <div class="src"><b>Consumers</b> <i>passionate about a product</i> <b>may create 「earned」 media</b> <u>by willingly promoting it to friends</u>, <b>and a company may leverage 「owned」 media</b> <u>by sending e-mail alerts about products and sales</u> to customers <i>registered with its Web site</i>.</div>
+          <ul class="anat">
+            <li><b class="skel">骨架</b>：<code><b>A may create X by doing…, and B may leverage Y by doing…</b></code> —— <b>两个分句结构完全对称，各给一个术语下定义。</b></li>
+            <li><b class="skel">⚠️ 两处后置定语，都极容易被读成谓语</b>：<br>▸ <code>Consumers <b>passionate about a product</b></code> ＝ <code>Consumers <b>who are</b> passionate about a product</code>（<b>形容词短语作后置定语</b>）。<b>若把 passionate 当谓语读，整句会散架——判据：句中已经有 <code>may create</code> 了。</b><br>▸ <code>customers <b>registered with</b> its Web site</code> ＝ <code>customers <b>who are</b> registered…</code>（<b>过去分词作后置定语</b>）＝ 已在其网站注册的顾客。</li>
+            <li><b class="skel">⭐⭐ 两个 <code>by doing</code> 就是两个术语的「生成方式」，31 题四个选项全部从这两个 <code>by</code> 里拆出来</b>：<b>前一个 <code>by willingly promoting it to friends</code> ⟹ 31D（正确）；后一个 <code>by sending e-mail alerts</code> ⟹ 31B（术语串门）。</b></li>
+            <li><b class="skel">⚠️ 介词决定施动方</b>：<code>promoting <b>it</b> <b>to</b> friends</code> —— <b><code>it</code> ＝ a product，<code>to friends</code> ＝ 推荐<u>给</u>朋友。</b><b>做这个动作的是消费者本人。</b><b>31C 写 <code>help their friends promote</code>，一个词就把施动方换成了朋友。</b></li>
+            <li><b class="skel">词</b>：<code>leverage</code> <b>v. 充分利用</b>（名词义「杠杆」引申而来，商业文常用）· <code>alert</code> <b>n. 提醒、通知</b>（<code>e-mail alerts</code> 邮件提醒）。<b>⚠️ <code>leverage</code> 是本篇「主动获利」类动词的样本，与 34D 的 <code>take advantage of</code> 同族——记住它长什么样，反过来就知道丰田那件事不是这一族。</b></li>
+          </ul>
+          <div class="tr"><b>译</b>：热衷于某一产品的消费者，可以通过自愿把它推荐给朋友来创造「赢得（口碑）」媒介；而企业则可以通过向在其网站注册的顾客发送有关产品与促销的邮件提醒，来充分利用「自有」媒介。</div>
+        </div>
+
+        <div class="sent" id="s3">
+          <div class="src"><b>The way</b> <i>consumers now approach the process of making purchase decisions</i> <b>means</b> <u>that marketing's impact stems from a broad range of factors beyond conventional paid media</u>.</div>
+          <ul class="anat">
+            <li><b class="skel">骨架</b>：<code><b>The way [ … ] means that …</b></code> —— <b>主语只有两个词 <code>The way</code>，谓语是 <code>means</code>，中间隔了 9 个词。</b></li>
+            <li><b class="skel">⭐ 中间那 9 个词是一个<u>省略了关系词</u>的定语从句</b>：<code>The way <b>(in which / that)</b> consumers now approach the process…</code> ＝「消费者如今<u>着手</u>做购买决策<u>的那种方式</u>」。<b>判据：<code>The way</code> 后面直接跟了一个「主语＋谓语」（consumers approach），中间没有连词 ⟹ 一定是省略了关系词的定语从句。</b>（⟹ 旧卡 <b>R70</b>）</li>
+            <li><b class="skel">⚠️ 找谓语的技巧</b>：<b>从句里的 <code>approach</code> 是复数主语 consumers 的谓语；真正的主句谓语是第三人称单数 <code>mean<u>s</u></code>——<u>那个 s 就是全句的坐标</u>。</b></li>
+            <li><b class="skel">词</b>：<code>approach</code> <b>v. 着手处理、对待</b>（不是「接近」）· <code>stem from</code> <b>源自、由……造成</b>（<code>stem</code> 本义「茎」⟹「从……长出来」）· <code>conventional</code> <b>传统的、常规的</b>。</li>
+            <li><b class="skel">⭐⭐ 考点</b>：<b>本句是全文主旨句，也是 35A 的正源</b>：<code>a broad range of factors <b>beyond conventional paid media</b></code> ⟹ <code><b>Alternatives to</b> conventional paid media</code>。<b><code>beyond</code>（超出）在这里等价于「替代性的」。</b></li>
+          </ul>
+          <div class="tr"><b>译</b>：消费者如今做出购买决策的方式意味着：营销的影响力来自超越传统付费媒介的众多因素。</div>
+        </div>
+
+        <div class="sent" id="s4">
+          <div class="src"><b>We define such sold media as owned media</b> <i>whose traffic is <u>so strong that</u> other organizations place their content or e-commerce engines within that environment</i>.</div>
+          <ul class="anat">
+            <li><b class="skel">骨架</b>：<code><b>define A as B</b></code>（把 A 定义为 B）—— <b>A ＝ such sold media，B ＝ owned media ＋ 一个 whose 定语从句。</b></li>
+            <li><b class="skel">⭐⭐ 定义的信息量全在 <code>whose</code> 从句里</b>：<b>「售出媒介」＝「自有媒介」＋ 一个限定条件。</b><b>换句话说，<u>售出媒介是自有媒介的子集</u>——这是本篇术语关系表里最重要的一条血缘。</b></li>
+            <li><b class="skel">⭐ 嵌套结构 <code>so … that …</code></b>：<code>whose traffic is <b>so strong that</b> other organizations place…</code> ＝「访问量<b>大到</b>其他机构会把内容放进来」。<b>这是<u>唯一</u>的判据句 ⟹ 32C <code>strong user traffic</code> 直接从这里搬。</b></li>
+            <li><b class="skel">⚠️ 两个被拿去造干扰项的词</b>：<code>other <b>organizations</b></code> ＝ 其他<u>机构</u>（可数名词，不是「组织形式」⟹ 32D 的坑）· <code>that <b>environment</b></code> ＝ 那个（网站）<u>环境</u>（中性，不含「安全」⟹ 32A 的坑）。</li>
+            <li><b class="skel">📌 <code>We define …</code> 这个句式本身就是考点标记</b>：<b>凡文章自己出面下定义，那一句必出题</b>——因为它是全文唯一给出「判据」的地方。<b>见到 <code>We define / We call / is known as / refers to</code>，就在旁边画一个五角星。</b></li>
+          </ul>
+          <div class="tr"><b>译</b>：我们把这样的售出媒介定义为：访问量大到其他机构愿意把自己的内容或电商引擎放进这一环境的自有媒介。</div>
+        </div>
+
+        <div class="sent" id="s5">
+          <div class="src"><b>This trend</b>, <i>which we believe is still in its infancy</i>, <b>effectively began with</b> retailers and travel providers such as airlines and hotels <b>and will no doubt go further</b>.</div>
+          <ul class="anat">
+            <li><b class="skel">骨架</b>：<code><b>This trend … began with A and will go further</b></code> —— <b>一个主语，两个并列谓语（began ／ will go）。</b></li>
+            <li><b class="skel">⭐ <code>which we believe is</code> 是本句最容易读错的地方</b>：<b><code>we believe</code> 是<u>插入语</u>，<code>which</code> 是后面 <code>is</code> 的主语</b>（＝ 我们认为这一趋势仍处起步阶段）。<br>⚠️ <b>千万别读成 <code>which we believe <u>it</u> is</code>——关系代词已经充当了从句主语，不能再加 it。</b><b>同类插入：<code>who I think is…</code> · <code>which experts say will…</code>。</b></li>
+            <li><b class="skel">⚠️ 两个 <code>and</code> 的辖域不同，读错就散架</b>：<b>第一个 <code>and</code> 连的是两个名词</b>（<code>retailers</code> 与 <code>travel providers</code>）；<b>第二个 <code>and</code> 连的是两个谓语</b>（<code>began</code> 与 <code>will … go further</code>）。<b>判据：第二个 and 后面跟的是<u>助动词 will</u>，只有谓语才配助动词。</b></li>
+            <li><b class="skel">词</b>：<code>in its infancy</code> <b>处于起步阶段</b>（不是「婴儿期」，商业文固定说法）· <code>effectively</code> <b>实际上、事实上</b>（⚠️ <u>不是</u>「有效地」，此处等于 in effect）· <code>no doubt</code> <b>无疑、势必</b>。</li>
+            <li><b class="skel">考点</b>：<b>本句不直接出题，但它交代了「售出媒介」的<u>发展阶段</u>，是 32 题四个选项都<u>没有</u>涉及的部分——读到这里可以确认：本段的答案区在上一句。</b></li>
+          </ul>
+          <div class="tr"><b>译</b>：我们认为这一趋势仍处于起步阶段，它实际上始于零售商以及航空公司、酒店这类旅游服务提供商，并且势必会进一步发展。</div>
+        </div>
+
+        <div class="sent" id="s6">
+          <div class="src"><u>Besides generating income</u>, <b>the presence of other marketers</b> <b>makes</b> the site seem objective, <b>gives</b> companies opportunities to learn valuable information about the appeal of other companies' marketing, <b>and may help</b> expand user traffic for all companies <i>concerned</i>.</div>
+          <ul class="anat">
+            <li><b class="skel">骨架</b>：<code><b>主语 ＋ 谓语① ＋ 谓语② ＋ and 谓语③</b></code> —— <b>主语只有一个（<code>the presence of other marketers</code>），后面挂了<u>三个</u>并列谓语：<code>makes</code> / <code>gives</code> / <code>may help</code>。</b></li>
+            <li><b class="skel">⚠️ 三个谓语相隔很远，最容易漏掉第三个</b>：<b>读到 <code>and may help</code> 时要意识到它的主语仍是句首那个 <code>presence</code>，不是紧挨着的 <code>marketing</code>。</b><b>技巧：并列谓语一律回到句首找主语，不看就近名词。</b></li>
+            <li><b class="skel">⭐ <code>makes the site <u>seem</u> objective</code></b>：<code>make ＋ 宾语 ＋ 动词原形</code>（使役结构）。<b>注意是 <code>seem</code>（显得）不是 <code>be</code>（是）——原文很克制：其他营销者的存在<u>让网站看起来</u>客观，并没有说它真的客观。</b></li>
+            <li><b class="skel">⭐ <code>all companies <u>concerned</u></code> ＝ 所有<u>相关</u>公司</b>（后置定语）。<b>⚠️ <code>concerned</code> 位置一变意思就变</b>：<code>the <b>concerned</b> parents</code> ＝ <u>担心的</u>家长（前置）· <code>all parties <b>concerned</b></code> ＝ 所有<u>相关</u>方（后置）。<b>这是英语一常考的一处位置差。</b></li>
+            <li><b class="skel">考点</b>：<b>32D 的诱饵来源。</b><b>这三条说的是「售出媒介给营销者带来<u>哪些好处</u>」，不是「它的组织方式多灵活」——好处 ≠ 特征，这一步分清就不会被 D 骗。</b></li>
+          </ul>
+          <div class="tr"><b>译</b>：除了创造收入之外，其他营销者的存在还使该网站显得客观，让各公司有机会了解别家公司营销的吸引力所在，并且可能帮助所有相关公司扩大用户访问量。</div>
+        </div>
+
+        <div class="sent" id="s7">
+          <div class="src"><b>The same dramatic technological changes</b> <i>that have provided marketers with more (and more diverse) communications choices</i> <b>have also increased the risk</b> <u>that passionate consumers will voice their opinions in quicker, more visible, and much more damaging ways</u>.</div>
+          <ul class="anat">
+            <li><b class="skel">骨架</b>：<code><b>changes [that 定语从句 13 词] have also increased the risk [that 同位语从句]</b></code> —— <b>全篇最长的一句，主语与谓语被撑开 13 个词。</b></li>
+            <li><b class="skel">⭐⭐ 两个 <code>that</code> 性质完全不同，这是本句唯一的考点</b>：<br>▸ <b>第一个 that ＝ 关系代词</b>（引导定语从句修饰 changes）。<b>判据：<code>that have provided…</code> 后面<u>缺主语</u>，that 自己就是主语。</b><br>▸ <b>第二个 that ＝ 连词</b>（引导同位语从句解释 risk 的内容）。<b>判据：<code>that passionate consumers will voice…</code> 后面<u>主谓宾齐全</u>，that 不充当任何成分。</b><br><b>⟹ 一句口诀：that 后面<u>缺成分</u>就是定语从句，<u>不缺</u>就是同位语／宾语从句。</b></li>
+            <li><b class="skel">⭐ 句首 <code>The same</code> 是一个跨段的钩子</b>：<b>「<u>同样是</u>这些技术变革」——它指的是②段那些给营销者带来新机会的技术。</b><b>一个 <code>same</code> 把②段（机遇）与③段（风险）焊成一体，这正是 33 题「一体两面」的第一条证据。</b>（⟹ 新卡 <b>R95</b>）</li>
+            <li><b class="skel">词</b>：<code>voice</code> <b>v. 表达、说出</b>（名词「嗓音」的动词化）· <code>visible</code> <b>显眼的、看得见的</b>（此处指「公开可见」）· <code>damaging</code> <b>破坏性的</b>· <code>diverse</code> <b>多样的</b>。</li>
+            <li><b class="skel">📌 括号插入 <code>(and more diverse)</code> 可以直接跳过</b>：<b>括号里的内容在英语一里几乎从不单独出题，但它常常是「作者补一句更精确的说法」——跳读不影响做题，回读能加深理解。</b></li>
+          </ul>
+          <div class="tr"><b>译</b>：同样是这些重大的技术变革，在给营销者带来更多（也更多样）的传播渠道选择的同时，也增加了这样一种风险：狂热的消费者会以更快、更公开可见、破坏力大得多的方式发表他们的观点。</div>
+        </div>
+
+        <div class="sent" id="s8">
+          <div class="src"><b>Such hijacked media are the opposite of earned media</b>: <i>an asset or campaign becomes hostage to consumers, other stakeholders, or activists</i> <u>who make negative allegations about a brand or product</u>.</div>
+          <ul class="anat">
+            <li><b class="skel">骨架</b>：<code><b>判断句 ＋ 冒号 ＋ 展开</b></code> —— <b>冒号在这里等于「即」「也就是说」：前面给结论，后面给这个结论的具体内容。</b></li>
+            <li><b class="skel">⭐⭐ 前半句是 33 题的全部支点</b>：<code>are <b>the opposite of</b> earned media</code>——<b>这不是在介绍两样东西，而是在说同一样东西的两面。</b><b>题干问 earned media，而全段只有这半句提到它 ⟹ 答案必须靠反推（⟹ 新卡 R95）。</b></li>
+            <li><b class="skel">⭐ <code>becomes hostage to sb</code> ＝ 成为某人的人质</b>（<code>hostage</code> 此处作表语，前面不加冠词）。<b>这个比喻很形象：企业花钱造出来的媒介资产，反过来被消费者攥在手里当筹码。</b></li>
+            <li><b class="skel">⚠️ <code>campaign</code> ＝ 宣传活动，<u>不是</u>「竞选／竞赛」</b>：<b>判据看它跟谁并列——<code>an <b>asset</b> or <b>campaign</b></code>，与「资产」并列的只能是企业自己的营销活动。</b><b>33C <code>fiercer competition</code> 正是把它读成了「竞争」，再脑补一步「竞争加剧」。</b>（⟹ 旧卡 <b>R10</b>）</li>
+            <li><b class="skel">📌 <code>who</code> 从句管辖三个并列名词</b>（consumers / stakeholders / activists）：<b>发负面言论的是这三类人，不是只有 activists。</b><b>⟹ 33A 把「消费者对品牌发难」写成「赢得媒介与消费者冲突」，冲突对象整个错位。</b></li>
+          </ul>
+          <div class="tr"><b>译</b>：这种「劫持」媒介是赢得（口碑）媒介的对立面：一项资产或一场宣传活动会成为消费者、其他利益相关方或激进分子的人质，这些人对某一品牌或产品发表负面言论。</div>
+        </div>
+
+        <div class="sent" id="s9">
+          <div class="src">In such a case, <b>the company's response may not be sufficiently quick or thoughtful</b>, and <b>the learning curve has been steep</b>.</div>
+          <ul class="anat">
+            <li><b class="skel">骨架</b>：两个并列分句，<b>句子很短，却是全篇最容易读岔的一句——因为它是<u>正话反说</u>。</b></li>
+            <li><b class="skel">⭐ <code>not … quick <u>or</u> thoughtful</code>：否定句里的 <code>or</code> ＝ 肯定句里的 <code>and</code></b>。<b>意思是「既不够快，<u>也</u>不够周密」——两个都被否定，不是「二者取其一」。</b><br>📌 <b>对照</b>：<code>He is not tall <b>or</b> strong.</code>（又不高又不壮）vs <code>He is not tall <b>and</b> strong.</code>（不是又高又壮，可能占一样）。<b>这是英语一常年考的一处逻辑差。</b></li>
+            <li><b class="skel">⭐ <code>the learning curve has been steep</code> ＝ 学习曲线一直很陡</b>：<b>直译没用，要落到它的含义上——<u>必须在很短时间内学会应对</u>（时间紧、任务重）。</b><b>不是「学起来很难」，也不是「进步很快」。</b></li>
+            <li><b class="skel">⚠️ 本句的功能是「<u>论点</u>」，而④❸ 的丰田是「<u>例证</u>」——两者是<u>反差</u>关系不是印证关系</b>：<b>论点说「公司通常做不好」，例子给的是「有一家做得还不错」。</b><b>⟹ 34 题问「丰田被用来举例说明什么」，答案就是「做到了这件难事」＝ 有效应对。</b></li>
+            <li><b class="skel">📌 读不懂本句也有保底走法</b>：<b>直接从下一句抽三个词 <code>alleviated</code>／<code>relatively quick</code>／<code>well-orchestrated</code>，三个都指向「有效应对」。</b><b>论点句读不通时，用例证句的核心词反推论点——这是例证题的通用备胎。</b></li>
+          </ul>
+          <div class="tr"><b>译</b>：在这种情况下，公司的回应可能不够迅速、也不够周密，而且留给它学会应对的时间一直很紧。</div>
+        </div>
+
+        <div class="sent" id="s10">
+          <div class="src"><b>Toyota Motor</b>, for example, <b>alleviated <u>some of</u> the damage</b> <i>from its recall crisis</i> <i>earlier this year</i> <u>with a relatively quick and well-orchestrated social-media response campaign</u>, <i>which included efforts to engage with consumers directly on sites such as Twitter and the social-news site Digg</i>.</div>
+          <ul class="anat">
+            <li><b class="skel">骨架</b>：<code><b>Toyota alleviated the damage with a campaign, which included efforts…</b></code> —— <b>主干只有五个词，其余全是修饰。</b></li>
+            <li><b class="skel">⭐ 三层修饰各管一件事，分清就不乱</b>：<code>from its recall crisis</code>（<b>损失的来源</b>）· <code>earlier this year</code>（<b>时间</b>）· <code>with a … campaign</code>（<b>方式，也是本题答案所在</b>）。<b>凡 <code>with ＋ 名词</code> 出现在动词后，先按「凭借／通过」读。</b></li>
+            <li><b class="skel">⭐⭐ <code>some of the damage</code> 这两个词是 34D 的直接反证</b>：<b>丰田只是<u>减轻了部分</u>损失——它仍然是受损方。</b><b>一个还在流血的人，谈不上 <code>take advantage of</code>（利用这场危机获利）。</b>（⟹ 新卡 <b>R96</b>）</li>
+            <li><b class="skel">词</b>：<code>alleviate</code> <b>v. 减轻、缓解</b>（<code>al-＋levi(轻)＋ate</code>，同源 <code>elevate</code> 抬升 / <code>levity</code> 轻浮）· <code>recall</code> <b>n.（产品）召回</b>（不是「回忆」）· <code>well-orchestrated</code> <b>精心编排、组织有序的</b>（<code>orchestra</code> 管弦乐队 ⟹ 指挥家把各声部安排妥当）· <code>engage with</code> <b>与……互动、打交道</b>。</li>
+            <li><b class="skel">⚠️ <code>which</code> 指代的是 <code>campaign</code>（那场回应行动），不是 <code>Toyota</code>。</b><b>判据：从句谓语 <code>included</code> 的宾语是 efforts（努力），只有「行动」才能包含「努力」。</b><b>34C 的 <code>supportive consumers</code> 就是从这个从句里的 <code>engage with consumers</code> 造的——原文只说「直接互动」，没说这些消费者是支持者。</b></li>
+          </ul>
+          <div class="tr"><b>译</b>：例如，丰田汽车公司就凭借一场相对迅速且组织有序的社交媒体回应行动——其中包括在推特和社会新闻网站 Digg 等平台上与消费者直接互动的努力——减轻了今年早些时候召回危机所造成的部分损失。</div>
+        </div>
+      </section>
+      <!-- ========== 熟词僻义 ========== -->
+      <section class="card">
+        <h2><span class="n">03+</span>熟词僻义清算表 · 57 行</h2>
+        <p style="font-size:.9rem;margin-bottom:12px">本篇是<b>商业／营销分析体</b>，词汇分三族：<b>①五个新造术语</b>（paid／earned／owned／sold／hijacked media——<u>它们本身不难，难的是不能串门</u>）· <b>②互联网商业行话</b>（traffic／ad space／engine／stand-alone／property／stakeholder——<u>按字面读全错</u>）· <b>③小词的第二义项</b>（campaign／organization／effectively／appeal／concerned／recall——<u>本篇干扰项的主要原料</u>）。<br><b>下表按「决定做题 / 决定读懂 / 行话与其余」三组排，凡带 ⭐ 的都直接影响做题。</b></p>
+        <div class="tabwrap"><table class="ctab">
+          <tr><th>词 / 短语</th><th>你以为</th><th>本篇的义项</th><th>语境</th></tr>
+          <tr><td colspan="4" style="background:var(--blue-soft)"><b>【一】直接决定某道题的（错一个就丢分）</b></td></tr>
+          <tr><td><code>earned media</code> ⭐⭐⭐</td><td>赚到的媒介</td><td><b>赢得（口碑）媒介</b>：消费者<u>自愿</u>替你传播</td><td>consumers … may create 「<b>earned</b>」 media（①❹，<b>31 题</b>）</td></tr>
+          <tr><td><code>owned media</code> ⭐⭐⭐</td><td>拥有的媒介</td><td><b>自有媒介</b>：企业自己的渠道（官网、邮件列表）</td><td>a company may leverage 「<b>owned</b>」 media（①❹，<b>31B 的出处</b>）</td></tr>
+          <tr><td><code>sold media</code> ⭐⭐⭐</td><td>卖掉的媒介</td><td><b>售出媒介</b>：把自家流量位卖给别人的自有媒介</td><td>We define such <b>sold media</b> as…（②❹，<b>32 题</b>）</td></tr>
+          <tr><td><code>hijacked media</code> ⭐⭐⭐</td><td>被劫机的媒介</td><td><b>劫持媒介</b>：企业的媒介被消费者反过来当武器</td><td>Such <b>hijacked media</b> are the opposite of…（③❷，<b>33／34 题</b>）</td></tr>
+          <tr><td><code>traffic</code> ⭐⭐⭐</td><td>交通、车流</td><td><b>（网站的）访问量、流量</b></td><td>owned media whose <b>traffic</b> is so strong（②❹，<b>32C 命脉</b>）</td></tr>
+          <tr><td><code>campaign</code> ⭐⭐⭐</td><td>战役、竞选、竞赛</td><td><b>宣传活动、营销行动</b></td><td>an asset or <b>campaign</b> becomes hostage（③❷，<b>33C 的坑</b>）· social-media response <b>campaign</b>（④❸）</td></tr>
+          <tr><td><code>organization</code> ⭐⭐⭐</td><td>组织形式、条理</td><td><b>机构、团体</b>（可数名词）</td><td>other <b>organizations</b> place their content（②❹，<b>32D 的坑</b>）</td></tr>
+          <tr><td><code>environment</code> ⭐⭐</td><td>自然环境</td><td><b>（网站的）环境、生态</b>——<u>中性词，不含「安全」</u></td><td>within that <b>environment</b>（②❹，<b>32A 的坑</b>）</td></tr>
+          <tr><td><code>take advantage of</code> ⭐⭐⭐</td><td>利用（中性）</td><td><b>借机为自己获利</b>——主体必须是<u>受益方</u></td><td>34D <b>taking advantage of</b> hijacked media（<b>方向反了</b>）</td></tr>
+          <tr><td><code>alleviate</code> ⭐⭐</td><td>消除、解决</td><td><b>减轻、缓解</b>（只减轻，不根除）</td><td><b>alleviated</b> some of the damage（④❸，<b>34A 正源</b>）</td></tr>
+          <tr><td><code>some of</code> ⭐⭐</td><td>（可略过）</td><td><b>其中一部分</b>——<u>丰田只减轻了部分损失</u></td><td>alleviated <b>some of</b> the damage（④❸，<b>34D 的反证</b>）</td></tr>
+          <tr><td><code>passionate about</code> ⭐⭐</td><td>充满激情的</td><td><b>热衷于（某物）</b>——<u>热衷的是产品，不是网购</u></td><td>Consumers <b>passionate about a product</b>（①❹，<b>31A 的分界线</b>）</td></tr>
+          <tr><td><code>promote it <u>to</u> friends</code> ⭐⭐⭐</td><td>促进朋友</td><td><b>把它推荐<u>给</u>朋友</b>——<u>推的人是我</u></td><td>willingly <b>promoting it to friends</b>（①❹，<b>31C 的分界线</b>）</td></tr>
+          <tr><td><code>alternative</code> ⭐⭐⭐</td><td>另类的、非主流的</td><td><b>替代性的</b>；名词 <b>替代选择</b></td><td>many <b>alternative</b> forms of media（①❸，<b>35A 的词源</b>）</td></tr>
+          <tr><td><code>beyond</code> ⭐⭐</td><td>在……后面</td><td><b>超越、不限于</b></td><td>factors <b>beyond</b> conventional paid media（①❺，<b>35A 正源</b>）</td></tr>
+          <tr><td><code>the opposite of</code> ⭐⭐⭐</td><td>两个相反的东西</td><td><b>同一样东西的两面</b>（一体两面）</td><td>hijacked media are <b>the opposite of</b> earned media（③❷，<b>33 题支点</b>）</td></tr>
+          <tr><td><code>leverage</code> ⭐⭐</td><td>杠杆（名词）</td><td><b>v. 充分利用（自己已有的资源）</b></td><td>a company may <b>leverage</b> 「owned」 media（①❹）</td></tr>
+          <tr><td><code>thoughtful</code> ⭐⭐</td><td>体贴的、为他人着想的</td><td><b>深思熟虑的、周密的</b></td><td>response may not be sufficiently quick or <b>thoughtful</b>（④❷）</td></tr>
+          <tr><td><code>learning curve … steep</code> ⭐⭐⭐</td><td>学习曲线很陡（学起来难）</td><td><b>必须在极短时间内学会应对</b>（时间紧、任务重）</td><td>the <b>learning curve has been steep</b>（④❷，<b>34 题论点句</b>）</td></tr>
+          <tr><td><code>recall</code> ⭐⭐⭐</td><td>回忆、召回记忆</td><td><b>n.（产品）召回</b></td><td>damage from its <b>recall</b> crisis（④❸）</td></tr>
+          <tr><td colspan="4" style="background:var(--blue-soft)"><b>【二】决定能不能读懂（不直接出题，但读错就跟丢）</b></td></tr>
+          <tr><td><code>rough guide</code></td><td>粗糙的向导</td><td><b>大致的准则、粗略的指南</b></td><td>The <b>rough guide</b> to marketing success（①❶）</td></tr>
+          <tr><td><code>you got what you paid for</code> ⭐</td><td>你得到你付钱的东西</td><td><b>一分钱一分货</b>（英语谚语）</td><td>used to be that <b>you got what you paid for</b>（①❶）</td></tr>
+          <tr><td><code>No longer.</code> ⭐⭐</td><td>不长了</td><td><b>如今不再如此</b>（独立成句，全文分水岭）</td><td><b>No longer.</b>（①❷）</td></tr>
+          <tr><td><code>commercial</code> ⭐</td><td>adj. 商业的</td><td><b>n. 电视／广播广告</b></td><td>television <b>commercials</b>（①❸）</td></tr>
+          <tr><td><code>exploit</code> ⭐⭐</td><td>剥削（贬义）</td><td><b>利用、开发</b>（此处<u>中性</u>）</td><td>companies today can <b>exploit</b> many alternative forms（①❸）</td></tr>
+          <tr><td><code>alert</code> ⭐</td><td>警报、警觉</td><td><b>n. 提醒、通知</b>（e-mail alerts 邮件提醒）</td><td>sending e-mail <b>alerts</b> about products（①❹）</td></tr>
+          <tr><td><code>registered with</code></td><td>登记了</td><td><b>在（某网站）注册过的</b></td><td>customers <b>registered with</b> its Web site（①❹）</td></tr>
+          <tr><td><code>approach</code> ⭐⭐</td><td>接近、靠近</td><td><b>v. 着手处理、对待</b></td><td>the way consumers now <b>approach</b> the process（①❺）</td></tr>
+          <tr><td><code>stem from</code> ⭐⭐</td><td>茎、阻止</td><td><b>源自、由……造成</b></td><td>marketing's impact <b>stems from</b>（①❺）</td></tr>
+          <tr><td><code>initiator</code> ⭐</td><td>创始人</td><td><b>发起者、触发者</b></td><td>marketers act as the <b>initiator</b> for users' responses（②❷）</td></tr>
+          <tr><td><code>place</code> ⭐</td><td>n. 地方</td><td><b>v. 投放、放置（内容／广告）</b></td><td>other organizations <b>place</b> their content（②❹）</td></tr>
+          <tr><td><code>infancy</code> ⭐⭐</td><td>婴儿期</td><td><b>起步阶段、初期</b></td><td>still in its <b>infancy</b>（②❺）</td></tr>
+          <tr><td><code>effectively</code> ⭐⭐⭐</td><td>有效地</td><td><b>实际上、事实上</b>（＝ in effect）</td><td><b>effectively</b> began with retailers（②❺）</td></tr>
+          <tr><td><code>property</code> ⭐⭐</td><td>财产、性质</td><td><b>（媒体）资产、产品线</b></td><td>a stand-alone media <b>property</b>（②❻）</td></tr>
+          <tr><td><code>complementary</code> ⭐⭐</td><td>赞美的（那是 compl<u>i</u>mentary）</td><td><b>互补的</b></td><td>promotes <b>complementary</b> and even competitive products（②❻）</td></tr>
+          <tr><td><code>presence</code> ⭐</td><td>出席、到场</td><td><b>存在、在场</b></td><td>the <b>presence</b> of other marketers（②❼）</td></tr>
+          <tr><td><code>objective</code> ⭐⭐</td><td>n. 目标</td><td><b>adj. 客观的</b>（且原文只说 seem objective）</td><td>makes the site seem <b>objective</b>（②❼）</td></tr>
+          <tr><td><code>appeal</code> ⭐⭐</td><td>呼吁、上诉</td><td><b>n. 吸引力</b></td><td>the <b>appeal</b> of other companies' marketing（②❼）</td></tr>
+          <tr><td><code>concerned</code> ⭐⭐⭐</td><td>担心的</td><td><b>相关的</b>（<u>后置</u>时才是这个意思）</td><td>all companies <b>concerned</b>（②❼）</td></tr>
+          <tr><td><code>dramatic</code> ⭐</td><td>戏剧性的</td><td><b>重大的、剧烈的</b></td><td>the same <b>dramatic</b> technological changes（③❶）</td></tr>
+          <tr><td><code>voice</code> ⭐⭐</td><td>n. 嗓音</td><td><b>v. 表达、说出（意见）</b></td><td>consumers will <b>voice</b> their opinions（③❶）</td></tr>
+          <tr><td><code>visible</code> ⭐</td><td>看得见的</td><td><b>公开可见的、显眼的</b></td><td>in quicker, more <b>visible</b> … ways（③❶）</td></tr>
+          <tr><td><code>hostage</code> ⭐⭐</td><td>人质（只用于绑架）</td><td><b>become hostage to ＝ 被……攥住、受制于</b></td><td>an asset or campaign becomes <b>hostage to</b> consumers（③❷）</td></tr>
+          <tr><td><code>stakeholder</code> ⭐⭐</td><td>股东（那是 shareholder）</td><td><b>利益相关方</b>（员工、客户、社区都算）</td><td>consumers, other <b>stakeholders</b>, or activists（③❷）</td></tr>
+          <tr><td><code>allegation</code> ⭐⭐</td><td>寓言（那是 allegory）</td><td><b>（未经证实的）指控、说法</b></td><td>make negative <b>allegations</b> about a brand（③❷）</td></tr>
+          <tr><td><code>apply pressure on</code> ⭐</td><td>申请压力</td><td><b>向……施压</b></td><td>hijack media to <b>apply pressure on</b> the businesses（③❸）</td></tr>
+          <tr><td><code>boycott</code> ⭐⭐</td><td>男孩小屋</td><td><b>v./n. 抵制</b>（源自人名 Boycott）</td><td>persuade others to <b>boycott</b> products（④❶）</td></tr>
+          <tr><td><code>at risk</code> ⭐</td><td>在风险上</td><td><b>处于危险之中</b></td><td>putting the reputation … <b>at risk</b>（④❶）</td></tr>
+          <tr><td><code>well-orchestrated</code> ⭐⭐</td><td>管弦乐队演奏的</td><td><b>精心编排、组织有序的</b></td><td>a relatively quick and <b>well-orchestrated</b> … campaign（④❸）</td></tr>
+          <tr><td><code>engage with</code> ⭐⭐</td><td>与……订婚</td><td><b>与……互动、打交道</b></td><td><b>engage with</b> consumers directly（④❸）</td></tr>
+          <tr><td colspan="4" style="background:var(--blue-soft)"><b>【三】互联网商业行话（认识即可，考场按字面读一定错）</b></td></tr>
+          <tr><td><code>marketer</code></td><td>市场</td><td><b>营销者、推销方</b>（是「人／公司」不是「市场」）</td><td>controlled by <b>marketers</b>（②❶）</td></tr>
+          <tr><td><code>e-commerce retailer</code></td><td>电子商务零售</td><td><b>电商零售商</b></td><td>when an <b>e-commerce retailer</b> sells ad space（②❸）</td></tr>
+          <tr><td><code>ad space</code></td><td>广告空间</td><td><b>广告位</b>（网站上卖给别人打广告的位置）</td><td>sells <b>ad space</b> on its Web site（②❸）</td></tr>
+          <tr><td><code>e-commerce engine</code></td><td>电商发动机</td><td><b>电商引擎</b>（嵌入别人网站的下单／交易系统）</td><td>place their content or <b>e-commerce engines</b>（②❹）</td></tr>
+          <tr><td><code>stand-alone</code> ⭐</td><td>单独站着</td><td><b>独立运营的</b>（不依附母品牌）</td><td>a <b>stand-alone</b> media property（②❻）</td></tr>
+          <tr><td><code>travel provider</code></td><td>旅行提供者</td><td><b>旅游服务提供商</b>（航空公司、酒店）</td><td>retailers and <b>travel providers</b>（②❺）</td></tr>
+          <tr><td><code>social-news site</code></td><td>社交新闻</td><td><b>社会新闻网站</b>（用户投票决定新闻排序，如 Digg）</td><td>the <b>social-news site</b> Digg（④❸）</td></tr>
+        </table></div>
+        <div class="atti" style="margin-top:14px">
+          🔤 <b>本表最贵的六个（背下来直接换分）</b>：<b><code>traffic</code>（访问量 ⟹ 32C）· <code>campaign</code>（宣传活动 ⟹ 33C 的坑）· <code>organization</code>（机构 ⟹ 32D 的坑）· <code>concerned</code>（后置＝相关的）· <code>effectively</code>（实际上，不是有效地）· <code>learning curve is steep</code>（时间紧任务重）。</b><br>
+          ⚠️ <b>跨篇对照：<code>property</code> 这个词在本篇是「媒体资产」，在 2010 T2（商业方法专利）里是「知识产权」的那个 property，在物理／化学类文章里是「性质」——<u>同一个词三个义项，判据永远是「它跟谁并列」</u>。</b><br>
+          ⚠️ <b>另一处易混：<code>stakeholder</code>（利益相关方）≠ <code>shareholder</code>（股东）。</b><b>③❷ 把 <code>consumers</code>、<code>other stakeholders</code>、<code>activists</code> 三者并列——若读成「股东」，整句的逻辑（外部人士向企业施压）就崩了。</b>
+        </div>
+      </section>
+
+      <!-- ========== 词汇复盘 ========== -->
+      <section class="card">
+        <h2><span class="n">04</span>词汇复盘（点卡片看详情）</h2>
+        <div class="filters">
+          <button class="fbtn on" data-f="all">全部</button>
+          <button class="fbtn" data-f="core">核心词</button>
+          <button class="fbtn" data-f="phrase">短语</button>
+          <button class="fbtn" data-f="poly">熟词僻义</button>
+          <button class="fbtn" data-f="write">写作可用</button>
+        </div>
+        <div class="vgrid" id="vgrid"></div>
+      </section>
+
+      <!-- ========== 写作素材 ========== -->
+      <section class="card">
+        <h2><span class="n">05</span>可搬进作文的素材 · 8 组</h2>
+        <p style="font-size:.9rem;margin-bottom:12px">本篇是<b>商业分析体</b>，最值得搬的不是营销词汇，而是它<b>「给新事物分类命名」</b>与<b>「同一件事的两面」</b>这两套论述工具。<br><b>英语一大作文凡涉及「网络与社交媒体 / 新技术的利与弊 / 消费与选择 / 危机与应对」——这一整套可以直接搬。第 1、3、5、7 组最值钱，优先背这四条。</b></p>
+        <div class="wb">
+          <div class="wbi"><div class="p">⭐⭐ The rough guide to X used to be that … . No longer.</div><div class="u">关于 X 的大致准则曾经是……。如今不再如此。<br>⟹ <b>本篇的开篇句式，两句话完成「立旧规则 ＋ 宣布它作废」</b>。<b><code>No longer.</code> 单独成句，是极有力的一记停顿</b>——考研作文里敢用短句的人很少，用对了很出彩。<br>可套：<code>The rough guide to success used to be that a diploma guaranteed a job. No longer.</code>　📌 <b>同族</b>：<code>That used to be true. It no longer is.</code> · <code>Those days are gone.</code></div></div>
+          <div class="wbi"><div class="p">⭐ While traditional X still plays a major role, … can now exploit many alternative forms of Y.</div><div class="u">虽然传统的 X 依然发挥主要作用，但……如今可以利用许多替代性的 Y。<br>⟹ <b>「不否定旧的、但强调新的」——这是最成熟的让步写法</b>，比 <code>X is out of date</code> 稳妥得多。<b>考研作文谈新旧事物（纸质书与电子书、线下与线上）都能套。</b><br>可套：<code>While traditional classrooms still play a major role, students today can exploit many alternative forms of learning.</code>　📌 <b><code>still play a major role</code> 是保命短语</b>：一句话堵住阅卷人「你是不是太绝对了」的疑问。</div></div>
+          <div class="wbi"><div class="p">⭐⭐ A is the opposite of B: the same X that gives us … also increases the risk that …</div><div class="u">A 是 B 的对立面：同样是那些带来……的 X，也增加了……的风险。<br>⟹ <b>本篇最值钱的一副骨架：「同一个原因，两个相反的结果」。</b><b>写「技术是双刃剑」这类题目时，用这句比 <code>Every coin has two sides</code>（最烂大街的一句）高三个档次。</b><br>可套：<code>The same technology that connects us also increases the risk that we never truly listen.</code>　📌 <b>关键在 <code>the same … that …</code>：它强调「不是两件事，是同一件事的两面」。</b></div></div>
+          <div class="wbi"><div class="p">We define X as Y whose … is so strong that … .</div><div class="u">我们把 X 定义为……强到……的那种 Y。<br>⟹ <b>下定义的标准句式</b>。<b>作文里若要自造一个概念（如「注意力贫困」「数字素养」），用它开场最稳。</b><br>可套：<code>We may define digital literacy as the ability whose reach is so broad that it shapes every other skill.</code>　📌 <b><code>so … that …</code> 是给定义加限定条件的最简办法</b>：先说它属于哪一类，再说它凭什么与众不同。</div></div>
+          <div class="wbi"><div class="p">⭐⭐ Besides generating income, X makes … seem …, gives … opportunities to …, and may help expand … .</div><div class="u">除了创造收益之外，X 还使……显得……、给……带来……的机会，并可能帮助扩大……。<br>⟹ <b>「一个主语挂三个并列谓语」，是列举好处最漂亮的写法</b>——比写三个 <code>Firstly / Secondly / Thirdly</code> 紧凑得多，也更像地道英语。<br>可套：<code>Besides saving time, online learning makes knowledge seem accessible, gives students opportunities to learn at their own pace, and may help narrow the gap between regions.</code>　📌 <b>三个谓语要<u>换动词</u>（makes / gives / helps），别重复。</b></div></div>
+          <div class="wbi"><div class="p">⭐ an asset becomes hostage to …</div><div class="u">一项资产反而成了……手中的人质。<br>⟹ <b>本篇的比喻眼</b>：<b>「本该属于你的东西，反过来被别人攥住」。</b><b>写「被算法绑架」「被流量绑架」这类主题极为贴切。</b><br>可套：<code>Once shared online, personal privacy becomes hostage to strangers.</code>　⚠️ <b>用比喻要给注解</b>：比喻后面补一句直白的解释，阅卷人才跟得上。</div></div>
+          <div class="wbi"><div class="p">⭐⭐ The company alleviated some of the damage with a relatively quick and well-orchestrated response.</div><div class="u">该公司凭借一场相对迅速、组织有序的回应，减轻了部分损失。<br>⟹ <b>写「应对危机」的模板句，三个词都值钱</b>：<code>alleviate</code>（减轻，比 solve 诚实）· <code>relatively quick</code>（相对迅速，留了余地）· <code>well-orchestrated</code>（组织有序，一个词顶一句话）。<br>可套：<code>Timely and well-orchestrated action can alleviate some of the damage, even if it cannot undo it.</code>　📌 <b><code>some of</code> 与 <code>relatively</code> 这两处「打折」，正是本篇分寸感的来源——不吹牛的句子才可信。</b></div></div>
+          <div class="wbi"><div class="p">Marketing's impact stems from a broad range of factors beyond conventional X.</div><div class="u">其影响力来自超越传统 X 的众多因素。<br>⟹ <b>「原因不止一个」的高级写法</b>：<code>stem from a broad range of factors beyond …</code>，一句话同时表达「多因」与「超出传统认知」。<br>可套：<code>Academic success stems from a broad range of factors beyond conventional test scores.</code>　📌 <b>比 <code>There are many reasons for …</code> 好用得多——后者是初中生写法。</b></div></div>
+        </div>
+        <div class="atti" style="margin-top:14px">
+          🧭 <b>本篇八组素材的共同点：它们都在处理「一件新事物该怎么谈」，而且分工清楚。</b><br>
+          <b>按顺序连起来就是一整段成熟的议论</b>：<b>① 先宣布旧规则作废（The rough guide … No longer.）→ ② 让一步保住旧事物（While traditional X still plays a major role…）→ ④ 给新事物下定义（We define X as…）→ ⑤ 列它的好处（Besides…, makes…, gives…, and may help…）→ ③ 翻到另一面（the same X that … also increases the risk that …）→ ⑥ 用比喻把风险说清（becomes hostage to）→ ⑦ 给出应对（alleviated some of the damage with…）。</b><br>
+          ⭐ <b>这正是本文四段的骨架，也是一篇「新技术利弊」大作文的完整结构——<u>把文章的结构本身背下来，比背单句更值钱</u>。</b><br>
+          📌 <b>与 2011 T1／T2 的素材三足鼎立</b>：<b>T1 给「让步—判决—打折—换根问题」的<u>驳论</u>骨架（写「该不该」）· T2 给「背景—旧规则作废—新常态—留余地」的<u>叙述</u>骨架（写「为什么变了」）· 本篇给「命名—列好处—翻另一面—给对策」的<u>分析</u>骨架（写「利与弊」）。</b><b>考研大作文的三大类题目，2011 一份卷子各配了一套。</b>
+        </div>
+      </section>
+
+
+    </main>
+    <aside>
+      <div id="panel">
+        <button class="close" onclick="document.getElementById('panel').classList.remove('open')">收起</button>
+        <div class="hint">点正文里的<b>黄色高亮词</b>，或下方词汇卡片，这里出详情。</div>
+      </div>
+    </aside>
+  </div>
+</div>
+<button id="yd">查有道</button>
+<script>
+
+const V={
+  roughguide:{w:"rough guide",ipa:"/rʌf ɡaɪd/",pos:"n.",tags:["phrase","write"],cn:"<b>大致的准则、粗略的指南</b>",en:"a general, approximate principle",ex:"The <b>rough guide</b> to marketing success used to be…（①❶）",mem:"📌 <code>rough</code> 在这里是「粗略的、大致的」，不是「粗糙／艰难」。<br>▸ 同族：<code>a rough estimate</code>（粗略估计）· <code>roughly speaking</code>（大致来说）· <code>a rough idea</code>（大概的想法）。",syn:"general principle · rule of thumb",conf:"⭐ <b>作文可用</b>：<code>The rough guide to X used to be that … . No longer.</code> —— 两句话立起旧规则又推翻它。"},
+  usedtobe:{w:"used to be",ipa:"/juːst tə biː/",pos:"phr.",tags:["phrase","poly"],cn:"<b>曾经是</b>（暗示现在已经不是）",en:"was so in the past but not now",ex:"The rough guide … <b>used to be</b> that you got what you paid for（①❶）",mem:"⭐ <b><code>used to</code> 本身就是一个「今昔对比」的信号词</b>：它不只是过去时，还自带「现在不再如此」的言外之意。<br>▸ 所以①❷ 那句 <code>No longer.</code> 只是把言外之意<b>说出声</b>而已。",syn:"once was · formerly",conf:"⚠️ 区分三个长得像的：<code>used to do</code>（过去常做）· <code>be used to doing</code>（习惯于做）· <code>be used to do</code>（被用来做）。<b>本句是第一个。</b>"},
+  gotwhatpaid:{w:"you got what you paid for",ipa:"/…/",pos:"phr.",tags:["phrase","write"],cn:"⭐ <b>一分钱一分货</b>",en:"the quality you receive matches the money you spend",ex:"…that <b>you got what you paid for</b>（①❶）",mem:"📌 <b>英语谚语</b>，此处指旧营销观：<b>广告砸多少钱，就得多少效果。</b><br>▸ 全文第一句就把这条旧规则立起来，第二句 <code>No longer.</code> 立刻推倒——<b>「立—破」两句完成，是说明文最快的开头。</b>",syn:"you get what you pay for",conf:"⭐ <b>作文可用</b>：写「便宜没好货」「投入与产出」时直接搬。"},
+  paidmedia:{w:"paid media",ipa:"/peɪd ˈmiːdiə/",pos:"n.",tags:["core","poly"],cn:"⭐ <b>付费媒介</b>——花钱买来的广告位",en:"advertising space a company pays for",ex:"traditional 「<b>paid</b>」 media—such as television commercials and print advertisements（①❸）",mem:"⭐⭐ <b>五个术语的第一个，也是全文的参照系</b>：其余四个都是相对它定义的（「超越付费媒介」）。<br>▸ <b>特征：营销者<u>掌控</u>，且要<u>花钱</u>。</b>",syn:"advertising · commercials",conf:"⚠️ <b>本篇五个术语的分辨全靠两个问题：<u>谁在动手</u>、<u>要不要花钱</u>。</b>付费＝我花钱；自有＝我自己的；赢得＝别人替我说；售出＝我把地方卖给别人；劫持＝别人拿我的东西打我。"},
+  commercial:{w:"commercial",ipa:"/kəˈmɜːʃl/",pos:"n.",tags:["core","poly"],cn:"<b>电视／广播广告</b>（名词）",en:"an advertisement on television or radio",ex:"television <b>commercials</b> and print advertisements（①❸）",mem:"📌 <b>一见 commercial 就译「商业的」是最常见的失误</b>——它作名词时专指「（电视／广播里播的）广告」。<br>▸ 对照：<code>print advertisement</code> ＝ 平面广告（报刊上的）。",syn:"ad · advert · spot",conf:"⚠️ <code>commerce</code>（商业）· <code>commercial</code>（adj. 商业的／n. 广告）· <code>e-commerce</code>（电子商务，本篇②段出现两次）。"},
+  exploit:{w:"exploit",ipa:"/ɪkˈsplɔɪt/",pos:"v.",tags:["core","poly","write"],cn:"<b>利用、开发</b>（此处<u>中性</u>，不是「剥削」）",en:"to make full use of a resource",ex:"companies today can <b>exploit</b> many alternative forms of media（①❸）",mem:"⭐ <b>exploit 有两副面孔，靠宾语判断</b>：<br>▸ 宾语是<b>资源／机会</b> ⟹ 中性「充分利用」（<code>exploit natural resources</code>）；<br>▸ 宾语是<b>人</b> ⟹ 贬义「剥削」（<code>exploit workers</code>）。<b>本句宾语是 media，所以是中性。</b>",syn:"make use of · tap · harness · leverage",conf:"⚠️ <b>它与 34D 的 <code>take advantage of</code> 同属「主动获利」族</b>——记住它长什么样，就知道丰田「减轻损失」不属于这一族。"},
+  alternative:{w:"alternative",ipa:"/ɔːlˈtɜːnətɪv/",pos:"adj./n.",tags:["core","poly","write"],cn:"⭐⭐⭐ <b>替代性的；替代选择</b>",en:"available as another possibility or choice",ex:"many <b>alternative</b> forms of media（①❸）",mem:"⭐⭐⭐ <b>35A 正确项 <code>Alternatives to conventional paid media</code> 的词源就是它。</b><br>▸ <b>主旨题的正解常常借用首段的一个概括词</b>——读首段时凡见到「统称若干新事物」的词（alternative / various / a range of），就画圈。",syn:"substitute · option · other choice",conf:"⚠️ 别按「另类的、非主流的」理解（那是中文语感）。<code>alternative energy</code> ＝ 替代能源，不是「另类能源」。<br>📌 <b>搭配</b>：<code>alternatives <b>to</b> X</code>（X 的替代品，用 to 不用 of）。"},
+  passionate:{w:"passionate about",ipa:"/ˈpæʃənət/",pos:"adj.",tags:["core","poly"],cn:"⭐⭐ <b>热衷于（某物）的</b>",en:"having strong enthusiasm for sth",ex:"Consumers <b>passionate about a product</b>（①❹）· <b>passionate</b> consumers（③❶）",mem:"⭐⭐ <b>本词是「一体两面」的钥匙</b>：<b>①❹ 里热衷的消费者<u>创造</u>赢得媒介，③❶ 里同一批热衷的消费者<u>发动</u>劫持——原文连形容词都没换。</b><br>▸ <b>这正是 33 题反推的第二条证据。</b>",syn:"enthusiastic · keen · devoted",conf:"⚠️ <b>31A 的坑</b>：原文热衷的对象是「<u>一件产品</u>」，选项写成「<u>网购这件事</u>」（obsessed with online shopping）。<b>热衷对象一换，整句作废。</b><br>📌 <code>passionate <b>about</b></code>：介词是 about。"},
+  earnedmedia:{w:"earned media",ipa:"/ɜːnd ˈmiːdiə/",pos:"n.",tags:["core","poly"],cn:"⭐⭐⭐ <b>赢得（口碑）媒介</b>——消费者自愿替你传播",en:"exposure gained through word of mouth rather than paid advertising",ex:"may create 「<b>earned</b>」 media by willingly promoting it to friends（①❹）",mem:"⭐⭐⭐ <b>31、33 两题都问它。</b><br>▸ <b>三个特征</b>：<b>① 动手的是消费者不是企业</b>（营销者只是 <code>initiator</code>，②❷）· <b>② 靠 <code>willingly</code> 自愿</b>· <b>③ 不花钱</b>。<br>▸ <b>它的反面就是劫持媒介</b>（③❷）——同一批人、同一个载体，只是正负号变了。",syn:"word-of-mouth · organic exposure",conf:"⚠️⚠️ <b>31B 的坑就是把「自有媒介」的定义搬到它头上</b>：<code>sending e-mail alerts</code> 是企业主动发邮件，属于自有媒介；<b>而且方向也反了——赢得是消费者<u>主动</u>，B 写成消费者<u>被邮件推动</u>。</b>"},
+  willingly:{w:"willingly",ipa:"/ˈwɪlɪŋli/",pos:"adv.",tags:["core"],cn:"<b>自愿地、心甘情愿地</b>",en:"readily and without being forced",ex:"by <b>willingly</b> promoting it to friends（①❹）",mem:"⭐ <b>这个副词是「赢得媒介」与「自有媒介」的分界线</b>：<b>赢得＝消费者<u>自愿</u>说；自有＝企业<u>主动</u>发。</b><br>▸ <b>做 31 题时，只要盯住「谁是主动的一方」，B 与 D 立分高下。</b>",syn:"voluntarily · of one's own accord",conf:"📌 副词修饰谁就只能说谁——这里修饰 <code>promoting</code>（推荐这个动作是自愿的）。"},
+  promoteto:{w:"promote it to friends",ipa:"/prəˈməʊt/",pos:"phr.",tags:["phrase","poly"],cn:"⭐⭐⭐ <b>把它推荐<u>给</u>朋友</b>（推的人是「我」）",en:"to recommend sth to one's friends",ex:"willingly <b>promoting it to friends</b>（①❹）",mem:"⭐⭐⭐ <b>31C 的全部分界线就在这个介词上</b>：<br>▸ <b>原文</b> <code>promote it <b>to</b> friends</code> ＝ <b>我</b>推荐给朋友（<b>我是施动方</b>）；<br>▸ <b>选项 31C</b> <code>help their friends <b>promote</b></code> ＝ <b>朋友</b>才是推的人，我只是帮忙。<br>▸ <b>一个介词，施动方就换了人。</b>",syn:"recommend to · spread the word about",conf:"⚠️ <code>promote</code> 另有「晋升」义（<code>be promoted to manager</code>）——本篇②段的 <code>promotes complementary products</code> 仍是「推广」。"},
+  leverage:{w:"leverage",ipa:"/ˈliːvərɪdʒ/",pos:"v.",tags:["core","poly","write"],cn:"<b>充分利用（自己已有的资源）</b>",en:"to use sth you already have to maximum advantage",ex:"a company may <b>leverage</b> 「owned」 media（①❹）",mem:"📌 <b>名词是「杠杆、影响力」⟹ 动词就是「拿杠杆把已有的东西撬到最大」。</b><br>▸ <b>商业文里极高频</b>：<code>leverage existing customers</code>（挖掘现有客户）· <code>leverage one's strengths</code>（发挥自身优势）。",syn:"exploit · capitalize on · make the most of",conf:"⭐⭐ <b>本词是 34D 的绝佳对照物</b>：<b>它与 <code>take advantage of</code> 同属「主动获利」族，主语是<u>受益方</u>；而丰田做的是 <code>alleviate the damage</code>（止损），属于另一族。</b><b>同一篇文章里，两族各给了一个样本。</b>"},
+  ownedmedia:{w:"owned media",ipa:"/əʊnd ˈmiːdiə/",pos:"n.",tags:["core","poly"],cn:"⭐⭐⭐ <b>自有媒介</b>——企业自己掌控的渠道",en:"channels a company owns and controls, such as its website or mailing list",ex:"may <b>leverage</b> 「<b>owned</b>」 media by sending e-mail alerts…（①❹）",mem:"⭐⭐⭐ <b>它在本篇出现三次，每次都很关键</b>：<b>① 定义（①❹）· ② 由营销者掌控（②❶）· ③ 访问量做大之后变成售出媒介（②❹）。</b><br>▸ <b>⟹ 它是唯一一个「能长出别的术语」的术语。</b>",syn:"first-party channels",conf:"⚠️⚠️ <b>31B 就是把它的定义搬去了「赢得媒介」名下</b>——本篇最干净的一个「术语串门」。<b>做题前先给每个选项标一个术语归属，这类干扰项就再也骗不到人。</b>"},
+  alert:{w:"alert",ipa:"/əˈlɜːt/",pos:"n.",tags:["core","poly"],cn:"<b>提醒、通知</b>（不是「警报」）",en:"a message that notifies sb of sth",ex:"sending e-mail <b>alerts</b> about products and sales（①❹）",mem:"📌 <code>e-mail alerts</code> ＝ 邮件提醒（新品／促销通知），是「自有媒介」最典型的形态。<br>▸ 同族：<code>be on the alert</code>（保持警觉）· <code>alert sb to sth</code>（提醒某人注意）。",syn:"notification · notice · reminder",conf:"⚠️ 名词的日常义偏向「警报」，但在互联网语境里只是中性的「通知」（如 Google Alerts）。"},
+  registered:{w:"registered with",ipa:"/ˈredʒɪstəd/",pos:"adj.",tags:["phrase"],cn:"<b>在（某网站）注册过的</b>",en:"having signed up with a site or organization",ex:"customers <b>registered with</b> its Web site（①❹）",mem:"📌 <b>这是过去分词作后置定语</b>：<code>customers (who are) registered with…</code>。<br>▸ <b>它交代了「自有媒介」的前提：对方得先留下联系方式，企业才发得出邮件。</b>",syn:"signed up with · enrolled in",conf:"⚠️ <b>31A 的诱饵之一</b>：选项拿走了 <code>Web site</code> 这个载体，却把它安到了「赢得媒介」头上。"},
+  approach:{w:"approach",ipa:"/əˈprəʊtʃ/",pos:"v.",tags:["core","poly"],cn:"<b>着手处理、对待</b>（不是「接近」）",en:"to deal with or set about a task in a particular way",ex:"the way consumers now <b>approach</b> the process of making purchase decisions（①❺）",mem:"📌 <b>判据：后面接的是「事情／任务」还是「地点／人」。</b><br>▸ 接事情 ⟹ 着手处理（<code>approach a problem</code> 处理问题）；接地点 ⟹ 走近。<br>▸ <b>名词义「方法、路径」同样高频</b>：<code>a new approach to teaching</code>。",syn:"tackle · handle · set about",conf:"⚠️ 本句里它藏在一个<b>省略关系词的定语从句</b>中（<code>The way (that) consumers approach…</code>），是全句最容易读乱的地方。"},
+  stemfrom:{w:"stem from",ipa:"/stem frɒm/",pos:"phr.v.",tags:["phrase","write"],cn:"<b>源自、由……造成</b>",en:"to originate in or be caused by",ex:"marketing's impact <b>stems from</b> a broad range of factors（①❺）",mem:"📌 <b><code>stem</code> 本义「茎、干」⟹ 「从……长出来」，形象好记。</b><br>▸ 同族：<code>arise from</code> · <code>derive from</code> · <code>be rooted in</code>（后者更书面）。",syn:"originate from · result from · derive from",conf:"⭐ <b>作文可用</b>：<code>Academic success stems from a broad range of factors beyond test scores.</code>（比 <code>There are many reasons</code> 高一档。）"},
+  broadrange:{w:"a broad range of factors",ipa:"/brɔːd reɪndʒ/",pos:"phr.",tags:["phrase","write"],cn:"<b>众多因素、广泛的因素</b>",en:"a wide variety of causes",ex:"stems from <b>a broad range of factors</b> beyond conventional paid media（①❺）",mem:"⭐ <b>本短语是 35 题主旨句的核心</b>：<b>「影响力来自<u>很多种</u>因素」＝「不止付费媒介一种」＝ 全文要讲的那些替代品。</b>",syn:"a wide range of · a variety of · numerous",conf:"⭐ <b>作文可用</b>：<code>a broad range of</code> 比 <code>many</code> 正式；后面接复数名词。"},
+  beyondconv:{w:"beyond conventional paid media",ipa:"/bɪˈjɒnd/",pos:"phr.",tags:["phrase","poly"],cn:"⭐⭐⭐ <b>超越传统付费媒介（＝不限于它）</b>",en:"going further than traditional paid advertising",ex:"factors <b>beyond conventional paid media</b>（①❺）",mem:"⭐⭐⭐ <b>35A 的正源，也是本文原标题的一半</b>（原文标题 <i>Beyond Paid Media</i>）。<br>▸ <b><code>beyond X</code> 在这里等价于「X 的<u>替代品</u>」⟹ 选项写成 <code>Alternatives to conventional paid media</code>。</b><br>▸ <b>这是一处很典型的「介词短语 ⟹ 名词」的同义改写，值得记住这条转换路径。</b>",syn:"other than · apart from · outside",conf:"⚠️ <code>beyond</code> 的另一常见义是「超出（能力／理解）」：<code>beyond my reach</code>（够不着）· <code>beyond doubt</code>（毫无疑问）。"},
+  marketer:{w:"marketer",ipa:"/ˈmɑːkɪtə/",pos:"n.",tags:["core","poly"],cn:"<b>营销者、推销方</b>（是「人／公司」不是「市场」）",en:"a person or company that promotes and sells products",ex:"controlled by <b>marketers</b> promoting their own products（②❶）",mem:"📌 <b>-er 结尾是「做这件事的人」</b>：<code>market</code>（v. 营销）＋ <code>-er</code>。<br>▸ <b>本篇里 marketer ＝ 企业方</b>，与 <code>consumers</code>（消费者方）构成全文两大阵营。",syn:"advertiser · brand · company",conf:"⚠️ 别读成 <code>market</code>（市场）。<b>②❸ 那句 <code>one marketer's owned media become another marketer's paid media</code> 若把 marketer 读成市场，整句立刻不通。</b>"},
+  initiator:{w:"initiator",ipa:"/ɪˈnɪʃieɪtə/",pos:"n.",tags:["core"],cn:"<b>发起者、触发者</b>",en:"the one who starts sth off",ex:"marketers act as the <b>initiator</b> for users' responses（②❷）",mem:"⭐ <b>这个词精确地划出了「赢得媒介」里企业的角色</b>：<b>企业只<u>点了一把火</u>，真正传播的是消费者。</b><br>▸ <b>对照「付费／自有媒介」——那两种是企业 <code>control</code>（掌控）。<u>control 与 initiate 的差别，就是三个术语的第一条分类轴。</u></b>",syn:"starter · trigger · instigator",conf:"📌 同族：<code>initiate</code>（v. 发起）· <code>initiative</code>（n. 倡议／主动性）· <code>initial</code>（adj. 最初的）。"},
+  response:{w:"response",ipa:"/rɪˈspɒns/",pos:"n.",tags:["core"],cn:"<b>反应、回应</b>",en:"a reaction or reply",ex:"the initiator for users' <b>responses</b>（②❷）· the company's <b>response</b>（④❷）",mem:"⭐ <b>本词在全篇出现三次，且一次比一次关键</b>：<b>②❷ 用户的反应 · ④❷ 公司的回应（论点句）· ④❸ social-media <u>response</u> campaign（丰田的回应行动）。</b><br>▸ <b>34A 的 <code>responding effectively</code> 正是从后两处来的。</b>",syn:"reaction · reply · feedback",conf:"📌 <code>in response to</code>（作为对……的回应）是高频搭配。"},
+  ecommerce:{w:"e-commerce",ipa:"/ˈiː kɒmɜːs/",pos:"n.",tags:["core"],cn:"<b>电子商务</b>",en:"buying and selling online",ex:"an <b>e-commerce</b> retailer sells ad space（②❸）· <b>e-commerce</b> engines（②❹）",mem:"📌 <code>e-</code> 前缀 ＝ electronic：<code>e-mail</code> · <code>e-book</code> · <code>e-commerce</code> · <code>e-learning</code>。",syn:"online retail · online business",conf:"⚠️ <code>e-commerce <b>engine</b></code> 不是「发动机」，是<b>嵌进别人网站的交易系统</b>（下单、支付那一套）。"},
+  retailer:{w:"retailer",ipa:"/ˈriːteɪlə/",pos:"n.",tags:["core"],cn:"<b>零售商</b>",en:"a business that sells goods to the public",ex:"an e-commerce <b>retailer</b> sells ad space（②❸）· began with <b>retailers</b> and travel providers（②❺）",mem:"📌 <code>retail</code>（零售）↔ <code>wholesale</code>（批发）。<br>▸ <b>②❺ 说售出媒介「实际上始于零售商与旅游服务商」——因为这两类网站天然流量大。</b>",syn:"merchant · store · shop",conf:"📌 同族：<code>retail price</code>（零售价）· <code>retail therapy</code>（购物疗法，口语）。"},
+  adspace:{w:"ad space",ipa:"/æd speɪs/",pos:"n.",tags:["phrase"],cn:"<b>广告位</b>",en:"space on a website or in a publication sold for advertising",ex:"sells <b>ad space</b> on its Web site（②❸）",mem:"⭐ <b>这三个词是「术语转化」的枢纽</b>：<b>同一块广告位，站在卖方（网站主）角度是<u>自有媒介</u>，站在买方（打广告的）角度是<u>付费媒介</u>。</b><br>▸ <b>⟹ 五个术语分的不是「东西」，是「<u>视角</u>」。</b>",syn:"advertising slot · banner space",conf:"⭐ <b>认清这一点，31B 那种「把定义搬个家」的干扰项就不再有杀伤力。</b>"},
+  define:{w:"define A as B",ipa:"/dɪˈfaɪn/",pos:"v.",tags:["phrase","write"],cn:"<b>把 A 定义为 B</b>",en:"to state precisely the meaning of sth",ex:"We <b>define</b> such sold media <b>as</b> owned media whose…（②❹）",mem:"⭐⭐ <b>凡文章自己出面下定义，那一句必出题</b>——因为它是全文唯一给出「判据」的地方。<br>▸ <b>见到 <code>We define / We call / is known as / refers to / is defined as</code>，立刻画五角星。</b><br>▸ <b>32C 就是把定义句里唯一的限定条件原样搬出来。</b>",syn:"describe as · term · characterize as",conf:"⭐ <b>作文可用</b>：<code>We may define X as Y whose … is so strong that … .</code> —— 自造概念时最稳的开场。"},
+  soldmedia:{w:"sold media",ipa:"/səʊld ˈmiːdiə/",pos:"n.",tags:["core","poly"],cn:"⭐⭐⭐ <b>售出媒介</b>——把自家流量位卖给别人的自有媒介",en:"owned media whose traffic is strong enough for others to place content in it",ex:"We define such <b>sold media</b> as owned media whose traffic is so strong that…（②❹）",mem:"⭐⭐⭐ <b>32 题的全部战场。</b><br>▸ <b>它是<u>自有媒介的子集</u></b>：自有媒介 ＋ 一个条件（访问量足够大）＝ 售出媒介。<br>▸ <b>⟹ 定义的信息量全在 <code>whose traffic is so strong that</code> 这个从句里。</b>",syn:"monetized owned media",conf:"⚠️⚠️ <b>本题三个干扰项全部产自 <code>for example</code> 之后的 BabyCenter 个例</b>（32B 推竞品 · 32D 三条好处 · 32A 过度解读 environment）。<b>问「一类」的特征，答案只能取自定义句。</b>"},
+  traffic:{w:"traffic",ipa:"/ˈtræfɪk/",pos:"n.",tags:["core","poly"],cn:"⭐⭐⭐ <b>（网站的）访问量、流量</b>",en:"the number of visitors to a website",ex:"owned media whose <b>traffic</b> is so strong（②❹）· expand user <b>traffic</b>（②❼）",mem:"⭐⭐⭐ <b>32C <code>strong user traffic</code> 的正源，全篇最该记住的一个熟词僻义。</b><br>▸ <b>互联网语境里 traffic 一律是「流量」</b>：<code>web traffic</code> · <code>drive traffic to a site</code>（给网站导流）· <code>traffic spike</code>（流量激增）。",syn:"visits · footfall（线下） · hits",conf:"⚠️ 别按「交通、车流」读。<b>判据：句中有没有 site / web / user 这类词。</b>"},
+  sothat:{w:"so ... that ...",ipa:"/səʊ ðæt/",pos:"conj.",tags:["phrase"],cn:"<b>如此……以至于……</b>",en:"to such a degree that",ex:"traffic is <b>so strong that</b> other organizations place their content…（②❹）",mem:"⭐ <b>本篇里它承担着「下定义」的功能</b>：<b>「访问量大<u>到</u>别人愿意把内容放进来」——这个「到什么程度」就是售出媒介与普通自有媒介的分界线。</b><br>▸ <b>⟹ 见到定义句里嵌 <code>so…that</code>，那个 <code>so</code> 后面的形容词多半就是答案。</b>",syn:"such ... that ... · to the point where",conf:"📌 区分：<code>so ＋ 形容词／副词 ＋ that</code> · <code>such ＋ 名词短语 ＋ that</code>。"},
+  organization:{w:"organization",ipa:"/ˌɔːɡənaɪˈzeɪʃn/",pos:"n.",tags:["core","poly"],cn:"⭐⭐⭐ <b>机构、团体</b>（可数名词）",en:"a company, institution or group",ex:"other <b>organizations</b> place their content（②❹）",mem:"⭐⭐⭐ <b>32D <code>flexibility in organization</code>（组织形式灵活）的坑就在这里</b>：<br>▸ <b>原文是可数名词「<u>机构</u>」</b>（前面有 <code>other</code>、后面接 <code>place their content</code>——只有实体才能投放内容）；<br>▸ <b>选项按不可数名词「<u>组织方式、条理</u>」读，一词两义被拿来做文章。</b>",syn:"institution · body · group",conf:"⚠️ <b>判据：前面有没有冠词／other／数量词。</b>有 ⟹ 机构（可数）；没有且抽象 ⟹ 组织性（不可数，如 <code>lack of organization</code> 缺乏条理）。"},
+  place:{w:"place",ipa:"/pleɪs/",pos:"v.",tags:["core","poly"],cn:"<b>投放、放置</b>（动词）",en:"to put sth in a particular position",ex:"other organizations <b>place</b> their content or e-commerce engines（②❹）",mem:"📌 <b>广告业固定说法</b>：<code>place an ad</code>（投放广告）· <code>ad placement</code>（广告投放位）。<br>▸ <b>本句 place 的宾语是「内容或电商引擎」——说的是别家把自己的东西<u>搬进</u>你的网站。</b>",syn:"put · position · insert",conf:"⚠️ 别一见 place 就当名词「地方」读——<b>判据：前面有主语、后面有宾语，那就是动词。</b>"},
+  engine:{w:"e-commerce engine",ipa:"/ˈendʒɪn/",pos:"n.",tags:["phrase","poly"],cn:"<b>电商引擎</b>（下单／支付系统）",en:"the software that powers online transactions",ex:"place their content or <b>e-commerce engines</b> within that environment（②❹）",mem:"📌 <b>IT 语境里 <code>engine</code> ＝ 引擎、内核</b>：<code>search engine</code>（搜索引擎）· <code>game engine</code>（游戏引擎）。<b>都不是「发动机」。</b>",syn:"platform · system",conf:"⚠️ 这类词看不懂也不影响做题——<b>它只是在说明「别家把自己的一整套买卖系统嵌了进来」，佐证「这个网站流量确实大」。</b>"},
+  environment:{w:"environment",ipa:"/ɪnˈvaɪrənmənt/",pos:"n.",tags:["core","poly"],cn:"⭐⭐ <b>（网站的）环境、生态</b>——<u>中性词</u>",en:"the setting or surroundings in which sth operates",ex:"within that <b>environment</b>（②❹）",mem:"⚠️⚠️ <b>32A <code>a safe business environment</code> 的诱饵就是它</b>：<b>原文的 <code>that environment</code> 只是回指「那个（流量大的）网站环境」，<u>不含任何「安全」的意思</u>——<code>safe</code> 是选项自己加的。</b><br>▸ <b>凡「原文名词 ＋ 选项自加的褒义形容词」，一律先怀疑。</b>",syn:"setting · context · ecosystem",conf:"📌 别只记「自然环境」。<code>a competitive environment</code>（竞争环境）· <code>a learning environment</code>（学习环境）都很常见。"},
+  infancy:{w:"in its infancy",ipa:"/ˈɪnfənsi/",pos:"phr.",tags:["phrase","poly","write"],cn:"<b>处于起步阶段、初期</b>",en:"at a very early stage of development",ex:"which we believe is still <b>in its infancy</b>（②❺）",mem:"📌 <b>字面「婴儿期」⟹ 引申为「刚起步」。</b><b>写新技术、新行业时非常好用。</b><br>可套：<code>The technology is still in its infancy, but its potential is already clear.</code>",syn:"at an early stage · fledgling · nascent",conf:"⭐ <b>作文可用</b>。同族：<code>infant industry</code>（幼稚产业，经济学术语）。"},
+  effectively:{w:"effectively",ipa:"/ɪˈfektɪvli/",pos:"adv.",tags:["core","poly"],cn:"⭐⭐⭐ <b>实际上、事实上</b>（＝ in effect）",en:"in practice, though not officially",ex:"<b>effectively</b> began with retailers and travel providers（②❺）",mem:"⚠️⚠️ <b>本篇最容易读错的副词之一</b>：<b>这里<u>不是</u>「有效地」，而是「实际上、说到底」。</b><br>▸ <b>判据：它修饰的若是「时间／归属／数量」这类事实性内容，就取「实际上」义；修饰「做事的方式」才取「有效地」。</b><b>本句修饰 <code>began</code>（何时开始）⟹ 实际上。</b>",syn:"in effect · in practice · virtually",conf:"📌 <b>对照④❸ 的 <code>responding <u>effectively</u></code>（34A 选项里）——那个才是「有效地」。</b><b>同一个词，本篇两种用法各出现一次。</b>"},
+  provider:{w:"travel provider",ipa:"/prəˈvaɪdə/",pos:"n.",tags:["phrase"],cn:"<b>旅游服务提供商</b>（航空公司、酒店等）",en:"a company that supplies travel services",ex:"retailers and <b>travel providers</b> such as airlines and hotels（②❺）",mem:"📌 <code>provider</code> ＝ 提供方，是商业英语里的万能后缀词：<code>service provider</code>（服务商）· <code>health-care provider</code>（医疗机构）· <code>Internet service provider</code>（网络运营商，即 ISP）。",syn:"supplier · operator",conf:"📌 <b>②❺ 举航空公司与酒店是有道理的</b>：这类网站访问量天然巨大，所以最早长出「售出媒介」。"},
+  nodoubt:{w:"no doubt",ipa:"/nəʊ daʊt/",pos:"adv.",tags:["phrase","write"],cn:"<b>无疑、势必</b>",en:"certainly; very probably",ex:"and will <b>no doubt</b> go further（②❺）",mem:"📌 <b>作者用它给趋势加了一句判断</b>：这一趋势<b>肯定还会发展下去</b>。<br>▸ <b>注意：这是本文少有的一处「作者的预测」，但它<u>不涉及褒贬</u>——所以本篇仍然不出态度题。</b>",syn:"undoubtedly · surely · certainly",conf:"⚠️ 区分 <code>no doubt</code>（无疑，语气较软）· <code>without doubt</code>（确凿无疑，更强）· <code>doubtless</code>（想必，有时含保留）。"},
+  standalone:{w:"stand-alone",ipa:"/ˈstænd əˌləʊn/",pos:"adj.",tags:["core"],cn:"<b>独立运营的</b>（不依附母品牌）",en:"operating independently of anything else",ex:"a <b>stand-alone</b> media property（②❻）",mem:"📌 <b>字面「自己站着」⟹ 独立的。</b><br>▸ <b>这个词说明 BabyCenter 虽是强生的，却不挂强生的招牌运营——正因如此，别家（甚至竞品）才愿意进来投广告。</b>",syn:"independent · self-contained",conf:"⚠️ <b>但这仍是<u>强生一家</u>的做法，不是「售出媒介」的共有特征</b>——这正是 32B／32D 出错的根源。"},
+  property:{w:"media property",ipa:"/ˈprɒpəti/",pos:"n.",tags:["core","poly"],cn:"⭐⭐ <b>（媒体）资产、产品线</b>",en:"a media asset such as a website, magazine or channel",ex:"a stand-alone <b>media property</b>（②❻）",mem:"⚠️ <b>property 三个义项，全靠「跟谁并列」分辨</b>：<b>① 财产、房产</b>（<code>buy a property</code>）· <b>② 性质、属性</b>（<code>the properties of water</code>）· <b>③（传媒／娱乐业）资产、IP</b>（本篇）。",syn:"asset · title · brand",conf:"📌 <b>跨篇对照</b>：2010 T2（商业方法专利）里的 <code>property</code> 是「知识产权」那一族；理科文章里是「性质」。<b>同一个词三种读法。</b>"},
+  complementary:{w:"complementary",ipa:"/ˌkɒmplɪˈmentri/",pos:"adj.",tags:["core","poly"],cn:"⭐⭐ <b>互补的</b>",en:"combining well with sth else",ex:"promotes <b>complementary</b> and even competitive products（②❻）",mem:"⚠️⚠️ <b>与 <code>complimentary</code>（赞美的／免费赠送的）只差一个字母</b>：<br>▸ <code>compl<b>e</b>mentary</code> ⟸ <code>complete</code>（补全）⟹ <b>互补的</b>；<br>▸ <code>compl<b>i</b>mentary</code> ⟸ <code>compliment</code>（恭维）⟹ <b>赞美的、免费赠送的</b>（<code>a complimentary breakfast</code> 免费早餐）。",syn:"mutually supporting · matching",conf:"⭐ <b>本句的看点是 <code>and even competitive</code>（甚至是竞争性的）</b>：<b>连竞品都放进来，才更显出这个平台的独立与客观——这是 32B 的诱饵来源。</b>"},
+  competitive:{w:"competitive products",ipa:"/kəmˈpetətɪv/",pos:"adj.",tags:["core"],cn:"<b>竞争性的（产品）</b>＝ 竞品",en:"products that compete with one's own",ex:"promotes complementary and even <b>competitive</b> products（②❻）",mem:"⚠️ <b>32B <code>random competition</code>（随机的竞争）就是从这个词造的</b>，两处错：<br>▸ <b>① <code>random</code>（随机）全文无据；</b><br>▸ <b>② 「推广竞品」是<u>强生一家</u>的做法，不是<u>整类</u>售出媒介的特征。</b>",syn:"rival · competing",conf:"📌 <code>competitive</code> 另有「有竞争力的」义（<code>a competitive price</code> 有竞争力的价格）——本句取「相互竞争的」。"},
+  generate:{w:"generate income",ipa:"/ˈdʒenəreɪt/",pos:"v.",tags:["phrase","write"],cn:"<b>创造收入</b>",en:"to produce revenue",ex:"Besides <b>generating income</b>, the presence of other marketers…（②❼）",mem:"📌 <code>Besides ＋ 动名词</code> ＝「除了……之外（还）」，<b>是列举好处时的标准开场。</b><br>▸ <b>本句结构极漂亮：一个主语挂三个并列谓语（makes / gives / may help），作文可直接仿写。</b>",syn:"produce revenue · bring in money",conf:"⭐ <b>作文可用</b>：<code>Besides saving time, online learning makes knowledge seem accessible, gives students opportunities to learn at their own pace, and may help narrow regional gaps.</code>"},
+  presence:{w:"presence",ipa:"/ˈprezns/",pos:"n.",tags:["core","poly"],cn:"<b>存在、在场</b>",en:"the fact of being there",ex:"the <b>presence</b> of other marketers makes the site seem objective（②❼）",mem:"📌 <b>本句主语就是它</b>（<code>the presence of other marketers</code> ＝ 其他营销者的<u>存在</u>本身）——<b>三个并列谓语 makes / gives / may help 都归它管。</b><br>▸ <b>读并列谓语一律回句首找主语，不看就近名词。</b>",syn:"existence · attendance",conf:"📌 反义 <code>absence</code>（缺席）。商业英语高频：<code>online presence</code>（线上存在感／网络布局）。"},
+  objective:{w:"objective",ipa:"/əbˈdʒektɪv/",pos:"adj.",tags:["core","poly"],cn:"<b>客观的</b>（不是名词「目标」）",en:"not influenced by personal feelings",ex:"makes the site <b>seem objective</b>（②❼）",mem:"⭐ <b>注意作者的分寸：<code>makes the site <u>seem</u> objective</code>（让网站<u>显得</u>客观），不是 <code>be objective</code>（是客观的）。</b><br>▸ <b>一个 <code>seem</code> 就把「事实」降级成了「观感」——这类小词是英语一最爱设的坑。</b>",syn:"impartial · unbiased · neutral",conf:"📌 <code>objective</code> 名词义是「目标」（<code>our main objective</code>）；<b>判据：前面有没有冠词／物主代词。</b>"},
+  appeal:{w:"appeal",ipa:"/əˈpiːl/",pos:"n.",tags:["core","poly"],cn:"⭐⭐ <b>吸引力</b>（不是「呼吁、上诉」）",en:"the quality of being attractive or interesting",ex:"information about the <b>appeal</b> of other companies' marketing（②❼）",mem:"📌 <b>三个常见义项</b>：<b>① n. 吸引力</b>（本篇）· <b>② n./v. 呼吁</b>（<code>appeal for help</code>）· <b>③ n./v. 上诉</b>（法律）。<br>▸ <b>判据：前面有 the ＋ of 结构、且谈的是产品或营销 ⟹ 吸引力。</b>",syn:"attraction · attractiveness · draw",conf:"📌 形容词 <code>appealing</code>（有吸引力的）在阅读里也高频。"},
+  expand:{w:"expand user traffic",ipa:"/ɪkˈspænd/",pos:"v.",tags:["phrase"],cn:"<b>扩大用户访问量</b>",en:"to increase the number of visitors",ex:"may help <b>expand user traffic</b> for all companies concerned（②❼）",mem:"📌 <b>这是②段列出的第三条好处</b>：<b>别家进来投广告，反而把整个网站的流量做得更大——「共赢」。</b><br>▸ <b>⟹ 这三条好处说的是「售出媒介能带来什么」，<u>不是</u>「它是什么」。32D 就是把「好处」当成了「特征」。</b>",syn:"increase · grow · boost",conf:"⚠️ <b>好处 ≠ 特征</b>：这一步分清，32D 当场出局。"},
+  concerned:{w:"concerned",ipa:"/kənˈsɜːnd/",pos:"adj.",tags:["core","poly"],cn:"⭐⭐⭐ <b>相关的</b>（<u>后置</u>时才是这个意思）",en:"involved in or affected by sth",ex:"for all companies <b>concerned</b>（②❼）",mem:"⭐⭐⭐ <b>位置一变，意思就变——这是英语一常考的一处</b>：<br>▸ <b>前置</b> <code>the <b>concerned</b> parents</code> ＝ <u>担心的</u>家长；<br>▸ <b>后置</b> <code>all parties <b>concerned</b></code> ＝ 所有<u>相关</u>方。<br>▸ <b>本句是后置 ⟹ 「所有相关公司」。</b>",syn:"involved · in question · relevant",conf:"📌 同族短语：<code>as far as X is concerned</code>（就 X 而言）· <code>be concerned with</code>（涉及）· <code>be concerned about</code>（担心）。<b>三个搭配三个意思，一并记。</b>"},
+  dramatic:{w:"dramatic",ipa:"/drəˈmætɪk/",pos:"adj.",tags:["core","poly"],cn:"<b>重大的、剧烈的</b>（不是「戏剧性的」那种夸张义）",en:"sudden and striking in degree",ex:"The same <b>dramatic</b> technological changes（③❶）",mem:"📌 <b>修饰 change / increase / shift 时，一律取「重大、急剧」义</b>：<code>a dramatic rise in prices</code>（价格急剧上涨）。<br>▸ <b>只有修饰「故事、场面、表现」时才带「戏剧性」。</b>",syn:"striking · marked · sweeping",conf:"📌 副词 <code>dramatically</code>（大幅地）在图表作文里极高频：<code>rose dramatically</code>。"},
+  diverse:{w:"diverse",ipa:"/daɪˈvɜːs/",pos:"adj.",tags:["core","write"],cn:"<b>多样的、各式各样的</b>",en:"of many different kinds",ex:"more (and more <b>diverse</b>) communications choices（③❶）",mem:"📌 <b>括号里的 <code>(and more diverse)</code> 是作者补的一句更精确的说法</b>：不只是「更多」，还是「种类更杂」。<br>▸ <b>括号内容英语一几乎从不单独出题，跳读不影响做题。</b>",syn:"varied · assorted · a range of",conf:"📌 名词 <code>diversity</code>（多样性）· 动词 <code>diversify</code>（使多样化）在作文里都好用。"},
+  voice:{w:"voice",ipa:"/vɔɪs/",pos:"v.",tags:["core","poly","write"],cn:"⭐⭐ <b>表达、说出（意见）</b>（名词「嗓音」的动词化）",en:"to express an opinion publicly",ex:"consumers will <b>voice</b> their opinions（③❶）",mem:"⭐ <b>固定搭配 <code>voice one's opinions / concerns / doubts</code>，比 <code>say</code> 正式得多。</b><br>▸ <b>作文可用</b>：<code>Citizens are now able to voice their concerns instantly.</code>",syn:"express · air · articulate",conf:"📌 <b>本句是③段风险的核心</b>：技术让消费者「发声」更快、更公开、破坏力更大——<b>这三个比较级正是「劫持媒介」的成因。</b>"},
+  visible:{w:"visible",ipa:"/ˈvɪzəbl/",pos:"adj.",tags:["core","poly"],cn:"<b>公开可见的、显眼的</b>",en:"easily seen or noticed by many people",ex:"in quicker, more <b>visible</b>, and much more damaging ways（③❶）",mem:"📌 <b>此处不是「肉眼可见」，而是「传播范围广、人人看得到」。</b><br>▸ <b>三个比较级并列：<code>quicker</code>（更快）· <code>more visible</code>（更公开）· <code>much more damaging</code>（破坏力大得多）——<u>注意最后一个用 much 加强</u>，作者的重心在这里。</b>",syn:"public · conspicuous · noticeable",conf:"📌 名词 <code>visibility</code>（能见度／曝光度）在商业文里常指「知名度」。"},
+  damaging:{w:"damaging",ipa:"/ˈdæmɪdʒɪŋ/",pos:"adj.",tags:["core"],cn:"<b>破坏性的、有害的</b>",en:"causing harm",ex:"much more <b>damaging</b> ways（③❶）",mem:"⭐ <b>它是 33B <code>negative effects</code> 的第一块拼图</b>：<b>③❶ 说消费者发声「破坏力大得多」，③❷ 说这就是赢得媒介的反面 ⟹ 合起来就是「赢得媒介可能被用来制造负面效应」。</b>",syn:"harmful · destructive · detrimental",conf:"📌 名词 <code>damage</code> 在④❸ 再次出现（<code>alleviated some of the damage</code>），<b>前后呼应：③段说会造成破坏，④段说怎么减轻破坏。</b>"},
+  hijack:{w:"hijacked media",ipa:"/ˈhaɪdʒækt/",pos:"n.",tags:["core","poly"],cn:"⭐⭐⭐ <b>劫持媒介</b>——企业的媒介被消费者反过来当作武器",en:"media assets taken over by consumers to attack the brand",ex:"Such <b>hijacked media</b> are the opposite of earned media（③❷）",mem:"⭐⭐⭐ <b>33、34 两题都问它。</b><br>▸ <b><code>hijack</code> 本义「劫持（飞机／车辆）」⟹ 此处指「本属于企业的传播渠道被外人夺走使用」。</b><br>▸ <b>③❸ 那句 <code>hijack media to apply pressure on the businesses that <u>originally created them</u></code> 是最形象的注解：<u>被夺走的正是企业自己造的东西</u>。</b>",syn:"take over · commandeer",conf:"⚠️ <b>35C <code>Dominance of hijacked media</code> 的坑</b>：它虽然占了③④两段，<b>但原文只说它是一种<u>风险</u>，从没说它<u>占了主导</u>——篇幅 ≠ 主题。</b>"},
+  opposite:{w:"the opposite of",ipa:"/ˈɒpəzɪt/",pos:"phr.",tags:["phrase","poly"],cn:"⭐⭐⭐ <b>……的对立面</b>——本篇指「同一样东西的两面」",en:"a person or thing that is completely different",ex:"hijacked media are <b>the opposite of</b> earned media（③❷）",mem:"⭐⭐⭐ <b>33 题的全部支点。</b><br>▸ <b>它不是在说「有两样东西」，而是在说「一体两面」</b>——本段给了三条证据：<b>同一批技术（<code>The same</code>）· 同一批人（<code>passionate consumers</code>）· 同一个载体（<code>originally created them</code>）。</b><br>▸ <b>⟹ 问 B 而定位段全在讲 A 时，把 A 的结论取负号。</b>（⟹ 新卡 R95）",syn:"the reverse of · the flip side of",conf:"⚠️ <b>35B <code>Conflict between hijacked and earned media</code> 的坑</b>：<b><code>the opposite of</code> 讲的是两个概念的<u>定义关系</u>，不是两方在<u>打架</u>。</b>"},
+  asset:{w:"asset",ipa:"/ˈæset/",pos:"n.",tags:["core","write"],cn:"<b>资产、有价值的东西</b>",en:"a useful or valuable thing owned by a company",ex:"an <b>asset</b> or campaign becomes hostage（③❷）",mem:"📌 <b>它与 <code>campaign</code> 并列，两者都是「企业手里的营销资源」</b>——<b>这一条并列关系就是判断 campaign 词义的依据（⟹ 33C 的坑）。</b><br>▸ <b>作文可用</b>：<code>Trust is a company's most valuable asset.</code>",syn:"resource · property · holding",conf:"📌 反义 <code>liability</code>（负债／累赘）。<b>本段的妙处正在于：企业的 asset 反过来成了 hostage。</b>"},
+  campaign:{w:"campaign",ipa:"/kæmˈpeɪn/",pos:"n.",tags:["core","poly"],cn:"⭐⭐⭐ <b>宣传活动、营销行动</b>（不是「竞选／竞赛」）",en:"an organized series of actions to achieve a goal",ex:"an asset or <b>campaign</b> becomes hostage（③❷）· social-media response <b>campaign</b>（④❸）",mem:"⭐⭐⭐ <b>33C <code>fiercer competition</code> 的坑就栽在这个词上</b>：<br>▸ <b>判据看它跟谁并列</b>——<code>an <b>asset</b> or <b>campaign</b></code>，与「资产」并列的只能是企业自己的营销活动。<br>▸ <b>把 campaign 读成「竞争」，再脑补一步「竞争加剧」——两步都是自己走的，原文全段不谈竞争。</b>",syn:"drive · initiative · push",conf:"📌 <b>本篇出现两次，都是「行动」义</b>：③❷ 企业的宣传活动 · ④❸ 丰田的社媒回应行动。<b>后者是 34A 的正源之一。</b>"},
+  hostage:{w:"become hostage to",ipa:"/ˈhɒstɪdʒ/",pos:"phr.",tags:["phrase","write"],cn:"<b>成为……的人质、受制于……</b>",en:"to be controlled or held to ransom by sb",ex:"an asset or campaign <b>becomes hostage to</b> consumers（③❷）",mem:"⭐ <b>本篇的比喻眼</b>：<b>企业花钱造出来的资产，反过来被消费者攥在手里当筹码。</b><br>▸ <b>作文可用</b>：<code>Once shared online, personal privacy becomes hostage to strangers.</code><br>▸ <b>作表语时不加冠词</b>（become hostage to，不是 become a hostage to）。",syn:"be held ransom by · be at the mercy of",conf:"⚠️ <b>用比喻要给注解</b>：原文冒号后面立刻解释了「谁扣了人质、扣来干什么」——这是比喻的正确用法。"},
+  stakeholder:{w:"stakeholder",ipa:"/ˈsteɪkhəʊldə/",pos:"n.",tags:["core","poly"],cn:"⭐⭐ <b>利益相关方</b>（员工、客户、社区都算）",en:"anyone affected by or having an interest in a business",ex:"consumers, other <b>stakeholders</b>, or activists（③❷）",mem:"⚠️⚠️ <b>≠ <code>shareholder</code>（股东，只指持股的人）。</b><br>▸ <b><code>stake</code> ＝ 利害关系、赌注 ⟹ <code>stakeholder</code> ＝ 在这件事里有利害关系的人。</b><br>▸ <b>本句三者并列（消费者／其他利益相关方／激进分子）——若读成「股东」，「外部人士向企业施压」的逻辑就崩了。</b>",syn:"interested party · those concerned",conf:"📌 <code>have a stake in sth</code>（对某事有利害关系）是高频搭配。"},
+  activist:{w:"activist",ipa:"/ˈæktɪvɪst/",pos:"n.",tags:["core"],cn:"<b>激进分子、活动人士</b>",en:"a person who campaigns for social or political change",ex:"consumers, other stakeholders, or <b>activists</b>（③❷）",mem:"📌 <b>三类人并列，<code>who make negative allegations</code> 这个从句<u>管着三者</u>，不是只管 activists。</b><br>▸ <b>⟹ 33A 把「消费者对品牌发难」写成「赢得媒介与消费者冲突」，冲突对象整个错位。</b>",syn:"campaigner · advocate",conf:"📌 同族：<code>activism</code>（行动主义）· <code>consumer activism</code>（消费者维权行动）。"},
+  allegation:{w:"allegation",ipa:"/ˌæləˈɡeɪʃn/",pos:"n.",tags:["core","poly"],cn:"⭐⭐ <b>（未经证实的）指控、说法</b>",en:"a claim that sb has done sth wrong, made without proof",ex:"make negative <b>allegations</b> about a brand or product（③❷）",mem:"📌 <b>关键在「未经证实」</b>：<code>allegation</code> 天然带着「只是说法，未必属实」的味道——<b>这也解释了企业为什么被动：它甚至无法用事实立刻反驳。</b><br>▸ 动词 <code>allege</code>（宣称）· 副词 <code>allegedly</code>（据称）在新闻体里极高频。",syn:"accusation · claim · charge",conf:"⚠️⚠️ <b>33D 的坑</b>：<b>负面言论是冲着 <code>a brand or product</code> 去的，不是冲着「赢得媒介本身」；</b><b>而且 <code>deserve all</code>（理应受到全部）是价值判断，作者从未对任何一种媒介下过褒贬。</b>"},
+  applypressure:{w:"apply pressure on",ipa:"/əˈplaɪ ˈpreʃə/",pos:"phr.",tags:["phrase","write"],cn:"<b>向……施加压力</b>",en:"to put pressure on sb to act",ex:"hijack media to <b>apply pressure on</b> the businesses（③❸）",mem:"📌 <b>同族说法</b>：<code>put pressure on sb</code> · <code>exert pressure on sb</code> · <code>be under pressure to do</code>。<br>▸ <b>作文可用</b>：<code>Social media allows ordinary people to apply pressure on large corporations.</code>",syn:"put pressure on · exert pressure on",conf:"📌 <code>apply</code> 在这里是「施加」，不是「申请」——<b>判据：宾语是抽象的 pressure / force / a rule。</b>"},
+  originally:{w:"originally created them",ipa:"/əˈrɪdʒənəli/",pos:"phr.",tags:["phrase","poly"],cn:"⭐⭐ <b>最初创造了它们（指那些媒介）</b>",en:"the ones who first made them",ex:"the businesses that <b>originally created them</b>（③❸）",mem:"⭐⭐ <b>这三个词是「一体两面」的第三条、也是最硬的一条证据</b>：<b><code>them</code> ＝ media ⟹ <u>被劫持的，正是企业自己最初造出来的那些媒介</u>。</b><br>▸ <b>⟹ 赢得媒介与劫持媒介不是两样东西，是同一个载体的两种用法 ⟹ 33B。</b>",syn:"first built · initially set up",conf:"⚠️ <b>指代要看准：<code>them</code> 指 media 不是 businesses</b>（企业不能「创造企业」）。<b>凡代词落在长句尾部，回头找最近的复数名词并验证语义。</b>"},
+  boycott:{w:"boycott",ipa:"/ˈbɔɪkɒt/",pos:"v./n.",tags:["core","write"],cn:"<b>抵制</b>",en:"to refuse to buy or take part in sth as a protest",ex:"persuade others to <b>boycott</b> products（④❶）",mem:"📌 <b>源自人名</b>：19 世纪爱尔兰土地经纪人 Charles Boycott 因苛待佃农而被全社区拒绝往来，他的名字从此变成了「抵制」。<br>▸ <b>作文可用</b>：<code>Consumers may boycott a brand overnight.</code>",syn:"refuse to buy · shun · blacklist",conf:"⚠️⚠️ <b>34B 的坑：做这个动作的是 <u>passionate consumers</u>，不是丰田。</b><b>五秒反证：一家公司劝顾客抵制自家产品，这话本身就荒谬。</b>"},
+  reputation:{w:"reputation",ipa:"/ˌrepjuˈteɪʃn/",pos:"n.",tags:["core","write"],cn:"<b>声誉、名声</b>",en:"the general opinion people have about sb or sth",ex:"putting the <b>reputation</b> of the target company at risk（④❶）",mem:"📌 <b>本段的因果链</b>：消费者抵制 ⟹ <b>声誉受损</b> ⟹ 公司必须回应 ⟹ 丰田是回应得不错的样本。<br>▸ <b>作文可用</b>：<code>A reputation takes years to build and minutes to lose.</code>",syn:"standing · image · name",conf:"📌 搭配：<code>damage / ruin / restore one's reputation</code> · <code>have a reputation for doing sth</code>。"},
+  atrisk:{w:"at risk",ipa:"/ət rɪsk/",pos:"phr.",tags:["phrase","write"],cn:"<b>处于危险之中</b>",en:"in danger of being harmed",ex:"putting the reputation … <b>at risk</b>（④❶）",mem:"📌 <b>结构 <code>put sth at risk</code>（使……面临风险）</b>，本句用的是现在分词短语作结果状语（<code>putting …</code>）。<br>▸ 同族：<code>at stake</code>（利害攸关）· <code>at the mercy of</code>（任由……摆布）。",syn:"in danger · in jeopardy",conf:"⭐ <b>作文可用</b>：<code>Careless words can put a lifetime of trust at risk.</code>"},
+  sufficiently:{w:"sufficiently",ipa:"/səˈfɪʃntli/",pos:"adv.",tags:["core"],cn:"<b>足够地</b>",en:"to an adequate degree",ex:"may not be <b>sufficiently</b> quick or thoughtful（④❷）",mem:"⭐⭐ <b>本句的逻辑要点：否定句里的 <code>or</code> ＝ 肯定句里的 <code>and</code></b>。<br>▸ <code>not … quick <b>or</b> thoughtful</code> ＝ <b>既不够快，<u>也</u>不够周密</b>（两个都被否定），<b>不是「二者取其一」。</b><br>▸ <b>对照</b>：<code>He is not tall <b>or</b> strong.</code>（又不高又不壮）vs <code>He is not tall <b>and</b> strong.</code>（不是又高又壮）。",syn:"adequately · enough",conf:"📌 <b>这是英语一常年考的一处逻辑差，翻译题里也常出现。</b>"},
+  thoughtful:{w:"thoughtful",ipa:"/ˈθɔːtfl/",pos:"adj.",tags:["core","poly"],cn:"⭐⭐ <b>深思熟虑的、周密的</b>（不是「体贴的」）",en:"showing careful thought",ex:"response may not be sufficiently quick or <b>thoughtful</b>（④❷）",mem:"📌 <b>两个义项靠对象分辨</b>：<b>形容「人对人」⟹ 体贴的</b>（<code>a thoughtful gift</code>）；<b>形容「回应、分析、文章」⟹ 深思熟虑的</b>（本篇）。<br>▸ <b>本句主语是 <code>the company's response</code>（公司的回应）⟹ 只能取后者。</b>",syn:"considered · careful · well-judged",conf:"⭐ <b>作文可用</b>：<code>a thoughtful response to criticism</code>（对批评的审慎回应）。"},
+  learningcurve:{w:"the learning curve has been steep",ipa:"/ˈlɜːnɪŋ kɜːv/",pos:"phr.",tags:["phrase","poly"],cn:"⭐⭐⭐ <b>必须在极短时间内学会应对</b>（时间紧、任务重）",en:"one has had to learn a great deal very quickly",ex:"and <b>the learning curve has been steep</b>（④❷）",mem:"⭐⭐⭐ <b>本篇最难落地的一句话，也是 34 题的论点句。</b><br>▸ <b>「学习曲线陡峭」＝ 单位时间里要学的东西极多 ⟹ <u>留给企业摸索的时间很短</u>。</b><br>▸ <b>不是「学起来很难」，也不是「进步很快」。</b>",syn:"a steep learning curve · a lot to learn fast",conf:"📌 <b>读不懂这句也有保底走法</b>：直接从下一句抽三个词 <code>alleviated</code>／<code>relatively quick</code>／<code>well-orchestrated</code>，三个都指向「有效应对」⟹ 34A。"},
+  steep:{w:"steep",ipa:"/stiːp/",pos:"adj.",tags:["core","poly"],cn:"<b>陡峭的</b>（引申：急剧的、高昂的）",en:"rising sharply",ex:"the learning curve has been <b>steep</b>（④❷）",mem:"📌 <b>三个常见用法</b>：<b>① 地形陡</b>（<code>a steep hill</code>）· <b>② 数据急升</b>（<code>a steep rise in prices</code>）· <b>③ 价格高得离谱</b>（口语 <code>That's a bit steep!</code>）。",syn:"sharp · sheer · abrupt",conf:"📌 图表作文可用：<code>a steep decline</code>（急剧下降）。"},
+  alleviate:{w:"alleviate",ipa:"/əˈliːvieɪt/",pos:"v.",tags:["core","write"],cn:"⭐⭐ <b>减轻、缓解</b>（只减轻，不根除）",en:"to make a problem less severe",ex:"<b>alleviated</b> some of the damage from its recall crisis（④❸）",mem:"📌 <b>词根 <code>levi-</code> ＝ 轻</b>：<code>elevate</code>（抬升）· <code>levity</code>（轻浮）· <code>alleviate</code>（使变轻＝减轻）。<br>▸ <b>作文可用</b>：<code>Timely action can alleviate some of the damage, even if it cannot undo it.</code>",syn:"ease · relieve · mitigate · lessen",conf:"⚠️⚠️ <b>它是 34D 的直接反证</b>：<b><code>alleviate</code> 属于「止损」族（主体是<u>受损方</u>），而 <code>take advantage of</code> 属于「获利」族（主体是<u>受益方</u>）。</b><b>丰田在减轻损失，不是在借势获利。</b>（⟹ 新卡 R96）"},
+  damage:{w:"some of the damage",ipa:"/ˈdæmɪdʒ/",pos:"n.",tags:["phrase","poly"],cn:"⭐⭐ <b>（其中的）部分损失</b>",en:"part of the harm caused",ex:"alleviated <b>some of the damage</b>（④❸）",mem:"⭐⭐ <b><code>some of</code> 这两个词是 34D 的第二条反证</b>：<b>损失并没有被消除，只是减少了一部分 ⟹ <u>一个还在流血的人，谈不上「利用」这场危机</u>。</b><br>▸ <b>凡见到 <code>some of</code> / <code>part of</code> / <code>relatively</code> 这类「打折词」，都要在旁边画一笔——它们常常正是排除绝对化选项的钥匙。</b>",syn:"part of the harm",conf:"📌 <b>本篇作者的分寸感全在这些小词上</b>：<code>some of</code>（部分）· <code>relatively</code>（相对）· <code>may not be</code>（可能不）· <code>seem</code>（显得）。<b>四处打折，全文才可信。</b>"},
+  recall:{w:"recall",ipa:"/ˈriːkɔːl/",pos:"n.",tags:["core","poly"],cn:"⭐⭐⭐ <b>（产品）召回</b>（不是「回忆」）",en:"an official request to return a faulty product",ex:"damage from its <b>recall</b> crisis earlier this year（④❸）",mem:"📌 <b>背景</b>：2009–2010 年丰田因油门踏板等问题在全球召回数百万辆车，是当年最著名的企业危机之一——<b>原文写于 2010 年，<code>earlier this year</code> 指的就是这件事。</b><br>▸ <b>动词义「回忆起」（<code>I recall meeting him</code>）仍然常见，靠词性与语境分辨。</b>",syn:"product recall · withdrawal",conf:"📌 <b>判据：前面有物主代词或冠词、后面接 crisis / campaign ⟹ 名词「召回」。</b>"},
+  crisis:{w:"crisis",ipa:"/ˈkraɪsɪs/",pos:"n.",tags:["core","write"],cn:"<b>危机</b>",en:"a time of intense difficulty or danger",ex:"its recall <b>crisis</b>（④❸）",mem:"📌 <b>复数是 <code>crises</code> /ˈkraɪsiːz/</b>（不规则变化，写作时易错）。<br>▸ <b>作文可用</b>：<code>crisis management</code>（危机公关／危机管理）——<b>本段讲的正是这件事。</b>",syn:"emergency · turning point",conf:"📌 同类不规则复数：<code>analysis→analyses</code> · <code>basis→bases</code> · <code>hypothesis→hypotheses</code>。"},
+  orchestrate:{w:"well-orchestrated",ipa:"/ˈɔːkɪstreɪtɪd/",pos:"adj.",tags:["core","write"],cn:"⭐⭐ <b>精心编排、组织有序的</b>",en:"carefully planned and coordinated",ex:"a relatively quick and <b>well-orchestrated</b> social-media response campaign（④❸）",mem:"📌 <b><code>orchestra</code>（管弦乐队）⟹ <code>orchestrate</code>（像指挥家那样把各声部安排妥当）</b>，形象好记。<br>▸ <b>它是 34A <code>effectively</code> 的第二块正源</b>：又快（quick）又有章法（well-orchestrated）＝ 有效应对。",syn:"well-coordinated · carefully planned",conf:"⭐ <b>作文可用</b>：<code>a well-orchestrated campaign</code> 一个词顶一整句「组织周密、配合得当」。"},
+  engagewith:{w:"engage with",ipa:"/ɪnˈɡeɪdʒ/",pos:"phr.v.",tags:["phrase","write"],cn:"⭐⭐ <b>与……互动、打交道</b>",en:"to interact or deal with sb directly",ex:"efforts to <b>engage with</b> consumers directly（④❸）",mem:"⚠️⚠️ <b>34C <code>cooperating with supportive consumers</code> 的坑就在这里</b>：<b>原文只说「<u>直接互动</u>」，而那些消费者恰恰是正在闹的一方；<code>supportive</code>（给予支持的）是选项自己加的。</b><br>▸ <b>见到选项冒出一个原文没有的<u>褒义形容词</u>，先回去看这个群体在原文里站哪一边。</b>",syn:"interact with · reach out to",conf:"📌 <code>engage</code> 的其他义：<code>be engaged in</code>（从事）· <code>be engaged to</code>（与……订婚）· <code>engaging</code>（adj. 迷人的）。"},
+  socialnews:{w:"social-news site",ipa:"/ˈsəʊʃl njuːz/",pos:"n.",tags:["phrase"],cn:"<b>社会新闻网站</b>（用户投票决定新闻排序）",en:"a site where users submit and vote on news items",ex:"the <b>social-news site</b> Digg（④❸）",mem:"📌 <b>Digg 是 2010 年前后极流行的一个网站</b>：用户投稿、投票，票高者上首页。<b>丰田跑去那里直接跟用户对话，正是「社媒回应」的具体做法。</b><br>▸ <b>这类专名不认识不影响做题——它只是在举例说明「在哪些平台互动」。</b>",syn:"news aggregator · community news site",conf:"📌 <b>与 Twitter 并列出现</b>：一个是社交平台，一个是新闻聚合站，<b>合起来说明丰田的回应覆盖面广（呼应 well-orchestrated）。</b>"},
+};
+
+const panel=document.getElementById('panel');
+const isMobile=()=>window.innerWidth<=900;
+function badge(t){const m={core:'核心',phrase:'短语',poly:'僻义',write:'写作'};return `<span class="badge b-${t}">${m[t]}</span>`}
+function showCard(k,el){
+  const d=V[k];if(!d)return;
+  document.querySelectorAll('.tk.active').forEach(x=>x.classList.remove('active'));
+  if(el)el.classList.add('active');
+  panel.innerHTML=`<button class="close" onclick="document.getElementById('panel').classList.remove('open')">收起</button>
+    <div class="wcard">
+      <div class="head"><span class="w">${d.w}</span><span class="ipa">${d.ipa}</span><span class="pos">${d.pos}</span>${d.tags.map(badge).join('')}</div>
+      <div class="cn">${d.cn}</div><div class="en-def">${d.en}</div>
+      <div class="row r-ex"><b>原文</b>${d.ex}</div>
+      <div class="row r-mem"><b>怎么记 / 考点</b>${d.mem}</div>
+      <div class="row r-syn"><b>同义 / 同族</b>${d.syn}</div>
+      <div class="row r-conf"><b>易混 / 提醒</b>${d.conf}</div>
+    </div>`;
+  if(isMobile())panel.classList.add('open');
+}
+document.querySelectorAll('.tk').forEach(t=>t.addEventListener('click',e=>{e.stopPropagation();showCard(t.dataset.w,t)}));
+
+function tz(btn){btn.closest('.para').classList.toggle('showzh')}
+let allOn=false;
+function toggleAll(){allOn=!allOn;document.querySelectorAll('.para').forEach(p=>p.classList.toggle('showzh',allOn))}
+function go(id){const s=document.getElementById(id);if(!s)return;s.scrollIntoView({behavior:'smooth',block:'center'});s.style.transition='none';s.style.opacity=.3;setTimeout(()=>{s.style.transition='opacity .8s';s.style.opacity=1},80)}
+
+document.querySelectorAll('.q').forEach(q=>{
+  const ans=+q.dataset.ans;
+  q.querySelectorAll('.opt').forEach((o,i)=>o.addEventListener('click',()=>{
+    if(q.classList.contains('done'))return;
+    q.classList.add('done');
+    if(i!==ans)o.classList.add('wrong');
+    q.querySelectorAll('.opt')[ans].classList.add('right');
+  }));
+});
+
+const vg=document.getElementById('vgrid');
+function renderGrid(f){
+  vg.innerHTML='';
+  Object.keys(V).forEach(k=>{
+    const d=V[k];
+    if(f!=='all'&&!d.tags.includes(f))return;
+    const div=document.createElement('div');div.className='vitem';
+    div.innerHTML=`<span class="badges">${d.tags.map(badge).join('')}</span><div class="w">${d.w}</div><div class="cn">${d.cn}</div>`;
+    div.addEventListener('click',()=>{showCard(k,null);if(!isMobile())window.scrollTo({top:0,behavior:'smooth'})});
+    vg.appendChild(div);
+  });
+}
+renderGrid('all');
+document.querySelectorAll('.fbtn').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.fbtn').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderGrid(b.dataset.f);
+}));
+
+const yd=document.getElementById('yd');let sel='';
+document.addEventListener('selectionchange',()=>{
+  const s=window.getSelection();const t=s?s.toString().trim():'';
+  if(t&&/^[a-zA-Z' -]{2,40}$/.test(t)){
+    sel=t;
+    try{const r=s.getRangeAt(0).getBoundingClientRect();
+      yd.style.left=Math.min(r.left,window.innerWidth-110)+'px';
+      yd.style.top=(r.bottom+8)+'px';yd.style.display='block';}catch(e){}
+  }else{yd.style.display='none'}
+});
+yd.addEventListener('click',()=>{window.open('https://dict.youdao.com/result?word='+encodeURIComponent(sel)+'&lang=en');yd.style.display='none'});
+document.addEventListener('click',e=>{if(e.target!==yd&&!window.getSelection().toString())yd.style.display='none'});
+
+</script>
+<script src="_fault_attr.js"></script>
+</body>
+</html>

@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2011 英一 Text 1 · 古典音乐会的危机：先看形容词前面那个小否定词还在不在</title>
+<style>
+  :root{
+    --bg:#faf9f6; --card:#ffffff; --ink:#2b2b2b; --muted:#8a8578;
+    --accent:#8b5e34; --accent-soft:#f3e9dd; --line:#e8e3d8;
+    --hl:#fdf3d8; --hl-border:#e0b84d;
+    --green:#3e7a4e; --green-soft:#e8f2ea;
+    --red:#b04a3a; --red-soft:#f9e9e6;
+    --blue:#3d6a8a; --blue-soft:#e7eff5;
+    --purple:#6d5a8e; --purple-soft:#eeeaf5;
+    --serif:"Georgia","Songti SC",serif;
+    --sans:-apple-system,"PingFang SC","Helvetica Neue",sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#1c1a17; --card:#26231f; --ink:#e8e4dc; --muted:#9a948a;
+      --accent:#d0a06a; --accent-soft:#3a3127; --line:#3a362f;
+      --hl:#3d3520; --hl-border:#b08c3a;
+      --green:#7fb98d; --green-soft:#26362b;
+      --red:#d98876; --red-soft:#3d2a26;
+      --blue:#8ab3d0; --blue-soft:#26323d;
+      --purple:#a996c8; --purple-soft:#302a3d;
+    }
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;padding-bottom:120px}
+  .wrap{max-width:1100px;margin:0 auto;padding:24px 20px}
+  .back{font-size:.85rem;color:var(--muted);text-decoration:none}
+  .back:hover{color:var(--accent)}
+  header{margin:14px 0 28px}
+  header h1{font-family:var(--serif);font-size:1.7rem;line-height:1.3}
+  header .sub{color:var(--muted);margin-top:6px;font-size:.9rem}
+  .tags{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+  .tag{font-size:.75rem;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);border:1px solid var(--line)}
+  .tag.warn{background:var(--red-soft);color:var(--red);border-color:var(--red)}
+  .tag.ok{background:var(--green-soft);color:var(--green);border-color:var(--green)}
+
+  .layout{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:24px;align-items:start}
+  main{min-width:0}
+  @media (max-width:900px){.layout{grid-template-columns:minmax(0,1fr)}}
+
+  section.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:24px}
+  h2{font-size:1.05rem;letter-spacing:.05em;color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+  h2 .n{font-size:.72rem;background:var(--accent);color:var(--card);border-radius:6px;padding:1px 7px}
+  h3{font-size:.95rem;color:var(--accent);margin:18px 0 10px}
+
+  .para{margin-bottom:22px}
+  .para .en{font-family:var(--serif);font-size:1.06rem;line-height:1.9}
+  .pno{color:var(--muted);font-size:.75rem;user-select:none;margin-right:6px}
+  .tk{background:var(--hl);border-bottom:2px solid var(--hl-border);border-radius:3px;padding:0 2px;cursor:pointer;transition:filter .15s}
+  .tk:hover{filter:brightness(.93)}
+  .tk.active{outline:2px solid var(--hl-border)}
+  .ls{border-bottom:2px dotted var(--blue);cursor:pointer}
+  .para .zh{display:none;margin-top:10px;padding:10px 14px;background:var(--blue-soft);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:.93rem}
+  .para.showzh .zh{display:block}
+  .zbtn{float:right;margin-left:10px;font-size:.72rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:6px;padding:2px 9px;cursor:pointer}
+  .zbtn:hover{color:var(--accent);border-color:var(--accent)}
+  .allbtn{font-size:.78rem;border:1px solid var(--accent);background:none;color:var(--accent);border-radius:8px;padding:4px 12px;cursor:pointer;margin-left:auto}
+
+  aside{position:sticky;top:20px}
+  #panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;min-height:180px}
+  #panel .hint{color:var(--muted);font-size:.88rem;text-align:center;padding:30px 10px}
+  .wcard .head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .wcard .w{font-family:var(--serif);font-size:1.35rem;font-weight:bold}
+  .wcard .ipa{color:var(--muted);font-size:.85rem}
+  .wcard .pos{font-size:.72rem;color:var(--purple);background:var(--purple-soft);padding:1px 8px;border-radius:999px}
+  .wcard .badge{font-size:.7rem;padding:1px 8px;border-radius:999px}
+  .b-core{background:var(--red-soft);color:var(--red)}
+  .b-phrase{background:var(--blue-soft);color:var(--blue)}
+  .b-poly{background:var(--purple-soft);color:var(--purple)}
+  .b-write{background:var(--green-soft);color:var(--green)}
+  .wcard .cn{margin-top:8px;font-size:1rem;font-weight:600}
+  .wcard .en-def{color:var(--muted);font-size:.86rem;font-style:italic;margin-top:2px}
+  .wcard .row{margin-top:10px;font-size:.86rem;padding:8px 10px;border-radius:8px}
+  .wcard .row>b:first-child{font-size:.72rem;display:block;margin-bottom:2px;letter-spacing:.06em}
+  .r-ex{background:var(--hl)} .r-ex b{color:var(--hl-border)}
+  .r-mem{background:var(--green-soft)} .r-mem b{color:var(--green)}
+  .r-syn{background:var(--blue-soft)} .r-syn b{color:var(--blue)}
+  .r-conf{background:var(--red-soft)} .r-conf b{color:var(--red)}
+  #panel .close{display:none}
+  @media (max-width:900px){
+    aside{position:fixed;left:0;right:0;bottom:0;z-index:50;padding:0 8px 8px}
+    #panel{box-shadow:0 -6px 24px rgba(0,0,0,.18);max-height:55vh;overflow-y:auto;display:none}
+    #panel.open{display:block}
+    #panel .close{display:block;float:right;border:none;background:var(--line);border-radius:8px;padding:2px 10px;cursor:pointer;color:var(--ink)}
+  }
+
+  .q{margin-bottom:22px;padding-bottom:18px;border-bottom:1px dashed var(--line)}
+  .q:last-child{border:none;margin-bottom:0;padding-bottom:0}
+  .q .stem{font-weight:600;font-family:var(--serif)}
+  .qt{font-size:.7rem;color:var(--blue);background:var(--blue-soft);border-radius:999px;padding:1px 8px;margin-right:6px;vertical-align:2px}
+  .opts{margin-top:10px;display:grid;gap:8px}
+  .opt{border:1px solid var(--line);border-radius:10px;padding:8px 12px;cursor:pointer;font-size:.93rem;font-family:var(--serif);transition:all .15s}
+  .opt:hover{border-color:var(--accent)}
+  .q.done .opt{cursor:default}
+  .opt.right{background:var(--green-soft);border-color:var(--green)}
+  .opt.wrong{background:var(--red-soft);border-color:var(--red)}
+  .expl{display:none;margin-top:12px;background:var(--accent-soft);border-radius:10px;padding:12px 14px;font-size:.9rem}
+  .q.done .expl{display:block}
+  .expl b{color:var(--accent)}
+  .expl .loc{font-family:var(--serif);font-style:italic;background:var(--hl);padding:1px 4px;border-radius:3px}
+  .fail{background:var(--red-soft);border:1px solid var(--red);border-radius:10px;padding:10px 13px;margin-bottom:10px;font-size:.89rem}
+  .fail b{color:var(--red)}
+  .waver{background:var(--hl);border:1px solid var(--hl-border);border-radius:10px;padding:10px 13px;margin-bottom:10px;font-size:.89rem}
+
+  .sent{margin-bottom:20px}
+  .sent .src{font-family:var(--serif);font-size:1rem;background:var(--blue-soft);padding:12px 14px;border-radius:10px;border-left:3px solid var(--blue)}
+  .sent .anat{margin-top:8px;font-size:.9rem}
+  .sent .anat li{margin:4px 0 4px 18px}
+  .sent .tr{margin-top:8px;font-size:.92rem;color:var(--muted)}
+  .skel{color:var(--red);font-weight:600}
+
+  .filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+  .fbtn{font-size:.8rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:999px;padding:4px 14px;cursor:pointer}
+  .fbtn.on{background:var(--accent);color:var(--card);border-color:var(--accent)}
+  .vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
+  .vitem{border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer;transition:border-color .15s}
+  .vitem:hover{border-color:var(--accent)}
+  .vitem .w{font-family:var(--serif);font-weight:bold}
+  .vitem .cn{font-size:.85rem;color:var(--muted)}
+  .vitem .badges{float:right}
+
+  .wb{display:grid;gap:10px}
+  .wbi{border-left:3px solid var(--green);background:var(--green-soft);border-radius:0 10px 10px 0;padding:10px 14px;font-size:.92rem}
+  .wbi .p{font-family:var(--serif);font-weight:600}
+  .wbi .u{color:var(--muted);font-size:.85rem}
+
+  .flow{display:grid;gap:8px;font-size:.92rem}
+  .flow .fi{border:1px solid var(--line);border-radius:10px;padding:9px 13px}
+  .flow .fi b{color:var(--accent)}
+
+  .ctab{width:100%;border-collapse:collapse;font-size:.86rem;margin-top:8px}
+  .ctab th,.ctab td{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
+  .ctab th{background:var(--accent-soft);color:var(--accent);font-size:.8rem;white-space:nowrap}
+  .ctab code{background:var(--hl);padding:0 3px;border-radius:3px}
+  .tabwrap{overflow-x:auto}
+  .ok{color:var(--green);font-weight:700}
+  .no{color:var(--red);font-weight:700}
+  .tl{display:grid;gap:10px;margin-top:6px}
+  .tli{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:start;border:1px solid var(--line);border-radius:10px;padding:10px 13px}
+  .tli .mark{font-family:var(--serif);font-weight:700;color:var(--accent);background:var(--accent-soft);border-radius:8px;padding:4px 10px;white-space:nowrap;font-size:.85rem}
+
+  .arrow{display:grid;gap:8px;margin-top:8px}
+  .arrow .ai{border:1px solid var(--line);border-radius:10px;padding:10px 13px;font-size:.9rem}
+  .arrow .ai.old{background:var(--red-soft);border-color:var(--red)}
+  .arrow .ai.new{background:var(--green-soft);border-color:var(--green)}
+  .chain{font-family:var(--serif);font-size:.95rem;background:var(--hl);border:1px solid var(--hl-border);border-radius:10px;padding:10px 14px;margin:8px 0;overflow-x:auto}
+
+  #yd{position:fixed;z-index:60;display:none;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:4px 12px;font-size:.8rem;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+  footer{color:var(--muted);font-size:.8rem;text-align:center;margin-top:30px}
+  .att{display:grid;gap:8px;margin-top:10px}
+  .atti{border:1px solid var(--line);border-radius:10px;padding:9px 13px;font-size:.9rem}
+  .atti b{font-family:var(--serif)}
+  .atti.no2{background:var(--red-soft);border-color:var(--red)}
+  .atti.yes{background:var(--green-soft);border-color:var(--green)}
+  .atti,.expl,.wbi,.zh,.fi,.ai,figcaption,p{overflow-wrap:anywhere}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">◀ 返回英语复盘中心</a>
+  <header>
+    <h1>古典音乐会正在面临的危机：<u>把选项里的形容词放回原文，先看它前面那个小否定词还在不在</u></h1>
+    <div class="sub">2011 年英语（一）真题 · Text 1 · 419 词 · 5 段 · 建议做题 18 min · 话题：纽约爱乐乐团新任音乐总监与古典音乐会的生存危机（源自《评论》<i>Commentary</i> 2007 年 9 月文章 <i>Selling Classical Music</i>「推销古典音乐」）</div>
+    <div class="tags">
+      <span class="tag">正确答案：21C 22B 23D 24B 25A</span><span class="tag">题型：事实细节 + 人物观点 + 作者观点 + 事实细节 + 作者态度</span><span class="tag ok">✅ Claude 盲做 <b>5/5</b> —— 2011 开年第一篇满分</span><span class="tag">🆕 套路库 83→87 卡：R84 否定词被吞掉 / R85 反问句≠困惑 / R86 话题换轨句 / R87 missing the point 判决句</span><span class="tag">⭐ 熟词僻义 46 处 · 长难句 9 句 · 词卡 65 张 · 作文素材 8 组</span>
+    </div>
+    <div class="atti" style="margin-top:14px;background:var(--blue-soft);border:1px solid var(--blue);border-radius:10px;padding:10px 14px;font-size:.88rem">
+      📖 <b>本页与原卷配合看</b>：原文与题目在原卷 <b>p3–p4</b>（<code>按年份/2011/…图像保真版.pdf</code> 第 <b>4–5</b> 页），答案在 <b>p16</b>，黄皮书精讲在同一 PDF 的 <b>p16–p22</b>（PDF 第 <b>32–38</b> 页）。本页第 01 节<b>逐段给出全部原文 ＋ 全段中译 ＋ 就地批注</b>，不必来回翻书。<br>
+      ⚠️ <b>黄皮书本篇仍然只有「总体分析＋考题速览＋英汉对译及试题精解」三块，没有长难句／词汇栏目</b> ⟹ <b>本页第 03、03+、04、05 四节 100% 原创，无官方文本可交叉参考</b>（<b>自 2010 T2 起已连续五篇如此</b>）。<br>
+      ✅ 五道题与十五个干扰项已与黄皮书精讲逐项交叉核对，<b>未发现书误</b>。
+    </div>
+    <div class="atti yes" style="margin-top:10px;font-size:.88rem">
+      🎯 <b>先说结果：本篇盲做 <u>5/5</u>（21C 22B 23D 24B 25A），是 2011 年的开门红。</b>但「全对」不等于「没东西可学」——<b>本篇十五个干扰项里，藏着 2010 全年四篇都没出现过的一个新族。</b><br>
+      ⭐⭐ <b>这个新族叫「把否定词摘掉」，一族三个（22A、22C、24D），全部集中在②段那三句话上。</b><br>
+      ▸ ②段短短三句，作者一口气埋了<b>三个否定限定词</b>：<code>comparatively <b>little</b> known</code>（相对<u>不</u>为人知）· <code><b>no</b> air of the formidable conductor</code>（<u>没有</u>大指挥家的派头）· <code><b>faint</b> praise</code>（<u>轻描淡写</u>的赞美）。<br>
+      ▸ <b>22A <code>influential</code> ＝ 把 <code>little</code> 摘掉</b>（不为人知 ⟹ 很有影响力，正好读反）；<b>22C <code>respectable</code> ＝ 把 <code>no</code> 和 <code>faint</code> 一起摘掉</b>（<code>formidable</code>「令人敬畏」＋ <code>praise</code>「赞美」两个词都真在原文，可它们前面各站着一个否定词）。<br>
+      ⟹ <b>一条五秒判据：把选项里的形容词放回原文，只看它<u>紧贴前面那一个词</u>——little / no / few / faint / hardly / far from / anything but 只要还在，这个选项就已经死了。</b>（⟹ 新卡 <b>R84</b>，完整拆解见第 <a href="#col1" style="color:var(--green);font-weight:700">02+ 节</a>）<br>
+      🔗 <b>与 2010 T1 的 R57 是一对</b>：<b>R57 说「特征词有据 ≠ 载体有据」（形容词对了但贴错了名词），R84 说「特征词有据 ≠ <u>极性</u>有据」（名词贴对了但正负号反了）。两把刀合起来才够用：先查它修饰谁，再查它前面有没有否定词。</b>
+    </div>
+    <div class="atti" style="margin-top:10px;font-size:.88rem">
+      🎯 <b>第二件事：本篇有<u>四个说话人</u>，是本中心至今说话人最多的一篇——而十五个干扰项里有五个就是从「谁说的」上动的手脚。</b><br>
+      ▸ <b>四个人</b>：<b>作者「我」</b>（③❶ <code>For my part, I have no idea…</code>）· <b>Tommasini</b>（评论家，①❸欢呼、②❷称他谦逊）· <b>Alex Ross</b>（另一位评论家，⑤❷夸他能把乐团变得更有活力）· <b>Times 读者</b>（②❸ <code>at least some Times readers</code>，他们把那句话读成了明褒暗贬）。<br>
+      ▸ <b>五个错位</b>：<b>22D <code>talented</code></b> 取自③❶作者的存疑（<code>whether Gilbert is a great conductor</code>），却安到了 Tommasini 头上；<b>25C <code>confident</code></b> 取自⑤❷ Alex Ross 的判断，却安到了作者头上（<b>本篇最险的一个干扰项</b>）；<b>21A <code>criticism</code></b> 甚至只是从 <code>critic</code>（评论家）这个<u>词形</u>上生造的；<b>22C</b> 取的是<u>读者</u>的观感（faint praise），题干问的却是 Tommasini 的评价；<b>25B <code>enthusiastic</code></b> 把「业界都注意到吉尔伯特对新音乐有兴趣」偷换成「作者对吉尔伯特很兴奋」。<br>
+      ⟹ <b>开篇的固定动作：在卷边列一张「谁—说了什么—什么倾向」的三列小表</b>（本篇四行）。<b>表列完，21／22／25 三道题的一半干扰项自动出局。</b>（表见第 <a href="#col3" style="color:var(--green);font-weight:700">02+++ 节</a>）
+    </div>
+    <div class="atti" style="margin-top:10px;font-size:.88rem">
+      🔗 <b>第三件事：这篇文章的真正话题，<u>不在标题人物身上</u>。</b><br>
+      ▸ 前两段全是「某人被任命」的乐坛新闻，读到第三段第一句 <code><b>For my part, I have no idea whether Gilbert is a great conductor or even a good one.</b></code>——<b>作者一句话把话题从「吉尔伯特这个人行不行」拧成了「古典音乐会这门生意还行不行」。</b><br>
+      ▸ <b>证据是题目自己给的</b>：五道题里，<b>23、24 两道（占 8 分）问的都是「录制品 vs 现场演奏」，与吉尔伯特本人毫无关系</b>；黄皮书给本篇拟的标题干脆就是<b>《古典音乐面临挑战》</b>，原文标题是<b><i>Selling Classical Music</i>（推销古典音乐）</b>——<b>没有一个是人名。</b><br>
+      ⟹ <b>可迁移动作：凡首段是「某人被任命／获奖／离职」的新闻由头，就去找作者用第一人称接管话题的那一句</b>（<code>For my part</code> / <code>I have no idea</code> / <code>To be sure…, but</code>）——<b>话题在那里换轨，全文重心在换轨<u>之后</u>。</b>（⟹ 新卡 <b>R86</b>）<br>
+      ⚠️ <b>反过来也要防</b>：<b>换轨不等于前面白写</b>。21、22 两道题（8 分）恰恰全在换轨<u>之前</u>的人物层——<b>所以不是「前两段可以略读」，而是「前两段管人物题，后三段管观点题」，两段各有各的题。</b>
+    </div>
+  </header>
+
+  <div class="layout">
+    <main>
+      <!-- ========== 全文脉络 ========== -->
+      <section class="card">
+        <h2><span class="n">00</span>读前一分钟 · 全文脉络（做完题再看也行）</h2>
+        <div class="flow">
+          <div class="fi"><b>① 事件 ＋ 反响：一片叫好</b>：纽约爱乐乐团聘请艾伦·吉尔伯特出任下一任音乐总监，<b>自 2009 年那次突然宣布以来，一直是古典音乐界的话题</b>。<b>大部分反响是赞同的，这么说还算轻的</b>——<b>连一向持重的评论家安东尼·托马西尼都写道：「好哇！终于！」</b><span style="color:var(--muted)">⟹ <b>21 题定位段。⭐ 三句话三个加强件：<code>For the most part</code>（大体上）· <code>to say the least</code>（说得还算轻）· <code>sober-sided</code>（一本正经的人都喊了）。三件叠起来只指一个方向：好评。</b></span></div>
+          <div class="fi"><b>② 转折：可这人其实没什么名气</b>：<b>然而</b>，这项任命之所以让人如此意外，<b>原因之一是吉尔伯特相对不为人知</b>。<b>就连</b>曾在《纽约时报》上撰文力荐他的托马西尼，也称他是「<b>一位不摆架子的音乐家，身上没有那种令人敬畏的大指挥家派头</b>」。<b>作为对一个迄今由马勒、布列兹这样的人物执掌过的乐团的下任总监的描述，这句话恐怕会让至少一部分《时报》读者觉得是<u>明褒暗贬</u></b>。<span style="color:var(--muted)">⟹ <b>22 题定位段，也是本篇最密的一段。⚠️⚠️ 三句话里埋了三个否定限定词（little / no / faint），22 题四个选项有两个就是把它们摘掉造出来的。</b></span></div>
+          <div class="fi"><b>③ ⭐⭐⭐ 话题换轨：作者亮出自己的立场</b>：<b>就我而言，我压根不知道吉尔伯特是不是一位伟大的指挥，甚至算不算一位好指挥</b>。诚然，他演出的曲目丰富有趣，<b>但我并不需要跑去艾弗里·费雪音乐厅或别的什么地方，才能听到有意思的管弦乐</b>。<b>我要做的只是走到唱片架前，或者打开电脑从 iTunes 上再下载一些录制的音乐。</b><span style="color:var(--muted)">⟹ ⭐⭐⭐ <b>全文的换轨句在这一段。<code>I have no idea</code> ＝ 我不打算评价这个人；<code>All I have to do is…</code> ＝ 我要谈的是另一件事。25A「怀疑」的第一块砖也在这里。</b></span></div>
+          <div class="fi"><b>④ 论点段：现场演奏正在被录制品打败</b>：<b>那些回应说「录制品无法取代现场演奏」的忠实音乐会听众，没有抓住问题的要害</b>。<b>为了争夺</b>爱好艺术的公众的<b>时间、注意力和金钱</b>，古典器乐演奏家<b>不仅要与歌剧院、舞蹈团、剧团和博物馆竞争，还要与 20 世纪那些伟大古典音乐家的演奏录音竞争</b>。<b>这些录音价格低廉、随处可得，而且艺术质量往往远高于当今的现场演奏</b>；此外，它们还可以在听众自己选定的时间和地点被「消费」。<b>这类录音的普遍可得性，由此给传统古典音乐会这一惯例带来了一场危机。</b><span style="color:var(--muted)">⟹ <b>23、24 两题都在这一段，占本篇一半分值。⭐ ❶句一句话给出全篇最重要的判决：<code>are missing the point</code>。</b></span></div>
+          <div class="fi"><b>⑤ 收口：仅仅换曲目不够，要换关系</b>：<b>一种可能的应对是</b>，古典演奏者去编排那些尚无唱片版本的、有吸引力的新音乐。吉尔伯特本人对新音乐的兴趣已广为人知：评论家亚历克斯·罗斯称他是一个<b>能把爱乐乐团变成「一个显著不同、更有活力的团体」的人</b>。<b>但这种「不同」究竟会是什么性质的不同呢？</b><b>仅仅扩充乐团的保留曲目是不够的。</b><b>如果吉尔伯特和爱乐乐团想要成功，他们必须首先改变这支美国最古老的乐团与它希望吸引的新听众之间的关系。</b><span style="color:var(--muted)">⟹ <b>25 题定位段。⚠️ ❸句那个问号是<u>反问</u>不是<u>困惑</u>——判据：紧跟其后的❹句是一句断言（<code>will not be enough</code>），不是一个回答。</b></span></div>
+        </div>
+        <div class="atti" style="margin-top:14px">
+          🧭 <b>一句话骨架</b>：<b>「乐坛为一项任命叫好（①）→ 可这人并不有名（②）→ 我不评价这个人，我要说的是：我在家就能听到好音乐（③）→ 所以真正的危机是录制品打败了现场（④）→ 光换曲目不够，要换的是乐团与听众的关系（⑤）」。</b><br>
+          📌 <b>五段的分工极其清楚，而且<u>题目就是按段发的</u></b>：<b>①段一题（21）· ②段一题（22）· ④段两题（23、24）· ⑤段一题（25）</b>——<b>③段是全文唯一不出题的一段，却是最该读慢的一段，因为它是换轨句所在。</b><br>
+          ⭐ <b>本篇是典型的「<u>由头 ＋ 借题发挥</u>」型评论</b>：<b>新闻由头（人事任命）只占前两段，作者真正想写的东西在后三段。</b><b>读这类文章最省力的做法：先扫一眼题目——如果有两道题问的东西与首段人物无关，那么文章的重心一定在后半。</b>（⟹ 新卡 <b>R86</b>）<br>
+          ⚠️ <b>与 2010 T1（报纸艺术评论的衰落）是同一模子的姊妹篇，可以并排读</b>：<b>都写「一门传统行当被新技术架空」（2010 是报纸乐评被业余博客架空，本篇是现场音乐会被录音架空）· 都是先讲一个人（卡达斯／吉尔伯特）再讲一个行当 · 都在末段给「出路」并对它打折扣。</b><br>
+          　⟹ <b>两篇的收口姿势是同一个：先摆出一条像样的出路，再当场给它打折扣。</b>本篇的那一句是 <code>Merely expanding the orchestra's repertoire <b>will not be enough</b></code>；<b>2010 T1 则是把「卡达斯那种乐评还能不能复兴」摆出来，随即用两条理由否掉（读者变了 ＋ 业余评论传统已在溃退）。</b><b>这类文章的态度题，几乎永远落在「怀疑／保留」，不落在「乐观／确信」。</b>
+        </div>
+      </section>
+      <!-- ========== 原文精读 ========== -->
+      <section class="card">
+        <h2><span class="n">01</span>原文精读 · 全文五段 <button class="allbtn" onclick="toggleAll()">全段译文 开/关</button></h2>
+        <p style="font-size:.8rem;color:var(--muted);margin-bottom:14px">🟡 黄色高亮 = 重难点词/短语，点击右侧出卡片 ｜ 蓝色虚线 = 长难句，点击跳到精析 ｜ 每段「译」= 该段完整中译 ｜ 选中任意其他单词浮出「查有道」</p>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p style="font-size:.78rem;color:var(--accent);margin-bottom:6px">① 事件 ＋ 反响 · 21 题定位段 · ⭐ 三个加强件叠在一起，只指一个方向</p>
+          <p class="en"><span class="pno">❶事件（21 题干定位句）</span><span class="ls" onclick="go('s1')">The decision of the New York Philharmonic to hire Alan Gilbert as its next music director has been <span class="tk" data-w="talkof">the talk of</span> the classical-music world ever since the <span class="tk" data-w="sudden">sudden</span> announcement of his <span class="tk" data-w="appointment">appointment</span> in 2009.</span></p>
+          <p class="en" style="margin-top:10px"><span class="pno">❷⭐⭐⭐ 21C 正源（上半）</span><span class="tk" data-w="forthemostpart">For the most part</span>, the response has been <span class="tk" data-w="favorable">favorable</span>, <span class="tk" data-w="tosaytheleast">to say the least</span>.</p>
+          <p class="en" style="margin-top:10px"><span class="pno">❸⭐⭐⭐ 21C 正源（下半）· 21A 的词形诱饵在这</span>「Hooray! <span class="tk" data-w="atlast">At last</span>!」wrote Anthony Tommasini, a <span class="tk" data-w="sobersided">sober-sided</span> classical-music <span class="tk" data-w="critic">critic</span>.</p>
+          <div class="zh"><b>①段全译：</b>纽约爱乐乐团决定聘请艾伦·吉尔伯特出任其下一任音乐总监，自 2009 年这一任命被突然宣布以来，此事一直是古典音乐界谈论的话题。绝大部分反响至少可以说是赞同的。「好哇！终于等到了！」持重的古典音乐评论家安东尼·托马西尼这样写道。
+          <div style="margin-top:8px;font-size:.86rem">⭐⭐ <b>21 题只考一件事：这一段的<u>总体倾向</u>是褒是贬。而作者把倾向写了三遍，一遍比一遍重。</b><br>
+          ▸ <b>第一遍 <code>For the most part</code>（大体上、多半）</b>：先给一个覆盖面——不是个别人叫好，是<b>多数</b>。<br>
+          ▸ <b>第二遍 <code>favorable</code>（赞同的、好评的）</b>：给方向。⚠️ <b>这里的 <code>favorable</code> 不是「有利的」，是「表示赞同的」</b>——搭配 <code>the response has been favorable</code> 是固定说法。<br>
+          ▸ <b>第三遍 <code>to say the least</code>（这么说还是轻的）</b>：⚠️⚠️ <b>本篇第一个熟词陷阱。<u>它是加强，不是减弱</u></b>——很多人按字面读成「至少可以说…（保守估计）」，于是把整句读成「勉强算赞同」。<b>真实语气是：「说赞同都算说轻了，其实是一片欢呼。」</b><br>
+          ⭐ <b>第四件加强件藏在❸句的定语里</b>：<code><b>a sober-sided critic</b></code>（一位一本正经、不苟言笑的评论家）——<b>连这种人都写下了「Hooray! At last!」两个感叹号。</b><b>「连……都」是英语文章最常用的加强手法，这一段和下一段的 <code>Even Tommasini</code> 是同一招连用两次。</b><br>
+          ⚠️ <b>21A 是纯词形诱饵</b>：选项 <code>incurred <b>criticism</b></code>（招致批评）的词根，来自❸句末尾的 <code><b>critic</b></code>（评论家）——<b>一个是「批评」，一个是「评论家」，除了词形没有任何关系；而这位评论家说的恰恰是好话。</b><br>
+          📌 <b>一个不影响做题但值得知道的细节</b>：<code>his appointment <b>in 2009</b></code> 里的 <code>in 2009</code> 修饰的是<b>「上任」</b>，不是「宣布」——原文发表于 2007 年 9 月（黄皮书给的出处），宣布在 2007 年，2009 年才正式接任。<b>所以 <code>sudden</code>（突然）形容的是「宣布」这件事出人意料，不是「2009 年很突然」。</b></div></div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p style="font-size:.78rem;color:var(--accent);margin-bottom:6px">② ⭐⭐⭐ 本篇最密的一段：三句话埋了三个否定限定词 · 22 题定位段</p>
+          <p class="en"><span class="pno">❶转折 · 22A 的产地</span>One of the reasons why the appointment <span class="tk" data-w="cameasasurprise">came as such a surprise</span>, however, is that Gilbert is <span class="tk" data-w="comparatively">comparatively</span> <span class="tk" data-w="littleknown">little known</span>.</p>
+          <p class="en" style="margin-top:10px"><span class="pno">❷⭐⭐⭐ 22B 唯一正源</span><span class="ls" onclick="go('s2')">Even Tommasini, who had <span class="tk" data-w="advocated">advocated</span> Gilbert's appointment in the <i>Times</i>, calls him 「an <span class="tk" data-w="unpretentious">unpretentious</span> musician with <span class="tk" data-w="airof">no air of</span> the <span class="tk" data-w="formidable">formidable</span> conductor about him.」</span></p>
+          <p class="en" style="margin-top:10px"><span class="pno">❸22C 的产地 · 第三个否定限定词</span><span class="ls" onclick="go('s3')">As a description of the next music director of an orchestra that has <span class="tk" data-w="hitherto">hitherto</span> been led by musicians like Gustav Mahler and Pierre Boulez, that seems likely to have <span class="tk" data-w="strikeas">struck</span> at least some <i>Times</i> readers as <span class="tk" data-w="faintpraise">faint praise</span>.</span></p>
+          <div class="zh"><b>②段全译：</b>然而，这项任命之所以如此出人意料，原因之一是吉尔伯特相对不为人所知。就连曾在《纽约时报》上撰文力荐这项任命的托马西尼，也称他是「一位不摆架子的音乐家，身上没有那种令人敬畏的大指挥家派头」。作为对一个迄今为止一直由古斯塔夫·马勒、皮埃尔·布列兹这样的音乐家执掌的乐团的下任音乐总监的描述，这句话恐怕会让至少一部分《时报》读者觉得是一种轻描淡写的赞美（明褒暗贬）。
+          <div style="margin-top:8px;font-size:.86rem">⚠️⚠️⚠️ <b>本段是全篇的题眼段，请数三个否定限定词：</b><br>
+          ▸ ❶句 <code>comparatively <b>little</b> known</code>（相对<u>不</u>为人知）· ▸ ❷句 <code>with <b>no</b> air of the formidable conductor</code>（<u>没有</u>大指挥家的派头）· ▸ ❸句 <code><b>faint</b> praise</code>（<u>轻描淡写</u>的赞美）。<br>
+          ⟹ <b>22 题四个选项，有两个是把这三个否定词摘掉造出来的</b>：<b>A <code>influential</code> ＝ 摘掉 <code>little</code></b>；<b>C <code>respectable</code> ＝ 同时摘掉 <code>no</code> 与 <code>faint</code></b>（<code>formidable</code>「令人敬畏」和 <code>praise</code>「赞美」两个原词都在，可它们各自前面站着一个否定词）。（⟹ 新卡 <b>R84</b>，见第 <a href="#col1" style="color:var(--green);font-weight:700">02+ 节</a>）<br>
+          ⭐⭐ <b><code>faint praise</code> 是本篇最贵的一个短语</b>，出自英语名句 <b><code>damn with faint praise</code>（用不痛不痒的赞美来毁掉一个人 ＝ 明褒暗贬）</b>。<b>它字面全是褒义词（praise ＝ 赞美），实际功能是贬。</b><b>凡见到 faint / lukewarm / qualified 修饰 praise / support / endorsement，一律按「打了折的赞美 ＝ 实为不看好」处理。</b><br>
+          ⚠️ <b>❸句还有一层「谁在说」的错位，非常隐蔽</b>：<b><code>faint praise</code> 是<u>《时报》读者可能产生的观感</u>（作者的推测），不是托马西尼的评价，更不是作者本人的评价。</b><b>而 22 题问的是 <code>Tommasini regards Gilbert as…</code></b> ⟹ <b>只能取❷句托马西尼自己的原话。</b>（⟹ 接 <b>R58</b>「引语里的态度分两层」，本篇是它的加强版：<b>R58 是同一个人嘴里的两层，这里是「他的话」与「别人对他这句话的反应」两层。</b>）<br>
+          ⭐ <b>❶句的 <code>Even</code> 与①段的 <code>sober-sided</code> 是同一招</b>：<b>「连最该说他好话的人（力荐者本人）都只说到这个份上」</b>——<b>Even 引出的永远是「最不该出现却出现了」的那个例子，它的功能是加强，方向由后面的内容定。</b><br>
+          📌 <b>为什么 <code>unpretentious</code>（不摆架子）在这里会被读成贬义</b>：因为❸句给了一个<u>参照系</u>——<b>这个乐团历任总监是马勒和布列兹（两位以强势、权威著称的大指挥家）。</b><b>形容词的褒贬要放进参照系里才算数：夸一个普通乐手「不摆架子」是褒，夸一个即将执掌马勒旧部的人「没有大师派头」，读者当然会往「他不够格」上想。</b></div></div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p style="font-size:.78rem;color:var(--accent);margin-bottom:6px">③ ⭐⭐⭐ 全文唯一不出题、却最该读慢的一段：话题在这里换轨</p>
+          <p class="en"><span class="pno">❶⭐⭐⭐ 换轨句 · 25A 的第一块砖 · 22D 的产地</span><span class="tk" data-w="formypart">For my part</span>, I have <span class="tk" data-w="noidea">no idea</span> whether Gilbert is a great conductor or even a good one.</p>
+          <p class="en" style="margin-top:10px"><span class="pno">❷让步 ＋ 转折</span><span class="ls" onclick="go('s4')"><span class="tk" data-w="tobesure">To be sure</span>, he performs an <span class="tk" data-w="impressivevariety">impressive variety</span> of interesting <span class="tk" data-w="compositions">compositions</span>, but it is not necessary for me to visit Avery Fisher Hall, or anywhere else, to hear interesting orchestral music.</span></p>
+          <p class="en" style="margin-top:10px"><span class="pno">❸把「替代方案」摆到台面上</span>All I have to do is to go to my CD shelf, or <span class="tk" data-w="bootup">boot up</span> my computer and download <span class="tk" data-w="stillmore">still more</span> recorded music from iTunes.</p>
+          <div class="zh"><b>③段全译：</b>就我而言，我压根不知道吉尔伯特是不是一位伟大的指挥，甚至不知道他算不算一位好指挥。诚然，他演奏的曲目丰富多样、颇有意思，但我并不需要跑到艾弗里·费雪音乐厅或别的任何地方，才能听到有意思的管弦乐。我所要做的仅仅是走到我的唱片架前，或者打开电脑，从 iTunes 上再多下载一些录制好的音乐。
+          <div style="margin-top:8px;font-size:.86rem">⭐⭐⭐ <b>这是全文的枢纽段，三句话干了三件事，一件比一件重要：</b><br>
+          ▸ <b>❶ 声明不评价这个人</b>（<code>I have no idea whether…</code>）⟹ <b>话题从「吉尔伯特行不行」上撤出；</b><br>
+          ▸ <b>❷ 先让一步再转折</b>（<code>To be sure…, <b>but</b>…</code>）⟹ <b>承认他曲目好，随即说「可我不必去现场」；</b><br>
+          ▸ <b>❸ 亮出替代品</b>（唱片架、iTunes）⟹ <b>话题正式换轨到「现场 vs 录制品」，④段整段就是这一句的展开。</b><br>
+          ⟹ <b>整段没有一道题，可它管着两道题</b>：<b>25A「怀疑」的第一块砖在❶句（他对这个人本来就不下判断）；23／24 两道题的前提在❸句（我在家就能听）。</b>（⟹ 新卡 <b>R86</b>，见第 <a href="#col3" style="color:var(--green);font-weight:700">02+++ 节</a>）<br>
+          ⚠️ <b>22D <code>talented</code> 就死在这一段</b>：选项里的「有才华」对应的是❶句的 <code>a great conductor or even a good one</code>——<b>可这是<u>作者</u>说自己不知道，不是<u>托马西尼</u>的评价。</b><b>选项把作者的存疑句，改头换面安到了另一个人身上。</b><br>
+          ⭐ <b><code>To be sure</code> 是英语议论文里最标准的让步信号</b>（＝ 诚然、固然），<b>它后面<u>必定</u>跟 but</b>。<b>做题手感：见到 To be sure，直接把它管辖的那半句划掉——作者让出去的东西不会是答案，答案在 but 之后。</b><br>
+          📌 <b>❸句的 <code>still more</code> 是个容易读漏的加强件</b>：<code>still ＋ 比较级</code>＝「还要更多」。<b>言下之意「我的唱片已经够多了，还能再下更多」——一句话写尽录制品的过剩，为④段的 <code>widespread availability</code> 埋好了伏笔。</b></div></div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p style="font-size:.78rem;color:var(--accent);margin-bottom:6px">④ ⭐⭐⭐ 论点段 · 23、24 两题都在这里（占本篇一半分值）</p>
+          <p class="en"><span class="pno">❶⭐⭐⭐ 23D 唯一正源 · 23B 的产地</span><span class="ls" onclick="go('s5')"><span class="tk" data-w="devoted">Devoted</span> <span class="tk" data-w="concertgoers">concertgoers</span> who <span class="tk" data-w="replythat">reply that</span> recordings are <span class="tk" data-w="nosubstitutefor">no substitute for</span> live performance are <span class="tk" data-w="missthepoint">missing the point</span>.</span></p>
+          <p class="en" style="margin-top:10px"><span class="pno">❷23A／23C／24D 的产地</span><span class="ls" onclick="go('s6')">For the time, attention, and money of the art-loving public, classical <span class="tk" data-w="instrumentalists">instrumentalists</span> must compete not only with opera houses, dance <span class="tk" data-w="troupes">troupes</span>, theater companies, and museums, but also with the recorded performances of the great classical musicians of the 20th century.</span></p>
+          <p class="en" style="margin-top:10px"><span class="pno">⭐⭐⭐❸24B 唯一正源 · 24A／24C 的产地</span><span class="ls" onclick="go('s7')">These recordings are cheap, <span class="tk" data-w="availableeverywhere">available everywhere</span>, and very often much higher in artistic quality than today's live performances; moreover, they can be 「<span class="tk" data-w="consumed">consumed</span>」 <span class="tk" data-w="atatimeandplace">at a time and place of the listener's choosing</span>.</span></p>
+          <p class="en" style="margin-top:10px"><span class="pno">❹段落结论</span>The widespread <span class="tk" data-w="availability">availability</span> of such recordings has thus <span class="tk" data-w="bringabout">brought about</span> a crisis in the <span class="tk" data-w="institution">institution</span> of the traditional classical concert.</p>
+          <div class="zh"><b>④段全译：</b>那些回应说「录制品无法取代现场演奏」的忠实音乐会听众，没有抓住问题的要害。为了争夺热爱艺术的公众的时间、注意力和金钱，古典器乐演奏者不仅必须与歌剧院、舞蹈团、剧团和博物馆展开竞争，而且还必须与 20 世纪那些伟大古典音乐家的演奏录音展开竞争。这些录音价格低廉、随处可得，而且艺术质量往往比当今的现场演奏高出很多；此外，听众还可以在自己选定的时间和地点「消费」它们。因此，这类录音的广泛可得性，已经给传统古典音乐会这一惯例带来了一场危机。
+          <div style="margin-top:8px;font-size:.86rem">⭐⭐⭐ <b>❶句是全篇最重要的一句，它同时给出「对方主张」和「作者判决」——而 23 题的正确项正是这两半的<u>合成</u>。</b><br>
+          ▸ <b>对方主张</b>（who 从句里）：<code>recordings are <b>no substitute for</b> live performance</code>（录制品无法替代现场）；▸ <b>作者判决</b>（主句谓语）：<code>are <b>missing the point</b></code>（没抓住要害 ＝ 你们错了）。<br>
+          ⟹ <b>「主张 ＋ 错」＝「你们<u>高估</u>了现场演奏的价值」＝ 23D <code>overestimate the value of live performances</code>。</b><b>正确项在原文里<u>没有任何一个对应词</u>——<code>overestimate</code> 是把对方主张乘上作者的负号得到的。</b>（⟹ 新卡 <b>R87</b>，见第 <a href="#col4" style="color:var(--green);font-weight:700">02++++ 节</a>）<br>
+          ⚠️ <b>而 23B 恰恰是「把对方主张原样搬过来」</b>：<code>reject most kinds of recorded performances</code> 差不多就是 <code>recordings are no substitute</code> 的直译。<b>凡题干问「作者认为某群体如何」，把对方原话翻译一遍的那个选项一定是错的——那是在回答「他们说了什么」，不是「作者认为他们怎么了」。</b><br>
+          ⭐ <b>❷句的 <code>For</code> 是本段最容易读错的一个词</b>：<b>它不是「对于」，是「为了争夺」</b>（<code>compete <b>for</b> sth</code> 的 for 被提到了句首）。<b>读懂它，整句的结构一秒钟就清楚：为了争夺 A（时间、注意力、金钱），B（器乐演奏家）必须与 C 和 D 竞争。</b><br>
+          　⟹ <b>这一句其实写的是「注意力经济」：古典音乐会的对手不只是同行，还有一切消耗时间和钱的东西。</b><b>作文里写「传统文化／纸质阅读／线下活动的衰落」时，这一句可以整句搬。</b>（见第 05 节素材 3）<br>
+          ⚠️ <b>❸句是 24 题的题库</b>：三个并列表语 <code>cheap</code>／<code>available everywhere</code>／<code>much higher in artistic quality</code> 各造出一个选项——<b>B 取第二个（<code>available everywhere</code> ⟹ <code>easily accessible</code>，标准的同义替换）· A 取第三个<u>并调头</u>（原文说录音质量<b>更高</b>，A 说<b>更低</b>）· C 取第三个<u>并把比较变成因果</u>（「录音质量比现场高」≠「录音有助于提高音乐质量」）。</b><br>
+          ⚠️ <b>24D 的死因是一个 <code>only</code></b>：❷句 <code>the recorded performances of <b>the great classical musicians</b> of the 20th century</code> 确实说了录音收录的是大师之作，<b>但原文从没说「<u>只</u>收录杰作」。</b><b>凡选项自带 only / all / never / always 这类绝对词，先回原文找有没有对应的限定——找不到就是加的。</b><br>
+          ⭐⭐ <b>❹句的 <code>institution</code> 是全篇最贵的熟词僻义</b>：<b>这里是「（社会）惯例、成规」，不是「机构」。</b><code>the institution of the traditional classical concert</code> ＝ <b>「去音乐厅听现场」这一套<u>习惯做法</u></b>——危机发生在<b>习惯</b>层面，不是某个乐团倒闭。<b>读成「机构」，整段的分量就掉了一半。</b>（同族：<code>the institution of marriage</code> 婚姻制度）<br>
+          📌 <b>引号在❸句里是「排斥」用法</b>：<code>they can be 「consumed」</code>——<b>作者不认为音乐该被「消费」，引号是他不出面的表态。</b>（⟹ <b>R29</b> 引号三功能之一）<b>本篇三处引号刚好三种用法：①❸「Hooray! At last!」＝ 引用原话 · ④❸「consumed」＝ 排斥 · ⑤❷「a markedly different, more vibrant organization」＝ 引用他人评价。</b></div></div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p style="font-size:.78rem;color:var(--accent);margin-bottom:6px">⑤ 收口 · 25 题定位段 · ⚠️ 那个问号是反问不是困惑</p>
+          <p class="en"><span class="pno">❶给出一条出路</span>One possible response is for classical performers to <span class="tk" data-w="program">program</span> attractive new music that is not yet available <span class="tk" data-w="onrecord">on record</span>.</p>
+          <p class="en" style="margin-top:10px"><span class="pno">❷25B／25C 的产地（⚠️ 这是 Alex Ross 的话，不是作者的）</span><span class="ls" onclick="go('s8')">Gilbert's own interest in new music has been <span class="tk" data-w="widelynoted">widely noted</span>: Alex Ross, a classical-music critic, has <span class="tk" data-w="describedas">described him as</span> a man who is <span class="tk" data-w="capableof">capable of</span> turning the Philharmonic into 「a markedly different, more <span class="tk" data-w="vibrant">vibrant</span> organization.」</span></p>
+          <p class="en" style="margin-top:10px"><span class="pno">❸⭐⭐⭐ 反问句 · 25D 的产地</span>But what will be the <span class="tk" data-w="nature">nature</span> of that difference?</p>
+          <p class="en" style="margin-top:10px"><span class="pno">❹⭐⭐⭐ 25A 唯一正源</span><span class="tk" data-w="merely">Merely</span> expanding the orchestra's <span class="tk" data-w="repertoire">repertoire</span> will not be enough.</p>
+          <p class="en" style="margin-top:10px"><span class="pno">❺条件句收口</span><span class="ls" onclick="go('s9')">If Gilbert and the Philharmonic <span class="tk" data-w="beto">are to</span> succeed, they must first change the relationship between America's oldest orchestra and the new audience it <span class="tk" data-w="hopestoattract">hopes to attract</span>.</span></p>
+          <div class="zh"><b>⑤段全译：</b>对古典演奏者而言，一种可能的应对措施是编排那些尚无唱片录音、又有吸引力的新音乐。吉尔伯特本人对新音乐的兴趣已广为人知：古典音乐评论家亚历克斯·罗斯曾称他是一个有能力把爱乐乐团变成「一个显著不同、更具活力的团体」的人。但这种不同究竟会是什么性质的不同呢？仅仅扩充乐团的保留曲目是不够的。如果吉尔伯特和爱乐乐团想要获得成功，他们必须首先改变这支美国最古老的乐团与它希望吸引的新听众之间的关系。
+          <div style="margin-top:8px;font-size:.86rem">⭐⭐⭐ <b>末段五句是一条完整的「先扬后抑」链，态度题的答案就长在链条的后半截：</b><br>
+          <b>❶ 提出一条出路（编排新曲目）→ ❷ 引别人的话说吉尔伯特正好合适 → ❸ <u>But</u> ＋ 反问 → ❹ 一句断言把出路否掉（<code>will not be enough</code>）→ ❺ 给出真正的条件（要改的是「关系」）。</b><br>
+          ⟹ <b>作者对「吉尔伯特能不能救活乐团」的态度 ＝ <u>怀疑（doubtful）</u>：他不否认这个人有本事，但他认为这条路走不到头。</b><br>
+          ⚠️⚠️ <b>❸句那个问号是本题最大的坑（25D <code>puzzled</code>）</b>：<b>判据只有一条——<u>看问号后面紧跟的是什么</u>。</b><b>后面是❹句这样的<u>断言</u>（仅仅扩充曲目不够）⟹ 这是<u>反问</u>，作者早有答案，问号只是修辞；如果后面跟的是一句<u>回答／探讨</u>，那才是真困惑。</b>（⟹ 新卡 <b>R85</b>，见第 <a href="#col2" style="color:var(--green);font-weight:700">02++ 节</a>）<br>
+          ⚠️⚠️ <b>❷句是 25C <code>confident</code> 的产地，也是本篇最险的一个干扰项</b>：<code>capable of turning the Philharmonic into…</code> 确实是一句充满信心的判断，<b>可说这话的是评论家 Alex Ross，不是作者</b>。<b>作者对这句话的态度，写在紧跟着的 <code><b>But</b> what will be the nature of that difference?</code> 里——他是来<u>接着质疑</u>的。</b><br>
+          ⚠️ <b>25B <code>enthusiastic</code> 的死法更轻微一点</b>：<code>Gilbert's own interest in new music has been <b>widely noted</b></code>（业界广泛注意到他对新音乐有兴趣）——<b>「有兴趣」的是吉尔伯特，「注意到」的是业界；作者本人一个表态词都没出。</b><br>
+          ⭐ <b>❺句的 <code>are to succeed</code> 是 <code>be to do</code> 的「意图／打算」用法</b>（＝ 若要成功），<b>不是被动、不是将来时。</b><b>而 <code>the new audience <u>it hopes to attract</u></code> 又是一个<u>省略关系代词</u>的定语从句</b>（＝ <code>the new audience <b>that</b> it hopes to attract</code>）——<b>判据仍是数缺口：<code>attract</code> 后面缺宾语。</b>（⟹ <b>R70</b>，2010 T4 的那把刀在本篇又出现一次）<br>
+          📌 <b>❶句的 <code>program</code> 是<u>动词</u>「编排（节目、曲目）」</b>——<b>这是本篇第二贵的熟词僻义。</b>读成名词「节目单／程序」，整句就散了：<code>for classical performers <b>to program</b> attractive new music</code> 是 <code>One possible response is <b>for sb to do sth</b></code> 结构里的不定式。</div></div>
+        </div>
+      </section>
+      <!-- ========== 题目与解析 ========== -->
+      <section class="card">
+        <h2><span class="n">02</span>题目与解析（点选项即判 · 再看解析）</h2>
+        <div class="atti yes" style="margin-bottom:18px">✅ <b>本篇 Claude 盲做 <u>5/5</u></b>（21C 22B 23D 24B 25A，与标准答案完全一致）。<br>
+        <b>全对的篇目更要写清楚「每个干扰项是从哪句话、用什么手法造出来的」</b>——<b>本篇十五个干扰项分得出<u>五个族</u>，其中「把否定词摘掉」这一族是 2010 全年四篇里从没出现过的。</b><br>
+        四个专栏分别拆四把新刀，末尾给出<b>十五个干扰项的产地总账表</b>。</div>
+
+        <div class="q" data-ans="2" id="q21">
+          <p class="stem"><span class="qt">事实细节题（限定第 1 段）</span>21. We learn from Paragraph 1 that Gilbert's appointment has ______.</p>
+          <div class="opts">
+            <div class="opt">[A] incurred criticism.</div>
+            <div class="opt">[B] raised suspicion.</div>
+            <div class="opt">[C] received acclaim.</div>
+            <div class="opt">[D] aroused curiosity.</div>
+          </div>
+          <div class="expl">
+            <b>✅ C · 定位①❷＋①❸两句</b><br>
+            <b>正源</b>：①❷ <span class="loc">For the most part, <b>the response has been favorable, to say the least.</b></span> ＋ ①❸ <span class="loc"><b>「Hooray! At last!」</b> wrote Anthony Tommasini, <b>a sober-sided classical-music critic</b>.</span><br>
+            ▸ <b><code>acclaim</code>（称赞、喝彩）正是 <code>favorable</code>（赞同的）＋ <code>Hooray! At last!</code>（欢呼）两句的概括。</b><b>C 项在原文没有原词，靠的是同义概括——这是 2011 开篇给的第一个提醒：正确项常常不带原词。</b><br>
+            ⭐ <b>本题的加强件有四个，方向完全一致</b>：<code>For the most part</code>（多数）· <code>favorable</code>（赞同）· <code>to say the least</code>（<b>说赞同都算轻的</b>）· <code>sober-sided</code>（<b>连一本正经的人都欢呼</b>）。<b>四件叠在一起，段落倾向不可能再清楚。</b>
+            <div style="margin-top:8px">
+            <b>[A] incurred criticism（招致批评）⚠️ 纯词形诱饵</b>：唯一的来源是①❸句末的 <code><b>critic</b></code>（评论家）——<b>与 <code>criticism</code>（批评）只是词形同根，意思毫无关系；而这位评论家写的恰恰是「Hooray!」。</b><br>
+            　📌 <b>同族陷阱要一起记</b>：<code>critic</code> 评论家 · <code>critical</code> ①批评的 ②<b>关键的、危急的</b> · <code>criticism</code> ①批评 ②<b>（文艺）评论</b>——<b>四个词四种脸，考研年年拿它们做文章。</b><br>
+            <b>[B] raised suspicion（引起怀疑）⚠️ 越段取料 ＋ 心理加戏</b>：<code>suspicion</code> 只能勉强挂到<u>第二段</u>❶句的 <code>comparatively little known</code>（不为人知）上。<b>两处不对</b>：① <b>题干写死了 <code>Paragraph 1</code></b>（⟹ <b>R7</b>：题干限定段落时，别处的信息一律不选）；② <b>「不为人知」也只推得出「意外」，推不出「怀疑」。</b><br>
+            <b>[C] received acclaim ✔</b><br>
+            <b>[D] aroused curiosity（引发好奇）⚠️ 把「意外」改写成「好奇」</b>：来源是①❶的 <code><b>sudden</b> announcement</code>（突然宣布）。<b>「突然」传递的是<u>出人意料</u>，不是<u>想知道为什么</u>。</b><br>
+            　⚠️ <b>D 是本题里最像的那个错项，因为它<u>方向不错</u>（不是贬义）、只是<u>内容不对</u>。</b><b>判据：题干问的是 <code>the response</code>（反响），而①段唯一写反响的两句写的都是「叫好」，一个字没提「大家想弄清楚他是谁」。</b>
+            </div>
+          </div>
+        </div>
+
+        <div class="q" data-ans="1" id="q22">
+          <p class="stem"><span class="qt">人物观点题</span>22. Tommasini regards Gilbert as an artist who is ______.</p>
+          <div class="opts">
+            <div class="opt">[A] influential.</div>
+            <div class="opt">[B] modest.</div>
+            <div class="opt">[C] respectable.</div>
+            <div class="opt">[D] talented.</div>
+          </div>
+          <div class="expl">
+            <b>✅ B · 定位②❷句（托马西尼自己的原话，且只能取这一句）</b><br>
+            <b>正源</b>：②❷ <span class="loc">Even Tommasini … <b>calls him「an unpretentious musician with no air of the formidable conductor about him.」</b></span><br>
+            ▸ <b><code>unpretentious</code>（不摆架子的、不事张扬的）＋ <code>no air of the formidable conductor</code>（没有令人敬畏的大指挥家派头）＝ <code>modest</code>（谦逊的）。</b><b>前半给正面描述，后半用否定再说一遍——同一个意思说两次，答案不可能是别的。</b><br>
+            ⚠️⚠️ <b>本题的四个选项里，有<u>两个</u>是「把否定词摘掉」造出来的（A 和 C），这是本篇最值钱的一条发现。</b>（⟹ 新卡 <b>R84</b>，见第 <a href="#col1" style="color:var(--green);font-weight:700">02+ 节</a>）
+            <div style="margin-top:8px">
+            <b>[A] influential（有影响力的）⚠️⚠️ 摘掉了 <code>little</code>，方向正好读反</b>：来源是②❶ <code>Gilbert is comparatively <b>little</b> known</code>——<b>原文说的是「相对<u>不</u>为人知」，选项说成「很有影响力」。</b><br>
+            　⟹ <b><code>little</code> 在这里是<u>否定副词</u>（＝ 几乎不），不是「少量」。</b><b>同族一起记：<code>little/few</code>（否定）vs <code>a little/a few</code>（肯定）——多一个冠词，正负号就翻过来。</b><br>
+            <b>[B] modest ✔</b><br>
+            <b>[C] respectable（值得尊敬的）⚠️⚠️ 一次摘掉两个否定词，是本题最险的一项</b>：<br>
+            　▸ <b>它的两个原料都真在原文里</b>：②❷的 <code><b>formidable</b></code>（令人敬畏的）＋ ②❸的 <code><b>praise</b></code>（赞美）。<b>「令人敬畏」＋「赞美」，读着当然像「值得尊敬」。</b><br>
+            　▸ <b>可这两个词前面各站着一个否定词</b>：<code><b>no air of</b> the formidable conductor</code>（<u>没有</u>那种派头）· <code><b>faint</b> praise</code>（<u>轻描淡写</u>的赞美，即明褒暗贬）。<b>摘掉它们，等于把原句的正负号全部翻转。</b><br>
+            　▸ <b>第三处不对</b>：<code>faint praise</code> 是<b>《时报》读者</b>可能有的观感（作者的推测），<b>不是托马西尼的评价</b>——而题干问的是 <code>Tommasini regards…</code>。<b>一个选项同时踩了「摘否定词」和「张冠李戴」两个坑。</b><br>
+            <b>[D] talented（有才华的）⚠️ 张冠李戴，取料跨到了第三段</b>：来源是③❶ <code>I have no idea whether Gilbert is <b>a great conductor or even a good one</b></code>。<br>
+            　▸ <b>两处不对</b>：① <b>这是<u>作者</u>说的，不是托马西尼说的</b>；② <b>而且作者说的是「我不知道」——连他自己都<u>没有</u>做出「有才华」这个判断。</b><br>
+            　⟹ <b>D 是「把一句<u>存疑句</u>拆掉否定壳、再换个人说出来」的双重加工，本篇十五个干扰项里加工层数最多的一个。</b>
+            </div>
+          </div>
+        </div>
+
+        <div class="q" data-ans="3" id="q23">
+          <p class="stem"><span class="qt">作者观点题（对文中人物观点的评价）</span>23. The author believes that the devoted concertgoers ______.</p>
+          <div class="opts">
+            <div class="opt">[A] ignore the expenses of live performances.</div>
+            <div class="opt">[B] reject most kinds of recorded performances.</div>
+            <div class="opt">[C] exaggerate the variety of live performances.</div>
+            <div class="opt">[D] overestimate the value of live performances.</div>
+          </div>
+          <div class="expl">
+            <b>✅ D · 定位④❶句（一句话里同时装着「对方主张」和「作者判决」）</b><br>
+            <b>正源</b>：④❶ <span class="loc"><b>Devoted concertgoers</b> who reply that <b>recordings are no substitute for live performance</b> <b>are missing the point</b>.</span><br>
+            ▸ <b>对方主张</b>（who 从句）＝「录制品替代不了现场」⟹ <b>他们主张的是：现场的价值不可替代。</b><br>
+            ▸ <b>作者判决</b>（主句谓语）＝ <code>are missing the point</code>（没抓住要害）⟹ <b>作者说这个主张是错的。</b><br>
+            ⟹ <b>主张 × 负号 ＝「他们<u>高估</u>了现场演奏的价值」＝ D。</b><b>注意：<code>overestimate</code> 在原文里没有任何对应词，它是「对方观点 ＋ 作者的否定」合成出来的。</b>（⟹ 新卡 <b>R87</b>，见第 <a href="#col4" style="color:var(--green);font-weight:700">02++++ 节</a>）<br>
+            ⭐ <b>作者随后用②③④三句给出理由，条条都在贬低现场的相对价值</b>：现场要与歌剧院、剧团、博物馆、老唱片一起抢时间和钱（❷）· 老唱片更便宜、随处可得、质量常常更高、还能随时随地听（❸）· 于是传统音乐会这一惯例陷入危机（❹）。
+            <div style="margin-top:8px">
+            <b>[A] ignore the expenses of live performances（忽视现场演奏的花费）⚠️ 把「谁的钱」偷换了</b>：<code>expenses</code> 的来源是④❷ 的 <code>money of the art-loving public</code>（公众的钱）与④❸ 的 <code>cheap</code>（录音便宜）。<br>
+            　▸ <b>两处不对</b>：① <b>原文谈的是「演奏家要去抢公众的钱」，不是「听众忽视了票价」</b>；② <b>作者从头到尾没有指责这批听众「忽视」了什么费用——他指责的是他们<u>判断错了</u>。</b><br>
+            <b>[B] reject most kinds of recorded performances（拒绝大多数录制品）⚠️⚠️ 把对方主张原样搬了过来</b>：这几乎就是 <code>recordings are no substitute for live performance</code> 的直译。<br>
+            　⟹ <b>这是本题设计得最巧的一项：它<u>忠实于原文</u>，却<u>答非所问</u>。</b><b>题干问的是「作者认为他们<u>怎么了</u>」，B 回答的是「他们<u>说了什么</u>」。</b><br>
+            　⚠️ <b>还有一处更硬的破绽</b>：<b>原文说的是「录制品无法<u>取代</u>现场」，不等于「拒绝<u>接受</u>录制品」。</b><b>一个人完全可以既买唱片、又坚持认为现场不可替代——「不能取代」与「拒绝」是两回事。</b>（⟹ <b>R8</b> 干扰项类型之「程度推过头」）<br>
+            <b>[C] exaggerate the variety of live performances（夸大现场演奏的种类）⚠️ 从竞争对手清单里剪料</b>：<code>variety</code> 挂靠的是④❷ 那串 <code>opera houses, dance troupes, theater companies, and museums</code>。<br>
+            　⟹ <b>那串名单是<u>作者</u>列出来说明「竞争对手多」的，不是听众说的，更不是「现场演奏的种类」。</b><b>名词换了、说话人也换了。</b><br>
+            <b>[D] overestimate the value of live performances ✔</b><br>
+            ⭐ <b>四个选项的动词全是「评价类」（ignore／reject／exaggerate／overestimate），这本身就是一条提示</b>：<b>凡四个选项都在给一个群体的行为下评价，就说明本题考的是「作者怎么看他们」，那么正确项必须能在原文里找到<u>作者的那句判决</u>作为靠山。</b><b>本题的靠山就是 <code>are missing the point</code> 五个词。</b>
+            </div>
+          </div>
+        </div>
+
+        <div class="q" data-ans="1" id="q24">
+          <p class="stem"><span class="qt">事实细节题（判断哪一项为真）</span>24. According to the text, which of the following is true of recordings?</p>
+          <div class="opts">
+            <div class="opt">[A] They are often inferior to live concerts in quality.</div>
+            <div class="opt">[B] They are easily accessible to the general public.</div>
+            <div class="opt">[C] They help improve the quality of music.</div>
+            <div class="opt">[D] They have only covered masterpieces.</div>
+          </div>
+          <div class="expl">
+            <b>✅ B · 定位④❸＋④❹两句</b><br>
+            <b>正源</b>：④❸ <span class="loc">These recordings are cheap, <b>available everywhere</b>, and very often much higher in artistic quality…</span> ＋ ④❹ <span class="loc">The <b>widespread availability</b> of such recordings…</span><br>
+            ▸ <b><code>available everywhere</code>（随处可得）＋ <code>cheap</code>（便宜）⟹ <code>easily accessible to the general public</code>（大众很容易获得）。</b><b>标准的同义替换，而且原文把这层意思写了两遍（❸句一个 available、❹句一个 availability）。</b><br>
+            ⭐ <b>本题是「一句话造四个选项」的标本</b>：❸句的三个并列表语，每一个都被拿去造了一项。<b>做这种题，先把定位句的并列成分逐个拆开列成一行，再逐项对——比整句读四遍快得多。</b>
+            <div style="margin-top:8px">
+            <b>[A] often inferior to live concerts in quality（质量常常不如现场）⚠️ 完全调头</b>：原文 <code>very often much <b>higher</b> in artistic quality than today's live performances</code>（往往<u>高得多</u>）。<b>连 <code>often</code> 都照抄了，只把 higher 换成 inferior。</b><br>
+            　📌 <b>凡选项与原文只差一个方向词（higher/lower、more/less、rise/fall），先别急着高兴——这类项要么是正解，要么正好反向，只能回原句逐字看。</b><br>
+            <b>[B] easily accessible to the general public ✔</b><br>
+            <b>[C] help improve the quality of music（有助于提高音乐质量）⚠️ 把「比较」偷换成「因果」</b>：原文只说<u>录音的</u>艺术质量常常比<u>今天的现场</u>高，<b>这是两者的<u>比较</u>；C 说成录音<u>促进</u>了音乐质量的提高，是一个原文完全没有的<u>因果作用</u>。</b><br>
+            　⟹ <b>可迁移判据：原文给的是「A 比 B 高」，选项写成「A 使 B 变高／A 提升了质量」，一律排。</b><b>比较是静态的，因果是动态的。</b><br>
+            <b>[D] have only covered masterpieces（只收录了杰作）⚠️ 死在一个 <code>only</code> 上</b>：来源是④❷ <code>the recorded performances of <b>the great classical musicians</b> of the 20th century</code>。<br>
+            　▸ <b>原文确实说录音里有大师之作，但从没说「<u>只</u>有大师之作」。</b><b><code>only</code> 是选项自己加的绝对化限定。</b><br>
+            　📌 <b>绝对词清单（见到先回原文找对应）</b>：<code>only / all / never / always / none / every / must</code>——<b>原文没有对应的限定词，就是加的。</b>
+            </div>
+          </div>
+        </div>
+
+        <div class="q" data-ans="0" id="q25">
+          <p class="stem"><span class="qt">作者态度题</span>25. Regarding Gilbert's role in revitalizing the Philharmonic, the author feels ______.</p>
+          <div class="opts">
+            <div class="opt">[A] doubtful.</div>
+            <div class="opt">[B] enthusiastic.</div>
+            <div class="opt">[C] confident.</div>
+            <div class="opt">[D] puzzled.</div>
+          </div>
+          <div class="expl">
+            <b>✅ A · 定位⑤❸❹❺三句（＋③❶句作旁证）</b><br>
+            <b>正源</b>：⑤❸ <span class="loc"><b>But</b> what will be the nature of that difference?</span> ＋ ⑤❹ <span class="loc"><b>Merely expanding the orchestra's repertoire will not be enough.</b></span> ＋ ⑤❺ <span class="loc">If Gilbert and the Philharmonic <b>are to succeed, they must first change the relationship</b>…</span><br>
+            ▸ <b>末段的走向是「先扬后抑」</b>：❶给出路 → ❷引 Alex Ross 的赞誉 → <b>❸ But ＋ 反问 → ❹ 一句断言否掉这条出路 → ❺ 提出真正的（更难的）条件</b>。<br>
+            ▸ <b>再加上③❶ <code>I have no idea whether Gilbert is a great conductor or even a good one</code>（作者一开始就声明不看好也不看衰）</b> ⟹ <b>作者的态度 ＝ 怀疑、保留（doubtful）：不否认这个人有本事，但不相信换个曲目就能解决问题。</b><br>
+            ⭐ <b>本题是「态度题必须读到最后一个转折」的又一个例子</b>（⟹ <b>R72</b> 第三道闸）：<b>只读到❷句，会得出 confident；读完❹句，只能是 doubtful。</b>
+            <div style="margin-top:8px">
+            <b>[A] doubtful ✔</b><br>
+            <b>[B] enthusiastic（热情的、满怀兴趣的）⚠️ 把「谁有兴趣」偷换了</b>：来源是⑤❷ <code>Gilbert's own <b>interest</b> in new music has been <b>widely noted</b></code>。<br>
+            　▸ <b>两处不对</b>：① <b>有兴趣的是<u>吉尔伯特</u>（对新音乐），不是作者（对吉尔伯特）</b>；② <b><code>widely noted</code>（业界广泛注意到）是一句<u>陈述事实</u>的话，作者本人没有出任何态度。</b><br>
+            <b>[C] confident（有信心的）⚠️⚠️ 张冠李戴，本题最险的一项</b>：来源是⑤❷ <code>Alex Ross … has described him as a man who is <b>capable of</b> turning the Philharmonic into「a markedly different, more vibrant organization.」</code><br>
+            　▸ <b>这确实是一句充满信心的判断——但说话的是评论家 Alex Ross，不是作者。</b><br>
+            　▸ <b>作者对这句话的回应就写在紧接着的下一句</b>：<code><b>But</b> what will be the nature of that difference?</code>——<b>他不是附和，他是接着质疑。</b><br>
+            　⟹ <b>硬判据：题干写的是 <code>the author feels</code>。凡态度题，先把文中<u>所有带引号或带 said/described 的句子</u>划掉，剩下的才是作者的声音。</b>（⟹ <b>R4</b>／<b>R45</b>）<br>
+            <b>[D] puzzled（困惑的）⚠️⚠️ 把反问句当成了真疑问</b>：来源是⑤❸ 那个问号 <code>But what will be the nature of that difference?</code><br>
+            　▸ <b>判据只有一条——看问号后面紧跟的是什么。</b><b>后面跟的是一句断言（<code>Merely expanding … will not be enough</code>），说明作者<u>心里有答案</u>，问号只是把答案抛给读者的修辞手段 ⟹ 这是<u>反问</u>（质疑），不是<u>发问</u>（困惑）。</b><br>
+            　▸ <b>反面验证：真困惑的人写不出❺句那样明确的条件句</b>（<code>they must first change the relationship between…</code>）。<b>他不但知道这条路不行，还知道该走哪条路——这怎么可能是 puzzled？</b>（⟹ 新卡 <b>R85</b>，见第 <a href="#col2" style="color:var(--green);font-weight:700">02++ 节</a>）<br>
+            　📌 <b><code>puzzled / confused / uncertain</code> 这一族选项，在评论体里几乎必错</b>：<b>能写评论的人不会把「我没想明白」拿出来当结论。</b>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========== 专栏一 ========== -->
+      <section class="card" id="col1">
+        <h2><span class="n">02+</span>专栏 · 本篇最贵的一条：<u>把选项里的形容词放回原文，先看它前面那个小否定词还在不在</u>（22 题 · 新卡 R84）</h2>
+        <p style="font-size:.9rem;margin-bottom:12px">②段只有三句话，作者却在里面埋了<b>三个否定限定词</b>；22 题四个选项里，有<b>两个</b>是把它们摘掉造出来的。<b>这一族干扰项在 2010 全年四篇里一个都没出现过，本篇一次来了三个（22A、22C，加上 24D 的绝对词 <code>only</code> 是它的近亲）。</b></p>
+        <div class="tabwrap"><table class="ctab">
+          <tr><th>原文（否定词加粗）</th><th>摘掉后变成</th><th>哪个选项</th><th>怎么发现</th></tr>
+          <tr><td>Gilbert is comparatively <b>little</b> known<br><span style="color:var(--muted)">相对<u>不</u>为人知</span></td><td>他很有名 ⟹ 有影响力</td><td><b>22A</b> influential</td><td><b><code>little</code> 是否定副词，不是「少量」</b>；<code>a little</code> 才是肯定</td></tr>
+          <tr><td>with <b>no</b> air of the formidable conductor about him<br><span style="color:var(--muted)"><u>没有</u>大指挥家的派头</span></td><td>他很有大师风范 ⟹ 令人敬重</td><td rowspan="2"><b>22C</b> respectable</td><td><code>formidable</code> 是原词，可它被 <code>no air of</code> 整个否定掉了</td></tr>
+          <tr><td>that seems likely to have struck … as <b>faint</b> praise<br><span style="color:var(--muted)"><u>轻描淡写</u>的赞美 ＝ 明褒暗贬</span></td><td>读者觉得这是赞美 ⟹ 值得尊敬</td><td><code>praise</code> 是原词，可 <code>faint</code> 把它整个打了折</td></tr>
+          <tr><td>the recorded performances of <b>the great classical musicians</b><br><span style="color:var(--muted)">（原文没有任何「只」）</span></td><td>录音<u>只</u>收录杰作</td><td><b>24D</b> only covered masterpieces</td><td>反向的同一把刀：<b>原文没有限定词，选项给你加一个</b></td></tr>
+        </table></div>
+        <div class="atti" style="margin-top:14px">
+          🔪 <b>R84 的三步动作（五秒能做完）</b><br>
+          <b>① 把选项里那个形容词／名词，在原文里找到它的<u>本尊</u></b>（influential ← known · respectable ← formidable / praise）；<br>
+          <b>② 只看它<u>紧贴前面的那一个词</u></b>——不用读整句；<br>
+          <b>③ 只要那个位置站着 <code>little / few / no / not / hardly / faint / lukewarm / far from / anything but / by no means</code>，这个选项当场判死。</b><br>
+          <b>反向同样成立：原文没有 only／all／never，选项却带着它们，也当场判死（24D）。</b>
+        </div>
+        <div class="atti" style="margin-top:10px">
+          ⚠️ <b>为什么这把刀值得单独立一张卡：因为「摘掉否定词」造出来的干扰项，<u>读上去和原文的字面重合度最高</u>。</b><br>
+          <b>22C 的两个原料（formidable、praise）都是原文的词，位置也没挪、修饰对象也没换——唯一被动的是<u>正负号</u>。</b><br>
+          <b>而我们平时最常用的检查方法（「这个词原文里有没有」「它修饰的是不是同一个东西」）在这里<u>全部失效</u>：两问的答案都是「是」。</b><br>
+          ⟹ <b>所以必须补上第三问：<u>它的正负号还在不在</u>。</b>
+        </div>
+        <div class="atti yes" style="margin-top:10px">
+          🔗 <b>三把刀连起来，就是「特征词类干扰项」的完整检查表（三年三把，正好凑齐）</b><br>
+          <b>① R57（2010 T1）——它修饰的是哪个名词？</b>（特征词有据 ≠ 载体有据：<code>elaborate</code> 对得上「写得详尽」，可原文详尽的是内容，选项贴到了版面上）<br>
+          <b>② R34（2009 T1）——这个「定语＋中心词」的组合原文有没有？</b>（概念嫁接：<code>American</code> 只修饰过 belief system，选项挪到了 thinking mode 上）<br>
+          <b>③ R84（本篇）——它前面的否定词还在不在？</b>（<code>formidable</code> 在，可 <code>no air of</code> 也在）<br>
+          ⟹ <b>顺序建议：先问③（一秒）、再问①（三秒）、最后问②（要回原文搜整个短语）。<u>越便宜的判据越先用</u>。</b>
+        </div>
+      </section>
+
+      <!-- ========== 专栏二 ========== -->
+      <section class="card" id="col2">
+        <h2><span class="n">02++</span>专栏 · 那个问号是<u>反问</u>不是<u>困惑</u>：态度题里 puzzled 一族的通用排除法（25 题 · 新卡 R85）</h2>
+        <p style="font-size:.9rem;margin-bottom:12px">末段⑤❸ <code>But what will be the nature of that difference?</code> 是全篇唯一一个问号，25D <code>puzzled</code> 就是冲它来的。<b>问句在议论文里有两种身份，判据不在问句本身，在它<u>后面那一句</u>。</b></p>
+        <div class="tabwrap"><table class="ctab">
+          <tr><th>身份</th><th>后面紧跟着什么</th><th>作者其实在说</th><th>态度题该选</th></tr>
+          <tr><td><b>反问 / 设问</b>（本篇）</td><td><b>一句断言</b>（<code>Merely expanding … <b>will not be enough</b>.</code>）</td><td>我早有答案，问号只是把它推到你面前</td><td><b>怀疑 / 批评 / 保留</b>（doubtful、critical、skeptical）</td></tr>
+          <tr><td><b>真发问</b></td><td><b>一个回答或一段探讨</b>（<code>Nobody knows.</code> / <code>Several explanations have been offered…</code>）</td><td>这件事确实还没定论</td><td>puzzled、uncertain 才有可能</td></tr>
+        </table></div>
+        <div class="atti" style="margin-top:14px">
+          🔪 <b>R85 的判据（两秒）</b>：<b>读问号后面的第一句。是<u>断言</u>就是反问（＝质疑）；是<u>回答</u>才是困惑。</b><br>
+          <b>本篇的加固证据有两条</b>：① <b>问句前面挂着 <code>But</code></b>——<b>转折词在前，说明它是用来<u>推翻上一句</u>（Alex Ross 的赞誉）的，不是用来求知的；</b>② <b>作者在❺句还给出了明确的解决条件</b>（<code>they must first change the relationship…</code>）——<b>连出路都写好了的人，不可能 puzzled。</b>
+        </div>
+        <div class="atti" style="margin-top:10px">
+          ⭐ <b>顺便把 25 题四个选项的四种造法排在一起看——这四种手法覆盖了态度题的绝大多数干扰项：</b><br>
+          <b>① 换情绪的主人（25B enthusiastic）</b>：有兴趣的是吉尔伯特，不是作者；<br>
+          <b>② 换说话人（25C confident）</b>：有信心的是 Alex Ross，不是作者；<br>
+          <b>③ 把修辞手段当真实情绪（25D puzzled）</b>：问号是反问，不是困惑；<br>
+          <b>④ 正解靠「读到最后一个转折」（25A doubtful）</b>：只读到❷句会选 C，读完❹句只能选 A。<br>
+          ⟹ <b>三个错项里有两个（B、C）是「谁的情绪」出了错——这与本篇「四个说话人」的特点完全吻合。</b>（见第 <a href="#col3" style="color:var(--green);font-weight:700">02+++ 节</a>）
+        </div>
+        <div class="atti yes" style="margin-top:10px">
+          📊 <b>态度题的选项，历年反复出现的就那么几族，值得按「能不能选」记住</b><br>
+          <b>▸ 常常是正解的</b>：doubtful / skeptical（怀疑）· critical（批评）· cautious（谨慎）· concerned（担忧）· <b>sympathetic（同情，2010 T4 正解）</b>· approving（赞同）。<br>
+          <b>▸ 几乎永远不是正解的</b>：<b>puzzled / confused</b>（作者不会以「我没想明白」收尾）· <b>indifferent / detached</b>（写评论的人不会漠不关心）· <b>objective / neutral</b>（有明确对立面时必错，⟹ R72）· <b>biased / hostile</b>（措辞往往到不了这个强度）。<br>
+          ⟹ <b>先用这份清单把三个选项框掉，再回原文验剩下的那个——比四个选项挨个回原文快得多。</b>（⟹ 接 <b>R12</b> 态度词强度尺）
+        </div>
+      </section>
+
+      <!-- ========== 专栏三 ========== -->
+      <section class="card" id="col3">
+        <h2><span class="n">02+++</span>专栏 · 人物由头 ≠ 文章主题：找到那句「话题换轨句」（③❶ · 新卡 R86）＋ 本篇四个说话人</h2>
+        <p style="font-size:.9rem;margin-bottom:12px">前两段全在写「某人被任命」，可五道题里有两道（23、24，占 8 分）与这个人毫无关系。<b>文章的重心在③段第一句之后。</b></p>
+        <div class="tabwrap"><table class="ctab">
+          <tr><th>段</th><th>写的是</th><th>出的题</th><th>身份</th></tr>
+          <tr><td>①②</td><td>吉尔伯特的任命与乐坛反响</td><td><b>21、22</b>（8 分）</td><td><b>新闻由头</b>：提供人物题的素材</td></tr>
+          <tr><td><b>③</b></td><td><b>作者声明：我不评价这个人，我要说的是别的</b></td><td><b>一道题都不出</b></td><td>⭐⭐⭐ <b>换轨句所在，全文枢纽</b></td></tr>
+          <tr><td>④</td><td>录制品把现场演奏挤到了墙角</td><td><b>23、24</b>（8 分）</td><td><b>真正的论点段</b></td></tr>
+          <tr><td>⑤</td><td>出路：光换曲目不够，要换关系</td><td><b>25</b>（4 分）</td><td>收口 ＋ 态度落点</td></tr>
+        </table></div>
+        <div class="atti" style="margin-top:14px">
+          🔪 <b>R86：怎么找那句换轨句</b>——<b>它几乎总是一个<u>第一人称的声明</u>，而且总在前两段之后紧接着出现：</b><br>
+          <code>For my part, …</code>（就我而言）· <code>I have no idea whether…</code>（我并不知道）· <code>To be sure, …, but …</code>（诚然…但…）· <code>The real question, however, is …</code>（真正的问题在于）· <code>But that is not the point.</code>（可这不是重点）<br>
+          ⟹ <b>见到这一句，就在卷边画一条横线：横线以上管人物题，横线以下管观点题。</b><b>本篇的横线画在③❶，上下各两道题，分得干干净净。</b>
+        </div>
+        <div class="atti" style="margin-top:10px">
+          ⚠️ <b>这把刀的<u>反面</u>同样要记牢，否则会矫枉过正</b>：<b>「重心在后半」不等于「前半可以略读」。</b><br>
+          <b>本篇前两段照样出了两道题、8 分，而且 22 题还是全篇最容易错的一道。</b><br>
+          ⟹ <b>正确的读法是「分区」而不是「取舍」：前半段读<u>人物的话</u>（谁说了什么、什么倾向），后半段读<u>作者的论证</u>（他反对谁、为什么）。</b>
+        </div>
+        <div class="atti yes" style="margin-top:10px">
+          🗣️ <b>本篇有四个说话人，是本中心至今说话人最多的一篇 ⟹ 开篇先列这张三列表，十五个干扰项里能自动排掉五个</b>
+          <div class="tabwrap" style="margin-top:8px"><table class="ctab">
+            <tr><th>谁</th><th>说了什么</th><th>倾向 ＋ 它造出了哪个干扰项</th></tr>
+            <tr><td><b>Tommasini</b>（评论家，力荐者）</td><td>①❸「Hooray! At last!」· ②❷「一位不摆架子、没有大指挥家派头的音乐家」</td><td><b>褒</b>（但②❷褒得很淡）⟹ <b>22 题的唯一正源</b></td></tr>
+            <tr><td><b>《时报》读者</b>（作者的推测）</td><td>②❸ 这句描述读着像 <code>faint praise</code></td><td><b>贬</b>（明褒暗贬）⟹ 造出 <b>22C</b>（读者的观感被当成托马西尼的评价）</td></tr>
+            <tr><td><b>Alex Ross</b>（另一位评论家）</td><td>⑤❷ 他有能力把乐团变成「更有活力的团体」</td><td><b>看好</b> ⟹ 造出 <b>25C confident</b>（<b>本篇最险的一项</b>）</td></tr>
+            <tr><td>⭐ <b>作者「我」</b></td><td>③❶ 我不知道他是不是好指挥 · ④❶ 忠实听众没抓住要害 · ⑤❹ 仅仅扩充曲目不够</td><td><b>怀疑 ＋ 批评</b> ⟹ <b>23、25 两题的唯一正源</b>；③❶还被拿去造了 <b>22D talented</b></td></tr>
+          </table></div>
+          ⟹ <b>一条硬规矩：题干问谁，就只在那一行里找答案。</b><b>22 题问 Tommasini ⟹ 只看第一行；25 题问 the author ⟹ 只看第四行。</b>（⟹ 接 <b>R4</b>／<b>R45</b>／<b>R69</b>：这三张卡讲的都是同一件事的不同侧面——<b>R4 分辨谁在说话，R45 分辨叙述者与人物，R69 分辨意图归属，本篇一次把三者全考了。</b>）
+        </div>
+      </section>
+
+      <!-- ========== 专栏四 ========== -->
+      <section class="card" id="col4">
+        <h2><span class="n">02++++</span>专栏 · <u>are missing the point</u> 型判决句：正解 ＝ 对方主张 × 作者的负号（23 题 · 新卡 R87）＋ 十五个干扰项产地总账</h2>
+        <p style="font-size:.9rem;margin-bottom:12px">④❶一句话里装了两样东西：<b>who 从句 ＝ 对方的主张</b>，<b>主句谓语 ＝ 作者的判决</b>。<b>题干问「作者认为他们怎么了」，答案必须由这两半<u>合成</u>，只取任何一半都是错的。</b></p>
+        <div class="tabwrap"><table class="ctab">
+          <tr><th>只取这一半</th><th>就会写出</th><th>对应选项</th></tr>
+          <tr><td>只取 who 从句（对方主张）</td><td>「他们认为录音替代不了现场」</td><td><b>23B</b> reject most kinds of recorded performances（<b>忠实于原文，却答非所问</b>）</td></tr>
+          <tr><td>只取主句谓语（作者判决）</td><td>「他们错了」——可错在哪？说不出来</td><td>（无法成项，所以命题人不会这么造）</td></tr>
+          <tr><td>⭐ <b>两半相乘</b></td><td><b>「他们<u>高估</u>了现场演奏的价值」</b></td><td><b>23D</b> overestimate the value of live performances ✔</td></tr>
+        </table></div>
+        <div class="atti" style="margin-top:14px">
+          🔪 <b>R87 的两步动作</b><br>
+          <b>① 先把对方主张翻成一个<u>名词短语</u></b>：<code>recordings are no substitute for live performance</code> ⟹ <b>「现场演奏的价值不可替代」</b>；<br>
+          <b>② 再给它挂上作者的负号</b>——<b>负号在英语里几乎总是以<u>前缀或程度动词</u>的形式出现在选项里</b>：<code><b>over</b>estimate</code> / <code><b>under</b>estimate</code> / <code><b>mis</b>read</code> / <code><b>mis</b>interpret</code> / <code>exaggerate</code> / <code>oversimplify</code> / <code>fail to see</code>。<br>
+          ⟹ <b>所以正解常常在原文里<u>一个对应词都没有</u>——它是算出来的，不是找出来的。</b><br>
+          📌 <b>判决句的信号词族（见到就知道后面要出这类题）</b>：<code>are missing the point</code> · <code>get it backwards</code> · <code>are mistaken</code> · <code>overlook the fact that</code> · <code>fail to appreciate</code> · <code>this is only half the story</code>。
+        </div>
+        <div class="atti" style="margin-top:10px">
+          📊 <b>十五个干扰项的产地总账（本篇分得出五个族）</b>
+          <div class="tabwrap" style="margin-top:8px"><table class="ctab">
+            <tr><th>族</th><th>干扰项</th><th>手法</th></tr>
+            <tr><td>⭐ <b>① 把否定／限定词摘掉</b>（<b>新族，2010 全年 0 例</b>）</td><td><b>22A</b> influential · <b>22C</b> respectable · <b>24D</b> only covered masterpieces</td><td>little / no / faint 被摘掉；或反向给原文加一个 only</td></tr>
+            <tr><td><b>② 张冠李戴（换说话人）</b></td><td><b>22C</b>（读者的观感）· <b>22D</b> talented（作者的存疑）· <b>25C</b> confident（Alex Ross 的判断）· <b>25B</b> enthusiastic（吉尔伯特的兴趣）</td><td>把 A 说的话安到 B 头上，或换掉情绪的主人</td></tr>
+            <tr><td><b>③ 方向调头 / 比较变因果</b></td><td><b>24A</b> inferior（原文说 higher）· <b>24C</b> help improve（原文只说「比…高」）</td><td>只改一个方向词，或把静态比较写成动态因果</td></tr>
+            <tr><td><b>④ 原样搬对方主张 / 就近剪料</b></td><td><b>23B</b> reject recorded performances · <b>23C</b> exaggerate the variety · <b>23A</b> ignore the expenses</td><td>忠实于原文某句，却答非所问；或从竞争对手清单里剪词</td></tr>
+            <tr><td><b>⑤ 词形诱饵 / 越段取料</b></td><td><b>21A</b> criticism（← critic）· <b>21B</b> suspicion（← 第二段的 little known）· <b>21D</b> curiosity（← sudden）</td><td>靠词根相似、或跳出题干限定的段落取料</td></tr>
+          </table></div>
+          ⭐⭐ <b>结论一：十五个干扰项里，<u>依然没有一个是「原文完全没提过的东西」</u>——这已经是连续第五篇同一结论</b>（2010 T1／T2／T3／T4 各一次）。<b>「这个词原文有没有」这条判据，在成熟真题里基本已经不能单独使用。</b><br>
+          ⭐⭐ <b>结论二：本篇的族谱分布与 2010 T4 正好互补。</b>2010 T4 的主力是「<b>作者自己的话被动了手脚</b>」（读反条件句／偷换动词／挪时态／换主体）；<b>本篇的主力是「<u>极性</u>与<u>归属</u>」——七个干扰项（族①三个 ＋ 族②四个）都在动这两样，占了近一半。</b><br>
+          ⟹ <b>所以本篇最该练的不是「读懂」，是<u>两个五秒动作</u>：看否定词、看说话人。</b>
+        </div>
+      </section>
+      <!-- ========== 长难句 ========== -->
+      <section class="card">
+        <h2><span class="n">03</span>长难句精析 · 9 句</h2>
+        <p style="font-size:.88rem;color:var(--muted);margin-bottom:14px">⚠️ <b>黄皮书本篇没有长难句栏目，以下 9 句全为原创拆解</b>（自 2010 T2 起已连续五篇如此）。<br><b>本篇的难点只有一种，但它出现了五次：<u>主语与谓语之间被塞进一大团修饰成分</u></b>（s1 塞了 14 个词的不定式定语 · s2 塞了一个非限定定语从句 · s3 把主语缩成一个孤零零的 <code>that</code> 而前面顶着 26 个词的状语 · s5 塞了一个 who 从句 · s6 把状语整个提到句首）。<br><b>五道题的命脉句全在下面：s1 管 21 · s2/s3 管 22 · s5 管 23 · s6/s7 管 24 · s8/s9 管 25。</b></p>
+
+        <div class="sent" id="s1">
+          <div class="src"><b>The decision</b> <i>of the New York Philharmonic to hire Alan Gilbert as its next music director</i> <b>has been the talk of</b> the classical-music world <u>ever since the sudden announcement of his appointment in 2009</u>.</div>
+          <ul class="anat">
+            <li><b class="skel">骨架</b>：<code><b>The decision … has been the talk of the world</b></code> —— <b>主 ＋ 系 ＋ 表</b>，主干只有八个词，<b>主语和谓语之间隔了 14 个词。</b></li>
+            <li><b class="skel">⭐ 撑开主语的是「of 短语 ＋ 不定式定语」双层修饰</b>：<code>the decision <b>of A</b>（谁的决定）<b>to do sth</b>（决定做什么）</code>。<b><code>decision to do</code> 是固定搭配</b>——<b>见到 <code>the decision of X to do Y</code>，直接读成「X 决定做 Y」，比按语法逐层翻快得多。</b></li>
+            <li><b class="skel">词</b>：<code>the talk of the town/world</code> <b>＝ 大家都在谈论的话题</b>（不是「世界的谈话」）· <code>hire</code> 聘任 · <code>music director</code> 音乐总监（乐团里的最高艺术职位）。</li>
+            <li><b class="skel">⚠️ 时间状语的挂靠</b>：<code>his appointment <b>in 2009</b></code>——<b><code>in 2009</code> 修饰的是「上任」，不是「宣布」</b>（原文写于 2007 年 9 月，宣布在 2007 年）。<b>而 <code>sudden</code> 修饰 <code>announcement</code>，说的是「这个消息来得突然」。</b><b>做题不影响，但读错会以为文章写于 2009 年之后。</b></li>
+            <li><b class="skel">考点</b>：<b>21 题的题干就是这一句的改写</b>（<code>Gilbert's appointment has ___</code>），而 <b>21D <code>aroused curiosity</code> 的诱饵正是这里的 <code>sudden</code>。</b></li>
+          </ul>
+          <div class="tr"><b>译</b>：纽约爱乐乐团决定聘请艾伦·吉尔伯特担任下一任音乐总监，自 2009 年这一任命被突然宣布以来，此事一直是古典音乐界谈论的话题。</div>
+        </div>
+
+        <div class="sent" id="s2">
+          <div class="src">Even <b>Tommasini</b>, <i>who had advocated Gilbert's appointment in the Times</i>, <b>calls him</b> 「an unpretentious musician <u>with no air of the formidable conductor about him</u>.」</div>
+          <ul class="anat">
+            <li><b class="skel">骨架</b>：<code><b>Even Tommasini … calls him「…」</b></code> —— <b>主谓宾被一个非限定定语从句切成两半</b>；<b>划掉两个逗号之间的部分，主干只剩三个词。</b></li>
+            <li><b class="skel">⭐⭐ 引语内部才是真难点</b>：<code>an unpretentious musician <b>with no air of the formidable conductor about him</b></code>。<br><code><b>with</b> ＋ <b>no air</b> ＋ <b>of the formidable conductor</b> ＋ <b>about him</b></code> ——<b>正常语序是 <code>with no air <u>about him</u></code>（他身上没有那种气派），中间被 <code>of the formidable conductor</code>（哪一种气派）撑开了。</b><br><b>读法：先把 <code>no air … about him</code> 接上，再回头填「哪种 air」。</b></li>
+            <li><b class="skel">词</b>：<code>air</code> <b>n. 派头、气派、神态</b>（不是「空气」）——<code>an air of authority</code> 威严的神气 · <code>with an air of indifference</code> 一副满不在乎的样子。<br><code>formidable</code> <b>令人敬畏的、让人望而生畏的</b>（含「强大到吓人」的味道，不是单纯的「强大」）· <code>unpretentious</code> <b>不摆架子的、不事张扬的</b>（<code>pretentious</code> ＝ 自命不凡的，加 un- 反转）。</li>
+            <li><b class="skel">⭐ <code>Even</code> 的功能</b>：<b>引出「最不该这么说的人也这么说了」</b>——<b>托马西尼是公开力荐吉尔伯特的人，连他给出的最高评价也只是「不摆架子」。</b><b>Even 本身不带褒贬，方向由后面的内容决定，此处指向「他名气确实不大」。</b></li>
+            <li><b class="skel">考点</b>：⭐⭐⭐ <b>22B 的唯一正源</b>（<code>unpretentious</code> ＋ <code>no air of…</code> ⟹ modest）；<b>22C 的第一块原料 <code>formidable</code> 也在这句，可它被 <code>no air of</code> 整个否定掉了</b>（⟹ 新卡 <b>R84</b>）。</li>
+          </ul>
+          <div class="tr"><b>译</b>：就连曾在《纽约时报》上撰文力荐这项任命的托马西尼，也称他是「一位不摆架子的音乐家，身上没有那种令人敬畏的大指挥家派头」。</div>
+        </div>
+
+        <div class="sent" id="s3">
+          <div class="src"><u>As a description of the next music director of an orchestra that has hitherto been led by musicians like Gustav Mahler and Pierre Boulez</u>, <b>that seems likely to have struck</b> at least some Times readers <b>as faint praise</b>.</div>
+          <ul class="anat">
+            <li><b class="skel">⭐⭐⭐ 本篇最该练的一句：句首状语 26 个词，主语只有一个词</b>。<br><b>骨架</b>：<code><b>that seems likely to have struck … readers as faint praise</b></code> —— <b>主语 <code>that</code> 指代<u>上一句的整段引语</u></b>（「一位不摆架子的音乐家…」这句评价）。</li>
+            <li><b class="skel">句首 <code>As …</code> ＝ 「作为……来说」</b>，里面还套着两层修饰：<code>a description <b>of the next music director</b> <b>of an orchestra</b> <b>that has hitherto been led by…</b></code>——<b>三层 of／定语从句串下来，一路把「谁」限定到底。</b><br><b>读法：只抓两个端点——「作为对<u>下任总监</u>的描述」＋「这个乐团历任是<u>马勒和布列兹</u>」，中间的连接词不必逐个落实。</b></li>
+            <li><b class="skel">⭐ <code>strike sb as sth</code> ＝ 给某人以……的印象</b>（<code>strike</code> 不是「打」）。<b>本句用的是<u>完成式不定式</u> <code>to have struck</code>，表示「对已经发生的事作推测」</b>——<b><code>seems likely to have done</code> ＝ 「（当时）很可能已经让……觉得」。</b><b>这层「推测」很关键：作者不是在下判断，是在替读者设想。</b></li>
+            <li><b class="skel">词</b>：<code>hitherto</code> <b>迄今为止</b>（书面语，＝ so far / up to now）· <code>faint praise</code> <b>轻描淡写的赞美 ＝ 明褒暗贬</b>（出自名句 <code>damn with faint praise</code>）。</li>
+            <li><b class="skel">考点</b>：⚠️⚠️ <b>22C 的第二块原料（<code>praise</code>）在这，可它被 <code>faint</code> 打了折</b>；<b>更重要的是「谁的观感」——<code>faint praise</code> 是<u>《时报》读者</u>的观感，题干问的却是<u>托马西尼</u>的评价。</b><b>一句话同时提供了「摘否定词」和「张冠李戴」两种造项原料。</b></li>
+          </ul>
+          <div class="tr"><b>译</b>：作为对一个迄今为止一直由马勒、布列兹这样的音乐家执掌的乐团的下任音乐总监的描述，这句话很可能会让至少一部分《时报》读者觉得是一种轻描淡写的赞美。</div>
+        </div>
+
+        <div class="sent" id="s4">
+          <div class="src"><b>To be sure</b>, he performs an impressive variety of interesting compositions, <b>but</b> <u>it is not necessary for me to visit Avery Fisher Hall, or anywhere else,</u> <b>to hear</b> interesting orchestral music.</div>
+          <ul class="anat">
+            <li><b class="skel">骨架</b>：<code><b>To be sure, A, but B</b></code> —— <b>标准的「让步 ＋ 转折」框架，作者的真意在 but 之后。</b></li>
+            <li><b class="skel">⭐ <code>To be sure</code> ＝ 诚然、固然</b>（不是「为了确定」！）。<b>它是<u>让步信号</u>，后面必定跟 but。</b><b>做题手感：见到 To be sure，把它管辖的那半句<u>整个划掉</u>——作者主动让出去的东西不会是答案。</b><br>同族：<code>Admittedly</code> · <code>It is true that…</code> · <code>Granted</code> · <code>No doubt</code>（＝ 诚然，也是让步不是「毫无疑问地肯定」）。</li>
+            <li><b class="skel">后半句是「双层不定式」</b>：<code><b>it</b>（形式主语）<b>is not necessary for me to visit</b> …（真主语）<b>to hear</b> …（目的状语）</code>。<br><b>两个 to 不是并列：前一个是主语，后一个是目的。</b><b>读法：为了「听到有意思的管弦乐」这个目的，「我去音乐厅」这件事并非必要。</b></li>
+            <li><b class="skel">词</b>：<code>compositions</code> <b>（音乐）作品、曲目</b>（不是「作文／构成」）· <code>orchestral</code> 管弦乐的 · <code>Avery Fisher Hall</code> 艾弗里·费雪音乐厅（<b>纽约爱乐的主场</b>，专名不必记，但要认出它是「现场」的代称）。</li>
+            <li><b class="skel">考点</b>：<b>这一句是全文话题换轨的执行句</b>——<b>让步部分承认吉尔伯特的曲目好（对应⑤段将要说的「扩充曲目」），转折部分把话题引向「我不必去现场」。</b><b>第 05 节素材 8 就是这个句式。</b></li>
+          </ul>
+          <div class="tr"><b>译</b>：诚然，他演奏的曲目丰富多样、颇有意思，但我并不需要跑到艾弗里·费雪音乐厅或别的任何地方，才能听到有意思的管弦乐。</div>
+        </div>
+
+        <div class="sent" id="s5">
+          <div class="src"><b>Devoted concertgoers</b> <i>who reply that recordings are no substitute for live performance</i> <b>are missing the point</b>.</div>
+          <ul class="anat">
+            <li><b class="skel">⭐⭐⭐ 全篇最重要的一句，也是最容易读错的一句</b>。<br><b>骨架</b>：<code><b>Devoted concertgoers … are missing the point.</b></code> —— <b>主语和谓语之间塞了一个 10 个词的 who 从句。</b></li>
+            <li><b class="skel">⚠️ 典型误读：把从句里的 <code>are no substitute</code> 当成主句谓语</b>，于是整句读成「录制品不能替代现场演奏」——<b>正好把作者的判决丢了，而那五个词（<code>are missing the point</code>）才是 23 题的答案所在。</b><br><b>硬判据：<code>who</code> 一出现，从句就开始；从句里已经有了谓语 <code>reply</code>，那么后面的 <code>are missing</code> 只能属于主句。</b><b>数谓语，不数意思。</b></li>
+            <li><b class="skel">⭐ 一句话装两个立场</b>：<b>who 从句 ＝ <u>对方的主张</u>（录音替代不了现场）· 主句 ＝ <u>作者的判决</u>（你们没抓住要害）。</b><br><b>23 题的正确项就是这两半的乘积：「主张」＋「错」＝「<u>高估</u>了现场的价值」。</b>（⟹ 新卡 <b>R87</b>）</li>
+            <li><b class="skel">词</b>：<code>devoted</code> <b>忠实的、投入的</b>（<code>a devoted fan</code> 铁杆粉丝）· <code>concertgoer</code> <b>常去听音乐会的人</b>（<code>-goer</code> 是能产的后缀：<code>moviegoer</code>／<code>churchgoer</code>）· <code>reply that</code> 此处 ＝ <b>反驳说、回应说</b>（暗示他们是在回应作者这类观点）· <code>be no substitute for</code> <b>无法取代</b>（注意 <code>substitute</code> 是名词，前面用 <code>no</code> 不用 <code>not</code>）· <code>miss the point</code> <b>没抓住要害、没说到点子上</b>。</li>
+            <li><b class="skel">考点</b>：<b>23B 就死在「只读了从句」</b>——它把 who 从句翻译了一遍就交卷。<b>而 23D 必须读完主句才写得出来。</b></li>
+          </ul>
+          <div class="tr"><b>译</b>：那些回应说「录制品无法取代现场演奏」的忠实音乐会听众，没有抓住问题的要害。</div>
+        </div>
+
+        <div class="sent" id="s6">
+          <div class="src"><u>For the time, attention, and money of the art-loving public</u>, <b>classical instrumentalists must compete</b> <b>not only with</b> opera houses, dance troupes, theater companies, and museums, <b>but also with</b> the recorded performances of the great classical musicians of the 20th century.</div>
+          <ul class="anat">
+            <li><b class="skel">骨架</b>：<code><b>Instrumentalists must compete not only with A, but also with B.</b></code> —— <b>句首那 12 个词是状语，主语在它之后才出现。</b></li>
+            <li><b class="skel">⭐⭐ 全句的钥匙是句首那个 <code>For</code>：它<u>不是</u>「对于」，而是 <code>compete <b>for</b> sth</code>（<b>为争夺……而竞争</b>）里的 for 被提到了句首。</b><br><b>还原语序：<code>Classical instrumentalists must compete <u>for</u> the time, attention, and money of the public <u>with</u> A and B.</code></b><br><b>读法口诀：见到句首 <code>For + 抽象名词串 + 逗号</code>，先往后找主句动词，看它是不是要求 for（compete for / fight for / struggle for / vie for）。</b></li>
+            <li><b class="skel">⭐ 「时间、注意力、金钱」三个词并列，本身就是全文最值钱的一个观察</b>：<b>作者把古典音乐会放进了「注意力经济」里——它的对手不只是同行，而是一切消耗公众时间与钱的东西。</b></li>
+            <li><b class="skel">⚠️ <code>not only with … but also with …</code> 的两端必须都认出来</b>：<b>第一端是「别的现场艺术」（歌剧院、舞蹈团、剧团、博物馆），第二端才是全文的重点——「20 世纪大师们的录音」。</b><br><b>命题人拿第一端造了 23C（<code>the variety of live performances</code>），拿第二端造了 24D（<code>only covered masterpieces</code>）。</b>（⟹ <b>R48</b> 半截复现的近亲：这里是「把一端当成全部」。）</li>
+            <li><b class="skel">词</b>：<code>troupe</code> <b>剧团、演出团</b>（⚠️ 与 <code>troop</code>「部队」只差一个字母）· <code>instrumentalist</code> <b>器乐演奏者</b>（对 <code>vocalist</code> 声乐演唱者）· <code>art-loving</code> 爱好艺术的（<b>「名词 ＋ -loving」是能产的构词法</b>：<code>peace-loving</code>／<code>fun-loving</code>）。</li>
+          </ul>
+          <div class="tr"><b>译</b>：为了争夺热爱艺术的公众的时间、注意力和金钱，古典器乐演奏者不仅必须与歌剧院、舞蹈团、剧团和博物馆竞争，而且还必须与 20 世纪那些伟大古典音乐家的演奏录音竞争。</div>
+        </div>
+
+        <div class="sent" id="s7">
+          <div class="src">These recordings are <b>cheap</b>, <b>available everywhere</b>, and very often <b>much higher in artistic quality than</b> today's live performances; <b>moreover</b>, they can be 「consumed」 at a time and place of the listener's choosing.</div>
+          <ul class="anat">
+            <li><b class="skel">骨架</b>：<code><b>These recordings are A, B, and C; moreover, they can be D.</b></code> —— <b>三个并列表语 ＋ 分号 ＋ 递进，一共给了录音四条优势。</b></li>
+            <li><b class="skel">⭐ 24 题四个选项，三个从这一句剪料</b>：<b>B ← <code>available everywhere</code>（同义替换，正解）· A ← <code>much higher in quality</code>（<u>调头</u>成 inferior）· C ← 同一处（把<u>比较</u>写成<u>因果</u>）。</b><br><b>做题动作：把三个并列表语抄成三行，再拿四个选项逐行对——比读四遍整句快。</b></li>
+            <li><b class="skel">⚠️ <code>much higher in artistic quality <u>than</u> today's live performances</code> 是一个比较结构</b>：<b>比较的两端是「录音」与「今天的现场」。</b><br><b>它只说明「谁更高」，不说明「谁导致谁变高」——24C 就是在这里把比较偷换成了因果。</b></li>
+            <li><b class="skel">⭐ 引号里的 <code>「consumed」</code> 是作者不出面的表态</b>（⟹ <b>R29</b> 引号三功能之「排斥」）：<b>他借用了商业词汇来说音乐，又用引号表示「这个词不是我要用的词」——一层淡淡的讽刺。</b></li>
+            <li><b class="skel">词</b>：<code>at a time and place of one's choosing</code> <b>在自己选定的时间与地点</b>（<b>极好用的固定表达</b>，<code>of one's choosing</code> ＝ 自己挑的）· <code>moreover</code> 而且（递进，不是转折）。</li>
+          </ul>
+          <div class="tr"><b>译</b>：这些录音价格低廉、随处可得，而且艺术质量往往比当今的现场演奏高出很多；此外，听众还可以在自己选定的时间和地点「消费」它们。</div>
+        </div>
+
+        <div class="sent" id="s8">
+          <div class="src">Gilbert's own interest in new music <b>has been widely noted</b>: <b>Alex Ross</b>, <i>a classical-music critic</i>, <b>has described him as</b> a man <u>who is capable of turning the Philharmonic into 「a markedly different, more vibrant organization.」</u></div>
+          <ul class="anat">
+            <li><b class="skel">骨架</b>：<code><b>A has been widely noted: B has described him as C.</b></code> —— <b>冒号前给结论，冒号后给例证</b>（冒号在英语里常常等于「例如／具体说」）。</li>
+            <li><b class="skel">⭐⭐ 这一句最要紧的不是语法，是「谁在说话」</b>：<b><code>Alex Ross … has described him as…</code> ⟹ 引号里那句褒扬<u>属于 Alex Ross</u>，不属于作者。</b><b>25C <code>confident</code> 就是把它安到了作者头上。</b></li>
+            <li><b class="skel">词</b>：<code>be capable of doing</code> 有能力做（<b>比 <code>be able to</code> 更强调「具备这种能力」</b>）· <code>markedly</code> <b>显著地</b>（＝ noticeably）· <code>vibrant</code> <b>充满活力的、生气勃勃的</b>（也可指色彩鲜艳）· <code>turn A into B</code> 把 A 变成 B。</li>
+            <li><b class="skel">⚠️ <code>widely noted</code> 的主语是「业界」不是作者</b>：<b>被动语态把施动者藏了起来——「（大家）广泛注意到」。</b><b>25B <code>enthusiastic</code> 就是把这个藏起来的施动者误认成了作者。</b><br><b>做题手感：被动语态出现在态度题的定位段时，先追问一句「是谁在做这个动作」。</b></li>
+            <li><b class="skel">考点</b>：<b>25B 与 25C 两个干扰项全部产自这一句</b>——<b>一句话喂饱两个错项，是本篇干扰项最密的一句。</b></li>
+          </ul>
+          <div class="tr"><b>译</b>：吉尔伯特本人对新音乐的兴趣已广为人知：古典音乐评论家亚历克斯·罗斯曾称他是一个有能力把爱乐乐团变成「一个显著不同、更具活力的团体」的人。</div>
+        </div>
+
+        <div class="sent" id="s9">
+          <div class="src"><b>If</b> Gilbert and the Philharmonic <b>are to succeed</b>, they <b>must first change the relationship</b> <u>between America's oldest orchestra and the new audience it hopes to attract</u>.</div>
+          <ul class="anat">
+            <li><b class="skel">骨架</b>：<code><b>If A are to succeed, they must first change the relationship between B and C.</b></code> —— <b>条件句 ＋ 主句，全文的收口。</b></li>
+            <li><b class="skel">⭐⭐ <code>be to do</code> 在条件句里表「打算、想要」</b>：<code>If … <b>are to</b> succeed</code> ＝ <b>「如果想要成功」</b>（不是被动，也不是单纯的将来时）。<br><b>同族用法</b>：<code>If we are to finish on time, we must start now.</code>（若要按时完成，现在就得动手。）<b>作文里这是一个很显功力的条件句式。</b></li>
+            <li><b class="skel">⭐ 句末 <code>the new audience <u>it hopes to attract</u></code> 是一个<u>省略关系代词</u>的定语从句</b>（＝ <code>the new audience <b>that</b> it hopes to attract</code>，<code>it</code> 指乐团）。<br><b>判据仍是「数缺口」：句末的及物动词 <code>attract</code> 后面缺宾语，这个缺口只能回指先行词 <code>the new audience</code>。</b>（⟹ <b>R70</b>，2010 T4 的那把刀在本篇复现）</li>
+            <li><b class="skel">⚠️ <code>between A and B</code> 的两端被撑得很长</b>：<b>A ＝ <code>America's oldest orchestra</code>（美国最古老的乐团，即爱乐乐团自己）· B ＝ <code>the new audience it hopes to attract</code>（它希望吸引的新听众）。</b><br><b>两端一老一新的对照，正是作者要说的：问题出在<u>老机构与新听众的关系</u>上，不在曲目单上。</b></li>
+            <li><b class="skel">考点</b>：⭐⭐⭐ <b>与前一句 <code>Merely expanding the orchestra's repertoire will not be enough</code> 合起来，构成 25A 的完整证据链</b>：<b>「你们以为的办法不够 ＋ 真正要动的是关系」＝ 作者对这条出路持保留态度。</b></li>
+          </ul>
+          <div class="tr"><b>译</b>：如果吉尔伯特和爱乐乐团想要获得成功，他们必须首先改变这支美国最古老的乐团与它希望吸引的新听众之间的关系。</div>
+        </div>
+      </section>
+
+      <!-- ========== 熟词僻义清算表 ========== -->
+      <section class="card">
+        <h2><span class="n">03+</span>熟词僻义清算表 · 46 处</h2>
+        <p style="font-size:.9rem;margin-bottom:12px">本篇是<b>文艺评论体</b>，词汇分三族：<b>①乐评行话</b>（conductor／repertoire／compositions／program／on record——<u>不难，但认不出就读不顺</u>）· <b>②评论体的态度小词</b>（to say the least／faint praise／To be sure／Even／merely——<u>作者靠它们表态，也靠它们出题</u>）· <b>③本篇特有的「否定限定词」</b>（little／no air of／faint——<u>22 题两个干扰项的全部来源</u>）。<br><b>下表按「决定做题 / 决定读懂 / 选项自带」三组排，凡带 ⭐ 的都直接影响做题。</b></p>
+        <div class="tabwrap"><table class="ctab">
+          <tr><th>词 / 短语</th><th>你以为</th><th>本篇的义项</th><th>语境</th></tr>
+          <tr><td colspan="4" style="background:var(--blue-soft)"><b>【一】直接决定某道题的（错一个就丢分）</b></td></tr>
+          <tr><td><code>to say the least</code> ⭐⭐⭐</td><td>至少可以说（＝保守估计，语气偏弱）</td><td><b>这么说还算轻的</b>——<u>加强</u>，不是减弱</td><td>the response has been favorable, <b>to say the least</b>（①❷，<b>21C 的强度来源</b>）</td></tr>
+          <tr><td><code>sober-sided</code> ⭐⭐</td><td>清醒的一面（拆词猜）</td><td><b>一本正经的、不苟言笑的</b></td><td>a <b>sober-sided</b> classical-music critic（①❸，<b>「连这种人都欢呼」</b>）</td></tr>
+          <tr><td><code>critic</code> ⭐⭐⭐</td><td>批评者</td><td><b>（文艺）评论家</b>——中性职业名</td><td>Anthony Tommasini, a … <b>critic</b>（①❸，<b>21A criticism 的词形诱饵</b>）</td></tr>
+          <tr><td><code>little known</code> ⭐⭐⭐</td><td>少为人知（当「少量」读）</td><td><b><code>little</code> 是否定副词 ＝ 几乎不为人知</b></td><td>Gilbert is comparatively <b>little known</b>（②❶，<b>22A influential 反向</b>）</td></tr>
+          <tr><td><code>air</code> ⭐⭐⭐</td><td>空气</td><td><b>n. 派头、气派、神态</b></td><td>with <b>no air of</b> the formidable conductor about him（②❷，<b>22C 的第一个否定词</b>）</td></tr>
+          <tr><td><code>formidable</code> ⭐⭐</td><td>强大的</td><td><b>令人敬畏的、望而生畏的</b></td><td>the <b>formidable</b> conductor（②❷，<b>22C 的原料之一</b>）</td></tr>
+          <tr><td><code>unpretentious</code> ⭐⭐⭐</td><td>（生词）</td><td><b>不摆架子的、不事张扬的</b>（＝ modest）</td><td>an <b>unpretentious</b> musician（②❷，<b>22B 唯一正源</b>）</td></tr>
+          <tr><td><code>faint praise</code> ⭐⭐⭐</td><td>微弱的赞美</td><td><b>轻描淡写的赞美 ＝ 明褒暗贬</b>（damn with faint praise）</td><td>struck … as <b>faint praise</b>（②❸，<b>22C 的第二个否定词</b>）</td></tr>
+          <tr><td><code>strike sb as</code> ⭐⭐</td><td>打某人</td><td><b>给某人以……的印象、让某人觉得</b></td><td>that seems likely to have <b>struck</b> … readers <b>as</b>…（②❸）</td></tr>
+          <tr><td><code>To be sure</code> ⭐⭐</td><td>为了确定</td><td><b>诚然、固然</b>（让步，后必接 but）</td><td><b>To be sure</b>, he performs an impressive variety…（③❷）</td></tr>
+          <tr><td><code>miss the point</code> ⭐⭐⭐</td><td>错过要点（字面）</td><td><b>没抓住要害、没说到点子上 ＝ 你们想错了</b></td><td>Devoted concertgoers … are <b>missing the point</b>（④❶，<b>23D 的负号来源</b>）</td></tr>
+          <tr><td><code>be no substitute for</code> ⭐⭐⭐</td><td>不是……的替代品</td><td><b>无法取代</b>（<code>substitute</code> 是名词，用 no 不用 not）</td><td>recordings are <b>no substitute for</b> live performance（④❶，<b>23B 的产地</b>）</td></tr>
+          <tr><td><code>compete for … with …</code> ⭐⭐⭐</td><td>For ＝ 对于</td><td><b>为争夺……而与……竞争</b>（for 被提到句首）</td><td><b>For</b> the time, attention, and money…, instrumentalists must <b>compete</b>…（④❷）</td></tr>
+          <tr><td><code>available</code> / <code>availability</code> ⭐⭐⭐</td><td>有空的</td><td><b>可获得的 / 可获得性</b></td><td><b>available everywhere</b>（④❸）· the widespread <b>availability</b>（④❹，<b>24B 唯一正源</b>）</td></tr>
+          <tr><td><code>institution</code> ⭐⭐⭐</td><td>机构、学院</td><td><b>（社会）惯例、成规、制度</b></td><td>a crisis in the <b>institution</b> of the traditional classical concert（④❹）</td></tr>
+          <tr><td><code>program</code> ⭐⭐⭐</td><td>节目单、程序（名词）</td><td><b>v. 编排（曲目、节目）</b></td><td>for classical performers to <b>program</b> attractive new music（⑤❶）</td></tr>
+          <tr><td><code>on record</code> ⭐⭐</td><td>有记录的、公开表态的</td><td><b>已录成唱片的</b>（record ＝ 唱片）</td><td>new music that is not yet available <b>on record</b>（⑤❶）</td></tr>
+          <tr><td><code>widely noted</code> ⭐⭐⭐</td><td>（会，但易读错主语）</td><td><b>被（业界）广泛注意到</b>——<u>施动者不是作者</u></td><td>Gilbert's own interest … has been <b>widely noted</b>（⑤❷，<b>25B 的产地</b>）</td></tr>
+          <tr><td><code>be capable of</code> ⭐⭐⭐</td><td>（会）</td><td>有能力做——⚠️ <b>说这话的是 Alex Ross，不是作者</b></td><td>a man who is <b>capable of</b> turning the Philharmonic into…（⑤❷，<b>25C 张冠李戴</b>）</td></tr>
+          <tr><td><code>merely</code> ⭐⭐⭐</td><td>仅仅（会）</td><td><b>仅仅——而且它自带「不够」的暗示</b></td><td><b>Merely</b> expanding the repertoire will not be enough（⑤❹，<b>25A 唯一正源</b>）</td></tr>
+          <tr><td><code>be to do</code> ⭐⭐</td><td>将要做（将来时）</td><td><b>（条件句里）若要、打算</b></td><td>If Gilbert and the Philharmonic <b>are to</b> succeed…（⑤❺）</td></tr>
+          <tr><td colspan="4" style="background:var(--blue-soft)"><b>【二】决定能不能读顺的（乐评行话族 ＋ 评论体小词）</b></td></tr>
+          <tr><td><code>the talk of the world/town</code></td><td>世界的谈话</td><td><b>大家都在谈论的话题</b></td><td>has been <b>the talk of</b> the classical-music world（①❶）</td></tr>
+          <tr><td><code>music director</code></td><td>音乐导演</td><td><b>音乐总监</b>（乐团最高艺术职位）</td><td>hire Alan Gilbert as its next <b>music director</b>（①❶）</td></tr>
+          <tr><td><code>For the most part</code></td><td>为了大部分</td><td><b>大体上、多半</b></td><td><b>For the most part</b>, the response has been favorable（①❷）</td></tr>
+          <tr><td><code>favorable</code></td><td>有利的</td><td><b>（反响）赞同的、好评的</b></td><td>the response has been <b>favorable</b>（①❷）</td></tr>
+          <tr><td><code>come as a surprise</code></td><td>作为惊喜而来</td><td><b>出人意料</b></td><td>the appointment <b>came as such a surprise</b>（②❶）</td></tr>
+          <tr><td><code>advocate</code></td><td>倡导者（名词）</td><td><b>v. 撰文支持、公开力荐</b></td><td>who had <b>advocated</b> Gilbert's appointment（②❷）</td></tr>
+          <tr><td><code>hitherto</code></td><td>（生词）</td><td><b>迄今为止</b>（＝ so far）</td><td>an orchestra that has <b>hitherto</b> been led by…（②❸）</td></tr>
+          <tr><td><code>Even ＋ 人名</code></td><td>甚至</td><td><b>「连……都」——加强件，方向由内容定</b></td><td><b>Even</b> Tommasini … calls him…（②❷）</td></tr>
+          <tr><td><code>For my part</code></td><td>为了我的部分</td><td><b>就我而言</b>（⭐ <b>本篇的话题换轨标记</b>）</td><td><b>For my part</b>, I have no idea whether…（③❶）</td></tr>
+          <tr><td><code>compositions</code></td><td>作文、构成</td><td><b>（音乐）作品、曲目</b></td><td>an impressive variety of interesting <b>compositions</b>（③❷）</td></tr>
+          <tr><td><code>boot up</code></td><td>靴子、踢</td><td><b>启动（电脑）</b></td><td><b>boot up</b> my computer（③❸）</td></tr>
+          <tr><td><code>still more</code></td><td>仍然更多（读漏）</td><td><b>还要更多的</b>（still ＋ 比较级 ＝ 加强）</td><td>download <b>still more</b> recorded music（③❸）</td></tr>
+          <tr><td><code>devoted</code></td><td>奉献的</td><td><b>忠实的、铁杆的</b></td><td><b>Devoted</b> concertgoers（④❶）</td></tr>
+          <tr><td><code>-goer</code></td><td>（构词）</td><td><b>常去某处的人</b>：concertgoer／moviegoer／churchgoer</td><td>concert<b>goers</b>（④❶）</td></tr>
+          <tr><td><code>troupe</code> ⚠️</td><td>部队（看成 troop）</td><td><b>剧团、演出团</b></td><td>dance <b>troupes</b>, theater companies（④❷）</td></tr>
+          <tr><td><code>instrumentalist</code></td><td>工具主义者</td><td><b>器乐演奏者</b>（对 vocalist 声乐演唱者）</td><td>classical <b>instrumentalists</b>（④❷）</td></tr>
+          <tr><td><code>at a time and place of one's choosing</code> ⭐</td><td>（长，易跳过）</td><td><b>在自己选定的时间与地点</b>（<b>作文可直接用</b>）</td><td>consumed <b>at a time and place of the listener's choosing</b>（④❸）</td></tr>
+          <tr><td><code>repertoire</code></td><td>（生词）</td><td><b>保留曲目、演出剧目</b>（也可引申为「本事清单」）</td><td>expanding the orchestra's <b>repertoire</b>（⑤❹）</td></tr>
+          <tr><td colspan="4" style="background:var(--blue-soft)"><b>【三】选项自带的词（原文里一个都没有，却决定成败）</b></td></tr>
+          <tr><td><code>acclaim</code> ⭐⭐⭐</td><td>（生词）</td><td><b>n./v. 称赞、喝彩</b>（＝ praise 的高阶词）</td><td>21C received <b>acclaim</b>（<b>正解</b>，原文无原词，靠概括）</td></tr>
+          <tr><td><code>incur</code> ⭐⭐</td><td>（生词）</td><td><b>招致（不好的东西）</b>：incur criticism／costs／debt</td><td>21A <b>incurred</b> criticism</td></tr>
+          <tr><td><code>respectable</code> ⚠️⚠️</td><td>值得尊敬的</td><td>⚠️ <b>与 <code>respectful</code>（恭敬的）、<code>respective</code>（各自的）三词一族，年年考</b></td><td>22C <b>respectable</b></td></tr>
+          <tr><td><code>overestimate</code> ⭐⭐⭐</td><td>（会）</td><td><b>高估</b>——⭐ <b>正解常用的「负号前缀」</b>（over-／under-／mis-）</td><td>23D <b>overestimate</b> the value of live performances（<b>正解</b>）</td></tr>
+          <tr><td><code>accessible</code> ⭐⭐⭐</td><td>可进入的</td><td><b>易获得的、易接触到的</b>（＝ available 的同义替换）</td><td>24B easily <b>accessible</b> to the general public（<b>正解</b>）</td></tr>
+          <tr><td><code>inferior to</code> ⭐⭐</td><td>低劣的</td><td><b>不如、劣于</b>（⚠️ 用 <b>to</b> 不用 than）</td><td>24A often <b>inferior to</b> live concerts</td></tr>
+          <tr><td><code>revitalize</code> ⭐</td><td>（生词）</td><td><b>使复兴、使重新焕发活力</b>（re- ＋ vital）</td><td>25 题干 Gilbert's role in <b>revitalizing</b> the Philharmonic</td></tr>
+        </table></div>
+        <div class="atti" style="margin-top:14px">
+          🔤 <b>本篇熟词僻义的共同规律：<u>考的全是「小词在评论文体里的第二义项」</u>，一个生僻大词都没有。</b><br>
+          <b>air（派头）· critic（评论家）· institution（惯例）· program（编排）· record（唱片）· composition（乐曲）· little（几乎不）</b>——<b>七个词都是初中词汇表里的，七个都换了行当。</b><br>
+          ⟹ <b>与 2010 新题型总结的「熟词僻义 ＝ 熟词换了行当」完全同源</b>（那篇是商业语境：margin 利润率／segment 细分市场／venture 企业）。<b>本篇是文艺评论语境。</b><br>
+          ⭐ <b>可迁移的读法：先认出文体（乐评／商业／法律／医学），再把这一族词的「行业义项」整批激活</b>——<b>比逐个查词高效得多。</b>
+        </div>
+      </section>
+      <!-- ========== 词汇复盘 ========== -->
+      <section class="card">
+        <h2><span class="n">04</span>词汇复盘（点卡片看详情）</h2>
+        <div class="filters">
+          <button class="fbtn on" data-f="all">全部</button>
+          <button class="fbtn" data-f="core">核心词</button>
+          <button class="fbtn" data-f="phrase">短语</button>
+          <button class="fbtn" data-f="poly">熟词僻义</button>
+          <button class="fbtn" data-f="write">写作可用</button>
+        </div>
+        <div class="vgrid" id="vgrid"></div>
+      </section>
+
+      <!-- ========== 写作素材 ========== -->
+      <section class="card">
+        <h2><span class="n">05</span>可搬进作文的素材 · 8 组</h2>
+        <p style="font-size:.9rem;margin-bottom:12px">本篇是<b>文艺评论体</b>，最值得搬的不是文艺词汇，而是它<b>「先承认、再否定、最后换一个更根本的问题」</b>那套推进方式：<b>让步（To be sure…）→ 判决（are missing the point）→ 打折（Merely … will not be enough）→ 换根问题（must first change the relationship）。</b><br><b>英语一大作文凡涉及「传统事物要不要／能不能被新技术取代」（纸质阅读、线下课堂、实体书店、博物馆、方言、手写）——这一整套骨架可以直接搬。第 2、3、5、8 组最值钱，优先背这四条。</b></p>
+        <div class="wb">
+          <div class="wbi"><div class="p">X is no substitute for Y.</div><div class="u">X 无法取代 Y。<br>⟹ <b>最紧凑的「不可替代」句式</b>（原文：<code>recordings are <b>no substitute for</b> live performance</code>）。<b>注意 substitute 是名词，前面用 no 不用 not；也可写成 <code>be no match for</code>（比不上）。</b><br>可套：<code>Online lectures are no substitute for face-to-face discussion.</code>（网课取代不了面对面的讨论。）　📌 <b>反着用更好：<code>Convenience is no substitute for depth.</code>（便利取代不了深度。）</b></div></div>
+          <div class="wbi"><div class="p">⭐ Those who argue that … are missing the point.</div><div class="u">那些主张……的人没有抓住问题的要害。<br>⟹ <b>本篇第一号句式，一句话完成「引对方观点 ＋ 判它错」两个动作</b>，而且比 <code>They are wrong.</code> 客气得多、也高级得多。<br>可套：<code>Those who argue that technology alone will solve the problem are missing the point.</code>　📌 <b>同族收口句</b>：<code>This is only half the story.</code>（这只是故事的一半。）· <code>The real question is not A but B.</code>（真正的问题不是 A 而是 B。）</div></div>
+          <div class="wbi"><div class="p">⭐⭐ For the time, attention, and money of the public, A must compete not only with B, but also with C.</div><div class="u">为了争夺公众的时间、注意力和金钱，A 不仅要与 B 竞争，还要与 C 竞争。<br>⟹ <b>本篇最好用的一个框架，等于把「注意力经济」写进了句子里。</b><b>它的力量在于把竞争对手扩到了「同行之外」——这正是大作文最容易写深的一层。</b><br>可套：<code>For the time, attention, and money of young readers, printed books must compete not only with e-books, but also with short videos and games.</code>　📌 <b>「时间、注意力、金钱」这三个并列名词可以整组背下来，它们本身就是一个论证角度。</b></div></div>
+          <div class="wbi"><div class="p">They are cheap, available everywhere, and can be enjoyed at a time and place of one's choosing.</div><div class="u">它们价格低廉、随处可得，而且可以在自己选定的时间和地点享用。<br>⟹ <b>描述「新事物为什么赢」的三件套：便宜 ＋ 易得 ＋ 自主。</b><b><code>at a time and place of one's choosing</code> 是极漂亮的固定表达</b>（也可写 <code>at a pace of one's own choosing</code> 按自己的节奏）。<br>可套：<code>Online courses are cheap, available everywhere, and can be taken at a time and place of the learner's choosing.</code>　📌 <b>写完这三条，紧接着写「但它缺了什么」，段落自然成形。</b></div></div>
+          <div class="wbi"><div class="p">⭐ Merely doing X will not be enough.</div><div class="u">仅仅做 X 是不够的。<br>⟹ <b>万能的「打折句」，专门用来否掉一个看似合理的方案，好把自己的方案顶出来。</b><b><code>Merely</code> 比 <code>Only</code> 更书面，也更有分寸。</b><br>可套：<code>Merely adding more courses will not be enough; what must change is how students are assessed.</code>　📌 <b>它天然带出下一句的句式：<code>What must change is …</code> 或 <code>They must first …</code>——两句一组，是很稳的过渡。</b></div></div>
+          <div class="wbi"><div class="p">⭐ If A is to succeed, it must first change the relationship between B and C.</div><div class="u">如果 A 想要成功，就必须首先改变 B 与 C 之间的关系。<br>⟹ <b>本篇的收口句，也是「把问题往根子上推一层」的标准动作</b>：<b>不谈手段（换曲目），谈关系（老机构 vs 新听众）。</b><b><code>be to do</code> 在条件句里表「若要」，是很显功力的一个用法。</b><br>可套：<code>If traditional museums are to survive, they must first change the relationship between the exhibits and the visitors they hope to attract.</code>　⚠️ <b>句末的 <code>they hope to attract</code> 是省略关系代词的定语从句，照搬即可。</b></div></div>
+          <div class="wbi"><div class="p">The widespread availability of X has brought about a crisis in the institution of Y.</div><div class="u">X 的广泛可得，给 Y 这一惯例带来了一场危机。<br>⟹ <b>「新事物普及 ⟹ 旧惯例危机」的一句话因果</b>。<b>两个词值得单独记：<code>availability</code>（可得性，比 popularity 更准）与 <code>institution</code>（<u>惯例／制度</u>，不是「机构」）。</b><br>可套：<code>The widespread availability of instant translation has brought about a crisis in the institution of foreign-language learning.</code>　📌 <b>用 institution 而不是 tradition，能让句子听起来像社论而不是读后感。</b></div></div>
+          <div class="wbi"><div class="p">⭐⭐ To be sure, …, but …</div><div class="u">诚然……，但是……<br>⟹ <b>议论文让步段的黄金句式，考研作文第二段用它几乎不会出错</b>：<b>先把对方最有力的那一点原样承认下来，再转折——比一上来就反驳显得公允得多。</b><br>可套：<code>To be sure, online reading is faster and cheaper, but speed is not the only thing that matters in reading.</code>　📌 <b>同族备用</b>：<code>Admittedly, …</code> · <code>It is true that …, yet …</code> · <code>Granted, …</code>。<b>⚠️ 用了 To be sure 就<u>必须</u>跟 but，否则句子悬空。</b></div></div>
+        </div>
+        <div class="atti" style="margin-top:14px">
+          🧭 <b>本篇八组素材的共同点：它们都是<u>论证动作</u>，不是<u>好词好句</u>。</b><br>
+          <b>把第 8、2、5、6 组按顺序连起来，就是一整段成熟的议论</b>：<b>⑧ 先让一步（To be sure…）→ ② 指出对方没抓住要害（are missing the point）→ ⑤ 否掉那个看似合理的办法（Merely … will not be enough）→ ⑥ 提出更根本的条件（If … is to succeed, it must first change …）。</b><br>
+          ⭐ <b>四句话四个采分点，而且互相咬合，背下来是一整段而不是四个零件。</b><br>
+          📌 <b>另外，本篇给出的「危机三件套」在描述现象时非常好用</b>：<b>便宜（cheap）· 随处可得（available everywhere）· 自主选择时间地点（at a time and place of one's choosing）</b>——<b>凡写「为什么线上／新技术赢了线下／传统」，照这三条写就够了，剩下的力气全部用在「但它缺了什么」上。</b>
+        </div>
+      </section>
+
+    </main>
+    <aside>
+      <div id="panel">
+        <button class="close" onclick="document.getElementById('panel').classList.remove('open')">收起</button>
+        <div class="hint">点正文里的<b>黄色高亮词</b>，或下方词汇卡片，这里出详情。</div>
+      </div>
+    </aside>
+  </div>
+</div>
+<button id="yd">查有道</button>
+<script>
+const V={
+  talkof:{w:"the talk of (the town/world)",ipa:"/tɔːk/",pos:"phr.",tags:["phrase","poly","write"],cn:"<b>大家都在谈论的话题、街谈巷议的焦点</b>",en:"a person or thing that everyone is talking about",ex:"has been <b>the talk of</b> the classical-music world（①❶）",mem:"⚠️ <b>不是「世界的谈话」</b>——<code>the talk of X</code> 是固定名词短语，X 是谈论它的<u>圈子</u>。<br>📌 最常见的形式是 <code>the talk of the town</code>（全城热议）。<b>本篇把 town 换成了 the classical-music world。</b>",syn:"the hot topic · the subject of much discussion",conf:"⭐ <b>作文可用</b>：<code>The new policy has been the talk of the campus for weeks.</code>（这项新规已在校园里热议了好几周。）"},
+  sudden:{w:"sudden",ipa:"/ˈsʌdn/",pos:"adj.",tags:["core"],cn:"<b>突然的、出人意料的</b>",en:"happening quickly and unexpectedly",ex:"ever since the <b>sudden</b> announcement of his appointment（①❶）",mem:"⚠️ <b>21D <code>aroused curiosity</code> 的诱饵就是这个词</b>：<b>「突然」传递的是<u>出人意料</u>，不是「大家想知道为什么」。</b><br>▸ <b>意外 ≠ 好奇</b>——中间还差一步「于是去打听」，而原文一个字没写。",syn:"abrupt · unexpected · out of the blue",conf:"📌 <b>它修饰的是 <code>announcement</code>（宣布）不是 2009 年</b>：文章写于 2007 年，宣布在 2007 年，2009 年才上任。"},
+  appointment:{w:"appointment",ipa:"/əˈpɔɪntmənt/",pos:"n.",tags:["core"],cn:"<b>任命、委任</b>（此处不是「约会」）",en:"the act of choosing sb for a job or position",ex:"the sudden announcement of his <b>appointment</b>（①❶）",mem:"⭐ <b>一词两义，考研只考第一个</b>：① <b>任命</b>（<code>make an appointment to a post</code>）② 预约、约会（<code>a doctor's appointment</code>）。<br>📌 <b>动词是 <code>appoint sb as/to be</code></b>；本篇①②③段各出现一次，是全文的线索词。",syn:"nomination · designation",conf:"⚠️ 与 <code>disappointment</code>（失望）只差一个前缀，读快了容易看串。"},
+  forthemostpart:{w:"for the most part",ipa:"/fɔː ðə məʊst pɑːt/",pos:"phr.",tags:["phrase","write"],cn:"<b>大体上、多半、就大部分而言</b>",en:"mostly; in most cases",ex:"<b>For the most part</b>, the response has been favorable（①❷）",mem:"⭐ <b>21 题的第一个加强件</b>：它先把「叫好」的<u>覆盖面</u>定下来——不是个别人，是多数人。<br>📌 <b>同族</b>：<code>by and large</code>（总的来说）· <code>on the whole</code>（整体上）· <code>in the main</code>（大体上）。",syn:"mostly · largely · on the whole",conf:"⭐ <b>作文可用</b>：<code>For the most part, students welcome the change.</code> 比 <code>Most students…</code> 更书面。"},
+  favorable:{w:"favorable",ipa:"/ˈfeɪvərəbl/",pos:"adj.",tags:["poly","core"],cn:"⭐ <b>（反响）赞同的、好评的</b>（不是「有利的」）",en:"showing approval; positive",ex:"the response has been <b>favorable</b>（①❷，<b>21C 正源</b>）",mem:"⚠️ <b>一词两义，本篇取第二义</b>：① 有利的（<code>favorable conditions</code> 有利条件）② <b>表示赞同的、正面的</b>（<code>a favorable review</code> 好评 · <code>a favorable response</code> 正面反响）。<br>▸ <b>判据看搭配</b>：<b>后面跟 response / review / reaction / comment ⟹ 一律取「好评」义。</b>",syn:"positive · approving · complimentary",conf:"⭐ <b>21C <code>received acclaim</code> 就是它 ＋ Hooray! 两句的概括</b>——<b>正解在原文没有原词，靠的是同义概括。</b>"},
+  tosaytheleast:{w:"to say the least",ipa:"/tə seɪ ðə liːst/",pos:"phr.",tags:["phrase","poly","write"],cn:"⭐⭐⭐ <b>这么说还算轻的、说得客气些</b>（<u>加强</u>语气）",en:"used to say that you could have described sth in a much stronger way",ex:"the response has been favorable, <b>to say the least</b>（①❷）",mem:"⚠️⚠️ <b>本篇第一号熟词陷阱：它是<u>加强</u>不是<u>减弱</u>。</b><br>▸ <b>误读</b>：按字面读成「至少可以说……（保守估计）」⟹ 整句变成「勉强算赞同」，21 题的强度就丢了。<br>▸ <b>真意</b>：<b>「说『赞同』都算说轻了」——实际是一片欢呼。</b><br>📌 <b>记法：least 指的是<u>我用的措辞最轻</u>，不是<u>事实最少</u>。</b>",syn:"and that's putting it mildly · to put it mildly",conf:"⭐ <b>作文可用（很显水平）</b>：<code>The result was disappointing, to say the least.</code>（这个结果令人失望，而且这还是<u>轻描淡写</u>的说法。）"},
+  atlast:{w:"at last",ipa:"/ət lɑːst/",pos:"phr.",tags:["phrase"],cn:"<b>终于（等到了）</b>",en:"after a long time or delay",ex:"「Hooray! <b>At last</b>!」wrote Anthony Tommasini（①❸）",mem:"⭐ <b>两个字里藏着态度</b>：<code>At last!</code> 表示「盼了很久」——<b>说明托马西尼早就希望换人，这项任命正合他意。</b><br>⚠️ <b>别与 <code>at least</code>（至少）混</b>，本篇①❷刚出现过 <code>to say the least</code>，三个形近短语挤在一起，读快了容易串。",syn:"finally · in the end",conf:"📌 <b>区分三个</b>：<code>at last</code> 终于（含如释重负）· <code>at least</code> 至少 · <code>lastly</code> 最后一点（列举用）。"},
+  sobersided:{w:"sober-sided",ipa:"/ˈsəʊbə saɪdɪd/",pos:"adj.",tags:["poly","core"],cn:"<b>一本正经的、不苟言笑的</b>",en:"serious and solemn in manner",ex:"a <b>sober-sided</b> classical-music critic（①❸）",mem:"⭐⭐ <b>21 题的第四个加强件，也是最含蓄的一个</b>：<b>「连一个一本正经、从不咋呼的评论家，都写下了带两个感叹号的『Hooray! At last!』」</b>——<b>这句定语本身就是在放大赞誉的分量。</b><br>📌 <b><code>sober</code> 的三个义项</b>：① 没醉的 ② <b>严肃的、持重的</b> ③ （颜色）素净的。<b>本篇取②。</b>",syn:"solemn · serious-minded · staid",conf:"⭐ <b>可迁移的读法：人物前面的<u>定语</u>常常不是装饰，而是作者用来加权的砝码。</b><b>读到修饰说话人的形容词，先问一句「作者为什么要提这一点」。</b>"},
+  critic:{w:"critic",ipa:"/ˈkrɪtɪk/",pos:"n.",tags:["poly","core"],cn:"⭐⭐⭐ <b>（文艺）评论家</b>（中性职业名，不是「批评者」）",en:"a person who writes reviews of books, music, films, etc.",ex:"Anthony Tommasini, a sober-sided classical-music <b>critic</b>（①❸）",mem:"⚠️⚠️ <b>21A <code>incurred criticism</code> 的全部来源就是这个词</b>——<b>纯词形诱饵：一个是「评论家」，一个是「批评」，除了词根没有任何关系；而这位评论家写的恰恰是好话。</b><br>📌 <b>四个同族词必须一起记</b>：<code>critic</code> 评论家 · <code>criticism</code> ①批评 ②<b>（文艺）评论</b> · <code>critical</code> ①批评的 ②<b>关键的、危急的</b> · <code>critique</code> 评论文章。",syn:"reviewer · commentator",conf:"⭐ <b>这一族是考研的常客</b>：<code>critical</code> 在科技类文章里几乎都取「关键的」（<code>a critical factor</code>），在评论类文章里才取「批评的」。<b>先看文体，再定义项。</b>"},
+  cameasasurprise:{w:"come as a surprise",ipa:"/kʌm æz ə səˈpraɪz/",pos:"phr.",tags:["phrase","write"],cn:"<b>出人意料、让人感到意外</b>",en:"to be unexpected",ex:"the appointment <b>came as such a surprise</b>（②❶）",mem:"📌 <b><code>come as ＋ 名词</code> 是能产结构</b>：<code>come as a shock</code>（令人震惊）· <code>come as no surprise</code>（<b>一点也不奇怪</b>，考研高频）· <code>come as a relief</code>（让人松一口气）。<br>⭐ <b>本句的 <code>such a surprise</code> 里的 such 与前面的 <code>One of the reasons why…</code> 呼应，等于承认「这事确实很意外」。</b>",syn:"be unexpected · take sb by surprise",conf:"⭐ <b>作文可用</b>：<code>It should come as no surprise that…</code>（……并不令人意外）——<b>用来引出一个你认为理所当然的判断。</b>"},
+  comparatively:{w:"comparatively",ipa:"/kəmˈpærətɪvli/",pos:"adv.",tags:["core"],cn:"<b>相对地、比较而言</b>",en:"in comparison with sth else; relatively",ex:"Gilbert is <b>comparatively</b> little known（②❶）",mem:"⭐ <b>它是一个「留余地」的副词</b>：作者没说吉尔伯特籍籍无名，只说<b>相对（于马勒、布列兹那一级）</b>不出名。<br>⚠️ <b>但它不能反转 <code>little</code> 的否定极性</b>——<b>「相对不为人知」仍然是「不为人知」，22A <code>influential</code> 依旧是错的。</b>",syn:"relatively · fairly",conf:"📌 <b>同族「打折副词」</b>：<code>relatively</code> · <code>fairly</code> · <code>somewhat</code> · <code>rather</code>——<b>它们只调节程度，不改变方向。</b>"},
+  littleknown:{w:"little known",ipa:"/ˈlɪtl nəʊn/",pos:"adj.",tags:["poly","core"],cn:"⭐⭐⭐ <b>鲜为人知的</b>（<code>little</code> 在这里是<u>否定副词</u>）",en:"not widely known",ex:"Gilbert is comparatively <b>little known</b>（②❶，<b>22A 的产地</b>）",mem:"⚠️⚠️ <b>22A <code>influential</code> 就是把这个 <code>little</code> 摘掉造出来的</b>——<b>原文说「相对<u>不</u>为人知」，选项说成「很有影响力」，正好读反。</b>（⟹ 新卡 <b>R84</b>）<br>📌 <b>硬语法：<code>little/few</code> ＝ 否定（几乎没有）· <code>a little/a few</code> ＝ 肯定（有一些）。多一个冠词，正负号就翻过来。</b><br>▸ 同族：<code>little-used</code>（很少使用的）· <code>little wonder</code>（难怪）· <code>He little knew that…</code>（他万万没想到）。",syn:"obscure · not well known · unknown to most",conf:"⭐⭐ <b>这是本篇最值钱的一条五秒判据的来源</b>：<b>把选项里的形容词放回原文，先看它前面那个小否定词还在不在。</b>"},
+  advocated:{w:"advocate",ipa:"/ˈædvəkeɪt/",pos:"v./n.",tags:["core","write"],cn:"<b>v. 公开支持、撰文力荐</b>／n. 拥护者",en:"to publicly support or recommend sth",ex:"who had <b>advocated</b> Gilbert's appointment in the <i>Times</i>（②❷）",mem:"⭐ <b>这个词决定了 <code>Even</code> 的分量</b>：<b>托马西尼是公开为这项任命<u>站过台</u>的人——连他给的最高评价也只是「不摆架子」，这才让读者觉得是明褒暗贬。</b><br>📌 <b>注意词性与读音不同</b>：动词 <code>/ˈædvəkeɪt/</code>，名词 <code>/ˈædvəkət/</code>。",syn:"champion · endorse · argue for",conf:"⭐ <b>作文可用</b>：<code>Many scholars advocate a more flexible assessment system.</code>　⚠️ <b>advocate 后面直接跟名词或 doing，不跟 <code>to do</code>。</b>"},
+  unpretentious:{w:"unpretentious",ipa:"/ˌʌnprɪˈtenʃəs/",pos:"adj.",tags:["core"],cn:"⭐⭐⭐ <b>不摆架子的、不事张扬的、朴实的</b>",en:"not trying to appear more important or impressive than one is",ex:"an <b>unpretentious</b> musician（②❷，<b>22B 唯一正源</b>）",mem:"⭐⭐⭐ <b>22 题的答案就靠它：<code>unpretentious</code> ＝ <code>modest</code>（谦逊的）。</b><br>📌 <b>拆词</b>：<code>un-</code>（否定）＋ <code>pretentious</code>（自命不凡的、装腔作势的）＋ <code>-ous</code>。<b>而 <code>pretend</code>（假装）是同源词根，记住「装」这个核心义就不会错。</b><br>▸ <b>后半句用否定又说了一遍</b>（<code>no air of the formidable conductor</code>）——<b>同一个意思正反各说一次，答案不可能是别的。</b>",syn:"modest · unassuming · down-to-earth",conf:"⚠️ <b>它在本篇的语境里读起来像贬义，是因为参照系是马勒和布列兹</b>——<b>形容词的褒贬要放进参照系里才算数。</b>"},
+  airof:{w:"air (of)",ipa:"/eə(r)/",pos:"n.",tags:["poly","core"],cn:"⭐⭐⭐ <b>派头、气派、神态</b>（不是「空气」）",en:"the particular impression or manner that sb/sth gives",ex:"with <b>no air of</b> the formidable conductor about him（②❷）",mem:"⚠️⚠️ <b>22C 的第一个否定词就在这</b>：<code><b>no</b> air of the formidable conductor</code> ＝ <b>身上<u>没有</u>那种令人敬畏的大指挥家派头。</b><b>选项把 <code>formidable</code> 摘出来用，却丢了这个 no。</b><br>📌 <b>常见搭配</b>：<code>an air of authority</code>（威严的神气）· <code>an air of mystery</code>（神秘感）· <code>with an air of indifference</code>（一副满不在乎的样子）。<br>⭐ <b>语序要注意</b>：<code>with no air … <u>about him</u></code> 才是完整搭配，中间被 <code>of the formidable conductor</code> 撑开了。",syn:"manner · bearing · aura",conf:"⭐ <b>作文可用</b>：<code>He answered with an air of complete confidence.</code>（他答话时一副十足自信的神气。）"},
+  formidable:{w:"formidable",ipa:"/ˈfɔːmɪdəbl/",pos:"adj.",tags:["core"],cn:"<b>令人敬畏的、望而生畏的</b>（强大到让人发怵）",en:"impressive in strength or ability, in a way that causes fear or respect",ex:"no air of the <b>formidable</b> conductor about him（②❷，<b>22C 的原料</b>）",mem:"⚠️⚠️ <b>22C <code>respectable</code> 的第一块原料</b>：<b>「令人敬畏」＋ 后文的「赞美」，读着当然像「值得尊敬」——可这两个词前面各站着一个否定词（<code>no air of</code> / <code>faint</code>）。</b>（⟹ 新卡 <b>R84</b>）<br>📌 <b>它不是单纯的「强大」</b>：<code>formidable</code> 带着「让对手心里发怵」的意味——<code>a formidable opponent</code>（劲敌）· <code>a formidable task</code>（艰巨的任务）。",syn:"intimidating · daunting · awe-inspiring",conf:"⭐ <b>作文可用</b>：<code>Learning a language in six months is a formidable challenge.</code>（半年学会一门语言是个艰巨的挑战。）"},
+  hitherto:{w:"hitherto",ipa:"/ˌhɪðəˈtuː/",pos:"adv.",tags:["core","write"],cn:"<b>迄今为止、到目前为止</b>（书面语）",en:"until now; until the time mentioned",ex:"an orchestra that has <b>hitherto</b> been led by musicians like Gustav Mahler（②❸）",mem:"⭐ <b>它的功能是划出一条时间线</b>：<b>「一直到现在为止，这个位子坐的都是马勒、布列兹那个级别的人」</b>——<b>下一任却是个不出名的人，落差就是这样制造出来的。</b><br>📌 <b>常与完成时连用</b>（<code>has hitherto been</code>），<b>见到它就知道后面要转折。</b>",syn:"so far · up to now · until now · to date",conf:"⭐ <b>作文可用（书面感很强）</b>：<code>a problem hitherto ignored by policymakers</code>（一个此前一直被决策者忽视的问题）。"},
+  strikeas:{w:"strike sb as sth",ipa:"/straɪk/",pos:"v.",tags:["poly","phrase"],cn:"⭐⭐ <b>给某人以……的印象、让某人觉得</b>（不是「打」）",en:"to give sb a particular impression",ex:"that seems likely to have <b>struck</b> at least some <i>Times</i> readers <b>as</b> faint praise（②❸）",mem:"⭐ <b>本句用的是<u>完成式不定式</u> <code>seems likely to have struck</code></b> ＝ <b>「（当时）很可能已经让……觉得」——作者在作事后推测，不是在下判断。</b><br>📌 <b>常见形式</b>：<code>It strikes me as odd that…</code>（我觉得……很奇怪）· <code>She strikes me as honest.</code>（我觉得她很诚实。）",syn:"come across as · impress sb as · seem to sb",conf:"⚠️ <b>本句最关键的不是词义，是「谁被打动」</b>：<b>觉得这是 faint praise 的是<u>《时报》读者</u>，不是托马西尼</b>——<b>22C 的第二处错就在这。</b>"},
+  faintpraise:{w:"faint praise",ipa:"/feɪnt preɪz/",pos:"phr.",tags:["poly","phrase","write"],cn:"⭐⭐⭐ <b>轻描淡写的赞美 ＝ 明褒暗贬</b>",en:"praise so weak that it suggests disapproval",ex:"struck at least some <i>Times</i> readers as <b>faint praise</b>（②❸，<b>22C 的第二个否定词</b>）",mem:"⭐⭐⭐ <b>本篇最贵的一个短语，出自英语名句 <code>damn with faint praise</code>（用不痛不痒的赞美来毁掉一个人）。</b><br>▸ <b>它的字面全是褒义（praise ＝ 赞美），功能却是贬。</b><b>22C 只看见 praise，没看见 faint。</b><br>📌 <b>整族一起记</b>：<code>faint / lukewarm / qualified / grudging ＋ praise / support / endorsement</code> ⟹ <b>一律按「打了折的赞美 ＝ 实为不看好」处理。</b>",syn:"backhanded compliment · lukewarm praise",conf:"⭐ <b>作文可用（很高级）</b>：<code>To call the plan 「not unreasonable」 is to damn it with faint praise.</code>　⚠️ <b>与 <code>faint</code>「（声音、光线）微弱的」是同一个词，考的是它修饰抽象名词时的引申义。</b>"},
+  formypart:{w:"For my part",ipa:"/fɔː maɪ pɑːt/",pos:"phr.",tags:["phrase","write"],cn:"⭐⭐⭐ <b>就我而言、至于我</b>",en:"speaking for myself; as far as I am concerned",ex:"<b>For my part</b>, I have no idea whether Gilbert is a great conductor（③❶）",mem:"⭐⭐⭐ <b>本篇的<u>话题换轨标记</u>，全文最重要的一个短语</b>：<b>前两段都在转述别人怎么说，这三个词一出现，作者接管了话题。</b>（⟹ 新卡 <b>R86</b>）<br>📌 <b>同族换轨句</b>：<code>I have no idea whether…</code> · <code>To be sure…, but…</code> · <code>The real question, however, is…</code> · <code>But that is not the point.</code><br>⟹ <b>见到这一句，在卷边画一条横线：横线以上管人物题，横线以下管观点题。</b>",syn:"as for me · personally · speaking for myself",conf:"⭐ <b>作文可用</b>：<code>For my part, I would rather see the money spent on teachers than on buildings.</code>"},
+  noidea:{w:"have no idea (whether)",ipa:"/aɪˈdɪə/",pos:"phr.",tags:["phrase"],cn:"<b>完全不知道、压根不清楚</b>",en:"to not know at all",ex:"I have <b>no idea</b> whether Gilbert is a great conductor or even a good one（③❶）",mem:"⚠️⚠️ <b>22D <code>talented</code> 就是从这一句造出来的，而且是双重加工</b>：<b>① 这是<u>作者</u>说的，不是托马西尼说的；② 作者说的还是「我<u>不知道</u>」——连他自己都没下过「有才华」这个判断。</b><br>⭐ <b><code>or even a good one</code> 是本句的语气所在</b>：<b>「别说伟大了，连合格与否我都不知道」——降一档再说一遍，是很地道的英语强调法。</b>",syn:"be at a loss · cannot say · have not the faintest idea",conf:"📌 <b>凡作者用「我不知道／很难说」开头，往往意味着他不打算在这个问题上花力气——真正想谈的在后面。</b>"},
+  tobesure:{w:"To be sure",ipa:"/tə bi ʃʊə/",pos:"phr.",tags:["phrase","poly","write"],cn:"⭐⭐ <b>诚然、固然</b>（让步信号，不是「为了确定」）",en:"it is true that (used before admitting sth, followed by 'but')",ex:"<b>To be sure</b>, he performs an impressive variety of interesting compositions, <b>but</b>…（③❷）",mem:"⭐⭐ <b>标准的「让步 ＋ 转折」框架，后面<u>必定</u>跟 but。</b><br>▸ <b>做题手感：见到 To be sure，把它管辖的那半句<u>整个划掉</u>——作者主动让出去的东西不会是答案，答案在 but 之后。</b><br>📌 <b>同族让步词</b>：<code>Admittedly</code> · <code>It is true that…</code> · <code>Granted</code> · <code>No doubt</code>（⚠️ <b>也是让步，不是「毫无疑问地肯定」</b>）。",syn:"admittedly · it is true that · granted",conf:"⭐⭐ <b>作文黄金句式（第 05 节素材 8）</b>：<code>To be sure, online reading is faster and cheaper, but speed is not the only thing that matters.</code>"},
+  impressivevariety:{w:"an impressive variety of",ipa:"/vəˈraɪəti/",pos:"phr.",tags:["phrase","write"],cn:"<b>种类丰富得令人赞叹的……</b>",en:"a large and admirable range of",ex:"he performs an <b>impressive variety</b> of interesting compositions（③❷）",mem:"⭐ <b>这半句是作者<u>让出去</u>的那一块</b>：<b>他承认吉尔伯特曲目丰富——而这正好预告了⑤段那条出路（编排新曲目），也预告了他随后要说「光有这个不够」。</b><br>📌 <b><code>a variety of</code> ＝ 多种多样的；<code>varieties of</code> ＝ 若干品种。前面加 impressive / wide / rich 都很自然。</b>",syn:"a wide range of · a rich array of",conf:"⚠️ <b>23C <code>exaggerate the variety of live performances</code> 借用了 variety 这个词，但它挂的是④❷那串竞争对手名单，与本句无关。</b>"},
+  compositions:{w:"composition",ipa:"/ˌkɒmpəˈzɪʃn/",pos:"n.",tags:["poly","core"],cn:"⭐⭐ <b>（音乐）作品、乐曲</b>（不是「作文／构成」）",en:"a piece of music that sb has written",ex:"an impressive variety of interesting <b>compositions</b>（③❷）",mem:"📌 <b>三个义项按文体分</b>：① <b>乐曲</b>（音乐语境，本篇）② 成分、构成（<code>the composition of the soil</code>）③ 作文（校园语境）。<br>⭐ <b>认出文体就能一次性激活整族乐评行话</b>：<code>conductor</code> 指挥 · <code>orchestra</code> 管弦乐团 · <code>repertoire</code> 保留曲目 · <code>instrumentalist</code> 器乐演奏者 · <code>program</code>（v.）编排曲目。",syn:"piece · work · score",conf:"⭐ <b>与 2010 新题型的结论同源</b>：<b>熟词僻义考的不是生词，是「熟词换了行当」。</b>"},
+  bootup:{w:"boot up",ipa:"/buːt ʌp/",pos:"phr.v.",tags:["phrase","poly"],cn:"<b>启动（电脑）</b>（与「靴子」无关）",en:"to make a computer ready for use by loading its operating system",ex:"or <b>boot up</b> my computer and download still more recorded music（③❸）",mem:"📌 <b>词源有趣</b>：来自 <code>bootstrap</code>（靴带）——<b>「自己拉着靴带把自己提起来」，指计算机自行加载系统。</b><br>⭐ <b>这半句的作用</b>：<b>把「替代现场」的两条路径都摆了出来——实体唱片架 ＋ 数字下载，一旧一新。</b>",syn:"start up · power on",conf:"⭐ <b>科技类文章高频</b>：<code>reboot</code>（重启，也可比喻「重新开始」：<code>a reboot of the franchise</code>）。"},
+  stillmore:{w:"still more",ipa:"/stɪl mɔː/",pos:"phr.",tags:["phrase","poly"],cn:"<b>还要更多的</b>（<code>still</code> ＋ 比较级 ＝ 加强）",en:"even more",ex:"download <b>still more</b> recorded music from iTunes（③❸）",mem:"⭐ <b>一个极易读漏的加强件</b>：<b><code>still more</code> 的言下之意是「我手上的录音已经够多了，还能再添」——一句话写尽录制品的过剩，为④段的 <code>widespread availability</code> 埋好伏笔。</b><br>📌 <b><code>still / even / far / much</code> ＋ 比较级 ＝ 强化比较</b>（<code>still better</code> 更好 · <code>far more difficult</code> 难得多）。<b>⚠️ <code>still</code> 在这里不是「仍然」。</b>",syn:"even more · yet more",conf:"⭐ <b>作文可用</b>：<code>Doing so would demand still more of an already overloaded teacher.</code>"},
+  devoted:{w:"devoted",ipa:"/dɪˈvəʊtɪd/",pos:"adj.",tags:["core"],cn:"<b>忠实的、铁杆的、全心投入的</b>",en:"very loving or loyal",ex:"<b>Devoted</b> concertgoers who reply that…（④❶）",mem:"⭐ <b>这个形容词不是可有可无的</b>：<b>作者故意先夸对方「忠实」，再说他们「没抓住要害」——先给尊重再下判决，是评论体常见的分寸感。</b><br>📌 <b>搭配</b>：<code>a devoted fan/reader/follower</code> · <code>be devoted to sth</code>（致力于、专用于）。",syn:"loyal · dedicated · ardent",conf:"⚠️ <b>与 <code>devote oneself to doing</code>（致力于）同源，注意 to 后面接名词或动名词，不接原形。</b>"},
+  concertgoers:{w:"concertgoer",ipa:"/ˈkɒnsətɡəʊə/",pos:"n.",tags:["core"],cn:"<b>常去听音乐会的人</b>",en:"a person who often goes to concerts",ex:"Devoted <b>concertgoers</b> …（④❶，<b>23 题的主角</b>）",mem:"📌 <b><code>-goer</code> 是能产后缀，见到就会拆</b>：<code>moviegoer</code>（常看电影的人）· <code>churchgoer</code>（常做礼拜的人）· <code>theatregoer</code> · <code>partygoer</code>。<br>⭐ <b>本篇的对立双方就靠两个词划开</b>：<b><code>concertgoers</code>（去现场的人）vs <code>the listener</code>（在家听录音的人）。</b>",syn:"audience member · patron",conf:"⭐ <b>构词法常考</b>：<code>-goer</code>（常去…的人）· <code>-holder</code>（持有者）· <code>-maker</code>（制造者）· <code>-seeker</code>（寻求者，<code>job-seeker</code>）。"},
+  replythat:{w:"reply that",ipa:"/rɪˈplaɪ/",pos:"v.",tags:["poly"],cn:"<b>回应说、反驳说</b>（此处含「对着作者这类观点回嘴」的味道）",en:"to say sth as an answer or in response",ex:"concertgoers who <b>reply that</b> recordings are no substitute for live performance（④❶）",mem:"⭐ <b>一个词就交代了这段的对话结构</b>：<b><code>reply</code>（回应）意味着<u>前面有人先说了什么</u>——正是③段作者那句「我在家就能听」。</b><b>④段是一场辩论的第二回合。</b><br>⚠️ <b>做题提醒：<code>reply that</code> 后面跟的是<u>对方的主张</u>，不是作者的观点</b>——<b>23B 就是把这半句原样搬来当答案。</b>",syn:"respond · counter · retort",conf:"📌 <b>转述动词自带态度</b>（⟹ 2010 T4 的经验）：<code>reply</code> 中性 · <code>moan</code> 抱怨（贬）· <code>argue</code> 主张 · <code>concede</code> 承认。<b>读到转述动词先看它带不带色。</b>"},
+  nosubstitutefor:{w:"be no substitute for",ipa:"/ˈsʌbstɪtjuːt/",pos:"phr.",tags:["phrase","write"],cn:"⭐⭐⭐ <b>无法取代……</b>",en:"cannot replace sth adequately",ex:"recordings are <b>no substitute for</b> live performance（④❶，<b>23B 的产地</b>）",mem:"📌 <b>语法要点：<code>substitute</code> 是<u>名词</u>，所以用 <code>no</code> 不用 <code>not</code>。</b>（同类：<code>be no match for</code> 比不上 · <code>be no stranger to</code> 对……不陌生）<br>⚠️⚠️ <b>23B <code>reject most kinds of recorded performances</code> 的错在于：「不能<u>取代</u>」≠「<u>拒绝</u>接受」。</b><b>一个人完全可以既买唱片、又坚持认为现场不可替代。</b>",syn:"cannot replace · be no match for",conf:"⭐ <b>作文一号句式（第 05 节素材 1）</b>：<code>Convenience is no substitute for depth.</code>（便利取代不了深度。）<b>反着用比正着用更出彩。</b>"},
+  missthepoint:{w:"miss the point",ipa:"/mɪs ðə pɔɪnt/",pos:"phr.",tags:["phrase","poly","write"],cn:"⭐⭐⭐ <b>没抓住要害、没说到点子上</b>（＝ 你们想错了）",en:"to fail to understand what is really important about sth",ex:"Devoted concertgoers … are <b>missing the point</b>（④❶，<b>23D 的负号来源</b>）",mem:"⭐⭐⭐ <b>全篇最重要的五个词，23 题的答案由它算出来</b>：<b>「对方主张（现场不可替代）」×「作者说他们错了」＝「他们<u>高估</u>了现场的价值」＝ 23D。</b>（⟹ 新卡 <b>R87</b>）<br>▸ <b>正解 <code>overestimate</code> 在原文<u>没有任何对应词</u>——它是算出来的，不是找出来的。</b><br>📌 <b>判决句族（见到就知道要出这类题）</b>：<code>get it backwards</code> · <code>overlook the fact that</code> · <code>fail to appreciate</code> · <code>this is only half the story</code>。",syn:"fail to see the point · be beside the point",conf:"⭐⭐ <b>作文可用（第 05 节素材 2）</b>：<code>Those who argue that technology alone will solve the problem are missing the point.</code>——<b>一句话完成「引观点 ＋ 判它错」，比 They are wrong 高级得多。</b>"},
+  instrumentalists:{w:"instrumentalist",ipa:"/ˌɪnstrəˈmentəlɪst/",pos:"n.",tags:["core"],cn:"<b>器乐演奏者</b>（对 <code>vocalist</code> 声乐演唱者）",en:"a person who plays a musical instrument",ex:"classical <b>instrumentalists</b> must compete…（④❷）",mem:"📌 <b>拆词</b>：<code>instrument</code>（乐器／仪器）＋ <code>-al</code> ＋ <code>-ist</code>（从事者）。<br>⚠️ <b>别与哲学词 <code>instrumentalism</code>（工具主义）混</b>——<b>本篇是音乐语境，一律取「器乐」义。</b>",syn:"player · musician",conf:"⭐ <b>本句的主语是「器乐演奏者」而不是「乐团」</b>：<b>作者把竞争压力落到了<u>具体的人</u>头上，比说「古典音乐业」更有痛感。</b>"},
+  troupes:{w:"troupe",ipa:"/truːp/",pos:"n.",tags:["core"],cn:"<b>剧团、演出团</b>",en:"a group of actors, singers or dancers who work together",ex:"dance <b>troupes</b>, theater companies, and museums（④❷）",mem:"⚠️⚠️ <b>与 <code>troop</code>（部队、一群）只差一个字母，读音也几乎一样</b>——<b>判据看语境：与 dance / theatre 连用一定是「团」，与 soldiers / withdraw 连用才是「部队」。</b><br>📌 <b>本句四个竞争对手要一起认</b>：<code>opera houses</code>（歌剧院）· <code>dance troupes</code>（舞蹈团）· <code>theater companies</code>（剧团，<b>company 此处 ＝ 剧团</b>）· <code>museums</code>。",syn:"company · ensemble",conf:"⭐ <b>23C 的原料就是这串名单</b>：<b>它是<u>作者</u>列出来说明「竞争对手多」的，不是「现场演奏的种类」。</b>"},
+  availableeverywhere:{w:"available (everywhere)",ipa:"/əˈveɪləbl/",pos:"adj.",tags:["core","poly"],cn:"⭐⭐⭐ <b>可获得的、买得到的</b>（不是「有空的」）",en:"able to be obtained or used",ex:"These recordings are cheap, <b>available everywhere</b>…（④❸，<b>24B 唯一正源</b>）",mem:"⭐⭐⭐ <b>24B <code>easily accessible to the general public</code> 就是它的同义替换</b>：<code>available everywhere</code> ⟹ <code>easily accessible</code>；而 <code>cheap</code> 又给「普通大众也买得起」补了一刀。<br>▸ <b>原文把这层意思写了两遍</b>（❸句的 <code>available</code> ＋ ❹句的 <code>availability</code>）——<b>凡一个意思被写两遍，多半是要出题的。</b>",syn:"accessible · obtainable · at hand",conf:"📌 <b><code>available</code> 的两义按主语分</b>：<b>主语是<u>物</u> ⟹ 可获得的；主语是<u>人</u> ⟹ 有空的。</b>"},
+  consumed:{w:"「consumed」",ipa:"/kənˈsjuːmd/",pos:"v.",tags:["poly","core"],cn:"<b>被「消费」</b>（作者加引号，表示这不是他要用的词）",en:"used up or enjoyed as a product",ex:"they can be 「<b>consumed</b>」 at a time and place of the listener's choosing（④❸）",mem:"⭐⭐ <b>引号在这里是「排斥」用法</b>（⟹ <b>R29</b> 引号三功能）：<b>作者借用商业词汇来说音乐，又用引号表示「这个说法不是我的」——一层很淡的讽刺，也是他对整件事的态度注脚。</b><br>📌 <b>本篇三处引号刚好三种功能</b>：<b>①❸「Hooray! At last!」＝ 引用原话 · ④❸「consumed」＝ 排斥 · ⑤❷「a markedly different…」＝ 引用他人评价。</b>",syn:"be used up · be taken in",conf:"⭐ <b>做题手感：引号是作者不出面的表态。</b><b>见到引号，先问一句「这是谁的词，作者赞不赞成」。</b>"},
+  atatimeandplace:{w:"at a time and place of one's choosing",ipa:"/ˈtʃuːzɪŋ/",pos:"phr.",tags:["phrase","write"],cn:"⭐ <b>在自己选定的时间和地点</b>",en:"whenever and wherever one wants",ex:"consumed <b>at a time and place of the listener's choosing</b>（④❸）",mem:"⭐ <b>录制品胜出的第四条理由：自主。</b><b>前三条是便宜、易得、质量高，这一条是「你说了算」——四条合起来，现场演奏几乎没有还手之力。</b><br>📌 <b><code>of one's choosing</code> ＝ 自己挑的</b>（<code>a battlefield of his own choosing</code> 他自己选定的战场）。<b>同族：<code>at a pace of one's own choosing</code>（按自己的节奏）。</b>",syn:"whenever and wherever one likes · on one's own terms",conf:"⭐⭐ <b>作文直接可用（第 05 节素材 4）</b>：<code>Online courses can be taken at a time and place of the learner's choosing.</code>"},
+  availability:{w:"availability",ipa:"/əˌveɪləˈbɪləti/",pos:"n.",tags:["core","write"],cn:"<b>可获得性、普及程度</b>",en:"the state of being able to be obtained",ex:"The widespread <b>availability</b> of such recordings…（④❹）",mem:"⭐ <b>比 <code>popularity</code> 更准的一个词</b>：<b>作者要说的不是「录音很受欢迎」，而是「到处都能弄到」——是<u>供给侧</u>的事实，不是<u>需求侧</u>的偏好。</b><br>📌 <b>与❸句的 <code>available everywhere</code> 首尾呼应，<u>同一层意思写两遍</u> ⟹ 24B 的双保险。</b>",syn:"accessibility · easy access",conf:"⭐ <b>作文可用（第 05 节素材 7）</b>：<code>The widespread availability of instant translation has brought about a crisis in the institution of foreign-language learning.</code>"},
+  bringabout:{w:"bring about",ipa:"/brɪŋ əˈbaʊt/",pos:"phr.v.",tags:["phrase","write"],cn:"<b>引起、导致、带来</b>",en:"to make sth happen",ex:"has thus <b>brought about</b> a crisis in the institution…（④❹）",mem:"📌 <b>考研高频因果动词族</b>：<code>bring about</code>（带来）· <code>give rise to</code>（引起）· <code>result in</code>（导致）· <code>account for</code>（解释、占比）· <code>contribute to</code>（促成）。<br>⭐ <b>本句的 <code>thus</code> 是段落收口标志</b>：<b>前三句摆事实，这一句下结论——考研文章里 thus/hence/therefore 之后的那句话，往往就是本段主旨。</b>",syn:"give rise to · lead to · trigger",conf:"⚠️ <b>是及物短语动词，宾语是名词时可拆可不拆</b>（<code>bring about change</code> / <code>bring it about</code>）。"},
+  institution:{w:"institution",ipa:"/ˌɪnstɪˈtjuːʃn/",pos:"n.",tags:["poly","core","write"],cn:"⭐⭐⭐ <b>（社会）惯例、成规、制度</b>（不是「机构」）",en:"an established law, practice or custom",ex:"a crisis in the <b>institution</b> of the traditional classical concert（④❹）",mem:"⚠️⚠️ <b>全篇最贵的一个熟词僻义</b>：<code>the institution of the traditional classical concert</code> ＝ <b>「去音乐厅听现场」这一套<u>习惯做法</u></b>——<b>危机发生在<u>惯例</u>层面，不是某个乐团要倒闭。</b><b>读成「机构」，整段分量掉一半。</b><br>📌 <b>经典例证</b>：<code>the institution of marriage</code>（婚姻制度）· <code>the institution of slavery</code>（奴隶制）。<b>判据：<code>the institution of ＋ 抽象名词</code> ⟹ 一律取「制度／惯例」。</b>",syn:"custom · established practice · convention",conf:"⭐ <b>作文里用 institution 而不是 tradition，能让句子听起来像社论而不是读后感。</b>"},
+  program:{w:"program",ipa:"/ˈprəʊɡræm/",pos:"v.",tags:["poly","core"],cn:"⭐⭐⭐ <b>v. 编排（曲目、节目）</b>（不是名词「节目单／程序」）",en:"to plan or arrange the items in a performance",ex:"for classical performers to <b>program</b> attractive new music（⑤❶）",mem:"⚠️⚠️ <b>读成名词整句就散了</b>：本句是 <code>One possible response is <b>for sb to do sth</b></code>（对某人来说，一种可能的应对是做某事）——<b><code>to program</code> 是不定式的谓语动词。</b><br>📌 <b>音乐／演出语境专用义</b>：<code>program a season</code>（编排一季的演出）· <code>the programming of the festival</code>（音乐节的节目编排）。",syn:"schedule · put on the programme · plan",conf:"⭐ <b>与 <code>compositions</code>／<code>repertoire</code> 属同一族乐评行话</b>——<b>认出文体，整族一起激活。</b>"},
+  onrecord:{w:"on record",ipa:"/ɒn ˈrekɔːd/",pos:"phr.",tags:["poly","phrase"],cn:"<b>已录成唱片的</b>（此处 record ＝ 唱片）",en:"recorded and issued as a recording",ex:"new music that is not yet available <b>on record</b>（⑤❶）",mem:"⚠️ <b>一词两境</b>：① <b>唱片</b>（音乐语境，本篇：<code>available on record</code> ＝ 有唱片版本）② 公开表态／有案可查（<code>go on record as saying…</code> 公开表示 · <code>on the record</code> 可引用的）。<br>⭐ <b>本句的逻辑</b>：<b>录音打败了现场 ⟹ 那就演<u>还没有录音</u>的曲子——这是全文给出的唯一一条出路，也是作者随即要打折的那条。</b>",syn:"recorded · issued on disc",conf:"📌 <b>与④段的 <code>recordings</code>／<code>recorded performances</code> 是同一个词根，全文出现六次以上，是本篇的关键词。</b>"},
+  widelynoted:{w:"be widely noted",ipa:"/ˈnəʊtɪd/",pos:"phr.",tags:["poly","phrase"],cn:"<b>被（业界）广泛注意到</b>",en:"to have been observed or remarked on by many people",ex:"Gilbert's own interest in new music has been <b>widely noted</b>（⑤❷，<b>25B 的产地</b>）",mem:"⚠️⚠️ <b>被动语态把施动者藏了起来——「（大家）广泛注意到」，而不是「作者很兴奋」。</b><b>25B <code>enthusiastic</code> 就是把这个藏起来的施动者误认成了作者，同时还把「感兴趣的人」从吉尔伯特换成了作者。</b><br>⭐ <b>做题手感：态度题的定位段里出现被动语态，先追问一句「是谁在做这个动作」。</b>",syn:"be widely observed · be well documented",conf:"📌 <b><code>noted</code> 作形容词还有「著名的」义</b>（<code>a noted scholar</code>）——<b>本篇是动词的被动，别混。</b>"},
+  describedas:{w:"describe sb as",ipa:"/dɪˈskraɪb/",pos:"v.",tags:["core"],cn:"<b>把某人称作、形容为</b>",en:"to say what sb is like",ex:"Alex Ross … has <b>described him as</b> a man who is capable of…（⑤❷）",mem:"⭐⭐ <b>这是一个「说话人标记」，作用等同于引号</b>：<b>它后面的一切都属于 Alex Ross，不属于作者。</b><b>25C <code>confident</code> 正是把这段话安到了作者头上。</b><br>📌 <b>态度题的固定动作：先把文中所有带 <code>said / wrote / called / described … as</code> 或引号的句子划掉，剩下的才是作者的声音。</b>（⟹ <b>R4</b>／<b>R45</b>）",syn:"characterize as · call · portray as",conf:"⚠️ <b>本篇有四个说话人（作者、Tommasini、Alex Ross、Times 读者）</b>——<b>十五个干扰项里有五个就是从「谁说的」上动的手脚。</b>"},
+  capableof:{w:"be capable of",ipa:"/ˈkeɪpəbl/",pos:"phr.",tags:["phrase","core"],cn:"<b>有能力做……</b>",en:"having the ability to do sth",ex:"a man who is <b>capable of</b> turning the Philharmonic into…（⑤❷，<b>25C 张冠李戴</b>）",mem:"⚠️⚠️ <b>这确实是一句充满信心的判断——但说话的是评论家 Alex Ross，不是作者。</b><br>▸ <b>作者的回应就写在下一句</b>：<code><b>But</b> what will be the nature of that difference?</code>——<b>他不是附和，是接着质疑。</b><br>📌 <b>语法</b>：<code>be capable of <b>doing</b></code>（接动名词）· <code>be able <b>to do</b></code>（接不定式）。<b>capable 强调「具备这种能力」，able 强调「做得到」。</b>",syn:"be able to · have the capacity to",conf:"⭐ <b>作文可用</b>：<code>The system is capable of processing thousands of requests a second.</code>"},
+  vibrant:{w:"vibrant",ipa:"/ˈvaɪbrənt/",pos:"adj.",tags:["core","write"],cn:"<b>充满活力的、生气勃勃的</b>（也可指色彩鲜艳）",en:"full of energy and enthusiasm",ex:"turning the Philharmonic into 「a markedly different, more <b>vibrant</b> organization」（⑤❷）",mem:"⭐ <b>它是 Alex Ross 给出的<u>愿景词</u></b>：<b>「显著不同、更有活力的团体」——听起来很美，作者紧接着就问：「不同在哪儿？」</b><b>⑤段的先扬后抑，就靠这个词与下一句的问号形成落差。</b><br>📌 <b>同族</b>：<code>vibrate</code>（振动）· <code>vibrancy</code>（活力）。<b>记法：能「振动」起来的东西 ⟹ 有生气。</b>",syn:"dynamic · lively · energetic",conf:"⭐ <b>作文可用</b>：<code>a vibrant campus culture</code>（生机勃勃的校园文化）——<b>比 active 高一档。</b>"},
+  nature:{w:"the nature of",ipa:"/ˈneɪtʃə/",pos:"n.",tags:["poly"],cn:"<b>性质、本质</b>（不是「自然」）",en:"the basic qualities of sth",ex:"But what will be the <b>nature</b> of that difference?（⑤❸）",mem:"⭐⭐ <b>这个词决定了 25 题的方向</b>：<b>作者不问「会不会有变化」，他问「变化的<u>性质</u>是什么」——潜台词是「表面的变化不算数」。</b><b>下一句立刻给出答案：仅仅扩充曲目不够。</b><br>📌 <b><code>the nature of ＋ 名词</code> ＝ ……的性质／本质</b>（<code>the nature of the problem</code> 问题的实质）。",syn:"essence · character · substance",conf:"⚠️ <b>这个问号是<u>反问</u>不是<u>困惑</u></b>（⟹ 新卡 <b>R85</b>）：<b>判据是问号后面紧跟的是一句<u>断言</u>，不是一个回答。</b>"},
+  merely:{w:"merely",ipa:"/ˈmɪəli/",pos:"adv.",tags:["core","write"],cn:"⭐⭐⭐ <b>仅仅、只不过</b>（自带「这还不够」的暗示）",en:"only; nothing more than",ex:"<b>Merely</b> expanding the orchestra's repertoire will not be enough（⑤❹，<b>25A 唯一正源</b>）",mem:"⭐⭐⭐ <b>25A <code>doubtful</code> 的直接证据</b>：<b><code>Merely X will not be enough</code> ＝ 「你们以为的办法不够」——作者当场否掉了⑤❶提出的那条出路。</b><br>▸ <b>它天然带出下一句</b>：<code>What must change is…</code> / <code>They must first…</code>——<b>两句一组，是很稳的过渡。</b><br>📌 <b><code>merely</code> 比 <code>only</code> 更书面、也更有分寸。</b>",syn:"only · simply · no more than",conf:"⭐⭐ <b>作文可用（第 05 节素材 5）</b>：<code>Merely adding more courses will not be enough; what must change is how students are assessed.</code>"},
+  repertoire:{w:"repertoire",ipa:"/ˈrepətwɑː/",pos:"n.",tags:["core"],cn:"<b>保留曲目、演出剧目</b>（引申：全部本领）",en:"all the pieces of music or plays that a performer knows and can perform",ex:"Merely expanding the orchestra's <b>repertoire</b>（⑤❹）",mem:"📌 <b>法语借词，拼写与读音都不规则</b>（<code>/ˈrepətwɑː/</code>，词尾 -oire 不发 t 音）。<br>⭐ <b>引申义在写作里很好用</b>：<code>add a new skill to one's repertoire</code>（给自己的本领清单添一项）· <code>a wide repertoire of teaching methods</code>。",syn:"repertory · range · stock",conf:"⭐ <b>本词是⑤段那条「出路」的核心</b>：<b>出路 ＝ 扩充曲目（repertoire）；作者的判决 ＝ 光扩曲目不够，要改的是<u>关系</u>（relationship）。</b><b>两个名词的对立，就是 25 题的全部。</b>"},
+  beto:{w:"be to do (in if-clause)",ipa:"/biː tuː/",pos:"phr.",tags:["phrase","write"],cn:"⭐⭐ <b>（条件句里）若要、打算</b>",en:"used in if-clauses to mean 'intend to' or 'want to'",ex:"If Gilbert and the Philharmonic <b>are to</b> succeed…（⑤❺）",mem:"⭐⭐ <b>不是被动、也不是单纯的将来时</b>：<code>If … are to succeed</code> ＝ <b>「如果想要成功」。</b><br>📌 <b>同类例句</b>：<code>If we are to finish on time, we must start now.</code>（若要按时完成，现在就得动手。）<br>▸ <b><code>be to do</code> 的其他用法</b>：安排（<code>The meeting is to be held on Friday.</code>）· 命令（<code>You are to report at once.</code>）· 注定（<code>He was never to see her again.</code>）。",syn:"if … want to · if … intend to",conf:"⭐ <b>作文可用（第 05 节素材 6）</b>：<code>If traditional museums are to survive, they must first change…</code>——<b>比 <code>If they want to succeed</code> 高一档。</b>"},
+  hopestoattract:{w:"the new audience it hopes to attract",ipa:"/əˈtrækt/",pos:"phr.",tags:["phrase"],cn:"<b>它希望吸引的新听众</b>（省略关系代词的定语从句）",en:"the new audience [that] it hopes to attract",ex:"the new audience <b>it hopes to attract</b>（⑤❺）",mem:"⭐⭐ <b>又一个「省略关系代词的定语从句」</b>（＝ <code>the new audience <b>that</b> it hopes to attract</code>，<code>it</code> 指乐团）。<br>▸ <b>判据仍是「数缺口」：句末的及物动词 <code>attract</code> 后面缺宾语，这个缺口只能回指先行词 <code>the new audience</code>。</b>（⟹ <b>R70</b>，2010 T4 的那把刀在本篇复现）<br>⭐ <b><code>between A and B</code> 的两端一老一新</b>：<b><code>America's oldest orchestra</code> ↔ <code>the new audience</code>——对照本身就是作者的论点。</b>",syn:"the new listeners it wants to win over",conf:"⭐ <b>作文可直接照搬这个尾巴</b>：<code>…the visitors they hope to attract</code>（他们希望吸引的参观者）。"},
+  acclaim:{w:"acclaim",ipa:"/əˈkleɪm/",pos:"n./v.",tags:["core","write"],cn:"⭐⭐⭐ <b>称赞、喝彩、好评</b>",en:"praise and approval for sb/sth",ex:"21C received <b>acclaim</b>（<b>正解</b>）",mem:"⭐⭐⭐ <b>正解词，而原文里一个原词都没有</b>：它概括的是①❷ <code>the response has been favorable</code> ＋ ①❸ <code>Hooray! At last!</code> 两句。<br>⟹ <b>2011 开篇给的第一个提醒：正确项常常不带原词，靠的是同义概括；反倒是干扰项爱用原词（21A 的 criticism ← critic）。</b><br>📌 <b>常见搭配</b>：<code>critical acclaim</code>（评论界的好评，⚠️ 不是「批评」）· <code>be acclaimed as…</code>（被誉为）· <code>widespread acclaim</code>。",syn:"praise · applause · approval",conf:"⚠️ <b><code>critical acclaim</code> 是一个必须整体记的搭配</b>——<b>字面看着像「批评」，实际是「专业评论界的高度好评」。</b>"},
+  incur:{w:"incur",ipa:"/ɪnˈkɜː/",pos:"v.",tags:["core","write"],cn:"<b>招致、蒙受（不好的东西）</b>",en:"to bring sth unpleasant upon oneself",ex:"21A <b>incurred</b> criticism",mem:"📌 <b>它的宾语永远是坏东西</b>：<code>incur criticism / costs / debt / losses / sb's anger</code>。<b>见到 incur，后面一定跟负面名词——这本身就是一条排除线索。</b><br>⚠️ <b>21A 的问题不在这个动词，在宾语 <code>criticism</code></b>：<b>它只是从①❸的 <code>critic</code> 词形上生造的。</b>",syn:"bring upon oneself · attract (blame)",conf:"⭐ <b>作文可用</b>：<code>Delaying the reform would incur far greater costs.</code>（推迟改革将招致大得多的代价。）"},
+  suspicion:{w:"suspicion",ipa:"/səˈspɪʃn/",pos:"n.",tags:["core"],cn:"<b>怀疑、疑心</b>",en:"a feeling that sb has done sth wrong",ex:"21B raised <b>suspicion</b>",mem:"⚠️ <b>21B 犯了两个错</b>：① <b>取料越段</b>——<code>suspicion</code> 只能勉强挂到<u>第二段</u>的 <code>comparatively little known</code> 上，<b>而题干写死了 <code>Paragraph 1</code></b>（⟹ <b>R7</b>）；② <b>「不为人知」只推得出「意外」，推不出「怀疑」。</b><br>📌 <b>注意褒贬</b>：<code>suspicion</code> 含「觉得对方有问题」的负面意味，与①段一片叫好的调子完全相反。",syn:"doubt · distrust · misgiving",conf:"⭐ <b>同族</b>：<code>suspicious</code>（可疑的／起疑的）· <code>suspect</code>（v. 怀疑 / n. 嫌疑人）。"},
+  curiosity:{w:"curiosity",ipa:"/ˌkjʊəriˈɒsəti/",pos:"n.",tags:["core"],cn:"<b>好奇（心）</b>",en:"a strong desire to know about sth",ex:"21D aroused <b>curiosity</b>",mem:"⚠️ <b>本题最像的错项，因为它<u>方向不错</u>（不是贬义），只是<u>内容不对</u>。</b><br>▸ <b>诱饵是①❶的 <code>sudden</code>（突然）</b>：<b>「突然」＝ 出人意料，不等于「大家想弄清楚他是谁」——中间还差一步「于是去打听」，而原文一个字没写。</b><br>▸ <b>硬判据：题干问的是 <code>the response</code>（反响），①段唯一写反响的两句写的都是叫好。</b>",syn:"inquisitiveness · interest",conf:"📌 <b>做题手感：<u>方向对但内容没写</u>的选项，比方向错的选项危险得多。</b><b>排它靠的不是褒贬，是「原文有没有走到这一步」。</b>"},
+  modest:{w:"modest",ipa:"/ˈmɒdɪst/",pos:"adj.",tags:["core","write"],cn:"⭐⭐⭐ <b>谦逊的、不张扬的</b>（也可指「不大的、适度的」）",en:"not talking much about your own abilities or possessions",ex:"22B <b>modest</b>（<b>正解</b>）",mem:"⭐⭐⭐ <b>正解词，对应原文的 <code>unpretentious</code> ＋ <code>no air of the formidable conductor</code>。</b><br>📌 <b>第二个义项也常考</b>：<code>a modest increase</code>（小幅增长）· <code>a modest income</code>（不高的收入）——<b>判据看修饰对象：修饰<u>人</u>＝谦逊，修饰<u>数量</u>＝不大的。</b>",syn:"unassuming · humble · unpretentious",conf:"⚠️ <b>与 <code>moderate</code>（适度的、温和的）形近义近，别写混</b>：<b>modest 强调「不自夸」，moderate 强调「不极端」。</b>"},
+  respectable:{w:"respectable",ipa:"/rɪˈspektəbl/",pos:"adj.",tags:["core"],cn:"<b>体面的、值得尊敬的</b>",en:"considered to be socially acceptable or good",ex:"22C <b>respectable</b>",mem:"⚠️⚠️ <b>本篇最险的干扰项，一次摘掉两个否定词</b>：原料是 <code>formidable</code>（令人敬畏）＋ <code>praise</code>（赞美），<b>可它们前面各站着 <code>no air of</code> 与 <code>faint</code>。</b>（⟹ 新卡 <b>R84</b>）<br>📌 <b>三兄弟必须一起记（年年考）</b>：<code>respectable</code> 体面的、可敬的 · <code>respectful</code> <b>恭敬的（对别人有礼貌）</b> · <code>respective</code> <b>各自的</b>。",syn:"decent · reputable · honourable",conf:"⭐ <b>记法</b>：<code>-able</code>（能被尊敬的）· <code>-ful</code>（充满敬意的，是<u>施与方</u>）· <code>-ive</code>（各自的，与 respect 已无关）。"},
+  influential:{w:"influential",ipa:"/ˌɪnfluˈenʃl/",pos:"adj.",tags:["core"],cn:"<b>有影响力的</b>",en:"having a lot of influence on sb/sth",ex:"22A <b>influential</b>",mem:"⚠️⚠️ <b>把 <code>little</code> 摘掉造出来的选项</b>：原文 <code>Gilbert is comparatively <b>little</b> known</code>（相对不为人知）⟹ 选项说成「很有影响力」，<b>正好读反。</b><br>⟹ <b>五秒判据：把选项里的形容词放回原文，只看它<u>紧贴前面那一个词</u>。</b>（⟹ 新卡 <b>R84</b>）",syn:"powerful · leading · authoritative",conf:"📌 <b>注意与 <code>influence</code>（n./v. 影响）、<code>influenza</code>（流感，即 flu）同源</b>——<b>词根 flu- ＝ 流动，「流入」你心里的东西就是影响。</b>"},
+  talented:{w:"talented",ipa:"/ˈtæləntɪd/",pos:"adj.",tags:["core"],cn:"<b>有才华的</b>",en:"having a natural ability to do sth well",ex:"22D <b>talented</b>",mem:"⚠️⚠️ <b>本篇加工层数最多的一个干扰项</b>：原料是③❶ <code>whether Gilbert is <b>a great conductor or even a good one</b></code>。<br>▸ <b>两处不对</b>：① <b>这是<u>作者</u>说的，不是托马西尼说的（题干问的是 Tommasini）</b>；② <b>而且作者说的是「我<u>不知道</u>」——连他自己都没做出这个判断。</b><br>⟹ <b>把一句<u>存疑句</u>拆掉否定壳、再换个人说出来。</b>",syn:"gifted · able · accomplished",conf:"⭐ <b>做题动作：题干问谁，就只在那个人说的话里找答案。</b><b>本篇有四个说话人，这条规矩能自动排掉五个干扰项。</b>"},
+  overestimate:{w:"overestimate",ipa:"/ˌəʊvərˈestɪmeɪt/",pos:"v.",tags:["core","write"],cn:"⭐⭐⭐ <b>高估</b>",en:"to think sth is larger, better or more important than it really is",ex:"23D <b>overestimate</b> the value of live performances（<b>正解</b>）",mem:"⭐⭐⭐ <b>正解词，而原文里没有任何对应词——它是「对方主张 × 作者的负号」算出来的。</b>（⟹ 新卡 <b>R87</b>）<br>📌 <b>「负号前缀」族一起记，它们是这类题正解的常客</b>：<code><b>over</b>estimate</code>（高估）· <code><b>under</b>estimate</code>（低估）· <code><b>mis</b>read / <b>mis</b>interpret</code>（误读）· <code>exaggerate</code>（夸大）· <code>oversimplify</code>（过分简化）· <code>fail to see</code>（没看到）。",syn:"overrate · overvalue",conf:"⚠️ <b>反义 <code>underestimate</code> 更常考</b>：<code>The difficulty should not be underestimated.</code>（这个难度不容低估。）"},
+  accessible:{w:"accessible",ipa:"/əkˈsesəbl/",pos:"adj.",tags:["core","write"],cn:"⭐⭐⭐ <b>易获得的、易接触到的</b>（也指「易懂的」）",en:"able to be reached, obtained or understood easily",ex:"24B easily <b>accessible</b> to the general public（<b>正解</b>）",mem:"⭐⭐⭐ <b>它是 <code>available everywhere</code> 的同义替换，本篇 24 题的胜负手。</b><br>📌 <b>三个义项</b>：① 可进入的（<code>wheelchair accessible</code>）② <b>可获得的</b>（本篇）③ <b>易懂的</b>（<code>an accessible introduction to physics</code> 一本浅显易懂的物理入门书）。<br>▸ <b>搭配固定用 <code>to</code></b>：<code>accessible to the general public</code>。",syn:"available · obtainable · within reach",conf:"⭐ <b>作文可用</b>：<code>Higher education should be accessible to students from all backgrounds.</code>"},
+  inferior:{w:"inferior to",ipa:"/ɪnˈfɪəriə/",pos:"adj.",tags:["core"],cn:"<b>不如……、劣于……</b>",en:"not as good as sth/sb else",ex:"24A often <b>inferior to</b> live concerts in quality",mem:"⚠️ <b>24A 是「只改一个方向词」的标准反向项</b>：原文 <code>very often much <b>higher</b> in artistic quality than…</code>（往往高得多），<b>选项连 <code>often</code> 都照抄了，只把 higher 换成 inferior。</b><br>📌 <b>语法要点：<code>inferior/superior/senior/junior/prior</code> 一族都用 <code>to</code> 不用 <code>than</code>。</b>",syn:"worse than · poorer than",conf:"⭐ <b>做题手感：选项与原文只差一个方向词时，要么是正解、要么正好反向——只能回原句逐字看，不能靠印象。</b>"},
+  revitalize:{w:"revitalize",ipa:"/ˌriːˈvaɪtəlaɪz/",pos:"v.",tags:["core","write"],cn:"<b>使复兴、使重新焕发活力</b>",en:"to make sth stronger, more active or more healthy again",ex:"25 题干 Gilbert's role in <b>revitalizing</b> the Philharmonic",mem:"📌 <b>拆词</b>：<code>re-</code>（重新）＋ <code>vital</code>（有生命力的）＋ <code>-ize</code>。<b>与⑤❷ Alex Ross 那句 <code>more <b>vibrant</b> organization</code> 同根同源——题干其实是在拿他的话设问。</b><br>⭐ <b>题干用词本身就是提示</b>：<b>它把「振兴乐团」当成既定话题，问的只是作者对吉尔伯特在其中<u>所起作用</u>的态度。</b>",syn:"revive · rejuvenate · breathe new life into",conf:"⭐ <b>作文可用</b>：<code>revitalize the local economy</code>（振兴地方经济）· <code>breathe new life into a tradition</code>。"},
+  doubtful:{w:"doubtful",ipa:"/ˈdaʊtfl/",pos:"adj.",tags:["core","write"],cn:"⭐⭐⭐ <b>怀疑的、不确信的</b>",en:"feeling uncertain about sth; unlikely to be true",ex:"25A the author feels <b>doubtful</b>（<b>正解</b>）",mem:"⭐⭐⭐ <b>正解。证据链有三段</b>：③❶ <code>I have no idea whether…</code>（一开始就不下判断）→ ⑤❸ <code><b>But</b> what will be the nature of that difference?</code>（反问）→ ⑤❹ <code>Merely … <b>will not be enough</b></code>（断言否掉那条出路）。<br>📌 <b>态度题的「常见正解族」</b>：doubtful / skeptical（怀疑）· critical（批评）· cautious（谨慎）· concerned（担忧）· sympathetic（同情）。",syn:"skeptical · unconvinced · dubious",conf:"⭐ <b>区分 <code>doubtful</code> 与 <code>puzzled</code></b>：<b>怀疑 ＝ 我不信你行；困惑 ＝ 我不明白发生了什么。</b><b>作者不但明白，还给出了正确路径 ⟹ 只能是怀疑。</b>"},
+  enthusiastic:{w:"enthusiastic",ipa:"/ɪnˌθjuːziˈæstɪk/",pos:"adj.",tags:["core"],cn:"<b>热情的、满怀兴趣的</b>",en:"feeling or showing a lot of excitement and interest",ex:"25B the author feels <b>enthusiastic</b>",mem:"⚠️ <b>两处偷换</b>：① <b>有兴趣的是<u>吉尔伯特</u>（对新音乐），不是作者（对吉尔伯特）</b>；② <b><code>widely noted</code>（业界广泛注意到）是陈述事实，作者本人没有出态度。</b><br>⟹ <b>态度题里，凡选项的情绪能在原文找到落点，先问一句「这情绪是谁的」。</b>",syn:"eager · keen · excited",conf:"📌 <b>本篇整体调子偏冷</b>：作者连「他是不是好指挥」都说不知道，<b>与 enthusiastic 的强度完全不匹配。</b><b>先定方向，再定强度</b>（⟹ <b>R12</b>）。"},
+  puzzled:{w:"puzzled",ipa:"/ˈpʌzld/",pos:"adj.",tags:["core"],cn:"<b>困惑的、迷惑不解的</b>",en:"unable to understand sth",ex:"25D the author feels <b>puzzled</b>",mem:"⚠️⚠️ <b>把反问句当成了真疑问</b>：⑤❸ <code>But what will be the nature of that difference?</code><br>▸ <b>判据只有一条——看问号后面紧跟的是什么。</b><b>后面是一句<u>断言</u>（<code>Merely … will not be enough</code>）⟹ 作者心里有答案，问号只是修辞 ⟹ 反问（质疑），不是发问（困惑）。</b>（⟹ 新卡 <b>R85</b>）<br>▸ <b>反面验证：真困惑的人写不出❺句那样明确的条件句。</b>",syn:"confused · baffled · perplexed",conf:"⭐⭐ <b><code>puzzled / confused / uncertain</code> 一族在评论体里几乎必错</b>：<b>能写评论的人，不会把「我没想明白」当结论。</b>"},
+};
+const panel=document.getElementById('panel');
+const isMobile=()=>window.innerWidth<=900;
+function badge(t){const m={core:'核心',phrase:'短语',poly:'僻义',write:'写作'};return `<span class="badge b-${t}">${m[t]}</span>`}
+function showCard(k,el){
+  const d=V[k];if(!d)return;
+  document.querySelectorAll('.tk.active').forEach(x=>x.classList.remove('active'));
+  if(el)el.classList.add('active');
+  panel.innerHTML=`<button class="close" onclick="document.getElementById('panel').classList.remove('open')">收起</button>
+    <div class="wcard">
+      <div class="head"><span class="w">${d.w}</span><span class="ipa">${d.ipa}</span><span class="pos">${d.pos}</span>${d.tags.map(badge).join('')}</div>
+      <div class="cn">${d.cn}</div><div class="en-def">${d.en}</div>
+      <div class="row r-ex"><b>原文</b>${d.ex}</div>
+      <div class="row r-mem"><b>怎么记 / 考点</b>${d.mem}</div>
+      <div class="row r-syn"><b>同义 / 同族</b>${d.syn}</div>
+      <div class="row r-conf"><b>易混 / 提醒</b>${d.conf}</div>
+    </div>`;
+  if(isMobile())panel.classList.add('open');
+}
+document.querySelectorAll('.tk').forEach(t=>t.addEventListener('click',e=>{e.stopPropagation();showCard(t.dataset.w,t)}));
+
+function tz(btn){btn.closest('.para').classList.toggle('showzh')}
+let allOn=false;
+function toggleAll(){allOn=!allOn;document.querySelectorAll('.para').forEach(p=>p.classList.toggle('showzh',allOn))}
+function go(id){const s=document.getElementById(id);if(!s)return;s.scrollIntoView({behavior:'smooth',block:'center'});s.style.transition='none';s.style.opacity=.3;setTimeout(()=>{s.style.transition='opacity .8s';s.style.opacity=1},80)}
+
+document.querySelectorAll('.q').forEach(q=>{
+  const ans=+q.dataset.ans;
+  q.querySelectorAll('.opt').forEach((o,i)=>o.addEventListener('click',()=>{
+    if(q.classList.contains('done'))return;
+    q.classList.add('done');
+    if(i!==ans)o.classList.add('wrong');
+    q.querySelectorAll('.opt')[ans].classList.add('right');
+  }));
+});
+
+const vg=document.getElementById('vgrid');
+function renderGrid(f){
+  vg.innerHTML='';
+  Object.keys(V).forEach(k=>{
+    const d=V[k];
+    if(f!=='all'&&!d.tags.includes(f))return;
+    const div=document.createElement('div');div.className='vitem';
+    div.innerHTML=`<span class="badges">${d.tags.map(badge).join('')}</span><div class="w">${d.w}</div><div class="cn">${d.cn}</div>`;
+    div.addEventListener('click',()=>{showCard(k,null);if(!isMobile())window.scrollTo({top:0,behavior:'smooth'})});
+    vg.appendChild(div);
+  });
+}
+renderGrid('all');
+document.querySelectorAll('.fbtn').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.fbtn').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderGrid(b.dataset.f);
+}));
+
+const yd=document.getElementById('yd');let sel='';
+document.addEventListener('selectionchange',()=>{
+  const s=window.getSelection();const t=s?s.toString().trim():'';
+  if(t&&/^[a-zA-Z' -]{2,40}$/.test(t)){
+    sel=t;
+    try{const r=s.getRangeAt(0).getBoundingClientRect();
+      yd.style.left=Math.min(r.left,window.innerWidth-110)+'px';
+      yd.style.top=(r.bottom+8)+'px';yd.style.display='block';}catch(e){}
+  }else{yd.style.display='none'}
+});
+yd.addEventListener('click',()=>{window.open('https://dict.youdao.com/result?word='+encodeURIComponent(sel)+'&lang=en');yd.style.display='none'});
+document.addEventListener('click',e=>{if(e.target!==yd&&!window.getSelection().toString())yd.style.display='none'});
+</script>
+<script src="_fault_attr.js"></script>
+</body>
+</html>

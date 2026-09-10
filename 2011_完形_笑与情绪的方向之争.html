@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2011 英一 完形 · 笑与情绪的方向之争</title>
+<style>
+  :root{
+    --bg:#faf9f6; --card:#ffffff; --ink:#2b2b2b; --muted:#8a8578;
+    --accent:#8b5e34; --accent-soft:#f3e9dd; --line:#e8e3d8;
+    --hl:#fdf3d8; --hl-border:#e0b84d;
+    --green:#3e7a4e; --green-soft:#e8f2ea;
+    --red:#b04a3a; --red-soft:#f9e9e6;
+    --blue:#3d6a8a; --blue-soft:#e7eff5;
+    --purple:#6d5a8e; --purple-soft:#eeeaf5;
+    --serif:"Georgia","Songti SC",serif;
+    --sans:-apple-system,"PingFang SC","Helvetica Neue",sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#1c1a17; --card:#26231f; --ink:#e8e4dc; --muted:#9a948a;
+      --accent:#d0a06a; --accent-soft:#3a3127; --line:#3a362f;
+      --hl:#3d3520; --hl-border:#b08c3a;
+      --green:#7fb98d; --green-soft:#26362b;
+      --red:#d98876; --red-soft:#3d2a26;
+      --blue:#8ab3d0; --blue-soft:#26323d;
+      --purple:#a996c8; --purple-soft:#302a3d;
+    }
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;padding-bottom:120px}
+  .wrap{max-width:1100px;margin:0 auto;padding:24px 20px}
+  .back{font-size:.85rem;color:var(--muted);text-decoration:none}
+  .back:hover{color:var(--accent)}
+  header{margin:14px 0 28px}
+  header h1{font-family:var(--serif);font-size:1.7rem;line-height:1.3}
+  header .sub{color:var(--muted);margin-top:6px;font-size:.9rem}
+  .tags{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+  .tag{font-size:.75rem;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);border:1px solid var(--line)}
+  .tag.spoiler{cursor:pointer;background:var(--card);color:var(--muted)}
+  .tag.spoiler .hid{filter:blur(5px)}
+  .tag.spoiler.open .hid{filter:none;color:var(--accent)}
+
+  .layout{display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:start}
+  @media (max-width:900px){.layout{grid-template-columns:1fr}}
+
+  section.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:24px}
+  h2{font-size:1.05rem;letter-spacing:.05em;color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  h2 .n{font-size:.72rem;background:var(--accent);color:var(--card);border-radius:6px;padding:1px 7px}
+  .note{font-size:.82rem;color:var(--muted);margin-bottom:14px}
+
+  .para{margin-bottom:22px}
+  .para .en{font-family:var(--serif);font-size:1.06rem;line-height:2.15}
+  .pno{color:var(--muted);font-size:.75rem;user-select:none;margin-right:6px}
+  .tk{background:var(--hl);border-bottom:2px solid var(--hl-border);border-radius:3px;padding:0 2px;cursor:pointer;transition:filter .15s}
+  .tk:hover{filter:brightness(.93)}
+  .tk.active{outline:2px solid var(--hl-border)}
+  .ls{border-bottom:2px dotted var(--blue);cursor:pointer}
+  .para .zh{display:none;margin-top:10px;padding:10px 14px;background:var(--blue-soft);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:.93rem}
+  .para.showzh .zh{display:block}
+  .zbtn{float:right;margin-left:10px;font-size:.72rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:6px;padding:2px 9px;cursor:pointer}
+  .zbtn:hover{color:var(--accent);border-color:var(--accent)}
+  .allbtn{font-size:.78rem;border:1px solid var(--accent);background:none;color:var(--accent);border-radius:8px;padding:4px 12px;cursor:pointer}
+
+  /* 完形空格 */
+  .bk{display:inline-block;min-width:64px;text-align:center;background:var(--hl);border-bottom:2px solid var(--hl-border);border-radius:4px;padding:0 6px;cursor:pointer;font-weight:600;color:var(--accent);transition:all .15s;font-family:var(--sans);font-size:.95rem}
+  .bk:hover{filter:brightness(.93)}
+  .bk.filled{background:var(--green-soft);border-bottom-color:var(--green);color:var(--green);font-family:var(--serif)}
+  .bk.miss{background:var(--red-soft);border-bottom-color:var(--red);color:var(--red);font-family:var(--serif)}
+  .bk.active{outline:2px solid var(--hl-border)}
+  .bk .idx{font-size:.7rem;color:var(--muted);margin-right:3px}
+
+  aside{position:sticky;top:20px}
+  #panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;min-height:180px}
+  #panel .hint{color:var(--muted);font-size:.88rem;text-align:center;padding:30px 10px}
+  .wcard .head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .wcard .w{font-family:var(--serif);font-size:1.35rem;font-weight:bold}
+  .wcard .ipa{color:var(--muted);font-size:.85rem}
+  .wcard .pos{font-size:.72rem;color:var(--purple);background:var(--purple-soft);padding:1px 8px;border-radius:999px}
+  .wcard .badge{font-size:.7rem;padding:1px 8px;border-radius:999px}
+  .b-core{background:var(--red-soft);color:var(--red)}
+  .b-phrase{background:var(--blue-soft);color:var(--blue)}
+  .b-poly{background:var(--purple-soft);color:var(--purple)}
+  .b-write{background:var(--green-soft);color:var(--green)}
+  .wcard .cn{margin-top:8px;font-size:1rem;font-weight:600}
+  .wcard .en-def{color:var(--muted);font-size:.86rem;font-style:italic;margin-top:2px}
+  .wcard .row{margin-top:10px;font-size:.86rem;padding:8px 10px;border-radius:8px}
+  .wcard .row>b:first-child{font-size:.72rem;display:block;margin-bottom:2px;letter-spacing:.06em}
+  .r-ex{background:var(--hl)} .r-ex b{color:var(--hl-border)}
+  .r-mem{background:var(--green-soft)} .r-mem b{color:var(--green)}
+  .r-syn{background:var(--blue-soft)} .r-syn b{color:var(--blue)}
+  .r-conf{background:var(--red-soft)} .r-conf b{color:var(--red)}
+  #panel .close{display:none}
+  @media (max-width:900px){
+    aside{position:fixed;left:0;right:0;bottom:0;z-index:50;padding:0 8px 8px}
+    #panel{box-shadow:0 -6px 24px rgba(0,0,0,.18);max-height:55vh;overflow-y:auto;display:none}
+    #panel.open{display:block}
+    #panel .close{display:block;float:right;border:none;background:var(--line);border-radius:8px;padding:2px 10px;cursor:pointer;color:var(--ink)}
+  }
+
+  /* 逐空精解 */
+  .q{margin-bottom:22px;padding-bottom:18px;border-bottom:1px dashed var(--line);scroll-margin-top:20px}
+  .q:last-child{border:none;margin-bottom:0;padding-bottom:0}
+  .q .stem{font-family:var(--serif);font-size:.98rem;background:var(--hl);border-radius:8px;padding:8px 12px;display:block}
+  .q .stem em{font-style:normal;font-weight:700;color:var(--accent);border-bottom:2px solid var(--hl-border);padding:0 4px}
+  .qhead{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+  .qno{font-family:var(--serif);font-size:1.2rem;font-weight:700;color:var(--accent)}
+  .qt{font-size:.7rem;border-radius:999px;padding:1px 9px}
+  .c-logic{background:var(--blue-soft);color:var(--blue)}
+  .c-collo{background:var(--green-soft);color:var(--green)}
+  .c-word{background:var(--red-soft);color:var(--red)}
+  .c-context{background:var(--purple-soft);color:var(--purple)}
+  .qpos{font-size:.7rem;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:1px 9px}
+  .opts{margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  @media (max-width:640px){.opts{grid-template-columns:1fr}}
+  .opt{border:1px solid var(--line);border-radius:10px;padding:7px 12px;cursor:pointer;font-size:.92rem;font-family:var(--serif);transition:all .15s}
+  .opt .gl{font-family:var(--sans);font-size:.8rem;color:var(--muted);margin-left:6px}
+  .opt:hover{border-color:var(--accent)}
+  .q.done .opt{cursor:default}
+  .opt.right{background:var(--green-soft);border-color:var(--green)}
+  .opt.wrong{background:var(--red-soft);border-color:var(--red)}
+  .expl{display:none;margin-top:12px;background:var(--accent-soft);border-radius:10px;padding:12px 14px;font-size:.9rem}
+  .q.done .expl{display:block}
+  .expl b{color:var(--accent)}
+  .expl .lbl{font-size:.74rem;letter-spacing:.06em;color:var(--muted);display:block;margin:10px 0 2px}
+  .expl .lbl:first-child{margin-top:0}
+  .expl code{font-family:var(--serif);background:var(--hl);border-radius:4px;padding:1px 5px}
+  .wrongs{margin-top:6px;display:grid;gap:5px}
+  .wr{font-size:.86rem;background:var(--card);border-radius:8px;padding:6px 10px;border-left:3px solid var(--red)}
+  .wr .l{font-family:var(--serif);font-weight:700;color:var(--red);margin-right:5px}
+
+  /* 计分条 */
+  .score{display:flex;gap:14px;flex-wrap:wrap;align-items:center;background:var(--hl);border-radius:12px;padding:10px 16px;margin-bottom:18px;font-size:.88rem}
+  .score .v{font-family:var(--serif);font-size:1.25rem;font-weight:700;color:var(--accent);margin-right:4px}
+  .score .rst{margin-left:auto;font-size:.78rem;border:1px solid var(--line);background:var(--card);color:var(--muted);border-radius:8px;padding:3px 10px;cursor:pointer}
+
+  /* 考点统计 */
+  .catbar{display:flex;height:26px;border-radius:8px;overflow:hidden;margin:10px 0 16px;border:1px solid var(--line)}
+  .catseg{display:flex;align-items:center;justify-content:center;font-size:.72rem;color:#fff;font-weight:600}
+  .catlegend{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px}
+  .cl{display:flex;gap:8px;align-items:center;font-size:.85rem;cursor:pointer;padding:6px 8px;border-radius:8px;border:1px solid var(--line)}
+  .cl:hover{border-color:var(--accent)}
+  .dot{width:12px;height:12px;border-radius:3px;flex:0 0 12px}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+  .chip{font-size:.78rem;background:var(--accent-soft);color:var(--accent);border-radius:6px;padding:2px 8px;cursor:pointer}
+  .chip:hover{filter:brightness(.94)}
+
+  /* 打法 / 搭配 */
+  .flow{display:grid;gap:10px;font-size:.92rem}
+  .flow .fi{border:1px solid var(--line);border-radius:10px;padding:10px 14px}
+  .flow .fi b{color:var(--accent)}
+  .flow .fi .ev{display:block;margin-top:4px;font-size:.85rem;color:var(--muted);border-left:3px solid var(--hl-border);padding-left:9px}
+  .wb{display:grid;gap:10px}
+  .wbi{border-left:3px solid var(--green);background:var(--green-soft);border-radius:0 10px 10px 0;padding:10px 14px;font-size:.92rem}
+  .wbi .p{font-family:var(--serif);font-weight:600}
+  .wbi .u{color:var(--muted);font-size:.85rem}
+
+  /* 长难句 */
+  .sent{margin-bottom:20px}
+  .sent .src{font-family:var(--serif);font-size:1rem;background:var(--blue-soft);padding:12px 14px;border-radius:10px;border-left:3px solid var(--blue)}
+  .sent .anat{margin-top:8px;font-size:.9rem}
+  .sent .anat li{margin:4px 0 4px 18px}
+  .sent .tr{margin-top:8px;font-size:.92rem;color:var(--muted)}
+  .skel{color:var(--red);font-weight:600}
+
+  /* 80词表 */
+  .otab{width:100%;border-collapse:collapse;font-size:.86rem}
+  .otab th,.otab td{border:1px solid var(--line);padding:5px 8px;vertical-align:top}
+  .otab th{background:var(--accent-soft);color:var(--accent);font-size:.78rem}
+  .otab td.n{text-align:center;font-family:var(--serif);color:var(--muted);width:38px}
+  .otab .ow{font-family:var(--serif)}
+  .otab .oc{color:var(--muted);font-size:.82rem;display:block}
+  .otab td.hit{background:var(--green-soft)}
+  .otab td.hit .ow{color:var(--green);font-weight:700}
+  .hidecn .oc{filter:blur(4px);cursor:pointer}
+  .hidecn .oc.show{filter:none}
+  .tabwrap{overflow-x:auto}
+
+  #yd{position:fixed;z-index:60;display:none;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:4px 12px;font-size:.8rem;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+  .fail{background:var(--red-soft);border:1px solid var(--red);border-radius:10px;padding:10px 13px;margin-bottom:10px;font-size:.89rem;line-height:1.75}
+  .fail b{color:var(--red)}
+  .expl .fail{margin-top:0}
+  footer{color:var(--muted);font-size:.8rem;text-align:center;margin-top:30px}
+  /* 修：.layout 是 grid，grid 项默认 min-width:auto ⟹ 06 的 80 词表（min-content 425px）会把整个左栏撑到 475px，
+     窄屏下页面 scrollWidth 超出视口（2007–2009 三篇完形页同源、同病）。min-width:0 后 .tabwrap 才真正接管横滚。 */
+  main,aside{min-width:0}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">◀ 返回英语复盘中心</a>
+  <header>
+    <h1>笑与情绪的方向之争：身体反应到底是因还是果</h1>
+    <div class="sub">2011 年英语（一）真题 · Section I 完形填空（Use of English）· 289 词 · 建议 15–18 min · 话题：心理学经典理论（情绪与身体反应的因果方向）（源自 <i>Scientific American</i>《科学美国人》2009 年 4—5 月刊 <i>Laughing Matters</i>）</div>
+    <div class="tags">
+      <span class="tag spoiler" onclick="this.classList.toggle('open')">🙈 答案（点击显示）：<span class="hid">1C 2D 3B 4B 5A 6B 7A 8D 9C 10A 11B 12C 13D 14C 15B 16D 17A 18D 19A 20C</span></span>
+      <span class="tag">难度：中（无生词障碍，难在<b>一根因果箭头的方向</b>）</span>
+      <span class="tag">Claude 盲做：19/20（<b>错 20 题</b>）</span>
+      <span class="tag">⚠️ 本页最值钱的一段：<b>20 空「末空不默认因果，先看主语换没换人」</b>——五年完形里我唯一错在这类的一次</span>
+    </div>
+  </header>
+
+  <div class="layout">
+    <main>
+
+      <!-- ========== 00 脉络 ========== -->
+      <section class="card">
+        <h2><span class="n">00</span>读前一分钟 · 全文脉络（完形先读首句，再看结构）</h2>
+        <p class="note">完形的<b>首句从不设空</b>。本篇首句 <i>Ancient Greek philosopher Aristotle viewed laughter as “a bodily exercise precious to health.”</i>——<b>一句话给了三样东西</b>：话题（笑与健康）、<b>一个古人的旧观点</b>、以及这个观点的<b>强度</b>（precious to health，说得很满）。<b>凡首句是「某个权威／古人认为……」，第二句几乎必然是「But …」</b>——命题人把 1 空就设在这个 But 之后，等于送分。</p>
+        <p class="note" style="margin-top:10px">⭐⭐ <b>而本篇真正的骨架，是<u>一根因果箭头的方向之争</u></b>：常识方向是<b>情绪 → 身体</b>（因为悲伤，所以流泪）；文章要论证的是<b>反方向</b>——<b>身体 → 情绪</b>（因为流泪，所以变得悲伤；因为做出笑的表情，所以心情变好）。<b>把这根箭头画在卷子上，12·13·14·15·18·19·20 <u>七个空（3.5 分）</u>一起顺下来。</b>判据词就四个：<code>rooted <b>in</b></code>（源自）· <code><b>precedes</b></code>（先于）· <code>flow <b>from</b></code>（源于）· <code>rather than just <b>the other way around</b></code>（而不只是反过来）。</p>
+        <div class="flow">
+          <div class="fi"><b>① 段一 · 先泼一盆冷水：笑<u>不</u>健身</b>——亚里士多德说笑是「有益健康的身体运动」，但作者说：笑对体质几乎没影响。它确实会让心率、耗氧量短期变化，可<b>大笑难以持续</b>，所以不像散步慢跑那样有显著成效。
+            <span class="ev">1–5 空全部服务于<b>同一次「让步—转折」</b>：<code>But <b>1</b> some claims to the contrary…</code>（让步）→ <code>Laughter <b>does</b> <b>2</b> short-term changes…</code>（再让一步：确实有短期变化）→ <code>But because…difficult to <b>4</b>, …unlikely to have <b>5</b> benefits</code>（收回）。<b>两个 But 夹一个 does，是英语里最标准的「先退后进」三拍。</b></span></div>
+          <div class="fi"><b>② 段二 · 转折的落点：笑与运动的作用<u>机制相反</u></b>——运动是<b>绷紧</b>肌肉来强健它，笑<b>恰恰相反</b>：20 世纪 30 年代以来的研究表明，笑会<b>放松</b>肌肉，笑声平息后肌张力还能低上 45 分钟。
+            <span class="ev">只有 6、7、8 三个空，却是<b>全篇的转轴</b>：①段说的是「差在<b>持续时长</b>」，②段说的是「差在<b>作用方向</b>」——<b>6 空的 In fact 就是这次「从表层差异跳到根本差异」的接缝</b>。而 7（opposite）与 8（relaxes）<b>由同一个 straining 反推</b>：取舍结构 <code>instead of doing X, …does Y</code> ⟹ Y 与 X 反向。<b>一个结构定两个空。</b></span></div>
+          <div class="fi"><b>③ 段三 · 掉头：身体上的松弛，能<u>改善心理</u></b>——这种身体反应也许能<b>缓和</b>心理压力；笑还会产生其他类型的<b>身体</b>反馈，改善情绪。为什么身体能管情绪？因为按一种经典情绪理论，<b>我们的感受部分源于身体反应</b>：19 世纪末就有人主张，<b>人不是因为悲伤才哭，而是眼泪流下来之后才变得悲伤</b>。
+            <span class="ev">9–13 空。<b>本段是全文的立论段，也是那根箭头第一次被明写出来</b>：<code>our feelings are partially <b>rooted in</b> physical reactions</code>。<b>13 空所在的 <code>not…but…</code> 是箭头的定义式</b>——<b>否定的不是 cry，而是「因为悲伤而哭」这一整个主从复合句</b>（这一点是 A/B/C 三个错项的共同死因）。</span></div>
+          <div class="fi"><b>④ 段四 · 用实验坐实，再由微笑<u>类推</u>到大笑</b>——1988 年 Strack 的咬笔实验：一组用<b>牙齿</b>咬笔（被迫做出假笑），一组用<b>嘴唇</b>衔笔（做出失望表情）；<b>咬笔组对搞笑漫画的反应更热烈</b>，说明表情能影响情绪，而不只是情绪影响表情。<b>同样地</b>，笑这一身体行为也能改善心情。
+            <span class="ev">14–20 空，占七个，是主战场。<b>结构极清楚：让步承认常规方向（14）→ 亮出反方向（15）→ 实验方法（16、17）→ 实验结果（18）→ 实验结论（19）→ 类推（20）。</b><br>⚠️ <b>而末句偏偏不是因果收口</b>：实验讲的是<b>微笑</b>，末句主语换成了<b>大笑</b>——<b>主语一换人，就只能是类比（Similarly），不能是因果（Consequently）</b>。<b>这是我这篇唯一栽的地方，也是本页最该记的一句。</b></span></div>
+        </div>
+        <p class="note" style="margin-top:14px">📌 <b>第二条强线索：全篇的褒贬是「先抑后扬」</b>。①②段一直在说笑的<b>坏消息</b>（不健身、成效不显著），③段起转为<b>好消息</b>（改善情绪、改善心情）。<b>凡带方向的选项，先问「这个空落在抑的一半还是扬的一半」</b>——<b>9 空的 aggravate（加重压力）、8 空的 weakens（削弱肌肉）就是靠这一刀直接划掉的</b>：它们的贬义色彩与③段之后的褒向不符。</p>
+        <p class="note">🎭 <b>背景（不影响做题，但读懂了心里有底）</b>：③④段援引的是心理学史上著名的 <b>James–Lange 情绪理论</b>（詹姆斯—兰格理论，1884 年前后）——<b>先有生理反应，后有情绪体验</b>：不是「见到熊 → 害怕 → 发抖」，而是「见到熊 → 发抖 → 才觉得害怕」。文中 <code>at the end of the 19th century</code> 指的正是它。<b>1988 年的咬笔实验（facial feedback hypothesis 面部反馈假说）是这条理论一百年后的实验版</b>。<b>知道这条脉络，14／15／19／20 四个空的方向不用犹豫。</b></p>
+      </section>
+      <!-- ========== 01 正文 ========== -->
+      <section class="card">
+        <h2><span class="n">01</span>完形正文（20 空 · 点空格跳到该题）
+          <button class="allbtn" onclick="toggleAll()" style="margin-left:auto">译文 开/关</button>
+          <button class="allbtn" onclick="revealAll()">显示全部答案</button>
+        </h2>
+        <p class="note">🟨 点<b>空格</b>＝跳到下面对应的解析卡（先自己选，再看解析）｜ 🟡 黄底词＝生词卡，点开看词根/辨析 ｜ 蓝色虚线＝长难句 ｜ 选中任意单词浮出「查有道」</p>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">①</span>Ancient Greek philosopher Aristotle viewed laughter as “a <span class="tk" data-w="bodily">bodily</span> exercise <span class="tk" data-w="precious">precious</span> to health.” But <span class="bk" data-n="1"><span class="idx">1</span>___</span> some claims <span class="tk" data-w="contrary">to the contrary</span>, laughing probably has little influence on physical <span class="tk" data-w="fitness">fitness</span>. Laughter does <span class="bk" data-n="2"><span class="idx">2</span>___</span> short-term changes in the function of the heart and its blood <span class="tk" data-w="vessel">vessels</span>, <span class="bk" data-n="3"><span class="idx">3</span>___</span> heart rate and oxygen <span class="tk" data-w="consumption">consumption</span>. <span class="ls" onclick="go('s1')">But because hard laughter is difficult to <span class="bk" data-n="4"><span class="idx">4</span>___</span>, a good laugh is unlikely to have <span class="bk" data-n="5"><span class="idx">5</span>___</span> benefits the way, <span class="tk" data-w="say">say</span>, walking or <span class="tk" data-w="jogging">jogging</span> does.</span></p>
+          <div class="zh">古希腊哲学家亚里士多德把笑视为“一种对健康十分宝贵的身体运动”。但是，<b>尽管</b>有一些与之相反的说法，笑很可能对身体健康影响甚微。笑确实会<b>引起</b>心脏及其血管功能的短期变化，<b>提高</b>心率和耗氧量。但因为大笑很难<b>维持</b>，一场痛快的笑不大可能像散步或慢跑那样带来<b>显著的</b>益处。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">②</span><span class="ls" onclick="go('s2')"><span class="bk" data-n="6"><span class="idx">6</span>___</span>, instead of <span class="tk" data-w="strain">straining</span> muscles to build them, as exercise does, laughter <span class="tk" data-w="apparently">apparently</span> <span class="tk" data-w="accomplish">accomplishes</span> the <span class="bk" data-n="7"><span class="idx">7</span>___</span>.</span> Studies <span class="tk" data-w="dateback">dating back to</span> the 1930s indicate that laughter <span class="bk" data-n="8"><span class="idx">8</span>___</span> muscles, decreasing muscle <span class="tk" data-w="tone">tone</span> for <span class="tk" data-w="upto">up to</span> 45 minutes after the laugh <span class="tk" data-w="diedown">dies down</span>.</p>
+          <div class="zh"><b>实际上</b>，笑并不像运动那样通过绷紧肌肉来强健肌肉，而是显然起到了<b>相反的</b>作用。追溯到 20 世纪 30 年代的多项研究表明，笑会<b>放松</b>肌肉——在笑声平息之后，它还能让肌张力降低长达 45 分钟。</div>
+        </div>
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">③</span>Such bodily reaction might <span class="tk" data-w="conceivably">conceivably</span> help <span class="bk" data-n="9"><span class="idx">9</span>___</span> the effects of <span class="tk" data-w="psychological">psychological</span> stress. Anyway, the act of laughing probably does produce other types of <span class="bk" data-n="10"><span class="idx">10</span>___</span> <span class="tk" data-w="feedback">feedback</span> that improve an <span class="tk" data-w="individual">individual's</span> emotional state. <span class="bk" data-n="11"><span class="idx">11</span>___</span> one <span class="tk" data-w="classical">classical</span> theory of emotion, our feelings are partially <span class="tk" data-w="rooted">rooted</span> <span class="bk" data-n="12"><span class="idx">12</span>___</span> physical reactions. <span class="ls" onclick="go('s3')">It was <span class="tk" data-w="argued">argued</span> at the end of the 19th century that humans do not cry <span class="bk" data-n="13"><span class="idx">13</span>___</span> they are sad but that they become sad when the tears begin to <span class="tk" data-w="flow">flow</span>.</span></p>
+          <div class="zh">可以想象，这样的身体反应也许有助于<b>缓和</b>心理压力带来的影响。无论如何，笑这一行为大概确实会产生其他类型的<b>身体</b>反馈，从而改善一个人的情绪状态。<b>根据</b>一种经典的情绪理论，我们的感受部分<b>源于</b>身体反应。19 世纪末有人主张：人并不是<b>因为</b>悲伤才哭泣，而是当眼泪开始流下来的时候才变得悲伤。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">④</span>Although sadness also <span class="bk" data-n="14"><span class="idx">14</span>___</span> tears, evidence suggests that emotions can <span class="tk" data-w="flow">flow</span> <span class="bk" data-n="15"><span class="idx">15</span>___</span> <span class="tk" data-w="muscular">muscular</span> responses. <span class="ls" onclick="go('s4')">In an experiment published in 1988, social psychologist Fritz Strack of the University of Würzburg in Germany asked <span class="tk" data-w="volunteer">volunteers</span> to <span class="bk" data-n="16"><span class="idx">16</span>___</span> a pen either with their teeth—<span class="tk" data-w="thereby">thereby</span> creating an <span class="tk" data-w="artificial">artificial</span> smile—or with their lips, which would produce a(n) <span class="bk" data-n="17"><span class="idx">17</span>___</span> <span class="tk" data-w="expression">expression</span>.</span> <span class="ls" onclick="go('s5')">Those forced to <span class="tk" data-w="exercise">exercise</span> their smiling muscles <span class="bk" data-n="18"><span class="idx">18</span>___</span> more <span class="tk" data-w="enthusiastically">enthusiastically</span> to funny <span class="tk" data-w="cartoon">cartoons</span> than did those whose mouths were <span class="tk" data-w="contract">contracted</span> in a <span class="tk" data-w="frown">frown</span>, <span class="bk" data-n="19"><span class="idx">19</span>___</span> that expressions may influence emotions rather than just <span class="tk" data-w="otherway">the other way around</span>.</span> <span class="bk" data-n="20"><span class="idx">20</span>___</span>, the physical act of laughter could improve <span class="tk" data-w="mood">mood</span>.</p>
+          <div class="zh">尽管悲伤也<b>先于</b>眼泪产生，但有证据表明，情绪可以<b>源于</b>肌肉反应。在 1988 年发表的一项实验中，德国维尔茨堡大学的社会心理学家弗里茨·斯特拉克要求志愿者<b>用</b>牙齿<b>咬住</b>一支钢笔——从而制造出一个假笑——或者用嘴唇衔住钢笔，后者会产生一种<b>失望的</b>表情。那些被迫动用笑肌的人，对搞笑漫画的<b>反应</b>比那些嘴巴皱缩成愁眉苦脸的人更为热烈，这<b>表明</b>表情也可以影响情绪，而不只是情绪影响表情。<b>同样地</b>，笑这一身体行为也许能够改善心情。</div>
+        </div>
+      </section>
+      <!-- ========== 02 逐空精解 ========== -->
+      <section class="card">
+        <h2><span class="n">02</span>逐空精解（点选项即判 · 再看解析）</h2>
+        <div class="score">
+          <span><span class="v" id="sDone">0</span>/20 已答</span>
+          <span><span class="v" id="sRight">0</span> 对</span>
+          <span>折合 <span class="v" id="sPt">0</span> 分 / 10</span>
+          <button class="rst" onclick="location.reload()">↺ 重做</button>
+        </div>
+        <p class="note">每空 0.5 分。<b>先在心里说出「这个空要填什么词性、什么方向」再点选项</b>。本篇有<b>五道题读都不用读语义</b>（<b>1</b> 靠 But＋to the contrary · <b>7</b> 靠 instead of · <b>8</b> 靠同句的 decreasing · <b>12/15</b> 靠介词搭配），真正要想的只有 <b>6</b>、<b>14</b>、<b>17</b>、<b>20</b> 四个——<b>其中 20 是我唯一做错的一个</b>。</p>
+
+        <div class="q" id="q1" data-ans="2">
+          <div class="qhead"><span class="qno">1</span><span class="qt c-logic">逻辑关系 · 介词</span><span class="qpos">But 之后、主干之前的状语</span></div>
+          <span class="stem"><b>But</b> <em>1</em> some claims <b>to the contrary</b>, laughing probably has little influence on physical fitness.</span>
+          <div class="opts">
+            <div class="opt">A among<span class="gl">在……之中（包含关系）</span></div>
+            <div class="opt">B except<span class="gl">除……之外（整体—特例）</span></div>
+            <div class="opt">C despite<span class="gl">尽管（让步）</span></div>
+            <div class="opt">D like<span class="gl">像；例如</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>逗号后的主干已经完整（<code>laughing probably has little influence…</code>），所以逗号前是<b>介词短语作状语</b>：空格＝介词，<code>some claims</code>＝宾语，<code>to the contrary</code>＝后置定语。<b>四个选项都能作介词——这题不考词性，只考逻辑。</b>
+            <span class="lbl">🔗 线索（就在空格后四个词）</span><code>to the contrary</code>＝<b>与之相反的</b>。既然「有些说法与主干相反」，空格就必须承载<b>「虽然有反对声，但……」</b>这层关系。<b>再加上句首那个 But</b>——<b>一个句子里两层转折，方向必须一致地指向「与常识相反」</b>。
+            <span class="lbl">✅ C despite</span>尽管。代入＝「<b>尽管</b>有一些相反的说法，笑很可能对身体健康影响甚微」。它同时干两件事：句内构成<b>让步—转折</b>，句际与首句亚里士多德的「笑有益健康」<b>正面顶牛</b>——<b>作者第一句就在拆一位古人的台，这正是 But 的作用。</b>
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>among＝「在……之中」，要求<b>被包含项与包含项同层级</b>（Among his good qualities is honesty）。代入后成了「在相反的观点之中，笑影响甚微」——可主干给的是<b>观点内容</b>，不是 <code>one claim</code>／<code>one opinion</code> 这样的<b>同层单数概念</b>。<b>结构上就搭不上。</b></div>
+              <div class="wr"><span class="l">B</span>except 要求出现 <b>all／every／any／no</b> 这类<b>全称量词</b>来当那个「整体」（We work every day except Sunday）。原文只有 <code>some claims</code>，<b>没有整体，就构不成「整体—特例」</b>。</div>
+              <div class="wr"><span class="l">D</span>like 取「像」义 → 「像一些相反的观点一样，笑影响甚微」，逻辑不通；取「例如」义 → 逗号前后<b>不构成举例关系</b>，且 <code>to the contrary</code> 的「对立性」与举例相悖。</div>
+            </div>
+            <span class="lbl">💡 迁移</span><b>介词空的第一刀不是比词义，是查「这个介词自带的结构要求，原文有没有给」</b>：among 要同层概念、except 要全称词、like 要可类比对象——<b>三个都要求上文出现某个特定的搭档，原文一个也没有。</b><br>⭐ <b>首句是「某位权威／古人认为……」时，第二句几乎必有 But，而空往往就设在 But 后面</b>——这是完形送分的固定工位。
+          </div>
+        </div>
+
+        <div class="q" id="q2" data-ans="3">
+          <div class="qhead"><span class="qno">2</span><span class="qt c-word">词义辨析 · 及物动词</span><span class="qpos">does ＋ ___ ＋ changes</span></div>
+          <span class="stem">Laughter <b>does</b> <em>2</em> short-term changes in the function of the heart and its blood vessels…</span>
+          <div class="opts">
+            <div class="opt">A reflect<span class="gl">反映；显示（自然属性/态度）</span></div>
+            <div class="opt">B demand<span class="gl">要求；强令（主语多为人）</span></div>
+            <div class="opt">C indicate<span class="gl">表明；是……的迹象</span></div>
+            <div class="opt">D produce<span class="gl">引起；造成（影响、变化）</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>助动词 <code>does</code> 后的<b>动词原形</b>（does 在这里是<b>强调</b>，不是疑问）；主语 Laughter（物）、宾语 short-term changes（变化）⟹ 空格词要建立<b>「笑」与「变化」之间的关系</b>。
+            <span class="lbl">🔗 线索</span>上一句刚说「笑对健康影响甚微」，下一句又说「但因为大笑难以维持，成效不显著」——<b>本句夹在两个否定之间，功能是「先让一步」：笑<u>确实</u>有点用</b>。<code>does</code> 这个强调助动词就是让步的标志。<b>既然是让步「确实有点用」，空格只能是「引起 / 带来」，不能是「显示 / 反映」。</b>
+            <span class="lbl">✅ D produce</span>引起，造成。<code>produce changes／effects／results</code> 是<b>标配动宾</b>。代入＝「笑<b>确实会引起</b>心脏及血管功能的短期变化」——笑是<b>原因</b>，变化是<b>结果</b>，与下句「但这点成效不如散步慢跑」顺理成章地接上。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>reflect＝反映、显示（常接事物的自然属性或人的态度）。代入＝「笑<b>反映了</b>心血管功能的变化」——<b>把因果颠倒了</b>：能反映心血管功能的应该是心率、耗氧量这些<b>指标</b>，而不是「笑」这个表情动作。</div>
+              <div class="wr"><span class="l">C</span>indicate＝表明、是……的迹象（Fever indicates illness）。错法与 A 同族：<b>笑不是心血管变化的「征兆」</b>；且「表明有变化」与下句「但成效不显著」构不成对比。</div>
+              <div class="wr"><span class="l">B</span>demand 的主语通常是<b>人或机构</b>，且 X demand Y＝<b>Y 是 X 的必要条件</b>。代入＝「笑需要心血管发生短期变化（才能实现）」——<b>因果整个反过来了</b>，且违常理。</div>
+            </div>
+            <span class="lbl">💡 迁移</span><b>凡「A ___ B」型动词空，先判 A 是 B 的<u>因</u>还是 B 的<u>标</u></b>：produce/cause/bring about 走<b>因</b>；reflect/indicate/signal/reveal 走<b>标</b>（A 是 B 的表征）。<b>这两族一旦选反，句子读着通、逻辑全反</b>——本题四个选项正好两族对撞。<br>📌 <b>顺带记住 <code>does ＋ 动词原形</code> 的语用功能：让步</b>（「确实……但……」），<b>它后面几乎一定跟着一个 But</b>。本篇③段 <code>probably <b>does</b> produce other types of physical feedback</code> 又用了一次同样的强调式——<b>同一篇里同一个词、同一种用法出现两次，是命题人留的暗号。</b>
+          </div>
+        </div>
+
+        <div class="q" id="q3" data-ans="1">
+          <div class="qhead"><span class="qno">3</span><span class="qt c-word">词义辨析 · 现在分词</span><span class="qpos">逗号后的补充说明成分</span></div>
+          <span class="stem">Laughter does produce short-term changes in the function of the heart and its blood vessels, <em>3</em> heart rate and oxygen consumption.</span>
+          <div class="opts">
+            <div class="opt">A stabilizing<span class="gl">使稳定（不发生剧变）</span></div>
+            <div class="opt">B boosting<span class="gl">提高，使增长</span></div>
+            <div class="opt">C impairing<span class="gl">损害，削弱</span></div>
+            <div class="opt">D determining<span class="gl">决定；查明</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>逗号 + 现在分词短语，作<b>补充说明</b>（对主干的具体化）。<b>它的逻辑主语是主干那件事</b>——「笑引起心血管功能的短期变化」。
+            <span class="lbl">🔗 线索（两条，方向一致）</span>① <b>主干说的是 changes（变化）</b>，本短语要给出这个变化的<b>具体表征</b>：心率、耗氧量正是心血管功能最标准的两个量化指标；② <b>常识</b>：笑＝兴奋激动的反应 ⟹ 心率上升、呼吸加快、耗氧量增加。
+            <span class="lbl">✅ B boosting</span>提高。代入＝「引起心血管功能的短期变化，<b>提高</b>心率和耗氧量」。<b>它还有第三重作用</b>：把笑抬到与有氧运动同一个测量口径上，为下一句 <code>But…unlikely to have measurable benefits the way walking or jogging does</code> 的<b>对比</b>搭好台子——<b>先承认「指标确实动了」，再说「但动得不够久、不够显著」。</b>
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>stabilize＝使平稳、不发生剧变，<b>与主干的 changes（变化）直接打架</b>：既然强调「产生了变化」，就不能同时说「使之保持稳定」。<b>本题最典型的自相矛盾项。</b></div>
+              <div class="wr"><span class="l">C</span>impair＝损害（含贬义），代入＝「削弱心率和耗氧量」。<b>方向错在两处</b>：一是这里在说笑的<b>积极</b>作用（下句才转折），二是心率、耗氧量本身是<b>中性指标</b>，不存在「被损害」。</div>
+              <div class="wr"><span class="l">D</span>determine 取「查明、测定」义，主语得是<b>研究者</b>，不能是「变化」；取「决定」义则＝「心血管的变化<b>决定</b>心率和耗氧量的高低」——<b>可它们本来就是同一件事的两种说法</b>，谈不上谁决定谁。</div>
+            </div>
+            <span class="lbl">💡 迁移</span><b>「逗号＋V-ing」的空，九成在做「把上文那句话具体化」这件事</b>——所以答案的方向必须与上文<b>同向</b>，绝不会突然反转（要反转会用 but/while/rather than）。<b>先把主干那句话的方向定死，再挑同向的词，比逐个比词义快。</b>
+          </div>
+        </div>
+
+        <div class="q" id="q4" data-ans="1">
+          <div class="qhead"><span class="qno">4</span><span class="qt c-word">词义辨析 · 动词</span><span class="qpos">because 原因从句的表语（is difficult to ___）</span></div>
+          <span class="stem"><b>But because</b> hard laughter is difficult to <em>4</em>, a good laugh is unlikely to have <em>5</em> benefits <b>the way, say, walking or jogging does</b>.</span>
+          <div class="opts">
+            <div class="opt">A transmit<span class="gl">传输，传播</span></div>
+            <div class="opt">B sustain<span class="gl">维持（使持续较长时间）</span></div>
+            <div class="opt">C evaluate<span class="gl">评估，评价</span></div>
+            <div class="opt">D observe<span class="gl">观察；注意到</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span><code>because</code> 从句里 <code>be difficult to do</code> 结构中的<b>不定式动词</b>，说明 hard laughter（＝大笑）的一个<b>性质</b>。
+            <span class="lbl">🔗 线索 ⭐ 这是一对「因果连体空」</span>本句是 <b>because A, 所以 B</b> 的完整因果：<b>4 空是因，5 空是果</b>，而且比较的对象由 <code>the way…walking or jogging does</code> 点明——<b>整句在回答一个问题：笑和散步慢跑到底差在哪？</b><br>常识给出答案：散步慢跑能<b>持续、长时间</b>地锻炼心肺；<b>大笑几秒钟就完了</b>。<b>差异只在「能否持续」这一项上。</b>
+            <span class="lbl">✅ B sustain</span>维持。代入＝「因为大笑<b>难以持续</b>，所以一场笑不大可能像散步慢跑那样带来显著的益处」。<b>「持续时长的差异 → 成效的差异」，这条因果链严丝合缝。</b>
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>transmit＝传输、传播。代入＝「因为大笑难以<b>传播</b>」——首先与常识相反（笑是最会传染的），其次它的言外之意「散步慢跑<b>可以</b>传播」根本不成立。<b>凡对比句，把选项代进<u>对照的另一方</u>验一遍，是最快的排除法。</b></div>
+              <div class="wr"><span class="l">C</span>evaluate＝评估。<b>两处错</b>：① 本句对比的是「笑 vs 散步慢跑<b>对健康的益处</b>」，不是「哪个更难测量」；② 「难以评估」与「成效不如散步」<b>构不成因果</b>，甚至自相矛盾——既然难评估，又怎么断言成效不如？</div>
+              <div class="wr"><span class="l">D</span>observe＝观察。<b>大笑是最外显的动作表情</b>，说它「难以观察」违反常识；且同样与主句的成效对比接不上。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐⭐ <b>「因果型连体空」的解法：把两个空的候选<u>组成一句话</u>念一遍，因果说不通的当场淘汰。</b><br>本题若选 C，读出来是「因为大笑难以<b>评估</b>，所以不大可能有<b>可测量的</b>益处」——<b>听着像同义反复，其实是循环论证</b>，命题人正是拿这种「像那么回事」的组合设障。<b>连体空永远先做<u>方向更明确</u>的那一个（本题是 4），再用它去卡另一个。</b>
+          </div>
+        </div>
+
+        <div class="q" id="q5" data-ans="0">
+          <div class="qhead"><span class="qno">5</span><span class="qt c-word">词义辨析 · 形容词</span><span class="qpos">benefits 的定语</span></div>
+          <span class="stem">…a good laugh is unlikely to have <em>5</em> benefits the way, say, walking or jogging does.</span>
+          <div class="opts">
+            <div class="opt">A measurable<span class="gl">可测量的 → <b>显著的</b></span></div>
+            <div class="opt">B manageable<span class="gl">易管理的；可控制的</span></div>
+            <div class="opt">C affordable<span class="gl">负担得起的（钱）</span></div>
+            <div class="opt">D renewable<span class="gl">可再生的；可延期的</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>修饰 benefits 的<b>形容词</b>，说明这种益处的<b>性质</b>。四个选项全是 <code>-able</code> 结尾——<b>词形一致，说明这题纯考语义方向。</b>
+            <span class="lbl">🔗 线索（三条互相印证）</span>① <b>4 空给的因</b>：难以持续 ⟹ 果只能是「不够显著／不够持久」；② <b>上文第二句</b>：<code>little influence on physical fitness</code>（影响甚微）——本句是它的重述；③ <b>上一句</b>只承认 <code>short-term changes</code>（短期变化）——<b>短期，所以不显著。</b>
+            <span class="lbl">✅ A measurable</span>基本义「可测量的」，<b>置于名词前时引申为「显著的、明显的」</b>（大到足以被察觉）。代入＝「不大可能像散步慢跑那样产生<b>显著的</b>益处」。<b>三条线索全部对上。</b>
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>manageable benefits＝「可控制的益处」。命题人利用的是「大笑有时停不下来」这个现实印象设障，<b>但空格修饰的是 benefits 不是 laughter</b>——<b>「控制益处」本身就是无稽之谈</b>，文中也从没谈过要控制什么。</div>
+              <div class="wr"><span class="l">C</span>affordable 侧重<b>金钱成本</b>。可笑与散步慢跑<b>同属免费活动</b>，在成本上根本没有差异，无从比较。</div>
+              <div class="wr"><span class="l">D</span>renewable＝（能源）可再生的、（协议）可延期的，<b>它的搭配对象是资源、签证、合同</b>（a renewable visa），与 benefits 搭不上；且「可再生的益处」也接不上「难以维持」这个因。</div>
+            </div>
+            <span class="lbl">💡 迁移</span><b>-able 结尾的四选一，先看它<u>习惯修饰什么名词</u>，而不是背中文</b>：affordable 修饰<b>价格/商品</b>、manageable 修饰<b>任务/工作量</b>、renewable 修饰<b>能源/证件</b>、measurable 修饰<b>差别/影响/益处</b>。<b>搭配对象一查，三个直接出局，根本用不到语境。</b><br>🔤 <b>measurable 是本篇第一个「熟词僻义」</b>：可测量的 → <b>显著的</b>。同类还有 <code>appreciable</code>（可观的）、<code>perceptible</code>（可察觉的）、<code>marked</code>（明显的）——<b>都是「能被感知」引申为「程度够大」。</b>
+          </div>
+        </div>
+
+        <div class="q" id="q6" data-ans="1">
+          <div class="qhead"><span class="qno">6</span><span class="qt c-logic">逻辑关系 · 段际衔接</span><span class="qpos">第二段段首（逗号隔开的连接性状语）</span></div>
+          <span class="stem"><em>6</em>, instead of straining muscles to build them, as exercise does, laughter apparently accomplishes the <em>7</em>.</span>
+          <div class="opts">
+            <div class="opt">A In turn<span class="gl">相应地；转而（因果链条的下一环）</span></div>
+            <div class="opt">B In fact<span class="gl">事实上（引出更根本的实情）</span></div>
+            <div class="opt">C In addition<span class="gl">此外（再加一项）</span></div>
+            <div class="opt">D In brief<span class="gl">简言之（概括上文）</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>段首、逗号隔开 ⟹ <b>连接性状语</b>，管的是<b>本段与上一段</b>的关系。<b>四个选项全是介词短语连接词——这题只考逻辑，不看语义。</b>
+            <span class="lbl">🔗 线索 ⭐ 要读出上一段那个「没说出口的前提」</span>①段的论证是：<b>笑和运动的差别在于「持续时长」不同，所以成效不同。</b><br><b>这句话隐含一个前提：二者的<u>作用机制是相同的</u></b>（都是通过锻炼肌肉/心肺起效），<b>只是时长有别</b>——否则比时长毫无意义。<br>而②段一上来就说：<b>运动是绷紧肌肉，笑却起了相反的作用。</b>⟹ <b>它推翻的不是上段的结论，而是上段的<u>前提</u>。</b>
+            <span class="lbl">✅ B In fact</span>「事实上、实际上」——<b>它的语用功能正是「承接上段，引出更深层、更根本的实情，并附带一次轻微的语义转折」</b>。代入＝「上段说二者差在时长；<b>实际上</b>，它们对肌肉的作用方式根本就是相反的」。<b>由表层差异 → 根本差异，这一跳正是 In fact 的招牌动作。</b>
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>In turn＝相应地、转而，要求<b>因果链条连续</b>（X 导致 Y，Y 又导致 Z）。可「健康成效的差异」与「肌肉作用方式的差异」之间<b>没有这条链</b>——<b>作用方式是成效差异的<u>原因</u>，不是它的<u>下一环</u>，顺序正好反了。</b></div>
+              <div class="wr"><span class="l">C</span>In addition＝此外，<b>它只是「再并排加一条」，不带任何否定意味</b>。可本段做的是<b>否定上段的隐含前提</b>（不是并列地再说一个差异）。<b>这是本题最迷惑的错项，它的错不在语义，在「力度不够」。</b></div>
+              <div class="wr"><span class="l">D</span>In brief＝简言之，后面必须是对上文的<b>概括/总结</b>。可「肌肉层面的作用方式相反」是<b>新信息</b>，概括不了上段的时长与成效——<b>它反而是上段现象的解释。</b></div>
+            </div>
+            <span class="lbl">💡 迁移</span><b>连接词题的正解，取决于「后一句对前一句做了什么动作」，一共就五种</b>：<b>补充</b>（In addition/Moreover）· <b>解释或纠偏</b>（In fact/Indeed/Actually）· <b>顺承因果</b>（In turn/Consequently）· <b>概括</b>（In brief/In short）· <b>对立</b>（However/Conversely）。<br>⭐ <b>本题的动作是「纠偏」——而纠偏的对象常常不是上文的结论，是上文<u>没说出口的前提</u>。</b>能读到这一层，In addition 就不再迷惑人了。
+          </div>
+        </div>
+
+        <div class="q" id="q7" data-ans="0">
+          <div class="qhead"><span class="qno">7</span><span class="qt c-context">上下文语义 · 名词</span><span class="qpos">accomplishes the ___（the ＋ adj. 名词化）</span></div>
+          <span class="stem">In fact, <b>instead of straining muscles to build them</b>, as exercise does, laughter apparently accomplishes the <em>7</em>.</span>
+          <div class="opts">
+            <div class="opt">A opposite<span class="gl">相反的事物</span></div>
+            <div class="opt">B impossible<span class="gl">不可能的事</span></div>
+            <div class="opt">C average<span class="gl">平均/一般的水平</span></div>
+            <div class="opt">D expected<span class="gl">预料之中的事</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span><code>the ＋ 形容词</code>的名词化结构，作 accomplishes 的宾语。
+            <span class="lbl">🔗 线索 ⭐⭐ 本篇第二条主刀：取舍结构自带答案</span><code><b>instead of</b> doing X, …does Y</code> 是一个<b>取舍/对照结构</b>：<b>它天然要求 Y 与 X 反向。</b><br>这里 X＝<code>straining muscles to build them</code>（绷紧肌肉以强健它们），<b>那么 Y 只能是「起相反的作用」</b>。<b>连下一句都不用读，答案就已经定死。</b>
+            <span class="lbl">✅ A opposite</span><code>accomplish the opposite</code>＝起到了相反的效果。而且它<b>与下一句严丝合缝</b>：下句说 laughter <b>relaxes</b> muscles, <b>decreasing</b> muscle tone——<b>「放松、降低张力」正是「绷紧」的反面。</b>⟹ <b>7 空与 8 空是同一个 straining 反推出来的一对。</b>
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>the impossible＝不可能之事。代入＝「笑完成了不可能的事」（效果惊人）——<b>可 instead of 要求的是「与 X 相反」，不是「比 X 更强」</b>，两者不在一个层面；下句讲的也只是<b>作用方式</b>，不是什么壮举。</div>
+              <div class="wr"><span class="l">C</span>the average＝一般水平。代入＝「笑发挥了一般的作用」——<b>说的是<u>程度</u>，可本句对比的是<u>方式</u></b>（绷紧 vs 放松）。<b>程度与方式错位，是本题最隐蔽的一个错法。</b></div>
+              <div class="wr"><span class="l">D</span>the expected＝预料之中的事。代入＝「笑实现了预期的效果」——<b>方向反了</b>：instead of 明摆着是要说「出乎意料/与之相反」；且这会变成肯定笑的功效，与①段「影响甚微」打架。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐⭐ <b>见到取舍结构，先在两端画箭头，再填空</b>：<code>instead of X, Y</code>｜<code>rather than X, Y</code>｜<code>not X but Y</code>｜<code>X, not Y</code> —— <b>Y 与 X 必然反向</b>。<b>这类空不需要理解文章，只需要认结构，是完形里性价比最高的一种。</b><br>📌 <b>本篇一共出现三次这类结构</b>：本句的 <code>instead of</code>（7、8 两空）· ③段的 <code>not…but…</code>（13 空）· ④段的 <code>rather than just the other way around</code>（19、20 两空的方向源）。<b>三处结构，管着五个空。</b>
+          </div>
+        </div>
+
+        <div class="q" id="q8" data-ans="3">
+          <div class="qhead"><span class="qno">8</span><span class="qt c-context">上下文语义 · 及物动词</span><span class="qpos">that 宾语从句的谓语</span></div>
+          <span class="stem">Studies dating back to the 1930s indicate that laughter <em>8</em> muscles, <b>decreasing muscle tone</b> for up to 45 minutes after the laugh dies down.</span>
+          <div class="opts">
+            <div class="opt">A hardens<span class="gl">使变硬（与 straining 同向）</span></div>
+            <div class="opt">B weakens<span class="gl">使虚弱，减弱（贬义）</span></div>
+            <div class="opt">C tightens<span class="gl">使绷紧，收紧</span></div>
+            <div class="opt">D relaxes<span class="gl">使放松，使松弛</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>that 从句的谓语，主语 laughter、宾语 muscles。<b>其后的 <code>decreasing muscle tone…</code> 是现在分词短语作结果状语，逻辑主语就是这个空</b>——<b>换句话说，空格词与 decreasing muscle tone 说的是同一件事。</b>
+            <span class="lbl">🔗 线索（两条，一条句内一条句际）</span>① <b>句内（最硬）</b>：<code>decreasing muscle <b>tone</b></code>＝<b>降低肌张力</b>（tone 在这里是熟词僻义＝肌张力），<b>空格必须与它同向</b>；② <b>句际</b>：上一句刚说笑「起了相反的作用」，而运动是 straining（绷紧）⟹ <b>空格必须是 straining 的反义。</b>
+            <span class="lbl">✅ D relaxes</span>使放松、使松弛。<b>两条线索同时命中</b>：与 decreasing muscle tone 同向，与 straining 反向。代入＝「笑会<b>放松</b>肌肉，在笑声平息后还能让肌张力降低长达 45 分钟」。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>harden＝使变硬。<b>与上句 straining、build 同向</b>——命题人正是拿这个「同向惯性」设障。<b>但上句 the opposite 已经把方向掰过来了</b>，而且「使肌肉变硬」与「降低肌张力」当场矛盾。</div>
+              <div class="wr"><span class="l">C</span>tighten＝使绷紧，<b>与 A 同族同错</b>：它几乎就是 straining 的同义词，代入后等于说「笑和运动做的是同一件事」，把上句的 the opposite 彻底推翻。</div>
+              <div class="wr"><span class="l">B</span>weaken＝使虚弱、削弱。<b>这个错项最值得记</b>：它<u>方向对了一半</u>（也是「往下走」），但 <b>weaken 含贬义</b>——言外之意「笑会损害肌肉」。<b>而全文对笑是褒向的</b>（③段起讲它的好处），<b>且「放松」与「变虚弱」是两回事</b>。</div>
+            </div>
+            <span class="lbl">💡 迁移</span><b>方向对了还不够，还要过<u>褒贬</u>这一关。</b>relaxes（中性偏褒，主动的松弛）vs weakens（贬义，被动的削弱）——<b>同一个方向上，往往还并排放着一个褒一个贬，专挑只看方向不看色彩的人。</b><br>⭐ 本篇这类「方向对但色彩错」的干扰项一共三个：<b>8 的 weakens · 9 的 aggravate · 3 的 impairing</b>——<b>三个都在把笑往坏处说，而全文对笑的态度是「不健身，但对情绪有益」。定死这个基调，三个空一起省事。</b>
+          </div>
+        </div>
+
+        <div class="q" id="q9" data-ans="2">
+          <div class="qhead"><span class="qno">9</span><span class="qt c-word">词义辨析 · 动词</span><span class="qpos">help (to) do 的不定式</span></div>
+          <span class="stem">Such bodily reaction might conceivably help <em>9</em> the effects of psychological stress.</span>
+          <div class="opts">
+            <div class="opt">A aggravate<span class="gl">使恶化，加剧（贬义）</span></div>
+            <div class="opt">B generate<span class="gl">产生，引起（能量、情感）</span></div>
+            <div class="opt">C moderate<span class="gl">缓和，减轻</span></div>
+            <div class="opt">D enhance<span class="gl">提高，增强（褒义）</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span><code>help (to) do sth</code> 结构里的<b>不定式动词</b>（to 省略），宾语是 <code>the effects of psychological stress</code>（心理压力的影响）。
+            <span class="lbl">🔗 线索</span><code>Such bodily reaction</code> 回指上段末的「笑使肌肉放松、肌张力下降」；下一句 <code>…improve an individual's emotional state</code>（改善情绪状态）给出本段的<b>基调：笑对心理是有益的</b>。⟹ <b>「肌肉放松 → 有助于<u>减轻</u>压力的影响」</b>，方向定死。
+            <span class="lbl">✅ C moderate</span>作动词＝<b>使缓和、使不那么极端</b>（熟词僻义：形容词义是「适度的」）。代入＝「这样的身体反应也许有助于<b>缓和</b>心理压力带来的影响」，与下句「改善情绪状态」同向。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>aggravate＝使恶化。<b>方向完全反</b>；而且有个更快的判据——<b>贬义词 aggravate 与褒义的 help 天然不搭</b>：「有助于使……恶化」在英文里是别扭的。命题人靠上一句的 decreasing、dies down 这些字面消极的词造假线索。</div>
+              <div class="wr"><span class="l">D</span>enhance＝提高、增强，<b>它自带褒义</b>（enhance quality/reputation），可宾语 <code>the effects of stress</code> 是<b>消极</b>的——<b>褒义动词配消极宾语，搭配本身就不成立</b>；代入的意思「增强压力的影响」也违常理。</div>
+              <div class="wr"><span class="l">B</span>generate＝产生。<b>因下文的 produce 而生的干扰</b>，但「笑使肌肉放松 → <u>造成</u>心理压力的影响」不合常理，也与下句「改善情绪状态」冲突。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>「动词＋宾语」的褒贬要成对看，不能只看动词</b>：<b>褒义动词</b>（enhance/boost/promote）配<b>好东西</b>；<b>减损类动词</b>（moderate/alleviate/mitigate/ease）配<b>坏东西</b>。<b>本题宾语是「压力的影响」＝坏东西 ⟹ 只能配减损类，四个里只有 moderate 是。</b><br>🔤 <b>「减轻」一族一次背全</b>：moderate（使缓和）｜ alleviate／mitigate／relieve／ease（减轻痛苦、压力）｜ cushion（缓冲冲击）｜ temper（调和，使不过分）。<b>写作里替换 reduce 极好用。</b>
+          </div>
+        </div>
+
+        <div class="q" id="q10" data-ans="0">
+          <div class="qhead"><span class="qno">10</span><span class="qt c-context">上下文语义 · 形容词</span><span class="qpos">other types of ___ feedback</span></div>
+          <span class="stem">Anyway, the act of laughing probably does produce <b>other types of</b> <em>10</em> feedback that improve an individual's emotional state.</span>
+          <div class="opts">
+            <div class="opt">A physical<span class="gl">身体的，肉体的</span></div>
+            <div class="opt">B mental<span class="gl">精神的，心理的</span></div>
+            <div class="opt">C subconscious<span class="gl">潜意识的</span></div>
+            <div class="opt">D internal<span class="gl">内部的，体内的</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>修饰 feedback 的形容词；<b>而真正的钥匙是它前面的 <code>other types of</code></b>。
+            <span class="lbl">🔗 线索 ⭐ other 是一个「回指标记」</span><b><code>other types of X</code> 意味着上文已经提过<u>一种</u> X</b>——上文提的是什么？<code><b>Such bodily reaction</b></code>（这种<b>身体</b>反应，指肌肉放松）。<br>⟹ <b>空格必须与 bodily 同类</b>：笑除了「肌肉放松」这一种身体反馈，还会产生<b>其他类型的身体反馈</b>，它们改善了情绪状态。<b>整段的因果方向也在这里：身体（因）→ 情绪（果）。</b>
+            <span class="lbl">✅ A physical</span>身体的（＝bodily 的同义替换）。<b>完形里「同义替换 + other 回指」是标准配置</b>：上文用 bodily，下文换成 physical，避免重复。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>mental＝心理的。<b>它是本题的重点陷阱</b>：代入后「其他类型的<b>心理</b>反馈改善情绪状态」<u>读着极其顺</u>，但 <code>other</code> 会倒逼一个前提——<b>上文得先提过「某种心理反馈」</b>，可上文提的是<b>身体反应</b>。<b>而且它会把整段的因果方向抹平</b>（心理→心理，就没有「身体影响心理」这条论点了）。</div>
+              <div class="wr"><span class="l">C</span>subconscious＝潜意识的，与 conscious 相对。上文的 bodily reaction 不属于这一类，<b>错法与 B 同族</b>（other 找不到回指对象）。</div>
+              <div class="wr"><span class="l">D</span>internal＝体内的、内部的（与 external 相对）。<b>看似与 bodily 同类，最像</b>——但文中 bodily 强调的是<b>「身体 vs 心理」</b>这一对立，不是<b>「体内 vs 体外」</b>；而且下文举的例子是<b>哭泣、流泪</b>，那显然是外显的身体反应，<b>不是「体内的」</b>。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐⭐ <b>见到 <code>other／another／such／this kind of</code>，先回上文找它指的那一个——这类词是完形里最可靠的「免费定位器」。</b><br><b>本题的两步走：① other types of X ⟹ 上文必有 one type of X；② 找到上文那句（Such <u>bodily</u> reaction）⟹ 空格＝bodily 的同义词。</b> 全程不需要理解「反馈」是什么。<b>同理，B/C/D 之所以全错，是因为它们都能让句子通顺，却没有一个能与 other 的回指对上。</b>
+          </div>
+        </div>
+        <div class="q" id="q11" data-ans="1">
+          <div class="qhead"><span class="qno">11</span><span class="qt c-logic">逻辑关系 · 短语介词</span><span class="qpos">句首状语（引出理论出处）</span></div>
+          <span class="stem"><em>11</em> one classical theory of emotion, our feelings are partially rooted <em>12</em> physical reactions.</span>
+          <div class="opts">
+            <div class="opt">A Except for<span class="gl">除……之外（局部修正）</span></div>
+            <div class="opt">B According to<span class="gl">根据；据……所说</span></div>
+            <div class="opt">C Due to<span class="gl">由于（引出原因）</span></div>
+            <div class="opt">D As for<span class="gl">至于；就……而言</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>逗号前的<b>介词短语作状语</b>，宾语是 <code>one classical theory of emotion</code>（一种经典的情绪理论）；逗号后主谓齐全。
+            <span class="lbl">🔗 线索</span>逗号后那句 <code>our feelings are partially rooted in physical reactions</code>，正是这个「经典理论」的<b>内容</b>；紧接着的下一句 <code>It was argued at the end of the 19th century that…</code> 是<b>同一理论的展开</b>（19 世纪末＝classical 的时间落点）。⟹ <b>空格要建立的是「理论 ↔ 理论内容」的关系，即「引出出处」。</b>
+            <span class="lbl">✅ B According to</span>根据、据……所说。代入＝「<b>根据</b>一种经典的情绪理论，我们的感受部分源于身体反应」。<b>它同时完成句际衔接</b>：上句刚说「笑产生的身体反馈能改善情绪」，本句<b>搬出理论来支撑</b>——<b>提出观点 → 援引理论，是学术型说明文最常见的两步。</b>
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">C</span>Due to＝由于，引出<b>原因</b>。代入＝「<b>由于</b>一种经典理论，我们的感受才部分源于身体反应」——<b>把关系彻底搞反了</b>：理论是用来<b>描述/解释</b>这个现象的，不是<b>造成</b>这个现象的。<b>本题最像的错项，错在「解释者」被当成了「原因」。</b></div>
+              <div class="wr"><span class="l">A</span>Except for 表「除……之外」，要求后文是<b>整体状况</b>、空格引出<b>局部例外</b>。代入＝「除了一种经典理论之外，我们的感受源于身体反应」——<b>可理论与感受不是同类项</b>，构不成「整体—例外」。</div>
+              <div class="wr"><span class="l">D</span>As for＝至于、就……而言，用来<b>转入一个新的讨论对象</b>（且这个对象通常上文刚提过一批同类）。可上文<b>压根没在谈各种理论</b>，突然「至于一种经典理论」，话头接不上。</div>
+            </div>
+            <span class="lbl">💡 迁移</span><b>句首介词短语的四种活儿，一次分清</b>：<b>引出处</b>（According to／In the words of）· <b>引原因</b>（Due to／Owing to／Thanks to）· <b>引例外</b>（Except for／Apart from）· <b>换话题</b>（As for／As to／When it comes to）。<b>先判「后半句是谁说的、还是为什么」，再挑词。</b><br>⭐ <b>本篇 11 空是全篇「因果箭头」第一次被明写</b>：according to 后面这句 <code>rooted in</code> 就是箭头本身（身体反应 → 情绪）。<b>做到这里就该把箭头画在卷子上，后面的 13、14、15、19、20 全部按它填。</b>
+          </div>
+        </div>
+
+        <div class="q" id="q12" data-ans="2">
+          <div class="qhead"><span class="qno">12</span><span class="qt c-collo">固定搭配 · 介词</span><span class="qpos">be rooted ___ sth</span></div>
+          <span class="stem">…our feelings are partially <b>rooted</b> <em>12</em> physical reactions.</span>
+          <div class="opts">
+            <div class="opt">A with<span class="gl">和……一起；由于（某种情绪）</span></div>
+            <div class="opt">B on<span class="gl">在……上（root on 不成立）</span></div>
+            <div class="opt">C in<span class="gl">be rooted in 植根于，源自</span></div>
+            <div class="opt">D at<span class="gl">在……（at the root of 才成立）</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>被动谓语 <code>are rooted</code> 后的<b>介词</b>（被动语态后不能直接跟宾语，所以这里必是介词）。
+            <span class="lbl">🔗 线索</span>纯搭配题，但<b>语义方向也能验</b>：上句「笑引发的身体反馈 → 改善情绪」，下句「不是因悲伤而哭，而是流泪之后才悲伤」——<b>两句说的都是「身体反应（因）→ 情绪（果）」</b>，所以这里的介词要表达「<b>（果）源自／植根于（因）</b>」。
+            <span class="lbl">✅ C in</span><code>be rooted in sth</code>＝植根于、源自。代入＝「我们的感受<b>部分源自</b>身体反应」，与上下文的因果方向完全一致。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>on 与 root 搭配时 root 是<b>不及物动词</b>，表「固定在……上不动」（His eyes rooted on my haircut）——<b>而文中 root 是及物动词的被动式</b>。at＋root 的正确形式是名词短语 <code>be at the root of sth</code>（是某事的根源），<b>动词 root 不与 at 搭配</b>。</div>
+              <div class="wr"><span class="l">A</span>with 与语境相关的义项是「由于（某种情绪/情形）」（beamed <b>with</b> pleasure 高兴得眉开眼笑），<b>但它不与 be rooted 搭配</b>，也表达不出「源自」。</div>
+              <div class="wr"><span class="l">D</span>at 见上：<code>be at the root of</code> 与 <code>be rooted in</code> 意思相近但结构完全不同——<b>一个用名词 root，一个用动词 root，介词不能互换。</b></div>
+            </div>
+            <span class="lbl">💡 迁移</span>🔤 <b>「源自 / 归因」一族一次背全</b>：<code>be rooted in</code>（植根于）｜ <code>stem from</code>｜ <code>arise from</code>｜ <code>originate in／from</code>｜ <code>result from</code>｜ <code>be attributed to</code>（被归因于）｜ <code>be traced back to</code>（追溯到）。<b>写作里表「深层原因」，be rooted in 比 because 高一档：<i>The problem is rooted in an outdated system.</i></b><br>⚠️ <b>本篇三个搭配空（12 in／15 from／18 reacted to）全是「动词＋介词」型</b>——<b>做搭配空先盯空格紧邻的那个介词或那个动词，别去比四个选项的中文意思。</b>
+          </div>
+        </div>
+
+        <div class="q" id="q13" data-ans="3">
+          <div class="qhead"><span class="qno">13</span><span class="qt c-logic">逻辑关系 · 连词</span><span class="qpos">not…but… 结构里前一分句的连词</span></div>
+          <span class="stem">It was argued… that humans do <b>not</b> cry <em>13</em> they are sad <b>but</b> that they become sad when the tears begin to flow.</span>
+          <div class="opts">
+            <div class="opt">A unless<span class="gl">除非（引出使主句不成立的条件）</span></div>
+            <div class="opt">B until<span class="gl">直到……才</span></div>
+            <div class="opt">C if<span class="gl">如果；即便</span></div>
+            <div class="opt">D because<span class="gl">因为</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>It 作形式主语，两个 that 从句由 <code>but</code> 并列；空格是<b>第一个 that 从句里连接主句与从句的连词</b>。
+            <span class="lbl">🔗 线索 ⭐ 关键是搞清 not 到底否定谁</span>句子的骨架是 <code><b>not</b> A <b>but</b> B</code>：<br><b>B（but 之后）＝</b> 眼泪流下来之后才变得悲伤 ⟹ <b>流泪 → 悲伤</b>；<br>⟹ <b>A（被否定的）必须是它的反向</b>：<b>因为悲伤才哭</b>（悲伤 → 流泪）。<br><b>所以空格要表达的正是「因为」这层因果</b>——而 <b>not 否定的是「因为悲伤而哭」这整个主从复合句</b>，<b>不是否定 cry 这个动作</b>。
+            <span class="lbl">✅ D because</span>代入＝「人<b>并不是因为</b>悲伤才哭泣，<b>而是</b>当眼泪开始流下来时才变得悲伤」。<b>这正是 James–Lange 情绪理论的招牌句式</b>：不是「怕了才发抖」，而是「发抖了才觉得怕」。<br>📌 <b>语法上还有一条硬规则</b>：主句含否定词 not 时，<b>not 的否定意义通常转移到 because 从句上</b>（<i>The mountain is not famous because it is high.</i> 这座山并不是因为高才出名）——<b>本句正是这条规则的教科书例句。</b>
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>unless＝除非。代入＝「除非悲伤，否则人们不会哭泣」——<b>它强调「悲伤是哭泣的<u>必要条件</u>」</b>，与常识不符（喜极而泣、洋葱催泪），<b>更要命的是它把 not 的否定对象误当成了 cry</b>。</div>
+              <div class="wr"><span class="l">B</span>until＝直到……才，<code>not…until…</code>＝「直到悲伤才会哭」，<b>与 A 同错</b>：仍是把悲伤当成哭泣的前置必要条件，且它会与后半句的 but 打架（but 要求前后是<b>取舍</b>，not…until 是<b>时间</b>）。</div>
+              <div class="wr"><span class="l">C</span>if 取「如果」＝「如果悲伤，人们就不会哭」，违背常理；取「即便」＝「即便悲伤，人们也不会哭」——<b>两种读法都把 not 的否定对象缩小成了 cry</b>，而原句要否定的是<b>那条因果方向</b>。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐⭐ <b>见到 <code>not … but …</code>，第一件事是问「not 否定的是<u>哪一段</u>」</b>：否定<b>动词</b>（人不哭）还是否定<b>整条因果</b>（人不是因为 X 才哭）？<b>判据看 but 之后</b>——but 之后给的是<b>另一条因果</b>（流泪→悲伤），<b>那 not 否定的当然也是一条因果</b>，两边必须对称。<b>本题 A/B/C 三个错项是同一个死法，一刀三个。</b>
+          </div>
+        </div>
+
+        <div class="q" id="q14" data-ans="2">
+          <div class="qhead"><span class="qno">14</span><span class="qt c-context">上下文语义 · 及物动词</span><span class="qpos">Although 让步从句的谓语</span></div>
+          <span class="stem"><b>Although</b> sadness <b>also</b> <em>14</em> tears, evidence suggests that emotions can flow <em>15</em> muscular responses.</span>
+          <div class="opts">
+            <div class="opt">A exhausts<span class="gl">耗尽，用完</span></div>
+            <div class="opt">B follows<span class="gl">跟随；在……之后发生</span></div>
+            <div class="opt">C precedes<span class="gl">先于……发生</span></div>
+            <div class="opt">D suppresses<span class="gl">抑制，压抑</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span><code>Although</code> 让步从句的谓语，主语 sadness、宾语 tears ⟹ <b>空格词要给「悲伤」和「眼泪」排个先后。</b>
+            <span class="lbl">🔗 线索 ⭐ Although 的功能是「先承认对方一半」</span>让步句的标准写法：<b>先承认常规认知（大家都同意的那一半），再用主句转向自己要说的</b>。<br>主句说的是：<b>情绪可以<u>源于</u>肌肉反应</b>（身体 → 情绪）。<br>⟹ <b>让步句里要承认的，就是它的反向</b>：<b>悲伤<u>也确实</u>会先于眼泪出现</b>（情绪 → 身体）。<br>而 <code><b>also</b></code> 这个词是第二条判据：<b>它表示「这一条也成立」——承认对方，正是让步。</b>
+            <span class="lbl">✅ C precedes</span>先于……发生。代入＝「<b>尽管悲伤也先于眼泪产生</b>，但有证据表明情绪可以源于肌肉反应」。<b>与上段末句的 <code>not…but…</code> 无缝对接</b>：上段刚说「不是因悲伤才哭」，本句让一步「悲伤有时确实在前」，随即再转回来。<b>一句话里装下了一个完整的「让—转」。</b>
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>follows＝跟随、在……之后发生。<b>X follows Y ＝ X 在 Y 之后</b>，代入＝「悲伤跟在眼泪之后」——<b>这恰恰是主句要说的观点，不是要让的那一步</b>。<b>让步句与主句说了同一件事，Although 就白写了。</b>⚠️ <b>本题最容易栽的地方就是 follow 的方向</b>：中文「跟随」听着像「带来」，其实是「在后」。</div>
+              <div class="wr"><span class="l">A</span>exhausts 取「用完」＝「悲伤耗尽了眼泪」，看似能说得通（哭干了），<b>但整段讨论的是<u>时间先后与因果方向</u>，不是数量多少</b>——<b>脱离语境。</b></div>
+              <div class="wr"><span class="l">D</span>suppresses＝抑制＝「悲伤抑制了眼泪」，<b>违背常识</b>，且同样偏离了「谁先谁后」这条主线。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>Although／While 从句里的空，答案永远是<u>主句观点的反面</u>（即那条被让掉的常规认知）</b>。<b>做法：先把主句读懂、把方向定死，再取反填让步句。</b>不要在四个词的词义里打转。<br>🔤 <b>「先后」一族别背中文，背箭头</b>：<code>A precedes B</code>＝A→B（A 在前）｜ <code>A follows B</code>＝B→A（A 在后）｜ <code>A gives rise to B</code>＝A→B｜ <code>A results from B</code>＝B→A｜ <code>A stems from B</code>＝B→A。<b>凡带方向的动词，卷子上直接画箭头，比记中文可靠。</b>
+          </div>
+        </div>
+
+        <div class="q" id="q15" data-ans="1">
+          <div class="qhead"><span class="qno">15</span><span class="qt c-collo">固定搭配 · 介词</span><span class="qpos">emotions can flow ___ muscular responses</span></div>
+          <span class="stem">…evidence suggests that emotions can <b>flow</b> <em>15</em> muscular responses.</span>
+          <div class="opts">
+            <div class="opt">A into<span class="gl">流入（情绪→肌肉，方向反）</span></div>
+            <div class="opt">B from<span class="gl">源于，出自</span></div>
+            <div class="opt">C towards<span class="gl">流向（动态过程，方向反）</span></div>
+            <div class="opt">D beyond<span class="gl">超越（不与 flow 搭配）</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>与 flow 构成短语的<b>介词</b>。四个选项都是介词——<b>这题考的不是词义，是箭头方向。</b>
+            <span class="lbl">🔗 线索（两条锁死）</span>① <b>句内的 Although 让步</b>：让步句已经承认了「悲伤<b>先于</b>眼泪」（情绪→身体），<b>主句必须给出反方向</b>；② <b>上下文</b>：③段 <code>rooted <b>in</b> physical reactions</code>、下文实验结论 <code>expressions may influence emotions <b>rather than just the other way around</b></code>——<b>全篇一根箭头：身体 → 情绪。</b>
+            <span class="lbl">✅ B from</span><code>flow from</code>＝源于、出自（Several conclusions flow from this hypothesis）。代入＝「情绪可以<b>源于</b>肌肉反应」——<b>肌肉反应是因，情绪是果，与全篇箭头一致。</b>
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>flow into＝流入。代入＝「情绪流入肌肉反应」——<b>箭头是「情绪 → 肌肉」，与主句要表达的正好相反</b>，也与 Although 的让步关系冲突（变成让步句与主句同向）。</div>
+              <div class="wr"><span class="l">C</span>flow towards＝流向，<b>与 A 同一个方向错误</b>；另外它强调的是<b>动态过程/趋势</b>，而本句要讲的是<b>来源</b>（一个结果的出处）。</div>
+              <div class="wr"><span class="l">D</span>beyond＝超越、在……之外，<b>通常不与 flow 搭配</b>；代入的「情绪可以超越肌肉反应」在文中无从谈起。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐⭐ <b>介词就是箭头</b>：<code>from</code>＝来源（箭头指向主语）｜ <code>into／towards／to</code>＝去向（箭头背离主语）。<b>凡文章在争论「A 导致 B 还是 B 导致 A」，介词空一律先画箭头再选词。</b><br>📌 <b>本篇挂在这根箭头上的空一共七个</b>：12（rooted <b>in</b>）· 13（<b>because</b>）· 14（<b>precedes</b>）· 15（flow <b>from</b>）· 18（<b>reacted</b> to）· 19（<b>suggesting</b>）· 20（<b>Similarly</b>）——<b>整整 3.5 分。把箭头画对，这七个空是一次做完的。</b>
+          </div>
+        </div>
+
+        <div class="q" id="q16" data-ans="3">
+          <div class="qhead"><span class="qno">16</span><span class="qt c-word">词义辨析 · 动词</span><span class="qpos">asked volunteers to ___ a pen</span></div>
+          <span class="stem">…asked volunteers to <em>16</em> a pen <b>either with their teeth</b>—thereby creating an artificial smile—<b>or with their lips</b>…</span>
+          <div class="opts">
+            <div class="opt">A fetch<span class="gl">（去某处）取来，拿回</span></div>
+            <div class="opt">B bite<span class="gl">咬（只能用牙，且会咬坏）</span></div>
+            <div class="opt">C pick<span class="gl">挑选；（用手指）拿起</span></div>
+            <div class="opt">D hold<span class="gl">拿着，衔住（保持不动）</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>ask sb <b>to do</b> 结构里的动词，宾语 a pen ⟹ 志愿者被要求做的<b>动作</b>。
+            <span class="lbl">🔗 线索 ⭐ 判据是 either…or… 这个并列</span>同一个动作要<b>同时兼容两种身体部位</b>：<b>用牙齿</b>（做出假笑）／<b>用嘴唇</b>（做出另一种表情）。<b>⟹ 空格词必须是牙齿和嘴唇<u>都能做</u>的那个动作。</b>这一条一出，四个选项立刻只剩一个。
+            <span class="lbl">✅ D hold</span>拿着、衔住（<b>保持一段时间不动</b>）。<code>hold a pen with their teeth</code>（用牙咬着笔）与 <code>hold a pen with their lips</code>（用唇衔着笔）<b>两种说法都成立</b>，而且「保持不动」正是实验需要的状态——<b>要维持住那个表情，才能观察情绪反应。</b>
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>bite＝咬。<b>本题最像的错项</b>（「用牙咬笔」听着完全对），<b>但两处硬伤</b>：① <b>嘴唇不能 bite</b>，与 either…or 的并列直接冲突；② bite 的内涵是<b>切碎、压碎</b>（He bit a mouthful from the sandwich），<b>咬坏实验用具不合科研常识。</b></div>
+              <div class="wr"><span class="l">A</span>fetch＝（去某处）取来。文中<b>没有任何方位信息</b>（从哪儿取？），而且「取来一支笔」与后面的「从而制造出一个假笑」<b>接不上</b>——取笔这个动作产生不了表情。</div>
+              <div class="wr"><span class="l">C</span>pick＝挑选，或用<b>手指</b>拿起。<b>身体部位错了</b>（文中是牙齿和嘴唇），且「挑选」需要有可选范围，文中没有。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>实验描述段里的动词空，判据往往不是词义而是「实验做得成做不成」</b>：这个动作两组都能做吗？会不会破坏器材？能维持住吗？<b>把自己放进实验里比划一遍，比查词典快。</b><br>📌 <b>16 与 17 是一对连体空</b>：16 定下「用牙／用唇各衔一支笔」这个装置，17 就只能是「用唇衔笔时脸会变成什么样」。<b>先做装置（16），再做结果（17）。</b>
+          </div>
+        </div>
+
+        <div class="q" id="q17" data-ans="0">
+          <div class="qhead"><span class="qno">17</span><span class="qt c-context">上下文语义 · 形容词</span><span class="qpos">which 定语从句的宾语定语</span></div>
+          <span class="stem">…either with their teeth—thereby creating an <b>artificial smile</b>—or with their lips, which would produce a(n) <em>17</em> expression.</span>
+          <div class="opts">
+            <div class="opt">A disappointed<span class="gl">沮丧的，失望的</span></div>
+            <div class="opt">B excited<span class="gl">兴奋的，激动的</span></div>
+            <div class="opt">C joyful<span class="gl">高兴的，快乐的</span></div>
+            <div class="opt">D indifferent<span class="gl">冷漠的，不感兴趣的</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>which 引导的非限定定语从句里，修饰 expression 的<b>形容词</b>——说明「用嘴唇衔笔」会做出<b>哪一种</b>表情。
+            <span class="lbl">🔗 线索 ⭐⭐ 实验的「对照原则」：两组的条件必须<u>相反</u></span>① 前一组是 <code>an artificial <b>smile</b></code>（假笑）⟹ <b>另一组必须是与「笑」相反的表情</b>，否则实验就没有对照，做不出结论；<br>② <b>下一句直接给了答案的同义句</b>：<code>those whose mouths were <b>contracted in a frown</b></code>（嘴巴皱缩成愁眉苦脸）——<b>frown 就是它的原文解释</b>；<br>③ <b>自己拿支笔比划一下</b>：牙咬＝咧嘴露齿（像笑），唇衔＝抿嘴闭唇（像不高兴）。<b>三条线索指向同一个方向。</b>
+            <span class="lbl">✅ A disappointed</span>沮丧的、失望的。<code>a disappointed expression</code>＝一副失望的表情，<b>既与 smile 构成对比，又与下句的 frown 呼应。</b>
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>excited＝兴奋的。兴奋的面部表情<b>比微笑更夸张</b>（张嘴大笑、欢呼），<b>而抿嘴闭唇根本做不出这种表情</b>；方向上也与 smile 同向，构不成对照。</div>
+              <div class="wr"><span class="l">C</span>joyful＝快乐的，<b>与 smile 几乎同义</b>——两组做出同一种表情，实验直接失效。<b>凡实验设计题，先问「这两组差在哪」，同向项一律先划掉。</b></div>
+              <div class="wr"><span class="l">D</span>indifferent＝冷漠的、不感兴趣的。<b>本题真正的迷惑项</b>：它虽与「微笑」形成反差，但呈现的是<b>面无表情（中性）</b>——<b>而「中性」不等于「相反」</b>；且文中强调嘴巴的形态是<b>抿紧、皱缩</b>（contracted in a frown），那是<b>有负面情绪的表情</b>，不是自然放松的脸。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>「相反」与「中性」是两回事，这是形容词空的高频分界线</b>：热 ↔ 冷（相反）／温（中性）；褒 ↔ 贬（相反）／不置可否（中性）。<b>题干要求对照时，选相反；题干只说「没有那种性质」时，才选中性。</b><br>📌 <b>再记一条：完形里凡出现实验，<u>答案常常写在下一句的同义句里</u></b>——本题的 frown、18 题的 more enthusiastically、19 题的 the other way around，<b>三个空的钥匙全在紧邻的下文。</b>
+          </div>
+        </div>
+
+        <div class="q" id="q18" data-ans="3">
+          <div class="qhead"><span class="qno">18</span><span class="qt c-collo">固定搭配 · 动词＋介词</span><span class="qpos">___ more enthusiastically <b>to</b> funny cartoons</span></div>
+          <span class="stem">Those forced to exercise their smiling muscles <em>18</em> more enthusiastically <b>to</b> funny cartoons than did those whose mouths were contracted in a frown…</span>
+          <div class="opts">
+            <div class="opt">A adapted<span class="gl">adapt to 适应（新环境）</span></div>
+            <div class="opt">B catered<span class="gl">cater to 迎合（需求）</span></div>
+            <div class="opt">C turned<span class="gl">turn to 求助于；改用</span></div>
+            <div class="opt">D reacted<span class="gl">react to 对……做出反应</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>主句谓语（不及物），后面跟方式状语 more enthusiastically 与介词短语 <code>to funny cartoons</code>。<b>四个选项都能接 to——所以这题不是「哪个接 to」，而是「哪个接 to 之后语义对」。</b>
+            <span class="lbl">🔗 线索</span>本句在交代<b>实验结果</b>：两组人看同一批搞笑漫画，<b>咬笔（假笑）组比抿唇组更「怎么样」</b>。而下一句的结论是 <code>expressions may influence <b>emotions</b></code>（表情影响情绪）⟹ <b>被测量的必须是「情绪上的反应」</b>。
+            <span class="lbl">✅ D reacted</span><code>react to sth</code>＝对……做出反应（因某事的发生而表现出特定的行为或情绪）。代入＝「被迫动用笑肌的人，对搞笑漫画的<b>反应</b>比愁眉苦脸的人更为热烈」——<b>正好落在「情绪反应」这个被测量的变量上</b>，也与本段首句 <code>emotions can flow from muscular responses</code> 严格对应。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>adapt to＝适应（新环境、新变化）。<b>搞笑漫画不是需要「适应」的对象</b>；且「适应卡通」与实验目的（表情与情绪的关系）毫无关系。</div>
+              <div class="wr"><span class="l">B</span>cater to＝迎合（某人的需求）。<b>卡通既不是需求，也不是被迎合的一方</b>——<b>而且方向反了</b>：应当是人<b>被</b>卡通逗乐，不是人去迎合卡通。</div>
+              <div class="wr"><span class="l">C</span>turn to＝求助于／改用。代入＝「实验对象更热烈地<b>求助于</b>搞笑卡通」——<b>可卡通是实验者提供的刺激材料，不是被试主动去找的东西。</b></div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>「动词＋to」的四选一，判据是<u>谁主动谁被动</u></b>：react to（<b>被动受刺激</b>，然后有反应）｜ cater to／adapt to（<b>主动去迎合/适应</b>）｜ turn to（<b>主动去求助</b>）。<b>本题里被试是「被漫画逗」的一方 ⟹ 只能选被动受刺激的那个。</b><br>📌 <b>实验型语段的三段式，每一段都设了空</b>：<b>方法</b>（16 hold／17 disappointed）→ <b>结果</b>（18 reacted）→ <b>结论</b>（19 suggesting）。<b>认出这个三段式，读到哪一段就知道该填哪一类词。</b>
+          </div>
+        </div>
+
+        <div class="q" id="q19" data-ans="0">
+          <div class="qhead"><span class="qno">19</span><span class="qt c-logic">逻辑关系 · 现在分词</span><span class="qpos">句末状语，引出结论</span></div>
+          <span class="stem">Those forced to exercise their smiling muscles reacted more enthusiastically…, <em>19</em> that expressions may influence emotions rather than just the other way around.</span>
+          <div class="opts">
+            <div class="opt">A suggesting<span class="gl">表明，暗示（接陈述从句）</span></div>
+            <div class="opt">B requiring<span class="gl">要求（后接从句用虚拟）</span></div>
+            <div class="opt">C mentioning<span class="gl">提及，谈到</span></div>
+            <div class="opt">D supposing<span class="gl">假定，设想</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>句末<code>V-ing ＋ that 从句</code>整体作<b>状语</b>，逻辑主语是<b>前面整句话（那个实验结果）</b>。⟹ 空格词要表达「<b>这个结果 → 那个结论</b>」的关系。
+            <span class="lbl">🔗 线索</span>空格前是<b>具体的实验发现</b>（假笑组反应更热烈），空格后是<b>一般性结论</b>（表情可以影响情绪，而不只是反过来）。<b>具体 → 一般，这个动作只有一个名字：「表明」。</b>
+            <span class="lbl">✅ A suggesting</span>suggest 的第二义＝<b>表明、暗示</b>（后接<b>陈述语气</b>从句：All the evidence suggests that he stole the money）。代入＝「……<b>表明</b>表情可以影响情绪，而不只是情绪影响表情」。<b>而且 suggest 的分寸恰到好处</b>：它是「表明」不是「证明」——<b>一项实验只能 suggest，不能 prove，这是学术语体的基本礼貌。</b>
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>requiring＝要求。<b>两处错</b>：① 逻辑上「客观发现<b>要求</b>某个结论」讲不通（那是「特殊→一般」的归纳，不是「要求 vs 被要求」）；② <b>语法上 require 后的从句要用虚拟语气</b>（should＋动词原形，should 可省），而文中是陈述语气 <code>may influence</code>。<b>一个语法判据直接出局。</b></div>
+              <div class="wr"><span class="l">C</span>mentioning＝提及、简短谈到。<b>有悖科研逻辑</b>：空格前是实验结果，空格后是由结果<b>推出</b>的推论——<b>推论不是「顺口提一句」</b>。</div>
+              <div class="wr"><span class="l">D</span>supposing＝假定、设想，引出<b>假设情形</b>。可这里陈述的是<b>已经得出的结论</b>，不是假设。<b>⚠️ 与②段那个 apparently 一样，本文对实验结论的措辞一直很克制，但克制 ≠ 假设。</b></div>
+            </div>
+            <span class="lbl">💡 迁移</span>🔤 <b>「引出结论」的一族背熟，作文与阅读通用</b>：<code>suggesting that…</code>｜ <code>indicating that…</code>｜ <code>implying that…</code>｜ <code>which points to…</code>｜ <code>lending support to the view that…</code>。<b>强度从弱到强：suggest &lt; indicate &lt; demonstrate &lt; prove。写作里描述数据，一律用前两个。</b><br>⚠️ <b>suggest 的两个义项决定后面的语气，这是考点</b>：表「建议」⟹ 从句用<b>虚拟</b>（should do）；表「表明」⟹ 从句用<b>陈述</b>。<b>看到 that 从句里是 may/is/does，就只能取「表明」义。</b>
+          </div>
+        </div>
+
+        <div class="q" id="q20" data-ans="2">
+          <div class="qhead"><span class="qno">20</span><span class="qt c-logic">逻辑关系 · 句际衔接</span><span class="qpos">末句句首 ⚠️ 我唯一做错的一题</span></div>
+          <span class="stem">…<b>expressions</b> may influence emotions rather than just the other way around. <em>20</em>, the physical act of <b>laughter</b> could improve mood.</span>
+          <div class="opts">
+            <div class="opt">A Eventually<span class="gl">最终（一系列事件的最后一环）</span></div>
+            <div class="opt">B Consequently<span class="gl">因此（前句造成的结果）</span></div>
+            <div class="opt">C Similarly<span class="gl">同样地（引出类似情形）</span></div>
+            <div class="opt">D Conversely<span class="gl">相反地（引出对立情形）</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>末句句首、逗号隔开的<b>句际连接词</b>。<b>全篇最后一个空，也是全篇唯一一个「靠语感会做错」的空。</b>
+            <span class="lbl">🔗 线索 ⭐⭐ 判据只有一个：<u>主语换人了没有</u></span>上一句的主语是 <code><b>expressions</b>／smiling muscles</code>——实验做的是<b>微笑</b>；<br>末句的主语是 <code>the physical act of <b>laughter</b></code>——说的是<b>大笑</b>。<br>⟹ <b>主语换了一个人，就意味着这是<u>同一个原理的另一个实例</u>，而不是上一句的结果。</b><br><b>咧嘴微笑能提升情绪 ⟹ 放声大笑<u>同样</u>能提升情绪</b>——这是<b>类比</b>，不是因果。
+            <span class="lbl">✅ C Similarly</span>同样地、相似地，用来引出<b>类似情形</b>。代入＝「<b>同样地</b>，笑这一身体行为也许能够改善心情」。<b>它一并完成了两件事</b>：把实验结论从「微笑」推广到「大笑」，并<b>回扣全文标题式的主旨</b>——<b>笑虽不健身，却能改善情绪。</b>
+            <span class="lbl">❌ 另外三个错在哪 —— 其中 B 是我踩的坑</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span><b>⚠️ 我选的就是它。</b>Consequently＝因此，要求后句是前句<b>逻辑上造成的结果</b>。可「表情能影响情绪」与「笑能改善情绪」<b>不构成因果链，而是同一条原理的两个平行实例</b>——<b>咬笔造出的微笑 ／ 真正的大笑，是并列的两个例子，谁也推不出谁。</b><br><b>我的错误机制：把「末空」条件反射地当成「收口 ⟹ 填因果」。</b>正确的顺序是<b>先看主语有没有换人，再决定填因果还是填类比。</b></div>
+              <div class="wr"><span class="l">A</span>Eventually＝最终，强调<b>经过较长时间或克服困难后</b>达成的最后一环。<b>本句虽在篇末，但内容上与上句是并列关系，不是时间/环节上的先后。</b>⚠️ <b>「位置在末尾」≠「逻辑上是最终」，这是 A 项唯一的诱惑点。</b></div>
+              <div class="wr"><span class="l">D</span>Conversely＝相反地，要求前后<b>对立</b>。可「表情影响情绪」与「笑改善心情」<b>方向完全一致</b>，构不成相反。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐⭐ <b>末空三问，按顺序问，别跳</b>：<br><b>① 主语换人了吗？</b>换了 ⟹ 多半是<b>类比/并列</b>（Similarly／Likewise／In the same way）；没换 ⟹ 才轮到考虑<b>因果</b>（Consequently／Therefore／As a result）。<br><b>② 这是不是一系列事件的最后一环？</b>是 ⟹ Eventually／Finally；只是「篇章位置靠后」⟹ 不是。<br><b>③ 前后方向一致吗？</b>一致 ⟹ 绝不填 Conversely／However。<br>📌 <b>三年末空三种形态，一起记</b>：<b>2009</b> 末空是<b>收口</b>（回看那个悬而未决的问句）· <b>2010</b> 末空<u>不是</u>收口（真正的收口句没设空）· <b>2011</b> 末空是收口句，但考的是<b>类比</b>。<b>⟹ 「末空＝因果收口」是个假规律，别再拿它当默认值。</b>
+          </div>
+        </div>
+      </section>
+      <!-- ========== 03 考点分类 ========== -->
+      <section class="card">
+        <h2><span class="n">03</span>考点分类（完形不背单个空，要看「这题在考什么」）</h2>
+        <div class="catbar" id="catbar"></div>
+        <div class="catlegend" id="catlegend"></div>
+        <p class="note" style="margin-top:14px">点某一类 → 下方列出该类所有空、正文里同步高亮 → 点小格跳到解析卡。（分类依据不是“空格里填的是什么词”，而是<b>“解这一题你得做什么动作”</b>。）</p>
+        <div class="chips" id="chips"></div>
+        <div class="flow" style="margin-top:16px">
+          <div class="fi"><b>⭐ 五年对照：2011 是<u>逻辑型</u>的一年——六个逻辑空，五年最多。</b>
+            <span class="ev"><div class="tabwrap"><table class="otab"><tr><th>年份</th><th>词义辨析</th><th>固定搭配</th><th>逻辑关系</th><th>上下文语义</th><th>这一年压在哪</th></tr>
+            <tr><td>2007</td><td>9</td><td>5</td><td>4</td><td>2</td><td>词义（占 45%）</td></tr>
+            <tr><td>2008</td><td>9</td><td>6</td><td><b>2</b></td><td>3</td><td>六道实义动词的主语适配</td></tr>
+            <tr><td>2009</td><td>6</td><td>5</td><td>5</td><td>4</td><td>四类几乎持平</td></tr>
+            <tr><td>2010</td><td>9</td><td>4</td><td>4</td><td>3</td><td>形容词与副词的“方向”</td></tr>
+            <tr><td><b>2011</b></td><td><b>6</b></td><td><b>3</b></td><td><b>6</b></td><td><b>5</b></td><td><b>一根因果箭头的方向</b></td></tr></table></div>
+            ⟹ <b>五年五种分布，第五次坐实「完形没有万能重心」。</b>2011 的特殊之处在于：<b>逻辑空与词义空并列第一，而搭配空只有 3 个（五年最少）</b>——<b>这一年靠背搭配拿不到分，靠读懂方向才拿得到。</b></span></div>
+          <div class="fi"><b>⭐⭐ 而本篇最该记的一条：<u>七个空挂在同一根因果箭头上</u>（3.5 分）。</b>
+            <span class="ev">全篇争的是「<b>情绪 → 身体</b>」还是「<b>身体 → 情绪</b>」。挂在这根箭头上的空：<b>12</b>（rooted <b>in</b>＝源自）· <b>13</b>（<b>because</b>：不是因悲伤而哭）· <b>14</b>（<b>precedes</b>：让步承认常规方向）· <b>15</b>（flow <b>from</b>＝源于）· <b>18</b>（<b>reacted</b> to：被刺激的一方）· <b>19</b>（<b>suggesting</b>：引出方向性结论）· <b>20</b>（<b>Similarly</b>：把结论类推到大笑）。<br><b>⟹ 做法：读到 <code>not…but…</code> 或 <code>the other way around</code>，立刻在卷子上画一根箭头，剩下的空对着箭头填，不再逐个比词义。</b></span></div>
+          <div class="fi"><b>📐 三个搭配空全是「动词＋介词」型——搭配空先看紧邻的那个介词。</b>
+            <span class="ev"><code>be rooted <b>in</b></code>（12）· <code>flow <b>from</b></code>（15）· <code><b>react</b> to</code>（18）。<b>其中两个（12、15）空格本身就是介词</b>，等于把「箭头」直接摆到你面前。<br>⟹ <b>凡空格是介词、或空格后紧跟一个孤零零的介词，先别管四个选项的中文</b>：把介词当箭头，看句子要求的方向。</span></div>
+          <div class="fi"><b>📐 线索位置统计（我自己数的，判据＝线索是否落在同一个句号之内）：句内自足 15 空 ／ 跨句 5 空。</b>
+            <span class="ev"><b>句内自足（15）</b>：1（But＋to the contrary）· 3（主干的 changes）· 4／5（because 因果对）· 7（instead of）· 8（decreasing muscle tone）· 9（help＋消极宾语）· 11（理论↔内容）· 12（rooted）· 13（not…but…）· 14（Although）· 15（Although＋flow）· 16（either…or…）· 18（to funny cartoons）· 19（结果→结论）。<br><b>跨句（5）</b>：2（夹在前后两句否定之间）· 6（否定上段的隐含前提）· 10（other 回指上句的 bodily）· 17（下句的 frown）· 20（上句的实验对象换人）。<br>⟹ <b>本篇 75% 的空是句内自足的（比 2010 的 65% 还高）</b>：<b>第一遍只做句内空，7.5 分先锁住</b>；第二遍再处理那五个跨句的——<b>而我唯一做错的 20，正是五个跨句空之一。</b></span></div>
+          <div class="fi"><b>📌 位置预判再次成立：四个逻辑空全在句首（或近句首）。</b>
+            <span class="ev"><b>1</b>（But 之后的状语位）· <b>6</b>（段首）· <b>11</b>（句首）· <b>20</b>（句首）——<b>4/4</b>。其余 16 个空全部落在主谓宾内部。<br>⟹ <b>反向用法最稳：空在句首 ⟹ 几乎一定考逻辑，直接进入「后一句对前一句做了什么动作」的五选一</b>（补充／纠偏／因果／概括／对立），<b>连语义都不用读。</b></span></div>
+        </div>
+      </section>
+
+      <!-- ========== 04 打法 ========== -->
+      <section class="card">
+        <h2><span class="n">04</span>完形六大打法（本篇取证）</h2>
+        <div class="flow">
+          <div class="fi"><b>① 首句不设空 → 先定三要素</b>：话题、性质、语气。
+            <span class="ev">本篇首句是<b>「某位古人认为……」</b>（亚里士多德：笑是有益健康的身体运动）⟹ <b>这种首句几乎必然被第二句的 But 推翻</b>，而 <b>1 空正好设在 But 之后</b>。<b>凡首句为「权威观点」，先在心里备好一个转折。</b></span></div>
+          <div class="fi"><b>② ⭐⭐ 因果箭头型文章：先画箭头，再填空</b>（本篇的主刀）。
+            <span class="ev">判据词链：<code>rooted <b>in</b></code>（源自）· <code><b>precedes</b></code>（先于）· <code>flow <b>from</b></code>（源于）· <code>rather than just <b>the other way around</b></code>（而不只是反过来）。<b>四个词把七个空串成一串。</b><br><b>凡文章在争「A 导致 B 还是 B 导致 A」</b>（本篇：情绪与身体反应；也常见于「贫穷与教育」「压力与失眠」类话题），<b>把箭头画在卷子空白处，后面每个空只问一句：它顺箭头还是逆箭头。</b></span></div>
+          <div class="fi"><b>③ ⭐ 取舍结构自带答案</b>：<code>instead of X, Y</code>｜<code>rather than X, Y</code>｜<code>not X but Y</code> ⟹ <b>Y 与 X 必然反向。</b>
+            <span class="ev">本篇三处、管五个空：②段 <code><b>instead of</b> straining muscles…, laughter accomplishes the <b>7</b></code>（opposite）＋ 下句的 <b>8</b>（relaxes，同由 straining 反推）· ③段 <code>do <b>not</b> cry <b>13</b> they are sad <b>but</b> that…</code>（because）· ④段 <code>rather than just the other way around</code>（19、20 的方向源）。<br><b>这类空不需要理解文章，只需要认结构，是完形里性价比最高的一种。</b></span></div>
+          <div class="fi"><b>④ ⭐ 连体空：把两个空组成一句话念一遍，因果说不通的当场淘汰。</b>
+            <span class="ev">本篇三对：<b>4＋5</b>（<code>because hard laughter is difficult to <b>sustain</b> ⟹ unlikely to have <b>measurable</b> benefits</code>：持续性→显著性）· <b>7＋8</b>（opposite → relaxes）· <b>16＋17</b>（hold a pen with lips → disappointed expression）。<br>⚠️ <b>命题人专门造「听起来像那么回事」的组合</b>：4C＋5A 读出来是「因为大笑难以<b>评估</b>，所以没有<b>可测量的</b>益处」——<b>像同义反复，其实是循环论证。</b><b>连体空永远先做方向更明确的那一个，再用它去卡另一个。</b></span></div>
+          <div class="fi"><b>⑤ ⭐ 实验型语段的三段式：方法 → 结果 → 结论，每段设空一枚。</b>
+            <span class="ev">本篇④段：<b>方法</b>（16 hold／17 disappointed）→ <b>结果</b>（18 reacted）→ <b>结论</b>（19 suggesting）。<br><b>两条现成的判据</b>：① <b>对照原则</b>——两组的条件必须<b>相反</b>（假笑 ↔ 失望的表情），<b>同向项（excited／joyful）一律先划掉，而「中性」的 indifferent 也不算「相反」</b>；② <b>答案常写在紧邻的下一句的同义句里</b>（17 的钥匙是下句的 <code>contracted in a <b>frown</b></code>）。</span></div>
+          <div class="fi"><b>⑥ ⚠️⚠️ 末空三问：先问主语换没换人，再问是不是因果。</b>（<b>本篇我唯一错的一题，也是本页最贵的一段</b>）
+            <span class="ev">末句 <code><b>20</b>, the physical act of <b>laughter</b> could improve mood.</code> 上一句讲的是<b>微笑</b>（expressions／smiling muscles），末句主语换成了<b>大笑</b> ⟹ <b>换了实例＝类比（Similarly），不是因果（Consequently）。</b><br><b>三问的顺序</b>：① 主语换人了吗？换了 ⟹ 类比／并列；② 是不是一系列事件的最后一环？是 ⟹ Eventually；③ 前后方向一致吗？一致 ⟹ 绝不填 Conversely。<br><b>五年末空三种形态</b>：<a href="2009_完形_智力的代价.html" style="color:var(--accent)">2009</a> 收口（回看那个悬而未决的问句）· <a href="2010_完形_霍桑效应遭到质疑.html" style="color:var(--accent)">2010</a> <b>末空压根不是收口</b>（真正的收口句没设空）· <b>2011 是收口句，但考类比</b>。<b>⟹「末空＝因果收口」是假规律，别拿它当默认值。</b></span></div>
+        </div>
+        <p class="note" style="margin-top:14px">🔁 <b>五年完形信号类型对照</b>：<a href="2022_完形_植物意识.html" style="color:var(--accent)">2022</a> 靠 nonetheless／However 这类<b>明信号词</b>；<a href="2007_完形_拉美独立后的理想与分歧.html" style="color:var(--accent)">2007</a> 靠 less agreement／most…some…／except 这类<b>结构性信号</b>；<a href="2008_完形_高智商与遗传疾病.html" style="color:var(--accent)">2008</a> 基本不给信号，靠“动词能不能带这个主语”；<a href="2009_完形_智力的代价.html" style="color:var(--accent)">2009</a> 靠<b>语用功能</b>（引例、递进、收口）；<a href="2010_完形_霍桑效应遭到质疑.html" style="color:var(--accent)">2010</a> 靠<b>叙事的方向</b>（三次反转、一个对照组）；<b>2011 则靠<u>一根因果箭头</u>——六种都要会认。</b></p>
+      </section>
+
+      <!-- ========== 05 搭配库 ========== -->
+      <section class="card">
+        <h2><span class="n">05</span>固定搭配 &amp; 熟词僻义（这些是死记就得分的）</h2>
+        <div class="wb">
+          <div class="wbi"><div class="p">despite ／ in spite of ＋ 名词　尽管（1 题）</div><div class="u"><b>让步介词一次分清</b>：<b>despite／in spite of ＋ 名词</b>（后面不能接句子）｜ <b>although／though ＋ 句子</b>｜ <b>notwithstanding</b>（正式，可前可后）。<br>⚠️ <b>常见错法是 despite of</b>（不存在）与 <b>although ＋ 名词</b>（不成立）。<b>判据：空格后是名词短语还是主谓结构，一看就分。</b></div></div>
+          <div class="wbi"><div class="p">to the contrary　与之相反的（1 题）· on the contrary　恰恰相反（连接副词）</div><div class="u"><b>两个长得像，用法完全不同</b>：<code>claims <b>to the contrary</b></code>＝<b>后置定语</b>，修饰前面的名词（与之相反的说法）；<code><b>On the contrary</b>, …</code>＝<b>句首连接副词</b>，用来否定上文。<br>再加一个 <code><b>contrary to</b> sth</code>（与……相反，作状语，<a href="2010_完形_霍桑效应遭到质疑.html" style="color:var(--accent)">2010 完形 12 题</a>考过）。<b>三种形态两年考了两次。</b></div></div>
+          <div class="wbi"><div class="p">does ＋ 动词原形　确实……（2 题；③段又用一次）</div><div class="u"><b>强调助动词的语用功能是「让步」</b>：「确实有 X，但……」。<b>它出现之后，几乎一定跟着一个 But 或语义转折。</b><br>本篇用了两次：<code>Laughter <b>does</b> produce short-term changes…<b>But</b> because…</code>（①段）· <code>the act of laughing probably <b>does</b> produce other types of physical feedback</code>（③段，让完之后转向心理层面）。<b>同一篇里同一个用法出现两次，是命题人留的暗号。</b></div></div>
+          <div class="wbi"><div class="p">the way ＋ 从句　像……那样（1 题所在句）· say　比如说（插入语）</div><div class="u"><code>the way (that) walking or jogging does</code>＝<b>方式状语从句</b>（＝in the way that…），<b>the way 本身充当连词，后面不用再加 that/in which。</b><br>🔤 <b><code>say</code> 在这里是熟词僻义＝「比如说」</b>（＝for example），作插入语，前后加逗号：<i>Take a sport, <b>say</b>, swimming.</i> <b>考场上见到孤零零一个 say 夹在两个逗号里，别当动词。</b></div></div>
+          <div class="wbi"><div class="p">instead of doing　而不是……（7 题）· rather than　而不是（19 题所在句）</div><div class="u"><b>取舍结构是完形的送分点</b>：<code>instead of X, Y</code>｜<code>rather than X, Y</code>｜<code>not X but Y</code> ⟹ <b>Y 与 X 必然反向。</b><br>⚠️ <b>两个的语法差别要记</b>：instead of 后接<b>名词/动名词</b>；rather than 后可接<b>与前面平行的任何成分</b>（名词、动词原形、从句均可）——<code>expressions may influence emotions rather than just <b>the other way around</b></code> 后面接的就是一个名词短语。</div></div>
+          <div class="wbi"><div class="p">be rooted in sth　植根于，源自（12 题）</div><div class="u"><b>「源自 / 归因」一族一次背全</b>：<b>be rooted in</b>｜ stem from｜ arise from｜ originate in/from｜ result from｜ be attributed to｜ be traced back to。<br>⚠️ <b>别与 <code>be at the root of sth</code>（是某事的根源）混结构</b>：一个用动词 root＋in，一个用名词 root＋of，<b>介词不能互换</b>。<br>✍️ 写作里表深层原因：<i>The problem is deeply rooted in an outdated evaluation system.</i></div></div>
+          <div class="wbi"><div class="p">not A but B　不是 A 而是 B（13 题）· not…because…　并不是因为……（同句）</div><div class="u">⚠️⚠️ <b>本篇最值钱的一条语法</b>：<b>主句含 not 时，否定意义通常转移到 because 从句上</b>——<code>humans do <b>not</b> cry <b>because</b> they are sad</code> ＝「人并<b>不是因为</b>悲伤才哭」，<b>否定的是那条因果，不是 cry 这个动作</b>。<br>经典例句：<i>The mountain is not famous because it is high.</i>（这座山并不是因为高才出名。）<b>翻译题里若把它译成「因为高，所以不出名」就直接扣光。</b></div></div>
+          <div class="wbi"><div class="p">precede ／ follow　先于 ／ 后于（14 题）</div><div class="u">⚠️ <b>这两个词的方向最容易记反，别背中文，背箭头</b>：<code>A <b>precedes</b> B</code>＝<b>A→B</b>（A 在前）；<code>A <b>follows</b> B</code>＝<b>B→A</b>（A 在后，<i>Rioting followed the unjust verdict.</i> 判决在前、骚乱在后）。<br>同族：<b>precede</b>（先于）↔ <b>succeed／follow</b>（继……之后）｜ <b>preceding</b>（前面的）↔ <b>subsequent</b>（随后的）｜ <b>prior to</b>＝before。</div></div>
+          <div class="wbi"><div class="p">flow from　源于（15 题）· react to　对……做出反应（18 题）</div><div class="u"><code>flow from</code>＝（结论、结果）产生于、源于：<i>Several conclusions flow from this hypothesis.</i><br><b>「动词＋to」一族按主动被动分两栏</b>：<b>被动受刺激</b>——react to（做出反应）｜ respond to｜ be exposed to；<b>主动去迎合</b>——cater to（迎合需求）｜ adapt to（适应）｜ turn to（求助于）｜ resort to（诉诸）。<b>本题被试是「被漫画逗」的一方 ⟹ 只能选被动那栏。</b></div></div>
+          <div class="wbi"><div class="p">suggest 的两个义项决定从句语气（19 题）</div><div class="u">⚠️ <b>考点就在语气上</b>：表<b>「建议」</b>⟹ 从句用<b>虚拟</b>（should＋原形，should 可省）：<i>She suggests that I (should) save some money.</i>；表<b>「表明、暗示」</b>⟹ 从句用<b>陈述</b>：<i>All the evidence suggests that he stole the money.</i><br>⟹ <b>看到 that 从句里是 may/is/does，就只能取「表明」义。</b>同族还有 insist（坚持要求→虚拟／坚称→陈述）、propose、require、demand。</div></div>
+          <div class="wbi"><div class="p">Similarly ／ Consequently ／ Eventually ／ Conversely（20 题）</div><div class="u">⚠️⚠️ <b>这四个词的分工，就是本篇最贵的一分</b>：<b>Similarly</b>（同样地）引出<b>同一原理的另一个实例</b>——<b>主语换人时用它</b>｜ <b>Consequently</b>（因此）要求后句是前句<b>逻辑上的结果</b>——<b>主语不换、且有因果链时才用</b>｜ <b>Eventually</b>（最终）要求是<b>一系列事件的最后一环</b>，「篇章位置靠后」不算｜ <b>Conversely</b>（相反地）要求前后<b>方向对立</b>。<br>同义扩容：Similarly ＝ Likewise ＝ In the same way ＝ By the same token。</div></div>
+          <div class="wbi"><div class="p">🔑 熟词僻义清单（本篇 14 处）</div><div class="u"><div class="tabwrap"><table class="otab"><tr><th>词</th><th>常见义</th><th>本篇义</th><th>出处</th></tr>
+            <tr><td><span class="ow">tone</span></td><td>语气；音调</td><td><b>肌张力</b>（muscle tone）</td><td>②段（8 题的判据）</td></tr>
+            <tr><td><span class="ow">strain</span></td><td>压力；紧张 n.</td><td><b>拉紧，绷紧 v.</b>（straining muscles）</td><td>②段（7、8 题的锚）</td></tr>
+            <tr><td><span class="ow">exercise</span></td><td>锻炼；练习</td><td><b>运用，使用 v.</b>（exercise their smiling muscles）</td><td>④段</td></tr>
+            <tr><td><span class="ow">flow</span></td><td>流动</td><td><b>产生，涌出</b>（emotions can flow from）</td><td>④段（15 题）</td></tr>
+            <tr><td><span class="ow">argue</span></td><td>争论，争吵</td><td><b>主张，认为</b>（It was argued that＝有人认为）</td><td>③段</td></tr>
+            <tr><td><span class="ow">say</span></td><td>说 v.</td><td><b>比如说</b>（插入语，＝for example）</td><td>①段末</td></tr>
+            <tr><td><span class="ow">contract</span></td><td>合同 n.</td><td><b>收缩，皱起 v.</b>（contracted in a frown）</td><td>④段（17 题的钥匙）</td></tr>
+            <tr><td><span class="ow">expression</span></td><td>表达；表述</td><td><b>表情</b></td><td>④段</td></tr>
+            <tr><td><span class="ow">die down</span></td><td>—</td><td><b>（笑声、风声）平息下去</b></td><td>②段末</td></tr>
+            <tr><td><span class="ow">moderate</span></td><td>适度的 adj.</td><td><b>缓和，减轻 v.</b></td><td>9 题答案</td></tr>
+            <tr><td><span class="ow">measurable</span></td><td>可测量的</td><td><b>显著的，明显的</b>（置于名词前）</td><td>5 题答案</td></tr>
+            <tr><td><span class="ow">boost</span></td><td>推动，促进</td><td><b>提高（心率、耗氧量等数值）</b></td><td>3 题答案</td></tr>
+            <tr><td><span class="ow">sustain</span></td><td>支撑；承受</td><td><b>维持（使持续较长时间）</b></td><td>4 题答案</td></tr>
+            <tr><td><span class="ow">precede</span></td><td>—</td><td><b>先于……发生</b>（A precedes B ＝ A→B）</td><td>14 题答案</td></tr>
+          </table></div></div></div>
+        </div>
+      </section>
+
+      <!-- ========== 06 80 词表 ========== -->
+      <section class="card">
+        <h2><span class="n">06</span>80 个选项词速查（完形的真正词汇量）
+          <button class="allbtn" id="btnHide" style="margin-left:auto" onclick="toggleHide()">✍️ 默写模式</button>
+        </h2>
+        <p class="note">完形一篇＝<b>80 个高频词的辨析现场</b>，绿底是正确项。<b>默写模式</b>会糊住中文释义——先自己说出意思，点单个格子可单独揭开。<b>把这 80 个词过一遍，比只记 20 个答案划算四倍。</b></p>
+        <div class="tabwrap"><table class="otab" id="otab"></table></div>
+      </section>
+      <!-- ========== 07 长难句 ========== -->
+      <section class="card">
+        <h2><span class="n">07</span>长难句精析（正文蓝色虚线句）</h2>
+
+        <div class="sent" id="s1">
+          <div class="src"><i>But because hard laughter is difficult to sustain,</i> <span class="skel">a good laugh is unlikely to have measurable benefits</span> <i>the way, say, walking or jogging does.</i></div>
+          <div class="anat">
+            <ul>
+              <li><b>三段式</b>：<code>because 原因状语从句</code> ＋ <span class="skel">主句</span> ＋ <code>the way 方式状语从句</code>。<b>主句只有八个词，前后各挂一个从句。</b></li>
+              <li>⭐ <b><code>the way ＋ 从句</code>＝「像……那样」</b>，the way <b>本身就是连词</b>（＝in the way that…），<b>后面不再加 that 或 in which</b>。同类还有 <code>the moment</code>（一……就）、<code>the instant</code>、<code>every time</code>——<b>名词直接当连词用，是英语里一小撮固定成员。</b></li>
+              <li>🔤 <b><code>say</code> 是插入语＝「比如说」</b>（＝for example），前后用逗号隔开。<b>孤零零一个 say 夹在两个逗号里，一律不是动词。</b></li>
+              <li>💡 <b>句末的 <code>does</code> 是代动词</b>，代替 <code>has measurable benefits</code>——<b>英语用助动词避免重复，汉译时要把它还原</b>：「像散步或慢跑<u>带来那样的益处</u>一样」。</li>
+              <li>⚠️ <b>本句一句话装了两个空（4 与 5），而且是一对因果连体空</b>：because 从句里的「难以维持」是因，主句里的「不显著」是果。<b>做题时把两个候选组成一句话念一遍，因果说不通的当场淘汰</b>（见 <a href="#q4" style="color:var(--accent)">4 题</a>）。</li>
+            </ul>
+          </div>
+          <div class="tr">译：但因为大笑很难维持，一场痛快的笑不大可能像散步或慢跑那样带来显著的益处。</div>
+        </div>
+
+        <div class="sent" id="s2">
+          <div class="src">In fact, <i>instead of straining muscles to build them,</i> <i>as exercise does,</i> <span class="skel">laughter apparently accomplishes the opposite.</span></div>
+          <div class="anat">
+            <ul>
+              <li><b>主干只有五个词</b>：<span class="skel">laughter accomplishes the opposite</span>。<b>前面两个逗号夹住的成分全是状语</b>，一个是取舍（instead of…），一个是比较（as exercise does）。</li>
+              <li>⭐⭐ <b><code>instead of doing X</code> 被<u>前置</u>到句首，是命题人最爱的设空位置</b>：它把「被否定的那一半」先摆出来，<b>空格答案必然是它的反面</b>。本句 X＝straining muscles（绷紧肌肉）⟹ 空格＝the <b>opposite</b>。</li>
+              <li>💡 <code>as exercise does</code> 里的 <b>as 是「像……一样」的比较连词</b>，does 代 <code>strains muscles to build them</code>。<b>它插在这里是为了点明：绷紧肌肉是「运动」的做法，不是「笑」的做法。</b></li>
+              <li>🔤 <code>build</code> 在这里＝<b>强健、增强（肌肉）</b>（build muscle 增肌），不是「建造」；<code>them</code> 回指 muscles。</li>
+              <li>📌 <b>本句与下一句是一对</b>：本句说「相反」，下句用 <code>relaxes muscles, decreasing muscle tone</code> 说明相反在哪。<b>7、8 两个空由同一个 straining 反推。</b></li>
+            </ul>
+          </div>
+          <div class="tr">译：实际上，笑并不像运动那样通过绷紧肌肉来强健肌肉，而是显然起到了相反的作用。</div>
+        </div>
+
+        <div class="sent" id="s3">
+          <div class="src"><span class="skel">It was argued</span> at the end of the 19th century <i>that humans do not cry because they are sad</i> <b>but</b> <i>that they become sad when the tears begin to flow.</i></div>
+          <div class="anat">
+            <ul>
+              <li><b>It 是形式主语</b>，真正的主语是<b>两个由 but 并列的 that 从句</b>。<b>⚠️ 第二个 that 不能省</b>——并列的主语从句必须各带各的 that，否则读者会把它读成前一个从句的延续。</li>
+              <li>⭐⭐ <b>全篇最该记的语法点：<code>not … because …</code> 的否定转移。</b><br><code>humans do <b>not</b> cry <b>because</b> they are sad</code> ＝「人并<b>不是因为</b>悲伤才哭」——<b>not 否定的是 because 从句（那条因果），不是 cry 这个动作</b>。<br>经典对照句：<i>The mountain is not famous because it is high.</i>（这座山并不是因为高才出名。）</li>
+              <li>💡 <b>判据很硬</b>：but 之后给的是<b>另一条因果</b>（流泪→悲伤），<b>那 not 否定的当然也是一条因果</b>——<b>not…but… 的两端必须是同一层级的东西。</b></li>
+              <li>🔤 <code>It was argued that…</code>＝<b>有人认为／有人主张</b>（argue 熟词僻义＝主张，不是「争吵」）。<b>被动式＋形式主语，是学术写作里「引出一个流行观点而不指名道姓」的标准句式</b>，作文里可直接用。</li>
+              <li>🎭 <b>背景</b>：这句话说的正是 <b>James–Lange 情绪理论</b>（1884 年前后）——<b>不是「怕了才发抖」，而是「发抖了才觉得怕」</b>。<b>13、14、15 三个空的方向全由它定死。</b></li>
+            </ul>
+          </div>
+          <div class="tr">译：19 世纪末有人主张：人并不是因为悲伤才哭泣，而是当眼泪开始流下来的时候才变得悲伤。</div>
+        </div>
+
+        <div class="sent" id="s4">
+          <div class="src">In an experiment published in 1988, <span class="skel">social psychologist Fritz Strack … asked volunteers to hold a pen</span> <b>either</b> <i>with their teeth</i>—<i>thereby creating an artificial smile</i>—<b>or</b> <i>with their lips, which would produce a disappointed expression.</i></div>
+          <div class="anat">
+            <ul>
+              <li><b>主干</b>：<span class="skel">Fritz Strack asked volunteers to hold a pen</span>。中间的 <code>of the University of Würzburg in Germany</code> 是<b>同位语＋后置定语</b>，交代这位学者的单位——<b>专名与单位一律跳读，它们进不了选项</b>。</li>
+              <li>⭐ <b><code>either … or …</code> 并列的是两个<u>方式状语</u></b>（with their teeth／with their lips），<b>这个并列就是 16 空的判据</b>：空格里的动作必须<b>牙齿和嘴唇都能做</b> ⟹ 只能是 hold。</li>
+              <li>💡 <b>两个破折号插入的 <code>thereby creating an artificial smile</code> 是现在分词短语作结果状语</b>：<b>thereby＝由此、从而</b>，专门引出<b>前一动作直接带来的结果</b>。<b>它与句末的 which 从句是对称的</b>——一个说牙齿组的结果，一个说嘴唇组的结果。</li>
+              <li>⚠️ <b>which 引导的非限定定语从句，先行词是「用嘴唇衔笔」这件事，不是 lips</b>。<b>判据：would produce（会产生）的主语必须是一个动作，不能是身体部位。</b></li>
+              <li>📌 <b>对称结构一旦看清，17 空就是白送的</b>：牙齿组＝artificial <b>smile</b>，嘴唇组＝一个与它<b>相反</b>的表情。</li>
+            </ul>
+          </div>
+          <div class="tr">译：在 1988 年发表的一项实验中，德国维尔茨堡大学的社会心理学家弗里茨·斯特拉克要求志愿者用牙齿咬住一支钢笔（从而制造出一个假笑），或者用嘴唇衔住钢笔——后者会产生一种失望的表情。</div>
+        </div>
+
+        <div class="sent" id="s5">
+          <div class="src"><span class="skel">Those</span> <i>forced to exercise their smiling muscles</i> <span class="skel">reacted more enthusiastically to funny cartoons</span> <b>than did</b> <i>those whose mouths were contracted in a frown,</i> <i>suggesting that expressions may influence emotions rather than just the other way around.</i></div>
+          <div class="anat">
+            <ul>
+              <li><b>主干</b>：<span class="skel">Those … reacted more enthusiastically to funny cartoons than …</span>。<b>主语 Those 后面挂着过去分词短语 <code>forced to…</code> 作后置定语</b>（那些被迫……的人）。</li>
+              <li>⚠️⚠️ <b><code>than did those…</code> 是部分倒装</b>：比较状语从句里，为避免头重脚轻，把助动词 did 提到主语 those 之前（<b>正常语序是 than those … did</b>）。<b>考场上见到 <code>than ＋ 助动词 ＋ 主语</code>，先把它还原再读。</b></li>
+              <li>💡 <b>比较的两方要数清楚</b>：<b>A＝</b>被迫动用笑肌的人（牙咬笔）；<b>B＝</b>嘴巴皱缩成愁眉苦脸的人（唇衔笔）。<b>whose 定语从句修饰的是 those（人），不是 mouths。</b></li>
+              <li>🔤 <code>exercise</code> 在这里是熟词僻义＝<b>运用、使用（肌肉）</b>，不是「锻炼身体」；<code>contract</code>＝<b>收缩、皱起</b>，不是「合同」。<b>一个句子里两个熟词僻义。</b></li>
+              <li>⭐⭐ <b>句末的 <code>suggesting that…</code> 是全篇结论</b>，其中 <code>rather than just <b>the other way around</b></code>＝「而不只是<b>反过来（情绪影响表情）</b>」——<b>这半句就是全篇那根因果箭头的最终定稿</b>，也是 <a href="#q20" style="color:var(--accent)">20 题</a>判断「类比还是因果」的起点。</li>
+            </ul>
+          </div>
+          <div class="tr">译：那些被迫动用笑肌的人，对搞笑漫画的反应比那些嘴巴皱缩成愁眉苦脸的人更为热烈，这表明表情也可以影响情绪，而不只是情绪影响表情。</div>
+        </div>
+      </section>
+
+      <!-- ========== 08 写作素材 ========== -->
+      <section class="card">
+        <h2><span class="n">08</span>可搬进作文/翻译的表达</h2>
+        <div class="wb">
+          <div class="wbi"><div class="p">Despite some claims to the contrary, X probably has little influence on Y.　尽管有相反的说法，X 很可能对 Y 影响甚微</div><div class="u"><b>反驳段的万能起手式</b>，分寸拿捏得极好：<code>despite…to the contrary</code> 先承认对方存在，<code>probably</code>＋<code>little</code> 又不把话说死。<b>比 X has no effect on Y 稳得多</b>：<i>Despite some claims to the contrary, longer working hours probably have little influence on real productivity.</i></div></div>
+          <div class="wbi"><div class="p">X does produce short-term changes, but …　X 确实会带来短期变化，但……</div><div class="u"><b>「先让后转」的三拍写法</b>：<code>does ＋ 动词原形</code> 承认对方一半 → but 收回。<b>议论文里让你的反驳显得公允</b>，阅卷老师最吃这一套：<i>Online courses do produce short-term gains in motivation, but they seldom sustain long-term learning.</i></div></div>
+          <div class="wbi"><div class="p">Instead of doing X, as A does, B accomplishes the opposite.　B 并不像 A 那样做 X，而是起了相反的作用</div><div class="u"><b>对比两个事物「作用机制不同」的最紧凑写法</b>——比 “A is different from B” 高好几档。<b>凡写「看似同类，其实机制相反」的段落都能套</b>：<i>Instead of narrowing the gap, as subsidies do, the new policy accomplishes the opposite.</i></div></div>
+          <div class="wbi"><div class="p">Studies dating back to the 1930s indicate that …　可追溯至 20 世纪 30 年代的多项研究表明……</div><div class="u"><b>引研究的标准句</b>，<code>dating back to</code> 顺带交代了「这不是新发现」。<b>写「某观点由来已久」时最省字</b>：<i>Studies dating back to the 1970s indicate that sleep loss impairs judgement.</i></div></div>
+          <div class="wbi"><div class="p">Such reaction might conceivably help moderate the effects of X.　这样的反应也许有助于缓和 X 带来的影响</div><div class="u"><b>「留余地的因果」三件套</b>：<code>might</code>＋<code>conceivably</code>＋<code>help</code>——<b>三层软化，把话说得既有据又不武断</b>。<code>moderate the effects of</code> 也比 reduce 正式：<i>Regular exercise might conceivably help moderate the effects of academic stress.</i></div></div>
+          <div class="wbi"><div class="p">Our feelings are partially rooted in physical reactions.　我们的感受部分源于身体反应</div><div class="u"><code>be rooted in</code>＝<b>植根于</b>，表深层归因；<code>partially</code> 是分寸词，<b>一加上去，整句话就从「断言」变成「有节制的判断」</b>。<b>凡写社会问题的成因，这个句式比 because 高一档</b>：<i>The problem is partially rooted in an outdated evaluation system.</i></div></div>
+          <div class="wbi"><div class="p">A may influence B rather than just the other way around.　A 也可以影响 B，而不只是反过来</div><div class="u"><b>强调因果方向的定式</b>，专门用来<b>纠正一个被大家默认的方向</b>。<b>这是很高级的一种论证姿势</b>：不否认现象，只把箭头掉个头：<i>Habits may shape motivation rather than just the other way around.</i></div></div>
+          <div class="wbi"><div class="p">Those forced to … reacted more enthusiastically than did those who …　那些被迫……的人，反应比……的人更热烈</div><div class="u"><b>描述实验/调查对照结果的标准句</b>，含 <code>than did ＋ 主语</code> 的<b>部分倒装</b>（写对了是加分点）。<b>数据类作文里直接可用</b>：<i>Those who kept a written plan performed markedly better than did those who relied on memory.</i></div></div>
+          <div class="wbi"><div class="p">Similarly, the physical act of X could improve Y.　同样地，X 这一身体行为也许能改善 Y</div><div class="u">⭐ <b>类比推广句</b>——把已被验证的结论推到<b>相邻的另一个实例</b>上。<b>⚠️ 用它的前提是「主语换了人」</b>：换人用 Similarly，同一主体的结果才用 Consequently。<b>这正是本篇 20 题考的那一刀，写作里同样别用反。</b></div></div>
+        </div>
+      </section>
+
+    </main>
+
+    <aside>
+      <div id="panel"><div class="hint">👆 点正文里的<b>黄底词</b><br>词卡会出现在这里<br><br>点<b>空格</b>则跳到对应解析卡</div></div>
+    </aside>
+  </div>
+
+  <footer>2011 英语一 · 完形填空复盘页 · 答案与解析由 Claude 独立盲做后写成（盲做 19/20，错 20 题）并与黄皮书精讲逐题交叉核对 · 生词卡、打法总纲、五年完形对照表、线索位置统计为自撰</footer>
+</div>
+
+<button id="yd">🔍 查有道</button>
+<script>
+/* ============ 词汇卡 ============ */
+const V = {
+  bodily:{w:"bodily",ipa:"/ˈbɒdɪli/",pos:"adj.",tags:["core"],cn:"身体的，肉体的（与精神的相对）",en:"connected with the human body, rather than the mind",ex:"…viewed laughter as a bodily exercise precious to health.",mem:"<b>body ＋ -ly</b>，注意它是<b>形容词</b>不是副词（英语里少数 -ly 结尾的形容词：friendly／likely／lonely／costly／bodily）。<br>⭐ <b>本篇它是 10 空的钥匙</b>：③段 <code>Such <b>bodily</b> reaction</code> ⟹ 下句 <code>other types of <b>physical</b> feedback</code> —— <b>bodily 与 physical 是同义替换，other 指的就是「同为身体类的另一种」。</b>",syn:"physical / corporeal",conf:"bodily／physical（身体的，与 mental 相对）vs. <b>corporal</b>（肉体的，几乎只用于 corporal punishment 体罚）vs. <b>bodied</b>（构成复合词：able-bodied 健全的）。"},
+
+  precious:{w:"precious",ipa:"/ˈpreʃəs/",pos:"adj.",tags:["core","write"],cn:"宝贵的，珍贵的；（时间、资源）稀缺可贵的",en:"of great value because of being rare, expensive or important",ex:"…a bodily exercise precious to health.",mem:"<b>preci-（＝price 价值）＋ -ous</b> ⟹ 有价值的。同族：<b>appreciate</b>（评估价值→欣赏、感激）· <b>depreciate</b>（贬值）· <b>priceless</b>（无价的，比 precious 更强）。",syn:"valuable / invaluable / priceless",conf:"⚠️ <b>valuable（有价值的）· invaluable（无价的，褒义最强）· valueless（毫无价值的）</b>——<b>in- 在这里不是否定！</b>invaluable ＝ 珍贵到无法估价，与 valueless 意思相反。这是考研高频陷阱。"},
+
+  contrary:{w:"to the contrary",ipa:"/ˈkɒntrəri/",pos:"phrase",tags:["phrase","poly"],cn:"（后置定语）<b>与之相反的</b>；相反地",en:"showing or saying the opposite of what has just been mentioned",ex:"But despite some claims to the contrary, laughing probably has little influence on physical fitness.",mem:"⭐ <b>三种形态必须分清，两年考了两次</b>：<br>① <code>claims <b>to the contrary</b></code>＝<b>后置定语</b>，修饰前面的名词（与之相反的说法）；<br>② <code><b>On the contrary</b>, …</code>＝<b>句首连接副词</b>，用来否定上文（恰恰相反）；<br>③ <code><b>Contrary to</b> sth, …</code>＝<b>介词短语作状语</b>（与……相反）——<a href='2010_完形_霍桑效应遭到质疑.html' style='color:var(--accent)'>2010 完形 12 题</a>考的正是这个。",syn:"opposite / conversely",conf:"⚠️ <b>on the contrary（用来反驳上文）vs. on the other hand（引出另一面，不含反驳）</b>——中文都译成「另一方面／相反」，英文的力度差得远。"},
+
+  fitness:{w:"fitness",ipa:"/ˈfɪtnəs/",pos:"n.",tags:["core"],cn:"①<b>健康，健壮（体质）</b>②（做某事的）适合，胜任",en:"the condition of being physically healthy and strong",ex:"…laughing probably has little influence on physical fitness.",mem:"<b>fit（健康的；合适的）＋ -ness</b>。本篇取<b>体质</b>义：<code>physical fitness</code>＝身体素质。<br>💡 第二义也要记：<code>fitness for the job</code>＝是否胜任这份工作；<b>survival of the fittest</b>＝适者生存（达尔文，<a href='2008_翻译_达尔文论智力.html' style='color:var(--accent)'>2008 翻译</a>的语境词）。",syn:"health / physical condition",conf:"fitness（体能、健壮）vs. <b>health</b>（健康状况，含无病）vs. <b>wellness</b>（身心整体的良好状态）。<b>本篇①段说笑不影响 fitness，③段说笑改善 emotional state ——两个词分管两半篇。</b>"},
+
+  vessel:{w:"vessel",ipa:"/ˈvesl/",pos:"n.",tags:["poly"],cn:"①<b>血管</b>（blood vessel）②船，舰 ③容器",en:"a tube that carries blood through the body",ex:"…short-term changes in the function of the heart and its blood vessels…",mem:"三个义项其实是<b>同一个形象：能装东西、能输送东西的管状物</b>。<br><b>blood vessel</b>＝血管（动脉 artery ／ 静脉 vein ／ 毛细血管 capillary）；<b>a fishing vessel</b>＝渔船；<b>a glass vessel</b>＝玻璃容器。",syn:"blood vessel / craft / container",conf:"vessel（正式，泛指船只，尤见于新闻与法律文本）vs. ship（大船）vs. boat（小船）。<b>医学语境里 vessel 几乎只作「血管」。</b>"},
+
+  consumption:{w:"consumption",ipa:"/kənˈsʌmpʃn/",pos:"n.",tags:["core","write"],cn:"①<b>消耗（量）</b>（oxygen consumption 耗氧量）②消费；食用",en:"the act of using energy, food or materials; the amount used",ex:"…boosting heart rate and oxygen consumption.",mem:"<b>con-（全部）＋ sum（拿走）＋ -tion</b> ⟹ 全部拿走＝消耗掉。<br>同族一次记：<b>consume</b>（消耗；吃喝）· <b>consumer</b>（消费者）· <b>consuming</b>（强烈的，a consuming passion）· <b>time-consuming</b>（耗时的，作文高频）。",syn:"use / expenditure / intake",conf:"consumption（消耗<b>量</b>，中性）vs. <b>waste</b>（浪费，贬义）vs. <b>intake</b>（摄入量，方向相反：进入身体）。✍️ 作文：<i>energy consumption per capita</i> 人均能耗。"},
+
+  say:{w:"say",ipa:"/seɪ/",pos:"adv. (插入语)",tags:["poly"],cn:"<b>比如说，譬如</b>（＝for example）",en:"used to introduce an example or a suggestion",ex:"…the way, say, walking or jogging does.",mem:"⭐ <b>本篇的熟词僻义之一</b>：<code>the way, <b>say</b>, walking or jogging does</code>＝「像<b>比如说</b>散步或慢跑那样」。<br><b>判据极硬：孤零零一个 say 被两个逗号夹住 ⟹ 一律不是动词，而是「比如说」。</b><i>Take a sport, <b>say</b>, swimming.</i>",syn:"for example / for instance / let's say",conf:"同为插入语的还有 <b>indeed</b>（确实）· <b>after all</b>（毕竟）· <b>if anything</b>（要说有什么不同的话）· <b>to say the least</b>（至少可以说，<a href='2011_T1_古典音乐会的危机.html' style='color:var(--accent)'>2011 T1</a> 出现过）。<b>插入语一律先用括号括起来再读主干。</b>"},
+
+  jogging:{w:"jogging",ipa:"/ˈdʒɒɡɪŋ/",pos:"n.",tags:["core"],cn:"慢跑",en:"the activity of running slowly and steadily as a form of exercise",ex:"…the way, say, walking or jogging does.",mem:"<b>jog</b>（慢跑；轻推）＋ -ing。本篇里它与 walking 并列，充当<b>「有氧运动」的代表</b>——<b>正是靠这个参照物，4、5 两空的「持续时长 → 显著成效」才立得住。</b>",syn:"running / a light run",conf:"jog（慢跑，强调匀速持续）vs. sprint（短跑冲刺）vs. stroll（散步溜达）。<b>本句选 walking／jogging 而不是 sprinting，正因为要的是「能长时间持续」这一点。</b>"},
+
+  strain:{w:"strain",ipa:"/streɪn/",pos:"v. / n.",tags:["poly","core"],cn:"①<b>拉紧，绷紧（肌肉）v.</b> ②拉伤 ③压力，负担 n.",en:"to make a muscle work hard by stretching or tightening it",ex:"…instead of straining muscles to build them, as exercise does…",mem:"⭐⭐ <b>本篇最关键的一个词：7、8 两个空都由它反推。</b><br><code>instead of <b>straining</b> muscles to build them</code>（绷紧肌肉以强健肌肉）⟹ 空 7 只能是 <b>the opposite</b>，空 8 只能是 <b>relaxes</b>。<br>💡 名词义在写作里更常用：<b>put a strain on</b>（给……造成压力）· <b>under strain</b>（承受压力）· <b>eye strain</b>（眼疲劳）。",syn:"tighten / tense / stretch",conf:"strain（绷紧、使受力，中性偏负）vs. <b>sprain</b>（扭伤，只用于关节：sprain one's ankle）vs. <b>stress</b>（心理压力；强调）。<b>本篇后面的 stress 是心理压力，与 strain 一物两面。</b>"},
+
+  apparently:{w:"apparently",ipa:"/əˈpærəntli/",pos:"adv.",tags:["core","write"],cn:"①<b>看上去（据说、似乎）</b>②显然",en:"according to what you have heard or read; it seems that",ex:"…laughter apparently accomplishes the opposite.",mem:"⚠️ <b>它有两个几乎相反的语气，考研里九成取第一个</b>：<b>「看样子是这样（但我不打包票）」</b>——<b>作者用它来给结论留余地</b>。<br>本篇全篇的措辞都很克制：<code>probably</code>（①段两处）· <code>apparently</code>（②段）· <code>might conceivably</code>（③段）· <code>could improve</code>（末句）。<b>五处软化词，说明作者始终不把话说死。</b>",syn:"seemingly / evidently / it seems",conf:"apparently（听来/看来如此，<b>留余地</b>）vs. <b>obviously／clearly</b>（显然，<b>不留余地</b>）vs. <b>evidently</b>（有证据表明）。<b>⚠️ 完形与阅读常拿这组词的「确信度」出题——19 题的 supposing 之所以错，也是因为文中是结论不是假设。</b>"},
+
+  accomplish:{w:"accomplish",ipa:"/əˈkʌmplɪʃ/",pos:"v.",tags:["core","write"],cn:"完成，实现；达到（某种效果）",en:"to succeed in doing or completing something",ex:"…laughter apparently accomplishes the opposite.",mem:"<b>ac-（＝ad 朝向）＋ compl（＝complete 完成）＋ -ish</b> ⟹ 做完、做成。<br>💡 <code>accomplish <b>the opposite</b></code>＝<b>起到了相反的效果</b>——<b>accomplish 后接 the ＋ 形容词（名词化）是它的一种常见用法</b>：accomplish the impossible（完成不可能的事）。",syn:"achieve / attain / fulfil",conf:"accomplish（完成任务、达成效果，<b>宾语可以是抽象结果</b>）vs. <b>achieve</b>（取得成就，宾语多为<b>具体目标</b>：achieve the target）vs. <b>complete</b>（把某物做完整）。<b>2010 完形 1 题的错项 achieved 正是死在「宾语要特定」这条上。</b>"},
+
+  dateback:{w:"date back to",ipa:"/deɪt/",pos:"phrase",tags:["phrase","write"],cn:"追溯到，始于（某个年代）",en:"to have existed since a particular time in the past",ex:"Studies dating back to the 1930s indicate that laughter relaxes muscles…",mem:"<b>两种写法都对</b>：<code>date back <b>to</b> the 1930s</code>＝<code>date <b>from</b> the 1930s</code>。<b>注意它是不及物的，没有被动式</b>（❌ be dated back to）。<br>✍️ 作文里表「由来已久」：<i>The custom dates back to the Tang dynasty.</i>",syn:"go back to / originate in / be traced back to",conf:"date back to（<b>主动</b>，主语是那个事物本身）vs. <b>be traced back to</b>（<b>被动</b>，强调「被人追溯」）。<b>两个都对，但混用成 be dated back to 就是错的。</b>"},
+
+  tone:{w:"tone",ipa:"/təʊn/",pos:"n.",tags:["poly"],cn:"①<b>（肌肉的）张力，紧张度</b>②语气，口吻 ③音调；色调",en:"the normal firmness of muscles when they are at rest",ex:"…decreasing muscle tone for up to 45 minutes after the laugh dies down.",mem:"⭐ <b>本篇的核心熟词僻义</b>：<code>muscle <b>tone</b></code>＝<b>肌张力</b>（肌肉在静息状态下的紧张度）。<b>decreasing muscle tone ＝ 让肌肉松弛下来</b>——<b>这就是 8 空 relaxes 的同句判据。</b><br>💡 阅读题里最常考的是<b>「语气」义</b>：<code>the tone of the passage</code>＝文章的语气（态度题的问法）。",syn:"firmness / tension（张力）· manner（语气）",conf:"⚠️ <b>同一个 tone，在完形里是「肌张力」，在阅读态度题里是「语气」</b>——<b>判据是它跟谁搭配</b>：muscle tone／skin tone 走生理义；tone of the article／in an angry tone 走语气义。"},
+
+  upto:{w:"up to",ipa:"/ʌp tuː/",pos:"phrase",tags:["phrase","poly"],cn:"①<b>多达，长达（表上限）</b>②取决于 ③在做（某事）",en:"as much as; as many as (used to show a maximum)",ex:"…decreasing muscle tone for up to 45 minutes…",mem:"⚠️ <b>表上限的 up to，中文一定要译出「最多／长达」</b>：<code>for <b>up to</b> 45 minutes</code>＝<b>最长可达 45 分钟</b>（不是「45 分钟」）。<b>这一点在翻译题里是采分点。</b><br>另两义：<code>It's <b>up to</b> you.</code>（取决于你）· <code>What are you <b>up to</b>?</code>（你在忙什么）。",syn:"as much as / as long as / a maximum of",conf:"up to（<b>上限</b>，实际可能更少）vs. <b>at least</b>（下限）vs. <b>as many as</b>（多达，强调数量之大）。<b>数据类文章里 up to 是常见的「话说一半」手法：宣传时说 up to 50% off，其实多数商品只打九折。</b>"},
+
+  diedown:{w:"die down",ipa:"/daɪ daʊn/",pos:"phrase",tags:["phrase","poly"],cn:"（声音、风、情绪）<b>逐渐平息，减弱</b>",en:"to become gradually less strong, loud or violent",ex:"…for up to 45 minutes after the laugh dies down.",mem:"<b>die 的小品词家族一次背全</b>：<b>die down</b>（平息、减弱）｜ <b>die out</b>（灭绝、消失，物种/习俗）｜ <b>die away</b>（声音渐渐听不见）｜ <b>die off</b>（一个接一个死去）｜ <b>be dying for/to do</b>（极想要）。",syn:"subside / abate / fade",conf:"die down（<b>暂时平息</b>，还可能再起：the storm/laughter/anger）vs. <b>die out</b>（<b>彻底消失</b>：a species dies out）。<b>本篇用 die down 是因为笑声只是停下来，不是从此消失。</b>"},
+
+  conceivably:{w:"conceivably",ipa:"/kənˈsiːvəbli/",pos:"adv.",tags:["core","write"],cn:"可以想象地；有可能地",en:"used to say that something is possible, though not certain",ex:"Such bodily reaction might conceivably help moderate the effects of psychological stress.",mem:"<b>con-（一起）＋ ceive（拿、抓）＋ -able ＋ -ly</b> ⟹ 脑子里能抓得住的＝可想象的。<br>同族：<b>conceive</b>（构想；怀孕）· <b>concept</b>（概念）· <b>perceive</b>（感知）· <b>deceive</b>（欺骗）· <b>receive</b>（接收）。<b>-ceive 一族全部来自「拿」这个动作。</b>",syn:"possibly / arguably / plausibly",conf:"⚠️ <b>与 might 连用是「双保险软化」</b>：might（可能）＋ conceivably（可以想象）＝<b>作者在明确表示「这只是一种合理推测」</b>。<b>凡完形要判褒贬强弱，先把这类软化词圈出来</b>——本篇一共五处（probably／apparently／might conceivably／could）。"},
+
+  psychological:{w:"psychological",ipa:"/ˌsaɪkəˈlɒdʒɪkl/",pos:"adj.",tags:["core","write"],cn:"心理的，精神上的",en:"connected with a person's mind and the way it works",ex:"…help moderate the effects of psychological stress.",mem:"<b>psycho-（心灵，希腊语 psyche）＋ -logical</b>。<b>ps- 开头 p 不发音</b>：psychology／psychiatrist（精神科医生）／psyche（心灵）。<br>⭐ <b>本篇的对立轴就是这两个词</b>：<b>physical（身体）↔ psychological／emotional（心理）</b>，<b>10 空考的正是这一对不能混。</b>",syn:"mental / emotional",conf:"psychological（心理层面的，学术）vs. <b>mental</b>（精神的，常与 health 连用）vs. <b>emotional</b>（情绪的，指具体感受）。<b>10 空的错项 mental 就错在：other types of 要求承接上文的 bodily，而不是引入心理层面。</b>"},
+
+  feedback:{w:"feedback",ipa:"/ˈfiːdbæk/",pos:"n.",tags:["core","write"],cn:"反馈（信息、反应）",en:"advice or information about how good or useful something is; a reaction sent back",ex:"…does produce other types of physical feedback that improve an individual's emotional state.",mem:"<b>feed（喂、输送）＋ back（回）</b> ⟹ 把结果送回去。<b>不可数名词</b>：❌ a feedback／feedbacks，✅ <b>some feedback／a piece of feedback</b>。<br>⭐ 本篇的 <code>physical feedback</code> 是<b>生理学义</b>：身体把状态「回报」给大脑，从而影响情绪——<b>1988 年那个实验的理论名字就叫 facial feedback hypothesis（面部反馈假说）。</b>",syn:"response / reaction / comment",conf:"feedback（<b>不可数</b>，反馈意见/反馈信号）vs. <b>response</b>（可数，回应）vs. <b>comment</b>（评论）。✍️ 作文：<i>timely feedback from teachers</i> 老师的及时反馈。"},
+
+  individual:{w:"individual",ipa:"/ˌɪndɪˈvɪdʒuəl/",pos:"n. / adj.",tags:["core","write"],cn:"①个人，个体 n. ②单独的；个人的 adj.",en:"a single human being, considered separately from a group",ex:"…feedback that improve an individual's emotional state.",mem:"<b>in-（不）＋ divid（分开）＋ -ual</b> ⟹ <b>不可再分的＝个体</b>。同族：divide（划分）· division（分割；部门）· dividend（红利，被分出去的部分）。<br>✍️ 写作里比 person 正式：<i>the rights of the individual</i>（个人的权利）· <i>individual differences</i>（个体差异）。",syn:"person / one / single",conf:"individual（个体，<b>与群体相对</b>，学术味）vs. <b>person</b>（人，日常）vs. <b>subject</b>（受试者，实验语境——<a href='2010_完形_霍桑效应遭到质疑.html' style='color:var(--accent)'>2010 完形</a>用的就是这个词）。"},
+
+  classical:{w:"classical",ipa:"/ˈklæsɪkl/",pos:"adj.",tags:["poly","core"],cn:"①<b>经典的，传统的（学说、理论）</b>②古典的（音乐、文学）",en:"traditional in style or form, or based on methods developed over a long time",ex:"According to one classical theory of emotion, our feelings are partially rooted in physical reactions.",mem:"⭐ <b>本篇取「经典/传统学说」义</b>：<code>one <b>classical</b> theory of emotion</code>＝一种经典的情绪理论。<b>它自带一层时间暗示——「流传已久」，与下一句的 <code>at the end of the 19th century</code> 正好呼应</b>（这是 11 空判断「引出理论」的辅助线索）。<br>💡 <a href='2011_T1_古典音乐会的危机.html' style='color:var(--accent)'>同年 T1</a> 的 classical music 取的是「古典音乐」义——<b>同一份卷子里一词两义。</b>",syn:"traditional / conventional / long-established",conf:"⚠️ <b>classical（经典的、古典的，褒义中性）vs. classic（典型的；一流的：a classic example 典型例子）</b>——两个词只差一个 al，考研常考。"},
+
+  rooted:{w:"be rooted in",ipa:"/ˈruːtɪd/",pos:"phrase",tags:["phrase","write"],cn:"植根于，源自，深深扎根于",en:"to be strongly influenced by or based on something",ex:"…our feelings are partially rooted in physical reactions.",mem:"⭐ <b>12 空的答案就在这个搭配里：be rooted <u>in</u>。</b><br><b>「源自 / 归因」一族一起背</b>：be rooted <b>in</b>｜ stem <b>from</b>｜ arise <b>from</b>｜ originate <b>in/from</b>｜ result <b>from</b>｜ be attributed <b>to</b>｜ be traced back <b>to</b>。<br>✍️ 作文表深层成因：<i>The problem is deeply rooted in an outdated evaluation system.</i>",syn:"stem from / originate in / spring from",conf:"⚠️ <b>别与 <code>be at the root of sth</code>（是某事的根源）混结构</b>：一个用动词 root ＋ in，一个用名词 root ＋ of，<b>介词不能互换</b>；root <b>on</b> 只用于「固定不动」（His eyes rooted on…），与本句的被动式无关。"},
+
+  argued:{w:"It was argued that…",ipa:"/ˈɑːɡjuːd/",pos:"phrase",tags:["poly","write"],cn:"<b>有人主张／有人认为</b>（argue＝主张，不是「争吵」）",en:"people claimed or maintained that…",ex:"It was argued at the end of the 19th century that humans do not cry because they are sad…",mem:"⭐ <b>argue 的熟词僻义＝主张、认为（提出理由地）</b>，不是吵架。<code>argue that…</code>＝主张……；<code>argue <b>for/against</b> sth</code>＝支持／反对某事。<br>✍️ <b>被动式 <code>It is/was argued that…</code> 是学术写作的标准句式</b>：引出一个流行观点<b>而不指名道姓</b>。同族句式：It is widely held that… ／ It has been suggested that…",syn:"maintain / contend / hold / claim",conf:"argue（<b>有理有据地主张</b>）vs. <b>claim</b>（宣称，常暗示未必属实）vs. <b>quarrel</b>（吵架，才是「争吵」）。<b>阅读题里 argue 一律按「主张」读。</b>"},
+
+  flow:{w:"flow",ipa:"/fləʊ/",pos:"v. / n.",tags:["poly","core"],cn:"①<b>产生，源于（flow from）</b>②流动，流淌",en:"to come or result from something",ex:"…evidence suggests that emotions can flow from muscular responses.",mem:"⭐ <b>本篇一词两用</b>：③段 <code>the tears begin to <b>flow</b></code>（眼泪流下来，本义）· ④段 <code>emotions can <b>flow from</b> muscular responses</code>（情绪<b>源于</b>肌肉反应，引申义）。<b>同一个词、一篇之内、两个意思——这正是命题人挑这篇文章的理由之一。</b><br>💡 <code>Several conclusions <b>flow from</b> this hypothesis.</code>（几个结论都源于这一假设。）",syn:"result from / stem from / issue from",conf:"⚠️ <b>介词就是箭头</b>：flow <b>from</b>（源自，箭头指向主语）vs. flow <b>into/towards</b>（流入/流向，箭头背离主语）。<b>15 题四个选项全是介词，考的就是这根箭头的方向。</b>"},
+
+  muscular:{w:"muscular",ipa:"/ˈmʌskjələ(r)/",pos:"adj.",tags:["core"],cn:"①肌肉的，与肌肉有关的 ②肌肉发达的，强健的",en:"connected with the muscles of the body",ex:"…emotions can flow from muscular responses.",mem:"<b>muscle（肌肉）＋ -ar</b>。<b>⚠️ 拼写：muscle 里的 c 不发音，muscular 里的 c 要发 /k/。</b><br>💡 <code>muscular responses</code>＝<b>肌肉反应</b>——它是本篇「身体」一侧的代表词，与 emotions（情绪）构成那根箭头的两端。",syn:"of the muscles / brawny（强健）",conf:"muscular（肌肉的/强壮的）vs. <b>muscle</b>（n. 肌肉）vs. <b>mussel</b>（贻贝，同音异形）。<b>本篇取「与肌肉有关的」这层中性义，不是夸人壮。</b>"},
+
+  volunteer:{w:"volunteer",ipa:"/ˌvɒlənˈtɪə(r)/",pos:"n. / v.",tags:["core","write"],cn:"①<b>志愿者；（实验的）受试者</b>②自愿做，主动提出",en:"a person who does something willingly, without being paid or forced",ex:"…asked volunteers to hold a pen either with their teeth…",mem:"<b>volunt-（＝will 意愿）＋ -eer（人）</b>。同族：<b>voluntary</b>（自愿的，adj.）· <b>involuntary</b>（不由自主的：an involuntary smile 不由自主的微笑——<b>正好是本篇实验的反面</b>）· <b>volition</b>（意志）。<br>✍️ 作文：<i>volunteer work／voluntary service</i> 志愿服务（<a href='2010_作文_研究生会通知与文化火锅漫画.html' style='color:var(--accent)'>2010 小作文</a>正是招募志愿者的通知）。",syn:"participant / subject（受试者）",conf:"volunteer（<b>自愿参加</b>的受试者）vs. <b>subject</b>（受试者，中性，未必自愿）vs. <b>participant</b>（参与者）。<b>科研伦理要求人体实验必须用 volunteer——这也是 16 题 bite「咬坏笔」不合伦理这条判据的背景。</b>"},
+
+  thereby:{w:"thereby",ipa:"/ˌðeəˈbaɪ/",pos:"adv.",tags:["core","write"],cn:"由此，从而（引出前一动作直接带来的结果）",en:"as a result of the action just mentioned",ex:"…with their teeth—thereby creating an artificial smile—or with their lips…",mem:"<b>there（那个）＋ by（凭借）</b> ⟹ 凭借那件事 ⟹ 从而。<b>最常见的形式是 <code>thereby ＋ doing</code></b>（现在分词作结果状语）。<br>✍️ <b>作文提分句式</b>：<i>Students can take part in community service, <b>thereby developing</b> a sense of responsibility.</i>",syn:"thus / hence / in this way",conf:"<b>there- 家族一次记</b>：thereby（从而）· therefore（因此）· thereafter（此后）· thereof（其）· therein（其中）。<b>⚠️ thereby 引出的是「顺带产生的结果」，therefore 引出的是「推理出的结论」，不能互换。</b>"},
+
+  artificial:{w:"artificial",ipa:"/ˌɑːtɪˈfɪʃl/",pos:"adj.",tags:["core","write"],cn:"①<b>假的，人为造出的</b>②人造的（与天然相对）",en:"created by people, not natural or genuine",ex:"…thereby creating an artificial smile…",mem:"<b>arti-（＝art 技艺）＋ fic（做）＋ -ial</b> ⟹ 人工做出来的。<br>⭐ <b>本篇 <code>an artificial smile</code>＝假笑</b>：不是发自情绪的笑，而是<b>被牙齿咬笔这个动作强行摆出来的</b>——<b>整个实验的巧妙之处正在这里：先造出一个「没有情绪的表情」，再看它会不会反过来生出情绪。</b>",syn:"fake / forced / man-made",conf:"artificial（人造的/装出来的）vs. <b>synthetic</b>（合成的，化学）vs. <b>genuine</b>（真诚的，反义词）。<b>✍️ artificial intelligence（人工智能）是作文高频词，同一个 artificial 完全不含贬义——褒贬要看搭配。</b>"},
+
+  expression:{w:"expression",ipa:"/ɪkˈspreʃn/",pos:"n.",tags:["poly","core"],cn:"①<b>表情，神色</b>②表达；表示 ③措辞，说法",en:"a look on a person's face that shows their feelings",ex:"…which would produce a disappointed expression.",mem:"⭐ <b>本篇取「表情」义，而且是全篇结论句的主语</b>：<code><b>expressions</b> may influence emotions rather than just the other way around</code>（表情能影响情绪，而不只是反过来）。<br>💡 <b>三义一起记</b>：facial <b>expression</b>（面部表情）· freedom of <b>expression</b>（表达自由）· a useful <b>expression</b>（一个有用的说法）。",syn:"look / face（表情）· phrase（说法）",conf:"expression（表情/表达）vs. <b>impression</b>（印象：make a good impression）vs. <b>depression</b>（沮丧；萧条）。<b>ex-（向外）／im-（向内）／de-（向下）——前缀一分，三个词再不会混。</b>"},
+
+  exercise:{w:"exercise",ipa:"/ˈeksəsaɪz/",pos:"v. / n.",tags:["poly"],cn:"①<b>运用，使用（肌肉、权力）v.</b> ②锻炼；练习",en:"to use a part of the body or a power/right",ex:"Those forced to exercise their smiling muscles reacted more enthusiastically…",mem:"⭐ <b>本篇的熟词僻义</b>：<code><b>exercise</b> their smiling muscles</code>＝<b>动用笑肌</b>（不是「锻炼笑肌」——他们只是被迫摆出笑的口型）。<br>💡 <b>「运用」义在阅读里更常考</b>：<code>exercise <b>power／authority／influence／caution／one's right</b></code>＝行使权力／施加影响／保持谨慎／行使权利。<br>⚠️ 首句 <code>a bodily <b>exercise</b></code> 又是名词「运动」义——<b>一篇之内一词两义，与 flow 同样。</b>",syn:"use / employ / exert",conf:"exercise（<b>行使、运用</b>已有的能力或权力）vs. <b>exert</b>（<b>施加</b>力量/影响：exert pressure on）vs. <b>practise</b>（反复练习）。"},
+
+  enthusiastically:{w:"enthusiastically",ipa:"/ɪnˌθjuːziˈæstɪkli/",pos:"adv.",tags:["core","write"],cn:"热情地，热烈地",en:"in a way that shows a lot of interest and excitement",ex:"…reacted more enthusiastically to funny cartoons than did those…",mem:"<b>en-（进入）＋ thus（＝theos 神）＋ -iastic</b> ⟹ 神灵附体般的 ⟹ 热情高涨。同族：<b>enthusiasm</b>（热情 n.）· <b>enthusiast</b>（爱好者：a football enthusiast）。<br>⭐ <b>本篇它是被测量的那个变量</b>：<code>reacted <b>more enthusiastically</b></code>＝反应更热烈——<b>「热烈程度」就是情绪反应的量化指标，18 空的 reacted 由它锁定。</b>",syn:"eagerly / warmly / wholeheartedly",conf:"enthusiastically（热情地，褒义）vs. <b>eagerly</b>（急切地，含期待）vs. <b>willingly</b>（心甘情愿地，强调不勉强）。<b>⚠️ 本句的实验对象是「被迫 forced」的，却反应更 enthusiastic——这个反差正是实验结论的力量所在。</b>"},
+
+  cartoon:{w:"cartoon",ipa:"/kɑːˈtuːn/",pos:"n.",tags:["core","write"],cn:"①漫画，讽刺画 ②动画片",en:"a funny drawing, often with a caption, in a newspaper or magazine",ex:"…reacted more enthusiastically to funny cartoons…",mem:"本篇里 <code>funny cartoons</code> 是实验的<b>情绪刺激材料</b>：给两组人看同样好笑的东西，看谁笑得更起劲。<br>✍️ <b>考研作文里 cartoon 是必备词</b>：大作文年年是<b>漫画作文</b>——<i>As is vividly depicted in the <b>cartoon</b>, …</i>（<a href='2010_作文_研究生会通知与文化火锅漫画.html' style='color:var(--accent)'>2010 大作文</a>正是文化「火锅」漫画）。",syn:"comic strip / caricature（讽刺人像）",conf:"cartoon（单幅或多格漫画，也指动画）vs. <b>caricature</b>（夸张变形的人物讽刺画）vs. <b>comic</b>（连环漫画书）。<b>大作文里一律写 cartoon／drawing／picture。</b>"},
+
+  contract:{w:"contract",ipa:"/kənˈtrækt/ v. · /ˈkɒntrækt/ n.",pos:"v. / n.",tags:["poly"],cn:"①<b>收缩，皱缩 v.</b> ②感染（疾病）③合同 n.",en:"to become smaller or tighter; to make a muscle become tighter",ex:"…than did those whose mouths were contracted in a frown.",mem:"⭐ <b>本篇熟词僻义</b>：<code>mouths were <b>contracted</b> in a frown</code>＝嘴巴<b>皱缩</b>成愁眉苦脸的样子——<b>它是 17 空 disappointed 的原文解释</b>。<br>⚠️ <b>重音移位是这个词的招牌</b>：<b>动词</b>重音在后 /kənˈtrækt/（收缩、感染），<b>名词</b>重音在前 /ˈkɒntrækt/（合同）。同类：record／present／object／conduct。<br>💡 第二义常考：<code>contract a disease</code>＝染上疾病。",syn:"shrink / tighten / tense up",conf:"contract（收缩，<b>反义 expand</b>）vs. <b>constrict</b>（使变窄，多用于血管）vs. <b>compress</b>（压缩）。<b>本篇里 contracted 与②段的 straining、relaxes 同属一条「肌肉张力」线索。</b>"},
+
+  frown:{w:"frown",ipa:"/fraʊn/",pos:"n. / v.",tags:["core"],cn:"皱眉（表示不悦、困惑）；愁眉苦脸",en:"to move your eyebrows together to show you are annoyed, worried or thinking hard",ex:"…those whose mouths were contracted in a frown…",mem:"⭐ <b>17 空的钥匙就是这个词</b>：正因为下句说另一组是 <code>in a <b>frown</b></code>（愁眉苦脸），17 空才只能填与 smile <b>相反</b>的 disappointed，而不是「中性」的 indifferent。<br>💡 <code><b>frown on/upon</b> sth</code>＝<b>不赞成，反对</b>（Smoking is frowned upon here.）——<b>这个短语义在阅读态度题里常考。</b>",syn:"scowl / grimace",conf:"frown（皱眉，可因不悦也可因思考）vs. <b>grin</b>（咧嘴笑，反义）vs. <b>smirk</b>（得意地笑）。<b>本篇的对立正是 smile ↔ frown 这一对最基本的表情。</b>"},
+
+  otherway:{w:"the other way around",ipa:"/ˈʌðə weɪ əˈraʊnd/",pos:"phrase",tags:["phrase","write"],cn:"<b>反过来，相反</b>（指方向、次序颠倒）",en:"in the opposite way or order",ex:"…expressions may influence emotions rather than just the other way around.",mem:"⭐⭐ <b>本篇那根因果箭头的最终定稿就在这半句</b>：<code>expressions may influence emotions <b>rather than just the other way around</b></code>＝表情能影响情绪，<b>而不只是「情绪影响表情」这个反方向</b>。<br><b>⟹ 见到 the other way around，先把前半句的箭头画出来，再把它倒过来</b>——<b>19、20 两空的方向都由它定。</b>",syn:"vice versa / conversely / the reverse",conf:"the other way around（<b>方向颠倒</b>）vs. <b>vice versa</b>（反之亦然，<b>两个方向都成立</b>）——⚠️ <b>意思差得很远</b>：本句说的是「不只是反过来那样」，若换成 vice versa 就变成「双向都成立」，会把作者的论点削平。"},
+
+  mood:{w:"mood",ipa:"/muːd/",pos:"n.",tags:["core","write"],cn:"心情，情绪（一段时间内的状态）",en:"the way you feel at a particular time",ex:"Similarly, the physical act of laughter could improve mood.",mem:"⭐ <b>末句的落点词</b>：<code>improve <b>mood</b></code>＝改善心情——<b>它回扣了③段的 <code>improve an individual's emotional state</code></b>，两处呼应，说明全文主旨就是「笑能改善情绪」。<br>💡 <code>be in a good/bad mood</code>（心情好/坏）· <code>mood swings</code>（情绪波动）· <code>set the mood</code>（营造气氛）。",syn:"emotional state / spirits / frame of mind",conf:"mood（<b>一段时间</b>的心情，可变）vs. <b>emotion</b>（具体的情绪：恐惧、喜悦）vs. <b>temper</b>（脾气，lose one's temper 发火）vs. <b>temperament</b>（性情，天生的）。<b>本篇 emotions／emotional state／mood 三个词交替出现，指的是同一件事。</b>"}
+};
+const panel=document.getElementById('panel');
+const isMobile=()=>window.innerWidth<=900;
+function badge(t){return {core:'<span class="badge b-core">核心词</span>',phrase:'<span class="badge b-phrase">短语</span>',poly:'<span class="badge b-poly">熟词僻义</span>',write:'<span class="badge b-write">写作✍︎</span>'}[t]||''}
+function showCard(k,el){
+  const d=V[k]; if(!d)return;
+  document.querySelectorAll('.tk.active').forEach(e=>e.classList.remove('active'));
+  if(el&&el.classList.contains('tk'))el.classList.add('active');
+  panel.innerHTML='<button class="close" onclick="panel.classList.remove(\'open\')">✕</button>'+
+  '<div class="wcard"><div class="head"><span class="w">'+d.w+'</span><span class="ipa">'+d.ipa+'</span><span class="pos">'+d.pos+'</span>'+d.tags.map(badge).join('')+'</div>'+
+  '<div class="cn">'+d.cn+'</div><div class="en-def">'+d.en+'</div>'+
+  '<div class="row r-ex"><b>原文语境</b>「…'+d.ex+'…」</div>'+
+  '<div class="row r-mem"><b>怎么记</b>'+d.mem+'</div>'+
+  '<div class="row r-syn"><b>同类词</b>'+d.syn+'</div>'+
+  '<div class="row r-conf"><b>易混辨析</b>'+d.conf+'</div></div>';
+  if(isMobile())panel.classList.add('open');
+}
+document.querySelectorAll('.tk').forEach(t=>t.addEventListener('click',e=>{e.stopPropagation();showCard(t.dataset.w,t)}));
+
+/* ============ 译文开关 ============ */
+function tz(btn){btn.closest('.para').classList.toggle('showzh')}
+let allOn=false;
+function toggleAll(){allOn=!allOn;document.querySelectorAll('.para').forEach(p=>p.classList.toggle('showzh',allOn))}
+function go(id){const s=document.getElementById(id);if(!s)return;s.scrollIntoView({behavior:'smooth',block:'center'});s.style.transition='none';s.style.opacity=.3;setTimeout(function(){s.style.transition='opacity .8s';s.style.opacity=1},80)}
+
+/* ============ 20 空数据（类别 + 正确词） ============ */
+const CAT={
+  logic:{name:"逻辑关系",cls:"c-logic",color:"#3d6a8a"},
+  collo:{name:"固定搭配",cls:"c-collo",color:"#3e7a4e"},
+  word:{name:"词义辨析",cls:"c-word",color:"#b04a3a"},
+  context:{name:"上下文语义",cls:"c-context",color:"#6d5a8e"}
+};
+const B={
+  1:{w:"despite",cat:"logic"},        2:{w:"produce",cat:"word"},
+  3:{w:"boosting",cat:"word"},        4:{w:"sustain",cat:"word"},
+  5:{w:"measurable",cat:"word"},      6:{w:"In fact",cat:"logic"},
+  7:{w:"opposite",cat:"context"},     8:{w:"relaxes",cat:"context"},
+  9:{w:"moderate",cat:"word"},        10:{w:"physical",cat:"context"},
+  11:{w:"According to",cat:"logic"},  12:{w:"in",cat:"collo"},
+  13:{w:"because",cat:"logic"},       14:{w:"precedes",cat:"context"},
+  15:{w:"from",cat:"collo"},          16:{w:"hold",cat:"word"},
+  17:{w:"disappointed",cat:"context"},18:{w:"reacted",cat:"collo"},
+  19:{w:"suggesting",cat:"logic"},    20:{w:"Similarly",cat:"logic"}
+};
+
+/* ============ 点空格 → 跳到解析卡 ============ */
+document.querySelectorAll('.bk').forEach(function(b){
+  b.addEventListener('click',function(){
+    document.querySelectorAll('.bk.active').forEach(function(e){e.classList.remove('active')});
+    b.classList.add('active');
+    go('q'+b.dataset.n);
+  });
+});
+function fillBlank(n,ok){
+  const el=document.querySelector('.bk[data-n="'+n+'"]');
+  if(!el)return;
+  el.classList.remove('miss');
+  el.classList.add(ok===false?'miss':'filled');
+  el.innerHTML='<span class="idx">'+n+'</span>'+B[n].w;
+}
+
+/* ============ 即点即判 + 计分 ============ */
+let done=0,right=0;
+function updScore(){
+  document.getElementById('sDone').textContent=done;
+  document.getElementById('sRight').textContent=right;
+  document.getElementById('sPt').textContent=(right*0.5).toFixed(1);
+}
+document.querySelectorAll('.q').forEach(function(q){
+  const ans=+q.dataset.ans, n=q.id.replace('q','');
+  q.querySelectorAll('.opt').forEach(function(o,i){
+    o.addEventListener('click',function(){
+      if(q.classList.contains('done'))return;
+      q.classList.add('done');
+      const ok=(i===ans);
+      if(!ok)o.classList.add('wrong');
+      q.querySelectorAll('.opt')[ans].classList.add('right');
+      done++; if(ok)right++; updScore();
+      fillBlank(n,ok);
+    });
+  });
+});
+function revealAll(){
+  document.querySelectorAll('.q').forEach(function(q){
+    const n=q.id.replace('q','');
+    if(!q.classList.contains('done')){
+      q.classList.add('done');
+      q.querySelectorAll('.opt')[+q.dataset.ans].classList.add('right');
+      done++; updScore();
+    }
+    fillBlank(n,true);
+  });
+  document.querySelectorAll('.bk.miss').forEach(function(e){e.classList.remove('miss');e.classList.add('filled')});
+}
+
+/* ============ 考点统计 ============ */
+const counts={};Object.keys(B).forEach(function(k){counts[B[k].cat]=(counts[B[k].cat]||0)+1});
+const order=["word","collo","context","logic"];
+document.getElementById('catbar').innerHTML=order.map(function(k){
+  return '<div class="catseg" style="flex:'+counts[k]+';background:'+CAT[k].color+'">'+CAT[k].name+' '+counts[k]+'</div>'}).join('');
+const legend=document.getElementById('catlegend');
+legend.innerHTML=order.map(function(k){
+  return '<div class="cl" data-cat="'+k+'"><span class="dot" style="background:'+CAT[k].color+'"></span>'+CAT[k].name+' · '+counts[k]+' 题</div>'}).join('');
+const chips=document.getElementById('chips');
+function renderChips(cat){
+  chips.innerHTML=Object.keys(B).filter(function(n){return !cat||B[n].cat===cat})
+    .map(function(n){return '<span class="chip" data-n="'+n+'">'+n+'. '+B[n].w+'</span>'}).join('');
+  chips.querySelectorAll('.chip').forEach(function(c){
+    c.addEventListener('click',function(){go('q'+c.dataset.n)});
+  });
+}
+renderChips(null);
+legend.querySelectorAll('.cl').forEach(function(l){
+  l.addEventListener('click',function(){
+    const cat=l.dataset.cat;
+    document.querySelectorAll('.cl').forEach(function(x){x.style.borderColor=''});
+    l.style.borderColor=CAT[cat].color;
+    renderChips(cat);
+    document.querySelectorAll('.bk').forEach(function(b){
+      b.style.outline=(B[b.dataset.n].cat===cat?'2px solid '+CAT[cat].color:'')});
+  });
+});
+
+/* ============ 80 选项词表 ============ */
+const OPTS={
+ 1:[["among","在……之中（须有同层概念）"],["except","除……之外（须有全称词）"],["despite","尽管（让步）"],["like","像；例如"]],
+ 2:[["reflect","反映（因果反了）"],["demand","要求（主语须为人）"],["indicate","表明（笑不是征兆）"],["produce","引起，造成（变化）"]],
+ 3:[["stabilizing","使稳定（与 changes 矛盾）"],["boosting","提高（心率、耗氧量）"],["impairing","削弱（贬义，方向反）"],["determining","决定；测定（主语不对）"]],
+ 4:[["transmit","传播（散步不可传播）"],["sustain","维持（持续较长时间）"],["evaluate","评估（与成效对比无关）"],["observe","观察（大笑最外显）"]],
+ 5:[["measurable","显著的（可测量的引申）"],["manageable","可控制的（修饰的是 benefits）"],["affordable","负担得起的（二者都免费）"],["renewable","可再生的（搭配对象是能源）"]],
+ 6:[["In turn","相应地（因果链顺序反了）"],["In fact","事实上（引出更根本的实情）"],["In addition","此外（力度不够，非否定）"],["In brief","简言之（后面是新信息）"]],
+ 7:[["opposite","相反的事物（instead of 反推）"],["impossible","不可能之事（层面不对）"],["average","一般水平（程度≠方式）"],["expected","预期之事（方向反）"]],
+ 8:[["hardens","使变硬（与 straining 同向）"],["weakens","使虚弱（贬义，色彩不符）"],["tightens","使绷紧（与 the opposite 冲突）"],["relaxes","使放松（同句 decreasing）"]],
+ 9:[["aggravate","使恶化（与 help 不搭）"],["generate","产生（造成压力，违常理）"],["moderate","缓和，减轻"],["enhance","增强（褒义配消极宾语）"]],
+ 10:[["physical","身体的（＝bodily 同义替换）"],["mental","心理的（other 找不到回指）"],["subconscious","潜意识的（不同类）"],["internal","体内的（哭泣是外显的）"]],
+ 11:[["Except for","除……之外（非同类项）"],["According to","根据（引出理论出处）"],["Due to","由于（把解释者当原因）"],["As for","至于（上文未谈各种理论）"]],
+ 12:[["with","不与 be rooted 搭配"],["on","root on 是不及物用法"],["in","be rooted in 源自"],["at","须写作 at the root of"]],
+ 13:[["unless","除非（把 not 的对象看成 cry）"],["until","直到……才（同上）"],["if","如果／即便（同上）"],["because","因为（not 否定的是这条因果）"]],
+ 14:[["exhausts","耗尽（脱离先后这条主线）"],["follows","跟在……之后（方向反）"],["precedes","先于……发生"],["suppresses","抑制（违常识）"]],
+ 15:[["into","流入（箭头方向反）"],["from","源于（flow from）"],["towards","流向（方向反且重过程）"],["beyond","超越（不与 flow 搭配）"]],
+ 16:[["fetch","取来（无方位信息）"],["bite","咬（嘴唇不能咬，且会咬坏）"],["pick","挑选／用手指拿（部位错）"],["hold","衔住、拿着（牙唇皆可）"]],
+ 17:[["disappointed","失望的（与 smile 相反）"],["excited","兴奋的（抿唇做不出）"],["joyful","高兴的（与 smile 同向）"],["indifferent","冷漠的（中性≠相反）"]],
+ 18:[["adapted","adapt to 适应（卡通无须适应）"],["catered","cater to 迎合（方向反）"],["turned","turn to 求助于（主动性错）"],["reacted","react to 做出反应"]],
+ 19:[["suggesting","表明（接陈述从句）"],["requiring","要求（后须虚拟语气）"],["mentioning","提及（推论不是顺口一提）"],["supposing","假定（这里是结论非假设）"]],
+ 20:[["Eventually","最终（位置靠后≠最后一环）"],["Consequently","因此（无因果链，我错选此项）"],["Similarly","同样地（主语换人＝类比）"],["Conversely","相反地（前后方向一致）"]]
+};
+const ANS={1:2,2:3,3:1,4:1,5:0,6:1,7:0,8:3,9:2,10:0,11:1,12:2,13:3,14:2,15:1,16:3,17:0,18:3,19:0,20:2};
+(function(){
+  let h='<tr><th>空</th><th>A</th><th>B</th><th>C</th><th>D</th></tr>';
+  for(let n=1;n<=20;n++){
+    h+='<tr><td class="n">'+n+'</td>';
+    OPTS[n].forEach(function(o,i){
+      h+='<td'+(i===ANS[n]?' class="hit"':'')+'><span class="ow">'+o[0]+'</span><span class="oc">'+o[1]+'</span></td>';
+    });
+    h+='</tr>';
+  }
+  document.getElementById('otab').innerHTML=h;
+  document.querySelectorAll('#otab .oc').forEach(function(c){
+    c.addEventListener('click',function(){c.classList.toggle('show')});
+  });
+})();
+function toggleHide(){
+  const t=document.getElementById('otab');
+  const on=t.classList.toggle('hidecn');
+  document.getElementById('btnHide').textContent=on?'👁 显示释义':'✍️ 默写模式';
+  if(!on)t.querySelectorAll('.oc.show').forEach(function(c){c.classList.remove('show')});
+}
+
+/* ============ 查有道 ============ */
+const yd=document.getElementById('yd');let sel='';
+document.addEventListener('selectionchange',function(){
+  const s=window.getSelection();const t=s?s.toString().trim():'';
+  if(t&&/^[a-zA-Z' -]{2,40}$/.test(t)){
+    sel=t;
+    try{const r=s.getRangeAt(0).getBoundingClientRect();
+      yd.style.left=Math.min(r.left,window.innerWidth-110)+'px';
+      yd.style.top=(r.bottom+8)+'px';yd.style.display='block';}catch(e){}
+  }else{yd.style.display='none'}
+});
+yd.addEventListener('click',function(){window.open('https://dict.youdao.com/result?word='+encodeURIComponent(sel)+'&lang=en');yd.style.display='none'});
+document.addEventListener('click',function(e){if(e.target!==yd&&!window.getSelection().toString())yd.style.display='none'});
+</script>
+<script src="_fault_attr.js"></script>
+</body>
+</html>
