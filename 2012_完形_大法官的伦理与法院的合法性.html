@@ -1,0 +1,1268 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2012 英一 完形 · 大法官的伦理与法院的合法性</title>
+<style>
+  :root{
+    --bg:#faf9f6; --card:#ffffff; --ink:#2b2b2b; --muted:#8a8578;
+    --accent:#8b5e34; --accent-soft:#f3e9dd; --line:#e8e3d8;
+    --hl:#fdf3d8; --hl-border:#e0b84d;
+    --green:#3e7a4e; --green-soft:#e8f2ea;
+    --red:#b04a3a; --red-soft:#f9e9e6;
+    --blue:#3d6a8a; --blue-soft:#e7eff5;
+    --purple:#6d5a8e; --purple-soft:#eeeaf5;
+    --serif:"Georgia","Songti SC",serif;
+    --sans:-apple-system,"PingFang SC","Helvetica Neue",sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#1c1a17; --card:#26231f; --ink:#e8e4dc; --muted:#9a948a;
+      --accent:#d0a06a; --accent-soft:#3a3127; --line:#3a362f;
+      --hl:#3d3520; --hl-border:#b08c3a;
+      --green:#7fb98d; --green-soft:#26362b;
+      --red:#d98876; --red-soft:#3d2a26;
+      --blue:#8ab3d0; --blue-soft:#26323d;
+      --purple:#a996c8; --purple-soft:#302a3d;
+    }
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;padding-bottom:120px}
+  .wrap{max-width:1100px;margin:0 auto;padding:24px 20px}
+  .back{font-size:.85rem;color:var(--muted);text-decoration:none}
+  .back:hover{color:var(--accent)}
+  header{margin:14px 0 28px}
+  header h1{font-family:var(--serif);font-size:1.7rem;line-height:1.3}
+  header .sub{color:var(--muted);margin-top:6px;font-size:.9rem}
+  .tags{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+  .tag{font-size:.75rem;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);border:1px solid var(--line)}
+  .tag.spoiler{cursor:pointer;background:var(--card);color:var(--muted)}
+  .tag.spoiler .hid{filter:blur(5px)}
+  .tag.spoiler.open .hid{filter:none;color:var(--accent)}
+
+  .layout{display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:start}
+  @media (max-width:900px){.layout{grid-template-columns:1fr}}
+
+  section.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:24px}
+  h2{font-size:1.05rem;letter-spacing:.05em;color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  h2 .n{font-size:.72rem;background:var(--accent);color:var(--card);border-radius:6px;padding:1px 7px}
+  .note{font-size:.82rem;color:var(--muted);margin-bottom:14px}
+
+  .para{margin-bottom:22px}
+  .para .en{font-family:var(--serif);font-size:1.06rem;line-height:2.15}
+  .pno{color:var(--muted);font-size:.75rem;user-select:none;margin-right:6px}
+  .tk{background:var(--hl);border-bottom:2px solid var(--hl-border);border-radius:3px;padding:0 2px;cursor:pointer;transition:filter .15s}
+  .tk:hover{filter:brightness(.93)}
+  .tk.active{outline:2px solid var(--hl-border)}
+  .ls{border-bottom:2px dotted var(--blue);cursor:pointer}
+  .para .zh{display:none;margin-top:10px;padding:10px 14px;background:var(--blue-soft);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:.93rem}
+  .para.showzh .zh{display:block}
+  .zbtn{float:right;margin-left:10px;font-size:.72rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:6px;padding:2px 9px;cursor:pointer}
+  .zbtn:hover{color:var(--accent);border-color:var(--accent)}
+  .allbtn{font-size:.78rem;border:1px solid var(--accent);background:none;color:var(--accent);border-radius:8px;padding:4px 12px;cursor:pointer}
+
+  /* 完形空格 */
+  .bk{display:inline-block;min-width:64px;text-align:center;background:var(--hl);border-bottom:2px solid var(--hl-border);border-radius:4px;padding:0 6px;cursor:pointer;font-weight:600;color:var(--accent);transition:all .15s;font-family:var(--sans);font-size:.95rem}
+  .bk:hover{filter:brightness(.93)}
+  .bk.filled{background:var(--green-soft);border-bottom-color:var(--green);color:var(--green);font-family:var(--serif)}
+  .bk.miss{background:var(--red-soft);border-bottom-color:var(--red);color:var(--red);font-family:var(--serif)}
+  .bk.active{outline:2px solid var(--hl-border)}
+  .bk .idx{font-size:.7rem;color:var(--muted);margin-right:3px}
+
+  aside{position:sticky;top:20px}
+  #panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;min-height:180px}
+  #panel .hint{color:var(--muted);font-size:.88rem;text-align:center;padding:30px 10px}
+  .wcard .head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .wcard .w{font-family:var(--serif);font-size:1.35rem;font-weight:bold}
+  .wcard .ipa{color:var(--muted);font-size:.85rem}
+  .wcard .pos{font-size:.72rem;color:var(--purple);background:var(--purple-soft);padding:1px 8px;border-radius:999px}
+  .wcard .badge{font-size:.7rem;padding:1px 8px;border-radius:999px}
+  .b-core{background:var(--red-soft);color:var(--red)}
+  .b-phrase{background:var(--blue-soft);color:var(--blue)}
+  .b-poly{background:var(--purple-soft);color:var(--purple)}
+  .b-write{background:var(--green-soft);color:var(--green)}
+  .wcard .cn{margin-top:8px;font-size:1rem;font-weight:600}
+  .wcard .en-def{color:var(--muted);font-size:.86rem;font-style:italic;margin-top:2px}
+  .wcard .row{margin-top:10px;font-size:.86rem;padding:8px 10px;border-radius:8px}
+  .wcard .row>b:first-child{font-size:.72rem;display:block;margin-bottom:2px;letter-spacing:.06em}
+  .r-ex{background:var(--hl)} .r-ex b{color:var(--hl-border)}
+  .r-mem{background:var(--green-soft)} .r-mem b{color:var(--green)}
+  .r-syn{background:var(--blue-soft)} .r-syn b{color:var(--blue)}
+  .r-conf{background:var(--red-soft)} .r-conf b{color:var(--red)}
+  #panel .close{display:none}
+  @media (max-width:900px){
+    aside{position:fixed;left:0;right:0;bottom:0;z-index:50;padding:0 8px 8px}
+    #panel{box-shadow:0 -6px 24px rgba(0,0,0,.18);max-height:55vh;overflow-y:auto;display:none}
+    #panel.open{display:block}
+    #panel .close{display:block;float:right;border:none;background:var(--line);border-radius:8px;padding:2px 10px;cursor:pointer;color:var(--ink)}
+  }
+
+  /* 逐空精解 */
+  .q{margin-bottom:22px;padding-bottom:18px;border-bottom:1px dashed var(--line);scroll-margin-top:20px}
+  .q:last-child{border:none;margin-bottom:0;padding-bottom:0}
+  .q .stem{font-family:var(--serif);font-size:.98rem;background:var(--hl);border-radius:8px;padding:8px 12px;display:block}
+  .q .stem em{font-style:normal;font-weight:700;color:var(--accent);border-bottom:2px solid var(--hl-border);padding:0 4px}
+  .qhead{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+  .qno{font-family:var(--serif);font-size:1.2rem;font-weight:700;color:var(--accent)}
+  .qt{font-size:.7rem;border-radius:999px;padding:1px 9px}
+  .c-logic{background:var(--blue-soft);color:var(--blue)}
+  .c-collo{background:var(--green-soft);color:var(--green)}
+  .c-word{background:var(--red-soft);color:var(--red)}
+  .c-context{background:var(--purple-soft);color:var(--purple)}
+  .qpos{font-size:.7rem;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:1px 9px}
+  .opts{margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  @media (max-width:640px){.opts{grid-template-columns:1fr}}
+  .opt{border:1px solid var(--line);border-radius:10px;padding:7px 12px;cursor:pointer;font-size:.92rem;font-family:var(--serif);transition:all .15s}
+  .opt .gl{font-family:var(--sans);font-size:.8rem;color:var(--muted);margin-left:6px}
+  .opt:hover{border-color:var(--accent)}
+  .q.done .opt{cursor:default}
+  .opt.right{background:var(--green-soft);border-color:var(--green)}
+  .opt.wrong{background:var(--red-soft);border-color:var(--red)}
+  .expl{display:none;margin-top:12px;background:var(--accent-soft);border-radius:10px;padding:12px 14px;font-size:.9rem}
+  .q.done .expl{display:block}
+  .expl b{color:var(--accent)}
+  .expl .lbl{font-size:.74rem;letter-spacing:.06em;color:var(--muted);display:block;margin:10px 0 2px}
+  .expl .lbl:first-child{margin-top:0}
+  .expl code{font-family:var(--serif);background:var(--hl);border-radius:4px;padding:1px 5px}
+  .wrongs{margin-top:6px;display:grid;gap:5px}
+  .wr{font-size:.86rem;background:var(--card);border-radius:8px;padding:6px 10px;border-left:3px solid var(--red)}
+  .wr .l{font-family:var(--serif);font-weight:700;color:var(--red);margin-right:5px}
+
+  /* 计分条 */
+  .score{display:flex;gap:14px;flex-wrap:wrap;align-items:center;background:var(--hl);border-radius:12px;padding:10px 16px;margin-bottom:18px;font-size:.88rem}
+  .score .v{font-family:var(--serif);font-size:1.25rem;font-weight:700;color:var(--accent);margin-right:4px}
+  .score .rst{margin-left:auto;font-size:.78rem;border:1px solid var(--line);background:var(--card);color:var(--muted);border-radius:8px;padding:3px 10px;cursor:pointer}
+
+  /* 考点统计 */
+  .catbar{display:flex;height:26px;border-radius:8px;overflow:hidden;margin:10px 0 16px;border:1px solid var(--line)}
+  .catseg{display:flex;align-items:center;justify-content:center;font-size:.72rem;color:#fff;font-weight:600}
+  .catlegend{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px}
+  .cl{display:flex;gap:8px;align-items:center;font-size:.85rem;cursor:pointer;padding:6px 8px;border-radius:8px;border:1px solid var(--line)}
+  .cl:hover{border-color:var(--accent)}
+  .dot{width:12px;height:12px;border-radius:3px;flex:0 0 12px}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+  .chip{font-size:.78rem;background:var(--accent-soft);color:var(--accent);border-radius:6px;padding:2px 8px;cursor:pointer}
+  .chip:hover{filter:brightness(.94)}
+
+  /* 打法 / 搭配 */
+  .flow{display:grid;gap:10px;font-size:.92rem}
+  .flow .fi{border:1px solid var(--line);border-radius:10px;padding:10px 14px}
+  .flow .fi b{color:var(--accent)}
+  .flow .fi .ev{display:block;margin-top:4px;font-size:.85rem;color:var(--muted);border-left:3px solid var(--hl-border);padding-left:9px}
+  .wb{display:grid;gap:10px}
+  .wbi{border-left:3px solid var(--green);background:var(--green-soft);border-radius:0 10px 10px 0;padding:10px 14px;font-size:.92rem}
+  .wbi .p{font-family:var(--serif);font-weight:600}
+  .wbi .u{color:var(--muted);font-size:.85rem}
+
+  /* 长难句 */
+  .sent{margin-bottom:20px}
+  .sent .src{font-family:var(--serif);font-size:1rem;background:var(--blue-soft);padding:12px 14px;border-radius:10px;border-left:3px solid var(--blue)}
+  .sent .anat{margin-top:8px;font-size:.9rem}
+  .sent .anat li{margin:4px 0 4px 18px}
+  .sent .tr{margin-top:8px;font-size:.92rem;color:var(--muted)}
+  .skel{color:var(--red);font-weight:600}
+
+  /* 80词表 */
+  .otab{width:100%;border-collapse:collapse;font-size:.86rem}
+  .otab th,.otab td{border:1px solid var(--line);padding:5px 8px;vertical-align:top}
+  .otab th{background:var(--accent-soft);color:var(--accent);font-size:.78rem}
+  .otab td.n{text-align:center;font-family:var(--serif);color:var(--muted);width:38px}
+  .otab .ow{font-family:var(--serif)}
+  .otab .oc{color:var(--muted);font-size:.82rem;display:block}
+  .otab td.hit{background:var(--green-soft)}
+  .otab td.hit .ow{color:var(--green);font-weight:700}
+  .hidecn .oc{filter:blur(4px);cursor:pointer}
+  .hidecn .oc.show{filter:none}
+  .tabwrap{overflow-x:auto}
+
+  #yd{position:fixed;z-index:60;display:none;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:4px 12px;font-size:.8rem;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+  .fail{background:var(--red-soft);border:1px solid var(--red);border-radius:10px;padding:10px 13px;margin-bottom:10px;font-size:.89rem;line-height:1.75}
+  .fail b{color:var(--red)}
+  .expl .fail{margin-top:0}
+  footer{color:var(--muted);font-size:.8rem;text-align:center;margin-top:30px}
+  /* 修：.layout 是 grid，grid 项默认 min-width:auto ⟹ 06 的 80 词表（min-content 425px）会把整个左栏撑到 475px，
+     窄屏下页面 scrollWidth 超出视口（2007–2009 三篇完形页同源、同病）。min-width:0 后 .tabwrap 才真正接管横滚。 */
+  main,aside{min-width:0}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">◀ 返回英语复盘中心</a>
+  <header>
+    <h1>大法官的伦理与法院的合法性：法律能不能与政治划清界限</h1>
+    <div class="sub">2012 年英语（一）真题 · Section I 完形填空（Use of English）· 266 词（黄皮书口径，已复盘六篇完形里最短）· 6 段 · 建议 15 min · 话题：司法独立与职业伦理（源自 <i>The New York Times</i>《纽约时报》2011 年 6 月 30 日 <i>Ethics, Politics and the Law</i>「伦理、政治和法律」，黄皮书口径）</div>
+    <div class="tags">
+      <span class="tag spoiler" onclick="this.classList.toggle('open')">🙈 答案（点击显示）：<span class="hid">1B 2A 3B 4D 5C 6B 7D 8B 9A 10B 11A 12C 13C 14D 15A 16C 17A 18C 19D 20D</span></span>
+      <span class="tag">难度：中偏易（无生词障碍，难在<b>三个「看着也通」的干扰项</b>：9 barrier · 13 express · 17 distorted）</span>
+      <span class="tag">Claude 盲做：20/20（9、15 两空犹豫过，靠硬判据定下）</span>
+      <span class="tag">⭐ 本页最值钱的一段：<b>02+ 末段是②段的镜像</b>——6↔19、4↔⑥❷、1↔18，一张表验五个空</span>
+    </div>
+  </header>
+
+  <div class="layout">
+    <main>
+
+      <!-- ========== 00 脉络 ========== -->
+      <section class="card">
+        <h2><span class="n">00</span>读前一分钟 · 全文脉络（完形先读首句，再看结构）</h2>
+        <p class="note">完形的<b>首句从不设空</b>。本篇首句 <i>The ethical judgments of the Supreme Court justices have become an important issue recently.</i>——<b>一句话给了三样东西</b>：话题（<b>大法官的职业操守</b>，不是判得对不对）、性质（<code>an important issue</code>＝一个<b>议题</b>）、语气（<code>recently</code>＝<b>时评</b>）。<b>凡首句是「X 近来已成为一个重要议题」，这就是一篇时评／社论，结尾一定给建议（should／must）</b>——末段的空一律往「对策」方向填。</p>
+        <p class="note" style="margin-top:10px">⭐⭐ <b>本篇的骨架是社论的标准三件套：应然 → 实然 → 对策</b>。<b>应然</b>＝法院的合法性来自「法律独立于政治」；<b>实然</b>＝大法官像政客一样行事，而且宪法性法律本身就带政治性；<b>对策</b>＝大法官应受那套适用于其他联邦法官的行为守则约束。<b>先把「应然」写成一句话——「法律应当与政治分开」——下面八个语境空只问一句：它把法院往政治那边推，还是往回拉。</b></p>
+        <div class="flow">
+          <div class="fi"><b>① 段一 · 立论：法院的合法性经不起「像政客一样」</b>——大法官的职业操守成了热门议题；大法官若像政客一样行事，最高法院就无法维持其作为法治捍卫者的合法性；然而在好几起事件中，大法官的行事方式削弱了法院独立、公正的声誉。
+            <span class="ev">1–3 空。<b>三句话走完「议题 → 应然 → 实然」</b>：❷ 句是应然（cannot <b>1</b> its legitimacy <b>2</b> justices behave like politicians），❸ 句用 <code>Yet</code> 掉头到实然（acted in ways that <b>3</b> the court's reputation）。<b>1 空与 18 空是全文首尾唯二提到 legitimacy 的地方</b>——守不住（①）→ 已受质疑、必须回应（⑥）。</span></div>
+          <div class="fi"><b>② 段二 · 举例 → 找原因 → 给最低限度的对策</b>——斯卡利亚大法官出席政治活动；这类行为让法院判决更难被视为公正；问题的部分原因在于大法官不受任何伦理守则约束；最起码，最高法院应当服从那套适用于联邦司法系统其他部门的行为守则。
+            <span class="ev">4–7 空，<b>一段里就把「问题—原因—对策」完整走了一遍</b>：例子（Scalia）→ 后果（less likely … <b>4</b> as impartial）→ 原因（Part of the problem is that … not <b>5</b> by an ethics code）→ 对策（At the very least … <b>6</b> to the code … that <b>7</b> to the rest）。<br>⭐⭐ <b>记住这一段：⑥段会把它换极性再说一遍</b>（less likely → more likely；make itself subject to → making themselves accountable to）——<b>见 02+ 镜像表</b>。</span></div>
+          <div class="fi"><b>③ 段三 · 单句过渡：法院与政治之间还有没有界限？</b>——这件事及其他类似事件引发了一个问题：最高法院与政治之间是否还存在一条界限。
+            <span class="ev">8、9 两空。<b>单句成段＝过渡段</b>：它把上文的「事例」转成下文的「议题」，所以 8 空只能是「开启」话题的 raise（不能是 settle），<b>9 空的答案在<u>下文</u></b>——④段两次 <code>apart from politics</code>、⑥段一次 <code>separate from politics</code>。</span></div>
+          <div class="fi"><b>④ 段四 · 回到应然：宪法制定者的设计</b>——制宪者把法律设想为拥有独立于政治之外的权威；他们给大法官终身职位，好让他们能毫无顾忌地挫败当权者、也不必去争取政治支持；法律体系之所以被设计成与政治分开，恰恰因为二者联系太紧密。
+            <span class="ev">10–14 空。<b>本段是全文的「应然」段</b>：<b>10</b> envisioned law <b>as</b>（看作族动词＋as）· <b>11</b> so（从句里的 would 是目的标记）· <b>12＋13</b> 是一对并列连体空（free to <b>upset</b>＝不怕 / no need to <b>cultivate</b>＝不求）· <b>14</b> 是句内反义对举（set law <b>apart</b> ↔ so closely <b>tied</b>）。</span></div>
+          <div class="fi"><b>⑤ 段五 · 让步：法律本身就带政治性</b>——宪法性法律之所以有政治性，是因为它源于植根于自由、财产等基本社会观念的选择；法院处理社会政策案件时，它所塑造的法律不可避免地带有政治性——所以按意识形态阵营分裂的判决很容易被斥为不公。
+            <span class="ev">15–17 空。<b>这一段是全文唯一的「让步」</b>：作者承认法律与政治注定有往来——<b>正是这一句让 9 空只能是 line（分界）而不能是 barrier（阻隔）</b>。<b>15</b> 用「例子 is a ___」检验（Liberty is a <b>concept</b>）；<b>16</b> 的钥匙在末句 <code>rulings … as law</code>；<b>17</b> 是全篇第二个 as 框架空（as unjust 贬义 ⟹ 否弃族 dismissed）。</span></div>
+          <div class="fi"><b>⑥ 段六 · 对策：让自己对守则负责，判决才令人信服</b>——大法官必须通过让自己对行为守则负责，来回应人们对法院合法性的质疑；这样他们的裁决才更可能被视为与政治分离，从而作为法律更令人信服。
+            <span class="ev">18–20 空。<b>⑥❶ 与②❹ 框架一字不差</b>（make oneself ___ to the code of conduct）⟹ <b>19 accountable 与 6 subject 互为答案</b>；⑥❷ 与②❷ 同构（make … more likely to be seen as ↔ makes it less likely … accepted as）。<b>20 是末空，但主语没换人</b>（their rulings）⟹ 因果成立，填 as a result——<b>正好是 2011 末空（主语换人 ⟹ 类比）的对照情形</b>。</span></div>
+        </div>
+        <p class="note" style="margin-top:14px">📌 <b>第二条强线索：全篇的褒贬极其单一</b>——凡是「像政客」「涉政」「分不开」的，都是作者要纠正的；凡是「独立」「公正」「受约束」的，都是作者要的。<b>带方向的选项一律先问它站哪一边</b>：3 空的 restored／established（正向）、6 空的 resistant／immune（不受约束）、12 空的 serve／satisfy（依附当权者）<b>都是被这一刀直接划掉的</b>。</p>
+        <p class="note">🎭 <b>读前背景（不影响做题，但读懂了心里有底）</b>：</p>
+        <div class="tabwrap"><table class="otab">
+          <tr><th>文中说法</th><th>背景</th><th>管哪个空</th></tr>
+          <tr><td><span class="ow">the Supreme Court justices</span></td><td>美国最高法院由 9 位<b>大法官</b>组成（justice 可数＝大法官），文中 the court 专指它</td><td>5 题 D founded 的陷阱</td></tr>
+          <tr><td><span class="ow">permanent positions</span></td><td>宪法第三条：联邦法官「行为良好期间」一直任职（事实上的终身制）；汉密尔顿在《联邦党人文集》第 78 篇论证<b>终身任职是司法独立最好的保障</b></td><td>11／12／13</td></tr>
+          <tr><td><span class="ow">the code of conduct that applies to the rest of the federal judiciary</span></td><td>《美国联邦法官行为守则》只管下级联邦法官，<b>当时不适用于最高法院大法官</b>（本文写于 2011 年；2023 年 11 月最高法院才首次发布适用于大法官本人的守则）</td><td>5／6／7／19</td></tr>
+          <tr><td><span class="ow">the law it shapes</span></td><td>美国是<b>判例法</b>国家：最高法院的判决会成为此后同类案件必须遵循的先例，法院不只适用法律，还在塑造法律</td><td>16（钥匙在末句 rulings as law）</td></tr>
+          <tr><td><span class="ow">decisions split along ideological lines</span></td><td>保守派与自由派大法官按阵营投票的判决（常见 5 比 4），输的一方最容易把它说成「政治判决」</td><td>17</td></tr>
+          <tr><td><span class="ow">Justice Antonin Scalia</span></td><td>保守派大法官的代表人物；本文只拿他出席政治活动当例子</td><td>②段首句（不设空）</td></tr>
+        </table></div>
+      </section>
+      <!-- ========== 01 正文 ========== -->
+      <section class="card">
+        <h2><span class="n">01</span>完形正文（20 空 · 点空格跳到该题）
+          <button class="allbtn" onclick="toggleAll()" style="margin-left:auto">译文 开/关</button>
+          <button class="allbtn" onclick="revealAll()">显示全部答案</button>
+        </h2>
+        <p class="note">🟨 点<b>空格</b>＝跳到下面对应的解析卡（先自己选，再看解析）｜ 🟡 黄底词＝生词卡，点开看词根/辨析 ｜ 蓝色虚线＝长难句 ｜ 选中任意单词浮出「查有道」</p>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">①</span>The <span class="tk" data-w="ethical">ethical</span> <span class="tk" data-w="judgment">judgments</span> of the Supreme Court <span class="tk" data-w="justice">justices</span> have become an important issue recently. The court cannot <span class="bk" data-n="1"><span class="idx">1</span>___</span> its <span class="tk" data-w="legitimacy">legitimacy</span> as <span class="tk" data-w="guardian">guardian</span> of <span class="tk" data-w="ruleoflaw">the rule of law</span> <span class="bk" data-n="2"><span class="idx">2</span>___</span> justices behave like politicians. Yet, in several <span class="tk" data-w="instance">instances</span>, justices acted in ways that <span class="bk" data-n="3"><span class="idx">3</span>___</span> the court's <span class="tk" data-w="reputation">reputation</span> for being independent and <span class="tk" data-w="impartial">impartial</span>.</p>
+          <div class="zh">最高法院大法官的职业伦理评判近来已成为一个重要议题。当大法官们像政客一样行事时，最高法院就无法<b>维持</b>其作为法治捍卫者的合法性。然而，在好几起事件中，大法官们的所作所为<b>削弱</b>了最高法院独立、公正的声誉。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">②</span>Justice Antonin Scalia, for example, <span class="tk" data-w="appear">appeared</span> at political events. <span class="ls" onclick="go('s1')">That kind of activity makes it less likely that the court's decisions will be <span class="bk" data-n="4"><span class="idx">4</span>___</span> as impartial <span class="tk" data-w="judgment">judgments</span>.</span> <span class="tk" data-w="partof">Part of the problem</span> is that the justices are not <span class="bk" data-n="5"><span class="idx">5</span>___</span> by an ethics <span class="tk" data-w="code">code</span>. <span class="ls" onclick="go('s2')"><span class="tk" data-w="atleast">At the very least</span>, the court should make itself <span class="bk" data-n="6"><span class="idx">6</span>___</span> to the code of <span class="tk" data-w="conduct">conduct</span> that <span class="bk" data-n="7"><span class="idx">7</span>___</span> to the rest of the <span class="tk" data-w="federal">federal</span> <span class="tk" data-w="judiciary">judiciary</span>.</span></p>
+          <div class="zh">比如，大法官安东宁·斯卡利亚曾在政治活动中露面。这类行为使最高法院的判决更难被<b>视为</b>公正的判决。问题的部分原因在于，大法官们不<b>受</b>任何伦理守则的<b>约束</b>。最起码，最高法院应当让自己<b>服从</b>那套<b>适用于</b>联邦司法系统其他部门的行为守则。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">③</span>This and other similar cases <span class="bk" data-n="8"><span class="idx">8</span>___</span> the question of whether there is still a <span class="bk" data-n="9"><span class="idx">9</span>___</span> between the court and politics.</p>
+          <div class="zh">这件事以及其他类似事件<b>引发</b>了一个问题：最高法院与政治之间是否还存在一条<b>界限</b>。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">④</span>The <span class="tk" data-w="framer">framers</span> of the Constitution <span class="tk" data-w="envision">envisioned</span> law <span class="bk" data-n="10"><span class="idx">10</span>___</span> having <span class="tk" data-w="authority">authority</span> <span class="tk" data-w="apartfrom">apart from</span> politics. <span class="ls" onclick="go('s3')">They gave justices <span class="tk" data-w="permanent">permanent</span> positions <span class="bk" data-n="11"><span class="idx">11</span>___</span> they would be free to <span class="bk" data-n="12"><span class="idx">12</span>___</span> <span class="tk" data-w="inpower">those in power</span> and have no need to <span class="bk" data-n="13"><span class="idx">13</span>___</span> political support.</span> <span class="ls" onclick="go('s4')">Our legal system was designed to set law <span class="tk" data-w="apartfrom">apart from</span> politics <span class="tk" data-w="precisely">precisely</span> because they are so closely <span class="bk" data-n="14"><span class="idx">14</span>___</span>.</span></p>
+          <div class="zh">宪法的制定者们把法律设想<b>为</b>拥有独立于政治之外的权威。他们给了大法官终身职位，<b>以便</b>大法官们能够毫无顾忌地<b>挫败</b>当权者，也无需去<b>争取</b>政治支持。我们的法律体系之所以被设计成让法律与政治分离，恰恰是因为二者<b>联系</b>得太紧密了。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">⑤</span><span class="tk" data-w="constitutional">Constitutional</span> law is political because it results from choices <span class="tk" data-w="rootedin">rooted in</span> <span class="tk" data-w="fundamental">fundamental</span> social <span class="bk" data-n="15"><span class="idx">15</span>___</span> like <span class="tk" data-w="liberty">liberty</span> and <span class="tk" data-w="property">property</span>. <span class="ls" onclick="go('s5')">When the court deals with social policy decisions, the law it <span class="bk" data-n="16"><span class="idx">16</span>___</span> is <span class="tk" data-w="inescapably">inescapably</span> political—which is why decisions <span class="tk" data-w="split">split</span> along <span class="tk" data-w="ideological">ideological</span> lines are so easily <span class="bk" data-n="17"><span class="idx">17</span>___</span> as <span class="tk" data-w="unjust">unjust</span>.</span></p>
+          <div class="zh">宪法性法律具有政治性，因为它源于一些选择，而这些选择植根于自由与财产等基本的社会<b>观念</b>。当最高法院处理社会政策方面的判决时，它所<b>塑造</b>的法律不可避免地带有政治性——这就是为什么那些按意识形态阵营分裂的判决如此容易被<b>斥为</b>不公正。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">⑥</span>The justices must <span class="bk" data-n="18"><span class="idx">18</span>___</span> doubts about the court's <span class="tk" data-w="legitimacy">legitimacy</span> by making themselves <span class="bk" data-n="19"><span class="idx">19</span>___</span> to the code of conduct. <span class="ls" onclick="go('s6')">That would make their <span class="tk" data-w="ruling">rulings</span> more likely to be seen as separate from politics and, <span class="bk" data-n="20"><span class="idx">20</span>___</span>, <span class="tk" data-w="convincing">convincing</span> as law.</span></p>
+          <div class="zh">大法官们必须通过让自己<b>对</b>行为守则<b>负责</b>，来<b>回应</b>人们对最高法院合法性的质疑。那样将使他们的裁决更可能被视为与政治相分离，<b>从而</b>作为法律也更令人信服。</div>
+        </div>
+      </section>
+      <!-- ========== 02 逐空精解 ========== -->
+      <section class="card">
+        <h2><span class="n">02</span>逐空精解（点选项即判 · 再看解析）</h2>
+        <div class="score">
+          <span><span class="v" id="sDone">0</span>/20 已答</span>
+          <span><span class="v" id="sRight">0</span> 对</span>
+          <span>折合 <span class="v" id="sPt">0</span> 分 / 10</span>
+          <button class="rst" onclick="location.reload()">↺ 重做</button>
+        </div>
+        <p class="note">每空 0.5 分。<b>先在心里说出「这个空要填什么词性、什么方向」再点选项</b>。本篇有<b>四道题只看结构就能定</b>（<b>10</b> 靠 envision … as · <b>11</b> 靠从句里的 would · <b>15</b> 靠「例子 is a ___」· <b>19</b> 靠②❹ 的原框架），<b>真正要想的是 9、13、17 三个</b>——三个都有一个「看着也通」的干扰项（barrier ／ express ／ distorted），<b>其中 9 是我盲做时唯一犹豫到要翻回去找判据的一空</b>。</p>
+
+        <div class="q" id="q1" data-ans="1">
+          <div class="qhead"><span class="qno">1</span><span class="qt c-word">词义辨析 · 及物动词</span><span class="qpos">cannot ＋ ___ ＋ its legitimacy</span></div>
+          <span class="stem">The court <b>cannot</b> <em>1</em> its legitimacy <b>as guardian of the rule of law</b> when justices behave like politicians.</span>
+          <div class="opts">
+            <div class="opt">A emphasize<span class="gl">强调，重视</span></div>
+            <div class="opt">B maintain<span class="gl">维持，保持</span></div>
+            <div class="opt">C modify<span class="gl">修改，调整</span></div>
+            <div class="opt">D recognize<span class="gl">承认；认出</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>cannot 后的及物动词原形，宾语 <code>its legitimacy</code>（合法性、正当性）。<b>legitimacy 是法院「本来就有、需要守住」的东西</b>——空格词要表达法院与这份合法性的关系。
+            <span class="lbl">🔗 线索</span>同句的 when 从句给出条件「大法官像政客一样行事」——这是全文批评的行为（下一句 <code>Yet … weakened</code>、下一段斯卡利亚出席政治活动）。<b>坏行为 ＋ cannot ⟹ 失去一样好东西</b> ⟹ 空格＝「守住」。<br>另：⑥❶ <code>address doubts about the court's <b>legitimacy</b></code>——末段说合法性<b>已遭质疑</b>，正是「没守住」的后果（见 <a href="#mirror" style="color:var(--accent)">02+ 镜像表</a>）。
+            <span class="lbl">✅ B maintain</span>维持、保持。代入＝「当大法官像政客一样行事时，最高法院就<b>无法维持</b>其作为法治捍卫者的合法性」。<b>maintain 预设「原本拥有」</b>——合法性是法院与生俱来的东西，被坏行为一点点磨掉。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">D</span><b>⚠️ 本题最阴的一项。</b>句中紧跟着 <code>its legitimacy <b>as</b> guardian…</code>，看上去正好凑成 <code>recognize A as B</code>（承认 A 是 B）。但 <b>as 短语前面紧挨的是名词 legitimacy</b>，它修饰这个名词（作为法治捍卫者的合法性），不是动词的补足语；而且 recognize A as B 要求能改写成「A is B」——<code>its legitimacy is guardian</code>？「合法性」是品质、「捍卫者」是角色，接不上。<b>框架诱惑是假的</b>（见 <a href="#as5" style="color:var(--accent)">02++ 一篇五个 as</a>）。</div>
+              <div class="wr"><span class="l">A</span>emphasize 强调。「无法强调自己的合法性」——问题从来不在「说得够不够多」，而在「还剩多少」。⚠️ emphasize 常见于 <code>cannot emphasize … too much／enough</code>（再怎么强调也不为过），本句没有 too much／enough，那层肯定义也立不起来。</div>
+              <div class="wr"><span class="l">C</span>modify 修改、调整——<b>预设对象有缺陷、需要改进</b>。合法性是要守护的理想状态，不是待修补的零件；且「大法官像政客 ⟹ 无法修改合法性」因果不通。</div>
+            </div>
+            <span class="lbl">💡 迁移</span><b>见到「动词 ＋ 名词 ＋ as ＋ 名词」先问：as 贴着动词还是贴着名词？</b>——只有当「动词 ＋ A ＋ as ＋ B」能改写成「A is B」时，才是框架；否则 as 短语多半是 A 的后置修饰（as guardian＝作为捍卫者的）。<b>本题 D 就是拿「假框架」造的干扰项。</b>
+          </div>
+        </div>
+
+        <div class="q" id="q2" data-ans="0">
+          <div class="qhead"><span class="qno">2</span><span class="qt c-logic">逻辑关系 · 从属连词</span><span class="qpos">主句 cannot … ＋ 从句引导词（分句首）</span></div>
+          <span class="stem">The court <b>cannot</b> maintain its legitimacy as guardian of the rule of law <em>2</em> justices <b>behave like politicians</b>.</span>
+          <div class="opts">
+            <div class="opt">A when<span class="gl">当……时（暗含条件—结果）</span></div>
+            <div class="opt">B lest<span class="gl">以免（后接 should＋原形）</span></div>
+            <div class="opt">C before<span class="gl">在……之前；以免（警告）</span></div>
+            <div class="opt">D unless<span class="gl">除非（＝if … not）</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>两个完整分句之间的<b>从属连词</b>，决定「大法官像政客一样行事」与「法院无法维持合法性」是什么关系。
+            <span class="lbl">🔗 线索</span>常识＋全文立场：大法官像政客＝坏事；合法性受损＝后果 ⟹ 从句是主句的<b>条件</b>，二者同时成立、方向一致。
+            <span class="lbl">✅ A when</span>当……时。在议论文里 when 常带「<b>一旦、既然</b>」的条件义，不只表时间：<b>一旦</b>大法官像政客一样行事，法院就无法维持合法性。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">D</span><b>⚠️ 本题最顺口的一项</b>：<code>cannot … unless …</code> 是英语里极高频的组合（You cannot pass unless you work hard），语感会自动把它补全。<b>验算法：把 unless 换成 if … not 念一遍</b>——「如果大法官<b>不</b>像政客一样行事，法院就无法维持合法性」＝只有像政客才能维持合法性，与全文立场正相反。</div>
+              <div class="wr"><span class="l">B</span>lest 以免：「法院无法维持合法性，以免大法官像政客一样行事」——<b>把后果当成了目的</b>，逻辑倒挂；且 lest 从句惯用 should＋原形，本句是一般现在时陈述。</div>
+              <div class="wr"><span class="l">C</span>before：取「在……之前」义时间顺序颠倒（合法性受损是涉政的<b>结果</b>，应在其后）；取「以免、不然」义时主句须是祈使或警告（Put it away before it gets broken），本句是陈述。</div>
+            </div>
+            <span class="lbl">💡 迁移</span><b>主句含否定（cannot／never／no）而空格要填连词时，若选项里有 unless，先把它换成 if … not 念一遍</b>——双重否定最容易「听着顺、意思反」。同理 <code>not … until …</code>（直到……才）也要还原成肯定句检验。
+          </div>
+        </div>
+
+        <div class="q" id="q3" data-ans="1">
+          <div class="qhead"><span class="qno">3</span><span class="qt c-context">上下文语义 · 动词</span><span class="qpos">Yet 句 · 定语从句的谓语</span></div>
+          <span class="stem"><b>Yet</b>, in several instances, justices acted in ways that <em>3</em> the court's reputation for being <b>independent and impartial</b>.</span>
+          <div class="opts">
+            <div class="opt">A restored<span class="gl">恢复，使复原</span></div>
+            <div class="opt">B weakened<span class="gl">削弱</span></div>
+            <div class="opt">C established<span class="gl">确立，建立</span></div>
+            <div class="opt">D eliminated<span class="gl">消除，排除</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>that 定语从句（修饰 ways）的谓语：主语＝大法官的行事方式，宾语＝法院「独立、公正」的声誉。
+            <span class="lbl">🔗 线索（跨句）</span>句首 <code>Yet</code> 与上一句构成「<b>理论上不该</b>（像政客一样行事）→ <b>实际上却这么做了</b>」；下一段首句的例子 <code>Scalia … appeared at political events</code> 坐实了这是<b>负面行为</b> ⟹ 负面行为作用于好声誉 ⟹ 使之受损。
+            <span class="lbl">✅ B weakened</span>削弱。代入＝「大法官的行事方式<b>削弱</b>了法院独立、公正的声誉」。weaken 是<b>程度词</b>——声誉还在，只是变弱了，与后文「最起码应当受守则约束」的<b>补救</b>口吻相配。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>restored 恢复——正向变化，与 Yet 引出的负面行为方向相反；且「恢复」预设声誉此前已受损，而上文还没谈到任何损害。</div>
+              <div class="wr"><span class="l">C</span>established 确立——同样是正向；还预设「此前没有这份声誉」，与①❷「法治捍卫者」的身份矛盾。</div>
+              <div class="wr"><span class="l">D</span>eliminated 消除——<b>方向对、程度错</b>：若声誉已被彻底抹掉，后文就不必讨论「怎样让判决更可能被视为公正」，⑥段的建议也就没有意义。</div>
+            </div>
+            <span class="lbl">💡 迁移</span><b>方向对了还要验程度</b>：同一方向的两个词（weaken／eliminate），挑那个与下文「还能补救」相容的——<b>文章后面若在提建议，前面的损害就不会是「彻底的」。</b><br>📌 本题四个选项是 <b>2 正（restored／established）＋ 2 负（weakened／eliminated）</b>，<b>三缺一法用不上</b>：先用 Yet 定方向砍掉一组，再用程度在剩下两个里挑。
+          </div>
+        </div>
+
+        <div class="q" id="q4" data-ans="3">
+          <div class="qhead"><span class="qno">4</span><span class="qt c-collo">固定搭配 · as 框架</span><span class="qpos">less likely that … will be ___ as ＋ 补足语</span></div>
+          <span class="stem">That kind of activity makes it <b>less likely</b> that the court's decisions will be <em>4</em> <b>as impartial judgments</b>.</span>
+          <div class="opts">
+            <div class="opt">A challenged<span class="gl">质疑；对……提出异议</span></div>
+            <div class="opt">B compromised<span class="gl">使受损；妥协</span></div>
+            <div class="opt">C suspected<span class="gl">怀疑</span></div>
+            <div class="opt">D accepted<span class="gl">接受，认可</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>that 从句（真正的宾语，it 是形式宾语）里的被动谓语，后面紧跟 <code>as impartial judgments</code> ⟹ 空格要能构成「<b>be ___ as ＋ 补足语</b>」框架。
+            <span class="lbl">🔗 线索</span>① as 后的补足语 <code>impartial judgments</code> 是<b>褒义</b>（公正的判决）；② <code>less likely</code>（更不可能）＋ 坏行为（出席政治活动）⟹ 空格描述的是「本来希望发生的好事」。<b>两条线都指向「接受族」动词。</b>
+            <span class="lbl">✅ D accepted</span>accept A as B＝认可 A 是 B。代入＝「这类行为使最高法院的判决更难被<b>视为</b>公正的判决」。<b>⑥❷ 用 <code>more likely to be <u>seen as</u> separate from politics</code> 把这句话换极性再说了一遍</b>（less → more，accepted as → seen as）——镜像验算，见 <a href="#mirror" style="color:var(--accent)">02+</a>。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span><b>⚠️ challenge … as 是真实存在的法律用法</b>（a law challenged as unconstitutional 被指违宪而遭起诉），<b>但 as 后面必须跟贬义补足语</b>：人们「质疑某判决<b>违宪</b>」，不会「质疑某判决<b>公正</b>」。<b>同一年卷子的 <a href="2012_T2_背弃承诺的核电厂主.html" style="color:var(--accent)">2012 T2</a> ②❶ 就有 <code>challenge the constitutionality of Vermont's rules</code></b>——这个词在阅读里正是「提起违宪诉讼」。</div>
+              <div class="wr"><span class="l">B</span>compromised：compromise 作「使受损」时宾语是原则、名誉（compromise one's reputation），与 <code>as impartial judgments</code> 搭不上；取「妥协」义更不通。</div>
+              <div class="wr"><span class="l">C</span>suspected：常规结构是 <code>suspect sb <b>of</b> sth</code>（怀疑某人做了坏事），<b>怀疑的对象永远是坏事</b>，与 impartial 的褒义冲突。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>「v. ＋ 宾语 ＋ as ＋ 补足语」框架，先看 as 后面的补足语是褒是贬，再挑动词族</b>：<b>接受族</b> accept／see／regard／view／hail ＋ 褒义或中性；<b>否弃族</b> dismiss／challenge／condemn／denounce ＋ 贬义。本题补足语 impartial（褒）⟹ 接受族；<a href="#q17" style="color:var(--accent)">17 题</a>补足语 unjust（贬）⟹ 否弃族。<b>一篇里两个 as 空，一褒一贬，同一把刀。</b><br>📌 另：A／B／C 三个都是「负面评价」，D 是唯一的「正面接纳」——<b>三缺一成立</b>（R74），本篇这把刀一共用了三次（4／18／19）。
+          </div>
+        </div>
+
+        <div class="q" id="q5" data-ans="2">
+          <div class="qhead"><span class="qno">5</span><span class="qt c-word">词义辨析 · 被动动词</span><span class="qpos">are not ___ by an ethics code</span></div>
+          <span class="stem"><b>Part of the problem</b> is that the justices are <b>not</b> <em>5</em> <b>by an ethics code</b>.</span>
+          <div class="opts">
+            <div class="opt">A advanced<span class="gl">推动；提出</span></div>
+            <div class="opt">B caught<span class="gl">抓住；使陷入</span></div>
+            <div class="opt">C bound<span class="gl">约束（bind 的过去分词）</span></div>
+            <div class="opt">D founded<span class="gl">创立，建立</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>表语从句里的被动谓语，<code>by an ethics code</code> 是施动者 ⟹ 空格要描述「伦理守则对大法官做了什么」。
+            <span class="lbl">🔗 线索</span><code>Part of the problem is that …</code>＝「问题的部分原因在于……」⟹ 本句要解释<b>为什么</b>大法官频频涉政；下一句 <code>the court should make itself subject to the code of conduct</code>（应当服从守则）⟹ 本句说的是「现在<b>不受</b>守则约束」。
+            <span class="lbl">✅ C bound</span><code>be bound by</code>＝受（规则、协议、法律）约束。代入＝「大法官们不<b>受</b>任何伦理守则的<b>约束</b>」——没有约束，所以才敢出席政治活动；下一句的建议「最起码应当服从守则」正好对症。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">D</span><b>⚠️ 本题最有设计感的一项</b>：命题人利用 justice 的基本义「公正」——「公正不是建立在伦理准则之上的」读着像句哲学话。但 <b>justices 带 -s、是可数名词＝大法官</b>，「大法官不是由伦理守则创立的」不知所云。<b>熟词僻义被反过来当成了陷阱。</b></div>
+              <div class="wr"><span class="l">A</span>advanced：advance 作及物动词是「推动（事业）、提出（理论）」，主语是人、宾语是物；本句是守则作用于人，方向倒了。</div>
+              <div class="wr"><span class="l">B</span>caught：<code>be caught by／in</code>＝被抓住、被困住（be caught in a dilemma），暗示守则让大法官进退两难——<b>等于说守则是坏东西</b>，与下一句「应当服从守则」相矛盾。</div>
+            </div>
+            <span class="lbl">💡 迁移</span><b>bound 一词三用，考研高频</b>：<code>be bound <b>by</b></code> 受……约束 ｜ <code>be bound <b>to</b> do</code> 必然、一定会 ｜ <code>be bound <b>for</b></code> 前往（a ship bound for Shanghai）——<b>介词一换意思全换</b>。<br>🔤 <b>凡选项里有一个「利用某词基本义」的，先回头看那个词在文中是不是熟词僻义</b>：justices（大法官）· <a href="2010_完形_霍桑效应遭到质疑.html" style="color:var(--accent)">2010 完形</a>的 plant（工厂）· <a href="2008_完形_高智商与遗传疾病.html" style="color:var(--accent)">2008 完形</a>的 bird（人）。
+          </div>
+        </div>
+
+        <div class="q" id="q6" data-ans="1">
+          <div class="qhead"><span class="qno">6</span><span class="qt c-context">上下文语义 · 形容词＋to</span><span class="qpos">make itself ___ to the code of conduct</span></div>
+          <span class="stem"><b>At the very least</b>, the court <b>should</b> make itself <em>6</em> to the code of conduct that applies to the rest of the federal judiciary.</span>
+          <div class="opts">
+            <div class="opt">A resistant<span class="gl">抵制的，抗拒的</span></div>
+            <div class="opt">B subject<span class="gl">受……支配的，服从的</span></div>
+            <div class="opt">C immune<span class="gl">免疫的，不受影响的</span></div>
+            <div class="opt">D prone<span class="gl">易于（遭受坏事）的</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span><code>make itself ＋ 形容词（宾补）＋ to ＋ 名词</code>。<b>四个选项都能接 to，搭配本身不区分，只能比方向。</b>
+            <span class="lbl">🔗 线索</span>① 上一句「大法官不受守则约束」是问题，本句 <code>At the very least … should</code> 是<b>最低限度的对策</b> ⟹ 空格＝「受约束」；② ⭐⭐ <b>⑥❶ <code>making themselves <u>accountable</u> to the code of conduct</code> 是本句框架的逐字复现</b>（make oneself ___ to the code of conduct）⟹ <b>6 与 19 互为答案</b>。
+            <span class="lbl">✅ B subject</span><code>be subject to</code>＝服从、受……支配（be subject to the law 受法律约束）。代入＝「最起码，最高法院应当让自己<b>服从</b>那套适用于联邦司法系统其他部门的行为守则」。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>resistant to 抵制（常指新事物、变化）——<b>「不受影响」方向</b>：代入后成了「法院应该抵制守则」，<b>把问题当成了对策</b>。</div>
+              <div class="wr"><span class="l">C</span>immune to 免疫（常接疾病、惩罚、批评）——与 A 同一方向：「法院应该免于守则的影响」，与上一句的批评正好相反。</div>
+              <div class="wr"><span class="l">D</span>prone to 易于（遭受坏事、犯错）：prone to error／injury。守则不是坏事，「易于受守则影响」语义别扭且带贬义。</div>
+            </div>
+            <span class="lbl">💡 迁移</span><b>四个选项都能接同一个介词时，搭配题就变成了方向题</b>：本题 resistant／immune（不受）vs subject／prone（受），先按「受不受」二分，再在「受」那一栏里挑褒贬对的。<br>📌 <b>跨年对照</b>：<a href="2008_完形_高智商与遗传疾病.html#q19" style="color:var(--accent)">2008 完形 19 题</a>考的是<b>动词</b> <code>subject sb to sth</code>（使某人遭受），本题考的是<b>形容词</b> <code>be subject to</code>（受……支配）——同一个词、两种词性，两年各考一次。
+          </div>
+        </div>
+
+        <div class="q" id="q7" data-ans="3">
+          <div class="qhead"><span class="qno">7</span><span class="qt c-collo">固定搭配 · 动词＋to</span><span class="qpos">定语从句的谓语（守则 ___ to 人）</span></div>
+          <span class="stem">…the code of conduct that <em>7</em> to <b>the rest of the federal judiciary</b>.</span>
+          <div class="opts">
+            <div class="opt">A resorts<span class="gl">（无奈时）诉诸，求助于</span></div>
+            <div class="opt">B sticks<span class="gl">坚持（决定、原则）</span></div>
+            <div class="opt">C leads<span class="gl">导致，通向</span></div>
+            <div class="opt">D applies<span class="gl">适用于</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>定语从句修饰 the code of conduct ⟹ <b>空格的主语是「守则」</b>，宾语是「联邦司法系统的其他部门」。四个都是「v.＋to」短语。
+            <span class="lbl">🔗 线索</span>主语是一套规则、宾语是一群人 ⟹ 规则与人的标准关系＝「适用于」。再加 <code>the rest of</code>（其余的）：暗示<b>其他联邦法官已经受这套守则管，只有最高法院例外</b>——这正是本段的批评点。
+            <span class="lbl">✅ D applies</span><code>apply to</code>＝适用于。<b>规章、法律、守则作主语时，apply to 几乎是唯一的谓语</b>（The rule applies to everyone）。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>resort to＝走投无路时诉诸某手段，主语须是人。守则不会「求助于司法部门」。</div>
+              <div class="wr"><span class="l">B</span>stick to＝坚持（决定、原则），主语须是有意志的人。「守则坚持司法部门」不通。</div>
+              <div class="wr"><span class="l">C</span>lead to＝导致，宾语是结果。「守则导致了联邦司法系统的其他部门」——司法部门不是守则的产物。</div>
+            </div>
+            <span class="lbl">💡 迁移</span><b>四个「v.＋to」短语比不出高下时，先看主语是人还是规则</b>：resort／stick 要人作主语，lead 要结果作宾语，只有 apply 能让「规则 → 人」这条关系成立。<b>这一刀与 <a href="2008_完形_高智商与遗传疾病.html" style="color:var(--accent)">2008 完形</a>「先问主语是人还是物」同源。</b>
+          </div>
+        </div>
+
+        <div class="q" id="q8" data-ans="1">
+          <div class="qhead"><span class="qno">8</span><span class="qt c-context">上下文语义 · 动词</span><span class="qpos">单句段（过渡段）的谓语</span></div>
+          <span class="stem"><b>This and other similar cases</b> <em>8</em> <b>the question of whether</b> there is still a line between the court and politics.</span>
+          <div class="opts">
+            <div class="opt">A evade<span class="gl">回避；难倒（某人）</span></div>
+            <div class="opt">B raise<span class="gl">引发，提出</span></div>
+            <div class="opt">C deny<span class="gl">否认；拒绝</span></div>
+            <div class="opt">D settle<span class="gl">解决，了结（争论）</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>主语＝「这件事及其他类似事件」（回指②段斯卡利亚出席政治活动），宾语＝「……是否还存在界限」这个问题。<b>raise／settle／evade a question 都是地道搭配，搭配不区分，只看方向。</b>
+            <span class="lbl">🔗 线索（跨句）</span>这些事件在前文被写成<b>负面的</b>（削弱声誉、判决更难被视为公正）⟹ 它们对「法院与政治还有没有界限」这个问题的作用只能是<b>挑起</b>它；而且③段只有一句、下面④⑤⑥整整三段都在谈这个问题 ⟹ 本句是<b>引出下文的过渡句</b>。
+            <span class="lbl">✅ B raise</span><code>raise a question</code>＝引发疑问、提出问题。代入＝「这件事以及其他类似事件<b>引发</b>了一个问题：……」——问题被提出，后三段才有东西可谈。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">D</span><b>⚠️ 最有迷惑性的一项</b>：<code>settle the question of whether …</code>＝了结「是否……」的争论，搭配完全地道。<b>但方向反了</b>：涉政事件恰恰是<b>挑起</b>争论的原因；而且问题若已「解决」，下文三段就没必要写了。<b>过渡句的动词必须「打开」话题，不能「关上」话题。</b></div>
+              <div class="wr"><span class="l">A</span>evade：回避（主语须是人：He evaded the question）；取「难倒」义时宾语须是人（The answer evaded her）。事件不会回避问题，也不会难倒问题。</div>
+              <div class="wr"><span class="l">C</span>deny：否认，主语须能做判断；且问题本身无所谓真假——可以 deny a claim（否认一种说法），不能 deny a question。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>单句成段＝过渡段</b>：它的任务是把上文的「事例」转成下文的「议题」，<b>动词一定是 raise／pose／prompt／bring up 这类「开启」义</b>，不会是 settle／resolve／answer。<b>判据：数一数下文还有几段在谈这个问题——还有三段，这个问题显然没被解决。</b>
+          </div>
+        </div>
+
+        <div class="q" id="q9" data-ans="0">
+          <div class="qhead"><span class="qno">9</span><span class="qt c-context">上下文语义 · 名词</span><span class="qpos">there is still a ___ between A and B ⚠️ 我盲做时犹豫过</span></div>
+          <span class="stem">…whether there is <b>still</b> a <em>9</em> <b>between the court and politics</b>.</span>
+          <div class="opts">
+            <div class="opt">A line<span class="gl">界限，分界线</span></div>
+            <div class="opt">B barrier<span class="gl">障碍，屏障</span></div>
+            <div class="opt">C similarity<span class="gl">相似之处</span></div>
+            <div class="opt">D conflict<span class="gl">冲突，分歧</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>there be 句型的主语，由 <code>between A and B</code> 修饰 ⟹ 空格描述「法院与政治之间的某种关系」。<b><code>still</code>（仍然）暗示这东西原本存在、现在可能没了。</b>
+            <span class="lbl">🔗 线索（跨句 · 答案在<u>下文</u>）</span>④❶ <code>law … having authority <b>apart from</b> politics</code> · ④❸ <code>set law <b>apart from</b> politics</code> · ⑥❷ <code>seen as <b>separate from</b> politics</code>——<b>全文三次说「法律与政治分开」，本空就是这个「分开」的名词形式。</b>
+            <span class="lbl">✅ A line</span>分界线、界限。<code>a line between A and B</code>／<code>draw a line between</code>／<code>blur the line between</code> 是「界限」的标准说法。代入＝「最高法院与政治之间是否还存在一条<b>界限</b>」。
+            <span class="lbl">❌ 另外三个错在哪 —— 其中 B 是我犹豫过的</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span><b>⚠️ 我盲做时在 A、B 之间犹豫过。</b>barrier 也能接 between A and B，方向也是「分开」。黄皮书的理由是「barrier 含贬义、侧重阻碍沟通」——<b>对，但不够硬</b>。<b>真正的判据在⑤段</b>：⑤❶ 明说 <code>Constitutional law is political</code>，⑤❷ 说法院塑造的法律 <code>inescapably political</code>——<b>法律与政治注定有往来，二者之间不可能有一堵「屏障」（阻隔往来），只可能有一条「界线」（分得清）。</b>作者要的不是「法院与政治不来往」，而是「二者分得清」。</div>
+              <div class="wr"><span class="l">C</span>similarity：「法院与政治之间是否还有相似之处」——作者担心的是二者<b>太像</b>（大法官像政客），不是不够像，方向反。</div>
+              <div class="wr"><span class="l">D</span>conflict：「是否还有冲突」预设二者本该冲突、冲突减少是坏事；全文的焦点是「分离」而不是「对抗」。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>过渡段里的抽象名词空，答案在<u>下文</u>的同义复现里</b>（R51 的反向用法）：单句段的任务是给下文命题，下文会把这个概念换着说好几遍——本篇 apart from ×2 ＋ separate from ×1。<br>📌 <b>两个近义名词挑不出来时，去找文章「承认」了什么</b>：⑤段承认「法律本身就带政治性」，这一句让 barrier 站不住、line 站得住。<b>让步段往往是近义词辨析的裁判。</b>
+          </div>
+        </div>
+
+        <div class="q" id="q10" data-ans="1">
+          <div class="qhead"><span class="qno">10</span><span class="qt c-collo">固定搭配 · 介词</span><span class="qpos">envision ＋ 宾语 ＋ ___ ＋ 补足语</span></div>
+          <span class="stem">The framers of the Constitution <b>envisioned</b> law <em>10</em> having authority apart from politics.</span>
+          <div class="opts">
+            <div class="opt">A by<span class="gl">通过，凭借（方式）</span></div>
+            <div class="opt">B as<span class="gl">作为，当作</span></div>
+            <div class="opt">C through<span class="gl">通过；由于</span></div>
+            <div class="opt">D towards<span class="gl">朝向；接近</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span><code>envision</code>（设想）＋ <code>law</code>（宾语）＋ ___ <code>having authority…</code> ⟹ 空格后的成分在说明「法律是什么样子」——这是<b>宾语补足语</b>的位置，不是方式状语的位置。
+            <span class="lbl">🔗 线索</span>envision 属于「看待、设想」类动词，与 see／regard／view／think of 同族，<b>都要求 as 引出宾补</b>：envision A as B＝把 A 设想为 B。
+            <span class="lbl">✅ B as</span>代入＝「宪法的制定者们把法律设想<b>为</b>拥有独立于政治之外的权威」。as 后面接动名词短语 having authority，完全合法（regard him as being reliable）。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>by 引出<b>方式、手段</b>——「制定者们<b>通过</b>拥有独立权威来设想法律」，把「法律的属性」读成了「设想的方法」；而「拥有权威」的主语是法律，不是制定者。</div>
+              <div class="wr"><span class="l">C</span>through 同 A：引出方式或原因，都不是宾补。</div>
+              <div class="wr"><span class="l">D</span>towards 朝向，常接在趋向性动词后（move／lean／tend towards）；envision 不表趋向，「朝着拥有权威的方向设想法律」不成话。</div>
+            </div>
+            <span class="lbl">💡 迁移</span><b>「看作、视为」族动词后面一律接 as</b>：see／regard／view／look upon／think of／treat／envision／accept／describe ＋ A ＋ <b>as</b> ＋ B。例外只有两个要单记：<code>consider A (to be) B</code>（as 可有可无）、<code>call A B</code>（不用 as）。<br>📌 本篇一共五个 as，这是唯一一个<b>空格就是 as 本身</b>的——见 <a href="#as5" style="color:var(--accent)">02++</a>。
+          </div>
+        </div>
+
+        <div class="q" id="q11" data-ans="0">
+          <div class="qhead"><span class="qno">11</span><span class="qt c-logic">逻辑关系 · 连词</span><span class="qpos">两个分句之间（从句含 would）</span></div>
+          <span class="stem">They gave justices <b>permanent positions</b> <em>11</em> they <b>would</b> be free to upset those in power and have no need to cultivate political support.</span>
+          <div class="opts">
+            <div class="opt">A so<span class="gl">（＝so that）以便；所以</span></div>
+            <div class="opt">B since<span class="gl">自从；既然</span></div>
+            <div class="opt">C provided<span class="gl">只要，假如</span></div>
+            <div class="opt">D though<span class="gl">虽然</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>两个分句之间的连词。<b>从句里有情态动词 would</b>——这是目的状语从句的语法标记（so that ＋ can／could／will／would）。
+            <span class="lbl">🔗 线索</span>主句「给大法官终身职位」是<b>手段</b>，从句「能毫无顾忌地挫败当权者、无需争取政治支持」是<b>目的</b>：终身任职 ⟹ 不怕被撤职 ⟹ 敢于独立判案。上一句 <code>law … having authority apart from politics</code> 给了这个目的的来源。
+            <span class="lbl">✅ A so</span>so 在这里＝so that（以便），省略了 that。代入＝「他们给了大法官终身职位，<b>以便</b>他们能毫无顾忌地……」。<b>从句里的 would 就是它的身份证。</b>
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>since：取「自从」义时间逻辑不通；取「既然、因为」义则把从句当成主句的<b>原因</b>——「因为大法官能自由地挫败当权者，所以给他们终身职位」，<b>因果倒挂</b>（能自由恰恰是终身职位带来的）。</div>
+              <div class="wr"><span class="l">C</span>provided：只要、假如——把从句当<b>条件</b>：「只要大法官能自由……，就给他们终身职位」。可「自由」是终身职位的<b>结果</b>，不是前提。</div>
+              <div class="wr"><span class="l">D</span>though：虽然——两句之间没有对立，「给职位」与「让他们自由」方向一致。</div>
+            </div>
+            <span class="lbl">💡 迁移</span><b>从句连词空，先看从句的谓语</b>：<code>would／could／can／may ＋ 动词原形</code> 且句意是「为了……」⟹ so that／in order that。<b>主从之间是「手段 → 目的」还是「原因 → 结果」，就看从句写的是「想达到的」还是「已发生的」。</b><br>🎭 背景：美国宪法第三条规定联邦法官「行为良好期间」任职；汉密尔顿在《联邦党人文集》第 78 篇里论证的正是「终身任职是司法独立最好的保障」——<b>本句是它的一句话版本</b>。
+          </div>
+        </div>
+
+        <div class="q" id="q12" data-ans="2">
+          <div class="qhead"><span class="qno">12</span><span class="qt c-context">上下文语义 · 动词（熟词僻义）</span><span class="qpos">be free to ___ those in power</span></div>
+          <span class="stem">…so they would <b>be free to</b> <em>12</em> <b>those in power</b> <b>and</b> have no need to cultivate political support.</span>
+          <div class="opts">
+            <div class="opt">A serve<span class="gl">为……服务</span></div>
+            <div class="opt">B satisfy<span class="gl">使满意</span></div>
+            <div class="opt">C upset<span class="gl">挫败，打乱（计划）</span></div>
+            <div class="opt">D replace<span class="gl">取代，替换</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>be free to 后的动词原形，宾语 <code>those in power</code>（当权者）。与 and 后的 <code>have no need to cultivate political support</code> 并列 ⟹ <b>两半说的是同一件事：独立于政治</b>。
+            <span class="lbl">🔗 线索</span>① <b><code>be free to do</code>＝可以毫无顾忌地做——后面接的是「本来不敢做的事」</b>（没有终身职位，谁敢得罪当权者？）；② 上一句 <code>authority apart from politics</code> ⟹ 法官对当权者的关系是「不必迎合，甚至可以对着干」。
+            <span class="lbl">✅ C upset</span>熟词僻义＝<b>挫败、打乱（计划）；（比赛中）爆冷击败</b>，不是「使心烦」。代入＝「他们可以毫无顾忌地<b>挫败</b>当权者」——最高法院通过违宪审查宣布总统或国会的行为无效，正是「挫败当权者」的日常形态。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>serve 为当权者服务——<b>「依附」方向</b>，恰恰是没有独立性的法官才会做的事。<b>它配 have to（不得不）才通，配 be free to（可以自由地）就自相矛盾</b>：谁需要「自由」才能去讨好当权者？</div>
+              <div class="wr"><span class="l">B</span>satisfy 使当权者满意——与 A 同病，是「依附」一栏。</div>
+              <div class="wr"><span class="l">D</span>replace 取代当权者——法官取代总统或国会，违背三权分立；且「给终身职位是为了让法官能取代当权者」荒谬。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>be free to ＋ ___ 的空，填「有风险、本来不敢做」的动作</b>；<b>have to／be forced to ＋ ___ 的空，填「不情愿、被迫做」的动作</b>——同一组选项，前面的框架一换，答案就翻面。<br>🔤 upset 的熟词僻义一次背全：<b>打乱（upset the plan）· 打破（upset the balance）· 爆冷击败（upset the champion；n. 爆冷）· 使肠胃不适（an upset stomach）</b>。
+          </div>
+        </div>
+
+        <div class="q" id="q13" data-ans="2">
+          <div class="qhead"><span class="qno">13</span><span class="qt c-word">词义辨析 · 动词</span><span class="qpos">have no need to ___ political support</span></div>
+          <span class="stem">…be free to upset those in power <b>and have no need to</b> <em>13</em> <b>political support</b>.</span>
+          <div class="opts">
+            <div class="opt">A confirm<span class="gl">确认；巩固</span></div>
+            <div class="opt">B express<span class="gl">表达，表示</span></div>
+            <div class="opt">C cultivate<span class="gl">培养，争取（支持）</span></div>
+            <div class="opt">D offer<span class="gl">提供</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>have no need to 后的动词原形，宾语 political support。与 12 空并列，<b>方向同为「独立」</b>。
+            <span class="lbl">🔗 线索</span>没有终身职位的人需要做什么才能保住位子？——<b>去赢得、去经营</b>政治支持。<b>no need to 后面接的是「本来不得不做的事」</b>，恰好与 12 空的 free to（本来不敢做的事）一左一右。
+            <span class="lbl">✅ C cultivate</span>熟词僻义＝<b>培养、争取（关系、支持、形象）</b>，不是「耕种」。<code>cultivate support／relationships／an image</code> 是地道搭配，暗含「从无到有、长期经营」之意。代入＝「也无需去<b>争取</b>政治支持」。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span><b>⚠️ 最有迷惑性的一项</b>：「无需表达政治支持」读起来也像「法官保持中立」。但 <code>express support</code> 的主语是<b>给出支持的一方</b>——法官表达对某政党的支持；而本句的逻辑是「终身职位让法官不必<b>依赖</b>政治支持」，法官是<b>需要支持的一方</b>。<b>方向（谁给谁）反了。</b></div>
+              <div class="wr"><span class="l">A</span>confirm 巩固、确认——预设政治支持已经存在，只是再加强；与「独立于政治」的原意不合。</div>
+              <div class="wr"><span class="l">D</span>offer 提供——法官向谁提供政治支持？与 B 同病（方向反），且法官本就不从事政治事务。</div>
+            </div>
+            <span class="lbl">💡 迁移</span><b>support 的动词按「谁给谁」分两栏</b>：<b>获取方</b>——cultivate／win／seek／gain／enlist support；<b>给予方</b>——offer／express／lend／give support。<b>先判空格主语在哪一栏，再挑词。</b><br>📌 <b>12＋13 是一对并列连体空</b>（R50）：两个空填完念一遍——「可以毫无顾忌地挫败当权者，也无需去争取政治支持」——一个说「不怕」、一个说「不求」，合起来才是「独立」。
+          </div>
+        </div>
+
+        <div class="q" id="q14" data-ans="3">
+          <div class="qhead"><span class="qno">14</span><span class="qt c-context">上下文语义 · 过去分词</span><span class="qpos">precisely because they are so closely ___</span></div>
+          <span class="stem">Our legal system was designed to <b>set law apart from politics</b> <b>precisely because</b> they are so closely <em>14</em>.</span>
+          <div class="opts">
+            <div class="opt">A guarded<span class="gl">保护，守卫</span></div>
+            <div class="opt">B followed<span class="gl">遵循；跟随</span></div>
+            <div class="opt">C studied<span class="gl">研究</span></div>
+            <div class="opt">D tied<span class="gl">联系在一起，紧密相连</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>because 从句的被动谓语（are ___），<code>they</code>＝law 与 politics（复数，不是单数的 our legal system），<code>closely</code> 修饰空格 ⟹ 空格描述「法律与政治之间是什么状态」。
+            <span class="lbl">🔗 线索</span>⭐ <b>句内反义对举</b>：主句的目标是 set law <b>apart</b> from politics（分开），原因从句里的 closely ___ 必须是它的反面（紧密连在一起）。<b><code>precisely because</code>（恰恰因为）专门引出「反直觉的原因」</b>：越是分不开，才越要刻意分开。
+            <span class="lbl">✅ D tied</span><code>be closely tied</code>＝紧密相连。代入＝「我们的法律体系之所以被设计成让法律与政治分离，<b>恰恰是因为</b>二者联系得太紧密了」。<b>它也是⑤段的伏笔</b>：⑤段马上承认「宪法性法律本身就是政治性的」。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>guarded：「法律与政治都受到严密保护，所以要把它们分开」——保护与分离之间没有因果，且文中从未谈及二者受到威胁。</div>
+              <div class="wr"><span class="l">B</span>followed：「都被严格遵守，所以要分开」——说的是人对法律与政治的态度，<b>丢掉了「二者之间的关系」这个焦点</b>。</div>
+              <div class="wr"><span class="l">C</span>studied：与 B 同病；closely 在这里修饰的是「联系有多紧」，不是「研究得多细」。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>「A 是为了（让二者分开／平衡／独立），precisely because 二者 ___」——空格填主句目标的反义词</b>。precisely because／only because／just because 都在提示「原因与结果方向相反」，这是英语里最典型的<b>悖论式因果</b>。<br>📌 <b>代词的数也是判据</b>：they 是复数，只能指 law 和 politics 两个名词，不能指单数的 our legal system——<b>所以空格说的是「法律与政治的关系」，不是「法律体系的状态」</b>，B、C 就是在这一步读偏的。
+          </div>
+        </div>
+
+        <div class="q" id="q15" data-ans="0">
+          <div class="qhead"><span class="qno">15</span><span class="qt c-word">词义辨析 · 名词（上位词）</span><span class="qpos">fundamental social ___ like A and B ⚠️ 我盲做时犹豫过</span></div>
+          <span class="stem">…choices rooted in fundamental social <em>15</em> <b>like liberty and property</b>.</span>
+          <div class="opts">
+            <div class="opt">A concepts<span class="gl">观念，概念</span></div>
+            <div class="opt">B theories<span class="gl">理论，学说</span></div>
+            <div class="opt">C divisions<span class="gl">分歧；部门</span></div>
+            <div class="opt">D conventions<span class="gl">惯例，习俗；公约</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>名词空，由 fundamental social 修饰、由 <code>like liberty and property</code> 举例 ⟹ <b>空格＝「自由」和「财产（权）」的上位类名</b>。
+            <span class="lbl">🔗 线索</span>举例结构 <code>N like A and B</code> 里，A 和 B 必须是 N 的成员。<b>验算法：把例子代进「A is a ___」</b>——Liberty is a <b>concept</b> ✓ · Liberty is a theory ✗ · Liberty is a division ✗ · Liberty is a convention ✗。
+            <span class="lbl">✅ A concepts</span>观念、概念。<code>social concepts like liberty and property</code>＝自由、财产权这类基本的社会观念——宪法性法律正是在这些观念之间取舍（言论自由与公共秩序、财产权与公共利益），所以才说它「具有政治性」。
+            <span class="lbl">❌ 另外三个错在哪 —— 其中 D 是我犹豫过的</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">D</span><b>⚠️ 我盲做时犹豫过的一项。</b>convention 有「惯例、习俗、公约」三义，<code>social conventions</code>（社会习俗）也是地道搭配——<b>但自由和财产权不是「约定俗成的做法」</b>，它们是抽象的价值与权利。「Liberty is a convention」不成立，一句就判死。</div>
+              <div class="wr"><span class="l">B</span>theories 理论、学说——自由、财产是单个概念，不是一整套解释性的学说（「自由主义」才是 theory）。</div>
+              <div class="wr"><span class="l">C</span>divisions 分歧、部门——自由与财产不是「分歧」，也不是「部门」。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>「like／such as／including ＋ 例子」前面的名词空，一律用「例子 is a ___」代入检验</b>——这是完形里最快的一种验算，一秒排三个。<b>它与阅读「类别名概括题照抄作者的归类」（<a href="套路库_阅读.html#R118" style="color:var(--accent)">R118</a>）是同一个动作：找上位词。</b><br>🔤 property 在这里＝<b>财产（权）</b>，不是「属性」；liberty and property 是英美政治哲学的固定并称（洛克的 life, liberty and property）。
+          </div>
+        </div>
+
+        <div class="q" id="q16" data-ans="2">
+          <div class="qhead"><span class="qno">16</span><span class="qt c-context">上下文语义 · 动词</span><span class="qpos">the law it ___（省略关系词的定语从句）</span></div>
+          <span class="stem">When the court deals with social policy decisions, <b>the law it</b> <em>16</em> is inescapably political…</span>
+          <div class="opts">
+            <div class="opt">A excludes<span class="gl">排除，把……排斥在外</span></div>
+            <div class="opt">B questions<span class="gl">质疑，怀疑</span></div>
+            <div class="opt">C shapes<span class="gl">塑造，形成</span></div>
+            <div class="opt">D controls<span class="gl">控制，管理</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span><code>the law (that) it ___</code>——省略了关系词的定语从句，<b>it＝the court</b>，空格是从句谓语 ⟹ 问的是「最高法院对法律做了什么」。
+            <span class="lbl">🔗 线索（跨句 · 钥匙在全文最后一句）</span>空格句要解释上一句「宪法性法律具有政治性」：法院处理社会政策案件时，<b>它的判决本身就成了法律</b>——所以法院「做出来的」法律不可避免地带政治性。⑥❷ <code>their rulings … convincing <b>as law</b></code>（判决作为法律令人信服）——<b>判决＝法律</b>。
+            <span class="lbl">✅ C shapes</span>塑造、形成。代入＝「当最高法院处理社会政策方面的判决时，它所<b>塑造</b>的法律不可避免地带有政治性」。美国是<b>判例法</b>国家，最高法院的判决会成为此后同类案件必须遵循的先例——法院不只「适用」法律，还在「塑造」法律。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>excludes：「法院排除在外的法律带有政治性」——法院是最高司法机关，不会故意把法律排除在外；被排除的法律为什么会带政治性，也说不通。</div>
+              <div class="wr"><span class="l">B</span>questions：「法院质疑的法律带有政治性」——言下之意是法院认可的法律就没有政治性，与上一句「宪法性法律（整体）具有政治性」冲突。</div>
+              <div class="wr"><span class="l">D</span>controls：控制、管理法律的是立法机关（国会）；法院的判决能「塑造」法律，却谈不上「控制」法律。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>省略关系词的定语从句是完形的高发设空位</b>：<code>the law it ___</code>、<code>the book I ___</code>——先把 that 补回来，确认从句主语是谁（本句 it＝法院），再问「这个主语对先行词能做什么」。<br>📌 <b>本题是全篇 4 个跨句空之一，钥匙在全文最后一句——做到末段别急着收工，回头验一遍 16。</b>
+          </div>
+        </div>
+
+        <div class="q" id="q17" data-ans="0">
+          <div class="qhead"><span class="qno">17</span><span class="qt c-collo">固定搭配 · as 框架</span><span class="qpos">are so easily ___ as ＋ 贬义补足语</span></div>
+          <span class="stem">…which is why decisions split along ideological lines are so easily <em>17</em> <b>as unjust</b>.</span>
+          <div class="opts">
+            <div class="opt">A dismissed<span class="gl">不予理会；把……贬为</span></div>
+            <div class="opt">B released<span class="gl">发布；释放</span></div>
+            <div class="opt">C ranked<span class="gl">把……列为（某等级）</span></div>
+            <div class="opt">D distorted<span class="gl">歪曲，曲解</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>why 从句里的被动谓语，后面紧跟 <code>as unjust</code> ⟹ 又一个「be ___ as ＋ 补足语」框架（本篇第二个 as 空，与 <a href="#q4" style="color:var(--accent)">4 题</a>成对）。⚠️ 先把主语读对：<code>decisions split along ideological lines</code> 里的 split 是<b>过去分词作后置定语</b>，真正的谓语是 <code>are … ___</code>（见 <a href="#s5" style="color:var(--accent)">长难句 s5</a>）。
+            <span class="lbl">🔗 线索</span>① as 后的补足语 <code>unjust</code>（不公正）是<b>贬义</b> ⟹ 空格要用「否弃族」动词；② 破折号前一句「法院塑造的法律不可避免地带政治性」是<b>原因</b>，<code>which is why</code> 引出<b>结果</b>：既然带政治性，意识形态分裂的判决就很容易被一些人<b>斥为不公、不予接受</b>。
+            <span class="lbl">✅ A dismissed</span><code>dismiss A as B</code>＝把 A 贬为 B 而不予理会（dismiss the idea as nonsense）。代入＝「这就是为什么那些按意识形态阵营分裂的判决如此容易被<b>斥为</b>不公正」——一个动作同时装下「认定不公」与「不予接受」两层意思。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">D</span><b>⚠️ distort 也是贬义、也能勉强接 as，但它的<u>预设</u>错了</b>：「被曲解为不公正」＝判决本来是公正的，被别人歪曲了。<b>而作者的立场恰恰是「法院确实带着政治性，所以要受守则约束」</b>——他没有替判决喊冤。<b>选项的预设与作者立场冲突，比词义冲突更隐蔽。</b></div>
+              <div class="wr"><span class="l">B</span>released 发布、释放——判决可以「被发布」，但 released as unjust（作为不公正的判决被发布）不成话：没有哪个法院会以「不公正」的名义发布判决。</div>
+              <div class="wr"><span class="l">C</span>ranked：<code>rank A as B</code>＝把 A 列为某等级，暗含比较与排序（ranked as the best）。「公正与否」是是非判断，不是等级高低。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>与 4 题合看：本篇两个 as 空，一褒一贬、同一把刀</b>——4 题 as impartial（褒）⟹ 接受族 accepted；17 题 as unjust（贬）⟹ 否弃族 dismissed。<b>先看 as 后面的补足语，再挑动词族。</b><br>📌 <b>否弃族内部再分预设</b>：dismiss（认定它就是这样、不予理会）vs distort（它本来不是这样、被歪曲了）vs challenge（对它提出正式质疑）——<b>挑与作者立场相容的那一个。</b>
+          </div>
+        </div>
+
+        <div class="q" id="q18" data-ans="2">
+          <div class="qhead"><span class="qno">18</span><span class="qt c-word">词义辨析 · 动词（熟词僻义）</span><span class="qpos">must ___ doubts about … by doing</span></div>
+          <span class="stem">The justices <b>must</b> <em>18</em> <b>doubts about the court's legitimacy</b> <b>by making themselves accountable to the code of conduct</b>.</span>
+          <div class="opts">
+            <div class="opt">A suppress<span class="gl">压制，镇压</span></div>
+            <div class="opt">B exploit<span class="gl">利用（谋私）；开发</span></div>
+            <div class="opt">C address<span class="gl">设法解决，处理</span></div>
+            <div class="opt">D ignore<span class="gl">忽视，不理会</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>must 后的动词原形，宾语是「对法院合法性的质疑」，<b>by doing 给出了具体的方法</b> ⟹ 空格动作必须能被「让自己对守则负责」这个方法实现。
+            <span class="lbl">🔗 线索</span>① must 表<b>建议</b>，本段是全文的对策段；② <code>by making themselves accountable …</code>＝通过<b>接受约束、正面回应</b>来达成——这个方法只能用来「解决」质疑，不能用来「压制」或「利用」质疑。③ 镜像：①❷ 说合法性 cannot be maintained（守不住），本句说要回应对合法性的质疑——<b>1 与 18 首尾一对</b>。
+            <span class="lbl">✅ C address</span>熟词僻义＝<b>设法解决、处理、应对</b>（address a problem／concerns／doubts），不是「地址」「演讲」。代入＝「大法官们必须通过让自己对行为守则负责，来<b>回应</b>人们对最高法院合法性的质疑」。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>suppress 压制——用「接受守则约束」的方式去压制质疑，手段与目的不配；且压制质疑本身就是作者批评的那种做法。</div>
+              <div class="wr"><span class="l">B</span>exploit 利用（谋私）——「利用人们的质疑」带阴谋意味，与对策段的正面口吻相悖；取「充分利用（优势）」义则质疑不是优势。</div>
+              <div class="wr"><span class="l">D</span>ignore 忽视——must ignore（必须忽视）与 by making themselves accountable（通过主动接受问责）<b>直接自相矛盾</b>。</div>
+            </div>
+            <span class="lbl">💡 迁移</span><b>「must／should ＋ ___ ＋ 问题 ＋ by doing」的空，由 by 后面的方法反推</b>：方法是积极的（接受约束、公开透明）⟹ 动作只能是 address／tackle／resolve／deal with。<br>📌 <b>三缺一又成立</b>：suppress／exploit／ignore 三个都是「不正面处理」，address 是唯一的「正面处理」（本篇第二次，见 R74）。
+          </div>
+        </div>
+
+        <div class="q" id="q19" data-ans="3">
+          <div class="qhead"><span class="qno">19</span><span class="qt c-context">上下文语义 · 形容词＋to</span><span class="qpos">making themselves ___ to the code of conduct（②❹ 的镜像）</span></div>
+          <span class="stem">…by <b>making themselves</b> <em>19</em> <b>to the code of conduct</b>.</span>
+          <div class="opts">
+            <div class="opt">A accessible<span class="gl">可接近的；易懂的</span></div>
+            <div class="opt">B amiable<span class="gl">和蔼可亲的</span></div>
+            <div class="opt">C agreeable<span class="gl">令人愉快的；欣然同意的</span></div>
+            <div class="opt">D accountable<span class="gl">负有责任的，须作出交代的</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span><code>make oneself ＋ 形容词 ＋ to ＋ 名词</code>——<b>这个框架在②❹ 已经出现过一次</b>：<code>make itself <b>subject</b> to the code of conduct</code>。
+            <span class="lbl">🔗 线索</span>⭐⭐ <b>⑥❶ 是②❹ 的逐字复现</b>（make oneself ___ to the code of conduct），<b>6 空与 19 空互为答案</b>：②段说「应当<b>服从</b>守则」，⑥段说「应当对守则<b>负责</b>」——同一个对策说了两遍，一次在问题段、一次在对策段。
+            <span class="lbl">✅ D accountable</span><code>be accountable to</code>＝对……负责、须向……作出交代。代入＝「通过让自己<b>对</b>行为守则<b>负责</b>」——即服从守则、违反就承担后果，与②❹ 的 subject to 同义。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>accessible 可接近的、易懂的（accessible to sb 对某人来说容易接触）——<b>「好相处」一栏</b>。「让自己对守则易于接近」不是法官与规则之间的关系。</div>
+              <div class="wr"><span class="l">B</span>amiable 和蔼可亲的——形容人的性格，与 A 同栏；「对守则和蔼可亲」不知所云。</div>
+              <div class="wr"><span class="l">C</span>agreeable to 虽能接计划（agreeable to the plan＝乐意同意），但意思是「<b>乐意</b>」，而作者要的是「<b>受约束、被问责</b>」——一个是态度，一个是义务。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐⭐ <b>社论型完形的末段是前文「问题段」的镜像</b>：同一个框架句换个词、换个极性再说一遍——<b>做到末段见到「似曾相识的句子」，立刻翻回去对照，那边的空就是这边的答案</b>（见 <a href="#mirror" style="color:var(--accent)">02+ 镜像表</a>：6↔19 · 4↔⑥❷ · 1↔18）。<b>反过来也成立：做 6 空拿不准时，先跳到末段看 19 所在的句子。</b><br>📌 <b>三缺一第三次成立</b>（accessible／amiable／agreeable 同栏）——<b>本篇 4／18／19 三次，三次孤立项都是答案</b>。
+          </div>
+        </div>
+
+        <div class="q" id="q20" data-ans="3">
+          <div class="qhead"><span class="qno">20</span><span class="qt c-logic">逻辑关系 · 插入的连接语</span><span class="qpos">末空 · 插在 and 与第二个补足语之间</span></div>
+          <span class="stem">That would make <b>their rulings</b> more likely to be seen as <b>separate from politics</b> and, <em>20</em>, <b>convincing as law</b>.</span>
+          <div class="opts">
+            <div class="opt">A by all means<span class="gl">务必；当然可以</span></div>
+            <div class="opt">B at all costs<span class="gl">不惜任何代价</span></div>
+            <div class="opt">C in a word<span class="gl">总之，简言之</span></div>
+            <div class="opt">D as a result<span class="gl">因此，结果</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>插在 and 与第二个补足语 <code>convincing as law</code> 之间的<b>逻辑连接语</b>，衔接 X（被视为与政治分离）与 Y（作为法律令人信服）。<b>全篇最后一个空，但它不在句首。</b>
+            <span class="lbl">🔗 线索 ⭐ 先用「末空三问」（R103）的第一问：主语换人了吗？</span><b>没换。</b>X 与 Y 的主语都是 <code>their rulings</code>（他们的判决）⟹ <b>同一主体</b>，才轮到考虑因果。再看内容：判决被视为独立于政治 ⟹ 所以作为法律更有说服力——这正是全文的因果链（合法性来自独立性，①❷ 已经埋下）。
+            <span class="lbl">✅ D as a result</span>因此、结果。代入＝「那样将使他们的裁决更可能被视为与政治相分离，<b>从而</b>作为法律也更令人信服」——一句话收住全文：①段的问题（合法性受损）在这里走到了对策的终点（令人信服）。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>by all means：「务必、一定」（强调必须做某事）或「当然可以」（回答请求）——空格后是对判决属性的评价，不是待办事项，也不是许可。</div>
+              <div class="wr"><span class="l">B</span>at all costs：「不惜一切代价」，强调为达目的愿付任何代价——「令人信服」是前一属性的<b>自然结果</b>，不需要付出代价去争取。</div>
+              <div class="wr"><span class="l">C</span>in a word：「总之、简言之」，用来<b>概括</b>前文——但 convincing as law 是<b>新信息</b>（前文从未说过判决「令人信服」），不是对「与政治分离」的简单总结。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐⭐ <b>2012 是 R103「末空三问」的对照情形</b>：<a href="2011_完形_笑与情绪的方向之争.html#q20" style="color:var(--accent)">2011 末空</a>主语换了人（微笑 → 大笑）⟹ 类比 Similarly；<b>2012 末空主语没换（their rulings）⟹ 因果 as a result 成立</b>。<b>三问不是为了排除因果，而是为了让因果「持证上岗」。</b><br>📌 <b>四年末空四种形态</b>：<a href="2009_完形_智力的代价.html#q20" style="color:var(--accent)">2009</a> 收口 · <a href="2010_完形_霍桑效应遭到质疑.html#q20" style="color:var(--accent)">2010</a> 不是收口（收口句没设空）· 2011 收口句考类比 · <b>2012 收口句考因果，且空格插在句中 and 之后</b>。
+          </div>
+        </div>
+      </section>
+
+      <!-- ========== 02+ 镜像 ========== -->
+      <section class="card" id="mirror">
+        <h2><span class="n">02+</span>⭐⭐ 末段是②段的镜像：一张表验五个空（本页最值钱的一段）</h2>
+        <p class="note">社论的骨架是「<b>问题 → 原因 → 对策</b>」。<b>对策段往往就是把问题段换个极性、换个近义词再说一遍</b>——本篇②段已经把「问题—原因—对策」完整走了一遍，⑥段又走了一遍。<b>两遍对齐，五个空互相验算。</b></p>
+        <div class="tabwrap"><table class="otab">
+          <tr><th>前文（问题 / 诊断）</th><th>末段（对策 / 处方）</th><th>这一对管哪几个空</th></tr>
+          <tr><td>②❹ the court should <b>make itself <u>6 subject</u> to the code of conduct</b></td><td>⑥❶ by <b>making themselves <u>19 accountable</u> to the code of conduct</b></td><td><b>6 ↔ 19</b>：框架一字不差，互为答案（服从 ≈ 负责）</td></tr>
+          <tr><td>②❷ makes it <b>less likely</b> that the court's decisions will be <b><u>4 accepted</u> as</b> impartial judgments</td><td>⑥❷ make their rulings <b>more likely</b> to be <b>seen as</b> separate from politics</td><td><b>4</b>：less → more 换极性，accepted as ≈ seen as</td></tr>
+          <tr><td>①❷ The court cannot <b><u>1 maintain</u> its legitimacy</b></td><td>⑥❶ must <b><u>18 address</u> doubts about the court's legitimacy</b></td><td><b>1 ↔ 18</b>：合法性守不住 → 已受质疑 → 必须回应</td></tr>
+          <tr><td>①❷ legitimacy as guardian of the rule of <b>law</b></td><td>⑥❷ and, <b><u>20 as a result</u>, convincing as law</b></td><td><b>20</b>：因果终点——与政治分离 ⟹ 作为法律令人信服</td></tr>
+          <tr><td>③ whether there is still a <b><u>9 line</u></b> between the court and politics</td><td>⑥❷ seen as <b>separate from</b> politics</td><td><b>9</b>：界限 ↔ 分离（中间还隔着④段两个 apart from）</td></tr>
+        </table></div>
+        <div class="flow" style="margin-top:14px">
+          <div class="fi"><b>① 怎么用：做到末段，把前文的问题句逐条列出来，找镜像。</b>
+            <span class="ev">末段的对策几乎不会引入新概念——它要解决的就是前面提过的问题。<b>见到「似曾相识的句子」（make oneself … to the code of conduct 第二次出现），立刻翻回去对照。</b></span></div>
+          <div class="fi"><b>② 反过来用：做前面的空拿不准时，先跳到末段看对策句。</b>
+            <span class="ev">6 空若在 subject／prone 之间犹豫，跳到⑥❶ 一看 <code>accountable to the code of conduct</code>——「负责」只能对应「服从」，prone（易遭坏事）当场出局。<b>完形不必严格从 1 做到 20；社论型文章的末段是一张答案提示卡。</b></span></div>
+          <div class="fi"><b>③ ⚠️ 镜像给的是方向和词族，不是原词。</b>
+            <span class="ev">19 的答案不是再填一次 subject，而是它的近义词 accountable；⑥❷ 的 seen as 也不是 accepted as 的原词。<b>镜像的作用是「告诉你往哪边找」，四个选项里仍要挑那个真正能配上框架的。</b>另外要注意<b>极性可能翻转</b>：②❷ 是 less likely（问题），⑥❷ 是 more likely（对策）——<b>对错时别把 less／more 抄反。</b></span></div>
+          <div class="fi"><b>④ 与 2010 完形那一刀的区别</b>
+            <span class="ev"><a href="2010_完形_霍桑效应遭到质疑.html#q8" style="color:var(--accent)">2010 完形 8／9／10</a> 用的是「<b>定义句与改写句逐成分对齐</b>」（R73）：同一个概念说两遍，<b>极性不变</b>。本篇是「<b>问题句与对策句逐项对齐</b>」：同一件事从问题说到对策，<b>极性常常翻转</b>（less → more、cannot maintain → must address）。<b>两刀同族——都是「同一个意思在文中出现两次，两处的空互为答案」——但对齐时要不要翻极性，得先认清是哪一种。</b></span></div>
+        </div>
+      </section>
+
+      <!-- ========== 02++ 五个 as ========== -->
+      <section class="card" id="as5">
+        <h2><span class="n">02++</span>⭐ 一篇五个 as：先看 as 贴着谁，再看 as 后面是褒是贬</h2>
+        <p class="note">266 词的文章里出现了<b>五处 as 结构</b>，命题人在其中三处设了空（4／10／17），<b>另拿一处造了一个假框架干扰项（1D recognize）</b>。<b>一个 as 一张卡，这一篇就是 as 框架的标本。</b></p>
+        <div class="tabwrap"><table class="otab">
+          <tr><th>位置</th><th>原文</th><th>as 贴着谁</th><th>本题怎么用</th></tr>
+          <tr><td>①❷</td><td>its legitimacy <b>as guardian</b> of the rule of law</td><td><b>名词</b> legitimacy（后置修饰：作为……的）</td><td><a href="#q1" style="color:var(--accent)">1 题</a> D recognize 的陷阱：看着像 recognize A as B，其实不是框架</td></tr>
+          <tr><td>②❷</td><td>will be <b>___ as impartial</b> judgments</td><td><b>动词</b>框架，补足语<b>褒</b></td><td><a href="#q4" style="color:var(--accent)">4 题</a> → 接受族 accepted（challenged／suspected 要接贬义）</td></tr>
+          <tr><td>④❶</td><td>envisioned law <b>___ having</b> authority</td><td><b>动词</b>框架（空格就是 as）</td><td><a href="#q10" style="color:var(--accent)">10 题</a> → as（看作族动词一律接 as）</td></tr>
+          <tr><td>⑤❷</td><td>are so easily <b>___ as unjust</b></td><td><b>动词</b>框架，补足语<b>贬</b></td><td><a href="#q17" style="color:var(--accent)">17 题</a> → 否弃族 dismissed（distorted 预设错）</td></tr>
+          <tr><td>⑥❷</td><td>be <b>seen as separate</b> … and, as a result, <b>convincing as law</b></td><td>seen as 贴动词（不设空）；convincing as 贴<b>形容词</b>（作为法律而言）</td><td>验算 4 题（less → more 的镜像）</td></tr>
+        </table></div>
+        <div class="flow" style="margin-top:14px">
+          <div class="fi"><b>第一步：as 贴着谁？</b>
+            <span class="ev"><b>判据是「A is B」改写</b>：「动词 ＋ A ＋ as ＋ B」若能改写成「A is B」（the decisions are impartial judgments ✓），as 贴动词、是框架；若改不通（its legitimacy is guardian ✗），as 只是贴在前面那个名词上的修饰语——<b>这时动词与 as 无关，别被「recognize A as B」这类熟搭配骗走</b>。</span></div>
+          <div class="fi"><b>第二步：as 后面是褒是贬？</b>
+            <span class="ev"><b>接受族</b>（补足语褒或中性）：accept · see · regard · view · recognize · envision · hail · describe<br><b>否弃族</b>（补足语贬）：dismiss · challenge · condemn · denounce · brand · reject<br>⟹ <b>4 题 as impartial（褒）选 accepted；17 题 as unjust（贬）选 dismissed——同一把刀，一褒一贬各砍一次。</b></span></div>
+          <div class="fi"><b>第三步：同族里再比预设。</b>
+            <span class="ev">否弃族内部：<b>dismiss</b>（认定它就是这样、不予理会）· <b>distort</b>（它本来不是这样、被歪曲了）· <b>challenge</b>（对它提出正式质疑）。<b>挑与作者立场相容的那一个</b>——作者承认判决带政治性，所以不能选「被歪曲」。</span></div>
+          <div class="fi"><b>⚠️ 别和 as 引导的从句混</b>
+            <span class="ev"><a href="2008_完形_高智商与遗传疾病.html#q13" style="color:var(--accent)">2008 完形 13 题</a>是 <code>as ＋ 主语 ＋ ___</code>（答案 affirm，「正如……所证实的」），as 后面跟的是<b>主谓</b>（as 引导的从句）；本篇五处 as 后面跟的都是<b>补足语或名词</b>。<b>先数 as 后面有没有谓语动词，再决定按哪一套规则做。</b></span></div>
+        </div>
+      </section>
+      <!-- ========== 03 考点分类 ========== -->
+      <section class="card">
+        <h2><span class="n">03</span>考点分类（完形不背单个空，要看「这题在考什么」）</h2>
+        <div class="catbar" id="catbar"></div>
+        <div class="catlegend" id="catlegend"></div>
+        <p class="note" style="margin-top:14px">点某一类 → 下方列出该类所有空、正文里同步高亮 → 点小格跳到解析卡。（分类依据不是“空格里填的是什么词”，而是<b>“解这一题你得做什么动作”</b>。）</p>
+        <div class="chips" id="chips"></div>
+        <div class="flow" style="margin-top:16px">
+          <div class="fi"><b>⭐ 六年对照：2012 是<u>语境型</u>的一年——八个上下文语义空，六年最多。</b>
+            <span class="ev"><div class="tabwrap"><table class="otab"><tr><th>年份</th><th>词义辨析</th><th>固定搭配</th><th>逻辑关系</th><th>上下文语义</th><th>这一年压在哪</th></tr>
+            <tr><td>2007</td><td>9</td><td>5</td><td>4</td><td>2</td><td>词义（占 45%）</td></tr>
+            <tr><td>2008</td><td>9</td><td>6</td><td><b>2</b></td><td>3</td><td>六道实义动词的主语适配</td></tr>
+            <tr><td>2009</td><td>6</td><td>5</td><td>5</td><td>4</td><td>四类几乎持平</td></tr>
+            <tr><td>2010</td><td>9</td><td>4</td><td>4</td><td>3</td><td>形容词与副词的“方向”</td></tr>
+            <tr><td>2011</td><td>6</td><td>3</td><td>6</td><td>5</td><td>一根因果箭头的方向</td></tr>
+            <tr><td><b>2012</b></td><td><b>5</b></td><td><b>4</b></td><td><b>3</b></td><td><b>8</b></td><td><b>作者的应然立场 ＋ 首尾镜像</b></td></tr></table></div>
+            ⟹ <b>六年六种分布，第六次坐实「完形没有万能重心」。</b>2012 的特殊之处：<b>词义辨析只有 5 个（六年最少）、上下文语义 8 个（六年最多）</b>——<b>这一年单背词义拿不满分，要读懂作者站在哪一边。</b></span></div>
+          <div class="fi"><b>⭐⭐ 八个语境空挂在同一根「应然轴」上（4 分）：法律应当与政治分开。</b>
+            <span class="ev"><b>3</b> weakened（涉政行为<u>损害</u>独立声誉）· <b>6</b> subject（应当<u>受</u>守则约束）· <b>8</b> raise（涉政事件<u>挑起</u>「还有没有界限」）· <b>9</b> line（法院与政治之间的<u>界限</u>）· <b>12</b> upset（终身职位让法官<u>敢</u>挫败当权者）· <b>14</b> tied（正因二者<u>太紧</u>才要分开）· <b>16</b> shapes（法院<u>塑造</u>的法律注定带政治性——轴的另一端）· <b>19</b> accountable（应当对守则<u>负责</u>）。<br><b>⟹ 做法：开考先把「应然」写成一句话（法律应当与政治分开），每个语境空只问一句：它把法院往政治那边推，还是往回拉。</b>（与 <a href="2011_完形_笑与情绪的方向之争.html" style="color:var(--accent)">2011 的因果箭头</a>是同一类动作：先立一根轴，再让空格对轴。）</span></div>
+          <div class="fi"><b>📐 四个搭配空里三个是 as 框架，一个是「v.＋to」</b>
+            <span class="ev"><code>be <b>accepted</b> as</code>（4）· <code>envision law <b>as</b></code>（10）· <code>be <b>dismissed</b> as</code>（17）· <code>the code … <b>applies</b> to</code>（7）。<b>as 框架的判法见 <a href="#as5" style="color:var(--accent)">02++</a>：先看 as 贴着谁，再看补足语褒贬。</b></span></div>
+          <div class="fi"><b>📐 线索位置统计（我自己数的，判据＝线索是否落在同一个句号之内）：句内自足 16 空 ／ 跨句 4 空。</b>
+            <span class="ev"><b>跨句（4）</b>：3（Yet 对上一句的应然）· 8（This and other similar cases 回指②段）· 9（下文的 apart from ×2 ＋ ⑤段的「分不开」）· 16（末句 rulings as law）。<br><b>句内自足（16）</b>：其余全部——其中 6 与 19 句内就能定，<b>镜像是验算，不是唯一线索</b>。<br>⟹ <b>句内比例 80%</b>（<a href="2010_完形_霍桑效应遭到质疑.html" style="color:var(--accent)">2010</a> 65% · <a href="2011_完形_笑与情绪的方向之争.html" style="color:var(--accent)">2011</a> 75% · <b>2012 80%</b>）。<b>第一遍只做句内空，8 分先锁住；第二遍处理那四个跨句的——而本篇我犹豫过的 9 正是其中之一。</b></span></div>
+          <div class="fi"><b>📌 位置预判第三次成立：三个逻辑空全在「成分首」。</b>
+            <span class="ev"><b>2</b>（从句首）· <b>11</b>（从句首）· <b>20</b>（and 之后、第二个补足语的开头）——<b>3/3</b>。<b>但注意 20 不在句首</b>：它插在句中，前后都有逗号。⟹ <b>「句首＝逻辑」可以扩写成「成分首＝逻辑」</b>：逗号隔开、插在并列成分之间的空，同样多半是连接语。</span></div>
+          <div class="fi"><b>📌 三缺一分组法一篇成立三次，无反例。</b>
+            <span class="ev"><b>4</b>：challenged／compromised／suspected（负面评价）＋ <b>accepted</b>（正面接纳）· <b>18</b>：suppress／exploit／ignore（不正面处理）＋ <b>address</b>（正面处理）· <b>19</b>：accessible／amiable／agreeable（好相处）＋ <b>accountable</b>（受问责）——<b>三次孤立的那一个都是答案</b>。另有 <b>8 题</b>可算半个：evade／deny／settle 都在「关上话题」、raise 是唯一「打开话题」。<b>分不出 3+1 的</b>如 3（2 正 2 负）、6（2 受 2 不受）、17（2 贬 2 中性）——这时老实读上下文。<b>逐组查过：本篇没有一组「成 3+1 但孤立项是错的」反例。</b>（<a href="2010_完形_霍桑效应遭到质疑.html" style="color:var(--accent)">2010</a> 用了两次，2012 用了三次。）</span></div>
+        </div>
+      </section>
+
+      <!-- ========== 04 打法 ========== -->
+      <section class="card">
+        <h2><span class="n">04</span>完形六大打法（本篇取证）</h2>
+        <div class="flow">
+          <div class="fi"><b>① 首句不设空 → 先定三要素</b>：话题、性质、语气。
+            <span class="ev">本篇首句是<b>「X 近来已成为一个重要议题」</b>（大法官的职业操守）⟹ <b>这是一篇时评／社论，结尾一定给建议</b>。果然：②❹ <code>should</code>、⑥❶ <code>must</code>。<b>凡首句是「议题」型，末段的空一律往「对策」方向填</b>——18 address、19 accountable、20 as a result 三个空都顺着「对策」走。</span></div>
+          <div class="fi"><b>② ⭐⭐ 社论型文章：先写下作者的「应然」一句话，再让语境空对轴</b>（本篇的主刀）。
+            <span class="ev">本篇的应然＝<b>法律应当与政治分开</b>（④段三次说 apart／set apart，⑥段一次说 separate）。<b>八个语境空</b>（3／6／8／9／12／14／16／19）<b>只问一句：它把法院往政治那边推，还是往回拉</b>——往政治那边推的是作者批评的（3 weakened、8 raise），往回拉的是作者要的（6 subject、12 upset、19 accountable）。<br>⚠️ <b>轴有两端，别只看一端</b>：⑤段是全文唯一的<b>让步</b>——承认「法律本身就带政治性」。<b>9 line（不是 barrier）与 16 shapes 都是靠这句让步定下来的。</b></span></div>
+          <div class="fi"><b>③ ⭐⭐ 问题—对策镜像：末段把前文的问题换极性再说一遍，两处的空互为答案。</b>
+            <span class="ev">②❹ make itself <b>6</b> to the code of conduct ↔ ⑥❶ making themselves <b>19</b> to the code of conduct · ②❷ <b>less</b> likely … <b>4</b> as impartial ↔ ⑥❷ <b>more</b> likely … seen as separate · ①❷ cannot <b>1</b> its legitimacy ↔ ⑥❶ <b>18</b> doubts about the court's legitimacy。<br><b>一张表管住五个空（见 <a href="#mirror" style="color:var(--accent)">02+</a>）</b>；做前面的空拿不准时，<b>先跳到末段看对策句</b>。</span></div>
+          <div class="fi"><b>④ ⭐ as 框架：先看 as 贴着谁，再看 as 后面是褒是贬。</b>
+            <span class="ev">一篇五个 as（<a href="#as5" style="color:var(--accent)">02++</a>）：<b>4</b> as impartial（褒）⟹ 接受族 accepted · <b>17</b> as unjust（贬）⟹ 否弃族 dismissed · <b>10</b> envision law as（看作族一律接 as）· <b>1D</b> recognize 是拿「its legitimacy as guardian」造的<b>假框架</b>（as 贴的是名词）。</span></div>
+          <div class="fi"><b>⑤ 三缺一分组法：本篇成立三次</b>（4／18／19）。
+            <span class="ev">四个选项按<b>极性</b>分组，成 3+1 就先看孤立的那一个：<b>4</b> 三负一正 · <b>18</b> 三个「不正面处理」一个「正面处理」· <b>19</b> 三个「好相处」一个「受问责」。<b>三次孤立项全是答案、本篇无反例。</b>⚠️ <b>分不出 3+1 就老实读上下文，别硬凑</b>（3 题 2 正 2 负就用不上）。</span></div>
+          <div class="fi"><b>⑥ 末空三问：先问主语换没换人——换了是类比，没换才轮到因果。</b>
+            <span class="ev">本篇末空 <code>their rulings … seen as separate from politics and, <b>20</b>, convincing as law</code>：<b>两个补足语共用主语 their rulings，主语没换</b> ⟹ 因果成立，填 as a result。<br><b>2011 与 2012 正好是一对</b>：<a href="2011_完形_笑与情绪的方向之争.html#q20" style="color:var(--accent)">2011</a> 主语换人（微笑 → 大笑）⟹ Similarly；<b>2012</b> 主语不换 ⟹ as a result。<b>三问不是为了排除因果，而是为了让因果「持证上岗」。</b></span></div>
+        </div>
+        <p class="note" style="margin-top:14px">🔁 <b>七篇完形（2007–2012 ＋ 2022）信号类型对照</b>：<a href="2022_完形_植物意识.html" style="color:var(--accent)">2022</a> 靠 nonetheless／However 这类<b>明信号词</b>；<a href="2007_完形_拉美独立后的理想与分歧.html" style="color:var(--accent)">2007</a> 靠 less agreement／most…some…／except 这类<b>结构性信号</b>；<a href="2008_完形_高智商与遗传疾病.html" style="color:var(--accent)">2008</a> 基本不给信号，靠“动词能不能带这个主语”；<a href="2009_完形_智力的代价.html" style="color:var(--accent)">2009</a> 靠<b>语用功能</b>（引例、递进、收口）；<a href="2010_完形_霍桑效应遭到质疑.html" style="color:var(--accent)">2010</a> 靠<b>叙事的方向</b>（三次反转、一个对照组）；<a href="2011_完形_笑与情绪的方向之争.html" style="color:var(--accent)">2011</a> 靠<b>一根因果箭头</b>；<b>2012 则靠<u>作者的应然立场 ＋ 首尾镜像</u>——七种都要会认。</b></p>
+      </section>
+
+      <!-- ========== 05 搭配库 ========== -->
+      <section class="card">
+        <h2><span class="n">05</span>固定搭配 &amp; 熟词僻义（这些是死记就得分的）</h2>
+        <div class="wb">
+          <div class="wbi"><div class="p">cannot … when …　一旦……就不能（2 题）· cannot … unless …　除非……否则不能</div><div class="u"><b>两个都顺口，意思正相反</b>：<code>cannot A when B</code>＝B 一发生，A 就做不到（B 是坏条件）；<code>cannot A unless B</code>＝只有 B 才能 A（B 是必要条件）。<br>⚠️ <b>验算法：把 unless 换成 if … not 念一遍。</b>本篇换完是「大法官不像政客就维持不了合法性」，当场荒谬。</div></div>
+          <div class="wbi"><div class="p">reputation for (being) sth　以……著称的名声（3 题所在句）</div><div class="u">⚠️ <b>介词是 for，不是 of</b>：<i>a reputation for honesty</i>／<i>a reputation for being independent and impartial</i>。<code>the reputation of sb</code> 表「某人的名声」（所属），<code>reputation for sth</code> 表「因什么而出名」（内容）——本句两个都有：the court's（所属）＋ for being…（内容）。</div></div>
+          <div class="wbi"><div class="p">accept／see／regard … as ＋ 褒 · dismiss／challenge … as ＋ 贬（4、17 题）</div><div class="u">⭐ <b>as 框架先看补足语的褒贬</b>：<b>接受族</b> accept／see／regard／view／recognize／envision／hail ＋ 褒义或中性；<b>否弃族</b> dismiss／challenge／condemn／denounce／brand ＋ 贬义。<br>本篇 4 题 <code>accepted as impartial</code>、17 题 <code>dismissed as unjust</code>——<b>一褒一贬，同一把刀</b>（详见 02++）。</div></div>
+          <div class="wbi"><div class="p">be bound by　受……约束（5 题）· be bound to do　必然 · be bound for　前往</div><div class="u"><b>bound 一词三用，介词一换意思全换</b>：<i>Judges are bound by a code of conduct.</i>（受约束）｜ <i>Prices are bound to rise.</i>（必然上涨）｜ <i>a train bound for Beijing</i>（开往北京）。<br>💡 前两个都来自 bind（捆绑）：被规则捆住＝受约束；被命运捆住＝必然。</div></div>
+          <div class="wbi"><div class="p">be subject to　服从，受……支配（6 题，adj.）· subject sb to sth　使遭受（v.）</div><div class="u"><b>同一个词、两种词性，两年各考一次</b>：本篇 6 题 <code>make itself <b>subject</b> to the code</code>（形容词：受守则约束）；<a href="2008_完形_高智商与遗传疾病.html#q19" style="color:var(--accent)">2008 完形 19 题</a> <code>has <b>subjected</b> them to unique evolutionary pressures</code>（动词：使遭受压力）。<br>再加一个：<code>be subject to change</code>＝可能会变动（通知、合同里的高频句）。</div></div>
+          <div class="wbi"><div class="p">apply to　适用于（7 题）· apply for　申请 · apply A to B　把 A 应用于 B</div><div class="u"><b>规章、法律、守则作主语时，谓语几乎只能是 apply to</b>：<i>The new rule applies to all students.</i><br>⚠️ <b>apply for</b>（申请：apply for a job）与 <b>apply A to B</b>（应用：apply the theory to practice）别混。</div></div>
+          <div class="wbi"><div class="p">raise／pose the question of whether …　引发「是否……」的问题（8 题）· settle the question　了结争论</div><div class="u"><b>raise 打开话题、settle 关上话题</b>——两个都与 question 搭配，方向相反。<b>过渡句（单句段）的动词只会是「打开」义</b>：raise／pose／prompt／bring up。<br>✍️ 作文开篇万能句：<i>This and other similar cases raise the question of whether …</i></div></div>
+          <div class="wbi"><div class="p">a line between A and B　A 与 B 之间的界限（9 题）</div><div class="u"><b>「界限」一族</b>：draw a line between（划清界限）· blur the line between（模糊界限）· cross the line（越界、过分）· a fine line between A and B（A 与 B 之间一线之隔）。<br>⚠️ <b>line（分界，二者可以有往来）vs barrier（屏障，阻隔往来）</b>——本篇⑤段承认法律注定带政治性，所以只能是 line。</div></div>
+          <div class="wbi"><div class="p">envision／see／regard／think of A as B　把 A 看作 B（10 题）</div><div class="u"><b>「看作、视为」族动词后面一律接 as</b>，as 后可接名词、形容词或动名词（<code>envisioned law as <b>having</b> authority</code>）。<br>⚠️ <b>两个例外单记</b>：<code>consider A (to be) B</code>（as 可有可无）· <code>call A B</code>（不用 as）。</div></div>
+          <div class="wbi"><div class="p">so (that) ＋ 主语 ＋ would／could／can　以便（11 题）</div><div class="u"><b>从句里的情态动词就是目的状语从句的身份证</b>：<i>They gave judges life tenure so (that) they would be free to act independently.</i><br>⚠️ 口语和新闻里 that 常省略，只剩一个 so——<b>so 后面的从句若有 would／could，就是「以便」而不是「所以」</b>。</div></div>
+          <div class="wbi"><div class="p">be free to do　可以毫无顾忌地做（12 题）· have no need to do　不必做（13 题）· those in power　当权者</div><div class="u">⭐ <b>free to 后面接「本来不敢做的事」，no need to 后面接「本来不得不做的事」</b>——本篇一个 upset（挫败当权者）、一个 cultivate（争取支持），合起来就是「独立」。<br><code>those ＋ 介词短语</code>＝那些……的人：those in power／in need／in charge／at risk。</div></div>
+          <div class="wbi"><div class="p">set A apart from B　使 A 与 B 分开（④❸）· apart from　独立于；除了（④❶）</div><div class="u">⭐⭐ <b>本篇最该当心的熟词僻义</b>：<code>authority <b>apart from</b> politics</code>＝<b>独立于政治之外的权威</b>，不是「除了政治之外的权威」。<br><code>set A apart from B</code> 另一义＝使 A 与众不同（<i>Her creativity sets her apart from other designers.</i>）——作文里夸人夸物的高分句。</div></div>
+          <div class="wbi"><div class="p">precisely because　恰恰因为（14 题）· which is why　这就是为什么（⑤❷）</div><div class="u"><code>precisely because</code> 引出<b>反直觉的原因</b>（越是分不开，才越要分开）；<code>…, which is why …</code> 用 which 指代前面整句、引出结果。<b>两个都是议论文里「讲清因果」的高分句式</b>，比 because／so 高一档。</div></div>
+          <div class="wbi"><div class="p">address doubts／concerns／a problem　回应、处理（18 题）· be accountable to sb／for sth　对……负责（19 题）</div><div class="u">🔤 <b>address 的熟词僻义＝设法解决</b>（不是「地址」「演讲」）：<i>The government must address public concerns about food safety.</i><br><code>be accountable <b>to</b> sb</code>（向某人交代）· <code>be accountable <b>for</b> sth</code>（为某事负责）· <code>hold sb accountable</code>（追究某人的责任）——✍️ 写监管、问责类作文必备。</div></div>
+          <div class="wbi"><div class="p">as a result／by all means／at all costs／in a word（20 题）</div><div class="u"><b>四个短语的分工</b>：<b>as a result</b>（因此，引出前文的<b>结果</b>）｜ <b>by all means</b>（务必；当然可以）｜ <b>at all costs</b>（不惜任何代价）｜ <b>in a word</b>（总之，<b>概括</b>前文）。<br>⚠️ <b>in a word 后面必须是前文的缩写，不能是新信息</b>——本篇 convincing as law 是新信息，所以只能是 as a result。</div></div>
+          <div class="wbi"><div class="p">🔑 熟词僻义清单（本篇 17 处）</div><div class="u"><div class="tabwrap"><table class="otab"><tr><th>词</th><th>常见义</th><th>本篇义</th><th>出处</th></tr>
+            <tr><td><span class="ow">justice</span></td><td>公正，正义</td><td><b>大法官</b>（可数；5D founded 的陷阱）</td><td>①❶ ②❶</td></tr>
+            <tr><td><span class="ow">judgment</span></td><td>判断力</td><td>①❶ <b>评判</b> ／ ②❷ <b>判决</b>（一篇两义）</td><td>①❶ ②❷</td></tr>
+            <tr><td><span class="ow">court</span></td><td>球场；宫廷</td><td><b>法院</b>（the court＝最高法院）</td><td>通篇</td></tr>
+            <tr><td><span class="ow">appear</span></td><td>出现；似乎</td><td><b>出席，公开露面</b>（appear at events）</td><td>②❶</td></tr>
+            <tr><td><span class="ow">code</span></td><td>密码；代码</td><td><b>准则，守则</b>（code of conduct）</td><td>②❸❹ ⑥❶</td></tr>
+            <tr><td><span class="ow">conduct</span></td><td>实施；指挥 v.</td><td><b>行为，品行</b> n.</td><td>②❹ ⑥❶</td></tr>
+            <tr><td><span class="ow">bound</span></td><td>跳跃；边界</td><td><b>受约束的</b>（bind 的过去分词）</td><td>5 题答案</td></tr>
+            <tr><td><span class="ow">subject</span></td><td>科目；主题 n.</td><td><b>受……支配的</b> adj.</td><td>6 题答案</td></tr>
+            <tr><td><span class="ow">apply</span></td><td>申请</td><td><b>适用</b>（apply to）</td><td>7 题答案</td></tr>
+            <tr><td><span class="ow">line</span></td><td>线；行</td><td><b>界限</b></td><td>9 题答案</td></tr>
+            <tr><td><span class="ow">apart from</span></td><td>除了</td><td><b>独立于；与……分开</b></td><td>④❶ ④❸</td></tr>
+            <tr><td><span class="ow">upset</span></td><td>使心烦</td><td><b>挫败，打乱</b>（当权者的计划）</td><td>12 题答案</td></tr>
+            <tr><td><span class="ow">cultivate</span></td><td>耕种</td><td><b>培植，争取</b>（支持）</td><td>13 题答案</td></tr>
+            <tr><td><span class="ow">property</span></td><td>属性；房产</td><td><b>财产（权）</b></td><td>⑤❶</td></tr>
+            <tr><td><span class="ow">split</span></td><td>劈开 v.</td><td><b>（按阵营）分裂</b>；本句是过去分词作后置定语</td><td>⑤❷</td></tr>
+            <tr><td><span class="ow">address</span></td><td>地址；演讲</td><td><b>设法解决，应对</b></td><td>18 题答案</td></tr>
+            <tr><td><span class="ow">ruling</span></td><td>统治的 adj.</td><td><b>裁决</b> n.（rule v. 裁定）</td><td>⑥❷</td></tr>
+          </table></div></div></div>
+        </div>
+      </section>
+
+      <!-- ========== 06 80 词表 ========== -->
+      <section class="card">
+        <h2><span class="n">06</span>80 个选项词速查（完形的真正词汇量）
+          <button class="allbtn" id="btnHide" style="margin-left:auto" onclick="toggleHide()">✍️ 默写模式</button>
+        </h2>
+        <p class="note">完形一篇＝<b>80 个高频词的辨析现场</b>，绿底是正确项。<b>默写模式</b>会糊住中文释义——先自己说出意思，点单个格子可单独揭开。<b>本篇 80 个词里有一整套美国司法词汇（bound／subject／applies／address／accountable／dismissed），与同年 <a href="2012_T2_背弃承诺的核电厂主.html" style="color:var(--accent)">T2</a> 的法律语境互通。</b></p>
+        <div class="tabwrap"><table class="otab" id="otab"></table></div>
+      </section>
+      <!-- ========== 07 长难句 ========== -->
+      <section class="card">
+        <h2><span class="n">07</span>长难句精析（正文蓝色虚线句）</h2>
+
+        <div class="sent" id="s1">
+          <div class="src"><span class="skel">That kind of activity makes it less likely</span> <i>that the court's decisions will be accepted as impartial judgments.</i></div>
+          <div class="anat">
+            <ul>
+              <li><b>主干</b>：<span class="skel">That kind of activity makes it less likely</span>——<b>it 是形式宾语</b>，真正的宾语是后面整个 that 从句。<code>make it ＋ 形容词 ＋ that 从句</code>＝使……变得……。</li>
+              <li>💡 <b><code>That kind of activity</code> 是概括性回指</b>：它把上一句「斯卡利亚出席政治活动」压缩成一个名词短语。<b>完形里以 That kind of／Such／This 开头的句子，主语就是上一句的一句话概括</b>——读懂它，就知道这句在评价的是一件坏事。</li>
+              <li>⭐ <b>从句是被动 ＋ as 框架</b>：<code>will be accepted as impartial judgments</code>（被认可为公正的判决）——<b>as 后的补足语是褒义 ⟹ 前面只能是接受族动词</b>（<a href="#q4" style="color:var(--accent)">4 题</a>）。</li>
+              <li>📌 <b>less likely 是省略了比较对象的比较级</b>：比什么更不可能？比「大法官不涉政时」。<b>⑥❷ 用 <code>more likely to be seen as</code> 把它换极性再说了一遍</b>——这是 02+ 镜像表的第二行。</li>
+            </ul>
+          </div>
+          <div class="tr">译：这类行为使最高法院的判决更难被视为公正的判决。</div>
+        </div>
+
+        <div class="sent" id="s2">
+          <div class="src">At the very least, <span class="skel">the court should make itself subject to the code of conduct</span> <i>that applies to the rest of the federal judiciary.</i></div>
+          <div class="anat">
+            <ul>
+              <li><b>主干</b>：<span class="skel">the court should make itself subject to the code of conduct</span>——<code>make ＋ 反身代词 ＋ 形容词（宾补）＋ to …</code>，itself 回指 the court。</li>
+              <li>⭐ <b><code>At the very least</code>＝最起码</b>，very 是强调词：<b>言下之意是「应该做的远不止这些，这只是底线」</b>。社论提建议的标准开头——先提最低要求，显得克制又有力。</li>
+              <li>💡 <b>that 定语从句修饰 the code of conduct</b>；<code>the rest of the federal judiciary</code>＝联邦司法系统的其余部分——<b>the rest of 暗示「只有最高法院例外」</b>，这正是本段的批评点（<a href="#q7" style="color:var(--accent)">7 题</a>）。</li>
+              <li>🔤 <code>judiciary</code>（司法系统，集合名词）· <code>judicial</code>（司法的）· <code>judicious</code>（明智的，与法律无关）——<b>三兄弟别混</b>。</li>
+              <li>📌 <b>记住这个框架：⑥❶ 会原样再出现一次</b>（making themselves <b>accountable</b> to the code of conduct）——<a href="#q6" style="color:var(--accent)">6</a> 与 <a href="#q19" style="color:var(--accent)">19</a> 互为答案。</li>
+            </ul>
+          </div>
+          <div class="tr">译：最起码，最高法院应当让自己服从那套适用于联邦司法系统其他部门的行为守则。</div>
+        </div>
+
+        <div class="sent" id="s3">
+          <div class="src"><span class="skel">They gave justices permanent positions</span> <i>so they would be free to upset those in power and have no need to cultivate political support.</i></div>
+          <div class="anat">
+            <ul>
+              <li><b>主干是双宾语</b>：<span class="skel">They gave justices permanent positions</span>——justices 是间接宾语（给谁），permanent positions 是直接宾语（给什么）。</li>
+              <li>⭐ <b><code>so</code>＝so that（以便），that 被省略</b>；判据是从句里的 <b>would</b>——目的状语从句的谓语惯用 can／could／will／would（<a href="#q11" style="color:var(--accent)">11 题</a>）。</li>
+              <li>💡 <b>从句里两个并列谓语共用主语 they</b>：<code>would be free to upset …</code> <b>and</b> <code>(would) have no need to cultivate …</code>——<b>一个说「不怕」（敢挫败当权者），一个说「不求」（不必争取支持）</b>，合起来就是「独立」（<a href="#q12" style="color:var(--accent)">12</a>／<a href="#q13" style="color:var(--accent)">13</a> 并列连体空）。</li>
+              <li>🔤 <code>those in power</code>＝当权者（those ＋ 介词短语＝那些……的人）；<code>upset</code>＝挫败（不是「使心烦」）；<code>cultivate</code>＝争取（不是「耕种」）——<b>一句话里两个熟词僻义答案。</b></li>
+              <li>🎭 背景：这句话是汉密尔顿《联邦党人文集》第 78 篇的一句话版本——终身任职是司法独立最好的保障。</li>
+            </ul>
+          </div>
+          <div class="tr">译：他们给了大法官终身职位，以便大法官们能够毫无顾忌地挫败当权者，也无需去争取政治支持。</div>
+        </div>
+
+        <div class="sent" id="s4">
+          <div class="src"><span class="skel">Our legal system was designed to set law apart from politics</span> <i>precisely because they are so closely tied.</i></div>
+          <div class="anat">
+            <ul>
+              <li><b>主干</b>：<span class="skel">Our legal system was designed to set law apart from politics</span>——<code>be designed to do</code>（被设计来做……）＋ <code>set A apart from B</code>（使 A 与 B 分开）。</li>
+              <li>⭐ <b><code>precisely because</code>＝恰恰因为</b>，专门引出<b>反直觉的原因</b>：「正因为二者联系太紧，才要刻意把它们分开」——<b>主句的 apart 与从句的 tied 是一对反义对举</b>（<a href="#q14" style="color:var(--accent)">14 题</a>）。</li>
+              <li>💡 <b>代词 they 是复数，只能指 law 和 politics</b>，不能指单数的 our legal system——<b>代词的数就是判据</b>，读错了 14 题会往「法律体系被研究／被遵守」那边偏。</li>
+              <li>📌 <b>本句是⑤段的伏笔</b>：说完「二者联系太紧」，⑤段马上承认「宪法性法律本身就是政治性的」——<b>全文唯一的让步由这里引出</b>。</li>
+            </ul>
+          </div>
+          <div class="tr">译：我们的法律体系之所以被设计成让法律与政治分离，恰恰是因为二者联系得太紧密了。</div>
+        </div>
+
+        <div class="sent" id="s5">
+          <div class="src"><i>When the court deals with social policy decisions,</i> <span class="skel">the law it shapes is inescapably political</span>—<i>which is why decisions split along ideological lines are so easily dismissed as unjust.</i></div>
+          <div class="anat">
+            <ul>
+              <li><b>主干</b>：<span class="skel">the law (that) it shapes is inescapably political</span>——<b>省略了关系词的定语从句</b>，it＝the court（<a href="#q16" style="color:var(--accent)">16 题</a>）。先把 that 补回来再读。</li>
+              <li>⚠️⚠️ <b>全篇最容易读错的一处：<code>decisions split along ideological lines are so easily dismissed</code></b>——<b>split 不是谓语！</b>它的原形、过去式、过去分词三形同体，这里是<b>过去分词作后置定语</b>（＝decisions which are split along ideological lines），<b>真正的谓语是后面的 are dismissed</b>。判据：一个从句只能有一个谓语，后面还有 are，split 只能是非谓语。</li>
+              <li>💡 <b><code>—which is why …</code></b>：破折号后的 which 指代<b>前面整个句子</b>（法律带政治性这件事），<code>which is why</code>＝这就是为什么——<b>引出结果</b>，所以 17 空是「结果」一侧的否弃动作。</li>
+              <li>🔤 <code>split along ideological lines</code>＝按意识形态阵营分裂（新闻高频：split along party lines 按党派划线投票）；<code>inescapably</code>＝不可避免地（in-＋escape＋-able＋-ly）。</li>
+            </ul>
+          </div>
+          <div class="tr">译：当最高法院处理社会政策方面的判决时，它所塑造的法律不可避免地带有政治性——这就是为什么那些按意识形态阵营分裂的判决如此容易被斥为不公正。</div>
+        </div>
+
+        <div class="sent" id="s6">
+          <div class="src"><span class="skel">That would make their rulings more likely to be seen as</span> <i>separate from politics</i> and, as a result, <i>convincing as law.</i></div>
+          <div class="anat">
+            <ul>
+              <li><b>主干</b>：<span class="skel">That would make their rulings more likely to be seen as …</span>——<code>make ＋ 宾语（their rulings）＋ 宾补（more likely to be seen as …）</code>；That 指代上一句的对策（让自己对守则负责），<b>would 表示对策的预期效果</b>。</li>
+              <li>⭐ <b>两个补足语并列，都受 <code>seen as</code> 管辖</b>：<code>seen as [separate from politics] and [convincing as law]</code>。<code>as a result</code> 插在 and 与第二个补足语之间（<a href="#q20" style="color:var(--accent)">20 题</a>）——<b>主语没换（都是 their rulings），所以能填因果</b>。</li>
+              <li>💡 <b>两个 as 用法不同</b>：<code>seen <b>as</b></code> 贴着动词（被看作）；<code>convincing <b>as</b> law</code> 贴着形容词（作为法律而言令人信服）——见 <a href="#as5" style="color:var(--accent)">02++</a>。</li>
+              <li>📌 <b>镜像</b>：本句是②❷ <code>makes it less likely that … accepted as impartial judgments</code> 的对策版（less → more）。</li>
+            </ul>
+          </div>
+          <div class="tr">译：那样将使他们的裁决更可能被视为与政治相分离，从而作为法律也更令人信服。</div>
+        </div>
+      </section>
+
+      <!-- ========== 08 写作素材 ========== -->
+      <section class="card">
+        <h2><span class="n">08</span>可搬进作文/翻译的表达</h2>
+        <p class="note">本篇是一篇<b>标准的社论</b>：问题 → 原因 → 对策，每一步都有一个可直接套用的句式。<b>议论文第二段（分析原因）和第三段（提建议）最缺的就是这类「有分寸的判断句」</b>。</p>
+        <div class="wb">
+          <div class="wbi"><div class="p">X cannot maintain its legitimacy as Y when …　一旦……，X 就无法维持其作为 Y 的正当性</div><div class="u"><b>开篇立论句</b>：先给出一个「理想身份」（as Y），再指出什么行为会毁掉它。<i>A university cannot maintain its credibility as a place of learning when degrees can simply be bought.</i></div></div>
+          <div class="wbi"><div class="p">That kind of activity makes it less likely that …　这类行为使……更不可能</div><div class="u"><b>「举例 → 评价」的衔接句</b>：That kind of 把上一句的例子压缩成一个名词，<code>make it less likely that</code> 给出后果。<i>That kind of shortcut makes it less likely that students will truly master the subject.</i></div></div>
+          <div class="wbi"><div class="p">Part of the problem is that …　问题的部分原因在于……</div><div class="u">⭐ <b>分析原因段的万能起手式</b>：只说「部分」，不把话说死——<b>比 The reason is that … 稳得多</b>。<i>Part of the problem is that young people are rarely taught how to manage money.</i></div></div>
+          <div class="wbi"><div class="p">At the very least, X should …　最起码，X 应当……</div><div class="u">⭐ <b>建议段的第一句</b>：先提最低要求，言下之意「该做的远不止这些」。<i>At the very least, online platforms should make their recommendation rules subject to public review.</i></div></div>
+          <div class="wbi"><div class="p">This and other similar cases raise the question of whether …　这件事及其他类似事件引发了一个问题：……是否……</div><div class="u"><b>从个案过渡到议题的最佳句</b>，大作文描图段之后直接接它。<i>This and other similar cases raise the question of whether online anonymity has gone too far.</i></div></div>
+          <div class="wbi"><div class="p">… precisely because …　恰恰因为……</div><div class="u"><b>反常识论证</b>：原因与结果方向相反，读起来有张力。<i>Honesty matters so much in business precisely because trust is so easily lost.</i></div></div>
+          <div class="wbi"><div class="p">X is designed to set A apart from B　X 的设计初衷是把 A 与 B 区分开</div><div class="u"><b>谈制度设计的高分表达</b>；set A apart from B 另一义「使 A 与众不同」也能用来夸人。<i>Exams are designed to set real understanding apart from rote memory.</i></div></div>
+          <div class="wbi"><div class="p">…, which is why …　……，这就是为什么……</div><div class="u"><b>用 which 指代前面整句、引出结果</b>，一句话写完因果，比 so 高一档。<i>Rural schools struggle to keep qualified teachers, which is why so many families move to the cities.</i></div></div>
+          <div class="wbi"><div class="p">X must address doubts about Y by making itself accountable to Z　X 必须通过对 Z 负责来回应人们对 Y 的质疑</div><div class="u"><b>对策句的完整形态</b>：动作（address doubts）＋ 方法（by making itself accountable）。<i>Charities must address doubts about their spending by making themselves accountable to donors.</i></div></div>
+          <div class="wbi"><div class="p">That would make … more likely to be seen as … and, as a result, …　那样将使……更可能被视为……，从而……</div><div class="u">⭐ <b>结尾段的收束句</b>：对策 → 预期效果 → 最终好处，一句话走完。<i>That would make the policy more likely to be seen as fair and, as a result, easier to carry out.</i></div></div>
+        </div>
+      </section>
+
+    </main>
+
+    <aside>
+      <div id="panel"><div class="hint">👆 点正文里的<b>黄底词</b><br>词卡会出现在这里<br><br>点<b>空格</b>则跳到对应解析卡</div></div>
+    </aside>
+  </div>
+
+  <footer>2012 英语一 · 完形填空复盘页 · 答案与解析由 Claude 独立盲做后写成（盲做 20/20，9、15 两空犹豫过）并与黄皮书精讲逐题交叉核对 · 生词卡、打法总纲、镜像表、as 框架表、六年完形对照表、线索位置统计为自撰</footer>
+</div>
+
+<button id="yd">🔍 查有道</button>
+<script>
+/* ============ V ============ */
+const V = {
+  ethical:{w:"ethical",ipa:"/ˈeθɪkl/",pos:"adj.",tags:["core","write"],cn:"伦理的，道德的；（职业）操守的",en:"connected with beliefs and principles about what is right and wrong",ex:"The ethical judgments of the Supreme Court justices have become an important issue recently.",mem:"<b>ethic（伦理）＋ -al</b>。同族：<b>ethics</b>（伦理学；行为准则，②❸ an ethics code）· <b>unethical</b>（不道德的）。<br>⭐ 首句 <code>The ethical judgments of…</code> 定下全文话题：<b>不是大法官判得对不对，而是大法官<u>做人做事</u>守不守职业操守</b>——所以后文的对策是「行为守则」，而不是「改判」。",syn:"moral / principled",conf:"ethical（职业伦理、行业操守，偏规范）vs. <b>moral</b>（个人道德、是非观，偏良知）——<i>medical ethics</i> 医学伦理 / <i>moral values</i> 道德观。"},
+
+  judgment:{w:"judgment",ipa:"/ˈdʒʌdʒmənt/",pos:"n.",tags:["poly"],cn:"①（对人对事的）<b>评判，看法</b> ②（法院的）<b>判决</b> ③判断力",en:"an opinion formed after careful thought; a decision of a court",ex:"…the court's decisions will be accepted as impartial judgments.",mem:"⭐ <b>一篇之内一词两义</b>：①❶ <code>The ethical <b>judgments</b> of the Supreme Court justices</code>＝对大法官伦理操守的<b>评判</b>（大法官是被评的一方）；②❷ <code>accepted as impartial <b>judgments</b></code>＝公正的<b>判决</b>（大法官是做判决的一方）。<b>主体一个被评、一个在评，别读混。</b><br>拼写：美式 judgment、英式 judgement 皆可。",syn:"assessment / ruling / verdict",conf:"judgment（判决，泛指）vs. <b>ruling</b>（裁决，⑥❷ their rulings）vs. <b>verdict</b>（陪审团的裁定：有罪 / 无罪）vs. <b>sentence</b>（量刑）。"},
+
+  justice:{w:"justice",ipa:"/ˈdʒʌstɪs/",pos:"n.",tags:["poly"],cn:"①<b>（最高法院）大法官</b>（可数；Justice X 作头衔）②公正，正义（不可数）③司法",en:"a judge in a court, especially the Supreme Court; fairness",ex:"Justice Antonin Scalia, for example, appeared at political events.",mem:"⭐ <b>可数与不可数，意思全变</b>：<code>the Supreme Court <b>justices</b></code>（带 -s ⟹ 大法官们）/ <code>Justice Antonin Scalia</code>（头衔）vs. <code>social justice</code>（社会公正）。<br>⚠️ <b>5 题 D founded 就是拿「公正」义设的陷阱</b>：「公正不是建立在伦理准则之上的」读着像句哲学话，可主语是 justices（大法官），根本不是「公正」。",syn:"judge / fairness",conf:"<b>justice</b>（最高法院大法官；正义）vs. <b>judge</b>（一般法官）vs. <b>jury</b>（陪审团）vs. <b>Chief Justice</b>（首席大法官）。"},
+
+  legitimacy:{w:"legitimacy",ipa:"/lɪˈdʒɪtɪməsi/",pos:"n.",tags:["core","write"],cn:"<b>正当性，合法性</b>（被公众认可、有权威）",en:"the quality of being fair and acceptable; the right to be obeyed",ex:"The court cannot maintain its legitimacy as guardian of the rule of law…",mem:"<b>legitimate（合法的，正当的）→ legitimacy</b>，词根 <b>leg-＝law</b>（legal / legislate / legislature 同源）。<br>⭐ <b>全文首尾各出现一次</b>：①❷ cannot maintain its legitimacy（守不住）↔ ⑥❶ doubts about the court's legitimacy（已受质疑）——<b>1 空与 18 空是一对镜像</b>。",syn:"authority / credibility / validity",conf:"⚠️ <b>legitimacy（正当性：人们认不认这个权威）vs. legality（合法性：符合不符合法律条文）</b>——一个法院的判决完全合法，却可能因大法官涉政而失去 legitimacy。黄皮书注：本句 legitimacy 侧重 <i>ultimate credibility</i>。"},
+
+  guardian:{w:"guardian",ipa:"/ˈɡɑːdiən/",pos:"n.",tags:["core","write"],cn:"捍卫者，守护者；监护人",en:"a person or institution that protects sth",ex:"…its legitimacy as guardian of the rule of law…",mem:"<b>guard（守卫）＋ -ian（人）</b>。✍️ 作文高频：<i>teachers as guardians of academic integrity</i>／<i>the guardian of public interest</i>。<br>💡 注意 <code>as guardian</code> 前面没有冠词——<b>表示身份、职位的名词作 as 的宾语时常省冠词</b>（as chairman / as captain）。",syn:"protector / defender / custodian",conf:"guardian（守护抽象的原则、利益；法律上的监护人）vs. <b>guard</b>（警卫，守护具体的人或地点）vs. <b>custodian</b>（保管人、看管者）。"},
+
+  ruleoflaw:{w:"the rule of law",ipa:"/ruːl əv lɔː/",pos:"phrase",tags:["phrase","write"],cn:"<b>法治</b>",en:"the principle that all people and institutions are subject to the law",ex:"…its legitimacy as guardian of the rule of law…",mem:"⭐ <b>这里的 rule 是名词「统治、支配」</b>，不是「规则」：the rule of law＝法律的统治＝法治（相对于 the rule of man 人治）。<br>✍️ 作文里谈法治社会：<i>strengthen the rule of law</i>／<i>a society governed by the rule of law</i>。",syn:"legal order / constitutionalism",conf:"the rule of law（法治，一种原则）vs. <b>rules and laws</b>（具体的规章与法律）vs. <b>the letter of the law</b>（法律条文的字面意思）。"},
+
+  instance:{w:"instance",ipa:"/ˈɪnstəns/",pos:"n.",tags:["core"],cn:"实例，事例；情况",en:"a particular example or case of sth",ex:"Yet, in several instances, justices acted in ways that…",mem:"<b>for instance</b>＝for example（例如）；<b>in several instances</b>＝在好几起事件中；<b>in the first instance</b>＝首先。<br>📌 ①❸ 的 in several instances 与③段首 <code>This and other similar <b>cases</b></code> 同义复现——instances ＝ cases，都指「大法官涉政事件」。",syn:"case / example / occasion",conf:"instance（一个具体事例）vs. <b>instant</b>（瞬间；即时的）——拼写只差一个字母。"},
+
+  reputation:{w:"reputation",ipa:"/ˌrepjuˈteɪʃn/",pos:"n.",tags:["core","write"],cn:"名声，声誉",en:"the opinion that people have about sb/sth",ex:"…the court's reputation for being independent and impartial.",mem:"<b>re-（反复）＋ put（想）＋ -ation</b> ⟹ 被人反复想起的样子＝名声。<br>⚠️ <b>搭配是 reputation <u>for</u> sth／being sth</b>（以……著称的名声），不是 of：<i>a reputation for honesty</i>／<i>a reputation for being reliable</i>。",syn:"standing / image / name",conf:"reputation（名声，好坏皆可）vs. <b>fame</b>（名气，偏正面）vs. <b>notoriety</b>（恶名）vs. <b>prestige</b>（威望，强调受尊敬）。"},
+
+  impartial:{w:"impartial",ipa:"/ɪmˈpɑːʃl/",pos:"adj.",tags:["core","write"],cn:"公正的，不偏不倚的",en:"not supporting one person or group more than another",ex:"…the court's reputation for being independent and impartial.",mem:"<b>im-（不）＋ partial（偏袒的）</b>——⚠️ <b>partial 在这里不是「部分的」，是「偏袒的」</b>（be partial to sb 偏爱某人）。<br>⭐ 本篇两次：①❸ independent and impartial（独立、公正）· ②❷ impartial judgments（公正的判决）。<br>📌 跨篇：<a href='2007_T2_智力测试的边界.html' style='color:var(--accent)'>2007 T2</a> 态度题的强度尺里，impartial 要求<b>作者两边都说、不站队</b>——同一个词，阅读里当态度选项，完形里当判决的属性。",syn:"unbiased / neutral / fair",conf:"impartial（不偏袒任何一方）vs. <b>neutral</b>（不介入、中立）vs. <b>objective</b>（客观，基于事实不基于感情）。"},
+
+  appear:{w:"appear",ipa:"/əˈpɪə(r)/",pos:"v.",tags:["poly"],cn:"①<b>出席，（公开）露面</b>（appear at an event）②出现 ③似乎",en:"to be present at a public event",ex:"Justice Antonin Scalia, for example, appeared at political events.",mem:"⭐ <b>appear at ＋ 场合＝出席、露面</b>（appear on TV 上电视 / appear in court 出庭）。本句不是「偶然出现在」，而是<b>公开现身</b>——正是作者批评的「像政客一样」：政客才会到处露面。",syn:"attend / show up / turn up",conf:"appear at（公开露面，被人看见）vs. <b>attend</b>（参加，中性）vs. <b>appear to do</b>（似乎，完全是另一个意思）。"},
+
+  partof:{w:"Part of the problem is that…",ipa:"/pɑːt əv ðə ˈprɒbləm/",pos:"phrase",tags:["phrase","write"],cn:"问题的部分原因在于……",en:"used to introduce one of the causes of a problem",ex:"Part of the problem is that the justices are not bound by an ethics code.",mem:"⭐ <b>社论分析原因的标准句式</b>：只说「部分原因」，不把话说死——<b>比 The reason is that… 稳得多</b>。<br>✍️ 作文：<i>Part of the problem is that young people are rarely taught how to manage money.</i><br>📌 它后面的原因，往往就是下一句对策要对准的那个点：本句「不受守则约束」⟹ 下句「最起码应服从守则」。",syn:"One reason is that… / The trouble is partly that…",conf:"Part of the problem is that…（部分原因）vs. <b>The heart of the problem is that…</b>（问题的核心）——分寸不同，写作时按你有多确定来选。"},
+
+  code:{w:"code",ipa:"/kəʊd/",pos:"n.",tags:["poly"],cn:"①<b>准则，守则</b>（ethics code / code of conduct）②法典 ③密码，代码",en:"a set of rules about how people should behave",ex:"…the justices are not bound by an ethics code.",mem:"⭐ <b>code 本义是「一整套成体系的规则」</b>：法典（the civil code 民法典）、行为守则、电报密码、程序代码都是「一套规则」。<br>本篇出现三次：②❸ an ethics code · ②❹ the code of conduct · ⑥❶ the code of conduct。",syn:"rules / guidelines / regulations",conf:"code（成套的行为准则）vs. <b>rule</b>（单条规定）vs. <b>regulation</b>（官方法规）vs. <b>dress code</b>（着装要求）——✍️ 写校园规定可用 <i>a code of conduct for students</i>。"},
+
+  atleast:{w:"at the very least",ipa:"/ət ðə ˈveri liːst/",pos:"phrase",tags:["phrase","write"],cn:"<b>至少，最起码</b>",en:"used to say the minimum that should be done",ex:"At the very least, the court should make itself subject to the code of conduct…",mem:"⭐ <b>very 在这里是强调词</b>（最、正是），<code>at the very least</code> 比 at least 更强调「这已经是最低要求了」——<b>言下之意：应该做的远不止这些</b>。<br>✍️ 社论提建议的标准开头：<i>At the very least, schools should…</i>——先提最低要求，显得克制又有力。",syn:"at a minimum / at least",conf:"at the very least（最起码，强调底线）vs. <b>at the most</b>（最多）vs. <b>not in the least</b>（一点也不，否定）。"},
+
+  conduct:{w:"conduct",ipa:"/ˈkɒndʌkt/ n. · /kənˈdʌkt/ v.",pos:"n./v.",tags:["poly"],cn:"n. <b>行为，品行</b>；v. 实施，进行；指挥",en:"n. a person's behaviour in a particular place or situation",ex:"…the code of conduct that applies to the rest of the federal judiciary.",mem:"⭐ <b>重音区分词性</b>：名词 CONduct（行为）、动词 conDUCT（实施、指挥）。<code>code of conduct</code>＝行为守则；<code>conduct research</code>＝开展研究；<code>conduct an orchestra</code>＝指挥乐队。",syn:"behaviour / manner",conf:"conduct（正式场合下的行为表现，常与规范连用）vs. <b>behaviour</b>（行为，泛指）vs. <b>misconduct</b>（不当行为，职业语境高频）。"},
+
+  judiciary:{w:"judiciary",ipa:"/dʒuˈdɪʃəri/",pos:"n.",tags:["core"],cn:"<b>司法系统，司法部门</b>（全体法官）",en:"the judges of a country or state, when considered as a group",ex:"…the rest of the federal judiciary.",mem:"<b>judic-（判断）</b>家族三兄弟：<b>judiciary</b>（司法系统 n.）· <b>judicial</b>（司法的 adj.：judicial independence 司法独立）· <b>judicious</b>（明智的、审慎的 adj.——⚠️ 与法律无关）。<br>🎭 三权分立：<b>the legislature</b>（立法）· <b>the executive</b>（行政）· <b>the judiciary</b>（司法）。",syn:"the courts / the judicial branch",conf:"⚠️ <b>judicial（司法的）vs. judicious（明智的）</b>——考研词汇题的经典对子。"},
+
+  federal:{w:"federal",ipa:"/ˈfedərəl/",pos:"adj.",tags:["core"],cn:"联邦的",en:"relating to the central government of a country with a federal system, such as the US",ex:"…the rest of the federal judiciary.",mem:"<b>feder-（联盟）</b>：federation（联邦）· confederation（邦联）。<br>📌 <b>2012 全卷的「联邦 vs 州」</b>：<a href='2012_T2_背弃承诺的核电厂主.html' style='color:var(--accent)'>2012 T2</a> 通篇是公司、州、联邦三方博弈（federal court / federal government）——同一年的完形和阅读用的是同一套美国政治词汇。",syn:"national / central",conf:"federal（联邦的，美国指全国层面）vs. <b>state</b>（州的）vs. <b>local</b>（地方的）。"},
+
+  framer:{w:"framer",ipa:"/ˈfreɪmə(r)/",pos:"n.",tags:["core"],cn:"（宪法等的）<b>制定者，起草人</b>",en:"a person who helps to plan a system or a document, especially the U.S. Constitution",ex:"The framers of the Constitution envisioned law as having authority apart from politics.",mem:"<b>frame（框架；构建）＋ -er</b> ⟹ 搭框架的人。<b>the Framers</b>（常大写）专指 1787 年起草美国宪法的那批人（华盛顿、麦迪逊、汉密尔顿等），与 <a href='2008_T4_开国元勋与奴隶制.html' style='color:var(--accent)'>2008 T4</a> 的 <b>the Founding Fathers</b>（开国元勋）大体是同一群人。",syn:"drafter / author / architect",conf:"framer（制定制度、文件的人）vs. <b>founder</b>（创始人）vs. <b>drafter</b>（起草具体文本的人）。"},
+
+  envision:{w:"envision",ipa:"/ɪnˈvɪʒn/",pos:"v.",tags:["core","write"],cn:"设想，展望",en:"to imagine what a situation will be like in the future",ex:"The framers of the Constitution envisioned law as having authority apart from politics.",mem:"<b>en-（使）＋ vision（景象）</b> ⟹ 在脑中形成景象。<b>envision A as B</b>＝把 A 设想为 B（10 题）。同义：envisage（英式）。<br>✍️ <i>The founders envisioned the university as a place of free inquiry.</i>",syn:"imagine / foresee / picture",conf:"envision（设想理想中的样子，正式）vs. <b>imagine</b>（想象，泛指）vs. <b>foresee</b>（预见，强调预测）。"},
+
+  authority:{w:"authority",ipa:"/ɔːˈθɒrəti/",pos:"n.",tags:["core"],cn:"权威；权力；（复数）当局",en:"the power to give orders or make decisions; the power that people respect",ex:"…law as having authority apart from politics.",mem:"<b>author（创造者）＋ -ity</b> ⟹ 创造者说了算的那份力量。<b>三个义项按单复数分</b>：authority（不可数，权力、权威）· an authority on sth（某领域的权威人士）· <b>the authorities</b>（复数，当局）。",syn:"power / legitimacy / command",conf:"authority（被认可的权力）vs. <b>power</b>（实际的力量，不一定正当）vs. <b>legitimacy</b>（正当性，authority 的来源）。"},
+
+  apartfrom:{w:"apart from",ipa:"/əˈpɑːt frəm/",pos:"phrase",tags:["phrase","poly"],cn:"①<b>独立于；与……分开</b> ②除了……之外（常见义）",en:"separate from; not including",ex:"…law as having authority apart from politics.",mem:"⭐⭐ <b>本篇最该当心的熟词僻义</b>：<code>authority <b>apart from</b> politics</code>＝<b>独立于政治之外的权威</b>，不是「除了政治之外的权威」。<b>④段出现两次</b>：<code>having authority apart from politics</code>（④❶）· <code>set law apart from politics</code>（④❸，set A apart from B 使 A 与 B 分开）。<br>📌 <b>它就是 9 空 line 的来源</b>：全文三次说「分开」（apart from ×2 ＋ ⑥❷ separate from），③段那条「界限」就是它的名词形式。",syn:"separate from / independent of / aside from（除了）",conf:"apart from（<b>分离义</b>：独立于；<b>排除义</b>：除了）——判据：前面若是 set／keep／stand 这类「放置」动词，或「权威、存在」这类名词，取分离义。"},
+
+  permanent:{w:"permanent",ipa:"/ˈpɜːmənənt/",pos:"adj.",tags:["core"],cn:"永久的，终身的",en:"lasting for a long time or for all time in the future",ex:"They gave justices permanent positions…",mem:"<b>per-（贯穿）＋ man（停留）＋ -ent</b> ⟹ 一直停留的。<br>🎭 <b>permanent positions＝终身职位</b>：美国宪法第三条规定联邦法官「行为良好期间」一直任职；汉密尔顿在《联邦党人文集》第 78 篇里说，终身任职是司法独立最好的保障——<b>11、12、13 三个空的方向全由这一句定</b>。",syn:"lasting / lifelong / tenured",conf:"permanent（永久的）vs. <b>temporary</b>（临时的）vs. <b>tenure</b>（n. 终身职位、任期，美国大学与法院的常用词）。"},
+
+  inpower:{w:"those in power",ipa:"/ðəʊz ɪn ˈpaʊə(r)/",pos:"phrase",tags:["phrase","write"],cn:"<b>当权者</b>",en:"the people who control a country or organization",ex:"…so they would be free to upset those in power…",mem:"<b>those ＋ 介词短语＝那些……的人</b>：those in power（当权者）· those in need（需要帮助的人）· those in charge（负责人）· those at risk（面临风险的人）。<br>✍️ 作文里谈权力与问责时比 officials 更有分量：<i>Those in power should be held accountable.</i>",syn:"the powerful / the authorities / officials",conf:"in power（掌权，指政府、政党）vs. <b>in charge</b>（负责，指具体事务）vs. <b>in control</b>（控制局面）。"},
+
+  precisely:{w:"precisely",ipa:"/prɪˈsaɪsli/",pos:"adv.",tags:["core","write"],cn:"①<b>恰恰，正是</b>（强调）②精确地",en:"exactly; used to emphasize that sth is very true",ex:"…precisely because they are so closely tied.",mem:"⭐ <b>precisely because＝恰恰因为</b>，专门引出<b>反直觉的原因</b>：「正因为二者联系太紧，才要刻意把它们分开」（14 题）。<br>✍️ 作文里做「反常识论证」最好用：<i>Failure is valuable precisely because it tells us what does not work.</i>",syn:"exactly / just / specifically",conf:"precisely（恰恰，强调）vs. <b>accurately</b>（准确地，与事实相符）vs. <b>concisely</b>（简明地）。"},
+
+  constitutional:{w:"constitutional",ipa:"/ˌkɒnstɪˈtjuːʃənl/",pos:"adj.",tags:["core"],cn:"宪法的；符合宪法的",en:"connected with the constitution of a country; allowed by the constitution",ex:"Constitutional law is political because it results from choices…",mem:"<b>constitution（宪法；体质）→ constitutional</b>。<code>constitutional law</code>＝宪法性法律；反义 <b>unconstitutional</b>（违宪的）。<br>📌 <b>2012 全卷法律词族</b>：<a href='2012_T2_背弃承诺的核电厂主.html' style='color:var(--accent)'>2012 T2</a> ②❶ <code>challenge the <b>constitutionality</b> of Vermont's rules</code>（对州法规提起违宪诉讼）——challenge 与 constitutional 在同一年的完形和阅读里各出现一次。",syn:"legal / lawful",conf:"constitution 三义：宪法 · 体质（<i>a strong constitution</i> 强健的体格）· 构成——⚠️ 后两个与法律无关。"},
+
+  rootedin:{w:"rooted in",ipa:"/ˈruːtɪd ɪn/",pos:"phrase",tags:["phrase","write"],cn:"<b>植根于，源自</b>",en:"developing from or being strongly influenced by sth",ex:"…choices rooted in fundamental social concepts like liberty and property.",mem:"⭐ <b>跨年复现</b>：<a href='2011_完形_笑与情绪的方向之争.html#q12' style='color:var(--accent)'>2011 完形 12 题</a>考的就是 <code>be rooted <b>in</b></code>（空格是介词 in）；<b>2012 ⑤❶ 原文又用了一次，这次没设空</b>——<b>去年的答案，今年当成送给你的铺垫。</b><br>本句是过去分词作后置定语：choices (which are) rooted in…",syn:"based on / grounded in / stem from",conf:"be rooted in（植根于，深层来源）vs. <b>be at the root of</b>（是……的根源，用名词 root）——介词不能互换。"},
+
+  fundamental:{w:"fundamental",ipa:"/ˌfʌndəˈmentl/",pos:"adj.",tags:["core","write"],cn:"基本的，根本的",en:"serious and very important; forming the base from which everything else develops",ex:"…fundamental social concepts like liberty and property.",mem:"<b>fund-（底部，同 found 建立）</b> ⟹ 打底的。<br>📌 跨年：<a href='2009_完形_智力的代价.html#q19' style='color:var(--accent)'>2009 完形 19 题</a>的答案就是 fundamental（与 18 Above all 同档的「最根本的问题」）。",syn:"basic / essential / underlying",conf:"fundamental（根本的，其他一切由此生发）vs. <b>basic</b>（基础的，入门级）vs. <b>essential</b>（必不可少的）。"},
+
+  liberty:{w:"liberty",ipa:"/ˈlɪbəti/",pos:"n.",tags:["core"],cn:"自由（尤指法律、政治上的权利）",en:"freedom to live as you choose without too many restrictions from government or authority",ex:"…fundamental social concepts like liberty and property.",mem:"<b>liber-（自由的）</b>：liberal（自由主义的）· liberate（解放）。<br>🎭 <b>liberty and property 是英美政治哲学的固定并称</b>——洛克的 life, liberty and property（生命、自由、财产），后来演化为美国《独立宣言》的 life, liberty and the pursuit of happiness。",syn:"freedom / rights",conf:"liberty（政治、法律意义上的自由权利）vs. <b>freedom</b>（泛指的自由，也可指个人感受）——<i>civil liberties</i>（公民自由权）一般不说 civil freedoms。"},
+
+  property:{w:"property",ipa:"/ˈprɒpəti/",pos:"n.",tags:["poly"],cn:"①<b>财产（权）</b>②房产，地产 ③属性，特性",en:"a thing or things that are owned by sb; the right to own things",ex:"…fundamental social concepts like liberty and property.",mem:"⭐ <b>本篇取「财产（权）」</b>——与 liberty（自由）并列，指一项基本权利，不是「属性」。<br><b>三个义项看搭配</b>：private property（私有财产）· property prices（房价）· the chemical properties of water（水的化学性质）。<b>intellectual property</b>＝知识产权（阅读高频）。",syn:"possessions / assets / ownership",conf:"property（财产，可指权利）vs. <b>possession</b>（所有物，强调在手里）vs. <b>estate</b>（地产、遗产）。"},
+
+  inescapably:{w:"inescapably",ipa:"/ˌɪnɪˈskeɪpəbli/",pos:"adv.",tags:["core"],cn:"不可避免地",en:"in a way that cannot be avoided",ex:"…the law it shapes is inescapably political…",mem:"<b>in-（不）＋ escape（逃脱）＋ -able ＋ -ly</b> ⟹ 逃不掉地。<br>⭐ <b>它是全篇立场的让步点</b>：④段还在说「法律应独立于政治」，⑤段就用 inescapably 承认<b>法律注定带政治性</b>——<b>正是这一句让 9 空只能是 line（分界）而不能是 barrier（阻隔）</b>。",syn:"inevitably / unavoidably",conf:"inescapable（逃不掉的，偏客观处境）vs. <b>inevitable</b>（必然发生的，偏事件）vs. <b>unavoidable</b>（无法避免的，偏行动）。"},
+
+  ideological:{w:"ideological",ipa:"/ˌaɪdiəˈlɒdʒɪkl/",pos:"adj.",tags:["core"],cn:"意识形态的，思想体系的",en:"based on or relating to a particular set of ideas or beliefs",ex:"…decisions split along ideological lines…",mem:"<b>ideo-（观念）＋ -logy（学说）</b> ⟹ ideology（意识形态）→ ideological。<br>🎭 <code>split along ideological lines</code> 在美国语境里指<b>保守派与自由派大法官各站一边</b>（常见的 5 比 4 判决）——所以这类判决最容易被输的一方斥为「政治判决」。",syn:"political / doctrinal / partisan",conf:"ideological（意识形态的）vs. <b>idealistic</b>（理想主义的）vs. <b>partisan</b>（党派偏见的）。"},
+
+  split:{w:"split",ipa:"/splɪt/",pos:"v./n.",tags:["phrase","poly"],cn:"分裂；使分开（split along … lines 按……阵营分裂）",en:"to divide into two or more groups that disagree",ex:"…decisions split along ideological lines are so easily dismissed as unjust.",mem:"⭐⭐ <b>本句最容易读错的一个词</b>：split 的原形、过去式、过去分词<b>三形同体</b>，这里是<b>过去分词作后置定语</b>——decisions (which are) split along ideological lines，<b>真正的谓语是后面的 are dismissed</b>。判据：一个从句只能有一个谓语，后面还有 are，split 只能是非谓语。<br>✍️ <code>split along party lines</code>（按党派划线投票）是新闻高频搭配。",syn:"divide / break up",conf:"split（一分为二，多指意见分裂）vs. <b>divide</b>（划分，中性）vs. <b>separate</b>（分离，强调距离）。"},
+
+  unjust:{w:"unjust",ipa:"/ˌʌnˈdʒʌst/",pos:"adj.",tags:["core"],cn:"不公正的，不公平的",en:"not deserved or not fair",ex:"…are so easily dismissed as unjust.",mem:"<b>un- ＋ just（公正的）</b>——注意 just 作形容词＝公正的（a just cause 正义的事业），与副词 just（刚刚、只是）无关；<b>名词 justice 就是从它来的</b>。<br>📌 <b>17 题的判据就是它</b>：as 后面的补足语是贬义 ⟹ 前面的动词只能是否弃族（dismissed）。",syn:"unfair / wrongful / inequitable",conf:"unjust（不公正，偏道德、法律）vs. <b>unfair</b>（不公平，偏日常规则）vs. <b>injustice</b>（n. 不公正的事）。"},
+
+  ruling:{w:"ruling",ipa:"/ˈruːlɪŋ/",pos:"n.",tags:["core"],cn:"<b>裁决，裁定</b>",en:"an official decision made by sb in a position of authority, especially a judge",ex:"That would make their rulings more likely to be seen as separate from politics…",mem:"<b>rule（v. 裁定）＋ -ing</b>：<code>The court ruled that…</code>＝法院裁定……。<br>📌 <b>2012 T2 ⑤❷ 原文</b>：<code>the Supreme Court has <b>ruled</b> that states do have some regulatory authority over nuclear power</code>——同一年卷子，动词 rule 在阅读里、名词 ruling 在完形里。<br>⭐ 全文对「判决」换了三个词：decisions（②❷ ⑤❷）· judgments（②❷）· rulings（⑥❷）——<b>同义替换，指的都是法院的判决</b>。",syn:"decision / judgment / verdict",conf:"ruling（法官对某一法律问题的裁定）vs. <b>verdict</b>（陪审团的有罪无罪裁定）vs. <b>the ruling party</b>（执政党，形容词用法）。"},
+
+  convincing:{w:"convincing",ipa:"/kənˈvɪnsɪŋ/",pos:"adj.",tags:["core","write"],cn:"令人信服的，有说服力的",en:"making you believe that sth is true or right",ex:"…and, as a result, convincing as law.",mem:"<b>convince（使信服）→ convincing（令人信服的，-ing 修饰物）／ convinced（信服的，-ed 修饰人）</b>。<br>⭐ <code>convincing as law</code>＝<b>作为法律而言令人信服</b>——as 贴着形容词，与前面 seen as（贴着动词）是两种 as（见 02++）。",syn:"persuasive / compelling / credible",conf:"convincing（让人相信是真的）vs. <b>persuasive</b>（让人愿意去做）vs. <b>compelling</b>（有力的、令人不得不信的）。"}
+};
+const panel=document.getElementById('panel');
+const isMobile=()=>window.innerWidth<=900;
+function badge(t){return {core:'<span class="badge b-core">核心词</span>',phrase:'<span class="badge b-phrase">短语</span>',poly:'<span class="badge b-poly">熟词僻义</span>',write:'<span class="badge b-write">写作✍︎</span>'}[t]||''}
+function showCard(k,el){
+  const d=V[k]; if(!d)return;
+  document.querySelectorAll('.tk.active').forEach(e=>e.classList.remove('active'));
+  if(el&&el.classList.contains('tk'))el.classList.add('active');
+  panel.innerHTML='<button class="close" onclick="panel.classList.remove(\'open\')">✕</button>'+
+  '<div class="wcard"><div class="head"><span class="w">'+d.w+'</span><span class="ipa">'+d.ipa+'</span><span class="pos">'+d.pos+'</span>'+d.tags.map(badge).join('')+'</div>'+
+  '<div class="cn">'+d.cn+'</div><div class="en-def">'+d.en+'</div>'+
+  '<div class="row r-ex"><b>原文语境</b>「…'+d.ex+'…」</div>'+
+  '<div class="row r-mem"><b>怎么记</b>'+d.mem+'</div>'+
+  '<div class="row r-syn"><b>同类词</b>'+d.syn+'</div>'+
+  '<div class="row r-conf"><b>易混辨析</b>'+d.conf+'</div></div>';
+  if(isMobile())panel.classList.add('open');
+}
+document.querySelectorAll('.tk').forEach(t=>t.addEventListener('click',e=>{e.stopPropagation();showCard(t.dataset.w,t)}));
+
+/* ============ 译文开关 ============ */
+function tz(btn){btn.closest('.para').classList.toggle('showzh')}
+let allOn=false;
+function toggleAll(){allOn=!allOn;document.querySelectorAll('.para').forEach(p=>p.classList.toggle('showzh',allOn))}
+function go(id){const s=document.getElementById(id);if(!s)return;s.scrollIntoView({behavior:'smooth',block:'center'});s.style.transition='none';s.style.opacity=.3;setTimeout(function(){s.style.transition='opacity .8s';s.style.opacity=1},80)}
+
+/* ============ 20 空数据（类别 + 正确词） ============ */
+const CAT={
+  logic:{name:"逻辑关系",cls:"c-logic",color:"#3d6a8a"},
+  collo:{name:"固定搭配",cls:"c-collo",color:"#3e7a4e"},
+  word:{name:"词义辨析",cls:"c-word",color:"#b04a3a"},
+  context:{name:"上下文语义",cls:"c-context",color:"#6d5a8e"}
+};
+const B={
+  1:{w:"maintain",cat:"word"},        2:{w:"when",cat:"logic"},
+  3:{w:"weakened",cat:"context"},     4:{w:"accepted",cat:"collo"},
+  5:{w:"bound",cat:"word"},           6:{w:"subject",cat:"context"},
+  7:{w:"applies",cat:"collo"},        8:{w:"raise",cat:"context"},
+  9:{w:"line",cat:"context"},         10:{w:"as",cat:"collo"},
+  11:{w:"so",cat:"logic"},            12:{w:"upset",cat:"context"},
+  13:{w:"cultivate",cat:"word"},      14:{w:"tied",cat:"context"},
+  15:{w:"concepts",cat:"word"},       16:{w:"shapes",cat:"context"},
+  17:{w:"dismissed",cat:"collo"},     18:{w:"address",cat:"word"},
+  19:{w:"accountable",cat:"context"}, 20:{w:"as a result",cat:"logic"}
+};
+
+
+/* ============ 点空格 → 跳到解析卡 ============ */
+document.querySelectorAll('.bk').forEach(function(b){
+  b.addEventListener('click',function(){
+    document.querySelectorAll('.bk.active').forEach(function(e){e.classList.remove('active')});
+    b.classList.add('active');
+    go('q'+b.dataset.n);
+  });
+});
+function fillBlank(n,ok){
+  const el=document.querySelector('.bk[data-n="'+n+'"]');
+  if(!el)return;
+  el.classList.remove('miss');
+  el.classList.add(ok===false?'miss':'filled');
+  el.innerHTML='<span class="idx">'+n+'</span>'+B[n].w;
+}
+
+/* ============ 即点即判 + 计分 ============ */
+let done=0,right=0;
+function updScore(){
+  document.getElementById('sDone').textContent=done;
+  document.getElementById('sRight').textContent=right;
+  document.getElementById('sPt').textContent=(right*0.5).toFixed(1);
+}
+document.querySelectorAll('.q').forEach(function(q){
+  const ans=+q.dataset.ans, n=q.id.replace('q','');
+  q.querySelectorAll('.opt').forEach(function(o,i){
+    o.addEventListener('click',function(){
+      if(q.classList.contains('done'))return;
+      q.classList.add('done');
+      const ok=(i===ans);
+      if(!ok)o.classList.add('wrong');
+      q.querySelectorAll('.opt')[ans].classList.add('right');
+      done++; if(ok)right++; updScore();
+      fillBlank(n,ok);
+    });
+  });
+});
+function revealAll(){
+  document.querySelectorAll('.q').forEach(function(q){
+    const n=q.id.replace('q','');
+    if(!q.classList.contains('done')){
+      q.classList.add('done');
+      q.querySelectorAll('.opt')[+q.dataset.ans].classList.add('right');
+      done++; updScore();
+    }
+    fillBlank(n,true);
+  });
+  document.querySelectorAll('.bk.miss').forEach(function(e){e.classList.remove('miss');e.classList.add('filled')});
+}
+
+/* ============ 考点统计 ============ */
+const counts={};Object.keys(B).forEach(function(k){counts[B[k].cat]=(counts[B[k].cat]||0)+1});
+const order=["word","collo","context","logic"];
+document.getElementById('catbar').innerHTML=order.map(function(k){
+  return '<div class="catseg" style="flex:'+counts[k]+';background:'+CAT[k].color+'">'+CAT[k].name+' '+counts[k]+'</div>'}).join('');
+const legend=document.getElementById('catlegend');
+legend.innerHTML=order.map(function(k){
+  return '<div class="cl" data-cat="'+k+'"><span class="dot" style="background:'+CAT[k].color+'"></span>'+CAT[k].name+' · '+counts[k]+' 题</div>'}).join('');
+const chips=document.getElementById('chips');
+function renderChips(cat){
+  chips.innerHTML=Object.keys(B).filter(function(n){return !cat||B[n].cat===cat})
+    .map(function(n){return '<span class="chip" data-n="'+n+'">'+n+'. '+B[n].w+'</span>'}).join('');
+  chips.querySelectorAll('.chip').forEach(function(c){
+    c.addEventListener('click',function(){go('q'+c.dataset.n)});
+  });
+}
+renderChips(null);
+legend.querySelectorAll('.cl').forEach(function(l){
+  l.addEventListener('click',function(){
+    const cat=l.dataset.cat;
+    document.querySelectorAll('.cl').forEach(function(x){x.style.borderColor=''});
+    l.style.borderColor=CAT[cat].color;
+    renderChips(cat);
+    document.querySelectorAll('.bk').forEach(function(b){
+      b.style.outline=(B[b.dataset.n].cat===cat?'2px solid '+CAT[cat].color:'')});
+  });
+});
+
+/* ============ 80 选项词表 ============ */
+const OPTS={
+ 1:[["emphasize","强调（问题不在说得够不够）"],["maintain","维持（合法性原本拥有）"],["modify","修改（合法性不是待修零件）"],["recognize","承认（as 贴的是名词，框架是假的）"]],
+ 2:[["when","当……时（条件—结果）"],["lest","以免（把后果当目的）"],["before","在……之前（时间倒挂）"],["unless","除非（换成 if…not 即荒谬）"]],
+ 3:[["restored","恢复（方向反）"],["weakened","削弱（程度留有余地）"],["established","确立（预设此前没有）"],["eliminated","消除（程度过头）"]],
+ 4:[["challenged","质疑（as 后须接贬义）"],["compromised","使受损（搭不上 as 褒义）"],["suspected","怀疑（怀疑的只能是坏事）"],["accepted","接受，认可（接受族＋褒义）"]],
+ 5:[["advanced","推动（人作用于物）"],["caught","使陷入（守则成了坏东西）"],["bound","受约束（be bound by）"],["founded","创立（利用 justice「公正」义）"]],
+ 6:[["resistant","抵制的（把问题当对策）"],["subject","服从的（be subject to）"],["immune","免疫的（同 A，不受约束）"],["prone","易于（接坏事）"]],
+ 7:[["resorts","诉诸（主语须是人）"],["sticks","坚持（主语须是人）"],["leads","导致（宾语须是结果）"],["applies","适用于（规则作主语）"]],
+ 8:[["evade","回避（主语须是人）"],["raise","引发（过渡句开启话题）"],["deny","否认（问题无所谓真假）"],["settle","了结（下文还有三段在谈）"]],
+ 9:[["line","界限（二者分得清）"],["barrier","屏障（⑤段：法律注定带政治性）"],["similarity","相似之处（方向反）"],["conflict","冲突（焦点是分离非对抗）"]],
+ 10:[["by","通过（引出方式）"],["as","作为（envision A as B）"],["through","通过（同 A）"],["towards","朝向（须接趋向动词）"]],
+ 11:[["so","以便（从句有 would）"],["since","既然（因果倒挂）"],["provided","只要（把结果当条件）"],["though","虽然（前后无对立）"]],
+ 12:[["serve","为……服务（依附，配 have to）"],["satisfy","使满意（同 A）"],["upset","挫败（free to 接不敢做的事）"],["replace","取代（违三权分立）"]],
+ 13:[["confirm","巩固（预设支持已在）"],["express","表达（谁给谁反了）"],["cultivate","争取（获取方动词）"],["offer","提供（给予方，方向反）"]],
+ 14:[["guarded","保护（与分离无因果）"],["followed","遵循（丢了二者关系）"],["studied","研究（同 B）"],["tied","紧密相连（apart 的反面）"]],
+ 15:[["concepts","观念（Liberty is a concept）"],["theories","理论（自由不是学说）"],["divisions","分歧；部门（不同类）"],["conventions","惯例（自由不是习俗）"]],
+ 16:[["excludes","排除（法院不会排除法律）"],["questions","质疑（与上句冲突）"],["shapes","塑造（判例法）"],["controls","控制（掌控法律的是国会）"]],
+ 17:[["dismissed","斥为，不予理会（否弃族＋贬义）"],["released","发布（不接评价）"],["ranked","列为（等级≠是非）"],["distorted","歪曲（预设判决本公正）"]],
+ 18:[["suppress","压制（手段不配）"],["exploit","利用（阴谋意味）"],["address","应对（by 后的方法是积极的）"],["ignore","忽视（与 by 自相矛盾）"]],
+ 19:[["accessible","可接近的（好相处栏）"],["amiable","和蔼的（同 A）"],["agreeable","欣然同意的（态度≠义务）"],["accountable","负责的（②❹ subject 的镜像）"]],
+ 20:[["by all means","务必；当然（不是待办事项）"],["at all costs","不惜代价（这是自然结果）"],["in a word","总之（后面是新信息）"],["as a result","因此（主语未换，因果成立）"]]
+};
+const ANS={1:1,2:0,3:1,4:3,5:2,6:1,7:3,8:1,9:0,10:1,11:0,12:2,13:2,14:3,15:0,16:2,17:0,18:2,19:3,20:3};
+(function(){
+  let h='<tr><th>空</th><th>A</th><th>B</th><th>C</th><th>D</th></tr>';
+  for(let n=1;n<=20;n++){
+    h+='<tr><td class="n">'+n+'</td>';
+    OPTS[n].forEach(function(o,i){
+      h+='<td'+(i===ANS[n]?' class="hit"':'')+'><span class="ow">'+o[0]+'</span><span class="oc">'+o[1]+'</span></td>';
+    });
+    h+='</tr>';
+  }
+  document.getElementById('otab').innerHTML=h;
+  document.querySelectorAll('#otab .oc').forEach(function(c){
+    c.addEventListener('click',function(){c.classList.toggle('show')});
+  });
+})();
+function toggleHide(){
+  const t=document.getElementById('otab');
+  const on=t.classList.toggle('hidecn');
+  document.getElementById('btnHide').textContent=on?'👁 显示释义':'✍️ 默写模式';
+  if(!on)t.querySelectorAll('.oc.show').forEach(function(c){c.classList.remove('show')});
+}
+
+/* ============ 查有道 ============ */
+const yd=document.getElementById('yd');let sel='';
+document.addEventListener('selectionchange',function(){
+  const s=window.getSelection();const t=s?s.toString().trim():'';
+  if(t&&/^[a-zA-Z' -]{2,40}$/.test(t)){
+    sel=t;
+    try{const r=s.getRangeAt(0).getBoundingClientRect();
+      yd.style.left=Math.min(r.left,window.innerWidth-110)+'px';
+      yd.style.top=(r.bottom+8)+'px';yd.style.display='block';}catch(e){}
+  }else{yd.style.display='none'}
+});
+yd.addEventListener('click',function(){window.open('https://dict.youdao.com/result?word='+encodeURIComponent(sel)+'&lang=en');yd.style.display='none'});
+document.addEventListener('click',function(e){if(e.target!==yd&&!window.getSelection().toString())yd.style.display='none'});
+</script>
+<script src="_fault_attr.js"></script>
+</body>
+</html>

@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2012 英一 新题型 · 下载与上传之间的隐秘战争</title>
+<style>
+  :root{
+    --bg:#faf9f6; --card:#ffffff; --ink:#2b2b2b; --muted:#8a8578;
+    --accent:#8b5e34; --accent-soft:#f3e9dd; --line:#e8e3d8;
+    --hl:#fdf3d8; --hl-border:#e0b84d;
+    --green:#3e7a4e; --green-soft:#e8f2ea;
+    --red:#b04a3a; --red-soft:#f9e9e6;
+    --blue:#3d6a8a; --blue-soft:#e7eff5;
+    --purple:#6d5a8e; --purple-soft:#eeeaf5;
+    --serif:"Georgia","Songti SC",serif;
+    --sans:-apple-system,"PingFang SC","Helvetica Neue",sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#1c1a17; --card:#26231f; --ink:#e8e4dc; --muted:#9a948a;
+      --accent:#d0a06a; --accent-soft:#3a3127; --line:#3a362f;
+      --hl:#3d3520; --hl-border:#b08c3a;
+      --green:#7fb98d; --green-soft:#26362b;
+      --red:#d98876; --red-soft:#3d2a26;
+      --blue:#8ab3d0; --blue-soft:#26323d;
+      --purple:#a996c8; --purple-soft:#302a3d;
+    }
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;padding-bottom:120px}
+  .wrap{max-width:1100px;margin:0 auto;padding:24px 20px}
+  .back{font-size:.85rem;color:var(--muted);text-decoration:none}
+  .back:hover{color:var(--accent)}
+  header{margin:14px 0 28px}
+  header h1{font-family:var(--serif);font-size:1.7rem;line-height:1.3}
+  header .sub{color:var(--muted);margin-top:6px;font-size:.9rem}
+  .tags{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+  .tag{font-size:.75rem;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);border:1px solid var(--line)}
+  .tag.bad{background:var(--red-soft);color:var(--red)}
+  .layout{display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:start}
+  .layout > main{min-width:0}
+  @media (max-width:900px){.layout{grid-template-columns:1fr}}
+  section.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:24px}
+  h2{font-size:1.05rem;letter-spacing:.05em;color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+  h2 .n{font-size:.72rem;background:var(--accent);color:var(--card);border-radius:6px;padding:1px 7px}
+  h3.sh{font-size:.95rem;color:var(--ink);margin:18px 0 8px;padding-left:9px;border-left:3px solid var(--accent)}
+  .para{margin-bottom:14px}
+  .en{font-family:var(--serif);font-size:1.03rem;line-height:1.95}
+  .tk{background:var(--hl);border-bottom:2px solid var(--hl-border);border-radius:3px;padding:0 2px;cursor:pointer;transition:filter .15s}
+  .tk:hover{filter:brightness(.93)}
+  .tk.active{outline:2px solid var(--hl-border)}
+  .clue{border-bottom:2px dotted var(--red)}
+  .zh{display:none;margin-top:8px;padding:10px 14px;background:var(--blue-soft);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:.92rem}
+  .showzh .zh{display:block}
+  .zbtn{float:right;margin-left:10px;font-size:.72rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:6px;padding:2px 9px;cursor:pointer}
+  .zbtn:hover{color:var(--accent);border-color:var(--accent)}
+  .allbtn{font-size:.78rem;border:1px solid var(--accent);background:none;color:var(--accent);border-radius:8px;padding:4px 12px;cursor:pointer;margin-left:auto}
+  aside{position:sticky;top:20px}
+  #panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;min-height:180px}
+  #panel .hint{color:var(--muted);font-size:.88rem;text-align:center;padding:30px 10px}
+  .wcard .head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .wcard .w{font-family:var(--serif);font-size:1.35rem;font-weight:bold}
+  .wcard .ipa{color:var(--muted);font-size:.85rem}
+  .wcard .pos{font-size:.72rem;color:var(--purple);background:var(--purple-soft);padding:1px 8px;border-radius:999px}
+  .wcard .badge{font-size:.7rem;padding:1px 8px;border-radius:999px}
+  .b-core{background:var(--red-soft);color:var(--red)}
+  .b-phrase{background:var(--blue-soft);color:var(--blue)}
+  .b-poly{background:var(--purple-soft);color:var(--purple)}
+  .b-write{background:var(--green-soft);color:var(--green)}
+  .wcard .cn{margin-top:8px;font-size:1rem;font-weight:600}
+  .wcard .en-def{color:var(--muted);font-size:.86rem;font-style:italic;margin-top:2px}
+  .wcard .row{margin-top:10px;font-size:.86rem;padding:8px 10px;border-radius:8px}
+  .wcard .row b{font-size:.72rem;display:block;margin-bottom:2px;letter-spacing:.06em}
+  .r-ex{background:var(--hl)} .r-ex b{color:var(--hl-border)}
+  .r-mem{background:var(--green-soft)} .r-mem b{color:var(--green)}
+  .r-syn{background:var(--blue-soft)} .r-syn b{color:var(--blue)}
+  .r-conf{background:var(--red-soft)} .r-conf b{color:var(--red)}
+  #panel .close{display:none}
+  @media (max-width:900px){
+    aside{position:fixed;left:0;right:0;bottom:0;z-index:50;padding:0 8px 8px}
+    #panel{box-shadow:0 -6px 24px rgba(0,0,0,.18);max-height:55vh;overflow-y:auto;display:none}
+    #panel.open{display:block}
+    #panel .close{display:block;float:right;border:none;background:var(--line);border-radius:8px;padding:2px 10px;cursor:pointer;color:var(--ink)}
+  }
+  /* 选项库 */
+  .optlib{display:grid;gap:8px}
+  .optitem{display:flex;gap:10px;border:1px solid var(--line);border-radius:10px;padding:9px 12px;font-size:.9rem}
+  .optitem .lt{font-weight:700;font-family:var(--serif);color:var(--accent);flex:0 0 18px}
+  .optitem.used{opacity:.45}
+  .optitem.extra{border-color:var(--red);background:var(--red-soft)}
+  .optitem .oen{font-family:var(--serif);font-size:.92rem;line-height:1.75}
+  .optitem .zhx{display:block;color:var(--muted);font-size:.82rem;margin-top:3px}
+  .optitem .kw{display:block;font-size:.78rem;color:var(--blue);margin-top:3px}
+  .optitem .stg{display:inline-block;font-size:.72rem;background:var(--purple-soft);color:var(--purple);border-radius:999px;padding:1px 9px;margin-top:5px}
+  /* 空格题 */
+  .person{margin-bottom:26px;padding-bottom:20px;border-bottom:1px dashed var(--line)}
+  .person:last-child{border:none}
+  .pname{font-family:var(--serif);font-weight:700;font-size:1.05rem;margin-bottom:8px}
+  .pname .qn{color:var(--accent)}
+  .stance{font-size:.72rem;border-radius:999px;padding:1px 9px;margin-left:8px;vertical-align:2px;font-family:var(--sans);font-weight:400}
+  .st-anti{background:var(--red-soft);color:var(--red)}
+  .st-pro{background:var(--green-soft);color:var(--green)}
+  .st-mid{background:var(--blue-soft);color:var(--blue)}
+  .slot{display:inline;background:var(--accent-soft);border-bottom:2px solid var(--accent);border-radius:3px;padding:0 6px;color:var(--accent);font-weight:700;font-family:var(--sans);font-size:.88rem}
+  .slot.filled{background:var(--green-soft);border-color:var(--green);color:var(--ink);font-weight:400;font-family:var(--serif);font-size:1.03rem}
+  .slot.filled .fl{font-family:var(--sans);font-size:.78rem;font-weight:700;color:var(--green);margin-right:5px}
+  .chips{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0 4px}
+  .chips .ch{width:38px;height:34px;border:1px solid var(--line);border-radius:8px;background:none;font-family:var(--serif);font-weight:700;font-size:1rem;color:var(--ink);cursor:pointer;transition:all .15s}
+  .chips .ch:hover{border-color:var(--accent)}
+  .person.done .ch{cursor:default;opacity:.6}
+  .ch.right{background:var(--green-soft);border-color:var(--green);color:var(--green);opacity:1!important}
+  .ch.wrong{background:var(--red-soft);border-color:var(--red);color:var(--red);opacity:1!important}
+  .expl{display:none;margin-top:10px;background:var(--accent-soft);border-radius:10px;padding:12px 14px;font-size:.9rem}
+  .person.done .expl{display:block}
+  .expl b{color:var(--accent)}
+  .loc{font-family:var(--serif);font-style:italic;background:var(--hl);padding:1px 4px;border-radius:3px}
+  .expl .line{margin-top:8px;padding-top:8px;border-top:1px dashed var(--line)}
+  .expl .mine{margin-top:8px;padding:8px 10px;background:var(--red-soft);border-radius:8px;color:var(--red);font-size:.86rem}
+  .wb{display:grid;gap:10px}
+  .wbi{border-left:3px solid var(--green);background:var(--green-soft);border-radius:0 10px 10px 0;padding:10px 14px;font-size:.92rem}
+  .wbi .p{font-family:var(--serif);font-weight:600}
+  .wbi .u{color:var(--muted);font-size:.85rem}
+  /* 表格 */
+  .tbwrap{overflow-x:auto}
+  table.gt{border-collapse:collapse;width:100%;min-width:600px;font-size:.86rem}
+  table.gt th,table.gt td{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
+  table.gt th{background:var(--accent-soft);color:var(--accent);font-weight:600;font-size:.8rem}
+  table.gt td.c{text-align:center;font-family:var(--serif);font-weight:700}
+  table.gt tr.bad td{background:var(--red-soft)}
+  /* 分区带 */
+  .zone{display:grid;grid-template-columns:118px 1fr;gap:12px;padding:9px 0;border-bottom:1px dashed var(--line);font-size:.9rem}
+  .zone:last-child{border:none}
+  .zone .zn{font-size:.82rem;color:var(--accent);font-weight:600}
+  .zone.empty{background:var(--red-soft);border-radius:8px;padding-left:10px}
+  .zone.empty .zn{color:var(--red)}
+  /* 长难句 */
+  .ls{border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:14px}
+  .ls .s{font-family:var(--serif);font-size:.98rem;line-height:1.85}
+  .ls .an{margin-top:10px;font-size:.88rem}
+  .ls .an div{margin-top:4px}
+  .ls .tr{margin-top:8px;padding:8px 12px;background:var(--blue-soft);border-radius:8px;font-size:.88rem}
+  .mk{color:var(--red);font-weight:600}
+  .mk2{color:var(--blue);font-weight:600}
+  .mk3{color:var(--green);font-weight:600}
+  .box{border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:0 10px 10px 0;padding:12px 14px;margin:12px 0;font-size:.92rem;background:var(--accent-soft)}
+  .box.red{border-left-color:var(--red);background:var(--red-soft)}
+  .box.green{border-left-color:var(--green);background:var(--green-soft)}
+  .box .bt{font-weight:700;color:var(--accent);display:block;margin-bottom:6px}
+  .box.red .bt{color:var(--red)} .box.green .bt{color:var(--green)}
+  .en,.zh,.expl,.wbi,.optitem,.ls,.zone,.bd,figcaption,p,li,td,th{overflow-wrap:anywhere}
+  footer{color:var(--muted);font-size:.8rem;text-align:center;margin-top:30px}
+  #yd{position:fixed;z-index:60;display:none;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:4px 12px;font-size:.8rem;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+</style>
+<style>
+  /* 2012 selection-insertion page extras */
+  .layout{grid-template-columns:minmax(0,1fr) 340px}
+  @media (max-width:900px){.layout{grid-template-columns:minmax(0,1fr)}}
+  main,aside{min-width:0}
+  .clue2{border-bottom:2px dotted var(--blue)}
+  .optitem .oen{display:block}
+  table.gt td[colspan]{background:var(--accent-soft)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">◀ 返回英语复盘中心</a>
+  <header>
+    <h1>The Secret War Between Downloading and Uploading　下载与上传之间的隐秘战争</h1>
+    <div class="sub">2012 年英语（一）真题 · Part B 新题型（<b>选句填空</b>：文中挖 5 个空 ⇄ 7 句选二余）· 建议做题 <b>6–8 min</b> · 话题：联网电脑与数字文化——被动消费还是主动创造 · 黄皮书口径 634 words（脚本数正文连同五个答案句 559 词，再加两个多余项 620 词，对不上，页面照写黄皮书口径）· 源自《新科学家》<i>New Scientist</i> 2011 年 7 月 5 日 <i>The Secret War Between Downloading and Uploading: Tales of the Computer as Culture Machine</i></div>
+    <div class="tags">
+      <span class="tag">正确答案：41 C　42 D　43 A　44 F　45 G（B、E 多余）</span>
+      <span class="tag">变体：选句填空（Part B 的第三次，前两次是 2008、2009）</span>
+      <span class="tag">文章线：<b>论证线</b>（议论文）—— 三篇选句填空，三种线</span>
+      <span class="tag">Claude 盲做：5/5 —— 唯一停顿在 45（G 与 E）</span>
+    </div>
+  </header>
+
+  <div class="layout">
+    <main>
+
+      <section class="card">
+        <h2><span class="n">00</span>开考先认三样：变体 · 文章线 · 空的形态 —— 本篇的主刀是「尾钩」</h2>
+        <p style="font-size:.92rem">同是<b>选句填空</b>，2008《如何写作初稿》靠<b>唯一词</b>全拿，2009《文化人类学理论》靠<b>指代距离与术语站位</b>才拆开 43/44。这一篇又换了一把钥匙：<span class="mk">五个正确项里有三个，是被<u>下一句</u>锁死的，不是被上一句。</span></p>
+
+        <h3 class="sh">① 认变体（Directions 那三行）</h3>
+        <p style="font-size:.92rem"><span class="loc">some sentences have been removed … There are two extra choices</span> ⟹ <b>选句填空</b>，五空七句、二项多余。与排序题（<span class="loc">paragraphs … numbered boxes</span>）、标题匹配（<span class="loc">heading</span>）、观点匹配（<span class="loc">match each person</span>）一眼可分（R32）。</p>
+
+        <h3 class="sh">② 认线（读前四段首句就够）</h3>
+        <p style="font-size:.92rem">①② 惊叹与发明史 → ③ 联网电脑是「文化机器」 → ④ <span class="loc">But for all the reasons there are to celebrate the computer, we must also act with caution.</span>
+          ⟹ <b>先扬后抑的议论文</b>，作者还用第一人称表态（<span class="loc">I call it…</span> / <span class="loc">My definition…</span>）。
+          <span class="mk">⟹ 这是<b>论证线</b>：每个空都是论证链上缺的那一环</span>——既不是 2008 的流程线（一段一个步骤），也不是 2009 的人物线（一段一位学者）。</p>
+
+        <h3 class="sh">③ 定空的形态：四末一中</h3>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:560px">
+          <tr><th style="width:9%">空</th><th style="width:20%">位置</th><th>证据在哪</th></tr>
+          <tr><td class="c">41</td><td>第②段 段末</td><td>本段（造出一台机器）＋ <b>第③段首句</b> <span class="loc">The networked computer…</span></td></tr>
+          <tr><td class="c">42</td><td>第④段 <b>段中</b></td><td>上句 <span class="loc">we must also act with caution</span> ＋ 下句 <span class="loc">I call it a secret war…</span> —— <b>两头都得对上</b></td></tr>
+          <tr><td class="c">43</td><td>第⑤段 段末</td><td>本段（人类创造多余之物）＋ <b>第⑥段首句</b> <span class="loc">… still stuck in download mode</span></td></tr>
+          <tr><td class="c">44</td><td>第⑥段 段末</td><td>本段（生产金字塔依然存在）＋ <b>第⑦段首句</b> <span class="loc">Television is a one-way tap…</span></td></tr>
+          <tr><td class="c">45</td><td>第⑦段 段末</td><td>本段（电视最难的任务是关掉）＋ <b>第⑧段首句</b> <span class="loc">What counts as meaningful uploading?</span></td></tr>
+        </table>
+        </div>
+
+        <h3 class="sh">④ 主刀：尾钩——下文把什么当成了「已知信息」</h3>
+        <p style="font-size:.92rem">下一句（段末空就是下一段首句）如果把一个<b>此前从没出现过的词</b>当成读者已经知道的东西来用——带定冠词（<span class="loc"><b>The</b> networked computer</span>）、用代词指它（<span class="loc">I call <b>it</b> a secret war</span>）、拿疑问句追问它（<span class="loc">What counts as <b>meaningful uploading</b>?</span>）——<b>那这个词只能由空格引入</b>。
+          <span class="mk">41、42、45 三空一招锁死；43、44 靠头钩的指示词（these / this）锁死。</span>详见 02+ 节（R136）。</p>
+
+        <h3 class="sh">⑤ 时间</h3>
+        <p style="font-size:.92rem">五个空两头都有硬钩，<b>6–8 分钟</b>足够。<span class="mk">多出来的时间全给 45</span>：B（stickiness）、E（computer／television）、G 三项都沾得上，是全篇唯一需要三选一的地方（黄皮书的备选也正是 B E G）。</p>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">01</span>七句选项（A–G）· 先给每一句贴「功能标签」，再看它的头和尾</h2>
+        <p style="font-size:.8rem;color:var(--muted);margin-bottom:12px">论证线文章里，<b>选项开头的五个词就是它的功能标签</b>（原因 / 溯因 / 评价 / 出路 / 递进 / 例证 / 结论）。答题后被选中的项会自动置灰，两个多余项带红框。</p>
+        <div class="optlib" id="optlib"></div>
+
+        <h3 class="sh">🪝 七句的「头」与「尾」：头要上家，尾要下家</h3>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:640px">
+          <tr><th style="width:6%">项</th><th style="width:47%">头：开头几个词要求上文有什么</th><th>尾：它引入了什么新东西，下文谁接</th></tr>
+          <tr><td class="c">A</td><td><span class="loc">these superfluous things</span> ⟹ 上文须刚列过「多余之物」 → ⑤段末 ✔</td><td><span class="loc">move beyond downloading</span> ⟹ ⑥❶ <span class="loc">still stuck in download mode</span> ✔（应然 → 实然）</td></tr>
+          <tr class="bad"><td class="c">B</td><td><span class="loc">Applications like tumblr.com</span> ⟹ 例证句，上文须有一个待举例的主张（黏性／应用）——五个空的上一句都没有 ✘</td><td><span class="loc">add stickiness</span> ⟹ 把 stickiness 当现成概念，而它要到 ⑧❷ 才被定义 ✘</td></tr>
+          <tr><td class="c">C</td><td><span class="loc">they</span> ＋ <span class="loc">such a device</span> ⟹ 上文须有「一群人造了一台机器」 → ②段末 ✔</td><td><span class="loc">a worldwide system</span> ⟹ ③❶ <span class="loc">The networked computer</span> ✔</td></tr>
+          <tr><td class="c">D</td><td><span class="loc">This is because</span> ⟹ 上文须有一个没给理由的判断 → ④❶ caution ✔</td><td><span class="loc">a secret war</span> ⟹ ④❸ <span class="loc">I call it a secret war</span> ✔</td></tr>
+          <tr class="bad"><td class="c">E</td><td><span class="loc">… thus …</span> ⟹ 上文须已讲清「电视只能下载、电脑能逆转流向」——后一半全文只有 G 给得出 △</td><td><span class="loc">record players → CD players</span> ⟹ 下文无人接 ✘</td></tr>
+          <tr><td class="c">F</td><td><span class="loc">this pyramid of production</span> ⟹ 上文须刚提过金字塔 → ⑥段末 ✔</td><td><span class="loc">television</span>（全文首现）⟹ ⑦❶ <span class="loc">Television is a one-way tap</span> ✔</td></tr>
+          <tr><td class="c">G</td><td><span class="loc">the flow</span> ⟹ 上文须有一股「流」 → ⑦❶ <span class="loc">flowing</span> ✔</td><td><span class="loc">meaningful uploading</span>（meaningful 全文首现）⟹ ⑧❶ <span class="loc">What counts as meaningful uploading?</span> ✔</td></tr>
+        </table>
+        </div>
+        <p style="font-size:.9rem;margin-top:10px">⭐ <b>五个正确项两头都有钩、而且两头都对得上；两个多余项至少一头悬空</b>——B 头尾全空，E 头钩只有一半、尾钩没有。<span class="mk">这张表画完，答案与多余项同时现形。</span></p>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">02</span>八段正文 · 点字母作答 <button class="allbtn" onclick="toggleAll()">译文 开/关</button></h2>
+        <p style="font-size:.8rem;color:var(--muted);margin-bottom:14px">🟡 高亮词可点出词卡（右侧/底部）｜ <span class="clue">红色虚线</span> ＝ 头钩（空格上文）｜ <span class="clue2">蓝色虚线</span> ＝ 尾钩（下文把它当已知信息）｜ 每个空下方点 A–G 作答，<b>答后空格就地补全成原文</b>，并出线索链解析 ＋ 错因标签</p>
+
+        <div class="para">
+          <div class="pname" style="font-family:var(--serif)">第一段 · 没有空（惊叹：三件日常「奇迹」）<button class="zbtn" onclick="tz(this)">译</button></div>
+          <p class="en">Think of those <span class="tk" data-w="fleeting">fleeting</span> moments when you look out of an aeroplane window and realise that you are flying, higher than a bird.
+            Now think of your laptop, thinner than a brown-paper envelope, or your cellphone in the palm of your hand.
+            Take a moment or two to <span class="tk" data-w="marvel">wonder at those marvels</span>.
+            You are the lucky <span class="tk" data-w="inheritor">inheritor</span> of <span class="tk" data-w="dreamcometrue">a dream come true</span>.</p>
+          <div class="zh">想想那些转瞬即逝的时刻：你望向飞机舷窗外，意识到自己正在飞，比鸟还高。再想想你的笔记本电脑，比牛皮纸信封还薄；还有握在掌心里的手机。花上一两分钟，为这些奇迹惊叹一下吧。你是一个美梦成真的幸运继承者。</div>
+        </div>
+
+        <div class="person q" id="q41" data-ans="C">
+          <div class="pname"><span class="qn">(41)</span> 第二段 · 段末空<span class="stance st-mid">证据 ＝ 本段的人与机器 ＋ 第三段首句</span><button class="zbtn" onclick="tz(this)">译</button></div>
+          <p class="en para">The second half of the 20th century <span class="tk" data-w="saw">saw</span>
+            <span class="clue">a collection of geniuses, warriors, entrepreneurs and <span class="tk" data-w="visionaries">visionaries</span></span>
+            <span class="tk" data-w="labour">labour</span> to create <span class="clue">a <span class="tk" data-w="fabulous">fabulous</span> machine</span>
+            that could <span class="tk" data-w="functionas">function as</span> a typewriter and printing press, studio and theatre, paintbrush and gallery, piano and radio,
+            the mail as well as the <span class="tk" data-w="mailcarrier">mail carrier</span>.
+            <span class="slot" data-n="41">(41) ＿＿＿＿＿＿＿＿</span></p>
+          <div class="zh">20 世纪后半叶，见证了一大批天才、斗士、企业家和远见卓识之士辛勤努力，造出一台神奇的机器：它能当打字机和印刷机、演播室和剧场、画笔和画廊、钢琴和收音机，既是信件本身，又是投递信件的邮差。<b>（41）他们不仅研发出了这样一台设备，而且到千禧年之交，还成功把它嵌进了一个每天有数十亿人访问的全球系统。</b></div>
+          <div class="chips"></div>
+          <div class="expl"><b>41 → C　Not only did they develop such a device but by the turn of the millennium they had also managed to embed it in a worldwide system accessed by billions of people every day.</b>
+            <div class="line">🔗 <b>头钩（三重）</b>：① <span class="loc">they</span> 只能指人——上一句里唯一的一群人就是 <span class="loc">a collection of geniuses, warriors, entrepreneurs and visionaries</span>；② <span class="loc">such a device</span> 回指 <span class="loc">a fabulous machine</span>（such ＋ 概括名词）；③ <span class="loc">develop</span> ≈ <span class="loc">labour to create</span>。再加一道时间接力：<span class="loc">The second half of the 20th century</span> → <span class="loc">by the turn of the millennium</span>（下半叶 → 世纪之交，顺着往后推）。</div>
+            <div class="line">🔗 <b>尾钩（最硬）</b>：第三段首句是 <span class="loc"><b>The</b> networked computer is an amazing device</span>——<b>networked（联网的）在全文第一次出现，却带着定冠词 The</b>，被当成读者已经知道的东西。<span class="mk">谁把「联网」交代给读者？只有 C 的 embed it in a worldwide system accessed by billions。</span>没有 C，第二段讲完「一台机器」，第三段突然冒出「那台联网电脑」，接缝是断的。</div>
+            <div class="line">🧱 <b>论证功能 ＝ 递进</b>：<span class="loc">Not only … but … also</span>——上文讲「造出来了」，C 再加一层「还连成了网」，下一段就从「联网电脑」讲起。典型的承上启下句。</div>
+            <div class="line">🚫 <b>为什么不是别项</b>：D、E、G 三项都含 computer，D、G 还带着 networked computer——<b>这是复现词，大家都有，不算证据</b>（R30）。G 的 <span class="loc">the flow</span> 在这里找不到任何「流」；D 的 <span class="loc">This is because</span> 要求上一句是个待解释的判断，而第二段是纯叙述；E 的 thus 与 television 全无着落。</div>
+            <div class="line">💡 <b>顺手一个读法</b>：第二段那五对名词——typewriter &amp; printing press / studio &amp; theatre / paintbrush &amp; gallery / piano &amp; radio / the mail &amp; the mail carrier——<b>每一对都是「创作的工具 ＋ 发布的渠道」</b>。作者在这里已经埋下第三段 <span class="loc">mode of production</span>（生产）与 <span class="loc">means of distribution</span>（传播）的伏笔，也埋下了全文 upload（创作）与 download（接收）的那组对立。</div>
+          </div>
+        </div>
+
+        <div class="para">
+          <div class="pname" style="font-family:var(--serif)">第三段 · 没有空（但它的首句是 41 的尾钩）<button class="zbtn" onclick="tz(this)">译</button></div>
+          <p class="en"><span class="clue2">The <span class="tk" data-w="networked">networked</span> computer</span> is an amazing device, the first media machine that <span class="tk" data-w="serveas">serves as</span>
+            the <span class="tk" data-w="mode">mode of production</span>, means of distribution, <span class="tk" data-w="site">site of reception</span>, and place of praise and <span class="tk" data-w="critique">critique</span>.
+            The computer is the 21st century’s <span class="tk" data-w="culturemachine">culture machine</span>.</p>
+          <div class="zh">联网电脑是一台了不起的设备，是第一台同时充当生产方式、传播手段、接收场所以及褒贬评判之地的媒介机器。电脑是 21 世纪的文化机器。</div>
+        </div>
+
+        <div class="person q" id="q42" data-ans="D">
+          <div class="pname"><span class="qn">(42)</span> 第四段 · <b>段中空</b><span class="stance st-mid">证据 ＝ 上句的警告 ＋ 下句的「it」</span><button class="zbtn" onclick="tz(this)">译</button></div>
+          <p class="en para">But <span class="tk" data-w="forall">for all</span> the reasons there are to <span class="tk" data-w="celebrate">celebrate</span> the computer,
+            <span class="clue">we must also <span class="tk" data-w="caution">act with caution</span>.</span>
+            <span class="slot" data-n="42">(42) ＿＿＿＿＿＿＿＿</span>
+            <span class="clue2">I call it a secret war</span> for two reasons.
+            First, most people do not realise that there are strong commercial <span class="tk" data-w="agendas">agendas</span> <span class="tk" data-w="atwork">at work</span> to keep them in <span class="clue2"><span class="tk" data-w="passive">passive consumption</span></span> mode.
+            Second, the majority of people who use networked computers to <span class="tk" data-w="download">upload</span> are not even aware of the <span class="tk" data-w="significance">significance</span> of what they are doing.</p>
+          <div class="zh">然而，尽管有种种理由为电脑喝彩，我们也必须谨慎行事。<b>（42）这是因为，联网电脑已经引发了一场下载与上传之间——也就是被动消费与主动创造之间——的隐秘战争，其结果将以我们才刚刚开始能想象的方式，塑造我们共同的未来。</b>我称它为「隐秘」战争，理由有二。第一，大多数人没有意识到，有强大的商业算计正在起作用，要把他们留在被动消费的模式里。第二，大多数用联网电脑上传内容的人，甚至意识不到自己所做之事的意义。</div>
+          <div class="chips"></div>
+          <div class="expl"><b>42 → D　This is because the networked computer has sparked a secret war between downloading and uploading—between passive consumption and active creation—whose outcome will shape our collective future in ways we can only begin to imagine.</b>
+            <div class="line">🔗 <b>头钩（论证功能）</b>：上一句 <span class="loc">we must also act with caution</span> 是一个<b>没给理由的警告</b>——读者的第一反应是「为什么？」。D 以 <span class="loc">This is because</span> 开头，正好是回答这个「为什么」的句子。<span class="mk">空格上一句抛出了什么，空格就补什么（R138）。</span></div>
+            <div class="line">🔗 <b>尾钩（两道）</b>：① 下一句 <span class="loc">I call <b>it</b> a secret war for two reasons</span>——it 要一个紧邻的先行词，而 <span class="loc">I call it X</span> 是在给一个<b>已经出场</b>的东西起名。七项里只有 D 含 <span class="loc">secret war</span>。
+              ② 更硬的一道：<b>downloading／uploading 与 passive consumption 在全文第一次出现，就在 D 里</b>，并且 D 用破折号给它们下了定义（下载 ＝ 被动消费，上传 ＝ 主动创造）；从下一句起（④❹ <span class="loc">passive consumption mode</span>、④❺ <span class="loc">to upload</span>、⑤ <span class="loc">All animals download…</span>）全部是裸用。<span class="mk">术语的定义句必须早于它的裸用（R54）——42 是全文唯一站在 ④❹ 之前的空。</span></div>
+            <div class="line">🧱 <b>段中空的规矩</b>：两头都得对上（R30）——D 头接 caution、尾接 secret war，一头都不缺。</div>
+            <div class="line">💡 <b>这一句就是全文的标题句</b>：黄皮书标的原题正是 <i>The Secret War Between Downloading and Uploading</i>。<b>选句填空把「标题句」挖掉时，下文一定会反复裸用标题里的词</b>——那正是找回它的钩子。</div>
+          </div>
+        </div>
+
+        <div class="person q" id="q43" data-ans="A">
+          <div class="pname"><span class="qn">(43)</span> 第五段 · 段末空<span class="stance st-mid">证据 ＝ 两类「多余之物」＋ 第六段首句</span><button class="zbtn" onclick="tz(this)">译</button></div>
+          <p class="en para">All animals <span class="tk" data-w="download">download</span>, but only a few upload.
+            <span class="tk" data-w="beaver">Beavers build dams</span> and birds make nests.
+            Yet <span class="tk" data-w="forthemostpart">for the most part</span>, the animal kingdom moves through the world downloading.
+            Humans are unique in their <span class="tk" data-w="capacity">capacity</span> to not only make tools but then <span class="tk" data-w="turnaround">turn around</span> and use them to create
+            <span class="clue"><span class="tk" data-w="superfluous">superfluous</span> material goods</span>—paintings, <span class="tk" data-w="sculpture">sculpture and architecture</span>—and
+            <span class="clue">superfluous experiences</span>—music, literature, religion and philosophy.
+            <span class="slot" data-n="43">(43) ＿＿＿＿＿＿＿＿</span></p>
+          <div class="zh">所有动物都在下载，但只有少数会上传。河狸筑坝，鸟儿做窝。然而大体说来，动物王国是以「下载」的方式走过这个世界的。人类的独特之处在于，他们不仅能制造工具，还能反过来用这些工具创造出多余的物质产品——绘画、雕塑和建筑——以及多余的体验——音乐、文学、宗教和哲学。<b>（43）当然，恰恰是这些多余之物，定义了人类文化，并最终定义了人之为人。下载和消费文化需要高超的技能，但止步于下载，就等于亲手剥夺了自己身为人类的一个决定性要素。</b></div>
+          <div class="chips"></div>
+          <div class="expl"><b>43 → A　Of course, it is precisely these superfluous things that define human culture and ultimately what it is to be human. Downloading and consuming culture requires great skills, but failing to move beyond downloading is to strip oneself of a defining constituent of humanity.</b>
+            <div class="line">🔗 <b>头钩（指示词 ＋ 原词 ＋ 概括名词）</b>：<span class="loc">these superfluous things</span>——these 要紧邻的先行词，superfluous 原词复现，things 是一个<b>概括名词</b>，一手打包上句两个破折号里的两类东西：superfluous material goods（绘画、雕塑、建筑）与 superfluous experiences（音乐、文学、宗教、哲学）（R83）。</div>
+            <div class="line">🔗 <b>尾钩（应然 → 实然）</b>：A 末句立了一个标准——<span class="loc">failing to move beyond downloading</span> 就等于丢掉人性 ⟹ 人<b>应当</b>超越下载。第六段首句立刻接上现实：<span class="loc">most people are <b>still stuck in download mode</b></span>。move beyond ↔ stuck in，一个该走出去、一个仍困在里面；<span class="loc">For all … still</span> 这个让步转折，要的正是 A 提供的那个「应然」。</div>
+            <div class="line">🧱 <b>论证功能 ＝ 评价</b>：第五段是一段<b>事实描述</b>（动物只下载、人类造多余之物），A 给这段事实下<b>评价</b>：「多余」恰恰是人之为人的东西。句首 <span class="loc">Of course</span> 与强调句 <span class="loc">it is precisely … that</span> 都是评价句的标志。</div>
+            <div class="line">🚫 <b>为什么不是 B</b>：B 的 <span class="loc">in creative ways</span> 看着能接上 create superfluous goods，但 B 是个<b>例子</b>（<span class="loc">Applications like tumblr.com</span>），举的是「增加黏性」——黏性要到第八段才被定义；而且第六段一开口就是「大多数人仍困在下载模式」，前面插一个「某些应用潜力很大」的正面例子，<span class="loc">For all … still</span> 的转折就接不上了。</div>
+          </div>
+        </div>
+
+        <div class="person q" id="q44" data-ans="F">
+          <div class="pname"><span class="qn">(44)</span> 第六段 · 段末空<span class="stance st-anti">⚠️ E 在这里是最强干扰（黄皮书备选 E F）</span><button class="zbtn" onclick="tz(this)">译</button></div>
+          <p class="en para"><span class="tk" data-w="forall">For all</span> the possibilities of our new culture machines, <span class="clue2">most people are still <span class="tk" data-w="stuck">stuck in</span> download mode</span>.
+            Even after the <span class="tk" data-w="advent">advent</span> of <span class="tk" data-w="widespread">widespread</span> social media,
+            <span class="clue">a <span class="tk" data-w="pyramid">pyramid</span> of production remains</span>, with a small number of people uploading material,
+            a slightly larger group commenting on or <span class="tk" data-w="modify">modifying</span> that content,
+            and a huge percentage remaining <span class="tk" data-w="content">content</span> to just consume.
+            <span class="slot" data-n="44">(44) ＿＿＿＿＿＿＿＿</span></p>
+          <div class="zh">尽管我们的新文化机器有种种可能，大多数人仍困在下载模式里。即便社交媒体已经普及，一座「生产金字塔」依然存在：少数人上传素材，稍多一些人评论或修改这些内容，而绝大多数人满足于只做消费。<b>（44）这座生产金字塔之所以持续存在，一个原因是：过去半个世纪里，世界上大部分媒介文化都由单一的媒介——电视——所塑造，而电视的本质就是下载。</b></div>
+          <div class="chips"></div>
+          <div class="expl"><b>44 → F　One reason for the persistence of this pyramid of production is that for the past half-century, much of the world’s media culture has been defined by a single medium—television—and television is defined by downloading.</b>
+            <div class="line">🔗 <b>头钩（指示词 ＋ 五词复现 ＋ 换词性）</b>：<span class="loc">this pyramid of production</span> 与上句 <span class="loc">a pyramid of production remains</span> 一字不差，冠词 a → this 完成回指；上句的动词 <span class="loc">remains</span>（依然存在）在 F 里变成名词 <span class="loc">persistence</span>（持续存在）——<b>同义换词性</b>，与 45 题 flowing → the flow 是同一手法（R109）。</div>
+            <div class="line">🔗 <b>尾钩（新话题的引入）</b>：television 在全文<b>第一次出现就在 F 里</b>，第七段整段谈电视：<span class="loc">Television is a one-way tap…</span>。F 的末句 <span class="loc">television is defined by downloading</span> 是论点，第七段的「单向水龙头」「开了就关不掉」是它的展开。</div>
+            <div class="line">🧱 <b>论证功能 ＝ 溯因</b>：上一句讲了一个<b>顽固的现象</b>（社交媒体普及了，金字塔还在）⟹ 读者要问「为什么还在」⟹ 空格补<b>原因</b>：<span class="loc">One reason for the persistence of … is that …</span>。</div>
+            <div class="line">🚫 <b>E 为什么不行</b>：E 同时有 computer 与 television，看上去能把「新文化机器」过渡到「电视」。但 E 带着 <b>thus</b>——它是个<b>结论</b>，前提必须站在它前面：要说「电脑对电视的挑战不同于唱片机换成 CD」，得先讲清电视是什么（单向下载）、电脑是什么（能逆转流向）。放在 44，这两件事一件都还没说（电视要到第七段才被解释）⟹ thus 凭空而来（R137）。</div>
+          </div>
+        </div>
+
+        <div class="person q" id="q45" data-ans="G">
+          <div class="pname"><span class="qn">(45)</span> 第七段 · 段末空<span class="stance st-anti">⚠️ 全篇唯一的三选一（黄皮书备选 B E G）</span><button class="zbtn" onclick="tz(this)">译</button></div>
+          <p class="en para"><span class="clue2">Television</span> is <span class="clue">a <span class="tk" data-w="oneway">one-way</span> <span class="tk" data-w="tap">tap</span> flowing into our homes</span>.
+            The hardest task that television asks of anyone is to <span class="tk" data-w="turnoff">turn the power off</span> after he has turned it on.
+            <span class="slot" data-n="45">(45) ＿＿＿＿＿＿＿＿</span></p>
+          <div class="zh">电视是一根单向流进我们家中的水龙头。电视对任何人提出的最难的任务，就是打开之后再把它关掉。<b>（45）联网电脑提供了五十年来第一次逆转这股流向的机会：鼓励有思考的下载，更重要的是，鼓励有意义的上传。</b></div>
+          <div class="chips"></div>
+          <div class="expl"><b>45 → G　The networked computer offers the first chance in 50 years to reverse the flow, to encourage thoughtful downloading and, even more importantly, meaningful uploading.</b>
+            <div class="line">🔗 <b>头钩（同源词换词性 ＋ 反义 ＋ 数字接力）</b>：<span class="loc">the flow</span> 带定冠词，回指本段首句 <span class="loc">a one-way tap <b>flowing</b> into our homes</span>——动词 flowing 变成名词 the flow（R109 的同一手法，2011 新题型是 kept separate → this separation）；<span class="loc">reverse</span>（逆转）正对 <span class="loc">one-way</span>（单向）。第三道：<span class="loc">the first chance in <b>50 years</b></span> 回扣 44 题 F 的 <span class="loc">for the past <b>half-century</b></span>——电视统治的半个世纪，电脑第一次有机会把它翻过来。</div>
+            <div class="line">🔗 <b>尾钩（最硬，一击即中）</b>：第八段首句 <span class="loc">What counts as <b>meaningful uploading</b>?</span> 是个疑问句，<b>它把 meaningful uploading 当成读者已经见过的话题来追问</b>；而 meaningful 在全文第一次出现就在 G 里。七项里只有 G 有这两个词。<span class="mk">「提出概念 → 就概念发问 → 给出定义」，G 是这条链的第一环。</span></div>
+            <div class="line">🧱 <b>论证功能 ＝ 出路</b>：本段抛出一个<b>困境</b>（电视最难的任务是关掉它）⟹ 空格补<b>出路</b>（<span class="loc">offers the first chance to reverse</span>）。</div>
+            <div class="line">🚫 <b>B 为什么进不来</b>：B 的 <span class="loc">add stickiness</span> 与第八段的 “stickiness” 词面相同，看着能接——但第八段是用<b>引号 ＋ 破折号第一次定义</b>这个词（<span class="loc">creations and experiences to which others adhere</span>），B 却把它当成现成概念直接用 ⟹ <b>B 只能站在第八段之后</b>（R54 反向 · R29 引号第四功能）。</div>
+            <div class="line">🚫 <b>E 为什么进不来</b>：E 的 thus 需要「电脑与电视本质不同」这个前提，本段只说了电视那一半；电脑那一半恰恰是 G ⟹ E 若要进来，只能排在 G 后面，而 G 与第八段之间没有空（R137）。何况第八段追问的是 meaningful uploading，E 通篇没有 upload 这个词。</div>
+            <div class="mine">🚩 <b>我的实况</b>：5/5，唯一停了一下的就是这里——E 同时沾着 computer 与 television，本段又正在谈电视，一眼看去很像「顺势总结」。让我放弃它的是尾钩：第八段在追问 meaningful uploading，而 E 一个 upload 都没有。<b>头钩打平时，看谁接得住下一句。</b></div>
+          </div>
+        </div>
+
+        <div class="para" style="margin-top:6px">
+          <div class="pname" style="font-family:var(--serif)">第八段 · <b>没有空</b>（但它的首句是 45 的尾钩，第二句判了 B 出局）<button class="zbtn" onclick="tz(this)">译</button></div>
+          <p class="en"><span class="clue2">What <span class="tk" data-w="countas">counts as</span> <span class="tk" data-w="meaningful">meaningful</span> uploading?</span>
+            My definition <span class="tk" data-w="revolve">revolves around</span> the concept of “<span class="tk" data-w="stickiness">stickiness</span>”—creations and experiences to which others <span class="tk" data-w="adhere">adhere</span>.</p>
+          <div class="zh">什么才算有意义的上传？我的定义围绕「黏性」这一概念展开——也就是能让别人黏住、追随的作品与体验。</div>
+        </div>
+      </section>
+
+      <section class="card" id="tail">
+        <h2><span class="n">02+</span>本页最值钱：尾钩 —— 下文把什么当成了「已知信息」</h2>
+        <p style="font-size:.92rem">英语里，<b>旧信息必须先被引入，才能带着 the／this／it 出场，才能被疑问句追问</b>。所以只要下一句把一个此前没出现过的词当旧信息用，这个词就只能是空格引进来的：</p>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:680px">
+          <tr><th style="width:6%">空</th><th style="width:30%">下文的那一句</th><th style="width:20%">被当成已知的词</th><th style="width:22%">凭什么说它「已知」</th><th>七项里谁接得住</th></tr>
+          <tr><td class="c">41</td><td>③❶ <span class="loc">The networked computer is an amazing device</span></td><td>networked</td><td>定冠词 The ＋ 全文首现</td><td>只有 <b>C</b> 交代了「嵌进全球系统」</td></tr>
+          <tr><td class="c">42</td><td>④❸ <span class="loc">I call it a secret war for two reasons</span>；④❹ <span class="loc">passive consumption mode</span></td><td>it／a secret war；passive consumption</td><td>代词 it ＋ 命名句 I call it X；术语裸用</td><td>只有 <b>D</b></td></tr>
+          <tr><td class="c">43</td><td>⑥❶ <span class="loc">… still stuck in download mode</span></td><td>（一个「应然」标准）</td><td>让步转折 For all … still 需要一个被违背的标准</td><td><b>A</b>（failing to move beyond downloading）</td></tr>
+          <tr><td class="c">44</td><td>⑦❶ <span class="loc">Television is a one-way tap</span></td><td>television</td><td>新话题直接作主语（泛指名词，属弱尾钩）</td><td><b>F</b>；E 也有 television，但头钩判死</td></tr>
+          <tr><td class="c">45</td><td>⑧❶ <span class="loc">What counts as meaningful uploading?</span></td><td>meaningful uploading</td><td>疑问句追问一个现成概念</td><td>只有 <b>G</b></td></tr>
+        </table>
+        </div>
+        <div class="box"><span class="bt">⭐ 尾钩为什么比头钩硬</span>
+          头钩只说「上文有个东西」，<b>常常好几项都回指得上</b>——本篇的 computer 在 D、E、G 三项里都有，downloading 在 A、D、F、G 四项里都有，全是复现词。
+          尾钩说的是「下文已经把某个词当旧信息在用」，而<b>引入这个动作，全篇只能发生一次、发生在一个地方</b>。所以尾钩一出现，往往只有一项接得住。
+          <span class="mk">它与 2009 立的 R54（术语的定义句必须早于裸用）是同一条原理：R54 管的是「术语」，尾钩管的是一切「被当成已知的新词」。</span>
+        </div>
+        <div class="box green"><span class="bt">✅ 考场动作（三步）</span>
+          ① 每个空<b>先读下一句</b>（段末空读下一段首句），圈出带 the／this／it 的名词、以及被疑问句追问的话题；<br>
+          ② 回头查：这个词在空格之前<b>出现过没有</b>？没出现过 ⟹ 它必须由空格引入 ⟹ 去七项里找它；<br>
+          ③ 再用头钩复核。<b>本篇 41／42／45 三空只用前两步就锁死。</b>
+        </div>
+        <div class="box red"><span class="bt">⚠️ 两条边界</span>
+          ① <b>尾钩要的是「第一次出现」的词</b>。⑥❶ 的 download 在第五段早就出现过，它只能加固 43、不能定位 43（同 R110：复现只加固、不定位）；<br>
+          ② <b>被下文「定义」的词不是已知信息，而是正在被引入</b>——第八段用引号给 stickiness 下定义，B 却把它当现成概念用，方向正好反了（⟹ 多余，见 03 节）。
+        </div>
+      </section>
+
+      <section class="card" id="chain">
+        <h2><span class="n">02++</span>论证链：五个空，五种论证功能</h2>
+        <p style="font-size:.92rem">议论文里每一句都在回答上一句引出的问题。<b>先写下「这里缺什么功能」，再去七项里找带那个功能标志的句子</b>——七个选项开头的五个词本身就是功能标签。</p>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:680px">
+          <tr><th style="width:15%">段</th><th style="width:30%">空格前一句抛出了什么</th><th style="width:15%">空格补什么</th><th>答案与它的功能标志</th></tr>
+          <tr><td>①–③ 赞美</td><td>②：一段事实叙述（一群人造出一台机器）</td><td><b>递进</b></td><td><b>C</b> <span class="loc">Not only did they develop … but … also</span></td></tr>
+          <tr><td>④ 转折警示</td><td>一个没给理由的警告（<span class="loc">we must also act with caution</span>）</td><td><b>原因</b></td><td><b>D</b> <span class="loc">This is because …</span></td></tr>
+          <tr><td>⑤ 人性</td><td>一段事实描述（人类创造多余之物）</td><td><b>评价</b></td><td><b>A</b> <span class="loc">Of course, it is precisely these … that …</span></td></tr>
+          <tr><td>⑥ 现状</td><td>一个顽固的现象（<span class="loc">a pyramid of production remains</span>）</td><td><b>溯因</b></td><td><b>F</b> <span class="loc">One reason for the persistence of … is that …</span></td></tr>
+          <tr><td>⑦ 电视</td><td>一个困境（<span class="loc">The hardest task … is to turn the power off</span>）</td><td><b>出路</b></td><td><b>G</b> <span class="loc">offers the first chance … to reverse the flow</span></td></tr>
+          <tr><td>⑧ 定义</td><td colspan="3">什么算有意义的上传 → 黏性（已给定，无空）</td></tr>
+          <tr class="bad"><td>多余项</td><td colspan="3"><b>B ＝ 例证</b>（<span class="loc">Applications like…</span>）：全文没有一个待举例的「黏性」主张站在空格前 ｜ <b>E ＝ 结论</b>（<span class="loc">thus</span>）：前提不全，一半在 G 里</td></tr>
+        </table>
+        </div>
+        <div class="box"><span class="bt">⭐ 功能标签的用法与局限</span>
+          <b>判断补理由、现象补原因、困境补出路、事实补评价或递进</b>——这四句话能把七项先粗分成组。
+          但它<b>只能缩小范围、不能直接定答案</b>：本篇 42 与 44 都是「补原因」，靠头钩（caution ↔ This is because；pyramid ↔ this pyramid）才分开。
+          <span class="mk">标签找不到上家的选项，就是多余项：B 的「例证」与 E 的「结论」，在五个空前面都没有对应的上一句。</span>（R138）
+        </div>
+      </section>
+
+      <section class="card" id="extra">
+        <h2><span class="n">03</span>两个多余项：B 与 E —— 内容都对，位置都满</h2>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:680px">
+          <tr><th style="width:5%">项</th><th style="width:27%">它说的（中文）</th><th style="width:22%">它本该站在哪</th><th>为什么五个空都装不下</th></tr>
+          <tr><td class="c">B</td><td>像 tumblr.com 这样的应用，让用户把图片、文字和其他媒介创造性地组合起来再分享出去，<b>有潜力通过愉悦、娱乐和启迪他人来增加黏性</b>。</td><td><b>第八段之后</b>：先给 “stickiness” 下定义，才能拿 tumblr 当例子</td><td>① 裸用 stickiness，而 ⑧❷ 才用引号 ＋ 破折号给它下定义（R29 引号第四功能＝命名）；② <span class="loc">Applications like…</span> 是例证句，要求上一句是个可被举例的主张——五个空的上一句没有一个在谈「黏性」或「应用」；③ 45 是它唯一沾得上的空（下一段就是 stickiness），可一旦放进去，第八段就成了「先举例、后定义」。</td></tr>
+          <tr><td class="c">E</td><td><b>因此</b>，电脑对电视的挑战，与唱片机被 CD 机取代那种「一种载体换成另一种」几乎毫无相似之处。</td><td><b>紧跟 G 之后</b>：G 说电脑能逆转流向，E 总结「所以这不是换载体，是换方向」</td><td>① thus 的前提是「电视只能下载、电脑能逆转流向」——前一半在 F 与第七段，后一半<b>只在 G</b>；② 放 44：电视还没被解释，thus 无从得出；③ 放 45：第八段追问 meaningful uploading，E 不提 upload；G 占住 45 后，G 与第八段之间没有空。</td></tr>
+        </table>
+        </div>
+        <div class="box"><span class="bt">⭐ 这两个多余项一个比一个「对」</span>
+          E 的意思几乎就是全文主旨的另一种说法（电脑不是更好的电视，而是反方向的机器）；B 是作者给出定义之后最顺手的一个例子。
+          命题人挑它们当多余项，挑的正是「<b>内容无懈可击、只是没有位置</b>」的句子。
+          <span class="mk">⟹ 判多余项别找「哪句说错了」，要找「它该站的地方有没有空」（R31）。</span>
+          <br><b>B 与 2008 的 B 是同一种死法</b>：都属于「末段之后」的内容，而节选文章在末段就结束了。
+        </div>
+
+        <h3 class="sh">📊 七篇 Part B 的多余项造法总账</h3>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:600px">
+          <tr><th style="width:9%">年份</th><th style="width:14%">变体</th><th style="width:10%">多余项</th><th>造法</th></tr>
+          <tr><td class="c">2007</td><td>标题匹配</td><td class="c">A、G</td><td>两项都有词面呼应（A ↔ 首句 role models，G ↔ responsible 连出两次）</td></tr>
+          <tr><td class="c">2008</td><td>选句填空</td><td class="c">B、F</td><td>B 阶段错位（属于末段之后）· F 与正确项 E 撞专名</td></tr>
+          <tr><td class="c">2009</td><td>选句填空</td><td class="c">D、F</td><td>同属功能论一区，而那一区没有空</td></tr>
+          <tr><td class="c">2010</td><td>排序</td><td class="c">C</td><td>复现词最多，却偏离主线</td></tr>
+          <tr><td class="c">2011</td><td>排序</td><td class="c">—</td><td>零多余项（7 格 7 项）</td></tr>
+          <tr class="bad"><td class="c">2012</td><td>选句填空</td><td class="c">B、E</td><td>B 先用后定义（属于末段之后）· E 缺前提的 thus（正确项 G 的下家）；两项都有词面呼应</td></tr>
+          <tr><td class="c">2022</td><td>观点匹配</td><td class="c">B、E</td><td>没有人说过的话（无人提及型）</td></tr>
+        </table>
+        </div>
+        <p style="font-size:.9rem;margin-top:10px">⭐ <b>多余项两大族</b>：①「<b>词面像</b>」——和邻居共用词（2007 A／G · 2008 F · 2010 C · 2012 B、E）；②「<b>位置满</b>」——内容全对，它该站的那一格没有空（2008 B · 2009 D／F · 2012 B、E）。
+          <span class="mk">2012 的两个多余项两族兼备：词面把你往空里引，位置把它挡在外面。</span>⟹「哪一项和上文最像」在 Part B 里依旧是负资产（R81）。</p>
+      </section>
+
+      <section class="card" id="three">
+        <h2><span class="n">03+</span>三篇选句填空：三种文章线，三把钥匙</h2>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:700px">
+          <tr><th style="width:14%"></th><th style="width:28%">2008《如何写作初稿》</th><th style="width:28%">2009《文化人类学理论》</th><th>2012《下载与上传》</th></tr>
+          <tr><td><b>文章线</b></td><td><b>流程线</b>：动笔前 → 写初稿 → 改初稿</td><td><b>人物线</b>：一段一位学者</td><td><b>论证线</b>：赞美 → 警示 → 溯因 → 出路 → 定义</td></tr>
+          <tr><td><b>空的形态</b></td><td>段首／段中／段末齐全</td><td>五个全在段末</td><td>四末一中</td></tr>
+          <tr><td><b>破题主刀</b></td><td><b>唯一词</b>（每一步有专属名词）</td><td><b>指代距离 ＋ 术语站位</b>（话题词跨段复现，唯一词失灵）</td><td><b>论证功能 ＋ 尾钩</b>（下一句把什么当已知）</td></tr>
+          <tr><td><b>最难的一处</b></td><td>43／44 连体空</td><td>43／44 连体空（A、B 可对调）</td><td>45 的三选一（B、E、G）</td></tr>
+          <tr><td><b>多余项</b></td><td>B 阶段错位 · F 专名撞车</td><td>D、F 同区一起死</td><td>B 先用后定义 · E 正确项的下家</td></tr>
+          <tr><td><b>Claude 盲做</b></td><td>5/5</td><td class="bad"><b>3/5</b></td><td>5/5</td></tr>
+        </table>
+        </div>
+        <div class="box"><span class="bt">⭐ 认完变体，还要认线</span>
+          流程线看<b>步骤的专属名词</b>，人物线看<b>代词与术语的站位</b>，论证线看<b>「上一句抛出了什么、下一句把什么当已知」</b>。
+          三条线的共同底线只有一条：<span class="mk">证据必须落到具体的词——「感觉这里该转折了」不算证据。</span>
+          <br>⚠️ 2009 的翻车正是没认线（拿流程线的唯一词法去做人物线），见 R55 第一条陷阱。
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">04</span>Part B 分诊表：四种变体 · 七篇实做（开考三十秒先认变体）</h2>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:680px">
+          <tr><th style="width:14%">变体</th><th style="width:25%">Directions 里的原话</th><th style="width:14%">考什么</th><th>打法与用时</th></tr>
+          <tr><td><b>选句填空</b><br><span style="font-size:.78rem">2008 · 2009 · <b>2012</b></span></td><td><i>some sentences (segments) have been removed … two extra choices</i></td><td><b>衔接与连贯</b></td><td>认线 → 定空的形态 → <b>每空先读下一句找尾钩</b> → 先挑自带硬约束的选项（代词／连接词／例证词开头）→ 先落定有硬排除的空 → 通读查代词。<b>6–9 min</b>，能自查</td></tr>
+          <tr><td><b>标题匹配</b><br><span style="font-size:.78rem">2007</span></td><td><i>choose the most suitable heading</i></td><td><b>段落概括</b></td><td>逐段先自己一句话概括再看选项；<b>复现词 ≠ 段落主旨</b>。<b>8–10 min</b>，不能自查</td></tr>
+          <tr><td><b>观点匹配</b><br><span style="font-size:.78rem">2022</span></td><td><i>match each person … with the statements</i></td><td><b>立场判定</b></td><td>先给每人贴「支持／反对／中间」，再按立场分堆匹配。<b>8–10 min</b></td></tr>
+          <tr><td><b>排序题</b><br><span style="font-size:.78rem">2010 · 2011</span></td><td><i>choose the most suitable paragraphs … numbered boxes</i></td><td><b>篇章顺序</b></td><td><b>先数格子</b>（有无多余项）→ 先做被已给定段夹住的空 → 段首排除法定首段 → 先拼块再排块 → 通读验闭合。<b>8–10 min</b>，能自查</td></tr>
+        </table>
+        </div>
+        <p style="font-size:.9rem;margin-top:10px">📊 <b>七篇战绩</b>：2007 标题 5/5 · 2022 观点 5/5 · 2008 选句 5/5 · <b>2009 选句 3/5</b> · 2010 排序 5/5 · 2011 排序 5/5 · <b>2012 选句 5/5</b>。<span class="mk">选句填空三篇里只有 2009 翻过车——那一篇恰恰是唯一一篇「唯一词」会骗人的。</span></p>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">05</span>长难句精析（8 句 · 本篇黄皮书无此栏目，全部原创）</h2>
+
+        <div class="ls">
+          <div class="s"><span class="mk">The second half of the 20th century</span> <span class="mk3">saw</span> <span class="mk2">a collection of geniuses, warriors, entrepreneurs and visionaries</span> <span class="mk3">labour</span> to create a fabulous machine that could function as a typewriter and printing press, studio and theatre, paintbrush and gallery, piano and radio, the mail as well as the mail carrier.</div>
+          <div class="an">
+            <div>· <span class="mk">时间作主语 ＋ see</span> ＝ 「见证了」（拟人）。读成「20 世纪后半叶<b>看见</b>……」整句就崩。同族：<i>The year 2011 witnessed…</i> / <i>The last decade has seen…</i>。</div>
+            <div>· <b>see sb do</b>：<span class="mk2">蓝＝宾语</span>（一群人），<span class="mk3">labour 是<b>不带 to 的不定式</b></span>作宾补——⚠️ labour 在这里是<b>动词</b>「辛勤工作」，不是名词「劳动力」。</div>
+            <div>· that 定语从句里 <i>function as</i> 挂了<b>五对</b>名词：前四对用 and，最后一对用 as well as。<b>每一对都是「创作工具 ＋ 发布渠道」</b>——这就是下一段 production／distribution 的具象版。</div>
+          </div>
+          <div class="tr">译：20 世纪后半叶见证了一大批天才、斗士、企业家和远见卓识之士辛勤努力，造出一台神奇的机器：它能当打字机和印刷机、演播室和剧场、画笔和画廊、钢琴和收音机，既是信件，又是邮差。</div>
+        </div>
+
+        <div class="ls">
+          <div class="s">The networked computer is an amazing device, <span class="mk2">the first media machine</span> <span class="mk">that serves as the mode of production, means of distribution, site of reception, and place of praise and critique</span>.</div>
+          <div class="an">
+            <div>· <span class="mk2">逗号后是同位语</span>，给 an amazing device 换一个更精确的说法；<span class="mk">that 从句</span>修饰 the first media machine。</div>
+            <div>· serves as 后四个并列：<b>生产方式 / 传播手段 / 接收场所 / 褒贬之地</b>——对应全文的 upload（生产）、download（接收）、comment（评判），<b>一句话把全文的三个动作都埋了</b>。</div>
+            <div>· ⚠️ <i>site</i> 在这里是「场所」，不是「网站」（website）；<i>critique</i> 是「评论、评判」，不等于 criticism（批评）——与 praise 并列，是「褒贬」的「贬」那一半的中性说法。</div>
+          </div>
+          <div class="tr">译：联网电脑是一台了不起的设备，是第一台同时充当生产方式、传播手段、接收场所以及褒贬评判之地的媒介机器。</div>
+        </div>
+
+        <div class="ls">
+          <div class="s"><span class="mk">Not only did they develop</span> such a device <span class="mk">but</span> <span class="mk2">by the turn of the millennium</span> they <span class="mk3">had also managed</span> to embed it in a worldwide system <span class="mk2">accessed by billions of people every day</span>.</div>
+          <div class="an">
+            <div>· <span class="mk">Not only 置于句首 ⟹ 部分倒装</span>（did they develop）；but … also 被拆开，also 挪到了助动词 had 后面。</div>
+            <div>· <span class="mk3">had managed</span> 过去完成时，由 <span class="mk2">by the turn of the millennium</span>（截至千禧年之交）触发——by ＋ 过去时间点 ⟹ 过去完成。</div>
+            <div>· <span class="mk2">accessed by…</span> 是过去分词后置定语，修饰 system（＝ which is accessed by…）。</div>
+          </div>
+          <div class="tr">译：他们不仅研发出了这样一台设备，而且到千禧年之交，还成功把它嵌进了一个每天有数十亿人访问的全球系统。</div>
+        </div>
+
+        <div class="ls">
+          <div class="s">This is because the networked computer has sparked <span class="mk">a secret war between downloading and uploading</span><span class="mk2">—between passive consumption and active creation—</span><span class="mk3">whose outcome will shape our collective future in ways we can only begin to imagine</span>.</div>
+          <div class="an">
+            <div>· <span class="mk2">破折号中间是同位解释</span>：第二个 between 解释第一个 between——<b>下载 ＝ 被动消费，上传 ＝ 主动创造</b>。这就是全文两个术语的定义点（42 题的尾钩）。</div>
+            <div>· <span class="mk3">whose 定语从句</span>修饰 war，<b>中间隔着一整段破折号插入</b>——读的时候把破折号之间先整段跳过，whose 就贴回 war 了。</div>
+            <div>· <i>in ways (that) we can only begin to imagine</i> 省略关系词；<i>can only begin to imagine</i> ＝「才刚刚开始能想象」⟹ 远超想象。</div>
+          </div>
+          <div class="tr">译：这是因为，联网电脑已经引发了一场下载与上传之间——即被动消费与主动创造之间——的隐秘战争，其结果将以我们几乎无法想象的方式塑造我们共同的未来。</div>
+        </div>
+
+        <div class="ls">
+          <div class="s">Humans are unique in their capacity <span class="mk">to not only make tools but then turn around and use them</span> to create <span class="mk2">superfluous material goods—paintings, sculpture and architecture—</span>and <span class="mk3">superfluous experiences—music, literature, religion and philosophy</span>.</div>
+          <div class="an">
+            <div>· <span class="mk">分裂不定式</span>：to <b>not only</b> make（副词插在 to 与动词之间，口语与报刊常见）；并列不是 not only … but also，而是 <b>not only … but then</b>——then 表示「在此基础上更进一步」。</div>
+            <div>· <i>turn around</i> ＝「反过来、转而」，不是「转身」。</div>
+            <div>· <span class="mk2">物质</span>与<span class="mk3">精神</span>两类「多余之物」各带一个破折号列举，<b>结构对称</b>——43 题 A 的 <i>these superfluous things</i> 就是一把把这两类都打包。</div>
+          </div>
+          <div class="tr">译：人类的独特之处在于，他们不仅能制造工具，还能反过来用这些工具创造出多余的物质产品——绘画、雕塑和建筑——以及多余的体验——音乐、文学、宗教和哲学。</div>
+        </div>
+
+        <div class="ls">
+          <div class="s"><span class="mk">Downloading and consuming culture</span> <span class="mk3">requires</span> great skills, but <span class="mk">failing to move beyond downloading</span> <span class="mk3">is</span> <span class="mk2">to strip oneself of a defining constituent of humanity</span>.</div>
+          <div class="an">
+            <div>· 两个分句都是<span class="mk">动名词作主语</span>。前一个 <i>Downloading and consuming culture</i> 是<b>一件事</b>（culture 同时是两个动名词的宾语），所以谓语用单数 requires。</div>
+            <div>· 后一个：<span class="mk">doing A</span> is <span class="mk2">to do B</span> ＝「做 A 就等于做 B」——不定式作表语表<b>等同</b>。写作可直接套：<i>To stop learning is to stop growing.</i></div>
+            <div>· <i>strip oneself of sth</i> ＝ 剥夺自己的某物（strip A of B 的反身用法）。</div>
+          </div>
+          <div class="tr">译：下载和消费文化需要高超的技能，但止步于下载，就等于亲手剥夺了自己身为人类的一个决定性要素。</div>
+        </div>
+
+        <div class="ls">
+          <div class="s">Even after the advent of widespread social media, <span class="mk">a pyramid of production</span> <span class="mk3">remains</span>, <span class="mk2">with a small number of people uploading material, a slightly larger group commenting on or modifying that content, and a huge percentage remaining content to just consume</span>.</div>
+          <div class="an">
+            <div>· 主干只有三个词：a pyramid remains（<b>remain 不及物 ＝ 依然存在</b>）。</div>
+            <div>· <span class="mk2">with ＋ 名词 ＋ 分词</span>三个并列，正好是<b>金字塔的三层</b>：塔尖少数人上传 → 中层稍多的人评论修改 → 塔底绝大多数人只消费。</div>
+            <div>· ⚠️ <b>同一句里 content 两义</b>：<i>that content</i>（名词「内容」，/ˈkɒntent/）与 <i>remaining content to…</i>（形容词「满足的」，/kənˈtent/）。2007 新题型的 <i>immediate content</i>（名词「满足」）是它的第三种样子。末尾 <i>to just consume</i> 又是一个分裂不定式。</div>
+          </div>
+          <div class="tr">译：即便社交媒体已经普及，一座「生产金字塔」依然存在：少数人上传素材，稍多一些人评论或修改这些内容，而绝大多数人满足于只做消费。</div>
+        </div>
+
+        <div class="ls">
+          <div class="s"><span class="mk">The challenge</span> <span class="mk2">[that] the computer mounts to television</span> thus <span class="mk3">bears little similarity to</span> <span class="mk">one format being replaced by another</span> in the manner of record players being replaced by CD players.</div>
+          <div class="an">
+            <div>· <span class="mk2">省略关系词的定语从句</span>：the challenge (that) the computer mounts to television。<i>mount a challenge to</i> ＝「向……发起挑战」——mount 在这里不是「登上」。</div>
+            <div>· <span class="mk3">bear little similarity to</span> ＝ 与……几乎毫无相似之处（bear 取「具有」义）。</div>
+            <div>· <span class="mk">one format being replaced by another</span> 是<b>动名词的复合结构</b>（逻辑主语 one format ＋ being done），作介词 to 的宾语；后面 <i>record players being replaced by CD players</i> 同构。</div>
+            <div>· 💡 这是多余项 E 的原句。<b>它的语法是全篇最复杂的，意思也是全篇最「对」的——但它没有位置</b>（见 03 节）。</div>
+          </div>
+          <div class="tr">译：因此，电脑对电视的挑战，与唱片机被 CD 机取代那种「一种载体换成另一种」几乎毫无相似之处。</div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">06</span>可搬进作文的素材（本篇是「科技与人 / 被动消费 vs 主动创造 / 沉迷屏幕」三个话题的弹药库）</h2>
+        <div class="wb">
+          <div class="wbi"><div class="p">All animals download, but only a few upload.</div><div class="u">📌 <b>主动学习 vs 被动接受</b>的一句话论点。教育、读书、网络话题都能用：<i>Reading without thinking is downloading; writing is uploading.</i></div></div>
+          <div class="wbi"><div class="p">Take a moment or two to wonder at those marvels. You are the lucky inheritor of a dream come true.</div><div class="u">📌 <b>科技进步类开头段</b>：先让读者对日常科技「惊叹」一下，再转入反思——正是本文 ①→④ 的先扬后抑结构。</div></div>
+          <div class="wbi"><div class="p">But for all the reasons there are to celebrate the computer, we must also act with caution.</div><div class="u">📌 <b>让步转折的万能句</b>：<i>For all the reasons there are to celebrate X, we must also…</i>——把 X 换成 smartphones / AI / online education，第二段开头直接用。</div></div>
+          <div class="wbi"><div class="p">Television is a one-way tap flowing into our homes. The hardest task that television asks of anyone is to turn the power off after he has turned it on.</div><div class="u">📌 <b>沉迷屏幕</b>话题的比喻论据，把 television 换成 smartphone 就是当下。与 <a href="2007_新题型_家长如何帮孩子.html">2007 新题型</a>第五段（电子游戏、电视、耳机）是同一组语料。</div></div>
+          <div class="wbi"><div class="p">A pyramid of production remains, with a small number of people uploading material, a slightly larger group commenting on or modifying that content, and a huge percentage remaining content to just consume.</div><div class="u">📌 <b>描述「沉默的大多数」</b>的三层结构句。<i>with ＋ 名词 ＋ 分词</i> 三并列，图表作文描述分层数据也能用。</div></div>
+          <div class="wbi"><div class="p">Failing to move beyond X is to strip oneself of…</div><div class="u">📌 <b>论证「不作为的代价」</b>：<i>Failing to move beyond passive learning is to strip oneself of the joy of discovery.</i> 比 <i>If we don't…, we will lose…</i> 高级一档。</div></div>
+          <div class="wbi"><div class="p">…to encourage thoughtful downloading and, even more importantly, meaningful uploading.</div><div class="u">📌 <b>递进句式</b> <i>A and, even more importantly, B</i>：先给一个可接受的，再给真正的重点。输入与输出、阅读与写作、学习与实践都能套。</div></div>
+          <div class="wbi"><div class="p">My definition revolves around the concept of “stickiness”—creations and experiences to which others adhere.</div><div class="u">📌 <b>给抽象概念下定义</b>的句式：<i>My definition of X revolves around…</i> ＋ 破折号给出解释。另可作<b>评价标准</b>：好作品的标准不是被多少人看过，而是能不能留住人。素材联动：<a href="2009_作文_报社来信与蜘蛛网漫画.html">2009 作文</a>「网络的近与远」。</div></div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">07</span>词汇复盘（点卡片看详情 · 共 <span id="vcount"></span> 张，含 <b>18 处熟词僻义</b>）</h2>
+        <p style="font-size:.85rem;color:var(--muted);margin-bottom:10px">本篇熟词僻义的共同规律：<b>全是「科技 / 媒介语境里换了义项的日常词」</b>——download、site、tap、application、spark、mount、agenda 都是你认识的词，在这篇里全换了行当。另有两个常见结构当心读错：时间作主语的 <i>saw</i>（见证）与句首的 <i>for all</i>（尽管）。</p>
+        <div id="vgrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px"></div>
+      </section>
+
+      <footer>2012 英语（一）Part B · 下载与上传之间的隐秘战争 ｜ 答案 41C 42D 43A 44F 45G（B、E 多余）｜ Claude 盲做 5/5 ｜ 本页解析为独立盲做后撰写，黄皮书精讲仅作交叉复核（零书误）</footer>
+    </main>
+
+    <aside>
+      <div id="panel"><div class="hint">👆 点正文里的<b>黄色高亮词</b>，或下方词汇卡，这里出详解<br><br>选中任意英文可弹出「查词」按钮</div></div>
+    </aside>
+  </div>
+</div>
+<button id="yd">🔍 有道查词</button>
+
+<script>
+const OPTS = {
+  A:["Of course, it is <span class='tk' data-w='precisely'>precisely</span> these superfluous things that define human culture and ultimately what it is to be human. Downloading and consuming culture requires great skills, but failing to move beyond downloading is to <span class='tk' data-w='strip'>strip oneself of</span> a defining <span class='tk' data-w='constituent'>constituent</span> of <span class='tk' data-w='humanity'>humanity</span>.",
+     "当然，恰恰是这些多余之物，定义了人类文化，并最终定义了人之为人。下载和消费文化需要高超的技能，但止步于下载，就等于亲手剥夺了自己身为人类的一个决定性要素。",
+     "头：<b>these superfluous things</b>（指示词 ＋ 原词 ＋ 概括名词，打包上文两类多余之物）｜尾：<b>move beyond downloading</b> ⟹ 下一段 still stuck in download mode",
+     "功能＝评价 · ⑤段末"],
+  B:["<span class='tk' data-w='application'>Applications</span> like tumblr.com, which allow users to combine pictures, words and other media in creative ways and then share them, have the potential to add stickiness by amusing, entertaining and <span class='tk' data-w='enlighten'>enlightening</span> others.",
+     "像 tumblr.com 这样的应用，让用户把图片、文字和其他媒介创造性地组合起来再分享出去，有潜力通过愉悦、娱乐和启迪他人来增加黏性。",
+     "头：<b>Applications like…</b>（例证句：要求上文先有一个待举例的主张）｜尾：<b>add stickiness</b>（把 stickiness 当现成概念，而它到第八段才被定义）",
+     "🚫 多余项 · 功能＝例证 · 本该站在第八段之后"],
+  C:["Not only did they develop such a device but <span class='tk' data-w='turnofmillennium'>by the turn of the millennium</span> they had also managed to <span class='tk' data-w='embed'>embed</span> it in a worldwide system <span class='tk' data-w='access'>accessed</span> by billions of people every day.",
+     "他们不仅研发出了这样一台设备，而且到千禧年之交，还成功把它嵌进了一个每天有数十亿人访问的全球系统。",
+     "头：<b>they / such a device</b>（回指上句的一群人与 a fabulous machine）｜尾：<b>a worldwide system</b> ⟹ 下一段 The networked computer",
+     "功能＝递进 · ②段末"],
+  D:["This is because the networked computer has <span class='tk' data-w='spark'>sparked</span> a secret war between downloading and uploading—between passive consumption and active creation—whose outcome will shape our <span class='tk' data-w='collective'>collective</span> future in ways we can only begin to imagine.",
+     "这是因为，联网电脑已经引发了一场下载与上传之间——即被动消费与主动创造之间——的隐秘战争，其结果将以我们几乎无法想象的方式塑造我们共同的未来。",
+     "头：<b>This is because</b>（给上句的警告补理由）｜尾：<b>a secret war</b> ⟹ 下句 I call it a secret war；并给 downloading／uploading 下定义",
+     "功能＝原因 · ④段中 · 全文标题句"],
+  E:["The challenge the computer <span class='tk' data-w='mount'>mounts</span> to television thus <span class='tk' data-w='similarity'>bears little similarity to</span> one <span class='tk' data-w='format'>format</span> being replaced by another <span class='tk' data-w='manner'>in the manner of</span> record players being replaced by CD players.",
+     "因此，电脑对电视的挑战，与唱片机被 CD 机取代那种「一种载体换成另一种」几乎毫无相似之处。",
+     "头：<b>… thus …</b>（结论：前提须完整地站在它前面，而后一半只在 G 里）｜尾：record players → CD players，下文无人接",
+     "🚫 多余项 · 功能＝结论 · 本该紧跟 G 之后"],
+  F:["One reason for the <span class='tk' data-w='persistence'>persistence</span> of this pyramid of production is that for the past half-century, much of the world’s media culture has been defined by a single <span class='tk' data-w='medium'>medium</span>—television—and television is defined by downloading.",
+     "这座生产金字塔之所以持续存在，一个原因是：过去半个世纪里，世界上大部分媒介文化都由单一的媒介——电视——所塑造，而电视的本质就是下载。",
+     "头：<b>this pyramid of production</b>（五词复现 ＋ 指示词；remains → persistence 换词性）｜尾：<b>television</b> ⟹ 下一段 Television is…",
+     "功能＝溯因 · ⑥段末"],
+  G:["The networked computer offers the first chance in 50 years to <span class='tk' data-w='reverse'>reverse the flow</span>, to encourage <span class='tk' data-w='thoughtful'>thoughtful</span> downloading and, <span class='tk' data-w='evenmore'>even more importantly</span>, meaningful uploading.",
+     "联网电脑提供了五十年来第一次逆转这股流向的机会：鼓励有思考的下载，更重要的是，鼓励有意义的上传。",
+     "头：<b>the flow</b>（回指 flowing，同源词换词性）＋ <b>50 years</b>（接 F 的 half-century）｜尾：<b>meaningful uploading</b> ⟹ 下一段 What counts as meaningful uploading?",
+     "功能＝出路 · ⑦段末"]
+};
+const EXTRA = ["B","E"];
+
+const V = {
+  fleeting:{w:"fleeting",ipa:"/ˈfliːtɪŋ/",pos:"adj.",tags:["core","write"],cn:"转瞬即逝的，短暂的",en:"lasting for a very short time",ex:"Think of those fleeting moments when you look out of an aeroplane window",mem:"fleet(飞驰；舰队)+ing → 一闪而过。<b>写作里形容时间、印象、机会的高级词</b>：a fleeting glimpse(匆匆一瞥) / fleeting fame(昙花一现的名声)。",syn:"brief / transient / momentary",conf:"fleeting(转瞬即逝) vs. flexible(灵活的) vs. floating(漂浮的)——fle- / flo- 形近"},
+  marvel:{w:"wonder at those marvels",ipa:"/ˈmɑːvl/",pos:"v.短语 / n.",tags:["poly","write"],cn:"⚠️wonder at ＝ 对……惊叹（不是「想知道」）；marvel n. 奇迹",en:"to feel amazed at; a wonderful thing",ex:"Take a moment or two to wonder at those marvels",mem:"⚠️<b>wonder 的两个义项靠介词分</b>：wonder whether / if / why(想知道) vs. <b>wonder at(对……惊叹)</b>。marvel 也是一对：n. 奇迹(these marvels) / v. marvel at(惊叹于，2010 T1 出现过 to marvel at the fact that)。",syn:"be amazed at / admire；wonder / miracle",conf:"wonder at(惊叹) vs. wonder about(琢磨) vs. wander(闲逛)——一个字母之差"},
+  inheritor:{w:"inheritor",ipa:"/ɪnˈherɪtə/",pos:"n.",tags:["core"],cn:"继承者，继承人",en:"a person who receives sth from those who came before",ex:"You are the lucky inheritor of a dream come true",mem:"inherit(继承)+or。同族：heritage(遗产，cultural heritage 文化遗产)、heir(继承人，h 不发音)、inheritance(遗产)。<b>本句把「用上手机」写成「继承了前人的梦想」</b>——第一段的情绪就是惊叹与感恩。",syn:"heir / successor / beneficiary",conf:"inherit(继承) vs. inhabit(居住) vs. inhibit(抑制)——考研三大形近词"},
+  dreamcometrue:{w:"a dream come true",ipa:"",pos:"n.短语",tags:["phrase","write"],cn:"美梦成真；梦想成真的事",en:"something one has long hoped for that has happened",ex:"You are the lucky inheritor of a dream come true",mem:"⚠️<b>come 是过去分词</b>（come-came-come），作后置定语 ＝ a dream (that has) come true，所以不是 comes / came。写作：<i>For many rural students, a place at university is a dream come true.</i>",syn:"a wish fulfilled",conf:"a dream come true(名词短语) vs. dreams come true(完整句) vs. realize one’s dream(实现梦想)"},
+  saw:{w:"(时间) saw …",ipa:"/sɔː/",pos:"v.",tags:["poly","write"],cn:"⚠️（某个年代）见证了……（不是「看见」）",en:"(of a period) to be the time when sth happened",ex:"The second half of the 20th century saw a collection of geniuses… labour to create a fabulous machine",mem:"⚠️<b>时间／地点作主语 ＋ see / witness ＝「见证、目睹」</b>，英语报刊的高频拟人。<b>图表作文第一句的利器</b>：<i>The past decade has seen a sharp rise in…</i>。本句还是 <b>see sb do</b>：saw … labour（不带 to）。",syn:"witness / experience",conf:"see(见证，时间作主语) vs. witness(见证，更正式) vs. observe(观察)"},
+  visionaries:{w:"visionaries",ipa:"/ˈvɪʒənəriz/",pos:"n.",tags:["core","write"],cn:"有远见卓识的人，梦想家",en:"people with original ideas about what the future will be like",ex:"geniuses, warriors, entrepreneurs and visionaries",mem:"vision(远见)+ary。<b>褒义为主</b>：a visionary leader(有远见的领导者)；偶有「空想家」的贬义，靠语境分。本句四个名词是一串赞词：天才 / 斗士 / 企业家 / 远见之士。",syn:"pioneer / innovator / dreamer",conf:"visionary(有远见的人) vs. visual(视觉的) vs. visible(看得见的)"},
+  labour:{w:"labour (v.)",ipa:"/ˈleɪbə/",pos:"v.",tags:["poly"],cn:"⚠️辛勤工作，努力（此处是动词）",en:"to work hard; to make a great effort",ex:"saw … visionaries labour to create a fabulous machine",mem:"⚠️<b>本句最容易读错的词</b>：labour 常见义是名词「劳动、劳动力」，这里却站在 <b>see sb do</b> 的 do 位上 ⟹ 只能是动词原形「辛勤劳作」。<b>labour to do ＝ 努力去做</b>。英式拼写 labour（美式 labor）；本文另有 realise、aeroplane、theatre 几处英式拼写。",syn:"strive / toil / work hard",conf:"labour(v.辛勤工作 / n.劳动) vs. laboratory(实验室) vs. elaborate(精心制作的)——同根 labor"},
+  fabulous:{w:"fabulous",ipa:"/ˈfæbjələs/",pos:"adj.",tags:["core","write"],cn:"极好的，神奇的",en:"extremely good; wonderful",ex:"to create a fabulous machine",mem:"fable(寓言)+ous → 像寓言里才有的 → 神奇的。<b>口语义「好极了」，书面义「难以置信的」</b>：a fabulous sum of money(一笔巨款)。",syn:"marvellous / wonderful / incredible",conf:"fabulous(神奇的) vs. fabricate(捏造) vs. famous(著名的)"},
+  functionas:{w:"function as",ipa:"",pos:"v.短语",tags:["phrase","write"],cn:"起……的作用，充当",en:"to work or be used as sth",ex:"a fabulous machine that could function as a typewriter and printing press…",mem:"<b>与第三段的 serve as 互为同义替换</b>——作者自己就在做「同义替换」。写作：<i>Libraries function as community centres.</i> 2009 新题型出现过 function to do(其功能在于)。",syn:"serve as / act as / work as",conf:"function as(充当) vs. function to do(功能在于) vs. functional(实用的)"},
+  mailcarrier:{w:"the mail as well as the mail carrier",ipa:"",pos:"n.短语",tags:["core"],cn:"既是信件，又是邮差",en:"both the letters and the person who delivers them",ex:"the mail as well as the mail carrier",mem:"<b>全句五对名词的最后一对，也是最妙的一对</b>：mail(信件＝内容) ＋ mail carrier(邮差＝渠道)——电脑既能写信又能送信。前四对同理：typewriter 写 / printing press 印；studio 录 / theatre 演；paintbrush 画 / gallery 展；piano 奏 / radio 播。<b>每一对都是「创作 ＋ 发布」</b>。",syn:"postman / courier",conf:"mail carrier(邮差，美) vs. postman(邮差，英) vs. carrier(承运人/航空公司)"},
+  networked:{w:"networked",ipa:"/ˈnetwɜːkt/",pos:"adj.",tags:["core"],cn:"联网的，网络化的",en:"connected to a computer network",ex:"The networked computer is an amazing device",mem:"network(网络)作动词「联网」→ 过去分词作形容词。<b>41 题的尾钩</b>：它在全文第一次出现就带着定冠词 The，被当成已知信息——所以前面必须有人把「联网」交代出来（C 的 embed it in a worldwide system）。",syn:"connected / online / linked",conf:"networked(联网的) vs. networking(人脉经营) vs. network(网络)"},
+  serveas:{w:"serve as",ipa:"",pos:"v.短语",tags:["phrase","write"],cn:"充当，用作",en:"to be used as; to act as",ex:"the first media machine that serves as the mode of production, means of distribution…",mem:"<b>写作高频</b>：serve as a reminder(起提醒作用) / serve as a bridge(充当桥梁)。与第二段的 function as 互为同义替换。",syn:"function as / act as",conf:"serve as(充当) vs. serve for(用于) vs. serve sb right(活该)"},
+  mode:{w:"mode of production",ipa:"/məʊd/",pos:"n.短语",tags:["phrase"],cn:"生产方式",en:"the way in which things are produced",ex:"serves as the mode of production, means of distribution, site of reception…",mem:"mode ＝ 方式、模式。<b>本文 mode 出现三次</b>：mode of production(生产方式) / passive consumption mode(被动消费模式) / download mode(下载模式)——正好串起全文主线。本句四个并列名词 mode / means / site / place，都是「……的方式或场所」。",syn:"manner / method / means",conf:"mode(方式) vs. model(模型/榜样) vs. mood(情绪)"},
+  site:{w:"site of reception",ipa:"/saɪt/",pos:"n.短语",tags:["poly"],cn:"⚠️接收场所（site ＝ 场所，不是「网站」）",en:"a place where sth is received",ex:"means of distribution, site of reception, and place of praise and critique",mem:"⚠️<b>在一篇讲电脑的文章里，site 最容易被读成 website</b>——但它与 mode / means / place 并列，只能是「场所」。常见搭配：construction site(工地) / historic site(遗址)。reception ＝ 接收（不是「接待处」）。",syn:"place / location / venue",conf:"site(场所) vs. sight(视力/景象) vs. cite(引用)——三个同音词考研写作常拼混"},
+  critique:{w:"critique",ipa:"/krɪˈtiːk/",pos:"n.",tags:["core","write"],cn:"评论，评判（中性）",en:"a careful judgment of the good and bad qualities of sth",ex:"place of praise and critique",mem:"⚠️<b>critique ≠ criticism</b>：critique 是「分析评判」，好坏都说，中性；criticism 偏「批评、指责」。本句 praise and critique ＝ 褒扬与评判。写作：<i>a critique of consumer culture</i>(对消费文化的剖析)。",syn:"review / assessment / analysis",conf:"critique(评论，中性) vs. criticism(批评) vs. critic(评论家)"},
+  culturemachine:{w:"culture machine",ipa:"",pos:"n.短语",tags:["phrase","write"],cn:"文化机器（能生产、传播、接收文化的机器）",en:"a machine that produces and distributes culture",ex:"The computer is the 21st century’s culture machine",mem:"<b>全文的核心隐喻</b>：黄皮书标的原题副标题正是 Tales of the Computer as Culture Machine。第六段又用复数 our new culture machines 回扣。写作：<i>The smartphone has become the culture machine of our age.</i>",syn:"cultural medium",conf:"culture machine(文化机器) vs. cultural industry(文化产业)"},
+  forall:{w:"for all",ipa:"",pos:"prep.短语",tags:["poly","write"],cn:"⚠️尽管，虽然（＝ despite）",en:"despite; in spite of",ex:"But for all the reasons there are to celebrate the computer, we must also act with caution. / For all the possibilities of our new culture machines, most people are still stuck in download mode.",mem:"⚠️<b>本篇出现两次，两次都是让步</b>（④❶、⑥❶），读成「为了所有……」整句就反。判据：<b>for all ＋ 名词，后面紧跟一个与之相反的主句</b>（值得喝彩……却要谨慎；可能性很多……却仍困在下载模式）。<b>在本中心已复盘的页面里，这是 for all ＝ 尽管第一次出现。</b>写作：<i>For all its benefits, social media has a dark side.</i>",syn:"despite / in spite of / notwithstanding",conf:"for all(尽管) vs. for all I know(说不定) vs. once and for all(一劳永逸)"},
+  celebrate:{w:"celebrate",ipa:"/ˈselɪbreɪt/",pos:"v.",tags:["poly","write"],cn:"⚠️称颂，赞美（此处，不是「庆祝」）",en:"to praise sb or sth publicly",ex:"for all the reasons there are to celebrate the computer",mem:"⚠️<b>celebrate 的宾语若是人或事物（而非节日、胜利），多是「颂扬」</b>：celebrate a poet(颂扬一位诗人)。本句对应前三段的一路赞美（marvels / fabulous / amazing）。形容词 celebrated ＝ 著名的。",syn:"praise / acclaim / honour",conf:"celebrate(颂扬/庆祝) vs. celebrity(名人) vs. celebrated(著名的)"},
+  caution:{w:"act with caution",ipa:"/ˈkɔːʃn/",pos:"v.短语",tags:["phrase","write"],cn:"谨慎行事",en:"to behave carefully to avoid danger",ex:"we must also act with caution",mem:"<b>42 题的头钩</b>：一个没给理由的警告 ⟹ 空格要补理由（This is because）。写作让步转折后的万能落点：<i>…, we must also act with caution.</i> 同族：cautious(谨慎的)、precaution(预防措施)。",syn:"be careful / proceed with care",conf:"caution(谨慎) vs. caution against(告诫不要) vs. precaution(预防措施)"},
+  agendas:{w:"agendas",ipa:"/əˈdʒendəz/",pos:"n.",tags:["poly"],cn:"⚠️（暗藏的）意图，算计（不是「议程」）",en:"private intentions or plans",ex:"there are strong commercial agendas at work to keep them in passive consumption mode",mem:"⚠️agenda 本义「议事日程」，<b>在「某人 / 某集团的 agenda」里常指「目的、盘算」，带「另有所图」的味道</b>：a hidden agenda(不可告人的目的)。本句 commercial agendas ＝ 商业算计——作者说「隐秘」战争，隐秘就隐在这里。",syn:"intentions / motives / aims",conf:"agenda(意图/议程) vs. agent(代理人) vs. agency(机构)"},
+  atwork:{w:"at work",ipa:"",pos:"prep.短语",tags:["poly"],cn:"⚠️在起作用（不是「在上班」）",en:"having an effect; operating",ex:"there are strong commercial agendas at work to keep them in passive consumption mode",mem:"⚠️<b>主语是抽象名词时，at work 只能是「起作用、在运作」</b>。<a href='2007_翻译_法律教育与新闻记者.html'>2007 翻译</a>的 notions … are at work 是同一个用法（概念不会去上班）。本句 ＝ 商业算计正在运作，要把人们留在被动消费里。",syn:"in operation / in effect / at play",conf:"at work(起作用) vs. at play(在起作用/在玩) vs. out of work(失业)"},
+  passive:{w:"passive consumption",ipa:"",pos:"n.短语",tags:["phrase","write"],cn:"被动消费",en:"taking in content without creating anything",ex:"to keep them in passive consumption mode / between passive consumption and active creation",mem:"<b>全文的一对核心术语</b>：passive consumption(被动消费) ↔ active creation(主动创造)，由 D 项用破折号定义，从 ④❹ 起裸用 ⟹ 42 题的第二道尾钩。写作：<i>Education should turn passive consumers into active creators.</i>",syn:"passive reception",conf:"passive(被动的) vs. pastime(消遣) vs. passionate(热情的)"},
+  download:{w:"download / upload",ipa:"/ˌdaʊnˈləʊd/ · /ˌʌpˈləʊd/",pos:"v./n.",tags:["poly","write"],cn:"⚠️（比喻）被动接受 / 主动创造并分享",en:"(figurative) to take in passively / to create and share",ex:"All animals download, but only a few upload.",mem:"⚠️<b>本篇把两个电脑术语扩成了一组哲学对立</b>：download ＝ 被动接收（动物筑巢也算），upload ＝ 主动创造并分享（绘画、音乐、哲学）。定义在 D 项：between downloading and uploading—between passive consumption and active creation。<a href='2011_T1_古典音乐会的危机.html'>2011 T1</a> 的 download still more recorded music 是它的字面义。",syn:"consume / create",conf:"download(下载) vs. unload(卸货) vs. overload(超载)"},
+  significance:{w:"significance",ipa:"/sɪɡˈnɪfɪkəns/",pos:"n.",tags:["core","write"],cn:"意义，重要性",en:"the importance or meaning of sth",ex:"are not even aware of the significance of what they are doing",mem:"sign(标志)+ify+ance。<b>写作第三段的高频词</b>：the significance of reading / of great significance(意义重大)。与 2009 新题型的 signify(标志着) 同根。",syn:"importance / meaning / implication",conf:"significance(意义) vs. signature(签名) vs. signal(信号)"},
+  beaver:{w:"Beavers build dams",ipa:"/ˈbiːvəz/",pos:"n.短语",tags:["core"],cn:"河狸筑坝",en:"beavers make barriers across rivers",ex:"Beavers build dams and birds make nests.",mem:"<b>作者故意举的「反例」</b>：河狸筑坝、鸟儿做窝看上去像「上传」（造了东西），但作者紧接着说 Yet for the most part … downloading——动物造的是<b>生存必需品</b>，人类造的是<b>多余之物</b>，这才是分界线。dam 还可作动词「筑坝拦住」。",syn:"(dam) barrier / barrage",conf:"dam(水坝) vs. damn(该死) vs. damp(潮湿的)"},
+  forthemostpart:{w:"for the most part",ipa:"",pos:"adv.短语",tags:["phrase","write"],cn:"大体上，多半",en:"mostly; usually",ex:"Yet for the most part, the animal kingdom moves through the world downloading",mem:"<b>给判断留余地的副词短语</b>：作者刚举完河狸与鸟（少数会造东西的动物），立刻用 for the most part 收回来——多数动物仍是下载。写作：<i>For the most part, students welcome the change.</i>",syn:"mostly / largely / on the whole",conf:"for the most part(大体上) vs. most of all(最重要的是) vs. at most(至多)"},
+  capacity:{w:"capacity",ipa:"/kəˈpæsəti/",pos:"n.",tags:["core","write"],cn:"能力；容量",en:"the ability to do sth",ex:"Humans are unique in their capacity to not only make tools but then turn around and use them",mem:"<b>capacity to do ＝ 做……的能力</b>（偏「潜能」）；另义「容量」：seating capacity(座位数)。本句 be unique in one’s capacity to … ＝ 某某的独特之处在于能够……（写作定义「人」的万能句）。",syn:"ability / capability / potential",conf:"capacity(能力/容量) vs. capability(能力，偏实际) vs. capital(资本)"},
+  turnaround:{w:"turn around",ipa:"",pos:"v.短语",tags:["poly"],cn:"⚠️反过来，转而（不是「转身」）",en:"to then do sth different, often the opposite",ex:"not only make tools but then turn around and use them to create superfluous material goods",mem:"⚠️<b>turn around and do ＝ 反过来又做……</b>（常带「出人意料」的意味）；字面义「转身」在这里说不通——工具造好之后，人又反过来用它造出多余之物。名词 turnaround ＝ 好转、周转。",syn:"then / in turn",conf:"turn around(转而) vs. turn over(翻转/移交) vs. turn down(拒绝)"},
+  superfluous:{w:"superfluous",ipa:"/suːˈpɜːfluəs/",pos:"adj.",tags:["poly","write"],cn:"⚠️多余的——此处＝超出生存所需的（中性偏褒）",en:"more than is needed",ex:"use them to create superfluous material goods… and superfluous experiences",mem:"super(超过)+flu(流，=fluid)+ous → 溢出来的。⚠️<b>日常义带贬（多余的、不必要的），本篇却被作者「翻案」</b>：A 项 it is precisely these superfluous things that define human culture——恰恰是「多余」定义了人。<b>读到被作者重新定义的贬义词，要跟着作者的口径走</b>。",syn:"surplus / excess / non-essential",conf:"superfluous(多余的) vs. superficial(肤浅的) vs. supervise(监督)——super- 三兄弟"},
+  sculpture:{w:"sculpture and architecture",ipa:"/ˈskʌlptʃə/",pos:"n.",tags:["core"],cn:"雕塑与建筑",en:"the art of making figures; the art of designing buildings",ex:"paintings, sculpture and architecture",mem:"<b>三种「多余的物质产品」</b>：painting(绘画) / sculpture(雕塑) / architecture(建筑)。写作谈文化遗产时可成组搬用。sculptor ＝ 雕塑家；architect ＝ 建筑师。",syn:"statue / carving；building design",conf:"sculpture(雕塑) vs. scripture(经文) vs. structure(结构)"},
+  stuck:{w:"be stuck in",ipa:"/stʌk/",pos:"adj.短语",tags:["phrase","write"],cn:"困在……里，陷入",en:"unable to move or change",ex:"most people are still stuck in download mode",mem:"stick 的过去分词。<b>43 题的尾钩</b>：A 说「不能止步于下载」(move beyond)，这里说「仍困在下载模式」(stuck in)——一个是应然，一个是实然。写作：<i>be stuck in a rut</i>(墨守成规) / <i>be stuck in traffic</i>(堵车)。",syn:"trapped in / caught in",conf:"be stuck in(困在) vs. stick to(坚持) vs. stick out(突出)"},
+  advent:{w:"advent",ipa:"/ˈædvent/",pos:"n.",tags:["core","write"],cn:"（重要事物的）出现，到来",en:"the arrival of an important thing",ex:"Even after the advent of widespread social media",mem:"ad(向)+vent(来，=event) → 到来。<b>写作谈科技变迁的第一名词</b>：with the advent of the Internet(随着互联网的出现)，比 with the appearance of 高级。",syn:"arrival / emergence / coming",conf:"advent(出现) vs. adventure(冒险) vs. advert(广告)"},
+  widespread:{w:"widespread",ipa:"/ˈwaɪdspred/",pos:"adj.",tags:["core","write"],cn:"普遍的，广泛的",en:"existing or happening in many places",ex:"the advent of widespread social media",mem:"wide ＋ spread。<b>写作高频</b>：widespread concern(普遍关注) / widespread use(广泛使用) / increasingly widespread(日益普遍)。",syn:"prevalent / common / extensive",conf:"widespread(普遍的) vs. worldwide(全球的) vs. wide-ranging(涉及面广的)"},
+  pyramid:{w:"a pyramid of production",ipa:"/ˈpɪrəmɪd/",pos:"n.短语",tags:["phrase","write"],cn:"「生产金字塔」（少数创造、多数消费的分层结构）",en:"a structure with few producers at the top and many consumers at the base",ex:"a pyramid of production remains, with a small number of people uploading material…",mem:"<b>44 题的头钩</b>：F 项 this pyramid of production 原样复现 ＋ 指示词 this。<b>金字塔三层</b>：塔尖少数上传 / 中层稍多的人评论修改 / 塔底大多数只消费。写作描述「少数创造、多数围观」可借用。",syn:"hierarchy",conf:"pyramid(金字塔) vs. paramount(至高无上的) vs. parameter(参数)"},
+  modify:{w:"modify",ipa:"/ˈmɒdɪfaɪ/",pos:"v.",tags:["core"],cn:"修改，调整",en:"to change sth slightly",ex:"a slightly larger group commenting on or modifying that content",mem:"mod(方式，=mode)+ify(使) → 改变方式。<b>金字塔中层的动作</b>：不原创，但评论、修改别人的内容。名词 modification。与 2008 新题型反复出现的 revise(修改稿子) 义近。",syn:"alter / adjust / revise",conf:"modify(修改) vs. modest(谦虚的) vs. moderate(适度的)"},
+  content:{w:"content (n. / adj.)",ipa:"/ˈkɒntent/ · /kənˈtent/",pos:"n./adj.",tags:["poly"],cn:"⚠️同一句两义：that content 内容 / remaining content to 满足于",en:"the things contained / satisfied",ex:"commenting on or modifying that content, and a huge percentage remaining content to just consume",mem:"⚠️<b>本篇最精巧的一处熟词僻义：同一句里 content 先当名词「内容」（/ˈkɒntent/），再当形容词「满足的」（/kənˈtent/）</b>。be content to do ＝ 满足于做……。<a href='2007_新题型_家长如何帮孩子.html'>2007 新题型</a>的 immediate content 是它的第三种样子（名词「满足」）。判据：<b>前面是 remain / be / seem 等系动词 ⟹ 形容词</b>。",syn:"material；satisfied",conf:"content(内容/满足的) vs. context(语境) vs. contest(比赛)"},
+  oneway:{w:"one-way",ipa:"",pos:"adj.",tags:["core"],cn:"单向的",en:"moving or working in only one direction",ex:"Television is a one-way tap flowing into our homes",mem:"<b>45 题头钩的一半</b>：G 项 reverse the flow(逆转流向) 正对着 one-way(单向)。反义 two-way(双向的)——联网电脑能下载也能上传，就是 two-way。写作：<i>Teaching should be a two-way process, not a one-way lecture.</i>",syn:"unidirectional",conf:"one-way(单向的) vs. one-off(一次性的) vs. one-sided(片面的)"},
+  tap:{w:"tap",ipa:"/tæp/",pos:"n.",tags:["poly","write"],cn:"⚠️水龙头（此处，不是「轻敲」）",en:"a device that controls the flow of water",ex:"Television is a one-way tap flowing into our homes",mem:"⚠️<b>tap 常见义「轻拍、轻敲」(tap on the shoulder)，这里是英式英语「水龙头」</b>（美式 faucet）——后面的 flowing(流) 把义项定死。另义：tap into(开发、利用) / on tap(随时可用)。<b>比喻论据</b>：电视像水龙头，一直往家里灌，而你很难关掉它。",syn:"faucet(美)",conf:"tap(水龙头/轻敲) vs. tape(磁带/胶带) vs. trap(陷阱)"},
+  turnoff:{w:"turn the power off",ipa:"",pos:"v.短语",tags:["phrase"],cn:"关掉电源",en:"to switch off the power",ex:"The hardest task that television asks of anyone is to turn the power off after he has turned it on",mem:"<b>一对反义短语</b>：turn on / turn off。本句的讽刺：电视对人提的「要求」只有一个——开了之后把它关掉，而这恰恰最难。<b>45 题要补的「出路」就是针对这个困境</b>。另：turn sb off(使人反感)。",syn:"switch off / shut off",conf:"turn off(关掉) vs. turn out(结果是) vs. turn up(出现/调大)"},
+  countas:{w:"count as",ipa:"",pos:"v.短语",tags:["phrase","write"],cn:"算作，被视为",en:"to be considered as",ex:"What counts as meaningful uploading?",mem:"count 不及物「算数」：<b>count as ＝ 算得上</b>。<b>给概念下定义前的提问句</b>：<i>What counts as success?</i> ⟹ 作文开头一句问句就把话题立住。",syn:"be regarded as / qualify as",conf:"count as(算作) vs. count on(依靠) vs. count in(把……算进去)"},
+  meaningful:{w:"meaningful",ipa:"/ˈmiːnɪŋfl/",pos:"adj.",tags:["core","write"],cn:"有意义的",en:"serious, important or useful",ex:"What counts as meaningful uploading?",mem:"<b>45 题的尾钩</b>：meaningful 在全文第一次出现就在 G 项里，第八段首句拿它当现成话题追问 ⟹ 只能是 G。写作：meaningful work / a meaningful life；反义 meaningless。",syn:"significant / worthwhile",conf:"meaningful(有意义的) vs. meaning(意思) vs. mean(吝啬的/意味着)"},
+  revolve:{w:"revolve around",ipa:"/rɪˈvɒlv/",pos:"v.短语",tags:["phrase","write"],cn:"围绕……展开；以……为中心",en:"to have sth as the main subject",ex:"My definition revolves around the concept of “stickiness”",mem:"re(反复)+volve(转) → 绕着转。<b>写作谈「核心」的高级动词</b>：<i>The debate revolves around one question.</i> 同根：revolution(革命/旋转)、evolve(进化)、involve(涉及)。",syn:"centre on / focus on",conf:"revolve(围绕) vs. evolve(进化) vs. involve(涉及)——volve 三兄弟"},
+  stickiness:{w:"stickiness",ipa:"/ˈstɪkinəs/",pos:"n.",tags:["core","write"],cn:"黏性——（作品）留住人的吸引力",en:"the quality of making people stay or come back",ex:"the concept of “stickiness”—creations and experiences to which others adhere",mem:"<b>作者用引号 ＋ 破折号给它下定义</b>（R29 引号第四功能：命名）。⚠️ <b>多余项 B 正是死在这里</b>：B 把 stickiness 当现成概念用（add stickiness），而它的定义点在第八段 ⟹ B 只能站在第八段之后。互联网行业说的「用户黏性」就是它。",syn:"appeal / attraction",conf:"stickiness(黏性) vs. sticker(贴纸) vs. stickler(挑剔的人)"},
+  adhere:{w:"adhere to",ipa:"/ədˈhɪə/",pos:"v.",tags:["poly"],cn:"⚠️黏附于；（引申）追随、坚持",en:"to stick firmly to; to follow",ex:"creations and experiences to which others adhere",mem:"⚠️ad(向)+here(黏) → 黏上去。<b>本义「黏附」，考研常见义「遵守、坚持」(adhere to the rules)</b>。本句一语双关：stickiness(黏性) → to which others adhere(让人黏上去、追随它)——<b>定义里的动词正是被定义词的字面义</b>。",syn:"stick to / cling to / follow",conf:"adhere(黏附/遵守) vs. inhere(存在于) vs. cohere(连贯)——here 词根三兄弟"},
+  precisely:{w:"precisely",ipa:"/prɪˈsaɪsli/",pos:"adv.",tags:["core","write"],cn:"恰恰，正是",en:"exactly",ex:"it is precisely these superfluous things that define human culture",mem:"<b>强调句 it is precisely … that 是加强版</b>：在被强调部分前加 precisely / only / just。写作点睛句：<i>It is precisely this curiosity that drives science forward.</i>",syn:"exactly / just",conf:"precisely(恰恰) vs. concisely(简洁地) vs. precious(珍贵的)"},
+  strip:{w:"strip oneself of",ipa:"/strɪp/",pos:"v.短语",tags:["phrase","write"],cn:"使自己失去……，剥夺自己的……",en:"to take away sth from oneself",ex:"failing to move beyond downloading is to strip oneself of a defining constituent of humanity",mem:"<b>strip A of B ＝ 剥夺 A 的 B</b>（与 rob A of B、deprive A of B 同构）。<b>写作句式</b>：<i>Failing to X is to strip oneself of Y</i>——不作为的代价，一句说完。",syn:"deprive oneself of / rob oneself of",conf:"strip A of B(剥夺) vs. strip off(脱掉) vs. stripe(条纹)"},
+  constituent:{w:"constituent",ipa:"/kənˈstɪtʃuənt/",pos:"n.",tags:["core"],cn:"组成部分，要素；（政治）选民",en:"one of the parts of sth",ex:"a defining constituent of humanity",mem:"con+stitu(立，=constitute 组成)+ent。<b>a defining constituent ＝ 决定性的组成部分</b>（defining ＝ 起定义作用的）。⚠️ 政治语境里 constituent ＝ 选民。",syn:"component / element / ingredient",conf:"constituent(组成部分) vs. constitution(宪法/体质) vs. consistent(一致的)"},
+  humanity:{w:"humanity",ipa:"/hjuːˈmænəti/",pos:"n.",tags:["core","write"],cn:"人性；人类",en:"the qualities that make us human; all people",ex:"a defining constituent of humanity",mem:"<b>两个义项</b>：人性（本句）/ 全人类（the future of humanity）。复数 the humanities ＝ 人文学科（2011 新题型谈的正是人文学科的困境）。",syn:"human nature / mankind",conf:"humanity(人性/人类) vs. humanities(人文学科) vs. humanitarian(人道主义的)"},
+  application:{w:"applications",ipa:"/ˌæplɪˈkeɪʃnz/",pos:"n.",tags:["poly"],cn:"⚠️应用程序（此处，不是「申请」）",en:"computer programs designed for a particular use",ex:"Applications like tumblr.com, which allow users to combine pictures, words and other media…",mem:"⚠️<b>application 三义</b>：申请(an application for a job) / 应用(the application of science) / <b>应用程序（app 的全称）</b>。本句 like tumblr.com 把义项定死。<b>多余项 B 的开头</b>：Applications like… 是例证句，要求上文先有一个待举例的主张。",syn:"app / program / software",conf:"application(申请/应用程序) vs. appliance(家用电器) vs. applicant(申请人)"},
+  enlighten:{w:"enlightening",ipa:"/ɪnˈlaɪtnɪŋ/",pos:"adj./v.",tags:["core","write"],cn:"启迪人的，使人豁然开朗的",en:"giving you more knowledge and understanding",ex:"add stickiness by amusing, entertaining and enlightening others",mem:"en(使)+light(光)+en → 照亮。<b>amuse / entertain / enlighten 三连</b>：愉悦 → 娱乐 → 启迪，由浅入深。写作评价书籍、讲座：<i>an enlightening lecture</i>。the Enlightenment ＝ 启蒙运动。",syn:"illuminating / informative / instructive",conf:"enlighten(启迪) vs. lighten(减轻/变亮) vs. enliven(使活跃)"},
+  turnofmillennium:{w:"by the turn of the millennium",ipa:"",pos:"prep.短语",tags:["phrase"],cn:"到千禧年之交（约 2000 年前后）",en:"by around the year 2000",ex:"by the turn of the millennium they had also managed to embed it…",mem:"<b>the turn of the century / millennium ＝ 世纪 / 千年之交</b>。by ＋ 过去时间点 ⟹ 谓语用过去完成时（had managed）。<b>41 题的时间接力</b>：上句 The second half of the 20th century → 本句 by the turn of the millennium。millennium 复数 millennia。",syn:"around 2000",conf:"millennium(千年) vs. century(世纪) vs. decade(十年)"},
+  embed:{w:"embed",ipa:"/ɪmˈbed/",pos:"v.",tags:["core","write"],cn:"把……嵌入，使扎根",en:"to fix sth firmly into sth else",ex:"managed to embed it in a worldwide system",mem:"em(进入)+bed(床) → 放进床里 → 嵌入。<b>写作高频引申</b>：be deeply embedded in the culture(深深植根于文化中)。",syn:"insert / implant / fix",conf:"embed(嵌入) vs. embark(登上/开始) vs. embrace(拥抱)"},
+  access:{w:"accessed",ipa:"/ˈækses/",pos:"v.",tags:["core","write"],cn:"访问，进入，使用（网络 / 数据）",en:"to reach or use sth, especially a computer system",ex:"a worldwide system accessed by billions of people every day",mem:"<b>access 作动词 ＝ 访问、获取</b>（access the Internet）；作名词要带 to：have access to(有机会接触)。2008 T2 的 ready access(便捷获取) 是名词用法。形容词 accessible ＝ 易接近的。",syn:"reach / enter / use",conf:"access(访问/获取) vs. assess(评估) vs. excess(过量)"},
+  spark:{w:"spark",ipa:"/spɑːk/",pos:"v.",tags:["poly","write"],cn:"⚠️引发，触发（此处是动词）",en:"to cause sth to start",ex:"the networked computer has sparked a secret war between downloading and uploading",mem:"⚠️<b>spark 名词「火花」，动词「引发」</b>——像火花点燃一场火。<b>写作高频</b>：spark a debate(引发争论) / spark interest(激发兴趣)。比 cause 更生动。",syn:"trigger / provoke / set off",conf:"spark(引发) vs. sparkle(闪耀) vs. spare(节省/备用的)"},
+  collective:{w:"collective",ipa:"/kəˈlektɪv/",pos:"adj.",tags:["core","write"],cn:"集体的，共同的",en:"shared by all members of a group",ex:"whose outcome will shape our collective future",mem:"collect(聚集)+ive。<b>写作高频</b>：collective future(共同的未来) / collective effort(集体努力) / collective memory(集体记忆)。2012 T3 的 collective scrutiny 也是它。",syn:"shared / common / joint",conf:"collective(集体的) vs. collection(收藏) vs. selective(有选择的)"},
+  mount:{w:"mount a challenge to",ipa:"/maʊnt/",pos:"v.短语",tags:["poly"],cn:"⚠️向……发起挑战（mount ＝ 发起，不是「登上」）",en:"to organize and begin a challenge",ex:"The challenge the computer mounts to television",mem:"⚠️<b>mount 的三个义项</b>：登上(mount a horse) / 增加(mounting pressure 日益增加的压力) / <b>发起、组织(mount a campaign / an attack / a challenge)</b>。本句 the challenge (that) the computer mounts to television，省略了关系词。",syn:"launch / stage / organize",conf:"mount(发起/登上) vs. amount(数量) vs. mountain(山)"},
+  similarity:{w:"bear little similarity to",ipa:"",pos:"v.短语",tags:["phrase","write"],cn:"与……几乎毫无相似之处",en:"to be very different from",ex:"thus bears little similarity to one format being replaced by another",mem:"<b>bear 取「具有、带有」义</b>：bear a resemblance to(与……相似) / bear little relation to(与……无关)。写作否定类比的高级句式：<i>Online learning bears little similarity to traditional classes.</i>",syn:"be quite unlike / differ greatly from",conf:"bear similarity to(相似) vs. bear in mind(记住) vs. bear with(容忍)"},
+  format:{w:"format",ipa:"/ˈfɔːmæt/",pos:"n.",tags:["core"],cn:"（媒介的）载体形式，格式",en:"the form in which media is produced",ex:"one format being replaced by another",mem:"<b>媒介行业里 format ＝ 载体形式</b>：唱片、磁带、CD、MP3 都是 format。E 项的意思：电脑取代电视不是「换载体」（像 CD 取代唱片），而是换了方向（从下载到上传）。",syn:"form / medium",conf:"format(格式) vs. formation(形成/编队) vs. formula(公式)"},
+  manner:{w:"in the manner of",ipa:"",pos:"prep.短语",tags:["phrase","write"],cn:"以……的方式，像……那样",en:"in the way that sth happens",ex:"in the manner of record players being replaced by CD players",mem:"<b>in the manner of ＝ 按……的方式</b>，常引出类比。写作：<i>in the manner of a true scholar</i>(以真正学者的方式)。复数 manners ＝ 礼貌。",syn:"in the way of / like",conf:"manner(方式) vs. manners(礼貌) vs. manor(庄园)"},
+  persistence:{w:"persistence",ipa:"/pəˈsɪstəns/",pos:"n.",tags:["core","write"],cn:"持续存在；坚持不懈",en:"the fact of continuing to exist",ex:"One reason for the persistence of this pyramid of production",mem:"per(贯穿)+sist(站)+ence → 一直站着。<b>44 题的头钩</b>：上句的动词 remains(依然存在) 在 F 里换成名词 persistence——同义换词性。<b>两个义项</b>：（事物）持续存在 / （人）坚持不懈（persistence pays off）。",syn:"continuation / survival；perseverance",conf:"persistence(持续) vs. resistance(抵抗) vs. insistence(坚持要求)"},
+  medium:{w:"medium / media",ipa:"/ˈmiːdiəm/",pos:"n.",tags:["core"],cn:"媒介（单数 medium，复数 media）",en:"a way of communicating information",ex:"defined by a single medium—television—",mem:"⚠️<b>拉丁语复数</b>：medium → media（同族 datum→data、phenomenon→phenomena）。本句 a single medium 单数；B 项 other media、⑥段 social media 复数。<b>写作写 the media is / are 都可，但 a media 是错的</b>。",syn:"channel / means",conf:"medium(媒介/中等的) vs. median(中位数) vs. mediate(调解)"},
+  reverse:{w:"reverse the flow",ipa:"/rɪˈvɜːs/",pos:"v.短语",tags:["phrase","write"],cn:"逆转流向",en:"to change the direction of the flow to the opposite",ex:"offers the first chance in 50 years to reverse the flow",mem:"<b>45 题的头钩</b>：the flow 回指上句 flowing（同源词换词性），reverse 正对 one-way。re(回)+verse(转，=versus)。写作：<i>reverse the trend</i>(扭转趋势)。",syn:"turn back / invert",conf:"reverse(逆转) vs. reserve(保留/预订) vs. revise(修改)"},
+  thoughtful:{w:"thoughtful",ipa:"/ˈθɔːtfl/",pos:"adj.",tags:["poly","write"],cn:"⚠️深思熟虑的，有思考的（此处，不是「体贴的」）",en:"showing careful thought",ex:"to encourage thoughtful downloading",mem:"⚠️<b>thoughtful 两义</b>：体贴的(a thoughtful gift) / <b>深思熟虑的(a thoughtful essay)</b>。本句修饰 downloading，只能是后者——「有选择、有思考地接收」，与 meaningful uploading 并列成对。",syn:"reflective / considered / careful",conf:"thoughtful(深思的/体贴的) vs. thoughtless(轻率的) vs. thorough(彻底的)"},
+  evenmore:{w:"even more importantly",ipa:"",pos:"adv.短语",tags:["phrase","write"],cn:"更重要的是",en:"used to introduce a point that is more important",ex:"to encourage thoughtful downloading and, even more importantly, meaningful uploading",mem:"<b>递进句式的点睛插入语</b>：A and, even more importantly, B——先给一个可接受的，再给真正的重点。<b>作文里比 moreover / what’s more 更有层次</b>。",syn:"more importantly / above all",conf:"even more importantly(更重要的是) vs. most importantly(最重要的是) vs. more or less(或多或少)"}
+};
+
+/* 选项库渲染 */
+const lib=document.getElementById('optlib');
+lib.innerHTML=Object.keys(OPTS).map(k=>
+  '<div class="optitem'+(EXTRA.indexOf(k)>=0?' extra':'')+'" id="opt-'+k+'"><span class="lt">'+k+'</span><span>'
+  +'<span class="oen">'+OPTS[k][0]+'</span>'
+  +'<span class="zhx">'+OPTS[k][1]+'</span>'
+  +'<span class="kw">🔑 '+OPTS[k][2]+'</span>'
+  +'<span class="stg">'+OPTS[k][3]+'</span></span></div>').join('');
+
+/* 作答交互：答后就地把空格补全成原文 */
+document.querySelectorAll('.person').forEach(p=>{
+  const ans=p.dataset.ans; if(!ans)return;
+  const chips=p.querySelector('.chips');
+  chips.innerHTML='ABCDEFG'.split('').map(l=>'<button class="ch" data-l="'+l+'">'+l+'</button>').join('');
+  chips.querySelectorAll('.ch').forEach(c=>c.addEventListener('click',()=>{
+    if(p.classList.contains('done'))return;
+    p.classList.add('done');
+    if(c.dataset.l!==ans)c.classList.add('wrong');
+    chips.querySelector('.ch[data-l="'+ans+'"]').classList.add('right');
+    const oi=document.getElementById('opt-'+ans); if(oi)oi.classList.add('used');
+    const slot=p.querySelector('.slot');
+    if(slot){slot.classList.add('filled');slot.innerHTML='<span class="fl">['+ans+']</span>'+OPTS[ans][0];}
+  }));
+});
+
+const panel=document.getElementById('panel');
+const isMobile=()=>window.innerWidth<=900;
+function badge(t){return {core:'<span class="badge b-core">核心词</span>',phrase:'<span class="badge b-phrase">短语</span>',poly:'<span class="badge b-poly">熟词僻义</span>',write:'<span class="badge b-write">写作✍︎</span>'}[t]||''}
+function showCard(k,el){
+  const d=V[k]; if(!d)return;
+  document.querySelectorAll('.tk.active').forEach(e=>e.classList.remove('active'));
+  if(el&&el.classList.contains('tk'))el.classList.add('active');
+  panel.innerHTML='<button class="close" onclick="panel.classList.remove(\'open\')">✕</button>'
+  +'<div class="wcard">'
+  +'<div class="head"><span class="w">'+d.w+'</span><span class="ipa">'+d.ipa+'</span><span class="pos">'+d.pos+'</span>'+d.tags.map(badge).join('')+'</div>'
+  +'<div class="cn">'+d.cn+'</div><div class="en-def">'+d.en+'</div>'
+  +'<div class="row r-ex"><b>原文语境</b>“…'+d.ex+'…”</div>'
+  +'<div class="row r-mem"><b>怎么记</b>'+d.mem+'</div>'
+  +'<div class="row r-syn"><b>同类词</b>'+d.syn+'</div>'
+  +'<div class="row r-conf"><b>易混辨析</b>'+d.conf+'</div>'
+  +'</div>';
+  if(isMobile())panel.classList.add('open');
+}
+document.addEventListener('click',function(e){
+  const t=e.target.closest?e.target.closest('.tk'):null;
+  if(t){e.stopPropagation();showCard(t.dataset.w,t);}
+});
+function tz(btn){btn.closest('.person,.para').classList.toggle('showzh')}
+let allOn=false;
+function toggleAll(){allOn=!allOn;document.querySelectorAll('.person,.para').forEach(p=>p.classList.toggle('showzh',allOn))}
+
+const vg=document.getElementById('vgrid');
+Object.keys(V).forEach(k=>{
+  const d=V[k];
+  const div=document.createElement('div');div.className='vitem';
+  div.style.cssText='border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer';
+  div.innerHTML='<span style="float:right">'+d.tags.map(badge).join('')+'</span>'
+   +'<div style="font-family:var(--serif);font-weight:bold">'+d.w+'</div>'
+   +'<div style="font-size:.85rem;color:var(--muted)">'+d.cn+'</div>';
+  div.addEventListener('click',()=>{showCard(k,null);if(!isMobile())window.scrollTo({top:0,behavior:'smooth'})});
+  vg.appendChild(div);
+});
+document.getElementById('vcount').textContent=Object.keys(V).length;
+
+const yd=document.getElementById('yd');let sel='';
+document.addEventListener('selectionchange',()=>{
+  const s=window.getSelection();const t=s?s.toString().trim():'';
+  if(t&&/^[a-zA-Z' -]{2,40}$/.test(t)){
+    sel=t;
+    try{const r=s.getRangeAt(0).getBoundingClientRect();
+      yd.style.left=Math.min(r.left,window.innerWidth-110)+'px';
+      yd.style.top=(r.bottom+8)+'px';yd.style.display='block';}catch(e){}
+  }else{yd.style.display='none'}
+});
+yd.addEventListener('click',()=>{window.open('https://dict.youdao.com/result?word='+encodeURIComponent(sel)+'&lang=en');yd.style.display='none'});
+document.addEventListener('click',e=>{if(e.target!==yd&&!window.getSelection().toString())yd.style.display='none'});
+</script>
+<script src="_fault_attr.js"></script>
+</body>
+</html>
