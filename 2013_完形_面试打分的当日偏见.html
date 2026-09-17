@@ -1,0 +1,1242 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2013 英一 完形 · 面试打分的当日偏见</title>
+<style>
+  :root{
+    --bg:#faf9f6; --card:#ffffff; --ink:#2b2b2b; --muted:#8a8578;
+    --accent:#8b5e34; --accent-soft:#f3e9dd; --line:#e8e3d8;
+    --hl:#fdf3d8; --hl-border:#e0b84d;
+    --green:#3e7a4e; --green-soft:#e8f2ea;
+    --red:#b04a3a; --red-soft:#f9e9e6;
+    --blue:#3d6a8a; --blue-soft:#e7eff5;
+    --purple:#6d5a8e; --purple-soft:#eeeaf5;
+    --serif:"Georgia","Songti SC",serif;
+    --sans:-apple-system,"PingFang SC","Helvetica Neue",sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#1c1a17; --card:#26231f; --ink:#e8e4dc; --muted:#9a948a;
+      --accent:#d0a06a; --accent-soft:#3a3127; --line:#3a362f;
+      --hl:#3d3520; --hl-border:#b08c3a;
+      --green:#7fb98d; --green-soft:#26362b;
+      --red:#d98876; --red-soft:#3d2a26;
+      --blue:#8ab3d0; --blue-soft:#26323d;
+      --purple:#a996c8; --purple-soft:#302a3d;
+    }
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;padding-bottom:120px}
+  .wrap{max-width:1100px;margin:0 auto;padding:24px 20px}
+  .back{font-size:.85rem;color:var(--muted);text-decoration:none}
+  .back:hover{color:var(--accent)}
+  header{margin:14px 0 28px}
+  header h1{font-family:var(--serif);font-size:1.7rem;line-height:1.3}
+  header .sub{color:var(--muted);margin-top:6px;font-size:.9rem}
+  .tags{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+  .tag{font-size:.75rem;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);border:1px solid var(--line)}
+  .tag.spoiler{cursor:pointer;background:var(--card);color:var(--muted)}
+  .tag.spoiler .hid{filter:blur(5px)}
+  .tag.spoiler.open .hid{filter:none;color:var(--accent)}
+
+  .layout{display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:start}
+  @media (max-width:900px){.layout{grid-template-columns:1fr}}
+
+  section.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:24px}
+  h2{font-size:1.05rem;letter-spacing:.05em;color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  h2 .n{font-size:.72rem;background:var(--accent);color:var(--card);border-radius:6px;padding:1px 7px}
+  .note{font-size:.82rem;color:var(--muted);margin-bottom:14px}
+
+  .para{margin-bottom:22px}
+  .para .en{font-family:var(--serif);font-size:1.06rem;line-height:2.15}
+  .pno{color:var(--muted);font-size:.75rem;user-select:none;margin-right:6px}
+  .tk{background:var(--hl);border-bottom:2px solid var(--hl-border);border-radius:3px;padding:0 2px;cursor:pointer;transition:filter .15s}
+  .tk:hover{filter:brightness(.93)}
+  .tk.active{outline:2px solid var(--hl-border)}
+  .ls{border-bottom:2px dotted var(--blue);cursor:pointer}
+  .para .zh{display:none;margin-top:10px;padding:10px 14px;background:var(--blue-soft);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:.93rem}
+  .para.showzh .zh{display:block}
+  .zbtn{float:right;margin-left:10px;font-size:.72rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:6px;padding:2px 9px;cursor:pointer}
+  .zbtn:hover{color:var(--accent);border-color:var(--accent)}
+  .allbtn{font-size:.78rem;border:1px solid var(--accent);background:none;color:var(--accent);border-radius:8px;padding:4px 12px;cursor:pointer}
+
+  /* 完形空格 */
+  .bk{display:inline-block;min-width:64px;text-align:center;background:var(--hl);border-bottom:2px solid var(--hl-border);border-radius:4px;padding:0 6px;cursor:pointer;font-weight:600;color:var(--accent);transition:all .15s;font-family:var(--sans);font-size:.95rem}
+  .bk:hover{filter:brightness(.93)}
+  .bk.filled{background:var(--green-soft);border-bottom-color:var(--green);color:var(--green);font-family:var(--serif)}
+  .bk.miss{background:var(--red-soft);border-bottom-color:var(--red);color:var(--red);font-family:var(--serif)}
+  .bk.active{outline:2px solid var(--hl-border)}
+  .bk .idx{font-size:.7rem;color:var(--muted);margin-right:3px}
+
+  aside{position:sticky;top:20px}
+  #panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;min-height:180px}
+  #panel .hint{color:var(--muted);font-size:.88rem;text-align:center;padding:30px 10px}
+  .wcard .head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .wcard .w{font-family:var(--serif);font-size:1.35rem;font-weight:bold}
+  .wcard .ipa{color:var(--muted);font-size:.85rem}
+  .wcard .pos{font-size:.72rem;color:var(--purple);background:var(--purple-soft);padding:1px 8px;border-radius:999px}
+  .wcard .badge{font-size:.7rem;padding:1px 8px;border-radius:999px}
+  .b-core{background:var(--red-soft);color:var(--red)}
+  .b-phrase{background:var(--blue-soft);color:var(--blue)}
+  .b-poly{background:var(--purple-soft);color:var(--purple)}
+  .b-write{background:var(--green-soft);color:var(--green)}
+  .wcard .cn{margin-top:8px;font-size:1rem;font-weight:600}
+  .wcard .en-def{color:var(--muted);font-size:.86rem;font-style:italic;margin-top:2px}
+  .wcard .row{margin-top:10px;font-size:.86rem;padding:8px 10px;border-radius:8px}
+  .wcard .row>b:first-child{font-size:.72rem;display:block;margin-bottom:2px;letter-spacing:.06em}
+  .r-ex{background:var(--hl)} .r-ex b{color:var(--hl-border)}
+  .r-mem{background:var(--green-soft)} .r-mem b{color:var(--green)}
+  .r-syn{background:var(--blue-soft)} .r-syn b{color:var(--blue)}
+  .r-conf{background:var(--red-soft)} .r-conf b{color:var(--red)}
+  #panel .close{display:none}
+  @media (max-width:900px){
+    aside{position:fixed;left:0;right:0;bottom:0;z-index:50;padding:0 8px 8px}
+    #panel{box-shadow:0 -6px 24px rgba(0,0,0,.18);max-height:55vh;overflow-y:auto;display:none}
+    #panel.open{display:block}
+    #panel .close{display:block;float:right;border:none;background:var(--line);border-radius:8px;padding:2px 10px;cursor:pointer;color:var(--ink)}
+  }
+
+  /* 逐空精解 */
+  .q{margin-bottom:22px;padding-bottom:18px;border-bottom:1px dashed var(--line);scroll-margin-top:20px}
+  .q:last-child{border:none;margin-bottom:0;padding-bottom:0}
+  .q .stem{font-family:var(--serif);font-size:.98rem;background:var(--hl);border-radius:8px;padding:8px 12px;display:block}
+  .q .stem em{font-style:normal;font-weight:700;color:var(--accent);border-bottom:2px solid var(--hl-border);padding:0 4px}
+  .qhead{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+  .qno{font-family:var(--serif);font-size:1.2rem;font-weight:700;color:var(--accent)}
+  .qt{font-size:.7rem;border-radius:999px;padding:1px 9px}
+  .c-logic{background:var(--blue-soft);color:var(--blue)}
+  .c-collo{background:var(--green-soft);color:var(--green)}
+  .c-word{background:var(--red-soft);color:var(--red)}
+  .c-context{background:var(--purple-soft);color:var(--purple)}
+  .qpos{font-size:.7rem;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:1px 9px}
+  .opts{margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  @media (max-width:640px){.opts{grid-template-columns:1fr}}
+  .opt{border:1px solid var(--line);border-radius:10px;padding:7px 12px;cursor:pointer;font-size:.92rem;font-family:var(--serif);transition:all .15s}
+  .opt .gl{font-family:var(--sans);font-size:.8rem;color:var(--muted);margin-left:6px}
+  .opt:hover{border-color:var(--accent)}
+  .q.done .opt{cursor:default}
+  .opt.right{background:var(--green-soft);border-color:var(--green)}
+  .opt.wrong{background:var(--red-soft);border-color:var(--red)}
+  .expl{display:none;margin-top:12px;background:var(--accent-soft);border-radius:10px;padding:12px 14px;font-size:.9rem}
+  .q.done .expl{display:block}
+  .expl b{color:var(--accent)}
+  .expl .lbl{font-size:.74rem;letter-spacing:.06em;color:var(--muted);display:block;margin:10px 0 2px}
+  .expl .lbl:first-child{margin-top:0}
+  .expl code{font-family:var(--serif);background:var(--hl);border-radius:4px;padding:1px 5px}
+  .wrongs{margin-top:6px;display:grid;gap:5px}
+  .wr{font-size:.86rem;background:var(--card);border-radius:8px;padding:6px 10px;border-left:3px solid var(--red)}
+  .wr .l{font-family:var(--serif);font-weight:700;color:var(--red);margin-right:5px}
+
+  /* 计分条 */
+  .score{display:flex;gap:14px;flex-wrap:wrap;align-items:center;background:var(--hl);border-radius:12px;padding:10px 16px;margin-bottom:18px;font-size:.88rem}
+  .score .v{font-family:var(--serif);font-size:1.25rem;font-weight:700;color:var(--accent);margin-right:4px}
+  .score .rst{margin-left:auto;font-size:.78rem;border:1px solid var(--line);background:var(--card);color:var(--muted);border-radius:8px;padding:3px 10px;cursor:pointer}
+
+  /* 考点统计 */
+  .catbar{display:flex;height:26px;border-radius:8px;overflow:hidden;margin:10px 0 16px;border:1px solid var(--line)}
+  .catseg{display:flex;align-items:center;justify-content:center;font-size:.72rem;color:#fff;font-weight:600}
+  .catlegend{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px}
+  .cl{display:flex;gap:8px;align-items:center;font-size:.85rem;cursor:pointer;padding:6px 8px;border-radius:8px;border:1px solid var(--line)}
+  .cl:hover{border-color:var(--accent)}
+  .dot{width:12px;height:12px;border-radius:3px;flex:0 0 12px}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+  .chip{font-size:.78rem;background:var(--accent-soft);color:var(--accent);border-radius:6px;padding:2px 8px;cursor:pointer}
+  .chip:hover{filter:brightness(.94)}
+
+  /* 打法 / 搭配 */
+  .flow{display:grid;gap:10px;font-size:.92rem}
+  .flow .fi{border:1px solid var(--line);border-radius:10px;padding:10px 14px}
+  .flow .fi b{color:var(--accent)}
+  .flow .fi .ev{display:block;margin-top:4px;font-size:.85rem;color:var(--muted);border-left:3px solid var(--hl-border);padding-left:9px}
+  .wb{display:grid;gap:10px}
+  .wbi{border-left:3px solid var(--green);background:var(--green-soft);border-radius:0 10px 10px 0;padding:10px 14px;font-size:.92rem}
+  .wbi .p{font-family:var(--serif);font-weight:600}
+  .wbi .u{color:var(--muted);font-size:.85rem}
+
+  /* 长难句 */
+  .sent{margin-bottom:20px}
+  .sent .src{font-family:var(--serif);font-size:1rem;background:var(--blue-soft);padding:12px 14px;border-radius:10px;border-left:3px solid var(--blue)}
+  .sent .anat{margin-top:8px;font-size:.9rem}
+  .sent .anat li{margin:4px 0 4px 18px}
+  .sent .tr{margin-top:8px;font-size:.92rem;color:var(--muted)}
+  .skel{color:var(--red);font-weight:600}
+
+  /* 80词表 */
+  .otab{width:100%;border-collapse:collapse;font-size:.86rem}
+  .otab th,.otab td{border:1px solid var(--line);padding:5px 8px;vertical-align:top}
+  .otab th{background:var(--accent-soft);color:var(--accent);font-size:.78rem}
+  .otab td.n{text-align:center;font-family:var(--serif);color:var(--muted);width:38px}
+  .otab .ow{font-family:var(--serif)}
+  .otab .oc{color:var(--muted);font-size:.82rem;display:block}
+  .otab td.hit{background:var(--green-soft)}
+  .otab td.hit .ow{color:var(--green);font-weight:700}
+  .hidecn .oc{filter:blur(4px);cursor:pointer}
+  .hidecn .oc.show{filter:none}
+  .tabwrap{overflow-x:auto}
+
+  #yd{position:fixed;z-index:60;display:none;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:4px 12px;font-size:.8rem;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+  .fail{background:var(--red-soft);border:1px solid var(--red);border-radius:10px;padding:10px 13px;margin-bottom:10px;font-size:.89rem;line-height:1.75}
+  .fail b{color:var(--red)}
+  .expl .fail{margin-top:0}
+  footer{color:var(--muted);font-size:.8rem;text-align:center;margin-top:30px}
+  /* 修：.layout 是 grid，grid 项默认 min-width:auto ⟹ 06 的 80 词表（min-content 425px）会把整个左栏撑到 475px，
+     窄屏下页面 scrollWidth 超出视口（2007–2009 三篇完形页同源、同病）。min-width:0 后 .tabwrap 才真正接管横滚。 */
+  main,aside{min-width:0}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">◀ 返回英语复盘中心</a>
+  <header>
+    <h1>面试打分的当日偏见：只看眼前几个人，判断就会走偏</h1>
+    <div class="sub">2013 年英语（一）真题 · Section I 完形填空（Use of English）· 292 词（黄皮书口径）· 4 段 · 建议 15 min · 话题：行为决策研究（判断偏差）（源自 <i>The Economist</i>《经济学人》2012 年 6 月 16 日 <i>A Question of Judgment: Interviewers Favour Those Seen First</i>「判断问题：面试官青睐先来的面试者」，黄皮书口径）</div>
+    <div class="tags">
+      <span class="tag spoiler" onclick="this.classList.toggle('open')">🙈 答案（点击显示）：<span class="hid">1A 2B 3C 4D 5B 6D 7A 8A 9D 10C 11A 12C 13B 14C 15B 16C 17D 18D 19B 20A</span></span>
+      <span class="tag">难度：中偏易（干扰项弱，难在<b>四个看介词的搭配空</b>和 <b>17 题的三人先后</b>）</span>
+      <span class="tag">⚠️ 本篇<b>不算盲做</b>：开工前答案已写在上一轮留下的「下一格」提示里，读原卷前就看到了。独立推理的结果与答案 20/20 一致，<b>不计入完形战绩</b></span>
+      <span class="tag">⭐ 本页最值钱的一段：<b>02+ 法官 ↔ 面试官同构表</b>——首段的法官例子就是末段研究发现的预告片，一张表定 4／7／17／18 四个空</span>
+    </div>
+  </header>
+
+  <div class="layout">
+    <main>
+      <!-- ========== 00 脉络 ========== -->
+      <section class="card">
+        <h2><span class="n">00</span>读前一分钟 · 全文脉络（完形先读首句，再看结构）</h2>
+        <p class="note">完形的<b>首句从不设空</b>。本篇首句 <i>People are, on the whole, poor at considering background information when making individual decisions.</i>——一句话给了三样东西：<b>话题</b>（人做决定时的毛病）、<b>性质</b>（<code>on the whole</code>＋一般现在时＝一条<b>普遍规律</b>，不是一件新闻）、<b>关键词</b>（<code>background information</code>，<b>后面两句会把它换着说两遍</b>：external factors、the big picture）。</p>
+        <p class="note" style="margin-top:10px">⭐⭐ <b>本篇是「研究报道」型完形：假说 → 检验 → 数据 → 发现</b>。认它的办法是圈出<b>研究者的五个动词</b>：<code>speculated</code>（推测）→ <code>theorised</code>（提出理论）→ <code>To <b>8</b> this idea</code>（检验）→ <code>suspected</code>（怀疑）→ <code>found</code>（发现）。<b>这条动词链一画出来，8 题 test 就不用想了</b>，而且整篇的走向也清楚了：先说一个猜想、举一个法官的例子，再去招生面试里找证据，最后给出数字。</p>
+        <div class="flow">
+          <div class="fi"><b>① 段一 · 现象 → 反转 → 假说 → 例子</b>——人们总体上不擅长在做单个决定时考虑背景信息；乍一看这似乎是个优点，能让人做出不受外界因素左右的判断；但西蒙逊博士推测，看不到大局会让决策者被手头每天的信息样本带偏；比如一位怕被说成「对犯罪手软」的法官，如果当天已经连着判了五六个被告只做社区服务，下一个人就更可能被他送进监狱。
+            <span class="ev">1–7 空，<b>一段占了七个空（3.5 分）</b>。❷ 句 <code>At first glance … might seem like a strength</code> 是<b>先扬</b>，❸ 句 <code>But</code> 是<b>后抑</b>——1 空要填正面词（grants），因为它还在「优点」那一边。<br>⭐ <b>❷ 句的 unbiased 与 ❸ 句的 biased 是一对反讽</b>：同一个毛病，从一个角度看是「不受外界因素影响」，换一个角度看是「被当天的样本带偏」——作者用一个词根把「看起来的优点」和「其实的缺点」钉在一起。<br>⭐⭐ <b>❹ 句的法官例子要仔细读：它和④段的研究发现是同一个模子</b>（见 <a href="#map" style="color:var(--accent)">02+ 同构表</a>）。</span></div>
+          <div class="fi"><b>② 段二 · 转入检验：选中大学招生面试</b>——为了检验这个想法，他去研究大学录取流程；按理说，申请者能不能被录取，不该取决于同一天被随机安排来面试的另外几个人，但西蒙逊怀疑事实并非如此。
+            <span class="ev">8–11 空。<b>本段是整篇的枢纽</b>：把①段的「法官」换成「招生官」，把「当天判过的案子」换成「当天面试过的人」。<code>In theory … but … the truth was <b>11</b></code> 是<b>理论与事实的对举</b>，11 空就是「事实不是理论说的那样」＝otherwise。<br>📌 <code>during the same day</code> 是全文第三次出现「当天」：①❸ <code>daily samples</code> · ①❹ <code>on that day</code> · ②❷ <code>during the same day</code>，④❶ 还有第四次 <code>a daily series</code>——<b>全文的病根就是「只看当天」</b>。</span></div>
+          <div class="fi"><b>③ 段三 · 数据从哪来：面试怎么打分</b>——他研究了 31 位招生官主持的 9323 场 MBA 面试的结果；面试官按 1 到 5 分给申请者打分，这个分数考虑了很多因素；然后分数会和申请者的 GMAT 成绩（一门满分 800 分的标准化考试）一起，用来决定是否录取。
+            <span class="ev">12–16 空。<b>这是「方法段」，四个空全是打分场景的固定搭配</b>：<code>interviews <b>12</b> by</code>（conducted）· <code><b>13</b> applicants on a scale of</code>（rated）· <code><b>14</b> … into consideration</code>（took）· <code>is <b>16</b> out of 800 points</code>（marked）——<b>四个空后面都跟着一个介词短语，介词就是锁</b>（⟹ R157）。15 then 是流程顺序：先打面试分，<b>然后</b>与 GMAT 合用。</span></div>
+          <div class="fi"><b>④ 段四 · 发现：前一位分高，下一位就吃亏</b>——西蒙逊发现，在一天的面试序列里，如果上一位候选人的分数比再前一位高出 0.75 分或更多，那么下一位申请者的分数平均会下降 0.075 分；这听起来很小，但要抵消这点降分，申请者需要比原本所需多考 30 分 GMAT。
+            <span class="ev">17–20 空。<b>一句发现（17、18）＋ 一句放大（19、20）</b>。17 要在脑子里排出<b>三个人的先后</b>（见 <a href="#timeline" style="color:var(--accent)">02++ 时间线</a>）；18 的方向由下一句 <code>such a <b>decrease</b></code> 锁死；<code>This might sound small, but …</code> 是作者把一个小数字<b>换算成读者有感觉的代价</b>——but 后面只能是「其实不小」，所以 19 是抵消（undo），20 是原本所需（necessary）。</span></div>
+        </div>
+        <p class="note" style="margin-top:14px">📌 <b>第二条强线索：全篇的方向只有一个——「前面的样本会把后面的判断往反方向推」</b>。法官：前面判得轻 ⟹ 后面判得重；面试官：前面给分高 ⟹ 后面给分低。<b>凡是与方向有关的空（5 fearful、7 if、17 before、18 drop），都顺着这一句填。</b></p>
+        <p class="note" id="bg">🎭 <b>读前背景（不影响做题，但读懂了心里有底）</b>：</p>
+        <div class="tabwrap"><table class="otab">
+          <tr><th>文中说法</th><th>背景</th><th>管哪个空</th></tr>
+          <tr><td><span class="ow">Dr Uri Simonsohn</span></td><td>行为决策学者，当时在宾夕法尼亚大学沃顿商学院。本文报道的是他与弗朗西丝卡·吉诺合作的研究，2012 年先以工作论文公开，2013 年正式发表在《心理科学》（<i>Psychological Science</i>）上（题名开头是 <i>Daily Horizons</i>「每日视野」，数据来自九千多场 MBA 录取面试）</td><td>全文</td></tr>
+          <tr><td><span class="ow">narrow bracketing</span>（原文未出现）</td><td><b>狭隘框定</b>：把一连串判断切成小块（一天一块），每一块都想「看起来正常」——一天里已经给了几个高分，就不好意思再给高分。这就是①❸ 说的 <code>an inability to consider the big picture</code></td><td>2／3／17／18</td></tr>
+          <tr><td><span class="ow">too soft on crime</span></td><td>美国政治里的固定说法：<b>对犯罪手软</b>（反义 tough on crime 严厉打击犯罪）。很多地方的法官要经选举连任，「手软」是会被对手拿来攻击的标签，所以法官「怕」被这么说</td><td>5／6</td></tr>
+          <tr><td><span class="ow">forced community service</span></td><td><b>社区服务令</b>：一种不坐牢的轻刑，被判者要义务劳动若干小时。<code>only to</code> 强调「只判了」这么轻</td><td>7</td></tr>
+          <tr><td><span class="ow">MBA interviews · GMAT</span></td><td>MBA 录取＝材料 ＋ 面试 ＋ GMAT。<b>GMAT 总分 200–800</b>（2012 年口径，文中说 <code>out of 800 points</code>），面试按 1–5 分打</td><td>13／16／19／20</td></tr>
+          <tr><td><span class="ow">theorised · standardised · Dr</span></td><td><b>英式拼写（-ise）和 Dr 不加点</b>，都是《经济学人》的排版习惯；同卷 <a href="2013_T2_默认不追踪之争.html" style="color:var(--accent)">Text 2</a> 也出自《经济学人》（2012 年 6 月 9 日），<b>与本篇前后相隔一周</b></td><td>—</td></tr>
+          <tr><td><span class="ow">对你的意义</span></td><td>复试面试同样是「一位老师一天连看很多人」。研究说的是<b>顺序效应真实存在但很小</b>（平均 0.075 分），你排在第几个自己控制不了——<b>别为抽签顺序焦虑，把能控制的准备做足</b></td><td>—</td></tr>
+        </table></div>
+      </section>
+      <!-- ========== 01 正文 ========== -->
+      <section class="card">
+        <h2><span class="n">01</span>完形正文（20 空 · 点空格跳到该题）
+          <button class="allbtn" onclick="toggleAll()" style="margin-left:auto">译文 开/关</button>
+          <button class="allbtn" onclick="revealAll()">显示全部答案</button>
+        </h2>
+        <p class="note">🟨 点<b>空格</b>＝跳到下面对应的解析卡（先自己选，再看解析）｜ 🟡 黄底词＝生词卡，点开看词根/辨析 ｜ 蓝色虚线＝长难句 ｜ 选中任意单词浮出「查有道」</p>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">①</span>People are, <span class="tk" data-w="onthewhole">on the whole</span>, poor at considering <span class="tk" data-w="background">background</span> information when making <span class="tk" data-w="individual">individual</span> decisions. <span class="ls" onclick="go('s1')"><span class="tk" data-w="atfirstglance">At first glance</span> this might seem like a <span class="tk" data-w="strength">strength</span> that <span class="bk" data-n="1"><span class="idx">1</span>___</span> the ability to make judgments which are <span class="tk" data-w="unbiased">unbiased</span> by <span class="bk" data-n="2"><span class="idx">2</span>___</span> factors.</span> <span class="ls" onclick="go('s2')">But Dr Uri Simonsohn <span class="tk" data-w="speculate">speculated</span> that an <span class="tk" data-w="inability">inability</span> to consider the big <span class="bk" data-n="3"><span class="idx">3</span>___</span> was leading <span class="tk" data-w="decisionmaker">decision-makers</span> to be <span class="tk" data-w="biased">biased</span> by the daily <span class="tk" data-w="sample">samples</span> of information they were working with.</span> <span class="ls" onclick="go('s3')"><span class="bk" data-n="4"><span class="idx">4</span>___</span>, he <span class="tk" data-w="theorise">theorised</span> that a judge <span class="bk" data-n="5"><span class="idx">5</span>___</span> of appearing too <span class="tk" data-w="soft">soft</span> <span class="bk" data-n="6"><span class="idx">6</span>___</span> crime might be more likely to send someone to prison <span class="bk" data-n="7"><span class="idx">7</span>___</span> he had already <span class="tk" data-w="sentence">sentenced</span> five or six other <span class="tk" data-w="defendant">defendants</span> only to forced <span class="tk" data-w="communityservice">community service</span> on that day.</span></p>
+          <div class="zh">总体而言，人们在做单个决定时不擅长考虑背景信息。乍一看，这似乎是一种优点，它<b>赋予</b>人们做出不受<b>外界</b>因素左右的判断的能力。但乌里·西蒙逊博士推测，无法考虑<b>大局</b>，正使决策者被他们手头每天处理的信息样本带偏。<b>比如</b>，他提出这样一个理论：一位<b>害怕</b>显得<b>对</b>犯罪太手软的法官，<b>如果</b>当天已经把另外五六名被告只判了强制社区服务，那么他就更有可能把某个人送进监狱。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">②</span>To <span class="bk" data-n="8"><span class="idx">8</span>___</span> this idea, he <span class="tk" data-w="turnto">turned to</span> the university-<span class="tk" data-w="admissions">admissions</span> process. <span class="ls" onclick="go('s4')"><span class="tk" data-w="intheory">In theory</span>, the <span class="bk" data-n="9"><span class="idx">9</span>___</span> of an <span class="tk" data-w="applicant">applicant</span> should not depend on the few others <span class="bk" data-n="10"><span class="idx">10</span>___</span> <span class="tk" data-w="randomly">randomly</span> for interview during the same day, but Dr Simonsohn <span class="tk" data-w="suspect">suspected</span> the truth was <span class="bk" data-n="11"><span class="idx">11</span>___</span>.</span></p>
+          <div class="zh">为了<b>检验</b>这一想法，他转而研究大学的招生录取流程。理论上，一位申请者能否<b>成功</b>（被录取），不应取决于同一天被随机<b>挑选</b>来参加面试的另外几个人，但西蒙逊博士怀疑事实<b>并非如此</b>。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">③</span>He studied the results of 9,323 MBA interviews <span class="bk" data-n="12"><span class="idx">12</span>___</span> by 31 admissions officers. The interviewers had <span class="bk" data-n="13"><span class="idx">13</span>___</span> applicants on a <span class="tk" data-w="scale">scale</span> of one to five. This scale <span class="bk" data-n="14"><span class="idx">14</span>___</span> <span class="tk" data-w="numerous">numerous</span> factors into consideration. <span class="ls" onclick="go('s5')">The scores were <span class="bk" data-n="15"><span class="idx">15</span>___</span> used <span class="tk" data-w="inconjunction">in conjunction with</span> an applicant's score on the Graduate Management Admission Test, or GMAT, a <span class="tk" data-w="standardised">standardised</span> exam which is <span class="bk" data-n="16"><span class="idx">16</span>___</span> out of 800 points, to make a decision on whether to accept him or her.</span></p>
+          <div class="zh">他研究了由 31 位招生官<b>主持</b>的 9323 场 MBA 面试的结果。面试官按 1 到 5 分的等级给申请者<b>打分</b>，这一评分等级<b>把</b>众多因素<b>考虑在内</b>。这些分数<b>随后</b>会与申请者的管理专业研究生入学考试（即 GMAT，一门按满分 800 分<b>计分</b>的标准化考试）成绩一起，用来决定是否录取此人。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">④</span><span class="ls" onclick="go('s6')">Dr Simonsohn found if the score of the <span class="tk" data-w="previous">previous</span> <span class="tk" data-w="candidate">candidate</span> in a daily <span class="tk" data-w="series">series</span> of interviewees was 0.75 points or more higher than that of the one <span class="bk" data-n="17"><span class="idx">17</span>___</span> that, then the score for the next applicant would <span class="bk" data-n="18"><span class="idx">18</span>___</span> <span class="tk" data-w="byaverage">by an average of</span> 0.075 points.</span> <span class="ls" onclick="go('s7')">This might <span class="tk" data-w="sound">sound</span> small, but to <span class="bk" data-n="19"><span class="idx">19</span>___</span> the effects of such a <span class="tk" data-w="decrease">decrease</span> a candidate would need 30 more GMAT points than would <span class="tk" data-w="otherwise">otherwise</span> have been <span class="bk" data-n="20"><span class="idx">20</span>___</span>.</span></p>
+          <div class="zh">西蒙逊博士发现，在一天的面试序列中，如果上一位候选人的分数比<b>再前</b>一位高出 0.75 分或更多，那么下一位申请者的分数平均会<b>降低</b> 0.075 分。这听起来也许很小，但要<b>抵消</b>这种降分的影响，一位候选人的 GMAT 成绩需要比原本<b>所需</b>的高出 30 分。</div>
+        </div>
+      </section>
+      <!-- ========== 02 逐空精解 ========== -->
+      <section class="card">
+        <h2><span class="n">02</span>逐空精解（点选项即判 · 再看解析）</h2>
+        <div class="score">
+          <span><span class="v" id="sDone">0</span>/20 已答</span>
+          <span><span class="v" id="sRight">0</span> 对</span>
+          <span>折合 <span class="v" id="sPt">0</span> 分 / 10</span>
+          <button class="rst" onclick="location.reload()">↺ 重做</button>
+        </div>
+        <p class="note">每空 0.5 分。<b>先在心里说出「这个空要填什么词性、什么方向」再点选项</b>。本篇有<b>六道题只看空格后面那个介词就能定</b>（<b>6</b> soft on · <b>12</b> conducted by · <b>13</b> rated on a scale of · <b>14</b> took … into consideration · <b>16</b> marked out of · <b>20</b> than would otherwise have been necessary），<b>真正要想的是 9、11、17 三个</b>：9 要分清「谁的」、11 要认出理论与事实的对举、17 要在脑子里排出三个人的先后。</p>
+
+        <div class="q" id="q1" data-ans="0">
+          <div class="qhead"><span class="qno">1</span><span class="qt c-word">词义辨析 · 「给」族动词</span><span class="qpos">a strength that ＋ ___ ＋ the ability to do</span></div>
+          <span class="stem">At first glance this might seem like a <b>strength</b> that <em>1</em> <b>the ability</b> to make judgments which are unbiased by external factors.</span>
+          <div class="opts">
+            <div class="opt">A grants<span class="gl">给予，赋予</span></div>
+            <div class="opt">B submits<span class="gl">提交；屈服</span></div>
+            <div class="opt">C transmits<span class="gl">传送，传播</span></div>
+            <div class="opt">D delivers<span class="gl">递送；发表</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>定语从句的谓语，主语 that＝a strength（优点），宾语 the ability to make judgments（做出判断的能力）。四个选项都带「给出去」的意思，<b>比的是「怎么给」</b>。
+            <span class="lbl">🔗 线索</span>① <code>a <b>strength</b></code> 定调：空格还在「看起来是优点」那一侧（But 在下一句才转），<b>要填正面的「让人拥有」</b>；② 宾语是一种<b>能力</b>，不是一份文件、一个包裹、一段信号。
+            <span class="lbl">✅ A grants</span>赋予、给予。<code>grant sb the ability／the right／permission</code> 是「把资格、权利、能力给某人」的标准说法（本句省略了间接宾语 people）。代入＝「这似乎是一个优点，<b>赋予</b>人们做出不受外界因素左右的判断的能力」。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>submits：「提交」要有接收方（submit sth <b>to</b> sb），「屈服」是 submit to sb／sth——<b>空格后的 to 是不定式符号</b>（the ability <b>to make</b>），不是介词，语法就接不上；优点也不会「提交」能力。</div>
+              <div class="wr"><span class="l">C</span>transmits：把东西<b>从一处传到另一处</b>（信号、疾病、知识）。transmit the ability 字面能说，意思却是「把这种能力传给别人」——<b>本句说的是「让人拥有」，不是「转手」</b>。</div>
+              <div class="wr"><span class="l">D</span>delivers：递送货物、发表演讲（deliver a speech）、兑现承诺——<b>强调移交过程</b>，宾语是具体东西或话语，不是一种能力。</div>
+            </div>
+            <span class="lbl">💡 迁移</span><b>「给」族动词按宾语分工</b>：资格、权利、能力 ⟹ <b>grant／give</b>；文件、申请 ⟹ <b>submit</b>；信号、疾病、文化 ⟹ <b>transmit</b>；货物、演讲、承诺 ⟹ <b>deliver</b>。⭐ <b>另注意空格的位置：它在「乍一看是优点」的让步句里，所以一定是正面词</b>——先扬后抑的文章，扬的那一句填正面，抑的那一句（But 之后）填负面。
+          </div>
+        </div>
+
+        <div class="q" id="q2" data-ans="1">
+          <div class="qhead"><span class="qno">2</span><span class="qt c-context">上下文语义 · 首句关键词的第一次改写</span><span class="qpos">unbiased by ＋ ___ ＋ factors</span></div>
+          <span class="stem">… judgments which are <b>unbiased by</b> <em>2</em> factors.（上一句：People are poor at considering <b>background information</b>…）</span>
+          <div class="opts">
+            <div class="opt">A minor<span class="gl">次要的，较小的</span></div>
+            <div class="opt">B external<span class="gl">外部的，外界的</span></div>
+            <div class="opt">C crucial<span class="gl">关键的</span></div>
+            <div class="opt">D objective<span class="gl">客观的</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>形容词，修饰 factors。<b>四个选项都能修饰 factors，语法一个都筛不掉</b>，只能回上一句找意思。
+            <span class="lbl">🔗 线索</span>本句的 this 指首句那件事：人们<b>不考虑背景信息</b>。「不考虑背景信息」换个说法就是「<b>不被 ___ 因素影响</b>」⟹ 空格要与 <code>background information</code> 同义。<b>下一句还有第三次改写</b>：<code>an inability to consider <b>the big picture</b></code>（3 题）。
+            <span class="lbl">✅ B external</span>外部的、外界的。背景信息＝<b>眼前这个决定之外</b>的东西 ⟹ external factors。代入＝「能做出不受<b>外界</b>因素左右的判断」——正好是「不考虑背景」的正面说法。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span><b>⚠️ 本题最顺的一项</b>：「不受<b>次要</b>因素干扰」听着就是个优点，正好配 strength。但 minor 讲的是<b>重要程度</b>，原文讲的是<b>范围</b>（眼前之内 vs 眼前之外）；而且全文恰恰要说明背景信息<b>很要紧</b>——黄皮书把它定为「利用常识和惯性思维设的障碍」。</div>
+              <div class="wr"><span class="l">C</span>crucial：同样是讲<b>重要程度</b>，而且方向反：「不受关键因素影响」算不上优点。</div>
+              <div class="wr"><span class="l">D</span>objective：「不受客观因素影响」＝只凭主观——这不是优点，是毛病；而且「背景信息」与「客观」不是一回事。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>首句的关键词，后面两三句里一定会被换着说</b>（本篇 background information → external factors → the big picture）。<b>形容词空四个选项都搭得上名词时，别比词义，回首句找被改写的那个词</b>（⟹ <a href="套路库_阅读.html#R51" style="color:var(--accent)">R51</a>）。选项里<b>讲「程度」的（minor／crucial）和讲「范围、类别」的（external／internal）先分开</b>，再看原文说的是哪一种。
+          </div>
+        </div>
+
+        <div class="q" id="q3" data-ans="2">
+          <div class="qhead"><span class="qno">3</span><span class="qt c-collo">固定搭配 · 熟词僻义</span><span class="qpos">consider the big ＋ ___</span></div>
+          <span class="stem">But Dr Uri Simonsohn speculated that an inability to consider <b>the big</b> <em>3</em> was leading decision-makers to be biased by <b>the daily samples</b> of information they were working with.</span>
+          <div class="opts">
+            <div class="opt">A issue<span class="gl">议题，问题</span></div>
+            <div class="opt">B vision<span class="gl">视力；远见，构想</span></div>
+            <div class="opt">C picture<span class="gl">图画；局面</span></div>
+            <div class="opt">D moment<span class="gl">时刻</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>名词，与 the big 组成 consider 的宾语。<b>the big ＋ 名词＝一个固定短语</b>，先想搭配，再对意思。
+            <span class="lbl">🔗 线索</span>① 本句与首句同义：「不擅长考虑背景信息」＝「无法考虑 the big ___」；② 同句的对立面是 <code>the <b>daily samples</b> of information</code>（每天手头那一小撮信息）——空格要与「一小撮、眼前」相反，<b>是「全貌、大局」</b>。
+            <span class="lbl">✅ C picture</span><code>the big picture</code>＝<b>大局，全貌</b>（picture 取熟词僻义「局面、情况」）。代入＝「无法考虑<b>大局</b>，使决策者被每天手头的信息样本带偏」。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>issue：the big issue＝重大议题、争论焦点。背景信息不是「议题」，而是理解议题所需的全部情况。</div>
+              <div class="wr"><span class="l">B</span>vision：远见、宏大构想，常说 have a vision。<b>consider a vision 搭配别扭</b>，而且「没考虑宏伟蓝图」与「被当天样本带偏」对不上。</div>
+              <div class="wr"><span class="l">D</span>moment：the big moment＝关键时刻。时间点与「信息的范围」无关。</div>
+            </div>
+            <span class="lbl">💡 迁移</span><b>「大局」一组要会认也要会写</b>：<code>see／consider／look at the big picture</code>（着眼大局）· <code>lose sight of the big picture</code>（忽视大局）· <code>in the big picture</code>（从大局看）。⭐ <b>对立面就在同一句里</b>：the big picture ↔ the daily samples——<b>同句里有一个「小」，空格常是它的反义「大」</b>。
+          </div>
+        </div>
+
+        <div class="q" id="q4" data-ans="3">
+          <div class="qhead"><span class="qno">4</span><span class="qt c-logic">逻辑关系 · 句首插入语</span><span class="qpos">句首 ＋ 逗号（理论 → 具体情境）</span></div>
+          <span class="stem"><em>4</em>, he <b>theorised</b> that <b>a judge</b> fearful of appearing too soft on crime <b>might</b> be more likely to send someone to prison if …（上一句：… was leading <b>decision-makers</b> to be biased …）</span>
+          <div class="opts">
+            <div class="opt">A Above all<span class="gl">最重要的是</span></div>
+            <div class="opt">B On average<span class="gl">平均而言</span></div>
+            <div class="opt">C In principle<span class="gl">原则上；大体上</span></div>
+            <div class="opt">D For example<span class="gl">例如</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>句首的衔接语，连接上一句（speculated 的一般猜想）与本句（theorised 的具体说法）。
+            <span class="lbl">🔗 线索</span>⭐ <b>上位词 → 下位词</b>：上一句说的是 <code>decision-makers</code>（决策者，一个大类），本句换成了 <code>a judge</code>（法官，大类里的一个成员）；上一句说「被每天的信息样本带偏」，本句具体成「当天已经轻判了五六人，下一个就判重」——<b>一般 ⟹ 具体，就是举例</b>。
+            <span class="lbl">✅ D For example</span>例如。逐项对得上：决策者 → 法官 · 每天的信息样本 → 当天已判的五六个案子 · 被带偏 → 下一个判得更重。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>Above all：在<b>几件事里挑最重要的一件</b>。前面没有列举过几件事，无从比较轻重。</div>
+              <div class="wr"><span class="l">B</span>On average：平均而言，要<b>有数据</b>才能说。本句的动词是 theorised、might——<b>这是理论推测，不是统计结果</b>。（④段才有真的 average：<code>by an average of 0.075 points</code>。）</div>
+              <div class="wr"><span class="l">C</span>In principle：「理论上（可行）」或「大体上（同意）」。本句不是在说「法官这样做理论上行得通」，而是在给上一句的猜想<b>打个比方</b>。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>前句是大类、后句换成大类里的一个成员（decision-makers → a judge），接缝处就是 For example</b>。⭐⭐ <b>而且要记住这个例子</b>：研究报道型文章里，假说阶段举的例子往往就是后面研究发现的「预告片」——本篇的法官例子与④段面试官的发现是同一个模子（见 <a href="#map" style="color:var(--accent)">02+ 同构表</a>，⟹ <a href="套路库_阅读.html#R156" style="color:var(--accent)">R156</a>）。
+          </div>
+        </div>
+
+        <div class="q" id="q5" data-ans="1">
+          <div class="qhead"><span class="qno">5</span><span class="qt c-word">词义辨析 · 形容词（四个都接 of）</span><span class="qpos">a judge ＋ ___ ＋ of appearing too soft</span></div>
+          <span class="stem">… he theorised that a judge <em>5</em> of <b>appearing too soft on crime</b> might be <b>more likely to send someone to prison</b> if he had already sentenced five or six other defendants only to forced community service …</span>
+          <div class="opts">
+            <div class="opt">A fond<span class="gl">喜爱的（be fond of）</span></div>
+            <div class="opt">B fearful<span class="gl">害怕的（be fearful of）</span></div>
+            <div class="opt">C capable<span class="gl">有能力的（be capable of）</span></div>
+            <div class="opt">D thoughtless<span class="gl">欠考虑的（be thoughtless of）</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>形容词短语 <code>___ of appearing too soft on crime</code> 作 a judge 的后置定语。⚠️ <b>四个选项全都能接 of</b>——介词这次锁不住，只能比意思。
+            <span class="lbl">🔗 线索</span>把这句话的因果理出来：前面连着轻判了五六个 ⟹ 下一个<b>更可能判重</b>。<b>为什么要判重？</b>因为他<b>不想被人说成「对犯罪手软」</b>——空格要给出这个<b>动机</b>：对「显得手软」的态度是<b>怕</b>。
+            <span class="lbl">✅ B fearful</span>害怕的、担心的。代入＝「一位<b>担心</b>显得对犯罪太手软的法官」——正是他「补一个重判」的心理动因。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>fond：<b>方向正相反</b>。喜欢显得手软的法官，应该一直轻判下去，不会突然把人送进监狱；而且法官不会凭个人喜好判案。</div>
+              <div class="wr"><span class="l">C</span>capable：「有能力显得手软」——手软是态度，不是本事；也解释不了他为什么会改判重。</div>
+              <div class="wr"><span class="l">D</span>thoughtless：「不考虑、不在乎显得手软」——恰恰说反了：他正是<b>太在乎</b>别人怎么看，才会改判。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>介词失效的情形</b>：四个形容词都接 of 时，<b>语法筛不掉任何一个</b>，这时要把句子里的<b>因果</b>补全——「他为什么会这么做」的答案就是空格（⟹ <a href="套路库_阅读.html#R157" style="color:var(--accent)">R157</a> 的边界）。<br>🔗 <b>5＋6 是连体空</b>：<code>fearful of appearing too soft <b>on</b> crime</code>——先用 6 的搭配把「对犯罪手软」这个短语读出来，5 的方向（怕）才立得住（⟹ <a href="套路库_阅读.html#R50" style="color:var(--accent)">R50</a>）。<br>⚠️ <b>按词形分组会骗人</b>：thoughtless 是四个里唯一带否定后缀的，看起来「孤立」，却不是答案——<b>三缺一只按意义方向分，不按词形分</b>（⟹ <a href="套路库_阅读.html#R74" style="color:var(--accent)">R74</a>）。
+          </div>
+        </div>
+
+        <div class="q" id="q6" data-ans="3">
+          <div class="qhead"><span class="qno">6</span><span class="qt c-collo">固定搭配 · 形容词＋介词</span><span class="qpos">too soft ＋ ___ ＋ crime</span></div>
+          <span class="stem">… a judge fearful of appearing too <b>soft</b> <em>6</em> <b>crime</b> …</span>
+          <div class="opts">
+            <div class="opt">A in<span class="gl">在……方面</span></div>
+            <div class="opt">B for<span class="gl">为了；因为</span></div>
+            <div class="opt">C to<span class="gl">对于；不定式符号</span></div>
+            <div class="opt">D on<span class="gl">对……（态度）</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>介词，连接形容词 soft 与名词 crime。<b>形容词决定介词</b>——先问 soft 表示「对……宽松」时跟哪个介词。
+            <span class="lbl">🔗 线索</span>语境：法官对<b>犯罪行为</b>的态度宽不宽。
+            <span class="lbl">✅ D on</span><code>be soft on sb／sth</code>＝对……心慈手软、不够严厉。它有一整族兄弟：<code>tough on</code>／<code>hard on</code>／<code>strict on</code>／<code>easy on</code>。<code>soft on crime</code> 与 <code>tough on crime</code> 还是美国政治里的一对固定口号（见 <a href="#bg" style="color:var(--accent)">00 背景表</a>）。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>in：「在……方面」（slow in their movements）——soft in crime 读成「在犯罪方面软」，不是英语对「态度」的说法。</div>
+              <div class="wr"><span class="l">B</span>for：表用途、原因、目的，与 soft 构不成「对……宽松」的意思。</div>
+              <div class="wr"><span class="l">C</span><b>⚠️ 最像的一项</b>：前面恰好有 <code>too soft</code>，看起来能凑成 <code>too … to do</code>（太……而不能）。但 <b>crime 在这里是名词</b>（犯罪），不是动词；就算硬读成动词，「法官怕显得太心软而不能犯罪」也不通。</div>
+            </div>
+            <span class="lbl">💡 迁移</span><b>对人对事的「宽严」一律用 on</b>：<code>soft／easy／hard／tough／strict on</code>。⚠️ 区分：<code>soft on sb</code>（纵容他的错）vs <code>soft with sb</code>（对他温柔耐心）。<b>见到 too ＋ 形容词 ＋ 空格，先看空格后面是名词还是动词，再决定要不要往 too…to 上想</b>。
+          </div>
+        </div>
+
+        <div class="q" id="q7" data-ans="0">
+          <div class="qhead"><span class="qno">7</span><span class="qt c-logic">逻辑关系 · 从属连词</span><span class="qpos">主句 might be more likely … ＋ 从句 had already sentenced</span></div>
+          <span class="stem">… a judge … <b>might</b> be more likely to send someone to prison <em>7</em> he <b>had already sentenced</b> five or six other defendants only to forced community service on that day.</span>
+          <div class="opts">
+            <div class="opt">A if<span class="gl">如果</span></div>
+            <div class="opt">B until<span class="gl">直到</span></div>
+            <div class="opt">C though<span class="gl">虽然</span></div>
+            <div class="opt">D unless<span class="gl">除非（＝if … not）</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>两个完整分句之间的从属连词。主句是<b>推测</b>（theorised … might），从句是过去完成时（<b>先</b>发生的事）。
+            <span class="lbl">🔗 线索</span>① 时态：<code>had already sentenced</code> 在前、<code>send someone to prison</code> 在后；② 内容：<b>前面轻判了一串 ⟹ 后面更可能判重</b>，前者是后者的<b>条件</b>；③ ⭐ <b>④段的研究发现用的是同一个句式</b>：<code>found <b>if</b> the score of the previous candidate … , <b>then</b> the score for the next applicant would drop</code>——理论与发现都是「如果前面……，那么后面……」。
+            <span class="lbl">✅ A if</span>如果。代入＝「<b>如果</b>当天已经把五六名被告只判了社区服务，那么法官就更可能把下一个人送进监狱」。与 theorised、might 的推测语气也一致。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>until：「一直更可能判重，<b>直到</b>已经轻判了五六人为止」——把先后顺序颠倒了：过去完成时说明轻判在<b>前</b>。</div>
+              <div class="wr"><span class="l">C</span>though：「虽然已经轻判了五六人，他还是更可能判重」——<b>让步要求前后方向相反</b>，而这里前面的轻判正是后面判重的<b>原因</b>，不是阻力。</div>
+              <div class="wr"><span class="l">D</span>unless：换成 <code>if … not</code> 念一遍——「<b>如果没有</b>轻判五六人，他就更可能判重」，条件正好反了（⟹ <a href="套路库_阅读.html#R135" style="color:var(--accent)">R135</a> 的验算法）。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>研究报道里，假说句的连词往往会在发现句里原样出现</b>（本篇 ①❹ if ↔ ④❶ if … then）——<b>假说段的逻辑空拿不准，就去找发现句的句式</b>（⟹ <a href="套路库_阅读.html#R156" style="color:var(--accent)">R156</a>）。
+          </div>
+        </div>
+
+        <div class="q" id="q8" data-ans="0">
+          <div class="qhead"><span class="qno">8</span><span class="qt c-context">上下文语义 · 研究者动词链</span><span class="qpos">To ＋ ___ ＋ this idea（目的状语）</span></div>
+          <span class="stem">To <em>8</em> this idea, he <b>turned to</b> the university-admissions process.（上文：he <b>speculated</b> … he <b>theorised</b> …；下文：he <b>suspected</b> … he <b>studied</b> … he <b>found</b> …）</span>
+          <div class="opts">
+            <div class="opt">A test<span class="gl">检验</span></div>
+            <div class="opt">B emphasize<span class="gl">强调</span></div>
+            <div class="opt">C share<span class="gl">分享</span></div>
+            <div class="opt">D promote<span class="gl">推广，提倡</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>不定式作目的状语的动词，宾语 this idea＝①段那个还<b>没被证实</b>的猜想。
+            <span class="lbl">🔗 线索</span>⭐ <b>把研究者的动词按顺序排出来</b>：speculated（推测）→ theorised（提出理论）→ <b>To ___ this idea</b> → turned to（转去研究）→ studied（研究数据）→ found（发现）。<b>推测 → ？ → 研究 → 发现，中间只能是「检验」</b>。
+            <span class="lbl">✅ A test</span>检验。<code>To test this idea</code> 是科研报道里「由假说转入实证」的标准转场句。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>emphasize：强调一个观点，<b>前提是它已经站得住</b>。一个刚推测出来的想法，先要验证，不是先强调；而且「为了强调，他去研究招生」因果不顺。</div>
+              <div class="wr"><span class="l">C</span>share：分享想法——同样预设想法已经成熟；也不需要「转去研究招生流程」才能分享。</div>
+              <div class="wr"><span class="l">D</span>promote：推广、宣传——预设已被证实、值得推广。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>三缺一成立</b>：emphasize／share／promote 都<b>预设想法已经成立</b>（传播族），test 是唯一「还不知道对不对」的（验证族）⟹ <b>孤立的那个就是答案</b>（⟹ <a href="套路库_阅读.html#R74" style="color:var(--accent)">R74</a>）。<b>研究报道的动词链背下来</b>：speculate／hypothesise／theorise（提出）→ <b>test</b>／examine／investigate（检验）→ find／show／suggest（发现）→ confirm／support（证实）。
+          </div>
+        </div>
+
+        <div class="q" id="q9" data-ans="3">
+          <div class="qhead"><span class="qno">9</span><span class="qt c-context">上下文语义 · 名词空（先问「谁的」）</span><span class="qpos">the ___ of an applicant should not depend on …</span></div>
+          <span class="stem">In theory, the <em>9</em> <b>of an applicant</b> should not depend on the few others chosen randomly for interview during the same day …（③段末：… to make a decision on <b>whether to accept him or her</b>）</span>
+          <div class="opts">
+            <div class="opt">A decision<span class="gl">决定</span></div>
+            <div class="opt">B quality<span class="gl">素质，品质</span></div>
+            <div class="opt">C status<span class="gl">地位，身份</span></div>
+            <div class="opt">D success<span class="gl">成功</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>主语中心词，被 <code>of an applicant</code> 限定——<b>这个名词必须是「申请者的」某样东西</b>，而且它「不该取决于同一天的其他人」。
+            <span class="lbl">🔗 线索</span>① 研究看的是什么？③段：面试分数 ＋ GMAT ⟹ <code>make a decision on <b>whether to accept him or her</b></code>——<b>最终落在「录没录取」</b>；② ④段的发现也是「下一位的分数会被拉低」⟹ 受影响的是<b>申请者的结果</b>。
+            <span class="lbl">✅ D success</span>成功（被录取）。代入＝「理论上，一位申请者能否<b>成功</b>，不应取决于同一天被随机挑来面试的其他几个人」。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span><b>⚠️ 本题最阴的一项</b>：decision 在上文出现过两次（individual decisions、decision-makers），③段还有 make a decision。但<b>做录取决定的是招生官，不是申请者</b>——<code>the decision of an applicant</code> 读出来是「申请者做的决定」，<b>主人换错了</b>。（同卷 <a href="2013_T4_移民法判决的两块比分牌.html" style="color:var(--accent)">Text 4</a> 的干扰项一大族也是「换主人」，⟹ R152。）</div>
+              <div class="wr"><span class="l">B</span>quality：申请者的素质确实是面试要看的东西，<b>但素质是申请者本来就有的，不会被当天其他人改变</b>——「素质不应取决于别人」是句废话，也不是研究关心的结果。</div>
+              <div class="wr"><span class="l">C</span>status：地位、身份，与录取、打分无关。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>「the ___ of ＋ 某人」这种名词空，先问「这东西归谁」</b>：动作的发出者是谁（decision 归招生官）、它会不会被别人改变（quality 不会）。<b>上文反复出现的词代进来最顺口，也最容易换错主人</b>。⭐ 本题的答案是<b>上文没出现过的新概念</b>，线索在<b>下文</b>③段末（accept him or her）——与 2012 完形 9 题「过渡段名词空的答案在下文」同一个方向（⟹ <a href="套路库_阅读.html#R51" style="color:var(--accent)">R51</a>）。
+          </div>
+        </div>
+
+        <div class="q" id="q10" data-ans="2">
+          <div class="qhead"><span class="qno">10</span><span class="qt c-word">词义辨析 · 过去分词（与 randomly 相容）</span><span class="qpos">the few others ＋ ___ ＋ randomly for interview</span></div>
+          <span class="stem">… should not depend on the few others <em>10</em> <b>randomly</b> for interview during the same day …</span>
+          <div class="opts">
+            <div class="opt">A found<span class="gl">找到；发现</span></div>
+            <div class="opt">B studied<span class="gl">研究</span></div>
+            <div class="opt">C chosen<span class="gl">选择，挑选</span></div>
+            <div class="opt">D identified<span class="gl">识别，确认</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>过去分词短语 <code>___ randomly for interview</code> 作 the few others 的后置定语，<b>被动义：这几个人是被（招生官）怎么样的</b>。
+            <span class="lbl">🔗 线索</span><b>randomly（随机地）是本题的钥匙</b>：动词必须能和「随机」放在一起，也就是一个<b>本身不要求目的、不要求判断</b>的动作。再加上 for interview：被安排来参加面试。
+            <span class="lbl">✅ C chosen</span>挑选。<code>chosen randomly for interview</code>＝被随机挑来参加面试——既与 randomly 相容，也符合「同一天的面试名单是随机排的」这个常识，<b>正因为是随机的，别人的表现才「不应该」影响你</b>（这是 In theory 那半句的道理）。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>found：「经寻找而发现」带目的，与 randomly 打架；取「偶然碰到」义也不对——面试者是报名、筛选后排进名单的，不是招生官偶然撞见的。</div>
+              <div class="wr"><span class="l">B</span>studied：「被随机研究来面试」——面试名单上的人不是研究对象；而且 studied 与 for interview 连不成意思。</div>
+              <div class="wr"><span class="l">D</span>identified：确认、辨认，<b>要有判断标准</b>，与「随机」矛盾。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>三缺一成立</b>：found／studied／identified 都是<b>有目的、要动脑的动作</b>，chosen 是唯一能「随手」做的 ⟹ 孤立项即答案（⟹ <a href="套路库_阅读.html#R74" style="color:var(--accent)">R74</a>）。<b>副词 randomly／arbitrarily／at random 是动词空的过滤器</b>：凡需要判断力的动词（identify、evaluate、select carefully）都与它不相容。
+          </div>
+        </div>
+
+        <div class="q" id="q11" data-ans="0">
+          <div class="qhead"><span class="qno">11</span><span class="qt c-logic">逻辑关系 · 理论与事实的对举（表语形容词）</span><span class="qpos">In theory … should not …, but … the truth was ___</span></div>
+          <span class="stem"><b>In theory</b>, the success of an applicant <b>should not</b> depend on the few others … , <b>but</b> Dr Simonsohn suspected <b>the truth was</b> <em>11</em>.</span>
+          <div class="opts">
+            <div class="opt">A otherwise<span class="gl">不是那样的，并非如此</span></div>
+            <div class="opt">B defensible<span class="gl">站得住脚的</span></div>
+            <div class="opt">C replaceable<span class="gl">可替换的</span></div>
+            <div class="opt">D exceptional<span class="gl">杰出的；例外的</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>系表结构 <code>the truth was ___</code> 的表语，句末位置。<b>选项里 otherwise 是副词兼形容词，另三个都是形容词</b>——都能作表语，语法筛不掉。
+            <span class="lbl">🔗 线索</span>⭐ <b><code>In theory … but … the truth was ___</code> 是「理论 vs 事实」的对举</b>：理论上「不该受影响」，但事实——<b>就是「不是理论说的那样」</b>。④段的发现（下一位会被拉低 0.075 分）正好证明了这个「并非如此」。
+            <span class="lbl">✅ A otherwise</span>作形容词＝<b>不是那样的，情况相反的</b>。<code>the truth was otherwise</code>＝事实并非如此。代入后把前半句整个翻了过来，与 In theory…but 完全对上。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>defensible：「事实是站得住脚的」——对「事实」本身做评价，<b>接不住 In theory 的对比</b>：理论说的是「不该受影响」，事实要回答的是「受没受影响」。</div>
+              <div class="wr"><span class="l">C</span>replaceable：「事实是可替换的」，无意义。</div>
+              <div class="wr"><span class="l">D</span>exceptional：「事实是罕见的／杰出的」——同样是评价，不是对比；「例外的」也说不通：事实已经发生，不存在「例外」一说。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐⭐ <b>看见 In theory ／ In principle ／ Ideally … but，空格就去取「与前半句相反」的那一项</b>；而 <code>the truth／the reality／the case is otherwise</code> 是这个对举最省字的收尾（同义：the opposite is true）。<br>⭐ <b>本篇有两个 otherwise，同卷还有第三个</b>：11 题（形容词，并非如此）· ④❷ <code>than would otherwise have been necessary</code>（副词，否则／在其他情况下，20 题所在句）· <a href="2013_T4_移民法判决的两块比分牌.html" style="color:var(--accent)">Text 4</a> ⑥❸ <code>any otherwise legitimate state law</code>（形容词前，在其他方面）——见 <a href="#otherwise" style="color:var(--accent)">02+++ 一卷三个 otherwise</a>。<br>📌 <b>「三缺一」在这里也成立</b>：defensible／replaceable／exceptional 都是<b>评价</b>，otherwise 是唯一表<b>关系</b>（与前文相反）的。
+          </div>
+        </div>
+
+        <div class="q" id="q12" data-ans="2">
+          <div class="qhead"><span class="qno">12</span><span class="qt c-collo">固定搭配 · 动宾（被动后置定语）</span><span class="qpos">interviews ＋ ___ ＋ by 31 admissions officers</span></div>
+          <span class="stem">He studied the results of 9,323 MBA <b>interviews</b> <em>12</em> <b>by 31 admissions officers</b>.</span>
+          <div class="opts">
+            <div class="opt">A inspired<span class="gl">激发；启发</span></div>
+            <div class="opt">B expressed<span class="gl">表达</span></div>
+            <div class="opt">C conducted<span class="gl">组织，实施</span></div>
+            <div class="opt">D secured<span class="gl">获得；保护</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>过去分词作 interviews 的后置定语，<b>by 引出动作执行者</b>——还原成主动句就是 <code>31 admissions officers ___ the interviews</code>。
+            <span class="lbl">🔗 线索</span>by 后面是<b>招生官</b>，宾语是<b>面试</b>：招生官对面试做的事＝<b>主持、进行</b>。
+            <span class="lbl">✅ C conducted</span><code>conduct an interview／a survey／an experiment／research</code>＝进行、实施。代入＝「由 31 位招生官<b>主持</b>的 9323 场面试」。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>inspired：激发、给人灵感——招生官是面试的主持者，不是「启发出」面试的人。</div>
+              <div class="wr"><span class="l">B</span>expressed：表达想法、情感——面试是一项活动，不是被表达出来的东西。</div>
+              <div class="wr"><span class="l">D</span>secured：（努力）争取到——<b>争取面试机会的是申请者</b>，by 后面却是招生官，主人又换错了（同 9A 的造法）。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>「做」一件有流程的事，英语几乎都用 conduct</b>：conduct an interview／a survey／a study／an experiment／an investigation／a campaign。<b>被动后置定语的空，先把 by 后面的人放回主语位置念一遍</b>——「招生官 ___ 面试」，答案自己出来。
+          </div>
+        </div>
+
+        <div class="q" id="q13" data-ans="1">
+          <div class="qhead"><span class="qno">13</span><span class="qt c-collo">固定搭配 · 动词＋on a scale of</span><span class="qpos">had ＋ ___ ＋ applicants on a scale of one to five</span></div>
+          <span class="stem">The interviewers had <em>13</em> applicants <b>on a scale of one to five</b>.（下一句：This <b>scale</b> … ；再下一句：The <b>scores</b> were …）</span>
+          <div class="opts">
+            <div class="opt">A assigned<span class="gl">分配，指派</span></div>
+            <div class="opt">B rated<span class="gl">评分，评级</span></div>
+            <div class="opt">C matched<span class="gl">匹配</span></div>
+            <div class="opt">D arranged<span class="gl">安排</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>过去完成时的谓语动词，宾语 applicants，后面带状语 <code>on a scale of one to five</code>。
+            <span class="lbl">🔗 线索</span>① 介词短语 <code>on a scale of 1 to 5</code>（按 1 到 5 的等级）<b>只和「打分、评级」类动词连用</b>；② 下两句 <code>This scale</code>、<code>The scores</code> 回指——<b>面试官做的事就是给分</b>。
+            <span class="lbl">✅ B rated</span><code>rate sb／sth on a scale of 1 to 5</code>＝按 1 到 5 分给……打分。代入＝「面试官按 1 到 5 分给申请者<b>打分</b>」。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>assigned：分配、指派（assign sb a task／assign sb to a group）。「按五个等级给申请者分派」——面试官不给申请者派活；而且若指「分到五个档里」，英语要说 assign sb to。</div>
+              <div class="wr"><span class="l">C</span>matched：要 <code>match A <b>to／with</b> B</code>，这里是 on，搭不上；「把申请者和等级匹配」也不是面试官的动作说法。</div>
+              <div class="wr"><span class="l">D</span>arranged：安排——「按五个等级安排申请者」不知所云，也接不上下文的 scores。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>打分四件套</b>（本段四个空里有三个）：<code>rate sb on a scale of 1 to 5</code>（按等级打分）· <code>take sth into consideration</code>（评分时考虑）· <code>be marked out of 100</code>（满分多少）· <code>score 80 on a test</code>（考了多少分）。✍️ 作文里说「满意度调查」「给服务打分」都用得上：<i>Customers are asked to rate the service on a scale of one to ten.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q14" data-ans="2">
+          <div class="qhead"><span class="qno">14</span><span class="qt c-collo">固定搭配 · take … into consideration</span><span class="qpos">This scale ＋ ___ ＋ numerous factors into consideration</span></div>
+          <span class="stem">This scale <em>14</em> numerous factors <b>into consideration</b>.</span>
+          <div class="opts">
+            <div class="opt">A put<span class="gl">放</span></div>
+            <div class="opt">B got<span class="gl">得到</span></div>
+            <div class="opt">C took<span class="gl">拿，取</span></div>
+            <div class="opt">D gave<span class="gl">给</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>谓语动词，框架是 <code>___ sth into consideration</code>。<b>四个都是最简单的动词，比的就是这一个搭配</b>。
+            <span class="lbl">🔗 线索</span>搭配本身：<code>take sth into consideration／account</code>＝把……考虑在内。
+            <span class="lbl">✅ C took</span><code>take numerous factors into consideration</code>＝把众多因素考虑在内。代入＝「这个评分等级把众多因素<b>考虑在内</b>」。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span><b>⚠️ 中文思维陷阱</b>：「<b>放</b>入考虑」字面对得上 put … into，但英语的固定说法是 take；黄皮书判 put sth into consideration 不合英语习惯。</div>
+              <div class="wr"><span class="l">B</span>got：get consideration＝得到关照（They got no consideration），<b>不接 into</b>。</div>
+              <div class="wr"><span class="l">D</span>gave：give sth (serious) consideration＝认真考虑某事，<b>同样不接 into</b>。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>介词比名词更能锁动词</b>：get 和 give 都能与 consideration 搭，<b>一加上 into 就只剩 take</b>——做搭配题<b>要看完整框架，不能只看名词</b>（⟹ <a href="套路库_阅读.html#R157" style="color:var(--accent)">R157</a>）。同族：<code>take sth into account</code>（考虑）· <code>take sth for granted</code>（视为理所当然）· <code>take sb by surprise</code>（使吃惊）。✍️ <b>作文高频</b>：<i>Various factors should be taken into consideration before …</i>
+          </div>
+        </div>
+
+        <div class="q" id="q15" data-ans="1">
+          <div class="qhead"><span class="qno">15</span><span class="qt c-logic">逻辑关系 · 顺承副词（嵌在谓语中间）</span><span class="qpos">were ＋ ___ ＋ used（流程下一步）</span></div>
+          <span class="stem">(面试官打分 → 分数考虑众多因素) The scores were <em>15</em> used in conjunction with an applicant's score on the … GMAT … to make a decision on whether to accept him or her.</span>
+          <div class="opts">
+            <div class="opt">A instead<span class="gl">反而，代替</span></div>
+            <div class="opt">B then<span class="gl">然后，接着</span></div>
+            <div class="opt">C ever<span class="gl">曾经；从来</span></div>
+            <div class="opt">D rather<span class="gl">相反；相当</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>副词，<b>夹在被动语态 were 与 used 之间</b>，决定本句与上两句的关系。
+            <span class="lbl">🔗 线索</span>③段是在讲<b>录取流程</b>：面试 → 按 1–5 分打分（考虑很多因素）→ <b>这些分数再和 GMAT 一起用</b> → 决定录不录。<b>一步接一步，方向一致，没有取舍也没有对立</b>。
+            <span class="lbl">✅ B then</span>然后、随后（不是「那时」）。代入＝「这些分数<b>随后</b>会和 GMAT 成绩一起用来决定是否录取」。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>instead：「没用 A，改用了 B」（They didn't choose me; they chose her instead）。前文没有被放弃的做法，面试分是<b>和</b> GMAT 一起用，不是代替什么。</div>
+              <div class="wr"><span class="l">C</span>ever：用在疑问句、否定句、if 从句、比较结构里表「曾经、从来」——本句是普通肯定陈述，放不进去。</div>
+              <div class="wr"><span class="l">D</span>rather：表「相反」要有前面的否定（not … but rather）；表「相当」是程度副词，而 used 没有程度可言。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐⭐ <b>本题打破了「逻辑空在句首」的位置预判</b>：单个副词（then／instead／rather／thus／also）<b>可以嵌进谓语中间</b>（were then used · has thus become），并不站在句首。⟹ <b>句首的空几乎一定考逻辑，但逻辑空不一定在句首</b>；<b>扫到「助动词 ＋ 空 ＋ 分词」，也要把它当逻辑空看</b>（⟹ <a href="套路库_阅读.html#R76" style="color:var(--accent)">R76</a> 补边界）。
+          </div>
+        </div>
+
+        <div class="q" id="q16" data-ans="2">
+          <div class="qhead"><span class="qno">16</span><span class="qt c-collo">固定搭配 · be marked out of ＋ 满分</span><span class="qpos">a standardised exam which is ＋ ___ ＋ out of 800 points</span></div>
+          <span class="stem">… the GMAT, a standardised exam which is <em>16</em> <b>out of 800 points</b> …（上文：面试 <b>on a scale of one to five</b>；下文：<b>30 more GMAT points</b>）</span>
+          <div class="opts">
+            <div class="opt">A selected<span class="gl">挑选</span></div>
+            <div class="opt">B passed<span class="gl">通过</span></div>
+            <div class="opt">C marked<span class="gl">打分，评分</span></div>
+            <div class="opt">D introduced<span class="gl">引进，推行</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>定语从句的被动谓语，主语 which＝the GMAT 考试，后接 <code>out of 800 points</code>。
+            <span class="lbl">🔗 线索</span>⭐ <b>out of ＋ 分数＝满分多少</b>（<i>She got 18 out of 20.</i> 满分 20 得了 18）。整句在交代 GMAT 的<b>计分制</b>：按 800 分制打分——与上文面试的「5 分制」正好对举。
+            <span class="lbl">✅ C marked</span><code>be marked out of 800</code>＝按满分 800 分打分。mark 作动词＝批改、打分（mark exam papers 阅卷）。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span><b>⚠️ out of 的另一个意思</b>：<code>select A out of B</code>＝从 B 中挑出 A，要求 A 与 B 同类（从 800 人中选 10 人）。「一门考试从 800 分中被挑出」不通——<b>这是拿 out of 的常见义造的干扰项</b>。</div>
+              <div class="wr"><span class="l">B</span>passed：pass an exam 是「人通过考试」；「考试被通过、满分 800」接不上，out of 800 也没着落。</div>
+              <div class="wr"><span class="l">D</span>introduced：引进、推行一门考试可以说，但「从 800 分中推行」同样接不上 out of 800。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>out of 两义靠后面是什么分</b>：后面是<b>分数</b> ⟹ 满分（marked／scored out of 100）；后面是<b>一群同类</b> ⟹ 从中（one out of ten students）。英式英语说 <b>mark</b>（阅卷打分），美式常说 <b>grade／score</b>——《经济学人》是英国刊物，用 marked 很自然。
+          </div>
+        </div>
+
+        <div class="q" id="q17" data-ans="3">
+          <div class="qhead"><span class="qno">17</span><span class="qt c-context">上下文语义 · 三个人的先后（比较对象）</span><span class="qpos">the previous candidate … higher than that of the one ＋ ___ ＋ that</span></div>
+          <span class="stem">… if the score of <b>the previous candidate</b> in a daily series of interviewees was 0.75 points or more higher than that of <b>the one</b> <em>17</em> <b>that</b>, then the score for <b>the next applicant</b> would drop …</span>
+          <div class="opts">
+            <div class="opt">A below<span class="gl">在……下面</span></div>
+            <div class="opt">B after<span class="gl">在……之后</span></div>
+            <div class="opt">C above<span class="gl">在……上面</span></div>
+            <div class="opt">D before<span class="gl">在……之前</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>介词，组成 <code>the one ___ that</code>。<b>先把两个 that 认清</b>：第一个 <code>that of</code> 的 that＝the score（分数）；第二个 <code>___ that</code> 的 that＝the previous candidate（上一位）。
+            <span class="lbl">🔗 线索</span>⭐ <b>一句话里出现了三个人，要排出先后</b>：<code>the next applicant</code>（下一位）之前是 <code>the previous candidate</code>（上一位），拿来和上一位比分数的，是<b>再往前的那一位</b>。<b>句中已经用 previous／next 建好了一条时间轴，空格也只能在这条轴上取词</b>（见 <a href="#timeline" style="color:var(--accent)">02++ 时间线</a>）。
+            <span class="lbl">✅ D before</span><code>the one before that</code>＝上一位之前的那一位。代入＝「如果上一位的分数比<b>再前一位</b>高出 0.75 分以上，下一位的分数就会平均降 0.075 分」——前面刚出了一个明显的高分，后面就被压一压，<b>正是①段法官那个理论的面试版</b>。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span><b>⚠️ 最要命的一项</b>：<code>the one after that</code>＝上一位之后的那一位＝<b>就是 the next applicant 本人</b>。句子就变成「如果上一位比下一位高 0.75 分，那么下一位的分数会降 0.075 分」——<b>用下一位的分数去预测下一位的分数</b>，自己绕自己：条件里下一位已经有了分数，结果里这个分数才被打出来。</div>
+              <div class="wr"><span class="l">A</span>below：表位置、数量、级别「低于」，不表先后。「比低于它的那一位高出 0.75」还是同义反复。</div>
+              <div class="wr"><span class="l">C</span>above：同 A。若硬把名单竖着写，「上面那位」勉强可指更早的人——但<b>同一句已经用 previous／next 这对时间词建了坐标系</b>，比较对象只能用时间词 before 来说。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐⭐ <b>比较句里出现 previous／next／the one … that，先画格子再选</b>：[更早那位] → [上一位 previous] → [下一位 next]。<b>一个选项若让两个格子里站的是同一个人，直接划掉</b>。⭐ <b>同句的坐标系要统一</b>：previous／next 是时间轴 ⟹ before／after；higher／lower 是分数轴 ⟹ above／below（⟹ <a href="套路库_阅读.html#R158" style="color:var(--accent)">R158</a>）。
+          </div>
+        </div>
+
+        <div class="q" id="q18" data-ans="3">
+          <div class="qhead"><span class="qno">18</span><span class="qt c-context">上下文语义 · 方向由下一句的回指名词锁死</span><span class="qpos">the score … would ＋ ___ ＋ by an average of 0.075 points</span></div>
+          <span class="stem">… then the score for the next applicant would <em>18</em> by an average of 0.075 points. This might sound small, but to undo the effects of <b>such a decrease</b> …</span>
+          <div class="opts">
+            <div class="opt">A jump<span class="gl">猛增</span></div>
+            <div class="opt">B float<span class="gl">漂浮；浮动</span></div>
+            <div class="opt">C fluctuate<span class="gl">波动</span></div>
+            <div class="opt">D drop<span class="gl">下降</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>不及物动词，主语 the score，<code>by ＋ 数量</code>表<b>变化的幅度</b>——空格要表示<b>有方向的</b>变化。
+            <span class="lbl">🔗 线索</span>⭐ <b>下一句 <code>such a decrease</code> 直接回指本句的变化</b>——「这样一种下降」⟹ 空格＝下降。另外两条旁证：① ①段的法官理论（前面轻判 ⟹ 后面判重）⟹ 前面分高 ⟹ 后面分<b>低</b>；② 下一句要多考 30 分才能<b>抵消</b>，说明这是吃亏。
+            <span class="lbl">✅ D drop</span>下降。<code>drop by 0.075 points</code>＝下降了 0.075 分（by 表差额）。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>jump：猛增，<b>方向反</b>，与 such a decrease 当场冲突；「猛」字与 0.075 这么小的数也不配。</div>
+              <div class="wr"><span class="l">B</span>float：物体漂浮、汇率浮动（a floating exchange rate）——<b>分数不说 float</b>，黄皮书点名这是「中文『分数浮动』」造的陷阱；也没有方向。</div>
+              <div class="wr"><span class="l">C</span>fluctuate：上下波动，<b>没有单一方向</b>；说的是一组数整体起伏，不是某一个人的分数朝一个方向变了多少。「平均波动 0.075 分」也接不上 such a decrease。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>数字句的方向空不急着填，先往下读一句找回指名词</b>：<code>such a decrease／this rise／the drop／that gap</code> 会把方向原样说出来（⟹ <a href="套路库_阅读.html#R158" style="color:var(--accent)">R158</a>）。<b>「变化」动词先分「有方向」与「没方向」两栏</b>：rise／jump／soar vs drop／fall／decline｜fluctuate／vary／float——by ＋ 数量要的是有方向的那栏。
+          </div>
+        </div>
+
+        <div class="q" id="q19" data-ans="1">
+          <div class="qhead"><span class="qno">19</span><span class="qt c-context">上下文语义 · 放大句里的「抵消」</span><span class="qpos">to ＋ ___ ＋ the effects of such a decrease … need 30 more GMAT points</span></div>
+          <span class="stem">This might <b>sound small, but</b> to <em>19</em> the effects of such a decrease a candidate would <b>need 30 more GMAT points</b> than would otherwise have been necessary.</span>
+          <div class="opts">
+            <div class="opt">A achieve<span class="gl">实现，达到</span></div>
+            <div class="opt">B undo<span class="gl">消除，抵消</span></div>
+            <div class="opt">C maintain<span class="gl">维持</span></div>
+            <div class="opt">D disregard<span class="gl">无视</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>不定式作目的状语的动词，宾语 <code>the effects of such a decrease</code>（降分造成的影响）。
+            <span class="lbl">🔗 线索</span>① <b>多考 30 分 GMAT</b> 是一种<b>补偿</b>：面试分被压低了，就要在另一项上多拿分才能扯平（③段说过两项分数合在一起决定录取）；② <code>This might sound small, but …</code> 是作者在<b>放大</b>这个小数字——but 后面要说出「要把它补回来得花多大代价」。
+            <span class="lbl">✅ B undo</span>消除、抵消（已经造成的影响）。代入＝「要<b>抵消</b>这种降分带来的影响，候选人需要多考 30 分 GMAT」。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>achieve：实现、取得（好结果）——「实现降分的影响」方向反，没有人想要这个影响。</div>
+              <div class="wr"><span class="l">C</span>maintain：维持——「为了维持降分的影响而多考 30 分」自相矛盾。</div>
+              <div class="wr"><span class="l">D</span>disregard：无视、不理会——<b>无视是主观态度，不用花力气</b>；多考 30 分是客观的补偿行动，二者接不上。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>三缺一成立</b>：achieve／maintain／disregard 做完之后<b>影响都还在</b>，只有 undo 让影响<b>消失</b> ⟹ 孤立项即答案。<b>「消除影响」一族</b>：undo／offset／counteract／compensate for／make up for。⭐ <b><code>X might sound small, but …</code> 是「小数字放大句」</b>：but 后面必是「其实代价不小」，空格往「补救、抵消、所需」上想（⟹ <a href="套路库_阅读.html#R158" style="color:var(--accent)">R158</a>）。
+          </div>
+        </div>
+
+        <div class="q" id="q20" data-ans="0">
+          <div class="qhead"><span class="qno">20</span><span class="qt c-collo">固定搭配 · than would otherwise be necessary</span><span class="qpos">30 more GMAT points than would otherwise have been ＋ ___</span></div>
+          <span class="stem">… a candidate would need <b>30 more</b> GMAT points <b>than would otherwise have been</b> <em>20</em>.</span>
+          <div class="opts">
+            <div class="opt">A necessary<span class="gl">必需的</span></div>
+            <div class="opt">B possible<span class="gl">可能的</span></div>
+            <div class="opt">C promising<span class="gl">有希望的</span></div>
+            <div class="opt">D helpful<span class="gl">有帮助的</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>比较从句里的表语形容词。<b>than 从句省略了主语</b>：than (what) would otherwise have been ___，被省掉的就是「所需的 GMAT 分数」。
+            <span class="lbl">🔗 线索</span>① 主句动词是 <b>need</b>（需要）——比较的两边必须同类：「现在需要的分」vs「本来<b>需要</b>的分」⟹ 空格与 need 同义；② <code>otherwise</code>＝「如果没有这次降分」，这是一个<b>反事实</b>的对照：没被压分时，达到录取线<b>所需</b>的分数。
+            <span class="lbl">✅ A necessary</span>必需的。<code>than would otherwise have been necessary</code>＝比原本（没被压分时）所需的（多 30 分）。这是英语里一个很稳的半固定说法：<i>more … than (would otherwise be) necessary</i>。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>possible：「比原本可能的多 30 分」——比较对象变成了「能考到多少」，与主句的 need（需要多少）不同类。</div>
+              <div class="wr"><span class="l">C</span>promising：「有希望的分数」是对分数的评价，不是录取门槛。</div>
+              <div class="wr"><span class="l">D</span>helpful：「有帮助的分数」——有用不等于必需，也接不住 need。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>比较从句的空，拿主句的动词去对</b>：主句 need ⟹ necessary；主句 can ⟹ possible；主句 expect ⟹ expected。⭐⭐ <b>末空形态第五种</b>：2009 收口 · 2010 不是收口 · 2011 收口句考类比 · 2012 收口句考因果 · <b>2013 末空根本不是逻辑空</b>，是一个反事实比较里的形容词（⟹ <a href="套路库_阅读.html#R103" style="color:var(--accent)">R103</a> 补）。✍️ <b>作文好用</b>：<i>Students end up spending more time than would otherwise be necessary.</i>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========== 02+ 同构表 ========== -->
+      <section class="card" id="map">
+        <h2><span class="n">02+</span>⭐⭐ 法官 ↔ 面试官：首段的例子就是末段发现的预告片（本页最值钱的一段）</h2>
+        <p class="note">研究报道型文章的套路是「<b>提出猜想 → 打个比方 → 找真实数据 → 报告发现</b>」。<b>比方与发现讲的是同一件事，只是换了场景</b>——作者先用一个人人都懂的法官故事把机制讲清楚，再拿招生面试的数据去证实它。<b>两边逐格对齐，一边的空就是另一边的答案提示。</b></p>
+        <div class="tabwrap"><table class="otab">
+          <tr><th>格子</th><th>①❹ 理论里的法官（假设）</th><th>④❶ 数据里的面试官（发现）</th><th>管哪个空</th></tr>
+          <tr><td>谁在做判断</td><td>a judge（上位词是①❸ decision-makers）</td><td>31 admissions officers（③❶）</td><td><b>4</b> For example（大类 → 成员）</td></tr>
+          <tr><td>「只看当天」</td><td>on that day</td><td>in a daily series of interviewees</td><td><b>2／3</b>（全文病根：daily samples）</td></tr>
+          <tr><td>前面发生了什么</td><td>had already sentenced five or six … <b>only to</b> community service（前面判得轻）</td><td>the previous candidate … 0.75 points or more <b>higher</b> than the one <b>17</b> that（前面给分高）</td><td><b>17</b> before（「前面」要站在更早的格子里）</td></tr>
+          <tr><td>连接方式</td><td>might be more likely … <b>7</b> he had already …</td><td>found <b>if</b> … , <b>then</b> …</td><td><b>7</b> if（两边同一个句式）</td></tr>
+          <tr><td>于是后面怎样</td><td>more likely to <b>send someone to prison</b>（判重）</td><td>the score for the next applicant would <b>18</b>（给分低）</td><td><b>18</b> drop（方向＝往严里拉）</td></tr>
+          <tr><td>为什么</td><td>a judge <b>5</b> of appearing too soft <b>6</b> crime（怕显得手软）</td><td><i>原文没写</i>（研究原文的解释：一天里已经给了几个高分，就不愿再给）</td><td><b>5</b> fearful · <b>6</b> on</td></tr>
+          <tr><td>理论 vs 事实</td><td colspan="2">②❷ In theory, the <b>9</b> of an applicant should not depend on … , but … the truth was <b>11</b></td><td><b>9</b> success · <b>11</b> otherwise</td></tr>
+        </table></div>
+        <p class="note" style="margin-top:12px">⭐ <b>怎么用</b>：做到①❹ 时<b>先别急着逐空死抠</b>，把法官这句拆成「谁 · 前面怎样 · 后面怎样 · 为什么」四格；读到④段，拿面试官的发现去填同样的四格——<b>两边方向必须一致</b>（前面宽 ⟹ 后面严）。<b>这张表管住 4／5／7／17／18 五个空（2.5 分），再加上 11 的「事实并非如此」正好就是这张表被数据证实</b>（⟹ <a href="套路库_阅读.html#R156" style="color:var(--accent)">R156</a>）。</p>
+        <p class="note">⚠️ <b>镜像给方向，不给原词</b>：「为什么」那一格在④段是空着的——作者没说面试官「怕」什么，<b>5 题只能在①段自己的句子里解</b>。<b>同族三刀</b>：<a href="2010_完形_霍桑效应遭到质疑.html" style="color:var(--accent)">2010</a> 定义句 ↔ 改写句（R73，极性不变）· <a href="2012_完形_大法官的伦理与法院的合法性.html#mirror" style="color:var(--accent)">2012</a> 问题句 ↔ 对策句（R132，极性常翻转）· <b>2013 比方 ↔ 发现（R156，换场景不换方向）</b>——三刀都是「同一个意思出现两次，两处互为答案」。</p>
+      </section>
+
+      <!-- ========== 02++ 时间线与数字链 ========== -->
+      <section class="card" id="timeline">
+        <h2><span class="n">02++</span>⭐ ④段的三个人与四个数字：先画格子，再顺着回指名词走</h2>
+        <p class="note"><b>④❶ 一句话里站着三个人</b>，17 题的四个选项里有一个会让其中两个人重合。画成三格一看便知：</p>
+        <div class="tabwrap"><table class="otab">
+          <tr><th>时间轴 →</th><th>更早的那一位</th><th>上一位</th><th>下一位</th></tr>
+          <tr><td>原文叫法</td><td><code>the one <b>before</b> that</code>（17 ✅）</td><td><code>the previous candidate</code>（that 指他）</td><td><code>the next applicant</code></td></tr>
+          <tr><td>在条件里</td><td>分数较低</td><td>比左边高 <b>0.75 分以上</b></td><td>—</td></tr>
+          <tr><td>在结果里</td><td>—</td><td>—</td><td>分数平均 <b>18 drop</b> 0.075 分</td></tr>
+          <tr><td>❌ 选 after 会怎样</td><td>—</td><td>比「上一位之后那位」高</td><td><b>「上一位之后那位」＝下一位本人</b> ⟹ 用自己预测自己</td></tr>
+        </table></div>
+        <p class="note" style="margin-top:12px">⭐ <b>接着是一条四个数字的链，每一环都锁住一个空</b>：</p>
+        <div class="flow">
+          <div class="fi"><b>0.75 分（条件：前面出了一个明显的高分）</b><span class="ev">1–5 分制下差 0.75 分，是一个「看得出来」的跳升——这是触发条件，不设空。</span></div>
+          <div class="fi"><b>0.075 分（结果）→ 18 drop</b><span class="ev">方向由下一句 <code>such a <b>decrease</b></code> 回指锁死；<code>by an average of</code> 的 by 表差额（降了多少），不是「降到多少」（降到＝to）。</span></div>
+          <div class="fi"><b>This might sound small, but …（放大）→ 19 undo</b><span class="ev">作者主动承认数字小，but 之后要说「补回来有多贵」——抵消族动词（undo／offset／make up for）。</span></div>
+          <div class="fi"><b>30 more GMAT points … than would otherwise have been → 20 necessary</b><span class="ev">把 0.075 个面试分<b>换算成读者有感觉的 GMAT 分</b>；比较从句的另一边是「没被压分时<b>需要</b>的分」，与主句 need 同义。</span></div>
+        </div>
+        <p class="note" style="margin-top:12px">📌 <b>数字句三件套</b>：① 句中有 previous／next／the one … that ⟹ <b>先画时间线</b>，同一句的坐标系要统一（时间轴用 before／after，分数轴用 above／below）；② 变化动词空 ⟹ <b>下一句找 such a／this ＋ 名词</b>；③ <code>sound small, but</code> ⟹ 后面必是放大（⟹ <a href="套路库_阅读.html#R158" style="color:var(--accent)">R158</a>）。</p>
+      </section>
+
+      <!-- ========== 02+++ otherwise ========== -->
+      <section class="card" id="otherwise">
+        <h2><span class="n">02+++</span>🔤 一卷三个 otherwise：位置不同，意思全变</h2>
+        <p class="note"><b>2013 年这张卷子里 otherwise 出现了三次，三次三个意思</b>——其中一次就是 11 题的答案。认的办法只有一个：<b>看它站在哪</b>。</p>
+        <div class="tabwrap"><table class="otab">
+          <tr><th>出处</th><th>位置</th><th>意思</th><th>判据</th></tr>
+          <tr><td>完形 ②❷ <code>the truth was <b>otherwise</b></code>（11 题）</td><td>系动词后，作<b>表语</b></td><td><b>不是那样的，情况相反</b>（adj.）</td><td>前面有 In theory … but 的对举，它把「理论说的」整个否定掉</td></tr>
+          <tr><td>完形 ④❷ <code>than would <b>otherwise</b> have been necessary</code></td><td>情态动词后、<b>虚拟语气</b>里</td><td><b>否则；在别的情况下</b>（adv.）</td><td>would have been ＝ 反事实：如果没有那次降分</td></tr>
+          <tr><td><a href="2013_T4_移民法判决的两块比分牌.html" style="color:var(--accent)">Text 4</a> ⑥❸ <code>any <b>otherwise</b> legitimate state law</code></td><td><b>形容词前</b></td><td><b>在其他方面</b>（除了这一点之外都……）</td><td>otherwise ＋ 形容词 ＋ 名词：an otherwise perfect day（除此之外都很完美的一天）</td></tr>
+        </table></div>
+        <p class="note" style="margin-top:12px">⚠️ <b>中文里只背一个「否则」，三处全会读偏</b>：11 题读成「但事实是否则」不成句；Text 4 读成「任何否则合法的州法」更是不知所云。✍️ <b>作文里最好用的是第三种</b>：<i>A single mistake ruined an otherwise excellent performance.</i>（一个失误毁了一场原本很出色的表演。）</p>
+      </section>
+
+      <!-- ========== 03 考点分类 ========== -->
+      <section class="card">
+        <h2><span class="n">03</span>考点分类（完形不背单个空，要看「这题在考什么」）</h2>
+        <div class="catbar" id="catbar"></div>
+        <div class="catlegend" id="catlegend"></div>
+        <p class="note" style="margin-top:14px">点某一类 → 下方列出该类所有空、正文里同步高亮 → 点小格跳到解析卡。（分类依据不是“空格里填的是什么词”，而是<b>“解这一题你得做什么动作”</b>。）</p>
+        <div class="chips" id="chips"></div>
+        <div class="flow" style="margin-top:16px">
+          <div class="fi"><b>⭐ 七年对照：2013 是<u>搭配型</u>的一年——七个固定搭配空（七年最多），词义辨析只有三个（七年最少）。</b>
+            <span class="ev"><div class="tabwrap"><table class="otab"><tr><th>年份</th><th>词义辨析</th><th>固定搭配</th><th>逻辑关系</th><th>上下文语义</th><th>这一年压在哪</th></tr>
+            <tr><td>2007</td><td>9</td><td>5</td><td>4</td><td>2</td><td>词义（占 45%）</td></tr>
+            <tr><td>2008</td><td>9</td><td>6</td><td><b>2</b></td><td>3</td><td>六道实义动词的主语适配</td></tr>
+            <tr><td>2009</td><td>6</td><td>5</td><td>5</td><td>4</td><td>四类几乎持平</td></tr>
+            <tr><td>2010</td><td>9</td><td>4</td><td>4</td><td>3</td><td>形容词与副词的“方向”</td></tr>
+            <tr><td>2011</td><td>6</td><td>3</td><td>6</td><td>5</td><td>一根因果箭头的方向</td></tr>
+            <tr><td>2012</td><td>5</td><td>4</td><td>3</td><td>8</td><td>作者的应然立场 ＋ 首尾镜像</td></tr>
+            <tr><td><b>2013</b></td><td><b>3</b></td><td><b>7</b></td><td><b>4</b></td><td><b>6</b></td><td><b>空格后的介词短语 ＋ 比方与发现同构</b></td></tr></table></div>
+            ⟹ <b>七年七种分布，第七次坐实「完形没有万能重心」。</b>2013 的特殊之处：<b>七个搭配空里有六个是被空格前后的介词或比较结构锁死的</b>（soft on／by／on a scale of／into consideration／out of／than would otherwise）——<b>这一年背熟「动词＋介词」框架的人最占便宜</b>；而 2011 那年搭配空只有三个，靠的是读懂因果方向。</span></div>
+          <div class="fi"><b>⭐⭐ ③段一段四个搭配空（2 分），全是「打分场景」的说法</b>
+            <span class="ev"><code>interviews <b>conducted</b> by</code>（12）· <code><b>rated</b> applicants on a scale of one to five</code>（13）· <code><b>took</b> numerous factors into consideration</code>（14）· <code>is <b>marked</b> out of 800 points</code>（16）。<b>研究报道的「方法段」不一定考实验操作</b>：<a href="2011_完形_笑与情绪的方向之争.html#q16" style="color:var(--accent)">2011</a> 的方法段考「两组都做得到的动作」（hold 一支笔），<b>2013 的方法段考「数据怎么打出来的」</b>——打分、计分、考虑、主持（⟹ R106 补）。</span></div>
+          <div class="fi"><b>📐 线索位置统计（判据＝线索是否落在同一个句号之内）：句内自足 14 空 ／ 跨句 6 空。</b>
+            <span class="ev"><b>跨句（6）</b>：2（上一句 background information）· 4（上下两句大类 → 成员）· 8（前后的研究者动词链）· 9（③段末 accept him or her）· 15（前两句的流程）· 18（下一句 such a decrease）。<br><b>句内自足（14）</b>：1 · 3 · 5 · 6 · 7 · 10 · 11 · 12 · 13 · 14 · 16 · 17 · 19 · 20。<br>⟹ 句内比例 <b>70%</b>（2010 65% → 2011 75% → 2012 80% → <b>2013 70%</b>），<b>跨句空里 9、18 两个的线索在<u>下文</u></b>——卡住时往后读，不要只往前翻。</span></div>
+          <div class="fi"><b>⚠️⚠️ 位置预判再次破例，而且一篇两个：四个逻辑空只有两个在「成分首」。</b>
+            <span class="ev"><b>4</b> For example（句首）✅ · <b>7</b> if（从句首）✅ · <b>11</b> otherwise（<b>句末表语位</b>）✗ · <b>15</b> then（<b>夹在 were 与 used 之间</b>）✗ ——<b>2/4</b>。2010 4/4、2011 4/4、2012 3/3 连续三年成立之后，<b>这是继 <a href="2009_完形_智力的代价.html#q14" style="color:var(--accent)">2009 完形 14 题</a>（插入语 for instance 在句中）之后第二次破例，而且一篇就有两个</b>。<br>⟹ <b>规则要加边界</b>：连词、短语型的逻辑词（For example／if／as a result）站在成分首；<b>单个副词（then／instead／thus）可以嵌进谓语，形容词型的 otherwise 可以站在表语位</b>。<b>看见「助动词 ＋ 空 ＋ 分词」或「the truth was ＋ 空」，也要把它当逻辑空看</b>（⟹ R76 补）。</span></div>
+          <div class="fi"><b>📌 三缺一分组法：按「意义方向」分成立四次，孤立项全是答案；按词形分会骗人。</b>
+            <span class="ev"><b>8</b>：emphasize／share／promote 都预设想法已成立 ＋ <b>test</b> · <b>10</b>：found／studied／identified 都有目的 ＋ <b>chosen</b>（与 randomly 相容）· <b>19</b>：achieve／maintain／disregard 之后影响都还在 ＋ <b>undo</b> · <b>20</b>：possible／promising／helpful 都讲可能与好处 ＋ <b>necessary</b>。<br>⚠️ <b>反面</b>：5 题 thoughtless 是唯一带否定后缀的、7 题 until 是唯一的时间连词——<b>看着「孤立」，却都不是答案</b>，因为它们是按<b>词形、词类</b>孤立的，不是按意义方向。<b>R74 早就写明「按极性分组，不按词性」，本篇给了两个反面教材</b>（⟹ R74 补）。</span></div>
+        </div>
+      </section>
+
+      <!-- ========== 04 打法 ========== -->
+      <section class="card">
+        <h2><span class="n">04</span>完形六大打法（本篇取证）</h2>
+        <div class="flow">
+          <div class="fi"><b>① 首句不设空 → 先定三要素，并圈出首句的关键词</b>：话题、性质、关键词。
+            <span class="ev">本篇首句是一条<b>普遍规律</b>（on the whole ＋ 一般现在时），关键词 <code>background information</code> 在后两句被改写两次：<b>2 external factors · 3 the big picture</b>。<b>首句关键词的改写处，一定有空</b>（⟹ R51）。</span></div>
+          <div class="fi"><b>② ⭐⭐ 研究报道型：圈研究者动词链，再让「比方」与「发现」对表</b>（本篇的主刀）。
+            <span class="ev">动词链 speculated → theorised → <b>test</b> → suspected → studied → found 定 8 题；①❹ 法官比方与④❶ 面试官发现逐格对齐，定 <b>4／5／7／17／18</b>（<a href="#map" style="color:var(--accent)">02+</a>，⟹ R156）。</span></div>
+          <div class="fi"><b>③ ⭐⭐ 空格后面紧跟介词短语 ⟹ 先套框架，再比词义</b>。
+            <span class="ev">soft <b>on</b>（6）· conducted <b>by</b>（12）· rated <b>on a scale of</b>（13）· took … <b>into consideration</b>（14）· marked <b>out of</b>（16）——<b>五个空当场定</b>。⚠️ 边界：5 题四个形容词都接 of，介词失效，改看因果（⟹ R157）。</span></div>
+          <div class="fi"><b>④ ⭐ 数字句：画时间线 · 找回指名词 · 认放大句</b>。
+            <span class="ev">17 before（三个人别让两个重合）· 18 drop（下一句 such a decrease）· 19 undo ＋ 20 necessary（<code>sound small, but</code> 之后是代价）（<a href="#timeline" style="color:var(--accent)">02++</a>，⟹ R158）。</span></div>
+          <div class="fi"><b>⑤ 「In theory … but」＝理论与事实对举，空格取「相反」</b>。
+            <span class="ev">11 otherwise。同族信号：In principle／Ideally／On paper … but in practice ⟹ 事实与理论相反；<b>若选项全是评价词（defensible／exceptional），它们都接不住「对比」</b>。</span></div>
+          <div class="fi"><b>⑥ 名词空先问「归谁」，被动空先把 by 后的人放回主语</b>。
+            <span class="ev">9 success（decision 归招生官，不归申请者）· 12 conducted（招生官主持面试；secured 是申请者争取面试）——<b>两个干扰项都是「换主人」造的</b>，与同卷 Text 4 的干扰项主力同一种造法。</span></div>
+        </div>
+        <p class="note" style="margin-top:14px">🔁 <b>八篇完形（2007–2013 ＋ 2022）信号类型对照</b>：<a href="2022_完形_植物意识.html" style="color:var(--accent)">2022</a> 靠明信号词 · <a href="2007_完形_拉美独立后的理想与分歧.html" style="color:var(--accent)">2007</a> 靠结构性信号 · <a href="2008_完形_高智商与遗传疾病.html" style="color:var(--accent)">2008</a> 靠动词与主语适配 · <a href="2009_完形_智力的代价.html" style="color:var(--accent)">2009</a> 靠语用功能 · <a href="2010_完形_霍桑效应遭到质疑.html" style="color:var(--accent)">2010</a> 靠叙事方向 · <a href="2011_完形_笑与情绪的方向之争.html" style="color:var(--accent)">2011</a> 靠因果箭头 · <a href="2012_完形_大法官的伦理与法院的合法性.html" style="color:var(--accent)">2012</a> 靠应然立场与首尾镜像 · <b>2013 靠介词框架与比方—发现同构</b>。<br>📰 <b>文体</b>：七年里<b>《经济学人》出了三篇</b>（2008 智力进化 · 2010 霍桑效应 · 2013 面试偏差），<b>研究报道型四篇</b>（再加 2011《科学美国人》笑与情绪）——<b>完形最常见的就是「一项研究发现了什么」</b>，动词链和「比方—发现」对表值得练熟。</p>
+      </section>
+
+      <!-- ========== 05 搭配库 ========== -->
+      <section class="card">
+        <h2><span class="n">05</span>固定搭配 &amp; 熟词僻义（这些是死记就得分的）</h2>
+        <div class="wb">
+          <div class="wbi"><div class="p">be poor at doing　不擅长做 · on the whole　总体而言（①❶）</div><div class="u"><b>poor 的熟词僻义＝差劲、不擅长</b>（不是「穷」）：<i>be poor at maths</i>。反义 be good at。on the whole ＝ in general ＝ by and large，<b>议论文开头下「总体判断」最稳</b>。</div></div>
+          <div class="wbi"><div class="p">At first glance this might seem like … But …　乍一看像是……，但……（①❷❸）</div><div class="u">⭐ <b>先扬后抑的标准开关</b>：At first glance／On the surface／It might seem … 之后必有 But 翻盘。<b>扬的那句里的空填正面（1 grants），抑的那句填负面</b>。</div></div>
+          <div class="wbi"><div class="p">grant sb the ability／right／permission to do　赋予某人……的能力／权利／许可（1 题）</div><div class="u"><b>「给」族按宾语分工</b>：资格权利 grant · 文件申请 submit (to) · 信号疾病 transmit · 货物演讲承诺 deliver。</div></div>
+          <div class="wbi"><div class="p">be (un)biased by　（不）受……影响而有偏差（①❷ unbiased by · ①❸ biased by）</div><div class="u">⭐ <b>同一段里一个 unbiased、一个 biased，是作者的反讽</b>：不看背景＝不受外界影响（看起来的好处）＝被当天样本带偏（其实的坏处）。<b>bias 还有 be biased against／towards</b>（对……有偏见／偏向）。</div></div>
+          <div class="wbi"><div class="p">consider／see／look at the big picture　着眼大局（3 题）</div><div class="u">反面：<b>lose sight of the big picture</b>（忽视大局）· <b>miss the forest for the trees</b>（只见树木不见森林）。✍️ 作文里批评短视：<i>Focusing only on test scores, we may lose sight of the big picture.</i></div></div>
+          <div class="wbi"><div class="p">be fearful of doing　担心……（5 题）· be fond／capable／thoughtless of</div><div class="u">⚠️ <b>四个选项全接 of</b>——介词锁不住，只能比意思。fearful of（怕）· fond of（喜欢）· capable of（能够）· thoughtless of（不顾及）。</div></div>
+          <div class="wbi"><div class="p">be soft／tough／hard／strict on sb／sth　对……宽松／严厉（6 题）</div><div class="u">⭐ <b>宽严一律用 on</b>。soft on crime／tough on crime 是美国政治口号。⚠️ soft <b>with</b> sb＝对人温柔耐心，与 soft on 不同。</div></div>
+          <div class="wbi"><div class="p">sentence sb to sth　判处某人……（①❹ sentenced … only to forced community service）· send sb to prison　把某人送进监狱</div><div class="u"><b>sentence 作动词＝判刑</b>（熟词僻义）：<i>He was sentenced to five years in prison.</i>；名词 a life sentence（无期徒刑）。<b>only to 是「只判到」</b>，强调轻。</div></div>
+          <div class="wbi"><div class="p">To test this idea, … turned to …　为检验这一想法，……转而研究……（8 题）</div><div class="u"><b>研究报道的转场句</b>。turn to sth＝转向（去研究、去求助）：turn to the data／turn to sb for help。动词链：speculate → theorise → <b>test</b> → find → confirm。</div></div>
+          <div class="wbi"><div class="p">depend on　取决于（9 题所在句）· be chosen randomly for　被随机挑选去……（10 题）</div><div class="u"><b>randomly 是动词过滤器</b>：凡要判断力的动词（identify、evaluate）都与它不相容。同义 at random／arbitrarily。</div></div>
+          <div class="wbi"><div class="p">In theory … , but … the truth was otherwise　理论上……，但事实并非如此（11 题）</div><div class="u">⭐ <b>理论 vs 事实</b>：In theory／In principle／On paper … but in practice／in reality。<b>the truth is otherwise ＝ the opposite is true</b>，一个词收住整句的反转。</div></div>
+          <div class="wbi"><div class="p">conduct an interview／a survey／a study　进行面试／调查／研究（12 题）</div><div class="u"><b>有流程的活动都用 conduct</b>。被动后置定语 <code>interviews conducted by officers</code>，先把 by 后的人放回主语：officers conducted interviews。</div></div>
+          <div class="wbi"><div class="p">rate sb／sth on a scale of 1 to 5　按 1 到 5 分给……打分（13 题）</div><div class="u">⭐ <b>on a scale of 只和打分、评级动词连用</b>（rate／grade／score／measure）。✍️ <i>Participants were asked to rate their satisfaction on a scale of one to ten.</i></div></div>
+          <div class="wbi"><div class="p">take sth into consideration／account　把……考虑在内（14 题）</div><div class="u">⭐ <b>介词比名词更能锁动词</b>：give／get 都能搭 consideration，加上 into 只剩 take。⚠️ 中文「放入考虑」会诱人选 put。</div></div>
+          <div class="wbi"><div class="p">be used in conjunction with　与……结合使用（15 题所在句）· then　然后</div><div class="u">in conjunction with ＝ together with ＝ combined with，<b>正式文体</b>。then 嵌在 were 与 used 之间——<b>逻辑副词不一定在句首</b>。</div></div>
+          <div class="wbi"><div class="p">be marked out of 800 (points)　按满分 800 分打分（16 题）</div><div class="u">⭐ <b>out of 两义</b>：后接分数 ＝ 满分（18 out of 20）；后接一群同类 ＝ 从中（one out of ten）。16A selected A out of B 就是拿第二义造的干扰项。</div></div>
+          <div class="wbi"><div class="p">the one before／after that　（那一位）之前／之后的那一位（17 题）</div><div class="u">⭐ <b>同句坐标系统一</b>：previous／next 建的是时间轴 ⟹ before／after；higher／lower 是数值轴 ⟹ above／below。</div></div>
+          <div class="wbi"><div class="p">drop／rise／fall by ＋ 差额　降低／升高了多少（18 题）· drop to ＋ 终值　降到多少</div><div class="u">⚠️ <b>by 是差额，to 是终点</b>：<i>Sales dropped by 5% to 200 units.</i>（下降了 5%，降到 200 件）。by an average of＝平均（降）了。</div></div>
+          <div class="wbi"><div class="p">undo／offset／make up for the effects of　抵消……的影响（19 题）</div><div class="u"><b>「消除影响」一族</b>：undo · offset · counteract · compensate for · make up for。⚠️ disregard 是主观不理，不是客观抵消。</div></div>
+          <div class="wbi"><div class="p">more … than would otherwise be／have been necessary　比原本所需的更多（20 题）</div><div class="u">⭐ <b>比较从句的空拿主句动词去对</b>：need ⟹ necessary。otherwise＝「如果没有这件事」，一个词装下整个反事实条件。</div></div>
+          <div class="wbi"><div class="p">🔑 熟词僻义清单（本篇 21 处）</div><div class="u"><div class="tabwrap"><table class="otab" id="polytab"><tr><th>词</th><th>常见义</th><th>本篇义</th><th>出处</th></tr>
+            <tr><td><span class="ow">poor</span></td><td>贫穷的</td><td><b>不擅长的</b>（be poor at）</td><td>①❶</td></tr>
+            <tr><td><span class="ow">strength</span></td><td>力气</td><td><b>优点，长处</b>（↔ weakness）</td><td>①❷</td></tr>
+            <tr><td><span class="ow">grant</span></td><td>拨款，助学金 n.</td><td><b>赋予，准予</b> v.</td><td>1 题答案</td></tr>
+            <tr><td><span class="ow">picture</span></td><td>图画，照片</td><td><b>局面，全貌</b>（the big picture）</td><td>3 题答案</td></tr>
+            <tr><td><span class="ow">sample</span></td><td>样品，试用装</td><td><b>（统计）样本</b></td><td>①❸</td></tr>
+            <tr><td><span class="ow">soft</span></td><td>柔软的</td><td><b>（对犯罪）手软的</b>（soft on）</td><td>①❹</td></tr>
+            <tr><td><span class="ow">sentence</span></td><td>句子 n.</td><td><b>判刑</b> v.</td><td>①❹</td></tr>
+            <tr><td><span class="ow">service</span></td><td>服务</td><td><b>社区服务令</b>（community service，一种轻刑）</td><td>①❹</td></tr>
+            <tr><td><span class="ow">turn to</span></td><td>翻到（某页）；求助于</td><td><b>转而研究</b></td><td>②❶</td></tr>
+            <tr><td><span class="ow">success</span></td><td>成功</td><td><b>（申请）被录取</b></td><td>9 题答案</td></tr>
+            <tr><td><span class="ow">suspect</span></td><td>怀疑（不信）</td><td><b>猜想……是真的</b>（suspect that＝觉得很可能）</td><td>②❷</td></tr>
+            <tr><td><span class="ow">otherwise</span></td><td>否则 adv.</td><td><b>并非如此</b> adj.（11）／<b>在别的情况下</b>（④❷）</td><td>11 题答案 ④❷</td></tr>
+            <tr><td><span class="ow">conduct</span></td><td>行为 n.；指挥</td><td><b>主持，进行</b> v.</td><td>12 题答案</td></tr>
+            <tr><td><span class="ow">rate</span></td><td>比率；速度 n.</td><td><b>给……打分</b> v.</td><td>13 题答案</td></tr>
+            <tr><td><span class="ow">scale</span></td><td>规模；秤；鳞</td><td><b>（评分）等级，量表</b></td><td>③❷❸</td></tr>
+            <tr><td><span class="ow">then</span></td><td>那时</td><td><b>然后，随后</b></td><td>15 题答案</td></tr>
+            <tr><td><span class="ow">mark</span></td><td>记号；痕迹 n.</td><td><b>（阅卷）打分</b> v.</td><td>16 题答案</td></tr>
+            <tr><td><span class="ow">series</span></td><td>电视剧；系列丛书</td><td><b>一连串</b>（a daily series of interviewees）</td><td>④❶</td></tr>
+            <tr><td><span class="ow">sound</span></td><td>声音 n.</td><td><b>听起来</b> v.（系动词）</td><td>④❷</td></tr>
+            <tr><td><span class="ow">undo</span></td><td>解开，撤销（电脑）</td><td><b>抵消（影响）</b></td><td>19 题答案</td></tr>
+            <tr><td><span class="ow">point</span></td><td>点；要点</td><td><b>分</b>（0.075 points／800 points）</td><td>③❹ ④</td></tr>
+          </table></div></div></div>
+        </div>
+      </section>
+
+      <!-- ========== 06 80 词表 ========== -->
+      <section class="card">
+        <h2><span class="n">06</span>80 个选项词速查（完形的真正词汇量）
+          <button class="allbtn" id="btnHide" style="margin-left:auto" onclick="toggleHide()">✍️ 默写模式</button>
+        </h2>
+        <p class="note">完形一篇＝<b>80 个高频词的辨析现场</b>，绿底是正确项。<b>默写模式</b>会糊住中文释义——先自己说出意思，点单个格子可单独揭开。<b>本篇 80 个词里有一整套「打分与变化」的词</b>（rated／marked／took into consideration／drop／fluctuate／jump／undo），写数据类小作文、图表作文直接能用。</p>
+        <div class="tabwrap"><table class="otab" id="otab"></table></div>
+      </section>
+      <!-- ========== 07 长难句 ========== -->
+      <section class="card">
+        <h2><span class="n">07</span>长难句精析（正文蓝色虚线句）</h2>
+
+        <div class="sent" id="s1">
+          <div class="src">At first glance <span class="skel">this might seem like a strength</span> <i>that grants the ability to make judgments which are unbiased by external factors.</i></div>
+          <div class="anat">
+            <ul>
+              <li><b>主干</b>：<span class="skel">this might seem like a strength</span>——<code>seem like ＋ 名词</code>＝看起来像……；this 回指首句「人们不擅长考虑背景信息」这整件事。</li>
+              <li>⭐ <b>两层定语从句套叠</b>：<code>that grants the ability …</code> 修饰 a strength；<code>which are unbiased by …</code> 修饰 judgments。<b>拆法：从最右边往回挂</b>——判断（不受外界影响的）→ 做出这种判断的能力 → 赋予这种能力的优点。</li>
+              <li>💡 <b>grants 后省略了间接宾语</b>（grants <i>people</i> the ability）：英语里「赋予能力」对象不言自明时常省略（<a href="#q1" style="color:var(--accent)">1 题</a>）。</li>
+              <li>📌 <b>At first glance ＋ might seem</b>：两个「表面」信号叠在一起，<b>作者在预告下一句要翻盘</b>——果然紧跟 But。</li>
+            </ul>
+          </div>
+          <div class="tr">译：乍一看，这似乎是一个优点，它让人能够做出不受外界因素左右的判断。</div>
+        </div>
+
+        <div class="sent" id="s2">
+          <div class="src">But <span class="skel">Dr Uri Simonsohn speculated</span> <i>that an inability to consider the big picture was leading decision-makers to be biased by the daily samples of information they were working with.</i></div>
+          <div class="anat">
+            <ul>
+              <li><b>主干</b>：<span class="skel">Dr Uri Simonsohn speculated that …</span>——宾语从句的骨架是 <code>an inability … was leading decision-makers to be biased by …</code>。</li>
+              <li>⭐ <b>从句的主语很长</b>：<code>an inability <u>to consider the big picture</u></code>——不定式作 inability 的后置定语；<b>名词化主语</b>（inability）＝「无法考虑大局这件事」，翻译时还原成动词更顺：「看不到大局，正让决策者……」。</li>
+              <li>💡 <code>lead sb to do</code>＝导致某人做；这里是 <code>lead sb to <b>be biased</b></code>（被动不定式）。进行时 was leading 表示「一直在起作用」。</li>
+              <li>🔤 <b>句末 <code>the daily samples of information <u>(that) they were working with</u></code></b>：省略关系词的定语从句，介词 with 留在句尾——<b>work with information</b>＝处理信息。读到句尾的 with 要回头找它的宾语（samples）。</li>
+            </ul>
+          </div>
+          <div class="tr">译：但乌里·西蒙逊博士推测，无法考虑大局，正使决策者被他们手头每天处理的信息样本带偏。</div>
+        </div>
+
+        <div class="sent" id="s3">
+          <div class="src">For example, <span class="skel">he theorised that a judge … might be more likely to send someone to prison</span> <i>if he had already sentenced five or six other defendants only to forced community service on that day.</i></div>
+          <div class="anat">
+            <ul>
+              <li><b>主干</b>：<span class="skel">he theorised that a judge might be more likely to send someone to prison</span>——宾语从句的主语 a judge 被一个<b>形容词短语后置定语</b>拉长：<code>a judge <u>fearful of appearing too soft on crime</u></code>（＝a judge who is fearful of …）。</li>
+              <li>⭐ <b>形容词短语作后置定语</b>是本句最难认的一处：fearful 前面没有 who is，读的时候要自己补上，否则会把 fearful 误当成谓语。</li>
+              <li>💡 <b>if 从句用过去完成时</b> had already sentenced：轻判在前、判重在后；<code>sentence sb to sth</code>＝判处某人……，<code>only to</code> 强调「只判到」这么轻（<a href="#q7" style="color:var(--accent)">7 题</a>）。</li>
+              <li>📌 <b>本句是④❶ 的预告片</b>：「前面判得轻 ⟹ 后面判得重」与「前面给分高 ⟹ 后面给分低」同一个模子（<a href="#map" style="color:var(--accent)">02+</a>）。</li>
+            </ul>
+          </div>
+          <div class="tr">译：例如，他提出这样一个理论：一位担心显得对犯罪太手软的法官，如果当天已经把另外五六名被告只判了强制社区服务，那么他就更有可能把某个人送进监狱。</div>
+        </div>
+
+        <div class="sent" id="s4">
+          <div class="src">In theory, <span class="skel">the success of an applicant should not depend on the few others</span> <i>chosen randomly for interview during the same day,</i> but <span class="skel">Dr Simonsohn suspected the truth was otherwise.</span></div>
+          <div class="anat">
+            <ul>
+              <li><b>两个并列分句</b>，由 but 连接：前一句是<b>理论</b>（In theory … should not），后一句是<b>怀疑中的事实</b>（suspected … otherwise）。</li>
+              <li>⭐ <code>the few others <u>chosen randomly for interview</u></code>：<b>过去分词短语作后置定语</b>（＝who were chosen …），被动义（<a href="#q10" style="color:var(--accent)">10 题</a>）。</li>
+              <li>💡 <b>suspected (that) the truth was otherwise</b>：suspect that 不是「不相信」，而是「<b>觉得很可能是……</b>」——他怀疑事实与理论不符，即他<b>倾向于认为</b>申请者会受影响。</li>
+              <li>🔤 <b>otherwise 作形容词表语</b>＝并非如此（<a href="#q11" style="color:var(--accent)">11 题</a>，另见 <a href="#otherwise" style="color:var(--accent)">02+++</a>）。</li>
+            </ul>
+          </div>
+          <div class="tr">译：理论上，一位申请者能否成功，不应取决于同一天被随机挑来参加面试的另外几个人，但西蒙逊博士怀疑事实并非如此。</div>
+        </div>
+
+        <div class="sent" id="s5">
+          <div class="src"><span class="skel">The scores were then used</span> in conjunction with an applicant's score on the Graduate Management Admission Test, or GMAT, <i>a standardised exam which is marked out of 800 points,</i> <span class="skel">to make a decision</span> on whether to accept him or her.</div>
+          <div class="anat">
+            <ul>
+              <li><b>主干</b>：<span class="skel">The scores were then used … to make a decision</span>——<code>be used to do</code>＝被用来做（不定式表目的，<b>别和 be used to doing 习惯于混了</b>）。</li>
+              <li>⭐ <b>主干被两层插入切得很散</b>：<code>in conjunction with an applicant's score on the GMAT</code>（与 GMAT 分数一起）＋ <code>a standardised exam which is marked out of 800 points</code>（GMAT 的同位语，自带定语从句）。<b>拆法：先把两个逗号之间的同位语整块拿掉</b>，主干 used … to make a decision 就连上了。</li>
+              <li>💡 <code>the Graduate Management Admission Test, or GMAT</code>：这里的 <b>or 不是「或者」，而是「即、也就是」</b>——引出缩写或另一种叫法。</li>
+              <li>🔤 <code>on whether to accept him or her</code>：whether ＋ 不定式作介词宾语；him or her 是性别中立写法，指 the applicant。</li>
+            </ul>
+          </div>
+          <div class="tr">译：这些分数随后会与申请者的管理专业研究生入学考试（即 GMAT，一门按满分 800 分计分的标准化考试）成绩一起，用来决定是否录取此人。</div>
+        </div>
+
+        <div class="sent" id="s6">
+          <div class="src"><span class="skel">Dr Simonsohn found</span> <i>if the score of the previous candidate in a daily series of interviewees was 0.75 points or more higher than that of the one before that,</i> <span class="skel">then the score for the next applicant would drop by an average of 0.075 points.</span></div>
+          <div class="anat">
+            <ul>
+              <li><b>主干</b>：<span class="skel">Dr Simonsohn found (that) … the score … would drop …</span>——found 后省略了 that，宾语从句本身是一个 <b>if … then …</b> 条件句。</li>
+              <li>⭐⭐ <b>两个 that 指不同的东西</b>：<code>than <b>that</b> of …</code> 的 that＝the score（避免重复用的代词）；<code>the one before <b>that</b></code> 的 that＝the previous candidate。<b>读不清这两个 that，17 题就会选 after</b>（<a href="#timeline" style="color:var(--accent)">02++</a>）。</li>
+              <li>💡 <code>0.75 points or more higher than …</code>：<b>数量 ＋ or more ＋ 比较级</b>＝高出 0.75 分或更多；中文语序要调成「比……高出 0.75 分以上」。</li>
+              <li>🔤 <code>drop by an average of 0.075 points</code>：by 表差额，an average of 表平均值——「平均下降 0.075 分」。</li>
+            </ul>
+          </div>
+          <div class="tr">译：西蒙逊博士发现，在一天的面试序列中，如果上一位候选人的分数比再前一位高出 0.75 分或更多，那么下一位申请者的分数平均会下降 0.075 分。</div>
+        </div>
+
+        <div class="sent" id="s7">
+          <div class="src"><span class="skel">This might sound small,</span> but <i>to undo the effects of such a decrease</i> <span class="skel">a candidate would need 30 more GMAT points</span> <i>than would otherwise have been necessary.</i></div>
+          <div class="anat">
+            <ul>
+              <li><b>主干</b>：<span class="skel">This might sound small, but a candidate would need 30 more GMAT points</span>——<code>sound ＋ 形容词</code>，sound 是系动词（听起来）。</li>
+              <li>⭐ <b>不定式目的状语被提到主语之前</b>：<code>to undo the effects of such a decrease</code> 放在 a candidate 前面，而且<b>没有逗号隔开</b>——读的时候要自己在 decrease 后停顿一下。</li>
+              <li>⭐⭐ <b>比较从句 <code>than would otherwise have been necessary</code> 省略了主语</b>：补全是 than <i>the number of points that</i> would otherwise have been necessary。<b>otherwise ＋ would have been ＝ 虚拟语气</b>：「如果没有这次降分，本来需要的分数」（<a href="#q20" style="color:var(--accent)">20 题</a>）。</li>
+              <li>📌 <b>such a decrease 回指上一句的 drop</b>——这是 18 题最硬的证据（<a href="#q18" style="color:var(--accent)">18 题</a>）。</li>
+            </ul>
+          </div>
+          <div class="tr">译：这听起来也许很小，但要抵消这种降分的影响，一位候选人的 GMAT 成绩需要比原本所需的高出 30 分。</div>
+        </div>
+      </section>
+
+      <!-- ========== 08 写作素材 ========== -->
+      <section class="card">
+        <h2><span class="n">08</span>可搬进作文/翻译的表达</h2>
+        <p class="note">本篇是一篇<b>标准的研究报道</b>：现象 → 猜想 → 检验 → 数据 → 发现。<b>大作文第二段要「摆证据」时，最缺的就是这种「研究表明」的句子</b>；话题上，「判断偏差、公平、只看眼前」能直接接上<b>公平选拔、理性决策、短视与长远</b>几个常考母题。</p>
+        <div class="wb">
+          <div class="wbi"><div class="p">People are, on the whole, poor at …　总体而言，人们不擅长……</div><div class="u"><b>开篇下一个普遍判断</b>，比 Most people cannot … 更稳。<i>People are, on the whole, poor at resisting instant gratification.</i>（总体而言，人们不善于抵抗即时满足的诱惑。）</div></div>
+          <div class="wbi"><div class="p">At first glance this might seem like a strength. But …　乍看之下这似乎是个优点，但……</div><div class="u">⭐ <b>先扬后抑的万能开关</b>，用来写「表面好处，实际隐患」。<i>At first glance, working from home might seem like a pure blessing. But it can blur the line between work and life.</i></div></div>
+          <div class="wbi"><div class="p">an inability to consider the big picture　无法着眼大局</div><div class="u"><b>批评短视的名词化表达</b>，比 they can't see the whole situation 高一档。<i>An inability to consider the big picture often leads young people to choose a major solely for its salary.</i></div></div>
+          <div class="wbi"><div class="p">To test this idea, researchers turned to …　为了检验这一想法，研究者转而研究……</div><div class="u"><b>摆证据段的转场句</b>，后面接数据。<i>To test this idea, researchers turned to the reading habits of 2,000 college students.</i></div></div>
+          <div class="wbi"><div class="p">In theory, X should …, but the truth is otherwise.　理论上 X 应当……，但事实并非如此。</div><div class="u">⭐ <b>议论文「揭示反差」的一句话</b>：<i>In theory, online courses should make education more equal, but the truth is otherwise: students without stable internet fall further behind.</i></div></div>
+          <div class="wbi"><div class="p">take numerous factors into consideration　把众多因素考虑在内</div><div class="u"><b>结尾段提建议必备</b>：<i>When choosing a career, one should take numerous factors into consideration, such as interest, ability and social needs.</i></div></div>
+          <div class="wbi"><div class="p">X is used in conjunction with Y to …　X 与 Y 结合使用来……</div><div class="u"><b>谈「综合评价」的正式说法</b>：<i>Test scores should be used in conjunction with teachers' observations to evaluate a student.</i>（考试成绩应与教师的观察结合起来评价学生。）</div></div>
+          <div class="wbi"><div class="p">This might sound small, but …　这听起来也许微不足道，但……</div><div class="u">⭐ <b>把小数字、小习惯放大成大问题</b>：<i>Saving ten minutes a day might sound small, but it adds up to sixty hours a year.</i></div></div>
+          <div class="wbi"><div class="p">… more … than would otherwise be necessary　比原本所需的更多……</div><div class="u"><b>写「额外代价」最省字</b>：<i>Poor planning forces students to spend more time than would otherwise be necessary.</i></div></div>
+          <div class="wbi"><div class="p">be biased by the daily samples of information　被眼前的零散信息带偏</div><div class="u">✍️ <b>谈信息茧房、网络舆论时可改写</b>：<i>Those who rely on social media alone are easily biased by fragmented samples of information.</i>（只靠社交媒体的人，很容易被零碎的信息片段带偏。）</div></div>
+        </div>
+      </section>
+
+    </main>
+
+    <aside>
+      <div id="panel"><div class="hint">👆 点正文里的<b>黄底词</b><br>词卡会出现在这里<br><br>点<b>空格</b>则跳到对应解析卡</div></div>
+    </aside>
+  </div>
+
+  <footer>2013 英语一 · 完形填空复盘页 · ⚠️ 本篇不算盲做（答案串开工前已在上一轮的「下一格」提示里看到，独立推理与答案 20/20 一致但不计战绩）· 解析由 Claude 独立写成并与黄皮书精讲逐空交叉核对（黄皮书零书误）· 背景核实：Simonsohn &amp; Gino 的研究 2013 年发表于《心理科学》· 生词卡 33 张、同构表、时间线、一卷三个 otherwise、七年完形对照均为原创 · 原文仅供个人备考复盘</footer>
+</div>
+
+<button id="yd">🔍 查有道</button>
+<script>
+/* ============ V ============ */
+const V = {
+  onthewhole:{w:"on the whole",ipa:"/ɒn ðə həʊl/",pos:"phrase",tags:["phrase","write"],cn:"<b>总体而言，大体上</b>",en:"generally; considering everything",ex:"People are, on the whole, poor at considering background information…",mem:"⭐ 插入语，给判断<b>留余地</b>：说的是大多数情况，不是所有人。✍️ 议论文开头下总体判断最稳。",syn:"in general · by and large · overall · all in all",conf:"<b>as a whole</b>＝作为一个整体（the society as a whole），修饰名词；<b>on the whole</b>＝总体而言，修饰整句。"},
+  background:{w:"background",ipa:"/ˈbækɡraʊnd/",pos:"n.",tags:["core"],cn:"背景；（人的）出身；背景信息",en:"information that helps you understand a situation",ex:"…poor at considering background information when making individual decisions.",mem:"<b>back（后）＋ ground（地面）</b> ⟹ 画面后方的地面。⭐ <b>本篇的关键词，后两句被改写两次</b>：external factors（2 题）· the big picture（3 题）。",syn:"context · setting · circumstances",conf:"<b>background</b> 是理解一件事所需的周边信息；<b>foreground</b> 是眼前最突出的部分——本篇的 daily samples 就是「前景」。"},
+  individual:{w:"individual",ipa:"/ˌɪndɪˈvɪdʒuəl/",pos:"adj./n.",tags:["core","write"],cn:"adj. <b>单个的，个别的</b>；个人的　n. 个人",en:"considered separately rather than as part of a group",ex:"…when making individual decisions.",mem:"<b>in-（不）＋ divid（分）＋ -ual</b> ⟹ 不可再分的 ⟹ 单个的、个人。⭐ <code>individual decisions</code>＝<b>一个一个的决定</b>，与全局（the big picture）相对。",syn:"single · separate · particular",conf:"<b>individual</b> 强调「单独的一个」；<b>personal</b> 强调「属于某人私人的」（personal opinion）。"},
+  atfirstglance:{w:"at first glance",ipa:"/ət fɜːst ɡlɑːns/",pos:"phrase",tags:["phrase","write"],cn:"<b>乍一看</b>",en:"when you first look at or think about sth",ex:"At first glance this might seem like a strength…",mem:"⭐⭐ <b>先扬后抑的开关</b>：见到 at first glance／on the surface，后面必有 but 翻盘。<b>它所在的那句里，空格往「看起来的样子」填</b>（1 题 grants 是正面）。",syn:"at first sight · on the surface · seemingly",conf:"<b>glance</b>＝一瞥（短暂地看）；<b>glimpse</b>＝瞥见（看到一眼）：catch a glimpse of。"},
+  strength:{w:"strength",ipa:"/streŋθ/",pos:"n.",tags:["poly","write"],cn:"①力气 ②<b>优点，长处</b>",en:"a quality or ability that gives sb an advantage",ex:"At first glance this might seem like a strength that grants the ability…",mem:"<b>strong → strength</b>。⭐ 本篇取「优点」：<code>strengths and weaknesses</code>（优缺点）。<b>它给 1 题定了正面的调</b>。",syn:"advantage · merit · asset · strong point",conf:"<b>strength</b>（优点，可数）vs <b>weakness</b>（缺点）；力气义不可数。"},
+  unbiased:{w:"unbiased",ipa:"/ʌnˈbaɪəst/",pos:"adj.",tags:["core","write"],cn:"<b>无偏见的，公正的</b>；（be unbiased by）不受……左右的",en:"fair; not influenced by personal opinions or outside factors",ex:"…the ability to make judgments which are unbiased by external factors.",mem:"<b>un- ＋ biased</b>。⭐ <b>与下一句的 biased 是一对反讽</b>：同一个毛病，从一面看是「不受外界影响」，从另一面看是「被当天样本带偏」。",syn:"impartial · objective · neutral · fair",conf:"<b>unbiased</b> 讲判断不偏；<b>impartial</b> 讲裁判者不偏袒任何一方（2012 完形 4 题）。"},
+  speculate:{w:"speculate",ipa:"/ˈspekjuleɪt/",pos:"v.",tags:["core"],cn:"<b>推测，猜测</b>；投机",en:"to form an opinion without having all the facts",ex:"But Dr Uri Simonsohn speculated that an inability to consider the big picture…",mem:"<b>spec-（看）</b> ⟹ 往远处看、猜。⭐ <b>研究者动词链的第一环</b>：speculate → theorise → <b>test</b>（8 题）→ find。",syn:"guess · conjecture · hypothesise · suppose",conf:"<b>speculate</b>（凭有限信息推测）vs <b>deduce</b>（按逻辑推出）；speculate in stocks＝炒股投机。"},
+  inability:{w:"inability",ipa:"/ˌɪnəˈbɪləti/",pos:"n.",tags:["core","write"],cn:"<b>无能力，不能</b>",en:"the fact of not being able to do sth",ex:"…an inability to consider the big picture was leading decision-makers to be biased…",mem:"<b>in- ＋ ability</b>。⭐ <b>名词化主语</b>：an inability to do ＝「做不到……这件事」，译成中文要还原成动词。✍️ an inability to manage time 不会管理时间。",syn:"incapacity · failure to do",conf:"<b>inability</b>（能力上做不到）vs <b>disability</b>（残疾）vs <b>unwillingness</b>（不愿意）。"},
+  decisionmaker:{w:"decision-maker",ipa:"/dɪˈsɪʒn meɪkə(r)/",pos:"n.",tags:["core"],cn:"<b>决策者</b>",en:"a person who makes important decisions",ex:"…was leading decision-makers to be biased by the daily samples of information…",mem:"⭐ <b>上位词</b>：下一句换成它的一个成员 a judge ⟹ 接缝处是 For example（4 题）；②③段又换成 admissions officers。",syn:"policymaker · authority",conf:"<b>decision-maker</b> 泛指做决定的人；<b>policymaker</b> 专指制定政策的官员。"},
+  biased:{w:"biased",ipa:"/ˈbaɪəst/",pos:"adj.",tags:["core","write"],cn:"<b>有偏差的，有偏见的</b>",en:"having a tendency to judge unfairly",ex:"…decision-makers to be biased by the daily samples of information…",mem:"<b>bias（偏差）</b>本指布料的斜纹 ⟹ 斜了、偏了。⭐ <b>be biased by</b>（被……带偏）· <b>be biased against</b>（对……有偏见）· <b>be biased towards</b>（偏向）。",syn:"prejudiced · partial · one-sided",conf:"<b>biased</b> 偏向一边（可以是无意的）；<b>prejudiced</b> 带成见、多含贬义歧视。"},
+  sample:{w:"sample",ipa:"/ˈsɑːmpl/",pos:"n./v.",tags:["poly"],cn:"①样品 ②<b>（统计）样本</b> v. 抽样；品尝",en:"a small part of a group used to learn about the whole",ex:"…biased by the daily samples of information they were working with.",mem:"⭐ <b>本篇取「样本」</b>：每天手头那一小撮信息。<b>the daily samples 与 the big picture 在同一句里对立</b>（小 vs 大），这是 3 题的线索。",syn:"specimen · selection · portion",conf:"<b>sample</b>（抽出来代表整体的一部分）vs <b>example</b>（举出来说明道理的一个例子）。"},
+  theorise:{w:"theorise",ipa:"/ˈθɪəraɪz/",pos:"v.",tags:["core"],cn:"<b>提出理论，推论</b>（美式拼作 theorize）",en:"to suggest facts and ideas to explain sth",ex:"For example, he theorised that a judge…might be more likely to send someone to prison…",mem:"<b>theory → theorise</b>。⭐ <b>-ise 是英式拼写</b>（《经济学人》的习惯，本篇还有 standardised）。它说明本句是<b>推测</b>，所以 4 题不能填需要数据的 On average。",syn:"hypothesise · speculate · propose",conf:"<b>theorise</b>（形成理论）vs <b>prove</b>（证明）——理论要经过 test（8 题）才算数。"},
+  soft:{w:"soft",ipa:"/sɒft/",pos:"adj.",tags:["poly","phrase"],cn:"①柔软的 ②<b>（对……）心慈手软的，不严厉的</b>",en:"not strict enough; not punishing people severely",ex:"…a judge fearful of appearing too soft on crime…",mem:"⭐⭐ <b>be soft on sb／sth</b>＝对……手软（6 题）。<b>soft on crime ↔ tough on crime</b> 是美国政治口号：法官、检察官怕被贴上「对犯罪手软」的标签。",syn:"lenient · easy on · permissive",conf:"<b>soft on</b>（纵容）vs <b>soft with</b>（温和耐心）；反义 <b>tough／hard／strict on</b>。"},
+  sentence:{w:"sentence",ipa:"/ˈsentəns/",pos:"v./n.",tags:["poly"],cn:"n. 句子；<b>判决，刑罚</b>　v. <b>判处，宣判</b>",en:"to officially say what punishment sb will receive",ex:"…if he had already sentenced five or six other defendants only to forced community service…",mem:"⭐ <b>熟词僻义</b>：sentence sb to sth＝判处某人……（<i>sentenced to ten years in prison</i>）；a life sentence 无期徒刑。<b>only to 强调「只判到」</b>这么轻。",syn:"condemn · convict (定罪)",conf:"<b>convict</b>（判定有罪）在先，<b>sentence</b>（判处刑罚）在后。"},
+  defendant:{w:"defendant",ipa:"/dɪˈfendənt/",pos:"n.",tags:["core"],cn:"<b>被告</b>",en:"a person accused of a crime in a court of law",ex:"…sentenced five or six other defendants only to forced community service…",mem:"<b>defend（辩护）＋ -ant（人）</b> ⟹ 在法庭上为自己辩护的人。",syn:"the accused",conf:"<b>defendant</b>（被告）vs <b>plaintiff</b>（民事原告）vs <b>prosecutor</b>（检察官，刑事公诉方）。"},
+  communityservice:{w:"community service",ipa:"/kəˈmjuːnəti ˈsɜːvɪs/",pos:"phrase",tags:["poly","write"],cn:"①<b>社区服务令</b>（一种不坐牢的轻刑）②社区志愿服务",en:"unpaid work in the community, sometimes given as a punishment instead of prison",ex:"…only to forced community service on that day.",mem:"⭐ <b>本篇取法律义</b>：forced（强制的）＋ community service ⟹ 判处义务劳动若干小时，与 send someone to prison（送进监狱）形成轻重对比。✍️ 作文里多用志愿义：<i>take part in community service</i>。",syn:"(法律) non-custodial sentence · (志愿) volunteer work",conf:"<b>community service</b> 作刑罚是强制的；作志愿活动是自愿的——看前面有没有 forced／sentenced to。"},
+  turnto:{w:"turn to",ipa:"/tɜːn tuː/",pos:"phrase",tags:["phrase","poly"],cn:"①<b>转向（去研究、去做）</b> ②求助于 ③翻到（某页）",en:"to start to study or deal with sth; to go to sb for help",ex:"To test this idea, he turned to the university-admissions process.",mem:"⭐ <b>研究报道的转场</b>：To test this idea, he turned to …＝为检验想法，转而研究……。<b>turn to sb for help</b> 求助于某人。",syn:"shift to · look to · resort to",conf:"<b>turn to</b>（转向、求助）vs <b>turn into</b>（变成）vs <b>turn out</b>（结果是）。"},
+  admissions:{w:"admissions",ipa:"/ədˈmɪʃnz/",pos:"n.",tags:["core"],cn:"<b>（学校）招生，录取</b>（复数形式作定语）；入场",en:"the process of accepting people into a school or university",ex:"…he turned to the university-admissions process.／…31 admissions officers.",mem:"<b>admit（准许进入）→ admission</b>。⭐ <b>admissions officer</b>＝招生官；admission fee＝门票费；admission of guilt＝认罪。",syn:"enrolment · intake · entry",conf:"<b>admission</b>（录取、准入）vs <b>enrolment</b>（注册入学，录取之后）。"},
+  intheory:{w:"in theory",ipa:"/ɪn ˈθɪəri/",pos:"phrase",tags:["phrase","write"],cn:"<b>理论上，按理说</b>",en:"used to say what should happen, which may not be what really happens",ex:"In theory, the success of an applicant should not depend on the few others…",mem:"⭐⭐ <b>In theory … but … 是理论与事实的对举</b>：后半句必翻（11 题 the truth was otherwise）。反义 <b>in practice／in reality</b>。",syn:"in principle · on paper · ideally",conf:"<b>in theory</b>（理论上，暗示实际不然）vs <b>in principle</b>（原则上可行／大体同意，4 题 C）。"},
+  applicant:{w:"applicant",ipa:"/ˈæplɪkənt/",pos:"n.",tags:["core"],cn:"<b>申请人</b>",en:"a person who applies for a job, a place at a college, etc.",ex:"In theory, the success of an applicant should not depend on…",mem:"<b>apply（申请）＋ -ant（人）</b>。⭐ 本篇申请者＝candidate＝interviewee，<b>三个词指同一群人</b>。",syn:"candidate · applier",conf:"<b>applicant</b>（提交了申请的人）vs <b>candidate</b>（候选人、应试者，范围更广）。"},
+  randomly:{w:"randomly",ipa:"/ˈrændəmli/",pos:"adv.",tags:["core"],cn:"<b>随机地，任意地</b>",en:"without any plan, pattern or method",ex:"…the few others chosen randomly for interview during the same day…",mem:"⭐ <b>动词过滤器</b>：凡需要目的与判断的动词（identify、find、study）都与它不相容 ⟹ 10 题 chosen。<b>正因为是随机的，别人的表现才「不该」影响你</b>。",syn:"at random · arbitrarily · by chance",conf:"<b>randomly</b>（无规律地挑）vs <b>accidentally</b>（意外地发生）——科研语境里随机是设计出来的，不是意外。"},
+  suspect:{w:"suspect",ipa:"/səˈspekt/ v. · /ˈsʌspekt/ n.",pos:"v./n.",tags:["poly"],cn:"v. ①<b>猜想（某事很可能是真的）</b> ②怀疑（某人有罪）　n. 嫌疑人",en:"to have an idea that sth is probably true",ex:"…but Dr Simonsohn suspected the truth was otherwise.",mem:"⭐⭐ <b>suspect that ＝ 觉得很可能是……（肯定倾向）</b>；<b>doubt that ＝ 不太相信……（否定倾向）</b>。本句 suspected the truth was otherwise＝他倾向于认为事实与理论不符。",syn:"guess · believe · have a hunch",conf:"<b>I suspect he is right</b>（我看他可能对）vs <b>I doubt he is right</b>（我看他未必对）——意思正相反。"},
+  scale:{w:"scale",ipa:"/skeɪl/",pos:"n.",tags:["poly","phrase"],cn:"①规模 ②秤 ③<b>（评分）等级，量表</b> ④比例尺",en:"a range of levels or numbers used for measuring sth",ex:"The interviewers had rated applicants on a scale of one to five. This scale took numerous factors into consideration.",mem:"⭐ <b>on a scale of 1 to 5</b>＝按 1 到 5 分的等级（13 题 rated 的锁）。其他义：on a large scale 大规模地 · bathroom scales 体重秤。",syn:"rating system · grade · range",conf:"<b>scale</b>（等级量表）vs <b>score</b>（在量表上得的分数）。"},
+  numerous:{w:"numerous",ipa:"/ˈnjuːmərəs/",pos:"adj.",tags:["core","write"],cn:"<b>众多的，许多的</b>",en:"existing in large numbers; many",ex:"This scale took numerous factors into consideration.",mem:"<b>numer-（数）＋ -ous</b>。✍️ 作文里替换 many：<i>numerous factors／on numerous occasions</i>。",syn:"many · a great many · countless · multiple",conf:"<b>numerous</b> 修饰可数复数；<b>considerable</b> 多修饰不可数量（considerable time）。"},
+  inconjunction:{w:"in conjunction with",ipa:"/ɪn kənˈdʒʌŋkʃn wɪð/",pos:"phrase",tags:["phrase","write"],cn:"<b>与……结合，连同</b>",en:"together with",ex:"The scores were then used in conjunction with an applicant's score on the…GMAT…",mem:"<b>con-（一起）＋ junct（连接）</b> ⟹ 连在一起。语法里的 conjunction 是「连词」。✍️ <i>be used in conjunction with</i> 写「综合评价」很正式。",syn:"together with · combined with · along with",conf:"<b>in conjunction with</b>（结合使用）vs <b>in connection with</b>（与……有关）。"},
+  standardised:{w:"standardised",ipa:"/ˈstændədaɪzd/",pos:"adj.",tags:["core"],cn:"<b>标准化的</b>（美式 standardized）",en:"made to be the same as others of its type; following a fixed standard",ex:"…the GMAT, a standardised exam which is marked out of 800 points…",mem:"<b>standard → standardise → standardised</b>。<b>standardised test</b>＝标准化考试（统一试题、统一评分）。-ise 英式拼写，与 theorised 一样是《经济学人》的习惯。",syn:"uniform · regulated",conf:"<b>standardised</b>（按统一标准做的）vs <b>standard</b>（标准的、常规的）。"},
+  previous:{w:"previous",ipa:"/ˈpriːviəs/",pos:"adj.",tags:["core"],cn:"<b>先前的，上一个的</b>",en:"happening or existing immediately before the one you are talking about",ex:"…if the score of the previous candidate in a daily series of interviewees was 0.75 points or more higher…",mem:"<b>pre-（前）＋ vi（路）</b> ⟹ 走在前面的。⭐ <b>它和 the next applicant 一起建了一条时间轴</b> ⟹ 17 题比较对象只能用时间词 before。",syn:"prior · preceding · former · earlier",conf:"<b>previous</b>（紧挨着的上一个）vs <b>former</b>（前任的、以前的，不一定紧挨）。"},
+  series:{w:"series",ipa:"/ˈsɪəriːz/",pos:"n.",tags:["poly"],cn:"①<b>一连串，一系列</b>（单复数同形）②电视系列节目",en:"a number of things of the same kind that come one after another",ex:"…the previous candidate in a daily series of interviewees…",mem:"⭐ <b>a daily series of interviewees</b>＝一天里一个接一个的面试者。<b>全文第四次「当天」</b>（daily samples · on that day · during the same day · a daily series）。",syn:"sequence · succession · string",conf:"<b>series</b>（同类事物前后相继）vs <b>range</b>（同类事物的一个范围，不强调先后）。"},
+  candidate:{w:"candidate",ipa:"/ˈkændɪdət/",pos:"n.",tags:["core"],cn:"<b>候选人；应试者</b>",en:"a person who is trying to be chosen for a job, a place, etc.",ex:"…the score of the previous candidate… a candidate would need 30 more GMAT points…",mem:"<b>candid-（白色）</b>：古罗马竞选者穿白袍。⭐ 本篇 candidate＝applicant＝interviewee，<b>同义轮换</b>。",syn:"applicant · contender · nominee",conf:"<b>candidate</b>（候选人）vs <b>candid</b>（坦率的，形容词）——同根不同义。"},
+  byaverage:{w:"by an average of",ipa:"/baɪ ən ˈævərɪdʒ əv/",pos:"phrase",tags:["phrase","write"],cn:"<b>平均（增减）了……</b>",en:"used to show the average amount of an increase or decrease",ex:"…the score for the next applicant would drop by an average of 0.075 points.",mem:"⭐ <b>by 表差额</b>（降了多少），<b>to 表终值</b>（降到多少）。<b>on average</b>＝平均而言（4 题 B，要有数据才能用——而本句恰恰是数据）。",syn:"on average · averaging",conf:"<b>drop by 5%</b>（下降了 5%）vs <b>drop to 5%</b>（降到 5%）。"},
+  sound:{w:"sound",ipa:"/saʊnd/",pos:"v./n./adj.",tags:["poly","write"],cn:"v. <b>听起来</b>（系动词）　n. 声音　adj. 健全的，合理的",en:"to seem to be sth when you hear or read about it",ex:"This might sound small, but to undo the effects of such a decrease…",mem:"⭐⭐ <b>X might sound small, but …</b>＝小数字放大句：but 后面必是「其实代价不小」⟹ 19 undo、20 necessary。<b>adj. 义</b>：a sound argument 站得住的论证。",syn:"seem · appear",conf:"<b>sound ＋ 形容词</b>（听起来）vs <b>sound like ＋ 名词</b>（听起来像）。"},
+  decrease:{w:"decrease",ipa:"/ˈdiːkriːs/ n. · /dɪˈkriːs/ v.",pos:"n./v.",tags:["core","write"],cn:"<b>减少，下降</b>",en:"the process of becoming less; a reduction",ex:"…to undo the effects of such a decrease a candidate would need 30 more GMAT points…",mem:"<b>de-（向下）＋ cres（生长）</b> ⟹ 往下长。⭐⭐ <b>such a decrease 回指上一句的变化</b>，把 18 题锁死为 drop。重音：名词 DEcrease，动词 deCREASE。",syn:"reduction · decline · drop · fall",conf:"<b>decrease</b>（数量减少）vs <b>decline</b>（下降，也可指衰落）。"},
+  otherwise:{w:"otherwise",ipa:"/ˈʌðəwaɪz/",pos:"adv./adj.",tags:["poly","write"],cn:"adv. ①<b>否则；在别的情况下</b> ②<b>在其他方面</b>　adj. <b>不是那样的</b>",en:"in a different way; in other circumstances; apart from that",ex:"…a candidate would need 30 more GMAT points than would otherwise have been necessary.",mem:"⭐⭐ <b>一卷三个 otherwise</b>：②❷ the truth was <b>otherwise</b>（adj. 并非如此，11 题）· ④❷ than would <b>otherwise</b> have been necessary（adv. 在别的情况下，虚拟）· Text 4 any <b>otherwise</b> legitimate law（在其他方面）。<b>判据是位置</b>。",syn:"(否则) or else · (其他方面) apart from that · (并非如此) different",conf:"<b>otherwise ＋ 形容词</b>＝除此之外都……（an otherwise perfect day）；<b>句首 Otherwise,</b>＝否则。"}
+};
+const panel=document.getElementById('panel');
+const isMobile=()=>window.innerWidth<=900;
+function badge(t){return {core:'<span class="badge b-core">核心词</span>',phrase:'<span class="badge b-phrase">短语</span>',poly:'<span class="badge b-poly">熟词僻义</span>',write:'<span class="badge b-write">写作✍︎</span>'}[t]||''}
+function showCard(k,el){
+  const d=V[k]; if(!d)return;
+  document.querySelectorAll('.tk.active').forEach(e=>e.classList.remove('active'));
+  if(el&&el.classList.contains('tk'))el.classList.add('active');
+  panel.innerHTML='<button class="close" onclick="panel.classList.remove(\'open\')">✕</button>'+
+  '<div class="wcard"><div class="head"><span class="w">'+d.w+'</span><span class="ipa">'+d.ipa+'</span><span class="pos">'+d.pos+'</span>'+d.tags.map(badge).join('')+'</div>'+
+  '<div class="cn">'+d.cn+'</div><div class="en-def">'+d.en+'</div>'+
+  '<div class="row r-ex"><b>原文语境</b>「…'+d.ex+'…」</div>'+
+  '<div class="row r-mem"><b>怎么记</b>'+d.mem+'</div>'+
+  '<div class="row r-syn"><b>同类词</b>'+d.syn+'</div>'+
+  '<div class="row r-conf"><b>易混辨析</b>'+d.conf+'</div></div>';
+  if(isMobile())panel.classList.add('open');
+}
+document.querySelectorAll('.tk').forEach(t=>t.addEventListener('click',e=>{e.stopPropagation();showCard(t.dataset.w,t)}));
+
+/* ============ 译文开关 ============ */
+function tz(btn){btn.closest('.para').classList.toggle('showzh')}
+let allOn=false;
+function toggleAll(){allOn=!allOn;document.querySelectorAll('.para').forEach(p=>p.classList.toggle('showzh',allOn))}
+function go(id){const s=document.getElementById(id);if(!s)return;s.scrollIntoView({behavior:'smooth',block:'center'});s.style.transition='none';s.style.opacity=.3;setTimeout(function(){s.style.transition='opacity .8s';s.style.opacity=1},80)}
+
+/* ============ 20 空数据（类别 + 正确词） ============ */
+const CAT={
+  logic:{name:"逻辑关系",cls:"c-logic",color:"#3d6a8a"},
+  collo:{name:"固定搭配",cls:"c-collo",color:"#3e7a4e"},
+  word:{name:"词义辨析",cls:"c-word",color:"#b04a3a"},
+  context:{name:"上下文语义",cls:"c-context",color:"#6d5a8e"}
+};
+const B={
+  1:{w:"grants",cat:"word"},          2:{w:"external",cat:"context"},
+  3:{w:"picture",cat:"collo"},        4:{w:"For example",cat:"logic"},
+  5:{w:"fearful",cat:"word"},         6:{w:"on",cat:"collo"},
+  7:{w:"if",cat:"logic"},             8:{w:"test",cat:"context"},
+  9:{w:"success",cat:"context"},      10:{w:"chosen",cat:"word"},
+  11:{w:"otherwise",cat:"logic"},     12:{w:"conducted",cat:"collo"},
+  13:{w:"rated",cat:"collo"},         14:{w:"took",cat:"collo"},
+  15:{w:"then",cat:"logic"},          16:{w:"marked",cat:"collo"},
+  17:{w:"before",cat:"context"},      18:{w:"drop",cat:"context"},
+  19:{w:"undo",cat:"context"},        20:{w:"necessary",cat:"collo"}
+};
+
+
+/* ============ 点空格 → 跳到解析卡 ============ */
+document.querySelectorAll('.bk').forEach(function(b){
+  b.addEventListener('click',function(){
+    document.querySelectorAll('.bk.active').forEach(function(e){e.classList.remove('active')});
+    b.classList.add('active');
+    go('q'+b.dataset.n);
+  });
+});
+function fillBlank(n,ok){
+  const el=document.querySelector('.bk[data-n="'+n+'"]');
+  if(!el)return;
+  el.classList.remove('miss');
+  el.classList.add(ok===false?'miss':'filled');
+  el.innerHTML='<span class="idx">'+n+'</span>'+B[n].w;
+}
+
+/* ============ 即点即判 + 计分 ============ */
+let done=0,right=0;
+function updScore(){
+  document.getElementById('sDone').textContent=done;
+  document.getElementById('sRight').textContent=right;
+  document.getElementById('sPt').textContent=(right*0.5).toFixed(1);
+}
+document.querySelectorAll('.q').forEach(function(q){
+  const ans=+q.dataset.ans, n=q.id.replace('q','');
+  q.querySelectorAll('.opt').forEach(function(o,i){
+    o.addEventListener('click',function(){
+      if(q.classList.contains('done'))return;
+      q.classList.add('done');
+      const ok=(i===ans);
+      if(!ok)o.classList.add('wrong');
+      q.querySelectorAll('.opt')[ans].classList.add('right');
+      done++; if(ok)right++; updScore();
+      fillBlank(n,ok);
+    });
+  });
+});
+function revealAll(){
+  document.querySelectorAll('.q').forEach(function(q){
+    const n=q.id.replace('q','');
+    if(!q.classList.contains('done')){
+      q.classList.add('done');
+      q.querySelectorAll('.opt')[+q.dataset.ans].classList.add('right');
+      done++; updScore();
+    }
+    fillBlank(n,true);
+  });
+  document.querySelectorAll('.bk.miss').forEach(function(e){e.classList.remove('miss');e.classList.add('filled')});
+}
+
+/* ============ 考点统计 ============ */
+const counts={};Object.keys(B).forEach(function(k){counts[B[k].cat]=(counts[B[k].cat]||0)+1});
+const order=["word","collo","context","logic"];
+document.getElementById('catbar').innerHTML=order.map(function(k){
+  return '<div class="catseg" style="flex:'+counts[k]+';background:'+CAT[k].color+'">'+CAT[k].name+' '+counts[k]+'</div>'}).join('');
+const legend=document.getElementById('catlegend');
+legend.innerHTML=order.map(function(k){
+  return '<div class="cl" data-cat="'+k+'"><span class="dot" style="background:'+CAT[k].color+'"></span>'+CAT[k].name+' · '+counts[k]+' 题</div>'}).join('');
+const chips=document.getElementById('chips');
+function renderChips(cat){
+  chips.innerHTML=Object.keys(B).filter(function(n){return !cat||B[n].cat===cat})
+    .map(function(n){return '<span class="chip" data-n="'+n+'">'+n+'. '+B[n].w+'</span>'}).join('');
+  chips.querySelectorAll('.chip').forEach(function(c){
+    c.addEventListener('click',function(){go('q'+c.dataset.n)});
+  });
+}
+renderChips(null);
+legend.querySelectorAll('.cl').forEach(function(l){
+  l.addEventListener('click',function(){
+    const cat=l.dataset.cat;
+    document.querySelectorAll('.cl').forEach(function(x){x.style.borderColor=''});
+    l.style.borderColor=CAT[cat].color;
+    renderChips(cat);
+    document.querySelectorAll('.bk').forEach(function(b){
+      b.style.outline=(B[b.dataset.n].cat===cat?'2px solid '+CAT[cat].color:'')});
+  });
+});
+
+/* ============ 80 选项词表 ============ */
+const OPTS={
+ 1:[["grants","赋予（资格、能力）"],["submits","提交（to 是不定式，接不上）"],["transmits","传送（从一方转到另一方）"],["delivers","递送（货物、演讲）"]],
+ 2:[["minor","次要的（讲程度，常识陷阱）"],["external","外部的（背景信息的改写）"],["crucial","关键的（讲程度，方向也反）"],["objective","客观的（只凭主观不是优点）"]],
+ 3:[["issue","议题（背景≠议题）"],["vision","远见（consider a vision 别扭）"],["picture","局面（the big picture 大局）"],["moment","时刻（与信息范围无关）"]],
+ 4:[["Above all","最重要的是（前无列举）"],["On average","平均而言（要数据，本句是推测）"],["In principle","原则上（不是打比方）"],["For example","例如（决策者 → 法官）"]],
+ 5:[["fond","喜欢（喜欢手软就该一直轻判）"],["fearful","害怕（怕被说手软才判重）"],["capable","能够（手软不是能力）"],["thoughtless","不顾及（他恰恰太在乎）"]],
+ 6:[["in","在……方面（不表态度）"],["for","为了（与 soft 不搭）"],["to","too…to 陷阱（crime 是名词）"],["on","soft on 对……手软"]],
+ 7:[["if","如果（发现句也是 if…then）"],["until","直到（先后颠倒）"],["though","虽然（前因不是阻力）"],["unless","除非（换成 if…not 即反）"]],
+ 8:[["test","检验（推测 → 研究的中间一环）"],["emphasize","强调（预设已成立）"],["share","分享（预设已成立）"],["promote","推广（预设已成立）"]],
+ 9:[["decision","决定（归招生官，换错主人）"],["quality","素质（不会被别人改变）"],["status","地位（与录取无关）"],["success","成功（被录取）"]],
+ 10:[["found","找到（有目的，与随机冲突）"],["studied","研究（面试者不是研究对象）"],["chosen","挑选（与 randomly 相容）"],["identified","识别（要判断标准）"]],
+ 11:[["otherwise","并非如此（理论 vs 事实）"],["defensible","站得住（是评价不是对比）"],["replaceable","可替换（无意义）"],["exceptional","杰出；例外（是评价）"]],
+ 12:[["inspired","激发（招生官不启发面试）"],["expressed","表达（面试不是情感）"],["conducted","主持（conduct an interview）"],["secured","争取到（那是申请者的事）"]],
+ 13:[["assigned","分派（面试官不派活）"],["rated","打分（rate on a scale of）"],["matched","匹配（须 to／with）"],["arranged","安排（接不上 scores）"]],
+ 14:[["put","放（中文「放入考虑」陷阱）"],["got","得到（不接 into）"],["took","take…into consideration"],["gave","给（give consideration 不接 into）"]],
+ 15:[["instead","反而（没有被放弃的做法）"],["then","然后（流程下一步）"],["ever","曾经（只进疑问、否定、比较）"],["rather","相反（前无否定）"]],
+ 16:[["selected","挑选（out of 取「从中」义的陷阱）"],["passed","通过（是人通过考试）"],["marked","打分（marked out of 800）"],["introduced","引进（接不上 out of 800）"]],
+ 17:[["below","在下面（不表先后）"],["after","之后（＝下一位本人，自己比自己）"],["above","在上面（换了坐标系）"],["before","之前（更早的那一位）"]],
+ 18:[["jump","猛增（与 such a decrease 冲突）"],["float","浮动（分数不说 float）"],["fluctuate","波动（没有单一方向）"],["drop","下降（such a decrease 回指）"]],
+ 19:[["achieve","实现（没人想要这影响）"],["undo","抵消（影响消失）"],["maintain","维持（自相矛盾）"],["disregard","无视（主观态度不用多考分）"]],
+ 20:[["necessary","必需的（与主句 need 对应）"],["possible","可能的（能考 ≠ 需要）"],["promising","有希望的（是评价）"],["helpful","有帮助的（有用 ≠ 必需）"]]
+};
+const ANS={1:0,2:1,3:2,4:3,5:1,6:3,7:0,8:0,9:3,10:2,11:0,12:2,13:1,14:2,15:1,16:2,17:3,18:3,19:1,20:0};
+(function(){
+  let h='<tr><th>空</th><th>A</th><th>B</th><th>C</th><th>D</th></tr>';
+  for(let n=1;n<=20;n++){
+    h+='<tr><td class="n">'+n+'</td>';
+    OPTS[n].forEach(function(o,i){
+      h+='<td'+(i===ANS[n]?' class="hit"':'')+'><span class="ow">'+o[0]+'</span><span class="oc">'+o[1]+'</span></td>';
+    });
+    h+='</tr>';
+  }
+  document.getElementById('otab').innerHTML=h;
+  document.querySelectorAll('#otab .oc').forEach(function(c){
+    c.addEventListener('click',function(){c.classList.toggle('show')});
+  });
+})();
+function toggleHide(){
+  const t=document.getElementById('otab');
+  const on=t.classList.toggle('hidecn');
+  document.getElementById('btnHide').textContent=on?'👁 显示释义':'✍️ 默写模式';
+  if(!on)t.querySelectorAll('.oc.show').forEach(function(c){c.classList.remove('show')});
+}
+
+/* ============ 查有道 ============ */
+const yd=document.getElementById('yd');let sel='';
+document.addEventListener('selectionchange',function(){
+  const s=window.getSelection();const t=s?s.toString().trim():'';
+  if(t&&/^[a-zA-Z' -]{2,40}$/.test(t)){
+    sel=t;
+    try{const r=s.getRangeAt(0).getBoundingClientRect();
+      yd.style.left=Math.min(r.left,window.innerWidth-110)+'px';
+      yd.style.top=(r.bottom+8)+'px';yd.style.display='block';}catch(e){}
+  }else{yd.style.display='none'}
+});
+yd.addEventListener('click',function(){window.open('https://dict.youdao.com/result?word='+encodeURIComponent(sel)+'&lang=en');yd.style.display='none'});
+document.addEventListener('click',function(e){if(e.target!==yd&&!window.getSelection().toString())yd.style.display='none'});
+</script>
+<script src="_fault_attr.js"></script>
+</body>
+</html>

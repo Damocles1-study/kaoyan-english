@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2013 英一 新题型 · 让社会科学有用起来</title>
+<style>
+  :root{
+    --bg:#faf9f6; --card:#ffffff; --ink:#2b2b2b; --muted:#8a8578;
+    --accent:#8b5e34; --accent-soft:#f3e9dd; --line:#e8e3d8;
+    --hl:#fdf3d8; --hl-border:#e0b84d;
+    --green:#3e7a4e; --green-soft:#e8f2ea;
+    --red:#b04a3a; --red-soft:#f9e9e6;
+    --blue:#3d6a8a; --blue-soft:#e7eff5;
+    --purple:#6d5a8e; --purple-soft:#eeeaf5;
+    --serif:"Georgia","Songti SC",serif;
+    --sans:-apple-system,"PingFang SC","Helvetica Neue",sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#1c1a17; --card:#26231f; --ink:#e8e4dc; --muted:#9a948a;
+      --accent:#d0a06a; --accent-soft:#3a3127; --line:#3a362f;
+      --hl:#3d3520; --hl-border:#b08c3a;
+      --green:#7fb98d; --green-soft:#26362b;
+      --red:#d98876; --red-soft:#3d2a26;
+      --blue:#8ab3d0; --blue-soft:#26323d;
+      --purple:#a996c8; --purple-soft:#302a3d;
+    }
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;padding-bottom:120px}
+  .wrap{max-width:1100px;margin:0 auto;padding:24px 20px}
+  .back{font-size:.85rem;color:var(--muted);text-decoration:none}
+  .back:hover{color:var(--accent)}
+  header{margin:14px 0 28px}
+  header h1{font-family:var(--serif);font-size:1.7rem;line-height:1.3}
+  header .sub{color:var(--muted);margin-top:6px;font-size:.9rem}
+  .tags{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+  .tag{font-size:.75rem;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);border:1px solid var(--line)}
+  .tag.bad{background:var(--red-soft);color:var(--red)}
+  .layout{display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:start}
+  .layout > main{min-width:0}
+  @media (max-width:900px){.layout{grid-template-columns:1fr}}
+  section.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:24px}
+  h2{font-size:1.05rem;letter-spacing:.05em;color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+  h2 .n{font-size:.72rem;background:var(--accent);color:var(--card);border-radius:6px;padding:1px 7px}
+  h3.sh{font-size:.95rem;color:var(--ink);margin:18px 0 8px;padding-left:9px;border-left:3px solid var(--accent)}
+  .para{margin-bottom:14px}
+  .en{font-family:var(--serif);font-size:1.03rem;line-height:1.95}
+  .tk{background:var(--hl);border-bottom:2px solid var(--hl-border);border-radius:3px;padding:0 2px;cursor:pointer;transition:filter .15s}
+  .tk:hover{filter:brightness(.93)}
+  .tk.active{outline:2px solid var(--hl-border)}
+  .clue{border-bottom:2px dotted var(--red)}
+  .zh{display:none;margin-top:8px;padding:10px 14px;background:var(--blue-soft);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:.92rem}
+  .showzh .zh{display:block}
+  .zbtn{float:right;margin-left:10px;font-size:.72rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:6px;padding:2px 9px;cursor:pointer}
+  .zbtn:hover{color:var(--accent);border-color:var(--accent)}
+  .allbtn{font-size:.78rem;border:1px solid var(--accent);background:none;color:var(--accent);border-radius:8px;padding:4px 12px;cursor:pointer;margin-left:auto}
+  aside{position:sticky;top:20px}
+  #panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;min-height:180px}
+  #panel .hint{color:var(--muted);font-size:.88rem;text-align:center;padding:30px 10px}
+  .wcard .head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .wcard .w{font-family:var(--serif);font-size:1.35rem;font-weight:bold}
+  .wcard .ipa{color:var(--muted);font-size:.85rem}
+  .wcard .pos{font-size:.72rem;color:var(--purple);background:var(--purple-soft);padding:1px 8px;border-radius:999px}
+  .wcard .badge{font-size:.7rem;padding:1px 8px;border-radius:999px}
+  .b-core{background:var(--red-soft);color:var(--red)}
+  .b-phrase{background:var(--blue-soft);color:var(--blue)}
+  .b-poly{background:var(--purple-soft);color:var(--purple)}
+  .b-write{background:var(--green-soft);color:var(--green)}
+  .wcard .cn{margin-top:8px;font-size:1rem;font-weight:600}
+  .wcard .en-def{color:var(--muted);font-size:.86rem;font-style:italic;margin-top:2px}
+  .wcard .row{margin-top:10px;font-size:.86rem;padding:8px 10px;border-radius:8px}
+  .wcard .row b{font-size:.72rem;display:block;margin-bottom:2px;letter-spacing:.06em}
+  .r-ex{background:var(--hl)} .r-ex b{color:var(--hl-border)}
+  .r-mem{background:var(--green-soft)} .r-mem b{color:var(--green)}
+  .r-syn{background:var(--blue-soft)} .r-syn b{color:var(--blue)}
+  .r-conf{background:var(--red-soft)} .r-conf b{color:var(--red)}
+  #panel .close{display:none}
+  @media (max-width:900px){
+    aside{position:fixed;left:0;right:0;bottom:0;z-index:50;padding:0 8px 8px}
+    #panel{box-shadow:0 -6px 24px rgba(0,0,0,.18);max-height:55vh;overflow-y:auto;display:none}
+    #panel.open{display:block}
+    #panel .close{display:block;float:right;border:none;background:var(--line);border-radius:8px;padding:2px 10px;cursor:pointer;color:var(--ink)}
+  }
+  /* 选项库 */
+  .optlib{display:grid;gap:8px}
+  .optitem{display:flex;gap:10px;border:1px solid var(--line);border-radius:10px;padding:9px 12px;font-size:.9rem}
+  .optitem .lt{font-weight:700;font-family:var(--serif);color:var(--accent);flex:0 0 18px}
+  .optitem.used{opacity:.45}
+  .optitem.extra{border-color:var(--red);background:var(--red-soft)}
+  .optitem .oen{font-family:var(--serif);font-size:.92rem;line-height:1.75}
+  .optitem .zhx{display:block;color:var(--muted);font-size:.82rem;margin-top:3px}
+  .optitem .kw{display:block;font-size:.78rem;color:var(--blue);margin-top:3px}
+  .optitem .stg{display:inline-block;font-size:.72rem;background:var(--purple-soft);color:var(--purple);border-radius:999px;padding:1px 9px;margin-top:5px}
+  /* 空格题 */
+  .person{margin-bottom:26px;padding-bottom:20px;border-bottom:1px dashed var(--line)}
+  .person:last-child{border:none}
+  .pname{font-family:var(--serif);font-weight:700;font-size:1.05rem;margin-bottom:8px}
+  .pname .qn{color:var(--accent)}
+  .stance{font-size:.72rem;border-radius:999px;padding:1px 9px;margin-left:8px;vertical-align:2px;font-family:var(--sans);font-weight:400}
+  .st-anti{background:var(--red-soft);color:var(--red)}
+  .st-pro{background:var(--green-soft);color:var(--green)}
+  .st-mid{background:var(--blue-soft);color:var(--blue)}
+  .slot{display:inline;background:var(--accent-soft);border-bottom:2px solid var(--accent);border-radius:3px;padding:0 6px;color:var(--accent);font-weight:700;font-family:var(--sans);font-size:.88rem}
+  .slot.filled{background:var(--green-soft);border-color:var(--green);color:var(--ink);font-weight:400;font-family:var(--serif);font-size:1.03rem}
+  .slot.filled .fl{font-family:var(--sans);font-size:.78rem;font-weight:700;color:var(--green);margin-right:5px}
+  .chips{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0 4px}
+  .chips .ch{width:38px;height:34px;border:1px solid var(--line);border-radius:8px;background:none;font-family:var(--serif);font-weight:700;font-size:1rem;color:var(--ink);cursor:pointer;transition:all .15s}
+  .chips .ch:hover{border-color:var(--accent)}
+  .person.done .ch{cursor:default;opacity:.6}
+  .ch.right{background:var(--green-soft);border-color:var(--green);color:var(--green);opacity:1!important}
+  .ch.wrong{background:var(--red-soft);border-color:var(--red);color:var(--red);opacity:1!important}
+  .expl{display:none;margin-top:10px;background:var(--accent-soft);border-radius:10px;padding:12px 14px;font-size:.9rem}
+  .person.done .expl{display:block}
+  .expl b{color:var(--accent)}
+  .loc{font-family:var(--serif);font-style:italic;background:var(--hl);padding:1px 4px;border-radius:3px}
+  .expl .line{margin-top:8px;padding-top:8px;border-top:1px dashed var(--line)}
+  .expl .mine{margin-top:8px;padding:8px 10px;background:var(--red-soft);border-radius:8px;color:var(--red);font-size:.86rem}
+  .wb{display:grid;gap:10px}
+  .wbi{border-left:3px solid var(--green);background:var(--green-soft);border-radius:0 10px 10px 0;padding:10px 14px;font-size:.92rem}
+  .wbi .p{font-family:var(--serif);font-weight:600}
+  .wbi .u{color:var(--muted);font-size:.85rem}
+  /* 表格 */
+  .tbwrap{overflow-x:auto}
+  table.gt{border-collapse:collapse;width:100%;min-width:600px;font-size:.86rem}
+  table.gt th,table.gt td{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
+  table.gt th{background:var(--accent-soft);color:var(--accent);font-weight:600;font-size:.8rem}
+  table.gt td.c{text-align:center;font-family:var(--serif);font-weight:700}
+  table.gt tr.bad td{background:var(--red-soft)}
+  /* 分区带 */
+  .zone{display:grid;grid-template-columns:118px 1fr;gap:12px;padding:9px 0;border-bottom:1px dashed var(--line);font-size:.9rem}
+  .zone:last-child{border:none}
+  .zone .zn{font-size:.82rem;color:var(--accent);font-weight:600}
+  .zone.empty{background:var(--red-soft);border-radius:8px;padding-left:10px}
+  .zone.empty .zn{color:var(--red)}
+  /* 长难句 */
+  .ls{border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:14px}
+  .ls .s{font-family:var(--serif);font-size:.98rem;line-height:1.85}
+  .ls .an{margin-top:10px;font-size:.88rem}
+  .ls .an div{margin-top:4px}
+  .ls .tr{margin-top:8px;padding:8px 12px;background:var(--blue-soft);border-radius:8px;font-size:.88rem}
+  .mk{color:var(--red);font-weight:600}
+  .mk2{color:var(--blue);font-weight:600}
+  .mk3{color:var(--green);font-weight:600}
+  .box{border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:0 10px 10px 0;padding:12px 14px;margin:12px 0;font-size:.92rem;background:var(--accent-soft)}
+  .box.red{border-left-color:var(--red);background:var(--red-soft)}
+  .box.green{border-left-color:var(--green);background:var(--green-soft)}
+  .box .bt{font-weight:700;color:var(--accent);display:block;margin-bottom:6px}
+  .box.red .bt{color:var(--red)} .box.green .bt{color:var(--green)}
+  .en,.zh,.expl,.wbi,.optitem,.ls,.zone,.bd,figcaption,p,li,td,th{overflow-wrap:anywhere}
+  footer{color:var(--muted);font-size:.8rem;text-align:center;margin-top:30px}
+  #yd{position:fixed;z-index:60;display:none;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:4px 12px;font-size:.8rem;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+</style>
+<style>
+  /* 2013 selection-insertion page extras */
+  .layout{grid-template-columns:minmax(0,1fr) 340px}
+  @media (max-width:900px){.layout{grid-template-columns:minmax(0,1fr)}}
+  main,aside{min-width:0}
+  .clue2{border-bottom:2px dotted var(--blue)}
+  .optitem .oen{display:block}
+  table.gt td[colspan]{background:var(--accent-soft)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">◀ 返回英语复盘中心</a>
+  <header>
+    <h1>Make Social Sciences Relevant　让社会科学有用起来</h1>
+    <div class="sub">2013 年英语（一）真题 · Part B 新题型（<b>选句填空</b>：文中挖 5 个空 ⇄ 7 句选二余）· 建议做题 <b>6–8 min</b> · 话题：社会科学家为什么对气候、饥饿这类全球难题使不上劲，钱该怎么花 · 黄皮书口径 534 words（脚本数正文连同五个答案句 534 词，分毫不差；再加两个多余项共 605 词）· 源自《自然》<i>Nature</i> 2012 年 4 月 26 日评论 <i>Make Social Sciences Relevant</i>（作者 Luk Van Langenhove，时任联合国大学比较区域一体化研究所所长）</div>
+    <div class="tags">
+      <span class="tag">正确答案：41 E　42 F　43 B　44 G　45 C（A、D 多余）</span>
+      <span class="tag">变体：选句填空（Part B 的第四次：2008 · 2009 · 2012 · 2013）</span>
+      <span class="tag">文章线：<b>论证线</b>·「问题 → 原因 → 方案」三区</span>
+      <span class="tag">Claude 盲做：5/5 —— 唯一一闪而过的是 42（D 与 F）</span>
+    </div>
+  </header>
+
+  <div class="layout">
+    <main>
+
+      <section class="card">
+        <h2><span class="n">00</span>开考先认三样：变体 · 文章线 · 空的形态 —— 本篇的主刀是「回指评价句」</h2>
+        <p style="font-size:.92rem">2012《下载与上传》教会我们「<b>每个空先读下一句</b>」：下一句把一个新词当成已知信息来用，这个词就只能由空格引入（R136）。2013 年把这条路又走深了一步——<span class="mk">五个空里有四个，空格后面紧跟着（41 是隔一句）的就是 <u>This／That／Here</u>，而跟在它后面的那个谓语，直接告诉你空格里装的是哪一类东西。</span></p>
+
+        <h3 class="sh">① 认变体（Directions 那三行）</h3>
+        <p style="font-size:.92rem"><span class="loc">some sentences have been removed … There are two extra choices</span> ⟹ <b>选句填空</b>，五空七句、二项多余。与排序题（<span class="loc">paragraphs … numbered boxes</span>）、标题匹配（<span class="loc">heading</span>）、观点匹配（<span class="loc">match each person</span>）一眼可分（R32）。</p>
+
+        <h3 class="sh">② 认线（读完每段首句就够）</h3>
+        <p style="font-size:.92rem">① 社科很兴旺 → ② <span class="loc">Yet this enormous resource is not contributing enough</span> → ④ <span class="loc">Today, the social sciences are largely focused on disciplinary problems</span> → ⑥ <span class="loc">The problem is not necessarily the amount of available funding</span> → ⑦ <span class="loc">The trick is to direct these funds better</span>。
+          ⟹ <b>标准的「问题 → 原因 → 方案」议论文</b>，黄皮书的脉络也正是这三段：问题（①–③）、原因（④⑤）、方案（⑥⑦）。
+          <span class="mk">⟹ 和 2012 一样是论证线，但骨架更规整：七个选项可以先按三区分堆（02++ 节）。</span></p>
+
+        <h3 class="sh">③ 定空的形态：三中一首一末 —— 而且五个空后面都紧跟着正文</h3>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:600px">
+          <tr><th style="width:8%">空</th><th style="width:22%">位置</th><th style="width:34%">上一句（头钩的来源）</th><th>下一句（尾钩的来源）</th></tr>
+          <tr><td class="c">41</td><td>第②段 <b>段中</b>（首句后）</td><td><span class="loc">not contributing enough to today’s global challenges, including…</span></td><td><span class="loc">Humanity has the necessary agro-technological tools…</span> ＋ <span class="loc"><b>Here, too</b>, the problems are social</span></td></tr>
+          <tr><td class="c">42</td><td>第③段 <b>段首</b></td><td>第②段末句 <span class="loc">the organization and distribution of food, wealth and prosperity</span></td><td><span class="loc"><b>This is a shame</b>—the community should be grasping the opportunity…</span></td></tr>
+          <tr><td class="c">43</td><td>第④段 <b>段末</b></td><td><span class="loc">the number of papers including the keywords … have increased rapidly</span></td><td>第⑤段首句 <span class="loc">When social scientists <b>do</b> tackle practical issues…</span></td></tr>
+          <tr><td class="c">44</td><td>第⑥段 <b>段中</b>（首句后）</td><td><span class="loc">The problem is not necessarily the amount of available funding.</span></td><td><span class="loc"><b>This is an adequate amount</b> so long as…</span></td></tr>
+          <tr><td class="c">45</td><td>第⑦段 <b>段中</b>（末句前）</td><td><span class="loc">But the intention is not to neglect social science; rather, the complete opposite.</span></td><td><span class="loc"><b>That should create</b> more collaborative endeavors…</span></td></tr>
+        </table>
+        </div>
+        <p style="font-size:.9rem;margin-top:8px">⭐ <b>五个空，五个都有「下一句」</b>——连段末的 43，下一段首句也立刻接得上。<span class="mk">这意味着五个空全都能从两头夹；而两头打架时，本篇每一次都是下一句说了算。</span></p>
+
+        <h3 class="sh">④ 主刀：回指评价句 —— This／That 后面的谓语是空格的「说明书」</h3>
+        <p style="font-size:.92rem">空格后一句用 <b>This／That</b> 开头，指的不是某个词，而是<b>整个空格那句话</b>；它后面的谓语是在给那句话<b>下评语</b>。评语是什么类型，空格就是什么类型：
+          <span class="loc">This is a <b>shame</b></span> ⟹ 空格是一件<b>坏事</b>；<span class="loc">This is an adequate <b>amount</b></span> ⟹ 空格里有一个<b>数量</b>；<span class="loc">That should <b>create</b> more collaborative endeavors</span> ⟹ 空格是一项能产生效果的<b>安排</b>。
+          再加两个<b>预设小词</b>：<span class="loc">Here, <b>too</b></span> ⟹ 空格里已经有过<b>同类的一例</b>；<span class="loc">When they <b>do</b> tackle</span> ⟹ 空格刚说过他们<b>很少碰</b>。
+          <span class="mk">五个空，五个都被空格后面的话锁死。</span>详见 02+ 节（R159 · R160）。</p>
+
+        <h3 class="sh">⑤ 时间与难点</h3>
+        <p style="font-size:.92rem">44 最送分（七项里只有 G 带数字），<b>先做 44</b>。真正要花时间的是三处：<b>41 三选一</b>（D、E、F 的开头都能回指「全球挑战」，黄皮书备选也是 D E F）、<b>43 二选一</b>（A、B 都在谈论文与学科）、<b>45 二选一</b>（C、D 都像「方案」）。<span class="mk">三处都是头钩打平、尾钩判胜负</span>，6–8 分钟足够。</p>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">01</span>七句选项（A–G）· 先给每一句贴「属于哪一区」，再看它的头和尾</h2>
+        <p style="font-size:.8rem;color:var(--muted);margin-bottom:12px">「问题 → 原因 → 方案」型议论文里，<b>选项的开头几个词就是它的区号</b>（These issues／Despite these factors ＝ 问题区；However, the numbers／It could be that ＝ 原因区；The solution／The idea is to／资金数字 ＝ 方案区）。答题后被选中的项会自动置灰，两个多余项带红框。</p>
+        <div class="optlib" id="optlib"></div>
+
+        <h3 class="sh">🪝 七句的「头」与「尾」：头要上家，尾要下家</h3>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:640px">
+          <tr><th style="width:6%">项</th><th style="width:47%">头：开头几个词要求上文有什么</th><th>尾：它说完之后，下文谁接得住</th></tr>
+          <tr class="bad"><td class="c">A</td><td><span class="loc">It could be that</span> ⟹ 推测句，上文须先摆出一个<b>待解释的现象</b>；它谈「专业期刊 vs 政策简报」，那个现象只能是「期刊论文里关键词很少」——<b>那是 B 的内容</b> △</td><td><span class="loc">two communities</span> ⟹ 下文（⑤ 研究范围局限于本国）再没人提「两个群体」 ✘</td></tr>
+          <tr><td class="c">B</td><td><span class="loc">However</span> ＋ <span class="loc">the numbers</span> ＋ <span class="loc">these keywords</span> ⟹ 上文须刚出现一个<b>上升的数量</b>和<b>几个关键词</b> → ④❷ ✔</td><td>「一千六百比十万」＝社科界<b>很少碰</b>现实议题 ⟹ ⑤❶ <span class="loc">When social scientists <b>do</b> tackle practical issues</span> ✔</td></tr>
+          <tr><td class="c">C</td><td><span class="loc">The idea is to</span> ⟹ 上文须刚提到一个<b>方案或意图</b> → ⑦❺ <span class="loc">the intention … the complete opposite</span> ✔</td><td><span class="loc">integrate their work with other categories</span> ⟹ ⑦❼ <span class="loc">That should create more collaborative endeavors</span> ✔</td></tr>
+          <tr class="bad"><td class="c">D</td><td><span class="loc">The solution is to</span> ⟹ 上文须刚立一个<b>问题</b>，且问题出在<b>观念</b>上 △（41 前有问题，但 41 的下一句要的是一个例子）</td><td><span class="loc">mindset</span>／<span class="loc">young scientists</span> ⟹ 下文的方案全是<b>钱</b>（⑥ funding · ⑦ direct these funds），没人接「观念」 ✘</td></tr>
+          <tr><td class="c">E</td><td><span class="loc">These issues</span> ⟹ 上文须刚列过几个议题 → ②❶ <span class="loc">climate change, security, sustainable development and health</span> ✔</td><td>「根子在人的行为」＋ 气候变化一例 ⟹ ②❸ 饥饿一例 ＋ <span class="loc">Here, <b>too</b>, the problems are social</span> ✔</td></tr>
+          <tr><td class="c">F</td><td><span class="loc">Despite these factors</span> ＋ <span class="loc">such problems</span> ⟹ 上文须刚讲完一串<b>社会因素</b> → ②❹ <span class="loc">the organization and distribution of food, wealth and prosperity</span> ✔</td><td><span class="loc">reluctant</span>／<span class="loc">up in arms</span>（一件坏事）⟹ ③ <span class="loc">This is a <b>shame</b></span> ✔；并预告了第⑦段的 Horizon 2020 之争</td></tr>
+          <tr><td class="c">G</td><td>形式上<b>没有头钩</b>（<span class="loc">During the late 1990s</span> 是个干净的开头），只能靠内容：上文须在谈<b>经费</b> → ⑥❶ <span class="loc">the amount of available funding</span> ✔</td><td><span class="loc">about 15%</span> ⟹ ⑥❸ <span class="loc">This is an adequate <b>amount</b></span> ✔（七项里唯一带数字）</td></tr>
+        </table>
+        </div>
+        <p style="font-size:.9rem;margin-top:10px">⭐ <b>五个正确项两头都对得上；两个多余项都是「头钩勉强、尾钩悬空」</b>——A 的头要的是 B 的数据，D 的尾接不上全文的「钱」。<span class="mk">和 2012 的 B、E 一样：画完这张表，答案与多余项同时现形。</span>
+          <br>⚠️ <b>G 是一个反例</b>：没有任何回指词的选项也能是答案，它全靠尾钩（amount ↔ 数字）进场。<span class="mk">「开头干净的选项多半是多余项」这个直觉在选句填空里不成立</span>——那是排序题定首段的判据（R79），别串用。</p>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">02</span>七段正文 · 点字母作答 <button class="allbtn" onclick="toggleAll()">译文 开/关</button></h2>
+        <p style="font-size:.8rem;color:var(--muted);margin-bottom:14px">🟡 高亮词可点出词卡（右侧/底部）｜ <span class="clue">红色虚线</span> ＝ 头钩（空格上文）｜ <span class="clue2">蓝色虚线</span> ＝ 尾钩（下一句的 This／That／Here／too／do）｜ 每个空下方点 A–G 作答，<b>答后空格就地补全成原文</b>，并出线索链解析 ＋ 错因标签</p>
+
+        <div class="para">
+          <div class="pname" style="font-family:var(--serif)">第一段 · 没有空（社科兴旺：三组数字）<button class="zbtn" onclick="tz(this)">译</button></div>
+          <p class="en">The social sciences are <span class="tk" data-w="flourish">flourishing</span>.
+            <span class="tk" data-w="asof">As of</span> 2005, there were almost half a million professional social scientists from all fields in the world, working both inside and outside <span class="tk" data-w="academia">academia</span>.
+            According to the <i>World Social Science Report 2010</i>, the number of social-science students worldwide has <span class="tk" data-w="swell">swollen</span> by about 11% every year since 2000.</p>
+          <div class="zh">社会科学正蓬勃发展。截至 2005 年，全世界各领域的职业社会科学家已近五十万人，学术界内外都有。据《2010 年世界社会科学报告》，自 2000 年以来，全球社会科学专业的学生人数每年增长约 11%。</div>
+        </div>
+
+        <div class="person q" id="q41" data-ans="E">
+          <div class="pname"><span class="qn">(41)</span> 第二段 · <b>段中空</b><span class="stance st-anti">⚠️ 三选一（黄皮书备选 D E F）</span><button class="zbtn" onclick="tz(this)">译</button></div>
+          <p class="en para">Yet this enormous <span class="tk" data-w="resource">resource</span> is not contributing enough to
+            <span class="clue">today’s global challenges, including climate change, security, <span class="tk" data-w="sustainable">sustainable</span> development and health</span>.
+            <span class="slot" data-n="41">(41) ＿＿＿＿＿＿＿＿</span>
+            Humanity has the necessary <span class="tk" data-w="agro">agro-technological</span> tools to <span class="tk" data-w="eradicate">eradicate</span> hunger, from <span class="tk" data-w="engineer">genetically engineered</span> crops to artificial <span class="tk" data-w="fertilizer">fertilizers</span>.
+            <span class="clue2"><span class="tk" data-w="heretoo">Here, too</span>, the problems are social</span>: <span class="clue">the organization and distribution of food, wealth and <span class="tk" data-w="prosperity">prosperity</span></span>.</p>
+          <div class="zh">然而，这一庞大的人才资源对当今的全球性挑战——包括气候变化、安全、可持续发展和健康——贡献并不够。<b>（41）这些问题的根源都在人的行为：它们都需要行为上的改变和社会层面的创新，也需要技术发展。比如遏制气候变化，改变消费模式、提高公众对税收的接受度，与开发清洁能源同样重要。</b>人类已经拥有消除饥饿所需的农业技术手段，从转基因作物到化肥应有尽有。这里的问题同样是社会性的：粮食、财富与繁荣如何组织、如何分配。</div>
+          <div class="chips"></div>
+          <div class="expl"><b>41 → E　These issues all have root causes in human behavior: all require behavioral change and social innovations, as well as technological development. Stemming climate change, for example, is as much about changing consumption patterns and promoting tax acceptance as it is about developing clean energy.</b>
+            <div class="line">🔗 <b>头钩（打平）</b>：<span class="loc">These issues</span> 回指上一句刚列的四个议题（climate change, security, sustainable development and health）——但<b>这一步定不了答案</b>：D 的 <span class="loc">The solution</span>（上一句正好是个问题）、F 的 <span class="loc">such problems</span>（也能回指全球难题）同样挂得上。黄皮书的备选也正是 D E F 三项。</div>
+            <div class="line">🔗 <b>尾钩一（最硬）· too 的预设</b>：空格后第二句 <span class="loc">Here, <b>too</b>, the problems are social</span>——<b>too 说的是「这里也一样」，它预设前面已经有一处「问题是社会性的」</b>。可空格前一句只说了「贡献不够」，从没说过问题出在社会。<span class="mk">⟹ 这个前例只能由空格给出</span>：七项里唯一说「问题的根子在人」的，就是 E 的 <span class="loc">root causes in human behavior</span>（R160）。</div>
+            <div class="line">🔗 <b>尾钩二 · 两个例子逐格同构</b>：E 用 <span class="loc">for example</span> 举了<b>气候</b>一例，空格后举的是<b>饥饿</b>一例，两例的骨架一模一样——
+              <br>　气候：技术有（<span class="loc">developing clean energy</span>）＋ 关键在人（<span class="loc">changing consumption patterns and promoting tax acceptance</span>）
+              <br>　饥饿：技术有（<span class="loc">genetically engineered crops to artificial fertilizers</span>）＋ 关键在人（<span class="loc">the organization and distribution of food</span>）
+              <br><span class="loc">Here</span> 指饥饿这件事，<span class="loc">too</span> 把它和气候那一例并排。<b>没有 E，饥饿一例就成了没有前例的「也」。</b></div>
+            <div class="line">🧱 <b>论证功能 ＝ 给判断补根源</b>：上一句抛出「社科贡献不够」，读者要问「全球难题关社科什么事？」——E 回答：<b>这些难题本来就是人的问题</b>（R138「判断补理由」）。</div>
+            <div class="line">🚫 <b>D 为什么进不来</b>：<span class="loc">The solution is to change the mindset</span> 一上来就开药方，可下一句还在举例证明「问题是社会性的」——<b>诊断还没完就开方，too 也找不到前例</b>。而且全文的方案区在第⑥⑦段（钱怎么花），不在这里。</div>
+            <div class="line">🚫 <b>F 为什么进不来</b>：<span class="loc">Despite <b>these factors</b></span> 要求上文刚讲过一串「因素」，而空格上一句只列了<b>议题</b>、没讲任何<b>因素</b>（黄皮书也正是用这一点排除 F）；再者 F 说科学家「不愿意」，下一句却跳到「人类有农业技术」，接缝断开。<b>F 的因素要等到本段末句（组织与分配）才出现——所以 F 属于下一个空。</b></div>
+          </div>
+        </div>
+
+        <div class="person q" id="q42" data-ans="F">
+          <div class="pname"><span class="qn">(42)</span> 第三段 · <b>段首空</b><span class="stance st-mid">证据 ＝ 上段末句的「因素」＋ This is a shame ＋ 熊彼特</span><button class="zbtn" onclick="tz(this)">译</button></div>
+          <p class="en para"><span class="slot" data-n="42">(42) ＿＿＿＿＿＿＿＿</span>
+            <span class="clue2">This is a <span class="tk" data-w="shame">shame</span></span>—the community should be <span class="tk" data-w="grasp">grasping the opportunity</span> to raise its influence in the real world.
+            To <span class="tk" data-w="paraphrase">paraphrase</span> the great social scientist Joseph Schumpeter: there is no <span class="tk" data-w="radical">radical</span> innovation without <span class="tk" data-w="creativedestruction">creative destruction</span>.</p>
+          <div class="zh"><b>（42）尽管有这些因素，许多社会科学家似乎仍不愿去应对这类问题。在欧洲，一项提议要取消社科研究的专项资助类别、把它并入可持续发展的跨领域课题，一些人为此群情激愤。</b>这真令人遗憾——社科界本应抓住这个机会，扩大自己在现实世界中的影响力。套用伟大的社会科学家约瑟夫·熊彼特的话：没有创造性的破坏，就没有根本性的创新。</div>
+          <div class="chips"></div>
+          <div class="expl"><b>42 → F　Despite these factors, many social scientists seem reluctant to tackle such problems. And in Europe, some are up in arms over a proposal to drop a specific funding category for social-science research and to integrate it within cross-cutting topics of sustainable development.</b>
+            <div class="line">🔗 <b>头钩（跨段，但仍是紧邻句）</b>：<span class="loc">these factors</span> 回指上一段末句刚列的一串社会因素——<span class="loc">the organization and distribution of food, wealth and prosperity</span>（连同 E 里的 consumption patterns、tax acceptance）；<span class="loc">such problems</span> 回指全球难题。<span class="loc">Despite</span> 是让步：<b>因素明明摆在那里（社科本该出场），他们却不愿意</b>。跨了段，但先行词就在紧挨着的上一句，距离合格（R53）。</div>
+            <div class="line">🔗 <b>尾钩一 · 评价谓语</b>：<span class="loc">This is a <b>shame</b></span>——shame 在这里是「遗憾、可惜」（不是「羞耻」），<b>它要求空格是一件坏事</b>。七项里说坏事的只有 F（不愿意 ＋ 群情激愤）；A 是推测、B 是数据、C／D 是方案、E 是分析、G 是数字（R159）。</div>
+            <div class="line">🔗 <b>尾钩二 · should be doing</b>：<span class="loc">the community should be grasping the opportunity</span>——「本该正在抓住机会」＝ <b>现在没有抓</b>，正对着 F 第一句的 <span class="loc">reluctant to tackle</span> 说。</div>
+            <div class="line">🔗 <b>尾钩三 · 熊彼特那句名言只对 F 的第二句成立</b>：<span class="loc">no radical innovation without creative destruction</span>——「拆掉旧的才有新的」。拆掉什么？正是 F 里那个要被取消的<b>专项资助类别</b>（<span class="loc">drop a specific funding category</span>）。<span class="mk">作者引这句话，是在批评那些「为取消专项而抗议」的人；没有 F，这句名言无的放矢。</span></div>
+            <div class="line">🔁 <b>F 是第⑦段的预告片</b>：<span class="loc">a proposal to drop a specific funding category</span> → ⑦❸ <span class="loc">Horizon 2020 … would not have such a category</span>；<span class="loc">up in arms</span> → ⑦❹ <span class="loc">protests from social scientists</span>；<span class="loc">integrate it within cross-cutting topics</span> → 45 题 C 的 <span class="loc">integrate their work with other categories</span>。<b>同一件事讲了两遍：第③段先下判语（可惜、要破旧立新），第⑦段才交代来龙去脉。所以 42 和 45 是一对</b>——做 45 时回看 F，C 几乎是它的改写。</div>
+            <div class="mine">🚩 <b>我的实况</b>：5/5，唯一一闪而过的是 D——D 说「全球挑战应该得到更多关注」，看着像是顺着第②段往下说。让我放弃它的是 <span class="loc">This is a shame</span>：<b>一个解决方案怎么会是「可惜」？</b>评价谓语一对，D 当场出局。</div>
+          </div>
+        </div>
+
+        <div class="person q" id="q43" data-ans="B">
+          <div class="pname"><span class="qn">(43)</span> 第四段 · 段末空<span class="stance st-anti">⚠️ 二选一（黄皮书备选 A B）</span><button class="zbtn" onclick="tz(this)">译</button></div>
+          <p class="en para">Today, the social sciences are largely focused on <span class="tk" data-w="disciplinary">disciplinary</span> problems and internal <span class="tk" data-w="scholarly">scholarly</span> debates, rather than on topics with external impact.
+            Analyses reveal that <span class="clue">the number of papers including the <span class="tk" data-w="keyword">keywords</span> “environmental change” or “climate change” have increased rapidly since 2004</span>.
+            <span class="slot" data-n="43">(43) ＿＿＿＿＿＿＿＿</span></p>
+          <div class="zh">如今，社会科学主要关注学科内部的问题和学术圈里的争论，而不是对外界有影响的话题。分析显示，自 2004 年以来，含有「环境变化」或「气候变化」关键词的论文数量增长迅速。<b>（43）然而，总量仍然很小：2010 年全球发表的十万篇社科论文里，只有约一千六百篇含有其中某个关键词。</b></div>
+          <div class="chips"></div>
+          <div class="expl"><b>43 → B　However, the numbers are still small: in 2010, about 1,600 of the 100,000 social-sciences papers published globally included one of these keywords.</b>
+            <div class="line">🔗 <b>头钩（三道同时扣上）</b>：① <span class="loc">However</span> 对着上一句的 <span class="loc">have increased rapidly</span> 转折——涨得快，但底子小；② <span class="loc">the numbers</span> 回指 <span class="loc">the number of papers</span>；③ <span class="loc">these keywords</span> 回指 <span class="loc">“environmental change” or “climate change”</span>。</div>
+            <div class="line">🔗 <b>尾钩 · 强调 do 的预设</b>：第⑤段首句 <span class="loc">When social scientists <b>do</b> tackle practical issues, their scope is often local</span>——肯定句里加助动词 do 是<b>强调</b>：「<b>真去</b>碰现实问题的时候」。<span class="mk">强调「真去做」，等于承认「平常很少做」</span>——这个「很少」必须先被说出来，而七项里给出「很少」的只有 B（一千六百比十万，1.6%）。A 说的是「分成两个群体」，没说「很少」，do 就失去了前提（R160）。</div>
+            <div class="line">🧱 <b>论证功能 ＝ 让步三拍的第三拍</b>：本段首句是论点（社科只顾学科内部），第二句却冒出一个<b>对论点不利的事实</b>（气候类论文涨得快）。段末必须把论点救回来 ⟹ <span class="loc">However, … still small</span>。<b>论点 → 反向事实 → However 拉回</b>，是议论文最常见的段内三拍；空在第三拍时，答案必带转折词。</div>
+            <div class="line">🚫 <b>A 为什么进不来</b>：<span class="loc">It could be that we are evolving two communities</span> 是一句<b>推测</b>，推测总要解释一个现象。它解释的是：为什么期刊论文里关键词这么少？——也许解决问题的那批人把东西发到<b>政策简报</b>去了，不在 <span class="loc">highly specialized journals</span> 里。<span class="mk">⟹ 它要的那个现象（期刊论文里很少）正是 B 的内容：A 是 B 的下家，不是 43 的主人</span>（R137 第二例；2012 的 E 是 G 的下家）。直接放进 43，① 紧跟「增长迅速」去推测「两个群体」，推的对象不明；② 丢了段内必需的 However，本段论点被「增长迅速」反驳后没人救回来；③ 第⑤段的 do 没有前提。</div>
+            <div class="line">🚫 <b>黄皮书的排除角度</b>：本段首句是「关注学科问题<b>而不是</b>外部话题」的<b>取舍关系</b>，A 描述的两类社科家是<b>并存关系</b>，前后逻辑不符——与上面「A 要 B 的数据」是同一件事的两面。</div>
+            <div class="line">⚠️ <b>原卷语法小瑕疵</b>：<span class="loc">the number of papers … <b>have</b> increased</span>——<b>the number of</b> 作主语时谓语用单数（has），<b>a number of</b> 才接复数。原卷如此、照录不改；<b>作文里别跟着写</b>。</div>
+          </div>
+        </div>
+
+        <div class="para">
+          <div class="pname" style="font-family:var(--serif)">第五段 · 没有空（但它的首句是 43 的尾钩）<button class="zbtn" onclick="tz(this)">译</button></div>
+          <p class="en"><span class="clue2">When social scientists <span class="tk" data-w="do">do</span> <span class="tk" data-w="tackle">tackle</span> practical issues</span>, their <span class="tk" data-w="scope">scope</span> is often <span class="tk" data-w="local">local</span>: Belgium is interested mainly in the effects of poverty on Belgium, for example.
+            And whether the community’s work contributes much to an overall <span class="tk" data-w="accumulation">accumulation</span> of knowledge is <span class="tk" data-w="doubtful">doubtful</span>.</p>
+          <div class="zh">社会科学家真去应对现实问题时，眼光也往往只盯着本国：比如比利时主要关心贫困对比利时的影响。至于社科界的工作对人类知识的整体积累有多大贡献，也值得怀疑。</div>
+        </div>
+
+        <div class="person q" id="q44" data-ans="G">
+          <div class="pname"><span class="qn">(44)</span> 第六段 · <b>段中空</b><span class="stance st-pro">✅ 全篇最送分：七项里只有 G 带数字</span><button class="zbtn" onclick="tz(this)">译</button></div>
+          <p class="en para">The problem is not necessarily <span class="clue">the amount of available funding</span>.
+            <span class="slot" data-n="44">(44) ＿＿＿＿＿＿＿＿</span>
+            <span class="clue2">This is an <span class="tk" data-w="adequate">adequate</span> amount</span> <span class="tk" data-w="solongas">so long as</span> it is aimed in the right direction.
+            Social scientists who complain about a lack of funding should not expect more in today’s <span class="tk" data-w="climate">economic climate</span>.</p>
+          <div class="zh">问题未必出在可用资金的多少。<b>（44）20 世纪 90 年代末，各国在社会科学和人文学科上的投入占全部研发经费（包括政府、高校、非营利机构和企业的经费）的比例，从约 4% 到 25% 不等；在大多数欧洲国家约为 15%。</b>只要投对方向，这个数目就够了。那些抱怨经费不足的社会科学家，在当今的经济形势下，不该指望拿到更多。</div>
+          <div class="chips"></div>
+          <div class="expl"><b>44 → G　During the late 1990s, national spending on social sciences and the humanities as a percentage of all research and development funds—including government, higher education, non-profit and corporate—varied from around 4% to 25%; in most European nations, it is about 15%.</b>
+            <div class="line">🔗 <b>尾钩（一击即中）· 评价谓语要一个量</b>：<span class="loc">This is an adequate <b>amount</b></span>——This 指的东西必须是一个<b>数量</b>，而七项里带数字的只有 G（4%–25%，约 15%）。<span class="mk">先做这一空，G 当场出列，剩下六选四。</span>（R159）</div>
+            <div class="line">🔗 <b>头钩（内容钩，没有回指词）</b>：上一句 <span class="loc">The problem is not necessarily the amount of available funding</span> 是个否定判断，读者马上要问「那钱到底有多少？」——G 回答了。<b>G 开头没有任何 this／these／however</b>，是七项里唯一「开头干净」的正确项：<b>没有形式钩的选项，照样能靠下一句进场</b>。</div>
+            <div class="line">🧱 <b>全文的「钱」字链，五环不断</b>：⑥❶ <span class="loc">the amount of available funding</span> → 44 G <span class="loc">national spending … research and development funds</span> → ⑥❸ <span class="loc">an adequate amount</span> → ⑥❹ <span class="loc">a lack of funding</span> → ⑦❶ <span class="loc">direct <b>these funds</b> better</span>。<b>这条链也判了 D 的死刑</b>：作者的方案从头到尾是「钱怎么花」，不是 D 的「观念怎么变」（见 45 与 03 节）。</div>
+            <div class="line">⚠️ <b>同一篇两个 climate</b>：②❶ <span class="loc">climate change</span>（气候）vs ⑥❹ <span class="loc">today’s economic climate</span>（经济<b>形势</b>）。后者是熟词僻义，读成「经济气候」还勉强能懂，写进译文就扣分。</div>
+          </div>
+        </div>
+
+        <div class="person q" id="q45" data-ans="C">
+          <div class="pname"><span class="qn">(45)</span> 第七段 · <b>段中空</b>（末句前）<span class="stance st-anti">⚠️ 二选一（黄皮书备选 C D）</span><button class="zbtn" onclick="tz(this)">译</button></div>
+          <p class="en para">The <span class="tk" data-w="trick">trick</span> is to <span class="tk" data-w="direct">direct</span> these funds better.
+            The European Union Framework funding programs have long had a <span class="tk" data-w="category">category</span> <span class="tk" data-w="target">specifically targeted at</span> social scientists.
+            This year, it was proposed that the system be changed: Horizon 2020, a new program to be <span class="tk" data-w="enact">enacted</span> in 2014, would not have such a category.
+            This has resulted in protests from social scientists.
+            <span class="clue">But the intention is not to <span class="tk" data-w="neglect">neglect</span> social science; <span class="tk" data-w="rather">rather, the complete opposite</span>.</span>
+            <span class="slot" data-n="45">(45) ＿＿＿＿＿＿＿＿</span>
+            <span class="clue2">That should create more <span class="tk" data-w="collaborative">collaborative</span> <span class="tk" data-w="endeavor">endeavors</span></span> and help to develop projects <span class="tk" data-w="aimedat">aimed directly at</span> solving global problems.</p>
+          <div class="zh">诀窍在于把这些资金用得更好。欧盟的框架资助计划长期以来都设有一个专门面向社会科学家的类别。今年有人提议改革这一体制：拟于 2014 年实施的新计划「地平线 2020」将不再设这一类别。这引起了社会科学家的抗议。但这一提议的本意并不是冷落社会科学，恰恰相反。<b>（45）其用意是促使社会科学家把自己的工作融入其他类别，包括：健康与人口变化；粮食安全；海洋研究与生物经济；清洁高效的能源；以及包容、创新、安全的社会。</b>这应当会催生更多协作，并有助于开发直接针对全球性问题的项目。</div>
+          <div class="chips"></div>
+          <div class="expl"><b>45 → C　The idea is to force social scientists to integrate their work with other categories, including health and demographic change; food security; marine research and the bio-economy; clean, efficient energy; and inclusive, innovative and secure societies.</b>
+            <div class="line">🔗 <b>头钩 · 同义换词 ＋「恰恰相反」要一个反面</b>：<span class="loc">the <b>intention</b> is not to neglect social science; rather, the complete opposite</span> → C <span class="loc">The <b>idea</b> is to force social scientists to integrate…</span>——intention 换成 idea（本意 ≈ 用意）；「冷落」的<b>完全反面</b>不是「照顾」，而是<b>把社科硬塞进每一个领域</b>（force … integrate）。</div>
+            <div class="line">🔗 <b>尾钩 · 评价谓语要一项「会产生效果的安排」</b>：<span class="loc">That should <b>create</b> more <b>collaborative</b> endeavors and help to develop projects aimed directly at solving global problems</span>——That 指的是一个<b>会带来后果的制度安排</b>，后果是「协作」；C 的 <span class="loc">integrate their work with other categories</span> 正是协作的原因，C 列的五个主题（健康、粮食、海洋、能源、社会）正是「全球问题」（R159）。</div>
+            <div class="line">🚫 <b>D 为什么进不来（四层）</b>：① <b>头</b>：<span class="loc">The solution is to</span> 要求上一句是个<b>问题</b>，而上一句说的是欧盟的<b>本意</b>；② <b>主体</b>：本段谈的是欧盟怎么设资助类别，D 却在谈学术界该怎么想、年轻学者该关注什么——换了主角；③ <b>杠杆</b>：作者的方案本段首句就亮了——<span class="loc">The trick is to direct these funds better</span>，杠杆是<b>钱</b>，D 的杠杆是<b>观念</b>；④ <b>尾</b>：「改变观念」没法被 That should create 当成一项已提出的安排来评价。<span class="mk">⟹ D 站在方案区，却是一张换了杠杆的第二张药方</span>（R161）。</div>
+            <div class="line">🔁 <b>回扣 42</b>：F 里「并入<b>可持续发展的跨领域课题</b>」在 C 里展开成五个主题；第③段熊彼特的「<b>创造性破坏</b>」在这里兑现——拆掉专项（破坏）→ 催生协作项目（创造）。<b>F 是预告、C 是揭底，同一件事首尾各说一次。</b></div>
+            <div class="line">💡 <b>C 的标点</b>：五个并列项之间用<b>分号</b>，因为有的项内部自带逗号（<span class="loc">clean, efficient energy</span>／<span class="loc">inclusive, innovative and secure societies</span>）——<b>并列项里有逗号时，项与项之间升级成分号</b>。这五项与欧盟最终定稿的 Horizon 2020 七大「社会挑战」大体对应（定稿另有交通、气候行动两项），不是命题人编的。</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card" id="tail">
+        <h2><span class="n">02+</span>本页最值钱：回指评价句 —— This／That 后面的谓语就是空格的说明书</h2>
+        <p style="font-size:.92rem">This／That 单独作主语、后面紧跟一个<b>评语</b>时，它回指的不是某个名词，而是<b>前面整句话</b>。评语对被评的东西有<b>类型要求</b>：只有坏事才「可惜」、只有数量才「够不够」、只有安排才「会催生」。<span class="mk">所以做题时别急着看空格前面——先把下一句的评语翻成一个「类型」，再去七项里找那个类型。</span></p>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:700px">
+          <tr><th style="width:6%">空</th><th style="width:30%">下一句的开头</th><th style="width:24%">它要求空格是什么类型</th><th>七项里谁是这个类型</th></tr>
+          <tr><td class="c">42</td><td><span class="loc">This is a <b>shame</b></span>—the community <b>should be</b> grasping the opportunity</td><td>一件<b>坏事</b>，且是「该做没做」</td><td>只有 <b>F</b>（reluctant ＋ up in arms）；D 是药方、E 是分析，都不「可惜」</td></tr>
+          <tr><td class="c">44</td><td><span class="loc">This is an adequate <b>amount</b></span> so long as…</td><td>一个<b>数量</b></td><td>只有 <b>G</b> 带数字（4%–25%，约 15%）</td></tr>
+          <tr><td class="c">45</td><td><span class="loc">That should <b>create</b> more collaborative endeavors</span></td><td>一项会产生效果的<b>安排</b>，效果是协作</td><td><b>C</b>（integrate with other categories）；D 是观念，不是安排</td></tr>
+          <tr><td colspan="4"><b>另两空用的是「预设小词」</b>——不是 This／That，但同样替空格规定了内容（R160）：</td></tr>
+          <tr><td class="c">41</td><td>空格后第二句 <span class="loc">Here, <b>too</b>, the problems are social</span></td><td>前面已有<b>同类的一例</b>「问题是社会性的」</td><td>只有 <b>E</b>（root causes in human behavior ＋ 气候一例）</td></tr>
+          <tr><td class="c">43</td><td>⑤❶ <span class="loc">When social scientists <b>do</b> tackle practical issues</span></td><td>前面刚说过他们<b>很少</b>碰</td><td><b>B</b>（1,600 of 100,000）；A 只说「分成两群」</td></tr>
+        </table>
+        </div>
+        <div class="box"><span class="bt">⭐ 和 2012 的尾钩（R136）是两种形态</span>
+          <b>2012 的尾钩是「新词当旧信息」</b>：下一句把一个从没出现过的词带着 The／it 使用（<span class="loc">The networked computer</span>）⟹ 去七项里找<b>那个词</b>。
+          <b>2013 的尾钩是「回指评价句」</b>：下一句用 This／That 回指整句、再给评语 ⟹ 去七项里找<b>那个类型</b>。
+          <span class="mk">前者比词面，后者比类型——类型钩连「七项里没有复现词」的情形也管得住</span>（G 与 This is an adequate amount 之间一个共同词都没有，照样锁死）。
+          <br>两年连起来只有一句话：<b>选句填空，每个空先读下一句</b>（R32 第二年验证）。
+        </div>
+        <div class="box green"><span class="bt">✅ 考场动作（三步）</span>
+          ① 每个空<b>先读下一句</b>，圈出句首的 <b>This／That／Here</b>，和句中的 <b>too／also／do／still</b>；<br>
+          ② 把 This／That 后面的谓语翻成类型：<b>坏事（shame／pity／problem）· 数量（amount／figure）· 安排（create／lead to／help）· 好事（welcome／good news）· 理由（because）</b>；too／also ⟹ 前面有同类一例；强调 do ⟹ 前面说过「很少」；<br>
+          ③ 七项里<b>先划掉类型不对的</b>，剩下的再用头钩复核。<b>本篇 42／44 两空，只用前两步就锁死。</b>
+        </div>
+        <div class="box red"><span class="bt">⚠️ 两条边界</span>
+          ① <b>This 后面接名词时</b>（this pyramid／this separation），它是<b>指代某个词</b>，走 R53／R109 的「先行词距离」判据，不是本节的「类型」判据；<br>
+          ② <b>评语有时是空格的主人之外的另一句话</b>：若空格与 This 之间还隔着一句，This 通常就近回指那一句——<b>先数距离</b>（本篇三处 This／That 全是紧挨着的；41 的 Here, too 隔了一句，但 Here 指的是紧邻的饥饿一例，too 才去找更前面的前例）。
+        </div>
+      </section>
+
+      <section class="card" id="zones">
+        <h2><span class="n">02++</span>三区分区：问题 → 原因 → 方案 —— 多余项不是「没有区」，而是「区里的格子被占了」</h2>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:680px">
+          <tr><th style="width:17%">区</th><th style="width:15%">段</th><th style="width:12%">空</th><th style="width:28%">该区的正确项</th><th>站在该区却没进来的</th></tr>
+          <tr><td><b>问题</b>：社科对全球难题贡献不足</td><td>①–③</td><td class="c">41 · 42</td><td><b>E</b> 根源在人 · <b>F</b> 科学家却不愿意</td><td>—</td></tr>
+          <tr class="bad"><td><b>原因</b>：只顾学科内部、眼光局限</td><td>④⑤</td><td class="c">43</td><td><b>B</b> 相关论文总量仍小</td><td><b>A</b> 推测「两个群体」——它解释的正是 B 的数据，只能排在 B 后面，而 B 与第⑤段之间没有空</td></tr>
+          <tr class="bad"><td><b>方案</b>：钱够了，要花对地方</td><td>⑥⑦</td><td class="c">44 · 45</td><td><b>G</b> 经费比例 · <b>C</b> 欧盟的用意</td><td><b>D</b> 改变观念——同区，但作者亮出的杠杆是<b>钱</b>（⑦❶ direct these funds），两个空又分别被「数量」「安排」两道尾钩占死</td></tr>
+        </table>
+        </div>
+        <div class="box"><span class="bt">⭐ 和前几篇的分区法比，多了一层「区内比杠杆」</span>
+          2008（流程线）与 2009（人物线）的多余项是<b>整区没空</b>：它所属的那一格根本没挖空（R31／R56）。
+          2013 不一样：<b>A 与 D 所在的区都有空</b>，只是 A 在区内的<b>站位</b>不对（要排在 B 后面），D 在区内的<b>杠杆</b>不对（作者给的方案是资金，不是观念）。
+          <span class="mk">⟹ 分完区还没完：区里有空时，再问两件事——它要谁当上家？它和作者自己亮出的方案是不是一回事？</span>（R161）
+        </div>
+        <p style="font-size:.9rem;margin-top:8px">📐 <b>2012 与 2013 的论证线，钥匙换了一头</b>：2012 主要看<b>空格前一句抛出了什么</b>（警告补原因、困境补出路，R138）；2013 同样的功能表只能把 41 缩到 D、E、F 三项，<b>最后一刀全在下一句</b>。<b>论证线文章，功能标签定范围，下一句定答案。</b></p>
+      </section>
+
+      <section class="card" id="extra">
+        <h2><span class="n">03</span>两个多余项：A 与 D —— 一个是正确项的下家，一个是换了杠杆的药方</h2>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:680px">
+          <tr><th style="width:5%">项</th><th style="width:27%">它说的（中文）</th><th style="width:22%">它本该站在哪</th><th>为什么五个空都装不下</th></tr>
+          <tr><td class="c">A</td><td>也许我们正在形成两类社会科学家群体：一类以学科为导向，在高度专业化的期刊上发表文章；一类以问题为导向，发表在别处，比如政策简报。</td><td><b>紧跟 B 之后</b>：B 说期刊论文里关键词很少 ⟹ A 推测「做现实问题的人可能不发期刊」</td><td>① <span class="loc">It could be that</span> 要解释一个现象，那个现象只有 B 给得出；② 放 43：丢了段内必需的 However，第⑤段的 do 失去前提；③ B 占住 43 后，B 与第⑤段之间没有空。<b>与 2012 的 E（G 的下家）同一种死法</b>（R137）。</td></tr>
+          <tr><td class="c">D</td><td>解决办法是改变学术界的思维方式，以及它对自身主要目标的认识。全球性挑战和社会创新应当得到科学家——尤其是年轻科学家——更多的关注。</td><td><b>无处可站</b>：作者的方案区（⑥⑦）从头到尾谈钱；D 若是原文句，也只能在全文结尾处作为呼吁出现</td><td>① 放 41：诊断还没完就开方，下一句的 too 找不到前例；② 放 42：药方不是 shame；③ 放 45：上一句是欧盟的本意而非问题，且 That should create 要一项安排；④ 作者自己的方案句 ⑦❶ <span class="loc">The trick is to direct these funds better</span> 已在场，<b>杠杆是钱不是观念</b>（R161）。</td></tr>
+        </table>
+        </div>
+        <div class="box"><span class="bt">⭐ 两个多余项都是「词面最像」的那种</span>
+          D 的 <span class="loc">Global challenges</span> 对着 ②❶ <span class="loc">today’s global challenges</span>、<span class="loc">social innovation</span> 对着 E 的 <span class="loc">social innovations</span>；A 的 <span class="loc">discipline-oriented</span> 对着 ④❶ <span class="loc">disciplinary problems</span>、<span class="loc">publishing … journals</span> 对着 <span class="loc">papers</span>。
+          <span class="mk">⟹ 八篇 Part B 里，多余项靠词面钓鱼这是第五篇（2007 · 2008 · 2010 · 2012 · 2013）</span>（R81）。「哪一项和原文最像」依旧是负资产。
+          <br>🔍 原文刊于 <i>Nature</i> 付费墙后，<b>没能核对 A、D 是不是原文里的句子</b>——页面只按卷面判断，不做推测。
+        </div>
+
+        <h3 class="sh">📊 八篇 Part B 的多余项造法总账</h3>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:600px">
+          <tr><th style="width:9%">年份</th><th style="width:14%">变体</th><th style="width:10%">多余项</th><th>造法</th></tr>
+          <tr><td class="c">2007</td><td>标题匹配</td><td class="c">A、G</td><td>两项都有词面呼应（A ↔ 首句 role models，G ↔ responsible 连出两次）</td></tr>
+          <tr><td class="c">2008</td><td>选句填空</td><td class="c">B、F</td><td>B 阶段错位（属于末段之后）· F 与正确项 E 撞专名</td></tr>
+          <tr><td class="c">2009</td><td>选句填空</td><td class="c">D、F</td><td>同属功能论一区，而那一区没有空</td></tr>
+          <tr><td class="c">2010</td><td>排序</td><td class="c">C</td><td>复现词最多，却偏离主线</td></tr>
+          <tr><td class="c">2011</td><td>排序</td><td class="c">—</td><td>零多余项（7 格 7 项）</td></tr>
+          <tr><td class="c">2012</td><td>选句填空</td><td class="c">B、E</td><td>B 先用后定义（属于末段之后）· E 缺前提的 thus（正确项 G 的下家）；两项都有词面呼应</td></tr>
+          <tr class="bad"><td class="c">2013</td><td>选句填空</td><td class="c">A、D</td><td>A 推测句要 B 的数据（正确项 B 的下家）· D 同区换杠杆（观念 vs 作者的资金）；两项都有词面呼应</td></tr>
+          <tr><td class="c">2022</td><td>观点匹配</td><td class="c">B、E</td><td>没有人说过的话（无人提及型）</td></tr>
+        </table>
+        </div>
+        <p style="font-size:.9rem;margin-top:10px">⭐ <b>多余项两大族</b>：①「<b>词面像</b>」——和邻居共用词（2007 A／G · 2008 F · 2010 C · 2012 B、E · <b>2013 A、D</b>）；②「<b>位置满</b>」——内容全对，它该站的那一格没有空或被占（2008 B · 2009 D／F · 2012 B、E · <b>2013 A、D</b>）。
+          <span class="mk">「正确项的下家」连续两年出现（2012 E · 2013 A）⟹ 做完五空，拿两个剩下的去问一句：「它是不是某个答案的续篇？」</span></p>
+      </section>
+
+      <section class="card" id="four">
+        <h2><span class="n">03+</span>四篇选句填空：三种文章线，四把钥匙</h2>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:760px">
+          <tr><th style="width:12%"></th><th style="width:22%">2008《如何写作初稿》</th><th style="width:22%">2009《文化人类学理论》</th><th style="width:22%">2012《下载与上传》</th><th>2013《让社会科学有用》</th></tr>
+          <tr><td><b>文章线</b></td><td><b>流程线</b>：动笔前 → 写初稿 → 改初稿</td><td><b>人物线</b>：一段一位学者</td><td><b>论证线</b>：赞美 → 警示 → 溯因 → 出路 → 定义</td><td><b>论证线</b>：问题 → 原因 → 方案</td></tr>
+          <tr><td><b>空的形态</b></td><td>段首／段中／段末齐全</td><td>五个全在段末</td><td>四末一中</td><td>三中一首一末，五空都有下一句</td></tr>
+          <tr><td><b>破题主刀</b></td><td><b>唯一词</b></td><td><b>指代距离 ＋ 术语站位</b></td><td><b>论证功能 ＋ 尾钩</b>（新词当旧信息）</td><td><b>回指评价句 ＋ 预设小词</b>（This is a shame／too／do）</td></tr>
+          <tr><td><b>最难的一处</b></td><td>43／44 连体空</td><td>43／44 连体空（A、B 可对调）</td><td>45 的三选一（B、E、G）</td><td>41 的三选一（D、E、F）</td></tr>
+          <tr><td><b>多余项</b></td><td>B 阶段错位 · F 专名撞车</td><td>D、F 同区一起死</td><td>B 先用后定义 · E 正确项的下家</td><td>A 正确项的下家 · D 同区换杠杆</td></tr>
+          <tr><td><b>Claude 盲做</b></td><td>5/5</td><td class="bad"><b>3/5</b></td><td>5/5</td><td>5/5</td></tr>
+        </table>
+        </div>
+        <div class="box"><span class="bt">⭐ 四篇的钥匙，一年比一年往「下一句」挪</span>
+          2008 看选项里的<b>专属名词</b>，2009 看选项开头的<b>代词距离</b>，都是「选项对上文」；2012 起改成「<b>下文对选项</b>」——先是下文里的新词（R136），再是下文开头的评语与预设小词（R159／R160）。
+          <span class="mk">认完线，第一眼看下一句；两头打架，下一句说了算。</span>
+          <br>⚠️ 2009 的翻车正是没认线（拿流程线的唯一词法去做人物线），见 R55 第一条陷阱。
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">04</span>Part B 分诊表：四种变体 · 八篇实做（开考三十秒先认变体）</h2>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:680px">
+          <tr><th style="width:14%">变体</th><th style="width:25%">Directions 里的原话</th><th style="width:14%">考什么</th><th>打法与用时</th></tr>
+          <tr><td><b>选句填空</b><br><span style="font-size:.78rem">2008 · 2009 · 2012 · <b>2013</b></span></td><td><i>some sentences (segments) have been removed … two extra choices</i></td><td><b>衔接与连贯</b></td><td>认线 → 定空的形态 → <b>每空先读下一句</b>（新词当旧信息／This 加评语／too、do）→ 先做类型最独特的空（本篇 44 数字）→ 两头打架看下一句 → <b>剩下两项问「是不是某个答案的下家」</b>。<b>6–9 min</b>，能自查</td></tr>
+          <tr><td><b>标题匹配</b><br><span style="font-size:.78rem">2007</span></td><td><i>choose the most suitable heading</i></td><td><b>段落概括</b></td><td>逐段先自己一句话概括再看选项；<b>复现词 ≠ 段落主旨</b>。<b>8–10 min</b>，不能自查</td></tr>
+          <tr><td><b>观点匹配</b><br><span style="font-size:.78rem">2022</span></td><td><i>match each person … with the statements</i></td><td><b>立场判定</b></td><td>先给每人贴「支持／反对／中间」，再按立场分堆匹配。<b>8–10 min</b></td></tr>
+          <tr><td><b>排序题</b><br><span style="font-size:.78rem">2010 · 2011</span></td><td><i>choose the most suitable paragraphs … numbered boxes</i></td><td><b>篇章顺序</b></td><td><b>先数格子</b>（有无多余项）→ 先做被已给定段夹住的空 → 段首排除法定首段 → 先拼块再排块 → 通读验闭合。<b>8–10 min</b>，能自查</td></tr>
+        </table>
+        </div>
+        <p style="font-size:.9rem;margin-top:10px">📊 <b>八篇战绩</b>：2007 标题 5/5 · 2022 观点 5/5 · 2008 选句 5/5 · <b>2009 选句 3/5</b> · 2010 排序 5/5 · 2011 排序 5/5 · 2012 选句 5/5 · <b>2013 选句 5/5</b>。<span class="mk">选句填空四篇占了一半，2012 起连续两年——基础年的 Part B 里它是最常见的变体。</span></p>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">05</span>长难句精析（10 句 · 本篇黄皮书无此栏目，全部原创）</h2>
+
+        <div class="ls">
+          <div class="s">As of 2005, there were almost half a million professional social scientists from all fields in the world, <span class="mk2">working both inside and outside academia</span>.</div>
+          <div class="an">
+            <div>· <b>As of ＋ 时间</b> ＝「截至……」，统计数据的标准开头（≠ as for「至于」）。</div>
+            <div>· <span class="mk2">逗号后的现在分词短语</span>是伴随状语，逻辑主语是 social scientists；<b>both inside and outside academia</b> 两个介词共用一个宾语 academia。</div>
+          </div>
+          <div class="tr">译：截至 2005 年，全世界各领域的职业社会科学家已近五十万人，学术界内外都有。</div>
+        </div>
+
+        <div class="ls">
+          <div class="s"><span class="mk">Stemming climate change</span>, for example, <span class="mk3">is as much about</span> changing consumption patterns and promoting tax acceptance <span class="mk3">as it is about</span> developing clean energy.</div>
+          <div class="an">
+            <div>· <span class="mk">动名词短语作主语</span>：stem 在这里是动词「遏制」（stem the tide／stem the flow），不是名词「茎」。</div>
+            <div>· <span class="mk3">be as much about A as (it is) about B</span> ＝「A 与 B 同样是关键」。⚠️ <b>重心不在 B</b>：人人都知道要开发清洁能源（B），作者要强调的是同样重要、却被忽视的 A。</div>
+            <div>· 结构两边都是动名词：changing … and promoting … ／ developing …——比较结构的两端必须同形。</div>
+          </div>
+          <div class="tr">译：比如遏制气候变化，改变消费模式、提高公众对税收的接受度，与开发清洁能源同样重要。</div>
+        </div>
+
+        <div class="ls">
+          <div class="s">Humanity has the necessary agro-technological tools <span class="mk">to eradicate hunger</span>, <span class="mk2">from genetically engineered crops to artificial fertilizers</span>.</div>
+          <div class="an">
+            <div>· <span class="mk">不定式作后置定语</span>修饰 tools：「用来消除饥饿的工具」。</div>
+            <div>· <span class="mk2">from A to B</span> 在逗号后是<b>举例式同位语</b>，列出 tools 的范围两端，不是「从 A 变成 B」。</div>
+          </div>
+          <div class="tr">译：人类已经拥有消除饥饿所需的农业技术手段，从转基因作物到化肥应有尽有。</div>
+        </div>
+
+        <div class="ls">
+          <div class="s">This is a shame—the community <span class="mk">should be grasping</span> the opportunity to raise its influence in the real world.</div>
+          <div class="an">
+            <div>· <span class="mk">should be doing</span> ＝「本该正在做（却没在做）」，带着责备语气；比 should do 更强调「此刻就该」。同族：<i>You should be studying now.</i></div>
+            <div>· 破折号后是对 shame 的解释：遗憾在哪？在于没抓住机会。<b>This 回指上一句整句话</b>（R159）。</div>
+          </div>
+          <div class="tr">译：这真令人遗憾——社科界本应抓住这个机会，扩大自己在现实世界中的影响力。</div>
+        </div>
+
+        <div class="ls">
+          <div class="s">Analyses reveal that <span class="mk">the number of papers</span> <span class="mk2">including the keywords “environmental change” or “climate change”</span> <span class="mk3">have increased</span> rapidly since 2004.</div>
+          <div class="an">
+            <div>· that 宾语从句的主语是 <span class="mk">the number of papers</span>，<span class="mk2">including…</span> 是现在分词后置定语修饰 papers。</div>
+            <div>· ⚠️ <span class="mk3">have increased</span>：<b>the number of ＋ 复数名词</b>作主语，谓语按 number 用<b>单数</b>（has increased）；<b>a number of</b>（许多）才用复数。原卷如此照录；作文和改错题都按规则走。</div>
+          </div>
+          <div class="tr">译：分析显示，自 2004 年以来，含有「环境变化」或「气候变化」关键词的论文数量增长迅速。</div>
+        </div>
+
+        <div class="ls">
+          <div class="s">It could be that we are evolving two communities of social scientists: <span class="mk2">one that is discipline-oriented and publishing in highly specialized journals</span>, and <span class="mk2">one that is problem-oriented and publishing elsewhere, such as policy briefs</span>.</div>
+          <div class="an">
+            <div>· <b>It could be that…</b> ＝「也许是……」，作者的<b>推测</b>，语气比 It is that 弱得多——推测句总要一个待解释的现象在前（A 为什么只能排在 B 后面，见 03 节）。</div>
+            <div>· ⚠️ <b>evolve 作及物动词</b>：evolve two communities ＝「逐渐形成、发展出两个群体」，不是「进化」。</div>
+            <div>· 冒号后两个 <span class="mk2">one that is … and publishing …</span> 平行展开：is 同时管 discipline-oriented（形容词）与 publishing（进行时）。</div>
+          </div>
+          <div class="tr">译：也许我们正在形成两类社会科学家群体：一类以学科为导向，在高度专业化的期刊上发表文章；一类以问题为导向，发表在别处，比如政策简报。</div>
+        </div>
+
+        <div class="ls">
+          <div class="s">And some are up in arms over <span class="mk">a proposal</span> <span class="mk2">to drop a specific funding category for social-science research</span> and <span class="mk2">to integrate it within cross-cutting topics of sustainable development</span>.</div>
+          <div class="an">
+            <div>· <b>be up in arms over sth</b> ＝「为某事群情激愤、强烈抗议」（字面「拿起武器」）。</div>
+            <div>· <span class="mk2">两个不定式并列</span>，都是 <span class="mk">proposal</span> 的后置定语：提议的内容是「取消 ＋ 并入」两个动作；it 指 category。</div>
+            <div>· ⚠️ <b>drop</b> 这里是「取消、撤掉」，不是「下降」。</div>
+          </div>
+          <div class="tr">译：在欧洲，一项提议要取消社科研究的专项资助类别、把它并入可持续发展的跨领域课题，一些人为此群情激愤。</div>
+        </div>
+
+        <div class="ls">
+          <div class="s">And <span class="mk">whether the community’s work contributes much to an overall accumulation of knowledge</span> <span class="mk3">is</span> doubtful.</div>
+          <div class="an">
+            <div>· <span class="mk">whether 引导主语从句</span>，谓语 is doubtful 直到句末才出现。等价的形式主语版：<i>It is doubtful whether…</i></div>
+            <div>· contribute much to ＝「对……贡献很大」；overall accumulation of knowledge ＝ 人类知识的<b>整体</b>积累，对着上一句的 local（只顾本国）。</div>
+          </div>
+          <div class="tr">译：至于社科界的工作对人类知识的整体积累有多大贡献，也值得怀疑。</div>
+        </div>
+
+        <div class="ls">
+          <div class="s"><span class="mk">National spending on social sciences and the humanities as a percentage of all research and development funds</span>—<span class="mk2">including government, higher education, non-profit and corporate</span>—<span class="mk3">varied</span> from around 4% to 25%; in most European nations, it is about 15%.</div>
+          <div class="an">
+            <div>· <span class="mk">主语长达 17 个词</span>，核心只有 spending；<b>as a percentage of</b> ＝「占……的百分比」。</div>
+            <div>· <span class="mk2">破折号中间是插入语</span>，列举 funds 的四种来源——读时先划掉，主谓 spending … varied 立刻接上。</div>
+            <div>· <span class="mk3">vary from A to B</span> ＝「从 A 到 B 不等」，图表作文描述区间的标准动词。分号后换成现在时 is，说的是现状。</div>
+          </div>
+          <div class="tr">译：20 世纪 90 年代末，各国在社会科学和人文学科上的投入占全部研发经费（包括政府、高校、非营利机构和企业的经费）的比例，从约 4% 到 25% 不等；在大多数欧洲国家约为 15%。</div>
+        </div>
+
+        <div class="ls">
+          <div class="s">This year, it was proposed that <span class="mk">the system be changed</span>: Horizon 2020, <span class="mk2">a new program to be enacted in 2014</span>, <span class="mk3">would not have</span> such a category.</div>
+          <div class="an">
+            <div>· <span class="mk">propose that ＋ (should) do</span>：建议类动词后的宾语从句用<b>虚拟语气</b>，should 省略后只剩动词原形 be changed。</div>
+            <div>· <span class="mk2">同位语</span>解释 Horizon 2020；to be enacted 是不定式的<b>被动将来</b>「将于 2014 年实施」。</div>
+            <div>· <span class="mk3">would not have</span>：过去将来——站在「今年提议」的时点说「新计划将不设」。</div>
+          </div>
+          <div class="tr">译：今年有人提议改革这一体制：拟于 2014 年实施的新计划「地平线 2020」将不再设这一类别。</div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">06</span>可搬进作文的素材（本篇是「资源与贡献 / 技术与人 / 改革阵痛 / 钱怎么花」四个话题的弹药库）</h2>
+        <div class="wb">
+          <div class="wbi"><div class="p">The social sciences are flourishing. … Yet this enormous resource is not contributing enough to today’s global challenges.</div><div class="u">📌 <b>「规模大 ≠ 贡献大」的开头段</b>：先摆数字说兴旺，再用 <i>Yet this enormous resource is not…</i> 一转。把 social sciences 换成 college graduates／online courses／volunteers 都能用。</div></div>
+          <div class="wbi"><div class="p">Stemming climate change, for example, is as much about changing consumption patterns … as it is about developing clean energy.</div><div class="u">📌 <b>「光靠技术不够，还要靠人」</b>的万能论证句：<i>Solving the problem of food waste is as much about changing habits as it is about improving storage technology.</i></div></div>
+          <div class="wbi"><div class="p">Humanity has the necessary tools to eradicate hunger. Here, too, the problems are social.</div><div class="u">📌 <b>「工具已有，问题在人」</b>：环保、教育公平、网络治理话题都能用；<i>Here, too</i> 是把第二个例子挂到第一个例子上的衔接词。</div></div>
+          <div class="wbi"><div class="p">This is a shame—the community should be grasping the opportunity to raise its influence in the real world.</div><div class="u">📌 <b>评价 ＋ 应然</b>的两段式：<i>This is a shame—young people should be seizing the chance to…</i>。<b>This 回指上一句整句</b>，作文里非常自然。</div></div>
+          <div class="wbi"><div class="p">There is no radical innovation without creative destruction.（Joseph Schumpeter）</div><div class="u">📌 <b>改革／创新话题的名人名言</b>，适合放大作文第三段收尾：不破不立。引用时写 <i>As the economist Joseph Schumpeter put it, …</i>（熊彼特通常被称作经济学家，本文称他 social scientist）。</div></div>
+          <div class="wbi"><div class="p">The problem is not necessarily the amount of available funding. This is an adequate amount so long as it is aimed in the right direction.</div><div class="u">📌 <b>「不是钱不够，是方向不对」</b>：教育投入、科研经费、扶贫资金话题的转折论点。<i>so long as</i> 引出条件，比 if 更有「只要……就」的语气。</div></div>
+          <div class="wbi"><div class="p">The trick is to direct these funds better.</div><div class="u">📌 <b>对策段第一句</b>：<i>The trick is to…</i>（诀窍在于）比 <i>The solution is to…</i> 更口语、更地道，一句话亮出方案。</div></div>
+          <div class="wbi"><div class="p">But the intention is not to neglect X; rather, the complete opposite. That should create more collaborative endeavors.</div><div class="u">📌 <b>替一项改革辩护</b>：先否定误读（not to neglect），再 <i>rather, the complete opposite</i> 翻过来，最后说好处。取消某项补贴、合并院系、改革考试制度等话题都能套。</div></div>
+        </div>
+        <p style="font-size:.88rem;margin-top:10px">🔁 <b>跨篇素材联动</b>：<a href="2011_新题型_知识与人才的专业化困境.html">2011 新题型</a>（学科专业化把人文学科逼进死角）与本篇 A 的「以学科为导向、在高度专业化期刊发表」是同一个病；<a href="2012_翻译_普遍真理的现实检验.html">2012 翻译</a>同出《自然》、同谈社会科学（寻找普遍规律）；<a href="2013_T3_人类前景的长视角.html">2013 Text 3</a> 把气候变化列为人类面临的威胁之一，本篇说对付它「一半靠技术、一半靠人」。</p>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">07</span>词汇复盘（点卡片看详情 · 共 <span id="vcount"></span> 张，含 <b>15 处熟词僻义</b>）</h2>
+        <p style="font-size:.85rem;color:var(--muted);margin-bottom:10px">本篇熟词僻义的共同规律：<b>学术与政策语境把日常词换了行当</b>——shame 是「遗憾」不是「羞耻」、disciplinary 是「学科的」不是「纪律的」、brief 是「简报」、drop 是「取消」、trick 是「诀窍」、direct 是「引导」；<b>同一篇里 climate 与 security 各有两个义项</b>（climate change／economic climate；security 安全／food security 粮食保障）。</p>
+        <div id="vgrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px"></div>
+      </section>
+
+      <footer>2013 英语（一）Part B · 让社会科学有用起来 ｜ 答案 41E 42F 43B 44G 45C（A、D 多余）｜ Claude 盲做 5/5 ｜ 本页解析为独立盲做后撰写，黄皮书精讲仅作交叉复核（零书误）</footer>
+    </main>
+
+    <aside>
+      <div id="panel"><div class="hint">👆 点正文里的<b>黄色高亮词</b>，或下方词汇卡，这里出详解<br><br>选中任意英文可弹出「查词」按钮</div></div>
+    </aside>
+  </div>
+</div>
+<button id="yd">🔍 有道查词</button>
+
+<script>
+const OPTS = {
+  A:["It could be that we are <span class='tk' data-w='evolve'>evolving</span> two communities of social scientists: one that is <span class='tk' data-w='orient'>discipline-oriented</span> and publishing in highly <span class='tk' data-w='specialized'>specialized</span> journals, and one that is problem-oriented and publishing elsewhere, such as <span class='tk' data-w='brief'>policy briefs</span>.",
+     "也许我们正在形成两类社会科学家群体：一类以学科为导向，在高度专业化的期刊上发表文章；一类以问题为导向，发表在别处，比如政策简报。",
+     "头：<b>It could be that</b>（推测句：上文须先有一个待解释的现象——期刊论文里关键词很少，那是 B 的内容）｜尾：<b>two communities</b>，下文再无人提",
+     "🚫 多余项 · 原因区 · 本该紧跟 B 之后（B 的下家）"],
+  B:["However, the numbers are still small: in 2010, about 1,600 of the 100,000 social-sciences papers published globally included one of these keywords.",
+     "然而，总量仍然很小：2010 年全球发表的十万篇社科论文里，只有约一千六百篇含有其中某个关键词。",
+     "头：<b>However ＋ the numbers ＋ these keywords</b>（转折「增长迅速」，回指论文数与两个关键词）｜尾：「很少」⟹ 下一段 When social scientists <b>do</b> tackle",
+     "原因区 · ④段末"],
+  C:["The idea is to force social scientists to <span class='tk' data-w='integrate'>integrate</span> their work with other categories, including health and <span class='tk' data-w='demographic'>demographic</span> change; <span class='tk' data-w='security'>food security</span>; <span class='tk' data-w='marine'>marine</span> research and the <span class='tk' data-w='bioeconomy'>bio-economy</span>; clean, efficient energy; and <span class='tk' data-w='inclusive'>inclusive</span>, innovative and secure societies.",
+     "其用意是促使社会科学家把自己的工作融入其他类别，包括：健康与人口变化；粮食安全；海洋研究与生物经济；清洁高效的能源；以及包容、创新、安全的社会。",
+     "头：<b>The idea is to</b>（≈ 上句 the intention；force…integrate 是 neglect 的完全反面）｜尾：<b>integrate with other categories</b> ⟹ 下句 That should create more collaborative endeavors",
+     "方案区 · ⑦段中"],
+  D:["The solution is to change the <span class='tk' data-w='mindset'>mindset</span> of the academic community, and what it considers to be its main goal. Global challenges and social <span class='tk' data-w='innovation'>innovation</span> ought to receive much more attention from scientists, especially the young ones.",
+     "解决办法是改变学术界的思维方式，以及它对自身主要目标的认识。全球性挑战和社会创新应当得到科学家——尤其是年轻科学家——更多的关注。",
+     "头：<b>The solution is to</b>（要求上一句是个问题，且问题出在观念）｜尾：<b>mindset／young scientists</b>，而下文的方案全在谈钱",
+     "🚫 多余项 · 方案区 · 换了杠杆（观念 vs 作者的资金）"],
+  E:["These issues all have <span class='tk' data-w='rootcause'>root causes</span> in human behavior: all require <span class='tk' data-w='behavioral'>behavioral change</span> and social innovations, as well as technological development. <span class='tk' data-w='stem'>Stemming</span> climate change, for example, is as much about changing <span class='tk' data-w='consumption'>consumption patterns</span> and promoting tax <span class='tk' data-w='acceptance'>acceptance</span> as it is about developing clean energy.",
+     "这些问题的根源都在人的行为：它们都需要行为上的改变和社会层面的创新，也需要技术发展。比如遏制气候变化，改变消费模式、提高公众对税收的接受度，与开发清洁能源同样重要。",
+     "头：<b>These issues</b>（回指上句四个全球挑战——D、F 也挂得上）｜尾：<b>问题在人 ＋ 气候一例</b> ⟹ 下文饥饿一例 ＋ Here, <b>too</b>, the problems are social",
+     "问题区 · ②段中"],
+  F:["Despite these factors, many social scientists seem <span class='tk' data-w='reluctant'>reluctant</span> to tackle such problems. And in Europe, some are <span class='tk' data-w='uparms'>up in arms</span> over a proposal to <span class='tk' data-w='drop'>drop</span> a specific funding category for social-science research and to integrate it within <span class='tk' data-w='crosscutting'>cross-cutting</span> topics of sustainable development.",
+     "尽管有这些因素，许多社会科学家似乎仍不愿去应对这类问题。在欧洲，一项提议要取消社科研究的专项资助类别、把它并入可持续发展的跨领域课题，一些人为此群情激愤。",
+     "头：<b>Despite these factors ＋ such problems</b>（回指上段末句的社会因素与全球难题）｜尾：<b>一件坏事</b> ⟹ 下句 This is a <b>shame</b>；取消专项 ⟹ 熊彼特「创造性破坏」",
+     "问题区 · ③段首 · 预告第⑦段"],
+  G:["During the late 1990s, national spending on social sciences and the <span class='tk' data-w='humanities'>humanities</span> as a <span class='tk' data-w='percentage'>percentage</span> of all research and development funds—including government, higher education, <span class='tk' data-w='nonprofit'>non-profit</span> and <span class='tk' data-w='corporate'>corporate</span>—<span class='tk' data-w='vary'>varied from</span> around 4% to 25%; in most European nations, it is about 15%.",
+     "20 世纪 90 年代末，各国在社会科学和人文学科上的投入占全部研发经费（包括政府、高校、非营利机构和企业的经费）的比例，从约 4% 到 25% 不等；在大多数欧洲国家约为 15%。",
+     "头：<b>无形式钩</b>，靠内容接上句 the amount of available funding｜尾：<b>about 15%</b>（七项里唯一的数字）⟹ 下句 This is an adequate <b>amount</b>",
+     "方案区 · ⑥段中"]
+};
+const EXTRA = ["A","D"];
+const V = {
+  flourish:{w:"flourish",ipa:"/ˈflʌrɪʃ/",pos:"v.",tags:["core","write"],cn:"繁荣，兴旺，蓬勃发展",en:"to develop quickly and be successful",ex:"The social sciences are flourishing",mem:"flour(花，同 flower)+ish → 开花 → 兴旺。<b>写作开头的高频词</b>：<i>Online education is flourishing.</i> 形容词 flourishing ＝ 繁荣的（a flourishing economy）。",syn:"thrive / prosper / boom",conf:"flourish(繁荣) vs. nourish(滋养) vs. flour(面粉)"},
+  asof:{w:"as of",ipa:"",pos:"prep.短语",tags:["phrase","write"],cn:"截至（某时间）；自……起",en:"up to or starting from a particular time",ex:"As of 2005, there were almost half a million professional social scientists",mem:"<b>统计数据的标准开头</b>：<i>As of 2025, the number of… had reached…</i>（图表作文第一句）。⚠️ 与 as for（至于）、as to（关于）三兄弟别混。",syn:"up to / by / as at",conf:"as of(截至) vs. as for(至于) vs. as to(关于)"},
+  academia:{w:"academia",ipa:"/ˌækəˈdiːmiə/",pos:"n.",tags:["core"],cn:"学术界，学术圈",en:"the world of universities and research",ex:"working both inside and outside academia",mem:"academy(学院)的集合名词。<b>inside and outside academia ＝ 学术界内外</b>。同族：academic(学术的/学者)、academician(院士)。",syn:"the academic world / scholarship",conf:"academia(学术界) vs. academy(学院) vs. academic(学术的)"},
+  swell:{w:"swell (swollen)",ipa:"/swel/",pos:"v.",tags:["core"],cn:"增长，膨胀（swell-swelled-swollen）",en:"to become larger in number or amount",ex:"the number of social-science students worldwide has swollen by about 11% every year",mem:"本义「肿胀」，引申为数量「激增」。⚠️ <b>by 11% ＝ 增长了 11%（差额）</b>，to 11% ＝ 增长到 11%。过去分词两种：swollen（常作形容词/完成时）、swelled。",syn:"grow / increase / expand",conf:"swell(膨胀) vs. swallow(吞咽) vs. sweat(出汗)"},
+  resource:{w:"this enormous resource",ipa:"/rɪˈsɔːs/",pos:"n.",tags:["poly"],cn:"⚠️这里指「人才资源」——近五十万社科学者加每年增长的学生",en:"people available to be used to achieve sth",ex:"Yet this enormous resource is not contributing enough to today’s global challenges",mem:"⚠️<b>this ＋ 概括名词回指上一段的人数</b>：resource 不是钱也不是矿产，而是<b>人</b>（human resources）。读成「资源」不算错，但要知道它指第一段那两组人数。",syn:"talent pool / manpower",conf:"resource(资源) vs. resort(度假地/诉诸) vs. source(来源)"},
+  sustainable:{w:"sustainable development",ipa:"/səˈsteɪnəbl/",pos:"n.短语",tags:["phrase","write"],cn:"可持续发展",en:"development that meets present needs without harming the future",ex:"including climate change, security, sustainable development and health",mem:"sustain(维持)+able。<b>环保作文必备</b>：<i>achieve sustainable development</i>。本文出现两次（②❶ 与 F 的 cross-cutting topics of sustainable development）。",syn:"green growth",conf:"sustainable(可持续的) vs. sustained(持续不断的) vs. suspended(暂停的)"},
+  agro:{w:"agro-technological",ipa:"/ˌæɡrəʊ-/",pos:"adj.",tags:["core"],cn:"农业技术的",en:"relating to technology used in farming",ex:"Humanity has the necessary agro-technological tools to eradicate hunger",mem:"agro-(农业，同 agriculture)+technological。构词法直接拆：agro-industry(农产品加工业)、agronomy(农学)。",syn:"agricultural",conf:"agro-(农) vs. aero-(航空) vs. aggro(闹事，俚语)"},
+  eradicate:{w:"eradicate",ipa:"/ɪˈrædɪkeɪt/",pos:"v.",tags:["core","write"],cn:"根除，消灭",en:"to destroy or get rid of sth completely",ex:"tools to eradicate hunger",mem:"e(出)+radic(根，同 radical、radish 萝卜)+ate → 连根拔出。<b>作文高分替换 eliminate / get rid of</b>：<i>eradicate poverty / disease / corruption</i>。",syn:"eliminate / wipe out / root out",conf:"eradicate(根除) vs. radiate(辐射) vs. irrigate(灌溉)"},
+  engineer:{w:"genetically engineered",ipa:"/ˌendʒɪˈnɪəd/",pos:"adj.短语",tags:["phrase","poly"],cn:"⚠️转基因的（engineer 作动词「改造」）",en:"having genes that have been changed by scientists",ex:"from genetically engineered crops to artificial fertilizers",mem:"⚠️<b>engineer 作动词</b>：设计、改造；genetically engineered ＝ genetically modified（GM）＝ 转基因的。另有贬义「策划、操纵」：engineer a scandal。",syn:"genetically modified / GM",conf:"genetically engineered(转基因) vs. genetic engineering(基因工程) vs. engineering(工程学)"},
+  fertilizer:{w:"fertilizer",ipa:"/ˈfɜːtəlaɪzə/",pos:"n.",tags:["core"],cn:"肥料，化肥",en:"a substance added to soil to help plants grow",ex:"from genetically engineered crops to artificial fertilizers",mem:"fertile(肥沃的)+ize+er。同族：fertility(生育力/肥力，2008 T1 类话题常见)。artificial fertilizers ＝ 化肥。",syn:"manure(粪肥) / compost(堆肥)",conf:"fertilizer(肥料) vs. fertility(生育力) vs. futile(徒劳的)"},
+  heretoo:{w:"Here, too",ipa:"",pos:"adv.短语",tags:["phrase","write"],cn:"这里也一样，在这件事上同样",en:"in this case as well",ex:"Here, too, the problems are social",mem:"⚠️<b>41 题的尾钩</b>：too 预设「前面已有同类的一例」。Here 指紧邻的饥饿一例，too 把它与 E 里的气候一例并排。写作里挂第二个例子：<i>Here, too, money is not the real issue.</i>",syn:"likewise / similarly / in this case as well",conf:"Here, too(这里也) vs. here and there(到处) vs. neither here nor there(无关紧要)"},
+  prosperity:{w:"prosperity",ipa:"/prɒˈsperəti/",pos:"n.",tags:["core","write"],cn:"繁荣，兴旺，富裕",en:"the state of being successful, especially financially",ex:"the organization and distribution of food, wealth and prosperity",mem:"prosper(繁荣)+ity。<b>作文收尾高频</b>：<i>peace and prosperity</i>、<i>common prosperity</i>（共同富裕）。",syn:"wealth / affluence / boom",conf:"prosperity(繁荣) vs. posterity(后代) vs. property(财产)"},
+  shame:{w:"This is a shame",ipa:"/ʃeɪm/",pos:"n.",tags:["poly","write"],cn:"⚠️遗憾，可惜（a shame ＝ a pity），不是「羞耻」",en:"a situation that makes you feel disappointed",ex:"This is a shame—the community should be grasping the opportunity",mem:"⚠️<b>a shame / What a shame! ＝ 真可惜</b>；不可数的 shame 才是「羞耻」（feel shame）。<b>42 题的尾钩</b>：只有坏事才「可惜」⟹ 空格是 F。",syn:"a pity / regrettable",conf:"a shame(可惜) vs. shame(羞耻) vs. ashamed(感到羞愧的)"},
+  grasp:{w:"grasp the opportunity",ipa:"/ɡrɑːsp/",pos:"v.短语",tags:["phrase","write"],cn:"抓住机会",en:"to take a chance eagerly",ex:"the community should be grasping the opportunity to raise its influence",mem:"grasp 本义「紧握」，引申「抓住（机会）/ 领会」。<b>作文替换 seize the opportunity / seize the day</b>。should be grasping ＝ 本该正在抓住（却没有）。",syn:"seize / take advantage of",conf:"grasp(抓住/领会) vs. gasp(喘气) vs. grass(草)"},
+  paraphrase:{w:"paraphrase",ipa:"/ˈpærəfreɪz/",pos:"v.",tags:["core","write"],cn:"意译，改述，换句话说",en:"to express what sb said using different words",ex:"To paraphrase the great social scientist Joseph Schumpeter",mem:"para(旁边)+phrase(说法) → 换个说法。<b>引用名言时的地道开头</b>：<i>To paraphrase Confucius, …</i>（套用孔子的话）——表示不是逐字引用。",syn:"rephrase / restate / reword",conf:"paraphrase(意译) vs. paragraph(段落) vs. parameter(参数)"},
+  radical:{w:"radical",ipa:"/ˈrædɪkl/",pos:"adj.",tags:["core"],cn:"根本的，彻底的；激进的",en:"thorough and complete; far-reaching",ex:"there is no radical innovation without creative destruction",mem:"radic(根)+al → 触及根本的。与 eradicate 同根。⚠️ <b>radical innovation ＝ 根本性创新</b>（不是「激进创新」）；radical 作「激进分子」时带政治色彩。",syn:"fundamental / thorough / sweeping",conf:"radical(根本的) vs. radial(放射状的) vs. rational(理性的)"},
+  creativedestruction:{w:"creative destruction",ipa:"",pos:"n.短语",tags:["phrase","write"],cn:"创造性破坏（熊彼特的经济学概念：破旧才能立新）",en:"the process in which old ways are destroyed so new ones can grow",ex:"there is no radical innovation without creative destruction",mem:"<b>熊彼特（Schumpeter）创新理论的核心</b>：新技术、新企业淘汰旧的，经济才前进。本文用它批评「为取消社科专项而抗议」的人——拆掉专项（破坏）才有跨学科协作（创造）。",syn:"break the old to build the new",conf:"creative destruction(创造性破坏) vs. destructive creation(破坏性创造，非术语)"},
+  disciplinary:{w:"disciplinary",ipa:"/ˌdɪsəˈplɪnəri/",pos:"adj.",tags:["poly"],cn:"⚠️学科的（此处），不是「纪律的/惩戒的」",en:"relating to an academic subject",ex:"the social sciences are largely focused on disciplinary problems and internal scholarly debates",mem:"⚠️<b>discipline 有两大义项</b>：纪律/惩戒（disciplinary action 纪律处分）与<b>学科</b>（academic discipline）。本句与 scholarly debates 并列、与 external impact 对立 ⟹ 学科。同族：interdisciplinary(跨学科的)、选项 A 的 discipline-oriented。",syn:"academic / subject-specific",conf:"disciplinary(学科的/纪律的) vs. interdisciplinary(跨学科的) vs. disciple(门徒)"},
+  scholarly:{w:"scholarly",ipa:"/ˈskɒləli/",pos:"adj.",tags:["core"],cn:"学术的；学者的",en:"relating to serious academic study",ex:"internal scholarly debates",mem:"scholar(学者)+ly。⚠️ <b>-ly 结尾的形容词</b>（同 friendly、costly、timely），不是副词。scholarly journals ＝ 学术期刊。",syn:"academic / learned",conf:"scholarly(学术的) vs. scholarship(奖学金/学识) vs. schooling(学校教育)"},
+  keyword:{w:"keyword",ipa:"/ˈkiːwɜːd/",pos:"n.",tags:["core"],cn:"关键词",en:"a word used to search for or classify information",ex:"the number of papers including the keywords “environmental change” or “climate change”",mem:"<b>43 题的头钩</b>：B 的 these keywords 回指这两个带引号的词。",syn:"search term / key term",conf:"keyword(关键词) vs. password(密码) vs. key(钥匙/关键的)"},
+  do:{w:"do tackle（强调 do）",ipa:"",pos:"aux.",tags:["poly"],cn:"⚠️确实，真的（助动词 do 用在肯定句里表强调）",en:"used to emphasize a positive verb",ex:"When social scientists do tackle practical issues, their scope is often local",mem:"⚠️<b>肯定句里多出一个 do/does/did ＝ 强调</b>，重读，译「真的、确实」。<b>强调「真去做」，等于承认「平常很少做」</b>——43 题的尾钩，前面必须先说「很少」（B 的 1,600 of 100,000）。写作：<i>Some students do read the classics, but…</i>",syn:"really / actually / indeed",conf:"do tackle(强调) vs. to tackle(不定式) vs. does(第三人称)"},
+  tackle:{w:"tackle",ipa:"/ˈtækl/",pos:"v.",tags:["core","write"],cn:"应对，着手处理（难题）",en:"to make a determined effort to deal with a difficult problem",ex:"many social scientists seem reluctant to tackle such problems / When social scientists do tackle practical issues",mem:"本义「（橄榄球）擒抱、铲断」→ 迎上去对付。<b>作文替换 deal with / solve</b>：<i>tackle climate change / tackle unemployment</i>。本文出现两次（F 与 ⑤❶）。",syn:"deal with / address / cope with",conf:"tackle(应对) vs. tickle(挠痒) vs. tactic(策略)"},
+  scope:{w:"scope",ipa:"/skəʊp/",pos:"n.",tags:["core"],cn:"范围，视野",en:"the range of things that a subject or activity deals with",ex:"their scope is often local",mem:"-scope 也是「看的器具」：telescope(望远镜)、microscope(显微镜) → scope ＝ 看得到的范围。<b>beyond the scope of ＝ 超出……范围</b>。",syn:"range / extent / reach",conf:"scope(范围) vs. slope(斜坡) vs. cope(应付)"},
+  local:{w:"local",ipa:"/ˈləʊkl/",pos:"adj.",tags:["poly"],cn:"⚠️局限于本国/本地的（与「全球」相对），不是「当地风味」",en:"limited to one country or area rather than global",ex:"their scope is often local: Belgium is interested mainly in the effects of poverty on Belgium",mem:"⚠️<b>与 global 相对时，local 连「一个国家」都算</b>——冒号后的比利时一例就是 local 的定义。与下一句 overall accumulation of knowledge（整体积累）形成对照。",syn:"parochial / narrow / national",conf:"local(本地的) vs. locale(发生地点) vs. locate(定位)"},
+  accumulation:{w:"accumulation",ipa:"/əˌkjuːmjəˈleɪʃn/",pos:"n.",tags:["core","write"],cn:"积累，积聚",en:"the process of gradually increasing in amount",ex:"an overall accumulation of knowledge",mem:"ac(加强)+cumul(堆)+ation。<b>作文：the accumulation of knowledge / wealth / experience</b>。动词 accumulate。",syn:"build-up / gathering / collection",conf:"accumulation(积累) vs. acclimation(适应) vs. calculation(计算)"},
+  doubtful:{w:"doubtful",ipa:"/ˈdaʊtfl/",pos:"adj.",tags:["core"],cn:"可疑的，不确定的；怀疑的",en:"uncertain; unlikely",ex:"whether the community’s work contributes much to an overall accumulation of knowledge is doubtful",mem:"⚠️<b>两种主语两种意思</b>：物 is doubtful ＝ 值得怀疑；人 is doubtful about ＝ 心存怀疑。本句主语是 whether 从句 ⟹ 值得怀疑。",syn:"questionable / uncertain / dubious",conf:"doubtful(可疑的) vs. doubtless(无疑地) vs. dubious(可疑的，更贬)"},
+  adequate:{w:"adequate",ipa:"/ˈædɪkwət/",pos:"adj.",tags:["core","write"],cn:"足够的，充分的",en:"enough in quantity or good enough",ex:"This is an adequate amount so long as it is aimed in the right direction",mem:"ad(趋向)+equ(相等)+ate → 与需要相等 → 够用。<b>44 题的尾钩</b>：an adequate amount 要求 This 指一个量 ⟹ G 的 15%。反义 inadequate（不足的）。",syn:"sufficient / enough / satisfactory",conf:"adequate(足够的) vs. adept(熟练的) vs. accurate(准确的)"},
+  solongas:{w:"so long as",ipa:"",pos:"conj.",tags:["phrase","write"],cn:"只要",en:"on condition that",ex:"This is an adequate amount so long as it is aimed in the right direction",mem:"＝ as long as。<b>引出条件，比 if 更有「只要……就」的语气</b>。作文：<i>Failure is not terrible so long as we learn from it.</i>",syn:"as long as / provided that / on condition that",conf:"so long as(只要) vs. as long as(只要/长达) vs. so long(再见，口语)"},
+  climate:{w:"economic climate",ipa:"/ˈklaɪmət/",pos:"n.短语",tags:["poly","write"],cn:"⚠️经济形势（climate ＝ 风气、形势）",en:"the general economic situation",ex:"should not expect more in today’s economic climate",mem:"⚠️<b>同一篇两个 climate</b>：②❶ climate change（气候）vs. ⑥❹ economic climate（经济形势）。同族：political climate(政治气候)、climate of opinion(舆论氛围)。",syn:"situation / atmosphere / conditions",conf:"climate(气候/风气) vs. weather(天气) vs. climax(高潮)"},
+  trick:{w:"The trick is to",ipa:"/trɪk/",pos:"n.",tags:["poly","write"],cn:"⚠️诀窍，窍门（不是「诡计」）",en:"a clever or effective way of doing sth",ex:"The trick is to direct these funds better",mem:"⚠️<b>the trick is to do ＝ 诀窍在于</b>，是作者亮出方案的信号句。这一句判了 D 的死刑：作者的方案杠杆是钱（funds），不是观念（mindset）。另：the tricks of the trade(行业窍门)。",syn:"the key / the secret / the knack",conf:"trick(诀窍/把戏) vs. tricky(棘手的) vs. treat(款待)"},
+  direct:{w:"direct (v.)",ipa:"/dəˈrekt/",pos:"v.",tags:["poly"],cn:"⚠️把……用于，引导（资金/注意力）到",en:"to aim sth in a particular direction",ex:"The trick is to direct these funds better",mem:"⚠️<b>direct 作动词</b>：direct funds / attention / efforts to…（把资金/注意力/精力投向）。上一段 aimed in the right direction 与它同根呼应。",syn:"channel / steer / allocate",conf:"direct(v.引导/adj.直接的) vs. director(主管/导演) vs. directory(目录)"},
+  category:{w:"category",ipa:"/ˈkætəɡəri/",pos:"n.",tags:["core"],cn:"类别，门类（此处指资助计划里的一个经费类别）",en:"a group of things with shared features",ex:"have long had a category specifically targeted at social scientists",mem:"<b>本文出现三次</b>：⑦❷ a category、⑦❸ such a category、C 的 other categories。F 的 a specific funding category 预告了它。",syn:"class / group / division",conf:"category(类别) vs. categorical(断然的) vs. catalogue(目录)"},
+  target:{w:"specifically targeted at",ipa:"/ˈtɑːɡɪt/",pos:"v.短语",tags:["phrase"],cn:"专门面向……的",en:"aimed especially at a particular group",ex:"a category specifically targeted at social scientists",mem:"be targeted at ＝ 以……为对象。作文：<i>policies targeted at low-income families</i>（面向低收入家庭的政策）。",syn:"aimed at / intended for / directed at",conf:"targeted at(面向) vs. targeted by(被……瞄准) vs. target(目标)"},
+  enact:{w:"enact",ipa:"/ɪˈnækt/",pos:"v.",tags:["core"],cn:"实施；颁布（法律）",en:"to put a law or plan into effect",ex:"Horizon 2020, a new program to be enacted in 2014",mem:"en(使)+act(法案/行动) → 使成为法令。<b>to be enacted ＝ 将被实施</b>（不定式被动将来）。",syn:"implement / put into effect / pass",conf:"enact(实施) vs. exact(精确的) vs. react(反应)"},
+  neglect:{w:"neglect",ipa:"/nɪˈɡlekt/",pos:"v.",tags:["core","write"],cn:"忽视，冷落",en:"to fail to give enough care or attention to",ex:"But the intention is not to neglect social science",mem:"neg(否)+lect(选) → 不挑它 → 忽视。<b>45 题的头钩</b>：「冷落」的完全反面是「把社科硬塞进每个领域」（C 的 force … integrate）。",syn:"ignore / overlook / disregard",conf:"neglect(忽视) vs. negligible(可忽略的) vs. negligent(疏忽的)"},
+  rather:{w:"rather, the complete opposite",ipa:"/ˈrɑːðə/",pos:"adv.",tags:["poly","write"],cn:"⚠️而是，恰恰相反（rather 放句首/分号后纠正前说）",en:"used to correct what has just been said",ex:"the intention is not to neglect social science; rather, the complete opposite",mem:"⚠️<b>not X; rather, Y ＝ 不是 X，而是 Y</b>——rather 在这里不是「相当、宁可」。<b>给改革辩护的万能句式</b>，素材区已收。",syn:"instead / on the contrary",conf:"rather(而是) vs. would rather(宁愿) vs. rather than(而不是)"},
+  collaborative:{w:"collaborative",ipa:"/kəˈlæbərətɪv/",pos:"adj.",tags:["core","write"],cn:"协作的，合作的",en:"involving people working together",ex:"That should create more collaborative endeavors",mem:"col(共同)+labor(劳动)+ative。<b>45 题的尾钩</b>：协作从哪来？从 C 的 integrate with other categories 来。作文：<i>collaborative learning</i>。",syn:"cooperative / joint / team",conf:"collaborative(协作的) vs. collaborator(合作者/通敌者) vs. elaborate(精心的)"},
+  endeavor:{w:"endeavor",ipa:"/ɪnˈdevə/",pos:"n.",tags:["core","write"],cn:"努力，尝试（美式拼写；英式 endeavour）",en:"an attempt to do sth, especially sth new or difficult",ex:"create more collaborative endeavors",mem:"<b>作文替换 effort / attempt 的高级词</b>：<i>scientific endeavor</i>、<i>make every endeavor to…</i>。⚠️ 本文拼写 endeavors、behavior、fertilizers、program、organization 全是美式。",syn:"effort / attempt / undertaking",conf:"endeavor(努力) vs. endanger(危及) vs. endure(忍受)"},
+  aimedat:{w:"aimed directly at",ipa:"",pos:"adj.短语",tags:["phrase","write"],cn:"直接针对……的",en:"intended directly to achieve sth",ex:"projects aimed directly at solving global problems",mem:"be aimed at doing ＝ 旨在。⚠️ <b>at 是介词，后接 doing</b>（solving），不是 to solve。",syn:"intended to / designed to / geared to",conf:"aimed at doing(旨在) vs. aim to do(目的是) vs. aimless(漫无目的的)"},
+  evolve:{w:"evolve (vt.)",ipa:"/ɪˈvɒlv/",pos:"v.",tags:["poly"],cn:"⚠️逐渐形成，发展出（及物用法），不是「进化」",en:"to develop sth gradually",ex:"It could be that we are evolving two communities of social scientists",mem:"⚠️<b>evolve 作及物动词</b>：evolve a theory / a plan / two communities ＝ 逐步发展出。不及物时才常译「进化、演变」（Man evolved from…）。",syn:"develop / form / give rise to",conf:"evolve(发展) vs. involve(涉及) vs. revolve(旋转)"},
+  orient:{w:"discipline-oriented / problem-oriented",ipa:"/ˈɔːrientɪd/",pos:"adj.",tags:["core","write"],cn:"以学科为导向的 / 以问题为导向的",en:"focused mainly on academic subjects / on real problems",ex:"one that is discipline-oriented … and one that is problem-oriented",mem:"<b>X-oriented ＝ 以 X 为导向的</b>，作文万能构词：<i>exam-oriented education</i>(应试教育)、<i>market-oriented</i>、<i>people-oriented</i>(以人为本)。",syn:"X-focused / X-driven",conf:"oriented(以…为导向) vs. orientation(方向/新生培训) vs. oriental(东方的)"},
+  specialized:{w:"highly specialized journals",ipa:"/ˈspeʃəlaɪzd/",pos:"adj.",tags:["core"],cn:"高度专业化的（期刊）",en:"designed for a particular narrow field",ex:"publishing in highly specialized journals",mem:"specialize(专门从事)。<b>跨篇</b>：2011 新题型《知识与人才的专业化困境》整篇在谈学科专业化——与 A 的 discipline-oriented 是同一个病。",syn:"specialist / technical / narrow",conf:"specialized(专业化的) vs. special(特别的) vs. specific(具体的)"},
+  brief:{w:"policy briefs",ipa:"/briːf/",pos:"n.",tags:["poly"],cn:"⚠️政策简报（brief 作名词 ＝ 简报、摘要）",en:"short documents giving advice to policy makers",ex:"publishing elsewhere, such as policy briefs",mem:"⚠️<b>brief 作名词</b>：简报、案情摘要；动词 brief sb ＝ 向某人简要汇报（briefing 吹风会）。形容词「简短的」反而与本句无关。",syn:"report / summary / memo",conf:"brief(n.简报/adj.简短) vs. briefing(简报会) vs. briefcase(公文包)"},
+  integrate:{w:"integrate … with / within",ipa:"/ˈɪntɪɡreɪt/",pos:"v.",tags:["core","write"],cn:"使融入，整合",en:"to combine two or more things so they work together",ex:"force social scientists to integrate their work with other categories",mem:"<b>F 与 C 各用一次</b>：F 是提议「并入」跨领域课题（integrate it within），C 是用意「融入」其他类别（integrate … with）——同一件事，一个预告一个揭底。作文：<i>integrate theory with practice</i>(理论联系实际)。",syn:"combine / merge / incorporate",conf:"integrate(整合) vs. integrity(正直/完整) vs. integral(不可或缺的)"},
+  demographic:{w:"demographic change",ipa:"/ˌdeməˈɡræfɪk/",pos:"adj.",tags:["core"],cn:"人口（结构）变化",en:"changes in the structure of a population",ex:"including health and demographic change",mem:"demo(人民)+graph(写)+ic → 人口统计的。<b>人口老龄化话题必备</b>：<i>demographic shift / an ageing population</i>。",syn:"population change",conf:"demographic(人口的) vs. democratic(民主的) vs. geographic(地理的)"},
+  security:{w:"food security",ipa:"/sɪˈkjʊərəti/",pos:"n.短语",tags:["poly","phrase"],cn:"⚠️粮食安全（＝粮食供应有保障），与②❶ 的 security（国家安全）不同",en:"reliable access to enough food",ex:"food security; marine research and the bio-economy",mem:"⚠️<b>同一篇两个 security</b>：②❶ climate change, security…（安全问题）vs. C 的 food security（粮食保障）；C 末尾又有 secure societies。别把 food security 读成「食品安全」（那是 food safety）。",syn:"food supply",conf:"food security(粮食保障) vs. food safety(食品安全) vs. securities(证券)"},
+  marine:{w:"marine",ipa:"/məˈriːn/",pos:"adj.",tags:["core"],cn:"海洋的",en:"relating to the sea",ex:"marine research and the bio-economy",mem:"mar(海，同 maritime、submarine)。marine life(海洋生物)。作名词是「海军陆战队员」。",syn:"maritime / oceanic",conf:"marine(海洋的) vs. marina(游艇码头) vs. mariner(水手)"},
+  bioeconomy:{w:"bio-economy",ipa:"",pos:"n.",tags:["core"],cn:"生物经济",en:"economic activity based on biological resources",ex:"marine research and the bio-economy",mem:"bio-(生命)+economy。构词直拆：biotech(生物技术)、biofuel(生物燃料)、biodiversity(生物多样性)。",syn:"bio-based economy",conf:"bio-economy(生物经济) vs. biology(生物学) vs. ecology(生态学)"},
+  inclusive:{w:"inclusive",ipa:"/ɪnˈkluːsɪv/",pos:"adj.",tags:["core","write"],cn:"包容的，兼容并包的",en:"including all kinds of people",ex:"inclusive, innovative and secure societies",mem:"include+ive。<b>社会公平话题高分词</b>：<i>inclusive education / inclusive growth</i>。反义 exclusive(排他的/独家的)。",syn:"open / tolerant / all-embracing",conf:"inclusive(包容的) vs. exclusive(独家的) vs. conclusive(确凿的)"},
+  mindset:{w:"mindset",ipa:"/ˈmaɪndset/",pos:"n.",tags:["core","write"],cn:"思维方式，心态",en:"a set of attitudes or fixed ideas",ex:"The solution is to change the mindset of the academic community",mem:"mind+set(固定) → 定了型的想法。<b>作文：growth mindset(成长型思维) / change one’s mindset</b>。⚠️ D 的杠杆是 mindset，作者的杠杆是 funds——这一对就是 D 出局的根据。",syn:"attitude / mentality / outlook",conf:"mindset(思维方式) vs. mindful(留心的) vs. set one’s mind on(下决心)"},
+  innovation:{w:"social innovation",ipa:"/ˌɪnəˈveɪʃn/",pos:"n.短语",tags:["phrase","write"],cn:"社会创新",en:"new ideas that meet social needs",ex:"Global challenges and social innovation ought to receive much more attention",mem:"in(进)+nov(新)+ation。⚠️ <b>词面陷阱</b>：D 的 social innovation 对着 E 的 social innovations，D 的 Global challenges 对着 ②❶——两处词面呼应，D 却是多余项（R81）。",syn:"social reform / new approaches",conf:"innovation(创新) vs. renovation(翻新) vs. invention(发明)"},
+  rootcause:{w:"root causes",ipa:"",pos:"n.短语",tags:["phrase","write"],cn:"根本原因，根源",en:"the fundamental reasons for a problem",ex:"These issues all have root causes in human behavior",mem:"<b>have root causes in ＝ 根源在于</b>。作文分析段高频：<i>The root cause of the problem lies in…</i>。41 题的尾钩要的正是这句「问题在人」。",syn:"underlying causes / origins",conf:"root cause(根源) vs. take root(扎根) vs. root out(根除)"},
+  behavioral:{w:"behavioral change",ipa:"/bɪˈheɪvjərəl/",pos:"n.短语",tags:["phrase"],cn:"行为改变",en:"a change in the way people act",ex:"all require behavioral change and social innovations",mem:"behavior+al（美式拼写，英式 behavioural）。behavioral science(行为科学)。",syn:"change in habits",conf:"behavioral(行为的) vs. behave(表现) vs. behalf(代表)"},
+  stem:{w:"stem (v.)",ipa:"/stem/",pos:"v.",tags:["poly","write"],cn:"⚠️遏制，阻止（stem 作动词），不是「茎」",en:"to stop sth from spreading or growing",ex:"Stemming climate change, for example, is as much about changing consumption patterns…",mem:"⚠️<b>stem 作动词两义</b>：stem the tide / flow / spread ＝ 遏制；stem from ＝ 源于（常考）。本句是前者。作文：<i>stem the spread of fake news</i>。",syn:"curb / check / halt",conf:"stem(遏制) vs. stem from(源于) vs. steam(蒸汽)"},
+  consumption:{w:"consumption patterns",ipa:"/kənˈsʌmpʃn/",pos:"n.短语",tags:["phrase","write"],cn:"消费模式",en:"the ways people buy and use things",ex:"changing consumption patterns and promoting tax acceptance",mem:"<b>环保作文与 2013 T1《快时尚》同一母题</b>：改变消费模式。consume(消费/消耗)。",syn:"spending habits",conf:"consumption(消费) vs. assumption(假设) vs. resumption(恢复)"},
+  acceptance:{w:"tax acceptance",ipa:"/əkˈseptəns/",pos:"n.短语",tags:["phrase"],cn:"（公众对税收的）接受度",en:"people’s willingness to pay taxes",ex:"promoting tax acceptance",mem:"应对气候变化常用碳税等手段，<b>公众愿不愿交税是「人的问题」</b>——正是 E 说「根子在行为」的例子。",syn:"public support for taxes",conf:"acceptance(接受) vs. acceptable(可接受的) vs. access(进入)"},
+  reluctant:{w:"reluctant",ipa:"/rɪˈlʌktənt/",pos:"adj.",tags:["core","write"],cn:"不情愿的，勉强的",en:"unwilling and hesitant",ex:"many social scientists seem reluctant to tackle such problems",mem:"re(反)+luct(挣扎)+ant → 挣扎着不肯。<b>be reluctant to do</b>。42 题：只有「不情愿」这种坏事才配得上 This is a shame。",syn:"unwilling / hesitant / disinclined",conf:"reluctant(不情愿的) vs. relevant(相关的) vs. reliant(依赖的)"},
+  uparms:{w:"be up in arms over",ipa:"",pos:"v.短语",tags:["phrase","write"],cn:"为……群情激愤，强烈抗议",en:"very angry and protesting about sth",ex:"some are up in arms over a proposal to drop a specific funding category",mem:"字面「拿起了武器」→ 激烈反对（不是真动武）。<b>F 的 up in arms 就是 ⑦❹ protests from social scientists 的预告</b>。",syn:"protest / be outraged at",conf:"up in arms(愤慨) vs. arms race(军备竞赛) vs. with open arms(热烈欢迎)"},
+  drop:{w:"drop (a category)",ipa:"/drɒp/",pos:"v.",tags:["poly"],cn:"⚠️取消，撤掉（不是「下降」）",en:"to stop including or doing sth",ex:"a proposal to drop a specific funding category",mem:"⚠️<b>drop ＋ 计划/课程/类别/指控 ＝ 取消、放弃</b>：drop a course(退课)、drop the charges(撤诉)。对应 ⑦❸ would not have such a category。",syn:"abolish / scrap / remove",conf:"drop(取消/下降) vs. drop out(退学) vs. drop by(顺便拜访)"},
+  crosscutting:{w:"cross-cutting topics",ipa:"",pos:"adj.短语",tags:["phrase"],cn:"跨领域的课题",en:"topics that involve several different fields",ex:"integrate it within cross-cutting topics of sustainable development",mem:"cross(横穿)+cutting(切) → 横切几个领域。与 interdisciplinary(跨学科的) 近义。C 列的五个主题就是 cross-cutting topics 的具体名单。",syn:"interdisciplinary / multi-field",conf:"cross-cutting(跨领域的) vs. cutting-edge(前沿的) vs. crossroads(十字路口)"},
+  humanities:{w:"the humanities",ipa:"/hjuːˈmænətiz/",pos:"n.",tags:["core"],cn:"人文学科（复数、带 the）",en:"subjects such as literature, history and philosophy",ex:"national spending on social sciences and the humanities",mem:"⚠️<b>the humanities ＝ 人文学科</b>；单数 humanity ＝ 人类/人性（本文②❸ Humanity has…）。同一篇两个形态两个意思。",syn:"the arts / liberal arts",conf:"the humanities(人文学科) vs. humanity(人类) vs. humanitarian(人道主义的)"},
+  percentage:{w:"as a percentage of",ipa:"/pəˈsentɪdʒ/",pos:"n.短语",tags:["phrase","write"],cn:"占……的百分比",en:"expressed as a part of a total of 100",ex:"national spending … as a percentage of all research and development funds",mem:"<b>图表作文必备</b>：<i>Spending on education as a percentage of GDP rose to 4%.</i> 44 题唯一带数字的选项就是它。",syn:"as a proportion of / as a share of",conf:"percentage(百分比) vs. percent(百分之…) vs. proportion(比例)"},
+  nonprofit:{w:"non-profit",ipa:"",pos:"adj.",tags:["core"],cn:"非营利的",en:"not intended to make a profit",ex:"including government, higher education, non-profit and corporate",mem:"non(不)+profit(利润)。non-profit organization(NPO，非营利组织)。",syn:"not-for-profit / charitable",conf:"non-profit(非营利) vs. profitable(有利可图) vs. prophet(先知)"},
+  corporate:{w:"corporate",ipa:"/ˈkɔːpərət/",pos:"adj.",tags:["core"],cn:"企业的，公司的",en:"relating to large companies",ex:"government, higher education, non-profit and corporate",mem:"corpor(身体)+ate → 法人团体。<b>corporate social responsibility ＝ 企业社会责任</b>（作文素材）。",syn:"business / company",conf:"corporate(公司的) vs. cooperate(合作) vs. corporal(肉体的)"},
+  vary:{w:"vary from … to …",ipa:"/ˈveəri/",pos:"v.短语",tags:["phrase","write"],cn:"从……到……不等",en:"to be different within a range",ex:"varied from around 4% to 25%",mem:"<b>图表作文描述区间的标准动词</b>：<i>Prices vary from 10 to 50 yuan.</i> 同族：various(各种)、variety(多样)、variable(变量)。",syn:"range from … to …",conf:"vary(变化) vs. very(非常) vs. variety(多样性)"}
+};
+
+/* 选项库渲染 */
+const lib=document.getElementById('optlib');
+lib.innerHTML=Object.keys(OPTS).map(k=>
+  '<div class="optitem'+(EXTRA.indexOf(k)>=0?' extra':'')+'" id="opt-'+k+'"><span class="lt">'+k+'</span><span>'
+  +'<span class="oen">'+OPTS[k][0]+'</span>'
+  +'<span class="zhx">'+OPTS[k][1]+'</span>'
+  +'<span class="kw">🔑 '+OPTS[k][2]+'</span>'
+  +'<span class="stg">'+OPTS[k][3]+'</span></span></div>').join('');
+
+/* 作答交互：答后就地把空格补全成原文 */
+document.querySelectorAll('.person').forEach(p=>{
+  const ans=p.dataset.ans; if(!ans)return;
+  const chips=p.querySelector('.chips');
+  chips.innerHTML='ABCDEFG'.split('').map(l=>'<button class="ch" data-l="'+l+'">'+l+'</button>').join('');
+  chips.querySelectorAll('.ch').forEach(c=>c.addEventListener('click',()=>{
+    if(p.classList.contains('done'))return;
+    p.classList.add('done');
+    if(c.dataset.l!==ans)c.classList.add('wrong');
+    chips.querySelector('.ch[data-l="'+ans+'"]').classList.add('right');
+    const oi=document.getElementById('opt-'+ans); if(oi)oi.classList.add('used');
+    const slot=p.querySelector('.slot');
+    if(slot){slot.classList.add('filled');slot.innerHTML='<span class="fl">['+ans+']</span>'+OPTS[ans][0];}
+  }));
+});
+
+const panel=document.getElementById('panel');
+const isMobile=()=>window.innerWidth<=900;
+function badge(t){return {core:'<span class="badge b-core">核心词</span>',phrase:'<span class="badge b-phrase">短语</span>',poly:'<span class="badge b-poly">熟词僻义</span>',write:'<span class="badge b-write">写作✍︎</span>'}[t]||''}
+function showCard(k,el){
+  const d=V[k]; if(!d)return;
+  document.querySelectorAll('.tk.active').forEach(e=>e.classList.remove('active'));
+  if(el&&el.classList.contains('tk'))el.classList.add('active');
+  panel.innerHTML='<button class="close" onclick="panel.classList.remove(\'open\')">✕</button>'
+  +'<div class="wcard">'
+  +'<div class="head"><span class="w">'+d.w+'</span><span class="ipa">'+d.ipa+'</span><span class="pos">'+d.pos+'</span>'+d.tags.map(badge).join('')+'</div>'
+  +'<div class="cn">'+d.cn+'</div><div class="en-def">'+d.en+'</div>'
+  +'<div class="row r-ex"><b>原文语境</b>“…'+d.ex+'…”</div>'
+  +'<div class="row r-mem"><b>怎么记</b>'+d.mem+'</div>'
+  +'<div class="row r-syn"><b>同类词</b>'+d.syn+'</div>'
+  +'<div class="row r-conf"><b>易混辨析</b>'+d.conf+'</div>'
+  +'</div>';
+  if(isMobile())panel.classList.add('open');
+}
+document.addEventListener('click',function(e){
+  const t=e.target.closest?e.target.closest('.tk'):null;
+  if(t){e.stopPropagation();showCard(t.dataset.w,t);}
+});
+function tz(btn){btn.closest('.person,.para').classList.toggle('showzh')}
+let allOn=false;
+function toggleAll(){allOn=!allOn;document.querySelectorAll('.person,.para').forEach(p=>p.classList.toggle('showzh',allOn))}
+
+const vg=document.getElementById('vgrid');
+Object.keys(V).forEach(k=>{
+  const d=V[k];
+  const div=document.createElement('div');div.className='vitem';
+  div.style.cssText='border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer';
+  div.innerHTML='<span style="float:right">'+d.tags.map(badge).join('')+'</span>'
+   +'<div style="font-family:var(--serif);font-weight:bold">'+d.w+'</div>'
+   +'<div style="font-size:.85rem;color:var(--muted)">'+d.cn+'</div>';
+  div.addEventListener('click',()=>{showCard(k,null);if(!isMobile())window.scrollTo({top:0,behavior:'smooth'})});
+  vg.appendChild(div);
+});
+document.getElementById('vcount').textContent=Object.keys(V).length;
+
+const yd=document.getElementById('yd');let sel='';
+document.addEventListener('selectionchange',()=>{
+  const s=window.getSelection();const t=s?s.toString().trim():'';
+  if(t&&/^[a-zA-Z' -]{2,40}$/.test(t)){
+    sel=t;
+    try{const r=s.getRangeAt(0).getBoundingClientRect();
+      yd.style.left=Math.min(r.left,window.innerWidth-110)+'px';
+      yd.style.top=(r.bottom+8)+'px';yd.style.display='block';}catch(e){}
+  }else{yd.style.display='none'}
+});
+yd.addEventListener('click',()=>{window.open('https://dict.youdao.com/result?word='+encodeURIComponent(sel)+'&lang=en');yd.style.display='none'});
+document.addEventListener('click',e=>{if(e.target!==yd&&!window.getSelection().toString())yd.style.display='none'});
+</script>
+<script src="_fault_attr.js"></script>
+</body>
+</html>
+
