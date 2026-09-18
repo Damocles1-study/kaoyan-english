@@ -1,0 +1,1240 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2014 英一 完形 · 像练肌肉一样练大脑</title>
+<style>
+  :root{
+    --bg:#faf9f6; --card:#ffffff; --ink:#2b2b2b; --muted:#8a8578;
+    --accent:#8b5e34; --accent-soft:#f3e9dd; --line:#e8e3d8;
+    --hl:#fdf3d8; --hl-border:#e0b84d;
+    --green:#3e7a4e; --green-soft:#e8f2ea;
+    --red:#b04a3a; --red-soft:#f9e9e6;
+    --blue:#3d6a8a; --blue-soft:#e7eff5;
+    --purple:#6d5a8e; --purple-soft:#eeeaf5;
+    --serif:"Georgia","Songti SC",serif;
+    --sans:-apple-system,"PingFang SC","Helvetica Neue",sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#1c1a17; --card:#26231f; --ink:#e8e4dc; --muted:#9a948a;
+      --accent:#d0a06a; --accent-soft:#3a3127; --line:#3a362f;
+      --hl:#3d3520; --hl-border:#b08c3a;
+      --green:#7fb98d; --green-soft:#26362b;
+      --red:#d98876; --red-soft:#3d2a26;
+      --blue:#8ab3d0; --blue-soft:#26323d;
+      --purple:#a996c8; --purple-soft:#302a3d;
+    }
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;padding-bottom:120px}
+  .wrap{max-width:1100px;margin:0 auto;padding:24px 20px}
+  .back{font-size:.85rem;color:var(--muted);text-decoration:none}
+  .back:hover{color:var(--accent)}
+  header{margin:14px 0 28px}
+  header h1{font-family:var(--serif);font-size:1.7rem;line-height:1.3}
+  header .sub{color:var(--muted);margin-top:6px;font-size:.9rem}
+  .tags{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+  .tag{font-size:.75rem;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);border:1px solid var(--line)}
+  .tag.spoiler{cursor:pointer;background:var(--card);color:var(--muted)}
+  .tag.spoiler .hid{filter:blur(5px)}
+  .tag.spoiler.open .hid{filter:none;color:var(--accent)}
+
+  .layout{display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:start}
+  @media (max-width:900px){.layout{grid-template-columns:1fr}}
+
+  section.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:24px}
+  h2{font-size:1.05rem;letter-spacing:.05em;color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  h2 .n{font-size:.72rem;background:var(--accent);color:var(--card);border-radius:6px;padding:1px 7px}
+  .note{font-size:.82rem;color:var(--muted);margin-bottom:14px}
+
+  .para{margin-bottom:22px}
+  .para .en{font-family:var(--serif);font-size:1.06rem;line-height:2.15}
+  .pno{color:var(--muted);font-size:.75rem;user-select:none;margin-right:6px}
+  .tk{background:var(--hl);border-bottom:2px solid var(--hl-border);border-radius:3px;padding:0 2px;cursor:pointer;transition:filter .15s}
+  .tk:hover{filter:brightness(.93)}
+  .tk.active{outline:2px solid var(--hl-border)}
+  .ls{border-bottom:2px dotted var(--blue);cursor:pointer}
+  .para .zh{display:none;margin-top:10px;padding:10px 14px;background:var(--blue-soft);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:.93rem}
+  .para.showzh .zh{display:block}
+  .zbtn{float:right;margin-left:10px;font-size:.72rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:6px;padding:2px 9px;cursor:pointer}
+  .zbtn:hover{color:var(--accent);border-color:var(--accent)}
+  .allbtn{font-size:.78rem;border:1px solid var(--accent);background:none;color:var(--accent);border-radius:8px;padding:4px 12px;cursor:pointer}
+
+  /* 完形空格 */
+  .bk{display:inline-block;min-width:64px;text-align:center;background:var(--hl);border-bottom:2px solid var(--hl-border);border-radius:4px;padding:0 6px;cursor:pointer;font-weight:600;color:var(--accent);transition:all .15s;font-family:var(--sans);font-size:.95rem}
+  .bk:hover{filter:brightness(.93)}
+  .bk.filled{background:var(--green-soft);border-bottom-color:var(--green);color:var(--green);font-family:var(--serif)}
+  .bk.miss{background:var(--red-soft);border-bottom-color:var(--red);color:var(--red);font-family:var(--serif)}
+  .bk.active{outline:2px solid var(--hl-border)}
+  .bk .idx{font-size:.7rem;color:var(--muted);margin-right:3px}
+
+  aside{position:sticky;top:20px}
+  #panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;min-height:180px}
+  #panel .hint{color:var(--muted);font-size:.88rem;text-align:center;padding:30px 10px}
+  .wcard .head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .wcard .w{font-family:var(--serif);font-size:1.35rem;font-weight:bold}
+  .wcard .ipa{color:var(--muted);font-size:.85rem}
+  .wcard .pos{font-size:.72rem;color:var(--purple);background:var(--purple-soft);padding:1px 8px;border-radius:999px}
+  .wcard .badge{font-size:.7rem;padding:1px 8px;border-radius:999px}
+  .b-core{background:var(--red-soft);color:var(--red)}
+  .b-phrase{background:var(--blue-soft);color:var(--blue)}
+  .b-poly{background:var(--purple-soft);color:var(--purple)}
+  .b-write{background:var(--green-soft);color:var(--green)}
+  .wcard .cn{margin-top:8px;font-size:1rem;font-weight:600}
+  .wcard .en-def{color:var(--muted);font-size:.86rem;font-style:italic;margin-top:2px}
+  .wcard .row{margin-top:10px;font-size:.86rem;padding:8px 10px;border-radius:8px}
+  .wcard .row>b:first-child{font-size:.72rem;display:block;margin-bottom:2px;letter-spacing:.06em}
+  .r-ex{background:var(--hl)} .r-ex b{color:var(--hl-border)}
+  .r-mem{background:var(--green-soft)} .r-mem b{color:var(--green)}
+  .r-syn{background:var(--blue-soft)} .r-syn b{color:var(--blue)}
+  .r-conf{background:var(--red-soft)} .r-conf b{color:var(--red)}
+  #panel .close{display:none}
+  @media (max-width:900px){
+    aside{position:fixed;left:0;right:0;bottom:0;z-index:50;padding:0 8px 8px}
+    #panel{box-shadow:0 -6px 24px rgba(0,0,0,.18);max-height:55vh;overflow-y:auto;display:none}
+    #panel.open{display:block}
+    #panel .close{display:block;float:right;border:none;background:var(--line);border-radius:8px;padding:2px 10px;cursor:pointer;color:var(--ink)}
+  }
+
+  /* 逐空精解 */
+  .q{margin-bottom:22px;padding-bottom:18px;border-bottom:1px dashed var(--line);scroll-margin-top:20px}
+  .q:last-child{border:none;margin-bottom:0;padding-bottom:0}
+  .q .stem{font-family:var(--serif);font-size:.98rem;background:var(--hl);border-radius:8px;padding:8px 12px;display:block}
+  .q .stem em{font-style:normal;font-weight:700;color:var(--accent);border-bottom:2px solid var(--hl-border);padding:0 4px}
+  .qhead{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+  .qno{font-family:var(--serif);font-size:1.2rem;font-weight:700;color:var(--accent)}
+  .qt{font-size:.7rem;border-radius:999px;padding:1px 9px}
+  .c-logic{background:var(--blue-soft);color:var(--blue)}
+  .c-collo{background:var(--green-soft);color:var(--green)}
+  .c-word{background:var(--red-soft);color:var(--red)}
+  .c-context{background:var(--purple-soft);color:var(--purple)}
+  .qpos{font-size:.7rem;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:1px 9px}
+  .opts{margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  @media (max-width:640px){.opts{grid-template-columns:1fr}}
+  .opt{border:1px solid var(--line);border-radius:10px;padding:7px 12px;cursor:pointer;font-size:.92rem;font-family:var(--serif);transition:all .15s}
+  .opt .gl{font-family:var(--sans);font-size:.8rem;color:var(--muted);margin-left:6px}
+  .opt:hover{border-color:var(--accent)}
+  .q.done .opt{cursor:default}
+  .opt.right{background:var(--green-soft);border-color:var(--green)}
+  .opt.wrong{background:var(--red-soft);border-color:var(--red)}
+  .expl{display:none;margin-top:12px;background:var(--accent-soft);border-radius:10px;padding:12px 14px;font-size:.9rem}
+  .q.done .expl{display:block}
+  .expl b{color:var(--accent)}
+  .expl .lbl{font-size:.74rem;letter-spacing:.06em;color:var(--muted);display:block;margin:10px 0 2px}
+  .expl .lbl:first-child{margin-top:0}
+  .expl code{font-family:var(--serif);background:var(--hl);border-radius:4px;padding:1px 5px}
+  .wrongs{margin-top:6px;display:grid;gap:5px}
+  .wr{font-size:.86rem;background:var(--card);border-radius:8px;padding:6px 10px;border-left:3px solid var(--red)}
+  .wr .l{font-family:var(--serif);font-weight:700;color:var(--red);margin-right:5px}
+
+  /* 计分条 */
+  .score{display:flex;gap:14px;flex-wrap:wrap;align-items:center;background:var(--hl);border-radius:12px;padding:10px 16px;margin-bottom:18px;font-size:.88rem}
+  .score .v{font-family:var(--serif);font-size:1.25rem;font-weight:700;color:var(--accent);margin-right:4px}
+  .score .rst{margin-left:auto;font-size:.78rem;border:1px solid var(--line);background:var(--card);color:var(--muted);border-radius:8px;padding:3px 10px;cursor:pointer}
+
+  /* 考点统计 */
+  .catbar{display:flex;height:26px;border-radius:8px;overflow:hidden;margin:10px 0 16px;border:1px solid var(--line)}
+  .catseg{display:flex;align-items:center;justify-content:center;font-size:.72rem;color:#fff;font-weight:600}
+  .catlegend{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px}
+  .cl{display:flex;gap:8px;align-items:center;font-size:.85rem;cursor:pointer;padding:6px 8px;border-radius:8px;border:1px solid var(--line)}
+  .cl:hover{border-color:var(--accent)}
+  .dot{width:12px;height:12px;border-radius:3px;flex:0 0 12px}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+  .chip{font-size:.78rem;background:var(--accent-soft);color:var(--accent);border-radius:6px;padding:2px 8px;cursor:pointer}
+  .chip:hover{filter:brightness(.94)}
+
+  /* 打法 / 搭配 */
+  .flow{display:grid;gap:10px;font-size:.92rem}
+  .flow .fi{border:1px solid var(--line);border-radius:10px;padding:10px 14px}
+  .flow .fi b{color:var(--accent)}
+  .flow .fi .ev{display:block;margin-top:4px;font-size:.85rem;color:var(--muted);border-left:3px solid var(--hl-border);padding-left:9px}
+  .wb{display:grid;gap:10px}
+  .wbi{border-left:3px solid var(--green);background:var(--green-soft);border-radius:0 10px 10px 0;padding:10px 14px;font-size:.92rem}
+  .wbi .p{font-family:var(--serif);font-weight:600}
+  .wbi .u{color:var(--muted);font-size:.85rem}
+
+  /* 长难句 */
+  .sent{margin-bottom:20px}
+  .sent .src{font-family:var(--serif);font-size:1rem;background:var(--blue-soft);padding:12px 14px;border-radius:10px;border-left:3px solid var(--blue)}
+  .sent .anat{margin-top:8px;font-size:.9rem}
+  .sent .anat li{margin:4px 0 4px 18px}
+  .sent .tr{margin-top:8px;font-size:.92rem;color:var(--muted)}
+  .skel{color:var(--red);font-weight:600}
+
+  /* 80词表 */
+  .otab{width:100%;border-collapse:collapse;font-size:.86rem}
+  .otab th,.otab td{border:1px solid var(--line);padding:5px 8px;vertical-align:top}
+  .otab th{background:var(--accent-soft);color:var(--accent);font-size:.78rem}
+  .otab td.n{text-align:center;font-family:var(--serif);color:var(--muted);width:38px}
+  .otab .ow{font-family:var(--serif)}
+  .otab .oc{color:var(--muted);font-size:.82rem;display:block}
+  .otab td.hit{background:var(--green-soft)}
+  .otab td.hit .ow{color:var(--green);font-weight:700}
+  .hidecn .oc{filter:blur(4px);cursor:pointer}
+  .hidecn .oc.show{filter:none}
+  .tabwrap{overflow-x:auto}
+
+  #yd{position:fixed;z-index:60;display:none;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:4px 12px;font-size:.8rem;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+  .fail{background:var(--red-soft);border:1px solid var(--red);border-radius:10px;padding:10px 13px;margin-bottom:10px;font-size:.89rem;line-height:1.75}
+  .fail b{color:var(--red)}
+  .expl .fail{margin-top:0}
+  footer{color:var(--muted);font-size:.8rem;text-align:center;margin-top:30px}
+  /* 修：.layout 是 grid，grid 项默认 min-width:auto ⟹ 06 的 80 词表（min-content 425px）会把整个左栏撑到 475px，
+     窄屏下页面 scrollWidth 超出视口（2007–2009 三篇完形页同源、同病）。min-width:0 后 .tabwrap 才真正接管横滚。 */
+  main,aside{min-width:0}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">◀ 返回英语复盘中心</a>
+  <header>
+    <h1>像练肌肉一样练大脑：中年健忘、先天后天与一款脑力训练程序</h1>
+    <div class="sub">2014 年英语（一）真题 · Section I 完形填空（Use of English）· 276 词（黄皮书口径）· 4 段 · 建议 15 min · 话题：脑科学科普 ＋ 产品推介（源自 <i>Medical Daily</i>《医学日报》2012 年 10 月 23 日 <i>Explanation: How Brain Training Can Make You Significantly Smarter</i>「解读：大脑训练如何让你明显变聪明」，文中那家网络公司即 Lumosity）</div>
+    <div class="tags">
+      <span class="tag spoiler" onclick="this.classList.toggle('open')">🙈 答案（点击显示）：<span class="hid">1D 2B 3A 4C 5C 6A 7C 8D 9B 10A 11A 12D 13B 14C 15D 16B 17B 18A 19C 20D</span></span>
+      <span class="tag">难度：易（干扰项弱，<b>六个空只要会固定搭配就白拿</b>；真正要想的是 <b>10 题四个动词全接 in</b> 和 <b>18 题 constantly／habitually</b>）</span>
+      <span class="tag">⚠️ 本篇<b>不算盲做</b>：做 2014 Text 1 核答案时裁图裁宽，完形 1–20 的答案已提前入眼。独立推理的结果与答案 20/20 一致，<b>不计入完形战绩</b></span>
+      <span class="tag">⭐ 本页最值钱的一段：<b>02+ 四段极性表</b>——①段是「坏」、②③④段全是「好」，<b>先定这一段的正负，再看选项</b>，2／4／14／15／18／20 六个空一张表定</span>
+    </div>
+  </header>
+
+  <div class="layout">
+    <main>
+      <!-- ========== 00 脉络 ========== -->
+      <section class="card">
+        <h2><span class="n">00</span>读前一分钟 · 全文脉络（完形先读首句，再看结构）</h2>
+        <p class="note">完形的<b>首句从不设空</b>。本篇首句 <i>As many people hit middle age, they often start to notice that their memory and mental clarity are not what they used to be.</i>——一句话给了三样东西：<b>话题</b>（中年人的记忆与头脑）、<b>方向</b>（<code>not what they used to be</code>＝大不如前，<b>坏</b>）、<b>关键词</b>（<code>memory</code> 与 <code>mental clarity</code>，<b>全文会把它们换着说好几遍</b>：mental focus · cognitive functions · memory and attention skills · <b>14 mental sharpness</b>）。</p>
+        <p class="note" style="margin-top:10px">⭐⭐ <b>本篇是「科普推介」型完形：问题 → 科学依据 → 产品 → 产品功能</b>。认它的办法是看每段的<b>主语换成了谁</b>：①段 <code>many people／We</code>（受害者）→ ②段 <code>Neuroscientists／scientists</code>（专家）→ ③段 <code>a new Web-based company</code>（公司）→ ④段 <code>The Web-based program／it</code>（产品）。<b>主语一路从「人」换到「产品」，文章的方向也从「坏」一路转到「好」</b>——①段的空往负面填，②③④段的空一律往正面填（见 <a href="#polar" style="color:var(--accent)">02+ 四段极性表</a>）。</p>
+        <div class="flow">
+          <div class="fi"><b>① 段一 · 问题：中年健忘</b>——很多人到了中年，会发现记忆力和头脑清晰度大不如前：刚放下的钥匙想不起放哪儿，老熟人的名字、年轻时爱听的乐队叫不出来；随着大脑<b>衰退</b>，我们把这些情形叫作「老年时刻」；<b>尽管</b>看似无害，这种注意力的丧失却可能对我们的职业、社交和个人<b>幸福</b>造成<b>损害</b>。
+            <span class="ev">1–5 空，<b>一段五个空（2.5 分）</b>。❷ 句是三个并列的<b>例子</b>（钥匙 · 熟人名字 · 老乐队），1 空要让「放钥匙」这件事成句——<code>put the keys</code> 缺一个<b>地点</b> ⟹ where。<br>⭐ <b>❹ 句是全段的转折点</b>：<code><b>3</b> seemingly innocent … can potentially have a(n) <b>4</b> impact</code>——seemingly（表面上）和 potentially（潜在地）两个副词把句子劈成「看上去无害 ↔ 其实有害」两半 ⟹ 3 让步（While）、4 负面（damaging）（⟹ <a href="#hedge" style="color:var(--accent)">02+++</a>）。</span></div>
+          <div class="fi"><b>② 段二 · 依据：大脑也能练，智力是可以变的</b>——神经科学家越来越多地证明，其实可以做很多事；<b>研究发现</b>，大脑和肌肉一样需要锻炼，合适的脑力<b>训练</b>能显著改善我们的基本认知<b>功能</b>；思考本质上是一个在大脑里建立连接的<b>过程</b>；在一定程度上，我们<b>擅长</b>建立这些推动智力的连接的能力是遗传的；<b>然而</b>，由于这些连接是通过努力和练习建立起来的，科学家认为智力能<b>随着</b>脑力投入而扩展和波动。
+            <span class="ev">6–12 空，<b>全篇最重的一段（七个空，3.5 分）</b>。❷ 句 <code>in much the same way our muscles do</code> 埋下<b>全文的比喻</b>，到④段末 <code>much like a(n) <b>20</b> exercise routine</code> 才收（⟹ <a href="#muscle" style="color:var(--accent)">02++ 肌肉类比表</a>）。<br>⭐⭐ <b>❹❺ 两句是一对「先天 ↔ 后天」</b>：<code>To a certain extent … is <b>inherited</b></code> ↔ <code><b>11</b>, because … made through <b>effort and practice</b></code>——10／11／12 三个空挂在同一根轴上：10 说先天的那一半（excel），11 翻到后天（However），12 说后天怎么起作用（according to）。</span></div>
+          <div class="fi"><b>③ 段三 · 产品登场</b>——如今，一家新的网络公司<b>更进一步</b>，开发出第一个「大脑训练程序」，旨在切实帮助人们改善并恢复大脑的<b>敏锐度</b>。
+            <span class="ev">13–14 空，<b>全篇最短的一段，只有一句</b>。<code>has taken it a step <b>13</b></code> 的 it 回指②段整套理论：从理论到产品＝<b>往前</b>一步（further）。<br>⭐ <code>improve and <b>regain</b> their mental <b>14</b></code>——<b>regain（重新获得）预设「本来有、后来丢了」</b>，丢的是什么？回首句：<code>memory and mental <b>clarity</b></code> ⟹ sharpness（头脑敏锐）。</span></div>
+          <div class="fi"><b>④ 段四 · 产品说明书</b>——这个网络程序<b>让</b>你能系统地提升记忆和注意力；它<b>跟踪记录</b>你的进步，并<b>就</b>你的表现和改进提供详细反馈；最重要的是，它<b>不断地</b>调整和强化你玩的游戏，<b>以</b>你正在培养的长处为<b>基础</b>继续提升——就像一套<b>有效的</b>锻炼计划要求你不断增加阻力、变换肌肉的用法。
+            <span class="ev">15–20 空。<b>这一段是说明书的口吻</b>：allows you to · keeps track of · provides feedback on · Most importantly · build on——<b>六个空里四个是动词或介词的固定搭配</b>（15／16／17／19）。<br>📌 <b>整段只说产品的好</b>：选项里凡带「催逼」「无规律」「有风险」「无效」色彩的（hurries／forces／irregularly／risky／idle），一律先划掉。</span></div>
+        </div>
+        <p class="note" style="margin-top:14px">📌 <b>第二条强线索：一个比喻从②段贯穿到④段末——「大脑像肌肉」</b>。②❷ <code>the brain needs exercise in much the same way our muscles do</code> ⟹ 7 mental <b>workouts</b>；④❸ <code>much like a(n) <b>20</b> exercise routine requires you to increase resistance and vary your muscle use</code> ⟹ 18 <b>constantly</b> modifies（阻力要一直加、用法要一直变）· 19 <b>build</b> on（越练越强）· 20 <b>effective</b>。<b>凡和「练」有关的空，都拿肌肉那一边去对</b>。</p>
+        <p class="note" id="bg">🎭 <b>读前背景（不影响做题，但读懂了心里有底）</b>：</p>
+        <div class="tabwrap"><table class="otab">
+          <tr><th>文中说法</th><th>背景</th><th>管哪个空</th></tr>
+          <tr><td><span class="ow">senior moments</span></td><td><b>「老年时刻」</b>：英语里自嘲一时健忘、脑子短路的俏皮说法（senior＝老年人）。黄皮书还提到俚语 <b>brain fade</b>（脑子一时空白）——<b>2 题答案 fades 正是从这个说法里来的</b></td><td>2</td></tr>
+          <tr><td><span class="ow">Neuroscientists</span></td><td>神经科学家。原文紧跟同位语 <code>experts who study the nervous system</code> 解释这个词——<b>考研文章遇到专业名词，后面常自带同位语解释</b>，不用慌</td><td>6</td></tr>
+          <tr><td><span class="ow">a new Web-based company</span></td><td>原文点了名：<b>Lumosity</b>（Lumos Labs 公司），宣称由斯坦福等校的神经科学与认知心理学专家设计。<b>考卷删掉了公司名</b>——完形不替产品做广告</td><td>13–20</td></tr>
+          <tr><td><span class="ow">brain training program</span></td><td>⚠️ <b>后话</b>：2016 年 1 月，美国联邦贸易委员会（FTC）认定 Lumosity 关于「提升工作学习表现、延缓认知衰退」的广告<b>缺乏科学依据</b>，公司以 200 万美元和解。<b>做题只看文内逻辑，不管真假</b>；但写作文时这是一条好素材：<b>宣传说「科学证明」，不等于真有证据</b></td><td>—</td></tr>
+          <tr><td><span class="ow">increase resistance</span></td><td>力量训练的基本原理：<b>渐进超负荷</b>——肌肉适应了当前重量就不再长，必须不断加阻力（加重量）、换动作。④段末用它类比「游戏难度随你的水平不断上调」</td><td>18／19／20</td></tr>
+          <tr><td><span class="ow">对你的意义</span></td><td>本篇讲的是「智力部分先天、大半后天」。<b>备考本身就是 effort and practice</b>——别拿「我天生记性差」给自己下结论，②❺ 那句才是这篇文章的结论</td><td>—</td></tr>
+        </table></div>
+      </section>
+      <!-- ========== 01 正文 ========== -->
+      <section class="card">
+        <h2><span class="n">01</span>完形正文（20 空 · 点空格跳到该题）
+          <button class="allbtn" onclick="toggleAll()" style="margin-left:auto">译文 开/关</button>
+          <button class="allbtn" onclick="revealAll()">显示全部答案</button>
+        </h2>
+        <p class="note">🟨 点<b>空格</b>＝跳到下面对应的解析卡（先自己选，再看解析）｜ 🟡 黄底词＝生词卡，点开看词根/辨析 ｜ 蓝色虚线＝长难句 ｜ 选中任意单词浮出「查有道」</p>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">①</span><span class="ls" onclick="go('s1')">As many people <span class="tk" data-w="hitmiddleage">hit middle age</span>, they often start to notice that their memory and mental <span class="tk" data-w="clarity">clarity</span> are <span class="tk" data-w="notwhat">not what they used to be</span>.</span> <span class="ls" onclick="go('s2')">We suddenly can't remember <span class="bk" data-n="1"><span class="idx">1</span>___</span> we put the keys just a moment ago, or an old <span class="tk" data-w="acquaintance">acquaintance</span>'s name, or the name of an old <span class="tk" data-w="band">band</span> we used to love.</span> As the brain <span class="bk" data-n="2"><span class="idx">2</span>___</span>, we <span class="tk" data-w="referto">refer to</span> these <span class="tk" data-w="occurrence">occurrences</span> as "<span class="tk" data-w="seniormoment">senior moments</span>." <span class="ls" onclick="go('s3')"><span class="bk" data-n="3"><span class="idx">3</span>___</span> <span class="tk" data-w="seemingly">seemingly</span> <span class="tk" data-w="innocent">innocent</span>, this loss of mental focus can <span class="tk" data-w="potentially">potentially</span> have a(n) <span class="bk" data-n="4"><span class="idx">4</span>___</span> impact on our professional, social, and personal <span class="bk" data-n="5"><span class="idx">5</span>___</span>.</span></p>
+          <div class="zh">很多人到了中年，常常开始发觉自己的记忆力和头脑的清晰度大不如前。我们会突然想不起刚才把钥匙放<b>在哪儿</b>了，或是想不起一位老熟人的名字，或是一支曾经喜爱的老乐队的名字。随着大脑<b>衰退</b>，我们把这些情形称作「老年时刻」。<b>尽管</b>看似无害，这种注意力的丧失却可能对我们的职业、社交和个人<b>幸福</b>造成<b>损害性的</b>影响。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">②</span><span class="tk" data-w="neuroscientist">Neuroscientists</span>, experts who study the <span class="tk" data-w="nervoussystem">nervous system</span>, are <span class="tk" data-w="increasingly">increasingly</span> showing that there's actually a lot that can be done. <span class="ls" onclick="go('s4')">It <span class="bk" data-n="6"><span class="idx">6</span>___</span> out that the brain needs exercise in much the same way our <span class="tk" data-w="muscle">muscles</span> do, and the right mental <span class="bk" data-n="7"><span class="idx">7</span>___</span> can significantly improve our basic <span class="tk" data-w="cognitive">cognitive</span> <span class="bk" data-n="8"><span class="idx">8</span>___</span>.</span> Thinking is <span class="tk" data-w="essentially">essentially</span> a <span class="bk" data-n="9"><span class="idx">9</span>___</span> of making connections in the brain. <span class="ls" onclick="go('s5')"><span class="tk" data-w="certainextent">To a certain extent</span>, our ability to <span class="bk" data-n="10"><span class="idx">10</span>___</span> in making the connections that <span class="tk" data-w="drive">drive</span> <span class="tk" data-w="intelligence">intelligence</span> is <span class="tk" data-w="inherited">inherited</span>.</span> <span class="ls" onclick="go('s6')"><span class="bk" data-n="11"><span class="idx">11</span>___</span>, because these connections are made through effort and practice, scientists believe that intelligence can expand and <span class="tk" data-w="fluctuate">fluctuate</span> <span class="bk" data-n="12"><span class="idx">12</span>___</span> mental effort.</span></p>
+          <div class="zh">神经科学家——研究神经系统的专家——正越来越多地证明，其实能做的事情有很多。<b>研究发现</b>，大脑就像肌肉一样需要锻炼，合适的脑力<b>训练</b>能显著改善我们的基本认知<b>功能</b>。思考本质上是一个在大脑中建立连接的<b>过程</b>。在一定程度上，我们<b>擅长</b>建立那些推动智力发展的连接的能力，是遗传而来的。<b>然而</b>，由于这些连接是通过努力和练习建立起来的，科学家相信，智力能够<b>随着</b>脑力的投入而扩展和起伏。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">③</span><span class="ls" onclick="go('s7')">Now, a new <span class="tk" data-w="webbased">Web-based</span> company has taken it a step <span class="bk" data-n="13"><span class="idx">13</span>___</span> and developed the first "brain training program" designed to actually help people improve and <span class="tk" data-w="regain">regain</span> their mental <span class="bk" data-n="14"><span class="idx">14</span>___</span>.</span></p>
+          <div class="zh">如今，一家新的网络公司<b>更进一步</b>，开发出了首个「大脑训练程序」，旨在切实帮助人们改善并恢复大脑的<b>敏锐度</b>。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">④</span>The Web-based program <span class="bk" data-n="15"><span class="idx">15</span>___</span> you to <span class="tk" data-w="systematically">systematically</span> improve your memory and attention skills. The program keeps <span class="bk" data-n="16"><span class="idx">16</span>___</span> of your <span class="tk" data-w="progress">progress</span> and provides detailed <span class="tk" data-w="feedback">feedback</span> <span class="bk" data-n="17"><span class="idx">17</span>___</span> your performance and improvement. <span class="ls" onclick="go('s8')">Most importantly, it <span class="bk" data-n="18"><span class="idx">18</span>___</span> <span class="tk" data-w="modify">modifies</span> and <span class="tk" data-w="enhance">enhances</span> the games you play to <span class="bk" data-n="19"><span class="idx">19</span>___</span> on the <span class="tk" data-w="strength">strengths</span> you are developing—much like a(n) <span class="bk" data-n="20"><span class="idx">20</span>___</span> exercise <span class="tk" data-w="routine">routine</span> requires you to increase <span class="tk" data-w="resistance">resistance</span> and <span class="tk" data-w="vary">vary</span> your muscle use.</span></p>
+          <div class="zh">这个网络程序<b>让</b>你能够系统地提升记忆力和注意力。它会<b>跟踪记录</b>你的进步，并<b>就</b>你的表现和改进提供详细的反馈。最重要的是，它会<b>不断地</b>调整和强化你所玩的游戏，<b>在</b>你正在培养的长处的<b>基础上</b>继续提升——这很像一套<b>有效的</b>锻炼计划，要求你不断增加阻力、变换对肌肉的使用方式。</div>
+        </div>
+      </section>
+      <!-- ========== 02 逐空精解 ========== -->
+      <section class="card">
+        <h2><span class="n">02</span>逐空精解（点选项即判 · 再看解析）</h2>
+        <div class="score">
+          <span><span class="v" id="sDone">0</span>/20 已答</span>
+          <span><span class="v" id="sRight">0</span> 对</span>
+          <span>折合 <span class="v" id="sPt">0</span> 分 / 10</span>
+          <button class="rst" onclick="location.reload()">↺ 重做</button>
+        </div>
+        <p class="note">每空 0.5 分。<b>先在心里说出「这个空要填什么词性、什么方向」再点选项</b>。本篇有<b>六道题只要会固定搭配就能定</b>（<b>6</b> It turns out that · <b>13</b> take it a step further · <b>16</b> keep track of · <b>17</b> feedback on · <b>19</b> build on · <b>1</b> put … where），<b>真正要想的是 10、18 两个</b>：10 的四个动词<b>全都能接 in</b>，介词帮不上忙，只能看「先天」；18 的 constantly 与 habitually 都有「经常」义，要看后面的肌肉比喻。</p>
+
+        <div class="q" id="q1" data-ans="3">
+          <div class="qhead"><span class="qno">1</span><span class="qt c-collo">固定搭配 · put 要带地点</span><span class="qpos">can't remember ＋ ___ ＋ we put the keys</span></div>
+          <span class="stem">We suddenly can't remember <em>1</em> we <b>put</b> the keys just a moment ago, or an old acquaintance's name, or the name of an old band we used to love.</span>
+          <div class="opts">
+            <div class="opt">A why<span class="gl">为什么</span></div>
+            <div class="opt">B when<span class="gl">什么时候</span></div>
+            <div class="opt">C that<span class="gl">（引导从句，无词义）</span></div>
+            <div class="opt">D where<span class="gl">在哪里</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>remember 后的<b>宾语从句引导词</b>，要在从句 <code>we put the keys just a moment ago</code> 里充当一个成分。四个选项都能引导宾语从句，<b>比的是从句缺什么</b>。
+            <span class="lbl">🔗 线索</span>① <b>put 是必须带地点的动词</b>：put sth <u>on the table／in the drawer</u>——光说 put the keys，句子没说完；② 时间已经有了：<code>just a moment ago</code>；③ 这是三个并列的「健忘」例子之一，最常见的就是「钥匙放哪儿了」。
+            <span class="lbl">✅ D where</span>在哪里，在从句里作<b>地点状语</b>，正好补上 put 缺的那一块。代入＝「突然想不起刚才把钥匙<b>放在哪儿</b>了」。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>why：「想不起为什么放钥匙」——放钥匙不需要理由，而且 put the keys 仍然缺地点，<b>语法和意思两头都不完整</b>。</div>
+              <div class="wr"><span class="l">B</span>when：时间状语<b>撞车</b>——从句里已经有 <code>just a moment ago</code>，再问「什么时候」就重复了；put 缺的地点也还缺着。</div>
+              <div class="wr"><span class="l">C</span>that：只起连接作用、不作成分，从句必须自己完整；<code>we put the keys</code> 缺地点，<b>不完整</b>。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>宾语从句的引导词空＝「从句缺什么就填什么」</b>：缺地点 where · 缺时间 when · 缺原因 why · 什么都不缺 that／whether。<b>put／place／leave（留在某处）／lay 这几个动词离不开地点</b>，看见它们后面没有介词短语，就知道地点被挪到从句开头去了。
+          </div>
+        </div>
+
+        <div class="q" id="q2" data-ans="1">
+          <div class="qhead"><span class="qno">2</span><span class="qt c-context">上下文语义 · 首句方向的第一次改写</span><span class="qpos">As the brain ＋ ___ ，we refer to these occurrences as "senior moments"</span></div>
+          <span class="stem">As the brain <em>2</em>, we refer to these occurrences as "<b>senior</b> moments."（首句：their memory and mental clarity are <b>not what they used to be</b>）</span>
+          <div class="opts">
+            <div class="opt">A improves<span class="gl">改善，好转</span></div>
+            <div class="opt">B fades<span class="gl">逐渐衰退；褪色</span></div>
+            <div class="opt">C collapses<span class="gl">崩溃，倒塌</span></div>
+            <div class="opt">D recovers<span class="gl">恢复，康复</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>As 引导的状语从句的谓语，不及物动词，说明 the brain <b>在发生什么变化</b>。四个选项两正两负。
+            <span class="lbl">🔗 线索</span>① <b>方向</b>：首句 <code>not what they used to be</code>（大不如前）、上一句一串健忘例子 ⟹ 大脑在<b>变差</b>，improves／recovers 先出局；② <b>程度</b>：these occurrences 是「突然想不起来」的<b>小插曲</b>，人还好好地上班社交——是<b>一点点变差</b>，不是彻底垮掉；③ <code>senior</code>（老年）说明是<b>随年龄慢慢来</b>的。
+            <span class="lbl">✅ B fades</span>逐渐衰退、渐渐变弱（颜色褪去、声音渐弱、记忆淡去都用它）。代入＝「随着大脑<b>逐渐衰退</b>，我们把这些情形叫作『老年时刻』」。黄皮书还指出俚语 <b>brain fade</b>（脑子一时短路）就从这里来。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>improves：方向反。大脑在变好，就不会有「老年时刻」。<b>命题人利用的是「先讲问题、后讲改善」的常见文章结构</b>——改善在②段以后，不在这里。</div>
+              <div class="wr"><span class="l">C</span>collapses：方向对，<b>程度过了</b>。collapse＝突然、彻底地垮掉；「忘了钥匙放哪儿」配不上「大脑崩溃」，下文还说它 <code>seemingly innocent</code>（看似无害）。</div>
+              <div class="wr"><span class="l">D</span>recovers：方向反，而且 recover 预设「先病了」；本段还没开始谈恢复——<b>恢复这层意思在③段的 regain 里</b>。</div>
+            </div>
+            <span class="lbl">💡 迁移</span><b>方向对了还要看程度</b>：fade（渐弱）＜ decline（下降）＜ deteriorate（恶化）＜ collapse（崩溃）。⭐ <b>「逐渐」的信号</b>：As（随着）、age、middle、gradually、over time ⟹ 选<b>渐变</b>类动词，不选突变类（collapse／crash／burst）。
+          </div>
+        </div>
+
+        <div class="q" id="q3" data-ans="0">
+          <div class="qhead"><span class="qno">3</span><span class="qt c-logic">逻辑关系 · 让步（省略的状语从句）</span><span class="qpos">___ ＋ seemingly innocent，this loss … can potentially have …</span></div>
+          <span class="stem"><em>3</em> <b>seemingly</b> innocent, this loss of mental focus can <b>potentially</b> have a(n) <em>4</em> impact on our professional, social, and personal <em>5</em>.</span>
+          <div class="opts">
+            <div class="opt">A While<span class="gl">虽然，尽管</span></div>
+            <div class="opt">B Unless<span class="gl">除非</span></div>
+            <div class="opt">C Once<span class="gl">一旦</span></div>
+            <div class="opt">D If<span class="gl">如果；即使</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>句首连词，引导一个<b>省略了「主语＋be」的状语从句</b>：还原为 <code><b>3</b> (it is) seemingly innocent</code>，it＝this loss of mental focus。四个选项全是从属连词，<b>比的是两半句的关系</b>。
+            <span class="lbl">🔗 线索</span>⭐ 两个副词已经把关系说完了：<code><b>seemingly</b> innocent</code>＝<b>表面上</b>无害（暗示其实不然）；<code>can <b>potentially</b> have a(n) impact</code>＝<b>潜在地</b>会有影响。「表面无害」vs「其实有害」＝<b>让步—转折</b>。
+            <span class="lbl">✅ A While</span>虽然、尽管（放句首表让步）。代入＝「<b>尽管</b>看似无害，这种注意力的丧失却可能……」。While ＋ 形容词／分词的省略从句非常常见：<i>While understandable, his anger is not helpful.</i>
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>Unless：「除非看似无害，否则会有影响」——把「看似无害」变成了<b>阻止影响的条件</b>，意思拧了。</div>
+              <div class="wr"><span class="l">C</span>Once：「一旦看似无害，就会造成影响」——Once 表「一……就」的时间或条件，两半句之间<b>没有先后或触发关系</b>。</div>
+              <div class="wr"><span class="l">D</span>If：「如果看似无害」是条件；If 虽也有「即使」义（<i>The weather was good, if not great.</i>），但那是两边<b>程度不同、方向相同</b>，本句两边<b>方向相反</b>（无害 ↔ 有害），要用纯让步的 While。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐⭐ <b>seemingly／apparently／on the surface／at first glance 一出现，这句话就在「表面」一侧</b>，后面必有「其实」——所以<b>句首的逻辑空填让步</b>（While／Although／Though），<b>另一半句的空填相反方向</b>（4 题 damaging）。这是一对<b>连体空</b>：先做 3 定关系，4 的方向自动出来（⟹ <a href="套路库_阅读.html#R50" style="color:var(--accent)">R50</a>、<a href="套路库_阅读.html#R176" style="color:var(--accent)">R176</a>）。
+          </div>
+        </div>
+
+        <div class="q" id="q4" data-ans="2">
+          <div class="qhead"><span class="qno">4</span><span class="qt c-context">上下文语义 · 与 seemingly innocent 反向</span><span class="qpos">can potentially have a(n) ＋ ___ ＋ impact on …</span></div>
+          <span class="stem"><em>3</em> <b>seemingly innocent</b>, this loss of mental focus can potentially have a(n) <em>4</em> impact on our professional, social, and personal <em>5</em>.</span>
+          <div class="opts">
+            <div class="opt">A uneven<span class="gl">不均衡的</span></div>
+            <div class="opt">B limited<span class="gl">有限的</span></div>
+            <div class="opt">C damaging<span class="gl">有害的，破坏性的</span></div>
+            <div class="opt">D obscure<span class="gl">模糊的，难懂的</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>形容词，修饰 impact，说明「影响」<b>是好是坏、有多大</b>。四个都能修饰 impact，语法筛不掉。
+            <span class="lbl">🔗 线索</span>① 3 题已定让步：前半句「看似<b>无害</b>」，后半句就得是「其实<b>有害</b>」——空格要和 <code>innocent</code>（harmless）<b>正相反</b>；② 下一段开头 <code>there's actually a lot that <b>can be done</b></code>——「能做点什么」是对付<b>坏事</b>的，反推这里是坏影响。
+            <span class="lbl">✅ C damaging</span>有害的、造成损害的。<code>have a damaging impact on</code>＝对……造成损害。代入＝「尽管看似无害，却可能对我们的职业、社交和个人幸福造成<b>损害</b>」。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>uneven：「影响不均衡」——说的是影响<b>分布不匀</b>，不是好坏；与「看似无害」构不成反向。</div>
+              <div class="wr"><span class="l">B</span>limited：「影响有限」——<b>方向正好反了</b>，等于替「看似无害」背书，让步句失去了转折的意义。</div>
+              <div class="wr"><span class="l">D</span>obscure：「影响不明」——说的是<b>看不清</b>，不是有害；而且下一段马上要讲怎么「对付」，影响得先是明确的坏事。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>三缺一</b>：uneven／limited／obscure 讲的都是影响的<b>形态</b>（匀不匀、大不大、清不清），只有 damaging 讲<b>好坏</b>——按「意义方向」分成 3＋1，孤立项就是答案（⟹ <a href="套路库_阅读.html#R74" style="color:var(--accent)">R74</a>）。✍️ <b>作文里「看似无害其实有害」的标准句</b>：<i>While seemingly harmless, excessive screen time can potentially have a damaging impact on children's eyesight.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q5" data-ans="2">
+          <div class="qhead"><span class="qno">5</span><span class="qt c-word">词义辨析 · 三个修饰语要同时搭上</span><span class="qpos">our professional, social, and personal ＋ ___</span></div>
+          <span class="stem">… can potentially have a(n) <em>4</em> impact on our <b>professional, social, and personal</b> <em>5</em>.</span>
+          <div class="opts">
+            <div class="opt">A relationship<span class="gl">关系</span></div>
+            <div class="opt">B environment<span class="gl">环境</span></div>
+            <div class="opt">C wellbeing<span class="gl">幸福，安康</span></div>
+            <div class="opt">D outlook<span class="gl">观点；前景</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>名词，句末宾语的中心词，被 <code>professional, social, and personal</code> <b>三个形容词并列修饰</b>。
+            <span class="lbl">🔗 线索</span>① <b>三个修饰语是并列关系</b>（and 连着），填进去的词必须<b>同时</b>接得住「职业的」「社交的」「个人的」，而且三者不能互相包含；② 被损害的对象要是<b>人自己</b>的东西——健忘伤的是人，不是外界。
+            <span class="lbl">✅ C wellbeing</span>幸福、安康（身心与生活状态的总体良好）。<code>professional／social／personal wellbeing</code> 三个都是常见说法，<b>三块并列、互不包含</b>。代入＝「对我们在职业、社交和个人方面的<b>生活质量</b>造成损害」。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>relationship：social relationship（社会关系）本身就<b>包括</b>职场关系和人际关系，三个修饰语变成了<b>上下义</b>，不再并列；personal relationship 也只是其中一块。</div>
+              <div class="wr"><span class="l">B</span>environment：伤的是<b>人外面的环境</b>——健忘伤不到职场环境、社会环境，受影响的是<b>人自身</b>的表现和感受。</div>
+              <div class="wr"><span class="l">D</span>outlook：看法或前景。「个人的看法」本身就可以涵盖对职业和社交的看法——<b>又成了包含关系</b>；「健忘损害我们的看法」也不合逻辑。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>多个修饰语并列修饰一个空</b>：挨个代进去，<b>每一个都要通</b>，而且<b>三者不能互相包含</b>。wellbeing（也写 well-being）是考研高频词：<i>physical and mental wellbeing</i>（身心健康）、<i>the wellbeing of children</i>（儿童福祉）。
+          </div>
+        </div>
+
+        <div class="q" id="q6" data-ans="0">
+          <div class="qhead"><span class="qno">6</span><span class="qt c-collo">固定搭配 · It 没有先行词 ⟹ 形式主语句型</span><span class="qpos">It ＋ ___ ＋ out that …</span></div>
+          <span class="stem">Neuroscientists … are increasingly showing that there's actually a lot that can be done. <b>It</b> <em>6</em> <b>out that</b> the brain needs exercise in much the same way our muscles do …</span>
+          <div class="opts">
+            <div class="opt">A turns<span class="gl">turn out 结果是，原来</span></div>
+            <div class="opt">B finds<span class="gl">find out 查明</span></div>
+            <div class="opt">C points<span class="gl">point out 指出</span></div>
+            <div class="opt">D figures<span class="gl">figure out 弄明白</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>谓语动词，四个选项都和空后的 <code>out</code> 组成短语，<b>也都能接 that 从句</b>——所以关键不在 out，<b>在句首那个 It</b>。
+            <span class="lbl">🔗 线索</span>⭐⭐ <b>先问：It 指谁？</b>往前一句找单数名词——上一句的主语是 <code>Neuroscientists</code>（<b>复数</b>，而且是人），<code>a lot that can be done</code> 也不是 It 能指的东西。<b>It 没有先行词 ⟹ 它是形式主语</b>，真正的主语是后面的 that 从句。
+            <span class="lbl">✅ A turns</span><code>It turns out that …</code>＝结果表明、原来是。形式主语 It ＋ turn out ＋ 主语从句，是报道研究发现的标准句型。代入＝「<b>研究表明</b>，大脑和肌肉一样需要锻炼……」——正好承接上句「神经科学家正在证明」。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>finds out：「查明」要<b>有人去查</b>——sb finds out that…。It 若指人，前面只有复数的 Neuroscientists，<b>单复数对不上</b>；It 作形式主语时 find out 也不成立。</div>
+              <div class="wr"><span class="l">C</span>points out：「指出」同样要<b>有人去指</b>（sb points out that…），错法同 B。</div>
+              <div class="wr"><span class="l">D</span>figures out：「想明白」要有人想；<code>It figures</code> 单独用是口语「这不奇怪」，<b>不带 out</b>；It takes sb time to figure out 里 It 替的是不定式，不是本句结构。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐⭐ <b>空格前的主语是 It／There／This 这类代词时，先回头找它指谁</b>：找不到先行词 ⟹ 形式主语句型（It turns out／It seems／It appears／It follows／It happens that）；找得到 ⟹ 查人还是物、单数还是复数（⟹ <a href="套路库_阅读.html#R175" style="color:var(--accent)">R175</a>）。✍️ <b>It turns out that 是摆研究结论的好句型</b>：<i>It turns out that students who sleep eight hours remember more.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q7" data-ans="2">
+          <div class="qhead"><span class="qno">7</span><span class="qt c-context">上下文语义 · 比喻的第一次落地</span><span class="qpos">the brain needs exercise … and the right mental ＋ ___ ＋ can improve …</span></div>
+          <span class="stem">It <em>6</em> out that the brain needs <b>exercise</b> in much the same way our <b>muscles</b> do, and the right mental <em>7</em> can significantly improve our basic cognitive <em>8</em>.</span>
+          <div class="opts">
+            <div class="opt">A responses<span class="gl">反应，回应</span></div>
+            <div class="opt">B roundabouts<span class="gl">环岛；旋转木马</span></div>
+            <div class="opt">C workouts<span class="gl">锻炼，训练</span></div>
+            <div class="opt">D associations<span class="gl">联想；联系</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>名词，and 后分句的主语中心词，被 <code>the right mental</code> 修饰；它是「能显著改善认知」的<b>那个东西</b>。
+            <span class="lbl">🔗 线索</span>and 前半句刚说「大脑像<b>肌肉</b>一样需要<b>锻炼</b>（exercise）」，后半句顺着说「合适的<b>脑力 ___</b> 能改善认知」⟹ 空格就是<b>把 exercise 换个说法、换到脑子上</b>。肌肉的锻炼叫 workout，脑子的锻炼就是 mental workout。
+            <span class="lbl">✅ C workouts</span>锻炼、训练（常指一次健身）。<code>mental workouts</code>＝脑力训练，<b>把②❷ 前半句的比喻原样接住</b>。代入＝「合适的<b>脑力训练</b>能显著改善我们的基本认知功能」。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>responses：mental responses＝心理反应，是<b>受刺激后自然产生的</b>，谈不上「选对的」（the right）去做；跟上半句的「锻炼」也接不上。</div>
+              <div class="wr"><span class="l">B</span>roundabouts：环岛、旋转木马——<b>拿 round（转）来蹭「脑子转一转」</b>，但 mental roundabouts 不是英语说法。</div>
+              <div class="wr"><span class="l">D</span>associations：心理联想，只是思维活动的一种，<b>不是「锻炼」</b>；也没有和肌肉那一边对上。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>比喻句的两半各有一套词</b>：喻体（肌肉）用 exercise／workout／training，本体（大脑）就用 mental exercise／mental workout／brain training——<b>空格常常就是「把喻体的词搬到本体上」</b>（⟹ <a href="套路库_阅读.html#R49" style="color:var(--accent)">R49</a>）。这个比喻在④段末还会再收一次（20 题）。
+          </div>
+        </div>
+        <div class="q" id="q8" data-ans="3">
+          <div class="qhead"><span class="qno">8</span><span class="qt c-word">词义辨析 · cognitive 后面接什么</span><span class="qpos">significantly improve our basic cognitive ＋ ___</span></div>
+          <span class="stem">… the right mental <em>7</em> can significantly <b>improve</b> our basic <b>cognitive</b> <em>8</em>.</span>
+          <div class="opts">
+            <div class="opt">A genre<span class="gl">体裁，类型</span></div>
+            <div class="opt">B criterion<span class="gl">标准</span></div>
+            <div class="opt">C circumstances<span class="gl">环境，境况</span></div>
+            <div class="opt">D functions<span class="gl">功能，机能</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>名词，improve 的宾语中心词，受 <code>basic cognitive</code>（基本的认知的）修饰。
+            <span class="lbl">🔗 线索</span>① <b>improve 的宾语要是「能变好的能力」</b>；② 回到首段：变差的是 <code>memory and mental clarity</code>、<code>mental focus</code>——空格要能<b>把这些都装进去</b>，做它们的上位词。
+            <span class="lbl">✅ D functions</span>功能、机能。<code>cognitive functions</code>＝认知功能（记忆、注意、推理……），是 memory、mental clarity 的<b>上位词</b>。代入＝「合适的脑力训练能显著改善我们的基本<b>认知功能</b>」——正好对着首段的问题开药。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>genre：文学、音乐、电影的<b>体裁</b>，与 cognitive 搭不上；「改善认知体裁」不知所云。</div>
+              <div class="wr"><span class="l">B</span>criterion：（评判的）标准。「改善认知标准」——训练改善的是<b>能力</b>，不是评判的尺子。</div>
+              <div class="wr"><span class="l">C</span>circumstances：<b>外在</b>的环境、境况（经济状况）。认知是<b>内在</b>的，训练改不了「环境」——与 5 题 environment 同一种错法。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>抽象名词空＝上文某个概念的上位词或同义复现</b>：memory／mental clarity／mental focus → <b>cognitive functions</b> → memory and attention skills（④❶）→ mental sharpness（14）——<b>一个概念全文换了五种说法</b>（⟹ <a href="套路库_阅读.html#R51" style="color:var(--accent)">R51</a>）。⚠️ <b>内外之分</b>：修饰「人的能力」的空，排除 circumstances／environment 这类「外面的东西」，本篇 5、8 两题考了两次。
+          </div>
+        </div>
+
+        <div class="q" id="q9" data-ans="1">
+          <div class="qhead"><span class="qno">9</span><span class="qt c-word">词义辨析 · essentially 问的是「本质是什么」</span><span class="qpos">Thinking is essentially a ＋ ___ ＋ of making connections</span></div>
+          <span class="stem">Thinking is <b>essentially</b> a <em>9</em> of <b>making</b> connections in the brain.</span>
+          <div class="opts">
+            <div class="opt">A channel<span class="gl">渠道，途径</span></div>
+            <div class="opt">B process<span class="gl">过程</span></div>
+            <div class="opt">C sequence<span class="gl">一连串；顺序</span></div>
+            <div class="opt">D condition<span class="gl">条件；状态</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>表语中心名词，<code>a ___ of making connections</code> 给「思考」下定义。
+            <span class="lbl">🔗 线索</span>① <code>essentially</code>＝<b>本质上</b>：这句话在说思考<b>是什么</b>，不是说它<b>有什么用</b>；② <code>of <b>making</b> connections</code>：of 后是<b>动名词</b>，一个正在进行的动作——空格要能装下「一个动作从头到尾」。
+            <span class="lbl">✅ B process</span>过程。<code>a process of doing</code>＝做某事的过程，是给动态活动下定义的标准说法。代入＝「思考本质上是一个在大脑里<b>建立连接的过程</b>」。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>channel：途径、渠道——说的是「<b>通过</b>思考来建立连接」，讲的是<b>作用</b>，不是本质；与 essentially 不合。</div>
+              <div class="wr"><span class="l">C</span>sequence：「一连串」要接<b>复数名词</b>（a sequence of numbers／events），不接一个动名词；「顺序」义更不通——思考不是一种顺序。</div>
+              <div class="wr"><span class="l">D</span>condition：「前提」——思考成了建立连接的前提，<b>因果颠倒</b>（其实是连接驱动智力）；「状态」——建立连接是动态的，状态是静态的。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>下定义的句子（X is essentially／basically a ___ of doing）</b>：动作 ⟹ process；方法 ⟹ way／means；结果 ⟹ product／result。<b>of 后是 doing 还是复数名词</b>，也能先筛一轮（sequence／series 接复数名词）。
+          </div>
+        </div>
+
+        <div class="q" id="q10" data-ans="0">
+          <div class="qhead"><span class="qno">10</span><span class="qt c-word">词义辨析 · 四个动词全接 in，介词失效</span><span class="qpos">our ability to ＋ ___ ＋ in making the connections … is inherited</span></div>
+          <span class="stem"><b>To a certain extent</b>, our <b>ability</b> to <em>10</em> in making the connections that drive intelligence is <b>inherited</b>.</span>
+          <div class="opts">
+            <div class="opt">A excel<span class="gl">擅长，胜过</span></div>
+            <div class="opt">B feature<span class="gl">以……为特色；起重要作用</span></div>
+            <div class="opt">C persist<span class="gl">坚持</span></div>
+            <div class="opt">D believe<span class="gl">相信</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>不定式里的动词，作 ability 的后置定语：<code>our ability to ___ in making …</code>；主干是 <code>our ability … is inherited</code>。
+            <span class="lbl">🔗 线索</span>⚠️ <b>四个选项全都能接 in</b>（excel in · feature in · persist in · believe in）——<b>介词锁不住</b>，只能比意思。⭐ 谓语是 <code>is <b>inherited</b></code>（遗传的，先天的）：空格要是一种<b>能天生带来的「能力」</b>；③ 下一句 However 翻到「后天努力」，所以这句只讲先天那一半。
+            <span class="lbl">✅ A excel</span>excel in (doing) sth＝擅长、在……方面出色。<code>ability to excel in making connections</code>＝在建立连接上<b>出色的能力</b>——能力有高低，可以天生。代入＝「在一定程度上，我们<b>善于</b>建立那些推动智力的连接的能力，是遗传的」。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>feature：feature in sth＝在……里起重要作用、是……的特色（主语一般是物）。「我们在建立连接中起重要作用的能力」——<b>主语对不上</b>，也不是一种能力。</div>
+              <div class="wr"><span class="l">C</span>persist：persist in＝坚持做（难事）。<b>「坚持」是后天的意志，不能遗传</b>——与 is inherited 正面冲突；它其实属于下一句「effort and practice」那一边。</div>
+              <div class="wr"><span class="l">D</span>believe：believe in＝相信……有用、赞成。那是<b>态度</b>，不是能力；「我们相信建立连接的能力是遗传的」也扭曲了句子结构。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐⭐ <b>介词失效时，找谓语对空格的限定</b>：本句谓语 inherited（天生的）一下筛掉了「坚持」（后天意志）和「相信」（态度）。<b>「先天 ↔ 后天」轴上的词要分栏</b>：先天 inherited／innate／genetic／born；后天 effort／practice／training／persist（⟹ <a href="套路库_阅读.html#R157" style="color:var(--accent)">R157</a> 的边界：<b>四个选项同接一个介词，介词就不管用</b>，<a href="2013_完形_面试打分的当日偏见.html#q5" style="color:var(--accent)">2013 完形 5 题</a>四个形容词全接 of，本题四个动词全接 in，同一种局面）。<br>📌 黄皮书把这句解作「人类相较其他物种在建立连接方面有先天优势」——<b>文中没有与动物比较，这层属于引申</b>；做题只需「擅长」这一层。
+          </div>
+        </div>
+
+        <div class="q" id="q11" data-ans="0">
+          <div class="qhead"><span class="qno">11</span><span class="qt c-logic">逻辑关系 · 先天 → 后天的翻转</span><span class="qpos">To a certain extent … inherited. ＋ ___ ，because … effort and practice</span></div>
+          <span class="stem"><b>To a certain extent</b>, our ability … is <b>inherited</b>. <em>11</em>, because these connections are made through <b>effort and practice</b>, scientists believe that intelligence can expand and fluctuate …</span>
+          <div class="opts">
+            <div class="opt">A However<span class="gl">然而</span></div>
+            <div class="opt">B Moreover<span class="gl">此外，而且</span></div>
+            <div class="opt">C Otherwise<span class="gl">否则；除此之外</span></div>
+            <div class="opt">D Therefore<span class="gl">因此</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>句首的连接副词，逗号隔开，管的是<b>这一句与上一句</b>的关系。
+            <span class="lbl">🔗 线索</span>① <b>上一句</b>：<code>To a certain extent</code>（在一定程度上）＋ <code>inherited</code>（先天）；<b>这一句</b>：<code>effort and practice</code>（后天）＋ <code>can expand and fluctuate</code>（可变）⟹ <b>先天 vs 后天，两句对立</b>；② ⭐ <code>To a certain extent</code> 本身就是<b>「只承认一部分」</b>的让步信号——承认完一部分，下一句必转「但更重要的是……」。
+            <span class="lbl">✅ A However</span>然而。代入＝「在一定程度上，这种能力是先天的。<b>然而</b>，由于这些连接是通过努力和练习建立的，科学家相信智力能随脑力投入而扩展和起伏」——<b>先让一步，再亮观点</b>。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>Moreover：递进，要求两句<b>同一方向</b>；「先天」和「后天可变」方向相反，递不上去。</div>
+              <div class="wr"><span class="l">C</span>Otherwise：「否则」表条件（上句不成立的后果）；「除此之外」表补充——上句「先天」并不是需要排除的例外，两义都不通。</div>
+              <div class="wr"><span class="l">D</span>Therefore：因果——「能力是遗传的，<b>所以</b>智力随努力而变」？先天不是后天可变的原因，<b>方向拧了</b>。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐⭐ <b>限定性让步信号</b>：To a certain extent／To some degree／In part／It is true that／Admittedly／seemingly——<b>它所在的那句只「部分成立」，下一处逻辑空填转折</b>，方向取反（⟹ <a href="套路库_阅读.html#R176" style="color:var(--accent)">R176</a>）。⭐ <b>三缺一</b>：Moreover／Therefore／Otherwise 都在<b>顺着</b>上句往下说（递进、因果、条件），只有 However 调头（⟹ R74）。
+          </div>
+        </div>
+
+        <div class="q" id="q12" data-ans="3">
+          <div class="qhead"><span class="qno">12</span><span class="qt c-logic">逻辑关系 · 智力「随」努力而变</span><span class="qpos">intelligence can expand and fluctuate ＋ ___ ＋ mental effort</span></div>
+          <span class="stem">… because these connections are made <b>through effort and practice</b>, scientists believe that intelligence can <b>expand and fluctuate</b> <em>12</em> mental effort.</span>
+          <div class="opts">
+            <div class="opt">A instead of<span class="gl">代替，而不是</span></div>
+            <div class="opt">B regardless of<span class="gl">不管，不顾</span></div>
+            <div class="opt">C apart from<span class="gl">除……之外</span></div>
+            <div class="opt">D according to<span class="gl">根据，随……而变</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>介词短语，引出 mental effort，作 <code>expand and fluctuate</code> 的状语，说明智力<b>凭什么</b>变。
+            <span class="lbl">🔗 线索</span>① 同一句前半的 because 从句：连接是<b>通过努力</b>建立的 ⟹ 智力的变化<b>取决于</b>努力——空格要表「依据、随……而变」；② <code>fluctuate</code>（起伏）说明智力<b>有涨有落</b>，跟着努力多少走。
+            <span class="lbl">✅ D according to</span>根据、按照、随……而（变）。<code>vary／change／fluctuate according to sth</code>＝随某事而变化。代入＝「智力能<b>随着</b>脑力投入的多少而扩展和起伏」——正是 because 从句推出的结论。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>instead of：「智力能扩展，<b>而不是</b>脑力投入」——把智力和努力当成二选一的两样东西，意思不通（黄皮书说「词性不同无法并列」；更直接的问题是<b>语义上二者根本不是替代关系</b>）。</div>
+              <div class="wr"><span class="l">B</span>regardless of：「不管努力与否，智力都会变」——<b>正好反了</b>，把 because 从句的因果一笔勾销。</div>
+              <div class="wr"><span class="l">C</span>apart from：「除了努力之外」——智力和努力不是整体与部分的关系，无从「除去」。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>变化动词（vary／change／fluctuate／differ）后面的介词空</b>：几乎总是 <b>according to／with／depending on</b>（随……而变），<b>regardless of 是它的反面</b>（不随……变），两者常一起出现当正反项。同一句前半有 because／since 时，<b>后半的介词顺着因果填</b>。
+          </div>
+        </div>
+
+        <div class="q" id="q13" data-ans="1">
+          <div class="qhead"><span class="qno">13</span><span class="qt c-collo">固定搭配 · take it a step further</span><span class="qpos">has taken it a step ＋ ___ ＋ and developed the first …</span></div>
+          <span class="stem"><b>Now</b>, a new Web-based company has <b>taken it a step</b> <em>13</em> and <b>developed</b> the first "brain training program" …</span>
+          <div class="opts">
+            <div class="opt">A back<span class="gl">向后</span></div>
+            <div class="opt">B further<span class="gl">更远，进一步</span></div>
+            <div class="opt">C aside<span class="gl">到一边</span></div>
+            <div class="opt">D around<span class="gl">在周围</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>副词，补足 <code>take it a step ___</code>；it 回指②段那套理论（大脑能练、智力可变）。
+            <span class="lbl">🔗 线索</span>① <b>固定说法</b> <code>take sth a step further</code>＝把某事再推进一步；② and 后面是 <code>developed the first … program</code>——从<b>理论</b>到<b>产品</b>，是往前走；③ 段首 <code>Now</code> 标志转入「如今已经有人做出来了」。
+            <span class="lbl">✅ B further</span>更远、更进一步。代入＝「如今，一家新的网络公司<b>更进一步</b>，开发出首个大脑训练程序」。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>back：take a step back＝退一步（冷静下来重新看）。开发出产品是<b>前进</b>，不是后退。</div>
+              <div class="wr"><span class="l">C</span>aside：step aside＝让开、下台；把理论「放在一边」——可程序恰恰是<b>基于</b>这套理论做的。</div>
+              <div class="wr"><span class="l">D</span>around：a step around 不成说法，「把理论往四周推一步」不知所云。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>三缺一</b>：back／aside／around 都<b>不往前</b>，只有 further 往前——<b>and 后面接的是一个新成果（developed the first …），方向一定是「前进」</b>（⟹ R74）。✍️ <b>作文的递进句</b>：<i>Some schools have taken it a step further and made coding a compulsory course.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q14" data-ans="2">
+          <div class="qhead"><span class="qno">14</span><span class="qt c-context">上下文语义 · regain 预设「先丢了」</span><span class="qpos">help people improve and regain their mental ＋ ___</span></div>
+          <span class="stem">… designed to actually help people improve and <b>regain</b> their <b>mental</b> <em>14</em>.（首句：their memory and <b>mental clarity</b> are not what they used to be）</span>
+          <div class="opts">
+            <div class="opt">A framework<span class="gl">框架</span></div>
+            <div class="opt">B stability<span class="gl">稳定性</span></div>
+            <div class="opt">C sharpness<span class="gl">敏锐，清晰</span></div>
+            <div class="opt">D flexibility<span class="gl">灵活性</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>名词，improve 与 regain 共同的宾语中心词，受 mental 修饰。
+            <span class="lbl">🔗 线索</span>⭐⭐ <code><b>re</b>gain</code>＝<b>重新</b>获得——<b>预设这个东西本来有、后来丢了</b>。全文说「丢了」的只有首段：<code>memory and mental <b>clarity</b></code> 大不如前、<code>this loss of mental <b>focus</b></code>。空格要和 clarity／focus 是<b>同一件东西</b>。
+            <span class="lbl">✅ C sharpness</span>敏锐、清晰（sharp＝锋利 ⟹ 头脑灵光）。<code>mental sharpness</code> 与首段 <code>mental clarity</code>「清晰」是<b>同义复现</b>。代入＝「帮助人们改善并<b>恢复</b>大脑的<b>敏锐度</b>」——首尾一对：首段丢了清晰，③段把它找回来。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>framework：思维框架——文中没说人到中年<b>丢了</b>思维框架，regain 无从谈起。</div>
+              <div class="wr"><span class="l">B</span>stability：心理稳定性——文中说的是健忘，不是情绪不稳；同样<b>没丢过</b>。</div>
+              <div class="wr"><span class="l">D</span>flexibility：心理灵活性（适应变化的能力）——听上去也像「脑子好使」，但首段丢的是<b>记忆与清晰</b>，不是灵活。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐⭐ <b>带 re- 的动词（regain／restore／recover／return to）＝回指信号</b>：先回上文找「丢掉的是什么」，空格就是它的同义词（⟹ <a href="套路库_阅读.html#R51" style="color:var(--accent)">R51</a>）。同理，<b>2 题 recovers 在①段错、14 题 regain 在③段对</b>——「恢复」这层意思只能出现在问题提出<b>之后</b>。
+          </div>
+        </div>
+        <div class="q" id="q15" data-ans="3">
+          <div class="qhead"><span class="qno">15</span><span class="qt c-word">词义辨析 · 「使某人做」族动词分赋能与施压</span><span class="qpos">The Web-based program ＋ ___ ＋ you to systematically improve …</span></div>
+          <span class="stem">The Web-based program <em>15</em> you to systematically improve your memory and attention skills.（③段：designed to actually <b>help</b> people improve …）</span>
+          <div class="opts">
+            <div class="opt">A hurries<span class="gl">催促</span></div>
+            <div class="opt">B reminds<span class="gl">提醒</span></div>
+            <div class="opt">C forces<span class="gl">强迫</span></div>
+            <div class="opt">D allows<span class="gl">允许；使能够</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>谓语动词，结构 <code>sb ___ you to do</code>（宾语＋不定式补足语）。<b>四个动词里三个能这样用</b>（remind／force／allow sb to do），语法只筛掉 hurries 的一半。
+            <span class="lbl">🔗 线索</span>① 上一段说程序 <code>designed to actually <b>help</b> people improve</code>——空格是 help 的换说法：<b>程序给人「能力」</b>；② 提升记忆力是用户<b>自己想做</b>的事，不需要催、不需要逼。
+            <span class="lbl">✅ D allows</span>allow sb to do＝使某人能够做（不只是「允许」）。代入＝「这个程序<b>让</b>你能系统地提升记忆力和注意力」——说明书的标准开头。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>hurries：催促。hurry sb 常接地点或 into doing（<i>hurry sb into a decision</i>），不接 to do；「系统地提升」也与「匆忙」相冲。</div>
+              <div class="wr"><span class="l">B</span>reminds：remind sb to do＝提醒某人去做<b>本该做、别忘了</b>的事——程序成了闹钟，没有「帮你提升」的意思。</div>
+              <div class="wr"><span class="l">C</span>forces：force sb to do＝逼某人做<b>不情愿</b>的事——这是一篇夸产品的段落，<b>不会说它「强迫」用户</b>。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>「使某人做」族分两栏</b>：赋能 allow／enable／help／empower sb to do ⟺ 施压 force／compel／urge／push sb to do。<b>推介段里只填赋能栏</b>（⟹ <a href="套路库_阅读.html#R174" style="color:var(--accent)">R174</a>）。<b>三缺一</b>：hurries／reminds／forces 都是<b>从外面推人一把</b>，只有 allows 是<b>给人能力</b>（⟹ R74）。
+          </div>
+        </div>
+
+        <div class="q" id="q16" data-ans="1">
+          <div class="qhead"><span class="qno">16</span><span class="qt c-collo">固定搭配 · keep track of</span><span class="qpos">The program keeps ＋ ___ ＋ of your progress</span></div>
+          <span class="stem">The program <b>keeps</b> <em>16</em> <b>of</b> your progress and provides detailed feedback <em>17</em> your performance and improvement.</span>
+          <div class="opts">
+            <div class="opt">A order<span class="gl">秩序；顺序</span></div>
+            <div class="opt">B track<span class="gl">踪迹，轨迹</span></div>
+            <div class="opt">C hold<span class="gl">抓握；控制</span></div>
+            <div class="opt">D pace<span class="gl">步速，节奏</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>名词，嵌在 <code>keep ___ of sth</code> 框架里。<b>先写框架再比词</b>：keep ＋ 名词 ＋ of。
+            <span class="lbl">🔗 线索</span>① <b>框架 keep ___ of</b> 只有 track 能进（keep track of）；② 意思：and 后面「提供详细反馈」——<b>先得记录你的进步，才能反馈</b>。
+            <span class="lbl">✅ B track</span><code>keep track of sth</code>＝跟踪记录、随时掌握……的情况。代入＝「程序会<b>跟踪记录</b>你的进步，并提供详细反馈」。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>order：keep order（维持秩序）、keep sb in order——<b>后面不接 of</b>；进步也谈不上「秩序」。</div>
+              <div class="wr"><span class="l">C</span>hold：keep hold of＝紧紧抓住（具体东西：the child's hand）；「抓住你的进步」不通。keep a hold on＝控制，也不是本句意思。</div>
+              <div class="wr"><span class="l">D</span>pace：keep pace <b>with</b>＝跟上、与……齐头并进——<b>介词是 with 不是 of</b>；「程序跟上你的进步」也偏了。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>keep 家族按介词分</b>：keep track <b>of</b>（记录）· keep pace <b>with</b>（跟上）· keep hold <b>of</b>（抓住）· keep an eye <b>on</b>（留意）· keep <b>in</b> touch <b>with</b>（保持联系）· keep order（维持秩序）。<b>反义</b>：lose track of（弄不清、忘了）。✍️ <i>Writing a daily plan helps me keep track of my progress.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q17" data-ans="1">
+          <div class="qhead"><span class="qno">17</span><span class="qt c-collo">固定搭配 · feedback on</span><span class="qpos">provides detailed feedback ＋ ___ ＋ your performance and improvement</span></div>
+          <span class="stem">The program keeps <em>16</em> of your progress and provides detailed <b>feedback</b> <em>17</em> your performance and improvement.</span>
+          <div class="opts">
+            <div class="opt">A to<span class="gl">向，对</span></div>
+            <div class="opt">B on<span class="gl">关于</span></div>
+            <div class="opt">C for<span class="gl">为，给</span></div>
+            <div class="opt">D with<span class="gl">和，带有</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>介词，引出 <code>your performance and improvement</code>，作 feedback 的后置定语——说明<b>反馈的内容是关于什么</b>。
+            <span class="lbl">🔗 线索</span>① feedback 的固定搭配：<b>feedback on sth</b>（就某事的反馈）；② 空后 <code>your performance and improvement</code> 是反馈的<b>话题</b>，不是接收者（接收者是「你」），也不是被提供的东西（被提供的是 feedback 本身）。
+            <span class="lbl">✅ B on</span>关于。<code>feedback／comment／advice／report on sth</code>——凡「就某事发表意见」的名词都用 on。代入＝「并<b>就</b>你的表现和改进提供详细反馈」。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>to：<b>中文「对你的表现提供反馈」诱人选 to</b>，但 to 引出的是接收者（give feedback to sb），不是话题。</div>
+              <div class="wr"><span class="l">C</span>for：套的是 <code>provide sth for sb</code>——for 后应是<b>接收者</b>；「表现和改进」不是接收反馈的人。</div>
+              <div class="wr"><span class="l">D</span>with：套的是 <code>provide sb with sth</code>——with 后应是<b>被提供的东西</b>；本句被提供的已经是 feedback 了。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐⭐ <b>provide 的两个框架是干扰项工厂</b>：provide <u>sth</u> for <u>sb</u> · provide <u>sb</u> with <u>sth</u>——<b>空格前已经有了「provide ＋ 东西」，for／with 就都没位置了</b>，剩下的介词归名词 feedback 管。<b>「意见类」名词＋on</b>：feedback／comment／advice／views／opinion／report／lecture on（⟹ R157）。
+          </div>
+        </div>
+
+        <div class="q" id="q18" data-ans="0">
+          <div class="qhead"><span class="qno">18</span><span class="qt c-context">上下文语义 · 拿肌肉那一边去对</span><span class="qpos">it ＋ ___ ＋ modifies and enhances the games … — much like … increase resistance and vary</span></div>
+          <span class="stem">Most importantly, it <em>18</em> <b>modifies and enhances</b> the games you play … —much like a(n) <em>20</em> exercise routine requires you to <b>increase</b> resistance and <b>vary</b> your muscle use.（④❶ systematically improve）</span>
+          <div class="opts">
+            <div class="opt">A constantly<span class="gl">不断地，一直</span></div>
+            <div class="opt">B habitually<span class="gl">习惯性地</span></div>
+            <div class="opt">C irregularly<span class="gl">不规则地</span></div>
+            <div class="opt">D unusually<span class="gl">异常地</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>副词，修饰 <code>modifies and enhances</code>，说明程序<b>怎样、多频繁地</b>调整游戏。
+            <span class="lbl">🔗 线索</span>① ⭐ 破折号后的比喻：锻炼计划要你<b>不断</b>加阻力、<b>不断</b>换用法——调整是<b>持续的、跟着你的进步走的</b>；② ④❶ <code>systematically</code>（系统地）——调整是<b>有规律的</b>，不是随机的。
+            <span class="lbl">✅ A constantly</span>不断地、一直。代入＝「最重要的是，它会<b>不断</b>调整和强化你玩的游戏」——你进步一点，它就加难一点，正对着「不断加阻力」。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span><b>⚠️ 本题最像的一项</b>：habitually 也有「经常」的意思，但它是<b>出于习惯、改不掉</b>（a habitual liar），带着「身不由己」的色彩——程序的调整是<b>按设计、跟着你的水平</b>来的，不是习惯使然。</div>
+              <div class="wr"><span class="l">C</span>irregularly：不规律地——与 ④❶ <code>systematically</code>（系统地）正面冲突，也与「渐进加阻力」的有章法相反。</div>
+              <div class="wr"><span class="l">D</span>unusually：「异常地」多修饰形容词（unusually cold）；修饰动词取「出人意料地」——系统化的程序设计谈不上出人意料。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>频率副词不只比频率，还比「为什么这么频繁」</b>：constantly（持续不断，中性）· habitually（出于习惯）· regularly（有规律）· frequently（次数多）。<b>比喻句的喻体一侧常把答案说白</b>：increase resistance and vary ＝ 一直在加、一直在变 ⟹ constantly（⟹ <a href="#muscle" style="color:var(--accent)">02++ 肌肉类比表</a>）。
+          </div>
+        </div>
+
+        <div class="q" id="q19" data-ans="2">
+          <div class="qhead"><span class="qno">19</span><span class="qt c-collo">固定搭配 · build on</span><span class="qpos">enhances the games you play to ＋ ___ ＋ on the strengths you are developing</span></div>
+          <span class="stem">… it <em>18</em> modifies and enhances the games you play to <em>19</em> <b>on</b> the <b>strengths</b> you are developing …</span>
+          <div class="opts">
+            <div class="opt">A carry<span class="gl">carry on 继续进行</span></div>
+            <div class="opt">B put<span class="gl">put on 穿上；增加（体重）</span></div>
+            <div class="opt">C build<span class="gl">build on 以……为基础发展</span></div>
+            <div class="opt">D take<span class="gl">take on 承担；呈现</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>不定式里的动词，与 on 组成短语动词，宾语是 <code>the strengths you are developing</code>（你正在培养的长处）；整个不定式表<b>目的</b>。
+            <span class="lbl">🔗 线索</span>① 调整、加难游戏的<b>目的</b>：让你已有的长处再往上长；② 宾语是 <b>strengths</b>（长处、优势）——四个 ___ on 里只有一个能以「长处」为宾语；③ 肌肉比喻：加阻力＝<b>在已有力量的基础上</b>继续练（2011 完形原文就写过 <code>straining muscles to <b>build</b> them</code>）。
+            <span class="lbl">✅ C build</span><code>build on sth</code>＝以……为基础、在……的基础上发展。代入＝「不断调整游戏，<b>在</b>你正在培养的长处<b>的基础上</b>继续提升」。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>carry on：继续进行（一项活动）——宾语要是 a conversation、the work 这种<b>事</b>，「继续进行你的长处」不通。</div>
+              <div class="wr"><span class="l">B</span>put on：穿上、增加（体重：put on five kilos）——<b>拿「增加」义来蹭「增强长处」</b>，但 put on 的增加只说体重。</div>
+              <div class="wr"><span class="l">D</span>take on：承担（工作、责任）、呈现（面貌）——「承担你的长处」「呈现你的长处」都不是训练的目的。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>build on 是写作高频短语</b>：<i>build on past success／build on each other's ideas／This study builds on earlier work.</i>——<b>「在前人／已有基础上」一律用它</b>。<b>短语动词空，先看宾语是「事」还是「能力」还是「衣物」</b>：carry on ＋ 事，put on ＋ 衣物／体重，take on ＋ 责任，build on ＋ 基础（成绩、长处、成果）。
+          </div>
+        </div>
+
+        <div class="q" id="q20" data-ans="3">
+          <div class="qhead"><span class="qno">20</span><span class="qt c-context">上下文语义 · 比喻的收口（末空）</span><span class="qpos">much like a(n) ＋ ___ ＋ exercise routine requires you to …</span></div>
+          <span class="stem">… —much like <b>a(n)</b> <em>20</em> exercise routine <b>requires</b> you to increase resistance and vary your muscle use.</span>
+          <div class="opts">
+            <div class="opt">A risky<span class="gl">有风险的</span></div>
+            <div class="opt">B familiar<span class="gl">熟悉的</span></div>
+            <div class="opt">C idle<span class="gl">闲置的；无效的</span></div>
+            <div class="opt">D effective<span class="gl">有效的</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>形容词，修饰 exercise routine（锻炼计划），在 <code>much like</code> 引导的<b>类比从句</b>里——这是全篇的末空，<b>不是逻辑空</b>。
+            <span class="lbl">🔗 线索</span>① <b>类比要成立，两边都得是「好东西」</b>：前半句是被夸的大脑训练程序，后半句拿来类比的也必须是<b>一套好的</b>锻炼计划；② <code>requires you to increase resistance and vary</code>——<b>什么样的锻炼计划才「要求」你不断加阻力、换动作？有效的那种</b>；③ 冠词 <code>a(n)</code> 已提示空格可能以元音开头（effective ✓，idle 也是元音，要靠意思）。
+            <span class="lbl">✅ D effective</span>有效的。代入＝「就像一套<b>有效的</b>锻炼计划，要求你不断增加阻力、变换肌肉的用法」——既收住②❷ 的肌肉比喻，也回扣全篇「训练有用」的立场。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>risky：有风险的——拿「加阻力可能受伤」来蹭，但全文没谈风险；拿一个「危险的计划」来类比被推荐的产品，<b>类比方向就反了</b>。</div>
+              <div class="wr"><span class="l">B</span>familiar：熟悉的——familiar routine（熟悉的老一套）<b>恰恰不要求变化</b>，与 vary 冲突。</div>
+              <div class="wr"><span class="l">C</span>idle：闲置的、无用的——<b>方向全反</b>；无效的计划没有资格拿来比一个「最重要的」功能。冠词 a(n) 对 idle 也成立，<b>别让冠词替你做选择</b>。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>末空不默认逻辑空</b>：2013 末空是形容词 necessary，本年末空仍是形容词 effective（⟹ <a href="套路库_阅读.html#R103" style="color:var(--accent)">R103</a>）。⭐ <b>类比从句（like／as／much like）里的评价词，跟着「被类比的那一方」定褒贬</b>——被夸的程序只能类比有效的计划。<b>三缺一</b>：risky／familiar／idle 都没说它「管用」，只有 effective 讲效果（⟹ R74）。
+          </div>
+        </div>
+      </section>
+      <!-- ========== 02+ 四段极性表 ========== -->
+      <section class="card" id="polar">
+        <h2><span class="n">02+</span>⭐⭐ 四段极性表：①段「坏」、②③④段「好」——先定这段的正负，再看选项（本页最值钱的一段）</h2>
+        <p class="note">科普推介型文章的走法固定：<b>问题（负）→ 科学依据（转正）→ 产品登场（正）→ 产品功能（正）</b>。<b>方向一旦按段定下来，选项里「方向不对」的词可以整批划掉</b>——本篇 20 组选项里有 <b>12 个干扰项</b>是靠「方向或褒贬不对」出局的。</p>
+        <div class="tabwrap"><table class="otab">
+          <tr><th>段</th><th>主语换成谁</th><th>这段的方向</th><th>空格与答案</th><th>因方向出局的干扰项</th></tr>
+          <tr><td>①</td><td>many people／We（受害者）</td><td><b>负</b>：not what they used to be · loss of mental focus</td><td>2 <b>fades</b> · 4 <b>damaging</b>（3 While 定让步，4 取反）</td><td>2A improves · 2D recovers · 4B limited</td></tr>
+          <tr><td>②</td><td>Neuroscientists／scientists（专家）</td><td><b>转正</b>：there's actually a lot that can be done</td><td>7 <b>workouts</b> · 8 <b>functions</b> · 11 <b>However</b>（先天 → 后天）· 12 <b>according to</b></td><td>12B regardless of（把「随努力而变」一笔勾销）</td></tr>
+          <tr><td>③</td><td>a new Web-based company（公司）</td><td><b>正</b>：taken it a step ___ ＋ improve and regain</td><td>13 <b>further</b> · 14 <b>sharpness</b>（regain ⟹ 回首段找丢掉的 clarity）</td><td>13A back · 13C aside</td></tr>
+          <tr><td>④</td><td>The program／it（产品）</td><td><b>正</b>：说明书口吻，Most importantly</td><td>15 <b>allows</b> · 18 <b>constantly</b> · 19 <b>build</b> · 20 <b>effective</b></td><td>15A hurries · 15C forces · 18C irregularly · 20A risky · 20B familiar · 20C idle</td></tr>
+        </table></div>
+        <p class="note" style="margin-top:12px">⭐ <b>怎么用</b>：读完每段第一句，在段首写一个「＋」或「−」；做题时<b>先按符号划掉方向不对的选项</b>，剩下的再比搭配与词义。⚠️ <b>同一个意思在不同段里对错互换</b>：「恢复」在①段是错项（2D recovers），到③段成了题眼（14 的 regain）；「改善」在①段是错项（2A improves），到②③④段满篇都是（improve／improvement 共四次）——<b>选项本身无所谓对错，看它落在哪一段</b>（⟹ <a href="套路库_阅读.html#R174" style="color:var(--accent)">R174</a>）。</p>
+        <p class="note">📌 <b>一个概念全文换了五种说法</b>（R51 的活样本）：①❶ memory and mental <b>clarity</b> → ①❹ mental <b>focus</b> → ②❷ basic cognitive <b>functions</b>（8）→ ③ mental <b>sharpness</b>（14）→ ④❶ memory and attention <b>skills</b>。<b>8 和 14 两个名词空，答案都是这条链上的一环</b>。</p>
+      </section>
+
+      <!-- ========== 02++ 肌肉类比 ========== -->
+      <section class="card" id="muscle">
+        <h2><span class="n">02++</span>⭐ 大脑 ↔ 肌肉：一个比喻从②段贯穿到④段末，四个空拿肌肉那一边去对</h2>
+        <p class="note">②❷ <code>the brain needs exercise <b>in much the same way our muscles do</b></code> 是比喻的<b>开头</b>；④❸ <code><b>much like</b> a(n) 20 exercise routine requires you to increase resistance and vary your muscle use</code> 是它的<b>收尾</b>。<b>中间讲大脑的每一句，都能在肌肉那一边找到对应</b>：</p>
+        <div class="tabwrap"><table class="otab">
+          <tr><th>肌肉（喻体）</th><th>大脑（本体）</th><th>管哪个空</th></tr>
+          <tr><td>muscles need exercise</td><td>the brain needs exercise（②❷）</td><td>—（比喻开头）</td></tr>
+          <tr><td>a workout（一次健身训练）</td><td>the right mental <b>7</b></td><td><b>7</b> workouts（把喻体的词搬到本体上）</td></tr>
+          <tr><td>an exercise routine（一套锻炼计划）</td><td>the "brain training program"（③）</td><td><b>13／14</b>（产品＝脑子的健身计划）</td></tr>
+          <tr><td>increase resistance · vary your muscle use（<b>一直加、一直变</b>）</td><td>it <b>18</b> modifies and enhances the games</td><td><b>18</b> constantly</td></tr>
+          <tr><td>越练越壮：在已有力量上继续加</td><td>to <b>19</b> on the strengths you are developing</td><td><b>19</b> build</td></tr>
+          <tr><td>a(n) <b>20</b> exercise routine（值得拿来比的那种）</td><td>被夸的程序</td><td><b>20</b> effective</td></tr>
+        </table></div>
+        <p class="note" style="margin-top:12px">⭐ <b>比喻句的喻体一侧常常把答案说白了</b>：18 题只看 <code>modifies and enhances</code> 分不清 constantly 与 habitually，<b>看破折号后「不断加阻力、换用法」就清楚了</b>（⟹ <a href="套路库_阅读.html#R49" style="color:var(--accent)">R49</a> 比喻链找接口词：本篇的接口词是 <b>exercise</b>，两次出现，一头一尾）。<br>🔁 <b>跨年</b>：<a href="2011_完形_笑与情绪的方向之争.html" style="color:var(--accent)">2011 完形</a> ②段也拿锻炼比——<code>instead of straining muscles to <b>build</b> them, as exercise does, laughter …</code>（笑不像锻炼那样绷紧肌肉），<b>2011 用锻炼作反衬，2014 用锻炼作正比</b>；「锻炼 build 肌肉」这个说法两年都出现了，<b>19 题 build on 可以从这里联想</b>。</p>
+      </section>
+
+      <!-- ========== 02+++ 四个限定副词 ========== -->
+      <section class="card" id="hedge">
+        <h2><span class="n">02+++</span>🔤 四个「限定副词」：它们不设空，却替旁边的空定了方向</h2>
+        <p class="note">本篇有四个<b>不在空格里</b>的副词或短语，各自给附近的空一个方向。<b>读的时候把它们圈出来，比读空格本身还有用</b>：</p>
+        <div class="tabwrap"><table class="otab">
+          <tr><th>限定词</th><th>意思</th><th>它在暗示什么</th><th>定哪个空</th></tr>
+          <tr><td><code><b>seemingly</b> innocent</code>（①❹）</td><td>表面上</td><td><b>其实不是这样</b> ⟹ 前半句是让步</td><td><b>3</b> While（让步连词）</td></tr>
+          <tr><td><code>can <b>potentially</b> have</code>（①❹）</td><td>潜在地、可能</td><td>后果还没发生但<b>有风险</b> ⟹ 后半句讲「有害」</td><td><b>4</b> damaging（与 innocent 相反）</td></tr>
+          <tr><td><code>Thinking is <b>essentially</b> a …</code>（②❸）</td><td>本质上</td><td>这句在<b>下定义</b>，说「是什么」不说「有什么用」</td><td><b>9</b> process（不是 channel）</td></tr>
+          <tr><td><code><b>To a certain extent</b>, … is inherited</code>（②❹）</td><td>在一定程度上</td><td><b>只承认一部分</b> ⟹ 下一句要转「但更重要的是」</td><td><b>11</b> However（＋ 10 excel 只讲先天那一半）</td></tr>
+        </table></div>
+        <p class="note" style="margin-top:12px">⭐⭐ <b>规律</b>：<b>限定词＝作者在给自己的话「打折」</b>。seemingly／apparently／at first glance 打的是「表面」的折 ⟹ 后面有「其实」；to a certain extent／to some degree／in part／admittedly 打的是「程度」的折 ⟹ 后面有「但更重要的是」；<b>折扣后面那一处逻辑空，填让步或转折；折扣对面那半句的实词空，方向取反</b>（⟹ <a href="套路库_阅读.html#R176" style="color:var(--accent)">R176</a>）。<br>🔁 <b>跨年</b>：<a href="2013_完形_面试打分的当日偏见.html" style="color:var(--accent)">2013 完形</a> ①❷ <code>At first glance this might seem like a strength</code> 与 ②❷ <code>In theory … but … the truth was otherwise</code> 是同一族——<b>连续两年的完形都在前两段用「表面／理论／程度」打折，再用 But／However 翻盘</b>。</p>
+      </section>
+      <!-- ========== 03 考点分类 ========== -->
+      <section class="card">
+        <h2><span class="n">03</span>考点分类（完形不背单个空，要看「这题在考什么」）</h2>
+        <div class="catbar" id="catbar"></div>
+        <div class="catlegend" id="catlegend"></div>
+        <p class="note" style="margin-top:14px">点某一类 → 下方列出该类所有空、正文里同步高亮 → 点小格跳到解析卡。（分类依据不是“空格里填的是什么词”，而是<b>“解这一题你得做什么动作”</b>。）</p>
+        <div class="chips" id="chips"></div>
+        <div class="flow" style="margin-top:16px">
+          <div class="fi"><b>⭐ 八年对照：2014 是<u>搭配 ＋ 语境</u>并重的一年——固定搭配 6、上下文语义 6，逻辑关系只有 3。</b>
+            <span class="ev"><div class="tabwrap"><table class="otab"><tr><th>年份</th><th>词义辨析</th><th>固定搭配</th><th>逻辑关系</th><th>上下文语义</th><th>这一年压在哪</th></tr>
+            <tr><td>2007</td><td>9</td><td>5</td><td>4</td><td>2</td><td>词义（占 45%）</td></tr>
+            <tr><td>2008</td><td>9</td><td>6</td><td><b>2</b></td><td>3</td><td>六道实义动词的主语适配</td></tr>
+            <tr><td>2009</td><td>6</td><td>5</td><td>5</td><td>4</td><td>四类几乎持平</td></tr>
+            <tr><td>2010</td><td>9</td><td>4</td><td>4</td><td>3</td><td>形容词与副词的“方向”</td></tr>
+            <tr><td>2011</td><td>6</td><td>3</td><td>6</td><td>5</td><td>一根因果箭头的方向</td></tr>
+            <tr><td>2012</td><td>5</td><td>4</td><td>3</td><td>8</td><td>作者的应然立场 ＋ 首尾镜像</td></tr>
+            <tr><td>2013</td><td>3</td><td>7</td><td>4</td><td>6</td><td>空格后的介词短语 ＋ 比方与发现同构</td></tr>
+            <tr><td><b>2014</b></td><td><b>5</b></td><td><b>6</b></td><td><b>3</b></td><td><b>6</b></td><td><b>按段定正负 ＋ 一个比喻贯穿全文 ＋ 说明书式搭配</b></td></tr></table></div>
+            ⟹ <b>八年八种分布，第八次坐实「完形没有万能重心」。</b>2014 的特殊之处：<b>六个搭配空里五个是「动词／名词＋小词」的短语</b>（turns out · a step further · keep track of · feedback on · build on），<b>另一个是 put 要带地点</b>（1 where）——<b>说明书段（④）一段就占了三个</b>；而六个语境空（2／4／7／14／18／20）全靠<b>「这一段是正是负」和「肌肉那边怎么说」</b>两张表。</span></div>
+          <div class="fi"><b>⭐⭐ 连续两年「搭配 6 个以上」：2013 靠介词锁，2014 靠短语本身</b>
+            <span class="ev"><a href="2013_完形_面试打分的当日偏见.html" style="color:var(--accent)">2013</a> 的搭配空，是<b>空格后面那个介词</b>替你选动词（rated <u>on a scale of</u>、marked <u>out of</u>）；<b>2014 的搭配空，是整个短语要背熟</b>：<code>It ___ out that</code> 四个选项都带 out，<code>___ on the strengths</code> 四个选项都带 on——<b>介词一样，只能靠「这个短语是什么意思」</b>。<b>两年合起来的教训：动词＋小词的短语要连意思一起背</b>（carry on／put on／build on／take on 四个一组背，比单背 build on 管用得多）。</span></div>
+          <div class="fi"><b>📐 线索位置统计（判据＝线索是否落在同一个句号之内）：句内自足 17 空 ／ 跨句 3 空。</b>
+            <span class="ev"><b>跨句（3）</b>：2（首句 not what they used to be）· 11（上一句 inherited ↔ 本句 effort and practice）· 14（regain 要回首段找 mental clarity）。<br><b>句内自足（17）</b>：1 · 3 · 4 · 5 · 6 · 7 · 8 · 9 · 10 · 12 · 13 · 15 · 16 · 17 · 18 · 19 · 20。<br>⟹ 句内比例 <b>85%</b>（2010 65% → 2011 75% → 2012 80% → 2013 70% → <b>2014 85%，五年最高</b>）——<b>这一年最适合「第一遍只做句内空」的打法</b>：17 个空（8.5 分）一句之内就能定，剩下三个再回头。<b>三个跨句空里两个（2、14）都要回到首句</b>——首句的关键词值得在卷子上圈出来。</span></div>
+          <div class="fi"><b>📌 位置预判：三个逻辑空两个在句首，第三个站在状语短语之首。</b>
+            <span class="ev"><b>3</b> While（句首）✅ · <b>11</b> However（句首）✅ · <b>12</b> according to（句末，<b>介词短语作状语，站在该短语之首</b>）——按「成分首」算 <b>3/3</b>。2013 的两次破例（then 嵌在 were 与 used 之间、otherwise 站表语位）是<b>单个副词、形容词</b>；本年 12 是<b>短语介词</b>，站位规矩照旧成立（⟹ R76 补）。</span></div>
+          <div class="fi"><b>📌 三缺一分组法：本年成立五次，孤立项五次全是答案。</b>
+            <span class="ev"><b>4</b>：uneven／limited／obscure 讲影响的形态 ＋ <b>damaging</b> 讲好坏 · <b>11</b>：Moreover／Therefore／Otherwise 顺着说 ＋ <b>However</b> 调头 · <b>13</b>：back／aside／around 不往前 ＋ <b>further</b> 往前 · <b>15</b>：hurries／reminds／forces 从外面推 ＋ <b>allows</b> 给能力 · <b>20</b>：risky／familiar／idle 都不讲效果 ＋ <b>effective</b>。<br>⚠️ <b>不成立的几组</b>：2（两正两负，先按方向划掉两个，再按程度在 fades／collapses 里选）· 18（constantly／habitually 同为「经常」、irregularly／unusually 同为「不寻常」，2＋2）——<b>2＋2 的组先定方向，再比程度或理由</b>（⟹ R74 补）。</span></div>
+        </div>
+      </section>
+
+      <!-- ========== 04 打法 ========== -->
+      <section class="card">
+        <h2><span class="n">04</span>完形六大打法（本篇取证）</h2>
+        <div class="flow">
+          <div class="fi"><b>① 首句不设空 → 先定三要素，并圈出首句的关键词</b>：话题、方向、关键词。
+            <span class="ev">本篇首句给了<b>负方向</b>（not what they used to be）和<b>关键词</b>（memory、mental clarity）。<b>两个跨句空（2、14）都要回到这一句</b>：2 fades 是 not what they used to be 的动词版，14 sharpness 是 clarity 的同义复现（⟹ R51）。</span></div>
+          <div class="fi"><b>② ⭐⭐ 推介型文章：按段标「＋／−」，方向不对的选项整批划掉</b>（本篇的主刀）。
+            <span class="ev">①段 − ／ ②③④段 ＋；<b>十二个干扰项因方向出局</b>，2／4／13／15／18／20 六个空一张表定（<a href="#polar" style="color:var(--accent)">02+</a>，⟹ R174）。</span></div>
+          <div class="fi"><b>③ ⭐ 比喻贯穿全文：找接口词，喻体那一边把答案说白</b>。
+            <span class="ev">接口词 exercise 一头一尾：7 workouts（把健身的词搬到脑子上）· 18 constantly（一直加阻力、一直变）· 19 build · 20 effective（<a href="#muscle" style="color:var(--accent)">02++</a>，⟹ R49）。</span></div>
+          <div class="fi"><b>④ ⭐⭐ 限定副词打折 ⟹ 折扣后填转折、对面取反</b>。
+            <span class="ev">seemingly ⟹ 3 While ＋ 4 damaging · To a certain extent ⟹ 11 However（10 只讲先天那半）· essentially ⟹ 9 process（<a href="#hedge" style="color:var(--accent)">02+++</a>，⟹ R176）。</span></div>
+          <div class="fi"><b>⑤ 代词主语先找先行词：找不到 ⟹ 形式主语句型</b>。
+            <span class="ev">6 It ___ out that：上一句只有复数的 Neuroscientists ⟹ It 是形式主语 ⟹ turns out；finds／points／figures out 都要一个<b>真的人</b>当主语（⟹ R175）。</span></div>
+          <div class="fi"><b>⑥ 搭配空：先写框架，框架一样就比意思</b>。
+            <span class="ev">keep ___ <b>of</b>（16 track，pace 要 with）· feedback ___（17 on；provide 的 for／with 位置已被占）· 四个 ___ in（10，<b>介词失效看谓语 inherited</b>）· 四个 ___ on（19，看宾语 strengths）（⟹ R157）。</span></div>
+        </div>
+        <p class="note" style="margin-top:14px">🔁 <b>九篇完形（2007–2014 ＋ 2022）信号类型对照</b>：<a href="2022_完形_植物意识.html" style="color:var(--accent)">2022</a> 靠明信号词 · <a href="2007_完形_拉美独立后的理想与分歧.html" style="color:var(--accent)">2007</a> 靠结构性信号 · <a href="2008_完形_高智商与遗传疾病.html" style="color:var(--accent)">2008</a> 靠动词与主语适配 · <a href="2009_完形_智力的代价.html" style="color:var(--accent)">2009</a> 靠语用功能 · <a href="2010_完形_霍桑效应遭到质疑.html" style="color:var(--accent)">2010</a> 靠叙事方向 · <a href="2011_完形_笑与情绪的方向之争.html" style="color:var(--accent)">2011</a> 靠因果箭头 · <a href="2012_完形_大法官的伦理与法院的合法性.html" style="color:var(--accent)">2012</a> 靠应然立场与首尾镜像 · <a href="2013_完形_面试打分的当日偏见.html" style="color:var(--accent)">2013</a> 靠介词框架与比方—发现同构 · <b>2014 靠按段定正负与贯穿比喻</b>。<br>📰 <b>话题</b>：<b>「智力」已是第三次上完形</b>——<a href="2008_完形_高智商与遗传疾病.html" style="color:var(--accent)">2008</a> 讲一个族群的高智商是自然选择的产物（偏先天）、<a href="2009_完形_智力的代价.html" style="color:var(--accent)">2009</a> 讲聪明要付出代价、<b>2014 讲智力「部分先天、可随努力扩展」</b>；再加阅读 <a href="2007_T1_刻意练习造就高手.html" style="color:var(--accent)">2007 Text 1</a> 的 <code>expert performers … are nearly always made, not born</code>——<b>「先天还是后天」是考研英语反复回来的母题</b>，作文也能用。</p>
+      </section>
+      <!-- ========== 05 搭配库 ========== -->
+      <section class="card">
+        <h2><span class="n">05</span>固定搭配 &amp; 熟词僻义（这些是死记就得分的）</h2>
+        <div class="wb">
+          <div class="wbi"><div class="p">hit middle age　人到中年（①❶）· not what sb／sth used to be　大不如前</div><div class="u"><b>hit 的熟词僻义＝到达（某个年龄、数字、阶段）</b>：<i>hit 40</i>（到四十岁）、<i>sales hit a record high</i>（销量创新高）。<b>not what it used to be</b> 是「今不如昔」最地道的说法：<i>The town is not what it used to be.</i></div></div>
+          <div class="wbi"><div class="p">put sth + 地点　把……放在某处（1 题）</div><div class="u">⭐ <b>put／place／lay／leave（留在某处）离不开地点</b>；地点被挪到从句开头时就是 where：<i>I can't remember where I left my phone.</i></div></div>
+          <div class="wbi"><div class="p">refer to A as B　把 A 称作 B（①❸）</div><div class="u">⭐ <b>「称作」一族都是 A as B</b>：refer to／regard／describe／think of A as B。<code>refer to</code> 单用＝提到、查阅：<i>refer to a dictionary</i>。</div></div>
+          <div class="wbi"><div class="p">While (it is) seemingly innocent, …　尽管看似无害，……（3 题）</div><div class="u">⭐ <b>While／Though／If ＋ 形容词</b> 是省略从句（省了「主语＋be」，主语与主句相同）：<i>While popular, the policy is costly.</i> ✍️ 作文里一句话写出「表面—实质」。</div></div>
+          <div class="wbi"><div class="p">have a(n) damaging／positive／profound impact on　对……有损害性／积极／深远的影响（4 题）</div><div class="u"><b>impact 的介词永远是 on</b>；形容词按方向选：damaging／negative／adverse（负）· positive／beneficial（正）· profound／far-reaching（深远）· limited（有限）。</div></div>
+          <div class="wbi"><div class="p">professional, social, and personal wellbeing　职业、社交与个人的幸福（5 题）</div><div class="u"><b>wellbeing（well-being）＝身心与生活的良好状态</b>：<i>mental wellbeing</i>（心理健康）· <i>the wellbeing of the elderly</i>（老年人福祉）。多个修饰语并列，<b>每个都要搭得上、彼此不包含</b>。</div></div>
+          <div class="wbi"><div class="p">It turns out that …　结果表明，原来……（6 题）</div><div class="u">⭐ <b>形式主语句型</b>：It turns out／It seems／It appears／It happens／It follows that。<b>It 找不到先行词时，就往这里想</b>。turn out 另有「结果是、证明是」：<i>The rumor turned out (to be) false.</i></div></div>
+          <div class="wbi"><div class="p">in much the same way (as) sb／sth does　与……差不多一样（②❷）· much like　很像（④❸）</div><div class="u"><b>比喻的开关与收口</b>：in much the same way (that) our muscles do（do 替 need exercise）。<b>much 修饰 the same／like，表「非常」</b>：much the same（大致相同）。</div></div>
+          <div class="wbi"><div class="p">mental workouts　脑力训练（7 题）· cognitive functions　认知功能（8 题）</div><div class="u"><b>workout</b>＝一次健身训练（go for a workout）；<b>cognitive</b> 是脑科学高频形容词：cognitive abilities／decline／skills。</div></div>
+          <div class="wbi"><div class="p">a process of doing　做某事的过程（9 题）· is essentially a …　本质上是……</div><div class="u"><b>下定义的标准句</b>：<i>Learning is essentially a process of making mistakes and correcting them.</i></div></div>
+          <div class="wbi"><div class="p">excel in／at (doing) sth　擅长，出类拔萃（10 题）</div><div class="u">⚠️ <b>同接 in 的四个动词</b>：excel in（擅长）· persist in（坚持）· believe in（相信）· feature in（出现在、起作用）——<b>介词相同，只能靠意思</b>。名词 excellence、形容词 excellent 同根。</div></div>
+          <div class="wbi"><div class="p">To a certain extent, … However, …　在一定程度上……；然而……（11 题）</div><div class="u">⭐ <b>先部分承认，再亮观点</b>：to a certain／some extent ＝ to some degree ＝ in part。✍️ <i>To a certain extent, talent matters. However, it is persistence that makes the difference.</i></div></div>
+          <div class="wbi"><div class="p">vary／change／fluctuate according to　随……而变化（12 题）</div><div class="u">⭐ <b>变化动词 ＋ according to／with／depending on</b>；反面是 <b>regardless of</b>（不管、不随……变）——两者常一起出现当正反选项。</div></div>
+          <div class="wbi"><div class="p">take sth a step further　把……更推进一步（13 题）</div><div class="u">⚠️ 对照 <b>take a step back</b>（退一步冷静看）· <b>step aside</b>（让位）。✍️ <i>Some cities have taken it a step further by banning plastic bags altogether.</i></div></div>
+          <div class="wbi"><div class="p">improve and regain one's mental sharpness　改善并恢复头脑的敏锐（14 题）</div><div class="u"><b>re- 动词＝回指</b>：regain／restore／recover 都预设「先失去了」。<b>sharp 的熟词僻义</b>：头脑灵敏（a sharp mind）、急剧的（a sharp rise）。</div></div>
+          <div class="wbi"><div class="p">allow／enable sb to do　使某人能够做（15 题）</div><div class="u"><b>「使某人做」族分两栏</b>：赋能 allow／enable／help／empower ⟺ 施压 force／compel／urge；提醒 remind sb to do。</div></div>
+          <div class="wbi"><div class="p">keep track of　跟踪记录，掌握……的动态（16 题）· lose track of　弄不清……</div><div class="u">⭐ <b>keep 家族按介词分</b>：keep track of · keep pace with · keep hold of · keep an eye on · keep in touch with。</div></div>
+          <div class="wbi"><div class="p">provide detailed feedback on　就……提供详细反馈（17 题）</div><div class="u">⭐ <b>「意见类」名词 ＋ on</b>：feedback／comment／advice／views／report on。⚠️ provide sth <b>for</b> sb ／ provide sb <b>with</b> sth——接收者与被提供物<b>各有位置</b>。</div></div>
+          <div class="wbi"><div class="p">Most importantly, …　最重要的是（④❸）</div><div class="u"><b>说明书、介绍文的收尾信号</b>：列完几个功能，用它亮出最核心的一个。同族：Above all · Crucially · Last but not least。</div></div>
+          <div class="wbi"><div class="p">build on sth　以……为基础，在……的基础上发展（19 题）</div><div class="u">⭐ <b>四个 ___ on 一起背</b>：carry on（继续进行）· put on（穿上／增重）· take on（承担／呈现）· <b>build on（在基础上发展）</b>。✍️ <i>Good teachers build on what students already know.</i></div></div>
+          <div class="wbi"><div class="p">increase resistance and vary your muscle use　不断加阻力、变换肌肉用法（④❸）</div><div class="u"><b>resistance 的熟词僻义＝（健身）阻力、负重</b>；<b>vary 作及物动词＝改变、使多样化</b>：<i>vary your diet</i>（饮食多样化）。</div></div>
+          <div class="wbi"><div class="p">🔑 熟词僻义清单（本篇 20 处）</div><div class="u"><div class="tabwrap"><table class="otab" id="polytab"><tr><th>词</th><th>常见义</th><th>本篇义</th><th>出处</th></tr>
+            <tr><td><span class="ow">hit</span></td><td>打，击</td><td><b>到达</b>（某个年龄）</td><td>①❶</td></tr>
+            <tr><td><span class="ow">clarity</span></td><td>（图像、声音）清晰</td><td><b>（头脑）清醒、思路清楚</b></td><td>①❶</td></tr>
+            <tr><td><span class="ow">band</span></td><td>带子；波段</td><td><b>乐队</b></td><td>①❷</td></tr>
+            <tr><td><span class="ow">senior</span></td><td>高级的；资深的</td><td><b>老年的</b>（senior moments）</td><td>①❸</td></tr>
+            <tr><td><span class="ow">fade</span></td><td>褪色</td><td><b>（能力）逐渐衰退</b></td><td>2 题答案</td></tr>
+            <tr><td><span class="ow">innocent</span></td><td>无辜的；天真的</td><td><b>无害的</b>（＝harmless）</td><td>①❹</td></tr>
+            <tr><td><span class="ow">focus</span></td><td>焦点</td><td><b>注意力，专注</b></td><td>①❹</td></tr>
+            <tr><td><span class="ow">turn out</span></td><td>关掉（灯）；出席</td><td><b>结果是，原来</b></td><td>6 题答案</td></tr>
+            <tr><td><span class="ow">function</span></td><td>函数；聚会</td><td><b>（大脑的）机能</b></td><td>8 题答案</td></tr>
+            <tr><td><span class="ow">drive</span></td><td>驾驶</td><td><b>推动，驱动</b>（connections that drive intelligence）</td><td>②❹</td></tr>
+            <tr><td><span class="ow">extent</span></td><td>范围，面积</td><td><b>程度</b>（to a certain extent）</td><td>②❹</td></tr>
+            <tr><td><span class="ow">expand</span></td><td>（体积）膨胀</td><td><b>（能力）增长、拓展</b></td><td>②❺</td></tr>
+            <tr><td><span class="ow">effort</span></td><td>努力</td><td><b>（脑力的）投入</b>（mental effort）</td><td>②❺</td></tr>
+            <tr><td><span class="ow">sharpness</span></td><td>锋利</td><td><b>（头脑）敏锐</b></td><td>14 题答案</td></tr>
+            <tr><td><span class="ow">track</span></td><td>跑道；轨道</td><td><b>踪迹</b>（keep track of）</td><td>16 题答案</td></tr>
+            <tr><td><span class="ow">game</span></td><td>比赛</td><td><b>（训练用的）小游戏</b></td><td>④❸</td></tr>
+            <tr><td><span class="ow">strength</span></td><td>力气</td><td><b>长处，优势</b></td><td>④❸</td></tr>
+            <tr><td><span class="ow">routine</span></td><td>例行公事，常规</td><td><b>（一套固定的）锻炼计划</b></td><td>④❸</td></tr>
+            <tr><td><span class="ow">resistance</span></td><td>抵抗，反对</td><td><b>（健身的）阻力，负重</b></td><td>④❸</td></tr>
+            <tr><td><span class="ow">vary</span></td><td>（自身）变化 vi.</td><td><b>改变，使多样</b> vt.</td><td>④❸</td></tr>
+          </table></div></div></div>
+        </div>
+      </section>
+
+      <!-- ========== 06 80 词表 ========== -->
+      <section class="card">
+        <h2><span class="n">06</span>80 个选项词速查（完形的真正词汇量）
+          <button class="allbtn" id="btnHide" style="margin-left:auto" onclick="toggleHide()">✍️ 默写模式</button>
+        </h2>
+        <p class="note">完形一篇＝<b>80 个高频词的辨析现场</b>，绿底是正确项。<b>默写模式</b>会糊住中文释义——先自己说出意思，点单个格子可单独揭开。<b>本篇 80 个词里有三组「同带一个小词」的短语动词</b>（___ out · ___ in · ___ on），<b>四个一组背</b>，比单背答案管用得多。</p>
+        <div class="tabwrap"><table class="otab" id="otab"></table></div>
+      </section>
+      <!-- ========== 07 长难句 ========== -->
+      <section class="card">
+        <h2><span class="n">07</span>长难句精析（正文蓝色虚线句）</h2>
+
+        <div class="sent" id="s1">
+          <div class="src">As many people hit middle age, <span class="skel">they often start to notice</span> <i>that their memory and mental clarity are not what they used to be.</i></div>
+          <div class="anat">
+            <ul>
+              <li><b>主干</b>：<span class="skel">they often start to notice that …</span>；句首 <code>As many people hit middle age</code> 是<b>时间状语从句</b>（As＝当……时、随着）。</li>
+              <li>⭐ <b>宾语从句里套了一个表语从句</b>：<code>their memory and mental clarity are <u>not what they used to be</u></code>——what 从句作表语，<code>what they used to be</code>＝「它们过去的样子」，they 指 memory and mental clarity。</li>
+              <li>💡 <b>not what sth used to be＝大不如前</b>，一句话定了全文第一段的<b>负方向</b>（2 题 fades 就是它的动词版）。</li>
+              <li>🔤 <b>hit</b> 取「到达」：hit middle age／hit forty／hit the headlines。</li>
+            </ul>
+          </div>
+          <div class="tr">译：很多人到了中年，常常开始发觉自己的记忆力和头脑的清晰度大不如前。</div>
+        </div>
+
+        <div class="sent" id="s2">
+          <div class="src"><span class="skel">We suddenly can't remember</span> <i>where we put the keys just a moment ago</i>, or <i>an old acquaintance's name</i>, or <i>the name of an old band (that) we used to love.</i></div>
+          <div class="anat">
+            <ul>
+              <li><b>主干</b>：<span class="skel">We can't remember A, or B, or C</span>——<b>remember 带三个并列宾语</b>，第一个是宾语从句，后两个是名词短语。</li>
+              <li>⭐ <b>三个宾语长短不一、形式不同，但地位平等</b>：看见 <code>, or</code> 两次出现，就回头找 remember——<b>这是完形 1 题的定位法</b>：三件事都是「想不起来的东西」，第一件是「钥匙放哪儿」（where）。</li>
+              <li>💡 句末 <code>an old band <u>we used to love</u></code>：<b>省略关系代词 that 的定语从句</b>，used to love＝过去常喜爱（现在不一定）。</li>
+            </ul>
+          </div>
+          <div class="tr">译：我们会突然想不起刚才把钥匙放在哪儿了，或是想不起一位老熟人的名字，或是一支曾经喜爱的老乐队的名字。</div>
+        </div>
+
+        <div class="sent" id="s3">
+          <div class="src"><i>While (it is) seemingly innocent</i>, <span class="skel">this loss of mental focus can potentially have a damaging impact</span> on our professional, social, and personal wellbeing.</div>
+          <div class="anat">
+            <ul>
+              <li><b>主干</b>：<span class="skel">this loss … can have a damaging impact on …</span>；<b>句首是省略的让步状语从句</b>：While (this loss is) seemingly innocent。</li>
+              <li>⭐ <b>省略的条件</b>：从句主语与主句主语相同、谓语是 be ⟹ 可把「主语＋be」一起省掉，只留 While ＋ 形容词（<a href="#q3" style="color:var(--accent)">3 题</a>）。</li>
+              <li>💡 <b>两个副词对撞</b>：seemingly（表面上）↔ potentially（潜在地）——<b>一个说「看起来」，一个说「可能会」</b>，中间就是让步—转折的缝（<a href="#hedge" style="color:var(--accent)">02+++</a>）。</li>
+              <li>🔤 <b>句末三个形容词并列修饰 wellbeing</b>：professional, social, and personal——三块互不包含（<a href="#q5" style="color:var(--accent)">5 题</a>）。</li>
+            </ul>
+          </div>
+          <div class="tr">译：尽管看似无害，这种注意力的丧失却可能对我们的职业、社交和个人幸福造成损害。</div>
+        </div>
+
+        <div class="sent" id="s4">
+          <div class="src"><span class="skel">It turns out</span> <i>that the brain needs exercise in much the same way (as) our muscles do</i>, and <span class="skel">the right mental workouts can significantly improve our basic cognitive functions.</span></div>
+          <div class="anat">
+            <ul>
+              <li><b>结构</b>：<b>and 连接两个分句</b>——前一个是 <code>It turns out that …</code>（It 形式主语，that 从句是真主语），后一个是简单句 <code>the right mental workouts can improve …</code>。</li>
+              <li>⚠️ <b>and 后面那半句还在不在 that 从句里？</b>两种读法都通；按意思，「合适的脑力训练能改善认知」也是研究发现的一部分——读成<b>都属于 turns out 的内容</b>更顺（黄皮书也这么切）。</li>
+              <li>💡 <code>in much the same way <u>our muscles do</u></code>：<b>do 替代 need exercise</b>（避免重复）；the same way 后省略了 as／that。</li>
+              <li>🔤 <b>比喻的开头</b>：brain ↔ muscles，全文到④段末 <code>much like … exercise routine</code> 才收（<a href="#muscle" style="color:var(--accent)">02++</a>）。</li>
+            </ul>
+          </div>
+          <div class="tr">译：研究发现，大脑就像肌肉一样需要锻炼，合适的脑力训练能显著改善我们的基本认知功能。</div>
+        </div>
+
+        <div class="sent" id="s5">
+          <div class="src">To a certain extent, <span class="skel">our ability</span> <i>to excel in making the connections <u>that drive intelligence</u></i> <span class="skel">is inherited.</span></div>
+          <div class="anat">
+            <ul>
+              <li><b>主干</b>：<span class="skel">our ability … is inherited</span>——<b>主语中心词 ability 和谓语 is 之间隔了 9 个词</b>。</li>
+              <li>⭐ <b>主语的后置修饰一层套一层</b>：ability ← <code>to excel in making the connections</code>（不定式定语）← <code>that drive intelligence</code>（定语从句修饰 connections）。<b>拆法：先找 is，再往回数</b>——is 前面那一大串都是主语。</li>
+              <li>💡 <b>that 从句的主语是 connections（复数）</b>，所以谓语是 drive 不是 drives——<b>drive 取「推动」义</b>（连接推动智力）。</li>
+              <li>📌 <b>To a certain extent</b> 放句首给整句打折：「在一定程度上」＝只承认一部分 ⟹ 下一句 However（<a href="#q11" style="color:var(--accent)">11 题</a>）。</li>
+            </ul>
+          </div>
+          <div class="tr">译：在一定程度上，我们善于建立那些推动智力发展的连接的能力，是遗传而来的。</div>
+        </div>
+
+        <div class="sent" id="s6">
+          <div class="src">However, <i>because these connections are made through effort and practice</i>, <span class="skel">scientists believe</span> <i>that intelligence can expand and fluctuate according to mental effort.</i></div>
+          <div class="anat">
+            <ul>
+              <li><b>主干</b>：<span class="skel">scientists believe that …</span>；<b>句首先后挂了两样</b>：连接副词 However ＋ 原因状语从句 because …。</li>
+              <li>⭐ <b>because 从句与 that 从句是一条因果链</b>：连接靠努力建立（因）⟹ 智力随努力变化（果）。<b>12 题 according to 就是这条因果链在介词上的体现</b>。</li>
+              <li>💡 <b>expand and fluctuate 并列</b>：expand（增长）只说往上，fluctuate（起伏）说有升有降——<b>智力不是只增不减，不练也会掉</b>，所以才需要「不断」训练（18 constantly）。</li>
+            </ul>
+          </div>
+          <div class="tr">译：然而，由于这些连接是通过努力和练习建立起来的，科学家相信，智力能够随着脑力的投入而扩展和起伏。</div>
+        </div>
+
+        <div class="sent" id="s7">
+          <div class="src">Now, <span class="skel">a new Web-based company has taken it a step further and developed the first "brain training program"</span> <i>designed to actually help people improve and regain their mental sharpness.</i></div>
+          <div class="anat">
+            <ul>
+              <li><b>主干</b>：<span class="skel">a company has taken it a step further and (has) developed the first program</span>——<b>and 连两个谓语，共用 has</b>。</li>
+              <li>⭐ <b>it 回指上一段整套理论</b>（大脑可练、智力可变）；take it a step further＝把理论推进到产品（<a href="#q13" style="color:var(--accent)">13 题</a>）。</li>
+              <li>💡 <code>designed to actually help …</code>：<b>过去分词短语作后置定语</b>，修饰 program（＝which is designed to…）。<code>help people improve and regain</code>：help sb do，省略 to。</li>
+              <li>🔤 <b>regain＝重新获得</b>，预设「先丢了」⟹ 回首段找 clarity（<a href="#q14" style="color:var(--accent)">14 题</a>）。</li>
+            </ul>
+          </div>
+          <div class="tr">译：如今，一家新的网络公司更进一步，开发出了首个「大脑训练程序」，旨在切实帮助人们改善并恢复大脑的敏锐度。</div>
+        </div>
+
+        <div class="sent" id="s8">
+          <div class="src">Most importantly, <span class="skel">it constantly modifies and enhances the games</span> <i>(that) you play</i> <i>to build on the strengths <u>(that) you are developing</u></i>—<i>much like an effective exercise routine requires you to increase resistance and vary your muscle use.</i></div>
+          <div class="anat">
+            <ul>
+              <li><b>主干</b>：<span class="skel">it modifies and enhances the games</span>——两个并列谓语共用宾语 the games。</li>
+              <li>⭐ <b>两个省略 that 的定语从句</b>：the games <u>you play</u> · the strengths <u>you are developing</u>——读到「名词 ＋ 主语 ＋ 动词」就知道中间省了关系代词。</li>
+              <li>💡 <b>to build on …</b> 是<b>目的状语</b>（调整游戏是为了在长处上继续提升），不是 play 的宾语补足。</li>
+              <li>⭐⭐ <b>破折号后 much like 引导类比</b>：<code>much like ＋ 完整句子</code>（an effective exercise routine requires you to …），口语里 like 可作连词＝as。<b>比喻在这里收口</b>，18／19／20 三个空都在这一句（<a href="#muscle" style="color:var(--accent)">02++</a>）。</li>
+            </ul>
+          </div>
+          <div class="tr">译：最重要的是，它会不断调整和强化你所玩的游戏，在你正在培养的长处的基础上继续提升——这很像一套有效的锻炼计划，要求你不断增加阻力、变换对肌肉的使用方式。</div>
+        </div>
+      </section>
+      <!-- ========== 08 写作素材 ========== -->
+      <section class="card">
+        <h2><span class="n">08</span>可搬进作文/翻译的表达</h2>
+        <p class="note">本篇是一篇<b>「问题 → 依据 → 方案」</b>的科普推介文，结构正好是<b>大作文三段式的骨架</b>：描述现象 → 分析原因（科学依据）→ 提出对策。话题上，「先天与后天」「坚持练习」「终身学习」「科技产品的宣传要打折看」能直接接上<b>努力与天赋、自我提升、理性看待科技</b>几个常考母题。</p>
+        <div class="wb">
+          <div class="wbi"><div class="p">X is not what it used to be.　X 大不如前。</div><div class="u"><b>描述现象段的开头</b>，比 X is worse than before 地道。<i>Our attention span is not what it used to be in the age of short videos.</i>（短视频时代，我们的专注力大不如前。）</div></div>
+          <div class="wbi"><div class="p">While seemingly innocent, X can potentially have a damaging impact on …　尽管看似无害，X 却可能对……造成损害。</div><div class="u">⭐ <b>「表面无害、实际有害」的万能句</b>，写手机依赖、熬夜、攀比都能用。<i>While seemingly innocent, late-night scrolling can potentially have a damaging impact on students' health and grades.</i></div></div>
+          <div class="wbi"><div class="p">It turns out that …　研究表明／事实证明……</div><div class="u"><b>摆证据的开头</b>：<i>It turns out that regular reading significantly improves one's ability to concentrate.</i></div></div>
+          <div class="wbi"><div class="p">X needs exercise in much the same way our muscles do.　X 就像肌肉一样需要锻炼。</div><div class="u">⭐ <b>比喻论证现成句</b>，把 X 换成 creativity／willpower／memory：<i>Willpower needs exercise in much the same way our muscles do—the more we use it, the stronger it becomes.</i></div></div>
+          <div class="wbi"><div class="p">To a certain extent, … is inherited. However, because …, … can expand according to effort.　在一定程度上……是天生的；然而……会随努力而增长。</div><div class="u">⭐⭐ <b>「天赋与努力」话题的让步—转折骨架</b>：<i>To a certain extent, talent is inherited. However, because skills are built through practice, what we achieve depends largely on the effort we make.</i></div></div>
+          <div class="wbi"><div class="p">take it a step further　更进一步</div><div class="u"><b>写递进、写举措</b>：<i>Some universities have taken it a step further and opened their libraries to local residents.</i></div></div>
+          <div class="wbi"><div class="p">keep track of one's progress and provide feedback on …　跟踪进展并就……提供反馈</div><div class="u"><b>写学习方法、写建议信</b>：<i>A study journal helps you keep track of your progress, and a good tutor provides detailed feedback on your weaknesses.</i></div></div>
+          <div class="wbi"><div class="p">build on the strengths you are developing　在已有长处的基础上继续提升</div><div class="u"><b>写个人成长、写推荐信</b>：<i>Instead of dwelling on weaknesses, students should build on their strengths.</i>（与其纠缠短处，不如在长处上继续发力。）</div></div>
+          <div class="wbi"><div class="p">much like an effective exercise routine requires you to increase resistance　就像有效的锻炼要求你不断加阻力</div><div class="u">✍️ <b>「走出舒适区」的比喻论证</b>：<i>Learning, much like an effective exercise routine, requires us to keep increasing the difficulty.</i></div></div>
+          <div class="wbi"><div class="p">⚠️ 批判性一笔：宣传说「科学证明」≠ 真有证据</div><div class="u">本文推介的产品 2016 年被美国联邦贸易委员会认定<b>广告宣称缺乏科学依据</b>并被罚。✍️ 写「理性看待科技／网络宣传」类作文时可用：<i>Claims that a product is "backed by science" should be taken with a grain of salt until they are supported by reliable evidence.</i>（「有科学依据」的宣传，在拿出可靠证据之前都要打个折扣。）</div></div>
+        </div>
+      </section>
+
+    </main>
+
+    <aside>
+      <div id="panel"><div class="hint">👆 点正文里的<b>黄底词</b><br>词卡会出现在这里<br><br>点<b>空格</b>则跳到对应解析卡</div></div>
+    </aside>
+  </div>
+
+  <footer>2014 英语一 · 完形填空复盘页 · ⚠️ 本篇不算盲做（做 2014 Text 1 核答案时裁图裁宽，完形答案已提前入眼；独立推理与答案 20/20 一致但不计战绩）· 解析由 Claude 独立写成并与黄皮书精讲逐空交叉核对（答案零书误；10 题「人类胜过其他物种」的引申与 12 题 instead of 的排除理由页内另注）· 背景核实：原文《医学日报》2012-10-23，所介绍的程序为 Lumosity；2016 年美国联邦贸易委员会就其广告宣称与之和解 · 生词卡 33 张、四段极性表、肌肉类比表、四个限定副词、八年完形对照均为原创 · 原文仅供个人备考复盘</footer>
+</div>
+
+<button id="yd">🔍 查有道</button>
+<script>
+/* ============ V ============ */
+const V = {
+  hitmiddleage:{w:"hit middle age",ipa:"/hɪt ˈmɪdl eɪdʒ/",pos:"phrase",tags:["phrase","poly"],cn:"<b>人到中年</b>",en:"to reach the age of about 45 to 60",ex:"As many people hit middle age, they often start to notice that…",mem:"⭐ <b>hit 的熟词僻义＝到达</b>（某个年龄、数字、水平）：hit 40 · hit a record high · hit the headlines（上头条）。",syn:"reach middle age · turn forty",conf:"<b>hit</b>（到达，口语化）vs <b>reach</b>（到达，中性）；<b>middle-aged</b> 是形容词：a middle-aged man。"},
+  clarity:{w:"clarity",ipa:"/ˈklærəti/",pos:"n.",tags:["core","write"],cn:"<b>清晰，清楚</b>；（头脑）清醒",en:"the quality of being clear and easy to understand; the ability to think clearly",ex:"…their memory and mental clarity are not what they used to be.",mem:"<b>clar-（clear）＋ -ity</b> ⟹ 清楚的状态。⭐ <b>本篇关键词之一</b>：mental clarity 在③段被换说成 mental <b>sharpness</b>（14 题）。",syn:"clearness · lucidity · sharpness",conf:"<b>clarity</b>（清晰度）vs <b>clarify</b>（v. 澄清）vs <b>clearance</b>（清除；许可）。"},
+  notwhat:{w:"not what sth used to be",ipa:"/nɒt wɒt … juːst tə biː/",pos:"phrase",tags:["phrase","write"],cn:"<b>大不如前</b>，今不如昔",en:"not as good as it was in the past",ex:"…their memory and mental clarity are not what they used to be.",mem:"what 从句作表语：<b>「不是它们过去的样子」</b>。⭐ 给首段定了<b>负方向</b>，2 题 fades 是它的动词版。✍️ 描述现象开头最地道。",syn:"not as good as before · in decline",conf:"<b>used to be</b>（过去是）vs <b>be used to doing</b>（习惯于做）——一个讲过去，一个讲习惯。"},
+  acquaintance:{w:"acquaintance",ipa:"/əˈkweɪntəns/",pos:"n.",tags:["core"],cn:"<b>熟人</b>；相识；（对某事的）了解",en:"a person that you know but who is not a close friend",ex:"…or an old acquaintance's name…",mem:"<b>ac-（to）＋ quaint（知道，同 cognit-）＋ -ance</b> ⟹ 认识的人。make sb's acquaintance（结识某人）。",syn:"contact · associate",conf:"<b>acquaintance</b>（认识但不熟）vs <b>friend</b>（朋友）vs <b>stranger</b>（陌生人）。"},
+  band:{w:"band",ipa:"/bænd/",pos:"n.",tags:["poly"],cn:"①<b>乐队</b> ②带子 ③（收音机）波段 ④一伙人",en:"a small group of musicians who play popular music together",ex:"…or the name of an old band we used to love.",mem:"⭐ 熟词僻义：本篇取「<b>乐队</b>」。a rock band（摇滚乐队）· a brass band（铜管乐队）。",syn:"group · ensemble",conf:"<b>band</b>（流行乐队）vs <b>orchestra</b>（管弦乐团）vs <b>choir</b>（合唱团）。"},
+  referto:{w:"refer to … as …",ipa:"/rɪˈfɜː tə … æz/",pos:"phrase",tags:["phrase","write"],cn:"<b>把……称作……</b>",en:"to call sb/sth by a particular name",ex:"As the brain fades, we refer to these occurrences as “senior moments.”",mem:"⭐ <b>「称作」一族都用 A as B</b>：refer to／regard／describe／think of A as B。单用 refer to＝提到、查阅。",syn:"call · term · describe as",conf:"<b>refer to</b>（提到；查阅；称作）vs <b>infer</b>（推断）vs <b>defer</b>（推迟）。"},
+  occurrence:{w:"occurrence",ipa:"/əˈkʌrəns/",pos:"n.",tags:["core"],cn:"<b>发生的事，事件</b>；发生",en:"something that happens",ex:"…we refer to these occurrences as “senior moments.”",mem:"<b>occur（发生）＋ -ence</b>，注意<b>双写 r</b>。these occurrences 回指上一句三个健忘例子。",syn:"event · incident · instance",conf:"<b>occurrence</b>（一般的发生之事）vs <b>incident</b>（小事件，常带负面）vs <b>accident</b>（意外事故）。"},
+  seniormoment:{w:"senior moment",ipa:"/ˈsiːniə ˈməʊmənt/",pos:"n.",tags:["phrase","poly"],cn:"<b>老年时刻</b>（一时健忘、脑子短路）",en:"a short period when an older person forgets or cannot think clearly",ex:"…we refer to these occurrences as “senior moments.”",mem:"⭐ <b>senior 的熟词僻义＝老年的</b>：senior citizens（老年人）。自嘲式俏皮话，原文加了引号。同义俚语 brain fade（2 题 fades 的来源）。",syn:"brain fade · mental lapse",conf:"<b>senior</b>：资深的（senior manager）· 高年级的（senior student）· <b>老年的</b>（senior citizen）——看搭配定义项。"},
+  seemingly:{w:"seemingly",ipa:"/ˈsiːmɪŋli/",pos:"adv.",tags:["core","write"],cn:"<b>表面上，看似</b>",en:"in a way that appears to be true but may not be",ex:"While seemingly innocent, this loss of mental focus can potentially have…",mem:"⭐⭐ <b>限定副词：给句子打「表面」的折</b>——见到它，后面必有「其实不然」。所以 3 题填让步 While、4 题填相反的 damaging（⟹ 02+++）。",syn:"apparently · on the surface · outwardly",conf:"<b>seemingly</b>（看似，暗示其实不然）vs <b>seriously</b>（严肃地）；<b>apparently</b> 也可表「显然」，要看上下文。"},
+  innocent:{w:"innocent",ipa:"/ˈɪnəsnt/",pos:"adj.",tags:["poly"],cn:"①无罪的 ②天真的 ③<b>无害的</b>",en:"not intended to cause harm or upset",ex:"While seemingly innocent, this loss of mental focus…",mem:"<b>in-（不）＋ noc（伤害，同 noxious）</b> ⟹ 不伤人的。⭐ 本篇取第三义「<b>无害</b>」＝harmless，4 题 damaging 与它相反。",syn:"harmless · inoffensive",conf:"<b>innocent</b>（无害；无辜）vs <b>innocuous</b>（无害的，更正式）vs <b>ignorant</b>（无知的）。"},
+  potentially:{w:"potentially",ipa:"/pəˈtenʃəli/",pos:"adv.",tags:["core","write"],cn:"<b>潜在地，可能地</b>",en:"used to say that sth may develop into sth",ex:"…this loss of mental focus can potentially have a damaging impact…",mem:"<b>potent（有力的）→ potential（潜力）→ potentially</b>。⭐ 与 seemingly 对撞：表面无害 ↔ 潜在有害。",syn:"possibly · conceivably",conf:"<b>potentially</b>（可能发展成）vs <b>potently</b>（强有力地）。"},
+  neuroscientist:{w:"neuroscientist",ipa:"/ˈnjʊərəʊsaɪəntɪst/",pos:"n.",tags:["core"],cn:"<b>神经科学家</b>",en:"a scientist who studies the nervous system and the brain",ex:"Neuroscientists, experts who study the nervous system, are increasingly showing…",mem:"<b>neuro-（神经）＋ scientist</b>。原文后面紧跟同位语解释——<b>专业名词后面常自带说明</b>。⭐ 复数，所以 6 题的 It 不能指它。",syn:"brain scientist · neurologist（神经科医生）",conf:"<b>neuroscientist</b>（做研究的）vs <b>neurologist</b>（看病的神经科医生）。"},
+  nervoussystem:{w:"nervous system",ipa:"/ˈnɜːvəs ˈsɪstəm/",pos:"n.",tags:["phrase"],cn:"<b>神经系统</b>",en:"the system of nerves in the body",ex:"…experts who study the nervous system…",mem:"<b>nervous 的本义就是「神经的」</b>，「紧张的」是引申。the central nervous system（中枢神经系统）。",syn:"—",conf:"<b>nervous</b>：神经的（nervous system）· 紧张的（feel nervous）。"},
+  increasingly:{w:"increasingly",ipa:"/ɪnˈkriːsɪŋli/",pos:"adv.",tags:["core","write"],cn:"<b>越来越多地</b>，日益",en:"more and more",ex:"…are increasingly showing that there's actually a lot that can be done.",mem:"✍️ 写趋势必备：<i>increasingly popular／increasingly common</i>，比 more and more 简洁。",syn:"more and more · progressively · growingly",conf:"<b>increasingly</b>（日益）修饰形容词或动词；<b>more and more</b> 口语些。"},
+  muscle:{w:"muscle",ipa:"/ˈmʌsl/",pos:"n.",tags:["core"],cn:"<b>肌肉</b>；力量，实力",en:"a piece of body tissue that you tighten to produce movement",ex:"…the brain needs exercise in much the same way our muscles do…",mem:"⭐ <b>全文比喻的喻体</b>：②❷ 开头、④❸ 收尾（vary your muscle use）。注意 <b>c 不发音</b>。引申：financial muscle（财力）。",syn:"strength · brawn",conf:"<b>muscle</b>（肌肉）vs <b>mussel</b>（贻贝），同音。"},
+  cognitive:{w:"cognitive",ipa:"/ˈkɒɡnətɪv/",pos:"adj.",tags:["core","write"],cn:"<b>认知的</b>",en:"connected with thinking, understanding and remembering",ex:"…can significantly improve our basic cognitive functions.",mem:"<b>cogn（知道，同 recognize）＋ -itive</b>。cognitive abilities／decline／psychology。⭐ 8 题 functions 与它构成「认知功能」。",syn:"mental · intellectual",conf:"<b>cognitive</b>（认知的）vs <b>cognition</b>（n. 认知）vs <b>conscious</b>（有意识的）。"},
+  essentially:{w:"essentially",ipa:"/ɪˈsenʃəli/",pos:"adv.",tags:["core","write"],cn:"<b>本质上，根本上</b>",en:"when you think about the true nature of sth",ex:"Thinking is essentially a process of making connections in the brain.",mem:"<b>essence（本质）→ essential → essentially</b>。⭐ 下定义信号：这句说「是什么」，不说「有什么用」⟹ 9 题 process 而非 channel。",syn:"basically · fundamentally · in essence",conf:"<b>essentially</b>（本质上）vs <b>especially</b>（尤其）——形近。"},
+  certainextent:{w:"to a certain extent",ipa:"/tu ə ˈsɜːtn ɪkˈstent/",pos:"phrase",tags:["phrase","write","poly"],cn:"<b>在一定程度上</b>",en:"partly; not completely",ex:"To a certain extent, our ability to excel in making the connections… is inherited.",mem:"⭐⭐ <b>限定短语：只承认一部分</b>——下一句几乎必有 However／But（11 题）。extent 的熟词僻义＝<b>程度</b>（不是「范围」）。✍️ 作文让步句开头。",syn:"to some degree · in part · partly",conf:"<b>to a certain extent</b>（部分地）vs <b>to a great extent</b>（在很大程度上）vs <b>to what extent</b>（在多大程度上）。"},
+  drive:{w:"drive",ipa:"/draɪv/",pos:"v.",tags:["poly","write"],cn:"①驾驶 ②<b>推动，驱动</b> ③驱使",en:"to make sth progress or develop",ex:"…the connections that drive intelligence is inherited.",mem:"⭐ 熟词僻义：<b>推动</b>。drive growth（推动增长）· drive innovation · data-driven（数据驱动的）。",syn:"power · propel · fuel · boost",conf:"<b>drive</b>（从内部推动）vs <b>derive</b>（得到，源于）——形近。"},
+  intelligence:{w:"intelligence",ipa:"/ɪnˈtelɪdʒəns/",pos:"n.",tags:["core"],cn:"<b>智力，智能</b>；情报",en:"the ability to learn, understand and think",ex:"…scientists believe that intelligence can expand and fluctuate…",mem:"<b>intel-（inter，在中间）＋ lig（选择）</b> ⟹ 能在中间挑出对的。artificial intelligence（AI）。⭐ <b>完形第三次谈智力</b>（2008、2009、2014）。",syn:"intellect · wit · brainpower",conf:"<b>intelligence</b>（智力；情报）vs <b>intellect</b>（理解力）vs <b>intelligent</b>（adj. 聪明的）。"},
+  inherited:{w:"inherited",ipa:"/ɪnˈherɪtɪd/",pos:"adj./v.-ed",tags:["core"],cn:"<b>遗传的</b>；继承的",en:"received from your parents through genes",ex:"…our ability to excel in making the connections that drive intelligence is inherited.",mem:"<b>in- ＋ herit（继承人，同 heir）</b>。⭐ <b>「先天」栏的核心词</b>，与下一句 effort and practice（后天）对立 ⟹ 10 excel、11 However。",syn:"innate · genetic · hereditary · inborn",conf:"<b>inherit</b>（继承；遗传）vs <b>inhibit</b>（抑制）——形近。"},
+  fluctuate:{w:"fluctuate",ipa:"/ˈflʌktʃueɪt/",pos:"v.",tags:["core","write"],cn:"<b>波动，起伏</b>",en:"to change frequently in size, amount or quality",ex:"…intelligence can expand and fluctuate according to mental effort.",mem:"<b>flu（流动）</b> ⟹ 像水流一样忽高忽低。⭐ <b>变化动词 ＋ according to</b>（12 题）。✍️ 图表作文：prices fluctuated between 5 and 8 dollars。",syn:"vary · rise and fall · swing",conf:"<b>fluctuate</b>（上下波动，无固定方向）vs <b>rise／fall</b>（有方向）。"},
+  webbased:{w:"Web-based",ipa:"/ˈweb beɪst/",pos:"adj.",tags:["write"],cn:"<b>基于网络的</b>，网络的",en:"available on or operated through the Internet",ex:"Now, a new Web-based company has taken it a step further…",mem:"<b>X-based</b> 构词：Web-based · community-based（社区的）· evidence-based（循证的）· home-based（在家办公的）。",syn:"online · Internet-based",conf:"<b>based on</b>（基于）vs <b>X-based</b>（以 X 为基础的，作前置定语）。"},
+  regain:{w:"regain",ipa:"/rɪˈɡeɪn/",pos:"v.",tags:["core","write"],cn:"<b>重新获得，恢复</b>",en:"to get back sth you had lost",ex:"…designed to actually help people improve and regain their mental sharpness.",mem:"⭐⭐ <b>re-（再）＋ gain</b>：<b>预设「本来有、后来丢了」</b>——回上文找丢掉的是什么（首段 mental clarity）⟹ 14 sharpness。",syn:"recover · restore · get back",conf:"<b>regain</b>（重新得到）vs <b>retain</b>（保留，没丢过）。"},
+  systematically:{w:"systematically",ipa:"/ˌsɪstəˈmætɪkli/",pos:"adv.",tags:["core","write"],cn:"<b>系统地，有条理地</b>",en:"according to a fixed plan or method",ex:"The Web-based program allows you to systematically improve your memory…",mem:"system → systematic → systematically。⭐ 它给 18 题定了调：调整是<b>有规律</b>的 ⟹ irregularly 出局。",syn:"methodically · in an organized way",conf:"<b>systematic</b>（有系统的）vs <b>systemic</b>（全身的；整个系统的）。"},
+  progress:{w:"progress",ipa:"/ˈprəʊɡres/ n. · /prəˈɡres/ v.",pos:"n./v.",tags:["core","write"],cn:"n. <b>进步，进展</b>（不可数）　v. 进步",en:"the process of improving or developing",ex:"The program keeps track of your progress…",mem:"<b>pro-（向前）＋ gress（走）</b>。⚠️ <b>不可数</b>：make great progress（不说 a progress）。",syn:"advance · improvement · development",conf:"<b>progress</b>（不可数）vs <b>process</b>（过程，可数，9 题答案）——形近。"},
+  feedback:{w:"feedback",ipa:"/ˈfiːdbæk/",pos:"n.",tags:["core","write"],cn:"<b>反馈</b>（意见）",en:"advice or criticism about how well sb has done sth",ex:"…provides detailed feedback on your performance and improvement.",mem:"feed（喂）＋ back ⟹ 喂回来的信息。⭐ <b>不可数，介词用 on</b>（17 题）：feedback on sth、give sb feedback。",syn:"response · comments · evaluation",conf:"<b>feedback on</b>（关于……的反馈）vs <b>feedback from</b>（来自……的反馈）。"},
+  modify:{w:"modify",ipa:"/ˈmɒdɪfaɪ/",pos:"v.",tags:["core"],cn:"<b>修改，调整</b>；（语法）修饰",en:"to change sth slightly to improve it",ex:"…it constantly modifies and enhances the games you play…",mem:"<b>mod（尺度，同 mode）＋ -ify</b> ⟹ 按尺度调。genetically modified（转基因的）。",syn:"adjust · alter · adapt",conf:"<b>modify</b>（小改）vs <b>transform</b>（彻底改变）vs <b>moderate</b>（使缓和）。"},
+  enhance:{w:"enhance",ipa:"/ɪnˈhɑːns/",pos:"v.",tags:["core","write"],cn:"<b>提高，增强</b>",en:"to increase or further improve the quality or value of sth",ex:"…it constantly modifies and enhances the games you play…",mem:"<b>en-（使）＋ hance（高）</b> ⟹ 使变高。✍️ enhance one's competitiveness（提高竞争力）。",syn:"improve · boost · strengthen",conf:"<b>enhance</b>（提高质量、价值）vs <b>enlarge</b>（扩大尺寸）vs <b>enrich</b>（丰富）。"},
+  strength:{w:"strength",ipa:"/streŋθ/",pos:"n.",tags:["poly","write"],cn:"①力气 ②<b>长处，优势</b>",en:"a quality or ability that gives sb an advantage",ex:"…to build on the strengths you are developing…",mem:"⭐ 本篇取「<b>长处</b>」（可数，复数 strengths），<b>19 题 build on 的宾语</b>。strengths and weaknesses（优缺点）。",syn:"advantage · asset · strong point",conf:"<b>strength</b>（长处，可数）vs <b>weakness</b>（短处）；力气义不可数。"},
+  routine:{w:"routine",ipa:"/ruːˈtiːn/",pos:"n./adj.",tags:["poly","write"],cn:"n. ①常规，例行公事 ②<b>（一套固定的）练习、动作</b>　adj. 常规的",en:"a fixed set of exercises or steps",ex:"…much like an effective exercise routine requires you to increase resistance…",mem:"<b>route（路线）</b> ⟹ 天天走的那条路。⭐ exercise routine＝<b>一套锻炼计划</b>；daily routine（日常作息）。",syn:"programme · regimen · schedule",conf:"<b>routine</b>（例行的一套）vs <b>route</b>（路线）vs <b>rotation</b>（轮换）。"},
+  resistance:{w:"resistance",ipa:"/rɪˈzɪstəns/",pos:"n.",tags:["poly"],cn:"①抵抗，反对 ②<b>（健身）阻力，负重</b> ③电阻",en:"(in exercise) the weight or force your muscles work against",ex:"…requires you to increase resistance and vary your muscle use.",mem:"<b>re-（反）＋ sist（站）</b> ⟹ 反着站。⭐ 熟词僻义：健身的<b>阻力</b>——resistance training（抗阻训练）。",syn:"load · weight",conf:"<b>resistance</b>（阻力；抵抗）vs <b>persistence</b>（坚持）vs <b>assistance</b>（帮助）——同根 sist。"},
+  vary:{w:"vary",ipa:"/ˈveəri/",pos:"v.",tags:["poly","write"],cn:"vi. 变化，不同　vt. <b>改变，使多样化</b>",en:"to make changes to sth to make it different",ex:"…increase resistance and vary your muscle use.",mem:"⭐ 本篇作<b>及物动词</b>：vary your diet（饮食多样）。与 18 题 constantly 呼应：<b>一直在变</b>。",syn:"change · alter · diversify",conf:"<b>vary</b>（v.）→ <b>various</b>（adj. 各种的）→ <b>variety</b>（n. 多样）。"}
+};
+const panel=document.getElementById('panel');
+const isMobile=()=>window.innerWidth<=900;
+function badge(t){return {core:'<span class="badge b-core">核心词</span>',phrase:'<span class="badge b-phrase">短语</span>',poly:'<span class="badge b-poly">熟词僻义</span>',write:'<span class="badge b-write">写作✍︎</span>'}[t]||''}
+function showCard(k,el){
+  const d=V[k]; if(!d)return;
+  document.querySelectorAll('.tk.active').forEach(e=>e.classList.remove('active'));
+  if(el&&el.classList.contains('tk'))el.classList.add('active');
+  panel.innerHTML='<button class="close" onclick="panel.classList.remove(\'open\')">✕</button>'+
+  '<div class="wcard"><div class="head"><span class="w">'+d.w+'</span><span class="ipa">'+d.ipa+'</span><span class="pos">'+d.pos+'</span>'+d.tags.map(badge).join('')+'</div>'+
+  '<div class="cn">'+d.cn+'</div><div class="en-def">'+d.en+'</div>'+
+  '<div class="row r-ex"><b>原文语境</b>「…'+d.ex+'…」</div>'+
+  '<div class="row r-mem"><b>怎么记</b>'+d.mem+'</div>'+
+  '<div class="row r-syn"><b>同类词</b>'+d.syn+'</div>'+
+  '<div class="row r-conf"><b>易混辨析</b>'+d.conf+'</div></div>';
+  if(isMobile())panel.classList.add('open');
+}
+document.querySelectorAll('.tk').forEach(t=>t.addEventListener('click',e=>{e.stopPropagation();showCard(t.dataset.w,t)}));
+
+/* ============ 译文开关 ============ */
+function tz(btn){btn.closest('.para').classList.toggle('showzh')}
+let allOn=false;
+function toggleAll(){allOn=!allOn;document.querySelectorAll('.para').forEach(p=>p.classList.toggle('showzh',allOn))}
+function go(id){const s=document.getElementById(id);if(!s)return;s.scrollIntoView({behavior:'smooth',block:'center'});s.style.transition='none';s.style.opacity=.3;setTimeout(function(){s.style.transition='opacity .8s';s.style.opacity=1},80)}
+
+/* ============ 20 空数据（类别 + 正确词） ============ */
+const CAT={
+  logic:{name:"逻辑关系",cls:"c-logic",color:"#3d6a8a"},
+  collo:{name:"固定搭配",cls:"c-collo",color:"#3e7a4e"},
+  word:{name:"词义辨析",cls:"c-word",color:"#b04a3a"},
+  context:{name:"上下文语义",cls:"c-context",color:"#6d5a8e"}
+};
+const B={
+  1:{w:"where",cat:"collo"},          2:{w:"fades",cat:"context"},
+  3:{w:"While",cat:"logic"},          4:{w:"damaging",cat:"context"},
+  5:{w:"wellbeing",cat:"word"},       6:{w:"turns",cat:"collo"},
+  7:{w:"workouts",cat:"context"},     8:{w:"functions",cat:"word"},
+  9:{w:"process",cat:"word"},         10:{w:"excel",cat:"word"},
+  11:{w:"However",cat:"logic"},       12:{w:"according to",cat:"logic"},
+  13:{w:"further",cat:"collo"},       14:{w:"sharpness",cat:"context"},
+  15:{w:"allows",cat:"word"},         16:{w:"track",cat:"collo"},
+  17:{w:"on",cat:"collo"},            18:{w:"constantly",cat:"context"},
+  19:{w:"build",cat:"collo"},         20:{w:"effective",cat:"context"}
+};
+
+
+/* ============ 点空格 → 跳到解析卡 ============ */
+document.querySelectorAll('.bk').forEach(function(b){
+  b.addEventListener('click',function(){
+    document.querySelectorAll('.bk.active').forEach(function(e){e.classList.remove('active')});
+    b.classList.add('active');
+    go('q'+b.dataset.n);
+  });
+});
+function fillBlank(n,ok){
+  const el=document.querySelector('.bk[data-n="'+n+'"]');
+  if(!el)return;
+  el.classList.remove('miss');
+  el.classList.add(ok===false?'miss':'filled');
+  el.innerHTML='<span class="idx">'+n+'</span>'+B[n].w;
+}
+
+/* ============ 即点即判 + 计分 ============ */
+let done=0,right=0;
+function updScore(){
+  document.getElementById('sDone').textContent=done;
+  document.getElementById('sRight').textContent=right;
+  document.getElementById('sPt').textContent=(right*0.5).toFixed(1);
+}
+document.querySelectorAll('.q').forEach(function(q){
+  const ans=+q.dataset.ans, n=q.id.replace('q','');
+  q.querySelectorAll('.opt').forEach(function(o,i){
+    o.addEventListener('click',function(){
+      if(q.classList.contains('done'))return;
+      q.classList.add('done');
+      const ok=(i===ans);
+      if(!ok)o.classList.add('wrong');
+      q.querySelectorAll('.opt')[ans].classList.add('right');
+      done++; if(ok)right++; updScore();
+      fillBlank(n,ok);
+    });
+  });
+});
+function revealAll(){
+  document.querySelectorAll('.q').forEach(function(q){
+    const n=q.id.replace('q','');
+    if(!q.classList.contains('done')){
+      q.classList.add('done');
+      q.querySelectorAll('.opt')[+q.dataset.ans].classList.add('right');
+      done++; updScore();
+    }
+    fillBlank(n,true);
+  });
+  document.querySelectorAll('.bk.miss').forEach(function(e){e.classList.remove('miss');e.classList.add('filled')});
+}
+
+/* ============ 考点统计 ============ */
+const counts={};Object.keys(B).forEach(function(k){counts[B[k].cat]=(counts[B[k].cat]||0)+1});
+const order=["word","collo","context","logic"];
+document.getElementById('catbar').innerHTML=order.map(function(k){
+  return '<div class="catseg" style="flex:'+counts[k]+';background:'+CAT[k].color+'">'+CAT[k].name+' '+counts[k]+'</div>'}).join('');
+const legend=document.getElementById('catlegend');
+legend.innerHTML=order.map(function(k){
+  return '<div class="cl" data-cat="'+k+'"><span class="dot" style="background:'+CAT[k].color+'"></span>'+CAT[k].name+' · '+counts[k]+' 题</div>'}).join('');
+const chips=document.getElementById('chips');
+function renderChips(cat){
+  chips.innerHTML=Object.keys(B).filter(function(n){return !cat||B[n].cat===cat})
+    .map(function(n){return '<span class="chip" data-n="'+n+'">'+n+'. '+B[n].w+'</span>'}).join('');
+  chips.querySelectorAll('.chip').forEach(function(c){
+    c.addEventListener('click',function(){go('q'+c.dataset.n)});
+  });
+}
+renderChips(null);
+legend.querySelectorAll('.cl').forEach(function(l){
+  l.addEventListener('click',function(){
+    const cat=l.dataset.cat;
+    document.querySelectorAll('.cl').forEach(function(x){x.style.borderColor=''});
+    l.style.borderColor=CAT[cat].color;
+    renderChips(cat);
+    document.querySelectorAll('.bk').forEach(function(b){
+      b.style.outline=(B[b.dataset.n].cat===cat?'2px solid '+CAT[cat].color:'')});
+  });
+});
+
+/* ============ 80 选项词表 ============ */
+const OPTS={
+ 1:[["why","为什么（put 仍缺地点）"],["when","何时（与 a moment ago 撞车）"],["that","无词义（从句不完整）"],["where","在哪里（补上 put 的地点）"]],
+ 2:[["improves","改善（①段方向是负）"],["fades","逐渐衰退（大不如前）"],["collapses","崩溃（程度过了）"],["recovers","恢复（恢复在③段）"]],
+ 3:[["While","尽管（seemingly ⟹ 让步）"],["Unless","除非（成了阻止条件）"],["Once","一旦（无先后触发）"],["If","如果；即使（两边方向相反用不了）"]],
+ 4:[["uneven","不均衡（讲形态不讲好坏）"],["limited","有限（替无害背书）"],["damaging","有害（与 innocent 相反）"],["obscure","模糊（讲清不清）"]],
+ 5:[["relationship","关系（与三个修饰语成包含）"],["environment","环境（伤的是人不是外界）"],["wellbeing","幸福（三块并列）"],["outlook","看法；前景（又成包含）"]],
+ 6:[["turns","turn out 原来（It 形式主语）"],["finds","find out 查明（要人作主语）"],["points","point out 指出（要人作主语）"],["figures","figure out 想明白（要人作主语）"]],
+ 7:[["responses","反应（自然产生，谈不上选）"],["roundabouts","环岛（拿 round 蹭）"],["workouts","锻炼（接住肌肉比喻）"],["associations","联想（不是锻炼）"]],
+ 8:[["genre","体裁（与认知不搭）"],["criterion","标准（改善的是能力）"],["circumstances","境况（外在，与 5B 同错）"],["functions","功能（memory 的上位词）"]],
+ 9:[["channel","途径（讲作用不讲本质）"],["process","过程（a process of doing）"],["sequence","一连串（接复数名词）"],["condition","条件；状态（因果颠倒、静态）"]],
+ 10:[["excel","擅长（能力可天生）"],["feature","起作用（主语要是物）"],["persist","坚持（后天意志，不能遗传）"],["believe","相信（态度不是能力）"]],
+ 11:[["However","然而（先天 → 后天）"],["Moreover","而且（方向相同才递进）"],["Otherwise","否则（无条件关系）"],["Therefore","因此（先天不是后天的原因）"]],
+ 12:[["instead of","而不是（不是替代关系）"],["regardless of","不管（与 because 从句相反）"],["apart from","除……外（无总分关系）"],["according to","随……而变（因果链）"]],
+ 13:[["back","后退（做出产品是前进）"],["further","更进一步（理论 → 产品）"],["aside","到一边（程序正基于理论）"],["around","在周围（不成说法）"]],
+ 14:[["framework","框架（没丢过）"],["stability","稳定性（没丢过）"],["sharpness","敏锐（＝首段 clarity）"],["flexibility","灵活性（首段丢的不是它）"]],
+ 15:[["hurries","催促（不接 to do）"],["reminds","提醒（程序成了闹钟）"],["forces","强迫（夸产品不说逼人）"],["allows","使能够（赋能）"]],
+ 16:[["order","秩序（keep order 不接 of）"],["track","keep track of 跟踪"],["hold","keep hold of 抓住（具体物）"],["pace","keep pace with（介词不对）"]],
+ 17:[["to","对（引出接收者）"],["on","feedback on 关于"],["for","provide sth for sb（位置已占）"],["with","provide sb with sth（位置已占）"]],
+ 18:[["constantly","不断地（一直加阻力）"],["habitually","习惯性地（程序不靠习惯）"],["irregularly","不规律地（与 systematically 冲突）"],["unusually","异常地（系统设计不出人意料）"]],
+ 19:[["carry","carry on 继续进行（接事）"],["put","put on 穿上／增重"],["build","build on 在……基础上发展"],["take","take on 承担／呈现"]],
+ 20:[["risky","有风险（类比方向反）"],["familiar","熟悉（老一套不变化）"],["idle","无效；闲置（方向全反）"],["effective","有效（被夸的程序只比有效的）"]]
+};
+const ANS={1:3,2:1,3:0,4:2,5:2,6:0,7:2,8:3,9:1,10:0,11:0,12:3,13:1,14:2,15:3,16:1,17:1,18:0,19:2,20:3};
+(function(){
+  let h='<tr><th>空</th><th>A</th><th>B</th><th>C</th><th>D</th></tr>';
+  for(let n=1;n<=20;n++){
+    h+='<tr><td class="n">'+n+'</td>';
+    OPTS[n].forEach(function(o,i){
+      h+='<td'+(i===ANS[n]?' class="hit"':'')+'><span class="ow">'+o[0]+'</span><span class="oc">'+o[1]+'</span></td>';
+    });
+    h+='</tr>';
+  }
+  document.getElementById('otab').innerHTML=h;
+  document.querySelectorAll('#otab .oc').forEach(function(c){
+    c.addEventListener('click',function(){c.classList.toggle('show')});
+  });
+})();
+function toggleHide(){
+  const t=document.getElementById('otab');
+  const on=t.classList.toggle('hidecn');
+  document.getElementById('btnHide').textContent=on?'👁 显示释义':'✍️ 默写模式';
+  if(!on)t.querySelectorAll('.oc.show').forEach(function(c){c.classList.remove('show')});
+}
+
+/* ============ 查有道 ============ */
+const yd=document.getElementById('yd');let sel='';
+document.addEventListener('selectionchange',function(){
+  const s=window.getSelection();const t=s?s.toString().trim():'';
+  if(t&&/^[a-zA-Z' -]{2,40}$/.test(t)){
+    sel=t;
+    try{const r=s.getRangeAt(0).getBoundingClientRect();
+      yd.style.left=Math.min(r.left,window.innerWidth-110)+'px';
+      yd.style.top=(r.bottom+8)+'px';yd.style.display='block';}catch(e){}
+  }else{yd.style.display='none'}
+});
+yd.addEventListener('click',function(){window.open('https://dict.youdao.com/result?word='+encodeURIComponent(sel)+'&lang=en');yd.style.display='none'});
+document.addEventListener('click',function(e){if(e.target!==yd&&!window.getSelection().toString())yd.style.display='none'});
+</script>
+<script src="_fault_attr.js"></script>
+</body>
+</html>

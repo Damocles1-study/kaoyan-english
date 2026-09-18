@@ -27,7 +27,8 @@ window.TRICK_READ = [
         '<b>2012·T4·38C</b>：四个选项里唯一有原文词根的 increased（pay increases）偏偏是错的——命题人给「原词复现」那一格配了一个方向相反的副词 excessively（原文 modest）；正确项 indirectly augmented 反而两词都零词源。'],
  refs:[{p:'2022_T1_塑料文物保护.html',q:'q21',label:'T1·21'},{p:'2022_T3_艺术与科学.html',q:'q34',label:'T3·34'},{p:'2022_T4_解雇保护悖论.html',q:'q36',label:'T4·36'},{p:'2007_T2_智力测试的边界.html',q:'q26',label:'2007·T2·26'},
        {p:'2012_T3_科学发现的取信过程.html',q:'q32',label:'2012·T3·32A（inspection 恰是 scrutiny 的同义词，却丢了 collective——同义替换是必要不充分，见 R121）'},
-       {p:'2012_T4_公共部门工会的膨胀.html',q:'q38',label:'2012·T4·38（唯一有词根的 C 是错的）'}]},
+       {p:'2012_T4_公共部门工会的膨胀.html',q:'q38',label:'2012·T4·38（唯一有词根的 C 是错的）'},
+       {p:'2014_T2_美国律师业的两个病根.html',q:'q26',label:'2014·T2·26B（inflation 是比较基准，原词复现当原因）'}]},
 
 {id:'R2', tier:'🔴', qt:'人物观点题', title:'先圈人名，再把「比喻句」翻成直义',
  trig:['X believes / notes / says','题干出现人名','In Ferreira’s opinion'],
@@ -59,7 +60,8 @@ window.TRICK_READ = [
  refs:[{p:'2010_T2_商业方法专利的威胁.html',q:'q26',label:'2010·T2·26B（反用：拿①段美林的例子 asset allocation 当「引发关注的原因」——例子只为论点作证，不能反过来充当论点）'},
        {p:'2022_T3_艺术与科学.html',q:'q32',label:'T3·32'},{p:'2007_T1_刻意练习造就高手.html',q:'q21',label:'2007·T1·21'},{p:'2008_T3_美国人的身高极限.html',q:'q31',label:'2008·T3·31（事例即靶子）'},{p:'2008_T4_开国元勋与奴隶制.html',q:'q36',label:'2008·T4·36（事例即反差）'},
        {p:'2013_T1_快时尚的控诉书.html',q:'q25',label:'2013·T1·25B（反差句左端当主题）'},
-       {p:'2013_T3_人类前景的长视角.html',q:'q32',label:'2013·T3·32（引证题：红色名录是③段第三条证据，答案取它服务的论点「人类能延续」）'}]},
+       {p:'2013_T3_人类前景的长视角.html',q:'q32',label:'2013·T3·32（引证题：红色名录是③段第三条证据，答案取它服务的论点「人类能延续」）'},
+       {p:'2014_T3_富豪设奖与诺奖的出身.html',q:'q33',label:'2014·T3·33（Higgs 例证服务于破折号前的观点：collaborative nature ⟹ joint effort）'}]},
 
 {id:'R4', tier:'🔴', qt:'作者态度 / 主旨 / 末段主旨', title:'先分清「谁在说话」，再抓情态词喊话句',
  trig:['the author thinks / suggests','末段','It can be concluded'],
@@ -112,7 +114,8 @@ window.TRICK_READ = [
         '<b>「有缺陷」≠「该淘汰」</b>：同题 D「传统测试已过时」——原文只列局限，且前文明说 IQ 分数<b>仍是</b>定义性术语、SAT/GRE <b>现行在用</b>。两者之间隔着好几步，作者一步都没走。',
         '<b>部分否定别读成全盘否定</b>：<code>may not assess <u>all</u></code>、<code>do <u>not necessarily</u> predict</code> ＝「未必全部」，不是「完全不能」。not + all/both/every/always/necessarily 一律是部分否定。'],
  refs:[{p:'2022_T2_Z世代与学位.html',q:'q30',label:'T2·30'},{p:'2022_T4_解雇保护悖论.html',q:'q38',label:'T4·38'},{p:'2022_T1_塑料文物保护.html',q:'q25',label:'T1·25'},{p:'2007_T1_刻意练习造就高手.html',q:'q24',label:'2007·T1·24'},{p:'2007_T2_智力测试的边界.html',q:'q29',label:'2007·T2·29'},
-       {p:'2012_T2_背弃承诺的核电厂主.html',q:'q30',label:'2012·T2·30C（推一步是「申请可能受影响」，推两步才是「撤回」）'}]},
+       {p:'2012_T2_背弃承诺的核电厂主.html',q:'q30',label:'2012·T2·30C（推一步是「申请可能受影响」，推两步才是「撤回」）'},
+       {p:'2014_T3_富豪设奖与诺奖的出身.html',q:'q31',label:'2014·T3·31D（bank accounts → bankers、funded → investments 词形偷换）'}]},
 
 {id:'R7', tier:'🟡', qt:'细节题（题干限定段落）', title:'题干限定第 N 段，别处的「对信息」也是错项',
  trig:['In Paragraph 5','According to Para X','题干明确点段号'],
@@ -154,7 +157,8 @@ window.TRICK_READ = [
        {p:'2011_T2_高管裸辞潮.html',q:'q26',label:'2011·T2·26（行为→人品：三个干扰项全是人格标签）'},
        {p:'2012_T3_科学发现的取信过程.html',q:'q31',label:'2012·T3·31B（Opportunities for … abound 的「可能」升格成「特征」）'},
        {p:'2012_T4_公共部门工会的膨胀.html',q:'q37',label:'2012·T4·37（B 描述升格为必要条件）'},
-       {p:'2013_T4_移民法判决的两块比分牌.html',q:'q38',label:'2013·T4·38（常识陷阱反向形态：史实指向 D，文内只能推 B）'}]},
+       {p:'2013_T4_移民法判决的两块比分牌.html',q:'q38',label:'2013·T4·38（常识陷阱反向形态：史实指向 D，文内只能推 B）'},
+       {p:'2014_T4_没说到要害的人文报告.html',q:'q38',label:'2014·T4·38D（funding for teachers ＋ study of foreign languages 两行拼一行，杂糅）'}]},
 
 {id:'R9', tier:'🟢', qt:'通用 · 信号灯', title:'两国家/两方案 &amp; 让步从句 = 出题信号灯',
  trig:['末段出现两个国家/两个方案','even if / although','Nor + 倒装'],
@@ -179,12 +183,14 @@ window.TRICK_READ = [
  traps:['<b>别拆词根、别凭字面联想。</b>2010·T2·28 的 <code>about-face</code>（军事口令「向后转」，face ＝ 面向）被 D 项 <code>enhancement of <b>dignity</b></code> 用 <code>lose face</code>／<code>save face</code> 这条<u>真实存在</u>的搭配来钓——<b>联想是真的，所以更危险。破解只能靠上下文的结构信号。</b>',
         '<b>用字典义答题</b>：mania 的医学义是「躁狂症」，照搬就会选 hysteria；词义题考的永远是<b>语境义</b>。',
         '把生词当拦路虎：生词所在句往往<b>自带注解</b>（同位语/举例/对比），先读完整句再看选项。',
-        '强度稀释项常成对出现（fun 与 excitement 是同一种错法），认出这一对可一次排两个。'],
+        '强度稀释项常成对出现（fun 与 excitement 是同一种错法），认出这一对可一次排两个。',
+        '<b>2014·T1·22</b>（sign on）：三条线索同时锁死——<b>取舍结构</b> <code>looking for work, not looking to sign on</code>（对立面）＋ <b>同指</b> <code>Those first few days</code> ＝ 上一句的 <code>seven-day wait for the jobseeker&#39;s allowance</code> ＋ <b>下一句</b> <code>stay off benefits</code> 与 <code>get into work</code> 对举。<b>英式义「登记领救济」与美式义「签约受雇」正相反</b>——背景知识靠不住时，三步照样能做。'],
  refs:[{p:'2011_T3_五种媒介的家谱.html',q:'q33',label:'2011·T3·33C（campaign 被读成“竞赛”）'},{p:'2010_T2_商业方法专利的威胁.html',q:'q28',label:'2010·T2·28（词义题标本：找<b>对立结构</b>——because 引出解释 ＋ itself 强调主体同一 ＋ 一对反义动作 Curbs ↔ introduced，四项里只有「转变」装得下）'},
        {p:'2007_T1_刻意练习造就高手.html',q:'q22',label:'2007·T1·22'},
        {p:'2011_T2_高管裸辞潮.html',q:'q28',label:'2011·T2·28（超纲词 poach：同段同根词 head<u>hunt</u>ers 就是答案）'},
        {p:'2012_T2_背弃承诺的核电厂主.html',q:'q26',label:'2012·T2·26（极性锁在同句 justified outrage ＋ 下一段 Instead 改写，见 R120）'},
-       {p:'2013_T1_快时尚的控诉书.html',q:'q23',label:'2013·T1·23（认隐喻场：indictment／hijacked／victims，见 R141）'}]},
+       {p:'2013_T1_快时尚的控诉书.html',q:'q23',label:'2013·T1·23（认隐喻场：indictment／hijacked／victims，见 R141）'},
+       {p:'2014_T1_奥斯本新政的台面上与台面下.html',q:'q22',label:'2014·T1·22（sign on：取舍 ＋ 同指 ＋ 下一句）'}]},
 
 {id:'R11', tier:'🟡', qt:'谚语主旨题 / 标题题', title:'先自写一句话主旨，再拿「核心对立」卡谚语',
  trig:['Which of the following proverbs is closest to…','The best title for the text is','the message the text tries to convey'],
@@ -234,7 +240,8 @@ window.TRICK_READ = [
        {p:'2010_T4_会计准则制定者被迁怒.html',q:'q40',label:'2010·T4·40（同情 &gt; 满意的完整推导）'},
        {p:'2011_T1_古典音乐会的危机.html',q:'q25',label:'2011·T1·25（doubtful 的三段证据链 ＋ 态度词能不能选清单）'},
        {p:'2012_T4_公共部门工会的膨胀.html',q:'q40',label:'2012·T4·40（disapproval 的强度档）'},
-       {p:'2013_T1_快时尚的控诉书.html',q:'q23',label:'2013·T1·23（accusation 与 criticism 同档；indifference、tolerance 方向与强度都不对）'}]},
+       {p:'2013_T1_快时尚的控诉书.html',q:'q23',label:'2013·T1·23（accusation 与 criticism 同档；indifference、tolerance 方向与强度都不对）'},
+       {p:'2014_T4_没说到要害的人文报告.html',q:'q36',label:'2014·T4·36（Critical vs Contemptuous：表扬给了具体理由 ⟹ 负向取温和档）'}]},
 
 {id:'R13', tier:'🟡', qt:'推理引申题 / 通用 · 找考点', title:'括号与同位语藏考点，缓和语气常是答案',
  trig:['原文出现 ( … ) / 破折号 / 同位语','推理题四选项都不好排','infer / can be learned'],
@@ -295,7 +302,8 @@ window.TRICK_READ = [
         '<b>「有原话支撑」不等于「是答案」</b>：C 有一句原文可指，D 一句都没有——但段落推理题问的是<b>整段让你推出什么</b>。<b>只有某句话的延伸 vs. 整段的主线，选主线。</b>',
         '<b>动词的褒贬也要比</b>：overshadowed（被盖过风头）＝作者在给这个决定打折，选项却说它 essential（至关重要）。<b>一个动词就能给整句定褒贬，别只翻字面。</b>',
         '<b>括号里的信息同样是判据</b>：40 题 A 的生死全在①句那个 <code>(in America, but not Europe)</code>（配合 R13 用）。'],
- refs:[{p:'2007_T4_数据泄密的公司.html',q:'q40',label:'2007·T4·40'},{p:'2007_T2_智力测试的边界.html',q:'q29',label:'2007·T2·29'}]},
+ refs:[{p:'2007_T4_数据泄密的公司.html',q:'q40',label:'2007·T4·40'},{p:'2007_T2_智力测试的边界.html',q:'q29',label:'2007·T2·29'},
+       {p:'2014_T4_没说到要害的人文报告.html',q:'q38',label:'2014·T4·38（题干只给段号：American history／subjects／technologies／funding 分头回文）'}]},
 
 {id:'R16', tier:'🔴', qt:'写作目的题（引言 / 概念 / 例子）', title:'配角只负责引出主角：定位句往外扩一层找意群',
  trig:['The statement “…” is used to introduce ______','In bringing up the concept of X the author is making the point that','X is mentioned to / The author quotes Y in order to','题干问某句话、某概念、某例子的「作用」'],
@@ -450,7 +458,9 @@ window.TRICK_READ = [
        {p:'2012_T3_科学发现的取信过程.html',q:'q31',label:'2012·T3·31B（self-deception 的 self- 被拿掉，受骗者从自己换成别人）'},
        {p:'2012_T4_公共部门工会的膨胀.html',q:'q36',label:'2012·T4·36（D 定语升主语）'},
        {p:'2013_T1_快时尚的控诉书.html',q:'q22',label:'2013·T1·22A（品牌自己的库存浪费少 → 敦促消费者对抗浪费）'},
-       {p:'2013_T4_移民法判决的两块比分牌.html',q:'q37',label:'2013·T4·37（D 依据句的主语国会进了答案）'}]},
+       {p:'2013_T4_移民法判决的两块比分牌.html',q:'q37',label:'2013·T4·37（D 依据句的主语国会进了答案）'},
+       {p:'2014_T2_美国律师业的两个病根.html',q:'q29',label:'2014·T2·29B（non-lawyers 删掉 non- 变 lawyers）'},
+       {p:'2014_T3_富豪设奖与诺奖的出身.html',q:'q33',label:'2014·T3·33B（who is ignored 被换成 recipients：对谁错了）'}]},
 
 {id:'R22', tier:'🔴', qt:'细节题 / 因果细节题', title:'题干关键词在文中<u>没有原词</u>时：先把它翻译成「文中的说法」',
  trig:['题干出现一个全文没出现过的名词（online publication、the new approach…）','According to the text… is significant in that','扫读全文找不到题干那个词'],
@@ -628,7 +638,8 @@ window.TRICK_READ = [
         '<b>第四种功能：标记非常规用法</b>（2012·T3 ⑤❶ credibility “happens” to a discovery claim）——happen to 的主语本该是事件，作者硬用，意在说可信度不是「做」出来的、是在共同体里「发生」的。'
         +'<b>判据：去掉引号读，搭配别扭 ⟹ 作者在借用这个词，要找它此处的特殊义</b>；本句正是 35C Evolution 的收口。',
         '<b>2012·T4·38</b>：引号第四功能（标记非常规用法）的第二例——“backloaded” 是借来的合同／金融说法，释义就在紧跟的分词短语 keeping … but adding … 里（⟹ R128）。',
-        '<b>2012·新题型 ⑧❷</b>：引号第四功能（命名）的又一例——<code>the concept of “stickiness”—creations and experiences to which others adhere</code>，引号 ＋ 破折号就地下定义。<b>被命名的那一处就是这个词的「出生点」，任何裸用它的句子都只能站在出生点之后</b>——多余项 B（add stickiness）正是死在这里（⟹ R54 反向 · <a href="#R136">R136</a>）。'],
+        '<b>2012·新题型 ⑧❷</b>：引号第四功能（命名）的又一例——<code>the concept of “stickiness”—creations and experiences to which others adhere</code>，引号 ＋ 破折号就地下定义。<b>被命名的那一处就是这个词的「出生点」，任何裸用它的句子都只能站在出生点之后</b>——多余项 B（add stickiness）正是死在这里（⟹ R54 反向 · <a href="#R136">R136</a>）。',
+        '<b>2014·T1 是引号排斥功能用到极致的一篇</b>：八组引号（change lives for the better／dependency／reforms／fundamental fairness／jobseeker&#39;s allowance／jobseeker／allowance 等），<b>七组是「所谓」、一组是中性的方案名，没有一处引作者赞同的话</b>；<b>同一个 reforms</b>，②❼ 加引号＝所谓改革，④❷ 不加引号＝真的改革。无引号的对方视角见 <a href="#R163">R163</a>。'],
  refs:[{p:'2010_T2_商业方法专利的威胁.html',q:'col3',label:'2010·T2（同一篇里三种引号：「a very big deal」引用评价／「reconsider」引用指令原话／「inventions」作者的排斥）'},
        {p:'2008_T4_开国元勋与奴隶制.html',q:'q39',label:'2008·T4·39（引用 + 排斥）'},{p:'2008_T1_女性与压力.html',q:'q21',label:'2008·T1（反语 opportunities）'},{p:'2022_T4_解雇保护悖论.html',q:'q36',label:'T4·36（比喻 time bomb）'},
        {p:'2010_T3_社会流行潮的传播.html',q:'s10',label:'2010·T3 · s10（引号＝命名，破折号给定义）'},
@@ -637,7 +648,9 @@ window.TRICK_READ = [
        {p:'2011_T1_古典音乐会的危机.html',q:'q24',label:'2011·T1（三处引号刚好三种功能：引用原话／排斥／引用他人评价）'},
        {p:'2012_T3_科学发现的取信过程.html',q:'q35',label:'2012·T3·⑤❶（credibility “happens”：引号的第四种功能——标记非常规用法）'},
        {p:'2012_T4_公共部门工会的膨胀.html',q:'col3',label:'2012·T4 · 02+++ 专栏（引号词的自带释义）'},
-       {p:'2012_新题型_下载与上传的隐秘战争.html',q:'extra',label:'2012·新题型（“stickiness” 的命名点判了 B 出局）'}]}
+       {p:'2012_新题型_下载与上传的隐秘战争.html',q:'extra',label:'2012·新题型（“stickiness” 的命名点判了 B 出局）'},
+       {p:'2014_T1_奥斯本新政的台面上与台面下.html',q:'col2',label:'2014·T1 · 02++ 专栏（八组引号清单）'},
+       {p:'2014_T4_没说到要害的人文报告.html',q:'s12',label:'2014·T4 · ④❸ "progressive," or left-liberal propaganda（排斥型引号 ＋ or 改写）'}]}
 ,
 
 {id:'R30', tier:'🔴', qt:'新题型 · 选句填空', title:'先定位「空格形态」，再找「唯一词」——复现词是大家都有的，唯一词只有它有',
@@ -718,9 +731,11 @@ window.TRICK_READ = [
         +'拿“概括段落主旨”的手感去做选句填空 ⟹ 忽略指代与照应，43/44 这种连体空必翻车（<b>2009 我正是这么翻的，见 <a href="#R55">R55</a></b>）。',
         '<b>四种变体的多余项造法各不相同</b>：标题匹配用<b>段内局部信息</b>做标题；观点匹配造一句<b>没人说过的话</b>；'
         +'选句填空则是<b>内容对但没有它的坑</b>（阶段错位）或<b>与正确项共用专名</b>；<b>排序题（2010）则专拿<u>复现词</u>钓鱼——多余项 C 的段首段尾各放一个回指词，却整段不含全文主线名词</b>（见 <a href="#R81">R81</a>）。',
-        '<b>2013 选句填空第四篇</b>：「每空先读下一句」第二年验证——这次下一句开头是 This is a shame／This is an adequate amount／That should create（评语定类型，<a href="#R159">R159</a>），外加 Here, too 与强调 do（预设小词，<a href="#R160">R160</a>）。选句填空四篇占八篇的一半。'],
+        '<b>2013 选句填空第四篇</b>：「每空先读下一句」第二年验证——这次下一句开头是 This is a shame／This is an adequate amount／That should create（评语定类型，<a href="#R159">R159</a>），外加 Here, too 与强调 do（预设小词，<a href="#R160">R160</a>）。选句填空四篇占八篇的一半。',
+        '<b>2014 排序题第三篇</b>：七格七段、首段空着 ⟹ 第一步仍是数格子，第二步<b>给每格数候选</b>（<a href="#R78">R78</a> 修正版），候选最少的先落。'],
  refs:[{p:'2008_新题型_如何写作初稿.html',q:'',label:'2008 · 选句填空（含三方对照表）'},{p:'2007_新题型_家长如何帮孩子.html',q:'',label:'2007 · 标题匹配'},{p:'2022_新题型_动物园之辩.html',q:'',label:'2022 · 观点匹配'},{p:'2010_新题型_欧洲食杂零售商转战批发.html',q:'',label:'2010 · 排序题（四方对照最新版）'},{p:'2012_新题型_下载与上传的隐秘战争.html',q:'three',label:'2012 · 选句填空第三篇（三种线对照）'},
-       {p:'2013_新题型_让社会科学有用起来.html',q:'four',label:'2013 · 选句填空第四篇（四篇对照）'}]},
+       {p:'2013_新题型_让社会科学有用起来.html',q:'four',label:'2013 · 选句填空第四篇（四篇对照）'},
+       {p:'2014_新题型_考古学家怎样找到遗址.html',q:'',label:'2014 · 排序题第三篇（零多余第二次）'}]},
 {id:'R33', tier:'🔴', qt:'推理题 / 段末收口句', title:'「This is where X comes in」是反向诊断句——它在说 X 此刻正缺席',
  trig:['段末出现 This is where … comes in','That’s where … comes in','Enter X.','This is where X becomes important'],
  flow:'① 见到这类<b>登场句</b>，先别当成「X 很有用」的正面表扬；'
@@ -755,7 +770,8 @@ window.TRICK_READ = [
  refs:[{p:'2009_T1_习惯与创新.html',q:'q25',label:'2009·T1·25 的 C 项'},{p:'2007_T4_数据泄密的公司.html',q:'q36',label:'2007·T4·36B（第九类对照）'},
        {p:'2010_T4_会计准则制定者被迁怒.html',q:'col2',label:'2010·T4 · 02++ 专栏（R70 与 R34 的分界）'},
        {p:'2012_T2_背弃承诺的核电厂主.html',q:'q27',label:'2012·T2·27B（Vermont legislature 被安上 federal 定语）'},
-       {p:'2013_T3_人类前景的长视角.html',q:'col5',label:'2013·T3·32A／34D／35B（词对主不对一族五个：misplaced 本修饰悲观 · shaping 的主语本是 patterns · evolution 本属技术——回搜时连主语一起搜）'}]},
+       {p:'2013_T3_人类前景的长视角.html',q:'col5',label:'2013·T3·32A／34D／35B（词对主不对一族五个：misplaced 本修饰悲观 · shaping 的主语本是 patterns · evolution 本属技术——回搜时连主语一起搜）'},
+       {p:'2014_T2_美国律师业的两个病根.html',q:'col4',label:'2014·T2 · 02++++ 专栏（authorized by 挂在 law schools 上 ⟹ 27C／27D 挪错对象）'}]},
 
 {id:'R35', tier:'🔴', qt:'通用 · 排除选项', title:'「本源词」的定义常在上一段——inherent / innate / natural 一律跨段追',
  trig:['选项出现 inherent / innate / natural / original / born with / by nature','选项出现 the inherent X'],
@@ -874,7 +890,8 @@ window.TRICK_READ = [
        {p:'2010_T4_会计准则制定者被迁怒.html',q:'q37',label:'2010·T4·37C（记账自由度 ⟹ 亏损本身）'},
        {p:'2010_T4_会计准则制定者被迁怒.html',q:'q39',label:'2010·T4·39A（market prices ＋ reflect 杂糅成 market price indicators）'},
        {p:'2012_T1_同侪压力与社会疗法.html',q:'q22',label:'2012·T1·22A（②段的 recruit ＋ ③段的 advertisers）'},
-       {p:'2013_T1_快时尚的控诉书.html',q:'q21',label:'2013·T1·21B（poor ＋ bargain 分属两个成分，还各换了一次义项，见 R139）'}]},
+       {p:'2013_T1_快时尚的控诉书.html',q:'q21',label:'2013·T1·21B（poor ＋ bargain 分属两个成分，还各换了一次义项，见 R139）'},
+       {p:'2014_T3_富豪设奖与诺奖的出身.html',q:'q34',label:'2014·T3·34C（④❸ has long been ＋ ❺ legitimacy 两句拼接再反向）'}]},
 
 {id:'R40', tier:'🟡', qt:'标题题 / 全文主旨题', title:'标题题三查：覆盖度 → 褒贬度 → 原词义项',
  trig:['An appropriate title for the text is most likely to be','Which of the following is the best title','四个标题看着都沾边'],
@@ -901,7 +918,8 @@ window.TRICK_READ = [
        {p:'2008_T1_女性与压力.html',q:'q25',label:'2008·T1·25（中性标题 vs 有立场的标题）'},{p:'2010_T1_报纸艺术评论的衰落.html',q:'q25',label:'2010·T1·25（两要素：对象 ＋ 发生了什么）'},
        {p:'2011_T2_高管裸辞潮.html',q:'q30',label:'2011·T2·30（三查不够用，要再加「主体」与「文体」两查 ⟹ R92）'},
        {p:'2012_T3_科学发现的取信过程.html',q:'q35',label:'2012·T3·35（C／D 共享 Credibility，比中心词 Evolution vs Challenge，见 R125）'},
-       {p:'2013_T3_人类前景的长视角.html',q:'q35',label:'2013·T3·35（褒贬度的边界：Ever-bright 很满，但四项里唯一与作者同向；⑦❷ To be sure 让步削不动它 ⟹ <a href="#R151">R151</a>）'}]}
+       {p:'2013_T3_人类前景的长视角.html',q:'q35',label:'2013·T3·35（褒贬度的边界：Ever-bright 很满，但四项里唯一与作者同向；⑦❷ To be sure 让步削不动它 ⟹ <a href="#R151">R151</a>）'},
+       {p:'2014_T4_没说到要害的人文报告.html',q:'q40',label:'2014·T4·40（覆盖度：B 只装褒 · D 只罩④⑤；A 是原文标题）'}]}
 ,
 
 {id:'R41', tier:'🔴', qt:'举例目的题 / 写作目的题', title:'举例题的答案不在例子里，在例子服务的那句论点里',
@@ -948,13 +966,15 @@ window.TRICK_READ = [
         +'<b>判据：第一段有没有一个明确的褒贬／否定词？</b>',
         '<b>不出题的段落别跳读</b>：2009·T3 的③段一道题都不出，却是④⑤段立论的地基——<b>跳过它，末两段的结论就成了无源之水。</b>',
         '<b>末段推理题可直接用它收尾</b>：题干若问的是全文讨论对象之一，<b>捷径就是「选与全文主旨相符的选项」</b>（35 题即是）。',
-        '<b>2010·T3 是驳论文的标准件，而箭头画得比 however 更早</b>：①❷ <code>The idea is intuitively compelling, <b>but</b> it doesn\'t explain…</code>——<b>第一段末尾就已定向，③段的 however 只是把它挑明，不是新信息。</b><br>⚠️⚠️ <b>本篇给出了这张卡最硬的一个数字：十五个干扰项里有<u>八个</u>产自「靶子」那一栏</b>（32A／32B／32C／31C 被否定的理论 ＋ 33B／33C／33D 被排除的例外 ＋ 35B 被落选的变量）。<br>📌 <b>而版面上靶子（①②，7 句）比作者的主张（③，2 句）还长——<u>篇幅 ≠ 重心</u>。</b><br>⭐ <b>判据要带上后半句：凡取材自靶子栏的选项，<u>除非题干专门问靶子</u>，一律不能选</b>（本篇 31 题正是那个「除非」：它问的就是「引用这本书意在什么」）。'],
+        '<b>2010·T3 是驳论文的标准件，而箭头画得比 however 更早</b>：①❷ <code>The idea is intuitively compelling, <b>but</b> it doesn\'t explain…</code>——<b>第一段末尾就已定向，③段的 however 只是把它挑明，不是新信息。</b><br>⚠️⚠️ <b>本篇给出了这张卡最硬的一个数字：十五个干扰项里有<u>八个</u>产自「靶子」那一栏</b>（32A／32B／32C／31C 被否定的理论 ＋ 33B／33C／33D 被排除的例外 ＋ 35B 被落选的变量）。<br>📌 <b>而版面上靶子（①②，7 句）比作者的主张（③，2 句）还长——<u>篇幅 ≠ 重心</u>。</b><br>⭐ <b>判据要带上后半句：凡取材自靶子栏的选项，<u>除非题干专门问靶子</u>，一律不能选</b>（本篇 31 题正是那个「除非」：它问的就是「引用这本书意在什么」）。',
+        '<b>2014·T1</b>：驳论专栏的另一种排兵——<b>先替对方把话说完（①②）→ 作者用 you 正面出场（③）→ 再把对方的世界观摆一遍立刻亮底牌（④ But in Osborneland … no longer … Instead）</b>。方向在①❸ 的反问 ＋ ②❶ apparent 就定了：反对新政。五道题里 21、23、25 三题的干扰项都从「对方的话」里取词。'],
  refs:[{p:'2009_T3_教育与经济增长的真实关系.html',q:'col1',label:'2009·T3 · 02+ 专栏「一支箭头」'},
        {p:'2009_T3_教育与经济增长的真实关系.html',q:'q31',label:'2009·T3·31（C 把方向掉了个头）'},
        {p:'2009_T3_教育与经济增长的真实关系.html',q:'q35',label:'2009·T3·35（A/B/D 各动一次箭头）'},
        {p:'2009_T1_习惯与创新.html',q:'q21',label:'2009·T1·21（同年另一篇驳论文：习惯从敌人改判为工具）'},
        {p:'2010_T3_社会流行潮的传播.html',q:'col4',label:'2010·T3 · 02++++ 专栏（十五个干扰项产地总账）'},
-       {p:'2013_T3_人类前景的长视角.html',q:'col1',label:'2013·T3 · 02+ 专栏（驳论文 × 今昔对比：两个靶子——被时间否定的昔、被作者否定的今；三个 But 是作者的三次亮相）'}]},
+       {p:'2013_T3_人类前景的长视角.html',q:'col1',label:'2013·T3 · 02+ 专栏（驳论文 × 今昔对比：两个靶子——被时间否定的昔、被作者否定的今；三个 But 是作者的三次亮相）'},
+       {p:'2014_T1_奥斯本新政的台面上与台面下.html',q:'col5',label:'2014·T1 · 02+++++ 专栏（三层归属表）'}]},
 
 {id:'R43', tier:'🟡', qt:'细节题 / 举例目的题（原文含倒装句时）', title:'Only when A, 倒装B：被 Only 罩住的 A 才是重心',
  trig:['原文出现句首 Only 而主句语序古怪','Not until … did …','Only by doing … can …','题目问「X 在什么时候／什么条件下才出现」'],
@@ -971,9 +991,11 @@ window.TRICK_READ = [
      +'<code>Education develops when the economy grows.</code> 有力得多，<b>作文里用一次倒装是很划算的加分动作。</b></p>',
  traps:['<b>2009·T3·34 的 A 项就是「把结果当条件」</b>：原文 <code>Only when humanity began to get its food in a more productive way <b>was there time</b></code>，'
         +'A 项答的是倒装主句里的 <code>time</code>（结果），正确项 C 答的是 Only 从句里的条件。',
-        '<b>与 R41 交叉验证</b>：R43 是<b>语法判据</b>，R41 是<b>论点判据</b>——<b>两条指向同一个答案时，可以放心落笔。</b>'],
+        '<b>与 R41 交叉验证</b>：R43 是<b>语法判据</b>，R41 是<b>论点判据</b>——<b>两条指向同一个答案时，可以放心落笔。</b>',
+        '<b>2014·T1·21</b>：<code>Only if the jobless arrive …, register …, and start looking for work will they be eligible for benefit</code>——被 Only if 罩住的三个动作＝方案核心 ⟹ 21C 鼓励积极求职；<b>21D 把 eligible 读成「保障权利」、21B 读成「更易获得」，都无视了 Only if 是在加门槛</b>。'],
  refs:[{p:'2009_T3_教育与经济增长的真实关系.html',q:'s6',label:'2009·T3 · 长难句 s6'},
-       {p:'2009_T3_教育与经济增长的真实关系.html',q:'col3',label:'2009·T3 · 02+++ 专栏「Only when 倒装」'}]},
+       {p:'2009_T3_教育与经济增长的真实关系.html',q:'col3',label:'2009·T3 · 02+++ 专栏「Only when 倒装」'},
+       {p:'2014_T1_奥斯本新政的台面上与台面下.html',q:'q21',label:'2014·T1·21（Only if 倒装：条件不是承诺）'}]},
 
 {id:'R44', tier:'🟢', qt:'通用 · 选项筛选顺序（作者观点题最常用）', title:'四个选项里若有一对矛盾项，先集中判这一对',
  trig:['两个选项读起来意思正相反','一对选项是同一维度的高／低、增／减、支持／反对'],
@@ -1074,7 +1096,8 @@ window.TRICK_READ = [
         '<b>2012·T1 给出第四种形态：破折号插入</b>：<code>positive health habits<b>—as well as negative ones—</b>spread…</code>。'
         +'<b>24A、24D 都只抱住破折号<u>里</u>的 negative ones，丢了破折号<u>前</u>的 positive</b>——<b>破折号插进来的并列成分，正确项必须同时罩住两侧</b>；'
         +'且 <code>A as well as B</code> 的重心在 A，只取 B 的选项更站不住。',
-        '<b>一句破折号插入能跨题喂两个干扰项</b>（2013·T1）：<code>although they don’t advertise that</code> 被 22C 改成「劝人抵制广告」、被 25D 升格成「揭露秘密」；而 22B 取的是插入语<u>之后</u>的第二个 to——<b>插入语之后是答案，之内是干扰项</b>。另：题干只问「劝消费者做什么」时，并列两件事答任一件都算对，「只截一半」在这里不是毛病——<b>判截一半是否为错，看题干要不要两件都答</b>。'],
+        '<b>一句破折号插入能跨题喂两个干扰项</b>（2013·T1）：<code>although they don’t advertise that</code> 被 22C 改成「劝人抵制广告」、被 25D 升格成「揭露秘密」；而 22B 取的是插入语<u>之后</u>的第二个 to——<b>插入语之后是答案，之内是干扰项</b>。另：题干只问「劝消费者做什么」时，并列两件事答任一件都算对，「只截一半」在这里不是毛病——<b>判截一半是否为错，看题干要不要两件都答</b>。',
+        '<b>2014·T1·25D</b>：<code>insure yourself against the risk of unemployment</code> 是④❸ 唯一的正面短语，D 原样搬走，<b>却丢了前面的 is no longer</b>，又把「为风险投保」换成「降低风险」——半截复现 ＋ 动词偷换同时出现（⟹ <a href="#R140">R140</a>）。'],
  refs:[{p:'2010_T2_商业方法专利的威胁.html',q:'q30',label:'2010·T2·30B（只截 <code>protections for patent holders</code>，把「被<b>缩小</b>」整个丢了，方向反转）'},
        {p:'2009_T4_新英格兰早期的精神文化生活.html',q:'q38',label:'2009·T4·38A（both New World and Old World 被砍一半）'},
        {p:'2009_T4_新英格兰早期的精神文化生活.html',q:'q39',label:'2009·T4·39B（三项并列被拆开拼接，对照 R39）'},
@@ -1084,7 +1107,8 @@ window.TRICK_READ = [
        {p:'2012_T1_同侪压力与社会疗法.html',q:'q24',label:'2012·T1·24A／24D（只抱住破折号里的 negative ones）'},
        {p:'2012_T3_科学发现的取信过程.html',q:'q32',label:'2012·T3·32A（scrutiny and acceptance 只截了前一半）'},
        {p:'2013_T1_快时尚的控诉书.html',q:'col2',label:'2013·T1 · 02++ 专栏（插入语之内 vs 之后）'},
-       {p:'2013_T1_快时尚的控诉书.html',q:'q22',label:'2013·T1·22（B 取第二个 to · C 取插入语）'}]},
+       {p:'2013_T1_快时尚的控诉书.html',q:'q22',label:'2013·T1·22（B 取第二个 to · C 取插入语）'},
+       {p:'2014_T1_奥斯本新政的台面上与台面下.html',q:'q25',label:'2014·T1·25D（丢了 no longer）'}]},
 
 {id:'R49', tier:'🔴', qt:'完形 · 比喻/类比句（阅读的比喻句同理）', title:'比喻链：先找「接口词」，比喻的两端一起落地',
  trig:['原文突然冒出一个与话题无关的具体名词（bulbs / fuel / starting line）','上下两句结构对称，却换了主语','出现一个天然双关的形容词：bright / dim / sharp / heavy'],
@@ -1099,8 +1123,9 @@ window.TRICK_READ = [
      +'<b>同一篇里往往不止一套比喻</b>：2009 完形②段还有一整套<b>汽车比喻</b>——<code>a high-priced <b>option</b></code>（选装配置）→ <code><b>upkeep</b></code>（保养费）→ <code>burns more <b>fuel</b></code> → <code>slow off the <b>starting line</b></code>。<b>认出比喻，整段四个空一起松动。</b>',
  traps:['<b>常识对 ≠ 逻辑对。</b>2009 完形 3 题的 stabler（更稳定的灯泡更耐用）完全符合常识，<b>但它与上句的「聪明↔短命」构不成类比关系</b>——比喻题只认对应，不认常识。',
         '<b>方向填反。</b>同题的 lighter（更亮的）方向正好相反；另有词法证据：light 表「明亮」多指天色、房间因自然光而亮，<b>不用于说发光体本身亮</b>。',
-        '<b>喻体那一栏的特征词被搬到本体栏。</b>2009 完形 7 题的 spontaneous（自发的、不假思索的）<b>恰恰是 instinct 的特征</b>，被摆到了形容 learning 的位置上——<b>凡对比句里出现「另一侧的特征词」，一律是陷阱。</b>'],
- refs:[{p:'2009_完形_智力的代价.html',q:'q3',label:'2009·完形·3（dimmer，接口词 bright）'},
+        '<b>喻体那一栏的特征词被搬到本体栏。</b>2009 完形 7 题的 spontaneous（自发的、不假思索的）<b>恰恰是 instinct 的特征</b>，被摆到了形容 learning 的位置上——<b>凡对比句里出现「另一侧的特征词」，一律是陷阱。</b>',
+        '📌 <b>2014 完形：比喻贯穿全篇、跨两段收口</b>——接口词 exercise 一头一尾（②❷ <code>the brain needs exercise in much the same way our muscles do</code> ⟹ ④❸ <code>much like a(n) ___ exercise routine requires you to increase resistance and vary your muscle use</code>）：7 workouts（把喻体的词搬到本体）· 18 constantly（喻体「一直加、一直变」把答案说白）· 19 build · 20 effective。<b>比喻不一定局部，开头埋下后要一直追到收口</b>。'],
+ refs:[{p:'2014_完形_像练肌肉一样练大脑.html',q:'muscle',label:'2014·完形 · 02++ 大脑↔肌肉类比表'},{p:'2014_完形_像练肌肉一样练大脑.html',q:'q18',label:'2014·完形·18（喻体一侧把 constantly 说白）'},{p:'2014_完形_像练肌肉一样练大脑.html',q:'q7',label:'2014·完形·7（workouts，把喻体的词搬到本体）'},{p:'2009_完形_智力的代价.html',q:'q3',label:'2009·完形·3（dimmer，接口词 bright）'},
        {p:'2009_完形_智力的代价.html',q:'q4',label:'2009·完形·4（并列 that 从句同向）'},
        {p:'2009_完形_智力的代价.html',q:'q6',label:'2009·完形·6（汽车比喻的第三件）'},
        {p:'2008_完形_高智商与遗传疾病.html',q:'q2',label:'2008·完形·2（that rare bird，比喻性表语必带同位语）'}]},
@@ -1121,8 +1146,9 @@ window.TRICK_READ = [
         '<b>形容词空要读冒号/破折号后面的同位语，别读句子里最大的那个名词。</b>2009 完形 19 题的 comprehensive 就是拿 the world 编出来的，而冒号后的问题只聚焦一点：人有没有自觉。',
         '⭐ <b>连体空要能拼成一句完整、不别扭的话——这是最好用的验算。</b>2010 完形 <b>9（enough）与 10（by itself）</b>说的是同一件事：<b>充分性</b>。若 9 填了 excessive／abundant（在谈「量的多少」），<b>10 空的 by itself（单凭它自己）就没有着落</b>。⟹ <b>两个空填完念一遍，念不顺就说明其中一个错了。</b>（配合 <a href="#R73">R73</a>：这两个空其实由上一段的定义句 <code>the <b>very</b> act</code> 一同管着。）',
         '⭐ <b>并列连体空的又一种形态：<code>be free to ___ and have no need to ___</code></b>（2012 完形 12＋13）——一个框架接「本来不敢做的事」（upset 挫败当权者）、一个接「本来不得不做的事」（cultivate 争取支持），<b>合起来念一遍才是「独立」</b>；serve／satisfy 配 free to 就自相矛盾，express 配 no need to 则把「谁给谁支持」弄反了。',
-        '<b>2013 完形两组连体空</b>：<b>5＋6</b> <code>fearful of appearing too soft on crime</code>——先用 6 的 soft on 读出「对犯罪手软」，5 的方向（怕）才立得住；<b>17＋18</b> 同一个 if…then 里的条件与结果——17 before 定比较对象，18 drop 的方向由下一句 such a decrease 锁死。'],
- refs:[{p:'2013_完形_面试打分的当日偏见.html',q:'q5',label:'2013·完形·5＋6（fearful of … soft on）'},{p:'2012_完形_大法官的伦理与法院的合法性.html',q:'q12',label:'2012·完形·12＋13（free to ／ no need to 并列连体空）'},{p:'2011_完形_笑与情绪的方向之争.html',q:'q4',label:'2011·完形·4＋5（因果型连体空，见 R105）'},{p:'2009_完形_智力的代价.html',q:'q18',label:'2009·完形·18（Above all，递进链末环）'},
+        '<b>2013 完形两组连体空</b>：<b>5＋6</b> <code>fearful of appearing too soft on crime</code>——先用 6 的 soft on 读出「对犯罪手软」，5 的方向（怕）才立得住；<b>17＋18</b> 同一个 if…then 里的条件与结果——17 before 定比较对象，18 drop 的方向由下一句 such a decrease 锁死。',
+        '<b>2014 完形 3＋4</b>：<code>___ seemingly innocent, … can potentially have a(n) ___ impact</code>——先做 3 定让步（While），4 自动取与 innocent 相反的 damaging（⟹ <a href="#R176">R176</a>）。'],
+ refs:[{p:'2014_完形_像练肌肉一样练大脑.html',q:'q3',label:'2014·完形·3＋4（While 定让步 ⟹ damaging）'},{p:'2013_完形_面试打分的当日偏见.html',q:'q5',label:'2013·完形·5＋6（fearful of … soft on）'},{p:'2012_完形_大法官的伦理与法院的合法性.html',q:'q12',label:'2012·完形·12＋13（free to ／ no need to 并列连体空）'},{p:'2011_完形_笑与情绪的方向之争.html',q:'q4',label:'2011·完形·4＋5（因果型连体空，见 R105）'},{p:'2009_完形_智力的代价.html',q:'q18',label:'2009·完形·18（Above all，递进链末环）'},
        {p:'2009_完形_智力的代价.html',q:'q19',label:'2009·完形·19（fundamental，与 18 同档）'},
        {p:'2009_完形_智力的代价.html',q:'q16',label:'2009·完形·16（三句平行句互为答案）'},
        {p:'2008_完形_高智商与遗传疾病.html',q:'q5',label:'2008·完形·5（句中已有 however ⟹ 填 Even）'},
@@ -1142,8 +1168,9 @@ window.TRICK_READ = [
         '<b>被 Instead of 否定掉的那条路，常被做成选项。</b>11 题的 features（人类智力有何特征）正是本句用 <code>Instead of casting a glance backward…</code> 明确排除掉的方向。',
         '⭐ <b>抽象名词空的最强形态：上文有一句<u>定义句</u>。</b>2010 完形 <b>8 题</b>的 <code>An <b>awareness</b> that they were being experimented upon</code>，就是①段末 <code>the very <b>act</b> of being experimented upon</code> 的第二次说法（<code>being experimented upon</code> 原词复现是识别标志）；<b>13 题</b>的 <code>evidence</code> 同理——它要能被「找到／找不到」并且能<b>证明</b>一个结论，所以 implication（暗指）、source（根源）当场出局。⟹ <b>见 <a href="#R73">R73</a>：定义句与改写句逐成分对齐。</b>',
         '⭐ <b>反向用法：单句成段的过渡段里，抽象名词空的答案在<u>下文</u>。</b>2012 完形 9 题 <code>whether there is still a ___ between the court and politics</code> 独占③段，下文④段两次 <code>apart from politics</code>、⑥段一次 <code>separate from politics</code>——<b>line 就是「分开」的名词形式</b>；它与 barrier 的裁决靠⑤段的让步（法律注定带政治性 ⟹ 只能有界线、不能有屏障）。',
-        '⭐ <b>2013 完形：首句关键词被连说两遍，两处都设了空</b>——①❶ background information → 2 <b>external</b> factors → 3 the big <b>picture</b>。<b>反例同篇</b>：9 题 <code>the ___ of an applicant</code> 的答案 success 是<b>上文没出现过的新概念</b>，钥匙在下文③段末 whether to accept him or her；而上文反复出现的 decision 恰是干扰项——<b>名词空先问「归谁」</b>（录取决定归招生官，不归申请者）。'],
- refs:[{p:'2013_完形_面试打分的当日偏见.html',q:'q9',label:'2013·完形·9（新概念，答案在下文；decision 换错主人）'},{p:'2013_完形_面试打分的当日偏见.html',q:'q2',label:'2013·完形·2（background information 的改写）'},{p:'2012_完形_大法官的伦理与法院的合法性.html',q:'q9',label:'2012·完形·9（过渡段 ⟹ 答案在下文）'},{p:'2009_完形_智力的代价.html',q:'q11',label:'2009·完形·11（costs ← high-priced/upkeep/fuel）'},
+        '⭐ <b>2013 完形：首句关键词被连说两遍，两处都设了空</b>——①❶ background information → 2 <b>external</b> factors → 3 the big <b>picture</b>。<b>反例同篇</b>：9 题 <code>the ___ of an applicant</code> 的答案 success 是<b>上文没出现过的新概念</b>，钥匙在下文③段末 whether to accept him or her；而上文反复出现的 decision 恰是干扰项——<b>名词空先问「归谁」</b>（录取决定归招生官，不归申请者）。',
+        '📌 <b>2014 完形：一个概念换了五种说法</b>——mental clarity → mental focus → cognitive functions（8）→ mental sharpness（14）→ memory and attention skills；<b>re- 动词（regain）是回指信号</b>：先回上文找「丢了什么」，空格就填它的同义词。'],
+ refs:[{p:'2014_完形_像练肌肉一样练大脑.html',q:'q14',label:'2014·完形·14（regain ⟹ sharpness＝首段 clarity）'},{p:'2014_完形_像练肌肉一样练大脑.html',q:'q8',label:'2014·完形·8（functions，memory 的上位词）'},{p:'2013_完形_面试打分的当日偏见.html',q:'q9',label:'2013·完形·9（新概念，答案在下文；decision 换错主人）'},{p:'2013_完形_面试打分的当日偏见.html',q:'q2',label:'2013·完形·2（background information 的改写）'},{p:'2012_完形_大法官的伦理与法院的合法性.html',q:'q9',label:'2012·完形·9（过渡段 ⟹ 答案在下文）'},{p:'2009_完形_智力的代价.html',q:'q11',label:'2009·完形·11（costs ← high-priced/upkeep/fuel）'},
        {p:'2009_完形_智力的代价.html',q:'q9',label:'2009·完形·9（limited ← not being too bright）'},
        {p:'2009_完形_智力的代价.html',q:'q4',label:'2009·完形·4（advantage，方向由并列从句定）'},
        {p:'2010_完形_霍桑效应遭到质疑.html',q:'q8',label:'2010·完形·8（awareness ← ①段定义句）'},
@@ -1527,7 +1554,8 @@ window.TRICK_READ = [
         +'凡<b>破折号里包着一整个从句</b>，先在卷边打个问号。'],
  refs:[{p:'2010_T3_社会流行潮的传播.html',q:'q33',label:'2010·T3·33（三个干扰项全产自例外半句）'},
        {p:'2010_T3_社会流行潮的传播.html',q:'col1',label:'2010·T3 · 02+ 专栏（例外区/规律区分栏表）'},
-       {p:'2010_T3_社会流行潮的传播.html',q:'s5',label:'2010·T3 · s5（54 词长难句拆解）'}]},
+       {p:'2010_T3_社会流行潮的传播.html',q:'s5',label:'2010·T3 · s5（54 词长难句拆解）'},
+       {p:'2014_T2_美国律师业的两个病根.html',q:'s13',label:'2014·T2 · 长难句 s13（Except in the District of Columbia：非律师不得持股才是通则）'}]},
 
 {id:'R66', tier:'🔴', qt:'作者态度题 / 观点态度题（The author suggests that…）', title:'折扣词族：作者的态度不在贬义词里，在他给这套说法打的<u>折扣</u>里',
  trig:['题干形如 <code>The author suggests / implies that X ______</code>，而原文<b>通篇没有一个贬义词</b>',
@@ -1554,10 +1582,13 @@ window.TRICK_READ = [
         +'<b>题干问 the author suggests，从别人的动机里取答案一律错</b>（⟹ 与 <a href="#R4">R4</a> 同用）。',
         '<b>被换掉的不是名词，是作者对这句话的信任度</b>——'
         +'<b>这是 <a href="#R48">R48</a>（半截复现）在「情态」维度上的变体：名词照抄，情态被删。</b>',
-        '<b>这把刀是双向的</b>：若全文调子是「确凿、已证实」，那么写 seems / may 的选项反而要警惕。<b>先定调，再用刀。</b>'],
+        '<b>这把刀是双向的</b>：若全文调子是「确凿、已证实」，那么写 seems / may 的选项反而要警惕。<b>先定调，再用刀。</b>',
+        '<b>2014·T1 的折扣词三级递进</b>：②❶ <code>More apparent reasonableness</code>（表面上）→ ②❼ <code>On first hearing</code>（乍一听）→ ②❽ <code>we were to understand</code>（被引导去相信）。<b>apparent 放在名词前＝「看似的」</b>，与表语位的 It is apparent that（显然）义项不同——位置决定它是不是折扣词。'],
  refs:[{p:'2010_T3_社会流行潮的传播.html',q:'q32',label:'2010·T3·32（六处折扣词定态度）'},
        {p:'2010_T3_社会流行潮的传播.html',q:'col2',label:'2010·T3 · 02++ 专栏（折扣词表 ＋ 选项取材分类）'},
-       {p:'2010_T2_商业方法专利的威胁.html',q:'col1',label:'2010·T2 · 02+ 专栏（姊妹刀 R61：时间刻度）'}]},
+       {p:'2010_T2_商业方法专利的威胁.html',q:'col1',label:'2010·T2 · 02+ 专栏（姊妹刀 R61：时间刻度）'},
+       {p:'2014_T1_奥斯本新政的台面上与台面下.html',q:'col4',label:'2014·T1 · 02++++ 专栏（反问、折扣与惋惜）'},
+       {p:'2014_T3_富豪设奖与诺奖的出身.html',q:'col1',label:'2014·T3 · 02+ 专栏（a handful of ／ some vs most ／ as scattered as 给批评降权）'}]},
 
 {id:'R67', tier:'🔴', qt:'事实细节题（实验／模拟／调查类文章）', title:'方法句列「候选项」，结论句才给「胜出项」——干扰项固定从落选变量里造',
  trig:['原文出现 <code>conducted</code> / <code>simulations</code> / <code>experiment</code> / <code>manipulating a number of variables</code> / <code>measured</code> / <code>surveyed</code>',
@@ -1772,8 +1803,9 @@ window.TRICK_READ = [
         +'同族 be likely to／be prone to／be inclined to。<b>而 attempt／choose／intend／mean to 这一族「主观意图」词，'
         +'一旦上下文有 in any case、always、generally，一律先划掉。</b>',
         '⭐ <b>2012 完形一篇成立三次、无反例</b>：<b>4</b>（challenged／compromised／suspected 三个负面评价 ＋ <b>accepted</b>）· <b>18</b>（suppress／exploit／ignore 都不正面处理 ＋ <b>address</b>）· <b>19</b>（accessible／amiable／agreeable 都是「好相处」＋ <b>accountable</b>）——<b>三次孤立项全是答案</b>；分不出 3+1 的 3 题（restored／established 对 weakened／eliminated，2 正 2 负）就老实读 Yet 定方向。',
-        '⭐ <b>2013 完形按意义方向分成立四次，孤立项全是答案</b>：<b>8</b>（emphasize／share／promote 都预设想法已成立 ＋ <b>test</b>）· <b>10</b>（found／studied／identified 都有目的 ＋ <b>chosen</b>）· <b>19</b>（achieve／maintain／disregard 之后影响都还在 ＋ <b>undo</b>）· <b>20</b>（possible／promising／helpful ＋ <b>necessary</b>）。⚠️ <b>两个反面教材</b>：5 题 thoughtless 是唯一带否定后缀的、7 题 until 是唯一的时间连词——<b>按词形、词类孤立出来的都不是答案</b>，印证「只按极性／方向分」。'],
- refs:[{p:'2013_完形_面试打分的当日偏见.html',q:'q8',label:'2013·完形·8（三个传播族 ＋ test）'},{p:'2013_完形_面试打分的当日偏见.html',q:'q19',label:'2013·完形·19（影响还在 vs 影响消失）'},{p:'2012_完形_大法官的伦理与法院的合法性.html',q:'q4',label:'2012·完形·4（三负一正）'},{p:'2012_完形_大法官的伦理与法院的合法性.html',q:'q18',label:'2012·完形·18（三个不正面处理）'},{p:'2012_完形_大法官的伦理与法院的合法性.html',q:'q19',label:'2012·完形·19（三个好相处）'},
+        '⭐ <b>2013 完形按意义方向分成立四次，孤立项全是答案</b>：<b>8</b>（emphasize／share／promote 都预设想法已成立 ＋ <b>test</b>）· <b>10</b>（found／studied／identified 都有目的 ＋ <b>chosen</b>）· <b>19</b>（achieve／maintain／disregard 之后影响都还在 ＋ <b>undo</b>）· <b>20</b>（possible／promising／helpful ＋ <b>necessary</b>）。⚠️ <b>两个反面教材</b>：5 题 thoughtless 是唯一带否定后缀的、7 题 until 是唯一的时间连词——<b>按词形、词类孤立出来的都不是答案</b>，印证「只按极性／方向分」。',
+        '<b>2014 完形：三缺一成立五次，孤立项五次全是答案</b>（4 damaging · 11 However · 13 further · 15 allows · 20 effective）；<b>2＋2 的组（2 两正两负、18 两个「经常」两个「不寻常」）先按方向划掉两个，再比程度或理由</b>。'],
+ refs:[{p:'2014_完形_像练肌肉一样练大脑.html',q:'q15',label:'2014·完形·15（三个从外面推 ＋ allows 给能力）'},{p:'2014_完形_像练肌肉一样练大脑.html',q:'q13',label:'2014·完形·13（三个不往前 ＋ further）'},{p:'2013_完形_面试打分的当日偏见.html',q:'q8',label:'2013·完形·8（三个传播族 ＋ test）'},{p:'2013_完形_面试打分的当日偏见.html',q:'q19',label:'2013·完形·19（影响还在 vs 影响消失）'},{p:'2012_完形_大法官的伦理与法院的合法性.html',q:'q4',label:'2012·完形·4（三负一正）'},{p:'2012_完形_大法官的伦理与法院的合法性.html',q:'q18',label:'2012·完形·18（三个不正面处理）'},{p:'2012_完形_大法官的伦理与法院的合法性.html',q:'q19',label:'2012·完形·19（三个好相处）'},
        {p:'2010_完形_霍桑效应遭到质疑.html',q:'q16',label:'2010·完形·16（duly，全篇最难的一空）'},
        {p:'2010_完形_霍桑效应遭到质疑.html',q:'q19',label:'2010·完形·19（tended，同一把刀的第二次）'},
        {p:'2009_完形_智力的代价.html',q:'q2',label:'2009·完形·2（tended，跨年第一次）'}]},
@@ -1810,7 +1842,7 @@ window.TRICK_READ = [
      +'② <b>再花十秒扫一遍 20 组选项</b>，判断这一年把分压在哪：'
      +'多是连接词／副词 ⟹ 考逻辑；多是实义动词 ⟹ 考搭配与主语适配；多是同词性形容词 ⟹ 考褒贬与程度；'
      +'③ <b>第一遍只做「线索在同一句之内」的空</b>，跨句的留到第二遍。',
- tmpl:'<b>七年考点分布（自己数的，判据＝「解这一题你得做什么动作」）</b>：'
+ tmpl:'<b>八年考点分布（自己数的，判据＝「解这一题你得做什么动作」）</b>：'
      +'<table class="tk"><tr><th>年份</th><th>词义 / 搭配 / 逻辑 / 语境</th><th>这一年压在哪</th></tr>'
      +'<tr><td>2007</td><td>9 / 5 / 4 / 2</td><td>词义辨析</td></tr>'
      +'<tr><td>2008</td><td>9 / 6 / <b>2</b> / 3</td><td>六道实义动词的主语适配</td></tr>'
@@ -1818,8 +1850,9 @@ window.TRICK_READ = [
      +'<tr><td>2010</td><td>9 / 4 / 4 / 3</td><td>形容词与副词的「方向」</td></tr>'
      +'<tr><td>2011</td><td>6 / 3 / <u>6</u> / 5</td><td>一根因果箭头的方向（逻辑空最多）</td></tr>'
      +'<tr><td>2012</td><td>5 / 4 / 3 / <u>8</u></td><td>作者的应然立场 ＋ 首尾镜像（语境空最多）</td></tr>'
-     +'<tr><td><b>2013</b></td><td><b><u>3</u> / <u>7</u> / 4 / 6</b></td><td><b>空格前后的介词框架（搭配最多、词义最少）＋ 比方与发现同构</b></td></tr></table>'
-     +'<b>⟹ 七年七种分布，「完形没有万能重心」已第七次坐实。</b>',
+     +'<tr><td>2013</td><td><u>3</u> / <u>7</u> / 4 / 6</td><td>空格前后的介词框架（搭配最多、词义最少）＋ 比方与发现同构</td></tr>'
+     +'<tr><td><b>2014</b></td><td><b>5 / 6 / 3 / 6</b></td><td><b>按段定正负 ＋ 贯穿比喻 ＋ 说明书式短语（搭配、语境并重）</b></td></tr></table>'
+     +'<b>⟹ 八年八种分布，「完形没有万能重心」已第八次坐实。</b>',
  traps:['<b>2012：三个逻辑空 3/3 落在「成分首」</b>——2、11 在从句首，<b>20 插在 and 与第二个补足语之间（前后都有逗号）</b> ⟹ 「句首＝逻辑」可扩写成「成分首＝逻辑」。线索位置统计：句内自足 16 ／ 跨句 4（<b>80%</b>；2010 65% → 2011 75% → 2012 80%），我犹豫过的 9 题正是四个跨句空之一。',
         '<b>句首＝逻辑，2011 完形再次 4/4 成立</b>：1（But 之后的状语位）· 6（段首）· 11（句首）· 20（句首），<b>四个逻辑空全部在句首或近句首</b>，其余 16 个空全在主谓宾内部。<b>而 2011 的线索位置统计是「句内自足 15 ／ 跨句 5」——句内比例升到 75%，但我唯一做错的 20 题正是那五个跨句空之一。</b>',
         '<b>「句首＝逻辑」这条<u>反向</u>最稳，正向不是铁律。</b>2010 完形四个逻辑空（7 分句首 · 12 · 15 · 18）<b>全部落在句首或分句首，4/4 成立</b>；'
@@ -1830,8 +1863,9 @@ window.TRICK_READ = [
         +'⟹ <b>第一遍先把 65% 的句内空锁住（6.5 分），第二遍再回头处理那七个跨句的</b>——时间和心态都稳。',
         '<b>别指望一招通吃。</b>四年的信号类型各不相同：2022 靠 nonetheless／However 这类<b>明信号词</b>；2007 靠 less agreement／except 这类<b>结构性信号</b>；'
         +'2008 <b>基本不给信号</b>，靠「动词能不能带这个主语」；2009 靠<b>语用功能</b>（引例、递进、收口）；<b>2010 靠<u>叙事的方向</u></b>（三次反转 ＋ 一个对照组 ＋ 两组三缺一）。',
-        '⚠️⚠️ <b>2013：位置预判一篇破例两次</b>——四个逻辑空 4 For example（句首）· 7 if（从句首）成立，<b>11 otherwise 在句末表语位</b>（the truth was ___）、<b>15 then 夹在 were 与 used 之间</b>，只有 2/4（继 2009 完形 14 题插入语 for instance 之后第二次破例）。⟹ <b>边界</b>：连词、短语型逻辑词站成分首；<b>单个副词（then／instead／thus）可以嵌进谓语，形容词型 otherwise 可以站表语位</b>——扫到「助动词 ＋ 空 ＋ 分词」「the truth was ＋ 空」也要当逻辑空看。线索位置：句内自足 14 ／ 跨句 6（<b>70%</b>，2012 是 80%）。'],
- refs:[{p:'2013_完形_面试打分的当日偏见.html',q:'q15',label:'2013·完形·15（逻辑副词嵌在 were 与 used 之间）'},{p:'2013_完形_面试打分的当日偏见.html',q:'q11',label:'2013·完形·11（逻辑空在句末表语位）'},{p:'2012_完形_大法官的伦理与法院的合法性.html',q:'q20',label:'2012·完形·20（成分首 ⟹ 逻辑，空在句中）'},{p:'2011_完形_笑与情绪的方向之争.html',q:'q20',label:'2011·完形·20（句首 ⟹ 逻辑，但考类比不是因果）'},{p:'2010_完形_霍桑效应遭到质疑.html',q:'q7',label:'2010·完形·7（分句首 ⟹ 条件连词）'},
+        '⚠️⚠️ <b>2013：位置预判一篇破例两次</b>——四个逻辑空 4 For example（句首）· 7 if（从句首）成立，<b>11 otherwise 在句末表语位</b>（the truth was ___）、<b>15 then 夹在 were 与 used 之间</b>，只有 2/4（继 2009 完形 14 题插入语 for instance 之后第二次破例）。⟹ <b>边界</b>：连词、短语型逻辑词站成分首；<b>单个副词（then／instead／thus）可以嵌进谓语，形容词型 otherwise 可以站表语位</b>——扫到「助动词 ＋ 空 ＋ 分词」「the truth was ＋ 空」也要当逻辑空看。线索位置：句内自足 14 ／ 跨句 6（<b>70%</b>，2012 是 80%）。',
+        '<b>2014：三个逻辑空按「成分首」3/3 成立</b>——3 While、11 However 在句首，12 according to 站在状语短语之首（2013 两次破例的是单个副词、形容词，短语介词照旧守规矩）。线索位置：句内自足 17 ／ 跨句 3（<b>85%，五年最高</b>）⟹ 这一年最适合「第一遍只做句内空」。'],
+ refs:[{p:'2014_完形_像练肌肉一样练大脑.html',q:'q12',label:'2014·完形·12（短语介词站成分首）'},{p:'2013_完形_面试打分的当日偏见.html',q:'q15',label:'2013·完形·15（逻辑副词嵌在 were 与 used 之间）'},{p:'2013_完形_面试打分的当日偏见.html',q:'q11',label:'2013·完形·11（逻辑空在句末表语位）'},{p:'2012_完形_大法官的伦理与法院的合法性.html',q:'q20',label:'2012·完形·20（成分首 ⟹ 逻辑，空在句中）'},{p:'2011_完形_笑与情绪的方向之争.html',q:'q20',label:'2011·完形·20（句首 ⟹ 逻辑，但考类比不是因果）'},{p:'2010_完形_霍桑效应遭到质疑.html',q:'q7',label:'2010·完形·7（分句首 ⟹ 条件连词）'},
        {p:'2010_完形_霍桑效应遭到质疑.html',q:'q15',label:'2010·完形·15（句首 ⟹ 总分关系）'},
        {p:'2009_完形_智力的代价.html',q:'q14',label:'2009·完形·14（反例：引例以插入语形态出现在句中）'}]},
 
@@ -1881,10 +1915,12 @@ window.TRICK_READ = [
         +'<b>排序题只认接缝，不认语感。</b>',
         '<b>通读验证这一步不许省。</b>Part B 四种变体里，<b>只有排序题与选句填空能自查</b>（标题匹配、观点匹配想验都没得验）——'
         +'这是白送的红利，花一分钟通读，等于给 10 分买保险。',
-        '<b>第⑤步（验多余项）不是每年都有。</b>2011 是<b>七格七项、零多余项</b>，没有多余项可以拿来反证，<b>整链通读就成了唯一的自查工具</b>；而且零多余项下<b>一处排错必然连累第二处</b>（错位成对发生）。<b>开考先数格子，见 <a href="#R107">R107</a>。</b>'],
+        '<b>第⑤步（验多余项）不是每年都有。</b>2011 是<b>七格七项、零多余项</b>，没有多余项可以拿来反证，<b>整链通读就成了唯一的自查工具</b>；而且零多余项下<b>一处排错必然连累第二处</b>（错位成对发生）。<b>开考先数格子，见 <a href="#R107">R107</a>。</b>',
+        '<b>2014：夹心格不一定先做——动手前先给每格数候选。</b>42 被 A、E 两个已给定段夹住，但两头都是软钩（A 尾是偶然发现的例子、E 首是 today），C 与 F 各能对上一部分；首段 41 反而只有 C 一个候选（首段排除法）⟹ 先做 41，它把 42 的候选从 2 个砍到 1 个。<b>修正版：候选最少的格先做；候选数相同，再看谁的已给定邻居多、钩更硬。</b>'],
  refs:[{p:'2010_新题型_欧洲食杂零售商转战批发.html',q:'q45',label:'2010·新题型·45（先做被 E 夹住的空）'},
        {p:'2010_新题型_欧洲食杂零售商转战批发.html',q:'q41',label:'2010·新题型·41（排除法定首段）'},
-       {p:'2010_新题型_欧洲食杂零售商转战批发.html',q:'',label:'2010·新题型 · 00 节打法五步表'}]},
+       {p:'2010_新题型_欧洲食杂零售商转战批发.html',q:'',label:'2010·新题型 · 00 节打法五步表'},
+       {p:'2014_新题型_考古学家怎样找到遗址.html',q:'cand',label:'2014·新题型 · 02+ 每格候选表（夹心格 42 有两个候选，首段 41 只有一个）'}]},
 
 {id:'R79', tier:'🔴', qt:'新题型 · 排序题（定首段 / 定任意一段的位置）', title:'首段判据：段首带「回指词 / 逻辑连接词 / 省略成分」的一律出局，剩下那个干净的就是首段',
  trig:['排序题要定首段','某一格前后都空着，找不到抓手','想在一分钟内先拿下一个空'],
@@ -1911,9 +1947,11 @@ window.TRICK_READ = [
         +'<b>首段不一定最像开头，但一定最不需要上文。</b>',
         '这条判据<b>反过来同样管用</b>：某一项段首带回指词 ⟹ 它一定<u>不在</u>第一格，而且<b>它的上一格必须真的提供了被回指的那个东西</b>——'
         +'2010 的 43 题就是靠这一步把 C 排掉的（C 的 such variations 形式上过关，但上文 F 给不出它要的「变化」这条主线）。',
-        '<b>首段被题目直接给定时，这套查法不作废，只是换了用途。</b>2011 的首段 G 是题目给的，于是七个段首的路标全部变成<b>粘块</b>的依据（见 <a href="#R108">R108</a>）：C 的 <code>Equally</code> 说明它必须紧跟一个「不足为奇」的结论、D 的 <code>such courses</code> 说明它必须紧跟一个讲课程的段落。<b>路标的本质从来不是「定首段」，而是「这一项欠上文什么」。</b>'],
+        '<b>首段被题目直接给定时，这套查法不作废，只是换了用途。</b>2011 的首段 G 是题目给的，于是七个段首的路标全部变成<b>粘块</b>的依据（见 <a href="#R108">R108</a>）：C 的 <code>Equally</code> 说明它必须紧跟一个「不足为奇」的结论、D 的 <code>such courses</code> 说明它必须紧跟一个讲课程的段落。<b>路标的本质从来不是「定首段」，而是「这一项欠上文什么」。</b>',
+        '<b>2014：首段空着，这把刀重新派上用场。</b>B <code>In another case</code>（要先有 one case）· D <code>Surveys can cover</code>（光杆复数当已知概念）· F <code>…, however,</code> · G <code>Ground surveys</code>（要先有「非地面」）四段出局，只剩设问的 C。<b>设问句（How do … ?）是零依赖开头里最像首段的一种</b>；已给定的第 2 段 A 以 <code>Some … have always been easily observable</code> 开头，正好是设问 <code>nothing visible</code> 的反面前提。'],
  refs:[{p:'2010_新题型_欧洲食杂零售商转战批发.html',q:'q41',label:'2010·新题型·41（六项六个路标）'},
-       {p:'2010_新题型_欧洲食杂零售商转战批发.html',q:'',label:'2010·新题型 · 02+ 首段判据表'}]},
+       {p:'2010_新题型_欧洲食杂零售商转战批发.html',q:'',label:'2010·新题型 · 02+ 首段判据表'},
+       {p:'2014_新题型_考古学家怎样找到遗址.html',q:'q41',label:'2014·新题型·41（首段排除法唯一幸存者：设问的 C）'}]},
 
 {id:'R80', tier:'🔴', qt:'新题型 · 排序题（串链条 / 找证据）', title:'排序题的证据只长在段首和段尾：七段一共 14 个接口，五种缝法分强弱',
  trig:['已经定下首段，要往下串','两段都能接在同一处，需要比强弱','时间不够，想知道哪些句子可以跳读'],
@@ -1935,10 +1973,12 @@ window.TRICK_READ = [
         '<b>④ 这一档单独用会翻车</b>：原词复现只能<u>加固</u>一个已经由 ①②③ 立住的接缝。'
         +'2010 的多余项 C 正是靠 <code>such variations</code>／<code>this change</code> 两个回指词伪装成「哪里都能插」的（见 <a href="#R81">R81</a>）。',
         '<b>段尾预告常常是一句「还没有证据的断言」</b>——<code>appears to be / seems to / may well</code>。'
-        +'见到这种句子收尾，<b>下一段几乎一定是来举证的</b>（2010 的 B→F 就是）。反过来，一段已经列完清单，下一段就该总结。'],
+        +'见到这种句子收尾，<b>下一段几乎一定是来举证的</b>（2010 的 B→F 就是）。反过来，一段已经列完清单，下一段就该总结。',
+        '<b>2014 新添两种缝法</b>：「however 拉回主干」（A→F，<a href="#R177">R177</a>）与「例子回收方法」（G→D，<a href="#R179">R179</a>）。另注意<b>年份分两种</b>：考古活动的年代（1922／1900）能排「先古后今」；遗址或文明本身的年代（AD 600／1400s BC）与叙述顺序无关。'],
  refs:[{p:'2010_新题型_欧洲食杂零售商转战批发.html',q:'',label:'2010·新题型 · 02++ 五个接缝总表'},
        {p:'2010_新题型_欧洲食杂零售商转战批发.html',q:'q44',label:'2010·新题型·44（同一对相邻段用了两种缝法）'},
-       {p:'2010_新题型_欧洲食杂零售商转战批发.html',q:'q42',label:'2010·新题型·42（未证的断言 ⟹ For example）'}]},
+       {p:'2010_新题型_欧洲食杂零售商转战批发.html',q:'q42',label:'2010·新题型·42（未证的断言 ⟹ For example）'},
+       {p:'2014_新题型_考古学家怎样找到遗址.html',q:'seams',label:'2014·新题型 · 02++ 六个接缝总表'}]},
 
 {id:'R81', tier:'🟡', qt:'新题型 · 找多余项（四种变体通用）', title:'词面呼应最多的那一项，往往正是多余项——先问它谈的是不是本文的关键词',
  trig:['某个选项和上文有好几个词对得上，看起来哪儿都能放','五个空定完，要回头验多余项','两个选项都像，其中一个词面更近'],
@@ -2060,10 +2100,12 @@ window.TRICK_READ = [
         +'· <b>④ 正解靠读到最后一个转折</b>（25A doubtful：只读到「他有能力…」会选 C，读完「仅仅…不够」只能选 A）。',
         '<b>问号在评论体里几乎总是修辞</b>：作者用它把答案推到读者面前，然后自己回答。'
         +'<b>⟹ 见到问号，别急着找「作者不懂什么」，去找他<u>紧接着说了什么</u>。</b>',
-        '<b>问号是全文最后一句时，「看后一句」无从下手</b>（2013·T2·30）：改看问号<b>前面</b>的疑点句（Also unclear is why… · After all… · If it is trying to…）与问句里的预设词（really · that simple）⟹ skepticism（⟹ 新卡 <a href="#R146">R146</a>）。'],
+        '<b>问号是全文最后一句时，「看后一句」无从下手</b>（2013·T2·30）：改看问号<b>前面</b>的疑点句（Also unclear is why… · After all… · If it is trying to…）与问句里的预设词（really · that simple）⟹ skepticism（⟹ 新卡 <a href="#R146">R146</a>）。',
+        '<b>2014·T1 两处问号都在文中，R85 照常用</b>：①❸ <code>What could be more reasonable?</code> → 后一句 <code>More apparent reasonableness followed</code>（apparent 坐实反话）；②❺❻ <code>Help? Really?</code> → 后一句 <code>On first hearing, …</code>（再降一格）。<b>一词问句 Help? 质疑的是它前一句引语里的 help</b>——问号前后两句都要看。'],
  refs:[{p:'2011_T1_古典音乐会的危机.html',q:'q25',label:'2011·T1·25（问号是反问，正解 doubtful）'},
        {p:'2011_T1_古典音乐会的危机.html',q:'col2',label:'2011·T1 · 02++ 专栏（两种身份对照 ＋ 态度词能不能选清单）'},
-       {p:'2013_T2_默认不追踪之争.html',q:'col4',label:'2013·T2 · 02++++ 专栏（问号在全文尽头 ⟹ 看前文）'}]},
+       {p:'2013_T2_默认不追踪之争.html',q:'col4',label:'2013·T2 · 02++++ 专栏（问号在全文尽头 ⟹ 看前文）'},
+       {p:'2014_T1_奥斯本新政的台面上与台面下.html',q:'col4',label:'2014·T1 · 02++++ 专栏（两处问号 ＋ 后一句）'}]},
 
 {id:'R86', tier:'🟡', qt:'元套路 · 读文章前先定重心（首段是人物新闻时）', title:'人物由头 ≠ 文章主题：找到那句第一人称的「话题换轨句」，在卷边画一条横线',
  trig:['首段是「某人被任命／获奖／离职／出书」的新闻','读到第二三段出现 For my part / I have no idea / To be sure…but / The real question is',
@@ -2197,7 +2239,8 @@ window.TRICK_READ = [
         +'<b>「本篇出现过这个意思」不等于「被考词是这个意思」。</b>'],
  refs:[{p:'2011_T2_高管裸辞潮.html',q:'q28',label:'2011·T2·28（poach ＝ hunted for）'},
        {p:'2011_T2_高管裸辞潮.html',q:'col3',label:'2011·T2 · 02+++ 专栏（四个选项塞回原句的对照表）'},
-       {p:'2011_T2_高管裸辞潮.html',q:'s7',label:'2011·T2 · 长难句 s7（完全倒装 ＋ 双重否定 ＋ 两层定语从句）'}]},
+       {p:'2011_T2_高管裸辞潮.html',q:'s7',label:'2011·T2 · 长难句 s7（完全倒装 ＋ 双重否定 ＋ 两层定语从句）'},
+       {p:'2014_T2_美国律师业的两个病根.html',q:'q28',label:'2014·T2·28D（「考试够严」是改革论据，被挪成障碍）'}]},
 
 {id:'R91', tier:'🔴', qt:'末段推理题（It can be inferred from the last paragraph）', title:'末段出现「旧规则已被颠覆」⟹ 正解常是那条旧规则的<u>过去式</u>；选项时态必须对得上',
  trig:['末段出现 <code>The traditional rule was …, but that&#39;s been inverted</code> / <code>That no longer holds</code> / <code>has been turned on its head</code> / <code>What was once … is now …</code>',
@@ -2220,10 +2263,13 @@ window.TRICK_READ = [
         '<b>客观情形 ⟹ 主观态度</b>：29C 把「外界的不光彩正在淡去」读成「他们更在意名声」（⟹ R37）；'
         +'<b>而且方向还反了：污名淡去意味着名声的约束力在<u>下降</u>。</b>',
         '<b>单复数也是判据</b>：29D 的 <code>the traditional rule<u>s</u></code>（泛指一切传统规则）与原文特指的<u>那一条</u> <code>The traditional rule</code> 不是一回事。',
-        '<b>推理题的安全方向</b>：往「原文明说了什么，它的<u>时间前提</u>是什么」推一步（A 对），<b>不要往「他们心里怎么想」推</b>（B、C 全错在这）。'],
+        '<b>推理题的安全方向</b>：往「原文明说了什么，它的<u>时间前提</u>是什么」推一步（A 对），<b>不要往「他们心里怎么想」推</b>（B、C 全错在这）。',
+        '<b>2014·T1·25 给本卡补「惋惜型」</b>：④❸ <code>The principle of British welfare is no longer that you can … receive unconditional payments</code> ＋ ④❺ <code>Instead … conditional on actively seeking a job; no entitlement and no insurance … least generous</code>——<b>作者对旧原则零负面词、对新做法五处负面限定</b> ⟹ 正解不是旧规则的过去式，而是它的<b>应然式</b>：25A <code>Unemployment benefits should not be made conditional</code>。<b>判据：作者对「颠覆」中性 ⟹ 过去式；惋惜 ⟹ should</b>。'],
  refs:[{p:'2011_T2_高管裸辞潮.html',q:'q29',label:'2011·T2·29（正解 ＝ 被推翻的旧规则的过去式）'},
        {p:'2011_T2_高管裸辞潮.html',q:'col4',label:'2011·T2 · 02++++ 专栏（末段三种时态对表）'},
-       {p:'2011_T2_高管裸辞潮.html',q:'s9',label:'2011·T2 · 长难句 s9（was ／ has been inverted 两个时态）'}]},
+       {p:'2011_T2_高管裸辞潮.html',q:'s9',label:'2011·T2 · 长难句 s9（was ／ has been inverted 两个时态）'},
+       {p:'2014_T1_奥斯本新政的台面上与台面下.html',q:'q25',label:'2014·T1·25（旧原则的应然式）'},
+       {p:'2014_T1_奥斯本新政的台面上与台面下.html',q:'s13',label:'2014·T1 · 长难句 s13（is no longer that …）'}]},
 
 {id:'R92', tier:'🟡', qt:'最佳标题题（接 R40 三查）', title:'标题题再加两查：<u>主体</u>对不对 ＋ <u>文体</u>对不对（现象分析型的标题不给出路）',
  trig:['四个选项里有两个是<b>疑问句</b>、两个是<b>陈述句</b>',
@@ -2347,7 +2393,9 @@ window.TRICK_READ = [
         '<b>选项里凭空多出的褒义形容词也归这一族查</b>：34C 的 <code>supportive</code> consumers——'
         +'<b>原文只说「直接互动」，而那些消费者恰恰是正在闹的一方。见到褒义形容词，先回去看这个群体站哪一边。</b>'],
  refs:[{p:'2011_T3_五种媒介的家谱.html',q:'q34',label:'2011·T3·34（丰田是受害者止损，不是获利）'},
-       {p:'2011_T3_五种媒介的家谱.html',q:'col4',label:'2011·T3 · 02++++ 专栏（动词三族表 ＋ 干扰项产地总账）'}]},
+       {p:'2011_T3_五种媒介的家谱.html',q:'col4',label:'2011·T3 · 02++++ 专栏（动词三族表 ＋ 干扰项产地总账）'},
+       {p:'2014_T2_美国律师业的两个病根.html',q:'q28',label:'2014·T2·28B（受益方 lawyers and customers 被写成反对方）'},
+       {p:'2014_T3_富豪设奖与诺奖的出身.html',q:'q32',label:'2014·T3·32C／32D（批评者说受害的体系被写成受益方）'}]},
 
 {id:'R97', tier:'🔴', qt:'评论型文章（本文在评论另一篇文章／另一批媒体）· 细节题与推理题通用', title:'文中有<u>三个以上说话人</u>时，先给他们编号——干扰项主力是「<u>说话人串门</u>」',
  trig:['文中出现 X writes / X suggests（引另一篇文章的作者）','出现 the message that… / to hear X tell it（转述大众或第三方的说法）',
@@ -2540,8 +2588,9 @@ window.TRICK_READ = [
         '<b>类比词的同义扩容一起背</b>：Similarly ＝ Likewise ＝ In the same way ＝ By the same token。'
         +'写作里由一个已验证的结论推广到相邻实例，用它开头最稳：<i>Similarly, the physical act of laughter could improve mood.</i>',
         '⭐⭐ <b>2012 是本卡的对照情形：主语没换 ⟹ 因果持证上岗。</b>末空 <code>their rulings … seen as separate from politics and, ___, convincing as law</code>——两个补足语共用主语 their rulings，<b>没换人</b> ⟹ 因果成立，填 <b>as a result</b>（in a word 要求后面是前文的缩写，而 convincing as law 是新信息）。<b>三问不是为了排除因果，而是为了让因果持证上岗。</b>四年四种形态：2009 收口 · 2010 不是收口 · 2011 收口考类比 · <b>2012 收口考因果，且空格插在句中 and 之后</b>。',
-        '📌 <b>2013：末空根本不是逻辑空</b>——<code>30 more GMAT points than would otherwise have been ___</code> 是反事实比较里的形容词（necessary，拿主句 need 去对）。⟹ <b>五年末空五种形态</b>：2009 收口 · 2010 不是收口 · 2011 收口考类比 · 2012 收口考因果 · <b>2013 连逻辑空都不是</b>。<b>做到最后一空，先看位置和选项词性，别预设它是连接词。</b>'],
- refs:[{p:'2013_完形_面试打分的当日偏见.html',q:'q20',label:'2013·完形·20（末空不是逻辑空）'},{p:'2012_完形_大法官的伦理与法院的合法性.html',q:'q20',label:'2012·完形·20（主语未换 ⟹ as a result）'},{p:'2011_完形_笑与情绪的方向之争.html',q:'q20',label:'2011·完形·20（换人 ⟹ 类比）'},
+        '📌 <b>2013：末空根本不是逻辑空</b>——<code>30 more GMAT points than would otherwise have been ___</code> 是反事实比较里的形容词（necessary，拿主句 need 去对）。⟹ <b>五年末空五种形态</b>：2009 收口 · 2010 不是收口 · 2011 收口考类比 · 2012 收口考因果 · <b>2013 连逻辑空都不是</b>。<b>做到最后一空，先看位置和选项词性，别预设它是连接词。</b>',
+        '📌 <b>2014：末空连续第二年不是逻辑空</b>——<code>much like a(n) ___ exercise routine</code> 里的形容词 effective；2013 靠主句动词 need 定 necessary，2014 靠类比从句的褒贬（被夸的程序只能比「有效的」计划）。'],
+ refs:[{p:'2014_完形_像练肌肉一样练大脑.html',q:'q20',label:'2014·完形·20（末空是类比从句里的形容词）'},{p:'2013_完形_面试打分的当日偏见.html',q:'q20',label:'2013·完形·20（末空不是逻辑空）'},{p:'2012_完形_大法官的伦理与法院的合法性.html',q:'q20',label:'2012·完形·20（主语未换 ⟹ as a result）'},{p:'2011_完形_笑与情绪的方向之争.html',q:'q20',label:'2011·完形·20（换人 ⟹ 类比）'},
        {p:'2010_完形_霍桑效应遭到质疑.html',q:'q20',label:'2010·完形·20（末空不是收口）'},
        {p:'2009_完形_智力的代价.html',q:'q20',label:'2009·完形·20（末空是收口）'}]},
 
@@ -2559,10 +2608,12 @@ window.TRICK_READ = [
         +'<code>the average</code>（发挥了一般作用）是<b>程度</b>描述——<b>两个都没落在「反向」这条线上</b>。',
         '<b>语法差别别混</b>：instead of 后接<b>名词/动名词</b>；rather than 后可接<b>与前面平行的任何成分</b>（名词、动词原形、从句）。'
         +'完形里若空格后是 doing，通常只有 instead of 接得上。',
-        '<b>一个结构常带出第二个空</b>：先用结构定下方向明确的那个（2011 的 7 空），再用它去卡紧邻的下一个（8 空）——<b>顺序反了会多花一倍时间。</b>'],
+        '<b>一个结构常带出第二个空</b>：先用结构定下方向明确的那个（2011 的 7 空），再用它去卡紧邻的下一个（8 空）——<b>顺序反了会多花一倍时间。</b>',
+        '<b>阅读同理 · 2014·T1·22</b>：<code>should be spent looking for work, not looking to sign on</code>——A, not B 的取舍结构，<b>B 必须是 A 的反面</b> ⟹ sign on 站在「找工作」的对立面（领救济）；22C「查看工作机会」、22D「参加培训」都与找工作<b>同向</b>，放不进 not 后面。'],
  refs:[{p:'2011_完形_笑与情绪的方向之争.html',q:'q7',label:'2011·完形·7（instead of ⟹ opposite）'},
        {p:'2011_完形_笑与情绪的方向之争.html',q:'q8',label:'2011·完形·8（同一结构反推 relaxes）'},
-       {p:'2011_完形_笑与情绪的方向之争.html',q:'q13',label:'2011·完形·13（not…but…）'}]},
+       {p:'2011_完形_笑与情绪的方向之争.html',q:'q13',label:'2011·完形·13（not…but…）'},
+       {p:'2014_T1_奥斯本新政的台面上与台面下.html',q:'q22',label:'2014·T1·22（阅读里的取舍结构）'}]},
 
 {id:'R105', tier:'🟡', qt:'完形 · 因果型连体空（一句 because／so 里挂着两个空）', title:'把两个空组成一句话念一遍：因果说不通的当场淘汰（专防「循环论证」型干扰）',
  trig:['一个句子里有两个空，中间由 because／since／so／that is why 连接','两个空一个在原因从句、一个在主句'],
@@ -2624,10 +2675,12 @@ window.TRICK_READ = [
         '<b>零多余项不等于更简单。</b>它把「认出假的」那部分分值，换成了「排列本身不许出错」的压力：'
         +'2009 选句填空 43 与 44 对调丢 4 分，就是同一个机制（见 <a href="#R55">R55</a>）——<b>只要是「一项一坑、全部用上」的题，错误天然成对。</b>',
         '<b>数格子要连已给定的那几格一起数。</b>2011 的链条是 <code>G→41→42→E→43→44→45</code>，'
-        +'看起来只有五个空，<b>但格子是七个</b>——漏数已给定的 G 与 E，就会误判成「有两个多余项」。'],
+        +'看起来只有五个空，<b>但格子是七个</b>——漏数已给定的 G 与 E，就会误判成「有两个多余项」。',
+        '<b>2014：零多余项第二次</b>（<code>41→A→42→E→43→44→45</code>，7 格 7 段）——三年排序题两年零多余。零多余年份的诱饵换成「位置可挪」：C 放 42 也读得通、G 像首段、D 像接在 E 后面的总述，<b>各被一条语法证据否掉</b>（41 只有 C 能打头 · Ground 要先有空中 · In one case 要紧跟 another）。'],
  refs:[{p:'2011_新题型_知识与人才的专业化困境.html',q:'',label:'2011·新题型 · 00 节「先数格子」'},
        {p:'2011_新题型_知识与人才的专业化困境.html',q:'q45',label:'2011·新题型·45（末格白送）'},
-       {p:'2010_新题型_欧洲食杂零售商转战批发.html',q:'',label:'2010·新题型 · 有多余项的那一年'}]},
+       {p:'2010_新题型_欧洲食杂零售商转战批发.html',q:'',label:'2010·新题型 · 有多余项的那一年'},
+       {p:'2014_新题型_考古学家怎样找到遗址.html',q:'extra',label:'2014·新题型 · 03 零多余的第二年（九篇多余项总账）'}]},
 
 {id:'R108', tier:'🔴', qt:'新题型 · 排序题（正式开排之前）', title:'先拼块，再排块：把成对的段落粘死，排列数会当场崩塌',
  trig:['七段读完，感觉每一段都能接每一段','五个空排列组合太多，无从下手','看见两段之间有明显的呼应词'],
@@ -2649,9 +2702,11 @@ window.TRICK_READ = [
         '<b>粘块还能反过来救你。</b>2011 的 E 与 F 之间有一处七词级的原词复现，很像该紧挨着；'
         +'但一旦把 A—C 粘成块，就会发现<b>把 F 提前会让这个块无处安放</b>——<b>块的存在本身就是一条排除理由</b>（见 <a href="#R110">R110</a>）。',
         '<b>粘块也把「错误成对」的风险压掉了。</b>零多余项时最怕相邻两格互换，'
-        +'而 43／44 一旦作为一个块整体落位，<b>两格是一次判断而不是两次</b>。'],
+        +'而 43／44 一旦作为一个块整体落位，<b>两格是一次判断而不是两次</b>。',
+        '<b>2014：E 之后连续三个空，全靠一个块。</b>D 末 <code>In one case</code>、B 首 <code>In another case</code> ⟹ [D–B] 粘死，剩下只是「G 在块前还是块后」的二选一（3! ＝ 6 → 2 → 1）；G 必须紧跟 E（Aerial → Ground），块落 44–45。'],
  refs:[{p:'2011_新题型_知识与人才的专业化困境.html',q:'q44',label:'2011·新题型·44（副词呼应＋数字接力）'},
-       {p:'2011_新题型_知识与人才的专业化困境.html',q:'',label:'2011·新题型 · 00 节第②条（120 → 6）'}]},
+       {p:'2011_新题型_知识与人才的专业化困境.html',q:'',label:'2011·新题型 · 00 节第②条（120 → 6）'},
+       {p:'2014_新题型_考古学家怎样找到遗址.html',q:'q44',label:'2014·新题型·44（[D–B] 块：In one case / In another case）'}]},
 
 {id:'R109', tier:'🔴', qt:'新题型 · 排序题 / 选句填空（找接缝）', title:'同源词换词性，是比代词更硬的一只钩：this 只说「上文有个东西」，separate→separation 还说了「是哪个东西」',
  trig:['某一项段首出现 this / these ＋ 抽象名词','两段之间似乎有呼应，但拿不准是不是巧合','有好几项都能接上这个指示代词'],
@@ -2693,10 +2748,12 @@ window.TRICK_READ = [
         '<b>命题人也用复现钓鱼。</b>2010 的多余项 C 是全篇复现词最多的一项（段首 such variations ＋ 段尾 this change），'
         +'却整段不含主线名词（见 <a href="#R81">R81</a>）——<b>五篇新题型里有两篇的多余项靠词面呼应钓鱼，占一半。</b>',
         '<b>结论：「哪一项和上文最像」在 Part B 里始终是负资产。</b>可靠的是那些'
-        +'<b>不指望你注意、却在语法上非有不可</b>的东西：His 找不到人就读不通、this separation 找不到「分离」就读不通、half 找不到中心词就读不通。'],
+        +'<b>不指望你注意、却在语法上非有不可</b>的东西：His 找不到人就读不通、this separation 找不到「分离」就读不通、half 找不到中心词就读不通。',
+        '<b>2014：C 末 <code>the larger landscapes</code> 与 D 首句 <code>entire landscapes</code> 隔着五段复现</b>——首段预告术语、后文兑现，天然隔得远，只能加固；真正定 D 的是<b>相邻</b>的 G 末 <code>maps / landscapes</code> ＋「例子回收方法」（见 <a href="#R179">R179</a>）。'],
  refs:[{p:'2011_新题型_知识与人才的专业化困境.html',q:'q45',label:'2011·新题型·45（隔两段的复现）'},
        {p:'2011_新题型_知识与人才的专业化困境.html',q:'',label:'2011·新题型 · 02++ 缝法强弱表'},
-       {p:'2010_新题型_欧洲食杂零售商转战批发.html',q:'',label:'2010·新题型 · 03 多余项 C'}]},
+       {p:'2010_新题型_欧洲食杂零售商转战批发.html',q:'',label:'2010·新题型 · 03 多余项 C'},
+       {p:'2014_新题型_考古学家怎样找到遗址.html',q:'q44',label:'2014·新题型·44（隔五段的 landscapes 只加固）'}]},
 
 {id:'R111', tier:'🟢', qt:'新题型 · 排序题（元套路 · 认文体）', title:'先认文体，首尾两格常常是白送的：书评的骨架是「荐书 → 观点 → 建议 → 局限」',
  trig:['七段里出现书名、作者身份、should be read by…','段落里反复出现同一个人名 ＋ says／notes／argues／concludes','拿不准末段该长什么样'],
@@ -2717,11 +2774,13 @@ window.TRICK_READ = [
         +'这一段就是方案段——<b>方案段在议论文里几乎总在最后。</b>',
         '<b>2012·T1：书评也会以阅读 Text 出现，而且在四选一里坑更多</b>——排序题里文体只帮你定首尾两格，'
         +'<b>阅读题里书评给出三个可被问的主体（书作者／书本身／所评之事），题干主语决定取料层</b>（⟹ R112、R113）。',
-        '<b>2013·T1：第二篇阅读书评，四格齐全</b>——①②❶ 荐书 → ②❷–④ 观点（Cline argues／she finds）→ ⑤❶⑥❶ 建议（Cline introduced／believes）→ ⑤❷⑥❷❸ 局限（But as Cline is the first to note／She exhibits the idealism…／Vanity is a constant）。<b>局限格就是书评人自己的声音，末段推断题（24）答案在这里</b>（⟹ <a href="#R142">R142</a>）。'],
+        '<b>2013·T1：第二篇阅读书评，四格齐全</b>——①②❶ 荐书 → ②❷–④ 观点（Cline argues／she finds）→ ⑤❶⑥❶ 建议（Cline introduced／believes）→ ⑤❷⑥❷❸ 局限（But as Cline is the first to note／She exhibits the idealism…／Vanity is a constant）。<b>局限格就是书评人自己的声音，末段推断题（24）答案在这里</b>（⟹ <a href="#R142">R142</a>）。',
+        '<b>2014：说明文末段是个例子，没有总结</b>（<code>In another case …</code> 戛然而止），与 2010 同。2011 书评结尾有总结，那是文体给的；<b>百科说明文的顺序靠三条说明逻辑：先问后答 · 先总后分 · 先古后今</b>。'],
  refs:[{p:'2011_新题型_知识与人才的专业化困境.html',q:'',label:'2011·新题型 · 00 节第③条（书评四格骨架）'},
        {p:'2011_新题型_知识与人才的专业化困境.html',q:'q45',label:'2011·新题型·45（两个末段标记）'},
        {p:'2012_T1_同侪压力与社会疗法.html',q:'col1',label:'2012·T1（书评第一次以阅读 Text 出现 ⟹ 三层主体，见 R112）'},
-       {p:'2013_T1_快时尚的控诉书.html',q:'col4',label:'2013·T1（书评四格齐全，局限格＝书评人的声音）'}]},
+       {p:'2013_T1_快时尚的控诉书.html',q:'col4',label:'2013·T1（书评四格齐全，局限格＝书评人的声音）'},
+       {p:'2014_新题型_考古学家怎样找到遗址.html',q:'q45',label:'2014·新题型·45（说明文末段是例子）'}]},
 
 {id:'R112', tier:'🔴', qt:'书评类文章 · 作者观点题 / 人物观点题 / 态度题通用', title:'书评里躺着三个主体：书作者 / 书本身 / 书所评的那件事——先给题干标出它在问哪一层',
  trig:['首段出现书名（斜体）＋ 作者名 ＋ contends／argues／claims that','题干出现 X&#39;s book fails to… 或 In the author&#39;s view, the book…','同一段里既有「这本书写得怎样」又有「书里那套东西灵不灵」'],
@@ -2971,7 +3030,8 @@ window.TRICK_READ = [
         '<b>与 R11、R40、R92 的分工</b>：R11 四查（对象／关系／程度／立场）· R40 覆盖度 → 褒贬度 → 原词义项 · R92 主体 ＋ 文体 · <b>R125 补两个具体动作：前题定位段覆盖表 ＋ X of Y 比中心词</b>。'],
  refs:[{p:'2012_T3_科学发现的取信过程.html',q:'col4',label:'2012·T3 · 02++++ 专栏（五段覆盖表 ＋ 中心词复现）'},
        {p:'2012_T3_科学发现的取信过程.html',q:'q35',label:'2012·T3·35（B 前题答案回收 · D 多段拼接）'},
-       {p:'2013_T1_快时尚的控诉书.html',q:'q25',label:'2013·T1·25（三个干扰项各占一块：A ④❸＋⑥❸ · B ①＋②❶左端 · D ②❹插入语）'}]},
+       {p:'2013_T1_快时尚的控诉书.html',q:'q25',label:'2013·T1·25（三个干扰项各占一块：A ④❸＋⑥❸ · B ①＋②❶左端 · D ②❹插入语）'},
+       {p:'2014_T4_没说到要害的人文报告.html',q:'q40',label:'2014·T4·40（覆盖表：B 取①❶／⑥❶ 的褒 · C 取④❶ 的双关 · D 只罩⑤；A 装下④❶ 论点 ＋ 首尾两段）'}]},
 
 {id:'R126', tier:'🟡', qt:'首段推断题 · 细节题（首句是虚拟语气）', title:'开篇虚拟句＝把一个趋势包装成假设：解码成「今天 X 那一行的重心已经转到 Y」；虚拟当事实、当年当如今都是错',
  trig:['首句是 If X were alive today, he would…／Were X to…／Had you asked … in 1960, they would have said…','虚拟句后面紧跟几组「当年 vs 如今」的数据','选项里出现 used to／still／has been 这类把假设或过去写成事实、现在的动词'],
@@ -3063,10 +3123,14 @@ window.TRICK_READ = [
  traps:['<b>argue 要看上下文</b>：作者自己的论证也常用 argue，它本身不带距离；只把「距离信号明确」的动词当判据。',
         '<b>给 2011 T2 那条元判断补一句</b>：作者表态 ⟹ 出作者态度题；作者躲在引语后 ⟹ 改出别的题；<b>第三种：作者不用第一人称却用评价词与认同型转述表态 ⟹ 态度题问那位认同型专家</b>。',
         '<b>强度尺</b>：is bad for／may be a problem 是明确而克制的负面 ⟹ disapproval 这一档；hostility／contempt 这类重词反而要排（⟹ R12）。',
-        '<b>书评里的转述标记分两类</b>（2013·T1）：<code>Cline argues／she finds／Cline believes</code> 标「书作者说」；<code>of course</code>、无标记的宣判句、归类句、格言短句是「书评人说」——末段推断题取后者（⟹ <a href="#R142">R142</a>）。'],
+        '<b>书评里的转述标记分两类</b>（2013·T1）：<code>Cline argues／she finds／Cline believes</code> 标「书作者说」；<code>of course</code>、无标记的宣判句、归类句、格言短句是「书评人说」——末段推断题取后者（⟹ <a href="#R142">R142</a>）。',
+        '<b>2014·T1</b>：②❸ <code>he claimed</code> 引出奥斯本的辩护（②❹ 帮人更快就业）⟹ 保留型，<b>23B「保护失业者」就从这句取词，错</b>；作者紧接着 <code>Help? Really?</code> 表态。与 <a href="#R162">R162</a> 连用：<b>claimed 后面是说辞，What motivated him 后面才是动机</b>。'],
  refs:[{p:'2012_T4_公共部门工会的膨胀.html',q:'col5',label:'2012·T4 · 02+++++ 专栏（转述动词三档表）'},
        {p:'2012_T4_公共部门工会的膨胀.html',q:'q40',label:'2012·T4·40（B 取让步前半 · C 取折中）'},
-       {p:'2013_T1_快时尚的控诉书.html',q:'col4',label:'2013·T1 · 末段说话人表'}]},
+       {p:'2013_T1_快时尚的控诉书.html',q:'col4',label:'2013·T1 · 末段说话人表'},
+       {p:'2014_T1_奥斯本新政的台面上与台面下.html',q:'q23',label:'2014·T1·23B（he claimed 的辩护当动机）'},
+       {p:'2014_T2_美国律师业的两个病根.html',q:'q29',label:'2014·T2·29A／29C（opponents insist that 的辩护层）'},
+       {p:'2014_T3_富豪设奖与诺奖的出身.html',q:'col1',label:'2014·T3 · 02+ 专栏（As Nature has pointed out：认同型 ＋ 社论自引＝作者）'}]},
 
 {id:'R131', tier:'🔴', qt:'完形 · 社论／时评型文章（首句是「X 已成为一个重要议题」，文中有 should／must）', title:'先写下作者的「应然」一句话，再让每个语境空对轴：它把事情往作者反对的那边推，还是往回拉',
  trig:['首句是 X has become an important issue 这类议题句','文中出现 should／must／At the very least 这类建议词','语境空多、四个选项同词性，比词义比不出高下'],
@@ -3247,7 +3311,8 @@ window.TRICK_READ = [
  refs:[{p:'2013_T1_快时尚的控诉书.html',q:'col1',label:'2013·T1 · 02+ 专栏（义项偷换表）'},
        {p:'2013_T1_快时尚的控诉书.html',q:'q21',label:'2013·T1·21（A、B 两项全靠换义项）'},
        {p:'2013_T1_快时尚的控诉书.html',q:'q23',label:'2013·T1·23B（feverish → enthusiasm）'},
-       {p:'2011_T3_五种媒介的家谱.html',q:'q33',label:'2011·T3·33C（campaign 读成竞赛）'}]},
+       {p:'2011_T3_五种媒介的家谱.html',q:'q33',label:'2011·T3·33C（campaign 读成竞赛）'},
+       {p:'2014_T3_富豪设奖与诺奖的出身.html',q:'q33',label:'2014·T3·33C（demonstrate 证明 → 展示研究成果）'}]},
 
 {id:'R140', tier:'🔴', qt:'推理引申题 · 细节题（原文含双重否定、否定＋比较级、句末省略的不定式）', title:'否定结构先翻正：couldn’t be more X ＝ 最 X；can’t afford not to ＝ 不得不——先补省略，再逐个消否定，最后才对选项',
  trig:['can’t afford not to ／ can’t help but ／ not…until ／ no…without','couldn’t be more … ／ couldn’t agree more ／ can’t be too careful','不定式 to 后面戛然而止（…when they can’t afford not to.）'],
@@ -3262,11 +3327,14 @@ window.TRICK_READ = [
  traps:['<b>couldn’t be more 最容易读反</b>：不是「不能再过时」，是「过时得不能再过时」。同类：I couldn’t agree more（完全同意）· It couldn’t be better（再好不过）。',
         '<b>only … when 是条件的唯一性</b>：与 <a href="#R43">R43</a>（Only when A 倒装 B：被 Only 罩住的 A 才是重心）同源——本句没倒装，但 when 从句仍是重心。',
         '<b>先翻正、再认说话人</b>：翻出来的意思是谁的主张？2013·T1 这句是书评人的，与上一句克莱恩的主张相反（⟹ <a href="#R142">R142</a>）。',
-        '<b>2013·T4·40A：虚拟条件 ＋ 否定事实要连读</b>——⑦❷ <code>if Congress wanted to prevent states from…, it could.</code> ⑦❸ <code>It never did so.</code> 是「本可以却没有」；A <code>Immigration issues are usually decided by Congress</code> 只取了前一半，还把 could 升成 usually。<b>读到 could／would have 的虚拟句，下一句若是短短的否定，务必连读</b>。'],
+        '<b>2013·T4·40A：虚拟条件 ＋ 否定事实要连读</b>——⑦❷ <code>if Congress wanted to prevent states from…, it could.</code> ⑦❸ <code>It never did so.</code> 是「本可以却没有」；A <code>Immigration issues are usually decided by Congress</code> 只取了前一半，还把 could 升成 usually。<b>读到 could／would have 的虚拟句，下一句若是短短的否定，务必连读</b>。',
+        '<b>2014·T1·25D</b>：④❸ <code>is no longer that you can insure yourself against the risk of unemployment</code>——先把 no longer 翻正：「为失业投保」<b>已经不是</b>英国福利的原则 ⟹ D「新政能降低失业风险」既丢了否定，又把 insure against（为风险投保）偷换成 reduce（降低风险）。'],
  refs:[{p:'2013_T1_快时尚的控诉书.html',q:'col4',label:'2013·T1 · 02++++ 专栏（否定翻正表）'},
        {p:'2013_T1_快时尚的控诉书.html',q:'q24',label:'2013·T1·24（C 正解 · D 只读半截）'},
        {p:'2013_T1_快时尚的控诉书.html',q:'s12',label:'2013·T1 · 长难句 s12'},
-       {p:'2013_T4_移民法判决的两块比分牌.html',q:'s16',label:'2013·T4 · 长难句 s16（if…it could. It never did so.）'}]},
+       {p:'2013_T4_移民法判决的两块比分牌.html',q:'s16',label:'2013·T4 · 长难句 s16（if…it could. It never did so.）'},
+       {p:'2014_T1_奥斯本新政的台面上与台面下.html',q:'q25',label:'2014·T1·25D（no longer 丢失 ＋ insure 偷换）'},
+       {p:'2014_T2_美国律师业的两个病根.html',q:'s2',label:'2014·T2 · 长难句 s2（few places … more … than ＝ 最）· s9（too … to 隐性否定）'}]},
 
 {id:'R141', tier:'🟡', qt:'词义推断题（被考词是从别的领域借来的：法律／犯罪／战争／医学／体育）', title:'隐喻场：被考词若是借来的，就去找它的「同乡」——同一个老家的兄弟词连成一片，整片场的褒贬就是它的褒贬',
  trig:['商业／社会类文章里突然出现法律、犯罪、战争、医学词（indictment、hijack、victim、patrol、feverish）','被考词不认识，但同段或下一段首句有一个你认识的、同领域的词','四个选项褒贬分两边'],
@@ -3304,7 +3372,8 @@ window.TRICK_READ = [
         '<b>先把否定翻正</b>：书评人的格言常带否定结构（can’t afford not to），翻错了方向，站对了边也没用（⟹ <a href="#R140">R140</a>）。'],
  refs:[{p:'2013_T1_快时尚的控诉书.html',q:'col4',label:'2013·T1 · 02++++ 专栏（末段说话人表）'},
        {p:'2013_T1_快时尚的控诉书.html',q:'q24',label:'2013·T1·24（取书评人的格言）'},
-       {p:'2012_T1_同侪压力与社会疗法.html',q:'col2',label:'2012·T1 · 分水岭明说版（对照）'}]},
+       {p:'2012_T1_同侪压力与社会疗法.html',q:'col2',label:'2012·T1 · 分水岭明说版（对照）'},
+       {p:'2014_T4_没说到要害的人文报告.html',q:'col4',label:'2014·T4 · 02++++ 专栏（认目标、疑诊断：与「认诊断、疑药方」并排）'}]},
 
 {id:'R143', tier:'🟡', qt:'书评类文章 · 主旨题／词义题／态度题', title:'书名同位语＝全书定性：书评人第一次提到这本书时贴的标签（X’s three-year indictment of Y），就是主旨题的答案——它若被出成词义题，那道题等于送你主旨',
  trig:['书名后面紧跟一个同位语：Book, X’s ＋ 名词 ＋ of Y（indictment／defense／celebration／critique／memoir）','词义题考的词正是这个同位语的中心词','主旨题两项难分，其中一项是这个同位语的改写'],
@@ -3575,8 +3644,10 @@ window.TRICK_READ = [
      +'<tr><td>too soft ___ crime</td><td>6 on</td></tr></table>',
  traps:['<b>中文直译陷阱</b>：「放入考虑」诱人选 put … into consideration，英语的固定说法是 take（14A）。',
         '<b>同一个介词两种意思</b>：out of ＋ 分数＝满分（marked out of 800）；out of ＋ 一群同类＝从中（select A out of B）——16A selected 正是拿第二义造的干扰项。',
-        '<b>介词失效</b>：2013 完形 5 题四个形容词都接 of，thoughtless 看着「孤立」却不是答案——此时要补全「他为什么判重」的因果（fearful）。'],
- refs:[{p:'2013_完形_面试打分的当日偏见.html',q:'q14',label:'2013·完形·14（加上 into 只剩 take）'},
+        '<b>介词失效</b>：2013 完形 5 题四个形容词都接 of，thoughtless 看着「孤立」却不是答案——此时要补全「他为什么判重」的因果（fearful）。',
+        '<b>介词失效又一例</b>：2014 完形 10 题 excel／feature／persist／believe <b>全接 in</b>——改看谓语 is inherited（先天）；19 题四个 ___ on 同理，看宾语 strengths。⟹ <b>同带一个小词的短语，要连意思四个一组背</b>。',
+        '<b>位置被占</b>：2014 完形 17 题 <code>provides detailed feedback ___ your performance</code>——provide sth for sb／provide sb with sth 的位置已被 feedback 占了，剩下的介词归名词 feedback 管（on）。'],
+ refs:[{p:'2014_完形_像练肌肉一样练大脑.html',q:'q10',label:'2014·完形·10（四个全接 in，介词失效）'},{p:'2014_完形_像练肌肉一样练大脑.html',q:'q17',label:'2014·完形·17（feedback on；for／with 位置已占）'},{p:'2014_完形_像练肌肉一样练大脑.html',q:'q16',label:'2014·完形·16（keep ___ of 只有 track）'},{p:'2013_完形_面试打分的当日偏见.html',q:'q14',label:'2013·完形·14（加上 into 只剩 take）'},
        {p:'2013_完形_面试打分的当日偏见.html',q:'q13',label:'2013·完形·13（on a scale of ⟹ rated）'},
        {p:'2013_完形_面试打分的当日偏见.html',q:'q16',label:'2013·完形·16（out of 两义）'},
        {p:'2013_完形_面试打分的当日偏见.html',q:'q12',label:'2013·完形·12（by 后的人放回主语）'},
@@ -3657,12 +3728,324 @@ window.TRICK_READ = [
  refs:[{p:'2013_新题型_让社会科学有用起来.html',q:'zones',label:'2013·新题型 · 02++ 三区分区表'},
        {p:'2013_新题型_让社会科学有用起来.html',q:'extra',label:'2013·新题型 · 03 两个多余项 ＋ 八篇总账'},
        {p:'2013_新题型_让社会科学有用起来.html',q:'q45',label:'2013·新题型·45（D 为什么进不来）'},
-       {p:'2012_新题型_下载与上传的隐秘战争.html',q:'extra',label:'2012·新题型 · E 是 G 的下家'}]}
+       {p:'2012_新题型_下载与上传的隐秘战争.html',q:'extra',label:'2012·新题型 · E 是 G 的下家'}]},
 
+{id:'R162', tier:'🔴', qt:'政策／决策评论文 · 目的题与动机题成对出现时（was intended to ／ What prompted）', title:'说辞与动机：X was intended to…问方案本身（取政策文本），What prompted／motivated X…问人（取作者揭穿的那一层）——宣称的目的、当事人的辩护、On first hearing 的表象都是干扰项工厂',
+ trig:['同一篇里既有 <code>The scheme／plan／policy was intended to…</code> 又有 <code>What prompted／motivated／drove X to…</code>','原文先把官方目的加引号复述（<code>In order to &quot;…&quot;</code>），再出现 <code>What motivated him … was</code>／<code>The real reason</code>','段里有 <code>he claimed</code> 的辩护 ＋ 作者的反问（<code>Help? Really?</code>）'],
+ flow:'① <b>先把定位段分层</b>：宣称的目的（引号）→ 方案文本（Only if／There will now be）→ 当事人辩护（he claimed）→ 作者质疑（反问）→ 表象（On first hearing）→ 动机（What motivated him）；<br>'
+     +'② <b>看题干动词</b>：<code>was intended to</code>／<code>is designed to</code>／<code>aims to</code> ⟹ 问<b>方案</b>，取「方案文本」层（用宣称目的辅助理解）；<code>What prompted／motivated</code>／<code>because</code> ⟹ 问<b>人</b>，取「动机」层；<br>'
+     +'③ <b>给每个选项标层号</b>：取自「辩护」「表象」层的，两题都错；取自「方案文本」的放到动机题里也错，反之亦然。',
+ tmpl:'<table class="tk"><tr><th>层（2014·T1）</th><th>挂在这一层的选项</th></tr>'
+     +'<tr><td>①❶ 宣称目的 <code>&quot;change lives for the better&quot;</code></td><td>21B · 23A（词源）</td></tr>'
+     +'<tr><td>①❷ 方案文本 <code>Only if … start looking for work</code></td><td><b>21C ✔</b> · 21A（细节 report）</td></tr>'
+     +'<tr><td>②❹ 辩护 <code>help those on benefits … he claimed</code></td><td>23B</td></tr>'
+     +'<tr><td>②❼ 表象 <code>On first hearing</code></td><td>23A · 25B</td></tr>'
+     +'<tr><td>②❽ 动机 <code>What motivated him … protecting the taxpayer</code></td><td><b>23D ✔</b> · 23C（反向）</td></tr></table>'
+     +'<p style="margin-top:8px">🔗 <b>与 <a href="#R69">R69</a> 反方向</b>：R69 防「反对者的引语被当成当事人的意图」；本卡防「当事人自己说的意图被当成真动机」。<b>问意图先找本人的话，问动机再找作者的揭穿。</b></p>',
+ traps:['<b>表象层的词往往就是宣称目的的原话</b>：②❼ <code>trying to change lives for the better</code> 复述了①❶ 的口号——<b>23A 看起来有「原文两处支持」，其实两处都是说辞</b>。',
+        '<b>受益方偷换</b>：动机句 <code>protecting the taxpayer</code> 被改成 <code>protect the unemployed</code>（23B）——同一个 protect，保护的人换了阵营。',
+        '<b>动机句带 we were to understand／we are told 时照样取</b>：它表示作者保持距离，但文中给出的动机只有这一句，且与作者的批评同向（奥斯本关心的是钱不是人）。'],
+ refs:[{p:'2014_T1_奥斯本新政的台面上与台面下.html',q:'col1',label:'2014·T1 · 02+ 专栏（六层表）'},
+       {p:'2014_T1_奥斯本新政的台面上与台面下.html',q:'q21',label:'2014·T1·21（was intended to ⟹ 方案文本）'},
+       {p:'2014_T1_奥斯本新政的台面上与台面下.html',q:'q23',label:'2014·T1·23（What prompted ⟹ 动机句）'}]},
+
+{id:'R163', tier:'🔴', qt:'作者观点题 · 态度题（驳论文 / 评论文，原文有 On first hearing / in X-land / we are told 一类句首框）', title:'视角框：On first hearing, …／But in Osborneland, …——框里的句子没有引号，却是对方的世界观；作者观点题从框里取词的选项一律先打问号',
+ trig:['句首出现 <code>On first hearing／At first glance／On the face of it</code>','造地名、造人设：<code>in Osborneland</code>／<code>in the world of X</code>／<code>in X&#39;s eyes</code>','被动的理解：<code>we were to understand</code>／<code>we are told</code>／<code>it is claimed</code>','作者观点题的某个选项措辞很肯定，原料却来自这些句子'],
+ flow:'① <b>通读时圈出所有框</b>，在卷边标「对方」；<br>'
+     +'② <b>找作者的反驳</b>：框前或框后通常紧挨着作者自己的事实段，方向正相反（2014·T1 ③段夹在 ②❼ 与 ④❶ 两个框之间）；<br>'
+     +'③ <b>作者观点题逐项查原料出处</b>：出自框内的判断 ⟹ 是对方的看法，除非作者另外明确认同，否则排除。',
+ tmpl:'<table class="tk"><tr><th>框（2014·T1）</th><th>框里的判断 → 被造成的选项</th></tr>'
+     +'<tr><td>②❼ <code>On first hearing,</code></td><td><code>indulgent system … subsidises laziness</code> → <b>25B</b>（一半）· <code>trying to change lives for the better</code> → <b>23A</b></td></tr>'
+     +'<tr><td>④❶ <code>But in Osborneland,</code></td><td><code>your first instinct is to fall into dependency … indulge your falsehood</code> → <b>25B</b>（另一半）· 24D guilty 的背景</td></tr></table>'
+     +'<p style="margin-top:8px">⚠️ <b>人称陷阱</b>：③段的 <code>you</code> 是「设身处地的你」（作者的论证），④❶ 的 <code>your first instinct</code> 是「奥斯本想象中的你」——<b>区别只在 But in Osborneland 三个词</b>。</p>',
+ traps:['<b>框里常有 obviously／of course 一类笃定词</b>：那是作者在模仿对方的口气，不是作者自己的判断（②❼ <code>an obviously indulgent system</code>）。',
+        '<b>与引号的分工</b>：引号标出「这个词是他的」（<a href="#R29">R29</a>），视角框标出「这一整句是他的」——框比引号管得宽，也更难发现。',
+        '<b>判据不是语气，是有没有被作者反驳</b>：④❷ <code>It is as though … never happened</code> 也是一种框（虚拟），但它是作者在嘲讽，框里的「改革从未发生」是作者认定的反事实。'],
+ refs:[{p:'2014_T1_奥斯本新政的台面上与台面下.html',q:'col2',label:'2014·T1 · 02++ 专栏（视角框 ＋ 引号清单）'},
+       {p:'2014_T1_奥斯本新政的台面上与台面下.html',q:'q25',label:'2014·T1·25B（两个框里的词拼成的选项）'},
+       {p:'2014_T1_奥斯本新政的台面上与台面下.html',q:'s11',label:'2014·T1 · 长难句 s11（But in Osborneland）'}]},
+
+{id:'R164', tier:'🟡', qt:'段落情绪概括题（makes one feel ___／X felt ___，选项是四个情绪形容词）', title:'情绪概括取公因式：段里列了一串情绪和处境——答案是能把它们全盖住的温和上位词（常降档）；另起一种带对象的情绪（被侮辱／愤怒／内疚）就是编的',
+ trig:['题干 <code>makes one feel</code>／<code>X felt</code>／<code>X&#39;s feeling can be described as</code> ＋ 段落限定','四个选项都是单个情绪形容词（insulted／uneasy／enraged／guilty）','定位段出现多个情绪词、处境词（terrifying／embarrassing／not wanted／excluded）'],
+ flow:'① <b>列清单</b>：段里所有情绪词、处境词逐个写下；<br>'
+     +'② <b>求公因式</b>：它们一起指向什么（痛苦、不安、没着落）；<br>'
+     +'③ <b>逐项问「有对象吗」</b>：insulted（被谁侮辱？）· enraged（冲谁发怒？）· guilty（对谁有愧？）——需要一个原文没有的对象的，排除；<br>'
+     +'④ <b>剩下的选项再比范围</b>：能和每一个描述都不冲突的，就是答案，哪怕它比原文最强的词弱得多。',
+ tmpl:'<table class="tk"><tr><th>2014·T1·24 原文</th><th>干扰项从哪个碎片推出来</th></tr>'
+     +'<tr><td>③❷ <code>psychologically embarrassing</code> ＋ ③❸ <code>not wanted … excluded</code></td><td>A insulted（被排斥 ≠ 被侮辱）</td></tr>'
+     +'<tr><td>③❷ <code>support is minimal and extraordinarily hard to get</code></td><td>C enraged（难拿 ≠ 愤怒）</td></tr>'
+     +'<tr><td>③❷ <code>financially terrifying</code> ＋ ③❹ <code>feed yourself and your family</code></td><td>D guilty（没钱养家 ≠ 内疚）</td></tr></table>'
+     +'<p style="margin-top:8px">⭐ <b>B uneasy</b> 盖住 hurting ＋ terrifying ＋ embarrassing ＋ not wanted ＋ excluded。<b>它比 terrifying 弱得多——概括题宁取弱的上位词，不取强的旁支词</b>。</p>',
+ traps:['<b>与 <a href="#R12">R12</a> 强度尺的分工</b>：R12 管作者态度「方向对了再比强度」；本卡管段落情绪「范围全了就不必比强度」——两者别混用。',
+        '<b>干扰项会偷站到对方视角里</b>：24D guilty 暗含「失业是自己的错」，正是④❶ Osborneland 的看法（<a href="#R163">R163</a>）。',
+        '<b>思路同 <a href="#R89">R89</a>（问群体取公因式）</b>：R89 对人求公因式，本卡对情绪词求公因式；C enraged 同时是 <a href="#R37">R37</a>「客观事实 ⟹ 主观评价」的实例。'],
+ refs:[{p:'2014_T1_奥斯本新政的台面上与台面下.html',q:'col3',label:'2014·T1 · 02+++ 专栏（情绪清单 × 干扰项）'},
+       {p:'2014_T1_奥斯本新政的台面上与台面下.html',q:'q24',label:'2014·T1·24（uneasy：取公因式）'}]},
+{id:'R165', tier:'🔴', qt:'因果细节题（题干 due to ／ because ／ adds to ／ originates from，原文找不到 because／so／as a result）', title:'隐性因果词：没有连词时，致使动词本身就是箭头——tempting ／ This leaves … with ／ means that ／ This keeps ／ isolates … from，左因右果；左边是 This 就回溯上一句',
+ trig:['题干问因（<code>due to</code>／<code>because</code>／<code>adds to</code>／<code>Hindrance … originates from</code>），定位段里却一个因果连词都没有','定位句带分词结果状语：<code>A did X, tempting／leading／forcing sb to …</code>','定位句以 <code>This／It</code> 开头，接致使动词：<code>This leaves／keeps／makes／means that …</code>'],
+ flow:'① <b>先定问因还是问果</b>：due to／because／adds to／originates from 问因；leads to／makes sb feel／result 问果；<br>'
+     +'② <b>在原文找到题干描述的那个「果」</b>（或「因」）；<br>'
+     +'③ <b>找贴着它的致使动词</b>：tempt · leave … with · keep · make · mean · isolate … from · cause · drive——<b>动词左边是因，右边是果</b>；<br>'
+     +'④ <b>左边是 This／It 时，回溯上一句</b>，把上一句拆成要素逐个与选项配对；<br>'
+     +'⑤ <b>同句里 than／as 后面的名词先标「比较基准」</b>，它不是原因。',
+ tmpl:'<table class="tk"><tr><th>原文（2014·T2）</th><th>因 → 果 → 题</th></tr>'
+     +'<tr><td>②❷ <code>made skyscrapers-full of money, <b>tempting</b> ever more students to pile into law schools</code></td><td>赚大钱 → 学生涌入 ⟹ <b>26D attraction of financial rewards</b></td></tr>'
+     +'<tr><td>③❹ <code><b>This leaves</b> … graduate with $100,000 of debt</code></td><td>This ＝ ③❸ 三要素 → 债务 ⟹ <b>27B</b>（回溯）</td></tr>'
+     +'<tr><td>⑤❸ <code><b>This keeps</b> fees high and innovation slow</code></td><td>外人不得持股 → 收费高（后果层，不是 29 答案）</td></tr></table>'
+     +'<p style="margin-top:8px">⭐ <b>26B inflation</b> 取自②❶ <code>grew twice as fast <u>as inflation</u></code>——<b>比较基准不是原因</b>。</p>',
+ traps:['<b>比较基准冒充原因</b>：<code>twice as fast as inflation</code> 的 inflation 是尺子（26B）——than／as 后面的名词一律先标「基准」（<a href="#R1">R1</a> 原词复现的一种）。',
+        '<b>This 句本身不含答案</b>：27 题的答案在 This leaves 的<b>上一句</b>里；只读 This 句会被 <code>on top of undergraduate debts</code> 带去选 27A。',
+        '<b>分工</b>：<a href="#R5">R5</a> 管「链很长别停在半路」、<a href="#R99">R99</a> 管「起点被换了人」；本卡管更前面一步——<b>没有连词时先把链认出来</b>。'],
+ refs:[{p:'2014_T2_美国律师业的两个病根.html',q:'col1',label:'2014·T2 · 02+ 专栏（七种隐性因果形式表）'},
+       {p:'2014_T2_美国律师业的两个病根.html',q:'q26',label:'2014·T2·26（tempting 左因右果）'},
+       {p:'2014_T2_美国律师业的两个病根.html',q:'q27',label:'2014·T2·27（This leaves … with 回溯三要素）'}]},
+
+{id:'R166', tier:'🟡', qt:'抽象标签词题（X is considered／called &quot;restrictive／flawed／excessive&quot; partly because …）', title:'标签词三层：作者先贴一个评价词，后文分「规定／后果／辩护」三层落实——问「为什么叫 X」只认规定层；This keeps／makes 是后果，insist that 是反对派的辩护',
+ trig:['题干把原文一个抽象形容词加引号：<code>is considered &quot;restrictive&quot; because</code>','标签句后紧跟一句带绝对词的具体规定（<code>may not … any</code>／<code>no</code>／<code>only</code>）','同段还有 <code>This keeps／makes …</code> 与 <code>X insist／claim that …</code>'],
+ flow:'① <b>找标签句</b>（题干引号词首次出现处）；<br>'
+     +'② <b>把后面几句分层</b>：规定（它具体禁止／要求什么）· 后果（This keeps／makes 回指规定）· 辩护（opponents／critics insist that）；<br>'
+     +'③ <b>只取规定层</b>做同义替换；<br>'
+     +'④ <b>规定层里再做主体校验</b>：被禁止的是谁（non-lawyers 不是 lawyers）。',
+ tmpl:'<table class="tk"><tr><th>层（2014·T2 ⑤段）</th><th>挂在这一层的选项</th></tr>'
+     +'<tr><td>规定 ⑤❷ <code>non-lawyers may not own any share</code> ＋ ⑤❹ <code>keeping outsiders out</code></td><td><b>29D ✔</b> bans outsiders&#39; involvement · 29B（non- 被删）</td></tr>'
+     +'<tr><td>后果 ⑤❸ <code>This keeps fees high and innovation slow</code></td><td>（本题未设项）</td></tr>'
+     +'<tr><td>辩护 ⑤❹ <code>opponents … insist that … isolates lawyers from the pressure to make money</code></td><td>29A due profits · 29C ethical situation</td></tr></table>',
+ traps:['<b>题干的 partly</b>：只需说中一面，别因为 D 没提「费用高」就嫌它不全。',
+        '<b>辩护层的词最像答案</b>：money、ethically 都在原文，而且离标签只隔两句——但说话人是反对派，作者用 In fact 反驳（<a href="#R130">R130</a>）。',
+        '<b>与 <a href="#R35">R35</a>／<a href="#R94">R94</a> 的分工</b>：那两张管定义在前、例子在后；本卡管标签在前、内容紧跟，且内容分三层。同型还有 2014·T1 的 <a href="#R162">R162</a>（说辞 vs 动机）。'],
+ refs:[{p:'2014_T2_美国律师业的两个病根.html',q:'col2',label:'2014·T2 · 02++ 专栏（标签词三层表）'},
+       {p:'2014_T2_美国律师业的两个病根.html',q:'q29',label:'2014·T2·29（restrictive ⟹ 规定层）'}]},
+
+{id:'R167', tier:'🔴', qt:'「问题—原因—对策」型社论（One is … ／ The other reason … ／ Reforming … would help … but …）· 细节题 ＋ 阻力题 ＋ 主旨题', title:'问题—原因—对策表：读到 One is 就在卷边画 2×2（原因 × 对策）再加一行阻力——细节题一题一格，阻力题只取 but 后消极句的主语，主旨题正解必须同时装下「问题」和「对策」',
+ trig:['原文有 <code>There are many reasons for this. One is …</code> ／ <code>The other reason why …</code>','对策段里夹着 <code>Sensible ideas have been around, but X have been too … to implement them</code>／<code>opponents … insist that</code>','题干 <code>Hindrance／obstacle／barrier to the reform</code> 或 <code>the author mainly discusses</code>'],
+ flow:'① <b>画表</b>：问题｜原因一｜阻力一｜对策一｜原因二｜阻力二｜对策二；<br>'
+     +'② <b>细节题</b>：先看题干落在哪一格，只在那一格里找；<br>'
+     +'③ <b>阻力题</b>：取「but ＋ 主语 ＋ 消极谓语（too … to／refuse／oppose／insist）」的主语；同段的受益方、论据、别段的人都是干扰项；<br>'
+     +'④ <b>主旨题</b>：给每个选项数格子——只占一轮原因、只占一句的都排除，留下「problem ＋ solutions」。',
+ tmpl:'<table class="tk"><tr><th>格（2014·T2）</th><th>题 ／ 干扰项</th></tr>'
+     +'<tr><td>阻力一 ④❷ <code>state-level bodies … too conservative to implement</code></td><td><b>28C ✔</b> · 28B 受益方 · 28D 论据 · 28A 别段的人</td></tr>'
+     +'<tr><td>原因二 ⑤ ＋ 对策二 ⑥（一行）</td><td>30A 只占一行、还把对策说成成因</td></tr>'
+     +'<tr><td>原因一 ③❸ 一句</td><td>30B successful lawyer · 30D undergraduate studies</td></tr>'
+     +'<tr><td>首段问题 ＋ ④⑥ 对策</td><td><b>30C ✔</b> a problem … and solutions to it</td></tr></table>',
+ traps:['<b>many reasons 却只写两个</b>：The other reason ＝ 两个中的另一个，别去找第三个，也别把任一个原因当全文。',
+        '<b>论据不是阻力</b>：④❺ 「考试够严」是支持改革的理由（28D，<a href="#R90">R90</a> 逻辑角色）；<b>受益方不是阻力</b>：④❶ help both lawyers and their customers（28B，<a href="#R96">R96</a>）。',
+        '<b>同一骨架三种题型</b>：完形 <a href="#R132">R132</a>（问题—对策镜像）· 新题型 <a href="#R161">R161</a>（找多余项）· 阅读本卡；主旨题另见 <a href="#R26">R26</a>、<a href="#R125">R125</a>。'],
+ refs:[{p:'2014_T2_美国律师业的两个病根.html',q:'col3',label:'2014·T2 · 02+++ 专栏（问题—原因—对策七格表）'},
+       {p:'2014_T2_美国律师业的两个病根.html',q:'q28',label:'2014·T2·28（阻力格：but ＋ too … to）'},
+       {p:'2014_T2_美国律师业的两个病根.html',q:'q30',label:'2014·T2·30（主旨题数格子）'}]},
+{id:'R168', tier:'🔴', qt:'人物观点题 ／ 作者观点题（The critics think … ／ The author believes …），原文没有引号、声音多层', title:'设问的答案归谁：What’s not to like? Quite a lot, according to a handful of X——问是作者替读者问的，答是 X 给的，还被 a handful 打了折；社论里 As 本刊 has pointed out (before) 才是作者本人',
+ trig:['原文用设问句转场：<code>What’s not to like?</code>／<code>So what’s the problem?</code>，答句后紧跟 <code>according to</code>／<code>say X</code>','社论里出现 <code>As <i>Nature</i>／<i>The Economist</i>／this newspaper has pointed out (before)</code>','题干分别问 <code>The critics think</code> 与 <code>The author believes</code>——同一篇里两股相反的声音'],
+ flow:'① <b>先给每一段标声音</b>：转述标记（as … said · they say · according to · say X）挂在哪句，那句就归谁；<br>'
+     +'② <b>设问句不等于作者自答</b>：看答句后面有没有转述标记——有，答案归被引者；<br>'
+     +'③ <b>社论自引＝作者</b>：As 本刊 has pointed out（认同型动词）＝ 编辑部自己的立场；同刊「另一篇报道 discusses」只是材料；<br>'
+     +'④ <b>量词就是态度</b>：a handful of／some（少数）对 most（多数）⟹ 作者在给批评降权；<br>'
+     +'⑤ <b>题干不给说话人时（is seen as），别替它找说话人</b>，只取谁都认的事实层。',
+ tmpl:'<table class="tk"><tr><th>声音（2014·T3）</th><th>题</th></tr>'
+     +'<tr><td>②❷ <code>Quite a lot, <b>according to a handful of scientists</b></code> · ②❹ <code>say scientists</code></td><td><b>32B</b>（The critics think）</td></tr>'
+     +'<tr><td>④❶ <code><b>As <i>Nature</i> has pointed out before</b></code></td><td><b>33A · 34D</b>（作者本人）</td></tr>'
+     +'<tr><td>⑤ <code>two things seem clear</code> · <code>It is wise to</code></td><td><b>35B</b>（The author believes）</td></tr></table>'
+     +'<p style="margin-top:8px">⭐ 31 题干 <code>is seen as</code> 无主语 ⟹ 取①段事实层（US $3-million · lucrative awards）⟹ <b>31C</b>。</p>',
+ traps:['<b>设问读成作者自答</b>：What’s not to like? Quite a lot 若当成作者的话，就会把②段批评当作者立场，35 题误选 A／D。',
+        '<b>「本刊另一篇报道」≠ 社论立场</b>：①❸ As a News Feature article in <i>Nature</i> discusses 是材料来源，discuss 中性；④❶ has pointed out 才是编辑部表态（<a href="#R130">R130</a> 转述动词测距离）。',
+        '<b>分工</b>：<a href="#R4">R4</a> 管「无引号无人名＝作者」、<a href="#R97">R97</a> 管「说话人编号」、<a href="#R66">R66</a> 管折扣词；本卡管两个它们没覆盖的信号——<b>设问答案的归属</b>与<b>社论自引</b>。'],
+ refs:[{p:'2014_T3_富豪设奖与诺奖的出身.html',q:'col1',label:'2014·T3 · 02+ 专栏（五层声音表）'},
+       {p:'2014_T3_富豪设奖与诺奖的出身.html',q:'q32',label:'2014·T3·32（The critics think ⟹ 设问答案挂 according to）'},
+       {p:'2014_T3_富豪设奖与诺奖的出身.html',q:'q31',label:'2014·T3·31（is seen as 无主语 ⟹ 取事实层）'}]},
+
+{id:'R169', tier:'🔴', qt:'作者观点题 ／ 段落细节题（which is true of X，X 是公认的老权威）', title:'旧权威出身类比：新事物被骂出身，作者就说 X were, of course, themselves …——问老权威取 A, rather than B 的 A；问新事物只推一步「也该交给时间」',
+ trig:['批评者攻击新事物的出身或动机（upstart · self-promotion · 有钱人的玩具）','作者接一句 <code>X were, of course, themselves set up by …</code>（of course ＋ 反身代词 themselves）','紧跟 <code>A, rather than B, has given them legitimacy／credibility</code>'],
+ flow:'① <b>认出类比</b>：of course（让步：别忘了）＋ themselves（连它自己也）⟹ 作者把老权威拉回与新事物同一个出身；<br>'
+     +'② <b>找桥</b>：两边的描述常逐字呼应（④❹ decided what he wanted to do with his own money ⟷ ⑤❹ money to do with as they please）；<br>'
+     +'③ <b>问老权威</b>：取 rather than 前的 A（Time ⟹ endurance），B 一半（intention）是干扰项工厂；<br>'
+     +'④ <b>问新事物</b>：只推一步——别凭出身判它，交给时间 ⟹ 「可以接受」，不推成「将来一定同样权威」。',
+ tmpl:'<table class="tk"><tr><th>原文（2014·T3 ④❹❺）</th><th>题</th></tr>'
+     +'<tr><td><code>Time, <b>rather than intention</b>, has given them legitimacy</code></td><td><b>34D</b> Their endurance has done justice to them</td></tr>'
+     +'<tr><td>取被否定的一半 ＋ 拼 ❸ has long been</td><td>34C Their legitimacy has long been in dispute ✘</td></tr>'
+     +'<tr><td>类比的言外之意</td><td><b>35B</b> acceptable despite the criticism</td></tr></table>',
+ traps:['<b>「时间给了正统」≠「从未被怀疑」</b>：34A History has never cast doubt——前者暗示起初并非天然正当，never 过度。',
+        '<b>别被同段的批评带偏</b>：④❸ 刚批过诺奖限额，但段落重心在末两句的「扬」；只看❸ 会选 34C。',
+        '<b>反向样本</b>：同卷 2014 T1 作者追问意图（<a href="#R162">R162</a>）；本篇作者搁置意图——意图重不重要，看作者在揭穿还是在辩护。跨篇另见 2013 T3「放长视角」。'],
+ refs:[{p:'2014_T3_富豪设奖与诺奖的出身.html',q:'col2',label:'2014·T3 · 02++ 专栏（of course ／ themselves ／ rather than 四信号表）'},
+       {p:'2014_T3_富豪设奖与诺奖的出身.html',q:'q34',label:'2014·T3·34（rather than 取前半 ⟹ endurance）'},
+       {p:'2014_T3_富豪设奖与诺奖的出身.html',q:'s14',label:'2014·T3 · 长难句 s14'}]},
+
+{id:'R170', tier:'🔴', qt:'作者态度题（The author believes that X is … ／ author’s attitude towards X）', title:'让步型态度题：As much as A may complain, … ／ It is fair to criticize …—but …——原文让步几次，正解就带着「despite 批评」那半句；全盘否定与阐释性无态度的选项先排',
+ trig:['作者发声段句首 <code>As much as … may</code>（＝ Although，不是「和……一样多」）','<code>It is fair／understandable to criticize … but …</code>、<code>of course</code>、<code>To be sure</code> 连续出现','四个选项里有一个带 <code>despite／though／while</code> 的双层结构'],
+ flow:'① <b>定主句方向</b>：让步之后的主句 ＋ 末句应然（It is wise to take such gifts）⟹ 褒 or 贬；<br>'
+     +'② <b>数让步</b>：承认了几次批评，就是「有保留」；<br>'
+     +'③ <b>按形状分选项</b>：全盘否定（harmful · unworthy）· 阐释性无态度（subject to changes）· 带让步的肯定（acceptable despite criticism）；<br>'
+     +'④ <b>正解＝主句方向 ＋ 让步保留</b>，形状与原文同构。',
+ tmpl:'<table class="tk"><tr><th>原文（2014·T3 ⑤）</th><th>正解对应</th></tr>'
+     +'<tr><td>❶ <code><b>As much as</b> some scientists may complain</code> · ❹ <code><b>It is fair to</b> criticize …—<b>but</b></code></td><td>despite the criticism</td></tr>'
+     +'<tr><td>❺ <code>It is wise to take such gifts with gratitude and grace</code></td><td>acceptable</td></tr>'
+     +'<tr><td>❸ <code>surely a good thing</code> 反向</td><td>35A harmful · 35D unworthy ✘</td></tr></table>',
+ traps:['<b>As much as 读成比较</b>：句首 As much as ＋ 主谓 ＋ 逗号一律按让步读，否则整段读反。',
+        '<b>让步里的原词是干扰项原料</b>：⑤❹ that is the culture of research 指批评本身，35A 把它安到受害者位置。',
+        '<b>分工</b>：<a href="#R12">R12</a> 态度强度尺先定方向再定强度；<a href="#R151">R151</a> 标题题里别拿让步去削唯一同向项；本卡管态度题本身——<b>让步不是用来削档的，它就是正解的一半</b>。'],
+ refs:[{p:'2014_T3_富豪设奖与诺奖的出身.html',q:'col3',label:'2014·T3 · 02+++ 专栏（四种让步形式表）'},
+       {p:'2014_T3_富豪设奖与诺奖的出身.html',q:'q35',label:'2014·T3·35（acceptable despite the criticism）'},
+       {p:'2014_T3_富豪设奖与诺奖的出身.html',q:'s15',label:'2014·T3 · 长难句 s15（As much as ＝ 尽管）'},
+       {p:'2014_T4_没说到要害的人文报告.html',q:'col1',label:'2014·T4 · 02+ 专栏（让步后遗憾：与 R170 方向相反的一对）'}]},
+{id:'R171', tier:'🔴', qt:'作者态度题（段落／全文，评论一份报告、计划、政策、书）· 最佳标题题', title:'表扬—遗憾型评论：X deserves praise for … Regrettably, however, … may cause more harm than good——态度取 however 后，强度被表扬压在 critical；全文几轮先褒后贬，标题就要装下「被评对象 ＋ 核心指控」',
+ trig:['首段两句一褒一贬：<code>deserves praise／is to be applauded／generally admirable</code> 紧跟 <code>Regrettably／Unfortunately／However／Yet</code>','后文又出现第二、第三轮：<code>The goals … are admirable</code> → <code>Unfortunately, despite …</code>；<code>displays great enthusiasm</code> → <code>Yet …</code>','态度选项里同时有「批评」「蔑视」「欣赏」「容忍」四档'],
+ flow:'① <b>数轮次</b>：每个 however／Unfortunately／Yet 下面划一道「→」，划几道就是几轮；<br>'
+     +'② <b>方向取箭头右边</b>：贬的那半是重心，褒的那半是让步；<br>'
+     +'③ <b>强度看让步有多真</b>：表扬给了具体理由、还带 may ⟹ 负向里取温和档 critical，不取 contemptuous／hostile；<br>'
+     +'④ <b>tolerant／acceptable 要找「接受」的字</b>，只有表扬与遗憾时一律排除；<br>'
+     +'⑤ <b>标题装两样</b>：被评对象 ＋ 作者的核心指控（常在冒号后）；只装褒的、装了对象丢了指控、装了指控丢了对象的都排。',
+ tmpl:'<table class="tk"><tr><th>原文（2014·T4）</th><th>题</th></tr>'
+     +'<tr><td>①❶ <code>deserves praise for affirming …</code> → ❷ <code><b>Regrettably, however</b> … may cause more harm than good</code></td><td><b>36A Critical</b>（B 只读褒 · C 升级 · D 无接受）</td></tr>'
+     +'<tr><td>③ <code>generally admirable</code> → ④❶ <code><b>Unfortunately, despite</b> … never gets to the heart of the matter: the illiberal nature of liberal education</code></td><td>论点句</td></tr>'
+     +'<tr><td>⑥❶ <code>great enthusiasm</code> → ❷ <code><b>Yet</b> … may well set back reform</code></td><td><b>40A</b>（B Contribution 只装褒）</td></tr></table>',
+ traps:['<b>被表扬句拉走</b>：36B Appreciative、40B The AAAS’s Contribution 都只读了让步那半——热情 ≠ 贡献。',
+        '<b>方向对、强度过头</b>：36C Contemptuous。作者肯说 deserves praise 并给出具体理由，就不是蔑视（<a href="#R12">R12</a> 强度尺）。',
+        '<b>分工</b>：<a href="#R170">R170</a> 管「让步后<b>接受</b>」（As much as … may complain ⟹ acceptable despite）；本卡管「表扬后<b>遗憾</b>」，方向正相反，<b>2014 同卷 T3、T4 连考</b>；<a href="#R151">R151</a> 管标题题里 To be sure 让步不降档；<a href="#R142">R142</a> 书评「认诊断、疑药方」是本卡「认目标、疑诊断」的邻居。'],
+ refs:[{p:'2014_T4_没说到要害的人文报告.html',q:'col1',label:'2014·T4 · 02+ 专栏（三轮先褒后贬表 ＋ 四条判据）'},
+       {p:'2014_T4_没说到要害的人文报告.html',q:'q36',label:'2014·T4·36（Critical：方向取 however 后，强度被表扬压住）'},
+       {p:'2014_T4_没说到要害的人文报告.html',q:'q40',label:'2014·T4·40（标题＝被评对象 ＋ illiberal 指控）'}]},
+
+{id:'R172', tier:'🔴', qt:'事实细节题（题干只给段号 ／ how to ／ the report suggests），原文是长清单或一句里有两份清单', title:'清单题同行对齐：一句里 by 引出「谁来做」、to 引出「为了什么」——how to 只取 to 后；一段并列建议先画「动词 | 对象」表，选项的动词、对象、修饰必须出自同一行',
+ trig:['一句里同时出现 <code>actions that could be taken by A, B, C … to do X</code> 这类「执行者清单 ＋ 目的」','一段由 <code>supports; stresses; and encourages</code>／<code>calls for A, B, C and D</code>／<code>also advocates</code> 串起一长串建议','选项里每个词都能在原文找到，但搭配看着有点「新」'],
+ flow:'① <b>先分清单种类</b>：by／for 后是执行者，to／in order to 后是目的；题干 how to／aim／purpose 取目的；<br>'
+     +'② <b>把并列建议画成表</b>：一行 ＝ 一个动词 ＋ 它自己的对象（分号、the 另起都是换行信号）；<br>'
+     +'③ <b>选项必须落在一行</b>：动词在这行、对象在那行 ⟹ 拼接；<br>'
+     +'④ <b>同一行里再比修饰语</b>：particularly → exclusive（程度）、实用课程 → theoretical（方向）；<br>'
+     +'⑤ <b>近义动词是甜头，宾语才是陷阱</b>：maintain ≈ retain，但 excellence ≠ interest。',
+ tmpl:'<table class="tk"><tr><th>行（2014·T4）</th><th>选项</th></tr>'
+     +'<tr><td>②❶ by <code>governments … educators, individual benefactors</code>（执行者）</td><td>37A individuals · 37B government ✘</td></tr>'
+     +'<tr><td>②❶ to <code>maintain national excellence in … scholarship and education</code></td><td><b>37D keep a leading position</b> · 37C retain interest ✘</td></tr>'
+     +'<tr><td>③❷ <code>encourages the use of new digital technologies</code></td><td><b>38C application of emerging technologies</b></td></tr>'
+     +'<tr><td>③❸ <code>funding for teachers</code> ＋ ③❹ <code>greater study of foreign languages</code></td><td>38D funding for languages ✘（两行拼一行）</td></tr></table>',
+ traps:['<b>「每个词原文都有」最危险</b>：37A、37B、38D 的词全来自原文，错在不同行或不同清单。',
+        '<b>并列切分看冠词</b>：<code>greater study of foreign languages, international affairs and the expansion of …</code>——the expansion 另起，前两项共用 greater study of。',
+        '<b>分工</b>：<a href="#R8">R8</a> 总纲里有「杂糅」一类（知道有这种错）；<a href="#R15">R15</a> 管题干只给段号时拿选项回文（知道怎么定位）；本卡补定位后的一步——<b>按行对齐</b>；<a href="#R167">R167</a> 是二维的「问题—原因—对策」表，本卡是一维清单表。'],
+ refs:[{p:'2014_T4_没说到要害的人文报告.html',q:'col2',label:'2014·T4 · 02++ 专栏（两种清单的「行」表）'},
+       {p:'2014_T4_没说到要害的人文报告.html',q:'q37',label:'2014·T4·37（how to 只取 to 后；A／B 捡执行者清单）'},
+       {p:'2014_T4_没说到要害的人文报告.html',q:'q38',label:'2014·T4·38（C 同一行；D 两行拼一行）'}]},
+
+{id:'R173', tier:'🟡', qt:'推理引申题（The author implies that X are …）· 标题题 · 政治／教育评论里有两派立场标签时', title:'立场标签分两栏：treat A as proper while portraying B as outside ⟹ biased against B；同一个 liberal 在一篇里能换五个义项——选项把一栏的标签安到另一栏的人头上，就是干扰项',
+ trig:['同一句里两组标签对举：<code>progressive … while portraying conservative or classical liberal ideas</code>','破折号 <code>—such as …—</code> 给其中一栏举例','一个核心词反复出现且带前缀或修饰：<code>liberal democracy／liberal education／illiberal／left-liberal／classical liberal</code>'],
+ flow:'① <b>卷边画两栏</b>：谁认的 · 谁被排斥的；破折号里的 such as 例子归它前面那一栏；<br>'
+     +'② <b>对举动词定关系</b>：treat A as 正当 ／ portray B as 界外 ⟹ 双重标准 ⟹ biased against B；<br>'
+     +'③ <b>每个选项查「人」与「标签」同不同栏</b>：把被排斥栏的标签（free markets、conservative）安到排斥者头上 ⟹ 立场对调；<br>'
+     +'④ <b>核心词逐次标义项</b>：illiberal 这种自相矛盾的词组往往就是论点与标题；<br>'
+     +'⑤ <b>带引号的自称 ＋ or 改写 ＝ 作者不认</b>（"progressive," or left-liberal）。',
+ tmpl:'<table class="tk"><tr><th>栏（2014·T4 ⑤❶）</th><th>选项</th></tr>'
+     +'<tr><td>第一栏（教授认的）：<code>progressive interpretation of history · progressive public policy</code></td><td>39D conservative about public policy ✘</td></tr>'
+     +'<tr><td>第二栏（被排斥的）：<code>conservative or classical liberal ideas—such as free markets and self-reliance</code></td><td><b>39B biased against classical liberal ideas</b> · 39A supportive of free markets ✘</td></tr>'
+     +'<tr><td>句末名词 <code>intellectual investigation</code></td><td>39C cautious about … ✘（照搬名词）</td></tr></table>',
+ traps:['<b>把 liberal education 读成「自由主义教育」</b>：它是博雅／通识教育，与政治派别无关；作者正是保守派却在捍卫它。',
+        '<b>译名陷阱</b>：黄皮书把 classical liberal ideas 译「古典人文思想」，会与④❸「拿人文学科当宣传工具」混成一栏——应为「古典自由主义」。',
+        '<b>分工</b>：<a href="#R139">R139</a> 管单个词被换义项；<a href="#R29">R29</a> 管引号三功能（本篇 "progressive," 是排斥）；本卡管<b>一组标签词分属两派、整栏挪位</b>。'],
+ refs:[{p:'2014_T4_没说到要害的人文报告.html',q:'col3',label:'2014·T4 · 02+++ 专栏（liberal 五义表 ＋ 两栏）'},
+       {p:'2014_T4_没说到要害的人文报告.html',q:'q39',label:'2014·T4·39（biased against；A／D 立场对调）'},
+       {p:'2014_T4_没说到要害的人文报告.html',q:'s13',label:'2014·T4 · 长难句 s13（treat A as … while portraying B as …）'}]}
+,
+{id:'R174', tier:'🔴', qt:'完形 · 科普推介型文章（问题 → 科学依据 → 产品／方案 → 功能说明）', title:'按段标「＋／−」：推介文的方向按段固定——问题段填负，依据、产品、功能段填正；方向不对的选项整批划掉，同一个意思换一段就对错互换',
+ trig:['首段讲一种困扰（not what they used to be／loss of mental focus／senior moments），第二段起换成 experts／scientists 说话','后半篇主语换成 a company／the program／it，句子是 allows you to／keeps track of／provides feedback on 的说明书口吻','选项里混着一对反义词（improves／fades · recovers／collapses），或一串「催逼、无规律、有风险、无效」的词'],
+ flow:'① <b>读每段首句，看主语换成了谁</b>：受害者 → 专家 → 公司 → 产品；<br>'
+     +'② <b>在段首写「＋」或「−」</b>：问题段 −，科学依据、产品、功能各段 ＋；<br>'
+     +'③ <b>做题先按符号划掉方向不对的选项</b>，剩下的再比搭配与词义；<br>'
+     +'④ <b>同一个意思（恢复、改善）在问题段是错项，到方案段才是答案</b>——选项本身无所谓对错，看它落在哪一段。',
+ tmpl:'<table class="tk"><tr><th>2014 完形（段 · 主语）</th><th>方向</th><th>答案 ／ 因方向出局</th></tr>'
+     +'<tr><td>① many people／We</td><td>−</td><td>2 fades · 4 damaging ／ improves · recovers · limited</td></tr>'
+     +'<tr><td>②③ scientists／a company</td><td>＋</td><td>12 according to · 13 further ／ regardless of · back · aside</td></tr>'
+     +'<tr><td>④ The program／it</td><td>＋</td><td>15 allows · 18 constantly · 20 effective ／ hurries · forces · irregularly · risky · familiar · idle</td></tr></table>'
+     +'<p class="note">二十组选项里<b>十二个干扰项</b>靠「方向或褒贬不对」出局。</p>',
+ traps:['<b>「恢复」放错了段</b>：2D recovers 在①段是错项，14 题 regain 在③段才是题眼——<b>问题还没提完，不谈恢复</b>；2A improves 同理。',
+        '<b>说明书段不说产品的坏话</b>：15C forces、20A risky、20C idle 语法上都通，但推介口吻里不会出现「强迫」「有风险」「无效」。',
+        '⚠️ <b>文外事实不进题</b>：本篇介绍的程序（Lumosity）2016 年被美国联邦贸易委员会认定宣传缺乏依据——做题只按文内方向走，这层批判留给作文。',
+        '<b>分工</b>：<a href="#R49">R49</a> 管比喻两端对表；<a href="#R102">R102</a> 管一根因果箭头；<a href="#R156">R156</a> 管比方与发现同构；<b>本卡管整篇按段翻转极性</b>。'],
+ refs:[{p:'2014_完形_像练肌肉一样练大脑.html',q:'polar',label:'2014·完形 · 02+ 四段极性表'},
+       {p:'2014_完形_像练肌肉一样练大脑.html',q:'q2',label:'2014·完形·2（①段负 ⟹ fades，improves／recovers 出局）'},
+       {p:'2014_完形_像练肌肉一样练大脑.html',q:'q14',label:'2014·完形·14（③段 regain ⟹ 回首段找丢掉的 clarity）'},
+       {p:'2014_完形_像练肌肉一样练大脑.html',q:'q15',label:'2014·完形·15（说明书段只填赋能 allows）'},
+       {p:'2014_完形_像练肌肉一样练大脑.html',q:'q20',label:'2014·完形·20（被夸的程序只能比有效的计划）'}]},
+
+{id:'R175', tier:'🟡', qt:'完形 · 空格前的主语是代词（It ___ out that …／It ___ that …）', title:'代词主语先找先行词：找不到 ⟹ 形式主语句型（It turns out／seems／appears／follows that）；找得到 ⟹ 再核对人与物、单数与复数',
+ trig:['空格紧跟句首的 It，后面又跟着 that 从句','四个选项都能和空后的小词组成短语（turns／finds／points／figures ＋ out）','上一句的主语是复数的人（Neuroscientists／researchers）'],
+ flow:'① <b>回上一句找一个单数、非人的名词</b>，看 It 能不能指它；<br>'
+     +'② <b>找不到 ⟹ It 是形式主语</b>，that 从句才是真主语——只有「不需要一个人去做」的动词进得来：turn out／seem／appear／happen／follow；<br>'
+     +'③ <b>找得到 ⟹ 按 <a href="#R21">R21</a> 做主体校验</b>：find out／point out／figure out 要人做；It 是单数，不能指复数；<br>'
+     +'④ <b>回代</b>：把 that 从句当成一件事放回 It 的位置读一遍。',
+ tmpl:'<table class="tk"><tr><th>2014 完形 6 题</th><th>要不要一个做动作的人</th><th>本句</th></tr>'
+     +'<tr><td>It <b>turns</b> out that …</td><td>不要（＝结果表明）</td><td>✅</td></tr>'
+     +'<tr><td>It finds／points／figures out that …</td><td>要（谁查明、谁指出、谁想明白？）</td><td>✘ 上一句只有复数的 Neuroscientists</td></tr></table>',
+ traps:['<b>中文「研究指出」的陷阱</b>：中文顺，英文 It points out 的 It 必须真有所指（The report points out that …）。',
+        '<b>别背成「It 开头必填 turns」</b>：上一句若是 The study／The report，It points out that 就成立——<b>第一步永远是回头找先行词</b>。',
+        '<b>It figures</b> 单用是口语「这不奇怪」，<b>不带 out</b>；It takes sb time to figure out 里 It 替的是不定式，不是本题结构。'],
+ refs:[{p:'2014_完形_像练肌肉一样练大脑.html',q:'q6',label:'2014·完形·6（It 无先行词 ⟹ turns out）'},
+       {p:'2014_完形_像练肌肉一样练大脑.html',q:'s4',label:'2014·完形 · 长难句 s4（It turns out that … and …）'}]},
+
+{id:'R176', tier:'🔴', qt:'完形／阅读 · 限定词打折（seemingly／apparently／at first glance／to a certain extent／in theory）', title:'限定词＝作者给自己的话打折：打「表面」的折，同句另一半是「其实」；打「程度」「理论」的折，下一句是「但更重要的是」——折扣后的逻辑空填让步或转折，对面的实词空方向取反',
+ trig:['seemingly／apparently／on the surface／at first glance 修饰一个评价词（innocent／a strength）','句首 To a certain extent／To some degree／In part／Admittedly／In theory','同一句里一个「看似」、一个「可能会」（seemingly … potentially）'],
+ flow:'① <b>圈出限定词，判断它打的是哪种折</b>：表面（seemingly／at first glance）· 程度（to a certain extent）· 理论（in theory／on paper）；<br>'
+     +'② <b>表面折</b> ⟹ 同句另一半「其实」方向相反：句首逻辑空填 While／Although，另一半的实词空取反；<br>'
+     +'③ <b>程度折、理论折</b> ⟹ 下一句句首填 However／But，内容翻到另一边；折扣所在那句的实词空只讲被承认的那一半；<br>'
+     +'④ <b>essentially／basically 是反向的限定</b>：它说「本质」，空格填定义（process），不填作用（channel）。',
+ tmpl:'<table class="tk"><tr><th>原文（2013–2014 完形）</th><th>折扣</th><th>定的空</th></tr>'
+     +'<tr><td>___ seemingly innocent, … potentially have a(n) ___ impact</td><td>表面</td><td>2014·3 While · 4 damaging</td></tr>'
+     +'<tr><td>To a certain extent … inherited. ___, because … effort and practice</td><td>程度</td><td>2014·11 However（10 excel 只讲先天）</td></tr>'
+     +'<tr><td>At first glance … a strength that ___ …</td><td>表面</td><td>2013·1 grants（扬的那句填正面）</td></tr>'
+     +'<tr><td>In theory … but … the truth was ___</td><td>理论</td><td>2013·11 otherwise</td></tr></table>',
+ traps:['<b>折扣所在那句填「表面」一侧</b>：2013·1 在 At first glance 句里填正面的 grants——别一看见让步就把整句都往负面填。',
+        '<b>If 的「即使」不等于 While</b>：if 让步要求两边方向相同、程度不同（good, if not great）；「看似无害 vs 其实有害」方向相反，只能 While／Although。',
+        '<b>阅读题同理</b>：原文用 seemingly／apparently 修饰的判断，选项照搬就是「把表面当结论」——与 <a href="#R163">R163</a> 视角框同一族。'],
+ refs:[{p:'2014_完形_像练肌肉一样练大脑.html',q:'hedge',label:'2014·完形 · 02+++ 四个限定副词'},
+       {p:'2014_完形_像练肌肉一样练大脑.html',q:'q3',label:'2014·完形·3（seemingly ⟹ While）'},
+       {p:'2014_完形_像练肌肉一样练大脑.html',q:'q11',label:'2014·完形·11（To a certain extent ⟹ However）'},
+       {p:'2013_完形_面试打分的当日偏见.html',q:'q1',label:'2013·完形·1（At first glance 句里填正面）'},
+       {p:'2013_完形_面试打分的当日偏见.html',q:'q11',label:'2013·完形·11（In theory … the truth was otherwise）'}]},
+
+{id:'R177', tier:'🔴', qt:'新题型 · 排序题／选句填空（上一段在分类、举例；下一段段首是 X, however, …）', title:'分类句里<u>没举例</u>的那一类＝下一段的主角；段首 however 可能只是「从岔路拉回主干」——它对立的是紧挨着的例子，不是上一段的观点',
+ trig:['上一段把情况分成两三类，只给其中几类举了例子','某一类标着 Most／the majority，却一个例子也没有','下一段段首 X, however, … 的内容几乎在复述上一段的某一句'],
+ flow:'① 给分类句的每一类标「<b>有例／无例</b>」；<br>'
+     +'② <b>无例而占比最大</b>（Most）的那一类 ⟹ 下一段来展开它；<br>'
+     +'③ 段首 however 先问「<b>它和谁对立</b>」：紧挨着的一两句（岔出去的例子），还是上一段的整体观点？前者＝<b>拉回主干</b>；<br>'
+     +'④ 验证：拉回主干的 however 段，首句会<b>换个说法复述</b>上一段那一类（换词不换意）。',
+ tmpl:'<table class="tk"><tr><th>原文（2014 Part B）</th><th>信号</th><th>结论</th></tr>'
+     +'<tr><td>A③ Most … located by means of careful searching, while many others … by accident</td><td>三类：看得见（3 例）· 偶然（2 例）· <b>仔细搜寻（0 例，Most）</b></td><td>下一段展开「仔细搜寻」</td></tr>'
+     +'<tr><td>A④⑤ butterfly hunter … / Aztec artifacts … subway</td><td>段落停在「偶然」这条岔路上</td><td>下一段要一个转回的词</td></tr>'
+     +'<tr><td>F① Most archaeological sites, <b>however</b>, are discovered by archaeologists who have set out to look for them</td><td>复述 A③ ＋ however</td><td>F 落 42，紧跟 A</td></tr></table>',
+ traps:['<b>把 however 读成「与上一段观点相反」</b>，就会去找一段和 A 唱反调的文字——全篇没有。2014 的 however 对立的是 A 末尾两个「偶然发现」的例子，F 与 A 的主张完全一致。',
+        '<b>「复述」不是多余，是接缝。</b>说明文展开某一类之前，先把它原样再说一遍是标准写法；段首句与上一段某句几乎同义 ⟹ 这两段就该挨着。'
+        +'与 <a href="#R110">R110</a> 不矛盾：R110 管的是<u>隔段</u>复现（只能加固），这里是<u>相邻段</u>。',
+        '<b>阅读题同理</b>：段首 however 若对立的是上一句的例子，这一段的主旨仍与上一段同向——问段落关系时别选 contradicts／refutes。'],
+ refs:[{p:'2014_新题型_考古学家怎样找到遗址.html',q:'q42',label:'2014·新题型·42（however 拉回「仔细搜寻」）'},
+       {p:'2014_新题型_考古学家怎样找到遗址.html',q:'seams',label:'2014·新题型 · 02++ 接缝 A → F'}]},
+
+{id:'R178', tier:'🔴', qt:'新题型／阅读 · 总述句列两项（can cover A or B ／ both A and B），后面跟两个例子（In one case … In another case …）', title:'总述「A or B」后的两个例子可能<u>倒着给</u>（先证 B、后证 A）——例子的先后靠 one／another、first／second 这类形式标记定，别拿「总述里谁先说」去一一对应',
+ trig:['一句话先列两类（a single … or entire …），下文 In one case／In another case','排序题要决定两个例子段谁在前','阅读题问 The example of X is used to show that …'],
+ flow:'① <b>排序只认形式标记</b>：one → another、first → second、for example → another example，它们决定先后；<br>'
+     +'② <b>读懂再逐个配对</b>：每个例子问「它证的是哪一类」，看<b>范围词</b>（around the city 城外 vs the entire city 全城）；<br>'
+     +'③ <b>允许交叉</b>：总述 A or B、例子按 B、A 给出完全合法；<br>'
+     +'④ 例证题：选项把例子配到总述的另一半上，就是干扰项。',
+ tmpl:'<table class="tk"><tr><th>总述</th><th>例一（In one case）</th><th>例二（In another case）</th></tr>'
+     +'<tr><td>D① Surveys can cover <b>a single large settlement</b> or <b>entire landscapes</b></td><td>科潘：working <b>around</b> the city … hundreds of small <b>rural</b> villages ⟹ <b>整片景观</b></td><td>特奥蒂瓦坎：mapping <b>the entire city</b> ⟹ <b>单个大型聚落</b></td></tr></table>'
+     +'<p class="note">黄皮书按顺序硬配成「D＝聚落、B＝景观」，恰好配反；答案不受影响，因为 44–45 的先后是 In one case／In another case 定的。</p>',
+ traps:['<b>「按顺序对应」是默认直觉，也是命题人最便宜的一招。</b>若出一道例证题「Copán is mentioned to show that surveys can cover a single settlement」，照顺序配的人就会选它。',
+        '<b>范围词是唯一可靠的判据</b>：around／surrounding／rural（城外、乡村）vs entire city／within（城内、全城）。先圈范围词，再配总述。'],
+ refs:[{p:'2014_新题型_考古学家怎样找到遗址.html',q:'q45',label:'2014·新题型·45（两例倒序对应总述）'},
+       {p:'2014_新题型_考古学家怎样找到遗址.html',q:'book',label:'2014·新题型 · 03+ 黄皮书配反之处'}]},
+
+{id:'R179', tier:'🟡', qt:'新题型 · 排序题（说明文：先介绍几种方法／技术，再举案例）', title:'例子只能用「已经讲过」的方法：案例段里同时点名两种方法（aerial photographs ＋ surveys on foot），它就必须排在介绍这两种方法的段落之后',
+ trig:['说明文分段介绍几种手段（空中／地面、理论／实验、线上／线下）','某段是 In one case／For example 引出的案例，案例里点名用了哪些手段','方法段与案例段的先后拿不准'],
+ flow:'① 圈出案例段里的<b>手段名词</b>；<br>'
+     +'② 回找每种手段在哪一段被介绍；<br>'
+     +'③ 案例段排在<b>最后一个被它引用的方法段</b>之后；<br>'
+     +'④ 顺带验「先总后分」：总说（systematic survey methods）→ 分说（空中、地面）→ 案例。',
+ tmpl:'<table class="tk"><tr><th>案例段 D 里的词</th><th>在哪一段介绍</th><th>结论</th></tr>'
+     +'<tr><td>aerial photographs</td><td>E（Airborne technologies … Aerial surveys）</td><td>D 在 E 之后</td></tr>'
+     +'<tr><td>making surveys on foot</td><td>G（a lot of walking）</td><td>D 在 G 之后 ⟹ G → D</td></tr>'
+     +'<tr><td>settlement maps · landscapes</td><td>G 末（map sites and the landscapes）</td><td>相邻复现，加固</td></tr></table>',
+ traps:['<b>反过来不成立</b>：方法段里提到某个例子的名字，不说明例子段在后——例子常常先出场当引子（设问、故事开头）。这条只管「案例回用方法」这一个方向。',
+        '<b>它是内容型证据，硬度却接近形式标记</b>：例子跑在方法前面，读者会先撞上还没解释过的术语，说明文作者不会这么写。2014 若把 [D–B] 放到 43–44，D 里的 surveys on foot 就跑到了 G（徒步勘测）前面。'],
+ refs:[{p:'2014_新题型_考古学家怎样找到遗址.html',q:'q44',label:'2014·新题型·44（案例回用 E、G 两段的方法）'},
+       {p:'2014_新题型_考古学家怎样找到遗址.html',q:'q43',label:'2014·新题型·43（D 放 43 会让例子跑在方法前）'}]}
 ];
 
 window.TRICK_READ_META = {
   subject:'英语一 · 阅读',
-  source:'2022 Text 1–4 · 2007 Text 1–4 · 2008 Text 1–4 · 2009 Text 1–4 · 2010 Text 1–4 · 2011 Text 1–4 · 2012 Text 1–4 · 2013 Text 1–4 · 2007/2008/2009/2010/2011/2012/2013/2022 新题型 · 2008/2009/2010/2011/2012/2013 完形',
+  source:'2022 Text 1–4 · 2007 Text 1–4 · 2008 Text 1–4 · 2009 Text 1–4 · 2010 Text 1–4 · 2011 Text 1–4 · 2012 Text 1–4 · 2013 Text 1–4 · 2014 Text 1–4 · 2007/2008/2009/2010/2011/2012/2013/2014/2022 新题型 · 2008/2009/2010/2011/2012/2013/2014 完形',
   note:'提炼自本复盘中心各篇阅读真题复盘页的技巧/干扰项分析，随复盘页增长。'
 };
