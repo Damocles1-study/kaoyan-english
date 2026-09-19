@@ -1,0 +1,1259 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2015 英一 完形 · 朋友是基因上的远亲</title>
+<style>
+  :root{
+    --bg:#faf9f6; --card:#ffffff; --ink:#2b2b2b; --muted:#8a8578;
+    --accent:#8b5e34; --accent-soft:#f3e9dd; --line:#e8e3d8;
+    --hl:#fdf3d8; --hl-border:#e0b84d;
+    --green:#3e7a4e; --green-soft:#e8f2ea;
+    --red:#b04a3a; --red-soft:#f9e9e6;
+    --blue:#3d6a8a; --blue-soft:#e7eff5;
+    --purple:#6d5a8e; --purple-soft:#eeeaf5;
+    --serif:"Georgia","Songti SC",serif;
+    --sans:-apple-system,"PingFang SC","Helvetica Neue",sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#1c1a17; --card:#26231f; --ink:#e8e4dc; --muted:#9a948a;
+      --accent:#d0a06a; --accent-soft:#3a3127; --line:#3a362f;
+      --hl:#3d3520; --hl-border:#b08c3a;
+      --green:#7fb98d; --green-soft:#26362b;
+      --red:#d98876; --red-soft:#3d2a26;
+      --blue:#8ab3d0; --blue-soft:#26323d;
+      --purple:#a996c8; --purple-soft:#302a3d;
+    }
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;padding-bottom:120px}
+  .wrap{max-width:1100px;margin:0 auto;padding:24px 20px}
+  .back{font-size:.85rem;color:var(--muted);text-decoration:none}
+  .back:hover{color:var(--accent)}
+  header{margin:14px 0 28px}
+  header h1{font-family:var(--serif);font-size:1.7rem;line-height:1.3}
+  header .sub{color:var(--muted);margin-top:6px;font-size:.9rem}
+  .tags{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+  .tag{font-size:.75rem;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);border:1px solid var(--line)}
+  .tag.spoiler{cursor:pointer;background:var(--card);color:var(--muted)}
+  .tag.spoiler .hid{filter:blur(5px)}
+  .tag.spoiler.open .hid{filter:none;color:var(--accent)}
+
+  .layout{display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:start}
+  @media (max-width:900px){.layout{grid-template-columns:1fr}}
+
+  section.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:24px}
+  h2{font-size:1.05rem;letter-spacing:.05em;color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  h2 .n{font-size:.72rem;background:var(--accent);color:var(--card);border-radius:6px;padding:1px 7px}
+  .note{font-size:.82rem;color:var(--muted);margin-bottom:14px}
+
+  .para{margin-bottom:22px}
+  .para .en{font-family:var(--serif);font-size:1.06rem;line-height:2.15}
+  .pno{color:var(--muted);font-size:.75rem;user-select:none;margin-right:6px}
+  .tk{background:var(--hl);border-bottom:2px solid var(--hl-border);border-radius:3px;padding:0 2px;cursor:pointer;transition:filter .15s}
+  .tk:hover{filter:brightness(.93)}
+  .tk.active{outline:2px solid var(--hl-border)}
+  .ls{border-bottom:2px dotted var(--blue);cursor:pointer}
+  .para .zh{display:none;margin-top:10px;padding:10px 14px;background:var(--blue-soft);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:.93rem}
+  .para.showzh .zh{display:block}
+  .zbtn{float:right;margin-left:10px;font-size:.72rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:6px;padding:2px 9px;cursor:pointer}
+  .zbtn:hover{color:var(--accent);border-color:var(--accent)}
+  .allbtn{font-size:.78rem;border:1px solid var(--accent);background:none;color:var(--accent);border-radius:8px;padding:4px 12px;cursor:pointer}
+
+  /* 完形空格 */
+  .bk{display:inline-block;min-width:64px;text-align:center;background:var(--hl);border-bottom:2px solid var(--hl-border);border-radius:4px;padding:0 6px;cursor:pointer;font-weight:600;color:var(--accent);transition:all .15s;font-family:var(--sans);font-size:.95rem}
+  .bk:hover{filter:brightness(.93)}
+  .bk.filled{background:var(--green-soft);border-bottom-color:var(--green);color:var(--green);font-family:var(--serif)}
+  .bk.miss{background:var(--red-soft);border-bottom-color:var(--red);color:var(--red);font-family:var(--serif)}
+  .bk.active{outline:2px solid var(--hl-border)}
+  .bk .idx{font-size:.7rem;color:var(--muted);margin-right:3px}
+
+  aside{position:sticky;top:20px}
+  #panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;min-height:180px}
+  #panel .hint{color:var(--muted);font-size:.88rem;text-align:center;padding:30px 10px}
+  .wcard .head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .wcard .w{font-family:var(--serif);font-size:1.35rem;font-weight:bold}
+  .wcard .ipa{color:var(--muted);font-size:.85rem}
+  .wcard .pos{font-size:.72rem;color:var(--purple);background:var(--purple-soft);padding:1px 8px;border-radius:999px}
+  .wcard .badge{font-size:.7rem;padding:1px 8px;border-radius:999px}
+  .b-core{background:var(--red-soft);color:var(--red)}
+  .b-phrase{background:var(--blue-soft);color:var(--blue)}
+  .b-poly{background:var(--purple-soft);color:var(--purple)}
+  .b-write{background:var(--green-soft);color:var(--green)}
+  .wcard .cn{margin-top:8px;font-size:1rem;font-weight:600}
+  .wcard .en-def{color:var(--muted);font-size:.86rem;font-style:italic;margin-top:2px}
+  .wcard .row{margin-top:10px;font-size:.86rem;padding:8px 10px;border-radius:8px}
+  .wcard .row>b:first-child{font-size:.72rem;display:block;margin-bottom:2px;letter-spacing:.06em}
+  .r-ex{background:var(--hl)} .r-ex b{color:var(--hl-border)}
+  .r-mem{background:var(--green-soft)} .r-mem b{color:var(--green)}
+  .r-syn{background:var(--blue-soft)} .r-syn b{color:var(--blue)}
+  .r-conf{background:var(--red-soft)} .r-conf b{color:var(--red)}
+  #panel .close{display:none}
+  @media (max-width:900px){
+    aside{position:fixed;left:0;right:0;bottom:0;z-index:50;padding:0 8px 8px}
+    #panel{box-shadow:0 -6px 24px rgba(0,0,0,.18);max-height:55vh;overflow-y:auto;display:none}
+    #panel.open{display:block}
+    #panel .close{display:block;float:right;border:none;background:var(--line);border-radius:8px;padding:2px 10px;cursor:pointer;color:var(--ink)}
+  }
+
+  /* 逐空精解 */
+  .q{margin-bottom:22px;padding-bottom:18px;border-bottom:1px dashed var(--line);scroll-margin-top:20px}
+  .q:last-child{border:none;margin-bottom:0;padding-bottom:0}
+  .q .stem{font-family:var(--serif);font-size:.98rem;background:var(--hl);border-radius:8px;padding:8px 12px;display:block}
+  .q .stem em{font-style:normal;font-weight:700;color:var(--accent);border-bottom:2px solid var(--hl-border);padding:0 4px}
+  .qhead{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+  .qno{font-family:var(--serif);font-size:1.2rem;font-weight:700;color:var(--accent)}
+  .qt{font-size:.7rem;border-radius:999px;padding:1px 9px}
+  .c-logic{background:var(--blue-soft);color:var(--blue)}
+  .c-collo{background:var(--green-soft);color:var(--green)}
+  .c-word{background:var(--red-soft);color:var(--red)}
+  .c-context{background:var(--purple-soft);color:var(--purple)}
+  .qpos{font-size:.7rem;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:1px 9px}
+  .opts{margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  @media (max-width:640px){.opts{grid-template-columns:1fr}}
+  .opt{border:1px solid var(--line);border-radius:10px;padding:7px 12px;cursor:pointer;font-size:.92rem;font-family:var(--serif);transition:all .15s}
+  .opt .gl{font-family:var(--sans);font-size:.8rem;color:var(--muted);margin-left:6px}
+  .opt:hover{border-color:var(--accent)}
+  .q.done .opt{cursor:default}
+  .opt.right{background:var(--green-soft);border-color:var(--green)}
+  .opt.wrong{background:var(--red-soft);border-color:var(--red)}
+  .expl{display:none;margin-top:12px;background:var(--accent-soft);border-radius:10px;padding:12px 14px;font-size:.9rem}
+  .q.done .expl{display:block}
+  .expl b{color:var(--accent)}
+  .expl .lbl{font-size:.74rem;letter-spacing:.06em;color:var(--muted);display:block;margin:10px 0 2px}
+  .expl .lbl:first-child{margin-top:0}
+  .expl code{font-family:var(--serif);background:var(--hl);border-radius:4px;padding:1px 5px}
+  .wrongs{margin-top:6px;display:grid;gap:5px}
+  .wr{font-size:.86rem;background:var(--card);border-radius:8px;padding:6px 10px;border-left:3px solid var(--red)}
+  .wr .l{font-family:var(--serif);font-weight:700;color:var(--red);margin-right:5px}
+
+  /* 计分条 */
+  .score{display:flex;gap:14px;flex-wrap:wrap;align-items:center;background:var(--hl);border-radius:12px;padding:10px 16px;margin-bottom:18px;font-size:.88rem}
+  .score .v{font-family:var(--serif);font-size:1.25rem;font-weight:700;color:var(--accent);margin-right:4px}
+  .score .rst{margin-left:auto;font-size:.78rem;border:1px solid var(--line);background:var(--card);color:var(--muted);border-radius:8px;padding:3px 10px;cursor:pointer}
+
+  /* 考点统计 */
+  .catbar{display:flex;height:26px;border-radius:8px;overflow:hidden;margin:10px 0 16px;border:1px solid var(--line)}
+  .catseg{display:flex;align-items:center;justify-content:center;font-size:.72rem;color:#fff;font-weight:600}
+  .catlegend{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px}
+  .cl{display:flex;gap:8px;align-items:center;font-size:.85rem;cursor:pointer;padding:6px 8px;border-radius:8px;border:1px solid var(--line)}
+  .cl:hover{border-color:var(--accent)}
+  .dot{width:12px;height:12px;border-radius:3px;flex:0 0 12px}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+  .chip{font-size:.78rem;background:var(--accent-soft);color:var(--accent);border-radius:6px;padding:2px 8px;cursor:pointer}
+  .chip:hover{filter:brightness(.94)}
+
+  /* 打法 / 搭配 */
+  .flow{display:grid;gap:10px;font-size:.92rem}
+  .flow .fi{border:1px solid var(--line);border-radius:10px;padding:10px 14px}
+  .flow .fi b{color:var(--accent)}
+  .flow .fi .ev{display:block;margin-top:4px;font-size:.85rem;color:var(--muted);border-left:3px solid var(--hl-border);padding-left:9px}
+  .wb{display:grid;gap:10px}
+  .wbi{border-left:3px solid var(--green);background:var(--green-soft);border-radius:0 10px 10px 0;padding:10px 14px;font-size:.92rem}
+  .wbi .p{font-family:var(--serif);font-weight:600}
+  .wbi .u{color:var(--muted);font-size:.85rem}
+
+  /* 长难句 */
+  .sent{margin-bottom:20px}
+  .sent .src{font-family:var(--serif);font-size:1rem;background:var(--blue-soft);padding:12px 14px;border-radius:10px;border-left:3px solid var(--blue)}
+  .sent .anat{margin-top:8px;font-size:.9rem}
+  .sent .anat li{margin:4px 0 4px 18px}
+  .sent .tr{margin-top:8px;font-size:.92rem;color:var(--muted)}
+  .skel{color:var(--red);font-weight:600}
+
+  /* 80词表 */
+  .otab{width:100%;border-collapse:collapse;font-size:.86rem}
+  .otab th,.otab td{border:1px solid var(--line);padding:5px 8px;vertical-align:top}
+  .otab th{background:var(--accent-soft);color:var(--accent);font-size:.78rem}
+  .otab td.n{text-align:center;font-family:var(--serif);color:var(--muted);width:38px}
+  .otab .ow{font-family:var(--serif)}
+  .otab .oc{color:var(--muted);font-size:.82rem;display:block}
+  .otab td.hit{background:var(--green-soft)}
+  .otab td.hit .ow{color:var(--green);font-weight:700}
+  .hidecn .oc{filter:blur(4px);cursor:pointer}
+  .hidecn .oc.show{filter:none}
+  .tabwrap{overflow-x:auto}
+
+  #yd{position:fixed;z-index:60;display:none;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:4px 12px;font-size:.8rem;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+  .fail{background:var(--red-soft);border:1px solid var(--red);border-radius:10px;padding:10px 13px;margin-bottom:10px;font-size:.89rem;line-height:1.75}
+  .fail b{color:var(--red)}
+  .expl .fail{margin-top:0}
+  footer{color:var(--muted);font-size:.8rem;text-align:center;margin-top:30px}
+  /* 修：.layout 是 grid，grid 项默认 min-width:auto ⟹ 06 的 80 词表（min-content 425px）会把整个左栏撑到 475px，
+     窄屏下页面 scrollWidth 超出视口（2007–2009 三篇完形页同源、同病）。min-width:0 后 .tabwrap 才真正接管横滚。 */
+  main,aside{min-width:0}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">◀ 返回英语复盘中心</a>
+  <header>
+    <h1>朋友是基因上的远亲：一项全基因组研究、嗅觉基因与「不止于功利」的择友机制</h1>
+    <div class="sub">2015 年英语（一）真题 · Section I 完形填空（Use of English）· 280 词（黄皮书口径；脚本按答案回填后数得 279，差一词，未查明）· 6 段 · 建议 15 min · 话题：遗传学研究报道（源自 <i>IB Times</i>《国际财经时报》2014 年 7 月 15 日 <i>DNA of Friendship: Study Finds We Are Genetically Linked to Our Friends</i>「友谊 DNA：研究发现我们与朋友有基因联系」；所报道的论文是 Christakis 与 Fowler 发表于《美国国家科学院院刊》的 <i>Friendship and Natural Selection</i>）</div>
+    <div class="tags">
+      <span class="tag spoiler" onclick="this.classList.toggle('open')">🙈 答案（点击显示）：<span class="hid">1A 2B 3D 4C 5C 6A 7C 8D 9B 10D 11B 12D 13B 14C 15A 16D 17B 18A 19C 20A</span></span>
+      <span class="tag">难度：中（前 12 空顺手，<b>真正的坎只有 13 一个</b>：四个短语介词里挑谁连接「基因相似的朋友」与「功利性亲缘」）</span>
+      <span class="tag">✅ <b>Claude 盲做 19/20</b>（盲做答案先落盘、再裁答案条核对）——<b>唯一错题 13：选了 D along with，正确 B rather than</b>。盲做时标过三处犹豫（13 · 20 · 5），<b>错的正是犹豫最久的那一道</b></span>
+      <span class="tag">⭐ 本页最值钱的两段：<b>02+ 错题标本</b>（genetically ↔ functional 是一根轴的两端，连接它们只能用取舍）与 <b>02++ 「不止于表面」四连</b>——全文四次说「表面那层解释不够」，13 的答案早就写在这四句里</span>
+    </div>
+  </header>
+
+  <div class="layout">
+    <main>
+      <!-- ========== 00 脉络 ========== -->
+      <section class="card">
+        <h2><span class="n">00</span>读前一分钟 · 全文脉络（完形先读首句，再看结构）</h2>
+        <p class="note">完形的<b>首句从不设空</b>。本篇首句 <i>Though not biologically related, friends are as "related" as fourth cousins, sharing about 1% of genes.</i>——一句话给了三样东西：<b>话题</b>（朋友之间的基因相似）、<b>方向</b>（<code>Though not … , … as "related" as</code>＝<b>表面上不是亲戚，其实像亲戚</b>）、<b>关键词</b>（<code>related</code> 打了引号、<code>fourth cousins</code>、<code>1%</code>——<b>三个词在后文都会被再用一次</b>：③段 1% may seem ___ · ③段 their fourth cousins · 8 our <b>kin</b>）。</p>
+        <p class="note" style="margin-top:10px">⭐⭐ <b>本篇是「研究报道」型完形：结论 → 方法 → 数字的意义 → 更多发现与解释 → 发现的意义 → 方法的严谨</b>。认它的办法是看每段<b>在回答哪个问题</b>：①段「发现了什么、谁发现的」→ ②段「怎么做的」→ ③段「1% 算多吗」→ ④段「还发现了什么、为什么」→ ⑤段「有什么用」→ ⑥段「靠得住吗」。<b>研究报道的每个槽位都有自己的词族</b>（得出结论 concluded · 针对……做分析 conducted on · 两组对比 compared · 样本 samples · 推测 Perhaps · 确保 see that），见 <a href="#slots" style="color:var(--accent)">02+++ 槽位表</a>。</p>
+        <div class="flow">
+          <div class="fi"><b>① 段一 · 结论先行：朋友像四代表亲</b>——朋友之间虽然没有血缘关系，却和第四代表亲一样「亲」，大约有 1% 的基因相同；这是加利福尼亚大学和耶鲁大学在《美国国家科学院院刊》上发表的一项研究<b>所得出的结论</b>。
+            <span class="ev">1–2 空，<b>一对连体空</b>：<code>That is <b>1</b> a study, …, has <b>2</b>.</code>——中间夹着一整段插入语（published from … Sciences），<b>先把插入语划掉</b>，剩下 <code>That is ___ a study has ___</code>：has 后面没有宾语 ⟹ 1 只能是在从句里当宾语的 what，2 只能是及物动词 concluded（⟹ <a href="#s2" style="color:var(--accent)">长难句 2</a>）。</span></div>
+          <div class="fi"><b>② 段二 · 方法：全基因组分析、朋友组对陌生人组</b>——这项研究是<b>针对</b> 1,932 名研究对象进行的全基因组分析，<b>比较了</b>没有血缘关系的朋友组与没有血缘关系的陌生人组；两组<b>样本</b>里用的是同一批人。
+            <span class="ev">3–5 空，<b>方法槽的三个术语</b>：conduct an analysis <b>on</b> · <b>compared</b> pairs of A and B · both <b>samples</b>。⚠️ <code>which <b>4</b> pairs of …</code> 的 <b>which 指 analysis 不指 subjects</b>——人不会「比较成对的朋友和陌生人」，分析才会（⟹ <a href="#s3" style="color:var(--accent)">长难句 3</a>）。</span></div>
+          <div class="fi"><b>③ 段三 · 1% 算多吗：对遗传学家来说不少</b>——1% 看起来也许<b>微不足道</b>，但对遗传学家来说并非如此；正如加州大学圣迭戈分校的医学遗传学教授詹姆斯·福勒所说：「大多数人连自己的第四代表亲都不<b>认识</b>，却不知怎么就能挑中那些<b>和我们亲戚相像</b>的人做朋友。」
+            <span class="ev">6–8 空。❶ 句 <code>While 1% may seem <b>6</b>, it is not so to a geneticist</code>——<b>「看起来 X，其实不 X」</b>，6 取遗传学家看法的反面 ⟹ insignificant。❷ 句福勒的话用 <code>do not even … but somehow manage to</code> 造反差：<b>连认都不认识，却挑得中</b> ⟹ 7 know、8 resemble（回扣首句 fourth cousins）。</span></div>
+          <div class="fi"><b>④ 段四 · 更多发现与试探性解释</b>——研究<b>还</b>发现，朋友之间共有的是嗅觉基因，而不是免疫基因；嗅觉基因为什么相似，目前还难以解释；<b>也许</b>正如研究团队所说，它把我们吸引到相似的环境中，但事情没那么简单；可能有许多机制共同作用，<b>驱使</b>我们选择基因相似的朋友，<b>而不是</b>那种「有好处才做朋友」的「功利性亲缘」！
+            <span class="ev">9–14 空，<b>全篇最重的一段（六个空，3 分）</b>，也是<b>全篇从「报道」转向「解释」的那一段</b>：<code>difficult to explain, for now</code> → <code>as the team suggests</code> → <code>but there is more to it</code> → <code>There could be</code>——<b>一路都是推测语气</b> ⟹ 10 填推测词 Perhaps。<br>⭐⭐ <b>❹ 句是全篇唯一的坎</b>：<code>genetically similar friends <b>13</b> "functional kinship" of being friends with <b>14</b>!</code>——<b>引号 ＋ 感叹号</b>是作者在调侃后面那种「为了好处交朋友」的解释 ⟹ 13 取舍（rather than），不是伴随（⟹ <a href="#axis" style="color:var(--accent)">02+ 错题标本</a>）。</span></div>
+          <div class="fi"><b>⑤ 段五 · 发现的意义：相似基因进化得更快</b>——这项研究的一个惊人发现是，这些相似的基因似乎比其他基因进化得<b>更快</b>；研究它有助于<b>理解</b>人类进化为什么在过去三万年里加快了步伐，而社会环境是其中一个主要的<b>促成</b>因素。
+            <span class="ev">15–17 空。<code>evolving <b>15</b> than other genes</code> 的方向由<b>下一句</b>的 <code>picked pace</code>（加速）定 ⟹ faster；16 help ___ why ⟹ understand；17 <code>a major ___ factor</code> ⟹ contributory（促成的）。</span></div>
+          <div class="fi"><b>⑥ 段六 · 方法的严谨：不只是「同族相亲」</b>——研究者说，这些发现并不只是在说明人们<b>倾向于</b>与<b>族裔</b>背景相似的人交朋友；尽管所有研究对象都选自一个欧洲裔人群，研究者仍小心地<b>确保</b>所有对象——朋友和陌生人——都来自同一个人群。
+            <span class="ev">18–20 空。<b>这一段是在堵一个漏洞</b>：「朋友基因像，会不会只因为大家都爱和同族人交朋友？」——研究者答：朋友和陌生人都从同一族群里取，族群这个变量已经被控制住了 ⟹ 19 ethnic、20 <b>see that＝确保</b>（熟词僻义）。</span></div>
+        </div>
+        <p class="note" style="margin-top:14px">📌 <b>第二条强线索：全文四次说「表面那层不够」</b>——① 首句 <code>not biologically related</code> 却 <code>"related"</code> · ③ 1% <code>may seem</code> 小，<code>it is not so</code> · ④ <code>there is more to it</code> · ⑥ <code>do not <u>simply</u> explain</code>。<b>作者一路在把读者从「表面解释」往「更深一层」推</b>：13 空后面那个带引号的「功利性亲缘」正是被推开的表面解释；18 选「无意识的倾向」而不选「刻意的决定」也是同一个方向（⟹ <a href="#deeper" style="color:var(--accent)">02++ 四连表</a>）。</p>
+        <p class="note" id="bg">🎭 <b>读前背景（不影响做题，但读懂了心里有底）</b>：</p>
+        <div class="tabwrap"><table class="otab">
+          <tr><th>文中说法</th><th>背景</th><th>管哪个空</th></tr>
+          <tr><td><span class="ow">a study … in the Proceedings of the National Academy of Sciences</span></td><td>论文是尼古拉斯·克里斯塔基斯（耶鲁）与詹姆斯·福勒（加州大学圣迭戈分校）的 <i>Friendship and Natural Selection</i>，2014 年 7 月刊于《美国国家科学院院刊》（PNAS）。<b>本文是《国际财经时报》对它的新闻报道，不是论文本身</b>——所以全篇是「记者转述 ＋ 引用研究者原话」的口吻</td><td>1／2</td></tr>
+          <tr><td><span class="ow">fourth cousins</span></td><td><b>第四代表亲</b>：共同祖先要往上数到<b>高祖父母的父母</b>（great-great-great-grandparents）那一辈。平均而言，这种远亲之间只多共享约 1% 的基因——<b>这就是首句「1%」的来历</b>。这么远的亲戚，大多数人一辈子都不认识</td><td>7／8</td></tr>
+          <tr><td><span class="ow">1,932 unique subjects</span></td><td>数据来自美国著名的<b>弗雷明汉心脏研究</b>（Framingham Heart Study）。unique 在这里取「<b>各不相同、不重复计数的</b>」：同一个人既可能出现在某对朋友里，也可能被配进陌生人组，<b>但按人头只算一次</b>——所以才有 <code>The same people were used in both samples</code></td><td>4／5</td></tr>
+          <tr><td><span class="ow">genes for smell … not genes for immunity</span></td><td>论文的原话更进一步：朋友在<b>嗅觉</b>相关基因上<b>更相似</b>，在<b>免疫</b>相关基因上反而<b>更不相似</b>（不同的免疫基因组合，对一个群体抵御疾病有利）。考卷只取了前半句</td><td>9</td></tr>
+          <tr><td><span class="ow">"functional kinship"</span></td><td>⭐ 这个说法<b>本是论文作者自己的术语</b>：把友谊看成一种「<b>功能上的亲缘</b>」——朋友像亲人一样互相扶持。<b>但本文记者把它和 <code>friends with benefits</code> 连在一起、打上引号、句末用感叹号</b>，把它说成了「有好处才做朋友」的功利关系，放在「基因驱动」的对面。<b>做题只认本文的对立</b>，不去管论文原意（⟹ <a href="#axis" style="color:var(--accent)">02+</a>）</td><td>13／14</td></tr>
+          <tr><td><span class="ow">friends with benefits</span></td><td>字面＝「有好处的朋友」。⚠️ 这个短语在英语口语里另有一个很常见的俚语义（指<b>只有身体关系、不谈恋爱</b>的朋友）——<b>记者句末那个感叹号就是在玩这个双关</b>，所以整句带着调侃的语气。考试只取字面义「互惠互利的朋友」</td><td>14</td></tr>
+          <tr><td><span class="ow">a population of European extraction</span></td><td>弗雷明汉研究的参与者绝大多数是<b>欧洲裔</b>美国人。extraction 的熟词僻义＝<b>血统、出身</b>（of Irish extraction＝爱尔兰血统）。研究者把朋友和陌生人都从这一个族群里取，就排除了「基因像只是因为同族」这种解释</td><td>19／20</td></tr>
+        </table></div>
+      </section>
+      <!-- ========== 01 正文 ========== -->
+      <section class="card">
+        <h2><span class="n">01</span>完形正文（20 空 · 点空格跳到该题）
+          <button class="allbtn" onclick="toggleAll()" style="margin-left:auto">译文 开/关</button>
+          <button class="allbtn" onclick="revealAll()">显示全部答案</button>
+        </h2>
+        <p class="note">🟨 点<b>空格</b>＝跳到下面对应的解析卡（先自己选，再看解析）｜ 🟡 黄底词＝生词卡，点开看词根/辨析 ｜ 蓝色虚线＝长难句 ｜ 选中任意单词浮出「查有道」</p>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">①</span><span class="ls" onclick="go('s1')">Though not <span class="tk" data-w="bio">biologically related</span>, friends are as "<span class="tk" data-w="related">related</span>" as <span class="tk" data-w="fourthcousin">fourth cousins</span>, sharing about 1% of <span class="tk" data-w="gene">genes</span>.</span> <span class="ls" onclick="go('s2')">That is <span class="bk" data-n="1"><span class="idx">1</span>___</span> a study, published from the University of California and Yale University in the <span class="tk" data-w="proceedings">Proceedings</span> of the National Academy of Sciences, has <span class="bk" data-n="2"><span class="idx">2</span>___</span>.</span></p>
+          <div class="zh">朋友之间虽然没有血缘关系，却和第四代表亲一样「亲」，大约有 1% 的基因相同。这就是加利福尼亚大学和耶鲁大学发表在《美国国家科学院院刊》上的一项研究<b>所得出的结论</b>。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">②</span><span class="ls" onclick="go('s3')">The study is a <span class="tk" data-w="genomewide">genome-wide</span> analysis <span class="tk" data-w="conduct">conducted</span> <span class="bk" data-n="3"><span class="idx">3</span>___</span> 1,932 <span class="tk" data-w="unique">unique</span> <span class="tk" data-w="subject">subjects</span> which <span class="bk" data-n="4"><span class="idx">4</span>___</span> pairs of <span class="tk" data-w="unrelated">unrelated</span> friends and unrelated strangers.</span> The same people were used in both <span class="bk" data-n="5"><span class="idx">5</span>___</span>.</p>
+          <div class="zh">这项研究是<b>针对</b> 1,932 名互不重复的研究对象所做的全基因组分析，它<b>比较了</b>成对的、没有血缘关系的朋友和成对的、没有血缘关系的陌生人。两组<b>样本</b>中用的是同一批人。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">③</span>While 1% may seem <span class="bk" data-n="6"><span class="idx">6</span>___</span>, it is not so to a <span class="tk" data-w="geneticist">geneticist</span>. <span class="ls" onclick="go('s4')">As James Fowler, professor of medical genetics at UC San Diego, says, "Most people do not even <span class="bk" data-n="7"><span class="idx">7</span>___</span> their fourth cousins but <span class="tk" data-w="somehow">somehow</span> manage to select as friends the people who <span class="bk" data-n="8"><span class="idx">8</span>___</span> our <span class="tk" data-w="kin">kin</span>."</span></p>
+          <div class="zh">虽然 1% 看起来也许<b>微不足道</b>，但对遗传学家来说并非如此。正如加州大学圣迭戈分校的医学遗传学教授詹姆斯·福勒所说：「大多数人连自己的第四代表亲都不<b>认识</b>，却不知怎么地总能挑中那些<b>和我们的亲戚相像</b>的人做朋友。」</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">④</span>The study <span class="bk" data-n="9"><span class="idx">9</span>___</span> found that the genes for <span class="tk" data-w="smell">smell</span> were something shared in friends but not genes for <span class="tk" data-w="immunity">immunity</span>. Why this similarity exists in smell genes is difficult to explain, <span class="tk" data-w="fornow">for now</span>. <span class="ls" onclick="go('s5')"><span class="bk" data-n="10"><span class="idx">10</span>___</span>, as the team <span class="tk" data-w="suggest">suggests</span>, it <span class="tk" data-w="draw">draws</span> us to similar environments but there is more <span class="bk" data-n="11"><span class="idx">11</span>___</span> it.</span> <span class="ls" onclick="go('s6')">There could be many <span class="tk" data-w="mechanism">mechanisms</span> working together that <span class="bk" data-n="12"><span class="idx">12</span>___</span> us in choosing <span class="tk" data-w="genetically">genetically</span> similar friends <span class="bk" data-n="13"><span class="idx">13</span>___</span> "<span class="tk" data-w="kinship">functional kinship</span>" of being friends with <span class="bk" data-n="14"><span class="idx">14</span>___</span>!</span></p>
+          <div class="zh">这项研究<b>还</b>发现，朋友之间共有的是嗅觉基因，而不是免疫基因。嗅觉基因上为何存在这种相似，目前还难以解释。<b>也许</b>正如研究团队所说，这种相似把我们吸引到相似的环境中去，但事情<b>没那么简单</b>。可能有许多机制在共同作用，<b>驱使</b>我们选择基因相似的朋友，<b>而不是</b>去结交那种「有好处才做朋友」的「功利性亲缘」！</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">⑤</span>One of the <span class="tk" data-w="remarkable">remarkable</span> <span class="tk" data-w="finding">findings</span> of the study was that the similar genes seem to be <span class="tk" data-w="evolve">evolving</span> <span class="bk" data-n="15"><span class="idx">15</span>___</span> than other genes. <span class="ls" onclick="go('s7')">Studying this could help <span class="bk" data-n="16"><span class="idx">16</span>___</span> why human evolution <span class="tk" data-w="pickpace">picked pace</span> in the last 30,000 years, with social environment being a major <span class="bk" data-n="17"><span class="idx">17</span>___</span> factor.</span></p>
+          <div class="zh">这项研究的一个惊人发现是：这些相似的基因似乎比其他基因进化得<b>更快</b>。研究这一点，有助于<b>理解</b>人类进化为什么在过去三万年里加快了步伐——而社会环境是其中一个主要的<b>促成</b>因素。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">⑥</span>The findings do not simply explain people's <span class="bk" data-n="18"><span class="idx">18</span>___</span> to <span class="tk" data-w="befriend">befriend</span> those of similar <span class="bk" data-n="19"><span class="idx">19</span>___</span> backgrounds, say the researchers. <span class="ls" onclick="go('s8')">Though all the subjects were <span class="tk" data-w="drawnfrom">drawn from</span> a <span class="tk" data-w="population">population</span> of European <span class="tk" data-w="extraction">extraction</span>, <span class="tk" data-w="caretaken">care was taken</span> to <span class="bk" data-n="20"><span class="idx">20</span>___</span> that all subjects, friends and strangers, were taken from the same population.</span></p>
+          <div class="zh">研究人员说，这些发现并不只是在说明人们<b>倾向于</b>和<b>族裔</b>背景相似的人交朋友。尽管所有研究对象都选自一个欧洲裔人群，研究人员仍小心地<b>确保</b>所有对象——无论是朋友还是陌生人——都取自同一个人群。</div>
+        </div>
+      </section>
+      <!-- ========== 02 逐空精解 ========== -->
+      <section class="card">
+        <h2><span class="n">02</span>逐空精解（点选项即判 · 再看解析）</h2>
+        <div class="score">
+          <span><span class="v" id="sDone">0</span>/20 已答</span>
+          <span><span class="v" id="sRight">0</span> 对</span>
+          <span>折合 <span class="v" id="sPt">0</span> 分 / 10</span>
+          <button class="rst" onclick="location.reload()">↺ 重做</button>
+        </div>
+        <p class="note">每空 0.5 分。<b>先在心里说出「这个空要填什么词性、什么方向」再点选项</b>。本篇前半（1–12）是<b>研究报道的套话</b>，会就白拿；<b>后半要盯住两样东西</b>：④段那一串<b>推测语气</b>（difficult to explain / Perhaps / could be）和全文反复出现的<b>「不止表面那一层」</b>——13、18 两个空都是在「表面解释」与「深层机制」之间二选一，<b>一律站深层那边</b>。</p>
+
+        <div class="q" id="q1" data-ans="0">
+          <div class="qhead"><span class="qno">1</span><span class="qt c-collo">句型 · 名词性从句缺宾语</span><span class="qpos">That is ＋ ___ ＋ a study（插入语）has ___</span></div>
+          <span class="stem">That is <em>1</em> a study, <b>published from the University of California and Yale University in the Proceedings of the National Academy of Sciences</b>, has <em>2</em>.</span>
+          <div class="opts">
+            <div class="opt">A what<span class="gl">（……的东西）所……的</span></div>
+            <div class="opt">B why<span class="gl">为什么</span></div>
+            <div class="opt">C how<span class="gl">如何</span></div>
+            <div class="opt">D when<span class="gl">何时</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>That is 后面的<b>表语从句引导词</b>。四个选项都能引导表语从句，<b>比的是它在从句里当什么成分</b>：what 是代词（能当主语、宾语），why／how／when 是副词（只能当状语）。
+            <span class="lbl">🔗 线索</span>① <b>先划掉插入语</b>（两个逗号之间那一长串 published from … Sciences），句子缩成 <code>That is ___ a study has ___.</code>；② has 是助动词，后面的空 2 是及物动词的过去分词，<b>它的宾语不在句末——被提到了从句开头</b>；③ That 回指首句那个事实（朋友像四代表亲）——「这就是研究得出的<b>东西</b>」。
+            <span class="lbl">✅ A what</span>＝the thing(s) that，在从句里当 has concluded 的<b>宾语</b>。代入＝「这就是一项研究<b>所得出的结论</b>」。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>why：副词，从句 <code>a study has concluded</code> 缺宾语，why 补不上。意思也不对：首句是一条<b>新发现</b>，不是研究的「原因」。</div>
+              <div class="wr"><span class="l">C</span>how：副词，同样补不上宾语；「这就是研究得出结论的方式」——首句讲的是结论内容，不是方式。</div>
+              <div class="wr"><span class="l">D</span>when：副词，补不上宾语；首句也不是一个时间点。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>引导词空＝「从句缺什么就填什么」</b>（与 <a href="2014_完形_像练肌肉一样练大脑.html#q1" style="color:var(--accent)">2014 完形 1 题</a>同一把刀：那年缺地点 ⟹ where，这年缺宾语 ⟹ what）。⭐ <b>缺主语／宾语只能填代词</b>（what／who／which），<b>缺状语才填副词</b>（where／when／why／how）。<code>That is what … has concluded／found／shown</code> 是研究报道的开场套话，作文可直接用。这是<b>一对连体空</b>：1 定了「从句缺宾语」，2 就只能是及物动词（⟹ <a href="套路库_阅读.html#R50" style="color:var(--accent)">R50</a>）。
+          </div>
+        </div>
+
+        <div class="q" id="q2" data-ans="1">
+          <div class="qhead"><span class="qno">2</span><span class="qt c-word">词义辨析 · 研究对一个事实做了什么</span><span class="qpos">That is what a study … has ＋ ___</span></div>
+          <span class="stem">That is <em>1</em> a study, published from the University of California and Yale University in the Proceedings of the National Academy of Sciences, has <em>2</em>.（That＝首句：friends are as "related" as fourth cousins, sharing about 1% of genes）</span>
+          <div class="opts">
+            <div class="opt">A defended<span class="gl">为……辩护，捍卫</span></div>
+            <div class="opt">B concluded<span class="gl">得出结论，推断出</span></div>
+            <div class="opt">C withdrawn<span class="gl">撤回，收回</span></div>
+            <div class="opt">D advised<span class="gl">建议，劝告</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>从句谓语的过去分词（has ___），主语是 a study，宾语是提前的 what（＝首句那个事实）。<b>问的是：一项研究会对一条新发现做什么？</b>
+            <span class="lbl">🔗 线索</span>① 首句用<b>一般现在时</b>客观陈述一条新发现（are as related as · sharing），没有任何争议、撤回、建议的色彩；② 下文②段起一路讲这项研究<b>怎么做的、发现了什么</b>——首句就是它的<b>结论</b>。
+            <span class="lbl">✅ B concluded</span>得出结论。<code>what a study has concluded</code>＝研究得出的结论。代入＝「这就是……一项研究<b>所得出的结论</b>」。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>defended：辩护——预设这个观点<b>先被人质疑过</b>；文中没有任何反对者，首句也不是争议观点。研究是「发现」它，不是「捍卫」它。</div>
+              <div class="wr"><span class="l">C</span>withdrawn：撤回——那就成了「研究收回了这个结论」，与全文一路报道这项发现<b>方向全反</b>。</div>
+              <div class="wr"><span class="l">D</span>advised：建议——首句是<b>事实</b>（朋友有 1% 相同基因），不是<b>建议</b>（该做什么）；研究不会「建议」一个基因事实。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>研究报道的「出处槽」动词族</b>：study／research ＋ <b>concluded／found／showed／revealed／suggested</b>——<b>都是「得出、发现」</b>；defend／withdraw／advise／recommend 这类预设了争议或建议的动词，放在研究结论前面一般都错（⟹ <a href="#slots" style="color:var(--accent)">02+++ 槽位表</a>）。
+          </div>
+        </div>
+
+        <div class="q" id="q3" data-ans="3">
+          <div class="qhead"><span class="qno">3</span><span class="qt c-collo">固定搭配 · conduct an analysis on</span><span class="qpos">a genome-wide analysis conducted ＋ ___ ＋ 1,932 unique subjects</span></div>
+          <span class="stem">The study is a genome-wide analysis <b>conducted</b> <em>3</em> 1,932 unique <b>subjects</b> which <em>4</em> pairs of unrelated friends and unrelated strangers.</span>
+          <div class="opts">
+            <div class="opt">A for<span class="gl">为了；给</span></div>
+            <div class="opt">B with<span class="gl">和；用</span></div>
+            <div class="opt">C by<span class="gl">由（施动者）；通过</span></div>
+            <div class="opt">D on<span class="gl">针对，对……（做研究）</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>过去分词短语 <code>conducted ___ 1,932 unique subjects</code> 作 analysis 的<b>后置定语</b>（＝which was conducted …），空格是介词，决定 subjects 和「做分析」是什么关系。
+            <span class="lbl">🔗 线索</span>⭐ <b>subjects 的熟词僻义＝受试者、研究对象</b>——他们是被分析的一方。「对谁做分析」＝<b>analysis on sb</b>（research／study／experiment／test <b>on</b> sb 同理）。
+            <span class="lbl">✅ D on</span>针对。<code>an analysis conducted on 1,932 subjects</code>＝针对 1,932 名研究对象进行的分析。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>for：「为研究对象而做的分析」——subjects 是<b>被研究的</b>，不是研究的<b>受益人</b>。</div>
+              <div class="wr"><span class="l">B</span>with：「和研究对象一起做／用研究对象做」——把 subjects 当成了<b>合作者或工具</b>；with 用在 conducted with 后面通常接合作机构。</div>
+              <div class="wr"><span class="l">C</span>by：「由研究对象进行的分析」——<b>by 引出施动者</b>，而做分析的是研究人员，不是受试者。<b>这是最像的一个干扰项</b>：被动的 conducted 让人条件反射想接 by。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>被动分词后面别条件反射接 by</b>：先问介词后面的名词是<b>施动者</b>（by）还是<b>对象</b>（on）。<b>研究类名词 ＋ on</b>：research on · a study on · an experiment on mice · tests on patients · an analysis on／of data。⭐ <b>subject＝受试者</b>在研究报道里极高频，见 <a href="2010_完形_霍桑效应遭到质疑.html" style="color:var(--accent)">2010 完形</a>。
+          </div>
+        </div>
+
+        <div class="q" id="q4" data-ans="2">
+          <div class="qhead"><span class="qno">4</span><span class="qt c-word">词义辨析 · 分析对两组人做什么</span><span class="qpos">an analysis … which ＋ ___ ＋ pairs of A and B</span></div>
+          <span class="stem">The study is a genome-wide <b>analysis</b> conducted <em>3</em> 1,932 unique subjects <b>which</b> <em>4</em> pairs of unrelated <b>friends</b> and unrelated <b>strangers</b>.</span>
+          <div class="opts">
+            <div class="opt">A separated<span class="gl">分开，隔开</span></div>
+            <div class="opt">B sought<span class="gl">寻找，寻求（seek 的过去式）</span></div>
+            <div class="opt">C compared<span class="gl">比较，对比</span></div>
+            <div class="opt">D connected<span class="gl">连接，使联系</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>which 引导的定语从句的谓语。⚠️ <b>先找 which 的先行词</b>：离它最近的是 subjects（人），但人不会对「成对的朋友和陌生人」做什么——<b>先行词是 analysis</b>（隔着一个分词短语）。
+            <span class="lbl">🔗 线索</span>① 宾语是<b>两组</b>：pairs of unrelated friends <b>and</b> unrelated strangers；② 研究要证明的是「朋友比陌生人基因更像」——<b>「更」字要有参照组</b>；③ 下一句 <code>The same people were used in both ___</code>——<b>两组</b>，正是对照实验的样子。
+            <span class="lbl">✅ C compared</span>比较。一项分析<b>比较</b>朋友组与陌生人组的基因相似度——<b>对照组设计</b>的标准说法。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>separated：分开——陌生人本来就互不相识，谈不上「把成对的陌生人分开」；而且分开是一个<b>动作</b>，不是分析要做的<b>事</b>。</div>
+              <div class="wr"><span class="l">B</span>sought：寻找——找研究对象是<b>分析之前的准备工作</b>，不是分析本身；主语 analysis 也不会去「寻找」人。</div>
+              <div class="wr"><span class="l">D</span>connected：把……联系起来——暗示朋友组和陌生人组之间有关联；研究恰恰是要把它们<b>对照</b>，不是连接。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>定语从句的先行词不一定是最近的名词</b>：which 前隔着一个分词短语时，<b>先把分词短语括起来</b>再找（⟹ <a href="#s3" style="color:var(--accent)">长难句 3</a>）。⭐ 研究报道里看到 <b>A and B 两组并列</b>，动词多半是 compared（compare A with B／compare pairs of A and B）。
+          </div>
+        </div>
+
+        <div class="q" id="q5" data-ans="2">
+          <div class="qhead"><span class="qno">5</span><span class="qt c-word">词义辨析 · both 回指上文的两组</span><span class="qpos">The same people were used in both ＋ ___</span></div>
+          <span class="stem">The same people were used in <b>both</b> <em>5</em>.（上句：… which <em>4</em> <b>pairs of unrelated friends and unrelated strangers</b>）</span>
+          <div class="opts">
+            <div class="opt">A tests<span class="gl">测试，检验</span></div>
+            <div class="opt">B objects<span class="gl">物体；对象，目标</span></div>
+            <div class="opt">C samples<span class="gl">样本，样品</span></div>
+            <div class="opt">D examples<span class="gl">例子，范例</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>介词 in 的宾语，名词复数，前有 <b>both</b>——<b>both 必须回指上文已经出现的「两个」</b>。
+            <span class="lbl">🔗 线索</span>上一句只出现过一个「二」：<b>朋友组 ＋ 陌生人组</b>。<b>这两组都是从人群里抽出来做统计比较的一批人</b>——统计学的叫法就是「样本」。同一批人（1,932 人）既能配成朋友对，也能配成陌生人对，所以「两组样本里用的是同一批人」。
+            <span class="lbl">✅ C samples</span>样本。代入＝「两组<b>样本</b>中用的是同一批人」。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>tests：两项测试——<b>上文只有一项分析，没有提过两项测试</b>，both 回指不上。<b>它最像</b>：subjects（受试者）让人联想到「测试」。这是盲做时最后排掉的一个。</div>
+              <div class="wr"><span class="l">B</span>objects：物体／对象——指单个的「东西」，不是一组人；「在两个对象里用了同一批人」说不通。</div>
+              <div class="wr"><span class="l">D</span>examples：例子、范例——是拿来<b>说明观点</b>的个例；研究里的两组人不是「例子」，是统计比较的<b>样本</b>。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>both／either／the two 开头的名词空＝回上文数「二」</b>：上文有哪两个东西，空格就是它们的<b>上位类名</b>（⟹ <a href="套路库_阅读.html#R51" style="color:var(--accent)">R51</a>）。⭐ <b>研究报道的「方法槽」名词</b>：sample（样本）· subject（受试者）· control group（对照组）· variable（变量）· population（总体，本篇⑥段）。
+          </div>
+        </div>
+
+        <div class="q" id="q6" data-ans="0">
+          <div class="qhead"><span class="qno">6</span><span class="qt c-context">上下文语义 · 看似 X，其实不 X</span><span class="qpos">While 1% may seem ___, it is not so to a geneticist</span></div>
+          <span class="stem"><b>While</b> 1% <b>may seem</b> <em>6</em>, it is <b>not so</b> to a geneticist.</span>
+          <div class="opts">
+            <div class="opt">A insignificant<span class="gl">微不足道的，无关紧要的</span></div>
+            <div class="opt">B unexpected<span class="gl">出乎意料的</span></div>
+            <div class="opt">C unreliable<span class="gl">不可靠的</span></div>
+            <div class="opt">D incredible<span class="gl">难以置信的；极好的</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>While 让步从句里的表语形容词，评价 1% 这个数。⚠️ <b>四个选项全带否定前缀</b>（in-／un-／un-／in-）——前缀帮不上忙，<b>要剥掉前缀比词根</b>：significant · expected · reliable · credible。
+            <span class="lbl">🔗 线索</span>① <b>句型</b>：<code>While X may seem ___, it is not so to Y</code>＝「在一般人看来是 ___，在 Y 看来<b>不是</b>」⟹ 空格填的是<b>遗传学家所否定的那个看法</b>；② 遗传学家怎么看？首句已经说了：1% 就<b>相当于第四代表亲</b>——在遗传学上<b>很有分量</b>；③ 一般人怎么看？<b>1% 这个数字看上去很小</b>。⟹ 空格＝「很小、不重要」。
+            <span class="lbl">✅ A insignificant</span>微不足道的（＝in-＋significant）。代入＝「1% 看起来也许<b>微不足道</b>，但对遗传学家来说并非如此」——遗传学家眼中它 significant。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>unexpected：「1% 看起来出乎意料，但对遗传学家来说并非出乎意料」——上下文没谈任何人的<b>预期</b>；而且福勒下一句的「不知怎么就挑中了」恰恰说明遗传学家也觉得<b>意外</b>，方向拧了。</div>
+              <div class="wr"><span class="l">C</span>unreliable：不可靠——变成在质疑<b>数据真假</b>；全文没有人怀疑这个 1%，⑥段还专门讲研究如何严谨。</div>
+              <div class="wr"><span class="l">D</span>incredible：难以置信／极大——若取「极大」，就成了「1% 看起来很大，遗传学家觉得不大」，<b>方向正好反</b>（遗传学家觉得它<b>大</b>）；若取「难以置信」，错因同 B。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐⭐ <b>「may seem X, it is not so to Y」＝一个句子里放了两种看法</b>：空格填<b>被否定的那一种</b>，所以先找 Y（这里是遗传学家）的真实看法，再<b>取反</b>（⟹ 新卡 <a href="套路库_阅读.html#R194" style="color:var(--accent)">R194</a>）。⭐ <b>选项全带否定前缀时，把前缀剥掉再比词根</b>——四个 in-／un- 放在一起是在考你<b>会不会只盯着「不」字</b>。
+          </div>
+        </div>
+
+        <div class="q" id="q7" data-ans="2">
+          <div class="qhead"><span class="qno">7</span><span class="qt c-context">上下文语义 · not even A but somehow B</span><span class="qpos">Most people do not even ___ their fourth cousins but somehow manage to …</span></div>
+          <span class="stem">"Most people do <b>not even</b> <em>7</em> their fourth cousins <b>but somehow</b> manage to select as friends the people who <em>8</em> our kin."</span>
+          <div class="opts">
+            <div class="opt">A visit<span class="gl">拜访，探望</span></div>
+            <div class="opt">B miss<span class="gl">想念；错过</span></div>
+            <div class="opt">C know<span class="gl">认识，知道</span></div>
+            <div class="opt">D seek<span class="gl">寻找，寻求</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>福勒引语里第一个并列谓语（do not even ___ their fourth cousins），与第二个谓语 <code>somehow manage to select …</code> 由 <b>but</b> 连成<b>反差</b>。
+            <span class="lbl">🔗 线索</span>① <b>not even</b>＝「连……都不」——空格要填一件<b>最起码、最低限度</b>的事；② <b>but somehow</b>＝「可是不知怎么」——后半句是一件<b>看起来需要前半句作基础</b>的事（挑中像亲戚的人）。「<b>连认都不认识</b>，却能挑中像他们的人」——反差最大、也最合常识（第四代表亲关系太远，大多数人确实不认识）。
+            <span class="lbl">✅ C know</span>认识。代入＝「大多数人连自己的第四代表亲都<b>不认识</b>，却不知怎么地总能挑中和亲戚相像的人做朋友」。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>visit：「连第四代表亲都不去拜访」——拜访的前提是<b>认识</b>；而且「不拜访」和「挑中像他们的人」之间没有反差可言。</div>
+              <div class="wr"><span class="l">B</span>miss：想念——同样预设<b>认识</b>；「不想念」也构不成 but 要的反差。</div>
+              <div class="wr"><span class="l">D</span>seek：寻找——seek 后面一般接物（seek help／advice）；「寻找表亲」与原意无关，且和后半句的 select 语义重叠，构不成反差。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>三缺一</b>：visit／miss／seek 三个都<b>预设你已经认识这个人</b>，只有 know 是那个「最起码的前提」——<b>not even 后面要填的正是「最起码的那一步」</b>（⟹ <a href="套路库_阅读.html#R74" style="color:var(--accent)">R74</a>）。✍️ <b>not even A, but somehow B</b>＝「连 A 都没有，却不知怎么做到了 B」——写「不可思议」的现成句式。
+          </div>
+        </div>
+
+        <div class="q" id="q8" data-ans="3">
+          <div class="qhead"><span class="qno">8</span><span class="qt c-context">上下文语义 · 回扣首句的「像亲戚」</span><span class="qpos">select as friends the people who ＋ ___ ＋ our kin</span></div>
+          <span class="stem">"Most people do not even <em>7</em> their fourth cousins but somehow manage to select as friends the people who <em>8</em> our <b>kin</b>."（首句：friends are as "related" as <b>fourth cousins</b>）</span>
+          <div class="opts">
+            <div class="opt">A surpass<span class="gl">超过，胜过</span></div>
+            <div class="opt">B influence<span class="gl">影响</span></div>
+            <div class="opt">C favor<span class="gl">偏爱；有利于；（口）长得像</span></div>
+            <div class="opt">D resemble<span class="gl">像，与……相似</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>who 引导的定语从句的谓语，修饰 the people（被挑中做朋友的人），宾语是 our kin（我们的亲戚）。<b>问的是：朋友和亲戚是什么关系？</b>
+            <span class="lbl">🔗 线索</span>① <b>全文的主张</b>就是一个「像」字：首句 friends are as "related" as fourth cousins、④段 genetically <b>similar</b> friends、⑤段 the <b>similar</b> genes；② kin 在这里就是回指上半句的 fourth cousins——<b>不认识四代表亲，却挑中了像四代表亲的人</b>。
+            <span class="lbl">✅ D resemble</span>与……相似（及物动词，不接介词）。代入＝「挑中那些<b>和我们的亲戚相像</b>的人做朋友」。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>surpass：超过——引入了<b>优劣比较</b>（朋友比亲戚强）；全文只谈相似，不谈谁更好。</div>
+              <div class="wr"><span class="l">B</span>influence：影响——引入了<b>作用关系</b>（朋友影响亲戚）；文中朋友和四代表亲之间没有互动。</div>
+              <div class="wr"><span class="l">C</span>favor：偏爱、有利于——引入了<b>利害关系</b>。⚠️ favor 口语里确有「长得像（父母）」的义项（She favors her mother.），但那说的是<b>外貌随谁</b>；本文说的是<b>基因</b>层面的相似，标准说法是 resemble。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>三缺一</b>：surpass（比高低）／influence（施加作用）／favor（给好处）三个都是<b>一方对另一方做什么</b>，只有 resemble 是<b>双方对称的「像」</b>——与全文的 similar 同族（⟹ <a href="套路库_阅读.html#R74" style="color:var(--accent)">R74</a>）。⚠️ <b>resemble 是及物动词</b>：resemble sb，<b>不说 resemble with／to sb</b>，也<b>不用进行时和被动</b>——语法填空与作文的高频错点。
+          </div>
+        </div>
+
+        <div class="q" id="q9" data-ans="1">
+          <div class="qhead"><span class="qno">9</span><span class="qt c-logic">逻辑关系 · 递进（又一项发现）</span><span class="qpos">The study ＋ ___ ＋ found that …（④段首）</span></div>
+          <span class="stem">The study <em>9</em> found that the genes for smell were something shared in friends but not genes for immunity.（上文：①段已报道第一项发现——朋友共享约 1% 的基因）</span>
+          <div class="opts">
+            <div class="opt">A again<span class="gl">再一次，又</span></div>
+            <div class="opt">B also<span class="gl">也，还</span></div>
+            <div class="opt">C instead<span class="gl">反而，却</span></div>
+            <div class="opt">D thus<span class="gl">因此，从而</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>夹在主语 The study 与谓语 found 之间的<b>副词</b>——⚠️ 位置在句中，但<b>考的是段与段之间的逻辑</b>：④段的新发现与①段的发现是什么关系。
+            <span class="lbl">🔗 线索</span>① ①段：朋友共享约 1% 的基因（<b>总体上</b>相似）；④段：共享的是嗅觉基因、不是免疫基因（<b>具体是哪些</b>基因相似）——<b>同一项研究的第二个发现，往深里补一层</b>；② ⑤段首又来一句 <code>One of the remarkable findings of the study was …</code>——<b>研究报道就是一项一项地列发现</b>。
+            <span class="lbl">✅ B also</span>还。代入＝「这项研究<b>还</b>发现……」——递进，补充新信息。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>again：再一次——意味着<b>同样的发现又出现了一遍</b>（重复）；④段的发现是新的（嗅觉 vs 免疫），不是把 1% 再发现一遍。</div>
+              <div class="wr"><span class="l">C</span>instead：反而——意味着这项发现与前面<b>相反</b>；嗅觉基因相似恰恰是在<b>支撑</b>「朋友基因相似」，不是推翻它。</div>
+              <div class="wr"><span class="l">D</span>thus：因此——意味着这项发现是前文的<b>结果</b>；③段只是一句引语，推不出「嗅觉基因相似」这个结论。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>单个逻辑副词可以嵌在主谓之间</b>（The study ___ found · were then used）——这是「句首＝逻辑空」的又一次例外，<b>扫到「主语 ＋ 空 ＋ 谓语」也要当逻辑空看</b>（⟹ <a href="套路库_阅读.html#R76" style="color:var(--accent)">R76</a>）。⭐ <b>研究报道换发现的信号</b>：The study also found · It also showed · Another finding is · One of the remarkable findings was——<b>发现与发现之间几乎总是递进</b>。
+          </div>
+        </div>
+
+        <div class="q" id="q10" data-ans="3">
+          <div class="qhead"><span class="qno">10</span><span class="qt c-logic">逻辑关系 · 推测（解释还没定论）</span><span class="qpos">___ , as the team suggests, it draws us to … but there is more to it</span></div>
+          <span class="stem">Why this similarity exists in smell genes is <b>difficult to explain, for now</b>. <em>10</em>, <b>as the team suggests</b>, it draws us to similar environments <b>but</b> there is more <em>11</em> it.</span>
+          <div class="opts">
+            <div class="opt">A Meanwhile<span class="gl">同时；另一方面</span></div>
+            <div class="opt">B Furthermore<span class="gl">此外，而且</span></div>
+            <div class="opt">C Likewise<span class="gl">同样地</span></div>
+            <div class="opt">D Perhaps<span class="gl">也许，可能</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>句首的副词，后面由逗号隔开。⚠️ 它<b>不是在连接</b>两件事，而是在给整句定<b>语气</b>。
+            <span class="lbl">🔗 线索</span>⭐ 这一小段是<b>一条完整的推测链</b>，四个信号一个接一个：① 上一句 <code>difficult to explain, <b>for now</b></code>（目前还解释不了）⟹ ② <code>as the team <b>suggests</b></code>（团队只是「提出」，不是「证明」）⟹ ③ <code><b>but</b> there is more to it</code>（这个解释还不够）⟹ ④ 下一句 <code>There <b>could</b> be many mechanisms</code>（可能有）。<b>既然「目前还解释不了」，接下来给的解释只能是一个猜测</b>。
+            <span class="lbl">✅ D Perhaps</span>也许。代入＝「<b>也许</b>正如团队所说，它把我们吸引到相似的环境中，但事情没那么简单」。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>Meanwhile：同时／另一方面——要求前后是<b>两件并行或相对的事</b>；这里前句提出疑问、本句给出解释，是<b>问与答</b>，不是并行。</div>
+              <div class="wr"><span class="l">B</span>Furthermore：而且——要求在前句的<b>观点上再加一条</b>；前句是「解释不了」，本句接着给解释，不是往「解释不了」上再加码。</div>
+              <div class="wr"><span class="l">C</span>Likewise：同样地——要求前后<b>相似</b>；前句是困惑、本句是尝试解答，谈不上「同样」。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>三缺一</b>：Meanwhile／Furthermore／Likewise 是三个<b>连接副词</b>（管两件事的关系），Perhaps 是<b>语气副词</b>（管说话人有几分把握）——上一句刚说完「解释不了」，要的是后者（⟹ <a href="套路库_阅读.html#R74" style="color:var(--accent)">R74</a>）。⭐ <b>「难以解释」之后必是推测</b>：difficult to explain／remains unclear／is still a mystery ⟹ 下一句找 perhaps／possibly／may／could／one theory is（⟹ <a href="#slots" style="color:var(--accent)">02+++ 解释槽</a>）。
+          </div>
+        </div>
+
+        <div class="q" id="q11" data-ans="1">
+          <div class="qhead"><span class="qno">11</span><span class="qt c-collo">固定搭配 · there is more to it</span><span class="qpos">but there is more ＋ ___ ＋ it</span></div>
+          <span class="stem"><em>10</em>, as the team suggests, it draws us to similar environments <b>but there is more</b> <em>11</em> <b>it</b>.</span>
+          <div class="opts">
+            <div class="opt">A about<span class="gl">关于</span></div>
+            <div class="opt">B to<span class="gl">（there is more to sth）不止于此</span></div>
+            <div class="opt">C from<span class="gl">来自</span></div>
+            <div class="opt">D like<span class="gl">像</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>there be 句里 more 与 it 之间的介词。<b>这是一个整体记忆的习语</b>，不靠推理。
+            <span class="lbl">🔗 线索</span>① 前面有 <b>but</b>：「它把我们吸引到相似的环境中，<b>但</b>……」——后半句要<b>修正</b>这个解释，说它不够；② 下一句 <code>There could be many mechanisms working together</code>——<b>不止一个机制</b>，正是「没那么简单」的展开。
+            <span class="lbl">✅ B to</span><code>there is more to it (than meets the eye)</code>＝事情没那么简单、不止表面看到的那些。代入＝「但事情<b>没那么简单</b>」。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>about：「关于它还有更多（可说的）」——语法勉强成立，但那预示下文会<b>接着讲这个解释</b>；下一句却换成了「许多机制」，没接着讲环境。</div>
+              <div class="wr"><span class="l">C</span>from：「从它那里还能得到更多」——意思是由这个解释<b>推出</b>更多信息；下文是另起的其他机制，不是从它推出来的。</div>
+              <div class="wr"><span class="l">D</span>like：「和它相似的还有很多」——那下文该列举<b>同类解释</b>；而且 more like it 另有习语义「这还差不多」，与此处无关。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐⭐ <b>there is more to X (than …)＝X 不只是表面那样</b>：<i>There is more to life than work.</i>（人生不只有工作。）<i>There's more to him than meets the eye.</i>（他可不像看上去那么简单。）⭐ <b>本篇的母题句</b>：全文四次说「表面那层不够」，这是其中最直白的一次——<b>13 题的答案方向就是它定的</b>（⟹ <a href="#deeper" style="color:var(--accent)">02++ 四连表</a>）。
+          </div>
+        </div>
+
+        <div class="q" id="q12" data-ans="3">
+          <div class="qhead"><span class="qno">12</span><span class="qt c-word">词义辨析 · 机制对我们做什么</span><span class="qpos">many mechanisms working together that ＋ ___ ＋ us in choosing …</span></div>
+          <span class="stem">There could be many <b>mechanisms</b> working together <b>that</b> <em>12</em> us in choosing genetically similar friends <em>13</em> "functional kinship" of being friends with <em>14</em>!（上句：it <b>draws</b> us to similar environments）</span>
+          <div class="opts">
+            <div class="opt">A limit<span class="gl">限制</span></div>
+            <div class="opt">B observe<span class="gl">观察；遵守</span></div>
+            <div class="opt">C confuse<span class="gl">使困惑，搅乱</span></div>
+            <div class="opt">D drive<span class="gl">驱使，推动</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>that 引导的定语从句的谓语。⚠️ <b>that 的先行词是 mechanisms</b>，不是紧挨着的 together（working together 是插在中间的分词短语）。
+            <span class="lbl">🔗 线索</span>① <b>主语是「机制」</b>——机制不会「观察」，observe 先出局；② <b>方向</b>：上一句 <code>it draws us to similar environments</code>（把我们<b>往那边拉</b>），本句是在上句基础上说「还有更多机制」——<b>作用方向相同</b>：都在<b>推动</b>我们选基因相似的人；③ 全文的事实是人们<b>确实</b>选了基因相似的朋友，机制是它的<b>成因</b>，不是阻碍。
+            <span class="lbl">✅ D drive</span>驱使。代入＝「许多机制共同作用，<b>驱使</b>我们选择基因相似的朋友」。<b>draw（拉）与 drive（推）方向相反、作用相同</b>——都是「让我们往那边去」。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>limit：限制——方向反了：机制成了<b>阻止</b>我们选基因相似朋友的东西，而事实是我们选了。</div>
+              <div class="wr"><span class="l">B</span>observe：观察——<b>主语不配</b>：机制不会观察人；即使取「遵守」义也说不通。</div>
+              <div class="wr"><span class="l">C</span>confuse：搅乱——方向反：机制成了<b>干扰</b>我们择友的东西。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>动词题先找主语，问它是什么</b>（2008 完形的老规矩）：主语是「机制／因素／力量」，谓语多半是 drive／push／lead／cause／shape。⭐ <b>方向由上一句同类动词定</b>：draws us to ⟹ drive us in——<b>「两次说机制」要同向</b>。✍️ <code>X drives sb to do／in doing</code>＝X 驱使某人……，写原因分析段很好用。
+          </div>
+        </div>
+
+        <div class="q" id="q13" data-ans="1">
+          <div class="qhead"><span class="qno">13</span><span class="qt c-logic">逻辑关系 · 取舍（本篇唯一错题）</span><span class="qpos">choosing genetically similar friends ＋ ___ ＋ "functional kinship" of being friends with …!</span></div>
+          <span class="stem">There could be many mechanisms working together that <em>12</em> us in choosing <b>genetically</b> similar friends <em>13</em> "<b>functional</b> kinship" of being friends with <em>14</em><b>!</b></span>
+          <div class="opts">
+            <div class="opt">A according to<span class="gl">根据，按照</span></div>
+            <div class="opt">B rather than<span class="gl">而不是</span></div>
+            <div class="opt">C regardless of<span class="gl">不管，不顾</span></div>
+            <div class="opt">D along with<span class="gl">连同，与……一起</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>连接两个名词性成分的短语：前面是 <code>(choosing) genetically similar friends</code>，后面是 <code>"functional kinship" of being friends with ___</code>。<b>问的是：这两样东西是什么关系</b>——依据、取舍、无视，还是伴随？
+            <span class="lbl">🔗 线索</span>⭐⭐ ① <b>把两端的修饰语并排写出来</b>：<b>genetically</b> similar（<b>基因上</b>的相近）↔ "<b>functional</b>" kinship（<b>功用上</b>的亲缘）——这是<b>同一根轴的两端</b>：一个说「天生的、基因驱动的」，一个说「为了用处、为了好处的」；② <b>引号 ＋ 感叹号</b>：<code>"functional kinship"</code> 打了引号、句末是全文唯一的感叹号——作者在<b>调侃</b>「有好处才做朋友」这种庸俗解释（friends with benefits 还有双关，见 00 背景表）；③ <b>上一句刚说 <code>there is more to it</code></b>——「不止于此」，作者一路在把读者从表面解释往深层机制推，<b>功利性解释正是那个要被推开的表面解释</b>。⟹ 肯定前者、否定后者＝<b>取舍</b>。
+            <span class="lbl">✅ B rather than</span>而不是。代入＝「驱使我们选择<b>基因相似</b>的朋友，<b>而不是</b>去结交「有好处才做朋友」那种<b>功利性亲缘</b>」——<b>我们交朋友是被基因推着走的，不是算计出来的</b>。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>according to：「<b>按照</b>功利性亲缘来选择基因相似的朋友」——把功利当成了选基因的<b>依据</b>；可文中的机制是基因层面的，功利关系既不是信息来源，也不是标准。</div>
+              <div class="wr"><span class="l">C</span>regardless of：「<b>不管</b>功利性亲缘，照样选基因相似的朋友」——让步关系要求两者<b>本应相互妨碍</b>（有利益也不管）；文中两者是<b>二选一的两种择友方式</b>，谈不上谁妨碍谁。</div>
+              <div class="wr"><span class="l">D</span>along with：「<b>连同</b>功利性亲缘<b>一起</b>选择基因相似的朋友」——⚠️ <b>我盲做选的就是它</b>。错因：<b>把 working together 的 together 读到了空格上</b>，以为作者在说「基因机制和功利关系一起起作用」。实际上 together 只管 mechanisms 之间的协作；<b>along with 要求两端同类、同向、可以相加</b>，而这两端一个是被肯定的深层机制、一个是被调侃的表面解释——<b>反向的东西不能相加</b>。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐⭐ <b>连接两个名词性成分的短语空：先把两端的修饰语并排写出来，问它们是「同一根轴的两端」还是「同类可相加」</b>——一根轴的两端（genetically ↔ functional、natural ↔ deliberate、真 ↔ 假）只能填取舍（rather than／instead of）；同类同向才填伴随（along with／as well as）（⟹ 新卡 <a href="套路库_阅读.html#R192" style="color:var(--accent)">R192</a>）。⭐ <b>引号是作者不出面的表态</b>：一个术语被打上引号又被放进感叹句，基本就是被排斥、被调侃的那一方（⟹ <a href="套路库_阅读.html#R29" style="color:var(--accent)">R29</a>）。⭐ <b>三缺一</b>其实能救我：according to／regardless of／along with 都是把后面的东西<b>拉进来</b>当依据、当条件、当同伴，只有 rather than 把它<b>推出去</b>（⟹ <a href="套路库_阅读.html#R74" style="color:var(--accent)">R74</a>）。完整复盘见 <a href="#axis" style="color:var(--accent)">02+ 错题标本</a>。
+          </div>
+        </div>
+
+        <div class="q" id="q14" data-ans="2">
+          <div class="qhead"><span class="qno">14</span><span class="qt c-collo">固定搭配 · friends with benefits</span><span class="qpos">"functional kinship" of being friends with ＋ ___</span></div>
+          <span class="stem">… choosing genetically similar friends <em>13</em> "<b>functional</b> kinship" <b>of</b> being friends with <em>14</em>!</span>
+          <div class="opts">
+            <div class="opt">A chances<span class="gl">机会；可能性</span></div>
+            <div class="opt">B responses<span class="gl">反应，回应</span></div>
+            <div class="opt">C benefits<span class="gl">好处，利益</span></div>
+            <div class="opt">D missions<span class="gl">任务，使命</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>介词 with 的宾语。整个 <code>of being friends with ___</code> 是 "functional kinship" 的<b>同位解释</b>（of 表同位：the city of Beijing）——<b>空格要把 functional（功用的）说成大白话</b>。
+            <span class="lbl">🔗 线索</span>① <b>functional</b>＝有用处的、实用的 ⟹「功能性亲缘」＝<b>因为对彼此有用</b>而亲近的关系；② 英语里现成的说法 <b>friends with benefits</b>＝「有好处可图的朋友」；③ 句末的感叹号——作者在用这个现成短语<b>开玩笑</b>。
+            <span class="lbl">✅ C benefits</span>好处。代入＝「那种『<b>有好处才做朋友</b>』的『功利性亲缘』」。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>chances：机会／偶然——friends with chances 不是英语说法；若取「偶然」义，与 functional 的<b>有目的性</b>正好相反。</div>
+              <div class="wr"><span class="l">B</span>responses：回应——「有回应的朋友」不成话，也表达不出「功利」。</div>
+              <div class="wr"><span class="l">D</span>missions：任务、使命——「有共同使命的朋友」偏向理想与责任，不是 functional 的「实用、有好处」。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>引号里的抽象说法，后面常紧跟一个白话版</b>（of 同位、冒号、破折号）——<b>空格若落在白话版里，就把引号里的词翻成大白话</b>：functional ⟹ benefits（⟹ <a href="套路库_阅读.html#R51" style="color:var(--accent)">R51</a>）。⚠️ friends with benefits 在口语里有一个俚语义（见 00 背景表），作文里别用这个短语表示「互利的朋友」；要说互利，写 <code>mutually beneficial relationship</code>。
+          </div>
+        </div>
+
+        <div class="q" id="q15" data-ans="0">
+          <div class="qhead"><span class="qno">15</span><span class="qt c-context">上下文语义 · 方向由下一句的 picked pace 定</span><span class="qpos">the similar genes seem to be evolving ＋ ___ ＋ than other genes</span></div>
+          <span class="stem">One of the remarkable findings of the study was that the similar genes seem to be evolving <em>15</em> than other genes. Studying this could help <em>16</em> why human evolution <b>picked pace</b> in the last 30,000 years …</span>
+          <div class="opts">
+            <div class="opt">A faster<span class="gl">更快</span></div>
+            <div class="opt">B slower<span class="gl">更慢</span></div>
+            <div class="opt">C later<span class="gl">更晚</span></div>
+            <div class="opt">D earlier<span class="gl">更早</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>比较级副词，修饰 evolving，与 than other genes 构成比较。四个选项 <b>2＋2</b>：faster／slower 讲<b>速度</b>，later／earlier 讲<b>时间先后</b>。
+            <span class="lbl">🔗 线索</span>① <b>先定维度</b>：下一句说研究这一点有助于理解人类进化为什么 <code><b>picked pace</b></code>（加快了步伐）——讲的是<b>速度</b>，later／earlier 出局；② <b>再定方向</b>：相似基因进化得快 ⟹ 能解释人类进化加速——<b>快对快</b>；③ remarkable（惊人的）也提示这是一个「出挑」的发现。
+            <span class="lbl">✅ A faster</span>更快。代入＝「这些相似的基因似乎比其他基因进化得<b>更快</b>」。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>slower：维度对、方向反——进化得更慢的基因解释不了人类进化的<b>加速</b>。</div>
+              <div class="wr"><span class="l">C</span>later：维度错——讲进化发生的<b>时间早晚</b>，而下文关心的是<b>快慢</b>。</div>
+              <div class="wr"><span class="l">D</span>earlier：同 C，维度错。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>2＋2 的组：先定维度，再定方向</b>——速度对时间、多对少、高对低，先用上下文把一对划掉，剩下一对再看正负（⟹ <a href="套路库_阅读.html#R74" style="color:var(--accent)">R74</a>）。⭐ <b>比较级空的方向，常常在下一句的「结果」里</b>。🔤 <code>picked pace</code>：原卷如此印；标准说法是 <b>pick up (the) pace</b>（加快步伐），pick up speed 同义。
+          </div>
+        </div>
+
+        <div class="q" id="q16" data-ans="3">
+          <div class="qhead"><span class="qno">16</span><span class="qt c-word">词义辨析 · 研究的用处</span><span class="qpos">Studying this could help ＋ ___ ＋ why human evolution picked pace …</span></div>
+          <span class="stem"><b>Studying this</b> could help <em>16</em> <b>why</b> human evolution <b>picked</b> pace in the last 30,000 years, with social environment being a major <em>17</em> factor.</span>
+          <div class="opts">
+            <div class="opt">A forecast<span class="gl">预测，预报</span></div>
+            <div class="opt">B remember<span class="gl">记得，记住</span></div>
+            <div class="opt">C express<span class="gl">表达，陈述</span></div>
+            <div class="opt">D understand<span class="gl">理解，弄清</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>help 后省略 to 的不定式动词，宾语是 why 引导的从句。<b>问的是：研究一件事，能帮我们对「为什么」做什么？</b>
+            <span class="lbl">🔗 线索</span>① 宾语是 <b>why</b>——对「原因」能做的事是<b>弄明白</b>；② <b>时态</b>：picked 是过去时、in the last 30,000 years 是已经过去的时段——是<b>已经发生的事</b>，谈不上预测；③ 主语是 Studying this（研究行为）——研究的产出是<b>理解</b>。
+            <span class="lbl">✅ D understand</span>理解。代入＝「研究这一点有助于<b>理解</b>人类进化为什么在过去三万年里加快了步伐」。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>forecast：预测——对象必须是<b>未来</b>；宾语讲的是过去三万年，时间对不上。</div>
+              <div class="wr"><span class="l">B</span>remember：记住——主体是人、对象是<b>经历过或学过的</b>东西；研究不会帮人「记起」进化的原因。</div>
+              <div class="wr"><span class="l">C</span>express：表达——要先<b>知道</b>了才能表达；研究帮的是「弄清原因」这一步，不是「说出原因」。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>研究报道的「意义槽」</b>：could help (to) understand／explain／shed light on why…——研究的用处永远是<b>理解、解释、揭示</b>。⭐ <b>宾语的时间定动词</b>：宾语是过去 ⟹ explain／understand；是未来 ⟹ predict／forecast。
+          </div>
+        </div>
+
+        <div class="q" id="q17" data-ans="1">
+          <div class="qhead"><span class="qno">17</span><span class="qt c-collo">固定搭配 · a contributory factor</span><span class="qpos">with social environment being a major ＋ ___ ＋ factor</span></div>
+          <span class="stem">Studying this could help <em>16</em> why human evolution picked pace in the last 30,000 years, <b>with social environment being a major</b> <em>17</em> <b>factor</b>.</span>
+          <div class="opts">
+            <div class="opt">A unpredictable<span class="gl">不可预测的</span></div>
+            <div class="opt">B contributory<span class="gl">促成的，起作用的</span></div>
+            <div class="opt">C controllable<span class="gl">可控制的</span></div>
+            <div class="opt">D disruptive<span class="gl">破坏性的，扰乱的</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>with 独立主格结构（with ＋ 名词 ＋ 分词）里的形容词，修饰 factor。with 结构在这里是<b>补充说明</b>主句：人类进化加速，<b>社会环境是其中一个 ___ 因素</b>。
+            <span class="lbl">🔗 线索</span>① <b>a major ___ factor</b> 问的是：社会环境对「进化加速」起了什么作用——主句与 with 结构之间<b>没有转折</b>，所以是<b>推动</b>作用；② 串起来：人们挑基因相似的人做朋友 → 形成社交圈（社会环境）→ 这些基因进化更快 → 人类进化加速——<b>社会环境是促成因素</b>。
+            <span class="lbl">✅ B contributory</span>促成的。<code>a (major) contributory factor</code>＝一个（主要的）促成因素，<b>固定搭配</b>（同义 contributing factor）。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>unpredictable：不可预测的——讲的是<b>能否预料</b>，没说它对加速有什么作用；且与前半句「有助于理解」的解释意图不搭。</div>
+              <div class="wr"><span class="l">C</span>controllable：可控的——讲<b>能否被控制</b>，偏离「为什么加速」这个问题。</div>
+              <div class="wr"><span class="l">D</span>disruptive：破坏性的——方向反：社会环境成了<b>阻碍</b>进化的因素，与「加快步伐」冲突。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>factor 前的形容词＝它对结果起什么作用</b>：contributory／contributing（促成）· decisive（决定性）· key（关键）· limiting（限制）。<b>解释「为什么」的句子里，factor 前一般填「促成」类</b>。✍️ <code>X is a major contributory factor in／to Y</code>——写原因分析的标配句。
+          </div>
+        </div>
+
+        <div class="q" id="q18" data-ans="0">
+          <div class="qhead"><span class="qno">18</span><span class="qt c-word">词义辨析 · 无意识的倾向 vs 刻意的决定</span><span class="qpos">The findings do not simply explain people's ＋ ___ ＋ to befriend …</span></div>
+          <span class="stem">The findings do not <b>simply</b> explain people's <em>18</em> to befriend those of similar <em>19</em> backgrounds, say the researchers.（③段：people <b>somehow</b> manage to select as friends… · ④段：mechanisms that <em>12</em> us in choosing…）</span>
+          <div class="opts">
+            <div class="opt">A tendency<span class="gl">倾向，趋势</span></div>
+            <div class="opt">B decision<span class="gl">决定</span></div>
+            <div class="opt">C arrangement<span class="gl">安排</span></div>
+            <div class="opt">D endeavor<span class="gl">努力，尽力</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>所有格 people's 后面的名词，后接 to do（to befriend）。<b>问的是：人们「和相似的人交朋友」这件事，是有意为之还是不知不觉？</b>
+            <span class="lbl">🔗 线索</span>① ③段福勒说人们 <code><b>somehow</b> manage to select</code>——「<b>不知怎么</b>就挑中了」，说明<b>不是有意的</b>；② ④段 <code>mechanisms that drive us</code>——是机制<b>驱使</b>我们，我们自己并没决定；③ 13 题刚把「功利算计」推开——<b>本文的交友是被推着走的，不是算计出来的</b>。
+            <span class="lbl">✅ A tendency</span>倾向。<code>people's tendency to befriend …</code>＝人们倾向于和……交朋友——<b>一种自然的、未必自觉的趋势</b>。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>decision：决定——意味着人们<b>有意识地决定</b>挑基因相似的人，与 somehow、drive 矛盾。</div>
+              <div class="wr"><span class="l">C</span>arrangement：安排——更是<b>刻意策划</b>，错因同 B。</div>
+              <div class="wr"><span class="l">D</span>endeavor：努力——意味着人们<b>努力</b>去结交相似的人，同样是主观刻意。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>三缺一</b>：decision／arrangement／endeavor 三个都是<b>主观刻意</b>，tendency 是<b>客观倾向</b>——孤立的那个就是答案（⟹ <a href="套路库_阅读.html#R74" style="color:var(--accent)">R74</a>；与 2009／2010 完形连着考 <code>tend to</code>、划掉 attempt／choose／intend 是<b>同一族</b>）。⭐ <b>13 与 18 是同一个方向的两次落地</b>：深层的、不自觉的 vs 表面的、刻意的，<b>全篇一律站前者</b>（⟹ <a href="#deeper" style="color:var(--accent)">02++</a>，新卡 <a href="套路库_阅读.html#R193" style="color:var(--accent)">R193</a>）。
+          </div>
+        </div>
+
+        <div class="q" id="q19" data-ans="2">
+          <div class="qhead"><span class="qno">19</span><span class="qt c-context">上下文语义 · 下一句的 European extraction</span><span class="qpos">befriend those of similar ＋ ___ ＋ backgrounds</span></div>
+          <span class="stem">The findings do not simply explain people's <em>18</em> to befriend those of similar <em>19</em> backgrounds, say the researchers. Though all the subjects were drawn from a population of <b>European extraction</b>, care was taken to <em>20</em> that all subjects, friends and strangers, were taken from <b>the same population</b>.</span>
+          <div class="opts">
+            <div class="opt">A political<span class="gl">政治的</span></div>
+            <div class="opt">B religious<span class="gl">宗教的</span></div>
+            <div class="opt">C ethnic<span class="gl">民族的，种族的，族裔的</span></div>
+            <div class="opt">D economic<span class="gl">经济的</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>形容词，修饰 backgrounds，说明是<b>哪一方面</b>的背景相似。
+            <span class="lbl">🔗 线索</span>① <b>下一句</b>直接给了答案所在的维度：<code>a population of European <b>extraction</b></code>（欧洲血统的人群）· <code>the same <b>population</b></code>——讲的全是<b>族群、血统</b>；② <b>这一段在堵漏洞</b>：有人会说「朋友基因像，不过是因为人都爱和同族人交朋友」——同族的人基因本来就更像。研究者的回答是：朋友和陌生人<b>都从同一个族群里取</b>，这个因素已经排除了；③ 全文是<b>生物学</b>话题，只有 ethnic 和基因直接相关。
+            <span class="lbl">✅ C ethnic</span>族裔的。代入＝「这些发现并不只是在说明人们倾向于和<b>族裔</b>背景相似的人交朋友」。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>political：政治背景——与基因无关，下一句也没谈政治。</div>
+              <div class="wr"><span class="l">B</span>religious：宗教背景——同样与基因无关。</div>
+              <div class="wr"><span class="l">D</span>economic：经济背景——同样与基因无关。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>三缺一</b>：political／religious／economic 都是<b>后天的社会身份</b>，只有 ethnic 连着<b>血统</b>——在一篇讲基因的文章里，孤立项就是答案（⟹ <a href="套路库_阅读.html#R74" style="color:var(--accent)">R74</a>）。⭐ <b>跨句空：答案在下一句的同义词里</b>（ethnic ≈ extraction ≈ population）——卡住就往后读一句。
+          </div>
+        </div>
+
+        <div class="q" id="q20" data-ans="0">
+          <div class="qhead"><span class="qno">20</span><span class="qt c-collo">固定搭配 · see (to it) that＝确保</span><span class="qpos">care was taken to ＋ ___ ＋ that all subjects … were taken from the same population</span></div>
+          <span class="stem"><b>Though</b> all the subjects were drawn from a population of European extraction, <b>care was taken</b> to <em>20</em> <b>that</b> all subjects, friends and strangers, were taken from the same population.</span>
+          <div class="opts">
+            <div class="opt">A see<span class="gl">（see that）确保，务必做到</span></div>
+            <div class="opt">B show<span class="gl">表明，显示</span></div>
+            <div class="opt">C prove<span class="gl">证明</span></div>
+            <div class="opt">D tell<span class="gl">看出，判断；告诉</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>不定式 to ___ 的动词，后接 that 从句。<b>四个动词都能接 that 从句</b>——比的是「接了 that 以后是什么意思」。
+            <span class="lbl">🔗 线索</span>① <code><b>care was taken</b> to …</code>＝（研究者）小心地、特意地去做——<b>这是一个操作上的动作</b>，不是一个结论；② that 从句的内容是<b>研究怎么取样</b>（朋友和陌生人都取自同一人群）——这是<b>方法</b>，是研究者要<b>保证做到</b>的事；③ <b>Though</b> 让步：「尽管都选自欧洲裔人群，（研究者）仍小心<b>确保</b>……」。
+            <span class="lbl">✅ A see</span>⭐ <b>熟词僻义：see (to it) that ＝ make sure that ＝ 确保、务必</b>。代入＝「研究者仍小心地<b>确保</b>所有研究对象都取自同一个人群」。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>show：表明——<code>show that</code> 引出的是<b>研究结论</b>；that 从句讲的却是<b>取样方法</b>。而且 <code>care was taken to show</code>（费心去表明）与方法描述不搭。<b>盲做时最后才排掉它</b>：研究报道里 show that 太常见了。</div>
+              <div class="wr"><span class="l">C</span>prove：证明——同 B，that 从句不是被证明的结论，是被保证的操作。</div>
+              <div class="wr"><span class="l">D</span>tell：看出、判断——「费心判断出所有对象来自同一人群」，语义别扭：取样是研究者<b>自己安排</b>的，用不着去「判断」。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐⭐ <b>see 的熟词僻义</b>：<code>see (to it) that …</code>＝确保（<i>I'll see that the job is done on time.</i>）· <code>see about sth</code>＝处理、安排 · <code>see sb off</code>＝送行。⭐ <b>研究报道的「严谨槽」</b>：care was taken to ensure／make sure／see that · controlled for · ruled out——凡讲「怎么排除干扰」，动词是<b>确保类</b>，不是<b>证明类</b>（⟹ <a href="#slots" style="color:var(--accent)">02+++ 槽位表</a>）。⭐ <b>末空连续第三年不是逻辑空</b>（2013 necessary · 2014 effective · 2015 see）（⟹ <a href="套路库_阅读.html#R103" style="color:var(--accent)">R103</a>）。
+          </div>
+        </div>
+      </section>
+      <!-- ========== 02+ 错题标本 ========== -->
+      <section class="card" id="axis">
+        <h2><span class="n">02+</span>⭐⭐ 错题标本 · 13 题：genetically ↔ functional 是一根轴的两端，连接它们只能用取舍（本页最值钱的一段）</h2>
+        <p class="note"><b>盲做选 D along with，正确 B rather than。</b>这是 2015 完形唯一的错题，也是盲做时标了犹豫、最后押错的那一道。下面按「我当时怎么想 → 错在哪一步 → 该用哪把刀」拆开。</p>
+        <div class="tabwrap"><table class="otab">
+          <tr><th>步骤</th><th>我当时的读法</th><th>应该的读法</th></tr>
+          <tr><td>① 读句子</td><td>many mechanisms <b>working together</b> ⟹ 「好几样东西一起起作用」，<b>于是找一个「一起」的词</b>：along with</td><td>together 只管 <b>mechanisms 之间</b>协同；它说的是机制<b>内部</b>，不管空格两端</td></tr>
+          <tr><td>② 看两端</td><td>没并排写，只觉得「选基因相似的朋友」和「功利性亲缘」都是交友的原因</td><td><b>genetically</b> similar ↔ "<b>functional</b>" kinship——<b>天生的 ↔ 有用的</b>，同一根轴的两端</td></tr>
+          <tr><td>③ 看标点</td><td>忽略了引号和感叹号</td><td>"functional kinship" 打了引号、全文唯一的感叹号 ⟹ 作者在<b>调侃</b>它（friends with benefits 还有双关）</td></tr>
+          <tr><td>④ 看上一句</td><td>没回头</td><td><code>there is more to it</code>——「不止于此」，作者正要把读者从表面解释往深处推</td></tr>
+          <tr><td>⑤ 结论</td><td>D along with：基因机制<b>连同</b>功利关系一起让我们选朋友</td><td>B rather than：基因机制驱使我们选相似的朋友，<b>而不是</b>为了好处交朋友</td></tr>
+        </table></div>
+        <p class="note" style="margin-top:12px">⭐ <b>判据一句话：along with 要求两端「同类、同向、能相加」；两端一旦是一根轴的两头，就只能取舍。</b>怎么判断是不是一根轴？<b>把两端的修饰语抽出来并排写</b>：genetically ／ functional——一个讲<b>出身</b>、一个讲<b>用途</b>，是「为什么亲近」这个问题的两种相反答案。同类的例子：<code>natural ↔ deliberate</code>（天生 ↔ 刻意）· <code>real ↔ so-called</code>（真的 ↔ 所谓的）· <code>inner ↔ surface</code>（内在 ↔ 表面）。</p>
+        <p class="note">⭐ <b>四个选项其实三缺一</b>：according to（把后面的当<b>依据</b>）· regardless of（把后面的当<b>障碍</b>，然后无视它）· along with（把后面的当<b>同伴</b>）——<b>三个都是把后面的东西「拉进来」</b>；只有 rather than 把它<b>推出去</b>。当时若先做分组，就不会在 B／D 之间犹豫（⟹ <a href="套路库_阅读.html#R74" style="color:var(--accent)">R74</a>）。</p>
+        <p class="note">📌 <b>一个背景知识的陷阱（反而帮倒忙）</b>：「功能性亲缘」原本是论文作者<b>自己</b>的正面术语（友谊像一种功能上的亲情，见 00 背景表）——知道这一点的人更容易选 along with。<b>但本文记者把它和 friends with benefits 连在一起、放进感叹句，改成了一个被调侃的对立面</b>。⟹ <b>完形只认本文的逻辑，背景知识与文内方向冲突时，服从文内</b>（与阅读的 <a href="套路库_阅读.html#R155" style="color:var(--accent)">R155</a> 同理）。新卡 <a href="套路库_阅读.html#R192" style="color:var(--accent)">R192</a>；引号的排斥功能见 <a href="套路库_阅读.html#R29" style="color:var(--accent)">R29</a>；取舍结构定方向见 <a href="套路库_阅读.html#R104" style="color:var(--accent)">R104</a>。</p>
+      </section>
+
+      <!-- ========== 02++ 不止于表面 ========== -->
+      <section class="card" id="deeper">
+        <h2><span class="n">02++</span>⭐ 「不止于表面」四连：全文四次说「表面那层解释不够」，13 和 18 的答案早就写在这四句里</h2>
+        <p class="note">这篇文章有一个<b>贯穿全文的动作</b>：先摆出一个表面上的看法，再说「不止如此／并非如此」。<b>四次，一段不落</b>：</p>
+        <div class="tabwrap"><table class="otab">
+          <tr><th>出处</th><th>表面那层</th><th>作者推到的深层</th><th>管哪个空</th></tr>
+          <tr><td>①❶</td><td><code>not biologically related</code>（没血缘）</td><td>as "<b>related</b>" as fourth cousins（基因上像亲戚）</td><td>8 resemble</td></tr>
+          <tr><td>③❶</td><td><code>1% may seem ___</code>（看起来很小）</td><td>it is <b>not so</b> to a geneticist（其实很有分量）</td><td>6 insignificant</td></tr>
+          <tr><td>④❸❹</td><td>it draws us to similar environments（环境相似）</td><td>but there is <b>more to it</b> … many mechanisms（更多机制）</td><td>11 to · 12 drive · <b>13 rather than</b></td></tr>
+          <tr><td>⑥❶</td><td>people's ___ to befriend those of similar ___ backgrounds（同族相亲）</td><td>do <b>not simply</b> explain（不只是同族相亲）</td><td>18 tendency · 19 ethnic</td></tr>
+        </table></div>
+        <p class="note" style="margin-top:12px">⭐⭐ <b>怎么用</b>：读完首句就在卷边写一个「<b>表 → 里</b>」。之后凡是在「表面／刻意／功利」与「深层／不自觉／天生」之间二选一的空，<b>一律站深层那边</b>：13 推开「有好处才交朋友」、18 推开「刻意的决定、安排、努力」（decision／arrangement／endeavor），选「不自觉的倾向」（tendency）。<b>命题人把答案方向在全文说了四遍，13 只是第四遍</b>（⟹ 新卡 <a href="套路库_阅读.html#R193" style="color:var(--accent)">R193</a>）。</p>
+        <p class="note">📌 <b>四个信号词记成一组</b>：<code>Though not X, …</code> · <code>may seem X, it is not so</code> · <code>there is more to it</code> · <code>do not simply explain</code>——<b>都是「否定表面、指向深层」</b>。同族还有 <code>not merely／not just</code> · <code>more than meets the eye</code> · <code>on the surface … but in fact</code>。与 2014 完形的「限定副词打折」（seemingly／to a certain extent，⟹ <a href="套路库_阅读.html#R176" style="color:var(--accent)">R176</a>）是一家：<b>R176 管单句里的折扣，本卡管全文反复出现的同一个动作</b>。</p>
+      </section>
+
+      <!-- ========== 02+++ 研究报道槽位 ========== -->
+      <section class="card" id="slots">
+        <h2><span class="n">02+++</span>🔬 研究报道的六个槽位：每个槽位有自己的词族，空格落在哪个槽就去哪个词族里找</h2>
+        <p class="note">本篇六段恰好是一篇研究报道的全套槽位，<b>二十个空里有十个是槽位套话</b>。研究报道型完形本站已做过好几篇（<a href="2010_完形_霍桑效应遭到质疑.html" style="color:var(--accent)">2010</a> 霍桑效应 · <a href="2011_完形_笑与情绪的方向之争.html" style="color:var(--accent)">2011</a> 表情实验 · <a href="2013_完形_面试打分的当日偏见.html" style="color:var(--accent)">2013</a> 面试打分 · 本篇 <b>2015</b>）——<b>这张表可以直接搬去做下一篇</b>：</p>
+        <div class="tabwrap"><table class="otab">
+          <tr><th>槽位（段）</th><th>本篇的空</th><th>这个槽的词族</th></tr>
+          <tr><td><b>出处与结论</b>（①）</td><td>1 what · 2 concluded</td><td>That is what a study has <b>concluded／found／shown</b> · published in · according to a study</td></tr>
+          <tr><td><b>方法</b>（②）</td><td>3 on · 4 compared · 5 samples</td><td>conduct an analysis／a study <b>on</b> · <b>compare</b> A with B · <b>samples／subjects／control group</b></td></tr>
+          <tr><td><b>数字的意义</b>（③）</td><td>6 insignificant · 7 know · 8 resemble</td><td>X may seem <b>small／insignificant</b>, but … · 专家引语给出分量</td></tr>
+          <tr><td><b>更多发现 ＋ 解释</b>（④）</td><td>9 also · 10 Perhaps · 11 to · 12 drive · 13 rather than · 14 benefits</td><td>The study <b>also</b> found · difficult to explain → <b>Perhaps／could／may</b> → there is <b>more to it</b></td></tr>
+          <tr><td><b>意义</b>（⑤）</td><td>15 faster · 16 understand · 17 contributory</td><td>could help <b>understand／explain</b> why · a major <b>contributory</b> factor</td></tr>
+          <tr><td><b>严谨性</b>（⑥）</td><td>18 tendency · 19 ethnic · 20 see</td><td>do not simply explain · care was taken to <b>see／make sure／ensure</b> that · controlled for</td></tr>
+        </table></div>
+        <p class="note" style="margin-top:12px">⭐ <b>两个槽最容易出错</b>：<b>解释槽</b>里的「推测语气」——「难以解释」之后只会是 perhaps／could，不会是 furthermore／likewise（10 题）；<b>严谨槽</b>里的「确保」——讲取样、控制变量的句子用确保类动词，不用证明类（20 题 see vs show／prove）。<b>与 2011 完形的实验段三段式（方法 → 结果 → 结论，⟹ <a href="套路库_阅读.html#R106" style="color:var(--accent)">R106</a>）合起来看</b>：2011 写的是一场实验，2015 写的是一篇<b>对研究的新闻报道</b>——多了「出处」「意义」「严谨」三个槽，少了实验操作的细节。</p>
+      </section>
+      <!-- ========== 03 考点分类 ========== -->
+      <section class="card">
+        <h2><span class="n">03</span>考点分类（完形不背单个空，要看「这题在考什么」）</h2>
+        <div class="catbar" id="catbar"></div>
+        <div class="catlegend" id="catlegend"></div>
+        <p class="note" style="margin-top:14px">点某一类 → 下方列出该类所有空、正文里同步高亮 → 点小格跳到解析卡。（分类依据不是“空格里填的是什么词”，而是<b>“解这一题你得做什么动作”</b>。）</p>
+        <div class="chips" id="chips"></div>
+        <div class="flow" style="margin-top:16px">
+          <div class="fi"><b>⭐ 九年对照：2015 是<u>词义 ＋ 搭配</u>并重的一年——词义 6、搭配 6，逻辑关系只有 3。</b>
+            <span class="ev"><div class="tabwrap"><table class="otab"><tr><th>年份</th><th>词义辨析</th><th>固定搭配</th><th>逻辑关系</th><th>上下文语义</th><th>这一年压在哪</th></tr>
+            <tr><td>2007</td><td>9</td><td>5</td><td>4</td><td>2</td><td>词义（占 45%）</td></tr>
+            <tr><td>2008</td><td>9</td><td>6</td><td><b>2</b></td><td>3</td><td>六道实义动词的主语适配</td></tr>
+            <tr><td>2009</td><td>6</td><td>5</td><td>5</td><td>4</td><td>四类几乎持平</td></tr>
+            <tr><td>2010</td><td>9</td><td>4</td><td>4</td><td>3</td><td>形容词与副词的“方向”</td></tr>
+            <tr><td>2011</td><td>6</td><td>3</td><td>6</td><td>5</td><td>一根因果箭头的方向</td></tr>
+            <tr><td>2012</td><td>5</td><td>4</td><td>3</td><td>8</td><td>作者的应然立场 ＋ 首尾镜像</td></tr>
+            <tr><td>2013</td><td>3</td><td>7</td><td>4</td><td>6</td><td>空格后的介词短语 ＋ 比方与发现同构</td></tr>
+            <tr><td>2014</td><td>5</td><td>6</td><td>3</td><td>6</td><td>按段定正负 ＋ 一个比喻贯穿全文 ＋ 说明书式搭配</td></tr>
+            <tr><td><b>2015</b></td><td><b>6</b></td><td><b>6</b></td><td><b>3</b></td><td><b>5</b></td><td><b>研究报道的槽位套话 ＋ 「不止于表面」四连</b></td></tr></table></div>
+            ⟹ <b>九年九种分布，第九次坐实「完形没有万能重心」</b>——但要照实说一句：<b>2015 与 2014 只差一空</b>（12 drive 归「词义」还是「语境」是一念之差：它的判据一半是「机制能做什么动作」、一半是上一句 draws；若归语境，两年就完全相同）。<b>更稳的规律是：2013、2014、2015 连续三年固定搭配 ≥ 6 个、逻辑关系 ≤ 4 个</b>——近几年的完形越来越像「套话 ＋ 词义」的考法，逻辑空变少了。</span></div>
+          <div class="fi"><b>⭐⭐ 本年的六个搭配空，四个是「整块背下来就白拿」的</b>
+            <span class="ev">3 conduct an analysis <b>on</b> · 11 there is more <b>to</b> it · 14 friends with <b>benefits</b> · 17 a major <b>contributory</b> factor；另两个是句型：1 That is <b>what</b> … has concluded（从句缺宾语）、20 care was taken to <b>see</b> that（see that＝确保）。⟹ <b>2013 靠介词锁、2014 靠短语动词、2015 靠研究报道的套话</b>——三年的搭配空形态不同，<b>共同点是都不需要推理，只需要见过</b>。</span></div>
+          <div class="fi"><b>📐 线索位置统计（判据＝线索是否落在同一个句号之内）：句内自足 13 空 ／ 跨句 7 空。</b>
+            <span class="ev"><b>跨句（7）</b>：2（首句是一条新发现，不是争议观点）· 5（both 回指上句的两组）· 9（④段的发现与①段的发现递进）· 10（上句 difficult to explain, for now）· 12（上句 draws us）· 15（下句 picked pace）· 19（下句 European extraction）。<br><b>句内自足（13）</b>：1 · 3 · 4 · 6 · 7 · 8 · 11 · 13 · 14 · 16 · 17 · 18 · 20。<br>⟹ 句内比例 <b>65%</b>（2010 65% → 2011 75% → 2012 80% → 2013 70% → 2014 85% → <b>2015 65%</b>，<b>与 2010 并列六年最低</b>）——<b>这一年「第一遍只做句内空」只能拿 6.5 分，另外 7 个空都要跨句</b>。⚠️ <b>跨句空里两个要往后读</b>（15、19 的钥匙都在<b>下一句</b>）——卡住时别只往回看。13 虽然按判据算句内（两端的修饰语、引号和感叹号都在本句），但<b>真正让人放心的证据在上一句 there is more to it 和全文的四连</b>——我就是没往外看才错的。</span></div>
+          <div class="fi"><b>📌 位置预判：三个逻辑空两个守规矩，一个嵌在主谓之间。</b>
+            <span class="ev"><b>10</b> Perhaps（句首）✅ · <b>13</b> rather than（连接两个成分，站在后一成分之首）✅ · <b>9</b> also（<code>The study ___ found</code>，<b>夹在主语和谓语之间</b>）✗——按「成分首」算 <b>2/3</b>。<b>边界再次印证</b>：短语型逻辑词（rather than）守规矩，<b>单个副词（also，如 2013 的 then）可以嵌进谓语</b> ⟹ 扫到「主语 ＋ 空 ＋ 谓语动词」也要当逻辑空看（⟹ R76 补）。</span></div>
+          <div class="fi"><b>📌 三缺一分组法：本年成立七次，孤立项七次全是答案。</b>
+            <span class="ev"><b>1</b>：why／how／when 副词 ＋ <b>what</b> 代词 · <b>7</b>：visit／miss／seek 都预设认识 ＋ <b>know</b> 是前提本身 · <b>8</b>：surpass／influence／favor 一方对另一方 ＋ <b>resemble</b> 对称的像 · <b>10</b>：Meanwhile／Furthermore／Likewise 连接副词 ＋ <b>Perhaps</b> 语气副词 · <b>13</b>：according to／regardless of／along with 把后面的拉进来 ＋ <b>rather than</b> 推出去 · <b>18</b>：decision／arrangement／endeavor 刻意 ＋ <b>tendency</b> 不自觉 · <b>19</b>：political／religious／economic 后天社会身份 ＋ <b>ethnic</b> 血统。<br>⚠️ <b>2＋2 与不成立的组</b>：15（速度 faster／slower 对时间 later／earlier，先定维度再定方向）· 6（四个全带否定前缀，<b>按词形分不出组</b>——要剥掉前缀比词根）· 2／3／4／5／9／11／12／14／16／17／20 分不出 3＋1，老实读上下文。⭐ <b>本年是本站记录里三缺一最好用的一年</b>（2010 两次 · 2012 三次 · 2013 四次 · 2014 五次 · <b>2015 七次</b>），而<b>我唯一的错题 13 恰好在这七次里</b>——<b>先分组再代入，这一分本来能保住</b>（⟹ R74 补）。</span></div>
+        </div>
+      </section>
+
+      <!-- ========== 04 打法 ========== -->
+      <section class="card">
+        <h2><span class="n">04</span>完形六大打法（本篇取证）</h2>
+        <div class="flow">
+          <div class="fi"><b>① 首句不设空 → 先定三要素，并圈出首句的关键词</b>：话题、方向、关键词。
+            <span class="ev">本篇首句给了<b>「表面不是、其实是」</b>的方向（Though not biologically related … as "related" as）和三个关键词（related 带引号、fourth cousins、1%）。<b>三个关键词后文各用一次</b>：6 题的 1%、7／8 题的 fourth cousins 与 kin。</span></div>
+          <div class="fi"><b>② ⭐⭐ 研究报道型：先认槽位，再去那个槽的词族里找</b>（本篇的主刀之一）。
+            <span class="ev">出处 → 方法 → 数字意义 → 发现与解释 → 意义 → 严谨，六段六槽；<b>十个空是槽位套话</b>（what · concluded · on · compared · samples · also · Perhaps · understand · contributory · see that）（<a href="#slots" style="color:var(--accent)">02+++</a>，⟹ R106）。</span></div>
+          <div class="fi"><b>③ ⭐⭐ 全文反复同一个动作 → 把它写在卷边，二选一的空一律跟着它走</b>（本篇的主刀之二）。
+            <span class="ev">「不止于表面」四连：not biologically related 却 "related" · may seem … not so · there is more to it · do not simply explain ⟹ 13 推开功利、18 推开刻意（<a href="#deeper" style="color:var(--accent)">02++</a>，⟹ R193）。</span></div>
+          <div class="fi"><b>④ ⭐⭐ 连接两个名词成分的空：先把两端的修饰语并排写</b>。
+            <span class="ev">genetically ↔ "functional"：一根轴的两端 ⟹ 取舍 rather than，<b>不是伴随 along with</b>；引号 ＋ 感叹号＝被调侃的一端（<a href="#axis" style="color:var(--accent)">02+</a>，⟹ R192、R29）。</span></div>
+          <div class="fi"><b>⑤ 「may seem X, it is not so to Y」：空格填 Y 所否定的那个看法</b>。
+            <span class="ev">6 题：遗传学家认为 1% 很有分量 ⟹ 一般人眼里它「微不足道」；<b>四个选项全带否定前缀，剥掉前缀比词根</b>（⟹ R194）。</span></div>
+          <div class="fi"><b>⑥ 先分组再代入：三缺一成立七次，孤立项全是答案</b>。
+            <span class="ev">1 what · 7 know · 8 resemble · 10 Perhaps · 13 rather than · 18 tendency · 19 ethnic；<b>2＋2 的 15 先定维度（速度 vs 时间）再定方向</b>（⟹ R74）。</span></div>
+        </div>
+        <p class="note" style="margin-top:14px">🔁 <b>十篇完形（2007–2015 ＋ 2022）信号类型对照</b>：<a href="2022_完形_植物意识.html" style="color:var(--accent)">2022</a> 靠明信号词 · <a href="2007_完形_拉美独立后的理想与分歧.html" style="color:var(--accent)">2007</a> 靠结构性信号 · <a href="2008_完形_高智商与遗传疾病.html" style="color:var(--accent)">2008</a> 靠动词与主语适配 · <a href="2009_完形_智力的代价.html" style="color:var(--accent)">2009</a> 靠语用功能 · <a href="2010_完形_霍桑效应遭到质疑.html" style="color:var(--accent)">2010</a> 靠叙事方向 · <a href="2011_完形_笑与情绪的方向之争.html" style="color:var(--accent)">2011</a> 靠因果箭头 · <a href="2012_完形_大法官的伦理与法院的合法性.html" style="color:var(--accent)">2012</a> 靠应然立场与首尾镜像 · <a href="2013_完形_面试打分的当日偏见.html" style="color:var(--accent)">2013</a> 靠介词框架与比方—发现同构 · <a href="2014_完形_像练肌肉一样练大脑.html" style="color:var(--accent)">2014</a> 靠按段定正负与贯穿比喻 · <b>2015 靠研究报道槽位与「不止于表面」四连</b>。<br>📰 <b>话题</b>：<b>「基因与遗传」又一次上完形</b>——<a href="2008_完形_高智商与遗传疾病.html" style="color:var(--accent)">2008</a> 讲一个族群的高智商与遗传病（自然选择）、<a href="2014_完形_像练肌肉一样练大脑.html" style="color:var(--accent)">2014</a> 讲智力「部分遗传、可随努力扩展」、<b>2015 讲连择友都带着基因的影子，且相似基因进化更快</b>——<b>2008 与 2015 都落在「自然选择」上</b>（本篇所报道的论文题目正是 <i>Friendship and Natural Selection</i>）。</p>
+      </section>
+      <!-- ========== 05 搭配库 ========== -->
+      <section class="card">
+        <h2><span class="n">05</span>固定搭配 &amp; 熟词僻义（这些是死记就得分的）</h2>
+        <div class="wb">
+          <div class="wbi"><div class="p">Though not X, … ／ as "related" as　虽然不是 X，却……；像……一样「亲」（①❶）</div><div class="u"><b>Though ＋ 形容词／分词</b>是省略从句（省了「主语＋be」）：<i>Though not rich, he is generous.</i> ⭐ <b>as … as 中间的词打了引号</b>：用的不是字面义（血缘上的亲），而是比方（基因上的像）。</div></div>
+          <div class="wbi"><div class="p">That is what a study has concluded／found.　这就是一项研究得出的结论（1–2 题）</div><div class="u">⭐ <b>研究报道的开场句</b>：先抛一个惊人的事实，再用 That is what … 交代出处。what 在从句里当宾语——<b>从句缺宾语，只能是代词</b>。</div></div>
+          <div class="wbi"><div class="p">publish (a study) in a journal　在期刊上发表（研究）（①❷）</div><div class="u"><b>在期刊上用 in</b>：published in <i>Nature</i>／the Proceedings of…。原卷的 <code>published from the University …</code> 是「出自（某机构）」，不是常规说法，<b>作文里写 by researchers from／at X University</b>。</div></div>
+          <div class="wbi"><div class="p">conduct an analysis／a study／an experiment on sb　针对某人做分析／研究／实验（3 题）</div><div class="u">⭐ <b>研究类名词 ＋ on ＋ 对象</b>：research on · tests on animals · a survey on／of students。⚠️ <b>by 接施动者</b>（conducted by researchers），<b>on 接对象</b>——被动分词后面别条件反射接 by。</div></div>
+          <div class="wbi"><div class="p">compare pairs of A and B ／ compare A with B　比较 A 与 B（4 题）</div><div class="u"><b>对照研究的标配动词</b>。compare A with B（比较异同）· compare A to B（把 A 比作 B）。</div></div>
+          <div class="wbi"><div class="p">The same people were used in both samples.　两组样本用的是同一批人（5 题）</div><div class="u"><b>both ＋ 复数名词＝回指上文的两个东西</b>。统计词族：sample（样本）· subject（受试者）· population（总体）· control group（对照组）· variable（变量）。</div></div>
+          <div class="wbi"><div class="p">X may seem insignificant, but it is not so to Y.　X 看似微不足道，在 Y 看来却并非如此（6 题）</div><div class="u">⭐ <b>「看似 X，其实不 X」的标准句</b>，<code>it is not so</code> 的 so 替代前面的 insignificant。✍️ <i>While a 1% rise may seem insignificant, it is not so to a family living on the edge.</i></div></div>
+          <div class="wbi"><div class="p">do not even A but somehow manage to B　连 A 都没有，却不知怎么做到了 B（7 题）</div><div class="u"><b>not even＝连……都不</b>（要填最低限度的那件事）；<b>manage to do＝设法做成</b>（强调结果做到了）；<b>somehow＝不知怎么地</b>。</div></div>
+          <div class="wbi"><div class="p">select as friends the people who …　挑选……的人做朋友（③❷）</div><div class="u">⭐ <b>宾语后置</b>：正常语序是 select the people who … as friends，<b>宾语带长定语从句时挪到 as friends 后面</b>，避免头重脚轻。同类：<i>consider as candidates those who …</i></div></div>
+          <div class="wbi"><div class="p">resemble sb　像某人（8 题）</div><div class="u">⚠️ <b>及物动词，不加介词</b>（不说 resemble to／with），<b>不用进行时、不用被动</b>。名词 resemblance：bear a (close) resemblance to。</div></div>
+          <div class="wbi"><div class="p">The study also found that …　研究还发现……（9 题）</div><div class="u"><b>换发现的信号</b>：also found · further showed · Another finding is · One of the remarkable findings was（⑤❶）。</div></div>
+          <div class="wbi"><div class="p">difficult to explain, for now ／ Perhaps, as the team suggests, …　目前难以解释；也许正如团队所说……（10 题）</div><div class="u"><b>for now＝暂时、目前</b>（暗示以后可能解释得了）。<b>as sb suggests</b>：suggest 取「提出（看法）」，比 prove 弱得多——推测语气的一环。</div></div>
+          <div class="wbi"><div class="p">there is more to it (than meets the eye)　事情没那么简单（11 题）</div><div class="u">⭐⭐ <b>there is more to X than Y＝X 不只是 Y</b>：<i>There is more to education than exams.</i>（教育不只是考试。）<b>写作文「驳片面观点」的万能开头</b>。</div></div>
+          <div class="wbi"><div class="p">draw sb to sth ／ drive sb to do／in doing　把某人吸引到……／驱使某人……（④❸、12 题）</div><div class="u"><b>draw（拉）与 drive（推）</b>方向相反、作用一样：都让人「往那边去」。draw 的熟词僻义还有「吸引」：draw a crowd（吸引人群）。</div></div>
+          <div class="wbi"><div class="p">A rather than B　是 A 而不是 B（13 题）</div><div class="u">⭐ <b>rather than 连接两个平行成分</b>（名词、动词原形、从句都行），<b>两端必须对立</b>；along with／as well as 连接的两端必须<b>同向可相加</b>——判据见 <a href="#axis" style="color:var(--accent)">02+</a>。</div></div>
+          <div class="wbi"><div class="p">friends with benefits　「有好处的朋友」（14 题）</div><div class="u">⚠️ 口语里另有俚语义（见 00 背景表），<b>只在读懂本文时用，作文别用</b>；要说「互利」写 mutually beneficial。</div></div>
+          <div class="wbi"><div class="p">evolve faster than　比……进化得快（15 题）· pick up (the) pace　加快步伐（⑤❷）</div><div class="u">原卷印作 <code>picked pace</code>，标准说法带 up：<i>The economy is picking up pace.</i>（经济正在提速。）</div></div>
+          <div class="wbi"><div class="p">help (to) understand why …　有助于理解为什么……（16 题）</div><div class="u"><b>help 后的 to 可省</b>：help (to) do。研究的「意义槽」：help understand／explain／shed light on。</div></div>
+          <div class="wbi"><div class="p">with X being a major contributory factor　X 是其中一个主要的促成因素（17 题）</div><div class="u">⭐ <b>with 复合结构补充原因</b>：<i>Obesity rates have risen, with lack of exercise being a major contributory factor.</i> ✍️ 写原因分析一句话带出主因。</div></div>
+          <div class="wbi"><div class="p">people's tendency to do　人们……的倾向（18 题）</div><div class="u"><b>tendency to do／toward sth</b>；动词 tend to do。⚠️ tendency 是<b>不自觉的倾向</b>，decision／endeavor 是<b>刻意的</b>。</div></div>
+          <div class="wbi"><div class="p">befriend those of similar ethnic backgrounds　与族裔背景相似的人交朋友（18–19 题）</div><div class="u"><b>befriend＝be- ＋ friend</b>（把名词变成动词：befriend 结交 · belittle 贬低 · behead 斩首）。<b>those of ＋ 名词</b>＝具有……的人。</div></div>
+          <div class="wbi"><div class="p">be drawn from a population of European extraction　选自欧洲裔人群（⑥❷）</div><div class="u"><b>be drawn from＝选自、取自</b>（draw 的又一义：抽取样本）；<b>of … extraction＝……血统的</b>。</div></div>
+          <div class="wbi"><div class="p">care was taken to see that …　（研究者）小心地确保……（20 题）</div><div class="u">⭐⭐ <b>see (to it) that＝make sure that＝确保</b>；<b>take care to do＝小心地、特意地做</b>。被动的 <code>care was taken</code> 是科研写作隐去施动者的标准写法。</div></div>
+          <div class="wbi"><div class="p">🔑 熟词僻义清单（本篇 22 处）</div><div class="u"><div class="tabwrap"><table class="otab" id="polytab"><tr><th>词</th><th>常见义</th><th>本篇义</th><th>出处</th></tr>
+            <tr><td><span class="ow">related</span></td><td>有关的</td><td><b>有亲属关系的</b>（带引号：基因上像亲戚）</td><td>①❶</td></tr>
+            <tr><td><span class="ow">cousin</span></td><td>堂／表兄弟姐妹</td><td><b>远房亲戚</b>（fourth cousins 第四代表亲）</td><td>①❶</td></tr>
+            <tr><td><span class="ow">proceedings</span></td><td>（一系列）事件；诉讼</td><td><b>（学会的）会刊、论文集</b></td><td>①❷</td></tr>
+            <tr><td><span class="ow">conclude</span></td><td>结束</td><td><b>得出结论</b></td><td>2 题答案</td></tr>
+            <tr><td><span class="ow">conduct</span></td><td>指挥（乐队）；行为</td><td><b>实施、进行</b>（研究）</td><td>②❶</td></tr>
+            <tr><td><span class="ow">unique</span></td><td>独一无二的，独特的</td><td><b>（计数时）各不相同、不重复的</b></td><td>②❶</td></tr>
+            <tr><td><span class="ow">subject</span></td><td>科目；主题；主语</td><td><b>受试者，研究对象</b></td><td>②❶</td></tr>
+            <tr><td><span class="ow">sample</span></td><td>样品，试用品</td><td><b>（统计）样本</b></td><td>5 题答案</td></tr>
+            <tr><td><span class="ow">kin</span></td><td>—（少见词）</td><td><b>亲戚，家属</b>（集合名词）</td><td>③❷</td></tr>
+            <tr><td><span class="ow">smell</span></td><td>气味；闻</td><td><b>嗅觉</b>（genes for smell）</td><td>④❶</td></tr>
+            <tr><td><span class="ow">suggest</span></td><td>建议</td><td><b>提出（看法）、认为</b></td><td>④❸</td></tr>
+            <tr><td><span class="ow">draw</span></td><td>画；拉</td><td><b>吸引</b>（draws us to）；<b>抽取</b>（drawn from）</td><td>④❸ ⑥❷</td></tr>
+            <tr><td><span class="ow">drive</span></td><td>驾驶</td><td><b>驱使，推动</b></td><td>12 题答案</td></tr>
+            <tr><td><span class="ow">functional</span></td><td>功能的；能运转的</td><td><b>实用的、为了用处的</b>（带引号，被调侃）</td><td>④❹</td></tr>
+            <tr><td><span class="ow">benefits</span></td><td>津贴，福利</td><td><b>好处</b>（friends with benefits）</td><td>14 题答案</td></tr>
+            <tr><td><span class="ow">remarkable</span></td><td>值得注意的</td><td><b>惊人的、非同寻常的</b></td><td>⑤❶</td></tr>
+            <tr><td><span class="ow">pace</span></td><td>步子</td><td><b>速度</b>（pick up pace 加速）</td><td>⑤❷</td></tr>
+            <tr><td><span class="ow">environment</span></td><td>（自然）环境</td><td><b>（社交）环境</b>、朋友圈</td><td>⑤❷</td></tr>
+            <tr><td><span class="ow">population</span></td><td>人口</td><td><b>（某一族群的）人群；统计总体</b></td><td>⑥❷</td></tr>
+            <tr><td><span class="ow">extraction</span></td><td>提取，拔出</td><td><b>血统，出身</b></td><td>⑥❷</td></tr>
+            <tr><td><span class="ow">care</span></td><td>关心；照顾</td><td><b>小心、谨慎</b>（care was taken to）</td><td>⑥❷</td></tr>
+            <tr><td><span class="ow">see</span></td><td>看见</td><td><b>确保</b>（see that）</td><td>20 题答案</td></tr>
+          </table></div></div></div>
+        </div>
+      </section>
+
+      <!-- ========== 06 80 词表 ========== -->
+      <section class="card">
+        <h2><span class="n">06</span>80 个选项词速查（完形的真正词汇量）
+          <button class="allbtn" id="btnHide" style="margin-left:auto" onclick="toggleHide()">✍️ 默写模式</button>
+        </h2>
+        <p class="note">完形一篇＝<b>80 个高频词的辨析现场</b>，绿底是正确项。<b>默写模式</b>会糊住中文释义——先自己说出意思，点单个格子可单独揭开。<b>本篇 80 个词里有两组值得成组背</b>：6 题<b>四个否定前缀词</b>（insignificant · unexpected · unreliable · incredible，<b>先剥前缀再比词根</b>）与 13 题<b>四个短语介词</b>（according to · rather than · regardless of · along with——<b>依据、取舍、无视、伴随</b>四种关系，一次分清）。</p>
+        <div class="tabwrap"><table class="otab" id="otab"></table></div>
+      </section>
+      <!-- ========== 07 长难句 ========== -->
+      <section class="card">
+        <h2><span class="n">07</span>长难句精析（正文蓝色虚线句）</h2>
+
+        <div class="sent" id="s1">
+          <div class="src"><i>Though not biologically related</i>, <span class="skel">friends are as "related" as fourth cousins</span>, <i>sharing about 1% of genes.</i></div>
+          <div class="anat">
+            <ul>
+              <li><b>主干</b>：<span class="skel">friends are as "related" as fourth cousins</span>（同级比较 as … as）；句首是<b>省略的让步状语从句</b>：Though (they are) not biologically related；句末 <code>sharing about 1% of genes</code> 是<b>现在分词短语作伴随／补充说明</b>，逻辑主语是 friends。</li>
+              <li>⭐ <b>同一个词用两遍、意思不同</b>：<code>biologically <u>related</u></code>（血缘上的亲属）↔ <code>"<u>related</u>"</code>（打引号＝比方：基因上像亲属）——<b>引号就是作者在说「我这里不是字面义」</b>（⟹ R29）。</li>
+              <li>💡 这句一开篇就立了<b>全文的动作：表面不是，其实是</b>（⟹ <a href="#deeper" style="color:var(--accent)">02++ 四连</a>第一连）。</li>
+            </ul>
+          </div>
+          <div class="tr">译：朋友之间虽然没有血缘关系，却和第四代表亲一样「亲」，大约有 1% 的基因是相同的。</div>
+        </div>
+
+        <div class="sent" id="s2">
+          <div class="src"><span class="skel">That is</span> <i>what a study, <u>published from the University of California and Yale University in the Proceedings of the National Academy of Sciences</u>, has concluded.</i></div>
+          <div class="anat">
+            <ul>
+              <li><b>主干</b>：<span class="skel">That is + 表语从句</span>；表语从句的骨架是 <code>what a study has concluded</code>——<b>what 是 concluded 的宾语</b>，被提到从句开头。</li>
+              <li>⭐ <b>从句的主语和谓语被一整段插入语撑开</b>：a study, <u>published from … Sciences</u>, has concluded——<b>过去分词短语作后置定语，两边带逗号</b>，长达 18 个词。<b>做 1、2 题的第一步就是把它括起来</b>，句子立刻缩成 That is ___ a study has ___。</li>
+              <li>💡 That 回指<b>上一句整句</b>（朋友像四代表亲这件事）。</li>
+            </ul>
+          </div>
+          <div class="tr">译：这就是加利福尼亚大学和耶鲁大学发表在《美国国家科学院院刊》上的一项研究所得出的结论。</div>
+        </div>
+
+        <div class="sent" id="s3">
+          <div class="src"><span class="skel">The study is a genome-wide analysis</span> <i>conducted on 1,932 unique subjects</i> <i>which compared pairs of unrelated friends and unrelated strangers.</i></div>
+          <div class="anat">
+            <ul>
+              <li><b>主干</b>：<span class="skel">The study is a genome-wide analysis</span>；analysis 后面挂了<b>两个后置修饰</b>：① 过去分词短语 <code>conducted on 1,932 unique subjects</code>；② 定语从句 <code>which compared pairs of …</code>。</li>
+              <li>⭐⭐ <b>which 的先行词是 analysis，不是紧挨着的 subjects</b>——判据是语义：subjects（受试者）不会去「比较成对的朋友和陌生人」，只有「分析」会。<b>定语从句前隔着一个分词短语时，先把分词短语括起来再找先行词</b>（4 题的关键）。</li>
+              <li>💡 <code>pairs of unrelated friends and unrelated strangers</code>：pairs of 同时管两个名词——<b>成对的朋友</b>与<b>成对的陌生人</b>；两个 unrelated 都指「彼此没有血缘关系」。</li>
+            </ul>
+          </div>
+          <div class="tr">译：这项研究是针对 1,932 名互不重复的研究对象所做的全基因组分析，它比较了成对的、没有血缘关系的朋友与成对的、没有血缘关系的陌生人。</div>
+        </div>
+
+        <div class="sent" id="s4">
+          <div class="src"><i>As James Fowler, professor of medical genetics at UC San Diego, says</i>, "<span class="skel">Most people do not even know their fourth cousins but somehow manage to select as friends</span> <i>the people who resemble our kin</i>."</div>
+          <div class="anat">
+            <ul>
+              <li><b>主干</b>：引号内是两个并列谓语——<span class="skel">Most people do not even know … but somehow manage to select …</span>；句首 <code>As …, says</code> 是<b>方式状语从句</b>（正如……所说），<code>professor of … San Diego</code> 是 Fowler 的<b>同位语</b>。</li>
+              <li>⭐ <b>宾语后置</b>：select 的宾语 <code>the people who resemble our kin</code> 带着定语从句，<b>被挪到了 as friends 之后</b>；正常语序是 select the people who resemble our kin as friends。读的时候先把 as friends 看成 select 的「补足语」，再往后找宾语。</li>
+              <li>💡 <code>not even … but somehow</code>＝「连……都不，却不知怎么就……」——<b>反差</b>定 7、8 两空。</li>
+            </ul>
+          </div>
+          <div class="tr">译：正如加州大学圣迭戈分校的医学遗传学教授詹姆斯·福勒所说：「大多数人连自己的第四代表亲都不认识，却不知怎么地总能挑中那些和我们的亲戚相像的人做朋友。」</div>
+        </div>
+
+        <div class="sent" id="s5">
+          <div class="src"><i>Perhaps, as the team suggests</i>, <span class="skel">it draws us to similar environments</span> <span class="skel">but there is more to it.</span></div>
+          <div class="anat">
+            <ul>
+              <li><b>主干</b>：两个由 but 连接的并列分句：<span class="skel">it draws us to …</span> ／ <span class="skel">there is more to it</span>；<code>as the team suggests</code> 是插入的方式状语从句。</li>
+              <li>⭐ <b>两个 it 指的不是同一件事</b>：第一个 it＝上句的 <code>this similarity (in smell genes)</code>（嗅觉基因的相似把我们吸引到相似的环境）；第二个 it（more to it）＝<b>「为什么朋友基因相似」这整件事</b>。</li>
+              <li>💡 <b>一句话里两层退让</b>：Perhaps（也许）＋ as the team suggests（只是团队的看法）——<b>作者对这个解释只给了半张票</b>，所以紧接着 but there is more to it（⟹ 10、11 两空）。</li>
+            </ul>
+          </div>
+          <div class="tr">译：也许正如研究团队所说，这种相似把我们吸引到相似的环境中去，但事情没那么简单。</div>
+        </div>
+
+        <div class="sent" id="s6">
+          <div class="src"><span class="skel">There could be many mechanisms</span> <i>working together</i> <i>that drive us in choosing genetically similar friends rather than "functional kinship" of being friends with benefits!</i></div>
+          <div class="anat">
+            <ul>
+              <li><b>主干</b>：<span class="skel">There could be many mechanisms</span>（could＝推测）；mechanisms 后挂两个修饰：现在分词 <code>working together</code>（共同作用的）与定语从句 <code>that drive us in choosing …</code>。</li>
+              <li>⭐⭐ <b>that 的先行词是 mechanisms</b>，working together 是插在中间的分词——<b>together 只管 mechanisms 之间的协同，不管后面的 rather than</b>（13 题我就是把 together 读到了空格上）。</li>
+              <li>⭐ <b>rather than 连接两个平行的宾语</b>：choosing ① genetically similar friends ／ ② "functional kinship" of being friends with benefits；<code>of being friends with benefits</code> 是 "functional kinship" 的<b>同位语</b>（of 表同位），把术语翻成大白话。</li>
+              <li>💡 <b>引号 ＋ 全文唯一的感叹号</b>＝作者的调侃语气：被引号框住的那一端是被推开的表面解释。</li>
+            </ul>
+          </div>
+          <div class="tr">译：可能有许多机制在共同起作用，驱使我们选择基因相似的朋友，而不是去结交「有好处才做朋友」的那种「功利性亲缘」！</div>
+        </div>
+
+        <div class="sent" id="s7">
+          <div class="src"><span class="skel">Studying this could help understand</span> <i>why human evolution picked pace in the last 30,000 years</i>, <i>with social environment being a major contributory factor.</i></div>
+          <div class="anat">
+            <ul>
+              <li><b>主干</b>：<span class="skel">Studying this could help understand + why 宾语从句</span>——动名词短语 Studying this 作主语，this 回指上句「相似基因进化得更快」这一发现；help 后省略了 to。</li>
+              <li>⭐ <b>句末 with 复合结构</b>：with ＋ 名词（social environment）＋ 现在分词（being a major contributory factor），<b>相当于一个补充说明的分句</b>（and social environment was a major contributory factor）。</li>
+              <li>💡 这里的 social environment 指人们挑基因相似者做朋友而形成的<b>社交圈</b>——社交圈让相似基因更集中，于是进化得更快。</li>
+            </ul>
+          </div>
+          <div class="tr">译：研究这一点，有助于理解人类进化为什么在过去三万年里加快了步伐——而社会环境是其中一个主要的促成因素。</div>
+        </div>
+
+        <div class="sent" id="s8">
+          <div class="src"><i>Though all the subjects were drawn from a population of European extraction</i>, <span class="skel">care was taken to see</span> <i>that all subjects, friends and strangers, were taken from the same population.</i></div>
+          <div class="anat">
+            <ul>
+              <li><b>主干</b>：<span class="skel">care was taken to see that …</span>（被动：研究者 took care to see that …）；句首 Though 引导<b>让步状语从句</b>；see 后的 that 从句是宾语，其中 <code>friends and strangers</code> 是 all subjects 的<b>同位语</b>（两边逗号）。</li>
+              <li>⭐ <b>see that＝确保</b>（熟词僻义，20 题）；<code>care was taken to</code>＝特意、小心地——科研写作隐去施动者的被动句。</li>
+              <li>💡 <b>让步的逻辑</b>：「尽管都来自欧洲裔人群（本来就同族）」→「仍确保朋友和陌生人都取自同一人群」——意思是：<b>比较的两组在族群上完全对等</b>，朋友之间多出来的相似就不能归到「同族」头上。</li>
+            </ul>
+          </div>
+          <div class="tr">译：尽管所有研究对象都选自一个欧洲裔人群，研究人员仍小心地确保所有对象——无论朋友还是陌生人——都取自同一个人群。</div>
+        </div>
+      </section>
+      <!-- ========== 08 写作素材 ========== -->
+      <section class="card">
+        <h2><span class="n">08</span>可搬进作文/翻译的表达</h2>
+        <p class="note">本篇是一篇<b>「研究发现 → 方法 → 意义 → 局限与严谨」</b>的科研报道，结构正好能套在<b>图表作文和论证段</b>上：先抛数据、再交代来源、再说意义、最后讲「不能简单理解」。话题上，「友谊与人际关系」「科学看待相似与差异」「不要用功利眼光看人际关系」能接上<b>交友、合作、人际信任</b>几个常考母题。</p>
+        <div class="wb">
+          <div class="wbi"><div class="p">Though not X, A is as "Y" as B.　A 虽不是 X，却和 B 一样「Y」。</div><div class="u">⭐ <b>引号比方句</b>，一句话写出「名义上不是、实际上是」：<i>Though not related by blood, close roommates are often as "family" as brothers and sisters.</i></div></div>
+          <div class="wbi"><div class="p">That is what a recent study has concluded.　这正是最近一项研究得出的结论。</div><div class="u"><b>先抛惊人事实、再亮出处</b>的开头法，图表作文与议论文第一段都能用。</div></div>
+          <div class="wbi"><div class="p">While X may seem insignificant, it is not so to …　X 看似微不足道，但在……看来并非如此。</div><div class="u">⭐ <b>写「小数字、大意义」</b>：<i>While a 2% drop in reading time may seem insignificant, it is not so to educators who worry about attention spans.</i></div></div>
+          <div class="wbi"><div class="p">There is more to it than meets the eye.　事情没有看上去那么简单。</div><div class="u">⭐⭐ <b>驳片面观点的万能转折句</b>：<i>Some attribute the popularity of short videos to laziness, but there is more to it than meets the eye.</i></div></div>
+          <div class="wbi"><div class="p">Many factors work together to drive people to …　多种因素共同作用，驱使人们……</div><div class="u"><b>原因分析段的总起句</b>：<i>Many factors work together to drive young people to choose jobs in big cities.</i></div></div>
+          <div class="wbi"><div class="p">choose friends based on genuine affinity rather than practical benefits　凭真正的投缘而不是现实好处去交朋友</div><div class="u">⭐ <b>「友谊不应功利」话题的中心句</b>，rather than 两端对立：<i>True friendship is built on shared values rather than mutual benefits.</i>（⚠️ 作文里写 mutual benefits，别写 friends with benefits。）</div></div>
+          <div class="wbi"><div class="p">Studying this could help us understand why …　研究这一点有助于我们理解为什么……</div><div class="u"><b>写「意义」段</b>：<i>Studying such cases could help us understand why some students give up halfway.</i></div></div>
+          <div class="wbi"><div class="p">with X being a major contributory factor　X 是其中一个主要的促成因素</div><div class="u"><b>一句话带出主因</b>：<i>Traffic congestion has worsened, with the rapid growth of private cars being a major contributory factor.</i></div></div>
+          <div class="wbi"><div class="p">The findings do not simply explain …　这些发现并不只是在说明……</div><div class="u"><b>「不能简单理解为……」的学术说法</b>：<i>The data do not simply reflect a change in taste; they point to a deeper shift in values.</i></div></div>
+          <div class="wbi"><div class="p">Care was taken to see that …　（我们）特意确保……</div><div class="u">⭐ <b>写建议信、活动方案、实验描述</b>：<i>Care was taken to see that every participant received the same instructions.</i> 同义 make sure／ensure。</div></div>
+        </div>
+      </section>
+
+    </main>
+
+    <aside>
+      <div id="panel"><div class="hint">👆 点正文里的<b>黄底词</b><br>词卡会出现在这里<br><br>点<b>空格</b>则跳到对应解析卡</div></div>
+    </aside>
+  </div>
+
+  <footer>2015 英语一 · 完形填空复盘页 · ✅ Claude 盲做 19/20（盲做答案先落盘、再只裁答案页 Section I 那一条核对；唯一错题 13：选 D along with，正确 B rather than）· 解析由 Claude 独立写成并与黄皮书精讲逐空交叉核对（答案零书误）· 背景核实：原文《国际财经时报》2014-07-15；所报道论文为 Christakis 与 Fowler 2014 年 7 月发表于《美国国家科学院院刊》的 <i>Friendship and Natural Selection</i>，数据来自弗雷明汉心脏研究；原卷印作 picked pace（标准说法 pick up pace）· 生词卡 30 张、错题标本、「不止于表面」四连表、研究报道槽位表、九年完形对照均为原创 · 原文仅供个人备考复盘</footer>
+</div>
+
+<button id="yd">🔍 查有道</button>
+<script>
+/* ============ V ============ */
+const V = {
+  bio:{w:"biologically related",ipa:"/ˌbaɪəˈlɒdʒɪkli rɪˈleɪtɪd/",pos:"phrase",tags:["phrase","core"],cn:"<b>有血缘关系的</b>",en:"connected by birth, sharing ancestors",ex:"Though not biologically related, friends are as &quot;related&quot; as fourth cousins…",mem:"<b>bio-（生命）＋ -logic（学）＋ -ally</b> ⟹ 生物学上。biologically related＝<b>生物学意义上有亲缘</b>，就是「有血缘」。反义 unrelated（②段两次）。",syn:"related by blood · blood relatives",conf:"<b>biological</b> parents（亲生父母）vs <b>adoptive</b> parents（养父母）vs <b>step</b>parents（继父母）。"},
+  related:{w:"related",ipa:"/rɪˈleɪtɪd/",pos:"adj.",tags:["poly","core"],cn:"①有关的 ②<b>有亲属关系的</b>",en:"belonging to the same family",ex:"…friends are as &quot;related&quot; as fourth cousins…",mem:"⭐ <b>一句用两遍</b>：biologically related（血缘上的亲）与带引号的 &quot;related&quot;（基因上像亲戚，比方）。<b>引号＝不取字面义</b>。be related to sb＝和某人是亲戚。",syn:"akin · kindred · connected",conf:"<b>related</b>（有亲缘的；相关的）vs <b>relative</b>（n. 亲戚；adj. 相对的）vs <b>relevant</b>（切题的）。"},
+  fourthcousin:{w:"fourth cousin",ipa:"/fɔːθ ˈkʌzn/",pos:"phrase",tags:["phrase"],cn:"<b>第四代表亲</b>（远房亲戚）",en:"a person who shares great-great-great-grandparents with you",ex:"…friends are as &quot;related&quot; as fourth cousins, sharing about 1% of genes.",mem:"first cousin＝共同的祖父母（堂／表兄弟姐妹）；second cousin＝共同的曾祖父母；……<b>fourth cousin＝共同的高祖父母的父母</b>。数字越大越远。",syn:"distant relative",conf:"<b>cousin</b> 不分堂表、不分男女；<b>nephew／niece</b>＝侄子（外甥）／侄女（外甥女）。"},
+  gene:{w:"gene",ipa:"/dʒiːn/",pos:"n.",tags:["core"],cn:"<b>基因</b>",en:"a unit inside a cell that controls a particular quality in a living thing, passed from parents",ex:"…sharing about 1% of genes.",mem:"gen-（产生，同 generate、genesis）。家族：<b>genetic</b>（基因的）· <b>genetics</b>（遗传学）· <b>geneticist</b>（遗传学家，③段）· <b>genome</b>（基因组，②段）。",syn:"DNA · hereditary unit",conf:"<b>gene</b>（基因）vs <b>genre</b>（体裁）vs <b>genius</b>（天才）——同根异义。"},
+  proceedings:{w:"proceedings",ipa:"/prəˈsiːdɪŋz/",pos:"n.",tags:["poly"],cn:"①（一系列）事件，过程 ②诉讼 ③<b>（学会的）会刊，论文集</b>",en:"a published record of the papers or discussions of a society",ex:"…in the Proceedings of the National Academy of Sciences…",mem:"⭐ 熟词僻义：本篇是期刊名 <i>Proceedings of the National Academy of Sciences</i>（《美国国家科学院院刊》，简称 PNAS）。常用复数。",syn:"transactions · journal",conf:"<b>proceedings</b>（会刊；诉讼程序）vs <b>procedure</b>（步骤）vs <b>process</b>（过程）。"},
+  genomewide:{w:"genome-wide",ipa:"/ˈdʒiːnəʊm waɪd/",pos:"adj.",tags:["core"],cn:"<b>全基因组的</b>",en:"covering the whole genome of an organism",ex:"The study is a genome-wide analysis…",mem:"<b>genome（基因组）＋ -wide（遍及……的）</b>。-wide 构词很能产：nationwide（全国的）· worldwide（全世界的）· campus-wide（全校的）。",syn:"—",conf:"<b>genome</b>（基因组，全部基因）vs <b>gene</b>（单个基因）。"},
+  conduct:{w:"conduct",ipa:"/kənˈdʌkt/",pos:"v./n.",tags:["poly","write"],cn:"v. <b>实施，进行</b>；指挥；传导　n. 行为",en:"to organize and carry out an activity",ex:"…a genome-wide analysis conducted on 1,932 unique subjects…",mem:"<b>con-（共同）＋ duct（引导）</b>。✍️ conduct a survey／an experiment／research <b>on</b>——对象用 on（3 题）。",syn:"carry out · perform · undertake",conf:"v. /kənˈdʌkt/ 与 n. /ˈkɒndʌkt/ 重音不同；<b>conduct</b>（进行）vs <b>conductor</b>（指挥；导体）。"},
+  unique:{w:"unique",ipa:"/juˈniːk/",pos:"adj.",tags:["poly"],cn:"①独一无二的 ②<b>（计数时）各不相同的、不重复的</b>",en:"being the only one; (of items counted) each different",ex:"…1,932 unique subjects…",mem:"⭐ 熟词僻义：<b>unique subjects／visitors／users</b>＝去重后的人数（每人只算一次）。uni-（一）同 uniform、unit。",syn:"distinct · individual",conf:"<b>unique</b>（独一的）vs <b>unusual</b>（不寻常的）——unique 理论上不能说 very unique。"},
+  subject:{w:"subject",ipa:"/ˈsʌbdʒɪkt/",pos:"n.",tags:["poly","core"],cn:"①科目 ②主题 ③主语 ④<b>受试者，研究对象</b>",en:"a person used in a scientific study",ex:"…conducted on 1,932 unique subjects…",mem:"⭐ <b>研究报道里 subject 几乎总是「受试者」</b>（2010 完形霍桑效应同）。be subject to（易受……影响）。",syn:"participant · volunteer",conf:"<b>subject</b>（受试者）vs <b>object</b>（物体；目标，5 题错项）。"},
+  unrelated:{w:"unrelated",ipa:"/ˌʌnrɪˈleɪtɪd/",pos:"adj.",tags:["core"],cn:"①无关的 ②<b>无亲属关系的</b>",en:"not belonging to the same family",ex:"…pairs of unrelated friends and unrelated strangers.",mem:"un- ＋ related。<b>两个 unrelated 是研究设计的关键</b>：只比非亲属，排除血缘造成的相似。",syn:"not related by blood",conf:"<b>unrelated</b>（无关的）vs <b>irrelevant</b>（不相干的、离题的）。"},
+  geneticist:{w:"geneticist",ipa:"/dʒəˈnetɪsɪst/",pos:"n.",tags:["core"],cn:"<b>遗传学家</b>",en:"a scientist who studies genetics",ex:"While 1% may seem insignificant, it is not so to a geneticist.",mem:"genetics（遗传学）＋ -ist（……家）。<b>it is not so to a geneticist</b>：6 题的钥匙——<b>专家看法与一般看法相反</b>。",syn:"—",conf:"<b>genetic</b>（adj.）· <b>genetics</b>（n. 遗传学）· <b>geneticist</b>（n. 人）。"},
+  somehow:{w:"somehow",ipa:"/ˈsʌmhaʊ/",pos:"adv.",tags:["core","write"],cn:"<b>不知怎么地</b>；以某种方式",en:"in a way that is not known or understood",ex:"…but somehow manage to select as friends the people who…",mem:"⭐ <b>somehow 暗示「不是有意的、说不清原因」</b>——18 题选 tendency（不自觉的倾向）而不选 decision（刻意）的伏笔。",syn:"in some way · for some reason",conf:"<b>somehow</b>（不知怎么）vs <b>somewhat</b>（有点儿）vs <b>anyhow</b>（无论如何）。"},
+  kin:{w:"kin",ipa:"/kɪn/",pos:"n.",tags:["core"],cn:"<b>亲戚，家属</b>（集合名词，作复数）",en:"your family and relatives",ex:"…select as friends the people who resemble our kin.",mem:"同族：<b>kinship</b>（亲属关系，④段 functional kinship）· <b>next of kin</b>（最近的亲属，医院、法律文书常用）· <b>kindred</b>（亲属；相似的）。",syn:"relatives · family",conf:"<b>kin</b>（亲戚）vs <b>skin</b>（皮肤）vs <b>kind</b>（种类；和善的）。"},
+  smell:{w:"smell",ipa:"/smel/",pos:"n./v.",tags:["poly"],cn:"n. 气味；<b>嗅觉</b>　v. 闻",en:"the ability to notice or recognize smells",ex:"…the genes for smell were something shared in friends…",mem:"⭐ <b>genes for smell＝嗅觉基因</b>（论文原词 olfactory，嗅觉的）。五感：sight · hearing · smell · taste · touch。",syn:"sense of smell · olfaction",conf:"<b>smell</b>（中性）vs <b>scent</b>（香味）vs <b>odor</b>（气味，多指难闻）。"},
+  immunity:{w:"immunity",ipa:"/ɪˈmjuːnəti/",pos:"n.",tags:["core","poly"],cn:"①<b>免疫力</b> ②豁免权",en:"the body's ability to avoid or not be affected by disease",ex:"…but not genes for immunity.",mem:"<b>im-（不）＋ mun（义务）</b> ⟹ 免除义务 ⟹ 豁免；医学上＝免疫。immune system（免疫系统）· diplomatic immunity（外交豁免）。",syn:"resistance · protection",conf:"<b>immunity</b>（免疫力）vs <b>community</b>（社区）——同根 mun。"},
+  fornow:{w:"for now",ipa:"/fə naʊ/",pos:"phrase",tags:["phrase","write"],cn:"<b>暂时，目前</b>",en:"at the present time, but may change",ex:"Why this similarity exists in smell genes is difficult to explain, for now.",mem:"⭐ 暗示「<b>以后可能会变</b>」——难以解释只是暂时的。这是④段推测链的第一环，10 题 Perhaps 由它引出。",syn:"for the time being · at present",conf:"<b>for now</b>（暂时）vs <b>by now</b>（到现在为止）vs <b>from now on</b>（从今以后）。"},
+  suggest:{w:"suggest",ipa:"/səˈdʒest/",pos:"v.",tags:["poly","write"],cn:"①建议 ②<b>表明，暗示；提出（看法）</b>",en:"to put forward an idea for consideration",ex:"Perhaps, as the team suggests, it draws us to similar environments…",mem:"⭐ <b>研究报道里 suggest＝「提出看法／表明」，比 prove 弱得多</b>。表「建议」时从句用虚拟（should do），表「表明」时用陈述语气。",syn:"propose · indicate · imply",conf:"<b>suggest</b>（表明，弱）vs <b>show</b>（显示）vs <b>prove</b>（证明，强）——20 题 show／prove 也是这一族。"},
+  draw:{w:"draw",ipa:"/drɔː/",pos:"v.",tags:["poly"],cn:"①画 ②拉 ③<b>吸引</b> ④<b>抽取</b>（样本）",en:"to attract sb; to take sth from a source",ex:"…it draws us to similar environments… ／ …all the subjects were drawn from a population…",mem:"⭐ <b>一篇用了两个义项</b>：④❸ draws us to（吸引我们去）· ⑥❷ drawn from（选自）。12 题的 drive 与 draws 一推一拉、同一方向。",syn:"attract · pull ／ select · take",conf:"<b>draw</b>（拉、吸引）vs <b>drive</b>（推、驱使）；draw a conclusion（得出结论）。"},
+  mechanism:{w:"mechanism",ipa:"/ˈmekənɪzəm/",pos:"n.",tags:["core","write"],cn:"<b>机制</b>；机械装置",en:"a process or system that makes something happen",ex:"There could be many mechanisms working together that…",mem:"mechan-（机器）＋ -ism。✍️ <b>a mechanism for doing</b>：a mechanism for resolving disputes（解决纠纷的机制）。",syn:"process · system · means",conf:"<b>mechanism</b>（机制）vs <b>mechanic</b>（机修工）vs <b>mechanical</b>（机械的）。"},
+  genetically:{w:"genetically",ipa:"/dʒəˈnetɪkli/",pos:"adv.",tags:["core"],cn:"<b>基因上，遗传上</b>",en:"in a way that relates to genes",ex:"…choosing genetically similar friends rather than…",mem:"⭐ <b>13 题的一端</b>：genetically（天生的、基因上的）↔ functional（为了用处的）——<b>两个修饰语对举＝一根轴的两端</b>。genetically modified（转基因的）。",syn:"hereditarily",conf:"<b>genetically</b>（基因上）vs <b>generically</b>（一般地、通用地）。"},
+  kinship:{w:"functional kinship",ipa:"/ˈfʌŋkʃənl ˈkɪnʃɪp/",pos:"phrase",tags:["phrase","poly"],cn:"<b>功能性亲缘</b>（本文语境：为了好处而亲近的关系）",en:"a close relationship that works like family ties because it is useful",ex:"…rather than &quot;functional kinship&quot; of being friends with benefits!",mem:"⭐ <b>论文作者自己的术语是正面的</b>（友谊像功能上的亲情），但<b>本文记者给它打引号、配上 friends with benefits 和感叹号</b>，改成了被调侃的一端 ⟹ 13 题 rather than。kinship＝kin（亲戚）＋ -ship（关系）。",syn:"—",conf:"<b>functional</b>（实用的；能运作的）vs <b>functioning</b>（正在运转的）。"},
+  remarkable:{w:"remarkable",ipa:"/rɪˈmɑːkəbl/",pos:"adj.",tags:["core","write"],cn:"<b>非凡的，惊人的</b>；值得注意的",en:"unusual or surprising in a way that causes people to notice",ex:"One of the remarkable findings of the study was that…",mem:"re- ＋ mark（标记）＋ -able ⟹ 值得标记出来的。✍️ One of the most remarkable findings is that…（写图表作文的亮点）。",syn:"striking · notable · extraordinary",conf:"<b>remarkable</b>（惊人的，褒）vs <b>notorious</b>（臭名昭著的，贬）。"},
+  finding:{w:"finding",ipa:"/ˈfaɪndɪŋ/",pos:"n.",tags:["core","write"],cn:"<b>（研究的）发现，结果</b>",en:"information discovered as the result of research",ex:"The findings do not simply explain…",mem:"⭐ <b>研究报道的高频名词，多用复数</b>：The findings suggest／show／indicate that…",syn:"result · conclusion · discovery",conf:"<b>finding</b>（研究发现）vs <b>discovery</b>（发现新东西）vs <b>invention</b>（发明）。"},
+  evolve:{w:"evolve",ipa:"/iˈvɒlv/",pos:"v.",tags:["core","write"],cn:"<b>进化</b>；逐步发展",en:"to develop gradually over a long period",ex:"…the similar genes seem to be evolving faster than other genes.",mem:"<b>e-（向外）＋ volve（卷、转）</b> ⟹ 展开 ⟹ 演变。evolution（进化）· evolutionary（进化的）。同根 revolve（旋转）、involve（卷入）。",syn:"develop · change · adapt",conf:"<b>evolve</b>（逐渐演变）vs <b>revolve</b>（旋转）vs <b>involve</b>（包含）。"},
+  pickpace:{w:"pick up (the) pace",ipa:"/pɪk ʌp peɪs/",pos:"phrase",tags:["phrase","write"],cn:"<b>加快步伐，提速</b>",en:"to begin to go faster",ex:"…why human evolution picked pace in the last 30,000 years…",mem:"⚠️ 原卷印作 picked pace，<b>标准说法带 up</b>。15 题 faster 的钥匙就是它。反义 slow down。",syn:"speed up · accelerate",conf:"<b>pace</b>（速度，步速）vs <b>space</b>（空间）；keep pace with（跟上）。"},
+  befriend:{w:"befriend",ipa:"/bɪˈfrend/",pos:"v.",tags:["core","write"],cn:"<b>与……交朋友</b>",en:"to become a friend of sb",ex:"…people's tendency to befriend those of similar ethnic backgrounds…",mem:"<b>be- ＋ 名词 ⟹ 动词</b>：befriend（交友）· belittle（贬低）· behead（斩首）· bewitch（施魔法）。✍️ befriend sb 比 make friends with sb 正式。",syn:"make friends with",conf:"<b>befriend</b>（结交）vs <b>friendly</b>（友好的，adj.）。"},
+  drawnfrom:{w:"be drawn from",ipa:"/drɔːn frɒm/",pos:"phrase",tags:["phrase","poly"],cn:"<b>选自，取自</b>",en:"to be taken or chosen from a larger group",ex:"Though all the subjects were drawn from a population of European extraction…",mem:"⭐ <b>draw 的第四个义项：抽取</b>（样本、人选）。draw lots（抽签）· draw water from a well（从井里打水）。",syn:"be selected from · be taken from",conf:"<b>be drawn from</b>（取自）vs <b>be drawn to</b>（被吸引到，④❸ 的主动形式 draws us to）。"},
+  population:{w:"population",ipa:"/ˌpɒpjuˈleɪʃn/",pos:"n.",tags:["poly"],cn:"①人口 ②<b>（某类）人群，族群</b> ③（统计）总体",en:"a particular group of people or animals",ex:"…drawn from a population of European extraction…were taken from the same population.",mem:"⭐ 熟词僻义：<b>a population of X＝一群 X 人</b>；统计里 population（总体）与 sample（样本，5 题）是一对。",syn:"group · community",conf:"<b>population</b>（人口；人群）vs <b>popularity</b>（受欢迎）。"},
+  extraction:{w:"extraction",ipa:"/ɪkˈstrækʃn/",pos:"n.",tags:["poly"],cn:"①提取，拔出 ②<b>血统，出身</b>",en:"a person's family origin",ex:"…a population of European extraction…",mem:"⭐ 熟词僻义：<b>of X extraction＝X 血统的</b>（of Irish extraction 爱尔兰裔）。ex-（出）＋ tract（拉）⟹ 从哪里拉出来的 ⟹ 出身。19 题 ethnic 的钥匙。",syn:"descent · origin · ancestry",conf:"<b>extraction</b>（提取；血统）vs <b>extract</b>（v. 提取；n. 摘录）vs <b>abstraction</b>（抽象）。"},
+  caretaken:{w:"care was taken to",ipa:"/keə wəz ˈteɪkən tuː/",pos:"phrase",tags:["phrase","write"],cn:"<b>（有人）小心地、特意地……</b>",en:"sb made a special effort to do sth carefully",ex:"…care was taken to see that all subjects…were taken from the same population.",mem:"⭐ take care to do（小心地做）的被动式，<b>科研写作隐去施动者</b>。后接 see (to it) that／ensure that（20 题）。",syn:"efforts were made to · pains were taken to",conf:"<b>take care to do</b>（小心去做）vs <b>take care of</b>（照顾）vs <b>care about</b>（在乎）。"}
+};
+const panel=document.getElementById('panel');
+const isMobile=()=>window.innerWidth<=900;
+function badge(t){return {core:'<span class="badge b-core">核心词</span>',phrase:'<span class="badge b-phrase">短语</span>',poly:'<span class="badge b-poly">熟词僻义</span>',write:'<span class="badge b-write">写作✍︎</span>'}[t]||''}
+function showCard(k,el){
+  const d=V[k]; if(!d)return;
+  document.querySelectorAll('.tk.active').forEach(e=>e.classList.remove('active'));
+  if(el&&el.classList.contains('tk'))el.classList.add('active');
+  panel.innerHTML='<button class="close" onclick="panel.classList.remove(\'open\')">✕</button>'+
+  '<div class="wcard"><div class="head"><span class="w">'+d.w+'</span><span class="ipa">'+d.ipa+'</span><span class="pos">'+d.pos+'</span>'+d.tags.map(badge).join('')+'</div>'+
+  '<div class="cn">'+d.cn+'</div><div class="en-def">'+d.en+'</div>'+
+  '<div class="row r-ex"><b>原文语境</b>「…'+d.ex+'…」</div>'+
+  '<div class="row r-mem"><b>怎么记</b>'+d.mem+'</div>'+
+  '<div class="row r-syn"><b>同类词</b>'+d.syn+'</div>'+
+  '<div class="row r-conf"><b>易混辨析</b>'+d.conf+'</div></div>';
+  if(isMobile())panel.classList.add('open');
+}
+document.querySelectorAll('.tk').forEach(t=>t.addEventListener('click',e=>{e.stopPropagation();showCard(t.dataset.w,t)}));
+
+/* ============ 译文开关 ============ */
+function tz(btn){btn.closest('.para').classList.toggle('showzh')}
+let allOn=false;
+function toggleAll(){allOn=!allOn;document.querySelectorAll('.para').forEach(p=>p.classList.toggle('showzh',allOn))}
+function go(id){const s=document.getElementById(id);if(!s)return;s.scrollIntoView({behavior:'smooth',block:'center'});s.style.transition='none';s.style.opacity=.3;setTimeout(function(){s.style.transition='opacity .8s';s.style.opacity=1},80)}
+
+/* ============ 20 空数据（类别 + 正确词） ============ */
+const CAT={
+  logic:{name:"逻辑关系",cls:"c-logic",color:"#3d6a8a"},
+  collo:{name:"固定搭配",cls:"c-collo",color:"#3e7a4e"},
+  word:{name:"词义辨析",cls:"c-word",color:"#b04a3a"},
+  context:{name:"上下文语义",cls:"c-context",color:"#6d5a8e"}
+};
+const B={
+  1:{w:"what",cat:"collo"},           2:{w:"concluded",cat:"word"},
+  3:{w:"on",cat:"collo"},             4:{w:"compared",cat:"word"},
+  5:{w:"samples",cat:"word"},         6:{w:"insignificant",cat:"context"},
+  7:{w:"know",cat:"context"},         8:{w:"resemble",cat:"context"},
+  9:{w:"also",cat:"logic"},           10:{w:"Perhaps",cat:"logic"},
+  11:{w:"to",cat:"collo"},            12:{w:"drive",cat:"word"},
+  13:{w:"rather than",cat:"logic"},   14:{w:"benefits",cat:"collo"},
+  15:{w:"faster",cat:"context"},      16:{w:"understand",cat:"word"},
+  17:{w:"contributory",cat:"collo"},  18:{w:"tendency",cat:"word"},
+  19:{w:"ethnic",cat:"context"},      20:{w:"see",cat:"collo"}
+};
+
+
+/* ============ 点空格 → 跳到解析卡 ============ */
+document.querySelectorAll('.bk').forEach(function(b){
+  b.addEventListener('click',function(){
+    document.querySelectorAll('.bk.active').forEach(function(e){e.classList.remove('active')});
+    b.classList.add('active');
+    go('q'+b.dataset.n);
+  });
+});
+function fillBlank(n,ok){
+  const el=document.querySelector('.bk[data-n="'+n+'"]');
+  if(!el)return;
+  el.classList.remove('miss');
+  el.classList.add(ok===false?'miss':'filled');
+  el.innerHTML='<span class="idx">'+n+'</span>'+B[n].w;
+}
+
+/* ============ 即点即判 + 计分 ============ */
+let done=0,right=0;
+function updScore(){
+  document.getElementById('sDone').textContent=done;
+  document.getElementById('sRight').textContent=right;
+  document.getElementById('sPt').textContent=(right*0.5).toFixed(1);
+}
+document.querySelectorAll('.q').forEach(function(q){
+  const ans=+q.dataset.ans, n=q.id.replace('q','');
+  q.querySelectorAll('.opt').forEach(function(o,i){
+    o.addEventListener('click',function(){
+      if(q.classList.contains('done'))return;
+      q.classList.add('done');
+      const ok=(i===ans);
+      if(!ok)o.classList.add('wrong');
+      q.querySelectorAll('.opt')[ans].classList.add('right');
+      done++; if(ok)right++; updScore();
+      fillBlank(n,ok);
+    });
+  });
+});
+function revealAll(){
+  document.querySelectorAll('.q').forEach(function(q){
+    const n=q.id.replace('q','');
+    if(!q.classList.contains('done')){
+      q.classList.add('done');
+      q.querySelectorAll('.opt')[+q.dataset.ans].classList.add('right');
+      done++; updScore();
+    }
+    fillBlank(n,true);
+  });
+  document.querySelectorAll('.bk.miss').forEach(function(e){e.classList.remove('miss');e.classList.add('filled')});
+}
+
+/* ============ 考点统计 ============ */
+const counts={};Object.keys(B).forEach(function(k){counts[B[k].cat]=(counts[B[k].cat]||0)+1});
+const order=["word","collo","context","logic"];
+document.getElementById('catbar').innerHTML=order.map(function(k){
+  return '<div class="catseg" style="flex:'+counts[k]+';background:'+CAT[k].color+'">'+CAT[k].name+' '+counts[k]+'</div>'}).join('');
+const legend=document.getElementById('catlegend');
+legend.innerHTML=order.map(function(k){
+  return '<div class="cl" data-cat="'+k+'"><span class="dot" style="background:'+CAT[k].color+'"></span>'+CAT[k].name+' · '+counts[k]+' 题</div>'}).join('');
+const chips=document.getElementById('chips');
+function renderChips(cat){
+  chips.innerHTML=Object.keys(B).filter(function(n){return !cat||B[n].cat===cat})
+    .map(function(n){return '<span class="chip" data-n="'+n+'">'+n+'. '+B[n].w+'</span>'}).join('');
+  chips.querySelectorAll('.chip').forEach(function(c){
+    c.addEventListener('click',function(){go('q'+c.dataset.n)});
+  });
+}
+renderChips(null);
+legend.querySelectorAll('.cl').forEach(function(l){
+  l.addEventListener('click',function(){
+    const cat=l.dataset.cat;
+    document.querySelectorAll('.cl').forEach(function(x){x.style.borderColor=''});
+    l.style.borderColor=CAT[cat].color;
+    renderChips(cat);
+    document.querySelectorAll('.bk').forEach(function(b){
+      b.style.outline=(B[b.dataset.n].cat===cat?'2px solid '+CAT[cat].color:'')});
+  });
+});
+
+/* ============ 80 选项词表 ============ */
+const OPTS={
+ 1:[["what","……的东西（从句缺宾语，只有代词补得上）"],["why","为什么（副词，补不上宾语）"],["how","如何（副词；首句不是方式）"],["when","何时（副词；首句不是时间）"]],
+ 2:[["defended","辩护（预设有人质疑）"],["concluded","得出结论（研究对发现做的事）"],["withdrawn","撤回（与全文报道方向反）"],["advised","建议（首句是事实不是建议）"]],
+ 3:[["for","为了（受试者不是受益人）"],["with","和；用（受试者不是合作者）"],["by","由（受试者不是施动者）"],["on","针对（analysis on 研究对象）"]],
+ 4:[["separated","分开（陌生人本不成对）"],["sought","寻找（分析前的准备）"],["compared","比较（朋友组对陌生人组）"],["connected","连接（研究要对照不要连接）"]],
+ 5:[["tests","测试（上文没有两项测试）"],["objects","物体；对象（指单个的东西）"],["samples","样本（both 回指两组）"],["examples","例子（用来说明观点）"]],
+ 6:[["insignificant","微不足道（遗传学家否定的看法）"],["unexpected","出乎意料（上文没谈预期）"],["unreliable","不可靠（没人质疑数据）"],["incredible","难以置信；极大（方向拧了）"]],
+ 7:[["visit","拜访（预设认识）"],["miss","想念（预设认识）"],["know","认识（最起码的那一步）"],["seek","寻找（接物；与 select 重叠）"]],
+ 8:[["surpass","超过（谈优劣）"],["influence","影响（谈作用）"],["favor","偏爱；长得像（外貌，非基因）"],["resemble","像（对称的相似）"]],
+ 9:[["again","又一次（成了重复）"],["also","还（新发现递进）"],["instead","反而（成了推翻）"],["thus","因此（前文推不出）"]],
+ 10:[["Meanwhile","同时（问与答不是并行）"],["Furthermore","而且（不是加码）"],["Likewise","同样（困惑与解答不相似）"],["Perhaps","也许（难以解释之后只能推测）"]],
+ 11:[["about","关于（预示接着讲环境）"],["to","there is more to it 没那么简单"],["from","来自（下文不是由此推出）"],["like","像（下文不是同类解释）"]],
+ 12:[["limit","限制（方向反）"],["observe","观察（机制不会观察）"],["confuse","搅乱（方向反）"],["drive","驱使（与 draws 同向）"]],
+ 13:[["according to","根据（把功利当依据）"],["rather than","而不是（一根轴的两端取舍）"],["regardless of","不管（两者不互相妨碍）"],["along with","连同（我选的；两端反向不能相加）"]],
+ 14:[["chances","机会；偶然（与 functional 相悖）"],["responses","回应（不成话）"],["benefits","好处（friends with benefits）"],["missions","任务；使命（偏理想责任）"]],
+ 15:[["faster","更快（呼应 picked pace）"],["slower","更慢（维度对、方向反）"],["later","更晚（维度错：时间）"],["earlier","更早（维度错：时间）"]],
+ 16:[["forecast","预测（宾语是过去的事）"],["remember","记住（研究不帮人回忆）"],["express","表达（先懂才能说）"],["understand","理解（研究的用处）"]],
+ 17:[["unpredictable","不可预测（没说作用）"],["contributory","促成的（a contributory factor）"],["controllable","可控的（偏离问题）"],["disruptive","破坏性的（方向反）"]],
+ 18:[["tendency","倾向（不自觉）"],["decision","决定（刻意）"],["arrangement","安排（刻意）"],["endeavor","努力（刻意）"]],
+ 19:[["political","政治的（与基因无关）"],["religious","宗教的（与基因无关）"],["ethnic","族裔的（接 European extraction）"],["economic","经济的（与基因无关）"]],
+ 20:[["see","see that 确保"],["show","表明（引出结论，这里是方法）"],["prove","证明（同 show）"],["tell","看出（取样用不着判断）"]]
+};
+const ANS={1:0,2:1,3:3,4:2,5:2,6:0,7:2,8:3,9:1,10:3,11:1,12:3,13:1,14:2,15:0,16:3,17:1,18:0,19:2,20:0};
+(function(){
+  let h='<tr><th>空</th><th>A</th><th>B</th><th>C</th><th>D</th></tr>';
+  for(let n=1;n<=20;n++){
+    h+='<tr><td class="n">'+n+'</td>';
+    OPTS[n].forEach(function(o,i){
+      h+='<td'+(i===ANS[n]?' class="hit"':'')+'><span class="ow">'+o[0]+'</span><span class="oc">'+o[1]+'</span></td>';
+    });
+    h+='</tr>';
+  }
+  document.getElementById('otab').innerHTML=h;
+  document.querySelectorAll('#otab .oc').forEach(function(c){
+    c.addEventListener('click',function(){c.classList.toggle('show')});
+  });
+})();
+function toggleHide(){
+  const t=document.getElementById('otab');
+  const on=t.classList.toggle('hidecn');
+  document.getElementById('btnHide').textContent=on?'👁 显示释义':'✍️ 默写模式';
+  if(!on)t.querySelectorAll('.oc.show').forEach(function(c){c.classList.remove('show')});
+}
+
+/* ============ 查有道 ============ */
+const yd=document.getElementById('yd');let sel='';
+document.addEventListener('selectionchange',function(){
+  const s=window.getSelection();const t=s?s.toString().trim():'';
+  if(t&&/^[a-zA-Z' -]{2,40}$/.test(t)){
+    sel=t;
+    try{const r=s.getRangeAt(0).getBoundingClientRect();
+      yd.style.left=Math.min(r.left,window.innerWidth-110)+'px';
+      yd.style.top=(r.bottom+8)+'px';yd.style.display='block';}catch(e){}
+  }else{yd.style.display='none'}
+});
+yd.addEventListener('click',function(){window.open('https://dict.youdao.com/result?word='+encodeURIComponent(sel)+'&lang=en');yd.style.display='none'});
+document.addEventListener('click',function(e){if(e.target!==yd&&!window.getSelection().toString())yd.style.display='none'});
+</script>
+<script src="_fault_attr.js"></script>
+</body>
+</html>

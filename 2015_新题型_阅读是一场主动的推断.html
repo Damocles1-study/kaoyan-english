@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2015 英一 新题型 · 阅读是一场主动的推断</title>
+<style>
+  :root{
+    --bg:#faf9f6; --card:#ffffff; --ink:#2b2b2b; --muted:#8a8578;
+    --accent:#8b5e34; --accent-soft:#f3e9dd; --line:#e8e3d8;
+    --hl:#fdf3d8; --hl-border:#e0b84d;
+    --green:#3e7a4e; --green-soft:#e8f2ea;
+    --red:#b04a3a; --red-soft:#f9e9e6;
+    --blue:#3d6a8a; --blue-soft:#e7eff5;
+    --purple:#6d5a8e; --purple-soft:#eeeaf5;
+    --serif:"Georgia","Songti SC",serif;
+    --sans:-apple-system,"PingFang SC","Helvetica Neue",sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#1c1a17; --card:#26231f; --ink:#e8e4dc; --muted:#9a948a;
+      --accent:#d0a06a; --accent-soft:#3a3127; --line:#3a362f;
+      --hl:#3d3520; --hl-border:#b08c3a;
+      --green:#7fb98d; --green-soft:#26362b;
+      --red:#d98876; --red-soft:#3d2a26;
+      --blue:#8ab3d0; --blue-soft:#26323d;
+      --purple:#a996c8; --purple-soft:#302a3d;
+    }
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;padding-bottom:120px}
+  .wrap{max-width:1100px;margin:0 auto;padding:24px 20px}
+  .back{font-size:.85rem;color:var(--muted);text-decoration:none}
+  .back:hover{color:var(--accent)}
+  header{margin:14px 0 28px}
+  header h1{font-family:var(--serif);font-size:1.7rem;line-height:1.3}
+  header .sub{color:var(--muted);margin-top:6px;font-size:.9rem}
+  .tags{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+  .tag{font-size:.75rem;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);border:1px solid var(--line)}
+  .tag.bad{background:var(--red-soft);color:var(--red)}
+  .layout{display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:start}
+  .layout > main{min-width:0}
+  @media (max-width:900px){.layout{grid-template-columns:1fr}}
+  section.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:24px}
+  h2{font-size:1.05rem;letter-spacing:.05em;color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+  h2 .n{font-size:.72rem;background:var(--accent);color:var(--card);border-radius:6px;padding:1px 7px}
+  h3.sh{font-size:.95rem;color:var(--ink);margin:18px 0 8px;padding-left:9px;border-left:3px solid var(--accent)}
+  .para{margin-bottom:14px}
+  .en{font-family:var(--serif);font-size:1.03rem;line-height:1.95}
+  .tk{background:var(--hl);border-bottom:2px solid var(--hl-border);border-radius:3px;padding:0 2px;cursor:pointer;transition:filter .15s}
+  .tk:hover{filter:brightness(.93)}
+  .tk.active{outline:2px solid var(--hl-border)}
+  .clue{border-bottom:2px dotted var(--red)}
+  .zh{display:none;margin-top:8px;padding:10px 14px;background:var(--blue-soft);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:.92rem}
+  .showzh .zh{display:block}
+  .zbtn{float:right;margin-left:10px;font-size:.72rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:6px;padding:2px 9px;cursor:pointer}
+  .zbtn:hover{color:var(--accent);border-color:var(--accent)}
+  .allbtn{font-size:.78rem;border:1px solid var(--accent);background:none;color:var(--accent);border-radius:8px;padding:4px 12px;cursor:pointer;margin-left:auto}
+  aside{position:sticky;top:20px}
+  #panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;min-height:180px}
+  #panel .hint{color:var(--muted);font-size:.88rem;text-align:center;padding:30px 10px}
+  .wcard .head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .wcard .w{font-family:var(--serif);font-size:1.35rem;font-weight:bold}
+  .wcard .ipa{color:var(--muted);font-size:.85rem}
+  .wcard .pos{font-size:.72rem;color:var(--purple);background:var(--purple-soft);padding:1px 8px;border-radius:999px}
+  .wcard .badge{font-size:.7rem;padding:1px 8px;border-radius:999px}
+  .b-core{background:var(--red-soft);color:var(--red)}
+  .b-phrase{background:var(--blue-soft);color:var(--blue)}
+  .b-poly{background:var(--purple-soft);color:var(--purple)}
+  .b-write{background:var(--green-soft);color:var(--green)}
+  .wcard .cn{margin-top:8px;font-size:1rem;font-weight:600}
+  .wcard .en-def{color:var(--muted);font-size:.86rem;font-style:italic;margin-top:2px}
+  .wcard .row{margin-top:10px;font-size:.86rem;padding:8px 10px;border-radius:8px}
+  .wcard .row b{font-size:.72rem;display:block;margin-bottom:2px;letter-spacing:.06em}
+  .r-ex{background:var(--hl)} .r-ex b{color:var(--hl-border)}
+  .r-mem{background:var(--green-soft)} .r-mem b{color:var(--green)}
+  .r-syn{background:var(--blue-soft)} .r-syn b{color:var(--blue)}
+  .r-conf{background:var(--red-soft)} .r-conf b{color:var(--red)}
+  #panel .close{display:none}
+  @media (max-width:900px){
+    aside{position:fixed;left:0;right:0;bottom:0;z-index:50;padding:0 8px 8px}
+    #panel{box-shadow:0 -6px 24px rgba(0,0,0,.18);max-height:55vh;overflow-y:auto;display:none}
+    #panel.open{display:block}
+    #panel .close{display:block;float:right;border:none;background:var(--line);border-radius:8px;padding:2px 10px;cursor:pointer;color:var(--ink)}
+  }
+  /* 选项库 */
+  .optlib{display:grid;gap:8px}
+  .optitem{display:flex;gap:10px;border:1px solid var(--line);border-radius:10px;padding:9px 12px;font-size:.9rem}
+  .optitem .lt{font-weight:700;font-family:var(--serif);color:var(--accent);flex:0 0 18px}
+  .optitem.used{opacity:.45}
+  .optitem.extra{border-color:var(--red);background:var(--red-soft)}
+  .optitem .oen{font-family:var(--serif);font-size:.92rem;line-height:1.75}
+  .optitem .zhx{display:block;color:var(--muted);font-size:.82rem;margin-top:3px}
+  .optitem .kw{display:block;font-size:.78rem;color:var(--blue);margin-top:3px}
+  .optitem .stg{display:inline-block;font-size:.72rem;background:var(--purple-soft);color:var(--purple);border-radius:999px;padding:1px 9px;margin-top:5px}
+  /* 空格题 */
+  .person{margin-bottom:26px;padding-bottom:20px;border-bottom:1px dashed var(--line)}
+  .person:last-child{border:none}
+  .pname{font-family:var(--serif);font-weight:700;font-size:1.05rem;margin-bottom:8px}
+  .pname .qn{color:var(--accent)}
+  .stance{font-size:.72rem;border-radius:999px;padding:1px 9px;margin-left:8px;vertical-align:2px;font-family:var(--sans);font-weight:400}
+  .st-anti{background:var(--red-soft);color:var(--red)}
+  .st-pro{background:var(--green-soft);color:var(--green)}
+  .st-mid{background:var(--blue-soft);color:var(--blue)}
+  .slot{display:inline;background:var(--accent-soft);border-bottom:2px solid var(--accent);border-radius:3px;padding:0 6px;color:var(--accent);font-weight:700;font-family:var(--sans);font-size:.88rem}
+  .slot.filled{background:var(--green-soft);border-color:var(--green);color:var(--ink);font-weight:400;font-family:var(--serif);font-size:1.03rem}
+  .slot.filled .fl{font-family:var(--sans);font-size:.78rem;font-weight:700;color:var(--green);margin-right:5px}
+  .chips{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0 4px}
+  .chips .ch{width:38px;height:34px;border:1px solid var(--line);border-radius:8px;background:none;font-family:var(--serif);font-weight:700;font-size:1rem;color:var(--ink);cursor:pointer;transition:all .15s}
+  .chips .ch:hover{border-color:var(--accent)}
+  .person.done .ch{cursor:default;opacity:.6}
+  .ch.right{background:var(--green-soft);border-color:var(--green);color:var(--green);opacity:1!important}
+  .ch.wrong{background:var(--red-soft);border-color:var(--red);color:var(--red);opacity:1!important}
+  .expl{display:none;margin-top:10px;background:var(--accent-soft);border-radius:10px;padding:12px 14px;font-size:.9rem}
+  .person.done .expl{display:block}
+  .expl b{color:var(--accent)}
+  .loc{font-family:var(--serif);font-style:italic;background:var(--hl);padding:1px 4px;border-radius:3px}
+  .expl .line{margin-top:8px;padding-top:8px;border-top:1px dashed var(--line)}
+  .expl .mine{margin-top:8px;padding:8px 10px;background:var(--red-soft);border-radius:8px;color:var(--red);font-size:.86rem}
+  .wb{display:grid;gap:10px}
+  .wbi{border-left:3px solid var(--green);background:var(--green-soft);border-radius:0 10px 10px 0;padding:10px 14px;font-size:.92rem}
+  .wbi .p{font-family:var(--serif);font-weight:600}
+  .wbi .u{color:var(--muted);font-size:.85rem}
+  /* 表格 */
+  .tbwrap{overflow-x:auto}
+  table.gt{border-collapse:collapse;width:100%;min-width:600px;font-size:.86rem}
+  table.gt th,table.gt td{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
+  table.gt th{background:var(--accent-soft);color:var(--accent);font-weight:600;font-size:.8rem}
+  table.gt td.c{text-align:center;font-family:var(--serif);font-weight:700}
+  table.gt tr.bad td{background:var(--red-soft)}
+  /* 分区带 */
+  .zone{display:grid;grid-template-columns:118px 1fr;gap:12px;padding:9px 0;border-bottom:1px dashed var(--line);font-size:.9rem}
+  .zone:last-child{border:none}
+  .zone .zn{font-size:.82rem;color:var(--accent);font-weight:600}
+  .zone.empty{background:var(--red-soft);border-radius:8px;padding-left:10px}
+  .zone.empty .zn{color:var(--red)}
+  /* 长难句 */
+  .ls{border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:14px}
+  .ls .s{font-family:var(--serif);font-size:.98rem;line-height:1.85}
+  .ls .an{margin-top:10px;font-size:.88rem}
+  .ls .an div{margin-top:4px}
+  .ls .tr{margin-top:8px;padding:8px 12px;background:var(--blue-soft);border-radius:8px;font-size:.88rem}
+  .mk{color:var(--red);font-weight:600}
+  .mk2{color:var(--blue);font-weight:600}
+  .mk3{color:var(--green);font-weight:600}
+  .box{border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:0 10px 10px 0;padding:12px 14px;margin:12px 0;font-size:.92rem;background:var(--accent-soft)}
+  .box.red{border-left-color:var(--red);background:var(--red-soft)}
+  .box.green{border-left-color:var(--green);background:var(--green-soft)}
+  .box .bt{font-weight:700;color:var(--accent);display:block;margin-bottom:6px}
+  .box.red .bt{color:var(--red)} .box.green .bt{color:var(--green)}
+  .en,.zh,.expl,.wbi,.optitem,.ls,.zone,.bd,figcaption,p,li,td,th{overflow-wrap:anywhere}
+  footer{color:var(--muted);font-size:.8rem;text-align:center;margin-top:30px}
+  #yd{position:fixed;z-index:60;display:none;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:4px 12px;font-size:.8rem;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+</style>
+<style>
+  /* selection-insertion page extras */
+  .layout{grid-template-columns:minmax(0,1fr) 340px}
+  @media (max-width:900px){.layout{grid-template-columns:minmax(0,1fr)}}
+  main,aside{min-width:0}
+  .clue2{border-bottom:2px dotted var(--blue)}
+  .optitem .oen{display:block}
+  table.gt td[colspan]{background:var(--accent-soft)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">◀ 返回英语复盘中心</a>
+  <header>
+    <h1>How Does Your Reading Proceed?　阅读是一场主动的推断</h1>
+    <div class="sub">2015 年英语（一）真题 · Part B 新题型（<b>选句填空</b>：文中挖 5 个空 ⇄ 7 句选二余）· 建议做题 <b>6–8 min</b> · 话题：读者怎样从一个个词读出「意义」——意义不是从文本里取出来的，而是读者带着自己的背景和目的「赋予」的 · 黄皮书口径 555 words（脚本数正文连同五个答案句 553 词，再加两个多余项共 605 词）· 黄皮书标源 <i>Ways of Reading: Advanced Reading Skills for Students of English Literature</i>《阅读的方法：英语文学专业高级阅读技巧》（Routledge 出版的英语文学入门教材，作者 Martin Montgomery 等五人，书名与作者已核；<b>原句没能在网上核到，版次与章节不详</b>）</div>
+    <div class="tags">
+      <span class="tag">正确答案：41 C　42 E　43 G　44 B　45 A（D、F 多余）</span>
+      <span class="tag">变体：选句填空（Part B 的第五次：2008 · 2009 · 2012 · 2013 · 2015）</span>
+      <span class="tag">文章线：<b>外扩线</b>·从词到语境、从作者到读者、从「我」到「我们」</span>
+      <span class="tag">Claude：5/5，<b>计入盲做 4/4</b>（⚠️ 41 不计：做 Text 4 时多渲染了两页精讲，已见「41.[C]」）</span>
+    </div>
+  </header>
+
+  <div class="layout">
+    <main>
+
+      <section class="card">
+        <h2><span class="n">00</span>开考先认三样：变体 · 文章线 · 空的形态 —— 本篇的主刀是「人称分区」</h2>
+        <p style="font-size:.92rem">2012 教我们「每个空先读下一句」（R136），2013 把它推到「下一句的评语给空格定类型」（R159）。2015 这篇多给了一把更粗、更快的刀：<span class="mk">正文前两段通篇对读者说 <u>you</u>，第三段末起换成 <u>we</u>；七个选项的人称恰好也是三句 you、三句 we、一句第三人称。</span>先按人称把七项分进两个区，五个空就只剩「三选二」和「三对三」两道小题。</p>
+
+        <h3 class="sh">① 认变体（Directions 那三行）</h3>
+        <p style="font-size:.92rem"><span class="loc">some sentences have been removed … There are two extra choices</span> ⟹ <b>选句填空</b>，五空七句、二项多余。与排序题（<span class="loc">paragraphs … numbered boxes</span>）、标题匹配（<span class="loc">heading</span>）、观点匹配（<span class="loc">match each person</span>）一眼可分（R32）。</p>
+
+        <h3 class="sh">② 认线（读完每段首句就够）</h3>
+        <p style="font-size:.92rem">① <span class="loc">How does your reading proceed?</span> → ② <span class="loc">The ways of reading indicated here are without doubt kinds of comprehension</span> → ③ <span class="loc">Conceived in this way, comprehension will not follow exactly the same track for each reader</span> → ④ <span class="loc">Such background material inevitably reflects who we are</span> → ⑤ <span class="loc">How we read a given text also depends … on our particular interest in reading it</span>。
+          ⟹ 这不是 2012／2013 那种「问题 → 原因 → 方案」的论证线，而是一本教材的开篇在<b>给「阅读」下定义</b>：从一个读者读懂一个词开始，一圈一圈往外扩——<b>词 → 语境 → 作者邀请你做的推断 → 你自己的推断 → 读者带来的背景 → 读者抱着的目的</b>。
+          <span class="mk">⟹ 本页叫它「外扩线」：箭头始终从文本指向读者。凡是把箭头掉头指回「作者本意」的选项，都站错了方向（见 02++ 与 03 节）。</span></p>
+
+        <h3 class="sh">③ 定空的形态：三中两末 —— 五个空后面都有下一句</h3>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:640px">
+          <tr><th style="width:8%">空</th><th style="width:17%">位置</th><th style="width:33%">上一句（头钩的来源）</th><th>下一句（尾钩的来源）</th></tr>
+          <tr><td class="c">41</td><td>第①段 <b>段中</b>（第 2 句后）</td><td><span class="loc">identifying meanings for individual words and working out relationships between them</span></td><td><span class="loc">You <b>begin</b> to infer a context for the text…</span></td></tr>
+          <tr><td class="c">42</td><td>第②段 <b>段末</b></td><td><span class="loc">You infer information you feel the writer has invited you to grasp…</span></td><td>第③段首句 <span class="loc"><b>Conceived in this way</b>, comprehension will not follow exactly the same track for each reader.</span></td></tr>
+          <tr><td class="c">43</td><td>第③段 <b>段末</b></td><td><span class="loc">What is in question is <b>not</b> the retrieval of an absolute, fixed or “true” meaning…</span></td><td>第④段首句 <span class="loc"><b>Such background material</b> inevitably reflects who we are.</span></td></tr>
+          <tr><td class="c">44</td><td>第④段 <b>段中</b>（首句后）</td><td><span class="loc">Such background material inevitably reflects who we are.</span></td><td><span class="loc"><b>This doesn’t, however,</b> make interpretation merely relative or even pointless.</span></td></tr>
+          <tr><td class="c">45</td><td>第⑤段 <b>段中</b>（首句后）</td><td><span class="loc">How we read a given text also depends … on our particular interest in reading it.</span></td><td><span class="loc"><b>Such dimensions of reading</b> suggest…</span></td></tr>
+        </table>
+        </div>
+        <p style="font-size:.9rem;margin-top:8px">⭐ <b>五个空的下一句，五个都带「回头看」的字眼</b>：begin（新一步 ⟹ 空格是上一步）、Conceived in this way（这样理解 ⟹ 空格是一种理解）、<b>Such</b> background material、<b>This</b> doesn’t however、<b>Such</b> dimensions of reading。<span class="mk">其中两个是「Such ＋ 类名」——下一句直接替空格起好了名字</span>（02+++ 节，R196）。</p>
+
+        <h3 class="sh">④ 主刀：人称分区 —— you 区两格、we 区三格</h3>
+        <p style="font-size:.92rem">正文 ①② 两段的主语全是 <b>you</b>（<span class="loc">your reading · you try · You begin · You infer</span>）；③❶ 换成中性的 <span class="loc">each reader</span>，③❷ 没有人称；<b>从 43 那一格（③❸）起到⑤段，凡是有人称的句子都用 we</b>（<span class="loc">who we are · How we read · our particular interest · we bring</span>）。
+          七个选项：<b>C、D、E 用 you</b>；<b>A、B、G 用 we</b>；<b>F 用第三人称</b>（characters、the author）。
+          <span class="mk">⟹ you 区（41、42）三选二：C D E；we 区（43、44、45）三对三：A B G；F 两区都进不去。</span>五个正确答案没有一个跨区（R195）。</p>
+
+        <h3 class="sh">⑤ 时间与难点</h3>
+        <p style="font-size:.92rem">分完区，<b>we 区三格一口气做完</b>：45 的 <span class="loc">that text</span> 只能回指 ⑤❶ <span class="loc">a given text</span> ⟹ A；44 要把「我们是谁」列开 ⟹ B；43 剩 G，且 G 里的 <span class="loc">background</span> 正是④段首 <span class="loc">Such background material</span> 要的那个词。
+          <b>真正要停一下的只有 42</b>：you 区的 D 和 E 都像「推断」的下一步（黄皮书备选也正是 D E）。判据是<b>方向</b>——E 往读者那边走（<span class="loc">significant to you</span>），D 往作者那边退（<span class="loc">the ones the author intended</span>），而第③段一开口就说「每个读者走的路不一样」。<span class="mk">6 分钟足够，省下的时间留给翻译。</span></p>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">01</span>七句选项（A–G）· 先给每一句标「人称」，再看它的头和尾</h2>
+        <p style="font-size:.8rem;color:var(--muted);margin-bottom:12px">这篇的选项不看内容也能先分一刀：<b>句子里的 you／we／第三人称，就是它的区号</b>。紫色标签里写着每一项的人称与站位；答题后被选中的项会自动置灰，两个多余项带红框。</p>
+        <div class="optlib" id="optlib"></div>
+
+        <h3 class="sh">🪝 七句的「人称 · 头 · 尾」：头要上家，尾要下家</h3>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:700px">
+          <tr><th style="width:5%">项</th><th style="width:9%">人称</th><th style="width:43%">头：开头几个词要求上文有什么</th><th>尾：它说完之后，下文谁接得住</th></tr>
+          <tr><td class="c">A</td><td>we</td><td><span class="loc">that text</span> ⟹ 上文紧邻处须有一个<b>已提到的文本</b> → ⑤❶ <span class="loc">a given text</span> ✔；三个问句问的是<b>为什么读</b> → ⑤❶ <span class="loc">our particular interest in reading it</span> ✔</td><td>三种读法（研读／消遣／浏览）＋ 两种场景（火车床上 vs 研讨室）⟹ ⑤❻ <span class="loc"><b>Such dimensions of reading</b></span> ✔</td></tr>
+          <tr><td class="c">B</td><td>we</td><td><span class="loc">Factors such as …</span> ⟹ 上文须刚立一个<b>总说</b>，B 负责列清单 → ④❶ <span class="loc">reflects <b>who we are</b></span>（B 的六项正是「我们是谁」）✔</td><td>「推向某些解读、遮蔽其他」听上去就是<b>解读全凭各人</b> ⟹ ④❸ <span class="loc"><b>This doesn’t, however,</b> make interpretation merely relative</span> ✔</td></tr>
+          <tr><td class="c">C</td><td>you</td><td><span class="loc">words or idioms … their meaning</span> ⟹ 上文须刚谈过<b>词义</b> → ①❷ <span class="loc">identifying meanings for individual words</span> ✔；<span class="loc">links between them</span> 对着 <span class="loc">relationships between them</span></td><td>还停在<b>词与语篇实体</b>这一层 ⟹ ①❺ <span class="loc">You <b>begin</b> to infer a context</span>（begin ＝ 往外迈一步）✔</td></tr>
+          <tr class="bad"><td class="c">D</td><td>you</td><td><span class="loc">In effect</span> ⟹ 要给上文<b>作总结或换个说法</b>；它能总结的只有「读者推断作者邀请的信息」②❸ △</td><td><span class="loc">the ones the author intended</span> ⟹ 下一句 ③❶ 说「每个读者走的路不同」、③❷ 说「不是取回唯一真意」——<b>正面相撞</b> ✘</td></tr>
+          <tr><td class="c">E</td><td>you</td><td><span class="loc">You make <b>further</b> inferences</span> ⟹ further 预设前面已有一轮推断 → ②❸ <span class="loc">You infer information…</span> ✔</td><td><span class="loc">a personal response</span>、作者<span class="loc">far less responsible</span> ⟹ ③❶ <span class="loc"><b>Conceived in this way</b>, comprehension will not follow exactly the same track for each reader</span> ✔</td></tr>
+          <tr class="bad"><td class="c">F</td><td>第三人称</td><td><span class="loc">In plays, novels and narrative poems</span> ⟹ 上文须在谈<b>文学体裁</b>或<b>作者怎样写人物</b>——全文没有这一处 ✘（唯一的词面：①❺ <span class="loc">Who is making the utterance</span> ↔ characters speak）</td><td><span class="loc">mouthpieces for the author’s own thoughts</span> ⟹ 下文没有一句谈「人物替谁说话」 ✘</td></tr>
+          <tr><td class="c">G</td><td>we</td><td><span class="loc"><b>Rather</b>,</span> ⟹ 上一句须是一个<b>否定</b>（not X）→ ③❷ <span class="loc">What is in question is <b>not</b> the retrieval of …</span> ✔</td><td><span class="loc">various kinds of <b>background</b> … that we bring to the text</span> ⟹ ④❶ <span class="loc"><b>Such background material</b></span> ✔（background 全文首现在 G）</td></tr>
+        </table>
+        </div>
+        <p style="font-size:.9rem;margin-top:10px">⭐ <b>五个正确项两头都对得上；两个多余项各死在一头</b>——D 的头勉强挂得上（In effect 可以总结 ②❸），尾却和第③段正面冲突；F 头尾两边都没有落点，只剩一个 speak／utterance 的词面。
+          <br>⚠️ <b>D 是这篇里唯一真正难排的项</b>：它和 C、E 同在 you 区，又自带一个总结词 In effect，放在 42 读起来很顺——<span class="mk">顺的是这一句，不顺的是下一段。</span>（见 42 解析与 03 节）</p>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">02</span>五段正文 · 点字母作答 <button class="allbtn" onclick="toggleAll()">译文 开/关</button></h2>
+        <p style="font-size:.8rem;color:var(--muted);margin-bottom:14px">🟡 高亮词可点出词卡（右侧/底部）｜ <span class="clue">红色虚线</span> ＝ 头钩（空格上文）｜ <span class="clue2">蓝色虚线</span> ＝ 尾钩（下一句的 begin／Conceived in this way／Such／This）｜ 每个空下方点 A–G 作答，<b>答后空格就地补全成原文</b>，并出线索链解析 ＋ 错因标签</p>
+
+        <div class="person q" id="q41" data-ans="C">
+          <div class="pname"><span class="qn">(41)</span> 第一段 · <b>段中空</b>（you 区）<span class="stance st-mid">⚠️ 不计盲做：答案提前入眼</span><button class="zbtn" onclick="tz(this)">译</button></div>
+          <p class="en para">How does your reading <span class="tk" data-w="proceed">proceed</span>?
+            Clearly you try to <span class="tk" data-w="comprehend">comprehend</span>, <span class="tk" data-w="insense">in the sense of</span> <span class="clue">identifying meanings for individual words and <span class="tk" data-w="workout">working out</span> relationships between them</span>, <span class="tk" data-w="drawon">drawing on</span> your <span class="tk" data-w="implicit">implicit</span> knowledge of English grammar.
+            <span class="slot" data-n="41">(41) ＿＿＿＿＿＿＿＿</span>
+            <span class="clue2">You <span class="tk" data-w="begin">begin</span> to <span class="tk" data-w="infer">infer</span> a <span class="tk" data-w="context">context</span> for the text</span>, for instance, by making decisions about what kind of <span class="tk" data-w="speechevent">speech event</span> is involved: Who is making the <span class="tk" data-w="utterance">utterance</span>, to whom, when and where.</p>
+          <div class="zh">你的阅读是怎样进行的？显然，你会努力去理解——也就是认出每个词的意思、弄清词与词之间的关系，靠的是你心里那套说不出来却一直在用的英语语法知识。<b>（41）碰到不熟悉的词或习语，你会借助上下文里的线索去猜它的意思。你料想文中提到的各个人、物、概念待会儿还会用上，于是在心里把它们、连同它们之间可能的联系，一一记下。</b>接着你开始为这段文字推断一个语境，比如判断它属于哪一类言语事件：是谁在说话，对谁说，在什么时候、什么地方说。</div>
+          <div class="chips"></div>
+          <div class="expl"><b>41 → C　If you are unfamiliar with words or idioms, you guess at their meaning, using clues presented in the context. On the assumption that they will become relevant later, you make a mental note of discourse entities as well as possible links between them.</b>
+            <div class="line">🔗 <b>头钩 · 同一层的补充</b>：上一句说「认出<b>每个词</b>的意思、弄清<b>它们之间</b>的关系」，C 紧接着说「<b>不认识的词</b>怎么办」——还在「词」这一层。两句的骨架逐格对得上：
+              <br>　<span class="loc">identifying meanings for individual words</span> ↔ <span class="loc">words or idioms … guess at their meaning</span>
+              <br>　<span class="loc">working out relationships between them</span> ↔ <span class="loc">possible links between them</span>
+              <br>　<span class="loc">drawing on your implicit knowledge of English grammar</span> ↔ <span class="loc">using clues presented in the context</span>（靠语法 ／ 靠上下文，两种资源）</div>
+            <div class="line">🔗 <b>尾钩 · begin 划出了下一步</b>：<span class="loc">You <b>begin</b> to infer a context for the text</span>——begin 说明「推断语境」是<b>新开始的一步</b>，所以空格必须还停在上一步（词与语篇实体），<b>不能提前谈推断</b>。C 的两句都是「记下来、猜一猜」，正好停在门口；E 的 <span class="loc">further inferences</span> 已经是第二轮推断，放这里等于先上二楼再说「开始上楼」。</div>
+            <div class="line">🧱 <b>C 的第二句在给下一句铺路</b>：<span class="loc">discourse entities</span>（语篇实体：文中被提到、之后还会被反复指称的人、物、概念）＝ 下一句「<b>谁</b>在说、对<b>谁</b>说」的原料。先在心里记下文中有哪些角色，才判断得了言语事件。<span class="loc">they will become relevant <b>later</b></span> 的 later 也是过程描写的口气——这一段是一张「阅读步骤表」。</div>
+            <div class="line">🧭 <b>人称</b>：①段从头到尾对读者说 you（your reading · you try · your implicit knowledge · You begin），C 的三个 you 与之同频。换成 A／B／G 的 we，这一段会突然从「你」跳到「我们」再跳回「你」（R195）。</div>
+            <div class="line">🚫 <b>F 的词面钓鱼</b>：下一句的 <span class="loc">Who is making the <b>utterance</b></span> 与 F 的 <span class="loc">characters <b>speak</b></span> 像是一回事。其实层级不同：①❺ 问的是<b>整篇文本</b>这件言语事件是谁在说，F 说的是<b>戏剧小说里的人物</b>替谁说话——一个是读者判断语境，一个是作者塑造人物（R81）。</div>
+            <div class="mine">🚩 <b>我的实况</b>：独立推理也是 C，但<b>不计盲做</b>——做 Text 4 时读精讲多渲染了两页，英汉对照里的「41.[C]」已入眼。计入盲做的是 42–45 四空。</div>
+          </div>
+        </div>
+
+        <div class="person q" id="q42" data-ans="E">
+          <div class="pname"><span class="qn">(42)</span> 第二段 · <b>段末空</b>（you 区）<span class="stance st-anti">⚠️ 二选一（黄皮书备选 D E）</span><button class="zbtn" onclick="tz(this)">译</button></div>
+          <p class="en para">The ways of reading <span class="tk" data-w="indicate">indicated</span> here are <span class="tk" data-w="withoutdoubt">without doubt</span> kinds of <span class="tk" data-w="comprehension">comprehension</span>.
+            But they show comprehension to <span class="tk" data-w="consistof">consist</span> not just of <span class="tk" data-w="passive">passive</span> <span class="tk" data-w="assimilation">assimilation</span> but of active <span class="tk" data-w="engagement">engagement</span> in <span class="tk" data-w="inference">inference</span> and problem-solving.
+            <span class="clue">You infer information you feel the writer has <span class="tk" data-w="invite">invited</span> you to <span class="tk" data-w="grasp">grasp</span> by presenting you with specific evidence and <span class="tk" data-w="clue">clues</span></span>.
+            <span class="slot" data-n="42">(42) ＿＿＿＿＿＿＿＿</span></p>
+          <div class="zh">这里说到的几种阅读方式，毫无疑问都属于理解。但它们表明，理解不只是被动地吸收，更是主动地投入推断、解决问题。作者把具体的证据和线索摆在你面前，你觉得这是在请你领会某些信息，于是你把这些信息推断出来。<b>（42）你还会做进一步的推断，比如这段文字对你可能有什么意义，或者它的说法站不站得住——这些推断是你个人反应的基础，而对这种反应，作者要负的责任必然小得多。</b></div>
+          <div class="chips"></div>
+          <div class="expl"><b>42 → E　You make further inferences, for instance, about how the text may be significant to you, or about its validity—inferences that form the basis of a personal response for which the author will inevitably be far less responsible.</b>
+            <div class="line">🔗 <b>头钩 · infer → further inferences</b>：上一句 <span class="loc">You <b>infer</b> information</span>，E <span class="loc">You make <b>further inferences</b></span>——动词换成名词、再加一个 <b>further</b>。further 预设「前面已经有过一轮」，那一轮就是 ②❸。两轮的分工写得清清楚楚：
+              <br>　第一轮：作者<b>邀请</b>你推断（<span class="loc">the writer has <b>invited</b> you to grasp</span>，靠作者摆出的 evidence and clues）
+              <br>　第二轮：推断<b>对你</b>有什么意义、说法<b>站不站得住</b>（<span class="loc">significant <b>to you</b> · its validity</span>），作者对此<span class="loc">far less <b>responsible</b></span>
+              <br><span class="mk">一个「邀请」、一个「卸责」——推断的主导权从作者手里交到了读者手里。</span></div>
+            <div class="line">🔗 <b>尾钩 · Conceived in this way</b>：第③段首句 <span class="loc">Conceived in this way, comprehension will not follow exactly the same track for <b>each reader</b></span>——「这样理解的话，理解就不会对每个读者都走同一条路」。为什么会不同？<b>因为有了 E 的 personal response</b>：每个人觉得「对我有什么意义」不一样。E 是因，③❶ 是果。</div>
+            <div class="line">🧱 <b>段落功能 · 把②段的主张做完</b>：②❷ 说理解不只是 <span class="loc">passive assimilation</span>，而是 <span class="loc">active engagement in inference</span>。②❸ 的推断还是作者引着走的；<b>E 的推断才是读者自己的</b>——「主动」到 E 才落了地。</div>
+            <div class="line">🚫 <b>D 为什么进不来（本篇唯一的硬仗）</b>：D 放在这里<b>句内是通的</b>——<span class="loc">In effect</span>（实际上）像在给 ②❸ 下总结：你借线索推断，实际上就是在重建作者想表达的东西。可它把箭头<b>掉了个头</b>：
+              <br>　① D 的落点是 <span class="loc">the ones the author <b>intended</b></span>——作者本意。人人都朝同一个本意靠拢，走的恰恰是「同一条路」，与 ③❶ 正面相撞；
+              <br>　② ③❷ 紧接着说要讨论的<b>不是</b> <span class="loc">the retrieval of an absolute, fixed or “true” meaning</span>——D 的「作者本意」正是这个「真意」；
+              <br>　③ <span class="loc">might have had</span> 是对过去的推测，D 整句都在往回看作者，而全文一路往外看读者。
+              <br><span class="mk">⟹ D 不是「接不上」，是「接上了但走反了」：它就是这篇文章要推翻的那种阅读观</span>（R197）。</div>
+            <div class="line">🧭 <b>人称</b>：D、E 都是 you，人称这把刀在这一格切不开，只能靠方向判（R195 的边界）。</div>
+            <div class="mine">🚩 <b>我的实况</b>：盲做选 E，D 一闪而过——正是因为 In effect 读起来太顺。让我放弃 D 的是下一段的第二句：<b>一篇说「意义不是取回来的」的文章，不会在前一段刚说完「你是在还原作者本意」。</b></div>
+          </div>
+        </div>
+
+        <div class="person q" id="q43" data-ans="G">
+          <div class="pname"><span class="qn">(43)</span> 第三段 · <b>段末空</b>（we 区第一格）<span class="stance st-anti">⚠️ 二选一（黄皮书备选 B G）</span><button class="zbtn" onclick="tz(this)">译</button></div>
+          <p class="en para"><span class="clue2"><span class="tk" data-w="conceive">Conceived</span> in this way</span>, comprehension will not follow exactly the same <span class="tk" data-w="track">track</span> for each reader.
+            <span class="clue">What is <span class="tk" data-w="inquestion">in question</span> is not the <span class="tk" data-w="retrieval">retrieval</span> of an <span class="tk" data-w="absolute">absolute</span>, fixed or “true” meaning that can be <span class="tk" data-w="readoff">read off</span> and checked for <span class="tk" data-w="accuracy">accuracy</span>, or some <span class="tk" data-w="timeless">timeless</span> relation of the text to the world</span>.
+            <span class="slot" data-n="43">(43) ＿＿＿＿＿＿＿＿</span></p>
+          <div class="zh">这样理解的话，理解就不会对每个读者都沿着完全相同的轨道走。这里要讨论的，不是取回某种绝对的、固定的或者「真正的」意义——那种可以直接读出来、再逐条核对准确与否的意义；也不是文本与世界之间某种永恒不变的关系。<b>（43）恰恰相反，我们赋予文本意义，靠的是两样东西之间的相互作用——我们或许可以把它们叫作「文本材料」和「语境材料」：一边是我们在文本的形式结构（尤其是它的语言结构）里察觉到的各种组织方式与规律，一边是我们带进文本的各种背景、社会知识、信念和态度。</b></div>
+          <div class="chips"></div>
+          <div class="expl"><b>43 → G　Rather, we ascribe meanings to texts on the basis of interaction between what we might call textual and contextual material: between kinds of organization or patterning we perceive in a text’s formal structures (so especially its language structures) and various kinds of background, social knowledge, belief and attitude that we bring to the text.</b>
+            <div class="line">🔗 <b>头钩 · 跨句的 not … Rather</b>：③❷ <span class="loc">What is in question is <b>not</b> X, or Y.</span> → G <span class="loc"><b>Rather</b>, we ascribe meanings…</span>——前一句只说「不是什么」，后一句必须说「是什么」。两个动词方向正好相反：<span class="loc"><b>retrieval</b></span>（从文本里<b>取出</b>一个现成的意义）↔ <span class="loc"><b>ascribe</b></span>（由我们<b>赋予</b>文本意义）。<span class="mk">这一对就是全文的论点句。</span></div>
+            <div class="line">🔗 <b>尾钩 · Such background material</b>：第④段首句拿 <span class="loc"><b>Such</b> background material</span> 开头——<b>background 这个词在全文首次出现，正是在 G 里</b>（<span class="loc">various kinds of <b>background</b> … that we bring to the text</span>），<b>material</b> 也来自 G（<span class="loc">textual and contextual <b>material</b></span>）。Such ＋ 类名 ＝ 「刚才说的那种背景材料」，空格里必须已经有这样东西（R136 ＋ R196）。</div>
+            <div class="line">🚫 <b>B 为什么进不来</b>：B 的地点、时代、性别……也是「背景」，Such background material 回指它<b>也说得通</b>——尾钩打平。判胜负在头：
+              <br>　① ③❷ 是个否定句，下一句得接一个<b>正面说法</b>；B 以 <span class="loc">Factors such as</span> 开头，是一张清单，接不住 not；
+              <br>　② B 若占了 43，G 就只能去 44——可 ④❶ 是个<b>肯定句</b>（背景反映我们是谁），G 的 <span class="loc">Rather</span> 没有东西可纠正；
+              <br>　③ B 没有 background 这个词，而 Such background material 要的恰恰是它<b>第一次出场的那一句</b>。</div>
+            <div class="line">🧭 <b>人称从这一格开始换成 we</b>：③❶ 的 <span class="loc">each reader</span> 是过渡——话题从「<b>你</b>怎么一步步读」转到「<b>读者之间</b>为什么读得不一样」，主语自然换成把作者和所有读者都算进去的 we。<b>43 是 we 区的第一格，G 是正文里第一个 we。</b></div>
+            <div class="line">💡 <b>formal ＝「形式上的」</b>：<span class="loc">a text’s formal structures</span> 不是「正式的结构」，而是与内容相对的<b>形式</b>（语音、句法、篇章组织）——括号里的 <span class="loc">so especially its language structures</span> 已经给出了定义。</div>
+          </div>
+        </div>
+
+        <div class="person q" id="q44" data-ans="B">
+          <div class="pname"><span class="qn">(44)</span> 第四段 · <b>段中空</b>（首句后 · we 区）<span class="stance st-pro">✅ 总→分，下一句的 This 回指它</span><button class="zbtn" onclick="tz(this)">译</button></div>
+          <p class="en para"><span class="clue">Such <span class="tk" data-w="background">background</span> <span class="tk" data-w="material">material</span> inevitably <span class="tk" data-w="reflect">reflects</span> who we are</span>.
+            <span class="slot" data-n="44">(44) ＿＿＿＿＿＿＿＿</span>
+            <span class="clue2">This doesn’t, however, make <span class="tk" data-w="interpretation">interpretation</span> merely <span class="tk" data-w="relative">relative</span> or even <span class="tk" data-w="pointless">pointless</span></span>.
+            <span class="tk" data-w="precisely">Precisely because</span> readers from different historical periods, places and social experiences produce different but <span class="tk" data-w="overlap">overlapping</span> readings of the same words on the page—including for texts that <span class="tk" data-w="engagewith">engage with</span> fundamental human <span class="tk" data-w="concern">concerns</span>—debates about texts can play an important role in social discussion of beliefs and values.</p>
+          <div class="zh">这样的背景材料不可避免地反映出我们是谁。<b>（44）我们读书时所处的地点和时代、我们的性别、族裔、年龄和社会阶层，诸如此类的因素会把我们推向某些解读，同时又遮蔽、甚至堵死另一些解读。</b>然而，这并不会让解读变得纯属相对，甚至毫无意义。恰恰因为来自不同历史时期、不同地方、有着不同社会经历的读者，会对纸上同样的文字——包括那些探讨人类根本关切的文本——读出不同却又彼此重叠的理解，关于文本的争论才能在社会对信念与价值观的讨论中发挥重要作用。</div>
+          <div class="chips"></div>
+          <div class="expl"><b>44 → B　Factors such as the place and period in which we are reading, our gender, ethnicity, age and social class will encourage us towards certain interpretations but at the same time obscure or even close off others.</b>
+            <div class="line">🔗 <b>头钩 · 总 → 分</b>：④❶ 说背景「反映<b>我们是谁</b>」——一句抽象的总说；B 用 <span class="loc">Factors <b>such as</b></span> 把「我们是谁」拆成六项：<b>地点、时代、性别、族裔、年龄、社会阶层</b>。总说之后紧跟清单，是说明文最常见的一拍。</div>
+            <div class="line">🔗 <b>尾钩 · This doesn’t, however</b>：<span class="loc"><b>This</b></span> 回指 B 整句，后面的谓语是在给它下评语——<span class="loc">make interpretation merely relative or even pointless</span>。要能被这样评论，This 指的那句话必须<b>听上去就像在说「解读因人而异、没有高下」</b>；B 说因素「推我们向某些解读、遮蔽其他解读」，正是这个意思，however 立刻纠偏：并不会因此变成纯粹相对（R159 回指评价句；<span class="loc">interpretations → interpretation</span> 词形复现）。</div>
+            <div class="line">🔗 <b>再往后一句还在回收 B</b>：④❹ <span class="loc">readers from different historical <b>periods</b>, <b>places</b> and <b>social</b> experiences</span>——B 的 <span class="loc">place and period</span>、<span class="loc">social class</span> 原样回来了。<span class="mk">一个选项的内容词在下文被逐项回收，是它站对位置最硬的证据。</span></div>
+            <div class="line">🚫 <b>A、G 为什么不在这儿</b>：同在 we 区，但 A 的 <span class="loc">that text</span> 在第④段找不到先行词（④❶ 没有 text）；G 的 <span class="loc">Rather</span> 前面要一个否定，④❶ 是肯定句。</div>
+            <div class="line">💡 <b>encourage sb towards sth</b>：不是「鼓励」，是「<b>把人往某个方向推</b>」，与后半句 <span class="loc">obscure or even close off</span>（遮蔽、堵死）一推一挡，写的是背景的<b>双刃</b>。</div>
+          </div>
+        </div>
+
+        <div class="person q" id="q45" data-ans="A">
+          <div class="pname"><span class="qn">(45)</span> 第五段 · <b>段中空</b>（首句后 · we 区）<span class="stance st-anti">⚠️ 二选一（黄皮书备选 A F）</span><button class="zbtn" onclick="tz(this)">译</button></div>
+          <p class="en para"><span class="clue">How we read <span class="tk" data-w="given">a given</span> text also depends <span class="tk" data-w="toextent">to some extent</span> on our particular interest in reading it</span>.
+            <span class="slot" data-n="45">(45) ＿＿＿＿＿＿＿＿</span>
+            <span class="clue2">Such <span class="tk" data-w="dimension">dimensions</span> of reading</span> suggest—as others introduced later in the book will also do—that we bring an implicit (often <span class="tk" data-w="unacknowledged">unacknowledged</span>) <span class="tk" data-w="agenda">agenda</span> to any act of reading.
+            It doesn’t then necessarily <span class="tk" data-w="follow">follow</span> that one kind of reading is fuller, more advanced or more <span class="tk" data-w="worthwhile">worthwhile</span> than another.
+            Ideally, different kinds of reading <span class="tk" data-w="inform">inform</span> each other, and act as useful <span class="tk" data-w="referencepoint">reference points</span> for and <span class="tk" data-w="counterbalance">counterbalances</span> to one another.
+            Together, they make up the reading <span class="tk" data-w="component">component</span> of your overall <span class="tk" data-w="literacy">literacy</span>, or relationship to your surrounding textual environment.</p>
+          <div class="zh">我们怎样读一篇文本，在一定程度上还取决于我们读它时抱着的特定兴趣。<b>（45）我们是在研读这篇文本、想以符合某门课程要求的方式作出回应？只是为了消遣而读？还是为了获取信息而浏览？在火车上或床上读，与在研讨室里读，方式很可能大不相同。</b>阅读的这些维度表明——本书后面介绍的其他维度也会表明——我们在任何一次阅读中都带着一套隐含的（往往自己也不承认的）目的。但由此并不必然得出：某一种读法就比另一种更充分、更高级或更有价值。理想的情况是，不同的读法相互启发，彼此充当有用的参照与制衡。它们合在一起，构成你整体读写素养中的阅读部分，也就是你与周围文本环境的关系。</div>
+          <div class="chips"></div>
+          <div class="expl"><b>45 → A　Are we studying that text and trying to respond in a way that fulfils the requirement of a given course? Reading it simply for pleasure? Skimming it for information? Ways of reading on a train or in bed are likely to differ considerably from reading in a seminar room.</b>
+            <div class="line">🔗 <b>头钩 · that text 紧贴 a given text</b>：A 开口就是 <span class="loc">that text</span>，先行词必须就在紧邻的上一句——⑤❶ <span class="loc">How we read <b>a given text</b></span> ✔（R53）。再看内容：⑤❶ 说读法取决于「<b>我们读它的特定兴趣</b>」，A 的三个问句正好是三种兴趣——<b>为课程研读 · 为消遣 · 为信息浏览</b>。总说一句，三问展开，一句场景对比收住。</div>
+            <div class="line">🔗 <b>尾钩 · Such dimensions of reading</b>：<span class="loc"><b>Such</b> dimensions of reading</span>——dimensions（维度、方面）是给 A 列出的东西起的<b>类名</b>：读的目的是一个维度，读的场景（火车、床上、研讨室）又是一个维度。<span class="mk">下一句替空格起好了名字，你只需要找「能被叫作『阅读的几个维度』」的那一句</span>（R196）。</div>
+            <div class="line">🔗 <b>再往后还在回收 A</b>：⑤❼ <span class="loc">one kind of reading is fuller, more advanced or more worthwhile than another</span>——「一种读法」和「另一种」，指的就是 A 里的研读、消遣、浏览：为课程研读并不比在床上随手翻更「高级」。</div>
+            <div class="line">🚫 <b>F 为什么进不来</b>：<span class="loc">plays, novels and narrative poems</span> 列了三种体裁，看上去也像「阅读的几个方面」，Such dimensions 能把它钓过来（黄皮书的备选也是 A F）。但：
+              <br>　① ⑤❶ 谈的是<b>读者</b>的兴趣与目的，F 谈的是<b>作者</b>怎样塑造人物——主体换了；
+              <br>　② F 是第三人称，全段是 we；
+              <br>　③ F 和 <span class="loc">a given text</span> 没有任何回指关系，接在 ⑤❶ 后面是另起话题。
+              <br><span class="mk">⟹ 三种体裁 ≠ 三种读法：dimensions of <b>reading</b> 要的是「读」的维度，不是「文学」的种类。</span></div>
+            <div class="line">🧭 <b>末句的 your 不是反例</b>：⑤❾ <span class="loc">your overall literacy</span> 又回到了 you——教材在收尾处回头对读者说话，这是<b>全文的收束</b>，不在任何一格的判据范围内。人称分区只看<b>空格前后那两三句</b>（R195 的边界）。</div>
+            <div class="line">💡 <b>fulfils</b> 是英式拼写（美式 fulfills），与本书出自英国出版社 Routledge 一致；<b>a given course</b> 的 given ＝「某一门特定的」，和 ⑤❶ 的 <span class="loc">a given text</span> 同一用法。</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card" id="person">
+        <h2><span class="n">02+</span>本页最值钱：人称分区 —— 先给正文和七项都标上 you／we，再做题</h2>
+        <p style="font-size:.92rem">说明文、教材、指南类文章常常<b>直接对读者说话</b>（you），讲到「人人如此」的道理时又换成 <b>we</b>。人称一换，说明<b>论述的层级换了</b>：you 是「你这一个读者的一步步操作」，we 是「所有读者（连同作者）共有的处境」。<span class="mk">选项是从原文里挖出来的句子，它当然带着原位置的人称——人称就是它的出生证明。</span></p>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:680px">
+          <tr><th style="width:10%">段</th><th style="width:30%">正文里的人称（按句）</th><th style="width:12%">区</th><th style="width:14%">空</th><th>该区的候选项</th></tr>
+          <tr><td class="c">①</td><td>your reading · you try · your implicit knowledge · <b>41</b> · You begin</td><td rowspan="2"><b>you 区</b></td><td class="c">41</td><td rowspan="2"><b>C · D · E</b>（三选二）<br><span style="font-size:.8rem">C If you… you… · D you try to reconstruct · E You make… significant to you</span></td></tr>
+          <tr><td class="c">②</td><td>（they ＝ ways of reading）· You infer · you feel · invited you · presenting you · <b>42</b></td><td class="c">42</td></tr>
+          <tr><td class="c">③</td><td>each reader（中性过渡）· 无人称 · <b>43</b></td><td rowspan="3"><b>we 区</b></td><td class="c">43</td><td rowspan="3"><b>A · B · G</b>（三对三）<br><span style="font-size:.8rem">A Are we studying · B we are reading, our gender · G we ascribe, we perceive, we bring</span></td></tr>
+          <tr><td class="c">④</td><td>who we are · <b>44</b> · readers（中性）</td><td class="c">44</td></tr>
+          <tr><td class="c">⑤</td><td>How we read · our particular interest · <b>45</b> · we bring · …（末句 your，收尾对读者说话）</td><td class="c">45</td></tr>
+          <tr class="bad"><td class="c">—</td><td colspan="3">第三人称：characters speak · the author · the author’s own thoughts</td><td><b>F</b>：两区都进不去</td></tr>
+        </table>
+        </div>
+        <div class="box"><span class="bt">⭐ 分完区，这篇只剩两道小题</span>
+          <b>we 区三对三</b>：A 有 that text 要紧贴 a given text ⟹ 45；G 有 Rather 要紧贴一个否定 ⟹ 43；剩下 B 去 44，且 B 的内容正是「我们是谁」的清单。<b>三格一口气做完。</b>
+          <br><b>you 区三选二</b>：C 停在「词」这一层 ⟹ 41；D、E 抢 42——人称切不开，改用<b>方向</b>判（见 02++）。
+          <br><span class="mk">⟹ 七项里真正需要掂量的只有 D 与 E 这一对。</span>黄皮书的五组备选（41 C · 42 D E · 43 B G · 44 B · 45 A F）里，<b>只有 F 跨了人称区，而 F 恰好被一票否决</b>。
+        </div>
+        <div class="box green"><span class="bt">✅ 考场动作（三步，30 秒）</span>
+          ① 扫正文：每段圈出第一个人称代词（you／your ／ we／our ／ 没有），在段旁写 Y、W 或 —；<br>
+          ② 扫七项：同样写 Y、W、3（第三人称）；<br>
+          ③ 按区配对：<b>哪一区的空比候选少，多出来的那一项就是多余项的嫌疑人</b>（本篇 you 区 2 空 3 项 ⟹ C D E 里必出一个多余；we 区 3 空 3 项 ⟹ A B G 全是答案；F 无区 ⟹ 多余）。
+        </div>
+        <div class="box red"><span class="bt">⚠️ 三条边界：人称是粗筛，不是判决</span>
+          ① <b>同一区里人称切不开</b>：本篇 42 的 D、E 都是 you，最后一刀靠方向（R197）；<br>
+          ② <b>只看空格前后两三句</b>：⑤❾ 的 your 是全文收束时回头对读者说话，③❶ 的 each reader、④❹ 的 readers 是中性的——区界落在「有人称的句子」之间，<b>中性句不算反例</b>；<br>
+          ③ <b>这把刀要「正文中途换人称」</b>：一个人称到底的文章没有它——2007 七个标题全是祈使句（your 贯穿）、2008 正文以 you 为主（五个答案里三句 you、两句无人称，人称分不出区）、2009 通篇第三人称；2012 的 D、2013 的 A 各只冒出一个 we，成不了区。<b>六篇选句填空与标题匹配里，2015 是第一篇「正文从 you 换到 we、七项随之分成两堆」的</b>——先扫一眼正文有没有换人称，再决定用不用这把刀。
+        </div>
+      </section>
+
+      <section class="card" id="ladder">
+        <h2><span class="n">02++</span>外扩线：七级台阶，箭头始终指向读者 —— D 是唯一一张往回走的牌</h2>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:640px">
+          <tr><th style="width:8%">级</th><th style="width:34%">这一级在做什么</th><th style="width:22%">原文</th><th>谁说了算</th></tr>
+          <tr><td class="c">1</td><td>认词义、理清词与词的关系</td><td>①❷</td><td>文本 ＋ 你的语法知识</td></tr>
+          <tr><td class="c">2</td><td>猜生词、在心里记下语篇实体</td><td><b>41 C</b></td><td>文本 ＋ 上下文线索</td></tr>
+          <tr><td class="c">3</td><td>推断语境：谁、对谁、何时、何地</td><td>①❺</td><td>文本所在的言语事件</td></tr>
+          <tr><td class="c">4</td><td>推断作者<b>邀请</b>你领会的信息</td><td>②❸</td><td><b>作者</b>（摆出证据与线索）</td></tr>
+          <tr><td class="c">5</td><td>进一步推断：对<b>你</b>的意义、说法是否成立</td><td><b>42 E</b></td><td><b>读者</b>（作者 far less responsible）</td></tr>
+          <tr><td class="c">6</td><td>意义由「文本材料 × 背景材料」相互作用而来；背景＝地点时代性别族裔年龄阶层</td><td><b>43 G · 44 B</b></td><td>读者带来的<b>背景</b></td></tr>
+          <tr><td class="c">7</td><td>读法还取决于读的目的与场景</td><td><b>45 A</b></td><td>读者抱着的<b>目的</b></td></tr>
+          <tr class="bad"><td class="c">↩</td><td>重建作者可能想要的意义与效果</td><td><b>D</b>（多余）</td><td>往回退到<b>作者本意</b>——③❷ 明确否定的那一种</td></tr>
+        </table>
+        </div>
+        <div class="box"><span class="bt">⭐ 「谁说了算」这一栏从上到下，一路从文本挪到读者</span>
+          第 4 级是转折点：作者还在场（invited），第 5 级起作者退场（far less responsible），此后全是读者带来的东西。<span class="mk">D 放进任何一格，都会让这一栏倒退一步——这就是它「句内通顺、全文不通」的原因。</span>
+          <br>这种「一路外扩」的说明文，每个空的判据都是<b>「它在第几级」</b>：41 必须还在第 2 级（下一句是第 3 级的 begin），42 必须已到第 5 级（下一段首句已在谈「每个读者不同」）。
+        </div>
+        <p style="font-size:.9rem;margin-top:8px">📐 <b>第五种文章线</b>：2008 流程线（写作的先后步骤）· 2009 人物线（一段一位学者）· 2012／2013 论证线（问题 → 原因 → 方案）· <b>2015 外扩线（同一件事一层层往外定义）</b>。外扩线和流程线都「一步接一步」，区别在于外扩线的每一步<b>还要朝同一个方向</b>：流程线的多余项多是「放错了阶段」（2008 的 B 属于末段之后），外扩线的多余项是「<b>走反了方向</b>」（2015 的 D 退回作者本意）。</p>
+      </section>
+
+      <section class="card" id="tail">
+        <h2><span class="n">02+++</span>五道尾钩：下一句怎样回头指认空格</h2>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:700px">
+          <tr><th style="width:6%">空</th><th style="width:30%">下一句的开头</th><th style="width:14%">钩的种类</th><th style="width:25%">它对空格的要求</th><th>七项里谁满足</th></tr>
+          <tr><td class="c">41</td><td><span class="loc">You <b>begin</b> to infer a context</span></td><td>阶段词</td><td>空格停在「推断语境」之前的那一步</td><td><b>C</b>（词、语篇实体）；E 已是第二轮推断</td></tr>
+          <tr><td class="c">42</td><td><span class="loc"><b>Conceived in this way</b>, comprehension will not follow the same track for each reader</span></td><td>方式回指</td><td>空格给出一种「会让读者各走各路」的理解</td><td><b>E</b>（personal response）；D 让人人朝作者本意靠拢</td></tr>
+          <tr><td class="c">43</td><td><span class="loc"><b>Such background material</b> inevitably reflects…</span></td><td>Such ＋ 类名（新词）</td><td>空格里要<b>第一次</b>出现「背景材料」</td><td><b>G</b>（background · material 两词都在）；B 有背景之实、无其名</td></tr>
+          <tr><td class="c">44</td><td><span class="loc"><b>This</b> doesn’t, however, make interpretation merely relative</span></td><td>回指评价句</td><td>空格听上去像在说「解读因人而异」</td><td><b>B</b>（推向某些解读、遮蔽其他）</td></tr>
+          <tr><td class="c">45</td><td><span class="loc"><b>Such dimensions of reading</b> suggest…</span></td><td>Such ＋ 类名</td><td>空格列出的东西能统称「阅读的几个维度」</td><td><b>A</b>（目的三问 ＋ 场景对比）；F 是文学体裁，不是读法</td></tr>
+        </table>
+        </div>
+        <div class="box"><span class="bt">⭐ 三年三种尾钩，都在告诉你同一件事：下一句替空格起了名字</span>
+          <b>2012（R136）</b>：下一句把一个新词当已知信息用（<span class="loc">The networked computer</span>）⟹ 找<b>那个词</b>。
+          <b>2013（R159）</b>：下一句 This／That ＋ 评语（<span class="loc">This is a shame</span>）⟹ 找<b>那个类型</b>。
+          <b>2015（R196）</b>：下一句 <b>Such ＋ 类名</b>（<span class="loc">Such background material · Such dimensions of reading</span>）⟹ 找<b>能被这个类名统称的那一句</b>；类名若是新词（background），就与 R136 合流，只有首次引入它的那一项能进。
+          <br><span class="mk">⟹ Such／These／This kind of ＋ 名词，是作者在替你做概括题：名词就是空格的标题。</span>
+        </div>
+        <div class="box red"><span class="bt">⚠️ Such ＋ 类名的一个陷阱：类名太宽时会钓来假货</span>
+          <span class="loc">Such dimensions of reading</span> 的 dimensions 很宽，F 的三种体裁也「像」几个维度；<span class="loc">Such background material</span> 也能粗粗罩住 B 的六项因素。<b>类名只负责缩小范围，最后一刀仍要回到上一句</b>：45 看 that text 贴不贴 a given text，43 看 Rather 有没有否定可纠正。
+        </div>
+      </section>
+
+      <section class="card" id="extra">
+        <h2><span class="n">03</span>两个多余项：D 与 F —— 一个走反了方向，一个换了主角</h2>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:680px">
+          <tr><th style="width:5%">项</th><th style="width:27%">它说的（中文）</th><th style="width:22%">它像哪一格</th><th>为什么五个空都装不下</th></tr>
+          <tr><td class="c">D</td><td>实际上，你是在努力重建某个句子、某个意象或某处指涉当初可能具有的意义或效果：这些也许正是作者本来想要的。</td><td><b>最像 42</b>（In effect 能总结 ②❸；人称 you 与②段同频）</td><td>① 放 42：③❶「每个读者走的路不同」、③❷「不是取回唯一真意」两句紧接着就否定它；② 放 41：In effect 要总结的东西（推断）还没出现，下一句的 begin 也不许提前推断；③ we 区三格人称不符，且都被 A、B、G 占住。<b>⟹ 它是全文要推翻的那种阅读观</b>（R197）。</td></tr>
+          <tr><td class="c">F</td><td>在戏剧、小说和叙事诗里，人物说话，是作为作者创造出来的建构物，不一定是作者本人思想的传声筒。</td><td><b>像 41 或 45</b>（speak ↔ ①❺ utterance；三种体裁 ↔ ⑤❻ Such dimensions）</td><td>① 全文五段谈的都是<b>读者</b>怎么读，F 谈的是<b>作者</b>怎么写人物——主角换了；② 第三人称，两区都进不去；③ 放 45：<span class="loc">a given text</span> 之后另起「文学体裁」，that text 也没有了着落；放 41：①❺ 的 utterance 指整篇文本的言语事件，不是人物台词。</td></tr>
+        </table>
+        </div>
+        <div class="box"><span class="bt">⭐ 两个多余项，两种新死法</span>
+          <b>D 是「作者要推翻的那一方」</b>：选项里的观点和全文论点正好相反，却用了全文的词（meanings、you、reading 的动作）。它最像答案的地方——句子通顺、人称对、还有个总结词 In effect——恰恰是命题人给它化的妆。<span class="mk">识别法：把选项的「重心落在谁身上」和全文的箭头比一比，逆着走的就是它。</span>
+          <br><b>F 是「换了主角的同话题句」</b>：谈的也是文学文本、也是「谁在说话」，可说话的主体从读者换成了作者与人物。<span class="mk">它很可能就是这本教材后面「戏剧与叙事」单元里的一句话——话题同属一本书，却不属于这一页。</span>（原书未能核对，这一点只是推测。）
+        </div>
+
+        <h3 class="sh">📊 十篇 Part B 的多余项造法总账</h3>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:600px">
+          <tr><th style="width:9%">年份</th><th style="width:14%">变体</th><th style="width:10%">多余项</th><th>造法</th></tr>
+          <tr><td class="c">2007</td><td>标题匹配</td><td class="c">A、G</td><td>两项都有词面呼应（A ↔ 首句 role models，G ↔ responsible 连出两次）</td></tr>
+          <tr><td class="c">2008</td><td>选句填空</td><td class="c">B、F</td><td>B 阶段错位（属于末段之后）· F 与正确项 E 撞专名</td></tr>
+          <tr><td class="c">2009</td><td>选句填空</td><td class="c">D、F</td><td>同属功能论一区，而那一区没有空</td></tr>
+          <tr><td class="c">2010</td><td>排序</td><td class="c">C</td><td>复现词最多，却偏离主线</td></tr>
+          <tr><td class="c">2011</td><td>排序</td><td class="c">—</td><td>零多余项（7 格 7 项）</td></tr>
+          <tr><td class="c">2012</td><td>选句填空</td><td class="c">B、E</td><td>B 先用后定义（属于末段之后）· E 缺前提的 thus（正确项 G 的下家）；两项都有词面呼应</td></tr>
+          <tr><td class="c">2013</td><td>选句填空</td><td class="c">A、D</td><td>A 推测句要 B 的数据（正确项 B 的下家）· D 同区换杠杆；两项都有词面呼应</td></tr>
+          <tr><td class="c">2014</td><td>排序</td><td class="c">—</td><td>零多余项（7 格 7 项）；诱饵换成「位置可挪」</td></tr>
+          <tr class="bad"><td class="c"><b>2015</b></td><td>选句填空</td><td class="c">D、F</td><td><b>D 逆箭头</b>（退回作者本意，正是全文要推翻的阅读观）＋ 位置满（you 区两格被 C、E 占）· <b>F 换主角</b>（谈作者塑造人物）＋ 人称不符 ＋ 词面（speak ↔ utterance）</td></tr>
+          <tr><td class="c">2022</td><td>观点匹配</td><td class="c">B、E</td><td>没有人说过的话（无人提及型）</td></tr>
+        </table>
+        </div>
+        <p style="font-size:.9rem;margin-top:10px">⭐ <b>多余项三大族</b>（前两族见 2013 页）：①「<b>词面像</b>」——2007 A／G · 2008 F · 2010 C · 2012 B、E · 2013 A、D · <b>2015 F</b>（第六篇）；②「<b>位置满</b>」——2008 B · 2009 D／F · 2012 B、E · 2013 A、D · <b>2015 D</b>；③ <b>新增「方向反」</b>——内容与全文论点背道而驰，只在本篇出现（<b>2015 D</b>）。
+          <span class="mk">⟹ 做完五空，拿剩下两项各问三句：它是不是某个答案的下家？它的杠杆是不是作者亮出的那根？它的方向是不是和全文一致？</span>（R137 · R161 · R197）</p>
+      </section>
+
+      <section class="card" id="five">
+        <h2><span class="n">03+</span>五篇选句填空：四种文章线，五把钥匙</h2>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:820px">
+          <tr><th style="width:11%"></th><th style="width:17%">2008《如何写作初稿》</th><th style="width:17%">2009《文化人类学理论》</th><th style="width:17%">2012《下载与上传》</th><th style="width:18%">2013《让社会科学有用》</th><th>2015《阅读的方法》</th></tr>
+          <tr><td><b>文章线</b></td><td><b>流程线</b>：动笔前 → 写初稿 → 改初稿</td><td><b>人物线</b>：一段一位学者</td><td><b>论证线</b>：赞美 → 警示 → 溯因 → 出路 → 定义</td><td><b>论证线</b>：问题 → 原因 → 方案</td><td><b>外扩线</b>：词 → 语境 → 作者的推断 → 读者的推断 → 背景 → 目的</td></tr>
+          <tr><td><b>空的形态</b></td><td>段首／段中／段末齐全</td><td>五个全在段末</td><td>四末一中</td><td>三中一首一末</td><td>三中两末，五空都有下一句</td></tr>
+          <tr><td><b>破题主刀</b></td><td><b>唯一词</b></td><td><b>指代距离 ＋ 术语站位</b></td><td><b>论证功能 ＋ 尾钩</b>（新词当旧信息）</td><td><b>回指评价句 ＋ 预设小词</b></td><td><b>人称分区 ＋ Such 类名尾钩</b></td></tr>
+          <tr><td><b>最难的一处</b></td><td>43／44 连体空</td><td>43／44 连体空（A、B 可对调）</td><td>45 的三选一（B、E、G）</td><td>41 的三选一（D、E、F）</td><td>42 的二选一（D、E，同区同人称）</td></tr>
+          <tr><td><b>多余项</b></td><td>B 阶段错位 · F 专名撞车</td><td>D、F 同区一起死</td><td>B 先用后定义 · E 正确项的下家</td><td>A 正确项的下家 · D 同区换杠杆</td><td>D 逆箭头 · F 换主角</td></tr>
+          <tr><td><b>Claude 盲做</b></td><td>5/5</td><td class="bad"><b>3/5</b></td><td>5/5</td><td>5/5</td><td>5/5（计入 4/4）</td></tr>
+        </table>
+        </div>
+        <div class="box"><span class="bt">⭐ 五篇的钥匙：从「选项对上文」到「下文对选项」，再到「全文给选项分区」</span>
+          2008 看选项里的<b>专属名词</b>，2009 看选项开头的<b>代词距离</b>——选项对上文；2012、2013 改成<b>下文对选项</b>（新词当旧信息、This ＋ 评语）；2015 又往外退了一步：<b>先看整篇文章的人称怎么分布</b>，一刀把七项分成两堆，再在堆里用上下句定位。
+          <span class="mk">认线 → 认人称 → 读下一句，三步由粗到细。</span>
+          <br>⚠️ 2009 的翻车正是没认线（拿流程线的唯一词法去做人物线），见 R55 第一条陷阱。
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">04</span>Part B 分诊表：四种变体 · 十篇实做（开考三十秒先认变体）</h2>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:680px">
+          <tr><th style="width:14%">变体</th><th style="width:25%">Directions 里的原话</th><th style="width:14%">考什么</th><th>打法与用时</th></tr>
+          <tr class="bad"><td><b>选句填空</b><br><span style="font-size:.78rem">2008 · 2009 · 2012 · 2013 · <b>2015</b></span></td><td><i>some sentences have been removed … two extra choices</i></td><td><b>衔接与连贯</b></td><td>认线 → <b>正文中途换人称就先按人称分区</b> → 定空的形态 → <b>每空先读下一句</b>（新词当旧信息／This 加评语／Such 加类名／too、do）→ 先做区里候选最少的空 → 两头打架看下一句与方向 → <b>剩下两项问「是不是某个答案的下家、是不是换了杠杆、是不是走反了方向」</b>。<b>6–9 min</b>，能自查</td></tr>
+          <tr><td><b>标题匹配</b><br><span style="font-size:.78rem">2007</span></td><td><i>choose the most suitable heading</i></td><td><b>段落概括</b></td><td>逐段先自己一句话概括再看选项；<b>复现词 ≠ 段落主旨</b>。<b>8–10 min</b>，不能自查</td></tr>
+          <tr><td><b>观点匹配</b><br><span style="font-size:.78rem">2022</span></td><td><i>match each person … with the statements</i></td><td><b>立场判定</b></td><td>先给每人贴「支持／反对／中间」，再按立场分堆匹配。<b>8–10 min</b></td></tr>
+          <tr><td><b>排序题</b><br><span style="font-size:.78rem">2010 · 2011 · 2014</span></td><td><i>reorganize these paragraphs … numbered boxes</i></td><td><b>篇章顺序</b></td><td><b>先数格子</b>（有无多余项）→ 给每格数候选，候选最少的先做 → 先拼块再排块 → 通读验闭合。<b>8–10 min</b>，能自查</td></tr>
+        </table>
+        </div>
+        <p style="font-size:.9rem;margin-top:10px">📊 <b>十篇战绩</b>：2007 标题 5/5 · 2022 观点 5/5 · 2008 选句 5/5 · <b>2009 选句 3/5</b> · 2010 排序 5/5 · 2011 排序 5/5 · 2012 选句 5/5 · 2013 选句 5/5 · 2014 排序 5/5（不计完整盲做）· <b>2015 选句 5/5（41 不计，计入 4/4）</b>。<span class="mk">选句填空五篇占了一半，2012 起四年里考了三次——基础与珍藏两段真题里，它都是最常见的 Part B 变体。</span></p>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">05</span>长难句精析（10 句 · 本篇黄皮书无此栏目，全部原创）</h2>
+
+        <div class="ls">
+          <div class="s">Clearly you try to comprehend, <span class="mk2">in the sense of identifying meanings for individual words and working out relationships between them</span>, <span class="mk3">drawing on your implicit knowledge of English grammar</span>.</div>
+          <div class="an">
+            <div>· 主干只有 <b>you try to comprehend</b>；后面两块都在给 comprehend 加注。</div>
+            <div>· <span class="mk2">in the sense of ＋ doing</span> ＝「就……意义而言；也就是说」，给一个宽泛的词下窄定义；两个动名词 identifying … and working out … 并列。</div>
+            <div>· <span class="mk3">drawing on …</span> 是逗号后的现在分词短语，作<b>方式状语</b>，逻辑主语 you：「凭借……」。draw on ＝ 利用、借助（知识、经验、资源）。</div>
+          </div>
+          <div class="tr">译：显然，你会努力去理解——也就是认出每个词的意思、弄清词与词之间的关系，凭借的是你心里那套说不出来却一直在用的英语语法知识。</div>
+        </div>
+
+        <div class="ls">
+          <div class="s">You begin to infer a context for the text, for instance, <span class="mk">by making decisions about <span class="mk2">what kind of speech event is involved</span></span>: <span class="mk3">Who is making the utterance, to whom, when and where.</span></div>
+          <div class="an">
+            <div>· <span class="mk">by ＋ doing</span> 表方式，for instance 插在中间，提示这只是推断语境的方法之一。</div>
+            <div>· <span class="mk2">what kind of … is involved</span> 是 about 的宾语从句（陈述语序）；be involved ＝「牵涉其中、属于」。</div>
+            <div>· 冒号后是<span class="mk3">省略的问句串</span>：完整形式是 Who is making the utterance, (who is making it) to whom, when (is it made) and where——共用前面的主谓，只留疑问词。</div>
+          </div>
+          <div class="tr">译：你开始为这段文字推断一个语境，比如判断它属于哪一类言语事件：是谁在说话，对谁说，在什么时候、什么地方说。</div>
+        </div>
+
+        <div class="ls">
+          <div class="s">But they show comprehension <span class="mk">to consist</span> <span class="mk2">not just of passive assimilation but of active engagement in inference and problem-solving</span>.</div>
+          <div class="an">
+            <div>· <span class="mk">show sth to do</span> ＝「表明某物……」（复合宾语），同类：prove / find / believe sth to be。</div>
+            <div>· <span class="mk2">consist not just of A but of B</span>：<b>not just … but …</b> 把 consist of 的介词 of 各重复一次，保证两边都是「of ＋ 名词」——平行结构的标准写法。</div>
+            <div>· passive assimilation ↔ active engagement：形容词对形容词（被动／主动）、名词对名词（吸收／投入），<b>一对反义组合</b>。</div>
+          </div>
+          <div class="tr">译：但它们表明，理解不只是被动地吸收，更是主动地投入推断与解决问题。</div>
+        </div>
+
+        <div class="ls">
+          <div class="s">You infer <span class="mk">information</span> <span class="mk2">(that) you feel the writer has invited you to grasp ▲</span> <span class="mk3">by presenting you with specific evidence and clues</span>.</div>
+          <div class="an">
+            <div>· <span class="mk">information</span> 后接省略 that 的<b>定语从句</b>，从句里又夹了一层 <b>you feel</b>（插入式的「你觉得」）：真正的结构是 the writer has invited you to grasp <b>▲</b>——grasp 缺宾语，缺的正是 information。</div>
+            <div>· <span class="mk3">by presenting …</span> 修饰的是 <b>has invited</b>（作者用什么方式邀请你），不是 infer。present sb with sth ＝ 把某物摆在某人面前。</div>
+            <div>· 读法：先找「缺宾语的那个动词」（grasp），把先行词放回去，句子就还原了——这是定语从句套 <i>you feel / I think / we believe</i> 的通用拆法。</div>
+          </div>
+          <div class="tr">译：作者把具体的证据和线索摆在你面前，你觉得这是在请你领会某些信息，于是你把这些信息推断出来。</div>
+        </div>
+
+        <div class="ls">
+          <div class="s">You make further inferences, for instance, about how the text may be significant to you, or about its validity—<span class="mk">inferences</span> <span class="mk2">that form the basis of a personal response</span> <span class="mk3">for which the author will inevitably be far less responsible</span>.</div>
+          <div class="an">
+            <div>· 破折号后<span class="mk">重复中心词 inferences</span>，再挂定语从句——英语给长句「续命」的常用法：重复一遍名词，把后面的修饰接上去。</div>
+            <div>· <span class="mk2">that form …</span> 修饰 inferences；<span class="mk3">for which …</span> 修饰 response，介词 for 来自 <b>be responsible for</b>。</div>
+            <div>· <b>far less</b> 修饰比较级：far / much / even / still 都能加强比较级。</div>
+          </div>
+          <div class="tr">译：你还会做进一步的推断，比如这段文字对你可能有什么意义，或者它的说法站不站得住——这些推断是你个人反应的基础，而对这种反应，作者要负的责任必然小得多。</div>
+        </div>
+
+        <div class="ls">
+          <div class="s"><span class="mk">What is in question</span> <span class="mk3">is not</span> the retrieval of an absolute, fixed or “true” meaning <span class="mk2">that can be read off and checked for accuracy</span>, <b>or</b> some timeless relation of the text to the world.</div>
+          <div class="an">
+            <div>· <span class="mk">What 引导主语从句</span>，in question ＝「正在讨论的、所说的」（不是「有疑问的」）。</div>
+            <div>· 表语是两个并列名词短语：the retrieval of … meaning <b>or</b> some timeless relation …；<b>not A or B ＝ 既不是 A 也不是 B</b>（否定句里用 or 不用 and）。</div>
+            <div>· <span class="mk2">that can be read off and checked</span> 修饰 meaning：read off ＝ 直接读出（像读仪表上的数字），checked for accuracy ＝ 核对准确性——两个动词都在嘲讽「意义像标准答案」的想法。</div>
+          </div>
+          <div class="tr">译：这里要讨论的，不是取回某种绝对的、固定的或者「真正的」意义——那种可以直接读出来、再核对准确与否的意义；也不是文本与世界之间某种永恒不变的关系。</div>
+        </div>
+
+        <div class="ls">
+          <div class="s">Rather, we ascribe meanings to texts on the basis of interaction between <span class="mk">what we might call textual and contextual material</span>: between <span class="mk2">kinds of organization or patterning (that) we perceive in a text’s formal structures</span> (so especially its language structures) and <span class="mk3">various kinds of background, social knowledge, belief and attitude that we bring to the text</span>.</div>
+          <div class="an">
+            <div>· <b>ascribe A to B</b> ＝「把 A 归于／赋予 B」：ascribe meanings to texts。</div>
+            <div>· <b>between A and B 出现两次</b>：第一次用 <span class="mk">what we might call …</span> 抽象地说（文本材料与语境材料）；冒号后第二次把 A、B 各展开一遍——<span class="mk2">A ＝ 我们在形式结构中察觉的组织方式</span>，<span class="mk3">B ＝ 我们带进来的背景、知识、信念、态度</span>。先给名称再给内容。</div>
+            <div>· what we might call ＝「我们或许可以称之为」：作者自造术语时的谦辞。括号里 so especially ＝「因此尤其是」。</div>
+          </div>
+          <div class="tr">译：恰恰相反，我们赋予文本意义，靠的是两样东西的相互作用——我们或许可以把它们叫作「文本材料」和「语境材料」：一边是我们在文本的形式结构（尤其是它的语言结构）里察觉到的各种组织方式与规律，一边是我们带进文本的各种背景、社会知识、信念和态度。</div>
+        </div>
+
+        <div class="ls">
+          <div class="s"><span class="mk">Factors such as the place and period in which we are reading, our gender, ethnicity, age and social class</span> <span class="mk3">will encourage</span> us towards certain interpretations but at the same time <span class="mk3">obscure or even close off</span> others.</div>
+          <div class="an">
+            <div>· <span class="mk">主语长达 19 个词</span>，核心只有 Factors；such as 后列了六项，其中 place and period 又带一个 <b>in which</b> 定语从句。</div>
+            <div>· 谓语两组由 but 连接：<span class="mk3">will encourage … towards</span>（推向）／<span class="mk3">obscure or even close off</span>（遮蔽甚至堵死）。<b>others ＝ other interpretations</b>，省略名词避免重复。</div>
+          </div>
+          <div class="tr">译：我们读书时所处的地点和时代，我们的性别、族裔、年龄和社会阶层——诸如此类的因素会把我们推向某些解读，同时又遮蔽、甚至堵死另一些解读。</div>
+        </div>
+
+        <div class="ls">
+          <div class="s"><span class="mk">Precisely because readers from different historical periods, places and social experiences produce different but overlapping readings of the same words on the page</span>—<span class="mk2">including for texts that engage with fundamental human concerns</span>—<span class="mk3">debates about texts can play an important role</span> in social discussion of beliefs and values.</div>
+          <div class="an">
+            <div>· <span class="mk">Precisely because 引导的原因状语从句</span>前置，占了全句一半；主句 <span class="mk3">debates … can play an important role</span> 要到破折号之后才出现。</div>
+            <div>· <span class="mk2">破折号中间是插入语</span>，补充范围：「包括那些探讨人类根本关切的文本」——读时先跳过。</div>
+            <div>· <b>different but overlapping</b>：不同却有重叠——这三个词就是作者对「相对主义」的回答：解读不同，但不是各说各话。</div>
+          </div>
+          <div class="tr">译：恰恰因为来自不同历史时期、不同地方、有着不同社会经历的读者，会对纸上同样的文字——包括那些探讨人类根本关切的文本——读出不同却又彼此重叠的理解，关于文本的争论才能在社会对信念与价值观的讨论中发挥重要作用。</div>
+        </div>
+
+        <div class="ls">
+          <div class="s">Such dimensions of reading <span class="mk">suggest</span>—<span class="mk2">as others introduced later in the book will also do</span>—<span class="mk">that we bring an implicit (often unacknowledged) agenda to any act of reading</span>.</div>
+          <div class="an">
+            <div>· 主干 <span class="mk">Such dimensions of reading suggest that …</span>，被破折号插入语从中间劈开。</div>
+            <div>· <span class="mk2">as others … will also do</span>：as 引导方式状语从句「正如……一样」；<b>do 代替 suggest that …</b>；others ＝ other dimensions，introduced later in the book 是过去分词后置定语。<b>这一句暴露了出处：这是一本书的开篇。</b></div>
+            <div>· <b>bring A to B</b>：带着 A 去做 B；agenda 在这里是「隐含的目的、动机」，不是会议议程。</div>
+          </div>
+          <div class="tr">译：阅读的这些维度表明——本书后面介绍的其他维度也会表明——我们在任何一次阅读中都带着一套隐含的（往往自己也不承认的）目的。</div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">06</span>可搬进作文的素材（本篇是「学习方法 / 被动与主动 / 看法因人而异 / 多元与包容」四个话题的弹药库）</h2>
+        <div class="wb">
+          <div class="wbi"><div class="p">How does your reading proceed? Clearly you try to…</div><div class="u">📌 <b>设问开头</b>：先抛一个读者从没想过的问题，再用 <i>Clearly</i> 给出「看似显然」的第一层答案，后文一层层推翻或加深。学习方法、网课、刷短视频等话题都能套：<i>How does your learning proceed? Clearly you…</i></div></div>
+          <div class="wbi"><div class="p">They show comprehension to consist not just of passive assimilation but of active engagement in inference and problem-solving.</div><div class="u">📌 <b>「被动接受 vs 主动参与」</b>的万能对照：把 comprehension 换成 learning／education／citizenship 即可。<i>Real learning consists not just of passive listening but of active engagement in discussion.</i></div></div>
+          <div class="wbi"><div class="p">What is in question is not X. Rather, Y.</div><div class="u">📌 <b>纠偏两拍</b>：先说「我们讨论的不是……」，再 <i>Rather</i> 给出正解。比 <i>not … but …</i> 更有分量，适合大作文第二段亮观点：<i>What is in question is not whether we use smartphones. Rather, it is how we use them.</i></div></div>
+          <div class="wbi"><div class="p">Such background material inevitably reflects who we are.</div><div class="u">📌 <b>「X 反映了我们是谁」</b>：选择、消费、阅读、择业话题的点睛句——<i>The books we choose inevitably reflect who we are.</i></div></div>
+          <div class="wbi"><div class="p">This doesn’t, however, make X merely relative or even pointless. Precisely because …, Y can play an important role in …</div><div class="u">📌 <b>先让步再翻转</b>：承认「各人看法不同」，却不滑向「无所谓对错」，反而说「正因为不同，讨论才有价值」。多元观点、代沟、网络争论话题的高分收束。</div></div>
+          <div class="wbi"><div class="p">Ways of reading on a train or in bed are likely to differ considerably from reading in a seminar room.</div><div class="u">📌 <b>场景对比</b>：一句话写出「同一件事，在不同场景下做法不同」。碎片化阅读 vs 深度阅读、线上课 vs 线下课都能用：<i>Learning on a phone during a commute is likely to differ considerably from studying in a library.</i></div></div>
+          <div class="wbi"><div class="p">It doesn’t then necessarily follow that one kind of X is fuller, more advanced or more worthwhile than another.</div><div class="u">📌 <b>反对「分高下」</b>：<i>it doesn’t follow that…</i>（并不能由此推出）是论证里最干净的反驳句。职业无贵贱、兴趣无高低、文化无优劣类话题。</div></div>
+          <div class="wbi"><div class="p">Ideally, different kinds of X inform each other, and act as useful reference points for and counterbalances to one another.</div><div class="u">📌 <b>互补收尾</b>：把两种对立的东西写成「互相启发、互为参照、彼此制衡」。传统与现代、理论与实践、纸质书与电子书话题的结尾句。注意 <i>for and … to</i> 两个介词共用 one another。</div></div>
+        </div>
+        <p style="font-size:.88rem;margin-top:10px">🔁 <b>跨篇联动</b>：<a href="2008_新题型_如何写作初稿.html">2008 新题型《如何写作初稿》</a>同样是教你一步步操作的指南体、同样大段对读者说 you——<b>一篇讲写，一篇讲读</b>，读写两头的「过程观」可以合在一起用；<a href="2014_T4_没说到要害的人文报告.html">2014 Text 4</a> 的人文报告把 full literacy 列为人文教育的目标，本篇末句把 literacy 定义为「你与周围文本环境的关系」——同一个词，一个是政策口号，一个是教材定义。</p>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">07</span>词汇复盘（点卡片看详情 · 共 <span id="vcount"></span> 张，含 <b>18 处熟词僻义</b>）</h2>
+        <p style="font-size:.85rem;color:var(--muted);margin-bottom:10px">本篇熟词僻义的共同规律：<b>文学理论把日常词换成了术语</b>——invite 是「引导、诱使」、in question 是「所讨论的」、track 是「路径」、formal 是「形式上的」、material 是「素材」、given 是「特定的」、inform 是「影响、启发」、agenda 是「隐含的目的」、relative 是「相对的」、construct 是「建构物」。<b>最危险的是 formal 和 inform</b>：一个读成「正式的」、一个读成「通知」，整句意思全错。</p>
+        <div id="vgrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px"></div>
+      </section>
+
+      <footer>2015 英语（一）Part B · 阅读是一场主动的推断 ｜ 答案 41C 42E 43G 44B 45A（D、F 多余）｜ Claude 5/5，计入盲做 4/4（41 答案提前入眼，不计）｜ 本页解析为独立盲做后撰写，黄皮书精讲仅作交叉复核（零书误）</footer>
+    </main>
+
+    <aside>
+      <div id="panel"><div class="hint">👆 点正文里的<b>黄色高亮词</b>，或下方词汇卡，这里出详解<br><br>选中任意英文可弹出「查词」按钮</div></div>
+    </aside>
+  </div>
+</div>
+<button id="yd">🔍 有道查词</button>
+
+<script>
+const OPTS = {
+  A:["Are we studying that text and trying to respond in a way that <span class='tk' data-w='fulfil'>fulfils the requirement</span> of a given course? Reading it simply for pleasure? <span class='tk' data-w='skim'>Skimming</span> it for information? Ways of reading on a train or in bed are likely to <span class='tk' data-w='differ'>differ considerably</span> from reading in a <span class='tk' data-w='seminar'>seminar</span> room.",
+     "我们是在研读这篇文本、想以符合某门课程要求的方式作出回应？只是为了消遣而读？还是为了获取信息而浏览？在火车上或床上读，与在研讨室里读，方式很可能大不相同。",
+     "头：<b>that text</b>（紧贴⑤❶ a given text）＋ 三问＝三种读的目的（our particular interest）｜尾：目的＋场景 ⟹ 下句 <b>Such dimensions of reading</b>",
+     "we · ⑤段 45"],
+  B:["Factors such as the place and period in which we are reading, our gender, <span class='tk' data-w='ethnicity'>ethnicity</span>, age and social class will <span class='tk' data-w='encourage'>encourage us towards</span> certain interpretations but at the same time <span class='tk' data-w='obscure'>obscure</span> or even <span class='tk' data-w='closeoff'>close off</span> others.",
+     "我们读书时所处的地点和时代，我们的性别、族裔、年龄和社会阶层——诸如此类的因素会把我们推向某些解读，同时又遮蔽、甚至堵死另一些解读。",
+     "头：<b>Factors such as</b>（把④❶「我们是谁」拆成六项）｜尾：「推向某些解读」⟹ 下句 <b>This doesn’t, however,</b> make interpretation merely relative",
+     "we · ④段 44"],
+  C:["If you are unfamiliar with words or <span class='tk' data-w='idiom'>idioms</span>, you <span class='tk' data-w='guessat'>guess at</span> their meaning, using clues presented in the context. <span class='tk' data-w='assumption'>On the assumption that</span> they will become relevant later, you <span class='tk' data-w='mentalnote'>make a mental note of</span> <span class='tk' data-w='discourse'>discourse entities</span> as well as possible links between them.",
+     "碰到不熟悉的词或习语，你会借助上下文里的线索去猜它的意思。你料想文中提到的各个人、物、概念待会儿还会用上，于是在心里把它们、连同它们之间可能的联系，一一记下。",
+     "头：<b>words … their meaning ／ links between them</b>（与①❷ 逐格同构，仍在「词」这一层）｜尾：停在推断之前 ⟹ 下句 You <b>begin</b> to infer a context",
+     "you · ①段 41"],
+  D:["<span class='tk' data-w='ineffect'>In effect</span>, you try to <span class='tk' data-w='reconstruct'>reconstruct</span> the likely meanings or effects that any given sentence, image or <span class='tk' data-w='reference'>reference</span> might have had: These might be the ones the author <span class='tk' data-w='intend'>intended</span>.",
+     "实际上，你是在努力重建某个句子、某个意象或某处指涉当初可能具有的意义或效果：这些也许正是作者本来想要的。",
+     "头：<b>In effect</b>（能总结②❸，句内通顺）｜尾：<b>the ones the author intended</b> ⟹ 与③❶「每个读者走的路不同」、③❷「不是取回真意」正面相撞",
+     "🚫 多余项 · you · 逆箭头（退回作者本意）"],
+  E:["You make further inferences, for instance, about how the text may be <span class='tk' data-w='significant'>significant</span> to you, or about its <span class='tk' data-w='validity'>validity</span>—inferences that form the basis of a personal <span class='tk' data-w='response'>response</span> for which the author will inevitably be far less <span class='tk' data-w='responsible'>responsible</span>.",
+     "你还会做进一步的推断，比如这段文字对你可能有什么意义，或者它的说法站不站得住——这些推断是你个人反应的基础，而对这种反应，作者要负的责任必然小得多。",
+     "头：<b>further inferences</b>（接②❸ You infer；further 要求前面已有一轮）｜尾：<b>personal response</b> ⟹ 下段 Conceived in this way … not the same track for each reader",
+     "you · ②段末 42"],
+  F:["In plays, novels and <span class='tk' data-w='narrative'>narrative poems</span>, characters speak as <span class='tk' data-w='construct'>constructs</span> created by the author, not necessarily as <span class='tk' data-w='mouthpiece'>mouthpieces</span> for the author’s own thoughts.",
+     "在戏剧、小说和叙事诗里，人物说话，是作为作者创造出来的建构物，不一定是作者本人思想的传声筒。",
+     "头：<b>In plays, novels and narrative poems</b>（全文没谈过文学体裁）｜尾：<b>mouthpieces for the author</b>，下文无人接；只有 speak ↔ utterance 的词面",
+     "🚫 多余项 · 第三人称 · 换了主角（作者怎么写 vs 读者怎么读）"],
+  G:["Rather, we <span class='tk' data-w='ascribe'>ascribe</span> meanings to texts <span class='tk' data-w='onbasis'>on the basis of</span> interaction between what we might call <span class='tk' data-w='textual'>textual and contextual</span> material: between kinds of organization or <span class='tk' data-w='patterning'>patterning</span> we <span class='tk' data-w='perceive'>perceive</span> in a text’s <span class='tk' data-w='formal'>formal</span> structures (so especially its language structures) and various kinds of background, social knowledge, belief and <span class='tk' data-w='attitude'>attitude</span> that we bring to the text.",
+     "恰恰相反，我们赋予文本意义，靠的是两样东西的相互作用——我们或许可以把它们叫作「文本材料」和「语境材料」：一边是我们在文本的形式结构（尤其是它的语言结构）里察觉到的各种组织方式与规律，一边是我们带进文本的各种背景、社会知识、信念和态度。",
+     "头：<b>Rather</b>（纠正③❷ What is in question is <b>not</b> …）｜尾：<b>background … material</b> 首现 ⟹ 下段 <b>Such background material</b>",
+     "we · ③段末 43"]
+};
+const EXTRA = ["D","F"];
+const V = {
+  proceed:{w:"proceed",ipa:"/prəˈsiːd/",pos:"v.",tags:["core"],cn:"进行，展开（过程）；继续",en:"to happen or develop in a particular way",ex:"How does your reading proceed?",mem:"pro(向前)+ceed(走) → 往前走。<b>How does X proceed? ＝ X 是怎样一步步进行的</b>，问的是过程。同根：process(过程)、procedure(程序)、proceeds(n.收益)。",syn:"go on / progress / unfold",conf:"proceed(进行) vs. precede(在…之前) vs. process(过程)"},
+  comprehend:{w:"comprehend",ipa:"/ˌkɒmprɪˈhend/",pos:"v.",tags:["core"],cn:"理解，领会",en:"to understand sth fully",ex:"Clearly you try to comprehend",mem:"com(全)+prehend(抓住) → 全部抓住 → 理解。名词 comprehension（全文关键词，②③两段共出现 3 次）；形容词 comprehensive ＝ 全面的（⚠️ 不是「可理解的」，可理解的是 comprehensible）。",syn:"understand / grasp / make sense of",conf:"comprehensible(可理解的) vs. comprehensive(全面的)"},
+  insense:{w:"in the sense of",ipa:"",pos:"prep.短语",tags:["phrase","write"],cn:"就……意义而言；也就是说",en:"with the meaning of; that is to say",ex:"in the sense of identifying meanings for individual words",mem:"<b>给一个宽泛的词下窄定义</b>：comprehend 太笼统，in the sense of 把它收窄成「认词义、理关系」。作文里界定概念很好用：<i>Success, in the sense of personal growth, …</i>",syn:"that is / namely / in terms of",conf:"in the sense of(就…意义而言) vs. in a sense(在某种意义上) vs. make sense(讲得通)"},
+  workout:{w:"work out",ipa:"",pos:"v.短语",tags:["phrase","write"],cn:"弄清，想出；算出",en:"to find the answer to sth by thinking",ex:"working out relationships between them",mem:"<b>work out ＝ 动脑子「做」出结果</b>：work out a problem / a plan / the answer。名词 workout 是「健身锻炼」，别混。",syn:"figure out / sort out / solve",conf:"work out(弄清) vs. workout(锻炼) vs. work on(致力于)"},
+  drawon:{w:"draw on",ipa:"",pos:"v.短语",tags:["phrase","write"],cn:"利用，凭借（知识、经验、资源）",en:"to use sth you have as a source",ex:"drawing on your implicit knowledge of English grammar",mem:"draw 本义「汲取」：从井里打水 → 从知识储备里取用。<b>作文高频</b>：<i>draw on past experience / draw on the wisdom of…</i>。",syn:"make use of / rely on / tap into",conf:"draw on(利用) vs. draw up(起草) vs. draw back(退缩)"},
+  implicit:{w:"implicit",ipa:"/ɪmˈplɪsɪt/",pos:"adj.",tags:["core","write"],cn:"隐含的，不言明的；心照不宣的",en:"understood without being stated directly",ex:"your implicit knowledge of English grammar",mem:"im(里)+plic(折叠)+it → 折在里面的。反义 explicit(明确的)。<b>本文出现两次</b>：implicit knowledge（说不出来却一直在用的语法知识）与 ⑤❻ an implicit (often unacknowledged) agenda。",syn:"tacit / unspoken / implied",conf:"implicit(隐含的) vs. explicit(明确的) vs. implicate(牵连)"},
+  begin:{w:"You begin to…",ipa:"",pos:"v.",tags:["phrase"],cn:"（阅读）开始进入下一步——41 题的尾钩",en:"to start a new stage",ex:"You begin to infer a context for the text",mem:"⚠️<b>过程描写里的 begin ＝ 新阶段的起点</b>：它把「推断语境」划成新的一步，所以前面的空格必须还停在上一步（词与语篇实体），不能提前谈推断。同类阶段词：then、next、at this point、finally。",syn:"start / move on to",conf:"begin to do(开始做) vs. begin with(以…开始) vs. to begin with(首先)"},
+  infer:{w:"infer",ipa:"/ɪnˈfɜː/",pos:"v.",tags:["core"],cn:"推断，推论",en:"to reach an opinion from the information you have",ex:"You begin to infer a context for the text",mem:"in(进)+fer(带) → 把结论带进来。<b>infer A from B ＝ 从 B 推出 A</b>。名词 inference（全文出现 3 次）。⚠️ 与 imply(暗示) 方向相反：说话人 imply，听话人 infer。",syn:"deduce / conclude / work out",conf:"infer(推断，听者) vs. imply(暗示，说者) vs. inform(告知)"},
+  context:{w:"context",ipa:"/ˈkɒntekst/",pos:"n.",tags:["core"],cn:"语境，上下文；背景",en:"the situation in which sth happens or is said",ex:"You begin to infer a context for the text",mem:"con(一起)+text(文本) → 与文本连在一起的东西。形容词 contextual（G 里的 textual and <b>contextual</b> material，与 textual 成对）。",syn:"setting / background / circumstances",conf:"context(语境) vs. contest(比赛) vs. content(内容)"},
+  speechevent:{w:"speech event",ipa:"",pos:"n.短语",tags:["phrase"],cn:"言语事件（语言学术语：谁、对谁、何时、何地说了什么）",en:"an act of communication with a speaker, hearer, time and place",ex:"what kind of speech event is involved",mem:"语言学把每一次「说话」看成一个事件，要素是说话人、听话人、时间、地点——冒号后的 <i>Who … to whom, when and where</i> 就是它的定义。⚠️ 这里的 speech 不是「演讲」。",syn:"communicative event",conf:"speech event(言语事件) vs. speech(演讲) vs. speech act(言语行为)"},
+  utterance:{w:"utterance",ipa:"/ˈʌtərəns/",pos:"n.",tags:["core"],cn:"话语，说出的话",en:"something that sb says",ex:"Who is making the utterance, to whom, when and where",mem:"utter(v.说出；adj.完全的)+ance。⚠️ F 的 characters speak 与它词面相近——但这里指整段文本这件「言语事件」，不是戏剧人物的台词（F 是多余项）。",syn:"statement / remark / words",conf:"utterance(话语) vs. utter(完全的/说出) vs. utterly(完全地)"},
+  indicate:{w:"indicate",ipa:"/ˈɪndɪkeɪt/",pos:"v.",tags:["core"],cn:"指出，表明",en:"to show or point out",ex:"The ways of reading indicated here",mem:"<b>过去分词后置</b>：the ways (which are) indicated here ＝ 这里提到的几种方式——回指①段整段。",syn:"mention / point out / show",conf:"indicate(表明) vs. dedicate(奉献) vs. indict(起诉)"},
+  withoutdoubt:{w:"without doubt",ipa:"",pos:"adv.短语",tags:["phrase","write"],cn:"毫无疑问",en:"certainly",ex:"are without doubt kinds of comprehension",mem:"<b>让步的起手式</b>：先说「毫无疑问是 X」，下一句 But 再说「但不只是 X」——本句与 ②❷ 正是这两拍。作文：<i>Technology is without doubt useful. But…</i>",syn:"undoubtedly / certainly / beyond doubt",conf:"without doubt(毫无疑问) vs. in doubt(不确定) vs. no doubt(很可能/无疑)"},
+  comprehension:{w:"comprehension",ipa:"/ˌkɒmprɪˈhenʃn/",pos:"n.",tags:["core"],cn:"理解（力）",en:"the ability to understand",ex:"kinds of comprehension",mem:"<b>全文的主题词</b>：②❶ kinds of comprehension → ②❷ show comprehension to consist… → ③❶ comprehension will not follow the same track。考研阅读的「阅读理解」就是 reading comprehension。",syn:"understanding / grasp",conf:"comprehension(理解) vs. comprehensive(全面的) vs. apprehension(忧虑)"},
+  consistof:{w:"consist of",ipa:"",pos:"v.短语",tags:["phrase"],cn:"由……组成",en:"to be formed from",ex:"show comprehension to consist not just of passive assimilation but of active engagement",mem:"⚠️<b>不用被动</b>：不能说 be consisted of。<b>consist in ＝ 在于</b>（抽象本质）。本句 not just of … but of … 把介词 of 各写一次，是平行结构。",syn:"be made up of / be composed of",conf:"consist of(由…组成) vs. consist in(在于) vs. consistent(一致的)"},
+  passive:{w:"passive",ipa:"/ˈpæsɪv/",pos:"adj.",tags:["core","write"],cn:"被动的，消极的",en:"accepting what happens without active response",ex:"not just of passive assimilation",mem:"与 active 成对：passive assimilation ↔ active engagement。作文：<i>passive recipients of information</i>（被动接受信息的人）。",syn:"inactive / receptive",conf:"passive(被动的) vs. passion(激情) vs. passage(段落)"},
+  assimilation:{w:"assimilation",ipa:"/əˌsɪmɪˈleɪʃn/",pos:"n.",tags:["core"],cn:"吸收，消化（知识）；同化",en:"the process of taking in and understanding information",ex:"passive assimilation",mem:"as(加强)+simil(相似)+ation → 使变得相同 → 吸收同化。移民话题里是「同化」（cultural assimilation），本文是「吸收知识」。",syn:"absorption / taking in / digestion",conf:"assimilation(吸收/同化) vs. simulation(模拟) vs. similarity(相似)"},
+  engagement:{w:"active engagement in",ipa:"/ɪnˈɡeɪdʒmənt/",pos:"n.短语",tags:["phrase","write"],cn:"积极参与，投入",en:"the act of taking part actively in sth",ex:"active engagement in inference and problem-solving",mem:"engage in ＝ 参与；engagement 另有「订婚、约定」义。<b>教育话题高频</b>：<i>student engagement</i>（学生投入度）。与 ④❹ engage with（探讨、处理）同根不同义。",syn:"involvement / participation",conf:"engagement in(参与) vs. engagement(订婚) vs. engage with(探讨)"},
+  inference:{w:"inference",ipa:"/ˈɪnfərəns/",pos:"n.",tags:["core"],cn:"推断，推论",en:"a conclusion reached from evidence",ex:"active engagement in inference and problem-solving",mem:"infer 的名词。<b>make an inference ＝ 作出推断</b>（E 的 make further inferences）。考研阅读的「推理题」＝ inference question。",syn:"deduction / conclusion",conf:"inference(推断) vs. interference(干涉) vs. reference(参考)"},
+  invite:{w:"invite (sb to do)",ipa:"/ɪnˈvaɪt/",pos:"v.",tags:["poly"],cn:"⚠️引导、诱使（某人去做），不是「邀请赴宴」",en:"to encourage sb to do or think sth",ex:"the writer has invited you to grasp",mem:"⚠️<b>作者 invite 读者 ＝ 有意引你去想</b>：他摆出证据和线索，就是在「请」你推出某个结论。同类：<i>The remark invites criticism</i>（招致批评）。E 的 far less responsible 与它一邀一卸。",syn:"encourage / prompt / lead",conf:"invite(引导/招致) vs. invitation(邀请) vs. inviting(诱人的)"},
+  grasp:{w:"grasp",ipa:"/ɡrɑːsp/",pos:"v.",tags:["core"],cn:"领会，理解；抓住",en:"to understand sth",ex:"invited you to grasp",mem:"本义「紧握」→ 抓住意思。⚠️ 本句 grasp 的宾语前置了：invited you to grasp <b>information</b>（定语从句缺宾）。",syn:"understand / take in / comprehend",conf:"grasp(领会) vs. gasp(喘气) vs. grasp at(试图抓住)"},
+  clue:{w:"clue",ipa:"/kluː/",pos:"n.",tags:["core"],cn:"线索，提示",en:"a sign that helps you find an answer",ex:"specific evidence and clues",mem:"本文出现两次：②❸ evidence and clues（作者给的）、C 的 clues presented in the context（上下文给的）。have no clue ＝ 一无所知。",syn:"hint / sign / cue",conf:"clue(线索) vs. cue(提示/暗示) vs. glue(胶水)"},
+  conceive:{w:"Conceived in this way",ipa:"/kənˈsiːv/",pos:"v.",tags:["phrase","write"],cn:"这样理解的话，按这种构想",en:"if thought of like this",ex:"Conceived in this way, comprehension will not follow",mem:"conceive ＝ 构想、设想（名词 concept、conception）。<b>过去分词短语作条件状语</b>，逻辑主语是 comprehension。42 题的尾钩：「这样理解」要求前一句给出一种「会让读者各走各路」的理解（E）。",syn:"Seen this way / Understood this way",conf:"conceive(构想/怀孕) vs. perceive(察觉) vs. deceive(欺骗)"},
+  track:{w:"track",ipa:"/træk/",pos:"n.",tags:["poly"],cn:"⚠️路径，轨道（比喻理解的过程），不是「追踪」",en:"a path or course of action",ex:"will not follow exactly the same track for each reader",mem:"⚠️<b>follow the same track ＝ 走同一条路</b>：比喻每个人理解的过程。同类：on the right track(方向对头)、keep track of(掌握…的动向)。",syn:"path / route / course",conf:"track(路径/追踪) vs. trace(痕迹) vs. trick(诀窍)"},
+  inquestion:{w:"in question",ipa:"",pos:"adj.短语",tags:["poly"],cn:"⚠️所讨论的，正在说的（What is in question ＝ 这里要讨论的）",en:"being discussed",ex:"What is in question is not the retrieval",mem:"⚠️<b>in question 放在名词后或作表语 ＝ 所说的、正在讨论的</b>：the person in question(当事人)。<b>out of the question ＝ 不可能</b>；<b>call … into question ＝ 质疑</b>。三个长得像，意思全不同。",syn:"at issue / under discussion",conf:"in question(所讨论的) vs. out of the question(不可能) vs. questionable(可疑的)"},
+  retrieval:{w:"retrieval",ipa:"/rɪˈtriːvl/",pos:"n.",tags:["core"],cn:"取回，找回；检索",en:"the act of getting sth back",ex:"the retrieval of an absolute, fixed or “true” meaning",mem:"re(回)+trieve(找) → 找回来。information retrieval(信息检索)。<b>与 G 的 ascribe（赋予）方向相反</b>：一个把意义从文本里拿出来，一个把意义放进去——这一对就是全文论点。",syn:"recovery / extraction / fetching",conf:"retrieval(取回) vs. retrieve(v.) vs. retreat(撤退)"},
+  absolute:{w:"absolute",ipa:"/ˈæbsəluːt/",pos:"adj.",tags:["core"],cn:"绝对的，完全的",en:"true in all situations; not relative",ex:"an absolute, fixed or “true” meaning",mem:"<b>与 ④❸ 的 relative（相对的）成对</b>：作者既不要绝对的唯一真意，也不认为解读就「纯属相对」。absolute / fixed / “true” 三个词递进，引号表示讽刺。",syn:"fixed / definite / total",conf:"absolute(绝对的) vs. absolutely(完全地/当然) vs. obsolete(过时的)"},
+  readoff:{w:"read off",ipa:"",pos:"v.短语",tags:["phrase","poly"],cn:"⚠️直接读出（像从仪表、表格上读数）",en:"to get information directly from a list or instrument",ex:"meaning that can be read off and checked for accuracy",mem:"⚠️<b>read off ＝ 照着读出来</b>：read off the temperature / the figures。作者用它讽刺「意义像刻度一样现成地摆在那里」的看法。",syn:"take directly from",conf:"read off(读出数值) vs. read out(大声读) vs. read into(过度解读)"},
+  accuracy:{w:"accuracy",ipa:"/ˈækjərəsi/",pos:"n.",tags:["core"],cn:"准确（性）",en:"the state of being correct",ex:"checked for accuracy",mem:"accurate 的名词。check sth for accuracy ＝ 核对某物是否准确。",syn:"precision / correctness",conf:"accuracy(准确) vs. adequacy(充分) vs. accountancy(会计)"},
+  timeless:{w:"timeless",ipa:"/ˈtaɪmləs/",pos:"adj.",tags:["core","write"],cn:"永恒的，不受时间影响的",en:"not changing as time passes",ex:"some timeless relation of the text to the world",mem:"time+less。<b>作文：timeless classics / timeless wisdom</b>（永恒的经典）。本文却是在否定它：文本与世界之间没有一成不变的关系。",syn:"eternal / enduring / ageless",conf:"timeless(永恒的) vs. timely(及时的) vs. tireless(不知疲倦的)"},
+  background:{w:"background",ipa:"/ˈbækɡraʊnd/",pos:"n.",tags:["core"],cn:"背景（经历、出身、知识）",en:"a person’s experience, education and social circumstances",ex:"Such background material",mem:"<b>43 题的尾钩</b>：background 在全文<b>首次出现就在 G 里</b>（various kinds of background … that we bring to the text），所以 Such background material 只能接在 G 后面。",syn:"experience / upbringing / context",conf:"background(背景) vs. backdrop(背景幕) vs. backward(落后的)"},
+  material:{w:"material",ipa:"/məˈtɪəriəl/",pos:"n.",tags:["poly"],cn:"⚠️素材，资料（textual / contextual / background material）",en:"information or ideas used as a basis for sth",ex:"Such background material inevitably reflects who we are",mem:"⚠️<b>material 不止是「材料、布料」</b>：reading material(读物)、background material(背景资料)。本文 G 造了一对术语 <i>textual and contextual material</i>，④❶ 立刻拿 material 回指。",syn:"information / data / content",conf:"material(素材/物质的) vs. materialistic(物质主义的) vs. maternal(母亲的)"}
+,
+  reflect:{w:"reflect",ipa:"/rɪˈflekt/",pos:"v.",tags:["core","write"],cn:"反映，体现",en:"to show the nature of sth",ex:"inevitably reflects who we are",mem:"re(回)+flect(弯) → 光折回来 → 映出。<b>作文金句：X reflects who we are</b>（X 反映了我们是谁）。名词 reflection 另有「反思」义。",syn:"mirror / reveal / show",conf:"reflect(反映/反思) vs. deflect(转移) vs. inflect(变调)"},
+  interpretation:{w:"interpretation",ipa:"/ɪnˌtɜːprɪˈteɪʃn/",pos:"n.",tags:["core"],cn:"解读，诠释；口译",en:"a particular explanation of the meaning of sth",ex:"make interpretation merely relative or even pointless",mem:"interpret(解释/口译)+ation。<b>B 的 certain interpretations → ④❸ interpretation</b>：词形复现，是 44 题 This 回指 B 的旁证。",syn:"reading / understanding / explanation",conf:"interpretation(解读) vs. interpreter(口译员) vs. misinterpretation(误读)"},
+  relative:{w:"relative",ipa:"/ˈrelətɪv/",pos:"adj.",tags:["poly"],cn:"⚠️相对的（解读因人而异、没有标准），不是「亲戚」",en:"having value only in comparison, with no fixed standard",ex:"make interpretation merely relative",mem:"⚠️<b>merely relative ＝ 纯属相对</b>：解读全凭各人、无所谓对错。作者用 however 否认这一点。反义 absolute（③❷）。名词 relativism(相对主义)。",syn:"subjective / arbitrary",conf:"relative(相对的/亲戚) vs. relevant(相关的) vs. relatively(相对地)"},
+  pointless:{w:"pointless",ipa:"/ˈpɔɪntləs/",pos:"adj.",tags:["core","write"],cn:"毫无意义的，徒劳的",en:"having no purpose",ex:"merely relative or even pointless",mem:"point(意义/要点)+less。<b>It is pointless to do ＝ 做……没意义</b>。与 relative 递进：从「相对」滑到「毫无意义」，or even 表更进一步。",syn:"meaningless / futile / useless",conf:"pointless(无意义的) vs. point out(指出) vs. pointed(尖锐的)"},
+  precisely:{w:"Precisely because",ipa:"/prɪˈsaɪsli/",pos:"conj.短语",tags:["phrase","write"],cn:"恰恰因为，正是由于",en:"exactly because",ex:"Precisely because readers from different historical periods",mem:"<b>翻转论证的利器</b>：对方说「因为 X，所以糟」，你说「<i>Precisely because</i> X，才好」。本句：解读不同 → 正因如此争论才有价值。",syn:"exactly because / just because",conf:"precisely(恰恰) vs. concisely(简洁地) vs. precious(珍贵的)"},
+  overlap:{w:"overlapping",ipa:"/ˌəʊvəˈlæpɪŋ/",pos:"adj.",tags:["core","write"],cn:"重叠的，部分相同的",en:"partly covering the same area",ex:"different but overlapping readings",mem:"over+lap(搭接)。<b>different but overlapping ＝ 不同却有重叠</b>：作者对「相对主义」的回答——各人读法不同，但不是各说各话。作文：<i>overlapping interests</i>（共同利益）。",syn:"shared in part / intersecting",conf:"overlap(重叠) vs. overlook(忽视) vs. overload(超载)"},
+  engagewith:{w:"engage with",ipa:"",pos:"v.短语",tags:["phrase","poly"],cn:"⚠️探讨，处理（话题、问题）；与……打交道",en:"to deal with or discuss a subject",ex:"texts that engage with fundamental human concerns",mem:"⚠️<b>文本 engage with 某问题 ＝ 探讨它</b>。与 ②❷ 的 engagement in（参与）同根不同搭配。",syn:"address / deal with / explore",conf:"engage with(探讨) vs. engage in(参与) vs. be engaged to(与…订婚)"},
+  concern:{w:"fundamental human concerns",ipa:"/kənˈsɜːn/",pos:"n.",tags:["poly","write"],cn:"⚠️关切，关注的问题（可数），不是「担忧」",en:"a matter that is important to people",ex:"fundamental human concerns",mem:"⚠️<b>concern 作可数名词 ＝ 关心的事、要紧的问题</b>：a major concern、public concerns。作文：<i>issues that touch on fundamental human concerns</i>（生死、爱、公正）。",syn:"issue / matter / interest",conf:"concern(关切/担忧) vs. concerned(担心的/有关的) vs. concerning(关于)"},
+  given:{w:"a given text / course",ipa:"/ˈɡɪvn/",pos:"adj.",tags:["poly"],cn:"⚠️某个特定的，既定的（不是「给出的」）",en:"particular; specified",ex:"How we read a given text",mem:"⚠️<b>a given X ＝ 任一特定的 X</b>：at a given time(在某一时刻)。本文三次：⑤❶ a given text、A 的 a given course、D 的 any given sentence。作介词 given ＝ 考虑到（Given the time, …）。",syn:"particular / specific / certain",conf:"a given X(某个特定的) vs. given(考虑到) vs. a given(既定事实)"},
+  toextent:{w:"to some extent",ipa:"",pos:"adv.短语",tags:["phrase","write"],cn:"在某种程度上",en:"partly",ex:"also depends to some extent on our particular interest",mem:"<b>作文缓和语气必备</b>：to some extent / to a certain extent / to a large extent。本句插在 depends 与 on 之间，读时要跳过去接上。",syn:"partly / in part / to a certain degree",conf:"to some extent(某种程度上) vs. to the extent that(到…程度) vs. extend(延伸)"},
+  dimension:{w:"dimension",ipa:"/daɪˈmenʃn/",pos:"n.",tags:["core","write"],cn:"方面，维度",en:"an aspect or feature of a situation",ex:"Such dimensions of reading suggest",mem:"本义「尺寸、维（三维 3D）」→ 看问题的一个方面。<b>45 题的尾钩</b>：Such dimensions of reading 是给 A 列出的目的与场景起的类名。作文：<i>add a new dimension to…</i>",syn:"aspect / facet / side",conf:"dimension(维度) vs. dementia(痴呆) vs. extension(延伸)"},
+  unacknowledged:{w:"unacknowledged",ipa:"/ˌʌnəkˈnɒlɪdʒd/",pos:"adj.",tags:["core"],cn:"未被承认的，未被意识到的",en:"not admitted or recognized",ex:"an implicit (often unacknowledged) agenda",mem:"un+acknowledge(承认)+ed。括号里补一句「往往连自己也不承认」——比 implicit 更进一步。",syn:"unrecognized / unadmitted",conf:"unacknowledged(未被承认的) vs. acknowledgement(致谢) vs. knowledgeable(博学的)"},
+  agenda:{w:"agenda",ipa:"/əˈdʒendə/",pos:"n.",tags:["poly"],cn:"⚠️隐含的目的、动机（hidden agenda），不只是「议程」",en:"a private plan or motive",ex:"we bring an implicit (often unacknowledged) agenda to any act of reading",mem:"⚠️<b>have an agenda ＝ 另有打算、别有用心</b>；hidden agenda ＝ 不可告人的目的。本文中性：读书时总带着某种目的（A 的课程、消遣、信息）。<b>on the agenda ＝ 列入议程</b>。",syn:"motive / purpose / aim",conf:"agenda(议程/目的) vs. agent(代理人) vs. legend(传说)"},
+  follow:{w:"It doesn’t follow that",ipa:"",pos:"v.短语",tags:["phrase","poly","write"],cn:"⚠️不能由此推出……（follow ＝ 作为逻辑结论推出）",en:"it is not a logical result that",ex:"It doesn’t then necessarily follow that one kind of reading is fuller",mem:"⚠️<b>it follows that ＝ 由此可见</b>；<b>it doesn’t follow that ＝ 并不能由此得出</b>。论证文里最干净的反驳句：<i>Being popular doesn’t mean… — it doesn’t follow that…</i>",syn:"it doesn’t mean that / it is not the case that",conf:"it follows that(由此推出) vs. as follows(如下) vs. follow suit(效仿)"},
+  worthwhile:{w:"worthwhile",ipa:"/ˌwɜːθˈwaɪl/",pos:"adj.",tags:["core","write"],cn:"值得做的，有价值的",en:"important or useful enough to spend time on",ex:"more advanced or more worthwhile than another",mem:"worth+while(时间) → 值得花时间的。<b>It is worthwhile to do / doing</b>。⚠️ worth 后接名词或 doing（worth reading），worthwhile 可作前置定语（a worthwhile job）。",syn:"valuable / rewarding / beneficial",conf:"worthwhile(值得的) vs. worth(值…的) vs. worthy of(配得上)"},
+  inform:{w:"inform each other",ipa:"/ɪnˈfɔːm/",pos:"v.",tags:["poly","write"],cn:"⚠️影响，启发，塑造（不是「通知」）",en:"to influence or shape sth",ex:"different kinds of reading inform each other",mem:"⚠️<b>A informs B ＝ A 给 B 提供养分、塑造 B</b>：<i>Her experience informs her writing.</i>（她的经历塑造了她的写作）。读成「通知彼此」整句就错了。形容词 informed ＝ 有见识的（an informed choice）。",syn:"influence / shape / enrich",conf:"inform(影响/告知) vs. informal(非正式的) vs. informative(信息丰富的)"},
+  referencepoint:{w:"reference point",ipa:"",pos:"n.短语",tags:["phrase","write"],cn:"参照点，参考标准",en:"something used to judge or compare other things",ex:"act as useful reference points for and counterbalances to one another",mem:"<b>act as reference points for ＝ 为……充当参照</b>。本句两个介词共用宾语：reference points <b>for</b> and counterbalances <b>to</b> one another。",syn:"benchmark / yardstick / standard",conf:"reference point(参照点) vs. point of view(观点) vs. turning point(转折点)"},
+  counterbalance:{w:"counterbalance",ipa:"/ˈkaʊntəbæləns/",pos:"n./v.",tags:["core","write"],cn:"平衡力，制衡；抵消",en:"something that balances the effect of sth else",ex:"counterbalances to one another",mem:"counter(对抗)+balance。<b>act as a counterbalance to ＝ 对……起制衡作用</b>。作文收尾：传统与现代<i>act as counterbalances to each other</i>。",syn:"balance / offset / check",conf:"counterbalance(制衡) vs. counterpart(对应的人/物) vs. counteract(抵消)"},
+  component:{w:"component",ipa:"/kəmˈpəʊnənt/",pos:"n.",tags:["core"],cn:"组成部分，成分",en:"one of several parts of sth",ex:"the reading component of your overall literacy",mem:"com(一起)+pon(放)+ent → 放在一起的部分。<b>the reading component of literacy ＝ 读写素养里「读」的那部分</b>。",syn:"part / element / constituent",conf:"component(组成部分) vs. compound(化合物) vs. opponent(对手)"},
+  literacy:{w:"literacy",ipa:"/ˈlɪtərəsi/",pos:"n.",tags:["poly","write"],cn:"⚠️读写能力；（引申）素养",en:"the ability to read and write; knowledge of a particular subject",ex:"your overall literacy, or relationship to your surrounding textual environment",mem:"⚠️<b>literacy 本义「识字、读写能力」</b>（反义 illiteracy 文盲），引申为「素养」：digital literacy(数字素养)、media literacy(媒介素养)。本文把它定义为「你与周围文本环境的关系」。跨篇：2014 Text 4 人文报告支持 full literacy。",syn:"reading and writing skills / competence",conf:"literacy(读写能力) vs. literature(文学) vs. literally(字面上)"},
+  fulfil:{w:"fulfil the requirement",ipa:"/fʊlˈfɪl/",pos:"v.短语",tags:["phrase","write"],cn:"满足要求",en:"to do what is needed",ex:"fulfils the requirement of a given course",mem:"⚠️<b>fulfil 是英式拼写</b>（美式 fulfill）——与本书出自英国出版社一致。同类搭配：fulfil a promise / a dream / one’s potential。",syn:"meet / satisfy the requirement",conf:"fulfil(满足/实现) vs. full-fill(错误拼写) vs. fulfilling(令人满足的)"},
+  skim:{w:"skim",ipa:"/skɪm/",pos:"v.",tags:["core"],cn:"略读，浏览",en:"to read quickly to get the main idea",ex:"Skimming it for information?",mem:"本义「撇去（浮沫）」→ 只取表面。<b>skim ＝ 略读抓大意，scan ＝ 扫读找细节</b>，阅读技巧两兄弟。",syn:"glance through / browse",conf:"skim(略读) vs. scan(扫读) vs. skip(跳过)"},
+  differ:{w:"differ considerably from",ipa:"/ˈdɪfə/",pos:"v.短语",tags:["phrase","write"],cn:"与……大不相同",en:"to be very different from",ex:"are likely to differ considerably from reading in a seminar room",mem:"<b>场景对比的标准句</b>：A is likely to differ considerably from B。considerably ＝ 相当大地（程度副词，≠ considerately 体贴地）。",syn:"be quite different from / vary greatly from",conf:"considerably(相当大地) vs. considerately(体贴地) vs. differ(不同) vs. defer(推迟)"},
+  seminar:{w:"seminar",ipa:"/ˈsemɪnɑː/",pos:"n.",tags:["core"],cn:"研讨课，研讨会",en:"a class where a small group discusses a subject",ex:"reading in a seminar room",mem:"大学里的小班讨论课（区别于大讲座 lecture）。<b>火车、床上 vs 研讨室</b>：随意读 vs 带着课程任务读。",syn:"tutorial / workshop / discussion class",conf:"seminar(研讨课) vs. semester(学期) vs. seminary(神学院)"},
+  ethnicity:{w:"ethnicity",ipa:"/eθˈnɪsəti/",pos:"n.",tags:["core"],cn:"种族，族裔（身份）",en:"the fact of belonging to a particular ethnic group",ex:"our gender, ethnicity, age and social class",mem:"ethnic(民族的)+ity。与 race 不同：ethnicity 强调文化、语言、传统上的族群归属。ethnic minority ＝ 少数民族。",syn:"ethnic identity / race",conf:"ethnicity(族裔) vs. ethics(伦理) vs. ethnic(民族的)"},
+  encourage:{w:"encourage sb towards",ipa:"/ɪnˈkʌrɪdʒ/",pos:"v.短语",tags:["poly"],cn:"⚠️把某人推向、引向（某方向），不只是「鼓励」",en:"to make sb more likely to move in a direction",ex:"will encourage us towards certain interpretations",mem:"⚠️<b>encourage + towards</b> 表方向：使人倾向于。与后半句 obscure or even close off 一推一挡——背景是双刃剑。",syn:"push / lead / incline",conf:"encourage towards(推向) vs. encourage sb to do(鼓励做) vs. discourage from(劝阻)"}
+,
+  obscure:{w:"obscure (v.)",ipa:"/əbˈskjʊə/",pos:"v.",tags:["poly"],cn:"⚠️遮蔽，使模糊（动词），不只是形容词「晦涩的」",en:"to hide sth or make it difficult to see",ex:"obscure or even close off others",mem:"⚠️<b>obscure 作动词 ＝ 遮住</b>：Clouds obscured the moon。作形容词才是「晦涩的、无名的」（an obscure poet）。本句 obscure → close off 递进：从「看不清」到「根本进不去」。",syn:"hide / conceal / blur",conf:"obscure(遮蔽/晦涩的) vs. obscene(淫秽的) vs. obscurity(默默无闻)"},
+  closeoff:{w:"close off",ipa:"",pos:"v.短语",tags:["phrase"],cn:"封闭，堵死（可能性）",en:"to block or shut sth completely",ex:"obscure or even close off others",mem:"close off a road(封路) → close off other interpretations(堵死别的解读)。比 obscure 更进一步，or even 表递进。",syn:"shut off / block / rule out",conf:"close off(封闭) vs. close down(关闭停业) vs. close in(逼近)"},
+  idiom:{w:"idiom",ipa:"/ˈɪdiəm/",pos:"n.",tags:["core"],cn:"习语，成语",en:"a group of words whose meaning differs from the individual words",ex:"If you are unfamiliar with words or idioms",mem:"idio(个人的、独特的)+m → 一种语言独有的说法。形容词 idiomatic(地道的)。",syn:"expression / set phrase",conf:"idiom(习语) vs. idiot(白痴) vs. ideal(理想)"},
+  guessat:{w:"guess at",ipa:"",pos:"v.短语",tags:["phrase"],cn:"猜测，推测（没有把握地）",en:"to try to guess sth without enough information",ex:"you guess at their meaning",mem:"<b>guess at 比 guess 更「没底」</b>：只能大致猜。考研阅读的「根据上下文猜词义」正是这一步。",syn:"speculate about / estimate",conf:"guess at(猜测) vs. guess(猜到) vs. second-guess(事后批评)"},
+  assumption:{w:"on the assumption that",ipa:"/əˈsʌmpʃn/",pos:"prep.短语",tags:["phrase","write"],cn:"假定，在……的假设下",en:"supposing that",ex:"On the assumption that they will become relevant later",mem:"<b>on the assumption that ＝ 假定……</b>：带出你行动的前提。作文：<i>On the assumption that…, we should…</i>。动词 assume。",syn:"assuming that / supposing that / on the basis that",conf:"assumption(假定) vs. consumption(消费) vs. presumption(推定)"},
+  mentalnote:{w:"make a mental note of",ipa:"",pos:"v.短语",tags:["phrase","write"],cn:"把……记在心里",en:"to make an effort to remember sth",ex:"you make a mental note of discourse entities",mem:"不写在纸上、只记在脑子里的「笔记」。<b>make a mental note to do ＝ 心里记着要做</b>。",syn:"remember / keep in mind / bear in mind",conf:"mental note(心里记下) vs. take notes(做笔记) vs. note down(记下)"},
+  discourse:{w:"discourse entities",ipa:"/ˈdɪskɔːs/",pos:"n.短语",tags:["phrase"],cn:"语篇实体（文中被提到、之后会被反复指称的人、物、概念）",en:"people, things or ideas that a text refers to repeatedly",ex:"discourse entities as well as possible links between them",mem:"discourse(语篇、话语)+entity(实体)。<b>为 ①❺「谁在说、对谁说」做铺垫</b>：先记住文中有哪些角色，才判断得了言语事件。代词回指（he / this / such）就是在追踪语篇实体。",syn:"referents / things mentioned",conf:"discourse(语篇) vs. discount(折扣) vs. course(课程)"},
+  ineffect:{w:"In effect",ipa:"",pos:"adv.短语",tags:["phrase"],cn:"实际上，事实上（总结或换个说法）",en:"in fact; used to summarize",ex:"In effect, you try to reconstruct",mem:"⚠️<b>D 的化妆品</b>：In effect 表总结，放在 42 读起来很顺——可它总结出的结论（还原作者本意）与全文方向相反。<b>come into effect ＝ 生效</b>，别混。",syn:"in fact / in reality / essentially",conf:"in effect(实际上) vs. into effect(生效) vs. in effort(错误搭配)"},
+  reconstruct:{w:"reconstruct",ipa:"/ˌriːkənˈstrʌkt/",pos:"v.",tags:["core"],cn:"重建，重现（过去的情形）",en:"to build again or recreate sth from evidence",ex:"you try to reconstruct the likely meanings or effects",mem:"re(再)+construct(建造)。<b>重建的对象永远在过去</b>——D 配着 might have had（过去可能有过），整句往回看作者，这正是它逆箭头的地方。",syn:"recreate / rebuild / piece together",conf:"reconstruct(重建) vs. restructure(重组) vs. deconstruct(解构)"},
+  reference:{w:"reference",ipa:"/ˈrefrəns/",pos:"n.",tags:["poly"],cn:"⚠️（文中的）指涉、提及，典故——不是「参考文献」",en:"a mention of sth in a text",ex:"any given sentence, image or reference",mem:"⚠️<b>文学语境里的 reference ＝ 提到某人某事、用典</b>：a reference to Shakespeare。与 sentence、image 并列，都是文本的组成单位。",syn:"allusion / mention",conf:"reference(指涉) vs. reference point(参照点) vs. preference(偏好)"},
+  intend:{w:"intend",ipa:"/ɪnˈtend/",pos:"v.",tags:["core"],cn:"打算，意欲（表达）",en:"to have sth in your mind as a purpose",ex:"These might be the ones the author intended",mem:"名词 intention。<b>the author intended ＝ 作者本意</b>：D 把阅读的目标定为还原作者本意，这正是 ③❷ 否定的「取回唯一真意」。",syn:"mean / plan / aim",conf:"intend(意欲) vs. intent(意图/专注的) vs. intense(强烈的)"},
+  significant:{w:"significant to you",ipa:"/sɪɡˈnɪfɪkənt/",pos:"adj.",tags:["core"],cn:"对（某人）有意义的，重要的",en:"important or meaningful to sb",ex:"how the text may be significant to you",mem:"sign(记号)+ific+ant → 有标记意义的。<b>significant to you</b>：意义从「文本本身」转到「对你」——E 把推断的主导权交给读者。",syn:"meaningful / important / relevant",conf:"significant(有意义的) vs. signify(表示) vs. magnificent(壮丽的)"},
+  validity:{w:"validity",ipa:"/vəˈlɪdəti/",pos:"n.",tags:["core"],cn:"有效性，（论点）成立与否",en:"the quality of being logically sound",ex:"or about its validity",mem:"valid(有效的、站得住的)+ity。<b>question the validity of an argument ＝ 质疑论证是否成立</b>。",syn:"soundness / legitimacy",conf:"validity(有效性) vs. validate(证实) vs. valiant(英勇的)"},
+  response:{w:"personal response",ipa:"/rɪˈspɒns/",pos:"n.短语",tags:["phrase","write"],cn:"个人反应、个人感受",en:"your own reaction to sth",ex:"the basis of a personal response",mem:"<b>42 题的因</b>：每个人的 personal response 不同 ⟹ ③❶ 理解对每个读者都不走同一条路。读后感作文：<i>my personal response to the novel</i>。",syn:"reaction / reply / feedback",conf:"response(反应) vs. responsibility(责任) vs. respond to(回应)"},
+  responsible:{w:"be responsible for",ipa:"/rɪˈspɒnsəbl/",pos:"adj.短语",tags:["phrase"],cn:"对……负责",en:"having the duty to deal with sth",ex:"for which the author will inevitably be far less responsible",mem:"<b>for which 的 for 来自 be responsible for</b>：介词提前到关系代词前。作者对你的个人反应「负的责任小得多」——与 ②❸ 作者 invited you 一邀一卸。",syn:"accountable for / answerable for",conf:"responsible(负责的) vs. responsive(反应快的) vs. response(反应)"},
+  narrative:{w:"narrative poems",ipa:"/ˈnærətɪv/",pos:"adj./n.",tags:["core"],cn:"叙事诗；narrative ＝ 叙事的、叙述",en:"poems that tell a story",ex:"In plays, novels and narrative poems",mem:"narrate(叙述)+ive。考研阅读常见：the dominant narrative(主流叙事)、a compelling narrative(引人入胜的叙述)。",syn:"story / account",conf:"narrative(叙事) vs. narrator(叙述者) vs. narrow(狭窄的)"},
+  construct:{w:"construct (n.)",ipa:"/ˈkɒnstrʌkt/",pos:"n.",tags:["poly"],cn:"⚠️建构物，人为构造的东西（名词，重音在前）",en:"an idea or thing created by people",ex:"characters speak as constructs created by the author",mem:"⚠️<b>construct 作名词 ＝ 构想出来的东西</b>：a social construct(社会建构)。动词重音在后 /kənˈstrʌkt/，名词重音在前。",syn:"creation / invention / artefact",conf:"construct(n.建构物/v.建造) vs. construction(建筑) vs. constrict(收缩)"},
+  mouthpiece:{w:"mouthpiece",ipa:"/ˈmaʊθpiːs/",pos:"n.",tags:["core","write"],cn:"代言人，传声筒",en:"a person or thing that expresses the views of others",ex:"not necessarily as mouthpieces for the author’s own thoughts",mem:"mouth+piece（本义乐器的吹口、电话的话筒）→ 替别人说话的人。<b>a mouthpiece for ＝ ……的传声筒</b>（常带贬义：a government mouthpiece 官方喉舌）。",syn:"spokesperson / voice",conf:"mouthpiece(传声筒) vs. masterpiece(杰作) vs. centrepiece(核心)"},
+  ascribe:{w:"ascribe … to",ipa:"/əˈskraɪb/",pos:"v.",tags:["core"],cn:"把……归于；赋予",en:"to consider sth as belonging to sth",ex:"we ascribe meanings to texts",mem:"a(向)+scribe(写) → 写到某人名下。<b>ascribe A to B</b>：把 A 归于 B（ascribe success to hard work 把成功归于努力）。本文：意义是我们<b>赋予</b>文本的——与 ③❷ retrieval（取出）方向相反。",syn:"attribute … to / assign … to",conf:"ascribe(归于) vs. subscribe(订阅) vs. describe(描述)"},
+  onbasis:{w:"on the basis of",ipa:"",pos:"prep.短语",tags:["phrase","write"],cn:"根据，在……的基础上",en:"according to; using sth as a reason",ex:"on the basis of interaction between what we might call textual and contextual material",mem:"<b>作文万能</b>：<i>on the basis of evidence / on a daily basis</i>(每天)。E 里的 form the basis of 同一个 basis。",syn:"based on / according to",conf:"on the basis of(根据) vs. basis(基础) vs. basin(盆地)"},
+  textual:{w:"textual and contextual material",ipa:"",pos:"n.短语",tags:["phrase"],cn:"文本材料与语境材料（作者自造的一对术语）",en:"what is in the text vs. what the reader brings",ex:"what we might call textual and contextual material",mem:"text → textual(文本的)；context → contextual(语境的)。冒号后逐一定义：textual ＝ 文本形式结构里的组织规律；contextual ＝ 读者带来的背景、知识、信念、态度。<b>④❶ 的 material 就回指这里</b>。",syn:"in-text vs. out-of-text material",conf:"textual(文本的) vs. textile(纺织品) vs. texture(质地)"},
+  patterning:{w:"patterning",ipa:"/ˈpætənɪŋ/",pos:"n.",tags:["core"],cn:"（形成的）规律、模式",en:"the way things are arranged in a regular form",ex:"kinds of organization or patterning we perceive",mem:"pattern(模式) 的动名词：「成型的规律」。文学分析里指押韵、重复、对称这类形式规律。",syn:"arrangement / structure / design",conf:"patterning(模式) vs. patent(专利) vs. patron(赞助人)"},
+  perceive:{w:"perceive",ipa:"/pəˈsiːv/",pos:"v.",tags:["core"],cn:"察觉，感知；认为",en:"to notice or become aware of sth",ex:"patterning we perceive in a text’s formal structures",mem:"per(完全)+ceive(抓) → 感知到。名词 perception。<b>be perceived as ＝ 被视为</b>（阅读高频）。",syn:"notice / detect / recognize",conf:"perceive(察觉) vs. receive(收到) vs. conceive(构想)"},
+  formal:{w:"formal structures",ipa:"/ˈfɔːml/",pos:"adj.",tags:["poly"],cn:"⚠️形式上的（与「内容」相对），不是「正式的」",en:"relating to the form or structure rather than the content",ex:"a text’s formal structures",mem:"⚠️<b>formal 在文学、语言学里 ＝ 关于形式的</b>：formal features(形式特征)、formal analysis(形式分析)。括号 (so especially its language structures) 已经给了定义。读成「正式结构」就错了。",syn:"structural / of form",conf:"formal(形式的/正式的) vs. formula(公式) vs. former(以前的)"},
+  attitude:{w:"attitude",ipa:"/ˈætɪtjuːd/",pos:"n.",tags:["core"],cn:"态度，看法",en:"the way you think and feel about sth",ex:"social knowledge, belief and attitude that we bring to the text",mem:"<b>G 列出读者带进文本的四样</b>：background, social knowledge, belief and attitude——④❶ 统称为 background material。",syn:"view / outlook / stance",conf:"attitude(态度) vs. altitude(海拔) vs. aptitude(天资)"}
+};
+
+/* 选项库渲染 */
+const lib=document.getElementById('optlib');
+lib.innerHTML=Object.keys(OPTS).map(k=>
+  '<div class="optitem'+(EXTRA.indexOf(k)>=0?' extra':'')+'" id="opt-'+k+'"><span class="lt">'+k+'</span><span>'
+  +'<span class="oen">'+OPTS[k][0]+'</span>'
+  +'<span class="zhx">'+OPTS[k][1]+'</span>'
+  +'<span class="kw">🔑 '+OPTS[k][2]+'</span>'
+  +'<span class="stg">'+OPTS[k][3]+'</span></span></div>').join('');
+
+/* 作答交互：答后就地把空格补全成原文 */
+document.querySelectorAll('.person').forEach(p=>{
+  const ans=p.dataset.ans; if(!ans)return;
+  const chips=p.querySelector('.chips');
+  chips.innerHTML='ABCDEFG'.split('').map(l=>'<button class="ch" data-l="'+l+'">'+l+'</button>').join('');
+  chips.querySelectorAll('.ch').forEach(c=>c.addEventListener('click',()=>{
+    if(p.classList.contains('done'))return;
+    p.classList.add('done');
+    if(c.dataset.l!==ans)c.classList.add('wrong');
+    chips.querySelector('.ch[data-l="'+ans+'"]').classList.add('right');
+    const oi=document.getElementById('opt-'+ans); if(oi)oi.classList.add('used');
+    const slot=p.querySelector('.slot');
+    if(slot){slot.classList.add('filled');slot.innerHTML='<span class="fl">['+ans+']</span>'+OPTS[ans][0];}
+  }));
+});
+
+const panel=document.getElementById('panel');
+const isMobile=()=>window.innerWidth<=900;
+function badge(t){return {core:'<span class="badge b-core">核心词</span>',phrase:'<span class="badge b-phrase">短语</span>',poly:'<span class="badge b-poly">熟词僻义</span>',write:'<span class="badge b-write">写作✍︎</span>'}[t]||''}
+function showCard(k,el){
+  const d=V[k]; if(!d)return;
+  document.querySelectorAll('.tk.active').forEach(e=>e.classList.remove('active'));
+  if(el&&el.classList.contains('tk'))el.classList.add('active');
+  panel.innerHTML='<button class="close" onclick="panel.classList.remove(\'open\')">✕</button>'
+  +'<div class="wcard">'
+  +'<div class="head"><span class="w">'+d.w+'</span><span class="ipa">'+d.ipa+'</span><span class="pos">'+d.pos+'</span>'+d.tags.map(badge).join('')+'</div>'
+  +'<div class="cn">'+d.cn+'</div><div class="en-def">'+d.en+'</div>'
+  +'<div class="row r-ex"><b>原文语境</b>“…'+d.ex+'…”</div>'
+  +'<div class="row r-mem"><b>怎么记</b>'+d.mem+'</div>'
+  +'<div class="row r-syn"><b>同类词</b>'+d.syn+'</div>'
+  +'<div class="row r-conf"><b>易混辨析</b>'+d.conf+'</div>'
+  +'</div>';
+  if(isMobile())panel.classList.add('open');
+}
+document.addEventListener('click',function(e){
+  const t=e.target.closest?e.target.closest('.tk'):null;
+  if(t){e.stopPropagation();showCard(t.dataset.w,t);}
+});
+function tz(btn){btn.closest('.person,.para').classList.toggle('showzh')}
+let allOn=false;
+function toggleAll(){allOn=!allOn;document.querySelectorAll('.person,.para').forEach(p=>p.classList.toggle('showzh',allOn))}
+
+const vg=document.getElementById('vgrid');
+Object.keys(V).forEach(k=>{
+  const d=V[k];
+  const div=document.createElement('div');div.className='vitem';
+  div.style.cssText='border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer';
+  div.innerHTML='<span style="float:right">'+d.tags.map(badge).join('')+'</span>'
+   +'<div style="font-family:var(--serif);font-weight:bold">'+d.w+'</div>'
+   +'<div style="font-size:.85rem;color:var(--muted)">'+d.cn+'</div>';
+  div.addEventListener('click',()=>{showCard(k,null);if(!isMobile())window.scrollTo({top:0,behavior:'smooth'})});
+  vg.appendChild(div);
+});
+document.getElementById('vcount').textContent=Object.keys(V).length;
+
+const yd=document.getElementById('yd');let sel='';
+document.addEventListener('selectionchange',()=>{
+  const s=window.getSelection();const t=s?s.toString().trim():'';
+  if(t&&/^[a-zA-Z' -]{2,40}$/.test(t)){
+    sel=t;
+    try{const r=s.getRangeAt(0).getBoundingClientRect();
+      yd.style.left=Math.min(r.left,window.innerWidth-110)+'px';
+      yd.style.top=(r.bottom+8)+'px';yd.style.display='block';}catch(e){}
+  }else{yd.style.display='none'}
+});
+yd.addEventListener('click',()=>{window.open('https://dict.youdao.com/result?word='+encodeURIComponent(sel)+'&lang=en');yd.style.display='none'});
+document.addEventListener('click',e=>{if(e.target!==yd&&!window.getSelection().toString())yd.style.display='none'});
+</script>
+<script src="_fault_attr.js"></script>
+</body>
+</html>
+
