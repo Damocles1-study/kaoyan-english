@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2017 英一 新题型 · 狄更斯小传</title>
+<style>
+  :root{
+    --bg:#faf9f6; --card:#ffffff; --ink:#2b2b2b; --muted:#8a8578;
+    --accent:#8b5e34; --accent-soft:#f3e9dd; --line:#e8e3d8;
+    --hl:#fdf3d8; --hl-border:#e0b84d;
+    --green:#3e7a4e; --green-soft:#e8f2ea;
+    --red:#b04a3a; --red-soft:#f9e9e6;
+    --blue:#3d6a8a; --blue-soft:#e7eff5;
+    --purple:#6d5a8e; --purple-soft:#eeeaf5;
+    --serif:"Georgia","Songti SC",serif;
+    --sans:-apple-system,"PingFang SC","Helvetica Neue",sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#1c1a17; --card:#26231f; --ink:#e8e4dc; --muted:#9a948a;
+      --accent:#d0a06a; --accent-soft:#3a3127; --line:#3a362f;
+      --hl:#3d3520; --hl-border:#b08c3a;
+      --green:#7fb98d; --green-soft:#26362b;
+      --red:#d98876; --red-soft:#3d2a26;
+      --blue:#8ab3d0; --blue-soft:#26323d;
+      --purple:#a996c8; --purple-soft:#302a3d;
+    }
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;padding-bottom:120px}
+  .wrap{max-width:1100px;margin:0 auto;padding:24px 20px}
+  .back{font-size:.85rem;color:var(--muted);text-decoration:none}
+  .back:hover{color:var(--accent)}
+  header{margin:14px 0 28px}
+  header h1{font-family:var(--serif);font-size:1.7rem;line-height:1.3}
+  header .sub{color:var(--muted);margin-top:6px;font-size:.9rem}
+  .tags{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+  .tag{font-size:.75rem;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);border:1px solid var(--line)}
+  .tag.bad{background:var(--red-soft);color:var(--red)}
+  .layout{display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:start}
+  .layout > main{min-width:0}
+  @media (max-width:900px){.layout{grid-template-columns:1fr}}
+  section.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:24px}
+  h2{font-size:1.05rem;letter-spacing:.05em;color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+  h2 .n{font-size:.72rem;background:var(--accent);color:var(--card);border-radius:6px;padding:1px 7px}
+  h3.sh{font-size:.95rem;color:var(--ink);margin:18px 0 8px;padding-left:9px;border-left:3px solid var(--accent)}
+  .para{margin-bottom:14px}
+  .en{font-family:var(--serif);font-size:1.03rem;line-height:1.95}
+  .tk{background:var(--hl);border-bottom:2px solid var(--hl-border);border-radius:3px;padding:0 2px;cursor:pointer;transition:filter .15s}
+  .tk:hover{filter:brightness(.93)}
+  .tk.active{outline:2px solid var(--hl-border)}
+  .clue{border-bottom:2px dotted var(--red)}
+  .zh{display:none;margin-top:8px;padding:10px 14px;background:var(--blue-soft);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:.92rem}
+  .showzh .zh{display:block}
+  .zbtn{float:right;margin-left:10px;font-size:.72rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:6px;padding:2px 9px;cursor:pointer}
+  .zbtn:hover{color:var(--accent);border-color:var(--accent)}
+  .allbtn{font-size:.78rem;border:1px solid var(--accent);background:none;color:var(--accent);border-radius:8px;padding:4px 12px;cursor:pointer;margin-left:auto}
+  aside{position:sticky;top:20px}
+  #panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;min-height:180px}
+  #panel .hint{color:var(--muted);font-size:.88rem;text-align:center;padding:30px 10px}
+  .wcard .head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .wcard .w{font-family:var(--serif);font-size:1.35rem;font-weight:bold}
+  .wcard .ipa{color:var(--muted);font-size:.85rem}
+  .wcard .pos{font-size:.72rem;color:var(--purple);background:var(--purple-soft);padding:1px 8px;border-radius:999px}
+  .wcard .badge{font-size:.7rem;padding:1px 8px;border-radius:999px}
+  .b-core{background:var(--red-soft);color:var(--red)}
+  .b-phrase{background:var(--blue-soft);color:var(--blue)}
+  .b-poly{background:var(--purple-soft);color:var(--purple)}
+  .b-write{background:var(--green-soft);color:var(--green)}
+  .wcard .cn{margin-top:8px;font-size:1rem;font-weight:600}
+  .wcard .en-def{color:var(--muted);font-size:.86rem;font-style:italic;margin-top:2px}
+  .wcard .row{margin-top:10px;font-size:.86rem;padding:8px 10px;border-radius:8px}
+  .wcard .row b{font-size:.72rem;display:block;margin-bottom:2px;letter-spacing:.06em}
+  .r-ex{background:var(--hl)} .r-ex b{color:var(--hl-border)}
+  .r-mem{background:var(--green-soft)} .r-mem b{color:var(--green)}
+  .r-syn{background:var(--blue-soft)} .r-syn b{color:var(--blue)}
+  .r-conf{background:var(--red-soft)} .r-conf b{color:var(--red)}
+  #panel .close{display:none}
+  @media (max-width:900px){
+    aside{position:fixed;left:0;right:0;bottom:0;z-index:50;padding:0 8px 8px}
+    #panel{box-shadow:0 -6px 24px rgba(0,0,0,.18);max-height:55vh;overflow-y:auto;display:none}
+    #panel.open{display:block}
+    #panel .close{display:block;float:right;border:none;background:var(--line);border-radius:8px;padding:2px 10px;cursor:pointer;color:var(--ink)}
+  }
+  /* 选项库 */
+  .optlib{display:grid;gap:8px}
+  .optitem{display:flex;gap:10px;border:1px solid var(--line);border-radius:10px;padding:9px 12px;font-size:.9rem}
+  .optitem .lt{font-weight:700;font-family:var(--serif);color:var(--accent);flex:0 0 18px}
+  .optitem.used{opacity:.45}
+  .optitem.extra{border-color:var(--red);background:var(--red-soft)}
+  .optitem .oen{font-family:var(--serif);font-size:.92rem;line-height:1.75}
+  .optitem .zhx{display:block;color:var(--muted);font-size:.82rem;margin-top:3px}
+  .optitem .kw{display:block;font-size:.78rem;color:var(--blue);margin-top:3px}
+  .optitem .stg{display:inline-block;font-size:.72rem;background:var(--purple-soft);color:var(--purple);border-radius:999px;padding:1px 9px;margin-top:5px}
+  /* 空格题 */
+  .person{margin-bottom:26px;padding-bottom:20px;border-bottom:1px dashed var(--line)}
+  .person:last-child{border:none}
+  .pname{font-family:var(--serif);font-weight:700;font-size:1.05rem;margin-bottom:8px}
+  .pname .qn{color:var(--accent)}
+  .stance{font-size:.72rem;border-radius:999px;padding:1px 9px;margin-left:8px;vertical-align:2px;font-family:var(--sans);font-weight:400}
+  .st-anti{background:var(--red-soft);color:var(--red)}
+  .st-pro{background:var(--green-soft);color:var(--green)}
+  .st-mid{background:var(--blue-soft);color:var(--blue)}
+  .slot{display:inline;background:var(--accent-soft);border-bottom:2px solid var(--accent);border-radius:3px;padding:0 6px;color:var(--accent);font-weight:700;font-family:var(--sans);font-size:.88rem}
+  .slot.filled{background:var(--green-soft);border-color:var(--green);color:var(--ink);font-weight:400;font-family:var(--serif);font-size:1.03rem}
+  .slot.filled .fl{font-family:var(--sans);font-size:.78rem;font-weight:700;color:var(--green);margin-right:5px}
+  .chips{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0 4px}
+  .chips .ch{width:38px;height:34px;border:1px solid var(--line);border-radius:8px;background:none;font-family:var(--serif);font-weight:700;font-size:1rem;color:var(--ink);cursor:pointer;transition:all .15s}
+  .chips .ch:hover{border-color:var(--accent)}
+  .person.done .ch{cursor:default;opacity:.6}
+  .ch.right{background:var(--green-soft);border-color:var(--green);color:var(--green);opacity:1!important}
+  .ch.wrong{background:var(--red-soft);border-color:var(--red);color:var(--red);opacity:1!important}
+  .expl{display:none;margin-top:10px;background:var(--accent-soft);border-radius:10px;padding:12px 14px;font-size:.9rem}
+  .person.done .expl{display:block}
+  .expl b{color:var(--accent)}
+  .loc{font-family:var(--serif);font-style:italic;background:var(--hl);padding:1px 4px;border-radius:3px}
+  .expl .line{margin-top:8px;padding-top:8px;border-top:1px dashed var(--line)}
+  .expl .mine{margin-top:8px;padding:8px 10px;background:var(--red-soft);border-radius:8px;color:var(--red);font-size:.86rem}
+  .wb{display:grid;gap:10px}
+  .wbi{border-left:3px solid var(--green);background:var(--green-soft);border-radius:0 10px 10px 0;padding:10px 14px;font-size:.92rem}
+  .wbi .p{font-family:var(--serif);font-weight:600}
+  .wbi .u{color:var(--muted);font-size:.85rem}
+  /* 表格 */
+  .tbwrap{overflow-x:auto}
+  table.gt{border-collapse:collapse;width:100%;min-width:600px;font-size:.86rem}
+  table.gt th,table.gt td{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
+  table.gt th{background:var(--accent-soft);color:var(--accent);font-weight:600;font-size:.8rem}
+  table.gt td.c{text-align:center;font-family:var(--serif);font-weight:700}
+  table.gt tr.bad td{background:var(--red-soft)}
+  /* 分区带 */
+  .zone{display:grid;grid-template-columns:118px 1fr;gap:12px;padding:9px 0;border-bottom:1px dashed var(--line);font-size:.9rem}
+  .zone:last-child{border:none}
+  .zone .zn{font-size:.82rem;color:var(--accent);font-weight:600}
+  .zone.empty{background:var(--red-soft);border-radius:8px;padding-left:10px}
+  .zone.empty .zn{color:var(--red)}
+  /* 长难句 */
+  .ls{border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:14px}
+  .ls .s{font-family:var(--serif);font-size:.98rem;line-height:1.85}
+  .ls .an{margin-top:10px;font-size:.88rem}
+  .ls .an div{margin-top:4px}
+  .ls .tr{margin-top:8px;padding:8px 12px;background:var(--blue-soft);border-radius:8px;font-size:.88rem}
+  .mk{color:var(--red);font-weight:600}
+  .mk2{color:var(--blue);font-weight:600}
+  .mk3{color:var(--green);font-weight:600}
+  .box{border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:0 10px 10px 0;padding:12px 14px;margin:12px 0;font-size:.92rem;background:var(--accent-soft)}
+  .box.red{border-left-color:var(--red);background:var(--red-soft)}
+  .box.green{border-left-color:var(--green);background:var(--green-soft)}
+  .box .bt{font-weight:700;color:var(--accent);display:block;margin-bottom:6px}
+  .box.red .bt{color:var(--red)} .box.green .bt{color:var(--green)}
+  .en,.zh,.expl,.wbi,.optitem,.ls,.zone,.bd,figcaption,p,li,td,th{overflow-wrap:anywhere}
+  footer{color:var(--muted);font-size:.8rem;text-align:center;margin-top:30px}
+  #yd{position:fixed;z-index:60;display:none;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:4px 12px;font-size:.8rem;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+</style>
+<style>
+  /* —— 排序题专用 —— */
+  main,aside{min-width:0}
+  .chainbar{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:16px 0 4px;padding:12px;background:var(--accent-soft);border-radius:12px}
+  .chainbar .cb{min-width:44px;height:36px;display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--accent);border-radius:8px;font-family:var(--serif);font-weight:700;color:var(--accent);background:var(--card)}
+  .chainbar .cb.given{background:var(--green-soft);border-color:var(--green);color:var(--green)}
+  .chainbar .ar{color:var(--muted)}
+  .ctx{font-size:.84rem;color:var(--muted);background:var(--blue-soft);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;padding:7px 12px;margin-bottom:10px}
+  .ctx i{font-family:var(--serif)}
+  .para{margin-bottom:22px;padding-bottom:16px;border-bottom:1px dashed var(--line)}
+  .para:last-of-type{border-bottom:none}
+  .person .en{margin-bottom:4px}
+  .optitem .oen{display:block}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">◀ 返回英语复盘中心</a>
+  <header>
+    <h1>Charles Dickens Biography　狄更斯小传：从鞋油厂童工到享誉世界的文人</h1>
+    <div class="sub">2017 年英语（一）真题 · Part B 新题型（<b>段落排序</b>：七段填进 [D]→41→42→43→44→[B]→45，<b>D 与 B 已给定，零多余项</b>）· 建议做题 <b>7–9 min</b> · 话题：狄更斯的出身、童年创伤与成名之路 · 黄皮书口径 527 words（脚本数 527，<b>一字不差</b>）· 黄皮书标源 www.charles-dickens.org 文章 <i>Charles Dickens Biography</i>（人物传记；原文未能联网逐字核到）</div>
+    <div class="tags">
+      <span class="tag">正确答案：41 F　42 E　43 A　44 C　45 G（<b>七项全部用上</b>）</span>
+      <span class="tag">全文顺序：D — F — E — A — C — B — G</span>
+      <span class="tag">变体：<b>排序题</b>（第四次：2010 · 2011 · 2014 · 2017 · <b>零多余项第三次</b>）</span>
+      <span class="tag">⚠️ Claude 独立作答 5/5，<b>不计完整盲做</b>（做 2017 T4 时已看到本篇精讲首页的来源、三段式脉络与 [A] 项分析）</span>
+    </div>
+  </header>
+
+  <div class="layout">
+    <main>
+      <section class="card">
+        <h2><span class="n">00</span>开考第一件事：数格子 —— 七格七段，<b>零多余项第三次</b>；首段已给，第六段已给</h2>
+
+        <div class="chainbar">
+          <span class="cb given">D</span><span class="ar">→</span><span class="cb">41</span><span class="ar">→</span><span class="cb">42</span><span class="ar">→</span><span class="cb">43</span><span class="ar">→</span><span class="cb">44</span><span class="ar">→</span><span class="cb given">B</span><span class="ar">→</span><span class="cb">45</span>
+        </div>
+
+        <p style="font-size:.92rem">四年排序题，四种链条。<b>数格子不只是为了判多余项，还要看已给定段落站在哪里</b>——它决定你从哪一格下刀：</p>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:640px">
+          <tr><th style="width:11%">年份</th><th style="width:26%">链条</th><th style="width:15%">格子 / 选项</th><th>这条链条告诉你什么</th></tr>
+          <tr><td class="c"><b>2010</b></td><td><code>41→42→43→44→E→45</code></td><td class="c">6 / 7</td><td><b>有 1 个多余项</b>；E 在倒数第二，只剩 45 一个邻居 ⟹ 先做 45</td></tr>
+          <tr><td class="c"><b>2011</b></td><td><code>G→41→42→E→43→44→45</code></td><td class="c">7 / 7</td><td>零多余；<b>首段被给定</b> ⟹ 首段排除法用不上，改做粘块</td></tr>
+          <tr><td class="c"><b>2014</b></td><td><code>41→A→42→E→43→44→45</code></td><td class="c">7 / 7</td><td>零多余；首段空着，A、E 之间只夹一格；E 之后连续三个空</td></tr>
+          <tr class="bad"><td class="c"><b>2017</b></td><td><code>D→41→42→43→44→B→45</code></td><td class="c"><b>7 / 7</b></td><td>零多余；<b>首段被给定（D 是总评）</b>，<b>第六段被给定（B 是成名）</b> ⟹ <b>两个已给定段本身就是时间轴上的两个刻度</b>：41–44 是「成名以前」，45 是「成名以后」</td></tr>
+        </table>
+        </div>
+
+        <div class="box green">
+          <span class="bt">🎁 零多余项第三次出现（2011 · 2014 · 2017）：三条红利照旧</span>
+          ① 排除法做满，<b>最后一格白送</b>；② <b>通读验闭合是充分检验</b>；③「这一段放哪儿都别扭」不是排除理由（见套路库 <a href="套路库_阅读.html#R107">R107</a>）。
+          <span class="mk">背面也照旧：一处排错必然连累第二处。本篇最容易成对出错的是 <b>42 与 43</b>——E（打零工、投稿）和 A（首篇发表、署名 Boz）都属于「写作起步」，谁先谁后要看 E 末 <span class="loc">submitted</span> 与 A 首 <span class="loc">The first published</span> 的先后，见 02 节。</span>
+        </div>
+
+        <h3 class="sh">① 五步实况：已给定的 B 把全文切成「前四格 ＋ 末一格」，然后顺着时间一格格接力</h3>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:640px">
+          <tr><th style="width:8%">步</th><th style="width:28%">做什么</th><th>本篇实况</th></tr>
+          <tr><td class="c">1</td><td><b>数格子 ＋ 认文体</b></td><td>7 格 7 段 ⟹ 零多余。D 一开口就是 <span class="loc">Charles Dickens is probably the best-known …</span> ⟹ <b>人物传记</b>，顺序＝时间顺序（出生 → 童年 → 工作 → 起步 → 成名 → 此后）。</td></tr>
+          <tr><td class="c">2</td><td><b>给每一格数候选</b>，候选最少的先做</td><td><b>41、44、45 各只有 1 个候选</b>（见 02+ 节）：41 ＝ 唯一不欠上文的段首 F（<span class="loc">Dickens was born</span>）；44 ＝ B 的上家必须给过作品全称 ⟹ C；45 ＝ B 的下家必须以成名作为时间起点 ⟹ G（<span class="loc">After Pickwick</span>）。</td></tr>
+          <tr><td class="c">3</td><td><b>剩两格二选一</b></td><td>池里只剩 E、A，放进 42、43。E 首 <span class="loc">Soon after his father’s <b>release</b> from prison</span> 要紧跟 F 末的 <span class="loc">His father was then <b>imprisoned</b> for debt</span>；A 首 <span class="loc">The <b>first published</b> sketch</span> 要紧跟 E 末的 <span class="loc">submitted short sketches</span> ⟹ <b>F—E—A</b>。</td></tr>
+          <tr><td class="c">4</td><td><b>验 A→C 这一缝</b></td><td>A 末交代笔名 <span class="loc">under the pen name “Boz”</span> ⟹ C 首 <span class="loc">Soon after <i>Sketches by Boz</i> appeared</span>。<b>笔名先立、书名后用</b>，缝上了。</td></tr>
+          <tr><td class="c">5</td><td><b>通读验闭合</b></td><td>D—F—E—A—C—B—G ＝ 总评 → 出身与童年创伤 → 父亲出狱后打工、业余投稿 → 首篇发表、以 Boz 成名 → 《匹克威克》的诞生 → 大获成功 → 此后转向阴暗、地位巩固。<b>六个接缝里五个是「上段最后一件事 ＝ 下段开头的时间状语」（02++ 节）⟹ 收工。</b></td></tr>
+        </table>
+        </div>
+
+        <h3 class="sh">② 认文体：人物传记，骨架是「总评 → 出身 → 挫折 → 起步 → 成名 → 此后」</h3>
+        <div class="box">
+          <span class="bt">📚 四年排序题，四种文体，顺序由什么决定各不相同</span>
+          2010 商业分析（问题 → 论据 → 条件 → 趋势）· 2011 书评（荐书 → 观点 → 建议 → 局限）· 2014 百科说明文（先问后答 · 先总后分 · 先古后今）· <b>2017 人物传记——顺序几乎只由一条逻辑决定：时间</b>。
+          <br>传记还有一个固定习惯：<b>首段先报结局</b>。D 说他是「19 世纪最知名、在许多人看来最伟大的英国小说家」——这是他一生的定评，<b>放在最前面，然后才从出生讲起</b>。所以 D 之后的 41 不是「接着评价」，而是「回到起点」。
+          <br><span class="mk">传记排序的最大风险不是「每段都能接每段」，而是<b>段内的插叙</b>：F 里有「狄更斯出生前两年」「12 岁」，C 里有 1836、1837——<b>只有段首段尾的时间状语是接缝证据，段中的年份是故事本身的年份</b>（见 <a href="套路库_阅读.html#R232">R232</a>）。</span>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">01</span>七段 A–G · 先给每一段标出「头路标 / 尾预示」</h2>
+        <p style="font-size:.8rem;color:var(--muted);margin-bottom:12px">🔑 一行 ＝ 这一段的两个接口 ｜ 紫色标签 ＝ 它最终落在哪一环（<b>作答后</b>对应项会自动置灰）｜ 本篇<b>没有红框</b>——七段全部有位置</p>
+        <div class="optlib" id="optlib"></div>
+        <div class="box" style="margin-top:14px">
+          <span class="bt">🚩 五个待排的段首里，四个是「时间状语 ＋ 一件事」——那件事必须已经讲过</span>
+          A <span class="loc">The <b>first published</b> sketch</span>（要先有「写了、投了」）· C <span class="loc"><b>Soon after</b> <i>Sketches by Boz</i> appeared</span>（要先有 Boz 这个名字）· E <span class="loc"><b>Soon after</b> his father’s <b>release</b> from prison</span>（要先有「入狱」）· G <span class="loc"><b>After</b> <i>Pickwick</i></span>（要先有《匹克威克》）· <b>F <span class="loc">Dickens was born in Portsmouth</span>（从出生讲起，一个字不欠）</b>。
+          <br>⟹ <b>2010 那套「看段首定首段」的排除法（<a href="套路库_阅读.html#R79">R79</a>）换个用法</b>：本篇首段 D 已经给了，但 D 是总评，<b>「生平叙事的第一段」仍然空着</b>——四个带时间状语的段首全部出局，只剩 F。
+          <span class="mk">已给定的两段也各有接口：D 尾 <span class="loc">capture the panorama of English society</span>（总评，不预告任何一件具体的事）；B 首 <span class="loc">The runaway success of <i>The Pickwick Papers</i>, <b>as it is generally known today</b></span>（要上文先用另一个名字介绍过这本书）。</span>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">02</span>链条作答 · 点字母 <button class="allbtn" onclick="toggleAll()">译文 开/关</button></h2>
+        <p style="font-size:.8rem;color:var(--muted);margin-bottom:14px">每格下方点 A–G 作答，<b>答后格子会就地补全成整段原文</b>，并出线索链解析 ＋ 错因标签。<span class="mk">建议顺序 41 → 44 → 45 → 42 → 43（三个单候选格先落，理由见 02+ 节）；下面按链条顺序排列。</span></p>
+
+        <div class="person q" id="q41" data-ans="F">
+          <div class="pname"><span class="qn">(41)</span> 链条第 2 格 · <b>紧跟已给定的总评 D</b><span class="stance st-pro">证据 ＝ 生平叙事的起点（唯一不欠上文的段首）</span><button class="zbtn" onclick="tz(this)">译</button></div>
+          <p class="ctx">↑ 上文：<b>D（已给定）</b>——总评：19 世纪最知名的英国小说家，道德家、讽刺作家、社会改革者　↓ 下文：42</p>
+          <p class="en"><span class="slot" data-n="41">(41) ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿</span></p>
+          <div class="zh"><b>（41）</b>狄更斯出生在英格兰南部海岸的朴茨茅斯。他的父亲是英国海军军饷处的一名职员——职位体面，社会地位却不高。他的祖父母，一个是男管家、一个是女管家，因为做过仆人，地位更低，狄更斯后来一直隐瞒他们的出身。据说狄更斯的母亲出身于一个更体面的家庭。然而就在狄更斯出生前两年，他的外祖父因偷窃被抓，逃往欧洲大陆，再也没有回来。家境日益贫困，狄更斯 12 岁就被迫辍学，到华伦黑鞋油作坊——一家鞋油厂——做工，那里的其他童工嘲笑他是「小绅士」。随后，他的父亲因欠债入狱。父亲入狱的屈辱和自己在鞋油厂的劳作，成了狄更斯最深的伤口，也成了他最深藏的秘密。他连妻子都无法倾诉，尽管这些经历是他小说创作从未言明的根基。</div>
+          <div class="chips"></div>
+          <div class="expl"><b>41 → F　Dickens was born in Portsmouth, on England’s southern coast.</b>
+            <div class="line">🔗 <b>决定性一击：段首排除法（变体）</b>。已给定的 D 是总评，不是生平的第一步 ⟹ 41 要的是「<b>叙事起点</b>」。剩下五段的段首——A <span class="loc">The <b>first published</b> sketch</span>、C <span class="loc"><b>Soon after</b> Sketches by Boz</span>、E <span class="loc"><b>Soon after</b> his father’s release</span>、G <span class="loc"><b>After</b> Pickwick</span>——<b>四个都拿一件「已经发生过的事」当时间坐标</b>，放在叙事第一段就悬空；只有 F 从出生讲起（套路库 <a href="套路库_阅读.html#R79">R79</a>）。</div>
+            <div class="line">🔗 <b>第二重证据：传记的固定骨架</b>。总评（D：他是谁、有多重要）→ <b>出身</b>（F：出生地、父亲职业、祖父母、母亲家世）。F 一口气交代了「父、祖父母、母、外祖父」四代人，<b>这种家谱式的密集介绍只可能出现在生平开头</b>。黄皮书 D 段「路标推引」同此：人物传记一般按时间顺序介绍生平。</div>
+            <div class="line">🔮 <b>F 的段尾给下一段埋了两颗钉子</b>：① ⑦ <span class="loc">His father was then <b>imprisoned</b> for debt</span> ⟹ 下文要交代「出狱以后」；② ⑥ 鞋油厂的童工活 ⟹ 下文的 <span class="loc">a <b>better</b> job</span> 要一个「更差的工作」作比较。<span class="mk">注意：F 的最后两句（⑧⑨）是<b>评论</b>（伤口、秘密、小说的根基），<b>最后「发生」的事是 ⑦ 入狱</b>——找接力棒要找最后一件事，不是最后一句话。</span></div>
+            <div class="line">✂️ <b>为什么不是 E</b>：E 同样讲早年打工，最像「接在总评后面介绍早年」的一段，但 <span class="loc">Soon after his father’s release from prison</span> 在 D 之后毫无来由——读者还不知道他父亲坐过牢。<br>
+              ✂️ <b>为什么不是 A</b>：A 首 <span class="loc">The first published sketch</span> 紧跟总评读起来也不算太别扭（「他的第一篇作品……」），但那样出身、童年、打工三件事就只能排在「首次发表」之后，<b>时间倒流</b>。</div>
+          </div>
+        </div>
+
+        <div class="person q" id="q42" data-ans="E">
+          <div class="pname"><span class="qn">(42)</span> 链条第 3 格<span class="stance st-pro">证据 ＝ 入狱 → 出狱（事件接力）＋ 童工 → 更好的工作</span><button class="zbtn" onclick="tz(this)">译</button></div>
+          <p class="ctx">↑ 上文：41（＝F）——出身、12 岁进鞋油厂、父亲因债入狱　↓ 下文：43</p>
+          <p class="en"><span class="slot" data-n="42">(42) ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿</span></p>
+          <div class="zh"><b>（42）</b>父亲出狱后不久，狄更斯找到一份好一点的差事：在律师事务所当跑腿的听差。他自学速记，后来又找到更好的工作，当上了法庭速记员和议会记者。与此同时，狄更斯有一双记者的眼睛，善于把身边的生活——尤其是一切滑稽或古怪的事——记录下来，他写了一些短篇随笔，投给不知名的杂志。</div>
+          <div class="chips"></div>
+          <div class="expl"><b>42 → E　Soon after his father’s release from prison, Dickens got a better job as errand boy in law offices.</b>
+            <div class="line">🔗 <b>向上的钩：release 预设了 imprisoned</b>。F ⑦ <span class="loc">His father was then <b>imprisoned</b> for debt</span> ⟷ E ① <span class="loc">Soon after his father’s <b>release from prison</b></span>。<b>「获释」这个词自己就说明了上文必须讲过「入狱」</b>——和 2014 的 <span class="loc">In another case</span> 要求上文有 one case 是同一类证据：<b>不指望你注意，但缺了就读不通</b>（⟹ 新卡 <a href="套路库_阅读.html#R232">R232</a>）。</div>
+            <div class="line">🔗 <b>比较级也在要上家</b>：E 里连用两次比较级——<span class="loc">a <b>better</b> job</span> as errand boy → <span class="loc">an <b>even better</b> job later</span> as a court stenographer。第一个 better <b>比的是谁？</b>——F ⑥ 鞋油厂里被嘲笑的童工活。黄皮书「路标推引」也点了这一条：<span class="loc">got a better job … get an even better job</span> 提示上文已介绍先前（不堪）的工作。</div>
+            <div class="line">🔮 <b>它的段尾预告了 43</b>：③ <span class="loc">At the same time</span> 把段落切成两层——①② 正职步步高升，③ 业余 <span class="loc"><b>submitted</b> short sketches to <b>obscure</b> magazines</span>。「投稿」之后该发生什么？<b>发表</b>。「不知名的杂志」之后该发生什么？<b>出名</b>。</div>
+            <div class="line">✂️ <b>最强的对手是 A</b>（它和 E 同属「写作起步」，都像是接在童年之后的那一段）：A 放 42，F 的「入狱」就接上了「首篇发表」，E 被挤到 43——<b>「出狱后不久」跑到了「首次发表、署名成名」之后</b>，而 E ③ 的 submitted 又跑到了 A 的 first published 后面，<b>两处时间倒流</b>。<span class="mk">零多余项下这就是「成对出错」：42、43 一起错，丢 4 分。</span></div>
+          </div>
+        </div>
+
+        <div class="person q" id="q43" data-ans="A">
+          <div class="pname"><span class="qn">(43)</span> 链条第 4 格<span class="stance st-pro">证据 ＝ 投稿 → 首次发表 ＋ 笔名先于书名</span><button class="zbtn" onclick="tz(this)">译</button></div>
+          <p class="ctx">↑ 上文：42（＝E）——打零工、自学速记，业余给不知名杂志投随笔　↓ 下文：44</p>
+          <p class="en"><span class="slot" data-n="43">(43) ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿</span></p>
+          <div class="zh"><b>（43）</b>他第一篇发表的随笔《白杨径晚宴》——当他在《每月杂志》上翻到它时，热泪夺眶而出。从那以后，他以「博兹」为笔名在《晚间纪事报》上发表的随笔，为他赢得了小小的名气。</div>
+          <div class="chips"></div>
+          <div class="expl"><b>43 → A　The first published sketch, “A Dinner at Poplar Walk” brought tears to Dickens’s eyes when he discovered it in the pages of <i>The Monthly Magazine</i>.</b>
+            <div class="line">🔗 <b>向上的钩：submitted → first published</b>。E ③ <span class="loc"><b>submitted</b> short <b>sketches</b> to obscure <b>magazines</b></span> ⟷ A ① <span class="loc">The first <b>published sketch</b> … in the pages of <i>The Monthly <b>Magazine</b></i></span>。<b>sketch、magazine 两个词从 E 尾直接走进 A 首，而且状态往前推了一步：投出去 → 登出来</b>。<span class="mk">这是相邻复现，可以当接缝用（<a href="套路库_阅读.html#R110">R110</a> 的判据是「隔了几段」）。</span></div>
+            <div class="line">🔗 <b>情绪也在接力</b>：<span class="loc">discovered it in the pages of …</span>——是他<b>自己在杂志里「发现」</b>了这篇稿子被登了出来，<b>说明他投稿时并不知道会不会被用</b>，这正是 E 里「投给不知名杂志」的那个处境；<span class="loc">brought tears to Dickens’s eyes</span>——一个不知名的投稿人第一次见到自己的文字变成铅字。</div>
+            <div class="line">🔮 <b>它的段尾预告了 44</b>：② <span class="loc">his sketches, which appeared under the <b>pen name “Boz”</b></span> ⟹ C 首 <span class="loc">Soon after <i><b>Sketches by Boz</b></i> appeared</span>。<b>先告诉你 Boz 是他的笔名、sketches 是他写的随笔，下一段才能直接说《博兹札记》问世</b>——书名正是「sketches ＋ by ＋ 笔名」拼出来的（⟹ 新卡 <a href="套路库_阅读.html#R231">R231</a>）。</div>
+            <div class="line">✂️ <b>为什么不是 C</b>：C 放 43，<span class="loc">Sketches by Boz</span> 里的 Boz 就成了一个没人介绍过的名字；A 被挤到 44，<b>「首篇发表」跑到《匹克威克》连载之后</b>，时间倒流。<br>
+              ✂️ <b>为什么不是 G</b>：<span class="loc">After Pickwick</span>——此时《匹克威克》还没出现。</div>
+          </div>
+        </div>
+
+        <div class="person q" id="q44" data-ans="C">
+          <div class="pname"><span class="qn">(44)</span> 链条第 5 格 · <b>紧挨已给定的 B 之前</b><span class="stance st-pro">证据 ＝ 全称在前、简称在后（as it is generally known today）＋ 出版 → 成功</span><button class="zbtn" onclick="tz(this)">译</button></div>
+          <p class="ctx">↑ 上文：43（＝A）——首篇发表，以笔名 Boz 小有名气　↓ 下文：<b>B（已给定）</b>——《匹克威克外传》（今天通行的叫法）大获成功</p>
+          <p class="en"><span class="slot" data-n="44">(44) ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿</span></p>
+          <div class="zh"><b>（44）</b>《博兹札记》问世后不久，一家出版社找到狄更斯，请他写一个按月分期刊出的故事，给当时颇有名气的画家罗伯特·西摩的一组木刻画当配文——这个故事的点子本就是西摩想出来的。狄更斯带着他一贯的自信，硬是让对方反过来，改由西摩的画为他自己的故事配图，而且成功了。第一期刊出后，狄更斯写信给这位画家，要他修改一幅狄更斯觉得不够贴合自己文字的插图。西摩改了画，随后走进自家后院，以自杀表达了他的不满。狄更斯和出版商干脆换了一位画家，照样往下干。这部喜剧小说——《匹克威克俱乐部遗稿》——于 1836 至 1837 年连载，1837 年首次出版成书。</div>
+          <div class="chips"></div>
+          <div class="expl"><b>44 → C　Soon after <i>Sketches by Boz</i> appeared, a publishing firm approached Dickens to write a story in monthly installments …</b>
+            <div class="line">🔗 <b>向下的钩（最硬）：B 首的 <span class="loc">as it is generally known today</span> 是一句「叫法说明」</b>。它的意思是「<b>《匹克威克外传》——这是它今天通行的叫法</b>」，<b>说话人默认你已经见过它的另一个名字</b>。全篇只有 C 末给出了那个名字：<span class="loc">The comic novel, <i>The Posthumous Papers of the Pickwick Club</i></span>（《匹克威克俱乐部遗稿》，这本书的正式全称）。<b>全称在前、通行简称在后</b>，C 必须紧挨在 B 前面（⟹ 新卡 <a href="套路库_阅读.html#R231">R231</a>）。</div>
+            <div class="line">🔗 <b>事件也在接力</b>：C 讲完这本书的整个诞生过程——约稿 → 争夺主导权 → 画家自杀 → 换人续作 → <span class="loc">appeared serially in 1836 and 1837 and was first published in book form in 1837</span>；B 开口就是 <span class="loc">The runaway <b>success</b></span>。<b>出版 → 成功</b>，和前面的「入狱 → 出狱」「投稿 → 发表」是同一种接力。</div>
+            <div class="line">🔗 <b>向上的钩</b>：<span class="loc">Soon after <i>Sketches by Boz</i> appeared</span> ⟸ A 末 <span class="loc">his sketches, which appeared under the pen name “Boz”</span>——连动词 appeared 都是同一个。</div>
+            <div class="line">✂️ <b>为什么不是 A、E</b>：它们放在 B 前面，B 的「叫法说明」就没有东西可说明——A、E 里压根没有《匹克威克》。<br>
+              ✂️ <b>为什么不是 G</b>：G 首 <span class="loc">After <i>Pickwick</i></span> 同样提到这本书，但它用的是更短的简称，而且是「<b>在它之后</b>」——G 放在 B 前面，就成了「在《匹克威克》之后……《匹克威克》大获成功」，顺序颠倒。<span class="mk">⟹ 这一格黄皮书是第一个做的（从已给定的 B 往回推），本页的建议顺序里它排第二。</span></div>
+          </div>
+        </div>
+
+        <div class="person q" id="q45" data-ans="G">
+          <div class="pname"><span class="qn">(45)</span> 链条第 7 格 · <b>末段，紧跟已给定的 B</b><span class="stance st-mid">证据 ＝ After Pickwick ＋ 零多余项的排除法收口</span><button class="zbtn" onclick="tz(this)">译</button></div>
+          <p class="ctx">↑ 上文：<b>B（已给定）</b>——《匹克威克外传》大获成功，主人公成了全国人物　↓ 下文：<b>无</b>（全文结束）</p>
+          <p class="en"><span class="slot" data-n="45">(45) ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿</span></p>
+          <div class="zh"><b>（45）</b>《匹克威克》之后，狄更斯一头扎进了一个更阴暗的世界。在《雾都孤儿》里，他一路追写一个孤儿的经历：从济贫院，到伦敦的犯罪贫民窟。他的下一部小说《尼古拉斯·尼克尔贝》，把《雾都孤儿》的黑暗与《匹克威克》的明快糅在了一起。这几部小说的风行，巩固了狄更斯作为一位享誉国内外的文人的地位。</div>
+          <div class="chips"></div>
+          <div class="expl"><b>45 → G　After <i>Pickwick</i>, Dickens plunged into a bleaker world.</b>
+            <div class="line">🔗 <b>时间状语接力</b>：B 讲《匹克威克》的成功 ⟹ G 首 <span class="loc"><b>After</b> <i>Pickwick</i></span>。<b>称呼又短了一截</b>：The Posthumous Papers of the Pickwick Club（C）→ The Pickwick Papers（B）→ <b>Pickwick</b>（G）——越往后越短，<b>全文的称呼链本身就是一条排序证据</b>（02+++ 节）。</div>
+            <div class="line">🔗 <b>对照成对</b>：<span class="loc">plunged into a <b>bleaker</b> world</span>——比较级 bleaker（更阴暗）要一个「不那么阴暗」的参照，就是上文 C 的 <span class="loc">The <b>comic</b> novel</span> 与 B 里胖乎乎、戴眼镜、满街都是同名外套雪茄的匹克威克先生；G ③ 自己也把两者并举：<span class="loc">the <b>darkness</b> of <i>Oliver Twist</i> with the <b>sunlight</b> of <i>Pickwick</i></span>。</div>
+            <div class="line">🎁 <b>零多余项在这里发力</b>：做完其余四格，池里只剩 G，<b>45 白送</b>；反过来它也是免费自检——G 读着别扭，说明前面排错了。</div>
+            <div class="line">⚠️ <b>别把它当成「总—分—总」的总结段</b>：G ④ <span class="loc">consolidated Dickens as a nationally and internationally celebrated man of letters</span> 读起来确实像收尾，黄皮书也据此说它「与首段呼应，全文形成总—分—总」。但《尼古拉斯·尼克尔贝》是狄更斯 1839 年前后的作品，<b>他一直写到 1870 年去世</b>，D 总评里的「复杂情节、鲜明人物、英国社会全景」说的是他一生的全部作品——<b>真题是节选，G 只是写到了「成名初期」这一站</b>。定 45 靠的是 <span class="loc">After Pickwick</span>，不是总结感（<a href="套路库_阅读.html#R111">R111</a>；详见 03+ 节第 2 条）。</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card" id="cand">
+        <h2><span class="n">02+</span>先做哪一格？把每一格的候选数一遍 —— 这一次，三格各只有一个候选</h2>
+        <p style="font-size:.92rem">2014 立的规矩是「<b>先数候选，候选最少的格先做</b>」（套路库 <a href="套路库_阅读.html#R78">R78</a> 修正版）。本篇照做，结果是四年里最整齐的一张表：</p>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:660px">
+          <tr><th style="width:9%">格</th><th style="width:22%">邻居</th><th style="width:15%">只看段首段尾时的候选</th><th>为什么</th></tr>
+          <tr class="bad"><td class="c"><b>41</b></td><td>上：D（已给定，总评）</td><td class="c"><b>F</b>（1 个）</td><td>生平叙事的起点：A、C、E、G 的段首都拿一件已发生的事当坐标，<b>只有 F 从出生讲起</b></td></tr>
+          <tr><td class="c">42</td><td>上：41</td><td class="c">E、A（2 个）</td><td>都属「写作起步」；<b>要等 41 落定</b>才分得开（F 末入狱 ⟹ E 首出狱）</td></tr>
+          <tr><td class="c">43</td><td>下：44</td><td class="c">E、A（2 个）</td><td>同上；<b>要等 44 落定</b>才分得开（C 首 Sketches by Boz ⟹ A 末笔名 Boz）</td></tr>
+          <tr class="bad"><td class="c"><b>44</b></td><td>下：B（已给定）</td><td class="c"><b>C</b>（1 个）</td><td>B 首 <span class="loc">as it is generally known today</span> 要上文给过书的另一个名字 ⟹ <b>只有 C 末有全称</b></td></tr>
+          <tr class="bad"><td class="c"><b>45</b></td><td>上：B（已给定）</td><td class="c"><b>G</b>（1 个）</td><td>B 之后只能讲「成名以后」⟹ <b>只有 G 以 After Pickwick 起头</b></td></tr>
+        </table>
+        </div>
+        <div class="box green">
+          <span class="bt">🏁 三个单候选格落定之后，中间两格自己分开</span>
+          41＝F、44＝C、45＝G 落定，池里只剩 E、A；而它们<b>两头都被钩住了</b>：E 首的 release 要接 F 末的 imprisoned，A 末的 Boz 要接 C 首的 Sketches by Boz ⟹ <b>F—E—A—C</b>，一步到位。
+          <br><span class="mk">⟹ 这一年验证了 R78 修正版的另一半：<b>候选为 1 的格先落，它会把相邻格的候选再砍掉一个</b>。本篇 41 与 44 从两头往中间夹，42、43 不用单独思考。</span>
+        </div>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:620px">
+          <tr><th style="width:18%">路径</th><th style="width:16%">第一格</th><th>推进方式</th></tr>
+          <tr><td><b>我独立作答时</b></td><td class="c">41 ＝ F</td><td>传记从出生讲起 ⟹ F；F 末入狱 ⟹ E 首出狱（42）；E 末投稿 ⟹ A 首首篇发表（43）；A 末笔名 Boz ⟹ C 首 Sketches by Boz（44）；C 末出版 ⟹ B 首成功（已给定）；B ⟹ G 首 After Pickwick（45）。<b>一路正推，没有停顿</b>——但要说明：来源与三段式脉络在做 T4 时已入眼，这份顺畅打了折扣。</td></tr>
+          <tr><td><b>黄皮书</b></td><td class="c">44 ＝ C</td><td><b>从已给定的 B 往回推</b>：B 的上文应是这部小说的创作与出版 ⟹ 44 C；C 首 Sketches by Boz ⟹ 43 A；A 首「第一篇发表」⟹ 42 E（投稿 → 发表）；E 首「父亲获释」⟹ 41 F（且 D → F 是「引出人物 → 回顾生平」）；最后 45 G；通读检验。</td></tr>
+        </table>
+        </div>
+        <p style="font-size:.9rem;margin-top:10px">📊 <b>四年排序题的第一刀</b>：2010 先做 45（E 只剩一个邻居）· 2011 先做 41（G 末点名 Menand ⟹ His）· 2014 先做 41（首段排除法）· <b>2017 先做 41 或 44 都行（各只有一个候选）</b>。<span class="mk">四年四个起点，共同点仍是一个：<b>先做证据「语法或语义上非有不可」的那一格</b>——序数词、代词、首段零依赖，<b>今年再加两种：动作的预设（release 预设 imprisoned）和叫法说明（as it is generally known 预设另一个名字）</b>。</span></p>
+      </section>
+
+      <section class="card" id="seams">
+        <h2><span class="n">02++</span>六个接缝、六种缝法 —— 其中五处是同一种：上段最后一件事 ＝ 下段开头的时间状语</h2>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:680px">
+          <tr><th style="width:11%">接缝</th><th style="width:23%">缝法</th><th>证据原文</th></tr>
+          <tr><td class="c">D → F<br>（最软）</td><td><b>文体：总评之后从出生讲起</b></td><td>上：<span class="loc">Charles Dickens is probably the best-known … A moralist, satirist, and social reformer …</span>｜下：<span class="loc">Dickens was <b>born</b> in Portsmouth</span></td></tr>
+          <tr class="bad"><td class="c">F → E<br>（最硬）</td><td><b>事件接力：入狱 → 出狱<br>＋ 比较级要参照</b></td><td>上：<span class="loc">His father was then <b>imprisoned</b> for debt.</span>（最后发生的事）＋ 鞋油厂童工｜下：<span class="loc">Soon after his father’s <b>release from prison</b>, Dickens got a <b>better</b> job</span></td></tr>
+          <tr><td class="c">E → A</td><td><b>事件接力：投稿 → 发表<br>＋ 相邻复现</b></td><td>上：<span class="loc"><b>submitted</b> short <b>sketches</b> to obscure <b>magazines</b></span>｜下：<span class="loc">The first <b>published sketch</b> … in the pages of <i>The Monthly <b>Magazine</b></i></span></td></tr>
+          <tr><td class="c">A → C</td><td><b>笔名先立、书名后用</b></td><td>上：<span class="loc">his <b>sketches</b>, which <b>appeared</b> under the pen name “<b>Boz</b>”</span>｜下：<span class="loc">Soon after <i><b>Sketches by Boz</b></i> <b>appeared</b></span></td></tr>
+          <tr class="bad"><td class="c">C → B<br>（最硬）</td><td><b>全称 → 通行简称（叫法说明）<br>＋ 出版 → 成功</b></td><td>上：<span class="loc">The comic novel, <i>The Posthumous Papers of the Pickwick Club</i>, … was first <b>published</b> in book form in 1837.</span>｜下：<span class="loc">The runaway <b>success</b> of <i>The Pickwick Papers</i>, <b>as it is generally known today</b></span></td></tr>
+          <tr><td class="c">B → G</td><td><b>事件接力：成名作 → After 成名作<br>＋ 称呼再缩短</b></td><td>上：<span class="loc">The runaway success of <i>The Pickwick Papers</i> … Samuel Pickwick, became a national figure.</span>｜下：<span class="loc"><b>After <i>Pickwick</i></b>, Dickens plunged into a bleaker world.</span></td></tr>
+        </table>
+        </div>
+        <div class="box">
+          <span class="bt">📐 四年排序题的缝法强弱（合并实测）</span>
+          <b>形式标记成对（one / another · The first / The second）≈ 动作预设（imprisoned / release）≈ 叫法说明（全称 / as it is generally known）≈ 同源词换词性 ＋ 指代 ≈ 代词紧邻回指 ＞ 成对的对照词（Aerial / Ground）＞ 概括名词回指 ＞ 副词呼应 ／ 时间对照 ＞ 相邻复现 ＞ 跨段复现（只加固）＞ 话题相近（不算证据）。</b>
+          <br><span class="mk">本篇新添两种硬证据：<b>「动作预设」</b>（F→E：获释预设入狱，发表预设写作投稿，After X 预设 X）和<b>「叫法说明」</b>（C→B：as it is generally known today 预设上文用过别的名字）。<b>两种都是「一个词自己就要求上文存在某件事」</b>，与 2014 的 In another case 同族。</span>
+        </div>
+        <div class="box red">
+          <span class="bt">⚠️ 找接力棒要找「最后发生的事」，不是「最后一句话」</span>
+          F 的最后两句是作者的<b>评论</b>：<span class="loc">The humiliations … formed Dickens’s greatest wound and became his deepest secret. He could not confide them even to his wife …</span>——这两句跳出了时间线（「后来连妻子都没告诉」已经是几十年后的事）。<b>F 里最后「发生」的事是 ⑦ 父亲入狱</b>，接力棒是它。
+          <span class="mk">同理，F 里的 <span class="loc">two years before Dickens’s birth</span> 是插叙（外祖父偷窃潜逃），C 里的 1836、1837 是出版年份——<b>段中的年份讲的是故事，不是段与段的先后</b>。这和 2014 的「先问这个年份说的是谁的事」是同一条纪律。</span>
+        </div>
+      </section>
+
+      <section class="card" id="names">
+        <h2><span class="n">02+++</span>两条暗线：称呼越叫越短 · 名气越来越大（排完序拿来验收）</h2>
+        <h3 class="sh">① 称呼链：同一个对象，第一次出现用全称或交代来历，之后只用简称</h3>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:640px">
+          <tr><th style="width:16%">对象</th><th style="width:12%">段</th><th style="width:34%">叫法</th><th>这一处的作用</th></tr>
+          <tr><td rowspan="2"><b>笔名 Boz</b></td><td class="c">A（43）</td><td><span class="loc">under the <b>pen name</b> “Boz”</span></td><td><b>交代来历</b>：Boz 是他的笔名</td></tr>
+          <tr><td class="c">C（44）</td><td><span class="loc"><i>Sketches by Boz</i></span></td><td>直接拿笔名拼成书名，不再解释</td></tr>
+          <tr><td rowspan="3"><b>《匹克威克》</b></td><td class="c">C（44）</td><td><span class="loc">The comic novel, <i>The Posthumous Papers of the Pickwick Club</i></span></td><td><b>全称</b>，前面还加了类名同位语 The comic novel</td></tr>
+          <tr class="bad"><td class="c">B（给定）</td><td><span class="loc"><i>The Pickwick Papers</i>, <b>as it is generally known today</b></span></td><td><b>通行简称 ＋ 叫法说明</b>——说明本身就在宣告「上文用过别的名字」</td></tr>
+          <tr><td class="c">G（45）</td><td><span class="loc">After <i>Pickwick</i></span> · <span class="loc">the sunlight of <i>Pickwick</i></span></td><td>最短的昵称，读者已经熟到只要一个词</td></tr>
+          <tr><td><b>主人公</b></td><td class="c">B（给定）</td><td><span class="loc">the plump, spectacled hero, Samuel Pickwick</span></td><td>第一次出现：外貌 ＋ 身份 ＋ 全名三件套</td></tr>
+          <tr><td><b>画家</b></td><td class="c">C（44）</td><td><span class="loc">the then-famous artist Robert Seymour</span> → <span class="loc">Seymour</span> → <span class="loc">the artist</span></td><td>段内也守同一条规矩：全名 → 姓 → 类名</td></tr>
+        </table>
+        </div>
+        <div class="box green">
+          <span class="bt">🧭 为什么称呼链能当排序证据</span>
+          英语写作有条几乎不破的规矩：<b>一个专名第一次出现时要让读者知道它是什么</b>（全称、同位语、来历），之后才能省。所以<b>「简称出现在全称之前」＝ 顺序排反了</b>。<span class="mk">它和选句填空的 <a href="套路库_阅读.html#R54">R54</a>「术语的定义句必须早于它的裸用」是同一个原理，R54 管术语，本篇管专名（⟹ 新卡 <a href="套路库_阅读.html#R231">R231</a>）。</span>
+        </div>
+
+        <h3 class="sh" id="ladder">② 名气阶梯：七段按顺序读，名气只升不降</h3>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:600px">
+          <tr><th style="width:12%">位置</th><th style="width:40%">原文</th><th>名气刻度</th></tr>
+          <tr><td class="c">F（41）</td><td><span class="loc">mocked him as “the young gentleman.”</span></td><td>被童工嘲笑的无名少年</td></tr>
+          <tr><td class="c">E（42）</td><td><span class="loc">submitted short sketches to <b>obscure</b> magazines</span></td><td>往不知名的杂志投稿</td></tr>
+          <tr><td class="c">A（43）</td><td><span class="loc">earned him a <b>modest reputation</b></span></td><td>小有名气</td></tr>
+          <tr><td class="c">C（44）</td><td><span class="loc">the <b>then-famous</b> artist Robert Seymour</span> vs <span class="loc">Dickens successfully insisted …</span></td><td>出版社原本请他给名画家配文，他反客为主</td></tr>
+          <tr><td class="c">B（给定）</td><td><span class="loc">secured Dickens’s <b>fame</b> … became a <b>national figure</b></span></td><td>成名，全国知名</td></tr>
+          <tr class="bad"><td class="c">G（45）</td><td><span class="loc">a <b>nationally and internationally celebrated</b> man of letters</span></td><td>享誉国内外</td></tr>
+          <tr><td class="c">D（首段）</td><td><span class="loc">probably the <b>best-known</b> and … the <b>greatest</b> English novelist of the 19th century</span></td><td><b>终点被提前放在开头</b>——传记首段先报结局</td></tr>
+        </table>
+        </div>
+        <div class="box">
+          <span class="bt">✅ 阶梯只能验收，不能定位</span>
+          把 A、E 对调，阶梯就变成「小有名气 → 往不知名杂志投稿」，<b>倒退一级，一眼看出错</b>；可阶梯不能告诉你 A 该放 43 还是 44——A 与 B 之间隔着 C。<span class="mk">G 的 <span class="loc">bleaker world</span> 不是名气回落，是<b>题材</b>变暗；阶梯要量的是名气词，别被情绪词带偏（⟹ 新卡 <a href="套路库_阅读.html#R233">R233</a>）。</span>
+          <br>另有两条更细的线可以顺手加固：<b>伤痕线</b>——F 末 <span class="loc">the unacknowledged foundation of his fiction</span>（屈辱是他小说未言明的根基）⟶ G <span class="loc">from the workhouse to the criminal slums of London</span>（《雾都孤儿》里的济贫院与贫民窟）；<b>喜剧线</b>——E <span class="loc">anything comic or odd</span> ⟶ C <span class="loc">The comic novel</span> ⟶ G <span class="loc">the sunlight of <i>Pickwick</i></span>。<span class="mk">两条都是跨段复现（F 到 G 隔了四段），<b>只加固、不定位</b>（<a href="套路库_阅读.html#R110">R110</a>）。</span>
+        </div>
+      </section>
+
+      <section class="card" id="extra">
+        <h2><span class="n">03</span>零多余项的第三年 —— 顺便把十二篇 Part B 的多余项造法一次数清</h2>
+        <p style="font-size:.92rem">四年排序题三年零多余（2011、2014、2017），只有 2010 多一段。<span class="mk">零多余的年份，命题人把「认出假的」那部分难度，换成了「每一段都长得能接每一段」。2014 是七段全在讲考古；<b>2017 则是七段全在讲同一个人，而且 E、A、C 三段都在讲「写作」</b>。</span></p>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:600px">
+          <tr><th style="width:9%">年份</th><th style="width:14%">变体</th><th style="width:10%">多余项</th><th>造法</th></tr>
+          <tr><td class="c">2007</td><td>标题匹配</td><td class="c">A、G</td><td>两项都有词面呼应（A ↔ 首句 role models，G ↔ responsible 连出两次）</td></tr>
+          <tr><td class="c">2008</td><td>选句填空</td><td class="c">B、F</td><td>B 阶段错位（属于末段之后）· F 与正确项 E 撞专名</td></tr>
+          <tr><td class="c">2009</td><td>选句填空</td><td class="c">D、F</td><td>同属功能论一区，而那一区没有空</td></tr>
+          <tr><td class="c">2010</td><td>排序</td><td class="c">C</td><td>复现词最多，却偏离主线</td></tr>
+          <tr><td class="c">2011</td><td>排序</td><td class="c">—</td><td>零多余项（7 格 7 项）</td></tr>
+          <tr><td class="c">2012</td><td>选句填空</td><td class="c">B、E</td><td>B 先用后定义（属于末段之后）· E 缺前提的 thus（正确项 G 的下家）；两项都有词面呼应</td></tr>
+          <tr><td class="c">2013</td><td>选句填空</td><td class="c">A、D</td><td>A 推测句要 B 的数据（正确项 B 的下家）· D 同区换杠杆；两项都有词面呼应</td></tr>
+          <tr><td class="c">2014</td><td>排序</td><td class="c">—</td><td>零多余项（7 格 7 项）；诱饵换成「位置可挪」</td></tr>
+          <tr><td class="c">2015</td><td>选句填空</td><td class="c">D、F</td><td>D 逆箭头（退回作者本意）＋ 位置满 · F 换主角 ＋ 人称不符 ＋ 词面</td></tr>
+          <tr><td class="c">2016</td><td>标题匹配</td><td class="c">A、C</td><td>A 话题词冒充段落词 · C 全文零出现的心态口号；两项都比正确项「大」</td></tr>
+          <tr class="bad"><td class="c"><b>2017</b></td><td>排序</td><td class="c">—</td><td><b>零多余项（7 格 7 项）</b>；诱饵是「同一阶段的两段」：E、A 都在写作起步，A 放 42 也像能接童年</td></tr>
+          <tr><td class="c">2022</td><td>观点匹配</td><td class="c">B、E</td><td>没有人说过的话（无人提及型）</td></tr>
+        </table>
+        </div>
+        <div class="box">
+          <span class="bt">📊 零多余年份的诱饵长什么样（三年对照）</span>
+          <b>2011</b>：跨段复现（F 与 E 隔两段共用七个词）· <b>2014</b>：位置可挪（C 放 42 也通、G 像首段、D 像接 E 的总述）· <b>2017</b>：<b>同阶段并列</b>——E（打零工 ＋ 投稿）和 A（首篇发表 ＋ 笔名成名）都属「成名以前的写作起步」，从话题上分不出先后，<b>只有「投稿在前、发表在后」这一件事能分</b>。
+          <br>⟹ <b>三年的诱饵各被一条「非有不可」的证据否掉</b>，今年是动作预设：<span class="loc">published</span> 预设 <span class="loc">submitted</span>，<span class="loc">release</span> 预设 <span class="loc">imprisoned</span>。<span class="mk">和 2011、2014 的结论一样：<b>可靠的永远是「不指望你注意、但缺了就读不通」的那些词</b>。</span>
+        </div>
+      </section>
+
+      <section class="card" id="book">
+        <h2><span class="n">03+</span>🔍 与黄皮书交叉核对：答案零书误，译文与解析商榷三处</h2>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:680px">
+          <tr><th style="width:5%">#</th><th style="width:24%">黄皮书的说法（要点转述）</th><th style="width:30%">原文事实</th><th>判断</th></tr>
+          <tr class="bad"><td class="c">1</td><td>B 段英汉对照把 <span class="loc">The runaway success of <i>The Pickwick Papers</i>, as it is generally known today</span> 译成「<b>如今广为人知的</b>《匹克威克外传》获得的巨大成功……」</td><td><span class="loc">as it is generally known today</span> 里的 <b>known</b> 是 <b>be known as</b>（被称作）的意思，<b>as 在前面提前了</b>：＝ as it is generally known (as) today ＝「<b>这是它今天通行的叫法</b>」。它说的是<b>名字</b>，不是<b>名气</b>。</td><td><b>译文读错了，而且和黄皮书自己的「路标推引」打架</b>——同一本书的 B 段路标写的是「暗示上文曾出现这部作品的名字或以其他曾用名出现」，那是对的。<span class="mk">译成「广为人知」，<b>本题最硬的一条接缝（C→B）就在译文里消失了</b>。写作也常用：<i>the Industrial Revolution, as it is now called</i>。</span></td></tr>
+          <tr><td class="c">2</td><td>45 精解：G 末句再次肯定狄更斯的崇高地位，与首段呼应，<b>全文形成「总—分—总」结构</b>；G 段路标：在名人传记中具有收尾、总结评价的作用，故可能为末段</td><td>G 讲到的《雾都孤儿》《尼古拉斯·尼克尔贝》是狄更斯 1830 年代末的作品，他写到 1870 年去世；D 的总评覆盖的是他一生的写作。G 末句说的是<b>这几部小说</b>巩固了他的地位，<b>是写到一半的一个站点</b>，不是对全人生的收束。</td><td><b>结论对，理由要换</b>。定 45 的证据是 <span class="loc">After <i>Pickwick</i></span>（B 之后只能讲成名以后），不是「总结感」。<span class="mk">真题是节选；2010、2014 的末段都戛然而止，靠「总—分—总」挑末段，四年里至少错两年（<a href="套路库_阅读.html#R111">R111</a>）。</span></td></tr>
+          <tr><td class="c">3</td><td>F ③ 译文：他的祖父母一个是男管家、一个是女管家，「<b>一直都是仆人</b>」，更没有地位</td><td><span class="loc">possessed even less status, <b>having been servants</b></span>：完成式分词作<b>原因状语</b>——「因为（他们）<b>做过</b>仆人」。</td><td>「一直都是」把完成式读成了持续，<b>也丢了因果</b>。宜译：「<b>因为当过仆人</b>，地位更低」。<span class="mk">完成式分词 having done 放在句末，多半是在解释前面的判断（为什么地位更低）。</span></td></tr>
+        </table>
+        </div>
+        <p style="font-size:.9rem;margin-top:10px">📌 另：原卷 A ① 写作 <span class="loc">The first published sketch, “A Dinner at Poplar Walk” brought tears …</span>——<b>同位语只开了一个逗号、没有关上</b>（规范写法是 <span class="loc">…, “A Dinner at Poplar Walk,” brought …</span>）。考试不受影响，页面照原卷排印；读的时候别把 <span class="loc">sketch</span> 和 <span class="loc">brought</span> 当成隔开的两个分句。<br>
+        📌 背景（通行史实，非本文信息）：狄更斯 1812 年生、1870 年卒；《匹克威克》接替西摩的插画家是 Hablot K. Browne（笔名 Phiz）。<b>文中说的只是「换了一位新画家」，做题不需要这些</b>。<br>
+        📌 黄皮书答案 41F 42E 43A 44C 45G 与本页一致；其英汉对译按 D—F—E—A—C—B—G 排列，与答案顺序一致；本篇黄皮书无长难句、词汇栏目。</p>
+      </section>
+
+      <section class="card" id="full">
+        <h2><span class="n">03++</span>复原后的全文（D — F — E — A — C — B — G）· 逐段精读 <button class="allbtn" onclick="toggleAll()">译文 开/关</button></h2>
+        <p style="font-size:.8rem;color:var(--muted);margin-bottom:14px">🟡 高亮词可点出词卡（右侧／底部）｜ <b>蓝框 ＝ 与下一段的接缝</b>｜ 排完序务必通读一遍：<b>读得顺 ＋ 六个接缝都指得出来 ＝ 全对</b></p>
+
+        <div class="para">
+          <div class="pname"><span class="qn">① ＝ D（已给定 · 首段）</span>总评：19 世纪最知名的英国小说家<button class="zbtn" onclick="tz(this)">译</button></div>
+          <p class="en">Charles Dickens is probably the best-known and, to many people, the greatest English <span class="tk" data-w="novelist">novelist</span> of the 19th century. <span class="clue">A <span class="tk" data-w="moralist">moralist</span>, <span class="tk" data-w="satirist">satirist</span>, and social <span class="tk" data-w="reformer">reformer</span>, Dickens <span class="tk" data-w="craft">crafted</span> complex <span class="tk" data-w="plot">plots</span> and <span class="tk" data-w="striking">striking</span> characters that capture the <span class="tk" data-w="panorama">panorama</span> of English society.</span></p>
+          <div class="zh">查尔斯·狄更斯大概是 19 世纪最知名的英国小说家，在许多人看来也是最伟大的。作为一位道德家、讽刺作家和社会改革者，狄更斯精心编织复杂的情节，塑造鲜明的人物，描绘出英国社会的全景。</div>
+          <div class="box" style="margin-top:8px"><span class="bt">🔗 接缝 D → F（全篇最软）</span>D 是一生的定评，<b>不预告任何一件具体的事</b>；下一段靠的是传记的固定习惯——<b>先报结局，再从出生讲起</b>。<span class="mk">这一缝没有词面证据，能定下来全靠「F 是唯一不欠上文的段首」（排除法）。</span></div>
+        </div>
+
+        <div class="para">
+          <div class="pname"><span class="qn">② ＝ F（41）</span>出身与童年：四代家世、鞋油厂、父亲入狱——一生的伤口<button class="zbtn" onclick="tz(this)">译</button></div>
+          <p class="en">Dickens was born in Portsmouth, on England’s southern coast. His father was a <span class="tk" data-w="clerk">clerk</span> in the British Navy pay office—a respectable position, but with little social <span class="tk" data-w="status">status</span>. His <span class="tk" data-w="paternal">paternal</span> grandparents, a <span class="tk" data-w="steward">steward</span> and a housekeeper, possessed even less status, having been servants, and Dickens later <span class="tk" data-w="conceal">concealed</span> their background. Dickens’s mother <span class="tk" data-w="supposedly">supposedly</span> came from a more respectable family. Yet two years before Dickens’s birth, his mother’s father was caught stealing and <span class="tk" data-w="flee">fled</span> to <span class="tk" data-w="europe">Europe</span>, never to return. The family’s increasing <span class="tk" data-w="poverty">poverty</span> forced Dickens out of school at age 12 to work in Warren’s <span class="tk" data-w="blacking">Blacking</span> Warehouse, a shoe-polish factory, where the other working boys <span class="tk" data-w="mock">mocked</span> him as “the young gentleman.” <span class="clue">His father was then <span class="tk" data-w="imprison">imprisoned</span> for <span class="tk" data-w="debt">debt</span>.</span> The <span class="tk" data-w="humiliation">humiliations</span> of his father’s imprisonment and his <span class="tk" data-w="labor">labor</span> in the blacking factory formed Dickens’s greatest <span class="tk" data-w="wound">wound</span> and became his deepest secret. He could not <span class="tk" data-w="confide">confide</span> them even to his wife, although they provide the <span class="tk" data-w="unacknowledged">unacknowledged</span> <span class="tk" data-w="foundation">foundation</span> of his <span class="tk" data-w="fiction">fiction</span>.</p>
+          <div class="zh">狄更斯出生在英格兰南部海岸的朴茨茅斯。他的父亲是英国海军军饷处的一名职员——职位体面，社会地位却不高。他的祖父母，一个是男管家、一个是女管家，因为做过仆人，地位更低，狄更斯后来一直隐瞒他们的出身。据说狄更斯的母亲出身于一个更体面的家庭。然而就在狄更斯出生前两年，他的外祖父因偷窃被抓，逃往欧洲大陆，再也没有回来。家境日益贫困，狄更斯 12 岁就被迫辍学，到华伦黑鞋油作坊——一家鞋油厂——做工，那里的其他童工嘲笑他是「小绅士」。随后，他的父亲因欠债入狱。父亲入狱的屈辱和自己在鞋油厂的劳作，成了狄更斯最深的伤口，也成了他最深藏的秘密。他连妻子都无法倾诉，尽管这些经历是他小说创作从未言明的根基。</div>
+          <div class="box" style="margin-top:8px"><span class="bt">🔗 接缝 F → E（全篇最硬之一）</span>最后发生的事是 <span class="loc">His father was then <b>imprisoned</b></span> ⟹ 下一段开口 <span class="loc">Soon after his father’s <b>release</b> from prison</span>；鞋油厂童工 ⟹ 下一段 <span class="loc">a <b>better</b> job</span>。<span class="mk">⑧⑨ 两句是评论，跳出了时间线——<b>找接力棒要找最后一件事，不是最后一句话</b>。「受尽嘲笑的小绅士」与「体面却没地位的父亲」「隐瞒出身」是同一件事的三面：<b>一个在体面与卑微之间挣扎的家庭</b>。</span></div>
+        </div>
+
+        <div class="para">
+          <div class="pname"><span class="qn">③ ＝ E（42）</span>父亲出狱后：跑腿 → 速记员 → 议会记者；业余投稿<button class="zbtn" onclick="tz(this)">译</button></div>
+          <p class="en"><span class="clue">Soon after his father’s <span class="tk" data-w="release">release</span> from prison, Dickens got a better job as <span class="tk" data-w="errand">errand</span> boy in law offices.</span> He taught himself <span class="tk" data-w="shorthand">shorthand</span> to get an even better job later as a court <span class="tk" data-w="stenographer">stenographer</span> and as a reporter in <span class="tk" data-w="parliament">Parliament</span>. <span class="clue">At the same time, Dickens, who had a reporter’s eye for <span class="tk" data-w="transcribe">transcribing</span> the life around him, especially anything comic or <span class="tk" data-w="odd">odd</span>, <span class="tk" data-w="submit">submitted</span> short sketches to <span class="tk" data-w="obscure">obscure</span> magazines.</span></p>
+          <div class="zh">父亲出狱后不久，狄更斯找到一份好一点的差事：在律师事务所当跑腿的听差。他自学速记，后来又找到更好的工作，当上了法庭速记员和议会记者。与此同时，狄更斯有一双记者的眼睛，善于把身边的生活——尤其是一切滑稽或古怪的事——记录下来，他写了一些短篇随笔，投给不知名的杂志。</div>
+          <div class="box" style="margin-top:8px"><span class="bt">🔗 接缝 E → A</span><span class="loc"><b>submitted</b> short <b>sketches</b> to obscure <b>magazines</b></span> ⟹ <span class="loc">The first <b>published sketch</b> … <i>The Monthly <b>Magazine</b></i></span>。<b>投出去 → 登出来</b>，sketch、magazine 两个词原样走进下一段。<span class="mk">① 的 better、② 的 even better 是一架小梯子：鞋油厂 → 跑腿 → 速记员／议会记者。<b>速记和「记者的眼睛」是一回事的两面</b>——一个记别人说的话，一个记眼前的生活，后者就是 sketches 的来源。</span></div>
+        </div>
+
+        <div class="para">
+          <div class="pname"><span class="qn">④ ＝ A（43）</span>首篇发表，以笔名 Boz 小有名气<button class="zbtn" onclick="tz(this)">译</button></div>
+          <p class="en"><span class="clue">The first published <span class="tk" data-w="sketch">sketch</span>, “A Dinner at Poplar Walk” brought tears to Dickens’s eyes when he discovered it in the pages of <i>The Monthly Magazine</i>.</span> <span class="clue">From then on his sketches, which appeared under the <span class="tk" data-w="penname">pen name</span> “Boz” in <i>The Evening Chronicle</i>, earned him a <span class="tk" data-w="modest">modest</span> <span class="tk" data-w="reputation">reputation</span>.</span></p>
+          <div class="zh">他第一篇发表的随笔《白杨径晚宴》——当他在《每月杂志》上翻到它时，热泪夺眶而出。从那以后，他以「博兹」为笔名在《晚间纪事报》上发表的随笔，为他赢得了小小的名气。</div>
+          <div class="box" style="margin-top:8px"><span class="bt">🔗 接缝 A → C</span><span class="loc">his <b>sketches</b>, which <b>appeared</b> under the pen name “<b>Boz</b>”</span> ⟹ <span class="loc">Soon after <i><b>Sketches by Boz</b></i> <b>appeared</b></span>。<b>书名就是「随笔 ＋ by ＋ 笔名」</b>，连动词都没换。<span class="mk">From then on 把「一篇」推成「一批」，modest reputation 是名气阶梯的第一级（02+++ 节）。</span></div>
+        </div>
+
+        <div class="para">
+          <div class="pname"><span class="qn">⑤ ＝ C（44）</span>《匹克威克》的诞生：约稿、反客为主、画家自杀、换人续作、出版<button class="zbtn" onclick="tz(this)">译</button></div>
+          <p class="en"><span class="clue">Soon after <i>Sketches by Boz</i> appeared, a publishing firm <span class="tk" data-w="approach">approached</span> Dickens to write a story in monthly <span class="tk" data-w="installment">installments</span>, as a <span class="tk" data-w="backdrop">backdrop</span> for a series of <span class="tk" data-w="woodcut">woodcuts</span> by the then-famous artist Robert Seymour, who had <span class="tk" data-w="originate">originated</span> the idea for the story.</span> With <span class="tk" data-w="characteristic">characteristic</span> confidence, Dickens successfully <span class="tk" data-w="insist">insisted</span> that Seymour’s pictures <span class="tk" data-w="illustrate">illustrate</span> his own story instead. After the first installment, Dickens wrote to the artist and asked him to correct a drawing Dickens felt was not <span class="tk" data-w="faithful">faithful</span> enough to his <span class="tk" data-w="prose">prose</span>. Seymour made the change, went into his backyard, and expressed his <span class="tk" data-w="displeasure">displeasure</span> by committing suicide. Dickens and his publishers simply <span class="tk" data-w="presson">pressed on</span> with a new artist. <span class="clue">The comic novel, <i>The <span class="tk" data-w="posthumous">Posthumous</span> Papers of the Pickwick Club</i>, appeared <span class="tk" data-w="serially">serially</span> in 1836 and 1837 and was first published in book form in 1837.</span></p>
+          <div class="zh">《博兹札记》问世后不久，一家出版社找到狄更斯，请他写一个按月分期刊出的故事，给当时颇有名气的画家罗伯特·西摩的一组木刻画当配文——这个故事的点子本就是西摩想出来的。狄更斯带着他一贯的自信，硬是让对方反过来，改由西摩的画为他自己的故事配图，而且成功了。第一期刊出后，狄更斯写信给这位画家，要他修改一幅狄更斯觉得不够贴合自己文字的插图。西摩改了画，随后走进自家后院，以自杀表达了他的不满。狄更斯和出版商干脆换了一位画家，照样往下干。这部喜剧小说——《匹克威克俱乐部遗稿》——于 1836 至 1837 年连载，1837 年首次出版成书。</div>
+          <div class="box" style="margin-top:8px"><span class="bt">🔗 接缝 C → B（全篇最硬之一）</span>本段末给出<b>全称</b> <span class="loc"><i>The Posthumous Papers of the Pickwick Club</i></span> ⟹ 下一段 <span class="loc"><i>The Pickwick Papers</i>, <b>as it is generally known today</b></span>（「这是它今天通行的叫法」）；本段以<b>出版</b>收尾 ⟹ 下一段以<b>成功</b>开头。<span class="mk">本段是全篇最长的「故事段」：画家本是主角，狄更斯是配文的；两句之内主次颠倒（<span class="loc">his own story instead</span>），再两句画家就死了——<b>characteristic confidence</b>（一贯的自信）一个词，替后面的事定了调。</span></div>
+        </div>
+
+        <div class="para">
+          <div class="pname"><span class="qn">⑥ ＝ B（已给定 · 第六段）</span>一举成名：满街都是匹克威克<button class="zbtn" onclick="tz(this)">译</button></div>
+          <p class="en"><span class="clue">The <span class="tk" data-w="runaway">runaway</span> success of <i>The Pickwick Papers</i>, as it is generally known today, <span class="tk" data-w="secure">secured</span> Dickens’s fame.</span> There were Pickwick coats and Pickwick cigars, and the <span class="tk" data-w="plump">plump</span>, <span class="tk" data-w="spectacled">spectacled</span> hero, Samuel Pickwick, became a national <span class="tk" data-w="figure">figure</span>.</p>
+          <div class="zh">《匹克威克外传》（这是它今天通行的叫法）大获成功，奠定了狄更斯的名声。市面上出现了匹克威克外套、匹克威克雪茄，那位胖乎乎、戴眼镜的主人公塞缪尔·匹克威克成了全国家喻户晓的人物。</div>
+          <div class="box" style="margin-top:8px"><span class="bt">🔗 接缝 B → G</span>讲完《匹克威克》的成功 ⟹ 下一段 <span class="loc"><b>After <i>Pickwick</i></b></span>——称呼又短了一截。<span class="mk">Pickwick 外套、Pickwick 雪茄：<b>一个虚构人物的名字变成商品牌子</b>，这是 19 世纪版的「出圈」。喜剧的明快（the sunlight of Pickwick）也在这里铺好，等着下一段的 bleaker 来反衬。</span></div>
+        </div>
+
+        <div class="para">
+          <div class="pname"><span class="qn">⑦ ＝ G（45 · 末段）</span>此后：转向阴暗题材，地位巩固<button class="zbtn" onclick="tz(this)">译</button></div>
+          <p class="en"><span class="clue">After <i>Pickwick</i>, Dickens <span class="tk" data-w="plunge">plunged</span> into a <span class="tk" data-w="bleak">bleaker</span> world.</span> In <i>Oliver Twist</i>, he <span class="tk" data-w="trace">traces</span> an <span class="tk" data-w="orphan">orphan</span>’s <span class="tk" data-w="progress">progress</span> from the <span class="tk" data-w="workhouse">workhouse</span> to the criminal <span class="tk" data-w="slum">slums</span> of London. <i>Nicholas Nickleby</i>, his next novel, combines the darkness of <i>Oliver Twist</i> with the sunlight of <i>Pickwick</i>. The popularity of these novels <span class="tk" data-w="consolidate">consolidated</span> Dickens as a nationally and internationally <span class="tk" data-w="celebrated">celebrated</span> <span class="tk" data-w="manofletters">man of letters</span>.</p>
+          <div class="zh">《匹克威克》之后，狄更斯一头扎进了一个更阴暗的世界。在《雾都孤儿》里，他一路追写一个孤儿的经历：从济贫院，到伦敦的犯罪贫民窟。他的下一部小说《尼古拉斯·尼克尔贝》，把《雾都孤儿》的黑暗与《匹克威克》的明快糅在了一起。这几部小说的风行，巩固了狄更斯作为一位享誉国内外的文人的地位。</div>
+          <div class="box" style="margin-top:8px"><span class="bt">🏁 末段：写到「成名初期」这一站，不是一生的总结</span><span class="loc">workhouse</span>（济贫院）、<span class="loc">criminal slums</span>（犯罪贫民窟）——<b>F 段那个「从未言明的根基」在这里第一次露面</b>：鞋油厂的屈辱变成了孤儿在济贫院里的遭遇。<span class="mk">真题是节选，G 之后狄更斯还写了三十年；「总—分—总」是读出来的效果，<b>定这一格的证据只有 After Pickwick</b>（03+ 节第 2 条）。</span></div>
+        </div>
+
+        <div class="box green">
+          <span class="bt">🧩 通读后的骨架（一句话记住这篇文章）</span>
+          <b>他是 19 世纪最知名的英国小说家（D）→ 出身体面又卑微，12 岁进鞋油厂，父亲因债入狱（F）→ 父亲出狱后他跑腿、学速记、当记者，业余投稿（E）→ 第一篇登出来，以 Boz 为笔名小有名气（A）→ 《博兹札记》后应约写《匹克威克》，画家自杀，换人续作，出版（C）→ 大获成功，主人公成了全国人物（B）→ 此后转向阴暗题材，《雾都孤儿》《尼古拉斯·尼克尔贝》巩固了他的地位（G）。</b>
+          <br><span class="mk">七段只有一条逻辑：<b>时间</b>。但时间不是靠年份标出来的（全篇只有 C 里有年份），<b>是靠每段开头那个「在……之后」</b>：出狱后、首次发表、《博兹札记》问世后、《匹克威克》之后——<b>传记排序排的是这些「之后」</b>。</span>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">04</span>Part B 分诊：四种变体 · 十二篇实做 ＋ 排序题的四种链条</h2>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:680px">
+          <tr><th style="width:14%">变体</th><th style="width:25%">Directions 里的原话</th><th style="width:14%">考什么</th><th>打法与用时</th></tr>
+          <tr><td><b>选句填空</b><br><span style="font-size:.78rem">2008 · 2009 · 2012 · 2013 · 2015</span></td><td><i>some sentences have been removed … two extra choices</i></td><td><b>衔接与连贯</b></td><td>认线 → 正文中途换人称就先按人称分区 → 定空的形态 → <b>每空先读下一句</b> → 先做区里候选最少的空 → 剩下两项问「是不是某个答案的下家、是不是换了杠杆、是不是走反了方向」。<b>6–9 min</b>，能自查</td></tr>
+          <tr><td><b>标题匹配</b><br><span style="font-size:.78rem">2007 · 2016</span></td><td><i>choose the most suitable heading／subheading</i></td><td><b>段落概括</b></td><td>看七项句式 → 引子里的问句先编号 → <b>逐段找主句</b> → 原词算数的前提是它在主句里 → 剩下两项问「是不是总话题、能不能照着做」。<b>5–8 min</b></td></tr>
+          <tr><td><b>观点匹配</b><br><span style="font-size:.78rem">2022</span></td><td><i>match each person … with the statements</i></td><td><b>立场判定</b></td><td>先给每人贴「支持／反对／中间」，再按立场分堆匹配。<b>8–10 min</b></td></tr>
+          <tr class="bad"><td><b>排序题</b><br><span style="font-size:.78rem">2010 · 2011 · 2014 · <b>2017</b></span></td><td><i>reorganize these paragraphs into a coherent text … numbered boxes</i></td><td><b>篇章顺序</b></td><td><b>先数格子</b>（有无多余项）→ <b>认文体</b>（传记 ⟹ 时间接力）→ <b>给每格数候选，候选最少的先做</b> → 先拼块再排块 → 通读验闭合，<b>再拿暗线（称呼链、程度阶梯）验收</b>。<b>7–10 min</b>，能自查</td></tr>
+        </table>
+        </div>
+        <h3 class="sh">排序题的四种链条（同一变体，下刀点不同）</h3>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:640px">
+          <tr><th style="width:12%">年份</th><th style="width:26%">链条特征</th><th style="width:22%">第一刀</th><th>关键证据类型</th></tr>
+          <tr><td class="c">2010</td><td>6 格 7 项 · 已给定 E 在第 5 格</td><td>45（E 只剩一个邻居）</td><td>序数词补中心词（The first…）· 多余项 C 复现最多却偏题</td></tr>
+          <tr><td class="c">2011</td><td>7 格 7 项 · 已给定首段 G 与第 4 格 E</td><td>41（His）或 42（this separation）</td><td>代词紧邻 · 同源词换词性 · 副词呼应粘块 · 书评文体定末段</td></tr>
+          <tr><td class="c">2014</td><td>7 格 7 项 · 已给定第 2 格 A 与第 4 格 E · 首段空着</td><td>41（首段排除法，唯一零依赖）</td><td>设问开篇 · however 拉回主干 · 先古后今 · 空中／地面对照 · 例子回收方法 · one／another 粘块</td></tr>
+          <tr class="bad"><td class="c"><b>2017</b></td><td>7 格 7 项 · 已给定首段 D（总评）与第 6 格 B（成名）</td><td><b>41（生平起点）或 44（叫法说明）</b>，45 也只有一个候选</td><td>传记骨架 · <b>动作预设</b>（imprisoned／release · submitted／published · X／After X）· <b>称呼由全到简</b> · 名气阶梯验收</td></tr>
+        </table>
+        </div>
+        <p style="font-size:.9rem;margin-top:10px">📊 <b>十二篇战绩</b>：2007 标题 5/5 · 2022 观点 5/5 · 2008 选句 5/5 · <b>2009 选句 3/5</b> · 2010 排序 5/5 · 2011 排序 5/5 · 2012 选句 5/5 · 2013 选句 5/5 · 2014 排序 5/5（不计完整盲做）· 2015 选句 5/5（计入 4/4）· 2016 标题 5/5 · <b>2017 排序 5/5（⚠️ 不计完整盲做：来源、脉络、A 项分析提前入眼）</b>。<span class="mk">四篇排序题 20/20，十二篇里唯一的失分仍是 2009 选句填空的一次对调；但排序题有两篇（2014、2017）都是脉络提前入眼，<b>排序题的真实手感还要靠 2018 之后的盲做来验</b>。</span></p>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">05</span>长难句精析（10 句 · 本篇黄皮书无此栏目，全部原创）</h2>
+        <p style="font-size:.85rem;color:var(--muted);margin-bottom:10px">传记的句子不靠长度难，靠<b>插入</b>：前置同位语、破折号同位语、句末分词、非限制性定语从句夹在主谓之间、嵌入式的 felt。每句先找主干，再把插进来的东西一块块拆下来。</p>
+
+        <div class="ls" id="s1">
+          <div class="s"><b>s1｜D 段②句（前置同位语）</b>　<span class="mk">A moralist, satirist, and social reformer</span>, <b>Dickens crafted</b> complex plots and striking characters <span class="mk2">that capture the panorama of English society</span>.</div>
+          <div class="an">
+            <div>▸ 句首三个名词<b>不是主语</b>——主语是逗号后的 Dickens。<span class="mk">A moralist, satirist, and social reformer</span> 是<b>前置的同位语</b>（＝ As a moralist…），冠词 A 只写一次、三个身份共用。</div>
+            <div>▸ <span class="mk2">that capture …</span> 修饰 plots and characters（复数，所以 capture 不加 s）；时态用一般现在时，因为作品今天依然在「描绘」。</div>
+            <div>▸ 写作可套：<i>A teacher, writer, and volunteer, she …</i>——用一个前置同位语把人物的三重身份压进一句。</div>
+          </div>
+          <div class="tr">译：作为一位道德家、讽刺作家和社会改革者，狄更斯精心编织复杂的情节，塑造鲜明的人物，描绘出英国社会的全景。</div>
+        </div>
+
+        <div class="ls" id="s2">
+          <div class="s"><b>s2｜F 段②句（破折号后的同位语 ＋ but 让步）</b>　<b>His father was a clerk in the British Navy pay office</b>—<span class="mk">a respectable position</span>, <span class="mk2">but with little social status</span>.</div>
+          <div class="an">
+            <div>▸ 破折号后面不是新句子，是给 <b>a clerk in … pay office</b> 下的<b>评价性同位语</b>：a respectable position。</div>
+            <div>▸ <span class="mk2">but with little social status</span> 省略了 it was a position：<b>「体面，但没地位」</b>——这一句定下了全段的基调：一个夹在体面与卑微之间的家庭。</div>
+          </div>
+          <div class="tr">译：他的父亲是英国海军军饷处的一名职员——职位体面，社会地位却不高。</div>
+        </div>
+
+        <div class="ls" id="s3">
+          <div class="s"><b>s3｜F 段③句（插入同位语 ＋ 句中完成式分词 ＋ and 并列）</b>　<b>His paternal grandparents</b>, <span class="mk">a steward and a housekeeper</span>, <b>possessed even less status</b>, <span class="mk2">having been servants</span>, and <b>Dickens later concealed their background</b>.</div>
+          <div class="an">
+            <div>▸ 两个并列分句：<b>grandparents possessed …</b> ＋ <b>Dickens concealed …</b>，由 and 连接。</div>
+            <div>▸ <span class="mk2">having been servants</span>：<b>完成式分词作原因状语</b>＝ because they had been servants。「做过仆人」是在「地位更低」<b>之前</b>的事，所以用完成式；它解释的是前面的判断。<span class="mk">黄皮书译「一直都是仆人」，把完成读成了持续，也丢了因果（03+ 节第 3 条）。</span></div>
+            <div>▸ <b>even less</b>：比父亲（little social status）还要低一档，even 修饰比较级。</div>
+          </div>
+          <div class="tr">译：他的祖父母，一个是男管家、一个是女管家，因为做过仆人，地位更低，狄更斯后来一直隐瞒他们的出身。</div>
+        </div>
+
+        <div class="ls" id="s4">
+          <div class="s"><b>s4｜F 段⑥句（force sb out of … to do ＋ 同位语 ＋ where 定从）</b>　<b>The family’s increasing poverty forced Dickens out of school</b> <span class="mk">at age 12</span> <span class="mk2">to work in Warren’s Blacking Warehouse</span>, <span class="mk3">a shoe-polish factory</span>, <span class="mk">where the other working boys mocked him as “the young gentleman.”</span></div>
+          <div class="an">
+            <div>▸ 主干 <b>poverty forced Dickens out of school</b>：「贫困把他逼出了学校」——无生命主语 ＋ force，中文要转成「家境贫困，他被迫辍学」。</div>
+            <div>▸ <span class="mk2">to work in …</span> 是结果兼目的：辍学<b>去</b>做工。<span class="mk3">a shoe-polish factory</span> 是专名 Warren’s Blacking Warehouse 的同位语（解释 blacking＝鞋油）。</div>
+            <div>▸ <b>where</b> 引导非限制性定语从句，先行词是那家工厂；<b>mock sb as …</b>＝嘲笑某人是……。「小绅士」是反讽：一个童工被叫作绅士，因为他出身比别的童工体面——<b>又是那种「体面与卑微」的错位</b>。</div>
+          </div>
+          <div class="tr">译：家境日益贫困，狄更斯 12 岁就被迫辍学，到华伦黑鞋油作坊——一家鞋油厂——做工，那里的其他童工嘲笑他是「小绅士」。</div>
+        </div>
+
+        <div class="ls" id="s5">
+          <div class="s"><b>s5｜F 段⑨句（even 强调 ＋ although 让步）</b>　<b>He could not confide them</b> <span class="mk">even to his wife</span>, <span class="mk2">although they provide the unacknowledged foundation of his fiction</span>.</div>
+          <div class="an">
+            <div>▸ <b>confide sth to sb</b>：向某人吐露（秘密）；them 回指上一句的 humiliations 与 labor。</div>
+            <div>▸ <span class="mk2">although …</span>：他从不说出口，<b>可</b>这些经历一直在他的小说里——这一句把「秘密」与「作品」连起来，也是 G 段 workhouse／slums 的伏笔。</div>
+            <div>▸ <b>unacknowledged</b>：un- ＋ acknowledge（承认）＋ -ed ＝「未被承认的、没说出来的」。provide 用一般现在时：作品至今如此。</div>
+          </div>
+          <div class="tr">译：他连妻子都无法倾诉，尽管这些经历是他小说创作从未言明的根基。</div>
+        </div>
+
+        <div class="ls" id="s6">
+          <div class="s"><b>s6｜E 段③句（主谓之间夹非限制性定从 ＋ 插入的 especially 短语）</b>　<b>At the same time, Dickens</b>, <span class="mk">who had a reporter’s eye for transcribing the life around him</span>, <span class="mk2">especially anything comic or odd</span>, <b>submitted short sketches to obscure magazines</b>.</div>
+          <div class="an">
+            <div>▸ 主干只有 <b>Dickens submitted short sketches to obscure magazines</b>；中间两段都是插入。</div>
+            <div>▸ <span class="mk">who had a reporter’s eye for …</span>：have an eye for sth＝对……有眼光；<b>a reporter’s eye</b> 呼应上一句他真当过记者。</div>
+            <div>▸ <span class="mk2">especially anything comic or odd</span> 是 the life around him 的<b>补充说明</b>（不是 submitted 的宾语），前后两个逗号框住它。</div>
+          </div>
+          <div class="tr">译：与此同时，狄更斯有一双记者的眼睛，善于把身边的生活——尤其是一切滑稽或古怪的事——记录下来，他写了一些短篇随笔，投给不知名的杂志。</div>
+        </div>
+
+        <div class="ls" id="s7">
+          <div class="s"><b>s7｜C 段①句（时间状语从句 ＋ 不定式 ＋ as 短语 ＋ 定从）</b>　<span class="mk">Soon after <i>Sketches by Boz</i> appeared</span>, <b>a publishing firm approached Dickens</b> <span class="mk2">to write a story in monthly installments</span>, <span class="mk3">as a backdrop for a series of woodcuts by the then-famous artist Robert Seymour</span>, <span class="mk">who had originated the idea for the story</span>.</div>
+          <div class="an">
+            <div>▸ 主干 <b>a publishing firm approached Dickens</b>：approach 这里是「<b>找……洽谈、接洽</b>」，不是「走近」。</div>
+            <div>▸ <span class="mk2">to write …</span> 是约他做什么；<span class="mk3">as a backdrop for …</span> 是这个故事的<b>用途</b>——给画「当背景」，<b>文字是配角</b>，下一句狄更斯才反客为主。</div>
+            <div>▸ 最后的 <b>who</b> 修饰紧挨着的 Robert Seymour；<b>had originated</b> 用过去完成时：点子早在约稿之前就是西摩的。</div>
+          </div>
+          <div class="tr">译：《博兹札记》问世后不久，一家出版社找到狄更斯，请他写一个按月分期刊出的故事，给当时颇有名气的画家罗伯特·西摩的一组木刻画当配文——这个故事的点子本就是西摩想出来的。</div>
+        </div>
+
+        <div class="ls" id="s8">
+          <div class="s"><b>s8｜C 段②句（insist that ＋ 虚拟：动词原形）</b>　With characteristic confidence, <b>Dickens successfully insisted</b> <span class="mk">that Seymour’s pictures illustrate his own story</span> <span class="mk2">instead</span>.</div>
+          <div class="an">
+            <div>▸ 注意 <span class="mk">illustrate</span>：主语是复数 pictures，看不出变化；但这里是 <b>insist that ＋ (should) do</b> 的虚拟语气——「坚持要求」时从句用原形，而不是过去式 illustrated。</div>
+            <div>▸ 对照：insist that he <b>was</b> right（坚持认为，陈述事实，不用虚拟）vs insist that he <b>(should) go</b>（坚持要求，用虚拟）。</div>
+            <div>▸ <span class="mk2">instead</span>：「反过来」——原计划是文配画，现在是画配文。<b>characteristic</b> 在这里是形容词「一贯的、典型的」，不是名词「特征」。</div>
+          </div>
+          <div class="tr">译：狄更斯带着他一贯的自信，硬是让对方反过来，改由西摩的画为他自己的故事配图，而且成功了。</div>
+        </div>
+
+        <div class="ls" id="s9">
+          <div class="s"><b>s9｜C 段③句（省略 that 的定从里嵌着 Dickens felt）</b>　After the first installment, <b>Dickens wrote to the artist and asked him to correct</b> <span class="mk">a drawing</span> <span class="mk2">Dickens felt</span> <span class="mk3">was not faithful enough to his prose</span>.</div>
+          <div class="an">
+            <div>▸ 难点在后半截：<span class="mk">a drawing</span> ＋ <span class="mk2">Dickens felt</span> ＋ <span class="mk3">was not faithful …</span>。还原：a drawing (that) Dickens felt <b>(it)</b> was not faithful …——<b>that 是 was 的主语，Dickens felt 是插进定语从句里的一层</b>（嵌入式定语从句，类似 the man I think is honest）。</div>
+            <div>▸ 读的时候把 <span class="mk2">Dickens felt</span> 用括号括起来：a drawing (Dickens felt) was not faithful enough to his prose ＝「一幅（狄更斯觉得）不够贴合他文字的画」。</div>
+            <div>▸ <b>faithful to</b>：忠实于（原文、原作），翻译与改编里的常用词。</div>
+          </div>
+          <div class="tr">译：第一期刊出后，狄更斯写信给这位画家，要他修改一幅狄更斯觉得不够贴合自己文字的插图。</div>
+        </div>
+
+        <div class="ls" id="s10">
+          <div class="s"><b>s10｜B 段①句（as 引导的「叫法说明」插在主谓之间）</b>　<b>The runaway success of <i>The Pickwick Papers</i></b>, <span class="mk">as it is generally known today</span>, <b>secured Dickens’s fame</b>.</div>
+          <div class="an">
+            <div>▸ 主干 <b>success secured fame</b>：成功奠定了名声。<b>runaway</b> 作定语＝「势不可挡的、一发不可收的」，不是「逃跑的」。</div>
+            <div>▸ <span class="mk">as it is generally known today</span>：as 是关系代词，指代那个书名——还原成 it is generally known <b>as</b> <i>The Pickwick Papers</i> today，<b>「这是它今天通行的叫法」</b>。说的是<b>名字</b>，不是「广为人知」。</div>
+            <div>▸ <b>排序题的钩子就在这个插入语里</b>：一说「今天通常这么叫」，就等于承认上文用过另一个名字（C 末的全称）。</div>
+          </div>
+          <div class="tr">译：《匹克威克外传》（这是它今天通行的叫法）大获成功，奠定了狄更斯的名声。</div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">06</span>可搬进作文的素材（本篇是「逆境与成才 / 坚持与起步 / 自信与主见 / 成功之后」四个话题的弹药库）</h2>
+        <div class="wb">
+          <div class="wbi"><div class="p">The humiliations of his childhood formed his greatest wound, yet they provide the foundation of his work.</div><div class="u">童年的屈辱成了他最深的伤口，却也成了他作品的根基。—— <b>论逆境成才，化用 F 段⑧⑨句</b></div></div>
+          <div class="wbi"><div class="p">He taught himself shorthand to get an even better job.</div><div class="u">他自学速记，为自己找到更好的工作。—— <b>论自学与自我提升，一个现成的例子句</b></div></div>
+          <div class="wbi"><div class="p">He had a reporter’s eye for the life around him.</div><div class="u">他对身边的生活有一双记者的眼睛。—— <b>论观察生活是创作（和一切学问）的起点</b></div></div>
+          <div class="wbi"><div class="p">The first published piece brought tears to his eyes.</div><div class="u">第一篇被发表的作品让他热泪盈眶。—— <b>论「第一步」的意义，适合写坚持的开头</b></div></div>
+          <div class="wbi"><div class="p">From then on, his work earned him a modest reputation.</div><div class="u">从那以后，他的作品为他赢得了小小的名气。—— <b>论积少成多：modest 是一个很好用的「低调」形容词</b></div></div>
+          <div class="wbi"><div class="p">With characteristic confidence, he successfully insisted on doing it his own way.</div><div class="u">凭着一贯的自信，他坚持按自己的方式来，而且成功了。—— <b>论自信与主见（化用 C 段②句）</b></div></div>
+          <div class="wbi"><div class="p">The runaway success secured his fame, but he did not rest on it.</div><div class="u">那次势不可挡的成功奠定了他的名声，但他没有躺在上面。—— <b>论成功之后：接 G 段「转向更难写的题材」</b></div></div>
+          <div class="wbi"><div class="p">It combines the darkness of reality with the sunlight of hope.</div><div class="u">它把现实的黑暗与希望的阳光糅在了一起。—— <b>论文学／艺术的价值；也可写「辩证看问题」</b></div></div>
+        </div>
+        <div class="box green">
+          <span class="bt">✍️ 一个可迁移的写作结构（本篇全文的骨架）</span>
+          <b>先给人物定评（D）→ 出身与挫折（F）→ 靠自己一步步往上走（E）→ 第一个小成果（A）→ 抓住机会、坚持主见（C）→ 大成功（B）→ 成功之后不止步（G）。</b>
+          <span class="mk">大作文写「榜样」「逆境」「坚持」题时，举一个人物例子最稳的就是这条线：<b>定评一句 ＋ 挫折一句 ＋ 转折一句 ＋ 结果一句</b>，四句写完一个例子段。</span>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">07</span>词汇复盘（点卡片看详情 · 共 <span id="vcount"></span> 张，含 <b>28 处熟词僻义</b>）</h2>
+        <p style="font-size:.8rem;color:var(--muted);margin-bottom:12px">⭐ 本篇熟词僻义的共同规律：<b>考的是「传记与出版语境里的第二义项」</b>——craft 精心打造 · striking 鲜明的 · Europe 欧洲大陆 · labor 劳作 · wound 心灵创伤 · foundation 根基 · fiction 小说 · release 获释 · odd 古怪的 · submit 投稿 · obscure 不知名的 · sketch 随笔 · modest 小小的 · approach 接洽 · installment 一期连载 · backdrop 背景（配角） · characteristic 一贯的 · illustrate 配插图 · faithful 忠实于原作 · press on 继续干下去 · runaway 势不可挡的 · secure 奠定 · figure 人物 · plunge 投身 · progress 历程 · man of letters 文人。<span class="mk">不是生词，是熟词换了行当：submit 不是「屈服」、sketch 不是「素描」、figure 不是「数字」、letters 不是「信件」。</span></p>
+        <div id="vgrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px"></div>
+      </section>
+
+      <footer>2017 英语（一）Part B · 狄更斯小传 ｜ 答案 41F 42E 43A 44C 45G（<b>零多余项</b>）· 全文顺序 D—F—E—A—C—B—G ｜ ⚠️ Claude 独立作答 5/5，不计完整盲做（本篇精讲首页的来源、脉络与 A 项分析在做 T4 时已入眼） ｜ 本页解析为 Claude 独立撰写，与黄皮书精讲交叉核对：<b>答案零书误</b>；B 段 as it is generally known today 译法、「总—分—总」理由、F 段 having been servants 译法三处商榷（见 03+ 节）</footer>
+    </main>
+
+    <aside>
+      <div id="panel"><div class="hint">&#128070; 点正文里的<b>黄色高亮词</b>，或下方词汇卡，这里出详解<br><br>选中任意英文可弹出「查词」按钮</div></div>
+    </aside>
+  </div>
+</div>
+<button id="yd">&#128269; 有道查词</button>
+
+<script>
+const OPTS = {
+  A:["The first published sketch, “A Dinner at Poplar Walk” brought tears to Dickens’s eyes when he discovered it in the pages of <i>The Monthly Magazine</i>. From then on his sketches, which appeared under the pen name “Boz” in <i>The Evening Chronicle</i>, earned him a modest reputation.",
+     "他第一篇发表的随笔《白杨径晚宴》——当他在《每月杂志》上翻到它时，热泪夺眶而出。从那以后，他以「博兹」为笔名在《晚间纪事报》上发表的随笔，为他赢得了小小的名气。",
+     "头：<b>The first published sketch</b> —— 要上文先有「写了、投了」｜尾：<b>under the pen name “Boz”</b> —— 先交代笔名，等着下一段用它拼书名；modest reputation ＝ 名气阶梯第一级",
+     "⟹ 归位 43 · 接 E 末的 submitted，交棒给 C 首的 Sketches by Boz"],
+  B:["The runaway success of <i>The Pickwick Papers</i>, as it is generally known today, secured Dickens’s fame. There were Pickwick coats and Pickwick cigars, and the plump, spectacled hero, Samuel Pickwick, became a national figure.",
+     "《匹克威克外传》（这是它今天通行的叫法）大获成功，奠定了狄更斯的名声。市面上出现了匹克威克外套、匹克威克雪茄，那位胖乎乎、戴眼镜的主人公塞缪尔·匹克威克成了全国家喻户晓的人物。",
+     "头：<b>The runaway success of … , as it is generally known today</b> —— 「今天通行的叫法」要上文先给出别的名字；success 要上文先有出版｜尾：<b>national figure</b> —— 成名，此后的事交给下一段",
+     "⟹ <b>题目已固定为第 6 格</b>· 它同时是 44（全称 → 简称）与 45（After Pickwick）两格的判据来源"],
+  C:["Soon after <i>Sketches by Boz</i> appeared, a publishing firm approached Dickens to write a story in monthly installments, as a backdrop for a series of woodcuts by the then-famous artist Robert Seymour, who had originated the idea for the story. With characteristic confidence, Dickens successfully insisted that Seymour’s pictures illustrate his own story instead. After the first installment, Dickens wrote to the artist and asked him to correct a drawing Dickens felt was not faithful enough to his prose. Seymour made the change, went into his backyard, and expressed his displeasure by committing suicide. Dickens and his publishers simply pressed on with a new artist. The comic novel, <i>The Posthumous Papers of the Pickwick Club</i>, appeared serially in 1836 and 1837 and was first published in book form in 1837.",
+     "《博兹札记》问世后不久，一家出版社找到狄更斯，请他写一个按月分期刊出的故事，给当时颇有名气的画家罗伯特·西摩的一组木刻画当配文——这个故事的点子本就是西摩想出来的。狄更斯带着他一贯的自信，硬是让对方反过来，改由西摩的画为他自己的故事配图，而且成功了。第一期刊出后，狄更斯写信给这位画家，要他修改一幅狄更斯觉得不够贴合自己文字的插图。西摩改了画，随后走进自家后院，以自杀表达了他的不满。狄更斯和出版商干脆换了一位画家，照样往下干。这部喜剧小说——《匹克威克俱乐部遗稿》——于 1836 至 1837 年连载，1837 年首次出版成书。",
+     "头：<b>Soon after <i>Sketches by Boz</i> appeared</b> —— 要上文先交代 Boz 是谁｜尾：<b>全称 <i>The Posthumous Papers of the Pickwick Club</i> ＋ first published in book form</b> —— 等着下一段的简称与「成功」",
+     "⟹ 归位 44（紧挨已给定的 B 之前）· 全称在前、通行简称在后，出版在前、成功在后"],
+  D:["Charles Dickens is probably the best-known and, to many people, the greatest English novelist of the 19th century. A moralist, satirist, and social reformer, Dickens crafted complex plots and striking characters that capture the panorama of English society.",
+     "查尔斯·狄更斯大概是 19 世纪最知名的英国小说家，在许多人看来也是最伟大的。作为一位道德家、讽刺作家和社会改革者，狄更斯精心编织复杂的情节，塑造鲜明的人物，描绘出英国社会的全景。",
+     "头：<b>Charles Dickens is probably the best-known …</b> —— 人物全名 ＋ 一生的定评，传记的标准开头｜尾：<b>capture the panorama of English society</b> —— 总评，不预告任何一件具体的事",
+     "⟹ <b>题目已固定为第 1 格</b>· 它定下了文体（人物传记 ⟹ 时间顺序），但不给 41 任何词面钩子"],
+  E:["Soon after his father’s release from prison, Dickens got a better job as errand boy in law offices. He taught himself shorthand to get an even better job later as a court stenographer and as a reporter in Parliament. At the same time, Dickens, who had a reporter’s eye for transcribing the life around him, especially anything comic or odd, submitted short sketches to obscure magazines.",
+     "父亲出狱后不久，狄更斯找到一份好一点的差事：在律师事务所当跑腿的听差。他自学速记，后来又找到更好的工作，当上了法庭速记员和议会记者。与此同时，狄更斯有一双记者的眼睛，善于把身边的生活——尤其是一切滑稽或古怪的事——记录下来，他写了一些短篇随笔，投给不知名的杂志。",
+     "头：<b>Soon after his father’s release from prison</b> —— release 预设上文讲过入狱；<b>a better job</b> 要一个更差的工作作参照｜尾：<b>submitted short sketches to obscure magazines</b> —— 投稿之后该是发表",
+     "⟹ 归位 42 · 接 F 末的 imprisoned，交棒给 A 首的 first published"],
+  F:["Dickens was born in Portsmouth, on England’s southern coast. His father was a clerk in the British Navy pay office—a respectable position, but with little social status. His paternal grandparents, a steward and a housekeeper, possessed even less status, having been servants, and Dickens later concealed their background. Dickens’s mother supposedly came from a more respectable family. Yet two years before Dickens’s birth, his mother’s father was caught stealing and fled to Europe, never to return. The family’s increasing poverty forced Dickens out of school at age 12 to work in Warren’s Blacking Warehouse, a shoe-polish factory, where the other working boys mocked him as “the young gentleman.” His father was then imprisoned for debt. The humiliations of his father’s imprisonment and his labor in the blacking factory formed Dickens’s greatest wound and became his deepest secret. He could not confide them even to his wife, although they provide the unacknowledged foundation of his fiction.",
+     "狄更斯出生在英格兰南部海岸的朴茨茅斯。他的父亲是英国海军军饷处的一名职员——职位体面，社会地位却不高。他的祖父母，一个是男管家、一个是女管家，因为做过仆人，地位更低，狄更斯后来一直隐瞒他们的出身。据说狄更斯的母亲出身于一个更体面的家庭。然而就在狄更斯出生前两年，他的外祖父因偷窃被抓，逃往欧洲大陆，再也没有回来。家境日益贫困，狄更斯 12 岁就被迫辍学，到华伦黑鞋油作坊——一家鞋油厂——做工，那里的其他童工嘲笑他是「小绅士」。随后，他的父亲因欠债入狱。父亲入狱的屈辱和自己在鞋油厂的劳作，成了狄更斯最深的伤口，也成了他最深藏的秘密。他连妻子都无法倾诉，尽管这些经历是他小说创作从未言明的根基。",
+     "头：<b>Dickens was born in Portsmouth</b> —— <b>七段里唯一从零讲起的段首</b>（除已给定的总评 D）｜尾：最后<b>发生</b>的事是 ⑦ <b>His father was then imprisoned for debt</b>；⑧⑨ 是评论（伤口、秘密、小说的根基）",
+     "⟹ 归位 41 · 传记的叙事起点；入狱交棒给 E 首的 release"],
+  G:["After <i>Pickwick</i>, Dickens plunged into a bleaker world. In <i>Oliver Twist</i>, he traces an orphan’s progress from the workhouse to the criminal slums of London. <i>Nicholas Nickleby</i>, his next novel, combines the darkness of <i>Oliver Twist</i> with the sunlight of <i>Pickwick</i>. The popularity of these novels consolidated Dickens as a nationally and internationally celebrated man of letters.",
+     "《匹克威克》之后，狄更斯一头扎进了一个更阴暗的世界。在《雾都孤儿》里，他一路追写一个孤儿的经历：从济贫院，到伦敦的犯罪贫民窟。他的下一部小说《尼古拉斯·尼克尔贝》，把《雾都孤儿》的黑暗与《匹克威克》的明快糅在了一起。这几部小说的风行，巩固了狄更斯作为一位享誉国内外的文人的地位。",
+     "头：<b>After <i>Pickwick</i></b> —— 要上文先讲完《匹克威克》；bleaker 要一个「不那么暗」的参照（comic novel）｜尾：<b>nationally and internationally celebrated</b> —— 名气阶梯的顶端，读着像收尾",
+     "⟹ 归位 45（末段）· 零多余项下白送；定它的是 After Pickwick，不是总结感"],
+};
+
+const EXTRA = [];
+
+const V = {
+  novelist:{w:"novelist",ipa:"/ˈnɒvəlɪst/",pos:"n.",tags:["core","write"],cn:"小说家",en:"a person who writes novels",ex:"the greatest English novelist of the 19th century",mem:"novel（长篇小说）＋ -ist（……的人）。⚠️ novel 作形容词是「新颖的」：a novel idea。",syn:"writer · author · storyteller",conf:"<b>novelist</b> 小说家 vs <b>novel</b> adj. 新奇的 vs <b>novelty</b> n. 新鲜事物。"},
+  moralist:{w:"moralist",ipa:"/ˈmɒrəlɪst/",pos:"n.",tags:["core"],cn:"道德家，道德说教者",en:"a person who has strong views about right and wrong and wants others to follow them",ex:"A moralist, satirist, and social reformer",mem:"moral（道德的）＋ -ist。狄更斯的小说几乎都有明确的善恶判断，所以称他为 moralist；有时略带贬义「好说教的人」。",syn:"preacher · ethicist",conf:"<b>moralist</b> 道德家 vs <b>moralistic</b> 说教的（贬义）vs <b>morale</b> 士气。"},
+  satirist:{w:"satirist",ipa:"/ˈsætərɪst/",pos:"n.",tags:["core"],cn:"讽刺作家",en:"a writer who uses humour to criticize people or ideas",ex:"A moralist, satirist, and social reformer",mem:"satire（讽刺作品）＋ -ist。satirize v. 讽刺；satirical adj. 讽刺的。",syn:"humorist · critic · parodist",conf:"<b>satire</b>（讽刺，借笑批评）vs <b>sarcasm</b>（挖苦，冷言冷语）vs <b>irony</b>（反讽，字面与本意相反）。"},
+  reformer:{w:"reformer",ipa:"/rɪˈfɔːmə(r)/",pos:"n.",tags:["core","write"],cn:"改革者",en:"a person who works to improve society or a system",ex:"A moralist, satirist, and social reformer",mem:"re-（重新）＋ form（形成）＋ -er。social reformer 社会改革者：狄更斯的小说推动了济贫院、债务监狱等制度的改革讨论。",syn:"campaigner · activist · progressive",conf:"<b>reform</b>（改良，渐进）vs <b>revolution</b>（革命，推翻）。"},
+  craft:{w:"craft",ipa:"/krɑːft/",pos:"v.",tags:["poly","core","write"],cn:"（此处 v.）精心制作，精心编织",en:"to make something with great skill and care",ex:"Dickens crafted complex plots and striking characters",mem:"⚠️ 熟义是名词「手艺；工艺；船只」；作动词＝<b>像手艺人一样精心打造</b>。写作常用：a carefully crafted speech（精心准备的讲话）。",syn:"create · fashion · shape · design",conf:"<b>craft</b> v. 精心制作 vs <b>draft</b> v. 起草。"},
+  plot:{w:"plot",ipa:"/plɒt/",pos:"n.",tags:["core"],cn:"情节",en:"the series of events in a story",ex:"Dickens crafted complex plots and striking characters",mem:"plot 另义「阴谋、密谋」（a plot to kill the king）和「一小块地」（a vegetable plot）。本句与 characters 并列 ⟹ 情节。",syn:"storyline · narrative · scenario",conf:"<b>plot</b> 情节 vs <b>theme</b> 主题 vs <b>setting</b> 背景。"},
+  striking:{w:"striking",ipa:"/ˈstraɪkɪŋ/",pos:"adj.",tags:["poly","core","write"],cn:"（此处）鲜明的，引人注目的",en:"very noticeable or unusual",ex:"complex plots and striking characters",mem:"⚠️ 与「打击 strike」「罢工 strike」无关的形容词义：<b>令人印象深刻的</b>。a striking contrast 鲜明的对比——写作高频。",syn:"remarkable · vivid · memorable · impressive",conf:"<b>striking</b> 引人注目的 vs <b>strikingly</b> 显著地（strikingly similar）。"},
+  panorama:{w:"panorama",ipa:"/ˌpænəˈrɑːmə/",pos:"n.",tags:["core","write"],cn:"全景；全貌",en:"a complete view or description of a subject",ex:"capture the panorama of English society",mem:"pan-（全）＋ -orama（景象）。手机拍照的「全景模式」就是 panorama。<b>capture the panorama of …</b>＝描绘……的全景。",syn:"overview · survey · sweep",conf:"<b>panorama</b> 全景 vs <b>panoramic</b> adj. 全景的。"},
+  clerk:{w:"clerk",ipa:"/klɑːk/",pos:"n.",tags:["core"],cn:"职员，办事员",en:"a person who keeps records or accounts in an office",ex:"His father was a clerk in the British Navy pay office",mem:"英音 /klɑːk/，美音 /klɜːrk/。bank clerk 银行职员；美式里还可指店员（sales clerk）。",syn:"office worker · official · assistant",conf:"<b>clerk</b> 职员 vs <b>clerical</b> adj. 办事员的；神职的。"},
+  status:{w:"status",ipa:"/ˈsteɪtəs/",pos:"n.",tags:["poly","core","write"],cn:"（此处）社会地位，身份",en:"a person’s social or professional position",ex:"a respectable position, but with little social status",mem:"⚠️ 熟义「状态」（the status of the project）；本段 social status＝<b>社会地位</b>，连用三次：little → even less → 母亲家「more respectable」。",syn:"standing · rank · position · prestige",conf:"<b>status</b> 地位 vs <b>statue</b> 雕像 vs <b>stature</b> 身高；声望。"},
+  paternal:{w:"paternal",ipa:"/pəˈtɜːnl/",pos:"adj.",tags:["core"],cn:"父系的；父亲的",en:"related through the father",ex:"His paternal grandparents, a steward and a housekeeper",mem:"patr-（父）：patriot 爱国者（爱祖国）、pattern。paternal grandparents＝<b>祖父母</b>（爸爸的父母）；maternal grandparents＝外祖父母。",syn:"fatherly · patrilineal",conf:"<b>paternal</b> 父系的 vs <b>maternal</b> 母系的。本段 his mother’s father ＝ 外祖父。"},
+  steward:{w:"steward",ipa:"/ˈstjuːəd/",pos:"n.",tags:["core"],cn:"（大户人家的）管家",en:"a man employed to manage a large house",ex:"a steward and a housekeeper",mem:"今天多指飞机、轮船上的乘务员（stewardess 空姐）；旧时指<b>替主人管理家产的男管家</b>，与 housekeeper（女管家）成对。",syn:"manager · butler · attendant",conf:"<b>steward</b> 管家／乘务员 vs <b>stewardship</b> 管理、看护（environmental stewardship）。"},
+  conceal:{w:"conceal",ipa:"/kənˈsiːl/",pos:"v.",tags:["core","write"],cn:"隐瞒，隐藏",en:"to hide something or keep it secret",ex:"Dickens later concealed their background",mem:"con-（加强）＋ ceal（藏）。conceal the truth 隐瞒真相。与后文 deepest secret、could not confide 同一条「藏」的线。",syn:"hide · cover up · keep secret",conf:"<b>conceal</b> 隐瞒 vs <b>reveal</b> 揭示——反义一对。"},
+  supposedly:{w:"supposedly",ipa:"/səˈpəʊzɪdli/",pos:"adv.",tags:["core"],cn:"据说，按说",en:"according to what is generally believed, though not certain",ex:"Dickens’s mother supposedly came from a more respectable family",mem:"<b>作者不打包票的信号词</b>：据说如此，但紧接着 Yet 就给出反例（外祖父偷窃潜逃）。阅读题里 supposedly、allegedly 后面常跟反转。",syn:"reportedly · allegedly · apparently",conf:"<b>supposedly</b> 据说 vs <b>supposed to</b> 应该（You’re supposed to be here）。"},
+  flee:{w:"flee",ipa:"/fliː/",pos:"v.",tags:["core"],cn:"逃离，逃跑",en:"to leave a place quickly to escape danger",ex:"was caught stealing and fled to Europe, never to return",mem:"flee – <b>fled</b> – fled。refugee（难民）同源思路。<b>never to return</b>：不定式表意外结果，「再也没回来」。",syn:"escape · run away · take flight",conf:"<b>flee</b>（fled）逃 vs <b>fly</b>（flew）飞 vs <b>flea</b> 跳蚤。"},
+  europe:{w:"Europe",ipa:"/ˈjʊərəp/",pos:"n.",tags:["poly"],cn:"（英国语境）欧洲大陆",en:"(in British use) the continent of Europe, not including Britain",ex:"fled to Europe, never to return",mem:"⚠️ 英国人说 go to Europe、fled to Europe，常指<b>英吉利海峡对岸的欧洲大陆</b>（the Continent），不包括不列颠本身——所以「逃往欧洲」要译成「逃往欧洲大陆」。",syn:"the Continent · mainland Europe",conf:"<b>the Continent</b>（英式）＝欧洲大陆 vs <b>continental</b> 欧陆的（continental breakfast）。"},
+  poverty:{w:"poverty",ipa:"/ˈpɒvəti/",pos:"n.",tags:["core","write"],cn:"贫困",en:"the state of being poor",ex:"The family’s increasing poverty forced Dickens out of school",mem:"poor → poverty。写作：lift people out of poverty（帮人脱贫）、poverty line（贫困线）。",syn:"hardship · deprivation · want",conf:"<b>poverty</b> 贫困 vs <b>property</b> 财产——形近。"},
+  blacking:{w:"blacking",ipa:"/ˈblækɪŋ/",pos:"n.",tags:["core"],cn:"黑色鞋油",en:"black polish for shoes",ex:"Warren’s Blacking Warehouse, a shoe-polish factory",mem:"black 作动词＝涂黑，blacking＝涂黑用的东西＝鞋油。原文紧跟同位语 a shoe-polish factory 替你解释了——<b>题目自带释义的词，就是作者知道你不认识</b>。",syn:"shoe polish",conf:"<b>blacking</b> 鞋油 vs <b>blackout</b> 停电；昏厥。"},
+  mock:{w:"mock",ipa:"/mɒk/",pos:"v.",tags:["core","write"],cn:"嘲笑，嘲弄",en:"to laugh at someone in an unkind way",ex:"where the other working boys mocked him as “the young gentleman.”",mem:"<b>mock sb as …</b>＝嘲笑某人是……。作形容词＝模拟的：mock exam 模拟考试。",syn:"ridicule · tease · make fun of",conf:"<b>mock</b> v. 嘲笑 / adj. 模拟的 vs <b>mockery</b> n. 嘲弄。"},
+  imprison:{w:"imprison",ipa:"/ɪmˈprɪzn/",pos:"v.",tags:["core"],cn:"监禁，关押",en:"to put someone in prison",ex:"His father was then imprisoned for debt",mem:"im-（进入）＋ prison。<b>be imprisoned for …</b>：因……入狱。⭐ 排序钩子：下一段 release from prison 预设了这里的 imprisoned。",syn:"jail · lock up · detain",conf:"<b>imprison</b> 监禁 vs <b>imprisonment</b> n. 监禁（下一句就用了）。"},
+  debt:{w:"debt",ipa:"/det/",pos:"n.",tags:["core","write"],cn:"债务",en:"money that you owe",ex:"His father was then imprisoned for debt",mem:"⚠️ b 不发音。19 世纪英国有债务人监狱（debtors’ prison），狄更斯的父亲就被关在那里。in debt 负债；pay off a debt 还清债务。",syn:"liability · arrears · obligation",conf:"<b>debt</b> 债务 vs <b>debtor</b> 债务人 vs <b>creditor</b> 债权人。"},
+
+  humiliation:{w:"humiliation",ipa:"/hjuːˌmɪliˈeɪʃn/",pos:"n.",tags:["core","write"],cn:"屈辱，羞辱",en:"a feeling of shame and loss of pride",ex:"The humiliations of his father’s imprisonment",mem:"humble（卑微的）同源；humiliate v. 羞辱。本句用复数 humiliations：一件件具体的屈辱事。",syn:"shame · disgrace · embarrassment",conf:"<b>humiliation</b> 屈辱 vs <b>humility</b> 谦逊——一个被迫低头，一个主动低头。"},
+  labor:{w:"labor",ipa:"/ˈleɪbə(r)/",pos:"n.",tags:["poly","core"],cn:"（此处）劳作，苦工",en:"hard physical work",ex:"his labor in the blacking factory",mem:"⚠️ 熟义「劳动力」（cheap labor）、「分娩」（in labor）；本句是<b>一个 12 岁孩子干的体力活</b>，带着苦味。英式拼作 labour。",syn:"toil · work · drudgery",conf:"<b>labor</b> 劳动 vs <b>laboratory</b> 实验室 vs <b>laborious</b> 费力的。"},
+  wound:{w:"wound",ipa:"/wuːnd/",pos:"n.",tags:["poly","core","write"],cn:"（此处）心灵创伤",en:"emotional pain caused by a bad experience",ex:"formed Dickens’s greatest wound",mem:"⚠️ 本义「伤口」；这里是<b>心理上的伤</b>。发音 /wuːnd/，与 wind 的过去式 wound /waʊnd/（缠绕）同形不同音。",syn:"trauma · scar · hurt",conf:"<b>wound</b> /wuːnd/ 伤口 vs <b>wound</b> /waʊnd/ 缠绕（wind 的过去式）。"},
+  confide:{w:"confide",ipa:"/kənˈfaɪd/",pos:"v.",tags:["core"],cn:"吐露（秘密）",en:"to tell someone a secret because you trust them",ex:"He could not confide them even to his wife",mem:"con-（加强）＋ fide（信任，fidelity 忠诚）⟹ 因为信任才说出口。<b>confide sth to sb</b>／confide in sb。",syn:"reveal · disclose · open up",conf:"<b>confide</b> 吐露 vs <b>confident</b> 自信的 vs <b>confidential</b> 机密的——同一个词根。"},
+  unacknowledged:{w:"unacknowledged",ipa:"/ˌʌnəkˈnɒlɪdʒd/",pos:"adj.",tags:["core"],cn:"未被承认的，未言明的",en:"not openly recognized or admitted",ex:"the unacknowledged foundation of his fiction",mem:"un- ＋ acknowledge（承认、致谢）＋ -ed。他从不说出口，但作品里处处是它——<b>与 deepest secret、could not confide 同一条线</b>。",syn:"unspoken · unrecognized · hidden",conf:"<b>acknowledge</b> 承认 vs <b>acknowledgements</b>（书前的「致谢」）。"},
+  foundation:{w:"foundation",ipa:"/faʊnˈdeɪʃn/",pos:"n.",tags:["poly","core","write"],cn:"（此处）根基，基础",en:"the basis from which something develops",ex:"the unacknowledged foundation of his fiction",mem:"⚠️ 熟义「基金会」（the Gates Foundation）；这里是<b>根基</b>。写作：lay a solid foundation for …（为……打下坚实基础）。",syn:"basis · base · root · groundwork",conf:"<b>foundation</b> 根基／基金会 vs <b>founder</b> 创始人。"},
+  fiction:{w:"fiction",ipa:"/ˈfɪkʃn/",pos:"n.",tags:["poly","core"],cn:"（此处）小说（总称）",en:"books and stories about imaginary people and events",ex:"the unacknowledged foundation of his fiction",mem:"⚠️ 熟义「虚构、编造的事」；作为文学门类＝<b>小说</b>。science fiction 科幻小说；non-fiction 非虚构作品。",syn:"novels · stories · literature",conf:"<b>fiction</b> 小说 vs <b>fictional</b> 虚构的 vs <b>fictitious</b> 捏造的（贬义）。"},
+  release:{w:"release",ipa:"/rɪˈliːs/",pos:"n.",tags:["poly","core"],cn:"（此处）获释，出狱",en:"the act of setting someone free",ex:"Soon after his father’s release from prison",mem:"⚠️ 熟义「发布、发行」（a new release 新品）；<b>release from prison ＝ 出狱</b>。⭐ 排序钩子：出狱预设入狱——上文必须讲过 imprisoned。",syn:"freedom · discharge · liberation",conf:"<b>release</b> 释放／发布 vs <b>relieve</b> 缓解。"},
+  errand:{w:"errand",ipa:"/ˈerənd/",pos:"n.",tags:["core"],cn:"差事，跑腿",en:"a short trip to take a message or deliver something",ex:"a better job as errand boy in law offices",mem:"<b>errand boy</b>＝跑腿的听差、送信的小厮；run errands for sb 替某人跑腿。",syn:"task · chore · assignment",conf:"<b>errand</b> 差事 vs <b>error</b> 错误——形近。"},
+  shorthand:{w:"shorthand",ipa:"/ˈʃɔːthænd/",pos:"n.",tags:["core"],cn:"速记（法）",en:"a fast way of writing using special signs",ex:"He taught himself shorthand",mem:"short（短）＋ hand（手写）。<b>teach oneself sth</b>＝自学。引申义「简略的说法」：a shorthand for …（……的简称）。",syn:"stenography",conf:"<b>shorthand</b> 速记 vs <b>shorthanded</b> 人手不足的。"},
+  stenographer:{w:"stenographer",ipa:"/stəˈnɒɡrəfə(r)/",pos:"n.",tags:["core"],cn:"速记员",en:"a person whose job is to write down what people say using shorthand",ex:"as a court stenographer and as a reporter in Parliament",mem:"steno-（窄、紧凑）＋ -graph（写）＋ -er。court stenographer 法庭速记员——学了 shorthand，才当得了 stenographer：<b>同一段里「学 → 用」</b>。",syn:"typist · recorder",conf:"<b>stenographer</b> 速记员 vs <b>photographer</b> 摄影师（同一个 -graph）。"},
+  parliament:{w:"Parliament",ipa:"/ˈpɑːləmənt/",pos:"n.",tags:["core"],cn:"（英国）议会",en:"the group of people elected to make laws in the UK",ex:"as a reporter in Parliament",mem:"parl-（说，法语 parler）＋ -ment ⟹「开会讲话的地方」。a reporter in Parliament＝议会记者，专门记录议员辩论。",syn:"legislature · assembly · Congress（美）",conf:"<b>Parliament</b>（英）vs <b>Congress</b>（美）vs <b>parliamentary</b> adj.。"},
+  transcribe:{w:"transcribe",ipa:"/trænˈskraɪb/",pos:"v.",tags:["core"],cn:"记录，誊写",en:"to write down exactly what you see or hear",ex:"a reporter’s eye for transcribing the life around him",mem:"trans-（转移）＋ scribe（写）⟹ 把听到、看到的转写到纸上。这里是比喻：<b>像速记员记发言一样记生活</b>。",syn:"record · write down · copy",conf:"<b>transcribe</b> 转写 vs <b>translate</b> 翻译 vs <b>transcript</b> n. 文字记录；成绩单。"},
+  odd:{w:"odd",ipa:"/ɒd/",pos:"adj.",tags:["poly","core"],cn:"（此处）古怪的，奇特的",en:"strange or unusual",ex:"especially anything comic or odd",mem:"⚠️ 数学里 odd number＝奇数；日常＝<b>古怪的</b>，与 comic 并列：滑稽的、古怪的——狄更斯人物的招牌。odds 另作「可能性」。",syn:"strange · peculiar · bizarre · quirky",conf:"<b>odd</b> 古怪的／奇数的 vs <b>odds</b> 可能性（against all odds 克服重重困难）。"},
+  submit:{w:"submit",ipa:"/səbˈmɪt/",pos:"v.",tags:["poly","core","write"],cn:"（此处）投稿，提交",en:"to send written work to be considered",ex:"submitted short sketches to obscure magazines",mem:"⚠️ 熟义「屈服」（submit to authority）；<b>submit sth to …</b>＝把作品投给、提交给。⭐ 排序钩子：投稿之后才有下一段的 first published。",syn:"send in · hand in · present",conf:"<b>submit to</b> 屈服于 vs <b>submit sth to</b> 提交给——看有没有宾语。"},
+  obscure:{w:"obscure",ipa:"/əbˈskjʊə(r)/",pos:"adj.",tags:["poly","core","write"],cn:"（此处）不知名的",en:"not well known",ex:"submitted short sketches to obscure magazines",mem:"⚠️ 熟义「晦涩难懂的」（an obscure passage）；修饰人、刊物时＝<b>默默无闻的</b>。名气阶梯的底层：obscure → modest reputation → fame。",syn:"unknown · little-known · minor",conf:"<b>obscure</b> 不知名的／晦涩的 vs <b>obscurity</b> n. 默默无闻（rise from obscurity 从无名中崛起）。"},
+  sketch:{w:"sketch",ipa:"/sketʃ/",pos:"n.",tags:["poly","core"],cn:"（此处）随笔，短篇特写",en:"a short piece of writing describing a scene or person",ex:"The first published sketch",mem:"⚠️ 熟义「素描、草图」；文学里＝<b>描写人物或场景的短文</b>。Sketches by Boz 就是这些随笔的结集——所以书名里的 Sketches 要上文先讲过他写 sketches。",syn:"essay · vignette · piece",conf:"<b>sketch</b> 随笔／素描 vs <b>sketchy</b> 粗略的；可疑的。"},
+  penname:{w:"pen name",ipa:"/ˈpen neɪm/",pos:"n.",tags:["phrase"],cn:"笔名",en:"a name used by a writer instead of their real name",ex:"which appeared under the pen name “Boz”",mem:"<b>under the pen name …</b>＝以……为笔名。⭐ 排序钩子：先交代 Boz 是笔名，下一段才能直接说 Sketches by Boz。",syn:"pseudonym · nom de plume",conf:"<b>pen name</b> 笔名 vs <b>nickname</b> 绰号 vs <b>alias</b> 化名。"},
+  modest:{w:"modest",ipa:"/ˈmɒdɪst/",pos:"adj.",tags:["poly","core","write"],cn:"（此处）不大的，小小的",en:"not very large or important",ex:"earned him a modest reputation",mem:"⚠️ 熟义「谦虚的」；修饰数量、成就时＝<b>不大的、有限的</b>：a modest increase 小幅增长。名气阶梯第一级。",syn:"moderate · limited · small",conf:"<b>modest</b> 谦虚的／不大的 vs <b>moderate</b> 适度的。"},
+  reputation:{w:"reputation",ipa:"/ˌrepjuˈteɪʃn/",pos:"n.",tags:["core","write"],cn:"名声，名气",en:"the opinion people have about someone",ex:"earned him a modest reputation",mem:"<b>earn sb a reputation</b>＝为某人赢得名声。写作：build a good reputation、damage one’s reputation。",syn:"fame · name · standing",conf:"<b>reputation</b>（口碑，可好可坏）vs <b>fame</b>（出名）vs <b>renown</b>（盛名，褒义）。"},
+  approach:{w:"approach",ipa:"/əˈprəʊtʃ/",pos:"v.",tags:["poly","core","write"],cn:"（此处）找……接洽，与……商谈",en:"to speak to someone to ask for something or offer something",ex:"a publishing firm approached Dickens to write a story",mem:"⚠️ 熟义「靠近」「方法」；<b>approach sb to do / about sth</b>＝去找某人谈、提出请求。",syn:"contact · sound out · reach out to",conf:"<b>approach sb</b>（不加 to）vs <b>an approach to</b> sth（方法，名词加 to）。"},
+  installment:{w:"installment",ipa:"/ɪnˈstɔːlmənt/",pos:"n.",tags:["poly","core"],cn:"（此处）（连载的）一期",en:"one part of a story that appears in parts over a period",ex:"to write a story in monthly installments",mem:"⚠️ 熟义「分期付款的一期」（pay in installments）；出版里＝<b>连载的一期</b>。in monthly installments 按月连载。英式拼作 instalment。",syn:"episode · part · issue",conf:"<b>installment</b> 一期 vs <b>installation</b> 安装。"},
+  backdrop:{w:"backdrop",ipa:"/ˈbækdrɒp/",pos:"n.",tags:["poly","core"],cn:"（此处）陪衬，背景（配角）",en:"something that forms the background for something else",ex:"as a backdrop for a series of woodcuts",mem:"⚠️ 本义「舞台背景幕布」；这里＝<b>给画当陪衬的文字</b>——文是配角，画是主角，这才有下一句狄更斯的 instead（反客为主）。",syn:"background · setting · context",conf:"<b>backdrop</b> 陪衬 vs <b>backup</b> 备份 vs <b>background</b> 背景。"},
+
+  woodcut:{w:"woodcut",ipa:"/ˈwʊdkʌt/",pos:"n.",tags:["core"],cn:"木刻画，木版画",en:"a print made from a design cut into a block of wood",ex:"a series of woodcuts by the then-famous artist Robert Seymour",mem:"wood（木）＋ cut（刻）。<b>then-famous</b>：then 作前置定语＝「当时的」，the then-famous artist 当时颇有名气的画家（言下之意：今天没那么有名了）。",syn:"engraving · print · illustration",conf:"<b>woodcut</b> 木刻 vs <b>etching</b> 蚀刻版画 vs <b>engraving</b> 雕版画。"},
+  originate:{w:"originate",ipa:"/əˈrɪdʒɪneɪt/",pos:"v.",tags:["core","write"],cn:"首创，发起",en:"to be the first to create or think of something",ex:"who had originated the idea for the story",mem:"origin（起源）→ originate。及物＝首创（originate an idea）；不及物＝起源于（originate from／in）。过去完成时 had originated：点子在约稿前就是西摩的。",syn:"create · invent · initiate · conceive",conf:"<b>originate</b> 首创 vs <b>original</b> 原创的 vs <b>originality</b> 独创性。"},
+  characteristic:{w:"characteristic",ipa:"/ˌkærəktəˈrɪstɪk/",pos:"adj.",tags:["poly","core","write"],cn:"（此处 adj.）一贯的，典型的",en:"typical of a particular person",ex:"With characteristic confidence",mem:"⚠️ 熟义是名词「特征」；作形容词＝<b>某人一贯的、他特有的</b>。with characteristic modesty（以他一贯的谦逊）——写人物的好搭配。",syn:"typical · usual · distinctive",conf:"<b>characteristic</b> adj. 一贯的／n. 特征 vs <b>character</b> 性格；人物。"},
+  insist:{w:"insist",ipa:"/ɪnˈsɪst/",pos:"v.",tags:["core","write"],cn:"坚持要求",en:"to demand firmly that something happen",ex:"Dickens successfully insisted that Seymour’s pictures illustrate his own story instead",mem:"<b>insist that sb (should) do</b>＝坚持要求（虚拟，用原形）；insist that sth was …＝坚持认为（陈述，不用虚拟）。本句 illustrate 是原形。",syn:"demand · require · press",conf:"<b>insist</b>（坚持要求／认为）vs <b>persist</b>（坚持不懈）。"},
+  illustrate:{w:"illustrate",ipa:"/ˈɪləstreɪt/",pos:"v.",tags:["poly","core","write"],cn:"（此处）给……配插图",en:"to put pictures in a book or story",ex:"Seymour’s pictures illustrate his own story instead",mem:"⚠️ 熟义「举例说明」（illustrate a point）；出版语境＝<b>为书配图</b>，illustrator 插画家、illustration 插图。",syn:"decorate · accompany with pictures",conf:"<b>illustrate</b> 配图／说明 vs <b>illuminate</b> 照亮；阐明。"},
+  faithful:{w:"faithful",ipa:"/ˈfeɪθfl/",pos:"adj.",tags:["poly","core"],cn:"（此处）忠实于（原作）的",en:"accurately representing something",ex:"not faithful enough to his prose",mem:"⚠️ 熟义「忠诚的」（a faithful friend）；<b>faithful to the original</b>＝忠实于原作，翻译与改编的评价用词。",syn:"accurate · true · exact",conf:"<b>faithful</b> 忠实的 vs <b>faithfully</b>（信尾 Yours faithfully）。"},
+  prose:{w:"prose",ipa:"/prəʊz/",pos:"n.",tags:["poly","core"],cn:"（此处）文字，散文",en:"written language in its ordinary form, not poetry",ex:"not faithful enough to his prose",mem:"⚠️ 与 poetry（诗）相对的「散文体」；这里泛指<b>狄更斯写的文字</b>——画要贴着文字走，不是文字贴着画。",syn:"text · writing · words",conf:"<b>prose</b> 散文 vs <b>verse</b> 韵文 vs <b>pose</b> 摆姿势。"},
+  displeasure:{w:"displeasure",ipa:"/dɪsˈpleʒə(r)/",pos:"n.",tags:["core"],cn:"不满，不悦",en:"a feeling of being annoyed or not satisfied",ex:"expressed his displeasure by committing suicide",mem:"dis- ＋ pleasure。<b>express one’s displeasure</b>＝表达不满。本句的冷幽默：用最平淡的「表达不满」说最极端的事。",syn:"dissatisfaction · annoyance · discontent",conf:"<b>displeasure</b> 不满 vs <b>displease</b> v. 使不快。"},
+  presson:{w:"press on",ipa:"/ˌpres ˈɒn/",pos:"phr. v.",tags:["phrase","poly","write"],cn:"继续干下去，坚持推进",en:"to continue doing something in a determined way",ex:"Dickens and his publishers simply pressed on with a new artist",mem:"⚠️ press 熟义「按、压」；<b>press on (with sth)</b>＝不顾困难继续推进。simply 在这里带点冷：出了人命，照样往下干。",syn:"carry on · push on · keep going",conf:"<b>press on</b> 继续推进 vs <b>press for</b> 催促要求。"},
+  posthumous:{w:"posthumous",ipa:"/ˈpɒstjʊməs/",pos:"adj.",tags:["core"],cn:"死后的；遗留的",en:"happening or published after someone’s death",ex:"The Posthumous Papers of the Pickwick Club",mem:"post-（之后）＋ humous（埋葬）⟹ 身后的。posthumous award 追授的奖项。书名《匹克威克俱乐部遗稿》是故作正经的戏仿——一本喜剧小说假装是「遗稿」。",syn:"after death · post-mortem",conf:"<b>posthumous</b> 身后的 vs <b>posterity</b> 后代。"},
+  serially:{w:"serially",ipa:"/ˈsɪəriəli/",pos:"adv.",tags:["core"],cn:"连载地",en:"in parts published one after another",ex:"appeared serially in 1836 and 1837",mem:"serial（连载的；连续剧）→ serially。<b>appear serially</b>＝连载；与 first published in book form（首次出书）一先一后。",syn:"in installments · in parts",conf:"<b>serial</b> 连载 vs <b>series</b> 系列 vs <b>cereal</b> 谷物（同音）。"},
+  runaway:{w:"runaway",ipa:"/ˈrʌnəweɪ/",pos:"adj.",tags:["poly","core","write"],cn:"（此处）势不可挡的，一发不可收的",en:"happening very quickly and in an uncontrolled way",ex:"The runaway success of The Pickwick Papers",mem:"⚠️ 熟义「逃跑的」（a runaway child 离家出走的孩子）；<b>a runaway success</b>＝大获成功、火得挡不住。runaway inflation 失控的通胀。",syn:"overwhelming · huge · unstoppable",conf:"<b>runaway</b> adj. 势不可挡的 vs <b>run away</b> v. 逃跑。"},
+  secure:{w:"secure",ipa:"/sɪˈkjʊə(r)/",pos:"v.",tags:["poly","core","write"],cn:"（此处 v.）确保，奠定",en:"to get or achieve something so that it is certain",ex:"secured Dickens’s fame",mem:"⚠️ 熟义是形容词「安全的」；动词＝<b>稳稳拿下</b>：secure a job／a place／victory。写作：secure a bright future。",syn:"establish · ensure · win · clinch",conf:"<b>secure</b> v. 获得 vs <b>security</b> n. 安全。"},
+  plump:{w:"plump",ipa:"/plʌmp/",pos:"adj.",tags:["core"],cn:"胖乎乎的，丰满的",en:"slightly fat in a pleasant way",ex:"the plump, spectacled hero, Samuel Pickwick",mem:"比 fat 客气、带点可爱。与 spectacled 一起是<b>人物第一次出场的外貌标签</b>。",syn:"chubby · stout · rounded",conf:"<b>plump</b>（胖得可爱）vs <b>fat</b>（直说胖）vs <b>obese</b>（医学肥胖）。"},
+  spectacled:{w:"spectacled",ipa:"/ˈspektəkld/",pos:"adj.",tags:["core"],cn:"戴眼镜的",en:"wearing glasses",ex:"the plump, spectacled hero, Samuel Pickwick",mem:"spectacles（眼镜，正式）＋ -ed ⟹ 戴眼镜的。⚠️ spectacle 单数＝壮观场面。",syn:"bespectacled · wearing glasses",conf:"<b>spectacles</b> 眼镜 vs <b>spectacle</b> 奇观 vs <b>spectacular</b> 壮观的。"},
+  figure:{w:"figure",ipa:"/ˈfɪɡə(r)/",pos:"n.",tags:["poly","core","write"],cn:"（此处）人物，名人",en:"a person, especially an important or well-known one",ex:"Samuel Pickwick, became a national figure",mem:"⚠️ 熟义「数字」「身材」「图表」；<b>a national figure</b>＝全国知名人物，public figure 公众人物。一个<b>虚构</b>人物成了 national figure，才显出成功之大。",syn:"personality · celebrity · character",conf:"<b>figure</b> 人物／数字 vs <b>figure out</b> 弄明白。"},
+  plunge:{w:"plunge",ipa:"/plʌndʒ/",pos:"v.",tags:["poly","core","write"],cn:"（此处）投身，一头扎进",en:"to start doing something suddenly and with a lot of energy",ex:"Dickens plunged into a bleaker world",mem:"⚠️ 熟义「跳入（水中）」「暴跌」（prices plunged）；<b>plunge into</b>＝全身心投入。写作：plunge into work。",syn:"dive into · throw oneself into · immerse",conf:"<b>plunge</b>（猛然投入）vs <b>plunder</b>（掠夺）。"},
+  bleak:{w:"bleak",ipa:"/bliːk/",pos:"adj.",tags:["core","write"],cn:"阴暗的，凄凉的",en:"cold, grim and without hope",ex:"Dickens plunged into a bleaker world",mem:"比较级 bleaker 要一个参照：上文的 comic novel／sunlight of Pickwick。狄更斯后来还写了《荒凉山庄》<i>Bleak House</i>。写作：a bleak future（前景暗淡）。",syn:"grim · dark · gloomy · dismal",conf:"<b>bleak</b> 阴暗的 vs <b>bleach</b> 漂白。"},
+  trace:{w:"trace",ipa:"/treɪs/",pos:"v.",tags:["core","write"],cn:"追述，追溯（经历）",en:"to describe the development of something",ex:"he traces an orphan’s progress",mem:"熟义「追踪」「痕迹」；写作里 <b>trace the history／development of …</b>＝追述……的历程。一般现在时：书今天仍在讲这个故事。",syn:"follow · chart · record",conf:"<b>trace</b> 追溯 vs <b>track</b> 跟踪。"},
+  orphan:{w:"orphan",ipa:"/ˈɔːfn/",pos:"n.",tags:["core"],cn:"孤儿",en:"a child whose parents are dead",ex:"he traces an orphan’s progress",mem:"orphanage 孤儿院。《雾都孤儿》原名 <i>Oliver Twist</i>，中译名把「孤儿」提到了书名里。",syn:"parentless child · foundling",conf:"<b>orphan</b> 孤儿 vs <b>orphanage</b> 孤儿院。"},
+  progress:{w:"progress",ipa:"/ˈprəʊɡres/",pos:"n.",tags:["poly","core"],cn:"（此处）历程，经历",en:"a journey or the course of someone’s life",ex:"an orphan’s progress from the workhouse to the criminal slums",mem:"⚠️ 熟义「进步」；这里是<b>一段旅程、一生的经历</b>——from … to … 就是路线，而且是往下走的路，不是「进步」。《雾都孤儿》的副标题就叫 <i>The Parish Boy’s Progress</i>（教区孤儿的历程）。",syn:"journey · course · passage",conf:"<b>progress</b> n. 历程／进步 vs <b>process</b> 过程。"},
+  workhouse:{w:"workhouse",ipa:"/ˈwɜːkhaʊs/",pos:"n.",tags:["core"],cn:"（旧时英国的）济贫院",en:"a place where poor people were sent to live and work",ex:"from the workhouse to the criminal slums of London",mem:"19 世纪英国收容穷人、强制劳动的机构，条件极差——<b>F 段里狄更斯童年的屈辱在这里化成了小说场景</b>。",syn:"poorhouse · almshouse",conf:"<b>workhouse</b> 济贫院 vs <b>workshop</b> 车间；研讨会。"},
+  slum:{w:"slum",ipa:"/slʌm/",pos:"n.",tags:["core","write"],cn:"贫民窟",en:"a very poor, crowded area of a city",ex:"the criminal slums of London",mem:"criminal slums＝犯罪猖獗的贫民窟。写作谈城市化、贫富差距可用：urban slums。",syn:"shantytown · ghetto · poor quarter",conf:"<b>slum</b> 贫民窟 vs <b>slump</b> 暴跌；萧条。"},
+  consolidate:{w:"consolidate",ipa:"/kənˈsɒlɪdeɪt/",pos:"v.",tags:["core","write"],cn:"巩固，加强",en:"to make a position stronger and more likely to last",ex:"The popularity of these novels consolidated Dickens as a nationally and internationally celebrated man of letters",mem:"con- ＋ solid（坚固的）⟹ 使更牢固。本句 consolidate sb as …＝巩固某人作为……的地位。与 B 的 secured 一前一后：先<b>奠定</b>，再<b>巩固</b>。",syn:"strengthen · reinforce · cement",conf:"<b>consolidate</b> 巩固 vs <b>console</b> 安慰。"},
+  celebrated:{w:"celebrated",ipa:"/ˈselɪbreɪtɪd/",pos:"adj.",tags:["core","write"],cn:"著名的，享有盛誉的",en:"famous and praised by many people",ex:"a nationally and internationally celebrated man of letters",mem:"celebrate（庆祝）的形容词用法＝<b>被广为称颂的</b>。名气阶梯的顶端：obscure → modest reputation → fame → national figure → <b>nationally and internationally celebrated</b>。",syn:"renowned · acclaimed · famous · eminent",conf:"<b>celebrated</b> 著名的 vs <b>celebrity</b> 名人。"},
+  manofletters:{w:"man of letters",ipa:"/ˌmæn əv ˈletəz/",pos:"n.",tags:["phrase","poly"],cn:"文人，文学家",en:"a writer, especially one who writes about literature",ex:"a nationally and internationally celebrated man of letters",mem:"⚠️ letters 复数＝<b>文学、学问</b>，不是「信件」。arts and letters 文艺；Doctor of Letters 文学博士。",syn:"writer · author · literary figure",conf:"<b>letters</b> 文学 vs <b>literal</b> 字面的 vs <b>literate</b> 识字的。"},
+};
+
+const lib=document.getElementById('optlib');
+lib.innerHTML=Object.keys(OPTS).map(k=>
+  '<div class="optitem'+(EXTRA.indexOf(k)>=0?' extra':'')+'" id="opt-'+k+'"><span class="lt">'+k+'</span><span>'
+  +'<span class="oen">'+OPTS[k][0]+'</span>'
+  +'<span class="zhx">'+OPTS[k][1]+'</span>'
+  +'<span class="kw">🔑 '+OPTS[k][2]+'</span>'
+  +'<span class="stg">'+OPTS[k][3]+'</span></span></div>').join('');
+
+/* 作答交互：答后就地把空格补全成原文 */
+document.querySelectorAll('.person').forEach(p=>{
+  const ans=p.dataset.ans; if(!ans)return;
+  const chips=p.querySelector('.chips');
+  chips.innerHTML='ABCDEFG'.split('').map(l=>'<button class="ch" data-l="'+l+'">'+l+'</button>').join('');
+  chips.querySelectorAll('.ch').forEach(c=>c.addEventListener('click',()=>{
+    if(p.classList.contains('done'))return;
+    p.classList.add('done');
+    if(c.dataset.l!==ans)c.classList.add('wrong');
+    chips.querySelector('.ch[data-l="'+ans+'"]').classList.add('right');
+    const oi=document.getElementById('opt-'+ans); if(oi)oi.classList.add('used');
+    const slot=p.querySelector('.slot');
+    if(slot){slot.classList.add('filled');slot.innerHTML='<span class="fl">['+ans+']</span>'+OPTS[ans][0];}
+  }));
+});
+
+const panel=document.getElementById('panel');
+const isMobile=()=>window.innerWidth<=900;
+function badge(t){return {core:'<span class="badge b-core">核心词</span>',phrase:'<span class="badge b-phrase">短语</span>',poly:'<span class="badge b-poly">熟词僻义</span>',write:'<span class="badge b-write">写作✍︎</span>'}[t]||''}
+function showCard(k,el){
+  const d=V[k]; if(!d)return;
+  document.querySelectorAll('.tk.active').forEach(e=>e.classList.remove('active'));
+  if(el&&el.classList.contains('tk'))el.classList.add('active');
+  panel.innerHTML='<button class="close" onclick="panel.classList.remove(\'open\')">✕</button>'
+  +'<div class="wcard">'
+  +'<div class="head"><span class="w">'+d.w+'</span><span class="ipa">'+d.ipa+'</span><span class="pos">'+d.pos+'</span>'+d.tags.map(badge).join('')+'</div>'
+  +'<div class="cn">'+d.cn+'</div><div class="en-def">'+d.en+'</div>'
+  +'<div class="row r-ex"><b>原文语境</b>“…'+d.ex+'…”</div>'
+  +'<div class="row r-mem"><b>怎么记</b>'+d.mem+'</div>'
+  +'<div class="row r-syn"><b>同类词</b>'+d.syn+'</div>'
+  +'<div class="row r-conf"><b>易混辨析</b>'+d.conf+'</div>'
+  +'</div>';
+  if(isMobile())panel.classList.add('open');
+}
+document.addEventListener('click',function(e){
+  const t=e.target.closest?e.target.closest('.tk'):null;
+  if(t){e.stopPropagation();showCard(t.dataset.w,t);}
+});
+function tz(btn){btn.closest('.person,.para').classList.toggle('showzh')}
+let allOn=false;
+function toggleAll(){allOn=!allOn;document.querySelectorAll('.person,.para').forEach(p=>p.classList.toggle('showzh',allOn))}
+
+const vg=document.getElementById('vgrid');
+Object.keys(V).forEach(k=>{
+  const d=V[k];
+  const div=document.createElement('div');div.className='vitem';
+  div.style.cssText='border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer';
+  div.innerHTML='<span style="float:right">'+d.tags.map(badge).join('')+'</span>'
+   +'<div style="font-family:var(--serif);font-weight:bold">'+d.w+'</div>'
+   +'<div style="font-size:.85rem;color:var(--muted)">'+d.cn+'</div>';
+  div.addEventListener('click',()=>{showCard(k,null);if(!isMobile())window.scrollTo({top:0,behavior:'smooth'})});
+  vg.appendChild(div);
+});
+document.getElementById('vcount').textContent=Object.keys(V).length;
+
+const yd=document.getElementById('yd');let sel='';
+document.addEventListener('selectionchange',()=>{
+  const s=window.getSelection();const t=s?s.toString().trim():'';
+  if(t&&/^[a-zA-Z' -]{2,40}$/.test(t)){
+    sel=t;
+    try{const r=s.getRangeAt(0).getBoundingClientRect();
+      yd.style.left=Math.min(r.left,window.innerWidth-110)+'px';
+      yd.style.top=(r.bottom+8)+'px';yd.style.display='block';}catch(e){}
+  }else{yd.style.display='none'}
+});
+yd.addEventListener('click',()=>{window.open('https://dict.youdao.com/result?word='+encodeURIComponent(sel)+'&lang=en');yd.style.display='none'});
+document.addEventListener('click',e=>{if(e.target!==yd&&!window.getSelection().toString())yd.style.display='none'});
+</script>
+
+<script src="_fault_attr.js"></script>
+</body>
+</html>

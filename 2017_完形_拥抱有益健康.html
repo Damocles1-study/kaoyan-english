@@ -1,0 +1,1247 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2017 英一 完形 · 拥抱有益健康</title>
+<style>
+  :root{
+    --bg:#faf9f6; --card:#ffffff; --ink:#2b2b2b; --muted:#8a8578;
+    --accent:#8b5e34; --accent-soft:#f3e9dd; --line:#e8e3d8;
+    --hl:#fdf3d8; --hl-border:#e0b84d;
+    --green:#3e7a4e; --green-soft:#e8f2ea;
+    --red:#b04a3a; --red-soft:#f9e9e6;
+    --blue:#3d6a8a; --blue-soft:#e7eff5;
+    --purple:#6d5a8e; --purple-soft:#eeeaf5;
+    --serif:"Georgia","Songti SC",serif;
+    --sans:-apple-system,"PingFang SC","Helvetica Neue",sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#1c1a17; --card:#26231f; --ink:#e8e4dc; --muted:#9a948a;
+      --accent:#d0a06a; --accent-soft:#3a3127; --line:#3a362f;
+      --hl:#3d3520; --hl-border:#b08c3a;
+      --green:#7fb98d; --green-soft:#26362b;
+      --red:#d98876; --red-soft:#3d2a26;
+      --blue:#8ab3d0; --blue-soft:#26323d;
+      --purple:#a996c8; --purple-soft:#302a3d;
+    }
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;padding-bottom:120px}
+  .wrap{max-width:1100px;margin:0 auto;padding:24px 20px}
+  .back{font-size:.85rem;color:var(--muted);text-decoration:none}
+  .back:hover{color:var(--accent)}
+  header{margin:14px 0 28px}
+  header h1{font-family:var(--serif);font-size:1.7rem;line-height:1.3}
+  header .sub{color:var(--muted);margin-top:6px;font-size:.9rem}
+  .tags{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+  .tag{font-size:.75rem;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);border:1px solid var(--line)}
+  .tag.spoiler{cursor:pointer;background:var(--card);color:var(--muted)}
+  .tag.spoiler .hid{filter:blur(5px)}
+  .tag.spoiler.open .hid{filter:none;color:var(--accent)}
+
+  .layout{display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:start}
+  @media (max-width:900px){.layout{grid-template-columns:1fr}}
+
+  section.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:24px}
+  h2{font-size:1.05rem;letter-spacing:.05em;color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  h2 .n{font-size:.72rem;background:var(--accent);color:var(--card);border-radius:6px;padding:1px 7px}
+  .note{font-size:.82rem;color:var(--muted);margin-bottom:14px}
+
+  .para{margin-bottom:22px}
+  .para .en{font-family:var(--serif);font-size:1.06rem;line-height:2.15}
+  .pno{color:var(--muted);font-size:.75rem;user-select:none;margin-right:6px}
+  .tk{background:var(--hl);border-bottom:2px solid var(--hl-border);border-radius:3px;padding:0 2px;cursor:pointer;transition:filter .15s}
+  .tk:hover{filter:brightness(.93)}
+  .tk.active{outline:2px solid var(--hl-border)}
+  .ls{border-bottom:2px dotted var(--blue);cursor:pointer}
+  .para .zh{display:none;margin-top:10px;padding:10px 14px;background:var(--blue-soft);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:.93rem}
+  .para.showzh .zh{display:block}
+  .zbtn{float:right;margin-left:10px;font-size:.72rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:6px;padding:2px 9px;cursor:pointer}
+  .zbtn:hover{color:var(--accent);border-color:var(--accent)}
+  .allbtn{font-size:.78rem;border:1px solid var(--accent);background:none;color:var(--accent);border-radius:8px;padding:4px 12px;cursor:pointer}
+
+  /* 完形空格 */
+  .bk{display:inline-block;min-width:64px;text-align:center;background:var(--hl);border-bottom:2px solid var(--hl-border);border-radius:4px;padding:0 6px;cursor:pointer;font-weight:600;color:var(--accent);transition:all .15s;font-family:var(--sans);font-size:.95rem}
+  .bk:hover{filter:brightness(.93)}
+  .bk.filled{background:var(--green-soft);border-bottom-color:var(--green);color:var(--green);font-family:var(--serif)}
+  .bk.miss{background:var(--red-soft);border-bottom-color:var(--red);color:var(--red);font-family:var(--serif)}
+  .bk.active{outline:2px solid var(--hl-border)}
+  .bk .idx{font-size:.7rem;color:var(--muted);margin-right:3px}
+
+  aside{position:sticky;top:20px}
+  #panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;min-height:180px}
+  #panel .hint{color:var(--muted);font-size:.88rem;text-align:center;padding:30px 10px}
+  .wcard .head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .wcard .w{font-family:var(--serif);font-size:1.35rem;font-weight:bold}
+  .wcard .ipa{color:var(--muted);font-size:.85rem}
+  .wcard .pos{font-size:.72rem;color:var(--purple);background:var(--purple-soft);padding:1px 8px;border-radius:999px}
+  .wcard .badge{font-size:.7rem;padding:1px 8px;border-radius:999px}
+  .b-core{background:var(--red-soft);color:var(--red)}
+  .b-phrase{background:var(--blue-soft);color:var(--blue)}
+  .b-poly{background:var(--purple-soft);color:var(--purple)}
+  .b-write{background:var(--green-soft);color:var(--green)}
+  .wcard .cn{margin-top:8px;font-size:1rem;font-weight:600}
+  .wcard .en-def{color:var(--muted);font-size:.86rem;font-style:italic;margin-top:2px}
+  .wcard .row{margin-top:10px;font-size:.86rem;padding:8px 10px;border-radius:8px}
+  .wcard .row>b:first-child{font-size:.72rem;display:block;margin-bottom:2px;letter-spacing:.06em}
+  .r-ex{background:var(--hl)} .r-ex b{color:var(--hl-border)}
+  .r-mem{background:var(--green-soft)} .r-mem b{color:var(--green)}
+  .r-syn{background:var(--blue-soft)} .r-syn b{color:var(--blue)}
+  .r-conf{background:var(--red-soft)} .r-conf b{color:var(--red)}
+  #panel .close{display:none}
+  @media (max-width:900px){
+    aside{position:fixed;left:0;right:0;bottom:0;z-index:50;padding:0 8px 8px}
+    #panel{box-shadow:0 -6px 24px rgba(0,0,0,.18);max-height:55vh;overflow-y:auto;display:none}
+    #panel.open{display:block}
+    #panel .close{display:block;float:right;border:none;background:var(--line);border-radius:8px;padding:2px 10px;cursor:pointer;color:var(--ink)}
+  }
+
+  /* 逐空精解 */
+  .q{margin-bottom:22px;padding-bottom:18px;border-bottom:1px dashed var(--line);scroll-margin-top:20px}
+  .q:last-child{border:none;margin-bottom:0;padding-bottom:0}
+  .q .stem{font-family:var(--serif);font-size:.98rem;background:var(--hl);border-radius:8px;padding:8px 12px;display:block}
+  .q .stem em{font-style:normal;font-weight:700;color:var(--accent);border-bottom:2px solid var(--hl-border);padding:0 4px}
+  .qhead{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+  .qno{font-family:var(--serif);font-size:1.2rem;font-weight:700;color:var(--accent)}
+  .qt{font-size:.7rem;border-radius:999px;padding:1px 9px}
+  .c-logic{background:var(--blue-soft);color:var(--blue)}
+  .c-collo{background:var(--green-soft);color:var(--green)}
+  .c-word{background:var(--red-soft);color:var(--red)}
+  .c-context{background:var(--purple-soft);color:var(--purple)}
+  .qpos{font-size:.7rem;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:1px 9px}
+  .opts{margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  @media (max-width:640px){.opts{grid-template-columns:1fr}}
+  .opt{border:1px solid var(--line);border-radius:10px;padding:7px 12px;cursor:pointer;font-size:.92rem;font-family:var(--serif);transition:all .15s}
+  .opt .gl{font-family:var(--sans);font-size:.8rem;color:var(--muted);margin-left:6px}
+  .opt:hover{border-color:var(--accent)}
+  .q.done .opt{cursor:default}
+  .opt.right{background:var(--green-soft);border-color:var(--green)}
+  .opt.wrong{background:var(--red-soft);border-color:var(--red)}
+  .expl{display:none;margin-top:12px;background:var(--accent-soft);border-radius:10px;padding:12px 14px;font-size:.9rem}
+  .q.done .expl{display:block}
+  .expl b{color:var(--accent)}
+  .expl .lbl{font-size:.74rem;letter-spacing:.06em;color:var(--muted);display:block;margin:10px 0 2px}
+  .expl .lbl:first-child{margin-top:0}
+  .expl code{font-family:var(--serif);background:var(--hl);border-radius:4px;padding:1px 5px}
+  .wrongs{margin-top:6px;display:grid;gap:5px}
+  .wr{font-size:.86rem;background:var(--card);border-radius:8px;padding:6px 10px;border-left:3px solid var(--red)}
+  .wr .l{font-family:var(--serif);font-weight:700;color:var(--red);margin-right:5px}
+
+  /* 计分条 */
+  .score{display:flex;gap:14px;flex-wrap:wrap;align-items:center;background:var(--hl);border-radius:12px;padding:10px 16px;margin-bottom:18px;font-size:.88rem}
+  .score .v{font-family:var(--serif);font-size:1.25rem;font-weight:700;color:var(--accent);margin-right:4px}
+  .score .rst{margin-left:auto;font-size:.78rem;border:1px solid var(--line);background:var(--card);color:var(--muted);border-radius:8px;padding:3px 10px;cursor:pointer}
+
+  /* 考点统计 */
+  .catbar{display:flex;height:26px;border-radius:8px;overflow:hidden;margin:10px 0 16px;border:1px solid var(--line)}
+  .catseg{display:flex;align-items:center;justify-content:center;font-size:.72rem;color:#fff;font-weight:600}
+  .catlegend{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px}
+  .cl{display:flex;gap:8px;align-items:center;font-size:.85rem;cursor:pointer;padding:6px 8px;border-radius:8px;border:1px solid var(--line)}
+  .cl:hover{border-color:var(--accent)}
+  .dot{width:12px;height:12px;border-radius:3px;flex:0 0 12px}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+  .chip{font-size:.78rem;background:var(--accent-soft);color:var(--accent);border-radius:6px;padding:2px 8px;cursor:pointer}
+  .chip:hover{filter:brightness(.94)}
+
+  /* 打法 / 搭配 */
+  .flow{display:grid;gap:10px;font-size:.92rem}
+  .flow .fi{border:1px solid var(--line);border-radius:10px;padding:10px 14px}
+  .flow .fi b{color:var(--accent)}
+  .flow .fi .ev{display:block;margin-top:4px;font-size:.85rem;color:var(--muted);border-left:3px solid var(--hl-border);padding-left:9px}
+  .wb{display:grid;gap:10px}
+  .wbi{border-left:3px solid var(--green);background:var(--green-soft);border-radius:0 10px 10px 0;padding:10px 14px;font-size:.92rem}
+  .wbi .p{font-family:var(--serif);font-weight:600}
+  .wbi .u{color:var(--muted);font-size:.85rem}
+
+  /* 长难句 */
+  .sent{margin-bottom:20px}
+  .sent .src{font-family:var(--serif);font-size:1rem;background:var(--blue-soft);padding:12px 14px;border-radius:10px;border-left:3px solid var(--blue)}
+  .sent .anat{margin-top:8px;font-size:.9rem}
+  .sent .anat li{margin:4px 0 4px 18px}
+  .sent .tr{margin-top:8px;font-size:.92rem;color:var(--muted)}
+  .skel{color:var(--red);font-weight:600}
+
+  /* 80词表 */
+  .otab{width:100%;border-collapse:collapse;font-size:.86rem}
+  .otab th,.otab td{border:1px solid var(--line);padding:5px 8px;vertical-align:top}
+  .otab th{background:var(--accent-soft);color:var(--accent);font-size:.78rem}
+  .otab td.n{text-align:center;font-family:var(--serif);color:var(--muted);width:38px}
+  .otab .ow{font-family:var(--serif)}
+  .otab .oc{color:var(--muted);font-size:.82rem;display:block}
+  .otab td.hit{background:var(--green-soft)}
+  .otab td.hit .ow{color:var(--green);font-weight:700}
+  .hidecn .oc{filter:blur(4px);cursor:pointer}
+  .hidecn .oc.show{filter:none}
+  .tabwrap{overflow-x:auto}
+
+  #yd{position:fixed;z-index:60;display:none;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:4px 12px;font-size:.8rem;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+  .fail{background:var(--red-soft);border:1px solid var(--red);border-radius:10px;padding:10px 13px;margin-bottom:10px;font-size:.89rem;line-height:1.75}
+  .fail b{color:var(--red)}
+  .expl .fail{margin-top:0}
+  footer{color:var(--muted);font-size:.8rem;text-align:center;margin-top:30px}
+  /* 修：.layout 是 grid，grid 项默认 min-width:auto ⟹ 06 的 80 词表（min-content 425px）会把整个左栏撑到 475px，
+     窄屏下页面 scrollWidth 超出视口（2007–2009 三篇完形页同源、同病）。min-width:0 后 .tabwrap 才真正接管横滚。 */
+  main,aside{min-width:0}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">◀ 返回英语复盘中心</a>
+  <header>
+    <h1>拥抱有益健康：一日一抱——挂在同一条因果链上的二十个空</h1>
+    <div class="sub">2017 年英语（一）真题 · Section I 完形填空（Use of English）· 黄皮书标 276 词（脚本按答案回填后数得 278 词）· 4 段 · 建议 15 min · 话题：健康／心理学研究报道（源自 <i>U.S. News &amp; World Report</i>《美国新闻与世界报道》2016-02-03 健康版文章 <i>The Health Benefits of Hugging</i>「拥抱的健康益处」；文中研究＝卡内基梅隆大学 Sheldon Cohen 团队发表在 <i>Psychological Science</i> 上的拥抱与感冒研究，卡内基梅隆大学 2014 年 12 月发布新闻稿）</div>
+    <div class="tags">
+      <span class="tag spoiler" onclick="this.classList.toggle('open')">🙈 答案（点击显示）：<span class="hid">1B 2C 3A 4C 5D 6A 7B 8C 9D 10B 11D 12B 13D 14A 15C 16A 17A 18B 19C 20D</span></span>
+      <span class="tag">难度：偏易（研究报道型，句子不长、没有插入语陷阱；<b>坎在两处</b>——11 题 Even／Still 要看清「未病 → 已病」是递进不是让步，15 题 generate／moderate 要看宾语是好事还是坏事）</span>
+      <span class="tag">✅ <b>盲做口径：计入 1–13 题 13/13</b>（盲做答案先落盘、再只裁答案页 Section I 那一条核对）。⚠️ <b>14–20 题不计</b>：做 2017 T1 时为找精讲起点拼过 p26–p33 的缩略图，那几页是完形 14–20 题的精讲，答案字母看得清。本会话独立写出的 20 个答案与官方全同，14–20 只作记录。标过两处犹豫：15（generate／moderate）· 11（Even／Still）</span>
+      <span class="tag">⭐ 本页最值钱的两段：<b>02+ 因果链</b>（全文一根链条：拥抱 → 减压 → 少得病／病得轻 → 催产素；五个空都在给链条「上扣环」）与 <b>02+++ 框架自带正负号</b>（protect from 后面必是坏事、moderate 的宾语必是坏事、help 后面必是好结果）</span>
+    </div>
+  </header>
+
+  <div class="layout">
+    <main>
+      <!-- ========== 00 脉络 ========== -->
+      <section class="card">
+        <h2><span class="n">00</span>读前一分钟 · 全文脉络（完形先读首句，再看结构）</h2>
+        <p class="note">完形的<b>首句从不设空</b>。本篇首句 <i>Could a hug a day keep the doctor away?</i>——化用谚语 <i>An apple a day keeps the doctor away</i>（一天一苹果，医生远离我），一句话给了三样东西：<b>话题</b>（拥抱与健康）、<b>方向</b>（第二句 <code>a resounding "yes!"</code> 马上作答——<b>全篇只讲好处，没有反方</b>）、<b>关键词</b>（<code>hug</code>——hug／hugs／hugging 全文出现 <b>8 次</b>，外加一个同义替换 <code>embrace</code>）。</p>
+        <p class="note" style="margin-top:10px">⭐⭐ <b>本篇是「研究报道型」完形</b>（本站已复盘的第五篇：<a href="2010_完形_霍桑效应遭到质疑.html" style="color:var(--accent)">2010 霍桑效应</a> · <a href="2011_完形_笑与情绪的方向之争.html" style="color:var(--accent)">2011 表情实验</a> · <a href="2013_完形_面试打分的当日偏见.html" style="color:var(--accent)">2013 面试打分</a> · <a href="2015_完形_朋友是基因上的远亲.html" style="color:var(--accent)">2015 朋友基因</a>）。但它和前四篇有一处不同：<b>前四篇都有「意外」或「争议」</b>（霍桑效应被推翻、情绪箭头之争、评分偏见、朋友像亲戚），<b>这一篇从头到尾只证明一件事——拥抱有好处——然后追问「为什么」</b>。所以全文是一条<b>单向的因果链</b>：拥抱 → 减压 → 少得病／病得轻 → 背后是催产素（⟹ <a href="#chain" style="color:var(--accent)">02+ 因果链</a>）。<b>方向不会反转，只会一级一级加码</b>（⟹ <a href="#steps" style="color:var(--accent)">02++ 递进台阶</a>）。</p>
+        <div class="flow">
+          <div class="fi"><b>① 段一 · 设问与预告：一日一抱能让医生远离你吗？</b>——答案可能是响亮的「能！」。<b>除了</b>让你感到和在乎的人亲近、<b>紧密相连</b>之外，原来拥抱还能给身心带来<b>一大堆</b>健康益处。信不信由你，一个温暖的拥抱甚至可能帮你在这个冬天<b>避免</b>生病。
+            <span class="ev">1–4 空。<b>一段两级台阶</b>：❸ 句 <code>___ helping you feel close …, it turns out that …</code>——逗号前是人人都知道的好处（亲近），逗号后是<b>「原来还有」</b>的新发现（健康），<code>turns out</code> 带着「没想到」⟹ 1 Besides（补充递进）；❹ 句 <code>might even help you ___ getting sick</code>——<b>even 再加一级</b>：不止有益，甚至不生病 ⟹ 4 avoid（⟹ <a href="#s1" style="color:var(--accent)">长难句 1</a>）。2 connected 与 close 并列同向、3 a host of 管数量。</span></div>
+          <div class="fi"><b>② 段二 · 研究：四百人、感冒病毒、32%</b>——在最近一项<b>有</b> 400 多名健康成年人<b>参与</b>的研究中，卡内基梅隆大学的研究人员考察了「感知到的社会支持」和「得到的拥抱」<b>对</b>参与者在<b>接触</b>病毒后染上普通感冒的易感性有何影响。感知到更多社会支持的人更不容易<b>患上</b>感冒；研究人员<b>算出</b>，拥抱的减压效果<b>能解释</b>这一有益影响的约 32%。<b>甚至</b>在那些得了感冒的人当中，感到社会支持更多、得到拥抱更频繁的人，<b>症状</b>也更轻。
+            <span class="ev">5–12 空，<b>全篇最重的一段（八个空）</b>，就是研究报道的「方法 → 结果 → 量化 → 追加发现」四格：❶ 句方法（5 involving 参与者 · 6 effects of A on B · 7 exposed 实验操作）；❷ 句结果与量化（8 come down with · 9 calculated · 10 explained）；❸ 句追加发现（11 Even · 12 symptoms）——<b>从「得不得病」推进到「病得重不重」</b>（⟹ <a href="#s2" style="color:var(--accent)">长难句 2</a>、<a href="#s3" style="color:var(--accent)">3</a>、<a href="#s4" style="color:var(--accent)">4</a>）。</span></div>
+          <div class="fi"><b>③ 段三 · 心理解释：学者引语</b>——「拥抱能保护处于压力之下的人，使他们免受通常<b>与</b>压力<b>相伴</b>的、<b>更高的</b>感冒风险，」卡内基梅隆大学心理学教授谢尔登·科恩指出。拥抱「是亲密的标志，有助于<b>产生</b>一种感觉：<b>遇到</b>困难时，总有人在身边帮你。」
+            <span class="ev">13–16 空。<b>两句引语，一句讲「压力 → 感冒」这一环</b>（13 increased · 14 associated with），<b>一句讲「拥抱 → 安全感」这一环</b>（15 generate · 16 in the face of）。⭐ 本段有两道<b>「框架定正负」</b>的题：<code>protect … from the ___ risk</code>（from 后必是坏事 ⟹ increased）、<code>helps ___ the feeling that others are there to help</code>（宾语是好感觉 ⟹ 不能 moderate）（⟹ <a href="#sign" style="color:var(--accent)">02+++</a>、<a href="#s5" style="color:var(--accent)">长难句 5</a>、<a href="#s6" style="color:var(--accent)">6</a>）。</span></div>
+          <div class="fi"><b>④ 段四 · 生理解释：催产素</b>——一些专家把拥抱减压、有益健康的好处<b>归因于</b>催产素的释放；催产素常被称作「亲密激素」，<b>因为</b>它能促进人际关系中的依恋，包括母亲和新生儿之间的依恋。催产素主要在大脑中下部生成，其中一部分被释放进血液。但也有一部分<b>留在</b>大脑里，在那里<b>影响</b>情绪、行为和生理机能。
+            <span class="ev">17–20 空。❶ 句 <code>attribute A to B … because …</code> 把链条的最后一环接上（17、18）；❸ 句 <code>some of it is released into the bloodstream. But some of it ___ in the brain</code>——<b>some … But some</b> 两部分对照 ⟹ 19 remains（没走的那部分）；末空 20 <b>不是逻辑空</b>，是从句谓语 influences，回扣③段的「心理」（mood）与②段的「身体」（physiology）（⟹ <a href="#s7" style="color:var(--accent)">长难句 7</a>、<a href="#s8" style="color:var(--accent)">8</a>）。</span></div>
+        </div>
+        <p class="note" style="margin-top:14px">📌 <b>第二条强线索：黄皮书说后两段是「心理」和「生理」两个角度</b>——③ 段学者谈的是感受（intimacy、feeling、difficulty），④ 段专家谈的是激素（oxytocin、brain、bloodstream）。<b>两段各管四个空，而且都在回答同一个问题：拥抱为什么能减压？</b>所以 ③④ 两段的空，方向全都顺着①②段的结论走，<b>不会冒出一个「但是拥抱也有坏处」</b>。</p>
+        <p class="note" id="bg">🎭 <b>读前背景（不影响做题，但读懂了心里有底）</b>：</p>
+        <div class="tabwrap"><table class="otab">
+          <tr><th>文中说法</th><th>背景</th><th>管哪个空</th></tr>
+          <tr><td><span class="ow">Could a hug a day keep the doctor away?</span></td><td>化用英语谚语 <i>An apple a day keeps the doctor away</i>。文章登在《美国新闻与世界报道》健康版——<b>这是一篇写给普通读者的健康科普</b>，所以口吻热情（resounding "yes!"、Believe it or not），不讲研究的局限</td><td>全篇方向</td></tr>
+          <tr><td><span class="ow">Carnegie Mellon University in Pennsylvania</span></td><td>卡内基梅隆大学，在宾夕法尼亚州匹兹堡。研究负责人 Sheldon Cohen 是该校心理学教授，长期研究压力、社会关系与感冒易感性</td><td>—</td></tr>
+          <tr><td><span class="ow">a recent study ___ over 400 healthy adults</span></td><td>据卡内基梅隆大学 2014-12-17 的新闻稿：研究<b>共 404 名健康成年人</b>，先用问卷测「感知到的社会支持」，再<b>连续 14 个晚上电话访谈</b>，问当天有没有和人起冲突、有没有被拥抱；然后<b>有意让他们接触感冒病毒</b>，隔离观察谁被感染、谁出症状。论文发表在 <i>Psychological Science</i></td><td>5 involving · 7 exposed</td></tr>
+          <tr><td><span class="ow">perceived social support</span></td><td>「感知到的」社会支持——不是别人实际给了多少帮助，而是<b>你觉得</b>有人会帮你。③段那句 <code>the feeling that others are there to help</code> 说的正是这个 perceived</td><td>15 generate</td></tr>
+          <tr><td><span class="ow">about 32 percent of that beneficial effect</span></td><td>新闻稿原话是拥抱「占社会支持保护效果的<b>三分之一</b>」（one-third）——考卷写成 about 32 percent，是论文里的精确数。这是一个<b>「A 能解释 B 的百分之几」</b>的统计说法</td><td>9 calculated · 10 explained</td></tr>
+          <tr><td><span class="ow">less severe ___</span></td><td>新闻稿：更多社会支持、更频繁的拥抱，都让<b>已经得病的人症状更轻</b>（less severe illness symptoms）。<b>研究区分了「感不感染」和「病得多重」两个结果</b>——考卷原样保留了这层区分</td><td>8 down · 11 Even · 12 symptoms</td></tr>
+          <tr><td><span class="ow">Sheldon Cohen … notes</span></td><td>notes 在这里是「指出、说」（熟词僻义），新闻写作里引出专家原话的常用动词，和 says／points out 同类</td><td>13 · 14</td></tr>
+          <tr><td><span class="ow">oxytocin, "the bonding hormone"</span></td><td>催产素：最早因<b>分娩时促进子宫收缩、哺乳时促进泌乳</b>而得名，后来发现它也参与社会联结（亲子依恋、伴侣信任），所以被媒体叫作「亲密激素」「拥抱激素」。<b>文中 mothers and their newborn babies 的例子就是从这里来的</b></td><td>17 attribute · 18 because</td></tr>
+          <tr><td><span class="ow">made … in the central lower part of the brain</span></td><td>指下丘脑：催产素在这里合成，一部分经垂体后叶释放进血液（作用于身体），一部分在大脑内部起作用（作用于情绪和行为）——<b>④段后两句就是这「兵分两路」的通俗说法</b></td><td>19 remains · 20 influences</td></tr>
+        </table></div>
+      </section>
+      <!-- ========== 01 正文 ========== -->
+      <section class="card">
+        <h2><span class="n">01</span>完形正文（20 空 · 点空格跳到该题）
+          <button class="allbtn" onclick="toggleAll()" style="margin-left:auto">译文 开/关</button>
+          <button class="allbtn" onclick="revealAll()">显示全部答案</button>
+        </h2>
+        <p class="note">🟨 点<b>空格</b>＝跳到下面对应的解析卡（先自己选，再看解析）｜ 🟡 黄底词＝生词卡，点开看词根/辨析 ｜ 蓝色虚线＝长难句 ｜ 选中任意单词浮出「查有道」</p>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">①</span>Could a hug a day <span class="tk" data-w="keepdoctor">keep the doctor away</span>? The answer may be a <span class="tk" data-w="resounding">resounding</span> “<i>yes!</i>” <span class="ls" onclick="go('s1')"><span class="bk" data-n="1"><span class="idx">1</span>___</span> helping you feel close and <span class="bk" data-n="2"><span class="idx">2</span>___</span> to people you care about, it <span class="tk" data-w="turnsout">turns out</span> that hugs can bring a <span class="bk" data-n="3"><span class="idx">3</span>___</span> of health benefits to your body and mind.</span> <span class="tk" data-w="believeit">Believe it or not</span>, a warm <span class="tk" data-w="embrace">embrace</span> might even help you <span class="bk" data-n="4"><span class="idx">4</span>___</span> getting sick this winter.</p>
+          <div class="zh">一天一个拥抱，能让医生远离你吗？答案也许是一声响亮的「能！」<b>除了</b>帮你感到与所关心的人亲近、<b>紧密相连</b>之外，原来拥抱还能给你的身心带来<b>许多</b>健康益处。信不信由你，一个温暖的拥抱甚至可能帮你在这个冬天<b>避免</b>生病。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">②</span><span class="ls" onclick="go('s2')">In a recent study <span class="bk" data-n="5"><span class="idx">5</span>___</span> over 400 healthy adults, researchers from <span class="tk" data-w="carnegie">Carnegie Mellon University</span> in Pennsylvania examined the effects of <span class="tk" data-w="perceive">perceived</span> <span class="tk" data-w="socialsupport">social support</span> and the <span class="tk" data-w="receipt">receipt</span> of hugs <span class="bk" data-n="6"><span class="idx">6</span>___</span> the <span class="tk" data-w="participant">participants</span>’ <span class="tk" data-w="susceptibility">susceptibility</span> to developing the <span class="tk" data-w="commoncold">common cold</span> after being <span class="bk" data-n="7"><span class="idx">7</span>___</span> to the virus.</span> <span class="ls" onclick="go('s3')">People who perceived greater social support were less likely to come <span class="bk" data-n="8"><span class="idx">8</span>___</span> with a cold, and the researchers <span class="bk" data-n="9"><span class="idx">9</span>___</span> that the <span class="tk" data-w="stressreducing">stress-reducing</span> effects of hugging <span class="bk" data-n="10"><span class="idx">10</span>___</span> about 32 percent of that <span class="tk" data-w="beneficial">beneficial</span> effect.</span> <span class="ls" onclick="go('s4')"><span class="bk" data-n="11"><span class="idx">11</span>___</span> among those who got a cold, the ones who felt greater social support and received more frequent hugs had less <span class="tk" data-w="severe">severe</span> <span class="bk" data-n="12"><span class="idx">12</span>___</span>.</span></p>
+          <div class="zh">在最近一项<b>有</b> 400 多名健康成年人<b>参与</b>的研究中，宾夕法尼亚州卡内基梅隆大学的研究人员考察了「感知到的社会支持」和「得到拥抱」<b>对</b>参与者在<b>接触</b>病毒之后染上普通感冒的易感性有何影响。感知到更多社会支持的人更不容易<b>患上</b>感冒；研究人员<b>算出</b>，拥抱的减压效果<b>能解释</b>这一有益影响的约 32%。<b>甚至</b>在那些得了感冒的人当中，感到社会支持更多、得到拥抱更频繁的人，<b>症状</b>也更轻。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">③</span><span class="ls" onclick="go('s5')">“Hugging protects people who are <span class="tk" data-w="understress">under stress</span> from the <span class="bk" data-n="13"><span class="idx">13</span>___</span> risk for colds that’s usually <span class="bk" data-n="14"><span class="idx">14</span>___</span> with stress,” <span class="tk" data-w="notes">notes</span> Sheldon Cohen, a professor of psychology at Carnegie.</span> <span class="ls" onclick="go('s6')">Hugging “is a <span class="tk" data-w="marker">marker</span> of <span class="tk" data-w="intimacy">intimacy</span> and helps <span class="bk" data-n="15"><span class="idx">15</span>___</span> the feeling that others are there to help <span class="bk" data-n="16"><span class="idx">16</span>___</span> difficulty.”</span></p>
+          <div class="zh">「拥抱能保护处于压力之下的人，使他们免受<b>更高的</b>感冒风险——这种风险通常<b>与</b>压力<b>相伴</b>，」卡内基梅隆大学心理学教授谢尔登·科恩指出。拥抱「是亲密的标志，有助于<b>产生</b>这样一种感觉：<b>遇到</b>困难时，总有人在身边帮你。」</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">④</span><span class="ls" onclick="go('s7')">Some experts <span class="bk" data-n="17"><span class="idx">17</span>___</span> the stress-reducing, <span class="tk" data-w="healthrelated">health-related</span> benefits of hugging to the <span class="tk" data-w="release">release</span> of <span class="tk" data-w="oxytocin">oxytocin</span>, often called “the <span class="tk" data-w="bonding">bonding hormone</span>” <span class="bk" data-n="18"><span class="idx">18</span>___</span> it <span class="tk" data-w="promote">promotes</span> <span class="tk" data-w="attachment">attachment</span> in relationships, including that between mothers and their <span class="tk" data-w="newborn">newborn</span> babies.</span> Oxytocin is made <span class="tk" data-w="primarily">primarily</span> in the <span class="tk" data-w="central">central</span> lower part of the brain, and some of it is released into the <span class="tk" data-w="bloodstream">bloodstream</span>. <span class="ls" onclick="go('s8')">But some of it <span class="bk" data-n="19"><span class="idx">19</span>___</span> in the brain, where it <span class="bk" data-n="20"><span class="idx">20</span>___</span> <span class="tk" data-w="mood">mood</span>, behavior and <span class="tk" data-w="physiology">physiology</span>.</span></p>
+          <div class="zh">一些专家把拥抱减压、有益健康的好处<b>归因于</b>催产素的释放。催产素常被称为「亲密激素」，<b>因为</b>它能促进人际关系中的依恋，包括母亲与新生儿之间的依恋。催产素主要在大脑的中下部生成，其中一部分被释放进血液。但也有一部分<b>留在</b>大脑里，在那里<b>影响</b>着情绪、行为和生理机能。</div>
+        </div>
+      </section>
+      <!-- ========== 02 逐空精解 ========== -->
+      <section class="card">
+        <h2><span class="n">02</span>逐空精解（点选项即判 · 再看解析）</h2>
+        <div class="score">
+          <span><span class="v" id="sDone">0</span>/20 已答</span>
+          <span><span class="v" id="sRight">0</span> 对</span>
+          <span>折合 <span class="v" id="sPt">0</span> 分 / 10</span>
+          <button class="rst" onclick="location.reload()">↺ 重做</button>
+        </div>
+        <p class="note">每空 0.5 分。<b>先在心里说出「这个空要填什么词性、什么方向」再点选项</b>。本篇全文只有一个方向——<b>拥抱有好处</b>——所以难点不在「正还是负」，而在三件事：<b>① 链条上的因果箭头朝哪边</b>（10、14、17、18）；<b>② 递进到了第几级</b>（1、4、11）；<b>③ 框架对宾语的正负有没有要求</b>（4、13、15）。另外本篇有<b>四道题四个选项接同一个介词</b>（2 全接 to · 7 全接 to · 14 全接 with · 17 全接 to），介词帮不上忙，要看意思。</p>
+
+        <div class="q" id="q1" data-ans="1">
+          <div class="qhead"><span class="qno">1</span><span class="qt c-logic">逻辑关系 · 递进第一级：人人知道的好处 → 没想到的好处</span><span class="qpos">___ helping you feel close …, it turns out that hugs can bring …</span></div>
+          <span class="stem"><em>1</em> helping you feel close and <em>2</em> to people you care about, <b>it turns out that</b> hugs can bring a <em>3</em> of health benefits to your body and mind.</span>
+          <div class="opts">
+            <div class="opt">A Unlike<span class="gl">不像，与……不同</span></div>
+            <div class="opt">B Besides<span class="gl">除……之外（还）</span></div>
+            <div class="opt">C Throughout<span class="gl">遍及；自始至终</span></div>
+            <div class="opt">D Despite<span class="gl">尽管</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>句首介词，后接 V-ing 短语 <code>helping you feel close …</code> 作状语；这个 V-ing 的逻辑主语就是主句里的 <code>hugs</code>。空格要交代<b>「帮你感到亲近」和「带来健康益处」是什么关系</b>。
+            <span class="lbl">🔗 线索</span>① 逗号两边说的是<b>同一个主体（拥抱）的两种好处</b>——一个是情感上的（亲近），一个是身体上的（健康）；② <code>it turns out that</code>＝「原来、结果发现」，带着<b>意外</b>：亲近是人人都知道的，健康益处才是新发现 ⟹ <b>先铺垫已知、再推出新知</b>；③ 上一句刚答了 <code>“yes!”</code>，这一句是在<b>解释为什么答 yes</b>——两种好处同向相加。
+            <span class="lbl">✅ B Besides</span>＝除了……之外（还有）。代入＝「<b>除了</b>帮你感到与关心的人亲近之外，原来拥抱还能带来许多健康益处」。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>Unlike：与……不同——比较的是<b>两个不同的东西</b>（Unlike his brother, he …）。这里逗号两边都是拥抱，没有第二个主体可比。</div>
+              <div class="wr"><span class="l">C</span>Throughout：自始至终；遍及——后面要接一段时间或一片地方（throughout the year），不接「一个好处」。中文「在帮你亲近的整个过程中」是凑出来的。</div>
+              <div class="wr"><span class="l">D</span>Despite：尽管——<b>最像的干扰</b>，因为 turns out 带着「没想到」，容易联想成「尽管……竟然……」。但让步要求两边<b>方向相反</b>（Despite the rain, we went out），亲近和健康都是好处，同向，不构成「尽管」。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>「没想到」≠「转折」</b>：it turns out／surprisingly／believe it or not 表达的是<b>超出预期</b>，前面可以是同向的铺垫——判逻辑空只看两边内容同向还是反向，不看语气惊不惊讶。⭐ <b>本篇递进三级台阶的第一级</b>：1 Besides → 4 even → 11 Even（⟹ <a href="#steps" style="color:var(--accent)">02++</a>、新卡 <a href="套路库_阅读.html#R229" style="color:var(--accent)">R229</a>）。✍️ <code>Besides doing A, X also does B</code> 是作文里最稳的递进开头。
+          </div>
+        </div>
+
+        <div class="q" id="q2" data-ans="2">
+          <div class="qhead"><span class="qno">2</span><span class="qt c-context">上下文语义 · and 并列同向（介词失效：四个全接 to）</span><span class="qpos">feel close and ___ to people you care about</span></div>
+          <span class="stem"><em>1</em> helping you feel <b>close and</b> <em>2</em> <b>to people you care about</b>, it turns out that …</span>
+          <div class="opts">
+            <div class="opt">A equal<span class="gl">平等的；胜任的</span></div>
+            <div class="opt">B restricted<span class="gl">受限制的</span></div>
+            <div class="opt">C connected<span class="gl">有联系的；关系亲密的</span></div>
+            <div class="opt">D inferior<span class="gl">较差的，不如……的</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span><code>feel</code> 后的第二个表语形容词，与 <code>close</code> 由 and 并列，共用 <code>to people you care about</code>。
+            <span class="lbl">🔗 线索</span>① <b>and 同向</b>：close（亲近）是好感受，空格也得是<b>同一方向的好感受</b>；② 对象是 <code>people you care about</code>（你在乎的人）——说的是<b>情感上的联结</b>，不是地位、能力、范围；③ ⚠️ <b>介词帮不上忙</b>：equal to／restricted to／connected to／inferior to 四个都成立。
+            <span class="lbl">✅ C connected</span>＝（情感上）有联结的。<code>feel connected to sb</code>＝觉得和某人心连心。代入＝「感到与你所关心的人亲近、<b>紧密相连</b>」。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>equal：平等的——暗示原本有高下之分、拥抱让你「追平了」，和「你在乎的人」这层关系不搭；feel equal to 更常见的意思是「觉得能胜任」（feel equal to the task）。</div>
+              <div class="wr"><span class="l">B</span>restricted：受限的——讲范围、行动被限制，<b>不描述人的心理感受</b>；中文「感到拘束」是翻译陷阱。</div>
+              <div class="wr"><span class="l">D</span>inferior：不如人的——<b>负面感受</b>，与 close 反向，与「拥抱有益」反向。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>and 并列 ⟹ 找同向词</b>（⟹ <a href="套路库_阅读.html#R77" style="color:var(--accent)">R77</a>）：close and connected、healthy and happy，这类并列常是<b>近义叠用</b>，空格就是前一个词的同义替换。⭐ <b>介词失效本篇第一例</b>（四个全接 to）——本篇共四道（2 · 7 · 14 · 17），<b>一篇四道是本站记录最多</b>（⟹ <a href="套路库_阅读.html#R157" style="color:var(--accent)">R157</a> 补）。✍️ <code>feel connected to one's community</code>（有归属感）是写社区、家庭话题的好短语。
+          </div>
+        </div>
+
+        <div class="q" id="q3" data-ans="0">
+          <div class="qhead"><span class="qno">3</span><span class="qt c-collo">固定搭配 · a ___ of ＋ 复数名词</span><span class="qpos">hugs can bring a ___ of health benefits</span></div>
+          <span class="stem">… it turns out that hugs can bring <b>a</b> <em>3</em> <b>of health benefits</b> to your body and mind.</span>
+          <div class="opts">
+            <div class="opt">A host<span class="gl">（a host of）许多，大量</span></div>
+            <div class="opt">B view<span class="gl">看法；视野</span></div>
+            <div class="opt">C lesson<span class="gl">课；教训</span></div>
+            <div class="opt">D choice<span class="gl">选择（范围）</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span><code>bring A to B</code> 里 A 的中心部分：<code>a ___ of health benefits</code>。要判断谁是这个名词短语的<b>中心词</b>——是空格，还是 health benefits。
+            <span class="lbl">🔗 线索</span>① 前两句一问一答讲的就是「<b>拥抱有益健康</b>」——语义重心必然落在 <code>health benefits</code> 上，<b>空格只是给它加个限定</b>；② benefits 是<b>复数</b>，空格前有不定冠词 a ⟹ 典型的「a ＋ 量词 ＋ of ＋ 复数名词」；③ 后一句 <code>might even help you ___ getting sick</code> 是在这「一大堆益处」里再挑出最惊人的一个。
+            <span class="lbl">✅ A host</span>＝<code>a host of</code> 许多、一大堆（＝a large number of），后接可数名词复数。代入＝「拥抱能给身心带来<b>许多</b>健康益处」。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>view：看法（a view of life）；视野——拥抱带给你的是实实在在的好处，不是「对健康益处的看法」。</div>
+              <div class="wr"><span class="l">C</span>lesson：课、教训——「给身心带来一堂健康益处课／一个教训」都不通；「关于……的课」要用 a lesson on／in。</div>
+              <div class="wr"><span class="l">D</span>choice：选择范围（a choice of dishes）——益处不是摆出来让你挑的菜单。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>三缺一</b>：view／lesson／choice 都会<b>把语义重心抢到自己身上</b>（看法、教训、选择），只有 host 甘当量词、把重心留给 health benefits（⟹ <a href="套路库_阅读.html#R74" style="color:var(--accent)">R74</a>）。⭐ <b>量词短语一组背</b>：a host of／a wealth of／a range of／a variety of／a multitude of（都接复数、都表「多」）。✍️ 作文开头：<i>Reading brings a host of benefits to both body and mind.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q4" data-ans="2">
+          <div class="qhead"><span class="qno">4</span><span class="qt c-context">上下文语义 · help 后面只能接好结果（even 再加一级）</span><span class="qpos">a warm embrace might even help you ___ getting sick this winter</span></div>
+          <span class="stem">Believe it or not, a warm embrace might <b>even help</b> you <em>4</em> <b>getting sick</b> this winter.</span>
+          <div class="opts">
+            <div class="opt">A recall<span class="gl">回想起</span></div>
+            <div class="opt">B forget<span class="gl">忘记</span></div>
+            <div class="opt">C avoid<span class="gl">避免</span></div>
+            <div class="opt">D keep<span class="gl">保持；一直（做）</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span><code>help you (to) do</code> 里的 do，宾语是动名词 <code>getting sick</code>；时间状语 <code>this winter</code> 指<b>眼下或将来</b>。
+            <span class="lbl">🔗 线索</span>① <b>help 定正负</b>：「帮你」做到的事一定是好事——而 getting sick 是坏事 ⟹ 空格必须把坏事<b>挡在外面</b>；② <code>even</code> 表递进：上一句说「有益健康」，这一句再进一步「<b>甚至不生病</b>」；③ <code>Believe it or not</code> 预告接下来是一个<b>夸张但为真</b>的说法。
+            <span class="lbl">✅ C avoid</span>＝<code>avoid doing</code> 避免。代入＝「一个温暖的拥抱甚至可能帮你在这个冬天<b>避免</b>生病」。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>recall doing：想起（过去）做过——和 this winter（还没发生）时间对不上，「帮你回想起生病」也不是好处。</div>
+              <div class="wr"><span class="l">B</span>forget doing：忘记（已经）做过——同 A，时间不对，意思也荒唐。</div>
+              <div class="wr"><span class="l">D</span>keep doing：一直做——「帮你一直生病」，方向全反。命题人是拿 <code>keep (sb) from doing</code>（阻止）来钓人的：<b>keep 要想表示「免于」，后面必须有 from</b>，这里没有。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>框架自带正负号</b>：help／enable／allow 后接的结果对主语是「好」的，prevent／protect from 后接的是「坏」的——<b>宾语是坏事时，help 后的动词必须是「避开」类</b>（⟹ <a href="#sign" style="color:var(--accent)">02+++</a>、新卡 <a href="套路库_阅读.html#R230" style="color:var(--accent)">R230</a>）。⭐ <b>四个选项全接 doing</b>——动名词框架筛不掉任何一个，同「介词失效」一个道理。✍️ <code>keep sb from doing</code> vs <code>keep doing</code> 一词之差、意思相反，作文里别写掉 from。
+          </div>
+        </div>
+
+        <div class="q" id="q5" data-ans="3">
+          <div class="qhead"><span class="qno">5</span><span class="qt c-word">词义辨析 · 研究报道套话：a study involving … participants</span><span class="qpos">In a recent study ___ over 400 healthy adults</span></div>
+          <span class="stem">In a recent <b>study</b> <em>5</em> <b>over 400 healthy adults</b>, researchers … examined the effects of … on <b>the participants’</b> susceptibility …</span>
+          <div class="opts">
+            <div class="opt">A collecting<span class="gl">收集；聚集</span></div>
+            <div class="opt">B affecting<span class="gl">影响</span></div>
+            <div class="opt">C guiding<span class="gl">引导，指导</span></div>
+            <div class="opt">D involving<span class="gl">涉及；使参与</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>现在分词短语 <code>___ over 400 healthy adults</code> 作 <code>study</code> 的后置定语——<b>study 是逻辑主语，400 名成年人是宾语</b>。
+            <span class="lbl">🔗 线索</span>⭐ 同一句后半 <code>the participants’</code>——<b>回指这 400 人，身份是「参与者」</b>。所以空格要说的是「这项研究<b>让 400 人参与其中</b>」，而不是研究对他们做了什么。
+            <span class="lbl">✅ D involving</span>＝涉及、有……参与。<code>a study involving 400 adults</code>＝一项有 400 名成年人参与的研究，是科研报道的<b>固定开场</b>。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>collecting：收集——研究可以 collect data（收集数据），不说「收集 400 个成年人」；表「人群聚集」时 collect 是不及物的（A crowd began to collect）。</div>
+              <div class="wr"><span class="l">B</span>affecting：影响——400 人是来<b>参加</b>研究的，不是被研究「影响」的对象；影响他们的是后面的拥抱和病毒。</div>
+              <div class="wr"><span class="l">C</span>guiding：指导、引导——错因同 B，把参与者说成了被研究指导的人。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>三缺一</b>：collecting／affecting／guiding 都是研究<b>对人做了点什么</b>，只有 involving 说人<b>在研究里面</b>（⟹ R74）。⭐ <b>研究报道「方法」槽的套话</b>：a study involving／of／with N participants · researchers examined the effects of A on B · subjects were exposed to …——<b>本篇②❶ 一句就用了三个</b>（5 · 6 · 7，⟹ <a href="#slots" style="color:var(--accent)">02++++</a>）。
+          </div>
+        </div>
+
+        <div class="q" id="q6" data-ans="0">
+          <div class="qhead"><span class="qno">6</span><span class="qt c-collo">固定搭配 · the effect(s) of A on B</span><span class="qpos">examined the effects of A … ___ the participants’ susceptibility</span></div>
+          <span class="stem">… researchers … examined <b>the effects of</b> perceived social support and the receipt of hugs <em>6</em> the participants’ susceptibility to developing the common cold …</span>
+          <div class="opts">
+            <div class="opt">A on<span class="gl">（effect on）对……的影响</span></div>
+            <div class="opt">B in<span class="gl">在……之中</span></div>
+            <div class="opt">C at<span class="gl">在……方面</span></div>
+            <div class="opt">D of<span class="gl">……的</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>介词，引出 <code>effects</code> 的<b>作用对象</b>；前面 <code>of perceived social support and the receipt of hugs</code> 是施加影响的一方（A），后面 <code>the participants’ susceptibility</code> 是被影响的一方（B）。
+            <span class="lbl">🔗 线索</span>① 中间那串 of 短语很长，<b>先把它括掉</b>：examined the effects ___ susceptibility；② 上一段结尾刚说拥抱能帮你不生病 ⟹ 研究测的正是「拥抱<b>对</b>易感性的影响」。
+            <span class="lbl">✅ A on</span>＝<code>the effect of A on B</code>，A 对 B 的影响。代入＝「考察了社会支持和拥抱<b>对</b>参与者感冒易感性的影响」。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>in：the effect of A in B＝A 在 B（某群人、某范围）<b>当中</b>的影响（the effect of the drug in adults）——易感性不是一个范围，是被影响的指标。</div>
+              <div class="wr"><span class="l">C</span>at：「在……方面」常跟形容词（good at），不跟 effect。</div>
+              <div class="wr"><span class="l">D</span>of：effects of A of B 只能表示所属或同位，「社会支持和拥抱的易感性的影响」说不通。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>长 of 短语括掉再看</b>：effect／impact／influence 与 on 是一对，中间夹多长的 of 都一样。⭐ 与 B 题 in 的区分值得背：<code>the effect of X <b>on</b> blood sugar <b>in</b> adults</code>——on 接指标、in 接人群。✍️ <code>have a profound effect on</code> 是作文高频。
+          </div>
+        </div>
+
+        <div class="q" id="q7" data-ans="1">
+          <div class="qhead"><span class="qno">7</span><span class="qt c-word">词义辨析 · 实验操作：be exposed to（介词失效：四个全接 to）</span><span class="qpos">after being ___ to the virus</span></div>
+          <span class="stem">… the participants’ susceptibility to developing the common cold <b>after being</b> <em>7</em> <b>to the virus</b>.</span>
+          <div class="opts">
+            <div class="opt">A devoted<span class="gl">（devote to）献身于，专注于</span></div>
+            <div class="opt">B exposed<span class="gl">（expose to）使接触，使暴露于</span></div>
+            <div class="opt">C lost<span class="gl">（lose to）输给</span></div>
+            <div class="opt">D attracted<span class="gl">（attract to）被……吸引</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span><code>after being ___ to the virus</code>：被动的动名词，隐含主语是参与者；描述研究里的<b>一道操作</b>。
+            <span class="lbl">🔗 线索</span>① after 排出流程：先 ___ 病毒 → 再看会不会得感冒；<b>这一步是「条件」，得感冒是「结果」</b>；② 研究测的是 <code>susceptibility</code>（易感性）——要测易感性，得先<b>让人接触病毒</b>；③ ⚠️ 四个选项全接 to，介词筛不掉。
+            <span class="lbl">✅ B exposed</span>＝<code>be exposed to</code> 接触、暴露于（尤指有害的东西）。代入＝「在<b>接触</b>病毒之后」。据新闻稿，研究者是<b>有意让参与者接触感冒病毒</b>、再隔离观察的。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>devoted to：献身于、专注于——「参与者献身于病毒」荒唐。</div>
+              <div class="wr"><span class="l">C</span>lost to：输给、被……夺去——中文「败给病毒」有点诱人，但 lose to 用于比赛输给对手（lost to Brazil），而且「输了之后才测易感性」顺序也不对。</div>
+              <div class="wr"><span class="l">D</span>attracted to：被……吸引——对病毒产生兴趣，不会让人更容易感冒，构不成「条件—结果」。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>介词失效本篇第二例</b>（四个全接 to）。⭐ <b>be exposed to 是研究报道「方法」槽的专用词</b>：实验对象被「暴露于」某种刺激（噪音、病毒、广告、阳光），对照组则没有。阅读里常见 <code>exposure to</code>（接触）。✍️ <code>Children exposed to books early …</code>（从小接触书的孩子）。
+          </div>
+        </div>
+
+        <div class="q" id="q8" data-ans="2">
+          <div class="qhead"><span class="qno">8</span><span class="qt c-collo">固定搭配 · come down with（染上小病）</span><span class="qpos">were less likely to come ___ with a cold</span></div>
+          <span class="stem">People who perceived greater social support were less likely to <b>come</b> <em>8</em> <b>with a cold</b>, and the researchers <em>9</em> that …</span>
+          <div class="opts">
+            <div class="opt">A along<span class="gl">（come along with）跟着来</span></div>
+            <div class="opt">B across<span class="gl">（come across with）提供</span></div>
+            <div class="opt">C down<span class="gl">（come down with）患上（小病）</span></div>
+            <div class="opt">D out<span class="gl">（come out with）说出</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>短语动词 <code>come ___ with a cold</code>，主语是人（people who perceived …）。
+            <span class="lbl">🔗 线索</span>① 这是研究的<b>结果句</b>，要和上一句的<b>测量指标</b>对上：上句测 <code>susceptibility to developing the common cold</code>（染上感冒的易感性），本句就该说「<b>更不容易染上感冒</b>」；② 宾语 a cold 是<b>一种小病</b>。
+            <span class="lbl">✅ C down</span>＝<code>come down with</code> 患上、染上（感冒、流感这类小病）＝catch／develop。代入＝「感知到更多社会支持的人更不容易<b>患上</b>感冒」。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>come along with：和（某人）一起来——后面接人；come along 单用是「出现」，但主语得是出现的东西（when the right opportunity comes along），这里主语是人。</div>
+              <div class="wr"><span class="l">B</span>come across with：（口语）提供、交出（钱、信息）——感冒不是你交出来的东西。</div>
+              <div class="wr"><span class="l">D</span>come out with：说出（令人吃惊的话）——命题人借 come out「结果是」钓人，但这个意思主语是事情本身（Everything will come out all right），也不带 with。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>come ＋ 小词 ＋ with 一组背</b>：come up with（想出）· come down with（患上）· come across（偶遇）· come along（出现；进展）· come out with（说出）。⭐ <b>结果句的动词＝方法句测量指标的同义替换</b>：developing the common cold ↔ come down with a cold（⟹ <a href="#slots" style="color:var(--accent)">02++++</a>）。
+          </div>
+        </div>
+
+        <div class="q" id="q9" data-ans="3">
+          <div class="qhead"><span class="qno">9</span><span class="qt c-word">词义辨析 · 研究结论动词：带具体数字 ⟹ 计算出来的</span><span class="qpos">the researchers ___ that … about 32 percent …</span></div>
+          <span class="stem">… and <b>the researchers</b> <em>9</em> that the stress-reducing effects of hugging <em>10</em> <b>about 32 percent</b> of that beneficial effect.</span>
+          <div class="opts">
+            <div class="opt">A imagined<span class="gl">想象；猜想</span></div>
+            <div class="opt">B denied<span class="gl">否认</span></div>
+            <div class="opt">C doubted<span class="gl">怀疑</span></div>
+            <div class="opt">D calculated<span class="gl">计算，估算</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>and 后第二个分句的谓语，主语 <code>the researchers</code>，接 that 宾语从句。
+            <span class="lbl">🔗 线索</span>① 宾语从句里有<b>一个精确数字</b> <code>about 32 percent</code>——研究人员对这个数的动作只能是<b>算出来</b>；② and 连接前后两个分句，<b>同向</b>：前一句给结果（更不容易感冒），这一句把结果<b>量化</b>（拥抱贡献了多少）；③ that beneficial effect 回指前一分句的结果。
+            <span class="lbl">✅ D calculated</span>＝（用数据）计算、估算出。代入＝「研究人员<b>算出</b>，拥抱的减压效果能解释这一有益影响的约 32%」。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>imagined：想象、猜——研究报告的结论不是想象出来的，而且和精确到个位的 32 相矛盾。</div>
+              <div class="wr"><span class="l">B</span>denied：否认——and 同向，前一句刚证实了好处，研究者不会接着否认它。</div>
+              <div class="wr"><span class="l">C</span>doubted：怀疑——错因同 B，「更不容易感冒，而且研究者怀疑拥抱有贡献」前后打架。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>三缺一</b>：imagined／denied／doubted 都是<b>不确定或否定</b>，只有 calculated 是<b>确定的量化</b>（⟹ R74）。⭐ <b>研究报道的结论动词按「确定度」分三档</b>：found／showed／calculated（确定）· suggested／indicated（倾向）· speculated／hypothesized（猜想）——<b>句子里有数字，就往最确定那档靠</b>（对照 <a href="2013_完形_面试打分的当日偏见.html" style="color:var(--accent)">2013 完形</a>的 speculated → found）。
+          </div>
+        </div>
+
+        <div class="q" id="q10" data-ans="1">
+          <div class="qhead"><span class="qno">10</span><span class="qt c-word">词义辨析 · 熟词僻义：explain X percent of ＝ 占原因的百分之几</span><span class="qpos">the stress-reducing effects of hugging ___ about 32 percent of that beneficial effect</span></div>
+          <span class="stem">… the researchers <em>9</em> that <b>the stress-reducing effects of hugging</b> <em>10</em> <b>about 32 percent of that beneficial effect</b>.</span>
+          <div class="opts">
+            <div class="opt">A served<span class="gl">服务；起……作用（serve as／to do）</span></div>
+            <div class="opt">B explained<span class="gl">解释；是……的原因</span></div>
+            <div class="opt">C restored<span class="gl">恢复</span></div>
+            <div class="opt">D required<span class="gl">需要</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>宾语从句的谓语：主语是<b>原因</b>（拥抱的减压效果），宾语是<b>结果的一部分</b>（「更不易感冒」这个好效果的约 32%）。
+            <span class="lbl">🔗 线索</span>① 主语、宾语的关系是<b>「原因 → 结果」</b>：减压是机制，少感冒是表现；② <b>「百分之几的效果」只能被「解释」、被「归因」</b>——即「这一好效果里，约 32% 是拥抱减压造成的」；③ 新闻稿原话是拥抱 <i>were responsible for one-third of the protective effect</i>（占保护效果的三分之一）⟹ responsible for ＝ explain。
+            <span class="lbl">✅ B explained</span>＝（因素）说明了、是……的原因；统计里 <code>A explains X% of B</code>＝A 能解释 B 的 X%。代入＝「拥抱的减压效果<b>能解释</b>这一有益影响的约 32%」。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>served：「起作用」的意思要写成 serve as sth／serve to do sth，不直接接「百分之几的效果」作宾语——语法上就过不去。</div>
+              <div class="wr"><span class="l">C</span>restored：恢复——预设「以前有、后来没了、现在找回来」，而这个好效果是研究新测出来的，谈不上恢复。</div>
+              <div class="wr"><span class="l">D</span>required：需要——<b>把箭头倒过来了</b>：「减压效果需要这一好效果」＝先得有少感冒、才有减压，因果颠倒。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐⭐ <b>explain 的熟词僻义</b>：主语是物时，explain＝account for＝be responsible for＝是……的原因（Her father’s violence explains her pacifism）。⭐ <b>因果空先画箭头</b>：原因在左、结果在右，<b>required／depend on 会把箭头倒过来</b>（⟹ <a href="#chain" style="color:var(--accent)">02+ 因果链</a>、新卡 <a href="套路库_阅读.html#R228" style="color:var(--accent)">R228</a>）。✍️ 阅读里 <code>This may explain why …</code>、<code>account for 60% of …</code> 都是这个意思。
+          </div>
+        </div>
+
+        <div class="q" id="q11" data-ans="3">
+          <div class="qhead"><span class="qno">11</span><span class="qt c-logic">逻辑关系 · 递进第三级：没得病的少得 → 得了病的也轻</span><span class="qpos">___ among those who got a cold, the ones who … had less severe ___</span></div>
+          <span class="stem"><em>11</em> <b>among those who got a cold</b>, the ones who felt greater social support and received more frequent hugs had <b>less severe</b> <em>12</em>.</span>
+          <div class="opts">
+            <div class="opt">A Thus<span class="gl">因此</span></div>
+            <div class="opt">B Still<span class="gl">仍然；不过</span></div>
+            <div class="opt">C Rather<span class="gl">更确切地说；相反</span></div>
+            <div class="opt">D Even<span class="gl">甚至；即使</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>句首副词，修饰介词短语 <code>among those who got a cold</code>——这个短语自己就能作状语，所以空格只管<b>本句和上一句的逻辑关系</b>。
+            <span class="lbl">🔗 线索</span>⭐ <b>换了一群人，方向没变</b>：上一句说的是<b>所有人</b>——社会支持多的人更不容易得感冒（<b>预防</b>）；这一句把范围缩到<b>已经得了感冒的人</b>——社会支持多、拥抱多的人症状更轻（<b>缓解</b>）。两句都在说拥抱的好处，第二句的好处<b>更出人意料</b>：连病了都有用。<b>同向 ＋ 加码 ⟹ 递进</b>。
+            <span class="lbl">✅ D Even</span>＝甚至、即便。代入＝「<b>甚至</b>在那些得了感冒的人当中，……症状也更轻」。<b>盲做时在 D／B 间停过</b>，理由见 B。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>Thus：因此——上一句不是本句的原因（「不容易得感冒」推不出「得了的人症状轻」），两句是<b>并列的两项发现</b>。</div>
+              <div class="wr"><span class="l">B</span>Still：<b>最像的干扰</b>。句首 Still 是「不过、尽管如此」，要求上一句说了什么<b>不利</b>的事，本句再拉回来（It was raining. Still, we went out.）。上一句全是好消息，没有需要拉回来的东西；Still 的「仍然」义要同一主体的持续状态，这里却换了一群人。</div>
+              <div class="wr"><span class="l">C</span>Rather：更确切地说／相反——要么纠正上一句，要么和上一句对立；两句同向，既不纠正也不对立。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐⭐ <b>判 Even 的两个条件</b>：① 方向和上一句<b>一样</b>；② 对象或程度<b>更极端</b>（所有人 → 连病人都；有益 → 甚至不生病）。<b>方向一样却不更极端 ⟹ also／moreover；方向反了 ⟹ still／however</b>。⭐ <b>三缺一</b>：Thus（因果）／Still（让步）／Rather（纠正）都在<b>拐弯</b>，只有 Even 是<b>直走加码</b>（⟹ R74）。⭐ 本篇递进三级台阶的第三级（1 Besides → 4 even → 11 Even，⟹ <a href="#steps" style="color:var(--accent)">02++</a>、新卡 <a href="套路库_阅读.html#R229" style="color:var(--accent)">R229</a>）。
+          </div>
+        </div>
+
+        <div class="q" id="q12" data-ans="1">
+          <div class="qhead"><span class="qno">12</span><span class="qt c-context">上下文语义 · 已经病了，还能比的只剩「症状」</span><span class="qpos">among those who got a cold, … had less severe ___</span></div>
+          <span class="stem"><em>11</em> <b>among those who got a cold</b>, the ones who felt greater social support and received more frequent hugs had <b>less severe</b> <em>12</em>.</span>
+          <div class="opts">
+            <div class="opt">A defeats<span class="gl">失败；击败</span></div>
+            <div class="opt">B symptoms<span class="gl">症状</span></div>
+            <div class="opt">C errors<span class="gl">错误</span></div>
+            <div class="opt">D tests<span class="gl">测验；考验</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span><code>had</code> 的宾语中心词，被 <code>less severe</code>（没那么严重的）修饰；全句最后一个词。
+            <span class="lbl">🔗 线索</span>① 比较的范围已经限定在 <code>those who got a cold</code>——<b>大家都病了</b>，「得没得」没法比了，还能比的只有<b>病得重不重</b>；② <code>severe</code> 最常修饰的就是疾病、症状、天气、惩罚；③ 全段是医学研究，词族是 cold／virus／susceptibility。
+            <span class="lbl">✅ B symptoms</span>＝症状。<code>less severe symptoms</code>＝症状较轻。新闻稿原话 <i>less severe illness symptoms</i>。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>defeats：失败——常规语境里「支持多 → 失败轻」有点顺，但本段讲的是健康，不是输赢。</div>
+              <div class="wr"><span class="l">C</span>errors：错误——同 A，离开了医学语境。</div>
+              <div class="wr"><span class="l">D</span>tests：考验——借 <code>a severe test</code>（严峻的考验）这个常见搭配钓人；可研究里<b>每个人接触的病毒是一样的</b>，不存在谁受的考验轻。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>三缺一</b>：defeats／errors／tests 都不是医学词，symptoms 是唯一属于本段词族的（⟹ R74）。⭐ <b>「预防 vs 缓解」是健康类研究的固定两问</b>：会不会得（8 come down with）· 得了重不重（12 symptoms）——<b>11 Even 正好卡在两问之间当转轴</b>。⭐ <b>抽象名词空找上文的词族</b>（⟹ <a href="套路库_阅读.html#R51" style="color:var(--accent)">R51</a>）。
+          </div>
+        </div>
+
+        <div class="q" id="q13" data-ans="3">
+          <div class="qhead"><span class="qno">13</span><span class="qt c-context">上下文语义 · protect … from 后面必是坏事</span><span class="qpos">Hugging protects people who are under stress from the ___ risk for colds</span></div>
+          <span class="stem">“Hugging <b>protects</b> people who are <b>under stress</b> <b>from</b> the <em>13</em> risk for colds that’s usually <em>14</em> with stress,” notes Sheldon Cohen …</span>
+          <div class="opts">
+            <div class="opt">A highlighted<span class="gl">被强调的</span></div>
+            <div class="opt">B minimized<span class="gl">被降到最低的</span></div>
+            <div class="opt">C controlled<span class="gl">受控的</span></div>
+            <div class="opt">D increased<span class="gl">增加了的，更高的</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>过去分词作前置定语，修饰 <code>risk</code>；整个 <code>the ___ risk for colds</code> 是 <code>protect sb from sth</code> 里的 sth。
+            <span class="lbl">🔗 线索</span>⭐ <b>protect sb from sth：sth 一定是坏事</b>——保护你免受的，只能是威胁。所以空格要让 risk <b>变得更坏</b>，不能让它变好。② 被保护的是 <code>people who are under stress</code>——<b>压力大的人比别人更容易感冒</b>，这正是「更高的」风险从哪来；③ 后半句 <code>that’s usually ___ with stress</code> 把这个风险和压力挂钩。
+            <span class="lbl">✅ D increased</span>＝增加了的，更高的（≈ greater／higher）。代入＝「拥抱能保护压力下的人，使他们免受<b>更高的</b>感冒风险」——暗含和没压力的人比。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>highlighted：被强调的——风险是客观存在的，不是谁「强调」出来的；上下文也没人在强调什么。</div>
+              <div class="wr"><span class="l">B</span>minimized：已降到最低的——<b>好事</b>放在 protect from 后面：「保护你免受已降到最低的风险」自相矛盾。</div>
+              <div class="wr"><span class="l">C</span>controlled：已受控的——同 B，一个已经被控制住的风险，用不着再保护。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐⭐ <b>框架自带正负号</b>：protect／shield／save sb <b>from</b>、prevent sb <b>from</b>、free from、immune to——后面一律是坏事；<b>先给宾语标上「−」，再看选项谁让它变「−」</b>（⟹ <a href="#sign" style="color:var(--accent)">02+++</a>、新卡 <a href="套路库_阅读.html#R230" style="color:var(--accent)">R230</a>）。⭐ <b>三缺一</b>：minimized／controlled 让风险变小、highlighted 中性，只有 increased 让风险变大（⟹ R74）。✍️ <code>an increased risk of heart disease</code> 是健康类文章的高频说法。
+          </div>
+        </div>
+
+        <div class="q" id="q14" data-ans="0">
+          <div class="qhead"><span class="qno">14</span><span class="qt c-word">词义辨析 · be associated with ＝ 相伴而生（介词失效：四个全接 with）</span><span class="qpos">risk for colds that’s usually ___ with stress</span></div>
+          <span class="stem">“Hugging protects people who are under stress from the <em>13</em> risk for colds that’s <b>usually</b> <em>14</em> <b>with stress</b>,” …</span>
+          <div class="opts">
+            <div class="opt">A associated<span class="gl">（be associated with）与……有关</span></div>
+            <div class="opt">B equipped<span class="gl">（be equipped with）配备</span></div>
+            <div class="opt">C presented<span class="gl">（be presented with）被授予；被给予</span></div>
+            <div class="opt">D compared<span class="gl">（be compared with）与……相比</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>定语从句 <code>that’s usually ___ with stress</code> 的谓语（被动），that 指 <code>risk for colds</code>。
+            <span class="lbl">🔗 线索</span>① 要说的是「感冒风险」和「压力」<b>是什么关系</b>：压力大 → 更容易感冒，两者<b>相伴出现</b>；② <code>usually</code>（通常）提示这是一个<b>规律性的关联</b>，不是一次动作；③ ②段刚说过「拥抱的<b>减压</b>效果解释了少感冒的 32%」——<b>压力与感冒挂钩</b>这一环，在这里被专家明说出来；④ ⚠️ 四个选项全接 with。
+            <span class="lbl">✅ A associated</span>＝<code>be associated with</code> 与……相关、伴随……而来。代入＝「这种风险通常<b>与</b>压力<b>相伴</b>」。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>equipped with：配备有——「风险配备着压力」不通。</div>
+              <div class="wr"><span class="l">C</span>presented with：被授予、面对（be presented with a problem）——主语通常是人，风险不会「被授予压力」。</div>
+              <div class="wr"><span class="l">D</span>compared with：与……比较——风险和压力是<b>两种不同的东西</b>，没有可比的尺度；本句要的是「挂钩」不是「比较」。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>介词失效本篇第三例</b>（四个全接 with）。⭐ <b>be associated with 是研究报道里最常见的「弱因果」</b>：它只说两者一起出现，不说谁导致谁——所以专家用它讲「压力 ↔ 感冒」很稳妥。<b>阅读题常考它的分寸</b>：associated with ≠ causes（⟹ <a href="#chain" style="color:var(--accent)">02+ 因果链</a>）。✍️ <code>Obesity is closely associated with a lack of exercise.</code>
+          </div>
+        </div>
+
+        <div class="q" id="q15" data-ans="2">
+          <div class="qhead"><span class="qno">15</span><span class="qt c-word">词义辨析 · 宾语是好感觉 ⟹ 不能 moderate，只能 generate</span><span class="qpos">helps ___ the feeling that others are there to help</span></div>
+          <span class="stem">Hugging “is a marker of intimacy and <b>helps</b> <em>15</em> <b>the feeling that others are there to help</b> <em>16</em> difficulty.”</span>
+          <div class="opts">
+            <div class="opt">A assess<span class="gl">评估</span></div>
+            <div class="opt">B moderate<span class="gl">缓和，使减轻</span></div>
+            <div class="opt">C generate<span class="gl">产生，引起</span></div>
+            <div class="opt">D record<span class="gl">记录</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span><code>helps (to) ___ the feeling</code> 里的动词；宾语 feeling 后面跟着同位语从句 <code>that others are there to help …</code> 说明是什么感觉。
+            <span class="lbl">🔗 线索</span>① <b>先定宾语的正负</b>：「有人在身边帮你」——这是一种<b>好的感觉</b>（安全感）；② <code>helps</code> 又要求结果对人有利 ⟹ <b>好东西 ＋ 有利 ＝ 让它出现</b>；③ 与前半句 <code>is a marker of intimacy</code>（是亲密的标志）并列：拥抱<b>标志着</b>亲密、<b>带来</b>安全感；④ 回扣②段的 <code>perceived social support</code>——拥抱让你<b>感知到</b>支持。
+            <span class="lbl">✅ C generate</span>＝产生、引起。代入＝「有助于<b>产生</b>一种感觉：遇到困难时，总有人在身边帮你」。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>assess：评估——拿 others、feeling 拼出「评估别人对你的感觉」，可同位语从句说的是<b>你自己的感觉</b>。</div>
+              <div class="wr"><span class="l">B</span>moderate：缓和、减轻——<b>盲做时停过的选项</b>。「拥抱减压」让人一下想到缓和；但 moderate 的宾语要是<b>需要压下去的东西</b>（moderate one’s anger／demands／the impact）。宾语是好感觉，缓和它等于削弱安全感，方向反了。</div>
+              <div class="wr"><span class="l">D</span>record：记录——拥抱是一个动作，不会「记录」感觉。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐⭐ <b>动词对宾语有正负要求</b>：moderate／ease／relieve／reduce 的宾语是坏事，generate／foster／promote／boost 的宾语是好事——<b>先给宾语标号，再挑动词</b>（⟹ <a href="#sign" style="color:var(--accent)">02+++</a>、新卡 <a href="套路库_阅读.html#R230" style="color:var(--accent)">R230</a>）。⭐ 这道题的陷阱是<b>拿全文主题词（减压）去套一个具体的空</b>——主题是对的，但这个空的宾语不是压力。✍️ <code>generate a sense of belonging</code>（产生归属感）。
+          </div>
+        </div>
+
+        <div class="q" id="q16" data-ans="0">
+          <div class="qhead"><span class="qno">16</span><span class="qt c-collo">固定搭配 · in the face of ＋ 困难／危险</span><span class="qpos">others are there to help ___ difficulty</span></div>
+          <span class="stem">… helps <em>15</em> the feeling that others are there to help <em>16</em> <b>difficulty</b>.”</span>
+          <div class="opts">
+            <div class="opt">A in the face of<span class="gl">面对，在……面前</span></div>
+            <div class="opt">B in the form of<span class="gl">以……的形式</span></div>
+            <div class="opt">C in the name of<span class="gl">以……的名义；代表</span></div>
+            <div class="opt">D in the way of<span class="gl">就……而言；妨碍</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>介词短语作状语，交代「别人来帮你」发生在<b>什么情况下</b>；宾语是 <code>difficulty</code>。
+            <span class="lbl">🔗 线索</span>「帮忙」和「困难」天然一对：<b>有困难时才需要人帮</b> ⟹ 空格要把 difficulty 变成<b>背景、处境</b>。
+            <span class="lbl">✅ A in the face of</span>＝面对、在……面前，后面常接 difficulty／danger／opposition 这类负面词。代入＝「<b>遇到</b>困难时，总有人在身边帮你」。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>in the form of：以……的形式——「以困难的形式来帮你」说不通。</div>
+              <div class="wr"><span class="l">C</span>in the name of：以……的名义——「以困难的名义帮你」说不通。</div>
+              <div class="wr"><span class="l">D</span>in the way of：常见用法是 <code>there isn’t much in the way of X</code>（没什么 X 可言）或 <code>stand in the way of</code>（挡道）——中文「在困难方面帮忙」看着顺，英语里不这么用。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>三缺一</b>：form／name／way 讲的是「<b>以什么方式、什么名义、在哪方面</b>」，只有 face 讲「<b>面对什么处境</b>」（⟹ R74）。⭐ <b>in the ___ of 一组背</b>：in the face of（面对）· in the event of（万一）· in the wake of（紧随……之后）· in the light of（鉴于）· in the course of（在……过程中）。✍️ <code>remain calm in the face of difficulty</code>。
+          </div>
+        </div>
+
+        <div class="q" id="q17" data-ans="0">
+          <div class="qhead"><span class="qno">17</span><span class="qt c-context">上下文语义 · attribute A to B：把结果挂到原因上（介词失效：四个全接 to）</span><span class="qpos">Some experts ___ the … benefits of hugging to the release of oxytocin</span></div>
+          <span class="stem">Some experts <em>17</em> <b>the stress-reducing, health-related benefits of hugging to the release of oxytocin</b>, often called “the bonding hormone” <em>18</em> it promotes attachment in relationships …</span>
+          <div class="opts">
+            <div class="opt">A attribute<span class="gl">（attribute A to B）把 A 归因于 B</span></div>
+            <div class="opt">B commit<span class="gl">（commit A to B）把 A 投入到 B</span></div>
+            <div class="opt">C transfer<span class="gl">（transfer A to B）把 A 转移到 B</span></div>
+            <div class="opt">D return<span class="gl">（return A to B）把 A 还给 B</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>主句谓语，构成 <code>___ A to B</code>：A＝拥抱的减压、健康益处（<b>结果</b>），B＝催产素的释放（<b>原因</b>）。
+            <span class="lbl">🔗 线索</span>① ③段刚从心理上解释了「拥抱为什么减压」，④段开头要从<b>生理上</b>给出原因——专家要说的是「这些好处<b>来自</b>催产素」；② 同一句后面 <code>because it promotes attachment</code> 再解释催产素为什么能起作用——<b>整句都在讲原因</b>；③ ⚠️ 四个选项全能构成 ___ A to B。
+            <span class="lbl">✅ A attribute</span>＝<code>attribute A to B</code> 把 A 归因于 B。代入＝「一些专家把拥抱减压、有益健康的好处<b>归因于</b>催产素的释放」。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>commit A to B：把（钱、时间、资源）投入 B；commit oneself to 承诺——「把好处投入到催产素释放中」不通。</div>
+              <div class="wr"><span class="l">C</span>transfer A to B：把 A 转移到 B（地点、对象）——催产素的释放不是一个可以「转过去」的去处。</div>
+              <div class="wr"><span class="l">D</span>return A to B：把 A 还给 B——同 C，B 必须是 A 原来所在的地方。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>介词失效本篇第四例</b>——commit／transfer／return 的 to 都指「<b>送到哪儿</b>」（去向），只有 attribute 的 to 指「<b>从哪儿来</b>」（来源、原因）⟹ <b>也是三缺一</b>（⟹ R74）。⭐⭐ <b>因果链的「上扣环」动词</b>：attribute A to B（A 是果、B 是因）· A explains B（A 是因）· A is associated with B（只说相关）——<b>这三个在同一篇里都考了</b>（17 · 10 · 14，⟹ <a href="#chain" style="color:var(--accent)">02+</a>、新卡 R228）。✍️ <code>attribute one’s success to hard work</code>。
+          </div>
+        </div>
+
+        <div class="q" id="q18" data-ans="1">
+          <div class="qhead"><span class="qno">18</span><span class="qt c-logic">逻辑关系 · 名字的由来 ＝ 因为它能……</span><span class="qpos">often called “the bonding hormone” ___ it promotes attachment</span></div>
+          <span class="stem">Some experts <em>17</em> the … benefits of hugging to the release of oxytocin, <b>often called “the bonding hormone”</b> <em>18</em> <b>it promotes attachment in relationships</b>, including that between mothers and their newborn babies.</span>
+          <div class="opts">
+            <div class="opt">A unless<span class="gl">除非</span></div>
+            <div class="opt">B because<span class="gl">因为</span></div>
+            <div class="opt">C though<span class="gl">虽然；不过</span></div>
+            <div class="opt">D until<span class="gl">直到</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>从属连词，连接 <code>(oxytocin,) often called “the bonding hormone”</code> 与 <code>it promotes attachment</code>；it＝oxytocin。
+            <span class="lbl">🔗 线索</span>⭐ 空前是一个<b>绰号</b>（「亲密激素」），空后是这个绰号的<b>由来</b>（它能促进依恋）——<b>「为什么叫这个名字」⟹ 因为</b>。bonding（结合、亲密）和 attachment（依恋）是同一个意思，前后正好互相解释。
+            <span class="lbl">✅ B because</span>＝因为。代入＝「催产素常被称为『亲密激素』，<b>因为</b>它能促进人际关系中的依恋」。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>unless：除非——「除非它促进依恋，否则才叫亲密激素」，把名字的由来说成了例外条件。</div>
+              <div class="wr"><span class="l">C</span>though：虽然——两边同向（亲密 ↔ 依恋），没有让步或转折。</div>
+              <div class="wr"><span class="l">D</span>until：直到——空后是一个一直成立的性质，不是时间终点。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>「绰号 ＋ 空 ＋ 解释」几乎都是 because</b>：X, often called／known as “…”, because／since …。⭐ <b>空前空后近义复现 ⟹ 解释关系</b>（bonding ≈ attachment）。⭐ 本篇三个逻辑空（1 递进 · 11 递进 · 18 因果）全部站在<b>句首或分句首</b>（⟹ <a href="套路库_阅读.html#R76" style="color:var(--accent)">R76</a>）。
+          </div>
+        </div>
+
+        <div class="q" id="q19" data-ans="2">
+          <div class="qhead"><span class="qno">19</span><span class="qt c-context">上下文语义 · some … But some：一部分走了，一部分留下</span><span class="qpos">some of it is released into the bloodstream. But some of it ___ in the brain</span></div>
+          <span class="stem">Oxytocin is made primarily in the central lower part of the brain, and <b>some of it is released into the bloodstream</b>. <b>But some of it</b> <em>19</em> <b>in the brain</b>, where it <em>20</em> mood, behavior and physiology.</span>
+          <div class="opts">
+            <div class="opt">A vanishes<span class="gl">消失</span></div>
+            <div class="opt">B emerges<span class="gl">出现，浮现</span></div>
+            <div class="opt">C remains<span class="gl">留下，保持</span></div>
+            <div class="opt">D decreases<span class="gl">减少</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>主句谓语（不及物），主语 <code>some of it</code>（一部分催产素），地点状语 <code>in the brain</code>。
+            <span class="lbl">🔗 线索</span>① <b>some … But some</b>：上一句一部分<b>离开大脑、进入血液</b>，这一句另一部分<b>和它相反</b> ⟹ 没离开、<b>留在</b>大脑里；② 上一句已经说催产素<b>本来就产在大脑里</b>——所以不存在「出现在大脑」；③ 后面 <code>where it ___ mood …</code>：这部分还在<b>起作用</b>，不可能已经没了。
+            <span class="lbl">✅ C remains</span>＝留下、仍在（尤指别的部分已经离开时）。代入＝「但也有一部分<b>留在</b>大脑里」。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>vanishes：消失——消失了就没法在 where 从句里继续影响情绪。</div>
+              <div class="wr"><span class="l">B</span>emerges：出现——暗示之前不在大脑里，和上一句「产在大脑中下部」矛盾。</div>
+              <div class="wr"><span class="l">D</span>decreases：减少——「一部分流进血液，所以大脑里的减少了」是<b>因果</b>，但两句之间是 But（对照），不是 so。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>some … some／others 的对照句</b>：前一部分做了 X，后一部分做「非 X」——<b>找上一句动作的反面</b>（released into ↔ remains in）。⭐ 本题是本篇两个<b>跨句空</b>之一（另一个是 11），钥匙都在上一句。⭐ <b>与 20 连体</b>：19 定位置（留在脑里），20 定作用（影响情绪）——<b>先做 19，20 的主语才站得住</b>（⟹ <a href="套路库_阅读.html#R50" style="color:var(--accent)">R50</a>）。
+          </div>
+        </div>
+
+        <div class="q" id="q20" data-ans="3">
+          <div class="qhead"><span class="qno">20</span><span class="qt c-word">词义辨析 · 末空不是逻辑空：激素对情绪 ＝ 影响</span><span class="qpos">in the brain, where it ___ mood, behavior and physiology</span></div>
+          <span class="stem">But some of it <em>19</em> in the brain, <b>where it</b> <em>20</em> <b>mood, behavior and physiology</b>.</span>
+          <div class="opts">
+            <div class="opt">A experiences<span class="gl">经历；体验</span></div>
+            <div class="opt">B combines<span class="gl">结合；兼有</span></div>
+            <div class="opt">C justifies<span class="gl">证明……合理</span></div>
+            <div class="opt">D influences<span class="gl">影响</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>非限制性定语从句 <code>where it ___ …</code> 的谓语；主语 it＝留在大脑里的那部分催产素，宾语是三样东西：情绪、行为、生理机能。
+            <span class="lbl">🔗 线索</span>① 主语是一种<b>激素</b>，宾语是<b>人的状态</b>——激素对人的状态只能是「<b>作用于</b>」；② 回扣本段开头：拥抱的好处<b>来自</b>催产素——那催产素就得<b>对人起作用</b>；③ 三个宾语正好把全文串起来：mood（③段的心理）、physiology（②段的少感冒）。
+            <span class="lbl">✅ D influences</span>＝影响、对……起作用。代入＝「在那里<b>影响</b>着情绪、行为和生理机能」。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>experiences：经历、体验——主语得是人（experience difficulties／joy），激素不会「体验情绪」。</div>
+              <div class="wr"><span class="l">B</span>combines：结合、兼有——借 <code>combine A, B and C</code> 这个常见格式钓人；但情绪、行为、生理机能没法「合成一个」，一种激素也不能「兼有」它们。</div>
+              <div class="wr"><span class="l">C</span>justifies：证明……合理、为……辩护——「催产素为你的情绪辩护」不通；即便理解成「解释」，一种激素也解释不了人的全部情绪和行为。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>末空不默认逻辑</b>：2013–2015 末空连续三年不是逻辑空，2016 回到逻辑空（while），2017 又是一个实义动词——<b>近五年四年不是逻辑空</b>（⟹ <a href="套路库_阅读.html#R103" style="color:var(--accent)">R103</a>）。⭐ <b>主语是物、宾语是人的状态 ⟹ affect／influence／shape</b>；主语是人 ⟹ experience／feel。✍️ 作文里写「某因素影响心态、行为和健康」：<i>Regular exercise influences mood, behavior and physiology.</i>
+          </div>
+        </div>
+      </section>
+      <!-- ========== 02+ 因果链 ========== -->
+      <section class="card" id="chain">
+        <h2><span class="n">02+</span>⭐⭐ 一条因果链：拥抱 → 减压 → 少得病／病得轻 → 催产素——五个空在给链条「上扣环」，干扰项专门把箭头倒过来（本页最值钱的一段）</h2>
+        <p class="note">这篇文章从头到尾只做一件事：<b>先证明拥抱有好处，再一环一环往回追原因</b>。拿到卷子，在卷边画一条横线，<b>左边写原因、右边写结果</b>：</p>
+        <div class="tabwrap"><table class="otab">
+          <tr><th>链条上的一环</th><th>原文怎么说</th><th>这一环的「扣环」词</th><th>箭头方向</th></tr>
+          <tr><td>拥抱 → 健康</td><td>hugs can bring a ___ of health benefits · help you ___ getting sick</td><td>3 host · 4 avoid</td><td>只说<b>有这回事</b>，还没说为什么</td></tr>
+          <tr><td>拥抱 → 少得病（研究证实）</td><td>examined the effects of A ___ B · less likely to come ___ with a cold</td><td>6 on · 8 down</td><td><b>effect of A on B</b>：A 因、B 果</td></tr>
+          <tr><td>减压 → 少得病（贡献多少）</td><td>the stress-reducing effects of hugging ___ about 32 percent of that beneficial effect</td><td><b>10 explained</b></td><td><b>A explains B</b>：主语是因、宾语是果</td></tr>
+          <tr><td>压力 → 感冒风险</td><td>the ___ risk for colds that’s usually ___ with stress</td><td>13 increased · <b>14 associated</b></td><td><b>be associated with</b>：只说相伴，不说谁导致谁</td></tr>
+          <tr><td>拥抱 → 安全感</td><td>helps ___ the feeling that others are there to help</td><td>15 generate</td><td>拥抱<b>产生</b>感觉</td></tr>
+          <tr><td>好处 ← 催产素</td><td>experts ___ the … benefits of hugging to the release of oxytocin</td><td><b>17 attribute</b></td><td><b>attribute A to B</b>：宾语是果、to 后是因（<b>方向和 explain 相反</b>）</td></tr>
+          <tr><td>名字 ← 作用</td><td>often called “the bonding hormone” ___ it promotes attachment</td><td><b>18 because</b></td><td>because 后是因</td></tr>
+          <tr><td>催产素 → 情绪、身体</td><td>some of it ___ in the brain, where it ___ mood, behavior and physiology</td><td>19 remains · 20 influences</td><td>主语（激素）是因</td></tr>
+        </table></div>
+        <p class="note" style="margin-top:12px">⭐⭐ <b>这张表怎么用</b>：① <b>因果扣环词的「因」站在哪一侧，要背清楚</b>——<code>A explains B</code>、<code>A leads to B</code>、<code>A influences B</code> 因在左；<code>attribute B to A</code>、<code>B results from A</code>、<code>B because A</code> 因在右；<code>A is associated with B</code> 不分左右。② <b>干扰项专门把箭头倒过来或把链条说断</b>：10D required（「减压需要少感冒」＝倒果为因）、10C restored（预设「以前有过」——链条上没有这一环）、19D decreases（把 But 的对照读成 so 的因果）。③ <b>链条只有一个方向</b>：全文没有一句说拥抱有坏处，<b>任何让链条反转的选项（inferior、doubted、denied、keep getting sick、minimized risk）都先划掉</b>。</p>
+        <p class="note">📌 <b>与旧卡的分工</b>：<a href="2011_完形_笑与情绪的方向之争.html" style="color:var(--accent)">2011 完形</a>也是一根因果箭头，但那篇的看点是<b>箭头朝哪边有争议</b>（情绪 → 身体，还是身体 → 情绪，⟹ <a href="套路库_阅读.html#R102" style="color:var(--accent)">R102</a>）；<b>2017 的箭头没有争议，看点是扣环词本身的方向</b>——同一篇里 explain（因在左）和 attribute…to（因在右）都考了，一不留神就读反（新卡 <a href="套路库_阅读.html#R228" style="color:var(--accent)">R228</a>）。阅读里这组词同样高频：<code>be attributed to</code>、<code>account for</code>、<code>be linked to</code> 常是细节题的定位句。</p>
+      </section>
+
+      <!-- ========== 02++ 递进台阶 ========== -->
+      <section class="card" id="steps">
+        <h2><span class="n">02++</span>⭐ 递进三级台阶：Besides → even → Even——好处一级比一级出人意料；「预防 → 缓解」是最后一级</h2>
+        <p class="note">一篇只讲好处的文章，逻辑空不会考转折，只会考<b>「好处再加一级」</b>。本篇三级台阶，每一级都比上一级更让人吃惊：</p>
+        <div class="tabwrap"><table class="otab">
+          <tr><th>台阶</th><th>上一级（已知）</th><th>这一级（加码）</th><th>空</th><th>信号</th></tr>
+          <tr><td>①</td><td>拥抱让人感到亲近（人人都知道）</td><td>拥抱还有<b>健康</b>益处（新发现）</td><td><b>1 Besides</b></td><td>it turns out that</td></tr>
+          <tr><td>②</td><td>有健康益处</td><td>甚至能让你<b>不生病</b></td><td>4 avoid（even 已给出）</td><td>Believe it or not · even</td></tr>
+          <tr><td>③</td><td>社会支持多的人<b>更不容易</b>得感冒（预防）</td><td>就算<b>得了</b>，症状也更轻（缓解）</td><td><b>11 Even</b> · 12 symptoms</td><td>among those who got a cold · less severe</td></tr>
+        </table></div>
+        <p class="note" style="margin-top:12px">⭐⭐ <b>判递进三件事</b>：① 两边<b>同向</b>（都是好处）；② 后一边<b>更极端</b>——范围更大（连病人都算上）、程度更深（从「有益」到「不生病」）、或更出人意料（turns out、believe it or not）；③ 两边<b>主体可以换</b>（11 题从「所有人」换成「已病者」），换主体不影响递进。<b>方向一样但不更极端 ⟹ also／in addition；方向反 ⟹ still／however／despite</b>——本篇 1D Despite、11B Still 都是拿「让步」冒充「递进」（新卡 <a href="套路库_阅读.html#R229" style="color:var(--accent)">R229</a>）。</p>
+        <p class="note">📌 <b>「预防 vs 缓解」是健康研究的两问</b>：会不会得（incidence）· 得了多重（severity）。<b>考卷两问都设了空</b>（8 come down with · 12 symptoms），而 11 就卡在两问之间——看见 <code>among those who got …</code>、<code>even for those who …</code> 这种把范围缩到「已经中招的人」的句子，<b>先想递进</b>。</p>
+      </section>
+
+      <!-- ========== 02+++ 正负号 ========== -->
+      <section class="card" id="sign">
+        <h2><span class="n">02+++</span>🧲 框架自带正负号：protect from 后面是坏事 · moderate 的宾语是坏事 · help 后面是好结果——先给宾语标号，再挑动词</h2>
+        <p class="note">本篇有四道题，<b>四个选项的中文都讲得通</b>，真正起作用的是<b>框架对宾语正负的要求</b>：</p>
+        <div class="tabwrap"><table class="otab">
+          <tr><th>空</th><th>框架</th><th>框架要求</th><th>宾语／结果的正负</th><th>⟹ 答案</th><th>反号的错项</th></tr>
+          <tr><td>4</td><td>help you ___ getting sick</td><td>help 的结果对人<b>有利</b></td><td>getting sick（−）</td><td><b>avoid</b>（挡掉坏事）</td><td>keep（一直生病）</td></tr>
+          <tr><td>13</td><td>protect people from the ___ risk</td><td>from 后必须是<b>威胁</b></td><td>risk（−），要更坏</td><td><b>increased</b></td><td>minimized · controlled（让风险变好）</td></tr>
+          <tr><td>15</td><td>helps ___ the feeling that others are there to help</td><td>动词对宾语有正负要求</td><td>安全感（＋）</td><td><b>generate</b>（让好事出现）</td><td>moderate（只压坏事）</td></tr>
+          <tr><td>2</td><td>feel close and ___ to people</td><td>and 同号</td><td>close（＋）</td><td><b>connected</b></td><td>inferior · restricted（−）</td></tr>
+        </table></div>
+        <p class="note" style="margin-top:12px">⭐⭐ <b>两张表背熟</b>：<b>要坏宾语的</b>——protect／shield／prevent／keep sb from · avoid · moderate／ease／relieve／reduce／alleviate · fight／combat · suffer from；<b>要好宾语的</b>——generate／foster／promote／boost／enhance · enjoy · help（结果）。<b>做法</b>：先把宾语标上「＋」或「−」，再看框架要什么号，<b>号对不上的选项不用查词义就能划</b>（新卡 <a href="套路库_阅读.html#R230" style="color:var(--accent)">R230</a>）。</p>
+        <p class="note">⚠️ <b>15 题是最典型的「主题词陷阱」</b>：全文主题是「减压」，moderate（缓和）看起来和主题最贴——但这个空的宾语是<b>安全感</b>，不是压力。<b>主题只告诉你方向，不告诉你每个空的宾语</b>。同理 13 题：主题是「降低风险」，minimized 看起来最贴，可 protect from 已经替你把「降低」做了，空格里要的是风险本身的样子。</p>
+      </section>
+
+      <!-- ========== 02++++ 研究报道槽位 ========== -->
+      <section class="card" id="slots">
+        <h2><span class="n">02++++</span>🔬 研究报道的槽位（与 2015 对照）＋ 考卷 vs 研究原稿：这篇多了两个「机制」槽，少了「严谨性」槽</h2>
+        <p class="note"><a href="2015_完形_朋友是基因上的远亲.html#slots" style="color:var(--accent)">2015 完形</a>页里整理过一张「研究报道六槽位表」。拿 2017 套进去：</p>
+        <div class="tabwrap"><table class="otab">
+          <tr><th>槽位</th><th>2015（朋友基因）</th><th>2017（拥抱）</th><th>这个槽的词族</th></tr>
+          <tr><td>出处与结论</td><td>1 what · 2 concluded（①）</td><td>1 Besides · 2 connected · 3 host · 4 avoid（①，以设问开头）</td><td>a study has found／concluded · it turns out that · a host of benefits</td></tr>
+          <tr><td>方法</td><td>3 on · 4 compared · 5 samples</td><td><b>5 involving · 6 on · 7 exposed</b></td><td>a study involving N adults · examined the effects of A on B · be exposed to</td></tr>
+          <tr><td>结果与数字</td><td>6 insignificant · 7 know · 8 resemble</td><td><b>8 down · 9 calculated · 10 explained</b></td><td>were less likely to · calculated that · explained X percent of</td></tr>
+          <tr><td>更多发现</td><td>9 also · 10 Perhaps …</td><td><b>11 Even · 12 symptoms</b></td><td>The study also found · Even among those who …</td></tr>
+          <tr><td>意义</td><td>15 faster · 16 understand · 17 contributory</td><td>—（本篇没有）</td><td>could help explain／understand</td></tr>
+          <tr><td>严谨性</td><td>18 tendency · 19 ethnic · 20 see</td><td>—（本篇没有）</td><td>care was taken to see that · controlled for</td></tr>
+          <tr><td><b>机制 · 心理</b>（学者引语）</td><td>—</td><td><b>13 increased · 14 associated · 15 generate · 16 in the face of</b>（③）</td><td>protects … from · is associated with · a marker of · the feeling that</td></tr>
+          <tr><td><b>机制 · 生理</b></td><td>—</td><td><b>17 attribute · 18 because · 19 remains · 20 influences</b>（④）</td><td>attribute A to B · the release of · promotes · influences</td></tr>
+        </table></div>
+        <p class="note" style="margin-top:12px">⭐ <b>这张表说明什么</b>：① 2015 那篇是<b>学术新闻</b>（报道一篇新论文，要交代严谨性），2017 这篇是<b>健康科普</b>（告诉读者拥抱有好处、为什么），所以<b>严谨性和意义两槽没了，换成两个机制槽</b>；② <b>方法槽和结果槽的套话几乎是通用的</b>——effects of A on B、be exposed to、less likely to、explained X percent，下一篇研究报道还会用；③ 机制槽的空，全是<b>因果扣环词</b>（⟹ <a href="#chain" style="color:var(--accent)">02+</a>）。</p>
+        <p class="note" id="orig">✂️ <b>考卷 vs 研究原稿</b>（据卡内基梅隆大学 2014-12-17 新闻稿核对；《美国新闻与世界报道》原文页无法直接打开，检索摘要显示③段首句引语与考卷一致，④段首句原文作 Experts attribute …，考卷加了 Some）：</p>
+        <div class="tabwrap"><table class="otab">
+          <tr><th>研究原稿（新闻稿）</th><th>考卷</th><th>影响哪个空</th></tr>
+          <tr><td>404 healthy adults</td><td>over 400 healthy adults</td><td>5（取整）</td></tr>
+          <tr><td>问卷测社会支持 ＋ <b>连续 14 晚电话访谈</b>记录冲突与拥抱</td><td>（删去，只说 examined the effects of …）</td><td>—（方法细节省掉，只留「考察什么对什么的影响」）</td></tr>
+          <tr><td><b>intentionally</b> exposed to a common cold virus and monitored in quarantine</td><td>after being ___ to the virus</td><td><b>7 exposed</b>（原词）</td></tr>
+          <tr><td>hugs were responsible for <b>one-third</b> of the protective effect of social support</td><td>the stress-reducing effects of hugging ___ about <b>32 percent</b> of that beneficial effect</td><td><b>10 explained</b>（responsible for ＝ explain）</td></tr>
+          <tr><td>less severe <b>illness symptoms</b></td><td>less severe ___</td><td><b>12 symptoms</b></td></tr>
+        </table></div>
+        <p class="note">📌 <b>最值得记的一格是第四行</b>：新闻稿写 <i>were responsible for one-third of</i>，考卷写 <i>explained about 32 percent of</i>——<b>be responsible for 就是 explain 的「答案」</b>。考场上若一时想不到 explain 能这么用，<b>把选项换成 be responsible for／account for 念一遍</b>，哪个通就是哪个。</p>
+      </section>
+      <!-- ========== 03 考点分类 ========== -->
+      <section class="card">
+        <h2><span class="n">03</span>考点分类（完形不背单个空，要看「这题在考什么」）</h2>
+        <div class="catbar" id="catbar"></div>
+        <div class="catlegend" id="catlegend"></div>
+        <p class="note" style="margin-top:14px">点某一类 → 下方列出该类所有空、正文里同步高亮 → 点小格跳到解析卡。（分类依据不是「空格里填的是什么词」，而是<b>「解这一题你得做什么动作」</b>——所以 7 exposed、14 associated 虽然答案是 be ___ to／with 的搭配，但四个选项接同一个介词、搭配筛不掉，<b>归「词义辨析」</b>；2 connected、17 attribute 同理，但要靠 and 同向、because 前后文定方向，<b>归「上下文语义」</b>。）</p>
+        <div class="chips" id="chips"></div>
+        <div class="flow" style="margin-top:16px">
+          <div class="fi"><b>⭐ 十一年对照：2017 是<u>逻辑空最少</u>的年份之一（3 个），词义辨析回到 7 个。</b>
+            <span class="ev"><div class="tabwrap"><table class="otab"><tr><th>年份</th><th>词义辨析</th><th>固定搭配</th><th>逻辑关系</th><th>上下文语义</th><th>这一年压在哪</th></tr>
+            <tr><td>2007</td><td>9</td><td>5</td><td>4</td><td>2</td><td>词义（占 45%）</td></tr>
+            <tr><td>2008</td><td>9</td><td>6</td><td><b>2</b></td><td>3</td><td>六道实义动词的主语适配</td></tr>
+            <tr><td>2009</td><td>6</td><td>5</td><td>5</td><td>4</td><td>四类几乎持平</td></tr>
+            <tr><td>2010</td><td>9</td><td>4</td><td>4</td><td>3</td><td>形容词与副词的「方向」</td></tr>
+            <tr><td>2011</td><td>6</td><td>3</td><td>6</td><td>5</td><td>一根因果箭头的方向</td></tr>
+            <tr><td>2012</td><td>5</td><td>4</td><td>3</td><td>8</td><td>作者的应然立场 ＋ 首尾镜像</td></tr>
+            <tr><td>2013</td><td>3</td><td>7</td><td>4</td><td>6</td><td>空格后的介词短语 ＋ 比方与发现同构</td></tr>
+            <tr><td>2014</td><td>5</td><td>6</td><td>3</td><td>6</td><td>按段定正负 ＋ 一个比喻贯穿全文 ＋ 说明书式搭配</td></tr>
+            <tr><td>2015</td><td>6</td><td>6</td><td>3</td><td>5</td><td>研究报道的槽位套话 ＋ 「不止于表面」四连</td></tr>
+            <tr><td>2016</td><td>6</td><td>3</td><td>6</td><td>5</td><td>流程时间轴 ＋ 许可与现实 ＋ 具体动作的画面</td></tr>
+            <tr><td><b>2017</b></td><td><b>7</b></td><td><b>4</b></td><td><b>3</b></td><td><b>6</b></td><td><b>一条因果链的扣环词 ＋ 递进台阶 ＋ 框架定正负</b></td></tr></table></div>
+            ⟹ 2017 的 7／4／3／6 <b>与前十年都不相同</b>。逻辑空只有 3 个（与 2012、2014、2015 并列次少，仅多于 2008 的 2 个），而且<b>三个里两个是递进</b>——一篇只讲好处、没有反方的文章，逻辑空既不考转折也不考对比。⚠️ <b>口径说明</b>：7 exposed、14 associated 若按「答案是固定搭配」归搭配，就成了 5／6／3／6；两种口径都写在这里。</span></div>
+          <div class="fi"><b>⭐⭐ 本年四道「介词失效」——本站已记录的最多一篇</b>
+            <span class="ev">2 equal／restricted／connected／inferior <b>全接 to</b> · 7 devoted／exposed／lost／attracted <b>全接 to</b> · 14 associated／equipped／presented／compared <b>全接 with</b> · 17 attribute／commit／transfer／return <b>全能构成 ___ A to B</b>；另有 4 题四个动词<b>全接 doing</b>。（此前：2013 一道、2014 两道、2016 三道。）⟹ <b>「先试介词」这一招在 2017 基本失灵</b>，救回来的是三样东西：and 同向（2）、实验流程（7）、因果方向（14、17）（⟹ <a href="套路库_阅读.html#R157" style="color:var(--accent)">R157</a> 补）。</span></div>
+          <div class="fi"><b>📐 线索位置统计（判据＝线索是否落在同一个句号之内）：句内自足 18 空 ／ 跨句 2 空。</b>
+            <span class="ev"><b>跨句（2）</b>：11（钥匙在上一句的「更不容易得感冒」——预防 → 缓解）· 19（钥匙在上一句的 some of it is released into the bloodstream）。<br><b>句内自足（18）</b>：其余全部。<br>⟹ 句内比例 <b>90%</b>（2010 65% → 2011 75% → 2012 80% → 2013 70% → 2014 85% → 2015 65% → 2016 95% → <b>2017 90%</b>）。⚠️ 句内不等于只看空格旁边：5 题的钥匙在同一句后半的 participants’、13 题要把 protect … from 的框架读完、17 题要读到句末的 because it promotes attachment。</span></div>
+          <div class="fi"><b>📌 位置预判：三个逻辑空全守规矩（3／3）。</b>
+            <span class="ev"><b>1</b> Besides（句首）· <b>11</b> Even（句首）· <b>18</b> because（分句首）——全部落在「句首／分句首」；反过来，<b>句内十七个空没有一个是逻辑空</b>（2014 3／3 · 2015 2／3 · 2016 6／6 · <b>2017 3／3</b>，⟹ <a href="套路库_阅读.html#R76" style="color:var(--accent)">R76</a>）。</span></div>
+          <div class="fi"><b>📌 三缺一分组法：本年成立 8 次，孤立项 8 次全是答案。</b>
+            <span class="ev"><b>3</b>：view／lesson／choice 抢语义重心 ＋ <b>host</b> 甘当量词 · <b>5</b>：collecting／affecting／guiding 研究对人做事 ＋ <b>involving</b> 人在研究里 · <b>9</b>：imagined／denied／doubted 不确定或否定 ＋ <b>calculated</b> 确定的量化 · <b>11</b>：Thus／Still／Rather 拐弯 ＋ <b>Even</b> 直走加码 · <b>12</b>：defeats／errors／tests 非医学词 ＋ <b>symptoms</b> · <b>13</b>：minimized／controlled／highlighted 让风险变好或中性 ＋ <b>increased</b> 让风险变坏 · <b>16</b>：form／name／way 讲方式名义方面 ＋ <b>face</b> 讲处境 · <b>17</b>：commit／transfer／return 的 to 是去向 ＋ <b>attribute</b> 的 to 是来源。<br>⚠️ <b>照实说</b>：5、13 两组的分组理由偏软（是做完才看得清的）；不成组的十二题（1 2 4 6 7 8 10 14 15 18 19 20）<b>老实读上下文</b>（⟹ <a href="套路库_阅读.html#R74" style="color:var(--accent)">R74</a>）。</span></div>
+        </div>
+      </section>
+
+      <!-- ========== 04 打法 ========== -->
+      <section class="card">
+        <h2><span class="n">04</span>完形六大打法（本篇取证）</h2>
+        <div class="flow">
+          <div class="fi"><b>① 首句不设空 → 先定三要素，再<u>认文体</u></b>：话题、方向、关键词；再问一句「这篇有没有反方」。
+            <span class="ev">本篇首句化用谚语设问、第二句 resounding “yes!” ⟹ <b>只讲好处的研究报道</b> ⟹ 逻辑空押递进与因果，不押转折（<a href="#steps" style="color:var(--accent)">02++</a>）。</span></div>
+          <div class="fi"><b>② ⭐⭐ 研究报道：在卷边画因果链，扣环词先认「因在哪一侧」</b>（本篇的主刀之一）。
+            <span class="ev">10 explained（因在左）· 14 associated with（只说相伴）· 17 attribute…to（因在右）· 18 because；干扰项把箭头倒过来（10D required）或凭空加一环（10C restored）（<a href="#chain" style="color:var(--accent)">02+</a>，⟹ 新卡 R228）。</span></div>
+          <div class="fi"><b>③ ⭐⭐ 只讲好处的文章，逻辑空考「再加一级」</b>（本篇的主刀之二）。
+            <span class="ev">1 Besides（已知 → 新知）· 4 even（有益 → 不生病）· 11 Even（未病 → 已病）；Despite／Still 拿让步冒充递进（<a href="#steps" style="color:var(--accent)">02++</a>，⟹ 新卡 R229）。</span></div>
+          <div class="fi"><b>④ ⭐⭐ 框架定正负：先给宾语标号，再挑动词</b>（本篇的主刀之三）。
+            <span class="ev">4 help ＋ avoid getting sick · 13 protect from ＋ increased risk · 15 generate（不是 moderate）the feeling · 2 close and connected（<a href="#sign" style="color:var(--accent)">02+++</a>，⟹ 新卡 R230）。</span></div>
+          <div class="fi"><b>⑤ 研究报道的套话按槽位背</b>：方法槽、结果槽的词几乎年年通用。
+            <span class="ev">a study involving N adults · the effects of A on B · be exposed to · less likely to come down with · calculated that · explained X percent of（<a href="#slots" style="color:var(--accent)">02++++</a>，⟹ <a href="套路库_阅读.html#R106" style="color:var(--accent)">R106</a>）。</span></div>
+          <div class="fi"><b>⑥ 先分组再代入；介词失效时换三样东西救</b>。
+            <span class="ev">三缺一成立 8 次全是答案；四道介词失效题靠 and 同向（2）、实验流程（7）、因果方向（14、17）救回——<b>一个空的方向，最终都能在「链条」上找到</b>（⟹ R74、R157）。</span></div>
+        </div>
+        <p class="note" style="margin-top:14px">🔁 <b>十二篇完形（2007–2017 ＋ 2022）信号类型对照</b>：<a href="2022_完形_植物意识.html" style="color:var(--accent)">2022</a> 靠明信号词 · <a href="2007_完形_拉美独立后的理想与分歧.html" style="color:var(--accent)">2007</a> 靠结构性信号 · <a href="2008_完形_高智商与遗传疾病.html" style="color:var(--accent)">2008</a> 靠动词与主语适配 · <a href="2009_完形_智力的代价.html" style="color:var(--accent)">2009</a> 靠语用功能 · <a href="2010_完形_霍桑效应遭到质疑.html" style="color:var(--accent)">2010</a> 靠叙事方向 · <a href="2011_完形_笑与情绪的方向之争.html" style="color:var(--accent)">2011</a> 靠因果箭头 · <a href="2012_完形_大法官的伦理与法院的合法性.html" style="color:var(--accent)">2012</a> 靠应然立场与首尾镜像 · <a href="2013_完形_面试打分的当日偏见.html" style="color:var(--accent)">2013</a> 靠介词框架与比方—发现同构 · <a href="2014_完形_像练肌肉一样练大脑.html" style="color:var(--accent)">2014</a> 靠按段定正负与贯穿比喻 · <a href="2015_完形_朋友是基因上的远亲.html" style="color:var(--accent)">2015</a> 靠研究报道槽位与「不止于表面」四连 · <a href="2016_完形_柬埔寨的婚俗.html" style="color:var(--accent)">2016</a> 靠流程时间轴、许可与现实、动作画面 · <b>2017 靠因果链扣环词、递进台阶、框架正负号</b>。<br>📰 <b>话题</b>：健康与心理——与 <a href="2008_完形_高智商与遗传疾病.html" style="color:var(--accent)">2008</a>（智力与疾病）、<a href="2011_完形_笑与情绪的方向之争.html" style="color:var(--accent)">2011</a>（笑与情绪）、<a href="2014_完形_像练肌肉一样练大脑.html" style="color:var(--accent)">2014</a>（大脑训练）同属「身心」一族。<b>2011 与 2017 最像</b>：都在讲「身体动作 → 情绪／健康」，2011 争箭头方向，2017 箭头已定、往回追原因（⟹ <a href="#chain" style="color:var(--accent)">02+</a>）。</p>
+      </section>
+      <!-- ========== 05 搭配库 ========== -->
+      <section class="card">
+        <h2><span class="n">05</span>固定搭配 &amp; 熟词僻义（这些是死记就得分的）</h2>
+        <div class="wb">
+          <div class="wbi"><div class="p">A hug a day keeps the doctor away.　一天一抱，医生远离（①❶ 化用）</div><div class="u">原谚语 <i>An apple a day keeps the doctor away.</i> ✍️ 作文开头化用谚语很出彩：<i>A book a day keeps boredom away.</i></div></div>
+          <div class="wbi"><div class="p">a resounding “yes”　一声响亮的「是」（①❷）</div><div class="u">⭐ <b>resounding 熟词僻义：明确无疑的、巨大的</b>——a resounding success（巨大成功）· a resounding defeat（惨败）。</div></div>
+          <div class="wbi"><div class="p">Besides doing A, it turns out that …　除了……之外，原来还……（1 题）</div><div class="u">⭐ <b>it turns out that＝原来、结果发现</b>，带「出乎意料」；同义 it emerges that · as it turns out。<b>besides（介词，除……之外还）vs beside（在……旁边）</b>。</div></div>
+          <div class="wbi"><div class="p">feel close and connected to sb　感到与某人亲近、心连心（2 题）</div><div class="u">✍️ 写家庭、社区话题：<i>Shared meals help family members feel close and connected to one another.</i></div></div>
+          <div class="wbi"><div class="p">a host of　许多，一大堆（3 题）</div><div class="u">⭐ <b>host 熟词僻义＝大量</b>（本义「主人」）；同组 a wealth of／a range of／a multitude of，后接复数。</div></div>
+          <div class="wbi"><div class="p">Believe it or not, …　信不信由你（①❹）</div><div class="u">插入语，预告后面是一个夸张但属实的说法。</div></div>
+          <div class="wbi"><div class="p">help sb avoid doing　帮某人避免……（4 题）</div><div class="u">⭐ 对比 <b>keep sb from doing</b>（阻止）vs <b>keep doing</b>（一直做）——差一个 from，意思相反。</div></div>
+          <div class="wbi"><div class="p">a study involving N participants　一项有 N 人参与的研究（5 题）</div><div class="u">⭐ 研究报道「方法」槽开场白。✍️ <i>A survey involving 2,000 college students shows that …</i>（作文引数据）</div></div>
+          <div class="wbi"><div class="p">the effect(s) of A on B　A 对 B 的影响（6 题）</div><div class="u">⭐ 中间 of 短语再长也先括掉；<b>on 接被影响的指标，in 接人群</b>。✍️ have a profound effect on。</div></div>
+          <div class="wbi"><div class="p">be exposed to　接触，暴露于（7 题）</div><div class="u">实验操作的专用词；名词 <b>exposure to</b>（接触）：early exposure to books。</div></div>
+          <div class="wbi"><div class="p">come down with　患上（小病）（8 题）</div><div class="u">⭐ ＝catch／develop；同组 come up with（想出）· come across（偶遇）· come along（出现）。</div></div>
+          <div class="wbi"><div class="p">A explains X percent of B　A 能解释 B 的百分之 X（10 题）</div><div class="u">⭐⭐ <b>explain 熟词僻义＝是……的原因</b>＝account for＝be responsible for。</div></div>
+          <div class="wbi"><div class="p">Even among those who …　甚至在……的人当中（11 题）</div><div class="u">⭐ 把范围缩到「已中招的人」，仍然成立 ⟹ 递进。</div></div>
+          <div class="wbi"><div class="p">protect sb from the increased risk of／for　保护某人免受更高的……风险（13 题）</div><div class="u">⭐ <b>an increased risk</b>＝更高的风险（与没有该因素的人相比）；protect from 后一律是坏事。</div></div>
+          <div class="wbi"><div class="p">be associated with　与……有关，与……相伴（14 题）</div><div class="u">⭐ 研究里的「弱因果」：只说相关，不说谁导致谁。</div></div>
+          <div class="wbi"><div class="p">notes Sheldon Cohen　谢尔登·科恩指出（③❶）</div><div class="u">⭐ <b>note 熟词僻义＝指出、说</b>（引出原话，倒装 notes X）；同组 observes／remarks／points out。</div></div>
+          <div class="wbi"><div class="p">a marker of intimacy　亲密的标志（③❷）</div><div class="u">⭐ <b>marker 熟词僻义＝标志、指标</b>（本义「记号笔」）；a marker of status／a biological marker（生物标志物）。</div></div>
+          <div class="wbi"><div class="p">generate the feeling that …　产生……的感觉（15 题）</div><div class="u">✍️ generate a sense of belonging／security（产生归属感／安全感）。</div></div>
+          <div class="wbi"><div class="p">in the face of difficulty　面对困难（16 题）</div><div class="u">⭐ 同组 in the event of · in the wake of · in the light of · in the course of。</div></div>
+          <div class="wbi"><div class="p">attribute A to B　把 A 归因于 B（17 题）</div><div class="u">⭐⭐ <b>A 是果、B 是因</b>；被动 A is attributed to B。✍️ <i>I attribute my progress to daily practice.</i></div></div>
+          <div class="wbi"><div class="p">promote attachment　促进依恋（④❶）</div><div class="u"><b>promote 熟词僻义之一</b>：促进（不只是「提升职位」「推销」）；attachment＝依恋、感情（本义「附件」）。</div></div>
+          <div class="wbi"><div class="p">some of it … But some of it …　一部分……但另一部分……（19 题）</div><div class="u">⭐ 对照句：后一部分做前一部分的反面动作（released into ↔ remains in）。</div></div>
+        </div>
+      </section>
+
+      <!-- ========== 06 80 词表 ========== -->
+      <section class="card">
+        <h2><span class="n">06</span>80 个选项词速查（完形的真正词汇量）
+          <button class="allbtn" id="btnHide" style="margin-left:auto" onclick="toggleHide()">✍️ 默写模式</button>
+        </h2>
+        <p class="note">完形一篇＝<b>80 个高频词的辨析现场</b>，绿底是正确项。<b>默写模式</b>会糊住中文释义——先自己说出意思，点单个格子可单独揭开。<b>本篇 80 个词里有四组值得成组背</b>：2 题<b>四个 ___ to</b>（equal／restricted／connected／inferior to）、7 题<b>四个 be ___ to</b>（devoted／exposed／lost／attracted to）、14 题<b>四个 be ___ with</b>（associated／equipped／presented／compared with）、17 题<b>四个 ___ A to B</b>（attribute／commit／transfer／return）——<b>同一个小词、四种意思，正是「介词失效」的出题材料</b>；另外 16 题<b>四个 in the ___ of</b> 也值得一起背。</p>
+        <div class="tabwrap"><table class="otab" id="otab"></table></div>
+      </section>
+      <!-- ========== 07 长难句 ========== -->
+      <section class="card">
+        <h2><span class="n">07</span>长难句精析（正文蓝色虚线句）</h2>
+
+        <div class="sent" id="s1">
+          <div class="src"><u>Besides helping you feel close and connected to people you care about</u>, <span class="skel">it turns out that</span> <i>hugs can bring a host of health benefits to your body and mind</i>.</div>
+          <div class="anat">
+            <ul>
+              <li><b>主干</b>：<span class="skel">it turns out ＋ that 从句</span>——it 是形式主语，真正的主语是 that 从句（原来……）。</li>
+              <li><b>句首状语</b>：<code>Besides ＋ V-ing</code>，V-ing 的逻辑主语＝从句里的 <code>hugs</code>（不是 it）。<code>people you care about</code> 省略了关系代词 whom／that。</li>
+              <li>⭐ <b>bring A to B</b>：A＝a host of health benefits，B＝your body and mind（带给身心）。</li>
+            </ul>
+          </div>
+          <div class="tr">译：除了帮你感到与所关心的人亲近、紧密相连之外，原来拥抱还能给你的身心带来许多健康益处。</div>
+        </div>
+
+        <div class="sent" id="s2">
+          <div class="src"><u>In a recent study involving over 400 healthy adults</u>, <span class="skel">researchers</span> <i>from Carnegie Mellon University in Pennsylvania</i> <span class="skel">examined the effects</span> <i>of perceived social support and the receipt of hugs</i> <span class="skel">on the participants’ susceptibility</span> <i>to developing the common cold</i> <u>after being exposed to the virus</u>.</div>
+          <div class="anat">
+            <ul>
+              <li><b>主干</b>：<span class="skel">researchers examined the effects on … susceptibility</span>——研究人员考察了（A）对（B）的影响。</li>
+              <li><b>三层修饰</b>：① 句首状语 <code>In a recent study involving …</code>（involving 现在分词作 study 的后置定语）；② <code>of perceived social support and the receipt of hugs</code> 修饰 effects（A，施加影响的一方）；③ <code>to developing the common cold</code> 修饰 susceptibility（susceptibility to 对……的易感性，to 是介词，后接动名词）。</li>
+              <li>⭐ <b>after being exposed</b>：被动的动名词，逻辑主语是 participants；<b>拆句时先把 of 短语括掉</b>，effects … on … 的骨架立刻显出来（6 题）。</li>
+            </ul>
+          </div>
+          <div class="tr">译：在最近一项有 400 多名健康成年人参与的研究中，宾夕法尼亚州卡内基梅隆大学的研究人员考察了「感知到的社会支持」和「得到拥抱」对参与者在接触病毒后染上普通感冒的易感性有何影响。</div>
+        </div>
+
+        <div class="sent" id="s3">
+          <div class="src"><span class="skel">People</span> <i>who perceived greater social support</i> <span class="skel">were less likely to come down with a cold</span>, and <span class="skel">the researchers calculated</span> <u>that the stress-reducing effects of hugging explained about 32 percent of that beneficial effect</u>.</div>
+          <div class="anat">
+            <ul>
+              <li><b>两个分句</b>由 and 并列：前一个给<b>结果</b>（更不容易感冒），后一个给<b>量化</b>（拥抱贡献了多少）。</li>
+              <li>⭐ <b>that beneficial effect</b> 回指前一分句的「更不容易感冒」这一好效果——<b>that 是指示代词，不是关系词</b>。</li>
+              <li>⭐ <b>explain 的主语是物</b>：the stress-reducing effects of hugging explained … ＝「拥抱的减压效果能解释……」＝ account for（10 题）。</li>
+            </ul>
+          </div>
+          <div class="tr">译：感知到更多社会支持的人更不容易患上感冒；研究人员算出，拥抱的减压效果能解释这一有益影响的约 32%。</div>
+        </div>
+
+        <div class="sent" id="s4">
+          <div class="src"><u>Even among those who got a cold</u>, <span class="skel">the ones</span> <i>who felt greater social support and received more frequent hugs</i> <span class="skel">had less severe symptoms</span>.</div>
+          <div class="anat">
+            <ul>
+              <li><b>主干</b>：<span class="skel">the ones had less severe symptoms</span>；the ones＝those people，后跟 who 定语从句（两个并列谓语 felt … and received …）。</li>
+              <li>⭐ <b>句首状语 Even among those who …</b>：把比较范围缩到「已经得了感冒的人」——<b>先划定范围，再在范围内比较</b>（11 题）。</li>
+            </ul>
+          </div>
+          <div class="tr">译：甚至在那些得了感冒的人当中，感到社会支持更多、得到拥抱更频繁的人，症状也更轻。</div>
+        </div>
+
+        <div class="sent" id="s5">
+          <div class="src">“<span class="skel">Hugging protects people</span> <i>who are under stress</i> <span class="skel">from the increased risk for colds</span> <i>that’s usually associated with stress</i>,” <span class="skel">notes Sheldon Cohen</span>, <u>a professor of psychology at Carnegie</u>.</div>
+          <div class="anat">
+            <ul>
+              <li><b>引语在前、说话人在后，主谓倒装</b>：notes Sheldon Cohen＝Sheldon Cohen notes（新闻引语的常见格式，说话人短时常倒装）。</li>
+              <li><b>引语主干</b>：<span class="skel">Hugging protects people from the … risk</span>；<code>who are under stress</code> 修饰 people，<code>that’s usually associated with stress</code> 修饰 risk for colds。</li>
+              <li>⭐ <b>protect sb from sth</b> 被两个定语从句撑开——<b>先把 who 从句括掉</b>，protect … from 的框架才看得见（13 题的钥匙）。</li>
+            </ul>
+          </div>
+          <div class="tr">译：「拥抱能保护处于压力之下的人，使他们免受更高的感冒风险——这种风险通常与压力相伴，」卡内基梅隆大学心理学教授谢尔登·科恩指出。</div>
+        </div>
+
+        <div class="sent" id="s6">
+          <div class="src"><span class="skel">Hugging</span> “<span class="skel">is a marker of intimacy and helps generate the feeling</span> <u>that others are there to help in the face of difficulty</u>.”</div>
+          <div class="anat">
+            <ul>
+              <li><b>引语只引了半句</b>：主语 Hugging 在引号外（作者的话），谓语部分在引号内（科恩的原话）——新闻里「嵌入式引语」的写法。</li>
+              <li><b>两个并列谓语</b>：is a marker of intimacy ＋ helps generate the feeling。</li>
+              <li>⭐ <b>that 从句是同位语</b>（说明 feeling 的内容），不是定语——that 在从句里不作成分；<b>there＝在身边</b>，be there to help＝在身边随时帮忙。</li>
+            </ul>
+          </div>
+          <div class="tr">译：拥抱「是亲密的标志，有助于产生这样一种感觉：遇到困难时，总有人在身边帮你。」</div>
+        </div>
+
+        <div class="sent" id="s7">
+          <div class="src"><span class="skel">Some experts attribute the stress-reducing, health-related benefits of hugging to the release of oxytocin</span>, <i>often called “the bonding hormone”</i> <u>because it promotes attachment in relationships</u>, <i>including that between mothers and their newborn babies</i>.</div>
+          <div class="anat">
+            <ul>
+              <li><b>主干</b>：<span class="skel">experts attribute A to B</span>；A＝the … benefits of hugging（果），B＝the release of oxytocin（因）。</li>
+              <li><b>oxytocin 后面挂了一串</b>：① 过去分词短语 <code>often called “…”</code>（常被称为）；② because 从句解释这个名字的由来；③ <code>including that between …</code>——<b>that＝attachment</b>，代词替代前面的不可数名词。</li>
+              <li>⭐ 这是全文<b>最长的一句</b>，但骨架只有 attribute A to B 五个词；because 从句修饰的是 called，不是 attribute（18 题）。</li>
+            </ul>
+          </div>
+          <div class="tr">译：一些专家把拥抱减压、有益健康的好处归因于催产素的释放；催产素常被称为「亲密激素」，因为它能促进人际关系中的依恋，包括母亲与新生儿之间的依恋。</div>
+        </div>
+
+        <div class="sent" id="s8">
+          <div class="src">But <span class="skel">some of it remains in the brain</span>, <u>where it influences mood, behavior and physiology</u>.</div>
+          <div class="anat">
+            <ul>
+              <li><b>where 引导非限制性定语从句</b>，先行词 the brain（在大脑里，它影响……）。</li>
+              <li>⭐ <b>some of it … But some of it</b>：两句一对，it 都指 oxytocin；上一句「一部分进入血液」、这一句「一部分留在脑中」——<b>兵分两路</b>（19 题）。</li>
+              <li>💡 三个宾语 mood／behavior／physiology 恰好串起全文：心理（③段）、行为、生理（②段）。</li>
+            </ul>
+          </div>
+          <div class="tr">译：但也有一部分留在大脑里，在那里影响着情绪、行为和生理机能。</div>
+        </div>
+      </section>
+
+      <!-- ========== 08 写作素材 ========== -->
+      <section class="card">
+        <h2><span class="n">08</span>可搬进作文/翻译的表达</h2>
+        <p class="note">本篇是一篇<b>「设问 → 研究 → 解释」的健康科普</b>，最能搬的是三类句子：<b>引数据句</b>（写「一项调查显示」）、<b>递进句</b>（写「不仅……甚至……」）、<b>归因句</b>（写「原因在于」）。话题上，「人际关系与心理健康」「家庭与陪伴」「压力与健康」「科技时代的人际疏离」都能接上。</p>
+        <div class="wb">
+          <div class="wbi"><div class="p">Could X a day keep Y away? The answer may be a resounding “yes!”　一天一个 X 能让 Y 远离吗？答案也许是响亮的「能！」</div><div class="u">⭐ <b>设问开头</b>：<i>Could half an hour of reading a day keep anxiety away? The answer may be a resounding “yes”.</i></div></div>
+          <div class="wbi"><div class="p">Besides doing A, it turns out that X can bring a host of benefits to …　除了……之外，原来 X 还能给……带来许多好处</div><div class="u">⭐ <b>递进开头</b>：<i>Besides keeping us fit, it turns out that sports can bring a host of benefits to our mental health.</i></div></div>
+          <div class="wbi"><div class="p">In a recent study involving over N …, researchers examined the effects of A on B.　在最近一项有 N 多人参与的研究中，研究人员考察了 A 对 B 的影响</div><div class="u">⭐⭐ <b>引研究的万能句</b>：<i>In a recent survey involving over 2,000 college students, researchers examined the effects of smartphone use on sleep quality.</i></div></div>
+          <div class="wbi"><div class="p">People who … were less likely to …　……的人更不容易……</div><div class="u"><b>写对比发现</b>：<i>Students who exercise regularly are less likely to feel stressed before exams.</i></div></div>
+          <div class="wbi"><div class="p">Even among those who …, the ones who … had …　甚至在……的人当中，……的人也……</div><div class="u">⭐ <b>递进举证</b>：<i>Even among those who failed the exam, the ones who had kept a study plan recovered faster.</i></div></div>
+          <div class="wbi"><div class="p">X protects people from the increased risk of … that’s usually associated with …　X 能保护人们免受通常与……相伴的更高风险</div><div class="u"><b>写保护作用</b>：<i>Regular exercise protects office workers from the increased risk of heart disease that’s usually associated with long hours of sitting.</i></div></div>
+          <div class="wbi"><div class="p">X is a marker of … and helps generate the feeling that …　X 是……的标志，有助于产生……的感觉</div><div class="u">⭐ <b>写陪伴、仪式感</b>：<i>A family dinner is a marker of togetherness and helps generate the feeling that someone is always there for you.</i></div></div>
+          <div class="wbi"><div class="p">in the face of difficulty　面对困难</div><div class="u"><b>写品质</b>：<i>True friends stand by us in the face of difficulty.</i></div></div>
+          <div class="wbi"><div class="p">Some experts attribute A to B, because …　一些专家把 A 归因于 B，因为……</div><div class="u">⭐⭐ <b>归因句</b>：<i>Some experts attribute the rise in anxiety among teenagers to social media, because it encourages constant comparison.</i></div></div>
+        </div>
+      </section>
+
+    </main>
+
+    <aside>
+      <div id="panel"><div class="hint">👆 点正文里的<b>黄底词</b><br>词卡会出现在这里<br><br>点<b>空格</b>则跳到对应解析卡</div></div>
+    </aside>
+  </div>
+
+  <footer>2017 英语一 · 完形填空复盘页 · ✅ 盲做口径：计入 1–13 题 13/13（盲做答案先落盘、再只裁答案页 Section I 那一条核对）；⚠️ 14–20 题不计——做 2017 T1 时拼过精讲 p26–p33 的缩略图，那几页是完形 14–20 题的精讲，答案字母可辨；本会话独立写出的 20 个答案与官方全同，照实注明 · 解析由 Claude 独立写成并与黄皮书精讲逐空交叉核对（答案零书误）· 来源：<i>U.S. News &amp; World Report</i> 2016-02-03 <i>The Health Benefits of Hugging</i>（原文页无法直接打开）；研究事实据卡内基梅隆大学 2014-12-17 新闻稿（404 人、<i>Psychological Science</i>、拥抱占保护效果的三分之一）核对 · 本页新卡 R228–R230</footer>
+</div>
+
+<button id="yd">🔍 查有道</button>
+<script>
+/* ============ V ============ */
+const V = {
+  keepdoctor:{w:"keep the doctor away",ipa:"/kiːp ðə ˈdɒktə(r) əˈweɪ/",pos:"phrase",tags:["phrase","write"],cn:"<b>让医生远离</b>＝保持健康、不生病",en:"to stay healthy so that you do not need a doctor",ex:"Could a hug a day keep the doctor away?",mem:"⭐ 化用谚语 <b>An apple a day keeps the doctor away</b>。keep sb／sth away＝让……远离：keep insects away · keep the wolf from the door（勉强糊口）。",syn:"stay healthy · ward off illness",conf:"<b>keep away</b>（使远离）vs <b>keep off</b>（勿踏入：Keep off the grass）vs <b>keep out</b>（不让进入）。"},
+  resounding:{w:"resounding",ipa:"/rɪˈzaʊndɪŋ/",pos:"adj.",tags:["poly","write"],cn:"①响亮的，回响的 ②<b>明确无疑的，巨大的</b>",en:"very great; very clear",ex:"The answer may be a resounding “yes!”",mem:"re-（回）＋ sound（响）⟹ 回响。⭐ 熟词僻义：<b>a resounding success／victory／defeat</b>＝巨大的成功／压倒性的胜利／惨败。",syn:"emphatic · decisive · overwhelming",conf:"<b>resounding</b>（明确的）vs <b>resonant</b>（洪亮的；引起共鸣的）。"},
+  turnsout:{w:"it turns out that",ipa:"/ɪt tɜːnz aʊt ðæt/",pos:"phrase",tags:["phrase","write"],cn:"<b>原来，结果（发现）</b>",en:"used to say that sth is discovered, especially unexpectedly",ex:"…it turns out that hugs can bring a host of health benefits…",mem:"⭐ 带<b>出乎意料</b>的味道——但「意外」≠「转折」：1 题 Besides 同向递进，别被它引到 Despite 上。同义 as it turns out · it emerges that。",syn:"it emerges that · it proves that",conf:"<b>turn out</b>（结果是；出席）vs <b>turn up</b>（出现）vs <b>turn over</b>（翻转；移交）。"},
+  believeit:{w:"believe it or not",ipa:"/bɪˈliːv ɪt ɔː nɒt/",pos:"phrase",tags:["phrase","write"],cn:"<b>信不信由你</b>",en:"used to introduce sth surprising but true",ex:"Believe it or not, a warm embrace might even help you avoid getting sick this winter.",mem:"插入语，预告后面是<b>夸张但属实</b>的说法——常与 even 连用，提示递进（4 题）。",syn:"surprisingly · incredibly",conf:"作文里别滥用——一篇最多一次。"},
+  embrace:{w:"embrace",ipa:"/ɪmˈbreɪs/",pos:"n./v.",tags:["core","poly","write"],cn:"n. <b>拥抱</b>　v. 拥抱；<b>欣然接受</b>；包括",en:"the act of holding sb close in your arms; to accept an idea willingly",ex:"…a warm embrace might even help you avoid getting sick this winter.",mem:"em-（进入）＋ brace（手臂）⟹ 抱进臂弯。⭐ 本篇是 hug 的<b>同义替换</b>；熟词僻义 v.＝接受：embrace change／new ideas（拥抱变化）——作文高频。",syn:"hug · cuddle ／ accept · welcome",conf:"<b>embrace</b>（拥抱；接受）vs <b>embarrass</b>（使尴尬）vs <b>brace</b>（支撑；使做好准备）。"},
+  carnegie:{w:"Carnegie Mellon University",ipa:"/kɑːˌneɡi ˈmelən/",pos:"n.",tags:["core"],cn:"<b>卡内基梅隆大学</b>（美国宾夕法尼亚州匹兹堡）",en:"a private research university in Pittsburgh, Pennsylvania",ex:"…researchers from Carnegie Mellon University in Pennsylvania examined…",mem:"③段 a professor of psychology at <b>Carnegie</b>＝同一所大学的简称。计算机、心理学都很强。",syn:"CMU",conf:"<b>Carnegie Mellon</b>（大学）vs <b>Carnegie Hall</b>（纽约卡内基音乐厅）。"},
+  perceive:{w:"perceived",ipa:"/pəˈsiːvd/",pos:"adj.",tags:["core","poly"],cn:"<b>感知到的，自认为的</b>",en:"that you notice or believe exists",ex:"…examined the effects of perceived social support…",mem:"per-（完全）＋ ceive（抓）⟹ 抓住 ⟹ 感知。⭐ <b>perceived X＝主观觉得的 X</b>，不一定是客观事实：perceived risk（感知风险）· perceived value。③段 the feeling that others are there to help 就是这个 perceived。",syn:"felt · subjective · apparent",conf:"<b>perceive</b>（感知）vs <b>receive</b>（收到）vs <b>conceive</b>（构想）vs <b>deceive</b>（欺骗）——同根 ceive。"},
+  socialsupport:{w:"social support",ipa:"/ˈsəʊʃl səˈpɔːt/",pos:"phrase",tags:["phrase","write"],cn:"<b>社会支持</b>（来自家人朋友的关心与帮助）",en:"help and care from family, friends and others",ex:"People who perceived greater social support were less likely to come down with a cold…",mem:"心理学术语：一个人能从身边的人那里得到的情感和实际帮助。✍️ 写心理健康、留守儿童、老龄化话题都能用。",syn:"support network · emotional support",conf:"<b>social support</b>（人际支持）vs <b>social security</b>（社会保障，指福利制度）。"},
+  receipt:{w:"receipt",ipa:"/rɪˈsiːt/",pos:"n.",tags:["poly"],cn:"①收据 ②<b>收到，接到</b>",en:"the act of receiving sth",ex:"…and the receipt of hugs on the participants’ susceptibility…",mem:"⭐ 熟词僻义：<b>the receipt of X＝得到 X 这件事</b>（不是收据！）；on receipt of（一收到……就）。<b>p 不发音</b>。",syn:"receiving · reception",conf:"<b>receipt</b>（收到；收据）vs <b>recipe</b>（食谱）vs <b>reception</b>（接待；招待会）。"},
+  participant:{w:"participant",ipa:"/pɑːˈtɪsɪpənt/",pos:"n.",tags:["core"],cn:"<b>参与者</b>；（研究的）<b>受试者</b>",en:"a person who takes part in sth",ex:"…on the participants’ susceptibility to developing the common cold…",mem:"part（部分）＋ cip（拿）⟹ 拿一份 ⟹ 参与。⭐ <b>回指 over 400 healthy adults</b> ⟹ 5 题 involving 的钥匙。研究里同义 subjects／volunteers。",syn:"subject · volunteer · respondent",conf:"<b>participant</b>（参与者）vs <b>participle</b>（分词）vs <b>partisan</b>（党派的）。"},
+  susceptibility:{w:"susceptibility",ipa:"/səˌseptəˈbɪləti/",pos:"n.",tags:["core"],cn:"<b>易感性</b>，易受影响",en:"the state of being easily affected by sth, especially disease",ex:"…on the participants’ susceptibility to developing the common cold…",mem:"sus-（在下）＋ cept（拿）⟹ 从下面接住 ⟹ 容易接受影响。⭐ <b>susceptible to</b>＝易受……影响（形容词）：Children are more susceptible to infection.",syn:"vulnerability · proneness",conf:"<b>susceptible</b>（易受影响的）vs <b>suspicious</b>（怀疑的）vs <b>sensitive</b>（敏感的）。"},
+  commoncold:{w:"the common cold",ipa:"/ðə ˈkɒmən kəʊld/",pos:"phrase",tags:["phrase"],cn:"<b>普通感冒</b>",en:"a mild illness of the nose and throat",ex:"…susceptibility to developing the common cold after being exposed to the virus.",mem:"⭐ <b>develop 熟词僻义＝患上</b>（develop a cold／cancer）；catch a cold · come down with a cold（8 题）都是「得感冒」。",syn:"a cold · head cold",conf:"<b>cold</b>（感冒）vs <b>flu</b>（流感，更重）。"},
+  stressreducing:{w:"stress-reducing",ipa:"/ˈstres rɪˌdjuːsɪŋ/",pos:"adj.",tags:["core","write"],cn:"<b>减压的</b>",en:"that lowers stress",ex:"…the stress-reducing effects of hugging explained about 32 percent…",mem:"⭐ <b>名词＋现在分词</b>构成复合形容词：time-consuming · energy-saving · labor-saving。✍️ 作文很好用：stress-reducing activities。",syn:"calming · relaxing",conf:"<b>stress-reducing</b>（减压的）vs <b>stressful</b>（有压力的）vs <b>stressed</b>（感到压力的）。"},
+  beneficial:{w:"beneficial",ipa:"/ˌbenɪˈfɪʃl/",pos:"adj.",tags:["core","write"],cn:"<b>有益的</b>",en:"having a good effect",ex:"…about 32 percent of that beneficial effect.",mem:"bene-（好）＋ fic（做）⟹ 做好事的。✍️ be beneficial to＝do good to。同根 benefit（③④段 benefits）。",syn:"helpful · advantageous · favourable",conf:"<b>beneficial</b>（有益的）vs <b>beneficiary</b>（受益人）。"},
+  severe:{w:"severe",ipa:"/sɪˈvɪə(r)/",pos:"adj.",tags:["core"],cn:"<b>严重的</b>；严厉的",en:"extremely bad or serious",ex:"…had less severe symptoms.",mem:"⭐ 常修饰疾病、症状、天气、处罚：severe pain · severe weather · a severe punishment。12 题 D 项借 <b>a severe test</b>（严峻考验）钓人。",syn:"serious · acute · harsh",conf:"<b>severe</b>（严重的）vs <b>several</b>（几个）vs <b>sever</b>（切断）。"},
+  understress:{w:"under stress",ipa:"/ˈʌndə stres/",pos:"phrase",tags:["phrase","write"],cn:"<b>处于压力之下</b>",en:"feeling worried because of too much work, pressure, etc.",ex:"Hugging protects people who are under stress from the increased risk…",mem:"⭐ <b>under ＋ 抽象名词＝处于某种状态</b>：under pressure · under control · under way · under discussion。",syn:"stressed · under pressure",conf:"<b>under stress</b>（有压力）vs <b>stress on</b>（强调）。"},
+  notes:{w:"note (v.)",ipa:"/nəʊt/",pos:"v.",tags:["poly","write"],cn:"①注意到 ②<b>指出，说</b>",en:"to mention sth because it is important",ex:"…,” notes Sheldon Cohen, a professor of psychology at Carnegie.",mem:"⭐ 熟词僻义：新闻里引出专家原话的动词，常<b>倒装</b>（notes X）。同组 observes／remarks／points out／argues。",syn:"observe · remark · point out",conf:"<b>note</b>（指出）vs <b>notice</b>（注意到）vs <b>notify</b>（通知）。"},
+  marker:{w:"marker",ipa:"/ˈmɑːkə(r)/",pos:"n.",tags:["poly"],cn:"①记号笔 ②<b>标志，指标</b>",en:"a sign that shows sth exists or is true",ex:"Hugging “is a marker of intimacy…”",mem:"⭐ 熟词僻义：<b>a marker of X＝X 的标志</b>；a biological marker（生物标志物）。",syn:"sign · indicator · symbol",conf:"<b>marker</b>（标志）vs <b>market</b>（市场）vs <b>marked</b>（显著的）。"},
+  intimacy:{w:"intimacy",ipa:"/ˈɪntɪməsi/",pos:"n.",tags:["core","write"],cn:"<b>亲密</b>，亲近",en:"the state of having a close personal relationship",ex:"Hugging “is a marker of intimacy…”",mem:"形容词 intimate（亲密的）。✍️ 写家庭、友谊话题：emotional intimacy。",syn:"closeness · familiarity · affection",conf:"<b>intimate</b>（亲密的）vs <b>intimidate</b>（恐吓）。"},
+  healthrelated:{w:"health-related",ipa:"/ˈhelθ rɪˌleɪtɪd/",pos:"adj.",tags:["core","write"],cn:"<b>与健康有关的</b>",en:"connected with health",ex:"Some experts attribute the stress-reducing, health-related benefits of hugging…",mem:"⭐ <b>名词＋related</b>：work-related · age-related · job-related。",syn:"health · medical",conf:"<b>related</b>（相关的）vs <b>relative</b>（亲戚；相对的）。"},
+  release:{w:"release",ipa:"/rɪˈliːs/",pos:"n./v.",tags:["core","poly"],cn:"<b>释放</b>；发布；上映",en:"the act of letting a substance flow out",ex:"…to the release of oxytocin… ／ some of it is released into the bloodstream.",mem:"⭐ 一篇两用：n. the release of oxytocin · v. is released into the bloodstream。熟词僻义：release a film（上映）· a press release（新闻稿）。",syn:"discharge · emission · issue",conf:"<b>release</b>（释放）vs <b>relieve</b>（缓解）vs <b>relax</b>（放松）。"},
+  oxytocin:{w:"oxytocin",ipa:"/ˌɒksɪˈtəʊsɪn/",pos:"n.",tags:["core"],cn:"<b>催产素</b>",en:"a hormone that helps childbirth and social bonding",ex:"…to the release of oxytocin, often called “the bonding hormone”…",mem:"希腊语 oxy（快）＋ tocin（分娩）⟹ 促进分娩的激素。<b>不认识不影响做题</b>：同位的 the bonding hormone 已经告诉你它是什么。",syn:"the bonding hormone · the love hormone",conf:"不认识的专有名词，<b>先找同位语或定语从句</b>。"},
+  bonding:{w:"the bonding hormone",ipa:"/ˈbɒndɪŋ ˈhɔːməʊn/",pos:"phrase",tags:["phrase"],cn:"<b>亲密激素</b>，结合激素",en:"a hormone that helps people form close relationships",ex:"…often called “the bonding hormone” because it promotes attachment…",mem:"bond（纽带）＋ -ing ⟹ 建立感情纽带。⭐ bonding ≈ attachment：<b>前后近义复现 ⟹ because 解释名字由来</b>（18 题）。hormone 激素。",syn:"love hormone · cuddle hormone",conf:"<b>bond</b>（纽带；债券）vs <b>bound</b>（一定会；被束缚的）。"},
+  promote:{w:"promote",ipa:"/prəˈməʊt/",pos:"v.",tags:["core","poly"],cn:"①<b>促进</b> ②提升（职位） ③推销",en:"to help sth to happen or develop",ex:"…because it promotes attachment in relationships…",mem:"pro-（向前）＋ mote（移动）⟹ 往前推。✍️ promote understanding／health／cooperation。",syn:"foster · encourage · boost",conf:"<b>promote</b>（促进）vs <b>prompt</b>（促使；及时的）。"},
+  attachment:{w:"attachment",ipa:"/əˈtætʃmənt/",pos:"n.",tags:["core","poly"],cn:"①附件 ②<b>依恋，感情</b>",en:"a strong feeling of love for sb",ex:"…it promotes attachment in relationships, including that between mothers and their newborn babies.",mem:"⭐ 熟词僻义：心理学「依恋」；be attached to（喜爱、依恋）。④❶ <b>including that</b>——that＝attachment。",syn:"bond · affection · closeness",conf:"<b>attachment</b>（依恋；附件）vs <b>attainment</b>（成就）vs <b>attack</b>（攻击）。"},
+  newborn:{w:"newborn",ipa:"/ˈnjuːbɔːn/",pos:"adj./n.",tags:["core"],cn:"<b>新生的</b>；新生儿",en:"recently born",ex:"…between mothers and their newborn babies.",mem:"new ＋ born。同类：firstborn（头生子）· stillborn（死产的）。",syn:"infant · neonatal",conf:"<b>newborn</b>（新生儿）vs <b>reborn</b>（重生的）。"},
+  primarily:{w:"primarily",ipa:"/praɪˈmerəli/",pos:"adv.",tags:["core","write"],cn:"<b>主要地</b>",en:"mainly",ex:"Oxytocin is made primarily in the central lower part of the brain…",mem:"⭐ 「主要」一族：mainly · chiefly · largely · predominantly。✍️ be primarily responsible for（主要负责）· primarily because …（主要是因为）",syn:"mainly · chiefly · largely",conf:"<b>primarily</b>（主要地）vs <b>primitively</b>（原始地）vs <b>previously</b>（以前）。"},
+  central:{w:"central",ipa:"/ˈsentrəl/",pos:"adj.",tags:["core","poly"],cn:"①<b>中央的</b> ②核心的，最重要的",en:"in the centre of an area",ex:"…in the central lower part of the brain…",mem:"⭐ 本篇是字面义「中间的」（大脑中下部＝下丘脑）；阅读里常见 play a central role（起核心作用）。",syn:"middle · core · key",conf:"<b>central</b>（中心的）vs <b>centric</b>（……中心的，多作后缀：egocentric）。"},
+  bloodstream:{w:"bloodstream",ipa:"/ˈblʌdstriːm/",pos:"n.",tags:["core"],cn:"<b>血流</b>，血液循环",en:"the blood flowing around the body",ex:"…some of it is released into the bloodstream.",mem:"blood ＋ stream（溪流）。⭐ released <b>into</b> the bloodstream ↔ remains <b>in</b> the brain——into 走了、in 留下（19 题）。",syn:"circulation · blood",conf:"<b>stream</b>（溪流）vs <b>steam</b>（蒸汽）。"},
+  mood:{w:"mood",ipa:"/muːd/",pos:"n.",tags:["core","write"],cn:"<b>心情，情绪</b>；语气",en:"the way you feel at a particular time",ex:"…where it influences mood, behavior and physiology.",mem:"✍️ be in a good／bad mood · lift one’s mood（提振心情）。语法里 mood＝语气（the subjunctive mood 虚拟语气）。",syn:"feeling · emotion · spirits",conf:"<b>mood</b>（心情）vs <b>mode</b>（方式）vs <b>moody</b>（喜怒无常的）。"},
+  physiology:{w:"physiology",ipa:"/ˌfɪziˈɒlədʒi/",pos:"n.",tags:["core"],cn:"<b>生理机能</b>；生理学",en:"the way a living thing’s body works",ex:"…where it influences mood, behavior and physiology.",mem:"physio-（自然、身体）＋ -logy（学）。⭐ <b>physiology（生理）vs psychology（心理）</b>——黄皮书说本篇③④两段就是心理、生理两个角度。",syn:"bodily functions · biology",conf:"<b>physiology</b>（生理学）vs <b>physiotherapy</b>（理疗）vs <b>physics</b>（物理）vs <b>psychology</b>（心理学）。"}
+};
+const panel=document.getElementById('panel');
+const isMobile=()=>window.innerWidth<=900;
+function badge(t){return {core:'<span class="badge b-core">核心词</span>',phrase:'<span class="badge b-phrase">短语</span>',poly:'<span class="badge b-poly">熟词僻义</span>',write:'<span class="badge b-write">写作✍︎</span>'}[t]||''}
+function showCard(k,el){
+  const d=V[k]; if(!d)return;
+  document.querySelectorAll('.tk.active').forEach(e=>e.classList.remove('active'));
+  if(el&&el.classList.contains('tk'))el.classList.add('active');
+  panel.innerHTML='<button class="close" onclick="panel.classList.remove(\'open\')">✕</button>'+
+  '<div class="wcard"><div class="head"><span class="w">'+d.w+'</span><span class="ipa">'+d.ipa+'</span><span class="pos">'+d.pos+'</span>'+d.tags.map(badge).join('')+'</div>'+
+  '<div class="cn">'+d.cn+'</div><div class="en-def">'+d.en+'</div>'+
+  '<div class="row r-ex"><b>原文语境</b>「…'+d.ex+'…」</div>'+
+  '<div class="row r-mem"><b>怎么记</b>'+d.mem+'</div>'+
+  '<div class="row r-syn"><b>同类词</b>'+d.syn+'</div>'+
+  '<div class="row r-conf"><b>易混辨析</b>'+d.conf+'</div></div>';
+  if(isMobile())panel.classList.add('open');
+}
+document.querySelectorAll('.tk').forEach(t=>t.addEventListener('click',e=>{e.stopPropagation();showCard(t.dataset.w,t)}));
+
+/* ============ 译文开关 ============ */
+function tz(btn){btn.closest('.para').classList.toggle('showzh')}
+let allOn=false;
+function toggleAll(){allOn=!allOn;document.querySelectorAll('.para').forEach(p=>p.classList.toggle('showzh',allOn))}
+function go(id){const s=document.getElementById(id);if(!s)return;s.scrollIntoView({behavior:'smooth',block:'center'});s.style.transition='none';s.style.opacity=.3;setTimeout(function(){s.style.transition='opacity .8s';s.style.opacity=1},80)}
+
+/* ============ 20 空数据（类别 + 正确词） ============ */
+const CAT={
+  logic:{name:"逻辑关系",cls:"c-logic",color:"#3d6a8a"},
+  collo:{name:"固定搭配",cls:"c-collo",color:"#3e7a4e"},
+  word:{name:"词义辨析",cls:"c-word",color:"#b04a3a"},
+  context:{name:"上下文语义",cls:"c-context",color:"#6d5a8e"}
+};
+const B={
+  1:{w:"Besides",cat:"logic"},        2:{w:"connected",cat:"context"},
+  3:{w:"host",cat:"collo"},           4:{w:"avoid",cat:"context"},
+  5:{w:"involving",cat:"word"},       6:{w:"on",cat:"collo"},
+  7:{w:"exposed",cat:"word"},         8:{w:"down",cat:"collo"},
+  9:{w:"calculated",cat:"word"},      10:{w:"explained",cat:"word"},
+  11:{w:"Even",cat:"logic"},          12:{w:"symptoms",cat:"context"},
+  13:{w:"increased",cat:"context"},   14:{w:"associated",cat:"word"},
+  15:{w:"generate",cat:"word"},       16:{w:"in the face of",cat:"collo"},
+  17:{w:"attribute",cat:"context"},   18:{w:"because",cat:"logic"},
+  19:{w:"remains",cat:"context"},     20:{w:"influences",cat:"word"}
+};
+/* ============ 点空格 → 跳到解析卡 ============ */
+document.querySelectorAll('.bk').forEach(function(b){
+  b.addEventListener('click',function(){
+    document.querySelectorAll('.bk.active').forEach(function(e){e.classList.remove('active')});
+    b.classList.add('active');
+    go('q'+b.dataset.n);
+  });
+});
+function fillBlank(n,ok){
+  const el=document.querySelector('.bk[data-n="'+n+'"]');
+  if(!el)return;
+  el.classList.remove('miss');
+  el.classList.add(ok===false?'miss':'filled');
+  el.innerHTML='<span class="idx">'+n+'</span>'+B[n].w;
+}
+
+/* ============ 即点即判 + 计分 ============ */
+let done=0,right=0;
+function updScore(){
+  document.getElementById('sDone').textContent=done;
+  document.getElementById('sRight').textContent=right;
+  document.getElementById('sPt').textContent=(right*0.5).toFixed(1);
+}
+document.querySelectorAll('.q').forEach(function(q){
+  const ans=+q.dataset.ans, n=q.id.replace('q','');
+  q.querySelectorAll('.opt').forEach(function(o,i){
+    o.addEventListener('click',function(){
+      if(q.classList.contains('done'))return;
+      q.classList.add('done');
+      const ok=(i===ans);
+      if(!ok)o.classList.add('wrong');
+      q.querySelectorAll('.opt')[ans].classList.add('right');
+      done++; if(ok)right++; updScore();
+      fillBlank(n,ok);
+    });
+  });
+});
+function revealAll(){
+  document.querySelectorAll('.q').forEach(function(q){
+    const n=q.id.replace('q','');
+    if(!q.classList.contains('done')){
+      q.classList.add('done');
+      q.querySelectorAll('.opt')[+q.dataset.ans].classList.add('right');
+      done++; updScore();
+    }
+    fillBlank(n,true);
+  });
+  document.querySelectorAll('.bk.miss').forEach(function(e){e.classList.remove('miss');e.classList.add('filled')});
+}
+
+/* ============ 考点统计 ============ */
+const counts={};Object.keys(B).forEach(function(k){counts[B[k].cat]=(counts[B[k].cat]||0)+1});
+const order=["word","collo","context","logic"];
+document.getElementById('catbar').innerHTML=order.map(function(k){
+  return '<div class="catseg" style="flex:'+counts[k]+';background:'+CAT[k].color+'">'+CAT[k].name+' '+counts[k]+'</div>'}).join('');
+const legend=document.getElementById('catlegend');
+legend.innerHTML=order.map(function(k){
+  return '<div class="cl" data-cat="'+k+'"><span class="dot" style="background:'+CAT[k].color+'"></span>'+CAT[k].name+' · '+counts[k]+' 题</div>'}).join('');
+const chips=document.getElementById('chips');
+function renderChips(cat){
+  chips.innerHTML=Object.keys(B).filter(function(n){return !cat||B[n].cat===cat})
+    .map(function(n){return '<span class="chip" data-n="'+n+'">'+n+'. '+B[n].w+'</span>'}).join('');
+  chips.querySelectorAll('.chip').forEach(function(c){
+    c.addEventListener('click',function(){go('q'+c.dataset.n)});
+  });
+}
+renderChips(null);
+legend.querySelectorAll('.cl').forEach(function(l){
+  l.addEventListener('click',function(){
+    const cat=l.dataset.cat;
+    document.querySelectorAll('.cl').forEach(function(x){x.style.borderColor=''});
+    l.style.borderColor=CAT[cat].color;
+    renderChips(cat);
+    document.querySelectorAll('.bk').forEach(function(b){
+      b.style.outline=(B[b.dataset.n].cat===cat?'2px solid '+CAT[cat].color:'')});
+  });
+});
+
+/* ============ 80 选项词表 ============ */
+const OPTS={
+ 1:[["Unlike","不像（要两个不同主体）"],["Besides","除……之外还（同向递进）"],["Throughout","自始至终；遍及（接时间地点）"],["Despite","尽管（要求方向相反）"]],
+ 2:[["equal","平等的；胜任的（equal to）"],["restricted","受限的（不表心理感受）"],["connected","心连心的（与 close 同向）"],["inferior","不如人的（负面）"]],
+ 3:[["host","a host of 许多（量词）"],["view","看法；视野"],["lesson","课；教训"],["choice","选择（范围）"]],
+ 4:[["recall","回想起（时间不对）"],["forget","忘记（时间不对）"],["avoid","避免（挡掉坏事）"],["keep","一直（做）；keep from 才是阻止"]],
+ 5:[["collecting","收集（接数据不接人）"],["affecting","影响（参与者不是被影响对象）"],["guiding","指导（同 B）"],["involving","有……参与（研究套话）"]],
+ 6:[["on","effect of A on B 对……的影响"],["in","在（某人群）当中"],["at","在……方面（跟形容词）"],["of","……的（所属，不通）"]],
+ 7:[["devoted","devote to 献身于"],["exposed","be exposed to 接触（实验操作）"],["lost","lose to 输给"],["attracted","attract to 被吸引"]],
+ 8:[["along","come along with 跟着来"],["across","come across with 提供"],["down","come down with 患上（小病）"],["out","come out with 说出"]],
+ 9:[["imagined","想象（与精确数字矛盾）"],["denied","否认（and 同向）"],["doubted","怀疑（and 同向）"],["calculated","算出（有具体数字）"]],
+ 10:[["served","serve as／to do 起作用（语法不通）"],["explained","是……的原因（＝account for）"],["restored","恢复（预设以前有过）"],["required","需要（倒果为因）"]],
+ 11:[["Thus","因此（不是因果）"],["Still","不过；仍然（不是让步）"],["Rather","更确切地说；相反"],["Even","甚至（同向加码）"]],
+ 12:[["defeats","失败（离开医学语境）"],["symptoms","症状"],["errors","错误"],["tests","考验（a severe test 陷阱）"]],
+ 13:[["highlighted","被强调的"],["minimized","最小化的（好事，与 from 冲突）"],["controlled","受控的（好事）"],["increased","更高的（坏事，接 from）"]],
+ 14:[["associated","be associated with 与……相伴"],["equipped","be equipped with 配备"],["presented","be presented with 被授予"],["compared","be compared with 与……相比"]],
+ 15:[["assess","评估"],["moderate","缓和（宾语要是坏事）"],["generate","产生（宾语是好事）"],["record","记录"]],
+ 16:[["in the face of","面对（困难）"],["in the form of","以……的形式"],["in the name of","以……的名义"],["in the way of","就……而言；妨碍"]],
+ 17:[["attribute","attribute A to B 归因于（to＝来源）"],["commit","commit A to B 投入（to＝去向）"],["transfer","transfer A to B 转移"],["return","return A to B 归还"]],
+ 18:[["unless","除非"],["because","因为（名字的由来）"],["though","虽然"],["until","直到"]],
+ 19:[["vanishes","消失（后文还在起作用）"],["emerges","出现（本来就在脑里）"],["remains","留下（与 released 对照）"],["decreases","减少（But 不是 so）"]],
+ 20:[["experiences","经历（主语要是人）"],["combines","结合；兼有"],["justifies","证明……合理"],["influences","影响（激素 → 情绪）"]]
+};
+const ANS={1:1,2:2,3:0,4:2,5:3,6:0,7:1,8:2,9:3,10:1,11:3,12:1,13:3,14:0,15:2,16:0,17:0,18:1,19:2,20:3};
+(function(){
+  let h='<tr><th>空</th><th>A</th><th>B</th><th>C</th><th>D</th></tr>';
+  for(let n=1;n<=20;n++){
+    h+='<tr><td class="n">'+n+'</td>';
+    OPTS[n].forEach(function(o,i){
+      h+='<td'+(i===ANS[n]?' class="hit"':'')+'><span class="ow">'+o[0]+'</span><span class="oc">'+o[1]+'</span></td>';
+    });
+    h+='</tr>';
+  }
+  document.getElementById('otab').innerHTML=h;
+  document.querySelectorAll('#otab .oc').forEach(function(c){
+    c.addEventListener('click',function(){c.classList.toggle('show')});
+  });
+})();
+function toggleHide(){
+  const t=document.getElementById('otab');
+  const on=t.classList.toggle('hidecn');
+  document.getElementById('btnHide').textContent=on?'👁 显示释义':'✍️ 默写模式';
+  if(!on)t.querySelectorAll('.oc.show').forEach(function(c){c.classList.remove('show')});
+}
+
+/* ============ 查有道 ============ */
+const yd=document.getElementById('yd');let sel='';
+document.addEventListener('selectionchange',function(){
+  const s=window.getSelection();const t=s?s.toString().trim():'';
+  if(t&&/^[a-zA-Z' -]{2,40}$/.test(t)){
+    sel=t;
+    try{const r=s.getRangeAt(0).getBoundingClientRect();
+      yd.style.left=Math.min(r.left,window.innerWidth-110)+'px';
+      yd.style.top=(r.bottom+8)+'px';yd.style.display='block';}catch(e){}
+  }else{yd.style.display='none'}
+});
+yd.addEventListener('click',function(){window.open('https://dict.youdao.com/result?word='+encodeURIComponent(sel)+'&lang=en');yd.style.display='none'});
+document.addEventListener('click',function(e){if(e.target!==yd&&!window.getSelection().toString())yd.style.display='none'});
+</script>
+<script src="_fault_attr.js"></script>
+</body>
+</html>
