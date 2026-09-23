@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2018 英一 新题型 · 艾森豪威尔行政办公楼</title>
+<style>
+  :root{
+    --bg:#faf9f6; --card:#ffffff; --ink:#2b2b2b; --muted:#8a8578;
+    --accent:#8b5e34; --accent-soft:#f3e9dd; --line:#e8e3d8;
+    --hl:#fdf3d8; --hl-border:#e0b84d;
+    --green:#3e7a4e; --green-soft:#e8f2ea;
+    --red:#b04a3a; --red-soft:#f9e9e6;
+    --blue:#3d6a8a; --blue-soft:#e7eff5;
+    --purple:#6d5a8e; --purple-soft:#eeeaf5;
+    --serif:"Georgia","Songti SC",serif;
+    --sans:-apple-system,"PingFang SC","Helvetica Neue",sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#1c1a17; --card:#26231f; --ink:#e8e4dc; --muted:#9a948a;
+      --accent:#d0a06a; --accent-soft:#3a3127; --line:#3a362f;
+      --hl:#3d3520; --hl-border:#b08c3a;
+      --green:#7fb98d; --green-soft:#26362b;
+      --red:#d98876; --red-soft:#3d2a26;
+      --blue:#8ab3d0; --blue-soft:#26323d;
+      --purple:#a996c8; --purple-soft:#302a3d;
+    }
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;padding-bottom:120px}
+  .wrap{max-width:1100px;margin:0 auto;padding:24px 20px}
+  .back{font-size:.85rem;color:var(--muted);text-decoration:none}
+  .back:hover{color:var(--accent)}
+  header{margin:14px 0 28px}
+  header h1{font-family:var(--serif);font-size:1.7rem;line-height:1.3}
+  header .sub{color:var(--muted);margin-top:6px;font-size:.9rem}
+  .tags{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+  .tag{font-size:.75rem;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);border:1px solid var(--line)}
+  .tag.bad{background:var(--red-soft);color:var(--red)}
+  .layout{display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:start}
+  .layout > main{min-width:0}
+  @media (max-width:900px){.layout{grid-template-columns:1fr}}
+  section.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:24px}
+  h2{font-size:1.05rem;letter-spacing:.05em;color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+  h2 .n{font-size:.72rem;background:var(--accent);color:var(--card);border-radius:6px;padding:1px 7px}
+  h3.sh{font-size:.95rem;color:var(--ink);margin:18px 0 8px;padding-left:9px;border-left:3px solid var(--accent)}
+  .para{margin-bottom:14px}
+  .en{font-family:var(--serif);font-size:1.03rem;line-height:1.95}
+  .tk{background:var(--hl);border-bottom:2px solid var(--hl-border);border-radius:3px;padding:0 2px;cursor:pointer;transition:filter .15s}
+  .tk:hover{filter:brightness(.93)}
+  .tk.active{outline:2px solid var(--hl-border)}
+  .clue{border-bottom:2px dotted var(--red)}
+  .zh{display:none;margin-top:8px;padding:10px 14px;background:var(--blue-soft);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:.92rem}
+  .showzh .zh{display:block}
+  .zbtn{float:right;margin-left:10px;font-size:.72rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:6px;padding:2px 9px;cursor:pointer}
+  .zbtn:hover{color:var(--accent);border-color:var(--accent)}
+  .allbtn{font-size:.78rem;border:1px solid var(--accent);background:none;color:var(--accent);border-radius:8px;padding:4px 12px;cursor:pointer;margin-left:auto}
+  aside{position:sticky;top:20px}
+  #panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;min-height:180px}
+  #panel .hint{color:var(--muted);font-size:.88rem;text-align:center;padding:30px 10px}
+  .wcard .head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .wcard .w{font-family:var(--serif);font-size:1.35rem;font-weight:bold}
+  .wcard .ipa{color:var(--muted);font-size:.85rem}
+  .wcard .pos{font-size:.72rem;color:var(--purple);background:var(--purple-soft);padding:1px 8px;border-radius:999px}
+  .wcard .badge{font-size:.7rem;padding:1px 8px;border-radius:999px}
+  .b-core{background:var(--red-soft);color:var(--red)}
+  .b-phrase{background:var(--blue-soft);color:var(--blue)}
+  .b-poly{background:var(--purple-soft);color:var(--purple)}
+  .b-write{background:var(--green-soft);color:var(--green)}
+  .wcard .cn{margin-top:8px;font-size:1rem;font-weight:600}
+  .wcard .en-def{color:var(--muted);font-size:.86rem;font-style:italic;margin-top:2px}
+  .wcard .row{margin-top:10px;font-size:.86rem;padding:8px 10px;border-radius:8px}
+  .wcard .row b{font-size:.72rem;display:block;margin-bottom:2px;letter-spacing:.06em}
+  .r-ex{background:var(--hl)} .r-ex b{color:var(--hl-border)}
+  .r-mem{background:var(--green-soft)} .r-mem b{color:var(--green)}
+  .r-syn{background:var(--blue-soft)} .r-syn b{color:var(--blue)}
+  .r-conf{background:var(--red-soft)} .r-conf b{color:var(--red)}
+  #panel .close{display:none}
+  @media (max-width:900px){
+    aside{position:fixed;left:0;right:0;bottom:0;z-index:50;padding:0 8px 8px}
+    #panel{box-shadow:0 -6px 24px rgba(0,0,0,.18);max-height:55vh;overflow-y:auto;display:none}
+    #panel.open{display:block}
+    #panel .close{display:block;float:right;border:none;background:var(--line);border-radius:8px;padding:2px 10px;cursor:pointer;color:var(--ink)}
+  }
+  /* 选项库 */
+  .optlib{display:grid;gap:8px}
+  .optitem{display:flex;gap:10px;border:1px solid var(--line);border-radius:10px;padding:9px 12px;font-size:.9rem}
+  .optitem .lt{font-weight:700;font-family:var(--serif);color:var(--accent);flex:0 0 18px}
+  .optitem.used{opacity:.45}
+  .optitem.extra{border-color:var(--red);background:var(--red-soft)}
+  .optitem .oen{font-family:var(--serif);font-size:.92rem;line-height:1.75}
+  .optitem .zhx{display:block;color:var(--muted);font-size:.82rem;margin-top:3px}
+  .optitem .kw{display:block;font-size:.78rem;color:var(--blue);margin-top:3px}
+  .optitem .stg{display:inline-block;font-size:.72rem;background:var(--purple-soft);color:var(--purple);border-radius:999px;padding:1px 9px;margin-top:5px}
+  /* 空格题 */
+  .person{margin-bottom:26px;padding-bottom:20px;border-bottom:1px dashed var(--line)}
+  .person:last-child{border:none}
+  .pname{font-family:var(--serif);font-weight:700;font-size:1.05rem;margin-bottom:8px}
+  .pname .qn{color:var(--accent)}
+  .stance{font-size:.72rem;border-radius:999px;padding:1px 9px;margin-left:8px;vertical-align:2px;font-family:var(--sans);font-weight:400}
+  .st-anti{background:var(--red-soft);color:var(--red)}
+  .st-pro{background:var(--green-soft);color:var(--green)}
+  .st-mid{background:var(--blue-soft);color:var(--blue)}
+  .slot{display:inline;background:var(--accent-soft);border-bottom:2px solid var(--accent);border-radius:3px;padding:0 6px;color:var(--accent);font-weight:700;font-family:var(--sans);font-size:.88rem}
+  .slot.filled{background:var(--green-soft);border-color:var(--green);color:var(--ink);font-weight:400;font-family:var(--serif);font-size:1.03rem}
+  .slot.filled .fl{font-family:var(--sans);font-size:.78rem;font-weight:700;color:var(--green);margin-right:5px}
+  .chips{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0 4px}
+  .chips .ch{width:38px;height:34px;border:1px solid var(--line);border-radius:8px;background:none;font-family:var(--serif);font-weight:700;font-size:1rem;color:var(--ink);cursor:pointer;transition:all .15s}
+  .chips .ch:hover{border-color:var(--accent)}
+  .person.done .ch{cursor:default;opacity:.6}
+  .ch.right{background:var(--green-soft);border-color:var(--green);color:var(--green);opacity:1!important}
+  .ch.wrong{background:var(--red-soft);border-color:var(--red);color:var(--red);opacity:1!important}
+  .expl{display:none;margin-top:10px;background:var(--accent-soft);border-radius:10px;padding:12px 14px;font-size:.9rem}
+  .person.done .expl{display:block}
+  .expl b{color:var(--accent)}
+  .loc{font-family:var(--serif);font-style:italic;background:var(--hl);padding:1px 4px;border-radius:3px}
+  .expl .line{margin-top:8px;padding-top:8px;border-top:1px dashed var(--line)}
+  .expl .mine{margin-top:8px;padding:8px 10px;background:var(--red-soft);border-radius:8px;color:var(--red);font-size:.86rem}
+  .wb{display:grid;gap:10px}
+  .wbi{border-left:3px solid var(--green);background:var(--green-soft);border-radius:0 10px 10px 0;padding:10px 14px;font-size:.92rem}
+  .wbi .p{font-family:var(--serif);font-weight:600}
+  .wbi .u{color:var(--muted);font-size:.85rem}
+  /* 表格 */
+  .tbwrap{overflow-x:auto}
+  table.gt{border-collapse:collapse;width:100%;min-width:600px;font-size:.86rem}
+  table.gt th,table.gt td{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
+  table.gt th{background:var(--accent-soft);color:var(--accent);font-weight:600;font-size:.8rem}
+  table.gt td.c{text-align:center;font-family:var(--serif);font-weight:700}
+  table.gt tr.bad td{background:var(--red-soft)}
+  /* 分区带 */
+  .zone{display:grid;grid-template-columns:118px 1fr;gap:12px;padding:9px 0;border-bottom:1px dashed var(--line);font-size:.9rem}
+  .zone:last-child{border:none}
+  .zone .zn{font-size:.82rem;color:var(--accent);font-weight:600}
+  .zone.empty{background:var(--red-soft);border-radius:8px;padding-left:10px}
+  .zone.empty .zn{color:var(--red)}
+  /* 长难句 */
+  .ls{border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:14px}
+  .ls .s{font-family:var(--serif);font-size:.98rem;line-height:1.85}
+  .ls .an{margin-top:10px;font-size:.88rem}
+  .ls .an div{margin-top:4px}
+  .ls .tr{margin-top:8px;padding:8px 12px;background:var(--blue-soft);border-radius:8px;font-size:.88rem}
+  .mk{color:var(--red);font-weight:600}
+  .mk2{color:var(--blue);font-weight:600}
+  .mk3{color:var(--green);font-weight:600}
+  .box{border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:0 10px 10px 0;padding:12px 14px;margin:12px 0;font-size:.92rem;background:var(--accent-soft)}
+  .box.red{border-left-color:var(--red);background:var(--red-soft)}
+  .box.green{border-left-color:var(--green);background:var(--green-soft)}
+  .box .bt{font-weight:700;color:var(--accent);display:block;margin-bottom:6px}
+  .box.red .bt{color:var(--red)} .box.green .bt{color:var(--green)}
+  .en,.zh,.expl,.wbi,.optitem,.ls,.zone,.bd,figcaption,p,li,td,th{overflow-wrap:anywhere}
+  footer{color:var(--muted);font-size:.8rem;text-align:center;margin-top:30px}
+  #yd{position:fixed;z-index:60;display:none;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:4px 12px;font-size:.8rem;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+</style>
+<style>
+  /* —— 排序题专用 —— */
+  main,aside{min-width:0}
+  .chainbar{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:16px 0 4px;padding:12px;background:var(--accent-soft);border-radius:12px}
+  .chainbar .cb{min-width:44px;height:36px;display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--accent);border-radius:8px;font-family:var(--serif);font-weight:700;color:var(--accent);background:var(--card)}
+  .chainbar .cb.given{background:var(--green-soft);border-color:var(--green);color:var(--green)}
+  .chainbar .ar{color:var(--muted)}
+  .ctx{font-size:.84rem;color:var(--muted);background:var(--blue-soft);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;padding:7px 12px;margin-bottom:10px}
+  .ctx i{font-family:var(--serif)}
+  .para{margin-bottom:22px;padding-bottom:16px;border-bottom:1px dashed var(--line)}
+  .para:last-of-type{border-bottom:none}
+  .person .en{margin-bottom:4px}
+  .optitem .oen{display:block}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">◀ 返回英语复盘中心</a>
+  <header>
+    <h1>Eisenhower Executive Office Building　艾森豪威尔行政办公楼：一栋楼里的半部美国外交史</h1>
+    <div class="sub">2018 年英语（一）真题 · Part B 新题型（<b>段落排序</b>：七段填进 41→[C]→42→43→[F]→44→45，<b>C 与 F 已给定，零多余项</b>）· 建议做题 <b>7–9 min</b> · 话题：一栋政府办公楼的前史、筹建、建造、入驻与名人往事 · 脚本数 536 words、21 句（黄皮书本篇未标词数）· 源 whitehouse.gov 白宫官网 <i>Eisenhower Executive Office Building</i> 页的 History 节（<b>已联网取到原文逐词比对</b>，美国政府出版物）</div>
+    <div class="tags">
+      <span class="tag">正确答案：41 E　42 G　43 A　44 B　45 D（<b>七项全部用上</b>）</span>
+      <span class="tag">全文顺序：E — C — G — A — F — B — D（<b>＝原刊顺序</b>）</span>
+      <span class="tag">变体：<b>排序题</b>（第五次：2010 · 2011 · 2014 · 2017 · 2018 · <b>零多余项第四次</b>）</span>
+      <span class="tag">✅ <b>Claude 完整盲做 5/5</b>（答案落盘前没看过答案页和精讲；排序题继 2010、2011 之后第三篇完整盲做）</span>
+    </div>
+  </header>
+
+  <div class="layout">
+    <main>
+      <section class="card">
+        <h2><span class="n">00</span>开考第一件事：数格子 —— 七格七段，<b>零多余项第四次</b>；已给定的两段一个在第 2 格、一个在第 5 格</h2>
+
+        <div class="chainbar">
+          <span class="cb">41</span><span class="ar">→</span><span class="cb given">C</span><span class="ar">→</span><span class="cb">42</span><span class="ar">→</span><span class="cb">43</span><span class="ar">→</span><span class="cb given">F</span><span class="ar">→</span><span class="cb">44</span><span class="ar">→</span><span class="cb">45</span>
+        </div>
+
+        <p style="font-size:.92rem">五年排序题，五种链条。<b>数格子不只是为了判多余项，还要看已给定段落站在哪里</b>——它决定你从哪一格下刀：</p>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:640px">
+          <tr><th style="width:11%">年份</th><th style="width:26%">链条</th><th style="width:15%">格子 / 选项</th><th>这条链条告诉你什么</th></tr>
+          <tr><td class="c"><b>2010</b></td><td><code>41→42→43→44→E→45</code></td><td class="c">6 / 7</td><td><b>有 1 个多余项</b>；E 在倒数第二，只剩 45 一个邻居 ⟹ 先做 45</td></tr>
+          <tr><td class="c"><b>2011</b></td><td><code>G→41→42→E→43→44→45</code></td><td class="c">7 / 7</td><td>零多余；<b>首段被给定</b> ⟹ 首段排除法用不上，改做粘块</td></tr>
+          <tr><td class="c"><b>2014</b></td><td><code>41→A→42→E→43→44→45</code></td><td class="c">7 / 7</td><td>零多余；首段空着，A、E 之间只夹一格；E 之后连续三个空</td></tr>
+          <tr><td class="c"><b>2017</b></td><td><code>D→41→42→43→44→B→45</code></td><td class="c">7 / 7</td><td>零多余；首段 D（总评）与第 6 格 B（成名）被给定 ⟹ 两个已给定段是时间轴上的两个刻度</td></tr>
+          <tr class="bad"><td class="c"><b>2018</b></td><td><code>41→C→42→43→F→44→45</code></td><td class="c"><b>7 / 7</b></td><td>零多余；<b>首段空着，但第 2 格的 C 一开口就是 <span class="loc">as it was originally known</span></b>（在说「原名」，现名必须已经出现过）⟹ 41 几乎白送；<b>F 在第 5 格，首句 <span class="loc">Construction took 17 years</span> 要一个「开工」的上家</b> ⟹ 43 也几乎白送。<b>两个已给定段各替你锁死一格</b></td></tr>
+        </table>
+        </div>
+
+        <div class="box green">
+          <span class="bt">🎁 零多余项第四次出现（2011 · 2014 · 2017 · 2018）：三条红利照旧</span>
+          ① 排除法做满，<b>最后一格白送</b>；② <b>通读验闭合是充分检验</b>；③「这一段放哪儿都别扭」不是排除理由（见套路库 <a href="套路库_阅读.html#R107">R107</a>）。
+          <span class="mk">背面也照旧：一处排错必然连累第二处。本篇最容易成对出错的是 <b>42 与 45</b>——C 末 <span class="loc">has been the scene of many historic events</span> 与 D 首 <span class="loc">have participated in historical events</span> 几乎是同一句话，<b>把 D 拉到 42，G 就只能去 45，一次丢 4 分</b>（见 02++ 节红框与新卡 <a href="套路库_阅读.html#R249">R249</a>）。</span>
+        </div>
+
+        <h3 class="sh">① 五步实况：两个已给定段各锁一格，剩下三段按「年份」和「层」分开</h3>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:640px">
+          <tr><th style="width:8%">步</th><th style="width:28%">做什么</th><th>本篇实况</th></tr>
+          <tr><td class="c">1</td><td><b>数格子 ＋ 认文体</b></td><td>7 格 7 段 ⟹ 零多余。七段里满是年份（1799、1814、1866、1869、1871、1875、1879）和部门名 ⟹ <b>机构／建筑史说明文</b>：一栋楼「今天是什么 → 当年怎么来的 → 里面发生过什么」。</td></tr>
+          <tr><td class="c">2</td><td><b>先做被已给定段锁死的两格</b></td><td><b>41</b>：C 首 <span class="loc">The State, War, and Navy Building, as it was originally known</span> ⟹ 上文要先有「现名」；七段里<b>只有 E 给出现名全称并当场定义缩写</b> <span class="loc">The Eisenhower Executive Office Building (EEOB)</span> ⟹ <b>E</b>。<b>43</b>：F 首 <span class="loc">Construction took 17 years</span> ⟹ 上文要先「开工」；<b>只有 A 末写着 <span class="loc">construction of a building to house all three departments began in June of 1871</span></b> ⟹ <b>A</b>（1871 ＋ 17 ＝ 1888，与 E 的 <span class="loc">from 1871 to 1888</span> 对上）。</td></tr>
+          <tr><td class="c">3</td><td><b>42：A 前面只有这一格</b></td><td>G 讲的是「奠基以前」（1799–1866），比 A 的 1869 早，<b>必须排在 A 前面</b>；A 前只剩 42 ⟹ <b>G</b>。再核一刀：G 末 <span class="loc">necessitated the demolition of the State Department building</span> ⟹ A 首 <span class="loc">a new State Department Building</span>——<b>旧楼拆了，才要新楼</b>。</td></tr>
+          <tr><td class="c">4</td><td><b>44、45：B 与 D 二选一排序</b></td><td>F 说 <span class="loc">the building slowly rose wing by wing</span> ⟹ B 一翼一翼地交代（<span class="loc">south wing</span> 1875、<span class="loc">east wing</span> 1879）⟹ <b>44 B</b>；D 用现在完成时回看这栋楼「容纳过谁、见证过什么」，点名的总统一路数到 1989 年就任的老布什，<b>是全文时间跨度最大、落点最晚的一段</b> ⟹ <b>45 D</b>。</td></tr>
+          <tr><td class="c">5</td><td><b>通读验闭合</b></td><td>E—C—G—A—F—B—D ＝ 现名与地位 → 原名与外交意义 → 前史（旧楼被拆）→ 筹建与动工 → 17 年建成 → 两翼先后入驻 → 名人与事件。<b>首尾三段用现在时／现在完成时站在今天说话，中间四段用过去时按年份讲故事</b>（02+++ 节）⟹ 收工。</td></tr>
+        </table>
+        </div>
+
+        <h3 class="sh">② 认文体：官网上的「建筑小传」，骨架是「今天 → 当年 → 今天」</h3>
+        <div class="box">
+          <span class="bt">📚 五年排序题，五种文体，顺序由什么决定各不相同</span>
+          2010 商业分析（问题 → 论据 → 条件 → 趋势）· 2011 书评（荐书 → 观点 → 建议 → 局限）· 2014 百科说明文（先问后答 · 先总后分 · 先古后今）· 2017 人物传记（时间接力）· <b>2018 建筑／机构史——两套顺序叠在一起：外面一层是「今天的地位 → 当年的故事 → 今天回看」，里面一层是年份</b>。
+          <br>它和 2017 的传记长得很像（都有年份、都「先报结局」），差别在于：<b>2017 七段里六段都在时间线上，只有首段 D 是总评；2018 七段里有三段（E、C、D）不在时间线上</b>——它们讲的是「这栋楼意味着什么」，用的是现在时和现在完成时。<span class="mk">所以 2018 不能只排年份：先把七段分成「总述层」和「叙事层」两堆，叙事层按年份排，总述层按「先介绍、后回看」排（⟹ 新卡 <a href="套路库_阅读.html#R248">R248</a>）。</span>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">01</span>七段 A–G · 先给每一段标出「头路标 / 尾预示」</h2>
+        <p style="font-size:.8rem;color:var(--muted);margin-bottom:12px">🔑 一行 ＝ 这一段的两个接口 ｜ 紫色标签 ＝ 它最终落在哪一环（<b>作答后</b>对应项会自动置灰）｜ 本篇<b>没有红框</b>——七段全部有位置</p>
+        <div class="optlib" id="optlib"></div>
+        <div class="box" style="margin-top:14px">
+          <span class="bt">🚩 七个段首，六个「欠上文一样东西」——欠的东西各不相同</span>
+          C <span class="loc">as it was <b>originally</b> known</span>（欠现名）· G <span class="loc">The history of <b>the EEOB</b></span>（欠缩写的全称）· D <span class="loc">within <b>the EEOB’s</b> granite walls</span>（同上）· F <span class="loc"><b>Construction</b> took 17 years</span>（欠开工）· B <span class="loc">Completed in 1875, <b>the State Department’s south wing</b></span>（欠「哪栋楼」）· A <span class="loc">a <b>new</b> State Department Building</span>（欠「旧楼怎么了」）· <b>E <span class="loc">The Eisenhower Executive Office Building (EEOB)</span>——全称带括号缩写，一样不欠</b>。
+          <br>⟹ <b>2010 那套段首排除法（<a href="套路库_阅读.html#R79">R79</a>）今年要加两类</b>：<b>缩写没定义</b>（EEOB 第一次出现必须带全称）和 <b>new 这类「预设旧的」形容词</b>。<span class="mk">注意 A：它的段首 <span class="loc">In December of 1869, Congress appointed a commission</span> 按 R79 原来的三类（回指词／连接词／省略成分）<b>一类都不命中</b>，读起来也像一篇历史文章的开头——<b>它是全篇最像首段的假首段</b>；让它出局的是 <span class="loc">a new State Department Building</span> 里的 new。</span>
+          <span class="mk">已给定的两段各有两个接口：C 首 <span class="loc">as it was originally known</span>（要现名在前）、C 尾 <span class="loc">has been the scene of many historic events</span>（一句预告，<b>不是交棒</b>）；F 首 <span class="loc">Construction took 17 years</span>（要开工在前）、F 尾是建筑细节（<b>整栋楼已经写完，下一段只能往回拆开讲</b>）。</span>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">02</span>链条作答 · 点字母 <button class="allbtn" onclick="toggleAll()">译文 开/关</button></h2>
+        <p style="font-size:.8rem;color:var(--muted);margin-bottom:14px">每格下方点 A–G 作答，<b>答后格子会就地补全成整段原文</b>，并出线索链解析 ＋ 错因标签。<span class="mk">建议顺序 41 → 43 → 42 → 44 → 45（两个被已给定段锁死的格先落，理由见 02+ 节）；下面按链条顺序排列。</span></p>
+
+        <div class="person q" id="q41" data-ans="E">
+          <div class="pname"><span class="qn">(41)</span> 链条第 1 格 · <b>首段，紧挨已给定的 C 之前</b><span class="stance st-pro">证据 ＝ 全称 ＋ 括号缩写（首次出现）→ C 的「原名」说明</span><button class="zbtn" onclick="tz(this)">译</button></div>
+          <p class="ctx">↑ 上文：<b>无</b>（全文开头）　↓ 下文：<b>C（已给定）</b>——「国务院、战争部和海军部大楼，这是它最初的名字」</p>
+          <p class="en"><span class="slot" data-n="41">(41) ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿</span></p>
+          <div class="zh"><b>（41）</b>艾森豪威尔行政办公楼（EEOB）在美国的国家历史和建筑遗产中都占据着独一无二的地位。它由财政部监理建筑师艾尔弗雷德·B. 马利特设计，建于 1871 至 1888 年，用来容纳国务院、战争部和海军部日益壮大的工作班子，被视为全美法兰西第二帝国风格建筑的最佳范例之一。</div>
+          <div class="chips"></div>
+          <div class="expl"><b>41 → E　The Eisenhower Executive Office Building (EEOB) commands a unique position in both the national history and the architectural heritage of the United States.</b>
+            <div class="line">🔗 <b>决定性一击：向下的钩在已给定的 C 身上</b>。C 首 <span class="loc">The State, War, and Navy Building, <b>as it was originally known</b></span>——「这是它<b>最初的</b>叫法」。一句话说「原名」，就等于承认<b>读者已经知道它现在叫什么</b>。七段里只有 E 给出了现名的全称 <span class="loc">The Eisenhower Executive Office Building</span> ⟹ E 必须紧挨在 C 前面；C 在第 2 格 ⟹ E 在第 1 格（⟹ <a href="套路库_阅读.html#R231">R231</a>，它的 2017 版是 <i>as it is generally known today</i>）。</div>
+            <div class="line">🔗 <b>第二重证据：缩写第一次出现必须带全称</b>。E 写 <span class="loc">The Eisenhower Executive Office Building (EEOB)</span>——<b>全称 ＋ 括号缩写，这是英文里「此处首次定义」的固定写法</b>；G、D、F 都直接用 <span class="loc">the EEOB</span>，放在 E 前面就是一个没人解释过的缩写。黄皮书同此：「EEOB 的全称仅在 E 段中出现」。</div>
+            <div class="line">🔗 <b>第三重：E 末把三个部门点齐，C 首接着说「三个部门」</b>：E ② <span class="loc">the growing staffs of the State, War, and Navy Departments</span> ⟹ C ① <span class="loc">housed the three Executive Branch Departments</span>——<b>三个名字先点出来，下一段才能用「三个」统称</b>。</div>
+            <div class="line">🔮 <b>E 自己也分两层</b>：① 用一般现在时 <span class="loc">commands a unique position</span> 说「它今天是什么」，② 才转入一般过去时 <span class="loc">it was built from 1871 to 1888</span> 说「它当年怎么来的」——<b>先今后昔，是这类「建筑小传」的标准开头</b>（黄皮书 E 段路标也点了这一条）。</div>
+            <div class="line">✂️ <b>为什么不是 A</b>：<span class="loc">In December of 1869, Congress appointed a commission</span> 拿年份开头，像极了历史文章的第一句，<b>段首排除法抓不住它</b>。但 <span class="loc">a <b>new</b> State Department Building</span>——「新」的国务院大楼，旧的去哪了？读者还不知道（G 末才拆）。而且 A 放 41，C 的「原名」说明前面就没有现名。<br>
+              ✂️ <b>为什么不是 G</b>：<span class="loc">The history of the EEOB began long before</span>——主题句的味道很足，但<b>缩写 EEOB 没定义</b>，而且「它的历史早在奠基前就开始了」预设读者已经知道这栋楼是什么。</div>
+          </div>
+        </div>
+
+        <div class="person q" id="q42" data-ans="G">
+          <div class="pname"><span class="qn">(42)</span> 链条第 3 格 · <b>紧跟已给定的 C</b><span class="stance st-pro">证据 ＝ 总述层 → 叙事层的开关句 ＋ G 必须排在 A（43）之前</span><button class="zbtn" onclick="tz(this)">译</button></div>
+          <p class="ctx">↑ 上文：<b>C（已给定）</b>——原名「国务院、战争部和海军部大楼」，是美国崛起时期的外交中枢，见证过许多历史事件　↓ 下文：43</p>
+          <p class="en"><span class="slot" data-n="42">(42) ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿</span></p>
+          <div class="zh"><b>（42）</b>EEOB 的历史早在它奠基之前就开始了。最早的一批行政办公楼建于 1799 至 1820 年间。一连串火灾（包括英军 1814 年放的火）加上办公拥挤，促成了现存的财政部大楼的修建。1866 年，财政部大楼北翼的修建使得国务院大楼不得不被拆除。</div>
+          <div class="chips"></div>
+          <div class="expl"><b>42 → G　The history of the EEOB began long before its foundations were laid.</b>
+            <div class="line">🔗 <b>决定性一击：格子容量</b>。43 已被 A 锁死（F 的「17 年」要 A 的「开工」）；G 讲的是 1799–1866 的旧事，<b>比 A 的 1869 早，必须排在 A 前面</b>；A 前面只剩 42 这一个空格 ⟹ <b>G</b>。<span class="mk">这一格黄皮书是第四个做的，本页建议第三个做——等 41、43 落定，它就没有别的去处。</span></div>
+            <div class="line">🔗 <b>向下的钩：拆旧楼 → 建新楼</b>。G ④ <span class="loc">necessitated the <b>demolition</b> of the State Department building</span> ⟹ A ① <span class="loc">a <b>new</b> State Department Building</span>。<b>new 这个词自己就在要求上文说明「旧的没了」</b>——和 2017 的 release 预设 imprisoned 同一类证据（<a href="套路库_阅读.html#R232">R232</a>）。还有一处定冠词：G ③ 首次交代 <span class="loc">the existing Treasury Building</span>（现存的财政部大楼），A ③ 才能直接说 <span class="loc">a Greek Revival twin of the Treasury Building</span>（财政部大楼的「孪生楼」）。</div>
+            <div class="line">🔗 <b>向上的钩（软）：一句开关，从「今天」切进「当年」</b>。C 的两句都在说这栋楼<b>意味着什么</b>（外交中枢、见证历史）；G ① <span class="loc">The history of the EEOB <b>began long before</b> its foundations were laid</span> 一句话把镜头拉回 1799 年，<b>此后四段全是一般过去时 ＋ 具体年份</b>。这一缝没有词面证据，定它靠的是容量与时间（⟹ 新卡 <a href="套路库_阅读.html#R248">R248</a>）。</div>
+            <div class="line">✂️ <b>最强的对手是 D</b>：C 末 <span class="loc">has been the scene of many historic events</span> ⟶ D 首 <span class="loc">have participated in historical events that have taken place within the EEOB’s granite walls</span>——<b>尾首相接、几乎原词复现</b>，看上去是全篇最漂亮的一条缝。可 D 放 42，G 就被挤到 44 或 45——<b>1799 年的事排到了 1879 年之后</b>；A 首的 new 也失去了上家。<span class="mk">C ② 是<b>总述里的一句预告</b>（「这楼见证过很多大事」），D 是<b>兑现</b>（大事是哪些）——预告与兑现之间可以隔着一整段故事（⟹ 新卡 <a href="套路库_阅读.html#R249">R249</a>）。零多余项下这就是成对出错：42、45 一起错，丢 4 分。</span></div>
+          </div>
+        </div>
+
+        <div class="person q" id="q43" data-ans="A">
+          <div class="pname"><span class="qn">(43)</span> 链条第 4 格 · <b>紧挨已给定的 F 之前</b><span class="stance st-pro">证据 ＝ 开工 → 工期（Construction … began → Construction took 17 years）</span><button class="zbtn" onclick="tz(this)">译</button></div>
+          <p class="ctx">↑ 上文：42（＝G）——1799 年起的旧行政楼、火灾、财政部大楼，1866 年旧国务院大楼被拆　↓ 下文：<b>F（已给定）</b>——「工程历时 17 年，大楼一翼一翼慢慢建起」</p>
+          <p class="en"><span class="slot" data-n="43">(43) ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿</span></p>
+          <div class="zh"><b>（43）</b>1869 年 12 月，国会任命了一个委员会，为新的国务院大楼选址，并拟定设计方案和费用估算。委员会还要考虑战争部和海军部可能的安置办法。有些人原本期待在白宫另一侧建起一座与财政部大楼成对的希腊复兴式建筑，令他们大为震惊的是，最终入选的是艾尔弗雷德·马利特那份繁复精美的法兰西第二帝国风格设计；1871 年 6 月，一座可容纳三个部门的大楼开工兴建。</div>
+          <div class="chips"></div>
+          <div class="expl"><b>43 → A　In December of 1869, Congress appointed a commission to select a site and prepare plans and cost estimates for a new State Department Building.</b>
+            <div class="line">🔗 <b>决定性一击：向下的钩在已给定的 F 身上</b>。F ① <span class="loc"><b>Construction took 17 years</b> as the building slowly rose wing by wing</span>——「工期 17 年」要一个<b>开工</b>的上家；七段里只有 A 末写着开工：<span class="loc"><b>construction</b> of a building to house all three departments <b>began</b> in June of 1871</span>。<b>construction 一词从 A 末原样走进 F 首，状态往前推了一步：开工 → 工期</b>（<a href="套路库_阅读.html#R232">R232</a>）。</div>
+            <div class="line">🔗 <b>数字验算</b>：A 的 1871 ＋ F 的 17 年 ＝ 1888，正是 E ② <span class="loc">it was built from 1871 to 1888</span> 的终点。<span class="mk">三段三个数字对得上，这一缝就坐实了。有意思的是原刊 F ② 本来写着 <i>When the EEOB was finished in 1888</i>，<b>考卷把 in 1888 删了</b>（03++ 节）——验算要你自己做。</span></div>
+            <div class="line">🔗 <b>指代也接上</b>：A 末 <span class="loc">a building to house all three departments</span>（一座楼，不定冠词，第一次出现）⟹ F 首 <span class="loc">the building</span>（这座楼，定冠词）。黄皮书同此。</div>
+            <div class="line">🔗 <b>向上的钩</b>：<span class="loc">a <b>new</b> State Department Building</span> ⟸ G 末 <span class="loc">the <b>demolition</b> of the State Department building</span>；1866 → 1869，拆了三年才议新楼。</div>
+            <div class="line">✂️ <b>为什么不是 G</b>：G 讲的全是「奠基以前」，<b>没有开工</b>，F 的「17 年」无从算起；黄皮书另给一条理由：G 放在 F 前，F 首 <span class="loc">the building</span> 按就近原则会指向 G 末的 Treasury Building 或旧国务院大楼，而 F ② 说明它指 EEOB。<br>
+              ✂️ <b>为什么不是 B</b>：B 讲的是「竣工、入驻」，放在「工期 17 年」之前就成了先搬家后盖楼。</div>
+          </div>
+        </div>
+
+        <div class="person q" id="q44" data-ans="B">
+          <div class="pname"><span class="qn">(44)</span> 链条第 6 格 · <b>紧跟已给定的 F</b><span class="stance st-pro">证据 ＝ wing by wing（预告分述）→ south wing / east wing</span><button class="zbtn" onclick="tz(this)">译</button></div>
+          <p class="ctx">↑ 上文：<b>F（已给定）</b>——工期 17 年、一翼一翼建成；华盛顿最大办公楼；铸铁、石膏、花岗岩楼梯、穹顶　↓ 下文：45</p>
+          <p class="en"><span class="slot" data-n="44">(44) ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿</span></p>
+          <div class="zh"><b>（44）</b>国务院所在的南翼于 1875 年完工，最先投入使用，里面有典雅的四层图书馆（1876 年完工）、外交接待厅，以及用木雕、东方地毯和印花墙纹装饰的国务卿办公室。1879 年，海军部迁入东翼，那里的部长办公室饰有精美的墙面与天花板印花，铺着镶嵌细工地板。</div>
+          <div class="chips"></div>
+          <div class="expl"><b>44 → B　Completed in 1875, the State Department’s south wing was the first to be occupied …</b>
+            <div class="line">🔗 <b>向上的钩：F 先说「一翼一翼」，B 就一翼一翼地讲</b>。F ① <span class="loc">the building slowly rose <b>wing by wing</b></span> ⟹ B ① <span class="loc">the State Department’s <b>south wing</b> was <b>the first</b> to be occupied</span>、B ② <span class="loc">The Navy Department moved into the <b>east wing</b> in 1879</span>。<b>wing by wing 是一句分述预告</b>，the first 是分述的第一项。黄皮书同此：「south wing、the east wing 呼应 F 段中的 wing by wing」。</div>
+            <div class="line">⚠️ <b>这一缝的时间是往回跳的</b>：F ② <span class="loc">When the EEOB was finished</span> 已经写到整栋楼竣工（1888），B 又回到 <span class="loc">Completed in 1875</span>。<b>这不是排错，是「先总后分」</b>：F 概述 17 年的整个工程，B 回头拆开讲其中两翼。<span class="mk">只按年份排的人会在这里犹豫——「1888 之后怎么接 1875？」判据是 F 里那句 <span class="loc">wing by wing</span>：<b>它预告了「下面逐翼细说」，时间回跳就是合法的</b>（⟹ 新卡 <a href="套路库_阅读.html#R250">R250</a>）。</span></div>
+            <div class="line">🔗 <b>也接得上 E、C 的「三个部门」</b>：B 里轮流登场的是 <span class="loc">the State Department’s south wing</span>、<span class="loc">The Navy Department</span>——正是 A 末那座「容纳三个部门」的楼按部门分翼入驻。</div>
+            <div class="line">✂️ <b>为什么不是 D</b>：D 首 <span class="loc">Many of the most celebrated national figures have participated in historical events</span>——跳出了建造的故事，改用现在完成时回看「这楼里发生过什么」；放在 F 后面，F 的 wing by wing 就没有兑现，B 被挤到末段，<b>全文会结束在一间部长办公室的地板上</b>。</div>
+          </div>
+        </div>
+
+        <div class="person q" id="q45" data-ans="D">
+          <div class="pname"><span class="qn">(45)</span> 链条第 7 格 · <b>末段</b><span class="stance st-mid">证据 ＝ 回到总述层（现在完成时）＋ 零多余项的排除法收口</span><button class="zbtn" onclick="tz(this)">译</button></div>
+          <p class="ctx">↑ 上文：44（＝B）——南翼 1875 年最先入驻、海军部 1879 年迁入东翼　↓ 下文：<b>无</b>（全文结束）</p>
+          <p class="en"><span class="slot" data-n="45">(45) ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿</span></p>
+          <div class="zh"><b>（45）</b>许多美国最负盛名的人物，都参与过在 EEOB 花岗岩墙内发生的历史事件。西奥多·罗斯福和富兰克林·D. 罗斯福、威廉·霍华德·塔夫脱、德怀特·D. 艾森豪威尔、林登·B. 约翰逊、杰拉尔德·福特和乔治·H. W. 布什，都曾在当上总统之前在这座楼里办公。这里先后容纳过 16 位海军部长、21 位战争部长和 24 位国务卿。温斯顿·丘吉尔曾走过它的走廊；珍珠港遭轰炸之后，日本使节在这里会见了国务卿科德尔·赫尔。</div>
+          <div class="chips"></div>
+          <div class="expl"><b>45 → D　Many of the most celebrated national figures have participated in historical events that have taken place within the EEOB’s granite walls.</b>
+            <div class="line">🔗 <b>回到总述层</b>：D ① ③ 的主干是现在完成时 <span class="loc">have participated</span>、<span class="loc">has housed</span>——<b>站在今天，把一百多年累计起来说</b>（16 位海军部长、21 位战争部长、24 位国务卿都是累计数）。E、C 也是这样说话的；中间 G、A、F、B 四段全是一般过去时 ＋ 具体年月。<b>叙事层讲完「怎么建起来、谁先搬进来」，镜头拉回今天</b>（<a href="套路库_阅读.html#R248">R248</a>）。</div>
+            <div class="line">🔗 <b>C 的预告在这里兑现</b>：C ② <span class="loc">has been the scene of many historic events</span> ⟶ D ① <span class="loc">historical events that have taken place within the EEOB’s granite walls</span>，C ② <span class="loc">most significant diplomats and politicians</span> ⟶ D ②③ 七位总统、61 位部长。<b>隔着 G、A、F、B 四段</b>——这正是 <a href="套路库_阅读.html#R110">R110</a> 说的「提出 → 展开 → 回扣」，回扣处必然隔得远（<a href="套路库_阅读.html#R249">R249</a>）。</div>
+            <div class="line">🎁 <b>零多余项在这里发力</b>：做完 41–44，池里只剩 D，<b>45 白送</b>；反过来它也是自检——D 读着别扭，说明前面排错了。</div>
+            <div class="line">⚠️ <b>别以为作者写了一个「总结段」</b>：原刊在 D 之后<b>还有七段</b>（三个部门陆续迁出、1949 年改归总统行政办公室、第二帝国风格的来历与争议、三度险些被拆改、1969 年列为国家历史地标……），D 只是历史叙述的一站。<b>「呼应开篇、重申意义」是命题人一刀剪在 D 后面剪出来的效果</b>——定 45 的证据是「总述层只剩 D」与格子容量，不是总结感（<a href="套路库_阅读.html#R111">R111</a>；03+ 节第 1 条、03++ 节）。</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card" id="cand">
+        <h2><span class="n">02+</span>先做哪一格？把每一格的候选数一遍 —— 两个单候选格一落，第三格没有去处可选</h2>
+        <p style="font-size:.92rem">2014 立的规矩是「<b>先数候选，候选最少的格先做</b>」（套路库 <a href="套路库_阅读.html#R78">R78</a> 修正版）。本篇照做：</p>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:660px">
+          <tr><th style="width:9%">格</th><th style="width:22%">邻居</th><th style="width:15%">只看段首段尾时的候选</th><th>为什么</th></tr>
+          <tr class="bad"><td class="c"><b>41</b></td><td>下：C（已给定）</td><td class="c"><b>E</b>（1 个）</td><td>C 首 <span class="loc">as it was originally known</span> 要上文先给现名；<b>只有 E 有现名全称</b>，且只有 E 定义了缩写 EEOB</td></tr>
+          <tr><td class="c">42</td><td>上：C（已给定）</td><td class="c">G、D（2 个）</td><td>G 从「今天」切回「当年」；D 与 C 末 historic events 词面相接。<b>要等 43 落定</b>才分得开</td></tr>
+          <tr class="bad"><td class="c"><b>43</b></td><td>下：F（已给定）</td><td class="c"><b>A</b>（1 个）</td><td>F 首 <span class="loc">Construction took 17 years</span> 要上文「开工」；<b>只有 A 末有 construction … began</b></td></tr>
+          <tr><td class="c">44</td><td>上：F（已给定）</td><td class="c">B、D（2 个）</td><td>F 末已写到竣工与内部装饰；B 接 wing by wing，D 转去讲人物</td></tr>
+          <tr><td class="c">45</td><td>上：44</td><td class="c">B、D（2 个）</td><td>末段：要么继续讲入驻（B），要么回看历史（D）</td></tr>
+        </table>
+        </div>
+        <div class="box green">
+          <span class="bt">🏁 41＝E、43＝A 落定之后，G 只剩一个位置</span>
+          池里剩 G、B、D。<b>G 讲的是 1799–1866，比 A 的 1869 早，只能排在 A 前面；A 前面只剩 42</b> ⟹ 42＝G，一步到位。剩下 B、D 进 44、45：F 的 wing by wing ⟹ B 紧跟 F；D 回看全局 ⟹ 末段。
+          <br><span class="mk">⟹ 这一年的新情况：<b>42 的两个候选里，词面更像的那个（D）是错的，没有词面的那个（G）是对的</b>——G 是被「时间只能往前」和「格子只剩一个」挤进去的。2017 是两头夹中间，2018 是<b>先落两格、再用时间把第三格挤出来</b>。</span>
+        </div>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:620px">
+          <tr><th style="width:18%">路径</th><th style="width:16%">第一格</th><th>推进方式</th></tr>
+          <tr><td><b>我盲做时</b></td><td class="c">41 ＝ E</td><td>E 唯一给全称并定义 EEOB，C 说「原名」⟹ 41 E；F 的「17 年」要开工 ⟹ 43 A；G 比 A 早、只能在 A 前 ⟹ 42 G；F 的 wing by wing ⟹ 44 B；剩 D ⟹ 45。<b>唯一停顿在 42</b>：C 末 historic events ⟶ D 首 historical events 太像接缝，想了一下「D 放 42 那 G 放哪」才放下。答案落盘前没看过答案与精讲。</td></tr>
+          <tr><td><b>黄皮书</b></td><td class="c">41 ＝ E</td><td>「(一) 从首段和已知段落入手」：41 E（首段、全称）→ 43 A（F 上文应是前期规划，A、G 备选，按 1871 ＋ 17 年锁 A，就近原则排 G）→ 44 B（wing by wing）；「(二) 依次确定其他段落」：42 G（拆 → 建、1866 → 1869）→ 45 D（末段呼应开篇）；「(三) 纵览全篇」。</td></tr>
+        </table>
+        </div>
+        <p style="font-size:.9rem;margin-top:10px">📊 <b>五年排序题的第一刀</b>：2010 先做 45（E 只剩一个邻居）· 2011 先做 41（G 末点名 Menand ⟹ His）· 2014 先做 41（首段排除法）· 2017 先做 41 或 44（各只有一个候选）· <b>2018 先做 41 或 43（都被已给定段锁死）</b>。<span class="mk">五年五个起点，共同点仍是一个：<b>先做证据「语法或语义上非有不可」的那一格</b>。今年的两种：<b>叫法说明</b>（as it was originally known 预设现名）与<b>工期预设开工</b>（Construction took 17 years 预设 construction began）。<b>2018 是 R78 原版口诀「先啃被已给定段夹住的空」最标准的一年</b>——两个已给定段各锁一格。</span></p>
+      </section>
+
+      <section class="card" id="seams">
+        <h2><span class="n">02++</span>六个接缝：三处硬、一处回跳、两处靠「层」</h2>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:680px">
+          <tr><th style="width:11%">接缝</th><th style="width:23%">缝法</th><th>证据原文</th></tr>
+          <tr class="bad"><td class="c">E → C<br>（最硬）</td><td><b>叫法说明：现名 → 原名<br>＋ 三个部门 → 「三个」</b></td><td>上：<span class="loc">The Eisenhower Executive Office Building (EEOB)</span> · <span class="loc">the State, War, and Navy Departments</span>｜下：<span class="loc">The State, War, and Navy Building, <b>as it was originally known</b>, housed <b>the three</b> Executive Branch Departments</span></td></tr>
+          <tr><td class="c">C → G<br>（最软）</td><td><b>层的切换：总述 → 叙事</b><br>（开关句 began long before）</td><td>上：<span class="loc">has been the scene of many historic events</span>（现在完成时，回看全局）｜下：<span class="loc">The history of the EEOB <b>began long before</b> its foundations were laid.</span>（一般过去时，镜头拉回 1799）</td></tr>
+          <tr class="bad"><td class="c">G → A<br>（硬）</td><td><b>动作预设：拆旧 → 建新<br>＋ 1866 → 1869 ＋ 定冠词</b></td><td>上：<span class="loc">In 1866, the construction of the North Wing of the Treasury Building necessitated the <b>demolition</b> of the State Department building.</span>｜下：<span class="loc">In December of 1869, … for a <b>new</b> State Department Building</span> · <span class="loc">a Greek Revival twin of <b>the Treasury Building</b></span></td></tr>
+          <tr class="bad"><td class="c">A → F<br>（最硬）</td><td><b>动作预设：开工 → 工期<br>＋ a building → the building</b></td><td>上：<span class="loc"><b>construction</b> of <b>a building</b> to house all three departments <b>began</b> in June of 1871</span>｜下：<span class="loc"><b>Construction took 17 years</b> as <b>the building</b> slowly rose wing by wing.</span>（1871 ＋ 17 ＝ E 的 1888）</td></tr>
+          <tr><td class="c">F → B<br>（回跳）</td><td><b>先总后分：整体竣工 → 回头讲两翼</b></td><td>上：<span class="loc">the building slowly rose <b>wing by wing</b></span> · <span class="loc">When the EEOB was finished</span>（1888）｜下：<span class="loc">Completed in <b>1875</b>, the State Department’s <b>south wing</b> was <b>the first</b> to be occupied</span> · <span class="loc">the <b>east wing</b> in 1879</span></td></tr>
+          <tr><td class="c">B → D<br>（软）</td><td><b>层的切换：叙事 → 总述</b><br>（＋ 部长办公室 → 61 位部长）</td><td>上：<span class="loc">decorated the office of the Secretary</span>（1879，一般过去时）｜下：<span class="loc">Many of the most celebrated national figures <b>have participated</b> …</span> · <span class="loc">It has housed 16 Secretaries of the Navy, 21 Secretaries of War, and 24 Secretaries of State.</span></td></tr>
+        </table>
+        </div>
+        <div class="box">
+          <span class="bt">📐 五年排序题的缝法强弱（合并实测）</span>
+          <b>形式标记成对（one / another · The first / The second）≈ 动作预设（imprisoned / release · demolition / new · began / took 17 years）≈ 叫法说明（as it is generally known today · as it was originally known）≈ 缩写首现（全称 ＋ 括号缩写）≈ 同源词换词性 ＋ 指代 ≈ 代词紧邻回指 ＞ 成对的对照词 ＞ 概括名词回指（the three … Departments）＞ 分述预告（wing by wing）＞ 副词呼应 ／ 时间对照 ＞ 相邻复现 ＞ 层的切换（只能排除后确认）＞ 跨段复现（只加固）＞ 话题相近（不算证据）。</b>
+          <br><span class="mk">本篇新添两种：<b>「缩写首现」</b>（EEOB 第一次出现必须带全称，是 41 的第二重证据）和<b>「分述预告」</b>（wing by wing 预告下文逐翼细说，允许时间回跳）。<b>最软的两缝（C→G、B→D）恰好是层与层之间的切换处</b>——两层之间天然没有词面钩子，只能靠排除和「层」本身来定。</span>
+        </div>
+        <div class="box red">
+          <span class="bt">⚠️ 尾首复现也会骗人：C 末 ⟶ D 首是「预告—兑现」，不是「交棒」</span>
+          C ② <span class="loc">The building has housed some of the nation’s most significant diplomats and politicians and has been the scene of many historic events.</span> ⟶ D ① <span class="loc">Many of the most celebrated national figures have participated in historical events that have taken place within the EEOB’s granite walls.</span>——<b>上段最后一句、下段第一句，意思几乎相同</b>，按 <a href="套路库_阅读.html#R110">R110</a> 的旧口径「尾接首就能当接缝」，这里本该是一条缝。
+          <br>可它们在答案里<b>隔着四段</b>。原因是 C ② 不是「最后发生的事」，而是<b>一句总评</b>：总评是在预告「后面会讲到」，兑现可以放在很远的地方。判据两条：① <b>上段那句是在讲一件事，还是在下判断</b>？讲事 ⟹ 交棒（2017 F 末入狱 → E 首出狱）；下判断 ⟹ 预告，兑现处不一定紧邻；② <b>拿格子容量反证</b>：D 放 42，G 就没处去。<span class="mk">⟹ R110 要补一句：<b>跨段复现只加固；尾首复现也要先问「它是交棒还是预告」</b>（新卡 <a href="套路库_阅读.html#R249">R249</a>）。黄皮书 42 题也点了这组「近义复现」，但给的排除理由不成立（03+ 节第 2 条）。</span>
+        </div>
+      </section>
+
+      <section class="card" id="layers">
+        <h2><span class="n">02+++</span>三条暗线：两层时态 · 一条时间轴 · 称呼由全到简（排完序拿来验收）</h2>
+        <h3 class="sh">① 两层：谁在「今天」说话，谁在讲「当年」</h3>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:660px">
+          <tr><th style="width:12%">段（位置）</th><th style="width:32%">主干动词</th><th style="width:26%">时间标记</th><th>层</th></tr>
+          <tr class="bad"><td class="c">E（41）</td><td><span class="loc">commands</span> · <span class="loc">was built</span> · <span class="loc">is considered</span></td><td>跨度 <span class="loc">from 1871 to 1888</span></td><td><b>总述</b>：今天的地位（先今后昔的开头）</td></tr>
+          <tr><td class="c">C（给定）</td><td><span class="loc">housed</span> · <span class="loc">has housed</span> · <span class="loc">has been</span></td><td>跨度 半个世纪（<span class="loc">the last quarter of the nineteenth century and the first quarter of the twentieth century</span>）</td><td><b>总述</b>：它意味着什么</td></tr>
+          <tr><td class="c">G（42）</td><td><span class="loc">began</span> · <span class="loc">were constructed</span> · <span class="loc">led to</span> · <span class="loc">necessitated</span></td><td>时间点 1799–1820 · 1814 · 1866</td><td>叙事：前史</td></tr>
+          <tr><td class="c">A（43）</td><td><span class="loc">appointed</span> · <span class="loc">was selected</span> · <span class="loc">began</span></td><td>时间点 1869 年 12 月 · 1871 年 6 月</td><td>叙事：筹建与动工</td></tr>
+          <tr><td class="c">F（给定）</td><td><span class="loc">took</span> · <span class="loc">rose</span> · <span class="loc">was finished</span>（＋ 现存细节用 <span class="loc">is</span>／<span class="loc">are</span>）</td><td>工期 17 年</td><td>叙事：建造</td></tr>
+          <tr><td class="c">B（44）</td><td><span class="loc">was the first to be occupied</span> · <span class="loc">moved into</span> · <span class="loc">decorated</span></td><td>时间点 1875 · 1876 · 1879</td><td>叙事：入驻</td></tr>
+          <tr class="bad"><td class="c">D（45）</td><td><span class="loc">have participated</span> · <span class="loc">has housed</span>（＋ 举例用 <span class="loc">had</span>／<span class="loc">walked</span>／<span class="loc">met</span>）</td><td>累计 16／21／24 位部长 · 七位总统</td><td><b>总述</b>：回看</td></tr>
+        </table>
+        </div>
+        <div class="box green">
+          <span class="bt">🧭 总述层包住叙事层：E C ｜ G A F B ｜ D</span>
+          <b>段首主干用现在时或现在完成时、时间标记是「跨度／累计」的段 ＝ 总述层</b>；<b>主干用一般过去时、时间标记是「某年某月」的段 ＝ 叙事层</b>。总述层讲「这栋楼是什么、意味着什么」，放首尾；叙事层讲「它怎么来的」，放中间、按年份排。
+          <br>判的时候看<b>段首那一句</b>：C ① 的 housed 虽是过去时，说的却是「半个世纪里一直容纳」，第二句马上变成 has housed / has been；F ③④ 的 is / are 描述的是今天还在的楼梯和穹顶，段首 took 17 years 才是它的身份。<span class="mk">黄皮书 E 段「路标推引」写了「先用一般现在时引入 EEOB 进行总体介绍，后以一般过去时具体介绍其历史」——它只用来定首段；<b>推到全文七段，就是一张分层表</b>（⟹ 新卡 <a href="套路库_阅读.html#R248">R248</a>）。</span>
+        </div>
+
+        <h3 class="sh" id="timeline">② 时间轴：叙事层按年份单调往前——只有一处合法的回跳</h3>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:600px">
+          <tr><th style="width:16%">年份</th><th style="width:12%">段</th><th>事</th></tr>
+          <tr><td class="c">1799–1820</td><td class="c">G</td><td>最早的一批行政办公楼建成</td></tr>
+          <tr><td class="c">1814</td><td class="c">G</td><td>英军纵火（一连串火灾之一）→ 财政部大楼</td></tr>
+          <tr><td class="c">1866</td><td class="c">G</td><td>财政部北翼开建 ⟹ <b>旧国务院大楼被拆</b></td></tr>
+          <tr><td class="c">1869 年 12 月</td><td class="c">A</td><td>国会任命委员会，为<b>新</b>国务院大楼选址</td></tr>
+          <tr><td class="c">1871 年 6 月</td><td class="c">A</td><td><b>开工</b></td></tr>
+          <tr><td class="c">（＋17 年）</td><td class="c">F</td><td>一翼一翼建起，<b>整栋竣工</b>（＝ E 的 1888；考卷删了 F 里的年份）</td></tr>
+          <tr class="bad"><td class="c">1875 ⤺</td><td class="c">B</td><td><b>回跳</b>：南翼完工，国务院最先入驻（图书馆 1876）</td></tr>
+          <tr><td class="c">1879</td><td class="c">B</td><td>海军部迁入东翼</td></tr>
+        </table>
+        </div>
+        <div class="box">
+          <span class="bt">✅ 回跳只许出现在「总 → 分」的接缝上</span>
+          F 概述整个工程（17 年、竣工时华盛顿最大），B 回头细讲其中两翼——<b>F 里的 <span class="loc">wing by wing</span> 就是许可证</b>。其余接缝上若出现倒退（比如把 G 放到 B 后面，1799 排在 1879 之后），就是排错了。<span class="mk">总述层三段（E、C、D）不上这张表：它们说的是跨度与累计，不是某一年的事（⟹ 新卡 <a href="套路库_阅读.html#R250">R250</a>）。</span>
+        </div>
+
+        <h3 class="sh" id="names">③ 称呼链：同一个对象，第一次出现用全称或交代来历，之后才省</h3>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:640px">
+          <tr><th style="width:16%">对象</th><th style="width:12%">段</th><th style="width:36%">叫法</th><th>这一处的作用</th></tr>
+          <tr><td rowspan="3"><b>这栋楼</b></td><td class="c">E（41）</td><td><span class="loc">The Eisenhower Executive Office Building (EEOB)</span></td><td><b>现名全称 ＋ 定义缩写</b></td></tr>
+          <tr class="bad"><td class="c">C（给定）</td><td><span class="loc">The State, War, and Navy Building, as it was originally known</span></td><td><b>原名 ＋ 叫法说明</b>——说明本身就在宣告「上文用过另一个名字」</td></tr>
+          <tr><td class="c">G · F · D</td><td><span class="loc">the EEOB</span> · <span class="loc">the building</span></td><td>缩写与类名，不再解释</td></tr>
+          <tr><td rowspan="2"><b>建筑师</b></td><td class="c">E（41）</td><td><span class="loc">Supervising Architect of the Treasury, Alfred B. Mullett</span></td><td>头衔 ＋ 全名（带中间名缩写）</td></tr>
+          <tr><td class="c">A（43）</td><td><span class="loc">Alfred Mullett</span></td><td>头衔和中间名都省了 ⟹ <b>E 在 A 前</b></td></tr>
+          <tr><td rowspan="2"><b>财政部大楼</b></td><td class="c">G（42）</td><td><span class="loc">the existing Treasury Building</span> · <span class="loc">the North Wing of the Treasury Building</span></td><td>第一次出现：「现存的」——交代它是哪一栋</td></tr>
+          <tr><td class="c">A（43）</td><td><span class="loc">a Greek Revival twin of the Treasury Building</span></td><td>直接拿来作比 ⟹ <b>G 在 A 前</b></td></tr>
+          <tr><td rowspan="2"><b>国务院大楼</b></td><td class="c">G（42）</td><td><span class="loc">the State Department building</span></td><td>旧楼，被拆</td></tr>
+          <tr><td class="c">A（43）</td><td><span class="loc">a new State Department Building</span></td><td>新楼——new 预设旧楼已不在 ⟹ <b>G 在 A 前</b></td></tr>
+          <tr><td><b>三个部门</b></td><td class="c">E → C → A → B</td><td><span class="loc">the State, War, and Navy Departments</span> → <span class="loc">the three Executive Branch Departments</span> → <span class="loc">all three departments</span> → <span class="loc">The Navy Department</span></td><td>先点名、再统称、后分述</td></tr>
+        </table>
+        </div>
+        <div class="box green">
+          <span class="bt">🧭 2017 与 2018：两句「叫法说明」，一正一反</span>
+          2017 B 首 <span class="loc">The Pickwick Papers, as it is generally known today</span>——「<b>今天</b>通行的叫法」⟹ 上文先给了<b>全称／旧称</b>（C 末 <i>The Posthumous Papers of the Pickwick Club</i>）。<br>
+          2018 C 首 <span class="loc">The State, War, and Navy Building, as it was originally known</span>——「<b>最初</b>的叫法」⟹ 上文先给了<b>现名</b>（E 首 <i>The Eisenhower Executive Office Building</i>）。<br>
+          <b>方向相反，结论一样：讲叫法的句子，背后必有另一个叫法，而且就在紧挨着的上一段</b>（<a href="套路库_阅读.html#R231">R231</a>）。<span class="mk">连着两年，已给定段或答案段里都有一句 as it is/was … known——<b>这是排序题最值钱的一类硬证据</b>。</span>
+          <br>顺手一提：D ② 点名的总统里有 <span class="loc">Dwight D. Eisenhower</span>——大楼今天以他命名（1999 年国会立法，史实补充，非本文信息）。<b>E 首的楼名和 D 里的人名首尾呼应</b>，只加固、不定位。
+        </div>
+      </section>
+
+      <section class="card" id="extra">
+        <h2><span class="n">03</span>零多余项的第四年 —— 顺便把十三篇 Part B 的多余项造法一次数清</h2>
+        <p style="font-size:.92rem">五年排序题四年零多余（2011、2014、2017、2018），只有 2010 多一段。<span class="mk">零多余的年份，命题人把「认出假的」那部分难度，换成了「每一段都长得能接每一段」。<b>2018 七段全在讲同一栋楼，而且有一对段落（C 末、D 首）几乎说的是同一句话</b>。</span></p>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:600px">
+          <tr><th style="width:9%">年份</th><th style="width:14%">变体</th><th style="width:10%">多余项</th><th>造法</th></tr>
+          <tr><td class="c">2007</td><td>标题匹配</td><td class="c">A、G</td><td>两项都有词面呼应（A ↔ 首句 role models，G ↔ responsible 连出两次）</td></tr>
+          <tr><td class="c">2008</td><td>选句填空</td><td class="c">B、F</td><td>B 阶段错位（属于末段之后）· F 与正确项 E 撞专名</td></tr>
+          <tr><td class="c">2009</td><td>选句填空</td><td class="c">D、F</td><td>同属功能论一区，而那一区没有空</td></tr>
+          <tr><td class="c">2010</td><td>排序</td><td class="c">C</td><td>复现词最多，却偏离主线</td></tr>
+          <tr><td class="c">2011</td><td>排序</td><td class="c">—</td><td>零多余项（7 格 7 项）</td></tr>
+          <tr><td class="c">2012</td><td>选句填空</td><td class="c">B、E</td><td>B 先用后定义（属于末段之后）· E 缺前提的 thus（正确项 G 的下家）；两项都有词面呼应</td></tr>
+          <tr><td class="c">2013</td><td>选句填空</td><td class="c">A、D</td><td>A 推测句要 B 的数据（正确项 B 的下家）· D 同区换杠杆；两项都有词面呼应</td></tr>
+          <tr><td class="c">2014</td><td>排序</td><td class="c">—</td><td>零多余项（7 格 7 项）；诱饵换成「位置可挪」</td></tr>
+          <tr><td class="c">2015</td><td>选句填空</td><td class="c">D、F</td><td>D 逆箭头（退回作者本意）＋ 位置满 · F 换主角 ＋ 人称不符 ＋ 词面</td></tr>
+          <tr><td class="c">2016</td><td>标题匹配</td><td class="c">A、C</td><td>A 话题词冒充段落词 · C 全文零出现的心态口号；两项都比正确项「大」</td></tr>
+          <tr><td class="c">2017</td><td>排序</td><td class="c">—</td><td>零多余项；诱饵是「同一阶段的两段」：E、A 都在写作起步</td></tr>
+          <tr class="bad"><td class="c"><b>2018</b></td><td>排序</td><td class="c">—</td><td><b>零多余项</b>；诱饵是「<b>尾首复现</b>」：C 末 historic events ⟶ D 首 historical events，D 放 42 读起来最顺；另一个是「<b>像首段的 A</b>」（年份开头，段首排除法三类都不命中）</td></tr>
+          <tr><td class="c">2022</td><td>观点匹配</td><td class="c">B、E</td><td>没有人说过的话（无人提及型）</td></tr>
+        </table>
+        </div>
+        <div class="box">
+          <span class="bt">📊 零多余年份的诱饵长什么样（四年对照）</span>
+          <b>2011</b>：跨段复现（F 与 E 隔两段共用七个词）· <b>2014</b>：位置可挪（C 放 42 也通、G 像首段）· <b>2017</b>：同阶段并列（E、A 都属写作起步）· <b>2018</b>：<b>尾首复现</b>（C 末 ⟶ D 首，比 2011 更狠——2011 的复现隔着两段，一眼能看出不是邻居；2018 的复现<b>本来就在一段的尾和另一段的头</b>）。
+          <br>⟹ <b>四年的诱饵各被一条「非有不可」的证据否掉</b>，今年是<b>时间与格子</b>：G 必须在 A 前、A 必须紧贴 F 前，D 就挤不进 42。<span class="mk">和前三年的结论一样：<b>可靠的永远是「不指望你注意、但缺了就读不通」的那些词</b>——今年是 originally、new、Construction、wing by wing；<b>最显眼的那处复现，四年里两年是诱饵</b>（2011、2018）。</span>
+        </div>
+      </section>
+
+      <section class="card" id="book">
+        <h2><span class="n">03+</span>🔍 与黄皮书交叉核对：答案零书误，解析商榷三处</h2>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:680px">
+          <tr><th style="width:5%">#</th><th style="width:24%">黄皮书的说法（要点转述）</th><th style="width:30%">原文事实</th><th>判断</th></tr>
+          <tr class="bad"><td class="c">1</td><td>总体分析的脉络与 45 精解：D 通过列举名人凸显 EEOB 的重要地位，<b>呼应开篇、重申历史意义</b>，是文章末段；全文「概述 → 建造历史与建筑特点 → 呼应开篇」</td><td>原刊 D 之后<b>还有七段</b>：三个部门陆续迁出（1918／1938／1947）并于 1949 年划归总统行政办公室、改名 · 第二帝国风格的来历 · 落成时这种风格已不合时宜 · 1917／1930／1957 年三度险些被改建或拆除 · 亨利·亚当斯、杜鲁门等人的恶评与史家的赞誉 · 1969 年列为国家历史地标 · 1988 年的修缮捐赠立法。D 在原文里只是历史叙述的<b>中间一站</b>。</td><td><b>结论对，理由要换</b>。「呼应开篇」是命题人把 D 之后七段剪掉造成的效果。定 45 的证据是：<b>叙事层四段（G A F B）排满 42–44 之后，只剩总述层的 D</b>；D 用现在完成时回看、所举人物一直数到 1989 年就任的老布什。<span class="mk">与 2017 同一问题（G 只写到 1830 年代末，黄皮书也说「总—分—总」）——<b>连续两年，排序题的末段都是剪出来的</b>（<a href="套路库_阅读.html#R111">R111</a>）。</span></td></tr>
+          <tr class="bad"><td class="c">2</td><td>42 排除干扰：D 首 the most celebrated national figures、historical events 似与 C 末复现，<b>但前者聚焦 EEOB，后者聚焦「国务院、战争部和海军部大楼」，并不能完全等同</b>；且 D 未提旧国务院大楼，无法与 A 衔接</td><td>C ① 明说 <span class="loc">The State, War, and Navy Building, as it was originally known</span>——它就是 EEOB 的<b>原名</b>（黄皮书自己在 C 段路标里也这么读）。C ② 的主语 <span class="loc">The building</span> 与 D 的 <span class="loc">the EEOB’s granite walls</span> 是同一栋楼。</td><td><b>第一条理由不成立</b>：两段说的是同一栋楼，不存在「聚焦对象不同」。第二条理由对但不够硬。<b>D 不能进 42 的真正原因</b>：① 格子容量——43 已锁 A，G 比 A 早且只能在 A 前，42 必须留给 G；② C ② 是总评里的一句<b>预告</b>，不是「最后发生的事」，预告与兑现可以隔很远（<a href="套路库_阅读.html#R249">R249</a>）。</td></tr>
+          <tr><td class="c">3</td><td>43 排除干扰：G 若在 F 前，按就近原则 F 首 the building 应指 G 末的 Treasury Building 或 State Department building，而 F ② 说明它实指 EEOB，故排除 G</td><td>G 的最后一件事是「旧国务院大楼被拆」；F 首是 <span class="loc">Construction took 17 years</span>。</td><td><b>理由可用，但绕了远路</b>。更硬的一条黄皮书在 42 题里用了：<b>G 里根本没有开工</b>，「17 年」无从算起；且 G 放 43，A 就只能去 42 之前——而 A 的 new 要以 G 的拆楼为前提，<b>两段互相要对方在前</b>，不可能。</td></tr>
+        </table>
+        </div>
+        <p style="font-size:.9rem;margin-top:10px">📌 黄皮书答案 41E 42G 43A 44B 45D 与本页一致；英汉对照按 E—C—G—A—F—B—D 排列；本篇黄皮书无长难句、词汇栏目，也未标词数。黄皮书「选项分析」的 E 段路标已点到「先用一般现在时总体介绍、后以一般过去时介绍历史」——本页 02+++ 节把它推到全文七段。<br>
+        📌 背景（通行史实，非本文信息）：大楼 1888 年落成时叫 State, War, and Navy Building；1949 年划归总统行政办公室，改称 Executive Office Building；后称 Old Executive Office Building；<b>1999 年 11 月 9 日</b>国会立法（Public Law 106-92）改名 Dwight D. Eisenhower Executive Office Building。英军 1814 年火烧华盛顿是 1812 年战争中的一役。<b>做题不需要这些</b>。</p>
+      </section>
+
+      <section class="card" id="orig">
+        <h2><span class="n">03++</span>✂️ 原刊 vs 考卷：顺序原样照搬，删掉的全是「多余的钩子」</h2>
+        <p style="font-size:.92rem">原文取自白宫官网 EEOB 页的 History 一节（WebFetch 取到全文，脚本逐词比对）。<b>考卷七段的顺序与原刊 History 节前七段完全一致</b>——命题人没有改顺序，只在段内删句、改词，并在 D 后面一刀剪断。</p>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:680px">
+          <tr><th style="width:8%">段</th><th style="width:12%">词数</th><th style="width:40%">改动（原刊 → 考卷）</th><th>对排序的影响</th></tr>
+          <tr><td class="c">E</td><td class="c">96 → 68</td><td>删句首 <i>Next door to the White House,</i>；<i>our national history</i> → <span class="loc">the national history</span>；句末补 <span class="loc">of the United States</span>；删末句（EEOB 张扬的风格体现了内战后的乐观与活力）</td><td>去掉官网自称的 our，改成第三人称；<b>全称 ＋ 缩写原样保留</b>——41 的证据一个字没动</td></tr>
+          <tr><td class="c">C</td><td class="c">76 → 76</td><td><b>一字未改</b></td><td>as it was originally known 原样</td></tr>
+          <tr class="bad"><td class="c">G</td><td class="c">114 → 66</td><td>删 <i>on sites flanking the White House</i>、<i>to the northeast of the White House</i>；<i>during the War of 1812</i> → <span class="loc">in 1814</span>；<b>删末句</b>：<i>The State Department then moved to the D.C. Orphan Asylum Building while the War and Navy Departments continued to make do with their cramped quarters …</i></td><td><b>删掉的末句本是 G → A 最硬的一条钩</b>：它说战争部、海军部还挤在旧址里，A ② 紧接着就是 <span class="loc">possible arrangements for the War and Navy Departments</span>。删了它，<b>G → A 只剩「拆 → 新」和 1866 → 1869</b>。战争名换成年份，G 里就只剩年份（1799、1820、1814、1866），时间轴更干净</td></tr>
+          <tr><td class="c">A</td><td class="c">91 → 91</td><td><b>一字未改</b></td><td>new、Treasury Building、construction … began 原样</td></tr>
+          <tr class="bad"><td class="c">F</td><td class="c">83 → 81</td><td><i>When the EEOB was finished <b>in 1888</b></i> → <span class="loc">When the EEOB was finished</span>；<i>ensure</i> → <span class="loc">insure</span></td><td><b>1888 被删</b>：留着它，A 的 1871 ＋ 17 ＝ 1888 就不用自己算；B 首的 1875 也会紧跟在 1888 后面，回跳一眼可见。删了之后，<b>「17 年」「wing by wing」成了唯一的线索</b>。insure 在美式英语里可作「确保」</td></tr>
+          <tr class="bad"><td class="c">B</td><td class="c">168 → 63</td><td>六句只留前两句；删印第安条约厅两句、<i>The remaining north, west, and center wings were constructed for the War Department and took an additional 10 years to build</i>、名贵内饰一句</td><td>被删的第五句说其余三翼归战争部、又花了十年才建成——会把 B 的时间再往后推，并把「战争部」补齐成三个部门；留下的 B 只讲国务院与海军部两翼，<b>停在 1879</b></td></tr>
+          <tr><td class="c">D</td><td class="c">151 → 91</td><td><i>our most celebrated</i> → <span class="loc">the most celebrated</span>；删胡佛 1929、尼克松、副总统约翰逊三句</td><td>去掉 our；删掉的三句都是更晚的事，留下的 D 仍是「回看全局」</td></tr>
+          <tr><td class="c">（D 后）</td><td class="c">—</td><td><b>原刊还有七段，全部删去</b></td><td>D 由「中间一站」变成「末段」（03+ 节第 1 条）</td></tr>
+        </table>
+        </div>
+        <div class="box">
+          <span class="bt">🔪 命题人的三刀（事实照录，动机是推测）</span>
+          ① <b>一字不动的两段（A、C）恰好是两条最硬证据的所在</b>：C 的 as it was originally known 管 41，A 的 construction … began 管 43；② <b>删掉的都是「多余的钩子」</b>：G 末的 War and Navy Departments（G→A 第二条钩）、F 的 in 1888（A→F 的现成答案、F→B 的回跳标记）、B 的 War Department 那句（B 与 F 的第二条连线）——每一缝只留一条够用的证据；③ <b>顺序一点没动</b>，所以本页复原的全文就是原刊的阅读顺序。
+          <span class="mk">和 2016 那年同一个观察：五个正确项是原文自带的小标题，一字不差；命题人的功夫花在「删什么」上，不在「改什么」上。</span>
+        </div>
+      </section>
+
+      <section class="card" id="full">
+        <h2><span class="n">03+++</span>复原后的全文（E — C — G — A — F — B — D）· 逐段精读 <button class="allbtn" onclick="toggleAll()">译文 开/关</button></h2>
+        <p style="font-size:.8rem;color:var(--muted);margin-bottom:14px">🟡 高亮词可点出词卡（右侧／底部）｜ <b>蓝框 ＝ 与下一段的接缝</b>｜ 排完序务必通读一遍：<b>读得顺 ＋ 六个接缝都指得出来 ＝ 全对</b>｜ 这也是白宫官网原文的阅读顺序（03++ 节）</p>
+
+        <div class="para">
+          <div class="pname"><span class="qn">① ＝ E（41 · 首段）</span>今天：现名、地位、建筑师、工期、风格<button class="zbtn" onclick="tz(this)">译</button></div>
+          <p class="en"><span class="clue">The Eisenhower Executive Office Building (EEOB) <span class="tk" data-w="command">commands</span> a unique position in both the national history and the architectural <span class="tk" data-w="heritage">heritage</span> of the United States.</span> <span class="clue">Designed by <span class="tk" data-w="supervise">Supervising</span> <span class="tk" data-w="architect">Architect</span> of the Treasury, Alfred B. Mullett, it was built from 1871 to 1888 to house the growing <span class="tk" data-w="staff">staffs</span> of the State, War, and Navy Departments, and is considered one of the best examples of French Second <span class="tk" data-w="empire">Empire</span> architecture in the country.</span></p>
+          <div class="zh">艾森豪威尔行政办公楼（EEOB）在美国的国家历史和建筑遗产中都占据着独一无二的地位。它由财政部监理建筑师艾尔弗雷德·B. 马利特设计，建于 1871 至 1888 年，用来容纳国务院、战争部和海军部日益壮大的工作班子，被视为全美法兰西第二帝国风格建筑的最佳范例之一。</div>
+          <div class="box" style="margin-top:8px"><span class="bt">🔗 接缝 E → C（全篇最硬）</span>本段给出<b>现名全称 ＋ 缩写</b>、点齐<b>三个部门</b> ⟹ 下一段 <span class="loc">The State, War, and Navy Building, as it was originally known, housed the three Executive Branch Departments</span>——原名 ＋ 「三个」。<span class="mk">两句两层：① 一般现在时说「今天的地位」（commands），② 一般过去时说「当年怎么来的」（was built），末尾又回到现在时（is considered）。<b>一个首段把全文的两层都预演了一遍</b>。</span></div>
+        </div>
+
+        <div class="para">
+          <div class="pname"><span class="qn">② ＝ C（已给定 · 第 2 段）</span>原名与外交意义：美国崛起的半个世纪<button class="zbtn" onclick="tz(this)">译</button></div>
+          <p class="en">The State, War, and Navy Building, as it was <span class="tk" data-w="originally">originally</span> known, <span class="tk" data-w="house">housed</span> the three <span class="tk" data-w="executive">Executive</span> Branch Departments most <span class="tk" data-w="intimately">intimately</span> associated with <span class="tk" data-w="formulate">formulating</span> and <span class="tk" data-w="conduct">conducting</span> the nation’s foreign policy in the last quarter of the nineteenth century and the first quarter of the twentieth century—the period when the United States <span class="tk" data-w="emerge">emerged</span> as an international power. <span class="clue">The building has housed some of the nation’s most significant <span class="tk" data-w="diplomat">diplomats</span> and politicians and has been the <span class="tk" data-w="scene">scene</span> of many historic events.</span></p>
+          <div class="zh">国务院、战争部和海军部大楼——这是它最初的名字——容纳过三个行政部门，在 19 世纪最后 25 年和 20 世纪头 25 年里，正是它们与美国外交政策的制定和执行关系最为密切，而那段时期恰是美国崛起为国际强国的时期。这座楼曾是美国一些最重要的外交家和政治家办公的地方，也见证过许多历史事件。</div>
+          <div class="box" style="margin-top:8px"><span class="bt">🔗 接缝 C → G（全篇最软）</span>C ② 是一句<b>总评</b>（「见证过许多历史事件」），不交棒给任何一件具体的事 ⟹ 下一段用一句开关 <span class="loc">The history of the EEOB began long before its foundations were laid</span> 从今天切回 1799。<span class="mk">⚠️ C ② 的预告要到<b>全文最后一段 D</b> 才兑现——紧挨着接 D 是本篇最贵的一个坑（02++ 节红框）。</span></div>
+        </div>
+
+        <div class="para">
+          <div class="pname"><span class="qn">③ ＝ G（42）</span>前史：旧行政楼、火灾、财政部大楼，旧国务院大楼被拆<button class="zbtn" onclick="tz(this)">译</button></div>
+          <p class="en">The history of the EEOB began long before its <span class="tk" data-w="foundation">foundations were laid</span>. The first executive offices were constructed between 1799 and 1820. A <span class="tk" data-w="series">series</span> of fires (including those set by the British in 1814) and <span class="tk" data-w="overcrowded">overcrowded</span> conditions led to the construction of the <span class="tk" data-w="existing">existing</span> Treasury Building. <span class="clue">In 1866, the construction of the North <span class="tk" data-w="wing">Wing</span> of the Treasury Building <span class="tk" data-w="necessitate">necessitated</span> the <span class="tk" data-w="demolition">demolition</span> of the State Department building.</span></p>
+          <div class="zh">EEOB 的历史早在它奠基之前就开始了。最早的一批行政办公楼建于 1799 至 1820 年间。一连串火灾（包括英军 1814 年放的火）加上办公拥挤，促成了现存的财政部大楼的修建。1866 年，财政部大楼北翼的修建使得国务院大楼不得不被拆除。</div>
+          <div class="box" style="margin-top:8px"><span class="bt">🔗 接缝 G → A（硬）</span>本段最后发生的事是<b>拆楼</b> ⟹ 下一段 <span class="loc">a new State Department Building</span>（<b>new 预设旧的没了</b>）；1866 → 1869；本段首次交代 <span class="loc">the existing Treasury Building</span> ⟹ 下一段才能拿它作比（<span class="loc">a Greek Revival twin of the Treasury Building</span>）。<span class="mk">一段四句，一句一个年代，四句都是一般过去时——<b>叙事层从这里开始</b>。</span></div>
+        </div>
+
+        <div class="para">
+          <div class="pname"><span class="qn">④ ＝ A（43）</span>筹建：国会设委员会、选中马利特的方案、1871 年开工<button class="zbtn" onclick="tz(this)">译</button></div>
+          <p class="en">In December of 1869, <span class="tk" data-w="congress">Congress</span> appointed a <span class="tk" data-w="commission">commission</span> to select a <span class="tk" data-w="site">site</span> and prepare plans and cost <span class="tk" data-w="estimate">estimates</span> for a new State Department Building. The commission was also to consider possible <span class="tk" data-w="arrangement">arrangements</span> for the War and Navy Departments. <span class="clue">To the <span class="tk" data-w="horror">horror</span> of some who expected a Greek <span class="tk" data-w="revival">Revival</span> <span class="tk" data-w="twin">twin</span> of the Treasury Building to be <span class="tk" data-w="erect">erected</span> on the other side of the White House, the <span class="tk" data-w="elaborate">elaborate</span> French Second Empire style design by Alfred Mullett was selected, and construction of a building to house all three departments began in June of 1871.</span></p>
+          <div class="zh">1869 年 12 月，国会任命了一个委员会，为新的国务院大楼选址，并拟定设计方案和费用估算。委员会还要考虑战争部和海军部可能的安置办法。有些人原本期待在白宫另一侧建起一座与财政部大楼成对的希腊复兴式建筑，令他们大为震惊的是，最终入选的是艾尔弗雷德·马利特那份繁复精美的法兰西第二帝国风格设计；1871 年 6 月，一座可容纳三个部门的大楼开工兴建。</div>
+          <div class="box" style="margin-top:8px"><span class="bt">🔗 接缝 A → F（全篇最硬之一）</span><span class="loc">construction of a building … began in June of 1871</span> ⟹ <span class="loc">Construction took 17 years as the building slowly rose wing by wing</span>——<b>开工 → 工期</b>，construction 原样走进下一段，a building 变成 the building。<span class="mk">「令一些人大为震惊」：他们以为白宫另一侧会建一座和财政部大楼一模一样的希腊复兴式建筑（对称），结果来了一座花哨的法式建筑——原刊后文专门讲了这场风格之争，考卷删掉了（03++ 节）。</span></div>
+        </div>
+
+        <div class="para">
+          <div class="pname"><span class="qn">⑤ ＝ F（已给定 · 第 5 段）</span>建造：17 年、华盛顿最大、铸铁与花岗岩<button class="zbtn" onclick="tz(this)">译</button></div>
+          <p class="en"><span class="clue">Construction took 17 years as the building slowly <span class="tk" data-w="rise">rose</span> wing by wing.</span> When the EEOB was finished, it was the largest <span class="tk" data-w="office">office</span> building in Washington, with nearly 2 miles of black and white <span class="tk" data-w="tile">tiled</span> <span class="tk" data-w="corridor">corridors</span>. Almost all of the <span class="tk" data-w="interior">interior</span> <span class="tk" data-w="detail">detail</span> is of <span class="tk" data-w="cast">cast</span> iron or <span class="tk" data-w="plaster">plaster</span>; the use of wood was <span class="tk" data-w="minimize">minimized</span> to <span class="tk" data-w="insure">insure</span> fire safety. Eight <span class="tk" data-w="monumental">monumental</span> curving staircases of <span class="tk" data-w="granite">granite</span> with over 4,000 individually cast bronze <span class="tk" data-w="baluster">balusters</span> are <span class="tk" data-w="cap">capped</span> by four <span class="tk" data-w="skylight">skylight</span> <span class="tk" data-w="dome">domes</span> and two <span class="tk" data-w="stainedglass">stained glass</span> <span class="tk" data-w="rotunda">rotundas</span>.</p>
+          <div class="zh">工程历时 17 年，大楼一翼接一翼地慢慢建起。EEOB 落成时是华盛顿最大的办公楼，黑白瓷砖铺成的走廊长近 2 英里。室内装饰几乎全是铸铁或石膏的；为确保防火安全，木材用量被压到最低。八座宏伟的花岗岩弧形楼梯，配有 4000 多根逐根单独铸造的青铜栏杆柱，楼梯顶上覆盖着四座天窗穹顶和两座彩色玻璃圆厅。</div>
+          <div class="box" style="margin-top:8px"><span class="bt">🔗 接缝 F → B（回跳）</span>① 句 <span class="loc">wing by wing</span> 预告「逐翼」⟹ 下一段 <span class="loc">the State Department’s south wing was the first to be occupied</span>、<span class="loc">the east wing</span>。本段已写到整栋竣工，下一段又回到 1875——<b>先总后分，回跳合法</b>。<span class="mk">②–④ 句是一组数字与材料：「最大」（2 英里走廊）、「防火」（铸铁、石膏、少用木材——呼应 G 里那一连串火灾）、「华丽」（4000 根青铜栏杆柱、穹顶、彩色玻璃）。<b>防火那一句是隔了两段的回扣，只加固</b>（<a href="套路库_阅读.html#R110">R110</a>）。</span></div>
+        </div>
+
+        <div class="para">
+          <div class="pname"><span class="qn">⑥ ＝ B（44）</span>入驻：国务院南翼 1875 年最先、海军部东翼 1879 年<button class="zbtn" onclick="tz(this)">译</button></div>
+          <p class="en">Completed in 1875, the State Department’s south wing was the first to be <span class="tk" data-w="occupy">occupied</span>, with its elegant four-<span class="tk" data-w="story">story</span> library (completed in 1876), Diplomatic <span class="tk" data-w="reception">Reception</span> Room, and <span class="tk" data-w="secretary">Secretary</span>’s office decorated with <span class="tk" data-w="carve">carved</span> wood, <span class="tk" data-w="oriental">Oriental</span> <span class="tk" data-w="rug">rugs</span>, and <span class="tk" data-w="stencil">stenciled</span> wall patterns. <span class="clue">The Navy <span class="tk" data-w="department">Department</span> moved into the east wing in 1879, where elaborate wall and ceiling stenciling and <span class="tk" data-w="marquetry">marquetry</span> floors decorated the office of the Secretary.</span></p>
+          <div class="zh">国务院所在的南翼于 1875 年完工，最先投入使用，里面有典雅的四层图书馆（1876 年完工）、外交接待厅，以及用木雕、东方地毯和印花墙纹装饰的国务卿办公室。1879 年，海军部迁入东翼，那里的部长办公室饰有精美的墙面与天花板印花，铺着镶嵌细工地板。</div>
+          <div class="box" style="margin-top:8px"><span class="bt">🔗 接缝 B → D（软）</span>叙事层到此讲完 ⟹ 下一段换成现在完成时 <span class="loc">have participated</span>、<span class="loc">has housed</span>，<b>镜头拉回今天、回看全局</b>。词面上只有一丝联系：本段两间「部长办公室」（<span class="loc">Secretary’s office</span>、<span class="loc">the office of the Secretary</span>）⟹ 下一段 <span class="loc">16 Secretaries of the Navy, 21 Secretaries of War, and 24 Secretaries of State</span>。<span class="mk">两句都在写办公室的装饰（木雕、地毯、印花、镶嵌地板）——<b>这是全篇最「不考」的一段内容，却是 44 的答案</b>：定它靠 F 的 wing by wing，不靠读懂装饰。</span></div>
+        </div>
+
+        <div class="para">
+          <div class="pname"><span class="qn">⑦ ＝ D（45 · 末段）</span>回看：七位总统、61 位部长、丘吉尔与珍珠港<button class="zbtn" onclick="tz(this)">译</button></div>
+          <p class="en">Many of the most <span class="tk" data-w="celebrated">celebrated</span> national <span class="tk" data-w="figure">figures</span> have <span class="tk" data-w="participate">participated</span> in historical events that have taken place within the EEOB’s granite walls. Theodore and Franklin D. Roosevelt, William Howard Taft, Dwight D. Eisenhower, Lyndon B. Johnson, Gerald Ford, and George H. W. Bush all had offices in this building before becoming President. It has housed 16 Secretaries of the Navy, 21 Secretaries of War, and 24 Secretaries of State. Winston Churchill once walked its corridors and Japanese <span class="tk" data-w="emissary">emissaries</span> met here with Secretary of State Cordell Hull after the <span class="tk" data-w="bombing">bombing</span> of Pearl Harbor.</p>
+          <div class="zh">许多美国最负盛名的人物，都参与过在 EEOB 花岗岩墙内发生的历史事件。西奥多·罗斯福和富兰克林·D. 罗斯福、威廉·霍华德·塔夫脱、德怀特·D. 艾森豪威尔、林登·B. 约翰逊、杰拉尔德·福特和乔治·H. W. 布什，都曾在当上总统之前在这座楼里办公。这里先后容纳过 16 位海军部长、21 位战争部长和 24 位国务卿。温斯顿·丘吉尔曾走过它的走廊；珍珠港遭轰炸之后，日本使节在这里会见了国务卿科德尔·赫尔。</div>
+          <div class="box" style="margin-top:8px"><span class="bt">🏁 末段：C 的预告在这里兑现，但它不是作者写的「总结」</span>「总—分」：① 概括（名人参与历史事件）→ ② 美国总统 → ③ 部长人数 → ④ 国际人物与事件。<b>C ② 的「最重要的外交家和政治家」「许多历史事件」在这里一一点名</b>。<span class="mk">原刊在这之后还有七段，考卷一刀剪在这里（03+ 节第 1 条）。七位总统里有 <b>Dwight D. Eisenhower</b>——今天这栋楼就以他命名，和首段的楼名遥相呼应。</span></div>
+        </div>
+
+        <div class="box green">
+          <span class="bt">🧩 通读后的骨架（一句话记住这篇文章）</span>
+          <b>它今天叫 EEOB，在美国历史与建筑上都独一无二（E）→ 它原名国务院、战争部和海军部大楼，是美国崛起时期的外交中枢（C）→ 它的历史始于奠基之前：旧楼失火、财政部大楼扩建，旧国务院大楼被拆（G）→ 国会设委员会筹建新楼，马利特的法式方案胜出，1871 年开工（A）→ 17 年一翼一翼建成，华盛顿最大、防火、华丽（F）→ 国务院 1875 年最先入驻南翼，海军部 1879 年入驻东翼（B）→ 七位总统、61 位部长、丘吉尔与珍珠港（D）。</b>
+          <br><span class="mk">七段两条逻辑：<b>外层是「今天 → 当年 → 今天」</b>（现在时的 E、C 与现在完成时的 D 包住过去时的 G、A、F、B）；<b>里层是年份</b>（1799 → 1866 → 1869 → 1871 → 17 年 → 1875 → 1879），只在 F → B 处按「先总后分」回跳一次。</span>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">04</span>Part B 分诊：四种变体 · 十三篇实做 ＋ 排序题的五种链条</h2>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:680px">
+          <tr><th style="width:14%">变体</th><th style="width:25%">Directions 里的原话</th><th style="width:14%">考什么</th><th>打法与用时</th></tr>
+          <tr><td><b>选句填空</b><br><span style="font-size:.78rem">2008 · 2009 · 2012 · 2013 · 2015</span></td><td><i>some sentences have been removed … two extra choices</i></td><td><b>衔接与连贯</b></td><td>认线 → 正文中途换人称就先按人称分区 → 定空的形态 → <b>每空先读下一句</b> → 先做区里候选最少的空 → 剩下两项问「是不是某个答案的下家、是不是换了杠杆、是不是走反了方向」。<b>6–9 min</b>，能自查</td></tr>
+          <tr><td><b>标题匹配</b><br><span style="font-size:.78rem">2007 · 2016</span></td><td><i>choose the most suitable heading／subheading</i></td><td><b>段落概括</b></td><td>看七项句式 → 引子里的问句先编号 → <b>逐段找主句</b> → 原词算数的前提是它在主句里 → 剩下两项问「是不是总话题、能不能照着做」。<b>5–8 min</b></td></tr>
+          <tr><td><b>观点匹配</b><br><span style="font-size:.78rem">2022</span></td><td><i>match each person … with the statements</i></td><td><b>立场判定</b></td><td>先给每人贴「支持／反对／中间」，再按立场分堆匹配。<b>8–10 min</b></td></tr>
+          <tr class="bad"><td><b>排序题</b><br><span style="font-size:.78rem">2010 · 2011 · 2014 · 2017 · <b>2018</b></span></td><td><i>reorganize these paragraphs into a coherent text … numbered boxes</i></td><td><b>篇章顺序</b></td><td><b>先数格子</b>（有无多余项）→ <b>认文体</b>（传记 ⟹ 时间接力；建筑／机构史 ⟹ <b>先分总述层与叙事层</b>）→ <b>给每格数候选，被已给定段锁死的先做</b> → 叙事层按年份排、总述层包在首尾 → 通读验闭合，<b>再拿暗线（称呼链、时间轴、程度阶梯）验收</b>。<b>7–10 min</b>，能自查</td></tr>
+        </table>
+        </div>
+        <h3 class="sh">排序题的五种链条（同一变体，下刀点不同）</h3>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:640px">
+          <tr><th style="width:12%">年份</th><th style="width:26%">链条特征</th><th style="width:22%">第一刀</th><th>关键证据类型</th></tr>
+          <tr><td class="c">2010</td><td>6 格 7 项 · 已给定 E 在第 5 格</td><td>45（E 只剩一个邻居）</td><td>序数词补中心词（The first…）· 多余项 C 复现最多却偏题</td></tr>
+          <tr><td class="c">2011</td><td>7 格 7 项 · 已给定首段 G 与第 4 格 E</td><td>41（His）或 42（this separation）</td><td>代词紧邻 · 同源词换词性 · 副词呼应粘块 · 书评文体定末段</td></tr>
+          <tr><td class="c">2014</td><td>7 格 7 项 · 已给定第 2 格 A 与第 4 格 E · 首段空着</td><td>41（首段排除法，唯一零依赖）</td><td>设问开篇 · however 拉回主干 · 先古后今 · 空中／地面对照 · 例子回收方法 · one／another 粘块</td></tr>
+          <tr><td class="c">2017</td><td>7 格 7 项 · 已给定首段 D（总评）与第 6 格 B（成名）</td><td>41（生平起点）或 44（叫法说明）</td><td>传记骨架 · 动作预设（imprisoned／release · submitted／published）· 称呼由全到简 · 名气阶梯验收</td></tr>
+          <tr class="bad"><td class="c"><b>2018</b></td><td>7 格 7 项 · 已给定第 2 格 C（原名与意义）与第 5 格 F（工期）· 首段空着</td><td><b>41（C 的叫法说明锁 E）或 43（F 的工期锁 A）</b></td><td><b>总述层／叙事层两层</b> · 叫法说明（as it was originally known）· 缩写首现 · 动作预设（demolition／new · began／took 17 years）· <b>分述预告允许回跳</b>（wing by wing）· <b>尾首复现是诱饵</b></td></tr>
+        </table>
+        </div>
+        <p style="font-size:.9rem;margin-top:10px">📊 <b>十三篇战绩</b>：2007 标题 5/5 · 2022 观点 5/5 · 2008 选句 5/5 · <b>2009 选句 3/5</b> · 2010 排序 5/5 · 2011 排序 5/5 · 2012 选句 5/5 · 2013 选句 5/5 · 2014 排序 5/5（不计完整盲做）· 2015 选句 5/5（计入 4/4）· 2016 标题 5/5 · 2017 排序 5/5（不计完整盲做）· <b>2018 排序 5/5（✅ 完整盲做）</b>。<span class="mk">2017 页留了一句话：「排序题的真实手感还要靠 2018 之后的盲做来验」——<b>今年验了：完整盲做 5/5，唯一的停顿就在命题人埋的那处尾首复现上</b>。五篇排序题 25/25，其中完整盲做三篇（2010、2011、2018）15/15。</span></p>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">05</span>长难句精析（9 句 · 本篇黄皮书无此栏目，全部原创）</h2>
+        <p style="font-size:.85rem;color:var(--muted);margin-bottom:10px">官网说明文的句子难在<b>挂件多</b>：前置分词、插入的叫法说明、破折号同位语、with 复合结构、括号、并列谓语。每句先找主干，再把挂件一件件摘下来。</p>
+
+        <div class="ls" id="s1">
+          <div class="s"><b>s1｜E 段②句（前置过去分词 ＋ 两个并列谓语）</b>　<span class="mk">Designed by Supervising Architect of the Treasury, Alfred B. Mullett</span>, <b>it was built</b> from 1871 to 1888 <span class="mk2">to house the growing staffs of the State, War, and Navy Departments</span>, and <b>is considered</b> one of the best examples of French Second Empire architecture in the country.</div>
+          <div class="an">
+            <div>▸ 主语 it（＝EEOB）带两个谓语：<b>was built</b>（过去：当年建）与 <b>is considered</b>（现在：今天的评价）——<b>一句话里跨了两层时态</b>，正是全文「今天 ↔ 当年」的缩影。</div>
+            <div>▸ 句首 <span class="mk">Designed by …</span> 是过去分词作状语，逻辑主语也是 it（楼是被设计的）；头衔 <i>Supervising Architect of the Treasury</i> 与人名之间用逗号隔开，作同位语。</div>
+            <div>▸ <span class="mk2">to house …</span> 是目的状语：house 作动词＝「容纳、为……提供办公场所」，不是「房子」。</div>
+          </div>
+          <div class="tr">译：它由财政部监理建筑师艾尔弗雷德·B. 马利特设计，建于 1871 至 1888 年，用来容纳国务院、战争部和海军部日益壮大的工作班子，被视为全美法兰西第二帝国风格建筑的最佳范例之一。</div>
+        </div>
+
+        <div class="ls" id="s2">
+          <div class="s"><b>s2｜C 段①句（叫法说明插在主谓之间 ＋ 后置分词 ＋ 破折号同位语）</b>　<b>The State, War, and Navy Building</b>, <span class="mk">as it was originally known</span>, <b>housed the three Executive Branch Departments</b> <span class="mk2">most intimately associated with formulating and conducting the nation’s foreign policy</span> in the last quarter of the nineteenth century and the first quarter of the twentieth century—<span class="mk">the period when the United States emerged as an international power</span>.</div>
+          <div class="an">
+            <div>▸ 主干 <b>Building housed Departments</b>。<span class="mk">as it was originally known</span>：as 指代前面的楼名，还原成 it was originally known <b>as</b> the State, War, and Navy Building——「这是它最初的叫法」。<b>排序题的钩子就在这个插入语里</b>（2017 的对应句是 <i>as it is generally known today</i>）。</div>
+            <div>▸ <span class="mk2">most intimately associated with doing</span> 是过去分词短语作后置定语，修饰 Departments：「与……关系最密切的」；formulating and conducting 共用宾语 foreign policy（制定与执行）。</div>
+            <div>▸ 破折号后的 <span class="mk">the period when …</span> 是前面两个「四分之一世纪」的同位语，给这段时间下定义。</div>
+          </div>
+          <div class="tr">译：国务院、战争部和海军部大楼——这是它最初的名字——容纳过三个行政部门，在 19 世纪最后 25 年和 20 世纪头 25 年里，正是它们与美国外交政策的制定和执行关系最为密切，而那段时期恰是美国崛起为国际强国的时期。</div>
+        </div>
+
+        <div class="ls" id="s3">
+          <div class="s"><b>s3｜C 段②句（两个现在完成时并列 ＝ 总评）</b>　<b>The building has housed</b> some of the nation’s most significant diplomats and politicians <b>and has been</b> the scene of many historic events.</div>
+          <div class="an">
+            <div>▸ 两个现在完成时：<b>从 1888 年到今天累计起来</b>——这是「总述层」的说话方式，不是在讲某一件事。</div>
+            <div>▸ <b>be the scene of</b>＝「是……的发生地」。<b>这句话是全文最大的预告</b>：哪些外交家、哪些事件？要到末段 D 才一一点名。它和 D ① 几乎同义，却隔着四段（02++ 节红框）。</div>
+          </div>
+          <div class="tr">译：这座楼曾是美国一些最重要的外交家和政治家办公的地方，也见证过许多历史事件。</div>
+        </div>
+
+        <div class="ls" id="s4">
+          <div class="s"><b>s4｜G 段③句（带括号的并列主语 ＋ lead to）</b>　<b>A series of fires</b> <span class="mk">(including those set by the British in 1814)</span> <b>and overcrowded conditions led to</b> the construction of the existing Treasury Building.</div>
+          <div class="an">
+            <div>▸ 主语是 <b>fires and conditions</b> 两样：火灾 ＋ 拥挤。括号里的 <span class="mk">those set by the British</span>：those 代 fires，set 是过去分词（set a fire＝纵火）——「包括英国人放的那几把火」。</div>
+            <div>▸ <b>lead to</b> 表因果：原因在左、结果在右。<b>the existing Treasury Building</b>：existing＝「现存的、至今还在的」，首次交代这栋楼，下一段 A 才能拿它作比。</div>
+          </div>
+          <div class="tr">译：一连串火灾（包括英军 1814 年放的火）加上办公拥挤，促成了现存的财政部大楼的修建。</div>
+        </div>
+
+        <div class="ls" id="s5">
+          <div class="s"><b>s5｜G 段④句（名词化主语 ＋ necessitate）</b>　In 1866, <b>the construction of the North Wing of the Treasury Building necessitated the demolition of the State Department building</b>.</div>
+          <div class="an">
+            <div>▸ 主语、宾语都是名词化结构：<b>construction of X</b>（修建 X）<b>necessitated demolition of Y</b>（使拆除 Y 成为必要）。还原成动词句：Because they built the North Wing, they had to tear down the State Department building.</div>
+            <div>▸ <b>necessitate</b>＝make necessary，是写作里替换 cause／lead to 的正式词，常带名词化宾语。</div>
+          </div>
+          <div class="tr">译：1866 年，财政部大楼北翼的修建使得国务院大楼不得不被拆除。</div>
+        </div>
+
+        <div class="ls" id="s6">
+          <div class="s"><b>s6｜A 段③句（To the horror of 状语 ＋ 复合宾语 ＋ 两个并列分句）</b>　<span class="mk">To the horror of some <span class="mk2">who expected a Greek Revival twin of the Treasury Building to be erected on the other side of the White House</span></span>, <b>the elaborate French Second Empire style design by Alfred Mullett was selected</b>, and <b>construction of a building to house all three departments began</b> in June of 1871.</div>
+          <div class="an">
+            <div>▸ <span class="mk">To the horror of some</span>＝「令一些人大为震惊的是」（to one’s surprise／delight 同一个结构）。some 后面挂一个 who 定语从句，从句里 <b>expect sb/sth to be done</b>：期待一座「希腊复兴式的、和财政部大楼成对的」建筑在白宫另一侧被建起来。</div>
+            <div>▸ 主句两个：① design <b>was selected</b>（被动）；② construction <b>began</b>。<b>② 就是 43 → F 的接缝</b>：construction … began → Construction took 17 years。</div>
+            <div>▸ <b>twin</b> 在建筑语境＝「成对的、一模一样的另一座」：白宫一侧已有财政部大楼，另一侧再建一座一样的，对称。</div>
+          </div>
+          <div class="tr">译：有些人原本期待在白宫另一侧建起一座与财政部大楼成对的希腊复兴式建筑，令他们大为震惊的是，最终入选的是艾尔弗雷德·马利特那份繁复精美的法兰西第二帝国风格设计；1871 年 6 月，一座可容纳三个部门的大楼开工兴建。</div>
+        </div>
+
+        <div class="ls" id="s7">
+          <div class="s"><b>s7｜F 段④句（长主语 ＋ 被动 be capped by）</b>　<b>Eight monumental curving staircases of granite</b> <span class="mk">with over 4,000 individually cast bronze balusters</span> <b>are capped by</b> four skylight domes and two stained glass rotundas.</div>
+          <div class="an">
+            <div>▸ 主语核心是 <b>staircases</b>，前有 Eight monumental curving 三个定语，后有 of granite 和 <span class="mk">with …</span> 两个介词短语。谓语 <b>are capped by</b> 要等主语的十三个词全部走完才出现。</div>
+            <div>▸ <b>cast</b> 在这里是过去分词「铸造的」（individually cast＝逐根单独浇铸），和同段 cast iron（铸铁）一样，不是「投、扔」。<b>cap</b> 作动词＝「覆盖在……顶上」。</div>
+          </div>
+          <div class="tr">译：八座宏伟的花岗岩弧形楼梯，配有 4000 多根逐根单独铸造的青铜栏杆柱，楼梯顶上覆盖着四座天窗穹顶和两座彩色玻璃圆厅。</div>
+        </div>
+
+        <div class="ls" id="s8">
+          <div class="s"><b>s8｜B 段①句（前置过去分词 ＋ with 复合结构挂三个名词）</b>　<span class="mk">Completed in 1875</span>, <b>the State Department’s south wing was the first to be occupied</b>, <span class="mk2">with its elegant four-story library (completed in 1876), Diplomatic Reception Room, and Secretary’s office decorated with carved wood, Oriental rugs, and stenciled wall patterns</span>.</div>
+          <div class="an">
+            <div>▸ 主干 <b>south wing was the first to be occupied</b>：<b>the first to do</b>＝「第一个做……的」，被动 to be occupied＝「第一个被入驻」。句首 <span class="mk">Completed in 1875</span> 是过去分词作状语。</div>
+            <div>▸ <span class="mk2">with …</span> 挂了三个名词：library、Reception Room、Secretary’s office；最后一个带着 decorated with …（又一个 with）。<b>两个 with 意思不同</b>：前一个「带有」，后一个「用……装饰」。</div>
+            <div>▸ <b>four-story</b>：story 在这里是「楼层」（英式拼作 storey），不是「故事」。</div>
+          </div>
+          <div class="tr">译：国务院所在的南翼于 1875 年完工，最先投入使用，里面有典雅的四层图书馆（1876 年完工）、外交接待厅，以及用木雕、东方地毯和印花墙纹装饰的国务卿办公室。</div>
+        </div>
+
+        <div class="ls" id="s9">
+          <div class="s"><b>s9｜D 段①句（现在完成时 ＋ 定语从句里再套现在完成时）</b>　<b>Many of the most celebrated national figures have participated in historical events</b> <span class="mk">that have taken place within the EEOB’s granite walls</span>.</div>
+          <div class="an">
+            <div>▸ 主句、从句都是现在完成时：<b>从建成到今天累计</b>——回到了首段的总述层。<b>figures</b>＝「人物」（national figures 全国性的人物），不是「数字」。</div>
+            <div>▸ <b>historical</b> 与 C 末的 <b>historic</b>：historic＝有历史意义的（重大的），historical＝历史上的、与历史有关的。两词一前一后，<b>意思几乎重合，却不是接缝</b>（R249）。</div>
+          </div>
+          <div class="tr">译：许多美国最负盛名的人物，都参与过在 EEOB 花岗岩墙内发生的历史事件。</div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">06</span>可搬进作文的素材（本篇是「文化遗产 / 历史建筑保护 / 城市记忆 / 介绍一个地方」四个话题的弹药库）</h2>
+        <div class="wb">
+          <div class="wbi"><div class="p">The old library commands a unique position in both the history and the cultural life of our city.</div><div class="u">这座老图书馆在本市的历史和文化生活中都占据着独一无二的地位。—— <b>化用 E 段①句：介绍一个地方的开头句，小作文（介绍信、推荐信）直接能用</b></div></div>
+          <div class="wbi"><div class="p">It is considered one of the best examples of traditional architecture in the country.</div><div class="u">它被视为全国传统建筑的最佳范例之一。—— <b>「one of the best examples of」写推荐、写评价都顺手</b></div></div>
+          <div class="wbi"><div class="p">The building has been the scene of many historic events.</div><div class="u">这座楼见证过许多历史事件。—— <b>be the scene of 比 witness 更地道；论历史建筑保护的理由句</b></div></div>
+          <div class="wbi"><div class="p">The history of the museum began long before its foundations were laid.</div><div class="u">这座博物馆的历史早在奠基之前就开始了。—— <b>化用 G 段①句：讲一个机构、一项传统的来历时，一句话把时间拉回去</b></div></div>
+          <div class="wbi"><div class="p">Rapid growth necessitated the construction of a new campus.</div><div class="u">快速扩张使新校区的建设成为必要。—— <b>necessitate 替换 lead to／cause，名词化主宾语，写因果更正式</b></div></div>
+          <div class="wbi"><div class="p">Like the building that slowly rose wing by wing, a good habit is formed step by step.</div><div class="u">就像那栋大楼一翼一翼慢慢建起，好习惯也是一步一步养成的。—— <b>论坚持与积累，化用 F 段①句</b></div></div>
+          <div class="wbi"><div class="p">To the surprise of many, the plan was chosen over a more conventional design.</div><div class="u">出乎许多人意料，这个方案压过了一个更保守的设计胜出。—— <b>To the horror／surprise／delight of sb 句型；论创新与争议</b></div></div>
+          <div class="wbi"><div class="p">Many of our most celebrated figures once worked within these walls.</div><div class="u">我们许多最负盛名的人物都曾在这几面墙里工作过。—— <b>写校史、写「这个地方为什么值得保护」的例证句（化用 D 段①②句）</b></div></div>
+        </div>
+        <div class="box green">
+          <span class="bt">✍️ 一个可迁移的写作结构（本篇全文的骨架）</span>
+          <b>今天的地位（E）→ 原名与意义（C）→ 来历（G）→ 诞生（A）→ 建成（F）→ 投入使用（B）→ 人与事（D）。</b>
+          <span class="mk">小作文要「介绍一个地方」（给外国朋友介绍学校图书馆、博物馆、校园）时，三句就够：<b>定位一句（commands a unique position）＋ 来历一句（was built … to …）＋ 意义一句（has been the scene of …）</b>；大作文谈文化遗产，把 C 与 D 当论据段的骨架：「它见证过什么 → 谁在这里工作过」。</span>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">07</span>词汇复盘（点卡片看详情 · 共 <span id="vcount"></span> 张，含 <b>24 处熟词僻义</b>）</h2>
+        <p style="font-size:.8rem;color:var(--muted);margin-bottom:12px">⭐ 本篇熟词僻义的共同规律：<b>考的是「建筑与政府机构语境里的第二义项」</b>——command 占据（地位） · staff 工作班子 · house 容纳 · conduct 实施（政策） · scene 发生地 · lay the foundations 奠基 · existing 现存的 · wing 翼楼 · commission 委员会 · arrangement 安置办法 · Revival 复兴式（建筑风格） · twin 成对的另一座 · erect 建造 · rise 建起 · office 办公楼／部门 · detail 装饰细部 · cast 铸造 · insure 确保 · cap 覆盖其顶 · occupy 入驻 · story 楼层 · Secretary 部长 · Department 部 · figure 人物。<span class="mk">不是生词，是熟词换了行当：house 不是「房子」、story 不是「故事」、wing 不是「翅膀」、Secretary 不是「秘书」、figure 不是「数字」、cast 不是「扔」。</span></p>
+        <div id="vgrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px"></div>
+      </section>
+
+      <footer>2018 英语（一）Part B · 艾森豪威尔行政办公楼 ｜ 答案 41E 42G 43A 44B 45D（<b>零多余项</b>）· 全文顺序 E—C—G—A—F—B—D（＝原刊顺序）｜ ✅ Claude 完整盲做 5/5（答案页只裁 Part B 一行；精讲读 p58 约 25% 至 p62 页尾，p63 起 Part C 未看） ｜ 本页解析为 Claude 独立撰写，与黄皮书精讲交叉核对：<b>答案零书误</b>；末段身份、42 题排除 D 的理由、43 题排除 G 的理由三处商榷（见 03+ 节）；原文取自白宫官网 EEOB 页 History 节，逐词比对（见 03++ 节）</footer>
+    </main>
+
+    <aside>
+      <div id="panel"><div class="hint">&#128070; 点正文里的<b>黄色高亮词</b>，或下方词汇卡，这里出详解<br><br>选中任意英文可弹出「查词」按钮</div></div>
+    </aside>
+  </div>
+</div>
+<button id="yd">&#128269; 有道查词</button>
+
+<script>
+const OPTS = {
+  A:["In December of 1869, Congress appointed a commission to select a site and prepare plans and cost estimates for a new State Department Building. The commission was also to consider possible arrangements for the War and Navy Departments. To the horror of some who expected a Greek Revival twin of the Treasury Building to be erected on the other side of the White House, the elaborate French Second Empire style design by Alfred Mullett was selected, and construction of a building to house all three departments began in June of 1871.",
+     "1869 年 12 月，国会任命了一个委员会，为新的国务院大楼选址，并拟定设计方案和费用估算。委员会还要考虑战争部和海军部可能的安置办法。有些人原本期待在白宫另一侧建起一座与财政部大楼成对的希腊复兴式建筑，令他们大为震惊的是，最终入选的是艾尔弗雷德·马利特那份繁复精美的法兰西第二帝国风格设计；1871 年 6 月，一座可容纳三个部门的大楼开工兴建。",
+     "头：<b>In December of 1869</b> —— 年份开头，段首排除法三类都不命中，<b>最像首段的假首段</b>；但 <b>a new State Department Building</b> 的 new 预设旧楼已不在｜尾：<b>construction of a building … began in June of 1871</b> —— 开工，等着下一段报工期",
+     "⟹ 归位 43（紧挨已给定的 F 之前）· 接 G 末的拆楼，交棒给 F 首的 Construction took 17 years"],
+  B:["Completed in 1875, the State Department’s south wing was the first to be occupied, with its elegant four-story library (completed in 1876), Diplomatic Reception Room, and Secretary’s office decorated with carved wood, Oriental rugs, and stenciled wall patterns. The Navy Department moved into the east wing in 1879, where elaborate wall and ceiling stenciling and marquetry floors decorated the office of the Secretary.",
+     "国务院所在的南翼于 1875 年完工，最先投入使用，里面有典雅的四层图书馆（1876 年完工）、外交接待厅，以及用木雕、东方地毯和印花墙纹装饰的国务卿办公室。1879 年，海军部迁入东翼，那里的部长办公室饰有精美的墙面与天花板印花，铺着镶嵌细工地板。",
+     "头：<b>Completed in 1875, the State Department’s south wing was the first</b> —— 要上文先有「哪栋楼」，the first 是分述的第一项｜尾：<b>The Navy Department moved into the east wing in 1879</b> —— 叙事层的最后一个年份",
+     "⟹ 归位 44 · 兑现 F 的 wing by wing（先总后分，时间回跳合法）"],
+  C:["The State, War, and Navy Building, as it was originally known, housed the three Executive Branch Departments most intimately associated with formulating and conducting the nation’s foreign policy in the last quarter of the nineteenth century and the first quarter of the twentieth century—the period when the United States emerged as an international power. The building has housed some of the nation’s most significant diplomats and politicians and has been the scene of many historic events.",
+     "国务院、战争部和海军部大楼——这是它最初的名字——容纳过三个行政部门，在 19 世纪最后 25 年和 20 世纪头 25 年里，正是它们与美国外交政策的制定和执行关系最为密切，而那段时期恰是美国崛起为国际强国的时期。这座楼曾是美国一些最重要的外交家和政治家办公的地方，也见证过许多历史事件。",
+     "头：<b>The State, War, and Navy Building, as it was originally known</b> —— 「原名」说明，要上文先给现名；<b>the three Executive Branch Departments</b> 要上文先点齐三个部门｜尾：<b>has been the scene of many historic events</b> —— 一句总评式的<b>预告</b>，不是交棒",
+     "⟹ <b>题目已固定为第 2 格</b>· 它锁死 41（只有 E 有现名全称）；尾巴的预告要到末段 D 才兑现"],
+  D:["Many of the most celebrated national figures have participated in historical events that have taken place within the EEOB’s granite walls. Theodore and Franklin D. Roosevelt, William Howard Taft, Dwight D. Eisenhower, Lyndon B. Johnson, Gerald Ford, and George H. W. Bush all had offices in this building before becoming President. It has housed 16 Secretaries of the Navy, 21 Secretaries of War, and 24 Secretaries of State. Winston Churchill once walked its corridors and Japanese emissaries met here with Secretary of State Cordell Hull after the bombing of Pearl Harbor.",
+     "许多美国最负盛名的人物，都参与过在 EEOB 花岗岩墙内发生的历史事件。西奥多·罗斯福和富兰克林·D. 罗斯福、威廉·霍华德·塔夫脱、德怀特·D. 艾森豪威尔、林登·B. 约翰逊、杰拉尔德·福特和乔治·H. W. 布什，都曾在当上总统之前在这座楼里办公。这里先后容纳过 16 位海军部长、21 位战争部长和 24 位国务卿。温斯顿·丘吉尔曾走过它的走廊；珍珠港遭轰炸之后，日本使节在这里会见了国务卿科德尔·赫尔。",
+     "头：<b>Many of the most celebrated national figures have participated in historical events</b> —— 现在完成时回看全局；与 C 末 historic events 几乎同义（诱饵）；<b>the EEOB’s</b> 缩写要上文定义｜尾：<b>after the bombing of Pearl Harbor</b> —— 人与事的清单，不交棒",
+     "⟹ 归位 45（末段）· 回到总述层；零多余项下白送。原刊在它之后还有七段，「末段感」是剪出来的"],
+  E:["The Eisenhower Executive Office Building (EEOB) commands a unique position in both the national history and the architectural heritage of the United States. Designed by Supervising Architect of the Treasury, Alfred B. Mullett, it was built from 1871 to 1888 to house the growing staffs of the State, War, and Navy Departments, and is considered one of the best examples of French Second Empire architecture in the country.",
+     "艾森豪威尔行政办公楼（EEOB）在美国的国家历史和建筑遗产中都占据着独一无二的地位。它由财政部监理建筑师艾尔弗雷德·B. 马利特设计，建于 1871 至 1888 年，用来容纳国务院、战争部和海军部日益壮大的工作班子，被视为全美法兰西第二帝国风格建筑的最佳范例之一。",
+     "头：<b>The Eisenhower Executive Office Building (EEOB)</b> —— <b>现名全称 ＋ 括号缩写，七段里唯一一样不欠的段首</b>｜尾：<b>the State, War, and Navy Departments</b> ＋ <b>from 1871 to 1888</b> —— 点齐三个部门，给出工期的两端",
+     "⟹ 归位 41（首段）· 交棒给 C 首的 as it was originally known 与 the three … Departments"],
+  F:["Construction took 17 years as the building slowly rose wing by wing. When the EEOB was finished, it was the largest office building in Washington, with nearly 2 miles of black and white tiled corridors. Almost all of the interior detail is of cast iron or plaster; the use of wood was minimized to insure fire safety. Eight monumental curving staircases of granite with over 4,000 individually cast bronze balusters are capped by four skylight domes and two stained glass rotundas.",
+     "工程历时 17 年，大楼一翼接一翼地慢慢建起。EEOB 落成时是华盛顿最大的办公楼，黑白瓷砖铺成的走廊长近 2 英里。室内装饰几乎全是铸铁或石膏的；为确保防火安全，木材用量被压到最低。八座宏伟的花岗岩弧形楼梯，配有 4000 多根逐根单独铸造的青铜栏杆柱，楼梯顶上覆盖着四座天窗穹顶和两座彩色玻璃圆厅。",
+     "头：<b>Construction took 17 years</b> —— 工期预设开工；<b>the building</b> 要上文先有 a building｜尾：<b>wing by wing</b>（① 句）预告逐翼分述；②–④ 写到整栋竣工与内部装饰",
+     "⟹ <b>题目已固定为第 5 格</b>· 它锁死 43（只有 A 末有 construction … began）与 44（wing by wing ⟹ south wing / east wing）"],
+  G:["The history of the EEOB began long before its foundations were laid. The first executive offices were constructed between 1799 and 1820. A series of fires (including those set by the British in 1814) and overcrowded conditions led to the construction of the existing Treasury Building. In 1866, the construction of the North Wing of the Treasury Building necessitated the demolition of the State Department building.",
+     "EEOB 的历史早在它奠基之前就开始了。最早的一批行政办公楼建于 1799 至 1820 年间。一连串火灾（包括英军 1814 年放的火）加上办公拥挤，促成了现存的财政部大楼的修建。1866 年，财政部大楼北翼的修建使得国务院大楼不得不被拆除。",
+     "头：<b>The history of the EEOB began long before its foundations were laid</b> —— 开关句：从「今天」切回「当年」；缩写 EEOB 要上文定义｜尾：<b>the demolition of the State Department building</b>（1866）—— 旧楼没了，等着下一段建新楼",
+     "⟹ 归位 42 · 被「时间只能往前」（比 A 的 1869 早）和「A 前只剩一格」挤进来；交棒给 A 首的 new"],
+};
+
+const EXTRA = [];
+
+const V = {
+  command:{w:"command",ipa:"/kəˈmɑːnd/",pos:"v.",tags:["poly","core","write"],cn:"（此处）占据（地位）；赢得（尊重、关注）",en:"to have a position, or to deserve and get something such as respect or attention",ex:"commands a unique position in both the national history and the architectural heritage",mem:"⚠️ 熟义「命令、指挥」；搭配地位、尊重、价格时＝<b>拥有、博得</b>：command respect（令人尊敬）· command a high price（卖得高价）· command a view of the sea（俯瞰大海）。本句 command a unique position＝占据独特地位，写作介绍地方的首句可直接套。",syn:"hold · occupy · enjoy · earn",conf:"<b>command</b> 占据／博得 vs <b>commend</b> 称赞 vs <b>comment</b> 评论。"},
+  heritage:{w:"heritage",ipa:"/ˈherɪtɪdʒ/",pos:"n.",tags:["core","write"],cn:"遗产（文化、历史、建筑方面）",en:"the history, traditions, buildings, etc. that a country or society has had for many years",ex:"the architectural heritage of the United States",mem:"herit（继承）＋ -age。cultural heritage 文化遗产、world heritage site 世界遗产地——大作文谈文化保护的高频词。",syn:"legacy · tradition · inheritance",conf:"<b>heritage</b>（集体的文化遗产）vs <b>inheritance</b>（个人继承的财产）vs <b>heredity</b>（遗传）。"},
+  supervise:{w:"supervise (Supervising Architect)",ipa:"/ˈsuːpəvaɪz/",pos:"v.",tags:["core"],cn:"监督，主管；Supervising Architect 监理建筑师（官职）",en:"to be in charge of an activity or people and make sure things are done correctly",ex:"Supervising Architect of the Treasury, Alfred B. Mullett",mem:"super（在上）＋ vise（看）⟹ 在上面看着。Supervising Architect of the Treasury 是 19 世纪美国财政部负责联邦建筑的官职，大写是因为作头衔用。",syn:"oversee · direct · manage",conf:"<b>supervisor</b> 主管；（研究生）导师 vs <b>superintendent</b> 负责人、督学。"},
+  architect:{w:"architect",ipa:"/ˈɑːkɪtekt/",pos:"n.",tags:["core"],cn:"建筑师；（喻）缔造者",en:"a person who designs buildings; the person who plans something",ex:"Designed by Supervising Architect of the Treasury",mem:"archi-（首要）＋ tect（建造者）。引申「缔造者」：the architect of the reform（改革的设计师）。architecture 建筑（学／风格），同段两见。",syn:"designer · planner · creator",conf:"<b>architect</b> 建筑师 vs <b>architecture</b> 建筑学、建筑风格 vs <b>architectural</b> 建筑的。"},
+  staff:{w:"staff",ipa:"/stɑːf/",pos:"n.",tags:["poly","core"],cn:"（全体）工作人员；本句用复数 staffs＝各部门的工作班子",en:"all the people employed by an organization",ex:"to house the growing staffs of the State, War, and Navy Departments",mem:"⚠️ staff 通常是集合名词、不加 s；本句 staffs 是「<b>三个部门各自的</b>工作班子」，所以用复数。另义「棍、杖」。staff 作动词＝为……配备人员（be staffed by）。",syn:"personnel · employees · workforce",conf:"<b>staff</b> 全体员工 vs <b>stuff</b> 东西 vs <b>stuffy</b> 闷的。"},
+  empire:{w:"French Second Empire (style)",ipa:"/ˈempaɪə(r)/",pos:"n.",tags:["core"],cn:"帝国；French Second Empire 法兰西第二帝国（1852–1870，拿破仑三世）；此处指该时期流行的建筑风格",en:"a group of countries ruled by one leader; here, an architectural style of France’s Second Empire",ex:"one of the best examples of French Second Empire architecture in the country",mem:"第二帝国风格：陡峭的孟莎式屋顶、中央与两端突出的楼阁、雕饰繁复的立面（原刊后文有介绍，考卷删了）。和 A 段的 Greek Revival（希腊复兴式）是两种对立的建筑风格。",syn:"realm · kingdom",conf:"<b>empire</b> 帝国 vs <b>emperor</b> 皇帝 vs <b>empirical</b> 经验主义的。"},
+  originally:{w:"originally",ipa:"/əˈrɪdʒənəli/",pos:"adv.",tags:["core"],cn:"起初，原来",en:"at first; before any changes",ex:"The State, War, and Navy Building, as it was originally known",mem:"<b>as it was originally known</b>＝「这是它最初的叫法」——一句话宣告「它现在另有其名」，于是上文必须先给出现名。<b>41 题的决定性证据就是这个副词</b>。",syn:"initially · at first · formerly",conf:"<b>originally</b> 起初 vs <b>originality</b> 独创性 vs <b>original</b> 原来的／独创的。"},
+  house:{w:"house",ipa:"/haʊz/",pos:"v.",tags:["poly","core","write"],cn:"（此处 v.）容纳，为……提供场所；收藏",en:"to provide space for people or things; to contain",ex:"The building has housed some of the nation’s most significant diplomats and politicians",mem:"⚠️ 动词 house 读 /haʊz/（名词读 /haʊs/）。本篇动词用了四次：to house the growing staffs · housed the three … Departments · has housed … diplomats · has housed 16 Secretaries。The museum houses 2,000 paintings（博物馆收藏 2000 幅画）。",syn:"accommodate · hold · contain · lodge",conf:"<b>house</b> v. 容纳 vs <b>housing</b> n. 住房 vs <b>household</b> 家庭。"},
+  executive:{w:"executive",ipa:"/ɪɡˈzekjətɪv/",pos:"adj./n.",tags:["core"],cn:"行政的；（公司）高管",en:"relating to the part of government that carries out laws; a senior manager",ex:"housed the three Executive Branch Departments",mem:"execute（执行）的形容词。美国三权：legislative（立法）· <b>executive</b>（行政）· judicial（司法）。the Executive Branch＝行政分支。本篇三处：Executive Office Building · Executive Branch Departments · executive offices。",syn:"administrative · managerial",conf:"<b>executive</b> 行政的 vs <b>legislative</b> 立法的 vs <b>judicial</b> 司法的。"},
+  intimately:{w:"intimately",ipa:"/ˈɪntɪmətli/",pos:"adv.",tags:["core"],cn:"密切地；熟悉地",en:"in a very close way",ex:"most intimately associated with formulating and conducting the nation’s foreign policy",mem:"intimate（亲密的）＋ -ly。be intimately associated／connected with＝与……密切相关——写作可替 closely related to。",syn:"closely · deeply · directly",conf:"<b>intimate</b> adj. 亲密的 vs <b>intimate</b> v. 暗示（/ˈɪntɪmeɪt/）vs <b>intimidate</b> 恐吓。"},
+  formulate:{w:"formulate",ipa:"/ˈfɔːmjuleɪt/",pos:"v.",tags:["core","write"],cn:"制定（政策、计划）；构想",en:"to create or develop a plan, policy, etc. carefully",ex:"formulating and conducting the nation’s foreign policy",mem:"formula（公式）＋ -ate ⟹ 把想法做成「公式」。formulate a policy／plan／strategy。与 conduct 并用：<b>制定 ＋ 执行</b>，政策的两端。",syn:"devise · draw up · develop · frame",conf:"<b>formulate</b> 制定 vs <b>formalize</b> 使正式化。"},
+  conduct:{w:"conduct",ipa:"/kənˈdʌkt/",pos:"v.",tags:["poly","core","write"],cn:"（此处）实施，处理（事务）；另义：导（电、热）、指挥（乐队）",en:"to organize and carry out an activity",ex:"formulating and conducting the nation’s foreign policy",mem:"⚠️ 熟义是「指挥、引导」；这里＝<b>开展、执行</b>：conduct a survey（做调查）· conduct foreign policy（推行外交政策）。名词 /ˈkɒndʌkt/＝行为：code of conduct（行为准则）。",syn:"carry out · run · manage · direct",conf:"<b>conduct</b> 实施 vs <b>conductor</b> 指挥；导体 vs <b>deduct</b> 扣除。"},
+  emerge:{w:"emerge",ipa:"/ɪˈmɜːdʒ/",pos:"v.",tags:["core","write"],cn:"出现；（从困境中）崛起，脱颖而出",en:"to appear or become known; to come out of a difficult situation",ex:"the period when the United States emerged as an international power",mem:"e-（出）＋ merge（沉）⟹ 从水里浮出来。<b>emerge as</b>＝以……的身份崛起：China has emerged as a major economy。emerging markets 新兴市场。",syn:"rise · appear · arise · come to the fore",conf:"<b>emerge</b> 出现 vs <b>emergency</b> 紧急情况 vs <b>submerge</b> 淹没。"},
+  diplomat:{w:"diplomat",ipa:"/ˈdɪpləmæt/",pos:"n.",tags:["core"],cn:"外交官；善于处理人际关系的人",en:"an official whose job is to represent his or her country abroad",ex:"some of the nation’s most significant diplomats and politicians",mem:"diploma（证书）同源——古时外交官持有君主颁发的文书。diplomacy 外交、diplomatic 外交的（B 段 Diplomatic Reception Room 外交接待厅）。",syn:"envoy · ambassador · emissary",conf:"<b>diplomat</b> 外交官 vs <b>diploma</b> 文凭 vs <b>diplomatic</b> 外交的；圆滑的。"},
+  scene:{w:"scene",ipa:"/siːn/",pos:"n.",tags:["poly","core","write"],cn:"（事件的）发生地，现场；（戏剧的）一场",en:"the place where something happens",ex:"has been the scene of many historic events",mem:"⚠️ 熟义「景色、场景」；<b>be the scene of</b>＝「是……的发生地」：the scene of the crime（犯罪现场）。写作比 witness 更地道：The square has been the scene of many celebrations。",syn:"site · setting · location · venue",conf:"<b>scene</b> 现场 vs <b>scenery</b> 风景（不可数）vs <b>scenario</b> 设想的情况。"},
+  foundation:{w:"foundation (foundations were laid)",ipa:"/faʊnˈdeɪʃn/",pos:"n.",tags:["poly","phrase","core"],cn:"（建筑的）地基；lay the foundations 打地基、奠基",en:"the solid layer under a building; lay the foundations = start building",ex:"foundations were laid",mem:"⚠️ 熟义「基础；基金会」；建筑语境复数 foundations＝<b>地基</b>，lay 是「铺设」（lay-laid-laid，别和 lie 混）。began long before its foundations were laid＝早在奠基之前就开始了——<b>全文从「今天」切回「当年」的开关句</b>。",syn:"base · groundwork · footing",conf:"<b>lay</b>（铺设，及物，laid）vs <b>lie</b>（躺，不及物，lay-lain）。"},
+  series:{w:"series",ipa:"/ˈsɪəriːz/",pos:"n.",tags:["core"],cn:"一系列，一连串；（电视）系列节目",en:"a number of similar events that happen one after another",ex:"A series of fires (including those set by the British in 1814)",mem:"单复数同形。<b>a series of ＋ 复数名词</b> 作主语时谓语一般用单数（A series of accidents has…）；本句主语是 fires and conditions 两样，所以用 led（过去时不显单复数）。",syn:"succession · sequence · chain · string",conf:"<b>series</b> 系列 vs <b>serial</b> 连续的；连载 vs <b>serious</b> 严肃的。"},
+  overcrowded:{w:"overcrowded",ipa:"/ˌəʊvəˈkraʊdɪd/",pos:"adj.",tags:["core","write"],cn:"过度拥挤的",en:"with too many people or things in a small space",ex:"overcrowded conditions",mem:"over-（过度）＋ crowded。overcrowded cities／classrooms——写城市化、教育资源的高频词。原刊 G 末还有一句 cramped quarters（逼仄的办公处），考卷删了。",syn:"congested · packed · cramped",conf:"<b>overcrowded</b> 过度拥挤的 vs <b>overwhelmed</b> 不堪重负的。"},
+  existing:{w:"existing",ipa:"/ɪɡˈzɪstɪŋ/",pos:"adj.",tags:["poly","core"],cn:"现存的，现有的（至今还在的）",en:"that exists now",ex:"led to the construction of the existing Treasury Building",mem:"⚠️ 不是「存在着的」这种空话，而是<b>「今天还立在那里的那一栋」</b>——区别于之前被烧掉的旧楼。existing laws 现行法律、existing customers 老客户。",syn:"current · present · surviving",conf:"<b>existing</b> 现存的 vs <b>existent</b> 存在的（少用）vs <b>exiting</b> 退出。"},
+  wing:{w:"wing",ipa:"/wɪŋ/",pos:"n.",tags:["poly","core"],cn:"（建筑的）翼楼，侧楼；（政党的）派别",en:"a part of a large building that sticks out from the main part",ex:"the construction of the North Wing of the Treasury Building",mem:"⚠️ 熟义「翅膀」；建筑＝<b>翼楼</b>：the West Wing（白宫西翼，总统办公处）· south wing · east wing。F 段 <b>rose wing by wing</b>＝一翼接一翼建起——<b>这句「逐翼」就是 44 题的钩子</b>。政治：left wing 左翼。",syn:"section · annex · extension",conf:"<b>wing</b> 翼楼 vs <b>ward</b> 病房 vs <b>annex</b> 附属建筑。"},
+  necessitate:{w:"necessitate",ipa:"/nəˈsesɪteɪt/",pos:"v.",tags:["core","write"],cn:"使成为必要，迫使",en:"to make something necessary",ex:"necessitated the demolition of the State Department building",mem:"necessity（必要）＋ -ate。常带名词化宾语：X necessitated the demolition of Y＝X 使拆除 Y 成为必要。<b>写作替换 lead to／require 的正式词</b>。",syn:"require · call for · demand · entail",conf:"<b>necessitate</b> 使必要 vs <b>necessarily</b> 必然地。"},
+  demolition:{w:"demolition",ipa:"/ˌdeməˈlɪʃn/",pos:"n.",tags:["core"],cn:"拆除，毁坏",en:"the act of knocking down a building",ex:"the demolition of the State Department building",mem:"demolish（拆毁）的名词。<b>G 段最后发生的事是拆楼</b> ⟹ A 段的 a <b>new</b> State Department Building——new 预设旧的没了（42→43 的接缝）。",syn:"destruction · knocking down · razing",conf:"<b>demolish</b> 拆除 vs <b>abolish</b> 废除（制度）vs <b>diminish</b> 减少。"},
+  congress:{w:"Congress",ipa:"/ˈkɒŋɡres/",pos:"n.",tags:["core"],cn:"（美国）国会",en:"the group of people elected to make laws in the US",ex:"In December of 1869, Congress appointed a commission",mem:"con-（共同）＋ gress（走）⟹ 走到一起。美国国会（Congress）＝参议院 the Senate ＋ 众议院 the House of Representatives；英国议会是 Parliament。小写 congress＝代表大会。",syn:"legislature · parliament · assembly",conf:"<b>Congress</b> 美国国会 vs <b>Parliament</b> 英国议会 vs <b>progress</b> 进步。"},
+  commission:{w:"commission",ipa:"/kəˈmɪʃn/",pos:"n.",tags:["poly","core"],cn:"（此处）委员会；另义：佣金、委托（创作）",en:"an official group of people given responsibility to do something",ex:"Congress appointed a commission to select a site",mem:"⚠️ 常见义「佣金」（on commission 拿提成）；本篇＝<b>专门委员会</b>：appoint a commission to do sth。作动词＝委托创作：commission a painting。A ② 的 The commission 回指 ① 的 a commission。",syn:"committee · board · panel",conf:"<b>commission</b> 委员会 vs <b>committee</b> 委员会（常设）vs <b>omission</b> 遗漏。"},
+  site:{w:"site",ipa:"/saɪt/",pos:"n.",tags:["core"],cn:"地点，场址；网站",en:"a place where a building is or will be built",ex:"to select a site and prepare plans",mem:"select a site 选址；building site 工地；heritage site 遗产地。与 G 原刊的 on sites flanking the White House 同义（考卷删了那一处）。",syn:"location · plot · spot · position",conf:"<b>site</b> 场址 vs <b>sight</b> 视力；景象 vs <b>cite</b> 引用。"},
+  estimate:{w:"estimate",ipa:"/ˈestɪmət/",pos:"n.",tags:["core"],cn:"估算，估价",en:"a calculation of how much something will cost",ex:"prepare plans and cost estimates",mem:"名词读 /-mət/，动词读 /-meɪt/。cost estimates＝费用估算。plans（设计图纸）＋ cost estimates（预算），一个建设项目的两份文件。",syn:"assessment · calculation · projection",conf:"<b>estimate</b> 估算 vs <b>esteem</b> 尊重 vs <b>overestimate</b> 高估。"},
+  arrangement:{w:"arrangement",ipa:"/əˈreɪndʒmənt/",pos:"n.",tags:["poly","core"],cn:"（此处）安置办法，安排",en:"a plan for how something will be done or where people will go",ex:"possible arrangements for the War and Navy Departments",mem:"⚠️ 熟义「排列、布置」；这里是<b>「怎么安顿这两个部门」</b>——原刊 G 末说它们还挤在白宫西边的旧址里（考卷删了），所以委员会顺带要考虑给它们找地方。",syn:"plan · provision · accommodation",conf:"<b>arrangement</b> 安排 vs <b>arrangements</b>（复数）＝筹备工作。"},
+  horror:{w:"horror (to the horror of)",ipa:"/ˈhɒrə(r)/",pos:"n.",tags:["phrase","core","write"],cn:"恐惧，震惊；to the horror of sb 令某人震惊的是",en:"a feeling of great shock",ex:"To the horror of some who expected a Greek Revival twin",mem:"<b>to one’s horror／surprise／delight／disappointment</b>＝令某人……的是——句首状语，引出一个出乎意料的结果。这里是夸张的修辞：风格之争在当年确实激烈（原刊后文有写）。",syn:"shock · dismay · consternation",conf:"<b>horror</b> 震惊 vs <b>horrible</b> 可怕的 vs <b>horrify</b> 使震惊。"},
+  revival:{w:"revival (Greek Revival)",ipa:"/rɪˈvaɪvl/",pos:"n.",tags:["poly","core"],cn:"复兴；Greek Revival 希腊复兴式（建筑风格）",en:"the process of becoming popular again; Greek Revival = a style copying ancient Greek temples",ex:"a Greek Revival twin of the Treasury Building",mem:"re-（再）＋ vive（活）。Greek Revival：19 世纪上半叶流行于美国的建筑风格，列柱、山墙，像希腊神庙（财政部大楼就是这种）。economic revival 经济复苏。",syn:"renaissance · resurgence · comeback",conf:"<b>revival</b> 复兴 vs <b>rival</b> 对手 vs <b>survival</b> 生存。"},
+  twin:{w:"twin",ipa:"/twɪn/",pos:"n.",tags:["poly","core"],cn:"（此处）一模一样的另一座，孪生建筑",en:"one of two things that are exactly alike",ex:"a Greek Revival twin of the Treasury Building",mem:"⚠️ 熟义「双胞胎」；建筑＝<b>成对、对称的另一栋</b>。财政部大楼在白宫一侧，有人期待另一侧建一座一模一样的——twin towers（双子塔）、twin cities（姊妹城）。",syn:"counterpart · duplicate · match",conf:"<b>twin</b> 孪生的 vs <b>twain</b> 二（古语）。"},
+  erect:{w:"erect",ipa:"/ɪˈrekt/",pos:"v.",tags:["poly","core"],cn:"（此处 v.）建造，竖立",en:"to build something",ex:"to be erected on the other side of the White House",mem:"⚠️ 熟义是形容词「直立的」（stand erect）；动词＝<b>建立、竖起</b>：erect a monument／statue／building。比 build 正式。",syn:"build · construct · put up · raise",conf:"<b>erect</b> 建造 vs <b>elect</b> 选举 vs <b>direct</b> 指导。"},
+  elaborate:{w:"elaborate",ipa:"/ɪˈlæbərət/",pos:"adj.",tags:["core","write"],cn:"精心制作的，繁复精美的",en:"very detailed and complicated",ex:"the elaborate French Second Empire style design by Alfred Mullett",mem:"e-（出）＋ labor（劳动）⟹ 费了大功夫做出来的。本篇两见：elaborate … design（A）· elaborate wall and ceiling stenciling（B）。动词 /-reɪt/＝详细阐述：elaborate on a point。",syn:"intricate · ornate · detailed",conf:"<b>elaborate</b> adj. 精美的 vs v. 详述 vs <b>collaborate</b> 合作。"},
+  rise:{w:"rise (rose)",ipa:"/raɪz/",pos:"v.",tags:["poly","core"],cn:"（此处）（建筑）建起，拔地而起",en:"(of a building) to be built; to appear above the surroundings",ex:"as the building slowly rose wing by wing",mem:"⚠️ 熟义「上升、起床、增长」；建筑作主语＝<b>被建起来</b>：A new hotel is rising on the site。rise-rose-risen，不及物（及物的「举起」用 raise）。",syn:"go up · be built · tower",conf:"<b>rise</b>（不及物，rose）vs <b>raise</b>（及物，raised）vs <b>arise</b>（出现）。"},
+  office:{w:"office",ipa:"/ˈɒfɪs/",pos:"n.",tags:["poly","core"],cn:"办公室；（政府的）部门；官职",en:"a room or building for work; a government department; a position of authority",ex:"it was the largest office building in Washington",mem:"⚠️ 本篇三种用法：office building 办公楼 · executive offices（G）最早的「行政办公楼」· the office of the Secretary（B）部长办公室。另义「官职」：take office 就职、in office 在任。",syn:"bureau · department · post",conf:"<b>office</b> 办公室 vs <b>official</b> 官员；官方的 vs <b>officer</b> 军官；警官。"},
+  tile:{w:"tile (tiled)",ipa:"/taɪl/",pos:"n./v.",tags:["core"],cn:"瓷砖，瓦片；tiled 铺了瓷砖的",en:"a flat square piece of baked clay used for covering floors or roofs",ex:"nearly 2 miles of black and white tiled corridors",mem:"black and white tiled corridors＝黑白瓷砖铺成的走廊（棋盘格地面）。floor tiles 地砖、roof tiles 屋瓦。",syn:"slab · paving",conf:"<b>tile</b> 瓷砖 vs <b>title</b> 标题 vs <b>tide</b> 潮汐。"},
+  corridor:{w:"corridor",ipa:"/ˈkɒrɪdɔː(r)/",pos:"n.",tags:["core","write"],cn:"走廊，过道；（交通）走廊地带",en:"a long passage in a building with doors into rooms",ex:"Winston Churchill once walked its corridors",mem:"本篇两见：F 的 2 英里走廊、D 的 walked its corridors。<b>the corridors of power</b>＝权力中枢（高层决策圈）。economic corridor 经济走廊。",syn:"hallway · passage · aisle",conf:"<b>corridor</b> 走廊 vs <b>corrode</b> 腐蚀。"},
+  interior:{w:"interior",ipa:"/ɪnˈtɪəriə(r)/",pos:"adj./n.",tags:["core"],cn:"内部的；室内",en:"inside; the inside part of something",ex:"Almost all of the interior detail is of cast iron or plaster",mem:"interior design 室内设计；反义 exterior（外部的）。the Department of the Interior（美国内政部）——interior 在政府名称里＝国内事务。",syn:"inner · internal · inside",conf:"<b>interior</b> 内部的 vs <b>inferior</b> 次等的 vs <b>exterior</b> 外部的。"},
+  detail:{w:"detail",ipa:"/ˈdiːteɪl/",pos:"n.",tags:["poly","core"],cn:"（此处）（建筑、装饰的）细部，装饰性构件",en:"small decorative parts of a building",ex:"the interior detail is of cast iron or plaster",mem:"⚠️ 熟义「细节」；建筑语境不可数的 detail＝<b>装饰细部</b>（线脚、雕饰、栏杆等）。本句 be of cast iron＝是铸铁做的（be of ＋ 材料）。",syn:"decoration · ornamentation · features",conf:"<b>detail</b> 细部 vs <b>detailed</b> 详细的 vs <b>retail</b> 零售。"},
+  cast:{w:"cast",ipa:"/kɑːst/",pos:"adj./v.",tags:["poly","core"],cn:"（此处）铸造的；cast iron 铸铁",en:"made by pouring hot liquid metal into a shape",ex:"over 4,000 individually cast bronze balusters",mem:"⚠️ 熟义「投、扔」「演员阵容」；金属语境＝<b>浇铸</b>（cast-cast-cast）：cast iron（铸铁）· individually cast（逐根单独浇铸）。本段两见。",syn:"moulded · forged · shaped",conf:"<b>cast</b> 浇铸 vs <b>caste</b> 种姓 vs <b>broadcast</b> 广播。"},
+  plaster:{w:"plaster",ipa:"/ˈplɑːstə(r)/",pos:"n.",tags:["core"],cn:"灰泥，石膏；膏药",en:"a substance that becomes hard when it dries, used for walls and decoration",ex:"cast iron or plaster",mem:"铸铁和石膏都不燃——所以下半句说 the use of wood was minimized to insure fire safety。另义：（英）创可贴、石膏绷带（a leg in plaster）。",syn:"stucco · mortar",conf:"<b>plaster</b> 石膏 vs <b>plastic</b> 塑料。"},
+  minimize:{w:"minimize",ipa:"/ˈmɪnɪmaɪz/",pos:"v.",tags:["core","write"],cn:"把……减到最少",en:"to reduce something to the lowest possible level",ex:"the use of wood was minimized to insure fire safety",mem:"minimum（最小值）＋ -ize。minimize the risk／cost／impact——写作高频。反义 maximize。",syn:"reduce · cut · curtail",conf:"<b>minimize</b> 减到最少 vs <b>diminish</b> 减少 vs <b>underestimate</b> 低估。"},
+  insure:{w:"insure",ipa:"/ɪnˈʃʊə(r)/",pos:"v.",tags:["poly","core"],cn:"（此处，美式）确保；常见义：给……上保险",en:"(American English) to make sure; to buy insurance for",ex:"to insure fire safety",mem:"⚠️ 常见义「保险」（insure a house against fire）；美式英语里 insure 也可作 <b>ensure（确保）</b>。<b>原刊白宫官网写的就是 ensure</b>，考卷改成了 insure（03++ 节）——意思一样。",syn:"ensure · guarantee · secure",conf:"<b>ensure</b> 确保 vs <b>insure</b> 保险／（美）确保 vs <b>assure</b> 向某人保证。"},
+  monumental:{w:"monumental",ipa:"/ˌmɒnjuˈmentl/",pos:"adj.",tags:["core","write"],cn:"宏伟的，巨大的；纪念碑式的",en:"very large and impressive",ex:"Eight monumental curving staircases of granite",mem:"monument（纪念碑）＋ -al。a monumental task（艰巨的任务）· a monumental mistake（天大的错误）——夸张地表示「极大」。",syn:"massive · grand · huge · imposing",conf:"<b>monumental</b> 宏伟的 vs <b>momentous</b> 重大的 vs <b>momentary</b> 片刻的。"},
+  granite:{w:"granite",ipa:"/ˈɡrænɪt/",pos:"n.",tags:["core"],cn:"花岗岩",en:"a very hard grey stone used for building",ex:"within the EEOB’s granite walls",mem:"gran-（颗粒）同 grain。本篇两见：F 的 staircases of granite 与 D 的 granite walls——<b>「花岗岩墙内」成了这栋楼的代称</b>。原刊首段写外墙是 granite, slate and cast iron。",syn:"stone · rock",conf:"<b>granite</b> 花岗岩 vs <b>marble</b> 大理石 vs <b>granted</b> 假定。"},
+  baluster:{w:"baluster",ipa:"/ˈbæləstə(r)/",pos:"n.",tags:["core"],cn:"（楼梯、栏杆的）栏杆柱",en:"one of the short posts that support a handrail",ex:"individually cast bronze balusters",mem:"一排 baluster 组成 balustrade（栏杆）。考研不会考这种词的意思，但读到时要知道是「楼梯栏杆上的一根根小柱子」。bronze 青铜。",syn:"banister post · spindle",conf:"<b>baluster</b> 栏杆柱 vs <b>banister</b> 楼梯扶手。"},
+  cap:{w:"cap (capped)",ipa:"/kæp/",pos:"v.",tags:["poly","core"],cn:"（此处）覆盖在……顶上；另义：给……设上限",en:"to cover the top of something",ex:"are capped by four skylight domes and two stained glass rotundas",mem:"⚠️ 熟义名词「帽子」；动词＝<b>给顶上盖一顶「帽子」</b>：mountains capped with snow（山顶覆雪）。经济语境＝设上限：cap prices（限价）、a cap on spending（开支上限）——阅读常考。",syn:"top · crown · cover",conf:"<b>cap</b> v. 覆盖／封顶 vs <b>capture</b> 俘获 vs <b>capital</b> 首都；资本。"},
+  skylight:{w:"skylight",ipa:"/ˈskaɪlaɪt/",pos:"n.",tags:["core"],cn:"天窗",en:"a window in a roof",ex:"four skylight domes",mem:"sky ＋ light。skylight dome＝带天窗的穹顶，光从顶上照进楼梯井。",syn:"roof window",conf:"<b>skylight</b> 天窗 vs <b>skyline</b> 天际线。"},
+  dome:{w:"dome",ipa:"/dəʊm/",pos:"n.",tags:["core"],cn:"穹顶，圆屋顶",en:"a round roof",ex:"four skylight domes",mem:"the Capitol dome（美国国会大厦的穹顶）。与 rotunda（圆形大厅）常一起出现：穹顶盖在圆厅上方。",syn:"cupola · vault",conf:"<b>dome</b> 穹顶 vs <b>domain</b> 领域 vs <b>doom</b> 厄运。"},
+  stainedglass:{w:"stained glass",ipa:"/ˌsteɪnd ˈɡlɑːs/",pos:"n.",tags:["phrase","core"],cn:"彩色玻璃（常见于教堂窗户）",en:"coloured glass used to make pictures in windows",ex:"two stained glass rotundas",mem:"stain（染色；污渍）的过去分词作定语。注意 stain 平时多是「污渍」（a coffee stain），但 stained glass 是固定说法＝<b>彩绘玻璃</b>，不是「脏玻璃」。",syn:"coloured glass",conf:"<b>stained</b> 彩色的（玻璃）／有污渍的 vs <b>stainless</b> 不锈的。"},
+  rotunda:{w:"rotunda",ipa:"/rəʊˈtʌndə/",pos:"n.",tags:["core"],cn:"圆形大厅（常带穹顶）",en:"a round building or hall, especially one with a dome",ex:"two stained glass rotundas",mem:"rot-（转、圆）同 rotate、round。美国国会大厦中央就是 the Rotunda。",syn:"round hall · domed hall",conf:"<b>rotunda</b> 圆厅 vs <b>rotund</b> 圆胖的。"},
+  occupy:{w:"occupy",ipa:"/ˈɒkjupaɪ/",pos:"v.",tags:["poly","core"],cn:"（此处）入驻，使用（建筑）；占据",en:"to live or work in a building",ex:"the State Department’s south wing was the first to be occupied",mem:"⚠️ 熟义「占领、占用（时间）」；建筑语境＝<b>入住、投入使用</b>：The flat is currently occupied. occupant 住户。the first to be occupied＝最先投入使用的。",syn:"move into · inhabit · use",conf:"<b>occupy</b> 入驻 vs <b>occupation</b> 职业；占领 vs <b>preoccupied</b> 心事重重的。"},
+  story:{w:"story (four-story)",ipa:"/ˈstɔːri/",pos:"n.",tags:["poly","core"],cn:"（此处）楼层（英式拼作 storey）",en:"a level of a building",ex:"elegant four-story library",mem:"⚠️ <b>不是「故事」</b>：a four-story library＝四层楼高的图书馆（四层楼那么高的书架与回廊）。复合形容词里 story 用单数：a 30-story building。",syn:"floor · level",conf:"<b>story</b> 楼层（美）＝ <b>storey</b>（英）vs <b>floor</b>（具体第几层：on the third floor）。"},
+  reception:{w:"reception",ipa:"/rɪˈsepʃn/",pos:"n.",tags:["core"],cn:"接待；招待会；（酒店）前台；（信号）接收",en:"a formal party to welcome someone; the act of receiving",ex:"Diplomatic Reception Room",mem:"receive 的名词。Diplomatic Reception Room＝外交接待厅（国务院接待外国使节）。另义：The book got a warm reception（反响热烈）——阅读常考。",syn:"welcome · reaction · party",conf:"<b>reception</b> 接待；反响 vs <b>receipt</b> 收据 vs <b>recipient</b> 接受者。"},
+  secretary:{w:"Secretary",ipa:"/ˈsekrətri/",pos:"n.",tags:["poly","core"],cn:"（此处，美国）部长；Secretary of State 国务卿",en:"the head of a US government department",ex:"Secretary of State Cordell Hull",mem:"⚠️ <b>不是「秘书」</b>：美国各部部长叫 Secretary（Secretary of the Navy 海军部长、Secretary of War 战争部长），国务院的部长叫 Secretary of State（<b>国务卿</b>）。B 段的 Secretary’s office、the office of the Secretary 都是部长办公室。",syn:"minister · head of department",conf:"<b>Secretary</b>（美）部长 vs <b>Minister</b>（英）大臣 vs <b>secretary</b> 秘书。"},
+  carve:{w:"carve (carved)",ipa:"/kɑːv/",pos:"v.",tags:["core"],cn:"雕刻；（切）肉",en:"to make something by cutting wood or stone",ex:"decorated with carved wood",mem:"carved wood＝木雕。引申：carve out a career（开创一番事业）· carve out a niche（开辟一块市场）——阅读常见。",syn:"sculpt · engrave · chisel",conf:"<b>carve</b> 雕刻 vs <b>crave</b> 渴望 vs <b>curve</b> 弯曲。"},
+  oriental:{w:"Oriental",ipa:"/ˌɔːriˈentl/",pos:"adj.",tags:["core"],cn:"东方的（今多用 Asian，Oriental 描述人时有过时／冒犯意味）",en:"from or relating to East Asia (now often considered old-fashioned)",ex:"Oriental rugs",mem:"orient（东方；日出之处）。Oriental rugs＝东方地毯（波斯、土耳其等手工地毯），是固定的商品名，这里没问题。orient v.＝使适应、定向：orientation 新生入学教育。",syn:"Eastern · Asian",conf:"<b>Oriental</b> 东方的 vs <b>Occidental</b> 西方的 vs <b>orientation</b> 方向；入学教育。"},
+  rug:{w:"rug",ipa:"/rʌɡ/",pos:"n.",tags:["core"],cn:"小地毯",en:"a piece of thick cloth that covers part of a floor",ex:"Oriental rugs",mem:"rug 盖地面一部分，carpet 铺满整个地面。sweep sth under the rug＝把问题掩盖起来。",syn:"carpet · mat",conf:"<b>rug</b> 小地毯 vs <b>rag</b> 破布 vs <b>drug</b> 药。"},
+  stencil:{w:"stencil (stenciled)",ipa:"/ˈstensl/",pos:"v./n.",tags:["core"],cn:"用镂花模板印刷（图案）；印花",en:"to make a pattern by painting through holes cut in a sheet",ex:"stenciled wall patterns",mem:"在薄板上刻出镂空图案，刷漆上去就印出花纹。B 段两见：stenciled wall patterns（印花墙纹）· wall and ceiling stenciling（墙面与天花板印花）。",syn:"pattern · print",conf:"<b>stencil</b> 模板印花 vs <b>pencil</b> 铅笔。"},
+  department:{w:"Department",ipa:"/dɪˈpɑːtmənt/",pos:"n.",tags:["poly","core"],cn:"（此处，美国政府的）部；State Department 国务院（外交部）",en:"one of the main sections of a government",ex:"The Navy Department moved into the east wing in 1879",mem:"⚠️ 熟义「系；部门；百货公司的柜台」；美国政府的 Department＝<b>部</b>：the State Department 国务院（管外交）· the War Department 战争部（1947 年后并入国防部）· the Navy Department 海军部。",syn:"ministry · bureau · agency",conf:"<b>State Department</b>（美）国务院＝外交部 vs <b>State Council</b>（中国）国务院。"},
+  marquetry:{w:"marquetry",ipa:"/ˈmɑːkɪtri/",pos:"n.",tags:["core"],cn:"镶嵌细工（用不同木片拼出图案）",en:"patterns made from small pieces of different kinds of wood",ex:"marquetry floors",mem:"marquetry floors＝拼花镶嵌地板。考研不会考这个词本身，读到知道是「拼花地板」即可——<b>B 段整段都在写装饰，读不懂也不影响排序</b>。",syn:"inlay · parquetry",conf:"<b>marquetry</b> 镶嵌细工 vs <b>parquet</b> 拼花地板。"},
+  celebrated:{w:"celebrated",ipa:"/ˈselɪbreɪtɪd/",pos:"adj.",tags:["core","write"],cn:"著名的，享有盛誉的",en:"famous and praised",ex:"Many of the most celebrated national figures",mem:"celebrate 的形容词用法＝被广为称颂的。<b>2017 新题型末段也用了它</b>：a nationally and internationally celebrated man of letters。",syn:"renowned · famous · acclaimed · eminent",conf:"<b>celebrated</b> 著名的 vs <b>celebrity</b> 名人 vs <b>celebration</b> 庆祝。"},
+  figure:{w:"figure",ipa:"/ˈfɪɡə(r)/",pos:"n.",tags:["poly","core","write"],cn:"（此处）人物，名人",en:"a person, especially an important or well-known one",ex:"the most celebrated national figures",mem:"⚠️ 熟义「数字、图表、身材」；<b>national figure</b>＝全国性的人物（2017 新题型 B 段 became a national figure 同一个搭配）。public figure 公众人物、key figure 关键人物。",syn:"personality · personage · celebrity",conf:"<b>figure</b> 人物／数字 vs <b>figure out</b> 弄明白 vs <b>figurative</b> 比喻的。"},
+  participate:{w:"participate",ipa:"/pɑːˈtɪsɪpeɪt/",pos:"v.",tags:["core","write"],cn:"参加，参与（in）",en:"to take part in an activity or event",ex:"have participated in historical events",mem:"part（部分）＋ cip（拿）⟹ 拿一份。participate in＝take part in。participant 参与者、participation 参与。",syn:"take part · be involved · engage",conf:"<b>participate</b> 参加 vs <b>anticipate</b> 预期 vs <b>precipitate</b> 促成。"},
+  emissary:{w:"emissary",ipa:"/ˈemɪsəri/",pos:"n.",tags:["core"],cn:"使者，特使",en:"a person sent to deliver a message or to negotiate",ex:"Japanese emissaries met here with Secretary of State Cordell Hull",mem:"e-（出）＋ miss（送）⟹ 派出去的人（同 mission、missile）。1941 年 12 月 7 日珍珠港遇袭当天，日本大使野村与特使来栖在这里向国务卿赫尔递交照会（史实补充）。",syn:"envoy · messenger · delegate",conf:"<b>emissary</b> 使者 vs <b>emission</b> 排放 vs <b>missionary</b> 传教士。"},
+  bombing:{w:"bombing",ipa:"/ˈbɒmɪŋ/",pos:"n.",tags:["core"],cn:"轰炸",en:"an attack with bombs",ex:"after the bombing of Pearl Harbor",mem:"bomb 的 b 不发音。the bombing of Pearl Harbor（1941 年日军偷袭珍珠港），美国由此对日宣战。",syn:"air raid · attack · bombardment",conf:"<b>bombing</b> 轰炸 vs <b>booming</b> 繁荣的。"},
+};
+
+const lib=document.getElementById('optlib');
+lib.innerHTML=Object.keys(OPTS).map(k=>
+  '<div class="optitem'+(EXTRA.indexOf(k)>=0?' extra':'')+'" id="opt-'+k+'"><span class="lt">'+k+'</span><span>'
+  +'<span class="oen">'+OPTS[k][0]+'</span>'
+  +'<span class="zhx">'+OPTS[k][1]+'</span>'
+  +'<span class="kw">🔑 '+OPTS[k][2]+'</span>'
+  +'<span class="stg">'+OPTS[k][3]+'</span></span></div>').join('');
+
+/* 作答交互：答后就地把空格补全成原文 */
+document.querySelectorAll('.person').forEach(p=>{
+  const ans=p.dataset.ans; if(!ans)return;
+  const chips=p.querySelector('.chips');
+  chips.innerHTML='ABCDEFG'.split('').map(l=>'<button class="ch" data-l="'+l+'">'+l+'</button>').join('');
+  chips.querySelectorAll('.ch').forEach(c=>c.addEventListener('click',()=>{
+    if(p.classList.contains('done'))return;
+    p.classList.add('done');
+    if(c.dataset.l!==ans)c.classList.add('wrong');
+    chips.querySelector('.ch[data-l="'+ans+'"]').classList.add('right');
+    const oi=document.getElementById('opt-'+ans); if(oi)oi.classList.add('used');
+    const slot=p.querySelector('.slot');
+    if(slot){slot.classList.add('filled');slot.innerHTML='<span class="fl">['+ans+']</span>'+OPTS[ans][0];}
+  }));
+});
+
+const panel=document.getElementById('panel');
+const isMobile=()=>window.innerWidth<=900;
+function badge(t){return {core:'<span class="badge b-core">核心词</span>',phrase:'<span class="badge b-phrase">短语</span>',poly:'<span class="badge b-poly">熟词僻义</span>',write:'<span class="badge b-write">写作✍︎</span>'}[t]||''}
+function showCard(k,el){
+  const d=V[k]; if(!d)return;
+  document.querySelectorAll('.tk.active').forEach(e=>e.classList.remove('active'));
+  if(el&&el.classList.contains('tk'))el.classList.add('active');
+  panel.innerHTML='<button class="close" onclick="panel.classList.remove(\'open\')">✕</button>'
+  +'<div class="wcard">'
+  +'<div class="head"><span class="w">'+d.w+'</span><span class="ipa">'+d.ipa+'</span><span class="pos">'+d.pos+'</span>'+d.tags.map(badge).join('')+'</div>'
+  +'<div class="cn">'+d.cn+'</div><div class="en-def">'+d.en+'</div>'
+  +'<div class="row r-ex"><b>原文语境</b>“…'+d.ex+'…”</div>'
+  +'<div class="row r-mem"><b>怎么记</b>'+d.mem+'</div>'
+  +'<div class="row r-syn"><b>同类词</b>'+d.syn+'</div>'
+  +'<div class="row r-conf"><b>易混辨析</b>'+d.conf+'</div>'
+  +'</div>';
+  if(isMobile())panel.classList.add('open');
+}
+document.addEventListener('click',function(e){
+  const t=e.target.closest?e.target.closest('.tk'):null;
+  if(t){e.stopPropagation();showCard(t.dataset.w,t);}
+});
+function tz(btn){btn.closest('.person,.para').classList.toggle('showzh')}
+let allOn=false;
+function toggleAll(){allOn=!allOn;document.querySelectorAll('.person,.para').forEach(p=>p.classList.toggle('showzh',allOn))}
+
+const vg=document.getElementById('vgrid');
+Object.keys(V).forEach(k=>{
+  const d=V[k];
+  const div=document.createElement('div');div.className='vitem';
+  div.style.cssText='border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer';
+  div.innerHTML='<span style="float:right">'+d.tags.map(badge).join('')+'</span>'
+   +'<div style="font-family:var(--serif);font-weight:bold">'+d.w+'</div>'
+   +'<div style="font-size:.85rem;color:var(--muted)">'+d.cn+'</div>';
+  div.addEventListener('click',()=>{showCard(k,null);if(!isMobile())window.scrollTo({top:0,behavior:'smooth'})});
+  vg.appendChild(div);
+});
+document.getElementById('vcount').textContent=Object.keys(V).length;
+
+const yd=document.getElementById('yd');let sel='';
+document.addEventListener('selectionchange',()=>{
+  const s=window.getSelection();const t=s?s.toString().trim():'';
+  if(t&&/^[a-zA-Z' -]{2,40}$/.test(t)){
+    sel=t;
+    try{const r=s.getRangeAt(0).getBoundingClientRect();
+      yd.style.left=Math.min(r.left,window.innerWidth-110)+'px';
+      yd.style.top=(r.bottom+8)+'px';yd.style.display='block';}catch(e){}
+  }else{yd.style.display='none'}
+});
+yd.addEventListener('click',()=>{window.open('https://dict.youdao.com/result?word='+encodeURIComponent(sel)+'&lang=en');yd.style.display='none'});
+document.addEventListener('click',e=>{if(e.target!==yd&&!window.getSelection().toString())yd.style.display='none'});
+</script>
+
+<script src="_fault_attr.js"></script>
+</body>
+</html>

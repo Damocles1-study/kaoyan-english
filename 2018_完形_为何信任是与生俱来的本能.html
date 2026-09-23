@@ -1,0 +1,1255 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2018 英一 完形 · 为何信任是与生俱来的本能</title>
+<style>
+  :root{
+    --bg:#faf9f6; --card:#ffffff; --ink:#2b2b2b; --muted:#8a8578;
+    --accent:#8b5e34; --accent-soft:#f3e9dd; --line:#e8e3d8;
+    --hl:#fdf3d8; --hl-border:#e0b84d;
+    --green:#3e7a4e; --green-soft:#e8f2ea;
+    --red:#b04a3a; --red-soft:#f9e9e6;
+    --blue:#3d6a8a; --blue-soft:#e7eff5;
+    --purple:#6d5a8e; --purple-soft:#eeeaf5;
+    --serif:"Georgia","Songti SC",serif;
+    --sans:-apple-system,"PingFang SC","Helvetica Neue",sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#1c1a17; --card:#26231f; --ink:#e8e4dc; --muted:#9a948a;
+      --accent:#d0a06a; --accent-soft:#3a3127; --line:#3a362f;
+      --hl:#3d3520; --hl-border:#b08c3a;
+      --green:#7fb98d; --green-soft:#26362b;
+      --red:#d98876; --red-soft:#3d2a26;
+      --blue:#8ab3d0; --blue-soft:#26323d;
+      --purple:#a996c8; --purple-soft:#302a3d;
+    }
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;padding-bottom:120px}
+  .wrap{max-width:1100px;margin:0 auto;padding:24px 20px}
+  .back{font-size:.85rem;color:var(--muted);text-decoration:none}
+  .back:hover{color:var(--accent)}
+  header{margin:14px 0 28px}
+  header h1{font-family:var(--serif);font-size:1.7rem;line-height:1.3}
+  header .sub{color:var(--muted);margin-top:6px;font-size:.9rem}
+  .tags{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+  .tag{font-size:.75rem;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);border:1px solid var(--line)}
+  .tag.spoiler{cursor:pointer;background:var(--card);color:var(--muted)}
+  .tag.spoiler .hid{filter:blur(5px)}
+  .tag.spoiler.open .hid{filter:none;color:var(--accent)}
+
+  .layout{display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:start}
+  @media (max-width:900px){.layout{grid-template-columns:1fr}}
+
+  section.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:24px}
+  h2{font-size:1.05rem;letter-spacing:.05em;color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  h2 .n{font-size:.72rem;background:var(--accent);color:var(--card);border-radius:6px;padding:1px 7px}
+  .note{font-size:.82rem;color:var(--muted);margin-bottom:14px}
+
+  .para{margin-bottom:22px}
+  .para .en{font-family:var(--serif);font-size:1.06rem;line-height:2.15}
+  .pno{color:var(--muted);font-size:.75rem;user-select:none;margin-right:6px}
+  .tk{background:var(--hl);border-bottom:2px solid var(--hl-border);border-radius:3px;padding:0 2px;cursor:pointer;transition:filter .15s}
+  .tk:hover{filter:brightness(.93)}
+  .tk.active{outline:2px solid var(--hl-border)}
+  .ls{border-bottom:2px dotted var(--blue);cursor:pointer}
+  .para .zh{display:none;margin-top:10px;padding:10px 14px;background:var(--blue-soft);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:.93rem}
+  .para.showzh .zh{display:block}
+  .zbtn{float:right;margin-left:10px;font-size:.72rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:6px;padding:2px 9px;cursor:pointer}
+  .zbtn:hover{color:var(--accent);border-color:var(--accent)}
+  .allbtn{font-size:.78rem;border:1px solid var(--accent);background:none;color:var(--accent);border-radius:8px;padding:4px 12px;cursor:pointer}
+
+  /* 完形空格 */
+  .bk{display:inline-block;min-width:64px;text-align:center;background:var(--hl);border-bottom:2px solid var(--hl-border);border-radius:4px;padding:0 6px;cursor:pointer;font-weight:600;color:var(--accent);transition:all .15s;font-family:var(--sans);font-size:.95rem}
+  .bk:hover{filter:brightness(.93)}
+  .bk.filled{background:var(--green-soft);border-bottom-color:var(--green);color:var(--green);font-family:var(--serif)}
+  .bk.miss{background:var(--red-soft);border-bottom-color:var(--red);color:var(--red);font-family:var(--serif)}
+  .bk.active{outline:2px solid var(--hl-border)}
+  .bk .idx{font-size:.7rem;color:var(--muted);margin-right:3px}
+
+  aside{position:sticky;top:20px}
+  #panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;min-height:180px}
+  #panel .hint{color:var(--muted);font-size:.88rem;text-align:center;padding:30px 10px}
+  .wcard .head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .wcard .w{font-family:var(--serif);font-size:1.35rem;font-weight:bold}
+  .wcard .ipa{color:var(--muted);font-size:.85rem}
+  .wcard .pos{font-size:.72rem;color:var(--purple);background:var(--purple-soft);padding:1px 8px;border-radius:999px}
+  .wcard .badge{font-size:.7rem;padding:1px 8px;border-radius:999px}
+  .b-core{background:var(--red-soft);color:var(--red)}
+  .b-phrase{background:var(--blue-soft);color:var(--blue)}
+  .b-poly{background:var(--purple-soft);color:var(--purple)}
+  .b-write{background:var(--green-soft);color:var(--green)}
+  .wcard .cn{margin-top:8px;font-size:1rem;font-weight:600}
+  .wcard .en-def{color:var(--muted);font-size:.86rem;font-style:italic;margin-top:2px}
+  .wcard .row{margin-top:10px;font-size:.86rem;padding:8px 10px;border-radius:8px}
+  .wcard .row>b:first-child{font-size:.72rem;display:block;margin-bottom:2px;letter-spacing:.06em}
+  .r-ex{background:var(--hl)} .r-ex b{color:var(--hl-border)}
+  .r-mem{background:var(--green-soft)} .r-mem b{color:var(--green)}
+  .r-syn{background:var(--blue-soft)} .r-syn b{color:var(--blue)}
+  .r-conf{background:var(--red-soft)} .r-conf b{color:var(--red)}
+  #panel .close{display:none}
+  @media (max-width:900px){
+    aside{position:fixed;left:0;right:0;bottom:0;z-index:50;padding:0 8px 8px}
+    #panel{box-shadow:0 -6px 24px rgba(0,0,0,.18);max-height:55vh;overflow-y:auto;display:none}
+    #panel.open{display:block}
+    #panel .close{display:block;float:right;border:none;background:var(--line);border-radius:8px;padding:2px 10px;cursor:pointer;color:var(--ink)}
+  }
+
+  /* 逐空精解 */
+  .q{margin-bottom:22px;padding-bottom:18px;border-bottom:1px dashed var(--line);scroll-margin-top:20px}
+  .q:last-child{border:none;margin-bottom:0;padding-bottom:0}
+  .q .stem{font-family:var(--serif);font-size:.98rem;background:var(--hl);border-radius:8px;padding:8px 12px;display:block}
+  .q .stem em{font-style:normal;font-weight:700;color:var(--accent);border-bottom:2px solid var(--hl-border);padding:0 4px}
+  .qhead{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+  .qno{font-family:var(--serif);font-size:1.2rem;font-weight:700;color:var(--accent)}
+  .qt{font-size:.7rem;border-radius:999px;padding:1px 9px}
+  .c-logic{background:var(--blue-soft);color:var(--blue)}
+  .c-collo{background:var(--green-soft);color:var(--green)}
+  .c-word{background:var(--red-soft);color:var(--red)}
+  .c-context{background:var(--purple-soft);color:var(--purple)}
+  .qpos{font-size:.7rem;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:1px 9px}
+  .opts{margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  @media (max-width:640px){.opts{grid-template-columns:1fr}}
+  .opt{border:1px solid var(--line);border-radius:10px;padding:7px 12px;cursor:pointer;font-size:.92rem;font-family:var(--serif);transition:all .15s}
+  .opt .gl{font-family:var(--sans);font-size:.8rem;color:var(--muted);margin-left:6px}
+  .opt:hover{border-color:var(--accent)}
+  .q.done .opt{cursor:default}
+  .opt.right{background:var(--green-soft);border-color:var(--green)}
+  .opt.wrong{background:var(--red-soft);border-color:var(--red)}
+  .expl{display:none;margin-top:12px;background:var(--accent-soft);border-radius:10px;padding:12px 14px;font-size:.9rem}
+  .q.done .expl{display:block}
+  .expl b{color:var(--accent)}
+  .expl .lbl{font-size:.74rem;letter-spacing:.06em;color:var(--muted);display:block;margin:10px 0 2px}
+  .expl .lbl:first-child{margin-top:0}
+  .expl code{font-family:var(--serif);background:var(--hl);border-radius:4px;padding:1px 5px}
+  .wrongs{margin-top:6px;display:grid;gap:5px}
+  .wr{font-size:.86rem;background:var(--card);border-radius:8px;padding:6px 10px;border-left:3px solid var(--red)}
+  .wr .l{font-family:var(--serif);font-weight:700;color:var(--red);margin-right:5px}
+
+  /* 计分条 */
+  .score{display:flex;gap:14px;flex-wrap:wrap;align-items:center;background:var(--hl);border-radius:12px;padding:10px 16px;margin-bottom:18px;font-size:.88rem}
+  .score .v{font-family:var(--serif);font-size:1.25rem;font-weight:700;color:var(--accent);margin-right:4px}
+  .score .rst{margin-left:auto;font-size:.78rem;border:1px solid var(--line);background:var(--card);color:var(--muted);border-radius:8px;padding:3px 10px;cursor:pointer}
+
+  /* 考点统计 */
+  .catbar{display:flex;height:26px;border-radius:8px;overflow:hidden;margin:10px 0 16px;border:1px solid var(--line)}
+  .catseg{display:flex;align-items:center;justify-content:center;font-size:.72rem;color:#fff;font-weight:600}
+  .catlegend{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px}
+  .cl{display:flex;gap:8px;align-items:center;font-size:.85rem;cursor:pointer;padding:6px 8px;border-radius:8px;border:1px solid var(--line)}
+  .cl:hover{border-color:var(--accent)}
+  .dot{width:12px;height:12px;border-radius:3px;flex:0 0 12px}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+  .chip{font-size:.78rem;background:var(--accent-soft);color:var(--accent);border-radius:6px;padding:2px 8px;cursor:pointer}
+  .chip:hover{filter:brightness(.94)}
+
+  /* 打法 / 搭配 */
+  .flow{display:grid;gap:10px;font-size:.92rem}
+  .flow .fi{border:1px solid var(--line);border-radius:10px;padding:10px 14px}
+  .flow .fi b{color:var(--accent)}
+  .flow .fi .ev{display:block;margin-top:4px;font-size:.85rem;color:var(--muted);border-left:3px solid var(--hl-border);padding-left:9px}
+  .wb{display:grid;gap:10px}
+  .wbi{border-left:3px solid var(--green);background:var(--green-soft);border-radius:0 10px 10px 0;padding:10px 14px;font-size:.92rem}
+  .wbi .p{font-family:var(--serif);font-weight:600}
+  .wbi .u{color:var(--muted);font-size:.85rem}
+
+  /* 长难句 */
+  .sent{margin-bottom:20px}
+  .sent .src{font-family:var(--serif);font-size:1rem;background:var(--blue-soft);padding:12px 14px;border-radius:10px;border-left:3px solid var(--blue)}
+  .sent .anat{margin-top:8px;font-size:.9rem}
+  .sent .anat li{margin:4px 0 4px 18px}
+  .sent .tr{margin-top:8px;font-size:.92rem;color:var(--muted)}
+  .skel{color:var(--red);font-weight:600}
+
+  /* 80词表 */
+  .otab{width:100%;border-collapse:collapse;font-size:.86rem}
+  .otab th,.otab td{border:1px solid var(--line);padding:5px 8px;vertical-align:top}
+  .otab th{background:var(--accent-soft);color:var(--accent);font-size:.78rem}
+  .otab td.n{text-align:center;font-family:var(--serif);color:var(--muted);width:38px}
+  .otab .ow{font-family:var(--serif)}
+  .otab .oc{color:var(--muted);font-size:.82rem;display:block}
+  .otab td.hit{background:var(--green-soft)}
+  .otab td.hit .ow{color:var(--green);font-weight:700}
+  .hidecn .oc{filter:blur(4px);cursor:pointer}
+  .hidecn .oc.show{filter:none}
+  .tabwrap{overflow-x:auto}
+
+  #yd{position:fixed;z-index:60;display:none;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:4px 12px;font-size:.8rem;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+  .fail{background:var(--red-soft);border:1px solid var(--red);border-radius:10px;padding:10px 13px;margin-bottom:10px;font-size:.89rem;line-height:1.75}
+  .fail b{color:var(--red)}
+  .expl .fail{margin-top:0}
+  footer{color:var(--muted);font-size:.8rem;text-align:center;margin-top:30px}
+  /* 修：.layout 是 grid，grid 项默认 min-width:auto ⟹ 06 的 80 词表（min-content 425px）会把整个左栏撑到 475px，
+     窄屏下页面 scrollWidth 超出视口（2007–2009 三篇完形页同源、同病）。min-width:0 后 .tabwrap 才真正接管横滚。 */
+  main,aside{min-width:0}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">◀ 返回英语复盘中心</a>
+  <header>
+    <h1>为何信任是与生俱来的本能：首段摆两本账，后文两个实验各接一头——二十个空站在「信」与「防」两侧</h1>
+    <div class="sub">2018 年英语（一）真题 · Section I 完形填空（Use of English）· 黄皮书标 281 词（脚本按答案回填后数得 272 词）· 4 段 15 句 · 建议 15 min · 话题：心理学／脑科学研究报道（源自 <i>Reader’s Digest</i>《读者文摘》文章 <i>Your Brain on Trust: Why We’re Hardwired to Rely on Others</i>「信任中的大脑：为何我们天生依赖他人」；文中两项研究＝瑞士的催产素喷鼻研究，与加拿大康考迪亚大学 2011 年发表的婴儿信任实验）</div>
+    <div class="tags">
+      <span class="tag spoiler" onclick="this.classList.toggle('open')">🙈 答案（点击显示）：<span class="hid">1B 2C 3B 4D 5A 6C 7A 8B 9D 10A 11C 12A 13D 14C 15B 16D 17A 18B 19D 20C</span></span>
+      <span class="tag">难度：中等偏易（句子不长、没有插入语陷阱；<b>坎在三处</b>——4 题 Then／Instead 要看出首段是「两本账」、第二段只是翻回「信」那一本；11 题 Lucky／Funny 要给「上一段结尾」标正负号；17 题 fooled／betrayed 要看下一句回指的 tricked 定档）</span>
+      <span class="tag">✅ <b>盲做口径：完整盲做 20/20</b>（盲做答案先落盘，再只裁答案页 Section I 那四行核对）。做 2018 T1–T4 四轮时，精讲 p17–p32 上半一页没看、答案条只裁过 Text 那几行，本篇没有任何提前入眼。标过四处犹豫：17（fooled／betrayed）· 4（Then／Instead）· 11（Lucky／Funny）· 12（protect／monitor），全对</span>
+      <span class="tag">⭐ 本页最值钱的两段：<b>02+ 两本账</b>（首段 On the one hand／On the other hand 就是全文目录，4 Then、11 Lucky 两个段首空是「翻账键」）与 <b>02++ 对照实验平行句</b>（两个实验、四个空都按「动作同义、结果反号、身份反写、连接取对比」填）</span>
+    </div>
+  </header>
+
+  <div class="layout">
+    <main>
+      <!-- ========== 00 脉络 ========== -->
+      <section class="card">
+        <h2><span class="n">00</span>读前一分钟 · 全文脉络（完形先读首句，再看结构）</h2>
+        <p class="note">完形的<b>首句从不设空</b>。本篇首句只有五个词：<i>Trust is a tricky business.</i>——一句话给了三样东西：<b>话题</b>（信任）、<b>方向</b>（tricky＝「微妙、棘手」，预告<b>有好有坏</b>，不是一边倒）、<b>关键词</b>（<code>trust</code>——trust／trusting／trusted 原文出现 <b>5 次</b>，外加答案里的同义词 faith 与反义词 unreliable）。</p>
+        <p class="note" style="margin-top:10px">⭐⭐ <b>紧跟首句的两句就是全文目录</b>：<code>On the one hand</code>（好处：育儿、友谊都离不开信任）／<code>On the other hand</code>（风险：信错了人代价高昂）。<b>后面三段不再开新话题，只是轮流接这两本账</b>——② 段回答「既然有风险，我们为什么还要信」（好处那本：感觉好、催产素），③④ 段回答「风险怎么防」（风险那本：识别不诚信的第六感、婴儿实验）。<b>两个段首空 4 和 11，就是在两本账之间「翻页」的键</b>（⟹ <a href="#ledger" style="color:var(--accent)">02+ 两本账</a>）。另外，② 段与③④ 段<b>各有一个对照实验</b>，四个空挂在「实验组 vs 对照组」的平行句上（⟹ <a href="#pairs" style="color:var(--accent)">02++ 对照实验平行句</a>）。</p>
+        <p class="note" style="margin-top:10px">📰 <b>研究报道型第六篇</b>（本站已复盘：<a href="2010_完形_霍桑效应遭到质疑.html" style="color:var(--accent)">2010 霍桑效应</a> · <a href="2011_完形_笑与情绪的方向之争.html" style="color:var(--accent)">2011 表情实验</a> · <a href="2013_完形_面试打分的当日偏见.html" style="color:var(--accent)">2013 面试打分</a> · <a href="2015_完形_朋友是基因上的远亲.html" style="color:var(--accent)">2015 朋友基因</a> · <a href="2017_完形_拥抱有益健康.html" style="color:var(--accent)">2017 拥抱</a>）。和 2017 最像——<b>两篇的主角都是催产素</b>（2017 叫它 the bonding hormone，2018 说它 triggers the herding instinct）；不同在于 2017 只讲好处、一条因果链走到底，<b>2018 一上来就摆出正反两面</b>，所以逻辑空不考「再加一级」，考的是「翻到哪一本账」和「两组结果怎么对比」。</p>
+        <div class="flow">
+          <div class="fi"><b>① 段一 · 立论：信任是件微妙的事</b>——一方面，它是育儿、友谊等许多有价值之事的必要条件；另一方面，把<b>信任</b>放错了地方，往往要付出高昂的<b>代价</b>。
+            <span class="ev">1–3 空。<b>一段两本账</b>：❷ 句好处（1 for：condition <b>for</b> sth）、❸ 句风险（2 faith · 3 price）。<code>On the one hand … On the other hand</code> 让 ❸ 句必须是<b>负面</b>，而且主语里的空必须还是「信任」本身——2 填的是 trust 的同义词，3 填的是坏结果（⟹ <a href="#s1" style="color:var(--accent)">长难句 1</a>）。</span></div>
+          <div class="fi"><b>② 段二 · 好处那本：信任让人感觉好（催产素＋瑞士实验）</b>——<b>那么</b>，我们究竟为什么要信任？因为感觉好。<b>当</b>人们信任某人或某机构时，大脑释放催产素，这种激素<b>产生</b>愉悦感，并触发促使人们彼此<b>联结</b>的群居本能。科学家发现，<b>接触</b>这种激素会让人进入一种容易信任的<b>心态</b>：瑞士一项研究给一半受试者鼻腔喷催产素，他们愿意借给陌生人的钱，明显多于吸入别的东西的<b>对照组</b>。
+            <span class="ev">4–10 空，<b>七个空，与③段并列全篇最多</b>。❶ 句 4 Then 是<b>翻账键</b>——① 段刚落在「代价」，这里翻回「那为什么还信」（⟹ <a href="#s2" style="color:var(--accent)">长难句 2</a>）；❸ 句 5 When 是条件、6 produces 与 triggers 并列、7 connect 解释群居本能；❹ 句是「结论 : 实验」，8 exposure to、9 mood、10 counterparts（⟹ <a href="#s3" style="color:var(--accent)">长难句 3</a>、<a href="#s4" style="color:var(--accent)">4</a>）。</span></div>
+          <div class="fi"><b>③ 段三 · 风险那本：我们也有识别不诚信的第六感（加拿大实验·过程）</b>——<b>幸运的是</b>，我们也有一种对不诚信的第六感，它可能<b>保护</b>我们。加拿大一项研究发现，14 个月大的孩子就能<b>区分</b>可信的人和不诚实的人。60 名学步儿每人被<b>介绍给</b>一位拿着塑料容器的成年测试员。测试员会问「这里面是什么？」，然后往容器里看、微笑、惊叹「哇！」。接着请每个孩子往<b>里面</b>看。一半孩子找到了玩具；另一半<b>发现</b>容器是空的——并意识到测试员<b>骗</b>了他们。
+            <span class="ev">11–17 空。❶ 句 11 Lucky 是<b>第二个翻账键</b>——② 段末把「信」推到了头（肯借大钱给陌生人＝风险敞口），这里翻到「防」那一本，而且是好消息（⟹ <a href="#s5" style="color:var(--accent)">长难句 5</a>）；12 protect 说第六感的作用；❷ 句 13 differentiate <b>between</b> X and Y；❸–❻ 句是实验过程：14 introduced（先认识）· 15 inside（回扣 looking into）· 16 discovered（与 found 平行）· 17 fooled（下一句回指 tricked）（⟹ <a href="#s6" style="color:var(--accent)">长难句 6</a>、<a href="#s7" style="color:var(--accent)">7</a>、<a href="#s8" style="color:var(--accent)">8</a>）。</span></div>
+          <div class="fi"><b>④ 段四 · 实验结果：两组孩子判若两人</b>——没被骗的孩子里，多数<b>愿意</b>跟测试员合作学一项新技能，说明他们信任他的带领。<b>相比之下</b>，跟那位「<b>不可靠的</b>」测试员配对的 30 个孩子里，只有 5 个参加了后续活动。
+            <span class="ev">18–20 空。<b>两句一对，就是对照实验的结果栏</b>：18 willing（没被骗 ⟹ 愿意）↔ 20 unreliable（被骗的那组的测试员），中间 19 In contrast 把两组并排（⟹ <a href="#s9" style="color:var(--accent)">长难句 9</a>）。⚠️ <b>全文没有结论句</b>——结果一给就收尾，意思留给首段：信任是本能，但本能里也带着防备。</span></div>
+        </div>
+        <p class="note" style="margin-top:14px">📌 <b>第二条强线索：两个实验的写法一模一样</b>——都是「一半人 A、另一半人 B，结果两组不同」。② 段是 <code>half the subjects … than were their ___</code>，③④ 段是 <code>Half of them … the other half ___ …</code> 与 <code>the majority … In contrast, only five …</code>。<b>看见 half／the other half／those who … vs those who …，就把句子劈成左右两栏再做题</b>：左栏的动作词在右栏换个说法、左栏的结果在右栏取反（⟹ <a href="#pairs" style="color:var(--accent)">02++</a>）。</p>
+        <p class="note" id="bg">🎭 <b>读前背景（不影响做题，但读懂了心里有底）</b>：</p>
+        <div class="tabwrap"><table class="otab">
+          <tr><th>文中说法</th><th>背景</th><th>管哪个空</th></tr>
+          <tr><td><span class="ow">Your Brain on Trust</span></td><td>《读者文摘》是面向大众的综合月刊，这篇是<b>脑科学科普</b>：先抛出「信任有两面」，再用两项研究讲「为什么信」「怎么防」。口吻轻松（Well, because it feels good.），<b>不交代研究局限，也没有结论段</b></td><td>全篇方向</td></tr>
+          <tr><td><span class="ow">oxytocin</span></td><td>催产素：下丘脑合成的激素，最早因分娩时促进子宫收缩而得名，后来发现它参与社会联结（亲子依恋、伴侣信任），被媒体叫作「信任激素」「拥抱激素」。<b>2017 完形也是它的主场</b>（⟹ <a href="2017_完形_拥抱有益健康.html#chain" style="color:var(--accent)">2017 因果链</a>）</td><td>6 produces · 7 connect</td></tr>
+          <tr><td><span class="ow">the herding instinct</span></td><td>「从众／群居本能」：herd 是「兽群；把牲畜赶到一起」，herding instinct 指人像群居动物一样想靠近同类、和群体待在一起。<b>这个词定死了 7 题的方向——是「凑到一起」，不是「互相竞争」</b></td><td>7 connect</td></tr>
+          <tr><td><span class="ow">In a Swiss study …</span></td><td>通常指苏黎世大学团队 2005 年发表在《自然》上的论文 <i>Oxytocin Increases Trust in Humans</i>：受试者玩「信任博弈」，作为投资者决定把多少钱交给一位素不相识的受托人（钱交出去会翻三倍，但对方回不回报全凭良心）；喷了催产素的一组交出去的钱更多，<b>对照组喷的是安慰剂</b>——考卷写成 <i>inhaled something else</i>。<b>考卷把「投资」通俗化成了「借钱给陌生人」</b></td><td>9 mood · 10 counterparts</td></tr>
+          <tr><td><span class="ow">a sixth sense</span></td><td>「第六感」：五感（视听嗅味触）之外的直觉。英语里 have a sixth sense for sth＝对某事有一种直觉般的敏感</td><td>12 protect</td></tr>
+          <tr><td><span class="ow">A Canadian study …</span></td><td>加拿大蒙特利尔康考迪亚大学 Diane Poulin-Dubois 等人 2011 年发表在 <i>Infant Behavior and Development</i> 上的论文 <i>Infants prefer to imitate a reliable person</i>（婴儿更愿意模仿可靠的人）。据该校新闻稿：<b>60 名 13–16 个月的婴儿</b>，分给「可靠」与「不可靠」两类测试员</td><td>13 between · 14 introduced</td></tr>
+          <tr><td><span class="ow">looking into the container, smiling, and exclaiming, “Wow!”</span></td><td>据新闻稿：测试员往容器里看、表现得很兴奋，然后请婴儿自己看看里面到底有没有玩具。<b>「可靠组」里真有玩具，「不可靠组」是空的</b>——测试员的兴奋是装出来的</td><td>15 inside · 16 discovered · 17 fooled</td></tr>
+          <tr><td><span class="ow">learning a new skill · a follow-up activity</span></td><td>新闻稿里的第二项任务：同一位测试员<b>用额头（而不是手）去按亮一盏按压灯</b>——一个「不合常理」的动作，看婴儿会不会照着学。结果「可靠组」61% 照做、「不可靠组」只有 34%（⟹ 与考卷数字的出入见 <a href="#orig" style="color:var(--accent)">02++++</a>）</td><td>18 willing · 19 In contrast</td></tr>
+          <tr><td><span class="ow">the “___” tester</span></td><td>引号是作者加的：测试员<b>并不是真的不可靠</b>，是按实验设计「演」出来的不可靠——黄皮书在 20 题特意注了这一句</td><td>20 unreliable</td></tr>
+        </table></div>
+      </section>
+      <!-- ========== 01 正文 ========== -->
+      <section class="card">
+        <h2><span class="n">01</span>完形正文（20 空 · 点空格跳到该题）
+          <button class="allbtn" onclick="toggleAll()" style="margin-left:auto">译文 开/关</button>
+          <button class="allbtn" onclick="revealAll()">显示全部答案</button>
+        </h2>
+        <p class="note">🟨 点<b>空格</b>＝跳到下面对应的解析卡（先自己选，再看解析）｜ 🟡 黄底词＝生词卡，点开看词根/辨析 ｜ 蓝色虚线＝长难句 ｜ 选中任意单词浮出「查有道」</p>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">①</span>Trust is a <span class="tk" data-w="tricky">tricky business</span>. <span class="ls" onclick="go('s1')">On the one hand, it’s a necessary <span class="tk" data-w="condition">condition</span> <span class="bk" data-n="1"><span class="idx">1</span>___</span> many <span class="tk" data-w="worthwhile">worthwhile</span> things: child care, friendships, etc. On the other hand, putting your <span class="bk" data-n="2"><span class="idx">2</span>___</span> in the wrong place often <span class="tk" data-w="carry">carries</span> a high <span class="bk" data-n="3"><span class="idx">3</span>___</span>.</span></p>
+          <div class="zh">信任是件微妙的事。一方面，<b>对</b>许多有价值的事情——比如照看孩子、交朋友等等——来说，它是必要条件。另一方面，把你的<b>信任</b>放错了地方，往往要付出高昂的<b>代价</b>。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">②</span><span class="ls" onclick="go('s2')"><span class="bk" data-n="4"><span class="idx">4</span>___</span>, why do we trust <span class="tk" data-w="atall">at all</span>? Well, because it feels good.</span> <span class="ls" onclick="go('s3')"><span class="bk" data-n="5"><span class="idx">5</span>___</span> people place their trust in an individual or an <span class="tk" data-w="institution">institution</span>, their brains <span class="tk" data-w="release">release</span> <span class="tk" data-w="oxytocin">oxytocin</span>, a <span class="tk" data-w="hormone">hormone</span> that <span class="bk" data-n="6"><span class="idx">6</span>___</span> <span class="tk" data-w="pleasurable">pleasurable</span> feelings and <span class="tk" data-w="trigger">triggers</span> the <span class="tk" data-w="herding">herding instinct</span> that <span class="tk" data-w="prompt">prompts</span> humans to <span class="bk" data-n="7"><span class="idx">7</span>___</span> with one another.</span> <span class="ls" onclick="go('s4')">Scientists have found that <span class="tk" data-w="exposure">exposure</span> <span class="bk" data-n="8"><span class="idx">8</span>___</span> this hormone puts us in a trusting <span class="bk" data-n="9"><span class="idx">9</span>___</span>: In a Swiss study, researchers <span class="tk" data-w="spray">sprayed</span> oxytocin into the noses of half the <span class="tk" data-w="subject">subjects</span>; those subjects were ready to lend <span class="tk" data-w="significantly">significantly</span> higher amounts of money to strangers than were their <span class="bk" data-n="10"><span class="idx">10</span>___</span> who <span class="tk" data-w="inhale">inhaled</span> something else.</span></p>
+          <div class="zh"><b>那么</b>，我们究竟为什么要信任别人呢？嗯，因为感觉好。<b>当</b>人们信任某个人或某个机构时，他们的大脑会释放催产素——这种激素能<b>产生</b>愉悦感，并触发群居本能，促使人们彼此<b>联结</b>。科学家发现，<b>接触</b>这种激素会让我们进入一种容易信任他人的<b>心态</b>：在瑞士的一项研究中，研究人员把催产素喷进一半受试者的鼻腔；这些受试者愿意借给陌生人的钱，明显多于吸入别的东西的<b>对照组受试者</b>。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">③</span><span class="ls" onclick="go('s5')"><span class="bk" data-n="11"><span class="idx">11</span>___</span> for us, we also have a <span class="tk" data-w="sixthsense">sixth sense</span> for <span class="tk" data-w="dishonesty">dishonesty</span> that may <span class="bk" data-n="12"><span class="idx">12</span>___</span> us.</span> <span class="ls" onclick="go('s6')">A Canadian study found that children <span class="tk" data-w="asyoungas">as young as</span> 14 months can <span class="tk" data-w="differentiate">differentiate</span> <span class="bk" data-n="13"><span class="idx">13</span>___</span> a <span class="tk" data-w="credible">credible</span> person and a dishonest one.</span> Sixty <span class="tk" data-w="toddler">toddlers</span> were each <span class="bk" data-n="14"><span class="idx">14</span>___</span> to an adult <span class="tk" data-w="tester">tester</span> holding a plastic <span class="tk" data-w="container">container</span>. <span class="ls" onclick="go('s7')">The tester would ask, “What’s in here?” before looking into the container, smiling, and <span class="tk" data-w="exclaim">exclaiming</span>, “Wow!”</span> Each subject was then invited to look <span class="bk" data-n="15"><span class="idx">15</span>___</span>. <span class="ls" onclick="go('s8')">Half of them found a toy; the other half <span class="bk" data-n="16"><span class="idx">16</span>___</span> the container was empty—and realized the tester had <span class="bk" data-n="17"><span class="idx">17</span>___</span> them.</span></p>
+          <div class="zh"><b>幸运的是</b>，我们也有一种识别不诚信的第六感，它或许能<b>保护</b>我们。加拿大的一项研究发现，年仅 14 个月大的孩子就能<b>把</b>可信的人<b>和</b>不诚实的人<b>区分开来</b>。60 名学步儿每人被<b>介绍给</b>一位手拿塑料容器的成年测试员。测试员会先问「这里面是什么？」，然后往容器里看、微笑、并惊叹一声「哇！」。接着，每个受试孩子被请去往<b>里面</b>看。一半孩子找到了一个玩具；另一半则<b>发现</b>容器是空的——并意识到测试员<b>骗</b>了他们。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">④</span><span class="ls" onclick="go('s9')">Among the children who had not been <span class="tk" data-w="trick">tricked</span>, the majority were <span class="bk" data-n="18"><span class="idx">18</span>___</span> to <span class="tk" data-w="cooperate">cooperate</span> with the tester in learning a new skill, <span class="tk" data-w="demonstrate">demonstrating</span> that they trusted his <span class="tk" data-w="leadership">leadership</span>. <span class="bk" data-n="19"><span class="idx">19</span>___</span>, only five of the 30 children <span class="tk" data-w="pairedwith">paired with</span> the “<span class="bk" data-n="20"><span class="idx">20</span>___</span>” tester participated in a <span class="tk" data-w="followup">follow-up</span> activity.</span></p>
+          <div class="zh">在没有被骗过的孩子当中，大多数都<b>愿意</b>跟着测试员学一项新本领，这说明他们信任他的带领。<b>相比之下</b>，与那位「<b>不可靠的</b>」测试员配对的 30 个孩子里，只有 5 个参加了后续活动。</div>
+        </div>
+      </section>
+      <!-- ========== 02 逐空精解 ========== -->
+      <section class="card">
+        <h2><span class="n">02</span>逐空精解（点选项即判 · 再看解析）</h2>
+        <div class="score">
+          <span><span class="v" id="sDone">0</span>/20 已答</span>
+          <span><span class="v" id="sRight">0</span> 对</span>
+          <span>折合 <span class="v" id="sPt">0</span> 分 / 10</span>
+          <button class="rst" onclick="location.reload()">↺ 重做</button>
+        </div>
+        <p class="note">每空 0.5 分。<b>先在心里说出「这个空要填什么词性、什么方向」再点选项</b>。本篇难点在三件事：<b>① 这一段接的是哪一本账</b>——好处那本还是风险那本（2、3、4、11、12）；<b>② 对照实验两栏怎么对</b>——动作同义、结果反号、身份反写（10、16、18、19、20）；<b>③ 主题词 trust 的替身</b>——同义替身是答案、形近替身是陷阱（2、14、17、20）。另有<b>三道题四个选项接同一个小词</b>（7 全接 with · 14 全接 to · 18 全接 to do），介词帮不上忙。</p>
+
+        <div class="q" id="q1" data-ans="1">
+          <div class="qhead"><span class="qno">1</span><span class="qt c-collo">固定搭配 · a (necessary) condition for sth</span><span class="qpos">a necessary condition ___ many worthwhile things</span></div>
+          <span class="stem">On the one hand, it’s a necessary condition <em>1</em> many worthwhile things: child care, friendships, etc.</span>
+          <div class="opts">
+            <div class="opt">A from<span class="gl">来自；从……来看</span></div>
+            <div class="opt">B for<span class="gl">对于；为了</span></div>
+            <div class="opt">C like<span class="gl">像；例如</span></div>
+            <div class="opt">D on<span class="gl">关于；对……（有影响）</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>介词，<code>___ many worthwhile things</code> 整体作 condition 的后置定语；冒号后 child care, friendships 是 worthwhile things 的举例。空格要交代<b>「信任」这个条件是给谁的条件</b>。
+            <span class="lbl">🔗 线索</span>① <b>condition 自带介词</b>：a condition <b>for</b> sth（……的条件）、on condition that（以……为条件）；② 句子讲的是「好处那本账」——没有信任，育儿、友谊都办不成 ⟹ 信任是这些事的<b>前提</b>。
+            <span class="lbl">✅ B for</span>＝对……来说（是必要条件）。<code>X is a necessary condition for Y</code>＝X 是 Y 的必要条件：<i>Hard work is a necessary condition for success.</i>
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>from：「来自」——借中文「信任源于友谊」设障，但方向反了：<b>是友谊需要信任，不是信任来自友谊</b>；a condition from sth 也不是英语的说法。</div>
+              <div class="wr"><span class="l">C</span>like：「像；例如」——要求空格后是 condition 的<b>同类或例子</b>；育儿、友谊不是「条件」的例子，而是需要这个条件的事。</div>
+              <div class="wr"><span class="l">D</span>on：「对……（有影响）」——a ban on smoking 这种用法里，on 前的名词含动作（禁止），condition 不含；「关于」义也不通（条件不是「关于」友谊的）。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>名词自带的介词先背成对</b>：condition for · demand for · key to · access to · approach to · effect on · influence on——空格夹在名词和宾语之间时，<b>先问这个名词平时跟谁</b>（⟹ <a href="套路库_阅读.html#R157" style="color:var(--accent)">R157</a>）。✍️ 作文里写「前提」：<i>Mutual trust is a necessary condition for any lasting cooperation.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q2" data-ans="2">
+          <div class="qhead"><span class="qno">2</span><span class="qt c-context">上下文语义 · 主题词的同义替身（Trust → it → ___）</span><span class="qpos">putting your ___ in the wrong place</span></div>
+          <span class="stem">On the other hand, putting your <em>2</em> in the wrong place often carries a high <em>3</em>.</span>
+          <div class="opts">
+            <div class="opt">A attention<span class="gl">注意力</span></div>
+            <div class="opt">B concern<span class="gl">担忧；关心</span></div>
+            <div class="opt">C faith<span class="gl">信任，信赖</span></div>
+            <div class="opt">D interest<span class="gl">兴趣；利息</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>名词，put 的宾语（put your ___ in the wrong place＝把你的 ___ 放错地方）。整个动名词短语作主语。
+            <span class="lbl">🔗 线索</span>① <code>On the one hand … On the other hand</code>：<b>两句说的是同一个东西的两面</b>——上句的主语 it＝Trust，这句的主语里也必须还是「信任」，只是换了一面（风险）；② <b>下一段首句 why do we trust at all 与 place their trust</b>——文章自己把 put／place 和 trust 连在一起用了。
+            <span class="lbl">✅ C faith</span>＝信任、信赖（a strong feeling of trust），trust 的同义替身。<code>put／place one’s faith in sb</code>＝信任某人：<b>段内三句 Trust → it → faith 一根线</b>。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>attention：「注意力放错地方」本身说得通，但它<b>跳出了主题</b>——On the other hand 要讲的是信任的另一面，不是换一个话题。</div>
+              <div class="wr"><span class="l">B</span>concern：「担忧／关心放错地方」同理——说得通、但不是信任。⚠️ <b>A、B、D 三个都是「关注」族（注意、关心、兴趣），只有 faith 一个是「信」</b>——三缺一。</div>
+              <div class="wr"><span class="l">D</span>interest：两个陷阱叠在一起——① put one’s interest in 不是常见搭配（兴趣用 have／show an interest in）；② <b>「利息」义</b>会和 3 题的 price、debt 串成一个「钱」的语义场，让人以为在讲借贷。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐⭐ <b>主题词不会在正文里只出现一种形态</b>——命题人最爱把它的<b>同义替身</b>挖成空（本篇 faith），再把它的<b>形近字</b>塞进别的题当干扰项（14 题 entrusted）。拿到卷子先把主题词写在卷边，每道名词空都问一句「是不是它换了身衣服」（新卡 <a href="套路库_阅读.html#R247" style="color:var(--accent)">R247</a>；抽象名词空＝上文概念的复现，⟹ <a href="套路库_阅读.html#R51" style="color:var(--accent)">R51</a>）。
+          </div>
+        </div>
+
+        <div class="q" id="q3" data-ans="1">
+          <div class="qhead"><span class="qno">3</span><span class="qt c-context">上下文语义 · 风险那本账：carry a high ___ 取负号</span><span class="qpos">often carries a high ___</span></div>
+          <span class="stem">On the other hand, putting your <em>2</em> in the wrong place often carries a high <em>3</em>.</span>
+          <div class="opts">
+            <div class="opt">A benefit<span class="gl">好处；救济金</span></div>
+            <div class="opt">B price<span class="gl">价格；代价</span></div>
+            <div class="opt">C debt<span class="gl">债务</span></div>
+            <div class="opt">D hope<span class="gl">希望</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>名词，carries 的宾语，被 high 修饰。carry 取熟词僻义「带来（后果）」。
+            <span class="lbl">🔗 线索</span>① <b>On the other hand 翻到风险一面</b>，而 in the wrong place 已经把事情定成「错」的 ⟹ 结果必须是<b>坏的</b>；② 与上句对称：上句是「必要条件」（好），这句是「高昂……」（坏）——首句 tricky business 说的就是这一好一坏。
+            <span class="lbl">✅ B price</span>＝代价。<code>carry／pay a high price</code>＝付出高昂代价，泛指一切损失，不限于钱。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>benefit：好处——<b>号反了</b>（信错人会带来高收益？）；它的另一义「救济金」会被上句 child care 勾出来，同样不通。</div>
+              <div class="wr"><span class="l">C</span>debt：债务——号对了，但<b>把代价缩成了钱</b>。信错人的损失可以是感情、安全、名誉；下一段的「借钱给陌生人」是另一回事，别被它倒推回来。</div>
+              <div class="wr"><span class="l">D</span>hope：希望——正面，号反了；a high hope 也说不通「带来」。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>四个选项先按正负分两栏</b>：benefit／hope（＋）vs price／debt（−）⟹ 2＋2，先划掉正面的两个，再在负面里挑<b>范围对的</b>——debt 太窄。⭐ <b>2、3 两题的选项互相串味</b>：interest（利息）、price、debt、benefit（救济金）凑成一个「钱」的场子，而正文要讲的是「信任」——<b>选项之间的联想不是线索</b>。✍️ <i>Neglecting one’s health often carries a high price.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q4" data-ans="3">
+          <div class="qhead"><span class="qno">4</span><span class="qt c-logic">逻辑关系 · 翻账键①：问句前的「那么／既然如此」</span><span class="qpos">___, why do we trust at all?</span></div>
+          <span class="stem"><em>4</em>, why do we trust at all? Well, because it feels good.</span>
+          <div class="opts">
+            <div class="opt">A Again<span class="gl">再一次；再说</span></div>
+            <div class="opt">B Instead<span class="gl">反而；代替</span></div>
+            <div class="opt">C Therefore<span class="gl">因此</span></div>
+            <div class="opt">D Then<span class="gl">然后；那么</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>段首连接副词，后面是一个<b>问句</b>。它要交代：这个问题和上一段是什么关系。
+            <span class="lbl">🔗 线索</span>① 上一段最后落在<b>风险</b>（信错人代价高昂）；② 这一句问「那我们<b>到底</b>为什么还要信？」——<code>at all</code> 带着「既然这样，还……？」的反问口气；③ 下一句马上作答「因为感觉好」——<b>这一段翻回了好处那本账</b>。所以空格要的是「<b>既然如此，那么</b>……？」：承认上文，再提一个由它引出的问题。
+            <span class="lbl">✅ D Then</span>＝那么、既然如此。用在问句前，表示「顺着你刚说的，我来问」：<i>You say you don’t want to be a singer. Then what do you want to be?</i>
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>Again：「再说一遍／再说」——要求上文<b>已经</b>问过这个问题，或者已经在论证「不该信任」，这里补一条理由；但上文没问过，作者也没主张不信任。</div>
+              <div class="wr"><span class="l">B</span>Instead：「反而」——要求上文说过「本该不信」，这里说「反而信了」；而且 Instead 后面接的应该是一个<b>做法</b>，不是一个问句。<b>我犹豫过的就是它</b>：中文「有风险，可人们反而还信」太顺口了，但英文里 instead 替换的是一个被否定的选项，上文没有。</div>
+              <div class="wr"><span class="l">C</span>Therefore：「因此」——要求后面是上文的<b>结论</b>。「信错人代价高，因此我们为什么要信？」——风险推出的结论应该是「所以要小心」，<b>不是一个问句</b>。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐⭐ <b>首段摆了两本账，段首空就是翻账键</b>：先问「上一段落在哪本账、这一段开在哪本账」，再挑连接词——从风险翻回好处、而且是提问 ⟹ Then（新卡 <a href="套路库_阅读.html#R245" style="color:var(--accent)">R245</a>；阅读版两本账 ⟹ <a href="套路库_阅读.html#R182" style="color:var(--accent)">R182</a>）。⭐ <b>Then 的两个意思都要会</b>：「然后」（时间）与「那么」（推论／问句前）；Therefore 后面永远是陈述，不接问句。
+          </div>
+        </div>
+
+        <div class="q" id="q5" data-ans="0">
+          <div class="qhead"><span class="qno">5</span><span class="qt c-logic">逻辑关系 · 从属连词：条件—结果（when）</span><span class="qpos">___ people place their trust …, their brains release oxytocin</span></div>
+          <span class="stem"><em>5</em> people place their trust in an individual or an institution, their brains release oxytocin, a hormone that …</span>
+          <div class="opts">
+            <div class="opt">A When<span class="gl">当……时</span></div>
+            <div class="opt">B Unless<span class="gl">除非</span></div>
+            <div class="opt">C Although<span class="gl">虽然</span></div>
+            <div class="opt">D Until<span class="gl">直到</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>从属连词，连接两个完整分句：从句「人们信任某人或某机构」，主句「大脑释放催产素」。
+            <span class="lbl">🔗 线索</span>① 上一句刚答「因为感觉好」，这一句在<b>解释感觉好从哪来</b>——信任一发生，大脑就释放让人愉悦的激素 ⟹ <b>条件—结果</b>；② 两个分句同向（都是好事），没有对立。
+            <span class="lbl">✅ A When</span>＝当……时、在……的情况下，表示「条件一出现，结果就发生」：<i>When lead is added to petrol, it improves the car’s performance.</i>
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>Unless：「除非」——换成 if … not 念一遍：「<b>如果不</b>信任，大脑就释放催产素」，正好反了（⟹ <a href="套路库_阅读.html#R135" style="color:var(--accent)">R135</a> 的验算法）。</div>
+              <div class="wr"><span class="l">C</span>Although：「虽然」——要求两边对立：「虽然信任，大脑却释放催产素」——信任和释放激素没有矛盾。</div>
+              <div class="wr"><span class="l">D</span>Until：「直到」——主句要能持续到某一刻：「大脑一直释放催产素，直到人们信任」，等于说信任之后就<b>停了</b>，与「信任让人感觉好」相反。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>从属连词空先问两边是同向还是反向</b>：同向 ⟹ when／if／because；反向 ⟹ although／while；再把 unless 换成 if not、把 until 换成「在……之前一直」念一遍，荒谬的当场划掉。⭐ 四个选项里 Unless、Although、Until 都给主句<b>设限或唱反调</b>，只有 When 平铺直叙——三缺一。
+          </div>
+        </div>
+
+        <div class="q" id="q6" data-ans="2">
+          <div class="qhead"><span class="qno">6</span><span class="qt c-word">词义辨析 · and 并列同向 ＋ 从无到有</span><span class="qpos">a hormone that ___ pleasurable feelings and triggers …</span></div>
+          <span class="stem">… oxytocin, a hormone that <em>6</em> pleasurable feelings and triggers the herding instinct that prompts humans to <em>7</em> with one another.</span>
+          <div class="opts">
+            <div class="opt">A selects<span class="gl">挑选</span></div>
+            <div class="opt">B applies<span class="gl">应用；施加</span></div>
+            <div class="opt">C produces<span class="gl">产生，引起</span></div>
+            <div class="opt">D maintains<span class="gl">维持</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>定语从句的第一个谓语动词，主语是 a hormone（that），宾语是 pleasurable feelings；它和 <code>and triggers</code> 并列。
+            <span class="lbl">🔗 线索</span>① <b>and 同向</b>：与 triggers（触发）并列 ⟹ 也是「让某种东西出现」；② 上文刚说 it feels good——愉悦感是<b>由</b>这种激素带来的，之前没有；③ 主语是激素（物），不会「挑选」。
+            <span class="lbl">✅ C produces</span>＝产生、引起（情感、效果）。produce pleasurable feelings＝产生愉悦感，与 trigger the instinct 同为「从无到有」。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>selects：挑选——要有<b>主观判断</b>，主语得是人；而且预设愉悦感<b>本来就在</b>那儿等着被挑。</div>
+              <div class="wr"><span class="l">B</span>applies：应用；施加——apply 的宾语是方法、规则、力（apply the brakes），不是感受；后面也没有它要的 to。</div>
+              <div class="wr"><span class="l">D</span>maintains：维持——预设愉悦感<b>已经存在</b>，只是保住；而 release、trigger 说的都是「从没有到有」。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>三缺一</b>：selects（挑已有的）· applies（用已有的）· maintains（保已有的）都<b>预设宾语已存在</b>，只有 produces 是「造出来」——与 2016 完形 3 题 arrange（从无到有 vs 预设已开始）是同一把刀（⟹ <a href="套路库_阅读.html#R74" style="color:var(--accent)">R74</a>）。⭐ <b>and 同向</b>先定方向（⟹ <a href="套路库_阅读.html#R77" style="color:var(--accent)">R77</a>）。✍️ <i>Regular exercise produces a sense of well-being.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q7" data-ans="0">
+          <div class="qhead"><span class="qno">7</span><span class="qt c-context">上下文语义 · herding instinct 定方向（介词失效：四个全接 with）</span><span class="qpos">prompts humans to ___ with one another</span></div>
+          <span class="stem">… triggers the herding instinct that prompts humans to <em>7</em> with one another.</span>
+          <div class="opts">
+            <div class="opt">A connect<span class="gl">联系，建立关系</span></div>
+            <div class="opt">B compete<span class="gl">竞争</span></div>
+            <div class="opt">C consult<span class="gl">商量</span></div>
+            <div class="opt">D compare<span class="gl">比较</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>不定式动词，作 humans 的宾补（prompt sb to do sth）；<code>with one another</code>＝彼此。<b>四个动词都能接 with</b>，介词筛不掉。
+            <span class="lbl">🔗 线索</span>① <b>the herding instinct</b>＝群居本能：像兽群一样<b>凑到一起</b>；② 整句在说信任为什么「感觉好」——pleasurable feelings、herding，全是靠拢、融洽的好感觉。
+            <span class="lbl">✅ A connect</span>＝建立联系、融洽相处。connect with one another＝彼此联结，正是群居本能要的结果。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>compete：竞争——和「群居、愉悦」反向。命题人拿<b>下一句的比较级</b>（significantly higher amounts … than）来勾：看到后面在比钱多钱少，就以为这里在讲争夺。</div>
+              <div class="wr"><span class="l">C</span>consult：商量、咨询——是为办事而做的「功能性」互动，和与生俱来的本能对不上。</div>
+              <div class="wr"><span class="l">D</span>compare：比较——同样被下一句的 higher … than 勾出来；「互相攀比」和「凑到一起」方向相反。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>介词失效时，回到修饰这个动作的那个名词</b>：instinct 前面的 herding 已经告诉你本能往哪边推（⟹ <a href="套路库_阅读.html#R157" style="color:var(--accent)">R157</a>）。⭐ <b>邻句勾引</b>：干扰项常借<b>相邻句子的语法特征</b>（这里是比较级）造出一个「好像有关」的词——本篇 7B、7D 都是。✍️ <i>Shared hobbies help people connect with one another.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q8" data-ans="1">
+          <div class="qhead"><span class="qno">8</span><span class="qt c-collo">固定搭配 · exposure to sth</span><span class="qpos">exposure ___ this hormone</span></div>
+          <span class="stem">Scientists have found that exposure <em>8</em> this hormone puts us in a trusting <em>9</em>: In a Swiss study, researchers sprayed oxytocin into the noses of half the subjects; …</span>
+          <div class="opts">
+            <div class="opt">A by<span class="gl">被；由</span></div>
+            <div class="opt">B to<span class="gl">对；向</span></div>
+            <div class="opt">C of<span class="gl">……的</span></div>
+            <div class="opt">D at<span class="gl">在</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>介词，夹在名词 exposure 和它的对象 this hormone 之间；<code>exposure ___ this hormone</code> 整体作从句主语。
+            <span class="lbl">🔗 线索</span>① 冒号后面就是解释：研究人员把催产素<b>喷进</b>受试者鼻腔 ⟹ 人「接触到」激素、受它影响；② <b>exposure 的固定介词是 to</b>（动词 be exposed to）——2017 完形 7 题刚考过 <code>after being exposed to the virus</code>。
+            <span class="lbl">✅ B to</span>：<code>exposure to sth</code>＝接触、暴露于某物（并受其影响）。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>by：引出施动者——但「接触」这个动作的施动者是<b>人（us）</b>，不是激素；exposure by 也不是搭配。</div>
+              <div class="wr"><span class="l">C</span>of：exposure of sth＝<b>揭露</b>某事（exposure of his criminal past）——「揭露这种激素」不通。</div>
+              <div class="wr"><span class="l">D</span>at：地点、方向、「在……方面」——都说不出 exposure 与激素的关系。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐⭐ <b>exposure 两个介词两个意思</b>：exposure <b>to</b>（接触，常用）vs exposure <b>of</b>（揭露，少用）。⭐ <b>2017 完形 7 exposed → 2018 完形 8 exposure，连着两年考同一个词族</b>，都在研究报道的「方法」槽里。✍️ <i>Early exposure to books shapes a child’s imagination.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q9" data-ans="3">
+          <div class="qhead"><span class="qno">9</span><span class="qt c-collo">固定搭配 · put sb in a(n) ＋ adj. ＋ mood</span><span class="qpos">puts us in a trusting ___</span></div>
+          <span class="stem">Scientists have found that exposure <em>8</em> this hormone puts us in a trusting <em>9</em>: In a Swiss study, … those subjects were ready to lend significantly higher amounts of money to strangers …</span>
+          <div class="opts">
+            <div class="opt">A context<span class="gl">背景；语境</span></div>
+            <div class="opt">B circle<span class="gl">圆圈；圈子</span></div>
+            <div class="opt">C period<span class="gl">时期</span></div>
+            <div class="opt">D mood<span class="gl">心情，心态</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>名词，介词 in 的宾语，被 trusting 修饰；<code>put sb in a … ___</code>＝让某人进入某种……。
+            <span class="lbl">🔗 线索</span>① 冒号后的实验说明结果是<b>人心里的变化</b>：喷了催产素的人「愿意」借更多钱——were ready to 说的是意愿；② 上文 feels good、pleasurable feelings、instinct 都是<b>内心状态</b>的词。
+            <span class="lbl">✅ D mood</span>＝心情、心态。<code>put sb in a good／generous／trusting mood</code>＝让某人心情好／变得大方／容易信任。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>context：背景、环境（外部的）；in context 是「在语境中」。实验改变的是人的心态，不是外部环境。</div>
+              <div class="wr"><span class="l">B</span>circle：圈子（兴趣、职业相同的一群人，theatrical circles）；中文「信任的思维圈」是凑出来的，circle 不表示心态。</div>
+              <div class="wr"><span class="l">C</span>period：时期——put sb in a period 不是英语；实验也没说效果分阶段。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>三缺一</b>：context（外部环境）· circle（人群）· period（时间段）全在<b>人外面</b>，只有 mood 在<b>人心里</b>——实验测的正是心里（⟹ <a href="套路库_阅读.html#R74" style="color:var(--accent)">R74</a>）。⭐ trusting mood 是 trust 家族在本篇的又一次出场（Trust → faith → trust ×2 → <b>trusting</b> → trusted）。✍️ <i>A walk in the sun can put you in a good mood.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q10" data-ans="0">
+          <div class="qhead"><span class="qno">10</span><span class="qt c-word">词义辨析 · 对照组的称呼：counterparts</span><span class="qpos">than were their ___ who inhaled something else</span></div>
+          <span class="stem">… researchers sprayed oxytocin into the noses of half the subjects; those subjects were ready to lend significantly higher amounts of money to strangers than were their <em>10</em> who inhaled something else.</span>
+          <div class="opts">
+            <div class="opt">A counterparts<span class="gl">对应的人（物）</span></div>
+            <div class="opt">B colleagues<span class="gl">同事</span></div>
+            <div class="opt">C substitutes<span class="gl">替代者</span></div>
+            <div class="opt">D supporters<span class="gl">支持者</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>名词，比较状语从句的主语（than were their ___ ＝ than their ___ were ready to lend），后接定语从句 who inhaled something else。
+            <span class="lbl">🔗 线索</span>① <b>half the subjects</b> ⟹ 另一半也是受试者，只是吸的东西不同 ⟹ 空格指<b>对照组的受试者</b>；② their 指 those subjects（实验组）——「实验组的<b>对应者</b>」。
+            <span class="lbl">✅ A counterparts</span>＝处在对应位置的另一方（身份、功能相同，条件不同）。<i>The minister held talks with his French counterpart.</i>——在实验报道里，counterparts 就是「对照组」的通用称呼。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>colleagues：同事——同一个实验里的受试者不是「同事」；被上文 individual、institution、one another 这些「人际」词勾出来的。</div>
+              <div class="wr"><span class="l">C</span>substitutes：替代者——借 something else 的「别的东西」设障，但两组是<b>同时</b>做实验、并排比较，谁也没有替代谁。</div>
+              <div class="wr"><span class="l">D</span>supporters：支持者——借「愿意借钱给陌生人＝支持陌生人」设障，但 their 指的是受试者，不是陌生人。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐⭐ <b>对照实验的两栏</b>：实验组＝those subjects／half of them／the majority，对照组＝their counterparts／the other half／those who …；<b>对照组的名词空，答案是「身份相同、条件不同」的那个词</b>（新卡 <a href="套路库_阅读.html#R246" style="color:var(--accent)">R246</a>；对照原则 ⟹ <a href="套路库_阅读.html#R106" style="color:var(--accent)">R106</a>）。⭐ <b>比较状语里的倒装</b>：than were their counterparts＝than their counterparts were——than／as 后面主语长时常倒装。✍️ <i>Rural students often have fewer resources than their urban counterparts.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q11" data-ans="2">
+          <div class="qhead"><span class="qno">11</span><span class="qt c-logic">逻辑关系 · 翻账键②：评注性句首 ___ for us 定正负</span><span class="qpos">___ for us, we also have a sixth sense for dishonesty</span></div>
+          <span class="stem"><em>11</em> for us, we also have a sixth sense for dishonesty that may <em>12</em> us.</span>
+          <div class="opts">
+            <div class="opt">A Odd<span class="gl">奇怪的</span></div>
+            <div class="opt">B Funny<span class="gl">好笑的；奇怪的</span></div>
+            <div class="opt">C Lucky<span class="gl">幸运的</span></div>
+            <div class="opt">D Ironic<span class="gl">讽刺的</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>段首评注语（___ for us＝对我们来说……的是），作者对这一整句内容的<b>评价</b>；它同时是③段与②段之间的接缝。
+            <span class="lbl">🔗 线索</span>① <b>②段末把「信」推到了头</b>：一喷催产素，人就肯借大笔钱给陌生人——这正是首段说的「信错了人代价高昂」的风险；② 本句说我们<b>也有</b>识别不诚信的第六感，<code>that may ___ us</code>——这是对风险的<b>解药</b>；③ 坏消息之后来了解药 ⟹ 评价必须是<b>正号</b>：好在、幸运的是。
+            <span class="lbl">✅ C Lucky</span>：<code>Lucky for us, …</code>＝幸运的是（＝Luckily／Fortunately for us）。<b>这是本篇第二个翻账键：从「信」那本翻到「防」那本</b>。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>Odd：奇怪的——既会信又会防，并不奇怪；下文也没有解释「怪」在哪，而是直接讲实验。</div>
+              <div class="wr"><span class="l">B</span>Funny：好笑的；令人费解的——<b>我犹豫过的就是它</b>（Funny,… 作「说来也怪」口语里常见）。但下文没有一句在讲「怪」，只在讲这种能力<b>怎么保护我们</b>——评注要跟着下文走。</div>
+              <div class="wr"><span class="l">D</span>Ironic：讽刺的——要求事情<b>和预期相反</b>；有防备能力正合预期，没有反讽。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐⭐ <b>三缺一，一眼可分</b>：Odd／Funny／Ironic 全是「出乎意料」族，只有 Lucky 是「好消息」族——命题人批量造的是「意外」，正解是唯一的「幸运」（⟹ <a href="套路库_阅读.html#R74" style="color:var(--accent)">R74</a>）。⭐⭐ <b>评注语的正负号 ＝ 上一段结尾的号 × 这一段的作用</b>：上段落在风险（−），这段给解药 ⟹ 好消息（＋）⟹ Lucky／Fortunately；反过来，好事之后来坏事 ⟹ Unfortunately／Sadly（新卡 <a href="套路库_阅读.html#R245" style="color:var(--accent)">R245</a>）。⚠️ 黄皮书说 Odd／Funny for sb 放句首「不常见」——这是次要理由，<b>真正起作用的是正负号</b>。
+          </div>
+        </div>
+
+        <div class="q" id="q12" data-ans="0">
+          <div class="qhead"><span class="qno">12</span><span class="qt c-context">上下文语义 · 解药那一侧：第六感的客观作用</span><span class="qpos">a sixth sense for dishonesty that may ___ us</span></div>
+          <span class="stem"><em>11</em> for us, we also have a sixth sense for dishonesty that may <em>12</em> us.</span>
+          <div class="opts">
+            <div class="opt">A protect<span class="gl">保护</span></div>
+            <div class="opt">B delight<span class="gl">使高兴</span></div>
+            <div class="opt">C surprise<span class="gl">使惊讶</span></div>
+            <div class="opt">D monitor<span class="gl">监视，监测</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>定语从句谓语，先行词是 <code>a sixth sense for dishonesty</code>（不是 dishonesty 本身）；宾语 us。
+            <span class="lbl">🔗 线索</span>① 这个第六感是 11 题那个「好消息」的内容，它的用处就是<b>抵消首段那句「信错人代价高昂」</b>；② 下一句的实验证明婴儿能分辨可信与不可信的人——说的是一种<b>防身能力</b>。
+            <span class="lbl">✅ A protect</span>＝保护（使免受伤害）。一种能识破不诚信的感觉，作用就是保护我们不被骗、不付那笔「高昂代价」。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>delight：使高兴——有第六感确实值得高兴，但这是<b>主观感受</b>；文章在讲它<b>管什么用</b>（防骗），不是它让我们多开心。</div>
+              <div class="wr"><span class="l">C</span>surprise：使惊讶——同上，而且和 11 题的 Lucky 对不上：幸运的事不必是意外的事。</div>
+              <div class="wr"><span class="l">D</span>monitor：监视、监测——<b>我犹豫过的就是它</b>（第六感像「监控」谎言）。但 monitor 的宾语是<b>被观察的情形</b>（monitor progress），而这里宾语是 us——「监视我们」反成了第六感在防我们。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>动词空先问宾语是谁</b>：宾语是「我们」⟹ 要的是对我们<b>有利</b>的动作（protect／help／benefit）；宾语是「情形」⟹ 才轮到 monitor／track。⭐ <b>2＋2</b>：delight／surprise 是给人的<b>感受</b>，protect／monitor 是起的<b>作用</b>——先按「感受 vs 作用」划掉两个，再用宾语 us 划掉 monitor。✍️ <i>A healthy skepticism may protect us from online fraud.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q13" data-ans="3">
+          <div class="qhead"><span class="qno">13</span><span class="qt c-collo">固定搭配 · differentiate between X and Y</span><span class="qpos">differentiate ___ a credible person and a dishonest one</span></div>
+          <span class="stem">A Canadian study found that children as young as 14 months can differentiate <em>13</em> a credible person and a dishonest one.</span>
+          <div class="opts">
+            <div class="opt">A over<span class="gl">超过；在……上方</span></div>
+            <div class="opt">B within<span class="gl">在……之内</span></div>
+            <div class="opt">C toward<span class="gl">朝向；对于</span></div>
+            <div class="opt">D between<span class="gl">在两者之间</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>介词，后面是 <code>X and Y</code> 两项（a credible person and a dishonest one）。
+            <span class="lbl">🔗 线索</span>① <b>后面是「X and Y」两项</b>——四个介词里只有 between 专管「两者之间」；② differentiate（区分）天生要两样东西：<code>differentiate between A and B</code>＝<code>differentiate A from B</code>。
+            <span class="lbl">✅ D between</span>：<code>differentiate／distinguish between X and Y</code>＝区分 X 和 Y。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>over：超过、优于——「区分超过可信的人和不诚实的人」不通；differentiate 也不接 over。</div>
+              <div class="wr"><span class="l">B</span>within：在（某群体）之内——但可信的人和不诚实的人是<b>对立的两类</b>，不是一个群体；within 也不和 differentiate 搭配。</div>
+              <div class="wr"><span class="l">C</span>toward：朝向、对于——「区分」没有方向性；differentiate 不接 toward。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>看见「X and Y」，先想 between</b>：distinguish／differentiate／choose／share／divide between X and Y。⭐ <b>按语法功能孤立</b>：只有 between 能管两项——这一类「孤立」理由回答得了「这个空要什么」，所以可靠（⟹ <a href="套路库_阅读.html#R74" style="color:var(--accent)">R74</a> 边界条）。⭐ <b>as young as 14 months</b>：as ＋ adj. ＋ as ＋ 数字＝强调「小／早／少」到这个地步（年仅……）。
+          </div>
+        </div>
+
+        <div class="q" id="q14" data-ans="2">
+          <div class="qhead"><span class="qno">14</span><span class="qt c-word">词义辨析 · 实验第一步是「认识」（介词失效：四个全接 to）</span><span class="qpos">Sixty toddlers were each ___ to an adult tester</span></div>
+          <span class="stem">Sixty toddlers were each <em>14</em> to an adult tester holding a plastic container.</span>
+          <div class="opts">
+            <div class="opt">A added<span class="gl">加进</span></div>
+            <div class="opt">B transferred<span class="gl">转移，调动</span></div>
+            <div class="opt">C introduced<span class="gl">介绍（给）</span></div>
+            <div class="opt">D entrusted<span class="gl">委托，托付</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>被动谓语的过去分词：<code>X were ___ to Y</code>。<b>四个都能构成 be ___ to</b>，介词筛不掉。
+            <span class="lbl">🔗 线索</span>① 这是<b>实验的第一步</b>：接下来测试员要当着孩子的面演一出戏，孩子再判断他可不可信 ⟹ 孩子和测试员<b>之前不认识</b>，现在第一次见面；② each＝每个孩子分别见一位测试员。
+            <span class="lbl">✅ C introduced</span>：<code>be introduced to sb</code>＝被介绍给某人、与某人初次认识——隐含两人原本互不相识，正合实验要的「白纸一张」。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>added：加进——把孩子「加进」测试员里，受试者和测试员成了一伙，实验没法做。</div>
+              <div class="wr"><span class="l">B</span>transferred：转移、移交——预设原来有别人带着孩子、现在「转交」给测试员，文中没有；be transferred to sb 也多指情感、疾病转到某人身上。</div>
+              <div class="wr"><span class="l">D</span>entrusted：托付——⚠️ <b>主题词的形近陷阱</b>：en-<b>trust</b>-ed 长得像全文主题 trust，又顺着「把孩子托付给测试员照看」的中文画面，但实验考的是孩子<b>信不信</b>测试员，不是大人把孩子<b>交给</b>测试员。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐⭐ <b>主题词的形近字，九成是陷阱</b>：答案若恰好含主题词的词根，先停一秒问——它在这句里说的是「谁信谁」吗？entrust（托付）说的是把东西交出去，和「信任判断」无关（新卡 <a href="套路库_阅读.html#R247" style="color:var(--accent)">R247</a>）。⭐ <b>三缺一</b>：added／transferred／entrusted 都是把孩子当<b>物件</b>处理（加进、转交、托付），只有 introduced 是<b>人与人</b>认识（⟹ <a href="套路库_阅读.html#R74" style="color:var(--accent)">R74</a>）。⭐ 实验流程动作空 ⟹ <a href="套路库_阅读.html#R212" style="color:var(--accent)">R212</a>。
+          </div>
+        </div>
+
+        <div class="q" id="q15" data-ans="1">
+          <div class="qhead"><span class="qno">15</span><span class="qt c-context">上下文语义 · 回扣上一句 looking into the container</span><span class="qpos">Each subject was then invited to look ___.</span></div>
+          <span class="stem">The tester would ask, “What’s in here?” before looking into the container, smiling, and exclaiming, “Wow!” Each subject was then invited to look <em>15</em>.</span>
+          <div class="opts">
+            <div class="opt">A out<span class="gl">向外；当心</span></div>
+            <div class="opt">B inside<span class="gl">往里面</span></div>
+            <div class="opt">C back<span class="gl">往回；回顾</span></div>
+            <div class="opt">D around<span class="gl">四处</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>副词，与 look 构成短语；句末，后面没有宾语。
+            <span class="lbl">🔗 线索</span>① 上一句测试员 <code>looking into the container</code>、惊呼 Wow——在暗示「里面有好东西」；② 下一句「一半人找到玩具，另一半发现是空的」——孩子<b>往容器里看了</b>才有这两种结果 ⟹ 孩子做的就是测试员刚做的那个动作。
+            <span class="lbl">✅ B inside</span>：<code>look inside</code>＝往里面看，与上句 looking into 同义换说——<b>测试员先看、孩子再看，是同一个动作的两次</b>。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>out：look out＝当心／往外看——孩子不在容器里，没法往外看；「当心」也接不上下一句的发现。</div>
+              <div class="wr"><span class="l">C</span>back：look back＝回顾／回头看——14 个月的孩子没什么可回顾，身后也没有东西。</div>
+              <div class="wr"><span class="l">D</span>around：look around＝环顾四周——实验要孩子看的是<b>容器</b>，不是房间。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>三缺一</b>：out／back／around 都是<b>离开容器</b>的方向，只有 inside 朝着容器——动作空先画出「人在哪、东西在哪」，方向对不上的一眼划掉（⟹ <a href="套路库_阅读.html#R212" style="color:var(--accent)">R212</a>）。⭐ <b>实验过程的动作常「两人各做一次」</b>：看空格前一句有没有同一个动作的另一种说法（looking into ⟹ look inside）。
+          </div>
+        </div>
+
+        <div class="q" id="q16" data-ans="3">
+          <div class="qhead"><span class="qno">16</span><span class="qt c-word">词义辨析 · 平行句：与 found 同义（新发现）</span><span class="qpos">Half of them found a toy; the other half ___ the container was empty</span></div>
+          <span class="stem">Half of them found a toy; the other half <em>16</em> the container was empty—and realized the tester had <em>17</em> them.</span>
+          <div class="opts">
+            <div class="opt">A proved<span class="gl">证明</span></div>
+            <div class="opt">B remembered<span class="gl">记得</span></div>
+            <div class="opt">C insisted<span class="gl">坚称</span></div>
+            <div class="opt">D discovered<span class="gl">发现</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>分号后分句的第一个谓语动词，后接宾语从句 the container was empty；与破折号后的 realized 并列。
+            <span class="lbl">🔗 线索</span>① <b>分号两边是平行句</b>：Half of them <b>found</b> a toy ↔ the other half <b>___</b> the container was empty——两组做的是<b>同一个动作</b>（往里看、发现），只是看到的结果相反；② 后面 and realized 说明这是一个<b>刚刚才知道</b>的事实。
+            <span class="lbl">✅ D discovered</span>＝发现（原先不知道的事实），与 found 同义换说。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>proved：证明——预设孩子<b>事先就知道</b>容器是空的，然后去证实；而且「证明」是论证行为，跟 found 不在一个层面。</div>
+              <div class="wr"><span class="l">B</span>remembered：记得——同样预设事先知道；实验里两组孩子事先都不知道里面有什么。</div>
+              <div class="wr"><span class="l">C</span>insisted：坚称——是<b>主观断言</b>，和对面那组的 found（客观事实）不平行；insist 表「坚决要求」时从句还要用虚拟。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐⭐ <b>平行句的动作位取同义、结果位取反义</b>：found ↔ discovered（同一个动作）、a toy ↔ empty（相反的结果）（新卡 <a href="套路库_阅读.html#R246" style="color:var(--accent)">R246</a>）。⭐ <b>三缺一</b>：proved／remembered／insisted 都预设孩子<b>事先已知或已认定</b>，只有 discovered 是「刚知道」（⟹ <a href="套路库_阅读.html#R74" style="color:var(--accent)">R74</a>）。⭐ 分号两侧互释 ⟹ <a href="套路库_阅读.html#R77" style="color:var(--accent)">R77</a>。
+          </div>
+        </div>
+
+        <div class="q" id="q17" data-ans="0">
+          <div class="qhead"><span class="qno">17</span><span class="qt c-word">词义辨析 · 下一句回指 tricked 定档（轻度的骗）</span><span class="qpos">realized the tester had ___ them</span></div>
+          <span class="stem">… the other half <em>16</em> the container was empty—and realized the tester had <em>17</em> them. Among the children who had not been <b>tricked</b>, the majority …</span>
+          <div class="opts">
+            <div class="opt">A fooled<span class="gl">骗，愚弄</span></div>
+            <div class="opt">B mocked<span class="gl">嘲弄</span></div>
+            <div class="opt">C betrayed<span class="gl">背叛；出卖</span></div>
+            <div class="opt">D wronged<span class="gl">冤枉；不公正对待</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>宾语从句的谓语（过去完成时），主语 the tester、宾语 them（那一半孩子）。
+            <span class="lbl">🔗 线索</span>① 测试员装作里面有好东西（Wow!），其实是空的 ⟹ 他让孩子<b>信了一件不真实的事</b>；② ⭐ <b>下一句开头 who had not been tricked</b>——文章自己回头给这件事起了名字：tricked（被骗、被耍）。空格要和 tricked <b>同义、而且同档</b>：一个小把戏，不是什么道德大事。
+            <span class="lbl">✅ A fooled</span>＝骗、愚弄（让人相信假的东西），语气轻，和 tricked 几乎可以互换。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>mocked：嘲弄（常指模仿、取笑）——测试员没有取笑谁，只是演了一出戏。</div>
+              <div class="wr"><span class="l">C</span>betrayed：背叛、辜负——<b>我犹豫过的就是它</b>：信任被辜负＝betray，和主题 trust 太贴了。但 betray 带<b>道德谴责</b>，档位太重；这是一个研究者设计好的小把戏，下一句也只用了 tricked。</div>
+              <div class="wr"><span class="l">D</span>wronged：冤枉、不公正地对待——同样是道义上的重词，档位不对。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐⭐ <b>「骗」字族分档</b>：fool／trick（小把戏，轻）· deceive／cheat（有意欺骗，中）· betray／wrong（辜负信任、道义层面，重）——<b>档位由下文的回指词决定</b>：本篇下一句写 tricked，就只能填轻档（新卡 <a href="套路库_阅读.html#R246" style="color:var(--accent)">R246</a>；连体空按档位对齐 ⟹ <a href="套路库_阅读.html#R50" style="color:var(--accent)">R50</a>）。⭐ <b>三缺一</b>：mocked／betrayed／wronged 都带恶意或道德评判，只有 fooled 是中性的把戏（⟹ <a href="套路库_阅读.html#R74" style="color:var(--accent)">R74</a>）。⚠️ <b>主题词陷阱的另一种</b>：betray 在意思上贴 trust（辜负信任），但文章不在谴责测试员（⟹ <a href="套路库_阅读.html#R247" style="color:var(--accent)">R247</a>）。
+          </div>
+        </div>
+
+        <div class="q" id="q18" data-ans="1">
+          <div class="qhead"><span class="qno">18</span><span class="qt c-context">上下文语义 · 没被骗的那组：愿意（结构失效：四个全接 to do）</span><span class="qpos">the majority were ___ to cooperate with the tester</span></div>
+          <span class="stem">Among the children who had not been tricked, the majority were <em>18</em> to cooperate with the tester in learning a new skill, demonstrating that they trusted his leadership.</span>
+          <div class="opts">
+            <div class="opt">A forced<span class="gl">被迫的</span></div>
+            <div class="opt">B willing<span class="gl">愿意的</span></div>
+            <div class="opt">C hesitant<span class="gl">犹豫的</span></div>
+            <div class="opt">D entitled<span class="gl">有资格的</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>表语，<code>be ___ to do</code>。<b>四个都能接 to do</b>（be forced／willing／hesitant／entitled to do），结构筛不掉。
+            <span class="lbl">🔗 线索</span>① 句首限定了对象：<b>没有被骗过</b>的孩子（可靠组）；② 句尾的现在分词 <code>demonstrating that they trusted his leadership</code> 替你把答案说了——合作的表现<b>说明他们信任他</b> ⟹ 合作是<b>自愿</b>的；③ 下一句 In contrast 另一组「只有 5 个参加」——这一组必须是「多数<b>愿意</b>」。
+            <span class="lbl">✅ B willing</span>：<code>be willing to do</code>＝愿意、乐意做——信任的最直接表现。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>forced：被迫——被迫合作说明不了「信任」；demonstrating that they trusted 直接否掉它。</div>
+              <div class="wr"><span class="l">C</span>hesitant：犹豫——方向反了：没被骗的孩子反而犹豫，与「信任」和下一句的对比都冲突。</div>
+              <div class="wr"><span class="l">D</span>entitled：有资格——讲权利，与意愿、信任无关；而且「合作学本领」不是需要授予资格的特权。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>句尾的 demonstrating／showing／suggesting that … 是作者给你的答案卡</b>：前面的结果空，要能被这句「说明」出来。⭐ <b>对照两栏</b>：可靠组 willing ↔ 不可靠组 only five participated——<b>两组结果一正一反</b>（新卡 <a href="套路库_阅读.html#R246" style="color:var(--accent)">R246</a>）。✍️ <i>Most residents were willing to cooperate with the new recycling scheme.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q19" data-ans="3">
+          <div class="qhead"><span class="qno">19</span><span class="qt c-logic">逻辑关系 · 两组结果并排：对比（In contrast）</span><span class="qpos">___, only five of the 30 children paired with the “___” tester</span></div>
+          <span class="stem">… the majority were <em>18</em> to cooperate with the tester … <em>19</em>, only five of the 30 children paired with the “<em>20</em>” tester participated in a follow-up activity.</span>
+          <div class="opts">
+            <div class="opt">A On the whole<span class="gl">总体上</span></div>
+            <div class="opt">B As a result<span class="gl">结果，因此</span></div>
+            <div class="opt">C For instance<span class="gl">例如</span></div>
+            <div class="opt">D In contrast<span class="gl">相比之下</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>句首连接状语，连接末段两句。
+            <span class="lbl">🔗 线索</span>① 两句说的是<b>两组不同的孩子</b>：上句是没被骗的那组，这句是配了「不可靠」测试员的那组 ⟹ <b>主语换了人</b>；② 结果一个 the majority、一个 only five——<b>方向相反</b>；③ 两句是并列的两个实验结果，谁也不是谁的原因或例子。
+            <span class="lbl">✅ D In contrast</span>＝相比之下、与此相反：把两组截然不同的结果并排放。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>On the whole：总体上——后面要接笼统的概括，而这句是<b>精确数字</b>（30 个里 5 个），讲的也只是其中一组。</div>
+              <div class="wr"><span class="l">B</span>As a result：因此——一组孩子愿意合作，不会<b>导致</b>另一组孩子不参加；两组结果是平行的，不是因果。</div>
+              <div class="wr"><span class="l">C</span>For instance：例如——这句不是上句的例子，是另一组的结果。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐⭐ <b>三缺一，一眼可分</b>：On the whole／As a result／For instance 都是<b>顺着上句往下说</b>（总括、因果、举例），只有 In contrast 是<b>拐过去比</b>（⟹ <a href="套路库_阅读.html#R74" style="color:var(--accent)">R74</a>）。⭐ <b>主语换人 ＋ 结果反向 ⟹ 对比</b>——与 <a href="套路库_阅读.html#R103" style="color:var(--accent)">R103</a> 同一问（「主语换没换人」），2011 换人是类比、2016 换人是对比 while、2018 换人还是对比（新卡 <a href="套路库_阅读.html#R246" style="color:var(--accent)">R246</a>）。
+          </div>
+        </div>
+
+        <div class="q" id="q20" data-ans="2">
+          <div class="qhead"><span class="qno">20</span><span class="qt c-context">上下文语义 · 身份位反写：not been tricked ⟺ “unreliable”</span><span class="qpos">the 30 children paired with the “___” tester</span></div>
+          <span class="stem">Among the children who had not been tricked, the majority … <em>19</em>, only five of the 30 children paired with the “<em>20</em>” tester participated in a follow-up activity.</span>
+          <div class="opts">
+            <div class="opt">A incapable<span class="gl">无能的</span></div>
+            <div class="opt">B inflexible<span class="gl">死板的；不屈的</span></div>
+            <div class="opt">C unreliable<span class="gl">不可靠的</span></div>
+            <div class="opt">D unsuitable<span class="gl">不合适的</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>形容词，修饰 tester，放在引号里；<code>paired with the “___” tester</code> 作 children 的后置定语。
+            <span class="lbl">🔗 线索</span>① <b>对照两栏的「身份位」</b>：上句那组是 children who had <b>not been tricked</b>，这句这组就是被骗了的那组——骗他们的测试员是<b>「不可信」</b>的；② 全文主题 trust，第二个实验考的就是孩子能不能分出 credible（可信）和 dishonest（不诚实）⟹ 空格是 credible 的反面；③ <b>引号</b>：这位测试员并非真的不可靠，是按实验设计演出来的——作者加引号提醒「这是实验里的角色标签」。
+            <span class="lbl">✅ C unreliable</span>＝不可靠的、不可信的——trust 的反面，正是康考迪亚那篇论文标题里的 reliable（<i>Infants prefer to imitate a reliable person</i>）的反义词。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>incapable：无能的——实验不测测试员的能力，测的是孩子<b>信不信</b>他。</div>
+              <div class="wr"><span class="l">B</span>inflexible：死板的——说的是性格，和「骗没骗」无关。</div>
+              <div class="wr"><span class="l">D</span>unsuitable：不合适的——被 paired with（配对）勾出来的「适不适配」，但实验没在测配对合不合适。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐⭐ <b>对照组的身份词＝实验组身份词的反写</b>：not been tricked ⟹ “unreliable”（新卡 <a href="套路库_阅读.html#R246" style="color:var(--accent)">R246</a>）。⭐ <b>三缺一</b>：incapable／inflexible／unsuitable 都在评价测试员「本身怎样」（能力、性格、适配），只有 unreliable 回答「<b>能不能信</b>」——与主题 trust 挂钩的那一个（⟹ <a href="套路库_阅读.html#R247" style="color:var(--accent)">R247</a>）。⭐ <b>四个选项全带否定前缀</b>（in-／un-），剥掉前缀比词根：capable／flexible／reliable／suitable——只有 reliable 和 trust 同义（⟹ <a href="套路库_阅读.html#R194" style="color:var(--accent)">R194</a>）。⭐ 末空又不是逻辑空（⟹ <a href="套路库_阅读.html#R103" style="color:var(--accent)">R103</a>）。
+          </div>
+        </div>
+      </section>
+      <!-- ========== 02+ 两本账 ========== -->
+      <section class="card" id="ledger">
+        <h2><span class="n">02+</span>⭐⭐ 两本账：首段 On the one hand／On the other hand 就是全文目录——后三段轮流接账，两个段首空是「翻账键」（本页最值钱的一段）</h2>
+        <p class="note">拿到卷子读完首段，在卷边画两栏：<b>左栏「信」（信任的好处，以及我们为什么会信）</b>、<b>右栏「防」（信错的代价，以及我们怎么防）</b>。然后每读一段，问一句「它在哪一栏」：</p>
+        <div class="tabwrap"><table class="otab">
+          <tr><th>段</th><th>在哪本账</th><th>这一段说什么</th><th>空</th><th>翻账键</th></tr>
+          <tr><td>①❷</td><td>信（＋）</td><td>信任是育儿、友谊的必要条件</td><td>1 for</td><td>On the one hand</td></tr>
+          <tr><td>①❸</td><td>防（−）</td><td>信错了地方代价高昂</td><td>2 faith · 3 price</td><td>On the other hand</td></tr>
+          <tr><td>②</td><td><b>翻回「信」</b></td><td>既然有代价，为什么还信？因为感觉好——催产素、群居本能、瑞士实验</td><td>5–10</td><td><b>4 Then</b>（问句前：那么，既然如此）</td></tr>
+          <tr><td>③④</td><td><b>翻到「防」</b></td><td>好在我们也有识别不诚信的第六感——加拿大婴儿实验</td><td>12–20</td><td><b>11 Lucky for us</b>（好消息：解药来了）</td></tr>
+        </table></div>
+        <p class="note" style="margin-top:12px">⭐⭐ <b>这张表怎么用</b>：① <b>段首空先问「翻到哪一本」</b>——4 题从「防」翻回「信」，而且句子是个问句 ⟹ 用 Then（既然如此，那为什么……？），Therefore 后面只能接陈述结论、Instead 要求上文说过「本该不信」、Again 要求上文已经问过；② <b>翻账键若是评注语（___ for us），它的正负号由「上一段落在哪」决定</b>——②段末落在风险敞口（肯借大钱给陌生人），③段给解药 ⟹ 好消息 ⟹ Lucky；③ <b>每段的实词空都服从它所在的账</b>：「防」那一栏里 3 题要负号（price），12 题要保护性的作用（protect，不是 delight／surprise）。</p>
+        <p class="note">📌 <b>这篇和 2017 的区别就在这里</b>：<a href="2017_完形_拥抱有益健康.html#steps" style="color:var(--accent)">2017</a> 只讲好处，逻辑空只能「再加一级」（Besides → even → Even）；<b>2018 一开头就把好坏两面都摆出来</b>，逻辑空就变成「翻到哪一面」。<b>先看首段有没有 On the one hand … On the other hand／both … and …／has its pros and cons</b>，就知道这一年的逻辑空押什么（新卡 <a href="套路库_阅读.html#R245" style="color:var(--accent)">R245</a>；阅读版「正反两本账」⟹ <a href="套路库_阅读.html#R182" style="color:var(--accent)">R182</a>；首句复现把文章切两半 ⟹ <a href="套路库_阅读.html#R52" style="color:var(--accent)">R52</a>）。</p>
+        <p class="note">⚠️ <b>两本账不等于两边一样重</b>：②段 95 词、③④段 140 词——<b>「防」那一本占了全文一半以上</b>，11–20 十个空全在这里。标题「为何信任是与生俱来的本能」只说了一半：文章真正落脚的是「本能里也带着防备」。</p>
+      </section>
+
+      <!-- ========== 02++ 对照实验平行句 ========== -->
+      <section class="card" id="pairs">
+        <h2><span class="n">02++</span>⭐⭐ 对照实验平行句：动作同义 · 结果反号 · 身份反写 · 连接取对比——两个实验、六个空按同一个模子填</h2>
+        <p class="note">本篇两个实验都写成「<b>一半人 A，另一半人 B</b>」。把每个平行句劈成左右两栏，<b>左栏是实验组，右栏是对照组</b>，空格落在哪一格，就按那一格的规矩填：</p>
+        <div class="tabwrap"><table class="otab">
+          <tr><th>实验</th><th>格位</th><th>左栏</th><th>右栏</th><th>空 ⟹ 规矩</th></tr>
+          <tr><td>瑞士（②❹）</td><td>身份</td><td>half the subjects／those subjects（喷催产素）</td><td>their <b>___</b> who inhaled something else</td><td><b>10 counterparts</b>：对照组的通称＝身份相同、条件不同</td></tr>
+          <tr><td>瑞士（②❹）</td><td>结果</td><td>significantly higher amounts of money</td><td>（than … 省略：借得少）</td><td>—（比较级已把两组的反差写明）</td></tr>
+          <tr><td>加拿大（③❻）</td><td>动作</td><td>Half of them <b>found</b></td><td>the other half <b>___</b></td><td><b>16 discovered</b>：动作位取<b>同义</b>（两组做的是同一件事）</td></tr>
+          <tr><td>加拿大（③❻）</td><td>结果</td><td>a toy</td><td>the container was empty</td><td>—（结果位<b>反义</b>，原文已给）</td></tr>
+          <tr><td>加拿大（③❻→④❶）</td><td>回指</td><td>—</td><td>the tester had <b>___</b> them ⟸ who had not been <b>tricked</b></td><td><b>17 fooled</b>：被下一句回指的词定档（轻度的骗）</td></tr>
+          <tr><td>加拿大（④）</td><td>结果</td><td>the majority were <b>___</b> to cooperate</td><td>only five of the 30 … participated</td><td><b>18 willing</b>：结果位与对面<b>反号</b>（多数愿意 ↔ 只有 5 个）</td></tr>
+          <tr><td>加拿大（④）</td><td>身份</td><td>children who had <b>not</b> been tricked</td><td>children paired with the “<b>___</b>” tester</td><td><b>20 unreliable</b>：身份位是对面的<b>反写</b></td></tr>
+          <tr><td>加拿大（④）</td><td>连接</td><td colspan="2">两句之间</td><td><b>19 In contrast</b>：主语换组 ＋ 结果反向 ⟹ 对比</td></tr>
+        </table></div>
+        <p class="note" style="margin-top:12px">⭐⭐ <b>口诀：动作同、结果反、身份反写、连接对比</b>。干扰项专门破坏其中一条：16 proved／remembered 让右栏的孩子「事先就知道」（动作不同了）· 17 betrayed 把轻档的「骗」抬成道义上的「背叛」（和回指词 tricked 不同档）· 18 forced／hesitant 让左栏结果不再是「信任的表现」· 19 As a result／For instance 把并排的两组说成因果或举例 · 20 incapable／inflexible 在评价测试员本人，而不是「信不信得过」。</p>
+        <p class="note">📌 <b>与旧卡的分工</b>：<a href="2011_完形_笑与情绪的方向之争.html" style="color:var(--accent)">2011 完形</a>管的是实验<b>方法段</b>「两组条件必须相反」（smile ↔ frown，⟹ <a href="套路库_阅读.html#R106" style="color:var(--accent)">R106</a>）；<b>2018 管的是实验<u>结果段</u>——两组做同一个动作、得出相反结果</b>，空格落在「动作」「结果」「身份」「连接」四个格位上，每个格位的规矩不同（新卡 <a href="套路库_阅读.html#R246" style="color:var(--accent)">R246</a>）。阅读里的研究段同样用得上：题干问「对照组怎样」，答案常是实验组结果的<b>反写</b>。</p>
+      </section>
+
+      <!-- ========== 02+++ 主题词替身 ========== -->
+      <section class="card" id="theme">
+        <h2><span class="n">02+++</span>🧲 主题词 trust 的替身：同义替身是答案 · 形近替身是陷阱 · 反义替身只站在「防」那一侧</h2>
+        <p class="note">全文 272 词，trust 家族本身出现 5 次（Trust · trust · trust · trusting · trusted）。但命题人挖空时<b>很少直接挖主题词本身</b>，挖的是它的替身——<b>分清替身是哪一种，四个选项里谁是答案、谁是陷阱就一目了然</b>：</p>
+        <div class="tabwrap"><table class="otab">
+          <tr><th>替身</th><th>本篇的词</th><th>在哪</th><th>结论</th></tr>
+          <tr><td><b>同义替身</b></td><td><b>faith</b>（put one’s faith in）· trusting <b>mood</b></td><td>2 · 9</td><td>✅ 答案</td></tr>
+          <tr><td><b>形近替身</b></td><td>en<b>trust</b>ed</td><td>14 D</td><td>❌ 陷阱：长得像 trust，意思是「托付」，和「信不信」无关</td></tr>
+          <tr><td><b>义近但档位不对</b></td><td>betrayed（辜负信任）</td><td>17 C</td><td>❌ 陷阱：意思贴着 trust，但带道德谴责，档位比回指词 tricked 重</td></tr>
+          <tr><td><b>反义替身</b></td><td>dishonesty · dishonest · <b>fooled</b> · tricked · <b>unreliable</b></td><td>③④ · 17 · 20</td><td>✅ 只出现在「防」那一栏、对照组那一侧</td></tr>
+          <tr><td><b>同族近义</b></td><td>credible（可信的）· reliable（论文标题原词）</td><td>③❷ · 20</td><td>unreliable＝剥掉 un- 后与 trust 同义的那个</td></tr>
+        </table></div>
+        <p class="note" style="margin-top:12px">⭐⭐ <b>做法</b>：① 读完首句把主题词写在卷边；② 名词空、形容词空先问「是不是主题词换了身衣服」（2 faith、9 mood、20 unreliable 都是）；③ <b>选项里出现主题词的形近字（entrusted）或意义贴得太紧的重词（betrayed），先停一秒</b>——问它在这句里是否真在讲「谁信谁」。（新卡 <a href="套路库_阅读.html#R247" style="color:var(--accent)">R247</a>；主题词陷阱的另一种——主题只给方向不给宾语 ⟹ <a href="套路库_阅读.html#R230" style="color:var(--accent)">R230</a>。）</p>
+        <p class="note">📌 <b>2017 的主题词陷阱与 2018 的不一样</b>：<a href="2017_完形_拥抱有益健康.html#sign" style="color:var(--accent)">2017</a> 15 题 moderate 贴合「减压」主题，错在<b>宾语正负</b>；2018 14 题 entrusted 贴合 trust，错在<b>只是长得像</b>。一个是意义陷阱、一个是字形陷阱。</p>
+      </section>
+
+      <!-- ========== 02++++ 考卷 vs 研究原稿 ========== -->
+      <section class="card" id="orig">
+        <h2><span class="n">02++++</span>✂️ 考卷 vs 研究原稿：加拿大实验对得上流程，对不上数字；瑞士实验把「投资」改成了「借钱」</h2>
+        <p class="note">《读者文摘》原刊页面无法直接打开（403），下面只拿<b>能核到的研究事实</b>对照：加拿大实验据康考迪亚大学 2011-12-05 新闻稿（ScienceDaily 同文转载）；瑞士实验据 2005 年《自然》论文的公开摘要。</p>
+        <div class="tabwrap"><table class="otab">
+          <tr><th>研究原稿</th><th>考卷</th><th>影响哪个空</th></tr>
+          <tr><td>苏黎世团队的「信任博弈」：投资者决定把多少钱<b>交给</b>素不相识的受托人（钱会翻三倍，对方回不回报全凭良心）；对照组喷安慰剂</td><td>ready to <b>lend</b> significantly higher amounts of money to <b>strangers</b> than were their ___ who inhaled <b>something else</b></td><td>9 mood · 10 counterparts（「安慰剂」被通俗化成 something else）</td></tr>
+          <tr><td>Infants prefer to imitate a <b>reliable</b> person（论文标题）</td><td>the “___” tester</td><td><b>20 unreliable</b>（标题里的关键词原样反写）</td></tr>
+          <tr><td><b>60 名 13–16 个月</b>的婴儿，分给可靠／不可靠两类测试员</td><td>children as young as <b>14 months</b> · Sixty toddlers</td><td>13 · 14（新闻稿写 13–16 个月，检索到的论文要点写「14 个月大的婴儿会模仿可靠的示范者」；as young as 强调「年仅」）</td></tr>
+          <tr><td>experimenters looked inside a container, <b>while expressing excitement</b>, and infants were invited to discover whether the box actually contained a toy or was empty</td><td>looking into the container, smiling, and exclaiming, “Wow!” · invited to look ___ · the other half ___ the container was empty</td><td><b>15 inside · 16 discovered</b>（新闻稿用的就是 looked inside 与 discover）</td></tr>
+          <tr><td>第二项任务：同一位测试员用<b>额头</b>按亮一盏按压灯；可靠组 <b>61%</b> 照做、不可靠组 <b>34%</b></td><td>the majority were ___ to cooperate … in learning a new skill · only <b>five of the 30</b> children … participated in a follow-up activity</td><td>18 willing · 19 In contrast</td></tr>
+          <tr><td>the same experimenter used <b>her</b> forehead</td><td>they trusted <b>his</b> leadership</td><td>—</td></tr>
+        </table></div>
+        <p class="note" style="margin-top:12px">📌 <b>最值得记的一格是第四行</b>：新闻稿写 <i>looked inside a container</i>、<i>invited to discover</i>——<b>15 inside 和 16 discovered 两个答案词，在研究原稿里原样就在</b>。到了考卷里，测试员的动作换成了 looking into（是《读者文摘》改的还是命题人改的，原刊打不开核不到），孩子的动作留成了空。⟹ <b>实验流程里「两人做同一个动作」，原稿常常用的是同一个词，考卷故意换掉一个、挖掉另一个</b>。</p>
+        <p class="note">⚠️ <b>照实说两处对不上</b>：① <b>数字</b>——新闻稿是「不可靠组 34% 照做」，30 人的 34% 约为 10 人，考卷写 only five of the 30；原刊打不开，不知道是《读者文摘》引了论文里另一项指标，还是改写时换了数——<b>不影响做题</b>（19 题只看方向）。② <b>性别</b>——新闻稿的测试员是女性（her forehead），考卷写 his leadership。这两处都只记在这里，不当作书误。</p>
+      </section>
+      <!-- ========== 03 考点分类 ========== -->
+      <section class="card">
+        <h2><span class="n">03</span>考点分类（完形不背单个空，要看「这题在考什么」）</h2>
+        <div class="catbar" id="catbar"></div>
+        <div class="catlegend" id="catlegend"></div>
+        <p class="note" style="margin-top:14px">点某一类 → 下方列出该类所有空、正文里同步高亮 → 点小格跳到解析卡。（分类依据不是「空格里填的是什么词」，而是<b>「解这一题你得做什么动作」</b>——所以 7 connect、18 willing 虽然答案是 ___ with／be ___ to do 的搭配，但四个选项接同一个小词、结构筛不掉，要靠 herding instinct、demonstrating that they trusted 定方向，<b>归「上下文语义」</b>；14 introduced 同样四个全接 to，但靠辨析四个动词各自的意思（加进、转交、介绍、托付）解题，<b>归「词义辨析」</b>。）</p>
+        <div class="chips" id="chips"></div>
+        <div class="flow" style="margin-top:16px">
+          <div class="fi"><b>⭐ 十二年对照：2018 是上下文语义空第二多的一年（7 个，仅次于 2012 的 8 个），逻辑空回到 4 个。</b>
+            <span class="ev"><div class="tabwrap"><table class="otab"><tr><th>年份</th><th>词义辨析</th><th>固定搭配</th><th>逻辑关系</th><th>上下文语义</th><th>这一年压在哪</th></tr>
+            <tr><td>2007</td><td>9</td><td>5</td><td>4</td><td>2</td><td>词义（占 45%）</td></tr>
+            <tr><td>2008</td><td>9</td><td>6</td><td><b>2</b></td><td>3</td><td>六道实义动词的主语适配</td></tr>
+            <tr><td>2009</td><td>6</td><td>5</td><td>5</td><td>4</td><td>四类几乎持平</td></tr>
+            <tr><td>2010</td><td>9</td><td>4</td><td>4</td><td>3</td><td>形容词与副词的「方向」</td></tr>
+            <tr><td>2011</td><td>6</td><td>3</td><td>6</td><td>5</td><td>一根因果箭头的方向</td></tr>
+            <tr><td>2012</td><td>5</td><td>4</td><td>3</td><td>8</td><td>作者的应然立场 ＋ 首尾镜像</td></tr>
+            <tr><td>2013</td><td>3</td><td>7</td><td>4</td><td>6</td><td>空格后的介词短语 ＋ 比方与发现同构</td></tr>
+            <tr><td>2014</td><td>5</td><td>6</td><td>3</td><td>6</td><td>按段定正负 ＋ 一个比喻贯穿全文 ＋ 说明书式搭配</td></tr>
+            <tr><td>2015</td><td>6</td><td>6</td><td>3</td><td>5</td><td>研究报道的槽位套话 ＋ 「不止于表面」四连</td></tr>
+            <tr><td>2016</td><td>6</td><td>3</td><td>6</td><td>5</td><td>流程时间轴 ＋ 许可与现实 ＋ 具体动作的画面</td></tr>
+            <tr><td>2017</td><td>7</td><td>4</td><td>3</td><td>6</td><td>一条因果链的扣环词 ＋ 递进台阶 ＋ 框架定正负</td></tr>
+            <tr><td><b>2018</b></td><td><b>5</b></td><td><b>4</b></td><td><b>4</b></td><td><b>7</b></td><td><b>两本账的翻账键 ＋ 对照实验平行句 ＋ 主题词替身</b></td></tr></table></div>
+            ⟹ 2018 的 5／4／4／7 <b>与前十一年都不相同</b>（十二年十一种，唯一一次重样仍是 2016 撞 2011）。语境空多，是因为<b>两本账与两个对照实验把大半的空都挂在了「这一段／这一栏往哪边」上</b>——2、3、12 看账，18、20 看对照栏，7、15 看邻句。⚠️ <b>口径说明</b>：9 mood 若按「put sb in a … mood」之外还要靠冒号后的实验定心态归语境，就成了 5／3／4／8；18 willing 若按答案形态归辨析，就成了 6／4／4／6。两种口径都写在这里。</span></div>
+          <div class="fi"><b>📌 介词（结构）失效三道：7 · 14 · 18。</b>
+            <span class="ev">7 connect／compete／consult／compare <b>全接 with</b>（靠 herding instinct）· 14 added／transferred／introduced／entrusted <b>全能 be ___ to</b>（靠实验第一步是「认识」）· 18 forced／willing／hesitant／entitled <b>全能 be ___ to do</b>（靠句尾 demonstrating that they trusted）；另有 16 题四个动词全能接 that 从句。（此前：2013 一道、2014 两道、2016 三道、2017 四道。）⟹ 与 2017 一样，<b>救回来的都不是介词，是这个空所在的那一栏、那一本账</b>（⟹ <a href="套路库_阅读.html#R157" style="color:var(--accent)">R157</a> 补）。</span></div>
+          <div class="fi"><b>📐 线索位置统计（判据＝关键线索是否落在同一个句号之内）：句内自足 13 空 ／ 跨句 7 空。</b>
+            <span class="ev"><b>跨句（7）</b>：2（上句 Trust → it，才知道是 faith）· 4（上一段落在风险）· 11（上一段末的风险敞口）· 15（上句 looking into）· <b>17（钥匙在下一句 who had not been tricked）</b>· 19（上句 the majority）· 20（上句 not been tricked）。<br><b>句内自足（13）</b>：其余全部。<br>⟹ 句内比例 <b>65%</b>（2010 65% → 2011 75% → 2012 80% → 2013 70% → 2014 85% → 2015 65% → 2016 95% → 2017 90% → <b>2018 65%</b>），与 2010、2015 并列本站最低。<b>跨句多的原因就是两本账和两个实验</b>——段首空要看上一段，对照组的空要看实验组那一句。⚠️ 我犹豫过的四题里，<b>17、4、11 三道都是跨句空</b>。</span></div>
+          <div class="fi"><b>📌 位置预判：四个逻辑空全守规矩（4／4）。</b>
+            <span class="ev"><b>4</b> Then（段首）· <b>5</b> When（句首）· <b>11</b> Lucky for us（段首评注语）· <b>19</b> In contrast（句首）——全部落在「句首／段首」；反过来，<b>句内十六个空没有一个是逻辑空</b>（2014 3／3 · 2015 2／3 · 2016 6／6 · 2017 3／3 · <b>2018 4／4</b>，⟹ <a href="套路库_阅读.html#R76" style="color:var(--accent)">R76</a>）。⚠️ <b>11 题是个「伪装的逻辑空」</b>：选项是四个形容词，看着像词义辨析，但它站在段首、管的是③段和②段怎么接——<b>按位置当逻辑空做，一下就想到「正负号」</b>。</span></div>
+          <div class="fi"><b>📌 三缺一分组法：本年成立 11 次，孤立项 11 次全是答案。</b>
+            <span class="ev"><b>2</b>：attention／concern／interest「关注」族 ＋ <b>faith</b>「信」· <b>6</b>：selects／applies／maintains 预设宾语已在 ＋ <b>produces</b> 从无到有 · <b>9</b>：context／circle／period 都在人外面 ＋ <b>mood</b> 在人心里 · <b>11</b>：Odd／Funny／Ironic「意外」族 ＋ <b>Lucky</b>「好消息」· <b>13</b>：只有 <b>between</b> 能管「X and Y」两项（按语法功能孤立）· <b>14</b>：added／transferred／entrusted 把孩子当物件 ＋ <b>introduced</b> 人与人认识 · <b>15</b>：out／back／around 离开容器 ＋ <b>inside</b> 朝向容器 · <b>16</b>：proved／remembered／insisted 预设事先已知 ＋ <b>discovered</b> 刚知道 · <b>17</b>：mocked／betrayed／wronged 带恶意或道德评判 ＋ <b>fooled</b> 小把戏 · <b>19</b>：On the whole／As a result／For instance 顺着说 ＋ <b>In contrast</b> 拐过去比 · <b>20</b>：incapable／inflexible／unsuitable 评价人本身 ＋ <b>unreliable</b> 信不信得过。<br>⚠️ <b>照实说</b>：6、15、20 三组的分组理由偏软（是做完才看得清的）；2＋2 的两组（3 benefit／hope vs price／debt · 12 delight／surprise vs protect／monitor）先划掉一对、再比；不成组的七题（1 4 5 7 8 10 18）<b>老实读上下文</b>。本年 11 次，仅次于 2016 的 13 次（⟹ <a href="套路库_阅读.html#R74" style="color:var(--accent)">R74</a>）。</span></div>
+        </div>
+      </section>
+
+      <!-- ========== 04 打法 ========== -->
+      <section class="card">
+        <h2><span class="n">04</span>完形六大打法（本篇取证）</h2>
+        <div class="flow">
+          <div class="fi"><b>① 首句不设空 → 先定三要素，再<u>认文体</u></b>：话题、方向、关键词；再问一句「首段有没有摆正反两面」。
+            <span class="ev">本篇首句 tricky business ＋ 紧跟 On the one hand／On the other hand ⟹ <b>两本账的研究报道</b> ⟹ 逻辑空押「翻账」与「对比」，不押递进（<a href="#ledger" style="color:var(--accent)">02+</a>）。</span></div>
+          <div class="fi"><b>② ⭐⭐ 两本账：段首空先问「翻到哪一本」</b>（本篇的主刀之一）。
+            <span class="ev">4 Then（从风险翻回好处，问句前 ⟹ 那么）· 11 Lucky for us（从风险敞口翻到解药 ⟹ 好消息）；Therefore 不接问句、Odd／Funny／Ironic 都是「意外」族（<a href="#ledger" style="color:var(--accent)">02+</a>，⟹ 新卡 R245）。</span></div>
+          <div class="fi"><b>③ ⭐⭐ 对照实验平行句：动作同、结果反、身份反写、连接对比</b>（本篇的主刀之二）。
+            <span class="ev">10 counterparts · 16 discovered（＝found）· 17 fooled（＝tricked）· 18 willing · 19 In contrast · 20 unreliable（＝not tricked 的反写）（<a href="#pairs" style="color:var(--accent)">02++</a>，⟹ 新卡 R246）。</span></div>
+          <div class="fi"><b>④ ⭐⭐ 主题词替身：同义替身是答案、形近替身是陷阱</b>（本篇的主刀之三）。
+            <span class="ev">2 faith · 9 trusting mood · 20 unreliable ✅；14 entrusted（形近）· 17 betrayed（义近档重）❌（<a href="#theme" style="color:var(--accent)">02+++</a>，⟹ 新卡 R247）。</span></div>
+          <div class="fi"><b>⑤ 研究报道：实验流程的动作「两人各做一次」，看前一句找同一个动作</b>。
+            <span class="ev">15 look inside ＝ 上句 looking into · 14 introduced（实验第一步是认识）· 8 exposure to（方法槽，2017 刚考过 exposed to）（<a href="#orig" style="color:var(--accent)">02++++</a>，⟹ <a href="套路库_阅读.html#R106" style="color:var(--accent)">R106</a>、<a href="套路库_阅读.html#R212" style="color:var(--accent)">R212</a>）。</span></div>
+          <div class="fi"><b>⑥ 先分组再代入；介词失效时回到「这一栏、这一本账」</b>。
+            <span class="ev">三缺一成立 11 次全是答案；三道介词失效题靠 herding instinct（7）、实验流程（14）、句尾 demonstrating（18）救回（⟹ R74、R157）。</span></div>
+        </div>
+        <p class="note" style="margin-top:14px">🔁 <b>十三篇完形（2007–2018 ＋ 2022）信号类型对照</b>：<a href="2022_完形_植物意识.html" style="color:var(--accent)">2022</a> 靠明信号词 · <a href="2007_完形_拉美独立后的理想与分歧.html" style="color:var(--accent)">2007</a> 靠结构性信号 · <a href="2008_完形_高智商与遗传疾病.html" style="color:var(--accent)">2008</a> 靠动词与主语适配 · <a href="2009_完形_智力的代价.html" style="color:var(--accent)">2009</a> 靠语用功能 · <a href="2010_完形_霍桑效应遭到质疑.html" style="color:var(--accent)">2010</a> 靠叙事方向 · <a href="2011_完形_笑与情绪的方向之争.html" style="color:var(--accent)">2011</a> 靠因果箭头 · <a href="2012_完形_大法官的伦理与法院的合法性.html" style="color:var(--accent)">2012</a> 靠应然立场与首尾镜像 · <a href="2013_完形_面试打分的当日偏见.html" style="color:var(--accent)">2013</a> 靠介词框架与比方—发现同构 · <a href="2014_完形_像练肌肉一样练大脑.html" style="color:var(--accent)">2014</a> 靠按段定正负与贯穿比喻 · <a href="2015_完形_朋友是基因上的远亲.html" style="color:var(--accent)">2015</a> 靠研究报道槽位与「不止于表面」四连 · <a href="2016_完形_柬埔寨的婚俗.html" style="color:var(--accent)">2016</a> 靠流程时间轴、许可与现实、动作画面 · <a href="2017_完形_拥抱有益健康.html" style="color:var(--accent)">2017</a> 靠因果链扣环词、递进台阶、框架正负号 · <b>2018 靠两本账的翻账键、对照实验平行句、主题词替身</b>。<br>📰 <b>话题</b>：心理与脑科学——与 <a href="2011_完形_笑与情绪的方向之争.html" style="color:var(--accent)">2011</a>（笑与情绪）、<a href="2014_完形_像练肌肉一样练大脑.html" style="color:var(--accent)">2014</a>（大脑训练）、<a href="2017_完形_拥抱有益健康.html" style="color:var(--accent)">2017</a>（拥抱与健康）同属「身心」一族。<b>2017 与 2018 连着两年讲催产素</b>：2017 讲它怎么让人健康（一条因果链），2018 讲它怎么让人信任、以及人为什么不会因此任人摆布（两本账）。</p>
+      </section>
+      <!-- ========== 05 搭配库 ========== -->
+      <section class="card">
+        <h2><span class="n">05</span>固定搭配 &amp; 熟词僻义（这些是死记就得分的）</h2>
+        <div class="wb">
+          <div class="wbi"><div class="p">a tricky business　一件微妙／棘手的事（①❶）</div><div class="u">⭐ <b>business 熟词僻义＝事情、事务</b>（不是「生意」）：a risky business · It’s none of your business.</div></div>
+          <div class="wbi"><div class="p">On the one hand, … On the other hand, …　一方面……另一方面……（①❷❸）</div><div class="u">⭐ 首段出现就是<b>两本账的目录</b>；注意是 On the one hand（有 the），不是 On one hand。</div></div>
+          <div class="wbi"><div class="p">a (necessary) condition for sth　……的（必要）条件（1 题）</div><div class="u">⭐ 对比 <b>on condition that</b>（在……条件下）· <b>under … conditions</b>（在……情况下，复数）。</div></div>
+          <div class="wbi"><div class="p">put／place one’s faith／trust in sb　信任某人（2 题；②❸ place their trust in）</div><div class="u">⭐ faith＝trust 的同义替身；have faith in · lose faith in（不再信任）。</div></div>
+          <div class="wbi"><div class="p">carry／pay a high price　付出高昂代价（3 题）</div><div class="u">⭐ <b>carry 熟词僻义＝带有、带来（后果、风险）</b>：carry a risk · carry a penalty（可判处……刑罚）。</div></div>
+          <div class="wbi"><div class="p">Then, why …?　那么，为什么……？（4 题）</div><div class="u">⭐ <b>then 在问句前＝那么、既然如此</b>，不是「然后」；Therefore 后面不接问句。</div></div>
+          <div class="wbi"><div class="p">why … at all?　究竟为什么……？（②❶）</div><div class="u">⭐ <b>at all 用在疑问句里加强语气</b>＝到底、究竟；否定句里＝一点也不（not at all）。</div></div>
+          <div class="wbi"><div class="p">produce pleasurable feelings　产生愉悦感（6 题）</div><div class="u">produce 熟词僻义之一：<b>引起、造成</b>（感受、效果），不只是「生产」。</div></div>
+          <div class="wbi"><div class="p">prompt sb to do sth　促使某人做某事（②❸）</div><div class="u">⭐ <b>prompt 作动词＝促使</b>（作形容词＝迅速的）；同组 drive／push／encourage sb to do。</div></div>
+          <div class="wbi"><div class="p">connect with sb　与某人建立联系、合得来（7 题）</div><div class="u">⭐ 对比 compete with（与……竞争）· consult with（与……商量）· compare with（与……相比）——<b>同接 with，意思各不同</b>。</div></div>
+          <div class="wbi"><div class="p">exposure to sth　接触、暴露于（8 题）</div><div class="u">⭐⭐ 动词 be exposed to（2017 完形 7 题）；exposure <b>of</b> sth＝揭露。</div></div>
+          <div class="wbi"><div class="p">put sb in a … mood　让某人产生……的心情（9 题）</div><div class="u">✍️ put sb in a good／festive／trusting mood；be in no mood for sth（没心情做）。</div></div>
+          <div class="wbi"><div class="p">than were their counterparts　比他们的对照组（10 题）</div><div class="u">⭐ <b>counterpart＝对应的人／物</b>；than／as 后主语长时常倒装（than did those who …）。</div></div>
+          <div class="wbi"><div class="p">Lucky for us, …　幸运的是（11 题）</div><div class="u">⭐ ＝Luckily／Fortunately for us；反义 Unfortunately for us · Sadly。评注语的正负号看上一段落在哪。</div></div>
+          <div class="wbi"><div class="p">a sixth sense for sth　对……的第六感（③❶）</div><div class="u">have a nose／an eye／a sense for sth＝对某事敏感。</div></div>
+          <div class="wbi"><div class="p">as young as 14 months　年仅 14 个月（③❷）</div><div class="u">⭐ as ＋ adj. ＋ as ＋ 数字＝强调「竟然这么小／早／多」：as early as 1900 · as many as 500。</div></div>
+          <div class="wbi"><div class="p">differentiate between X and Y　区分 X 和 Y（13 题）</div><div class="u">⭐ ＝distinguish between X and Y ＝ differentiate／distinguish X from Y。</div></div>
+          <div class="wbi"><div class="p">be introduced to sb　被介绍给某人、与某人初识（14 题）</div><div class="u">⭐ 对比 be entrusted to sb（被托付给某人）· be transferred to（被调往）· be added to（被加进）——<b>全接 to</b>。</div></div>
+          <div class="wbi"><div class="p">look inside ／ look into　往里面看（15 题）</div><div class="u">⭐ <b>look into 熟词僻义＝调查</b>（look into the matter）；look out＝当心 · look back＝回顾 · look around＝环顾。</div></div>
+          <div class="wbi"><div class="p">be willing to do　愿意做（18 题）</div><div class="u">⭐ 对比 be forced to（被迫）· be hesitant to（犹豫）· be entitled to（有资格）——<b>全接 to do</b>。</div></div>
+          <div class="wbi"><div class="p">… , demonstrating that …　（这）表明……（④❶）</div><div class="u">⭐ 句尾现在分词作结果状语：showing／suggesting／indicating that …——<b>是作者替你下的结论</b>。</div></div>
+          <div class="wbi"><div class="p">be paired with sb　与某人配成一对（④❷）</div><div class="u">⭐ in pairs（成对地）· pair up with；实验报道里常指「分到某一组」。</div></div>
+        </div>
+      </section>
+
+      <!-- ========== 06 80 词表 ========== -->
+      <section class="card">
+        <h2><span class="n">06</span>80 个选项词速查（完形的真正词汇量）
+          <button class="allbtn" id="btnHide" style="margin-left:auto" onclick="toggleHide()">✍️ 默写模式</button>
+        </h2>
+        <p class="note">完形一篇＝<b>80 个高频词的辨析现场</b>，绿底是正确项。<b>默写模式</b>会糊住中文释义——先自己说出意思，点单个格子可单独揭开。<b>本篇 80 个词里有四组值得成组背</b>：7 题<b>四个 ___ with</b>（connect／compete／consult／compare with）、14 题<b>四个 be ___ to</b>（added／transferred／introduced／entrusted to）、18 题<b>四个 be ___ to do</b>（forced／willing／hesitant／entitled to do）、20 题<b>四个否定前缀形容词</b>（incapable／inflexible／unreliable／unsuitable）——<b>同一个小词、四种意思，正是「介词失效」的出题材料</b>；另外 11 题四个「___ for us」评注语（Odd／Funny／Lucky／Ironic）与 19 题四个句首短语也值得一起背。</p>
+        <div class="tabwrap"><table class="otab" id="otab"></table></div>
+      </section>
+      <!-- ========== 07 长难句 ========== -->
+      <section class="card">
+        <h2><span class="n">07</span>长难句精析（正文蓝色虚线句）</h2>
+
+        <div class="sent" id="s1">
+          <div class="src"><u>On the one hand</u>, <span class="skel">it’s a necessary condition</span> <i>for many worthwhile things</i>: child care, friendships, etc. <u>On the other hand</u>, <span class="skel">putting your faith in the wrong place often carries a high price</span>.</div>
+          <div class="anat">
+            <ul>
+              <li><b>两句一对</b>：On the one hand … On the other hand …，同一个主题（信任）的<b>正反两面</b>——这就是全文的目录（⟹ <a href="#ledger" style="color:var(--accent)">02+</a>）。</li>
+              <li>第一句 it＝Trust；冒号后 child care, friendships, etc. 是 worthwhile things 的举例。</li>
+              <li>⭐ 第二句<b>主语是动名词短语</b> <code>putting your faith in the wrong place</code>，谓语 carries，宾语 a high price——主语再长，先找谓语 carries（2、3 题）。</li>
+            </ul>
+          </div>
+          <div class="tr">译：一方面，对于照看孩子、交朋友等许多有价值的事情来说，信任是必要条件。另一方面，把信任放错了地方，往往要付出高昂的代价。</div>
+        </div>
+
+        <div class="sent" id="s2">
+          <div class="src"><u>Then</u>, <span class="skel">why do we trust at all</span>? Well, <span class="skel">because it feels good</span>.</div>
+          <div class="anat">
+            <ul>
+              <li><b>设问—作答</b>：研究报道常用的转折方式——作者替读者问出疑问，自己马上回答。</li>
+              <li>⭐ <b>Then</b> 在问句前＝那么、既然如此；<b>at all</b> 在问句里＝究竟、到底，带「既然有风险，还……？」的口气（4 题）。</li>
+              <li>第二句是省略句：<code>(We trust) because it feels good.</code>——口语化的 Well 提示下面是解释。</li>
+            </ul>
+          </div>
+          <div class="tr">译：那么，我们究竟为什么要信任别人呢？嗯，因为感觉好。</div>
+        </div>
+
+        <div class="sent" id="s3">
+          <div class="src"><u>When people place their trust in an individual or an institution</u>, <span class="skel">their brains release oxytocin</span>, <i>a hormone that produces pleasurable feelings and triggers the herding instinct</i> <i>that prompts humans to connect with one another</i>.</div>
+          <div class="anat">
+            <ul>
+              <li><b>主干</b>：<span class="skel">their brains release oxytocin</span>；句首 When 从句是条件（5 题）。</li>
+              <li><b>oxytocin 后挂了一个同位语</b> <code>a hormone that …</code>，同位语里又套一个定语从句（that produces … and triggers …），<b>第二个 that</b> 修饰 the herding instinct——<b>两个 that，先行词不同</b>。</li>
+              <li>⭐ <b>produces … and triggers …</b> 两个并列谓语，and 同向（6 题）；<code>prompt sb to do</code> 的 to do 就是 7 题。</li>
+            </ul>
+          </div>
+          <div class="tr">译：当人们信任某个人或某个机构时，他们的大脑会释放催产素——这种激素能产生愉悦感，并触发群居本能，促使人们彼此联结。</div>
+        </div>
+
+        <div class="sent" id="s4">
+          <div class="src"><span class="skel">Scientists have found</span> <u>that exposure to this hormone puts us in a trusting mood</u>: <i>In a Swiss study, researchers sprayed oxytocin into the noses of half the subjects</i>; <i>those subjects were ready to lend significantly higher amounts of money to strangers than were their counterparts who inhaled something else</i>.</div>
+          <div class="anat">
+            <ul>
+              <li><b>冒号前是结论，冒号后是证据</b>；分号把证据再切成「做了什么」与「结果如何」两半——研究报道的标准三段。</li>
+              <li><b>宾语从句主干</b>：<span class="skel">exposure … puts us in a … mood</span>——主语是名词 exposure（to this hormone 是它的介词短语，8 题）。</li>
+              <li>⭐ <b>than were their counterparts who …</b>＝than their counterparts (who inhaled something else) were (ready to lend)——比较状语从句倒装并省略（10 题）。</li>
+            </ul>
+          </div>
+          <div class="tr">译：科学家发现，接触这种激素会让我们进入一种容易信任他人的心态：在瑞士的一项研究中，研究人员把催产素喷进一半受试者的鼻腔；这些受试者愿意借给陌生人的钱，明显多于吸入了别的东西的对照组受试者。</div>
+        </div>
+
+        <div class="sent" id="s5">
+          <div class="src"><u>Lucky for us</u>, <span class="skel">we also have a sixth sense</span> <i>for dishonesty</i> <i>that may protect us</i>.</div>
+          <div class="anat">
+            <ul>
+              <li><b>句首评注语</b> Lucky for us＝作者对整句内容的评价（幸运的是），不是句子成分（11 题）。</li>
+              <li>⭐ <b>that 从句修饰谁</b>：修饰 a sixth sense for dishonesty（第六感保护我们），不是修饰 dishonesty（不诚信可不会保护我们）——就近原则要让位给意思（12 题）。</li>
+              <li><b>also</b>：我们除了会信，<b>也</b>会防——一个词就把两本账接上了。</li>
+            </ul>
+          </div>
+          <div class="tr">译：幸运的是，我们也有一种识别不诚信的第六感，它或许能保护我们。</div>
+        </div>
+
+        <div class="sent" id="s6">
+          <div class="src"><span class="skel">A Canadian study found</span> <u>that children <i>as young as 14 months</i> can differentiate between a credible person and a dishonest one</u>.</div>
+          <div class="anat">
+            <ul>
+              <li><b>宾语从句主干</b>：<span class="skel">children can differentiate between X and Y</span>；as young as 14 months 作 children 的后置定语（年仅 14 个月的）。</li>
+              <li>⭐ <b>a dishonest one</b> 的 one＝person，避免重复；credible ↔ dishonest 一正一反（13 题）。</li>
+            </ul>
+          </div>
+          <div class="tr">译：加拿大的一项研究发现，年仅 14 个月大的孩子就能把可信的人和不诚实的人区分开来。</div>
+        </div>
+
+        <div class="sent" id="s7">
+          <div class="src"><span class="skel">The tester would ask</span>, “What’s in here?” <u>before looking into the container, smiling, and exclaiming, “Wow!”</u></div>
+          <div class="anat">
+            <ul>
+              <li><b>before ＋ 三个并列动名词</b>（looking … , smiling, and exclaiming …）：一连串动作按先后排开。</li>
+              <li>⭐ <b>would 表过去的习惯性动作</b>（每个孩子都来一遍）——不是虚拟语气。</li>
+              <li>looking into the container 是 15 题 look inside 的「前一次」：<b>测试员先看，孩子后看</b>。</li>
+            </ul>
+          </div>
+          <div class="tr">译：测试员会先问「这里面是什么？」，然后往容器里看、微笑、并惊叹一声「哇！」。</div>
+        </div>
+
+        <div class="sent" id="s8">
+          <div class="src"><span class="skel">Half of them found a toy</span>; <span class="skel">the other half discovered</span> <u>the container was empty</u>—and <span class="skel">realized</span> <u>the tester had fooled them</u>.</div>
+          <div class="anat">
+            <ul>
+              <li><b>分号两侧是平行句</b>：Half of them … ; the other half …——两组结果并排（16 题 discovered ＝ found）。</li>
+              <li><b>破折号 ＋ and</b>：把第二个谓语 realized 隔开，强调「发现空盒 → 恍然大悟被骗」这一步。</li>
+              <li>⭐ discovered 与 realized 后面都是<b>省略了 that 的宾语从句</b>；had fooled 用过去完成时——骗在前、意识到在后（17 题）。</li>
+            </ul>
+          </div>
+          <div class="tr">译：一半孩子找到了一个玩具；另一半则发现容器是空的——并意识到测试员骗了他们。</div>
+        </div>
+
+        <div class="sent" id="s9">
+          <div class="src"><u>Among the children who had not been tricked</u>, <span class="skel">the majority were willing to cooperate with the tester</span> <i>in learning a new skill</i>, <u>demonstrating that they trusted his leadership</u>. In contrast, <span class="skel">only five of the 30 children</span> <i>paired with the “unreliable” tester</i> <span class="skel">participated in a follow-up activity</span>.</div>
+          <div class="anat">
+            <ul>
+              <li><b>两句就是对照实验的结果栏</b>：左栏 the children who had not been tricked ＋ the majority were willing；右栏 the 30 children paired with the “unreliable” tester ＋ only five participated（⟹ <a href="#pairs" style="color:var(--accent)">02++</a>）。</li>
+              <li>⭐ <b>demonstrating that …</b> 是结果状语，逻辑主语是前面整件事（多数愿意合作）——作者自己给出了 18 题的方向。</li>
+              <li>⭐ <b>paired with …</b> 是过去分词短语作后置定语；引号里的 unreliable 是实验给测试员贴的标签（20 题）。</li>
+            </ul>
+          </div>
+          <div class="tr">译：在没有被骗过的孩子当中，大多数都愿意跟着测试员学一项新本领，这说明他们信任他的带领。相比之下，与那位「不可靠的」测试员配对的 30 个孩子里，只有 5 个参加了后续活动。</div>
+        </div>
+      </section>
+
+      <!-- ========== 08 写作素材 ========== -->
+      <section class="card">
+        <h2><span class="n">08</span>可搬进作文/翻译的表达</h2>
+        <p class="note">本篇是一篇<b>「两面立论 → 研究解释 → 实验证明」的心理科普</b>，最能搬的是三类句子：<b>两面开头句</b>（写「利弊」）、<b>设问—作答句</b>（写「为什么」）、<b>引研究的对照句</b>（写「一项调查显示……相比之下……」）。话题上，「诚信」「人际信任」「网络诈骗」「儿童教育」「社会合作」都能接上。</p>
+        <div class="wb">
+          <div class="wbi"><div class="p">X is a tricky business. On the one hand, … On the other hand, …　X 是件微妙的事。一方面……另一方面……</div><div class="u">⭐⭐ <b>利弊题开头</b>：<i>Online shopping is a tricky business. On the one hand, it saves time; on the other hand, it carries a high price when personal data are leaked.</i></div></div>
+          <div class="wbi"><div class="p">X is a necessary condition for many worthwhile things.　X 是许多有价值之事的必要条件</div><div class="u">⭐ <b>写「前提」</b>：<i>Integrity is a necessary condition for any lasting friendship.</i></div></div>
+          <div class="wbi"><div class="p">Putting your faith in the wrong place often carries a high price.　信错了人往往要付出高昂代价</div><div class="u"><b>写诈骗、诚信</b>：<i>Putting blind faith in online strangers often carries a high price.</i></div></div>
+          <div class="wbi"><div class="p">Then, why do we … at all? Well, because …　那么，我们究竟为什么要……？嗯，因为……</div><div class="u">⭐ <b>设问过渡</b>，大作文第二段开头：<i>Then, why do young people still choose to stay in big cities at all? Well, because opportunities are there.</i></div></div>
+          <div class="wbi"><div class="p">Scientists have found that exposure to X puts us in a … mood.　科学家发现，接触 X 会让我们产生……的心态</div><div class="u"><b>写环境的影响</b>：<i>Studies have found that exposure to nature puts us in a calmer mood.</i></div></div>
+          <div class="wbi"><div class="p">… were ready to do … than were their counterparts who …　比……的同龄人更愿意……</div><div class="u">⭐ <b>引研究对照</b>：<i>Students who read daily were far more ready to express their views than were their counterparts who seldom read.</i></div></div>
+          <div class="wbi"><div class="p">Lucky for us, we also have …　幸运的是，我们也有……</div><div class="u"><b>写「转机」</b>：<i>Lucky for us, we also have a growing number of volunteers willing to help.</i></div></div>
+          <div class="wbi"><div class="p">children as young as N can …　年仅 N 岁的孩子就能……</div><div class="u"><b>写早期教育</b>：<i>Children as young as three can learn to share and take turns.</i></div></div>
+          <div class="wbi"><div class="p">…, demonstrating that … In contrast, only …　……这表明……相比之下，只有……</div><div class="u">⭐⭐ <b>写数据对比</b>：<i>Most respondents were willing to pay more for green products, demonstrating that awareness is rising. In contrast, only a few would give up their cars.</i></div></div>
+        </div>
+      </section>
+
+    </main>
+
+    <aside>
+      <div id="panel"><div class="hint">👆 点正文里的<b>黄底词</b><br>词卡会出现在这里<br><br>点<b>空格</b>则跳到对应解析卡</div></div>
+    </aside>
+  </div>
+
+  <footer>2018 英语一 · 完形填空复盘页 · ✅ 盲做口径：完整盲做 20/20（盲做答案先落盘，再只裁答案页 Section I 那四行核对；2018 T1–T4 四轮都没看过完形精讲）· 解析由 Claude 独立写成并与黄皮书精讲逐空交叉核对（答案零书误）· 来源：<i>Reader’s Digest</i> <i>Your Brain on Trust: Why We’re Hardwired to Rely on Others</i>（原刊页 403，未逐字核）；研究事实据康考迪亚大学 2011-12-05 新闻稿（60 名 13–16 个月婴儿、可靠组 61% vs 不可靠组 34%）与苏黎世团队 2005 年《自然》论文摘要核对；考卷 only five of the 30 与新闻稿 34% 对不上，照实注明 · 本页新卡 R245–R247</footer>
+</div>
+
+<button id="yd">🔍 查有道</button>
+<script>
+/* ============ V ============ */
+const V = {
+  tricky:{w:"a tricky business",ipa:"/ə ˈtrɪki ˈbɪznəs/",pos:"phrase",tags:["phrase","poly","write"],cn:"<b>一件微妙／棘手的事</b>",en:"a situation that is difficult to deal with",ex:"Trust is a tricky business.",mem:"tricky＝trick（把戏）＋ -y ⟹ 要费心思对付的。⭐ <b>business 熟词僻义＝事情、事务</b>：a risky business · none of your business。首句的 tricky 预告全文<b>有好有坏</b>。",syn:"a delicate matter · a thorny issue",conf:"<b>tricky</b>（棘手的）vs <b>tricked</b>（被骗的，④❶）——同词根，一个说事难办、一个说人被耍。"},
+  condition:{w:"condition",ipa:"/kənˈdɪʃn/",pos:"n.",tags:["core","poly"],cn:"①<b>条件，前提</b> ②状况 ③（复数）环境",en:"something that must exist before sth else can happen",ex:"it’s a necessary condition for many worthwhile things",mem:"⭐ <b>a condition for sth</b>＝……的条件（1 题）；on condition that＝以……为条件；living conditions＝生活条件（复数＝环境）。",syn:"prerequisite · requirement",conf:"<b>condition</b>（前提）vs <b>conditional</b>（有条件的）vs <b>precondition</b>（先决条件）。"},
+  worthwhile:{w:"worthwhile",ipa:"/ˌwɜːθˈwaɪl/",pos:"adj.",tags:["core","write"],cn:"<b>值得做的，有价值的</b>",en:"important or useful enough to spend time or effort on",ex:"many worthwhile things: child care, friendships, etc.",mem:"worth（值得）＋ while（时间）⟹ 值得花时间的。✍️ a worthwhile experience · It is worthwhile to do／doing sth。",syn:"valuable · rewarding · meaningful",conf:"<b>worthwhile</b>（值得做的，可作定语）vs <b>worth</b>（值……，后接名词或 doing，只作表语）vs <b>worthy</b>（值得的，worthy of）。"},
+  carry:{w:"carry",ipa:"/ˈkæri/",pos:"v.",tags:["poly"],cn:"①搬运 ②<b>带有，带来（后果、风险）</b>",en:"to have sth as a result or consequence",ex:"often carries a high price",mem:"⭐ <b>熟词僻义</b>：carry a risk（有风险）· carry a penalty（可判刑罚）· carry weight（有分量）——主语都是事，不是人。",syn:"involve · entail · bring",conf:"<b>carry</b>（带有）vs <b>carry out</b>（执行）vs <b>carry on</b>（继续）。"},
+  atall:{w:"at all",ipa:"/ət ˈɔːl/",pos:"phrase",tags:["phrase"],cn:"①（疑问句）<b>究竟，到底</b> ②（否定句）一点也（不）",en:"used in questions to add emphasis; used in negatives to mean ‘in any way’",ex:"why do we trust at all?",mem:"⭐ 问句里带「既然这样，何必……」的口气——4 题 Then 的另一半线索。Not at all（一点也不；不客气）。",syn:"in the first place · ever",conf:"<b>at all</b>（究竟）vs <b>after all</b>（毕竟）vs <b>above all</b>（最重要的是）vs <b>in all</b>（总共）。"},
+  institution:{w:"institution",ipa:"/ˌɪnstɪˈtjuːʃn/",pos:"n.",tags:["core"],cn:"①<b>机构</b>（银行、学校、医院等） ②制度，习俗",en:"a large important organization such as a bank or university",ex:"place their trust in an individual or an institution",mem:"in-（向内）＋ stitute（立）⟹ 立起来的东西 ⟹ 机构、制度。阅读高频：financial institutions（金融机构）· the institution of marriage（婚姻制度）。",syn:"organization · establishment",conf:"<b>institution</b>（机构）vs <b>institute</b>（研究所、学院）vs <b>constitution</b>（宪法；体质）。"},
+  release:{w:"release",ipa:"/rɪˈliːs/",pos:"v./n.",tags:["core","poly"],cn:"①<b>释放（物质、激素）</b> ②发布，发行 ③释放（犯人）",en:"to let a substance flow out",ex:"their brains release oxytocin",mem:"⭐ 科普文里的 release＝身体「放出」某种物质：release hormones／energy／carbon dioxide。2017 完形也写过 the release of oxytocin。",syn:"give off · emit · secrete",conf:"<b>release</b>（释放）vs <b>relieve</b>（缓解）vs <b>relief</b>（宽慰）。"},
+  oxytocin:{w:"oxytocin",ipa:"/ˌɒksiˈtəʊsɪn/",pos:"n.",tags:["core"],cn:"<b>催产素</b>（一种激素）",en:"a hormone that helps social bonding and trust",ex:"their brains release oxytocin, a hormone that",mem:"oxy-（快速）＋ toc（分娩）＋ -in（化学物质）⟹ 促分娩的激素。⭐ 2017、2018 完形<b>连着两年</b>的主角：2017 叫它 the bonding hormone，2018 说它产生愉悦、触发群居本能。",syn:"the bonding hormone · the love hormone",conf:"<b>oxytocin</b>（催产素）vs <b>oxygen</b>（氧气）——同一个 oxy- 词头，意思不同（oxygen 的 oxy-＝酸）。"},
+  hormone:{w:"hormone",ipa:"/ˈhɔːməʊn/",pos:"n.",tags:["core"],cn:"<b>激素，荷尔蒙</b>",en:"a chemical substance produced in the body that controls growth, mood, etc.",ex:"a hormone that produces pleasurable feelings",mem:"希腊语 hormōn（促动）⟹ 促使身体变化的物质。stress hormone（压力激素）· growth hormone（生长激素）。",syn:"—",conf:"<b>hormone</b>（激素）vs <b>harmony</b>（和谐）——形近。"},
+  pleasurable:{w:"pleasurable",ipa:"/ˈpleʒərəbl/",pos:"adj.",tags:["core"],cn:"<b>令人愉快的</b>",en:"giving pleasure; enjoyable",ex:"produces pleasurable feelings",mem:"pleasure（愉快）＋ -able ⟹ 带来愉快的。与上句 it feels good 同义复现——6 题的方向由它定（从无到有地「产生」好感觉）。",syn:"enjoyable · pleasant · agreeable",conf:"<b>pleasurable</b>（令人愉快的）vs <b>pleased</b>（感到高兴的，人作主语）vs <b>pleasant</b>（宜人的）。"},
+  trigger:{w:"trigger",ipa:"/ˈtrɪɡə(r)/",pos:"v./n.",tags:["core","write"],cn:"v. <b>触发，引起</b> n. 扳机；诱因",en:"to make sth happen suddenly",ex:"triggers the herding instinct",mem:"本义「扣扳机」⟹ 一扣就发。⭐ 与 6 题 produces 并列同向（and）。✍️ trigger a debate／an allergy／a chain reaction。",syn:"set off · spark · prompt",conf:"<b>trigger</b>（触发）vs <b>tiger</b>（老虎）——拼写易混。"},
+  herding:{w:"the herding instinct",ipa:"/ðə ˈhɜːdɪŋ ˈɪnstɪŋkt/",pos:"phrase",tags:["phrase"],cn:"<b>群居本能，从众本能</b>",en:"the natural tendency of people to stay close to and follow a group",ex:"triggers the herding instinct that prompts humans to connect with one another",mem:"herd（兽群；把……赶到一起）⟹ herding＝聚成群。⭐ <b>定死 7 题方向：凑到一起（connect），不是互相竞争（compete）</b>。herd mentality＝从众心理。",syn:"herd mentality · social instinct",conf:"<b>herd</b>（兽群）vs <b>heard</b>（听见）vs <b>hurdle</b>（障碍）。"},
+  prompt:{w:"prompt",ipa:"/prɒmpt/",pos:"v./adj.",tags:["core","poly"],cn:"v. <b>促使，激起</b> adj. 迅速的，及时的",en:"to make sb decide to do sth",ex:"prompts humans to connect with one another",mem:"⭐ <b>prompt sb to do</b>＝促使某人做；作形容词 a prompt reply（及时的回复）。AI 时代的「提示词」也叫 prompt。",syn:"encourage · drive · motivate",conf:"<b>prompt</b>（促使）vs <b>promote</b>（促进；提拔）vs <b>prompted</b>（被……促使的）。"},
+  exposure:{w:"exposure",ipa:"/ɪkˈspəʊʒə(r)/",pos:"n.",tags:["core","poly"],cn:"①<b>接触，暴露</b>（exposure to） ②揭露（exposure of） ③曝光",en:"the state of being in a situation where sth can affect you",ex:"exposure to this hormone puts us in a trusting mood",mem:"ex-（向外）＋ pose（放）⟹ 放到外面、摆在面前。⭐⭐ <b>exposure to（接触）vs exposure of（揭露）</b>——8 题；2017 完形 7 题考的是动词 be exposed to。",syn:"contact with · subjection to",conf:"<b>exposure</b>（接触）vs <b>exposition</b>（阐述；博览会）vs <b>expose</b>（v. 使暴露）。"},
+  spray:{w:"spray",ipa:"/spreɪ/",pos:"v./n.",tags:["core"],cn:"v. <b>喷，喷洒</b> n. 喷雾",en:"to force liquid out in very small drops",ex:"researchers sprayed oxytocin into the noses of half the subjects",mem:"nasal spray（鼻喷剂）——催产素实验就是用鼻喷剂给药，所以对照组是 inhaled something else（吸入安慰剂）。",syn:"sprinkle · squirt",conf:"<b>spray</b>（喷）vs <b>spread</b>（传播；铺开）vs <b>stray</b>（走失的）。"},
+  subject:{w:"subject",ipa:"/ˈsʌbdʒɪkt/",pos:"n.",tags:["core","poly"],cn:"①科目 ②主题 ③<b>（实验的）受试者</b>",en:"a person who is used in an experiment",ex:"half the subjects; those subjects were ready to lend",mem:"⭐ <b>熟词僻义</b>：研究报道里的 subject＝受试者＝participant（2017 用 participants）。③❺ Each subject 指的也是受试孩子。",syn:"participant · volunteer",conf:"<b>subject</b>（受试者）vs <b>object</b>（物体；目标）vs <b>be subject to</b>（受……支配；易受……）。"},
+  significantly:{w:"significantly",ipa:"/sɪɡˈnɪfɪkəntli/",pos:"adv.",tags:["core","write"],cn:"<b>显著地，明显地</b>",en:"in a way that is large or important enough to be noticed",ex:"significantly higher amounts of money",mem:"⭐ 研究报道里 significantly 常带统计含义（差异显著）；修饰比较级：significantly higher／lower。✍️ The situation has improved significantly.",syn:"considerably · markedly · substantially",conf:"<b>significantly</b>（显著地）vs <b>signify</b>（表示）vs <b>insignificant</b>（不重要的）。"},
+  inhale:{w:"inhale",ipa:"/ɪnˈheɪl/",pos:"v.",tags:["core"],cn:"<b>吸入</b>",en:"to breathe in air, smoke, or a substance",ex:"who inhaled something else",mem:"in-（向内）＋ hale（呼吸）⟹ 吸入；反义 <b>exhale</b>（呼出）。",syn:"breathe in · take in",conf:"<b>inhale</b>（吸入）vs <b>exhale</b>（呼出）vs <b>inhabit</b>（居住）。"},
+  sixthsense:{w:"a sixth sense",ipa:"/ə sɪksθ sens/",pos:"phrase",tags:["phrase"],cn:"<b>第六感，直觉</b>",en:"a natural ability to know sth without using the five senses",ex:"we also have a sixth sense for dishonesty",mem:"五感之外的第六感。⭐ have a sixth sense for sth＝对……有直觉般的敏感；12 题 protect 的主语就是它（不是 dishonesty）。",syn:"intuition · instinct · gut feeling",conf:"<b>sense</b>（感觉）vs <b>sensation</b>（知觉；轰动）vs <b>sensible</b>（明智的）vs <b>sensitive</b>（敏感的）。"},
+  dishonesty:{w:"dishonesty",ipa:"/dɪsˈɒnɪsti/",pos:"n.",tags:["core"],cn:"<b>不诚实，欺骗行为</b>",en:"behaviour that is not honest",ex:"a sixth sense for dishonesty",mem:"dis-（否定）＋ honesty ⟹ 不诚实。⭐ 本篇「防」那一本账的关键词：dishonesty → dishonest → fooled → tricked → unreliable。",syn:"deceit · deception · fraud",conf:"<b>dishonest</b>（adj. 不诚实的）vs <b>dishonesty</b>（n.）vs <b>dishonor</b>（耻辱）。"},
+  asyoungas:{w:"as young as",ipa:"/æz jʌŋ æz/",pos:"phrase",tags:["phrase","write"],cn:"<b>年仅……，小到……</b>",en:"used to emphasize how young sb is",ex:"children as young as 14 months",mem:"⭐ as ＋ adj. ＋ as ＋ 数字＝强调「竟然这么……」：as early as 1900（早在）· as many as 500（多达）· as little as $5（低至）。",syn:"only · no older than",conf:"<b>as young as</b>（年仅）vs <b>as long as</b>（只要）vs <b>as well as</b>（以及）。"},
+  differentiate:{w:"differentiate",ipa:"/ˌdɪfəˈrenʃieɪt/",pos:"v.",tags:["core","write"],cn:"<b>区分，辨别</b>",en:"to recognize the difference between two things",ex:"can differentiate between a credible person and a dishonest one",mem:"different ＋ -iate ⟹ 使不同 ⟹ 区分。⭐ <b>differentiate between A and B ＝ differentiate A from B</b>（13 题）。",syn:"distinguish · tell apart · discriminate",conf:"<b>differentiate</b>（区分）vs <b>discriminate</b>（区分；歧视，discriminate against）。"},
+  credible:{w:"credible",ipa:"/ˈkredəbl/",pos:"adj.",tags:["core","write"],cn:"<b>可信的，可靠的</b>",en:"that can be believed or trusted",ex:"a credible person and a dishonest one",mem:"cred-（相信）＋ -ible ⟹ 可信的；同根 credit（信用）· credulous（轻信的）· incredible（难以置信的）。⭐ 与 20 题 unreliable 一正一反，框住整个实验。",syn:"trustworthy · reliable · believable",conf:"<b>credible</b>（可信的）vs <b>credulous</b>（轻信的）vs <b>creditable</b>（值得称赞的）。"},
+  toddler:{w:"toddler",ipa:"/ˈtɒdlə(r)/",pos:"n.",tags:["core"],cn:"<b>学步儿</b>（约 1–3 岁）",en:"a young child who has only recently learned to walk",ex:"Sixty toddlers were each introduced to an adult tester",mem:"toddle（蹒跚学步）＋ -er。⭐ 与上句 children as young as 14 months 同指——换词复现。",syn:"infant · young child",conf:"<b>toddler</b>（学步儿）vs <b>infant</b>（婴儿）vs <b>juvenile</b>（青少年）。"},
+  tester:{w:"tester",ipa:"/ˈtestə(r)/",pos:"n.",tags:["core"],cn:"<b>测试员，实验人员</b>",en:"a person who tests sb or sth",ex:"an adult tester holding a plastic container",mem:"test ＋ -er。新闻稿里叫 experimenter；④❷ 的 the “unreliable” tester 就是那位装出惊喜的测试员。",syn:"experimenter · examiner",conf:"<b>tester</b>（测试的人）vs <b>testee</b>（被测的人）——-er 主动、-ee 被动（employer／employee）。"},
+  container:{w:"container",ipa:"/kənˈteɪnə(r)/",pos:"n.",tags:["core"],cn:"<b>容器</b>；集装箱",en:"a box, bottle, etc. used for holding sth",ex:"holding a plastic container",mem:"contain（容纳）＋ -er。⭐ 15 题 look inside 与 16 题 the container was empty 都围着它转——动作空先画出「人在哪、容器在哪」。",syn:"box · receptacle",conf:"<b>container</b>（容器）vs <b>contents</b>（内容物）vs <b>contain</b>（包含）。"},
+  exclaim:{w:"exclaim",ipa:"/ɪkˈskleɪm/",pos:"v.",tags:["core"],cn:"<b>惊叫，呼喊</b>",en:"to say sth suddenly and loudly because of surprise or excitement",ex:"smiling, and exclaiming, “Wow!”",mem:"ex-（向外）＋ claim（喊）⟹ 喊出来；名词 exclamation（感叹号 exclamation mark）。",syn:"cry out · shout",conf:"<b>exclaim</b>（惊叫）vs <b>explain</b>（解释）vs <b>proclaim</b>（宣布）。"},
+  trick:{w:"trick",ipa:"/trɪk/",pos:"v./n.",tags:["core"],cn:"v. <b>欺骗，捉弄</b> n. 把戏；窍门",en:"to make sb believe sth that is not true",ex:"Among the children who had not been tricked",mem:"⭐⭐ <b>17 题的回指词</b>：下一句用 tricked 给上一句的空起了名字 ⟹ 空格只能填同档的 fooled，不能填重档的 betrayed。trick sb into doing sth（骗某人做某事）。",syn:"fool · deceive · cheat",conf:"<b>trick</b>（小把戏，轻）vs <b>deceive</b>（欺骗，中）vs <b>betray</b>（背叛，重）。"},
+  cooperate:{w:"cooperate",ipa:"/kəʊˈɒpəreɪt/",pos:"v.",tags:["core","write"],cn:"<b>合作，配合</b>",en:"to work together with sb",ex:"willing to cooperate with the tester in learning a new skill",mem:"co-（共同）＋ operate（工作）。✍️ cooperate with sb in (doing) sth；名词 cooperation · 形容词 cooperative。",syn:"collaborate · work together",conf:"<b>cooperate</b>（合作）vs <b>corporate</b>（公司的）vs <b>incorporate</b>（包含）。"},
+  demonstrate:{w:"demonstrate",ipa:"/ˈdemənstreɪt/",pos:"v.",tags:["core","poly"],cn:"①<b>表明，证明</b> ②演示 ③示威",en:"to show clearly that sth is true",ex:"demonstrating that they trusted his leadership",mem:"de-（完全）＋ monstr（显示）⟹ 完全显示出来。⭐ 句尾 demonstrating that … 是作者替你下的结论——18 题的方向就在这里。",syn:"show · indicate · prove",conf:"<b>demonstrate</b>（表明）vs <b>demonstration</b>（示威游行；演示）。"},
+  leadership:{w:"leadership",ipa:"/ˈliːdəʃɪp/",pos:"n.",tags:["core"],cn:"①<b>领导，带领</b> ②领导能力 ③领导层",en:"the act of leading a group",ex:"they trusted his leadership",mem:"leader ＋ -ship（状态、身份）。本篇指测试员带着孩子学新本领的「带领」。",syn:"guidance · direction",conf:"<b>leadership</b>（领导）vs <b>leader</b>（领导者）vs <b>-ship</b>：friendship · partnership。"},
+  pairedwith:{w:"be paired with",ipa:"/bi peəd wɪð/",pos:"phrase",tags:["phrase"],cn:"<b>与……配对，分在一组</b>",en:"to be put together with sb to form a pair",ex:"the 30 children paired with the “unreliable” tester",mem:"pair（一对）。⭐ 过去分词短语作后置定语：children (who were) paired with …；20 题 unsuitable 就是被 paired（配对）勾出来的「适不适配」。",syn:"be matched with · be assigned to",conf:"<b>pair</b>（一对）vs <b>pare</b>（削减）vs <b>peer</b>（同龄人）。"},
+  followup:{w:"follow-up",ipa:"/ˈfɒləʊ ʌp/",pos:"adj./n.",tags:["core"],cn:"adj. <b>后续的</b> n. 后续行动",en:"done to continue or check sth done earlier",ex:"participated in a follow-up activity",mem:"动词短语 follow up（跟进）⟹ 连字符形容词 follow-up。✍️ a follow-up study／visit／question。",syn:"subsequent · further",conf:"<b>follow-up</b>（后续的）vs <b>following</b>（下列的；接着的）。"}
+};
+const panel=document.getElementById('panel');
+const isMobile=()=>window.innerWidth<=900;
+function badge(t){return {core:'<span class="badge b-core">核心词</span>',phrase:'<span class="badge b-phrase">短语</span>',poly:'<span class="badge b-poly">熟词僻义</span>',write:'<span class="badge b-write">写作✍︎</span>'}[t]||''}
+function showCard(k,el){
+  const d=V[k]; if(!d)return;
+  document.querySelectorAll('.tk.active').forEach(e=>e.classList.remove('active'));
+  if(el&&el.classList.contains('tk'))el.classList.add('active');
+  panel.innerHTML='<button class="close" onclick="panel.classList.remove(\'open\')">✕</button>'+
+  '<div class="wcard"><div class="head"><span class="w">'+d.w+'</span><span class="ipa">'+d.ipa+'</span><span class="pos">'+d.pos+'</span>'+d.tags.map(badge).join('')+'</div>'+
+  '<div class="cn">'+d.cn+'</div><div class="en-def">'+d.en+'</div>'+
+  '<div class="row r-ex"><b>原文语境</b>「…'+d.ex+'…」</div>'+
+  '<div class="row r-mem"><b>怎么记</b>'+d.mem+'</div>'+
+  '<div class="row r-syn"><b>同类词</b>'+d.syn+'</div>'+
+  '<div class="row r-conf"><b>易混辨析</b>'+d.conf+'</div></div>';
+  if(isMobile())panel.classList.add('open');
+}
+document.querySelectorAll('.tk').forEach(t=>t.addEventListener('click',e=>{e.stopPropagation();showCard(t.dataset.w,t)}));
+
+/* ============ 译文开关 ============ */
+function tz(btn){btn.closest('.para').classList.toggle('showzh')}
+let allOn=false;
+function toggleAll(){allOn=!allOn;document.querySelectorAll('.para').forEach(p=>p.classList.toggle('showzh',allOn))}
+function go(id){const s=document.getElementById(id);if(!s)return;s.scrollIntoView({behavior:'smooth',block:'center'});s.style.transition='none';s.style.opacity=.3;setTimeout(function(){s.style.transition='opacity .8s';s.style.opacity=1},80)}
+
+/* ============ 20 空数据（类别 + 正确词） ============ */
+const CAT={
+  logic:{name:"逻辑关系",cls:"c-logic",color:"#3d6a8a"},
+  collo:{name:"固定搭配",cls:"c-collo",color:"#3e7a4e"},
+  word:{name:"词义辨析",cls:"c-word",color:"#b04a3a"},
+  context:{name:"上下文语义",cls:"c-context",color:"#6d5a8e"}
+};
+const B={
+  1:{w:"for",cat:"collo"},            2:{w:"faith",cat:"context"},
+  3:{w:"price",cat:"context"},        4:{w:"Then",cat:"logic"},
+  5:{w:"When",cat:"logic"},           6:{w:"produces",cat:"word"},
+  7:{w:"connect",cat:"context"},      8:{w:"to",cat:"collo"},
+  9:{w:"mood",cat:"collo"},           10:{w:"counterparts",cat:"word"},
+  11:{w:"Lucky",cat:"logic"},         12:{w:"protect",cat:"context"},
+  13:{w:"between",cat:"collo"},       14:{w:"introduced",cat:"word"},
+  15:{w:"inside",cat:"context"},      16:{w:"discovered",cat:"word"},
+  17:{w:"fooled",cat:"word"},         18:{w:"willing",cat:"context"},
+  19:{w:"In contrast",cat:"logic"},   20:{w:"unreliable",cat:"context"}
+};
+/* ============ 点空格 → 跳到解析卡 ============ */
+document.querySelectorAll('.bk').forEach(function(b){
+  b.addEventListener('click',function(){
+    document.querySelectorAll('.bk.active').forEach(function(e){e.classList.remove('active')});
+    b.classList.add('active');
+    go('q'+b.dataset.n);
+  });
+});
+function fillBlank(n,ok){
+  const el=document.querySelector('.bk[data-n="'+n+'"]');
+  if(!el)return;
+  el.classList.remove('miss');
+  el.classList.add(ok===false?'miss':'filled');
+  el.innerHTML='<span class="idx">'+n+'</span>'+B[n].w;
+}
+
+/* ============ 即点即判 + 计分 ============ */
+let done=0,right=0;
+function updScore(){
+  document.getElementById('sDone').textContent=done;
+  document.getElementById('sRight').textContent=right;
+  document.getElementById('sPt').textContent=(right*0.5).toFixed(1);
+}
+document.querySelectorAll('.q').forEach(function(q){
+  const ans=+q.dataset.ans, n=q.id.replace('q','');
+  q.querySelectorAll('.opt').forEach(function(o,i){
+    o.addEventListener('click',function(){
+      if(q.classList.contains('done'))return;
+      q.classList.add('done');
+      const ok=(i===ans);
+      if(!ok)o.classList.add('wrong');
+      q.querySelectorAll('.opt')[ans].classList.add('right');
+      done++; if(ok)right++; updScore();
+      fillBlank(n,ok);
+    });
+  });
+});
+function revealAll(){
+  document.querySelectorAll('.q').forEach(function(q){
+    const n=q.id.replace('q','');
+    if(!q.classList.contains('done')){
+      q.classList.add('done');
+      q.querySelectorAll('.opt')[+q.dataset.ans].classList.add('right');
+      done++; updScore();
+    }
+    fillBlank(n,true);
+  });
+  document.querySelectorAll('.bk.miss').forEach(function(e){e.classList.remove('miss');e.classList.add('filled')});
+}
+
+/* ============ 考点统计 ============ */
+const counts={};Object.keys(B).forEach(function(k){counts[B[k].cat]=(counts[B[k].cat]||0)+1});
+const order=["word","collo","context","logic"];
+document.getElementById('catbar').innerHTML=order.map(function(k){
+  return '<div class="catseg" style="flex:'+counts[k]+';background:'+CAT[k].color+'">'+CAT[k].name+' '+counts[k]+'</div>'}).join('');
+const legend=document.getElementById('catlegend');
+legend.innerHTML=order.map(function(k){
+  return '<div class="cl" data-cat="'+k+'"><span class="dot" style="background:'+CAT[k].color+'"></span>'+CAT[k].name+' · '+counts[k]+' 题</div>'}).join('');
+const chips=document.getElementById('chips');
+function renderChips(cat){
+  chips.innerHTML=Object.keys(B).filter(function(n){return !cat||B[n].cat===cat})
+    .map(function(n){return '<span class="chip" data-n="'+n+'">'+n+'. '+B[n].w+'</span>'}).join('');
+  chips.querySelectorAll('.chip').forEach(function(c){
+    c.addEventListener('click',function(){go('q'+c.dataset.n)});
+  });
+}
+renderChips(null);
+legend.querySelectorAll('.cl').forEach(function(l){
+  l.addEventListener('click',function(){
+    const cat=l.dataset.cat;
+    document.querySelectorAll('.cl').forEach(function(x){x.style.borderColor=''});
+    l.style.borderColor=CAT[cat].color;
+    renderChips(cat);
+    document.querySelectorAll('.bk').forEach(function(b){
+      b.style.outline=(B[b.dataset.n].cat===cat?'2px solid '+CAT[cat].color:'')});
+  });
+});
+
+/* ============ 80 选项词表 ============ */
+const OPTS={
+ 1:[["from","来自（方向反了）"],["for","condition for 对……是条件"],["like","像；例如（要同类或例子）"],["on","关于；对……（前面名词要含动作）"]],
+ 2:[["attention","注意力（关注族，跳出主题）"],["concern","担忧；关心（关注族）"],["faith","信任（trust 的同义替身）"],["interest","兴趣；利息（钱场子陷阱）"]],
+ 3:[["benefit","好处；救济金（号反了）"],["price","代价（泛指一切损失）"],["debt","债务（把代价缩成钱）"],["hope","希望（号反了）"]],
+ 4:[["Again","再一次；再说（上文没问过）"],["Instead","反而（上文没说本该不信）"],["Therefore","因此（不接问句）"],["Then","那么，既然如此（问句前）"]],
+ 5:[["When","当……时（条件—结果）"],["Unless","除非（换 if not 即荒谬）"],["Although","虽然（两边不对立）"],["Until","直到（信任后就停了？）"]],
+ 6:[["selects","挑选（预设已存在）"],["applies","应用；施加（宾语不对）"],["produces","产生（从无到有）"],["maintains","维持（预设已存在）"]],
+ 7:[["connect","联结（群居本能）"],["compete","竞争（被比较级勾引）"],["consult","商量（功能性互动）"],["compare","比较（被比较级勾引）"]],
+ 8:[["by","被；由（施动者是人）"],["to","exposure to 接触"],["of","exposure of 揭露"],["at","在（说不出关系）"]],
+ 9:[["context","背景；语境（人外面）"],["circle","圈子（人群）"],["period","时期（时间段）"],["mood","心态（人心里）"]],
+ 10:[["counterparts","对应者＝对照组"],["colleagues","同事（受试者不是同事）"],["substitutes","替代者（两组同时做）"],["supporters","支持者（their 指受试者）"]],
+ 11:[["Odd","奇怪的（意外族）"],["Funny","好笑的；奇怪的（意外族）"],["Lucky","幸运的（好消息）"],["Ironic","讽刺的（意外族）"]],
+ 12:[["protect","保护（第六感的作用）"],["delight","使高兴（主观感受）"],["surprise","使惊讶（主观感受）"],["monitor","监视（宾语应是情形）"]],
+ 13:[["over","超过（不接 X and Y）"],["within","在……之内（对立两类非一群）"],["toward","朝向（区分无方向）"],["between","between X and Y 区分两者"]],
+ 14:[["added","加进（当物件）"],["transferred","转交（当物件）"],["introduced","介绍给（初次认识）"],["entrusted","托付（trust 形近陷阱）"]],
+ 15:[["out","向外；当心"],["inside","往里面（＝looking into）"],["back","回顾；向后"],["around","环顾四周"]],
+ 16:[["proved","证明（预设已知）"],["remembered","记得（预设已知）"],["insisted","坚称（主观断言）"],["discovered","发现（＝found）"]],
+ 17:[["fooled","骗（轻档，＝tricked）"],["mocked","嘲弄（没取笑谁）"],["betrayed","背叛（重档，道德谴责）"],["wronged","冤枉（重档）"]],
+ 18:[["forced","被迫的（说明不了信任）"],["willing","愿意的（信任的表现）"],["hesitant","犹豫的（方向反）"],["entitled","有资格的（与意愿无关）"]],
+ 19:[["On the whole","总体上（后接概括）"],["As a result","因此（两组不是因果）"],["For instance","例如（不是例子）"],["In contrast","相比之下（两组对比）"]],
+ 20:[["incapable","无能的（评价能力）"],["inflexible","死板的（评价性格）"],["unreliable","不可靠的（trust 的反面）"],["unsuitable","不合适的（被 paired 勾引）"]]
+};
+const ANS={1:1,2:2,3:1,4:3,5:0,6:2,7:0,8:1,9:3,10:0,11:2,12:0,13:3,14:2,15:1,16:3,17:0,18:1,19:3,20:2};
+(function(){
+  let h='<tr><th>空</th><th>A</th><th>B</th><th>C</th><th>D</th></tr>';
+  for(let n=1;n<=20;n++){
+    h+='<tr><td class="n">'+n+'</td>';
+    OPTS[n].forEach(function(o,i){
+      h+='<td'+(i===ANS[n]?' class="hit"':'')+'><span class="ow">'+o[0]+'</span><span class="oc">'+o[1]+'</span></td>';
+    });
+    h+='</tr>';
+  }
+  document.getElementById('otab').innerHTML=h;
+  document.querySelectorAll('#otab .oc').forEach(function(c){
+    c.addEventListener('click',function(){c.classList.toggle('show')});
+  });
+})();
+function toggleHide(){
+  const t=document.getElementById('otab');
+  const on=t.classList.toggle('hidecn');
+  document.getElementById('btnHide').textContent=on?'👁 显示释义':'✍️ 默写模式';
+  if(!on)t.querySelectorAll('.oc.show').forEach(function(c){c.classList.remove('show')});
+}
+
+/* ============ 查有道 ============ */
+const yd=document.getElementById('yd');let sel='';
+document.addEventListener('selectionchange',function(){
+  const s=window.getSelection();const t=s?s.toString().trim():'';
+  if(t&&/^[a-zA-Z' -]{2,40}$/.test(t)){
+    sel=t;
+    try{const r=s.getRangeAt(0).getBoundingClientRect();
+      yd.style.left=Math.min(r.left,window.innerWidth-110)+'px';
+      yd.style.top=(r.bottom+8)+'px';yd.style.display='block';}catch(e){}
+  }else{yd.style.display='none'}
+});
+yd.addEventListener('click',function(){window.open('https://dict.youdao.com/result?word='+encodeURIComponent(sel)+'&lang=en');yd.style.display='none'});
+document.addEventListener('click',function(e){if(e.target!==yd&&!window.getSelection().toString())yd.style.display='none'});
+</script>
+<script src="_fault_attr.js"></script>
+</body>
+</html>

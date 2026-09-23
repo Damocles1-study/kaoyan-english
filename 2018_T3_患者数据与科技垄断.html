@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2018 英一 Text 3 · 患者数据与科技垄断：换尺子、不够—关键与态度题两头验</title>
+<style>
+  :root{
+    --bg:#faf9f6; --card:#ffffff; --ink:#2b2b2b; --muted:#8a8578;
+    --accent:#8b5e34; --accent-soft:#f3e9dd; --line:#e8e3d8;
+    --hl:#fdf3d8; --hl-border:#e0b84d;
+    --green:#3e7a4e; --green-soft:#e8f2ea;
+    --red:#b04a3a; --red-soft:#f9e9e6;
+    --blue:#3d6a8a; --blue-soft:#e7eff5;
+    --purple:#6d5a8e; --purple-soft:#eeeaf5;
+    --serif:"Georgia","Songti SC",serif;
+    --sans:-apple-system,"PingFang SC","Helvetica Neue",sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#1c1a17; --card:#26231f; --ink:#e8e4dc; --muted:#9a948a;
+      --accent:#d0a06a; --accent-soft:#3a3127; --line:#3a362f;
+      --hl:#3d3520; --hl-border:#b08c3a;
+      --green:#7fb98d; --green-soft:#26362b;
+      --red:#d98876; --red-soft:#3d2a26;
+      --blue:#8ab3d0; --blue-soft:#26323d;
+      --purple:#a996c8; --purple-soft:#302a3d;
+    }
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;padding-bottom:120px}
+  .wrap{max-width:1100px;margin:0 auto;padding:24px 20px}
+  .back{font-size:.85rem;color:var(--muted);text-decoration:none}
+  .back:hover{color:var(--accent)}
+  header{margin:14px 0 28px}
+  header h1{font-family:var(--serif);font-size:1.7rem;line-height:1.3}
+  header .sub{color:var(--muted);margin-top:6px;font-size:.9rem}
+  .tags{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+  .tag{font-size:.75rem;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);border:1px solid var(--line)}
+  .tag.warn{background:var(--red-soft);color:var(--red);border-color:var(--red)}
+  .tag.ok{background:var(--green-soft);color:var(--green);border-color:var(--green)}
+
+  .layout{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:24px;align-items:start}
+  main{min-width:0}
+  @media (max-width:900px){.layout{grid-template-columns:minmax(0,1fr)}}
+
+  section.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:24px}
+  h2{font-size:1.05rem;letter-spacing:.05em;color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+  h2 .n{font-size:.72rem;background:var(--accent);color:var(--card);border-radius:6px;padding:1px 7px}
+  h3{font-size:.95rem;color:var(--accent);margin:18px 0 10px}
+
+  .para{margin-bottom:22px}
+  .para .en{font-family:var(--serif);font-size:1.06rem;line-height:1.9}
+  .pno{color:var(--muted);font-size:.75rem;user-select:none;margin-right:6px}
+  .tk{background:var(--hl);border-bottom:2px solid var(--hl-border);border-radius:3px;padding:0 2px;cursor:pointer;transition:filter .15s}
+  .tk:hover{filter:brightness(.93)}
+  .tk.active{outline:2px solid var(--hl-border)}
+  .ls{border-bottom:2px dotted var(--blue);cursor:pointer}
+  .para .zh{display:none;margin-top:10px;padding:10px 14px;background:var(--blue-soft);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:.93rem}
+  .para.showzh .zh{display:block}
+  .zbtn{float:right;margin-left:10px;font-size:.72rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:6px;padding:2px 9px;cursor:pointer}
+  .zbtn:hover{color:var(--accent);border-color:var(--accent)}
+  .allbtn{font-size:.78rem;border:1px solid var(--accent);background:none;color:var(--accent);border-radius:8px;padding:4px 12px;cursor:pointer;margin-left:auto}
+
+  aside{position:sticky;top:20px}
+  #panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;min-height:180px}
+  #panel .hint{color:var(--muted);font-size:.88rem;text-align:center;padding:30px 10px}
+  .wcard .head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .wcard .w{font-family:var(--serif);font-size:1.35rem;font-weight:bold}
+  .wcard .ipa{color:var(--muted);font-size:.85rem}
+  .wcard .pos{font-size:.72rem;color:var(--purple);background:var(--purple-soft);padding:1px 8px;border-radius:999px}
+  .wcard .badge{font-size:.7rem;padding:1px 8px;border-radius:999px}
+  .b-core{background:var(--red-soft);color:var(--red)}
+  .b-phrase{background:var(--blue-soft);color:var(--blue)}
+  .b-poly{background:var(--purple-soft);color:var(--purple)}
+  .b-write{background:var(--green-soft);color:var(--green)}
+  .wcard .cn{margin-top:8px;font-size:1rem;font-weight:600}
+  .wcard .en-def{color:var(--muted);font-size:.86rem;font-style:italic;margin-top:2px}
+  .wcard .row{margin-top:10px;font-size:.86rem;padding:8px 10px;border-radius:8px}
+  .wcard .row>b:first-child{font-size:.72rem;display:block;margin-bottom:2px;letter-spacing:.06em}
+  .r-ex{background:var(--hl)} .r-ex b{color:var(--hl-border)}
+  .r-mem{background:var(--green-soft)} .r-mem b{color:var(--green)}
+  .r-syn{background:var(--blue-soft)} .r-syn b{color:var(--blue)}
+  .r-conf{background:var(--red-soft)} .r-conf b{color:var(--red)}
+  #panel .close{display:none}
+  @media (max-width:900px){
+    aside{position:fixed;left:0;right:0;bottom:0;z-index:50;padding:0 8px 8px}
+    #panel{box-shadow:0 -6px 24px rgba(0,0,0,.18);max-height:55vh;overflow-y:auto;display:none}
+    #panel.open{display:block}
+    #panel .close{display:block;float:right;border:none;background:var(--line);border-radius:8px;padding:2px 10px;cursor:pointer;color:var(--ink)}
+  }
+
+  .q{margin-bottom:22px;padding-bottom:18px;border-bottom:1px dashed var(--line)}
+  .q:last-child{border:none;margin-bottom:0;padding-bottom:0}
+  .q .stem{font-weight:600;font-family:var(--serif)}
+  .qt{font-size:.7rem;color:var(--blue);background:var(--blue-soft);border-radius:999px;padding:1px 8px;margin-right:6px;vertical-align:2px}
+  .opts{margin-top:10px;display:grid;gap:8px}
+  .opt{border:1px solid var(--line);border-radius:10px;padding:8px 12px;cursor:pointer;font-size:.93rem;font-family:var(--serif);transition:all .15s}
+  .opt:hover{border-color:var(--accent)}
+  .q.done .opt{cursor:default}
+  .opt.right{background:var(--green-soft);border-color:var(--green)}
+  .opt.wrong{background:var(--red-soft);border-color:var(--red)}
+  .expl{display:none;margin-top:12px;background:var(--accent-soft);border-radius:10px;padding:12px 14px;font-size:.9rem}
+  .q.done .expl{display:block}
+  .expl b{color:var(--accent)}
+  .expl .loc{font-family:var(--serif);font-style:italic;background:var(--hl);padding:1px 4px;border-radius:3px}
+  .fail{background:var(--red-soft);border:1px solid var(--red);border-radius:10px;padding:10px 13px;margin-bottom:10px;font-size:.89rem}
+  .fail b{color:var(--red)}
+  .waver{background:var(--hl);border:1px solid var(--hl-border);border-radius:10px;padding:10px 13px;margin-bottom:10px;font-size:.89rem}
+
+  .sent{margin-bottom:20px}
+  .sent .src{font-family:var(--serif);font-size:1rem;background:var(--blue-soft);padding:12px 14px;border-radius:10px;border-left:3px solid var(--blue)}
+  .sent .anat{margin-top:8px;font-size:.9rem}
+  .sent .anat li{margin:4px 0 4px 18px}
+  .sent .tr{margin-top:8px;font-size:.92rem;color:var(--muted)}
+  .skel{color:var(--red);font-weight:600}
+
+  .filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+  .fbtn{font-size:.8rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:999px;padding:4px 14px;cursor:pointer}
+  .fbtn.on{background:var(--accent);color:var(--card);border-color:var(--accent)}
+  .vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
+  .vitem{border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer;transition:border-color .15s}
+  .vitem:hover{border-color:var(--accent)}
+  .vitem .w{font-family:var(--serif);font-weight:bold}
+  .vitem .cn{font-size:.85rem;color:var(--muted)}
+  .vitem .badges{float:right}
+
+  .wb{display:grid;gap:10px}
+  .wbi{border-left:3px solid var(--green);background:var(--green-soft);border-radius:0 10px 10px 0;padding:10px 14px;font-size:.92rem}
+  .wbi .p{font-family:var(--serif);font-weight:600}
+  .wbi .u{color:var(--muted);font-size:.85rem}
+
+  .flow{display:grid;gap:8px;font-size:.92rem}
+  .flow .fi{border:1px solid var(--line);border-radius:10px;padding:9px 13px}
+  .flow .fi b{color:var(--accent)}
+
+  .ctab{width:100%;border-collapse:collapse;font-size:.86rem;margin-top:8px}
+  .ctab th,.ctab td{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
+  .ctab th{background:var(--accent-soft);color:var(--accent);font-size:.8rem;white-space:nowrap}
+  .ctab code{background:var(--hl);padding:0 3px;border-radius:3px}
+  .tabwrap{overflow-x:auto}
+  .ok{color:var(--green);font-weight:700}
+  .no{color:var(--red);font-weight:700}
+  .tl{display:grid;gap:10px;margin-top:6px}
+  .tli{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:start;border:1px solid var(--line);border-radius:10px;padding:10px 13px}
+  .tli .mark{font-family:var(--serif);font-weight:700;color:var(--accent);background:var(--accent-soft);border-radius:8px;padding:4px 10px;white-space:nowrap;font-size:.85rem}
+
+  .arrow{display:grid;gap:8px;margin-top:8px}
+  .arrow .ai{border:1px solid var(--line);border-radius:10px;padding:10px 13px;font-size:.9rem}
+  .arrow .ai.old{background:var(--red-soft);border-color:var(--red)}
+  .arrow .ai.new{background:var(--green-soft);border-color:var(--green)}
+  .chain{font-family:var(--serif);font-size:.95rem;background:var(--hl);border:1px solid var(--hl-border);border-radius:10px;padding:10px 14px;margin:8px 0;overflow-x:auto}
+
+  #yd{position:fixed;z-index:60;display:none;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:4px 12px;font-size:.8rem;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+  footer{color:var(--muted);font-size:.8rem;text-align:center;margin-top:30px}
+  .att{display:grid;gap:8px;margin-top:10px}
+  .atti{border:1px solid var(--line);border-radius:10px;padding:9px 13px;font-size:.9rem}
+  .atti b{font-family:var(--serif)}
+  .atti.no2{background:var(--red-soft);border-color:var(--red)}
+  .atti.yes{background:var(--green-soft);border-color:var(--green)}
+  .atti,.expl,.wbi,.zh,.fi,.ai,figcaption,p{overflow-wrap:anywhere}
+</style>
+
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">◀ 返回英语复盘中心</a>
+  <header>
+    <h1>患者数据与科技垄断：<u>一篇《卫报》社论——评英国信息专员对「NHS 医院把 160 万份病历交给 DeepMind」一案的裁定。作者先替双方开脱（都出于好意），再承认裁定有理（协议含糊、没顾及患者隐私），然后把尺子换掉：隐私不是本案最重要的角度——真正的问题是「谁从数据分析中受益」，真正的担忧是用公共资源开发出来的算法将归私人垄断所有。① 先让步、再引出裁定 → ② 双方都已整改；但裁定只盯着「谁掌控数据」，没抓住「数据的价值来自处理与聚合」→ ③ 大问题：谁该受益？隐私法的「个人受损」框架不懂监视经济 → ④ 用隐私法管科技巨头不对路；要紧的是垄断；这场革命才开始，要防数字封建主义，这份报告是个好开端。五道题三道落在「换尺子」上：裁定用的是哪把尺、作者换上了哪把、选项用的是哪把</u></h1>
+    <div class="sub">2018 年英语（一）真题 · Text 3 · 429 词（脚本计数；黄皮书标 437 词）· 4 段 23 句 · 建议做题 18 min · 话题：<b>医疗 AI 拿了患者的数据，问题只是「隐私」吗？</b>——评价英国国民医疗服务体系（NHS）与 DeepMind 之间这笔交易的危害，任何公允的评价都得先承认：双方都出于好意。DeepMind 是全球领先的人工智能公司，这项技术用在医疗上潜力巨大，<b>但也可能让权力进一步集中到科技巨头手里</b>。正是在这个背景下，英国信息专员伊丽莎白·德纳姆对 NHS 下属的皇家自由医院信托作出了措辞严厉的裁定：该院 2015 年依据一份含糊的协议，把 160 万名患者的病历交给了 DeepMind，协议对患者的权利和隐私期待考虑得太少。DeepMind 差不多道了歉，医院信托也改正了做法；<b>可隐私不是本案唯一的角度，甚至不是最重要的</b>。德纳姆把责任集中在医院信托身上，因为按现行法律是它「控制」数据、DeepMind 只是「处理」数据——<b>这个区分没抓住要点：赋予数据价值的，是处理与聚合，不是单纯占有</b>。<b>大问题是：我们生活产生的所有数据，分析它们的好处该归谁？</b>隐私法建立在「可识别的信息会伤害个人」这个概念上，不懂监视经济——在那里，个人数据只有和无数他人的数据相比才有价值。<b>用隐私法约束科技巨头，有点不对路</b>：光说 DeepMind 的算法能造福患者、拯救生命是不够的，<b>要紧的是这些算法将归一家用公共资源开发它们的私人垄断企业所有</b>。如果软件能像药物一样大规模救命，大数据也可能像大药企那样行事。革命才刚开始，眼下的小选择日后可能后果巨大；要避免数字封建主义，需要长期的斗争——<b>德纳姆的报告是个值得欢迎的开端</b>（源自 <i>The Guardian</i>《卫报》2017 年 7 月 5 日社论（「The Guardian view」栏）<i>The Guardian View on Patient Data: We Need a Better Approach</i>，标题与日期照黄皮书；<b>原刊不可达，未逐字核</b>——theguardian.com 拒绝抓取、Wayback 无快照）</div>
+    <div class="tags">
+      <span class="tag">正确答案：31C 32D 33B 34A 35C</span><span class="tag">题型：事实细节 × 3（协议 · 回应 · 真正的担忧）+ 作者观点（段落）+ 作者态度</span><span class="tag">✅ Claude 盲做 5/5</span><span class="tag">🆕 套路库 239→241 卡：R240 换尺子 / R241 不够—关键</span><span class="tag">⭐ 熟词僻义 60 处 · 长难句 17 句 · 词卡 90 张 · 作文素材 8 组</span>
+    </div>
+    <div class="atti" style="margin-top:14px;background:var(--blue-soft);border:1px solid var(--blue);border-radius:10px;padding:10px 14px;font-size:.88rem">
+      📖 <b>本页与原卷配合看</b>：原文与题目在原卷印刷页 <b>第 7–8 页</b>（<code>按年份/2018/…图像保真版.pdf</code> 第 <b>8–9</b> 页），答案在 <b>p16</b>，黄皮书精讲在同一 PDF 的书页 <b>p30–p35</b>（PDF 第 <b>46–51</b> 页；p46 页首「Text 3 科技巨头涉足医疗领域引发的问题」起，p51 页尾的 35 题技巧总结止）。本页第 01 节<b>逐段给出全部原文 ＋ 全段中译 ＋ 就地批注</b>，不必来回翻书。<br>
+      🆕 黄皮书 2018 体例同 T1、T2：「一、总体分析 → 二、考题速览（问题关联 ＋ 由题入文）→ 三、英汉对照及试题精解（题干定位 → 选项定位 → 正误判断 → 技巧总结）」，<b>仍然没有长难句、词汇栏</b> ⟹ <b>本页第 03、03+、04、05 四节 100% 原创</b>；02 节的干扰项拆解与黄皮书逐项交叉核对过。<br>
+      ⚖️ <b>案情核过</b>（WebSearch：ICO 官方新闻稿转载、Herbert Smith Freehills、Digital Health、DeepMind 官方博文）：<b>2017 年 7 月 3 日</b>，英国信息专员办公室（ICO）裁定皇家自由医院信托为测试急性肾损伤预警 App <b>Streams</b>，向 DeepMind 提供约 <b>160 万</b>份患者记录，<b>不符合 1998 年《数据保护法》</b>；处理结果是<b>要求信托签署整改承诺书（undertaking）</b>，没有罚款。DeepMind 当天发博文：<code>We got that wrong, and we need to do better</code>——<b>认了错、说要改进，但没说 sorry</b> ⟹ 这就是 ②❶ <code>almost apologised</code> 的「almost」。社论刊于裁定后两天。<br>
+      ✅ <b>答案一律按官方答案页，本篇答案零书误</b>。🔍 <b>两处商榷（不影响答案）</b>：① ①❹ <code>her damning verdict</code> 书译「定罪裁决」——ICO 是数据保护监管机构，裁定是<b>行政性质</b>的（要求整改、无罚款），不是刑事「定罪」；<b>damning ＝ 措辞严厉的、谴责性的</b>，宜译「措辞严厉的裁定」（见 s3）；② 35 题技巧栏说作者「于首、末段<b>几度指出</b>『将人工智能应用于医疗的做法富有潜力，有望挽救患者的生命』」——首段只有 ①❸ <code>The potential … is very great</code> 一句；末段那两处，④❸ 是被 <code>It is not enough to say that</code> 驳掉的说法、④❺ 是 <code>If</code> 条件句，<b>都不是作者正面「指出」</b>。排除 D contemptuous 的依据只有 ①❸（加上 ①❶ 的 both sides mean well），<b>一处就够，不必说「几度」</b>（见 q35）。
+    </div>
+    <div class="atti yes" style="margin-top:10px;font-size:.88rem">
+      ✅ <b>本篇是盲做</b>：读完原卷后<b>先把五题答案连同理由写进文件</b>（31C：①❹ <code>a vague agreement which took far too little account of the patients’ rights</code>；32D：②❷ <code>The NHS trust has mended its ways</code>，C 的「道歉」是 DeepMind 的、且只是 almost；33B：②❼ <code>it is processing and aggregation, not the mere possession of bits, that gives the data value</code>；34A：④❹ <code>they will belong to a private monopoly</code>；35C：①❸ 潜力巨大 ＋ ④❼ long struggle ＋ ④❽ welcome start ⟹ 谨慎），再对答案——<b>5/5</b>，没有犹豫。<br>
+      ⚠️ <b>本轮有一处失误，照实记</b>：对答案时裁答案页裁得太宽（34%–46%），<b>画面里多了 Text 4 那一行</b> ⟹ <b>T4 的正文与精讲都没看过，但答案已经入眼</b>，<b>2018 T4 不能再算完整盲做</b>（到时只能按「知道答案后做」记）。精讲从 p46 页首读到 p51 页尾为止，<b>p52 起是 T4，未渲染</b>。以后裁答案页只裁本篇那一行。
+    </div>
+    <div class="atti yes" style="margin-top:10px;font-size:.88rem">
+      🎯 <b>这篇难在哪</b>：词汇中等（最生的是 fair-minded、damning verdict、mended its ways、scrutinised、aggregation、surveillance economy、maladapted、curb、big pharma、feudalism），23 句平均 18.7 词，<b>但 ①❹ 一句 60 词</b>（全篇最长，占第一段一半篇幅），31 题全押在它的末尾。<b>真正难的是「作者在跟谁的尺子过不去」</b>：<br>
+      ▸ ⭐⭐⭐ <b>换尺子</b>：德纳姆的裁定用的是<b>隐私法的尺子</b>——谁「控制」数据（controlled vs processed）、个人有没有因可识别信息受损；作者换成<b>另一把尺</b>——③❶ <code>who should benefit from the analysis of all the data</code>（谁受益）、④❹ <code>a private monopoly</code>（归谁所有）。<b>33、34 两题考的都是「换上来的尺子」，33A、33D、34D 三个干扰项用的都是「被换掉的尺子」</b>（⟹ 新卡 <b>R240</b>）。<br>
+      ▸ ⭐⭐⭐ <b>不够—关键</b>：④❸ <code>It is not enough to say that X</code> ＋ ④❹ <code>What matters is that Y</code>——X（能造福患者、拯救生命）作者并不否认，只是嫌它不够；<b>Y 才是答案</b>（34A）。同一篇里还有三处同构的「贬一个、抬一个」：②❺ <code>not the only angle … and not even the most important</code> · ②❼ <code>it is X, not Y, that …</code> · ④❷ <code>does not address the real worry</code>——<b>四处都挂着题</b>（⟹ 新卡 <b>R241</b>）。<br>
+      ▸ ⭐⭐ <b>32 题是「多方各做了什么」</b>：DeepMind <code>has almost apologised</code>，NHS 信托 <code>has mended its ways</code>——32C sincere apologies 同时错了<b>主体</b>（DeepMind 的道歉安到了 NHS 头上）和<b>刻度</b>（almost → sincere）（⟹ 老卡 <b>R21</b>、<b>R117</b>、<b>R176</b>）。<br>
+      ▸ ⭐⭐ <b>35 题两头验</b>：①❸ 潜力 very great 挡住 contemptuous，④❹–❼ 的担忧挡住 appreciative；④❽ <code>welcome</code> 的宾语是<b>德纳姆的报告</b>，不是 AI 医疗（R221）；作者给了明确的行动方向（long struggle），不是 ambiguous。⭐ <b>全站九道态度题，中性／无态度／容忍类选项共 11 个，0 次正确</b>（R72，见 02++++）。
+    </div>
+  </header>
+
+  <div class="layout">
+    <main>
+      <!-- ========== 全文脉络 ========== -->
+      <section class="card">
+        <h2><span class="n">00</span>读前一分钟 · 全文脉络（做完题再看也行）</h2>
+        <div class="flow">
+          <div class="fi"><b>① 让步开篇 → 背景 → 裁定</b>：评价 NHS 与 DeepMind 这笔交易的危害，任何公允的评价都得先承认双方都出于好意。DeepMind 是全球领先的 AI 公司之一。这项工作用在医疗上潜力巨大，但也可能让权力进一步集中到科技巨头手里。正是在这个背景下，信息专员伊丽莎白·德纳姆对 NHS 下属的皇家自由医院信托作出了措辞严厉的裁定——该院 2015 年依据一份含糊的协议，把 160 万名患者的病历交给了 DeepMind，而这份协议对患者的权利和他们对隐私的期待考虑得太少。<span style="color:var(--muted)">⟹ <b>31 题定位段；35 题「潜力」一半在这里。⭐⭐⭐ ❶ Any fair-minded assessment … must start by acknowledging that both sides mean well——让步开篇：作者不骂当事人的动机 ⟹ 31D「双方陷入危险」、32B「强硬抵制」这类把当事人写成坏人或受害者的选项都没根。⭐⭐⭐ ❹ It is against that background that … 强调句：❶–❸ 是铺垫，裁定才是本段的落点（R180）；协议的两个负面修饰 vague ＋ took far too little account of ⟹ 31C。⭐⭐ ❸ but 后半句 concentration of power in the tech giants 是全文担忧的第一次露面，④❹ 才展开。</b></span></div>
+          <div class="fi"><b>② 双方整改；但隐私不是最重要的角度——裁定用的区分没抓住要点</b>：DeepMind 差不多道了歉。NHS 信托已经改正了做法。NHS 与 DeepMind 之间今后的协议——可能会有很多——都将受到仔细审查，确保所有必要的许可都已征得患者同意、所有不必要的数据都已清除。在患者知情同意这方面，有教训要吸取。但隐私并不是本案唯一的角度，甚至不是最重要的角度。德纳姆女士选择把责任集中在 NHS 信托身上，因为按现行法律，是它「控制」数据，DeepMind 只是「处理」数据。但这个区分没抓住要点：赋予数据价值的，是处理与聚合，而不是单纯占有那些比特。<span style="color:var(--muted)">⟹ <b>32、33 题定位段。⭐⭐⭐ ❶❷ 两方各一句：DeepMind → almost apologised；NHS trust → mended its ways ⟹ 32D；32C 主体错 ＋ 刻度错（R21、R176）。⭐⭐⭐ ❺ But … not the only angle … not even the most important——全文第一次换尺子（R240）。⭐⭐⭐ ❼ But this distinction misses the point that it is X, not Y, that … ⟹ 33B（R241、R180）。⭐⭐ ❻ controlled vs processed 是德纳姆（现行法律）的尺子 ⟹ 33D 用的就是这把尺。</b></span></div>
+          <div class="fi"><b>③ 大问题：谁该从数据分析中受益？——隐私法的框架不懂监视经济</b>：大问题在于，我们的生活如今产生的所有数据，对它们的分析该让谁受益。隐私法建立在这样一个概念之上：关于个人的可识别信息会给这个人带来伤害。这没有看到监视经济的运作方式。在那里，一个人的数据只有和无数其他人的数据放在一起比较时，才获得价值。<span style="color:var(--muted)">⟹ <b>没有专题——但 ❶ The great question 是全文题眼：34A 的「垄断」、35C 的「谨慎」都是从这个问题长出来的。⭐⭐⭐ ❷ 是隐私法的尺子（个人 ＋ 可识别 ＋ 伤害），❸ That misses 否定它，❹ 给出新尺子（价值来自比较、聚合）——与 ②❼ 同一个论点再说一遍，更抽象。⭐⭐ 33C 从 ❶ 借了 benefit from，改成 making profits … is illegal（黄皮书）。</b></span></div>
+          <div class="fi"><b>④ 用隐私法管科技巨头不对路；要紧的是垄断；要防数字封建主义——报告是个好开端</b>：在这个案子里，用隐私法来约束科技巨头，感觉有点不对路。这种做法没有触及真正的担忧。光说 DeepMind 开发的算法将造福患者、拯救生命，是不够的。要紧的是，这些算法将归一家私人垄断企业所有，而它是用公共资源把它们开发出来的。如果软件有望以今天药物的规模拯救生命，那么大数据可能也会像大药企那样行事。这场革命才刚刚开始，眼下的小选择日后可能带来巨大的后果。要避免一个数字封建主义的未来，需要一场长期的斗争。德纳姆女士的报告是个值得欢迎的开端。<span style="color:var(--muted)">⟹ <b>34、35 题定位段。⭐⭐⭐ ❸❹ It is not enough to say X / What matters is Y ⟹ 34A（R241）。⭐⭐⭐ ❶❷ 第二次换尺子：maladapted（不对路）≠ ineffective enforcement（执行不力）⟹ 34D 偷换（R240）。⭐⭐ ❺ 类比：big data ↔ big pharma——类比是为了说明「垄断」，不是说药企之间在打架 ⟹ 34B 例子当主旨（R122）。⭐⭐ ❻ small choices now → gigantic consequences later、❼ long struggle ⟹ 35C 谨慎；❽ welcome 的宾语是报告 ⟹ 35B 对象偷换（R221）。</b></span></div>
+        </div>
+        <div class="atti" style="margin-top:14px">
+          🧭 <b>一句话骨架</b>：<b>「双方都出于好意，但 AI 医疗可能让权力集中到科技巨头；信息专员裁定医院的协议没顾及患者隐私（①）→ 双方已整改；但隐私不是最重要的角度，『谁控制数据』的区分没抓住『价值来自处理与聚合』（②）→ 真正的问题是谁该从数据中受益，隐私法的框架不懂监视经济（③）→ 用隐私法管巨头不对路，要紧的是算法归私人垄断；革命才开始，要长期斗争防数字封建主义，这份报告是个好开端（④）」</b>。<br>
+          ⭐⭐⭐ <b>这是一篇「评一份裁定」的社论</b>：① 让步 ＋ 裁定（124 词）· ② 整改 ＋ 第一次换尺（117 词）· ③ 新尺子的理论（64 词）· ④ 第二次换尺 ＋ 真正的担忧 ＋ 建议（124 词）。黄皮书的脉络：<b>引入案件、介绍裁决结果（首段）→ 批驳裁决者／监管者「仅考虑隐私问题，未抓住关键问题」（第二段）→ 详述关键问题（第三段）→ 亮明作者的建议（末段）</b>。<b>五题严格同序</b>：31 在①、32 33 在②、34 35 在④——<b>③ 没有题，却是 34、35 的根</b>：
+          <div class="tabwrap" style="margin:8px 0">
+          <table class="ctab">
+            <tr><th>段</th><th>在干什么</th><th>信号</th><th>题</th></tr>
+            <tr><td>①</td><td>让步开篇 → 背景 → 裁定</td><td><code>must start by acknowledging that both sides mean well</code> · <code>but it could also lead to</code> · <code>It is against that background that</code></td><td><b>31C</b> · 35 的「潜力」</td></tr>
+            <tr><td>②</td><td>双方整改 → 第一次换尺子</td><td><code>has almost apologised</code> · <code>has mended its ways</code> · <code>But … not the only angle</code> · <code>But this distinction misses the point that it is X, not Y, that</code></td><td><b>32D</b> · <b>33B</b></td></tr>
+            <tr><td>③</td><td>新尺子的理论：谁受益 · 价值来自比较</td><td><code>The great question is</code> · <code>That misses the way</code></td><td>（无题；33C 借词）</td></tr>
+            <tr><td>④</td><td>第二次换尺子 → 真正的担忧 → 建议</td><td><code>feels slightly maladapted</code> · <code>does not address the real worry</code> · <code>It is not enough to say … What matters is</code> · <code>A long struggle</code> · <code>a welcome start</code></td><td><b>34A</b> · <b>35C</b></td></tr>
+          </table>
+          </div>
+          ▸ <b>两把尺子</b>：<b>隐私法的尺</b>（①❹ patients’ rights and their expectations of privacy → ②❻ controlled vs processed → ③❷ damage to an individual from identifiable knowledge → ④❶ The use of privacy law）与<b>作者的尺</b>（①❸ concentration of power → ②❼ processing and aggregation → ③❶ who should benefit → ④❹ a private monopoly … using public resources → ④❼ digital feudalism）。<b>31 题问的是裁定本身，所以答案用隐私法的尺（C patients’ rights）；33、34 问的是作者，所以答案用作者的尺</b>——同一篇文章里，两把尺各有正确答案，<b>先看题干问的是谁</b>（R240）。<br>
+          ▸ <b>作者站在哪里</b>：《卫报》社论，<b>基调是「支持裁定、但嫌它不够」</b>——①❹ damning verdict 与 ④❽ a welcome start 是对裁定的肯定；②❺ ②❼ ④❶ ④❷ 是对裁定的「嫌不够」。对 AI 医疗本身：<b>承认潜力（①❸）、警惕垄断（④❹–❼）</b> ⟹ 35C cautious。
+        </div>
+      </section>
+
+      <!-- ========== 背景 ========== -->
+      <section class="card" id="bg">
+        <h2><span class="n">00+</span>读前背景 · 十个专名与事实（常识只帮读，不帮选——33C、34D 都是给「以为这是一篇讲隐私违法的文章」的人设的）</h2>
+        <p style="font-size:.9rem;margin-bottom:12px">本篇是<b>《卫报》社论</b>（「The Guardian view on …」是《卫报》社论栏的固定标题格式，无个人署名、代表报社立场），2017 年 7 月 5 日刊出——<b>ICO 裁定公布后两天</b>。全文只有四个角色：<b>DeepMind、NHS（皇家自由医院信托）、信息专员德纳姆、作者</b>；五道题里 31、32、33 三题要先分清「这句话是谁的」。</p>
+        <div class="tabwrap">
+        <table class="ctab">
+          <tr><th>专名 / 事实</th><th>是什么</th><th>在本文里的作用</th></tr>
+          <tr><td><b>The Guardian</b>（卫报）· The Guardian view</td><td>英国全国性日报，1821 年创办于曼彻斯特，立场中左；「The Guardian view on …」是它的<b>社论栏</b></td><td>⭐⭐ <b>全站第三篇《卫报》</b>（2015 T1 文章、2016 T2 Simon Jenkins 专栏；另有 2014 T1 出自其姊妹报《观察家报》），<b>前两篇的页面都记作文章／专栏，本篇是第一篇标明「The Guardian view」社论栏的</b>。社论＝有立场：本篇的立场是「裁定有理，但尺子用错了」</td></tr>
+          <tr><td><b>NHS</b>（National Health Service，英国国民医疗服务体系）</td><td>1948 年建立的英国公费医疗体系，由税收支付、看病基本免费；各地医院以「信托」（trust）形式运营</td><td>①❶ 交易一方。⭐⭐ <b>NHS 的数据是「公共资源」</b>——④❹ <code>developed them using public resources</code> 的 public resources 指的就是公费医疗体系里攒下的病历 ⟹ 垄断之所以刺眼</td></tr>
+          <tr><td><b>DeepMind</b></td><td>2010 年在伦敦成立的人工智能公司，2014 年被谷歌收购；2016 年它的 AlphaGo 击败李世石，名声大噪</td><td>①❷ <code>one of the leading artificial intelligence (AI) companies in the world</code>——<b>「领先」为 ①❸「权力集中于科技巨头」铺垫</b>：DeepMind 背后是谷歌</td></tr>
+          <tr><td><b>the Royal Free hospital trust</b>（皇家自由医院信托）· <b>Streams</b></td><td>伦敦的 Royal Free London NHS Foundation Trust。它与 DeepMind 合作开发急性肾损伤预警 App <b>Streams</b>，为了测试，2015 年把约 <b>160 万</b>名患者的记录交给了 DeepMind（WebSearch 核）</td><td>①❹ <code>handed over to DeepMind the records of 1.6 million patients in 2015</code>——⭐⭐ ICO 认为用 160 万份记录做测试<b>「不必要、不成比例」</b>、患者未被充分告知 ⟹ ②❸ <code>all unnecessary data has been cleaned</code> 与 ②❹ <code>informed patient consent</code> 就是整改的两件事</td></tr>
+          <tr><td><b>the information commissioner</b>（信息专员）· <b>Elizabeth Denham</b></td><td>英国信息专员办公室（ICO）的负责人，独立监管数据保护与信息公开。德纳姆 2016–2021 年任此职，此前在加拿大不列颠哥伦比亚省做同类工作</td><td>①❹ <code>has issued her damning verdict</code>——⭐⭐ <b>是监管机构，不是法院</b>：「verdict」在这里是比喻性的「裁定」（见 03+ 熟词僻义）</td></tr>
+          <tr><td><b>ICO 2017 年 7 月 3 日的裁定</b></td><td>皇家自由医院信托提供患者数据的做法<b>不符合 1998 年《数据保护法》</b>（至少违反八项原则中的四项）；处理结果：<b>要求签署整改承诺书（undertaking）</b>——建立合法依据、说明如何履行保密义务、完成隐私影响评估、委托审计；<b>没有罚款</b>（WebSearch 核）</td><td>⭐⭐⭐ ⟹ ②❷ <code>The NHS trust has mended its ways</code> ＝ 签了承诺书、改了做法 ⟹ 32D necessary adjustments。⭐⭐ 书把 damning verdict 译成「定罪裁决」，偏重了（见页首商榷①）</td></tr>
+          <tr><td><b>DeepMind 的回应</b></td><td>同日博文 <i>The Information Commissioner, the Royal Free, and what we’ve learned</i>：「低估了 NHS 和患者数据规则的复杂性」「<code>We got that wrong, and we need to do better</code>」（WebSearch 核）</td><td>⭐⭐⭐ ⟹ ②❶ <code>DeepMind has almost apologised</code>——<b>认错 ＋ 表态改进，但没有 sorry</b>，所以是 almost。32C sincere apologies 拔高了刻度，还换了主体（R176、R21）</td></tr>
+          <tr><td><b>data controller vs data processor</b>（数据控制者 vs 数据处理者）</td><td>1998 年《数据保护法》的法定区分：<b>控制者</b>决定数据的用途和方式、承担主要法律责任；<b>处理者</b>只按控制者的指示处理数据。ICO 认定医院是控制者、DeepMind 是处理者</td><td>⭐⭐⭐ ②❻ <code>it “controlled” the data and DeepMind merely “processed” it</code>——<b>引号就是在引法律术语</b>。作者 ②❼ 说这个区分 <code>misses the point</code>：法律按「谁控制」追责，可数据的价值恰恰在「处理」那一头 ⟹ 33B（R240）</td></tr>
+          <tr><td><b>surveillance economy</b>（监视经济）</td><td>以收集、分析用户数据为核心盈利方式的经济形态——免费服务换数据、数据换广告与预测。与哈佛商学院教授祖博夫（Shoshana Zuboff）提出的 surveillance capitalism（监视资本主义）是同一个思路（本页未核作者是否化用她）</td><td>③❸ <code>That misses the way the surveillance economy works</code>——⭐⭐ <b>单个人的数据不值钱，千万人的数据放在一起比较才值钱</b>（③❹）⟹ 隐私法「保护个人」的思路管不到「聚合」这一层</td></tr>
+          <tr><td><b>big pharma</b>（大药企）· <b>digital feudalism</b>（数字封建主义）</td><td>big pharma：对跨国大型制药公司的统称，常带贬义——专利垄断、高药价。digital feudalism：把数字平台比作封建领主、用户比作耕种领主土地的农奴——<b>数据是土地，产出归领主</b></td><td>④❺ <code>big data may be expected to behave as big pharma has done</code>——类比的相同点是<b>「救命的东西被垄断、定价」</b>，不是「药企之间恶性竞争」⟹ 34B 例子当主旨。④❼ <code>a future of digital feudalism</code> ⟹ 垄断的终局 ⟹ 34A、35C</td></tr>
+        </table>
+        </div>
+        <div class="atti no2" style="margin-top:12px">⚠️ <b>本篇背景知识的正确用法：帮你认出「谁说的、用的是哪条法律」，不帮你判选项</b>。<br>
+        ▸ <b>该用的</b>：知道 controller／processor 是法律术语，就明白 ②❻ 的引号是在引法条、②❼ 的 But 是在跟法条过不去；知道 DeepMind 只说了 We got that wrong，就明白 almost 为什么在那儿；知道 NHS 是公费医疗，④❹ 的 public resources 就有了分量；<br>
+        ▸ <b>不该用的</b>：你对「隐私泄露」的直觉——觉得「这是一篇讲隐私违法的文章」，就会被 33A「不惜一切代价保护隐私」、33C「用患者数据牟利违法」、34D「隐私法执行不力」拉走；<b>作者恰恰在说：隐私不是最重要的角度</b>（②❺）（⟹ 老卡 <b>R8</b> 常识陷阱、新卡 <b>R240</b>）。<br>
+        🔗 <b>跨篇（已 grep 全站核过）</b>：<br>
+        ▸ <b>2013 T2《默认不追踪之争》</b>、<b>2015 T2《最高法院与手机隐私》</b>、<b>2007 T4《数据泄密的公司》</b>：这三篇隐私／数据话题都在「个人信息要不要保护、怎么保护」的框架里谈；<b>本篇却说「隐私不是最重要的角度」</b>——同一个话题，作者把尺子换成了「谁受益、归谁所有」。<br>
+        ▸ <b>2018 T1《机器人与中产阶级》</b>：同卷 Text 1 的暗线是 ②❺ <code>The rich own the robots</code>——<b>技术的好处归拥有它的人</b>；本篇 ④❹ <code>they will belong to a private monopoly</code> 是同一个问题换到医疗数据上。<b>2018 卷 T1、T3 都落在「技术成果归谁」</b>。<br>
+        ▸ <b>2015 T4《窃听案与道德目的缺失》</b>、<b>2017 T4《最高法院推翻州长贪腐定罪》</b>：同样是「评一个裁决」的评论——那两篇作者对裁决的态度是另一种写法（R190、R227）；本篇是<b>「支持裁定、嫌它不够」</b>。</div>
+      </section>
+      <!-- ========== 原文精读 ========== -->
+      <section class="card">
+        <h2><span class="n">01</span>原文精读 · 全文四段 <button class="allbtn" onclick="toggleAll()">全段译文 开/关</button></h2>
+        <p style="font-size:.8rem;color:var(--muted);margin-bottom:14px">🟡 黄色高亮 = 重难点词/短语，点击右侧出卡片 ｜ 蓝色虚线 = 长难句，点击跳到精析 ｜ 每段「译」= 该段完整中译 ｜ 选中任意其他单词浮出「查有道」</p>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p style="font-size:.78rem;color:var(--accent);margin-bottom:6px">① 让步开篇 → 背景 → 裁定 · 31 题定位段 · ⭐⭐⭐ 先替双方开脱（both sides mean well），再用强调句把裁定推到台前；协议的两个负面修饰（vague · took far too little account of）就是 31C</p>
+          <p class="en"><span class="pno">❶⭐⭐⭐ 让步开篇：公允评价先承认双方好意 · 31D 的反证 · 长难句 1</span><span class="ls" onclick="go('s1')">Any <span class="tk" data-w="fairminded">fair-minded</span> <span class="tk" data-w="assessment">assessment</span> of the dangers of the <span class="tk" data-w="deal">deal</span> between Britain’s National Health Service (NHS) and DeepMind must start by <span class="tk" data-w="acknowledge">acknowledging</span> that both sides <span class="tk" data-w="meanwell">mean well</span>.</span></p>
+          <p class="en" style="margin-top:10px"><span class="pno">❷⭐ 介绍 DeepMind：领先的 AI 公司——为 ❸「科技巨头」铺垫</span>DeepMind is one of the <span class="tk" data-w="leading">leading</span> artificial intelligence (AI) companies in the world.</p>
+          <p class="en" style="margin-top:10px"><span class="pno">❸⭐⭐⭐ 潜力 ＋ but 担忧：35 题两头都在这一句 · 31B 借词 · 长难句 2</span><span class="ls" onclick="go('s2')">The <span class="tk" data-w="potential">potential</span> of this work <span class="tk" data-w="applyto">applied to</span> healthcare is very great, but it could also lead to further <span class="tk" data-w="concentration">concentration</span> of power in the <span class="tk" data-w="techgiant">tech giants</span>.</span></p>
+          <p class="en" style="margin-top:10px"><span class="pno">❹⭐⭐⭐ 强调句推出裁定 ＋ 两层定语从句：31C 正源 · 全篇最长（60 词）· 长难句 3</span><span class="ls" onclick="go('s3')">It is against that <span class="tk" data-w="background">background</span> that the information <span class="tk" data-w="commissioner">commissioner</span>, Elizabeth Denham, has issued her <span class="tk" data-w="damning">damning</span> <span class="tk" data-w="verdict">verdict</span> against the Royal Free hospital <span class="tk" data-w="trust">trust</span> under the NHS, which <span class="tk" data-w="handover">handed over</span> to DeepMind the <span class="tk" data-w="record">records</span> of 1.6 million patients in 2015 <span class="tk" data-w="onthebasisof">on the basis of</span> a <span class="tk" data-w="vague">vague</span> agreement which <span class="tk" data-w="takeaccountof">took far too little account of</span> the patients’ rights and their <span class="tk" data-w="expectation">expectations</span> of privacy.</span></p>
+          <div class="zh"><b>①段全译：</b>对英国国民医疗服务体系（NHS）与 DeepMind 之间这笔交易的危害，任何公允的评价都必须先承认：双方都是出于好意。DeepMind 是全球领先的人工智能（AI）公司之一。这项工作用于医疗保健的潜力非常巨大，但它也可能导致权力进一步集中到科技巨头手中。正是在这样的背景下，信息专员伊丽莎白·德纳姆对 NHS 下属的皇家自由医院信托作出了措辞严厉的裁定——该院 2015 年依据一份含糊的协议，把 160 万名患者的病历交给了 DeepMind，而这份协议对患者的权利以及他们对隐私的期待考虑得实在太少。
+          <div style="margin-top:8px;font-size:.86rem">⭐⭐⭐ <b>❶ 是让步开篇，不是结论</b>：<code>Any fair-minded assessment … must start by acknowledging that both sides mean well</code>——「任何公允的评价都<b>必须先</b>承认……」，start by 暗示后面还有别的话要说。作者先替两方开脱：<b>动机没问题</b>。所以全文批评的<b>不是当事人的居心</b>，而是这笔交易背后的结构（权力集中、隐私法的框架）⟹ 31D <code>It put both sides into a dangerous situation</code> 把 <code>the dangers of the deal</code>（交易带给公众／患者的危害）读成了「交易给双方带来的危险」（黄皮书：dangers 指协议对公众／患者的危害，而非对协议双方的危害）（⟹ 老卡 <b>R96</b> 先判受损方）。<br>
+          ⭐⭐⭐ <b>❸ 一句装下 35 题的两头</b>：<code>The potential … is very great</code>（潜力很大）<b>, but</b> <code>it could also lead to further concentration of power in the tech giants</code>（也可能让权力集中）——前半挡住 35D contemptuous，后半挡住 35B appreciative。<b>but 后半句是全文担忧的第一次露面</b>，到 ④❹ 才说透：concentration of power ⟹ a private monopoly ⟹ digital feudalism。31B <code>It caused conflicts among tech giants</code> 借了 tech giants，却把「权力集中<b>于</b>巨头」改成「巨头<b>之间</b>冲突」——方向反了（黄皮书：协议有助于科技巨头集权，选项强调协议有损于科技巨头）。<br>
+          ⭐⭐⭐ <b>❹ It is against that background that …——强调句是作者的荧光笔</b>：被拎出来的是 <code>against that background</code>，把 ❶–❸ 统统收成「背景」，that 之后的<b>裁定</b>才是本段主角（黄皮书：强调句式暗示前三句铺垫背景，that 后的内容才是段落的核心信息）（⟹ 老卡 <b>R180</b>）。<br>
+          ⭐⭐⭐ <b>31 题的答案在 ❹ 的最末尾</b>：<code>a vague agreement which took far too little account of the patients’ rights and their expectations of privacy</code>——agreement 挂了<b>两个负面修饰</b>：vague（含糊）＋ took far too little account of（考虑得太少）⟹ 31C <code>It failed to pay due attention to patients’ rights</code>：<b>take account of ＝ pay attention to；far too little ＝ failed to … due</b>，整句同义改写（黄皮书：agreement 以 on the basis of 与 NHS 信托医院相关联，联系其带有的两个负面指向明显的修饰成分，可知「协议内容含糊、未充分重视患者隐私权益」是 NHS 被定罪的原因）。<br>
+          ⭐⭐⭐ <b>31A 的指代陷阱</b>：<code>It fell short of the latter’s expectations</code>——题干里 the latter（后者）＝ DeepMind；原文的 expectations 属于 <code>their</code>，<b>their 就近回指 the patients</b>。「没达到患者的期待」被偷换成「没达到 DeepMind 的期待」（黄皮书同此）（⟹ 老卡 <b>R21</b> 主体校验）。<br>
+          ⭐⭐ <b>这是全篇唯一一处「裁定的尺子」对了题</b>：31 问的是协议本身，答案用的是隐私法的尺（patients’ rights、privacy）；到 ②❺ 作者才开始换尺（R240）——<b>先看题干问的是谁</b>。<br>
+          📌 <b>damning verdict</b>：damning 是「足以定罪的、谴责性的」，修饰 verdict 时＝措辞严厉的裁定；ICO 是行政监管机构，这份「verdict」没有罚款，只要求整改（见 00+、s3）。<b>hospital trust</b>：trust 是「信托（机构）」——NHS 的医院以信托形式运营，不是「信任」（见 03+）。</div></div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p style="font-size:.78rem;color:var(--accent);margin-bottom:6px">② 双方整改 → 第一次换尺子 · 32、33 题定位段 · ⭐⭐⭐ 前四句是两方各自做了什么（32），后三句两个 But：隐私不是最重要的角度、「控制 vs 处理」的区分没抓住「价值来自处理与聚合」（33）</p>
+          <p class="en"><span class="pno">❶⭐⭐⭐ DeepMind 这一方：almost——只差一点算道歉 · 32C 的原料</span>DeepMind has almost <span class="tk" data-w="apologise">apologised</span>.</p>
+          <p class="en" style="margin-top:10px"><span class="pno">❷⭐⭐⭐ NHS 信托这一方：改正做法 · 32D 正源之一</span>The NHS trust has <span class="tk" data-w="mendways">mended its ways</span>.</p>
+          <p class="en" style="margin-top:10px"><span class="pno">❸⭐⭐ 整改的内容：审查 ＋ 征得许可 ＋ 清除数据 · 32D 正源之二 · 长难句 4</span><span class="ls" onclick="go('s4')">Further <span class="tk" data-w="arrangement">arrangements</span>—and there may be many—between the NHS and DeepMind will be carefully <span class="tk" data-w="scrutinise">scrutinised</span> to ensure that all necessary <span class="tk" data-w="permission">permissions</span> have been <span class="tk" data-w="askof">asked of</span> patients and all unnecessary data has been <span class="tk" data-w="clean">cleaned</span>.</span></p>
+          <p class="en" style="margin-top:10px"><span class="pno">❹⭐⭐ 让步：隐私这一角度确有教训——为 ❺ 的 But 蓄力 · 长难句 5</span><span class="ls" onclick="go('s5')">There are <span class="tk" data-w="lesson">lessons</span> about <span class="tk" data-w="informedconsent">informed patient consent</span> to learn.</span></p>
+          <p class="en" style="margin-top:10px"><span class="pno">❺⭐⭐⭐ But ＋ not the only … not even the most：第一次换尺子 · 33A 的反证 · 长难句 6</span><span class="ls" onclick="go('s6')">But privacy is not the only <span class="tk" data-w="angle">angle</span> in this case and not even the most important.</span></p>
+          <p class="en" style="margin-top:10px"><span class="pno">❻⭐⭐⭐ 德纳姆的尺子：controlled vs processed（法律术语）· 33D 的原料 · 长难句 7</span><span class="ls" onclick="go('s7')">Ms Denham chose to <span class="tk" data-w="concentrate">concentrate the blame on</span> the NHS trust, since under existing law it “<span class="tk" data-w="control">controlled</span>” the data and DeepMind <span class="tk" data-w="merely">merely</span> “<span class="tk" data-w="process">processed</span>” it.</span></p>
+          <p class="en" style="margin-top:10px"><span class="pno">❼⭐⭐⭐ But ＋ misses the point ＋ 强调句 it is X, not Y, that：作者的尺子 · 33B 正源 · 长难句 8</span><span class="ls" onclick="go('s8')">But this <span class="tk" data-w="distinction">distinction</span> <span class="tk" data-w="missthepoint">misses the point</span> that it is processing and <span class="tk" data-w="aggregation">aggregation</span>, not the mere <span class="tk" data-w="possession">possession</span> of <span class="tk" data-w="bit">bits</span>, that gives the data value.</span></p>
+          <div class="zh"><b>②段全译：</b>DeepMind 差不多已经道歉了。NHS 信托已经改正了做法。NHS 与 DeepMind 之间今后的协议——也许会有很多——都将受到仔细审查，以确保所有必要的许可都已征得患者同意，所有不必要的数据都已被清除。在患者知情同意方面，有一些教训需要吸取。但隐私并不是本案唯一的角度，甚至不是最重要的角度。德纳姆女士选择把责任集中在 NHS 信托身上，因为按照现行法律，是它「控制」了数据，而 DeepMind 只是「处理」了数据。但这种区分没有抓住要点：赋予数据价值的，是对数据的处理与聚合，而不是单纯占有那些比特。
+          <div style="margin-top:8px;font-size:.86rem">⭐⭐⭐ <b>❶❷ 两方、两句、两个动作——32 题先把人和动作配对</b>：<br>
+          <div class="tabwrap" style="margin:6px 0">
+          <table class="ctab">
+            <tr><th>谁</th><th>原文</th><th>做了什么（刻度）</th><th>对应选项</th></tr>
+            <tr><td>DeepMind</td><td><code>has almost apologised</code></td><td>差一点算道歉（只认了错：We got that wrong）</td><td>32C 把它安到 NHS 头上，还拔成 sincere</td></tr>
+            <tr><td>NHS 信托</td><td><code>has mended its ways</code> ＋ ❸ 审查、征得许可、清除数据</td><td>已经改正做法，并承诺今后严查</td><td><b>32D necessary adjustments</b> ✔</td></tr>
+            <tr><td>德纳姆</td><td><code>chose to concentrate the blame on the NHS trust</code></td><td>把责任集中在信托身上</td><td>（32 题干里的 Denham’s verdict）</td></tr>
+            <tr><td>作者</td><td><code>But … misses the point</code></td><td>嫌裁定的区分没抓住要点</td><td>33B（32A 借了 misses the point）</td></tr>
+          </table>
+          </div>
+          题干问 <code>The NHS trust responded to Denham’s verdict with</code> ⟹ 只看 NHS 那一行：<b>mended its ways ＝ 改正做法 ＝ necessary adjustments</b>（黄皮书：②③ 先总后分地介绍 NHS 信托医院对裁决的回应：已纠正了其错误行为——将仔细审查后续协定……可见采取了必要的补救措施）。32C <code>sincere apologies</code> <b>错两处</b>：主体（道歉的是 DeepMind）＋ 刻度（almost apologised 是「差不多道歉」，被夸大成「诚恳的道歉」）（黄皮书同此）（⟹ 老卡 <b>R21</b>、<b>R117</b>、<b>R176</b>）。<br>
+          ⭐⭐ <b>32A empty promises（空头承诺）也有「原料」</b>：❸ <code>will be carefully scrutinised to ensure …</code> 是将来时，看着像承诺；❼ <code>misses the point</code> 看着像「没做到」。但 ❷ 用的是现在完成时 <code>has mended</code>——<b>已经改了</b>，不是空口说；而 misses the point 说的是德纳姆的区分「没抓住要点」，跟 NHS 兑没兑现承诺无关（黄皮书同此）。32B <code>tough resistance</code> 与 mended its ways 正好相反。<br>
+          ⭐⭐⭐ <b>❹❺ 是「让步 → 转折」</b>：❹ <code>There are lessons about informed patient consent to learn</code>——作者承认隐私这一角度确有教训；❺ <code>But privacy is not the only angle in this case and not even the most important</code>——<b>not the only（不是唯一）→ not even the most important（甚至不是最重要）</b>，一句里降了两级。这是<b>全文第一次换尺子</b>：从这里开始，作者不再用隐私法的尺子量这件事（⟹ 新卡 <b>R240</b>）。33A <code>privacy protection must be secured at all costs</code>（不惜一切代价保护隐私）撞在 ❺ 上——作者刚说隐私连最重要的都不是（黄皮书：与⑤句所传达的作者态度「隐私不算本案最重要、最值得关注的问题」相悖）。<br>
+          ⭐⭐⭐ <b>❻ 是德纳姆的尺子，❼ 是作者的尺子</b>：❻ <code>since under existing law it “controlled” the data and DeepMind merely “processed” it</code>——引号里是 1998 年《数据保护法》的法定术语（数据控制者／数据处理者），<b>按法律，控制者担主责</b>，所以德纳姆把账记在信托头上；merely（只不过）是德纳姆（法律）的口吻，把「处理」说得无足轻重。❼ <code>But this distinction misses the point that it is processing and aggregation, not the mere possession of bits, that gives the data value</code>——作者把轻重倒了过来：<b>值钱的恰恰是「处理」</b>，「占有」反倒是 mere（单纯的）。<b>merely 与 mere 同根，一个压「处理」、一个压「占有」</b>——两把尺子的轻重正好相反 ⟹ 33B <code>the value of data comes from the processing of it</code>（黄皮书：数据的价值源自数据的分析和整合，而非单纯拥有数据）（⟹ 新卡 <b>R240</b>、<b>R241</b>）。<br>
+          ⭐⭐⭐ <b>❼ 里还套着一个强调句</b>：<code>it is processing and aggregation, not the mere possession of bits, that gives the data value</code> ＝ It is X, not Y, that …——<b>被拎出来的 X 是答案（33B），被排除的 Y 是干扰项原料</b>（⟹ 老卡 <b>R180</b>）。本篇两个强调句（①❹、②❼）都挂着题。<br>
+          ⭐⭐ <b>33D leaking patients’ data is worse than selling it</b>：把 ❻ 的「controlled vs processed」这组对比改成了「泄露 vs 出售」——文中没有 selling（黄皮书：无从知晓其是否「贩卖了」患者数据）；而「泄露（交出数据）比处理更严重」若说是谁的意思，也是德纳姆（按现行法律）的，<b>恰好是作者要驳的那把尺</b>（黄皮书：这是德纳姆女士的观点，而其观点恰好与题干所问的作者观点相悖）。<br>
+          📌 <b>两个 But 是本段的分水岭</b>（黄皮书技巧栏：第二段的两个 But 为案件裁决者的观点和作者观点的分水岭）：❶–❹ 是事实与让步，❺ 起是作者；❻ 夹在两个 But 中间，是被驳的靶子。<b>ask sth of sb</b>：向某人要求某物——permissions have been asked of patients ＝ 已向患者征得许可（见 s4）。<b>cleaned</b>：数据语境下＝清除、删除（见 03+）。</div></div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p style="font-size:.78rem;color:var(--accent);margin-bottom:6px">③ 新尺子的理论 · 无题段（33C 从这里借词）· ⭐⭐⭐ The great question 是全文题眼：谁该从数据分析中受益？隐私法的「个人受损」框架不懂监视经济——价值来自千万人数据的比较</p>
+          <p class="en"><span class="pno">❶⭐⭐⭐ The great question is who …：作者亮出自己的问题 · 33C 借 benefit from · 长难句 9</span><span class="ls" onclick="go('s9')">The great question is who should <span class="tk" data-w="benefitfrom">benefit from</span> the <span class="tk" data-w="analysis">analysis</span> of all the data that our lives now <span class="tk" data-w="generate">generate</span>.</span></p>
+          <p class="en" style="margin-top:10px"><span class="pno">❷⭐⭐⭐ 隐私法的尺子：个人 ＋ 可识别 ＋ 伤害 · 长难句 10</span><span class="ls" onclick="go('s10')">Privacy law <span class="tk" data-w="buildon">builds on</span> the concept of <span class="tk" data-w="damage">damage</span> to an individual from <span class="tk" data-w="identifiable">identifiable</span> knowledge about them.</span></p>
+          <p class="en" style="margin-top:10px"><span class="pno">❸⭐⭐⭐ That misses：否定这把尺 · 与 ②❼ misses the point 同一个动词 · 长难句 11</span><span class="ls" onclick="go('s11')">That misses the way the <span class="tk" data-w="surveillance">surveillance economy</span> works.</span></p>
+          <p class="en" style="margin-top:10px"><span class="pno">❹⭐⭐⭐ 新尺子：个人数据的价值只来自与千万人比较 · 长难句 12</span><span class="ls" onclick="go('s12')">The data of an individual there gains its value only when it is compared with the data of <span class="tk" data-w="countless">countless</span> millions more.</span></p>
+          <div class="zh"><b>③段全译：</b>真正的大问题是：我们的生活如今产生的所有数据，对它们的分析应该让谁受益。隐私法建立在这样一个概念之上：关于个人的可识别信息会给这个人带来伤害。这没有看清监视经济的运作方式。在监视经济里，一个人的数据只有在与其他千千万万人的数据相比较时，才会获得价值。
+          <div style="margin-top:8px;font-size:.86rem">⭐⭐⭐ <b>这一段没有题，却是 34、35 的根</b>：❶ <code>The great question is who should benefit from …</code>——作者在 ②❺ 说「隐私不是最重要的角度」之后，<b>终于亮出他认为最重要的角度：受益归谁</b>。④❹ 的 <code>a private monopoly</code> 就是这个问题的答案（归私人垄断——作者担心的正是这个）⟹ 34A；④❻ 的「小选择、大后果」就是对这个问题的谨慎 ⟹ 35C（黄皮书脉络：第三段「详述关键问题」）。<br>
+          ⭐⭐⭐ <b>❷❸❹ 是 ②❻❼ 的抽象版，结构一模一样</b>：<br>
+          <div class="tabwrap" style="margin:6px 0">
+          <table class="ctab">
+            <tr><th></th><th>② 具体版（本案）</th><th>③ 抽象版（原理）</th></tr>
+            <tr><td>旧尺子</td><td>❻ 按现行法律，信托「控制」数据，DeepMind 只「处理」</td><td>❷ 隐私法建立在「可识别信息对个人的伤害」上</td></tr>
+            <tr><td>否定</td><td>❼ <code>But this distinction misses the point</code></td><td>❸ <code>That misses the way …</code></td></tr>
+            <tr><td>新尺子</td><td>❼ 价值来自处理与聚合，不是单纯占有</td><td>❹ 个人数据的价值只来自与千万人比较</td></tr>
+          </table>
+          </div>
+          <b>同一个动词 misses 用了两次</b>——作者在同一处用力。读懂了 ③，33B 就是 ③❹ 与 ②❼ 的公因式：<b>价值来自处理（比较、聚合），不来自单个数据本身</b>（⟹ 新卡 <b>R240</b>）。<br>
+          ⭐⭐ <b>33C 从 ❶ 借了 benefit</b>：<code>making profits from patients’ data is illegal</code>——❶ 问的是「谁<b>该</b>受益」（should），是个价值问题，没说「牟利违法」；②❻ 的 <code>under existing law</code> 说的是德纳姆追责的法律依据，追的是「交出数据」，不是「牟利」（黄皮书：作者提及「谁该获利／受益」，意在暗示「私人公司（而非公众）从公共数据中获利是不合理的」，选项曲解文意）。<b>「不合理」≠「违法」</b>——作者恰恰在说现行法律管不到这一层。<br>
+          ⭐⭐ <b>❸ the way the surveillance economy works</b>：the way 后面省略了关系副词（the way (that／in which) … works）＝「监视经济运作的方式」；surveillance economy 是作者对数据经济的贬义命名——「监视」二字已带态度（见 00+、s11）。<br>
+          📌 <b>❹ there</b> 回指 ❸ 的 surveillance economy（在监视经济里），不是「那里」地点。<b>countless millions more</b>：「另外千千万万人」——more 表「额外的」，不是比较级。</div></div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p style="font-size:.78rem;color:var(--accent);margin-bottom:6px">④ 第二次换尺子 → 真正的担忧 → 建议 · 34、35 题定位段 · ⭐⭐⭐ 先破（隐私法不对路、没触及真正的担忧）后立（要紧的是垄断）；It is not enough to say X / What matters is Y ⟹ 34A；小选择大后果、长期斗争、好的开端 ⟹ 35C</p>
+          <p class="en"><span class="pno">❶⭐⭐⭐ 第二次换尺子：用隐私法管巨头「有点不对路」· 34D 的原料 · 长难句 13</span><span class="ls" onclick="go('s13')">The use of privacy law to <span class="tk" data-w="curb">curb</span> the tech giants in this <span class="tk" data-w="instance">instance</span> feels slightly <span class="tk" data-w="maladapted">maladapted</span>.</span></p>
+          <p class="en" style="margin-top:10px"><span class="pno">❷⭐⭐⭐ 先破：没触及真正的担忧 · 34 题干 the real worry 在此</span>This practice does not <span class="tk" data-w="address">address</span> the real <span class="tk" data-w="worry">worry</span>.</p>
+          <p class="en" style="margin-top:10px"><span class="pno">❸⭐⭐⭐ It is not enough to say that X：X 不是错，是不够 · 35B 的诱饵 · 长难句 14</span><span class="ls" onclick="go('s14')">It is not enough to say that the <span class="tk" data-w="algorithm">algorithms</span> DeepMind develops will benefit patients and save lives.</span></p>
+          <p class="en" style="margin-top:10px"><span class="pno">❹⭐⭐⭐ What matters is that Y：真正的担忧＝私人垄断 · 34A 正源 · 长难句 15</span><span class="ls" onclick="go('s15')">What matters is that they will <span class="tk" data-w="belongto">belong to</span> a private <span class="tk" data-w="monopoly">monopoly</span> which developed them using public <span class="tk" data-w="resource">resources</span>.</span></p>
+          <p class="en" style="margin-top:10px"><span class="pno">❺⭐⭐ 条件 ＋ 类比：大数据可能像大药企那样行事 · 34B、34C 的原料 · 长难句 16</span><span class="ls" onclick="go('s16')">If software <span class="tk" data-w="promise">promises to</span> save lives on the <span class="tk" data-w="scale">scale</span> that drugs now can, big data may be expected to behave as big <span class="tk" data-w="pharma">pharma</span> has done.</span></p>
+          <p class="en" style="margin-top:10px"><span class="pno">❻⭐⭐⭐ 小选择、大后果：35C 正源 · 长难句 17</span><span class="ls" onclick="go('s17')">We are still at the beginning of this <span class="tk" data-w="revolution">revolution</span> and small choices now may <span class="tk" data-w="turnout">turn out to</span> have <span class="tk" data-w="gigantic">gigantic</span> <span class="tk" data-w="consequence">consequences</span> later.</span></p>
+          <p class="en" style="margin-top:10px"><span class="pno">❼⭐⭐⭐ 后立：长期斗争，防数字封建主义 · 35D 借 avoid 造「蔑视」</span>A long <span class="tk" data-w="struggle">struggle</span> will be needed to avoid a future of digital <span class="tk" data-w="feudalism">feudalism</span>.</p>
+          <p class="en" style="margin-top:10px"><span class="pno">❽⭐⭐⭐ 收口：报告是好开端——welcome 的宾语是报告 · 35B 的对象偷换</span>Ms Denham’s report is a <span class="tk" data-w="welcome">welcome</span> start.</p>
+          <div class="zh"><b>④段全译：</b>在这个案子里，用隐私法来约束科技巨头，感觉有点不对路。这种做法没有触及真正的担忧。光说 DeepMind 开发的算法将造福患者、拯救生命，是不够的。要紧的是，这些算法将归一家私人垄断企业所有，而这家企业是利用公共资源把它们开发出来的。如果软件有望以药物如今所能达到的规模拯救生命，那么大数据可能也会像大型制药公司过去那样行事。我们仍处在这场革命的开端，眼下的小选择日后可能会带来巨大的后果。要避免一个数字封建主义的未来，需要一场长期的斗争。德纳姆女士的报告是个值得欢迎的开端。
+          <div style="margin-top:8px;font-size:.86rem">⭐⭐⭐ <b>先破后立</b>（黄皮书技巧栏：末段整体以 does not address the real worry（②）→ will be needed to…（⑦）呈现先破后立的结构）：<br>
+          ▸ <b>破</b>：❶ <code>The use of privacy law … feels slightly maladapted</code>（用隐私法有点不对路）→ ❷ <code>This practice does not address the real worry</code>（没触及真正的担忧）；<br>
+          ▸ <b>取舍</b>：❸ <code>It is not enough to say that X</code> → ❹ <code>What matters is that Y</code>；<br>
+          ▸ <b>类比</b>：❺ big data ↔ big pharma；<br>
+          ▸ <b>立</b>：❻ 小选择大后果 → ❼ 长期斗争 → ❽ 报告是好开端。<br>
+          ⭐⭐⭐ <b>34 题：the real worry 就在 ❷，答案在 ❹</b>——❸❹ 是「不够—关键」取舍句：<b>X（能造福患者、拯救生命）作者不否认，只嫌不够；Y（归私人垄断）才是 the real worry</b>。34A <code>the monopoly of big data by tech giants</code>：monopoly ← ❹ a private monopoly；tech giants ← ❶ curb the tech giants、①❸ concentration of power in the tech giants；big data ← ❺ big data may be expected to behave as big pharma（黄皮书：④句直接指向科技巨头的垄断问题）（⟹ 新卡 <b>R241</b>）。<br>
+          ⭐⭐⭐ <b>34D 是「被换掉的尺子」</b>：<code>the ineffective enforcement of privacy law</code>（隐私法执行不力）——❶ 说的是隐私法<b>不对路</b>（maladapted：用错了工具），不是<b>执行得不好</b>（ineffective enforcement：工具对、没用好）。作者嫌的是「拿这把尺子量」，不是「量得不准」（黄皮书：该句实际强调「案件的裁决者不该使用隐私法作为裁决依据」，而非「执法人员对隐私法的执行做得不到位」）（⟹ 新卡 <b>R240</b>）。<br>
+          ⭐⭐ <b>❺ 是类比，不是新话题</b>：<code>If software promises to save lives on the scale that drugs now can, big data may be expected to behave as big pharma has done</code>——相同点：<b>救命的东西一旦被少数公司垄断，就会像大药企那样行事</b>（定价、专利）。类比服务于 ❹ 的「垄断」。34B <code>the vicious rivalry among big pharmas</code> 把类比的「喻体」当成了担忧本身，还加了一个文中没有的「恶性竞争」（黄皮书：选项聚焦例子，偏离文意重点，且其所述的「恶性竞争」存在与否也无从推知）（⟹ 老卡 <b>R122</b>）；34C <code>the uncontrolled use of new software</code> 把「软件<b>归谁所有</b>」换成「软件<b>被滥用</b>」（黄皮书：窜改为「软件泛滥」）。<br>
+          ⭐⭐⭐ <b>35 题两头验</b>：<br>
+          ▸ <b>挡 D contemptuous（蔑视）</b>：①❸ <code>The potential of this work applied to healthcare is very great</code>——作者亲口说潜力很大；④❸ 也只是说「光说能救命<b>不够</b>」，没说救不了。❼ 批的是 digital feudalism（数字封建主义），不是 AI 医疗（黄皮书：⑦句中作者批驳的对象是「数字封建主义」）；<br>
+          ▸ <b>挡 B appreciative（赞赏）</b>：❽ <code>Ms Denham’s report is a welcome start</code>——<b>welcome 的宾语是德纳姆的报告</b>，不是 AI 医疗（黄皮书：⑧句中作者赞赏的是「德纳姆的案情报告」，而非题干中所问的「将 AI 应用于医疗领域」）（⟹ 老卡 <b>R221</b> 批评／表扬对象 ≠ 题干对象）；<br>
+          ▸ <b>挡 A ambiguous（模棱两可）</b>：作者的态度一点也不含糊——潜力承认、垄断警惕、斗争要长期；<b>「既看到好处又看到风险」是谨慎，不是含糊</b>（黄皮书：作者对「AI 技术的应用」持非常明确的谨慎态度，而非持模棱两可的态度）；<br>
+          ▸ <b>C cautious（谨慎）</b>：❻ <code>We are still at the beginning of this revolution and small choices now may turn out to have gigantic consequences later</code>——言下之意：<b>现在的每个决定都得小心</b>（黄皮书）。<br>
+          ⭐⭐ <b>❸ 的 benefit patients and save lives 不是作者的主张</b>：It is not enough to say that … 是在转述一种说法再打折——它证明作者<b>不否认</b>好处（挡 D），但不能说作者在<b>「指出」</b>好处（黄皮书技巧栏说作者「于首、末段几度指出……」，商榷见页首）。<br>
+          📌 <b>maladapted</b>：mal-（坏、不当）＋ adapted（适应的）＝「不适应的、不对路的」；<b>slightly</b> 给它打了折——作者说话很有分寸（见 03+）。<b>big pharma</b>：pharma 是 pharmaceutical companies 的口语缩写，常带贬义（见 00+）。</div></div>
+        </div>
+      </section>
+
+      <!-- ========== 题目 ========== -->
+      <section class="card">
+        <h2><span class="n">02</span>题目与解析（点选项即判 · 再看解析）</h2>
+        <div class="waver" style="margin-bottom:18px">✅ <b>盲做 5/5</b>：先读原卷、把五题答案与理由写进文件，再对答案——<b>五题理由与黄皮书的判据逐条对得上</b>。<br>
+        <b>十五个干扰项分七族</b>：<b>偷换对象／主体 4</b>（31A · 31D · 32C · 35B）· <b>方向反 3</b>（31B · 32B · 33A）· <b>被换掉的尺子 2</b>（33D · 34D）· <b>无中生有 2</b>（32A · 33C）· <b>态度档位错 2</b>（35A · 35D）· <b>例子当主旨 1</b>（34B）· <b>偷换属性 1</b>（34C）。<br>
+        ⭐ <b>本篇最该练的是「对谁」</b>：the latter 是谁、dangers 是对谁的危险、道歉的是谁、welcome 的是谁——<b>四个干扰项全是动作对了、对象错了</b>。<b>2018 卷三篇连起来看：T1 考「站在哪一头」（方向反 4），T2 考「是谁说的」（借词 4），T3 考「对谁」（偷换对象 4）</b>。33、34 两题是新卡 <b>R240</b>（换尺子）与 <b>R241</b>（不够—关键）；31 是老卡 <b>R180</b>（强调句）、32 是老卡 <b>R21</b>＋<b>R176</b>（主体＋刻度）、35 是老卡 <b>R12</b>＋<b>R221</b>（强度尺＋对象）。四个专栏分拆两把新刀和两件老工具，末尾是<b>十五个干扰项的产地总账 ＋ 同序检查</b>。</div>
+
+        <div class="q" data-ans="2" id="q31">
+          <p class="stem"><span class="qt">事实细节（强调句定位 ＋ 修饰语同义改写）</span>31. What is true of the agreement between the NHS and DeepMind?</p>
+          <div class="opts">
+            <div class="opt">[A] It <span class="tk" data-w="fallshort">fell short of</span> the <span class="tk" data-w="latter">latter</span>’s expectations.</div>
+            <div class="opt">[B] It caused <span class="tk" data-w="conflict">conflicts</span> among tech giants.</div>
+            <div class="opt">[C] It failed to <span class="tk" data-w="dueattention">pay due attention to</span> patients’ rights.</div>
+            <div class="opt">[D] It put both sides into a dangerous situation.</div>
+          </div>
+          <div class="expl">
+            <b>✅ C · 定位①❹（题干 the agreement ↔ ①❹ a vague agreement；the deal between … ↔ ①❶）</b><br>
+            <b>正源</b>：①❹ <span class="loc">It is against that background that … the Royal Free hospital trust … handed over to DeepMind the records of 1.6 million patients in 2015 on the basis of a <b>vague</b> agreement which <b>took far too little account of the patients’ rights</b> and their expectations of privacy.</span><br>
+            ▸ <b>第一步：先找 agreement 在哪</b>——全文只在 ①❹ 出现一次（①❶ 用的是 deal）；<br>
+            ▸ <b>第二步：强调句告诉你这句是落点</b>——<code>It is against that background that …</code>：❶–❸ 是铺垫，裁定才是主角（R180）；<br>
+            ▸ <b>第三步：看 agreement 身上挂了什么</b>——两个负面修饰：vague（含糊）＋ <code>which took far too little account of the patients’ rights</code>（对患者权利考虑得太少）⟹ <b>take account of ＝ pay attention to；far too little ＝ failed to … due</b> ⟹ C。<br>
+            黄皮书技巧栏（要点转述）：本题聚焦 agreement，除借该词回文定位、比对选项之外，还应思考它在文中「为何重要／起什么作用」，命题人常基于此设正确项。先借 agreement 定位至 ①④ 句，句首强调句式暗示前三句为铺垫，that 后「裁定 NHS 信托医院违法」才是核心；agreement 以 on the basis of 与 NHS 信托医院相关联，联系其两个负面修饰 vague、which took far too little account of… ⟹「协议内容含糊、未充分重视患者隐私权益」是 NHS 被定罪的原因。
+            <div style="margin-top:8px">
+            <b>[A] It fell short of the latter’s expectations ⚠️ 偷换对象（指代）</b>：← ①❹ <code>their expectations of privacy</code>。题干里 the latter（后者）＝ DeepMind；原文的 their 就近回指 the patients——「没顾及<b>患者</b>的期待」被换成「没达到 <b>DeepMind</b> 的期待」（黄皮书：将④句……窜改为「协议未达到 DeepMind 的期望」）（⟹ 老卡 <b>R21</b>）。<br>
+            <b>[B] It caused conflicts among tech giants ⚠️ 方向反（借词）</b>：← ①❸ <code>further concentration of power in the tech giants</code>。原文是权力<b>集中到</b>巨头手里（协议对巨头有利），B 说巨头<b>之间</b>起冲突——方向反了（黄皮书：可见「协议有助于科技巨头集权」，选项却强调协议有损于科技巨头）。<br>
+            <b>[C] It failed to pay due attention to patients’ rights ✔</b>　①❹ took far too little account of the patients’ rights 的同义改写。<br>
+            <b>[D] It put both sides into a dangerous situation ⚠️ 偷换对象（危险对谁）</b>：← ①❶ <code>the dangers of the deal</code>。dangers 是这笔交易给<b>公众／患者</b>带来的危害（权力集中、隐私），不是双方自己的处境；①❶ 还说 <code>both sides mean well</code>，作者根本没把双方写成受害者（黄皮书：「危险（dangers）」指的是协议对公众／患者的危害……而非对协议双方的危害）（⟹ 老卡 <b>R96</b> 先判受损方）。
+            </div>
+          </div>
+        </div>
+
+        <div class="q" data-ans="3" id="q32">
+          <p class="stem"><span class="qt">事实细节（多方回应：先配对「谁 × 做了什么」）</span>32. The NHS trust <span class="tk" data-w="respondto">responded to</span> Denham’s verdict with</p>
+          <div class="opts">
+            <div class="opt">[A] <span class="tk" data-w="empty">empty</span> promises.</div>
+            <div class="opt">[B] tough <span class="tk" data-w="resistance">resistance</span>.</div>
+            <div class="opt">[C] <span class="tk" data-w="sincere">sincere</span> apologies.</div>
+            <div class="opt">[D] necessary <span class="tk" data-w="adjustment">adjustments</span>.</div>
+          </div>
+          <div class="expl">
+            <b>✅ D · 定位②❷❸（题干 The NHS trust ↔ ②❷ The NHS trust has mended its ways）</b><br>
+            <b>正源</b>：②❷ <span class="loc">The NHS trust has <b>mended its ways</b>.</span> ＋ ②❸ <span class="loc">Further arrangements … will be <b>carefully scrutinised</b> to ensure that all necessary permissions have been asked of patients and all unnecessary data has been cleaned.</span><br>
+            ▸ <b>第一步：本段有两方，先配对</b>——②❶ DeepMind → <code>has almost apologised</code>；②❷ NHS 信托 → <code>has mended its ways</code>；<br>
+            ▸ <b>第二步：题干只问 NHS 信托</b>——mended its ways（改正做法）＋ ❸ 审查、征得许可、清除数据（具体怎么改）⟹ <b>necessary adjustments</b>；<br>
+            ▸ <b>第三步：拿 DeepMind 那一行去验 C</b>——道歉的是 DeepMind，而且只是 almost ⟹ C 主体、刻度双错（⟹ 老卡 <b>R21</b>、<b>R117</b>、<b>R176</b>）。<br>
+            黄皮书技巧栏（要点转述）：对于考查涉及「多方做法」的段落的题目，首先要明确题目考查的对象，然后敲定相关方各自的做法，再对比选项。由第二段前三句可知「DeepMind 几乎已经道歉」「NHS 信托医院纠正了其行为方式，承诺将仔细审查后续协定」，文中并未提及 NHS 是否切实履行了承诺，A 无信息支持，B 与文意截然相反，C 张冠李戴 ⟹ D。
+            <div style="margin-top:8px">
+            <b>[A] empty promises ⚠️ 无中生有（已做 → 只说不做）</b>：← ②❸ <code>will be carefully scrutinised</code>（将来时，像承诺）、②❼ <code>misses the point</code>（像「没做到」）。但 ②❷ 是现在完成时 <code>has mended</code>——<b>已经改了</b>；misses the point 的主语是德纳姆的 distinction，与 NHS 兑不兑现承诺无关（黄皮书：采取了具体的纠正措施，而非仅有「空洞的承诺」；⑦句的 misses the point 意指「裁决者／监管者未能抓住关键问题」）。<br>
+            <b>[B] tough resistance ⚠️ 方向反</b>：mended its ways ＝ 接受裁定、改正做法；「强硬抵制」正好相反（黄皮书：选项的内涵「（该医院）强烈反对（裁决）」与此完全相悖）。<br>
+            <b>[C] sincere apologies ⚠️ 偷换对象 ＋ 刻度拔高</b>：← ②❶ <code>DeepMind has almost apologised</code>。① 主体：道歉的是 DeepMind，不是 NHS 信托；② 刻度：almost apologised（差不多算道歉）→ sincere apologies（诚恳道歉）。DeepMind 当天的博文只说了 <code>We got that wrong, and we need to do better</code>——认错，没说 sorry（黄皮书：选项错误有二：将 almost apologised 夸大为 sincere apologies；将道歉的主体 DeepMind 偷换为题干所问的 The NHS trust）。<br>
+            <b>[D] necessary adjustments ✔</b>　②❷ mended its ways ＋ ②❸ 审查后续协议、征得许可、清除不必要数据。
+            </div>
+          </div>
+        </div>
+
+        <div class="q" data-ans="1" id="q33">
+          <p class="stem"><span class="qt">作者观点（段落）（两个 But 分出裁定者与作者）</span>33. The author argues in Paragraph 2 that</p>
+          <div class="opts">
+            <div class="opt">[A] privacy protection must be <span class="tk" data-w="secure">secured</span> <span class="tk" data-w="atallcosts">at all costs</span>.</div>
+            <div class="opt">[B] the value of data comes from the processing of it.</div>
+            <div class="opt">[C] making <span class="tk" data-w="profit">profits</span> from patients’ data is <span class="tk" data-w="illegal">illegal</span>.</div>
+            <div class="opt">[D] <span class="tk" data-w="leak">leaking</span> patients’ data is worse than selling it.</div>
+          </div>
+          <div class="expl">
+            <b>✅ B · 定位②❺–❼（题干 The author argues ＋ Paragraph 2 ↔ 本段两个 But）</b><br>
+            <b>正源</b>：②❼ <span class="loc">But this distinction misses the point that <b>it is processing and aggregation, not the mere possession of bits, that gives the data value</b>.</span><br>
+            ▸ <b>第一步：题干问「作者」</b>——本段有三个声音：DeepMind 与 NHS 的动作（❶–❸）、德纳姆的裁定（❻）、作者（❹❺❼）。两个 But（❺、❼）后面是作者；<br>
+            ▸ <b>第二步：❼ 是强调句 It is X, not Y, that …</b>——X ＝ processing and aggregation，Y ＝ the mere possession of bits ⟹ 价值来自处理（R180）；<br>
+            ▸ <b>第三步：认出两把尺子</b>——❻ controlled vs processed 是德纳姆（现行法律）的尺子，❼ 是作者换上的尺子；A、D 用的是隐私／法律那把尺，B 用的是作者这把（⟹ 新卡 <b>R240</b>）。<br>
+            黄皮书技巧栏（要点转述）：涉及多方观点／做法的段落常成为命题焦点。若就作者观点设题，一般要求抓取语气词、关联词，尤其是表示语义转折、引出语义重心的 but、yet、however 等来把握作者站位。本题第二段的两个 But 为案件裁决者的观点和作者观点的分水岭，抓住 But 之后的内容可确定作者的核心观点为「隐私（个人数据是否被非法泄露）不是关键问题，数据如何产生价值才是关键问题」⟹ B。
+            <div style="margin-top:8px">
+            <b>[A] privacy protection must be secured at all costs ⚠️ 方向反（被换掉的尺子推到极端）</b>：← ②❺ <code>privacy is not the only angle … and not even the most important</code>。作者刚把隐私从「唯一」降到「连最重要都不是」，A 却说「不惜一切代价」（黄皮书：与⑤句所传达的作者态度「隐私不算本案最重要、最值得关注的问题」相悖）（⟹ 新卡 <b>R240</b>）。<br>
+            <b>[B] the value of data comes from the processing of it ✔</b>　②❼ processing and aggregation … gives the data value 的同义改写（aggregation 省掉不影响）。<br>
+            <b>[C] making profits from patients’ data is illegal ⚠️ 无中生有（借词）</b>：← ②❻ <code>under existing law</code>、③❶ <code>who should benefit from</code>。现行法律追的是「交出数据」（控制者的责任），不是「牟利」；③❶ 问的是谁<b>该</b>受益（价值判断），没说违法（黄皮书：意在暗示「私人公司（而非公众）从公共数据中获利是不合理的」，选项曲解文意）。<br>
+            <b>[D] leaking patients’ data is worse than selling it ⚠️ 被换掉的尺子（说话人错位）＋ 无中生有</b>：← ②❻ <code>“controlled” … merely “processed”</code>。① 文中没有 selling；② 「交出数据的一方责任更重」是德纳姆按现行法律的判断，<b>恰是作者在 ❼ 驳的那把尺</b>（黄皮书：该句虽传达出「泄露患者数据比处理患者数据性质更恶劣」之意，但这是德纳姆女士的观点，恰好与题干所问的作者观点相悖）。
+            </div>
+          </div>
+        </div>
+
+        <div class="q" data-ans="0" id="q34">
+          <p class="stem"><span class="qt">事实细节（不够—关键：取 What matters 之后）</span>34. According to the last paragraph, the real worry <span class="tk" data-w="arisefrom">arising from</span> this deal is</p>
+          <div class="opts">
+            <div class="opt">[A] the monopoly of big data by tech giants.</div>
+            <div class="opt">[B] the <span class="tk" data-w="vicious">vicious</span> <span class="tk" data-w="rivalry">rivalry</span> among big pharmas.</div>
+            <div class="opt">[C] the <span class="tk" data-w="uncontrolled">uncontrolled</span> use of new software.</div>
+            <div class="opt">[D] the ineffective <span class="tk" data-w="enforcement">enforcement</span> of privacy law.</div>
+          </div>
+          <div class="expl">
+            <b>✅ A · 定位④❷–❹（题干 the real worry ↔ ④❷ does not address the real worry）</b><br>
+            <b>正源</b>：④❷ <span class="loc">This practice does not address the real worry.</span> ＋ ④❸ <span class="loc">It is not enough to say that the algorithms DeepMind develops will benefit patients and save lives.</span> ＋ ④❹ <span class="loc">What matters is that they will belong to a <b>private monopoly</b> which developed them using public resources.</span><br>
+            ▸ <b>第一步：题干原词 the real worry 在 ④❷</b>——但 ❷ 只说隐私法「没触及」它，没说它是什么；<br>
+            ▸ <b>第二步：往下找「不够—关键」</b>——❸ <code>It is not enough to say that X</code>（X 不是答案，是被打折的说法）→ ❹ <code>What matters is that Y</code>（Y 才是答案）⟹ 归私人垄断（⟹ 新卡 <b>R241</b>）；<br>
+            ▸ <b>第三步：验证后文都在说垄断</b>——❺ 大数据像大药企（垄断救命的东西）、❼ digital feudalism（垄断的终局）⟹ A。<br>
+            黄皮书技巧栏（要点转述）：试题命制常遵循文章主线，正确项往往指向或体现定位段的主旨，可借段中对比、取舍、例证等结构锁定重点并串联出主旨。末段整体以「does not address the real worry（②）→ will be needed to…（⑦）」呈现先破后立的结构；段中取舍结构「It is not enough to say X（③）vs What matters is Y（④）」与类比论证「W may…behave as Z（⑤）」凸显真正的隐患在「科技巨头对大数据算法的垄断」⟹ A。
+            <div style="margin-top:8px">
+            <b>[A] the monopoly of big data by tech giants ✔</b>　④❹ a private monopoly ＋ ④❶ the tech giants ＋ ④❺ big data。<br>
+            <b>[B] the vicious rivalry among big pharmas ⚠️ 例子当主旨 ＋ 无中生有</b>：← ④❺ <code>big data may be expected to behave as big pharma has done</code>。big pharma 是类比的喻体，用来说明「垄断」；「恶性竞争」文中没有（黄皮书：选项聚焦例子，偏离文意重点，且其所述的「恶性竞争」存在与否也无从推知）（⟹ 老卡 <b>R122</b>）。<br>
+            <b>[C] the uncontrolled use of new software ⚠️ 偷换属性（所有权 → 使用）</b>：← ④❺ <code>If software promises to save lives</code>。作者担心软件<b>归谁所有</b>，C 换成软件<b>被滥用</b>（黄皮书：将⑤句中作者强调的真正的隐患「软件被垄断（即归属权问题）」窜改为「软件泛滥」）。<br>
+            <b>[D] the ineffective enforcement of privacy law ⚠️ 被换掉的尺子</b>：← ④❶ <code>The use of privacy law … feels slightly maladapted</code>。作者说隐私法<b>用错了地方</b>（maladapted），不是<b>执行不力</b>（ineffective enforcement）；D 还默认「把隐私法执行好就行」——那正是作者要换掉的尺子（黄皮书：该句实际强调「案件的裁决者不该使用隐私法作为裁决依据」）（⟹ 新卡 <b>R240</b>）。
+            </div>
+          </div>
+        </div>
+
+        <div class="q" data-ans="2" id="q35">
+          <p class="stem"><span class="qt">作者态度（两头验：潜力挡蔑视、担忧挡赞赏）</span>35. The author’s attitude toward the application of AI to healthcare is</p>
+          <div class="opts">
+            <div class="opt">[A] <span class="tk" data-w="ambiguous">ambiguous</span>.</div>
+            <div class="opt">[B] <span class="tk" data-w="appreciative">appreciative</span>.</div>
+            <div class="opt">[C] <span class="tk" data-w="cautious">cautious</span>.</div>
+            <div class="opt">[D] <span class="tk" data-w="contemptuous">contemptuous</span>.</div>
+          </div>
+          <div class="expl">
+            <b>✅ C · 定位①❸ ＋ ④❸–❽（题干 the application of AI to healthcare ↔ ①❸ this work applied to healthcare）</b><br>
+            <b>正源</b>：①❸ <span class="loc">The potential of this work applied to healthcare is very great, but it could also lead to further concentration of power in the tech giants.</span> ＋ ④❻ <span class="loc">We are still at the beginning of this revolution and <b>small choices now may turn out to have gigantic consequences later</b>.</span> ＋ ④❼ <span class="loc">A long struggle will be needed to avoid a future of digital feudalism.</span><br>
+            ▸ <b>第一步：先把 toward 后面的对象写在卷边</b>——<b>AI 用于医疗</b>，不是德纳姆的报告、不是数字封建主义（⟹ 老卡 <b>R221</b>）；<br>
+            ▸ <b>第二步：两头验</b>——①❸ 前半「潜力非常大」⟹ 不是蔑视（排 D）；①❸ 后半 ＋ ④❹–❼「权力集中、私人垄断、数字封建主义」⟹ 不是赞赏（排 B）；<br>
+            ▸ <b>第三步：定档</b>——看到好处、警惕风险、主张长期斗争 ⟹ 立场明确（排 A ambiguous），档位落在「谨慎」⟹ C（⟹ 老卡 <b>R12</b> 强度尺）。<br>
+            黄皮书技巧栏（要点转述）：作者态度题实际影射全文主旨，可从「论述结构」与「论述角度」两方面解答。论证结构：第一至三段以「树靶—批驳」结构批评德纳姆的裁定未切中要害，末段指出「科技巨头垄断大数据才是真正需要担忧的问题」，站位相当明确，排除 A、B；论述角度：作者在质疑科技巨头可能垄断大数据之余，还于首、末段几度指出「将人工智能应用于医疗的做法富有潜力，有望挽救患者的生命」，可见其并非一味批判，排除 D ⟹ C，即作者意欲「警示人们及早防范新事物的负面影响」。<b>商榷</b>：「几度指出」夸了——作者正面说潜力只有 ①❸ 一处；④❸ 是被 It is not enough to say that 打折的说法，④❺ 是 If 条件句（见页首）。
+            <div style="margin-top:8px">
+            <b>[A] ambiguous ⚠️ 态度档位错（立场明确 ≠ 含糊）</b>：← ①❸ 的「潜力 … but 担忧」、④❼ avoid 与 ④❽ welcome 一褒一贬。两面都说不等于没态度——作者的结论很清楚：要长期斗争、防垄断（黄皮书：作者对「AI 技术的应用」持非常明确的谨慎态度，而非持模棱两可的态度）。<b>全站九道态度题，中性／无态度类选项 0 次正确</b>（见 02++++）。<br>
+            <b>[B] appreciative ⚠️ 偷换对象（表扬的是报告）</b>：← ④❽ <code>Ms Denham’s report is a welcome start</code>。welcome 的宾语是德纳姆的报告，不是 AI 医疗；文中对这种应用只用一句说潜力，却用大段篇幅说隐患（黄皮书：可见作者对这种应用的态度并非全盘认可）（⟹ 老卡 <b>R221</b>）。<br>
+            <b>[C] cautious ✔</b>　①❸ 潜力 very great ＋ but 权力集中 → ④❻ 小选择可能有巨大后果 → ④❼ 长期斗争。<br>
+            <b>[D] contemptuous ⚠️ 态度档位错（偷换批评对象）</b>：← ④❼ <code>A long struggle … to avoid a future of digital feudalism</code>。作者反对的是 digital feudalism（数字封建主义），不是 AI 医疗本身；contemptuous 还带「傲慢、看不起」的意味，作者一点也没有（黄皮书：contemptuous 一词侧重于「傲慢、瞧不上」，作者在文中并未表现出此态度）。
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card" id="col1">
+        <h2><span class="n">02+</span>专栏 · 换尺子：<u>德纳姆的裁定用隐私法的尺子（谁「控制」数据、个人有没有受损），作者换成自己的尺子（数据的价值来自处理与聚合、好处归谁、会不会被垄断）——题干问裁定就用旧尺，问作者就用新尺；作者观点题的干扰项专拿被换掉的那把尺造（33A、33D、34D）</u></h2>
+        <p style="font-size:.9rem;margin-bottom:12px">评论一个裁决、一份报告、一项政策的社论，常见两种写法：<b>一种是「裁得对不对」</b>（2017 T4 评最高法院推翻定罪、2015 T4 评窃听案判决），<b>一种是「用的尺子对不对」</b>——本篇就是后者。作者不说德纳姆裁错了（①❹ damning verdict、④❽ a welcome start 都是肯定），<b>他说的是：拿隐私法这把尺子量这件事，量不到要害</b>。于是全文有两套词，各自成串：</p>
+        <div class="tabwrap">
+        <table class="ctab">
+          <tr><th>段</th><th>旧尺子（隐私法／现行法律）</th><th>换尺信号</th><th>新尺子（作者）</th></tr>
+          <tr><td>①</td><td>❹ <code>took far too little account of the patients’ rights and their expectations of privacy</code></td><td>—（此处作者还在转述裁定）</td><td>❸ <code>further concentration of power in the tech giants</code>（伏笔）</td></tr>
+          <tr><td>②</td><td>❹ <code>lessons about informed patient consent</code> · ❻ <code>“controlled” … merely “processed”</code></td><td>❺ <code>But … not the only angle … not even the most important</code> · ❼ <code>But this distinction misses the point</code></td><td>❼ <code>it is processing and aggregation, not the mere possession of bits, that gives the data value</code></td></tr>
+          <tr><td>③</td><td>❷ <code>damage to an individual from identifiable knowledge about them</code></td><td>❸ <code>That misses the way the surveillance economy works</code></td><td>❶ <code>who should benefit from the analysis</code> · ❹ <code>gains its value only when it is compared with …</code></td></tr>
+          <tr><td>④</td><td>❶ <code>The use of privacy law to curb the tech giants</code></td><td>❶ <code>feels slightly maladapted</code> · ❷ <code>does not address the real worry</code></td><td>❹ <code>a private monopoly … using public resources</code> · ❺ big pharma · ❼ <code>digital feudalism</code></td></tr>
+        </table>
+        </div>
+        <div class="atti" style="margin-top:12px">
+          ⭐⭐⭐ <b>三步用法</b>：<br>
+          ▸ <b>① 读到 But … not the only／misses the point／maladapted／does not address，就在卷边画一条竖线</b>：左边是旧尺子，右边是新尺子。本篇换尺信号共五处（②❺、②❼、③❸、④❶、④❷），<b>其中三处用的是同一个动词族：misses / misses / does not address</b>；<br>
+          ▸ <b>② 看题干问谁</b>：31 问协议本身（裁定的事实层）⟹ 答案在旧尺子那边（patients’ rights）；33 问 The author argues、34 问 the real worry ⟹ 答案在新尺子那边；<br>
+          ▸ <b>③ 作者观点题里，旧尺子上的选项一律划掉</b>——33A（把隐私推到「不惜一切代价」）、33D（控制／处理之争被改成泄露／出售之争）、34D（隐私法执行不力）<b>三个干扰项都长在旧尺子上</b>。<br>
+          ⚠️ <b>最容易踩的坑</b>：旧尺子<b>不是错的</b>——作者承认 ②❹ There are lessons about informed patient consent to learn、④❽ 报告是个好开端。所以旧尺子上的选项<b>「看起来合理」</b>，只是<b>不是作者这一题要的</b>；34D 最狡猾，它把「尺子用错」偷换成「尺子没用好」——换完之后，旧尺子又被扶正了（⟹ 新卡 <b>R240</b>）。<br>
+          🔗 <b>与老卡的分工</b>：<b>R190</b> 管「判决结果 ≠ 作者判断」（事实层 vs 作者层）、<b>R227</b> 管「对行为的嫌恶 vs 对裁决的支持」（法与德两本账）；<b>R240 管「作者认可裁定，却换掉了裁定的尺子」</b>——三张卡都是评裁决的社论，分别回答「作者同不同意」「作者站哪边」「作者用什么量」。
+        </div>
+      </section>
+
+      <section class="card" id="col2">
+        <h2><span class="n">02++</span>专栏 · 不够—关键：<u>④❸ It is not enough to say that X ＋ ④❹ What matters is that Y——X 作者不否认，只嫌它不够；Y 才是答案（34A）。本篇一共四处「贬一个、抬一个」，四处都挂着题：被贬的那一半是干扰项的原料，被抬的那一半是正确项</u></h2>
+        <p style="font-size:.9rem;margin-bottom:12px">脚本扫过全站此前 50 篇 Part A 阅读原文（01 节逐句）：<code>It is not enough to say</code> 与 <code>What matters is</code> <b>一次都没出现过，本篇是第一次</b>。但它背后的动作——<b>「X 不是（唯一的／最重要的／关键的），Y 才是」</b>——在本篇里用了四种句型：</p>
+        <div class="tabwrap">
+        <table class="ctab">
+          <tr><th>句型</th><th>原文</th><th>被贬的（干扰项原料）</th><th>被抬的（正确项）</th><th>题</th></tr>
+          <tr><td>降级否定</td><td>②❺ <code>privacy is not the only angle … and not even the most important</code></td><td>隐私</td><td>（下文揭晓）</td><td>33A 撞它</td></tr>
+          <tr><td>强调句排除</td><td>②❼ <code>it is processing and aggregation, not the mere possession of bits, that gives the data value</code></td><td>占有</td><td>处理与聚合</td><td><b>33B</b></td></tr>
+          <tr><td>没触及</td><td>④❷ <code>This practice does not address the real worry</code></td><td>用隐私法约束巨头</td><td>the real worry（下一句揭晓）</td><td>34 题干 · 34D 撞它</td></tr>
+          <tr><td>不够—关键</td><td>④❸ <code>It is not enough to say that …</code> ④❹ <code>What matters is that …</code></td><td>算法能造福患者、拯救生命</td><td>算法将归私人垄断</td><td><b>34A</b> · 35 两头</td></tr>
+        </table>
+        </div>
+        <div class="atti" style="margin-top:12px">
+          ⭐⭐⭐ <b>规律一：被贬的那一半不是「错」，是「不够」</b>。②❺ 说隐私「不是最重要」，没说不重要；④❸ 说「光说能救命不够」，没说救不了命。所以<b>被贬的内容可以用来排除「全盘否定」</b>——35D contemptuous 就是被 ④❸ 挡住的：作者都承认能救命了，怎么会蔑视？<br>
+          ⭐⭐⭐ <b>规律二：抬起来的那一半常常「下一句才揭晓」</b>。②❺ 只说隐私不是最重要的，最重要的是什么？②❼ 才说（价值来自处理）、③❶ 再说一遍（谁受益）；④❷ 只说没触及真正的担忧，担忧是什么？④❹ 才说。<b>题干给的是被贬那一半的原词（34 的 the real worry），答案要往下一句找</b>。<br>
+          ⭐⭐ <b>规律三：What matters is that … 是伪强调句</b>（what 从句作主语）：与 ②❼ 的 It is X that … 同一个功能——<b>作者拿荧光笔标出重点</b>（⟹ 老卡 <b>R180</b>）。<br>
+          🔗 <b>与老卡的分工</b>：<b>R180</b> 管 It is X, not Y, that … 这一种句型；<b>R235</b> 管「两头挡」（作者先撇清一个极端、再对另一个极端让步）；<b>R241 管「不够—关键」</b>——被贬的一半作者是认的，所以它既能反证「全盘否定」的选项，又不能被当成答案（⟹ 新卡 <b>R241</b>）。
+        </div>
+      </section>
+
+      <section class="card" id="col3">
+        <h2><span class="n">02+++</span>专栏 · 多方各做了什么 ＋ 刻度词：<u>32 题先配对「谁 × 做了什么」，再核刻度——almost apologised ≠ sincere apologies；本篇作者说话极有分寸，七个刻度词各管一件事，干扰项专门把刻度拔高或压低</u></h2>
+        <p style="font-size:.9rem;margin-bottom:12px">本篇有四方：DeepMind、NHS 信托、德纳姆、作者。32 题只问 NHS 信托；33 题只问作者。<b>先把人和动作配成对，选项里的动词再去找主人</b>（⟹ 老卡 <b>R21</b>、<b>R117</b>）。然后看刻度——这篇社论几乎每个判断都带着一个<b>「刻度词」</b>，干扰项就在刻度上做手脚（⟹ 老卡 <b>R176</b>）：</p>
+        <div class="tabwrap">
+        <table class="ctab">
+          <tr><th>刻度词</th><th>原文</th><th>刻度说了什么</th><th>被哪个选项改了</th></tr>
+          <tr><td><code>far too little</code></td><td>①❹ took far too little account of the patients’ rights</td><td>考虑得<b>远远不够</b>（不是完全没考虑）</td><td>31C failed to pay <b>due</b> attention ——保真 ✔</td></tr>
+          <tr><td><code>very great · could also</code></td><td>①❸ The potential … is very great, but it could also lead to …</td><td>潜力是<b>确定</b>的，风险是<b>可能</b>的</td><td>35D 把「可能的风险」当成全盘否定</td></tr>
+          <tr><td><code>almost</code></td><td>②❶ DeepMind has almost apologised</td><td><b>差一点</b>算道歉——认了错，没说 sorry</td><td>32C <b>sincere</b> apologies 拔高 ＋ 换主体</td></tr>
+          <tr><td><code>not the only · not even the most</code></td><td>②❺ privacy is not the only angle … and not even the most important</td><td>隐私降两级，<b>但仍是一个角度</b></td><td>33A at all costs 反向拔到顶</td></tr>
+          <tr><td><code>merely · mere</code></td><td>②❻ DeepMind merely “processed” it · ②❼ not the mere possession of bits</td><td>德纳姆压低「处理」，作者压低「占有」——<b>两把尺子轻重相反</b></td><td>33D 用德纳姆的轻重</td></tr>
+          <tr><td><code>slightly</code></td><td>④❶ feels slightly maladapted</td><td><b>有点</b>不对路（不是完全无用）</td><td>34D ineffective enforcement 换了性质</td></tr>
+          <tr><td><code>welcome start</code></td><td>④❽ Ms Denham’s report is a welcome start</td><td>是<b>开端</b>——好，但远远不够（呼应 ④❼ A long struggle）</td><td>35B 把对报告的「欢迎」挪给 AI</td></tr>
+        </table>
+        </div>
+        <div class="atti" style="margin-top:12px">
+          ⭐⭐⭐ <b>32 题的三步</b>：① 画出 ②❶❷ 两行：DeepMind → almost apologised，NHS → mended its ways；② 题干问 NHS ⟹ 只看第二行，mended its ways ＋ ❸ 的整改内容 ⟹ D；③ C 的 apologies 在第一行，<b>主体一错就不必再看刻度</b>——但刻度也错了（almost → sincere），<b>一个选项双保险地错</b>。<br>
+          ⭐⭐ <b>32A empty promises 是「时态陷阱」</b>：②❸ 是将来时（will be scrutinised），看起来是承诺；但 ②❷ 是现在完成时（has mended）——<b>「已经改了」＋「将来还会严查」</b>，不是空口承诺。<br>
+          ⭐⭐ <b>刻度词的读法</b>：本篇作者是「支持裁定、但嫌不够」的立场，所以他<b>既不会把话说满，也不会把话说死</b>——读到 almost、slightly、not even the most、a … start 这类词，就知道选项里的 sincere、at all costs、ineffective、appreciative 是在替作者把话说满（⟹ 老卡 <b>R176</b> 限定词打折、<b>R12</b> 强度尺）。
+        </div>
+      </section>
+
+      <section class="card" id="col4">
+        <h2><span class="n">02++++</span>专栏 · 全站九道态度题账：<u>题干含 attitude 的态度题，连本题全站共 9 道——中性／无态度／容忍类选项共出现 11 次，0 次正确；正确项 5 次偏负面、3 次偏正面、1 次谨慎（本题）；「谨慎／犹豫」类出现 3 次，只有本题是对的——判据是「作者两头都说了，而且给了明确的行动方向」</u></h2>
+        <p style="font-size:.9rem;margin-bottom:12px">脚本扫全站 50 篇阅读页的题干（含 attitude 的算态度题），结果如下（2012 T4 问的是 Donahue 的态度，其余都问作者）：</p>
+        <div class="tabwrap">
+        <table class="ctab">
+          <tr><th>年·题</th><th>谁 → 对什么</th><th>四个选项</th><th>答案</th><th>中性类选项</th></tr>
+          <tr><td>2007 T2·30</td><td>作者 → IQ tests</td><td>Supportive / Skeptical / Impartial / Biased</td><td><b>B Skeptical</b></td><td>Impartial</td></tr>
+          <tr><td>2010 T4·40</td><td>作者 → standard-setters</td><td>satisfaction / skepticism / objectiveness / sympathy</td><td><b>D sympathy</b></td><td>objectiveness</td></tr>
+          <tr><td>2012 T4·40</td><td>Donahue → public-sector system</td><td>disapproval / appreciation / tolerance / indifference</td><td><b>A disapproval</b></td><td>tolerance · indifference</td></tr>
+          <tr><td>2013 T2·30</td><td>作者 → Lynch 博文里的话</td><td>appreciation / understanding / indulgence / skepticism</td><td><b>D skepticism</b></td><td>indulgence</td></tr>
+          <tr><td>2014 T4·36</td><td>作者 → AAAS 报告（第 1 段）</td><td>Critical / Appreciative / Contemptuous / Tolerant</td><td><b>A Critical</b></td><td>Tolerant</td></tr>
+          <tr><td>2015 T2·27</td><td>作者 → 加州的论点</td><td>tolerance / indifference / disapproval / cautiousness</td><td><b>C disapproval</b></td><td>tolerance · indifference</td></tr>
+          <tr><td>2017 T2·30</td><td>作者 → 选址莫纳克亚山</td><td>severe criticism / full approval / passive acceptance / slight hesitancy</td><td><b>B full approval</b></td><td>passive acceptance</td></tr>
+          <tr><td>2017 T4·40</td><td>作者 → 法院的裁决</td><td>sarcastic / tolerant / skeptical / supportive</td><td><b>D supportive</b></td><td>tolerant</td></tr>
+          <tr><td><b>2018 T3·35</b></td><td>作者 → AI 用于医疗</td><td>ambiguous / appreciative / cautious / contemptuous</td><td><b>C cautious</b></td><td>ambiguous</td></tr>
+        </table>
+        </div>
+        <div class="atti" style="margin-top:12px">
+          ⭐⭐⭐ <b>第一条：中性／无态度／容忍类 11 个选项，0 次正确</b>——impartial、objectiveness、tolerance ×2、indifference ×2、indulgence、tolerant ×2、passive acceptance、ambiguous。<b>命题人出态度题，就是因为作者有态度</b>；这类选项是给「读不出态度」的人准备的（⟹ 老卡 <b>R72</b> 社论里「客观」几乎必错）。<br>
+          ⭐⭐⭐ <b>第二条：「谨慎／犹豫」类 3 次，1 次对</b>——2015 T2 cautiousness 错（作者对加州的论点是明确反对）、2017 T2 slight hesitancy 错（作者对选址是完全支持）、<b>2018 T3 cautious 对</b>。区别在于：<b>前两篇作者一边倒，本篇作者两头都说了</b>（潜力 very great ＋ 担忧 concentration of power），<b>而且给了明确的行动方向</b>（long struggle）——两头都说 ＋ 有方向 ＝ 谨慎；两头都说 ＋ 没方向才叫含糊——而含糊类选项在九题里一次也没对过。<br>
+          ⭐⭐ <b>第三条：极端档（contemptuous ×2 · sarcastic · severe criticism）4 次，0 次正确</b>——作者再反对，也会说 critical、disapproval、skepticism，不会「蔑视」「挖苦」。<br>
+          ⭐⭐ <b>第四条：先写对象</b>——九道题的 toward／towards 后面都是一个<b>具体对象</b>（一份报告、一句话、一个论点、一个裁决、一项应用），不是「全文话题」。2017 T2 的对象是选址、不是天文学家的过去（R221）；2017 T4 的对象是裁决、不是当事人的行为（R227）；<b>2018 T3 的对象是 AI 医疗、不是德纳姆的报告</b>——三道题的干扰项都在「对象」上做文章。
+        </div>
+      </section>
+
+      <section class="card" id="col5">
+        <h2><span class="n">02+++++</span>专栏 · 十五个干扰项的产地总账 ＋ 同序检查</h2>
+        <div class="tabwrap">
+        <table class="ctab">
+          <tr><th>选项</th><th>族</th><th>原料出处</th><th>怎么造的</th></tr>
+          <tr><td>31A the latter’s expectations</td><td>偷换对象</td><td>①❹ their expectations of privacy</td><td>their（患者）→ the latter（DeepMind）</td></tr>
+          <tr><td>31B conflicts among tech giants</td><td>方向反</td><td>①❸ concentration of power in the tech giants</td><td>集中于巨头 → 巨头之间冲突</td></tr>
+          <tr><td>31D both sides … dangerous situation</td><td>偷换对象</td><td>①❶ the dangers of the deal · both sides</td><td>对公众的危害 → 双方的危险</td></tr>
+          <tr><td>32A empty promises</td><td>无中生有</td><td>②❸ will be scrutinised（将来时）</td><td>已改 ＋ 将严查 → 只说不做</td></tr>
+          <tr><td>32B tough resistance</td><td>方向反</td><td>②❷ has mended its ways</td><td>改正 → 抵制</td></tr>
+          <tr><td>32C sincere apologies</td><td>偷换对象</td><td>②❶ DeepMind has almost apologised</td><td>DeepMind → NHS；almost → sincere</td></tr>
+          <tr><td>33A privacy … at all costs</td><td>方向反</td><td>②❺ not even the most important</td><td>降两级 → 拔到顶</td></tr>
+          <tr><td>33C profits … illegal</td><td>无中生有</td><td>②❻ under existing law · ③❶ benefit from</td><td>「谁该受益」→「牟利违法」</td></tr>
+          <tr><td>33D leaking … worse than selling</td><td>被换掉的尺子</td><td>②❻ “controlled” … merely “processed”</td><td>德纳姆的轻重 ＋ 凭空加 selling</td></tr>
+          <tr><td>34B rivalry among big pharmas</td><td>例子当主旨</td><td>④❺ behave as big pharma has done</td><td>喻体当担忧 ＋ 凭空加恶性竞争</td></tr>
+          <tr><td>34C uncontrolled use of new software</td><td>偷换属性</td><td>④❺ If software promises to save lives</td><td>归谁所有 → 被滥用</td></tr>
+          <tr><td>34D ineffective enforcement of privacy law</td><td>被换掉的尺子</td><td>④❶ The use of privacy law … maladapted</td><td>用错工具 → 工具没用好</td></tr>
+          <tr><td>35A ambiguous</td><td>态度档位错</td><td>①❸ very great, but … · ④❼ avoid · ④❽ welcome</td><td>两头都说 → 含糊</td></tr>
+          <tr><td>35B appreciative</td><td>偷换对象</td><td>④❽ a welcome start</td><td>欢迎报告 → 欣赏 AI 医疗</td></tr>
+          <tr><td>35D contemptuous</td><td>态度档位错</td><td>④❼ to avoid a future of digital feudalism</td><td>反对封建主义 → 蔑视 AI 医疗</td></tr>
+        </table>
+        </div>
+        <div class="atti" style="margin-top:12px">
+          📊 <b>七族</b>：偷换对象／主体 4 · 方向反 3 · 被换掉的尺子 2 · 无中生有 2 · 态度档位错 2 · 例子当主旨 1 · 偷换属性 1。<b>2018 卷三篇的最大族各不相同</b>：T1 方向反 4（站哪头）· T2 借词造句 4（谁说的）· <b>T3 偷换对象 4（对谁）</b>。<br>
+          ⭐⭐ <b>十五个干扰项全部能在原文找到原料</b>：最远的一个是 33C，从 ③❶ 借了 benefit（③ 是无题段）——<b>无题段照样给干扰项供料</b>。<br>
+          ✅ <b>同序检查</b>：31① · 32②❶–❸ · 33②❺–❼ · 34④❷–❹ · 35 ①❸＋④❻–❽——<b>基本同序</b>，只有 35（态度题）回头取了 ①❸ 的「潜力」。<b>③ 没有题</b>：64 词、全篇最短，却是 33 与 34 的理论底座（价值来自聚合、谁该受益）。<b>篇幅与题量</b>：① 124 词出 1 题、② 117 词出 2 题、③ 64 词出 0 题、④ 124 词出 2 题——<b>换尺子的两段（②④）各出两题</b>。
+        </div>
+      </section>
+
+      <!-- ========== 长难句 ========== -->
+      <section class="card">
+        <h2><span class="n">03</span>长难句精析 · 17 句</h2>
+        <p style="font-size:.9rem;margin-bottom:12px">本篇是《卫报》社论，<b>23 句 429 词，平均 18.7 词一句</b>；最长的 ①❹ 一句 60 词（占第一段一半），其次 ②❸ 34 词。23 句里 17 句值得拆。难点分五种：<b>① 强调与伪强调</b>（s3 的 It is against that background that、s8 的 it is X, not Y, that、s15 的 What matters is that——<b>三处荧光笔，三处都有题</b>）· <b>② 长定语套长定语</b>（s3 的 which handed over … on the basis of a vague agreement which took …、s15 的 a private monopoly which developed them using …）· <b>③ 否定与转折换尺</b>（s6 的 not the only … not even the most、s8 的 misses the point that、s11 的 That misses、s13 的 feels slightly maladapted、s14 的 It is not enough to say that）· <b>④ 被动、倒装与后置</b>（s4 的 permissions have been asked of patients、s5 的 lessons … to learn、s16 的 on the scale that drugs now can）· <b>⑤ 名词化与抽象主语</b>（s1 的 Any fair-minded assessment of the dangers of the deal、s9 的 the analysis of all the data that our lives now generate、s10 的 the concept of damage to an individual from identifiable knowledge）。</p>
+
+        <div class="sent" id="s1">
+          <div class="src"><b>s1（①❶）</b>　<span class="skel">Any fair-minded assessment</span> of the dangers of the deal between Britain’s National Health Service (NHS) and DeepMind <span class="skel">must start by acknowledging</span> that both sides mean well.</div>
+          <div class="anat">
+            <ul>
+              <li><b>主干</b>：<code>Any fair-minded assessment … must start by acknowledging that …</code>——主语是名词短语 assessment，谓语 must start，by doing 表方式。</li>
+              <li><b>主语里的三层 of</b>：<code>assessment of the dangers of the deal between A and B</code>——评价 ← 危害 ← 交易 ← A 与 B 之间；<b>从右往左译</b>：「对 A 与 B 之间这笔交易的危害的评价」。</li>
+              <li><b>宾语从句</b>：<code>that both sides mean well</code>——mean well ＝ 本意是好的、出于好意（不及物短语）。</li>
+            </ul>
+          </div>
+          <div class="tr">译：对英国国民医疗服务体系（NHS）与 DeepMind 之间这笔交易的危害，任何公允的评价都必须先承认：双方都是出于好意。</div>
+          <div class="anat" style="margin-top:6px">⭐⭐⭐ <b>must start by doing ＝ 让步开篇</b>：「必须<b>先</b>承认」——start 预告后面有转折。作者先替双方开脱，后文批评的就不是动机 ⟹ 31D 把双方写成危险处境里的人，没根。<br>⭐⭐ <b>dangers 的承受者不在句子里</b>：the dangers of the deal 只说「交易的危害」，没说危害谁——读完 ①❸ 才知道：权力集中、患者隐私受损 ⟹ 受害的是公众与患者，不是 both sides（R96）。</div>
+        </div>
+
+        <div class="sent" id="s2">
+          <div class="src"><b>s2（①❸）</b>　<span class="skel">The potential</span> of this work applied to healthcare <span class="skel">is very great</span>, <span class="skel">but it could also lead to</span> further concentration of power in the tech giants.</div>
+          <div class="anat">
+            <ul>
+              <li><b>前一分句</b>：<code>The potential of this work applied to healthcare is very great</code>——applied to healthcare 是过去分词短语作后置定语，修饰 this work（「用于医疗的这项工作」）。</li>
+              <li><b>but 后一分句</b>：<code>it could also lead to further concentration of power in the tech giants</code>——it 回指 this work applied to healthcare；could 表可能；lead to ＋ 名词化（concentration of power）。</li>
+              <li><b>in the tech giants</b>：权力集中「于」科技巨头（在他们手里），不是「在巨头之间」。</li>
+            </ul>
+          </div>
+          <div class="tr">译：这项工作用于医疗保健的潜力非常巨大，但它也可能导致权力进一步集中到科技巨头手中。</div>
+          <div class="anat" style="margin-top:6px">⭐⭐⭐ <b>一句装下 35 题的两头</b>：is very great（确定的潜力）⟹ 排 contemptuous；could also lead to（可能的风险）⟹ 排 appreciative——<b>确定 ＋ 可能</b>的组合，正是「谨慎」的语气（见 02+++ 刻度词表）。<br>⭐⭐ <b>concentration of power in X ≠ conflicts among X</b>：31B 把介词 in 换成 among、把「集中」换成「冲突」——<b>介词一换，方向就反了</b>。</div>
+        </div>
+
+        <div class="sent" id="s3">
+          <div class="src"><b>s3（①❹）</b>　<span class="skel">It is against that background that the information commissioner</span>, Elizabeth Denham, <span class="skel">has issued her damning verdict</span> against the Royal Free hospital trust under the NHS, which handed over to DeepMind the records of 1.6 million patients in 2015 on the basis of a vague agreement which took far too little account of the patients’ rights and their expectations of privacy.</div>
+          <div class="anat">
+            <ul>
+              <li><b>强调句框架</b>：<code>It is [against that background] that …</code>——去掉 It is … that 还原：<code>The information commissioner has issued her damning verdict … against that background.</code> 被强调的是<b>状语</b> against that background（在那样的背景下）。</li>
+              <li><b>主干</b>：<code>the information commissioner, Elizabeth Denham, has issued her damning verdict against the Royal Free hospital trust</code>——Elizabeth Denham 是同位语；under the NHS 修饰 trust（NHS 下属的）。</li>
+              <li><b>第一层定语从句</b>：<code>which handed over to DeepMind the records of 1.6 million patients in 2015 on the basis of …</code>——先行词是 the Royal Free hospital trust；hand over sth to sb 在这里<b>把 to DeepMind 提前、长宾语 the records of 1.6 million patients 后置</b>（尾重原则）。</li>
+              <li><b>第二层定语从句</b>：<code>which took far too little account of the patients’ rights and their expectations of privacy</code>——先行词是 a vague agreement；take account of sth ＝ 考虑某事，far too little 插进 take 与 account 之间修饰 account。</li>
+            </ul>
+          </div>
+          <div class="tr">译：正是在这样的背景下，信息专员伊丽莎白·德纳姆对 NHS 下属的皇家自由医院信托作出了措辞严厉的裁定——该院 2015 年依据一份含糊的协议，把 160 万名患者的病历交给了 DeepMind，而这份协议对患者的权利以及他们对隐私的期待考虑得实在太少。</div>
+          <div class="anat" style="margin-top:6px">⭐⭐⭐ <b>60 词的句子，题只考最后那个 15 词的定语从句</b>：31C 的原料全在第二层定语从句里——<b>长句的题常常压在最深的那一层修饰语上</b>。拆句时先把两个 which 各画一条竖线：<code>…trust | which handed over … | which took far too little account of …</code>。<br>⭐⭐ <b>take account of 的变形</b>：take account of ＝ take into account ＝ pay attention to；<code>took far too little account of</code> ＝ 对……考虑得太少 ⟹ 31C failed to pay due attention to。<br>⭐⭐ <b>their 回指 the patients</b>：the patients’ rights and <b>their</b> expectations——their 就近回指 patients ⟹ 31A 把 expectations 安给 the latter（DeepMind），指代错了。<br>🔍 <b>damning verdict</b>：黄皮书译「定罪裁决」偏重——ICO 是行政监管机构，这份裁定要求整改、没有罚款；damning 在这里是「措辞严厉的、谴责性的」，<b>宜译「措辞严厉的裁定」</b>（见页首商榷①）。</div>
+        </div>
+
+        <div class="sent" id="s4">
+          <div class="src"><b>s4（②❸）</b>　<span class="skel">Further arrangements</span>—and there may be many—between the NHS and DeepMind <span class="skel">will be carefully scrutinised</span> to ensure that all necessary permissions have been asked of patients and all unnecessary data has been cleaned.</div>
+          <div class="anat">
+            <ul>
+              <li><b>主干</b>：<code>Further arrangements … between the NHS and DeepMind will be carefully scrutinised</code>——将来时被动；between … 是 arrangements 的后置定语，被破折号插入语隔开了。</li>
+              <li><b>破折号插入语</b>：<code>—and there may be many—</code>——作者的旁白（「这样的协议也许会有很多」）：<b>先摘出去再读主干</b>。</li>
+              <li><b>目的状语</b>：<code>to ensure that A and B</code>——ensure 后接两个并列的宾语从句：<code>all necessary permissions have been asked of patients</code> 与 <code>all unnecessary data has been cleaned</code>。</li>
+              <li><b>ask sth of sb</b>：向某人要求／请求某物；被动后 <code>permissions have been asked of patients</code> ＝ 已向患者征求许可。</li>
+            </ul>
+          </div>
+          <div class="tr">译：NHS 与 DeepMind 之间今后的协议——也许会有很多——都将受到仔细审查，以确保所有必要的许可都已征得患者同意，所有不必要的数据都已被清除。</div>
+          <div class="anat" style="margin-top:6px">⭐⭐ <b>necessary 与 unnecessary 对仗</b>：该要的许可都要到（necessary permissions），不该留的数据都删掉（unnecessary data）——这正是 ICO 裁定里的两条：患者未被充分告知、160 万份记录「不必要、不成比例」⟹ <b>32D necessary adjustments 的 necessary 与这里同词</b>。<br>⭐ <b>will be scrutinised 是将来时</b>——32A empty promises 抓的就是这一点；但上一句 has mended its ways 是现在完成时，「已经改了」（见 02+++）。</div>
+        </div>
+
+        <div class="sent" id="s5">
+          <div class="src"><b>s5（②❹）</b>　<span class="skel">There are lessons</span> about informed patient consent <span class="skel">to learn</span>.</div>
+          <div class="anat">
+            <ul>
+              <li><b>There be 句型</b>：<code>There are lessons …</code>——主语 lessons。</li>
+              <li><b>定语被拆开</b>：lessons 有两个后置定语——介词短语 <code>about informed patient consent</code> 与不定式 <code>to learn</code>；<b>to learn 被推到句末</b>，跟 lessons 隔了四个词。还原：lessons to learn about informed patient consent（有待吸取的、关于知情同意的教训）。</li>
+              <li><b>informed patient consent</b>：informed consent（知情同意）是医学伦理术语，patient 插在中间作定语：患者的知情同意。</li>
+            </ul>
+          </div>
+          <div class="tr">译：在患者知情同意方面，有一些教训需要吸取。</div>
+          <div class="anat" style="margin-top:6px">⭐⭐⭐ <b>这是让步，不是结论</b>：下一句就是 <code>But privacy is not the only angle</code>——❹ 承认隐私这一角度有教训，❺ 马上降它的级。<b>「There are lessons … to learn. But …」＝ 先认一部分、再转</b>，But 后面才是作者要说的。<br>⭐ <b>to learn 主动表被动</b>：lessons to learn ＝ lessons to be learned（有待吸取的教训），There be ＋ 名词 ＋ to do 常这么用。</div>
+        </div>
+
+        <div class="sent" id="s6">
+          <div class="src"><b>s6（②❺）</b>　<span class="skel">But privacy is not the only angle</span> in this case <span class="skel">and not even the most important</span>.</div>
+          <div class="anat">
+            <ul>
+              <li><b>主干</b>：<code>privacy is not the only angle … and not even the most important</code>——系表结构，两个表语并列，第二个省略了 angle（the most important [angle]）。</li>
+              <li><b>否定加码</b>：not the only（不是唯一）→ not even the most important（甚至不是最重要的）——even 表递进，<b>否定升级</b>。</li>
+            </ul>
+          </div>
+          <div class="tr">译：但隐私并不是本案唯一的角度，甚至不是最重要的角度。</div>
+          <div class="anat" style="margin-top:6px">⭐⭐⭐ <b>全文第一次换尺子</b>：从这句起，作者不再用「隐私」量这件事（R240）。33A privacy protection must be secured at all costs 与这句正面相撞。<br>⭐⭐ <b>「不是最重要」≠「不重要」</b>：隐私仍是一个角度（上一句还说有教训要吸取）——作者只是降它的级。<b>被降级的东西不能当答案，但也不能说作者否定它</b>（R241 规律一）。</div>
+        </div>
+
+        <div class="sent" id="s7">
+          <div class="src"><b>s7（②❻）</b>　<span class="skel">Ms Denham chose to concentrate the blame on the NHS trust</span>, since under existing law it “controlled” the data and DeepMind merely “processed” it.</div>
+          <div class="anat">
+            <ul>
+              <li><b>主干</b>：<code>Ms Denham chose to concentrate the blame on the NHS trust</code>——concentrate the blame on sb ＝ 把责任集中在某人身上。</li>
+              <li><b>原因状语从句</b>：<code>since under existing law it “controlled” the data and DeepMind merely “processed” it</code>——since ＝ 因为（已知的原因）；两个并列分句，it 指 the NHS trust，第二个 it 指 the data。</li>
+              <li><b>引号</b>：“controlled” 与 “processed” 是法律术语（数据控制者／数据处理者），引号表示「照法律的说法」。</li>
+            </ul>
+          </div>
+          <div class="tr">译：德纳姆女士选择把责任集中在 NHS 信托身上，因为按照现行法律，是它「控制」了数据，而 DeepMind 只是「处理」了数据。</div>
+          <div class="anat" style="margin-top:6px">⭐⭐⭐ <b>这是被驳的靶子</b>：夹在两个 But（❺、❼）之间——德纳姆（现行法律）的尺子：谁「控制」谁担责。<b>merely 是法律的口吻</b>：「只不过处理了一下」。下一句作者把轻重倒过来 ⟹ 33D 用的就是这句的轻重（R240）。<br>⭐ <b>chose to</b>：「选择了」——暗示还有别的选法，作者不认同这个选择。</div>
+        </div>
+
+        <div class="sent" id="s8">
+          <div class="src"><b>s8（②❼）</b>　<span class="skel">But this distinction misses the point</span> that <span class="skel">it is</span> processing and aggregation, not the mere possession of bits, <span class="skel">that gives the data value</span>.</div>
+          <div class="anat">
+            <ul>
+              <li><b>主干</b>：<code>this distinction misses the point that …</code>——this distinction 回指 ❻ 的 controlled vs processed；miss the point ＝ 没抓住要点。</li>
+              <li><b>同位语从句</b>：<code>the point that …</code>——that 从句说明 the point 的内容。</li>
+              <li><b>从句里是强调句</b>：<code>it is [processing and aggregation, not the mere possession of bits] that gives the data value</code>——还原：Processing and aggregation, not the mere possession of bits, gives the data value.</li>
+              <li><b>give sth value</b>：双宾语，give the data value ＝ 赋予数据价值。</li>
+            </ul>
+          </div>
+          <div class="tr">译：但这种区分没有抓住要点：赋予数据价值的，是对数据的处理与聚合，而不是单纯占有那些比特。</div>
+          <div class="anat" style="margin-top:6px">⭐⭐⭐ <b>同位语从句里套强调句</b>——两个 that 功能不同：第一个 that 引出 the point 的内容，第二个 that 是强调句的框架词。<b>断句：misses the point | that it is X, not Y, that …</b>。<br>⭐⭐⭐ <b>33B 就是这句去掉强调框架后的同义改写</b>：the value of data comes from the processing of it（R180、R240）。<br>⭐⭐ <b>mere 与上一句的 merely 同根</b>：德纳姆压低「处理」（merely processed），作者压低「占有」（mere possession）——<b>同一个词根，两把尺子轻重相反</b>。</div>
+        </div>
+
+        <div class="sent" id="s9">
+          <div class="src"><b>s9（③❶）</b>　<span class="skel">The great question is who</span> should benefit from the analysis of all the data that our lives now generate.</div>
+          <div class="anat">
+            <ul>
+              <li><b>主干</b>：<code>The great question is who …</code>——系表结构，who 引导<b>表语从句</b>（陈述语序，不是疑问句）。</li>
+              <li><b>表语从句</b>：<code>who should benefit from the analysis of all the data</code>——benefit from sth ＝ 从某事中受益。</li>
+              <li><b>定语从句</b>：<code>that our lives now generate</code>——修饰 all the data，that 在从句中作 generate 的宾语（「我们的生活如今产生的所有数据」）。</li>
+            </ul>
+          </div>
+          <div class="tr">译：真正的大问题是：我们的生活如今产生的所有数据，对它们的分析应该让谁受益。</div>
+          <div class="anat" style="margin-top:6px">⭐⭐⭐ <b>作者亮出自己的问题</b>：The great question is … 是作者的新尺子——「受益归谁」。这一段没有题，但 34A（垄断）、35C（谨慎）都从这个问题长出来。<br>⭐⭐ <b>should ＝ 应该</b>：这是价值判断（谁<b>该</b>受益），不是法律判断——33C 把它改成 is illegal（违法），性质变了。<br>⭐ <b>the analysis of all the data</b>：受益的来源是「分析」，不是数据本身——与 ②❼ processing and aggregation 呼应。</div>
+        </div>
+
+        <div class="sent" id="s10">
+          <div class="src"><b>s10（③❷）</b>　<span class="skel">Privacy law builds on the concept</span> of damage to an individual from identifiable knowledge about them.</div>
+          <div class="anat">
+            <ul>
+              <li><b>主干</b>：<code>Privacy law builds on the concept of …</code>——build on sth ＝ 以某事为基础、建立在……之上。</li>
+              <li><b>concept 的内容（名词化）</b>：<code>damage to an individual from identifiable knowledge about them</code>——damage（伤害）＋ to an individual（受害者）＋ from identifiable knowledge（伤害的来源）＋ about them（知识的内容）。还原成句子：<i>Identifiable knowledge about an individual can damage him or her.</i></li>
+              <li><b>them</b>：单数 an individual 用 them 回指（性别中立的单数 they）。</li>
+            </ul>
+          </div>
+          <div class="tr">译：隐私法建立在这样一个概念之上：关于个人的可识别信息会给这个人带来伤害。</div>
+          <div class="anat" style="margin-top:6px">⭐⭐⭐ <b>旧尺子的三个零件</b>：个人（an individual）＋ 可识别（identifiable）＋ 伤害（damage）——隐私法只管「能认出是谁、并伤到这个人」的信息。下一句 That misses … 否定它；再下一句给出新尺子：<b>价值来自千万人的数据放在一起比较</b>（R240）。<br>⭐ <b>名词化句的读法</b>：看到 concept of ＋ 一长串名词，先把它还原成「谁对谁做了什么」——这里是「信息伤害个人」。</div>
+        </div>
+
+        <div class="sent" id="s11">
+          <div class="src"><b>s11（③❸）</b>　<span class="skel">That misses the way</span> the surveillance economy works.</div>
+          <div class="anat">
+            <ul>
+              <li><b>主干</b>：<code>That misses the way …</code>——That 回指上一句整句（隐私法的这个基础）；miss ＝ 没看到、没抓住。</li>
+              <li><b>the way 后省略关系词</b>：<code>the way (that／in which) the surveillance economy works</code> ＝ 监视经济的运作方式。</li>
+            </ul>
+          </div>
+          <div class="tr">译：这没有看清监视经济的运作方式。</div>
+          <div class="anat" style="margin-top:6px">⭐⭐⭐ <b>短句不等于简单句</b>：只有 8 个词，却有<b>一个回指（That → 上一整句）＋ 一个省略（the way 后的 that／in which）＋ 一个熟词僻义（miss ＝ 没看到，不是「想念」「错过」）</b>。<br>⭐⭐ <b>misses 第二次出现</b>：②❼ this distinction misses the point、③❸ That misses the way——作者在同一处用力，<b>两次都是否定旧尺子</b>。</div>
+        </div>
+
+        <div class="sent" id="s12">
+          <div class="src"><b>s12（③❹）</b>　<span class="skel">The data of an individual there gains its value only when</span> it is compared with the data of countless millions more.</div>
+          <div class="anat">
+            <ul>
+              <li><b>主干</b>：<code>The data of an individual there gains its value</code>——there ＝ in the surveillance economy（回指上一句），不是地点「那里」。</li>
+              <li><b>only when 条件状语</b>：<code>only when it is compared with …</code>——只有当……时才；it 回指 the data of an individual。</li>
+              <li><b>countless millions more</b>：另外千千万万人（的数据）——more 表「额外的、另外的」。</li>
+            </ul>
+          </div>
+          <div class="tr">译：在监视经济里，一个人的数据只有在与其他千千万万人的数据相比较时，才会获得价值。</div>
+          <div class="anat" style="margin-top:6px">⭐⭐⭐ <b>新尺子的原理</b>：单个人的数据不值钱，<b>聚合起来比较才值钱</b>——这就是 ②❼ processing and aggregation 的理论版。所以隐私法「保护单个人」的思路管不到价值产生的那一层 ⟹ 33B 的底座。<br>⭐ <b>only when 放句中不倒装</b>：only 修饰状语从句且位于句首时主句才倒装（Only when … does it gain value）；这里 only when 在句中，语序正常。</div>
+        </div>
+
+        <div class="sent" id="s13">
+          <div class="src"><b>s13（④❶）</b>　<span class="skel">The use of privacy law</span> to curb the tech giants in this instance <span class="skel">feels slightly maladapted</span>.</div>
+          <div class="anat">
+            <ul>
+              <li><b>主干</b>：<code>The use of privacy law … feels slightly maladapted</code>——主语是名词化的 use（使用），feel 是系动词（感觉起来……）。</li>
+              <li><b>不定式作 use 的后置定语</b>：<code>to curb the tech giants</code>——用隐私法「来约束」科技巨头；in this instance ＝ in this case（在这个案子里）。</li>
+              <li><b>表语</b>：<code>slightly maladapted</code>——slightly 打折，maladapted ＝ 不适应的、不对路的。</li>
+            </ul>
+          </div>
+          <div class="tr">译：在这个案子里，用隐私法来约束科技巨头，感觉有点不对路。</div>
+          <div class="anat" style="margin-top:6px">⭐⭐⭐ <b>第二次换尺子</b>：maladapted 说的是<b>工具不对</b>（隐私法不是管垄断的工具），不是<b>工具没用好</b> ⟹ 34D ineffective enforcement of privacy law 偷换了性质（R240）。<br>⭐⭐ <b>feels slightly ——两层打折</b>：feels（感觉上）＋ slightly（有点）——作者对德纳姆很客气：不说她错了，只说「有点不对路」。这也是 ④❽ 能说 a welcome start 的原因。</div>
+        </div>
+
+        <div class="sent" id="s14">
+          <div class="src"><b>s14（④❸）</b>　<span class="skel">It is not enough to say that</span> the algorithms DeepMind develops will benefit patients and save lives.</div>
+          <div class="anat">
+            <ul>
+              <li><b>形式主语</b>：<code>It is not enough to say that …</code>——it 是形式主语，真正的主语是不定式 to say that …（「说……是不够的」）。</li>
+              <li><b>宾语从句</b>：<code>the algorithms DeepMind develops will benefit patients and save lives</code>——主语 the algorithms，后面省略了关系代词的定语从句 <code>(that) DeepMind develops</code>；谓语 will benefit 与 (will) save 并列。</li>
+            </ul>
+          </div>
+          <div class="tr">译：光说 DeepMind 开发的算法将造福患者、拯救生命，是不够的。</div>
+          <div class="anat" style="margin-top:6px">⭐⭐⭐ <b>「不够」≠「不对」</b>：作者没说算法救不了命，只说<b>光说这个不够</b>——这一半是被打折的说法，<b>既不是答案，也不能被当成作者的否定</b>。它挡住 35D contemptuous（作者承认好处），但不能说作者在「指出」好处（R241；黄皮书技巧栏的「几度指出」商榷见页首）。<br>⭐⭐ <b>省略关系代词的定语从句</b>：the algorithms DeepMind develops ＝ the algorithms that DeepMind develops——名词后面直接跟「主语 ＋ 谓语」，中间一定省了 that／which。</div>
+        </div>
+
+        <div class="sent" id="s15">
+          <div class="src"><b>s15（④❹）</b>　<span class="skel">What matters is that</span> they will belong to a private monopoly which developed them using public resources.</div>
+          <div class="anat">
+            <ul>
+              <li><b>主干</b>：<code>What matters is that …</code>——What matters（重要的是）是主语从句，that 引导表语从句。</li>
+              <li><b>表语从句</b>：<code>they will belong to a private monopoly</code>——they 回指上一句的 the algorithms；belong to ＝ 属于、归……所有。</li>
+              <li><b>定语从句</b>：<code>which developed them using public resources</code>——先行词 a private monopoly；using public resources 是现在分词作方式状语（「利用公共资源」）。</li>
+            </ul>
+          </div>
+          <div class="tr">译：要紧的是，这些算法将归一家私人垄断企业所有，而这家企业是利用公共资源把它们开发出来的。</div>
+          <div class="anat" style="margin-top:6px">⭐⭐⭐ <b>伪强调句 ＝ 作者的荧光笔</b>：What matters is that … 与 It is X that … 同一个功能——拎出重点。③❶ The great question is 说「问题是什么」，<b>这一句才说「要紧的是什么」</b> ⟹ 34A（R241、R180）。<br>⭐⭐⭐ <b>private 与 public 对仗</b>：私人垄断 ↔ 公共资源——<b>用公家的数据开发、归私人所有</b>，这才是作者的「担忧」。NHS 是公费医疗，病历就是公共资源（见 00+）。<br>⭐ <b>they → them</b>：they 与 them 都指 the algorithms，which 指 a private monopoly——两个代词、一个关系词，三个指代要分清。</div>
+        </div>
+
+        <div class="sent" id="s16">
+          <div class="src"><b>s16（④❺）</b>　If software promises to save lives on the scale that drugs now can, <span class="skel">big data may be expected to behave as big pharma has done</span>.</div>
+          <div class="anat">
+            <ul>
+              <li><b>条件状语从句</b>：<code>If software promises to save lives on the scale that drugs now can</code>——promise to do ＝ 有望做（不是「承诺」）；on the scale that drugs now can (save lives) ＝ 以药物如今能达到的规模，can 后省略了 save lives。</li>
+              <li><b>主句</b>：<code>big data may be expected to behave as big pharma has done</code>——be expected to do 被动；as 引导方式状语从句，has done 替代 has behaved。</li>
+            </ul>
+          </div>
+          <div class="tr">译：如果软件有望以药物如今所能达到的规模拯救生命，那么大数据可能也会像大型制药公司过去那样行事。</div>
+          <div class="anat" style="margin-top:6px">⭐⭐⭐ <b>两处省略都要补</b>：drugs now can [save lives]、big pharma has done [= has behaved]——<b>助动词收尾的地方，都要回前面把动词补回来</b>。<br>⭐⭐ <b>类比的相同点是「救命的东西被垄断」</b>：big data ↔ big pharma（大药企的专利、定价）——类比为 ❹ 的「垄断」服务。34B 把喻体（大药企）当成担忧本身，还加了「恶性竞争」（R122）。<br>⭐ <b>promise to do ＝ 有望</b>：熟词僻义（见 03+）；这里是条件，不是作者的断言——黄皮书「几度指出」的商榷也在这里。</div>
+        </div>
+
+        <div class="sent" id="s17">
+          <div class="src"><b>s17（④❻）</b>　<span class="skel">We are still at the beginning</span> of this revolution <span class="skel">and small choices now may turn out to have</span> gigantic consequences later.</div>
+          <div class="anat">
+            <ul>
+              <li><b>并列句</b>：<code>We are still at the beginning of this revolution</code> ＋ and ＋ <code>small choices now may turn out to have gigantic consequences later</code>——前一分句是原因，后一分句是结果。</li>
+              <li><b>turn out to do</b>：结果是、原来是——may turn out to have ＝ 日后可能会（被证明）带来。</li>
+              <li><b>对仗</b>：small ↔ gigantic、now ↔ later——四个词两两相对。</li>
+            </ul>
+          </div>
+          <div class="tr">译：我们仍处在这场革命的开端，眼下的小选择日后可能会带来巨大的后果。</div>
+          <div class="anat" style="margin-top:6px">⭐⭐⭐ <b>35C cautious 的正源</b>：小选择、大后果 ⟹ <b>现在的每个决定都要小心</b>——这就是「谨慎」（黄皮书：言下之意即「当前针对这种技术应用所作的任何决定都应谨慎」）。<br>⭐⭐ <b>this revolution</b> 指 AI／大数据用于医疗这场变革——作者称之为「革命」，本身就承认了它的分量（挡 contemptuous）。</div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">03+</span>熟词僻义清算表 · 60 处</h2>
+        <p style="font-size:.9rem;margin-bottom:12px">本篇生词不多（maladapted、aggregation、feudalism、scrutinise、contemptuous），<b>真正会让你读错的是熟词换了义项</b>，分三族：<b>① 法律与监管的行话</b>（verdict、trust、commissioner、controlled、processed、consent、case、blame——<b>trust 是「信托机构」不是「信任」，verdict 是监管机构的「裁定」不是法庭的「判决」</b>）· <b>② 数据与科技的行话</b>（work、bits、aggregation、generate、identifiable、surveillance、clean、giants——<b>clean 是「删除」不是「打扫」，bits 是「比特」不是「一点点」</b>）· <b>③ 小词大义</b>（almost、merely、slightly、miss、address、matter、promise、feel、there、more——<b>这篇社论的分寸全在这些小词里</b>）。</p>
+        <div class="tabwrap">
+        <table class="ctab" id="polytab">
+          <tr><th>词 / 短语</th><th>你以为</th><th>本篇的意思</th><th>出处与作用</th></tr>
+          <tr><td><code>fair-minded</code></td><td>心地好的</td><td><b>公允的、不偏不倚的</b></td><td>①❶ Any fair-minded assessment——「任何公允的评价」，让步开篇 ⭐⭐</td></tr>
+          <tr><td><code>assessment</code></td><td>考核、测评</td><td><b>评价、判断</b></td><td>①❶ assessment of the dangers of the deal</td></tr>
+          <tr><td><code>deal</code></td><td>买卖、处理（v.）</td><td><b>（双方的）协议、合作</b>（n.）</td><td>①❶ the deal between … NHS and DeepMind ＝ ①❹ agreement ＝ 31 题干 ⭐⭐</td></tr>
+          <tr><td><code>mean well</code></td><td>意思好</td><td><b>本意是好的、出于好意</b></td><td>①❶ both sides mean well ⟹ 31D 的反证 ⭐⭐</td></tr>
+          <tr><td><code>leading</code></td><td>领导的</td><td><b>领先的、一流的</b></td><td>①❷ one of the leading AI companies</td></tr>
+          <tr><td><code>work</code></td><td>工作</td><td><b>（技术）成果、研究项目</b></td><td>①❸ The potential of this work applied to healthcare ⭐</td></tr>
+          <tr><td><code>apply to</code></td><td>申请</td><td><b>应用于</b></td><td>①❸ this work applied to healthcare ＝ 35 题干 the application of AI to healthcare ⭐⭐</td></tr>
+          <tr><td><code>concentration</code></td><td>注意力集中</td><td><b>（权力的）集中、集聚</b></td><td>①❸ further concentration of power in the tech giants ⟹ 31B 方向反 ⭐⭐</td></tr>
+          <tr><td><code>giant</code></td><td>巨人</td><td><b>巨头（公司）</b></td><td>①❸ ④❶ the tech giants ⟹ 34A</td></tr>
+          <tr><td><code>background</code></td><td>背景（图画、出身）</td><td><b>事情发生的背景、来龙去脉</b></td><td>①❹ It is against that background that——强调句 ⭐⭐</td></tr>
+          <tr><td><code>commissioner</code></td><td>委员</td><td><b>（政府独立机构的）专员</b></td><td>①❹ the information commissioner ＝ 信息专员（ICO 负责人）</td></tr>
+          <tr><td><code>damning</code></td><td>该死的（damn）</td><td><b>谴责性的、措辞严厉的</b>（足以定罪的）</td><td>①❹ her damning verdict——黄皮书译「定罪」偏重 ⭐⭐</td></tr>
+          <tr><td><code>verdict</code></td><td>（陪审团的）裁决</td><td><b>（监管机构的）裁定、结论</b></td><td>①❹ ＝ 32 题干 Denham’s verdict；ICO 不是法院 ⭐⭐</td></tr>
+          <tr><td><code>trust</code></td><td>信任</td><td><b>信托（机构）</b>——NHS 医院的运营实体</td><td>①❹ the Royal Free hospital trust · ②❷ The NHS trust ＝ 32 题干 ⭐⭐⭐</td></tr>
+          <tr><td><code>under</code></td><td>在……下面</td><td><b>隶属于、归……管</b></td><td>①❹ the Royal Free hospital trust under the NHS</td></tr>
+          <tr><td><code>records</code></td><td>记录、唱片</td><td><b>病历、档案</b></td><td>①❹ the records of 1.6 million patients</td></tr>
+          <tr><td><code>take account of</code></td><td>账户</td><td><b>考虑、顾及</b></td><td>①❹ took far too little account of ⟹ 31C pay due attention to ⭐⭐⭐</td></tr>
+          <tr><td><code>expectation</code></td><td>期望、盼望</td><td><b>（合理的）预期、应有的期待</b></td><td>①❹ their expectations of privacy ⟹ 31A 换主体</td></tr>
+          <tr><td><code>almost</code></td><td>几乎（快要做到）</td><td><b>差一点就——意味着「没做到」</b></td><td>②❶ DeepMind has almost apologised ⟹ 32C 拔高 ⭐⭐⭐</td></tr>
+          <tr><td><code>mend one’s ways</code></td><td>修补路</td><td><b>改过、改正做法</b></td><td>②❷ The NHS trust has mended its ways ⟹ 32D ⭐⭐⭐</td></tr>
+          <tr><td><code>arrangement</code></td><td>安排、布置</td><td><b>协议、约定</b></td><td>②❸ Further arrangements … between the NHS and DeepMind ＝ deal ＝ agreement</td></tr>
+          <tr><td><code>ask sth of sb</code></td><td>问某人某事</td><td><b>向某人要求／征求某物</b></td><td>②❸ permissions have been asked of patients ⭐</td></tr>
+          <tr><td><code>clean</code></td><td>打扫、弄干净</td><td><b>（数据）清除、删除</b></td><td>②❸ all unnecessary data has been cleaned ⭐⭐</td></tr>
+          <tr><td><code>informed</code></td><td>消息灵通的</td><td><b>知情的</b>（informed consent 知情同意）</td><td>②❹ informed patient consent——医学伦理术语 ⭐</td></tr>
+          <tr><td><code>lesson</code></td><td>课</td><td><b>教训</b></td><td>②❹ There are lessons … to learn</td></tr>
+          <tr><td><code>angle</code></td><td>角、角度（几何）</td><td><b>看问题的角度、视角</b></td><td>②❺ privacy is not the only angle ⟹ 换尺子 ⭐⭐</td></tr>
+          <tr><td><code>case</code></td><td>情况、箱子</td><td><b>案子、案件</b></td><td>②❺ in this case ＝ ④❶ in this instance</td></tr>
+          <tr><td><code>concentrate the blame on</code></td><td>集中注意力</td><td><b>把责任集中在……身上</b></td><td>②❻ chose to concentrate the blame on the NHS trust——与 ①❸ concentration of power 同词不同义 ⭐⭐</td></tr>
+          <tr><td><code>control</code></td><td>控制</td><td><b>（法律上）作为数据控制者</b>（决定数据用途、担主责）</td><td>②❻ it “controlled” the data——引号＝法律术语 ⭐⭐⭐</td></tr>
+          <tr><td><code>process</code></td><td>过程（n.）</td><td><b>处理（数据）</b>（v.）</td><td>②❻ merely “processed” · ②❼ processing ⟹ 33B ⭐⭐⭐</td></tr>
+          <tr><td><code>merely · mere</code></td><td>仅仅</td><td><b>只不过（带贬低）</b>——谁用它，谁就在压低后面那个词</td><td>②❻ merely processed（德纳姆压「处理」）· ②❼ the mere possession（作者压「占有」）⭐⭐⭐</td></tr>
+          <tr><td><code>distinction</code></td><td>优秀、荣誉（with distinction）</td><td><b>区分、区别</b></td><td>②❼ this distinction ＝ controlled vs processed ⭐⭐</td></tr>
+          <tr><td><code>miss</code></td><td>想念、错过</td><td><b>没抓住、没看到</b></td><td>②❼ misses the point · ③❸ That misses the way——两次否定旧尺子 ⭐⭐⭐</td></tr>
+          <tr><td><code>bits</code></td><td>一点点</td><td><b>比特（数据的最小单位）</b>——泛指数据</td><td>②❼ the mere possession of bits ⭐⭐</td></tr>
+          <tr><td><code>generate</code></td><td>发电、产生（能量）</td><td><b>产生（数据）</b></td><td>③❶ all the data that our lives now generate</td></tr>
+          <tr><td><code>build on</code></td><td>在……上建造</td><td><b>以……为基础</b></td><td>③❷ Privacy law builds on the concept of … ⭐</td></tr>
+          <tr><td><code>knowledge</code></td><td>知识、学问</td><td><b>（关于某人的）信息、情况</b></td><td>③❷ identifiable knowledge about them</td></tr>
+          <tr><td><code>surveillance</code></td><td>（警方的）监视</td><td><b>「监视经济」——对数据经济的贬称</b></td><td>③❸ the surveillance economy ⭐⭐</td></tr>
+          <tr><td><code>there</code></td><td>那里</td><td><b>在那种经济里</b>（回指 surveillance economy）</td><td>③❹ The data of an individual there ⭐</td></tr>
+          <tr><td><code>more</code></td><td>更多（比较级）</td><td><b>另外的、额外的</b></td><td>③❹ countless millions more ⭐</td></tr>
+          <tr><td><code>curb</code></td><td>路边（kerb）</td><td><b>约束、遏制</b>（v.）</td><td>④❶ to curb the tech giants ⭐⭐</td></tr>
+          <tr><td><code>instance</code></td><td>例子（for instance）</td><td><b>情况、案例</b></td><td>④❶ in this instance ＝ in this case</td></tr>
+          <tr><td><code>feel</code></td><td>（人）感觉</td><td><b>（事物）给人……的感觉、显得</b>（系动词）</td><td>④❶ The use of privacy law … feels slightly maladapted ⭐</td></tr>
+          <tr><td><code>practice</code></td><td>练习</td><td><b>做法</b></td><td>④❷ This practice ＝ 用隐私法约束巨头的做法</td></tr>
+          <tr><td><code>address</code></td><td>地址</td><td><b>处理、应对（问题）</b>（v.）</td><td>④❷ does not address the real worry ⭐⭐⭐</td></tr>
+          <tr><td><code>matter</code></td><td>事情、物质（n.）</td><td><b>要紧、有关系</b>（v.）</td><td>④❹ What matters is that … ⟹ 34A ⭐⭐⭐</td></tr>
+          <tr><td><code>promise to do</code></td><td>承诺做</td><td><b>有望做、有……的可能</b></td><td>④❺ If software promises to save lives ⭐⭐</td></tr>
+          <tr><td><code>scale</code></td><td>秤、鳞片、刻度</td><td><b>规模</b></td><td>④❺ on the scale that drugs now can</td></tr>
+          <tr><td><code>revolution</code></td><td>（政治）革命</td><td><b>（技术）变革</b></td><td>④❻ this revolution ＝ AI 与大数据进入医疗</td></tr>
+          <tr><td><code>turn out to</code></td><td>出来、关掉</td><td><b>结果是、原来是</b></td><td>④❻ may turn out to have gigantic consequences ⭐</td></tr>
+          <tr><td><code>struggle</code></td><td>挣扎</td><td><b>斗争、奋斗</b></td><td>④❼ A long struggle will be needed</td></tr>
+          <tr><td><code>welcome</code></td><td>欢迎（v.）</td><td><b>值得欢迎的、可喜的</b>（adj.）</td><td>④❽ a welcome start——宾语是报告 ⟹ 35B ⭐⭐⭐</td></tr>
+          <tr><td><code>fall short of</code></td><td>跌倒</td><td><b>未达到、不符合</b></td><td>31A fell short of the latter’s expectations</td></tr>
+          <tr><td><code>the latter</code></td><td>后来的</td><td><b>后者</b>（前面提到的两者中的第二个）</td><td>31A——题干里后者是 DeepMind ⭐⭐</td></tr>
+          <tr><td><code>due</code></td><td>到期的、预定的</td><td><b>应有的、适当的</b></td><td>31C pay due attention to ⭐⭐</td></tr>
+          <tr><td><code>empty</code></td><td>空的</td><td><b>空洞的、不兑现的</b></td><td>32A empty promises</td></tr>
+          <tr><td><code>secure</code></td><td>安全的（adj.）</td><td><b>确保、获得</b>（v.）</td><td>33A must be secured at all costs ⭐</td></tr>
+          <tr><td><code>arise from</code></td><td>升起、起床</td><td><b>由……产生、引起</b></td><td>34 题干 the real worry arising from this deal</td></tr>
+          <tr><td><code>appreciative</code></td><td>感激的</td><td><b>赞赏的</b>（态度题）</td><td>35B ⭐⭐</td></tr>
+          <tr><td><code>ambiguous</code></td><td>模糊的（意思）</td><td><b>（态度）模棱两可的、含糊的</b></td><td>35A——全站态度题里中性类 0 次正确 ⭐⭐</td></tr>
+        </table>
+        </div>
+        <div class="atti" style="margin-top:12px">⭐⭐⭐ <b>本篇最该记的五个</b>：<b>trust</b>（信托，32 题干）· <b>verdict</b>（监管裁定）· <b>merely／mere</b>（谁用谁在压低）· <b>miss</b>（没抓住）· <b>address</b>（应对）。<br>
+        ▸ <b>concentrate 两义</b>：①❸ <code>concentration of power</code>（权力集中）· ②❻ <code>concentrate the blame on</code>（把责任集中于）——<b>一个是作者的担忧，一个是德纳姆的做法</b>，两把尺子各用了一次。<br>
+        ▸ <b>deal ＝ agreement ＝ arrangement</b>：①❶ deal、①❹ agreement、②❸ arrangements——同一件事的三个名字；31 题干用 agreement，定位到 ①❹。<br>
+        ⭐⭐ <b>三个「不到位」的动词</b>：<code>misses the point</code>（没抓住要点）· <code>misses the way</code>（没看清方式）· <code>does not address</code>（没触及）——<b>全是作者用来否定旧尺子的</b>（R240）；写作文驳论点时可以直接用。</div>
+      </section>
+
+      <!-- ========== 词汇 ========== -->
+      <section class="card">
+        <h2><span class="n">04</span>词汇复盘（点卡片看详情）</h2>
+        <div class="filters">
+          <button class="fbtn on" data-f="all">全部</button>
+          <button class="fbtn" data-f="core">核心词</button>
+          <button class="fbtn" data-f="phrase">短语</button>
+          <button class="fbtn" data-f="poly">熟词僻义</button>
+          <button class="fbtn" data-f="write">写作可用</button>
+        </div>
+        <div class="vgrid" id="vgrid"></div>
+      </section>
+
+      <!-- ========== 写作素材 ========== -->
+      <section class="card">
+        <h2><span class="n">05</span>可搬进作文的素材 · 8 组</h2>
+        <p style="font-size:.9rem;margin-bottom:12px">本篇话题——<b>人工智能、大数据、隐私、科技垄断、公共利益</b>——正对英语一大作文里<b>「科技与生活」「新技术的利与弊」「个人信息保护」「公平与责任」</b>一类题目（人脸识别、算法推荐、大数据杀熟、AI 医疗、个人信息泄露都能用）。<br><b>最值得搬的是四副句式</b>：<b>① Any fair-minded assessment of X must start by acknowledging that …（让步开篇）</b>· <b>② X is not the only angle, and not even the most important（降级换角度）</b>· <b>③ It is not enough to say that …; what matters is that …（不够—关键）</b>· <b>④ small choices now may turn out to have gigantic consequences later（呼吁谨慎）</b>。</p>
+        <div class="wb">
+          <div class="wbi"><div class="p">⭐⭐⭐ Any fair-minded assessment of X must start by acknowledging that ….</div><div class="u">对 X 任何公允的评价，都必须先承认……。<br>⟹ <b>让步开篇</b>（原文①❶）：先承认对方的好处，后面的批评更可信——比「Every coin has two sides」高级得多。<br>可套：<code>Any fair-minded assessment of short-video platforms must start by acknowledging that they have made information more accessible than ever.</code></div></div>
+          <div class="wbi"><div class="p">⭐⭐⭐ The potential of X is very great, but it could also lead to ….</div><div class="u">X 的潜力非常巨大，但它也可能导致……。<br>⟹ <b>一句讲清利与弊</b>（原文①❸）：前半确定、后半可能——分寸得体。<br>可套：<code>The potential of artificial intelligence in education is very great, but it could also lead to students’ over-dependence on machines.</code></div></div>
+          <div class="wbi"><div class="p">⭐⭐ It is against that background that ….</div><div class="u">正是在这样的背景下，……。<br>⟹ <b>强调句引出主题</b>（原文①❹）：写完一段背景，用它转入要讨论的事件或现象。<br>可套：<code>It is against that background that the government has issued new rules on the protection of personal information.</code></div></div>
+          <div class="wbi"><div class="p">⭐⭐⭐ But X is not the only angle, and not even the most important.</div><div class="u">但 X 不是唯一的角度，甚至不是最重要的角度。<br>⟹ <b>降级 ＋ 换角度</b>（原文②❺）：驳论文的利器——不说对方错，只说对方没抓住重点。<br>可套：<code>But convenience is not the only angle in this debate, and not even the most important.</code></div></div>
+          <div class="wbi"><div class="p">⭐⭐⭐ It is X, not Y, that gives … value.</div><div class="u">赋予……价值的，是 X，而不是 Y。<br>⟹ <b>强调句 ＋ 对比</b>（原文②❼）：一句话排除一个、突出一个。<br>可套：<code>It is persistence, not talent alone, that gives a young person’s effort real value.</code></div></div>
+          <div class="wbi"><div class="p">⭐⭐ The great question is who should benefit from ….</div><div class="u">真正的大问题是，谁应该从……中受益。<br>⟹ <b>亮出核心问题</b>（原文③❶）：把讨论从「好不好」拉到「归谁」「公不公平」。<br>可套：<code>The great question is who should benefit from the data that millions of users generate every day.</code></div></div>
+          <div class="wbi"><div class="p">⭐⭐⭐ It is not enough to say that …. What matters is that ….</div><div class="u">光说……是不够的。要紧的是……。<br>⟹ <b>不够—关键</b>（原文④❸❹）：先承认一个表层说法，再把重心推到深层——议论文第二段的万能骨架。<br>可套：<code>It is not enough to say that online courses save time. What matters is that students learn to study on their own.</code></div></div>
+          <div class="wbi"><div class="p">⭐⭐⭐ We are still at the beginning of …, and small choices now may turn out to have gigantic consequences later.</div><div class="u">我们仍处在……的开端，眼下的小选择日后可能带来巨大的后果。<br>⟹ <b>呼吁谨慎收尾</b>（原文④❻）：small ↔ gigantic、now ↔ later 双对仗，适合放结尾段。配合 <code>A long struggle will be needed to …</code>／<code>X is a welcome start</code> 使用。<br>可套：<code>We are still at the beginning of the AI age, and small choices now may turn out to have gigantic consequences later.</code></div></div>
+        </div>
+        <div class="atti" style="margin-top:12px">
+          🧱 <b>一段可以直接用的骨架</b>（把上面八副句式按顺序排）：<b>① 让步开篇（Any fair-minded assessment of X must start by acknowledging that …）→ ② 利弊一句（The potential of X is very great, but it could also lead to …）→ ③ 引出事件（It is against that background that …）→ ④ 换角度（But X is not the only angle, and not even the most important）→ ⑤ 强调对比（It is X, not Y, that …）→ ⑥ 核心问题（The great question is who should benefit from …）→ ⑦ 不够—关键（It is not enough to say that … What matters is that …）→ ⑧ 谨慎收尾（small choices now may turn out to have gigantic consequences later）</b>。<br>
+          ⭐ <b>这正是本文的逻辑</b>：让步 → 背景 → 换角度 → 核心问题 → 真正的担忧 → 呼吁；写进作文就是「<b>先承认好处，再指出大家没看到的那一层，最后呼吁谨慎</b>」——比「科技是一把双刃剑」有层次得多。<br>
+          ⚠️ <b>DeepMind、NHS、德纳姆这些专名别照搬进作文</b>，也别把「监视经济」「数字封建主义」这类重词用在小话题上；<b>要搬的是句式与论证动作</b>，话题换成「人脸识别」「算法推荐」「个人信息保护」即可。
+        </div>
+      </section>
+    </main>
+    <aside>
+      <div id="panel">
+        <button class="close" onclick="document.getElementById('panel').classList.remove('open')">收起</button>
+        <div class="hint">点正文里的<b>黄色高亮词</b>，或下方词汇卡片，这里出详情。</div>
+      </div>
+    </aside>
+  </div>
+</div>
+<button id="yd">查有道</button>
+
+<script>
+const V={
+  fairminded:{w:"fair-minded",ipa:"/ˌfeəˈmaɪndɪd/",pos:"adj.",tags:["poly","write"],cn:"<b>公允的、不偏不倚的</b>",en:"treating people and ideas equally and without bias",ex:"Any <b>fair-minded</b> assessment of the dangers of the deal（①❶）",mem:"⭐⭐ fair（公平）＋ minded（……心态的）⟹ 心态公平的。<br>▸ 让步开篇的信号：Any fair-minded X must start by acknowledging that …——作者先替对方说句公道话。",syn:"impartial · unbiased · even-handed",conf:"✍️ <code>Any fair-minded observer would admit that …</code>——议论文让步的高级开头。"},
+  assessment:{w:"assessment",ipa:"/əˈsesmənt/",pos:"n.",tags:["core","write"],cn:"<b>评价、判断</b>；评估",en:"an opinion or a judgement about somebody or something that has been thought about very carefully",ex:"Any fair-minded <b>assessment</b> of the dangers of the deal（①❶）",mem:"⭐ assess（评估）＋ -ment。<br>▸ assessment of X ＝ 对 X 的评价；本句里 of 连用三层，从右往左译。",syn:"evaluation · appraisal · judgement",conf:"assess（评估）· access（进入）——形近。"},
+  deal:{w:"deal",ipa:"/diːl/",pos:"n.",tags:["core","poly"],cn:"<b>协议、交易</b>（双方达成的安排）",en:"an agreement, especially in business, on particular conditions for buying or doing something",ex:"the dangers of the <b>deal</b> between Britain’s National Health Service (NHS) and DeepMind（①❶）· the real worry arising from this <b>deal</b>（34 题干）",mem:"⭐⭐ 本篇同一件事有三个名字：deal（①❶）＝ agreement（①❹）＝ arrangements（②❸）——换词不换事。<br>▸ 动词 deal with ＝ 处理，名词 a deal ＝ 协议。",syn:"agreement · arrangement · contract",conf:"a great deal of（大量）· deal with（处理）· a deal（协议）——三义别混。"},
+  acknowledge:{w:"acknowledge",ipa:"/əkˈnɒlɪdʒ/",pos:"v.",tags:["core","write"],cn:"<b>承认</b>（事实、对方的优点）",en:"to accept that something is true",ex:"must start by <b>acknowledging</b> that both sides mean well（①❶）",mem:"⭐⭐ ac- ＋ knowledge（知道）⟹ 表示知道了 ⟹ 承认。<br>▸ acknowledge that … 常出现在让步里：先承认，再转折。",syn:"admit · recognise · accept",conf:"✍️ <code>We must acknowledge that …, but …</code>——让步转折的标配。"},
+  meanwell:{w:"mean well",ipa:"/miːn wel/",pos:"phr. v.",tags:["phrase","poly"],cn:"<b>本意是好的、出于好意</b>",en:"to have good intentions, although the effect of what you do may not be good",ex:"both sides <b>mean well</b>（①❶）",mem:"⭐⭐ 常暗含「但效果未必好」——He means well, but … 是经典用法。<br>▸ 作者先说双方 mean well，再说交易有危害——批评的是结构，不是动机 ⟹ 31D 没根。",syn:"have good intentions",conf:"mean well（出于好意）vs mean it（是认真的）vs mean to（打算）。"},
+  leading:{w:"leading",ipa:"/ˈliːdɪŋ/",pos:"adj.",tags:["core","poly"],cn:"<b>领先的、一流的</b>",en:"most important or most successful",ex:"one of the <b>leading</b> artificial intelligence (AI) companies in the world（①❷）",mem:"⭐ lead（领先）＋ -ing ⟹ 领先的；one of the leading … ＝ ……之一的佼佼者。",syn:"top · foremost · major",conf:"leading（领先的）vs misleading（误导的）。"},
+  potential:{w:"potential",ipa:"/pəˈtenʃl/",pos:"n./adj.",tags:["core","write"],cn:"<b>潜力、潜能</b>；潜在的",en:"the possibility of something happening or being developed or used",ex:"The <b>potential</b> of this work applied to healthcare is very great（①❸）",mem:"⭐⭐⭐ 35 题「挡 contemptuous」的那一半就是这个词：作者亲口说潜力 very great。<br>▸ potent（有力的）同根。",syn:"promise · capacity · possibility",conf:"✍️ <code>The potential of X is very great, but it could also …</code>——一句讲清利弊。"},
+  applyto:{w:"apply to",ipa:"/əˈplaɪ tuː/",pos:"phr. v.",tags:["phrase","poly"],cn:"<b>应用于、适用于</b>",en:"to use something in a particular situation",ex:"this work <b>applied to</b> healthcare（①❸）",mem:"⭐⭐ 过去分词 applied to healthcare 作后置定语 ＝ 用于医疗的这项工作 ⟹ 35 题干 the application of AI to healthcare 的原型。<br>▸ apply for ＝ 申请；apply to ＝ 应用于／适用于。",syn:"use in · employ in",conf:"apply for（申请）· apply to（应用于）· apply oneself to（专心于）。"},
+  concentration:{w:"concentration",ipa:"/ˌkɒnsnˈtreɪʃn/",pos:"n.",tags:["core","poly"],cn:"<b>（权力、财富的）集中</b>；专注",en:"a large amount of something in one place",ex:"further <b>concentration</b> of power in the tech giants（①❸）",mem:"⭐⭐⭐ concentration of power in X ＝ 权力集中到 X 手里——31B 把 in 换成 among、把集中换成冲突，方向反了。<br>▸ con-（共同）＋ centr（中心）⟹ 聚向中心。",syn:"accumulation · centralisation",conf:"concentration of power（权力集中）· powers of concentration（专注力）——两义。"},
+  techgiant:{w:"tech giant",ipa:"/tek ˈdʒaɪənt/",pos:"n.",tags:["phrase","poly","write"],cn:"<b>科技巨头</b>",en:"a very large and powerful technology company",ex:"concentration of power in the <b>tech giants</b>（①❸）· to curb the <b>tech giants</b>（④❶）",mem:"⭐⭐ giant ＝ 巨头（大公司），不是巨人。本篇 tech giants 出现两次，都与「权力、约束」连在一起 ⟹ 34A。<br>▸ 同类：media giant（媒体巨头，2018 T2）、retail giant。",syn:"big tech · tech titan",conf:"✍️ <code>the growing power of tech giants</code>——科技话题作文常用。"},
+  background:{w:"background",ipa:"/ˈbækɡraʊnd/",pos:"n.",tags:["core","poly"],cn:"<b>（事件的）背景</b>；出身；背景（画面）",en:"the circumstances or past events that help explain how something happens",ex:"It is against that <b>background</b> that the information commissioner … has issued her damning verdict（①❹）",mem:"⭐⭐⭐ against that background ＝ 在那样的背景下——被强调句拎出来，把 ❶–❸ 收成铺垫。<br>▸ against 表「以……为背景」，不是「反对」。",syn:"context · circumstances · setting",conf:"✍️ <code>It is against this background that …</code>——作文里引出事件的强调句。"},
+  commissioner:{w:"commissioner",ipa:"/kəˈmɪʃənə(r)/",pos:"n.",tags:["core","poly"],cn:"<b>专员、长官</b>（政府独立机构的负责人）",en:"the head of a particular government department or official organization",ex:"the information <b>commissioner</b>, Elizabeth Denham（①❹）",mem:"⭐ commission（委员会、委托）＋ -er。<br>▸ the Information Commissioner ＝ 英国信息专员（ICO 负责人），监管数据保护与信息公开。",syn:"official · regulator",conf:"commission（委员会；佣金）· commissioner（专员）。"},
+  damning:{w:"damning",ipa:"/ˈdæmɪŋ/",pos:"adj.",tags:["core","poly"],cn:"<b>谴责性的、措辞严厉的</b>；足以定罪的",en:"critical of somebody or something; suggesting that somebody is guilty",ex:"has issued her <b>damning</b> verdict against the Royal Free hospital trust（①❹）",mem:"⭐⭐ damn（谴责、诅咒）＋ -ing ⟹ 谴责性的。<br>▸ 黄皮书译「定罪裁决」偏重——ICO 是行政监管机构，裁定要求整改、无罚款；宜译「措辞严厉的裁定」。",syn:"scathing · condemnatory · severe",conf:"damning evidence（足以定罪的证据）· a damning report（措辞严厉的报告）。"},
+  verdict:{w:"verdict",ipa:"/ˈvɜːdɪkt/",pos:"n.",tags:["core","poly"],cn:"<b>裁定、结论</b>；（陪审团的）裁决",en:"a decision or an opinion that is given about something after testing or considering it carefully",ex:"her damning <b>verdict</b> against the Royal Free hospital trust（①❹）· responded to Denham’s <b>verdict</b> with（32 题干）",mem:"⭐⭐ ver（真）＋ dict（说）⟹ 说出真相 ⟹ 裁决。<br>▸ 本篇的 verdict 出自监管机构，不是法院——比喻性的「裁定」。",syn:"ruling · judgement · finding",conf:"verdict（陪审团裁决）· sentence（法官判刑）· ruling（裁定）。"},
+  trust:{w:"trust",ipa:"/trʌst/",pos:"n.",tags:["core","poly"],cn:"<b>信托（机构）</b>；信任",en:"an organization that is set up to manage money or property for others; in the UK, a hospital run as an independent organization",ex:"the Royal Free hospital <b>trust</b> under the NHS（①❹）· The NHS <b>trust</b> has mended its ways（②❷）",mem:"⭐⭐⭐ 熟词僻义：NHS 的医院以「信托」形式运营，the NHS trust ＝ NHS 下属的医院信托——<b>不是「对 NHS 的信任」</b>。32 题干主语就是它。",syn:"foundation · organisation",conf:"trust（信任）· a trust（信托机构）· trustee（受托人）。"},
+  handover:{w:"hand over",ipa:"/hænd ˈəʊvə(r)/",pos:"phr. v.",tags:["phrase"],cn:"<b>交出、移交</b>",en:"to give something or somebody officially to another person",ex:"which <b>handed over</b> to DeepMind the records of 1.6 million patients（①❹）",mem:"⭐⭐ hand over sth to sb；本句把 to DeepMind 提前、长宾语 the records of 1.6 million patients 后置（尾重原则）。",syn:"give · transfer · pass",conf:"hand over（移交）· hand out（分发）· hand in（上交）。"},
+  record:{w:"record",ipa:"/ˈrekɔːd/",pos:"n.",tags:["core","poly"],cn:"<b>病历、档案</b>；记录；唱片",en:"a written account of something that is kept so that it can be looked at and used in the future",ex:"the <b>records</b> of 1.6 million patients（①❹）",mem:"⭐ medical records ＝ 病历。<br>▸ 名词重音在前 /ˈrekɔːd/，动词重音在后 /rɪˈkɔːd/。",syn:"file · document · history",conf:"on record（有记录的）· off the record（非正式的、不公开的）。"},
+  onthebasisof:{w:"on the basis of",ipa:"/ɒn ðə ˈbeɪsɪs əv/",pos:"phr.",tags:["phrase","write"],cn:"<b>依据、根据</b>",en:"because of a particular fact or situation; according to",ex:"<b>on the basis of</b> a vague agreement（①❹）",mem:"⭐⭐ 把 agreement 与 NHS 信托的行为连起来：依据一份含糊的协议交出病历（黄皮书）。",syn:"based on · according to",conf:"✍️ <code>on the basis of solid evidence</code>——论证时常用。"},
+  vague:{w:"vague",ipa:"/veɪɡ/",pos:"adj.",tags:["core"],cn:"<b>含糊的、不明确的</b>",en:"not clear in a person’s mind; not having or giving enough information or details",ex:"a <b>vague</b> agreement which took far too little account of the patients’ rights（①❹）",mem:"⭐⭐⭐ agreement 身上的第一个负面修饰——31 题「协议是什么样的」的第一块砖。",syn:"unclear · imprecise · ambiguous",conf:"vague（含糊的）· vogue（时尚）——形近。"},
+  takeaccountof:{w:"take account of",ipa:"/teɪk əˈkaʊnt əv/",pos:"phr.",tags:["phrase","poly","write"],cn:"<b>考虑、顾及</b>",en:"to consider particular facts or circumstances when you decide about something",ex:"a vague agreement which <b>took far too little account of</b> the patients’ rights（①❹）",mem:"⭐⭐⭐ ＝ take into account ＝ pay attention to；took far too little account of（考虑得太少）⟹ 31C failed to pay due attention to。<br>▸ 修饰语 far too little 插在 take 与 account 之间。",syn:"consider · take into account · allow for",conf:"✍️ <code>Any plan must take account of the needs of the elderly.</code>"},
+  expectation:{w:"expectation",ipa:"/ˌekspekˈteɪʃn/",pos:"n.",tags:["core"],cn:"<b>预期、期待</b>",en:"a belief that something will happen or that somebody should behave in a particular way",ex:"the patients’ rights and their <b>expectations</b> of privacy（①❹）· It fell short of the latter’s <b>expectations</b>（31A）",mem:"⭐⭐⭐ their 就近回指 patients——31A 把 expectations 安给 the latter（DeepMind），指代错了。<br>▸ expectations of privacy ＝ 对隐私的（合理）期待，法律用语。",syn:"hope · anticipation · assumption",conf:"live up to / fall short of expectations（达到／未达到预期）。"},
+  apologise:{w:"apologise",ipa:"/əˈpɒlədʒaɪz/",pos:"v.",tags:["core"],cn:"<b>道歉</b>",en:"to say that you are sorry for doing something wrong",ex:"DeepMind has almost <b>apologised</b>（②❶）",mem:"⭐⭐⭐ almost apologised ＝ 差一点算道歉——DeepMind 当天只说了 We got that wrong（认错，没说 sorry）⟹ 32C sincere apologies 拔高 ＋ 换主体。<br>▸ 英式拼写 -ise，美式 -ize。",syn:"say sorry · express regret",conf:"apologise to sb for sth——对象用 to，原因用 for。"},
+  mendways:{w:"mend one’s ways",ipa:"/mend wʌnz weɪz/",pos:"idiom",tags:["phrase","poly"],cn:"<b>改过、改正做法</b>",en:"to stop behaving badly and start behaving better",ex:"The NHS trust has <b>mended its ways</b>（②❷）",mem:"⭐⭐⭐ 32D necessary adjustments 的正源：has mended（现在完成时）＝ 已经改了——不是空头承诺（32A）、不是抵制（32B）。<br>▸ mend（修补）＋ ways（做法）。",syn:"reform · change for the better · correct oneself",conf:"mend one’s ways（改过）· go one’s own way（我行我素）。"},
+  arrangement:{w:"arrangement",ipa:"/əˈreɪndʒmənt/",pos:"n.",tags:["core","poly"],cn:"<b>协议、约定</b>；安排",en:"a plan or preparation that you make so that something can happen; an agreement",ex:"Further <b>arrangements</b>—and there may be many—between the NHS and DeepMind（②❸）",mem:"⭐ 本篇 deal ＝ agreement ＝ arrangements，同一件事的三个名字。",syn:"agreement · deal · understanding",conf:"make arrangements for（为……做安排）· by arrangement（按约定）。"},
+  scrutinise:{w:"scrutinise",ipa:"/ˈskruːtənaɪz/",pos:"v.",tags:["core"],cn:"<b>仔细审查</b>",en:"to look at or examine somebody or something carefully",ex:"will be carefully <b>scrutinised</b> to ensure that all necessary permissions have been asked of patients（②❸）",mem:"⭐⭐ 名词 scrutiny（审查）更常考：under scrutiny ＝ 受到审查。<br>▸ 将来时被动——32A empty promises 抓的就是「将来」这一点。",syn:"examine · inspect · review",conf:"scrutinise（审查）vs skim（略读）——一细一粗。"},
+  permission:{w:"permission",ipa:"/pəˈmɪʃn/",pos:"n.",tags:["core"],cn:"<b>许可、准许</b>",en:"the act of allowing somebody to do something, especially when this is done by somebody in a position of authority",ex:"all necessary <b>permissions</b> have been asked of patients（②❸）",mem:"⭐ permit（允许）的名词；necessary permissions ↔ unnecessary data 对仗。",syn:"consent · approval · authorisation",conf:"ask for / give / grant permission。"},
+  askof:{w:"ask sth of sb",ipa:"/ɑːsk əv/",pos:"phr.",tags:["phrase","poly"],cn:"<b>向某人要求／征求某物</b>",en:"to expect or demand something from somebody",ex:"all necessary permissions have been <b>asked of</b> patients（②❸）",mem:"⭐⭐ 被动后 sth has been asked of sb ＝ 已向某人征得某物。<br>▸ 常见：It’s too much to ask of him（这对他要求太高）。",syn:"request from · demand of",conf:"ask sb sth（问某人某事）· ask sth of sb（向某人要求某物）。"},
+  clean:{w:"clean",ipa:"/kliːn/",pos:"v.",tags:["core","poly"],cn:"<b>（数据）清除、删除</b>；打扫",en:"to remove unwanted or incorrect data from a set of data",ex:"all unnecessary data has been <b>cleaned</b>（②❸）",mem:"⭐⭐ 熟词僻义：数据语境下 clean ＝ 删除不需要的、修正错误的（data cleaning 数据清洗）。<br>▸ ICO 认为 160 万份记录「不必要、不成比例」⟹ 整改之一就是删数据。",syn:"delete · remove · wipe",conf:"clean data（清洗数据）· clean up（清理）。"},
+  lesson:{w:"lesson",ipa:"/ˈlesn/",pos:"n.",tags:["core","poly","write"],cn:"<b>教训</b>；课",en:"an experience, especially an unpleasant one, from which you can learn",ex:"There are <b>lessons</b> about informed patient consent to learn（②❹）",mem:"⭐⭐ There are lessons … to learn. But … ——先认教训，再转折：让步的信号。",syn:"moral · warning · takeaway",conf:"✍️ <code>There are lessons to learn from this case.</code>——作文收尾常用。"},
+  informedconsent:{w:"informed consent",ipa:"/ɪnˈfɔːmd kənˈsent/",pos:"n.",tags:["phrase","poly"],cn:"<b>知情同意</b>（医学伦理术语）",en:"permission given by a patient after being told about the possible risks of a treatment or procedure",ex:"lessons about <b>informed patient consent</b> to learn（②❹）",mem:"⭐⭐ informed ＝ 知情的（不是「消息灵通的」）；patient 插在中间作定语。<br>▸ ICO 认定患者「未被充分告知」——这就是教训。",syn:"consent · permission",conf:"informed（知情的）· uninformed（不知情的）· ill-informed（信息错误的）。"},
+  angle:{w:"angle",ipa:"/ˈæŋɡl/",pos:"n.",tags:["core","poly","write"],cn:"<b>角度、视角</b>；角",en:"a particular way of presenting or thinking about a situation or problem",ex:"But privacy is not the only <b>angle</b> in this case and not even the most important（②❺）",mem:"⭐⭐⭐ 全文第一次换尺子：隐私不是唯一的角度，甚至不是最重要的 ⟹ 33A at all costs 撞在这里（R240）。",syn:"perspective · viewpoint · aspect",conf:"✍️ <code>X is not the only angle, and not even the most important.</code>——驳论降级句。"},
+  concentrate:{w:"concentrate the blame on",ipa:"/ˈkɒnsntreɪt/",pos:"phr.",tags:["phrase","poly"],cn:"<b>把责任集中在……身上</b>",en:"to put all the blame on one person or group",ex:"Ms Denham chose to <b>concentrate the blame on</b> the NHS trust（②❻）",mem:"⭐⭐ 与 ①❸ concentration of power 同词不同义：一个是作者担忧的「权力集中」，一个是德纳姆的做法「追责集中」。<br>▸ blame 作名词：责任、过错。",syn:"put the blame on · hold responsible",conf:"concentrate on（专心于）· concentrate sth on（把……集中于）。"},
+  control:{w:"control",ipa:"/kənˈtrəʊl/",pos:"v.",tags:["core","poly"],cn:"<b>（法律上）作为数据控制者</b>；控制",en:"(in data protection law) to decide how and why personal data is used",ex:"under existing law it “<b>controlled</b>” the data（②❻）",mem:"⭐⭐⭐ 引号＝法律术语：data controller（数据控制者）决定数据用途、担主责；data processor 只按指示处理。<br>▸ 德纳姆按这条追责 ⟹ 作者说这个区分 misses the point。",syn:"manage · be in charge of",conf:"controller（控制者）vs processor（处理者）——1998 年《数据保护法》的区分。"},
+  merely:{w:"merely",ipa:"/ˈmɪəli/",pos:"adv.",tags:["core","poly"],cn:"<b>只不过、仅仅</b>（带贬低）",en:"used meaning ‘only’ or ‘simply’ to emphasize a fact or something that you are saying",ex:"DeepMind <b>merely</b> “processed” it（②❻）· not the <b>mere</b> possession of bits（②❼）",mem:"⭐⭐⭐ 谁用 merely／mere，谁就在压低后面那个词：德纳姆压「处理」、作者压「占有」——<b>两把尺子轻重相反</b>（R240）。",syn:"only · simply · just",conf:"merely（adv.）· mere（adj.）——一个修饰动词，一个修饰名词。"},
+  process:{w:"process",ipa:"/ˈprəʊses/",pos:"v./n.",tags:["core","poly"],cn:"<b>处理（数据）</b>（v.）；过程（n.）",en:"to perform a series of operations on data in a computer",ex:"DeepMind merely “<b>processed</b>” it（②❻）· it is <b>processing</b> and aggregation … that gives the data value（②❼）",mem:"⭐⭐⭐ 33B the value of data comes from the processing of it——作者的新尺子：值钱的是处理。<br>▸ 动词 process 的法律义：data processor（数据处理者）。",syn:"handle · analyse · treat",conf:"process（处理）· procession（队伍）· proceed（继续）。"},
+  distinction:{w:"distinction",ipa:"/dɪˈstɪŋkʃn/",pos:"n.",tags:["core","poly"],cn:"<b>区分、区别</b>；优秀",en:"a clear difference or contrast between two similar things",ex:"But this <b>distinction</b> misses the point（②❼）",mem:"⭐⭐ this distinction ＝ ②❻ 的 controlled vs processed。<br>▸ make / draw a distinction between A and B ＝ 区分 A 与 B。",syn:"difference · contrast · differentiation",conf:"distinction（区别；优秀）· distinct（明显的；不同的）· distinctive（独特的）。"},
+  missthepoint:{w:"miss the point",ipa:"/mɪs ðə pɔɪnt/",pos:"idiom",tags:["phrase","poly","write"],cn:"<b>没抓住要点、不得要领</b>",en:"to fail to understand the important part of something",ex:"But this distinction <b>misses the point</b> that it is processing and aggregation … that gives the data value（②❼）",mem:"⭐⭐⭐ 否定旧尺子的动词：②❼ misses the point · ③❸ That misses the way · ④❷ does not address——三处同一族（R240）。<br>▸ 32A 从这里借了「没做到」的影子，但主语是德纳姆的 distinction。",syn:"not see what matters · be beside the point",conf:"✍️ <code>This argument misses the point that …</code>——驳论必备。"},
+  aggregation:{w:"aggregation",ipa:"/ˌæɡrɪˈɡeɪʃn/",pos:"n.",tags:["core"],cn:"<b>（数据的）聚合、汇总</b>",en:"the act of collecting things together into one group or amount",ex:"it is processing and <b>aggregation</b>, not the mere possession of bits, that gives the data value（②❼）",mem:"⭐⭐ ag-（向）＋ greg（群）＋ -ation ⟹ 聚成一群。同根：congregate（聚集）、segregate（隔离）。<br>▸ ③❹ 是它的原理：个人数据只有与千万人比较才有价值。",syn:"collection · combination · accumulation",conf:"aggregate（总计的）· aggregation（聚合）。"},
+  possession:{w:"possession",ipa:"/pəˈzeʃn/",pos:"n.",tags:["core"],cn:"<b>占有、拥有</b>；财产",en:"the state of having or owning something",ex:"not the mere <b>possession</b> of bits（②❼）",mem:"⭐⭐ 强调句 It is X, not Y, that … 里被排除的 Y——德纳姆那把尺子看重「谁占有（控制）」，作者说占有不值钱。",syn:"ownership · holding · control",conf:"in possession of（拥有）· in the possession of（被……拥有）。"},
+  bit:{w:"bit",ipa:"/bɪt/",pos:"n.",tags:["core","poly"],cn:"<b>比特</b>（信息的最小单位）；一点儿",en:"the smallest unit of information used by a computer",ex:"not the mere possession of <b>bits</b>（②❼）",mem:"⭐⭐ 熟词僻义：bits 在这里是「比特」，泛指数据——不是「一点点」。<br>▸ bit ＝ binary digit 的缩写。",syn:"data · digits",conf:"a bit（一点）· bits（比特，数据）· byte（字节）。"},
+  benefitfrom:{w:"benefit from",ipa:"/ˈbenɪfɪt frəm/",pos:"phr. v.",tags:["phrase","core","write"],cn:"<b>从……中受益</b>",en:"to get an advantage from something",ex:"who should <b>benefit from</b> the analysis of all the data（③❶）",mem:"⭐⭐⭐ 作者的新尺子：谁该受益——34A 的「垄断」就是这个问题的答案。<br>▸ 33C 借了 benefit，改成 making profits … is illegal（受益 → 牟利违法），性质变了。<br>▸ benefit sb（使某人受益）：④❸ will benefit patients。",syn:"profit from · gain from",conf:"benefit from（受益于）· benefit sb（有益于某人）· for the benefit of（为了……的利益）。"},
+  analysis:{w:"analysis",ipa:"/əˈnæləsɪs/",pos:"n.",tags:["core"],cn:"<b>分析</b>",en:"the detailed study or examination of something in order to understand more about it",ex:"who should benefit from the <b>analysis</b> of all the data that our lives now generate（③❶）",mem:"⭐ 复数 analyses；动词 analyse／analyze。<br>▸ 受益的来源是「分析」而不是数据本身——与 ②❼ processing 呼应。",syn:"examination · study · evaluation",conf:"analysis（n.）· analyse（v.）· analyst（分析师）· analytical（adj.）。"},
+  generate:{w:"generate",ipa:"/ˈdʒenəreɪt/",pos:"v.",tags:["core","poly"],cn:"<b>产生、生成</b>（数据、收入、想法）",en:"to produce or create something",ex:"all the data that our lives now <b>generate</b>（③❶）",mem:"⭐ gener（生）＋ -ate ⟹ 产生。同根 generation、genetic。<br>▸ 定语从句 that our lives now generate——that 作 generate 的宾语。",syn:"produce · create · yield",conf:"generate electricity（发电）· generate data / income / interest。"},
+  buildon:{w:"build on",ipa:"/bɪld ɒn/",pos:"phr. v.",tags:["phrase","poly"],cn:"<b>以……为基础、建立在……之上</b>",en:"to use something as a basis for further progress",ex:"Privacy law <b>builds on</b> the concept of damage to an individual（③❷）",mem:"⭐⭐ 引出旧尺子的「地基」：个人 ＋ 可识别 ＋ 伤害。下一句 That misses … 拆掉它。",syn:"be based on · rest on",conf:"build on（以……为基础）· build up（逐步增加）。"},
+  damage:{w:"damage",ipa:"/ˈdæmɪdʒ/",pos:"n./v.",tags:["core"],cn:"<b>伤害、损害</b>",en:"physical or other harm that is caused to somebody or something",ex:"the concept of <b>damage</b> to an individual from identifiable knowledge about them（③❷）",mem:"⭐⭐ damage to sb from sth ＝ 某物对某人造成的伤害——名词化结构，还原成「信息伤害个人」。<br>▸ damages（复数）＝ 损害赔偿金。",syn:"harm · injury · loss",conf:"damage（不可数，损害）· damages（赔偿金）。"},
+  identifiable:{w:"identifiable",ipa:"/aɪˈdentɪfaɪəbl/",pos:"adj.",tags:["core","poly"],cn:"<b>可识别（身份）的</b>",en:"that can be recognized",ex:"damage to an individual from <b>identifiable</b> knowledge about them（③❷）",mem:"⭐⭐ 隐私法只管「能认出是谁」的信息（personally identifiable information）——作者说价值却在「聚合」那一层，个人认不认得出反而不要紧。",syn:"recognisable · distinguishable",conf:"identify（识别）· identity（身份）· identical（相同的）。"},
+  surveillance:{w:"surveillance economy",ipa:"/sɜːˈveɪləns ɪˈkɒnəmi/",pos:"n.",tags:["phrase","poly"],cn:"<b>监视经济</b>（以收集、分析用户数据盈利的经济形态）",en:"an economy in which companies make money by collecting and analysing data about people",ex:"That misses the way the <b>surveillance economy</b> works（③❸）",mem:"⭐⭐ sur-（在上）＋ veill（看）⟹ 从上面看着 ⟹ 监视。<br>▸ 「监视」二字已带贬义——作者对数据经济的命名本身就是态度。",syn:"data economy · surveillance capitalism",conf:"surveillance（监视）· survey（调查）——同根 sur-。"},
+  countless:{w:"countless",ipa:"/ˈkaʊntləs/",pos:"adj.",tags:["core","write"],cn:"<b>无数的、数不清的</b>",en:"very many; too many to be counted",ex:"compared with the data of <b>countless</b> millions more（③❹）",mem:"⭐ count（数）＋ -less（不能）⟹ 数不清的。<br>▸ countless millions more ＝ 另外千千万万人（more 表「额外的」）。",syn:"innumerable · numerous · myriad",conf:"✍️ <code>countless young people</code>——作文夸张数量。"},
+  curb:{w:"curb",ipa:"/kɜːb/",pos:"v./n.",tags:["core","poly","write"],cn:"<b>约束、遏制</b>",en:"to control or limit something, especially something bad",ex:"The use of privacy law to <b>curb</b> the tech giants（④❶）",mem:"⭐⭐ 熟词僻义：curb 作名词还有「路缘」（美式，英式 kerb）。<br>▸ 高频考研词：curb inflation／curb spending。",syn:"restrain · limit · check · rein in",conf:"✍️ <code>measures to curb online fraud</code>——作文常用。"},
+  instance:{w:"instance",ipa:"/ˈɪnstəns/",pos:"n.",tags:["core","poly"],cn:"<b>情况、案例</b>；例子",en:"a particular example or case of something",ex:"to curb the tech giants in this <b>instance</b>（④❶）",mem:"⭐ in this instance ＝ in this case（在这个案子里）——与 ②❺ in this case 呼应。",syn:"case · example · occasion",conf:"for instance（例如）· in this instance（在这种情况下）。"},
+  maladapted:{w:"maladapted",ipa:"/ˌmæləˈdæptɪd/",pos:"adj.",tags:["core"],cn:"<b>不适应的、不对路的</b>",en:"not well suited to a particular situation",ex:"feels slightly <b>maladapted</b>（④❶）",mem:"⭐⭐⭐ mal-（坏、不当）＋ adapted（适应的）。同前缀：malfunction（故障）、malnutrition（营养不良）。<br>▸ 说的是「工具用错了」，不是「执行不力」⟹ 34D 偷换（R240）。<br>▸ slightly 打折：作者很客气。",syn:"unsuitable · ill-suited · inappropriate",conf:"maladapted（不适应的）vs ineffective（无效的）——34D 就在这里偷换。"},
+  address:{w:"address",ipa:"/əˈdres/",pos:"v.",tags:["core","poly","write"],cn:"<b>处理、应对（问题）</b>；向……讲话",en:"to think about a problem or a situation and decide how you are going to deal with it",ex:"This practice does not <b>address</b> the real worry（④❷）",mem:"⭐⭐⭐ 熟词僻义：address a problem ＝ 解决问题。本句是「先破」，the real worry 下一句揭晓 ⟹ 34 题干原词在此。",syn:"tackle · deal with · handle",conf:"✍️ <code>address the problem of …</code>——作文写对策的万能动词。"},
+  worry:{w:"worry",ipa:"/ˈwʌri/",pos:"n.",tags:["core"],cn:"<b>担忧、令人担心的事</b>",en:"something that worries you",ex:"This practice does not address the real <b>worry</b>（④❷）· the real <b>worry</b> arising from this deal（34 题干）",mem:"⭐⭐⭐ the real worry 是 34 题干原词——但 ❷ 只说没触及，答案在 ❹ What matters is that（R241）。",syn:"concern · anxiety · fear",conf:"a worry（可数，令人担心的事）· worry（不可数，担忧）。"},
+  algorithm:{w:"algorithm",ipa:"/ˈælɡərɪðəm/",pos:"n.",tags:["core"],cn:"<b>算法</b>",en:"a set of rules that must be followed when solving a particular problem",ex:"the <b>algorithms</b> DeepMind develops will benefit patients and save lives（④❸）",mem:"⭐⭐ 源自 9 世纪数学家花拉子米（al-Khwarizmi）的名字。<br>▸ 省略关系代词：the algorithms (that) DeepMind develops。",syn:"procedure · formula · program",conf:"algorithm（算法）· logarithm（对数）——形近。"},
+  belongto:{w:"belong to",ipa:"/bɪˈlɒŋ tuː/",pos:"phr. v.",tags:["phrase","core"],cn:"<b>属于、归……所有</b>",en:"to be owned by somebody",ex:"they will <b>belong to</b> a private monopoly（④❹）",mem:"⭐⭐⭐ 作者担忧的是「归属」——34C 把「归谁所有」换成「被滥用」，偷换了属性。<br>▸ belong to 不用进行时、不用被动。",syn:"be owned by · be the property of",conf:"belong to（属于）· belongings（财物）。"},
+  monopoly:{w:"monopoly",ipa:"/məˈnɒpəli/",pos:"n.",tags:["core","write"],cn:"<b>垄断（企业）</b>；专营权",en:"a company or organization that has complete control of something, especially an area of business",ex:"they will belong to a private <b>monopoly</b> which developed them using public resources（④❹）· the <b>monopoly</b> of big data by tech giants（34A）",mem:"⭐⭐⭐ mono（单一）＋ poly（卖）⟹ 独家卖 ⟹ 垄断。<br>▸ 34A 的核心词；private monopoly ↔ public resources 对仗。",syn:"exclusive control · cartel",conf:"monopoly（垄断）· monotony（单调）——同前缀 mono-。"},
+  resource:{w:"resource",ipa:"/rɪˈsɔːs/",pos:"n.",tags:["core"],cn:"<b>资源</b>",en:"a supply of something such as money, labour, etc. that can be used",ex:"which developed them using public <b>resources</b>（④❹）",mem:"⭐⭐ public resources ＝ 公费医疗体系攒下的病历——用公家的东西开发、归私人所有，这才是担忧。",syn:"asset · supply · means",conf:"✍️ <code>public resources should serve the public</code>。"},
+  promise:{w:"promise to do",ipa:"/ˈprɒmɪs/",pos:"v.",tags:["phrase","poly"],cn:"<b>有望做、有……的可能</b>；承诺",en:"to make something seem likely to happen",ex:"If software <b>promises to</b> save lives on the scale that drugs now can（④❺）",mem:"⭐⭐ 熟词僻义：主语是事物时 promise to do ＝ 有望（不是「承诺」）。<br>▸ 本句是 If 条件句，不是作者断言——黄皮书「几度指出」的商榷在此。",syn:"show signs of · be likely to",conf:"promise（承诺）· promising（有前途的）· show promise（有潜力）。"},
+  scale:{w:"scale",ipa:"/skeɪl/",pos:"n.",tags:["core","poly"],cn:"<b>规模</b>；刻度；秤；鳞",en:"the size or extent of something",ex:"save lives on the <b>scale</b> that drugs now can（④❺）",mem:"⭐ on the scale that … ＝ 以……的规模；on a large scale ＝ 大规模地。<br>▸ can 后省略 save lives。",syn:"extent · size · magnitude",conf:"on a large scale（大规模）· scale up（扩大规模）。"},
+  pharma:{w:"big pharma",ipa:"/bɪɡ ˈfɑːmə/",pos:"n.",tags:["phrase"],cn:"<b>大药企</b>（跨国大型制药公司的统称，常带贬义）",en:"large pharmaceutical companies considered as a powerful group",ex:"big data may be expected to behave as big <b>pharma</b> has done（④❺）· the vicious rivalry among big <b>pharmas</b>（34B）",mem:"⭐⭐ pharma ＝ pharmaceutical companies 的口语缩写。<br>▸ 类比的相同点是「救命的东西被垄断、定价」——34B 把喻体当担忧、还加了「恶性竞争」（R122）。",syn:"drug companies · pharmaceutical industry",conf:"pharmacy（药房）· pharmacist（药剂师）· pharmaceutical（制药的）。"},
+  revolution:{w:"revolution",ipa:"/ˌrevəˈluːʃn/",pos:"n.",tags:["core","poly"],cn:"<b>（技术）变革</b>；革命",en:"a great change in conditions, ways of working, beliefs, etc. that affects large numbers of people",ex:"We are still at the beginning of this <b>revolution</b>（④❻）",mem:"⭐⭐ this revolution ＝ AI 与大数据进入医疗——作者称之为「革命」，本身就承认了它的分量（挡 35D）。",syn:"transformation · upheaval",conf:"✍️ <code>We are still at the beginning of the digital revolution.</code>"},
+  turnout:{w:"turn out to",ipa:"/tɜːn aʊt tuː/",pos:"phr. v.",tags:["phrase","poly"],cn:"<b>结果是、原来是</b>",en:"to be discovered to be; to prove to be",ex:"small choices now may <b>turn out to</b> have gigantic consequences later（④❻）",mem:"⭐⭐ may turn out to have ＝ 日后可能会（被证明）带来——35C cautious 的正源。",syn:"prove to · end up",conf:"turn out（结果是；出席）· turnout（n. 投票率、出席人数）。"},
+  gigantic:{w:"gigantic",ipa:"/dʒaɪˈɡæntɪk/",pos:"adj.",tags:["core","write"],cn:"<b>巨大的</b>",en:"extremely large",ex:"small choices now may turn out to have <b>gigantic</b> consequences later（④❻）",mem:"⭐⭐ giant（巨人）同根。small ↔ gigantic、now ↔ later 双对仗。",syn:"huge · enormous · immense",conf:"✍️ <code>small choices, gigantic consequences</code>——作文收尾的对仗。"},
+  consequence:{w:"consequence",ipa:"/ˈkɒnsɪkwəns/",pos:"n.",tags:["core","write"],cn:"<b>后果、结果</b>",en:"a result of something that has happened",ex:"small choices now may turn out to have gigantic <b>consequences</b> later（④❻）",mem:"⭐ con-（共同）＋ sequ（跟随）⟹ 随之而来的 ⟹ 后果。同根 sequence、subsequent。",syn:"result · outcome · effect",conf:"as a consequence（因此）· of no consequence（无关紧要）。"},
+  struggle:{w:"struggle",ipa:"/ˈstrʌɡl/",pos:"n./v.",tags:["core","write"],cn:"<b>斗争、奋斗</b>；挣扎",en:"a hard fight in which people try to obtain or achieve something",ex:"A long <b>struggle</b> will be needed to avoid a future of digital feudalism（④❼）",mem:"⭐⭐ 「后立」的一句：作者给出了明确的行动方向 ⟹ 态度不是 ambiguous。",syn:"fight · battle · effort",conf:"✍️ <code>A long struggle will be needed to …</code>——作文呼吁句。"},
+  feudalism:{w:"digital feudalism",ipa:"/ˈfjuːdəlɪzəm/",pos:"n.",tags:["phrase"],cn:"<b>数字封建主义</b>（平台如领主、用户如农奴）",en:"a situation in which a few powerful technology companies control people’s data and lives, like lords in the feudal system",ex:"to avoid a future of digital <b>feudalism</b>（④❼）",mem:"⭐⭐ feudal（封建的）＋ -ism。数据是土地，产出归领主——垄断的终局 ⟹ 34A、35C。<br>▸ 35D contemptuous 把「反对数字封建主义」偷换成「蔑视 AI 医疗」。",syn:"tech feudalism",conf:"feudal（封建的）· feud（世仇）——形近不同义。"},
+  welcome:{w:"welcome",ipa:"/ˈwelkəm/",pos:"adj.",tags:["core","poly","write"],cn:"<b>值得欢迎的、可喜的</b>",en:"pleasing and received with pleasure",ex:"Ms Denham’s report is a <b>welcome</b> start（④❽）",mem:"⭐⭐⭐ 形容词 welcome 的宾语是「报告」——35B appreciative 把对报告的欢迎挪给了 AI 医疗（R221）。<br>▸ a welcome start ＝ 好，但只是开端（呼应 long struggle）。",syn:"pleasing · encouraging · heartening",conf:"✍️ <code>X is a welcome start, but much remains to be done.</code>"},
+  fallshort:{w:"fall short of",ipa:"/fɔːl ʃɔːt əv/",pos:"phr.",tags:["phrase","poly","write"],cn:"<b>未达到、不符合</b>（标准、期望）",en:"to fail to reach the standard that you expected or need",ex:"It <b>fell short of</b> the latter’s expectations（31A）",mem:"⭐⭐ 31A 的毛病不在短语，在 the latter——原文 their expectations 属于患者，不属于 DeepMind。",syn:"fail to meet · not live up to",conf:"✍️ <code>The results fell short of our expectations.</code>"},
+  latter:{w:"the latter",ipa:"/ðə ˈlætə(r)/",pos:"n.",tags:["core","poly"],cn:"<b>后者</b>",en:"used to refer to the second of two things or people mentioned",ex:"It fell short of the <b>latter</b>’s expectations（31A）",mem:"⭐⭐⭐ 选项里的 the latter／the former 一律回到<b>题干</b>去找：31 题干 the NHS and DeepMind ⟹ the latter ＝ DeepMind ⟹ 与原文 their（患者）不符（R21）。",syn:"the second · the last-mentioned",conf:"the former（前者）· the latter（后者）· later（后来）。"},
+  conflict:{w:"conflict",ipa:"/ˈkɒnflɪkt/",pos:"n.",tags:["core"],cn:"<b>冲突、矛盾</b>",en:"a situation in which people, groups or countries disagree strongly",ex:"It caused <b>conflicts</b> among tech giants（31B）",mem:"⭐⭐ 31B：原文是权力集中「于」巨头（concentration of power in），选项是巨头「之间」冲突——方向反。",syn:"clash · dispute · rivalry",conf:"conflict with（与……冲突）· in conflict（处于冲突中）。"},
+  dueattention:{w:"pay due attention to",ipa:"/djuː əˈtenʃn/",pos:"phr.",tags:["phrase","poly","write"],cn:"<b>给予应有的重视</b>",en:"to give something the attention that it deserves",ex:"It failed to <b>pay due attention to</b> patients’ rights（31C）",mem:"⭐⭐⭐ due ＝ 应有的、适当的（熟词僻义）；failed to pay due attention to ＝ ①❹ took far too little account of——31C 正解的同义改写。",syn:"give proper consideration to · take account of",conf:"due（应有的；到期的；由于 due to）——三义。"},
+  respondto:{w:"respond to … with",ipa:"/rɪˈspɒnd/",pos:"phr. v.",tags:["phrase"],cn:"<b>以……回应</b>",en:"to react to something that somebody has said or done",ex:"The NHS trust <b>responded to</b> Denham’s verdict with（32 题干）",mem:"⭐⭐ 题干主语 The NHS trust ⟹ 只看 ②❷ 那一行（mended its ways），DeepMind 那一行（almost apologised）是 32C 的原料。",syn:"react to · reply to",conf:"respond to sth with sth / by doing sth。"},
+  empty:{w:"empty promises",ipa:"/ˈempti ˈprɒmɪsɪz/",pos:"phr.",tags:["phrase","poly","write"],cn:"<b>空头承诺</b>",en:"promises that are not kept or not meant",ex:"<b>empty</b> promises（32A）",mem:"⭐⭐ empty ＝ 空洞的、不兑现的。32A 抓的是 ②❸ will be scrutinised（将来时）；但 ②❷ has mended（已经改了）。",syn:"hollow promises · lip service",conf:"✍️ <code>Empty promises will not win public trust.</code>"},
+  resistance:{w:"resistance",ipa:"/rɪˈzɪstəns/",pos:"n.",tags:["core"],cn:"<b>抵制、反抗</b>",en:"dislike of or opposition to a plan, an idea, etc.; refusal to accept something",ex:"tough <b>resistance</b>（32B）",mem:"⭐ 32B 与 mended its ways 正好相反：改正 vs 抵制。<br>▸ resist（抵抗）＋ -ance。",syn:"opposition · defiance",conf:"resistance to sth（对……的抵制）。"},
+  sincere:{w:"sincere",ipa:"/sɪnˈsɪə(r)/",pos:"adj.",tags:["core","write"],cn:"<b>真诚的、诚恳的</b>",en:"showing what you really think or feel",ex:"<b>sincere</b> apologies（32C）",mem:"⭐⭐⭐ 32C 双错：主体（道歉的是 DeepMind）＋ 刻度（almost apologised → sincere apologies）（R176）。",syn:"genuine · heartfelt · honest",conf:"Yours sincerely（书信结尾）。"},
+  adjustment:{w:"adjustment",ipa:"/əˈdʒʌstmənt/",pos:"n.",tags:["core","write"],cn:"<b>调整、改动</b>",en:"a small change made to something in order to correct or improve it",ex:"necessary <b>adjustments</b>（32D）",mem:"⭐⭐⭐ 32D 正解：mended its ways ＋ 审查、征得许可、清除数据 ＝ necessary adjustments。",syn:"change · modification · correction",conf:"make adjustments to（对……做调整）。"},
+  secure:{w:"secure",ipa:"/sɪˈkjʊə(r)/",pos:"v.",tags:["core","poly"],cn:"<b>确保、获得</b>（v.）；安全的（adj.）",en:"to make something safe; to obtain or achieve something",ex:"privacy protection must be <b>secured</b> at all costs（33A）",mem:"⭐⭐ 熟词僻义：动词 secure ＝ 确保、争取到。33A 与 ②❺ not even the most important 正面相撞。",syn:"ensure · guarantee · obtain",conf:"secure（v. 确保）· security（n. 安全）。"},
+  atallcosts:{w:"at all costs",ipa:"/ət ɔːl kɒsts/",pos:"phr.",tags:["phrase","write"],cn:"<b>不惜一切代价</b>",en:"whatever is needed to achieve something",ex:"must be secured <b>at all costs</b>（33A）",mem:"⭐⭐⭐ 绝对化词——作者刚把隐私降到「连最重要都不是」，选项却拔到顶（R240）。",syn:"no matter what · whatever it takes",conf:"at all costs（不惜代价）· at the cost of（以……为代价）。"},
+  profit:{w:"make profits from",ipa:"/ˈprɒfɪt/",pos:"phr.",tags:["phrase","core"],cn:"<b>从……中牟利</b>",en:"to earn money from something",ex:"making <b>profits</b> from patients’ data is illegal（33C）",mem:"⭐⭐ 33C 从 ③❶ benefit from 借来——但作者问的是谁「该」受益（价值判断），没说「牟利违法」。",syn:"profit from · earn from",conf:"profit（利润）· prophet（先知）——同音。"},
+  illegal:{w:"illegal",ipa:"/ɪˈliːɡl/",pos:"adj.",tags:["core"],cn:"<b>违法的</b>",en:"not allowed by the law",ex:"making profits from patients’ data is <b>illegal</b>（33C）",mem:"⭐⭐ 「不合理」≠「违法」——作者恰恰在说现行法律管不到数据价值那一层。",syn:"unlawful · illicit",conf:"illegal（违法的）· illegible（难以辨认的）——形近。"},
+  leak:{w:"leak",ipa:"/liːk/",pos:"v.",tags:["core"],cn:"<b>泄露</b>（信息、数据）",en:"to give secret information to the public",ex:"<b>leaking</b> patients’ data is worse than selling it（33D）",mem:"⭐⭐ 33D：文中没有 selling；「交出数据更严重」若说是谁的判断，也是德纳姆按现行法律的，恰是作者要驳的那把尺（R240）。",syn:"disclose · reveal",conf:"leak（泄露）· leek（韭葱）——同音。"},
+  arisefrom:{w:"arise from",ipa:"/əˈraɪz frəm/",pos:"phr. v.",tags:["phrase"],cn:"<b>由……产生、引起</b>",en:"to happen as a result of a particular situation",ex:"the real worry <b>arising from</b> this deal（34 题干）",mem:"⭐ arise from ＝ result from；arising from this deal 作 worry 的后置定语。",syn:"result from · stem from · come from",conf:"arise（产生）· arouse（激起）· rise（上升）。"},
+  vicious:{w:"vicious",ipa:"/ˈvɪʃəs/",pos:"adj.",tags:["core"],cn:"<b>恶性的、恶毒的</b>",en:"violent and cruel; having the intention of hurting somebody",ex:"the <b>vicious</b> rivalry among big pharmas（34B）",mem:"⭐ vicious circle（恶性循环）是高频搭配。34B 的「恶性竞争」文中根本没有。",syn:"fierce · cruel · savage",conf:"vicious（恶性的）· virtuous（有德的）——vicious circle vs virtuous circle。"},
+  rivalry:{w:"rivalry",ipa:"/ˈraɪvlri/",pos:"n.",tags:["core"],cn:"<b>竞争、敌对</b>",en:"a state in which two people, companies, etc. are competing for the same thing",ex:"the vicious <b>rivalry</b> among big pharmas（34B）",mem:"⭐⭐ 34B 例子当主旨：big pharma 是类比的喻体，类比的相同点是「垄断」，不是「竞争」——两者恰好相反。",syn:"competition · contest",conf:"rival（对手）· rivalry（竞争）· arrival（到达）。"},
+  uncontrolled:{w:"uncontrolled",ipa:"/ˌʌnkənˈtrəʊld/",pos:"adj.",tags:["core"],cn:"<b>不受控制的、失控的</b>",en:"that is not controlled or limited",ex:"the <b>uncontrolled</b> use of new software（34C）",mem:"⭐⭐ 34C 偷换属性：作者担心软件「归谁所有」，选项换成「被滥用」。",syn:"unchecked · unrestrained",conf:"uncontrolled（失控的）· controlled（②❻ 法律术语「控制」）。"},
+  enforcement:{w:"enforcement",ipa:"/ɪnˈfɔːsmənt/",pos:"n.",tags:["core"],cn:"<b>（法律的）执行、实施</b>",en:"the act of making sure that people obey a particular law or rule",ex:"the ineffective <b>enforcement</b> of privacy law（34D）",mem:"⭐⭐⭐ 34D 偷换：作者说隐私法用错了地方（maladapted），不是执行不力（ineffective enforcement）（R240）。<br>▸ enforce（强制执行）＋ -ment。",syn:"implementation · application",conf:"law enforcement（执法）· reinforcement（加强）。"},
+  ambiguous:{w:"ambiguous",ipa:"/æmˈbɪɡjuəs/",pos:"adj.",tags:["core","poly"],cn:"<b>（态度）模棱两可的、含糊的</b>",en:"not clearly stated or defined; that can be understood in more than one way",ex:"<b>ambiguous</b>（35A）",mem:"⭐⭐⭐ ambi-（两边）⟹ 两边都可以。态度题里：两头都说 ＋ 有行动方向 ＝ 谨慎；两头都说 ＋ 没方向才是含糊。<br>▸ 全站九道态度题，中性／无态度类选项 0 次正确（R72）。",syn:"equivocal · unclear · uncertain",conf:"ambiguous（模棱两可）· ambitious（有雄心的）——形近。"},
+  appreciative:{w:"appreciative",ipa:"/əˈpriːʃətɪv/",pos:"adj.",tags:["core","poly"],cn:"<b>赞赏的</b>；感激的",en:"feeling or showing that you are grateful for something or admire it",ex:"<b>appreciative</b>（35B）",mem:"⭐⭐ 35B：作者 welcome 的是德纳姆的报告，不是 AI 医疗（R221）。<br>▸ appreciate（欣赏、感激）＋ -ive。",syn:"approving · admiring",conf:"appreciative of（对……赞赏的）· appreciable（可观的）。"},
+  cautious:{w:"cautious",ipa:"/ˈkɔːʃəs/",pos:"adj.",tags:["core","write"],cn:"<b>谨慎的、小心的</b>",en:"being careful about what you say or do, especially to avoid danger or mistakes",ex:"<b>cautious</b>（35C）",mem:"⭐⭐⭐ 35C 正解：承认潜力（①❸）＋ 警惕垄断（④❹–❼）＋ 小选择大后果（④❻）。<br>▸ 全站「谨慎／犹豫」类选项出现 3 次，只有本题是对的。",syn:"careful · wary · prudent",conf:"caution（n. 谨慎；警告）· cautious（adj.）。"},
+  contemptuous:{w:"contemptuous",ipa:"/kənˈtemptʃuəs/",pos:"adj.",tags:["core"],cn:"<b>蔑视的、看不起的</b>",en:"feeling or showing that you have no respect for somebody or something",ex:"<b>contemptuous</b>（35D）",mem:"⭐⭐ contempt（蔑视）＋ -uous。态度题里的极端档，全站出现 2 次（2014 T4、2018 T3），都是干扰项。<br>▸ 作者承认潜力 very great，反对的是 digital feudalism，不是 AI 医疗。",syn:"scornful · disdainful",conf:"contemptuous（蔑视的）· contemptible（可鄙的）——一个是态度，一个是被评价。"}
+};
+const panel=document.getElementById('panel');
+const isMobile=()=>window.innerWidth<=900;
+function badge(t){const m={core:'核心',phrase:'短语',poly:'僻义',write:'写作'};return `<span class="badge b-${t}">${m[t]}</span>`}
+function showCard(k,el){
+  const d=V[k];if(!d)return;
+  document.querySelectorAll('.tk.active').forEach(x=>x.classList.remove('active'));
+  if(el)el.classList.add('active');
+  panel.innerHTML=`<button class="close" onclick="document.getElementById('panel').classList.remove('open')">收起</button>
+    <div class="wcard">
+      <div class="head"><span class="w">${d.w}</span><span class="ipa">${d.ipa}</span><span class="pos">${d.pos}</span>${d.tags.map(badge).join('')}</div>
+      <div class="cn">${d.cn}</div><div class="en-def">${d.en}</div>
+      <div class="row r-ex"><b>原文</b>${d.ex}</div>
+      <div class="row r-mem"><b>怎么记 / 考点</b>${d.mem}</div>
+      <div class="row r-syn"><b>同义 / 同族</b>${d.syn}</div>
+      <div class="row r-conf"><b>易混 / 提醒</b>${d.conf}</div>
+    </div>`;
+  if(isMobile())panel.classList.add('open');
+}
+document.querySelectorAll('.tk').forEach(t=>t.addEventListener('click',e=>{e.stopPropagation();showCard(t.dataset.w,t)}));
+
+function tz(btn){btn.closest('.para').classList.toggle('showzh')}
+let allOn=false;
+function toggleAll(){allOn=!allOn;document.querySelectorAll('.para').forEach(p=>p.classList.toggle('showzh',allOn))}
+function go(id){const s=document.getElementById(id);if(!s)return;s.scrollIntoView({behavior:'smooth',block:'center'});s.style.transition='none';s.style.opacity=.3;setTimeout(()=>{s.style.transition='opacity .8s';s.style.opacity=1},80)}
+
+document.querySelectorAll('.q').forEach(q=>{
+  const ans=+q.dataset.ans;
+  q.querySelectorAll('.opt').forEach((o,i)=>o.addEventListener('click',()=>{
+    if(q.classList.contains('done'))return;
+    q.classList.add('done');
+    if(i!==ans)o.classList.add('wrong');
+    q.querySelectorAll('.opt')[ans].classList.add('right');
+  }));
+});
+
+const vg=document.getElementById('vgrid');
+function renderGrid(f){
+  vg.innerHTML='';
+  Object.keys(V).forEach(k=>{
+    const d=V[k];
+    if(f!=='all'&&!d.tags.includes(f))return;
+    const div=document.createElement('div');div.className='vitem';
+    div.innerHTML=`<span class="badges">${d.tags.map(badge).join('')}</span><div class="w">${d.w}</div><div class="cn">${d.cn}</div>`;
+    div.addEventListener('click',()=>{showCard(k,null);if(!isMobile())window.scrollTo({top:0,behavior:'smooth'})});
+    vg.appendChild(div);
+  });
+}
+renderGrid('all');
+document.querySelectorAll('.fbtn').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.fbtn').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderGrid(b.dataset.f);
+}));
+
+const yd=document.getElementById('yd');let sel='';
+document.addEventListener('selectionchange',()=>{
+  const s=window.getSelection();const t=s?s.toString().trim():'';
+  if(t&&/^[a-zA-Z' -]{2,40}$/.test(t)){
+    sel=t;
+    try{const r=s.getRangeAt(0).getBoundingClientRect();
+      yd.style.left=Math.min(r.left,window.innerWidth-110)+'px';
+      yd.style.top=(r.bottom+8)+'px';yd.style.display='block';}catch(e){}
+  }else{yd.style.display='none'}
+});
+yd.addEventListener('click',()=>{window.open('https://dict.youdao.com/result?word='+encodeURIComponent(sel)+'&lang=en');yd.style.display='none'});
+document.addEventListener('click',e=>{if(e.target!==yd&&!window.getSelection().toString())yd.style.display='none'});
+</script>
+<script src="_fault_attr.js"></script>
+</body>
+</html>
