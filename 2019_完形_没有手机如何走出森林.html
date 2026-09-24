@@ -1,0 +1,1272 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2019 英一 完形 · 没有手机如何走出森林</title>
+<style>
+  :root{
+    --bg:#faf9f6; --card:#ffffff; --ink:#2b2b2b; --muted:#8a8578;
+    --accent:#8b5e34; --accent-soft:#f3e9dd; --line:#e8e3d8;
+    --hl:#fdf3d8; --hl-border:#e0b84d;
+    --green:#3e7a4e; --green-soft:#e8f2ea;
+    --red:#b04a3a; --red-soft:#f9e9e6;
+    --blue:#3d6a8a; --blue-soft:#e7eff5;
+    --purple:#6d5a8e; --purple-soft:#eeeaf5;
+    --serif:"Georgia","Songti SC",serif;
+    --sans:-apple-system,"PingFang SC","Helvetica Neue",sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#1c1a17; --card:#26231f; --ink:#e8e4dc; --muted:#9a948a;
+      --accent:#d0a06a; --accent-soft:#3a3127; --line:#3a362f;
+      --hl:#3d3520; --hl-border:#b08c3a;
+      --green:#7fb98d; --green-soft:#26362b;
+      --red:#d98876; --red-soft:#3d2a26;
+      --blue:#8ab3d0; --blue-soft:#26323d;
+      --purple:#a996c8; --purple-soft:#302a3d;
+    }
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;padding-bottom:120px}
+  .wrap{max-width:1100px;margin:0 auto;padding:24px 20px}
+  .back{font-size:.85rem;color:var(--muted);text-decoration:none}
+  .back:hover{color:var(--accent)}
+  header{margin:14px 0 28px}
+  header h1{font-family:var(--serif);font-size:1.7rem;line-height:1.3}
+  header .sub{color:var(--muted);margin-top:6px;font-size:.9rem}
+  .tags{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+  .tag{font-size:.75rem;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);border:1px solid var(--line)}
+  .tag.spoiler{cursor:pointer;background:var(--card);color:var(--muted)}
+  .tag.spoiler .hid{filter:blur(5px)}
+  .tag.spoiler.open .hid{filter:none;color:var(--accent)}
+
+  .layout{display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:start}
+  @media (max-width:900px){.layout{grid-template-columns:1fr}}
+
+  section.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:24px}
+  h2{font-size:1.05rem;letter-spacing:.05em;color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  h2 .n{font-size:.72rem;background:var(--accent);color:var(--card);border-radius:6px;padding:1px 7px}
+  .note{font-size:.82rem;color:var(--muted);margin-bottom:14px}
+
+  .para{margin-bottom:22px}
+  .para .en{font-family:var(--serif);font-size:1.06rem;line-height:2.15}
+  .pno{color:var(--muted);font-size:.75rem;user-select:none;margin-right:6px}
+  .tk{background:var(--hl);border-bottom:2px solid var(--hl-border);border-radius:3px;padding:0 2px;cursor:pointer;transition:filter .15s}
+  .tk:hover{filter:brightness(.93)}
+  .tk.active{outline:2px solid var(--hl-border)}
+  .ls{border-bottom:2px dotted var(--blue);cursor:pointer}
+  .para .zh{display:none;margin-top:10px;padding:10px 14px;background:var(--blue-soft);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:.93rem}
+  .para.showzh .zh{display:block}
+  .zbtn{float:right;margin-left:10px;font-size:.72rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:6px;padding:2px 9px;cursor:pointer}
+  .zbtn:hover{color:var(--accent);border-color:var(--accent)}
+  .allbtn{font-size:.78rem;border:1px solid var(--accent);background:none;color:var(--accent);border-radius:8px;padding:4px 12px;cursor:pointer}
+
+  /* 完形空格 */
+  .bk{display:inline-block;min-width:64px;text-align:center;background:var(--hl);border-bottom:2px solid var(--hl-border);border-radius:4px;padding:0 6px;cursor:pointer;font-weight:600;color:var(--accent);transition:all .15s;font-family:var(--sans);font-size:.95rem}
+  .bk:hover{filter:brightness(.93)}
+  .bk.filled{background:var(--green-soft);border-bottom-color:var(--green);color:var(--green);font-family:var(--serif)}
+  .bk.miss{background:var(--red-soft);border-bottom-color:var(--red);color:var(--red);font-family:var(--serif)}
+  .bk.active{outline:2px solid var(--hl-border)}
+  .bk .idx{font-size:.7rem;color:var(--muted);margin-right:3px}
+
+  aside{position:sticky;top:20px}
+  #panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;min-height:180px}
+  #panel .hint{color:var(--muted);font-size:.88rem;text-align:center;padding:30px 10px}
+  .wcard .head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .wcard .w{font-family:var(--serif);font-size:1.35rem;font-weight:bold}
+  .wcard .ipa{color:var(--muted);font-size:.85rem}
+  .wcard .pos{font-size:.72rem;color:var(--purple);background:var(--purple-soft);padding:1px 8px;border-radius:999px}
+  .wcard .badge{font-size:.7rem;padding:1px 8px;border-radius:999px}
+  .b-core{background:var(--red-soft);color:var(--red)}
+  .b-phrase{background:var(--blue-soft);color:var(--blue)}
+  .b-poly{background:var(--purple-soft);color:var(--purple)}
+  .b-write{background:var(--green-soft);color:var(--green)}
+  .wcard .cn{margin-top:8px;font-size:1rem;font-weight:600}
+  .wcard .en-def{color:var(--muted);font-size:.86rem;font-style:italic;margin-top:2px}
+  .wcard .row{margin-top:10px;font-size:.86rem;padding:8px 10px;border-radius:8px}
+  .wcard .row>b:first-child{font-size:.72rem;display:block;margin-bottom:2px;letter-spacing:.06em}
+  .r-ex{background:var(--hl)} .r-ex b{color:var(--hl-border)}
+  .r-mem{background:var(--green-soft)} .r-mem b{color:var(--green)}
+  .r-syn{background:var(--blue-soft)} .r-syn b{color:var(--blue)}
+  .r-conf{background:var(--red-soft)} .r-conf b{color:var(--red)}
+  #panel .close{display:none}
+  @media (max-width:900px){
+    aside{position:fixed;left:0;right:0;bottom:0;z-index:50;padding:0 8px 8px}
+    #panel{box-shadow:0 -6px 24px rgba(0,0,0,.18);max-height:55vh;overflow-y:auto;display:none}
+    #panel.open{display:block}
+    #panel .close{display:block;float:right;border:none;background:var(--line);border-radius:8px;padding:2px 10px;cursor:pointer;color:var(--ink)}
+  }
+
+  /* 逐空精解 */
+  .q{margin-bottom:22px;padding-bottom:18px;border-bottom:1px dashed var(--line);scroll-margin-top:20px}
+  .q:last-child{border:none;margin-bottom:0;padding-bottom:0}
+  .q .stem{font-family:var(--serif);font-size:.98rem;background:var(--hl);border-radius:8px;padding:8px 12px;display:block}
+  .q .stem em{font-style:normal;font-weight:700;color:var(--accent);border-bottom:2px solid var(--hl-border);padding:0 4px}
+  .qhead{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+  .qno{font-family:var(--serif);font-size:1.2rem;font-weight:700;color:var(--accent)}
+  .qt{font-size:.7rem;border-radius:999px;padding:1px 9px}
+  .c-logic{background:var(--blue-soft);color:var(--blue)}
+  .c-collo{background:var(--green-soft);color:var(--green)}
+  .c-word{background:var(--red-soft);color:var(--red)}
+  .c-context{background:var(--purple-soft);color:var(--purple)}
+  .qpos{font-size:.7rem;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:1px 9px}
+  .opts{margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  @media (max-width:640px){.opts{grid-template-columns:1fr}}
+  .opt{border:1px solid var(--line);border-radius:10px;padding:7px 12px;cursor:pointer;font-size:.92rem;font-family:var(--serif);transition:all .15s}
+  .opt .gl{font-family:var(--sans);font-size:.8rem;color:var(--muted);margin-left:6px}
+  .opt:hover{border-color:var(--accent)}
+  .q.done .opt{cursor:default}
+  .opt.right{background:var(--green-soft);border-color:var(--green)}
+  .opt.wrong{background:var(--red-soft);border-color:var(--red)}
+  .expl{display:none;margin-top:12px;background:var(--accent-soft);border-radius:10px;padding:12px 14px;font-size:.9rem}
+  .q.done .expl{display:block}
+  .expl b{color:var(--accent)}
+  .expl .lbl{font-size:.74rem;letter-spacing:.06em;color:var(--muted);display:block;margin:10px 0 2px}
+  .expl .lbl:first-child{margin-top:0}
+  .expl code{font-family:var(--serif);background:var(--hl);border-radius:4px;padding:1px 5px}
+  .wrongs{margin-top:6px;display:grid;gap:5px}
+  .wr{font-size:.86rem;background:var(--card);border-radius:8px;padding:6px 10px;border-left:3px solid var(--red)}
+  .wr .l{font-family:var(--serif);font-weight:700;color:var(--red);margin-right:5px}
+
+  /* 计分条 */
+  .score{display:flex;gap:14px;flex-wrap:wrap;align-items:center;background:var(--hl);border-radius:12px;padding:10px 16px;margin-bottom:18px;font-size:.88rem}
+  .score .v{font-family:var(--serif);font-size:1.25rem;font-weight:700;color:var(--accent);margin-right:4px}
+  .score .rst{margin-left:auto;font-size:.78rem;border:1px solid var(--line);background:var(--card);color:var(--muted);border-radius:8px;padding:3px 10px;cursor:pointer}
+
+  /* 考点统计 */
+  .catbar{display:flex;height:26px;border-radius:8px;overflow:hidden;margin:10px 0 16px;border:1px solid var(--line)}
+  .catseg{display:flex;align-items:center;justify-content:center;font-size:.72rem;color:#fff;font-weight:600}
+  .catlegend{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px}
+  .cl{display:flex;gap:8px;align-items:center;font-size:.85rem;cursor:pointer;padding:6px 8px;border-radius:8px;border:1px solid var(--line)}
+  .cl:hover{border-color:var(--accent)}
+  .dot{width:12px;height:12px;border-radius:3px;flex:0 0 12px}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+  .chip{font-size:.78rem;background:var(--accent-soft);color:var(--accent);border-radius:6px;padding:2px 8px;cursor:pointer}
+  .chip:hover{filter:brightness(.94)}
+
+  /* 打法 / 搭配 */
+  .flow{display:grid;gap:10px;font-size:.92rem}
+  .flow .fi{border:1px solid var(--line);border-radius:10px;padding:10px 14px}
+  .flow .fi b{color:var(--accent)}
+  .flow .fi .ev{display:block;margin-top:4px;font-size:.85rem;color:var(--muted);border-left:3px solid var(--hl-border);padding-left:9px}
+  .wb{display:grid;gap:10px}
+  .wbi{border-left:3px solid var(--green);background:var(--green-soft);border-radius:0 10px 10px 0;padding:10px 14px;font-size:.92rem}
+  .wbi .p{font-family:var(--serif);font-weight:600}
+  .wbi .u{color:var(--muted);font-size:.85rem}
+
+  /* 长难句 */
+  .sent{margin-bottom:20px}
+  .sent .src{font-family:var(--serif);font-size:1rem;background:var(--blue-soft);padding:12px 14px;border-radius:10px;border-left:3px solid var(--blue)}
+  .sent .anat{margin-top:8px;font-size:.9rem}
+  .sent .anat li{margin:4px 0 4px 18px}
+  .sent .tr{margin-top:8px;font-size:.92rem;color:var(--muted)}
+  .skel{color:var(--red);font-weight:600}
+
+  /* 80词表 */
+  .otab{width:100%;border-collapse:collapse;font-size:.86rem}
+  .otab th,.otab td{border:1px solid var(--line);padding:5px 8px;vertical-align:top}
+  .otab th{background:var(--accent-soft);color:var(--accent);font-size:.78rem}
+  .otab td.n{text-align:center;font-family:var(--serif);color:var(--muted);width:38px}
+  .otab .ow{font-family:var(--serif)}
+  .otab .oc{color:var(--muted);font-size:.82rem;display:block}
+  .otab td.hit{background:var(--green-soft)}
+  .otab td.hit .ow{color:var(--green);font-weight:700}
+  .hidecn .oc{filter:blur(4px);cursor:pointer}
+  .hidecn .oc.show{filter:none}
+  .tabwrap{overflow-x:auto}
+
+  #yd{position:fixed;z-index:60;display:none;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:4px 12px;font-size:.8rem;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+  .fail{background:var(--red-soft);border:1px solid var(--red);border-radius:10px;padding:10px 13px;margin-bottom:10px;font-size:.89rem;line-height:1.75}
+  .fail b{color:var(--red)}
+  .expl .fail{margin-top:0}
+  footer{color:var(--muted);font-size:.8rem;text-align:center;margin-top:30px}
+  /* 修：.layout 是 grid，grid 项默认 min-width:auto ⟹ 06 的 80 词表（min-content 425px）会把整个左栏撑到 475px，
+     窄屏下页面 scrollWidth 超出视口（2007–2009 三篇完形页同源、同病）。min-width:0 后 .tabwrap 才真正接管横滚。 */
+  main,aside{min-width:0}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">◀ 返回英语复盘中心</a>
+  <header>
+    <h1>没有手机，如何走出森林：首段一句 a few tricks 就是目录——四招各占一段，段首空是编号，内容空全往「人迹」那头指</h1>
+    <div class="sub">2019 年英语（一）真题 · Section I 完形填空（Use of English）· 黄皮书标 288 词（脚本按答案回填后数得 279 词）· 5 段 15 句 · 建议 15 min · 话题：户外实用指南（how-to）（源自 <i>Popular Science</i>《大众科学》网站 2018-06-30 「DIY · Life Skills」栏目 Dan Seitz 的文章 <i>How to find your way out of the woods without tools—or your phone</i>「如何不靠工具——也不靠手机——走出森林」，副标题 <i>Navigate back to civilization.</i>；考卷只取了原刊的引言与第一节 <i>Follow the land</i>）</div>
+    <div class="tags">
+      <span class="tag spoiler" onclick="this.classList.toggle('open')">🙈 答案（点击显示）：<span class="hid">1A 2C 3D 4B 5C 6D 7B 8A 9C 10B 11C 12D 13B 14A 15D 16B 17C 18A 19D 20A</span></span>
+      <span class="tag">难度：中等偏易（话题生活化、句子短、20 个答案词全是原刊原词；<b>坎在三处</b>——7 题 unfamiliar／uncrowded、13 题 For example／Above all、18 题 Finally／Generally，<b>三处都是「清单结构」没看清</b>：每招的情形互不重叠、一招里的例子不是「最重要的一项」、有自己情形的末段是又一招而不是总结）</span>
+      <span class="tag">✅ <b>盲做口径：完整盲做 20/20</b>（盲做答案 13:02 先落盘，再只裁答案页 Section I 那四行核对）。做 2019 T1–T4 四轮时，精讲 p17–p30 一页没看、答案条只裁过 Text 那几行，本篇没有任何提前入眼。标过三处犹豫：7（unfamiliar／uncrowded）· 13（For example／Above all）· 18（Finally／Generally），全对。落盘时照实写了一句：这套卷子名气大，对答案有模糊印象——作答只按文内推理，13、18 两题推理结论与那点模糊印象相反，结果推理是对的</span>
+      <span class="tag">⭐ 本页最值钱的两段：<b>02+ 四招清单</b>（首段 a few tricks, one of which … 就是目录，Another ___、___ 两个段首空是编号；我犹豫的三题全在这张表上）与 <b>02+++ 原刊 vs 考卷</b>（20 个答案词全是原词；<b>命题人删掉了两处会泄底的复现</b>：首段的 off-trail、③段的 spotting）</span>
+    </div>
+  </header>
+
+  <div class="layout">
+    <main>
+      <!-- ========== 00 脉络 ========== -->
+      <section class="card">
+        <h2><span class="n">00</span>读前一分钟 · 全文脉络（完形先读首句，再看结构）</h2>
+        <p class="note">完形的<b>首句从不设空</b>。本篇首句：<i>Today, we live in a world where GPS systems, digital maps, and other navigation apps are all available on our smartphones.</i>——给了三样东西：<b>话题</b>（导航、手机）、<b>方向</b>（「如今人人手机在手」是个铺垫——紧接着就要说「可手机会没电」）、<b>关键词</b>（<code>navigation</code>——首段末句 <code>navigate back to civilization</code> 回扣它，全文就是在教你「没有导航怎么导航」）。</p>
+        <p class="note" style="margin-top:10px">⭐⭐ <b>首段末句就是全文目录</b>：<code>a few tricks may help you navigate back to civilization, one of which is to follow the land</code>——<b>「有几招」</b>。后面四段<b>一段一招</b>，每招都按同一个模子写：<b>先给情形</b>（When you find yourself … ／ If you’ve explored … ／ assuming you’re lost in …）、<b>再给做法</b>（祈使句）、<b>最后给结果</b>（you should eventually see … ／ can restore your bearings ／ to find a way out ／ can lead you to civilization）。<b>两个段首空 12 和 18，就是清单的编号</b>（⟹ <a href="#list" style="color:var(--accent)">02+ 四招清单</a>）。另外，<b>四招要找的都是同一样东西——人留下的痕迹</b>，三个名词、形容词空挂在这条线上（⟹ <a href="#trace" style="color:var(--accent)">02++ 人迹替身链</a>）。</p>
+        <p class="note" style="margin-top:10px">📰 <b>本站已复盘的十四篇完形里，第一篇「实用指南」</b>——此前是历史（2007）、进化与智力（2008、2009）、心理与行为研究报道（2010、2011、2013、2015、2017、2018）、司法伦理（2012）、脑科学科普推介（2014）、民俗说明（2016）、植物科学（2022）。指南文<b>没有论点、没有对手、没有实验</b>，所以没有「翻账」（2018）也没有「因果箭头」（2011）——<b>逻辑空只考两件事：这是第几招、这句和上句是什么关系（假设／推论／举例）</b>。《大众科学》第一次进站。</p>
+        <div class="flow">
+          <div class="fi"><b>① 段一 · 引子 ＋ 目录：手机会没电——几招帮你回到人烟处</b>——如今导航都在手机上，<b>很少有</b>人不带手机就进林子。可手机<b>靠</b>电池<b>运转</b>，电池没电比想象的快。<b>如果</b>没带手机和指南针迷了路、<b>真的</b>找不着北，有几招能帮你<b>回到</b>人烟处，其中一招是顺着地势走。
+            <span class="ev">1–5 空。❷ 句 1 Few 把常识钉死（没人不带手机），❸ 句 But 才翻得过来（带了也会没电）（⟹ <a href="#s2" style="color:var(--accent)">长难句 2</a>）；❹ 句是<b>全文目录</b>：3 If 设情形、4 literally 把「找不着北」掰回字面、5 back 定方向——<b>目的地 civilization 在末句 20 题再出现一次</b>（⟹ <a href="#s3" style="color:var(--accent)">长难句 3</a>）。</span></div>
+          <div class="fi"><b>② 段二 · 第一招：顺着地势走——朝下坡、跟着水</b>——<b>偏离</b>了小路、但又不是完全<b>陌生</b>的地方时，先回答两个问题：<b>哪边</b>是下坡？最近的水在哪？人大多住在山谷、靠淡水生活。<b>所以</b>朝下坡走、跟着水走，<b>终究</b>会看到人迹。
+            <span class="ev">6–10 空，五个空。❶ 句情形：6 off 重申首段 get lost、7 unfamiliar 给它打折（but not completely）；两个问题 8 way；❷❸ 句「事实 → 行动」：9 So 把 valleys ↔ downhill、fresh water ↔ H<sub>2</sub>O 一一配对，10 eventually 是 should 的预期（⟹ <a href="#s4" style="color:var(--accent)">长难句 4</a>、<a href="#s5" style="color:var(--accent)">5</a>）。</span></div>
+          <div class="fi"><b>③ 段三 · 第二招：来过这里就认熟悉的景物</b>——以前来过这一带，就留意眼熟的景物——认出一块特别的石头或一棵树，能多快让你找回方向，你会<b>吃惊</b>。
+            <span class="ev">只有 11 一个空：<code>you may be ___ how quickly …</code>——how quickly 是感叹，restore your bearings 是好事 ⟹ surprised（⟹ <a href="#s6" style="color:var(--accent)">长难句 6</a>）。⚠️ 原刊这里写的是 <i>spotting</i> a distinctive rock，<b>考卷改成了 identifying</b>——因为下一段 14 题的答案就是 spot（⟹ <a href="#orig" style="color:var(--accent)">02+++</a>）。</span></div>
+          <div class="fi"><b>④ 段四 · 第三招：登高找人迹——白天看林子的缺口，夜里看人造的光</b>——另一个<b>办法</b>：爬高，找人类居住的迹象。<b>比如</b>，即使林子再密，也能<b>看出</b>林木线上的缺口——人们<b>穿</b>林修的公路、铁轨、小路造成的。朝这些<b>缺口</b>走。夜里就找<b>人造</b>光源——火堆、路灯——朝光污染的亮处走。
+            <span class="ev">12–17 空，<b>六个空，本篇最多</b>。12 option 是<b>第一个编号空</b>（Another ＋ 目录名词 tricks 的替身）；13 For example 把「人迹」落到一个实例上；14 spot · 15 through · 16 breaks（these 回指 gaps）· 17 artificial（such as fires and streetlights）——<b>四个空全是「人迹」的一环</b>（⟹ <a href="#s7" style="color:var(--accent)">长难句 7</a>、<a href="#s8" style="color:var(--accent)">8</a>）。</span></div>
+          <div class="fi"><b>⑤ 段五 · 第四招：在人常去的地方，就找人留下的痕迹</b>——<b>最后</b>，假如是在人常来的地方迷了路，就找我们在地面上留下的<b>痕迹</b>：树上的路标刻痕、车辙之类，能<b>把</b>你<b>带</b>回人烟处。
+            <span class="ev">18–20 空。18 Finally 是<b>第二个编号空</b>——本段有自己的情形（assuming …），是又一招，不是总结；19 marks 概括下一句的 trail blazes、tire tracks；20 lead 与首段 navigate back to civilization <b>首尾扣环</b>（⟹ <a href="#s9" style="color:var(--accent)">长难句 9</a>）。⚠️ <b>全文没有结论段</b>——第四招一讲完就收尾（原刊后面还有三节，考卷没取）。</span></div>
+        </div>
+        <p class="note" style="margin-top:14px">📌 <b>第二条强线索：四招的「情形」互不重叠</b>——② 离了路但不算完全陌生 · ③ 以前来过 · ⑤ 人常来的地方 · ④ 登高没有前提（哪儿都能用）。<b>清单体里同一个情形不会给两招</b>——这条直接定了 7 题（若填 uncrowded「不算荒无人烟」，② 段就和 ⑤ 段的「人常来的地方」撞车）。</p>
+        <p class="note" id="bg">🎭 <b>读前背景（不影响做题，但读懂了心里有底）</b>：</p>
+        <div class="tabwrap"><table class="otab">
+          <tr><th>文中说法</th><th>背景</th><th>管哪个空</th></tr>
+          <tr><td><span class="ow">Popular Science</span></td><td>美国老牌科普杂志（1872 年创刊），现以网站为主；本文在「DIY · Life Skills」（生活技能）栏目，作者 Dan Seitz，2018-06-30 发布。口吻是<b>面向普通读者的操作指南</b>：短句、祈使句、第二人称 you，还带点俏皮（把水写成 H<sub>2</sub>O）</td><td>全篇文体</td></tr>
+          <tr><td><span class="ow">Navigate back to civilization.</span></td><td><b>原刊的副标题</b>。civilization 在户外文章里是熟词僻义：不是「文明」，是<b>有人烟、有路、有商店的地方</b>（back to civilization＝回到人间）</td><td>5 back · 20 lead</td></tr>
+          <tr><td><span class="ow">原刊四节</span></td><td>引言之后分四个小标题：<i>Follow the land</i>（顺着地势走）· <i>Consult the sun</i>（看太阳）· <i>Read the night sky</i>（看星月）· <i>Non-digital tools</i>（带点非电子工具）。<b>考卷只取了引言和第一节</b>，并把小标题 Follow the land 并进首段末句：<i>one of which is to follow the land</i></td><td>12 · 18（四招都属第一节）</td></tr>
+          <tr><td><span class="ow">stay put</span></td><td>原刊引言后紧跟一段安全提醒（考卷整段删了）：<b>救援队最容易在你最后已知的位置找到你——除非遇到天灾之类的紧急情况，待在原地、别离开小路</b>；「为了这篇指南，姑且假设你已经离开了路」。原刊结尾再说一遍：带上指南针和信号镜，迷路时就能按规矩原地等待</td><td>（不管空；读懂作者真正的第一忠告）</td></tr>
+          <tr><td><span class="ow">trail · off a trail</span></td><td>trail＝林间小路、步道（hiking trail）。off-trail＝离开步道（进入无路的野地）。<b>原刊首段写的是 get lost off-trail</b>，考卷删掉了 off-trail（⟹ 02+++）</td><td>6 off</td></tr>
+          <tr><td><span class="ow">Humans overwhelmingly live in valleys</span></td><td>人类定居点多在河谷：地势平、有水、便于交通。所以野外求生里「顺水往下游走」是经典建议——水往低处流，河流通向村镇</td><td>8 way · 9 So · 10 eventually</td></tr>
+          <tr><td><span class="ow">restore your bearings</span></td><td>bearings（复数）＝方位感、对自己在哪的判断：get／find one’s bearings（弄清方位）、lose one’s bearings（迷失方向）。本是航海用语（方位角）</td><td>11 surprised</td></tr>
+          <tr><td><span class="ow">gaps in the tree line</span></td><td>从高处俯看森林，树冠连成一条「林线」；公路、铁路、输电线穿过林子要砍出通道，树冠上就留下一道豁口。原刊还列了 power cables（输电线），考卷删了</td><td>13 · 14 spot · 15 through · 16 breaks</td></tr>
+          <tr><td><span class="ow">light pollution</span></td><td>光污染：城镇灯光把夜空照亮，远处看是地平线上的一团亮光（glow）。在野外它反倒是路标——<b>哪里亮，哪里就有人</b></td><td>17 artificial</td></tr>
+          <tr><td><span class="ow">trail blazes</span></td><td>blaze 熟词僻义：<b>在树干上刻的（或刷漆的）路标记号</b>，徒步步道每隔一段就有一个（「火焰」义是另一个词源）。tire tracks＝车辙</td><td>19 marks</td></tr>
+        </table></div>
+      </section>
+      <!-- ========== 01 正文 ========== -->
+      <section class="card">
+        <h2><span class="n">01</span>完形正文（20 空 · 点空格跳到该题）
+          <button class="allbtn" onclick="toggleAll()" style="margin-left:auto">译文 开/关</button>
+          <button class="allbtn" onclick="revealAll()">显示全部答案</button>
+        </h2>
+        <p class="note">🟨 点<b>空格</b>＝跳到下面对应的解析卡（先自己选，再看解析）｜ 🟡 黄底词＝生词卡，点开看词根/辨析 ｜ 蓝色虚线＝长难句 ｜ 选中任意单词浮出「查有道」</p>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">①</span><span class="ls" onclick="go('s1')">Today, we live in a world where GPS systems, digital maps, and other <span class="tk" data-w="navigation">navigation</span> apps are all available on our smartphones.</span> <span class="ls" onclick="go('s2')"><span class="bk" data-n="1"><span class="idx">1</span>___</span> of us just <span class="tk" data-w="straight">walk straight into</span> the woods without a phone. But phones <span class="bk" data-n="2"><span class="idx">2</span>___</span> on batteries, and batteries can <span class="tk" data-w="die">die</span> faster than we realize.</span> <span class="ls" onclick="go('s3')"><span class="bk" data-n="3"><span class="idx">3</span>___</span> you get lost without a phone or a <span class="tk" data-w="compass">compass</span>, and you <span class="bk" data-n="4"><span class="idx">4</span>___</span> <span class="tk" data-w="findnorth">can’t find north</span>, a few <span class="tk" data-w="trick">tricks</span> may help you <span class="tk" data-w="navigate">navigate</span> <span class="bk" data-n="5"><span class="idx">5</span>___</span> to <span class="tk" data-w="civilization">civilization</span>, one of which is to <span class="tk" data-w="land">follow the land</span>.</span></p>
+          <div class="zh">如今，我们生活在这样一个世界：GPS 系统、电子地图和其他导航应用在智能手机上一应俱全。<b>很少有</b>人会不带手机就径直走进树林。可手机<b>靠</b>电池<b>运转</b>，而电池没电的速度可能比我们意识到的更快。<b>如果</b>你没带手机或指南针迷了路，而且<b>真的</b>找不着北了，有几招或许能帮你摸索着<b>回到</b>有人烟的地方，其中一招就是顺着地势走。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">②</span><span class="ls" onclick="go('s4')">When you find yourself <span class="bk" data-n="6"><span class="idx">6</span>___</span> a <span class="tk" data-w="trail">trail</span>, but not in a completely <span class="bk" data-n="7"><span class="idx">7</span>___</span> area of land, you have to answer two questions: Which <span class="bk" data-n="8"><span class="idx">8</span>___</span> is <span class="tk" data-w="downhill">downhill</span>, in this <span class="tk" data-w="particular">particular</span> area? And where is the nearest water <span class="tk" data-w="source">source</span>?</span> <span class="ls" onclick="go('s5')">Humans <span class="tk" data-w="overwhelmingly">overwhelmingly</span> live in <span class="tk" data-w="valley">valleys</span>, and on <span class="tk" data-w="supply">supplies of</span> fresh water. <span class="bk" data-n="9"><span class="idx">9</span>___</span>, if you <span class="tk" data-w="head">head</span> downhill, and follow any <span class="tk" data-w="h2o">H<sub>2</sub>O</span> you find, you should <span class="bk" data-n="10"><span class="idx">10</span>___</span> see <span class="tk" data-w="sign">signs</span> of people.</span></p>
+          <div class="zh">当你发现自己<b>偏离了</b>小路、却又不是身处一片完全<b>陌生</b>的地方时，你得回答两个问题：在这片区域，<b>哪边</b>是下坡？最近的水源又在哪里？人类绝大多数住在山谷里，并且依靠淡水生活。<b>所以</b>，如果你朝下坡走，并跟着你找到的任何一股水走，<b>最终</b>应该会看到人的踪迹。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">③</span><span class="ls" onclick="go('s6')">If you’ve <span class="tk" data-w="explore">explored</span> the area before, <span class="tk" data-w="keepeye">keep an eye out for</span> familiar <span class="tk" data-w="sight">sights</span>—you may be <span class="bk" data-n="11"><span class="idx">11</span>___</span> how quickly <span class="tk" data-w="identify">identifying</span> a <span class="tk" data-w="distinctive">distinctive</span> rock or tree can <span class="tk" data-w="restore">restore</span> your <span class="tk" data-w="bearings">bearings</span>.</span></p>
+          <div class="zh">如果你以前来过这一带，就留意那些眼熟的景物——认出一块与众不同的岩石或一棵树，能多快让你重新辨清方向，你可能会<b>感到惊讶</b>。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">④</span><span class="ls" onclick="go('s7')">Another <span class="bk" data-n="12"><span class="idx">12</span>___</span>: Climb high and look for signs of human <span class="tk" data-w="habitation">habitation</span>. <span class="bk" data-n="13"><span class="idx">13</span>___</span>, even in <span class="tk" data-w="dense">dense</span> forest, you should be able to <span class="bk" data-n="14"><span class="idx">14</span>___</span> gaps in the <span class="tk" data-w="treeline">tree line</span> due to roads, <span class="tk" data-w="track">train tracks</span>, and other paths people <span class="tk" data-w="carve">carve</span> <span class="bk" data-n="15"><span class="idx">15</span>___</span> the woods.</span> <span class="ls" onclick="go('s8')">Head toward these <span class="bk" data-n="16"><span class="idx">16</span>___</span> to find a way out. At night, <span class="tk" data-w="scan">scan</span> the <span class="tk" data-w="horizon">horizon</span> for <span class="bk" data-n="17"><span class="idx">17</span>___</span> light sources, such as fires and streetlights, then walk toward the <span class="tk" data-w="glow">glow</span> of <span class="tk" data-w="lightpollution">light pollution</span>.</span></p>
+          <div class="zh">还有一个<b>办法</b>：爬到高处，寻找人类居住的迹象。<b>比如</b>，即使在茂密的森林里，你也应该能<b>看出</b>林木线上的缺口——那是人们<b>穿</b>林开出的公路、铁轨和其他道路留下的。朝这些<b>缺口</b>走，就能找到出路。到了夜里，扫视地平线，寻找<b>人造</b>光源，比如火堆和路灯，然后朝着光污染的那片光亮走去。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">⑤</span><span class="ls" onclick="go('s9')"><span class="bk" data-n="18"><span class="idx">18</span>___</span>, <span class="tk" data-w="assuming">assuming</span> you’re lost in an area humans tend to <span class="tk" data-w="frequent">frequent</span>, look for the <span class="bk" data-n="19"><span class="idx">19</span>___</span> we leave on the <span class="tk" data-w="landscape">landscape</span>. Trail <span class="tk" data-w="blaze">blazes</span>, tire tracks, and other <span class="tk" data-w="feature">features</span> can <span class="bk" data-n="20"><span class="idx">20</span>___</span> you to civilization.</span></p>
+          <div class="zh"><b>最后</b>，假如你是在人类常去的地方迷了路，就寻找我们在地面上留下的<b>痕迹</b>。树干上的路标刻痕、车辙以及其他特征，都能<b>把</b>你<b>带</b>回有人烟的地方。</div>
+        </div>
+      </section>
+      <!-- ========== 02 逐空精解 ========== -->
+      <section class="card">
+        <h2><span class="n">02</span>逐空精解（点选项即判 · 再看解析）</h2>
+        <div class="score">
+          <span><span class="v" id="sDone">0</span>/20 已答</span>
+          <span><span class="v" id="sRight">0</span> 对</span>
+          <span>折合 <span class="v" id="sPt">0</span> 分 / 10</span>
+          <button class="rst" onclick="location.reload()">↺ 重做</button>
+        </div>
+        <p class="note">每空 0.5 分。<b>先在心里说出「这个空要填什么词性、什么方向」再点选项</b>。本篇难点在三件事：<b>① 这一段是清单的第几招</b>——段首空是编号，每招的情形互不重叠（7、12、13、18）；<b>② 全文在找什么</b>——四招找的都是人迹，名词、形容词空往「人留下的」那头填（16、17、19）；<b>③ 首尾扣环</b>——目的地 civilization 首段一次、末句一次（5、20）。另有<b>两道题四个选项接同一个小词</b>（2 全接 on · 20 全接 sb to），介词帮不上忙。</p>
+
+        <div class="q" id="q1" data-ans="0">
+          <div class="qhead"><span class="qno">1</span><span class="qt c-context">上下文语义 · Few of us just …：先把常识钉死，下句 But 才翻得过来</span><span class="qpos">___ of us just walk straight into the woods without a phone</span></div>
+          <span class="stem">Today, we live in a world where GPS systems, digital maps, and other navigation apps are all available on our smartphones. <em>1</em> of us just walk straight into the woods without a phone. But phones <em>2</em> on batteries …</span>
+          <div class="opts">
+            <div class="opt">A Few<span class="gl">很少的人；几乎没有人</span></div>
+            <div class="opt">B Most<span class="gl">大多数人</span></div>
+            <div class="opt">C Some<span class="gl">有些人</span></div>
+            <div class="opt">D All<span class="gl">所有人</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>代词，<code>___ of us</code> 作主语——它决定这句话是「有人这么干」还是「几乎没人这么干」。
+            <span class="lbl">🔗 线索</span>① <b>上句</b>：导航应用都在手机上 ⟹ 人人手机不离身；② <b>下句开头就是 But</b>：But phones run on batteries…——But 要能翻得过来，本句必须先把「大家都带手机」钉死，下句才转成「可带了也会没电」；③ <code>just walk straight into</code> 带着「就这么贸然走进去」的口气——作者不赞成的做法 ⟹ 这种人<b>很少</b>。
+            <span class="lbl">✅ A Few</span>＝几乎没有人。原刊原句：<i>Few of us just walk straight into the woods without a phone, a personal GPS, or another navigation tool.</i>（考卷删了后两样）。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>Most：「大多数人不带手机进林子」——与上句「导航都在手机上」相反；而且下句的 But 就无从翻起：大多数人本来就不带，何必提醒手机会没电？</div>
+              <div class="wr"><span class="l">C</span>Some：「有些人不带」只是一句中性的事实，没有否定力度——下句 But 要翻的是「几乎人人都带」这个安心感，Some 给不出来。</div>
+              <div class="wr"><span class="l">D</span>All：「所有人都不带手机进林子」——比 B 更离谱。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>句首空 ＋ 下一句以 But 开头 ⟹ 先读 But，倒推本句的方向</b>：But 后面是「坏消息」，本句就是「看起来没问题」。⭐ <b>三缺一</b>：Most／Some／All 都是肯定的量，Few 唯一带否定（⟹ <a href="套路库_阅读.html#R74" style="color:var(--accent)">R74</a>）。✍️ <i>Few of us can imagine a day without our phones.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q2" data-ans="2">
+          <div class="qhead"><span class="qno">2</span><span class="qt c-collo">固定搭配 · run on batteries＝靠电池运转（四个全接 on，介词失效）</span><span class="qpos">But phones ___ on batteries</span></div>
+          <span class="stem">But phones <em>2</em> on batteries, and batteries can die faster than we realize.</span>
+          <div class="opts">
+            <div class="opt">A put<span class="gl">放；put on 穿戴</span></div>
+            <div class="opt">B take<span class="gl">拿；take on 承担</span></div>
+            <div class="opt">C run<span class="gl">跑；run on 靠……运转</span></div>
+            <div class="opt">D come<span class="gl">来；come on 开启</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>谓语动词，主语 phones，后接 <code>on batteries</code>。
+            <span class="lbl">🔗 线索</span>① <b>四个动词都能和 on 组词</b>（put on／take on／run on／come on）——介词筛不掉，得看整个短语的意思（⟹ <a href="套路库_阅读.html#R157" style="color:var(--accent)">R157</a>）；② 后一分句 <code>batteries can die</code>——die 是熟词僻义「（电池）耗尽」⟹ 手机和电池是「<b>靠它才能工作</b>」的关系；③ <code>run on sth</code>＝（机器）靠……运转：<i>Cars run on petrol.</i>
+            <span class="lbl">✅ C run</span>＝run on batteries，靠电池运转。原刊原词。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>put：put on 是「穿戴、上演、增加（体重）」——主语得是人，「手机穿上电池」不通；「装着电池」也只是配置，说不出「靠它运转」。</div>
+              <div class="wr"><span class="l">B</span>take：take on 是「承担（责任）、呈现（面貌）、雇用」——「手机承担电池」没有意义。</div>
+              <div class="wr"><span class="l">D</span>come：come on 是「（灯、机器）开启；快点」，不及物——后面不能再带 batteries 作宾语；come on sth 是「偶然碰到」，手机不会「碰到」电池。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>run 的熟词僻义一串背</b>：run on（靠……运转）· run a shop（经营）· run for office（竞选）· run for three months（持续）· run low／out（快用完／用完）。⭐ 同句的 <b>die＝（电池、手机）没电</b>：<i>My phone died halfway through the call.</i> ✍️ <i>Most of our cities still run on fossil fuels.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q3" data-ans="3">
+          <div class="qhead"><span class="qno">3</span><span class="qt c-logic">逻辑关系 · 假设条件：If you get lost …, a few tricks may help（清单体的第一个「情形」）</span><span class="qpos">___ you get lost without a phone or a compass</span></div>
+          <span class="stem"><em>3</em> you get lost without a phone or a compass, and you <em>4</em> can’t find north, a few tricks may help you navigate <em>5</em> to civilization, one of which is to follow the land.</span>
+          <div class="opts">
+            <div class="opt">A Since<span class="gl">既然；自从</span></div>
+            <div class="opt">B Until<span class="gl">直到</span></div>
+            <div class="opt">C Though<span class="gl">虽然</span></div>
+            <div class="opt">D If<span class="gl">如果</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>从属连词，引导由 and 连着的两个小句（you get lost …, and you … can’t find north），主句是 a few tricks may help …。
+            <span class="lbl">🔗 线索</span>① <b>主句带 may</b>：「有几招或许能帮上忙」——是给一个<b>还没发生的情形</b>开药方；② <b>上句刚说电池可能没电</b> ⟹ 本句顺势设想：真没了手机又迷了路怎么办——假设；③ 这是全文目录句，后面每一招都以「情形」开头（When … ／ If … ／ assuming …），本句是第一个情形（⟹ <a href="#list" style="color:var(--accent)">02+</a>）。
+            <span class="lbl">✅ D If</span>＝如果、万一。原刊原词。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>Since：既然——把「迷路」当成已经发生的事实；而且迷路不是「有妙招」的原因。借的是中文「既然你迷了路，那就……」的语感。</div>
+              <div class="wr"><span class="l">B</span>Until：直到——「直到你迷路为止，这几招都能帮你」，时间关系荒谬：还没迷路，谈何找路？</div>
+              <div class="wr"><span class="l">C</span>Though：虽然——前后不对立：迷路和「有几招能帮你」不是让步关系。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>主句有 may／can／should、从句是一件「还没发生的坏事」⟹ If</b>（假设），不是 Since（既成事实）。⭐ 三缺一（偏软）：Since／Until／Though 都把从句当成真事，If 唯一只是设想。✍️ <i>If you ever find yourself in trouble abroad, a few tips may help.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q4" data-ans="1">
+          <div class="qhead"><span class="qno">4</span><span class="qt c-word">词义辨析 · literally can’t find north：不是比喻，真的找不着北</span><span class="qpos">and you ___ can’t find north</span></div>
+          <span class="stem">If you get lost without a phone or a compass, and you <em>4</em> can’t find north, a few tricks may help you …</span>
+          <div class="opts">
+            <div class="opt">A formally<span class="gl">正式地；形式上</span></div>
+            <div class="opt">B literally<span class="gl">字面上；确实，简直</span></div>
+            <div class="opt">C gradually<span class="gl">逐渐地</span></div>
+            <div class="opt">D relatively<span class="gl">相对地</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>副词，插在主语 you 和谓语 can’t find 之间，修饰「找不着北」。
+            <span class="lbl">🔗 线索</span>① and 前是「没带手机也没带指南针」——这一句在<b>一步步加码到最糟</b>：连北都找不到；② <b>find north 在这里是字面意思</b>：没有指南针，真的分不清哪边是北——作者要用一个词把它从比喻（晕头转向）掰回字面。
+            <span class="lbl">✅ B literally</span>＝确实地、真的（强调「不是夸张」）。原刊原词。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>formally：正式地——野外迷路无所谓正式不正式；「形式上找不着北」反倒是说没真迷路，和假设相反。</div>
+              <div class="wr"><span class="l">C</span>gradually：逐渐地——can’t find 是一个结果状态，不是渐进过程；而且修饰否定谓语很别扭。</div>
+              <div class="wr"><span class="l">D</span>relatively：相对地——一般修饰形容词、副词表程度；「相对地找不着北」说不通，找不着就是找不着。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>literally 两副面孔</b>：本义「字面上」（translate literally 直译），口语里「真的、简直」（<i>I literally ran all the way.</i>）。⭐ 中文「找不着北」恰好也是比喻，英文作者用 literally 提醒你：这里说的是真正的「北」。
+          </div>
+        </div>
+
+        <div class="q" id="q5" data-ans="2">
+          <div class="qhead"><span class="qno">5</span><span class="qt c-collo">固定搭配 · navigate back to civilization（回到有人烟的地方）——原刊副标题</span><span class="qpos">help you navigate ___ to civilization</span></div>
+          <span class="stem">… a few tricks may help you navigate <em>5</em> to civilization, one of which is to follow the land.</span>
+          <div class="opts">
+            <div class="opt">A around<span class="gl">四处；绕着</span></div>
+            <div class="opt">B away<span class="gl">离开</span></div>
+            <div class="opt">C back<span class="gl">回</span></div>
+            <div class="opt">D next<span class="gl">紧挨着；下一个</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>副词，跟在不及物的 navigate 后面，再接 <code>to civilization</code> 指出去向。
+            <span class="lbl">🔗 线索</span>① <b>civilization 是熟词僻义</b>：户外语境里＝有人烟、有公路商店的地方——迷路的人<b>本来就是从那里来的</b>；② 从林子到人烟处＝<b>回去</b>；③ 末句 <code>can ___ you to civilization</code>（20 题）是同一个目的地——首尾扣环（⟹ <a href="#trace" style="color:var(--accent)">02++</a>）。
+            <span class="lbl">✅ C back</span>＝navigate back to civilization。<b>原刊的副标题一字不差就是 Navigate back to civilization.</b>
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>around：navigate around 是「绕开（障碍）」，后面不接 to；「在文明周围打转」不合逻辑。</div>
+              <div class="wr"><span class="l">B</span>away：方向反了——要回去，不是离开。</div>
+              <div class="wr"><span class="l">D</span>next：next to＝紧挨着；「航向紧挨着文明的地方」不通，迷路者要回的就是人烟处本身。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>back to civilization 是固定说法</b>（回到人间、回到有电有网的地方）。⭐ <b>目的地词在首尾各出现一次</b>：首段 navigate back to civilization、末句 lead you to civilization——做末空时回首段找动词（20 题）。✍️ <i>After a week in the mountains, we were glad to get back to civilization.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q6" data-ans="3">
+          <div class="qhead"><span class="qno">6</span><span class="qt c-context">上下文语义 · find yourself off a trail：重申首段的 get lost（第一招的情形槽）</span><span class="qpos">When you find yourself ___ a trail</span></div>
+          <span class="stem">When you find yourself <em>6</em> a trail, but not in a completely <em>7</em> area of land, you have to answer two questions …</span>
+          <div class="opts">
+            <div class="opt">A onto<span class="gl">到……上</span></div>
+            <div class="opt">B along<span class="gl">沿着</span></div>
+            <div class="opt">C across<span class="gl">穿过；在……对面</span></div>
+            <div class="opt">D off<span class="gl">离开；偏离</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>介词，<code>___ a trail</code> 作 yourself 的宾语补足语（find oneself ＋ 状态＝发现自己处在……境地）。
+            <span class="lbl">🔗 线索</span>① <b>同句 but not in a completely ___ area</b>：but 后面是「还不算太糟」，but 前面就必须是「糟」——离了路；② 这是第一招的<b>情形</b>，重申首段的 <code>If you get lost</code>；③ onto／along／across 都还在路上或路边——「发现自己在路上」用不着任何妙招。
+            <span class="lbl">✅ D off</span>＝离开、偏离（off the road／off course）。原刊原文 <i>well off a trail</i>（考卷删了 well）。⚠️ <b>原刊首段写的是 get lost off-trail，考卷把 off-trail 删了</b>——留着它，这一空的答案就在上一段（⟹ <a href="#orig" style="color:var(--accent)">02+++</a>）。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>onto：到……上——要配移动动词（jump onto），find 不表移动；「发现自己到了路上」是好事，不是迷路。</div>
+              <div class="wr"><span class="l">B</span>along：沿着——沿着小路走，谈不上迷路。</div>
+              <div class="wr"><span class="l">C</span>across：在路那边／横穿——仍在路附近；且「横穿」要移动动词。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>X, but not completely Y</b>：but 后是「打折」，前后同一个方向——前半一定是 Y 的一部分（离了路 ⟹ 但还没完全迷失）。⭐ <b>三缺一</b>：onto／along／across 都让你「在路上或路边」，off 唯一让你「离开路」（⟹ <a href="套路库_阅读.html#R74" style="color:var(--accent)">R74</a>）。⭐ 本空的线索是 get lost 的同义复现，不是原词复现——命题人把原词删了（新卡 <a href="套路库_阅读.html#R268" style="color:var(--accent)">R268</a>）。
+          </div>
+        </div>
+
+        <div class="q" id="q7" data-ans="1">
+          <div class="qhead"><span class="qno">7</span><span class="qt c-context">上下文语义 · but not in a completely ___ area：给「迷路」打折＝不算完全陌生</span><span class="qpos">but not in a completely ___ area of land</span></div>
+          <span class="stem">When you find yourself off a trail, but not in a completely <em>7</em> area of land, you have to answer two questions: Which <em>8</em> is downhill, in this particular area?</span>
+          <div class="opts">
+            <div class="opt">A unattractive<span class="gl">没有吸引力的</span></div>
+            <div class="opt">B unfamiliar<span class="gl">陌生的，不熟悉的</span></div>
+            <div class="opt">C unchanged<span class="gl">没有变化的</span></div>
+            <div class="opt">D uncrowded<span class="gl">不拥挤的；人少的</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>形容词，修饰 area，前有 completely，整体被 not 否定：<code>not in a completely ___ area</code>。
+            <span class="lbl">🔗 线索</span>① <b>but 与前半 off a trail 相对</b>：离了路——但「不算完全 ___」⟹ 空格是「离了路」推到极端的样子：完全认不得这地方；② <b>下一段 If you’ve explored the area before, keep an eye out for familiar sights</b>——familiar 在下一段出现，正是本空的反义回扣；③ 本招的做法是「判断哪边下坡、水在哪」——你得对地形<b>还有点数</b>，才答得出这两个问题。
+            <span class="lbl">✅ B unfamiliar</span>＝陌生的。原刊原文 <i>not in the middle of completely unfamiliar terrain</i>（考卷把 terrain 换成 area of land）。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>unattractive：没有吸引力——风景好不好看与找路无关；借下一段 distinctive rock or tree 设的「观光」陷阱。</div>
+              <div class="wr"><span class="l">C</span>unchanged：没变化——环境变没变，和「迷没迷路」构不成 but 的对照。</div>
+              <div class="wr"><span class="l">D</span>uncrowded：「并非完全荒无人烟」——⚠️ <b>我犹豫过的一题</b>。它错在两处：a) 若附近就有人，下文何必「朝下坡、跟着水走，<b>最终</b>才看到人迹」；b) <b>「人常来的地方」是第四招（⑤段 an area humans tend to frequent）的情形</b>——清单体里同一个情形不会给两招，塞在第一招就和第四招撞车（⟹ <a href="#list" style="color:var(--accent)">02+</a>）。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>四个 un- 形容词，剥掉前缀比词根</b>：attractive／familiar／changed／crowded——只有 familiar 说的是「<b>你认不认得这里</b>」，和「迷路」同一根轴（⟹ <a href="套路库_阅读.html#R194" style="color:var(--accent)">R194</a>；2018 完形 20 题同一招）。⭐⭐ <b>清单体：各招的情形互不重叠</b>——拿不准的情形空，去翻其他几招的情形，别和它们撞（新卡 <a href="套路库_阅读.html#R266" style="color:var(--accent)">R266</a>）。
+          </div>
+        </div>
+
+        <div class="q" id="q8" data-ans="0">
+          <div class="qhead"><span class="qno">8</span><span class="qt c-collo">固定搭配 · Which way is downhill?（哪边是下坡）——way＝方向</span><span class="qpos">Which ___ is downhill, in this particular area?</span></div>
+          <span class="stem">… you have to answer two questions: Which <em>8</em> is downhill, in this particular area? And where is the nearest water source?</span>
+          <div class="opts">
+            <div class="opt">A way<span class="gl">方向；道路</span></div>
+            <div class="opt">B point<span class="gl">点；要点</span></div>
+            <div class="opt">C site<span class="gl">场所，地点</span></div>
+            <div class="opt">D place<span class="gl">地方</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>名词，与 Which 组成疑问词组作表语（<code>Which ___ is downhill?</code>＝Downhill is which ___?）。
+            <span class="lbl">🔗 线索</span>① <b>downhill 在这里是副词／形容词「往坡下」</b>——问的是<b>朝哪个方向</b>；② 下文 <code>if you head downhill</code>——head＝朝……方向走，回答的正是这个问题；③ 两个问题一个问方向（which way）、一个问地点（where is the nearest water source）。
+            <span class="lbl">✅ A way</span>＝which way，哪个方向（<i>Which way is the station?</i>）。原刊原词。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>point：一个点——「哪一个点是下坡」不通，下坡是一个方向、一片坡，不是一个点；借中文「哪一点」设障。</div>
+              <div class="wr"><span class="l">C</span>site：场所（建筑工地、遗址）——具体地点，同错。</div>
+              <div class="wr"><span class="l">D</span>place：地方——同错；一个地方可以 on a hill，但不能 is downhill。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>which way／this way／the other way 里的 way＝方向</b>。⭐ <b>三缺一</b>：point／site／place 都是「位置」，way 唯一是「方向」（⟹ <a href="套路库_阅读.html#R74" style="color:var(--accent)">R74</a>）。
+          </div>
+        </div>
+
+        <div class="q" id="q9" data-ans="2">
+          <div class="qhead"><span class="qno">9</span><span class="qt c-logic">逻辑关系 · 事实 → 行动：住在山谷、靠淡水 ⟹ 所以朝下坡、跟着水</span><span class="qpos">___, if you head downhill, and follow any H₂O you find</span></div>
+          <span class="stem">Humans overwhelmingly live in valleys, and on supplies of fresh water. <em>9</em>, if you head downhill, and follow any H<sub>2</sub>O you find, you should <em>10</em> see signs of people.</span>
+          <div class="opts">
+            <div class="opt">A Instead<span class="gl">反而，代替</span></div>
+            <div class="opt">B Yet<span class="gl">然而</span></div>
+            <div class="opt">C So<span class="gl">所以</span></div>
+            <div class="opt">D Besides<span class="gl">此外</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>句首连接副词，连接上句（两条事实）与本句（两个动作）。
+            <span class="lbl">🔗 线索</span>① 上句两条事实：<code>live in valleys</code>、<code>on supplies of fresh water</code>；② 本句两个动作：<code>head downhill</code>、<code>follow any H₂O</code>；③ <b>一一配得上</b>：山谷 ↔ 下坡、淡水 ↔ 跟着水——事实推出做法，是因果（推论）。
+            <span class="lbl">✅ C So</span>＝所以。原刊原词（原刊无逗号，考卷加了）。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>Instead：反而——要求上文提过一个被放弃的做法；上句只有事实，没有做法。</div>
+              <div class="wr"><span class="l">B</span>Yet：然而——两句不对立，本句恰是上句的应用。</div>
+              <div class="wr"><span class="l">D</span>Besides：此外——本句不是再加一条事实，而是从事实推出的行动；事实与建议不在一个层面上，谈不上「补充」。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>「事实句 ＋ if you do X, you should Y」⟹ So</b>：把两句的要素配对（valleys ↔ downhill、fresh water ↔ H₂O），配得上就是推论。⭐ <b>一段三步</b>：提两个问题（哪边下坡？水在哪？）→ 给两条事实 → 由事实推出两个动作——So 站在第二步和第三步之间。
+          </div>
+        </div>
+
+        <div class="q" id="q10" data-ans="1">
+          <div class="qhead"><span class="qno">10</span><span class="qt c-word">词义辨析 · should eventually see：路要走一阵，但结果可期</span><span class="qpos">you should ___ see signs of people</span></div>
+          <span class="stem">So, if you head downhill, and follow any H<sub>2</sub>O you find, you should <em>10</em> see signs of people.</span>
+          <div class="opts">
+            <div class="opt">A immediately<span class="gl">立即</span></div>
+            <div class="opt">B eventually<span class="gl">最终，终究</span></div>
+            <div class="opt">C unexpectedly<span class="gl">出乎意料地</span></div>
+            <div class="opt">D intentionally<span class="gl">故意地</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>副词，夹在情态动词 should 与 see 之间。
+            <span class="lbl">🔗 线索</span>① <b>should 表「按理会」</b>——是预期，不是意外；② 朝下坡走、跟着水走——<b>要走一段路</b>才到谷底；③ 句首 So：这是从「人住山谷」推出来的结果，自然而然、只是要花时间。
+            <span class="lbl">✅ B eventually</span>＝最终、终究（经过一段时间后）。原刊原词。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>immediately：马上——要走到谷底，不可能马上；马上就能看到人，也就谈不上迷路。</div>
+              <div class="wr"><span class="l">C</span>unexpectedly：意外地——与句首 So 的推理、should 的预期都相反：这是算出来的结果，不是撞上的。</div>
+              <div class="wr"><span class="l">D</span>intentionally：故意地——see 是看到，不是有意的动作；「故意看到人迹」不通。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>should ＋ 副词 ＋ 结果动词：副词要和 should 的「预期」同向</b>（eventually／soon／probably），unexpectedly 当场出局。⭐ <b>清单每招都有「结果槽」</b>：本招 should eventually see signs of people · 第二招 restore your bearings · 第三招 find a way out · 第四招 lead you to civilization——结果全是「回到人群」（⟹ <a href="#list" style="color:var(--accent)">02+</a>）。
+          </div>
+        </div>
+
+        <div class="q" id="q11" data-ans="2">
+          <div class="qhead"><span class="qno">11</span><span class="qt c-word">词义辨析 · you may be surprised how quickly …（快得出乎你意料）</span><span class="qpos">you may be ___ how quickly identifying a distinctive rock or tree can restore your bearings</span></div>
+          <span class="stem">If you’ve explored the area before, keep an eye out for familiar sights—you may be <em>11</em> how quickly identifying a distinctive rock or tree can restore your bearings.</span>
+          <div class="opts">
+            <div class="opt">A frightened<span class="gl">害怕的</span></div>
+            <div class="opt">B annoyed<span class="gl">恼火的</span></div>
+            <div class="opt">C surprised<span class="gl">惊讶的</span></div>
+            <div class="opt">D confused<span class="gl">困惑的</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>表语形容词，后接 how 引导的宾语从句（be surprised (at) how …）。
+            <span class="lbl">🔗 线索</span>① <b>how quickly</b>——感叹「竟然这么快」；② restore your bearings（重新辨清方向）对迷路的人是<b>好事</b>；③ 破折号前是建议（留意熟悉的景物），破折号后说它<b>有多管用</b>。
+            <span class="lbl">✅ C surprised</span>＝You’d／You may be surprised how …：常用句式「……得出乎你的意料」，这里是惊喜。原刊原词。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>frightened：害怕——重新找到方向没什么可怕的。</div>
+              <div class="wr"><span class="l">B</span>annoyed：恼火——好消息不会让人恼火。</div>
+              <div class="wr"><span class="l">D</span>confused：困惑——迷路时才困惑；认出景物恰恰是「不再困惑」，方向反了。借的是「迷路者的心情」。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>三缺一</b>：frightened／annoyed／confused 全是负面情绪，surprised 唯一可正可负（这里是惊喜）（⟹ <a href="套路库_阅读.html#R74" style="color:var(--accent)">R74</a>）。⭐ 情绪形容词空：先给后面的事标正负号——restore your bearings 是「＋」。✍️ <i>You may be surprised how much a short walk can lift your mood.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q12" data-ans="3">
+          <div class="qhead"><span class="qno">12</span><span class="qt c-context">上下文语义 · Another ___：清单的编号——空格是首段 tricks 的替身</span><span class="qpos">Another ___: Climb high and look for signs of human habitation.</span></div>
+          <span class="stem">Another <em>12</em>: Climb high and look for signs of human habitation.</span>
+          <div class="opts">
+            <div class="opt">A problem<span class="gl">问题</span></div>
+            <div class="opt">B result<span class="gl">结果</span></div>
+            <div class="opt">C view<span class="gl">观点；景色</span></div>
+            <div class="opt">D option<span class="gl">可选的办法</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>名词。<code>Another ___:</code> 是省略句（There is another ___），冒号后面是它的具体内容——一个祈使句 Climb high and look for …。
+            <span class="lbl">🔗 线索</span>① <b>Another＝上文已经有过同类</b>——上文的同类是什么？首段目录 <code>a few tricks</code>，②③ 段各给了一招；② <b>冒号后是祈使句＝一个做法</b> ⟹ 冒号前的名词得是「做法」类：trick／tip／way／option；③ 段首 ＋ Another ＝ 清单的编号（⟹ <a href="#list" style="color:var(--accent)">02+</a>）。
+            <span class="lbl">✅ D option</span>＝可以选的办法。原刊原文 <i>Another option:</i>。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>problem：问题——冒号后是解决办法，不是新问题。</div>
+              <div class="wr"><span class="l">B</span>result：结果——冒号后不是③段「认出景物」的结果，而是和它并列的另一招。</div>
+              <div class="wr"><span class="l">C</span>view：观点／景色——「登高」勾出「看风景」（又一个观光陷阱，和 7A 一样）；「观点」义也不对：冒号后是动作，不是看法。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐⭐ <b>清单体的段首空</b>：Another ＋ 名词 ＝ 目录句名词（tricks）的替身；最后一招 ＝ Finally（18 题）（新卡 <a href="套路库_阅读.html#R266" style="color:var(--accent)">R266</a>）。⭐ <b>冒号后是祈使句 ⟹ 冒号前的名词是「办法」</b>（option／tip／step／way）。⭐ 三缺一（偏软）：problem／result／view 都不是「你可以去做的事」，option 唯一是。
+          </div>
+        </div>
+
+        <div class="q" id="q13" data-ans="1">
+          <div class="qhead"><span class="qno">13</span><span class="qt c-logic">逻辑关系 · 举例：林木线缺口是「人迹」的一个实例（不是「最重要的一项」）</span><span class="qpos">___, even in dense forest, you should be able to spot gaps in the tree line</span></div>
+          <span class="stem">Another option: Climb high and look for signs of human habitation. <em>13</em>, even in dense forest, you should be able to <em>14</em> gaps in the tree line due to roads, train tracks, and other paths people carve <em>15</em> the woods.</span>
+          <div class="opts">
+            <div class="opt">A Above all<span class="gl">最重要的是</span></div>
+            <div class="opt">B For example<span class="gl">例如</span></div>
+            <div class="opt">C On average<span class="gl">平均而言</span></div>
+            <div class="opt">D In contrast<span class="gl">相比之下</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>句首连接语，连接冒号后的总述与本句。
+            <span class="lbl">🔗 线索</span>① <b>上句是总说</b>：look for <b>signs</b> of human habitation——复数、泛称；② <b>本句是具体一种</b>：林木线上的缺口，由公路、铁轨、小路造成——正是人迹的一种；③ <b>后面还有另一种</b>：夜里的人造光源——两种人迹并列，谁也不比谁「更重要」。
+            <span class="lbl">✅ B For example</span>＝例如。原刊原词。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>Above all：最重要的是——⚠️ <b>我犹豫过的一题</b>。Above all 要从<b>已经摆出来的几项里</b>挑最要紧的一项；上句只有一个总动作（look for signs），没有可挑的几项；而且紧接着还有「夜里看灯光」，白天的缺口并不比它更重要。</div>
+              <div class="wr"><span class="l">C</span>On average：平均而言——需要数字或统计，本句没有；把「应该能看到」说成「平均能看到」也不通。</div>
+              <div class="wr"><span class="l">D</span>In contrast：相比之下——本句与上句同向：缺口本身就是人迹，没有对比。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>总说（复数泛称 signs／ways／factors）＋ 下一句一个具体名词 ⟹ For example</b>；Above all 要先有并列的几项可挑（新卡 <a href="套路库_阅读.html#R266" style="color:var(--accent)">R266</a> 的 trap）。⭐ <b>同段两层举例</b>：For example 是句间举例、such as fires and streetlights 是句内举例。
+          </div>
+        </div>
+
+        <div class="q" id="q14" data-ans="0">
+          <div class="qhead"><span class="qno">14</span><span class="qt c-word">词义辨析 · spot gaps（看出缺口）＝上句 look for 的落点</span><span class="qpos">you should be able to ___ gaps in the tree line</span></div>
+          <span class="stem"><em>13</em>, even in dense forest, you should be able to <em>14</em> gaps in the tree line due to roads, train tracks, and other paths people carve <em>15</em> the woods. Head toward these <em>16</em> to find a way out.</span>
+          <div class="opts">
+            <div class="opt">A spot<span class="gl">发现，认出</span></div>
+            <div class="opt">B avoid<span class="gl">避开</span></div>
+            <div class="opt">C bridge<span class="gl">架桥；弥合</span></div>
+            <div class="opt">D separate<span class="gl">分开；区分</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>实义动词，宾语 gaps in the tree line。
+            <span class="lbl">🔗 线索</span>① <b>上句动作 look for signs</b> ⟹ 本句是它的落点：找 → 看到；② <code>even in dense forest, you should be able to ___</code>——「即使林子密也能 ___」：密林挡视线 ⟹ 考的是<b>能不能看见</b>；③ 下句 <code>Head toward these ___</code>——要朝它走，就不是避开它。
+            <span class="lbl">✅ A spot</span>＝（在不易察觉时）看出、发现。原刊原词。⚠️ <b>原刊③段写的是 spotting a distinctive rock，考卷改成 identifying</b>——命题人抹掉了这个会泄底的复现（⟹ <a href="#orig" style="color:var(--accent)">02+++</a>）。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>avoid：避开——与下句「朝这些缺口走」正相反；借中文「密林里要避开坑洞」设障。</div>
+              <div class="wr"><span class="l">C</span>bridge：<code>bridge the gap</code> 是「弥合差距」——熟搭配陷阱；这里的 gap 是林子里<b>实实在在的豁口</b>，不是抽象的差距，更不需要去「弥合」。</div>
+              <div class="wr"><span class="l">D</span>separate：分开、区分——缺口本身就是把林线断开的东西，用不着你去分；「区分缺口」对找路也毫无用处。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>三缺一</b>：avoid／bridge／separate 都是对缺口「做点什么」，spot 唯一是「看见」（⟹ <a href="套路库_阅读.html#R74" style="color:var(--accent)">R74</a>）。⭐ <b>看到 gap 先问：是抽象的差距还是具体的豁口</b>——bridge the gap 只配前者。⭐ 线索找的是同义词（look for · identifying），不是原词——原词被命题人换掉了（新卡 <a href="套路库_阅读.html#R268" style="color:var(--accent)">R268</a>）。✍️ <i>Can you spot the mistake in this sentence?</i>
+          </div>
+        </div>
+
+        <div class="q" id="q15" data-ans="3">
+          <div class="qhead"><span class="qno">15</span><span class="qt c-collo">固定搭配 · carve a path through the woods（在林中开出路）</span><span class="qpos">other paths people carve ___ the woods</span></div>
+          <span class="stem">… you should be able to spot gaps in the tree line due to roads, train tracks, and other paths people carve <em>15</em> the woods.</span>
+          <div class="opts">
+            <div class="opt">A from<span class="gl">从；用……（雕）</span></div>
+            <div class="opt">B under<span class="gl">在……下面</span></div>
+            <div class="opt">C beyond<span class="gl">在……那边；超出</span></div>
+            <div class="opt">D through<span class="gl">穿过</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>介词，在省略了关系词的定语从句 <code>(that) people carve ___ the woods</code> 里，修饰 roads, train tracks, and other paths。
+            <span class="lbl">🔗 线索</span>① 主句说<b>缺口是这些路造成的</b>（due to）⟹ 路得真的<b>穿过</b>林子、把树砍出一条通道，林线上才会有豁口；② <code>carve a path／way through sth</code>＝在……中开辟出一条路，固定说法。
+            <span class="lbl">✅ D through</span>＝穿过。原刊原词。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>from：<code>carve X from Y</code>＝用 Y 雕出 X（carve a statue from wood）——「用树林雕出小路」不通。</div>
+              <div class="wr"><span class="l">B</span>under：在林子下面（隧道）——不会在树冠上留缺口。</div>
+              <div class="wr"><span class="l">C</span>beyond：在林子那边——根本不碰林子，也就不会有缺口。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>carve 的熟词僻义</b>：本义「雕刻」→ 开辟（carve a path through）→ 努力开创（carve out a career）。⭐ <b>介词选方位，先问结果</b>：能在林线上留下「缺口」的只有「穿过」。
+          </div>
+        </div>
+
+        <div class="q" id="q16" data-ans="1">
+          <div class="qhead"><span class="qno">16</span><span class="qt c-context">上下文语义 · these ___ 回指 gaps——原作者自己的同义替换</span><span class="qpos">Head toward these ___ to find a way out</span></div>
+          <span class="stem">… you should be able to spot gaps in the tree line due to roads, train tracks, and other paths people carve through the woods. Head toward these <em>16</em> to find a way out.</span>
+          <div class="opts">
+            <div class="opt">A posts<span class="gl">柱子；岗位；帖子</span></div>
+            <div class="opt">B breaks<span class="gl">缺口，断开处；间歇</span></div>
+            <div class="opt">C shades<span class="gl">阴凉处；色调</span></div>
+            <div class="opt">D links<span class="gl">联系；连接（的路线）</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>名词，被 these 限定，作 toward 的宾语。
+            <span class="lbl">🔗 线索</span>① <b>these 回指</b> ⟹ 回上一句找复数名词：gaps（in the tree line）；② 要选 gaps 的<b>同义替身</b>：break＝断开的地方、缺口（a break in the clouds）；③ 朝缺口走 ⟹ 缺口背后就是路。
+            <span class="lbl">✅ B breaks</span>＝缺口。原刊原词——<b>原作者自己就用 breaks 替换了 gaps</b>。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>posts：柱子、标志杆——路边确实有电线杆（原刊上句还列了 power cables，考卷删了），但 these 回指不到它：上句根本没提柱子。</div>
+              <div class="wr"><span class="l">C</span>shades：树荫、色调——林子里到处是荫，谈不上「朝它走出去」；借「密林」设的场景陷阱。</div>
+              <div class="wr"><span class="l">D</span>links：交通线路——看似呼应 roads, train tracks，却把寻路的<b>结果</b>（找到路）当成了<b>线索</b>（看到缺口）。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>this／these ＋ 名词空 ⟹ 回上文找同义名词</b>（回指替身）。⭐ <b>break 的熟词僻义</b>：缺口、断开处（a break in the wall／in the clouds）。⭐ <b>三缺一</b>：posts／shades／links 都是「那里有样东西」，breaks 唯一是「那里空了一块」（⟹ <a href="套路库_阅读.html#R74" style="color:var(--accent)">R74</a>）。
+          </div>
+        </div>
+
+        <div class="q" id="q17" data-ans="2">
+          <div class="qhead"><span class="qno">17</span><span class="qt c-context">上下文语义 · such as fires and streetlights ⟹ ___ light sources＝人造光源</span><span class="qpos">scan the horizon for ___ light sources, such as fires and streetlights</span></div>
+          <span class="stem">At night, scan the horizon for <em>17</em> light sources, such as fires and streetlights, then walk toward the glow of light pollution.</span>
+          <div class="opts">
+            <div class="opt">A hidden<span class="gl">隐藏的</span></div>
+            <div class="opt">B mysterious<span class="gl">神秘的</span></div>
+            <div class="opt">C artificial<span class="gl">人造的，人工的</span></div>
+            <div class="opt">D limited<span class="gl">有限的</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>形容词，修饰 light sources。
+            <span class="lbl">🔗 线索</span>① <b>such as fires and streetlights 是它的例子</b>——火堆和路灯的公约数：<b>人弄出来的</b>；② 句末 <code>the glow of light pollution</code>——光污染就是人类聚居地的灯光；③ 本段总目标 <code>signs of human habitation</code>——人迹（⟹ <a href="#trace" style="color:var(--accent)">02++</a>）。
+            <span class="lbl">✅ C artificial</span>＝人造的。原刊原词。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>hidden：隐藏的——夜里的火堆、路灯恰恰最显眼；借「夜里找光」设的直觉陷阱。</div>
+              <div class="wr"><span class="l">B</span>mysterious：神秘的——路灯一点也不神秘。</div>
+              <div class="wr"><span class="l">D</span>limited：有限的——光源多少无关紧要；本句要的是「谁造的」，limited 说不出光源和人的关系。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>such as 后面的例子取公约数 ⟹ 修饰语</b>：火堆、路灯 ⟹ 人造。⭐ <b>三缺一（偏软）</b>：hidden／mysterious 说「看不看得清、说不说得清」、limited 说「多不多」，artificial 唯一回答「谁造的」。⭐ 全文在找人迹——形容词空也往「人」那头填（新卡 <a href="套路库_阅读.html#R267" style="color:var(--accent)">R267</a>）。
+          </div>
+        </div>
+
+        <div class="q" id="q18" data-ans="0">
+          <div class="qhead"><span class="qno">18</span><span class="qt c-logic">逻辑关系 · 清单最后一招：Finally（末段有自己的情形，不是总结）</span><span class="qpos">___, assuming you’re lost in an area humans tend to frequent</span></div>
+          <span class="stem"><em>18</em>, assuming you’re lost in an area humans tend to frequent, look for the <em>19</em> we leave on the landscape.</span>
+          <div class="opts">
+            <div class="opt">A Finally<span class="gl">最后</span></div>
+            <div class="opt">B Consequently<span class="gl">因此</span></div>
+            <div class="opt">C Incidentally<span class="gl">顺便提一句</span></div>
+            <div class="opt">D Generally<span class="gl">一般说来，总的来说</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>段首连接副词。
+            <span class="lbl">🔗 线索</span>① <b>本段和②③段一个模子</b>：先给情形（assuming you’re lost in an area humans tend to frequent）、再给做法（look for the marks）、再给结果（can lead you to civilization）——<b>这是又一招</b>，不是总结；② 首段目录 a few tricks，②③④ 已出三招（④段还用了 Another）⟹ 这是最后一招；③ 这也是全文最后一段。
+            <span class="lbl">✅ A Finally</span>＝（列举的）最后一项。原刊原词。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>Consequently：因此——④段「登高找人迹」不会导致⑤段的新情形；两招是并列，不是因果。</div>
+              <div class="wr"><span class="l">C</span>Incidentally：顺便一提——引出题外话；这一招与前几招平起平坐，而且紧扣主题。</div>
+              <div class="wr"><span class="l">D</span>Generally：一般来说——⚠️ <b>我犹豫过的一题</b>。末段常被当成总结段，但这段<b>有自己的前提</b>（assuming …）、只管「人常来的地方」这一种情形，给的是具体做法——不是对前几招的概括，也不是「适用于大多数情况」的通则。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐⭐ <b>清单体末段：有自己的「情形 ＋ 做法」⟹ Finally</b>；真正的总结段才用 In short／Generally／All in all，而且不会再冒出新情形（新卡 <a href="套路库_阅读.html#R266" style="color:var(--accent)">R266</a>）。⭐ 判「又一招还是总结」：看段首空后面紧跟的是不是一个<b>新的条件</b>（assuming／if／when）。
+          </div>
+        </div>
+
+        <div class="q" id="q19" data-ans="3">
+          <div class="qhead"><span class="qno">19</span><span class="qt c-context">上下文语义 · the ___ we leave on the landscape ⟹ 下句 trail blazes, tire tracks 的概括词</span><span class="qpos">look for the ___ we leave on the landscape</span></div>
+          <span class="stem">Finally, assuming you’re lost in an area humans tend to frequent, look for the <em>19</em> we leave on the landscape. Trail blazes, tire tracks, and other features can <em>20</em> you to civilization.</span>
+          <div class="opts">
+            <div class="opt">A memories<span class="gl">记忆，回忆</span></div>
+            <div class="opt">B belongings<span class="gl">随身财物</span></div>
+            <div class="opt">C notes<span class="gl">笔记；便条</span></div>
+            <div class="opt">D marks<span class="gl">痕迹；记号</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>名词，look for 的宾语，后跟定语从句 <code>(that) we leave on the landscape</code>。
+            <span class="lbl">🔗 线索</span>① <b>下一句就是它的详述</b>：Trail blazes（树干上的路标刻痕）、tire tracks（车辙）、other features ⟹ 空格要能<b>概括这三样</b>；② <code>leave … on the landscape</code>——留在地面上的「痕」。
+            <span class="lbl">✅ D marks</span>＝痕迹、记号；<code>leave marks on sth</code>＝在……上留下痕迹。原刊原词。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>memories：记忆——这一招说的是「人常来的地方」，不是「你来过的地方」（那是第二招）；记忆也留不到地面上。</div>
+              <div class="wr"><span class="l">B</span>belongings：随身财物——人落下的东西也算人迹，但和下句的刻痕、车辙对不上：它们不是「东西」，是「痕」。</div>
+              <div class="wr"><span class="l">C</span>notes：字条、便条——刻痕、车辙不是文字；借的是「标记能提醒人」这层意思。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>概括词空 ＋ 下一句列举 ⟹ 取列举项的公约数</b>（刻痕、车辙、特征 ⟹ 痕迹）。⭐ <b>人迹替身链的最后一环</b>（⟹ <a href="#trace" style="color:var(--accent)">02++</a>，新卡 <a href="套路库_阅读.html#R267" style="color:var(--accent)">R267</a>）。⭐ A memories 与第二招「来过这里」撞车——<b>各招的情形互不重叠</b>，7 题的那条规矩在这里又用了一次。✍️ <i>Every generation leaves its mark on the city.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q20" data-ans="0">
+          <div class="qhead"><span class="qno">20</span><span class="qt c-context">上下文语义 · can ___ you to civilization＝首段 navigate back to civilization（四个全接 sb to，介词失效）</span><span class="qpos">other features can ___ you to civilization</span></div>
+          <span class="stem">Trail blazes, tire tracks, and other features can <em>20</em> you to civilization.</span>
+          <div class="opts">
+            <div class="opt">A lead<span class="gl">引领，带到</span></div>
+            <div class="opt">B adapt<span class="gl">使适应</span></div>
+            <div class="opt">C restrict<span class="gl">限制</span></div>
+            <div class="opt">D expose<span class="gl">使接触；使暴露</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>谓语动词，<code>___ sb to sth</code> 结构。
+            <span class="lbl">🔗 线索</span>① <b>四个都能接 sb to sth</b>（lead／adapt／restrict／expose sb to）——结构筛不掉（⟹ <a href="套路库_阅读.html#R157" style="color:var(--accent)">R157</a>）；② <b>首段的承诺</b>：a few tricks may help you navigate back to civilization——末句兑现：这些痕迹能<b>把你带回去</b>；③ 刻痕、车辙本身就是路线，循着走就到。
+            <span class="lbl">✅ A lead</span>＝lead sb to sth，把某人带到。原刊原词。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>adapt：adapt sb to＝使适应——迷路的人是要回去，不需要「适应」人间。</div>
+              <div class="wr"><span class="l">C</span>restrict：restrict sb to＝把人限制在——人烟处是目的地，不是牢笼。</div>
+              <div class="wr"><span class="l">D</span>expose：expose sb to＝使接触（新事物）／使暴露于（危险）——人烟处你本来就熟，也不是危险。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐⭐ <b>末句呼应首段</b>：目的地 civilization 首尾各一次，动词都是「带你去／回」（5 back、20 lead）——做末空回首段找动词（新卡 <a href="套路库_阅读.html#R267" style="color:var(--accent)">R267</a>）。⭐ <b>末空又不是逻辑空</b>（⟹ <a href="套路库_阅读.html#R103" style="color:var(--accent)">R103</a>）。✍️ <i>Hard work alone will not necessarily lead you to success.</i>
+          </div>
+        </div>
+      </section>
+      <!-- ========== 02+ 四招清单 ========== -->
+      <section class="card" id="list">
+        <h2><span class="n">02+</span>⭐⭐ 四招清单：首段一句 a few tricks 就是目录——一段一招，段首空是编号，每招都是「情形 → 做法 → 结果」三格（本页最值钱的一段）</h2>
+        <p class="note">读完首段末句 <code>a few tricks may help you …, one of which is to follow the land</code>，在卷边写一个「<b>招 ①②③④</b>」。然后每读一段，问三句：<b>这是第几招？它管什么情形？它让你做什么、换来什么？</b></p>
+        <div class="tabwrap"><table class="otab">
+          <tr><th>段</th><th>编号</th><th>情形</th><th>做法</th><th>结果</th></tr>
+          <tr><td>①</td><td><b>目录</b>：a few <b>tricks</b></td><td><b>3 If</b> you get lost …, and you <b>4 literally</b> can’t find north</td><td>（总说：follow the land）</td><td>navigate <b>5 back</b> to civilization</td></tr>
+          <tr><td>②</td><td>第一招（无编号词，直接用 When 开情形）</td><td>find yourself <b>6 off</b> a trail, but not in a completely <b>7 unfamiliar</b> area</td><td>答两问：Which <b>8 way</b> is downhill? · 水在哪？<b>9 So</b> head downhill, follow any H<sub>2</sub>O</td><td>should <b>10 eventually</b> see signs of people</td></tr>
+          <tr><td>③</td><td>第二招（If 开情形）</td><td>If you’ve explored the area before</td><td>keep an eye out for familiar sights</td><td>you may be <b>11 surprised</b> how quickly … restore your bearings</td></tr>
+          <tr><td>④</td><td><b>12 Another option</b></td><td>（无前提：哪儿都能用）</td><td>Climb high, look for signs of human habitation：<b>13 For example</b> <b>14 spot</b> gaps … carve <b>15 through</b> …；head toward these <b>16 breaks</b>；夜里 scan for <b>17 artificial</b> light</td><td>to find a way out · walk toward the glow</td></tr>
+          <tr><td>⑤</td><td><b>18 Finally</b></td><td>assuming you’re lost in an area humans tend to frequent</td><td>look for the <b>19 marks</b> we leave</td><td>can <b>20 lead</b> you to civilization</td></tr>
+        </table></div>
+        <p class="note" style="margin-top:12px">⭐⭐ <b>这张表怎么用</b>：① <b>段首空先问「第几招」</b>——④ 段首 <code>Another ___:</code> 后接祈使句 ⟹ 填目录名词 tricks 的替身（option）；⑤ 段首有新情形 ⟹ 最后一招（Finally），<b>不是总结</b>（Generally）。② <b>情形空先看其他几招的情形</b>——② 离了路但不算完全陌生 · ③ 来过这里 · ⑤ 人常来的地方——<b>互不重叠</b>；7 题若填 uncrowded（「不算荒无人烟」），② 段就和 ⑤ 段撞车；19A memories 则和 ③ 段「来过这里」撞车。③ <b>结果空全往「回到人群」那头填</b>——10 eventually · 11 surprised（好事）· 20 lead。</p>
+        <p class="note">📊 <b>二十个空落在哪一格</b>：情形格 3 · 4 · 6 · 7（4 个）｜做法格 8 · 9 · 13 · 14 · 15 · 16 · 17 · 19（8 个）｜结果格 5 · 10 · 11 · 20（4 个）｜编号格 12 · 18（2 个）｜铺垫 1 · 2（手机会没电）。<b>做法格的空最多——因为指南文的正文就是动作</b>。</p>
+        <p class="note">⚠️⚠️ <b>我犹豫的三题，全在这张表上</b>：<b>7</b>（unfamiliar／uncrowded）＝没去核「情形互不重叠」；<b>13</b>（For example／Above all）＝没看出「一招里的一个例子」不是「几招里最要紧的一招」——Above all 要先有并排的几项；<b>18</b>（Finally／Generally）＝没先看末段有没有自己的情形。<b>三题同一个动作：先认出这是清单、再问这一句在清单的哪一格</b>（新卡 <a href="套路库_阅读.html#R266" style="color:var(--accent)">R266</a>）。</p>
+        <p class="note">📌 <b>这篇和 2018 的区别</b>：<a href="2018_完形_为何信任是与生俱来的本能.html#ledger" style="color:var(--accent)">2018</a> 首段摆「两本账」，段首空是<b>翻账键</b>（Then 翻回好处、Lucky for us 翻到解药），问的是「翻到哪一面」；<b>2019 首段给「目录」，段首空是编号</b>（Another option、Finally），问的是「这是第几条」。<b>同是首段定结构、段首空管结构</b>——读完首段先问一句：「它给了我两面，还是一张单子？」</p>
+      </section>
+
+      <!-- ========== 02++ 人迹替身链 ========== -->
+      <section class="card" id="trace">
+        <h2><span class="n">02++</span>🧭 全文只在找一样东西：人——「人迹」替身链七环 ＋ 目的地 civilization 首尾扣环</h2>
+        <p class="note">四招的做法各不相同（顺坡找水、认景物、登高看、找痕迹），<b>要找的却是同一样东西：人留下的迹象</b>。作者每一次都换个说法——<b>名词、形容词空挂在这条链上，就填「人弄出来的、人留下的」那一个</b>：</p>
+        <div class="tabwrap"><table class="otab">
+          <tr><th>环</th><th>原文</th><th>空</th><th>干扰项怎么偏</th></tr>
+          <tr><td>1</td><td>signs of <b>people</b>（②❸）</td><td>10 eventually</td><td>immediately／unexpectedly：把「终会见到人」说成马上、意外</td></tr>
+          <tr><td>2</td><td>signs of <b>human habitation</b>（④❶）</td><td>12 option · 13 For example</td><td>view：看风景（观光陷阱）· Above all：把一个例子抬成最要紧的</td></tr>
+          <tr><td>3</td><td>gaps in the tree line due to roads, train tracks, and other paths people carve ___ the woods</td><td>14 spot · 15 through</td><td>avoid／bridge：对缺口「做点什么」而不是看见它 · under／beyond：路没穿过林子就没有缺口</td></tr>
+          <tr><td>4</td><td>these ___（回指 gaps）</td><td><b>16 breaks</b></td><td>posts：人造物但回指不到 · shades：林子自带的阴影 · links：把结果（路）当线索（缺口）</td></tr>
+          <tr><td>5</td><td>___ light sources, such as fires and streetlights</td><td><b>17 artificial</b></td><td>hidden／mysterious／limited：都没回答「是不是人造的」</td></tr>
+          <tr><td>6</td><td>the glow of <b>light pollution</b></td><td>—</td><td>（原文：光污染＝人烟处的灯光）</td></tr>
+          <tr><td>7</td><td>the ___ we leave on the landscape ⟹ trail blazes, tire tracks</td><td><b>19 marks</b></td><td>memories：不在地上 · belongings：是东西不是痕 · notes：是文字不是痕</td></tr>
+          <tr><td>🎯</td><td>navigate back to <b>civilization</b>（①❹）……can ___ you to <b>civilization</b>（⑤❷）</td><td><b>5 back · 20 lead</b></td><td>away／next：方向不对 · adapt／restrict／expose：没有「带你去」</td></tr>
+        </table></div>
+        <p class="note" style="margin-top:12px">⭐⭐ <b>口诀：先问全文在找什么，名词空就填它的替身</b>。本篇找的是「人」，所以 16、17、19 的答案都是人迹：<b>缺口是人砍出来的、光是人点的、痕迹是人留的</b>；干扰项要么不是人弄的（shades 树荫）、要么不在地上（memories）、要么回指不到（posts）。<b>首尾两个 civilization 是同一个目的地</b>——末空卡住时回首段找动词：navigate back ⟹ lead（新卡 <a href="套路库_阅读.html#R267" style="color:var(--accent)">R267</a>）。</p>
+        <p class="note">📌 <b>与 2018「主题词替身」的分工</b>：<a href="2018_完形_为何信任是与生俱来的本能.html#theme" style="color:var(--accent)">2018</a> 的主题词 trust 是一个<b>概念</b>，替身是它的同义词（faith、trusting mood）与形近陷阱（entrusted）；<b>2019 的「人迹」是一个<u>目标物</u></b>，替身不是同义词，而是<b>属于这一类的具体东西</b>（缺口、灯光、车辙）——所以 13 考 For example、17 考 such as 的公约数、19 考下一句列举的公约数（⟹ <a href="套路库_阅读.html#R247" style="color:var(--accent)">R247</a>）。</p>
+      </section>
+
+      <!-- ========== 02+++ 原刊 vs 考卷 ========== -->
+      <section class="card" id="orig">
+        <h2><span class="n">02+++</span>✂️ 原刊 vs 考卷：20 个答案词全是原词——命题人删掉了两处会「泄底」的复现，也删掉了作者的第一忠告</h2>
+        <p class="note">原刊（<i>Popular Science</i> 网站，2018-06-30）全文可取，逐词比对。原刊正文连小标题约 <b>1289 词</b>，考卷 <b>279 词</b>（约 22%）：只取了引言与第一节 <i>Follow the land</i>，后三节（看太阳、看星月、带工具，约 920 词）全删。取用的部分里，改动只有下面这些：</p>
+        <div class="tabwrap"><table class="otab">
+          <tr><th>原刊</th><th>考卷</th><th>影响哪个空</th></tr>
+          <tr><td>副标题 <i>Navigate <b>back</b> to civilization.</i></td><td>a few tricks may help you navigate ___ to civilization</td><td><b>5 back</b>：答案词就在原刊副标题里</td></tr>
+          <tr><td>Few of us just walk straight into the woods without a phone, <b>a personal GPS, or another navigation tool</b>.</td><td>… without a phone.</td><td>1 Few（删掉后两样，句子更干脆）</td></tr>
+          <tr><td>If you get lost <b>off-trail</b> without a phone or a compass</td><td>If you get lost without a phone or a compass</td><td>⚠️⚠️ <b>6 off</b>：off-trail 若留着，下一段 6 题的答案就在眼前</td></tr>
+          <tr><td><b>we have</b> a few tricks <b>to</b> help you navigate back to civilization</td><td>a few tricks <b>may</b> help you navigate back to civilization<b>, one of which is to follow the land.</b></td><td>去掉杂志口吻的 we；<b>把第一节小标题 Follow the land 并进句子</b> ⟹ 首段有了「目录」</td></tr>
+          <tr><td>Before we begin, remember the basics of outdoor safety: … <b>stay put and don’t leave the trail!</b> For the sake of this guide, however, let’s assume you have deserted the beaten path. What do you do?（70 词）</td><td>（整段删除）</td><td>作者的<b>第一忠告是「别动」</b>；考卷只留「非走不可时怎么走」——全文变成一条线</td></tr>
+          <tr><td>When you find yourself <b>well</b> off a trail, but not in <b>the middle of</b> completely unfamiliar <b>terrain</b></td><td>When you find yourself ___ a trail, but not in <b>a</b> completely ___ <b>area of land</b></td><td>6 off · <b>7 unfamiliar</b>（原词）</td></tr>
+          <tr><td>live in valleys, and on <b>(or near)</b> supplies of fresh water. So if you head downhill</td><td>… and on supplies of fresh water. So<b>,</b> if you head downhill</td><td>9 So（原词）</td></tr>
+          <tr><td>you should eventually see signs of people<b>, provided you don’t stumble onto a trail first</b>.</td><td>… see signs of people.</td><td>10 eventually（删掉「除非你先撞上一条路」的附加条件）</td></tr>
+          <tr><td>how quickly <b>spotting</b> a distinctive rock or tree can restore your bearings</td><td>how quickly <b>identifying</b> a distinctive rock or tree …</td><td>⚠️⚠️ <b>14 spot</b>：spotting 若留着，下一段 14 题的答案就在上一句</td></tr>
+          <tr><td>gaps in the tree line due to roads, <b>power cables,</b> train tracks, and other paths</td><td>… due to roads, train tracks, and other paths</td><td>13–16（删掉不算「路」的输电线，and other paths 才站得住）</td></tr>
+          <tr><td>⑤段 Finally, assuming … lead you to civilization.</td><td>一字未改</td><td>18 · 19 · 20</td></tr>
+        </table></div>
+        <p class="note" style="margin-top:12px">⭐⭐⭐ <b>最值得记的是两行 ⚠️⚠️</b>：原刊里 <b>off</b> 和 <b>spot</b> 各自在答案空的<b>上文</b>出现过一次（off-trail、spotting），<b>命题人一删一换</b>——删掉 off-trail，换成 identifying。<b>他在防你「照抄上文」</b>。反过来用：<b>找线索要找同义词，别指望原词复现</b>——6 的线索是 get lost（同义）、14 的线索是 look for 与 identifying（同义），16 的线索是 gaps（breaks 的同义词，原作者自己换的）（新卡 <a href="套路库_阅读.html#R268" style="color:var(--accent)">R268</a>）。</p>
+        <p class="note">📌 <b>这是本站第二篇拿到原文逐词比对的完形</b>：<a href="2016_完形_柬埔寨的婚俗.html#edits" style="color:var(--accent)">2016</a> 20 空 17 个原词（5 After 是改写造的、19／20 所在整句是改编加的）；<b>2019 是 20 空 20 个原词</b>，改动全在空格<b>以外</b>——命题人挖的是原作者的词，改的是会暴露答案的上下文。<a href="2018_完形_为何信任是与生俱来的本能.html#orig" style="color:var(--accent)">2018</a> 研究原稿里 looked inside 到考卷成了 looking into、同时挖掉 15 inside——当时原刊打不开，不知道是谁改的；<b>2019 这两处有原刊为证，是命题人改的</b>。</p>
+        <p class="note">⚠️ <b>别把考卷当野外求生手册</b>：原刊作者的第一条和最后一条都是「<b>待在原地等救援</b>」（stay put），顺坡找水、登高看缺口都是「万不得已」时的办法——考卷把前提删了，读起来像是「迷路就动身」。</p>
+      </section>
+      <!-- ========== 03 考点分类 ========== -->
+      <section class="card">
+        <h2><span class="n">03</span>考点分类（完形不背单个空，要看「这题在考什么」）</h2>
+        <div class="catbar" id="catbar"></div>
+        <div class="catlegend" id="catlegend"></div>
+        <p class="note" style="margin-top:14px">点某一类 → 下方列出该类所有空、正文里同步高亮 → 点小格跳到解析卡。（分类依据不是「空格里填的是什么词」，而是<b>「解这一题你得做什么动作」</b>——所以 20 lead 虽然答案是 lead sb to 的搭配，但四个选项全接 sb to、结构筛不掉，要靠首段 navigate back to civilization 定方向，<b>归「上下文语义」</b>；2 run 同样四个全接 on，但解题靠的是 run on＝靠……运转这个现成短语，<b>归「固定搭配」</b>；6 off 看着是介词搭配，定它的是同句 but not completely 与首段 get lost，<b>归「上下文语义」</b>。）</p>
+        <div class="chips" id="chips"></div>
+        <div class="flow" style="margin-top:16px">
+          <div class="fi"><b>⭐ 十三年对照：2019 的上下文语义空 8 个，与 2012 并列最多；其余三类各 4 个。</b>
+            <span class="ev"><div class="tabwrap"><table class="otab"><tr><th>年份</th><th>词义辨析</th><th>固定搭配</th><th>逻辑关系</th><th>上下文语义</th><th>这一年压在哪</th></tr>
+            <tr><td>2007</td><td>9</td><td>5</td><td>4</td><td>2</td><td>词义（占 45%）</td></tr>
+            <tr><td>2008</td><td>9</td><td>6</td><td><b>2</b></td><td>3</td><td>六道实义动词的主语适配</td></tr>
+            <tr><td>2009</td><td>6</td><td>5</td><td>5</td><td>4</td><td>四类几乎持平</td></tr>
+            <tr><td>2010</td><td>9</td><td>4</td><td>4</td><td>3</td><td>形容词与副词的「方向」</td></tr>
+            <tr><td>2011</td><td>6</td><td>3</td><td>6</td><td>5</td><td>一根因果箭头的方向</td></tr>
+            <tr><td>2012</td><td>5</td><td>4</td><td>3</td><td>8</td><td>作者的应然立场 ＋ 首尾镜像</td></tr>
+            <tr><td>2013</td><td>3</td><td>7</td><td>4</td><td>6</td><td>空格后的介词短语 ＋ 比方与发现同构</td></tr>
+            <tr><td>2014</td><td>5</td><td>6</td><td>3</td><td>6</td><td>按段定正负 ＋ 一个比喻贯穿全文 ＋ 说明书式搭配</td></tr>
+            <tr><td>2015</td><td>6</td><td>6</td><td>3</td><td>5</td><td>研究报道的槽位套话 ＋ 「不止于表面」四连</td></tr>
+            <tr><td>2016</td><td>6</td><td>3</td><td>6</td><td>5</td><td>流程时间轴 ＋ 许可与现实 ＋ 具体动作的画面</td></tr>
+            <tr><td>2017</td><td>7</td><td>4</td><td>3</td><td>6</td><td>一条因果链的扣环词 ＋ 递进台阶 ＋ 框架定正负</td></tr>
+            <tr><td>2018</td><td>5</td><td>4</td><td>4</td><td>7</td><td>两本账的翻账键 ＋ 对照实验平行句 ＋ 主题词替身</td></tr>
+            <tr><td><b>2019</b></td><td><b>4</b></td><td><b>4</b></td><td><b>4</b></td><td><b>8</b></td><td><b>清单编号 ＋ 人迹替身链 ＋ 首尾扣环</b></td></tr></table></div>
+            ⟹ 2019 的 4／4／4／8 <b>与前十二年都不相同</b>（十三年十二种，唯一一次重样仍是 2016 撞 2011）。语境空多，是因为<b>清单与人迹链把一半的空挂在了「这一招的哪一格、找的是不是人」上</b>——6、7 看其他几招的情形，12 看目录，16、19 看回指与列举，17 看例子，20 看首段。<b>连续两年上下文语义空 ≥ 7</b>（2018 7 · 2019 8）。⚠️ <b>口径说明</b>：11 surprised 若按 You may be surprised how … 这个现成句式归搭配，就成了 3／5／4／8；6 off 若按介词搭配归搭配，就成了 4／5／4／7。两种口径都写在这里。</span></div>
+          <div class="fi"><b>📌 介词（结构）失效两道：2 · 20。</b>
+            <span class="ev">2 put／take／run／come <b>全接 on</b>（靠 run on＝靠……运转，与下半句 batteries can die）· 20 lead／adapt／restrict／expose <b>全接 sb to</b>（靠首段 navigate back to civilization）。另 5 题 back／next 能接 to、around／away 接 to 都别扭——<b>介词只筛掉一半</b>。（此前：2013 一道、2014 两道、2016 三道、2017 四道、2018 三道。）⟹ 救回 20 题的不是介词，是<b>首尾扣环</b>（⟹ <a href="套路库_阅读.html#R157" style="color:var(--accent)">R157</a> 补）。</span></div>
+          <div class="fi"><b>📐 线索位置统计（判据＝关键线索是否落在同一个句号之内）：句内自足 12 空 ／ 跨句 8 空。</b>
+            <span class="ev"><b>跨句（8）</b>：1（下句 But）· 9（上句两条事实）· 12（首段 tricks 与前两招）· 13（上句 signs）· 14（上句 look for、下句 Head toward）· 16（上句 gaps）· <b>18（全文的清单结构）</b>· 19（下句 trail blazes, tire tracks）。<br><b>句内自足（12）</b>：其余全部（7 题靠同句 but not completely 就能定，③段 familiar 只是旁证）。<br>⟹ 句内比例 <b>60%</b>（2010 65% → 2011 75% → 2012 80% → 2013 70% → 2014 85% → 2015 65% → 2016 95% → 2017 90% → 2018 65% → <b>2019 60%</b>），<b>2010 年以来最低</b>。⚠️ 口径：14 题若只凭 even in dense forest … be able to 就算句内，则 13／7＝65%，与 2010、2015、2018 并列。<b>跨句多的原因是清单</b>——编号空看目录、举例空看总说、回指空看上一句、概括空看下一句。我犹豫过的三题里，13、18 是跨句空。</span></div>
+          <div class="fi"><b>📌 位置预判：四个逻辑空全守规矩（4／4），但句首空不全是逻辑空。</b>
+            <span class="ev"><b>3</b> If（句首）· <b>9</b> So（句首）· <b>13</b> For example（句首）· <b>18</b> Finally（段首）——全部落在「句首／段首」；句内十六个空没有一个是逻辑空（2015 2／3 · 2016 6／6 · 2017 3／3 · 2018 4／4 · <b>2019 4／4</b>，⟹ <a href="套路库_阅读.html#R76" style="color:var(--accent)">R76</a>）。⚠️ <b>反向不成立：句首／段首空 6 个，只有 4 个是逻辑空</b>——<b>1</b> ___ of us 是主语（后面紧跟 of us）、<b>12</b> Another ___: 是名词（前面有 Another、后面是冒号）。<b>先看空格紧挨着的词</b>：紧跟 of、紧接冒号、前有限定词，就不是连接词。</span></div>
+          <div class="fi"><b>📌 三缺一分组法：本年成立 11 次，孤立项 11 次全是答案。</b>
+            <span class="ev"><b>1</b>：Most／Some／All 肯定 ＋ <b>Few</b> 否定 · <b>6</b>：onto／along／across 都在路上或路边 ＋ <b>off</b> 离开路 · <b>7</b>：attractive／changed／crowded 说地方本身 ＋ <b>familiar</b> 说你认不认得 · <b>8</b>：point／site／place 是位置 ＋ <b>way</b> 是方向 · <b>11</b>：frightened／annoyed／confused 负面 ＋ <b>surprised</b> 可正 · <b>14</b>：avoid／bridge／separate 对缺口动手 ＋ <b>spot</b> 看见 · <b>16</b>：posts／shades／links 有东西 ＋ <b>breaks</b> 空了一块。<br>⚠️ <b>照实说</b>：另四组理由偏软（做完才看得清）——<b>3</b> Since／Until／Though 把从句当真事 ＋ If 只是设想 · <b>12</b> problem／result／view 不是能做的事 ＋ option · <b>17</b> hidden／mysterious／limited 不说来源 ＋ artificial · <b>20</b> adapt／restrict／expose 改变人的处境 ＋ lead 带人去。不成组的九题（2 4 5 9 10 13 15 18 19）<b>老实读上下文</b>。本年 11 次，与 2018 持平（⟹ <a href="套路库_阅读.html#R74" style="color:var(--accent)">R74</a>）。</span></div>
+        </div>
+      </section>
+
+      <!-- ========== 04 打法 ========== -->
+      <section class="card">
+        <h2><span class="n">04</span>完形六大打法（本篇取证）</h2>
+        <div class="flow">
+          <div class="fi"><b>① 首句不设空 → 先定三要素，再<u>认文体</u></b>：话题、方向、关键词；再问一句「首段给了我两面、一条链，还是一张单子」。
+            <span class="ev">本篇首句「导航都在手机上」＋ 首段末句 a few tricks, one of which … ⟹ <b>实用指南（清单体）</b> ⟹ 逻辑空押「第几招」与「假设／推论／举例」，不押翻转与因果箭头（<a href="#list" style="color:var(--accent)">02+</a>）。</span></div>
+          <div class="fi"><b>② ⭐⭐ 清单体：段首空是编号，情形空互不重叠</b>（本篇的主刀之一）。
+            <span class="ev">12 Another option（目录名词 tricks 的替身）· 18 Finally（有新情形 ⟹ 又一招，不是总结）· 7 unfamiliar（不和第四招「人常来的地方」撞车）· 13 For example（一招里的一个例子，不是 Above all）（<a href="#list" style="color:var(--accent)">02+</a>，⟹ 新卡 R266）。</span></div>
+          <div class="fi"><b>③ ⭐⭐ 目标链：全文在找什么，名词空就填它的替身</b>（本篇的主刀之二）。
+            <span class="ev">16 breaks（人砍出的缺口）· 17 artificial（人点的光）· 19 marks（人留的痕）；目的地 civilization 首尾扣环：5 back · 20 lead（<a href="#trace" style="color:var(--accent)">02++</a>，⟹ 新卡 R267）。</span></div>
+          <div class="fi"><b>④ ⭐⭐ 找线索找同义词，别等原词复现</b>（本篇的主刀之三，原刊为证）。
+            <span class="ev">命题人删掉了 off-trail（6 off）、把 spotting 换成 identifying（14 spot）；16 breaks 的线索是 gaps（<a href="#orig" style="color:var(--accent)">02+++</a>，⟹ 新卡 R268）。</span></div>
+          <div class="fi"><b>⑤ 推理与举例：事实 → 行动 ⟹ So；should ＋ 预期副词；总说 ＋ 具体 ⟹ For example</b>。
+            <span class="ev">9 So（valleys ↔ downhill、fresh water ↔ H<sub>2</sub>O 一一配对）· 10 eventually（should 的预期，排除 unexpectedly）· 13 For example（signs 复数泛称 → gaps 一个实例）· 3 If（主句 may ＋ 还没发生的坏事）。</span></div>
+          <div class="fi"><b>⑥ 先分组再代入；介词失效时回到首尾扣环</b>。
+            <span class="ev">三缺一成立 11 次全是答案；两道介词失效题：2 靠 run on 的现成意思、20 靠首段 navigate back to civilization（⟹ R74、R157）；三道剥前缀／看熟词僻义（7 un- 四连 · 2 run · 16 break）。</span></div>
+        </div>
+        <p class="note" style="margin-top:14px">🔁 <b>十四篇完形（2007–2019 ＋ 2022）信号类型对照</b>：<a href="2022_完形_植物意识.html" style="color:var(--accent)">2022</a> 靠明信号词 · <a href="2007_完形_拉美独立后的理想与分歧.html" style="color:var(--accent)">2007</a> 靠结构性信号 · <a href="2008_完形_高智商与遗传疾病.html" style="color:var(--accent)">2008</a> 靠动词与主语适配 · <a href="2009_完形_智力的代价.html" style="color:var(--accent)">2009</a> 靠语用功能 · <a href="2010_完形_霍桑效应遭到质疑.html" style="color:var(--accent)">2010</a> 靠叙事方向 · <a href="2011_完形_笑与情绪的方向之争.html" style="color:var(--accent)">2011</a> 靠因果箭头 · <a href="2012_完形_大法官的伦理与法院的合法性.html" style="color:var(--accent)">2012</a> 靠应然立场与首尾镜像 · <a href="2013_完形_面试打分的当日偏见.html" style="color:var(--accent)">2013</a> 靠介词框架与比方—发现同构 · <a href="2014_完形_像练肌肉一样练大脑.html" style="color:var(--accent)">2014</a> 靠按段定正负与贯穿比喻 · <a href="2015_完形_朋友是基因上的远亲.html" style="color:var(--accent)">2015</a> 靠研究报道槽位与「不止于表面」四连 · <a href="2016_完形_柬埔寨的婚俗.html" style="color:var(--accent)">2016</a> 靠流程时间轴、许可与现实、动作画面 · <a href="2017_完形_拥抱有益健康.html" style="color:var(--accent)">2017</a> 靠因果链扣环词、递进台阶、框架正负号 · <a href="2018_完形_为何信任是与生俱来的本能.html" style="color:var(--accent)">2018</a> 靠两本账的翻账键、对照实验平行句、主题词替身 · <b>2019 靠清单编号、人迹替身链、首尾扣环</b>。<br>📰 <b>话题</b>：第一篇<b>实用指南</b>——没有论点、没有实验、没有对手。它和 <a href="2016_完形_柬埔寨的婚俗.html" style="color:var(--accent)">2016</a>（民俗说明）同属「<b>无观点说明文</b>」：2016 按时间轴排、2019 按清单排——<b>没有作者观点时，就找文章自己的排序方式</b>（时间、步骤、条目），空格跟着排序走。<b>首尾扣环</b>则与 <a href="2012_完形_大法官的伦理与法院的合法性.html" style="color:var(--accent)">2012</a> 的首尾镜像同一招（末空回首段找词）。</p>
+      </section>
+      <!-- ========== 05 搭配库 ========== -->
+      <section class="card">
+        <h2><span class="n">05</span>固定搭配 &amp; 熟词僻义（这些是死记就得分的）</h2>
+        <div class="wb">
+          <div class="wbi"><div class="p">Today, we live in a world where …　如今，我们生活在一个……的世界（①❶）</div><div class="u">✍️ 大作文开头万能句；where 引导定语从句修饰 world。</div></div>
+          <div class="wbi"><div class="p">walk straight into sth　径直走进（①❷）</div><div class="u">straight 作副词＝径直、直接：go straight home · straight after school。</div></div>
+          <div class="wbi"><div class="p">run on batteries　靠电池运转（2 题）</div><div class="u">⭐⭐ <b>run 熟词僻义＝运转</b>；run on sth 靠……运转；对比 put on（穿戴）· take on（承担）· come on（开启）——<b>全接 on</b>。</div></div>
+          <div class="wbi"><div class="p">batteries die　电池没电（①❸）</div><div class="u">⭐ <b>die 熟词僻义＝（电池、手机）没电、（机器）熄火</b>：My phone died.</div></div>
+          <div class="wbi"><div class="p">literally can’t find north　真的找不着北（4 题）</div><div class="u">⭐ literally：字面上 → 口语里「真的、简直」。</div></div>
+          <div class="wbi"><div class="p">navigate back to civilization　回到有人烟的地方（5 题）</div><div class="u">⭐⭐ <b>civilization 熟词僻义＝人烟处、有路有店的地方</b>（户外语境）；back to civilization 是固定说法。</div></div>
+          <div class="wbi"><div class="p">…, one of which is to do　其中之一是……（①❹）</div><div class="u">✍️ 非限制性定语从句「其中之一」：There are several ways, one of which is to …</div></div>
+          <div class="wbi"><div class="p">follow the land　顺着地势走（①❹）</div><div class="u">⭐ <b>land 熟词僻义＝地形、地势</b>（lie of the land＝地形；形势）。原刊第一节的小标题。</div></div>
+          <div class="wbi"><div class="p">find oneself off a trail　发现自己偏离了小路（6 题）</div><div class="u">⭐ find oneself ＋ 介词短语／形容词＝发现自己（意外地）处于：find oneself in trouble · find oneself alone。</div></div>
+          <div class="wbi"><div class="p">Which way is downhill?　哪边是下坡？（8 题）</div><div class="u">⭐ <b>way＝方向</b>：this way · the other way round · Which way is the exit?</div></div>
+          <div class="wbi"><div class="p">live on supplies of fresh water　靠淡水生活（②❷）</div><div class="u">⭐ live on sth＝靠……生活（live on rice／on a small income）；本句 on 前省略了 live。</div></div>
+          <div class="wbi"><div class="p">head downhill ／ head toward sth　朝下坡走／朝……走（②❸、④❸）</div><div class="u">⭐⭐ <b>head 作动词＝朝……方向去</b>：head home · head for the exit · be headed for trouble。</div></div>
+          <div class="wbi"><div class="p">keep an eye out for sth　留意、留心找（③）</div><div class="u">⭐ ＝look out for · watch out for；keep an eye on sth＝看着、照看。</div></div>
+          <div class="wbi"><div class="p">You may be surprised how …　……得出乎你意料（11 题）</div><div class="u">✍️ You’d be surprised how much／how often …——作文里引出一个反常识的事实。</div></div>
+          <div class="wbi"><div class="p">restore one’s bearings　重新辨清方向（③）</div><div class="u">⭐ <b>bearings（复数）＝方位感</b>：get／find one’s bearings · lose one’s bearings。</div></div>
+          <div class="wbi"><div class="p">Another option: …　另一个办法：……（12 题）</div><div class="u">⭐ 清单体的编号词；同类 Another way／tip／step is to …</div></div>
+          <div class="wbi"><div class="p">signs of human habitation　人类居住的迹象（④❶）</div><div class="u">habitation＝居住（fit for human habitation 适合人居住）；sign＝迹象、痕迹。</div></div>
+          <div class="wbi"><div class="p">spot gaps　看出缺口（14 题）</div><div class="u">⭐ spot 动词＝（在不易察觉时）看出、认出；对比 <b>bridge the gap</b>（弥合差距，抽象义）。</div></div>
+          <div class="wbi"><div class="p">carve a path through the woods　在林中开出路（15 题）</div><div class="u">⭐ <b>carve 熟词僻义＝开辟</b>；carve out a career／a niche（开创事业／打开一片天地）。</div></div>
+          <div class="wbi"><div class="p">a break in the tree line　林线上的缺口（16 题）</div><div class="u">⭐ <b>break 熟词僻义＝缺口、断开处</b>：a break in the clouds（云缝）。</div></div>
+          <div class="wbi"><div class="p">scan the horizon for sth　扫视地平线寻找（④❹）</div><div class="u">scan＝扫视、快速浏览（scan the headlines）；horizon 复数 horizons＝眼界（broaden one’s horizons）。</div></div>
+          <div class="wbi"><div class="p">the glow of light pollution　光污染的光亮（④❹）</div><div class="u">glow＝（不刺眼的）光亮、红光；动词 glow＝发光、（脸）发红。</div></div>
+          <div class="wbi"><div class="p">assuming (that) …　假设……（⑤）</div><div class="u">⭐ 分词作条件状语＝if；同类 supposing · provided (that) · given that。</div></div>
+          <div class="wbi"><div class="p">an area humans tend to frequent　人们常去的地方（⑤）</div><div class="u">⭐⭐ <b>frequent 作动词＝常去</b>（重音在后：/friˈkwent/）：frequent the library。</div></div>
+          <div class="wbi"><div class="p">leave marks on sth　在……上留下痕迹（19 题）</div><div class="u">✍️ leave one’s mark on history／the world（留下印记）。</div></div>
+          <div class="wbi"><div class="p">trail blazes　（树干上的）路标刻痕（⑤❷）</div><div class="u">⭐ <b>blaze 熟词僻义＝路标记号</b>；blaze a trail＝开路、开创先河（a trail-blazing study 开创性研究）。</div></div>
+          <div class="wbi"><div class="p">lead sb to sth　把某人带到（20 题）</div><div class="u">⭐ 对比 adapt sb to（使适应）· restrict sb to（限制在）· expose sb to（使接触）——<b>全接 sb to</b>。</div></div>
+        </div>
+      </section>
+
+      <!-- ========== 06 80 词表 ========== -->
+      <section class="card">
+        <h2><span class="n">06</span>80 个选项词速查（完形的真正词汇量）
+          <button class="allbtn" id="btnHide" style="margin-left:auto" onclick="toggleHide()">✍️ 默写模式</button>
+        </h2>
+        <p class="note">完形一篇＝<b>80 个高频词的辨析现场</b>，绿底是正确项。<b>默写模式</b>会糊住中文释义——先自己说出意思，点单个格子可单独揭开。<b>本篇 80 个词里有四组值得成组背</b>：2 题<b>四个 ___ on</b>（put／take／run／come on）、20 题<b>四个 ___ sb to</b>（lead／adapt／restrict／expose sb to）——<b>同一个小词、四种意思，正是「介词失效」的出题材料</b>；7 题<b>四个 un- 形容词</b>（unattractive／unfamiliar／unchanged／uncrowded，剥掉前缀比词根）；18 题<b>四个段首副词</b>（Finally／Consequently／Incidentally／Generally——「最后／因此／顺便／总的来说」四种篇章功能）。另外 13 题四个句首短语（Above all／For example／On average／In contrast）也值得一起背。</p>
+        <div class="tabwrap"><table class="otab" id="otab"></table></div>
+      </section>
+      <!-- ========== 07 长难句 ========== -->
+      <section class="card">
+        <h2><span class="n">07</span>长难句精析（正文蓝色虚线句）</h2>
+
+        <div class="sent" id="s1">
+          <div class="src"><span class="skel">Today, we live in a world</span> <i>where GPS systems, digital maps, and other navigation apps are all available on our smartphones</i>.</div>
+          <div class="anat">
+            <ul>
+              <li>主干只有 <code>we live in a world</code>；<b>where 引导定语从句</b>修饰 world（where＝in which）。</li>
+              <li>从句主语是三项并列：GPS systems, digital maps, and other navigation apps——<b>other 提示前两项也属于「导航应用」</b>。</li>
+              <li>⭐ 首句不设空，但它是<b>铺垫</b>：先说「人人有导航」，下两句才好说「可导航会没电」。</li>
+            </ul>
+          </div>
+          <div class="tr">译：如今，我们生活在这样一个世界：GPS 系统、电子地图和其他导航应用在智能手机上一应俱全。</div>
+        </div>
+
+        <div class="sent" id="s2">
+          <div class="src"><span class="skel">Few of us just walk straight into the woods</span> <i>without a phone</i>. <u>But</u> <span class="skel">phones run on batteries</span>, <u>and</u> <span class="skel">batteries can die</span> <i>faster than we realize</i>.</div>
+          <div class="anat">
+            <ul>
+              <li>⭐ <b>先钉死、再翻转</b>：第一句用 Few（几乎没人）把「人人带手机」钉死，第二句 But 翻成「带了也没用」（1、2 题）。</li>
+              <li>第二句是 and 连接的两个并列分句；后一分句 batteries 顶针式接前一分句句尾的 batteries——<b>顶针</b>是英文里常见的衔接。</li>
+              <li><code>faster than we realize</code>：比我们意识到的更快——比较状语。</li>
+            </ul>
+          </div>
+          <div class="tr">译：很少有人会不带手机就径直走进树林。可手机靠电池运转，而电池没电的速度可能比我们意识到的更快。</div>
+        </div>
+
+        <div class="sent" id="s3">
+          <div class="src"><u>If you get lost without a phone or a compass, and you literally can’t find north</u>, <span class="skel">a few tricks may help you navigate back to civilization</span>, <i>one of which is to follow the land</i>.</div>
+          <div class="anat">
+            <ul>
+              <li><b>If 条件从句里是两个并列小句</b>（you get lost …, and you … can’t find north）——and 后的主语 you 重复出现，说明是两个小句，不是一个谓语的并列。</li>
+              <li>主句 <code>a few tricks may help you navigate …</code>：help sb do（不带 to）。</li>
+              <li>⭐ 句尾 <code>, one of which is to follow the land</code> 是<b>非限制性定语从句</b>，which 指 tricks——这是<b>全文的目录</b>：有几招，第一招是顺着地势走（3、4、5 题；⟹ <a href="#list" style="color:var(--accent)">02+</a>）。</li>
+            </ul>
+          </div>
+          <div class="tr">译：如果你没带手机或指南针迷了路，而且真的找不着北了，有几招或许能帮你摸索着回到有人烟的地方，其中一招就是顺着地势走。</div>
+        </div>
+
+        <div class="sent" id="s4">
+          <div class="src"><u>When you find yourself off a trail, but not in a completely unfamiliar area of land</u>, <span class="skel">you have to answer two questions</span>: <i>Which way is downhill, in this particular area? And where is the nearest water source?</i></div>
+          <div class="anat">
+            <ul>
+              <li>When 从句里 <code>find yourself + 宾补</code>：宾补有两个——off a trail 与 (but) not in a completely unfamiliar area of land，<b>but 连接两个宾补</b>（6、7 题）。</li>
+              <li>冒号后两个问句解释 two questions；第一问是倒装的主系表：<code>Which way is downhill?</code>＝Downhill is which way?（8 题）。</li>
+              <li><code>in this particular area</code> 是插入的状语，强调「就在这一带」。</li>
+            </ul>
+          </div>
+          <div class="tr">译：当你发现自己偏离了小路、却又不是身处一片完全陌生的地方时，你得回答两个问题：在这片区域，哪边是下坡？最近的水源又在哪里？</div>
+        </div>
+
+        <div class="sent" id="s5">
+          <div class="src"><span class="skel">Humans overwhelmingly live in valleys</span>, <u>and</u> <i>(live) on supplies of fresh water</i>. <u>So</u>, <u>if you head downhill, and follow any H<sub>2</sub>O you find</u>, <span class="skel">you should eventually see signs of people</span>.</div>
+          <div class="anat">
+            <ul>
+              <li>第一句 <code>and on supplies of fresh water</code> <b>省略了 live</b>：live in valleys and (live) on supplies——一个 live 管两个介词短语（in＝住在、on＝靠……生活）。</li>
+              <li>⭐ <b>两句要素一一对应</b>：valleys ↔ head downhill、fresh water ↔ follow any H<sub>2</sub>O ⟹ So 是推论（9 题）。</li>
+              <li><code>any H₂O you find</code>：you find 是省略关系词的定语从句；H<sub>2</sub>O 是作者的俏皮写法，就是 water。</li>
+            </ul>
+          </div>
+          <div class="tr">译：人类绝大多数住在山谷里，并且依靠淡水生活。所以，如果你朝下坡走，并跟着你找到的任何一股水走，最终应该会看到人的踪迹。</div>
+        </div>
+
+        <div class="sent" id="s6">
+          <div class="src"><u>If you’ve explored the area before</u>, <span class="skel">keep an eye out for familiar sights</span>—<span class="skel">you may be surprised</span> <i>how quickly identifying a distinctive rock or tree can restore your bearings</i>.</div>
+          <div class="anat">
+            <ul>
+              <li>破折号前是祈使句（建议），破折号后解释这条建议<b>有多管用</b>。</li>
+              <li>⭐ <b>how 从句里的主语是动名词短语</b> <code>identifying a distinctive rock or tree</code>，谓语 can restore——主语一长，先找情态动词 can（11 题）。</li>
+              <li><code>be surprised how …</code>＝be surprised at how …（at 常省略）。</li>
+            </ul>
+          </div>
+          <div class="tr">译：如果你以前来过这一带，就留意那些眼熟的景物——认出一块与众不同的岩石或一棵树，能多快让你重新辨清方向，你可能会感到惊讶。</div>
+        </div>
+
+        <div class="sent" id="s7">
+          <div class="src"><span class="skel">Another option</span>: <span class="skel">Climb high and look for signs of human habitation</span>. <u>For example</u>, <i>even in dense forest</i>, <span class="skel">you should be able to spot gaps in the tree line</span> <i>due to roads, train tracks, and other paths</i> <i>(that) people carve through the woods</i>.</div>
+          <div class="anat">
+            <ul>
+              <li>第一句是<b>省略句</b>：(There is) another option——冒号后的祈使句是 option 的内容（12 题）。</li>
+              <li>第二句主干 <code>you should be able to spot gaps</code>；<code>due to …</code> 说缺口的来源；<b>paths people carve through the woods 省略了关系词 that</b>（people carve 修饰 paths；13、14、15 题）。</li>
+              <li><code>even in dense forest</code> 是让步性的状语：「即使林子再密」——暗示「这件事不容易，但能做到」⟹ spot。</li>
+            </ul>
+          </div>
+          <div class="tr">译：还有一个办法：爬到高处，寻找人类居住的迹象。比如，即使在茂密的森林里，你也应该能看出林木线上的缺口——那是人们穿林开出的公路、铁轨和其他道路留下的。</div>
+        </div>
+
+        <div class="sent" id="s8">
+          <div class="src"><span class="skel">Head toward these breaks</span> <i>to find a way out</i>. <u>At night</u>, <span class="skel">scan the horizon for artificial light sources</span>, <i>such as fires and streetlights</i>, <u>then</u> <span class="skel">walk toward the glow of light pollution</span>.</div>
+          <div class="anat">
+            <ul>
+              <li>两个祈使句：第一句 <code>to find a way out</code> 是目的状语；these breaks 回指上句 gaps（16 题）。</li>
+              <li>第二句两个谓语 scan … then walk …，<b>then 连接先后两个动作</b>（口语化，正式写法是 and then）。</li>
+              <li><code>such as fires and streetlights</code> 举例说明 artificial light sources——<b>取例子的公约数定形容词</b>（17 题）。</li>
+            </ul>
+          </div>
+          <div class="tr">译：朝这些缺口走，就能找到出路。到了夜里，扫视地平线，寻找人造光源，比如火堆和路灯，然后朝着光污染的那片光亮走去。</div>
+        </div>
+
+        <div class="sent" id="s9">
+          <div class="src"><u>Finally</u>, <u>assuming you’re lost in an area</u> <i>(that) humans tend to frequent</i>, <span class="skel">look for the marks</span> <i>(that) we leave on the landscape</i>. <span class="skel">Trail blazes, tire tracks, and other features can lead you to civilization</span>.</div>
+          <div class="anat">
+            <ul>
+              <li><code>assuming …</code> 是分词作条件状语（＝if you’re lost …）——<b>末段有自己的情形 ⟹ 是又一招，不是总结</b>（18 题）。</li>
+              <li>⭐ 两个省略关系词的定语从句：an area (that) humans tend to frequent（<b>frequent 是动词「常去」</b>）· the marks (that) we leave on the landscape（19 题）。</li>
+              <li>第二句三项并列主语，是 marks 的具体化（概述 → 详述）；<code>lead you to civilization</code> 与首段 navigate back to civilization 首尾扣环（20 题）。</li>
+            </ul>
+          </div>
+          <div class="tr">译：最后，假如你是在人类常去的地方迷了路，就寻找我们在地面上留下的痕迹。树干上的路标刻痕、车辙以及其他特征，都能把你带回有人烟的地方。</div>
+        </div>
+      </section>
+
+      <!-- ========== 08 写作素材 ========== -->
+      <section class="card">
+        <h2><span class="n">08</span>可搬进作文/翻译的表达</h2>
+        <p class="note">本篇是一篇<b>「情境引入 → 目录 → 分条给办法」的实用指南</b>，最能搬的是三类句子：<b>时代背景开头句</b>（写科技依赖）、<b>「有几招，其一是……」的目录句</b>（写建议信、对策段）、<b>「另一个办法／最后」的分条句</b>。话题上，「手机依赖」「科技与生活」「户外运动」「应急能力」都能接上。</p>
+        <div class="wb">
+          <div class="wbi"><div class="p">Today, we live in a world where …　如今，我们生活在一个……的世界</div><div class="u">⭐⭐ <b>科技类大作文开头</b>：<i>Today, we live in a world where almost everything can be done with a few taps on a smartphone.</i></div></div>
+          <div class="wbi"><div class="p">Few of us … But …　我们当中很少有人……可是……</div><div class="u">⭐ <b>先立常识再转折</b>：<i>Few of us leave home without a phone. But what happens when the battery dies?</i></div></div>
+          <div class="wbi"><div class="p">X can die faster than we realize.　X 耗尽得比我们意识到的更快</div><div class="u"><b>写资源、时间、耐心</b>：<i>Our attention, like a phone battery, can run out faster than we realize.</i></div></div>
+          <div class="wbi"><div class="p">A few tricks may help you …, one of which is to …　有几招能帮你……，其中之一是……</div><div class="u">⭐⭐ <b>建议信、对策段的目录句</b>：<i>A few measures may help ease the pressure, one of which is to set aside time for exercise.</i></div></div>
+          <div class="wbi"><div class="p">you may be surprised how quickly …　……之快可能会让你吃惊</div><div class="u"><b>引出反常识的事实</b>：<i>You may be surprised how quickly a small habit can change your life.</i></div></div>
+          <div class="wbi"><div class="p">Another option: …　另一个办法是……</div><div class="u">⭐ <b>分条给建议</b>：<i>Another option is to join a study group, where peers keep one another on track.</i></div></div>
+          <div class="wbi"><div class="p">even in …, you should be able to …　即使在……，你也应该能……</div><div class="u"><b>写「不难做到」</b>：<i>Even in a busy schedule, you should be able to find twenty minutes for reading.</i></div></div>
+          <div class="wbi"><div class="p">Finally, assuming …, …　最后，假如……，就……</div><div class="u">⭐ <b>对策段收尾</b>：<i>Finally, assuming the problem persists, turn to a professional for help.</i></div></div>
+          <div class="wbi"><div class="p">… can lead you to …　能把你带到……</div><div class="u"><b>写路径与结果</b>：<i>Curiosity, rather than pressure, is what leads students to real learning.</i></div></div>
+        </div>
+      </section>
+
+    </main>
+
+    <aside>
+      <div id="panel"><div class="hint">👆 点正文里的<b>黄底词</b><br>词卡会出现在这里<br><br>点<b>空格</b>则跳到对应解析卡</div></div>
+    </aside>
+  </div>
+
+  <footer>2019 英语一 · 完形填空复盘页 · ✅ 盲做口径：完整盲做 20/20（盲做答案 13:02 先落盘，再只裁答案页 Section I 那四行核对；2019 T1–T4 四轮都没看过完形精讲）· 解析由 Claude 独立写成并与黄皮书精讲逐空交叉核对（答案零书误）· 来源：<i>Popular Science</i> 网站 2018-06-30 Dan Seitz <i>How to find your way out of the woods without tools—or your phone</i>（原刊全文取到，逐词比对：20 个答案词全是原词；考卷删 off-trail、改 spotting 为 identifying 等改动见 02+++）· 本页新卡 R266–R268</footer>
+</div>
+
+<button id="yd">🔍 查有道</button>
+
+<script>
+/* ============ V ============ */
+const V = {
+  navigation:{w:"navigation",ipa:"/ˌnævɪˈɡeɪʃn/",pos:"n.",tags:["core"],cn:"<b>导航</b>；航行",en:"the process of finding your way from one place to another",ex:"other navigation apps are all available on our smartphones",mem:"navig-（船）＋ -ation ⟹ 驾船 ⟹ 导航。⭐ 首句的关键词：全文就在教你「没有 navigation 怎么 navigate」——首段末句 navigate back to civilization 回扣它。",syn:"wayfinding · guidance",conf:"<b>navigation</b>（导航）vs <b>navigate</b>（v. 找路）vs <b>navy</b>（海军，同词根）。"},
+  straight:{w:"walk straight into",ipa:"/wɔːk streɪt ˈɪntə/",pos:"phrase",tags:["phrase"],cn:"<b>径直走进</b>",en:"to walk directly into a place without stopping",ex:"just walk straight into the woods without a phone",mem:"straight 作副词＝径直、直接：go straight home · straight away（立刻）。⭐ 与 just 连用带「就这么贸然」的口气——1 题 Few 的线索之一。",syn:"head directly into",conf:"<b>straight</b>（径直）vs <b>strait</b>（海峡，同音）vs <b>straighten</b>（弄直）。"},
+  die:{w:"die",ipa:"/daɪ/",pos:"v.",tags:["poly"],cn:"①死 ②<b>（电池、手机）没电；（机器）熄火</b>",en:"(of a battery or machine) to stop working",ex:"batteries can die faster than we realize",mem:"⭐ <b>熟词僻义</b>：My phone died.（手机没电了）· The engine died.（发动机熄火了）——2 题 run on 的线索：电池会「死」，说明手机「靠它活」。",syn:"run out · go dead · run flat",conf:"<b>die</b>（没电）vs <b>die out</b>（灭绝）vs <b>die down</b>（平息）。"},
+  compass:{w:"compass",ipa:"/ˈkʌmpəs/",pos:"n.",tags:["core"],cn:"①<b>指南针</b> ②（复数）圆规 ③范围",en:"an instrument with a needle that always points north",ex:"without a phone or a compass",mem:"com-（共同）＋ pass（步）⟹ 绕一圈量步子 ⟹ 圆规、指南针。⭐ 与下半句 can’t find north 呼应：没有指南针才找不着北。",syn:"—",conf:"<b>compass</b>（指南针）vs <b>compassion</b>（同情）vs <b>encompass</b>（包含）。"},
+  findnorth:{w:"can’t find north",ipa:"/kɑːnt faɪnd nɔːθ/",pos:"phrase",tags:["phrase"],cn:"<b>找不到北</b>（字面：分不清哪边是北）",en:"to be unable to tell which direction is north",ex:"and you literally can’t find north",mem:"⭐ 4 题 literally 的落点：中文「找不着北」是比喻，这里作者用 literally 掰回字面——没有指南针，真的分不清方向。",syn:"lose one’s bearings",conf:"<b>north</b>（北方，n.）vs <b>northern</b>（北方的，adj.）vs <b>northward</b>（向北）。"},
+  trick:{w:"trick",ipa:"/trɪk/",pos:"n.",tags:["core","poly"],cn:"①把戏，骗局 ②<b>窍门，诀窍</b>",en:"a clever or quick way of doing sth",ex:"a few tricks may help you navigate back to civilization",mem:"⭐ <b>本篇＝窍门</b>（不是骗局）：the tricks of the trade（行业诀窍）· do the trick（奏效）。⭐⭐ <b>全文目录词</b>：12 题 Another option 的 option 就是它的替身。",syn:"tip · technique · knack",conf:"<b>trick</b>（窍门）vs <b>tricky</b>（棘手的，2018 完形首句）vs <b>treat</b>（款待）。"},
+  navigate:{w:"navigate",ipa:"/ˈnævɪɡeɪt/",pos:"v.",tags:["core","poly","write"],cn:"①<b>找路，导航</b> ②驾驶（船、飞机） ③应对（复杂局面）",en:"to find your way to a place",ex:"a few tricks may help you navigate back to civilization",mem:"⭐ 不及物用法 navigate back to …（5 题）；✍️ 抽象义：navigate the job market（在求职市场里摸索前行）· navigate a difficult situation。",syn:"find one’s way · steer",conf:"<b>navigate</b>（找路）vs <b>negotiate</b>（谈判；通过障碍）——negotiate a bend 也是「顺利通过」。"},
+  civilization:{w:"civilization",ipa:"/ˌsɪvəlaɪˈzeɪʃn/",pos:"n.",tags:["core","poly"],cn:"①文明 ②<b>有人烟的地方，文明社会</b>（户外语境）",en:"a place with towns, roads and modern comforts, as opposed to the wilderness",ex:"help you navigate back to civilization",mem:"⭐⭐ <b>熟词僻义</b>：back to civilization＝回到人间、回到有电有网的地方。⭐ 全文目的地，<b>首尾各一次</b>：navigate back to civilization（5）· lead you to civilization（20）。",syn:"the outside world · society",conf:"<b>civilization</b>（文明）vs <b>civilian</b>（平民）vs <b>civil</b>（公民的；文明的）。"},
+  land:{w:"follow the land",ipa:"/ˈfɒləʊ ðə lænd/",pos:"phrase",tags:["phrase","poly"],cn:"<b>顺着地势走</b>",en:"to use the shape of the ground (hills, valleys, water) to guide you",ex:"one of which is to follow the land",mem:"⭐ <b>land 熟词僻义＝地形、地势</b>：the lie of the land（地形；形势）。原刊第一节的小标题就是 Follow the land——考卷把它并进了首段末句，当作目录。",syn:"read the terrain",conf:"<b>land</b>（地势）vs <b>landscape</b>（地貌，⑤段）vs <b>terrain</b>（地形，原刊用词）。"},
+  trail:{w:"trail",ipa:"/treɪl/",pos:"n./v.",tags:["core","poly"],cn:"n. ①<b>小路，步道</b> ②踪迹 v. 落后；拖在后面",en:"a path through the countryside, often made for walking",ex:"When you find yourself off a trail",mem:"⭐ hiking trail（徒步道）· off-trail（离开步道）。⭐ 作动词 trail behind＝落后（阅读常考）。⑤段 trail blazes＝步道上的路标刻痕。",syn:"path · track · footpath",conf:"<b>trail</b>（小路；落后）vs <b>trial</b>（审判；试验）——字母顺序易混。"},
+  downhill:{w:"downhill",ipa:"/ˌdaʊnˈhɪl/",pos:"adv./adj.",tags:["core","poly"],cn:"adv. <b>往坡下，向下坡</b> adj. 下坡的；每况愈下的",en:"towards the bottom of a hill",ex:"Which way is downhill, in this particular area?",mem:"down ＋ hill。⭐ go downhill＝走下坡路、每况愈下（比喻义，阅读常见）。本篇是字面：head downhill。",syn:"down the slope",conf:"<b>downhill</b>（下坡）vs <b>uphill</b>（上坡；艰难的：an uphill battle）。"},
+  particular:{w:"particular",ipa:"/pəˈtɪkjələ(r)/",pos:"adj.",tags:["core"],cn:"①<b>特定的，这一个的</b> ②特别的 ③挑剔的",en:"used to emphasize that you are talking about one specific thing",ex:"in this particular area",mem:"⭐ in this particular area＝就在这一带（不是别处）；in particular＝尤其；be particular about＝对……挑剔。",syn:"specific · certain",conf:"<b>particular</b>（特定的）vs <b>particle</b>（微粒）vs <b>peculiar</b>（奇特的）。"},
+  source:{w:"source",ipa:"/sɔːs/",pos:"n.",tags:["core"],cn:"<b>来源，源头</b>；消息来源",en:"a place where sth comes from",ex:"And where is the nearest water source?",mem:"⭐ water source（水源）· light source（光源，④段）· a source of income。一个词两处出现：找水源、找光源。",syn:"origin · supply",conf:"<b>source</b>（来源）vs <b>sauce</b>（酱汁）vs <b>resource</b>（资源）。"},
+  overwhelmingly:{w:"overwhelmingly",ipa:"/ˌəʊvəˈwelmɪŋli/",pos:"adv.",tags:["core","write"],cn:"<b>压倒性地，绝大多数地</b>",en:"very strongly; in a way that affects almost all",ex:"Humans overwhelmingly live in valleys",mem:"over-（上）＋ whelm（淹没）⟹ 从上面淹没 ⟹ 压倒性的。✍️ The proposal was overwhelmingly supported.（获得压倒性支持）",syn:"predominantly · largely",conf:"<b>overwhelmingly</b>（压倒性地）vs <b>overwhelmed</b>（不知所措的）。"},
+  valley:{w:"valley",ipa:"/ˈvæli/",pos:"n.",tags:["core"],cn:"<b>山谷，河谷</b>",en:"an area of low land between hills or mountains, often with a river",ex:"Humans overwhelmingly live in valleys",mem:"⭐ 与 downhill 配对：人住在谷里 ⟹ 往下坡走（9 题 So 的要素配对）。Silicon Valley（硅谷）。",syn:"vale · basin",conf:"<b>valley</b>（山谷）vs <b>volley</b>（齐射；截击）。"},
+  supply:{w:"supplies of",ipa:"/səˈplaɪz əv/",pos:"n.",tags:["core"],cn:"<b>供给，储备</b>（复数：物资）",en:"an amount of sth that is available to be used",ex:"and on supplies of fresh water",mem:"⭐ 本句省略了 live：live (in valleys) and (live) on supplies of fresh water——live on＝靠……生活。与 follow any H₂O 配对（9 题）。",syn:"sources · stocks",conf:"<b>supply</b>（供给）vs <b>supplement</b>（补充）vs <b>supple</b>（柔软的）。"},
+  head:{w:"head",ipa:"/hed/",pos:"v.",tags:["poly","write"],cn:"①率领 ②<b>朝……方向走</b> ③用头顶（球）",en:"to move in a particular direction",ex:"if you head downhill",mem:"⭐⭐ <b>熟词僻义</b>：head downhill · head toward these breaks（④段）· head home · head for the exit · be headed for trouble（要出事）。8 题 which way 的回答就在这个动词里。",syn:"make for · go toward",conf:"<b>head for</b>（朝……去）vs <b>ahead</b>（在前）vs <b>heading</b>（标题；航向）。"},
+  h2o:{w:"H₂O",ipa:"/ˌeɪtʃ tuː ˈəʊ/",pos:"n.",tags:["core"],cn:"<b>水</b>（化学式，俏皮写法）",en:"a humorous way of saying water",ex:"follow any H",mem:"作者用化学式代替 water，是《大众科学》的俏皮口吻，也避免同句重复 water。⭐ 与上句 fresh water 配对：跟着水走（9 题）。",syn:"water",conf:"—"},
+  sign:{w:"signs",ipa:"/saɪnz/",pos:"n.",tags:["core","poly"],cn:"①标志，招牌 ②<b>迹象，痕迹</b> ③手势",en:"evidence that sth exists or is present",ex:"you should eventually see signs of people",mem:"⭐⭐ <b>全文目标词</b>：signs of people（②）→ signs of human habitation（④）→ gaps／breaks → artificial light → marks——人迹替身链（⟹ 02++）。",syn:"traces · evidence · indications",conf:"<b>sign</b>（迹象）vs <b>signal</b>（信号）vs <b>signature</b>（签名）。"},
+  explore:{w:"explore",ipa:"/ɪkˈsplɔː(r)/",pos:"v.",tags:["core","write"],cn:"①<b>探索，考察（某地）</b> ②探讨（问题）",en:"to travel around a place to learn about it",ex:"If you’ve explored the area before",mem:"⭐ 第二招的情形：来过这里 ⟹ 认熟悉的景物。✍️ explore the possibility of …（探讨……的可能性）。",syn:"investigate · tour · scout",conf:"<b>explore</b>（探索）vs <b>exploit</b>（开发；剥削）vs <b>explode</b>（爆炸）。"},
+  keepeye:{w:"keep an eye out for",ipa:"/kiːp ən aɪ aʊt fə(r)/",pos:"phrase",tags:["phrase","write"],cn:"<b>留意，留心找</b>",en:"to watch carefully for sb or sth to appear",ex:"keep an eye out for familiar sights",mem:"⭐ ＝look out for · watch out for；对比 keep an eye on sth（看着、照看）。✍️ Keep an eye out for scholarship announcements.",syn:"look out for · watch for",conf:"<b>keep an eye out for</b>（留心找）vs <b>keep an eye on</b>（照看）vs <b>see eye to eye</b>（看法一致）。"},
+  sight:{w:"sights",ipa:"/saɪts/",pos:"n.",tags:["core","poly"],cn:"①视力 ②<b>景象，景物</b> ③（复数）名胜",en:"things that you can see, especially interesting ones",ex:"keep an eye out for familiar sights",mem:"⭐ familiar sights＝眼熟的景物（不是「名胜」）；see the sights＝观光。⭐ familiar 回扣 7 题 unfamiliar。",syn:"landmarks · scenes",conf:"<b>sight</b>（景象）vs <b>site</b>（场所，8C）vs <b>cite</b>（引用）——三个同音。"},
+  identify:{w:"identifying",ipa:"/aɪˈdentɪfaɪɪŋ/",pos:"v.",tags:["core"],cn:"<b>认出，识别</b>；确认",en:"to recognize sb or sth and say who or what they are",ex:"how quickly identifying a distinctive rock or tree",mem:"⭐⭐ <b>原刊这里写的是 spotting，考卷改成 identifying</b>——因为 14 题的答案是 spot，命题人抹掉了会泄底的复现（⟹ 02+++）。identify with（认同）。",syn:"recognize · pick out · spot",conf:"<b>identify</b>（认出）vs <b>identity</b>（身份）vs <b>identical</b>（完全相同的）。"},
+  distinctive:{w:"distinctive",ipa:"/dɪˈstɪŋktɪv/",pos:"adj.",tags:["core","write"],cn:"<b>与众不同的，有特色的</b>",en:"having a quality that makes sth easy to recognize",ex:"a distinctive rock or tree",mem:"distinct（明显不同的）＋ -ive。⭐ 与众不同 ⟹ 好认 ⟹ 能当路标。✍️ a distinctive style／voice。",syn:"characteristic · unique · striking",conf:"<b>distinctive</b>（有特色的）vs <b>distinct</b>（清楚的；截然不同的）vs <b>distinguished</b>（杰出的）。"},
+  restore:{w:"restore",ipa:"/rɪˈstɔː(r)/",pos:"v.",tags:["core","write"],cn:"<b>恢复，使复原</b>；修复",en:"to bring back a situation or feeling that existed before",ex:"can restore your bearings",mem:"re-（再）＋ store（立）⟹ 重新立起 ⟹ 恢复。✍️ restore confidence／order／public trust。⭐ 11 题的线索：restore 是好事 ⟹ surprised（惊喜）。",syn:"bring back · recover · re-establish",conf:"<b>restore</b>（恢复）vs <b>restrict</b>（限制，20C）vs <b>resort</b>（求助；度假地）。"},
+  bearings:{w:"bearings",ipa:"/ˈbeərɪŋz/",pos:"n. (pl.)",tags:["poly"],cn:"<b>方位感，方向感</b>；（机械）轴承",en:"an understanding of where you are or what situation you are in",ex:"can restore your bearings",mem:"⭐ <b>熟词僻义</b>：get／find one’s bearings（弄清方位；熟悉环境）· lose one’s bearings（迷失方向）。本是航海用语 bearing（方位角）。",syn:"sense of direction · orientation",conf:"<b>bearings</b>（方位感）vs <b>bearing</b>（举止；关系：have a bearing on）vs <b>bearable</b>（可忍受的）。"},
+  habitation:{w:"habitation",ipa:"/ˌhæbɪˈteɪʃn/",pos:"n.",tags:["core"],cn:"<b>居住；住所</b>",en:"the act of living in a place",ex:"look for signs of human habitation",mem:"habit-（居住）＋ -ation；同根 inhabit（居住于）· habitat（栖息地）。fit for human habitation＝适合人居住。",syn:"residence · occupation · settlement",conf:"<b>habitation</b>（居住）vs <b>habitat</b>（动植物栖息地）vs <b>habit</b>（习惯）。"},
+  dense:{w:"dense",ipa:"/dens/",pos:"adj.",tags:["core"],cn:"<b>密集的，茂密的</b>；浓的",en:"containing a lot of things close together",ex:"even in dense forest",mem:"⭐ dense forest（密林）· dense fog（浓雾）· densely populated（人口稠密的）。even in dense forest ⟹「再密也看得见」⟹ 14 题 spot。",syn:"thick · crowded · compact",conf:"<b>dense</b>（密的）vs <b>intense</b>（强烈的）vs <b>tense</b>（紧张的）。"},
+  treeline:{w:"tree line",ipa:"/ˈtriː laɪn/",pos:"n.",tags:["core"],cn:"<b>林木线</b>（从高处看，树冠连成的线）",en:"the edge of a forest or the line formed by the tops of trees",ex:"gaps in the tree line",mem:"⭐ 生态学里 tree line 也指「树木线」（海拔或纬度的林木生长上限）；本篇指俯看时树冠连成的一片——公路铁路穿过就留下缺口。",syn:"treetops · forest edge",conf:"<b>tree line</b>（林线）vs <b>timberline</b>（高山林线，同义）vs <b>skyline</b>（天际线）。"},
+  track:{w:"train tracks",ipa:"/treɪn træks/",pos:"n.",tags:["core","poly"],cn:"<b>铁轨</b>；（track）小路；踪迹；车辙",en:"the rails that a train moves on; marks left by a moving vehicle",ex:"due to roads, train tracks, and other paths",mem:"⭐ track 一词多义：train tracks（铁轨）· tire tracks（车辙，⑤段）· keep track of（跟踪）· on track（步入正轨）。",syn:"rails · railway",conf:"<b>track</b>（轨道；踪迹）vs <b>trace</b>（痕迹）vs <b>trail</b>（小路）。"},
+  carve:{w:"carve",ipa:"/kɑːv/",pos:"v.",tags:["core","poly"],cn:"①雕刻 ②切（肉） ③<b>开辟（道路）；开创</b>",en:"to make a path or way through sth by cutting",ex:"other paths people carve through the woods",mem:"⭐ <b>熟词僻义</b>：carve a path through（开出一条路，15 题）· carve out a career／niche（开创事业／打开一片天地）。",syn:"cut · hew · clear",conf:"<b>carve</b>（雕刻；开辟）vs <b>curve</b>（曲线）vs <b>crave</b>（渴望）。"},
+  scan:{w:"scan",ipa:"/skæn/",pos:"v.",tags:["core","poly"],cn:"①<b>扫视，细看</b> ②浏览 ③扫描",en:"to look carefully at all of an area to find sth",ex:"scan the horizon for",mem:"⭐ scan the horizon for sth＝扫视地平线找……；scan the headlines＝快速浏览标题（阅读技巧里的「扫读」也叫 scanning）。",syn:"survey · search · sweep",conf:"<b>scan</b>（扫视）vs <b>skim</b>（略读）——阅读技巧：skim 看大意、scan 找具体信息。"},
+  horizon:{w:"horizon",ipa:"/həˈraɪzn/",pos:"n.",tags:["core","poly","write"],cn:"①<b>地平线</b> ②（复数）眼界，视野",en:"the line where the earth or sea seems to meet the sky",ex:"scan the horizon for",mem:"⭐ broaden one’s horizons（开阔眼界）· on the horizon（即将发生）。形容词 horizontal（水平的）。",syn:"skyline · (pl.) outlook",conf:"<b>horizon</b>（地平线）vs <b>horizontal</b>（水平的）vs <b>vertical</b>（垂直的）。"},
+  glow:{w:"glow",ipa:"/ɡləʊ/",pos:"n./v.",tags:["core"],cn:"n. <b>（柔和的）光亮，红光</b> v. 发光；（脸）发红",en:"a soft steady light",ex:"walk toward the glow of light pollution",mem:"⭐ 夜里城镇灯光在远处天边映出的一团亮——哪里亮，哪里有人。glow with pride（满面红光）。",syn:"gleam · radiance",conf:"<b>glow</b>（柔光）vs <b>glare</b>（刺眼的光；怒视）vs <b>grow</b>（生长）。"},
+  lightpollution:{w:"light pollution",ipa:"/laɪt pəˈluːʃn/",pos:"n.",tags:["core"],cn:"<b>光污染</b>",en:"too much artificial light at night that brightens the sky",ex:"the glow of light pollution",mem:"⭐ 本是环保话题里的坏东西，在迷路时却成了路标——17 题 artificial 的同义回扣（光污染＝人造光）。noise pollution（噪声污染）。",syn:"—",conf:"<b>pollution</b>（污染）vs <b>pollutant</b>（污染物）vs <b>polluter</b>（污染者）。"},
+  assuming:{w:"assuming",ipa:"/əˈsjuːmɪŋ/",pos:"conj.",tags:["core","write"],cn:"<b>假设，假如</b>（＝if）",en:"used to suppose that sth is true",ex:"Finally, assuming you’re lost in an area",mem:"⭐ assuming (that) …＝supposing／provided (that)。⭐⭐ <b>末段带着新情形 ⟹ 是又一招不是总结</b>（18 题 Finally 的线索）。",syn:"supposing · provided that · if",conf:"<b>assume</b>（假定；承担：assume responsibility）vs <b>presume</b>（推定）vs <b>resume</b>（恢复）。"},
+  frequent:{w:"frequent",ipa:"/friˈkwent/ (v.)",pos:"v./adj.",tags:["core","poly"],cn:"adj. 频繁的 v. <b>常去，常到</b>",en:"to visit a place often",ex:"an area humans tend to frequent",mem:"⭐⭐ <b>熟词僻义：作动词＝常去</b>（重音后移：/friˈkwent/）：frequent the library · a café frequented by students。⭐ 第四招的情形——和 7 题 uncrowded 撞车的就是它。",syn:"visit often · haunt",conf:"<b>frequent</b>（常去，v.）vs <b>frequent</b>（频繁的，adj.，重音在前）vs <b>frequency</b>（频率）。"},
+  landscape:{w:"landscape",ipa:"/ˈlændskeɪp/",pos:"n.",tags:["core","poly"],cn:"①<b>地貌，地面景观</b> ②风景 ③（某领域的）格局",en:"everything you can see when you look across a large area of land",ex:"the marks we leave on the landscape",mem:"land ＋ -scape（景）。⭐ 阅读常见抽象义：the political landscape（政治格局）· the media landscape。本篇是字面：地面上。",syn:"terrain · scenery",conf:"<b>landscape</b>（地貌）vs <b>landmark</b>（地标）vs <b>scenery</b>（风景，不可数）。"},
+  blaze:{w:"trail blazes",ipa:"/treɪl ˈbleɪzɪz/",pos:"n.",tags:["poly"],cn:"<b>（树干上的）路标刻痕、漆记</b>",en:"marks cut or painted on trees to show a path",ex:"Trail blazes, tire tracks, and other features",mem:"⭐⭐ <b>blaze 熟词僻义</b>：①大火 ②<b>路标记号</b>（本篇）；blaze a trail＝开路 ⟹ 开创先河：a trail-blazing study（开创性研究）。19 题 marks 概括的就是它。",syn:"waymarks · markers",conf:"<b>blaze</b>（大火；路标）vs <b>blade</b>（刀片）vs <b>blame</b>（责备）。"},
+  feature:{w:"features",ipa:"/ˈfiːtʃəz/",pos:"n.",tags:["core","poly"],cn:"①<b>特征，（地貌）特点</b> ②容貌 ③特写",en:"a noticeable part of a place",ex:"and other features can lead you to civilization",mem:"⭐ 地理语境：natural features（自然地貌）· landscape features。作动词 feature＝以……为特色、由……主演。",syn:"characteristics · marks",conf:"<b>feature</b>（特征）vs <b>future</b>（未来）vs <b>figure</b>（数字；人物）。"}
+};
+const panel=document.getElementById('panel');
+const isMobile=()=>window.innerWidth<=900;
+function badge(t){return {core:'<span class="badge b-core">核心词</span>',phrase:'<span class="badge b-phrase">短语</span>',poly:'<span class="badge b-poly">熟词僻义</span>',write:'<span class="badge b-write">写作✍︎</span>'}[t]||''}
+function showCard(k,el){
+  const d=V[k]; if(!d)return;
+  document.querySelectorAll('.tk.active').forEach(e=>e.classList.remove('active'));
+  if(el&&el.classList.contains('tk'))el.classList.add('active');
+  panel.innerHTML='<button class="close" onclick="panel.classList.remove(\'open\')">✕</button>'+
+  '<div class="wcard"><div class="head"><span class="w">'+d.w+'</span><span class="ipa">'+d.ipa+'</span><span class="pos">'+d.pos+'</span>'+d.tags.map(badge).join('')+'</div>'+
+  '<div class="cn">'+d.cn+'</div><div class="en-def">'+d.en+'</div>'+
+  '<div class="row r-ex"><b>原文语境</b>「…'+d.ex+'…」</div>'+
+  '<div class="row r-mem"><b>怎么记</b>'+d.mem+'</div>'+
+  '<div class="row r-syn"><b>同类词</b>'+d.syn+'</div>'+
+  '<div class="row r-conf"><b>易混辨析</b>'+d.conf+'</div></div>';
+  if(isMobile())panel.classList.add('open');
+}
+document.querySelectorAll('.tk').forEach(t=>t.addEventListener('click',e=>{e.stopPropagation();showCard(t.dataset.w,t)}));
+
+/* ============ 译文开关 ============ */
+function tz(btn){btn.closest('.para').classList.toggle('showzh')}
+let allOn=false;
+function toggleAll(){allOn=!allOn;document.querySelectorAll('.para').forEach(p=>p.classList.toggle('showzh',allOn))}
+function go(id){const s=document.getElementById(id);if(!s)return;s.scrollIntoView({behavior:'smooth',block:'center'});s.style.transition='none';s.style.opacity=.3;setTimeout(function(){s.style.transition='opacity .8s';s.style.opacity=1},80)}
+
+/* ============ 20 空数据（类别 + 正确词） ============ */
+const CAT={
+  logic:{name:"逻辑关系",cls:"c-logic",color:"#3d6a8a"},
+  collo:{name:"固定搭配",cls:"c-collo",color:"#3e7a4e"},
+  word:{name:"词义辨析",cls:"c-word",color:"#b04a3a"},
+  context:{name:"上下文语义",cls:"c-context",color:"#6d5a8e"}
+};
+const B={
+  1:{w:"Few",cat:"context"},          2:{w:"run",cat:"collo"},
+  3:{w:"If",cat:"logic"},             4:{w:"literally",cat:"word"},
+  5:{w:"back",cat:"collo"},           6:{w:"off",cat:"context"},
+  7:{w:"unfamiliar",cat:"context"},   8:{w:"way",cat:"collo"},
+  9:{w:"So",cat:"logic"},             10:{w:"eventually",cat:"word"},
+  11:{w:"surprised",cat:"word"},      12:{w:"option",cat:"context"},
+  13:{w:"For example",cat:"logic"},   14:{w:"spot",cat:"word"},
+  15:{w:"through",cat:"collo"},       16:{w:"breaks",cat:"context"},
+  17:{w:"artificial",cat:"context"},  18:{w:"Finally",cat:"logic"},
+  19:{w:"marks",cat:"context"},       20:{w:"lead",cat:"context"}
+};
+
+/* ============ 点空格 → 跳到解析卡 ============ */
+document.querySelectorAll('.bk').forEach(function(b){
+  b.addEventListener('click',function(){
+    document.querySelectorAll('.bk.active').forEach(function(e){e.classList.remove('active')});
+    b.classList.add('active');
+    go('q'+b.dataset.n);
+  });
+});
+function fillBlank(n,ok){
+  const el=document.querySelector('.bk[data-n="'+n+'"]');
+  if(!el)return;
+  el.classList.remove('miss');
+  el.classList.add(ok===false?'miss':'filled');
+  el.innerHTML='<span class="idx">'+n+'</span>'+B[n].w;
+}
+
+/* ============ 即点即判 + 计分 ============ */
+let done=0,right=0;
+function updScore(){
+  document.getElementById('sDone').textContent=done;
+  document.getElementById('sRight').textContent=right;
+  document.getElementById('sPt').textContent=(right*0.5).toFixed(1);
+}
+document.querySelectorAll('.q').forEach(function(q){
+  const ans=+q.dataset.ans, n=q.id.replace('q','');
+  q.querySelectorAll('.opt').forEach(function(o,i){
+    o.addEventListener('click',function(){
+      if(q.classList.contains('done'))return;
+      q.classList.add('done');
+      const ok=(i===ans);
+      if(!ok)o.classList.add('wrong');
+      q.querySelectorAll('.opt')[ans].classList.add('right');
+      done++; if(ok)right++; updScore();
+      fillBlank(n,ok);
+    });
+  });
+});
+function revealAll(){
+  document.querySelectorAll('.q').forEach(function(q){
+    const n=q.id.replace('q','');
+    if(!q.classList.contains('done')){
+      q.classList.add('done');
+      q.querySelectorAll('.opt')[+q.dataset.ans].classList.add('right');
+      done++; updScore();
+    }
+    fillBlank(n,true);
+  });
+  document.querySelectorAll('.bk.miss').forEach(function(e){e.classList.remove('miss');e.classList.add('filled')});
+}
+
+/* ============ 考点统计 ============ */
+const counts={};Object.keys(B).forEach(function(k){counts[B[k].cat]=(counts[B[k].cat]||0)+1});
+const order=["word","collo","context","logic"];
+document.getElementById('catbar').innerHTML=order.map(function(k){
+  return '<div class="catseg" style="flex:'+counts[k]+';background:'+CAT[k].color+'">'+CAT[k].name+' '+counts[k]+'</div>'}).join('');
+const legend=document.getElementById('catlegend');
+legend.innerHTML=order.map(function(k){
+  return '<div class="cl" data-cat="'+k+'"><span class="dot" style="background:'+CAT[k].color+'"></span>'+CAT[k].name+' · '+counts[k]+' 题</div>'}).join('');
+const chips=document.getElementById('chips');
+function renderChips(cat){
+  chips.innerHTML=Object.keys(B).filter(function(n){return !cat||B[n].cat===cat})
+    .map(function(n){return '<span class="chip" data-n="'+n+'">'+n+'. '+B[n].w+'</span>'}).join('');
+  chips.querySelectorAll('.chip').forEach(function(c){
+    c.addEventListener('click',function(){go('q'+c.dataset.n)});
+  });
+}
+renderChips(null);
+legend.querySelectorAll('.cl').forEach(function(l){
+  l.addEventListener('click',function(){
+    const cat=l.dataset.cat;
+    document.querySelectorAll('.cl').forEach(function(x){x.style.borderColor=''});
+    l.style.borderColor=CAT[cat].color;
+    renderChips(cat);
+    document.querySelectorAll('.bk').forEach(function(b){
+      b.style.outline=(B[b.dataset.n].cat===cat?'2px solid '+CAT[cat].color:'')});
+  });
+});
+
+/* ============ 80 选项词表 ============ */
+const OPTS={
+ 1:[["Few","很少的人（否定，下句 But 才翻得过来）"],["Most","大多数人（与首句相反）"],["Some","一些人（没有否定力度）"],["All","所有人（更离谱）"]],
+ 2:[["put","put on 穿戴（主语要是人）"],["take","take on 承担；呈现"],["run","run on 靠……运转"],["come","come on 开启（不接宾语）"]],
+ 3:[["Since","既然（当成既成事实）"],["Until","直到（时间荒谬）"],["Though","虽然（不对立）"],["If","如果（假设情形）"]],
+ 4:[["formally","正式地；形式上"],["literally","真的，字面上"],["gradually","逐渐地（不是过程）"],["relatively","相对地（修饰程度）"]],
+ 5:[["around","四处；绕开（不接 to）"],["away","离开（方向反）"],["back","回（back to civilization）"],["next","紧挨着（不通）"]],
+ 6:[["onto","到……上（还在路上）"],["along","沿着（还在路上）"],["across","横穿；在对面"],["off","离开，偏离"]],
+ 7:[["unattractive","没吸引力的（观光陷阱）"],["unfamiliar","陌生的（认不认得）"],["unchanged","没变化的（构不成 but）"],["uncrowded","人少的（与第四招撞车）"]],
+ 8:[["way","方向（which way）"],["point","点（是位置）"],["site","场所（是位置）"],["place","地方（是位置）"]],
+ 9:[["Instead","反而（上文无做法）"],["Yet","然而（不对立）"],["So","所以（事实 → 行动）"],["Besides","此外（不是再加一条）"]],
+ 10:[["immediately","立即（走不到）"],["eventually","最终（should 的预期）"],["unexpectedly","意外地（与 So 相反）"],["intentionally","故意地（see 不是有意）"]],
+ 11:[["frightened","害怕的（负面）"],["annoyed","恼火的（负面）"],["surprised","惊讶的（可正：惊喜）"],["confused","困惑的（方向反）"]],
+ 12:[["problem","问题（冒号后是办法）"],["result","结果（是并列的另一招）"],["view","观点；景色（观光陷阱）"],["option","可选的办法（＝trick）"]],
+ 13:[["Above all","最重要的是（没有可挑的几项）"],["For example","例如（一个实例）"],["On average","平均而言（要数字）"],["In contrast","相比之下（同向）"]],
+ 14:[["spot","看出，发现"],["avoid","避开（与朝它走相反）"],["bridge","弥合（bridge the gap 抽象义）"],["separate","分开；区分（无意义）"]],
+ 15:[["from","carve X from Y 用 Y 雕"],["under","在……下（不留缺口）"],["beyond","在……那边（不碰林子）"],["through","穿过（carve a path through）"]],
+ 16:[["posts","柱子（回指不到）"],["breaks","缺口（＝gaps）"],["shades","树荫；色调"],["links","交通线（把结果当线索）"]],
+ 17:[["hidden","隐藏的（火光最显眼）"],["mysterious","神秘的（路灯不神秘）"],["artificial","人造的（火堆、路灯）"],["limited","有限的（与人无关）"]],
+ 18:[["Finally","最后（又一招）"],["Consequently","因此（不是因果）"],["Incidentally","顺便一提（不是题外话）"],["Generally","总的来说（有新情形，不是总结）"]],
+ 19:[["memories","记忆（不在地上）"],["belongings","财物（是东西不是痕）"],["notes","笔记；便条（是文字）"],["marks","痕迹，记号"]],
+ 20:[["lead","lead sb to 带到"],["adapt","adapt sb to 使适应"],["restrict","restrict sb to 限制在"],["expose","expose sb to 使接触／暴露"]]
+};
+const ANS={1:0,2:2,3:3,4:1,5:2,6:3,7:1,8:0,9:2,10:1,11:2,12:3,13:1,14:0,15:3,16:1,17:2,18:0,19:3,20:0};
+(function(){
+  let h='<tr><th>空</th><th>A</th><th>B</th><th>C</th><th>D</th></tr>';
+  for(let n=1;n<=20;n++){
+    h+='<tr><td class="n">'+n+'</td>';
+    OPTS[n].forEach(function(o,i){
+      h+='<td'+(i===ANS[n]?' class="hit"':'')+'><span class="ow">'+o[0]+'</span><span class="oc">'+o[1]+'</span></td>';
+    });
+    h+='</tr>';
+  }
+  document.getElementById('otab').innerHTML=h;
+  document.querySelectorAll('#otab .oc').forEach(function(c){
+    c.addEventListener('click',function(){c.classList.toggle('show')});
+  });
+})();
+function toggleHide(){
+  const t=document.getElementById('otab');
+  const on=t.classList.toggle('hidecn');
+  document.getElementById('btnHide').textContent=on?'👁 显示释义':'✍️ 默写模式';
+  if(!on)t.querySelectorAll('.oc.show').forEach(function(c){c.classList.remove('show')});
+}
+
+/* ============ 查有道 ============ */
+const yd=document.getElementById('yd');let sel='';
+document.addEventListener('selectionchange',function(){
+  const s=window.getSelection();const t=s?s.toString().trim():'';
+  if(t&&/^[a-zA-Z' -]{2,40}$/.test(t)){
+    sel=t;
+    try{const r=s.getRangeAt(0).getBoundingClientRect();
+      yd.style.left=Math.min(r.left,window.innerWidth-110)+'px';
+      yd.style.top=(r.bottom+8)+'px';yd.style.display='block';}catch(e){}
+  }else{yd.style.display='none'}
+});
+yd.addEventListener('click',function(){window.open('https://dict.youdao.com/result?word='+encodeURIComponent(sel)+'&lang=en');yd.style.display='none'});
+document.addEventListener('click',function(e){if(e.target!==yd&&!window.getSelection().toString())yd.style.display='none'});
+</script>
+<script src="_fault_attr.js"></script>
+</body>
+</html>
