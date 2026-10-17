@@ -323,18 +323,26 @@ Object.keys(V).forEach(k=>{
   vg.appendChild(div);
 });
 
-const yd=document.getElementById('yd');let sel='';
-document.addEventListener('selectionchange',()=>{
+const yd=document.getElementById('yd');let sel='',ydHold=0,ydT=0;
+/* 触屏：点按钮会先把选区清掉 → selectionchange 立刻把按钮藏了 → 点击落空。改成延迟隐藏 ＋ 按下即锁定 */
+const ydTouch=window.matchMedia&&matchMedia('(pointer:coarse)').matches;
+function ydHide(){clearTimeout(ydT);ydHold=0;yd.style.display='none'}
+document.addEventListener('selectionchange',function(){
   const s=window.getSelection();const t=s?s.toString().trim():'';
   if(t&&/^[a-zA-Z' -]{2,40}$/.test(t)){
-    sel=t;
+    sel=t;clearTimeout(ydT);
     try{const r=s.getRangeAt(0).getBoundingClientRect();
-      yd.style.left=Math.min(r.left,window.innerWidth-110)+'px';
-      yd.style.top=(r.bottom+8)+'px';yd.style.display='block';}catch(e){}
-  }else{yd.style.display='none'}
+      yd.style.left=Math.max(8,Math.min(r.left,window.innerWidth-110))+'px';
+      yd.style.top=(r.bottom+(ydTouch?30:8))+'px';yd.style.display='block';}catch(e){}
+  }else if(!ydHold){clearTimeout(ydT);ydT=setTimeout(function(){if(!ydHold)yd.style.display='none'},ydTouch?900:0)}
 });
-yd.addEventListener('click',()=>{window.open('https://dict.youdao.com/result?word='+encodeURIComponent(sel)+'&lang=en');yd.style.display='none'});
-document.addEventListener('click',e=>{if(e.target!==yd&&!window.getSelection().toString())yd.style.display='none'});
+['pointerdown','touchstart','mousedown'].forEach(function(ev){yd.addEventListener(ev,function(){ydHold=1;clearTimeout(ydT)},{passive:true})});
+yd.addEventListener('click',function(){
+  const u='https://dict.youdao.com/result?word='+encodeURIComponent(sel)+'&lang=en';
+  let w=null;try{w=window.open(u,'_blank')}catch(e){}
+  if(!w)location.href=u;
+  ydHide()});
+document.addEventListener('click',function(e){if(e.target!==yd&&!window.getSelection().toString())ydHide()});
 </script>
 </body>
 </html>

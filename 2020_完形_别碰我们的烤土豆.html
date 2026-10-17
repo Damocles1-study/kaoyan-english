@@ -1,0 +1,1276 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2020 英一 完形 · 别碰我们的烤土豆</title>
+<style>
+  :root{
+    --bg:#faf9f6; --card:#ffffff; --ink:#2b2b2b; --muted:#8a8578;
+    --accent:#8b5e34; --accent-soft:#f3e9dd; --line:#e8e3d8;
+    --hl:#fdf3d8; --hl-border:#e0b84d;
+    --green:#3e7a4e; --green-soft:#e8f2ea;
+    --red:#b04a3a; --red-soft:#f9e9e6;
+    --blue:#3d6a8a; --blue-soft:#e7eff5;
+    --purple:#6d5a8e; --purple-soft:#eeeaf5;
+    --serif:"Georgia","Songti SC",serif;
+    --sans:-apple-system,"PingFang SC","Helvetica Neue",sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#1c1a17; --card:#26231f; --ink:#e8e4dc; --muted:#9a948a;
+      --accent:#d0a06a; --accent-soft:#3a3127; --line:#3a362f;
+      --hl:#3d3520; --hl-border:#b08c3a;
+      --green:#7fb98d; --green-soft:#26362b;
+      --red:#d98876; --red-soft:#3d2a26;
+      --blue:#8ab3d0; --blue-soft:#26323d;
+      --purple:#a996c8; --purple-soft:#302a3d;
+    }
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;padding-bottom:120px}
+  .wrap{max-width:1100px;margin:0 auto;padding:24px 20px}
+  .back{font-size:.85rem;color:var(--muted);text-decoration:none}
+  .back:hover{color:var(--accent)}
+  header{margin:14px 0 28px}
+  header h1{font-family:var(--serif);font-size:1.7rem;line-height:1.3}
+  header .sub{color:var(--muted);margin-top:6px;font-size:.9rem}
+  .tags{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+  .tag{font-size:.75rem;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);border:1px solid var(--line)}
+  .tag.spoiler{cursor:pointer;background:var(--card);color:var(--muted)}
+  .tag.spoiler .hid{filter:blur(5px)}
+  .tag.spoiler.open .hid{filter:none;color:var(--accent)}
+
+  .layout{display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:start}
+  @media (max-width:900px){.layout{grid-template-columns:1fr}}
+
+  section.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:24px}
+  h2{font-size:1.05rem;letter-spacing:.05em;color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  h2 .n{font-size:.72rem;background:var(--accent);color:var(--card);border-radius:6px;padding:1px 7px}
+  .note{font-size:.82rem;color:var(--muted);margin-bottom:14px}
+
+  .para{margin-bottom:22px}
+  .para .en{font-family:var(--serif);font-size:1.06rem;line-height:2.15}
+  .pno{color:var(--muted);font-size:.75rem;user-select:none;margin-right:6px}
+  .tk{background:var(--hl);border-bottom:2px solid var(--hl-border);border-radius:3px;padding:0 2px;cursor:pointer;transition:filter .15s}
+  .tk:hover{filter:brightness(.93)}
+  .tk.active{outline:2px solid var(--hl-border)}
+  .ls{border-bottom:2px dotted var(--blue);cursor:pointer}
+  .para .zh{display:none;margin-top:10px;padding:10px 14px;background:var(--blue-soft);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:.93rem}
+  .para.showzh .zh{display:block}
+  .zbtn{float:right;margin-left:10px;font-size:.72rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:6px;padding:2px 9px;cursor:pointer}
+  .zbtn:hover{color:var(--accent);border-color:var(--accent)}
+  .allbtn{font-size:.78rem;border:1px solid var(--accent);background:none;color:var(--accent);border-radius:8px;padding:4px 12px;cursor:pointer}
+
+  /* 完形空格 */
+  .bk{display:inline-block;min-width:64px;text-align:center;background:var(--hl);border-bottom:2px solid var(--hl-border);border-radius:4px;padding:0 6px;cursor:pointer;font-weight:600;color:var(--accent);transition:all .15s;font-family:var(--sans);font-size:.95rem}
+  .bk:hover{filter:brightness(.93)}
+  .bk.filled{background:var(--green-soft);border-bottom-color:var(--green);color:var(--green);font-family:var(--serif)}
+  .bk.miss{background:var(--red-soft);border-bottom-color:var(--red);color:var(--red);font-family:var(--serif)}
+  .bk.active{outline:2px solid var(--hl-border)}
+  .bk .idx{font-size:.7rem;color:var(--muted);margin-right:3px}
+
+  aside{position:sticky;top:20px}
+  #panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;min-height:180px}
+  #panel .hint{color:var(--muted);font-size:.88rem;text-align:center;padding:30px 10px}
+  .wcard .head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .wcard .w{font-family:var(--serif);font-size:1.35rem;font-weight:bold}
+  .wcard .ipa{color:var(--muted);font-size:.85rem}
+  .wcard .pos{font-size:.72rem;color:var(--purple);background:var(--purple-soft);padding:1px 8px;border-radius:999px}
+  .wcard .badge{font-size:.7rem;padding:1px 8px;border-radius:999px}
+  .b-core{background:var(--red-soft);color:var(--red)}
+  .b-phrase{background:var(--blue-soft);color:var(--blue)}
+  .b-poly{background:var(--purple-soft);color:var(--purple)}
+  .b-write{background:var(--green-soft);color:var(--green)}
+  .wcard .cn{margin-top:8px;font-size:1rem;font-weight:600}
+  .wcard .en-def{color:var(--muted);font-size:.86rem;font-style:italic;margin-top:2px}
+  .wcard .row{margin-top:10px;font-size:.86rem;padding:8px 10px;border-radius:8px}
+  .wcard .row>b:first-child{font-size:.72rem;display:block;margin-bottom:2px;letter-spacing:.06em}
+  .r-ex{background:var(--hl)} .r-ex b{color:var(--hl-border)}
+  .r-mem{background:var(--green-soft)} .r-mem b{color:var(--green)}
+  .r-syn{background:var(--blue-soft)} .r-syn b{color:var(--blue)}
+  .r-conf{background:var(--red-soft)} .r-conf b{color:var(--red)}
+  #panel .close{display:none}
+  @media (max-width:900px){
+    aside{position:fixed;left:0;right:0;bottom:0;z-index:50;padding:0 8px 8px}
+    #panel{box-shadow:0 -6px 24px rgba(0,0,0,.18);max-height:55vh;overflow-y:auto;display:none}
+    #panel.open{display:block}
+    #panel .close{display:block;float:right;border:none;background:var(--line);border-radius:8px;padding:2px 10px;cursor:pointer;color:var(--ink)}
+  }
+
+  /* 逐空精解 */
+  .q{margin-bottom:22px;padding-bottom:18px;border-bottom:1px dashed var(--line);scroll-margin-top:20px}
+  .q:last-child{border:none;margin-bottom:0;padding-bottom:0}
+  .q .stem{font-family:var(--serif);font-size:.98rem;background:var(--hl);border-radius:8px;padding:8px 12px;display:block}
+  .q .stem em{font-style:normal;font-weight:700;color:var(--accent);border-bottom:2px solid var(--hl-border);padding:0 4px}
+  .qhead{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+  .qno{font-family:var(--serif);font-size:1.2rem;font-weight:700;color:var(--accent)}
+  .qt{font-size:.7rem;border-radius:999px;padding:1px 9px}
+  .c-logic{background:var(--blue-soft);color:var(--blue)}
+  .c-collo{background:var(--green-soft);color:var(--green)}
+  .c-word{background:var(--red-soft);color:var(--red)}
+  .c-context{background:var(--purple-soft);color:var(--purple)}
+  .qpos{font-size:.7rem;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:1px 9px}
+  .opts{margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  @media (max-width:640px){.opts{grid-template-columns:1fr}}
+  .opt{border:1px solid var(--line);border-radius:10px;padding:7px 12px;cursor:pointer;font-size:.92rem;font-family:var(--serif);transition:all .15s}
+  .opt .gl{font-family:var(--sans);font-size:.8rem;color:var(--muted);margin-left:6px}
+  .opt:hover{border-color:var(--accent)}
+  .q.done .opt{cursor:default}
+  .opt.right{background:var(--green-soft);border-color:var(--green)}
+  .opt.wrong{background:var(--red-soft);border-color:var(--red)}
+  .expl{display:none;margin-top:12px;background:var(--accent-soft);border-radius:10px;padding:12px 14px;font-size:.9rem}
+  .q.done .expl{display:block}
+  .expl b{color:var(--accent)}
+  .expl .lbl{font-size:.74rem;letter-spacing:.06em;color:var(--muted);display:block;margin:10px 0 2px}
+  .expl .lbl:first-child{margin-top:0}
+  .expl code{font-family:var(--serif);background:var(--hl);border-radius:4px;padding:1px 5px}
+  .wrongs{margin-top:6px;display:grid;gap:5px}
+  .wr{font-size:.86rem;background:var(--card);border-radius:8px;padding:6px 10px;border-left:3px solid var(--red)}
+  .wr .l{font-family:var(--serif);font-weight:700;color:var(--red);margin-right:5px}
+
+  /* 计分条 */
+  .score{display:flex;gap:14px;flex-wrap:wrap;align-items:center;background:var(--hl);border-radius:12px;padding:10px 16px;margin-bottom:18px;font-size:.88rem}
+  .score .v{font-family:var(--serif);font-size:1.25rem;font-weight:700;color:var(--accent);margin-right:4px}
+  .score .rst{margin-left:auto;font-size:.78rem;border:1px solid var(--line);background:var(--card);color:var(--muted);border-radius:8px;padding:3px 10px;cursor:pointer}
+
+  /* 考点统计 */
+  .catbar{display:flex;height:26px;border-radius:8px;overflow:hidden;margin:10px 0 16px;border:1px solid var(--line)}
+  .catseg{display:flex;align-items:center;justify-content:center;font-size:.72rem;color:#fff;font-weight:600}
+  .catlegend{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px}
+  .cl{display:flex;gap:8px;align-items:center;font-size:.85rem;cursor:pointer;padding:6px 8px;border-radius:8px;border:1px solid var(--line)}
+  .cl:hover{border-color:var(--accent)}
+  .dot{width:12px;height:12px;border-radius:3px;flex:0 0 12px}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+  .chip{font-size:.78rem;background:var(--accent-soft);color:var(--accent);border-radius:6px;padding:2px 8px;cursor:pointer}
+  .chip:hover{filter:brightness(.94)}
+
+  /* 打法 / 搭配 */
+  .flow{display:grid;gap:10px;font-size:.92rem}
+  .flow .fi{border:1px solid var(--line);border-radius:10px;padding:10px 14px}
+  .flow .fi b{color:var(--accent)}
+  .flow .fi .ev{display:block;margin-top:4px;font-size:.85rem;color:var(--muted);border-left:3px solid var(--hl-border);padding-left:9px}
+  .wb{display:grid;gap:10px}
+  .wbi{border-left:3px solid var(--green);background:var(--green-soft);border-radius:0 10px 10px 0;padding:10px 14px;font-size:.92rem}
+  .wbi .p{font-family:var(--serif);font-weight:600}
+  .wbi .u{color:var(--muted);font-size:.85rem}
+
+  /* 长难句 */
+  .sent{margin-bottom:20px}
+  .sent .src{font-family:var(--serif);font-size:1rem;background:var(--blue-soft);padding:12px 14px;border-radius:10px;border-left:3px solid var(--blue)}
+  .sent .anat{margin-top:8px;font-size:.9rem}
+  .sent .anat li{margin:4px 0 4px 18px}
+  .sent .tr{margin-top:8px;font-size:.92rem;color:var(--muted)}
+  .skel{color:var(--red);font-weight:600}
+
+  /* 80词表 */
+  .otab{width:100%;border-collapse:collapse;font-size:.86rem}
+  .otab th,.otab td{border:1px solid var(--line);padding:5px 8px;vertical-align:top}
+  .otab th{background:var(--accent-soft);color:var(--accent);font-size:.78rem}
+  .otab td.n{text-align:center;font-family:var(--serif);color:var(--muted);width:38px}
+  .otab .ow{font-family:var(--serif)}
+  .otab .oc{color:var(--muted);font-size:.82rem;display:block}
+  .otab td.hit{background:var(--green-soft)}
+  .otab td.hit .ow{color:var(--green);font-weight:700}
+  .hidecn .oc{filter:blur(4px);cursor:pointer}
+  .hidecn .oc.show{filter:none}
+  .tabwrap{overflow-x:auto}
+
+  #yd{position:fixed;z-index:60;display:none;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:4px 12px;font-size:.8rem;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+  .fail{background:var(--red-soft);border:1px solid var(--red);border-radius:10px;padding:10px 13px;margin-bottom:10px;font-size:.89rem;line-height:1.75}
+  .fail b{color:var(--red)}
+  .expl .fail{margin-top:0}
+  footer{color:var(--muted);font-size:.8rem;text-align:center;margin-top:30px}
+  /* 修：.layout 是 grid，grid 项默认 min-width:auto ⟹ 06 的 80 词表（min-content 425px）会把整个左栏撑到 475px，
+     窄屏下页面 scrollWidth 超出视口（2007–2009 三篇完形页同源、同病）。min-width:0 后 .tabwrap 才真正接管横滚。 */
+  main,aside{min-width:0}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">◀ 返回英语复盘中心</a>
+  <header>
+    <h1>别碰我们的烤土豆：一篇驳论社论里有三个声部——转述对方的句子按对方的口径填，让步的句子只让半步，作者自己的转折词一个没挖</h1>
+    <div class="sub">2020 年英语（一）真题 · Section I 完形填空（Use of English）· 黄皮书标 278 词（脚本按答案回填后数得 278 词，一致）· 4 段 15 句 · 建议 15 min · 话题：饮食健康与政府劝导（时评）（源自 <i>The Telegraph</i>《每日电讯报》2017-01-23「Telegraph View」栏社论 <i>Hands off our roast potatoes</i>「别碰我们的烤土豆」；原刊 4 段 281 词，<b>考卷整篇照用</b>，只改了几处措辞）</div>
+    <div class="tags">
+      <span class="tag spoiler" onclick="this.classList.toggle('open')">🙈 答案（点击显示）：<span class="hid">1B 2A 3D 4B 5C 6D 7B 8C 9C 10A 11A 12C 13D 14B 15A 16D 17C 18A 19D 20B</span></span>
+      <span class="tag">难度：中等（词都认识、句子短；<b>坎不在词汇，在「这句是谁在说」</b>——4 题 guaranteed 是作者替「食品警察」说的狠话，11 likely、13 advisable 是作者让步时只肯让的那半步，拿作者「没证据」的立场去套就会选错；另有五道题四个选项结构相同，介词和句型帮不上忙）</span>
+      <span class="tag">✅ <b>盲做口径：完整盲做 20/20</b>（只看原卷 p2 正文、p3 选项作答，答案 2026-09-24 20:52 先落盘 <code>_讲义笔记/2020_完形_mine.txt</code>，再只裁答案页 Section I 那四行核对）。做 2020 T1–T4 四轮时，完形精讲 p17–p29 一页没看。标过四处犹豫：8（partially／easily）· 14（After all／As usual）· 17（To be fair／In general）· 19（campaign／promise），全对。落盘时照实写了一句：这篇名气大，对答案有模糊印象——作答只按文内推理</span>
+      <span class="tag">⭐ 本页最值钱的两段：<b>02+ 三声部表</b>（每句先标「对方 · 作者驳 · 作者让」，二十个空按声部填；<b>三个逻辑空全在让步一侧</b>）与 <b>02++ 档位尺</b>（likely／bound、advisable／urgent、partially、entirely、conclusive——七个空考的不是意思对不对，是<b>说到几分</b>）</span>
+    </div>
+  </header>
+
+  <div class="layout">
+    <main>
+      <!-- ========== 00 脉络 ========== -->
+      <section class="card">
+        <h2><span class="n">00</span>读前一分钟 · 全文脉络（完形先读首句，再看结构）</h2>
+        <p class="note">完形的<b>首句从不设空</b>。本篇首句：<i>Even if families don’t sit down to eat together as frequently as before, millions of Britons will nonetheless have got a share this weekend of one of the nation’s great traditions: the Sunday roast.</i>——给了三样东西：<b>话题</b>（周日烤肉，冒号后才揭晓）、<b>方向</b>（Even if … nonetheless：传统在松动，但这一样<b>照样</b>人人在吃——作者站在烤肉这边）、<b>口吻</b>（the nation’s great traditions——这是一篇<b>护着传统</b>的文章，下面一定有人要动它）。</p>
+        <p class="note" style="margin-top:10px">⭐⭐ <b>认文体：这是一篇社论，而且是驳论</b>。第三句 <code>Yet as we report now, the food police are …</code>——<b>as we report</b>＝「本报今天报道了」：说话的是报社自己（社论的口吻），<b>the food police</b> 是作者给对方起的外号——作者有立场、有靶子。读到这里就该在卷边写三个字：<b>「对 · 驳 · 让」</b>——后面每一句都属于其中一个声部：<b>转述对方</b>（食品警察说了什么、要人怎么做）· <b>作者驳</b>（证据在哪？日子还过不过？）· <b>作者让</b>（说句公道话……）。<b>二十个空按声部填</b>（⟹ <a href="#voice" style="color:var(--accent)">02+ 三声部表</a>）。</p>
+        <p class="note" style="margin-top:10px">📰 <b>本站已复盘的十五篇完形里，第三篇社论</b>——此前 <a href="2009_完形_智力的代价.html" style="color:var(--accent)">2009</a>（《纽约时报》社论）、<a href="2012_完形_大法官的伦理与法院的合法性.html" style="color:var(--accent)">2012</a>（《纽约时报》）；<b>第一篇英国报纸社论</b>，《每日电讯报》第一次进站。2012 是「应然 → 实然 → 对策」的立论社论，<b>本篇是驳论</b>：没有对策段，整篇在拆对方的一项警告，所以逻辑空不押因果、不押对策，<b>押让步</b>。</p>
+        <div class="flow">
+          <div class="fi"><b>① 段一 · 立靶：周日烤肉是国宝级的享受——可「食品警察」要把它变成罪恶之乐</b>——一家人一起吃饭少了，可周日烤肉照样人人在吃。<b>在</b>冷天里，没什么美食<b>比得上</b>它。然而本报今天报道：食品警察执意要把这份<b>享受</b>变成又一种<b>必定</b>伤身的罪恶之乐。
+            <span class="ev">1–4 空。1 On、2 match 是作者在夸（声部：作者）；❸ 句 Yet 一转，3 enjoyment、4 guaranteed 都在 <code>the food police are determined that …</code> 里——<b>声部是「转述对方」</b>，而且转述得很夸张（「必定」伤身），这是作者故意竖的靶子（⟹ <a href="#s2" style="color:var(--accent)">长难句 2</a>）。</span></div>
+          <div class="fi"><b>② 段二 · 摆出对方的警告，紧接一句「证据在哪？」</b>——食品标准局<b>发布</b>警告：高温烹制的食物里会生成丙烯酰胺。照它的意思：别把土豆烤脆、别吃薄底披萨、面包只<b>稍微</b>烤一下。可证据在哪？<b>虽然</b>小鼠实验显示它损伤神经，却没有<b>确凿</b>证据说它让人患癌。
+            <span class="ev">5–10 空。前两句是<b>对方声部</b>（5 issued、6 at、7 avoid、8 partially——FSA 的原意是「少一点」）；❸ 句 But where is the evidence 是<b>作者亮剑</b>，alarmist 一词定性；❹ 句<b>从句让、主句驳</b>：9 While 让出小鼠、10 conclusive 驳在人类（⟹ <a href="#s5" style="color:var(--accent)">长难句 5</a>）。</span></div>
+          <div class="fi"><b>③ 段三 · 让步：没实锤，但按预防原则，听它的也说得过去——毕竟吸烟致癌当年也是先有传言、后有证据</b>——科学家说它<b>可能</b>致癌，但没有硬证据。<b>依据</b>预防原则，可以说听 FSA 的是<b>明智的</b>。<b>毕竟</b>，吸烟致癌的说法传了多年，才找到证据证明这层<b>关联</b>。
+            <span class="ev">11–15 空，<b>整段都是让步</b>（11 是科学家的话、原刊带引号；12–13 是不署名的 it could be argued；14–15 是替 FSA 补的理由）。<b>让步的空只让半步</b>：11 likely 不是 bound、13 advisable 不是 urgent（⟹ <a href="#degree" style="color:var(--accent)">02++ 档位尺</a>、<a href="#s6" style="color:var(--accent)">长难句 6</a>、<a href="#s7" style="color:var(--accent)">7</a>）。</span></div>
+          <div class="fi"><b>④ 段四 · 反讽 → 公道话 → 总判决：日子还过不过？它倒也没说全戒——可这种宣传只会让人不再听</b>——当然，周日总能<b>端上</b>一块水煮牛肉配清蒸菜，不要布丁、不喝酒。可这日子还值得过吗？<b>说句公道话</b>，FSA 说它没叫人<b>彻底</b>戒掉烤制食品，只是少吃。然而，它的<b>宣传运动</b>难免显得咄咄逼人、保护过度。没完没了的健康恐慌，只会<b>落得</b>无人理睬。
+            <span class="ev">16–20 空。<b>一段里声部换了四次</b>：Doubtless（反讽的让步，16 served）→ But would life be worth living?（作者驳，反问）→ <b>17 To be fair</b>（让：转述 FSA 的自辩，18 entirely 与 8 partially 成对）→ However（作者驳，19 campaign）→ 末句总判决（20 end up）（⟹ <a href="#s8" style="color:var(--accent)">长难句 8</a>、<a href="#s9" style="color:var(--accent)">9</a>）。⚠️ <b>没有对策段</b>——驳论社论到「狼来了」就收住。</span></div>
+        </div>
+        <p class="note" style="margin-top:14px">📌 <b>第二条强线索：作者的转折词一个都没挖</b>——Yet（①❸）· But（②❸）· But（④❷）· However（④❹）全在明处；<b>挖掉的三个逻辑空 9 While、14 After all、17 To be fair 全在让步一侧</b>。命题人的意思很清楚：<b>作者往哪边站，题面已经告诉你了；考的是你能不能认出「作者暂时退半步」的那几句</b>。</p>
+        <p class="note" id="bg">🎭 <b>读前背景（不影响做题，但读懂了心里有底）</b>：</p>
+        <div class="tabwrap"><table class="otab">
+          <tr><th>文中说法</th><th>背景</th><th>管哪个空</th></tr>
+          <tr><td><span class="ow">The Telegraph · Telegraph View</span></td><td>《每日电讯报》，英国老牌大报，立场偏保守。Telegraph View 是它的<b>社论栏</b>：不署名、代表报社立场。本篇 2017-01-23 刊出，标题 <i>Hands off our roast potatoes</i>（别碰我们的烤土豆）。<b>as we report now</b>＝同一天本报新闻版报道了 FSA 的警告，社论随即表态</td><td>全篇文体</td></tr>
+          <tr><td><span class="ow">the Sunday roast</span></td><td>英国周日午餐：烤牛肉（或鸡、羊）＋ 烤土豆 ＋ 约克郡布丁 ＋ 肉汁，常配一杯葡萄酒。<b>烤土豆外皮要焦脆</b>才算地道——所以「别烤脆」等于动了这顿饭的魂</td><td>1 · 2 · 3 · 16</td></tr>
+          <tr><td><span class="ow">the food police</span></td><td>贬称：对别人吃什么指手画脚的官员、营养专家。同类说法 <b>nanny state</b>（保姆国家）——原刊末段正用了 nannying（保姆式管教），考卷换成 overprotective</td><td>4 · 5 · 19</td></tr>
+          <tr><td><span class="ow">Food Standards Authority (FSA)</span></td><td>英国食品安全监管机构，<b>正式名称是 Food Standards Agency</b>（2000 年成立）——原刊社论写成了 Authority，考卷照抄。2017 年 1 月它发起丙烯酰胺宣传，口号 <b>Go for Gold</b>：土豆、面包烤到金黄就好，别烤成焦褐色</td><td>5 · 8 · 19</td></tr>
+          <tr><td><span class="ow">acrylamide</span></td><td>丙烯酰胺：土豆、面包等淀粉类食物在约 120 ℃ 以上煎炸烤时生成，颜色越深含量越高。国际癌症研究机构把它列为 2A 类「很可能对人致癌」（主要依据是动物实验）——<b>原刊引科学家的话 likely to be carcinogenic 就是这个口径</b></td><td>6 · 9 · 10 · 11</td></tr>
+          <tr><td><span class="ow">the precautionary principle</span></td><td>预防原则：风险尚未被科学证实时，也可以先采取防范措施（「宁可信其有」）。起于环境法，1992 年《里约宣言》写入。<b>它天生就是「没证据也先防」</b>——所以作者刚说完「没证据」，就拿它来让步</td><td>12 · 13</td></tr>
+          <tr><td><span class="ow">smoking caused cancer</span></td><td>吸烟致癌：香烟早被戏称为「棺材钉」，但流行病学证据要到 1950 年代（英国 Doll 与 Hill 的研究）才拿出来，1964 年美国卫生署报告正式认定。<b>先有传言、后有证据</b>正是预防原则最常举的例子</td><td>14 · 15</td></tr>
+          <tr><td><span class="ow">Yorkshire pudding</span></td><td>约克郡布丁：面糊在烤肉油里烤成的咸味小饼，是周日烤牛肉的标配（不是甜点）。作者列「不要布丁、不喝酒、只吃水煮牛肉配蒸菜」，是故意把一顿饭减到最寡淡</td><td>16</td></tr>
+          <tr><td><span class="ow">health scares</span></td><td>英国报纸常用语：一阵阵的「某某食物致病」警告（鸡蛋沙门氏菌、疯牛病……）。末句是「狼来了」的逻辑：警告太多，公众就不再理睬</td><td>19 · 20</td></tr>
+        </table></div>
+      </section>
+      <!-- ========== 01 正文 ========== -->
+      <section class="card">
+        <h2><span class="n">01</span>完形正文（20 空 · 点空格跳到该题）
+          <button class="allbtn" onclick="toggleAll()" style="margin-left:auto">译文 开/关</button>
+          <button class="allbtn" onclick="revealAll()">显示全部答案</button>
+        </h2>
+        <p class="note">🟨 点<b>空格</b>＝跳到下面对应的解析卡（先自己选，再看解析）｜ 🟡 黄底词＝生词卡，点开看词根/辨析 ｜ 蓝色虚线＝长难句 ｜ 选中任意单词浮出「查有道」</p>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">①</span><span class="ls" onclick="go('s1')">Even if families don’t sit down to eat together as frequently as before, millions of Britons will <span class="tk" data-w="nonetheless">nonetheless</span> have <span class="tk" data-w="share">got a share</span> this weekend of one of the nation’s great <span class="tk" data-w="tradition">traditions</span>: the Sunday <span class="tk" data-w="roast">roast</span>.</span> <span class="ls" onclick="go('s2')"><span class="bk" data-n="1"><span class="idx">1</span>___</span> a cold winter’s day, few <span class="tk" data-w="culinary">culinary</span> pleasures can <span class="bk" data-n="2"><span class="idx">2</span>___</span> it. Yet as we report now, the <span class="tk" data-w="foodpolice">food police</span> are <span class="tk" data-w="determined">determined</span> that this <span class="bk" data-n="3"><span class="idx">3</span>___</span> should be <span class="tk" data-w="render">rendered</span> yet another <span class="tk" data-w="guiltypleasure">guilty pleasure</span> <span class="bk" data-n="4"><span class="idx">4</span>___</span> to damage our health.</span></p>
+          <div class="zh">即便如今一家人不像从前那样常常坐下来一起吃饭，这个周末，数以百万计的英国人还是会分享到国家的一大传统：周日烤肉。<b>在</b>寒冷的冬日里，很少有什么美食能<b>比得上</b>它。然而，正如本报今天所报道的，「食品警察」执意要把这份<b>享受</b>变成又一种<b>必定</b>损害健康的罪恶之乐。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">②</span><span class="ls" onclick="go('s3')">The <span class="tk" data-w="fsa">Food Standards Authority</span> (FSA) has <span class="bk" data-n="5"><span class="idx">5</span>___</span> a public warning about the risks of a <span class="tk" data-w="compound">compound</span> called <span class="tk" data-w="acrylamide">acrylamide</span> that forms in some foods cooked <span class="bk" data-n="6"><span class="idx">6</span>___</span> high temperatures.</span> <span class="ls" onclick="go('s4')">This means that people should <span class="bk" data-n="7"><span class="idx">7</span>___</span> <span class="tk" data-w="crisp">crisping</span> their roast potatoes, reject <span class="tk" data-w="thincrust">thin-crust pizzas</span> and only <span class="bk" data-n="8"><span class="idx">8</span>___</span> <span class="tk" data-w="toast">toast</span> their bread.</span> <span class="ls" onclick="go('s5')">But where is the evidence to support such <span class="tk" data-w="alarmist">alarmist</span> advice? <span class="bk" data-n="9"><span class="idx">9</span>___</span> studies have shown that acrylamide can cause <span class="tk" data-w="neurological">neurological</span> damage in mice, there is no <span class="bk" data-n="10"><span class="idx">10</span>___</span> evidence that it causes cancer in humans.</span></p>
+          <div class="zh">食品标准局（FSA）<b>发布</b>了一项公开警告，指出一种叫丙烯酰胺的化合物有风险——它会在某些<b>以</b>高温烹制的食物中生成。这就意味着，人们应当<b>避免</b>把烤土豆烤得焦脆、拒吃薄饼披萨，面包也只能<b>稍微</b>烤一烤。可是，支持这种危言耸听的建议的证据在哪里？<b>虽然</b>有研究表明丙烯酰胺会损伤小鼠的神经，却没有<b>确凿</b>证据表明它会让人患癌。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">③</span><span class="ls" onclick="go('s6')">Scientists say the compound is <span class="bk" data-n="11"><span class="idx">11</span>___</span> to cause cancer but have no <span class="tk" data-w="hardproof">hard scientific proof</span>. <span class="bk" data-n="12"><span class="idx">12</span>___</span> the <span class="tk" data-w="precautionary">precautionary principle</span>, it <span class="tk" data-w="argue">could be argued</span> that it is <span class="bk" data-n="13"><span class="idx">13</span>___</span> to follow the FSA advice.</span> <span class="ls" onclick="go('s7')"><span class="bk" data-n="14"><span class="idx">14</span>___</span>, it was <span class="tk" data-w="rumour">rumoured</span> that smoking caused cancer for years before the evidence was found to prove a <span class="bk" data-n="15"><span class="idx">15</span>___</span>.</span></p>
+          <div class="zh">科学家们说，这种化合物<b>有可能</b>致癌，但拿不出确凿的科学证据。<b>依据</b>预防原则，可以说听从食品标准局的建议是<b>明智的</b>。<b>毕竟</b>，吸烟致癌的说法流传了好多年，才找到证据证实两者之间的<b>关联</b>。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">译</button>
+          <p class="en"><span class="pno">④</span><span class="ls" onclick="go('s8')"><span class="tk" data-w="doubtless">Doubtless</span> a piece of <span class="tk" data-w="boiled">boiled beef</span> can always be <span class="bk" data-n="16"><span class="idx">16</span>___</span> up on Sunday alongside some <span class="tk" data-w="steamed">steamed vegetables</span>, without the <span class="tk" data-w="yorkshire">Yorkshire pudding</span> and no wine. But would life be <span class="tk" data-w="worthliving">worth living</span>?</span> <span class="ls" onclick="go('s9')"><span class="bk" data-n="17"><span class="idx">17</span>___</span>, the FSA says it is not telling people to <span class="tk" data-w="cutout">cut out</span> roast foods <span class="bk" data-n="18"><span class="idx">18</span>___</span>, but to reduce their lifetime <span class="tk" data-w="intake">intake</span>. However, its <span class="bk" data-n="19"><span class="idx">19</span>___</span> <span class="tk" data-w="riskdoing">risks coming across as</span> being <span class="tk" data-w="pushy">pushy</span> and <span class="tk" data-w="overprotective">overprotective</span>. Constant health <span class="tk" data-w="scare">scares</span> just <span class="bk" data-n="20"><span class="idx">20</span>___</span> with no one listening.</span></p>
+          <div class="zh">毫无疑问，周日总还可以<b>端上</b>一块水煮牛肉，配些清蒸蔬菜，不要约克郡布丁，也不喝葡萄酒。可这样的日子还值得过吗？<b>说句公道话</b>，食品标准局表示，它并不是让人们<b>彻底</b>戒掉烤制食品，而是要减少一生的摄入量。然而，它的<b>宣传运动</b>有可能让人觉得咄咄逼人、保护过度。没完没了的健康恐慌，只会<b>落得</b>无人理睬的下场。</div>
+        </div>
+      </section>
+      <!-- ========== 02 逐空精解 ========== -->
+      <section class="card">
+        <h2><span class="n">02</span>逐空精解（点选项即判 · 再看解析）</h2>
+        <div class="score">
+          <span><span class="v" id="sDone">0</span>/20 已答</span>
+          <span><span class="v" id="sRight">0</span> 对</span>
+          <span>折合 <span class="v" id="sPt">0</span> 分 / 10</span>
+          <button class="rst" onclick="location.reload()">↺ 重做</button>
+        </div>
+        <p class="note">每空 0.5 分。<b>先在心里说出「这句是谁在说」再点选项</b>——本篇是一篇<b>驳论社论</b>：作者反对食品标准局的警告，但中间让了三次步。难点在三件事：<b>① 转述对方的句子按对方的口径填</b>（4 guaranteed 是「食品警察」的笃定，不是作者的看法）；<b>② 让步句只让半步</b>——被 but／However 夹着的词要「够让步、不过头」（11 likely 不是 bound、13 advisable 不是 urgent）；<b>③ 三个逻辑空全在让步一侧</b>（9 While · 14 After all · 17 To be fair），作者自己的转折词 Yet／But／However 命题人一个都没挖。另有<b>五道题四个选项结构一样</b>（4、11 全能接 be ___ to do · 7 全接 doing · 12 全接名词 · 20 全是 ___ up），结构帮不上忙。</p>
+
+        <div class="q" id="q1" data-ans="1">
+          <div class="qhead"><span class="qno">1</span><span class="qt c-collo">固定搭配 · on ＋ 具体某一天：a cold winter’s day 是「某一个冬日」</span><span class="qpos">___ a cold winter’s day, few culinary pleasures can match it</span></div>
+          <span class="stem">… one of the nation’s great traditions: the Sunday roast. <em>1</em> a cold winter’s day, few culinary pleasures can <em>2</em> it.</span>
+          <div class="opts">
+            <div class="opt">A In<span class="gl">在……期间；在……之后</span></div>
+            <div class="opt">B On<span class="gl">在（某一天）</span></div>
+            <div class="opt">C Till<span class="gl">直到</span></div>
+            <div class="opt">D Towards<span class="gl">接近（某时）</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>介词，与 <code>a cold winter’s day</code> 构成句首时间状语。
+            <span class="lbl">🔗 线索</span>① 宾语是 <b>day</b>——具体某一天（on Monday · on Christmas Day · on a rainy morning），而且是带了修饰语的「某一个」冬日；② 上句刚说 this weekend 的 Sunday roast，本句「在那样一个冷天里」没有别的吃食比得上——<b>说的是那一天的体验</b>，不是一段时期。
+            <span class="lbl">✅ B On</span>原刊原句：<i>On a cold winter’s day, few culinary pleasures can match it.</i>
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>In：in 接月份、季节、年份、一天中的时段（in winter · in the morning）；day 前加了修饰语（a cold winter’s day）仍用 on。in a day 还有「一天之内」「一天之后」的意思，都不通。</div>
+              <div class="wr"><span class="l">C</span>Till：「直到一个冷天为止，少有美食比得上它」——难道冷天过后就比得上了？时间终点荒谬。</div>
+              <div class="wr"><span class="l">D</span>Towards：「快到某个冷天时」——本句是评述，不是讲某事在临近某时发生。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>day／night／morning 前一旦有具体修饰语，介词就用 on</b>：on a cold winter’s day · on the morning of May 1 · on a stormy night。<b>句首空不一定是逻辑空</b>——紧挨着的是名词短语时先想介词（⟹ <a href="套路库_阅读.html#R76" style="color:var(--accent)">R76</a>）。✍️ <i>On a cold winter’s day, nothing beats a bowl of hot noodles.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q2" data-ans="0">
+          <div class="qhead"><span class="qno">2</span><span class="qt c-word">词义辨析 · few … can ___ it：同类相比，没有能「比得上」它的</span><span class="qpos">few culinary pleasures can ___ it</span></div>
+          <span class="stem"><em>1</em> a cold winter’s day, few culinary pleasures can <em>2</em> it. Yet as we report now, the food police are determined that this <em>3</em> should be rendered yet another guilty pleasure …</span>
+          <div class="opts">
+            <div class="opt">A match<span class="gl">比得上，与……相当</span></div>
+            <div class="opt">B express<span class="gl">表达</span></div>
+            <div class="opt">C satisfy<span class="gl">满足；使满意</span></div>
+            <div class="opt">D influence<span class="gl">影响</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>谓语动词。主语 few culinary pleasures（很少有什么美食之乐），宾语 it（＝the Sunday roast）。
+            <span class="lbl">🔗 线索</span>① <b>主语和宾语是同类</b>：it 本身就是一种 culinary pleasure——同类之间最自然的关系是「比」；② <b>few ＋ 比较</b>＝「几乎没有能比得上的」＝最高级（Few can match it ≈ It is the best）；③ 首句刚把它捧为 great traditions，本句继续夸，下句 Yet 才翻。
+            <span class="lbl">✅ A match</span>＝比得上、匹敌（No one can match her in speed）。原刊原词。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>express：宾语该是想法、感受（express one’s gratitude）；「美食之乐表达烤肉」主宾都不搭。</div>
+              <div class="wr"><span class="l">C</span>satisfy：宾语是需求（satisfy demand）或人（satisfy customers）；it 是一顿饭，谈不上「被满足」。</div>
+              <div class="wr"><span class="l">D</span>influence：「很少有别的美食能影响周日烤肉」——同类之间没有「施加影响」的关系；作者要夸它，不是说它地位稳。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>「few／nothing／no one ＋ can ___ it」且主宾同类 ⟹ 比较义动词</b>：match · rival · compare with · beat · equal。✍️ <i>Few experiences can match the joy of reading a good book on a rainy afternoon.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q3" data-ans="3">
+          <div class="qhead"><span class="qno">3</span><span class="qt c-context">上下文语义 · this ___ 被 yet another guilty pleasure 预设为「乐」</span><span class="qpos">this ___ should be rendered yet another guilty pleasure</span></div>
+          <span class="stem">Yet as we report now, the food police are determined that this <em>3</em> should be rendered yet another guilty pleasure <em>4</em> to damage our health.</span>
+          <div class="opts">
+            <div class="opt">A patience<span class="gl">耐心</span></div>
+            <div class="opt">B concern<span class="gl">关心；担忧</span></div>
+            <div class="opt">C surprise<span class="gl">惊奇；意外之事</span></div>
+            <div class="opt">D enjoyment<span class="gl">享受；乐事</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>名词，this ___ 回指上文的 the Sunday roast，并作 render 的宾语（被动：this ___ should be rendered …）。
+            <span class="lbl">🔗 线索</span>① <b>this 回指</b>：上两句的核心是 great traditions、culinary pleasures——它是「乐」；② ⭐⭐ <b>yet another guilty pleasure 里的 another</b>：「把它变成<u>又一种</u>罪恶之乐」——another 预设它本来就是一种 pleasure，只是要被加上 guilty；③ 这是 render A B（把 A 变成 B）：A 与 B 同类（乐 → 罪恶之乐），变的只是 guilty 这个修饰语。
+            <span class="lbl">✅ D enjoyment</span>＝享受、乐事，是 culinary pleasures 的同义复现。原刊原词。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>patience：借「烤肉要慢慢烤」的常识造的；「把这份耐心变成又一种罪恶之乐」——耐心不是 pleasure，another 接不上。</div>
+              <div class="wr"><span class="l">B</span>concern：担忧是食品警察那一方的情绪，不是周日烤肉本身；this ___ 回指的是烤肉，不是人对它的看法。</div>
+              <div class="wr"><span class="l">C</span>surprise：周日烤肉是 great tradition——年年吃，谈不上「意外之喜」。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐⭐ <b>another／yet another／other 是预设词</b>：「又一个 X」预设前面那个也是 X——空格在 another X 的对面，就填 X 的同类（2013 新题型 Here, too 要求前面已有同类一例，同一个道理，⟹ <a href="套路库_阅读.html#R160" style="color:var(--accent)">R160</a>）。⭐ this ___ 回指空取上文的<b>中心概念</b>，不取某个细节（⟹ <a href="套路库_阅读.html#R51" style="color:var(--accent)">R51</a>）。
+          </div>
+        </div>
+
+        <div class="q" id="q4" data-ans="1">
+          <div class="qhead"><span class="qno">4</span><span class="qt c-word">词义辨析 · 转述对方就按对方的口径：食品警察「执意」⟹ 他们眼里烤肉「必定」伤身</span><span class="qpos">yet another guilty pleasure ___ to damage our health</span></div>
+          <span class="stem">… the food police are determined that this <em>3</em> should be rendered yet another guilty pleasure <em>4</em> to damage our health.</span>
+          <div class="opts">
+            <div class="opt">A intensified<span class="gl">被加强的</span></div>
+            <div class="opt">B guaranteed<span class="gl">必定会……的</span></div>
+            <div class="opt">C compelled<span class="gl">被迫的</span></div>
+            <div class="opt">D privileged<span class="gl">有幸的</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>过去分词作后置定语，<code>(which is) ___ to damage our health</code> 修饰 guilty pleasure。
+            <span class="lbl">🔗 线索</span>① ⭐⭐ <b>这一句是谁的看法？</b>——that 从句是 the food police are determined that … 的内容，<b>是作者在转述对方（而且故意转述得很夸张）</b>：对方「执意」认定烤肉伤身。空格按对方的口径填：<b>笃定</b>；② be guaranteed to do＝必定会（The plan is guaranteed to fail）；③ 下一段作者自己说的是 no conclusive evidence——<b>作者和对方口径正相反，这正是作者要驳的靶子</b>。
+            <span class="lbl">✅ B guaranteed</span>原刊原词。<b>「必定伤身」是作者替对方说重了的话</b>——对方越笃定，下一段的「证据在哪？」就越有力。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>intensified：be intensified to do＝「被加强以便……」，表目的；烤肉不是「被加强来伤身」的。</div>
+              <div class="wr"><span class="l">C</span>compelled：be compelled to do＝被迫做；罪恶之乐没有意志，谈不上「被迫伤身」。</div>
+              <div class="wr"><span class="l">D</span>privileged：be privileged to do＝有幸做，褒义；「有幸损害我们的健康」色彩完全不搭。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐⭐ <b>别拿作者的立场去填转述对方的句子</b>：作者认为「没证据」，可这一空在 the food police are determined that 里——填对方的笃定。<b>驳论文先给每句标声部</b>（新卡 <a href="套路库_阅读.html#R288" style="color:var(--accent)">R288</a>，⟹ <a href="#voice" style="color:var(--accent)">02+ 声部表</a>）。⭐ be ___ to do 四个都能搭，结构不筛——比的是「谁的意志」。✍️ <i>Cramming the night before is guaranteed to leave you exhausted.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q5" data-ans="2">
+          <div class="qhead"><span class="qno">5</span><span class="qt c-collo">固定搭配 · issue a warning：FSA 就是上一段的「食品警察」，警告是它发的</span><span class="qpos">The FSA has ___ a public warning</span></div>
+          <span class="stem">The Food Standards Authority (FSA) has <em>5</em> a public warning about the risks of a compound called acrylamide that forms in some foods cooked <em>6</em> high temperatures.</span>
+          <div class="opts">
+            <div class="opt">A ignored<span class="gl">忽视</span></div>
+            <div class="opt">B received<span class="gl">收到</span></div>
+            <div class="opt">C issued<span class="gl">发布</span></div>
+            <div class="opt">D cancelled<span class="gl">取消，撤销</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>谓语动词（has ___ 现在完成时），宾语 a public warning。
+            <span class="lbl">🔗 线索</span>① 固定搭配 <b>issue a warning／a statement／guidelines</b>＝发布；② ⭐ <b>FSA 就是上段的 the food police</b>——上段说「本报今天报道了食品警察的动作」，本段第一句就是那个动作：发警告；③ 下一句 This means that people should … 是在解读警告内容——警告已经发出、还有效。
+            <span class="lbl">✅ C issued</span>原刊原词。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>ignored：「FSA 忽视了警告」——把 FSA 和 food police 当成了两家（食品警察发警告、FSA 不理）；可全文只有一个被批的对象，下文 the FSA advice 就是这份警告。</div>
+              <div class="wr"><span class="l">B</span>received：「FSA 收到了警告」——同样把发警告的人当成了别人。</div>
+              <div class="wr"><span class="l">D</span>cancelled：「撤销了警告」——那下一句 This means that people should … 就没的可解读了；④段 FSA 还在为自己的建议辩护。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>贬称与正式名称是同一个人</b>：社论常先骂一句外号（the food police · the nanny state），下一段再亮真名——两处的主语当一个人处理。✍️ <i>The school has issued a warning about the dangers of swimming in the lake.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q6" data-ans="3">
+          <div class="qhead"><span class="qno">6</span><span class="qt c-collo">固定搭配 · at ＋ 温度／速度／比率</span><span class="qpos">foods cooked ___ high temperatures</span></div>
+          <span class="stem">… a compound called acrylamide that forms in some foods cooked <em>6</em> high temperatures.</span>
+          <div class="opts">
+            <div class="opt">A under<span class="gl">在……之下</span></div>
+            <div class="opt">B by<span class="gl">通过，借助</span></div>
+            <div class="opt">C for<span class="gl">为了；由于</span></div>
+            <div class="opt">D at<span class="gl">以（温度、速度）</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>介词，<code>cooked ___ high temperatures</code> 作 foods 的后置定语。
+            <span class="lbl">🔗 线索</span>温度、速度、价格、比率一律用 <b>at</b>：at 200 degrees · at high speed · at a low price · at a rate of。
+            <span class="lbl">✅ D at</span>原刊原词。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>under：under 接条件、压力（under pressure · under normal conditions）；中文「在高温下」诱人选它，但英文温度不用 under。</div>
+              <div class="wr"><span class="l">B</span>by：by 接方式、手段（by hand · by boiling）；高温是烹制的程度，不是手段。</div>
+              <div class="wr"><span class="l">C</span>for：「为了高温而烹制」「因为高温而烹制」都不通。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>中文「在……下」≠ under</b>：在高温下 at high temperatures · 在……帮助下 with the help of · 在……情况下 in the case of。✍️ <i>Water boils at 100 degrees Celsius.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q7" data-ans="1">
+          <div class="qhead"><span class="qno">7</span><span class="qt c-context">上下文语义 · 三组并列谓语同向：___ crisping · reject · only partially toast</span><span class="qpos">people should ___ crisping their roast potatoes</span></div>
+          <span class="stem">This means that people should <em>7</em> crisping their roast potatoes, reject thin-crust pizzas and only <em>8</em> toast their bread.</span>
+          <div class="opts">
+            <div class="opt">A forget<span class="gl">忘记</span></div>
+            <div class="opt">B avoid<span class="gl">避免</span></div>
+            <div class="opt">C finish<span class="gl">完成</span></div>
+            <div class="opt">D regret<span class="gl">后悔</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>谓语动词，与 reject、toast 并列，共用 should；宾语是动名词 crisping。
+            <span class="lbl">🔗 线索</span>① ⚠️ <b>四个动词都能接 doing</b>——结构筛不掉；② <b>并列三项同向</b>：reject thin-crust pizzas（拒吃）· only partially toast（少烤）——第一项也得是「别做」；③ This means that 是在把上句的警告（高温烹制有风险）翻译成行动建议——<b>建议管的是做法</b>，不是记性或心情；④ <b>avoid 的宾语是坏事</b>，而 crisping 在 FSA 眼里正是坏事（高温 → 丙烯酰胺）。
+            <span class="lbl">✅ B avoid</span>＝避免做（avoid doing）。原刊原词。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>forget：forget doing＝忘了做过某事（已做）；「人们应当忘了自己烤脆过土豆」不是建议。</div>
+              <div class="wr"><span class="l">C</span>finish：finish doing＝做完；「应当把土豆烤脆做完」与 reject 反向。</div>
+              <div class="wr"><span class="l">D</span>regret：regret doing＝后悔做过；建议针对的是做法，不是事后的心情——后面 reject、toast 都是动作。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>并列谓语空：先看同一个 should 下的其他动词</b>，方向照抄（⟹ <a href="套路库_阅读.html#R77" style="color:var(--accent)">R77</a>）；⭐ avoid／prevent 的宾语是坏事——给宾语标「＋／−」（⟹ <a href="套路库_阅读.html#R230" style="color:var(--accent)">R230</a>）。四个全接 doing ＝ 结构失效（⟹ <a href="套路库_阅读.html#R157" style="color:var(--accent)">R157</a>）。
+          </div>
+        </div>
+
+        <div class="q" id="q8" data-ans="2">
+          <div class="qhead"><span class="qno">8</span><span class="qt c-word">词义辨析 · only 限定程度：面包「只烤一部分」＝浅烤</span><span class="qpos">only ___ toast their bread</span></div>
+          <span class="stem">This means that people should <em>7</em> crisping their roast potatoes, reject thin-crust pizzas and only <em>8</em> toast their bread.</span>
+          <div class="opts">
+            <div class="opt">A easily<span class="gl">容易地；动辄</span></div>
+            <div class="opt">B regularly<span class="gl">定期地；整齐地</span></div>
+            <div class="opt">C partially<span class="gl">部分地，不完全地</span></div>
+            <div class="opt">D initially<span class="gl">起初</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>副词，修饰 toast；前面有 <b>only</b>。
+            <span class="lbl">🔗 线索</span>① FSA 的道理是「高温烤久了生成丙烯酰胺」⟹ 对面包的建议只能是<b>烤得少一点、浅一点</b>——空格要表示<b>程度</b>；② <b>only 限定程度</b>：only partially＝只烤到一定程度，别烤透（烤焦）；③ ⭐ 与 18 题 not … entirely <b>是一对程度副词</b>——FSA 的口径从头到尾是「少一点」，不是「别吃」（⟹ <a href="#degree" style="color:var(--accent)">02++</a>）。
+            <span class="lbl">✅ C partially</span>＝部分地、不完全地（partially cooked 半熟）。原刊原词。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>easily：说难易（「只容易地烤一烤」不通）；easily 另有「动辄、很快就」（She cries easily），说的是倾向，不是程度。</div>
+              <div class="wr"><span class="l">B</span>regularly：说频率（定期烤）或整齐——FSA 管的是烤到什么颜色，不是多久烤一次。</div>
+              <div class="wr"><span class="l">D</span>initially：说顺序（「只先烤一下，再……」）——后面没有「再」；这里说的是烤的程度。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>三缺一</b>：easily（难易）／regularly（频率）／initially（顺序）各说一件事，<b>partially 唯一说程度</b>——本篇三缺一成立得干脆的只有三组，这是其一（⟹ <a href="套路库_阅读.html#R74" style="color:var(--accent)">R74</a>）。partially（质上不完全）vs partly（量上一部分）：The road is partly finished。✍️ <i>The project was only partially successful.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q9" data-ans="2">
+          <div class="qhead"><span class="qno">9</span><span class="qt c-logic">逻辑关系 · While 让步：小鼠身上有，人身上没有</span><span class="qpos">___ studies have shown … in mice, there is no … evidence … in humans</span></div>
+          <span class="stem">But where is the evidence to support such alarmist advice? <em>9</em> studies have shown that acrylamide can cause neurological damage in mice, there is no <em>10</em> evidence that it causes cancer in humans.</span>
+          <div class="opts">
+            <div class="opt">A If<span class="gl">如果</span></div>
+            <div class="opt">B Since<span class="gl">既然；由于</span></div>
+            <div class="opt">C While<span class="gl">虽然；然而</span></div>
+            <div class="opt">D Unless<span class="gl">除非</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>从属连词，引导句首状语从句；主句 there is no ___ evidence …。
+            <span class="lbl">🔗 线索</span>① 两个分句一正一反：从句「研究<b>已经证明</b>……小鼠」、主句「<b>没有</b>……证据……人类」——<b>对比轴有两根：mice ↔ humans、neurological damage ↔ cancer</b>；② 上一句是作者的质问 But where is the evidence? ——本句先承认一点（有研究），再落到「没证据」；③ <b>让步在从句、作者的判断在主句</b>。
+            <span class="lbl">✅ C While</span>＝although（句首的 while 常表让步）。原刊原词。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>If：条件；「如果小鼠研究证明了……，就没有人类证据」——前者不是后者的条件，而且研究已经发生（have shown），不是假设。</div>
+              <div class="wr"><span class="l">B</span>Since：原因；「既然小鼠研究证明了，所以人类没证据」——因果不通。</div>
+              <div class="wr"><span class="l">D</span>Unless：「除非小鼠研究证明了……，否则没有人类证据」——逻辑正好反：言下之意成了「小鼠研究能当人类证据」。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>句首 While ＋ 两个分句方向相反 ⟹ 让步</b>；while 另有「当……时」「而（对比）」两义，句首＋现在完成时（have shown）多是让步。⭐⭐ 本篇<b>三个逻辑空全在让步那一侧</b>（9 While · 14 After all · 17 To be fair），作者自己的 Yet／But／However 一个没挖（⟹ <a href="#voice" style="color:var(--accent)">02+</a>，新卡 <a href="套路库_阅读.html#R288" style="color:var(--accent)">R288</a>）。
+          </div>
+        </div>
+
+        <div class="q" id="q10" data-ans="0">
+          <div class="qhead"><span class="qno">10</span><span class="qt c-collo">固定搭配 · conclusive evidence：比的是证据的「强度」，下一段 no hard scientific proof 是回声</span><span class="qpos">there is no ___ evidence that it causes cancer in humans</span></div>
+          <span class="stem"><em>9</em> studies have shown that acrylamide can cause neurological damage in mice, there is no <em>10</em> evidence that it causes cancer in humans.</span>
+          <div class="opts">
+            <div class="opt">A conclusive<span class="gl">确凿的，决定性的</span></div>
+            <div class="opt">B external<span class="gl">外部的</span></div>
+            <div class="opt">C secondary<span class="gl">次要的；间接的</span></div>
+            <div class="opt">D negative<span class="gl">否定的；负面的</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>形容词，修饰 evidence。
+            <span class="lbl">🔗 线索</span>① 作者刚质问 where is the evidence——他要说的不是「一点证据都没有」（小鼠研究就是证据），而是<b>「不够确凿」</b>；② ⭐⭐ <b>下一段第一句就是回声</b>：Scientists … have no <b>hard</b> scientific proof——hard proof ＝ conclusive evidence；③ 搭配 conclusive evidence／proof 是现成的。
+            <span class="lbl">✅ A conclusive</span>＝确凿的、有定论的（conclude 下结论）。原刊原词。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>external：说证据的<b>来源</b>（内部／外部）；本句对比的是证据的<b>对象</b>（小鼠／人）和<b>强度</b>，不是来源。</div>
+              <div class="wr"><span class="l">C</span>secondary：说证据的<b>主次</b>；「没有次要证据」反倒暗示有主要证据——与作者要说的「证据不足」反向。</div>
+              <div class="wr"><span class="l">D</span>negative：negative evidence 是「否定性证据」（证明某事<u>不</u>成立）；「没有否定证据证明它致癌」＝致癌无可辩驳——与作者立场正相反。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>三缺一</b>：external（来源）／secondary（主次）／negative（方向）说证据的「种类」，<b>conclusive 唯一说「强度」</b>——而作者质疑的就是强度（⟹ <a href="套路库_阅读.html#R74" style="color:var(--accent)">R74</a>）。⭐ <b>作者的质疑句（where is the evidence?）之后，形容词空往「够不够」那头填</b>。✍️ <i>There is no conclusive evidence that video games make children violent.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q11" data-ans="0">
+          <div class="qhead"><span class="qno">11</span><span class="qt c-word">词义辨析 · 让步只让一档：likely（有可能）够让步，bound（一定会）就让过了头、but 翻不动了</span><span class="qpos">the compound is ___ to cause cancer but have no hard scientific proof</span></div>
+          <span class="stem">Scientists say the compound is <em>11</em> to cause cancer but have no hard scientific proof.</span>
+          <div class="opts">
+            <div class="opt">A likely<span class="gl">可能的</span></div>
+            <div class="opt">B bound<span class="gl">必定的；有义务的</span></div>
+            <div class="opt">C insufficient<span class="gl">不足的</span></div>
+            <div class="opt">D slow<span class="gl">缓慢的</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>形容词，be ___ to do。四个都能接 to do（be likely／bound／insufficient／slow to do），结构不筛。
+            <span class="lbl">🔗 线索</span>① <b>同一个主语 Scientists 说了两件事，中间是 but</b>：「它 ___ 致癌」但「没有硬证据」——前半句必须<b>偏向致癌</b>（否则 but 翻什么？），又<b>不能说死</b>（否则和「没证据」自相矛盾）；② ⟹ 取中间那一档：<b>有可能</b>；③ ⭐ 原刊这里带引号：Scientists say the compound is <i>“likely to be carcinogenic”</i>——<b>是科学家的原话</b>，考卷拆了引号、把 carcinogenic 换成 cause cancer（⟹ <a href="#orig" style="color:var(--accent)">02+++</a>）。
+            <span class="lbl">✅ A likely</span>be likely to do＝有可能做。原刊原词（引号里的）。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>bound：be bound to do＝必定会——「一定致癌，但没有硬证据」自相矛盾；<b>让过了头</b>，but 翻不动。</div>
+              <div class="wr"><span class="l">C</span>insufficient：「不足以致癌」——等于说不致癌，与 but 后「没证据」同向，but 没得翻。</div>
+              <div class="wr"><span class="l">D</span>slow：「致癌很慢」——仍然默认一定致癌，只是快慢问题，同样与「没证据」矛盾。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐⭐ <b>让步句的程度空取「够让步、不过头」的那一档</b>：让步是为了被 but 翻回来——让得太满（bound 一定）就翻不动，让得太少（insufficient）就没什么可翻（新卡 <a href="套路库_阅读.html#R289" style="color:var(--accent)">R289</a>）。likely ＜ probable ＜ bound／certain，是一把尺。✍️ <i>Such measures are likely to help, but they are no cure-all.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q12" data-ans="2">
+          <div class="qhead"><span class="qno">12</span><span class="qt c-collo">固定搭配 · on the basis of ＋ 原则：原则是评判的依据</span><span class="qpos">___ the precautionary principle, it could be argued that …</span></div>
+          <span class="stem">Scientists say the compound is <em>11</em> to cause cancer but have no hard scientific proof. <em>12</em> the precautionary principle, it could be argued that it is <em>13</em> to follow the FSA advice.</span>
+          <div class="opts">
+            <div class="opt">A In addition to<span class="gl">除……之外（还）</span></div>
+            <div class="opt">B At the cost of<span class="gl">以……为代价</span></div>
+            <div class="opt">C On the basis of<span class="gl">根据，基于</span></div>
+            <div class="opt">D In contrast to<span class="gl">与……相比</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>介词短语，引出句首状语；宾语 the precautionary principle。四个选项全接名词——结构不筛。
+            <span class="lbl">🔗 线索</span>① <b>预防原则</b>＝风险未证实也先防——正好接住上句的「没有硬证据」：没实锤，但按这个原则也可以先防；② 主句 it could be argued that …＝「可以认为」——<b>一个原则 ＋ 一个论断</b>，原则是论断的依据；③ 固定说法 on the basis of the principle／evidence／data。
+            <span class="lbl">✅ C On the basis of</span>原刊原词。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>In addition to：「除了预防原则之外，还可以说……」——预防原则和「听 FSA 的建议」不是两件并列的事，前者正是后者的理由。</div>
+              <div class="wr"><span class="l">B</span>At the cost of：「以牺牲预防原则为代价」——听 FSA 的恰恰是遵守预防原则，不是牺牲它。</div>
+              <div class="wr"><span class="l">D</span>In contrast to：「与预防原则相反，可以说应该听 FSA 的」——两者同向，没有对比。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>句首介词短语空 ＋ 宾语是原则／证据／数据 ⟹ 依据类</b>（on the basis of · in light of · according to）。<b>句首空不全是逻辑空</b>：本篇 1 On、12 On the basis of 都是句首介词（2019 恰好也是 1、12 两个非逻辑的句首空）（⟹ <a href="套路库_阅读.html#R76" style="color:var(--accent)">R76</a>）。
+          </div>
+        </div>
+
+        <div class="q" id="q13" data-ans="3">
+          <div class="qhead"><span class="qno">13</span><span class="qt c-word">词义辨析 · it could be argued 是半署名的让步：取「明智的」，不取「紧迫的」</span><span class="qpos">it could be argued that it is ___ to follow the FSA advice</span></div>
+          <span class="stem"><em>12</em> the precautionary principle, it could be argued that it is <em>13</em> to follow the FSA advice.</span>
+          <div class="opts">
+            <div class="opt">A interesting<span class="gl">有趣的</span></div>
+            <div class="opt">B fortunate<span class="gl">幸运的</span></div>
+            <div class="opt">C urgent<span class="gl">紧急的</span></div>
+            <div class="opt">D advisable<span class="gl">明智的，可取的</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>形容词，it is ___ to do（it 是形式主语）——对「听从 FSA 建议」这个做法的评价。
+            <span class="lbl">🔗 线索</span>① <b>依据是预防原则</b>——预防原则只能推出「这样做比较稳妥」；② ⭐⭐ <b>it could be argued</b>＝could（可能）＋ 被动（不署名）——<b>作者只肯说到「可以这么认为」</b>，评价词也只能是温和的一档；③ 下一段 To be fair … However 再翻——这里的认可是临时的。
+            <span class="lbl">✅ D advisable</span>＝可取的、明智的（It is advisable to book in advance）。原刊原词。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>interesting：「听从建议很有趣」——跟预防原则毫无关系。</div>
+              <div class="wr"><span class="l">B</span>fortunate：be fortunate to do＝有幸做——是事后庆幸，不是对该不该做的评价。</div>
+              <div class="wr"><span class="l">C</span>urgent：「刻不容缓」——<b>让过了头</b>：作者刚说没有硬证据，还在 could be argued 这层保护里，不可能转身说紧迫；而且作者通篇嫌 FSA 危言耸听，urgent 正是他反对的口气。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐⭐ <b>it could be argued／one might say／admittedly 圈起来的让步 ⟹ 评价词取温和档</b>（advisable · reasonable · understandable），不取强档（urgent · essential · vital）（新卡 <a href="套路库_阅读.html#R289" style="color:var(--accent)">R289</a>）。✍️ <i>It could be argued that it is advisable to limit screen time, but banning phones outright goes too far.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q14" data-ans="1">
+          <div class="qhead"><span class="qno">14</span><span class="qt c-logic">逻辑关系 · After all 给上句补理由：历史先例「先有传言、后有证据」</span><span class="qpos">___, it was rumoured that smoking caused cancer for years before …</span></div>
+          <span class="stem"><em>12</em> the precautionary principle, it could be argued that it is <em>13</em> to follow the FSA advice. <em>14</em>, it was rumoured that smoking caused cancer for years before the evidence was found to prove a <em>15</em>.</span>
+          <div class="opts">
+            <div class="opt">A As usual<span class="gl">像往常一样</span></div>
+            <div class="opt">B After all<span class="gl">毕竟；别忘了</span></div>
+            <div class="opt">C By definition<span class="gl">按定义；必然</span></div>
+            <div class="opt">D In particular<span class="gl">尤其，特别</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>句首连接性状语，连接上下两句。
+            <span class="lbl">🔗 线索</span>① 上句：没有实锤也可以先防；本句：吸烟致癌<b>当年也是先有传言、多年后才找到证据</b>——<b>本句是上句的理由</b>（「现在没证据」不等于「没危害」）；② 引出理由、提醒一个大家都知道的事实 ⟹ After all；③ 吸烟和丙烯酰胺<b>是两件事</b>，本句是拿旧事作类比。
+            <span class="lbl">✅ B After all</span>＝毕竟、别忘了（用来补一个理由）。原刊原词。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>As usual：「照例」——同一件事按老样子又发生了一次；吸烟和烤肉是两件事，而且吸烟那段是历史，不是「照例」。</div>
+              <div class="wr"><span class="l">C</span>By definition：「按定义、必然」——吸烟致癌并不是从定义推出来的，恰恰是靠多年后的证据才坐实。</div>
+              <div class="wr"><span class="l">D</span>In particular：「尤其是」——要先有一类，再从中挑一个；上句没有一类东西可挑，吸烟也不是丙烯酰胺的一个特例。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐⭐ <b>After all ＋ 旧例 ＝ 给上句补理由的类比</b>：旧例必须与上句<b>同构</b>（吸烟 : 癌症 ＝ 丙烯酰胺 : 癌症；当年没证据 ＝ 现在没证据），15 题就从同构里定（新卡 <a href="套路库_阅读.html#R290" style="color:var(--accent)">R290</a>）。⚠️ 这仍是<b>让步的一部分</b>：作者在替 FSA 说话，下一段 But would life be worth living? 才翻回来。
+          </div>
+        </div>
+
+        <div class="q" id="q15" data-ans="0">
+          <div class="qhead"><span class="qno">15</span><span class="qt c-context">上下文语义 · 先例与本案同构：证据要证明的是「吸烟—癌症」这对关联</span><span class="qpos">before the evidence was found to prove a ___</span></div>
+          <span class="stem"><em>14</em>, it was rumoured that smoking caused cancer for years before the evidence was found to prove a <em>15</em>.</span>
+          <div class="opts">
+            <div class="opt">A connection<span class="gl">联系，关联</span></div>
+            <div class="opt">B combination<span class="gl">结合，组合</span></div>
+            <div class="opt">C resemblance<span class="gl">相似</span></div>
+            <div class="opt">D pattern<span class="gl">模式；规律</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>名词，prove 的宾语；证据要证明的对象。
+            <span class="lbl">🔗 线索</span>① 同句前半：smoking <b>caused</b> cancer——传言的内容是「吸烟 → 癌症」，证据要证明的就是这根因果线；② ⭐ <b>与本案同构</b>：②段 no conclusive evidence <b>that it causes cancer</b>——两处要证明的都是「X 致癌」这层关系；③ prove a connection／link between A and B 是现成搭配。
+            <span class="lbl">✅ A connection</span>原刊原词（prove a connection）。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>combination：「组合」——吸烟与癌症不是被组合在一起，而是一个导致另一个。</div>
+              <div class="wr"><span class="l">C</span>resemblance：「相似」——借「吸烟和烤肉很像」的类比造的陷阱；可证据证明的是吸烟和<b>癌症</b>之间的事，不是吸烟和烤肉像不像。<b>别把类比本身当成被证明的对象</b>。</div>
+              <div class="wr"><span class="l">D</span>pattern：「模式」——证明「如何致癌的规律」；本句关心的是「是否致癌」这一层。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>prove／establish／find a ___ between A and B ⟹ link · connection · correlation</b>。⭐⭐ 类比句里的空，填的是<b>旧例内部</b>的那一格（吸烟—癌症），不是旧例和本案之间的关系（新卡 <a href="套路库_阅读.html#R290" style="color:var(--accent)">R290</a>）。✍️ <i>Scientists have found a clear connection between sleep and memory.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q16" data-ans="3">
+          <div class="qhead"><span class="qno">16</span><span class="qt c-collo">固定搭配 · serve up 端上桌：Doubtless 让给对方的，是一顿寡淡的饭</span><span class="qpos">a piece of boiled beef can always be ___ up on Sunday</span></div>
+          <span class="stem">Doubtless a piece of boiled beef can always be <em>16</em> up on Sunday alongside some steamed vegetables, without the Yorkshire pudding and no wine. But would life be worth living?</span>
+          <div class="opts">
+            <div class="opt">A made<span class="gl">make up 组成；编造</span></div>
+            <div class="opt">B used<span class="gl">use up 用完</span></div>
+            <div class="opt">C saved<span class="gl">save up 攒钱</span></div>
+            <div class="opt">D served<span class="gl">serve up 端上（饭菜）</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>动词过去分词，与 up 组成短语动词，被动：can always be ___ up。
+            <span class="lbl">🔗 线索</span>① 主语是一块水煮牛肉，状语 on Sunday、alongside some steamed vegetables——<b>画面是周日饭桌</b>：端上一块牛肉配蔬菜；② ⭐ Doubtless＝固然：作者「让」给 FSA 一顿不烤、不脆、没布丁、没酒的饭，下一句 But would life be worth living? 立刻反问——<b>这是反讽的让步</b>，但空格本身只要一个<b>字面上讲得通的上菜动词</b>。
+            <span class="lbl">✅ D served</span>serve up＝（把饭菜）端上桌。原刊原词。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>made：be made up of＝由……组成（还缺 of）；make up 作「拼凑一顿饭」时宾语是一顿饭，不是一块牛肉。</div>
+              <div class="wr"><span class="l">B</span>used：use up＝用完、吃光；「周日总能把一块水煮牛肉吃光」——作者要说的是吃什么，不是吃没吃完。</div>
+              <div class="wr"><span class="l">C</span>saved：save up＝攒钱、存起来；宾语通常是钱，「攒一块牛肉」不通。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>四个 ___ up 同形，比的是动词本身</b>——先想画面（饭桌 ⟹ 上菜）。⭐ <b>Doubtless／Of course／Admittedly 开头的句子是让步，下一句必翻</b>；本篇的 Doubtless 让步带着讽刺（⟹ <a href="#voice" style="color:var(--accent)">02+</a>）。✍️ <i>The canteen serves up the same dishes every week.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q17" data-ans="2">
+          <div class="qhead"><span class="qno">17</span><span class="qt c-logic">逻辑关系 · To be fair：反讽之后替对方说句公道话，下一句 However 再翻</span><span class="qpos">___, the FSA says it is not telling people to cut out roast foods …</span></div>
+          <span class="stem">But would life be worth living? <em>17</em>, the FSA says it is not telling people to cut out roast foods <em>18</em>, but to reduce their lifetime intake. However, its <em>19</em> risks coming across as being pushy and overprotective.</span>
+          <div class="opts">
+            <div class="opt">A To be brief<span class="gl">简言之</span></div>
+            <div class="opt">B For instance<span class="gl">例如</span></div>
+            <div class="opt">C To be fair<span class="gl">公平地说</span></div>
+            <div class="opt">D In general<span class="gl">总体上，通常</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>句首插入语，连接上下句、标明作者此刻的姿态。
+            <span class="lbl">🔗 线索</span>① <b>上句</b>是作者最狠的一击（反问：只吃水煮牛肉，活着还有啥意思？）；② <b>本句</b>内容却是替 FSA 澄清——它没叫人彻底戒掉烤制食品，只是少吃；③ <b>下句</b>立刻 However 再批——<b>「狠批 → 替对方说句公道话 → 再批」</b>，中间这一拍是让步；④ 本句的信息来自 FSA 自己（the FSA says）：作者是在<b>如实补一句对方的说法</b>，不是在总结或举例。
+            <span class="lbl">✅ C To be fair</span>＝说句公道话、公平地讲。原刊原词。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>To be brief：「简言之」要概括前文；本句是新信息（FSA 的澄清），而且和上句的反问方向相反。</div>
+              <div class="wr"><span class="l">B</span>For instance：本句不是上句的例子——上句是反问，本句是替对方辩护。</div>
+              <div class="wr"><span class="l">D</span>In general：「总的来说」要把前面几点归纳一下；本句只说了 FSA 的一个澄清，而且马上被 However 推翻，不是总论。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐⭐ <b>「批 → ___ → However 批」夹着的一拍，是让步</b>：To be fair · Admittedly · Granted · Of course（⟹ <a href="套路库_阅读.html#R131" style="color:var(--accent)">R131</a> 社论对轴，新卡 <a href="套路库_阅读.html#R288" style="color:var(--accent)">R288</a>）。📌 本站已复盘的考卷原文里，to be fair 此前只在 <a href="2015_T4_窃听案与道德目的缺失.html" style="color:var(--accent)">2015 T4</a> 出现过一次，而且是字面义（to be fair in what was written，写得公正）——<b>作句首插入语「说句公道话」，本篇是第一次</b>。✍️ <i>To be fair, the new policy has reduced traffic in the city centre. However, …</i>
+          </div>
+        </div>
+
+        <div class="q" id="q18" data-ans="0">
+          <div class="qhead"><span class="qno">18</span><span class="qt c-context">上下文语义 · not … ___, but to reduce：戒 vs 减，两端是「彻底」对「少一点」</span><span class="qpos">not telling people to cut out roast foods ___, but to reduce their lifetime intake</span></div>
+          <span class="stem"><em>17</em>, the FSA says it is not telling people to cut out roast foods <em>18</em>, but to reduce their lifetime intake.</span>
+          <div class="opts">
+            <div class="opt">A entirely<span class="gl">完全地，彻底地</span></div>
+            <div class="opt">B gradually<span class="gl">逐渐地</span></div>
+            <div class="opt">C reluctantly<span class="gl">不情愿地</span></div>
+            <div class="opt">D carefully<span class="gl">小心地</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>副词，修饰 cut out roast foods。
+            <span class="lbl">🔗 线索</span>① <b>取舍结构 not … but …</b>：not to cut out roast foods ___, but to reduce their lifetime intake——被否定的一端与 reduce（减少）必须<b>在同一根轴上反向</b>：「完全不吃」vs「少吃」；② 这根轴是<b>程度</b> ⟹ 程度副词；③ ⭐ 与 8 题 only partially toast <b>是一对</b>：FSA 的口径一直是「少一点」。
+            <span class="lbl">✅ A entirely</span>原刊原词。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>gradually：「不是让人逐步戒掉，而是减少摄入」——逐步戒掉的对立面应是一下子戒掉，不是「减少」；而且逐步戒掉最终还是戒。</div>
+              <div class="wr"><span class="l">C</span>reluctantly：「不情愿地戒掉」说的是心态；reduce 没有心态，两端不在一根轴上。</div>
+              <div class="wr"><span class="l">D</span>carefully：「不是让人小心地戒掉」——暗示「可以大大咧咧地戒掉」，荒谬。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>not X but Y：先把 Y 写下来，再找同一根轴上的反面</b>（⟹ <a href="套路库_阅读.html#R104" style="color:var(--accent)">R104</a>）。⭐ <b>三缺一</b>：gradually／reluctantly／carefully 都是方式，<b>entirely 唯一说程度</b>——与 8 题 partially 同构（⟹ <a href="#degree" style="color:var(--accent)">02++</a>）。✍️ <i>The aim is not to ban phones entirely, but to limit their use in class.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q19" data-ans="3">
+          <div class="qhead"><span class="qno">19</span><span class="qt c-context">上下文语义 · its ___ 要能「给人留下印象」：概括 FSA 的警告＋建议＋表态 ⟹ 宣传运动</span><span class="qpos">However, its ___ risks coming across as being pushy and overprotective</span></div>
+          <span class="stem">However, its <em>19</em> risks coming across as being pushy and overprotective. Constant health scares just <em>20</em> with no one listening.</span>
+          <div class="opts">
+            <div class="opt">A promise<span class="gl">承诺</span></div>
+            <div class="opt">B competition<span class="gl">竞争</span></div>
+            <div class="opt">C experience<span class="gl">经历；经验</span></div>
+            <div class="opt">D campaign<span class="gl">（有组织的）宣传运动</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>名词，its（＝the FSA’s）___ 作主语；谓语 risks coming across as（有显得……之嫌）。
+            <span class="lbl">🔗 线索</span>① <b>its ＝ FSA 的</b>，要的是 FSA <b>做的一件事</b>，而且这件事能「给公众留下咄咄逼人的印象」；② 上文 FSA 做过的事：issued a public warning · 解读成 people should … · the FSA says it is not telling people to … ——<b>一连串面向公众的警告与劝导 ＝ 宣传运动</b>；③ 下一句 Constant health scares 把它定性为「没完没了的健康恐吓」——campaign 与 scares 同指。
+            <span class="lbl">✅ D campaign</span>原刊原词（原刊 <i>their campaign</i>——英式英语把机构当复数；考卷改成 its，与前一句 the FSA says <b>it</b> 统一）。背景：FSA 这次的宣传运动名叫「Go for Gold」（烤到金黄就好，别烤焦）。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>promise：把 the FSA says it is not telling … 曲解成「承诺」；FSA 做的是警告和建议，不是许诺。</div>
+              <div class="wr"><span class="l">B</span>competition：借 pushy、risks 的负面色彩联想「恶性竞争」；全文没有 FSA 和谁竞争。</div>
+              <div class="wr"><span class="l">C</span>experience：「FSA 的经历／经验显得咄咄逼人」——经历不是它对公众做的事，谈不上「给人留下强势的印象」。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>its／their ___ 概括空：把上文这个主体做过的事列一遍，找一个能装下全部的名词</b>（⟹ <a href="套路库_阅读.html#R51" style="color:var(--accent)">R51</a>）。⭐ 本题是<b>跨句空</b>——本篇 20 空里只有三个（14 · 17 · 19）。✍️ <i>The government launched a campaign to encourage people to recycle.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q20" data-ans="1">
+          <div class="qhead"><span class="qno">20</span><span class="qt c-context">上下文语义 · 末空是结局：狼来了喊多了 ⟹ 落得没人听</span><span class="qpos">Constant health scares just ___ with no one listening</span></div>
+          <span class="stem">However, its <em>19</em> risks coming across as being pushy and overprotective. Constant health scares just <em>20</em> with no one listening.</span>
+          <div class="opts">
+            <div class="opt">A follow up<span class="gl">跟进，接着做</span></div>
+            <div class="opt">B end up<span class="gl">最终落得</span></div>
+            <div class="opt">C open up<span class="gl">打开；开放；出现</span></div>
+            <div class="opt">D pick up<span class="gl">拾起；（渐）好转，增多</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>短语动词作谓语；四个选项全是 ___ up——结构不筛。
+            <span class="lbl">🔗 线索</span>① <b>with no one listening</b>（with 复合结构：没有人在听）是一个<b>结局</b>；② <b>just</b>＝「只会」——带着「白忙一场」的口气；③ 全文最后一句：作者的总判决——警告喊得太多，公众就不当回事了（狼来了）。要一个表<b>最终结果</b>的动词。
+            <span class="lbl">✅ B end up</span>＝最终落得（end up with／doing／in）。原刊原词。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>follow up：「跟进、接着做」——说的是下一步动作，不是结局；follow up with 后面常接具体的事（follow up with a phone call）。</div>
+              <div class="wr"><span class="l">C</span>open up：「打开、开放」或「（机会）出现」——「健康恐慌打开了」不通，与 no one listening 也接不上。</div>
+              <div class="wr"><span class="l">D</span>pick up：「增多、好转」——「恐慌越来越多、没人听」勉强，但作者要的是<b>结局</b>，不是趋势；「好转」更是方向反。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>末空又不是逻辑空</b>——近八年七年如此（⟹ <a href="套路库_阅读.html#R103" style="color:var(--accent)">R103</a>）；社论的末句常是<b>总判决</b>，空格填「结局」类（end up · result in · backfire）（⟹ <a href="套路库_阅读.html#R132" style="color:var(--accent)">R132</a>）。四个 ___ up 同形（⟹ <a href="套路库_阅读.html#R157" style="color:var(--accent)">R157</a>）。✍️ <i>Students who cram without rest often end up forgetting what they learned.</i>
+          </div>
+        </div>
+      </section>
+      <!-- ========== 02+ 三声部 ========== -->
+      <section class="card" id="voice">
+        <h2><span class="n">02+</span>⭐⭐ 三声部表：每句先问「谁在说」——转述对方 · 作者驳 · 作者让；二十个空按声部填（本页最值钱的一段）</h2>
+        <p class="note">读完首段第三句 <code>Yet as we report now, the food police are determined that …</code>，在卷边写「<b>对 · 驳 · 让</b>」。然后每读一句，先给它贴一个标签，再填空：<b>对方声部</b>按对方的口径填（哪怕作者不同意）；<b>驳的声部</b>按作者的立场填；<b>让的声部</b>往对方那边挪半步、但不许挪过头。</p>
+        <div class="tabwrap"><table class="otab">
+          <tr><th>句</th><th>声部</th><th>标记</th><th>空</th><th>这一声部要什么</th></tr>
+          <tr><td>①❶</td><td>作者（铺垫）</td><td>Even if … nonetheless</td><td>—</td><td>传统松动、烤肉照吃——作者护着它</td></tr>
+          <tr><td>①❷</td><td>作者（夸）</td><td>few … can ___ it</td><td>1 On · 2 match</td><td>最高级：没有比得上的</td></tr>
+          <tr><td>①❸</td><td><b>对方</b>（被夸张转述）</td><td><b>Yet</b> as we report now, the food police are determined that</td><td>3 enjoyment · <b>4 guaranteed</b></td><td>对方的笃定：「必定」伤身</td></tr>
+          <tr><td>②❶</td><td><b>对方</b>（事实）</td><td>The FSA has ___ a public warning</td><td>5 issued · 6 at</td><td>警告是它发的</td></tr>
+          <tr><td>②❷</td><td><b>对方</b>（建议）</td><td>This means that people should</td><td>7 avoid · <b>8 partially</b></td><td>它的原意：少一点、浅一点</td></tr>
+          <tr><td>②❸</td><td><b>驳</b></td><td><b>But</b> where is the evidence … alarmist</td><td>—</td><td>作者亮剑，alarmist 定性</td></tr>
+          <tr><td>②❹</td><td>让 → <b>驳</b></td><td><b>___</b> studies have shown …, there is no</td><td><b>9 While</b> · 10 conclusive</td><td>从句让出小鼠、主句驳在人类</td></tr>
+          <tr><td>③❶</td><td><b>让</b>（科学家原话）</td><td>Scientists say … but</td><td><b>11 likely</b></td><td>偏向致癌，但不能说死</td></tr>
+          <tr><td>③❷</td><td><b>让</b>（不署名）</td><td>it could be argued that</td><td>12 On the basis of · <b>13 advisable</b></td><td>温和的认可</td></tr>
+          <tr><td>③❸</td><td><b>让</b>（补理由）</td><td><b>___</b>, it was rumoured that …</td><td><b>14 After all</b> · 15 connection</td><td>同构的旧例</td></tr>
+          <tr><td>④❶</td><td><b>让</b>（反讽）</td><td>Doubtless …</td><td>16 served</td><td>字面讲得通的上菜动词</td></tr>
+          <tr><td>④❷</td><td><b>驳</b></td><td><b>But</b> would life be worth living?</td><td>—</td><td>反问＝否定</td></tr>
+          <tr><td>④❸</td><td><b>让</b>（转述 FSA 自辩）</td><td><b>___</b>, the FSA says it is not …</td><td><b>17 To be fair</b> · <b>18 entirely</b></td><td>替对方说句公道话</td></tr>
+          <tr><td>④❹</td><td><b>驳</b></td><td><b>However</b>, its ___ risks …</td><td>19 campaign</td><td>它的做法给人的观感</td></tr>
+          <tr><td>④❺</td><td><b>驳</b>（总判决）</td><td>Constant health scares just ___</td><td>20 end up</td><td>结局：没人听</td></tr>
+        </table></div>
+        <p class="note" style="margin-top:12px">📊 <b>二十个空落在哪个声部</b>：作者夸 1 · 2（2 个）｜<b>对方 3–8（6 个）</b>｜<b>让 9 · 11–18（9 个）</b>｜驳 10 · 19 · 20（3 个）。⟹ <b>将近一半的空埋在让步里</b>——这篇真正考的不是「作者反对什么」（题面写得明明白白），而是「作者在哪几句暂时站到了对面」。</p>
+        <p class="note">⭐⭐ <b>这张表怎么用</b>：① <b>四个转折词全在明处</b>——Yet · But · But · However，命题人一个没挖；<b>三个逻辑空 9 While · 14 After all · 17 To be fair 全在让步一侧</b>。看到句首空，先问：上一句是作者在驳吗？下一句是不是 But／However？夹在两次驳之间的那一拍就是让（17 题）。② <b>对方声部的空按对方的口径填</b>——4 题 guaranteed 和作者的「没证据」正相反，可它在 the food police are determined that 里，就该是对方的笃定。<b>拿作者的立场去填对方的句子，是本篇最大的坑</b>。③ <b>让的声部只让半步</b>（⟹ <a href="#degree" style="color:var(--accent)">02++</a>）。</p>
+        <p class="note">⚠️ <b>我犹豫的四题，三题在这张表上</b>：<b>14</b>（After all／As usual）与 <b>17</b>（To be fair／In general）都是「让」的标记词——认出这一句在替对方说话，就不会去选总结、照例；<b>19</b>（campaign／promise）在驳的声部里，要的是对方<b>做的事</b>，不是对方的说法。只有 <b>8</b>（partially／easily）是纯词义——而它恰好是对方声部里「少一点」的口径（新卡 <a href="套路库_阅读.html#R288" style="color:var(--accent)">R288</a>）。</p>
+        <p class="note">📌 <b>与 2012 社论完形的分工</b>：<a href="2012_完形_大法官的伦理与法院的合法性.html" style="color:var(--accent)">2012</a> 是<b>立论</b>（应然 → 实然 → 对策），语境空对着作者的「应然」轴填（⟹ <a href="套路库_阅读.html#R131" style="color:var(--accent)">R131</a>）；<b>2020 是驳论</b>，对象是别人的一句警告，文中三个声部轮流出场——<b>先分声部，再对轴</b>。阅读题里同样的功夫叫「先分清谁在说话」（⟹ <a href="套路库_阅读.html#R4" style="color:var(--accent)">R4</a>）。</p>
+      </section>
+
+      <!-- ========== 02++ 档位尺 ========== -->
+      <section class="card" id="degree">
+        <h2><span class="n">02++</span>📏 档位尺：五个空考的不是「意思对不对」，是「说到几分」——让步取半步，FSA 的原意是「少一点」</h2>
+        <p class="note">本篇有五个空，四个选项里<b>不止一个意思沾边</b>，区别在程度。把选项摆到一把尺上，再问：<b>这一句的声部允许说到几分？</b></p>
+        <div class="tabwrap"><table class="otab">
+          <tr><th>空</th><th>尺</th><th>取哪一格</th><th>为什么</th></tr>
+          <tr><td><b>11 likely</b></td><td>insufficient（不致癌）‹ <b>likely（可能）</b> ‹ bound（一定）</td><td>中间</td><td>前有「科学家说」、后有 but no hard proof：偏向致癌，又不能说死</td></tr>
+          <tr><td><b>13 advisable</b></td><td><b>advisable（可取）</b> ‹ urgent（刻不容缓）</td><td>温和</td><td>it could be argued ＋ 依据只是预防原则——只够「可取」</td></tr>
+          <tr><td><b>10 conclusive</b></td><td>有证据（小鼠）‹ <b>conclusive（确凿）</b></td><td>强</td><td>作者驳的是证据的<b>强度</b>：不是没有，是不够确凿</td></tr>
+          <tr><td><b>8 partially</b></td><td><b>partially（浅烤）</b> ‹ 烤透</td><td>弱</td><td>only 限定程度——FSA 的原意：少一点</td></tr>
+          <tr><td><b>18 entirely</b></td><td>reduce（少吃）‹ <b>entirely（全戒）</b></td><td>强（被否定）</td><td>not … entirely, but reduce——否定的是「全戒」这一头</td></tr>
+        </table></div>
+        <p class="note" style="margin-top:12px">⭐⭐ <b>让步只让半步</b>：让步是为了被 but／However 翻回来——让得太满（bound「一定致癌」、urgent「刻不容缓」）就翻不动，让得太少（insufficient「不足以致癌」）就没什么可翻。<b>让步句里的形容词、副词空，取尺子中间偏弱的那一格</b>（新卡 <a href="套路库_阅读.html#R289" style="color:var(--accent)">R289</a>）。</p>
+        <p class="note">⭐ <b>对方也有两个口径</b>：作者<b>漫画化</b>的对方是「执意」「必定伤身」（①❸ determined · 4 guaranteed）；<b>对方自己的话</b>却是「浅烤一点」「不必全戒、少吃就行」（8 partially · 18 entirely）。<b>8 与 18 两个程度副词是一对</b>——一个在对方声部、一个在让步声部，说的是同一件事：FSA 的口径是「量」，不是「禁」。作者的真正论点也就落在这里：<b>话本身说得并不重，可一遍遍地喊，就成了 pushy、overprotective，就成了 constant health scares</b>（19 · 20）。</p>
+        <p class="note">📌 <b>三缺一在这篇里几乎不灵</b>：干脆成立的只有三组（8 partially · 10 conclusive · 18 entirely），恰好全是这把尺上的空——<b>四个选项里唯一说「程度／强度」的那一个就是答案</b>（⟹ <a href="套路库_阅读.html#R74" style="color:var(--accent)">R74</a>）。2019 成立 11 次，2020 只有 3 次：本篇靠声部和档位，不靠分组。</p>
+      </section>
+
+      <!-- ========== 02+++ 原刊 vs 考卷 ========== -->
+      <section class="card" id="orig">
+        <h2><span class="n">02+++</span>✂️ 原刊 vs 考卷：整篇照用、20 个答案词全是原词——改动只有五处措辞，最要紧的一处是拆掉了 11 题前后的引号</h2>
+        <p class="note">原刊（《每日电讯报》2017-01-23 社论，网页存档取到全文）逐词比对：原刊 4 段 <b>281 词</b>，考卷 4 段 <b>278 词</b>（98.9%）——<b>一段没删、一句没删</b>。<a href="2019_完形_没有手机如何走出森林.html#orig" style="color:var(--accent)">2019</a> 只取了原刊的引言加第一节（约 22%），2020 是整篇照搬。改动全部列在这里：</p>
+        <div class="tabwrap"><table class="otab">
+          <tr><th>原刊</th><th>考卷</th><th>影响哪个空</th></tr>
+          <tr><td>Even if families <b>are less likely to</b> sit down to eat together <b>than was once the case</b></td><td>Even if families <b>don’t</b> sit down to eat together <b>as frequently as before</b></td><td>首句不设空；把 than was once the case 这种书面比较换成平常说法</td></tr>
+          <tr><td>will <b>none the less</b> have <b>partaken</b> this weekend <b>of</b> …</td><td>will <b>nonetheless</b> have <b>got a share</b> this weekend <b>of</b> …</td><td>同上；partake of（享用）换成 get a share of——of 仍隔着 this weekend 挂在后面</td></tr>
+          <tr><td><b>spurn</b> thin-crust pizzas</td><td><b>reject</b> thin-crust pizzas</td><td>7 avoid 的并列项：生僻词换常用词</td></tr>
+          <tr><td>Scientists say the compound is <b>“likely to be carcinogenic”</b></td><td>Scientists say the compound is ___ <b>to cause cancer</b></td><td>⚠️⚠️ <b>11 likely</b>：引号表明「这是科学家的原话」，拆掉后要靠 Scientists say … but 自己认出这是让步；carcinogenic 换成 cause cancer，与 ②段 causes cancer 统一</td></tr>
+          <tr><td>However, <b>their</b> campaign risks coming across as <b>exhortation and nannying</b></td><td>However, <b>its</b> ___ risks coming across as <b>being pushy and overprotective</b></td><td><b>19 campaign</b>：英式英语把机构当复数（their），考卷改成单数 its，与上句 the FSA says <b>it</b> 统一；两个生僻名词换成两个常用形容词</td></tr>
+          <tr><td>The <b>Food Standards Authority</b> (FSA)</td><td>原样照抄</td><td>（该机构正式名称是 Food Standards <b>Agency</b>，原刊写错，考卷没改）</td></tr>
+          <tr><td>其余全部，含 20 个答案词</td><td>一字未改</td><td>1–20</td></tr>
+        </table></div>
+        <p class="note" style="margin-top:12px">⭐⭐ <b>20 个答案词全是原词——连续第二年</b>（<a href="2016_完形_柬埔寨的婚俗.html#edits" style="color:var(--accent)">2016</a> 17／20 → <a href="2019_完形_没有手机如何走出森林.html#orig" style="color:var(--accent)">2019</a> 20／20 → <b>2020 20／20</b>）。但<b>改动的用意变了</b>：2019 命题人删 off-trail、换 spotting，是在<b>藏答案词的复现</b>；2020 没有一处藏答案——改的是<b>生僻词</b>（partaken · spurn · carcinogenic · exhortation · nannying）、<b>语法一致</b>（their → its），以及<b>一对引号</b>。</p>
+        <p class="note">⚠️ <b>那对引号最值得记</b>：原刊用引号把 likely to be carcinogenic 圈成「科学家的原话」——这正是「声部」的标记。考卷拆掉引号，11 题就只能靠 <code>Scientists say … but have no hard scientific proof</code> 这个结构自己认出：前半句是别人的话、是让步，后半句才是作者的判断（⟹ <a href="#voice" style="color:var(--accent)">02+</a>，<a href="套路库_阅读.html#R268" style="color:var(--accent)">R268</a> 补）。</p>
+      </section>
+
+      <!-- ========== 03 考点分类 ========== -->
+      <section class="card">
+        <h2><span class="n">03</span>考点分类（完形不背单个空，要看「这题在考什么」）</h2>
+        <div class="catbar" id="catbar"></div>
+        <div class="catlegend" id="catlegend"></div>
+        <p class="note" style="margin-top:14px">点某一类 → 下方列出该类所有空、正文里同步高亮 → 点小格跳到解析卡。（分类依据不是「空格里填的是什么词」，而是<b>「解这一题你得做什么动作」</b>——所以 7 avoid 虽然是动词辨析，但四个选项全接 doing、定它的是同句并列的 reject 与 only partially toast，<b>归「上下文语义」</b>；10 conclusive 有下一段 no hard scientific proof 作回声，但 conclusive evidence 本身就是现成搭配，<b>归「固定搭配」</b>；20 end up 四个全是 ___ up，定它的是 with no one listening 这个结局，<b>归「上下文语义」</b>。）</p>
+        <div class="chips" id="chips"></div>
+        <div class="flow" style="margin-top:16px">
+          <div class="fi"><b>⭐ 十四年对照：2020 的 5／6／3／6 与 2014 完全相同——十四年十二种，第二次重样。</b>
+            <span class="ev"><div class="tabwrap"><table class="otab"><tr><th>年份</th><th>词义辨析</th><th>固定搭配</th><th>逻辑关系</th><th>上下文语义</th><th>这一年压在哪</th></tr>
+            <tr><td>2007</td><td>9</td><td>5</td><td>4</td><td>2</td><td>词义（占 45%）</td></tr>
+            <tr><td>2008</td><td>9</td><td>6</td><td><b>2</b></td><td>3</td><td>六道实义动词的主语适配</td></tr>
+            <tr><td>2009</td><td>6</td><td>5</td><td>5</td><td>4</td><td>四类几乎持平</td></tr>
+            <tr><td>2010</td><td>9</td><td>4</td><td>4</td><td>3</td><td>形容词与副词的「方向」</td></tr>
+            <tr><td>2011</td><td>6</td><td>3</td><td>6</td><td>5</td><td>一根因果箭头的方向</td></tr>
+            <tr><td>2012</td><td>5</td><td>4</td><td>3</td><td>8</td><td>作者的应然立场 ＋ 首尾镜像</td></tr>
+            <tr><td>2013</td><td>3</td><td>7</td><td>4</td><td>6</td><td>空格后的介词短语 ＋ 比方与发现同构</td></tr>
+            <tr><td>2014</td><td>5</td><td>6</td><td>3</td><td>6</td><td>按段定正负 ＋ 一个比喻贯穿全文 ＋ 说明书式搭配</td></tr>
+            <tr><td>2015</td><td>6</td><td>6</td><td>3</td><td>5</td><td>研究报道的槽位套话 ＋ 「不止于表面」四连</td></tr>
+            <tr><td>2016</td><td>6</td><td>3</td><td>6</td><td>5</td><td>流程时间轴 ＋ 许可与现实 ＋ 具体动作的画面</td></tr>
+            <tr><td>2017</td><td>7</td><td>4</td><td>3</td><td>6</td><td>一条因果链的扣环词 ＋ 递进台阶 ＋ 框架定正负</td></tr>
+            <tr><td>2018</td><td>5</td><td>4</td><td>4</td><td>7</td><td>两本账的翻账键 ＋ 对照实验平行句 ＋ 主题词替身</td></tr>
+            <tr><td>2019</td><td>4</td><td>4</td><td>4</td><td>8</td><td>清单编号 ＋ 人迹替身链 ＋ 首尾扣环</td></tr>
+            <tr><td><b>2020</b></td><td><b>5</b></td><td><b>6</b></td><td><b>3</b></td><td><b>6</b></td><td><b>三声部 ＋ 让步档位 ＋ 同构旧例</b></td></tr></table></div>
+            ⟹ 2020 的 5／6／3／6 <b>与 2014 一模一样</b>——十四年十二种，重样两次（2016 撞 2011、2020 撞 2014）。逻辑空只有 3 个（9 · 14 · 17），<b>全在让步一侧</b>；搭配空回升到 6 个（1 On · 5 issue a warning · 6 at · 10 conclusive evidence · 12 on the basis of · 16 serve up）——社论里套话多。⚠️ <b>口径说明</b>：7 avoid 若按动词辨析归词义，就成了 6／6／3／5（又撞 2015）；10 若按回声归语境，就成了 5／5／3／7。三种口径都写在这里。</span></div>
+          <div class="fi"><b>📌 结构失效五道：4 · 7 · 11 · 12 · 20。</b>
+            <span class="ev">4 intensified／guaranteed／compelled／privileged <b>都能接 be ___ to do</b> · 7 forget／avoid／finish／regret <b>全接 doing</b> · 11 likely／bound／insufficient／slow <b>都能接 be ___ to do</b> · 12 四个介词短语<b>全接名词</b> · 20 follow／end／open／pick <b>全是 ___ up</b>（16 也是四个 ___ up，但 serve up 的画面一眼可定）。<b>按往年只数「四个选项接同一个小词」的口径是 2 道</b>（16 · 20 全是 ___ up；2013 一道、2014 两道、2016 三道、2017 四道、2018 三道、2019 两道）。⟹ 救回这几题的不是结构，是<b>声部</b>（4 对方的笃定）、<b>档位</b>（11 只让半步）、<b>并列</b>（7 与 reject 同向）、<b>结局</b>（20）（⟹ <a href="套路库_阅读.html#R157" style="color:var(--accent)">R157</a>）。</span></div>
+          <div class="fi"><b>📐 线索位置统计（判据＝关键线索是否落在同一个句号之内）：句内自足 17 空 ／ 跨句 3 空。</b>
+            <span class="ev"><b>跨句（3）</b>：14（上句的让步要一个理由）· 17（上句反问、下句 However，夹着的一拍）· 19（上文 FSA 做过的一连串事）。<br><b>句内自足（17）</b>：其余全部（3 靠同句 yet another guilty pleasure 的 another、10 靠同句 mice ↔ humans 的对比就能定）。<br>⟹ 句内比例 <b>85%</b>（2010 65% → 2011 75% → 2012 80% → 2013 70% → 2014 85% → 2015 65% → 2016 95% → 2017 90% → 2018 65% → 2019 60% → <b>2020 85%</b>），从 2019 的最低点一下弹回。⚠️ 口径：3 若按「this 回指上句」、10 若按「下段 hard proof 回声」算跨句，则 15／5＝75%。<b>跨句的三个全是声部转换处</b>——让步从哪开始、到哪结束，要跨句才看得出。</span></div>
+          <div class="fi"><b>📌 位置预判：三个逻辑空全守规矩（3／3），句首空又有两个不是逻辑空——与 2019 同号。</b>
+            <span class="ev"><b>9</b> While · <b>14</b> After all · <b>17</b> To be fair——全部句首；句内十七个空没有一个是逻辑空（2015 2／3 · 2016 6／6 · 2017 3／3 · 2018 4／4 · 2019 4／4 · <b>2020 3／3</b>，⟹ <a href="套路库_阅读.html#R76" style="color:var(--accent)">R76</a>）。⚠️ <b>反向仍不成立：句首空 5 个，只有 3 个是逻辑空</b>——<b>1</b> ___ a cold winter’s day 是介词、<b>12</b> ___ the precautionary principle 是介词短语；巧的是 2019 的两个例外也是 <b>1 和 12</b>。<b>先看空格紧挨着的词</b>：后面紧跟一个名词短语、再接逗号，就是介词状语，不是连接词。</span></div>
+          <div class="fi"><b>📌 三缺一：干脆成立只有 3 次（8 · 10 · 18），全是答案。</b>
+            <span class="ev"><b>8</b>：easily（难易）／regularly（频率）／initially（顺序）＋ <b>partially</b> 程度 · <b>10</b>：external（来源）／secondary（主次）／negative（方向）＋ <b>conclusive</b> 强度 · <b>18</b>：gradually／reluctantly／carefully 方式 ＋ <b>entirely</b> 程度。<br>⚠️ <b>照实说</b>：其余各组分不出 3＋1，或分出来的理由太软（6 at「唯一说温度」、20 end up「唯一说结局」都是做完才看得清）。2019 成立 11 次，<b>2020 只有 3 次——这篇是靠声部和档位做的</b>（⟹ <a href="套路库_阅读.html#R74" style="color:var(--accent)">R74</a>）。</span></div>
+        </div>
+      </section>
+
+      <!-- ========== 04 打法 ========== -->
+      <section class="card">
+        <h2><span class="n">04</span>完形六大打法（本篇取证）</h2>
+        <div class="flow">
+          <div class="fi"><b>① 首句不设空 → 先定三要素，再<u>认文体</u></b>：话题、方向、口吻；再问一句「作者是在立、在驳，还是只在说明」。
+            <span class="ev">本篇首句「传统松动、烤肉照吃」＋ 第三句 Yet as we report now, the food police … ⟹ <b>驳论社论</b> ⟹ 逻辑空押让步，不押因果与对策（<a href="#voice" style="color:var(--accent)">02+</a>）。</span></div>
+          <div class="fi"><b>② ⭐⭐ 驳论文先分声部：对方 · 驳 · 让</b>（本篇的主刀之一）。
+            <span class="ev">4 guaranteed（对方的笃定，不是作者的看法）· 9 While · 14 After all · 17 To be fair（三个逻辑空全在让步一侧）· 作者的 Yet／But／However 全在明处（<a href="#voice" style="color:var(--accent)">02+</a>，⟹ 新卡 R288）。</span></div>
+          <div class="fi"><b>③ ⭐⭐ 让步只让半步：程度空先排尺</b>（本篇的主刀之二）。
+            <span class="ev">11 likely（不是 bound）· 13 advisable（不是 urgent）· 10 conclusive（驳的是强度）· 8 partially ↔ 18 entirely（FSA 的口径是量）（<a href="#degree" style="color:var(--accent)">02++</a>，⟹ 新卡 R289）。</span></div>
+          <div class="fi"><b>④ ⭐⭐ After all ＋ 旧例：旧例与本案同构，旧例里的空按本案对位</b>（本篇的主刀之三）。
+            <span class="ev">吸烟 : 癌症 ＝ 丙烯酰胺 : 癌症；当年先传言后证据 ＝ 现在没有确凿证据 ⟹ 14 After all（补理由）· 15 connection（证据要证明的那层关系；resemblance 是把类比本身当成了对象）（⟹ 新卡 R290）。</span></div>
+          <div class="fi"><b>⑤ 并列与取舍：同一个 should 下方向照抄；not … but 两端同轴反向</b>。
+            <span class="ev">7 avoid（与 reject、only partially toast 同向）· 18 entirely（not cut out entirely, but reduce）· 3 enjoyment（yet another guilty pleasure 的 another 预设它本是「乐」）（⟹ R77、R104）。</span></div>
+          <div class="fi"><b>⑥ 结构失效时，别硬比介词——回到声部、档位、画面</b>。
+            <span class="ev">五道结构失效（4 · 7 · 11 · 12 · 20）；16 serve up 靠饭桌画面、20 end up 靠「结局」、6 at 靠温度的固定介词；三缺一只成立 3 次（⟹ R74、R157）。</span></div>
+        </div>
+        <p class="note" style="margin-top:14px">🔁 <b>十五篇完形（2007–2020 ＋ 2022）信号类型对照</b>：<a href="2022_完形_植物意识.html" style="color:var(--accent)">2022</a> 靠明信号词 · <a href="2007_完形_拉美独立后的理想与分歧.html" style="color:var(--accent)">2007</a> 靠结构性信号 · <a href="2008_完形_高智商与遗传疾病.html" style="color:var(--accent)">2008</a> 靠动词与主语适配 · <a href="2009_完形_智力的代价.html" style="color:var(--accent)">2009</a> 靠语用功能 · <a href="2010_完形_霍桑效应遭到质疑.html" style="color:var(--accent)">2010</a> 靠叙事方向 · <a href="2011_完形_笑与情绪的方向之争.html" style="color:var(--accent)">2011</a> 靠因果箭头 · <a href="2012_完形_大法官的伦理与法院的合法性.html" style="color:var(--accent)">2012</a> 靠应然立场与首尾镜像 · <a href="2013_完形_面试打分的当日偏见.html" style="color:var(--accent)">2013</a> 靠介词框架与比方—发现同构 · <a href="2014_完形_像练肌肉一样练大脑.html" style="color:var(--accent)">2014</a> 靠按段定正负与贯穿比喻 · <a href="2015_完形_朋友是基因上的远亲.html" style="color:var(--accent)">2015</a> 靠研究报道槽位与「不止于表面」四连 · <a href="2016_完形_柬埔寨的婚俗.html" style="color:var(--accent)">2016</a> 靠流程时间轴、许可与现实、动作画面 · <a href="2017_完形_拥抱有益健康.html" style="color:var(--accent)">2017</a> 靠因果链扣环词、递进台阶、框架正负号 · <a href="2018_完形_为何信任是与生俱来的本能.html" style="color:var(--accent)">2018</a> 靠两本账的翻账键、对照实验平行句、主题词替身 · <a href="2019_完形_没有手机如何走出森林.html" style="color:var(--accent)">2019</a> 靠清单编号、人迹替身链、首尾扣环 · <b>2020 靠三声部、让步档位、同构旧例</b>。<br>📰 <b>话题</b>：第三篇<b>社论</b>（2009、2012 都是《纽约时报》），第一篇<b>驳论</b>社论。它和 <a href="2018_完形_为何信任是与生俱来的本能.html" style="color:var(--accent)">2018</a> 一样「一篇里有两面」，但 2018 两面都是作者摆出来的事实（两本账），<b>2020 的两面是两个人</b>（作者与对方）——段首空问的不是「翻到哪本账」，而是「这句轮到谁说」。</p>
+      </section>
+      <!-- ========== 05 搭配库 ========== -->
+      <section class="card">
+        <h2><span class="n">05</span>固定搭配 &amp; 熟词僻义（这些是死记就得分的）</h2>
+        <div class="wb">
+          <div class="wbi"><div class="p">sit down to eat together　坐下来一起吃饭（①❶）</div><div class="u">sit down to dinner／to a meal＝坐下吃饭；家庭聚餐话题现成说法。</div></div>
+          <div class="wbi"><div class="p">Even if …, … will nonetheless …　即便……，也照样……（①❶）</div><div class="u">✍️ <b>让步 ＋ 主句里再补一个「照样」</b>：Even if prices rise, people will nonetheless buy books for their children.</div></div>
+          <div class="wbi"><div class="p">get a share of sth　分享到……（①❶）</div><div class="u">⭐ 考卷把 of 和 a share 隔开了（got a share this weekend of …）；原刊是 partake of（享用；参与）。</div></div>
+          <div class="wbi"><div class="p">on a cold winter’s day　在一个寒冷的冬日（1 题）</div><div class="u">⭐ day／morning／night 前有修饰语 ⟹ on：on a rainy morning · on the night of May 4。</div></div>
+          <div class="wbi"><div class="p">few … can match it　几乎没有……比得上它（2 题）</div><div class="u">⭐ <b>few ＋ 比较义动词＝最高级</b>；同类 rival · beat · compare with · equal。</div></div>
+          <div class="wbi"><div class="p">as we report now　正如本报今天所报道的（①❸）</div><div class="u">⭐ <b>社论的口吻</b>：we＝报社；出现它就知道是在表态，不是在报道。</div></div>
+          <div class="wbi"><div class="p">be determined that … should do　执意要……（①❸）</div><div class="u">that 从句用 (should) do；比较 be determined to do（决心做）。</div></div>
+          <div class="wbi"><div class="p">render A B　把 A 变成 B（①❸）</div><div class="u">⭐⭐ <b>render 熟词僻义＝使变得</b>：render sth useless／obsolete；被动 A is rendered B。</div></div>
+          <div class="wbi"><div class="p">yet another …　又一个……（①❸）</div><div class="u">⭐ <b>预设词</b>：another X 预设前面那个也是 X（3 题 enjoyment）；yet 加强「又来了」的不耐烦。</div></div>
+          <div class="wbi"><div class="p">be guaranteed to do　必定会……（4 题）</div><div class="u">⭐ ＝be bound to／be certain to；guarantee 作名词：There is no guarantee that …（不能保证）。</div></div>
+          <div class="wbi"><div class="p">issue a (public) warning　发布（公开）警告（5 题）</div><div class="u">⭐ issue 熟词僻义＝发布、发行：issue a statement／guidelines／a passport；n. 问题；（期刊）一期。</div></div>
+          <div class="wbi"><div class="p">at high temperatures　以高温（6 题）</div><div class="u">⭐ 温度、速度、价格、比率用 at：at 100℃ · at full speed · at a discount。</div></div>
+          <div class="wbi"><div class="p">avoid doing sth　避免做（7 题）</div><div class="u">⭐ avoid 后接 doing，不接 to do；同类 risk／mind／consider／suggest doing。</div></div>
+          <div class="wbi"><div class="p">only partially　只是部分地（8 题）</div><div class="u">⭐ only partially successful／true（只部分成功／部分正确）——作文里「有保留的肯定」。</div></div>
+          <div class="wbi"><div class="p">alarmist advice　危言耸听的建议（②❸）</div><div class="u">✍️ This is not to be alarmist, but …（不是危言耸听，但……）。</div></div>
+          <div class="wbi"><div class="p">There is no conclusive evidence that …　没有确凿证据表明……（10 题）</div><div class="u">⭐⭐ <b>作文里反驳「某某有害」的万能句</b>；同义 hard proof · firm evidence。</div></div>
+          <div class="wbi"><div class="p">be likely to do　有可能做（11 题）</div><div class="u">⭐ 尺：be likely to ‹ be bound to／be certain to；It is likely that …。</div></div>
+          <div class="wbi"><div class="p">hard scientific proof　确凿的科学证据（③❶）</div><div class="u">⭐⭐ <b>hard 熟词僻义＝确凿的</b>：hard evidence · hard facts · hard data。</div></div>
+          <div class="wbi"><div class="p">on the basis of sth　基于、根据（12 题）</div><div class="u">⭐ on the basis of evidence／experience；同类 in light of · according to。</div></div>
+          <div class="wbi"><div class="p">the precautionary principle　预防原则（12 题）</div><div class="u">「宁可信其有」：Better safe than sorry.</div></div>
+          <div class="wbi"><div class="p">It could be argued that …　可以说……（③❷）</div><div class="u">⭐⭐ <b>作文让步段的开头</b>：It could be argued that …; however, …</div></div>
+          <div class="wbi"><div class="p">It is advisable to do　做……是明智的（13 题）</div><div class="u">⭐ 书信、建议句常用：It is advisable to book in advance.</div></div>
+          <div class="wbi"><div class="p">After all, …　毕竟、别忘了（14 题）</div><div class="u">⭐ <b>补一个理由</b>；放句末时是「终究、到底」（He came after all. 他终究还是来了）。</div></div>
+          <div class="wbi"><div class="p">It was rumoured that …　据传……（③❸）</div><div class="u">⭐ 被动＋that 从句：It is said／reported／believed that …</div></div>
+          <div class="wbi"><div class="p">prove a connection (between A and B)　证明（A 与 B 之间的）关联（15 题）</div><div class="u">⭐ establish／find／prove a link／connection／correlation。</div></div>
+          <div class="wbi"><div class="p">serve up sth　端上（饭菜）（16 题）</div><div class="u">⭐ serve up 也作「提供、拿出（常带贬义）」：serve up the same old excuses（又拿出那套老借口）。</div></div>
+          <div class="wbi"><div class="p">To be fair, …　说句公道话（17 题）</div><div class="u">⭐⭐ <b>让步插入语</b>，下句常接 However／But；同类 Admittedly · Granted · In fairness。</div></div>
+          <div class="wbi"><div class="p">cut out sth entirely　彻底戒掉（18 题）</div><div class="u">⭐ cut out（戒掉）vs cut down on（减少）——本句正是这两个的对立：not cut out entirely, but reduce。</div></div>
+          <div class="wbi"><div class="p">lifetime intake　一生的摄入量（④❸）</div><div class="u">intake 熟词僻义②：招生人数（the annual intake）。</div></div>
+          <div class="wbi"><div class="p">risk doing ／ come across as　有……的风险／给人……的印象（④❹）</div><div class="u">⭐⭐ risk 后接 doing；come across as＝显得（常非本意）。</div></div>
+          <div class="wbi"><div class="p">end up with (no one listening)　落得（没人理睬）（20 题）</div><div class="u">⭐ end up doing／with／in sth＝最终落得；四个 ___ up 同形：follow up · open up · pick up。</div></div>
+        </div>
+      </section>
+
+      <!-- ========== 06 80 词表 ========== -->
+      <section class="card">
+        <h2><span class="n">06</span>80 个选项词速查（完形的真正词汇量）
+          <button class="allbtn" id="btnHide" style="margin-left:auto" onclick="toggleHide()">✍️ 默写模式</button>
+        </h2>
+        <p class="note">完形一篇＝<b>80 个高频词的辨析现场</b>，绿底是正确项。<b>默写模式</b>会糊住中文释义——先自己说出意思，点单个格子可单独揭开。<b>本篇 80 个词里有四组值得成组背</b>：16 题与 20 题<b>两组 ___ up</b>（made／used／saved／served up · follow／end／open／pick up——八个短语动词，同一个 up、八种意思）；14 题与 17 题<b>八个句首插入语</b>（As usual／After all／By definition／In particular · To be brief／For instance／To be fair／In general——八种篇章功能：照例、补理由、按定义、挑一项、总结、举例、让步、概括）；12 题<b>四个介词短语</b>（In addition to／At the cost of／On the basis of／In contrast to——补充、代价、依据、对比）；11 与 13 题是<b>两把档位尺</b>（likely／bound · advisable／urgent）。</p>
+        <div class="tabwrap"><table class="otab" id="otab"></table></div>
+      </section>
+      <!-- ========== 07 长难句 ========== -->
+      <section class="card">
+        <h2><span class="n">07</span>长难句精析（正文蓝色虚线句）</h2>
+
+        <div class="sent" id="s1">
+          <div class="src"><u>Even if families don’t sit down to eat together as frequently as before</u>, <span class="skel">millions of Britons will nonetheless have got a share</span> <i>this weekend</i> <span class="skel">of one of the nation’s great traditions</span>: <i>the Sunday roast</i>.</div>
+          <div class="anat">
+            <ul>
+              <li><b>Even if 让步从句 ＋ 主句里的 nonetheless</b>：让步之后再补一个「照样」——让步的分量被抵消，作者站在「烤肉照吃」这边。</li>
+              <li><code>will … have got</code> 是将来完成时：到这个周末结束时，「将已经」吃过了——社论周一刊出，说的是刚过去的周末。</li>
+              <li>⭐ <code>a share … of one of the nation’s great traditions</code>：<b>a share 和 of 被 this weekend 隔开</b>，读时要接回去；冒号后 <i>the Sunday roast</i> 才揭晓话题——<b>冒号＝揭晓</b>。</li>
+            </ul>
+          </div>
+          <div class="tr">译：即便如今一家人不像从前那样常常坐下来一起吃饭，这个周末，数以百万计的英国人还是会分享到国家的一大传统：周日烤肉。</div>
+        </div>
+
+        <div class="sent" id="s2">
+          <div class="src"><u>On a cold winter’s day</u>, <span class="skel">few culinary pleasures can match it</span>. <u>Yet</u> <i>as we report now</i>, <span class="skel">the food police are determined</span> <i>that this enjoyment should be rendered yet another guilty pleasure guaranteed to damage our health</i>.</div>
+          <div class="anat">
+            <ul>
+              <li>第一句：few ＋ match＝最高级（没有比得上的）——作者在夸（1、2 题）。</li>
+              <li>⭐⭐ 第二句 <b>Yet 一转，主语换成 the food police</b>：that 从句里的内容是<b>对方的主张</b>（被作者夸张地转述）——<b>声部从「作者」换到「对方」</b>，3、4 两空按对方口径填。</li>
+              <li><code>render A B</code> 的被动：<code>A should be rendered B</code>（A＝this enjoyment，B＝yet another guilty pleasure）；<code>guaranteed to damage our health</code> 是过去分词短语作后置定语，修饰 guilty pleasure。</li>
+              <li><code>as we report now</code>：as 引导方式状语从句（正如……），we＝报社——社论的标志。</li>
+            </ul>
+          </div>
+          <div class="tr">译：在寒冷的冬日里，很少有什么美食能比得上它。然而，正如本报今天所报道的，「食品警察」执意要把这份享受变成又一种必定损害健康的罪恶之乐。</div>
+        </div>
+
+        <div class="sent" id="s3">
+          <div class="src"><span class="skel">The Food Standards Authority (FSA) has issued a public warning</span> <i>about the risks of a compound called acrylamide</i> <i>that forms in some foods cooked at high temperatures</i>.</div>
+          <div class="anat">
+            <ul>
+              <li>主干只有 <code>The FSA has issued a public warning</code>（5 题）；后面是一串层层套叠的修饰。</li>
+              <li><b>三层修饰</b>：about the risks（警告的内容）→ of a compound called acrylamide（什么的风险；called 过去分词作定语）→ that forms in some foods（定语从句修饰 compound）→ cooked at high temperatures（过去分词修饰 foods，6 题）。</li>
+              <li>⭐ 读法：<b>每遇到一个 of／called／that／cooked 就往后挪一格</b>，最后一格才是「高温烹制」——FSA 警告的根子在这里。</li>
+            </ul>
+          </div>
+          <div class="tr">译：食品标准局（FSA）发布了一项公开警告，指出一种叫丙烯酰胺的化合物有风险——它会在某些以高温烹制的食物中生成。</div>
+        </div>
+
+        <div class="sent" id="s4">
+          <div class="src"><span class="skel">This means</span> <i>that people should avoid crisping their roast potatoes, reject thin-crust pizzas and only partially toast their bread</i>.</div>
+          <div class="anat">
+            <ul>
+              <li>that 宾语从句里<b>三个谓语并列共用 should</b>：avoid crisping … · reject … · only partially toast …——三项同向，都是「少一点、别过头」（7、8 题）。</li>
+              <li>⭐ <code>This means that</code>：把上句的警告「翻译」成行动——<b>这一句仍是对方声部</b>（FSA 的意思），作者还没开口驳。</li>
+              <li>原刊第二项是 <i>spurn</i>（唾弃），考卷换成 reject。</li>
+            </ul>
+          </div>
+          <div class="tr">译：这就意味着，人们应当避免把烤土豆烤得焦脆、拒吃薄饼披萨，面包也只能稍微烤一烤。</div>
+        </div>
+
+        <div class="sent" id="s5">
+          <div class="src"><u>But</u> <span class="skel">where is the evidence</span> <i>to support such alarmist advice</i>? <u>While studies have shown that acrylamide can cause neurological damage in mice</u>, <span class="skel">there is no conclusive evidence</span> <i>that it causes cancer in humans</i>.</div>
+          <div class="anat">
+            <ul>
+              <li>⭐⭐ 第一句是<b>作者亮剑</b>：But ＋ 设问（证据在哪？）＋ alarmist（危言耸听）定性——<b>声部从「对方」换到「驳」</b>。</li>
+              <li>第二句<b>从句让、主句驳</b>：While 让出「小鼠身上有」，主句落在「人身上没有确凿证据」（9、10 题）；对比轴两根：mice ↔ humans、neurological damage ↔ cancer。</li>
+              <li><code>evidence that it causes cancer</code>：that 引导<b>同位语从句</b>，说明 evidence 的内容（不是定语从句——that 在从句里不作成分）。</li>
+            </ul>
+          </div>
+          <div class="tr">译：可是，支持这种危言耸听的建议的证据在哪里？虽然有研究表明丙烯酰胺会损伤小鼠的神经，却没有确凿证据表明它会让人患癌。</div>
+        </div>
+
+        <div class="sent" id="s6">
+          <div class="src"><span class="skel">Scientists say</span> <i>the compound is likely to cause cancer</i> <u>but</u> <span class="skel">have no hard scientific proof</span>. <u>On the basis of the precautionary principle</u>, <span class="skel">it could be argued</span> <i>that it is advisable to follow the FSA advice</i>.</div>
+          <div class="anat">
+            <ul>
+              <li>第一句：主语 Scientists 带两个并列谓语 say … but have …——<b>同一批人说了两件事</b>：可能致癌（让）、但没实锤（驳）（11 题）。原刊 likely to be carcinogenic 带引号，是科学家的原话。</li>
+              <li>⭐⭐ 第二句 <code>it could be argued that</code>：<b>could ＋ 被动＝不署名的观点</b>——作者把话说出来，但不算自己的：典型的让步（12、13 题）。</li>
+              <li><code>it is advisable to follow the FSA advice</code>：it 作形式主语，真正的主语是 to follow …；FSA advice 是名词作定语（FSA 的建议）。</li>
+            </ul>
+          </div>
+          <div class="tr">译：科学家们说，这种化合物有可能致癌，但拿不出确凿的科学证据。依据预防原则，可以说听从食品标准局的建议是明智的。</div>
+        </div>
+
+        <div class="sent" id="s7">
+          <div class="src"><u>After all</u>, <span class="skel">it was rumoured</span> <i>that smoking caused cancer</i> <i>for years</i> <u>before the evidence was found to prove a connection</u>.</div>
+          <div class="anat">
+            <ul>
+              <li><code>It was rumoured that …</code>：it 作形式主语，that 从句是真正的主语（据传……）。</li>
+              <li><code>for years before …</code>：「……了多年之后，才……」——<b>before 在这里要译成「才」</b>：先有传言多年，证据后到。</li>
+              <li>⭐ After all ＋ 旧例＝<b>给上句补理由的类比</b>：吸烟 : 癌症 ＝ 丙烯酰胺 : 癌症；<code>prove a connection</code> 证明的是旧例内部那一层关系（14、15 题）。</li>
+            </ul>
+          </div>
+          <div class="tr">译：毕竟，吸烟致癌的说法流传了好多年，才找到证据证实两者之间的关联。</div>
+        </div>
+
+        <div class="sent" id="s8">
+          <div class="src"><u>Doubtless</u> <span class="skel">a piece of boiled beef can always be served up</span> <i>on Sunday</i> <i>alongside some steamed vegetables</i>, <i>without the Yorkshire pudding and no wine</i>. <u>But</u> <span class="skel">would life be worth living</span>?</div>
+          <div class="anat">
+            <ul>
+              <li>⭐⭐ <b>Doubtless 让步 ＋ But 反问</b>：先「让」给对方一顿最寡淡的饭（水煮、清蒸、不要布丁、不喝酒），再反问「这日子还过不过」——<b>反讽式让步</b>，让的是为了嘲（16 题）。</li>
+              <li><code>can always be served up</code>：can always＝「总还可以」，带「退而求其次」的口气。</li>
+              <li>⚠️ <code>without the Yorkshire pudding and no wine</code> 是 without A ＋ and no B 的混搭（规范写法是 without … or wine），原刊如此——读懂即可，作文别学。</li>
+              <li><code>would life be worth living?</code>：虚拟 would ＋ 反问＝否定（那样活着就没意思了）。</li>
+            </ul>
+          </div>
+          <div class="tr">译：毫无疑问，周日总还可以端上一块水煮牛肉，配些清蒸蔬菜，不要约克郡布丁，也不喝葡萄酒。可这样的日子还值得过吗？</div>
+        </div>
+
+        <div class="sent" id="s9">
+          <div class="src"><u>To be fair</u>, <span class="skel">the FSA says</span> <i>it is not telling people to cut out roast foods entirely, but to reduce their lifetime intake</i>. <u>However</u>, <span class="skel">its campaign risks coming across as being pushy and overprotective</span>. <span class="skel">Constant health scares just end up</span> <i>with no one listening</i>.</div>
+          <div class="anat">
+            <ul>
+              <li>第一句：<b>To be fair 让步 ＋ 转述 FSA 的自辩</b>；宾语从句里 <code>not telling people to A, but to B</code> 是取舍结构，A 与 B 同轴反向：全戒 vs 少吃（17、18 题）。</li>
+              <li>第二句 However 再驳：<code>risk doing</code>（冒……之险）＋ <code>come across as</code>（给人……的印象）＋ <code>being pushy and overprotective</code>——<b>批的不是 FSA 说了什么，而是它给人的观感</b>（19 题）。</li>
+              <li>第三句总判决：<code>end up with no one listening</code>——with ＋ 名词 ＋ 现在分词的复合结构（无人在听），作「落得」的结局（20 题）。</li>
+              <li>⭐ 三句是<b>让 → 驳 → 判</b>的三拍，段尾不给对策——驳论社论在「狼来了」处收住。</li>
+            </ul>
+          </div>
+          <div class="tr">译：说句公道话，食品标准局表示，它并不是让人们彻底戒掉烤制食品，而是要减少一生的摄入量。然而，它的宣传运动有可能让人觉得咄咄逼人、保护过度。没完没了的健康恐慌，只会落得无人理睬的下场。</div>
+        </div>
+      </section>
+
+      <!-- ========== 08 写作素材 ========== -->
+      <section class="card">
+        <h2><span class="n">08</span>可搬进作文/翻译的表达</h2>
+        <p class="note">本篇是一篇<b>「立靶 → 质疑证据 → 让步 → 再驳 → 总判决」的驳论社论</b>，最能搬的是三类句子：<b>质疑证据句</b>（写「某某有害论」的反驳）、<b>让步句</b>（It could be argued · To be fair · After all）、<b>「适得其反」的结局句</b>。话题上，「健康与饮食」「政府管理与个人自由」「信息过载／预警疲劳」「传统与现代」都能接上。</p>
+        <div class="wb">
+          <div class="wbi"><div class="p">Even if …, … will nonetheless …　即便……，……也照样……</div><div class="u">⭐ <b>写传统的生命力</b>：<i>Even if fewer people write letters by hand, millions will nonetheless send handwritten cards during the Spring Festival.</i></div></div>
+          <div class="wbi"><div class="p">But where is the evidence to support such … claims?　可支持这种说法的证据在哪里？</div><div class="u">⭐⭐ <b>驳论段的开场</b>：<i>But where is the evidence to support such sweeping claims about young people?</i></div></div>
+          <div class="wbi"><div class="p">While studies have shown that …, there is no conclusive evidence that …　虽有研究表明……，却没有确凿证据表明……</div><div class="u">⭐⭐ <b>反驳「某某有害」的万能句</b>：<i>While studies have shown that screens affect sleep, there is no conclusive evidence that they damage children’s intelligence.</i></div></div>
+          <div class="wbi"><div class="p">On the basis of …, it could be argued that it is advisable to …　基于……，可以说……是明智的</div><div class="u">⭐ <b>让步段</b>：<i>On the basis of these findings, it could be argued that it is advisable to limit screen time.</i></div></div>
+          <div class="wbi"><div class="p">After all, …　毕竟……</div><div class="u"><b>给让步补一个理由</b>：<i>After all, many habits that seemed harmless were later proved to be risky.</i></div></div>
+          <div class="wbi"><div class="p">But would life be worth living?　可这样活着还有什么意思？</div><div class="u"><b>反问收束一个极端方案</b>：<i>We could ban every risky activity. But would life be worth living?</i></div></div>
+          <div class="wbi"><div class="p">To be fair, X is not …, but …　说句公道话，X 并不是……，而是……</div><div class="u">⭐⭐ <b>批评里留一句公道话，文章立刻显得客观</b>：<i>To be fair, the school is not banning phones entirely, but limiting their use in class.</i></div></div>
+          <div class="wbi"><div class="p">… risks coming across as …　有显得……之嫌</div><div class="u"><b>批做法给人的观感</b>：<i>Too many rules risk coming across as distrust of students.</i></div></div>
+          <div class="wbi"><div class="p">Constant … just end up with no one listening.　没完没了的……只会落得无人理睬</div><div class="u">⭐⭐ <b>「狼来了」式结尾</b>：<i>Constant warnings just end up with no one listening; a single clear message works better.</i></div></div>
+        </div>
+      </section>
+
+    </main>
+
+    <aside>
+      <div id="panel"><div class="hint">👆 点正文里的<b>黄底词</b><br>词卡会出现在这里<br><br>点<b>空格</b>则跳到对应解析卡</div></div>
+    </aside>
+  </div>
+
+  <footer>2020 英语一 · 完形填空复盘页 · ✅ 盲做口径：完整盲做 20/20（盲做答案 2026-09-24 20:52 先落盘，再只裁答案页 Section I 那四行核对；2020 T1–T4 四轮都没看过完形精讲）· 解析由 Claude 独立写成并与黄皮书精讲逐空交叉核对（答案零书误）· 来源：<i>The Telegraph</i> 2017-01-23 Telegraph View 社论 <i>Hands off our roast potatoes</i>（原刊全文经网页存档取到，逐词比对：整篇照用，20 个答案词全是原词；拆引号、their → its 等改动见 02+++）· 本页新卡 R288–R290</footer>
+</div>
+
+<button id="yd">🔍 查有道</button>
+
+<script>
+/* ============ V ============ */
+const V = {
+  nonetheless:{w:"nonetheless",ipa:"/ˌnʌnðəˈles/",pos:"adv.",tags:["core","write"],cn:"<b>尽管如此，然而</b>",en:"despite what has just been said",ex:"millions of Britons will nonetheless have got a share",mem:"none ＋ the ＋ less ⟹「并不因此少一点」。⭐ 首句 Even if … nonetheless 是<b>让步 ＋ 主句里再补一个「照样」</b>：让步的分量被 nonetheless 抵消掉——原刊写成三个词 none the less，考卷合成一个。",syn:"nevertheless · all the same · even so",conf:"<b>nonetheless</b>（尽管如此，副词，不能连接两个句子）vs <b>although</b>（连词）vs <b>none the worse</b>（并没因此变差）。"},
+  share:{w:"get a share of",ipa:"/ɡet ə ʃeə(r) ɒv/",pos:"phrase",tags:["phrase"],cn:"<b>分享到，分得一份</b>",en:"to receive part of sth that is divided among people",ex:"have got a share this weekend of one of the nation’s great traditions",mem:"⭐ 原刊是 <i>have partaken this weekend of</i>（partake of＝参与；吃喝）——考卷换成了更常见的 get a share of，<b>还把 of 和宾语隔开了</b>（中间插了 this weekend），读时要把 a share … of 接起来。",syn:"partake of · take part in",conf:"<b>share</b> n.（一份）vs <b>shares</b>（股份）vs <b>a fair share</b>（应得的一份）。"},
+  tradition:{w:"tradition",ipa:"/trəˈdɪʃn/",pos:"n.",tags:["core"],cn:"<b>传统，惯例</b>",en:"a belief or custom passed down over a long time",ex:"one of the nation’s great traditions: the Sunday roast",mem:"tra-（＝trans 跨）＋ dit（给）⟹ 一代代交出去。⭐ 冒号后才是它指什么：the Sunday roast——<b>冒号＝揭晓</b>，本篇的话题词在首句句末才露面。",syn:"custom · convention · heritage",conf:"<b>traditional</b>（传统的）vs <b>conventional</b>（常规的，常带「俗套」）vs <b>customary</b>（习惯上的）。"},
+  roast:{w:"Sunday roast",ipa:"/ˈsʌndeɪ rəʊst/",pos:"n.",tags:["core"],cn:"<b>周日烤肉（英国传统午餐）</b>；roast 作动词＝烤",en:"a traditional British meal of roast meat and vegetables eaten on Sunday",ex:"the Sunday roast",mem:"⭐ 英国周日午餐：烤牛肉（或鸡、羊）＋ 烤土豆 ＋ 约克郡布丁 ＋ 肉汁（gravy）。<b>roast potatoes 要烤到外皮焦脆（crisp）才地道</b>——所以 FSA 叫人别烤脆，等于动了这顿饭的魂。",syn:"Sunday lunch · roast dinner",conf:"<b>roast</b>（烤，炉里干烤肉、土豆）vs <b>toast</b>（烤面包片）vs <b>bake</b>（烘焙面包蛋糕）vs <b>grill</b>（明火炙烤）。"},
+  culinary:{w:"culinary",ipa:"/ˈkʌlɪnəri/",pos:"adj.",tags:["core","write"],cn:"<b>烹饪的，厨房的</b>",en:"connected with cooking or kitchens",ex:"few culinary pleasures can match it",mem:"拉丁 culina（厨房）⟹ kitchen 同源。⭐ culinary pleasures＝美食之乐——与 3 题 enjoyment、guilty pleasure 同属「乐」这条线。",syn:"cooking · gastronomic",conf:"<b>culinary</b>（烹饪的）vs <b>cuisine</b>（菜系）vs <b>gourmet</b>（美食家；精美的）。"},
+  foodpolice:{w:"the food police",ipa:"/ðə fuːd pəˈliːs/",pos:"n.",tags:["phrase"],cn:"<b>「食品警察」</b>（贬称：对别人吃什么指手画脚的卫生部门、营养专家）",en:"a disapproving name for people or officials who tell others what they should not eat",ex:"the food police are determined that",mem:"⭐⭐ <b>这是作者给 FSA 起的外号</b>，下一段才亮出真名 The Food Standards Authority——同一个对象、两种叫法，一贬一中性。5 题 ignored／received 就是专门给「以为食品警察和 FSA 是两家」的人设的坑。同类贬称：the fashion police · the grammar police。",syn:"nanny state · health zealots",conf:"<b>police</b> 集体名词，谓语用复数（are determined）；比较 <b>policy</b>（政策）。"},
+  determined:{w:"be determined that / to do",ipa:"/dɪˈtɜːmɪnd/",pos:"adj.",tags:["core"],cn:"<b>下定决心，执意要</b>",en:"having made a firm decision to do sth",ex:"the food police are determined that this enjoyment should be rendered",mem:"⭐ that 从句里用 should do（虚拟）。⭐⭐ <b>「执意」是作者替对方加的口气</b>——对方越笃定，作者越好驳。4 题 guaranteed 接的正是这份笃定。",syn:"resolved · set on · intent on",conf:"<b>determined</b>（坚决的）vs <b>determine</b>（决定；查明）vs <b>deterministic</b>（决定论的）。"},
+  render:{w:"render",ipa:"/ˈrendə(r)/",pos:"v.",tags:["core","poly"],cn:"①<b>使变得，使成为</b>（render sb/sth ＋ adj./n.）②给予 ③翻译 ④表演",en:"to cause sb/sth to be in a particular state",ex:"should be rendered yet another guilty pleasure",mem:"⭐⭐ <b>熟词僻义高频</b>：render sth useless（使无用）· render assistance（提供帮助）· render into English（译成英语）。本句被动：this enjoyment should be rendered yet another guilty pleasure＝把乐事变成罪恶之乐。",syn:"make · turn into",conf:"<b>render</b>（使成为）vs <b>surrender</b>（投降）vs <b>rendering</b>（演绎；渲染图）。"},
+  guiltypleasure:{w:"guilty pleasure",ipa:"/ˈɡɪlti ˈpleʒə(r)/",pos:"n.",tags:["phrase","write"],cn:"<b>罪恶的快感</b>（明知不该、还是忍不住享受的东西）",en:"sth you enjoy although you feel it is bad for you",ex:"yet another guilty pleasure guaranteed to damage our health",mem:"⭐ yet another＝「又一个」——<b>预设这东西本来就是 pleasure</b>，3 题的空只能填「乐」一类的词（enjoyment）。✍️ 作文可用：Scrolling through short videos has become a guilty pleasure for many students.",syn:"indulgence · vice",conf:"<b>guilty</b>（内疚的；有罪的）vs <b>guilt</b>（内疚，n.）vs <b>guiltless</b>（无辜的）。"},
+  fsa:{w:"Food Standards Authority (FSA)",ipa:"/fuːd ˈstændədz ɔːˈθɒrəti/",pos:"n.",tags:["core"],cn:"<b>食品标准局</b>（英国政府的食品安全监管机构）",en:"the UK government body responsible for food safety",ex:"The Food Standards Authority (FSA) has issued a public warning",mem:"⚠️ <b>该机构的正式名称是 Food Standards <u>Agency</u></b>（2000 年成立）；原刊社论写成了 Authority，考卷照抄。缩写 FSA 不变。authority＝当局、权威机构（the authorities 当局）。",syn:"regulator · watchdog",conf:"<b>authority</b>（当局；权威）vs <b>authorize</b>（授权）vs <b>authoritative</b>（权威的）vs <b>authoritarian</b>（专制的）。"},
+  compound:{w:"compound",ipa:"/ˈkɒmpaʊnd/",pos:"n.",tags:["core","poly"],cn:"①<b>化合物</b> ②混合物 ③（有围墙的）大院；v. /kəmˈpaʊnd/ 使恶化，加重",en:"a substance formed by a chemical reaction of two or more elements",ex:"a compound called acrylamide",mem:"com-（一起）＋ pound（放）⟹ 放在一起的东西。⭐⭐ <b>动词义高频</b>：compound the problem（使问题更糟）。③段 the compound 回指丙烯酰胺。",syn:"substance · chemical",conf:"<b>compound</b>（化合物）vs <b>component</b>（成分）vs <b>composite</b>（合成的）。"},
+  acrylamide:{w:"acrylamide",ipa:"/əˈkrɪləmaɪd/",pos:"n.",tags:["core"],cn:"<b>丙烯酰胺</b>（淀粉类食物高温烹制时生成的化合物）",en:"a chemical that can form in starchy foods cooked at high temperatures",ex:"a compound called acrylamide that forms in some foods cooked at high temperatures",mem:"acryl-（丙烯）＋ amide（酰胺）。⭐ 背景：土豆、面包等淀粉食物在 120 ℃ 以上煎炸烤时生成；国际癌症研究机构把它列为 2A 类「很可能致癌」——原刊引的 <i>likely to be carcinogenic</i> 就是这个口径。不必背，认出是「一种化学物质」即可。",syn:"—",conf:"<b>-amide</b>（酰胺）vs <b>-amine</b>（胺）——化学后缀，考试只要认得是物质名。"},
+  crisp:{w:"crisp",ipa:"/krɪsp/",pos:"v./adj.",tags:["core","poly"],cn:"v. <b>把……烤（炸）脆</b>；adj. 脆的；（空气）清新的；（风格）干脆利落的",en:"to make food hard and dry on the outside by cooking",ex:"avoid crisping their roast potatoes",mem:"⭐ crisps（英）＝薯片（美 chips）。形容词：crisp air（清爽的空气）· a crisp reply（干脆的回答）。7 题 avoid 的宾语 crisping 是「坏事」——框架自带负号。",syn:"brown · toast",conf:"<b>crisp</b>（脆）vs <b>crispy</b>（酥脆的，口语）vs <b>crust</b>（外皮）。"},
+  thincrust:{w:"thin-crust pizza",ipa:"/θɪn krʌst ˈpiːtsə/",pos:"n.",tags:["core"],cn:"<b>薄底披萨</b>",en:"a pizza with a thin, crisp base",ex:"reject thin-crust pizzas",mem:"crust＝（面包、披萨的）硬皮；地壳（the earth’s crust）。薄底烤得更焦 ⟹ 丙烯酰胺更多。⭐ 三个建议并列：avoid crisping · reject · only partially toast——原刊的 reject 是 <i>spurn</i>（唾弃，更重），考卷换成了平常词。",syn:"—",conf:"<b>crust</b>（外皮）vs <b>crest</b>（顶峰；羽冠）vs <b>crush</b>（压碎）。"},
+  toast:{w:"toast",ipa:"/təʊst/",pos:"v./n.",tags:["core","poly"],cn:"v. <b>烤（面包）</b>；n. 烤面包片；<b>祝酒</b>",en:"to make bread brown by heating it",ex:"only partially toast their bread",mem:"⭐ 熟词僻义：drink a toast to sb（为某人干杯）· be the toast of the town（名噪一时的人）。8 题：only ___ toast——only 限定的是<b>程度</b> ⟹ partially。",syn:"brown · grill",conf:"<b>toast</b>（烤面包；祝酒）vs <b>roast</b>（烤肉）vs <b>boast</b>（吹嘘）。"},
+  alarmist:{w:"alarmist",ipa:"/əˈlɑːmɪst/",pos:"adj./n.",tags:["core","write"],cn:"adj. <b>危言耸听的</b>；n. 大惊小怪的人",en:"causing unnecessary fear",ex:"such alarmist advice",mem:"alarm（警报）＋ -ist。⭐⭐ <b>作者亮出底牌的第一个词</b>——把对方的建议叫作 alarmist，下文每一个让步都要在这个判断下读。✍️ This is not to be alarmist, but …（不是危言耸听，但……）——2018 T1 原文也有 This isn’t to be alarmist。",syn:"scaremongering · sensational",conf:"<b>alarmist</b>（危言耸听）vs <b>alarming</b>（令人担忧的，事实上确实可怕）vs <b>alarmed</b>（感到惊恐的）。"},
+  neurological:{w:"neurological",ipa:"/ˌnjʊərəˈlɒdʒɪkl/",pos:"adj.",tags:["core"],cn:"<b>神经（系统）的；神经病学的</b>",en:"relating to nerves or to the science of nerves",ex:"can cause neurological damage in mice",mem:"neuro-（神经）＋ -logical。⭐ 本句 mice vs humans 是 9 题 While 的对比轴：小鼠身上证实了（而且是神经损伤，不是癌）、人身上没证实。",syn:"nervous · neural",conf:"<b>neurological</b>（神经的）vs <b>neurotic</b>（神经质的）vs <b>neutral</b>（中立的）。"},
+  hardproof:{w:"hard scientific proof",ipa:"/hɑːd ˌsaɪənˈtɪfɪk pruːf/",pos:"phrase",tags:["phrase","poly"],cn:"<b>确凿的科学证据</b>",en:"definite scientific evidence",ex:"have no hard scientific proof",mem:"⭐⭐ <b>hard 熟词僻义＝确凿的、实打实的</b>：hard evidence · hard facts · hard data。本句 no hard proof 是上段 no conclusive evidence 的同义复现 ⟹ 10 题 conclusive 的回声；也是 11 题 likely 的刹车（有可能，但没实锤）。",syn:"conclusive evidence · firm proof",conf:"<b>proof</b>（证据，n.）vs <b>prove</b>（证明，v.）vs <b>-proof</b> 后缀＝防……的（waterproof）。"},
+  precautionary:{w:"precautionary principle",ipa:"/prɪˈkɔːʃənəri ˈprɪnsəpl/",pos:"n.",tags:["core","write"],cn:"<b>预防原则</b>（风险尚未证实时，宁可先防）",en:"the idea that you should act to prevent possible harm even without full scientific proof",ex:"the precautionary principle",mem:"pre-（预先）＋ caution（小心）。⭐⭐ <b>这个原则本身就是「没证据也先防」</b>——所以它是让步的最好支点：作者刚说没证据，马上承认「按预防原则，听 FSA 的也说得过去」。12 题 On the basis of 以它为依据。",syn:"better safe than sorry",conf:"<b>precaution</b>（预防措施）vs <b>caution</b>（谨慎）vs <b>precautious</b>（✗ 不存在，别写）。"},
+  argue:{w:"it could be argued that",ipa:"/ɪt kʊd biː ˈɑːɡjuːd ðæt/",pos:"phrase",tags:["phrase","write"],cn:"<b>可以说，或许有理由认为</b>",en:"used to introduce a view that is possible but not certain",ex:"it could be argued that it is advisable to follow the FSA advice",mem:"⭐⭐ <b>could ＋ 被动的 argue ＝ 作者不署名的观点</b>：把话说出来、但不算自己的——这正是让步的标记。13 题 advisable 就站在这个「半署名」的档位上，urgent 就过了头。✍️ It could be argued that …, but …（作文让步段万能开头）。",syn:"one might argue · arguably",conf:"<b>argue that</b>（主张）vs <b>argue with sb</b>（与人争吵）vs <b>arguably</b>（可以说，副词）。"},
+  rumour:{w:"rumour",ipa:"/ˈruːmə(r)/",pos:"v./n.",tags:["core"],cn:"n. <b>传言，谣言</b>；v. 谣传（常用被动 It is rumoured that …）",en:"(of a story) to be passed from person to person without proof",ex:"it was rumoured that smoking caused cancer for years",mem:"⭐ It was rumoured that …＝据传……（英式拼写 rumour，美式 rumor）。本句是历史先例：<b>先有「传言」、多年后才有「证据」</b>——14 题 After all 用它替 FSA 补理由。",syn:"hearsay · gossip",conf:"<b>rumour</b>（传言）vs <b>humour</b>（幽默）vs <b>rumor has it that</b>（据说）。"},
+  doubtless:{w:"doubtless",ipa:"/ˈdaʊtləs/",pos:"adv.",tags:["core","write"],cn:"<b>无疑，想必</b>（常作让步：固然……）",en:"almost certainly",ex:"Doubtless a piece of boiled beef can always be served up",mem:"⭐⭐ <b>句首 Doubtless ＝ 让步开场</b>，下一句 But 必翻——本篇的 Doubtless 还带讽刺：它「让」给对方的是一顿干巴巴的水煮牛肉，然后反问 But would life be worth living?",syn:"no doubt · undoubtedly · certainly",conf:"<b>doubtless</b>（无疑，常用于让步）vs <b>undoubtedly</b>（毫无疑问，更强）vs <b>doubtful</b>（怀疑的）。"},
+  boiled:{w:"boiled beef",ipa:"/bɔɪld biːf/",pos:"n.",tags:["core"],cn:"<b>水煮牛肉</b>",en:"beef cooked in boiling water",ex:"a piece of boiled beef",mem:"⭐ 作者故意挑了一顿最寡淡的饭：<b>boiled（水煮）对 roast（烤）、steamed（清蒸）对 crisped（烤脆）</b>——不烤、不脆、不配布丁、不喝酒，全是「减法」。",syn:"—",conf:"<b>boil</b>（煮）vs <b>broil</b>（美：烤）vs <b>steam</b>（蒸）vs <b>stew</b>（炖）。"},
+  steamed:{w:"steamed vegetables",ipa:"/stiːmd ˈvedʒtəblz/",pos:"n.",tags:["core"],cn:"<b>清蒸蔬菜</b>",en:"vegetables cooked in steam",ex:"alongside some steamed vegetables",mem:"alongside＝与……一起、在……旁边：serve A alongside B（A 配 B 上桌）。",syn:"—",conf:"<b>steam</b>（蒸汽；蒸）vs <b>steamer</b>（蒸锅；汽船）vs <b>esteem</b>（尊重）。"},
+  yorkshire:{w:"Yorkshire pudding",ipa:"/ˈjɔːkʃə ˈpʊdɪŋ/",pos:"n.",tags:["core"],cn:"<b>约克郡布丁</b>（烤肉的传统配菜，面糊烤成，不是甜点）",en:"a baked dish made from batter, eaten with roast beef",ex:"without the Yorkshire pudding and no wine",mem:"⭐ pudding 在英国常泛指饭后甜点，但约克郡布丁是<b>咸的面糊烤饼</b>，跟烤牛肉一起上。⚠️ <code>without the Yorkshire pudding and no wine</code> 语法上混搭（without A and no B），原刊如此，考卷照抄。",syn:"—",conf:"<b>pudding</b>（英：甜点；布丁）vs <b>dessert</b>（甜点，通用）。"},
+  worthliving:{w:"worth living",ipa:"/wɜːθ ˈlɪvɪŋ/",pos:"phrase",tags:["phrase","write"],cn:"<b>值得过（的人生）</b>",en:"good enough to make life enjoyable",ex:"But would life be worth living?",mem:"⭐ be worth doing（主动形式表被动）：The book is worth reading. ⭐⭐ <b>反问句＝否定</b>：would life be worth living?＝活着就没意思了——作者对「只吃水煮牛肉」的判决。",syn:"worthwhile",conf:"<b>worth</b>（值得，后接 doing 或名词）vs <b>worthy of</b>（配得上）vs <b>worthwhile</b>（值得的）。"},
+  cutout:{w:"cut out",ipa:"/kʌt aʊt/",pos:"phr. v.",tags:["phrase","poly"],cn:"①<b>戒掉，不再吃（喝）</b> ②剪下 ③（发动机）熄火",en:"to stop eating or doing sth",ex:"not telling people to cut out roast foods entirely",mem:"⭐ cut out sugar／alcohol（戒糖／戒酒）· be cut out for（天生适合做）。⭐⭐ <b>not … cut out … entirely, but … reduce</b> 是取舍：戒 vs 减 ⟹ 18 题只能填「彻底」一类的程度词。",syn:"give up · eliminate",conf:"<b>cut out</b>（戒掉）vs <b>cut down on</b>（减少）vs <b>cut off</b>（切断）。"},
+  intake:{w:"intake",ipa:"/ˈɪnteɪk/",pos:"n.",tags:["core","write"],cn:"①<b>摄入量</b> ②（学校）招生人数",en:"the amount of food, drink, etc. that you take into your body",ex:"to reduce their lifetime intake",mem:"in ＋ take。⭐ reduce／limit one’s intake of sugar（控糖）· the annual intake of students（年度招生数）。lifetime intake＝一辈子吃进去的总量——FSA 的口径是<b>「量」而不是「有没有」</b>。",syn:"consumption",conf:"<b>intake</b>（摄入）vs <b>input</b>（输入）vs <b>uptake</b>（吸收；采用率）。"},
+  riskdoing:{w:"risk doing / come across as",ipa:"/rɪsk/ · /kʌm əˈkrɒs æz/",pos:"v. / phr. v.",tags:["phrase","write"],cn:"risk doing：<b>冒……之险，有……的风险</b>；come across as：<b>给人……的印象</b>",en:"risk doing: to do sth that may have a bad result; come across as: to seem to be",ex:"its campaign risks coming across as being pushy and overprotective",mem:"⭐⭐ <b>risk 作动词后接 doing</b>（不接 to do）：risk losing everything。come across as＝显得（常带「不是本意」）：He comes across as arrogant. ⭐ 本句主语是 its ___ ⟹ 19 题要一个<b>能「给人印象」的东西</b>：宣传运动（campaign）。",syn:"be in danger of · seem · appear",conf:"<b>come across as</b>（显得）vs <b>come across sth</b>（偶然遇到）vs <b>get across</b>（讲明白）。"},
+  pushy:{w:"pushy",ipa:"/ˈpʊʃi/",pos:"adj.",tags:["core"],cn:"<b>咄咄逼人的，强人所难的</b>",en:"trying too hard to get what you want",ex:"being pushy and overprotective",mem:"push ＋ -y。⭐ 原刊用的是名词 <i>exhortation</i>（苦口婆心的规劝）和 <i>nannying</i>（保姆式管教），考卷换成两个形容词 pushy／overprotective——意思不变、词更简单。",syn:"aggressive · overbearing",conf:"<b>pushy</b>（强人所难）vs <b>pushing</b>（年近：pushing forty）vs <b>pushover</b>（容易被说服的人）。"},
+  overprotective:{w:"overprotective",ipa:"/ˌəʊvəprəˈtektɪv/",pos:"adj.",tags:["core","write"],cn:"<b>保护过度的</b>",en:"too anxious to protect sb from harm",ex:"pushy and overprotective",mem:"over-（过度）＋ protective。⭐ 对应英国政论常骂的 <b>nanny state</b>（保姆国家：政府像保姆一样管你吃什么）——原刊正是 nannying。✍️ overprotective parents（过度保护的父母）——作文「溺爱」话题可用。",syn:"paternalistic · smothering",conf:"<b>over-</b> 前缀＝过度：overreact · overestimate · overconfident。"},
+  scare:{w:"health scare",ipa:"/helθ skeə(r)/",pos:"n.",tags:["core","write"],cn:"<b>健康恐慌</b>（一阵阵的「某某食物致病」警告）",en:"a situation in which many people are frightened about a possible danger to health",ex:"Constant health scares just end up with no one listening",mem:"⭐ scare 作名词＝恐慌：a food scare · a bomb scare（炸弹恐慌）。⭐⭐ <b>「狼来了」的逻辑</b>：警告太多 ⟹ 没人再听——20 题 end up 接的就是这个结局。",syn:"panic · alarm",conf:"<b>scare</b>（恐慌，n.；吓唬，v.）vs <b>scarce</b>（稀缺的）vs <b>scary</b>（吓人的）。"}
+};
+const panel=document.getElementById('panel');
+const isMobile=()=>window.innerWidth<=900;
+function badge(t){return {core:'<span class="badge b-core">核心词</span>',phrase:'<span class="badge b-phrase">短语</span>',poly:'<span class="badge b-poly">熟词僻义</span>',write:'<span class="badge b-write">写作✍︎</span>'}[t]||''}
+function showCard(k,el){
+  const d=V[k]; if(!d)return;
+  document.querySelectorAll('.tk.active').forEach(e=>e.classList.remove('active'));
+  if(el&&el.classList.contains('tk'))el.classList.add('active');
+  panel.innerHTML='<button class="close" onclick="panel.classList.remove(\'open\')">✕</button>'+
+  '<div class="wcard"><div class="head"><span class="w">'+d.w+'</span><span class="ipa">'+d.ipa+'</span><span class="pos">'+d.pos+'</span>'+d.tags.map(badge).join('')+'</div>'+
+  '<div class="cn">'+d.cn+'</div><div class="en-def">'+d.en+'</div>'+
+  '<div class="row r-ex"><b>原文语境</b>「…'+d.ex+'…」</div>'+
+  '<div class="row r-mem"><b>怎么记</b>'+d.mem+'</div>'+
+  '<div class="row r-syn"><b>同类词</b>'+d.syn+'</div>'+
+  '<div class="row r-conf"><b>易混辨析</b>'+d.conf+'</div></div>';
+  if(isMobile())panel.classList.add('open');
+}
+document.querySelectorAll('.tk').forEach(t=>t.addEventListener('click',e=>{e.stopPropagation();showCard(t.dataset.w,t)}));
+
+/* ============ 译文开关 ============ */
+function tz(btn){btn.closest('.para').classList.toggle('showzh')}
+let allOn=false;
+function toggleAll(){allOn=!allOn;document.querySelectorAll('.para').forEach(p=>p.classList.toggle('showzh',allOn))}
+function go(id){const s=document.getElementById(id);if(!s)return;s.scrollIntoView({behavior:'smooth',block:'center'});s.style.transition='none';s.style.opacity=.3;setTimeout(function(){s.style.transition='opacity .8s';s.style.opacity=1},80)}
+
+/* ============ 20 空数据（类别 + 正确词） ============ */
+const CAT={
+  logic:{name:"逻辑关系",cls:"c-logic",color:"#3d6a8a"},
+  collo:{name:"固定搭配",cls:"c-collo",color:"#3e7a4e"},
+  word:{name:"词义辨析",cls:"c-word",color:"#b04a3a"},
+  context:{name:"上下文语义",cls:"c-context",color:"#6d5a8e"}
+};
+const B={
+  1:{w:"On",cat:"collo"},              2:{w:"match",cat:"word"},
+  3:{w:"enjoyment",cat:"context"},     4:{w:"guaranteed",cat:"word"},
+  5:{w:"issued",cat:"collo"},          6:{w:"at",cat:"collo"},
+  7:{w:"avoid",cat:"context"},         8:{w:"partially",cat:"word"},
+  9:{w:"While",cat:"logic"},           10:{w:"conclusive",cat:"collo"},
+  11:{w:"likely",cat:"word"},          12:{w:"On the basis of",cat:"collo"},
+  13:{w:"advisable",cat:"word"},       14:{w:"After all",cat:"logic"},
+  15:{w:"connection",cat:"context"},   16:{w:"served",cat:"collo"},
+  17:{w:"To be fair",cat:"logic"},     18:{w:"entirely",cat:"context"},
+  19:{w:"campaign",cat:"context"},     20:{w:"end up",cat:"context"}
+};
+
+
+/* ============ 点空格 → 跳到解析卡 ============ */
+document.querySelectorAll('.bk').forEach(function(b){
+  b.addEventListener('click',function(){
+    document.querySelectorAll('.bk.active').forEach(function(e){e.classList.remove('active')});
+    b.classList.add('active');
+    go('q'+b.dataset.n);
+  });
+});
+function fillBlank(n,ok){
+  const el=document.querySelector('.bk[data-n="'+n+'"]');
+  if(!el)return;
+  el.classList.remove('miss');
+  el.classList.add(ok===false?'miss':'filled');
+  el.innerHTML='<span class="idx">'+n+'</span>'+B[n].w;
+}
+
+/* ============ 即点即判 + 计分 ============ */
+let done=0,right=0;
+function updScore(){
+  document.getElementById('sDone').textContent=done;
+  document.getElementById('sRight').textContent=right;
+  document.getElementById('sPt').textContent=(right*0.5).toFixed(1);
+}
+document.querySelectorAll('.q').forEach(function(q){
+  const ans=+q.dataset.ans, n=q.id.replace('q','');
+  q.querySelectorAll('.opt').forEach(function(o,i){
+    o.addEventListener('click',function(){
+      if(q.classList.contains('done'))return;
+      q.classList.add('done');
+      const ok=(i===ans);
+      if(!ok)o.classList.add('wrong');
+      q.querySelectorAll('.opt')[ans].classList.add('right');
+      done++; if(ok)right++; updScore();
+      fillBlank(n,ok);
+    });
+  });
+});
+function revealAll(){
+  document.querySelectorAll('.q').forEach(function(q){
+    const n=q.id.replace('q','');
+    if(!q.classList.contains('done')){
+      q.classList.add('done');
+      q.querySelectorAll('.opt')[+q.dataset.ans].classList.add('right');
+      done++; updScore();
+    }
+    fillBlank(n,true);
+  });
+  document.querySelectorAll('.bk.miss').forEach(function(e){e.classList.remove('miss');e.classList.add('filled')});
+}
+
+/* ============ 考点统计 ============ */
+const counts={};Object.keys(B).forEach(function(k){counts[B[k].cat]=(counts[B[k].cat]||0)+1});
+const order=["word","collo","context","logic"];
+document.getElementById('catbar').innerHTML=order.map(function(k){
+  return '<div class="catseg" style="flex:'+counts[k]+';background:'+CAT[k].color+'">'+CAT[k].name+' '+counts[k]+'</div>'}).join('');
+const legend=document.getElementById('catlegend');
+legend.innerHTML=order.map(function(k){
+  return '<div class="cl" data-cat="'+k+'"><span class="dot" style="background:'+CAT[k].color+'"></span>'+CAT[k].name+' · '+counts[k]+' 题</div>'}).join('');
+const chips=document.getElementById('chips');
+function renderChips(cat){
+  chips.innerHTML=Object.keys(B).filter(function(n){return !cat||B[n].cat===cat})
+    .map(function(n){return '<span class="chip" data-n="'+n+'">'+n+'. '+B[n].w+'</span>'}).join('');
+  chips.querySelectorAll('.chip').forEach(function(c){
+    c.addEventListener('click',function(){go('q'+c.dataset.n)});
+  });
+}
+renderChips(null);
+legend.querySelectorAll('.cl').forEach(function(l){
+  l.addEventListener('click',function(){
+    const cat=l.dataset.cat;
+    document.querySelectorAll('.cl').forEach(function(x){x.style.borderColor=''});
+    l.style.borderColor=CAT[cat].color;
+    renderChips(cat);
+    document.querySelectorAll('.bk').forEach(function(b){
+      b.style.outline=(B[b.dataset.n].cat===cat?'2px solid '+CAT[cat].color:'')});
+  });
+});
+
+/* ============ 80 选项词表 ============ */
+const OPTS={
+ 1:[["In","在……期间（要一段时间）"],["On","在（具体某一天）"],["Till","直到（时间点荒谬）"],["Towards","快到……时（不是评述）"]],
+ 2:[["match","比得上（同类相比）"],["express","表达（宾语是想法感受）"],["satisfy","满足（宾语是需求或人）"],["influence","影响（同类不能左右它）"]],
+ 3:[["patience","耐心（与 pleasure 不对等）"],["concern","担忧（是警察的，不是烤肉）"],["surprise","惊喜（传统不是意外）"],["enjoyment","乐事（＝culinary pleasure）"]],
+ 4:[["intensified","被加强（主语不对）"],["guaranteed","必定会（对方的笃定）"],["compelled","被迫（烤肉没有意志）"],["privileged","有幸（褒义不搭）"]],
+ 5:[["ignored","忽视（把 FSA 当成另一方）"],["received","收到（同上）"],["issued","发布（issue a warning）"],["cancelled","撤销（态度没变）"]],
+ 6:[["under","在……条件下"],["by","借助（方式）"],["for","为了；因为"],["at","以（温度、速度）"]],
+ 7:[["forget","忘记（做过／要做）"],["avoid","避免（＝reject 同向）"],["finish","做完（已完成）"],["regret","后悔（是心态不是做法）"]],
+ 8:[["easily","容易地（难易）"],["regularly","定期地（频率）"],["partially","部分地（程度，配 only）"],["initially","起初（顺序）"]],
+ 9:[["If","如果（不是条件）"],["Since","既然（不是原因）"],["While","虽然（小鼠有 vs 人类无）"],["Unless","除非（逻辑相反）"]],
+ 10:[["conclusive","确凿的（证据强度）"],["external","外部的（证据来源）"],["secondary","次要的（证据主次）"],["negative","否定性的（法律义，反了）"]],
+ 11:[["likely","可能（让步一档）"],["bound","必定（让过头，but 翻不动）"],["insufficient","不足以（否定了致癌）"],["slow","慢（仍默认会致癌）"]],
+ 12:[["In addition to","除……之外（补充同类）"],["At the cost of","以……为代价（原则没被牺牲）"],["On the basis of","基于（原则作依据）"],["In contrast to","与……相比（不对立）"]],
+ 13:[["interesting","有趣的（与原则无关）"],["fortunate","幸运的（事后庆幸）"],["urgent","紧迫的（让过头）"],["advisable","明智的（让步一档）"]],
+ 14:[["As usual","照例（同一事反复）"],["After all","毕竟（补理由）"],["By definition","按定义（必然）"],["In particular","尤其（挑一项）"]],
+ 15:[["connection","关联（吸烟—癌症）"],["combination","组合（不是因果）"],["resemblance","相似（把类比当对象）"],["pattern","模式（问是否不问如何）"]],
+ 16:[["made","make up 组成；拼凑"],["used","use up 用完"],["saved","save up 攒钱"],["served","serve up 端上桌"]],
+ 17:[["To be brief","简言之（不是总结）"],["For instance","例如（不是举例）"],["To be fair","公平地说（替对方说句话）"],["In general","总的来说（不是概括）"]],
+ 18:[["entirely","完全地（not…but 对 reduce）"],["gradually","逐渐地（对立面是一下子）"],["reluctantly","不情愿地（心态）"],["carefully","小心地（与警告矛盾）"]],
+ 19:[["promise","承诺（FSA 是在警告）"],["competition","竞争（无中生有）"],["experience","经历（不是 FSA 的行动）"],["campaign","宣传运动（警告＋建议）"]],
+ 20:[["follow up","跟进（不是结局）"],["end up","落得（结局）"],["open up","打开；出现（要宾语）"],["pick up","拾起；好转（方向反）"]]
+};
+const ANS={1:1,2:0,3:3,4:1,5:2,6:3,7:1,8:2,9:2,10:0,11:0,12:2,13:3,14:1,15:0,16:3,17:2,18:0,19:3,20:1};
+(function(){
+  let h='<tr><th>空</th><th>A</th><th>B</th><th>C</th><th>D</th></tr>';
+  for(let n=1;n<=20;n++){
+    h+='<tr><td class="n">'+n+'</td>';
+    OPTS[n].forEach(function(o,i){
+      h+='<td'+(i===ANS[n]?' class="hit"':'')+'><span class="ow">'+o[0]+'</span><span class="oc">'+o[1]+'</span></td>';
+    });
+    h+='</tr>';
+  }
+  document.getElementById('otab').innerHTML=h;
+  document.querySelectorAll('#otab .oc').forEach(function(c){
+    c.addEventListener('click',function(){c.classList.toggle('show')});
+  });
+})();
+function toggleHide(){
+  const t=document.getElementById('otab');
+  const on=t.classList.toggle('hidecn');
+  document.getElementById('btnHide').textContent=on?'👁 显示释义':'✍️ 默写模式';
+  if(!on)t.querySelectorAll('.oc.show').forEach(function(c){c.classList.remove('show')});
+}
+
+/* ============ 查有道 ============ */
+const yd=document.getElementById('yd');let sel='',ydHold=0,ydT=0;
+/* 触屏：点按钮会先把选区清掉 → selectionchange 立刻把按钮藏了 → 点击落空。改成延迟隐藏 ＋ 按下即锁定 */
+const ydTouch=window.matchMedia&&matchMedia('(pointer:coarse)').matches;
+function ydHide(){clearTimeout(ydT);ydHold=0;yd.style.display='none'}
+document.addEventListener('selectionchange',function(){
+  const s=window.getSelection();const t=s?s.toString().trim():'';
+  if(t&&/^[a-zA-Z' -]{2,40}$/.test(t)){
+    sel=t;clearTimeout(ydT);
+    try{const r=s.getRangeAt(0).getBoundingClientRect();
+      yd.style.left=Math.max(8,Math.min(r.left,window.innerWidth-110))+'px';
+      yd.style.top=(r.bottom+(ydTouch?30:8))+'px';yd.style.display='block';}catch(e){}
+  }else if(!ydHold){clearTimeout(ydT);ydT=setTimeout(function(){if(!ydHold)yd.style.display='none'},ydTouch?900:0)}
+});
+['pointerdown','touchstart','mousedown'].forEach(function(ev){yd.addEventListener(ev,function(){ydHold=1;clearTimeout(ydT)},{passive:true})});
+yd.addEventListener('click',function(){
+  const u='https://dict.youdao.com/result?word='+encodeURIComponent(sel)+'&lang=en';
+  let w=null;try{w=window.open(u,'_blank')}catch(e){}
+  if(!w)location.href=u;
+  ydHide()});
+document.addEventListener('click',function(e){if(e.target!==yd&&!window.getSelection().toString())ydHide()});
+</script>
+<script src="_fault_attr.js"></script>
+</body>
+</html>
