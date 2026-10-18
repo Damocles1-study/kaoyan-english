@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2020 英一 新题型 · 目光接触或合或分</title>
+<style>
+  :root{
+    --bg:#faf9f6; --card:#ffffff; --ink:#2b2b2b; --muted:#8a8578;
+    --accent:#8b5e34; --accent-soft:#f3e9dd; --line:#e8e3d8;
+    --hl:#fdf3d8; --hl-border:#e0b84d;
+    --green:#3e7a4e; --green-soft:#e8f2ea;
+    --red:#b04a3a; --red-soft:#f9e9e6;
+    --blue:#3d6a8a; --blue-soft:#e7eff5;
+    --purple:#6d5a8e; --purple-soft:#eeeaf5;
+    --serif:"Georgia","Songti SC",serif;
+    --sans:-apple-system,"PingFang SC","Helvetica Neue",sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#1c1a17; --card:#26231f; --ink:#e8e4dc; --muted:#9a948a;
+      --accent:#d0a06a; --accent-soft:#3a3127; --line:#3a362f;
+      --hl:#3d3520; --hl-border:#b08c3a;
+      --green:#7fb98d; --green-soft:#26362b;
+      --red:#d98876; --red-soft:#3d2a26;
+      --blue:#8ab3d0; --blue-soft:#26323d;
+      --purple:#a996c8; --purple-soft:#302a3d;
+    }
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;padding-bottom:120px}
+  .wrap{max-width:1100px;margin:0 auto;padding:24px 20px}
+  .back{font-size:.85rem;color:var(--muted);text-decoration:none}
+  .back:hover{color:var(--accent)}
+  header{margin:14px 0 28px}
+  header h1{font-family:var(--serif);font-size:1.7rem;line-height:1.3}
+  header .sub{color:var(--muted);margin-top:6px;font-size:.9rem}
+  .tags{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+  .tag{font-size:.75rem;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);border:1px solid var(--line)}
+  .tag.bad{background:var(--red-soft);color:var(--red)}
+  .layout{display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:start}
+  .layout > main{min-width:0}
+  @media (max-width:900px){.layout{grid-template-columns:1fr}}
+  section.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:24px}
+  h2{font-size:1.05rem;letter-spacing:.05em;color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+  h2 .n{font-size:.72rem;background:var(--accent);color:var(--card);border-radius:6px;padding:1px 7px}
+  h3.sh{font-size:.95rem;color:var(--ink);margin:18px 0 8px;padding-left:9px;border-left:3px solid var(--accent)}
+  .para{margin-bottom:14px}
+  .en{font-family:var(--serif);font-size:1.03rem;line-height:1.95}
+  .tk{background:var(--hl);border-bottom:2px solid var(--hl-border);border-radius:3px;padding:0 2px;cursor:pointer;transition:filter .15s}
+  .tk:hover{filter:brightness(.93)}
+  .tk.active{outline:2px solid var(--hl-border)}
+  .clue{border-bottom:2px dotted var(--red)}
+  .zh{display:none;margin-top:8px;padding:10px 14px;background:var(--blue-soft);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:.92rem}
+  .showzh .zh{display:block}
+  .zbtn{float:right;margin-left:10px;font-size:.72rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:6px;padding:2px 9px;cursor:pointer}
+  .zbtn:hover{color:var(--accent);border-color:var(--accent)}
+  .allbtn{font-size:.78rem;border:1px solid var(--accent);background:none;color:var(--accent);border-radius:8px;padding:4px 12px;cursor:pointer;margin-left:auto}
+  aside{position:sticky;top:20px}
+  #panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;min-height:180px}
+  #panel .hint{color:var(--muted);font-size:.88rem;text-align:center;padding:30px 10px}
+  .wcard .head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .wcard .w{font-family:var(--serif);font-size:1.35rem;font-weight:bold}
+  .wcard .ipa{color:var(--muted);font-size:.85rem}
+  .wcard .pos{font-size:.72rem;color:var(--purple);background:var(--purple-soft);padding:1px 8px;border-radius:999px}
+  .wcard .badge{font-size:.7rem;padding:1px 8px;border-radius:999px}
+  .b-core{background:var(--red-soft);color:var(--red)}
+  .b-phrase{background:var(--blue-soft);color:var(--blue)}
+  .b-poly{background:var(--purple-soft);color:var(--purple)}
+  .b-write{background:var(--green-soft);color:var(--green)}
+  .wcard .cn{margin-top:8px;font-size:1rem;font-weight:600}
+  .wcard .en-def{color:var(--muted);font-size:.86rem;font-style:italic;margin-top:2px}
+  .wcard .row{margin-top:10px;font-size:.86rem;padding:8px 10px;border-radius:8px}
+  .wcard .row b{font-size:.72rem;display:block;margin-bottom:2px;letter-spacing:.06em}
+  .r-ex{background:var(--hl)} .r-ex b{color:var(--hl-border)}
+  .r-mem{background:var(--green-soft)} .r-mem b{color:var(--green)}
+  .r-syn{background:var(--blue-soft)} .r-syn b{color:var(--blue)}
+  .r-conf{background:var(--red-soft)} .r-conf b{color:var(--red)}
+  #panel .close{display:none}
+  @media (max-width:900px){
+    aside{position:fixed;left:0;right:0;bottom:0;z-index:50;padding:0 8px 8px}
+    #panel{box-shadow:0 -6px 24px rgba(0,0,0,.18);max-height:55vh;overflow-y:auto;display:none}
+    #panel.open{display:block}
+    #panel .close{display:block;float:right;border:none;background:var(--line);border-radius:8px;padding:2px 10px;cursor:pointer;color:var(--ink)}
+  }
+  /* 选项库 */
+  .optlib{display:grid;gap:8px}
+  .optitem{display:flex;gap:10px;border:1px solid var(--line);border-radius:10px;padding:9px 12px;font-size:.9rem}
+  .optitem .lt{font-weight:700;font-family:var(--serif);color:var(--accent);flex:0 0 18px}
+  .optitem.used{opacity:.45}
+  .optitem.extra{border-color:var(--red);background:var(--red-soft)}
+  .optitem .oen{font-family:var(--serif);font-size:.92rem;line-height:1.75}
+  .optitem .zhx{display:block;color:var(--muted);font-size:.82rem;margin-top:3px}
+  .optitem .kw{display:block;font-size:.78rem;color:var(--blue);margin-top:3px}
+  .optitem .stg{display:inline-block;font-size:.72rem;background:var(--purple-soft);color:var(--purple);border-radius:999px;padding:1px 9px;margin-top:5px}
+  /* 空格题 */
+  .person{margin-bottom:26px;padding-bottom:20px;border-bottom:1px dashed var(--line)}
+  .person:last-child{border:none}
+  .pname{font-family:var(--serif);font-weight:700;font-size:1.05rem;margin-bottom:8px}
+  .pname .qn{color:var(--accent)}
+  .stance{font-size:.72rem;border-radius:999px;padding:1px 9px;margin-left:8px;vertical-align:2px;font-family:var(--sans);font-weight:400}
+  .st-anti{background:var(--red-soft);color:var(--red)}
+  .st-pro{background:var(--green-soft);color:var(--green)}
+  .st-mid{background:var(--blue-soft);color:var(--blue)}
+  .slot{display:inline;background:var(--accent-soft);border-bottom:2px solid var(--accent);border-radius:3px;padding:0 6px;color:var(--accent);font-weight:700;font-family:var(--sans);font-size:.88rem}
+  .slot.filled{background:var(--green-soft);border-color:var(--green);color:var(--ink);font-weight:400;font-family:var(--serif);font-size:1.03rem}
+  .slot.filled .fl{font-family:var(--sans);font-size:.78rem;font-weight:700;color:var(--green);margin-right:5px}
+  .chips{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0 4px}
+  .chips .ch{width:38px;height:34px;border:1px solid var(--line);border-radius:8px;background:none;font-family:var(--serif);font-weight:700;font-size:1rem;color:var(--ink);cursor:pointer;transition:all .15s}
+  .chips .ch:hover{border-color:var(--accent)}
+  .person.done .ch{cursor:default;opacity:.6}
+  .ch.right{background:var(--green-soft);border-color:var(--green);color:var(--green);opacity:1!important}
+  .ch.wrong{background:var(--red-soft);border-color:var(--red);color:var(--red);opacity:1!important}
+  .expl{display:none;margin-top:10px;background:var(--accent-soft);border-radius:10px;padding:12px 14px;font-size:.9rem}
+  .person.done .expl{display:block}
+  .expl b{color:var(--accent)}
+  .loc{font-family:var(--serif);font-style:italic;background:var(--hl);padding:1px 4px;border-radius:3px}
+  .expl .line{margin-top:8px;padding-top:8px;border-top:1px dashed var(--line)}
+  .expl .mine{margin-top:8px;padding:8px 10px;background:var(--red-soft);border-radius:8px;color:var(--red);font-size:.86rem}
+  .wb{display:grid;gap:10px}
+  .wbi{border-left:3px solid var(--green);background:var(--green-soft);border-radius:0 10px 10px 0;padding:10px 14px;font-size:.92rem}
+  .wbi .p{font-family:var(--serif);font-weight:600}
+  .wbi .u{color:var(--muted);font-size:.85rem}
+  /* 表格 */
+  .tbwrap{overflow-x:auto}
+  table.gt{border-collapse:collapse;width:100%;min-width:600px;font-size:.86rem}
+  table.gt th,table.gt td{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
+  table.gt th{background:var(--accent-soft);color:var(--accent);font-weight:600;font-size:.8rem}
+  table.gt td.c{text-align:center;font-family:var(--serif);font-weight:700}
+  table.gt tr.bad td{background:var(--red-soft)}
+  /* 分区带 */
+  .zone{display:grid;grid-template-columns:118px 1fr;gap:12px;padding:9px 0;border-bottom:1px dashed var(--line);font-size:.9rem}
+  .zone:last-child{border:none}
+  .zone .zn{font-size:.82rem;color:var(--accent);font-weight:600}
+  .zone.empty{background:var(--red-soft);border-radius:8px;padding-left:10px}
+  .zone.empty .zn{color:var(--red)}
+  /* 长难句 */
+  .ls{border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:14px}
+  .ls .s{font-family:var(--serif);font-size:.98rem;line-height:1.85}
+  .ls .an{margin-top:10px;font-size:.88rem}
+  .ls .an div{margin-top:4px}
+  .ls .tr{margin-top:8px;padding:8px 12px;background:var(--blue-soft);border-radius:8px;font-size:.88rem}
+  .mk{color:var(--red);font-weight:600}
+  .mk2{color:var(--blue);font-weight:600}
+  .mk3{color:var(--green);font-weight:600}
+  .box{border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:0 10px 10px 0;padding:12px 14px;margin:12px 0;font-size:.92rem;background:var(--accent-soft)}
+  .box.red{border-left-color:var(--red);background:var(--red-soft)}
+  .box.green{border-left-color:var(--green);background:var(--green-soft)}
+  .box .bt{font-weight:700;color:var(--accent);display:block;margin-bottom:6px}
+  .box.red .bt{color:var(--red)} .box.green .bt{color:var(--green)}
+  .en,.zh,.expl,.wbi,.optitem,.ls,.zone,.bd,figcaption,p,li,td,th{overflow-wrap:anywhere}
+  footer{color:var(--muted);font-size:.8rem;text-align:center;margin-top:30px}
+  #yd{position:fixed;z-index:60;display:none;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:4px 12px;font-size:.8rem;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+</style>
+<style>
+  /* selection-insertion page extras */
+  .layout{grid-template-columns:minmax(0,1fr) 340px}
+  @media (max-width:900px){.layout{grid-template-columns:minmax(0,1fr)}}
+  main,aside{min-width:0}
+  .clue2{border-bottom:2px dotted var(--blue)}
+  .optitem .oen{display:block}
+  table.gt td[colspan]{background:var(--accent-soft)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">◀ 返回英语复盘中心</a>
+  <header>
+    <h1>How Eye Contact Brings You Together (or Pulls You Apart)　目光接触如何使你们或合或分</h1>
+    <div class="sub">2020 年英语（一）真题 · Part B 新题型（<b>小标题匹配</b>：5 个编号段落 ⇄ 7 个小标题选二余）· 建议做题 <b>5–7 min</b> · 话题：目光接触——硬科学关于「对视」的五条发现（友好信号 · 生物机制 · 攻击性 · 注视停留 · 性格差异）· 黄皮书口径 540 words（脚本数：正文 470 词 ＋ 五个答案 35 词 ＝ 505；连两个多余项 525）· 来源 <i>Psychology Today</i>《今日心理学》网站 2016-09-11 博客 <i>Neuro-Behavioral Betterment</i>，作者 <b>Robert A. Lavine</b>（临床心理学家，乔治·华盛顿大学医学院兼职副教授）——<b>原文直取、逐词比对</b>（13 段 852 词 → 考卷 6 段 470 词，留 55.2%）</div>
+    <div class="tags">
+      <span class="tag">正确答案：41 C　42 E　43 G　44 A　45 D（B、F 多余）</span>
+      <span class="tag">变体：小标题匹配（标题匹配第三篇：2007 · 2016 · 2020）</span>
+      <span class="tag">文章线：<b>研究清单线</b>·一段引子（冒号收尾）＋ 五条发现</span>
+      <span class="tag">⭐ 五个正确项＝作者的五个粗体段首句（三个一字不差；G 把 It can also 改成 Eye contact can，D 把 modulate 改成 affect）</span>
+      <span class="tag">⭐ 命题人把三个标题词从段里擦掉了：friendly → pleasant · fixations → pauses · aggressive 连段删</span>
+      <span class="tag">Claude：<b>✅ 完整盲做 5/5</b>（mine 06:54 先落盘；43 在 G／C 间一闪）</span>
+    </div>
+  </header>
+
+  <div class="layout">
+    <main>
+
+      <section class="card">
+        <h2><span class="n">00</span>开考先认三样：变体 · 文章线 · 七个标题的句式 —— 本篇的主刀是「原词被擦掉以后，概括哪一层」</h2>
+        <p style="font-size:.92rem">三篇标题匹配，三种「原词」处境：<b>2007</b> 五个正确项三个零原词，复现最猛的两项反而是多余项（R17）；<b>2016</b> 五个正确项四个有原词，判据改成「原词落在哪一句」（R213）；<b>2020</b> 又倒回去，而且这次是<b>命题人亲手擦的</b>——<span class="mk">五个正确标题的关键词，只有 D 的 personality 还留在自己那一段；C 的 friendly 被改成 pleasant，A 的 fixations 被改成 pauses，G 的 aggressive 连同它所在的整段一起删掉，E 的 biological 原文本来就只在小标题里。</span>原词没了，就只能问：<b>这一段的研究，结论是什么</b>。</p>
+
+        <div class="tbwrap">
+        <table class="gt" style="min-width:660px">
+          <tr><th style="width:7%">空</th><th style="width:26%">正确项的关键词</th><th style="width:30%">在自己那一段里还剩什么</th><th>原文里它原来在哪</th></tr>
+          <tr><td class="c">41</td><td>C a <b>friendly</b> social signal</td><td><b>零</b>：②❸ in a <b>pleasant</b> way（原文是 in a friendly way）</td><td>粗体段首句 ＋ ②❸——<b>两处都被处理掉</b>；friendly 只剩在引子 ①❶ 和 43 段 ④❷</td></tr>
+          <tr><td class="c">42</td><td>E <b>Biological</b> factors … <b>are being investigated</b></td><td>biological 零；<b>are being explored</b>（③❸）同一个时体</td><td>只在粗体段首句；考卷还删了 As I recently reported</td></tr>
+          <tr><td class="c">43</td><td>G <b>aggressive</b></td><td><b>零</b>：只剩 dominance · intimidation · adversarial · backfire</td><td>粗体段首句 It can also be aggressive. ＋ 下一句 an <b>aggressive</b> argument——<b>整段 44 词删光</b></td></tr>
+          <tr><td class="c">44</td><td>A Eye <b>fixations</b> are <b>brief</b></td><td><b>零</b>：⑤❶ our eyes <b>pause</b> · ⑤❷ These <b>pauses</b></td><td>原文 our eyes pause, <b>or fixate</b>, … These <b>fixations</b> typically occur——<b>两处都改掉</b></td></tr>
+          <tr><td class="c">45</td><td>D <b>Personality</b> can affect how a person reacts</td><td><b>有</b>：⑥❶ a <b>personality</b> dimension</td><td>原文是 Personality <b>can modulate</b> …——选项把 modulate 换成了 affect</td></tr>
+        </table>
+        </div>
+        <p style="font-size:.9rem;margin-top:8px">⭐ <b>擦词不是随手的</b>：friendly → pleasant 和 fixations → pauses 都只改了一个词、意思不变，删 or fixate 也只删了两个词——<b>改动的唯一作用就是让小标题的原词从本段消失</b>。2020 卷 T3 把 less qualified 换成 less experienced 是同一只手（R255）。<span class="mk">⟹ 小标题匹配里「这段没有这个词」不能当排除理由；命题人就是不想让你靠找词做。</span>（R291）</p>
+
+        <h3 class="sh">① 认变体（Directions 那三行）</h3>
+        <p style="font-size:.92rem"><span class="loc">choosing the most suitable <b>subheading</b> from the list A–G for each of the numbered paragraphs (41–45). There are two extra subheadings</span> ⟹ <b>小标题匹配</b>，五段七标题、二项多余。与 2016 同用 subheading（2007 是 heading）。⚠️ sub- 的含义同 2016：文章有一个总话题（目光接触的科学），五段各是它下面的一条，<b>总话题本身做不了任何一段的小标题</b>。</p>
+
+        <h3 class="sh">② 认线：引子以冒号收尾 ⟹ 后面每段是一条「发现」</h3>
+        <p style="font-size:.92rem">只有一段引子：①❶ 好的一面（friendly）→ ①❷ 坏的一面（antagonistic · hostility）→ ①❸ <span class="loc">Here’s what hard science reveals about eye contact<b>:</b></span>。冒号把下面五段变成一张清单，<b>每段＝一项研究发现</b>，而且几乎每段都点名一位研究者：</p>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:620px">
+          <tr><th style="width:7%">空</th><th style="width:28%">研究者</th><th style="width:30%">研究的是什么</th><th>发现（＝小标题）</th></tr>
+          <tr><td class="c">41</td><td>心理学家 Monica Moore</td><td>婴儿与母亲 · 成人社交</td><td>对视是友好的社交信号 ⟹ <b>C</b></td></tr>
+          <tr><td class="c">42</td><td>神经科学家 Bonnie Auyeung ＋ other researchers</td><td>催产素 · 脑区</td><td>背后的生物因素正在被研究 ⟹ <b>E</b></td></tr>
+          <tr><td class="c">43</td><td>哈佛肯尼迪学院 Julia Minson</td><td>友好 vs 敌对情境</td><td>敌对时对视传达压制与恐吓 ⟹ <b>G</b></td></tr>
+          <tr><td class="c">44</td><td><b>无署名</b>（普遍事实）</td><td>看脸、看图时眼睛怎么动</td><td>每次停留很短 ⟹ <b>A</b></td></tr>
+          <tr><td class="c">45</td><td>芬兰学者 Jari Hietanen 等</td><td>神经质得分高的人</td><td>性格影响对对视的反应 ⟹ <b>D</b></td></tr>
+        </table>
+        </div>
+        <p style="font-size:.9rem;margin-top:8px"><span class="mk">⟹ 本页叫它「研究清单线」。研究段有三层：<b>对象</b>（谁被研究）· <b>方法</b>（怎么研究）· <b>发现</b>（得出什么）。小标题永远取发现层；本篇的诱饵全从对象层和方法层借词（见 02+++）。</span></p>
+
+        <h3 class="sh">③ 看七个标题的句式：第一次全是陈述句——情态词与量词分得出真假</h3>
+        <p style="font-size:.92rem">2007、2016 的七项全是祈使句（每段一条建议），形式上分不出来。<b>2020 七项全是陈述句</b>（每段一条发现），形式上就有一刀可下：</p>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:600px">
+          <tr><th style="width:8%">项</th><th style="width:38%">谓语怎么说</th><th>口气</th></tr>
+          <tr><td class="c">C</td><td><b>can be</b> a friendly social signal</td><td>可能（有时如此）</td></tr>
+          <tr><td class="c">G</td><td><b>can be</b> aggressive</td><td>可能（有时如此）——与 C 一对，一合一分</td></tr>
+          <tr><td class="c">D</td><td><b>can affect</b> how a person reacts</td><td>可能（因人而异）</td></tr>
+          <tr><td class="c">E</td><td><b>are being investigated</b></td><td>进行中（研究还没完）</td></tr>
+          <tr><td class="c">A</td><td><b>are</b> brief</td><td>普遍事实（生理现象，人人如此）</td></tr>
+          <tr class="bad"><td class="c">B</td><td><b>is instinctively felt</b> to be rude</td><td>一律（本能——人人生来如此）</td></tr>
+          <tr class="bad"><td class="c">F</td><td><b>Most people are not</b> comfortable</td><td>一律（大多数人）</td></tr>
+        </table>
+        </div>
+        <p style="font-size:.9rem;margin-top:8px">⭐ <b>标题与全文主旨对口径</b>：原文标题是 <i>Brings You Together <b>(or</b> Pulls You Apart)</i>，④❶ 明说 <span class="loc">depending on the situation</span>，⑥ 说因人而异——全文的结论是「<b>看情况</b>」。正确项里讲社会意义的三项全用 can；A 是生理事实，可以说死。<span class="mk">两个多余项恰好是唯二把「人的感受」说成一律的：本能地觉得无礼、大多数人都不自在。</span>（R292）</p>
+
+        <h3 class="sh">④ 做题顺序：先做原词还在的，再做换了说法的，最后做原词被擦光的</h3>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:640px">
+          <tr><th style="width:8%">顺序</th><th style="width:8%">空</th><th style="width:42%">锁定依据</th><th>为什么这个顺序</th></tr>
+          <tr><td class="c">1</td><td class="c">45</td><td>⑥❶ a <b>personality</b> dimension ＋ ⑥❸ people who scored high for negative emotions</td><td>唯一一个原词还在本段的；F 的 comfortable 在 ⑥❸，一并看清</td></tr>
+          <tr><td class="c">2</td><td class="c">42</td><td>③❶ the hormone oxytocin · ③❸ brain regions … <b>are being explored</b></td><td>时体一模一样（are being V-ed）；hormone、brain ＝ biological</td></tr>
+          <tr><td class="c">3</td><td class="c">44</td><td>⑤❶ our eyes <b>pause on one spot at a time</b> · ⑤❷ about three per second</td><td>pause ＝ fixation（换词）；一秒三次 ＝ brief</td></tr>
+          <tr><td class="c">4</td><td class="c">41</td><td>②❸ a <b>complimentary sign</b> · ②❺ can <b>signal</b> availability and confidence</td><td>sign／signal ＝ social signal；pleasant ＝ friendly</td></tr>
+          <tr><td class="c">5</td><td class="c">43</td><td>④❷ <b>dominance or intimidation in adversarial situations</b> · ④❸ may backfire</td><td>aggressive 全段零出现，要概括；而且段里有 friendly，C 来钓</td></tr>
+        </table>
+        </div>
+
+        <h3 class="sh">⑤ 时间与难点</h3>
+        <p style="font-size:.92rem">45、42、44 各 30 秒。<b>要停的是 43</b>：段里同时有 friendly situations（C 的原词）和「保持对视会适得其反」（B 的影子），黄皮书给了三个备选 B C G。拆法是 <b>While 让步</b>：④❷ 的重心在主句（敌对情境 ⟹ 压制、恐吓）。<span class="mk">另外留神两处「研究进行时」的交叉钩：42 段的 brief interview 钓 A、44 段的 subject of current research 钓 E——都是方法层的词。5 分钟够用。</span></p>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">01</span>七个小标题（A–G）· 先给每一项画「主语 ＋ 谓语口气」，再查关键词在原文哪几段出现</h2>
+        <p style="font-size:.8rem;color:var(--muted);margin-bottom:12px">紫色标签写着每一项的去向；答题后被选中的项自动置灰，两个多余项带红框。</p>
+        <div class="optlib" id="optlib"></div>
+
+        <h3 class="sh">🔎 七项关键词的原文分布：<b>五个正确项里四个的关键词不在自己那段</b></h3>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:700px">
+          <tr><th style="width:5%">项</th><th style="width:24%">关键词</th><th style="width:33%">考卷里哪里有（段 · 句）</th><th>说明</th></tr>
+          <tr><td class="c">A</td><td>eye <b>fixations</b> · <b>brief</b></td><td>fixation：<b>零</b>（⑤❶❷ 是 pause／pauses）· brief：<b>③❶ a brief interview</b></td><td><b>唯一的原词 brief 落在 42 段</b>，修饰的是访谈——<b>钓 42</b></td></tr>
+          <tr class="bad"><td class="c">B</td><td>too much · <b>instinctively</b> · <b>rude</b></td><td>instinctively：<b>②❶ will instinctively gaze</b> · rude、too much：零</td><td>本能是「去看」，不是「觉得无礼」——<b>钓 41</b>；「保持对视适得其反」（④❸）是 43 段的影子</td></tr>
+          <tr><td class="c">C</td><td>a <b>friendly</b> social <b>signal</b></td><td>friendly：<b>①❶ · ④❷</b>（都不在 41 段）· signal：①❷ · ②❺ · ④❶</td><td>41 段的原词被改成 <b>pleasant</b>；friendly 留在 43 段的让步从句里——<b>钓 43</b></td></tr>
+          <tr><td class="c">D</td><td><b>personality</b> · <b>react</b></td><td>personality：<b>⑥❶</b> · react：零（⑥❶ triggered more activity · ⑥❷ brain reactions）</td><td>唯一留在自己那段的原词；另有 ③❷ <b>avoid</b> eye contact 钓 42</td></tr>
+          <tr><td class="c">E</td><td><b>biological</b> factors · <b>are being investigated</b></td><td>biological：零 · ③❸ <b>are being explored</b> · ⑤❸ the subject of <b>current research</b></td><td>hormone · brain 是下义词；⑤❸ 的「正在研究」<b>钓 44</b></td></tr>
+          <tr class="bad"><td class="c">F</td><td><b>most people</b> · not <b>comfortable</b> · <b>strangers</b></td><td>comfortable：<b>⑥❸ more comfortable feelings</b> · strangers、most：零</td><td>⑥❸ 的主语是「负面情绪得分高的人」，不是 most people——<b>钓 45</b>；stranger 原在被删的那段里（见 03）</td></tr>
+          <tr><td class="c">G</td><td><b>aggressive</b></td><td><b>零</b>；近义 ④❷ dominance · intimidation · adversarial · ①❷ antagonistic · hostility</td><td>原词连段删；引子 ①❷ 已预告「坏的一面」</td></tr>
+        </table>
+        </div>
+        <p style="font-size:.9rem;margin-top:10px">⭐ <b>五个「钓鱼词」全落在别人的段里</b>：brief（42）· instinctively（41）· friendly（43）· current research（44）· comfortable（45）——<span class="mk">每个诱饵都在一段里找得到一个原词，每个正确项都在自己那段找不到原词。</span>2007 是「多余项有原词、正确项零原词」，2020 把它推到了每一段。（R17 · R291）</p>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">02</span>一段引子 ＋ 五个编号段 · 点字母作答 <button class="allbtn" onclick="toggleAll()">译文 开/关</button></h2>
+        <p style="font-size:.8rem;color:var(--muted);margin-bottom:14px">🟡 高亮词可点出词卡（右侧/底部）｜ <span class="clue">红色虚线</span> ＝ 这一段的发现句（小标题的出处）｜ <span class="clue2">蓝色虚线</span> ＝ 钩：引子的预告，或诱饵借词的位置 ｜ 每段上方点 A–G 作答，<b>答后小标题就地补上</b>，并出解析 ＋ 错因标签</p>
+
+        <div class="person">
+          <div class="pname"><span class="qn">①</span> 引子 · 不编号<span class="stance st-mid">一好一坏两句，冒号收尾——预告了 41 C 与 43 G</span><button class="zbtn" onclick="tz(this)">译</button></div>
+          <p class="en para">In a <span class="tk" data-w="socialsit">social situation</span>, <span class="tk" data-w="eyecontact">eye contact</span> with another person can show that <span class="clue2">you are <span class="tk" data-w="payattn">paying attention</span> in a friendly way</span>.
+            But <span class="clue2">it can also be <span class="tk" data-w="antagonistic">antagonistic</span></span>, such as when a political <span class="tk" data-w="candidate">candidate</span> turns toward their <span class="tk" data-w="competitor">competitor</span> during a <span class="tk" data-w="debate">debate</span> and makes eye contact that <span class="tk" data-w="signal">signals</span> <span class="tk" data-w="hostility">hostility</span>.
+            Here’s what <span class="tk" data-w="hardsci">hard science</span> <span class="tk" data-w="reveal">reveals</span> about eye contact:</p>
+          <div class="zh">① 在社交场合，和别人目光相接，可以表明你在友善地留意对方。但目光接触也可能带着敌意——比如辩论中，一位政治候选人转身面向对手，投去充满敌意的目光。下面是硬科学关于目光接触的一些发现：</div>
+          <div class="expl" style="display:block"><b>引子读法：一好一坏，冒号收尾——它是目录，也是两个答案的预告</b>
+            <div class="line">🧭 <b>①❶ 与 ①❷ 是一对</b>：<span class="loc">in a <b>friendly</b> way</span> ⟷ <span class="loc">it can <b>also</b> be <b>antagonistic</b> … signals <b>hostility</b></span>。原文标题 <i>Brings You Together (or Pulls You Apart)</i> 的「合」与「分」就是这两句 ⟹ <b>41 C（can be a friendly social signal）</b>和 <b>43 G（can be aggressive）</b>。七项里正好有两项用 <b>can be</b> 起句——一好一坏，各认一段。</div>
+            <div class="line">🧱 <b>①❸ 的冒号</b>：<span class="loc">Here’s what hard science reveals about eye contact<b>:</b></span> ⟹ 后面五段是并列的五条发现，<b>段与段之间没有因果，只有「又一条」</b>。所以小标题要从每段<b>自己的研究结论</b>里取，不能指望段间衔接帮忙（对照 2016：引子三问是目录，后文还回收前文）。</div>
+            <div class="line">⚠️ <b>friendly 在这里出现，恰恰不在 41 段</b>：41 段里作者原本也写了 in a friendly way，考卷改成了 pleasant（见 02++）。<b>引子里的词是预告，不算任何一段的原词。</b></div>
+          </div>
+        </div>
+
+        <div class="person q" id="q41" data-ans="C">
+          <div class="pname"><span class="qn">(41)</span> 第②段 · Monica Moore · 从婴儿到成人<span class="stance st-mid">黄皮书备选 B C</span><button class="zbtn" onclick="tz(this)">译</button></div>
+          <p class="en"><span class="slot" data-n="41">(41) ＿＿＿＿＿＿＿＿</span></p>
+          <p class="en para">We know that a typical <span class="tk" data-w="infant">infant</span> will <span class="clue2"><span class="tk" data-w="instinct">instinctively</span></span> <span class="tk" data-w="gaze">gaze</span> into its mother’s eyes, and she will look back.
+            This <span class="tk" data-w="mutual">mutual</span> gaze is a major part of the <span class="tk" data-w="attachment">attachment</span> between mother and child.
+            In <span class="tk" data-w="adulthood">adulthood</span>, looking at someone else in a <span class="tk" data-w="pleasant">pleasant</span> way can be <span class="clue">a <span class="tk" data-w="complimentary">complimentary</span> sign of paying attention</span>.
+            It can <span class="tk" data-w="catch">catch someone’s attention</span> in a <span class="tk" data-w="crowded">crowded</span> room.
+            <span class="clue">“Eye contact and smiles” can signal <span class="tk" data-w="availability">availability</span> and <span class="tk" data-w="confidence">confidence</span></span>, a <span class="tk" data-w="commonsense">common-sense</span> <span class="tk" data-w="notion">notion</span> supported in studies by <span class="tk" data-w="psychologist">psychologist</span> Monica Moore.</p>
+          <div class="zh"><b>（41）目光接触可以是一种友好的社交信号。</b>我们知道，一个正常的婴儿会本能地凝视母亲的眼睛，母亲也会回望。这种相互凝视是母子依恋的重要组成部分。成年以后，用让人舒服的方式看着别人，可以表示你在留意对方，带着欣赏的意味。在拥挤的房间里，它能把某个人的注意力吸引过来。「目光接触加微笑」可以传递出「我愿意交往」和自信——这个常识性的看法得到了心理学家莫妮卡·摩尔多项研究的支持。</div>
+          <div class="chips"></div>
+          <div class="expl"><b>41 → C　Eye contact can be a friendly social signal.</b>
+            <div class="line">🎯 <b>发现句在段中和段尾</b>：②❸ <span class="loc">can be a complimentary <b>sign</b> of paying attention</span> · ②❺ <span class="loc">can <b>signal</b> availability and confidence</span>——两句都是「目光能传递什么」，sign／signal ＝ <b>social signal</b>；传递的内容（关注、欣赏、愿意交往、自信）全是好的 ＝ <b>friendly</b>。连句式都对得上：can be ＋ 名词。</div>
+            <div class="line">🧩 <b>①❷ 是铺垫</b>：婴儿凝视母亲、母亲回望——<b>依恋</b>，社交关系的起点；②❸ 起切到成人。全段一条线：<b>从母子到社交，对视一直是在「拉近」</b>。②❹ 在人堆里吸引注意，同样是「信号」。</div>
+            <div class="line">✂️ <b>原文本来写的是 friendly</b>：<span class="loc">looking at someone else in a <b>friendly</b> way</span>——考卷改成 <b>pleasant</b>，加上粗体段首句被挖走，<b>friendly 在本段零出现</b>。命题人不想让你靠找词做这道题。</div>
+            <div class="line">🚫 <b>B 的钩子是 ②❶ 的 instinctively</b>：<span class="loc">a typical infant will <b>instinctively</b> gaze into its mother’s eyes</span>——原词复现，而且就在段首。可本能是<b>去看</b>，B 说的是本能地<b>觉得无礼</b>；too much、rude 全段一个字都没有，<b>方向正好相反</b>（这一段讲的全是对视的好处）。<span class="mk">原词复现、意思反向——黄皮书把 B 列进备选，就是因为这个词。</span></div>
+            <div class="mine">🚩 <b>我的实况</b>：C，一次定。读到 complimentary sign 就有了，B 的 instinctively 一眼看穿（段里的本能是「想看」）。</div>
+          </div>
+        </div>
+
+        <div class="person q" id="q42" data-ans="E">
+          <div class="pname"><span class="qn">(42)</span> 第③段 · Bonnie Auyeung ＋ other researchers<span class="stance st-mid">黄皮书备选 A D E</span><button class="zbtn" onclick="tz(this)">译</button></div>
+          <p class="en"><span class="slot" data-n="42">(42) ＿＿＿＿＿＿＿＿</span></p>
+          <p class="en para"><span class="tk" data-w="neurosci">Neuroscientist</span> Bonnie Auyeung found that <span class="clue">the <span class="tk" data-w="hormone">hormone</span> <span class="tk" data-w="oxytocin">oxytocin</span> increased the amount of eye contact</span> from men toward the <span class="tk" data-w="interviewer">interviewer</span> during <span class="clue2">a <span class="tk" data-w="brief">brief</span> interview</span> when the <span class="tk" data-w="direction">direction of their gaze</span> was <span class="tk" data-w="record">recorded</span>.
+            This was also found in <span class="tk" data-w="highfunc">high-functioning</span> men with some <span class="tk" data-w="autistic">autistic spectrum</span> <span class="tk" data-w="symptom">symptoms</span>, <span class="clue2">who may <span class="tk" data-w="tendto">tend to</span> <span class="tk" data-w="avoid">avoid</span> eye contact</span>.
+            <span class="clue"><span class="tk" data-w="specific">Specific</span> brain <span class="tk" data-w="region">regions</span> that <span class="tk" data-w="respond">respond</span> during <span class="tk" data-w="directgaze">direct gaze</span> are being <span class="tk" data-w="explore">explored</span></span> by other researchers, using <span class="tk" data-w="advanced">advanced</span> methods of brain <span class="tk" data-w="scan">scanning</span>.</p>
+          <div class="zh"><b>（42）目光接触背后的生物学因素正在被研究。</b>神经科学家邦妮·欧阳发现，在一次简短的面谈中记录男性被试的视线方向时，激素催产素会增加他们看向面谈者的目光接触。在有一些自闭症谱系症状、往往回避目光接触的高功能男性身上，也发现了同样的效果。另有研究者正在用先进的脑扫描方法，探究直视时会作出反应的具体脑区。</div>
+          <div class="chips"></div>
+          <div class="expl"><b>42 → E　Biological factors behind eye contact are being investigated.</b>
+            <div class="line">🎯 <b>两项研究、一个上位词</b>：③❶ <span class="loc">the <b>hormone</b> oxytocin</span>（激素）· ③❸ <span class="loc">Specific <b>brain regions</b></span>（脑区）——激素和脑区都是 <b>biological factors</b> 的下义词。<b>E 的谓语和 ③❸ 是同一个时体</b>：<span class="loc">are being explored</span> ⟷ <span class="loc">are being investigated</span>，连「正在进行」都对上了。</div>
+            <div class="line">🧩 <b>三句的公约数</b>：❶ 催产素增加对视（发现）→ ❷ 自闭症谱系男性身上也一样（发现的推广）→ ❸ 脑区还在研究（研究进行时）。<b>三句都在讲「对视在身体里是怎么被调控的」</b>，没有一句讲社交意义或性格。</div>
+            <div class="line">✂️ <b>原文开头是 As I recently reported</b>（作者在别的文章里报道过），后面还有 from the University of Cambridge——考卷都删了，只剩研究本身。</div>
+            <div class="line">🚫 <b>A 的钩子是 ③❶ 的 brief</b>：<span class="loc">during a <b>brief</b> interview</span>——brief 修饰的是<b>面谈</b>（实验持续多久），不是目光停留多久。这是<b>方法层</b>的词（见 02+++）。</div>
+            <div class="line">🚫 <b>D 的钩子是 ③❷ 的 who 从句</b>：<span class="loc">who may tend to <b>avoid</b> eye contact</span>——「回避对视」像是性格影响反应。可 ③❷ 的主干是 <b>This was also found</b>：This 指 ③❶ 的发现（催产素增加对视），这句是在说<b>药效在另一群人身上也成立</b>；who 从句只是交代这群被试是谁（<b>对象层</b>）。黄皮书说「仅是用 who 引导的从句补充」，更硬的判据是<b>主语 This 回指的是激素的作用</b>。</div>
+            <div class="mine">🚩 <b>我的实况</b>：E，一次定。hormone ＋ brain regions ＋ are being explored 三样齐了。</div>
+          </div>
+        </div>
+
+        <div class="person q" id="q43" data-ans="G">
+          <div class="pname"><span class="qn">(43)</span> 第④段 · Julia Minson · While 让步<span class="stance st-anti">⚠️ 三选一（黄皮书备选 B C G）</span><button class="zbtn" onclick="tz(this)">译</button></div>
+          <p class="en"><span class="slot" data-n="43">(43) ＿＿＿＿＿＿＿＿</span></p>
+          <p class="en para">With the use of <span class="tk" data-w="eyetrack">eye-tracking technology</span>, Julia Minson of the Harvard Kennedy School of Government <span class="tk" data-w="conclude">concluded</span> that eye contact can signal very different kinds of messages, <span class="tk" data-w="depending">depending on</span> the situation.
+            While eye contact may be a sign of <span class="tk" data-w="connection">connection</span> or trust in <span class="clue2">friendly situations</span>, <span class="clue">it’s more likely to be <span class="tk" data-w="associate">associated with</span> <span class="tk" data-w="dominance">dominance</span> or <span class="tk" data-w="intimidation">intimidation</span> in <span class="tk" data-w="adversarial">adversarial</span> situations</span>.
+            “Whether you’re a politician or a parent, it might be helpful to <span class="tk" data-w="keepinmind">keep in mind</span> that <span class="clue">trying to <span class="tk" data-w="maintain">maintain</span> eye contact may <span class="tk" data-w="backfire">backfire</span></span> if you’re trying to <span class="tk" data-w="convince">convince</span> someone who has a different <span class="tk" data-w="setof">set of beliefs</span> than you,” said Minson.</p>
+          <div class="zh"><b>（43）目光接触可能带有攻击性。</b>哈佛大学肯尼迪政府学院的朱莉娅·明森借助眼动追踪技术得出结论：目光接触传递的信息可以截然不同，要看情境。在友好的情境中，它也许是亲近或信任的标志；在对立的情境中，它更可能和压制或恐吓联系在一起。「不管你是政客还是家长，记住这一点也许有好处：如果你想说服一个和你观念不同的人，硬要和他保持目光接触，可能会适得其反。」明森说。</div>
+          <div class="chips"></div>
+          <div class="expl"><b>43 → G　Eye contact can be aggressive.</b>
+            <div class="line">🎯 <b>While 让步，重心在主句</b>：④❷ <span class="loc"><b>While</b> eye contact may be a sign of connection or trust in friendly situations, <b>it’s more likely to be associated with dominance or intimidation in adversarial situations</b></span>——从句让一步（友好时是信任），主句才是作者要说的（敌对时是压制、恐吓）。dominance · intimidation · adversarial 的公约数 ＝ <b>aggressive</b>。</div>
+            <div class="line">🧩 <b>首尾都在为「敌对」服务</b>：④❶ 先立总论「看情境」，④❷ 分两种情境、重心落在敌对，④❸ 明森给的建议只针对「观念不同的人」——<b>说服对手时盯着他看会适得其反</b>。三句里只有 ④❷ 的从句讲友好，而它是让步。</div>
+            <div class="line">🧭 <b>引子早预告过</b>：①❷ <span class="loc">it can also be <b>antagonistic</b> … a political candidate turns toward their competitor during a debate … signals <b>hostility</b></span>——辩论台上的「对手」与 ④❷ 的 adversarial、④❸ 的 politician、different set of beliefs 是同一个场景。</div>
+            <div class="line">✂️ <b>原文这里是两段</b>：粗体 <b>It can also be aggressive.</b> 之后还有一段——总统初选辩论里两人转身相对「伴随着激烈的争吵」（an <b>aggressive</b> argument），在大街上被陌生人一直盯着看会显得有威胁——<b>考卷整段删掉</b>，aggressive 一个都没留，<b>stranger 也跟着没了</b>（F 的产地，见 03）。</div>
+            <div class="line">🚫 <b>C 的钩子是 ④❷ 的 friendly situations</b>：C 的原词 friendly <b>只在这一段的让步从句里出现</b>（41 段反而被改成 pleasant）。押在从句上，就是押在作者让掉的那一半上。<b>而且 C 已经给了 41。</b></div>
+            <div class="line">🚫 <b>B 的钩子是 ④❸ 的 maintain … backfire</b>：「保持对视适得其反」听着像「对视太多让人觉得无礼」。可 ① <b>条件不同</b>：明森说的是「说服观念不同的人」时，B 说的是一切场合、出于本能；② <b>轴不同</b>：段落讲<b>情境</b>（友好 vs 敌对），B 讲<b>数量</b>（too much）——黄皮书也是这么拆的。</div>
+            <div class="mine">🚩 <b>我的实况</b>：G。读到 While 从句的 friendly 时 C 闪了一下，主句一出来就定了；C 也已经给了 41。</div>
+          </div>
+        </div>
+
+        <div class="person q" id="q44" data-ans="A">
+          <div class="pname"><span class="qn">(44)</span> 第⑤段 · 无署名 · 全篇唯一没有 eye contact 的一段<span class="stance st-mid">黄皮书备选 A E</span><button class="zbtn" onclick="tz(this)">译</button></div>
+          <p class="en"><span class="slot" data-n="44">(44) ＿＿＿＿＿＿＿＿</span></p>
+          <p class="en para">When we look at a face or a picture, <span class="clue">our eyes <span class="tk" data-w="pause">pause</span> on one <span class="tk" data-w="spot">spot</span> <span class="tk" data-w="atatime">at a time</span></span>, often on the eyes or mouth.
+            <span class="clue">These pauses <span class="tk" data-w="typically">typically</span> <span class="tk" data-w="occur">occur</span> at about three per second</span>, and the eyes then jump to another spot, until several important points in the image are <span class="tk" data-w="register">registered</span> like a series of <span class="tk" data-w="snapshot">snapshots</span>.
+            How the whole image is then <span class="tk" data-w="assemble">assembled</span> and <span class="tk" data-w="perceive">perceived</span> is still a <span class="tk" data-w="mystery">mystery</span> although it is <span class="clue2">the <span class="tk" data-w="subjectof">subject of</span> current research</span>.</p>
+          <div class="zh"><b>（44）目光的停留很短暂。</b>我们看一张脸或一幅图时，眼睛每次只在一个点上停住，往往是眼睛或嘴巴。这种停顿通常每秒大约三次，接着目光跳到另一个点，直到图像上几个重要的点像一组快照那样被记下来。至于整幅图像随后是怎样被拼合、被感知的，至今仍是个谜，尽管这正是眼下的研究课题。</div>
+          <div class="chips"></div>
+          <div class="expl"><b>44 → A　Eye fixations are brief.</b>
+            <div class="line">🎯 <b>pause ＝ fixation，three per second ＝ brief</b>：⑤❶ <span class="loc">our eyes <b>pause</b> on one spot at a time</span> · ⑤❷ <span class="loc">These <b>pauses</b> typically occur at about <b>three per second</b></span>——一秒停三次，每次约三分之一秒 ⟹ <b>停留很短</b>。fixation 是眼动研究的术语（注视点、一次注视），日常说法就是「眼睛停在一处」。</div>
+            <div class="line">✂️ <b>命题人把 fixation 擦掉了两次</b>：原文是 <span class="loc">our eyes pause, <b>or fixate</b>, on one spot</span> · <span class="loc">These <b>fixations</b> typically occur</span>——考卷删掉 or fixate、把 fixations 改成 pauses。原文作者特意给 pause 配了术语，命题人特意拿掉。<span class="mk">⟹ 考场上要自己把 pause 翻成 fixation：A 的主语是一个你得认识的学术词。</span></div>
+            <div class="line">🔎 <b>本段是全篇唯一没有 eye contact 的一段</b>：全文 eye contact 出现 10 次，分布在 ①②③④⑥，独缺 ⑤——这段讲的是<b>看脸、看图时眼球怎么动</b>，不是两个人对视。所以小标题的主语也换了：别的段是 Eye contact，这一段是 <b>Eye fixations</b>。</div>
+            <div class="line">🚫 <b>E 的钩子是 ⑤❸ 的 subject of current research</b>：「正在研究」≈ are being investigated。可被研究的是<b>大脑怎样把图像拼起来、感知出来</b>（认知问题），E 说的是<b>生物因素</b>；而且 ⑤❸ 是段尾的一句补充（还是个谜），不是本段的发现。<b>原文在这一段后面还有一段</b>：这种跳动的眼动主要由大脑里一个叫额叶眼区的部位控制——<b>真要留着它，44 就真有「生物因素」了</b>；考卷删了。</div>
+            <div class="mine">🚩 <b>我的实况</b>：A，一次定。pause ＋ three per second 直接翻成 fixations are brief。</div>
+          </div>
+        </div>
+
+        <div class="person q" id="q45" data-ans="D">
+          <div class="pname"><span class="qn">(45)</span> 第⑥段 · Jari Hietanen · 由原文三段拼成<span class="stance st-anti">⚠️ 二选一（黄皮书备选 D F）</span><button class="zbtn" onclick="tz(this)">译</button></div>
+          <p class="en"><span class="slot" data-n="45">(45) ＿＿＿＿＿＿＿＿</span></p>
+          <p class="en para">In people who <span class="tk" data-w="score">score high</span> in a test of <span class="tk" data-w="neuroticism">neuroticism</span>, <span class="clue">a <span class="tk" data-w="personality">personality</span> <span class="tk" data-w="dimension">dimension</span></span> associated with <span class="tk" data-w="selfcon">self-consciousness</span> and <span class="tk" data-w="anxiety">anxiety</span>, eye contact <span class="tk" data-w="trigger">triggered</span> more activity associated with <span class="tk" data-w="avoidance">avoidance</span>, according to the Finnish researcher Jari Hietanen and <span class="tk" data-w="colleague">colleagues</span>.
+            “Our <span class="tk" data-w="finding">findings</span> <span class="tk" data-w="indicate">indicate</span> that people do not only feel different when they are <span class="tk" data-w="centre">the centre of attention</span> but that <span class="clue">their brain reactions also differ</span>.”
+            A more direct finding is that <span class="clue">people who scored high for <span class="tk" data-w="negemo">negative emotions</span> like anxiety</span> looked at others for shorter <span class="tk" data-w="period">periods</span> of time and reported more <span class="clue2"><span class="tk" data-w="comfortable">comfortable</span> feelings</span> when others did not look directly at them.</p>
+          <div class="zh"><b>（45）性格会影响一个人对目光接触的反应。</b>据芬兰研究者贾里·希塔宁及其同事的研究，在神经质测试中得分高的人——神经质是一个与过分在意自己、焦虑相关的人格维度——目光接触会引发更多与回避有关的（大脑）活动。「我们的发现表明，人们在成为众人注意的焦点时，不仅感受不同，大脑的反应也不同。」一个更直接的发现是：负面情绪（如焦虑）得分高的人，看别人的时间更短；别人不直视他们时，他们自述感觉更自在。</div>
+          <div class="chips"></div>
+          <div class="expl"><b>45 → D　Personality can affect how a person reacts to eye contact.</b>
+            <div class="line">🎯 <b>原词留在段首</b>：⑥❶ <span class="loc">neuroticism, a <b>personality</b> dimension</span>——神经质是一种人格维度；得分高的人对目光接触的反应是<b>回避</b>。⑥❷ 说大脑反应也不同，⑥❸ 说负面情绪高的人看人更短、不被看更自在。<b>三句都是「某种性格的人 → 对目光接触的某种反应」</b> ＝ D。</div>
+            <div class="line">🧩 <b>react 的着落</b>：⑥❶ triggered more activity（引发的大脑活动）· ⑥❷ brain <b>reactions</b> also differ · ⑥❸ looked … shorter · felt more comfortable——反应有三层：大脑、行为、感受。D 的 how a person reacts 三层都罩得住。</div>
+            <div class="line">✂️ <b>考卷这一段由原文三段拼成</b>：原文 ⑧（粗体段首句 ＋ 神经质研究）＋ ⑨ 引语（只留第一句，删了「对有些人，对视让大脑更想发起交往；对另一些人则相反」和脑电研究方法）＋ ⑩（A more direct finding，scored <b>highly</b> 改成 scored <b>high</b>）。<b>2019 新题型的 D 段也是两段拼的</b>——Part B 连续两年拼段。原文后面还有一段「所以传统精神分析让病人躺在沙发上、不面对分析师」，删了。</div>
+            <div class="line">🚫 <b>F 的钩子是 ⑥❸ 的 comfortable</b>：<span class="loc">reported more <b>comfortable</b> feelings when others did not look directly at them</span>——原词复现。可 ① <b>主语换了</b>：原文是「负面情绪得分高的人」，F 是「大多数人」——把一个性格群体的特点说成了普遍现象；② <b>strangers</b> 全段零出现。<span class="mk">F 把本段的条件（某种性格）删了，正好删掉了本段的主旨（性格）。</span></div>
+            <div class="mine">🚩 <b>我的实况</b>：D，一次定。personality 原词就在段首；F 的 comfortable 看到了，但 Most people 和 strangers 都对不上。</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card" id="cover">
+        <h2><span class="n">02+</span>覆盖表 —— 一个小标题要罩住整段每一句，诱饵每次只罩一个词</h2>
+        <p style="font-size:.92rem">黄皮书给的五组备选（41 B C · 42 A D E · 43 B C G · 44 A E · 45 D F）里，<b>B 钓了两段（41、43），C 被 43 回钓一次，A、D、E、F 各钓一段</b>。逐句打勾：<span class="mk">诱饵从来罩不住一整句，罩住的只是一句里的一个词或一个从句。</span></p>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:720px">
+          <tr><th style="width:7%">空</th><th style="width:9%">项</th><th style="width:50%">逐句打勾（✔ 罩得住 · ✘ 罩不住 · ⚔ 冲突 · — 中性）</th><th>结论</th></tr>
+          <tr><td class="c" rowspan="2">41</td><td class="c"><b>C</b></td><td>❶ 婴儿凝视母亲 ✔（亲近）· ❷ 母子依恋 ✔ · ❸ 表示关注与欣赏 ✔ · ❹ 吸引注意 ✔ · ❺ 愿意交往、自信 ✔</td><td><b>5/5</b></td></tr>
+          <tr class="bad"><td class="c">B</td><td>❶ instinctively ✔（词面）<b>⚔ 本能是「想看」</b> · ❷–❺ ✘（全是好处）</td><td>0/5，方向相反</td></tr>
+          <tr><td class="c" rowspan="3">42</td><td class="c"><b>E</b></td><td>❶ 激素 ✔ · ❷ 自闭症谱系者身上同样有效 ✔ · ❸ 脑区正在被研究 ✔（时体相同）</td><td><b>3/3</b></td></tr>
+          <tr class="bad"><td class="c">A</td><td>❶ a brief interview（词面；brief 修饰面谈）· ❷❸ ✘</td><td>0/3，方法层</td></tr>
+          <tr class="bad"><td class="c">D</td><td>❷ 的 who 从句 avoid eye contact（被试是谁）· ❶❸ ✘</td><td>只罩一个从句，对象层</td></tr>
+          <tr><td class="c" rowspan="3">43</td><td class="c"><b>G</b></td><td>❶ 看情境 ✔（G 是其中一种）· ❷ 主句：压制、恐吓 ✔ · ❸ 对观念不同的人适得其反 ✔</td><td><b>3/3</b></td></tr>
+          <tr class="bad"><td class="c">C</td><td>❷ 的让步从句 friendly situations ✔ · ❶ — · ❸ ✘</td><td>只罩让步的一半</td></tr>
+          <tr class="bad"><td class="c">B</td><td>❸ maintain … backfire 勉强（条件是「说服异见者」，不是「太多」）· ❶❷ ✘</td><td>轴不同：数量 vs 情境</td></tr>
+          <tr><td class="c" rowspan="2">44</td><td class="c"><b>A</b></td><td>❶ 一次停一个点 ✔ · ❷ 一秒约三次 ✔ · ❸ 拼合仍是谜 —（段尾补充，不冲突）</td><td><b>2/2 ＋ 1 中性</b></td></tr>
+          <tr class="bad"><td class="c">E</td><td>❸ subject of current research（词面）· 研究的是感知，不是生物因素 · ❶❷ ✘</td><td>0/3，研究状态层</td></tr>
+          <tr><td class="c" rowspan="2">45</td><td class="c"><b>D</b></td><td>❶ 神经质（人格维度）→ 回避 ✔ · ❷ 大脑反应不同 ✔ · ❸ 负面情绪高者 → 看得少、不被看更自在 ✔</td><td><b>3/3</b></td></tr>
+          <tr class="bad"><td class="c">F</td><td>❸ comfortable（词面）<b>⚔ 主语从「负面情绪高的人」换成「大多数人」</b> · strangers 零 · ❶❷ ✘</td><td>0/3，删掉条件</td></tr>
+        </table>
+        </div>
+        <div class="box"><span class="bt">⭐ 覆盖表揭出的规律：诱饵借的词，没有一个是那一段的谓语核心</span>
+          brief 是 interview 的定语 · avoid 在 who 从句里 · friendly 在 While 从句里 · current research 在 although 从句里 · instinctively 修饰的是 gaze（想看）· comfortable 的主语是一个特定人群。
+          <br><span class="mk">⟹ 考场动作：每段只圈一句「发现句」（found that … · concluded that … · 段里的主句），圈中的那句说了什么，小标题就是什么；诱饵的词都长在圈外的从句、定语和例子里。</span>
+        </div>
+        <div class="box green"><span class="bt">✅ 考场动作（每段 20 秒）</span>
+          ① 找发现句：研究段先找 found that／concluded that／Our findings indicate；没署名的段找主句的谓语（pause · occur）；<br>
+          ② 发现句里的词不在选项里时，<b>先换成上位词或术语</b>（hormone、brain ⟹ biological；pause ⟹ fixation；dominance、intimidation ⟹ aggressive）；<br>
+          ③ 配上以后看<b>谓语口气</b>：段里说「看情况」，标题就得是 can；段里只说某类人，标题就不能是 most people。
+        </div>
+      </section>
+
+      <section class="card" id="scrub">
+        <h2><span class="n">02++</span>命题人擦了哪些词 —— 原文 13 段 852 词 → 考卷 6 段 470 词，五个标题词被处理了四个</h2>
+        <p style="font-size:.92rem">原文取自 psychologytoday.com（Robert A. Lavine，2016-09-11），逐词比对后，与五个小标题有关的改动全部列在这里：</p>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:700px">
+          <tr><th style="width:15%">位置</th><th style="width:31%">原文</th><th style="width:22%">考卷</th><th>效果</th></tr>
+          <tr><td>五个粗体段首句</td><td><b>Eye contact can be a friendly social signal.</b> · <b>Biological factors behind eye contact are being investigated.</b> · <b>It can also be aggressive.</b> · <b>Eye fixations are brief.</b> · <b>Personality can modulate how a person reacts to eye contact.</b></td><td>挖出来当 C、E、G、A、D</td><td>C、E、A 一字不差；G、D 各改一处（见下两行）</td></tr>
+          <tr><td>G 的主语</td><td><b>It can also</b> be aggressive.</td><td><b>Eye contact can</b> be aggressive.</td><td>It 要回指上一段、also 要求前面已有「好的一面」——<b>留着 also，G 就只能排在 C 后面</b>。改成独立句，七项才能互不依赖</td></tr>
+          <tr><td>D 的动词</td><td>Personality can <b>modulate</b></td><td>can <b>affect</b></td><td>难词换常用词（modulate 调节）</td></tr>
+          <tr class="bad"><td>②❸（41 段）</td><td>looking at someone else in a <b>friendly</b> way</td><td>in a <b>pleasant</b> way</td><td><b>C 的原词在 41 段清零</b>；friendly 只剩引子 ①❶ 与 43 段 ④❷——<b>都在别人的段里</b></td></tr>
+          <tr><td>③❶（42 段）</td><td><b>As I recently reported,</b> neuroscientist Bonnie Auyeung <b>from the University of Cambridge</b> found</td><td>Neuroscientist Bonnie Auyeung found</td><td>删作者自述与机构，只留研究</td></tr>
+          <tr class="bad"><td>原文第 4 段（G 的正文）</td><td><b>It can also be aggressive.</b> If you watched the recent presidential primary debates, you saw that two speakers turning toward each other can accompany an <b>aggressive</b> argument. When it’s inappropriate, like from a <b>stranger</b> on a city street, steady eye contact can appear threatening.</td><td><b>整段删（44 词）</b></td><td><b>aggressive 全文清零</b>；43 段只剩明森那段，要自己从 dominance · intimidation 概括；<b>stranger 也跟着消失——F 的产地</b></td></tr>
+          <tr class="bad"><td>⑤❶❷（44 段）</td><td>our eyes pause<b>, or fixate,</b> on one spot … These <b>fixations</b> typically occur</td><td>our eyes pause on one spot … These <b>pauses</b> typically occur</td><td><b>A 的原词 fixations 清零</b>，两处都动了</td></tr>
+          <tr><td>⑤ 段内</td><td>An example of such eye movement is shown in this picture.</td><td>删</td><td>原文配了一张眼动轨迹图</td></tr>
+          <tr class="bad"><td>原文第 7 段</td><td>These jumping or saccadic eye movements are governed largely by a part of the brain called the frontal eye field …</td><td><b>整段删（37 词）</b></td><td>留着它，44 段就有「大脑部位」——<b>E 会变成 44 的强候选</b></td></tr>
+          <tr><td>原文第 9–10 段（45 段）</td><td>引语后半（对有些人对视让大脑更想发起交往，对另一些人相反）＋ 脑电研究方法 ＋ scored <b>highly</b></td><td>只留引语第一句；scored <b>high</b></td><td>三段拼成一段（第 8 ＋ 9 ＋ 10）</td></tr>
+          <tr><td>原文第 11 段</td><td>That may be a reason why, in traditional psychoanalysis, the client lay on a couch … feeling more <b>comfortable</b> when others are looking at an image along with you …</td><td><b>整段删（51 词）</b></td><td>comfortable 原有两处，只留 ⑥❸ 一处</td></tr>
+          <tr><td>原文第 12–13 段</td><td>第六个粗体段首句 <b>Looking at cell phones threatens real conversation.</b> ＋ 雪莉·特克尔《群体性孤独》两段</td><td><b>整节删（144 词）</b></td><td>原文六条发现，考卷用五条——<b>唯一一条「谈后果、给建议」的被拿掉</b>，剩下的五条全是「研究发现」</td></tr>
+        </table>
+        </div>
+        <div class="box"><span class="bt">⭐ 五个标题词的下场：一个留、一个本来就没有、三个被擦</span>
+          <b>留</b>：personality（45）。<b>本来就没有</b>：biological（原文只在粗体句里出现）。<b>被擦</b>：friendly（改词）· fixations（改词 ＋ 删两个词）· aggressive（连段删）。
+          <br><span class="mk">⟹ 2020 卷五篇里第二次见「换词藏答案」（T3 less qualified → less experienced 是第一次），也是第五次「删正确项的另一处出处」——四篇阅读加一篇新题型，<b>同一套手法用满全卷</b>。（R255 · R291）</span>
+          <br><span style="font-size:.84rem;color:var(--muted)">数字由脚本逐词比对得出：删去 382 词（整段删五段 276 词 ＋ 第 9 段删 54 词 ＋ 五个粗体句与段内零碎 52 词），改词三处（friendly → pleasant · fixations → pauses · highly → high）。</span>
+        </div>
+      </section>
+
+      <section class="card" id="layers">
+        <h2><span class="n">02+++</span>研究段的三层：对象 · 方法 · 发现 —— 小标题只取发现层，诱饵全从另外两层借词</h2>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:720px">
+          <tr><th style="width:6%">空</th><th style="width:21%">对象（谁被研究）</th><th style="width:21%">方法／状态（怎么研究）</th><th style="width:24%">发现（＝小标题）</th><th>诱饵借了哪层</th></tr>
+          <tr><td class="c">41</td><td>婴儿与母亲 · 成年人</td><td>心理学研究（Moore）</td><td>对视传递关注、欣赏、愿意交往 ⟹ <b>C</b></td><td>B ← 对象层：婴儿的 <b>instinctively</b></td></tr>
+          <tr><td class="c">42</td><td>男性被试 · 自闭症谱系男性（<b>who may tend to avoid</b>）</td><td>一次<b>简短的</b>面谈 · 记录视线 · 脑扫描</td><td>激素与脑区调控对视 ⟹ <b>E</b></td><td>A ← 方法层：<b>brief</b> interview · D ← 对象层：<b>avoid</b></td></tr>
+          <tr><td class="c">43</td><td>友好情境 vs 敌对情境</td><td>眼动追踪</td><td>敌对时对视意味着压制、恐吓 ⟹ <b>G</b></td><td>C ← 让步从句：<b>friendly</b> situations · B ← 建议句：maintain … backfire</td></tr>
+          <tr><td class="c">44</td><td>看脸、看图的眼睛</td><td>（眼动研究，<b>current research</b>）</td><td>每次停留很短、一秒三次 ⟹ <b>A</b></td><td>E ← 研究状态：subject of <b>current research</b></td></tr>
+          <tr><td class="c">45</td><td>神经质得分高的人 · 负面情绪高的人</td><td>人格测试 · 大脑反应</td><td>性格不同，反应不同 ⟹ <b>D</b></td><td>F ← 发现的局部（<b>comfortable</b>），再把对象换成 most people</td></tr>
+        </table>
+        </div>
+        <div class="box"><span class="bt">⭐ 研究清单体的通用读法</span>
+          一段研究报道永远是「<b>谁</b>（研究者）· 研究了<b>谁</b>（对象）· 怎么研究（方法）· <b>发现了什么</b>」四件套。小标题概括的是最后一件；命题人造诱饵时，最顺手的原料是前三件——它们在段里有现成的词（brief · avoid · current research），读起来「在这一段里」。
+          <br><span class="mk">⟹ 判一个词能不能当标题，先问它属于哪一层：修饰实验过程的（brief interview）、描述被试的（who avoid）、说研究还没完的（current research），都不是发现。</span>（R293）
+        </div>
+        <h3 class="sh">🧭 引子的钩 · 两个「看……而定」</h3>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:620px">
+          <tr><th style="width:30%">前面</th><th style="width:30%">后面</th><th style="width:10%">标题</th><th>钩的类型</th></tr>
+          <tr><td>①❶ paying attention <b>in a friendly way</b></td><td>② 整段（友好的信号）</td><td class="c">41 C</td><td><b>预告</b>：本段原词被换走，预告里的还在</td></tr>
+          <tr><td>①❷ it can <b>also</b> be <b>antagonistic</b> … debate … <b>hostility</b></td><td>④❷ dominance or intimidation in <b>adversarial</b> situations</td><td class="c">43 G</td><td><b>预告</b>：同一个场景（辩论台上的对手）</td></tr>
+          <tr><td>④❶ <b>depending on the situation</b></td><td>⑥ 神经质得分高的人反应不同</td><td class="c">43 G · 45 D</td><td><b>并列</b>：一个看情境，一个看人——原文标题里的 <i>(or Pulls You Apart)</i></td></tr>
+          <tr><td>原文副标题 <i>Mutual glances signal everything from interest to confrontation</i></td><td>—</td><td class="c">C ↔ G</td><td>考卷没印副标题；interest（兴趣、好感）到 confrontation（对抗）＝ C 到 G</td></tr>
+        </table>
+        </div>
+        <p style="font-size:.9rem;margin-top:8px">🔗 对照 <a href="2016_新题型_如何提升职业形象.html#hooks">2016 的前后钩</a>：那篇的引子是三个问句、后文还回收前文；这篇的引子只有「一好一坏 ＋ 冒号」，五段之间<b>没有回收</b>。<b>研究清单体段间几乎无钩，小标题只能逐段从发现层概括</b>——这也是命题人敢把原词擦掉的底气。</p>
+      </section>
+
+      <section class="card" id="extra">
+        <h2><span class="n">03</span>两个多余项：B 与 F —— 都把「看情况」说成了「一律」</h2>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:700px">
+          <tr><th style="width:5%">项</th><th style="width:20%">它说的（中文）</th><th style="width:25%">它借了哪些词</th><th>为什么五段都装不下</th></tr>
+          <tr><td class="c">B</td><td>对视太多，人会本能地觉得无礼。</td><td><b>instinctively</b> ← ②❶（婴儿本能地凝视）· 「保持对视会适得其反」← ④❸</td><td>① <b>too much、rude 全文零出现</b>；② 41 段的本能是「想看」，方向相反；③ 43 段讲的是情境不是数量，而且只针对「观念不同的人」；④ <b>instinctively ＝ 人人生来如此</b>，全文没有一条发现是「人人」的。</td></tr>
+          <tr><td class="c">F</td><td>大多数人和陌生人对视时都不自在。</td><td><b>comfortable</b> ← ⑥❸ · <b>strangers</b> ← 原文第 4 段（考卷删了）</td><td>① ⑥❸ 的主语是「负面情绪得分高的人」，F 换成 <b>most people</b>——<b>删掉的正是 45 段的主旨（性格）</b>；② strangers 考卷里零出现；③ 原文第 4 段说的是陌生人在街上「一直盯着看」显得有威胁，那是<b>被看的人</b>的感受、而且是「不合时宜」时——F 把它也说成了常态。</td></tr>
+        </table>
+        </div>
+        <div class="box"><span class="bt">⭐ 两个多余项的共同点：把条件删掉，把「某些人、某些时候」说成「人人、总是」</span>
+          全文每一条发现都带条件：in adversarial situations（43）· people who score high in neuroticism（45）· when trying to convince someone with different beliefs（43）· 连 41 都是「用让人舒服的方式」看。原文标题本身就是条件句的口气：<i>Brings You Together <b>(or</b> Pulls You Apart)</i>。
+          <br><span class="mk">⟹ B 的 instinctively、F 的 Most people 是七项里仅有的两个「全称」口气——而全文没有一条发现是全称的。陈述句式的标题题，<b>先看情态词和量词</b>：can／may 与全文口径一致，instinctively／most／always 要拿出全称的证据。</span>（R292）
+          <br>🔎 <b>核到的硬证据</b>：F 的 strangers 只在原文第 4 段出现，而这一段被整段删掉——<b>多余项的词来自被删的原文</b>。2016 那篇我们曾推测 C 的 confidence 来自被删的结尾段，当时没能逐字核到；<b>2020 把这种造法坐实了</b>。
+        </div>
+
+        <h3 class="sh">📊 十五篇 Part B 的多余项造法总账</h3>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:600px">
+          <tr><th style="width:9%">年份</th><th style="width:14%">变体</th><th style="width:10%">多余项</th><th>造法</th></tr>
+          <tr><td class="c">2007</td><td>标题匹配</td><td class="c">A、G</td><td>两项都有词面呼应（A ↔ 首句 role models，G ↔ responsible 连出两次）</td></tr>
+          <tr><td class="c">2008</td><td>选句填空</td><td class="c">B、F</td><td>B 阶段错位（属于末段之后）· F 与正确项 E 撞专名</td></tr>
+          <tr><td class="c">2009</td><td>选句填空</td><td class="c">D、F</td><td>同属功能论一区，而那一区没有空</td></tr>
+          <tr><td class="c">2010</td><td>排序</td><td class="c">C</td><td>复现词最多，却偏离主线</td></tr>
+          <tr><td class="c">2011</td><td>排序</td><td class="c">—</td><td>零多余项（7 格 7 项）</td></tr>
+          <tr><td class="c">2012</td><td>选句填空</td><td class="c">B、E</td><td>B 先用后定义（属于末段之后）· E 缺前提的 thus（正确项 G 的下家）；两项都有词面呼应</td></tr>
+          <tr><td class="c">2013</td><td>选句填空</td><td class="c">A、D</td><td>A 推测句要 B 的数据（正确项 B 的下家）· D 同区换杠杆；两项都有词面呼应</td></tr>
+          <tr><td class="c">2014</td><td>排序</td><td class="c">—</td><td>零多余项（7 格 7 项）；诱饵换成「位置可挪」</td></tr>
+          <tr><td class="c">2015</td><td>选句填空</td><td class="c">D、F</td><td>D 逆箭头（退回作者本意）＋ 位置满 · F 换主角 ＋ 人称不符 ＋ 词面</td></tr>
+          <tr><td class="c">2016</td><td>标题匹配</td><td class="c">A、C</td><td>A 话题词冒充段落词 · C 全文零出现的心态口号；两项都比正确项「大」</td></tr>
+          <tr><td class="c">2017</td><td>排序</td><td class="c">—</td><td>零多余项；诱饵是「同一阶段的两段」：E、A 都在写作起步</td></tr>
+          <tr><td class="c">2018</td><td>排序</td><td class="c">—</td><td>零多余项；诱饵是「尾首复现」：C 末 historic events ⟶ D 首 historical events</td></tr>
+          <tr><td class="c">2019</td><td>排序</td><td class="c">—</td><td>零多余项；诱饵是「同词镜像」：F ⑤ ⟶ A ①，一段诱饵两个假位置</td></tr>
+          <tr class="bad"><td class="c"><b>2020</b></td><td>标题匹配</td><td class="c">B、F</td><td><b>去条件／全称化</b>：B instinctively（人人生来）、F Most people（大多数人）——全文每条发现都带条件；两项都有词面呼应（instinctively ← 41 · comfortable ← 45），<b>F 的 strangers 取自被删的原文段落</b></td></tr>
+          <tr><td class="c">2022</td><td>观点匹配</td><td class="c">B、E</td><td>没有人说过的话（无人提及型）</td></tr>
+        </table>
+        </div>
+        <p style="font-size:.9rem;margin-top:10px">⭐ <b>多余项五族</b>：①「词面像」——2007 A／G · 2008 F · 2010 C · 2012 B、E · 2013 A、D · 2015 F · 2016 A · <b>2020 B、F</b>（第八篇）；②「位置满」——2008 B · 2009 D／F · 2012 B、E · 2013 A、D · 2015 D；③「方向反」——2015 D（<b>2020 B 在 41 段也是方向反</b>：本能是想看）；④「大而空」——2016 A、C；⑤ <b>新增「去条件」</b>——把只对某些人、某些情境成立的发现说成人人、总是（<b>2020 B、F</b>）。
+          <span class="mk">⟹ 三篇标题匹配，多余项三种长相：2007 词面最像、2016 比正确项大一号、2020 比正确项「绝对」。共同点只有一条：<b>没有一段能从头罩到尾</b>。</span></p>
+      </section>
+
+      <section class="card" id="three">
+        <h2><span class="n">03+</span>三篇标题匹配：2007 · 2016 · 2020 —— 同一变体，原词的处境三年三样</h2>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:720px">
+          <tr><th style="width:15%"></th><th style="width:27%">2007《家长如何帮孩子》</th><th style="width:28%">2016《如何提升职业形象》</th><th>2020《目光接触或合或分》</th></tr>
+          <tr><td><b>Directions</b></td><td>heading</td><td>subheading</td><td>subheading（同 2016）</td></tr>
+          <tr><td><b>文章线</b></td><td>首段 Here are a few measures ＋ 五条做法</td><td>三段引子（三问 ＋ Here are some tips）＋ 五条建议</td><td><b>一段引子（一好一坏 ＋ 冒号）＋ 五条发现</b></td></tr>
+          <tr><td><b>七项句式</b></td><td>七个祈使句</td><td>七个祈使句</td><td><b>七个陈述句</b>（第一次）——情态词与量词能分真假</td></tr>
+          <tr><td><b>正确项从哪来</b></td><td>（未核原文）</td><td>原文五个小标题，一字不差</td><td><b>原文五个粗体段首句</b>，三个一字不差、两个改一处</td></tr>
+          <tr><td><b>正确项的原词在不在本段</b></td><td>3 项零原词</td><td>4 项有原词</td><td><b>只有 1 项（D personality）</b>——其中两个是命题人改掉的</td></tr>
+          <tr><td><b>多余项的长相</b></td><td>词面最像（role models · responsible ×2）</td><td>大而空（总话题 · 心态口号）</td><td><b>去条件</b>（本能 · 大多数人）＋ 词面钩</td></tr>
+          <tr><td><b>主刀</b></td><td>先自写主旨，复现最猛的先怀疑</td><td>找主句：原词在主句里才算</td><td><b>找发现句、换成上位词；看情态与量词</b></td></tr>
+          <tr><td><b>最难的一处</b></td><td>42／43 在 A、B、D、G 里二选二</td><td>41（A／B）· 45（C／F）</td><td>43（B／C／G）</td></tr>
+          <tr><td><b>Claude 盲做</b></td><td>5/5</td><td>5/5</td><td>5/5（完整盲做）</td></tr>
+        </table>
+        </div>
+        <div class="box"><span class="bt">⭐ 三篇合起来，标题匹配只剩一条稳的判据</span>
+          2007 说「复现词是陷阱」，2016 说「原词在主句里才算」，2020 干脆把原词擦掉。三年的共同点是：<span class="mk">正确的小标题概括的是<b>这一段的核心那句</b>（建议句 ／ 发现句）；原词在不在、出现几次都不稳——命题人可以把它放进别的段，也可以把它从本段擦掉。</span>
+          <br>⭐ <b>另一个三年不变的事实</b>：2016、2020 两篇的正确项都直接取自原文的小标题／粗体段首句——<b>命题人选的是「自带小标题」的网络文章</b>，正确项是作者写的，多余项是命题人编的。所以做完五段回头看剩下两项，问一句「<b>这像不像作者会给自己这一节起的标题</b>」：作者不会给一节起一个和正文对不上口径的标题（「人人本能地觉得无礼」）。
+        </div>
+      </section>
+
+      <section class="card" id="orig">
+        <h2><span class="n">03++</span>原文与考卷逐段对照：13 段删成 6 段，第六条发现整节拿掉</h2>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:640px">
+          <tr><th style="width:8%">原文段</th><th style="width:8%">词数</th><th style="width:36%">内容</th><th>去向</th></tr>
+          <tr><td class="c">1</td><td class="c">54</td><td>引子：友好 · 敌意 · 硬科学的发现</td><td>考卷 ①，原样</td></tr>
+          <tr><td class="c">2</td><td class="c">86</td><td><b>Eye contact can be a friendly social signal.</b> 婴儿 · 成人 · Moore</td><td>考卷 ②（41）：粗体句挖走成 C；friendly → pleasant</td></tr>
+          <tr><td class="c">3</td><td class="c">87</td><td><b>Biological factors … are being investigated.</b> Auyeung · 脑区</td><td>考卷 ③（42）：粗体句挖走成 E；删 As I recently reported、剑桥大学</td></tr>
+          <tr class="bad"><td class="c">4</td><td class="c">44</td><td><b>It can also be aggressive.</b> 初选辩论 · 街上陌生人盯着看</td><td><b>整段删</b>；粗体句改写成 G</td></tr>
+          <tr><td class="c">5</td><td class="c">97</td><td>Minson：看情境 · 敌对时压制恐吓 · 引语</td><td>考卷 ④（43），原样</td></tr>
+          <tr><td class="c">6</td><td class="c">93</td><td><b>Eye fixations are brief.</b> 一秒三次 · 快照 · 配图说明</td><td>考卷 ⑤（44）：粗体句挖走成 A；删 or fixate、配图句；fixations → pauses</td></tr>
+          <tr class="bad"><td class="c">7</td><td class="c">37</td><td>跳视由额叶眼区控制</td><td><b>整段删</b></td></tr>
+          <tr><td class="c">8</td><td class="c">45</td><td><b>Personality can modulate …</b> 神经质 · 回避</td><td>考卷 ⑥❶（45）：粗体句改写成 D</td></tr>
+          <tr><td class="c">9</td><td class="c">78</td><td>希塔宁引语三句 ＋ 脑电方法</td><td>考卷 ⑥❷：<b>只留引语第一句</b></td></tr>
+          <tr><td class="c">10</td><td class="c">36</td><td>A more direct finding：负面情绪高者</td><td>考卷 ⑥❸：scored highly → high</td></tr>
+          <tr class="bad"><td class="c">11</td><td class="c">51</td><td>精神分析的躺椅 · 一起看屏幕更自在</td><td><b>整段删</b></td></tr>
+          <tr class="bad"><td class="c">12</td><td class="c">65</td><td><b>Looking at cell phones threatens real conversation.</b> 特克尔《纽约时报》</td><td><b>整段删</b>（第六条发现）</td></tr>
+          <tr class="bad"><td class="c">13</td><td class="c">79</td><td>《群体性孤独》：大学生共情力下降四成 · 手机时代对视更有力量</td><td><b>整段删</b></td></tr>
+        </table>
+        </div>
+        <p style="font-size:.9rem;margin-top:8px">📏 原文 852 词（不含标题与副标题）→ 考卷 470 词，<b>留 55.2%</b>；整段删五段（4 · 7 · 11 · 12 · 13）；第 8、9、10 三段拼成考卷 ⑥。<span class="mk">删掉的五段有一个共同点：<b>都不是「一项研究的发现」</b>——辩论场景、脑区解剖、精神分析的推论、手机与共情的评论。命题人把一篇夹叙夹议的博客，剪成了一张干净的「五条发现」清单。</span></p>
+      </section>
+
+      <section class="card" id="book">
+        <h2><span class="n">03+++</span>黄皮书商榷：答案零书误，解析与译文五处可以补</h2>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:620px">
+          <tr><th style="width:16%">位置</th><th style="width:30%">黄皮书</th><th>商榷</th></tr>
+          <tr><td>42 排除 D</td><td>②句仅是用 who 引导的从句补充指出自闭症患者具有回避目光接触的倾向</td><td>对。更硬的一刀是<b>主语</b>：③❷ This was also found——This 回指 ③❶ 的发现（催产素增加对视），这句讲的是<b>药效的推广</b>，被试是谁只是从句里的背景（对象层，见 02+++）。</td></tr>
+          <tr><td>43 排除 B</td><td>一个针对目光接触的数量，一个针对目光接触的情境</td><td>对。可再补一层<b>条件</b>：明森的「适得其反」只针对「说服观念不同的人」，B 说的是本能、人人如此（R292）。</td></tr>
+          <tr><td>44 排除 E</td><td>E 被研究的是生物学因素，本段被研究的是大脑对图像的整合和认知</td><td>对。补一个原文事实：<b>原文这一段后面紧跟着一段讲额叶眼区（大脑部位）控制跳视</b>，考卷删了——留着它，E 在 44 就不好排了。</td></tr>
+          <tr><td>⑥❶ self-consciousness</td><td>「拘谨」</td><td>可以更准：self-conscious ＝ <b>过分在意别人怎么看自己、因而局促不安</b>（神经质人格的典型表现），「拘谨」偏行为表现。⚠️ 别读成「自觉」——那是 self-awareness／conscientious 的意思（熟词僻义）。</td></tr>
+          <tr><td>②❺ availability</td><td>「你愿意交流」</td><td>方向对。补背景：在社交、约会语境里 availability ＝「（感情上）有空、可以接近」；摩尔的代表研究正是<b>女性的非语言求偶信号</b>（眼神 ＋ 微笑），所以 Eye contact and smiles 加了引号。</td></tr>
+          <tr><td>字数</td><td>[540 words]</td><td>脚本数：正文 470 词，加五个答案 505，连两个多余项 525——都不到 540；本页只作记录，不影响做题。</td></tr>
+        </table>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">04</span>Part B 分诊表：四种变体 · 十五篇实做（开考三十秒先认变体）</h2>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:680px">
+          <tr><th style="width:14%">变体</th><th style="width:25%">Directions 里的原话</th><th style="width:14%">考什么</th><th>打法与用时</th></tr>
+          <tr><td><b>选句填空</b><br><span style="font-size:.78rem">2008 · 2009 · 2012 · 2013 · 2015</span></td><td><i>some sentences have been removed … two extra choices</i></td><td><b>衔接与连贯</b></td><td>认线 → 正文中途换人称就先按人称分区 → 定空的形态 → <b>每空先读下一句</b> → 先做区里候选最少的空 → 剩下两项问「是不是某个答案的下家、是不是换了杠杆、是不是走反了方向」。<b>6–9 min</b>，能自查</td></tr>
+          <tr class="bad"><td><b>标题匹配</b><br><span style="font-size:.78rem">2007 · 2016 · <b>2020</b></span></td><td><i>choose the most suitable heading／subheading</i></td><td><b>段落概括</b></td><td>看七项句式：<b>祈使句</b>（2007、2016）⟹ 每段一条建议，逐段找主句；<b>陈述句</b>（2020）⟹ 每段一条发现，逐段找发现句，<b>原词不在就换上位词或术语</b>（hormone ⟹ biological · pause ⟹ fixation）→ 用覆盖表验：诱饵只罩一个词或一个从句 → 剩下两项问「是不是总话题、能不能照着做」（祈使）或「<b>是不是把条件删了、说成了一律</b>」（陈述）。<b>5–8 min</b></td></tr>
+          <tr><td><b>观点匹配</b><br><span style="font-size:.78rem">2022</span></td><td><i>match each person … with the statements</i></td><td><b>立场判定</b></td><td>先给每人贴「支持／反对／中间」，再按立场分堆匹配。<b>8–10 min</b></td></tr>
+          <tr><td><b>排序题</b><br><span style="font-size:.78rem">2010 · 2011 · 2014 · 2017 · 2018 · 2019</span></td><td><i>reorganize these paragraphs into a coherent text … numbered boxes</i></td><td><b>篇章顺序</b></td><td><b>先数格子</b>（有无多余项）→ 认文体（传记看时间、说明文看两层、议论文看语气）→ 给每格数候选，被已给定段锁死的先做 → 通读验闭合（六种链条见 <a href="2019_新题型_如何赢得每一场争论.html">2019 新题型 · 04</a>）。<b>7–10 min</b>，能自查</td></tr>
+        </table>
+        </div>
+        <p style="font-size:.9rem;margin-top:10px">📊 <b>十五篇战绩</b>：2007 标题 5/5 · 2022 观点 5/5 · 2008 选句 5/5 · <b>2009 选句 3/5</b> · 2010 排序 5/5 · 2011 排序 5/5 · 2012 选句 5/5 · 2013 选句 5/5 · 2014 排序 5/5（不计完整盲做）· 2015 选句 5/5（计入 4/4）· 2016 标题 5/5 · 2017 排序 5/5（不计完整盲做）· 2018 排序 5/5 · 2019 排序 5/5 · <b>2020 标题 5/5（✅ 完整盲做）</b>。<span class="mk">三篇标题匹配 15/15。标题匹配是 Part B 里最快的一种（5–7 分钟），省下的时间留给翻译。</span></p>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">05</span>长难句精析（11 句 · 本篇黄皮书无此栏目，全部原创）</h2>
+        <p style="font-size:.85rem;color:var(--muted);margin-bottom:10px">科普报道体的句子难在<b>挂件多</b>：一个主干上挂时间状语、方式状语、同位语、分词、从句，主干本身很短。先找谓语，再把挂件一件件摘下来。</p>
+
+        <div class="ls">
+          <div class="s">But it can also be antagonistic, <span class="mk">such as when</span> a political candidate <span class="mk2">turns toward their competitor during a debate</span> and <span class="mk2">makes eye contact <span class="mk3">that signals hostility</span></span>.</div>
+          <div class="an">
+            <div>· <span class="mk">such as when …</span>：such as 后面直接接 when 从句，用一个<b>场景</b>举例——比 for example 更口语。</div>
+            <div>· when 从句里两个并列谓语 <span class="mk2">turns toward … and makes …</span>，主语都是 a political candidate；<b>their</b> 指代单数的 candidate（不分性别的单数 they）。</div>
+            <div>· <span class="mk3">that signals hostility</span> 修饰 eye contact。also 回指 ①❶ 的「友好」——<b>这一句是全文「或分」的一半</b>。</div>
+          </div>
+          <div class="tr">译：但它也可能带着敌意，比如辩论中一位政治候选人转身面向对手，投去充满敌意的目光。</div>
+        </div>
+
+        <div class="ls">
+          <div class="s">“Eye contact and smiles” <span class="mk">can signal</span> availability and confidence, <span class="mk2">a common-sense notion</span> <span class="mk3">supported in studies by psychologist Monica Moore</span>.</div>
+          <div class="an">
+            <div>· 主干：<b>“Eye contact and smiles” can signal availability and confidence</b>。</div>
+            <div>· <span class="mk2">a common-sense notion</span> 是<b>同位语</b>，复指前面整个句子说的看法（不是某一个名词）；<span class="mk3">supported in studies by …</span> 是过去分词短语作后置定语，修饰 notion。</div>
+            <div>· 句末同位语 ＋ 分词，是英语给前一句「贴评价、给出处」的常用法：先说结论，再补一句「这是常识，研究也证实了」。</div>
+          </div>
+          <div class="tr">译：「目光接触加微笑」可以传递出愿意交往和自信——这是一个常识性的看法，也得到了心理学家莫妮卡·摩尔多项研究的支持。</div>
+        </div>
+
+        <div class="ls">
+          <div class="s">Neuroscientist Bonnie Auyeung found <span class="mk">that the hormone oxytocin increased the amount of eye contact</span> <span class="mk2">from men toward the interviewer</span> <span class="mk3">during a brief interview</span> <span class="mk3">when the direction of their gaze was recorded</span>.</div>
+          <div class="an">
+            <div>· found 的宾语从句主干只有 <span class="mk">the hormone oxytocin increased the amount of eye contact</span>；后面三个挂件：<span class="mk2">from … toward …</span>（方向）· <span class="mk3">during …</span>（时间）· <span class="mk3">when …</span>（条件）。</div>
+            <div>· ⚠️ <b>brief 在挂件里</b>：它修饰的是实验里的面谈，是方法层的词——A 项 brief 的钩子就在这。</div>
+          </div>
+          <div class="tr">译：神经科学家邦妮·欧阳发现，在一次简短的面谈中记录男性被试的视线方向时，激素催产素会增加他们看向面谈者的目光接触。</div>
+        </div>
+
+        <div class="ls">
+          <div class="s"><span class="mk">Specific brain regions</span> <span class="mk3">that respond during direct gaze</span> <span class="mk">are being explored</span> by other researchers, <span class="mk2">using advanced methods of brain scanning</span>.</div>
+          <div class="an">
+            <div>· 主语 Specific brain regions ＋ 定语从句 that respond during direct gaze；谓语是<b>现在进行时的被动</b> <span class="mk">are being explored</span>——和 E 项 are being investigated 同一个时体。</div>
+            <div>· <span class="mk2">using …</span> 的逻辑主语是 other researchers（被动句的施动者），不是句子主语 brain regions——读的时候别让「脑区使用先进方法」。</div>
+          </div>
+          <div class="tr">译：另有研究者正在用先进的脑扫描方法，探究直视时会作出反应的具体脑区。</div>
+        </div>
+
+        <div class="ls">
+          <div class="s"><span class="mk3">While eye contact may be a sign of connection or trust in friendly situations</span>, <span class="mk">it’s more likely to be associated with dominance or intimidation</span> <span class="mk2">in adversarial situations</span>.</div>
+          <div class="an">
+            <div>· <span class="mk3">While …</span> 是让步／对比从句：<b>重心永远在主句</b>。</div>
+            <div>· 两半各有一个「情境」状语：in friendly situations ⟷ in adversarial situations，中心词 situations 重复，形容词对立——<b>这是在把 ④❶ 的 depending on the situation 拆成两种</b>。</div>
+            <div>· may be ⟷ more likely to be：前一半「也许」，后一半「更可能」——连情态都偏向主句。</div>
+          </div>
+          <div class="tr">译：在友好的情境中，目光接触也许是亲近或信任的标志；而在对立的情境中，它更可能和压制或恐吓联系在一起。</div>
+        </div>
+
+        <div class="ls">
+          <div class="s">“<span class="mk3">Whether you’re a politician or a parent</span>, <span class="mk">it might be helpful to keep in mind</span> <span class="mk2">that trying to maintain eye contact may backfire</span> <span class="mk3">if you’re trying to convince someone <span class="mk2">who has a different set of beliefs than you</span></span>,” said Minson.</div>
+          <div class="an">
+            <div>· 开头 <span class="mk3">Whether A or B</span> 是让步状语「不管是 A 还是 B」；主干 <span class="mk">it might be helpful to keep in mind that …</span>，it 是形式主语。</div>
+            <div>· that 从句的主语是动名词短语 <b>trying to maintain eye contact</b>，谓语 may backfire；后面再挂 if 条件。</div>
+            <div>· <b>different … than you</b>：美式口语常用 than，规范写法是 different from。考场上见到别以为是比较级。</div>
+          </div>
+          <div class="tr">译：「不管你是政客还是家长，记住这一点也许有好处：如果你想说服一个和你观念不同的人，硬要和他保持目光接触，可能会适得其反。」明森说。</div>
+        </div>
+
+        <div class="ls">
+          <div class="s">These pauses typically occur at about three per second, <span class="mk">and the eyes then jump to another spot</span>, <span class="mk2">until several important points in the image are registered</span> <span class="mk3">like a series of snapshots</span>.</div>
+          <div class="an">
+            <div>· 两个并列分句 ＋ 一个 until 从句：停（occur）→ 跳（jump）→ 直到记下（registered）——<b>一句话写完一个循环过程</b>。</div>
+            <div>· <b>register</b> 在这里是「（被大脑）记下、意识到」，不是「登记、注册」（熟词僻义）。<span class="mk3">like a series of snapshots</span> 是比喻：一张一张拍下来，不是一次看全。</div>
+          </div>
+          <div class="tr">译：这种停顿通常每秒大约三次，接着目光跳到另一个点，直到图像上几个重要的点像一组快照那样被记下来。</div>
+        </div>
+
+        <div class="ls">
+          <div class="s"><span class="mk">How the whole image is then assembled and perceived</span> is still a mystery <span class="mk3">although it is the subject of current research</span>.</div>
+          <div class="an">
+            <div>· <span class="mk">How … perceived</span> 是<b>主语从句</b>，谓语 is still a mystery。</div>
+            <div>· although 从句里的 it 指整个主语从句的内容；<b>the subject of</b> ＝「……的对象、课题」（不是「主语、科目」）。</div>
+            <div>· ⚠️ E 项 are being investigated 的钩子就在这个 although 从句里——段尾让步的半句，不是发现。</div>
+          </div>
+          <div class="tr">译：至于整幅图像随后是怎样被拼合、被感知的，至今仍是个谜，尽管这正是眼下的研究课题。</div>
+        </div>
+
+        <div class="ls">
+          <div class="s"><span class="mk3">In people who score high in a test of neuroticism</span>, <span class="mk2">a personality dimension associated with self-consciousness and anxiety</span>, <span class="mk">eye contact triggered more activity associated with avoidance</span>, <span class="mk3">according to the Finnish researcher Jari Hietanen and colleagues</span>.</div>
+          <div class="an">
+            <div>· 主干在中间：<span class="mk">eye contact triggered more activity</span>。前面是范围状语（In people who …），后面是出处（according to …）。</div>
+            <div>· <span class="mk2">a personality dimension …</span> 是 neuroticism 的<b>同位语</b>——<b>D 项 personality 的原词就藏在这个同位语里</b>；两个 associated with 一个解释神经质、一个解释大脑活动。</div>
+          </div>
+          <div class="tr">译：据芬兰研究者贾里·希塔宁及其同事的研究，神经质是一个与过分在意自己、焦虑相关的人格维度，在神经质测试中得分高的人，目光接触会引发更多与回避有关的活动。</div>
+        </div>
+
+        <div class="ls">
+          <div class="s">“Our findings indicate <span class="mk">that people do not only feel different</span> <span class="mk3">when they are the centre of attention</span> <span class="mk">but that their brain reactions also differ</span>.”</div>
+          <div class="an">
+            <div>· <b>not only … but (also) …</b> 拆在两个 that 从句上：indicate that A but that B——第二个 that 重复出现，表明 but 连接的是两个宾语从句。also 后移到从句里。</div>
+            <div>· feel different（主观感受）→ brain reactions differ（客观反应）：递进到「连大脑都不一样」，正是 D 项 reacts 的出处之一。centre 是英式拼写（美式 center），考卷照原文保留。</div>
+          </div>
+          <div class="tr">译：「我们的发现表明，人们在成为众人注意的焦点时，不仅感受不同，大脑的反应也不同。」</div>
+        </div>
+
+        <div class="ls">
+          <div class="s">A more direct finding is <span class="mk">that people <span class="mk3">who scored high for negative emotions like anxiety</span> looked at others for shorter periods of time and reported more comfortable feelings</span> <span class="mk2">when others did not look directly at them</span>.</div>
+          <div class="an">
+            <div>· 表语从句 that …：主语 people ＋ 定语从句，两个并列谓语 <b>looked … and reported …</b>。</div>
+            <div>· ⚠️ <span class="mk2">when …</span> 只管第二个谓语（reported more comfortable feelings），说的是「<b>别人不看他们时</b>」更自在——F 项把它改成「大多数人和陌生人对视时不自在」，<b>主语、条件都换了</b>。</div>
+          </div>
+          <div class="tr">译：一个更直接的发现是：负面情绪（如焦虑）得分高的人，看别人的时间更短；别人不直视他们时，他们自述感觉更自在。</div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">06</span>可搬进作文的素材（本篇是「人际交往 / 沟通与说服 / 网络与面对面 / 性格差异」四个话题的弹药库）</h2>
+        <div class="wb">
+          <div class="wbi"><div class="p">X can show that you are paying attention in a friendly way. But it can also be antagonistic.</div><div class="u">📌 <b>一好一坏两句起笔</b>：开头先承认两面，后文再分说。<i>The Internet can bring people together. But it can also drive them apart.</i>——大作文写「双刃剑」类话题的首段骨架。</div></div>
+          <div class="wbi"><div class="p">Here’s what hard science reveals about X:</div><div class="u">📌 <b>冒号引出清单</b>：作文里换成 <i>Here is what recent surveys reveal about…</i>，后面分点给论据，阅卷人一眼看到结构。</div></div>
+          <div class="wbi"><div class="p">…, a common-sense notion supported in studies by psychologist Monica Moore.</div><div class="u">📌 <b>句末同位语给论据背书</b>：先摆观点，再补一句「这是常识，也有研究支持」。<i>Reading broadens one’s mind, a common-sense notion supported by countless studies.</i></div></div>
+          <div class="wbi"><div class="p">Eye contact can signal very different kinds of messages, depending on the situation.</div><div class="u">📌 <b>辩证收口</b>：<i>depending on the situation／context／how it is used</i>——给结论留余地，避免绝对化（本篇两个多余项正是死在「绝对」上）。</div></div>
+          <div class="wbi"><div class="p">While X may be a sign of connection in friendly situations, it’s more likely to be associated with Y in adversarial situations.</div><div class="u">📌 <b>While 对比句</b>：一句话把两种情况都写进去，重心放在主句。<i>While competition may motivate some students, it is more likely to cause anxiety in others.</i></div></div>
+          <div class="wbi"><div class="p">Trying to X may backfire if you’re trying to Y.</div><div class="u">📌 <b>backfire（适得其反）</b>：写家长施压、过度管理、强行推销类话题的好词。<i>Pushing children too hard may backfire.</i></div></div>
+          <div class="wbi"><div class="p">People do not only feel different when they are the centre of attention but their brain reactions also differ.</div><div class="u">📌 <b>不仅……而且（递进到更深一层）</b>：从感受递进到生理、从个人递进到社会。the centre of attention（众人瞩目）本身也好用。</div></div>
+          <div class="wbi"><div class="p">Looking at cell phones threatens real conversation.（原文被删的第六条）</div><div class="u">📌 <b>手机与面对面交流</b>：原文作者引特克尔的话——在真正的对话里我们学会对视、学会共情。写「低头族」「线上社交」话题可用：<i>With people so often looking down at phones, eye contact can be an even more powerful way to communicate.</i>（原文末句）</div></div>
+        </div>
+        <p style="font-size:.88rem;margin-top:10px">🔁 <b>跨篇联动</b>：同卷 <a href="2020_T3_董事会配额强化特权.html">2020 Text 3</a> 也在讲「研究说了什么」（挪威配额的实证），但那是驳论；本篇是纯科普，五条发现一条都不评价。<a href="2016_新题型_如何提升职业形象.html">2016 新题型</a>讲「第一印象十分之一秒」，本篇讲「对视一秒三次」——两篇标题匹配都在讲人怎么被别人看。</p>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">07</span>词汇复盘（点卡片看详情 · 共 <span id="vcount"></span> 张，含 <b>18 处熟词僻义</b>）</h2>
+        <p style="font-size:.85rem;color:var(--muted);margin-bottom:10px">本篇熟词僻义的共同规律：<b>心理学与神经科学把日常词变成了术语</b>——attachment 是「依恋」、availability 是「可接近」、dimension 是「人格维度」、self-consciousness 是「过分在意自己」、register 是「被意识到」、subject 是「研究对象」、fixation 是「注视」、score high 是「得分高」、hard science 是「自然科学」。<b>最危险的是 self-consciousness 和 complimentary</b>：一个读成「自觉」、一个读成「互补的」，整句意思就反了。</p>
+        <div id="vgrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px"></div>
+      </section>
+
+      <footer>2020 英语（一）Part B · 目光接触如何使你们或合或分 ｜ 答案 41C 42E 43G 44A 45D（B、F 多余）｜ ✅ Claude 完整盲做 5/5（mine 先落盘，答案页只裁 Part B 一行，精讲只读到 Part B 末、Part C 未入眼）｜ 原文 psychologytoday.com 逐词比对 ｜ 本页解析为独立盲做后撰写，黄皮书精讲仅作交叉复核（零书误）</footer>
+    </main>
+
+    <aside>
+      <div id="panel"><div class="hint">👆 点正文里的<b>黄色高亮词</b>，或下方词汇卡，这里出详解<br><br>选中任意英文可弹出「查词」按钮</div></div>
+    </aside>
+  </div>
+</div>
+<button id="yd">🔍 有道查词</button>
+
+<script>
+const OPTS = {
+  A:["Eye <span class='tk' data-w='fixation'>fixations</span> are brief.",
+     "目光的停留很短暂。",
+     "主语 <b>Eye fixations</b>（不是 eye contact）｜fixations 在 44 段被擦成 pauses；brief 只在 ③❶ brief interview（钓 42）",
+     "⑤段 44 · 原文粗体段首句"],
+  B:["Too much eye contact is instinctively felt to be <span class='tk' data-w='rude'>rude</span>.",
+     "目光接触太多会让人本能地觉得无礼。",
+     "口气 <b>instinctively</b>（人人生来）｜instinctively ← ②❶ 婴儿本能地凝视（方向相反）；too much、rude 全文零",
+     "🚫 多余项 · 钓 41、43 · 去条件"],
+  C:["Eye contact can be a friendly social signal.",
+     "目光接触可以是一种友好的社交信号。",
+     "口气 <b>can be</b>｜friendly 在 41 段被改成 pleasant，只剩 ①❶、④❷；②❸ sign · ②❺ signal",
+     "②段 41 · 原文粗体段首句"],
+  D:["Personality can affect how a person <span class='tk' data-w='react'>reacts</span> to eye contact.",
+     "性格会影响一个人对目光接触的反应。",
+     "原词 <b>personality</b> 留在 ⑥❶（唯一一个）｜原文是 can modulate",
+     "⑥段 45 · 原文粗体段首句（改一词）"],
+  E:["<span class='tk' data-w='biological'>Biological</span> factors behind eye contact are being <span class='tk' data-w='investigate'>investigated</span>.",
+     "目光接触背后的生物学因素正在被研究。",
+     "时体 <b>are being V-ed</b> ＝ ③❸ are being explored｜hormone · brain regions 是下义词；⑤❸ current research 钓 44",
+     "③段 42 · 原文粗体段首句"],
+  F:["Most people are not comfortable <span class='tk' data-w='hold'>holding</span> eye contact with <span class='tk' data-w='stranger'>strangers</span>.",
+     "大多数人和陌生人保持目光接触时都会不自在。",
+     "量词 <b>Most people</b>｜comfortable ← ⑥❸（主语是负面情绪高的人）；strangers 只在被删的原文第 4 段",
+     "🚫 多余项 · 钓 45 · 去条件"],
+  G:["Eye contact can be <span class='tk' data-w='aggressive'>aggressive</span>.",
+     "目光接触可能带有攻击性。",
+     "口气 <b>can be</b>，与 C 一对｜aggressive 连段删；④❷ dominance · intimidation · adversarial",
+     "④段 43 · 原文粗体段首句（It can also → Eye contact can）"]
+};
+const EXTRA = ["B","F"];
+const V = {
+  socialsit:{w:"social situation",ipa:"",pos:"n.短语",tags:["phrase","write"],cn:"社交场合",en:"an occasion when you are with other people",ex:"In a social situation, eye contact with another person",mem:"social(社会的、社交的) + situation(情境)。<b>situation 全文 4 次</b>：①❶ · ④❶ depending on the situation · ④❷ friendly／adversarial situations——43 段的关键就是「看情境」。",syn:"social setting / social occasion",conf:"situation(情境) vs. site(地点) vs. status(地位)"},
+  eyecontact:{w:"eye contact",ipa:"",pos:"n.短语",tags:["phrase","write"],cn:"目光接触，对视",en:"the act of looking directly into sb’s eyes",ex:"eye contact with another person can show",mem:"<b>make／maintain／hold／avoid eye contact</b>（进行／保持／保持／回避目光接触）四个动词全在本篇或选项里出现。全文 10 次，<b>只有 44 段没有</b>——那段讲的是看图时眼球怎么动。",syn:"mutual gaze",conf:"eye contact(对视) vs. contact lens(隐形眼镜)"},
+  payattn:{w:"pay attention",ipa:"",pos:"v.短语",tags:["phrase","write"],cn:"注意，留意",en:"to watch, listen to or think about sth carefully",ex:"you are paying attention in a friendly way",mem:"<b>pay attention to sth</b>。attention 全文 4 次：①❶ paying attention · ②❸ sign of paying attention · ②❹ catch someone’s attention · ⑥❷ the centre of attention。",syn:"attend to / take notice of",conf:"attention(注意) vs. intention(意图) vs. attendance(出席)"},
+  antagonistic:{w:"antagonistic",ipa:"/ænˌtæɡəˈnɪstɪk/",pos:"adj.",tags:["core"],cn:"敌对的，对抗的",en:"showing or feeling opposition",ex:"But it can also be antagonistic",mem:"ant(i)(反) + agon(竞赛、争斗) + -ist → antagonist(对手、反派) → antagonistic。<b>与 ④❷ adversarial、①❷ hostility 同一个场：G 的 aggressive 要从这一族词里概括</b>。",syn:"hostile / adversarial / opposed",conf:"antagonistic(敌对的) vs. agonizing(痛苦的) vs. protagonist(主角)"},
+  candidate:{w:"political candidate",ipa:"/ˈkændɪdət/",pos:"n.",tags:["core"],cn:"（政治）候选人",en:"a person who is trying to be elected",ex:"such as when a political candidate turns toward their competitor",mem:"拉丁语 candidatus＝「穿白袍的」：古罗马竞选者穿白色长袍。<b>①❷ 的辩论场景与 ④❸ 的 politician 前后呼应</b>——原文删掉的第 4 段还写了总统初选辩论。",syn:"nominee / contender",conf:"candidate(候选人) vs. candid(坦率的) vs. candle(蜡烛)"},
+  competitor:{w:"competitor",ipa:"/kəmˈpetɪtə(r)/",pos:"n.",tags:["core"],cn:"竞争对手",en:"a person or an organization that competes against others",ex:"turns toward their competitor during a debate",mem:"compete(竞争) + -itor。注意 their 指单数 candidate——<b>不分性别的单数 they</b>。",syn:"rival / opponent",conf:"competitor(对手) vs. competence(能力) vs. competition(比赛)"},
+  debate:{w:"debate",ipa:"/dɪˈbeɪt/",pos:"n./v.",tags:["core","write"],cn:"辩论；争论",en:"a formal discussion of an issue in which people express different opinions",ex:"during a debate and makes eye contact that signals hostility",mem:"de(加强) + bate(打) → 你来我往地打 → 辩论。作文：<i>There has been a heated debate over…</i>",syn:"argument / dispute",conf:"debate(辩论) vs. debt(债务) vs. rebate(退款)"},
+  signal:{w:"signal",ipa:"/ˈsɪɡnəl/",pos:"v./n.",tags:["core","write"],cn:"v. 表示，示意，传递信号；n. 信号",en:"to show or communicate a feeling or an intention",ex:"makes eye contact that signals hostility",mem:"sign(标志) + -al。全文动词 3 次：①❷ signals hostility · ②❺ can signal availability · ④❶ can signal very different kinds of messages；<b>C 用的是名词 a social signal</b>。",syn:"indicate / convey / show",conf:"signal(信号) vs. signature(签名) vs. significant(重要的)"},
+  hostility:{w:"hostility",ipa:"/hɒˈstɪləti/",pos:"n.",tags:["core"],cn:"敌意，敌对",en:"unfriendly or aggressive feelings or behaviour",ex:"eye contact that signals hostility",mem:"hostile(敌对的) → hostility。⚠️ 与 host(主人)、hospitality(好客) 同源却意思相反：拉丁语 hostis 本义「陌生人／敌人」。",syn:"enmity / antagonism",conf:"hostility(敌意) vs. hospitality(好客) vs. hostage(人质)"},
+  hardsci:{w:"hard science",ipa:"",pos:"n.短语",tags:["poly"],cn:"⚠️硬科学（自然科学，可实验、可量化），不是「困难的科学」",en:"natural sciences such as physics, chemistry and biology",ex:"Here’s what hard science reveals about eye contact:",mem:"⚠️<b>hard 在这里是「硬的、可实证的」</b>：hard science（物理、化学、生物、神经科学）vs. soft science（社会学、心理学的部分领域）。hard evidence 硬证据、hard data 硬数据同理。本篇用它强调：下面不是常识，是实验结果。",syn:"natural science / empirical science",conf:"hard science(硬科学) vs. hardware(硬件) vs. hardship(艰难)"},
+  reveal:{w:"reveal",ipa:"/rɪˈviːl/",pos:"v.",tags:["core","write"],cn:"揭示，显示",en:"to make sth known to sb",ex:"Here’s what hard science reveals about eye contact:",mem:"re(反) + veal(＝veil 面纱) → 揭开面纱。作文：<i>A recent survey reveals that…</i>",syn:"show / disclose / uncover",conf:"reveal(揭示) vs. revel(狂欢) vs. revenue(收入)"},
+  infant:{w:"infant",ipa:"/ˈɪnfənt/",pos:"n.",tags:["core"],cn:"婴儿",en:"a baby or very young child",ex:"a typical infant will instinctively gaze into its mother’s eyes",mem:"in(不) + fant(说) → 还不会说话的 → 婴儿。infancy 婴儿期；in its infancy 处于起步阶段。",syn:"baby / newborn",conf:"infant(婴儿) vs. infantry(步兵) vs. infinite(无限的)"},
+  instinct:{w:"instinctively",ipa:"/ɪnˈstɪŋktɪvli/",pos:"adv.",tags:["core"],cn:"本能地，出于直觉地",en:"based on instinct, not thinking",ex:"will instinctively gaze into its mother’s eyes",mem:"instinct(本能) + -ive + -ly。⚠️ <b>B 项的钩子</b>：B 说对视太多本能地让人觉得无礼——本段的本能却是<b>想看</b>，方向相反。",syn:"naturally / intuitively",conf:"instinct(本能) vs. distinct(明显的) vs. extinct(灭绝的)"},
+  gaze:{w:"gaze",ipa:"/ɡeɪz/",pos:"v./n.",tags:["core"],cn:"凝视，注视",en:"to look steadily at sb/sth for a long time",ex:"gaze into its mother’s eyes",mem:"<b>gaze at／into</b>。全文 4 次：②❶ gaze into · ②❷ mutual gaze · ③❶ the direction of their gaze · ③❸ direct gaze。辨析：gaze 长时间凝视（常带感情），stare 瞪着看，glance 一瞥。",syn:"stare / look steadily",conf:"gaze(凝视) vs. graze(吃草；擦伤) vs. glaze(上釉)"},
+  mutual:{w:"mutual",ipa:"/ˈmjuːtʃuəl/",pos:"adj.",tags:["core","write"],cn:"相互的，共同的",en:"felt or done by each of two people towards the other",ex:"This mutual gaze is a major part of the attachment",mem:"mut(变换、交换) → 互相给 → 相互的。<b>mutual understanding／respect／benefit</b> 作文常用。原文副标题 Mutual glances signal everything from interest to confrontation。",syn:"reciprocal / shared",conf:"mutual(相互的) vs. mutable(易变的) vs. mutant(突变体)"},
+  attachment:{w:"attachment",ipa:"/əˈtætʃmənt/",pos:"n.",tags:["poly"],cn:"⚠️（心理学）依恋，情感纽带（不是「附件」）",en:"a strong feeling of affection for sb",ex:"the attachment between mother and child",mem:"⚠️邮件里的 attachment 是「附件」；<b>心理学里 attachment 是依恋</b>——婴儿与照料者之间的情感纽带（依恋理论 attachment theory）。attach 本义「系上」→ 情感上系在一起。",syn:"bond / affection",conf:"attachment(依恋／附件) vs. attack(攻击) vs. detachment(超然)"},
+  adulthood:{w:"adulthood",ipa:"/ˈædʌlthʊd/",pos:"n.",tags:["core"],cn:"成年期",en:"the state of being an adult",ex:"In adulthood, looking at someone else in a pleasant way",mem:"adult + -hood(时期、状态)：childhood 童年 · parenthood 为人父母。②❸ 的 In adulthood 把段落从「婴儿」切到「成人」。",syn:"maturity",conf:"adulthood(成年) vs. adultery(通奸)"},
+  pleasant:{w:"pleasant",ipa:"/ˈpleznt/",pos:"adj.",tags:["core"],cn:"令人愉快的，友好的",en:"enjoyable, pleasing or attractive; friendly and polite",ex:"looking at someone else in a pleasant way",mem:"please(使高兴) + -ant。⭐ <b>原文这里是 friendly，考卷改成 pleasant</b>——C 项的原词就这样从 41 段消失了。",syn:"friendly / agreeable / nice",conf:"pleasant(令人愉快的) vs. peasant(农民) vs. pleased(高兴的)"},
+  complimentary:{w:"complimentary",ipa:"/ˌkɒmplɪˈmentri/",pos:"adj.",tags:["poly"],cn:"⚠️赞美的，表示欣赏的；免费赠送的（不是 complementary「互补的」）",en:"expressing admiration or praise; given free",ex:"can be a complimentary sign of paying attention",mem:"compliment(赞美) + -ary。⚠️ 两个义项：① 赞美的（本篇）② 免费的（complimentary tickets 赠票）。<b>和 complementary（互补的）只差一个字母 i／e</b>——读成「互补的」整句就不通了。",syn:"admiring / flattering; free",conf:"complimentary(赞美的；免费的) vs. complementary(互补的)"},
+  catch:{w:"catch someone’s attention",ipa:"",pos:"v.短语",tags:["poly","write"],cn:"⚠️吸引某人的注意（catch 不是「抓住」）",en:"to make sb notice sth",ex:"It can catch someone’s attention in a crowded room.",mem:"⚠️catch 的抽象义：catch sb’s eye／attention（引人注目）· catch a cold（感冒）· catch the meaning（听懂）。作文：<i>The headline caught my attention.</i>",syn:"attract attention / grab attention",conf:"catch attention(吸引注意) vs. pay attention(注意) vs. draw attention to(使注意到)"},
+  crowded:{w:"crowded",ipa:"/ˈkraʊdɪd/",pos:"adj.",tags:["core"],cn:"拥挤的",en:"having a lot of people in it",ex:"in a crowded room",mem:"crowd(人群) + -ed。<b>be crowded with</b> 挤满了……",syn:"packed / busy",conf:"crowded(拥挤的) vs. clouded(多云的)"},
+  availability:{w:"availability",ipa:"/əˌveɪləˈbɪləti/",pos:"n.",tags:["poly"],cn:"⚠️（社交上）可接近、愿意交往；（感情上）单身可约（不是「可用性、可得到」）",en:"the fact of being free to start a relationship or to talk",ex:"can signal availability and confidence",mem:"⚠️available 的日常义是「可得到的、有空的」；<b>说人时常指「有空、可接近」，约会语境里指「单身、可以约」</b>。Moore 的代表研究正是女性的非语言求偶信号——所以是 eye contact <b>and smiles</b>。",syn:"approachability / openness",conf:"availability(可接近) vs. ability(能力) vs. avail(效用)"},
+  confidence:{w:"confidence",ipa:"/ˈkɒnfɪdəns/",pos:"n.",tags:["core","write"],cn:"自信；信任",en:"a feeling that you can do things well",ex:"can signal availability and confidence",mem:"con(全) + fid(信) + -ence。self-confidence 自信；have confidence in 信任。作文高频。",syn:"self-assurance / trust",conf:"confidence(自信) vs. confident(adj.) vs. confidential(机密的)"},
+  commonsense:{w:"common-sense",ipa:"",pos:"adj.",tags:["phrase","write"],cn:"常识性的，合乎常理的",en:"based on good practical judgement",ex:"a common-sense notion supported in studies",mem:"common sense（名词：常识）作定语时加连字符：a common-sense approach。作文：<i>It is common sense that…</i>",syn:"sensible / practical",conf:"common sense(常识) vs. general knowledge(常识性知识)"},
+  notion:{w:"notion",ipa:"/ˈnəʊʃn/",pos:"n.",tags:["core","write"],cn:"观念，看法",en:"an idea, a belief or an understanding of sth",ex:"a common-sense notion supported in studies",mem:"not(知道) → notion。②❺ 的 a common-sense notion 是整句的同位语。",syn:"idea / concept / belief",conf:"notion(观念) vs. motion(运动) vs. notation(符号)"},
+  psychologist:{w:"psychologist",ipa:"/saɪˈkɒlədʒɪst/",pos:"n.",tags:["core"],cn:"心理学家",en:"a scientist who studies the mind",ex:"supported in studies by psychologist Monica Moore",mem:"psycho(心理) + logy(学) + -ist；p 不发音。本篇三类研究者：psychologist · neuroscientist · researcher。",syn:"",conf:"psychologist(心理学家) vs. psychiatrist(精神科医生)"},
+  neurosci:{w:"neuroscientist",ipa:"/ˈnjʊərəʊsaɪəntɪst/",pos:"n.",tags:["core"],cn:"神经科学家",en:"a scientist who studies the nervous system and the brain",ex:"Neuroscientist Bonnie Auyeung found",mem:"neuro(神经) + scientist。同根：neuron 神经元 · neural 神经的 · <b>neuroticism 神经质</b>（45 段）。",syn:"brain scientist",conf:"neuroscientist(神经科学家) vs. neurologist(神经科医生)"},
+  hormone:{w:"hormone",ipa:"/ˈhɔːməʊn/",pos:"n.",tags:["core"],cn:"激素，荷尔蒙",en:"a chemical substance produced in the body that influences growth, development, etc.",ex:"the hormone oxytocin increased the amount of eye contact",mem:"希腊语 horman「激发」。<b>hormone 是 E 项 biological factors 的下义词</b>——42 段两个下义词：激素、脑区。",syn:"",conf:"hormone(激素) vs. harmony(和谐)"},
+  oxytocin:{w:"oxytocin",ipa:"/ˌɒksɪˈtəʊsɪn/",pos:"n.",tags:["core"],cn:"催产素（常被称作「亲密激素」）",en:"a hormone that is involved in social bonding",ex:"the hormone oxytocin increased the amount of eye contact",mem:"oxy(快) + toc(分娩) → 加速分娩的激素；后来发现它和依恋、信任有关，俗称 love hormone。Auyeung 的研究 2015 年发表在《转化精神病学》。",syn:"love hormone",conf:"oxytocin(催产素) vs. oxygen(氧气) vs. toxin(毒素)"},
+  interviewer:{w:"interviewer",ipa:"/ˈɪntəvjuːə(r)/",pos:"n.",tags:["core"],cn:"面谈者，采访者",en:"a person who asks the questions in an interview",ex:"from men toward the interviewer during a brief interview",mem:"interview + -er(主动方)；interviewee(-ee 被动方) 受访者。",syn:"questioner",conf:"interviewer(面谈者) vs. interviewee(受访者)"},
+  brief:{w:"brief",ipa:"/briːf/",pos:"adj.",tags:["core"],cn:"短暂的；简短的",en:"lasting only a short time",ex:"during a brief interview",mem:"⚠️ <b>A 项 Eye fixations are brief 的原词，却落在 42 段</b>：这里修饰的是面谈（实验的方法），不是目光的停留。brief 也作名词「简报」、动词「向……简要介绍」（briefing）。",syn:"short / quick",conf:"brief(短暂的) vs. briefcase(公文包) vs. grief(悲伤)"},
+  direction:{w:"direction of their gaze",ipa:"",pos:"n.短语",tags:["phrase"],cn:"视线方向",en:"the way in which sb is looking",ex:"when the direction of their gaze was recorded",mem:"direction(方向) + of gaze。实验记录被试看向哪里，才能算出目光接触的量。",syn:"line of sight",conf:"direction(方向) vs. directory(目录)"},
+  record:{w:"record",ipa:"/rɪˈkɔːd/",pos:"v.",tags:["core"],cn:"记录",en:"to keep a permanent account of facts",ex:"when the direction of their gaze was recorded",mem:"动词重音在后 /rɪˈkɔːd/，名词重音在前 /ˈrekɔːd/。",syn:"note / log",conf:"record(v.记录) vs. record(n.记录；唱片)"},
+  highfunc:{w:"high-functioning",ipa:"",pos:"adj.",tags:["phrase"],cn:"高功能的（指有自闭症特征、但日常能力与智力正常）",en:"able to manage daily life well despite a condition such as autism",ex:"high-functioning men with some autistic spectrum symptoms",mem:"function(运作) → functioning。high-functioning autism 高功能自闭症。",syn:"",conf:"high-functioning(高功能的) vs. dysfunctional(功能失调的)"},
+  autistic:{w:"autistic spectrum",ipa:"/ɔːˈtɪstɪk/",pos:"n.短语",tags:["phrase"],cn:"自闭症谱系",en:"a range of conditions related to autism",ex:"with some autistic spectrum symptoms",mem:"aut(o)(自己) + -ism → autism 自闭症；spectrum(光谱) → 从轻到重连续的一段范围。",syn:"autism spectrum",conf:"autistic(自闭症的) vs. artistic(艺术的)"},
+  symptom:{w:"symptom",ipa:"/ˈsɪmptəm/",pos:"n.",tags:["core"],cn:"症状；征兆",en:"a change in the body or mind showing illness",ex:"with some autistic spectrum symptoms",mem:"sym(一起) + ptom(落下) → 一起出现的东西。也可比喻「征兆」：a symptom of social problems。",syn:"sign / indication",conf:"symptom(症状) vs. syndrome(综合征) vs. symphony(交响乐)"},
+  tendto:{w:"tend to",ipa:"",pos:"v.短语",tags:["phrase","write"],cn:"往往会，倾向于",en:"to be likely to do sth",ex:"who may tend to avoid eye contact",mem:"tendency 倾向。⚠️ <b>may tend to 是双重弱化</b>：这类人「可能往往」回避对视——<b>D 项的钩子在这个从句里，但它只是交代被试是谁</b>。",syn:"be inclined to / be apt to",conf:"tend to(倾向于) vs. attend to(处理) vs. intend to(打算)"},
+  avoid:{w:"avoid",ipa:"/əˈvɔɪd/",pos:"v.",tags:["core","write"],cn:"避免，回避",en:"to keep away from sb/sth",ex:"who may tend to avoid eye contact",mem:"avoid doing。名词 <b>avoidance</b>（⑥❶ activity associated with avoidance）。",syn:"evade / shun",conf:"avoid(避免) vs. void(空的；无效的)"},
+  specific:{w:"specific",ipa:"/spəˈsɪfɪk/",pos:"adj.",tags:["core","write"],cn:"具体的，特定的",en:"particular; detailed and exact",ex:"Specific brain regions that respond during direct gaze",mem:"species(物种) 同源：区分出一类 → 特定的。",syn:"particular / certain",conf:"specific(特定的) vs. pacific(和平的) vs. specify(具体说明)"},
+  region:{w:"brain region",ipa:"/ˈriːdʒən/",pos:"n.短语",tags:["phrase"],cn:"脑区",en:"a particular part of the brain",ex:"Specific brain regions that respond during direct gaze",mem:"region 区域。<b>brain regions 是 E 项 biological factors 的第二个下义词</b>。",syn:"area of the brain",conf:"region(区域) vs. religion(宗教)"},
+  respond:{w:"respond",ipa:"/rɪˈspɒnd/",pos:"v.",tags:["core"],cn:"作出反应；回应",en:"to react to sth",ex:"Specific brain regions that respond during direct gaze",mem:"response 反应；respondent 受访者。",syn:"react / reply",conf:"respond(反应) vs. correspond(通信；对应)"},
+  directgaze:{w:"direct gaze",ipa:"",pos:"n.短语",tags:["phrase"],cn:"直视",en:"looking straight at sb",ex:"respond during direct gaze",mem:"direct 作形容词＝直接的、正对着的。⑥❸ <b>look directly at</b> 直视——同一个意思的副词说法。",syn:"straight look",conf:"direct gaze(直视) vs. averted gaze(移开的目光)"},
+  explore:{w:"explore",ipa:"/ɪkˈsplɔː(r)/",pos:"v.",tags:["poly"],cn:"⚠️探究，研究（不只是「探险」）",en:"to examine sth completely or carefully",ex:"are being explored by other researchers",mem:"⚠️地理义「探险、勘探」，<b>学术义「探究」</b>：explore the possibility／a question。⭐ <b>are being explored ＝ E 项 are being investigated</b>，时体一样。",syn:"investigate / examine / look into",conf:"explore(探究) vs. explode(爆炸) vs. exploit(利用)"},
+  advanced:{w:"advanced",ipa:"/ədˈvɑːnst/",pos:"adj.",tags:["core"],cn:"先进的；高级的",en:"having the most modern features",ex:"using advanced methods of brain scanning",mem:"advance(前进) + -ed。advanced technology 先进技术。",syn:"cutting-edge / sophisticated",conf:"advanced(先进的) vs. advance(提前的；进展)"},
+  scan:{w:"brain scanning",ipa:"/skæn/",pos:"n.短语",tags:["phrase"],cn:"脑部扫描",en:"using machines to produce images of the brain",ex:"using advanced methods of brain scanning",mem:"scan 扫描；scanner 扫描仪。也作「浏览」：scan the text。",syn:"brain imaging",conf:"scan(扫描；浏览) vs. scam(骗局)"},
+  eyetrack:{w:"eye-tracking technology",ipa:"",pos:"n.短语",tags:["phrase"],cn:"眼动追踪技术",en:"technology that measures where a person is looking",ex:"With the use of eye-tracking technology",mem:"track(追踪) → tracking。眼动追踪能精确记录注视点（fixation）——<b>44 段 A 项的 fixations 就是这一行的术语</b>。",syn:"gaze tracking",conf:"track(追踪) vs. trick(诡计)"},
+  conclude:{w:"conclude",ipa:"/kənˈkluːd/",pos:"v.",tags:["core","write"],cn:"得出结论；结束",en:"to decide that sth is true after considering",ex:"concluded that eye contact can signal very different kinds of messages",mem:"con + clude(关闭) → 合上 → 下结论。<b>研究段的发现句标志</b>：found that · concluded that · findings indicate that。",syn:"deduce / infer",conf:"conclude(得出结论) vs. include(包括) vs. exclude(排除)"},
+  depending:{w:"depending on",ipa:"",pos:"prep.短语",tags:["phrase","write"],cn:"根据，取决于",en:"according to",ex:"depending on the situation",mem:"⭐ <b>全文的主旨口径</b>：结论是「看情况」——正确项都用 can，多余项 B、F 说成「一律」。作文辩证收尾：<i>…, depending on how it is used.</i>",syn:"according to / based on",conf:"depending on(取决于) vs. dependent(依赖的)"},
+  connection:{w:"connection",ipa:"/kəˈnekʃn/",pos:"n.",tags:["core"],cn:"关联；亲近，人际联系",en:"a relationship with sb",ex:"a sign of connection or trust in friendly situations",mem:"connect(连接)。⚠️ 说人时是「关系、亲近感」：feel a connection with sb。",syn:"bond / link",conf:"connection(联系) vs. correction(改正) vs. collection(收集)"},
+  associate:{w:"be associated with",ipa:"/əˈsəʊʃieɪtɪd/",pos:"v.短语",tags:["phrase","write"],cn:"与……相关，与……联系在一起",en:"to be connected with sth",ex:"it’s more likely to be associated with dominance or intimidation",mem:"全文 3 次：④❷ · ⑥❶ 两次（a personality dimension associated with… · activity associated with avoidance）。作文：<i>Obesity is closely associated with…</i>",syn:"be linked to / be connected with",conf:"associate(联系) vs. association(协会)"},
+  dominance:{w:"dominance",ipa:"/ˈdɒmɪnəns/",pos:"n.",tags:["core"],cn:"支配，压制，统治地位",en:"control or power over others",ex:"associated with dominance or intimidation",mem:"domin(主人) → dominate 支配 → dominance。<b>dominance ＋ intimidation ＋ adversarial ⟹ aggressive</b>（G）。",syn:"control / supremacy",conf:"dominance(支配) vs. dominion(领土) vs. domination(统治)"},
+  intimidation:{w:"intimidation",ipa:"/ɪnˌtɪmɪˈdeɪʃn/",pos:"n.",tags:["core"],cn:"恐吓，威胁",en:"the act of frightening sb",ex:"associated with dominance or intimidation",mem:"in(使) + timid(胆小的) → 使人胆怯 → intimidate 恐吓。",syn:"threat / bullying",conf:"intimidate(恐吓) vs. intimate(亲密的)"},
+  adversarial:{w:"adversarial",ipa:"/ˌædvəˈseəriəl/",pos:"adj.",tags:["core"],cn:"对立的，敌对的",en:"involving people who are opposed to each other",ex:"in adversarial situations",mem:"adversary(对手) + -ial。ad(向) + vers(转) → 转过来对着你 → 对手。与 friendly situations 相对。",syn:"hostile / antagonistic",conf:"adversarial(敌对的) vs. adversity(逆境) vs. advertise(广告)"},
+  keepinmind:{w:"keep in mind",ipa:"",pos:"v.短语",tags:["phrase","write"],cn:"记住，牢记",en:"to remember sth",ex:"it might be helpful to keep in mind that",mem:"keep sth in mind／keep in mind that…。作文建议信：<i>Please keep in mind that…</i>",syn:"bear in mind / remember",conf:"keep in mind(记住) vs. make up one’s mind(决定)"},
+  maintain:{w:"maintain",ipa:"/meɪnˈteɪn/",pos:"v.",tags:["poly"],cn:"⚠️保持，维持（还可作「坚称」「维修」）",en:"to make sth continue at the same level",ex:"trying to maintain eye contact may backfire",mem:"main(手) + tain(握) → 握在手里不放 → 保持。⚠️ 三义：保持（maintain eye contact）· 维修（maintain a car）· 坚称（He maintains that…）。F 项换成了 <b>hold</b> eye contact。",syn:"keep up / sustain",conf:"maintain(保持) vs. maintenance(维修；抚养费) vs. obtain(获得)"},
+  backfire:{w:"backfire",ipa:"/ˌbækˈfaɪə(r)/",pos:"v.",tags:["poly","write"],cn:"⚠️适得其反，产生反效果",en:"to have the opposite result to the one intended",ex:"trying to maintain eye contact may backfire",mem:"⚠️本义是汽车「回火」、枪「走火」（火往回烧）→ 引申「事与愿违」。作文：<i>Overprotective parenting may backfire.</i> ⚠️ B 项的影子在这句：但条件是「想说服观念不同的人」。",syn:"boomerang / be counterproductive",conf:"backfire(适得其反) vs. bonfire(篝火) vs. back up(支持；备份)"},
+  convince:{w:"convince",ipa:"/kənˈvɪns/",pos:"v.",tags:["core","write"],cn:"说服，使信服",en:"to make sb believe sth is true",ex:"if you’re trying to convince someone",mem:"con(全) + vince(征服) → 彻底征服 → 说服。convince sb of sth／that…；persuade sb to do。",syn:"persuade / win over",conf:"convince(使信服) vs. persuade(劝说做) vs. convict(定罪)"},
+  setof:{w:"a set of beliefs",ipa:"",pos:"n.短语",tags:["phrase","write"],cn:"一套观念，一套信念",en:"a group of beliefs that belong together",ex:"someone who has a different set of beliefs than you",mem:"a set of values／rules／skills。⚠️ different … than 是美式口语，规范写法 different from。",syn:"belief system / worldview",conf:"set(一套) vs. sect(教派)"},
+  pause:{w:"pause",ipa:"/pɔːz/",pos:"v./n.",tags:["core"],cn:"暂停，停顿",en:"to stop for a short time",ex:"our eyes pause on one spot at a time",mem:"⭐ <b>原文是 our eyes pause, or fixate, … These fixations</b>——考卷删 or fixate、把 fixations 改成 pauses。<b>考场上要自己把 pause 换成 fixation</b>（A 项的主语）。",syn:"stop / halt / fixate",conf:"pause(停顿) vs. paws(爪子) vs. cause(原因)"},
+  spot:{w:"spot",ipa:"/spɒt/",pos:"n.",tags:["poly"],cn:"⚠️点，处（不是「斑点、污点」）",en:"a particular area or place",ex:"our eyes pause on one spot at a time",mem:"⚠️spot 三义：斑点（a red spot）· 地点（a tourist spot）· <b>某一点、某一处</b>（本篇）。动词 spot ＝ 认出、发现。",syn:"point / place / location",conf:"spot(点；地点) vs. sport(运动) vs. slot(位置；狭槽)"},
+  atatime:{w:"at a time",ipa:"",pos:"短语",tags:["phrase"],cn:"每次，一次",en:"separately; on each occasion",ex:"our eyes pause on one spot at a time",mem:"one at a time 一次一个。别和 at one time（曾经）、at times（有时）混。",syn:"each time",conf:"at a time(每次) vs. at one time(曾经) vs. at times(有时)"},
+  typically:{w:"typically",ipa:"/ˈtɪpɪkli/",pos:"adv.",tags:["core"],cn:"通常，一般",en:"usually; in a way that is typical",ex:"These pauses typically occur at about three per second",mem:"type(类型) → typical(典型的) → typically。②❶ a typical infant（正常的婴儿）同根。",syn:"usually / normally",conf:"typically(通常) vs. typing(打字)"},
+  occur:{w:"occur",ipa:"/əˈkɜː(r)/",pos:"v.",tags:["core"],cn:"发生，出现",en:"to happen",ex:"These pauses typically occur at about three per second",mem:"occurrence 发生（双写 r）。⚠️ occur to sb ＝ 某人想到。",syn:"happen / take place",conf:"occur(发生) vs. incur(招致) vs. recur(复发)"},
+  register:{w:"register",ipa:"/ˈredʒɪstə(r)/",pos:"v.",tags:["poly"],cn:"⚠️（被大脑）记下、意识到（不是「登记、注册」）",en:"to be noticed or recorded by the mind",ex:"several important points in the image are registered",mem:"⚠️register 的感知义：It didn’t register with me（我没意识到）· 仪器显示读数（The thermometer registered 30°）。本句：图像上的点被大脑「记录下来」。",syn:"record / take in / notice",conf:"register(记下；登记) vs. registrar(教务主任) vs. resister(抵抗者)"},
+  snapshot:{w:"snapshot",ipa:"/ˈsnæpʃɒt/",pos:"n.",tags:["core","write"],cn:"快照；简要描述",en:"a photograph taken quickly; a short description that gives a quick view",ex:"like a series of snapshots",mem:"snap(快速咔嚓) + shot(拍摄)。引申「概况」：a snapshot of the economy。",syn:"photo / glimpse",conf:"snapshot(快照) vs. screenshot(截图)"},
+  assemble:{w:"assemble",ipa:"/əˈsembl/",pos:"v.",tags:["core"],cn:"组装，拼合；集合",en:"to fit together the separate parts of sth",ex:"How the whole image is then assembled and perceived",mem:"as(向) + semble(＝similar／together) → 放到一起。assembly line 装配线。",syn:"put together / piece together",conf:"assemble(组装) vs. resemble(相似)"},
+  perceive:{w:"perceive",ipa:"/pəˈsiːv/",pos:"v.",tags:["core"],cn:"感知，察觉；认为",en:"to notice or become aware of sth",ex:"How the whole image is then assembled and perceived",mem:"per(完全) + ceive(抓取) → 感知。名词 perception。",syn:"see / sense / notice",conf:"perceive(感知) vs. receive(收到) vs. conceive(构想)"},
+  mystery:{w:"mystery",ipa:"/ˈmɪstri/",pos:"n.",tags:["core","write"],cn:"谜，难以理解的事",en:"something that is difficult to understand",ex:"is still a mystery",mem:"remain a mystery 仍是个谜。作文：<i>Why … remains a mystery.</i>",syn:"puzzle / enigma",conf:"mystery(谜) vs. misery(痛苦) vs. mastery(精通)"},
+  subjectof:{w:"the subject of",ipa:"",pos:"n.短语",tags:["poly"],cn:"⚠️……的对象、课题（不是「主语、科目」）",en:"a thing or person being discussed or studied",ex:"it is the subject of current research",mem:"⚠️subject 多义：科目 · 主语 · 臣民 · <b>（研究、讨论的）对象</b>（本篇）。the subject of research／debate／criticism。⚠️ E 项的钩子在这里，但被研究的是「感知」，不是生物因素。",syn:"topic / focus / object",conf:"subject of(……的对象) vs. subject to(受制于)"},
+  score:{w:"score high",ipa:"",pos:"v.短语",tags:["poly"],cn:"⚠️（测试中）得分高",en:"to get a high result in a test",ex:"In people who score high in a test of neuroticism",mem:"⚠️score 作动词＝得分：score high／low on a test。⑥❸ scored high for negative emotions——<b>原文是 scored highly</b>，考卷统一成 high。",syn:"get a high score",conf:"score(得分) vs. scorn(蔑视)"},
+  neuroticism:{w:"neuroticism",ipa:"/njʊəˈrɒtɪsɪzəm/",pos:"n.",tags:["core"],cn:"神经质（大五人格之一，易焦虑、情绪不稳）",en:"a personality trait involving anxiety and moodiness",ex:"a test of neuroticism",mem:"neur(神经) + -otic + -ism。大五人格（Big Five）：开放性、尽责性、外向性、宜人性、<b>神经质</b>——所以 ⑥❶ 说它是 a personality dimension。",syn:"emotional instability",conf:"neuroticism(神经质) vs. neurology(神经学)"},
+  personality:{w:"personality",ipa:"/ˌpɜːsəˈnæləti/",pos:"n.",tags:["core","write"],cn:"性格，人格",en:"the various aspects of a person’s character",ex:"a personality dimension associated with self-consciousness and anxiety",mem:"person + -al + -ity。⭐ <b>五个正确项里唯一一个原词还留在自己那段的</b>（D）。",syn:"character / nature",conf:"personality(性格) vs. personnel(全体员工) vs. personal(个人的)"},
+  dimension:{w:"dimension",ipa:"/daɪˈmenʃn/",pos:"n.",tags:["poly"],cn:"⚠️（人格的）维度，方面（不只是「尺寸、空间维度」）",en:"an aspect or a way of looking at sth",ex:"a personality dimension associated with",mem:"⚠️dimension：尺寸（the dimensions of a room）· 维度（three dimensions）· <b>方面</b>（a new dimension to the problem）。心理学里 personality dimension ＝ 人格维度，可打分的一根轴。",syn:"aspect / trait / facet",conf:"dimension(维度) vs. diminish(减少) vs. mention(提到)"},
+  selfcon:{w:"self-consciousness",ipa:"/ˌselfˈkɒnʃəsnəs/",pos:"n.",tags:["poly"],cn:"⚠️过分在意自己，难为情，局促不安（不是「自觉」）",en:"the state of being nervous or embarrassed about what others think of you",ex:"associated with self-consciousness and anxiety",mem:"⚠️<b>self-conscious ＝ 老觉得别人在看自己而不自在</b>，是贬义的局促；「自觉」是 conscientious／self-disciplined，「自我意识」是 self-awareness。黄皮书译「拘谨」。",syn:"embarrassment / awkwardness / shyness",conf:"self-conscious(局促的) vs. self-aware(有自知的) vs. conscientious(尽责的)"},
+  anxiety:{w:"anxiety",ipa:"/æŋˈzaɪəti/",pos:"n.",tags:["core","write"],cn:"焦虑",en:"the state of feeling nervous or worried",ex:"associated with self-consciousness and anxiety",mem:"anxious → anxiety（读音 /æŋˈzaɪ/）。⑥ 两次：⑥❶ · ⑥❸ negative emotions like anxiety。",syn:"worry / unease",conf:"anxiety(焦虑) vs. eagerness(渴望)；be anxious to do 渴望做"},
+  trigger:{w:"trigger",ipa:"/ˈtrɪɡə(r)/",pos:"v.",tags:["poly","write"],cn:"⚠️引发，触发（名词本义「扳机」）",en:"to make sth happen suddenly",ex:"eye contact triggered more activity associated with avoidance",mem:"⚠️名词「扳机」→ 动词「扣动扳机」→ 引发。作文：<i>trigger a debate／anxiety</i>。",syn:"cause / set off / prompt",conf:"trigger(引发) vs. tiger(老虎)"},
+  avoidance:{w:"avoidance",ipa:"/əˈvɔɪdəns/",pos:"n.",tags:["core"],cn:"回避，躲避",en:"not doing sth or staying away from sb/sth",ex:"more activity associated with avoidance",mem:"avoid + -ance。<b>45 段的 avoidance 是反应，42 段的 avoid 是被试的特点</b>——同一个词在两段，只在 45 段是主角。",syn:"evasion",conf:"avoidance(回避) vs. abundance(丰富)"},
+  colleague:{w:"colleague",ipa:"/ˈkɒliːɡ/",pos:"n.",tags:["core"],cn:"同事",en:"a person you work with",ex:"Jari Hietanen and colleagues",mem:"col(共同) + league(联盟)。学术报道惯用 X and colleagues ＝「X 及其同事（的研究团队）」。",syn:"co-worker / associate",conf:"colleague(同事) vs. college(学院) vs. league(联盟)"},
+  finding:{w:"finding",ipa:"/ˈfaɪndɪŋ/",pos:"n.",tags:["core","write"],cn:"（研究）发现，结论",en:"information discovered as a result of research",ex:"Our findings indicate that",mem:"⭐ <b>研究清单体的灵魂词</b>：小标题取的就是每段的 finding。⑥ 两次：Our findings · A more direct finding。",syn:"result / conclusion",conf:"finding(发现) vs. funding(资金)"},
+  indicate:{w:"indicate",ipa:"/ˈɪndɪkeɪt/",pos:"v.",tags:["core","write"],cn:"表明，显示",en:"to show that sth is true",ex:"Our findings indicate that",mem:"in + dic(说) → 指出。作文：<i>Statistics indicate that…</i>",syn:"show / suggest / reveal",conf:"indicate(表明) vs. dedicate(奉献) vs. indict(起诉)"},
+  centre:{w:"the centre of attention",ipa:"",pos:"n.短语",tags:["phrase","write"],cn:"众人注意的焦点",en:"the person that everyone is looking at",ex:"when they are the centre of attention",mem:"centre 英式拼写（美式 center）。be the centre of attention 成为焦点——<b>被很多双眼睛看</b>，正是神经质高分者不自在的时刻。",syn:"spotlight / focus of attention",conf:"centre(中心) vs. centrist(中间派)"},
+  negemo:{w:"negative emotions",ipa:"",pos:"n.短语",tags:["phrase","write"],cn:"负面情绪",en:"feelings such as anxiety, sadness or anger",ex:"people who scored high for negative emotions like anxiety",mem:"negative ↔ positive。⚠️ <b>F 项的 comfortable 就出自这些人</b>——「负面情绪高的人」不被直视时更自在，不是「大多数人」。",syn:"bad feelings",conf:"negative(负面的) vs. neglect(忽视)"},
+  period:{w:"period",ipa:"/ˈpɪəriəd/",pos:"n.",tags:["core"],cn:"一段时间",en:"a length of time",ex:"looked at others for shorter periods of time",mem:"for shorter periods of time ＝ 看的时间更短。period 也作「时期、课时、句号」。",syn:"span / stretch",conf:"period(时期) vs. periodical(期刊)"},
+  comfortable:{w:"comfortable",ipa:"/ˈkʌmftəbl/",pos:"adj.",tags:["core"],cn:"舒适的，自在的",en:"feeling relaxed and not worried",ex:"reported more comfortable feelings",mem:"⚠️ <b>F 项的钩子</b>：原文 comfortable 有两处，考卷删了精神分析那段，只留 ⑥❸ 一处——而它的主语是「负面情绪得分高的人」。读音三个音节 /ˈkʌmf-tə-bl/。",syn:"at ease / relaxed",conf:"comfortable(舒适的) vs. comfortably(adv.) vs. comforting(安慰人的)"},
+  fixation:{w:"fixation",ipa:"/fɪkˈseɪʃn/",pos:"n.",tags:["poly"],cn:"⚠️（眼动）注视，注视点；（日常）执念、迷恋",en:"(in eye-tracking) a pause of the eyes on one point",ex:"Eye fixations are brief.",mem:"fix(固定) + -ation → 目光固定在一处。⚠️ 日常义「执念」（a fixation on money），<b>眼动研究里是术语「注视」</b>——眼睛停下来的那一下。原文 our eyes pause, or fixate——考卷把 fixate／fixations 都擦掉了。",syn:"gaze point / pause",conf:"fixation(注视；执念) vs. fixture(固定装置) vs. fiction(小说)"},
+  rude:{w:"rude",ipa:"/ruːd/",pos:"adj.",tags:["core"],cn:"无礼的，粗鲁的",en:"having or showing a lack of respect",ex:"Too much eye contact is instinctively felt to be rude.",mem:"It’s rude to stare. ⚠️ <b>全文零出现</b>——B 项是命题人编的。",syn:"impolite / disrespectful",conf:"rude(无礼的) vs. crude(粗糙的；原油)"},
+  react:{w:"react",ipa:"/riˈækt/",pos:"v.",tags:["core"],cn:"（对……）作出反应",en:"to change or behave in a particular way as a result of sth",ex:"Personality can affect how a person reacts to eye contact.",mem:"re(回) + act(动) → react to sth。名词 reaction（⑥❷ brain reactions）。",syn:"respond",conf:"react(反应) vs. enact(颁布) vs. reactor(反应堆)"},
+  biological:{w:"biological",ipa:"/ˌbaɪəˈlɒdʒɪkl/",pos:"adj.",tags:["core"],cn:"生物的，生物学的",en:"connected with the processes of living things",ex:"Biological factors behind eye contact are being investigated.",mem:"bio(生命) + logy + -ical。⚠️ <b>考卷全文零出现</b>（原文也只在粗体句里）——要从 hormone、brain regions 两个下义词概括上来。",syn:"physiological",conf:"biological(生物的) vs. biographical(传记的)"},
+  investigate:{w:"investigate",ipa:"/ɪnˈvestɪɡeɪt/",pos:"v.",tags:["core","write"],cn:"调查，研究",en:"to find out information about sth",ex:"Biological factors behind eye contact are being investigated.",mem:"in + vestig(足迹) → 跟着足迹查。<b>are being investigated ＝ ③❸ are being explored</b>。",syn:"explore / examine / look into",conf:"investigate(调查) vs. invest(投资) vs. instigate(煽动)"},
+  hold:{w:"hold eye contact",ipa:"",pos:"v.短语",tags:["poly","phrase"],cn:"⚠️保持对视（hold 不是「拿着」）",en:"to keep looking into sb’s eyes",ex:"Most people are not comfortable holding eye contact with strangers.",mem:"⚠️hold 的「保持」义：hold sb’s attention · hold a position · hold one’s breath。<b>hold eye contact ＝ ④❸ maintain eye contact</b>。",syn:"maintain eye contact",conf:"hold eye contact(保持对视) vs. make eye contact(对视) vs. avoid eye contact(回避对视)"},
+  stranger:{w:"stranger",ipa:"/ˈstreɪndʒə(r)/",pos:"n.",tags:["core"],cn:"陌生人",en:"a person that you do not know",ex:"Most people are not comfortable holding eye contact with strangers.",mem:"strange(陌生的) + -er。⭐ <b>考卷全文零出现，原文只在被删的第 4 段</b>（a stranger on a city street）——F 项的词来自被删的原文。",syn:"unknown person",conf:"stranger(陌生人) vs. strangle(勒死) vs. danger(危险)"},
+  aggressive:{w:"aggressive",ipa:"/əˈɡresɪv/",pos:"adj.",tags:["poly","write"],cn:"⚠️有攻击性的，挑衅的；（商业）积极进取的",en:"angry and behaving in a threatening way; (in business) determined to succeed",ex:"Eye contact can be aggressive.",mem:"ag(向) + gress(走) → 冲着人走过去。⚠️ 商业语境常是褒义「积极进取的」：an aggressive marketing campaign。<b>考卷全文零出现</b>——原文那段（an aggressive argument）整段删了，要从 dominance、intimidation、adversarial 概括。",syn:"hostile / confrontational; assertive",conf:"aggressive(攻击性的) vs. progressive(进步的) vs. aggression(侵略)"}
+};
+
+/* 选项库渲染 */
+const lib=document.getElementById('optlib');
+lib.innerHTML=Object.keys(OPTS).map(k=>
+  '<div class="optitem'+(EXTRA.indexOf(k)>=0?' extra':'')+'" id="opt-'+k+'"><span class="lt">'+k+'</span><span>'
+  +'<span class="oen">'+OPTS[k][0]+'</span>'
+  +'<span class="zhx">'+OPTS[k][1]+'</span>'
+  +'<span class="kw">🔑 '+OPTS[k][2]+'</span>'
+  +'<span class="stg">'+OPTS[k][3]+'</span></span></div>').join('');
+
+/* 作答交互：答后就地把空格补全成原文 */
+document.querySelectorAll('.person').forEach(p=>{
+  const ans=p.dataset.ans; if(!ans)return;
+  const chips=p.querySelector('.chips');
+  chips.innerHTML='ABCDEFG'.split('').map(l=>'<button class="ch" data-l="'+l+'">'+l+'</button>').join('');
+  chips.querySelectorAll('.ch').forEach(c=>c.addEventListener('click',()=>{
+    if(p.classList.contains('done'))return;
+    p.classList.add('done');
+    if(c.dataset.l!==ans)c.classList.add('wrong');
+    chips.querySelector('.ch[data-l="'+ans+'"]').classList.add('right');
+    const oi=document.getElementById('opt-'+ans); if(oi)oi.classList.add('used');
+    const slot=p.querySelector('.slot');
+    if(slot){slot.classList.add('filled');slot.innerHTML='<span class="fl">['+ans+']</span>'+OPTS[ans][0];}
+  }));
+});
+
+const panel=document.getElementById('panel');
+const isMobile=()=>window.innerWidth<=900;
+function badge(t){return {core:'<span class="badge b-core">核心词</span>',phrase:'<span class="badge b-phrase">短语</span>',poly:'<span class="badge b-poly">熟词僻义</span>',write:'<span class="badge b-write">写作✍︎</span>'}[t]||''}
+function showCard(k,el){
+  const d=V[k]; if(!d)return;
+  document.querySelectorAll('.tk.active').forEach(e=>e.classList.remove('active'));
+  if(el&&el.classList.contains('tk'))el.classList.add('active');
+  panel.innerHTML='<button class="close" onclick="panel.classList.remove(\'open\')">✕</button>'
+  +'<div class="wcard">'
+  +'<div class="head"><span class="w">'+d.w+'</span><span class="ipa">'+d.ipa+'</span><span class="pos">'+d.pos+'</span>'+d.tags.map(badge).join('')+'</div>'
+  +'<div class="cn">'+d.cn+'</div><div class="en-def">'+d.en+'</div>'
+  +'<div class="row r-ex"><b>原文语境</b>“…'+d.ex+'…”</div>'
+  +'<div class="row r-mem"><b>怎么记</b>'+d.mem+'</div>'
+  +'<div class="row r-syn"><b>同类词</b>'+d.syn+'</div>'
+  +'<div class="row r-conf"><b>易混辨析</b>'+d.conf+'</div>'
+  +'</div>';
+  if(isMobile())panel.classList.add('open');
+}
+document.addEventListener('click',function(e){
+  const t=e.target.closest?e.target.closest('.tk'):null;
+  if(t){e.stopPropagation();showCard(t.dataset.w,t);}
+});
+function tz(btn){btn.closest('.person,.para').classList.toggle('showzh')}
+let allOn=false;
+function toggleAll(){allOn=!allOn;document.querySelectorAll('.person,.para').forEach(p=>p.classList.toggle('showzh',allOn))}
+
+const vg=document.getElementById('vgrid');
+Object.keys(V).forEach(k=>{
+  const d=V[k];
+  const div=document.createElement('div');div.className='vitem';
+  div.style.cssText='border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer';
+  div.innerHTML='<span style="float:right">'+d.tags.map(badge).join('')+'</span>'
+   +'<div style="font-family:var(--serif);font-weight:bold">'+d.w+'</div>'
+   +'<div style="font-size:.85rem;color:var(--muted)">'+d.cn+'</div>';
+  div.addEventListener('click',()=>{showCard(k,null);if(!isMobile())window.scrollTo({top:0,behavior:'smooth'})});
+  vg.appendChild(div);
+});
+document.getElementById('vcount').textContent=Object.keys(V).length;
+
+const yd=document.getElementById('yd');let sel='',ydHold=0,ydT=0;
+/* 触屏：点按钮会先把选区清掉 → selectionchange 立刻把按钮藏了 → 点击落空。改成延迟隐藏 ＋ 按下即锁定 */
+const ydTouch=window.matchMedia&&matchMedia('(pointer:coarse)').matches;
+function ydHide(){clearTimeout(ydT);ydHold=0;yd.style.display='none'}
+document.addEventListener('selectionchange',function(){
+  const s=window.getSelection();const t=s?s.toString().trim():'';
+  if(t&&/^[a-zA-Z' -]{2,40}$/.test(t)){
+    sel=t;clearTimeout(ydT);
+    try{const r=s.getRangeAt(0).getBoundingClientRect();
+      yd.style.left=Math.max(8,Math.min(r.left,window.innerWidth-110))+'px';
+      yd.style.top=(r.bottom+(ydTouch?30:8))+'px';yd.style.display='block';}catch(e){}
+  }else if(!ydHold){clearTimeout(ydT);ydT=setTimeout(function(){if(!ydHold)yd.style.display='none'},ydTouch?900:0)}
+});
+['pointerdown','touchstart','mousedown'].forEach(function(ev){yd.addEventListener(ev,function(){ydHold=1;clearTimeout(ydT)},{passive:true})});
+yd.addEventListener('click',function(){
+  const u='https://dict.youdao.com/result?word='+encodeURIComponent(sel)+'&lang=en';
+  let w=null;try{w=window.open(u,'_blank')}catch(e){}
+  if(!w)location.href=u;
+  ydHide()});
+document.addEventListener('click',function(e){if(e.target!==yd&&!window.getSelection().toString())ydHide()});
+</script>
+<script src="_fault_attr.js"></script>
+</body>
+</html>
+

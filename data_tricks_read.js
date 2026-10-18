@@ -484,9 +484,11 @@ window.TRICK_READ = [
         '<b>代词回指要先还原（2007·45）</b>：末句 <code>help them apply <b>these skills</b></code> 又把 skills 送到眼前，很像 B 项 Work Skills。但 these skills 回指前两句的抗挫/解决问题/批判性思考，且原文自己点明 <code>everyday life situations</code>。'
         +'<b>看到 these / such / it + 名词，先回头找它指谁，再判主旨。</b>',
         '<b>一段一项、不重复</b>：撞车时（44 与 43 都能扯上 skills）回去比<b>哪一段的证据更硬</b>，硬的那段留住选项。',
-        '<b>⭐ 2016 修正：原词算不算数，看它落在哪一句</b>：2016 五个正确标题有四个带原词（time≈、goals、context、professionals），照「复现词＝陷阱」会把三个正确项当陷阱。两年统一的判据是 <a href="#R213">R213</a>：<b>原词落在这一段的主句（给读者的那条建议）里就算数</b>；落在例子、被否定的半句、别人段落的宾语里才是诱饵。2007 的 G responsible 主语是老师与家长，正好不在主句里。'],
+        '<b>⭐ 2016 修正：原词算不算数，看它落在哪一句</b>：2016 五个正确标题有四个带原词（time≈、goals、context、professionals），照「复现词＝陷阱」会把三个正确项当陷阱。两年统一的判据是 <a href="#R213">R213</a>：<b>原词落在这一段的主句（给读者的那条建议）里就算数</b>；落在例子、被否定的半句、别人段落的宾语里才是诱饵。2007 的 G responsible 主语是老师与家长，正好不在主句里。',
+        '<b>2020 新题型把本卡推到每一段</b>：五个钓鱼词（brief · instinctively · friendly · current research · comfortable）全落在别人的段里，五个正确项四个在本段零原词——命题人还亲手擦掉两个（friendly → pleasant · fixations → pauses）。先自写主旨再看选项，这一年最管用（⟹ <a href="#R291">R291</a>）。'],
  refs:[{p:'2007_新题型_家长如何帮孩子.html',q:'q42',label:'2007·新题型·42（首句陷阱）'},{p:'2007_新题型_家长如何帮孩子.html',q:'q43',label:'2007·新题型·43（复现陷阱）'},{p:'2007_新题型_家长如何帮孩子.html',q:'q44',label:'2007·新题型·44（反向引申）'},{p:'2022_新题型_动物园之辩.html',q:'',label:'2022·新题型（观点匹配对照）'},
-       {p:'2016_新题型_如何提升职业形象.html',q:'two',label:'2016·新题型 · 03+ 两篇标题匹配对照（本卡被修正的半句）'}]},
+       {p:'2016_新题型_如何提升职业形象.html',q:'two',label:'2016·新题型 · 03+ 两篇标题匹配对照（本卡被修正的半句）'},
+       {p:'2020_新题型_目光接触或合或分.html',q:'cover',label:'2020·新题型 · 02+ 覆盖表（五个钓鱼词全在别人的段里）'}]},
 
 {id:'R18', tier:'🔴', qt:'标题题 / 主旨题 / 态度题 · 立场判定', title:'先判作者站没站队：反语、情感副词、末段建议给了谁',
  trig:['best title for the text','the author’s attitude','选项里同时有中性词（difference/change）与倾向词（inequality/threat）','读完觉得「作者只是在客观陈述」'],
@@ -2324,14 +2326,16 @@ window.TRICK_READ = [
         '<b>2012 补：两个多余项都有词面呼应</b>——B 抓第八段的 stickiness，E 同时抓 computer 与 television。<b>多余项分两大族</b>：「词面像」（2007 A／G · 2008 F · 2010 C · 2012 B、E）与「位置满」（2008 B · 2009 D／F · 2012 B、E），<b>2012 两族兼备</b>：词面把你往空里引，位置把它挡在外面。',
         '<b>2013 补：两个多余项又都有词面呼应</b>——D 的 Global challenges／social innovation 对着 ②❶ 与 E，A 的 discipline-oriented／journals 对着 ④❶ disciplinary problems／papers。<b>八篇里第五次靠词面钓鱼</b>（2007 · 2008 · 2010 · 2012 · 2013），且两项同时属「位置满」一族（<a href="#R161">R161</a>）。',
         '<b>2015 F</b>：characters speak 对着 ①❺ Who is making the utterance，三种体裁对着 ⑤❻ Such dimensions——两处词面呼应，谈的却是作者怎么塑造人物；十篇 Part B 里词面钓鱼的第六篇。',
-        '<b>2016 的反例提醒</b>：词面呼应最多的项未必是多余项——2016 标题匹配里 E professionals、D context、G goals 都是原词且都是正确项；多余项 A 的词是<b>全文话题词</b>（image／upgrade），C 则全文零出现。先问它是不是本文关键词，再问它落在哪一句（<a href="#R213">R213</a>、<a href="#R215">R215</a>）。'],
+        '<b>2016 的反例提醒</b>：词面呼应最多的项未必是多余项——2016 标题匹配里 E professionals、D context、G goals 都是原词且都是正确项；多余项 A 的词是<b>全文话题词</b>（image／upgrade），C 则全文零出现。先问它是不是本文关键词，再问它落在哪一句（<a href="#R213">R213</a>、<a href="#R215">R215</a>）。',
+        '2020·新题型 B、F：instinctively ← 41 段、comfortable ← 45 段，词面各钓一段；死因不在词面，在「去条件」——把婴儿想看、负面情绪高的人不自在，说成了人人本能、大多数人（⟹ <a href="#R292">R292</a>）。'],
  refs:[{p:'2010_新题型_欧洲食杂零售商转战批发.html',q:'',label:'2010·新题型 · 03 节 多余项 C 三条理由'},
        {p:'2007_新题型_家长如何帮孩子.html',q:'',label:'2007·新题型（两个多余项都有词面呼应）'},
        {p:'2009_新题型_文化人类学理论.html',q:'',label:'2009·新题型（整区没有空 ⟹ 两项一起死）'},
        {p:'2012_新题型_下载与上传的隐秘战争.html',q:'extra',label:'2012·新题型（七篇多余项造法总账）'},
        {p:'2013_新题型_让社会科学有用起来.html',q:'extra',label:'2013·新题型（八篇多余项造法总账）'},
        {p:'2015_新题型_阅读是一场主动的推断.html',q:'extra',label:'2015·新题型 · 03 多余项 F 与十篇总账'},
-       {p:'2016_新题型_如何提升职业形象.html',q:'extra',label:'2016·新题型（多余项第四族「大而空」· 十一篇总账）'}]},
+       {p:'2016_新题型_如何提升职业形象.html',q:'extra',label:'2016·新题型（多余项第四族「大而空」· 十一篇总账）'},
+       {p:'2020_新题型_目光接触或合或分.html',q:'extra',label:'2020·新题型 · 03 多余项 B、F（词面钩 ＋ 去条件）'}]},
 
 {id:'R82', tier:'🟡', qt:'通用 · 选项内部读起来「自相矛盾」时', title:'先回头看上文有没有说「两个相反的 X」——如果有，这个矛盾就是答案本身',
  trig:['某个选项前半句和后半句方向相反，怀疑它被改造过','上文出现 two opposing trends／on the one hand… on the other／a double-edged sword','一个段落里出现 Meanwhile / At the same time 却接了反方向的内容'],
@@ -5224,12 +5228,14 @@ window.TRICK_READ = [
  traps:['<b>「复现词＝陷阱」只对了一半</b>：R17 从 2007 总结出的这条，在 2016 会让你把 44 题的 E、43 题的 D、42 题的 G 都当成陷阱——三个都是正确项。',
         '<b>「标题看段首句」只对了三成</b>：2016 五段里只有 42、43、44 的主句在段首；41 段首是作者经历，45 段首是否定句。',
         '<b>一句里挤了三个选项词</b>（⑦❶ professionals · goals · context）：先问谁是谓语的宾语，别数哪个词更长、更显眼。',
-        '<b>分工</b>：<a href="#R17">R17</a> 管「先自写主旨、防复现陷阱」；本卡管「复现词站在哪一句」；<a href="#R214">R214</a> 管引子和段首的前后钩。'],
+        '<b>分工</b>：<a href="#R17">R17</a> 管「先自写主旨、防复现陷阱」；本卡管「复现词站在哪一句」；<a href="#R214">R214</a> 管引子和段首的前后钩。',
+        '<b>2020 新题型是本卡的反面</b>：2016 的原词都在，判据是「站在哪一句」；2020 的原词多半被擦掉——friendly 只剩在 ①❶ 引子和 ④❷ 的 While 从句里（43 段），偏偏不在 41 段。<b>原词站在别人段的让步从句里，就是诱饵</b>（⟹ <a href="#R291">R291</a>）。'],
  refs:[{p:'2016_新题型_如何提升职业形象.html',q:'cover',label:'2016·新题型 · 02+ 覆盖表（诱饵每次只占一句）'},
        {p:'2016_新题型_如何提升职业形象.html',q:'q41',label:'2016·新题型·41（主句不在段首，A 的 new 落在例子里）'},
        {p:'2016_新题型_如何提升职业形象.html',q:'q44',label:'2016·新题型·44（一句三个选项词，看谁在主干上）'},
        {p:'2016_新题型_如何提升职业形象.html',q:'q45',label:'2016·新题型·45（C 押在被否定的 vain 上）'},
-       {p:'2016_新题型_如何提升职业形象.html',q:'two',label:'2016·新题型 · 03+ 2007 vs 2016 两篇标题匹配'}]},
+       {p:'2016_新题型_如何提升职业形象.html',q:'two',label:'2016·新题型 · 03+ 2007 vs 2016 两篇标题匹配'},
+       {p:'2020_新题型_目光接触或合或分.html',q:'q43',label:'2020·新题型·43（friendly 在 While 从句里，是诱饵）'}]},
 
 {id:'R214', tier:'🟡', qt:'新题型 · 标题匹配（how-to 清单体：引子以问句或 Here are some tips／steps／ways 收尾）', title:'引子里的问句是目录，后面的条目会回头点名前面的条目——标题匹配也有接缝：问句的关键词是小标题的草稿，后段回收前段时被回收的词是配角',
  trig:['引子最后一段连问几个 How／When／What','引子以 Here are some tips／a few measures／steps 收尾','某一段开头把前面两条建议的关键词并列提了一遍'],
@@ -5262,9 +5268,11 @@ window.TRICK_READ = [
      +'<p class="note">原文（Entrepreneur.com，Jeff Giesea）的五个小标题就是本题的 B、G、D、E、F，一字不差；A、C 是命题人编的——<b>命题人造的两项都比作者的五项更「大」</b>。</p>',
  traps:['<b>最像主旨的那一项先怀疑</b>：标题匹配里，读着最顺、最「对」的往往是总话题，不是某一段的小标题。',
         '<b>褒贬之辨不够硬</b>：只凭「vain 贬义、confidence 褒义」排 C，考场上会被「自信也可以是自负」绕进去；更硬的是「全文零出现 ＋ vain 被否定」。',
-        '<b>分工</b>：多余项的其他死法见 <a href="#R81">R81</a>（词面像）、<a href="#R137">R137</a>（正确项的下家）、<a href="#R161">R161</a>（换杠杆）、<a href="#R197">R197</a>（方向反）；本卡管「大而空」。'],
+        '<b>分工</b>：多余项的其他死法见 <a href="#R81">R81</a>（词面像）、<a href="#R137">R137</a>（正确项的下家）、<a href="#R161">R161</a>（换杠杆）、<a href="#R197">R197</a>（方向反）；本卡管「大而空」。',
+        '<b>2020 的两个多余项不是「大而空」，是「绝对」</b>：B 本能、F 大多数人——比正确项口气更满，而不是层级更高。三篇标题匹配三种多余项：2007 词面像 · 2016 大而空 · 2020 去条件（⟹ <a href="#R292">R292</a>）。另：本卡说 2016 C 的 confidence「可能来自被删的结尾段」，2020 F 的 strangers 已逐字核到来自被删的原文第 4 段。'],
  refs:[{p:'2016_新题型_如何提升职业形象.html',q:'extra',label:'2016·新题型 · 03 多余项 A、C 与十一篇总账'},
-       {p:'2016_新题型_如何提升职业形象.html',q:'orig',label:'2016·新题型 · 03++ 原文与考卷对照（五个原小标题）'}]},
+       {p:'2016_新题型_如何提升职业形象.html',q:'orig',label:'2016·新题型 · 03++ 原文与考卷对照（五个原小标题）'},
+       {p:'2020_新题型_目光接触或合或分.html',q:'extra',label:'2020·新题型 · 03 多余项「去条件」与十五篇总账'}]},
 
 {id:'R216', tier:'🔴', qt:'写作目的题（X is mentioned to …）· 作者态度题 · 标题题（社论里出现句末省略：a reminder of why ／ And it should ／ doing so）', title:'省略句回填：句子在 why／should／so 处戛然而止，断掉的那半截只能从上一句补——补回来，事例服务谁、作者站哪边就都写在那里了',
  trig:['句末只剩一个疑问词：provides another reminder of why. ／ which explains why. ／ The question is how.','只剩情态动词或助动词：And it should: … ／ Nor should they. ／ It ought to.','do so／doing so 回指上一句的动作'],
@@ -5977,7 +5985,8 @@ window.TRICK_READ = [
         '<b>2020·T1：这次删的是「正确项的另一处出处」</b>——原刊第四段 121 词整段删去，开头就是 Despite these caveats, the proposal of Ms Cooper and her colleagues is a sound one；25C 只剩末句 should welcome this positive, hope-filled proposal 独撑。与 2019·T4 删「干扰项的产地」正好相反：<b>删掉判决句不会让题变成猜题，但会让你必须自己看出社论的四拍</b>。',
         '<b>2020·T2：同一年第二次「删正确项的另一处出处」</b>——原刊第二段 Since academic careers depend on publication, the demand for scientific publications is unbounded except by the price that scholarly libraries can be forced to pay 被删，27A 只能靠 ②❷ not very price sensitive ＋ ③❶ UK universities spent 合并推出；同篇还删光了第六段的冷嘲（somehow · the work gets more expensive the more that publishers do it）。<b>2020 卷 T1、T2 同一种删法</b>。',
         '<b>2020·T3：第三次「删正确项的另一处出处」，外加第一次「换词」</b>——原刊第 14 段 the only thing Norway’s gender quotas have done is benefit the individual women actually selected to serve on the corporate boards 整段删去（31A、35B 的实证）；更要紧的是 ⑧❶ 原刊的 less qualified 被换成 less experienced（借自被删的论文引文 younger and less experienced boards），34C unqualified 于是从「原词复现」变成「同义改写」。删一句会让某个选项失去出处，换一个词会让正确项的原词在考卷里消失。',
-        '<b>2020·T4：第四次，而且删的是正确项的原词本身</b>——原刊第 6 段 it needs to be updated（⟹ 38A needs upgrading）、第 8 段 follow France’s lead（⟹ 40A Leads the Charge）与 the United States may take retaliatory measures（⟹ 37D countermeasures）全在整段删掉的四段里；另一方向，命题人把 reflect a view 改成 share a view、给 is working 加上 currently，让题干词在考卷里能原样搜到。<b>2020 卷四篇阅读全中</b>。'],
+        '<b>2020·T4：第四次，而且删的是正确项的原词本身</b>——原刊第 6 段 it needs to be updated（⟹ 38A needs upgrading）、第 8 段 follow France’s lead（⟹ 40A Leads the Charge）与 the United States may take retaliatory measures（⟹ 37D countermeasures）全在整段删掉的四段里；另一方向，命题人把 reflect a view 改成 share a view、给 is working 加上 currently，让题干词在考卷里能原样搜到。<b>2020 卷四篇阅读全中</b>。',
+        '<b>2020·新题型：第五次「删正确项的另一处出处」，2020 卷五篇全中</b>——原文第 4 段（粗体 It can also be aggressive ＋ an aggressive argument ＋ a stranger on a city street）整段删，G 的原词清零、F 的 strangers 也出自这一段；另两处换词藏答案：friendly → pleasant（41 段）· fixations → pauses（44 段）；还删了额叶眼区一段（留着它 44 就有「生物因素」，E 难排）。考卷第 ⑥ 段由原文三段拼成——Part B 连续两年拼段（2019 D）。'],
  refs:[{p:'2019_T2_大学成绩宽恕的兴起.html',q:'q30',label:'2019·T2·30C（原刊有正反两派，考卷只剩学校一方）'},
        {p:'2019_T2_大学成绩宽恕的兴起.html',q:'col1',label:'2019·T2 · 02+ 专栏（原刊 12 段 vs 考卷 6 段逐段对照）'},
        {p:'2019_T3_赋予AI以良知.html',q:'q33',label:'2019·T3·33（原刊给了两个办法 ＋ 一句希望，考卷全删）'},
@@ -5992,7 +6001,8 @@ window.TRICK_READ = [
        {p:'2020_T3_董事会配额强化特权.html',q:'q34',label:'2020·T3·34（原刊 less qualified 被换成 less experienced）'},
        {p:'2020_T3_董事会配额强化特权.html',q:'col1',label:'2020·T3 · 02+ 专栏（原刊 16 段 vs 考卷 10 段：删四段、换一个词）'},
        {p:'2020_T4_法国开征数字服务税.html',q:'q38',label:'2020·T4·38（原刊 needs to be updated 整段删；reflect → share 对上题干）'},
-       {p:'2020_T4_法国开征数字服务税.html',q:'col1',label:'2020·T4 · 02+ 专栏（原刊 11 段 vs 考卷 6 段：删掉的四段里躺着三个正确项的原词）'}]},
+       {p:'2020_T4_法国开征数字服务税.html',q:'col1',label:'2020·T4 · 02+ 专栏（原刊 11 段 vs 考卷 6 段：删掉的四段里躺着三个正确项的原词）'},
+       {p:'2020_新题型_目光接触或合或分.html',q:'scrub',label:'2020·新题型 · 02++ 命题人擦了哪些词（删段 ＋ 换词 ＋ 拼段）'}]},
 
 {id:'R256', tier:'🔴', qt:'词义题 · 关系类短语（to be aligned／to coincide／to converge／to be at odds · 四个选项是两方关系的四个档位）', title:'关系词义四档：identical（两方要同一个东西）· complement（要不同的东西、彼此补缺）· counterbalance（方向相反、互相抵消）· contradictory（互相排斥）——先在卷边写下两方各自要什么，再按「同一个／不同但成全／不同且相抵／互斥」对档',
  trig:['被考短语描述两方的关系（incentives／interests／goals of A and B）','四个选项是 identical／complement／counterbalance／contradictory 一类','原文前一句用 Since／so／and 把两方连起来'],
@@ -6645,12 +6655,69 @@ window.TRICK_READ = [
         '<b>resemblance</b>：类比本身（吸烟像烤肉）不是证据要证明的东西（2020·15C）。',
         '<b>与 <a href="#R103">R103</a> 的关系</b>：R103 说末空换了主语就是类比不是因果；本卡管类比句内部怎么对位。'],
  refs:[{p:'2020_完形_别碰我们的烤土豆.html',q:'q14',label:'2020·完形·14（旧例补理由 ⟹ After all）'},
-       {p:'2020_完形_别碰我们的烤土豆.html',q:'q15',label:'2020·完形·15（旧例内部的关系 ⟹ connection）'}]}
+       {p:'2020_完形_别碰我们的烤土豆.html',q:'q15',label:'2020·完形·15（旧例内部的关系 ⟹ connection）'}]},
+
+{id:'R291', tier:'🔴', qt:'新题型 · 标题／小标题匹配（某个选项的关键词在本段找不到，却出现在引子或别的段里）', title:'小标题的原词会被擦掉：命题人把 friendly 改成 pleasant、fixations 改成 pauses、aggressive 连段删——本段找不到原词不能当排除理由，要把这段的核心句往上走一层（下义词 → 上位词、日常词 → 术语、一族近义 → 概括词）；原词出现在别的段，多半是诱饵或预告',
+ trig:['某个选项的关键词全文零出现（biological · aggressive · fixations）','某个选项的原词只出现在引子或别人的段里（friendly 在 ①❶、④❷，偏偏不在 41 段）','段里只有近义词或下义词：hormone、brain regions · pause · dominance、intimidation'],
+ flow:'① <b>逐段先圈核心句</b>：研究段＝found that／concluded that 后面的从句或段的主句；建议段＝给读者的那条建议；<br>'
+     +'② <b>核心句的词不在选项里时，往上走一层</b>：下义词 → 上位词（hormone、brain regions ⟹ biological factors）· 日常词 → 术语（pause ⟹ fixation）· 一族近义 → 概括词（dominance、intimidation、adversarial ⟹ aggressive）；<br>'
+     +'③ <b>给每个原词标段号</b>：原词只在别的段或引子里出现 ⟹ 在那里它是诱饵（让步从句、定语、例子）或预告，不是本段的标题；<br>'
+     +'④ <b>时体也算原词</b>：③❸ are being explored ＝ E 的 are being investigated。',
+ tmpl:'<table class="tk"><tr><th>正确项</th><th>本段还剩什么</th><th>怎么走上去</th></tr>'
+     +'<tr><td>41 C friendly social signal</td><td>pleasant（原文 friendly，改了）· sign · signal</td><td>近义 ＋ 句式 can be ＋ 名词</td></tr>'
+     +'<tr><td>42 E Biological factors … are being investigated</td><td>hormone · brain regions · are being explored</td><td>下义词 → 上位词；时体相同</td></tr>'
+     +'<tr><td>43 G aggressive</td><td>dominance · intimidation · adversarial（原段整段删）</td><td>一族近义 → 概括词</td></tr>'
+     +'<tr><td>44 A Eye fixations are brief</td><td>pause · three per second（原文 fixate／fixations，改了）</td><td>日常词 → 术语</td></tr>'
+     +'<tr><td>45 D Personality …</td><td>a personality dimension</td><td>唯一留下的原词</td></tr></table>'
+     +'<p class="note">三篇标题匹配，正确项在本段有原词的：2007 两项 · 2016 四项 · 2020 一项——原词多少每年都在变，「核心句」这把尺子不变。</p>',
+ traps:['<b>「这段没这个词」不是排除理由</b>：2020 五个正确项四个在本段零原词，其中两个是命题人亲手改掉的（原文 in a friendly way · These fixations）。',
+        '<b>原词在引子里只算预告</b>：friendly 出现在 ①❶（预告 41）与 ④❷ 的 While 从句（43 段让掉的那一半）——C 的原词偏偏不在 C 自己那段。',
+        '<b>分工</b>：<a href="#R17">R17</a> 管复现陷阱、<a href="#R213">R213</a> 管原词站在哪一句、本卡管原词被擦掉以后怎么概括；去条件的多余项见 <a href="#R292">R292</a>，研究段的三层见 <a href="#R293">R293</a>。'],
+ refs:[{p:'2020_新题型_目光接触或合或分.html',q:'scrub',label:'2020·新题型 · 02++ 命题人擦了哪些词'},
+       {p:'2020_新题型_目光接触或合或分.html',q:'q41',label:'2020·新题型·41（friendly 被改成 pleasant）'},
+       {p:'2020_新题型_目光接触或合或分.html',q:'q44',label:'2020·新题型·44（fixations 被改成 pauses）'},
+       {p:'2020_新题型_目光接触或合或分.html',q:'q43',label:'2020·新题型·43（aggressive 连段删，从 dominance／intimidation 概括）'}]},
+
+{id:'R292', tier:'🔴', qt:'新题型 · 找多余项（七项是陈述句：can be／are／Most people…；全文结论是「看情况」）', title:'去条件的多余项：全文每条发现都带条件（敌对情境 · 神经质得分高的人 · 说服异见者时），多余项把条件删了、说成「本能／大多数人」——陈述句标题先看情态词与量词：can 与「看情况」同口径，instinctively／most 要拿全称证据',
+ trig:['七个选项是陈述句，不是祈使句','原文有 depending on the situation／in people who…／when … 这类限定','某个选项带 instinctively／naturally／most people／always／all'],
+ flow:'① <b>给七项标口气</b>：can／may（可能）· are being V-ed（进行中）· 一般现在时（事实）· instinctively／most（全称）；<br>'
+     +'② <b>回原文找全文的口径</b>：标题、引子、主旨句是不是「看情况」（<i>Brings You Together (or Pulls You Apart)</i> · depending on the situation）；<br>'
+     +'③ <b>全称项逐个找全称证据</b>：原文有没有一句说「人人都」「大多数人都」？没有 ⟹ 多余；<br>'
+     +'④ <b>看它借了哪段的词</b>：借词所在那句的主语，一定是一个特定人群或特定情境（comfortable ← 负面情绪高的人；instinctively ← 婴儿想看）。',
+ tmpl:'<table class="tk"><tr><th>多余项</th><th>借词</th><th>被删掉的条件</th></tr>'
+     +'<tr><td>B Too much eye contact is instinctively felt to be rude</td><td>instinctively ← ②❶ · backfire ← ④❸</td><td>婴儿的本能是「想看」；适得其反只在「说服观念不同的人」时</td></tr>'
+     +'<tr><td>F Most people are not comfortable holding eye contact with strangers</td><td>comfortable ← ⑥❸ · strangers ← 被删的原文第 4 段</td><td>不自在的是「负面情绪得分高的人」，而且是在被直视时</td></tr></table>'
+     +'<p class="note">正确项里讲社会意义的三项（C、G、D）全用 can；A 是生理事实（一秒停三次，人人如此），可以说死。</p>',
+ traps:['<b>能说死的只有事实</b>：A Eye fixations are brief 没有 can 也对——判全称项前先分「生理事实」与「人的感受、社会意义」。',
+        '<b>多余项的词可能来自被删的原文</b>：F 的 strangers 只在原文第 4 段（陌生人在街上一直盯着看显得有威胁），考卷整段删了；2016 C 的 confidence 当年只能推测来自被删的结尾，2020 把这种造法坐实（见 <a href="#R255">R255</a>）。',
+        '<b>分工</b>：多余项其他死法见 <a href="#R81">R81</a>（词面像）· <a href="#R197">R197</a>（方向反）· <a href="#R215">R215</a>（大而空）；本卡管「去条件」。'],
+ refs:[{p:'2020_新题型_目光接触或合或分.html',q:'extra',label:'2020·新题型 · 03 多余项 B、F 与十五篇总账'},
+       {p:'2020_新题型_目光接触或合或分.html',q:'q45',label:'2020·新题型·45（F 把负面情绪高的人换成 most people）'},
+       {p:'2020_新题型_目光接触或合或分.html',q:'q41',label:'2020·新题型·41（B 的 instinctively：本能是想看）'}]},
+
+{id:'R293', tier:'🟡', qt:'新题型 · 标题匹配／选句填空（研究清单体：引子以 Here’s what research／science reveals: 收尾，每段一位研究者）', title:'研究段四件套：谁研究 · 研究谁 · 怎么研究 · 发现了什么——小标题只取发现，诱饵从「研究谁」「怎么研究」「研究还没完」里借词（brief interview · who may tend to avoid eye contact · the subject of current research）',
+ trig:['段里出现 found that／concluded that／Our findings indicate／according to X and colleagues','段里有被试描述（men with some autistic spectrum symptoms, who…）或方法（eye-tracking · brain scanning · during a brief interview）','段尾一句「仍是个谜，尽管正在研究」'],
+ flow:'① <b>圈发现句</b>：found that／concluded that／findings indicate 之后的那个从句；<br>'
+     +'② <b>划掉对象层与方法层</b>：被试是谁、有什么特点、实验多长、用什么技术——这些词只描述实验，不是结论；<br>'
+     +'③ <b>段尾的「还在研究」是研究状态，不是发现</b>：44 段 the subject of current research 钓的是 E；<br>'
+     +'④ <b>无署名的一段</b>（普遍事实）直接取主句谓语（pause · occur）。',
+ tmpl:'<table class="tk"><tr><th>层</th><th>2020 新题型里的词</th><th>钓了谁</th></tr>'
+     +'<tr><td>对象</td><td>③❷ men … who may tend to avoid eye contact · ②❶ an infant will instinctively gaze</td><td>D（42）· B（41）</td></tr>'
+     +'<tr><td>方法</td><td>③❶ during a brief interview</td><td>A（42）</td></tr>'
+     +'<tr><td>状态</td><td>⑤❸ the subject of current research</td><td>E（44）</td></tr>'
+     +'<tr><td>发现</td><td>③❶ oxytocin increased … · ④❷ more likely … dominance · ⑥❶ triggered … avoidance</td><td>正确项</td></tr></table>'
+     +'<p class="note">研究清单体段间几乎无钩（一段一条发现，冒号并列），没有 2016 那种引子三问与后文回收——只能逐段从发现层概括。</p>',
+ traps:['<b>同一个词在两段，只在一段是发现</b>：avoid 在 ③❷ 是被试特点（对象层），avoidance 在 ⑥❶ 是研究结果（发现层）——D 只属于 45。',
+        '<b>主语回指定性质</b>：③❷ This was also found——This 回指 ③❶ 的发现，这句讲药效在另一群人身上也成立；被试是谁写在 who 从句里。',
+        '<b>分工</b>：<a href="#R213">R213</a> 管建议清单体（核心句＝给读者的那条建议）；本卡管研究清单体（核心句＝发现句）。'],
+ refs:[{p:'2020_新题型_目光接触或合或分.html',q:'layers',label:'2020·新题型 · 02+++ 研究段三层表'},
+       {p:'2020_新题型_目光接触或合或分.html',q:'q42',label:'2020·新题型·42（A 借方法层 brief、D 借对象层 avoid）'},
+       {p:'2020_新题型_目光接触或合或分.html',q:'q44',label:'2020·新题型·44（E 借研究状态 current research）'}]}
 
 ];
 
 window.TRICK_READ_META = {
   subject:'英语一 · 阅读',
-  source:'2022 Text 1–4 · 2007 Text 1–4 · 2008 Text 1–4 · 2009 Text 1–4 · 2010 Text 1–4 · 2011 Text 1–4 · 2012 Text 1–4 · 2013 Text 1–4 · 2014 Text 1–4 · 2015 Text 1–4 · 2016 Text 1–4 · 2017 Text 1–4 · 2018 Text 1–4 · 2019 Text 1–4 · 2020 Text 1–4 · 2007/2008/2009/2010/2011/2012/2013/2014/2015/2016/2017/2018/2019/2022 新题型 · 2008/2009/2010/2011/2012/2013/2014/2015/2016/2017/2018/2019/2020 完形',
+  source:'2022 Text 1–4 · 2007 Text 1–4 · 2008 Text 1–4 · 2009 Text 1–4 · 2010 Text 1–4 · 2011 Text 1–4 · 2012 Text 1–4 · 2013 Text 1–4 · 2014 Text 1–4 · 2015 Text 1–4 · 2016 Text 1–4 · 2017 Text 1–4 · 2018 Text 1–4 · 2019 Text 1–4 · 2020 Text 1–4 · 2007/2008/2009/2010/2011/2012/2013/2014/2015/2016/2017/2018/2019/2020/2022 新题型 · 2008/2009/2010/2011/2012/2013/2014/2015/2016/2017/2018/2019/2020 完形',
   note:'提炼自本复盘中心各篇阅读真题复盘页的技巧/干扰项分析，随复盘页增长。'
 };
