@@ -1,0 +1,1362 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2021 英一 完形 · 腹部脂肪与大脑</title>
+<style>
+  :root{
+    --bg:#faf9f6; --card:#ffffff; --ink:#2b2b2b; --muted:#8a8578;
+    --accent:#8b5e34; --accent-soft:#f3e9dd; --line:#e8e3d8;
+    --hl:#fdf3d8; --hl-border:#e0b84d;
+    --green:#3e7a4e; --green-soft:#e8f2ea;
+    --red:#b04a3a; --red-soft:#f9e9e6;
+    --blue:#3d6a8a; --blue-soft:#e7eff5;
+    --purple:#6d5a8e; --purple-soft:#eeeaf5;
+    --serif:"Georgia","Songti SC",serif;
+    --sans:-apple-system,"PingFang SC","Helvetica Neue",sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#1c1a17; --card:#26231f; --ink:#e8e4dc; --muted:#9a948a;
+      --accent:#d0a06a; --accent-soft:#3a3127; --line:#3a362f;
+      --hl:#3d3520; --hl-border:#b08c3a;
+      --green:#7fb98d; --green-soft:#26362b;
+      --red:#d98876; --red-soft:#3d2a26;
+      --blue:#8ab3d0; --blue-soft:#26323d;
+      --purple:#a996c8; --purple-soft:#302a3d;
+    }
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;padding-bottom:120px}
+  .wrap{max-width:1100px;margin:0 auto;padding:24px 20px}
+  .back{font-size:.85rem;color:var(--muted);text-decoration:none}
+  .back:hover{color:var(--accent)}
+  header{margin:14px 0 28px}
+  header h1{font-family:var(--serif);font-size:1.7rem;line-height:1.3}
+  header .sub{color:var(--muted);margin-top:6px;font-size:.9rem}
+  .tags{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+  .tag{font-size:.75rem;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);border:1px solid var(--line)}
+  .tag.spoiler{cursor:pointer;background:var(--card);color:var(--muted)}
+  .tag.spoiler .hid{filter:blur(5px)}
+  .tag.spoiler.open .hid{filter:none;color:var(--accent)}
+
+  .layout{display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:start}
+  @media (max-width:900px){.layout{grid-template-columns:1fr}}
+
+  section.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:24px}
+  h2{font-size:1.05rem;letter-spacing:.05em;color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  h2 .n{font-size:.72rem;background:var(--accent);color:var(--card);border-radius:6px;padding:1px 7px}
+  .note{font-size:.82rem;color:var(--muted);margin-bottom:14px}
+
+  .para{margin-bottom:22px}
+  .para .en{font-family:var(--serif);font-size:1.06rem;line-height:2.15}
+  .pno{color:var(--muted);font-size:.75rem;user-select:none;margin-right:6px}
+  .tk{background:var(--hl);border-bottom:2px solid var(--hl-border);border-radius:3px;padding:0 2px;cursor:pointer;transition:filter .15s}
+  .tk:hover{filter:brightness(.93)}
+  .tk.active{outline:2px solid var(--hl-border)}
+  .ls{border-bottom:2px dotted var(--blue);cursor:pointer}
+  .para .zh{display:none;margin-top:10px;padding:10px 14px;background:var(--blue-soft);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:.93rem}
+  .para.showzh .zh{display:block}
+  .zbtn{float:right;margin-left:10px;font-size:.72rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:6px;padding:2px 9px;cursor:pointer}
+  .zbtn:hover{color:var(--accent);border-color:var(--accent)}
+  .allbtn{font-size:.78rem;border:1px solid var(--accent);background:none;color:var(--accent);border-radius:8px;padding:4px 12px;cursor:pointer}
+
+  /* 完形空格 */
+  .bk{display:inline-block;min-width:64px;text-align:center;background:var(--hl);border-bottom:2px solid var(--hl-border);border-radius:4px;padding:0 6px;cursor:pointer;font-weight:600;color:var(--accent);transition:all .15s;font-family:var(--sans);font-size:.95rem}
+  .bk:hover{filter:brightness(.93)}
+  .bk.filled{background:var(--green-soft);border-bottom-color:var(--green);color:var(--green);font-family:var(--serif)}
+  .bk.miss{background:var(--red-soft);border-bottom-color:var(--red);color:var(--red);font-family:var(--serif)}
+  .bk.active{outline:2px solid var(--hl-border)}
+  .bk .idx{font-size:.7rem;color:var(--muted);margin-right:3px}
+
+  aside{position:sticky;top:20px}
+  #panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;min-height:180px}
+  #panel .hint{color:var(--muted);font-size:.88rem;text-align:center;padding:30px 10px}
+  .wcard .head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .wcard .w{font-family:var(--serif);font-size:1.35rem;font-weight:bold}
+  .wcard .ipa{color:var(--muted);font-size:.85rem}
+  .wcard .pos{font-size:.72rem;color:var(--purple);background:var(--purple-soft);padding:1px 8px;border-radius:999px}
+  .wcard .badge{font-size:.7rem;padding:1px 8px;border-radius:999px}
+  .b-core{background:var(--red-soft);color:var(--red)}
+  .b-phrase{background:var(--blue-soft);color:var(--blue)}
+  .b-poly{background:var(--purple-soft);color:var(--purple)}
+  .b-write{background:var(--green-soft);color:var(--green)}
+  .wcard .cn{margin-top:8px;font-size:1rem;font-weight:600}
+  .wcard .en-def{color:var(--muted);font-size:.86rem;font-style:italic;margin-top:2px}
+  .wcard .row{margin-top:10px;font-size:.86rem;padding:8px 10px;border-radius:8px}
+  .wcard .row>b:first-child{font-size:.72rem;display:block;margin-bottom:2px;letter-spacing:.06em}
+  .r-ex{background:var(--hl)} .r-ex b{color:var(--hl-border)}
+  .r-mem{background:var(--green-soft)} .r-mem b{color:var(--green)}
+  .r-syn{background:var(--blue-soft)} .r-syn b{color:var(--blue)}
+  .r-conf{background:var(--red-soft)} .r-conf b{color:var(--red)}
+  #panel .close{display:none}
+  @media (max-width:900px){
+    aside{position:fixed;left:0;right:0;bottom:0;z-index:50;padding:0 8px 8px}
+    #panel{box-shadow:0 -6px 24px rgba(0,0,0,.18);max-height:55vh;overflow-y:auto;display:none}
+    #panel.open{display:block}
+    #panel .close{display:block;float:right;border:none;background:var(--line);border-radius:8px;padding:2px 10px;cursor:pointer;color:var(--ink)}
+  }
+
+  /* 逐空精解 */
+  .q{margin-bottom:22px;padding-bottom:18px;border-bottom:1px dashed var(--line);scroll-margin-top:20px}
+  .q:last-child{border:none;margin-bottom:0;padding-bottom:0}
+  .q .stem{font-family:var(--serif);font-size:.98rem;background:var(--hl);border-radius:8px;padding:8px 12px;display:block}
+  .q .stem em{font-style:normal;font-weight:700;color:var(--accent);border-bottom:2px solid var(--hl-border);padding:0 4px}
+  .qhead{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+  .qno{font-family:var(--serif);font-size:1.2rem;font-weight:700;color:var(--accent)}
+  .qt{font-size:.7rem;border-radius:999px;padding:1px 9px}
+  .c-logic{background:var(--blue-soft);color:var(--blue)}
+  .c-collo{background:var(--green-soft);color:var(--green)}
+  .c-word{background:var(--red-soft);color:var(--red)}
+  .c-context{background:var(--purple-soft);color:var(--purple)}
+  .qpos{font-size:.7rem;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:1px 9px}
+  .opts{margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  @media (max-width:640px){.opts{grid-template-columns:1fr}}
+  .opt{border:1px solid var(--line);border-radius:10px;padding:7px 12px;cursor:pointer;font-size:.92rem;font-family:var(--serif);transition:all .15s}
+  .opt .gl{font-family:var(--sans);font-size:.8rem;color:var(--muted);margin-left:6px}
+  .opt:hover{border-color:var(--accent)}
+  .q.done .opt{cursor:default}
+  .opt.right{background:var(--green-soft);border-color:var(--green)}
+  .opt.wrong{background:var(--red-soft);border-color:var(--red)}
+  .expl{display:none;margin-top:12px;background:var(--accent-soft);border-radius:10px;padding:12px 14px;font-size:.9rem}
+  .q.done .expl{display:block}
+  .expl b{color:var(--accent)}
+  .expl .lbl{font-size:.74rem;letter-spacing:.06em;color:var(--muted);display:block;margin:10px 0 2px}
+  .expl .lbl:first-child{margin-top:0}
+  .expl code{font-family:var(--serif);background:var(--hl);border-radius:4px;padding:1px 5px}
+  .wrongs{margin-top:6px;display:grid;gap:5px}
+  .wr{font-size:.86rem;background:var(--card);border-radius:8px;padding:6px 10px;border-left:3px solid var(--red)}
+  .wr .l{font-family:var(--serif);font-weight:700;color:var(--red);margin-right:5px}
+
+  /* 计分条 */
+  .score{display:flex;gap:14px;flex-wrap:wrap;align-items:center;background:var(--hl);border-radius:12px;padding:10px 16px;margin-bottom:18px;font-size:.88rem}
+  .score .v{font-family:var(--serif);font-size:1.25rem;font-weight:700;color:var(--accent);margin-right:4px}
+  .score .rst{margin-left:auto;font-size:.78rem;border:1px solid var(--line);background:var(--card);color:var(--muted);border-radius:8px;padding:3px 10px;cursor:pointer}
+
+  /* 考点统计 */
+  .catbar{display:flex;height:26px;border-radius:8px;overflow:hidden;margin:10px 0 16px;border:1px solid var(--line)}
+  .catseg{display:flex;align-items:center;justify-content:center;font-size:.72rem;color:#fff;font-weight:600}
+  .catlegend{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px}
+  .cl{display:flex;gap:8px;align-items:center;font-size:.85rem;cursor:pointer;padding:6px 8px;border-radius:8px;border:1px solid var(--line)}
+  .cl:hover{border-color:var(--accent)}
+  .dot{width:12px;height:12px;border-radius:3px;flex:0 0 12px}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+  .chip{font-size:.78rem;background:var(--accent-soft);color:var(--accent);border-radius:6px;padding:2px 8px;cursor:pointer}
+  .chip:hover{filter:brightness(.94)}
+
+  /* 打法 / 搭配 */
+  .flow{display:grid;gap:10px;font-size:.92rem}
+  .flow .fi{border:1px solid var(--line);border-radius:10px;padding:10px 14px}
+  .flow .fi b{color:var(--accent)}
+  .flow .fi .ev{display:block;margin-top:4px;font-size:.85rem;color:var(--muted);border-left:3px solid var(--hl-border);padding-left:9px}
+  .wb{display:grid;gap:10px}
+  .wbi{border-left:3px solid var(--green);background:var(--green-soft);border-radius:0 10px 10px 0;padding:10px 14px;font-size:.92rem}
+  .wbi .p{font-family:var(--serif);font-weight:600}
+  .wbi .u{color:var(--muted);font-size:.85rem}
+
+  /* 长难句 */
+  .sent{margin-bottom:20px}
+  .sent .src{font-family:var(--serif);font-size:1rem;background:var(--blue-soft);padding:12px 14px;border-radius:10px;border-left:3px solid var(--blue)}
+  .sent .anat{margin-top:8px;font-size:.9rem}
+  .sent .anat li{margin:4px 0 4px 18px}
+  .sent .tr{margin-top:8px;font-size:.92rem;color:var(--muted)}
+  .skel{color:var(--red);font-weight:600}
+
+  /* 80词表 */
+  .otab{width:100%;border-collapse:collapse;font-size:.86rem}
+  .otab th,.otab td{border:1px solid var(--line);padding:5px 8px;vertical-align:top}
+  .otab th{background:var(--accent-soft);color:var(--accent);font-size:.78rem}
+  .otab td.n{text-align:center;font-family:var(--serif);color:var(--muted);width:38px}
+  .otab .ow{font-family:var(--serif)}
+  .otab .oc{color:var(--muted);font-size:.82rem;display:block}
+  .otab td.hit{background:var(--green-soft)}
+  .otab td.hit .ow{color:var(--green);font-weight:700}
+  .hidecn .oc{filter:blur(4px);cursor:pointer}
+  .hidecn .oc.show{filter:none}
+  .tabwrap{overflow-x:auto}
+
+  #yd{position:fixed;z-index:60;display:none;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:4px 12px;font-size:.8rem;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+  .fail{background:var(--red-soft);border:1px solid var(--red);border-radius:10px;padding:10px 13px;margin-bottom:10px;font-size:.89rem;line-height:1.75}
+  .fail b{color:var(--red)}
+  .expl .fail{margin-top:0}
+  footer{color:var(--muted);font-size:.8rem;text-align:center;margin-top:30px}
+  /* 修：.layout 是 grid，grid 项默认 min-width:auto ⟹ 06 的 80 词表（min-content 425px）会把整个左栏撑到 475px，
+     窄屏下页面 scrollWidth 超出视口（2007–2009 三篇完形页同源、同病）。min-width:0 后 .tabwrap 才真正接管横滚。 */
+  main,aside{min-width:0}
+
+  /* ---- 2021：原卷句条 ---- */
+  .ctab{width:100%;border-collapse:collapse;font-size:.86rem;margin-top:8px}
+  .ctab th,.ctab td{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
+  .ctab th{background:var(--accent-soft);color:var(--accent);font-size:.8rem;white-space:nowrap}
+  .ctab code{background:var(--hl);padding:0 3px;border-radius:3px}
+  .sn{margin:0 0 14px}
+  .sn .pno{display:block;margin-bottom:4px;font-size:.78rem;line-height:1.6}
+  img.strip{display:block;width:100%;max-width:760px;height:auto;background:#fff;border:1px solid var(--line);border-radius:6px;cursor:pointer}
+  .sent .src img.strip{margin-top:6px;cursor:default}
+  .kw{margin-top:5px;font-size:.88rem;line-height:2.1;font-family:var(--serif)}
+  @media (prefers-color-scheme: dark){img.strip{filter:invert(.9) hue-rotate(180deg)}}
+  .sn,.sent .src{overflow-x:auto}
+  @media (max-width:700px){img.strip{width:640px;max-width:none}.sn::after{content:'← 句条可左右滑动 →';display:block;font-size:.7rem;color:var(--muted);margin-top:2px}}
+  .bkrow{margin-top:6px;font-size:.85rem;color:var(--muted);font-family:var(--serif);line-height:2.1}
+  .bkrow .bk{margin:0 6px}
+  .sent .src b{display:block;font-family:var(--sans,inherit);font-size:.8rem;color:var(--muted);font-weight:600}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">◀ 返回英语复盘中心</a>
+  <header>
+    <h1>腹部脂肪与大脑：一篇科研报道按「现象 → 发现 → 意义 → 方法 → 结果 → 机制 → 展望 → 建议」八格设空——每个空都有一个同句搭档，干扰项只搭得上一边</h1>
+    <div class="sub">2021 年英语（一）真题 · Section I 完形填空（Use of English）· 黄皮书标 275 词（人工逐行计数 274，went by 按两词；差 1 词照实写）· 5 段 11 句 · 建议 15 min · 话题：健康与认知衰老（科普）（源自 <i>Psychology Today</i>《今日心理学》2019-12-19 <i>Belly Fat and Your Brain</i>「腹部脂肪与大脑」）· <b>正文以原卷扫描句条呈现</b>（同 2021 T1–T4 口径：不转录全文，批注只引短语）</div>
+    <div class="tags">
+      <span class="tag spoiler" onclick="this.classList.toggle('open')">🙈 答案（点击显示）：<span class="hid">1B 2C 3D 4A 5D 6D 7B 8A 9D 10B 11C 12A 13B 14C 15C 16A 17C 18D 19D 20B</span></span>
+      <span class="tag">难度：偏易（句子短、词都常见、逻辑空只有 2 个；<b>坎在「搭配只搭一边」</b>——17 watch／count、20 routine／prescription、11 ran out 都和空格的某一侧搭得上，要左右两边同时验；另有 8、12 两道四个选项后面全接 to，介词帮不上忙）</span>
+      <span class="tag">⚠️ <b>盲做口径：18 空盲做 18/18 ＋ 2 空已误见</b>——做 2021 T1 找精讲时缩略图认错一页，看到了 p30 上 19（D level）、20（B diet）两空的解析；其余 18 空只看原卷 p2 正文、p3 选项作答，先落盘 <code>_讲义笔记/2021_完形_mine.txt</code>，再只裁答案页 Section I 那四行核对，<b>18 空全对</b>，19、20 不计战绩</span>
+      <span class="tag">⭐ 本页最值钱的两段：<b>02+ 科研报道八格表</b>（二十个空挂在八个环节上，每格的空自带方向）与 <b>02++ 搭档表</b>（每个空在同一句里都有一个「搭档词」——17／20 句内自足，跨句的只有 14 与 16）</span>
+    </div>
+  </header>
+
+  <div class="layout">
+    <main>
+      <!-- ========== 00 脉络 ========== -->
+      <section class="card">
+        <h2><span class="n">00</span>读前一分钟 · 全文脉络（完形先读首句，再看结构）</h2>
+        <p class="note">完形的<b>首句从不设空</b>。本篇首句是一个<b>定义句</b>：Fluid intelligence is the type of intelligence that …——给了三样东西：<b>话题</b>（流体智力：短期记忆 ＋ 快速、逻辑、抽象地解新题）、<b>文体</b>（「X is the type of Y that …」是教科书式下定义 ⟹ <b>科普／科研报道</b>，不是社论）、<b>口吻</b>（中性、客观，没有作者立场）。<b>第三句的 But 才亮出全文的立意</b>：衰老躲不掉，<b>但某些变化未必躲不掉</b>——后面四段都在讲「哪些变化、怎么躲」。</p>
+        <p class="note" style="margin-top:10px">⭐⭐ <b>认文体：这是一篇「一项研究」的转述报道</b>。第二段 One study found that … 一出，就该在脑子里摆出科研报道的固定格子：<b>发现 → 意义 → 方法 → 结果 → 机制 → 展望 → 建议</b>。每一格里的空都有固定的「长相」——方法格填研究动作（include · compare），结果格填测量动词（score worse on），机制格填因果扣环（attributable to），展望格填研究能做到的事（explain · treatments），建议格填生活动作（take steps · diet）。⟹ 详见 <a href="#slots" style="color:var(--accent)">02+ 八格表</a>。</p>
+        <div class="flow" style="margin-top:14px">
+          <div class="fi"><b>① 现象（第一段）</b>：流体智力的一生——<b>成年早期到顶 → 持平一段 → 一般随年龄缓慢下降</b>；但衰老不可避免，大脑功能的某些变化却未必。<span class="ev">1 peaks · 2 generally · 3 while（让步：一般规律 vs 新发现）</span></div>
+          <div class="fi"><b>② 发现 ＋ 意义（第二段）</b>：一项研究发现，<b>肌肉流失与腹部脂肪堆积</b>和流体智力下降相关 ⟹ 这说明生活方式<b>可能</b>有助于防止或推迟这种下降。<span class="ev">4 accumulation · 5 possibility · 6 delay</span></div>
+          <div class="fi"><b>③ 方法 ＋ 结果（第三段）</b>：研究者看了四千多名中老年人的肌肉、腹脂测量数据，<b>与</b>六年间的流体智力变化<b>作比较</b> ⟹ 腹脂高的中年人，随着岁月流逝，流体智力得分更差。<span class="ev">7 included · 8 compared · 9 with · 10 scored · 11 went by</span></div>
+          <div class="fi"><b>④ 机制 ＋ 展望（第四段）</b>：女性这种关联可能<b>归因于</b>腹脂引起的免疫变化；男性则似乎<b>与免疫无关</b> ⟹ 希望将来的研究能<b>解释</b>这些差异，或许还能带来男女有别的<b>疗法</b>。<span class="ev">12 attributable · 13 involved · 14 explain · 15 treatments</span></div>
+          <div class="fi"><b>⑤ 建议（第五段）</b>：<b>与此同时</b>，你现在就能<b>采取</b>措施减腹脂、保肌肉，护住身心<b>健康</b>——两条：保持或提高有氧运动<b>量</b>，遵循高纤维、不吃深加工食品的地中海式<b>饮食</b>。<span class="ev">16 Meanwhile · 17 take · 18 wellbeing · 19 level · 20 diet</span></div>
+        </div>
+        <p class="note" style="margin-top:12px">📌 <b>五段的节奏是「研究者的时间」与「你的时间」交替</b>：①–④ 说研究（过去做了什么、将来希望什么），⑤ 突然把主语换成 <b>you</b>、时态拉回<b>现在</b>（there are steps you can take）——<b>16 题段首空就站在这个换人换时的接缝上</b>（⟹ 新卡 R313）。</p>
+      </section>
+
+      <!-- ========== 00+ 背景 ========== -->
+      <section class="card">
+        <h2><span class="n">00+</span>读前背景（WebSearch 核过的事实，不读也能做题，读了更快）</h2>
+        <div class="tabwrap"><table class="ctab">
+          <tr><th>项</th><th>事实</th><th>和题的关系</th></tr>
+          <tr><td>原文</td><td><i>Psychology Today</i> 网站博客文章 <i>Belly Fat and Your Brain</i>（2019-12，黄皮书记 12 月 19 日）</td><td>大众心理学刊物的科普博客 ⟹ 口吻中性、句子短、末段一定落到「你能做什么」</td></tr>
+          <tr><td>研究出处</td><td>美国爱荷华州立大学 Willette 团队（第一作者 Klinedinst），论文 2019 年发表于 <i>Brain, Behavior, and Immunity</i>（《脑、行为与免疫》）第 82 卷；学校新闻稿 2019-12-17</td><td>期刊名里就有 <b>Immunity</b> ⟹ 第四段讲免疫机制不是插曲，是这项研究的主题</td></tr>
+          <tr><td>数据来源</td><td>英国生物样本库（UK Biobank），四千多名中老年男女</td><td>7 题「数据<b>包含</b>测量值」：研究者用的是现成的大数据库，不是自己做实验 ⟹ modified（改数据）更站不住</td></tr>
+          <tr><td>测量</td><td>直接测瘦肌肉量、腹部脂肪、皮下脂肪；追踪约六年的流体智力变化</td><td>③ measurements of lean muscle and abdominal fat · over a six-year period ⟹ 11 题「随着岁月流逝」的岁月就是这六年</td></tr>
+          <tr><td>主要结论</td><td>腹部脂肪多 → 随年龄流体智力更差；肌肉多 → 似有保护作用；控制年龄、教育、社会经济地位后仍成立</td><td>4 accumulation（脂肪「多」是坏方向）· 10 scored worse</td></tr>
+          <tr><td>免疫中介</td><td>腹脂与智力的关联部分经由免疫系统的变化传导，<b>男女表现不同</b>（具体是哪类免疫细胞，各家报道说法不一，这里不写细节）</td><td>12 attributable to（女性：归因于免疫变化）↔ 13 involved（男性：免疫似乎没参与）</td></tr>
+          <tr><td>研究性质</td><td>观察性、相关性研究——研究者自己也说只发现了相关，尚不能确定因果</td><td>⭐ 所以原文通篇用 are associated with · may be · might help · did not appear · perhaps——<b>5 题只能填 possibility</b>（⟹ 02++++ 语气表）</td></tr>
+          <tr><td>流体 vs 晶体智力</td><td>心理学经典二分：流体智力（临场推理）中年后下降；晶体智力（知识、词汇）可持续增长到老年</td><td>首句的定义 ＋ 1、2 题的曲线：<b>只有流体智力是「先升、后平、再降」</b></td></tr>
+          <tr><td>地中海式饮食</td><td>以蔬果、全谷物、豆类、鱼、橄榄油为主，少红肉与加工食品；常被推荐用于心血管与认知健康</td><td>20 题：high in fiber · eliminates highly processed foods ⟹ 是「吃的」</td></tr>
+          <tr><td>考卷改动</td><td>黄皮书只标「源自」；本页按新口径<b>不抓原刊全文</b>，不做原刊对照</td><td>—</td></tr>
+        </table></div>
+      </section>
+      <!-- ========== 01 正文 ========== -->
+      <section class="card">
+        <h2><span class="n">01</span>完形正文（本机识别成文字 · 20 空 · 点空格跳到该题）
+          <button class="allbtn" onclick="toggleAll()" style="margin-left:auto">意译 开/关</button>
+          <button class="allbtn" onclick="revealAll()">显示全部答案</button>
+        </h2>
+        <p class="note">📄 原文由你的浏览器从原卷第 1 页识别成文字（每句末尾「原卷」可切回扫描图，「校对」可改错字）｜ 🟨 正文里的<b>空格按钮</b>＝跳到 02 对应的解析卡（先自己选，再看解析；答过的空会就地填上答案词）｜ <b>选中任意单词弹「查有道」</b>（触屏长按选词；切回原卷后在扫描图上点词也能查）｜ 每句下方「↘ 跳到长难句精析」按钮跳 07 节（六句有精析）｜ 🟡 黄底词＝本句重难点词，点开看词根／辨析 ｜ 每段「意」＝该段意译（按句意转述，非逐字翻译）</p>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <p style="font-size:.78rem;color:var(--accent);margin-bottom:6px">① 现象：流体智力先升到顶、再持平、后下降——但下降未必躲不掉</p>
+          <div class="sn"><span class="pno">❶ 首句不设空 · <b>定义句</b>：Fluid intelligence is the type of intelligence ＋ that 定语从句（has to do with A and B）；B 是 the ability to think quickly, logically, and abstractly（三个副词并列）＋ in order to 目的状语 · 29 词 · 长难句 1</span>
+          <img class="strip" src="img/2021_完形/s1_1.png" alt="①❶ 原卷句条" loading="lazy" onclick="go('l1_1')">
+          <div class="kw">🟡 <span class="tk" data-w="fluid">fluid intelligence</span> · <span class="tk" data-w="hastodo">has to do with</span> · <span class="tk" data-w="shortterm">short-term memory</span> · <span class="tk" data-w="abstractly">abstractly</span></div></div>
+
+          <div class="sn"><span class="pno">❷⭐⭐ <b>一句话画一条曲线</b>：主语 It（＝流体智力）带三个谓语——___ in young adulthood · levels out for a period of time · and then ___ starts to slowly decline as we age ⟹ 升到头 → 走平 → 下降 · 21 词 · 长难句 2</span>
+          <img class="strip" src="img/2021_完形/s1_2.png" alt="①❷ 原卷句条" loading="lazy" onclick="go('l1_2')">
+          <div class="bkrow">空格：<span class="bk" data-n="1"><span class="idx">1</span>___</span> <span class="bk" data-n="2"><span class="idx">2</span>___</span></div>
+          <div class="kw">🟡 <span class="tk" data-w="adulthood">young adulthood</span> · <span class="tk" data-w="levelout">levels out</span> · <span class="tk" data-w="decline">decline</span> · <span class="tk" data-w="asweage">as we age</span></div></div>
+
+          <div class="sn"><span class="pno">❸⭐⭐ <b>全文立意</b>：But ＋ ___ 从句（aging is inevitable）＋ 主句（scientists are finding out that certain changes in brain function may not be）——may not be 后面省了 inevitable；从句是常识、主句是新发现 ⟹ 让步 · 18 词</span>
+          <img class="strip" src="img/2021_完形/s1_3.png" alt="①❸ 原卷句条" loading="lazy">
+          <div class="bkrow">空格：<span class="bk" data-n="3"><span class="idx">3</span>___</span></div>
+          <div class="kw">🟡 <span class="tk" data-w="inevitable">inevitable</span></div></div>
+
+          <div class="zh"><b>①段意译：</b>流体智力是这样一种智力：它关乎短期记忆，关乎为解决新问题而快速、有逻辑、抽象地思考的能力。它在成年早期<b>达到顶峰</b>，之后持平一段时间，然后<b>通常</b>随着年龄增长开始缓慢下降。<b>虽然</b>衰老不可避免，但科学家正在发现：大脑功能的某些变化也许并非躲不掉。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <p style="font-size:.78rem;color:var(--accent);margin-bottom:6px">② 发现 ＋ 意义：肌肉少、腹脂多 ↔ 流体智力降 ⟹ 生活方式可能有用</p>
+          <div class="sn"><span class="pno">❶⭐ <b>研究发现</b>：One study found that ＋ 从句（主语 A and B · 谓语 are associated with a decline in fluid intelligence）——A＝muscle loss、B＝the ___ of body fat around the abdomen，<b>and 两边同属「不健康的身体变化」</b> · 23 词</span>
+          <img class="strip" src="img/2021_完形/s2_1.png" alt="②❶ 原卷句条" loading="lazy">
+          <div class="bkrow">空格：<span class="bk" data-n="4"><span class="idx">4</span>___</span></div>
+          <div class="kw">🟡 <span class="tk" data-w="abdomen">abdomen</span> · <span class="tk" data-w="associated">are associated with</span></div></div>
+
+          <div class="sn"><span class="pno">❷⭐⭐ <b>研究意义</b>：This suggests the ___ ＋ that 同位语从句（lifestyle factors might help prevent or ___ this type of decline）——<b>might</b> 定了 5 题的语气，<b>prevent or</b> 定了 6 题的方向 · 16 词</span>
+          <img class="strip" src="img/2021_完形/s2_2.png" alt="②❷ 原卷句条" loading="lazy">
+          <div class="bkrow">空格：<span class="bk" data-n="5"><span class="idx">5</span>___</span> <span class="bk" data-n="6"><span class="idx">6</span>___</span></div>
+          <div class="kw">🟡 <span class="tk" data-w="lifestyle">lifestyle factors</span></div></div>
+
+          <div class="zh"><b>②段意译：</b>一项研究发现，肌肉流失和腹部周围体脂的<b>堆积</b>，与流体智力下降有关。这说明存在一种<b>可能</b>：生活方式方面的因素或许有助于防止、或者<b>推迟</b>这类衰退。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <p style="font-size:.78rem;color:var(--accent);margin-bottom:6px">③ 方法 ＋ 结果：拿测量数据和六年的智力变化作比较——腹脂高的中年人越往后得分越差</p>
+          <div class="sn"><span class="pno">❶⭐⭐ <b>研究方法（全文最长句）</b>：The researchers 带两个谓语——looked at data（that ___ measurements of lean muscle and abdominal fat from more than 4,000 … men and women）and ___ that data to reported changes in fluid intelligence over a six-year period ⟹ <b>看数据、再比数据</b> · 36 词 · 长难句 3</span>
+          <img class="strip" src="img/2021_完形/s3_1.png" alt="③❶ 原卷句条" loading="lazy" onclick="go('l3_1')">
+          <div class="bkrow">空格：<span class="bk" data-n="7"><span class="idx">7</span>___</span> <span class="bk" data-n="8"><span class="idx">8</span>___</span></div>
+          <div class="kw">🟡 <span class="tk" data-w="measurement">measurements</span> · <span class="tk" data-w="lean">lean muscle</span> · <span class="tk" data-w="middleaged">middle-to-older-aged</span> · <span class="tk" data-w="reported">reported changes</span></div></div>
+
+          <div class="sn"><span class="pno">❷⭐⭐ <b>研究结果</b>：They found that ＋ 从句（主语 middle-aged people ___ higher measures of abdominal fat · 谓语 ___ worse on measures of fluid intelligence · 状语 as the years ___）——<b>一个空在主语里、一个在谓语、一个在状语</b> · 23 词 · 长难句 4</span>
+          <img class="strip" src="img/2021_完形/s3_2.png" alt="③❷ 原卷句条" loading="lazy" onclick="go('l3_2')">
+          <div class="bkrow">空格：<span class="bk" data-n="9"><span class="idx">9</span>___</span> <span class="bk" data-n="10"><span class="idx">10</span>___</span> <span class="bk" data-n="11"><span class="idx">11</span>___</span></div>
+          <div class="kw">🟡 <span class="tk" data-w="measurement">measures of</span></div></div>
+
+          <div class="zh"><b>③段意译：</b>研究人员查看了四千多名中老年男女的数据，数据<b>包括</b>瘦肌肉量和腹部脂肪的测量值；再把这些数据与他们在六年间有记录的流体智力变化<b>作比较</b>。结果发现：<b>腹部脂肪测量值更高</b>的中年人，随着岁月<b>推移</b>，在流体智力测试上<b>得分</b>更差。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <p style="font-size:.78rem;color:var(--accent);margin-bottom:6px">④ 机制 ＋ 展望：女性经由免疫变化、男性与免疫无关——希望将来解释这个差异、分性别治疗</p>
+          <div class="sn"><span class="pno">❶⭐⭐⭐ <b>男女对照</b>：分号前 For women, the association may be ___ to changes in immunity（that resulted from excess abdominal fat）；分号后 in men, the immune system did not appear to be ___ ——<b>肯定 vs 否定、女 vs 男</b>，两个空互为镜像 · 28 词 · 长难句 5</span>
+          <img class="strip" src="img/2021_完形/s4_1.png" alt="④❶ 原卷句条" loading="lazy" onclick="go('l4_1')">
+          <div class="bkrow">空格：<span class="bk" data-n="12"><span class="idx">12</span>___</span> <span class="bk" data-n="13"><span class="idx">13</span>___</span></div>
+          <div class="kw">🟡 <span class="tk" data-w="immunity">immunity</span> · <span class="tk" data-w="resultfrom">resulted from</span> · <span class="tk" data-w="excess">excess</span> · <span class="tk" data-w="immunity">immune system</span></div></div>
+
+          <div class="sn"><span class="pno">❷⭐ <b>展望</b>：It is hoped that ＋ 从句（future studies could ___ these differences … lead to different ___ …）——these differences 回指上句的男女差异；<b>先弄清、再对症</b> · 20 词</span>
+          <img class="strip" src="img/2021_完形/s4_2.png" alt="④❷ 原卷句条" loading="lazy">
+          <div class="bkrow">空格：<span class="bk" data-n="14"><span class="idx">14</span>___</span> <span class="bk" data-n="15"><span class="idx">15</span>___</span></div>
+          <div class="kw">🟡 <span class="tk" data-w="hoped">It is hoped that</span></div></div>
+
+          <div class="zh"><b>④段意译：</b>对女性来说，这种关联或许<b>可以归因于</b>腹部脂肪过多所引起的免疫变化；对男性来说，免疫系统似乎并没有<b>参与其中</b>。人们希望将来的研究能<b>解释</b>这些差异，或许还能为男性和女性带来不同的<b>疗法</b>。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <p style="font-size:.78rem;color:var(--accent);margin-bottom:6px">⑤ 建议：研究还在路上，你现在就能做两件事——多做有氧、吃地中海式饮食</p>
+          <div class="sn"><span class="pno">❶⭐⭐ <b>换人换时</b>：___, there are steps you can ___ ＋ to help reduce … and maintain …（目的 1）＋ in order to protect both your physical and mental ___（目的 2）——主语从「研究」换成 you、时态从 could 拉回 can · 30 词</span>
+          <img class="strip" src="img/2021_完形/s5_1.png" alt="⑤❶ 原卷句条" loading="lazy">
+          <div class="bkrow">空格：<span class="bk" data-n="16"><span class="idx">16</span>___</span> <span class="bk" data-n="17"><span class="idx">17</span>___</span> <span class="bk" data-n="18"><span class="idx">18</span>___</span></div>
+          <div class="kw">🟡 <span class="tk" data-w="mass">muscle mass</span> · <span class="tk" data-w="asweage">as you age</span></div></div>
+
+          <div class="sn"><span class="pno">❷⭐⭐ <b>两条建议</b>：The two highly recommended lifestyle approaches are ＋ 两个动名词表语（maintaining or increasing your ___ of aerobic exercise ＋ following a Mediterranean-style ___ that is high in fiber and …）——<b>数 and 两边</b>：正好两条 · 30 词 · 长难句 6</span>
+          <img class="strip" src="img/2021_完形/s5_2.png" alt="⑤❷ 原卷句条" loading="lazy" onclick="go('l5_2')">
+          <div class="bkrow">空格：<span class="bk" data-n="19"><span class="idx">19</span>___</span> <span class="bk" data-n="20"><span class="idx">20</span>___</span></div>
+          <div class="kw">🟡 <span class="tk" data-w="recommended">highly recommended</span> · <span class="tk" data-w="approach">approaches</span> · <span class="tk" data-w="maintain">maintaining</span> · <span class="tk" data-w="aerobic">aerobic exercise</span> · <span class="tk" data-w="mediterranean">Mediterranean-style</span> · <span class="tk" data-w="fiber">high in fiber</span> · <span class="tk" data-w="eliminate">eliminates</span> · <span class="tk" data-w="processed">highly processed foods</span></div></div>
+
+          <div class="zh"><b>⑤段意译：</b><b>与此同时</b>，随着年龄增长，你可以<b>采取</b>一些措施来帮助减少腹部脂肪、保持瘦肌肉量，从而保护自己的身心<b>健康</b>。最受推荐的两种生活方式：一是保持或提高有氧运动的<b>量</b>；二是遵循地中海式<b>饮食</b>——富含纤维、不吃深加工食品。</div>
+        </div>
+      </section>
+      <!-- ========== 02 逐空精解 ========== -->
+      <section class="card">
+        <h2><span class="n">02</span>逐空精解（点选项即判 · 再看解析）</h2>
+        <div class="score">
+          <span><span class="v" id="sDone">0</span>/20 已答</span>
+          <span><span class="v" id="sRight">0</span> 对</span>
+          <span>折合 <span class="v" id="sPt">0</span> 分 / 10</span>
+          <button class="rst" onclick="location.reload()">↺ 重做</button>
+        </div>
+        <p class="note">每空 0.5 分。题干只引空格所在的<b>短语</b>，完整句子看 01 的句条。本篇是一篇<b>科研报道</b>：逻辑空只有 2 个（3 while · 16 Meanwhile），其余 18 个都是「研究里的某一格该填什么」。三件事最要紧：<b>① 每个空先找它在同一句里的搭档</b>——1 peaks 的搭档是 levels out 和 decline、4 accumulation 的搭档是 loss、6 delay 的搭档是 prevent、13 involved 的搭档是 12 那半句（<a href="#partner" style="color:var(--accent)">02++</a>）；<b>② 干扰项爱「只搭一边」</b>——watch one’s step、count steps、follow a routine、follow a prescription、time runs out，单看空格一侧都对，左右一起念就散（<a href="#oneside" style="color:var(--accent)">02+++</a>）；<b>③ 语气只说到证据那么满</b>——might 配 possibility，研究者只能 include、compare、explain，不能 modify 数据、alter 差异（<a href="#hedge" style="color:var(--accent)">02++++</a>）。另有<b>两道四个选项后面全接 to</b>（8 compare／devote／convert／apply A to B · 12 be attributable／superior／parallel／resistant to），介词定不了。</p>
+
+        <div class="q" id="q1" data-ans="1">
+          <div class="qhead"><span class="qno">1</span><span class="qt c-context">上下文语义 · 一句三个谓语画出一条曲线：升到头 → 走平 → 下降</span><span class="qpos">It ___ in young adulthood, levels out …</span></div>
+          <span class="stem">It <em>1</em> in young adulthood, levels out for a period of time …</span>
+          <div class="opts">
+            <div class="opt">A pauses<span class="gl">暂停</span></div>
+            <div class="opt">B peaks<span class="gl">达到顶峰</span></div>
+            <div class="opt">C returns<span class="gl">恢复，重现</span></div>
+            <div class="opt">D fades<span class="gl">逐渐衰退</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>不及物谓语动词，主语 It＝流体智力；是三个并列谓语中的第一个。
+            <span class="lbl">🔗 线索</span>① 同句后两个谓语：<b>levels out</b>（持平）→ <b>and then … starts to slowly decline</b>（然后<b>开始</b>下降）——starts to 说明此前<b>还没降过</b>，持平之前只能是<b>升</b>，而且升到了头才会「走平」；② 常识：年轻时智力上升、到成年早期最好。三个谓语拼成「<b>升 — 平 — 降</b>」一条曲线，缺的是第一段的终点。
+            <span class="lbl">✅ B peaks</span>流体智力在成年早期<b>达到顶峰</b>，然后持平一段，再开始下降——曲线完整。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>pauses：「暂停」预设之前在走、之后还要接着走；前面没提发展，后面也没有「再继续」。</div>
+              <div class="wr"><span class="l">C</span>returns：「重现」预设它曾经消失过——流体智力不会消失后在成年早期回来（黄皮书：short-term memory 是术语「短期记忆」，不是说这种能力只短暂存在）。</div>
+              <div class="wr"><span class="l">D</span>fades：「逐渐衰退」与后文 then starts to decline <b>撞车</b>——成年早期就退了，年老后怎么「开始」退？</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>趋势句先画图</b>：把同句的几个谓语按时间排开，空格填缺的那一段（⟹ 新卡 <a href="套路库_阅读.html#R312" style="color:var(--accent)">R312</a>）。peak 的趋势家族：rise／climb → <b>peak</b>／reach a high → <b>level out／off</b>／plateau → decline／drop off。✍️ <i>Sales peaked in May, leveled out over the summer and then declined.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q2" data-ans="2">
+          <div class="qhead"><span class="qno">2</span><span class="qt c-context">上下文语义 · 一般现在时 ＋ we：这是「人人如此」的总体规律</span><span class="qpos">and then ___ starts to slowly decline as we age</span></div>
+          <span class="stem">… and then <em>2</em> starts to slowly decline as we age.</span>
+          <div class="opts">
+            <div class="opt">A alternatively<span class="gl">或者</span></div>
+            <div class="opt">B formally<span class="gl">正式地；形式上</span></div>
+            <div class="opt">C generally<span class="gl">通常，一般</span></div>
+            <div class="opt">D accidentally<span class="gl">偶然地</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>副词，修饰第三个谓语 starts to slowly decline，给这段趋势<b>定性</b>。
+            <span class="lbl">🔗 线索</span>① 时态是<b>一般现在时</b>、主语 <b>we</b>（我们大家）——描述的是普遍规律；② 下一句 <b>But</b> while aging is inevitable … certain changes may not be：先说「一般都会降」，再转「但某些未必」——<b>2 题说「一般」，3 题那句才说「例外」</b>，前后正好接上。
+            <span class="lbl">✅ C generally</span>然后<b>通常</b>随着年龄增长开始缓慢下降——「一般如此」给下一句的 But 留出了「例外」的余地。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>alternatively：「或者」引出另一种选择（go by ship or alternatively by rail）；三个谓语是先后顺承，不是三选一。</div>
+              <div class="wr"><span class="l">B</span>formally：「表面上开始衰退」言外之意是其实没退，与后文研究的就是这种衰退相矛盾；「正式地」用于事务、程序，不用于生理变化。</div>
+              <div class="wr"><span class="l">D</span>accidentally：「偶然地」——年老智力下降是人人可预期的规律，不是意外。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>「一般规律 → But 例外」是科普文开头的标配</b>：generally／usually／typically 先立常识，下一句用 But／However 引出新发现。2 题和 3 题要<b>连起来做</b>：一个立、一个破。✍️ <i>Memory generally declines with age, but some abilities may actually improve.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q3" data-ans="3">
+          <div class="qhead"><span class="qno">3</span><span class="qt c-logic">逻辑关系 · 从句是常识、主句是新发现：让步</span><span class="qpos">But ___ aging is inevitable, … may not be</span></div>
+          <span class="stem">But <em>3</em> aging is inevitable, scientists are finding out that certain changes … may not be.</span>
+          <div class="opts">
+            <div class="opt">A until<span class="gl">直到</span></div>
+            <div class="opt">B since<span class="gl">自从；既然</span></div>
+            <div class="opt">C once<span class="gl">一旦</span></div>
+            <div class="opt">D while<span class="gl">虽然；当……时</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>从属连词，引导状语从句 aging is inevitable，后面接主句。
+            <span class="lbl">🔗 线索</span>① <b>把省略补回来</b>：may not be ＝ may not be <b>inevitable</b>——从句「衰老<b>躲不掉</b>」、主句「某些变化<b>未必躲不掉</b>」，同一个词一正一反 ⟹ <b>对比／让步</b>；② 从句是人人知道的常识，主句是科学家<b>正在</b>发现的新东西——让步从句在前、重心在后。
+            <span class="lbl">✅ D while</span><b>虽然</b>衰老不可避免，科学家却发现大脑功能的某些变化未必不可避免。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>until：「直到衰老不可避免之前」——「不可避免」不是一个时间点。</div>
+              <div class="wr"><span class="l">B</span>since：作「自从」要配完成时主句，这里是现在进行时；作「既然」是因果——「既然衰老躲不掉，所以某些变化躲得掉」，因果不通。</div>
+              <div class="wr"><span class="l">C</span>once：「一旦衰老不可避免，科学家（就）发现……」——「衰老躲不掉」不是「科学家发现」的触发条件。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>四个连词两两对：</b>until／once 只说时间与条件，since 时间或原因，<b>只有 while 能让步</b>——三缺一干脆成立（⟹ <a href="套路库_阅读.html#R74" style="color:var(--accent)">R74</a>）。⭐ <b>while 让步的句型就是 3 题这样</b>：While A is X, B may not be（省掉 X）——看到句尾 may not be／is not 戛然而止，先补宾语再判关系。✍️ <i>While talent is important, it may not be decisive.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q4" data-ans="0">
+          <div class="qhead"><span class="qno">4</span><span class="qt c-context">上下文语义 · and 两边同属「不健康的变化」：肌肉少一样、脂肪多一样</span><span class="qpos">muscle loss and the ___ of body fat</span></div>
+          <span class="stem">… muscle loss and the <em>4</em> of body fat around the abdomen …</span>
+          <div class="opts">
+            <div class="opt">A accumulation<span class="gl">堆积，积累</span></div>
+            <div class="opt">B detection<span class="gl">检测，发现</span></div>
+            <div class="opt">C consumption<span class="gl">消耗</span></div>
+            <div class="opt">D separation<span class="gl">分离</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>名词，与 muscle loss 并列作从句主语，两者一起「与流体智力下降相关」。
+            <span class="lbl">🔗 线索</span>① <b>and 并列同一范畴</b>：muscle loss 是随年龄发生的坏变化，搭档也得是<b>随年龄自然发生的坏变化</b>；② 谓语 are associated with <b>a decline</b>——两者都得对智力不利；③ <b>往后读两段有回声</b>：③❷ higher measures of abdominal fat、④❶ excess abdominal fat——脂肪是「<b>多</b>」了。
+            <span class="lbl">✅ A accumulation</span>肌肉流失与腹部脂肪<b>堆积</b>，与流体智力下降有关——一减一增，都是坏方向。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>detection：「检测出腹部脂肪」是人做的动作，与自然的生理变化 muscle loss 不在同一层面；体脂也不是要「查出来」的隐患。</div>
+              <div class="wr"><span class="l">C</span>consumption：「脂肪消耗」是好事，与 loss（坏事）方向相反，and 连不起来；还与后文 higher／excess 相反。</div>
+              <div class="wr"><span class="l">D</span>separation：「脂肪分离」不是随年龄自然发生的变化，后文也没有回声。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>and 并列的名词空：先给搭档定正负号，再要求同号</b>（⟹ <a href="套路库_阅读.html#R77" style="color:var(--accent)">R77</a> and 同向）。⭐ <b>名词空卡住就往后读</b>：科研报道会把同一个变量换着说三遍（the accumulation of body fat → higher measures of abdominal fat → excess abdominal fat）——第二、三次就是答案的回声。✍️ <i>the accumulation of wealth／knowledge／waste</i>。
+          </div>
+        </div>
+
+        <div class="q" id="q5" data-ans="3">
+          <div class="qhead"><span class="qno">5</span><span class="qt c-word">词义辨析 · 同位语从句里是 might：抽象名词只能是「可能」</span><span class="qpos">This suggests the ___ that lifestyle factors might help</span></div>
+          <span class="stem">This suggests the <em>5</em> that lifestyle factors might help …</span>
+          <div class="opts">
+            <div class="opt">A requirement<span class="gl">要求；必要条件</span></div>
+            <div class="opt">B decision<span class="gl">决定</span></div>
+            <div class="opt">C goal<span class="gl">目标</span></div>
+            <div class="opt">D possibility<span class="gl">可能性</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>抽象名词，suggests 的宾语，后接 that 同位语从句说明它的内容。
+            <span class="lbl">🔗 线索</span>① 同位语从句的谓语是 <b>might help</b>——「或许有助于」，语气是<b>推测</b>；空格名词的性质必须和从句的语气一致；② 主语 This 回指上句的研究发现，suggests＝「表明、暗示」——<b>从一项相关性研究里，只推得出「可能」</b>。
+            <span class="lbl">✅ D possibility</span>这表明存在一种<b>可能</b>：生活方式或许有助于防止或推迟这种衰退。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>requirement：「要求」是强制的，后接同位语从句时从句用 (should) ＋ 动词原形；这里是 might，语气对不上。</div>
+              <div class="wr"><span class="l">B</span>decision：「决定」是人的主观选择；研究发现「表明了一个决定」不通，从句内容也不是谁做的决定。</div>
+              <div class="wr"><span class="l">C</span>goal：「目标」——研究发现不能推出「研究目的」；而且「生活方式或许有用」是推出来的可能，不是想要达到的目标（goal 也常接 of doing，不接同位语从句）。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐⭐ <b>同位语从句里的情态动词就是抽象名词的「类型说明书」</b>：might／may／could ⟹ possibility／chance／likelihood；should ⟹ requirement／suggestion／demand；will ⟹ promise／prediction（⟹ 新卡 <a href="套路库_阅读.html#R311" style="color:var(--accent)">R311</a>）。三缺一也成立：requirement／decision／goal 都是「人要的、人定的」，只有 possibility 说「事情本身可能怎样」。✍️ <i>The findings raise the possibility that sleep might protect memory.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q6" data-ans="3">
+          <div class="qhead"><span class="qno">6</span><span class="qt c-context">上下文语义 · prevent or ___：or 连着的是「退一步」，不是「反过来」</span><span class="qpos">help prevent or ___ this type of decline</span></div>
+          <span class="stem">… lifestyle factors might help prevent or <em>6</em> this type of decline.</span>
+          <div class="opts">
+            <div class="opt">A utilize<span class="gl">利用</span></div>
+            <div class="opt">B ensure<span class="gl">确保</span></div>
+            <div class="opt">C seek<span class="gl">寻求</span></div>
+            <div class="opt">D delay<span class="gl">推迟，延缓</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>及物动词，与 prevent 并列，宾语 this type of decline。
+            <span class="lbl">🔗 线索</span>① <b>宾语是坏事</b>（衰退）、<b>谓语有 help</b>（对人有利）⟹ 空格动词对坏事只能「挡」；② <b>or 的两种用法</b>：一是「或者说、退一步」（同向），二是「要么……要么……」（反向，to live or to die）——help 已经定了同向；③ 退一步的分寸：<b>防不住，至少推迟</b>，与 ① 的 may not be、② 的 might 一样谨慎。
+            <span class="lbl">✅ D delay</span>有助于防止、或者至少<b>延缓</b>这种衰退。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>utilize：「利用这种衰退」——把衰退当成可以化害为利的资源，全文没有这层意思。</div>
+              <div class="wr"><span class="l">B</span>ensure：「确保衰退发生」与 prevent 正好反向；同一个因素既防止又确保，自相矛盾，也与 help 的积极义相悖。</div>
+              <div class="wr"><span class="l">C</span>seek：「寻求衰退」同样反向；而且 seek 要有主观意图的主语，lifestyle factors 是客观因素，不会「寻求」。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>框架自带正负号</b>：prevent／delay／slow／reduce 的宾语是坏事，help 的结果对人有利（⟹ <a href="套路库_阅读.html#R230" style="color:var(--accent)">R230</a>）。三缺一：utilize／ensure／seek 都是「要它」，只有 delay 是「挡它」。⭐ <b>prevent or delay</b> 是医学科普的固定搭档（防不住就延缓）。✍️ <i>Regular check-ups can help prevent or delay serious illness.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q7" data-ans="1">
+          <div class="qhead"><span class="qno">7</span><span class="qt c-word">词义辨析 · 主语是 data：数据只能「包含」测量值，不能修改、证实、预测它</span><span class="qpos">data that ___ measurements of lean muscle</span></div>
+          <span class="stem">… looked at data that <em>7</em> measurements of lean muscle and abdominal fat …</span>
+          <div class="opts">
+            <div class="opt">A modified<span class="gl">修改，调整</span></div>
+            <div class="opt">B included<span class="gl">包含，包括</span></div>
+            <div class="opt">C supported<span class="gl">支持，证实</span></div>
+            <div class="opt">D predicted<span class="gl">预测</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>定语从句的谓语，从句主语 that＝data，宾语 measurements of lean muscle and abdominal fat。
+            <span class="lbl">🔗 线索</span>① 主语是<b>数据</b>、宾语是<b>测量值</b>——测量值就是数据的一部分，两者是「整体 ⊃ 部分」；② 这一句在讲<b>研究方法</b>：先交代用了什么数据（含哪些变量），后半句再交代怎么用（compare）。
+            <span class="lbl">✅ B included</span>研究者查看了<b>包含</b>瘦肌肉和腹部脂肪测量值的数据。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>modified：「数据修改了测量值」——主语错位（修改的应该是人）；研究数据也不该被改，这是拿「研究者会调整数据」的惯性设的套。</div>
+              <div class="wr"><span class="l">C</span>supported：「数据证实了测量值」——测量值是客观数字，不是待证的结论。</div>
+              <div class="wr"><span class="l">D</span>predicted：「数据预测测量值」——把变量关系说乱了：测量值（腹脂）是因，被预测的是流体智力的变化。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>研究方法句的动词边界</b>：数据 include／contain／cover 变量，研究者 look at／collect／compare／analyze 数据——<b>改数据（modify）、让数据证实数字（support）都越界</b>（⟹ 新卡 <a href="套路库_阅读.html#R311" style="color:var(--accent)">R311</a>）。✍️ <i>The survey included questions about sleep and screen time.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q8" data-ans="0">
+          <div class="qhead"><span class="qno">8</span><span class="qt c-collo">固定搭配 · compare A to B：四个选项全接 A to B，靠「研究要干什么」定</span><span class="qpos">and ___ that data to reported changes</span></div>
+          <span class="stem">… men and women and <em>8</em> that data to reported changes in fluid intelligence …</span>
+          <div class="opts">
+            <div class="opt">A compared<span class="gl">比较（compare A to B）</span></div>
+            <div class="opt">B devoted<span class="gl">把……专用于</span></div>
+            <div class="opt">C converted<span class="gl">把……转变成</span></div>
+            <div class="opt">D applied<span class="gl">把……应用于</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>主句第二个谓语，与 looked at 并列；结构 ___ A（that data）to B（reported changes …）。
+            <span class="lbl">🔗 线索</span>① <b>结构失效</b>：compare／devote／convert／apply 四个全是 <b>V A to B</b>，介词 to 帮不上忙；② 回到研究目的：要看「腹脂多 → 智力降」这层<b>关联</b>是否存在，就得把两组数据（测量值 vs 智力变化）<b>放在一起比</b>；③ 下一句 They found that … 给的正是比较出来的结果。
+            <span class="lbl">✅ A compared</span>研究者把这些数据与六年间有记录的流体智力变化<b>作比较</b>——比出相关性。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>devoted：devote A to B＝把 A 专门用于 B（某个目的）——「把数据专用于智力变化」不通，智力变化不是目的。</div>
+              <div class="wr"><span class="l">C</span>converted：convert A to B＝把 A 变成 B（同一事物换形态）——两组是不同的数据，把一组「变成」另一组得不出相关性。</div>
+              <div class="wr"><span class="l">D</span>applied：apply A to B＝把 A 用到 B 上——「把数据应用于智力变化」，智力变化不是应用场景。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>四个选项介词相同时，介词失效，改问「这一步想得到什么」</b>（⟹ <a href="套路库_阅读.html#R157" style="color:var(--accent)">R157</a>）。科研报道方法句的两步：<b>looked at A … and compared A to B</b>（先看、再比）——同一句的第二个谓语几乎总是 compare。✍️ <i>The researchers compared the results to those of a control group.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q9" data-ans="3">
+          <div class="qhead"><span class="qno">9</span><span class="qt c-collo">固定搭配 · people with ＋ 身体指标：「带有……的人」</span><span class="qpos">middle-aged people ___ higher measures of abdominal fat</span></div>
+          <span class="stem">… middle-aged people <em>9</em> higher measures of abdominal fat <em>10</em> worse …</span>
+          <div class="opts">
+            <div class="opt">A against<span class="gl">反对；防备</span></div>
+            <div class="opt">B above<span class="gl">高于</span></div>
+            <div class="opt">C by<span class="gl">被；通过</span></div>
+            <div class="opt">D with<span class="gl">带有，具有</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>介词，与 higher measures of abdominal fat 构成介词短语，作 middle-aged people 的后置定语——整个是从句的主语。
+            <span class="lbl">🔗 线索</span>① 先认结构：10 题是从句的谓语，所以 people ___ higher measures … 整个是<b>主语</b>，空格介词把一个身体指标挂到人身上；② 回指 ②❶：研究发现<b>腹脂多</b>与智力下降有关——这里要说的就是「<b>腹脂多的</b>中年人」。
+            <span class="lbl">✅ D with</span>腹部脂肪测量值<b>更高的</b>中年人——with 接身体特征和指标（with blue eyes · with high blood pressure）。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>against：拿中文「防腹脂」设的套——「对抗更高腹脂的中年人」，文中根本没谈人们对腹脂的态度；空格后是被测得的实际含量，不是要防的东西。</div>
+              <div class="wr"><span class="l">B</span>above：above 接确定的数值或水平（above 30 · above average）；higher measures 本身是比较级、没有确定值，「高于更高的测量值」不通。</div>
+              <div class="wr"><span class="l">C</span>by：by 引出施事者或方式——腹脂既不是施事也不是手段；by 修饰人时只说出身（German by birth），不说身体状态。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>科研报道里「人 ＋ with ＋ 指标」是主语的标准长相</b>：people with diabetes · patients with higher blood pressure · children with lower test scores——看到「人 ___ 一个指标 ＋ 谓语」，先填 with。✍️ <i>Students with more sleep scored better on memory tests.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q10" data-ans="1">
+          <div class="qhead"><span class="qno">10</span><span class="qt c-collo">固定搭配 · score worse on sth：在某方面得分更低</span><span class="qpos">___ worse on measures of fluid intelligence</span></div>
+          <span class="stem">… abdominal fat <em>10</em> worse on measures of fluid intelligence …</span>
+          <div class="opts">
+            <div class="opt">A lived<span class="gl">生活（live on 靠……过活）</span></div>
+            <div class="opt">B scored<span class="gl">得分</span></div>
+            <div class="opt">C managed<span class="gl">设法；（manage on）勉强维持</span></div>
+            <div class="opt">D played<span class="gl">比赛；表现</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>从句的谓语，不及物，后接 worse（方式）＋ on measures …（方面）。
+            <span class="lbl">🔗 线索</span>① <b>worse on measures of fluid intelligence</b>——「在流体智力的<b>测量</b>上更差」：测量 ⟹ 测试 ⟹ 分数；② 结果句要把「智力衰退」量化成可比的东西——就是<b>测试得分</b>。
+            <span class="lbl">✅ B scored</span>腹脂多的中年人在流体智力测量上<b>得分</b>更差。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>lived：live on 是「靠……过活」（live on rice／a pension），「靠智力测量值过活得更差」不通。</div>
+              <div class="wr"><span class="l">C</span>managed：manage on 同样是「靠……勉强过日子」，接钱和物；偏到生计去了。</div>
+              <div class="wr"><span class="l">D</span>played：play well／worse 说比赛中的表现——智力测试有比较，但不是竞赛。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>结构半失效</b>：四个动词后面都能接 on（live on · score on · manage on · play on），而且都能带 well／worse——<b>只有 score 能接「测量／测试」</b>。score high／low／better／worse on a test 是科研结果句的标准动词。✍️ <i>Children who read daily scored higher on vocabulary tests.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q11" data-ans="2">
+          <div class="qhead"><span class="qno">11</span><span class="qt c-collo">固定搭配 · as the years go by：岁月流逝（＝ ① as we age）</span><span class="qpos">as the years ___</span></div>
+          <span class="stem">… worse on measures of fluid intelligence as the years <em>11</em>.</span>
+          <div class="opts">
+            <div class="opt">A ran out<span class="gl">用完，耗尽</span></div>
+            <div class="opt">B set off<span class="gl">出发</span></div>
+            <div class="opt">C went by<span class="gl">（时间）流逝</span></div>
+            <div class="opt">D drew in<span class="gl">（白昼）变短；（天）渐黑</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>时间状语从句 as the years ___ 的谓语（不及物短语动词）。
+            <span class="lbl">🔗 线索</span>① 本句说的是六年里智力<b>逐渐</b>变差——要的是时间<b>持续推移</b>；② ⭐ <b>全文的时间轴三次复现</b>：①❷ as we age · ③❷ as the years ___ · ⑤❶ as you age——11 题是同一根轴的第二次，换了个说法。
+            <span class="lbl">✅ C went by</span>随着岁月<b>流逝</b>，得分越来越差——as the years go by 是固定说法。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>ran out：「时间用完了」强调所剩无几、带紧迫感（time is running out）——本句讲的是逐渐变化的过程，不是期限将至。</div>
+              <div class="wr"><span class="l">B</span>set off：「出发」是短暂动作、主语通常是人；years 不会出发。</div>
+              <div class="wr"><span class="l">D</span>drew in：说冬天白昼变短、天黑得早（the nights are drawing in），搭 nights／days，不搭 years。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>单边搭配的典型</b>：ran out 和时间搭（time ran out），可是 as the years ran out 放进「逐年变差」里就不对了——<b>左边搭得上、整句说不通</b>（⟹ 新卡 <a href="套路库_阅读.html#R310" style="color:var(--accent)">R310</a>）。⭐ 时间轴复现（⟹ 新卡 <a href="套路库_阅读.html#R312" style="color:var(--accent)">R312</a>）。✍️ <i>As the years went by, the small town became a busy city.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q12" data-ans="0">
+          <div class="qhead"><span class="qno">12</span><span class="qt c-collo">固定搭配 · be attributable to：可归因于——与同句 resulted from 扣成两环因果链</span><span class="qpos">the association may be ___ to changes in immunity</span></div>
+          <span class="stem">For women, the association may be <em>12</em> to changes in immunity …</span>
+          <div class="opts">
+            <div class="opt">A attributable<span class="gl">可归因于</span></div>
+            <div class="opt">B superior<span class="gl">优于</span></div>
+            <div class="opt">C parallel<span class="gl">与……平行；类似</span></div>
+            <div class="opt">D resistant<span class="gl">抵抗……的</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>形容词作表语，be ___ to 结构；主语 the association 回指 ②❶ 的「腹脂 ↔ 智力下降」这层关联。
+            <span class="lbl">🔗 线索</span>① <b>结构失效</b>：四个都是 be ___ to；② 同句 that 从句是一环因果：免疫变化 <b>resulted from</b> 腹脂过多；空格要把「关联」挂到「免疫变化」上——再扣一环因果：<b>腹脂多 → 免疫变 → 智力降</b>；③ 本段在讲<b>机制</b>（为什么相关），机制段的动词就是因果扣环。
+            <span class="lbl">✅ A attributable</span>对女性而言，这种关联或许<b>可以归因于</b>腹脂过多引起的免疫变化。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>superior：A is superior to B 比两个<b>同类</b>事物的优劣；「关联」与「免疫变化」不是同类，没法比高低。</div>
+              <div class="wr"><span class="l">C</span>parallel：「与……平行／相似」——「关联」与「免疫变化」谈不上相似，句子也不是在做类比。</div>
+              <div class="wr"><span class="l">D</span>resistant：「这种关联不受免疫变化影响」——与「免疫变化正是腹脂与智力之间的中间环」正相反；而且男性那半句才说免疫无关。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐⭐ <b>因果扣环词先认因站哪边</b>：A is attributable to B、A results from B——<b>因在右</b>；A leads to B——因在左；A is associated with B——不分左右（⟹ <a href="套路库_阅读.html#R228" style="color:var(--accent)">R228</a>）。本篇三个全用上了：②❶ are associated with（只说相关）→ ④❶ attributable to ＋ resulted from（说机制），<b>措辞随证据升级</b>，但 may 还在。✍️ <i>Much of the improvement is attributable to better teaching.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q13" data-ans="1">
+          <div class="qhead"><span class="qno">13</span><span class="qt c-context">上下文语义 · 分号两边男女对照：女性「免疫有份」⟹ 男性「免疫没参与」</span><span class="qpos">in men, the immune system did not appear to be ___</span></div>
+          <span class="stem">… in men, the immune system did not appear to be <em>13</em>.</span>
+          <div class="opts">
+            <div class="opt">A restored<span class="gl">被恢复</span></div>
+            <div class="opt">B involved<span class="gl">牵涉其中，起作用</span></div>
+            <div class="opt">C isolated<span class="gl">被孤立；被单独处理</span></div>
+            <div class="opt">D controlled<span class="gl">被控制</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>表语（过去分词），be ___ 后面省略了 in the association。
+            <span class="lbl">🔗 线索</span>① <b>For women … ; in men …</b>——分号连着两个平行分句，<b>男女对照</b>；② 前半句肯定（关联归因于<b>免疫</b>变化），后半句否定（did <b>not</b> appear）——同一个话题（免疫系统在这层关联里的作用），一有一无；③ 下句 these differences 回指的正是这个男女差异。
+            <span class="lbl">✅ B involved</span>对男性而言，免疫系统似乎并没有<b>参与其中</b>——be involved (in the association)。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>restored：「男性的免疫系统似乎没有恢复」——前半句没说女性的免疫系统「恢复了」，对不上；全文也没说免疫受损要恢复。</div>
+              <div class="wr"><span class="l">C</span>isolated：「免疫系统没被单独分析」——这是在说研究方法，与前半句的研究结果不在同一层面。</div>
+              <div class="wr"><span class="l">D</span>controlled：「免疫系统没被控制」——前半句没提「女性免疫系统被控制」，构不成对照。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐⭐ <b>对照平行句：话题照抄、结果反号</b>——前半句的关键词（immunity）在后半句换个说法（the immune system）原样出现，空格填「前半句那层关系」的否定版（⟹ <a href="套路库_阅读.html#R246" style="color:var(--accent)">R246</a>）。三缺一：restored／isolated／controlled 都是「被人处置」，只有 involved 说「在这件事里有没有份」。✍️ <i>Sleep mattered for the older group; for the younger group, it played no clear role.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q14" data-ans="2">
+          <div class="qhead"><span class="qno">14</span><span class="qt c-context">上下文语义 · 研究能对差异做的事只有一件：解释它</span><span class="qpos">future studies could ___ these differences</span></div>
+          <span class="stem">… future studies could <em>14</em> these differences and perhaps lead to …</span>
+          <div class="opts">
+            <div class="opt">A alter<span class="gl">改变</span></div>
+            <div class="opt">B spread<span class="gl">传播；扩散</span></div>
+            <div class="opt">C explain<span class="gl">解释，说明（原因）</span></div>
+            <div class="opt">D remove<span class="gl">去除</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>从句谓语，主语 future studies、宾语 these differences。
+            <span class="lbl">🔗 线索</span>① <b>these differences 回指上句的男女差异</b>（女性免疫有份、男性没有）——这一题要跨句；② 主语是<b>研究</b>：研究能对一个现象做的事是弄清它的原因，<b>改不了</b>男女生理上的差异；③ 后半句 and perhaps lead to different treatments——先弄明白、再对症，前后递进。
+            <span class="lbl">✅ C explain</span>希望将来的研究能<b>解释</b>这些差异。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>alter：差异源于性别生理，研究改变不了；而且「希望改变差异」暗示差异有害，原文只是客观呈现。</div>
+              <div class="wr"><span class="l">B</span>spread：spread 的宾语是信息、观念、疾病；「研究传播差异」不通。</div>
+              <div class="wr"><span class="l">D</span>remove：错因同 A——研究去不掉生理差异，原文也没评判差异好坏。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>研究者的动词边界</b>：研究能 find／show／explain／understand／lead to，<b>不能 alter／remove／change 自然事实</b>（⟹ 新卡 <a href="套路库_阅读.html#R311" style="color:var(--accent)">R311</a>）。三缺一：alter／spread／remove 都是「动它」，只有 explain 是「懂它」。✍️ <i>Further research is needed to explain why some patients recover faster.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q15" data-ans="2">
+          <div class="qhead"><span class="qno">15</span><span class="qt c-context">上下文语义 · 先解释差异、再「男女有别」地对症：疗法</span><span class="qpos">lead to different ___ for men and women</span></div>
+          <span class="stem">… perhaps lead to different <em>15</em> for men and women.</span>
+          <div class="opts">
+            <div class="opt">A compensations<span class="gl">补偿</span></div>
+            <div class="opt">B symptoms<span class="gl">症状</span></div>
+            <div class="opt">C treatments<span class="gl">治疗，疗法</span></div>
+            <div class="opt">D demands<span class="gl">要求；需求</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>名词，lead to 的宾语；different ___ for men and women。
+            <span class="lbl">🔗 线索</span>① <b>explain … and perhaps lead to …</b> 是递进：先弄清原因，再基于原因<b>做点什么</b>；② <b>different … for men and women</b>——男女机制不同（女性经由免疫），对策就该<b>男女有别</b>；③ 全文主旨是「防止或推迟衰退」，研究能带来的「对策」就是治疗方法。⑤ 段开头 Meanwhile 说「你现在能做的」——与「将来的疗法」对举。
+            <span class="lbl">✅ C treatments</span>或许能为男女带来不同的<b>疗法</b>——对症下药。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>compensations：「补偿」是用别处的所得弥补损失；本文讨论的是抑制衰退本身，不是拿别的能力去补。</div>
+              <div class="wr"><span class="l">B</span>symptoms：拿上句 did not appear（男性似乎没有……）造出「男女症状不同」的假象；「研究带来不同的症状」不合逻辑。</div>
+              <div class="wr"><span class="l">D</span>demands：demands for sth 是「对某物的需求」，demands on sb 才是「对人提要求」；「研究带来对男女的不同需求」不通。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>科研报道展望句的固定两步</b>：future research could <b>explain／understand</b> X and (perhaps) <b>lead to</b> new <b>treatments／therapies／interventions</b>——前一个动词「懂」、后一个名词「治」。✍️ <i>Understanding the cause could lead to better treatments for the disease.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q16" data-ans="0">
+          <div class="qhead"><span class="qno">16</span><span class="qt c-logic">逻辑关系 · 换人换时：研究者等将来，你现在就能做 ⟹ 与此同时</span><span class="qpos">___, there are steps you can take</span></div>
+          <span class="stem"><em>16</em>, there are steps you can <em>17</em> to help reduce abdominal fat …</span>
+          <div class="opts">
+            <div class="opt">A Meanwhile<span class="gl">与此同时；在此期间</span></div>
+            <div class="opt">B Likewise<span class="gl">同样地</span></div>
+            <div class="opt">C Therefore<span class="gl">因此</span></div>
+            <div class="opt">D Instead<span class="gl">反而，作为替代</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>段首连接副词，后接完整句 there are steps …，连接第四、五段。
+            <span class="lbl">🔗 线索</span>① <b>换人</b>：上段主语是 future studies（研究者），本句是 <b>you</b>（读者）；② <b>换时</b>：上段是 could … perhaps（将来的希望），本句是 <b>can</b>（现在就行）；③ 两边方向一致（都在对付衰退），只是分头进行——<b>研究者去找疗法的这段时间里，你自己先做</b>。
+            <span class="lbl">✅ A Meanwhile</span><b>在此期间／与此同时</b>，你现在就能采取一些措施……
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>Likewise：要求前后内容相似；一边是「临床疗法」，一边是「日常生活方式」，内容不同。</div>
+              <div class="wr"><span class="l">C</span>Therefore：要求前一件事导致后一件；「希望研究能解释差异」并不会导致「你能采取措施」，两件事可以分头进行。</div>
+              <div class="wr"><span class="l">D</span>Instead：要求前面否定或放弃了一件事（not X, instead Y）；上段是希望，没有否定，与本段是并行而非替代。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐⭐ <b>段首空遇到「换人 ＋ 换时」</b>：前段说将来（研究者 could／it is hoped），本段说现在（you can）、方向不变 ⟹ <b>Meanwhile／In the meantime</b>（⟹ 新卡 <a href="套路库_阅读.html#R313" style="color:var(--accent)">R313</a>）；换人但内容相似 ⟹ Likewise；前面先否定 ⟹ Instead。科普文末段「研究还要等，<b>但你现在就可以</b>……」几乎是固定收尾。✍️ <i>A cure may be years away. Meanwhile, there is plenty you can do to stay healthy.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q17" data-ans="2">
+          <div class="qhead"><span class="qno">17</span><span class="qt c-collo">固定搭配 · take steps to do：采取措施</span><span class="qpos">there are steps you can ___ to help reduce …</span></div>
+          <span class="stem">… there are steps you can <em>17</em> to help reduce abdominal fat …</span>
+          <div class="opts">
+            <div class="opt">A change<span class="gl">改变</span></div>
+            <div class="opt">B watch<span class="gl">注意，当心</span></div>
+            <div class="opt">C take<span class="gl">采取</span></div>
+            <div class="opt">D count<span class="gl">数，计算</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>定语从句（that）you can ___ 的谓语，逻辑宾语是 steps；后面 to help … 是目的状语。
+            <span class="lbl">🔗 线索</span>① steps 在这里是「<b>措施</b>」不是「脚步」；② 后接 <b>to help reduce … and maintain …</b>——「为了达到某目的而<b>做</b>的事」；③ 下一句 The two … approaches 把这些措施具体化为两条生活方式——本句是总述，下句分述。
+            <span class="lbl">✅ C take</span>你可以<b>采取</b>一些措施——take steps to do sth。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>change：「改变措施」预设上文已有现成的措施，上文没提。</div>
+              <div class="wr"><span class="l">B</span>watch：拿习语 watch one’s step（走路当心；说话小心）设的套——它是单数、要带物主代词，意思也不是「采取措施」。</div>
+              <div class="wr"><span class="l">D</span>count：拿「数步数减肥」设的套——count steps 是计步；「there are steps you can count」不是英文的建议说法，下文的饮食建议也不是计步。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐⭐ <b>单边搭配陷阱</b>：watch 和 step 搭、count 和 steps 搭——<b>只看左边的 steps 都对</b>；把右边的 to help reduce … 一起念，只有 take steps to do 成立（⟹ 新卡 <a href="套路库_阅读.html#R310" style="color:var(--accent)">R310</a>）。✍️ <i>The government has taken steps to reduce air pollution.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q18" data-ans="3">
+          <div class="qhead"><span class="qno">18</span><span class="qt c-collo">固定搭配 · physical and mental wellbeing：身心健康</span><span class="qpos">protect both your physical and mental ___</span></div>
+          <span class="stem">… in order to protect both your physical and mental <em>18</em>.</span>
+          <div class="opts">
+            <div class="opt">A coordination<span class="gl">协调</span></div>
+            <div class="opt">B process<span class="gl">过程</span></div>
+            <div class="opt">C formation<span class="gl">形成</span></div>
+            <div class="opt">D wellbeing<span class="gl">健康，安康</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>名词，protect 的宾语，被 both physical and mental 修饰。
+            <span class="lbl">🔗 线索</span>① <b>both … and …</b>：空格名词要能<b>分别</b>被 physical 和 mental 修饰（physical X ＋ mental X）；② 目的链：减腹脂、保肌肉 → 身体好；防流体智力衰退 → 大脑好 ⟹ <b>身心两方面的健康</b>；③ 动词 protect 的宾语要是好东西。
+            <span class="lbl">✅ D wellbeing</span>保护你的身心<b>健康</b>——physical and mental wellbeing／health 是固定说法。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>coordination：拿中文「身心协调」设的套——coordination 在英文里多指身体的协调能力（手眼配合），不说「身体与心理的协调」；both physical and mental coordination 又成了「两种协调」，与 both 强调的两方面不配。</div>
+              <div class="wr"><span class="l">B</span>process：mental process 是具体的思维过程，physical process 是物理／生理过程——「保护过程」不通。</div>
+              <div class="wr"><span class="l">C</span>formation：「形成」——建议对象是 as you age 的成年人，身心早已成形，谈不上保护其形成。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>both A and B ＋ 名词空</b>：拆成 A ＋ 名词、B ＋ 名词各念一遍，两边都通才行。wellbeing 也写 well-being／well being，是健康话题作文高频词。✍️ <i>Regular exercise benefits both our physical and mental wellbeing.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q19" data-ans="3">
+          <div class="qhead"><span class="qno">19</span><span class="qt c-word">词义辨析 · maintain or increase 的宾语得是一个能升降的量：运动量</span><span class="qpos">maintaining or increasing your ___ of aerobic exercise</span></div>
+          <span class="stem">… maintaining or increasing your <em>19</em> of aerobic exercise …</span>
+          <div class="opts">
+            <div class="opt">A space<span class="gl">空间；场地</span></div>
+            <div class="opt">B love<span class="gl">热爱</span></div>
+            <div class="opt">C knowledge<span class="gl">知识</span></div>
+            <div class="opt">D level<span class="gl">水平；量</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>名词，maintaining or increasing 的宾语，后接 of aerobic exercise。⚠️ <b>本空解析做 T1 时已误见，不计盲做</b>。
+            <span class="lbl">🔗 线索</span>① <b>maintain or increase</b>——「至少保持、最好提高」，宾语必须是一个<b>可度量、可升降的量</b>；② 主语是 lifestyle approaches——生活方式层面<b>实打实的做法</b>，不是态度或知识；③ 目的是减腹脂、保肌肉——靠的是<b>运动量</b>。
+            <span class="lbl">✅ D level</span>保持或提高你的有氧运动<b>量</b>——level of exercise／activity。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>space：「扩大运动场地」——有了场地不动也没用，不是生活方式本身。</div>
+              <div class="wr"><span class="l">B</span>love：「保持对运动的热爱」停在态度上，不保证有实际行动。</div>
+              <div class="wr"><span class="l">C</span>knowledge：「增加有氧运动知识」停在理论上，不涉及实践。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ 同一篇里 <b>level 出现两次、两种词性</b>：①❷ levels out（动词，趋于平稳）、⑤❷ your level of exercise（名词，量）。⭐ maintain／increase／reduce／raise 的宾语空，先找「能升降的量」：level · amount · rate · intake · number。✍️ <i>Try to increase your level of physical activity gradually.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q20" data-ans="1">
+          <div class="qhead"><span class="qno">20</span><span class="qt c-context">上下文语义 · 定语从句 high in fiber、eliminates processed foods：说的是吃的</span><span class="qpos">a Mediterranean-style ___ that is high in fiber</span></div>
+          <span class="stem">… following a Mediterranean-style <em>20</em> that is high in fiber …</span>
+          <div class="opts">
+            <div class="opt">A design<span class="gl">设计</span></div>
+            <div class="opt">B diet<span class="gl">饮食</span></div>
+            <div class="opt">C routine<span class="gl">常规，惯例</span></div>
+            <div class="opt">D prescription<span class="gl">处方，药方</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>名词，following 的宾语，前有 Mediterranean-style 修饰，后有 that 定语从句。
+            <span class="lbl">🔗 线索</span>① <b>定语从句是最直接的证据</b>：is high in fiber（富含纤维）· eliminates highly processed foods（不吃深加工食品）——只有<b>吃的东西</b>才谈得上含纤维、排除加工食品；② 两条建议「一动一吃」：前一条是运动，这一条是饮食；③ 背景：地中海式饮食本身就是专有说法。
+            <span class="lbl">✅ B diet</span>遵循富含纤维、不吃深加工食品的地中海式<b>饮食</b>。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>design：「设计」指建筑、服装等的布局；design a healthy diet 可以说，但 design 自己不能表示「饮食方案」。</div>
+              <div class="wr"><span class="l">C</span>routine：拿 follow a routine（遵循固定程序）设的套——「富含纤维的惯例」不通。</div>
+              <div class="wr"><span class="l">D</span>prescription：拿 follow a prescription（遵医嘱）和上文的 treatments 设的套——这一条是生活方式层面的建议，不是医生的处方；「富含纤维的处方」也不通。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐⭐ <b>单边搭配陷阱的第二种：左边搭动词、右边挂定语从句</b>——follow 能接 routine、prescription、diet，只有往右念上 that is high in fiber 才分得开（⟹ 新卡 <a href="套路库_阅读.html#R310" style="color:var(--accent)">R310</a>）。⚠️ <b>本空解析做 T1 时已误见，不计盲做</b>。✍️ <i>A diet that is low in sugar can lower the risk of heart disease.</i>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========== 02+ 八格表 ========== -->
+      <section class="card" id="slots">
+        <h2><span class="n">02+</span>⭐⭐⭐ 科研报道八格表：二十个空挂在八个环节上——先认「这句是研究的哪一格」，再填这一格该有的词（本页最值钱的一段）</h2>
+        <p class="note">一篇转述<b>一项研究</b>的科普，句子的功能几乎是固定的：先摆现象，再报发现，接着说意义、方法、结果、机制、展望，最后给读者建议。<b>每一格的空有固定长相</b>——认出格子，四个选项里往往只剩一个「这一格会用的词」。</p>
+        <div class="tabwrap"><table class="ctab">
+          <tr><th>格</th><th>句</th><th>这一格在干什么</th><th>空</th><th>这一格的词长什么样</th></tr>
+          <tr><td>① 现象</td><td>①❷ ①❸</td><td>一般规律 ＋ But 例外</td><td>1 peaks · 2 generally · <b>3 while</b></td><td>趋势动词（升 — 平 — 降）、「一般」副词、让步连词</td></tr>
+          <tr><td>② 发现</td><td>②❶</td><td>One study found that A and B are associated with C</td><td>4 accumulation</td><td>变量名词——和并列的另一个变量<b>同号</b>（都是坏变化）</td></tr>
+          <tr><td>③ 意义</td><td>②❷</td><td>This suggests the possibility that …</td><td>5 possibility · 6 delay</td><td>「可能」类名词（配 might）、「挡」类动词（配 prevent）</td></tr>
+          <tr><td>④ 方法</td><td>③❶</td><td>looked at data that … and compared …</td><td>7 included · 8 compared</td><td>研究动作：数据<b>包含</b>变量、研究者<b>比较</b>两组数据</td></tr>
+          <tr><td>⑤ 结果</td><td>③❷</td><td>They found that people with X scored worse …</td><td>9 with · 10 scored · 11 went by</td><td>「人 ＋ with ＋ 指标」、测量动词（score）、时间推移</td></tr>
+          <tr><td>⑥ 机制</td><td>④❶</td><td>For women … ; in men …</td><td>12 attributable · 13 involved</td><td>因果扣环（attributable to）、「有没有份」（involved）</td></tr>
+          <tr><td>⑦ 展望</td><td>④❷</td><td>It is hoped that future studies could …</td><td>14 explain · 15 treatments</td><td>研究「懂」的动词 ＋ 医学「治」的名词</td></tr>
+          <tr><td>⑧ 建议</td><td>⑤❶ ⑤❷</td><td>Meanwhile, there are steps you can take …</td><td><b>16 Meanwhile</b> · 17 take · 18 wellbeing · 19 level · 20 diet</td><td>换人换时的连接词、take steps、健康名词、运动量、饮食</td></tr>
+        </table></div>
+        <div class="flow" style="margin-top:14px">
+          <div class="fi"><b>📌 格子的分布：前四段 15 个空、末段 5 个空。</b><span class="ev">研究本身（②–④ 六格）占 12 个空，平均每格 2 个——<b>每一格都挖到了它最有代表性的那个词</b>：发现格挖变量、方法格挖研究动作、结果格挖测量动词、机制格挖因果扣环、展望格挖「解释 ＋ 疗法」。<b>逻辑空只落在两个接缝上</b>：3 while（规律 → 例外）、16 Meanwhile（研究 → 你）。</span></div>
+          <div class="fi"><b>📌 和往年科研报道完形比：</b><span class="ev"><a href="2015_完形_朋友是基因上的远亲.html" style="color:var(--accent)">2015</a> 是研究报道的「槽位套话」（for example 后面接研究、the study found 后面接结果）；<a href="2018_完形_为何信任是与生俱来的本能.html" style="color:var(--accent)">2018</a> 是对照实验的平行句；<a href="2013_完形_面试打分的当日偏见.html" style="color:var(--accent)">2013</a> 是「比方 → 发现」同构。<b>2021 一篇里八格齐全</b>（从现象一直讲到给读者的建议），最适合当科研报道的样板背格子。</span></div>
+          <div class="fi"><b>📌 用法：</b><span class="ev">开考先读首句（定义）＋ 每段首几个词（One study found · The researchers looked at · For women · ___, there are steps you can）——<b>标出每段是哪一格</b>，再进空。卡住的空问一句「这一格会用什么词」，常常一步到位（⟹ <a href="套路库_阅读.html#R106" style="color:var(--accent)">R106</a> 实验段「方法 → 结果 → 结论」三段设空）。</span></div>
+        </div>
+      </section>
+
+      <!-- ========== 02++ 搭档表 ========== -->
+      <section class="card" id="partner">
+        <h2><span class="n">02++</span>🤝 搭档表：二十个空，每个都在同一句里有一个「搭档词」——18 个靠搭档就能定，跨句的只有 14 与 16</h2>
+        <p class="note">本篇几乎没有「要回读全文才能做」的空。做法：<b>每个空先找同一句里和它绑在一起的那个词</b>（并列的另一半、搭配的另一头、对照的另一边、修饰它的从句），再看选项。</p>
+        <div class="tabwrap"><table class="ctab">
+          <tr><th>空</th><th>同句搭档</th><th>绑法</th><th>搭档给出的条件</th></tr>
+          <tr><td>1 peaks</td><td>levels out · then starts to decline</td><td>三个并列谓语</td><td>曲线缺第一段的终点：升到头</td></tr>
+          <tr><td>2 generally</td><td>we · 一般现在时</td><td>主语 ＋ 时态</td><td>人人如此的规律</td></tr>
+          <tr><td>3 while</td><td>may not be（省了 inevitable）</td><td>主从句同一个词一正一反</td><td>让步</td></tr>
+          <tr><td>4 accumulation</td><td>muscle loss</td><td>and 并列</td><td>同号：不健康的变化</td></tr>
+          <tr><td>5 possibility</td><td>might help</td><td>同位语从句的情态</td><td>推测语气</td></tr>
+          <tr><td>6 delay</td><td>prevent</td><td>or 并列 ＋ help</td><td>同向退一步：挡坏事</td></tr>
+          <tr><td>7 included</td><td>data … measurements</td><td>主语 ＋ 宾语</td><td>整体包含部分</td></tr>
+          <tr><td>8 compared</td><td>that data to reported changes</td><td>V A to B</td><td>两组数据放一起：比较</td></tr>
+          <tr><td>9 with</td><td>people … higher measures</td><td>人 ＋ 指标</td><td>「带有」</td></tr>
+          <tr><td>10 scored</td><td>worse on measures</td><td>V ＋ worse on</td><td>测量 ⟹ 得分</td></tr>
+          <tr><td>11 went by</td><td>the years</td><td>主语 ＋ 短语动词</td><td>时间流逝（＝ as we age）</td></tr>
+          <tr><td>12 attributable</td><td>to changes … that resulted from</td><td>be ___ to ＋ 因果从句</td><td>再扣一环因果</td></tr>
+          <tr><td>13 involved</td><td>For women … immunity（分号前半句）</td><td>分号两边对照</td><td>话题照抄、结果反号</td></tr>
+          <tr><td>14 explain</td><td>these differences（回指上句）</td><td><b>跨句</b>回指</td><td>研究能做的：弄懂</td></tr>
+          <tr><td>15 treatments</td><td>lead to different … for men and women</td><td>explain … and lead to</td><td>先懂、再治</td></tr>
+          <tr><td>16 Meanwhile</td><td>上段 future studies could ↔ 本句 you can</td><td><b>跨段</b>接缝</td><td>换人换时、方向不变</td></tr>
+          <tr><td>17 take</td><td>steps … to help reduce</td><td>V ＋ steps ＋ to do</td><td>采取措施</td></tr>
+          <tr><td>18 wellbeing</td><td>both physical and mental</td><td>both A and B 修饰</td><td>两边各念一遍都通</td></tr>
+          <tr><td>19 level</td><td>maintaining or increasing</td><td>动词 ＋ 宾语</td><td>能升降的量</td></tr>
+          <tr><td>20 diet</td><td>that is high in fiber</td><td>定语从句</td><td>吃的东西</td></tr>
+        </table></div>
+        <p class="note" style="margin-top:12px">📐 <b>句内自足 18／20＝90%</b>，与 2017 并列 2010 年以来第二高（最高 2016 的 95%）。⚠️ 口径：4 若按「要往后读到 excess 才定」、9 若按黄皮书「照应第二段首句」算跨句，则 16／4＝80%。<b>跨句的两个都在「换话题」的地方</b>：14 回指上一句的男女差异、16 站在研究与读者的接缝上。⟹ 科研报道句子短、一句一事，<b>完形难度主要在选项，不在找线索</b>——所以下一节的「单边搭配」才是这篇的真坎。</p>
+      </section>
+
+      <!-- ========== 02+++ 单边搭配 ========== -->
+      <section class="card" id="oneside">
+        <h2><span class="n">02+++</span>🪤 单边搭配陷阱：干扰项只和空格的一侧搭得上——左边对、右边散，或者中文对、英文散</h2>
+        <p class="note">本篇十几个干扰项是同一个造法：<b>挑一个和空格某一侧真能组成搭配的词</b>，让人「眼熟」就选。破法只有一个：<b>把空格左右两边连同后面的修饰成分一起念</b>。</p>
+        <div class="tabwrap"><table class="ctab">
+          <tr><th>空</th><th>干扰项</th><th>它搭得上的那一侧</th><th>搭不上的那一侧</th></tr>
+          <tr><td>17</td><td>watch</td><td>watch one’s step（走路小心）</td><td>steps 是复数、没有物主代词；后面 to help reduce … 要的是「做事」</td></tr>
+          <tr><td>17</td><td>count</td><td>count steps（计步）</td><td>there are steps you can count to help … 不是建议的说法；下句的饮食也不是计步</td></tr>
+          <tr><td>20</td><td>routine</td><td>follow a routine（照常规办）</td><td>that is high in fiber——常规不含纤维</td></tr>
+          <tr><td>20</td><td>prescription</td><td>follow a prescription（遵医嘱）＋ 上文 treatments</td><td>high in fiber；而且是 lifestyle approaches，不是处方</td></tr>
+          <tr><td>11</td><td>ran out</td><td>time runs out（时间用完）</td><td>本句要的是「逐年变差」的持续过程，不是期限将至</td></tr>
+          <tr><td>11</td><td>drew in</td><td>the nights draw in（天黑得早）</td><td>主语是 years</td></tr>
+          <tr><td>15</td><td>symptoms</td><td>上句 did not appear（像「没有症状」）</td><td>lead to different symptoms——研究不会带来症状</td></tr>
+          <tr><td>15</td><td>demands</td><td>demand for（对……的需求）</td><td>研究带来「对男女的需求」不通</td></tr>
+          <tr><td>10</td><td>lived · managed</td><td>live on · manage on（靠……过活）</td><td>宾语是「智力测量值」</td></tr>
+          <tr><td>9</td><td>against</td><td>中文「防腹脂」</td><td>higher measures 是实测含量，不是要防的东西</td></tr>
+          <tr><td>18</td><td>coordination</td><td>中文「身心协调」</td><td>英文不说「身体与心理的协调」；both … and 要两边各成立</td></tr>
+          <tr><td>7</td><td>modified</td><td>中文「研究者调整数据」的印象</td><td>主语是 data，数据不会修改测量值</td></tr>
+          <tr><td>14</td><td>alter · remove</td><td>these differences 可以被改变？</td><td>主语是 studies：研究改不了生理差异</td></tr>
+        </table></div>
+        <div class="flow" style="margin-top:14px">
+          <div class="fi"><b>📌 三种「单边」：</b><span class="ev"><b>① 搭左不搭右</b>（17 watch／count · 20 routine／prescription · 11 ran out）——空格左边的词确实能和它组成习语，往右念就断；<b>② 搭上文不搭本句</b>（15 symptoms 借 did not appear、20 prescription 借 treatments）——命题人从上一句借一个影子；<b>③ 搭中文不搭英文</b>（9 against「防」· 18 coordination「身心协调」）——中文译过去顺，英文没有这个用法。</span></div>
+          <div class="fi"><b>📌 验法：「整串念」。</b><span class="ev">把选项放进空格，<b>从左边最近的实词一直念到右边的修饰语结束</b>：there are steps you can <b>count</b> to help reduce abdominal fat ⟹ 断；following a Mediterranean-style <b>routine</b> that is high in fiber ⟹ 断；as the years <b>ran out</b>（在「逐年变差」里）⟹ 断。⟹ 新卡 <a href="套路库_阅读.html#R310" style="color:var(--accent)">R310</a>。</span></div>
+          <div class="fi"><b>📌 和往年比：</b><span class="ev"><a href="2020_完形_别碰我们的烤土豆.html" style="color:var(--accent)">2020</a> 的干扰项多是「档位不对」（bound 让得太满）。<b>2021 换成了「搭配只成立一半」</b>——单看一侧都像对的，这是本篇偏易却仍有人丢分的原因。</span></div>
+        </div>
+      </section>
+
+      <!-- ========== 02++++ 语气与动词边界 ========== -->
+      <section class="card" id="hedge">
+        <h2><span class="n">02++++</span>📏 语气表 ＋ 研究者的动词边界：观察性研究只能说到「可能」，研究者只能「包含、比较、解释」</h2>
+        <p class="note">这是一项<b>相关性研究</b>（研究者自己也说只发现了相关、不能确定因果）。原文每一处结论都垫着一个「打折词」——<b>答案词的语气不能比原文更满</b>；同时，研究者在句子里能做的动作也有边界。</p>
+        <div class="tabwrap"><table class="ctab">
+          <tr><th>句</th><th>原文的打折词</th><th>空</th><th>正解（够谨慎）</th><th>被淘汰的「说过头」</th></tr>
+          <tr><td>①❸</td><td>may not be</td><td>3</td><td>while（让步：未必）</td><td>—</td></tr>
+          <tr><td>②❶</td><td>are associated with</td><td>4</td><td>accumulation（只是变量）</td><td>—</td></tr>
+          <tr><td>②❷</td><td>suggests · might help</td><td>5 · 6</td><td>possibility · delay（防不住至少推迟）</td><td>requirement · decision（强制、定论）</td></tr>
+          <tr><td>④❶</td><td>may be · did not appear</td><td>12 · 13</td><td>attributable · involved</td><td>resistant（与因果链相悖）</td></tr>
+          <tr><td>④❷</td><td>It is hoped · could · perhaps</td><td>14 · 15</td><td>explain · treatments</td><td>alter · remove（研究改不了差异）</td></tr>
+        </table></div>
+        <div class="tabwrap" style="margin-top:12px"><table class="ctab">
+          <tr><th>动作者</th><th>能做（正解）</th><th>越界（干扰）</th></tr>
+          <tr><td>数据 data</td><td>7 included 测量值</td><td>modified · supported · predicted 测量值</td></tr>
+          <tr><td>研究者 researchers</td><td>looked at · 8 compared 数据</td><td>devoted · converted 数据</td></tr>
+          <tr><td>将来的研究 future studies</td><td>14 explain 差异 · lead to 15 treatments</td><td>alter · remove · spread 差异；lead to symptoms／demands</td></tr>
+          <tr><td>生活方式 lifestyle factors</td><td>help prevent or 6 delay 衰退</td><td>utilize · ensure · seek 衰退</td></tr>
+          <tr><td>你 you</td><td>17 take steps · maintain or increase 19 level · follow a 20 diet</td><td>watch／count steps · follow a routine／prescription</td></tr>
+        </table></div>
+        <p class="note" style="margin-top:12px">⭐⭐ <b>两条规矩</b>：<b>① 情态定类型</b>——同位语从句里是 might／may，抽象名词只能是 possibility 一类；<b>② 主语定动作</b>——先问「谁在做」，再问「这个谁做得到吗」：数据只会「包含」，研究只会「比较、解释」，生活方式只会「帮着挡」。⟹ 新卡 <a href="套路库_阅读.html#R311" style="color:var(--accent)">R311</a>；对照 <a href="2020_完形_别碰我们的烤土豆.html" style="color:var(--accent)">2020</a> 的「让步只让半步」（<a href="套路库_阅读.html#R289" style="color:var(--accent)">R289</a>）——<b>2020 是作者让步时打折，2021 是研究证据本身只够打折</b>。</p>
+      </section>
+
+      <!-- ========== 03 考点分类 ========== -->
+      <section class="card">
+        <h2><span class="n">03</span>考点分类（完形不背单个空，要看「这题在考什么」）</h2>
+        <div class="catbar" id="catbar"></div>
+        <div class="catlegend" id="catlegend"></div>
+        <p class="note" style="margin-top:14px">点某一类 → 下方列出该类所有空 → 点小格跳到解析卡。（分类依据不是「空格里填的是什么词」，而是<b>「解这一题你得做什么动作」</b>——所以 1 peaks 虽是动词辨析，定它的是同句 levels out、decline 画出的曲线，<b>归「上下文语义」</b>；13 involved 定它的是分号前半句的男女对照，<b>归「上下文语义」</b>；18 wellbeing 是 physical and mental wellbeing 现成搭配，<b>归「固定搭配」</b>；19 level 要判断「能升降的量」，<b>归「词义辨析」</b>。）</p>
+        <div class="chips" id="chips"></div>
+        <div class="flow" style="margin-top:16px">
+          <div class="fi"><b>⭐ 十五年对照：2021 的 3／7／2／8 是新组合——十五年十三种；逻辑空只有 2 个，与 2008 并列最少。</b>
+            <span class="ev"><div class="tabwrap"><table class="otab"><tr><th>年份</th><th>词义辨析</th><th>固定搭配</th><th>逻辑关系</th><th>上下文语义</th><th>这一年压在哪</th></tr>
+            <tr><td>2007</td><td>9</td><td>5</td><td>4</td><td>2</td><td>词义（占 45%）</td></tr>
+            <tr><td>2008</td><td>9</td><td>6</td><td><b>2</b></td><td>3</td><td>六道实义动词的主语适配</td></tr>
+            <tr><td>2009</td><td>6</td><td>5</td><td>5</td><td>4</td><td>四类几乎持平</td></tr>
+            <tr><td>2010</td><td>9</td><td>4</td><td>4</td><td>3</td><td>形容词与副词的「方向」</td></tr>
+            <tr><td>2011</td><td>6</td><td>3</td><td>6</td><td>5</td><td>一根因果箭头的方向</td></tr>
+            <tr><td>2012</td><td>5</td><td>4</td><td>3</td><td>8</td><td>作者的应然立场 ＋ 首尾镜像</td></tr>
+            <tr><td>2013</td><td>3</td><td>7</td><td>4</td><td>6</td><td>空格后的介词短语 ＋ 比方与发现同构</td></tr>
+            <tr><td>2014</td><td>5</td><td>6</td><td>3</td><td>6</td><td>按段定正负 ＋ 一个比喻贯穿全文 ＋ 说明书式搭配</td></tr>
+            <tr><td>2015</td><td>6</td><td>6</td><td>3</td><td>5</td><td>研究报道的槽位套话 ＋ 「不止于表面」四连</td></tr>
+            <tr><td>2016</td><td>6</td><td>3</td><td>6</td><td>5</td><td>流程时间轴 ＋ 许可与现实 ＋ 具体动作的画面</td></tr>
+            <tr><td>2017</td><td>7</td><td>4</td><td>3</td><td>6</td><td>一条因果链的扣环词 ＋ 递进台阶 ＋ 框架定正负</td></tr>
+            <tr><td>2018</td><td>5</td><td>4</td><td>4</td><td>7</td><td>两本账的翻账键 ＋ 对照实验平行句 ＋ 主题词替身</td></tr>
+            <tr><td>2019</td><td>4</td><td>4</td><td>4</td><td>8</td><td>清单编号 ＋ 人迹替身链 ＋ 首尾扣环</td></tr>
+            <tr><td>2020</td><td>5</td><td>6</td><td>3</td><td>6</td><td>三声部 ＋ 让步档位 ＋ 同构旧例</td></tr>
+            <tr><td><b>2021</b></td><td><b>3</b></td><td><b>7</b></td><td><b>2</b></td><td><b>8</b></td><td><b>科研报道八格 ＋ 同句搭档 ＋ 单边搭配</b></td></tr></table></div>
+            ⟹ 2021 的 3／7／2／8 <b>此前没出现过</b>——十五年十三种（重样仍是两次：2016 撞 2011、2020 撞 2014）。三个「并列极值」：<b>逻辑 2</b>（与 2008 并列最少）、<b>搭配 7</b>（与 2013 并列最多）、<b>语境 8</b>（与 2012、2019 并列最多）；<b>词义 3</b> 与 2013 并列最少。⟹ <b>科研报道的完形，逻辑空让位给「这一格的现成说法」</b>（compare A to B · score worse on · be attributable to · take steps · physical and mental wellbeing）。⚠️ <b>口径说明</b>：19 level 若按 level of exercise 现成搭配归搭配，就成了 2／8／2／8；5 possibility 若按 might 回声归语境，就成了 2／7／2／9；1 peaks 若按动词辨析归词义，就成了 4／7／2／7。三种口径都写在这里，「逻辑只有 2」在哪种口径下都不变。</span></div>
+          <div class="fi"><b>📌 结构失效：两道硬的 ＋ 一道半。</b>
+            <span class="ev"><b>8</b> compared／devoted／converted／applied <b>全是 V A to B</b> · <b>12</b> attributable／superior／parallel／resistant <b>全是 be ___ to</b>——四个选项接同一个小词，介词一点忙都帮不上；<b>10</b> lived／scored／managed／played 后面<b>都能接 on</b>（live on · score on · manage on · play on），算半道。按往年「四个选项接同一个小词」的口径：2013 一道、2014 两道、2016 三道、2017 四道、2018 三道、2019 两道、2020 两道、<b>2021 两道（＋10 半道）</b>。⟹ 救回 8 的是研究目的（要比出相关性）、救回 12 的是同句 resulted from 的因果链（⟹ <a href="套路库_阅读.html#R157" style="color:var(--accent)">R157</a>）。</span></div>
+          <div class="fi"><b>📐 线索位置统计（判据＝关键线索是否落在同一个句号之内）：句内自足 18 空 ／ 跨句 2 空。</b>
+            <span class="ev"><b>跨句（2）</b>：14（these differences 回指上句）· 16（段首空，站在研究与读者的接缝）。<br><b>句内自足（18）</b>：其余全部（13 的对照在分号前半句、仍在同一句号内）。<br>⟹ 句内比例 <b>90%</b>（2010 65% → 2011 75% → 2012 80% → 2013 70% → 2014 85% → 2015 65% → 2016 95% → 2017 90% → 2018 65% → 2019 60% → 2020 85% → <b>2021 90%</b>），与 2017 并列 2010 年以来第二高。⚠️ 口径：4 若按「往后读到 excess 才定」、9 若按黄皮书「照应第二段首句」算跨句，则 16／4＝80%。</span></div>
+          <div class="fi"><b>📌 位置预判：两个逻辑空都守规矩（2／2），而且这一年反向也成立。</b>
+            <span class="ev"><b>3</b> while（紧跟句首 But，从句之首）· <b>16</b> Meanwhile（段首）——全在句首；句内十八个空没有一个是逻辑空（2015 2／3 · 2016 6／6 · 2017 3／3 · 2018 4／4 · 2019 4／4 · 2020 3／3 · <b>2021 2／2</b>，⟹ <a href="套路库_阅读.html#R76" style="color:var(--accent)">R76</a>）。⭐ <b>反向这一年也成立</b>：句首空只有 3 和 16 两个，都是逻辑空——2019、2020 都各有两个句首空是介词（编号恰好都是 1 和 12），<b>2021 的 1 在句中（It ___ in …）、12 在表语位（may be ___ to）</b>。</span></div>
+          <div class="fi"><b>📌 三缺一：干脆成立 5 次（3 · 5 · 6 · 13 · 14），全是答案。</b>
+            <span class="ev"><b>3</b>：until／once 时间与条件、since 时间或原因 ＋ <b>while</b> 唯一能让步 · <b>5</b>：requirement／decision／goal 都是「人要的、人定的」＋ <b>possibility</b> 说事情本身 · <b>6</b>：utilize／ensure／seek 都是「要它」＋ <b>delay</b> 唯一「挡它」 · <b>13</b>：restored／isolated／controlled 都是「被人处置」＋ <b>involved</b> 说有没有份 · <b>14</b>：alter／spread／remove 都是「动它」＋ <b>explain</b> 唯一「懂它」。<br>⚠️ <b>照实说</b>：1、4、15、19 勉强也能分（peaks 唯一说「到头」、level 唯一是「量」），但理由是做完才看清的；2019 成立 11 次、2020 只有 3 次，<b>2021 回到 5 次</b>（⟹ <a href="套路库_阅读.html#R74" style="color:var(--accent)">R74</a>）。</span></div>
+          <div class="fi"><b>📌 末空：20 diet，又不是逻辑空。</b>
+            <span class="ev">近九年八年末空不是逻辑空（只有 2016 是 while）——科研报道的末空落在最后一条建议的核心名词上（⟹ <a href="套路库_阅读.html#R103" style="color:var(--accent)">R103</a>）。</span></div>
+        </div>
+      </section>
+
+      <!-- ========== 04 打法 ========== -->
+      <section class="card">
+        <h2><span class="n">04</span>完形六大打法（本篇取证）</h2>
+        <div class="flow">
+          <div class="fi"><b>① 首句不设空 → 先定三要素，再<u>认文体</u></b>：话题、方向、口吻；再问「这是社论、叙事，还是研究报道」。
+            <span class="ev">本篇首句是定义句（X is the type of Y that …），第二段 One study found that … ⟹ <b>科研报道</b> ⟹ 逻辑空押得少，先摆八格（<a href="#slots" style="color:var(--accent)">02+</a>）。</span></div>
+          <div class="fi"><b>② ⭐⭐ 科研报道先摆八格：现象 · 发现 · 意义 · 方法 · 结果 · 机制 · 展望 · 建议</b>（本篇的主刀之一）。
+            <span class="ev">方法格 7 included · 8 compared；结果格 9 with · 10 scored · 11 went by；机制格 12 attributable · 13 involved；展望格 14 explain · 15 treatments（<a href="#slots" style="color:var(--accent)">02+</a>，⟹ <a href="套路库_阅读.html#R106" style="color:var(--accent)">R106</a>）。</span></div>
+          <div class="fi"><b>③ ⭐⭐ 每个空先找同句搭档</b>（本篇的主刀之二）。
+            <span class="ev">1 ↔ levels out／decline（曲线）· 4 ↔ loss（同号）· 6 ↔ prevent（同向）· 13 ↔ 分号前半句（反号）· 18 ↔ both physical and mental · 20 ↔ high in fiber；句内自足 18／20（<a href="#partner" style="color:var(--accent)">02++</a>，⟹ 新卡 R312 的「曲线」与时间轴）。</span></div>
+          <div class="fi"><b>④ ⭐⭐ 干扰项「只搭一边」：整串念</b>（本篇的主刀之三）。
+            <span class="ev">17 watch／count · 20 routine／prescription · 11 ran out／drew in · 15 symptoms／demands · 9 against · 18 coordination（<a href="#oneside" style="color:var(--accent)">02+++</a>，⟹ 新卡 R310）。</span></div>
+          <div class="fi"><b>⑤ 语气只说到证据那么满；研究者只做得到研究者的事</b>。
+            <span class="ev">5 possibility（配 might）· 6 delay（防不住至少推迟）· 7 included（数据不修改数据）· 14 explain（研究改不了差异）（<a href="#hedge" style="color:var(--accent)">02++++</a>，⟹ 新卡 R311；对照 R289 让步档位）。</span></div>
+          <div class="fi"><b>⑥ 段首空看「换人换时」</b>。
+            <span class="ev">16：上段 future studies could（研究者 · 将来）→ 本段 you can（你 · 现在），方向不变 ⟹ Meanwhile；Likewise 要内容相似、Therefore 要因果、Instead 要先否定（⟹ 新卡 R313）。</span></div>
+        </div>
+        <p class="note" style="margin-top:14px">🔁 <b>十六篇完形（2007–2021 ＋ 2022）信号类型对照</b>：<a href="2022_完形_植物意识.html" style="color:var(--accent)">2022</a> 靠明信号词 · <a href="2007_完形_拉美独立后的理想与分歧.html" style="color:var(--accent)">2007</a> 靠结构性信号 · <a href="2008_完形_高智商与遗传疾病.html" style="color:var(--accent)">2008</a> 靠动词与主语适配 · <a href="2009_完形_智力的代价.html" style="color:var(--accent)">2009</a> 靠语用功能 · <a href="2010_完形_霍桑效应遭到质疑.html" style="color:var(--accent)">2010</a> 靠叙事方向 · <a href="2011_完形_笑与情绪的方向之争.html" style="color:var(--accent)">2011</a> 靠因果箭头 · <a href="2012_完形_大法官的伦理与法院的合法性.html" style="color:var(--accent)">2012</a> 靠应然立场与首尾镜像 · <a href="2013_完形_面试打分的当日偏见.html" style="color:var(--accent)">2013</a> 靠介词框架与比方—发现同构 · <a href="2014_完形_像练肌肉一样练大脑.html" style="color:var(--accent)">2014</a> 靠按段定正负与贯穿比喻 · <a href="2015_完形_朋友是基因上的远亲.html" style="color:var(--accent)">2015</a> 靠研究报道槽位与「不止于表面」四连 · <a href="2016_完形_柬埔寨的婚俗.html" style="color:var(--accent)">2016</a> 靠流程时间轴、许可与现实、动作画面 · <a href="2017_完形_拥抱有益健康.html" style="color:var(--accent)">2017</a> 靠因果链扣环词、递进台阶、框架正负号 · <a href="2018_完形_为何信任是与生俱来的本能.html" style="color:var(--accent)">2018</a> 靠两本账的翻账键、对照实验平行句、主题词替身 · <a href="2019_完形_没有手机如何走出森林.html" style="color:var(--accent)">2019</a> 靠清单编号、人迹替身链、首尾扣环 · <a href="2020_完形_别碰我们的烤土豆.html" style="color:var(--accent)">2020</a> 靠三声部、让步档位、同构旧例 · <b>2021 靠科研报道八格、同句搭档、整串念破单边搭配</b>。<br>🧠 <b>话题</b>：与 <a href="2014_完形_像练肌肉一样练大脑.html" style="color:var(--accent)">2014</a>（像练肌肉一样练大脑）、<a href="2009_完形_智力的代价.html" style="color:var(--accent)">2009</a>（智力的代价）、<a href="2008_完形_高智商与遗传疾病.html" style="color:var(--accent)">2008</a>（高智商与遗传疾病）同属「智力／大脑」话题；与 <a href="2017_完形_拥抱有益健康.html" style="color:var(--accent)">2017</a>（拥抱有益健康）同属「健康科普」——<b>完形最爱的两类话题在这一篇里合在一起</b>：大脑 ＋ 健康生活方式。</p>
+      </section>
+
+      <!-- ========== 05 搭配库 ========== -->
+      <section class="card">
+        <h2><span class="n">05</span>固定搭配 &amp; 熟词僻义（这些是死记就得分的）</h2>
+        <div class="wb">
+          <div class="wbi"><div class="p">have to do with　与……有关（①❶）</div><div class="u">✍️ 比较句：Success has more to do with habits than with talent.</div></div>
+          <div class="wbi"><div class="p">peak · level out · decline　到顶 · 持平 · 下降（①❷）</div><div class="u">⭐ <b>趋势三段</b>：图表作文直接用；level out 是熟词僻义（level 作动词短语）。</div></div>
+          <div class="wbi"><div class="p">generally / typically / usually　一般、通常（①❷）</div><div class="u">⭐ 立常识的副词，下一句多半是 But 例外。</div></div>
+          <div class="wbi"><div class="p">While A is X, B may not be　虽然 A 是 X，B 却未必（①❸）</div><div class="u">⭐⭐ 让步 ＋ 省略：may not be 后面省掉了 X。</div></div>
+          <div class="wbi"><div class="p">the accumulation of sth　……的堆积、积累（②❶）</div><div class="u">accumulation of fat／wealth／knowledge／evidence。</div></div>
+          <div class="wbi"><div class="p">be associated with　与……相关（②❶）</div><div class="u">⭐ 只说相关、不说因果——科研报道的标准措辞（⟹ R228）。</div></div>
+          <div class="wbi"><div class="p">suggest the possibility that …　表明存在……的可能（②❷）</div><div class="u">⭐ 同位语从句里是 might／may ⟹ possibility。</div></div>
+          <div class="wbi"><div class="p">help prevent or delay sth　有助于防止或延缓（②❷）</div><div class="u">⭐ 医学科普固定搭档；help 后直接接动词原形。</div></div>
+          <div class="wbi"><div class="p">compare A to／with B　把 A 与 B 比较（③❶）</div><div class="u">⭐ 同族陷阱：devote／convert／apply A to B——都是 to，意思各不相同。</div></div>
+          <div class="wbi"><div class="p">over a six-year period　在六年期间（③❶）</div><div class="u">over ＋ 时间段：over the past decade · over a period of time。</div></div>
+          <div class="wbi"><div class="p">people with higher measures of …　……指标更高的人（③❷）</div><div class="u">⭐ 「人 ＋ with ＋ 指标」是结果句主语的标准长相。</div></div>
+          <div class="wbi"><div class="p">score worse／better on sth　在……上得分更低／更高（③❷）</div><div class="u">⭐ 测量 ⟹ 得分；live on／manage on 是「靠……过活」。</div></div>
+          <div class="wbi"><div class="p">as the years go by　随着岁月流逝（③❷）</div><div class="u">⭐ ＝ as we age ＝ as time goes by；对照 time runs out（时间用完）· the nights draw in（天黑得早）。</div></div>
+          <div class="wbi"><div class="p">measures（熟词僻义）　测量值、指标（③❷）</div><div class="u">⭐ 不是「措施」：measures of fluid intelligence ＝ 流体智力的测量值。</div></div>
+          <div class="wbi"><div class="p">be attributable to　可归因于（④❶）</div><div class="u">⭐⭐ 因在右；同族 be superior／parallel／resistant to 全是 to。</div></div>
+          <div class="wbi"><div class="p">result from ／ result in　由……引起 ／ 导致（④❶）</div><div class="u">⭐⭐ 方向相反：A results from B（B 是因）· B results in A。</div></div>
+          <div class="wbi"><div class="p">be involved (in sth)　参与其中、牵涉其中（④❶）</div><div class="u">本句省掉了 in the association。</div></div>
+          <div class="wbi"><div class="p">It is hoped that …　人们希望……（④❷）</div><div class="u">✍️ 同族：It is said／believed／expected that …</div></div>
+          <div class="wbi"><div class="p">explain … and lead to new treatments　解释……并带来新疗法（④❷）</div><div class="u">⭐ 科研展望句的「懂 ＋ 治」两步。</div></div>
+          <div class="wbi"><div class="p">Meanwhile ／ In the meantime　与此同时；在此期间（⑤❶）</div><div class="u">⭐⭐ 换人换时、方向不变（⟹ R313）。</div></div>
+          <div class="wbi"><div class="p">take steps to do sth　采取措施做某事（⑤❶）</div><div class="u">⭐ 对照 watch one’s step（当心脚下）· count steps（计步）· step by step（逐步）。</div></div>
+          <div class="wbi"><div class="p">physical and mental wellbeing／health　身心健康（⑤❶）</div><div class="u">⭐ 健康话题作文高频；wellbeing 也写 well-being。</div></div>
+          <div class="wbi"><div class="p">maintain or increase your level of …　保持或提高……的量（⑤❷）</div><div class="u">⭐ 宾语要能升降：level · amount · intake · rate。</div></div>
+          <div class="wbi"><div class="p">follow a … diet　遵循某种饮食方案（⑤❷）</div><div class="u">⭐ 同族：follow a routine（照常规）· follow a prescription（遵医嘱）——单边搭配陷阱的来源。</div></div>
+          <div class="wbi"><div class="p">be high／low in sth　某成分含量高／低（⑤❷）</div><div class="u">high in fiber · low in sugar · rich in vitamins。</div></div>
+          <div class="wbi"><div class="p">lean（熟词僻义）　瘦的、不带肥的（③❶ ⑤❶）</div><div class="u">lean muscle · lean meat · lean years（歉收年）。</div></div>
+          <div class="wbi"><div class="p">mass（熟词僻义）　量、质量（⑤❶）</div><div class="u">muscle mass · body mass index（BMI）· bone mass。</div></div>
+        </div>
+      </section>
+
+      <!-- ========== 06 80 词表 ========== -->
+      <section class="card">
+        <h2><span class="n">06</span>80 个选项词速查（完形的真正词汇量）
+          <button class="allbtn" id="btnHide" style="margin-left:auto" onclick="toggleHide()">✍️ 默写模式</button>
+        </h2>
+        <p class="note">完形一篇＝<b>80 个高频词的辨析现场</b>，绿底是正确项。<b>默写模式</b>会糊住中文释义——先自己说出意思，点单个格子可单独揭开。<b>本篇 80 个词里有四组值得成组背</b>：8 题<b>四个 V A to B</b>（compare／devote／convert／apply——比较、专用、转变、应用）；12 题<b>四个 be ___ to</b>（attributable／superior／parallel／resistant——归因、优于、类似、抵抗）；11 题<b>四个短语动词</b>（run out／set off／go by／draw in——用完、出发、流逝、天短）；16 题<b>四个段首副词</b>（Meanwhile／Likewise／Therefore／Instead——并行、相似、因果、替代）。</p>
+        <div class="tabwrap"><table class="otab" id="otab"></table></div>
+      </section>
+
+      <!-- ========== 07 长难句 ========== -->
+      <section class="card">
+        <h2><span class="n">07</span>长难句精析（点 01 里的句条跳到这里）</h2>
+
+        <div class="sent" id="l1_1">
+          <div class="src"><b>①❶ 首句 · 定义句</b>（29 词）<img class="strip" src="img/2021_完形/s1_1.png" alt="①❶ 原卷句条" loading="lazy"></div>
+          <div class="anat">
+            <ul>
+              <li><b>主干</b>：<span class="skel">Fluid intelligence is the type of intelligence</span>——「X is the type of Y」是下定义的标准句型。</li>
+              <li><b>that 定语从句</b>：that has to do with A and B——A＝short-term memory，B＝the ability to think …；<b>and 连的是两个名词</b>，不是两个动词。</li>
+              <li>B 的内部：the ability ＋ to think（不定式作定语）＋ quickly, logically, and abstractly（三个副词并列）＋ in order to solve new problems（目的状语）。</li>
+            </ul>
+          </div>
+          <div class="tr">意：流体智力这种智力，关乎短期记忆，关乎为解决新问题而快速、有逻辑、抽象地思考的能力。</div>
+        </div>
+
+        <div class="sent" id="l1_2">
+          <div class="src"><b>①❷ 一主三谓</b>（21 词）<img class="strip" src="img/2021_完形/s1_2.png" alt="①❷ 原卷句条" loading="lazy"></div>
+          <div class="anat">
+            <ul>
+              <li><b>一个主语 It、三个谓语</b>：<span class="skel">It peaks</span> in young adulthood，<span class="skel">levels out</span> for a period of time，and then generally <span class="skel">starts</span> to slowly decline。</li>
+              <li>⭐ 三个谓语<b>按时间顺序</b>排开 ⟹ 一条曲线；and then 标出最后一段。</li>
+              <li><code>to slowly decline</code> 是分裂不定式（to 和动词之间插副词），口语与科普常见，考场作文少用。</li>
+              <li><code>as we age</code>：as 引导时间状语从句（随着），age 是动词「变老」。</li>
+            </ul>
+          </div>
+          <div class="tr">意：它在成年早期达到顶峰，随后持平一段时间，然后通常随着年龄增长开始缓慢下降。</div>
+        </div>
+
+        <div class="sent" id="l3_1">
+          <div class="src"><b>③❶ 全文最长句 · 研究方法</b>（36 词）<img class="strip" src="img/2021_完形/s3_1.png" alt="③❶ 原卷句条" loading="lazy"></div>
+          <div class="anat">
+            <ul>
+              <li><b>一主两谓</b>：<span class="skel">The researchers looked at data</span> … <b>and</b> <span class="skel">compared that data to reported changes</span> …——第二个 and 才是连谓语的，<b>前面那个 men and women 的 and 只连名词</b>，别在那里断句。</li>
+              <li><b>data 后的定语从句</b>：that included measurements of A and B（lean muscle · abdominal fat）from more than 4,000 … men and women——from 短语说明测量值<b>取自谁</b>。</li>
+              <li>middle-to-older-aged：连字符复合形容词，「中老年的」。</li>
+              <li>over a six-year period：时间状语，修饰 changes（六年间的变化）。</li>
+            </ul>
+          </div>
+          <div class="tr">意：研究人员查看了四千多名中老年男女的数据（包括瘦肌肉量和腹部脂肪的测量值），并把这些数据与他们六年间有记录的流体智力变化作比较。</div>
+        </div>
+
+        <div class="sent" id="l3_2">
+          <div class="src"><b>③❷ 研究结果</b>（23 词）<img class="strip" src="img/2021_完形/s3_2.png" alt="③❷ 原卷句条" loading="lazy"></div>
+          <div class="anat">
+            <ul>
+              <li><b>主干</b>：<span class="skel">They found that</span> ＋ 宾语从句。</li>
+              <li><b>从句的主语很长</b>：middle-aged people ＋ with higher measures of abdominal fat（介词短语作后置定语）；<b>谓语到 scored 才出现</b>——找谓语时跳过 with 短语。</li>
+              <li>scored worse on measures of fluid intelligence：score ＋ 比较级 ＋ on（在……方面）。</li>
+              <li>as the years went by：时间状语从句，时态随 found 用过去时。</li>
+            </ul>
+          </div>
+          <div class="tr">意：他们发现，腹部脂肪测量值更高的中年人，随着岁月推移，在流体智力测量上的得分更差。</div>
+        </div>
+
+        <div class="sent" id="l4_1">
+          <div class="src"><b>④❶ 分号对照</b>（28 词）<img class="strip" src="img/2021_完形/s4_1.png" alt="④❶ 原卷句条" loading="lazy"></div>
+          <div class="anat">
+            <ul>
+              <li><b>两个分句由分号连接</b>：For women, <span class="skel">the association may be attributable to changes in immunity</span> …；in men, <span class="skel">the immune system did not appear to be involved</span>。</li>
+              <li>⭐ 两个状语 <b>For women ／ in men 都提到句首</b>——对照的「标签」放在最前面，读者一眼看出是男女对比。</li>
+              <li>that resulted from excess abdominal fat：定语从句修饰 changes in immunity——<b>一句里两环因果</b>：腹脂 → 免疫变化（resulted from）→ 关联（attributable to）。</li>
+              <li>the association：回指 ②❶ 的 are associated with——<b>动词变名词的回指</b>。</li>
+            </ul>
+          </div>
+          <div class="tr">意：对女性来说，这种关联或许可以归因于腹部脂肪过多所引起的免疫变化；而对男性来说，免疫系统似乎并没有参与其中。</div>
+        </div>
+
+        <div class="sent" id="l5_2">
+          <div class="src"><b>⑤❷ 两条建议</b>（30 词）<img class="strip" src="img/2021_完形/s5_2.png" alt="⑤❷ 原卷句条" loading="lazy"></div>
+          <div class="anat">
+            <ul>
+              <li><b>主系表</b>：<span class="skel">The two highly recommended lifestyle approaches are</span> A and B——<b>表语是两个动名词短语</b>，正好对应 The two。</li>
+              <li>A＝maintaining or increasing your level of aerobic exercise（or 连两个动名词，共用宾语）。</li>
+              <li>B＝following a Mediterranean-style diet ＋ that 定语从句（is high in fiber <b>and</b> eliminates highly processed foods——从句里又有两个并列谓语）。</li>
+              <li>⭐ <b>三个 and 三个层次</b>：A and B（两条建议）· high in fiber and eliminates（饮食的两个特点）· 别和上一句的 reduce … and maintain 混。</li>
+            </ul>
+          </div>
+          <div class="tr">意：最受推荐的两种生活方式是：保持或提高有氧运动量；遵循富含纤维、不吃深加工食品的地中海式饮食。</div>
+        </div>
+      </section>
+
+      <!-- ========== 08 写作素材 ========== -->
+      <section class="card">
+        <h2><span class="n">08</span>可搬进作文/翻译的表达</h2>
+        <p class="note">本篇是一篇<b>「现象 → 研究 → 机制 → 展望 → 建议」的科研报道</b>，最能搬的是四类句子：<b>趋势句</b>（图表作文）、<b>研究发现句</b>（举论据）、<b>谨慎推论句</b>（may／might／suggest）、<b>「研究还要等，你现在就能做」的建议句</b>（大作文收尾）。话题上，「健康生活方式」「老龄化与终身学习」「科学研究的价值」都能接上。下面例句全部自拟，只借句式骨架。</p>
+        <div class="wb">
+          <div class="wbi"><div class="p">X peaks …, levels out …, and then starts to decline　先到顶、再持平、后下降</div><div class="u">⭐⭐ <b>图表作文的趋势句</b>：<i>The number of visitors peaked in 2019, leveled out for two years and then began to fall.</i></div></div>
+          <div class="wbi"><div class="p">While A is inevitable, B may not be　A 躲不掉，B 却未必</div><div class="u">⭐⭐ <b>立意句</b>：<i>While change is inevitable, decline is not.</i></div></div>
+          <div class="wbi"><div class="p">One study found that A is associated with B　一项研究发现 A 与 B 相关</div><div class="u">⭐ <b>举论据</b>：<i>One study found that reading for pleasure is associated with better grades.</i></div></div>
+          <div class="wbi"><div class="p">This suggests the possibility that …　这表明……是可能的</div><div class="u">⭐⭐ <b>谨慎推论</b>：<i>This suggests the possibility that small habits might matter more than talent.</i></div></div>
+          <div class="wbi"><div class="p">help prevent or delay …　有助于防止或延缓……</div><div class="u"><i>Staying socially active can help prevent or delay loneliness in old age.</i></div></div>
+          <div class="wbi"><div class="p">… may be attributable to …　……或许可归因于……</div><div class="u">⭐ <b>分析原因段</b>：<i>The rise in short-sightedness may be attributable to long hours on screens.</i></div></div>
+          <div class="wbi"><div class="p">It is hoped that … could … and perhaps lead to …　希望……能……，或许还能带来……</div><div class="u"><i>It is hoped that the new policy could ease traffic and perhaps lead to cleaner air.</i></div></div>
+          <div class="wbi"><div class="p">Meanwhile, there are steps you can take to …　与此同时，你可以采取一些措施来……</div><div class="u">⭐⭐ <b>大作文收尾的「个人行动」段</b>：<i>Meanwhile, there are steps each of us can take to protect the environment.</i></div></div>
+          <div class="wbi"><div class="p">protect both your physical and mental wellbeing　保护身心健康</div><div class="u"><i>Regular walks protect both our physical and mental wellbeing.</i></div></div>
+        </div>
+      </section>
+
+    </main>
+
+    <aside>
+      <div id="panel"><div class="hint">👆 点正文里的<b>黄底词</b><br>词卡会出现在这里<br><br>点<b>空格按钮</b>则跳到对应解析卡</div></div>
+    </aside>
+  </div>
+
+  <footer>2021 英语一 · 完形填空复盘页 · ⚠️ 盲做口径：18 空盲做 18/18（盲做答案先落盘，再只裁答案页 Section I 那四行核对）＋ 19、20 两空解析做 T1 时已误见、不计 · 解析由 Claude 独立写成并与黄皮书精讲（p17–p30，书内 1–14）逐空交叉核对（答案零书误）· 来源：<i>Psychology Today</i> 2019-12 <i>Belly Fat and Your Brain</i>（据黄皮书）；研究背景经 WebSearch 核对（Klinedinst、Willette 等，<i>Brain, Behavior, and Immunity</i> 2019）· 正文为原卷扫描句条，不转录全文 · 本页新卡 R310–R313</footer>
+</div>
+
+<button id="yd">🔍 查有道</button>
+
+<script>
+/* ============ V ============ */
+const V = {
+  fluid:{w:"fluid intelligence",ipa:"/ˈfluːɪd ɪnˈtelɪdʒəns/",pos:"n. phrase",tags:["core","phrase"],cn:"<b>流体智力</b>（临场推理、解新题的能力）",en:"the ability to think and reason quickly about new problems",ex:"Fluid intelligence is the type of intelligence",mem:"fluid＝流动的 ⟹「流动的智力」：不靠存货、靠现场转。⭐ 心理学里与它相对的是 <b>crystallized intelligence</b>（晶体智力：知识、词汇、经验，年纪越大越多）——<b>本文只说流体智力会掉</b>，所以全文的「衰退」都不是说人变笨了，是说<b>临场反应变慢</b>。",syn:"reasoning ability · mental agility",conf:"<b>fluid</b>（流体的；流畅的）vs <b>fluent</b>（说话流利的）——fluent English，不说 fluid English。"},
+  shortterm:{w:"short-term memory",ipa:"/ˌʃɔːt tɜːm ˈmeməri/",pos:"n. phrase",tags:["phrase"],cn:"<b>短期记忆</b>",en:"the ability to remember things for a short time",ex:"has to do with short-term memory",mem:"固定术语，不是说「这种能力只存在一小会儿」（黄皮书在 1 题 returns 的分析里专门澄清过）。反义 long-term memory。",syn:"working memory（工作记忆，近义）",conf:"<b>short-term</b>（短期的）vs <b>shortsighted</b>（目光短浅的）。"},
+  hastodo:{w:"have to do with",ipa:"/hæv tə duː wɪð/",pos:"phrase",tags:["phrase","write"],cn:"<b>与……有关</b>",en:"to be connected with",ex:"has to do with short-term memory",mem:"⭐ 写作替换 be related to：<i>Success has more to do with habits than with talent.</i>（成功更多与习惯有关，而非天赋）——<b>has more to do with A than with B</b> 是现成的比较句。",syn:"be related to · be connected with · concern",conf:"<b>have to do with</b>（有关）vs <b>have to do</b>（不得不做）vs <b>have nothing to do with</b>（毫无关系）。"},
+  abstractly:{w:"abstractly",ipa:"/ˈæbstræktli/",pos:"adv.",tags:["core"],cn:"<b>抽象地</b>",en:"in a way based on general ideas rather than real things",ex:"quickly, logically, and abstractly",mem:"abs-（离开）＋ tract（拉）⟹ 从具体事物里「拉出来」的。同根：tractor 拖拉机 · attract 吸引 · distract 分心 · extract 提取。",syn:"theoretically · conceptually",conf:"<b>abstract</b>（抽象的；摘要 n.）vs <b>absurd</b>（荒谬的）。"},
+  adulthood:{w:"adulthood",ipa:"/ˈædʌlthʊd/",pos:"n.",tags:["core"],cn:"<b>成年（期）</b>",en:"the time when you are an adult",ex:"in young adulthood",mem:"-hood 表「时期、身份」：childhood · adulthood · neighborhood（邻里）· likelihood（可能性）。<b>young adulthood</b>＝成年早期（约 20–30 岁）。",syn:"maturity",conf:"<b>adulthood</b> vs <b>adolescence</b>（青春期）。"},
+  levelout:{w:"level out / off",ipa:"/ˈlevl aʊt/",pos:"phrasal v.",tags:["phrase","poly"],cn:"<b>（升降之后）趋于平稳，持平</b>",en:"to stop rising or falling and stay at the same level",ex:"levels out for a period of time",mem:"⭐⭐ <b>熟词僻义</b>：level 名词「水平」，动词短语 level out＝「走成一条平线」。<b>1 题的钥匙</b>：先升（peaks）→ 持平（levels out）→ 降（decline），三个动词画出一条曲线。19 题又考 level 名词（运动量）——<b>同一篇里 level 出现两次、两种词性</b>。",syn:"plateau · stabilize · flatten out",conf:"<b>level out</b>（趋于平稳）vs <b>level with sb</b>（对某人说实话）vs <b>level the playing field</b>（创造公平竞争环境）。"},
+  decline:{w:"decline",ipa:"/dɪˈklaɪn/",pos:"v./n.",tags:["core","poly","write"],cn:"<b>下降，衰退</b>；（熟词）谢绝",en:"to become less or worse",ex:"starts to slowly decline as we age",mem:"de-（向下）＋ cline（倾斜）⟹ 往下斜。全文出现四次：①❷ 动词、②❶ ②❷ 名词 a decline in · this type of decline。⭐ <b>decline in sth</b>（某方面的下降，in 不能丢）；另义 decline an invitation（谢绝邀请）。",syn:"deteriorate · diminish · fall off",conf:"<b>decline</b>（自然下降）vs <b>reduce</b>（人为减少，及物）——⑤❶ help reduce abdominal fat 用的是 reduce。"},
+  inevitable:{w:"inevitable",ipa:"/ɪnˈevɪtəbl/",pos:"adj.",tags:["core","write"],cn:"<b>不可避免的</b>",en:"certain to happen and impossible to avoid",ex:"aging is inevitable",mem:"in-（不）＋ e-（出）＋ vit（避开）⟹ 躲不出去的。⭐ <b>3 题让步句</b>：<i>while aging is inevitable, … may not be</i>——<b>may not be 后面省掉了 inevitable</b>，读时要补回去：衰老躲不掉，某些变化未必躲不掉。",syn:"unavoidable · bound to happen",conf:"<b>inevitable</b>（必然）vs <b>invaluable</b>（无价的）vs <b>inviolable</b>（不可侵犯的）。"},
+  abdomen:{w:"abdomen / abdominal",ipa:"/ˈæbdəmən/ /æbˈdɒmɪnl/",pos:"n./adj.",tags:["core"],cn:"<b>腹部 ／ 腹部的</b>",en:"the part of the body containing the stomach",ex:"body fat around the abdomen",mem:"全文出现五次（①一次 abdomen，③④⑤ 四次 abdominal fat）——<b>话题词</b>，就是标题里的 belly。口语 belly、书面 abdomen；健身里的 abs＝abdominal muscles。",syn:"belly · stomach · midsection",conf:"<b>abdominal</b>（腹部的）vs <b>abominable</b>（可恶的）——长得像。"},
+  associated:{w:"be associated with",ipa:"/əˈsəʊʃieɪtɪd wɪð/",pos:"phrase",tags:["phrase","write"],cn:"<b>与……有关联</b>（只说相关，不说谁导致谁）",en:"to be connected with sth",ex:"are associated with a decline",mem:"⭐⭐ <b>科研报道的标准措辞</b>：观察性研究只能说「相关」，不能说「导致」——所以②❶ 用 are associated with，④❶ 才用 the association 回指它，并进一步用 may be attributable to 提出机制（还加了 may）。⟹ 老卡 <b>R228</b>：associated with 不分左右。",syn:"be linked to · be correlated with · be connected with",conf:"<b>associated with</b>（相关）vs <b>caused by</b>（由……导致）——前者弱、后者强；作文里说因果拿不准时用前者更稳。"},
+  lifestyle:{w:"lifestyle factors",ipa:"/ˈlaɪfstaɪl ˈfæktəz/",pos:"n. phrase",tags:["phrase","write"],cn:"<b>生活方式因素</b>",en:"things about how you live, such as diet and exercise",ex:"lifestyle factors might help prevent",mem:"⭐ 首尾扣环：②❷ 提 lifestyle factors（抽象），⑤❷ 兑现为 the two lifestyle approaches（运动 ＋ 饮食）——<b>16–20 五个空都在兑现这一句</b>。",syn:"lifestyle choices · way of life",conf:"<b>lifestyle</b>（生活方式）vs <b>livelihood</b>（生计）。"},
+  measurement:{w:"measurement / measure",ipa:"/ˈmeʒəmənt/",pos:"n.",tags:["core","poly"],cn:"<b>测量值</b>；（熟词）措施",en:"a number obtained by measuring",ex:"measurements of lean muscle",mem:"⭐ <b>熟词僻义</b>：measure 常见义「措施」（take measures），本文三次 measures of … 全是「<b>测量值、指标</b>」（higher measures of abdominal fat · measures of fluid intelligence）。读成「措施」整句就崩。",syn:"reading · index · indicator",conf:"<b>measures</b>（措施／测量值）vs <b>measurement</b>（测量；测得的数值）。"},
+  lean:{w:"lean muscle",ipa:"/liːn ˈmʌsl/",pos:"n. phrase",tags:["poly"],cn:"<b>瘦肌肉，去脂肌肉</b>",en:"muscle without fat",ex:"measurements of lean muscle",mem:"⭐ <b>熟词僻义</b>：lean 动词「倚靠、倾斜」，形容词「瘦的；（肉）不带肥的」——lean meat 瘦肉、lean muscle mass 瘦体重；还有 lean year（歉收年）、lean company（精简的公司）。",syn:"muscle mass · fat-free mass",conf:"<b>lean</b>（精瘦，褒）vs <b>thin</b>（瘦，中性）vs <b>skinny</b>（皮包骨，贬）。"},
+  middleaged:{w:"middle-to-older-aged",ipa:"/ˌmɪdl tə ˈəʊldər eɪdʒd/",pos:"adj.",tags:["core"],cn:"<b>中老年的</b>",en:"in middle or older age",ex:"middle-to-older-aged men and women",mem:"连字符把一串词粘成一个形容词，放名词前。⭐ ③❷ 结果里只说 <b>middle-aged people</b>（中年人）——<b>样本是中老年，显著结论落在中年</b>（研究新闻稿也说主要是四五十岁的人）。",syn:"older adults · midlife",conf:"<b>middle-aged</b>（中年的）vs <b>the Middle Ages</b>（中世纪）。"},
+  reported:{w:"reported changes",ipa:"/rɪˈpɔːtɪd ˈtʃeɪndʒɪz/",pos:"n. phrase",tags:["poly"],cn:"<b>（数据中）记录在案的变化</b>",en:"changes that were recorded",ex:"to reported changes in fluid intelligence",mem:"reported 作前置定语＝「已报告的、有记录的」——指数据库里登记过的六年变化，不是「新闻报道的」。8 题 compare A to B 的 B 就是它。",syn:"recorded · documented",conf:"<b>reported</b>（有记录的）vs <b>reputed</b>（据说的）。"},
+  immunity:{w:"immunity / immune system",ipa:"/ɪˈmjuːnəti/",pos:"n.",tags:["core"],cn:"<b>免疫力 ／ 免疫系统</b>；（法律）豁免",en:"the body’s ability to fight infection",ex:"changes in immunity",mem:"im-（不）＋ mun（义务）⟹「免于负担」——所以还有法律义「豁免」：diplomatic immunity（外交豁免权）。④❶ 前半 immunity、后半 the immune system——<b>同一个东西两个说法</b>，13 题 involved 的主语就是它。",syn:"resistance · defenses",conf:"<b>immune</b>（免疫的）vs <b>immense</b>（巨大的）vs <b>immunize</b>（使免疫）。"},
+  resultfrom:{w:"result from",ipa:"/rɪˈzʌlt frəm/",pos:"phrasal v.",tags:["phrase","write"],cn:"<b>由……引起</b>（因在右边）",en:"to be caused by",ex:"changes in immunity that resulted from excess abdominal fat",mem:"⭐⭐ <b>result from 因在右、result in 因在左</b>：A results from B（B 是因）· B results in A（B 是因）。④❶ 一句话里两个扣环：<b>智力关联 ← attributable to 免疫变化 ← resulted from 多余腹脂</b>——12 题的答案就是第二个扣环（⟹ R228）。",syn:"stem from · arise from · be caused by",conf:"<b>result from</b>（源于）vs <b>result in</b>（导致）——方向相反，写作最常写反。"},
+  excess:{w:"excess",ipa:"/ɪkˈses/ /ˈekses/",pos:"adj./n.",tags:["core"],cn:"<b>过多的，多余的</b>",en:"more than is usual or needed",ex:"excess abdominal fat",mem:"ex-（出）＋ cess（走）⟹ 走出界限。⭐ 回指 4 题：the accumulation of body fat（脂肪堆积）→ higher measures of abdominal fat → <b>excess abdominal fat</b>——<b>同一件事换了三种说法</b>，4 题卡住时往后读两段就能定。",syn:"surplus · extra · superfluous",conf:"<b>excess</b>（过多的）vs <b>excessive</b>（过度的，带贬义评价）vs <b>access</b>（进入）。"},
+  hoped:{w:"It is hoped that …",ipa:"/ɪt ɪz həʊpt ðæt/",pos:"sentence pattern",tags:["write"],cn:"<b>人们希望……</b>",en:"people hope that …",ex:"It is hoped that future studies could",mem:"⭐ It is ＋ 过去分词 ＋ that：It is said／believed／hoped／expected that——<b>不交代是谁在希望</b>，科研报道收尾的标准句。后面的 could、perhaps 都在压低语气（⟹ 02++++ 语气表）。",syn:"Hopefully, … · Researchers hope that …",conf:"<b>It is hoped that</b>（正确）vs <b>It is hoping that</b>（错）。"},
+  mass:{w:"muscle mass",ipa:"/ˈmʌsl mæs/",pos:"n. phrase",tags:["poly"],cn:"<b>肌肉量</b>",en:"the amount of muscle in the body",ex:"maintain lean muscle mass as you age",mem:"⭐ <b>熟词僻义</b>：mass 常见义「大量；群众」（mass media），在体检、健身语境里是「<b>质量、量</b>」：muscle mass 肌肉量 · body mass index（BMI，体重指数）· bone mass 骨量。",syn:"muscle volume",conf:"<b>mass</b>（质量）vs <b>weight</b>（重量）。"},
+  maintain:{w:"maintain",ipa:"/meɪnˈteɪn/",pos:"v.",tags:["core","write"],cn:"<b>保持，维持</b>",en:"to keep sth at the same level",ex:"maintaining or increasing your level",mem:"main（手）＋ tain（握）⟹ 握在手里不放。⑤ 两次：maintain lean muscle mass · maintaining or increasing your level——<b>maintain or increase 是「至少不降、最好再升」</b>，19 题的宾语必须是一个能升降的量 ⟹ level。",syn:"keep up · sustain · preserve",conf:"<b>maintain</b>（保持）vs <b>retain</b>（保留）vs <b>obtain</b>（获得）——同一个 -tain 家族。"},
+  approach:{w:"approach",ipa:"/əˈprəʊtʃ/",pos:"n.",tags:["core","poly","write"],cn:"<b>方法，途径</b>；（熟词）接近",en:"a way of dealing with sth",ex:"The two highly recommended lifestyle approaches",mem:"⭐ <b>熟词僻义</b>：approach 动词「靠近」，名词「<b>方法</b>」——an approach to doing sth（to 是介词）。⑤❷ 主语 The two … approaches，表语是两个动名词短语，正好两个——<b>数一下 and 两边</b>：maintaining or increasing … ＋ following …。",syn:"method · way · strategy",conf:"<b>approach to doing</b>（to 是介词）vs <b>way to do</b>（to 是不定式）。"},
+  aerobic:{w:"aerobic exercise",ipa:"/eəˈrəʊbɪk ˈeksəsaɪz/",pos:"n. phrase",tags:["core","write"],cn:"<b>有氧运动</b>",en:"exercise that makes the heart and lungs work hard",ex:"your level of aerobic exercise",mem:"aero-（空气）＋ bio（生命）⟹ 需要氧气的。反义 anaerobic exercise（无氧运动，如举重）。⭐ 19 题：increase your <b>level</b> of aerobic exercise（运动量）——作文写健身直接搬。",syn:"cardio（口语）",conf:"<b>aerobic</b>（有氧的）vs <b>aerial</b>（空中的）。"},
+  mediterranean:{w:"Mediterranean-style diet",ipa:"/ˌmedɪtəˈreɪniən staɪl ˈdaɪət/",pos:"n. phrase",tags:["core"],cn:"<b>地中海式饮食</b>",en:"a diet with lots of vegetables, fish and olive oil",ex:"following a Mediterranean-style diet",mem:"medi（中间）＋ terra（土地）⟹「陆地中间的海」。⭐ <b>follow a diet</b>（遵循某种饮食方案）——20 题 follow 也能接 routine、prescription，但定语从句 that is high in fiber 只能修饰饮食。",syn:"Mediterranean diet",conf:"<b>diet</b>（日常饮食；节食）vs <b>dietary</b>（饮食的 adj.）vs <b>be on a diet</b>（在节食）。"},
+  fiber:{w:"be high in fiber",ipa:"/biː haɪ ɪn ˈfaɪbə(r)/",pos:"phrase",tags:["phrase","write"],cn:"<b>富含纤维</b>",en:"to contain a lot of fiber",ex:"high in fiber",mem:"⭐ <b>be high／low in sth</b>＝某成分含量高／低：high in protein · low in sugar · rich in vitamins——<b>20 题的定语从句里藏着「它是食物」的证据</b>。英式拼写 fibre。",syn:"rich in · full of",conf:"<b>high in</b>（含量高）vs <b>high on</b>（热衷于；因……兴奋）。"},
+  eliminate:{w:"eliminate",ipa:"/ɪˈlɪmɪneɪt/",pos:"v.",tags:["core","write"],cn:"<b>排除，去掉</b>",en:"to remove completely",ex:"eliminates highly processed foods",mem:"e-（出）＋ limin（门槛）⟹ 推出门槛外。考研高频：eliminate poverty（消除贫困）· be eliminated（被淘汰）。",syn:"remove · get rid of · exclude",conf:"<b>eliminate</b>（彻底去掉）vs <b>reduce</b>（减少）——⑤ 腹脂用 reduce、加工食品用 eliminate，力度不同。"},
+  processed:{w:"highly processed foods",ipa:"/ˈhaɪli ˈprəʊsest fuːdz/",pos:"n. phrase",tags:["phrase"],cn:"<b>深加工食品</b>",en:"foods changed a lot from their natural state",ex:"highly processed foods",mem:"process 动词「加工」，过去分词作定语：processed food（加工食品）· processed cheese。⭐ 18 题选项 process 是名词「过程」——<b>同一个词在选项和原文里两种意思</b>。",syn:"ultra-processed · junk food（口语）",conf:"<b>processed</b>（加工过的）vs <b>procession</b>（游行队伍）。"},
+  recommended:{w:"highly recommended",ipa:"/ˈhaɪli ˌrekəˈmendɪd/",pos:"adj. phrase",tags:["write"],cn:"<b>强烈推荐的</b>",en:"strongly advised",ex:"The two highly recommended lifestyle approaches",mem:"⭐ highly ＋ 过去分词＝「高度地」：highly recommended · highly processed（⑤❷ 一句里出现两次 highly，意思一褒一贬）· highly educated · highly regarded。",syn:"strongly advised · widely endorsed",conf:"<b>highly</b>（高度地，修饰程度）vs <b>high</b>（高的，修饰位置）。"},
+  asweage:{w:"as we age / as you age",ipa:"/æz wiː eɪdʒ/",pos:"phrase",tags:["phrase","write"],cn:"<b>随着年龄增长</b>",en:"while getting older",ex:"as we age",mem:"⭐⭐ <b>全文的时间轴出现三次</b>：①❷ as we age · ③❷ as the years ___（11 went by）· ⑤❶ as you age——<b>11 题就是这根轴的第二次</b>，as the years go by＝as we age。age 这里是动词「变老」。",syn:"with age · over time · as time goes by",conf:"<b>age</b> v.（变老）vs <b>aged</b>（……岁的；年老的）vs <b>ageing／aging</b>（衰老）。"}
+};
+const panel=document.getElementById('panel');
+const isMobile=()=>window.innerWidth<=900;
+function badge(t){return {core:'<span class="badge b-core">核心词</span>',phrase:'<span class="badge b-phrase">短语</span>',poly:'<span class="badge b-poly">熟词僻义</span>',write:'<span class="badge b-write">写作✍︎</span>'}[t]||''}
+function showCard(k,el){
+  const d=V[k]; if(!d)return;
+  document.querySelectorAll('.tk.active').forEach(e=>e.classList.remove('active'));
+  if(el&&el.classList.contains('tk'))el.classList.add('active');
+  panel.innerHTML='<button class="close" onclick="panel.classList.remove(\'open\')">✕</button>'+
+  '<div class="wcard"><div class="head"><span class="w">'+d.w+'</span><span class="ipa">'+d.ipa+'</span><span class="pos">'+d.pos+'</span>'+d.tags.map(badge).join('')+'</div>'+
+  '<div class="cn">'+d.cn+'</div><div class="en-def">'+d.en+'</div>'+
+  '<div class="row r-ex"><b>原文语境</b>「…'+d.ex+'…」</div>'+
+  '<div class="row r-mem"><b>怎么记</b>'+d.mem+'</div>'+
+  '<div class="row r-syn"><b>同类词</b>'+d.syn+'</div>'+
+  '<div class="row r-conf"><b>易混辨析</b>'+d.conf+'</div></div>';
+  if(isMobile())panel.classList.add('open');
+}
+document.querySelectorAll('.tk').forEach(t=>t.addEventListener('click',e=>{e.stopPropagation();showCard(t.dataset.w,t)}));
+
+/* ============ 译文开关 ============ */
+function tz(btn){btn.closest('.para').classList.toggle('showzh')}
+let allOn=false;
+function toggleAll(){allOn=!allOn;document.querySelectorAll('.para').forEach(p=>p.classList.toggle('showzh',allOn))}
+function go(id){const s=document.getElementById(id);if(!s)return;s.scrollIntoView({behavior:'smooth',block:'center'});s.style.transition='none';s.style.opacity=.3;setTimeout(function(){s.style.transition='opacity .8s';s.style.opacity=1},80)}
+
+/* ============ 20 空数据（类别 + 正确词） ============ */
+const CAT={
+  logic:{name:"逻辑关系",cls:"c-logic",color:"#3d6a8a"},
+  collo:{name:"固定搭配",cls:"c-collo",color:"#3e7a4e"},
+  word:{name:"词义辨析",cls:"c-word",color:"#b04a3a"},
+  context:{name:"上下文语义",cls:"c-context",color:"#6d5a8e"}
+};
+const B={
+  1:{w:"peaks",cat:"context"},          2:{w:"generally",cat:"context"},
+  3:{w:"while",cat:"logic"},            4:{w:"accumulation",cat:"context"},
+  5:{w:"possibility",cat:"word"},       6:{w:"delay",cat:"context"},
+  7:{w:"included",cat:"word"},          8:{w:"compared",cat:"collo"},
+  9:{w:"with",cat:"collo"},             10:{w:"scored",cat:"collo"},
+  11:{w:"went by",cat:"collo"},         12:{w:"attributable",cat:"collo"},
+  13:{w:"involved",cat:"context"},      14:{w:"explain",cat:"context"},
+  15:{w:"treatments",cat:"context"},    16:{w:"Meanwhile",cat:"logic"},
+  17:{w:"take",cat:"collo"},            18:{w:"wellbeing",cat:"collo"},
+  19:{w:"level",cat:"word"},            20:{w:"diet",cat:"context"}
+};
+
+
+
+/* ============ 点空格 → 跳到解析卡 ============ */
+document.querySelectorAll('.bk').forEach(function(b){
+  b.addEventListener('click',function(){
+    document.querySelectorAll('.bk.active').forEach(function(e){e.classList.remove('active')});
+    b.classList.add('active');
+    go('q'+b.dataset.n);
+  });
+});
+function fillBlank(n,ok){
+  const el=document.querySelector('.bk[data-n="'+n+'"]');
+  if(!el)return;
+  el.classList.remove('miss');
+  el.classList.add(ok===false?'miss':'filled');
+  el.innerHTML='<span class="idx">'+n+'</span>'+B[n].w;
+}
+
+/* ============ 即点即判 + 计分 ============ */
+let done=0,right=0;
+function updScore(){
+  document.getElementById('sDone').textContent=done;
+  document.getElementById('sRight').textContent=right;
+  document.getElementById('sPt').textContent=(right*0.5).toFixed(1);
+}
+document.querySelectorAll('.q').forEach(function(q){
+  const ans=+q.dataset.ans, n=q.id.replace('q','');
+  q.querySelectorAll('.opt').forEach(function(o,i){
+    o.addEventListener('click',function(){
+      if(q.classList.contains('done'))return;
+      q.classList.add('done');
+      const ok=(i===ans);
+      if(!ok)o.classList.add('wrong');
+      q.querySelectorAll('.opt')[ans].classList.add('right');
+      done++; if(ok)right++; updScore();
+      fillBlank(n,ok);
+    });
+  });
+});
+function revealAll(){
+  document.querySelectorAll('.q').forEach(function(q){
+    const n=q.id.replace('q','');
+    if(!q.classList.contains('done')){
+      q.classList.add('done');
+      q.querySelectorAll('.opt')[+q.dataset.ans].classList.add('right');
+      done++; updScore();
+    }
+    fillBlank(n,true);
+  });
+  document.querySelectorAll('.bk.miss').forEach(function(e){e.classList.remove('miss');e.classList.add('filled')});
+}
+
+/* ============ 考点统计 ============ */
+const counts={};Object.keys(B).forEach(function(k){counts[B[k].cat]=(counts[B[k].cat]||0)+1});
+const order=["word","collo","context","logic"];
+document.getElementById('catbar').innerHTML=order.map(function(k){
+  return '<div class="catseg" style="flex:'+counts[k]+';background:'+CAT[k].color+'">'+CAT[k].name+' '+counts[k]+'</div>'}).join('');
+const legend=document.getElementById('catlegend');
+legend.innerHTML=order.map(function(k){
+  return '<div class="cl" data-cat="'+k+'"><span class="dot" style="background:'+CAT[k].color+'"></span>'+CAT[k].name+' · '+counts[k]+' 题</div>'}).join('');
+const chips=document.getElementById('chips');
+function renderChips(cat){
+  chips.innerHTML=Object.keys(B).filter(function(n){return !cat||B[n].cat===cat})
+    .map(function(n){return '<span class="chip" data-n="'+n+'">'+n+'. '+B[n].w+'</span>'}).join('');
+  chips.querySelectorAll('.chip').forEach(function(c){
+    c.addEventListener('click',function(){go('q'+c.dataset.n)});
+  });
+}
+renderChips(null);
+legend.querySelectorAll('.cl').forEach(function(l){
+  l.addEventListener('click',function(){
+    const cat=l.dataset.cat;
+    document.querySelectorAll('.cl').forEach(function(x){x.style.borderColor=''});
+    l.style.borderColor=CAT[cat].color;
+    renderChips(cat);
+    document.querySelectorAll('.bk').forEach(function(b){
+      b.style.outline=(B[b.dataset.n].cat===cat?'2px solid '+CAT[cat].color:'')});
+  });
+});
+
+/* ============ 80 选项词表 ============ */
+const OPTS={
+ 1:[["pauses","暂停（之后还要再走）"],["peaks","达到顶峰（升到头）"],["returns","恢复（先得消失过）"],["fades","逐渐衰退（与后文开始衰退撞车）"]],
+ 2:[["alternatively","或者（二选一）"],["formally","正式地；表面上"],["generally","通常，一般（总体规律）"],["accidentally","偶然地（意外）"]],
+ 3:[["until","直到（时间终点）"],["since","自从；既然（因果）"],["once","一旦（条件）"],["while","虽然（让步）"]],
+ 4:[["accumulation","堆积（脂肪增多）"],["detection","检测出（人为动作）"],["consumption","消耗（方向反了）"],["separation","分离（不是自然变化）"]],
+ 5:[["requirement","要求（强制）"],["decision","决定（主观选择）"],["goal","目标（想要达到的）"],["possibility","可能性（配 might）"]],
+ 6:[["utilize","利用（把衰退当好事）"],["ensure","确保（与 prevent 反向）"],["seek","寻求（同上）"],["delay","推迟（prevent 退一步）"]],
+ 7:[["modified","修改（研究者改数据？）"],["included","包含（数据里有什么）"],["supported","证实（测量值不待证）"],["predicted","预测（把因果说反）"]],
+ 8:[["compared","比较（compare A to B）"],["devoted","把……专用于"],["converted","把……转换成"],["applied","把……应用于"]],
+ 9:[["against","反对；防（中文陷阱）"],["above","高于（某个数值）"],["by","被；通过（方式）"],["with","带有，具有（特征）"]],
+ 10:[["lived","生活（live on 靠……过活）"],["scored","得分（score worse on）"],["managed","设法（manage on 勉强过活）"],["played","比赛（play 表现）"]],
+ 11:[["ran out","用完（时间所剩无几）"],["set off","出发（人的动作）"],["went by","（时间）流逝"],["drew in","（白昼）变短"]],
+ 12:[["attributable","可归因于（be ~ to）"],["superior","优于（同类比较）"],["parallel","与……平行／相似"],["resistant","抵抗……的"]],
+ 13:[["restored","被恢复"],["involved","牵涉其中（起作用）"],["isolated","被隔离／单独处理"],["controlled","被控制"]],
+ 14:[["alter","改变（研究改不了性别差异）"],["spread","传播"],["explain","解释（弄清原因）"],["remove","去除（同 alter）"]],
+ 15:[["compensations","补偿（弥补损失）"],["symptoms","症状（不是研究带来的）"],["treatments","疗法（针对性治疗）"],["demands","需求（demand for）"]],
+ 16:[["Meanwhile","与此同时（研究等将来，你现在做）"],["Likewise","同样地（内容得相似）"],["Therefore","因此（得有因果）"],["Instead","反而（得先否定一件事）"]],
+ 17:[["change","改变（得先有旧步骤）"],["watch","当心（watch one’s step）"],["take","采取（take steps）"],["count","数（count steps 数步数）"]],
+ 18:[["coordination","协调（身心协调是中文）"],["process","过程"],["formation","形成（成年人已定型）"],["wellbeing","健康，幸福"]],
+ 19:[["space","空间（场地）"],["love","热爱（态度）"],["knowledge","知识（认知）"],["level","水平，量（运动量）"]],
+ 20:[["design","设计（布局）"],["diet","饮食（high in fiber）"],["routine","常规（follow a routine）"],["prescription","处方（follow a prescription）"]]
+};
+const ANS={1:1,2:2,3:3,4:0,5:3,6:3,7:1,8:0,9:3,10:1,11:2,12:0,13:1,14:2,15:2,16:0,17:2,18:3,19:3,20:1};
+(function(){
+  let h='<tr><th>空</th><th>A</th><th>B</th><th>C</th><th>D</th></tr>';
+  for(let n=1;n<=20;n++){
+    h+='<tr><td class="n">'+n+'</td>';
+    OPTS[n].forEach(function(o,i){
+      h+='<td'+(i===ANS[n]?' class="hit"':'')+'><span class="ow">'+o[0]+'</span><span class="oc">'+o[1]+'</span></td>';
+    });
+    h+='</tr>';
+  }
+  document.getElementById('otab').innerHTML=h;
+  document.querySelectorAll('#otab .oc').forEach(function(c){
+    c.addEventListener('click',function(){c.classList.toggle('show')});
+  });
+})();
+function toggleHide(){
+  const t=document.getElementById('otab');
+  const on=t.classList.toggle('hidecn');
+  document.getElementById('btnHide').textContent=on?'👁 显示释义':'✍️ 默写模式';
+  if(!on)t.querySelectorAll('.oc.show').forEach(function(c){c.classList.remove('show')});
+}
+
+/* ============ 查有道 ============ */
+const yd=document.getElementById('yd');let sel='',ydHold=0,ydT=0;
+/* 触屏：点按钮会先把选区清掉 → selectionchange 立刻把按钮藏了 → 点击落空。改成延迟隐藏 ＋ 按下即锁定 */
+const ydTouch=window.matchMedia&&matchMedia('(pointer:coarse)').matches;
+function ydHide(){clearTimeout(ydT);ydHold=0;yd.style.display='none'}
+document.addEventListener('selectionchange',function(){
+  const s=window.getSelection();const t=s?s.toString().trim():'';
+  if(t&&/^[a-zA-Z' -]{2,40}$/.test(t)){
+    sel=t;clearTimeout(ydT);
+    try{const r=s.getRangeAt(0).getBoundingClientRect();
+      yd.style.left=Math.max(8,Math.min(r.left,window.innerWidth-110))+'px';
+      yd.style.top=(r.bottom+(ydTouch?30:8))+'px';yd.style.display='block';}catch(e){}
+  }else if(!ydHold){clearTimeout(ydT);ydT=setTimeout(function(){if(!ydHold)yd.style.display='none'},ydTouch?900:0)}
+});
+['pointerdown','touchstart','mousedown'].forEach(function(ev){yd.addEventListener(ev,function(){ydHold=1;clearTimeout(ydT)},{passive:true})});
+yd.addEventListener('click',function(){
+  const u='https://dict.youdao.com/result?word='+encodeURIComponent(sel)+'&lang=en';
+  let w=null;try{w=window.open(u,'_blank')}catch(e){}
+  if(!w)location.href=u;
+  ydHide()});
+document.addEventListener('click',function(e){if(e.target!==yd&&!window.getSelection().toString())ydHide()});
+</script>
+<script src="img/strip_boxes_2021.js?v=5"></script>
+<script src="_strip_lookup.js?v=8"></script>
+<script src="_strip_text.js?v=18"></script>
+<script src="_fault_attr.js"></script>
+</body>
+</html>

@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2021 英一 新题型 · 人工智能助益企业</title>
+<style>
+  :root{
+    --bg:#faf9f6; --card:#ffffff; --ink:#2b2b2b; --muted:#8a8578;
+    --accent:#8b5e34; --accent-soft:#f3e9dd; --line:#e8e3d8;
+    --hl:#fdf3d8; --hl-border:#e0b84d;
+    --green:#3e7a4e; --green-soft:#e8f2ea;
+    --red:#b04a3a; --red-soft:#f9e9e6;
+    --blue:#3d6a8a; --blue-soft:#e7eff5;
+    --purple:#6d5a8e; --purple-soft:#eeeaf5;
+    --serif:"Georgia","Songti SC",serif;
+    --sans:-apple-system,"PingFang SC","Helvetica Neue",sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#1c1a17; --card:#26231f; --ink:#e8e4dc; --muted:#9a948a;
+      --accent:#d0a06a; --accent-soft:#3a3127; --line:#3a362f;
+      --hl:#3d3520; --hl-border:#b08c3a;
+      --green:#7fb98d; --green-soft:#26362b;
+      --red:#d98876; --red-soft:#3d2a26;
+      --blue:#8ab3d0; --blue-soft:#26323d;
+      --purple:#a996c8; --purple-soft:#302a3d;
+    }
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;padding-bottom:120px}
+  .wrap{max-width:1100px;margin:0 auto;padding:24px 20px}
+  .back{font-size:.85rem;color:var(--muted);text-decoration:none}
+  .back:hover{color:var(--accent)}
+  header{margin:14px 0 28px}
+  header h1{font-family:var(--serif);font-size:1.7rem;line-height:1.3}
+  header .sub{color:var(--muted);margin-top:6px;font-size:.9rem}
+  .tags{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+  .tag{font-size:.75rem;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);border:1px solid var(--line)}
+  .tag.bad{background:var(--red-soft);color:var(--red)}
+  .layout{display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:start}
+  .layout > main{min-width:0}
+  @media (max-width:900px){.layout{grid-template-columns:1fr}}
+  section.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:24px}
+  h2{font-size:1.05rem;letter-spacing:.05em;color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+  h2 .n{font-size:.72rem;background:var(--accent);color:var(--card);border-radius:6px;padding:1px 7px}
+  h3.sh{font-size:.95rem;color:var(--ink);margin:18px 0 8px;padding-left:9px;border-left:3px solid var(--accent)}
+  .para{margin-bottom:14px}
+  .en{font-family:var(--serif);font-size:1.03rem;line-height:1.95}
+  .tk{background:var(--hl);border-bottom:2px solid var(--hl-border);border-radius:3px;padding:0 2px;cursor:pointer;transition:filter .15s}
+  .tk:hover{filter:brightness(.93)}
+  .tk.active{outline:2px solid var(--hl-border)}
+  .clue{border-bottom:2px dotted var(--red)}
+  .zh{display:none;margin-top:8px;padding:10px 14px;background:var(--blue-soft);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:.92rem}
+  .showzh .zh{display:block}
+  .zbtn{float:right;margin-left:10px;font-size:.72rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:6px;padding:2px 9px;cursor:pointer}
+  .zbtn:hover{color:var(--accent);border-color:var(--accent)}
+  .allbtn{font-size:.78rem;border:1px solid var(--accent);background:none;color:var(--accent);border-radius:8px;padding:4px 12px;cursor:pointer;margin-left:auto}
+  aside{position:sticky;top:20px}
+  #panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;min-height:180px}
+  #panel .hint{color:var(--muted);font-size:.88rem;text-align:center;padding:30px 10px}
+  .wcard .head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .wcard .w{font-family:var(--serif);font-size:1.35rem;font-weight:bold}
+  .wcard .ipa{color:var(--muted);font-size:.85rem}
+  .wcard .pos{font-size:.72rem;color:var(--purple);background:var(--purple-soft);padding:1px 8px;border-radius:999px}
+  .wcard .badge{font-size:.7rem;padding:1px 8px;border-radius:999px}
+  .b-core{background:var(--red-soft);color:var(--red)}
+  .b-phrase{background:var(--blue-soft);color:var(--blue)}
+  .b-poly{background:var(--purple-soft);color:var(--purple)}
+  .b-write{background:var(--green-soft);color:var(--green)}
+  .wcard .cn{margin-top:8px;font-size:1rem;font-weight:600}
+  .wcard .en-def{color:var(--muted);font-size:.86rem;font-style:italic;margin-top:2px}
+  .wcard .row{margin-top:10px;font-size:.86rem;padding:8px 10px;border-radius:8px}
+  .wcard .row b{font-size:.72rem;display:block;margin-bottom:2px;letter-spacing:.06em}
+  .r-ex{background:var(--hl)} .r-ex b{color:var(--hl-border)}
+  .r-mem{background:var(--green-soft)} .r-mem b{color:var(--green)}
+  .r-syn{background:var(--blue-soft)} .r-syn b{color:var(--blue)}
+  .r-conf{background:var(--red-soft)} .r-conf b{color:var(--red)}
+  #panel .close{display:none}
+  @media (max-width:900px){
+    aside{position:fixed;left:0;right:0;bottom:0;z-index:50;padding:0 8px 8px}
+    #panel{box-shadow:0 -6px 24px rgba(0,0,0,.18);max-height:55vh;overflow-y:auto;display:none}
+    #panel.open{display:block}
+    #panel .close{display:block;float:right;border:none;background:var(--line);border-radius:8px;padding:2px 10px;cursor:pointer;color:var(--ink)}
+  }
+  /* 选项库 */
+  .optlib{display:grid;gap:8px}
+  .optitem{display:flex;gap:10px;border:1px solid var(--line);border-radius:10px;padding:9px 12px;font-size:.9rem}
+  .optitem .lt{font-weight:700;font-family:var(--serif);color:var(--accent);flex:0 0 18px}
+  .optitem.used{opacity:.45}
+  .optitem.extra{border-color:var(--red);background:var(--red-soft)}
+  .optitem .oen{font-family:var(--serif);font-size:.92rem;line-height:1.75}
+  .optitem .zhx{display:block;color:var(--muted);font-size:.82rem;margin-top:3px}
+  .optitem .kw{display:block;font-size:.78rem;color:var(--blue);margin-top:3px}
+  .optitem .stg{display:inline-block;font-size:.72rem;background:var(--purple-soft);color:var(--purple);border-radius:999px;padding:1px 9px;margin-top:5px}
+  /* 空格题 */
+  .person{margin-bottom:26px;padding-bottom:20px;border-bottom:1px dashed var(--line)}
+  .person:last-child{border:none}
+  .pname{font-family:var(--serif);font-weight:700;font-size:1.05rem;margin-bottom:8px}
+  .pname .qn{color:var(--accent)}
+  .stance{font-size:.72rem;border-radius:999px;padding:1px 9px;margin-left:8px;vertical-align:2px;font-family:var(--sans);font-weight:400}
+  .st-anti{background:var(--red-soft);color:var(--red)}
+  .st-pro{background:var(--green-soft);color:var(--green)}
+  .st-mid{background:var(--blue-soft);color:var(--blue)}
+  .slot{display:inline;background:var(--accent-soft);border-bottom:2px solid var(--accent);border-radius:3px;padding:0 6px;color:var(--accent);font-weight:700;font-family:var(--sans);font-size:.88rem}
+  .slot.filled{background:var(--green-soft);border-color:var(--green);color:var(--ink);font-weight:400;font-family:var(--serif);font-size:1.03rem}
+  .slot.filled .fl{font-family:var(--sans);font-size:.78rem;font-weight:700;color:var(--green);margin-right:5px}
+  .chips{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0 4px}
+  .chips .ch{width:38px;height:34px;border:1px solid var(--line);border-radius:8px;background:none;font-family:var(--serif);font-weight:700;font-size:1rem;color:var(--ink);cursor:pointer;transition:all .15s}
+  .chips .ch:hover{border-color:var(--accent)}
+  .person.done .ch{cursor:default;opacity:.6}
+  .ch.right{background:var(--green-soft);border-color:var(--green);color:var(--green);opacity:1!important}
+  .ch.wrong{background:var(--red-soft);border-color:var(--red);color:var(--red);opacity:1!important}
+  .expl{display:none;margin-top:10px;background:var(--accent-soft);border-radius:10px;padding:12px 14px;font-size:.9rem}
+  .person.done .expl{display:block}
+  .expl b{color:var(--accent)}
+  .loc{font-family:var(--serif);font-style:italic;background:var(--hl);padding:1px 4px;border-radius:3px}
+  .expl .line{margin-top:8px;padding-top:8px;border-top:1px dashed var(--line)}
+  .expl .mine{margin-top:8px;padding:8px 10px;background:var(--red-soft);border-radius:8px;color:var(--red);font-size:.86rem}
+  .wb{display:grid;gap:10px}
+  .wbi{border-left:3px solid var(--green);background:var(--green-soft);border-radius:0 10px 10px 0;padding:10px 14px;font-size:.92rem}
+  .wbi .p{font-family:var(--serif);font-weight:600}
+  .wbi .u{color:var(--muted);font-size:.85rem}
+  /* 表格 */
+  .tbwrap{overflow-x:auto}
+  table.gt{border-collapse:collapse;width:100%;min-width:600px;font-size:.86rem}
+  table.gt th,table.gt td{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
+  table.gt th{background:var(--accent-soft);color:var(--accent);font-weight:600;font-size:.8rem}
+  table.gt td.c{text-align:center;font-family:var(--serif);font-weight:700}
+  table.gt tr.bad td{background:var(--red-soft)}
+  /* 分区带 */
+  .zone{display:grid;grid-template-columns:118px 1fr;gap:12px;padding:9px 0;border-bottom:1px dashed var(--line);font-size:.9rem}
+  .zone:last-child{border:none}
+  .zone .zn{font-size:.82rem;color:var(--accent);font-weight:600}
+  .zone.empty{background:var(--red-soft);border-radius:8px;padding-left:10px}
+  .zone.empty .zn{color:var(--red)}
+  /* 长难句 */
+  .ls{border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:14px}
+  .ls .s{font-family:var(--serif);font-size:.98rem;line-height:1.85}
+  .ls .an{margin-top:10px;font-size:.88rem}
+  .ls .an div{margin-top:4px}
+  .ls .tr{margin-top:8px;padding:8px 12px;background:var(--blue-soft);border-radius:8px;font-size:.88rem}
+  .mk{color:var(--red);font-weight:600}
+  .mk2{color:var(--blue);font-weight:600}
+  .mk3{color:var(--green);font-weight:600}
+  .box{border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:0 10px 10px 0;padding:12px 14px;margin:12px 0;font-size:.92rem;background:var(--accent-soft)}
+  .box.red{border-left-color:var(--red);background:var(--red-soft)}
+  .box.green{border-left-color:var(--green);background:var(--green-soft)}
+  .box .bt{font-weight:700;color:var(--accent);display:block;margin-bottom:6px}
+  .box.red .bt{color:var(--red)} .box.green .bt{color:var(--green)}
+  .en,.zh,.expl,.wbi,.optitem,.ls,.zone,.bd,figcaption,p,li,td,th{overflow-wrap:anywhere}
+  footer{color:var(--muted);font-size:.8rem;text-align:center;margin-top:30px}
+  #yd{position:fixed;z-index:60;display:none;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:4px 12px;font-size:.8rem;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+</style>
+<style>
+  /* selection-insertion page extras */
+  .layout{grid-template-columns:minmax(0,1fr) 340px}
+  @media (max-width:900px){.layout{grid-template-columns:minmax(0,1fr)}}
+  main,aside{min-width:0}
+  .clue2{border-bottom:2px dotted var(--blue)}
+  .optitem .oen{display:block}
+  table.gt td[colspan]{background:var(--accent-soft)}
+</style>
+<style>
+  /* ---- 2021：原卷句条 ---- */
+  .sn{margin:0 0 14px}
+  .sn .pno{display:block;margin-bottom:4px;font-size:.78rem;line-height:1.6}
+  img.strip{display:block;width:100%;max-width:760px;height:auto;background:#fff;border:1px solid var(--line);border-radius:6px;cursor:pointer}
+  .kw{margin-top:5px;font-size:.88rem;line-height:2.1;font-family:var(--serif)}
+  @media (prefers-color-scheme: dark){img.strip{filter:invert(.9) hue-rotate(180deg)}}
+  .sn,.sent .src{overflow-x:auto}
+  @media (max-width:700px){img.strip{width:640px;max-width:none}.sn::after{content:'← 句条可左右滑动 →';display:block;font-size:.7rem;color:var(--muted);margin-top:2px}}
+  .hd{font-family:var(--serif);font-weight:700;font-size:1.02rem;margin:6px 0 10px;padding:4px 10px;border-left:3px solid var(--accent);background:var(--accent-soft);border-radius:0 6px 6px 0}
+  .hd span{font-weight:400;font-size:.74rem;color:var(--muted);margin-left:8px;font-family:inherit}
+  .person .slot{display:inline-block;margin:2px 0 12px}
+  .person .slot.filled{display:block;padding:6px 8px}
+  .optitem>span:last-child{min-width:0;flex:1}
+  .optlib{grid-template-columns:minmax(0,1fr)}
+  .optitem{min-width:0}
+  .ls,.person .slot.filled,.optitem .oen{overflow-x:auto}
+  .ls .lsh{font-weight:700;font-size:.85rem;color:var(--accent);margin-bottom:6px}
+  .ls img.strip{cursor:default}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">◀ 返回英语复盘中心</a>
+  <header>
+    <h1>AI at Work, Not Instead of Workers　人工智能对企业的助益</h1>
+    <div class="sub">2021 年英语（一）真题 · Part B 新题型（<b>选句填空 ＋ 小标题</b>：文中挖 5 个空 ⇄ 7 句选二余，<b>五个空各落在一个粗体小标题段里</b>）· 建议做题 <b>6–8 min</b> · 话题：一提起商业里的人工智能，人们就想到自动化和失业；可调查显示企业用 AI 更多是「机器对机器」，文章于是列出 AI <b>帮企业而不替代员工</b>的五个方面——招聘、营销、省钱、准确、维护设施 · 黄皮书口径 526 words（人工逐句计数：正文 380 ＋ 五个小标题 15 ＋ 五个答案句 132 ＝ <b>527</b>，差 1 照实写；再加两个多余项 51 词共 578）· 黄皮书标源 <i>The Atlantic</i>《大西洋月刊》2018 年 <i>How A.I. Might Actually Make Your Job Easier</i>（WebSearch：同标题文章现挂在摩根大通官网的 news-stories 栏目，疑为品牌合作稿，<b>未抓全文、未核实刊登关系</b>）· 正文与选项均为<b>原卷扫描句条</b></div>
+    <div class="tags">
+      <span class="tag">正确答案：41 E　42 B　43 G　44 D　45 F（A、C 多余）</span>
+      <span class="tag">变体：选句填空第六篇（2008 · 2009 · 2012 · 2013 · 2015 · <b>2021</b>），<b>第一次带小标题</b></span>
+      <span class="tag">文章线：<b>清单线</b>·引子 → 主旨句冒号 → 五个小标题各列一条好处</span>
+      <span class="tag">Claude：<b>完整盲做 5/5</b>（44 A／D 停过一瞬）</span>
+    </div>
+  </header>
+
+  <div class="layout">
+    <main>
+
+      <section class="card">
+        <h2><span class="n">00</span>开考先认三样：变体 · 文章线 · 空的形态 —— 本篇的主刀是「引号分区」</h2>
+        <p style="font-size:.92rem">2015 那篇教我们按<b>人称</b>把七项分堆（R195）。2021 给了一把同样粗、却更好认的刀：<span class="mk">五个空里有三个夹在引号里（41、43、45），说话人都是华盛顿大学的 Domingos 教授；另外两个（42、44）在引号外，是叙述者自己在说话。</span>引号格要<b>口语</b>，叙述格要<b>举例</b>——七项一贴口吻标签，五个空当场分成「三个口语格 ＋ 两个举例格」，再让小标题定案。</p>
+
+        <h3 class="sh">① 认变体：Directions 是选句填空，正文却长着小标题</h3>
+        <p style="font-size:.92rem"><span class="loc">some sentences have been removed … two extra choices</span> ⟹ <b>选句填空</b>，五空七句、二项多余（R32）。可是正文有<b>五个粗体小标题</b>，五个空恰好一段一个 ⟹ <b>混合型</b>：选的这句既要接得上前后句，还要<b>罩得住本段的小标题</b>。黄皮书精讲开头也点了这一句：本文「并非典型」的选句填空，还带着小标题文章的特点。</p>
+
+        <h3 class="sh">② 认线：读到冒号就够了</h3>
+        <p style="font-size:.92rem">① 影视里的 AI 是邪恶的、商业里的 AI 只跟失业连在一起——那么，<b>不涉及大规模失业</b>的改变有哪些？（设问）→ ② 一项调查：企业用 AI 更多在<span class="loc">computer-to-computer activities</span>，而不是替人干活 → <span class="loc">Here are a few ways AI is aiding companies without replacing employees:</span>（<b>冒号＝清单开始</b>）→ 五个小标题。
+          ⟹ 这是一篇<b>清单线</b>文章：引子提问、主旨句收口、小标题逐条列举，<b>没有转折、没有反方</b>。
+          <span class="mk">⟹ 主旨句里的 without replacing employees 是全篇的过滤器：每个正确项都得「帮人、不替人」；七项里唯一一个动词是 replaces 的，就是多余项（见 02+++ 与 03 节）。</span></p>
+
+        <h3 class="sh">③ 定空的形态：五个空、五个小标题、两种说话人</h3>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:720px">
+          <tr><th style="width:6%">空</th><th style="width:18%">所在小标题</th><th style="width:12%">在引号里？</th><th style="width:14%">谁在说</th><th style="width:22%">上一句（头钩）</th><th>下一句（尾钩）</th></tr>
+          <tr><td class="c">41</td><td>Better hiring practices</td><td class="c">✅ “(41)”</td><td>Domingos（上句刚署名，In addition 后接着引）</td><td><span class="loc">In addition,</span>（同句）</td><td><span class="loc">One company that’s <b>doing this</b> is called Blendoor.</span></td></tr>
+          <tr class="bad"><td class="c">42</td><td>More effective marketing</td><td class="c">❌</td><td>叙述者</td><td><span class="loc">This can mean millions more in revenue.</span></td><td><span class="loc"><b>These</b> are “tools that help people use data…</span></td></tr>
+          <tr><td class="c">43</td><td>Saving customers money</td><td class="c">✅ “(43)”</td><td><span class="loc">Domingos says,</span></td><td><span class="loc">Insurance companies … more accurately assess risk.</span></td><td>（段末，下接小标题）</td></tr>
+          <tr class="bad"><td class="c">44</td><td>Improved accuracy</td><td class="c">❌</td><td>叙述者</td><td><span class="loc">It “helps people make smarter decisions.”</span></td><td>（段末，下接小标题）</td></tr>
+          <tr><td class="c">45</td><td>Protecting and maintaining infrastructure</td><td class="c">✅ “(45)”</td><td>Domingos（上句 <span class="loc">says Domingos</span>，引号再开）</td><td><span class="loc">“If they fail first and then you fix them, it’s very expensive,”</span></td><td>（全文末）</td></tr>
+        </table>
+        </div>
+        <p style="font-size:.9rem;margin-top:8px">⟹ <b>三末两中</b>：43、44、45 是段末空（只有头钩、没有尾钩），41、42 是段中空（有 doing this、These 两道尾钩）。<span class="mk">三个段末空没有下一句可读——补位的正是小标题和引号。</span></p>
+
+        <h3 class="sh">④ 本篇做题顺序（实测 6 分钟）</h3>
+        <p style="font-size:.92rem">❶ 扫五个空的<b>引号</b>（10 秒）：42、44 在外 → ❷ 七项贴口吻标签：只有 <b>B、D</b> 是「叙述者举一家公司的例子」 → ❸ 42 营销 ⟸ B（广告投放）、44 准确 ⟸ D（faster and more accurate），两空先落 → ❹ 剩 A C E F G 进三个引号格，按小标题配：41 招聘 ⟸ E（简历、候选人）、43 保险 ⟸ G（they 回指保险公司）、45 设施 ⟸ F（事后修贵 → 事前预测） → ❺ 剩 A、C，回头验：A 撞主旨（replaces），C 的 we 找不到说话人。</p>
+      </section>
+
+      <section class="card" id="bg">
+        <h2><span class="n">00+</span>背景 8 行：认清谁是教授、谁是公司——背景只帮你认说话人，不帮你判选项</h2>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:620px">
+          <tr><th style="width:24%">人／机构</th><th style="width:34%">是谁（WebSearch 已核的部分）</th><th>在本文里干什么</th></tr>
+          <tr><td>Pedro Domingos</td><td>华盛顿大学计算机系教授，著有 <i>The Master Algorithm</i>《终极算法》（2015）</td><td><b>三次出场、全是引语</b>：③❷ 面试比 AI 更有偏见 · 41 · 43 · 45——<b>三个引号空的说话人都是他</b></td></tr>
+          <tr><td>Patrick H. Winston</td><td>MIT 教授，1972–1997 年任 MIT 人工智能实验室主任；2019 年 7 月 19 日去世</td><td>两次出场：④❺「工具不是替代品」· ⑥❶❷ 机器学习让数据更可靠——<b>本文主旨的代言人</b></td></tr>
+          <tr><td>Tata Consultancy Services（塔塔咨询服务公司）</td><td>印度 IT 服务公司；2017 年发布 AI 全球趋势调查（受访高管 835 人）</td><td>②❶ 调查结论：AI 多用在机器对机器（<b>这句原话没在检索结果里核到</b>，照黄皮书）</td></tr>
+          <tr><td>Blendoor · Phrasee · Acquisio · EY</td><td>招聘分析 · 英国邮件营销 AI · 广告投放 AI · 安永（四大会计师事务所之一）</td><td>四个公司例子：③❹ · ④❷ · <b>B</b> · <b>D</b>——<b>公司只当例子、从不开口说话</b></td></tr>
+        </table>
+        </div>
+        <div class="box green"><span class="bt">本篇背景知识的正确用法</span>
+          ▸ <b>该用的</b>：知道 Domingos、Winston 是<b>教授</b>，就知道引号里不会冒出「<b>我们</b>给<b>我们的客户</b>更好的渠道」这种企业口吻——C 当场没了说话人；知道 Phrasee、Acquisio 都是营销 AI 公司，42 的 These are tools（复数）就有了两件工具。<br>
+          ▸ <b>不该用的</b>：你知道 AI 确实会替代一些枯燥工作，会觉得 A 说的是实话——<b>可本文的主旨偏偏是「不替代」</b>；你知道客服机器人很常见，会觉得 C 能塞进「帮客户省钱」——<b>可那一段讲的是电费和保费</b>。<br>
+          🔗 <b>跨篇</b>：<a href="2021_T1_火车票价一涨再涨.html">2021 Text 1</a>～<a href="2021_T4_网络中立要靠国会立法.html">Text 4</a> 四篇阅读各有一张表（让—转 · 证据链 · 原因 × 有效期 · 权力图），本篇的表是<b>「小标题 × 说话人」</b>——同一张卷子五篇都在考「把东西放回它的格子」。
+        </div>
+      </section>
+
+      <section class="card" id="opts">
+        <h2><span class="n">01</span>七句选项（A–G · 本机识别成文字）· 先给每一项贴三张标签：口吻 · 说话人 · 话题</h2>
+        <p style="font-size:.8rem;color:var(--muted);margin-bottom:10px">🖼 每一项是原卷第 12 页裁下的扫描条 ｜ <b>条上任意一个词都能点着查有道</b> ｜ 作答后用掉的项自动置灰 ｜ 红框＝多余项（做完再看）｜ 🔑 行写「它像谁说的话、能进哪种格」</p>
+        <div class="optlib" id="optlib"></div>
+
+        <h3 class="sh">七项口吻表 —— 先分「口语」与「举例」，再看话题</h3>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:700px">
+          <tr><th style="width:6%">项</th><th style="width:20%">口吻</th><th style="width:24%">主语／人称</th><th style="width:18%">话题词</th><th>能进哪种格</th></tr>
+          <tr><td class="c">A</td><td>口语 · 对听者说 you</td><td>AI replaces · <b>you</b>’re doing research</td><td>research · sources</td><td>引号格（41／43／45）；但全文没有「研究」这一段</td></tr>
+          <tr><td class="c">B</td><td><b>叙述 · 举例</b></td><td>There are also companies like <b>Acquisio</b></td><td>advertising · channels</td><td><b>叙述格（42／44）</b></td></tr>
+          <tr class="bad"><td class="c">C</td><td>口语 · <b>企业自称 we</b></td><td><b>We</b>’re … <b>our</b> customers</td><td>customers · channels</td><td>引号格——可三个引号格的说话人都是教授 ⟹ <b>无人可说这句话</b></td></tr>
+          <tr><td class="c">D</td><td><b>叙述 · 举例</b></td><td>One accounting firm, <b>EY</b></td><td>audit · accurate</td><td><b>叙述格（42／44）</b></td></tr>
+          <tr><td class="c">E</td><td>中性陈述</td><td>AI looks at … selects</td><td>résumés · candidates</td><td>两种格都可（话题只有招聘）</td></tr>
+          <tr><td class="c">F</td><td>口语 · 泛指 you</td><td><b>You</b> want to predict</td><td>attention · employees</td><td>引号格</td></tr>
+          <tr><td class="c">G</td><td>口语 · 讲以前</td><td>Before, <b>they</b> might not insure</td><td>insure · charge · money</td><td>引号格（they 要有先行词：保险公司）</td></tr>
+        </table>
+        </div>
+        <p style="font-size:.9rem;margin-top:8px">⟹ 叙述格两个、举例句恰好两句（B、D）；引号格三个、口语与中性句五句（A C E F G）——<b>引号格里候选比空多两个，两个多余项就在这一堆里</b>。这一刀不是逻辑上的绝对排除（教授也可能举公司的例子），是<b>语体上的强信号</b>：它先把五个空分成两组，再让小标题定案。</p>
+      </section>
+
+      <section class="card" id="text">
+        <h2><span class="n">02</span>引子两段 ＋ 五个小标题段 · 点字母作答 <button class="allbtn" onclick="toggleAll()">全段意译 开/关</button></h2>
+        <p style="font-size:.8rem;color:var(--muted);margin-bottom:14px">📄 原文由你的浏览器从原卷第 11–12 页识别成文字（每句末尾「原卷」可切回扫描图，「校对」可改错字）｜ <b>选中任意单词弹「查有道」</b>（触屏长按选词；切回原卷后在扫描图上点词也能查）｜ 每句下方「↘ 跳到长难句精析」按钮跳 05 节 ｜ <b>虚线词</b> ＝ 本句重难点词，点开出卡片（正文里没认出来的才留在下面 🟡 行） ｜ 每个空下方点 A–G 作答，<b>答后空格处补上该项原句</b>，并出线索链解析 ＋ 错因标签 ｜「意」＝ 按句意转述，非逐字翻译</p>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <p style="font-size:.78rem;color:var(--accent);margin-bottom:6px">① 引子：人们一谈商业 AI 就谈失业——有没有别的改变？</p>
+          <div class="sn" id="t1_1"><span class="pno">❶ 被动 is typically depicted as「通常被描绘成」；as 后的 something sinister 带 that 定语从句 will upend our way of life——<b>影视的刻板印象</b> · 22 词</span>
+          <img class="strip" src="img/2021_新题型/s1_1.png" alt="①❶ 原卷句条" loading="lazy">
+          <div class="kw">🟡 <span class="tk" data-w="depict">depicted as</span> · <span class="tk" data-w="typically">typically</span> · <span class="tk" data-w="sinister">sinister</span> · <span class="tk" data-w="upend">upend</span> · <span class="tk" data-w="wayoflife">way of life</span></div></div>
+          <div class="sn" id="t1_2"><span class="pno">❷⭐⭐ 全段的问号：When it comes to …「一说到……」；前半 we often hear about it in relation to …（<b>人们常把它和自动化、失业连在一起</b>），but 后面是一个<b>倒装的疑问句</b> in what ways is AI changing …，句尾 that 从句修饰 ways——问「<b>不涉及</b>失业预言的改变」⟹ 设问，下文回答 · 41 词 · 长难句 1</span>
+          <img class="strip" src="img/2021_新题型/s1_2.png" alt="①❷ 原卷句条" loading="lazy" onclick="go('l1_2')">
+          <div class="kw">🟡 <span class="tk" data-w="whenitcomes">When it comes to</span> · <span class="tk" data-w="inrelationto">in relation to</span> · <span class="tk" data-w="automation">automation</span> · <span class="tk" data-w="impending">impending</span> · <span class="tk" data-w="economy">economy</span> · <span class="tk" data-w="involve">involve</span> · <span class="tk" data-w="doomgloom">doom-and-gloom</span> · <span class="tk" data-w="massunemp">mass unemployment</span> · <span class="tk" data-w="prediction">predictions</span></div></div>
+          <div class="zh"><b>①段意：</b>在电影电视里，人工智能常被画成一种要颠覆我们生活方式的邪恶东西。一谈到商业领域的 AI，我们听到的也多半是自动化、是即将来临的失业潮；可是，AI 还有哪些改变企业和整体经济的方式，是跟「大规模失业」这种悲观预言不沾边的呢？</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <p style="font-size:.78rem;color:var(--accent);margin-bottom:6px">② 回答：调查说企业用 AI 多在「机器对机器」→ 主旨句 ＋ 冒号</p>
+          <div class="sn" id="t2_1"><span class="pno">❶ 主干 A recent survey … found that …；survey 后挂 of 短语（调查对象：制造业和服务业）与 from 短语（谁做的：塔塔咨询）；that 从句里是比较 <b>more often in A than in B</b>——A ＝ 机器对机器，B ＝ 替人干活 · 28 词 · 长难句 2</span>
+          <img class="strip" src="img/2021_新题型/s2_1.png" alt="②❶ 原卷句条" loading="lazy" onclick="go('l2_1')">
+          <div class="kw">🟡 <span class="tk" data-w="survey">survey</span> · <span class="tk" data-w="manufacturing">manufacturing</span> · <span class="tk" data-w="serviceind">service industries</span> · <span class="tk" data-w="currently">currently</span> · <span class="tk" data-w="comptocomp">computer-to-computer</span> · <span class="tk" data-w="automate">automating</span></div></div>
+          <div class="sn" id="t2_2"><span class="pno">❷⭐⭐⭐ <b>全文主旨句 ＋ 目录</b>：Here are a few ways …（下面列几条）；<b>aiding companies without replacing employees</b>——「帮企业」与「不替人」两个条件，冒号收尾 ⟹ 后面五个小标题就是这几条 · 12 词</span>
+          <img class="strip" src="img/2021_新题型/s2_2.png" alt="②❷ 原卷句条" loading="lazy">
+          <div class="kw">🟡 <span class="tk" data-w="aid">aiding</span> · <span class="tk" data-w="replace">replacing</span> · <span class="tk" data-w="employee">employees</span></div></div>
+          <div class="zh"><b>②段意：</b>塔塔咨询服务公司近来对制造业和服务业做的一项调查发现，眼下企业用 AI，更多是在计算机与计算机之间的活动上，而不是把人干的活自动化。下面是 AI 在不替代员工的前提下帮助企业的几种方式：</div>
+        </div>
+
+        <div class="person q" id="q41" data-ans="E">
+          <div class="pname"><span class="qn">(41)</span> 第③段 · <b>段中空 · 引号格</b>（说话人 Domingos）<span class="stance st-pro">✅ 盲做零停顿</span><button class="zbtn" onclick="tz(this)">意</button></div>
+          <div class="hd">Better hiring practices<span>小标题 ① · 招聘做法更好</span></div>
+          <div class="sn" id="t3_1"><span class="pno">❶ 本段论点：用 AI <b>remove some of the unconscious bias from</b> hiring decisions（remove A from B）——注意 some，不是全部 · 15 词</span>
+          <img class="strip" src="img/2021_新题型/s3_1.png" alt="③❶ 原卷句条" loading="lazy">
+          <div class="kw">🟡 <span class="tk" data-w="hiring">hiring</span> · <span class="tk" data-w="practice">practices</span> · <span class="tk" data-w="unconscious">unconscious</span> · <span class="tk" data-w="bias">bias</span></div></div>
+          <div class="sn" id="t3_2"><span class="pno">❷⭐⭐ 全文最长句：引语 There are experiments that show that …（两个 that：定语从句 ＋ 宾语从句）；比较 much more biased than what AI does；says 后是说话人 Pedro Domingos，再挂两个同位语（书的作者 ＋ 华盛顿大学教授）——<b>记住这个人：后面三个引号空都是他说的</b> · 49 词 · 长难句 3</span>
+          <img class="strip" src="img/2021_新题型/s3_2.png" alt="③❷ 原卷句条" loading="lazy" onclick="go('l3_2')">
+          <div class="kw">🟡 experiments · <span class="tk" data-w="naturally">naturally</span> · interviews · <span class="tk" data-w="biased">biased</span></div></div>
+          <div class="sn" id="t3_3"><span class="pno">❸ <b>41 空</b>：In addition（并列补充）＋ 引号——没有重新署名 ⟹ <b>仍是 Domingos 在说</b></span>
+          <img class="strip" src="img/2021_新题型/s3_3.png" alt="③❸ 41 空 原卷句条" loading="lazy">
+          <div class="kw">🟡 <span class="tk" data-w="inaddition">In addition</span></div></div>
+          <span class="slot" data-n="41">(41) ＿＿＿＿ 点下方字母作答</span>
+          <div class="sn" id="t3_4"><span class="pno">❹ <b>尾钩</b>：One company that’s <b>doing this</b>——doing this 回指空格里的动作 · 8 词</span>
+          <img class="strip" src="img/2021_新题型/s3_4.png" alt="③❹ 原卷句条" loading="lazy"></div>
+          <div class="sn" id="t3_5"><span class="pno">❺ 例子落地：help identify where there may be bias——<b>又绕回 ❶ 的偏见</b> · 15 词</span>
+          <img class="strip" src="img/2021_新题型/s3_5.png" alt="③❺ 原卷句条" loading="lazy">
+          <div class="kw">🟡 <span class="tk" data-w="analytics">analytics</span> · <span class="tk" data-w="identify">identify</span> · process</div></div>
+          <div class="zh"><b>③段意：</b>（招聘做法更好）企业正用 AI 去掉招聘决定里的一部分无意识偏见。「有实验表明，面试结果自然比 AI 的判断偏得多。」《终极算法》的作者、华盛顿大学计算机教授佩德罗·多明戈斯这样说。此外，<b>（41）「AI 能看的简历比人多得多，并能挑出更有潜力的候选人。」</b>有一家叫 Blendoor 的公司就在这样做，它用数据分析帮忙找出招聘过程中可能存在偏见的地方。</div>
+          <div class="chips"></div>
+          <div class="expl"><b>41 → E　AI 筛简历：看得比人多，挑出更有潜力的候选人</b>
+            <div class="line">🏷 <b>标题钩</b>：Better <b>hiring</b> practices——七项里谈招聘的只有 E（<span class="loc">résumés</span> · <span class="loc">candidates</span>，招聘的一头一尾）。hiring 这个词没在 E 里出现，换成了招聘流程里的两个具体名词（R1：换词不换意）。</div>
+            <div class="line">🎙 <b>引号门</b>：41 夹在引号里、说话人承上是 Domingos。E 是中性陈述（AI 做什么），放进教授嘴里自然；B、D 那种「某某公司如何如何」的举例句是叙述者的活——何况下一句已经在举 Blendoor 的例子了（R314）。</div>
+            <div class="line">🔗 <b>头钩 · In addition 补第二个优点</b>：③❷ 说 AI 比面试<b>偏见少</b>（质），E 说 AI <b>看得多</b>（<span class="loc">in greater numbers than humans</span>，量）——同一段里的两条好处，并列。</div>
+            <div class="line">🔗 <b>尾钩 · doing this 要一个动作</b>：<span class="loc">One company that’s doing this</span>——this 回指一件公司能「做」的事。E 的 looks at … selects 正是动作；接着 Blendoor「找出招聘中的偏见」，把 E（筛简历）与 ③❶（去偏见）两件事缝到了同一家公司身上（R136：下文把空格里的东西当已知信息用）。</div>
+            <div class="line">🚫 <b>诱饵</b>：A 的 <span class="loc">relevant sources and information</span> 也是「AI 替人看材料」，但对象是 research 不是招聘；C 的 <span class="loc">beyond human scale</span> 与 E 的 than humans would be able to 同是「超出人力」，C 讲的却是客服渠道。</div>
+            <div class="mine">🚩 <b>我的实况</b>：第一眼就是 E——七项里唯一一句招聘，零停顿。</div>
+          </div>
+        </div>
+
+        <div class="person q" id="q42" data-ans="B">
+          <div class="pname"><span class="qn">(42)</span> 第④段 · <b>段中空 · 叙述格</b>（引号外）<span class="stance st-pro">✅ 盲做零停顿</span><button class="zbtn" onclick="tz(this)">意</button></div>
+          <div class="hd">More effective marketing<span>小标题 ② · 营销更有效</span></div>
+          <div class="sn" id="t4_1"><span class="pno">❶ 论点：AI 软件能 analyze and optimize marketing email subject lines，目的 to increase open rates（打开率）· 15 词</span>
+          <img class="strip" src="img/2021_新题型/s4_1.png" alt="④❶ 原卷句条" loading="lazy">
+          <div class="kw">🟡 <span class="tk" data-w="analyze">analyze</span> · <span class="tk" data-w="optimize">optimize</span> · <span class="tk" data-w="marketing">marketing</span> · <span class="tk" data-w="subjectline">subject lines</span> · <span class="tk" data-w="openrate">open rates</span></div></div>
+          <div class="sn" id="t4_2"><span class="pno">❷⭐ <b>第一个例子</b>：One company in the UK, Phrasee（同位语插入）, claims …；by up to 10 percent「最多高出 10 个百分点」；when it comes to 第二次出现 · 24 词 · 长难句 4</span>
+          <img class="strip" src="img/2021_新题型/s4_2.png" alt="④❷ 原卷句条" loading="lazy" onclick="go('l4_2')">
+          <div class="kw">🟡 <span class="tk" data-w="claim">claims</span> · <span class="tk" data-w="outperform">outperform</span> · <span class="tk" data-w="upto">by up to</span></div></div>
+          <div class="sn" id="t4_3"><span class="pno">❸ 推论：This 回指打开率提高 ⟹ 收入 · 7 词</span>
+          <img class="strip" src="img/2021_新题型/s4_3.png" alt="④❸ 原卷句条" loading="lazy">
+          <div class="kw">🟡 <span class="tk" data-w="revenue">revenue</span></div></div>
+          <div class="sn" id="t4_4"><span class="pno">❹ <b>42 空</b>：<b>前后都没有引号</b> ⟹ 叙述者在说话</span>
+          <img class="strip" src="img/2021_新题型/s4_4.png" alt="④❹ 42 空 原卷句条" loading="lazy"></div>
+          <span class="slot" data-n="42">(42) ＿＿＿＿ 点下方字母作答</span>
+          <div class="sn" id="t4_5"><span class="pno">❺⭐⭐ <b>尾钩 ＋ 主旨回声</b>：<b>These</b>（复数）are “tools …”；引语里 not a replacement for people ＝ ②❷ without replacing employees 的原话版；说话人 Winston 带同位语 · 27 词 · 长难句 5</span>
+          <img class="strip" src="img/2021_新题型/s4_5.png" alt="④❺ 原卷句条" loading="lazy" onclick="go('l4_5')">
+          <div class="kw">🟡 tools · <span class="tk" data-w="replacement">replacement</span></div></div>
+          <div class="zh"><b>④段意：</b>（营销更有效）有些 AI 软件能分析、优化营销邮件的主题行，提高打开率。英国一家叫 Phrasee 的公司说，在邮件打开率上，它的软件比人工最多高出 10 个百分点——这可能意味着多出几百万的收入。<b>（42）还有像 Acquisio 这样的公司，分析广告在 Adwords、必应、社交媒体等多个渠道的投放效果，并就广告资金投到哪里收效最好作出调整或给出建议。</b>麻省理工学院人工智能与计算机科学教授帕特里克·H. 温斯顿说，这些都是「帮人用好数据的工具，而不是人的替代品」。</div>
+          <div class="chips"></div>
+          <div class="expl"><b>42 → B　还有 Acquisio 这类公司：分析多渠道广告效果、调整投放</b>
+            <div class="line">🎙 <b>引号门（本题主刀）</b>：42 在引号外，是叙述者的话。七项里「叙述者举一家公司的例子」只有 B（<span class="loc">There are also companies like Acquisio</span>）和 D（<span class="loc">One accounting firm, EY</span>）——候选从 7 个当场缩到 2 个（R314）。</div>
+            <div class="line">🔗 <b>头钩 · 举例接力</b>：④❷ <span class="loc">One company in the UK, Phrasee</span> → B <span class="loc">There are <b>also</b> companies like</span>——<b>One company … ／ There are also companies …</b> 是举例的标准接力：第一个例子，再来一类。</div>
+            <div class="line">🔗 <b>尾钩 · These 复数</b>：<span class="loc">These are “tools that help people use data</span>——These 要至少两件工具：Phrasee 的邮件软件 ＋ Acquisio 的广告分析，B 正好补上第二件；评语 tools that help people use data 是空格的类型说明书（R159）：B 的 analyzes advertising performance 就是「用数据」。</div>
+            <div class="line">🏷 <b>标题钩</b>：More effective <b>marketing</b> ↔ B 的 <span class="loc">advertising</span> · <span class="loc">best results</span>（effective 的换说法）。D 的 accounting、audit 和营销无关 ⟹ D 只能去 44。</div>
+            <div class="line">🚫 <b>A 被尾钩当场否掉</b>：下一句说这些是「工具，<b>不是人的替代品</b>」，A 偏偏说 AI <b>replaces</b> the boring parts of your job——黄皮书把 A 列为 42 的备选、说它与尾句「似对应」，其实是<b>正面相撞</b>（R317，见 03++）。</div>
+            <div class="mine">🚩 <b>我的实况</b>：先看到 These are tools 的复数，再看到 There are also，零停顿。</div>
+          </div>
+        </div>
+
+        <div class="person q" id="q43" data-ans="G">
+          <div class="pname"><span class="qn">(43)</span> 第⑤段 · <b>段末空 · 引号格</b>（Domingos says）<span class="stance st-pro">✅ 盲做零停顿</span><button class="zbtn" onclick="tz(this)">意</button></div>
+          <div class="hd">Saving customers money<span>小标题 ③ · 帮客户省钱</span></div>
+          <div class="sn" id="t5_1"><span class="pno">❶ 能源公司：help customers reduce their electricity bills；逗号后 <b>saving them money while helping the environment</b> 是结果状语（省钱 ＋ 环保）· 19 词 · 长难句 6</span>
+          <img class="strip" src="img/2021_新题型/s5_1.png" alt="⑤❶ 原卷句条" loading="lazy" onclick="go('l5_1')">
+          <div class="kw">🟡 bills · <span class="tk" data-w="save">saving them money</span> · <span class="tk" data-w="whiledoing">while helping</span></div></div>
+          <div class="sn" id="t5_2"><span class="pno">❷ 企业自己：optimize their own energy use and cut down on the cost · 16 词</span>
+          <img class="strip" src="img/2021_新题型/s5_2.png" alt="⑤❷ 原卷句条" loading="lazy">
+          <div class="kw">🟡 <span class="tk" data-w="cutdown">cut down on</span></div></div>
+          <div class="sn" id="t5_3"><span class="pno">❸⭐⭐ <b>头钩（跨页）</b>：Insurance companies, meanwhile（插入语，「另一方面」换行业），base their premiums on AI models（base A on B）；that 从句 more accurately assess risk——<b>现在</b>定价更准 · 15 词</span>
+          <img class="strip" src="img/2021_新题型/s5_3.png" alt="⑤❸ 原卷句条（跨页拼接）" loading="lazy">
+          <div class="kw">🟡 <span class="tk" data-w="meanwhile">meanwhile</span> · <span class="tk" data-w="baseon">base … on</span> · <span class="tk" data-w="premium">premiums</span> · <span class="tk" data-w="assess">assess</span> · <span class="tk" data-w="risk">risk</span></div></div>
+          <div class="sn" id="t5_4"><span class="pno">❹ <b>43 空</b>：Domingos says, ＋ 引号 ⟹ 口语格、教授在说</span>
+          <img class="strip" src="img/2021_新题型/s5_4.png" alt="⑤❹ 43 空 原卷句条" loading="lazy"></div>
+          <span class="slot" data-n="43">(43) ＿＿＿＿ 点下方字母作答</span>
+          <div class="zh"><b>⑤段意：</b>（帮客户省钱）能源公司可以用 AI 帮客户减少电费，既省钱又环保；企业也能优化自身的能源使用、压低电费成本。保险公司则可以用更准确评估风险的 AI 模型来定保费。多明戈斯说：<b>（43）「以前，他们可能不给看上去风险高的人上保险，或者收这些人太多钱；要么就收得太少，结果让公司赔钱。」</b></div>
+          <div class="chips"></div>
+          <div class="expl"><b>43 → G　过去保险公司要么拒保、要么收多收少两头亏</b>
+            <div class="line">🎙 <b>引号门</b>：<span class="loc">Domingos says, “(43)”</span>——口语格。G 是典型的口头解释：Before 开头、<span class="loc">felt like a high risk</span>（「看上去像」）、<span class="loc">it would cost the company money</span>，放进教授嘴里正合适。</div>
+            <div class="line">🔗 <b>头钩 · 今昔对比</b>：⑤❸ 保险公司<b>现在</b>靠 AI <span class="loc">more accurately assess risk</span> → G 的 <b>Before</b> 讲<b>以前</b>怎样定不准——too much ／ too little，正是 accurately 的反面。</div>
+            <div class="line">🔗 <b>代词</b>：G 的 they 要会 insure、会 charge ⟹ 只能是保险公司；⑤❸ 的主语正是 Insurance companies，they 就近回指。</div>
+            <div class="line">🏷 <b>标题钩</b>：Saving customers money ↔ <span class="loc">charge them too much</span>（客户多付）＋ <span class="loc">cost the company money</span>（公司亏钱）——<b>定价准，两头都省</b>。G 是七项里唯一同时带「顾客」与「钱」两层意思的一句。</div>
+            <div class="line">🚫 <b>C 是本题的标题诱饵</b>：Saving <b>customers</b> money 的 customers 原样出现在 C 里——七项中与小标题核心词完全相同的只有 C 的 customers 和 G 的 money，<b>一真一假</b>（R316）。C 讲「给客户更好的渠道、不用打电话」，和电费、保费都不沾边；而且 C 的 we 是企业口吻，说话人 Domingos 是教授（R315）。</div>
+            <div class="mine">🚩 <b>我的实况</b>：insurance → insure 一眼对上，零停顿。</div>
+          </div>
+        </div>
+
+        <div class="person q" id="q44" data-ans="D">
+          <div class="pname"><span class="qn">(44)</span> 第⑥段 · <b>段末空 · 叙述格</b>（引号已关）<span class="stance st-mid">⚠️ 盲做 A／D 停过一瞬</span><button class="zbtn" onclick="tz(this)">意</button></div>
+          <div class="hd">Improved accuracy<span>小标题 ④ · 更准确</span></div>
+          <div class="sn" id="t6_1"><span class="pno">❶ Winston 引语：which 非限制性定语从句指代前面整件事（提供更可靠的统计 ⟹ 让数据更有价值）· 17 词</span>
+          <img class="strip" src="img/2021_新题型/s6_1.png" alt="⑥❶ 原卷句条" loading="lazy">
+          <div class="kw">🟡 <span class="tk" data-w="machinelearning">Machine learning</span> · <span class="tk" data-w="reliable">reliable</span> · <span class="tk" data-w="statistics">statistics</span> · <span class="tk" data-w="valuable">valuable</span></div></div>
+          <div class="sn" id="t6_2"><span class="pno">❷ It 回指机器学习；引号只括住半句——<b>引号在 decisions 后关上</b> · 6 词</span>
+          <img class="strip" src="img/2021_新题型/s6_2.png" alt="⑥❷ 原卷句条" loading="lazy">
+          <div class="kw">🟡 <span class="tk" data-w="smart">smarter decisions</span></div></div>
+          <div class="sn" id="t6_3"><span class="pno">❸ <b>44 空</b>：<b>没有引号</b>（下划线折到了下一行）⟹ 叙述格</span>
+          <img class="strip" src="img/2021_新题型/s6_3.png" alt="⑥❸ 44 空 原卷句条" loading="lazy"></div>
+          <span class="slot" data-n="44">(44) ＿＿＿＿ 点下方字母作答</span>
+          <div class="zh"><b>⑥段意：</b>（更准确）「机器学习往往能提供更可靠的统计，这让数据更有价值。」温斯顿说。它「帮助人们作出更明智的决定」。<b>（44）会计师事务所安永就用一套 AI 系统在审计时帮忙审合同；这个流程再配上员工审核，又快又准。</b></div>
+          <div class="chips"></div>
+          <div class="expl"><b>44 → D　安永用 AI 协助审合同，配合员工审核，更快更准</b>
+            <div class="line">🎙 <b>引号门（本题主刀）</b>：44 在引号外——⑥❷ 的引号在 decisions 后已经关上。叙述格的候选只有 B、D（E 两可）；B 已去 42、E 只谈招聘 ⟹ D（R314）。</div>
+            <div class="line">🏷 <b>标题钩</b>：Improved <b>accuracy</b> ↔ D 的 <span class="loc">faster and more <b>accurate</b></span>——七项里唯一和小标题同根的词。</div>
+            <div class="line">🔗 <b>头钩 · 论点 → 论据</b>：⑥❶❷ 是 Winston 给的<b>论点</b>（统计更可靠、决定更明智），D 是<b>论据</b>（一家具体公司 ＋ 具体流程 ＋ 结果）——段末举例收尾，和 ④ 段 Phrasee 是同一个结构。</div>
+            <div class="line">🧭 <b>主旨钩</b>：<span class="loc">along with employees reviewing the contracts</span>——D 明写「与员工一起」，正是 without replacing employees 的实例（R317）。</div>
+            <div class="line">🚫 <b>A 的诱惑</b>：A 的 <span class="loc">sources and information</span> 和上文 statistics、data 像同一个话题，黄皮书也把 A 列为备选。可 44 在引号外，A 是对听者说 you 的口语——放进来，叙述者会突然对读者喊「如果你在做研究」，语体断了。E 的 more promising 与 more reliable 只是比较级撞形。</div>
+            <div class="mine">🚩 <b>我的实况</b>：A／D 停过一瞬（A 的 information 与上文 data 像），看到 44 没有引号、D 有 accurate，落 D。<b>这一瞬正是本页把「引号门」排在第一刀的原因。</b></div>
+          </div>
+        </div>
+
+        <div class="person q" id="q45" data-ans="F">
+          <div class="pname"><span class="qn">(45)</span> 第⑦段 · <b>段末空（全文末）· 引号格</b>（承上 says Domingos）<span class="stance st-pro">✅ 盲做零停顿</span><button class="zbtn" onclick="tz(this)">意</button></div>
+          <div class="hd">Protecting and maintaining infrastructure<span>小标题 ⑤ · 保护与维护基础设施</span></div>
+          <div class="sn" id="t7_1"><span class="pno">❶ 主干 A number of companies … use AI image processing technology；particularly in … 插入（尤其是能源、交通）；to inspect … and prevent … 两个目的；<b>before they happen</b>——「事前」是本段的关键词 · 26 词 · 长难句 7</span>
+          <img class="strip" src="img/2021_新题型/s7_1.png" alt="⑦❶ 原卷句条" loading="lazy" onclick="go('l7_1')">
+          <div class="kw">🟡 <span class="tk" data-w="particularly">particularly</span> · <span class="tk" data-w="transportation">transportation</span> · <span class="tk" data-w="imageproc">image processing</span> · <span class="tk" data-w="inspect">inspect</span> · <span class="tk" data-w="infrastructure">infrastructure</span> · <span class="tk" data-w="prevent">prevent</span> · <span class="tk" data-w="equipfail">equipment failure</span> · <span class="tk" data-w="leak">leaks</span></div></div>
+          <div class="sn" id="t7_2"><span class="pno">❷⭐ <b>头钩</b>：If they fail first and then you fix them——they ＝ 设备，<b>you 是泛指的「你」</b>；it’s very expensive ⟹ 事后修 ＝ 贵 · 14 词</span>
+          <img class="strip" src="img/2021_新题型/s7_2.png" alt="⑦❷ 原卷句条" loading="lazy"></div>
+          <div class="sn" id="t7_3"><span class="pno">❸ <b>45 空</b>：引号重开、不再署名 ⟹ Domingos 的下一句话</span>
+          <img class="strip" src="img/2021_新题型/s7_3.png" alt="⑦❸ 45 空 原卷句条" loading="lazy"></div>
+          <span class="slot" data-n="45">(45) ＿＿＿＿ 点下方字母作答</span>
+          <div class="zh"><b>⑦段意：</b>（保护与维护基础设施）不少企业，尤其是能源和交通企业，用 AI 图像处理技术检查基础设施，在设备故障或泄漏发生之前加以预防。「如果等它们先坏了再去修，代价非常高，」多明戈斯说，<b>（45）「你得预先知道哪里现在需要处理，并告诉员工往哪儿去才有用。」</b></div>
+          <div class="chips"></div>
+          <div class="expl"><b>45 → F　预先判断哪里需要处理，告诉员工该去哪儿</b>
+            <div class="line">🎙 <b>引号门</b>：“(45)” 紧跟 says Domingos，是他的第二句话、口语格。F 的 <span class="loc">You want to …</span> 是口语里泛指的「你」。</div>
+            <div class="line">🔗 <b>头钩（本题主刀）· 反面做法 → 正面做法</b>：<span class="loc">If they fail first and then you fix them</span>（事后修 ⟹ 贵）→ F <span class="loc">You want to predict if something needs attention now</span>（所以要事前判断）——<b>you fix ↔ You want</b>，人称接得严丝合缝。</div>
+            <div class="line">🏷 <b>标题钩</b>：Protecting and <b>maintaining</b> infrastructure ＋ ⑦❶ <span class="loc">prevent … before they happen</span> ↔ F 的 <span class="loc">predict</span> · <span class="loc">needs attention now</span>。</div>
+            <div class="line">🧭 <b>主旨钩</b>：<span class="loc">point to where it’s useful for employees to go to</span>——AI 指路，<b>还是员工去修</b>：又一个「帮人、不替人」（R317）。</div>
+            <div class="line">🚫 <b>G 的诱惑</b>：G 开头 <span class="loc">Before, they might …</span> 也是「没用 AI 时的老做法」，和 ⑦❷「先坏后修」像一对。但 G 的 they 要会 insure、会 charge——⑦段的 they 是设备，设备不会给人上保险。</div>
+            <div class="mine">🚩 <b>我的实况</b>：零停顿。</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card" id="quote">
+        <h2><span class="n">02+</span>本页最值钱：引号分区 —— 每段都由「陈述 · 引语 · 例子」三种零件拼成，挖掉哪种零件，就要哪种语体</h2>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:760px">
+          <tr><th style="width:15%">段（小标题）</th><th style="width:43%">零件顺序（<b>粗体</b>＝被挖掉的那一件）</th><th style="width:14%">空格缺的零件</th><th>所以空格要什么</th></tr>
+          <tr><td>③ hiring</td><td>陈述 ❶ → Domingos 引语 ❷ → <b>(41) 引语续</b> → 例子 Blendoor ❹❺</td><td class="c">引语</td><td>口语或中性；且能被 doing this 回指成一个动作 ⟹ E</td></tr>
+          <tr class="bad"><td>④ marketing</td><td>陈述 ❶ → 例子 Phrasee ❷ → 推论 ❸ → <b>(42) 例子 2</b> → Winston 引语 ❺</td><td class="c">例子</td><td>叙述体 ＋ 公司名 ＋ 能凑成 These 复数 ⟹ B</td></tr>
+          <tr><td>⑤ saving</td><td>陈述 能源 ❶❷ → 陈述 保险 ❸ → <b>(43) Domingos 引语</b></td><td class="c">引语</td><td>口语；they 回指保险公司 ⟹ G</td></tr>
+          <tr class="bad"><td>⑥ accuracy</td><td>Winston 引语 ❶❷ → <b>(44) 例子</b></td><td class="c">例子</td><td>叙述体 ＋ 公司名 ＋ accurate ⟹ D</td></tr>
+          <tr><td>⑦ infrastructure</td><td>陈述 ❶ → Domingos 引语 ❷ → <b>(45) 引语续</b></td><td class="c">引语</td><td>口语；接住 you fix them ⟹ F</td></tr>
+        </table>
+        </div>
+        <div class="box"><span class="bt">⭐ 三种零件，两种语体：命题人挖了三句引语、两句例子</span>
+          <b>例子</b>的长相固定：<span class="loc">One company …</span>／<span class="loc">There are also companies like …</span>／<span class="loc">One accounting firm, EY, …</span>——叙述者第三人称、带公司名，<b>全文四个例子全在引号外</b>（Blendoor · Phrasee · Acquisio · EY）。<br>
+          <b>引语</b>的长相也固定：教授开口，用 you 泛指（<span class="loc">you fix them</span>）、用 Before 讲往事、用 it would … 讲后果——<b>七项里 A、C、F、G 四句都是这副口吻</b>。<br>
+          <span class="mk">⟹ 先看空格在不在引号里，再看零件表缺的是什么，五个空就从「7 选 1」变成了「2 选 1」和「5 选 1」两道小题。</span>
+        </div>
+
+        <h3 class="sh">说话人表 —— 全文只有两位开口的人，都是教授</h3>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:600px">
+          <tr><th style="width:22%">说话人</th><th style="width:30%">在哪儿开口</th><th>说的是什么口吻</th></tr>
+          <tr><td>Pedro Domingos<br><span style="font-size:.78rem">华盛顿大学教授</span></td><td>③❷ · <b>41</b> · <b>43</b>（says）· ⑦❷ · <b>45</b></td><td>旁观者讲道理：实验表明……／以前他们……／你得预先……——<b>从不说「我们公司」</b></td></tr>
+          <tr><td>Patrick H. Winston<br><span style="font-size:.78rem">MIT 教授</span></td><td>④❺ · ⑥❶❷</td><td>下定义：工具不是替代品／机器学习让数据更可靠</td></tr>
+          <tr class="bad"><td>（任何一家公司）</td><td><b>无</b></td><td>四家公司都只当例子出现，没有一家开口 ⟹ <b>C 的「我们给我们的客户……」找不到嘴</b></td></tr>
+        </table>
+        </div>
+        <p style="font-size:.9rem;margin-top:8px">🔁 <b>和 2015 的人称分区是一家</b>：2015 看正文从 you 换到 we，按人称给七项分区（R195）；2021 看的是<b>引号的有无和说话人的身份</b>（R314、R315）。两年的共同点：<span class="mk">先不读意思，先读「谁在说、对谁说」</span>——这一步只要十几秒，却能一次砍掉一半选项。</p>
+      </section>
+
+      <section class="card" id="cover">
+        <h2><span class="n">02++</span>小标题覆盖表 —— 标题定范围，原词复现不加分</h2>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:720px">
+          <tr><th style="width:24%">小标题</th><th style="width:30%">正确项里的换说法</th><th style="width:16%">与标题同词？</th><th>诱饵与它的瓜葛</th></tr>
+          <tr><td>Better <b>hiring</b> practices</td><td>E：résumés · candidates（招聘的一头一尾）</td><td class="c">✗（换说法）</td><td>A 的 sources and information 也是「替人看材料」，但对象是研究</td></tr>
+          <tr><td>More effective <b>marketing</b></td><td>B：advertising performance · best results</td><td class="c">✗（换说法）</td><td>C 的 better <b>channels</b> 与 B 的 multiple <b>channels</b> 撞词，一个是客服渠道、一个是广告渠道</td></tr>
+          <tr class="bad"><td>Saving <b>customers</b> <b>money</b></td><td>G：charge them too much · cost the company <b>money</b></td><td class="c">✓ money</td><td><b>C：our customers</b>——标题核心词原样出现，却是多余项</td></tr>
+          <tr><td>Improved <b>accuracy</b></td><td>D：faster and more <b>accurate</b></td><td class="c">✓ 同根</td><td>E 的 more promising、A 的 information 只是形似</td></tr>
+          <tr><td>Protecting and <b>maintaining</b> infrastructure</td><td>F：predict · needs attention now</td><td class="c">✗（换说法）</td><td>G 的 Before 也在讲「事前／事后」，但 they 是保险公司</td></tr>
+        </table>
+        </div>
+        <div class="box red"><span class="bt">⚠️ 七项里与小标题同词的只有三处：G money · D accurate · <u>C customers</u> —— 两真一假</span>
+          混合型的小标题和 2020 的标题匹配不一样：2020 是<b>选标题</b>，标题词被命题人擦掉、藏起来；2021 是<b>标题给定、选句子</b>，标题只告诉你「这一段在谈哪方面的好处」。<span class="mk">标题原词出现在选项里，只说明它「可能」属于这段；判定还得看它在段里干什么活——G 补的是「以前定价不准」，C 补不上任何一句。</span>（R316）
+        </div>
+      </section>
+
+      <section class="card" id="theme">
+        <h2><span class="n">02+++</span>主旨过滤器：without replacing employees —— 五个正确项都在替主旨句作证</h2>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:680px">
+          <tr><th style="width:8%">项</th><th style="width:40%">AI 做了什么</th><th>人还在不在？</th></tr>
+          <tr><td class="c">E</td><td>看更多简历、挑出更有潜力的候选人</td><td>在——挑出来的人还要面试、录用</td></tr>
+          <tr><td class="c">B</td><td>分析广告效果，<b>作出调整或给出建议</b></td><td>在——suggestions 是给人看的</td></tr>
+          <tr><td class="c">G</td><td>（对照组）以前人定价不准</td><td>在——AI 只让定价更准</td></tr>
+          <tr><td class="c">D</td><td>帮忙审合同</td><td><b>明写在</b>：along with employees reviewing the contracts</td></tr>
+          <tr><td class="c">F</td><td>预先判断哪里需要处理</td><td><b>明写在</b>：point to where it’s useful for employees to go</td></tr>
+          <tr class="bad"><td class="c">A</td><td>AI <b>replaces</b> the boring parts of your job</td><td><b>七项里唯一一个 replace</b>——正撞主旨</td></tr>
+        </table>
+        </div>
+        <p style="font-size:.92rem;margin-top:10px">🔗 <b>全文的「人」链</b>：①❷ loss of jobs · mass unemployment（怕的）→ ②❷ <b>without replacing employees</b>（主旨）→ ④❺ <b>not a replacement for people</b>（Winston）→ D along with <b>employees</b> → F <b>employees</b> to go to。<span class="mk">清单文的主旨句带着一个「without Y」，Y 就是全篇的红线：哪一项碰了 Y，哪一项就出局。</span>（R317）</p>
+      </section>
+
+      <section class="card" id="extra">
+        <h2><span class="n">03</span>两个多余项：A 与 C —— 一个撞了主旨，一个找不到说话人</h2>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:680px">
+          <tr><th style="width:8%">项</th><th style="width:30%">看起来能去哪</th><th>为什么不行</th></tr>
+          <tr class="bad"><td class="c">A</td><td>42（尾句说 help people use data）· 44（上文 statistics、data ↔ sources and information）</td><td>① <b>撞主旨</b>：replaces 正撞 ②❷ without replacing 与 ④❺ not a replacement——放进 42，下一句当场把它否了；② <b>视角错位</b>：your job、you’re doing research 是个人干活省事，全文五段都是企业层面的好处；③ <b>语体</b>：44 在引号外，A 却是对听者说 you 的口语；④ <b>没有「研究」这一段</b></td></tr>
+          <tr class="bad"><td class="c">C</td><td>43（标题 Saving <b>customers</b> money）· 42（channels ↔ B）</td><td>① <b>无说话人</b>：We’re … our customers 是企业自称，三个引号格的说话人都是教授，没有一家公司开口；② <b>词面钓鱼</b>：customers 钓 43 的标题、channels 钓 42 的 B；③ <b>无落点</b>：「比打电话更好的渠道」是客服话题，全文没有客服这一段；④ <b>also 无上家</b>：We’re also … 要求前面先说过「我们做的另一件事」，全文找不到</td></tr>
+        </table>
+        </div>
+        <div class="box"><span class="bt">⭐ 两个多余项各占一种老造法</span>
+          A 是第三族「<b>方向反</b>」——和 2015 D（逆箭头）一样，不是离题，是和主线对着干；C 是第一族「<b>词面像</b>」加「<b>人称不符</b>」——和 2015 F（换主角 ＋ 人称不符 ＋ 词面）几乎同款。
+          <span class="mk">2015 与 2021 两篇选句填空，多余项的造法一模一样：一个走反方向，一个换了说话的人。</span>
+        </div>
+
+        <h3 class="sh">📊 十六篇 Part B 的多余项造法总账</h3>
+<div class="tbwrap">
+        <table class="gt" style="min-width:600px">
+          <tr><th style="width:9%">年份</th><th style="width:14%">变体</th><th style="width:10%">多余项</th><th>造法</th></tr>
+          <tr><td class="c">2007</td><td>标题匹配</td><td class="c">A、G</td><td>两项都有词面呼应（A ↔ 首句 role models，G ↔ responsible 连出两次）</td></tr>
+          <tr><td class="c">2008</td><td>选句填空</td><td class="c">B、F</td><td>B 阶段错位（属于末段之后）· F 与正确项 E 撞专名</td></tr>
+          <tr><td class="c">2009</td><td>选句填空</td><td class="c">D、F</td><td>同属功能论一区，而那一区没有空</td></tr>
+          <tr><td class="c">2010</td><td>排序</td><td class="c">C</td><td>复现词最多，却偏离主线</td></tr>
+          <tr><td class="c">2011</td><td>排序</td><td class="c">—</td><td>零多余项（7 格 7 项）</td></tr>
+          <tr><td class="c">2012</td><td>选句填空</td><td class="c">B、E</td><td>B 先用后定义（属于末段之后）· E 缺前提的 thus（正确项 G 的下家）；两项都有词面呼应</td></tr>
+          <tr><td class="c">2013</td><td>选句填空</td><td class="c">A、D</td><td>A 推测句要 B 的数据（正确项 B 的下家）· D 同区换杠杆；两项都有词面呼应</td></tr>
+          <tr><td class="c">2014</td><td>排序</td><td class="c">—</td><td>零多余项（7 格 7 项）；诱饵换成「位置可挪」</td></tr>
+          <tr><td class="c">2015</td><td>选句填空</td><td class="c">D、F</td><td>D 逆箭头（退回作者本意）＋ 位置满 · F 换主角 ＋ 人称不符 ＋ 词面</td></tr>
+          <tr><td class="c">2016</td><td>标题匹配</td><td class="c">A、C</td><td>A 话题词冒充段落词 · C 全文零出现的心态口号；两项都比正确项「大」</td></tr>
+          <tr><td class="c">2017</td><td>排序</td><td class="c">—</td><td>零多余项；诱饵是「同一阶段的两段」：E、A 都在写作起步</td></tr>
+          <tr><td class="c">2018</td><td>排序</td><td class="c">—</td><td>零多余项；诱饵是「尾首复现」：C 末 historic events ⟶ D 首 historical events</td></tr>
+          <tr><td class="c">2019</td><td>排序</td><td class="c">—</td><td>零多余项；诱饵是「同词镜像」：F ⑤ ⟶ A ①，一段诱饵两个假位置</td></tr>
+          <tr class="bad"><td class="c"><b>2020</b></td><td>标题匹配</td><td class="c">B、F</td><td><b>去条件／全称化</b>：B instinctively（人人生来）、F Most people（大多数人）——全文每条发现都带条件；两项都有词面呼应（instinctively ← 41 · comfortable ← 45），<b>F 的 strangers 取自被删的原文段落</b></td></tr>
+          <tr class="bad"><td class="c"><b>2021</b></td><td>选句填空<br><span style="font-size:.78rem">（带小标题）</span></td><td class="c"><b>A、C</b></td><td><b>A 撞主旨</b>：七项里唯一的 replaces，正撞 ②❷ without replacing 与 ④❺ not a replacement（方向反）· <b>C 无说话人</b>：we／our 是企业口吻，三个引号格的说话人都是教授（人称不符）；C 还有词面钩：customers ← 43 标题、channels ← B</td></tr>
+          <tr><td class="c">2022</td><td>观点匹配</td><td class="c">B、E</td><td>没有人说过的话（无人提及型）</td></tr>
+        </table>
+        </div>
+        <p style="font-size:.9rem;margin-top:8px">⭐ <b>多余项五族</b>：①「词面像」——2007 A／G · 2008 F · 2010 C · 2012 B、E · 2013 A、D · 2015 F · 2016 A · 2020 B、F · <b>2021 C</b>（第九篇）；②「位置满」——2008 B · 2009 D／F · 2012 B、E · 2013 A、D · 2015 D；③「方向反」——2015 D · 2020 B（41 段）· <b>2021 A</b>；④「大而空」——2016 A、C；⑤「去条件」——2020 B、F。另：「<b>人称／说话人不符</b>」两次，都在选句填空——2015 F（换主角）、<b>2021 C</b>（企业口吻，教授的嘴）。</p>
+      </section>
+
+      <section class="card" id="six">
+        <h2><span class="n">03+</span>六篇选句填空：五种文章线，六把钥匙</h2>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:920px">
+          <tr><th style="width:9%"></th><th style="width:14%">2008《如何写作初稿》</th><th style="width:14%">2009《文化人类学理论》</th><th style="width:15%">2012《下载与上传》</th><th style="width:15%">2013《让社会科学有用》</th><th style="width:16%">2015《阅读的方法》</th><th><b>2021《AI 助益企业》</b></th></tr>
+          <tr><td><b>文章线</b></td><td><b>流程线</b>：动笔前 → 写初稿 → 改初稿</td><td><b>人物线</b>：一段一位学者</td><td><b>论证线</b>：赞美 → 警示 → 溯因 → 出路 → 定义</td><td><b>论证线</b>：问题 → 原因 → 方案</td><td><b>外扩线</b>：词 → 语境 → 作者的推断 → 读者的推断 → 背景 → 目的</td><td><b>清单线</b>：设问 → 主旨句冒号 → 五个小标题</td></tr>
+          <tr><td><b>空的形态</b></td><td>段首／段中／段末齐全</td><td>五个全在段末</td><td>四末一中</td><td>三中一首一末</td><td>三中两末，五空都有下一句</td><td>三末两中；<b>一段一空、段段有小标题</b></td></tr>
+          <tr><td><b>破题主刀</b></td><td><b>唯一词</b></td><td><b>指代距离 ＋ 术语站位</b></td><td><b>论证功能 ＋ 尾钩</b>（新词当旧信息）</td><td><b>回指评价句 ＋ 预设小词</b></td><td><b>人称分区 ＋ Such 类名尾钩</b></td><td><b>引号分区 ＋ 小标题定案</b></td></tr>
+          <tr><td><b>最难的一处</b></td><td>43／44 连体空</td><td>43／44 连体空（A、B 可对调）</td><td>45 的三选一（B、E、G）</td><td>41 的三选一（D、E、F）</td><td>42 的二选一（D、E，同区同人称）</td><td>44 的 A／D（A 与上文 data 像）</td></tr>
+          <tr><td><b>多余项</b></td><td>B 阶段错位 · F 专名撞车</td><td>D、F 同区一起死</td><td>B 先用后定义 · E 正确项的下家</td><td>A 正确项的下家 · D 同区换杠杆</td><td>D 逆箭头 · F 换主角</td><td>A 撞主旨 · C 无说话人</td></tr>
+          <tr><td><b>Claude 盲做</b></td><td>5/5</td><td class="bad"><b>3/5</b></td><td>5/5</td><td>5/5</td><td>5/5（计入 4/4）</td><td><b>5/5（完整盲做）</b></td></tr>
+        </table>
+        </div>
+        <div class="box"><span class="bt">⭐ 六篇的钥匙：从「选项对上文」到「全文给选项分区」，2021 把分区的依据换成了标点</span>
+          2008 看<b>专属名词</b>、2009 看<b>代词距离</b>（选项对上文）；2012、2013 看<b>下一句</b>（新词当旧信息、This ＋ 评语）；2015 先看全文的<b>人称</b>；2021 先看空格两边的<b>引号</b>。
+          <span class="mk">越往后，第一刀越粗、越快：2021 的第一刀连一个词都不用读，看标点就够。</span>
+          <br>⚠️ 2021 是唯一带小标题的一篇：小标题让三个段末空不再需要下一句，但也送来了标题诱饵（C 的 customers）。
+        </div>
+      </section>
+
+      <section class="card" id="book">
+        <h2><span class="n">03++</span>🔍 与黄皮书交叉核对：答案零书误，解析商榷四处、补两处</h2>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:680px">
+          <tr><th style="width:12%">位置</th><th style="width:38%">黄皮书怎么说</th><th>本页的看法</th></tr>
+          <tr><td>42 备选</td><td>备选 A、B；说尾句 help people use data, not a replacement for people「似对应」A</td><td><b>商榷</b>：A 的 replaces 与 not a replacement 是<b>正面相撞</b>，不是「似对应」——尾句本身就把 A 否了，A 根本进不了 42 的备选</td></tr>
+          <tr><td>全篇</td><td>五题的【选项推测】都按「标题 ＋ 上下文 ＋ 复现」走，备选常有三项（43 C F G · 44 A D E）</td><td><b>补</b>：引号这一刀解析里一次没用。42、44 在引号外 ⟹ 只有 B、D 是叙述体举例；43、45 在引号里 ⟹ C 的企业口吻没人说。用上它，44 的三项备选直接剩 D</td></tr>
+          <tr><td>43 备选</td><td>说 accurately assess risk 符合 F 的定位</td><td><b>商榷</b>：F 的 predict 与 assess risk 同属「预判」，但把 F 排出 43 的不是这一点，是 F 的后半句 <span class="loc">point to where it’s useful for employees to go</span>——派人去现场，是设施维护的事</td></tr>
+          <tr><td>45</td><td>只给备选 F，无【排除干扰】</td><td><b>补</b>：G（Before, they … 也是「没用 AI 时的老做法」，但 they 要会 insure）与 A（you 口语也能进引号，但讲研究）</td></tr>
+          <tr><td>字数</td><td>526 words</td><td><b>商榷（小）</b>：人工逐句数，正文 380 ＋ 小标题 15 ＋ 五个答案 132 ＝ 527，差 1；可能是 Patrick H. Winston 的 H. 或 (AI) 的计法不同</td></tr>
+          <tr><td>来源</td><td>《大西洋月刊》2018 年 How A.I. Might Actually Make Your Job Easier</td><td><b>存疑（软）</b>：同标题文章现见于摩根大通官网 news-stories 栏目；可能是品牌合作稿两处刊登，没有抓全文、没有核实，照黄皮书标</td></tr>
+        </table>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">04</span>Part B 分诊表：四种变体 · 十六篇实做（开考三十秒先认变体）</h2>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:680px">
+          <tr><th style="width:14%">变体</th><th style="width:25%">Directions 里的原话</th><th style="width:14%">考什么</th><th>打法与用时</th></tr>
+          <tr class="bad"><td><b>选句填空</b><br><span style="font-size:.78rem">2008 · 2009 · 2012 · 2013 · 2015 · <b>2021</b></span></td><td><i>some sentences have been removed … two extra choices</i></td><td><b>衔接与连贯</b></td><td>认线 → <b>先找一把「分区刀」</b>：正文中途换人称就按人称分（2015），空格有的在引号里、有的在外就按引号分（2021）→ 定空的形态 → 段中空先读下一句、<b>段末空看小标题或下一段首句</b> → 先做区里候选最少的空 → 剩下两项问「是不是撞了主旨、是不是没人说这句话、是不是某个答案的下家」。<b>6–8 min</b>，能自查</td></tr>
+          <tr><td><b>标题匹配</b><br><span style="font-size:.78rem">2007 · 2016 · 2020</span></td><td><i>choose the most suitable heading／subheading</i></td><td><b>段落概括</b></td><td>看七项句式：<b>祈使句</b>（2007、2016）⟹ 每段一条建议，逐段找主句；<b>陈述句</b>（2020）⟹ 每段一条发现，原词不在就换上位词 → 用覆盖表验 → 剩下两项问「是不是总话题」或「是不是把条件删了」。<b>5–8 min</b></td></tr>
+          <tr><td><b>观点匹配</b><br><span style="font-size:.78rem">2022</span></td><td><i>match each person … with the statements</i></td><td><b>立场判定</b></td><td>先给每人贴「支持／反对／中间」，再按立场分堆匹配。<b>8–10 min</b></td></tr>
+          <tr><td><b>排序题</b><br><span style="font-size:.78rem">2010 · 2011 · 2014 · 2017 · 2018 · 2019</span></td><td><i>reorganize these paragraphs into a coherent text … numbered boxes</i></td><td><b>篇章顺序</b></td><td><b>先数格子</b>（有无多余项）→ 认文体 → 给每格数候选，被已给定段锁死的先做 → 通读验闭合（六种链条见 <a href="2019_新题型_如何赢得每一场争论.html">2019 新题型 · 04</a>）。<b>7–10 min</b>，能自查</td></tr>
+        </table>
+        </div>
+        <p style="font-size:.9rem;margin-top:10px">⚠️ <b>2021 提醒一件事：Directions 定变体，正文定打法</b>。Directions 写的是选句填空，正文却带着小标题——别因为看到小标题就改用标题匹配的打法（逐段找主句），这里要选的仍是<b>一句能接上前后句的话</b>，小标题只是多给的一条线索（R32）。</p>
+        <p style="font-size:.9rem;margin-top:10px">📊 <b>十六篇战绩</b>：2007 标题 5/5 · 2022 观点 5/5 · 2008 选句 5/5 · <b>2009 选句 3/5</b> · 2010 排序 5/5 · 2011 排序 5/5 · 2012 选句 5/5 · 2013 选句 5/5 · 2014 排序 5/5（不计完整盲做）· 2015 选句 5/5（计入 4/4）· 2016 标题 5/5 · 2017 排序 5/5（不计完整盲做）· 2018 排序 5/5 · 2019 排序 5/5 · 2020 标题 5/5 · <b>2021 选句 5/5（✅ 完整盲做）</b>。<span class="mk">六篇选句填空 28/30，唯一的翻车仍是 2009（没认线）。</span></p>
+      </section>
+
+      <section class="card" id="long">
+        <h2><span class="n">05</span>长难句精析（9 句 · 本篇黄皮书无此栏目，全部原创 · 原句看句条）</h2>
+        <p style="font-size:.8rem;color:var(--muted);margin-bottom:10px">本篇句子不难（最长 49 词，靠的是同位语堆叠），难在两样：<b>倒装的疑问句</b>（①❷）和<b>引号只括半句</b>（④❺ · ⑥❷）——后者直接决定 42、44 是不是引号格。</p>
+
+        <div class="ls" id="l1_2"><div class="lsh">长难句 1 · ①❷ 让步式设问（41 词）</div>
+          <img class="strip" src="img/2021_新题型/s1_2.png" alt="①❷ 原卷句条" loading="lazy">
+          <div class="an"><div>① 时间状语：<span class="loc">When it comes to AI in business</span>（一谈到……）</div>
+            <div>② 前一分句：we often hear about it（it ＝ AI）＋ <span class="loc">in relation to automation</span>（自动化）and <span class="loc">the impending loss of jobs</span>（失业）——；in relation to 后两个并列宾语</div>
+            <div>③ but 后：<b>特殊疑问句的倒装</b> in what ways <b>is AI changing</b> …（助动词提前）；宾语 companies and the larger economy</div>
+            <div>④ 句尾 <span class="loc">that don’t involve doom-and-gloom … predictions</span>——that 修饰的是 <b>ways</b>（复数 don’t），不是 economy</div></div>
+          <div class="tr">意：一谈到商业里的 AI，我们常把它和自动化、和眼看要来的失业连在一起；可是 AI 改变企业和整体经济的方式里，有哪些是和「大规模失业」这种悲观预言无关的呢？</div></div>
+
+        <div class="ls" id="l2_1"><div class="lsh">长难句 2 · ②❶ 调查结论（28 词）</div>
+          <img class="strip" src="img/2021_新题型/s2_1.png" alt="②❶ 原卷句条" loading="lazy">
+          <div class="an"><div>① 主语 A recent survey ＋ 两个后置定语：of manufacturing and service industries（调查谁）· from Tata Consultancy Services（谁调查）</div>
+            <div>② 谓语 found ＋ that 宾语从句</div>
+            <div>③ 从句里的比较：use AI <b>more often in</b> computer-to-computer activities <b>than in</b> automating human activities——<b>in … than in</b> 两个介词短语对称</div></div>
+          <div class="tr">意：塔塔咨询近来对制造业和服务业的调查发现，企业眼下用 AI，更多是在计算机之间的活动上，而不是把人干的活自动化。</div></div>
+
+        <div class="ls" id="l3_2"><div class="lsh">长难句 3 · ③❷ 全文最长：引语 ＋ 说话人 ＋ 双同位语（49 词）</div>
+          <img class="strip" src="img/2021_新题型/s3_2.png" alt="③❷ 原卷句条" loading="lazy">
+          <div class="an"><div>① 引语：There are experiments <b>that</b> show <b>that</b> …——第一个 that 引定语从句（修饰 experiments），第二个 that 引宾语从句（show 的内容）</div>
+            <div>② 宾语从句里插入 naturally（「自然而然地」），比较 much more biased <b>than what AI does</b>（what AI does ＝ AI 作出的判断）</div>
+            <div>③ 引语后倒装 says Pedro Domingos</div>
+            <div>④ 两个同位语用 and 连起来：author of <i>The Master Algorithm: …</i>（书名带副标题）<b>and</b> a computer science professor at …</div></div>
+          <div class="tr">意：「有实验表明，面试结果自然比 AI 的判断偏得多。」《终极算法》的作者、华盛顿大学计算机教授多明戈斯这样说。</div></div>
+
+        <div class="ls" id="l4_2"><div class="lsh">长难句 4 · ④❷ 第一个公司例子（24 词）</div>
+          <img class="strip" src="img/2021_新题型/s4_2.png" alt="④❷ 原卷句条" loading="lazy">
+          <div class="an"><div>① 主语 One company in the UK ＋ 同位语 Phrasee（逗号夹住）</div>
+            <div>② 谓语 claims ＋ 省略 that 的宾语从句：their software can outperform humans</div>
+            <div>③ <span class="loc">by up to 10 percent</span>：by 表差额，up to 表上限——「最多高出 10 个百分点」</div>
+            <div>④ when it comes to email open rates：比较的范围</div></div>
+          <div class="tr">意：英国的 Phrasee 公司说，在邮件打开率上，它的软件比人工最多高出 10 个百分点。</div></div>
+
+        <div class="ls" id="l4_5"><div class="lsh">长难句 5 · ④❺ 引号只括半句 ＋ 主旨回声（27 词）</div>
+          <img class="strip" src="img/2021_新题型/s4_5.png" alt="④❺ 原卷句条" loading="lazy">
+          <div class="an"><div>① <b>These are</b> 是叙述者的话，引号从 tools 才开始——<b>半句引语</b>：叙述者搭架子，教授填内容</div>
+            <div>② 引语内：tools <b>that</b> help people use data（定语从句；help sb do），逗号后 <b>not a replacement for people</b> 是对 tools 的补充说明（否定式同位）</div>
+            <div>③ says Patrick H. Winston ＋ 同位语 a professor of … at MIT</div>
+            <div>④ ⭐ These 复数：回指 Phrasee 的软件 ＋ 42 空里的第二件工具</div></div>
+          <div class="tr">意：这些都是「帮人用好数据的工具，而不是人的替代品」，MIT 人工智能与计算机科学教授温斯顿这样说。</div></div>
+
+        <div class="ls" id="l5_1"><div class="lsh">长难句 6 · ⑤❶ 分词结果状语套 while（19 词）</div>
+          <img class="strip" src="img/2021_新题型/s5_1.png" alt="⑤❶ 原卷句条" loading="lazy">
+          <div class="an"><div>① 主干 Energy companies can use AI to help customers reduce their electricity bills（use A to do · help sb do）</div>
+            <div>② 逗号后 <b>saving them money</b>：现在分词作结果状语，逻辑主语是前面整件事；them ＝ customers</div>
+            <div>③ <b>while helping the environment</b>：while ＋ doing 表「同时」，不是转折</div></div>
+          <div class="tr">意：能源公司可以用 AI 帮客户减少电费，在替客户省钱的同时也有益于环境。</div></div>
+
+        <div class="ls" id="l7_1"><div class="lsh">长难句 7 · ⑦❶ 插入语 ＋ 两个目的（26 词）</div>
+          <img class="strip" src="img/2021_新题型/s7_1.png" alt="⑦❶ 原卷句条" loading="lazy">
+          <div class="an"><div>① 主语 A number of companies，插入 particularly in energy and transportation（逗号夹住，先跳过）</div>
+            <div>② 谓语 use ＋ 宾语 AI image processing technology（四个名词连用：AI 的 · 图像 · 处理 · 技术）</div>
+            <div>③ 目的不定式 to inspect infrastructure <b>and</b> prevent equipment failure or leaks——to 管两个动词</div>
+            <div>④ before they happen：they ＝ failure or leaks</div></div>
+          <div class="tr">意：不少企业，尤其是能源和交通企业，用 AI 图像处理技术来检查基础设施，在设备故障或泄漏发生之前加以预防。</div></div>
+
+        <div class="ls" id="lB"><div class="lsh">长难句 8 · 选项 B 一个 which 管两个谓语（32 词）</div>
+          <img class="strip" src="img/2021_新题型/oB.png" alt="选项 B 原卷句条" loading="lazy">
+          <div class="an"><div>① There are also companies like Acquisio（like ＝ such as，举例）</div>
+            <div>② which 非限制性定语从句，<b>一个 which 带两个谓语</b>：analyzes advertising performance across multiple channels <b>and</b> makes adjustments or suggestions</div>
+            <div>③ 第一个谓语里又有一个 like 举例（Adwords、Bing、社交媒体）——<b>两个 like 一个修饰公司、一个修饰渠道</b></div>
+            <div>④ about where advertising funds will yield best results：where 引宾语从句作 about 的宾语</div></div>
+          <div class="tr">意：还有像 Acquisio 这样的公司，分析广告在 Adwords、必应、社交媒体等多个渠道的投放效果，并就广告资金投在哪里收效最好作出调整或提出建议。</div></div>
+
+        <div class="ls" id="lG"><div class="lsh">长难句 9 · 选项 G 两个 or 分三种情形（33 词）</div>
+          <img class="strip" src="img/2021_新题型/oG.png" alt="选项 G 原卷句条" loading="lazy">
+          <div class="an"><div>① Before, they might not insure the ones <b>who felt like a high risk</b>——the ones ＝ 投保人，felt like「看起来像」</div>
+            <div>② <b>or</b> charge them too much（第二种情形，承 might）</div>
+            <div>③ 逗号后 <b>or</b> they would charge them too little（第三种情形），<b>and then</b> it would cost the company money（后果）</div>
+            <div>④ 三种情形 ＝ 两个方向：前两种亏客户（拒保、多收），第三种亏公司（少收）——<b>正好对上「帮客户省钱」与 AI 定价更准</b></div></div>
+          <div class="tr">意：以前，保险公司可能不给看起来风险高的人上保险，或者收他们太多钱；要么就收得太少，结果让公司赔钱。</div></div>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">06</span>可搬进作文的素材（本篇是「人工智能与就业 / 科技与人 / 预防胜于补救 / 人机协作」四个话题的弹药库）</h2>
+        <p style="font-size:.8rem;color:var(--muted);margin-bottom:10px">每条只借原文的<b>句式骨架</b>（X、Y 处换词），斜体例句全部是自拟的。</p>
+        <div class="wb">
+          <div class="wbi"><div class="p">When it comes to X, we often hear about it in relation to …</div><div class="u">📌 <b>开头破题</b>：先摆出人们一提起 X 就想到的那件事，再用 but 转到你要谈的另一面。<i>When it comes to online learning, we often hear about it in relation to screen time, but rarely about the habits it can build.</i></div></div>
+          <div class="wbi"><div class="p">X is typically depicted as something … that will upend our way of life.</div><div class="u">📌 <b>反驳刻板印象</b>：先写「通常被描绘成……」，下一句再翻。科技焦虑、短视频、人工智能话题都能用：<i>Smartphones are often depicted as something that will ruin our attention spans, yet they also put a library in every pocket.</i></div></div>
+          <div class="wbi"><div class="p">Here are a few ways X is aiding Y without replacing Z:</div><div class="u">📌 <b>清单式过渡</b>：一句话同时交代「好处」和「底线」，冒号后分条展开。<i>Here are a few ways technology is helping the elderly without isolating them:</i></div></div>
+          <div class="wbi"><div class="p">These are tools that help people …, not a replacement for people.</div><div class="u">📌 <b>人机关系的定性句</b>：「是工具，不是替代品」，人工智能、在线教育、智能家居话题的点睛句。<i>Smart classrooms are tools that help teachers teach, not a replacement for teachers.</i></div></div>
+          <div class="wbi"><div class="p">If they fail first and then you fix them, it’s very expensive.</div><div class="u">📌 <b>预防胜于补救</b>：用一个条件句把「事后补救的代价」讲具体，健康、环保、安全话题都能用。<i>If we wait until a river is polluted and then try to clean it, the cost is far higher than prevention.</i></div></div>
+          <div class="wbi"><div class="p">X, along with Y, is faster and more accurate.</div><div class="u">📌 <b>协作的效果</b>：along with 把「另一方的参与」嵌在主语后面，谓语照主语单复数走。<i>Machine translation, along with a human editor checking the result, is faster and more reliable.</i></div></div>
+          <div class="wbi"><div class="p">… saving them money while helping the environment.</div><div class="u">📌 <b>一举两得</b>：分词结果状语 ＋ while doing，一句写出两个好处。<i>Shared bikes let people travel cheaply, saving them money while cutting traffic emissions.</i></div></div>
+          <div class="wbi"><div class="p">… doom-and-gloom predictions</div><div class="u">📌 <b>批评悲观论调</b>：doom-and-gloom 作定语，比 pessimistic 生动。<i>Instead of doom-and-gloom predictions about the future of work, we need practical plans for retraining.</i></div></div>
+        </div>
+        <p style="font-size:.88rem;margin-top:10px">🔁 <b>跨篇联动</b>：<a href="2021_T4_网络中立要靠国会立法.html">2021 Text 4</a> 讲谁来管网络、本篇讲企业怎样用 AI——同一张卷子里两篇科技文，一篇谈<b>规则</b>、一篇谈<b>工具</b>；写「科技与社会」类大作文时，两篇各取一条：技术本身是工具（本篇），用好它要靠规则（T4）。</p>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">07</span>词汇复盘（点卡片看详情 · 共 <span id="vcount"></span> 张，含 <b>15 处熟词僻义</b>）</h2>
+        <p style="font-size:.85rem;color:var(--muted);margin-bottom:10px">本篇熟词僻义的共同规律：<b>商业场景把日常词换成了行话</b>——open rate 的 open 是「邮件被打开」、subject line 是「邮件主题行」、premium 是「保费」、charge 是「收费」、yield 是「产出」、channel 是「渠道」、practice 是「做法」、promising 是「有前途的」、attention 是「（设备）需要处理」。<b>最危险的是 premium 和 charge</b>：一个读成「优质的」、一个读成「充电／指控」，43 题的头钩和 G 就都读不懂了。</p>
+        <div id="vgrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px"></div>
+      </section>
+
+      <footer>2021 英语（一）Part B · 人工智能对企业的助益 ｜ 答案 41E 42B 43G 44D 45F（A、C 多余）｜ Claude 完整盲做 5/5 ｜ 正文与选项为原卷扫描句条 ｜ 本页解析为独立盲做后撰写，黄皮书精讲仅作交叉复核（零书误）</footer>
+    </main>
+
+    <aside>
+      <div id="panel"><div class="hint">👆 点正文里的<b>黄色高亮词</b>，或下方词汇卡，这里出详解<br><br>选中任意英文可弹出「查词」按钮</div></div>
+    </aside>
+  </div>
+</div>
+<button id="yd">🔍 有道查词</button>
+
+
+<script>
+function go(id){const s=document.getElementById(id);if(!s)return;s.scrollIntoView({behavior:'smooth',block:'center'});s.style.transition='none';s.style.opacity=.3;setTimeout(()=>{s.style.transition='opacity .8s';s.style.opacity=1},80)}
+const IMG=k=>'<img class="strip" src="img/2021_新题型/o'+k+'.png" alt="选项 '+k+' 原卷句条" loading="lazy">';
+const OPTS = {
+  A:[IMG('A'),
+     "AI 替你承担工作里枯燥的部分。比如你在做研究，就可以让 AI 去找相关的资料和信息——否则你根本没时间去找。",
+     "口吻：<b>口语 · 对听者说 you</b>（能进引号格）｜话题：研究、找资料（全文没有这一段）｜⚠️ 七项里唯一的 <b>replaces</b>，正撞主旨 without replacing ｜🟡 <span class='tk' data-w='boring'>boring</span> · <span class='tk' data-w='relevant'>relevant</span> · <span class='tk' data-w='source'>sources</span> · <span class='tk' data-w='otherwise'>otherwise</span>",
+     "多余 · 方向反"],
+  B:[IMG('B'),
+     "还有像 Acquisio 这样的公司，分析广告在 Adwords、必应、社交媒体等多个渠道的投放效果，并就广告资金投在哪里收效最好作出调整或提出建议。",
+     "口吻：<b>叙述 · 举例</b>（There are also companies like ＋ 公司名）⟹ 叙述格 ｜头：接 ④❷ One company … Phrasee ｜尾：凑成 ④❺ <b>These</b> are tools 的复数 ｜🟡 <span class='tk' data-w='advertising'>advertising</span> · <span class='tk' data-w='performance'>performance</span> · <span class='tk' data-w='multiple'>multiple</span> · <span class='tk' data-w='channel'>channels</span> · <span class='tk' data-w='adjustment'>adjustments</span> · <span class='tk' data-w='suggestion'>suggestions</span> · <span class='tk' data-w='fund'>funds</span> · <span class='tk' data-w='yield'>yield</span>",
+     "④段 42 · 营销"],
+  C:[IMG('C'),
+     "我们还为客户提供了比打电话更好的渠道，去完成一些人力所不及的事情。",
+     "口吻：<b>口语 · 企业自称 we／our</b> ⟹ 只能进引号格，可三个引号格的说话人都是教授 ｜钓鱼词：customers ← 43 标题、channels ← B ｜🟡 <span class='tk' data-w='versus'>versus</span> · <span class='tk' data-w='pickup'>picking up the phone</span> · <span class='tk' data-w='accomplish'>accomplish</span> · <span class='tk' data-w='scale'>human scale</span>",
+     "多余 · 无说话人"],
+  D:[IMG('D'),
+     "会计师事务所安永用一套 AI 系统在审计时帮忙审合同；这个流程再配上员工审核，又快又准。",
+     "口吻：<b>叙述 · 举例</b>（One accounting firm, EY）⟹ 叙述格 ｜头：⑥❶❷ 论点 → 论据 ｜标题：more <b>accurate</b> ↔ Improved accuracy ｜🟡 <span class='tk' data-w='accounting'>accounting firm</span> · <span class='tk' data-w='review'>review</span> · <span class='tk' data-w='contract'>contracts</span> · <span class='tk' data-w='audit'>audit</span> · <span class='tk' data-w='alongwith'>along with</span>",
+     "⑥段 44 · 准确"],
+  E:[IMG('E'),
+     "AI 看简历的数量是人做不到的，还能挑出更有潜力的候选人。",
+     "口吻：中性陈述（两种格都可）｜话题：<b>招聘</b>（七项里唯一）｜尾：被 ③❹ doing this 回指 ｜🟡 <span class='tk' data-w='resume'>résumés</span> · <span class='tk' data-w='ingreater'>in greater numbers</span> · <span class='tk' data-w='promising'>promising</span> · <span class='tk' data-w='candidate'>candidates</span>",
+     "③段 41 · 招聘"],
+  F:[IMG('F'),
+     "你要做的是预先判断哪里现在需要处理，并告诉员工往哪儿去才有用。",
+     "口吻：<b>口语 · 泛指 you</b> ⟹ 引号格 ｜头：接 ⑦❷ you fix them（事后修贵 → 事前预判）｜主旨：employees 还要去现场 ｜🟡 <span class='tk' data-w='predict'>predict</span> · <span class='tk' data-w='attention'>needs attention</span> · <span class='tk' data-w='pointto'>point to</span>",
+     "⑦段 45 · 设施"],
+  G:[IMG('G'),
+     "以前，保险公司可能不给看起来风险高的人上保险，或者收他们太多钱；要么就收得太少，结果让公司赔钱。",
+     "口吻：<b>口语 · 讲以前</b>（Before, they might…）⟹ 引号格 ｜代词：they 要会 insure ⟹ 保险公司（⑤❸）｜标题：too much ／ cost the company money ↔ Saving customers money ｜🟡 <span class='tk' data-w='insure'>insure</span> · <span class='tk' data-w='feellike'>felt like</span> · <span class='tk' data-w='charge'>charge</span> · <span class='tk' data-w='cost'>cost</span>",
+     "⑤段 43 · 省钱"]
+};
+const EXTRA = ["A","C"];
+const V = {
+  depict:{w:"depict … as",ipa:"/dɪˈpɪkt/",pos:"v.",tags:["core","write"],cn:"把……描绘成",en:"to show or describe sb/sth in a particular way",ex:"artificial intelligence (AI) is typically depicted as something sinister",mem:"de(加强)+pict(画，picture 同根) → 画出来。<b>be depicted as ＝ 被塑造成</b>，常用来引出刻板印象再翻转。",syn:"portray / present … as / describe … as",conf:"depict(描绘) vs. depend(依赖) vs. deplete(耗尽)"},
+  typically:{w:"typically",ipa:"/ˈtɪpɪkli/",pos:"adv.",tags:["core"],cn:"通常，一般；典型地",en:"usually; in a way that is typical",ex:"is typically depicted as something sinister",mem:"type(类型)→typical(典型的)→typically。写作里替换 usually，显得更书面。",syn:"usually / generally / as a rule",conf:"typically(通常) vs. typing(打字)"},
+  sinister:{w:"sinister",ipa:"/ˈsɪnɪstə(r)/",pos:"adj.",tags:["core"],cn:"邪恶的；不祥的，险恶的",en:"seeming evil or dangerous",ex:"something sinister that will upend our way of life",mem:"拉丁语原义「左边的」——古人认为左边不吉利。<b>sinister ＝ 让人觉得要出坏事</b>。",syn:"evil / menacing / threatening",conf:"sinister(邪恶的) vs. sincere(真诚的)"},
+  upend:{w:"upend",ipa:"/ʌpˈend/",pos:"v.",tags:["core"],cn:"颠覆，彻底打乱；把……倒过来",en:"to change sth completely, often causing disorder",ex:"will upend our way of life",mem:"up(朝上)+end(一端) → 把底朝天翻过来 → 颠覆。比 change 狠得多。",syn:"overturn / turn upside down / disrupt",conf:"upend(颠覆) vs. append(附加)"},
+  wayoflife:{w:"way of life",ipa:"",pos:"n.短语",tags:["phrase","write"],cn:"生活方式",en:"the typical pattern of behaviour of a person or group",ex:"will upend our way of life",mem:"<b>way of life 是整体的生活方式</b>（社会层面）；lifestyle 偏个人的生活习惯。作文写科技影响社会时用前者。",syn:"lifestyle / mode of living",conf:"way of life(生活方式) vs. way to life(×)"},
+  whenitcomes:{w:"when it comes to",ipa:"",pos:"短语",tags:["phrase","write"],cn:"一谈到……；就……而言",en:"used to introduce a new topic or aspect",ex:"When it comes to AI in business",mem:"<b>to 是介词</b>，后接名词或 doing：when it comes to learning English。本文出现两次（①❷ · ④❷）。",syn:"as for / in terms of / speaking of",conf:"when it comes to doing(√) vs. when it comes to do(×)"},
+  inrelationto:{w:"in relation to",ipa:"",pos:"prep.短语",tags:["phrase","write"],cn:"与……相关；关于；与……相比",en:"in connection with; concerning",ex:"we often hear about it in relation to automation",mem:"relation(关系) → 在……的关系里谈 → 「把 A 和 B 连在一起谈」。",syn:"in connection with / with regard to",conf:"in relation to(关于) vs. relative to(相对于)"},
+  automation:{w:"automation",ipa:"/ˌɔːtəˈmeɪʃn/",pos:"n.",tags:["core"],cn:"自动化",en:"the use of machines to do work that people used to do",ex:"in relation to automation and the impending loss of jobs",mem:"auto(自己)+mat(动)+ion → 自己会动。动词 automate（②❶ automating）。",syn:"mechanization / computerization",conf:"automation(自动化) vs. automatic(自动的,adj.)"},
+  impending:{w:"impending",ipa:"/ɪmˈpendɪŋ/",pos:"adj.",tags:["core"],cn:"即将发生的，迫在眉睫的（多指坏事）",en:"about to happen, usually sth unpleasant",ex:"the impending loss of jobs",mem:"im(在上)+pend(悬挂) → 悬在头上 → 迫在眉睫。<b>多修饰坏事</b>：impending crisis / disaster。",syn:"imminent / looming / forthcoming",conf:"impending(即将的) vs. pending(待定的)"},
+  economy:{w:"economy",ipa:"/ɪˈkɒnəmi/",pos:"n.",tags:["core"],cn:"经济（体）；节约",en:"the system of trade and industry of a country or region",ex:"changing companies and the larger economy",mem:"the larger economy ＝ 比单个企业更大的「整体经济」。形容词 economic(经济的) / economical(节约的)。",syn:"financial system / market",conf:"economic(经济的) vs. economical(节俭的)"},
+  involve:{w:"involve",ipa:"/ɪnˈvɒlv/",pos:"v.",tags:["core"],cn:"涉及，牵涉；包含",en:"to include sth as a necessary part",ex:"that don’t involve doom-and-gloom mass unemployment predictions",mem:"in(进)+volve(卷) → 卷进来。don’t involve ＝ 「不牵扯到」，本句在把失业话题排除出去。",syn:"include / entail / concern",conf:"involve(涉及) vs. evolve(进化) vs. revolve(旋转)"},
+  doomgloom:{w:"doom-and-gloom",ipa:"",pos:"adj./n.",tags:["phrase","write"],cn:"悲观绝望的（论调）",en:"a feeling or prediction that things will go badly",ex:"doom-and-gloom mass unemployment predictions",mem:"doom(厄运)+gloom(阴郁)，押韵合成词。<b>批评别人危言耸听</b>的好词：doom-and-gloom forecasts。",syn:"pessimistic / gloomy",conf:"doom(厄运) vs. dome(圆顶)"},
+  massunemp:{w:"mass unemployment",ipa:"",pos:"n.短语",tags:["phrase","write"],cn:"大规模失业",en:"a situation in which very many people have no job",ex:"doom-and-gloom mass unemployment predictions",mem:"mass 作定语 ＝ 大规模的：mass production(批量生产)、mass media(大众传媒)。",syn:"widespread joblessness",conf:"unemployment(失业) vs. underemployment(就业不足)"},
+  prediction:{w:"prediction",ipa:"/prɪˈdɪkʃn/",pos:"n.",tags:["core"],cn:"预言，预测",en:"a statement about what will happen",ex:"mass unemployment predictions",mem:"pre(先)+dict(说) → 先说出来。动词 predict 在 F 项出现：You want to predict…",syn:"forecast / projection",conf:"predict(预测) vs. prevent(预防)——⑦段两个都有"},
+  survey:{w:"survey",ipa:"/ˈsɜːveɪ/",pos:"n.",tags:["core"],cn:"调查",en:"an investigation of the opinions or behaviour of a group",ex:"A recent survey of manufacturing and service industries",mem:"sur(在上)+vey(看) → 从上往下看 → 全面考察。a survey <b>of</b>(调查对象) <b>from／by</b>(谁做的)。",syn:"poll / study / investigation",conf:"survey(调查) vs. surveillance(监视)"},
+  manufacturing:{w:"manufacturing",ipa:"/ˌmænjuˈfæktʃərɪŋ/",pos:"n.",tags:["core"],cn:"制造业",en:"the business of producing goods in large numbers",ex:"A recent survey of manufacturing and service industries",mem:"manu(手)+fact(做) → 手工做 → 后来指机器大生产。",syn:"production / industry",conf:"manufacture(制造) vs. manuscript(手稿)"},
+  serviceind:{w:"service industries",ipa:"",pos:"n.短语",tags:["phrase"],cn:"服务业",en:"businesses that provide services rather than goods",ex:"manufacturing and service industries",mem:"与 manufacturing(制造业) 并列，构成经济的两大块。",syn:"tertiary sector",conf:"service(服务) vs. servant(仆人)"},
+  currently:{w:"currently",ipa:"/ˈkʌrəntli/",pos:"adv.",tags:["core"],cn:"目前，现在",en:"at the present time",ex:"companies currently use AI more often",mem:"current(当前的) → currently。调查结论里的时间词：<b>只说「眼下」，不说将来</b>。",syn:"at present / now",conf:"currently(目前) vs. recently(最近)"},
+  comptocomp:{w:"computer-to-computer",ipa:"",pos:"adj.",tags:["phrase"],cn:"计算机对计算机的（机器之间的）",en:"happening between computers without people",ex:"in computer-to-computer activities",mem:"A-to-A 结构的连字符形容词：face-to-face(面对面的)、door-to-door(上门的)。",syn:"machine-to-machine",conf:"—"},
+  automate:{w:"automate",ipa:"/ˈɔːtəmeɪt/",pos:"v.",tags:["core"],cn:"使自动化",en:"to make a process operate by machines",ex:"than in automating human activities",mem:"名词 automation(①❷)。automating human activities ＝ 把人干的活交给机器。",syn:"mechanize / computerize",conf:"automate(v.) vs. automatic(adj.)"},
+  aid:{w:"aid",ipa:"/eɪd/",pos:"v.",tags:["core"],cn:"帮助，援助",en:"to help sb/sth",ex:"Here are a few ways AI is aiding companies",mem:"比 help 正式。<b>主旨句的动词</b>：aiding（帮）对 replacing（替）。",syn:"help / assist / support",conf:"aid(帮助) vs. aide(助手)"},
+  replace:{w:"replace",ipa:"/rɪˈpleɪs/",pos:"v.",tags:["core"],cn:"取代，替代",en:"to take the place of sb/sth",ex:"without replacing employees",mem:"re(再)+place(放) → 换一个放上去。⭐ 本文的红线词：主旨 without replacing、Winston not a replacement——<b>A 的 replaces 正撞上</b>。",syn:"substitute for / take the place of",conf:"replace A with B(用 B 换 A) vs. substitute B for A(用 B 代 A)"},
+  employee:{w:"employee",ipa:"/ɪmˈplɔɪiː/",pos:"n.",tags:["core"],cn:"雇员，员工",en:"a person who is paid to work for sb",ex:"without replacing employees",mem:"-ee 表「被……的人」：employee(被雇者)、trainee。-er 是做的人：employer(雇主)。",syn:"worker / staff member",conf:"employee(雇员) vs. employer(雇主)"},
+  hiring:{w:"hiring",ipa:"/ˈhaɪərɪŋ/",pos:"n.",tags:["core"],cn:"招聘，雇用",en:"the act of employing sb",ex:"from hiring decisions",mem:"hire(雇用)。hiring decisions ＝ 录不录用的决定；hiring process ＝ 招聘流程。",syn:"recruitment / employment",conf:"hire(雇用；租用) vs. higher(更高的)"},
+  practice:{w:"practice",ipa:"/ˈpræktɪs/",pos:"n.",tags:["poly"],cn:"<b>做法，惯例</b>（熟义：练习）",en:"a way of doing sth that is usual or expected",ex:"Better hiring practices",mem:"⚠️ 小标题里不是「练习」：hiring practices ＝ 招聘的做法。同类：business practices(商业惯例)、best practice(最佳做法)。",syn:"method / procedure / custom",conf:"practice(做法) vs. practise(英式动词)"},
+  unconscious:{w:"unconscious",ipa:"/ʌnˈkɒnʃəs/",pos:"adj.",tags:["core"],cn:"无意识的，不自觉的",en:"done without realizing",ex:"some of the unconscious bias from hiring decisions",mem:"un+conscious(有意识的)。unconscious bias ＝ 自己都没察觉的偏见，招聘、教育话题的高频搭配。",syn:"unintentional / implicit",conf:"unconscious(无意识的) vs. unconscientious(不尽责的)"},
+  bias:{w:"bias",ipa:"/ˈbaɪəs/",pos:"n.",tags:["core","write"],cn:"偏见，偏向",en:"an unfair preference for or against sb/sth",ex:"remove some of the unconscious bias",mem:"原义「斜线」→ 看人看斜了。形容词 biased(有偏见的，③❷)。bias against / towards。",syn:"prejudice / partiality",conf:"bias(偏见) vs. basis(基础)"},
+  biased:{w:"biased",ipa:"/ˈbaɪəst/",pos:"adj.",tags:["core"],cn:"有偏见的，偏颇的",en:"unfairly favouring one side",ex:"much more biased than what AI does",mem:"much more biased than what AI does——<b>人的面试比 AI 偏得多</b>，是本段论点的证据。",syn:"prejudiced / one-sided / partial",conf:"biased(有偏见的) vs. unbiased(公正的)"},
+  naturally:{w:"naturally",ipa:"/ˈnætʃrəli/",pos:"adv.",tags:["poly"],cn:"<b>自然而然地，当然</b>（熟义：天然地）",en:"as you would expect; of course",ex:"There are experiments that show that, naturally",mem:"⚠️ 插在句中表说话人态度：「这也不奇怪」。不是「天然地」。",syn:"of course / as expected",conf:"naturally(当然) vs. natural(天然的)"},
+  inaddition:{w:"in addition",ipa:"",pos:"adv.短语",tags:["phrase","write"],cn:"此外，另外",en:"used to add another point",ex:"In addition,",mem:"⭐ 41 的头钩：并列补充同一段的第二个好处。in addition to ＋ n./doing ＝ 除……之外。",syn:"besides / moreover / furthermore",conf:"in addition(此外) vs. in addition to(除……外还)"},
+  analytics:{w:"analytics",ipa:"/ˌænəˈlɪtɪks/",pos:"n.",tags:["core"],cn:"数据分析（学）",en:"the systematic analysis of data",ex:"It uses analytics to help identify",mem:"analysis(分析) → analytics 专指用数据和统计做的分析，商业文章常见。",syn:"data analysis",conf:"analytics(数据分析) vs. analytic(分析的)"},
+  identify:{w:"identify",ipa:"/aɪˈdentɪfaɪ/",pos:"v.",tags:["core"],cn:"找出，识别；确认",en:"to recognize or find sb/sth",ex:"help identify where there may be bias",mem:"identity(身份) → 认出是谁。identify where … ＝ 找出哪里有……",syn:"recognize / pinpoint / spot",conf:"identify(识别) vs. identity(身份)"},
+  analyze:{w:"analyze",ipa:"/ˈænəlaɪz/",pos:"v.",tags:["core"],cn:"分析",en:"to examine sth in detail",ex:"can analyze and optimize marketing email subject lines",mem:"美式 -yze、英式 -yse。B 项 analyzes advertising performance 与 ④❶ 的 analyze 同一动作——<b>B 在营销段的身份证</b>。",syn:"examine / study / evaluate",conf:"analyze(分析) vs. paralyze(使瘫痪)"},
+  optimize:{w:"optimize",ipa:"/ˈɒptɪmaɪz/",pos:"v.",tags:["core"],cn:"优化，使最佳",en:"to make sth as good or effective as possible",ex:"can analyze and optimize marketing email subject lines",mem:"optimum(最佳的)+ize。本文出现两次：邮件主题行、能源使用（⑤❷）。",syn:"improve / enhance / perfect",conf:"optimize(优化) vs. optimistic(乐观的)"},
+  marketing:{w:"marketing",ipa:"/ˈmɑːkɪtɪŋ/",pos:"n.",tags:["core"],cn:"营销，市场推广",en:"the activity of presenting and selling products",ex:"More effective marketing",mem:"market(市场)+ing。小标题词——<b>B 的 advertising 是它的换说法</b>。",syn:"promotion / advertising",conf:"marketing(营销) vs. market(市场)"},
+  subjectline:{w:"subject line",ipa:"",pos:"n.短语",tags:["poly"],cn:"<b>（邮件）主题行</b>（subject 熟义：科目、主题）",en:"the line in an email that says what it is about",ex:"marketing email subject lines",mem:"⚠️ 邮件界面上「主题」那一栏。subject 在这里不是「科目」也不是「主语」。",syn:"email heading",conf:"subject line(主题行) vs. subject matter(题材)"},
+  openrate:{w:"open rate",ipa:"",pos:"n.短语",tags:["poly"],cn:"<b>（邮件）打开率</b>",en:"the percentage of people who open an email",ex:"to increase open rates",mem:"⚠️ open 作名词定语＝「被打开」，不是「开放的比率」。营销行话：click rate(点击率)、conversion rate(转化率)。",syn:"—",conf:"open rate(打开率) vs. opening hours(营业时间)"},
+  claim:{w:"claim",ipa:"/kleɪm/",pos:"v.",tags:["core"],cn:"声称，宣称",en:"to say that sth is true without proof",ex:"Phrasee, claims their software can outperform humans",mem:"⭐ 作者用 claim 引公司数据——<b>「这是公司自己说的」</b>，有保留。读阅读题时 claim 常暗示存疑。",syn:"assert / maintain / allege",conf:"claim(声称) vs. declare(宣布)"},
+  outperform:{w:"outperform",ipa:"/ˌaʊtpəˈfɔːm/",pos:"v.",tags:["core"],cn:"胜过，比……表现好",en:"to do better than sb/sth",ex:"can outperform humans by up to 10 percent",mem:"out-(超过)+perform：outrun、outnumber、outweigh 同一构词。",syn:"surpass / outdo / beat",conf:"outperform(胜过) vs. perform(表现)"},
+  upto:{w:"by up to",ipa:"",pos:"短语",tags:["phrase"],cn:"最多（高出／降低）……",en:"by an amount that can reach but not exceed",ex:"by up to 10 percent",mem:"<b>by 表差额，up to 表上限</b>：prices rose by up to 5%(最多涨 5%)。",syn:"by as much as",conf:"up to(多达) vs. be up to sb(由某人决定)"},
+  revenue:{w:"revenue",ipa:"/ˈrevənjuː/",pos:"n.",tags:["core"],cn:"收入，营业额",en:"money that a business receives",ex:"This can mean millions more in revenue",mem:"re(回)+venue(来) → 回来的钱。millions more in revenue ＝ 多出几百万收入。",syn:"income / earnings / turnover",conf:"revenue(收入) vs. revenge(报复)"},
+  replacement:{w:"replacement",ipa:"/rɪˈpleɪsmənt/",pos:"n.",tags:["core","write"],cn:"替代品，替代者",en:"a thing or person that takes the place of another",ex:"not a replacement for people",mem:"⭐ a replacement <b>for</b> sb。tools …, not a replacement for people——人机关系的定性句，作文可直接借骨架。",syn:"substitute / stand-in",conf:"replacement for(替代) vs. replacement of(更换)"},
+  save:{w:"save sb money",ipa:"",pos:"v.短语",tags:["phrase","write"],cn:"为某人省钱",en:"to help sb spend less money",ex:"saving them money while helping the environment",mem:"save 带双宾语：save sb time / trouble / money。小标题 Saving customers money 同一结构。",syn:"cut costs for sb",conf:"save sb money(省钱) vs. save money for sb(给某人存钱)"},
+  whiledoing:{w:"while doing",ipa:"",pos:"短语",tags:["phrase","write"],cn:"在……的同时",en:"at the same time as doing sth",ex:"saving them money while helping the environment",mem:"⚠️ while ＋ doing 表「同时」，不是转折。写「一举两得」很顺手。",syn:"at the same time as",conf:"while(同时) vs. while(然而，从句开头)"},
+  cutdown:{w:"cut down on",ipa:"",pos:"v.短语",tags:["phrase","write"],cn:"削减，减少",en:"to reduce the amount of sth",ex:"cut down on the cost of electricity",mem:"cut down on ＋ 名词（cost / sugar / spending），别漏 on。",syn:"reduce / lower / trim",conf:"cut down on(减少) vs. cut down(砍倒)"},
+  meanwhile:{w:"meanwhile",ipa:"/ˈmiːnwaɪl/",pos:"adv.",tags:["core"],cn:"同时；另一方面",en:"used to compare two things or situations",ex:"Insurance companies, meanwhile, can base their premiums",mem:"⭐ 插在主语后，表「换一个行业说」（能源公司 → 保险公司），不是时间上的「与此同时」。",syn:"on the other hand / at the same time",conf:"meanwhile(另一方面) vs. meantime(其间)"},
+  baseon:{w:"base A on B",ipa:"",pos:"v.短语",tags:["phrase","write"],cn:"以 B 为依据定 A",en:"to use B as the foundation for A",ex:"base their premiums on AI models",mem:"be based on 的主动形式：base decisions on data(依据数据作决定)。",syn:"ground A in B / found A on B",conf:"base on(以……为依据) vs. basis(基础)"},
+  premium:{w:"premium",ipa:"/ˈpriːmiəm/",pos:"n.",tags:["poly"],cn:"<b>保险费</b>（熟义：优质的，附加费）",en:"an amount paid for an insurance policy",ex:"base their premiums on AI models",mem:"⚠️ 与 insurance 同现就是「保费」。premium 还可作形容词「高档的」(premium coffee)。<b>43 的头钩全靠它</b>。",syn:"insurance payment",conf:"premium(保费) vs. premier(首要的)"},
+  assess:{w:"assess",ipa:"/əˈses/",pos:"v.",tags:["core"],cn:"评估，评定",en:"to judge the nature or quality of sth",ex:"more accurately assess risk",mem:"名词 assessment。assess risk ＝ 评估风险，保险、金融话题固定搭配。",syn:"evaluate / judge / gauge",conf:"assess(评估) vs. access(进入)"},
+  risk:{w:"risk",ipa:"/rɪsk/",pos:"n.",tags:["core"],cn:"风险；（保险）风险对象",en:"the possibility of loss; a person considered likely to cause loss",ex:"more accurately assess risk",mem:"G 项 a high risk ＝ 「高风险的人」——risk 可指人：a good / poor risk。",syn:"danger / hazard",conf:"at risk(处于危险) vs. at the risk of(冒着……风险)"},
+  machinelearning:{w:"machine learning",ipa:"",pos:"n.短语",tags:["phrase"],cn:"机器学习",en:"a type of AI in which computers learn from data",ex:"Machine learning often provides a more reliable form of statistics",mem:"AI 的一个分支：让计算机从数据里学规律。",syn:"—",conf:"machine learning vs. deep learning(深度学习)"},
+  reliable:{w:"reliable",ipa:"/rɪˈlaɪəbl/",pos:"adj.",tags:["core"],cn:"可靠的",en:"that can be trusted",ex:"a more reliable form of statistics",mem:"rely(依赖)+able → 靠得住的。⑥段关键词，与小标题 accuracy 呼应。",syn:"dependable / trustworthy",conf:"reliable(可靠的) vs. reliant(依赖的)"},
+  statistics:{w:"statistics",ipa:"/stəˈtɪstɪks/",pos:"n.",tags:["core"],cn:"统计数据；统计学",en:"numbers collected to give information",ex:"a more reliable form of statistics",mem:"state(国家) → 原指国家的人口财政数据。",syn:"data / figures",conf:"statistics(统计) vs. statistician(统计学家)"},
+  valuable:{w:"valuable",ipa:"/ˈvæljuəbl/",pos:"adj.",tags:["core"],cn:"有价值的，宝贵的",en:"very useful or important",ex:"which makes data more valuable",mem:"value+able。makes data more valuable——which 指代前面整件事。",syn:"precious / useful / worthwhile",conf:"valuable(宝贵的) vs. invaluable(极宝贵的，不是「无价值」)"},
+  smart:{w:"smart decisions",ipa:"",pos:"n.短语",tags:["phrase","write"],cn:"明智的决定",en:"decisions made with good judgement",ex:"helps people make smarter decisions",mem:"smart 修饰决定 ＝ 明智；smart home / phone ＝ 智能。make a decision 动词用 make。",syn:"wise / informed decisions",conf:"make decisions(√) vs. do decisions(×)"},
+  particularly:{w:"particularly",ipa:"/pəˈtɪkjələli/",pos:"adv.",tags:["core"],cn:"尤其，特别",en:"especially; more than usually",ex:"particularly in energy and transportation",mem:"插入语，逗号夹住，读主干时先跳过。",syn:"especially / notably / in particular",conf:"particularly(尤其) vs. partially(部分地)"},
+  transportation:{w:"transportation",ipa:"/ˌtrænspɔːˈteɪʃn/",pos:"n.",tags:["core"],cn:"交通运输（业）",en:"the system for carrying people or goods",ex:"particularly in energy and transportation",mem:"trans(跨越)+port(搬运)。美式 transportation，英式多用 transport。",syn:"transport / transit",conf:"transportation(运输) vs. transformation(转变)"},
+  imageproc:{w:"image processing",ipa:"",pos:"n.短语",tags:["phrase"],cn:"图像处理",en:"the analysis of pictures by computer",ex:"use AI image processing technology",mem:"AI image processing technology——四个名词叠成一个名词短语，从后往前读：技术 ← 处理 ← 图像 ← AI。",syn:"computer vision",conf:"—"},
+  inspect:{w:"inspect",ipa:"/ɪnˈspekt/",pos:"v.",tags:["core"],cn:"检查，视察",en:"to look closely at sth to check it",ex:"to inspect infrastructure",mem:"in(往里)+spect(看) → 仔细往里看。inspector(检查员)。",syn:"examine / check / survey",conf:"inspect(检查) vs. expect(期待)"},
+  infrastructure:{w:"infrastructure",ipa:"/ˈɪnfrəstrʌktʃə(r)/",pos:"n.",tags:["core","write"],cn:"基础设施",en:"basic systems and services such as roads and power",ex:"to inspect infrastructure",mem:"infra(在下面)+structure(结构) → 底层结构。作文写城市化、乡村振兴常用。",syn:"basic facilities",conf:"infrastructure(基础设施) vs. superstructure(上层建筑)"},
+  prevent:{w:"prevent",ipa:"/prɪˈvent/",pos:"v.",tags:["core"],cn:"预防，阻止",en:"to stop sth from happening",ex:"prevent equipment failure or leaks before they happen",mem:"pre(先)+vent(来) → 先到一步拦住。⭐ ⑦段的「事前」，F 的 predict 是它的前一步：先预判，再预防。",syn:"stop / avert / head off",conf:"prevent(预防) vs. predict(预测)"},
+  equipfail:{w:"equipment failure",ipa:"",pos:"n.短语",tags:["phrase"],cn:"设备故障",en:"a situation in which machines stop working",ex:"prevent equipment failure or leaks",mem:"failure 在这里是「故障」不是「失败」：power failure(停电)、heart failure(心力衰竭)。",syn:"breakdown / malfunction",conf:"equipment(不可数) vs. equipments(×)"},
+  leak:{w:"leak",ipa:"/liːk/",pos:"n.",tags:["core"],cn:"泄漏；泄密",en:"a hole or crack through which liquid or gas escapes",ex:"equipment failure or leaks",mem:"能源企业的设施：管道漏油漏气。leak 也指泄露消息。",syn:"spill / escape",conf:"leak(泄漏) vs. leek(韭葱)"},
+  boring:{w:"boring",ipa:"/ˈbɔːrɪŋ/",pos:"adj.",tags:["core"],cn:"枯燥的，乏味的",en:"not interesting",ex:"AI replaces the boring parts of your job",mem:"the boring parts of your job——<b>A 的视角是个人</b>（你的工作），全文五段讲的都是企业。",syn:"dull / tedious",conf:"boring(令人厌烦的) vs. bored(感到厌烦的)"},
+  relevant:{w:"relevant",ipa:"/ˈreləvənt/",pos:"adj.",tags:["core"],cn:"相关的，切题的",en:"closely connected with the subject",ex:"look for relevant sources and information",mem:"relevant to sth。反义 irrelevant(无关的)，阅读题常用来排除选项。",syn:"related / pertinent",conf:"relevant(相关的) vs. relative(相对的)"},
+  source:{w:"source",ipa:"/sɔːs/",pos:"n.",tags:["core"],cn:"（资料）来源，出处",en:"a book or document that provides information",ex:"relevant sources and information",mem:"研究语境里 sources ＝ 文献资料。",syn:"reference / origin",conf:"source(来源) vs. sauce(调味汁)"},
+  otherwise:{w:"otherwise",ipa:"/ˈʌðəwaɪz/",pos:"adv.",tags:["core"],cn:"否则，不然",en:"used to say what would happen if not",ex:"that otherwise you just wouldn’t have time for",mem:"后面常配虚拟语气 would：otherwise you wouldn’t …",syn:"or else / if not",conf:"otherwise(否则) vs. likewise(同样)"},
+  advertising:{w:"advertising",ipa:"/ˈædvətaɪzɪŋ/",pos:"n.",tags:["core"],cn:"广告（业）；广告投放",en:"the activity of telling people about products",ex:"analyzes advertising performance",mem:"⭐ B 在营销段的身份证：advertising ＝ marketing 的下位词。",syn:"promotion / publicity",conf:"advertising(广告业,不可数) vs. advertisement(一则广告)"},
+  performance:{w:"performance",ipa:"/pəˈfɔːməns/",pos:"n.",tags:["poly"],cn:"<b>效果，成效</b>（熟义：演出）",en:"how well sth works",ex:"analyzes advertising performance across multiple channels",mem:"⚠️ advertising performance ＝ 广告效果，不是「广告表演」。",syn:"effectiveness / results",conf:"performance(效果) vs. performer(表演者)"},
+  multiple:{w:"multiple",ipa:"/ˈmʌltɪpl/",pos:"adj.",tags:["core"],cn:"多个的，多种的",en:"many in number",ex:"across multiple channels",mem:"multi(多)。multiple channels ＝ 多个渠道。",syn:"many / various / numerous",conf:"multiple(多个的) vs. multiply(乘)"},
+  channel:{w:"channel",ipa:"/ˈtʃænl/",pos:"n.",tags:["poly"],cn:"<b>渠道，途径</b>（熟义：频道）",en:"a way of communicating or selling",ex:"across multiple channels",mem:"⚠️ 本篇两处 channel 意思不同：B 是<b>广告投放渠道</b>，C 是<b>客户服务渠道</b>（比打电话更好）——C 借这个词跟 B 撞面。",syn:"medium / avenue / route",conf:"channel(渠道) vs. canal(运河)"},
+  adjustment:{w:"adjustment",ipa:"/əˈdʒʌstmənt/",pos:"n.",tags:["core"],cn:"调整",en:"a small change made to improve sth",ex:"makes adjustments or suggestions",mem:"make adjustments(作调整)。adjust ＝ ad(使)+just(恰当)。",syn:"modification / alteration",conf:"adjust(调整) vs. adapt(适应)"},
+  suggestion:{w:"suggestion",ipa:"/səˈdʒestʃən/",pos:"n.",tags:["core"],cn:"建议",en:"an idea put forward for consideration",ex:"makes adjustments or suggestions",mem:"⭐ AI 给建议、人拍板——B 也在替主旨「不替人」作证。",syn:"proposal / recommendation",conf:"suggestion(建议) vs. suggestive(暗示的)"},
+  fund:{w:"fund",ipa:"/fʌnd/",pos:"n.",tags:["core"],cn:"资金，款项",en:"money for a particular purpose",ex:"where advertising funds will yield best results",mem:"多用复数 funds。advertising funds ＝ 广告预算。",syn:"money / budget / capital",conf:"fund(资金) vs. found(建立)"},
+  yield:{w:"yield",ipa:"/jiːld/",pos:"v.",tags:["poly"],cn:"<b>产出，带来（结果、收益）</b>（另义：让步）",en:"to produce a result or profit",ex:"will yield best results",mem:"⚠️ yield results / profits ＝ 产生效果、收益；yield to ＝ 屈服、让路。",syn:"produce / generate / bring",conf:"yield results(产出) vs. yield to(屈服于)"},
+  versus:{w:"versus",ipa:"/ˈvɜːsəs/",pos:"prep.",tags:["core"],cn:"与……相对，相比",en:"compared with",ex:"better channels versus picking up the phone",mem:"缩写 vs.。better channels versus picking up the phone ＝ 比打电话更好的渠道。",syn:"compared with / as opposed to",conf:"versus(对比) vs. verse(诗句)"},
+  pickup:{w:"pick up the phone",ipa:"",pos:"v.短语",tags:["phrase"],cn:"拿起电话（打电话）",en:"to make or answer a phone call",ex:"versus picking up the phone",mem:"客服语境：比起打电话，网上渠道更方便——<b>全文没有客服这一段</b>，C 无处可去。",syn:"make a call",conf:"pick up(拿起；学会；接人)"},
+  accomplish:{w:"accomplish",ipa:"/əˈkʌmplɪʃ/",pos:"v.",tags:["core"],cn:"完成，实现",en:"to succeed in doing sth",ex:"to accomplish something beyond human scale",mem:"ac+complete 同源。名词 accomplishment(成就)。",syn:"achieve / complete / fulfil",conf:"accomplish(完成) vs. accompany(陪伴)"},
+  scale:{w:"scale",ipa:"/skeɪl/",pos:"n.",tags:["poly"],cn:"<b>规模</b>（熟义：天平、刻度、鳞）",en:"the size or extent of sth",ex:"something beyond human scale",mem:"⚠️ beyond human scale ＝ 超出人力所及的规模。on a large scale(大规模地)。",syn:"size / extent / magnitude",conf:"scale(规模) vs. scope(范围)"},
+  accounting:{w:"accounting firm",ipa:"",pos:"n.短语",tags:["phrase"],cn:"会计师事务所",en:"a company that keeps and checks financial records",ex:"One accounting firm, EY",mem:"firm 作名词＝公司（不是「坚定的」）。EY ＝ 安永，四大之一。",syn:"accountancy",conf:"firm(公司) vs. firm(坚定的)"},
+  review:{w:"review",ipa:"/rɪˈvjuː/",pos:"v.",tags:["poly"],cn:"<b>审查，审核</b>（熟义：复习、评论）",en:"to examine sth carefully",ex:"helps review contracts during an audit",mem:"⚠️ review contracts ＝ 审合同。D 里出现两次：AI 帮着审、员工也在审——<b>人机一起</b>。",syn:"examine / check / go over",conf:"review(审查) vs. preview(预习)"},
+  contract:{w:"contract",ipa:"/ˈkɒntrækt/",pos:"n.",tags:["core"],cn:"合同，契约",en:"a written legal agreement",ex:"helps review contracts during an audit",mem:"con(共同)+tract(拉) → 双方拉在一起的约定。动词 /kənˈtrækt/ ＝ 收缩、感染。",syn:"agreement / deal",conf:"contract(合同) vs. contact(联系)"},
+  audit:{w:"audit",ipa:"/ˈɔːdɪt/",pos:"n.",tags:["core"],cn:"审计，查账",en:"an official examination of financial accounts",ex:"during an audit",mem:"audi(听) → 古时查账是听人念账目。auditor(审计师)。",syn:"inspection / examination of accounts",conf:"audit(审计) vs. audio(音频)"},
+  alongwith:{w:"along with",ipa:"",pos:"prep.短语",tags:["phrase","write"],cn:"连同，与……一起",en:"together with",ex:"along with employees reviewing the contracts",mem:"⭐ A, along with B, is …——谓语跟 A 走（This process … is）。D 的这句明写人机协作。",syn:"together with / in addition to",conf:"along with(连同) vs. get along with(与……相处)"},
+  resume:{w:"résumé",ipa:"/ˈrezjumeɪ/",pos:"n.",tags:["core"],cn:"简历",en:"a written record of your education and jobs",ex:"AI looks at résumés in greater numbers",mem:"带重音符的 résumé(简历) ≠ resume(继续)。英式多说 CV。",syn:"CV / curriculum vitae",conf:"résumé(简历) vs. resume(继续,/rɪˈzjuːm/)"},
+  ingreater:{w:"in greater numbers",ipa:"",pos:"短语",tags:["phrase","write"],cn:"数量更多地",en:"in larger quantities",ex:"in greater numbers than humans would be able to",mem:"in large numbers(大量地)的比较级。⭐ E 讲「量」，与 ③❷ 讲「偏见少」（质）并列。",syn:"in larger quantities",conf:"in numbers(大批地) vs. by numbers(按部就班)"},
+  promising:{w:"promising",ipa:"/ˈprɒmɪsɪŋ/",pos:"adj.",tags:["poly"],cn:"<b>有前途的，有希望的</b>（promise 熟义：承诺）",en:"showing signs of future success",ex:"selects the more promising candidates",mem:"⚠️ promising 不是「承诺的」：a promising student(有出息的学生)。",syn:"talented / up-and-coming",conf:"promising(有前途的) vs. promised(被承诺的)"},
+  candidate:{w:"candidate",ipa:"/ˈkændɪdət/",pos:"n.",tags:["core"],cn:"候选人，求职者",en:"a person applying for a job",ex:"selects the more promising candidates",mem:"拉丁语「穿白袍的人」——古罗马竞选者穿白袍。",syn:"applicant / contender",conf:"candidate(候选人) vs. candid(坦率的)"},
+  predict:{w:"predict",ipa:"/prɪˈdɪkt/",pos:"v.",tags:["core"],cn:"预测，预判",en:"to say that sth will happen",ex:"You want to predict if something needs attention now",mem:"⭐ F 的核心动词，对上 ⑦❶ prevent … before they happen。",syn:"forecast / foresee / anticipate",conf:"predict(预测) vs. prevent(预防)"},
+  attention:{w:"need attention",ipa:"",pos:"短语",tags:["poly"],cn:"<b>需要处理（维修）</b>（熟义：注意力）",en:"to need to be dealt with or repaired",ex:"if something needs attention now",mem:"⚠️ 说设备时 needs attention ＝ 该修了：The roof needs attention.",syn:"need fixing / need repair",conf:"need attention(需维修) vs. pay attention(注意)"},
+  pointto:{w:"point to",ipa:"",pos:"v.短语",tags:["phrase"],cn:"指向，指出",en:"to show where sth is",ex:"point to where it’s useful for employees to go to",mem:"point to ＋ where 从句。<b>AI 指路、员工去修</b>——F 也在替主旨作证。",syn:"indicate / show",conf:"point to(指向) vs. point out(指出)"},
+  insure:{w:"insure",ipa:"/ɪnˈʃʊə(r)/",pos:"v.",tags:["core"],cn:"给……保险，承保",en:"to provide insurance for sb/sth",ex:"they might not insure the ones who felt like",mem:"⭐ G 的 they 要会 insure ⟹ 只能是保险公司。insurance(保险) ← insure。",syn:"cover / underwrite",conf:"insure(保险) vs. ensure(确保) vs. assure(使放心)"},
+  feellike:{w:"feel like",ipa:"",pos:"v.短语",tags:["poly"],cn:"<b>看起来像，给人的感觉是</b>（另义：想要）",en:"to seem to be",ex:"the ones who felt like a high risk",mem:"⚠️ felt like a high risk ＝ 看起来像高风险的人。feel like doing ＝ 想做。口语味浓——G 是教授的话。",syn:"seem / appear to be",conf:"feel like(像) vs. feel like doing(想做)"},
+  charge:{w:"charge",ipa:"/tʃɑːdʒ/",pos:"v.",tags:["poly"],cn:"<b>收费，要价</b>（熟义：充电、指控、负责）",en:"to ask an amount of money for sth",ex:"charge them too much",mem:"⚠️ charge sb money ＝ 向某人收钱。G 里出现两次：收太多、收太少。",syn:"bill / price",conf:"charge sb(收费) vs. in charge of(负责)"},
+  cost:{w:"cost",ipa:"/kɒst/",pos:"v.",tags:["poly"],cn:"<b>使损失，使付出</b>",en:"to cause sb to lose sth",ex:"it would cost the company money",mem:"⚠️ cost sb money ＝ 让某人赔钱（不只是「花费」）。cost sb their job ＝ 让某人丢了工作。",syn:"lose sb money",conf:"cost(使损失) vs. costly(昂贵的)"}
+};
+
+/* 选项库渲染 */
+const lib=document.getElementById('optlib');
+lib.innerHTML=Object.keys(OPTS).map(k=>
+  '<div class="optitem'+(EXTRA.indexOf(k)>=0?' extra':'')+'" id="opt-'+k+'"><span class="lt">'+k+'</span><span>'
+  +'<span class="oen">'+OPTS[k][0]+'</span>'
+  +'<span class="zhx">'+OPTS[k][1]+'</span>'
+  +'<span class="kw">🔑 '+OPTS[k][2]+'</span>'
+  +'<span class="stg">'+OPTS[k][3]+'</span></span></div>').join('');
+
+/* 作答交互：答后就地把空格补全成原文 */
+document.querySelectorAll('.person').forEach(p=>{
+  const ans=p.dataset.ans; if(!ans)return;
+  const chips=p.querySelector('.chips');
+  chips.innerHTML='ABCDEFG'.split('').map(l=>'<button class="ch" data-l="'+l+'">'+l+'</button>').join('');
+  chips.querySelectorAll('.ch').forEach(c=>c.addEventListener('click',()=>{
+    if(p.classList.contains('done'))return;
+    p.classList.add('done');
+    if(c.dataset.l!==ans)c.classList.add('wrong');
+    chips.querySelector('.ch[data-l="'+ans+'"]').classList.add('right');
+    const oi=document.getElementById('opt-'+ans); if(oi)oi.classList.add('used');
+    const slot=p.querySelector('.slot');
+    if(slot){slot.classList.add('filled');slot.innerHTML='<span class="fl">['+ans+']</span>'+OPTS[ans][0];}
+  }));
+});
+
+const panel=document.getElementById('panel');
+const isMobile=()=>window.innerWidth<=900;
+function badge(t){return {core:'<span class="badge b-core">核心词</span>',phrase:'<span class="badge b-phrase">短语</span>',poly:'<span class="badge b-poly">熟词僻义</span>',write:'<span class="badge b-write">写作✍︎</span>'}[t]||''}
+function showCard(k,el){
+  const d=V[k]; if(!d)return;
+  document.querySelectorAll('.tk.active').forEach(e=>e.classList.remove('active'));
+  if(el&&el.classList.contains('tk'))el.classList.add('active');
+  panel.innerHTML='<button class="close" onclick="panel.classList.remove(\'open\')">✕</button>'
+  +'<div class="wcard">'
+  +'<div class="head"><span class="w">'+d.w+'</span><span class="ipa">'+d.ipa+'</span><span class="pos">'+d.pos+'</span>'+d.tags.map(badge).join('')+'</div>'
+  +'<div class="cn">'+d.cn+'</div><div class="en-def">'+d.en+'</div>'
+  +'<div class="row r-ex"><b>原文语境</b>“…'+d.ex+'…”</div>'
+  +'<div class="row r-mem"><b>怎么记</b>'+d.mem+'</div>'
+  +'<div class="row r-syn"><b>同类词</b>'+d.syn+'</div>'
+  +'<div class="row r-conf"><b>易混辨析</b>'+d.conf+'</div>'
+  +'</div>';
+  if(isMobile())panel.classList.add('open');
+}
+document.addEventListener('click',function(e){
+  const t=e.target.closest?e.target.closest('.tk'):null;
+  if(t){e.stopPropagation();showCard(t.dataset.w,t);}
+});
+function tz(btn){btn.closest('.person,.para').classList.toggle('showzh')}
+let allOn=false;
+function toggleAll(){allOn=!allOn;document.querySelectorAll('.person,.para').forEach(p=>p.classList.toggle('showzh',allOn))}
+
+const vg=document.getElementById('vgrid');
+Object.keys(V).forEach(k=>{
+  const d=V[k];
+  const div=document.createElement('div');div.className='vitem';
+  div.style.cssText='border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer';
+  div.innerHTML='<span style="float:right">'+d.tags.map(badge).join('')+'</span>'
+   +'<div style="font-family:var(--serif);font-weight:bold">'+d.w+'</div>'
+   +'<div style="font-size:.85rem;color:var(--muted)">'+d.cn+'</div>';
+  div.addEventListener('click',()=>{showCard(k,null);if(!isMobile())window.scrollTo({top:0,behavior:'smooth'})});
+  vg.appendChild(div);
+});
+document.getElementById('vcount').textContent=Object.keys(V).length;
+
+const yd=document.getElementById('yd');let sel='',ydHold=0,ydT=0;
+/* 触屏：点按钮会先把选区清掉 → selectionchange 立刻把按钮藏了 → 点击落空。改成延迟隐藏 ＋ 按下即锁定 */
+const ydTouch=window.matchMedia&&matchMedia('(pointer:coarse)').matches;
+function ydHide(){clearTimeout(ydT);ydHold=0;yd.style.display='none'}
+document.addEventListener('selectionchange',function(){
+  const s=window.getSelection();const t=s?s.toString().trim():'';
+  if(t&&/^[a-zA-Z' -]{2,40}$/.test(t)){
+    sel=t;clearTimeout(ydT);
+    try{const r=s.getRangeAt(0).getBoundingClientRect();
+      yd.style.left=Math.max(8,Math.min(r.left,window.innerWidth-110))+'px';
+      yd.style.top=(r.bottom+(ydTouch?30:8))+'px';yd.style.display='block';}catch(e){}
+  }else if(!ydHold){clearTimeout(ydT);ydT=setTimeout(function(){if(!ydHold)yd.style.display='none'},ydTouch?900:0)}
+});
+['pointerdown','touchstart','mousedown'].forEach(function(ev){yd.addEventListener(ev,function(){ydHold=1;clearTimeout(ydT)},{passive:true})});
+yd.addEventListener('click',function(){
+  const u='https://dict.youdao.com/result?word='+encodeURIComponent(sel)+'&lang=en';
+  let w=null;try{w=window.open(u,'_blank')}catch(e){}
+  if(!w)location.href=u;
+  ydHide()});
+document.addEventListener('click',function(e){if(e.target!==yd&&!window.getSelection().toString())ydHide()});
+</script>
+<script src="img/strip_boxes_2021.js?v=5"></script>
+<script src="_strip_lookup.js?v=8"></script>
+<script src="_strip_text.js?v=18"></script>
+<script src="_fault_attr.js"></script>
+</body>
+</html>
+
