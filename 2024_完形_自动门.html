@@ -1,0 +1,1220 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2024 英一 完形 · 自动门</title>
+<style>
+  :root{
+    --bg:#faf9f6; --card:#ffffff; --ink:#2b2b2b; --muted:#8a8578;
+    --accent:#8b5e34; --accent-soft:#f3e9dd; --line:#e8e3d8;
+    --hl:#fdf3d8; --hl-border:#e0b84d;
+    --green:#3e7a4e; --green-soft:#e8f2ea;
+    --red:#b04a3a; --red-soft:#f9e9e6;
+    --blue:#3d6a8a; --blue-soft:#e7eff5;
+    --purple:#6d5a8e; --purple-soft:#eeeaf5;
+    --serif:"Georgia","Songti SC",serif;
+    --sans:-apple-system,"PingFang SC","Helvetica Neue",sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#1c1a17; --card:#26231f; --ink:#e8e4dc; --muted:#9a948a;
+      --accent:#d0a06a; --accent-soft:#3a3127; --line:#3a362f;
+      --hl:#3d3520; --hl-border:#b08c3a;
+      --green:#7fb98d; --green-soft:#26362b;
+      --red:#d98876; --red-soft:#3d2a26;
+      --blue:#8ab3d0; --blue-soft:#26323d;
+      --purple:#a996c8; --purple-soft:#302a3d;
+    }
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;padding-bottom:120px}
+  .wrap{max-width:1100px;margin:0 auto;padding:24px 20px}
+  .back{font-size:.85rem;color:var(--muted);text-decoration:none}
+  .back:hover{color:var(--accent)}
+  header{margin:14px 0 28px}
+  header h1{font-family:var(--serif);font-size:1.7rem;line-height:1.3}
+  header .sub{color:var(--muted);margin-top:6px;font-size:.9rem}
+  .tags{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+  .tag{font-size:.75rem;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);border:1px solid var(--line)}
+  .tag.spoiler{cursor:pointer;background:var(--card);color:var(--muted)}
+  .tag.spoiler .hid{filter:blur(5px)}
+  .tag.spoiler.open .hid{filter:none;color:var(--accent)}
+
+  .layout{display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:start}
+  @media (max-width:900px){.layout{grid-template-columns:1fr}}
+
+  section.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:24px}
+  h2{font-size:1.05rem;letter-spacing:.05em;color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  h2 .n{font-size:.72rem;background:var(--accent);color:var(--card);border-radius:6px;padding:1px 7px}
+  .note{font-size:.82rem;color:var(--muted);margin-bottom:14px}
+
+  .para{margin-bottom:22px}
+  .para .en{font-family:var(--serif);font-size:1.06rem;line-height:2.15}
+  .pno{color:var(--muted);font-size:.75rem;user-select:none;margin-right:6px}
+  .tk{background:var(--hl);border-bottom:2px solid var(--hl-border);border-radius:3px;padding:0 2px;cursor:pointer;transition:filter .15s}
+  .tk:hover{filter:brightness(.93)}
+  .tk.active{outline:2px solid var(--hl-border)}
+  .ls{border-bottom:2px dotted var(--blue);cursor:pointer}
+  .para .zh{display:none;margin-top:10px;padding:10px 14px;background:var(--blue-soft);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:.93rem}
+  .para.showzh .zh{display:block}
+  .zbtn{float:right;margin-left:10px;font-size:.72rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:6px;padding:2px 9px;cursor:pointer}
+  .zbtn:hover{color:var(--accent);border-color:var(--accent)}
+  .allbtn{font-size:.78rem;border:1px solid var(--accent);background:none;color:var(--accent);border-radius:8px;padding:4px 12px;cursor:pointer}
+
+  /* 完形空格 */
+  .bk{display:inline-block;min-width:64px;text-align:center;background:var(--hl);border-bottom:2px solid var(--hl-border);border-radius:4px;padding:0 6px;cursor:pointer;font-weight:600;color:var(--accent);transition:all .15s;font-family:var(--sans);font-size:.95rem}
+  .bk:hover{filter:brightness(.93)}
+  .bk.filled{background:var(--green-soft);border-bottom-color:var(--green);color:var(--green);font-family:var(--serif)}
+  .bk.miss{background:var(--red-soft);border-bottom-color:var(--red);color:var(--red);font-family:var(--serif)}
+  .bk.active{outline:2px solid var(--hl-border)}
+  .bk .idx{font-size:.7rem;color:var(--muted);margin-right:3px}
+
+  aside{position:sticky;top:20px}
+  #panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;min-height:180px}
+  #panel .hint{color:var(--muted);font-size:.88rem;text-align:center;padding:30px 10px}
+  .wcard .head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .wcard .w{font-family:var(--serif);font-size:1.35rem;font-weight:bold}
+  .wcard .ipa{color:var(--muted);font-size:.85rem}
+  .wcard .pos{font-size:.72rem;color:var(--purple);background:var(--purple-soft);padding:1px 8px;border-radius:999px}
+  .wcard .badge{font-size:.7rem;padding:1px 8px;border-radius:999px}
+  .b-core{background:var(--red-soft);color:var(--red)}
+  .b-phrase{background:var(--blue-soft);color:var(--blue)}
+  .b-poly{background:var(--purple-soft);color:var(--purple)}
+  .b-write{background:var(--green-soft);color:var(--green)}
+  .wcard .cn{margin-top:8px;font-size:1rem;font-weight:600}
+  .wcard .en-def{color:var(--muted);font-size:.86rem;font-style:italic;margin-top:2px}
+  .wcard .row{margin-top:10px;font-size:.86rem;padding:8px 10px;border-radius:8px}
+  .wcard .row>b:first-child{font-size:.72rem;display:block;margin-bottom:2px;letter-spacing:.06em}
+  .r-ex{background:var(--hl)} .r-ex b{color:var(--hl-border)}
+  .r-mem{background:var(--green-soft)} .r-mem b{color:var(--green)}
+  .r-syn{background:var(--blue-soft)} .r-syn b{color:var(--blue)}
+  .r-conf{background:var(--red-soft)} .r-conf b{color:var(--red)}
+  #panel .close{display:none}
+  @media (max-width:900px){
+    aside{position:fixed;left:0;right:0;bottom:0;z-index:50;padding:0 8px 8px}
+    #panel{box-shadow:0 -6px 24px rgba(0,0,0,.18);max-height:55vh;overflow-y:auto;display:none}
+    #panel.open{display:block}
+    #panel .close{display:block;float:right;border:none;background:var(--line);border-radius:8px;padding:2px 10px;cursor:pointer;color:var(--ink)}
+  }
+
+  /* 逐空精解 */
+  .q{margin-bottom:22px;padding-bottom:18px;border-bottom:1px dashed var(--line);scroll-margin-top:20px}
+  .q:last-child{border:none;margin-bottom:0;padding-bottom:0}
+  .q .stem{font-family:var(--serif);font-size:.98rem;background:var(--hl);border-radius:8px;padding:8px 12px;display:block}
+  .q .stem em{font-style:normal;font-weight:700;color:var(--accent);border-bottom:2px solid var(--hl-border);padding:0 4px}
+  .qhead{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+  .qno{font-family:var(--serif);font-size:1.2rem;font-weight:700;color:var(--accent)}
+  .qt{font-size:.7rem;border-radius:999px;padding:1px 9px}
+  .c-logic{background:var(--blue-soft);color:var(--blue)}
+  .c-collo{background:var(--green-soft);color:var(--green)}
+  .c-word{background:var(--red-soft);color:var(--red)}
+  .c-context{background:var(--purple-soft);color:var(--purple)}
+  .qpos{font-size:.7rem;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:1px 9px}
+  .opts{margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  @media (max-width:640px){.opts{grid-template-columns:1fr}}
+  .opt{border:1px solid var(--line);border-radius:10px;padding:7px 12px;cursor:pointer;font-size:.92rem;font-family:var(--serif);transition:all .15s}
+  .opt .gl{font-family:var(--sans);font-size:.8rem;color:var(--muted);margin-left:6px}
+  .opt:hover{border-color:var(--accent)}
+  .q.done .opt{cursor:default}
+  .opt.right{background:var(--green-soft);border-color:var(--green)}
+  .opt.wrong{background:var(--red-soft);border-color:var(--red)}
+  .expl{display:none;margin-top:12px;background:var(--accent-soft);border-radius:10px;padding:12px 14px;font-size:.9rem}
+  .q.done .expl{display:block}
+  .expl b{color:var(--accent)}
+  .expl .lbl{font-size:.74rem;letter-spacing:.06em;color:var(--muted);display:block;margin:10px 0 2px}
+  .expl .lbl:first-child{margin-top:0}
+  .expl code{font-family:var(--serif);background:var(--hl);border-radius:4px;padding:1px 5px}
+  .wrongs{margin-top:6px;display:grid;gap:5px}
+  .wr{font-size:.86rem;background:var(--card);border-radius:8px;padding:6px 10px;border-left:3px solid var(--red)}
+  .wr .l{font-family:var(--serif);font-weight:700;color:var(--red);margin-right:5px}
+
+  /* 计分条 */
+  .score{display:flex;gap:14px;flex-wrap:wrap;align-items:center;background:var(--hl);border-radius:12px;padding:10px 16px;margin-bottom:18px;font-size:.88rem}
+  .score .v{font-family:var(--serif);font-size:1.25rem;font-weight:700;color:var(--accent);margin-right:4px}
+  .score .rst{margin-left:auto;font-size:.78rem;border:1px solid var(--line);background:var(--card);color:var(--muted);border-radius:8px;padding:3px 10px;cursor:pointer}
+
+  /* 考点统计 */
+  .catbar{display:flex;height:26px;border-radius:8px;overflow:hidden;margin:10px 0 16px;border:1px solid var(--line)}
+  .catseg{display:flex;align-items:center;justify-content:center;font-size:.72rem;color:#fff;font-weight:600}
+  .catlegend{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px}
+  .cl{display:flex;gap:8px;align-items:center;font-size:.85rem;cursor:pointer;padding:6px 8px;border-radius:8px;border:1px solid var(--line)}
+  .cl:hover{border-color:var(--accent)}
+  .dot{width:12px;height:12px;border-radius:3px;flex:0 0 12px}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+  .chip{font-size:.78rem;background:var(--accent-soft);color:var(--accent);border-radius:6px;padding:2px 8px;cursor:pointer}
+  .chip:hover{filter:brightness(.94)}
+
+  /* 打法 / 搭配 */
+  .flow{display:grid;gap:10px;font-size:.92rem}
+  .flow .fi{border:1px solid var(--line);border-radius:10px;padding:10px 14px}
+  .flow .fi b{color:var(--accent)}
+  .flow .fi .ev{display:block;margin-top:4px;font-size:.85rem;color:var(--muted);border-left:3px solid var(--hl-border);padding-left:9px}
+  .wb{display:grid;gap:10px}
+  .wbi{border-left:3px solid var(--green);background:var(--green-soft);border-radius:0 10px 10px 0;padding:10px 14px;font-size:.92rem}
+  .wbi .p{font-family:var(--serif);font-weight:600}
+  .wbi .u{color:var(--muted);font-size:.85rem}
+
+  /* 长难句 */
+  .sent{margin-bottom:20px}
+  .sent .src{font-family:var(--serif);font-size:1rem;background:var(--blue-soft);padding:12px 14px;border-radius:10px;border-left:3px solid var(--blue)}
+  .sent .anat{margin-top:8px;font-size:.9rem}
+  .sent .anat li{margin:4px 0 4px 18px}
+  .sent .tr{margin-top:8px;font-size:.92rem;color:var(--muted)}
+  .skel{color:var(--red);font-weight:600}
+
+  /* 80词表 */
+  .otab{width:100%;border-collapse:collapse;font-size:.86rem}
+  .otab th,.otab td{border:1px solid var(--line);padding:5px 8px;vertical-align:top}
+  .otab th{background:var(--accent-soft);color:var(--accent);font-size:.78rem}
+  .otab td.n{text-align:center;font-family:var(--serif);color:var(--muted);width:38px}
+  .otab .ow{font-family:var(--serif)}
+  .otab .oc{color:var(--muted);font-size:.82rem;display:block}
+  .otab td.hit{background:var(--green-soft)}
+  .otab td.hit .ow{color:var(--green);font-weight:700}
+  .hidecn .oc{filter:blur(4px);cursor:pointer}
+  .hidecn .oc.show{filter:none}
+  .tabwrap{overflow-x:auto}
+
+  #yd{position:fixed;z-index:60;display:none;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:4px 12px;font-size:.8rem;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+  .fail{background:var(--red-soft);border:1px solid var(--red);border-radius:10px;padding:10px 13px;margin-bottom:10px;font-size:.89rem;line-height:1.75}
+  .fail b{color:var(--red)}
+  .expl .fail{margin-top:0}
+  footer{color:var(--muted);font-size:.8rem;text-align:center;margin-top:30px}
+  /* 修：.layout 是 grid，grid 项默认 min-width:auto ⟹ 06 的 80 词表（min-content 425px）会把整个左栏撑到 475px，
+     窄屏下页面 scrollWidth 超出视口（2007–2009 三篇完形页同源、同病）。min-width:0 后 .tabwrap 才真正接管横滚。 */
+  main,aside{min-width:0}
+
+  /* ---- 2021：原卷句条 ---- */
+  .ctab{width:100%;border-collapse:collapse;font-size:.86rem;margin-top:8px}
+  .ctab th,.ctab td{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
+  .ctab th{background:var(--accent-soft);color:var(--accent);font-size:.8rem;white-space:nowrap}
+  .ctab code{background:var(--hl);padding:0 3px;border-radius:3px}
+  .sn{margin:0 0 14px}
+  .sn .pno{display:block;margin-bottom:4px;font-size:.78rem;line-height:1.6}
+  img.strip{display:block;width:100%;max-width:760px;height:auto;background:#fff;border:1px solid var(--line);border-radius:6px;cursor:pointer}
+  .sent .src img.strip{margin-top:6px;cursor:default}
+  .kw{margin-top:5px;font-size:.88rem;line-height:2.1;font-family:var(--serif)}
+  @media (prefers-color-scheme: dark){img.strip{filter:invert(.9) hue-rotate(180deg)}}
+  .sn,.sent .src{overflow-x:auto}
+  @media (max-width:700px){img.strip{width:640px;max-width:none}.sn::after{content:'← 句条可左右滑动 →';display:block;font-size:.7rem;color:var(--muted);margin-top:2px}}
+  .bkrow{margin-top:6px;font-size:.85rem;color:var(--muted);font-family:var(--serif);line-height:2.1}
+  .bkrow .bk{margin:0 6px}
+  .sent .src b{display:block;font-family:var(--sans,inherit);font-size:.8rem;color:var(--muted);font-weight:600}
+
+  /* ---- 2023 起：流式版——识别好的句子在段落里连排，像 2007–2020 ---- */
+  .para .en{font-family:var(--serif);font-size:1.02rem;line-height:1.9}
+  .stx-flow .para .en .pno{margin-right:4px}
+  .stx-flow .para .sn:not(.stx-on) .kw{margin-bottom:8px}
+  .stx-flow .para .sn:not(.stx-on) .bkrow{margin-bottom:4px}
+</style>
+</head>
+<body class="stx-flow">
+<div class="wrap">
+  <a class="back" href="index.html">◀ 返回英语复盘中心</a>
+  <header>
+    <h1>自动门：一扇为你打开的门</h1>
+    <div class="sub">2024 年英语（一）真题 · Section I 完形填空（Use of English）· 黄皮书标 271 词 · 4 段 14 句 · 建议 15 min · 话题：科技（产品原理说明文）（来源：<i>How It Works Daily</i> 网站 2021-03-25，原题 <i>How Automatic Door Mechanisms Work</i>，据黄皮书）</div>
+    <div class="tags">
+      <span class="tag spoiler" onclick="this.classList.toggle('open')">🙈 答案（点击显示）：<span class="hid">1D 2C 3B 4A 5B 6C 7A 8D 9A 10D 11A 12C 13C 14D 15C 16B 17D 18C 19B 20A</span></span>
+      <span class="tag">难度：偏易（话题日常、没有立场起伏；<b>坎在一处</b>——每段都把同一个意思换三种说法，认出「这一空是在复述谁」就能秒；没认出来就会在 8、16、17 这几个动词空上犹豫）</span>
+      <span class="tag">Claude 盲做：20/20（只看原卷正文与选项作答、先落盘，再核答案）</span>
+      <span class="tag">⚠️ 原定冲刺模考卷，已按你的决定开复盘</span>
+    </div>
+  </header>
+
+  <div class="layout">
+    <main>
+
+      <!-- ========== 00 脉络 ========== -->
+      <section class="card">
+        <h2><span class="n">00</span>读前一分钟 · 全文脉络（完形先读首句，再看结构）</h2>
+        <p class="note">完形的<b>首句从不设空</b>。本篇首句是一句<b>「否定＋比较级」的最高级</b>：There’s nothing more welcoming than a door opening for you——没有什么比一扇为你打开的门更让人舒服的了。⟹ 两件事一句话定死：<b>话题</b>（自动门）、<b>基调</b>（正面、夸它好）。后面二十个空要么在说「它好在哪」，要么在说「它怎么工作」，<b>没有一个空在批评自动门</b>——方向几乎不会反，唯一的「负面」是 19 那个反例，而它也是在证明「选对传感器很重要」。</p>
+        <div class="flow">
+          <div class="fi"><b>① 段 · 引出话题：它方便</b>：<b>无需</b>碰就能开关（1 Without），自动门对<b>改善</b>建筑的无障碍通行、给商业大楼提供普遍的<b>便利</b>至关重要（2 improving · 3 convenience）。
+            <span class="ev">三个空说的是<b>同一件事</b>：不用碰 → 残障人士好进 → 所有人都方便。1 是原因，2、3 是 and 两边的两个好处，方向都跟首句 welcoming 一样正。</span></div>
+          <div class="fi"><b>② 段 · 来历与第一个作用：疏导人流</b>：滑动自动门 1960 年作为商品出现，此前六年（1954）已由霍顿和休伊特发明（4 previously）；<b>起初</b>只是个新奇噱头（5 started out），但随着用得越来越多，它的<b>好处</b>也扩展了（6 benefits）；在繁忙地段或紧急时刻它<b>尤其有用</b>（7 useful），通过减少挡路的障碍<b>起到</b>人群管理的作用（8 act as）。
+            <span class="ev">一条时间线：发明（1954）→ 上市（1960）→ 起初是噱头 → 如今用处大。5 的 but 是<b>两层转折</b>：过去时 → 现在完成时、novelty → use has grown。6、7、8 三个空又是「好处」换三种说法：名词 benefits → 形容词 useful → 动作 act as crowd management。</span></div>
+          <div class="fi"><b>③ 段 · 第二个作用：省地方</b>：<b>除了</b>让人进出更方便（9 As well as），开门方式的不同还能减少门<b>占用</b>的总面积（10 occupied）；自动门往两边滑开、门扇互相错过；取代平开门之后，它<b>让</b>小建筑能充分利用内部空间（11 allow），不必为一扇大而突出的门<b>腾地方</b>（12 clear）。自动门有许多种，每种都<b>靠</b>特定信号来提示何时开门（13 relying on）；<b>虽然</b>方式各不相同（14 Although），主要<b>原理</b>是一样的（15 principles）。
+            <span class="ev">前半段「省地方」<b>又说了三遍</b>：reduce the total area occupied（10）→ maximise the usable space（11）→ without having to clear the way（12）。后半段两句是<b>过渡</b>：13 先抛出「靠信号」，14、15 用「方式不同、原理相同」把话头递给④段。</span></div>
+          <div class="fi"><b>④ 段 · 工作原理：按环境配传感器</b>：每套系统都<b>分析</b>周围的光、声、重量或动作，当作开门信号（16 analyses）；传感器的类型要选得<b>与</b>它所在的环境<b>相配</b>（17 complement）。<b>比如</b>（18 For example），繁忙的街道可能就<b>不适合</b>动作感应门（19 suit），因为它会不停地为过路人打开；压敏地垫限定检测区域，会<b>更合适</b>（20 appropriate）。
+            <span class="ev">一句原则 ＋ 一个例子（反例 ＋ 正例）。⭐ <b>17 complement · 19 suit · 20 appropriate 是同一个意思「相配」用了三种词性</b>：动词 → 否定动词 → 形容词比较级。认出这一点，末段三个空是一道题。</span></div>
+          <div class="fi" style="border-color:var(--accent)">📌 <b>一句话主旨</b>：自动门让人方便、能疏导人流、能省空间；它靠分析特定信号开门，传感器要按环境来选。<br>📌 <b>结构套路</b>：引出话题（①）→ 作用一：通行（②）→ 作用二：省地方（③前半）→ 过渡：方式不同、原理相同（③后半）→ 原理与例子（④）——<b>产品说明文的标准写法</b>，和 2023 的百科词条一样没有作者立场。<br>📌 <b>本篇最大的规律：一个意思说三遍</b>。① 便利（1 不用碰 · 2 改善通行 · 3 便利）· ② 好处（6 benefits · 7 useful · 8 act as）· ③ 省地方（10 occupied · 11 allow … maximise · 12 clear the way）· ④ 相配（17 complement · 19 suit · 20 appropriate）——<b>四段四组同义复现，覆盖了 12 个空</b>。做完形时只要先认出「这段在反复说什么」，那一组空就按同一个意思去挑。<br>📌 <b>代词链</b>：the doors（②❸）→ them（10）→ these（11）→ each（13）→ Each automatic door system（16）——<b>主语一直是门</b>，所以 8、11、16 这几个动词空都先问「门能做这件事吗」：门不能「要求」人群管理（8）、不能「期望」建筑（11）、不能「产生」光和声（16）。</div>
+          <div class="fi">🗞 <b>背景（WebSearch 核过，只帮读、不替原文纠错）</b>：<i>How It Works</i> 是英国一本面向大众的科技科普杂志——所以全文用英式拼写（<b>maximise、analyses</b>）。②段两位发明人 Dee Horton 和 Lew Hewitt 是得克萨斯州科珀斯克里斯蒂做玻璃店面生意的商人：当地风大，平开门很难推开，两人便在 <b>1954 年</b>发明了滑动自动门，<b>1960 年</b>成立 Horton Automatics 开始销售——正好是原文的「1960 年上市、此前六年发明」（4 previously）。一个和④段呼应的细节：他们最早的设计<b>用地垫触发</b>，因为地垫不受风的干扰——就是④❹那块「压敏地垫」的祖先。⚠️ 厂家自己的资料只说「1950 年代中期」，1954 这个年份来自公司史与黄皮书。</div>
+        </div>
+        <p class="note" style="margin-top:14px">📌 <b>完形不是 20 道独立小题，是一条语义链。</b>本篇这条链是<b>一组一组的</b>：每段先立一个意思，再换说法说两遍。所以拿到一个空，<b>先问「这段在反复说什么」</b>，再问「这一空是那个意思的哪种说法」——名词、形容词、动词短语，还是一个否定的反例。</p>
+      </section>
+
+      <!-- ========== 01 正文 ========== -->
+      <section class="card">
+        <h2><span class="n">01</span>完形正文（20 空 · 点空格跳到该题）
+          <button class="allbtn" onclick="toggleAll()" style="margin-left:auto">意译 开/关</button>
+          <button class="allbtn" onclick="revealAll()">显示全部答案</button>
+          <button class="allbtn" id="imgall" onclick="imgAll(this)">原卷对照</button>
+        </h2>
+        <p class="note">🟨 点<b>空格</b>＝跳到下面对应的解析卡（先自己选，再看解析；答过的空会就地填上答案词）｜ 🟡 黄底词＝重难点词，点开看词根／辨析 ｜ 蓝色虚线＝长难句，点击跳到 07 精析 ｜ 每段「意」＝该段意译 ｜ 选中任意其他单词浮出「查有道」｜ 原文由你的浏览器从原卷识别成文字（首次约 3 秒，之后秒开）；「原卷对照」可逐句看扫描原图、改识别错字</p>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">①</span>
+            <div class="sn"><img class="strip" src="img/2024_完形/s1_1.png" alt="①❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="welcoming">welcoming</span></div></div>
+            <div class="sn" data-go="l1_2"><img class="strip" src="img/2024_完形/s1_2.png" alt="①❷ 原卷句条" loading="lazy"><div class="bkrow">空格：<span class="bk" data-n="1"><span class="idx">1</span>___</span> <span class="bk" data-n="2"><span class="idx">2</span>___</span> <span class="bk" data-n="3"><span class="idx">3</span>___</span></div><div class="kw">🟡 <span class="tk" data-w="disabled">disabled access</span> · <span class="tk" data-w="commercial">commercial buildings</span></div></div>
+          </div>
+          <div class="zh"><b>①段意：</b>没有什么比一扇为你打开的门更让人觉得受欢迎了。自动门<b>无需</b>触碰就能开关，因此在<b>改善</b>建筑的无障碍通行、为商业大楼提供普遍的<b>便利</b>方面至关重要。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">②</span>
+            <div class="sn" data-go="l2_1"><img class="strip" src="img/2024_完形/s2_1.png" alt="②❶ 原卷句条" loading="lazy"><div class="bkrow">空格：<span class="bk" data-n="4"><span class="idx">4</span>___</span></div><div class="kw">🟡 <span class="tk" data-w="emerge">emerge</span> · <span class="tk" data-w="commercial">commercial product</span></div></div>
+            <div class="sn" data-go="l2_2"><img class="strip" src="img/2024_完形/s2_2.png" alt="②❷ 原卷句条" loading="lazy"><div class="bkrow">空格：<span class="bk" data-n="5"><span class="idx">5</span>___</span> <span class="bk" data-n="6"><span class="idx">6</span>___</span></div><div class="kw">🟡 <span class="tk" data-w="novelty">novelty feature</span> · <span class="tk" data-w="extend">extended</span> · <span class="tk" data-w="technologically">technologically advanced</span></div></div>
+            <div class="sn" data-go="l2_3"><img class="strip" src="img/2024_完形/s2_3.png" alt="②❸ 原卷句条" loading="lazy"><div class="bkrow">空格：<span class="bk" data-n="7"><span class="idx">7</span>___</span> <span class="bk" data-n="8"><span class="idx">8</span>___</span></div><div class="kw">🟡 <span class="tk" data-w="emergency">emergency</span> · <span class="tk" data-w="crowd">crowd management</span> · <span class="tk" data-w="obstacle">obstacles</span></div></div>
+          </div>
+          <div class="zh"><b>②段意：</b>滑动自动门 1960 年开始作为商品出现，而它<b>早在</b>六年前就由美国人迪伊·霍顿和卢·休伊特发明出来了。它们<b>起初</b>只是一种新奇的噱头，但随着用得越来越广，它们的<b>好处</b>也在我们这个技术先进的世界里扩展开来。尤其在繁忙地段或紧急时刻，自动门格外<b>有用</b>：它们减少了挡在人们路上的障碍，<b>起到</b>疏导人流的作用。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">③</span>
+            <div class="sn" data-go="l3_1"><img class="strip" src="img/2024_完形/s3_1.png" alt="③❶ 原卷句条" loading="lazy"><div class="bkrow">空格：<span class="bk" data-n="9"><span class="idx">9</span>___</span> <span class="bk" data-n="10"><span class="idx">10</span>___</span></div><div class="kw">🟡 <span class="tk" data-w="access">access</span></div></div>
+            <div class="sn"><img class="strip" src="img/2024_完形/s3_2.png" alt="③❷ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="panel">panels</span></div></div>
+            <div class="sn" data-go="l3_3"><img class="strip" src="img/2024_完形/s3_3.png" alt="③❸ 原卷句条" loading="lazy"><div class="bkrow">空格：<span class="bk" data-n="11"><span class="idx">11</span>___</span> <span class="bk" data-n="12"><span class="idx">12</span>___</span></div><div class="kw">🟡 <span class="tk" data-w="swing">swing doors</span> · <span class="tk" data-w="maximise">maximise</span> · <span class="tk" data-w="usable">usable space</span> · <span class="tk" data-w="stickingout">sticking-out</span></div></div>
+            <div class="sn" data-go="l3_4"><img class="strip" src="img/2024_完形/s3_4.png" alt="③❹ 原卷句条" loading="lazy"><div class="bkrow">空格：<span class="bk" data-n="13"><span class="idx">13</span>___</span></div><div class="kw">🟡 <span class="tk" data-w="specific">specific signals</span></div></div>
+            <div class="sn"><img class="strip" src="img/2024_完形/s3_5.png" alt="③❺ 原卷句条" loading="lazy"><div class="bkrow">空格：<span class="bk" data-n="14"><span class="idx">14</span>___</span> <span class="bk" data-n="15"><span class="idx">15</span>___</span></div><div class="kw">🟡 <span class="tk" data-w="method">methods</span></div></div>
+          </div>
+          <div class="zh"><b>③段意：</b><b>除了</b>让人们进出建筑更方便，许多这类门开启方式上的不同，还有助于减少它们<b>占用</b>的总面积。自动门通常向两侧打开，门扇彼此错开滑动。取代平开门之后，它们<b>让</b>较小的建筑能够充分利用内部的可用空间，而不必为一扇大而突出的门<b>腾出地方</b>。自动门有许多不同类型，每一种都<b>依靠</b>特定的信号来告诉它们何时打开。<b>虽然</b>这些方式各不相同，但主要的<b>原理</b>是一样的。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">④</span>
+            <div class="sn"><img class="strip" src="img/2024_完形/s4_1.png" alt="④❶ 原卷句条" loading="lazy"><div class="bkrow">空格：<span class="bk" data-n="16"><span class="idx">16</span>___</span></div><div class="kw">🟡 <span class="tk" data-w="vicinity">vicinity</span></div></div>
+            <div class="sn"><img class="strip" src="img/2024_完形/s4_2.png" alt="④❷ 原卷句条" loading="lazy"><div class="bkrow">空格：<span class="bk" data-n="17"><span class="idx">17</span>___</span></div><div class="kw">🟡 <span class="tk" data-w="sensor">Sensor types</span></div></div>
+            <div class="sn" data-go="l4_3"><img class="strip" src="img/2024_完形/s4_3.png" alt="④❸ 原卷句条" loading="lazy"><div class="bkrow">空格：<span class="bk" data-n="18"><span class="idx">18</span>___</span> <span class="bk" data-n="19"><span class="idx">19</span>___</span></div><div class="kw">🟡 <span class="tk" data-w="motionsensored">motion-sensored</span> · <span class="tk" data-w="passersby">passers-by</span></div></div>
+            <div class="sn"><img class="strip" src="img/2024_完形/s4_4.png" alt="④❹ 原卷句条" loading="lazy"><div class="bkrow">空格：<span class="bk" data-n="20"><span class="idx">20</span>___</span></div><div class="kw">🟡 <span class="tk" data-w="pressure">pressure-sensitive mat</span> · <span class="tk" data-w="surveyed">surveyed area</span></div></div>
+          </div>
+          <div class="zh"><b>④段意：</b>每套自动门系统都会<b>分析</b>周围的光线、声音、重量或动作，把它当作开门的信号。传感器类型的选择，是为了<b>与</b>它们所处的不同环境<b>相匹配</b>。<b>比如</b>，繁忙的街道可能就<b>不适合</b>装动作感应门，因为它会不停地为过路人打开；而压敏地垫能限定检测范围，会<b>更合适</b>。</div>
+        </div>
+      </section>
+
+
+      <!-- ========== 02 逐空精解 ========== -->
+      <section class="card">
+        <h2><span class="n">02</span>逐空精解（点选项即判 · 再看解析）</h2>
+        <div class="score">
+          <span><span class="v" id="sDone">0</span>/20 已答</span>
+          <span><span class="v" id="sRight">0</span> 对</span>
+          <span>折合 <span class="v" id="sPt">0</span> 分 / 10</span>
+          <button class="rst" onclick="location.reload()">↺ 重做</button>
+        </div>
+        <p class="note">每空 0.5 分。题干只引空格所在的<b>短语</b>，完整句子看 01。本篇是<b>产品说明文</b>，方向几乎不会错，真正要动脑的是两件事：<b>① 认出「同一个意思说三遍」</b>——2／3、6／7／8、10／11／12、17／19／20 这四组空各自在复述同一个意思，先说出这段在反复讲什么，再挑「那个意思的这种说法」；<b>② 动词空先问主语能不能做</b>——8、11、16 三个动词空的主语都是门，四个选项结构全通（都接 to do、都是三单），只能问「门能不能 要求／期望／产生」。</p>
+
+        <div class="q" id="q1" data-ans="3">
+          <div class="qhead"><span class="qno">1</span><span class="qt c-logic">逻辑关系 · 「需要触碰」是有还是没有</span><span class="qpos">___ the need to be touched to open or close</span></div>
+          <span class="stem"><em>1</em> the need to be touched to open or close, automatic doors …</span>
+          <div class="opts">
+            <div class="opt">A Through<span class="gl">通过，凭借</span></div>
+            <div class="opt">B Despite<span class="gl">尽管</span></div>
+            <div class="opt">C Besides<span class="gl">除……之外（还）</span></div>
+            <div class="opt">D Without<span class="gl">没有，无需</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>介词，和 <code>the need to be touched</code> 组成介词短语，逗号后才是主句——这个短语给主句交代<b>前提</b>。
+            <span class="lbl">🔗 线索</span>① 主语是 <b>automatic</b> doors——「自动」本身就是「不用手」；② 首句刚说「为你打开的门」最受欢迎：门<b>替你</b>开，你不用碰；③ 主句说它对残障人士通行至关重要——正因为<b>不用碰</b>，坐轮椅的人才进得去。三条线索都指向：「需要触碰」这件事<b>不存在</b>。
+            <span class="lbl">✅ D Without</span>无需触碰即可开关，所以自动门在……方面至关重要——without 引出条件，暗含因果。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>Through：「通过需要触碰」——把「触碰」当成开门的手段，正好违背 automatic。</div>
+              <div class="wr"><span class="l">B</span>Despite：「尽管需要触碰」——承认确实要手动开，同样违背 automatic；而且让步之后主句应该转向坏处，这里却在夸。</div>
+              <div class="wr"><span class="l">C</span>Besides：「除了需要触碰之外（还）」——承认要触碰再外加别的，同样违背；下文也没说「手动之外还要做什么」（黄皮书同此）。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>三缺一</b>：Through／Despite／Besides 都默认「需要触碰」<b>存在</b>，只有 Without 把它<b>否掉</b>——三个站一边、一个站另一边，答案就是那一个（⟹ <a href="套路库_阅读.html#R74" style="color:var(--accent)">R74</a>）。再看主语的修饰语：automatic、self-sliding、hands-free 这类词就是在说「不用手」。✍️ <i>Without the need to queue, online booking saves visitors a lot of time.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q2" data-ans="2">
+          <div class="qhead"><span class="qno">2</span><span class="qt c-context">上下文语义 · and 两边同向：两个好处</span><span class="qpos">essential in ___ disabled access to buildings</span></div>
+          <span class="stem">… are essential in <em>2</em> disabled access to buildings and helping provide …</span>
+          <div class="opts">
+            <div class="opt">A revealing<span class="gl">揭示，显露</span></div>
+            <div class="opt">B demanding<span class="gl">要求；需要</span></div>
+            <div class="opt">C improving<span class="gl">改善，改进</span></div>
+            <div class="opt">D tracing<span class="gl">追溯；查出</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>动名词，作 in 的宾语；它和后面的 <code>helping provide</code> 被 and 连成并列，两个都挂在 essential in 后面。
+            <span class="lbl">🔗 线索</span><b>and 两边同类同向</b>：helping provide general ___ 是一个<b>好处</b>（帮着提供便利）⟹ 空格也得是一个好处，而且是自动门<b>对</b>残障通道<b>做</b>的好事。
+            <span class="lbl">✅ C improving</span>自动门对<b>改善</b>建筑的无障碍通行、帮助提供普遍便利至关重要——两个好处并列。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>revealing：「揭示残障通道」——好像通道本来藏着、门把它露出来，不合常理。</div>
+              <div class="wr"><span class="l">B</span>demanding：「要求」的主语一般是人；当「需要」讲又和前面的 the need 撞义，而这里要说的是门<b>带来</b>的作用，不是门<b>需要</b>的条件（黄皮书同此）。</div>
+              <div class="wr"><span class="l">D</span>tracing：「追溯／查出残障通道」——门不会做调查。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>并列的另一边是「好处」，空格也只能是「好处」</b>——四个动词里只有 improving 自带正面方向（⟹ <a href="套路库_阅读.html#R77" style="color:var(--accent)">R77</a>）。improve access to 是写作现成搭配。✍️ <i>The new ramps have greatly improved access to the library.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q3" data-ans="1">
+          <div class="qhead"><span class="qno">3</span><span class="qt c-context">上下文语义 · 回扣首句 welcoming</span><span class="qpos">helping provide general ___ to commercial buildings</span></div>
+          <span class="stem">… helping provide general <em>3</em> to commercial buildings.</span>
+          <div class="opts">
+            <div class="opt">A experience<span class="gl">经历，经验</span></div>
+            <div class="opt">B convenience<span class="gl">便利，方便</span></div>
+            <div class="opt">C guidance<span class="gl">指导，引导</span></div>
+            <div class="opt">D reference<span class="gl">参考，查阅</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>名词，provide 的宾语——provide A to B（向 B 提供 A）；general 修饰空格：普遍的、面向所有人的。
+            <span class="lbl">🔗 线索</span>① 和 2 同一组：前一半是残障人士（特定人群），后一半是 <b>general</b>（所有人）——从「照顾一部分人」推到「方便所有人」；② 首句 welcoming ＋ 本句开头 Without the need to be touched：全段都在说<b>不用动手、很舒服</b>。
+            <span class="lbl">✅ B convenience</span>为商业大楼提供普遍的<b>便利</b>——这就是首句「受欢迎」的具体落点。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>experience：「提供普遍的经历」——experience 是人的亲身经历，门「提供经历」说不通。</div>
+              <div class="wr"><span class="l">C</span>guidance：指导多来自权威或有经验的人；门不给人指路，也不给建议（黄皮书同此）。</div>
+              <div class="wr"><span class="l">D</span>reference：「提供参考」是资料、文献的功能，与「不用动手」无关。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>抽象名词空＝上文某个意思的复述</b>：本空复述的是首句的 welcoming 和本句的 Without the need to be touched（⟹ <a href="套路库_阅读.html#R51" style="color:var(--accent)">R51</a>）。✍️ <i>Mobile payment has brought great convenience to daily life.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q4" data-ans="0">
+          <div class="qhead"><span class="qno">4</span><span class="qt c-word">词义辨析 · 「时长＋副词」这个槽位</span><span class="qpos">after being invented six years ___</span></div>
+          <span class="stem">… in 1960 after being invented six years <em>4</em> by Americans …</span>
+          <div class="opts">
+            <div class="opt">A previously<span class="gl">以前，先前</span></div>
+            <div class="opt">B temporarily<span class="gl">暂时地</span></div>
+            <div class="opt">C successively<span class="gl">相继地，连续地</span></div>
+            <div class="opt">D eventually<span class="gl">最终</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>副词，紧跟在时长 <code>six years</code> 后面，一起修饰 being invented。
+            <span class="lbl">🔗 线索</span>① 句子有两个时间：1960（上市）和 after being invented（发明在先）——after 已经告诉你<b>发明早于上市</b>；② six years ___ 要说的是「早多少」：<b>1960 年的六年前</b>，即 1954 年（黄皮书与背景资料同）。
+            <span class="lbl">✅ A previously</span>six years previously ＝「六年前」（以 1960 为参照点）——「时长 ＋ previously／earlier／before」专门说「比某个时间早多久」。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>temporarily：「暂时被发明」——发明是一次性的事，不存在「暂时」；它也进不了「时长 ＋ 副词」表先后的槽位。</div>
+              <div class="wr"><span class="l">C</span>successively：「连续六年」应说 six successive years（形容词修饰名词）；「连续六年被发明」本身也不通（黄皮书同此）。</div>
+              <div class="wr"><span class="l">D</span>eventually：「六年后终于被发明」——和 after 打架：after 已经说明发明在先、上市在后，eventually 反过来暗示发明是最后才发生的事。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>时长后面紧跟的副词，只收「相对时间」一族</b>：ago（以现在为参照）· before／earlier／previously（以过去某时为参照）· later（往后数）。见到 <code>N years ___</code>，先在这一族里找（⟹ <a href="套路库_阅读.html#R158" style="color:var(--accent)">R158</a>）。✍️ <i>She moved to Beijing in 2020, having graduated two years previously.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q5" data-ans="1">
+          <div class="qhead"><span class="qno">5</span><span class="qt c-collo">固定搭配 · 空格后有 as ＋ 后面有 but</span><span class="qpos">They ___ as a novelty feature, but …</span></div>
+          <span class="stem">They <em>5</em> as a novelty feature, but as their use has grown, …</span>
+          <div class="opts">
+            <div class="opt">A held on<span class="gl">坚持住；别挂断</span></div>
+            <div class="opt">B started out<span class="gl">起初是，以……起步</span></div>
+            <div class="opt">C settled down<span class="gl">安顿下来；静下心</span></div>
+            <div class="opt">D went by<span class="gl">（时间）流逝</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>谓语短语动词，过去时；后面紧跟 <code>as a novelty feature</code>（作为一种新奇噱头）——<b>空格必须能接 as ＋ 身份</b>。
+            <span class="lbl">🔗 线索</span>but 带来<b>两层转折</b>：① 时态：前半过去时（___ed）→ 后半现在完成时（has grown, have extended）——「当初 vs 如今」；② 身份：novelty feature（图个新鲜）→ use has grown（真被用起来了）。⟹ 前半要说的是<b>「起初只是……」</b>。
+            <span class="lbl">✅ B started out</span>start out as ＝「起初是、以……起步」，天然暗示「后来变了」——正好接 but 后面的「如今用处大了」。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>held on：「坚持住」主语通常是人，而且不接 as（hold on until … 才常见）。</div>
+              <div class="wr"><span class="l">C</span>settled down：「安顿下来；静下心来做」——三个义项都和「起初是噱头」无关，也不接 as 表身份。</div>
+              <div class="wr"><span class="l">D</span>went by：主语是时间（as time went by），门不会「流逝」。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>空格后有 as ＋ 身份</b> ⟹ 先找能接 as 的动词：start out as · serve as · act as（8 题）· be regarded as（⟹ <a href="套路库_阅读.html#R133" style="color:var(--accent)">R133</a>）。⭐ start out as 本身就预告转折——<b>看到它，就等着后面的 but／now</b>。✍️ <i>The app started out as a student project but now has millions of users.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q6" data-ans="2">
+          <div class="qhead"><span class="qno">6</span><span class="qt c-context">上下文语义 · their ___ 对 their use</span><span class="qpos">their ___ have extended within our … world</span></div>
+          <span class="stem">… as their use has grown, their <em>6</em> have extended within our …</span>
+          <div class="opts">
+            <div class="opt">A relations<span class="gl">关系</span></div>
+            <div class="opt">B volumes<span class="gl">容量；量</span></div>
+            <div class="opt">C benefits<span class="gl">好处，益处</span></div>
+            <div class="opt">D sources<span class="gl">来源</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>名词，主句主语；从句与主句<b>逐成分平行</b>：their use ↔ their ___，has grown ↔ have extended。
+            <span class="lbl">🔗 线索</span>① 平行结构：用得越多 ⟹ 某样东西跟着扩大——和「用」同向扩大的，是<b>用处、好处</b>；② 下一句马上举例：particularly useful（7）、act as crowd management（8）——正是在展开「好处」。
+            <span class="lbl">✅ C benefits</span>随着自动门用得越来越广，它们的<b>好处</b>也扩展开来——不再只是噱头。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>relations：their 指自动门这一类东西，句子在讲它的变化，不是讲门与门之间的关系；relations 也很少与 extend 搭配（黄皮书同此）。</div>
+              <div class="wr"><span class="l">B</span>volumes：偷「通行量增加」的意思，但光说 volumes 指容量、体积，要说通行量得写 traffic volumes；而且 but 后面讲的是作用的变化，不是数量。</div>
+              <div class="wr"><span class="l">D</span>sources：和上文 began to emerge、started out 的「起源」话题近义，但 but 之后已经转去谈后来的应用；「来源扩展了」也说不通。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>主从句平行时，逐成分对齐</b>：their use 对 their ___，grown 对 extended——空格和 use 是同一条线上的东西。本空也是 R51 的又一次：抽象名词空复述上文的「用」。✍️ <i>As remote work has spread, its benefits have become clearer.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q7" data-ans="0">
+          <div class="qhead"><span class="qno">7</span><span class="qt c-context">上下文语义 · Particularly 承上：好处的具体场景</span><span class="qpos">Particularly ___ in busy locations</span></div>
+          <span class="stem">Particularly <em>7</em> in busy locations or during times of emergency, the doors …</span>
+          <div class="opts">
+            <div class="opt">A useful<span class="gl">有用的</span></div>
+            <div class="opt">B simple<span class="gl">简单的</span></div>
+            <div class="opt">C flexible<span class="gl">灵活的</span></div>
+            <div class="opt">D stable<span class="gl">稳定的</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>形容词，Particularly ___ in … or during … 是句首形容词短语作状语，逻辑主语是主句的 the doors。
+            <span class="lbl">🔗 线索</span>① Particularly（尤其）＝「概述 → 具体」：上句刚说好处扩展了（6 benefits），这句挑出好处<b>最突出的场景</b>（繁忙地段、紧急时刻）；② 句子后半给了理由：减少障碍、疏导人流——这说的是门<b>对人有什么用</b>。
+            <span class="lbl">✅ A useful</span>自动门在繁忙地段或紧急时刻<b>尤其有用</b>——useful 接住 use／benefits，又引出后半句的具体用处。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>simple：偷「便捷」的意思，但 simple 说的是门<b>本身</b>不复杂；「在繁忙或紧急时尤其简单」不合逻辑——情况越复杂，越谈不上简单。</div>
+              <div class="wr"><span class="l">C</span>flexible：偷「繁忙、紧急需要适应力」，但下文说的是减少障碍、疏导人流，没说门能随机应变；自动门的功能本来就是固定的（黄皮书同此）。</div>
+              <div class="wr"><span class="l">D</span>stable：偷常识「性能稳定」，可「在繁忙时尤其稳定」暗示平时不稳定，而且下文讲的焦点是「用处」不是「质量」。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>三缺一</b>：simple／flexible／stable 都在说<b>门本身是什么样</b>（属性），只有 useful 在说<b>门对人有什么用</b>（作用）——而本段讲的恰恰是作用（⟹ <a href="套路库_阅读.html#R74" style="color:var(--accent)">R74</a>）。⭐ 6／7／8 三个空是「好处」的三种说法：benefits（名词）→ useful（形容词）→ act as crowd management（动作）。✍️ <i>Bicycles are particularly useful in crowded city centres.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q8" data-ans="3">
+          <div class="qhead"><span class="qno">8</span><span class="qt c-word">词义辨析 · 门对人群管理：要求它还是充当它</span><span class="qpos">the doors ___ crowd management by reducing …</span></div>
+          <span class="stem">… the doors <em>8</em> crowd management by reducing the obstacles …</span>
+          <div class="opts">
+            <div class="opt">A call for<span class="gl">需要，要求</span></div>
+            <div class="opt">B yield to<span class="gl">屈服于；让位于</span></div>
+            <div class="opt">C insist on<span class="gl">坚持要求</span></div>
+            <div class="opt">D act as<span class="gl">充当，起……作用</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>谓语短语动词，主语 the doors、宾语 crowd management；by reducing … 交代<b>怎么做到的</b>。
+            <span class="lbl">🔗 线索</span>by ＋ 动作 ⟹ 前面的谓语是一件门<b>自己完成</b>的事：门通过减少障碍，<b>完成了</b>人群管理这件事。上句 useful 也要求这里继续说门的用处。
+            <span class="lbl">✅ D act as</span>自动门通过减少挡路的障碍，<b>起到</b>人群管理的作用——act as ＋ 角色／功能。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>call for：「门需要人群管理」——把门的作用说成了门的需求；而且「通过减少障碍来要求人群管理」逻辑不通。</div>
+              <div class="wr"><span class="l">B</span>yield to：「屈服于／让位于人群管理」——门成了被取代的一方，方向反了。</div>
+              <div class="wr"><span class="l">C</span>insist on：「坚持要求」的主语通常是人，门不会坚持什么；语义同 A，也把作用说成了要求。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>三缺一</b>：call for／insist on／yield to 都把 crowd management 当成门之外的<b>另一方</b>（要求它、坚持它、让给它），只有 act as 把它当成门<b>自己的职能</b>。⚠️ 照实说：act as 后面通常接<b>角色名词</b>（act as a guide），接 crowd management 这种「职能名词」略松——这道题靠的是「另外三个方向全反」的排除，不是搭配熟不熟。as 框架见 <a href="套路库_阅读.html#R133" style="color:var(--accent)">R133</a>。✍️ <i>Trees along the river act as a natural barrier against floods.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q9" data-ans="0">
+          <div class="qhead"><span class="qno">9</span><span class="qt c-logic">逻辑关系 · 段首承上启下：旧作用＋新作用</span><span class="qpos">___ making access both in and out … easier</span></div>
+          <span class="stem"><em>9</em> making access both in and out of buildings easier for people, …</span>
+          <div class="opts">
+            <div class="opt">A As well as<span class="gl">除……之外（还）</span></div>
+            <div class="opt">B In terms of<span class="gl">就……而言</span></div>
+            <div class="opt">C Thanks to<span class="gl">多亏，由于</span></div>
+            <div class="opt">D Rather than<span class="gl">而不是</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>介词性短语，带动名词短语 making access … easier 作句首状语；逗号后主句是 the difference … helps reduce the total area …。
+            <span class="lbl">🔗 线索</span>① 状语里的「进出更方便」＝<b>上段已经讲过的作用</b>（减少障碍、疏导人流）；② 主句的「减少占地面积」＝<b>一个新作用</b>，下文 maximise the usable space 继续展开它。⟹ 旧的 ＋ 新的，两个都是自动门的好处，重心落在新的上。
+            <span class="lbl">✅ A As well as</span>除了让人进出更方便之外，开门方式的不同<b>还</b>有助于减少占地面积——As well as X, Y：X、Y 并列，重心在 Y。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>In terms of：「就进出方便而言」——引出的是谈论的角度，可主句谈的是占地面积，和「进出方便」不是同一个角度。</div>
+              <div class="wr"><span class="l">C</span>Thanks to：「多亏进出方便，所以占地面积减少」——两件事不是因果，进出方便并不会让门变小。</div>
+              <div class="wr"><span class="l">D</span>Rather than：取舍——「省面积而不是方便进出」，可两个作用都被肯定，没有取舍（黄皮书同此）。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>段首空：状语复述上段、主句开新话题 ⟹ As well as／Besides／In addition to</b>——这就是段落之间的「承上启下」（⟹ <a href="套路库_阅读.html#R76" style="color:var(--accent)">R76</a> 句首的空先当逻辑空看）。✍️ <i>As well as saving time, online shopping helps reduce traffic.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q10" data-ans="3">
+          <div class="qhead"><span class="qno">10</span><span class="qt c-collo">固定搭配 · area ＋ occupied by</span><span class="qpos">reduce the total area ___ by them</span></div>
+          <span class="stem">… helps reduce the total area <em>10</em> by them.</span>
+          <div class="opts">
+            <div class="opt">A connected<span class="gl">连接的</span></div>
+            <div class="opt">B shared<span class="gl">共用的；分摊的</span></div>
+            <div class="opt">C represented<span class="gl">代表的</span></div>
+            <div class="opt">D occupied<span class="gl">占用的，占据的</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>过去分词，___ by them 作后置定语修饰 the total area；them＝these doors。
+            <span class="lbl">🔗 线索</span>① 门和面积之间是什么关系？门<b>占着</b>一块地方；② 下两句接着说「门向两侧滑」「让小建筑能充分利用空间」——全在讲<b>省地方</b>。
+            <span class="lbl">✅ D occupied</span>减少门<b>所占用</b>的总面积——空间 is occupied by 物，正是「占地面积」的地道说法。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>connected：「被门连接起来的总面积」——total area 是一个整体，不是被连起来的几块。</div>
+              <div class="wr"><span class="l">B</span>shared：「被门共用的面积」——share 的主语常是人；这里说的是每扇门自己占的地方，不是几扇门分摊。</div>
+              <div class="wr"><span class="l">C</span>represented：「门所代表的面积」——门不代表面积。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>「物 ＋ 空间」的关系动词</b>：occupy／take up（占用）· free up／save（腾出、省下）· maximise（充分利用，11 题那句）。2023 完形第 1 题正好反过来用 occupied 当<b>干扰项</b>（主语是客栈、后面是方位短语，对不上），本年它当<b>答案</b>——同一个词，判据都是「空间作宾语」。✍️ <i>Folding beds reduce the floor space occupied by furniture.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q11" data-ans="0">
+          <div class="qhead"><span class="qno">11</span><span class="qt c-word">词义辨析 · 四个都接 sth to do，只能问主语</span><span class="qpos">these ___ smaller buildings to maximise …</span></div>
+          <span class="stem">Replacing swing doors, these <em>11</em> smaller buildings to maximise the usable space …</span>
+          <div class="opts">
+            <div class="opt">A allow<span class="gl">使能够；允许</span></div>
+            <div class="opt">B expect<span class="gl">期望，预料</span></div>
+            <div class="opt">C require<span class="gl">要求，需要</span></div>
+            <div class="opt">D direct<span class="gl">命令；指引</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>谓语动词，主语 these（＝这些自动门），结构「动词 ＋ smaller buildings ＋ to maximise …」——<b>四个选项都能进这个结构</b>，形式上帮不上忙。
+            <span class="lbl">🔗 线索</span>① 上句：门向两侧滑开（不往外摆）⟹ 省地方；② 本句：小建筑能充分利用内部空间——<b>因为</b>门省了地方，建筑<b>才得以</b>利用空间。门是「成全者」，不是「下命令的人」。
+            <span class="lbl">✅ A allow</span>自动门取代平开门，<b>使</b>较小的建筑能充分利用内部空间——allow sth to do 的「使能」义（≈ enable）。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>expect：「期望」需要有意识的主语；门不会期望什么，而且全段说的是已经实现的作用，不是期望。</div>
+              <div class="wr"><span class="l">C</span>require：「门要求小建筑充分利用空间」——方向倒了：是门<b>帮</b>建筑省空间，不是门对建筑提要求。</div>
+              <div class="wr"><span class="l">D</span>direct：「命令、指使」主语一般是人；「把……对准」又要接 to sth。门既不下命令，也不对准建筑。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>三缺一</b>：expect／require／direct 都是对宾语<b>提要求</b>（期望、要求、命令），只有 allow 是<b>放行、成全</b>——主语是一件好用的东西时，它对别人做的事只能是「成全」（⟹ <a href="套路库_阅读.html#R74" style="color:var(--accent)">R74</a>）。⭐ <b>结构全通时只问主语</b>：无生命主语 ＋ sth to do，首选 allow／enable／help。✍️ <i>The Internet allows students to learn at their own pace.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q12" data-ans="2">
+          <div class="qhead"><span class="qno">12</span><span class="qt c-collo">固定搭配 · ___ the way for：腾地方</span><span class="qpos">without having to ___ the way for a large, sticking-out door</span></div>
+          <span class="stem">… without having to <em>12</em> the way for a large, sticking-out door.</span>
+          <div class="opts">
+            <div class="opt">A adopt<span class="gl">采用，采纳</span></div>
+            <div class="opt">B lead<span class="gl">带领；领先</span></div>
+            <div class="opt">C clear<span class="gl">清除，清理</span></div>
+            <div class="opt">D change<span class="gl">改变</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>动词原形，having to ___ the way for … ——空格和 the way 组成动宾，后面还挂着 for ＋ 一扇大门。
+            <span class="lbl">🔗 线索</span>① way 在这里是<b>空间、通道</b>（不是方法）：上文刚说 maximise the usable space；② a large, sticking-out door ——一扇<b>又大又往外突出</b>的门，往外摆要占一大块地方。⟹ 平开门得有人为它<b>让出、空出</b>一片地方；自动门不用。
+            <span class="lbl">✅ C clear</span>clear the way for sth ＝ 为……扫清道路、腾出地方——不必为一扇大而突出的门<b>腾出空间</b>。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>adopt：偷 way「方法」的义项（adopt a way 采用一种方法），可本句的 way 是空间；「为大门采用方法」也不通。</div>
+              <div class="wr"><span class="l">B</span>lead：lead the way 是「带路」或「领先」——「不必为大门带路／领先」说不通。</div>
+              <div class="wr"><span class="l">D</span>change：偷句首 Replacing 与常识「自动门改变了开门方式」，可 change the way 说的是「改变做法」，而本句的 way 是空间（黄皮书同此）。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>四个都是真搭配</b>（adopt／lead／change the way 都能说）——先定 way 是哪个意思：前面有 space、后面有一扇大门 ⟹ 空间义 ⟹ 只有 clear 能配。⭐ 10／11／12 是「省地方」的三种说法：area occupied → maximise the usable space → no need to clear the way。✍️ <i>The new policy will clear the way for more affordable housing.</i>（抽象义：扫清障碍）
+          </div>
+        </div>
+
+        <div class="q" id="q13" data-ans="2">
+          <div class="qhead"><span class="qno">13</span><span class="qt c-collo">固定搭配 · rely on X to do Y</span><span class="qpos">with each ___ specific signals to tell them when to open</span></div>
+          <span class="stem">… with each <em>13</em> specific signals to tell them when to open.</span>
+          <div class="opts">
+            <div class="opt">A adapting to<span class="gl">适应</span></div>
+            <div class="opt">B deriving from<span class="gl">源自，来自</span></div>
+            <div class="opt">C relying on<span class="gl">依靠，依赖</span></div>
+            <div class="opt">D pointing at<span class="gl">指向，对准</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>现在分词短语，with ＋ each ＋ ___ing ＋ specific signals ＋ to tell them … 是 with 复合结构；each ＝ each type of automatic door。
+            <span class="lbl">🔗 线索</span>① 空格后是「宾语 ＋ to do」：specific signals <b>to tell them when to open</b> ——信号的作用是<b>告诉门何时开</b>；② 下句 these methods 回指本句说的「各种开门方式」；④段又说每套系统分析光、声等「作为开门信号」。⟹ 门<b>靠</b>信号开门。
+            <span class="lbl">✅ C relying on</span>每种门都<b>依靠</b>特定信号来提示何时开门——rely on X to do Y：靠 X 来做 Y。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>adapting to：「适应特定信号」——信号不是需要去适应的新环境；adapt to sth 后面一般也不再接 to do 补充宾语（黄皮书同此）。</div>
+              <div class="wr"><span class="l">B</span>deriving from：「每种门源自特定信号」——门不是从信号里生出来的。</div>
+              <div class="wr"><span class="l">D</span>pointing at：「指向特定信号」——逻辑主语是 each type，门不会用手指。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>空格后是「名词 ＋ to do」时，先想 rely on／count on／depend on X to do</b>——宾语后面的 to do 说的就是「靠它来干什么」。⭐ 13 是③④两段的桥：③❹「靠信号」→ ④❶「分析光声当信号」（16）。✍️ <i>Many farmers rely on weather apps to tell them when to plant.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q14" data-ans="3">
+          <div class="qhead"><span class="qno">14</span><span class="qt c-logic">逻辑关系 · differ vs same</span><span class="qpos">___ these methods differ, the main … remain the same</span></div>
+          <span class="stem"><em>14</em> these methods differ, the main <em>15</em> remain the same.</span>
+          <div class="opts">
+            <div class="opt">A Once<span class="gl">一旦</span></div>
+            <div class="opt">B Since<span class="gl">自从；既然</span></div>
+            <div class="opt">C Unless<span class="gl">除非</span></div>
+            <div class="opt">D Although<span class="gl">虽然，尽管</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>从属连词，引导状语从句 these methods differ，主句 the main ___ remain the same。
+            <span class="lbl">🔗 线索</span>从句和主句各有一个关键词：<b>differ（不同）↔ the same（相同）</b>——一对反义词。两个完整分句一正一反，中间只能是<b>让步</b>：方式不同，<b>但</b>原理相同。
+            <span class="lbl">✅ D Although</span><b>虽然</b>这些方式各不相同，但主要的原理是一样的。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>Once：「一旦方式不同，原理就相同」——条件／时间关系，「不同」不是「相同」的前提。</div>
+              <div class="wr"><span class="l">B</span>Since：「既然方式不同，所以原理相同」——不同推不出相同；作「自从」讲又要接时间点。</div>
+              <div class="wr"><span class="l">C</span>Unless：「除非方式不同，否则原理相同」——条件关系，说不通。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>三缺一</b>：Once／Since／Unless 是条件、时间、原因，Although 唯一表让步；⭐ <b>两个分句里有一对反义词（differ／same、many／only、rise／fall）⟹ 先想让步</b>（⟹ <a href="套路库_阅读.html#R135" style="color:var(--accent)">R135</a>）。2023 第 19 空也是这一刀（建了一万多座 vs 只剩约三千座 ⟹ although）。✍️ <i>Although the two cities differ in size, their problems remain the same.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q15" data-ans="2">
+          <div class="qhead"><span class="qno">15</span><span class="qt c-context">上下文语义 · 方式不同、什么相同</span><span class="qpos">the main ___ remain the same</span></div>
+          <span class="stem">… these methods differ, the main <em>15</em> remain the same.</span>
+          <div class="opts">
+            <div class="opt">A records<span class="gl">记录；纪录</span></div>
+            <div class="opt">B positions<span class="gl">位置；安装方式</span></div>
+            <div class="opt">C principles<span class="gl">原理，原则</span></div>
+            <div class="opt">D reasons<span class="gl">原因，理由</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>名词复数，主句主语，与从句的 these methods 形成对比：methods 不同，the main ___ 相同。
+            <span class="lbl">🔗 线索</span>① <b>和 methods（具体方式）对着说的，是更底层的东西</b>——做法不同、道理一样；② 下一段整段在讲<b>工作原理</b>：每套系统都分析光、声、重量、动作当信号，再按环境选传感器。本句就是④段的标题句。
+            <span class="lbl">✅ C principles</span>虽然开门方式各不相同，但主要的<b>工作原理</b>是一样的——引出④段。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>records：「记录／成绩相同」——上下文没有提门的记录。</div>
+              <div class="wr"><span class="l">B</span>positions：偷「开法不同、安装位置一样」，但下文讲的是运行原理，不是安装（黄皮书同此）。</div>
+              <div class="wr"><span class="l">D</span>reasons：偷「方式不同、道理一样」的中文思维，可 reasons 是「原因、动机」，门谈不上动机。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>「方式不同 ↔ ___ 相同」：和 method／way／form 对着说的，是 principle／idea／purpose 这类更抽象的词</b>。⭐ 过渡句的空看<b>下一段</b>：③段末两句是递话头，答案在④段的整段内容里。⚠️ 商榷：黄皮书排 D 说「reason 作『道理』讲不可数」，可选项本身就是复数 reasons，形式上完全能填——排它要靠语义（门没有动机）。✍️ <i>Although teaching methods differ, the basic principles of learning remain the same.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q16" data-ans="1">
+          <div class="qhead"><span class="qno">16</span><span class="qt c-word">词义辨析 · 系统对光声：读取还是动手</span><span class="qpos">Each … system ___ the light, sound, weight or movement</span></div>
+          <span class="stem">Each automatic door system <em>16</em> the light, sound, weight or movement …</span>
+          <div class="opts">
+            <div class="opt">A controls<span class="gl">控制，操纵</span></div>
+            <div class="opt">B analyses<span class="gl">分析</span></div>
+            <div class="opt">C produces<span class="gl">产生，制造</span></div>
+            <div class="opt">D mixes<span class="gl">混合</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>谓语动词三单（主语 Each … system），宾语是周围的光、声、重量、动作，补足语 as a signal to open。⚠️ <b>四个选项都是三单 -s 形式</b>，结构帮不上。
+            <span class="lbl">🔗 线索</span>① 上段末：每种门都<b>靠</b>特定信号开门（13 relying on）；② 本句补足语 as a signal to open：光、声这些东西要被<b>当作信号</b>——信号是用来<b>读</b>的，系统得先感知、判断它。
+            <span class="lbl">✅ B analyses</span>每套系统都<b>分析</b>周围的光、声、重量或动作，把它当开门信号——这就是「感应」的工作原理。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>controls：「门控制周围的光和声」——门管不了别人的脚步和说话声；何况本句说的是把它们当信号，不是去控制它们。</div>
+              <div class="wr"><span class="l">C</span>produces：「门产生光、声、重量、动作」——重量和行人的动作不是门造出来的。</div>
+              <div class="wr"><span class="l">D</span>mixes：「把光声混合起来当信号」——mix 是把几种东西掺成一种新东西，不合常理。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>英式拼写陷阱</b>：analyses 在这里是动词 analyse 的三单（美式 analyzes），<b>不是名词 analysis 的复数</b>——全文英式：maximise、analyses。认不出词性就会以为四个选项词性不一。⭐ <b>三缺一</b>：controls／produces／mixes 都是对光声<b>动手</b>，analyses 唯一是<b>读取</b>（⟹ <a href="套路库_阅读.html#R74" style="color:var(--accent)">R74</a>）。✍️ <i>The app analyses your sleep and suggests a better bedtime.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q17" data-ans="3">
+          <div class="qhead"><span class="qno">17</span><span class="qt c-word">词义辨析 · 传感器 ↔ 环境：相配</span><span class="qpos">chosen to ___ the different environments</span></div>
+          <span class="stem">Sensor types are chosen to <em>17</em> the different environments they are needed in.</span>
+          <div class="opts">
+            <div class="opt">A decorate<span class="gl">装饰</span></div>
+            <div class="opt">B compare<span class="gl">比较</span></div>
+            <div class="opt">C protect<span class="gl">保护</span></div>
+            <div class="opt">D complement<span class="gl">与……相配，补足</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>动词原形，to ___ 是目的状语：挑选传感器类型<b>是为了</b>……环境。
+            <span class="lbl">🔗 线索</span>① 「不同的环境」＋「挑选类型」⟹ 不同的地方配不同的传感器；② 下句的例子：繁忙街道<b>不适合</b>动作感应门（19 suit），地垫<b>更合适</b>（20 appropriate）——例子在证明的就是「<b>相配</b>」。
+            <span class="lbl">✅ D complement</span>选传感器类型是为了与它们所处的不同环境<b>相匹配</b>——X complements Y ＝ X 与 Y 相配、相得益彰。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>decorate：「装饰环境」——全文讲的是门的作用与原理，和装饰无关；传感器也不是装饰品。</div>
+              <div class="wr"><span class="l">B</span>compare：「为了比较环境而挑传感器」——因果倒了：比较环境（如果有）是挑选的手段，不是挑选的目的；环境也不用分高下（黄皮书同此）。</div>
+              <div class="wr"><span class="l">C</span>protect：偷中文「保护环境」，可 environments 在这里是复数的「使用场所」，不是自然环境；挑传感器也不是为了保护街道。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>17 · 19 · 20 是同一个意思「相配」的三种说法</b>：动词 complement → 否定的动词 might not suit → 形容词比较级 more appropriate。17 拿不准，往后看两句例子就定了（⟹ <a href="套路库_阅读.html#R51" style="color:var(--accent)">R51</a>）。⚠️ complement（相配，补足）≠ compliment（称赞），只差一个字母。✍️ <i>The soft lighting complements the warm colours of the room.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q18" data-ans="2">
+          <div class="qhead"><span class="qno">18</span><span class="qt c-logic">逻辑关系 · 原则 → 例子</span><span class="qpos">___, a busy street might not … a motion-sensored door</span></div>
+          <span class="stem"><em>18</em>, a busy street might not <em>19</em> a motion-sensored door, …</span>
+          <div class="opts">
+            <div class="opt">A In conclusion<span class="gl">总之</span></div>
+            <div class="opt">B By contrast<span class="gl">相比之下</span></div>
+            <div class="opt">C For example<span class="gl">例如</span></div>
+            <div class="opt">D Above all<span class="gl">最重要的是</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>句首插入语，连接上句与本句。
+            <span class="lbl">🔗 线索</span>上句是原则：传感器要和<b>不同环境</b>相配；本句的 a busy street 是「环境」的一种，motion-sensored door 是「传感器类型」的一种——<b>上义词 → 下义词</b>，本句是在给上句举例。
+            <span class="lbl">✅ C For example</span><b>例如</b>，繁忙的街道可能就不适合动作感应门——原则 → 例证。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>In conclusion：偷「末段总结全文」，可这一句只说了一种门在一种街道上的情况，不是总结。</div>
+              <div class="wr"><span class="l">B</span>By contrast：要有两个对象对比；这里前后同向——后句正是在支持前句的原则。</div>
+              <div class="wr"><span class="l">D</span>Above all：动作感应门只是「不同传感器」中的一种，文中没说它格外重要（黄皮书同此）。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>判例证：后句的名词是前句名词的「一个具体成员」</b>（environments → a busy street，sensor types → a motion-sensored door）。⭐ 18／19 是<b>连体空</b>：先定 18 是例证，19 就得和上句「相配」同向（⟹ <a href="套路库_阅读.html#R50" style="color:var(--accent)">R50</a>）。✍️ <i>Some jobs suit remote work. For example, a translator can work from anywhere.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q19" data-ans="1">
+          <div class="qhead"><span class="qno">19</span><span class="qt c-context">上下文语义 · not ＋ ___ ＝ 反着说「相配」</span><span class="qpos">a busy street might not ___ a motion-sensored door</span></div>
+          <span class="stem">… a busy street might not <em>19</em> a motion-sensored door, as it would …</span>
+          <div class="opts">
+            <div class="opt">A identify<span class="gl">识别，认出</span></div>
+            <div class="opt">B suit<span class="gl">适合，与……相配</span></div>
+            <div class="opt">C secure<span class="gl">固定；关紧</span></div>
+            <div class="opt">D include<span class="gl">包括</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>谓语动词原形（might not ___），主语 a busy street、宾语 a motion-sensored door；as 引导原因状语。
+            <span class="lbl">🔗 线索</span>① 原因从句：动作感应门在繁忙街道上会<b>不停地</b>为过路人打开——白开、费电、没必要 ⟹ 二者<b>不匹配</b>；② 它是 17 的例子：上句说「传感器要与环境相配」，这里就是一个<b>不相配</b>的例子。
+            <span class="lbl">✅ B suit</span>繁忙的街道可能<b>不适合</b>装动作感应门——suit 与上句 complement 同义，加 not 反着说。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>identify：「街道可能认不出动作感应门」——街道不会识别；即使理解成「门识别不了」，也和「不停地开」相反（它恰恰识别得太多了）。</div>
+              <div class="wr"><span class="l">C</span>secure：偷「关紧门」的义项，可主语是街道，街道不会关门。</div>
+              <div class="wr"><span class="l">D</span>include：「街道可能不包括动作感应门」——看似通，但和 as 后的原因（会不停开门）接不上：不停开门是「不合适」的理由，不是「没有」的理由。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>as 原因从句是空格的说明书</b>：「会不停地开」——这个后果只能说明「不合适」。⭐ <b>否定 ＋ 正向词 ＝ 反例</b>：例证段常是「反例（not suit）＋ 正例（more appropriate）」两连，两个空同一个意思、一正一反。✍️ <i>A small flat might not suit a family with three children.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q20" data-ans="0">
+          <div class="qhead"><span class="qno">20</span><span class="qt c-context">上下文语义 · more ___ ＝ 正着说「相配」</span><span class="qpos">would be more ___ to limit the surveyed area</span></div>
+          <span class="stem">A pressure-sensitive mat would be more <em>20</em> to limit the surveyed area.</span>
+          <div class="opts">
+            <div class="opt">A appropriate<span class="gl">合适的，恰当的</span></div>
+            <div class="opt">B obvious<span class="gl">明显的</span></div>
+            <div class="opt">C impressive<span class="gl">令人赞叹的</span></div>
+            <div class="opt">D delicate<span class="gl">精细的；灵敏的</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>形容词，be more ___ to do 作表语；比较级 more 的比较对象是上句的动作感应门。
+            <span class="lbl">🔗 线索</span>① <b>more 要求和上句对比</b>：上句动作感应门「不适合」（might not suit），本句地垫「更……」——<b>不适合 ↔ 更合适</b>；② to limit the surveyed area 给了理由：地垫只认踩在上面的人，<b>检测范围小</b>，正好解决「不停为过路人开门」的问题。
+            <span class="lbl">✅ A appropriate</span>（在繁忙的街道上）压敏地垫能限定检测区域，会<b>更合适</b>——与上句 suit、上上句 complement 同义。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>obvious：偷 the obvious thing to do（显然该做的事），但「地垫更明显」和上句的「不适合」对不上，句式也不是那个固定说法（黄皮书同此）。</div>
+              <div class="wr"><span class="l">C</span>impressive：「更令人赞叹」——前文没有谈人对传感器的感受。</div>
+              <div class="wr"><span class="l">D</span>delicate：「更灵敏」——可动作感应门的毛病恰恰是<b>太灵</b>（谁路过都开），地垫胜在范围小，不是更灵。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>末空又不是逻辑空——2013 年以来十二年里十一年如此</b>（只有 2016 是 while；2022 是 poor、2023 是 ruins、2024 是 appropriate），末空怎么判见 <a href="套路库_阅读.html#R103" style="color:var(--accent)">R103</a>。⭐ <b>比较级空：先找比较对象</b>——more ___ 的对面是上句的 might not suit，答案就是 suit 的正面说法。✍️ <i>For beginners, a shorter route would be more appropriate.</i>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========== 03 考点分类 ========== -->
+      <section class="card">
+        <h2><span class="n">03</span>考点分类（完形不背单个空，要看「这题在考什么」）</h2>
+        <div class="catbar" id="catbar"></div>
+        <div class="catlegend" id="catlegend"></div>
+        <p class="note" style="margin-top:14px">点某一类 → 下方列出该类所有空、正文里同步高亮 → 点小格跳到解析卡。（分类依据不是「空格里填的是什么词」，而是<b>「解这一题你得做什么动作」</b>——5 started out、10 occupied、12 clear、13 relying on 得先认得 start out as／area occupied by／clear the way for／rely on X to do 这些搭配才谈得上挑，<b>归「固定搭配」</b>；8 act as、11 allow、16 analyses 四个选项结构全通，定它们的是「门能不能做这件事」，<b>归「词义辨析」</b>；19 suit、20 appropriate 单看句子挑不出，要回到上句的 complement 才定，<b>归「上下文语义」</b>。）</p>
+        <div class="chips" id="chips"></div>
+        <p class="note" style="margin-top:14px">⭐ <b>十八年对照：2024 的 5／4／4／7 撞上了 2018——重样第三次</b>（前两次：2016 撞 2011、2020 撞 2014）；十八年仍是十五种组合。语境 7 个，与 2018、2022 并列第二多（仅次于 2012／2019／2021 的 8）。</p>
+        <div class="tabwrap"><table class="otab">
+          <tr><th>年份</th><th>词义</th><th>搭配</th><th>逻辑</th><th>语境</th><th>这一年压在哪</th></tr>
+          <tr><td>2007</td><td>9</td><td>5</td><td>4</td><td>2</td><td>词义（占 45%）</td></tr>
+          <tr><td>2008</td><td>9</td><td>6</td><td>2</td><td>3</td><td>实义动词的主语适配</td></tr>
+          <tr><td>2009</td><td>6</td><td>5</td><td>5</td><td>4</td><td>四类几乎持平</td></tr>
+          <tr><td>2010</td><td>9</td><td>4</td><td>4</td><td>3</td><td>形容词与副词的方向</td></tr>
+          <tr><td>2011</td><td>6</td><td>3</td><td>6</td><td>5</td><td>一根因果箭头的方向</td></tr>
+          <tr><td>2012</td><td>5</td><td>4</td><td>3</td><td>8</td><td>作者的应然立场</td></tr>
+          <tr><td>2013</td><td>3</td><td>7</td><td>4</td><td>6</td><td>空格后的介词短语</td></tr>
+          <tr><td>2014</td><td>5</td><td>6</td><td>3</td><td>6</td><td>按段定正负</td></tr>
+          <tr><td>2015</td><td>6</td><td>6</td><td>3</td><td>5</td><td>研究报道的槽位套话</td></tr>
+          <tr><td>2016</td><td>6</td><td>3</td><td>6</td><td>5</td><td>流程时间轴</td></tr>
+          <tr><td>2017</td><td>7</td><td>4</td><td>3</td><td>6</td><td>因果链的扣环词</td></tr>
+          <tr><td><b>2018</b></td><td><b>5</b></td><td><b>4</b></td><td><b>4</b></td><td><b>7</b></td><td>两本账的翻账键</td></tr>
+          <tr><td>2019</td><td>4</td><td>4</td><td>4</td><td>8</td><td>清单编号 ＋ 替身链</td></tr>
+          <tr><td>2020</td><td>5</td><td>6</td><td>3</td><td>6</td><td>三声部 ＋ 让步档位</td></tr>
+          <tr><td>2021</td><td>3</td><td>7</td><td>2</td><td>8</td><td>同句搭档 ＋ 单边搭配</td></tr>
+          <tr><td>2022</td><td>6</td><td>4</td><td>3</td><td>7</td><td>让步转折信号词</td></tr>
+          <tr><td>2023</td><td>5</td><td>5</td><td>6</td><td>4</td><td>六种逻辑关系 ＋ 全真搭配</td></tr>
+          <tr><td><b>2024</b></td><td><b>5</b></td><td><b>4</b></td><td><b>4</b></td><td><b>7</b></td><td><b>一个意思说三遍（四组同义复现）</b></td></tr>
+        </table></div>
+        <p class="note">⚠️ <b>口径说明</b>：4 若按「N years previously」现成说法归搭配，就成了 4／5／4／7；19 若按「suit 的词义」归词义，就成了 6／4／4／6；10 若按「下文在说省空间」归语境，就成了 5／3／4／8。三种口径下<b>「逻辑 4、语境最多」都不变</b>。和 2018 撞的只是四个数字，两年的打法并不一样：2018 靠「翻账键」翻方向，2024 方向不翻、靠复现认组。</p>
+        <p class="note">📌 <b>结构失效：硬的两道 ＋ 框架全通两道。</b> <b>11</b> allow／expect／require／direct 全能接 sth to do · <b>16</b> controls／analyses／produces／mixes 全是三单 -s，全能接名词宾语——形式一点忙帮不上；另有 <b>12</b>（adopt／lead／clear／change 四个都能接 the way）、<b>13</b>（四个都是「动词 ＋ 介词」，都能接名词）。⟹ 救回它们的只有一样东西：<b>主语是门</b>。门不会期望、要求、命令（11），不会控制、制造、混合光和声（16）（⟹ <a href="套路库_阅读.html#R157" style="color:var(--accent)">R157</a>）。</p>
+        <p class="note">📐 <b>线索位置（判据＝关键线索是否落在同一个句号之内）：句内自足 15 空／跨句 5 空 ＝ 75%。</b> 跨句：<b>7</b>（承上句 benefits）· <b>9</b>（承上段末「减少障碍」）· <b>15</b>（下一段整段讲原理）· <b>18</b>（上句的 environments → a busy street）· <b>20</b>（more 的比较对象在上句）。⚠️ 口径：17 若按「要读到下句例子才敢定」算跨句，则 14／6＝70%。（往年：2019 60% → 2020 85% → 2021 90% → 2023 85% → <b>2024 75%</b>——本年跨句多，正是「一个意思说三遍」的副作用：后两遍要回头找第一遍。）</p>
+        <p class="note">📌 <b>位置预判：句首空 4 个，恰好就是 4 个逻辑空（1 · 9 · 14 · 18）</b>——句首空全是逻辑空，逻辑空全在句首，一一对应（对照 2023：六个逻辑空只有两个在句首）。⟹ <a href="套路库_阅读.html#R76" style="color:var(--accent)">R76</a>「句首的空几乎一定考逻辑」本年满分成立。</p>
+        <p class="note">📌 <b>三缺一：干脆成立 6 次（1 · 7 · 8 · 11 · 14 · 16），全是答案。</b> 1：Through／Despite／Besides 都默认「需要触碰」存在 ＋ Without 唯一否掉 · 7：simple／flexible／stable 都是门本身的属性 ＋ useful 唯一说对人的作用 · 8：call for／insist on／yield to 都把人群管理当另一方 ＋ act as 唯一当成自己的职能 · 11：expect／require／direct 都对宾语提要求 ＋ allow 唯一成全 · 14：Once／Since／Unless 条件、时间、原因 ＋ Although 唯一让步 · 16：controls／produces／mixes 都对光声动手 ＋ analyses 唯一读取。⚠️ 和 2023 对照：2023 六次里五次是逻辑空，<b>2024 六次里只有两次是逻辑空、三次是动词空</b>（8、11、16）——实义动词也会按「对宾语做什么」自然分成 3＋1，<b>动词空同样值得先分组</b>（⟹ <a href="套路库_阅读.html#R74" style="color:var(--accent)">R74</a>）。</p>
+      </section>
+
+      <!-- ========== 04 打法 ========== -->
+      <section class="card">
+        <h2><span class="n">04</span>完形六大打法（本篇取证）</h2>
+        <div class="flow">
+          <div class="fi"><b>① 首句定基调：「否定＋比较级」＝最高级 ⟹ 全文正面</b>：nothing more welcoming than … 一句话把自动门捧到最高，后面二十个空不会掉头批评它。
+            <span class="ev">全文唯一的「负面」是 19 might not suit——但它是一个<b>反例</b>，证明的仍是「选对传感器很重要」这条正面原则。方向题在本篇几乎零风险。</span></div>
+          <div class="fi"><b>② 先说出「这段在反复讲什么」，再挑「那个意思的这种说法」</b>：产品说明文爱把一个好处换着词性说三遍。
+            <span class="ev">① 便利：不用碰（1）· 改善通行（2）· 便利（3）｜② 好处：benefits（6）· useful（7）· act as crowd management（8）｜③ 省地方：occupied（10）· allow … maximise（11）· clear the way（12）｜④ 相配：complement（17）· not suit（19）· more appropriate（20）——<b>12 个空，四个意思</b>。</span></div>
+          <div class="fi"><b>③ 动词空的主语是物：问「它能不能做这件事」</b>：门不会要求、期望、命令、制造。
+            <span class="ev">8 门能「充当」人群管理，不能「要求」它 · 11 门能「使」建筑省空间，不能「期望／要求／命令」建筑 · 16 门能「分析」光声，不能「控制／产生／混合」光声 · 19 街道能「适合」某种门，不能「识别／关紧」门。</span></div>
+          <div class="fi"><b>④ 四个选项结构全通时，只看语义</b>：别在「哪个能接 to do」上耗时间，四个都能接。
+            <span class="ev">11 全接 sth to do · 16 全是三单 · 12 全能接 the way——先定 way 是「空间」还是「方法」：前有 space、后有一扇大门 ⟹ 空间 ⟹ clear。</span></div>
+          <div class="fi"><b>⑤ 平行结构逐成分对齐</b>：and、主从句、对比句两边，词对词地对上。
+            <span class="ev">2 improving ↔ helping（两个好处）· 6 their ___ ↔ their use、extended ↔ grown · 14／15 differ ↔ the same、methods ↔ principles。</span></div>
+          <div class="fi"><b>⑥ 例证段：原则 → 反例 → 正例</b>：先定连接词是「例如」，后面两个空就是同一个意思的一反一正。
+            <span class="ev">17 原则（与环境相配）→ 18 For example → 19 反例（繁忙街道 not suit 动作感应门）→ 20 正例（地垫 more appropriate）。<b>四个空一条线，做对一个就能顺下其余三个。</b></span></div>
+        </div>
+        <p class="note" style="margin-top:14px">🔁 与 <a href="2023_完形_商旅客栈.html" style="color:var(--accent)">2023 完形</a> 对照：两年都是<b>没有作者立场的说明文</b>（2023 百科词条、2024 产品原理），方向都不会反；可难点不同——2023 靠<b>关系</b>（六个逻辑空六种关系），2024 靠<b>复现</b>（四组同义说法）。两年合起来：说明文的完形，<b>先认关系、再认复现</b>。与 <a href="2018_完形_为何信任是与生俱来的本能.html" style="color:var(--accent)">2018 完形</a> 对照：分类数字一模一样（5／4／4／7），但 2018 是一篇有两种观点的科普，要靠「翻账键」翻方向；2024 一路正面、从不翻——<b>同样的分布，不同的打法</b>，分类只是体检表，不是药方。</p>
+      </section>
+
+      <!-- ========== 05 固定搭配 ========== -->
+      <section class="card">
+        <h2><span class="n">05</span>固定搭配 &amp; 熟词僻义（这些是死记就得分的）</h2>
+        <div class="wb">
+          <div class="wbi"><div class="p">There’s nothing more ＋ adj. ＋ than …　没有比……更……的了（首句）</div><div class="u">否定 ＋ 比较级 ＝ 最高级。同类：Nothing is more important than health · I couldn’t agree more（完全同意）。</div></div>
+          <div class="wbi"><div class="p">Without the need to do …　无需……（1 题）</div><div class="u">without 引出条件，常暗含因果。近亲：eliminate the need for · There is no need to do。</div></div>
+          <div class="wbi"><div class="p">improve access to sth　改善……的通行／获取途径（2 题）</div><div class="u">access to 的 to 是介词：access to education／clean water。disabled access 无障碍通道。</div></div>
+          <div class="wbi"><div class="p">provide A to B ／ provide B with A　向 B 提供 A（3 题）</div><div class="u">两种语序都要会：provide convenience to buildings · provide buildings with convenience。</div></div>
+          <div class="wbi"><div class="p">N years previously／earlier／before　（以过去某时为参照）N 年前（4 题）</div><div class="u">以现在为参照用 ago：six years ago。往后数用 later：six years later。</div></div>
+          <div class="wbi"><div class="p">start out as sth　起初是，以……起步（5 题）</div><div class="u">天然预告转折：started out as … but now …。同类 as 框架：serve as · act as · emerge as。</div></div>
+          <div class="wbi"><div class="p">act as sth　充当，起……作用（8 题）</div><div class="u">act as a guide／a bridge／a barrier。别和 call for（需要）、yield to（屈服）、insist on（坚持）混。</div></div>
+          <div class="wbi"><div class="p">As well as doing …, sb／sth also …　除了……还（9 题）</div><div class="u">as well as 后接动名词；重心在主句。近亲：In addition to doing · Besides doing。</div></div>
+          <div class="wbi"><div class="p">the area occupied by sth　某物所占的面积（10 题）</div><div class="u">空间 ＋ be occupied by ＋ 物。take up space · free up space · save space 一族。</div></div>
+          <div class="wbi"><div class="p">allow sth to do　使……能够（11 题）</div><div class="u">无生命主语 ＋ allow／enable／help sth to do。别和 expect／require sb to do（对人提要求）混。</div></div>
+          <div class="wbi"><div class="p">clear the way for sth　为……扫清道路、腾出地方（12 题）</div><div class="u">字面＝腾地方，抽象＝扫清障碍（clear the way for reform）。the way 三兄弟：lead the way 带路 · change the way 改变方式 · clear the way 腾路。</div></div>
+          <div class="wbi"><div class="p">rely on X to do Y　靠 X 来做 Y（13 题）</div><div class="u">同类：count on／depend on X to do。⭐ 空格后是「名词 ＋ to do」，先想这一族。</div></div>
+          <div class="wbi"><div class="p">Although A differ, the main principles remain the same　方式不同，原理相同（14／15 题）</div><div class="u">differ ↔ the same 一对反义词 ＝ 让步的证据。principle 原理（工作原理 the working principle）。</div></div>
+          <div class="wbi"><div class="p">X complements Y　X 与 Y 相配、相得益彰（17 题）</div><div class="u">⚠️ complement（相配，补足）≠ compliment（称赞）。同义：suit · match · go well with。</div></div>
+          <div class="wbi"><div class="p">might not suit sth ／ be more appropriate to do　不适合……／更适合做……（19／20 题）</div><div class="u">suit 作及物动词，不加 to／for：This job suits me。appropriate for sth／to do。</div></div>
+          <div class="wbi"><div class="p">🔑 熟词僻义四个：panel · survey · way · commercial</div><div class="u"><b>panel</b> 门扇（不是专家小组）· <b>surveyed area</b> 检测区（survey 不是调查）· <b>the way</b> 空间、通道（12 题，不是方法）· <b>commercial product</b> 上市的商品（不只是「商业的」）。</div></div>
+          <div class="wbi"><div class="p">🔑 英式拼写：maximise · analyses</div><div class="u">-ise／-yse 是英式（美式 -ize／-yze）。⚠️ 16 题的 analyses 是<b>动词三单</b>，不是 analysis 的复数——词性认错，会以为四个选项不同类。</div></div>
+        </div>
+      </section>
+
+      <!-- ========== 06 80 词 ========== -->
+      <section class="card">
+        <h2><span class="n">06</span>80 个选项词速查（完形的真正词汇量）
+          <button class="allbtn" id="btnHide" style="margin-left:auto" onclick="toggleHide()">✍️ 默写模式</button>
+        </h2>
+        <p class="note">完形一篇＝<b>80 个高频词的辨析现场</b>，绿底是正确项。<b>默写模式</b>会糊住中文释义——先自己说出意思，点单个格子可单独揭开。本篇有 <b>20 个是短语</b>——5、8、9、13、18 五道题四个选项全是短语（held on／started out · call for／act as · As well as／Rather than · relying on · For example …）；另外 complement／compliment、sensitive／sensible 这类形近词值得在这张表里顺手过一遍。</p>
+        <div class="tabwrap"><table class="otab" id="otab"></table></div>
+      </section>
+
+      <!-- ========== 07 长难句 ========== -->
+      <section class="card">
+        <h2><span class="n">07</span>长难句精析（正文蓝色虚线句）</h2>
+
+        <div class="sent" id="l1_2">
+          <div class="src"><b>①❷ 介词短语作状语 ＋ in 后两个动名词并列</b><img class="strip" src="img/2024_完形/s1_2.png" alt="①❷ 原卷句条" loading="lazy"></div>
+          <div class="anat">
+            <ul>
+              <li><b>句首状语</b>：<code>Without the need to be touched to open or close</code>——the need 后挂不定式 to be touched（被动），再挂目的 to open or close：「无需被触碰就能开关」。</li>
+              <li><b>主干</b>：<span class="skel">automatic doors are essential in A and B</span>——essential in doing ＝ 在……方面至关重要。</li>
+              <li><b>A 与 B 并列</b>：A ＝ improving disabled access to buildings；B ＝ helping provide general convenience to commercial buildings——<b>help do</b> 省 to，provide A to B。⚠️ and 连的是两个 -ing，不是 buildings and helping。</li>
+            </ul>
+          </div>
+          <div class="tr">意：自动门无需触碰即可开关，因此在改善建筑的无障碍通行、为商业大楼提供普遍便利方面至关重要。</div>
+        </div>
+
+        <div class="sent" id="l2_1">
+          <div class="src"><b>②❶ 两个时间状语：1960 上市 ＋ 此前六年发明</b><img class="strip" src="img/2024_完形/s2_1.png" alt="②❶ 原卷句条" loading="lazy"></div>
+          <div class="anat">
+            <ul>
+              <li><b>主干</b>：<span class="skel">Self-sliding doors began to emerge as a commercial product</span>——emerge as ＝ 作为……出现。</li>
+              <li><b>两层时间</b>：in 1960（上市的年份）＋ <code>after being invented</code> six years previously（被动完成的动名词：在被发明之后）——发明在前、上市在后，previously 以 1960 为参照点往前数六年 ＝ 1954。</li>
+              <li><b>by 引出发明人</b>：by Americans Dee Horton and Lew Hewitt——被动的施动者，挂在 invented 后面，不修饰 1960。</li>
+            </ul>
+          </div>
+          <div class="tr">意：滑动自动门于 1960 年开始作为商品出现，此前六年由美国人迪伊·霍顿和卢·休伊特发明。</div>
+        </div>
+
+        <div class="sent" id="l2_2">
+          <div class="src"><b>②❷ but 两层转折 ＋ as 从句与主句平行</b><img class="strip" src="img/2024_完形/s2_2.png" alt="②❷ 原卷句条" loading="lazy"></div>
+          <div class="anat">
+            <ul>
+              <li><b>but 前</b>：<span class="skel">They ___ as a novelty feature</span>——过去时，「当初」。</li>
+              <li><b>but 后</b>：as 从句 <code>as their use has grown</code> ＋ 主句 <code>their ___ have extended</code>——现在完成时，「如今」；as ＝ 随着。</li>
+              <li><b>平行</b>：their use ↔ their ___ · has grown ↔ have extended——从句和主句逐成分对齐，第 6 空的身份由此而定（和 use 同向的「好处」）。within our technologically advanced world 是地点状语。</li>
+            </ul>
+          </div>
+          <div class="tr">意：它们起初只是一种新奇的噱头，但随着用得越来越广，它们的好处也在我们这个技术先进的世界里扩展开来。</div>
+        </div>
+
+        <div class="sent" id="l2_3">
+          <div class="src"><b>②❸ 句首形容词短语作状语 ＋ by doing ＋ 过去分词后置</b><img class="strip" src="img/2024_完形/s2_3.png" alt="②❸ 原卷句条" loading="lazy"></div>
+          <div class="anat">
+            <ul>
+              <li><b>句首状语</b>：Particularly ___ in busy locations <b>or</b> during times of emergency——形容词短语提前，逻辑主语是主句的 the doors；or 连两个场景（地点 ＋ 时间）。</li>
+              <li><b>主干</b>：<span class="skel">the doors ___ crowd management</span>，<code>by reducing the obstacles</code> 交代方式。</li>
+              <li><b>过去分词后置</b>：the obstacles <code>put in people’s way</code>——put 是过去分词（被放在人们路上的障碍），不是谓语。⚠️ 句子只有一个谓语，就是第 8 空。</li>
+            </ul>
+          </div>
+          <div class="tr">意：尤其在繁忙地段或紧急时刻，自动门格外有用：它们减少了挡在人们路上的障碍，起到疏导人流的作用。</div>
+        </div>
+
+        <div class="sent" id="l3_1">
+          <div class="src"><b>③❶ 长主语：the difference in the way …（本篇最长句）</b><img class="strip" src="img/2024_完形/s3_1.png" alt="③❶ 原卷句条" loading="lazy"></div>
+          <div class="anat">
+            <ul>
+              <li><b>句首状语</b>：___ making access both in and out of buildings easier for people——make ＋ 宾语 ＋ 宾补（make access easier），both in and out 修饰 access。</li>
+              <li><b>主语很长</b>：<span class="skel">the difference</span> ＋ in the way ＋ <code>many of these doors open</code>——way 后面省了 that／in which，「这些门开启方式上的不同」。</li>
+              <li><b>谓语与宾语</b>：<span class="skel">helps reduce the total area</span> ＋ ___ by them（过去分词后置定语）——help do 省 to。⚠️ 主语中心词是 difference，所以谓语用 helps。</li>
+            </ul>
+          </div>
+          <div class="tr">意：除了让人们进出建筑更方便，许多这类门开启方式上的不同，还有助于减少它们占用的总面积。</div>
+        </div>
+
+        <div class="sent" id="l3_3">
+          <div class="src"><b>③❸ 现在分词作状语 ＋ allow sth to do ＋ without having to</b><img class="strip" src="img/2024_完形/s3_3.png" alt="③❸ 原卷句条" loading="lazy"></div>
+          <div class="anat">
+            <ul>
+              <li><b>句首状语</b>：<code>Replacing swing doors</code>——现在分词，逻辑主语是主句的 these（自动门）：「取代了平开门之后」。</li>
+              <li><b>主干</b>：<span class="skel">these ___ smaller buildings to maximise the usable space inside</span>——动词 ＋ 宾语 ＋ 不定式宾补。</li>
+              <li><b>伴随状语</b>：without having to ___ the way for a large, sticking-out door——having to 是 have to 的动名词形式；两个形容词 large、sticking-out 用逗号并列修饰 door。</li>
+            </ul>
+          </div>
+          <div class="tr">意：取代平开门之后，它们让较小的建筑能够充分利用内部的可用空间，而不必为一扇大而突出的门腾出地方。</div>
+        </div>
+
+        <div class="sent" id="l3_4">
+          <div class="src"><b>③❹ There be ＋ with 复合结构</b><img class="strip" src="img/2024_完形/s3_4.png" alt="③❹ 原卷句条" loading="lazy"></div>
+          <div class="anat">
+            <ul>
+              <li><b>主干</b>：<span class="skel">There are many different types of automatic door</span>——types of 后面的 door 用单数（指「门」这个类别）。</li>
+              <li><b>with 复合结构</b>：with ＋ each（＝each type）＋ ___ing specific signals ＋ <code>to tell them when to open</code>——each 是 -ing 的逻辑主语；to tell 说的是「靠信号来干什么」。</li>
+              <li><b>宾语里的宾语</b>：tell them when to open——them ＝ 门，when to open 是「疑问词 ＋ 不定式」作 tell 的第二个宾语。</li>
+            </ul>
+          </div>
+          <div class="tr">意：自动门有许多不同类型，每一种都依靠特定的信号来告诉它们何时打开。</div>
+        </div>
+
+        <div class="sent" id="l4_3">
+          <div class="src"><b>④❸ 例证句 ＋ as 原因从句 ＋ would be doing</b><img class="strip" src="img/2024_完形/s4_3.png" alt="④❸ 原卷句条" loading="lazy"></div>
+          <div class="anat">
+            <ul>
+              <li><b>主干</b>：<span class="skel">a busy street might not ___ a motion-sensored door</span>——might not ＝ 委婉的「可能不」，例子的语气。</li>
+              <li><b>as 原因从句</b>：as it <code>would constantly be opening</code> for passers-by——would be doing 是「（一旦装上）就会一直……」的虚拟推测；constantly 强调「不停地」。</li>
+              <li>⚠️ 主语是 street、宾语是 door：是「街道适不适合这种门」，不是「门适不适合街道」——suit 的主语是被满足的一方（This job suits me）。</li>
+            </ul>
+          </div>
+          <div class="tr">意：比如，繁忙的街道可能就不适合装动作感应门，因为它会不停地为过路人打开。</div>
+        </div>
+      </section>
+
+      <!-- ========== 08 素材 ========== -->
+      <section class="card">
+        <h2><span class="n">08</span>可搬进作文/翻译的表达</h2>
+        <p class="note">本篇是一篇<b>介绍一样东西「好在哪、怎么用」</b>的说明文，最能搬的是四类句子：<b>开头造势</b>（There’s nothing more … than …）、<b>讲来历与变化</b>（started out as … but as … has grown）、<b>讲多个好处</b>（As well as … , it also …）、<b>讲因地制宜</b>（be chosen to complement · might not suit · would be more appropriate）。话题上，「科技便利生活」「无障碍设施」「城市规划」都能接上。下面例句全部自拟，只借句式骨架。</p>
+        <div class="wb">
+          <div class="wbi"><div class="p">There is nothing more … than …　没有比……更……的了</div><div class="u">⭐⭐ <b>作文开头造势</b>：<i>There is nothing more rewarding than seeing your hard work pay off.</i></div></div>
+          <div class="wbi"><div class="p">X is essential in improving … and helping provide …　X 对改善……、帮助提供……至关重要</div><div class="u">⭐ <b>讲一样东西的两个作用</b>：<i>Public libraries are essential in improving literacy and helping provide free resources to all.</i></div></div>
+          <div class="wbi"><div class="p">X started out as …, but as its use has grown, its benefits have extended …　X 起初只是……，但随着……，它的好处也扩展了</div><div class="u">⭐⭐ <b>图表作文／现象作文的发展句</b>：<i>Online learning started out as a backup plan, but as its use has grown, its benefits have become clear.</i></div></div>
+          <div class="wbi"><div class="p">Particularly useful in … or during …　在……或……时尤其有用</div><div class="u"><i>Particularly useful in remote areas or during emergencies, drones can deliver medicine quickly.</i></div></div>
+          <div class="wbi"><div class="p">As well as doing A, X also helps B　除了 A 之外，X 还有助于 B</div><div class="u">⭐ <b>递进论证</b>：<i>As well as keeping us fit, regular exercise helps reduce stress.</i></div></div>
+          <div class="wbi"><div class="p">X allows Y to make the most of …　X 让 Y 能充分利用……</div><div class="u"><i>Shared bikes allow city dwellers to make the most of short trips.</i></div></div>
+          <div class="wbi"><div class="p">Although the methods differ, the main principles remain the same.　方法各异，原理相同</div><div class="u">⭐ <b>议论文的让步收束句</b>：<i>Although teaching styles differ, the main goal remains the same: to help students think.</i></div></div>
+          <div class="wbi"><div class="p">X should be chosen to complement …; for example, … might not suit …, as …　X 应按……来选；比如……就不适合……，因为……</div><div class="u">⭐⭐ <b>建议信／议论文的「因地制宜」</b>：<i>Courses should be chosen to complement your goals; a busy worker might not suit a full-time programme.</i></div></div>
+        </div>
+      </section>
+
+    </main>
+
+    <aside>
+      <div id="panel"><div class="hint">👆 点正文里的<b>黄底词</b><br>词卡会出现在这里<br><br>点<b>空格</b>则跳到对应解析卡</div></div>
+    </aside>
+  </div>
+
+  <footer>2024 英语一 · 完形填空复盘页 · 盲做口径：只看原卷正文与选项作答，答案先落盘 <code>_讲义笔记/2024_完形_mine.txt</code>，再核答案页（只裁 Section I 四行）——<b>20/20</b> · 解析由 Claude 独立写成并与黄皮书精讲（书内 1–13）逐空交叉核对（答案零书误；商榷两处：8 题 act as 接职能名词略松、本题靠排除而非搭配 · 15 题排 reasons 时书说「reason 作道理不可数」，而选项本身是可数复数，应靠语义排除）· 来源：<i>How It Works Daily</i> 2021-03-25 <i>How Automatic Door Mechanisms Work</i>（据黄皮书）；发明人与年份背景经 WebSearch 核对 · 正文由读者浏览器从原卷识别成文字，不转录全文 · 2023 起回到 2007 式版面</footer>
+</div>
+
+<button id="yd">🔍 查有道</button>
+
+<script>
+/* ============ V ============ */
+const V = {
+  welcoming:{w:"welcoming",ipa:"/ˈwelkəmɪŋ/",pos:"adj.",tags:["core","write"],cn:"<b>令人感到受欢迎的，亲切的</b>",en:"friendly and making you feel accepted",ex:"nothing more welcoming than a door opening for you",mem:"⭐ 首句定调：There’s nothing more ___ than … ＝「没有比……更……的了」，<b>否定词＋比较级＝最高级</b>。全文基调由这一句定成正面——二十个空没有一个在批评自动门。✍️ <i>There is nothing more rewarding than helping others.</i>",syn:"friendly 友好的 · inviting 吸引人的 · hospitable 好客的",conf:"welcome（v./n./adj. 受欢迎的）· welcoming（让人觉得被欢迎的，形容环境、态度）——a welcome change 令人高兴的变化 vs a welcoming smile 亲切的微笑"},
+  disabled:{w:"disabled access",ipa:"/dɪsˈeɪbld ˈækses/",pos:"n. phrase",tags:["phrase","write"],cn:"<b>残障人士通道，无障碍通行</b>",en:"ways for people with disabilities to enter a place",ex:"disabled access to buildings",mem:"disabled 作定语＝「供残障人士用的」：disabled parking 残障车位 · disabled toilet 无障碍卫生间。access to＝进入……的通道、途径——<b>to 是介词</b>，后接名词。✍️ 写公共设施、社会关怀：<i>improve disabled access to public transport</i>。",syn:"barrier-free access 无障碍通行 · accessibility 可达性",conf:"access（n. 通道；v. 进入）· assess（评估）· excess（过量）——三个词形近，阅读里常看串"},
+  commercial:{w:"commercial",ipa:"/kəˈmɜːʃl/",pos:"adj.",tags:["core"],cn:"<b>商业的</b>；商用的",en:"related to buying and selling; made to be sold",ex:"a commercial product in 1960",mem:"本篇出现两次、两个意思：①❷ commercial buildings ＝ 商业大楼（商场、写字楼）；②❶ a commercial product ＝ <b>投放市场的商品</b>（不再是实验品）。⟹ emerge as a commercial product ＝「开始作为商品上市」。",syn:"business 商业的 · retail 零售的 · marketable 可上市的",conf:"commercial（商业的）· commerce（n. 商业）· commercialise（v. 使商业化）——英式拼写 -ise"},
+  emerge:{w:"emerge",ipa:"/ɪˈmɜːdʒ/",pos:"v.",tags:["core","write"],cn:"<b>出现，兴起</b>；（真相）显露",en:"to appear or become known",ex:"began to emerge as a commercial product",mem:"e-（出）＋ merge（沉没）⟹ 从水里冒出来 ⟹ 出现。emerge as ＝「作为……出现」，和 5 题的 start out as 是一对：<b>emerge as 讲「何时出现」，start out as 讲「起初是什么」</b>。✍️ <i>Online learning has emerged as a popular choice.</i>",syn:"appear · come into being 产生 · arise 出现（问题）",conf:"emerge（冒出来）· merge（合并）· submerge（淹没）——同根三兄弟"},
+  novelty:{w:"novelty feature",ipa:"/ˈnɒvlti ˈfiːtʃə/",pos:"n. phrase",tags:["core"],cn:"<b>新奇的特色（噱头）</b>",en:"a feature that is interesting mainly because it is new",ex:"as a novelty feature",mem:"⭐ novelty ＝ nov-（新）＋ -elty ⟹「新鲜玩意儿」，常带一点<b>「图个新鲜、并不实用」</b>的意味——正好和后半句的 their use has grown 对着说：起初只是个噱头，后来真成了刚需。⟹ 这就是 5 题 but 的两层转折。",syn:"gimmick 噱头 · curiosity 稀罕物 · innovation 创新（褒义更强）",conf:"novel（adj. 新颖的；n. 小说）· novelty（新奇事物）· novice（新手）——同根 nov-"},
+  extend:{w:"extend",ipa:"/ɪkˈstend/",pos:"v.",tags:["core"],cn:"<b>扩展，延伸</b>；延长",en:"to become larger in area, range or effect",ex:"have extended within our technologically advanced world",mem:"ex-（向外）＋ tend（伸）⟹ 往外伸。⭐ 6 题的钥匙：<b>their ___ have extended 与 their use has grown 平行</b>——use 变多 ⟹ 好处跟着扩大；relations／sources 都不会「扩展」。",syn:"expand 扩张 · broaden 拓宽 · spread 传播",conf:"extend（范围扩大）· extent（n. 程度）· extensive（adj. 广泛的）"},
+  technologically:{w:"technologically advanced",ipa:"/ˌteknəˈlɒdʒɪkli ədˈvɑːnst/",pos:"adj. phrase",tags:["phrase","write"],cn:"<b>技术先进的</b>",en:"using modern and developed technology",ex:"our technologically advanced world",mem:"「副词＋形容词」作前置定语：technologically advanced 技术先进的 · economically developed 经济发达的 · environmentally friendly 环保的。✍️ 作文开头常用：<i>In today’s technologically advanced world, …</i>",syn:"high-tech 高科技的 · cutting-edge 尖端的",conf:"advanced（先进的；高级的）· advancing（正在前进的）· advance（n. 进步）"},
+  emergency:{w:"emergency",ipa:"/ɪˈmɜːdʒənsi/",pos:"n.",tags:["core","write"],cn:"<b>紧急情况</b>",en:"a sudden dangerous situation that needs action at once",ex:"during times of emergency",mem:"和 emerge 同根：突然「冒出来」的事 ⟹ 突发事件。in an emergency 紧急时 · emergency exit 安全出口 · emergency services 急救服务。本句的「繁忙地段 or 紧急时刻」是自动门最显本事的两个场景 ⟹ 7 填 useful。",syn:"crisis 危机 · urgent situation 紧急状况",conf:"emergency（紧急情况）· emergence（出现，兴起）——只差一个字母、意思完全不同"},
+  crowd:{w:"crowd management",ipa:"/kraʊd ˈmænɪdʒmənt/",pos:"n. phrase",tags:["phrase"],cn:"<b>人群管理，人流疏导</b>",en:"organising large numbers of people so they move safely",ex:"crowd management by reducing the obstacles",mem:"crowd control 人群控制 · traffic management 交通管理。⚠️ 8 题：crowd management 是门<b>自己发挥的职能</b>，不是门对别人提的要求 ⟹ act as（充当、起作用），不是 call for／insist on（要求）。",syn:"crowd control · flow management 人流管理",conf:"manage（设法做到；管理）· management（管理；管理层）· manager"},
+  obstacle:{w:"obstacle",ipa:"/ˈɒbstəkl/",pos:"n.",tags:["core","write"],cn:"<b>障碍（物）</b>",en:"something that blocks your way",ex:"reducing the obstacles put in people’s way",mem:"ob-（对着）＋ sta（站）⟹ 站在你面前挡路的东西。put sth in sb’s way ＝ 挡某人的路。✍️ 抽象用法更常考：<i>Lack of money is the main obstacle to studying abroad.</i>（obstacle <b>to</b> sth）",syn:"barrier 屏障 · hurdle 跨栏；难关 · impediment 阻碍",conf:"obstacle（挡路的东西）· obstinate（固执的）· obstruct（v. 阻碍）"},
+  access:{w:"access",ipa:"/ˈækses/",pos:"n.",tags:["core","poly"],cn:"<b>进出；通道</b>；使用权",en:"the way in or out of a place; the right to use something",ex:"making access both in and out of buildings easier",mem:"⭐ 本篇两次出现：①❷ disabled access（无障碍通道）、③❶ access both in and out（进出）。9 题 As well as 的前一半就是「进出更方便」——呼应②段的人群疏导；后一半才是新话题「省面积」。",syn:"entry 进入 · entrance 入口 · approach 通路",conf:"access to sth（to 是介词）· accessible（adj. 可进入的；易懂的）· accessory（配件）"},
+  panel:{w:"panel",ipa:"/ˈpænl/",pos:"n.",tags:["core","poly"],cn:"<b>（门窗的）嵌板，门扇</b>；专家小组",en:"a flat piece forming part of a door or wall",ex:"the panels sliding across one another",mem:"⭐ 熟词僻义：阅读里 panel 多是「专家小组、委员会」（a panel of experts）；本篇是<b>门扇、面板</b>——solar panel 太阳能板 · control panel 控制面板。with the panels sliding … 是 with 复合结构：门扇彼此滑过。",syn:"board 板 · leaf（门扇，建筑术语）",conf:"panel（面板；小组）· pane（一块窗玻璃）· penal（刑罚的）"},
+  swing:{w:"swing door",ipa:"/swɪŋ dɔː/",pos:"n.",tags:["core"],cn:"<b>平开门，弹簧门</b>（推拉开合的那种）",en:"a door that opens by moving round on hinges",ex:"Replacing swing doors",mem:"swing ＝ 摆动 ⟹ 绕着门轴「摆」开的门。⭐ ③段整段的对比对象：平开门要往外「突出」一大块（large, sticking-out door），滑动门只往两边走 ⟹ 省地方。Replacing swing doors 是现在分词作状语，逻辑主语 these（自动门）。",syn:"hinged door 铰链门 · revolving door 旋转门 · sliding door 推拉门",conf:"swing（摆动，过去式 swung）· sway（摇晃）· swirl（打旋）"},
+  maximise:{w:"maximise",ipa:"/ˈmæksɪmaɪz/",pos:"v.",tags:["core","write"],cn:"<b>使最大化，充分利用</b>",en:"to make something as large or useful as possible",ex:"to maximise the usable space inside",mem:"⭐ <b>英式拼写 -ise</b>（美式 maximize）——全文英式：maximise、analyses（16 题）。看到 -ise 别当错字，看到 analyses 也别当复数名词。✍️ <i>maximise the use of resources</i> 充分利用资源。",syn:"make the most of 充分利用 · optimise 优化",conf:"maximise ↔ minimise（最小化）· maximum（n./adj. 最大量）"},
+  usable:{w:"usable space",ipa:"/ˈjuːzəbl speɪs/",pos:"n. phrase",tags:["phrase"],cn:"<b>可用空间</b>",en:"the part of an area that can actually be used",ex:"the usable space inside",mem:"usable 可用的（能拿来用）· useful 有用的（用了有好处）——7 题就是 useful。③段「省空间」说了三遍：reduce the total area occupied（10）→ maximise the usable space（11）→ without clearing the way for a big door（12）。",syn:"available space 可用空间 · floor space 占地面积",conf:"usable（能用）· useful（有用）· used（用过的；习惯的）"},
+  stickingout:{w:"sticking-out",ipa:"/ˈstɪkɪŋ aʊt/",pos:"adj.",tags:["core"],cn:"<b>突出的，伸出来的</b>",en:"pushing out beyond the surface",ex:"a large, sticking-out door",mem:"stick out ＝ 伸出、突出（stick out your tongue）；加连字符变前置形容词。⭐ 12 题：门<b>往外突出</b>，就得为它「腾出地方」⟹ clear the way for。",syn:"protruding 突出的 · projecting 伸出的",conf:"stick out（突出；显眼）· stick to（坚持）· stick with（继续用）"},
+  specific:{w:"specific signals",ipa:"/spəˈsɪfɪk ˈsɪɡnəlz/",pos:"n. phrase",tags:["phrase"],cn:"<b>特定的信号</b>",en:"particular signs that cause an action",ex:"specific signals to tell them when to open",mem:"⭐ 13 题与 16 题之间的桥：③❹ 说「每种门都<b>靠</b>特定信号」（relying on），④❶ 说「每套系统都<b>分析</b>光、声、重量、动作当信号」（analyses）——<b>④段是把③❹这句话展开讲</b>。",syn:"particular 特定的 · certain 某些",conf:"specific（具体的，特定的）· specify（v. 具体说明）· species（物种）"},
+  method:{w:"method",ipa:"/ˈmeθəd/",pos:"n.",tags:["core"],cn:"<b>方法，方式</b>",en:"a way of doing something",ex:"these methods differ",mem:"these methods 回指上一句「各种门靠不同信号开门」的那些方式。⭐ 14／15：方式<b>不同</b>（differ）← 让步 → 原理<b>相同</b>（remain the same）——same vs differ 一对反义词就是 Although 的证据。",syn:"way · approach 方法 · means 手段",conf:"method（方法）· methodology（方法论）· mechanism（机制，本文标题词）"},
+  vicinity:{w:"vicinity",ipa:"/vəˈsɪnəti/",pos:"n.",tags:["core"],cn:"<b>附近，周围</b>",en:"the area around a particular place",ex:"movement in their vicinity",mem:"vicin-（邻近）＝ neighbour 的拉丁兄弟。in the vicinity of ＝ near（正式）。阅读与新闻里常见：in the immediate vicinity 就在附近。",syn:"neighbourhood 邻近地区 · surroundings 周围",conf:"vicinity（附近）· vicious（恶毒的）· vicissitude（变迁）——形近不同根"},
+  sensor:{w:"sensor",ipa:"/ˈsensə/",pos:"n.",tags:["core"],cn:"<b>传感器，感应器</b>",en:"a device that detects light, heat, movement, etc.",ex:"Sensor types are chosen to",mem:"sens-（感觉）＋ -or（东西）⟹ 会「感觉」的东西。motion sensor 动作感应器 · pressure sensor 压力感应器。④段两个例子就是两种传感器：<b>动作感应</b>（繁忙街道不合适）vs <b>压力感应地垫</b>（更合适）。",syn:"detector 探测器 · monitor 监测器",conf:"sensor（传感器）· censor（审查）· sensory（感官的）"},
+  motionsensored:{w:"motion-sensored",ipa:"/ˈməʊʃn ˈsensəd/",pos:"adj.",tags:["core"],cn:"<b>动作感应式的</b>",en:"opening when it detects movement",ex:"a motion-sensored door",mem:"比较少见的构词（更常见的是 motion-sensor door／motion-activated door），意思一看就懂：靠「感应动作」开门。⭐ 19 题：它太灵了——街上人来人往就一直开着 ⟹ 繁忙街道<b>不适合</b>（might not suit）。",syn:"motion-activated 动作触发的 · sensor-operated 传感器控制的",conf:"motion（动作，运动）· emotion（情感）· promotion（晋升；促销）"},
+  passersby:{w:"passers-by",ipa:"/ˌpɑːsəz ˈbaɪ/",pos:"n.",tags:["core"],cn:"<b>过路人</b>（复数）",en:"people who are walking past a place",ex:"opening for passers-by",mem:"⭐ 复数加在<b>中心词</b>上：passer-by → passers-by（不是 passer-bys）；同类 mother-in-law → mothers-in-law。过路人只是路过、并不想进门 ⟹ 动作感应门对他们白开。",syn:"pedestrian 行人 · bystander 旁观者",conf:"passer-by（过路人）· bystander（旁观者，在场但不参与）"},
+  pressure:{w:"pressure-sensitive mat",ipa:"/ˈpreʃə ˈsensətɪv mæt/",pos:"n. phrase",tags:["phrase"],cn:"<b>压敏地垫</b>（踩上去才开门）",en:"a mat that reacts when someone stands on it",ex:"A pressure-sensitive mat would be more",mem:"⭐ 背景彩蛋：Horton 和 Hewitt 最早的自动门<b>用的就是地垫触发</b>——科珀斯克里斯蒂风大，地垫不受风干扰。20 题：地垫只认「踩在上面的人」⟹ 检测范围小 ⟹ 繁忙街道上更合适。",syn:"pressure pad 压力垫 · floor mat 地垫",conf:"sensitive（敏感的，灵敏的）· sensible（明智的）——考研最经典的一对形近词"},
+  surveyed:{w:"surveyed area",ipa:"/səˈveɪd ˈeəriə/",pos:"n. phrase",tags:["phrase","poly"],cn:"<b>受检测的区域，感应范围</b>",en:"the area that a sensor watches",ex:"to limit the surveyed area",mem:"⭐ 熟词僻义：survey 阅读里多是「调查」（a survey of 1,000 adults），这里是<b>监测、察看</b>（survey the scene 环视现场）。limit the surveyed area ＝ 缩小感应范围——这就是地垫比动作感应「更合适」的理由。",syn:"monitored area 监测区 · detection zone 感应区",conf:"survey（调查；察看；测量土地）· surveillance（监视）"}
+};
+const panel=document.getElementById('panel');
+const isMobile=()=>window.innerWidth<=900;
+function badge(t){return {core:'<span class="badge b-core">核心词</span>',phrase:'<span class="badge b-phrase">短语</span>',poly:'<span class="badge b-poly">熟词僻义</span>',write:'<span class="badge b-write">写作✍︎</span>'}[t]||''}
+function showCard(k,el){
+  const d=V[k]; if(!d)return;
+  document.querySelectorAll('.tk.active').forEach(e=>e.classList.remove('active'));
+  if(el&&el.classList.contains('tk'))el.classList.add('active');
+  panel.innerHTML='<button class="close" onclick="panel.classList.remove(\'open\')">✕</button>'+
+  '<div class="wcard"><div class="head"><span class="w">'+d.w+'</span><span class="ipa">'+d.ipa+'</span><span class="pos">'+d.pos+'</span>'+d.tags.map(badge).join('')+'</div>'+
+  '<div class="cn">'+d.cn+'</div><div class="en-def">'+d.en+'</div>'+
+  '<div class="row r-ex"><b>原文语境</b>「…'+d.ex+'…」</div>'+
+  '<div class="row r-mem"><b>怎么记</b>'+d.mem+'</div>'+
+  '<div class="row r-syn"><b>同类词</b>'+d.syn+'</div>'+
+  '<div class="row r-conf"><b>易混辨析</b>'+d.conf+'</div></div>';
+  if(isMobile())panel.classList.add('open');
+}
+document.querySelectorAll('.tk').forEach(t=>t.addEventListener('click',e=>{e.stopPropagation();showCard(t.dataset.w,t)}));
+
+/* ============ 译文开关 ============ */
+function tz(btn){btn.closest('.para').classList.toggle('showzh')}
+let allOn=false;
+function toggleAll(){allOn=!allOn;document.querySelectorAll('.para').forEach(p=>p.classList.toggle('showzh',allOn))}
+function go(id){const s=document.getElementById(id);if(!s)return;s.scrollIntoView({behavior:'smooth',block:'center'});s.style.transition='none';s.style.opacity=.3;setTimeout(function(){s.style.transition='opacity .8s';s.style.opacity=1},80)}
+
+/* ============ 20 空数据（类别 + 正确词） ============ */
+const CAT={
+  logic:{name:"逻辑关系",cls:"c-logic",color:"#3d6a8a"},
+  collo:{name:"固定搭配",cls:"c-collo",color:"#3e7a4e"},
+  word:{name:"词义辨析",cls:"c-word",color:"#b04a3a"},
+  context:{name:"上下文语义",cls:"c-context",color:"#6d5a8e"}
+};
+const B={
+  1:{w:"Without",cat:"logic"},          2:{w:"improving",cat:"context"},
+  3:{w:"convenience",cat:"context"},    4:{w:"previously",cat:"word"},
+  5:{w:"started out",cat:"collo"},      6:{w:"benefits",cat:"context"},
+  7:{w:"useful",cat:"context"},         8:{w:"act as",cat:"word"},
+  9:{w:"As well as",cat:"logic"},       10:{w:"occupied",cat:"collo"},
+  11:{w:"allow",cat:"word"},            12:{w:"clear",cat:"collo"},
+  13:{w:"relying on",cat:"collo"},      14:{w:"Although",cat:"logic"},
+  15:{w:"principles",cat:"context"},    16:{w:"analyses",cat:"word"},
+  17:{w:"complement",cat:"word"},       18:{w:"For example",cat:"logic"},
+  19:{w:"suit",cat:"context"},          20:{w:"appropriate",cat:"context"}
+};
+
+
+
+
+
+/* ============ 点空格 → 跳到解析卡 ============ */
+document.querySelectorAll('.bk').forEach(function(b){
+  b.addEventListener('click',function(){
+    document.querySelectorAll('.bk.active').forEach(function(e){e.classList.remove('active')});
+    b.classList.add('active');
+    go('q'+b.dataset.n);
+  });
+});
+function fillBlank(n,ok){
+  const el=document.querySelector('.bk[data-n="'+n+'"]');
+  if(!el)return;
+  el.classList.remove('miss');
+  el.classList.add(ok===false?'miss':'filled');
+  el.innerHTML='<span class="idx">'+n+'</span>'+B[n].w;
+}
+
+/* ============ 即点即判 + 计分 ============ */
+let done=0,right=0;
+function updScore(){
+  document.getElementById('sDone').textContent=done;
+  document.getElementById('sRight').textContent=right;
+  document.getElementById('sPt').textContent=(right*0.5).toFixed(1);
+}
+document.querySelectorAll('.q').forEach(function(q){
+  const ans=+q.dataset.ans, n=q.id.replace('q','');
+  q.querySelectorAll('.opt').forEach(function(o,i){
+    o.addEventListener('click',function(){
+      if(q.classList.contains('done'))return;
+      q.classList.add('done');
+      const ok=(i===ans);
+      if(!ok)o.classList.add('wrong');
+      q.querySelectorAll('.opt')[ans].classList.add('right');
+      done++; if(ok)right++; updScore();
+      fillBlank(n,ok);
+    });
+  });
+});
+function revealAll(){
+  document.querySelectorAll('.q').forEach(function(q){
+    const n=q.id.replace('q','');
+    if(!q.classList.contains('done')){
+      q.classList.add('done');
+      q.querySelectorAll('.opt')[+q.dataset.ans].classList.add('right');
+      done++; updScore();
+    }
+    fillBlank(n,true);
+  });
+  document.querySelectorAll('.bk.miss').forEach(function(e){e.classList.remove('miss');e.classList.add('filled')});
+}
+
+/* ============ 考点统计 ============ */
+const counts={};Object.keys(B).forEach(function(k){counts[B[k].cat]=(counts[B[k].cat]||0)+1});
+const order=["word","collo","context","logic"];
+document.getElementById('catbar').innerHTML=order.map(function(k){
+  return '<div class="catseg" style="flex:'+counts[k]+';background:'+CAT[k].color+'">'+CAT[k].name+' '+counts[k]+'</div>'}).join('');
+const legend=document.getElementById('catlegend');
+legend.innerHTML=order.map(function(k){
+  return '<div class="cl" data-cat="'+k+'"><span class="dot" style="background:'+CAT[k].color+'"></span>'+CAT[k].name+' · '+counts[k]+' 题</div>'}).join('');
+const chips=document.getElementById('chips');
+function renderChips(cat){
+  chips.innerHTML=Object.keys(B).filter(function(n){return !cat||B[n].cat===cat})
+    .map(function(n){return '<span class="chip" data-n="'+n+'">'+n+'. '+B[n].w+'</span>'}).join('');
+  chips.querySelectorAll('.chip').forEach(function(c){
+    c.addEventListener('click',function(){go('q'+c.dataset.n)});
+  });
+}
+renderChips(null);
+legend.querySelectorAll('.cl').forEach(function(l){
+  l.addEventListener('click',function(){
+    const cat=l.dataset.cat;
+    document.querySelectorAll('.cl').forEach(function(x){x.style.borderColor=''});
+    l.style.borderColor=CAT[cat].color;
+    renderChips(cat);
+    document.querySelectorAll('.bk').forEach(function(b){
+      b.style.outline=(B[b.dataset.n].cat===cat?'2px solid '+CAT[cat].color:'')});
+  });
+});
+
+/* ============ 80 选项词表 ============ */
+const OPTS={
+ 1:[["Through","通过（把「需要触碰」当手段）"],["Despite","尽管（承认确实要触碰）"],["Besides","除了……还（承认要触碰再外加）"],["Without","无需（唯一否定「需要触碰」）"]],
+ 2:[["revealing","揭示（通道本来藏着？）"],["demanding","要求（主语常是人）"],["improving","改善（与 helping 同向并列）"],["tracing","追溯，查出"]],
+ 3:[["experience","经历，经验"],["convenience","便利（回扣首句 welcoming）"],["guidance","指导（权威给的）"],["reference","参考，查阅"]],
+ 4:[["previously","在此之前（时长 ＋ previously）"],["temporarily","暂时地（修饰 invented 不通）"],["successively","相继地（要 six successive years）"],["eventually","最终（与 after 顺序打架）"]],
+ 5:[["held on","坚持住；别挂断（不接 as）"],["started out","start out as 起初是"],["settled down","安定下来；静下心"],["went by","（时间）流逝"]],
+ 6:[["relations","关系（门与门之间？）"],["volumes","容量（要说 traffic volumes）"],["benefits","好处（与 use 同向）"],["sources","来源（but 后已不谈起源）"]],
+ 7:[["useful","有用的（唯一说「对人的作用」）"],["simple","简单的（门本身的属性）"],["flexible","灵活的（门本身的属性）"],["stable","稳定的（门本身的属性）"]],
+ 8:[["call for","需要，要求"],["yield to","屈服于；让位于"],["insist on","坚持要求（主语常是人）"],["act as","充当，起……作用"]],
+ 9:[["As well as","除了……还（并列，重心在后）"],["In terms of","就……而言（角度）"],["Thanks to","多亏（因果）"],["Rather than","而不是（取舍）"]],
+ 10:[["connected","被连接的"],["shared","被共用的（主语常是人）"],["represented","被代表的"],["occupied","被占据的（area occupied by）"]],
+ 11:[["allow","使能够（allow sth to do）"],["expect","期望（无生命主语不能期望）"],["require","要求，需要"],["direct","命令；把……对准"]],
+ 12:[["adopt","采用（偷 way「方法」义）"],["lead","lead the way 带路；领先"],["clear","clear the way for 为……腾地方"],["change","change the way 改变方式"]],
+ 13:[["adapting to","适应（信号不是新环境）"],["deriving from","源自"],["relying on","rely on X to do 靠 X 来做"],["pointing at","指着，对准"]],
+ 14:[["Once","一旦（条件／时间）"],["Since","自从；既然"],["Unless","除非（条件）"],["Although","虽然（让步：differ vs same）"]],
+ 15:[["records","记录；纪录"],["positions","位置；安装方式"],["principles","原理（引出④段）"],["reasons","原因；动机"]],
+ 16:[["controls","控制，操纵"],["analyses","分析（英式拼写的动词三单）"],["produces","产生，制造"],["mixes","混合"]],
+ 17:[["decorate","装饰"],["compare","比较"],["protect","保护（中文「保护环境」陷阱）"],["complement","与……相配，补足"]],
+ 18:[["In conclusion","总之（偷「末段总结」）"],["By contrast","相比之下"],["For example","例如（环境→繁忙街道）"],["Above all","最重要的是"]],
+ 19:[["identify","识别，认出"],["suit","适合（≈上句 complement）"],["secure","固定；关紧"],["include","包括"]],
+ 20:[["appropriate","合适的（≈上句 suit）"],["obvious","明显的"],["impressive","令人赞叹的"],["delicate","精细的；灵敏的"]]
+};
+const ANS={1:3,2:2,3:1,4:0,5:1,6:2,7:0,8:3,9:0,10:3,11:0,12:2,13:2,14:3,15:2,16:1,17:3,18:2,19:1,20:0};
+(function(){
+  let h='<tr><th>空</th><th>A</th><th>B</th><th>C</th><th>D</th></tr>';
+  for(let n=1;n<=20;n++){
+    h+='<tr><td class="n">'+n+'</td>';
+    OPTS[n].forEach(function(o,i){
+      h+='<td'+(i===ANS[n]?' class="hit"':'')+'><span class="ow">'+o[0]+'</span><span class="oc">'+o[1]+'</span></td>';
+    });
+    h+='</tr>';
+  }
+  document.getElementById('otab').innerHTML=h;
+  document.querySelectorAll('#otab .oc').forEach(function(c){
+    c.addEventListener('click',function(){c.classList.toggle('show')});
+  });
+})();
+function toggleHide(){
+  const t=document.getElementById('otab');
+  const on=t.classList.toggle('hidecn');
+  document.getElementById('btnHide').textContent=on?'👁 显示释义':'✍️ 默写模式';
+  if(!on)t.querySelectorAll('.oc.show').forEach(function(c){c.classList.remove('show')});
+}
+
+/* ============ 查有道 ============ */
+const yd=document.getElementById('yd');let sel='',ydHold=0,ydT=0;
+/* 触屏：点按钮会先把选区清掉 → selectionchange 立刻把按钮藏了 → 点击落空。改成延迟隐藏 ＋ 按下即锁定 */
+const ydTouch=window.matchMedia&&matchMedia('(pointer:coarse)').matches;
+function ydHide(){clearTimeout(ydT);ydHold=0;yd.style.display='none'}
+document.addEventListener('selectionchange',function(){
+  const s=window.getSelection();const t=s?s.toString().trim():'';
+  if(t&&/^[a-zA-Z' -]{2,40}$/.test(t)){
+    sel=t;clearTimeout(ydT);
+    try{const r=s.getRangeAt(0).getBoundingClientRect();
+      yd.style.left=Math.max(8,Math.min(r.left,window.innerWidth-110))+'px';
+      yd.style.top=(r.bottom+(ydTouch?30:8))+'px';yd.style.display='block';}catch(e){}
+  }else if(!ydHold){clearTimeout(ydT);ydT=setTimeout(function(){if(!ydHold)yd.style.display='none'},ydTouch?900:0)}
+});
+['pointerdown','touchstart','mousedown'].forEach(function(ev){yd.addEventListener(ev,function(){ydHold=1;clearTimeout(ydT)},{passive:true})});
+yd.addEventListener('click',function(){
+  const u='https://dict.youdao.com/result?word='+encodeURIComponent(sel)+'&lang=en';
+  let w=null;try{w=window.open(u,'_blank')}catch(e){}
+  if(!w)location.href=u;
+  ydHide()});
+document.addEventListener('click',function(e){if(e.target!==yd&&!window.getSelection().toString())ydHide()});
+/* ============ 原卷对照总开关（流式版） ============ */
+function imgAll(b){const on=document.body.classList.toggle('stx-allimg');b.textContent=on?'收起原卷':'原卷对照';
+  if(on)document.querySelectorAll('.para img.strip').forEach(im=>im.loading='eager')}
+</script>
+<script src="img/strip_boxes_2024.js?v=6"></script>
+<script src="_strip_lookup.js?v=8"></script>
+<script src="_strip_text.js?v=26"></script>
+<script src="_fault_attr.js"></script>
+</body>
+</html>

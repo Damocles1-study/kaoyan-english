@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2024 英一 Text 2 · 狩猎采集者的育儿经：一个孩子，很多大人</title>
+<style>
+  :root{
+    --bg:#faf9f6; --card:#ffffff; --ink:#2b2b2b; --muted:#8a8578;
+    --accent:#8b5e34; --accent-soft:#f3e9dd; --line:#e8e3d8;
+    --hl:#fdf3d8; --hl-border:#e0b84d;
+    --green:#3e7a4e; --green-soft:#e8f2ea;
+    --red:#b04a3a; --red-soft:#f9e9e6;
+    --blue:#3d6a8a; --blue-soft:#e7eff5;
+    --purple:#6d5a8e; --purple-soft:#eeeaf5;
+    --serif:"Georgia","Songti SC",serif;
+    --sans:-apple-system,"PingFang SC","Helvetica Neue",sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#1c1a17; --card:#26231f; --ink:#e8e4dc; --muted:#9a948a;
+      --accent:#d0a06a; --accent-soft:#3a3127; --line:#3a362f;
+      --hl:#3d3520; --hl-border:#b08c3a;
+      --green:#7fb98d; --green-soft:#26362b;
+      --red:#d98876; --red-soft:#3d2a26;
+      --blue:#8ab3d0; --blue-soft:#26323d;
+      --purple:#a996c8; --purple-soft:#302a3d;
+    }
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;padding-bottom:120px}
+  .wrap{max-width:1100px;margin:0 auto;padding:24px 20px}
+  .back{font-size:.85rem;color:var(--muted);text-decoration:none}
+  .back:hover{color:var(--accent)}
+  header{margin:14px 0 28px}
+  header h1{font-family:var(--serif);font-size:1.7rem;line-height:1.3}
+  header .sub{color:var(--muted);margin-top:6px;font-size:.9rem}
+  .tags{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+  .tag{font-size:.75rem;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);border:1px solid var(--line)}
+  .tag.warn{background:var(--red-soft);color:var(--red);border-color:var(--red)}
+  .tag.ok{background:var(--green-soft);color:var(--green);border-color:var(--green)}
+
+  .layout{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:24px;align-items:start}
+  main{min-width:0}
+  @media (max-width:900px){.layout{grid-template-columns:minmax(0,1fr)}}
+
+  section.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:24px}
+  h2{font-size:1.05rem;letter-spacing:.05em;color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+  h2 .n{font-size:.72rem;background:var(--accent);color:var(--card);border-radius:6px;padding:1px 7px}
+  h3{font-size:.95rem;color:var(--accent);margin:18px 0 10px}
+
+  .para{margin-bottom:22px}
+  .para .en{font-family:var(--serif);font-size:1.06rem;line-height:1.9}
+  .pno{color:var(--muted);font-size:.75rem;user-select:none;margin-right:6px}
+  .tk{background:var(--hl);border-bottom:2px solid var(--hl-border);border-radius:3px;padding:0 2px;cursor:pointer;transition:filter .15s}
+  .tk:hover{filter:brightness(.93)}
+  .tk.active{outline:2px solid var(--hl-border)}
+  .ls{border-bottom:2px dotted var(--blue);cursor:pointer}
+  .para .zh{display:none;margin-top:10px;padding:10px 14px;background:var(--blue-soft);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:.93rem}
+  .para.showzh .zh{display:block}
+  .zbtn{float:right;margin-left:10px;font-size:.72rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:6px;padding:2px 9px;cursor:pointer}
+  .zbtn:hover{color:var(--accent);border-color:var(--accent)}
+  .allbtn{font-size:.78rem;border:1px solid var(--accent);background:none;color:var(--accent);border-radius:8px;padding:4px 12px;cursor:pointer;margin-left:auto}
+
+  aside{position:sticky;top:20px}
+  #panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;min-height:180px}
+  #panel .hint{color:var(--muted);font-size:.88rem;text-align:center;padding:30px 10px}
+  .wcard .head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .wcard .w{font-family:var(--serif);font-size:1.35rem;font-weight:bold}
+  .wcard .ipa{color:var(--muted);font-size:.85rem}
+  .wcard .pos{font-size:.72rem;color:var(--purple);background:var(--purple-soft);padding:1px 8px;border-radius:999px}
+  .wcard .badge{font-size:.7rem;padding:1px 8px;border-radius:999px}
+  .b-core{background:var(--red-soft);color:var(--red)}
+  .b-phrase{background:var(--blue-soft);color:var(--blue)}
+  .b-poly{background:var(--purple-soft);color:var(--purple)}
+  .b-write{background:var(--green-soft);color:var(--green)}
+  .wcard .cn{margin-top:8px;font-size:1rem;font-weight:600}
+  .wcard .en-def{color:var(--muted);font-size:.86rem;font-style:italic;margin-top:2px}
+  .wcard .row{margin-top:10px;font-size:.86rem;padding:8px 10px;border-radius:8px}
+  .wcard .row>b:first-child{font-size:.72rem;display:block;margin-bottom:2px;letter-spacing:.06em}
+  .r-ex{background:var(--hl)} .r-ex b{color:var(--hl-border)}
+  .r-mem{background:var(--green-soft)} .r-mem b{color:var(--green)}
+  .r-syn{background:var(--blue-soft)} .r-syn b{color:var(--blue)}
+  .r-conf{background:var(--red-soft)} .r-conf b{color:var(--red)}
+  #panel .close{display:none}
+  @media (max-width:900px){
+    aside{position:fixed;left:0;right:0;bottom:0;z-index:50;padding:0 8px 8px}
+    #panel{box-shadow:0 -6px 24px rgba(0,0,0,.18);max-height:55vh;overflow-y:auto;display:none}
+    #panel.open{display:block}
+    #panel .close{display:block;float:right;border:none;background:var(--line);border-radius:8px;padding:2px 10px;cursor:pointer;color:var(--ink)}
+  }
+
+  .q{margin-bottom:22px;padding-bottom:18px;border-bottom:1px dashed var(--line)}
+  .q:last-child{border:none;margin-bottom:0;padding-bottom:0}
+  .q .stem{font-weight:600;font-family:var(--serif)}
+  .qt{font-size:.7rem;color:var(--blue);background:var(--blue-soft);border-radius:999px;padding:1px 8px;margin-right:6px;vertical-align:2px}
+  .opts{margin-top:10px;display:grid;gap:8px}
+  .opt{border:1px solid var(--line);border-radius:10px;padding:8px 12px;cursor:pointer;font-size:.93rem;font-family:var(--serif);transition:all .15s}
+  .opt:hover{border-color:var(--accent)}
+  .q.done .opt{cursor:default}
+  .opt.right{background:var(--green-soft);border-color:var(--green)}
+  .opt.wrong{background:var(--red-soft);border-color:var(--red)}
+  .expl{display:none;margin-top:12px;background:var(--accent-soft);border-radius:10px;padding:12px 14px;font-size:.9rem}
+  .q.done .expl{display:block}
+  .expl b{color:var(--accent)}
+  .expl .loc{font-family:var(--serif);font-style:italic;background:var(--hl);padding:1px 4px;border-radius:3px}
+  .fail{background:var(--red-soft);border:1px solid var(--red);border-radius:10px;padding:10px 13px;margin-bottom:10px;font-size:.89rem}
+  .fail b{color:var(--red)}
+  .waver{background:var(--hl);border:1px solid var(--hl-border);border-radius:10px;padding:10px 13px;margin-bottom:10px;font-size:.89rem}
+
+  .sent{margin-bottom:20px}
+  .sent .src{font-family:var(--serif);font-size:1rem;background:var(--blue-soft);padding:12px 14px;border-radius:10px;border-left:3px solid var(--blue)}
+  .sent .anat{margin-top:8px;font-size:.9rem}
+  .sent .anat li{margin:4px 0 4px 18px}
+  .sent .tr{margin-top:8px;font-size:.92rem;color:var(--muted)}
+  .skel{color:var(--red);font-weight:600}
+
+  .filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+  .fbtn{font-size:.8rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:999px;padding:4px 14px;cursor:pointer}
+  .fbtn.on{background:var(--accent);color:var(--card);border-color:var(--accent)}
+  .vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
+  .vitem{border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer;transition:border-color .15s}
+  .vitem:hover{border-color:var(--accent)}
+  .vitem .w{font-family:var(--serif);font-weight:bold}
+  .vitem .cn{font-size:.85rem;color:var(--muted)}
+  .vitem .badges{float:right}
+
+  .wb{display:grid;gap:10px}
+  .wbi{border-left:3px solid var(--green);background:var(--green-soft);border-radius:0 10px 10px 0;padding:10px 14px;font-size:.92rem}
+  .wbi .p{font-family:var(--serif);font-weight:600}
+  .wbi .u{color:var(--muted);font-size:.85rem}
+
+  .flow{display:grid;gap:8px;font-size:.92rem}
+  .flow .fi{border:1px solid var(--line);border-radius:10px;padding:9px 13px}
+  .flow .fi b{color:var(--accent)}
+
+  .ctab{width:100%;border-collapse:collapse;font-size:.86rem;margin-top:8px}
+  .ctab th,.ctab td{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
+  .ctab th{background:var(--accent-soft);color:var(--accent);font-size:.8rem;white-space:nowrap}
+  .ctab code{background:var(--hl);padding:0 3px;border-radius:3px}
+  .tabwrap{overflow-x:auto}
+  .ok{color:var(--green);font-weight:700}
+  .no{color:var(--red);font-weight:700}
+  .tl{display:grid;gap:10px;margin-top:6px}
+  .tli{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:start;border:1px solid var(--line);border-radius:10px;padding:10px 13px}
+  .tli .mark{font-family:var(--serif);font-weight:700;color:var(--accent);background:var(--accent-soft);border-radius:8px;padding:4px 10px;white-space:nowrap;font-size:.85rem}
+
+  .arrow{display:grid;gap:8px;margin-top:8px}
+  .arrow .ai{border:1px solid var(--line);border-radius:10px;padding:10px 13px;font-size:.9rem}
+  .arrow .ai.old{background:var(--red-soft);border-color:var(--red)}
+  .arrow .ai.new{background:var(--green-soft);border-color:var(--green)}
+  .chain{font-family:var(--serif);font-size:.95rem;background:var(--hl);border:1px solid var(--hl-border);border-radius:10px;padding:10px 14px;margin:8px 0;overflow-x:auto}
+
+  #yd{position:fixed;z-index:60;display:none;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:4px 12px;font-size:.8rem;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+  footer{color:var(--muted);font-size:.8rem;text-align:center;margin-top:30px}
+  .att{display:grid;gap:8px;margin-top:10px}
+  .atti{border:1px solid var(--line);border-radius:10px;padding:9px 13px;font-size:.9rem}
+  .atti b{font-family:var(--serif)}
+  .atti.no2{background:var(--red-soft);border-color:var(--red)}
+  .atti.yes{background:var(--green-soft);border-color:var(--green)}
+  .atti,.expl,.wbi,.zh,.fi,.ai,figcaption,p{overflow-wrap:anywhere}
+
+  /* 2021 起：原文以原卷扫描句条呈现 */
+  .sn{margin:0 0 14px}
+  .sn .pno{display:block;margin-bottom:4px;font-size:.78rem;line-height:1.6}
+  img.strip{display:block;width:100%;max-width:760px;height:auto;background:#fff;border:1px solid var(--line);border-radius:6px;cursor:pointer}
+  .sent .src img.strip{margin-top:6px;cursor:default}
+  .kw{margin-top:5px;font-size:.88rem;line-height:2.1;font-family:var(--serif)}
+  @media (prefers-color-scheme: dark){img.strip{filter:invert(.9) hue-rotate(180deg)}}
+  .sn,.sent .src{overflow-x:auto}
+  @media (max-width:700px){img.strip{width:640px;max-width:none}.sn::after{content:'← 句条可左右滑动 →';display:block;font-size:.7rem;color:var(--muted);margin-top:2px}}
+
+  /* 2023 起：流式版——识别好的句子在段落里连排，像 2007–2020 */
+  .para .en{font-family:var(--serif);font-size:1.02rem;line-height:1.9}
+  .stx-flow .para .en .pno{margin-right:4px}
+  .stx-flow .para .sn:not(.stx-on) .kw{margin-bottom:8px}
+</style>
+
+</head>
+<body class="stx-flow">
+<div class="wrap">
+  <a class="back" href="index.html">◀ 返回英语复盘中心</a>
+  <header>
+    <h1>狩猎采集者的育儿经：一个孩子，很多大人</h1>
+    <div class="sub">2024 年英语（一）真题 · Text 2 · 417 词 · 7 段 · 建议做题 18 min · 话题：育儿×进化人类学×社会政策（来源：《泰晤士报》2023-03-08，原题 <i>Hunter Gatherers Show Us How to Bring up Happier Children</i>，据黄皮书）</div>
+    <div class="tags">
+      <span class="tag">正确答案：26A 27B 28D 29C 30B</span><span class="tag">题型：概念细节 ＋ 例子作用 ＋ 事实细节 ＋ 细节推理 ＋ 标题</span><span class="tag">难度：顺序出题，⑤⑦段不单独出题；坑全在「对比的另一边」</span><span class="tag">✅ Claude 盲做 5/5（29 题在 B／C 之间排过一下）</span><span class="tag">⚠️ 原定冲刺模考卷，已按你的决定开复盘</span>
+    </div>
+  </header>
+
+  <div class="layout">
+    <main>
+      <!-- ========== 全文脉络 ========== -->
+      <section class="card">
+        <h2><span class="n">00</span>读前一分钟 · 全文脉络（做完题再看也行）</h2>
+        <div class="flow">
+          <div class="fi"><b>①段 提出说法</b>：研究者认为，从非洲狩猎采集者那里学来的育儿窍门，也许是养出更快乐孩子的钥匙。依据是对博茨瓦纳昆族这类社群的研究——那里<b>每个孩子都由许多大人照顾</b>，四岁的孩子就会帮忙看更小的，把婴儿用背巾带在身上是常态。</div>
+          <div class="fi"><b>②段 给做法命名</b>：剑桥进化人类学家乔杜里说，<b>这些做法</b>叫作「异亲养育」，能让孩子和父母都少些焦虑（26 题：these practices 回指①段 ⟹ 社群成员一起带孩子）。</div>
+          <div class="fi"><b>③段 西方怎么借</b>：儿童精神科医生斯瓦内普尔认为有办法把它们<b>融入西方生活</b>。例一：德国把养老院和托儿所结成对子，老人帮着看孩子——类似异亲养育；例二：鼓励不同年级的孩子交朋友，仿照狩猎采集社群里没人看管的混龄玩耍小组（27 题：例子服务于❶ 的论点）。</div>
+          <div class="fi"><b>④段 西方的问题</b>：一篇论文说，西方核心家庭是<b>近来才有的发明</b>，打破了人类进化史；转向「母亲该一个人带娃」的<b>密集母职叙事</b>很可能有害——会让母亲累垮、带来危险后果（28 题：背离进化历程）。</div>
+          <div class="fi"><b>⑤段 对照组</b>：相比之下，狩猎采集社会里父母以外的大人能承担近一半的照料。一项旧研究发现，刚果的埃菲族婴儿到 18 周大时平均每天有 14 个异亲照料者，每小时在照料者之间传递 8 次。</div>
+          <div class="fi"><b>⑥段 加人的好处 × 英国的现状</b>：乔杜里说，如今父母从家人和关系网里得到的帮助比进化史上大部分时候都少；<b>多加照料者</b>能减轻压力和母亲抑郁，连带让孩子受益。狩猎采集社会一个婴儿可能有十几个照料者——英国托儿所的规定却是<b>一个人看四个两三岁的孩子</b>，反差鲜明（29 题：应提高照料者对孩子的比例）。</div>
+          <div class="fi"><b>⑦段 教育 × 收束</b>：狩猎采集社会的孩子在混龄小组里靠观察和模仿学习；研究者说西方要求学生坐着不动的「训导式教学」可能助长多动症之类的问题。乔杜里说，英国应探索让哥哥姐姐帮父母带孩子——这也许还能促进他们自己的社会性发展。</div>
+          <div class="fi" style="border-color:var(--accent)">📌 <b>一句话主旨</b>：一个孩子很多大人带——狩猎采集者的「异亲养育」能让孩子更快乐、父母更轻松，西方的核心家庭和「母亲独自带娃」反倒是进化史上的例外，值得照着学（30B）。<br>📌 <b>文体</b>：这是一篇<b>新闻稿</b>，不是评论——全文没有作者自己的观点，五个声音轮流开口：<span class="loc">researchers have suggested</span>（①）· 乔杜里（②⑥⑦）· 斯瓦内普尔（③）· 期刊论文（④）· 一项旧研究（⑤）。<b>同卷 T1 正好相反</b>：T1 是专栏，作者第一人称亮观点。<br>📌 <b>结构套路：一条对比线贯穿全文</b>——狩猎采集（多人带一个）vs 西方（一个人带、一人看四个、坐着听讲）。三个对比信号：⑤❶ <span class="loc">By contrast</span> · ⑥❷ <span class="loc">contrasts starkly to</span> · ⑦❶ <span class="loc">While</span>。<b>五道题的正确项全站在狩猎采集那一边</b>，干扰项多从西方那一边取料，或者把对比读反（27D differences、28A alleviates）。<br>📌 <b>出题顺序</b>：26 ①②、27 ③、28 ④、29 ⑥、30 全文——<b>⑤段和⑦段不单独出题</b>：⑤段是给 28／29 垫数据的对照组，⑦段被 30A、30C 拿去当干扰项原料。<br>📌 <b>本篇最值钱的一条规律：概念题先拆词，再找回指</b>。alloparenting ＝ allo-（别的）＋ parenting——光拆词就能排掉 26D 的 by their parents；再顺着 <span class="loc">these practices</span> 往回找①段的具体做法，答案自己出来。</div>
+          <div class="fi">🗞 <b>背景（WebSearch 核过，只帮读、不替原文纠错）</b>：④段那篇论文是乔杜里与斯瓦内普尔<b>两人合写</b>的评论文章（《儿童心理学与精神病学杂志》2023 年第 64 卷第 10 期），剑桥大学 2023-03-08 发新闻稿——正是《泰晤士报》见报那天；考卷里斯瓦内普尔只以「一位儿童精神科医生」出场。论文原话：狩猎采集社会里异亲照料者通常承担 <b>40%–50%</b> 的照料（⟹ ⑤❶ <span class="loc">almost half</span>），照料者与婴幼儿之比<b>可超过 10:1</b>（⟹ ⑥❷ <span class="loc">more than ten caregivers</span>）；作者还特意提醒「别把狩猎采集童年理想化」、这只是待检验的「失配假说」——考卷没收这句。⑥❷ 的「两三岁一人看四个」是当时英格兰的法定比例；<b>2023 年 9 月起英格兰把两岁儿童的最低比例放宽到 1:5</b>（同年 3 月预算案宣布，可选采用，业界多数反对）——到 12 月考试时，题里的 1:4 已是旧规定，而且政策走的方向正好和本文的呼吁相反。⑤段埃菲族的研究可追到 1987 年《美国人类学家》上一篇讲埃菲婴儿多人照料的论文（多人照料「从出生起至少持续到 18 周」⟹ ⑤❸ <span class="loc">18 weeks old</span>）。</div>
+        </div>
+      </section>
+
+      <!-- ========== 原文精读 ========== -->
+      <section class="card">
+        <h2><span class="n">01</span>原文精读 <button class="allbtn" onclick="toggleAll()">全文意译 开/关</button> <button class="allbtn" id="imgall" onclick="imgAll(this)">原卷对照</button></h2>
+        <p style="font-size:.8rem;color:var(--muted);margin-bottom:14px">🟡 黄色高亮 = 重难点词/短语，点击右侧出卡片 ｜ 蓝色虚线 = 长难句，点击跳到精析 ｜ 每段「意」= 段落意译 ｜ 选中任意其他单词浮出「查有道」 ｜ 原文由你的浏览器从原卷识别成文字（首次约 3 秒，之后秒开）；「原卷对照」可逐句看扫描原图、改识别错字</p>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">①</span>
+            <div class="sn" data-go="l1_1"><img class="strip" src="img/2024_T2/s1_1.png" alt="①❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="tip">tips</span> · <span class="tk" data-w="huntergatherer">hunter-gatherers</span> · <span class="tk" data-w="keyto">the key to</span> · <span class="tk" data-w="bringup">bringing up</span> · <span class="tk" data-w="contented">contented</span></div></div>
+            <div class="sn"><img class="strip" src="img/2024_T2/s1_2.png" alt="①❷ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="basedon">is based on</span> · <span class="tk" data-w="community">communities</span> · <span class="tk" data-w="careforby">cared for by</span></div></div>
+            <div class="sn" data-go="l1_3"><img class="strip" src="img/2024_T2/s1_3.png" alt="①❸ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="asyoungas">as young as</span> · <span class="tk" data-w="lookafter">look after</span> · <span class="tk" data-w="babywearing">baby-wearing</span> · <span class="tk" data-w="infant">infants</span> · <span class="tk" data-w="sling">slings</span> · <span class="tk" data-w="norm">the norm</span></div></div>
+          </div>
+          <div class="zh"><b>①段意：</b>研究人员提出，从非洲狩猎采集者那里学来的育儿窍门，也许正是养出更快乐、更满足的孩子的关键。这一看法的依据，是对博茨瓦纳昆族等社群的研究——在那里，每个孩子都由许多成年人共同照顾。昆族孩子小到四岁就会帮着照看更小的孩子；「背娃」——把婴儿装在背巾里随身带着——被视为再平常不过的事。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">②</span>
+            <div class="sn" data-go="l2_1"><img class="strip" src="img/2024_T2/s2_1.png" alt="②❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="evolutionary">evolutionary</span> · <span class="tk" data-w="anthropologist">anthropologist</span> · <span class="tk" data-w="practice">practices</span> · <span class="tk" data-w="knownas">known as</span> · <span class="tk" data-w="alloparenting">alloparenting</span> · <span class="tk" data-w="anxiety">anxiety</span></div></div>
+          </div>
+          <div class="zh"><b>②段意：</b>剑桥大学进化人类学家尼基尔·乔杜里博士认为，这些被称作「异亲养育」的做法，可以减少孩子和父母双方的焦虑。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">③</span>
+            <div class="sn"><img class="strip" src="img/2024_T2/s3_1.png" alt="③❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="psychiatrist">psychiatrist</span> · <span class="tk" data-w="incorporate">incorporate</span></div></div>
+            <div class="sn"><img class="strip" src="img/2024_T2/s3_2.png" alt="③❷ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="scheme">scheme</span> · <span class="tk" data-w="pair">paired</span> · <span class="tk" data-w="nursery">nursery</span></div></div>
+            <div class="sn"><img class="strip" src="img/2024_T2/s3_3.png" alt="③❸ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="resident">residents</span> · <span class="tk" data-w="arrangement">arrangement</span> · <span class="tk" data-w="akin">akin to</span></div></div>
+            <div class="sn" data-go="l3_4"><img class="strip" src="img/2024_T2/s3_4.png" alt="③❹ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="measure">measure</span> · <span class="tk" data-w="mirror">mirror</span> · <span class="tk" data-w="unsupervised">unsupervised</span> · <span class="tk" data-w="mixedage">mixed-age</span> · <span class="tk" data-w="playgroup">playgroups</span></div></div>
+          </div>
+          <div class="zh"><b>③段意：</b>儿童精神科医生安妮·斯瓦内普尔博士认为，有办法把这些做法融入西方人的生活。在德国，一个项目把一家养老院和一家托儿所结成了对子：老人们帮忙照看孩子——这种安排和异亲养育很相近。另一个可行的措施，是鼓励不同年级的孩子之间交朋友，以此仿照狩猎采集社群里那种没有大人看管的混龄玩耍小组。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">④</span>
+            <div class="sn"><img class="strip" src="img/2024_T2/s4_1.png" alt="④❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="nuclearfamily">nuclear family</span> · <span class="tk" data-w="invention">invention</span> · <span class="tk" data-w="breakwith">broke with</span></div></div>
+            <div class="sn" data-go="l4_2"><img class="strip" src="img/2024_T2/s4_2.png" alt="④❷ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="abrupt">abrupt</span> · <span class="tk" data-w="shift">shift</span> · <span class="tk" data-w="intensive">intensive</span> · <span class="tk" data-w="narrative">narrative</span> · <span class="tk" data-w="manage">manage</span> · <span class="tk" data-w="harmful">harmful</span></div></div>
+            <div class="sn"><img class="strip" src="img/2024_T2/s4_3.png" alt="④❸ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="maternal">maternal</span> · <span class="tk" data-w="exhaustion">exhaustion</span> · <span class="tk" data-w="consequence">consequences</span></div></div>
+          </div>
+          <div class="zh"><b>④段意：</b>研究人员在《儿童心理学与精神病学杂志》上发表的一篇论文中说，西方的核心家庭是近来才出现的发明，它打破了人类的进化历史。这种向「密集母职叙事」——认为母亲应当独自操持育儿——的骤然转变，很可能已经造成了伤害。他们写道：「这类说法会让母亲精疲力竭，并带来危险的后果。」</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">⑤</span>
+            <div class="sn"><img class="strip" src="img/2024_T2/s5_1.png" alt="⑤❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="bycontrast">By contrast</span> · <span class="tk" data-w="otherthan">other than</span></div></div>
+            <div class="sn"><img class="strip" src="img/2024_T2/s5_2.png" alt="⑤❷ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="previous">previous</span></div></div>
+            <div class="sn" data-go="l5_3"><img class="strip" src="img/2024_T2/s5_3.png" alt="⑤❸ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="average">an average of</span> · <span class="tk" data-w="caregiver">caregivers</span></div></div>
+          </div>
+          <div class="zh"><b>⑤段意：</b>相比之下，在狩猎采集社会里，父母以外的成年人能承担孩子将近一半的照料。此前有一项研究考察了刚果民主共和国的埃菲人，发现婴儿长到 18 周大时，平均每天有 14 位异亲照料者，每小时要在照料者之间传递 8 次。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">⑥</span>
+            <div class="sn" data-go="l6_1"><img class="strip" src="img/2024_T2/s6_1.png" alt="⑥❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="support">support</span> · <span class="tk" data-w="network">networks</span> · <span class="tk" data-w="additional">additional</span> · <span class="tk" data-w="depression">depression</span> · <span class="tk" data-w="knockon">knock-on</span> · <span class="tk" data-w="wellbeing">wellbeing</span></div></div>
+            <div class="sn" data-go="l6_2"><img class="strip" src="img/2024_T2/s6_2.png" alt="⑥❷ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="starkly">contrasts starkly</span> · <span class="tk" data-w="setting">settings</span> · <span class="tk" data-w="regulation">regulations</span> · <span class="tk" data-w="callfor">call for</span> · <span class="tk" data-w="ratio">ratio</span> · <span class="tk" data-w="aged">aged</span></div></div>
+          </div>
+          <div class="zh"><b>⑥段意：</b>乔杜里说，如今父母从家人和社会关系网中得到的育儿帮助，比人类进化史上大部分时期都要少；而增加照料者可以减轻压力、减少母亲抑郁，进而给孩子的身心健康带来连带的好处。狩猎采集社会里出生的婴儿可能有十个以上的照料者——这和英国的托儿机构形成了鲜明对比：那里的规定是一名看护人员照看四名两到三岁的孩子。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">⑦</span>
+            <div class="sn" data-go="l7_1"><img class="strip" src="img/2024_T2/s7_1.png" alt="⑦❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="observation">observation</span> · <span class="tk" data-w="imitation">imitation</span> · <span class="tk" data-w="instructive">instructive teaching</span> · <span class="tk" data-w="sitstill">sit still</span> · <span class="tk" data-w="contributeto">contribute to</span> · <span class="tk" data-w="condition">conditions</span> · <span class="tk" data-w="adhd">attention deficit hyperactivity disorder</span></div></div>
+            <div class="sn"><img class="strip" src="img/2024_T2/s7_2.png" alt="⑦❷ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="explore">explore</span> · <span class="tk" data-w="sibling">siblings</span> · <span class="tk" data-w="enhance">enhance</span></div></div>
+          </div>
+          <div class="zh"><b>⑦段意：</b>狩猎采集社会的孩子是在混龄玩耍小组里通过观察和模仿来学习的，而研究人员说，西方要求学生坐着不动的「训导式教学」，可能会助长注意力缺陷多动障碍之类的问题。乔杜里说，英国应当探索这样一种可能：让哥哥姐姐帮父母带孩子，「或许还能促进他们自己的社会性发展」。</div>
+        </div>
+      </section>
+
+      <!-- ========== 题目 ========== -->
+      <section class="card">
+        <h2><span class="n">02</span>题目与解析（点选项即判 · 再看解析）</h2>
+
+        <div class="q" data-ans="0" id="q26">
+          <p class="stem"><span class="qt">概念细节</span>26. According to the first two paragraphs, alloparenting <span class="tk" data-w="referto">refers to</span> the practice of ______.</p>
+          <div class="opts">
+            <div class="opt">[A] sharing childcare among community members.</div>
+            <div class="opt">[B] assigning babies to specific adult caregivers.</div>
+            <div class="opt">[C] teaching parenting skills to older children.</div>
+            <div class="opt">[D] carrying infants around by their parents.</div>
+          </div>
+          <div class="expl"><b>答案 A</b>　alloparenting 在②❶ 才露面，而且是用 <span class="loc">these practices, known as alloparenting</span> 引出来的——<b>these practices 是回指</b>，具体内容全在①段：❷ <span class="loc">each child is cared for by many adults</span>（每个孩子由许多大人照顾）＋ ❸ 四岁的孩子帮着照看更小的、背娃是常态。把这些做法收拢成一句话：社群里的人<b>一起</b>带孩子 ⟹ A。sharing ↔ many adults ＋ 孩子帮孩子，community members ↔ ①❷ <span class="loc">communities such as the Kung</span>。<br><b>干扰项：</b>B 的 <b>specific</b>（指定的）是凭空加的——原文是许多人轮着照顾（⑤❸ 每小时传递 8 次），恰恰没有「专人负责」。C 把①❶ 的 <span class="loc">Parenting tips</span> 和①❸ 的 children … younger ones 拼在一起，编成「教大孩子育儿技巧」——原文是大孩子<b>动手帮忙</b>，不是被<b>教</b>技巧。D 取①❸ 的背娃，却加了个 <b>by their parents</b>——背娃只是一种做法，撑不起「异亲养育」这个总称；更要命的是，alloparenting 的意思恰恰是<b>父母以外的人</b>来带。<br><b>技巧：</b>① <b>先拆词</b>：allo- 是希腊语「别的、他者」（allergy 过敏 ＝ 别样的反应），allo-parenting ＝「别人来当父母」——D 当场出局；② <b>再找回指</b>：抽象概念多半由前文的具体现象引出，these / such / this practice 往回指的那几句就是答案的原料。<br>📕 <b>与书解析的商榷</b>：无分歧。书的「技巧总结」讲的正是第②条（these practices 与 alloparenting 同指）；补一句第①条——构词本身就把 D 排掉了，考场上比回读还快。</div>
+        </div>
+
+        <div class="q" data-ans="1" id="q27">
+          <p class="stem"><span class="qt">例子作用</span>27. The scheme in Germany is mentioned to <span class="tk" data-w="illustrate">illustrate</span> ______.</p>
+          <div class="opts">
+            <div class="opt">[A] an attempt to <span class="tk" data-w="facilitate">facilitate</span> <span class="tk" data-w="intergenerational">intergenerational</span> communication.</div>
+            <div class="opt">[B] an approach to <span class="tk" data-w="integrate">integrating</span> alloparenting into western society.</div>
+            <div class="opt">[C] the <span class="tk" data-w="conventional">conventional</span> parenting style in western culture.</div>
+            <div class="opt">[D] the differences between western and African ways of living.</div>
+          </div>
+          <div class="expl"><b>答案 B</b>　③段是「总 → 分」：❶ 斯瓦内普尔认为 <span class="loc">there are ways to incorporate them into western life</span>（论点：有<b>办法</b>把这些做法融入西方生活）→ ❷❸ <span class="loc">In Germany, one scheme</span> …（办法一）→ ❹ <span class="loc">Another measure</span> …（办法二）。one scheme 和 Another measure 是把❶ 的 <b>ways</b> 拆成两条——德国方案就是 ways 之一 ⟹ B。approach ↔ ways，integrating … into western society ↔ incorporate them into western life，alloparenting ↔ them（回指②段的 these practices）。❸ 自己也点了题：<span class="loc">an arrangement akin to alloparenting</span>。<br><b>干扰项：</b>A 抓的是德国方案的<b>表面</b>——养老院＋托儿所，看上去像「老少交流」；可作者把它写进来，是因为老人在<b>帮忙看孩子</b>（像异亲养育），话题是育儿不是代际沟通。C 方向反：老幼结对是<b>新</b>办法，西方传统育儿在④段（核心家庭、母亲独自带娃），而且那是被批评的对象。D 方向也反：❸ <span class="loc">akin to</span>、❹ <span class="loc">mirror</span> 说的都是<b>相似</b>（照着学），段内没有一个否定词，哪来「差异」；而且 ways of living（生活方式）也把育儿偷换大了。<br><b>技巧：</b>例子题只问一件事——<b>这个例子在给哪句话作证？</b>往前找「总」句：本段❶ 的 ways 是复数，后面 one … Another … 两个序数词一出，「总—分」就锁定了。<br>📕 <b>与书解析的商榷</b>：无分歧。书的「解题捷径」（偏离全文主题的多半是干扰项）在本题很好用：A 代际、C 传统、D 生活方式，三项都没落在「异亲养育值得借鉴」上。</div>
+        </div>
+
+        <div class="q" data-ans="3" id="q28">
+          <p class="stem"><span class="qt">事实细节</span>28. According to Paragraph 4, the “intensive mothering narrative” ______.</p>
+          <div class="opts">
+            <div class="opt">[A] <span class="tk" data-w="alleviate">alleviates</span> parenting pressures.</div>
+            <div class="opt">[B] <span class="tk" data-w="consolidate">consolidates</span> family relationships.</div>
+            <div class="opt">[C] results in the <span class="tk" data-w="childcentred">child-centred</span> family.</div>
+            <div class="opt">[D] <span class="tk" data-w="departfrom">departs from</span> the course of evolution.</div>
+          </div>
+          <div class="expl"><b>答案 D</b>　④段三句连成一条指代链：❶ 西方核心家庭是 <span class="loc">a recent invention which broke with evolutionary history</span> → ❷ <span class="loc">This abrupt shift to an “intensive mothering narrative”</span>——<b>This abrupt shift</b> 回指❶ 那次「打破」：从进化史上的多人带娃，<b>骤然转向</b>母亲独自带娃 → ❸ <span class="loc">Such narratives</span> 再回指❷。所以「密集母职叙事」本身就是那次偏离的产物 ⟹ D。departs from ↔ broke with，the course of evolution ↔ evolutionary history。<br><b>干扰项：</b>A 方向反：❷ <span class="loc">harmful</span>、❸ <span class="loc">maternal exhaustion</span> 说的是它<b>加重</b>母亲的压力，alleviates 是「减轻」。B 用 <span class="loc">nuclear family</span> 设坑——「核心」听着像「凝聚力强」，原文只是讲家庭<b>结构</b>（父母＋孩子），全段没有一个字说家庭关系变好，倒是说了 <span class="loc">dangerous consequences</span>。C 把❷ <span class="loc">mothers should manage childcare alone</span> 读成了「以孩子为中心」——原文说的是<b>谁来带</b>（母亲一个人），不是家庭<b>围着谁转</b>。<br><b>技巧：</b>书的分法很好用：四个选项里 A、B、C 都在说「<b>影响</b>」（A、B 正面，C 中性偏负面），只有 D 在说「<b>它本身是什么</b>」；本段描述它的词全是负面（broke with · harmful · dangerous），正面的 A、B 先出局，剩下的看<b>指代链</b>——This / Such 一路回指到❶ 的 broke with。<br>📕 <b>与书解析的商榷</b>：书说 D 是「对❶ broke with evolutionary history 的同义改写」——严格说❶ 的主语是<b>核心家庭</b>，不是这套叙事；能把它挪到叙事头上，靠的正是❷ 的 <b>This abrupt shift</b>（shift ＝ 离开原来的方向，本身就是 depart 的意思）。书在「技巧总结」后半段讲了同指，这里把两步连起来更稳。</div>
+        </div>
+
+        <div class="q" data-ans="2" id="q29">
+          <p class="stem"><span class="qt">细节推理</span>29. What can be inferred about the nurseries in the UK?</p>
+          <div class="opts">
+            <div class="opt">[A] They tend to <span class="tk" data-w="fallshortof">fall short of</span> official requirements.</div>
+            <div class="opt">[B] They have difficulty finding enough caregivers.</div>
+            <div class="opt">[C] They ought to improve their carer-to-child ratio.</div>
+            <div class="opt">[D] They should try to prevent parental depression.</div>
+          </div>
+          <div class="expl"><b>答案 C</b>　英国托儿所只在⑥❷ 出现一次，但要和⑥❶ 连着读。⑥❶ 是「现实 vs 理想」：父母如今得到的帮助<b>少了</b>（现实），<b>but</b> <span class="loc">introducing additional caregivers could reduce stress</span> …（理想：多加照料者有好处）；⑥❷ 再拿数字对比：狩猎采集社会一个婴儿 <span class="loc">more than ten caregivers</span>，英国规定 <span class="loc">one carer to four children</span>，用 <span class="loc">contrasts starkly</span> 强调差距。两句合起来：照料者越多越好，英国的比例太低 ⟹ 应当提高照料者对孩子的比例 ⟹ C。<b>ought to</b> 正对应推理题要的「作者暗含的建议」。<br><b>干扰项：</b>A 把 <span class="loc">regulations call for</span> 读成了「规定要求、而托儿所没做到」——原文是<b>规定本身</b>就只要求 1:4，作者嫌的是标准低，不是没达标。B 替原文找了个<b>原因</b>（招不到人）——原文只摆出比例低这个事实，为什么低一个字没提，属于过度推断。D 把⑥❶ 多加照料者的<b>好处</b>（减轻母亲抑郁）偷换成托儿所的<b>职责</b>——托儿所该做的是多派人，防抑郁是加人之后的连带效果。<br><b>技巧：</b>推理题先找<b>作者的态度</b>，再看选项是不是那个态度的自然延伸：本段的态度藏在 but 后面（加人有好处）和 contrasts starkly（差距大）里——C 是唯一一个「照着这个态度往前走一步」的选项。<br>⚠️ <b>盲做时 B、C 排过一下</b>：两项都和「人手」有关，判据是<b>原文说没说</b>——比例低是原文给的事实，招不到人是自己替原文补的原因。<br>📕 <b>与书解析的商榷</b>：无分歧。书把⑥段概括成「事实（育儿支持不足）vs 理想（增加育儿支持有好处）」，正是 C 的推理链。🗞 补一个考卷外的事实：2023 年 9 月英格兰把两岁儿童的比例放宽到 <b>1:5</b>——现实政策走的方向和 C 正相反，这也是为什么原文要用 contrasts starkly 这么重的词。</div>
+        </div>
+
+        <div class="q" data-ans="1" id="q30">
+          <p class="stem"><span class="qt">文章标题</span>30. Which of the following would be the best title for the text?</p>
+          <div class="opts">
+            <div class="opt">[A] Instructive teaching: a <span class="tk" data-w="dilemma">dilemma</span> for anxious parents</div>
+            <div class="opt">[B] For a happier family, learn from the hunter-gatherers</div>
+            <div class="opt">[C] Mixed-age playgroup, a better choice for lonely children</div>
+            <div class="opt">[D] <span class="tk" data-w="trace">Tracing</span> the history of parenting: from Africa to Europe</div>
+          </div>
+          <div class="expl"><b>答案 B</b>　全文是「提出说法 → 怎么借 → 西方的问题 → 对照组 → 加人的好处 → 收束」：①❶ 开篇就是中心句——狩猎采集者的育儿窍门 <span class="loc">may be the key to bringing up more contented children</span>；③段讲西方怎么借、④段讲西方现状的害处、⑤⑥段拿数字对照、⑦段呼吁英国去探索。B 两半各管一头：<b>learn from the hunter-gatherers</b> ↔ 全文的「借鉴」，<b>a happier family</b> ↔ ①❶ more contented children ＋ ②❶ <span class="loc">less anxiety for children and parents</span>。注意 B 写的是 <b>family</b> 不是 children——②段说的是孩子<b>和父母</b>都受益，④⑥段又专门讲了母亲的疲惫和抑郁，family 恰好把两代人都装进去了。<br><b>干扰项：</b>A 的 Instructive teaching 只在⑦❶ 出现一次，撑不起全文；anxious parents 是从②段拼来的，而原文说训导式教学的坏处落在<b>孩子</b>（多动症）身上，没说让家长两难。C 的混龄玩耍小组只是③❹、⑦❶ 提到的一项做法，属于细节；<b>lonely</b>（孤独的）原文一个字没有。D 用 Africa、Germany、UK 这些地名拼出一条「从非洲到欧洲」的历史线——文章不是在讲育儿史怎么演变，而是<b>拿进化史作镜子</b>批评西方的现状。<br><b>技巧：</b>标题题三步：① 首段中心句（本篇在①❶）② 末段收束（⑦❷ 英国应探索）③ 选项要<b>两头都盖住</b>——B 的前半盖住「孩子和父母更快乐」，后半盖住「向谁学」；A、C 只盖住一段，D 盖错了方向。<br>📕 <b>与书解析的商榷</b>：无分歧。书指出 D「由全文高频词与碎片信息杂糅捏造」，并点明文章是「以史为鉴」——这正是 D 的硬伤。</div>
+        </div>
+      </section>
+
+      <!-- ========== 长难句 ========== -->
+      <section class="card" id="sents">
+        <h2><span class="n">03</span>长难句精析（正文蓝色虚线句）</h2>
+
+        <div class="sent" id="l1_1">
+          <div class="src"><b>s1（①❶）</b><img class="strip" src="img/2024_T2/s1_1.png" alt="①❶ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：<code>Parenting tips … may be the key to …, researchers have suggested</code>——新闻稿的标准开头：<b>先说结论，消息来源放句末</b>。researchers have suggested 其实是主句（研究者提出），前面一整句是它的宾语，倒装到前面突出内容。</li>
+            <li>主语 <code>Parenting tips</code> 后挂过去分词短语 <code>obtained from hunter-gatherers in Africa</code> 作后置定语（「从……那里得来的」）。</li>
+            <li><code>the key to bringing up</code>：to 是<b>介词</b>，后接 doing；<code>bring up</code>＝养育。<code>may be</code>：留有余地的推测——全文的口气都是 may / could / likely，作者从不说死，这是研究类新闻稿的特点。</li>
+          </ul>
+          <div class="tr">意：研究人员提出，从非洲狩猎采集者那里学来的育儿窍门，也许正是养出更快乐、更满足的孩子的关键。</div>
+        </div>
+
+        <div class="sent" id="l1_3">
+          <div class="src"><b>s2（①❸）</b><img class="strip" src="img/2024_T2/s1_3.png" alt="①❸ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li>and 连接两个并列分句：前句 <code>Kung children as young as four will help to look after younger ones</code>；后句主干 <code>“baby-wearing” … is considered the norm</code>。</li>
+            <li><code>as young as four</code> 作后置定语修饰 children，强调「才四岁」；<code>will</code> 表示<b>习惯性的倾向</b>（「总会、往往会」），不是将来时。</li>
+            <li>后句主语 baby-wearing 后跟 <code>in which</code> 引导的非限制性定语从句，解释这个新造词——<span class="loc">infants are carried in slings</span>；谓语 <code>is considered the norm</code>：被看作常态（consider sb/sth + 名词 的被动）。</li>
+            <li>本句两个做法都是 26 题的原料：前一半（孩子帮带孩子）支撑 A 的 sharing，后一半（背娃）被 D 拿去加上了 by their parents。</li>
+          </ul>
+          <div class="tr">意：昆族孩子小到四岁就会帮着照看更小的孩子；「背娃」——把婴儿装在背巾里随身带着——被视为再平常不过的事。</div>
+        </div>
+
+        <div class="sent" id="l2_1">
+          <div class="src"><b>s3（②❶）</b><img class="strip" src="img/2024_T2/s2_1.png" alt="②❶ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：<code>these practices … could lead to less anxiety</code>——句首 <code>According to Dr Nikhil Chaudhary</code> 交代出处，后接同位语 <code>an evolutionary anthropologist at Cambridge University</code> 介绍身份。</li>
+            <li>主语 these practices 后的 <code>known as alloparenting</code> 是过去分词短语作插入语，<b>给前面的东西命名</b>——一个整段只有一句话的段落，干的就是「下定义」这件事，26 题就考它。</li>
+            <li><code>lead to</code>：导致；<code>for children and parents</code>：受益的是<b>两代人</b>——30B 用 family 不用 children 的依据。</li>
+          </ul>
+          <div class="tr">意：剑桥大学进化人类学家尼基尔·乔杜里博士认为，这些被称作「异亲养育」的做法，可以减少孩子和父母双方的焦虑。</div>
+        </div>
+
+        <div class="sent" id="l3_4">
+          <div class="src"><b>s4（③❹）</b><img class="strip" src="img/2024_T2/s3_4.png" alt="③❹ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：<code>Another measure could be encouraging friendships</code>——主系表，表语是动名词短语（「措施可以是鼓励……」），不是进行时。</li>
+            <li><code>between children in different school years</code>：介词短语修饰 friendships；school years 指<b>年级</b>，不是「学生时代」。</li>
+            <li><code>to mirror</code> 开头的部分是不定式作<b>目的状语</b>：为了仿照……；mirror 作动词＝像镜子一样照着做。宾语里 <code>unsupervised</code>（没人看管的）和 <code>mixed-age</code>（混龄的）两个前置定语叠在 playgroups 前。</li>
+            <li><b>Another</b> 呼应❷ 的 one scheme——两个办法都在给❶ 的 ways 作例子（27 题）；而 mirror 和❸ 的 akin to 都表示「相似」，正好排掉 27D 的 differences。</li>
+          </ul>
+          <div class="tr">意：另一个可行的措施，是鼓励不同年级的孩子之间交朋友，以此仿照狩猎采集社群里那种没有大人看管的混龄玩耍小组。</div>
+        </div>
+
+        <div class="sent" id="l4_2">
+          <div class="src"><b>s5（④❷）</b><img class="strip" src="img/2024_T2/s4_2.png" alt="④❷ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：<code>This abrupt shift … was likely to have been harmful</code>——主语和谓语之间隔着一个 which 从句，读的时候先把它跳过去。</li>
+            <li><code>shift to</code> 后的宾语是加引号的术语「密集母职叙事」，其后 <code>which suggests that</code> 引出非限制性定语从句，解释这套说法的内容：<span class="loc">mothers should manage childcare alone</span>（suggest 后的 that 从句里 should 表「应该」）。</li>
+            <li><code>be likely to have been</code>：对<b>过去</b>的推测（「很可能已经」），和 be likely to be（对现在／将来）区分开。</li>
+            <li><b>This abrupt shift</b> 是本句的关节：This 回指❶ 整件事（核心家庭打破进化史），shift 本身就有「偏离原方向」的意思——28D departs from 就从这里来。</li>
+          </ul>
+          <div class="tr">意：这种向「密集母职叙事」——认为母亲应当独自操持育儿——的骤然转变，很可能已经造成了伤害。</div>
+        </div>
+
+        <div class="sent" id="l5_3">
+          <div class="src"><b>s6（⑤❸）</b><img class="strip" src="img/2024_T2/s5_3.png" alt="⑤❸ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：<code>It found that …</code>——It 回指❷ 的 previous study，that 引导宾语从句。</li>
+            <li>宾语从句里一个主语 infants 带两个并列谓语：① <code>had an average of 14 alloparents a day</code>；② <code>were passed between caregivers eight times an hour</code>（被动：被传来传去）。中间夹着时间状语从句 <code>by the time they were 18 weeks old</code>。</li>
+            <li><code>by the time</code>：「到……的时候」，主句常配完成时；这里用一般过去时 had，是在报告研究结果。<code>a day</code> / <code>an hour</code>：不定冠词作「每」（per）讲。</li>
+            <li>两组数字（14 个人／每小时 8 次）是给⑤❶ 的 almost half 补证据——这一段没出题，却是 29 题「人越多越好」的数据底。</li>
+          </ul>
+          <div class="tr">意：研究发现，婴儿长到 18 周大时，平均每天有 14 位异亲照料者，每小时要在照料者之间传递 8 次。</div>
+        </div>
+
+        <div class="sent" id="l6_1">
+          <div class="src"><b>s7（⑥❶）</b><img class="strip" src="img/2024_T2/s6_1.png" alt="⑥❶ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：<code>Chaudhary said that A, but B</code>——said 后的宾语从句由 but 连成两半，<b>重心在 but 之后</b>。</li>
+            <li>前半 A：<code>parents now had less childcare support …</code> 后接比较对象 <code>than during most of humans’ evolutionary history</code>——比较的是两个<b>时期</b>（现在 vs 进化史上大部分时候），所以 than 后直接跟 during 短语。宾语从句里 had 是间接引语的时态后移，意思仍是「现在」。</li>
+            <li>后半 B：主语是动名词短语 <code>introducing additional caregivers</code>，谓语 <code>could reduce stress and maternal depression</code>；再挂一个 <code>which</code> 非限制性定语从句，which 指代前面「减轻压力和抑郁」这整件事：<span class="loc">could have a “knock-on” benefit</span>。</li>
+            <li>一句话就是一条因果链：<b>加人 → 父母压力和抑郁减轻 → 孩子连带受益</b>。29 题 C 的「应提高比例」就从 introducing additional caregivers 推出来。</li>
+          </ul>
+          <div class="tr">意：乔杜里说，如今父母从家人和社会关系网中得到的育儿帮助，比人类进化史上大部分时期都要少；而增加照料者可以减轻压力、减少母亲抑郁，进而给孩子的身心健康带来连带的好处。</div>
+        </div>
+
+        <div class="sent" id="l6_2">
+          <div class="src"><b>s8（⑥❷）</b><img class="strip" src="img/2024_T2/s6_2.png" alt="⑥❷ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li>破折号前后是两个分句：前句 <code>An infant born to a hunter-gatherer society could have more than ten caregivers</code>（born to 作后置定语：出生在……的）；后句 <code>this contrasts starkly to nursery settings in the UK</code>，this 回指前句整件事。</li>
+            <li><code>where</code> 引导定语从句修饰 nursery settings：<code>regulations call for a ratio of one carer to four children</code>；最后 <code>aged two to three</code> 是后置定语修饰 children（「两到三岁的」，aged 读 /eɪdʒd/）。</li>
+            <li><code>a ratio of A to B</code>＝A 比 B。两组数字并排：十几个人看一个 vs 一个人看四个——作者不加评论，只用 <b>contrasts starkly</b> 让读者自己得出结论，这就是 29 题为什么是<b>推理</b>题。</li>
+          </ul>
+          <div class="tr">意：狩猎采集社会里出生的婴儿可能有十个以上的照料者——这和英国的托儿机构形成了鲜明对比：那里的规定是一名看护人员照看四名两到三岁的孩子。</div>
+        </div>
+
+        <div class="sent" id="l7_1">
+          <div class="src"><b>s9（⑦❶）</b><img class="strip" src="img/2024_T2/s7_1.png" alt="⑦❶ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：<code>researchers said that …</code>——句首 <code>While</code> 引导的是<b>对比</b>状语从句（「……，而……」），不是时间。</li>
+            <li>While 从句：<code>hunter-gatherer children learnt from observation and imitation</code>，地点状语 <code>in mixed-age playgroups</code>。</li>
+            <li>said 后的宾语从句：主语 <code>western “instructive teaching”</code> 后跟 <code>where</code> 引导的非限制性定语从句（pupils are asked to sit still），谓语 <code>may contribute to conditions</code>，再用 <code>such as</code> 举例：注意力缺陷多动障碍。contribute to 这里是「助长（坏事）」。</li>
+            <li>对比的两头：<b>看＋学、混龄、自由</b> vs <b>讲＋听、坐着不动</b>。30A 拿后一头做标题，可它只占这一句。</li>
+          </ul>
+          <div class="tr">意：狩猎采集社会的孩子是在混龄玩耍小组里通过观察和模仿来学习的，而研究人员说，西方要求学生坐着不动的「训导式教学」，可能会助长注意力缺陷多动障碍之类的问题。</div>
+        </div>
+      </section>
+
+      <!-- ========== 词汇复盘 ========== -->
+      <section class="card">
+        <h2><span class="n">04</span>词汇复盘（点卡片看详情）</h2>
+        <div class="filters">
+          <button class="fbtn on" data-f="all">全部</button>
+          <button class="fbtn" data-f="core">核心词</button>
+          <button class="fbtn" data-f="phrase">短语</button>
+          <button class="fbtn" data-f="poly">熟词僻义</button>
+          <button class="fbtn" data-f="write">写作可用</button>
+        </div>
+        <div class="vgrid" id="vgrid"></div>
+      </section>
+
+      <!-- ========== 写作素材 ========== -->
+      <section class="card">
+        <h2><span class="n">05</span>可搬进作文/翻译的素材</h2>
+        <p style="font-size:.9rem;margin-bottom:12px">本篇话题——<b>育儿、家庭支持、老幼互助、教育方式</b>——正对大作文里的「家庭教育」「代际关系」「独生子女／二孩」「压力与心理健康」类题目，也能给小作文写「社区志愿活动通知」「给托育机构提建议」垫素材。英文例句都是按原文句式自拟的，只借骨架。</p>
+        <div class="wb">
+          <div class="wbi"><div class="p">X may be the key to …, researchers have suggested.</div><div class="u">「研究者提出，X 也许是……的关键」——<b>把论点包成研究结论</b>，开头显得有依据：Regular sleep may be the key to better memory, researchers have suggested.</div></div>
+          <div class="wbi"><div class="p">…, known as X, could lead to …</div><div class="u">「……这种被称作 X 的做法，能带来……」——<b>先描述、再命名、再说好处</b>：Peer tutoring, known as learning by teaching, could lead to deeper understanding.</div></div>
+          <div class="wbi"><div class="p">There are ways to incorporate … into …</div><div class="u">「有办法把……融入……」——提建议段的总起句：There are ways to incorporate traditional culture into everyday school life.</div></div>
+          <div class="wbi"><div class="p">One scheme has paired A with B. … Another measure could be …</div><div class="u">「一个项目把 A 和 B 结成对子……另一项措施可以是……」——<b>举两个办法</b>的现成骨架：One scheme has paired retired teachers with rural schools. Another measure could be online tutoring.</div></div>
+          <div class="wbi"><div class="p">This abrupt shift to … was likely to have been harmful.</div><div class="u">「这种向……的骤然转变很可能已经造成了伤害」——<b>批评一种风气</b>：This abrupt shift to screen-based learning was likely to have been harmful to children’s eyesight.</div></div>
+          <div class="wbi"><div class="p">By contrast, in …, …</div><div class="u">「相比之下，在……，……」——<b>对比论证</b>的转折句：By contrast, in many rural villages, neighbours still help raise one another’s children.</div></div>
+          <div class="wbi"><div class="p">…, which could have a knock-on benefit to …</div><div class="u">「……这会给……带来连带的好处」——写<b>间接效果</b>，比 good for 高级：Shorter working hours reduce parental stress, which could have a knock-on benefit to family life.</div></div>
+          <div class="wbi"><div class="p">This contrasts starkly to / with …</div><div class="u">「这和……形成鲜明对比」——<b>数据对比</b>：Rural students read fewer than five books a year; this contrasts starkly with their urban peers.</div></div>
+          <div class="wbi"><div class="p">… should explore the possibility that …</div><div class="u">「……应当探索……的可能性」——<b>收尾提建议</b>，语气比 must 委婉：Schools should explore the possibility that older students could mentor new ones.</div></div>
+          <div class="wbi"><div class="p">话题词包：caregiver · wellbeing · anxiety · support network · intergenerational</div><div class="u">写「家庭／育儿／代际」时直接可用：share childcare（分担育儿）· a support network（支持网络）· reduce parental stress（减轻父母压力）· a child’s wellbeing（孩子的身心健康）· intergenerational bonds（代际纽带）· it takes a village to raise a child（养育一个孩子要靠全村之力——非本文原句，常用谚语）。</div></div>
+        </div>
+      </section>
+    </main>
+    <aside>
+      <div id="panel">
+        <button class="close" onclick="document.getElementById('panel').classList.remove('open')">收起</button>
+        <div class="hint">点正文里的<b>黄色高亮词</b>，或下方词汇卡片，这里出详情。</div>
+      </div>
+    </aside>
+  </div>
+</div>
+<button id="yd">查有道</button>
+
+<script>
+const V={
+  tip:{"w": "tip", "ipa": "/tɪp/", "pos": "n.", "tags": ["core", "poly"], "cn": "<b>窍门</b>、实用的建议；小费；尖端", "en": "a small but useful piece of practical advice", "ex": "<b>Parenting tips</b> obtained from hunter-gatherers（①❶）", "mem": "⚠️ 熟词僻义：tip 最常见的是「小费」「尖端」，阅读里 tips 多是「窍门、小建议」——parenting tips 育儿窍门、study tips 学习小贴士。<br>写作：Here are a few tips on … 以下是关于……的几条建议（小作文万能开头）。", "syn": "advice · hint · pointer", "conf": "tip（窍门）· top（顶部）· type（类型）——tip 的「尖端」是细小的头，top 是最高处。"},
+  huntergatherer:{"w": "hunter-gatherer", "ipa": "/ˌhʌntə ˈɡæðərə/", "pos": "n.", "tags": ["core"], "cn": "<b>狩猎采集者</b>（靠打猎、采集野果为生的人群）", "en": "a member of a society that lives by hunting and collecting wild food", "ex": "Parenting tips obtained from <b>hunter-gatherers</b> in Africa（①❶）", "mem": "hunter（猎人）＋ gatherer（采集者）。全文出现 6 次，是「多人养育」的榜样一方；对面是 western（西方）——全篇就是这两方的对比。", "syn": "forager", "conf": "hunter-gatherer（狩猎采集者）· farmer（农耕者）· herder（牧人）。"},
+  keyto:{"w": "the key to", "ipa": "/ðə kiː tə/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "……的<b>关键</b>、秘诀（to 是介词，后接名词或 doing）", "en": "the most important thing that helps you achieve something", "ex": "may be <b>the key to</b> bringing up more contented children（①❶）", "mem": "⚠️ to 是介词：the key to bringing up（不是 to bring up）。同类：look forward to doing · be devoted to doing · contribute to doing。<br>写作：Reading widely is the key to writing well.", "syn": "secret · essential factor", "conf": "the key to doing（介词 to）· the way to do（不定式 to）——一个接 doing、一个接 do，考场易混。"},
+  bringup:{"w": "bring up", "ipa": "/brɪŋ ʌp/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>抚养</b>、养育（孩子）；提出（话题）", "en": "to care for a child until it is an adult; to mention a subject", "ex": "the key to <b>bringing up</b> more contented children（①❶）", "mem": "bring up 两个义项：① 养育（bring up a child）② 提出（bring up a question）。本文是①，和 raise / rear 同义。", "syn": "raise · rear · nurture", "conf": "bring up（养育；提出）· grow up（长大，不及物）· bring about（导致）。"},
+  contented:{"w": "contented", "ipa": "/kənˈtentɪd/", "pos": "adj.", "tags": ["core"], "cn": "<b>满足的</b>、心满意足的", "en": "happy and satisfied with your situation", "ex": "more <b>contented</b> children（①❶）", "mem": "content（满足的；内容）＋ -ed。注意重音：形容词 con<b>TENT</b>ed，名词「内容」是 <b>CON</b>tent。30B 的 happier family 就是 more contented children 的改写。", "syn": "satisfied · content · happy", "conf": "contented（满足的）· contended（contend 的过去式，争辩）——只差一个字母。"},
+  basedon:{"w": "be based on", "ipa": "/biː beɪst ɒn/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "以……为<b>基础</b>、根据", "en": "to use something as the starting point or evidence for an idea", "ex": "The idea <b>is based on</b> studies of communities（①❷）", "mem": "写作：My view is based on two facts. · Decisions should be based on evidence, not on feelings.<br>名词：on the basis of 在……基础上。", "syn": "be founded on · be grounded in", "conf": "be based on（基于）· base（基础，名词）· basis（基础，抽象）。"},
+  community:{"w": "community", "ipa": "/kəˈmjuːnəti/", "pos": "n.", "tags": ["core"], "cn": "<b>社群</b>、群落；社区", "en": "a group of people living together and sharing customs", "ex": "studies of <b>communities</b> such as the Kung of Botswana（①❷）", "mem": "com（共同）＋ mun（义务）＋ -ity ⟹ 共同承担义务的一群人。<b>26A 的 community members 就从这里来</b>：异亲养育＝社群成员一起带孩子。", "syn": "society · group", "conf": "community（社群）· commune（公社）· communication（交流）。"},
+  careforby:{"w": "be cared for by", "ipa": "/biː keəd fɔː baɪ/", "pos": "phr.", "tags": ["phrase"], "cn": "<b>由……照顾</b>（care for 的被动）", "en": "to be looked after by someone", "ex": "each child <b>is cared for by</b> many adults（①❷）", "mem": "care for 是「照顾」（及物短语），被动要连 for 一起：be cared for by。<b>本句就是 alloparenting 的定义</b>——每个孩子由许多成年人照顾 ⟹ 26A。", "syn": "be looked after by · be raised by", "conf": "care for（照顾；喜欢）· care about（在乎）· take care of（照料）。"},
+  asyoungas:{"w": "as young as", "ipa": "/æz jʌŋ æz/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>小到</b>……（岁）、年仅……", "en": "used to emphasize how young someone is", "ex": "Kung children <b>as young as</b> four（①❸）", "mem": "as + 形容词 + as + 数字 ＝ 强调「（数字）之小／之多」：as young as four 年仅四岁、as many as 300 多达 300、as early as 1900 早在 1900 年。", "syn": "—", "conf": "as young as（低龄强调）· as old as（高龄强调）· as many as（数量强调）。"},
+  lookafter:{"w": "look after", "ipa": "/lʊk ˈɑːftə/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>照看</b>、照料", "en": "to take care of someone", "ex": "will help to <b>look after</b> younger ones（①❸）", "mem": "全文三次：①❸ 孩子帮着照看更小的、③❸ 老人帮着照看孩子——同一个动词串起两种「父母之外的照料者」。", "syn": "take care of · care for · mind", "conf": "look after（照看）· look for（寻找）· look into（调查）· look up to（敬仰）。"},
+  babywearing:{"w": "baby-wearing", "ipa": "/ˈbeɪbi ˌweərɪŋ/", "pos": "n.", "tags": ["core"], "cn": "「<b>背娃</b>」、背着／抱着婴儿（用背巾把婴儿贴身带着）", "en": "the practice of carrying a baby in a cloth sling on your body", "ex": "<b>“baby-wearing”</b>, in which infants are carried in slings（①❸）", "mem": "wear（穿戴）＋ baby ⟹ 把婴儿「穿」在身上——英语造新词的典型手法，所以原文加了引号。<b>26D 就从这里来</b>，但原文没说「由父母背」。", "syn": "—", "conf": "baby-wearing（背娃）· baby-sitting（临时看孩子）。"},
+  infant:{"w": "infant", "ipa": "/ˈɪnfənt/", "pos": "n.", "tags": ["core"], "cn": "<b>婴儿</b>（一般指一岁以内）", "en": "a baby or very young child", "ex": "<b>infants</b> are carried in slings（①❸）", "mem": "in（不）＋ fant（说话）⟹ 还不会说话的人。同根：infancy 婴儿期、infantry 步兵（本义「年轻人」）。", "syn": "baby · newborn", "conf": "infant（婴儿）· toddler（学步儿，1–3 岁）· juvenile（青少年）。"},
+  sling:{"w": "sling", "ipa": "/slɪŋ/", "pos": "n.", "tags": ["core"], "cn": "<b>吊带</b>、背巾；（医用）三角巾", "en": "a piece of cloth tied over the shoulder to carry something", "ex": "infants are carried in <b>slings</b>（①❸）", "mem": "sling 本义「用带子挂起」：arm in a sling 手臂吊着三角巾。", "syn": "carrier · strap", "conf": "sling（背巾）· swing（秋千）· sting（刺）。"},
+  norm:{"w": "the norm", "ipa": "/ðə nɔːm/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>常态</b>、惯例；（复数）规范", "en": "the usual or expected situation or behavior", "ex": "is considered <b>the norm</b>（①❸）", "mem": "norm（规范）→ normal（正常的）→ abnormal（反常的）。<br>写作：Working from home has become the norm. 居家办公已成常态。", "syn": "standard · convention", "conf": "the norm（常态）· norms（社会规范，复数）· enormous（e 出 ＋ norm ⟹ 超出常规 ⟹ 巨大的）。"},
+  evolutionary:{"w": "evolutionary", "ipa": "/ˌiːvəˈluːʃənəri/", "pos": "adj.", "tags": ["core"], "cn": "<b>进化的</b>、演化的", "en": "relating to the way living things develop over time", "ex": "an <b>evolutionary</b> anthropologist（②❶）", "mem": "evolve（进化）→ evolution（进化）→ evolutionary（进化的）。全文 3 次：②❶ 进化人类学家、④❶ <b>broke with evolutionary history</b>（28D）、⑥❶ 人类进化史。", "syn": "developmental", "conf": "evolutionary（进化的）· revolutionary（革命的）——差一个 r。"},
+  anthropologist:{"w": "anthropologist", "ipa": "/ˌænθrəˈpɒlədʒɪst/", "pos": "n.", "tags": ["core"], "cn": "<b>人类学家</b>", "en": "a person who studies human societies and cultures", "ex": "an evolutionary <b>anthropologist</b> at Cambridge（②❶）", "mem": "anthropo（人）＋ logy（学）＋ -ist（人）。同根：philanthropy 慈善（爱人类）、misanthrope 厌世者。", "syn": "—", "conf": "anthropologist（人类学家）· archaeologist（考古学家）· sociologist（社会学家）。"},
+  practice:{"w": "practice", "ipa": "/ˈpræktɪs/", "pos": "n.", "tags": ["core", "poly"], "cn": "<b>做法</b>、惯例；练习；（医生、律师的）业务", "en": "a usual way of doing something", "ex": "these <b>practices</b>, known as alloparenting（②❶）", "mem": "⚠️ 熟词僻义：practice 可数时常是「做法、惯例」——common practice 普遍做法、best practices 最佳做法。<b>these practices 回指①段的两种具体做法</b>，再由 known as 给它命名——26 题就考这个回指。", "syn": "custom · habit · method", "conf": "practice（名词，美式也作动词）· practise（英式动词）。"},
+  knownas:{"w": "known as", "ipa": "/nəʊn æz/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>被称为</b>、叫作", "en": "called by a particular name", "ex": "these practices, <b>known as</b> alloparenting（②❶）", "mem": "过去分词短语作插入语，<b>给前面的东西命名</b>——阅读里见到 known as / called / termed / dubbed，后面就是一个要考的概念。<br>写作：a practice known as … 一种被称为……的做法。", "syn": "called · termed · referred to as", "conf": "known as（被称为）· known for（因……出名）· known to（为……所知）。"},
+  alloparenting:{"w": "alloparenting", "ipa": "/ˌæləʊˈpeərəntɪŋ/", "pos": "n.", "tags": ["core"], "cn": "<b>异亲养育</b>（由亲生父母以外的人一起照料孩子）", "en": "care of young provided by individuals other than the parents", "ex": "these practices, known as <b>alloparenting</b>（②❶）", "mem": "⭐ <b>allo-（希腊语「别的、他者」）＋ parenting（养育）</b> ⟹ 「别人来当父母」。同前缀：allergy 过敏（别的反应）、allotrope 同素异形体。<b>光拆词就能排掉 26D</b>：by their parents 正好是 allo- 的反面。", "syn": "communal childcare · shared care", "conf": "alloparent（异亲照料者，⑤❸）· alloparenting（异亲养育这种做法）。"},
+  anxiety:{"w": "anxiety", "ipa": "/æŋˈzaɪəti/", "pos": "n.", "tags": ["core"], "cn": "<b>焦虑</b>、担忧", "en": "a feeling of worry and nervousness", "ex": "could lead to less <b>anxiety</b> for children and parents（②❶）", "mem": "anxious（焦虑的）→ anxiety。注意 for children <b>and parents</b>——受益的是两代人，所以 30B 写 a happier <b>family</b>，不只写 children。", "syn": "worry · unease · stress", "conf": "anxiety（焦虑，名）· anxious（形）· eager（渴望的，褒）——be anxious to do 也可是「渴望」。"},
+  psychiatrist:{"w": "psychiatrist", "ipa": "/saɪˈkaɪətrɪst/", "pos": "n.", "tags": ["core"], "cn": "<b>精神科医生</b>、精神病学家", "en": "a doctor who treats mental illness", "ex": "Dr Annie Swanepoel, a child <b>psychiatrist</b>（③❶）", "mem": "psych（心灵）＋ iatr（医治）＋ -ist ⟹ 治心的医生。psychiatry 精神病学（④❶ 期刊名）、pediatrician 儿科医生（ped 儿童 ＋ iatr）。", "syn": "—", "conf": "psychiatrist（精神科医生，能开药）· psychologist（心理学家）。"},
+  incorporate:{"w": "incorporate", "ipa": "/ɪnˈkɔːpəreɪt/", "pos": "v.", "tags": ["core", "write"], "cn": "把……<b>纳入</b>、融入", "en": "to include something as part of a larger whole", "ex": "ways to <b>incorporate</b> them into western life（③❶）", "mem": "in（进入）＋ corpor（身体）＋ -ate ⟹ 放进身体里 ⟹ 融为一体。<b>27B 的 integrating … into western society 就是它的同义改写</b>。<br>写作：incorporate exercise into daily routine 把锻炼融入日常。", "syn": "integrate · include · build in", "conf": "incorporate A into B（把 A 纳入 B）· corporation（公司，「法人团体」）· cooperate（合作）。"},
+  scheme:{"w": "scheme", "ipa": "/skiːm/", "pos": "n.", "tags": ["core", "poly"], "cn": "（英）<b>方案</b>、计划；（贬）阴谋", "en": "an official plan for doing something", "ex": "one <b>scheme</b> has paired an old people’s home with a nursery（③❷）", "mem": "⚠️ 英式英语里 scheme 是中性的「方案、项目」（a pension scheme 养老金计划）；美式常带贬义「诡计」。本文是《泰晤士报》，中性。", "syn": "plan · programme · project", "conf": "scheme（方案）· schema（图式）· scam（骗局）。"},
+  pair:{"w": "pair", "ipa": "/peə/", "pos": "v.", "tags": ["core", "poly"], "cn": "使<b>配对</b>、使结对", "en": "to put two people or things together", "ex": "has <b>paired</b> an old people’s home with a nursery（③❷）", "mem": "⚠️ 熟词僻义：pair 常见作名词「一双」，这里是动词 pair A with B「把 A 和 B 配成一对」。<br>写作：pair new students with senior mentors 给新生配学长导师。", "syn": "match · couple · team up", "conf": "pair A with B（配对）· compare A with B（比较）· pare（削）。"},
+  nursery:{"w": "nursery", "ipa": "/ˈnɜːsəri/", "pos": "n.", "tags": ["core", "poly"], "cn": "<b>托儿所</b>；育婴室；苗圃", "en": "a place where young children are looked after while parents work", "ex": "paired an old people’s home with a <b>nursery</b>（③❷）", "mem": "nurse（护理、哺育）＋ -ery（场所）。⚠️ 熟词僻义：nursery 还指「苗圃」（plant nursery）。全文两次：③❷ 德国方案、⑥❷ 英国托儿所（29 题）。", "syn": "daycare · kindergarten · crèche", "conf": "nursery（托儿所，英式）· kindergarten（幼儿园）· nursing home（养老院）——nurse 系的三个场所别混。"},
+  resident:{"w": "resident", "ipa": "/ˈrezɪdənt/", "pos": "n.", "tags": ["core"], "cn": "<b>住户</b>、（养老院等的）入住者；居民", "en": "a person who lives in a particular place", "ex": "The <b>residents</b> help to look after the children（③❸）", "mem": "re（回）＋ sid（坐）＋ -ent ⟹ 坐下来不走的人 ⟹ 住户。这里指<b>养老院里的老人</b>——不是小区居民。", "syn": "inhabitant · occupant", "conf": "resident（居民）· residence（住所）· president（总统，pre 前 ＋ sid 坐）。"},
+  arrangement:{"w": "arrangement", "ipa": "/əˈreɪndʒmənt/", "pos": "n.", "tags": ["core"], "cn": "<b>安排</b>、做法", "en": "a plan or system for organizing something", "ex": "an <b>arrangement</b> akin to alloparenting（③❸）", "mem": "arrange（安排）＋ -ment。an arrangement … 是<b>同位语</b>，把前面整件事（老人帮看孩子）概括成一个名词再加评论——阅读里常见的「名词总结前文」。", "syn": "plan · set-up · system", "conf": "arrangement（安排）· agreement（协议）· argument（争论）。"},
+  akin:{"w": "akin to", "ipa": "/əˈkɪn tə/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>类似于</b>、与……相近", "en": "similar to something", "ex": "an arrangement <b>akin to</b> alloparenting（③❸）", "mem": "a ＋ kin（亲属）⟹ 有亲缘的 ⟹ 相似的。<b>本句说的是「相似」不是「不同」</b>——27D differences 就错在方向。<br>写作：Learning a language is akin to building a house.", "syn": "similar to · like · comparable to", "conf": "akin（相似的）· kin（亲属）· skin（皮肤）。"},
+  measure:{"w": "measure", "ipa": "/ˈmeʒə/", "pos": "n.", "tags": ["core", "poly"], "cn": "<b>措施</b>、办法；量度", "en": "an official action to deal with a problem", "ex": "Another <b>measure</b> could be encouraging friendships（③❹）", "mem": "⚠️ 熟词僻义：measure 作可数名词常是「措施」：take measures to do 采取措施。<b>one scheme（❷）… Another measure（❹）</b> 两个词把 ❶ 的 ways 拆成两条——典型的「总—分」。", "syn": "step · action · initiative", "conf": "measure（措施；测量）· measurement（尺寸，测量值）· treasure（宝藏）。"},
+  mirror:{"w": "mirror", "ipa": "/ˈmɪrə/", "pos": "v.", "tags": ["core", "poly"], "cn": "<b>仿照</b>、反映、与……相似", "en": "to copy or be very similar to something", "ex": "to <b>mirror</b> the unsupervised mixed-age playgroups（③❹）", "mem": "⚠️ 熟词僻义：mirror 作动词＝「像镜子一样照出」⟹ 反映、仿照。和❸ 的 akin to 一样，都是「相似」——<b>作者在说西方可以学着做，不是在说差异</b>（27D 错在这）。", "syn": "reflect · imitate · replicate", "conf": "mirror（仿照）· reflect（反映）· echo（呼应）——三个都能译「体现」。"},
+  unsupervised:{"w": "unsupervised", "ipa": "/ʌnˈsuːpəvaɪzd/", "pos": "adj.", "tags": ["core"], "cn": "<b>无人监管的</b>、没有大人看着的", "en": "not watched or controlled by someone in authority", "ex": "the <b>unsupervised</b> mixed-age playgroups（③❹）", "mem": "un（不）＋ super（在上）＋ vis（看）＋ -ed ⟹ 没人在上面看着。supervisor 主管、导师。", "syn": "unattended · unmonitored", "conf": "unsupervised（无人看管）· unattended（无人照看的，多指物）。"},
+  mixedage:{"w": "mixed-age", "ipa": "/ˌmɪkst ˈeɪdʒ/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>混龄的</b>、不同年龄混在一起的", "en": "including people of different ages", "ex": "the unsupervised <b>mixed-age</b> playgroups（③❹）", "mem": "mixed（混合的）＋ age。全文两次：③❹ 和⑦❶——30C 拿它做标题，可它只是异亲养育的<b>一项</b>措施。", "syn": "multi-age · cross-age", "conf": "mixed-age（混龄）· middle-aged（中年的）· aged（……岁的）。"},
+  playgroup:{"w": "playgroup", "ipa": "/ˈpleɪɡruːp/", "pos": "n.", "tags": ["core"], "cn": "<b>玩耍小组</b>、游戏小组（一群孩子一起玩）", "en": "a group of young children who play together regularly", "ex": "mixed-age <b>playgroups</b> in hunter-gatherer communities（③❹）", "mem": "play ＋ group。在英国 playgroup 也指家长自发组织的学前游戏班。", "syn": "play circle", "conf": "playgroup（游戏小组）· playground（游乐场）。"},
+  nuclearfamily:{"w": "nuclear family", "ipa": "/ˌnjuːkliə ˈfæməli/", "pos": "n.", "tags": ["phrase", "core"], "cn": "<b>核心家庭</b>（只有父母和未婚子女）", "en": "a family consisting of two parents and their children only", "ex": "the western <b>nuclear family</b> was a recent invention（④❶）", "mem": "⚠️ nuclear 本义「核（心）的」：nuclear power 核能、nuclear family 核心家庭——只剩最里面那一圈。对面是 extended family 大家庭（含祖辈、亲戚）。<b>28B 拿它当「凝聚力强」设坑</b>，原文只是讲家庭结构。", "syn": "—", "conf": "nuclear family（核心家庭）· extended family（大家庭）· single-parent family（单亲家庭）。"},
+  invention:{"w": "invention", "ipa": "/ɪnˈvenʃn/", "pos": "n.", "tags": ["core", "poly"], "cn": "<b>发明</b>；（新近才有的）产物", "en": "something new that has been created", "ex": "a recent <b>invention</b>（④❶）", "mem": "⚠️ 本文 invention 不是机器，而是<b>社会制度</b>：核心家庭是「近来才有的东西」——作者在说它不是人类的老样子。", "syn": "creation · innovation", "conf": "invention（发明物）· invent（发明）· inventory（库存清单）。"},
+  breakwith:{"w": "break with", "ipa": "/breɪk wɪð/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "与……<b>决裂</b>、打破（传统）", "en": "to end a connection with a tradition or way of doing things", "ex": "which <b>broke with</b> evolutionary history（④❶）", "mem": "⭐ <b>28D 的 departs from the course of evolution 就是 broke with evolutionary history 的同义改写</b>。<br>写作：break with tradition 打破传统。", "syn": "depart from · abandon · deviate from", "conf": "break with（决裂）· break into（闯入）· break down（崩溃）· break out（爆发）。"},
+  abrupt:{"w": "abrupt", "ipa": "/əˈbrʌpt/", "pos": "adj.", "tags": ["core"], "cn": "<b>突然的</b>、意外的；（言行）唐突的", "en": "sudden and unexpected", "ex": "This <b>abrupt</b> shift（④❷）", "mem": "ab（离开）＋ rupt（断）⟹ 突然断开。同根：interrupt 打断、bankrupt 破产、erupt 爆发。", "syn": "sudden · unexpected", "conf": "abrupt（突然的）· abort（中止）· erupt（爆发）。"},
+  shift:{"w": "shift", "ipa": "/ʃɪft/", "pos": "n.", "tags": ["core", "poly"], "cn": "<b>转变</b>、转移；轮班", "en": "a change in position or direction", "ex": "This abrupt <b>shift</b> to an “intensive mothering narrative”（④❷）", "mem": "⚠️ shift 还是「轮班」：night shift 夜班。<b>This abrupt shift 回指❶ 整件事（核心家庭打破进化史）</b>——书的技巧总结说的就是这个同指。", "syn": "change · move · transition", "conf": "shift to（转向）· shift from A to B · shift work（轮班工作）。"},
+  intensive:{"w": "intensive", "ipa": "/ɪnˈtensɪv/", "pos": "adj.", "tags": ["core"], "cn": "<b>密集的</b>、高强度的", "en": "involving a lot of work or effort in a short time", "ex": "an “<b>intensive</b> mothering narrative”（④❷）", "mem": "intense（强烈的）→ intensive（集中的、密集的）。intensive care 重症监护、labour-intensive 劳动密集型。intensive mothering ＝「密集母职」：育儿全压在母亲一人身上。", "syn": "concentrated · demanding", "conf": "intensive（密集的）· intense（强烈的）· extensive（广泛的）。"},
+  narrative:{"w": "narrative", "ipa": "/ˈnærətɪv/", "pos": "n.", "tags": ["core", "poly"], "cn": "<b>叙事</b>、说法；（社会上流行的）论调", "en": "a way of explaining events that reflects a particular view", "ex": "an “intensive mothering <b>narrative</b>”（④❷）", "mem": "narrate（讲述）→ narrative。⚠️ 外刊里 narrative 常是「某种被反复讲、被当成理所当然的说法」，带点批判意味——本文的「密集母职叙事」就是这种用法。", "syn": "story · account · discourse", "conf": "narrative（叙事、论调）· narration（讲述行为）· narrator（叙述者）。"},
+  manage:{"w": "manage", "ipa": "/ˈmænɪdʒ/", "pos": "v.", "tags": ["core", "poly"], "cn": "<b>应付</b>、处理；管理；设法做到", "en": "to deal with something or be in charge of it", "ex": "mothers should <b>manage</b> childcare alone（④❷）", "mem": "⚠️ manage 在这里不是「管理（公司）」，是「（一个人）应付、操持」。manage to do 设法做成。", "syn": "handle · cope with · run", "conf": "manage to do（设法做到）· manage sth（处理）· manager（经理）。"},
+  harmful:{"w": "harmful", "ipa": "/ˈhɑːmfl/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>有害的</b>", "en": "causing damage or injury", "ex": "was likely to have been <b>harmful</b>（④❷）", "mem": "harm ＋ -ful。be likely to have been 是对<b>过去</b>的推测：「很可能已经造成了伤害」。28A alleviates（减轻）方向正好反。", "syn": "damaging · detrimental", "conf": "harmful（有害的）· harmless（无害的）· harmony（和谐）。"},
+  maternal:{"w": "maternal", "ipa": "/məˈtɜːnl/", "pos": "adj.", "tags": ["core"], "cn": "<b>母亲的</b>、母性的", "en": "relating to a mother", "ex": "can lead to <b>maternal</b> exhaustion（④❸）", "mem": "matern（母亲）＋ -al。对照 paternal 父亲的、parental 父母的（29D）。全文两次：④❸ maternal exhaustion、⑥❶ maternal depression。", "syn": "motherly", "conf": "maternal（母亲的）· paternal（父亲的）· parental（父母的）· maternity leave（产假）。"},
+  exhaustion:{"w": "exhaustion", "ipa": "/ɪɡˈzɔːstʃən/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>精疲力竭</b>；耗尽", "en": "the state of being extremely tired", "ex": "can lead to maternal <b>exhaustion</b>（④❸）", "mem": "ex（出）＋ haust（汲取）⟹ 被汲干 ⟹ 筋疲力尽。exhausted 累坏了、exhaustive 详尽的（把能说的都汲出来）。", "syn": "fatigue · burnout", "conf": "exhaustion（疲惫）· exhaustive（详尽的）· exhaust（废气；耗尽）。"},
+  consequence:{"w": "consequence", "ipa": "/ˈkɒnsɪkwəns/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>后果</b>、结果", "en": "a result of something, often a bad one", "ex": "have dangerous <b>consequences</b>（④❸）", "mem": "con（共同）＋ sequ（跟随）⟹ 跟着来的东西 ⟹ 后果。<br>写作：have serious consequences for … 对……造成严重后果。", "syn": "result · effect · outcome", "conf": "consequence（后果）· consequently（因此）· sequence（顺序）。"},
+  bycontrast:{"w": "by contrast", "ipa": "/baɪ ˈkɒntrɑːst/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>相比之下</b>、与此相反", "en": "used to compare two things that are very different", "ex": "<b>By contrast</b>, in hunter-gatherer societies（⑤❶）", "mem": "⭐ 本文的三个对比信号：⑤❶ By contrast · ⑥❷ contrasts starkly to · ⑦❶ While ——<b>整篇就是「狩猎采集 vs 西方」一条对比线</b>，每题的正确项都站在狩猎采集那边。<br>写作：By contrast, … 是大作文第二段转对比的好开头。", "syn": "in contrast · on the other hand", "conf": "by contrast（相比之下）· in contrast to（与……相反）· on the contrary（恰恰相反，否定前说）。"},
+  otherthan:{"w": "other than", "ipa": "/ˈʌðə ðæn/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>除了</b>……之外（的）", "en": "except; apart from", "ex": "adults <b>other than</b> the parents（⑤❶）", "mem": "adults other than the parents ＝ 父母以外的成年人 ＝ <b>alloparents 的定义</b>，⑤❸ 马上就用了这个词。", "syn": "apart from · except", "conf": "other than（除了）· rather than（而不是）· more than（不止）。"},
+  previous:{"w": "previous", "ipa": "/ˈpriːviəs/", "pos": "adj.", "tags": ["core"], "cn": "<b>先前的</b>、以往的", "en": "happening or existing before", "ex": "One <b>previous</b> study（⑤❷）", "mem": "pre（前）＋ vi（路）⟹ 走在前面的。这是一项<b>旧</b>研究，和④段那篇新论文分开——新闻稿常用「新研究 ＋ 旧研究」叠证据。", "syn": "earlier · prior · former", "conf": "previous（先前的）· precious（珍贵的）· previously（以前）。"},
+  average:{"w": "an average of", "ipa": "/ən ˈævərɪdʒ əv/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>平均</b>（有）……", "en": "a typical amount calculated by dividing a total", "ex": "had <b>an average of</b> 14 alloparents a day（⑤❸）", "mem": "an average of + 数字 ＋ 名词复数。on average 平均而言。<br>写作：Students spend an average of two hours a day on their phones.", "syn": "on average · a mean of", "conf": "an average of（平均……个）· on average（平均来看）· above / below average（高于／低于平均）。"},
+  caregiver:{"w": "caregiver", "ipa": "/ˈkeəɡɪvə/", "pos": "n.", "tags": ["core"], "cn": "<b>照料者</b>、看护人", "en": "a person who takes care of a child or sick person", "ex": "were passed between <b>caregivers</b> eight times an hour（⑤❸）", "mem": "care ＋ giver（给予者）。⑥❷ 的 carer 是英式同义词（29C 的 carer-to-child ratio）。", "syn": "carer · minder · guardian", "conf": "caregiver（美式常用）· carer（英式）· caretaker（看门人；看管者）。"},
+  support:{"w": "support", "ipa": "/səˈpɔːt/", "pos": "n.", "tags": ["core", "poly"], "cn": "<b>支持</b>、帮助", "en": "help, encouragement or practical assistance", "ex": "less childcare <b>support</b> from family and social networks（⑥❶）", "mem": "sup（在下）＋ port（拿）⟹ 在下面托着。⑥❶ 前半说「支持少了」、后半说「加人有好处」——29 题的推理就从这对反差来。", "syn": "help · assistance · backing", "conf": "support（支持）· supply（供应）· suppose（假定）。"},
+  network:{"w": "network", "ipa": "/ˈnetwɜːk/", "pos": "n.", "tags": ["core"], "cn": "<b>网络</b>、关系网", "en": "a group of people who help or are connected to each other", "ex": "family and social <b>networks</b>（⑥❶）", "mem": "net（网）＋ work。social networks 在本文是「社会关系网」（亲戚朋友邻居），不是社交媒体。", "syn": "circle · web · connections", "conf": "social network（关系网；社交网站）· networking（人脉经营）。"},
+  additional:{"w": "additional", "ipa": "/əˈdɪʃənl/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>额外的</b>、附加的", "en": "more than was first mentioned or is usual", "ex": "introducing <b>additional</b> caregivers（⑥❶）", "mem": "add → addition → additional。introducing additional caregivers ＝ 29C「提高照料者对孩子的比例」——多加人就是提高比例。", "syn": "extra · further · more", "conf": "additional（额外的）· traditional（传统的）· conditional（有条件的）。"},
+  depression:{"w": "depression", "ipa": "/dɪˈpreʃn/", "pos": "n.", "tags": ["core", "poly"], "cn": "<b>抑郁</b>（症）；（经济）萧条；洼地", "en": "a mental condition of feeling very sad; a period of economic decline", "ex": "reduce stress and maternal <b>depression</b>（⑥❶）", "mem": "de（向下）＋ press（压）⟹ 被压下去 ⟹ 抑郁／萧条。the Great Depression 大萧条。<b>29D 把「加人能减轻抑郁」偷换成「托儿所该防抑郁」</b>。", "syn": "low mood · despair", "conf": "depression（抑郁）· pressure（压力）· oppression（压迫）。"},
+  knockon:{"w": "knock-on", "ipa": "/ˈnɒk ɒn/", "pos": "adj.", "tags": ["core", "write"], "cn": "（英）<b>连锁的</b>、间接引起的", "en": "having an effect on other things in a series", "ex": "a “<b>knock-on</b>” benefit to a child’s wellbeing（⑥❶）", "mem": "knock on ＝ 撞一下传下去（像多米诺骨牌）。a knock-on effect 连锁反应。这里的链条：加人 → 父母压力、抑郁少 → 孩子受益。", "syn": "ripple · domino · indirect", "conf": "knock-on effect（连锁效应）· side effect（副作用）。"},
+  wellbeing:{"w": "wellbeing", "ipa": "/ˌwelˈbiːɪŋ/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>健康</b>、幸福（身心状态良好）", "en": "the state of being healthy and happy", "ex": "a child’s <b>wellbeing</b>（⑥❶）", "mem": "well ＋ being。也写 well-being。写作高频：mental wellbeing 心理健康、promote students’ wellbeing。", "syn": "welfare · health · happiness", "conf": "wellbeing（身心健康）· welfare（福利）· wealth（财富）。"},
+  starkly:{"w": "contrast starkly", "ipa": "/ˈkɒntrɑːst ˈstɑːkli/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "形成<b>鲜明对比</b>", "en": "to be very clearly different", "ex": "this <b>contrasts starkly</b> to nursery settings in the UK（⑥❷）", "mem": "stark（鲜明的、赤裸裸的）→ starkly。contrast 作动词，常接 with（本文用 to）。<b>29 题的推理支点</b>：十几个照料者 vs 一人看四个。<br>写作：This stands in stark contrast to …", "syn": "differ sharply from", "conf": "contrast with / to（形成对比）· in stark contrast（截然相反）。"},
+  setting:{"w": "setting", "ipa": "/ˈsetɪŋ/", "pos": "n.", "tags": ["core", "poly"], "cn": "<b>环境</b>、场所；（小说）背景", "en": "the place or type of surroundings where something happens", "ex": "nursery <b>settings</b> in the UK（⑥❷）", "mem": "⚠️ 熟词僻义：setting 不只是手机「设置」——nursery settings 托儿机构、in a classroom setting 在课堂环境中。", "syn": "environment · context · surroundings", "conf": "setting（环境）· settings（设置）· settlement（定居点；和解）。"},
+  regulation:{"w": "regulation", "ipa": "/ˌreɡjuˈleɪʃn/", "pos": "n.", "tags": ["core"], "cn": "<b>规定</b>、法规", "en": "an official rule", "ex": "where <b>regulations</b> call for a ratio of one carer to four children（⑥❷）", "mem": "regular（规则的）→ regulate（管理）→ regulation（法规）。<b>29A 由 regulations 编出「达不到官方要求」</b>——原文说的是规定本身就只要求 1:4。", "syn": "rule · requirement · law", "conf": "regulation（规定）· regular（规律的）· regulator（监管者）。"},
+  callfor:{"w": "call for", "ipa": "/kɔːl fɔː/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>要求</b>、需要；呼吁", "en": "to demand or need something", "ex": "regulations <b>call for</b> a ratio of one carer to four children（⑥❷）", "mem": "call for 两个义项：① 要求（规章要求）② 呼吁（call for change）。<br>写作：The situation calls for immediate action.", "syn": "require · demand · need", "conf": "call for（要求）· call on（拜访；号召）· call off（取消）。"},
+  ratio:{"w": "ratio", "ipa": "/ˈreɪʃiəʊ/", "pos": "n.", "tags": ["core"], "cn": "<b>比例</b>、比率", "en": "the relationship between two amounts", "ex": "a <b>ratio</b> of one carer to four children（⑥❷）", "mem": "a ratio of A to B ＝ A 比 B。1:4 读作 one to four。<b>29C carer-to-child ratio 的「提高」＝照料者多、孩子少</b>。", "syn": "proportion · rate", "conf": "ratio（比例）· ration（配给量）· rational（理性的）。"},
+  aged:{"w": "aged", "ipa": "/eɪdʒd/", "pos": "adj.", "tags": ["core", "poly"], "cn": "<b>……岁的</b>；年老的", "en": "of the stated age; very old", "ex": "four children <b>aged</b> two to three（⑥❷）", "mem": "⚠️ aged 读 /eɪdʒd/ 时接数字＝「……岁的」（children aged 2–3）；读 /ˈeɪdʒɪd/ 时＝「年老的」（the aged 老人）。", "syn": "—", "conf": "aged two（两岁的，/eɪdʒd/）· the aged（老年人，/ˈeɪdʒɪd/）。"},
+  observation:{"w": "observation", "ipa": "/ˌɒbzəˈveɪʃn/", "pos": "n.", "tags": ["core"], "cn": "<b>观察</b>；评论", "en": "the act of watching something carefully", "ex": "learnt from <b>observation</b> and imitation（⑦❶）", "mem": "observe → observation。⚠️ observation 也可作「评论」：make an observation 说一句看法。", "syn": "watching · noticing", "conf": "observation（观察）· observance（遵守）· observatory（天文台）。"},
+  imitation:{"w": "imitation", "ipa": "/ˌɪmɪˈteɪʃn/", "pos": "n.", "tags": ["core"], "cn": "<b>模仿</b>；仿制品", "en": "copying someone’s behaviour", "ex": "learnt from observation and <b>imitation</b>（⑦❶）", "mem": "imitate → imitation。observation and imitation（看＋学）对面是 instructive teaching（讲＋坐着听）——⑦❶ 的 While 让步对比。", "syn": "copying · mimicry", "conf": "imitation（模仿）· initiation（入门）· limitation（限制）。"},
+  instructive:{"w": "instructive teaching", "ipa": "/ɪnˈstrʌktɪv ˈtiːtʃɪŋ/", "pos": "phr.", "tags": ["phrase"], "cn": "<b>训导式教学</b>（老师讲、学生坐着听）", "en": "teaching in which a teacher gives information to pupils who listen", "ex": "western “<b>instructive teaching</b>”（⑦❶）", "mem": "instruct（指导）→ instructive（有教育意义的）。⚠️ instructive 平时是褒义「有启发的」，加了引号的 instructive teaching 是被批评的对象。<b>30A 拿它做标题</b>——只在末段出现一次，撑不起全文。", "syn": "didactic teaching", "conf": "instructive（有启发的）· instructional（教学用的）· destructive（破坏性的）。"},
+  sitstill:{"w": "sit still", "ipa": "/sɪt stɪl/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>坐着不动</b>", "en": "to sit without moving", "ex": "pupils are asked to <b>sit still</b>（⑦❶）", "mem": "still 作形容词＝「静止的」（Keep still! 别动！），不是副词「仍然」。<br>写作：Children cannot sit still for long.", "syn": "stay put · keep still", "conf": "sit still（坐着不动）· stand still（站着不动；停滞）。"},
+  contributeto:{"w": "contribute to", "ipa": "/kənˈtrɪbjuːt tə/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>促成</b>、导致（常指坏结果）；为……作贡献", "en": "to be one of the causes of something", "ex": "may <b>contribute to</b> conditions such as …（⑦❶）", "mem": "⚠️ contribute to 不一定是褒义「贡献」，也可以是「助长（坏事）」：Smoking contributes to heart disease. to 是介词，后接名词／doing。", "syn": "lead to · cause · add to", "conf": "contribute to（促成）· attribute to（归因于）· distribute（分发）。"},
+  condition:{"w": "condition", "ipa": "/kənˈdɪʃn/", "pos": "n.", "tags": ["core", "poly"], "cn": "（医）<b>疾病</b>、病症；条件；状况", "en": "a medical problem that affects someone for a long time", "ex": "conditions such as attention deficit hyperactivity disorder（⑦❶）", "mem": "⚠️ 熟词僻义：condition 在健康语境里是「病症」：a heart condition 心脏病。⑦❶ 的 conditions 后面举的例子就是多动症。", "syn": "illness · disorder · ailment", "conf": "condition（病症；条件）· conditioner（护发素）· on condition that（条件是）。"},
+  adhd:{"w": "attention deficit hyperactivity disorder", "ipa": "/əˈtenʃn ˈdefɪsɪt ˌhaɪpəræktɪvəti dɪsˈɔːdə/", "pos": "n.", "tags": ["core"], "cn": "<b>注意力缺陷多动障碍</b>（缩写 ADHD，俗称多动症）", "en": "a condition in which a child finds it hard to concentrate and is very active", "ex": "such as <b>attention deficit hyperactivity disorder</b>（⑦❶）", "mem": "attention（注意力）＋ deficit（缺乏）＋ hyper（过度）activity（活动）＋ disorder（障碍）——拆开就是中文名。", "syn": "ADHD", "conf": "deficit（赤字、缺乏）· disorder（失调、疾病）· hyperactive（过度活跃的）。"},
+  explore:{"w": "explore", "ipa": "/ɪkˈsplɔː/", "pos": "v.", "tags": ["core", "write"], "cn": "<b>探索</b>、研究（可能性）", "en": "to examine or discuss something to find out more", "ex": "Britain should <b>explore</b> the possibility（⑦❷）", "mem": "explore the possibility that … 研究……的可能性——政策建议的常见说法。<br>写作：We should explore ways to …", "syn": "investigate · examine · look into", "conf": "explore（探索）· exploit（开发；剥削）· explode（爆炸）。"},
+  sibling:{"w": "sibling", "ipa": "/ˈsɪblɪŋ/", "pos": "n.", "tags": ["core"], "cn": "<b>兄弟姐妹</b>（中性统称）", "en": "a brother or sister", "ex": "older <b>siblings</b> helping their parents（⑦❷）", "mem": "sib（亲属）＋ -ling（小）。英语没有「兄弟姐妹」一个词时就用 sibling，不分性别长幼。<b>⑦❷ 回扣①❸ 四岁孩子带更小的</b>——首尾呼应。", "syn": "brother or sister", "conf": "sibling（兄弟姐妹）· sibling rivalry（手足之争）。"},
+  enhance:{"w": "enhance", "ipa": "/ɪnˈhɑːns/", "pos": "v.", "tags": ["core", "write"], "cn": "<b>增强</b>、提高", "en": "to improve the quality or value of something", "ex": "might also <b>enhance</b> their own social development（⑦❷）", "mem": "en（使）＋ hance（高）⟹ 使变高。写作高频：enhance one’s abilities / competitiveness / quality of life。", "syn": "improve · boost · strengthen", "conf": "enhance（增强，质量）· enlarge（扩大，体积）· enrich（丰富）。"},
+  referto:{"w": "refer to", "ipa": "/rɪˈfɜː tə/", "pos": "phr.", "tags": ["phrase", "poly"], "cn": "<b>指的是</b>；提到；参考", "en": "to describe or relate to something", "ex": "alloparenting <b>refers to</b> the practice of（26 题干）", "mem": "⚠️ refer to 三个义项：① 指（X refers to Y）② 提到 ③ 查阅。题干 refers to the practice of ＝ 「指……的做法」——<b>概念定义题</b>，答案在原文对这个词的具体描述里。", "syn": "mean · denote · describe", "conf": "refer to（指）· refer A to B（把 A 转交 B）· reference（参考）。"},
+  illustrate:{"w": "illustrate", "ipa": "/ˈɪləstreɪt/", "pos": "v.", "tags": ["core"], "cn": "<b>说明</b>、阐明（举例）", "en": "to explain something by giving examples", "ex": "is mentioned to <b>illustrate</b>（27 题干）", "mem": "il（使）＋ lustr（光亮）⟹ 照亮 ⟹ 用例子讲清楚。题干 is mentioned to illustrate ＝ <b>例子作用题</b>：例子为论点服务，答案是例子前的那句论点。", "syn": "show · demonstrate · exemplify", "conf": "illustrate（举例说明）· illustration（插图；例证）· illusion（错觉）。"},
+  facilitate:{"w": "facilitate", "ipa": "/fəˈsɪlɪteɪt/", "pos": "v.", "tags": ["core", "write"], "cn": "<b>促进</b>、使便利", "en": "to make an action or process easier", "ex": "an attempt to <b>facilitate</b> intergenerational communication（27A）", "mem": "facile（容易的）＋ -ate ⟹ 使容易。facility 设施（让事变容易的东西）。<br>写作：facilitate learning / communication。", "syn": "promote · ease · enable", "conf": "facilitate（促进）· facility（设施）· felicitate（祝贺）。"},
+  intergenerational:{"w": "intergenerational", "ipa": "/ˌɪntədʒenəˈreɪʃənl/", "pos": "adj.", "tags": ["core"], "cn": "<b>代际的</b>、两代（或几代）人之间的", "en": "involving people of different generations", "ex": "intergenerational communication（27A）", "mem": "inter（之间）＋ generation（一代人）＋ -al。27A 抓的是德国方案的<b>表面特征</b>（老人＋小孩），文章用它是为了说「育儿」。", "syn": "cross-generational", "conf": "intergenerational（代际的）· international（国际的）· interpersonal（人际的）。"},
+  integrate:{"w": "integrate", "ipa": "/ˈɪntɪɡreɪt/", "pos": "v.", "tags": ["core", "write"], "cn": "使<b>融入</b>、使成为一体", "en": "to combine something so that it becomes part of a whole", "ex": "integrating alloparenting into western society（27B）", "mem": "integer（整数、完整的）＋ -ate ⟹ 使完整。integrate A into B ＝ ③❶ incorporate A into B——<b>27B 是原文论点句的同义替换</b>。", "syn": "incorporate · combine · merge", "conf": "integrate（融合）· integrity（正直；完整）· integral（不可或缺的）。"},
+  conventional:{"w": "conventional", "ipa": "/kənˈvenʃənl/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>传统的</b>、常规的", "en": "following what is traditional or usual", "ex": "the conventional parenting style（27C）", "mem": "convention（惯例；大会）＋ -al。27C 错在德国方案是<b>新办法</b>，不是西方传统育儿；西方传统在④段（核心家庭）。", "syn": "traditional · customary · orthodox", "conf": "conventional（传统的）· convenient（方便的）· conversational（会话的）。"},
+  alleviate:{"w": "alleviate", "ipa": "/əˈliːvieɪt/", "pos": "v.", "tags": ["core", "write"], "cn": "<b>减轻</b>、缓解（痛苦、压力）", "en": "to make something bad less severe", "ex": "alleviates parenting pressures（28A）", "mem": "al（加强）＋ lev（轻）＋ -ate ⟹ 使变轻。同根：lever 杠杆、elevator 电梯（抬起）。<b>28A 与④❷❸ harmful、exhaustion 正好反向</b>。", "syn": "relieve · ease · reduce", "conf": "alleviate（缓解）· elevate（抬高）· relieve（解除）。"},
+  consolidate:{"w": "consolidate", "ipa": "/kənˈsɒlɪdeɪt/", "pos": "v.", "tags": ["core"], "cn": "<b>巩固</b>、加强", "en": "to make something stronger or more secure", "ex": "consolidates family relationships（28B）", "mem": "con（共同）＋ solid（坚固）＋ -ate ⟹ 使坚固。consolidate one’s position 巩固地位。", "syn": "strengthen · reinforce · cement", "conf": "consolidate（巩固）· console（安慰）· consolation（安慰）。"},
+  childcentred:{"w": "child-centred", "ipa": "/ˈtʃaɪld ˌsentəd/", "pos": "adj.", "tags": ["core"], "cn": "<b>以孩子为中心的</b>", "en": "focused on the needs of children", "ex": "results in the child-centred family（28C）", "mem": "名词-centred ＝「以……为中心的」：student-centred 以学生为中心、people-centred 以人为本。<b>28C 把 childcare alone（母亲独自带娃）曲解成「以孩子为中心」</b>。", "syn": "—", "conf": "child-centred（英式拼写）· child-centered（美式）。"},
+  departfrom:{"w": "depart from", "ipa": "/dɪˈpɑːt frəm/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>背离</b>、偏离；从……出发", "en": "to be different from the usual way; to leave", "ex": "departs from the course of evolution（28D）", "mem": "⚠️ depart from 除了「从某地出发」，还有「背离（常规）」：depart from tradition 背离传统。<b>28D ＝ ④❶ broke with evolutionary history</b>；名词 departure 也常作「背离」。", "syn": "deviate from · break with", "conf": "depart from（背离）· departure（偏离；出发）· department（部门）。"},
+  fallshortof:{"w": "fall short of", "ipa": "/fɔːl ʃɔːt əv/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>达不到</b>、不符合（标准、期望）", "en": "to fail to reach a standard or level", "ex": "fall short of official requirements（29A）", "mem": "fall（落）＋ short（短）⟹ 落得不够远。<br>写作：The results fell short of our expectations.<b>29A 原文无据</b>：只说规定要求 1:4，没说托儿所达不到。", "syn": "fail to meet · be below", "conf": "fall short of（达不到）· run short of（快用完）· short of（缺少）。"},
+  dilemma:{"w": "dilemma", "ipa": "/dɪˈlemə/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>两难</b>、进退维谷", "en": "a situation in which you have to choose between two difficult things", "ex": "a dilemma for anxious parents（30A）", "mem": "di（二）＋ lemma（前提）⟹ 两个前提都不好选。写作：face a dilemma 面临两难。", "syn": "predicament · quandary", "conf": "dilemma（两难）· dilemma 不是「困难」泛称——只有两边都不好时才用。"},
+  trace:{"w": "trace", "ipa": "/treɪs/", "pos": "v.", "tags": ["core", "poly"], "cn": "<b>追溯</b>、追踪；（名）痕迹", "en": "to find the origins of something by going back in time", "ex": "Tracing the history of parenting（30D）", "mem": "⚠️ 熟词僻义：trace 作名词是「痕迹」（without a trace 无影无踪），作动词是「追溯」：trace … back to 追溯到。<b>30D 错在文章没有追溯育儿史</b>，只是以史为鉴。", "syn": "track · follow back", "conf": "trace（追溯；痕迹）· track（追踪；轨道）· tracing（描摹）。"}
+};
+const panel=document.getElementById('panel');
+const isMobile=()=>window.innerWidth<=900;
+function badge(t){const m={core:'核心',phrase:'短语',poly:'僻义',write:'写作'};return `<span class="badge b-${t}">${m[t]}</span>`}
+function showCard(k,el){
+  const d=V[k];if(!d)return;
+  document.querySelectorAll('.tk.active').forEach(x=>x.classList.remove('active'));
+  if(el)el.classList.add('active');
+  panel.innerHTML=`<button class="close" onclick="document.getElementById('panel').classList.remove('open')">收起</button>
+    <div class="wcard">
+      <div class="head"><span class="w">${d.w}</span><span class="ipa">${d.ipa}</span><span class="pos">${d.pos}</span>${d.tags.map(badge).join('')}</div>
+      <div class="cn">${d.cn}</div><div class="en-def">${d.en}</div>
+      <div class="row r-ex"><b>原文</b>${d.ex}</div>
+      <div class="row r-mem"><b>怎么记 / 考点</b>${d.mem}</div>
+      <div class="row r-syn"><b>同义 / 同族</b>${d.syn}</div>
+      <div class="row r-conf"><b>易混 / 提醒</b>${d.conf}</div>
+    </div>`;
+  if(isMobile())panel.classList.add('open');
+}
+document.querySelectorAll('.tk').forEach(t=>t.addEventListener('click',e=>{e.stopPropagation();showCard(t.dataset.w,t)}));
+
+function tz(btn){btn.closest('.para').classList.toggle('showzh')}
+let allOn=false;
+function toggleAll(){allOn=!allOn;document.querySelectorAll('.para').forEach(p=>p.classList.toggle('showzh',allOn))}
+function go(id){const s=document.getElementById(id);if(!s)return;s.scrollIntoView({behavior:'smooth',block:'center'});s.style.transition='none';s.style.opacity=.3;setTimeout(()=>{s.style.transition='opacity .8s';s.style.opacity=1},80)}
+
+document.querySelectorAll('.q').forEach(q=>{
+  const ans=+q.dataset.ans;
+  q.querySelectorAll('.opt').forEach((o,i)=>o.addEventListener('click',()=>{
+    if(q.classList.contains('done'))return;
+    q.classList.add('done');
+    if(i!==ans)o.classList.add('wrong');
+    q.querySelectorAll('.opt')[ans].classList.add('right');
+  }));
+});
+
+const vg=document.getElementById('vgrid');
+function renderGrid(f){
+  vg.innerHTML='';
+  Object.keys(V).forEach(k=>{
+    const d=V[k];
+    if(f!=='all'&&!d.tags.includes(f))return;
+    const div=document.createElement('div');div.className='vitem';
+    div.innerHTML=`<span class="badges">${d.tags.map(badge).join('')}</span><div class="w">${d.w}</div><div class="cn">${d.cn}</div>`;
+    div.addEventListener('click',()=>{showCard(k,null);if(!isMobile())window.scrollTo({top:0,behavior:'smooth'})});
+    vg.appendChild(div);
+  });
+}
+renderGrid('all');
+document.querySelectorAll('.fbtn').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.fbtn').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderGrid(b.dataset.f);
+}));
+
+const yd=document.getElementById('yd');let sel='',ydHold=0,ydT=0;
+/* 触屏：点按钮会先把选区清掉 → selectionchange 立刻把按钮藏了 → 点击落空。改成延迟隐藏 ＋ 按下即锁定 */
+const ydTouch=window.matchMedia&&matchMedia('(pointer:coarse)').matches;
+function ydHide(){clearTimeout(ydT);ydHold=0;yd.style.display='none'}
+document.addEventListener('selectionchange',function(){
+  const s=window.getSelection();const t=s?s.toString().trim():'';
+  if(t&&/^[a-zA-Z' -]{2,40}$/.test(t)){
+    sel=t;clearTimeout(ydT);
+    try{const r=s.getRangeAt(0).getBoundingClientRect();
+      yd.style.left=Math.max(8,Math.min(r.left,window.innerWidth-110))+'px';
+      yd.style.top=(r.bottom+(ydTouch?30:8))+'px';yd.style.display='block';}catch(e){}
+  }else if(!ydHold){clearTimeout(ydT);ydT=setTimeout(function(){if(!ydHold)yd.style.display='none'},ydTouch?900:0)}
+});
+['pointerdown','touchstart','mousedown'].forEach(function(ev){yd.addEventListener(ev,function(){ydHold=1;clearTimeout(ydT)},{passive:true})});
+yd.addEventListener('click',function(){
+  const u='https://dict.youdao.com/result?word='+encodeURIComponent(sel)+'&lang=en';
+  let w=null;try{w=window.open(u,'_blank')}catch(e){}
+  if(!w)location.href=u;
+  ydHide()});
+document.addEventListener('click',function(e){if(e.target!==yd&&!window.getSelection().toString())ydHide()});
+
+function imgAll(b){const on=document.body.classList.toggle('stx-allimg');b.textContent=on?'收起原卷':'原卷对照';
+  if(on)document.querySelectorAll('.para img.strip').forEach(im=>im.loading='eager')}
+</script>
+<script src="img/strip_boxes_2024.js?v=2"></script>
+<script src="_strip_lookup.js?v=8"></script>
+<script src="_strip_text.js?v=25"></script>
+<script src="_fault_attr.js"></script>
+</body>
+</html>

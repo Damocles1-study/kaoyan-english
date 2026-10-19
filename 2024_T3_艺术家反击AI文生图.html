@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2024 英一 Text 3 · 艺术家打响对 AI 文生图的反击战</title>
+<style>
+  :root{
+    --bg:#faf9f6; --card:#ffffff; --ink:#2b2b2b; --muted:#8a8578;
+    --accent:#8b5e34; --accent-soft:#f3e9dd; --line:#e8e3d8;
+    --hl:#fdf3d8; --hl-border:#e0b84d;
+    --green:#3e7a4e; --green-soft:#e8f2ea;
+    --red:#b04a3a; --red-soft:#f9e9e6;
+    --blue:#3d6a8a; --blue-soft:#e7eff5;
+    --purple:#6d5a8e; --purple-soft:#eeeaf5;
+    --serif:"Georgia","Songti SC",serif;
+    --sans:-apple-system,"PingFang SC","Helvetica Neue",sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#1c1a17; --card:#26231f; --ink:#e8e4dc; --muted:#9a948a;
+      --accent:#d0a06a; --accent-soft:#3a3127; --line:#3a362f;
+      --hl:#3d3520; --hl-border:#b08c3a;
+      --green:#7fb98d; --green-soft:#26362b;
+      --red:#d98876; --red-soft:#3d2a26;
+      --blue:#8ab3d0; --blue-soft:#26323d;
+      --purple:#a996c8; --purple-soft:#302a3d;
+    }
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;padding-bottom:120px}
+  .wrap{max-width:1100px;margin:0 auto;padding:24px 20px}
+  .back{font-size:.85rem;color:var(--muted);text-decoration:none}
+  .back:hover{color:var(--accent)}
+  header{margin:14px 0 28px}
+  header h1{font-family:var(--serif);font-size:1.7rem;line-height:1.3}
+  header .sub{color:var(--muted);margin-top:6px;font-size:.9rem}
+  .tags{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+  .tag{font-size:.75rem;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);border:1px solid var(--line)}
+  .tag.warn{background:var(--red-soft);color:var(--red);border-color:var(--red)}
+  .tag.ok{background:var(--green-soft);color:var(--green);border-color:var(--green)}
+
+  .layout{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:24px;align-items:start}
+  main{min-width:0}
+  @media (max-width:900px){.layout{grid-template-columns:minmax(0,1fr)}}
+
+  section.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:24px}
+  h2{font-size:1.05rem;letter-spacing:.05em;color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+  h2 .n{font-size:.72rem;background:var(--accent);color:var(--card);border-radius:6px;padding:1px 7px}
+  h3{font-size:.95rem;color:var(--accent);margin:18px 0 10px}
+
+  .para{margin-bottom:22px}
+  .para .en{font-family:var(--serif);font-size:1.06rem;line-height:1.9}
+  .pno{color:var(--muted);font-size:.75rem;user-select:none;margin-right:6px}
+  .tk{background:var(--hl);border-bottom:2px solid var(--hl-border);border-radius:3px;padding:0 2px;cursor:pointer;transition:filter .15s}
+  .tk:hover{filter:brightness(.93)}
+  .tk.active{outline:2px solid var(--hl-border)}
+  .ls{border-bottom:2px dotted var(--blue);cursor:pointer}
+  .para .zh{display:none;margin-top:10px;padding:10px 14px;background:var(--blue-soft);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:.93rem}
+  .para.showzh .zh{display:block}
+  .zbtn{float:right;margin-left:10px;font-size:.72rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:6px;padding:2px 9px;cursor:pointer}
+  .zbtn:hover{color:var(--accent);border-color:var(--accent)}
+  .allbtn{font-size:.78rem;border:1px solid var(--accent);background:none;color:var(--accent);border-radius:8px;padding:4px 12px;cursor:pointer;margin-left:auto}
+
+  aside{position:sticky;top:20px}
+  #panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;min-height:180px}
+  #panel .hint{color:var(--muted);font-size:.88rem;text-align:center;padding:30px 10px}
+  .wcard .head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .wcard .w{font-family:var(--serif);font-size:1.35rem;font-weight:bold}
+  .wcard .ipa{color:var(--muted);font-size:.85rem}
+  .wcard .pos{font-size:.72rem;color:var(--purple);background:var(--purple-soft);padding:1px 8px;border-radius:999px}
+  .wcard .badge{font-size:.7rem;padding:1px 8px;border-radius:999px}
+  .b-core{background:var(--red-soft);color:var(--red)}
+  .b-phrase{background:var(--blue-soft);color:var(--blue)}
+  .b-poly{background:var(--purple-soft);color:var(--purple)}
+  .b-write{background:var(--green-soft);color:var(--green)}
+  .wcard .cn{margin-top:8px;font-size:1rem;font-weight:600}
+  .wcard .en-def{color:var(--muted);font-size:.86rem;font-style:italic;margin-top:2px}
+  .wcard .row{margin-top:10px;font-size:.86rem;padding:8px 10px;border-radius:8px}
+  .wcard .row>b:first-child{font-size:.72rem;display:block;margin-bottom:2px;letter-spacing:.06em}
+  .r-ex{background:var(--hl)} .r-ex b{color:var(--hl-border)}
+  .r-mem{background:var(--green-soft)} .r-mem b{color:var(--green)}
+  .r-syn{background:var(--blue-soft)} .r-syn b{color:var(--blue)}
+  .r-conf{background:var(--red-soft)} .r-conf b{color:var(--red)}
+  #panel .close{display:none}
+  @media (max-width:900px){
+    aside{position:fixed;left:0;right:0;bottom:0;z-index:50;padding:0 8px 8px}
+    #panel{box-shadow:0 -6px 24px rgba(0,0,0,.18);max-height:55vh;overflow-y:auto;display:none}
+    #panel.open{display:block}
+    #panel .close{display:block;float:right;border:none;background:var(--line);border-radius:8px;padding:2px 10px;cursor:pointer;color:var(--ink)}
+  }
+
+  .q{margin-bottom:22px;padding-bottom:18px;border-bottom:1px dashed var(--line)}
+  .q:last-child{border:none;margin-bottom:0;padding-bottom:0}
+  .q .stem{font-weight:600;font-family:var(--serif)}
+  .qt{font-size:.7rem;color:var(--blue);background:var(--blue-soft);border-radius:999px;padding:1px 8px;margin-right:6px;vertical-align:2px}
+  .opts{margin-top:10px;display:grid;gap:8px}
+  .opt{border:1px solid var(--line);border-radius:10px;padding:8px 12px;cursor:pointer;font-size:.93rem;font-family:var(--serif);transition:all .15s}
+  .opt:hover{border-color:var(--accent)}
+  .q.done .opt{cursor:default}
+  .opt.right{background:var(--green-soft);border-color:var(--green)}
+  .opt.wrong{background:var(--red-soft);border-color:var(--red)}
+  .expl{display:none;margin-top:12px;background:var(--accent-soft);border-radius:10px;padding:12px 14px;font-size:.9rem}
+  .q.done .expl{display:block}
+  .expl b{color:var(--accent)}
+  .expl .loc{font-family:var(--serif);font-style:italic;background:var(--hl);padding:1px 4px;border-radius:3px}
+  .fail{background:var(--red-soft);border:1px solid var(--red);border-radius:10px;padding:10px 13px;margin-bottom:10px;font-size:.89rem}
+  .fail b{color:var(--red)}
+  .waver{background:var(--hl);border:1px solid var(--hl-border);border-radius:10px;padding:10px 13px;margin-bottom:10px;font-size:.89rem}
+
+  .sent{margin-bottom:20px}
+  .sent .src{font-family:var(--serif);font-size:1rem;background:var(--blue-soft);padding:12px 14px;border-radius:10px;border-left:3px solid var(--blue)}
+  .sent .anat{margin-top:8px;font-size:.9rem}
+  .sent .anat li{margin:4px 0 4px 18px}
+  .sent .tr{margin-top:8px;font-size:.92rem;color:var(--muted)}
+  .skel{color:var(--red);font-weight:600}
+
+  .filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+  .fbtn{font-size:.8rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:999px;padding:4px 14px;cursor:pointer}
+  .fbtn.on{background:var(--accent);color:var(--card);border-color:var(--accent)}
+  .vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
+  .vitem{border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer;transition:border-color .15s}
+  .vitem:hover{border-color:var(--accent)}
+  .vitem .w{font-family:var(--serif);font-weight:bold}
+  .vitem .cn{font-size:.85rem;color:var(--muted)}
+  .vitem .badges{float:right}
+
+  .wb{display:grid;gap:10px}
+  .wbi{border-left:3px solid var(--green);background:var(--green-soft);border-radius:0 10px 10px 0;padding:10px 14px;font-size:.92rem}
+  .wbi .p{font-family:var(--serif);font-weight:600}
+  .wbi .u{color:var(--muted);font-size:.85rem}
+
+  .flow{display:grid;gap:8px;font-size:.92rem}
+  .flow .fi{border:1px solid var(--line);border-radius:10px;padding:9px 13px}
+  .flow .fi b{color:var(--accent)}
+
+  .ctab{width:100%;border-collapse:collapse;font-size:.86rem;margin-top:8px}
+  .ctab th,.ctab td{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
+  .ctab th{background:var(--accent-soft);color:var(--accent);font-size:.8rem;white-space:nowrap}
+  .ctab code{background:var(--hl);padding:0 3px;border-radius:3px}
+  .tabwrap{overflow-x:auto}
+  .ok{color:var(--green);font-weight:700}
+  .no{color:var(--red);font-weight:700}
+  .tl{display:grid;gap:10px;margin-top:6px}
+  .tli{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:start;border:1px solid var(--line);border-radius:10px;padding:10px 13px}
+  .tli .mark{font-family:var(--serif);font-weight:700;color:var(--accent);background:var(--accent-soft);border-radius:8px;padding:4px 10px;white-space:nowrap;font-size:.85rem}
+
+  .arrow{display:grid;gap:8px;margin-top:8px}
+  .arrow .ai{border:1px solid var(--line);border-radius:10px;padding:10px 13px;font-size:.9rem}
+  .arrow .ai.old{background:var(--red-soft);border-color:var(--red)}
+  .arrow .ai.new{background:var(--green-soft);border-color:var(--green)}
+  .chain{font-family:var(--serif);font-size:.95rem;background:var(--hl);border:1px solid var(--hl-border);border-radius:10px;padding:10px 14px;margin:8px 0;overflow-x:auto}
+
+  #yd{position:fixed;z-index:60;display:none;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:4px 12px;font-size:.8rem;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+  footer{color:var(--muted);font-size:.8rem;text-align:center;margin-top:30px}
+  .att{display:grid;gap:8px;margin-top:10px}
+  .atti{border:1px solid var(--line);border-radius:10px;padding:9px 13px;font-size:.9rem}
+  .atti b{font-family:var(--serif)}
+  .atti.no2{background:var(--red-soft);border-color:var(--red)}
+  .atti.yes{background:var(--green-soft);border-color:var(--green)}
+  .atti,.expl,.wbi,.zh,.fi,.ai,figcaption,p{overflow-wrap:anywhere}
+
+  /* 2021 起：原文以原卷扫描句条呈现 */
+  .sn{margin:0 0 14px}
+  .sn .pno{display:block;margin-bottom:4px;font-size:.78rem;line-height:1.6}
+  img.strip{display:block;width:100%;max-width:760px;height:auto;background:#fff;border:1px solid var(--line);border-radius:6px;cursor:pointer}
+  .sent .src img.strip{margin-top:6px;cursor:default}
+  .kw{margin-top:5px;font-size:.88rem;line-height:2.1;font-family:var(--serif)}
+  @media (prefers-color-scheme: dark){img.strip{filter:invert(.9) hue-rotate(180deg)}}
+  .sn,.sent .src{overflow-x:auto}
+  @media (max-width:700px){img.strip{width:640px;max-width:none}.sn::after{content:'← 句条可左右滑动 →';display:block;font-size:.7rem;color:var(--muted);margin-top:2px}}
+
+  /* 2023 起：流式版——识别好的句子在段落里连排，像 2007–2020 */
+  .para .en{font-family:var(--serif);font-size:1.02rem;line-height:1.9}
+  .stx-flow .para .en .pno{margin-right:4px}
+  .stx-flow .para .sn:not(.stx-on) .kw{margin-bottom:8px}
+</style>
+
+</head>
+<body class="stx-flow">
+<div class="wrap">
+  <a class="back" href="index.html">◀ 返回英语复盘中心</a>
+  <header>
+    <h1>艺术家打响对 AI 文生图的反击战</h1>
+    <div class="sub">2024 年英语（一）真题 · Text 3 · 437 词 · 8 段 · 建议做题 18 min · 话题：人工智能×版权×艺术家生计（来源：《麻省理工科技评论》2022-09-16，原题 <i>This Artist Is Dominating AI-Generated Art. And He’s Not Happy about It.</i>，据黄皮书）</div>
+    <div class="tags">
+      <span class="tag">正确答案：31B 32C 33C 34D 35A</span><span class="tag">题型：事实细节 ×3 ＋ 人物观点 ＋ 文章主旨</span><span class="tag">难度：顺序出题，⑤⑥⑦段不单独出题；坑在「时间先后」和「谁对谁说」</span><span class="tag">✅ Claude 盲做 5/5（31 D、34 A 各排过一下）</span><span class="tag">⚠️ 原定冲刺模考卷，已按你的决定开复盘</span>
+    </div>
+  </header>
+
+  <div class="layout">
+    <main>
+      <!-- ========== 全文脉络 ========== -->
+      <section class="card">
+        <h2><span class="n">00</span>读前一分钟 · 全文脉络（做完题再看也行）</h2>
+        <div class="flow">
+          <div class="fi"><b>①段 人物出场</b>：格雷格·鲁特科夫斯基，波兰数字艺术家，用<b>古典绘画风格</b>画梦幻奇幻风景，给《龙与地下城》《万智牌》等游戏画过插画——<b>如今他在 AI 文生图的新世界里突然走红</b>（31 题：①❷ 是概述句）。</div>
+          <div class="fi"><b>②段 怎么个红法</b>：他的独特画风已是开源 AI 绘画生成器 Stable Diffusion 里<b>最常用的提示词之一</b>；这类工具让任何人都能凭文字提示生成精美图片——输入一串描述再加上他的名字，系统就能出一张和他的风格相差无几的图（31 题：②段是对①❷ 的详说）。</div>
+          <div class="fi"><b>③段 问题在哪</b>：<b>But</b>——这些开源程序是靠<b>从网上抓取图片</b>建起来的，往往没经过许可、也不给艺术家应有的署名；<b>As a result</b>，引出伦理与版权的棘手问题。像他这样的艺术家已经<b>受够了</b>（32 题：因果链回推 ⟹ 未经授权使用网络图片）。</div>
+          <div class="fi"><b>④段 他自己的经历</b>：追踪网站 Lexica 显示，他的名字被当作提示词用了约 9.3 万次。他起初吃惊，<b>但以为</b>这也许是接触新受众的好办法；<b>然后</b>他上网搜自己的名字，想看看自己画过的一幅作品有没有发出来——<b>搜出来的却是挂着他名字、却不是他画的作品</b>（33 题：题干 After searching online 卡住时间 ⟹ ❸❹ 之后）。</div>
+          <div class="fi"><b>⑤段 他的担忧</b>：「才过了一个月，一年后呢？到时网上全是 AI 画，我大概连自己的作品都找不到了。这让人担心。」——④段事件的情绪收尾。</div>
+          <div class="fi"><b>⑥段 过渡</b>：<b>不止他一个</b>——别的艺术家也惊讶于自己的作品在文生图工具里这么「火」，<b>有些人已开始反击</b>。全段一句话，把文章从「一个人的遭遇」转到「一群人的行动」。</div>
+          <div class="fi"><b>⑦段 第二个声音</b>：旧金山插画师卡拉·奥尔蒂斯在 Stable Diffusion 的数据集里发现了自己的作品，一直在<b>提高公众对 AI 艺术与版权问题的认识</b>。艺术家们说，人们拿基于受版权保护素材生成的 AI 图去商用，他们就有<b>丢收入</b>的风险；奥尔蒂斯说这还牵涉<b>更私人</b>的东西——艺术和人紧密相连，可能引发数据保护和隐私问题（35C 的原料）。</div>
+          <div class="fi"><b>⑧段 反击怎么打</b>：艺术界正在<b>结成联盟</b>，想办法化解或缓解这件事；联盟还在动员初期，<b>可能推动出台新政策或监管</b>。一条建议：<b>AI 模型可以用公有领域的图片训练</b>，AI 公司可以和博物馆、艺术家<b>建立合作</b>（34 题：分清「谁做什么」）。</div>
+          <div class="fi" style="border-color:var(--accent)">📌 <b>一句话主旨</b>：AI 文生图未经许可拿艺术家的作品「喂」模型，鲁特科夫斯基这样的艺术家受够了，以奥尔蒂斯为代表的一批人已经开始反击（35A）。<br>📌 <b>文体</b>：科技媒体的<b>特稿</b>——和同卷 T2 一样，<b>作者自己不亮观点</b>，全靠两位艺术家的话推进：前半是鲁特科夫斯基（①–⑤），后半是奥尔蒂斯（⑦⑧），中间⑥段一句话换人。<b>两人立场一致</b>，都站在艺术家一边——这一点直接判死 35D 的「对立观点」。<br>📌 <b>结构：一条情绪线</b>——走红（①②）→ But 问题（③）→ 惊讶→以为是好事→发现不对（④）→ 担忧（⑤）→ 反击（⑥–⑧）。三个转折信号：③❶ <span class="loc">But</span> · ④❷ <span class="loc">but thought</span> · ⑦❸ <span class="loc">But it’s also</span>。<br>📌 <b>出题顺序</b>：31 ①② · 32 ③ · 33 ④ · 34 ⑧ · 35 全文——<b>⑤⑥⑦段不单独出题</b>：⑤是④的情绪尾巴，⑥是过渡，⑦被 34D 拿去做对比（copyrighted material ↔ public domain），又被 35C 拿去当干扰项原料（privacy）。<br>📌 <b>本篇最值钱的两条规律</b>：① <b>时间状语卡定位</b>（33 题 After searching online：同一段里「搜之前」的想法和「搜之后」的发现，只有后者能选）；② <b>人物建议题先画「主体→动作」表</b>（34 题⑧段三个主体三件事：联盟→推政策 · AI 模型→换训练素材 · AI 公司→找合作，干扰项全是把主体对错位）。</div>
+          <div class="fi">🗞 <b>背景（WebSearch 核过，只帮读、不替原文纠错）</b>：原文刊于《麻省理工科技评论》2022 年 9 月 16 日。Stable Diffusion 是 2022 年 8 月公开发布的——⑤❶ 那句「才过了一个月」正好对得上发稿时间。原文在「约 9.3 万次」之后紧接着有一组对照：米开朗琪罗、毕加索、达·芬奇这样的大师，各自只被用作提示词约 2,000 次甚至更少——<b>考卷把这句删了</b>，所以卷面上「最常用」的分量要靠②❶ 自己撑。后续：2023 年 1 月，包括奥尔蒂斯在内的几位艺术家对 Stability AI、Midjourney 等公司提起集体诉讼；同年 10 月法官作出初步裁定，「用作品训练模型构成直接侵权」这一主张得以继续推进、其余主张多数被驳回——<b>考生 12 月考试时，这场官司正打着</b>。另据科技媒体报道，Stable Diffusion 2.0（2022 年 11 月）之后模仿特定画家风格变难了，可很快有人用他的作品另训小模型，把「他的风格」又做了回来——开源工具的版权难题，到今天也没解完。</div>
+        </div>
+      </section>
+
+      <!-- ========== 原文精读 ========== -->
+      <section class="card">
+        <h2><span class="n">01</span>原文精读 <button class="allbtn" onclick="toggleAll()">全文意译 开/关</button> <button class="allbtn" id="imgall" onclick="imgAll(this)">原卷对照</button></h2>
+        <p style="font-size:.8rem;color:var(--muted);margin-bottom:14px">🟡 黄色高亮 = 重难点词/短语，点击右侧出卡片 ｜ 蓝色虚线 = 长难句，点击跳到精析 ｜ 每段「意」= 段落意译 ｜ 选中任意其他单词浮出「查有道」 ｜ 原文由你的浏览器从原卷识别成文字（首次约 3 秒，之后秒开）；「原卷对照」可逐句看扫描原图、改识别错字</p>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">①</span>
+            <div class="sn" data-go="l1_1"><img class="strip" src="img/2024_T3/s1_1.png" alt="①❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="digital">digital</span> · <span class="tk" data-w="classical">classical</span> · <span class="tk" data-w="dreamy">dreamy</span> · <span class="tk" data-w="fantasy">fantasy</span> · <span class="tk" data-w="landscape">landscapes</span> · <span class="tk" data-w="illustration">illustrations</span></div></div>
+            <div class="sn"><img class="strip" src="img/2024_T3/s1_2.png" alt="①❷ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="hit">a sudden hit</span> · <span class="tk" data-w="texttoimage">text-to-image</span> · <span class="tk" data-w="generation">generation</span></div></div>
+          </div>
+          <div class="zh"><b>①段意：</b>格雷格·鲁特科夫斯基是一位波兰数字艺术家，用古典绘画风格创作梦幻般的奇幻风景，曾为《龙与地下城》《万智牌》等游戏绘制插画。如今，他在 AI 文生图这个新世界里突然走红了。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">②</span>
+            <div class="sn"><img class="strip" src="img/2024_T3/s2_1.png" alt="②❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="distinctive">distinctive</span> · <span class="tk" data-w="prompt">prompts</span> · <span class="tk" data-w="opensource">open-source</span> · <span class="tk" data-w="generator">generator</span></div></div>
+            <div class="sn"><img class="strip" src="img/2024_T3/s2_2.png" alt="②❷ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="alongwith">along with</span> · <span class="tk" data-w="allow">allows</span> · <span class="tk" data-w="impressive">impressive</span> · <span class="tk" data-w="basedon">based on</span></div></div>
+            <div class="sn" data-go="l2_3"><img class="strip" src="img/2024_T3/s2_3.png" alt="②❸ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="typein">type in</span> · <span class="tk" data-w="orb">orb</span> · <span class="tk" data-w="fierce">fierce</span> · <span class="tk" data-w="millionmiles">not a million miles away from</span></div></div>
+          </div>
+          <div class="zh"><b>②段意：</b>他独特的画风，现在已经是新出的开源 AI 绘画生成器 Stable Diffusion 里最常用的提示词之一。和其他流行的 AI 图像生成模型一样，这个工具让任何人都能凭文字提示创作出精美的图像。比如，输入「巫师手持利剑和闪耀的魔法火球，与一条凶猛的巨龙搏斗，格雷格·鲁特科夫斯基」，系统就会生成一幅和他的作品风格相差无几的画。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">③</span>
+            <div class="sn" data-go="l3_1"><img class="strip" src="img/2024_T3/s3_1.png" alt="③❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="scrape">scraping</span> · <span class="tk" data-w="permission">permission</span> · <span class="tk" data-w="attribution">attribution</span></div></div>
+            <div class="sn"><img class="strip" src="img/2024_T3/s3_2.png" alt="③❷ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="asaresult">As a result</span> · <span class="tk" data-w="raise">raising</span> · <span class="tk" data-w="tricky">tricky</span> · <span class="tk" data-w="ethics">ethics</span> · <span class="tk" data-w="copyright">copyright</span></div></div>
+            <div class="sn"><img class="strip" src="img/2024_T3/s3_3.png" alt="③❸ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="haveenough">have had enough</span></div></div>
+          </div>
+          <div class="zh"><b>③段意：</b>但这些开源程序是靠从互联网上抓取图片建起来的，往往既没有征得艺术家的许可，也没有给出应有的署名。于是，它们引发了有关伦理和版权的棘手问题。像鲁特科夫斯基这样的艺术家已经受够了。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">④</span>
+            <div class="sn" data-go="l4_1"><img class="strip" src="img/2024_T3/s4_1.png" alt="④❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="track">tracks</span></div></div>
+            <div class="sn"><img class="strip" src="img/2024_T3/s4_2.png" alt="④❷ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="initially">initially</span> · <span class="tk" data-w="reach">reach</span> · <span class="tk" data-w="audience">audiences</span></div></div>
+            <div class="sn" data-go="l4_3"><img class="strip" src="img/2024_T3/s4_3.png" alt="④❸ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="workon">worked on</span> · <span class="tk" data-w="publish">published</span></div></div>
+            <div class="sn" data-go="l4_4"><img class="strip" src="img/2024_T3/s4_4.png" alt="④❹ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="bringback">brought back</span> · <span class="tk" data-w="attach">attached</span></div></div>
+          </div>
+          <div class="zh"><b>④段意：</b>据追踪了 1000 多万张 Stable Diffusion 图像及其提示词的网站 Lexica 统计，鲁特科夫斯基的名字被用作提示词约 9.3 万次。他起初很吃惊，但觉得这也许是接触新受众的好办法。后来，他试着搜索自己的名字，想看看自己画过的一幅作品有没有发表出来——搜索结果里却是一些挂着他的名字、却并非出自他手的作品。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">⑤</span>
+            <div class="sn"><img class="strip" src="img/2024_T3/s5_1.png" alt="⑤❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="justamonth">just a month</span></div></div>
+            <div class="sn"><img class="strip" src="img/2024_T3/s5_2.png" alt="⑤❷ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="whatabout">What about</span></div></div>
+            <div class="sn"><img class="strip" src="img/2024_T3/s5_3.png" alt="⑤❸ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="outthere">out there</span> · <span class="tk" data-w="flood">flooded with</span></div></div>
+            <div class="sn"><img class="strip" src="img/2024_T3/s5_4.png" alt="⑤❹ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="concerning">concerning</span></div></div>
+          </div>
+          <div class="zh"><b>⑤段意：</b>「这才过了一个月。要是一年以后呢？到时候我大概根本找不到自己的作品了，因为网上会被 AI 画作淹没。」鲁特科夫斯基说，「这让人担心。」</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">⑥</span>
+            <div class="sn" data-go="l6_1"><img class="strip" src="img/2024_T3/s6_1.png" alt="⑥❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="besides">besides</span> · <span class="tk" data-w="apparent">apparent</span> · <span class="tk" data-w="popularity">popularity</span> · <span class="tk" data-w="fightback">fighting back</span></div></div>
+          </div>
+          <div class="zh"><b>⑥段意：</b>除了鲁特科夫斯基，其他艺术家也对自己的作品在文生图工具里明显的走红感到吃惊——而且有些人已经开始反击。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">⑦</span>
+            <div class="sn" data-go="l7_1"><img class="strip" src="img/2024_T3/s7_1.png" alt="⑦❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="illustrator">illustrator</span> · <span class="tk" data-w="basedin">based in</span> · <span class="tk" data-w="dataset">data set</span> · <span class="tk" data-w="raiseawareness">raising awareness</span> · <span class="tk" data-w="issue">issues around</span></div></div>
+            <div class="sn"><img class="strip" src="img/2024_T3/s7_2.png" alt="⑦❷ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="risk">risk losing</span> · <span class="tk" data-w="income">income</span> · <span class="tk" data-w="copyrighted">copyrighted</span> · <span class="tk" data-w="material">material</span> · <span class="tk" data-w="commercial">commercial</span></div></div>
+            <div class="sn" data-go="l7_3"><img class="strip" src="img/2024_T3/s7_3.png" alt="⑦❸ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="personal">personal</span> · <span class="tk" data-w="argue">arguing</span> · <span class="tk" data-w="linkedto">linked to</span> · <span class="tk" data-w="dataprotection">data protection</span> · <span class="tk" data-w="privacy">privacy</span></div></div>
+          </div>
+          <div class="zh"><b>⑦段意：</b>卡拉·奥尔蒂斯是旧金山的一位插画师，她在 Stable Diffusion 的数据集里发现了自己的作品，此后一直在提高人们对 AI 艺术和版权相关问题的认识。艺术家们说，随着人们开始把基于受版权保护素材生成的 AI 图像用于商业目的，他们面临丢掉收入的风险。但奥尔蒂斯说，这件事还私人得多：她认为，由于艺术和创作者本人联系得如此紧密，这可能引发数据保护和隐私问题。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">⑧</span>
+            <div class="sn"><img class="strip" src="img/2024_T3/s8_1.png" alt="⑧❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="coalition">coalition</span> · <span class="tk" data-w="figureout">figure out</span> · <span class="tk" data-w="tackle">tackle</span> · <span class="tk" data-w="mitigate">mitigate</span></div></div>
+            <div class="sn" data-go="l8_2"><img class="strip" src="img/2024_T3/s8_2.png" alt="⑧❷ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="earlydays">early days</span> · <span class="tk" data-w="mobilization">mobilization</span> · <span class="tk" data-w="involve">involve</span> · <span class="tk" data-w="pushfor">pushing for</span> · <span class="tk" data-w="regulation">regulation</span></div></div>
+            <div class="sn" data-go="l8_3"><img class="strip" src="img/2024_T3/s8_3.png" alt="⑧❸ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="trainon">trained on</span> · <span class="tk" data-w="publicdomain">public domain</span> · <span class="tk" data-w="forge">forge</span> · <span class="tk" data-w="partnership">partnerships</span></div></div>
+          </div>
+          <div class="zh"><b>⑧段意：</b>「艺术界内部正在形成一个联盟，想办法解决或缓解这个问题。」奥尔蒂斯说。这个团体还处在动员的初期，接下来可能会推动出台新的政策或监管措施。奥尔蒂斯说，有一条建议是：AI 模型可以用公有领域（不受版权保护）的图片来训练，AI 公司也可以和博物馆、艺术家建立合作关系。</div>
+        </div>
+      </section>
+
+      <!-- ========== 题目 ========== -->
+      <section class="card">
+        <h2><span class="n">02</span>题目与解析（点选项即判 · 再看解析）</h2>
+
+        <div class="q" data-ans="1" id="q31">
+          <p class="stem"><span class="qt">事实细节</span>31. What can be learned about Rutkowski from the first two paragraphs?</p>
+          <div class="opts">
+            <div class="opt">[A] He is <span class="tk" data-w="enthusiastic">enthusiastic</span> about using AI models.</div>
+            <div class="opt">[B] He is popular with users of an AI art generator.</div>
+            <div class="opt">[C] He attracts <span class="tk" data-w="admiration">admiration</span> from other illustrators.</div>
+            <div class="opt">[D] He <span class="tk" data-w="specialize">specializes in</span> classical painting <span class="tk" data-w="digitalization">digitalization</span>.</div>
+          </div>
+          <div class="expl"><b>答案 B</b>　两段是「概述 → 详说」：①❷ 一句话先概述——<span class="loc">he’s become a sudden hit</span> in the new world of text-to-image AI generation；②段再展开怎么个「红」法——❶ 他的画风是 Stable Diffusion 里 <span class="loc">one of the most commonly used prompts</span>，❸ 输入他的名字就能出近似他风格的图。<b>「被当作提示词用得最多」＝ 生成器的用户最爱用他</b> ⟹ B。popular ↔ a sudden hit ＋ most commonly used，users of an AI art generator ↔ 在 Stable Diffusion 里输提示词的人，<b>an AI art generator 恰好指代 Stable Diffusion</b>。<br><b>干扰项：</b>A 把主体弄反了：热衷用 AI 模型的是<b>大众用户</b>，不是他本人——他本人③❸ <span class="loc">have had enough</span>、⑤❹ 觉得 concerning，态度恰恰相反。C「受同行钦佩」原文没有：①段只说他给游戏画插画、在 AI 圈走红——那是<b>市场</b>认可，不是 other illustrators 的评价。D 是本题最毒的一项，偷换在两处：原文是他<b>用古典画风创作数字作品</b>（<span class="loc">uses classical painting styles to create</span> 奇幻风景），选项变成「把古典画作数字化」——前者是原创，后者是把旧画扫描、修复成电子版；身份也从<b>艺术家</b>被换成了<b>技术人员</b>。<br><b>要害：</b>前两段问「能了解到他什么」，答案要落在两段<b>共同的核心</b>上——①❷ 的 hit 和②段的 most commonly used 说的是同一件事。A、D 只扣个人兴趣／个人工作，C 扣同行评价，都偏离「走红」这条主线。</div>
+        </div>
+
+        <div class="q" data-ans="2" id="q32">
+          <p class="stem"><span class="qt">事实细节</span>32. The problem with open-source AI art generators is that they ______.</p>
+          <div class="opts">
+            <div class="opt">[A] lack <span class="tk" data-w="flexibility">flexibility</span> in responding to prompts.</div>
+            <div class="opt">[B] produce artworks in <span class="tk" data-w="unpredictable">unpredictable</span> styles.</div>
+            <div class="opt">[C] make <span class="tk" data-w="unauthorized">unauthorized</span> use of online images.</div>
+            <div class="opt">[D] collect user information without <span class="tk" data-w="consent">consent</span>.</div>
+          </div>
+          <div class="expl"><b>答案 C</b>　题干的 The problem 指向③段——③❶ 一开头就是 <span class="loc">But</span>，从②段的「好用」转到「问题」。③❶ 这些开源程序是 <span class="loc">built by scraping images from the internet</span>，<span class="loc">often without permission</span> and proper attribution → ❷ <span class="loc">As a result</span>，引出伦理和版权难题。版权、伦理是抽象词，<b>顺着 As a result 往回推</b>，它们的具体所指就是❶ 的「抓图不经许可、不署名」⟹ C。unauthorized ↔ without permission，online images ↔ images from the internet。<br><b>干扰项：</b>A、B 都从②❸ 取料却说反了：②❸ 恰恰说明输入一串提示词，系统就能产出和他风格<b>相差无几</b>的图——这是「听话」、风格高度可控，既不是 lack flexibility，也不是 unpredictable styles。D 偷换对象：未经许可「收集」的是<b>艺术家的作品图片</b>，不是<b>用户信息</b>；⑦❸ 的 privacy 说的是艺术和艺术家本人紧密相连，也跟用户数据无关。<br><b>要害：</b>答案句（版权、伦理）越抽象，越要找它的<b>因果上家</b>——As a result、Therefore、So 前面那句才是可以和选项对上的具体事实。</div>
+        </div>
+
+        <div class="q" data-ans="2" id="q33">
+          <p class="stem"><span class="qt">事实细节</span>33. After searching online, Rutkowski found ______.</p>
+          <div class="opts">
+            <div class="opt">[A] a <span class="tk" data-w="unique">unique</span> way to reach audiences.</div>
+            <div class="opt">[B] a new method to <span class="tk" data-w="identify">identify</span> AI images.</div>
+            <div class="opt">[C] AI-generated work <span class="tk" data-w="bear">bearing</span> his name.</div>
+            <div class="opt">[D] <span class="tk" data-w="heated">heated</span> <span class="tk" data-w="dispute">disputes</span> regarding his copyright.</div>
+          </div>
+          <div class="expl"><b>答案 C</b>　题干带了一个<b>时间限定</b>：After searching online。④段四句按时间排：❶ Lexica 数据 → ❷ 他起初吃惊、以为是好事 → ❸ <span class="loc">Then he tried searching</span> for his name → ❹ <span class="loc">The online search brought back</span> 一些 <span class="loc">work that had his name attached to it but wasn’t his</span>。「搜之后发现了什么」只能是❹ ⟹ C。bearing his name ↔ had his name attached to it；AI-generated 是由 wasn’t his 加上全文语境（他的名字被当提示词用了 9 万多次）得出的——挂他名字又不是他画的，只能是 AI 按他的名字生成的。<br><b>干扰项：</b>A 看着最像原文——④❷ <span class="loc">a good way to reach new audiences</span>，但那是他<b>搜索之前</b>的想法，选项把事件先后颠倒了；搜索之后他的态度反转成⑤段的担忧。B 窜改④❶：Lexica 只是「追踪」了图像和提示词，不是他找到了「识别 AI 图像的方法」。D 把③❷❸ 的版权难题、艺术家「受够了」挪了过来，可那是整个行业的问题，不是他上网搜出来的东西；原文也没写「激烈争议」。<br><b>要害：</b>题干里的 After / Before / Initially / Then / Later 都是定位器——<b>同一段里，时间点之前的信息全是干扰项原料</b>。</div>
+        </div>
+
+        <div class="q" data-ans="3" id="q34">
+          <p class="stem"><span class="qt">人物观点</span>34. According to Ortiz, AI companies are advised to ______.</p>
+          <div class="opts">
+            <div class="opt">[A] <span class="tk" data-w="campaign">campaign for</span> new policies or regulation.</div>
+            <div class="opt">[B] offer their services to public <span class="tk" data-w="institution">institutions</span>.</div>
+            <div class="opt">[C] <span class="tk" data-w="strengthen">strengthen</span> their relationships with AI users.</div>
+            <div class="opt">[D] adopt a different <span class="tk" data-w="strategy">strategy</span> for AI model training.</div>
+          </div>
+          <div class="expl"><b>答案 D</b>　⑧段奥尔蒂斯说了三个主体、三件事，先画成表：<br>　① <b>艺术家联盟</b>（⑧❶❷ coalition / The group）→ 可能 <span class="loc">pushing for new policies or regulation</span>；<br>　② <b>AI 模型</b>（⑧❸ 前半）→ <span class="loc">could be trained on images in the public domain</span>；<br>　③ <b>AI 公司</b>（⑧❸ 后半）→ <span class="loc">could forge partnerships with museums and artists</span>。<br>题干问的是给 AI 公司的建议。⑦❷ 交代了现状：AI 图像是 <span class="loc">based on copyrighted material</span>（基于受版权保护的素材）；⑧❸ 建议改用 public domain（公有领域、不受版权保护）的图片——<b>从「受版权保护的素材」换成「无版权的素材」，就是换一种训练策略</b> ⟹ D。a different strategy 正体现 copyrighted material ↔ public domain 的对比。<br><b>干扰项：</b>A 主体偷换——推动新政策是<b>联盟</b>（艺术家一方）要做的事，不是给 AI 公司的建议；campaign for ↔ pushing for 改写得很像，正是陷阱所在。B 把「和博物馆<b>合作</b>」改成「向公共机构<b>提供服务</b>」——合作关系被扭成了服务与被服务。C 把合作对象 museums and artists 换成了 AI users。<br><b>要害：</b>人物话语里同时出现几个主体、几条建议时，干扰项几乎都是「把 A 的动作安到 B 头上」。<b>先配对、再对题干的主体</b>，A、C 一眼就出局。</div>
+        </div>
+
+        <div class="q" data-ans="0" id="q35">
+          <p class="stem"><span class="qt">文章主旨</span>35. What is the text mainly about?</p>
+          <div class="opts">
+            <div class="opt">[A] Artists’ <span class="tk" data-w="response">responses</span> to AI art generation.</div>
+            <div class="opt">[B] AI’s <span class="tk" data-w="expand">expanded</span> role in artistic creation.</div>
+            <div class="opt">[C] Privacy issues in the application of AI.</div>
+            <div class="opt">[D] <span class="tk" data-w="opposing">Opposing</span> views on AI development.</div>
+          </div>
+          <div class="expl"><b>答案 A</b>　纵向数一遍复现词：Rutkowski、artists、Ortiz 全指向<b>艺术家</b>；AI art、AI-generated images、text-to-image generators 全指向 <b>AI 生成艺术</b>——两者就是全文的两条线索。再看走向：①–⑤ 借鲁特科夫斯基走红，带出艺术家对伦理、版权问题<b>受够了</b>（③❸）、<b>担忧</b>（⑤❹）；⑥ <span class="loc">some are now fighting back</span>；⑦⑧ 以奥尔蒂斯为代表写反击——发声、结盟、提建议。吃惊、担忧、反击，都是艺术家的「回应」⟹ A。<br><b>干扰项：</b>B 只概括了②段（AI 让任何人都能作画），而且把全文的关注点从「AI 绘画引发的问题」偏成了「AI 起的作用」。C 的 privacy 只在⑦❸ 出现一次，是诸多后果中的一个，属细节。D 看着像「前后两半各一个人」，可两人<b>立场一致</b>（都反对 AI 不经许可用作品），谈不上 opposing；文章讨论的也是具体的文生图技术，而不是泛泛的 AI development。<br><b>要害：</b>主旨题先按复现词排掉<b>范围太宽</b>的（C、D 说的是整个 AI），再在剩下的 A、B 里看<b>方向</b>：文章在讲问题与反击，不在讲 AI 的功劳。</div>
+        </div>
+      </section>
+
+      <!-- ========== 长难句 ========== -->
+      <section class="card" id="sents">
+        <h2><span class="n">03</span>长难句精析（正文蓝色虚线句）</h2>
+
+        <div class="sent" id="l1_1">
+          <div class="src"><b>s1（①❶）</b><img class="strip" src="img/2024_T3/s1_1.png" alt="①❶ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：<code>Greg Rutkowski has made illustrations for games</code>——主语是逗号后面的人名。</li>
+            <li>句首 <code>A Polish digital artist who uses …</code> 是<b>前置同位语</b>：先给身份、再报名字，新闻特稿介绍人物的标准写法。同位语里套着 who 引导的定语从句：<code>uses classical painting styles to create dreamy fantasy landscapes</code>——to create 是目的状语。</li>
+            <li><code>games such as Dungeons &amp; Dragons and Magic: The Gathering</code>：such as 举例，两个都是游戏名（龙与地下城 / 万智牌），别把 and 当成连接两个并列成分的普通 and。</li>
+            <li>31D 就在这句上下手：<b>uses classical styles to create</b>（用古典风格创作新东西）≠ classical painting digitalization（把古典画作数字化）。</li>
+          </ul>
+          <div class="tr">意：格雷格·鲁特科夫斯基是一位用古典绘画风格创作梦幻奇幻风景的波兰数字艺术家，曾为《龙与地下城》《万智牌》等游戏绘制插画。</div>
+        </div>
+
+        <div class="sent" id="l2_3">
+          <div class="src"><b>s2（②❸）</b><img class="strip" src="img/2024_T3/s2_3.png" alt="②❸ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">结构</span>：<b>祈使句 ＋ and ＋ 陈述句</b>＝「只要……就……」。<code>type in “…”, and the system will produce something</code>——和 Work hard, and you will succeed 同一个骨架，前半是条件。</li>
+            <li>引号里是一条完整的提示词：巫师持剑与魔法火球，<code>fights a fierce dragon</code>，最后缀上画家的名字——<b>名字本身就是「风格开关」</b>，这正是全文的起因。</li>
+            <li><code>something that looks not a million miles away from works in Rutkowski’s style</code>：that 引导定语从句修饰 something；<code>not a million miles away from</code> 字面是「离……不到一百万英里」，实际意思是<b>跟……差不多、相去不远</b>（英式口语里的反语式夸张）。</li>
+            <li>本句被 32A、32B 拿去造干扰项：它说的是生成器很「听话」，所以 lack flexibility、unpredictable styles 都和原文唱反调。</li>
+          </ul>
+          <div class="tr">意：比如，输入「巫师手持利剑和闪耀的魔法火球与一条凶猛的巨龙搏斗，格雷格·鲁特科夫斯基」，系统就会生成一幅和他的作品风格相差无几的画。</div>
+        </div>
+
+        <div class="sent" id="l3_1">
+          <div class="src"><b>s3（③❶）</b><img class="strip" src="img/2024_T3/s3_1.png" alt="③❶ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：<code>these open-source programs are built by scraping images</code>——被动语态，<code>by doing</code> 表方式（靠抓取图片建成）。</li>
+            <li><code>from the internet</code> 修饰 scraping 的来源；逗号后 <code>often without permission and proper attribution to artists</code> 是补充说明的方式状语，permission 和 attribution 共用 without 和 to artists。</li>
+            <li>句首 <code>But</code> 是全文第一个转折：①②段的「走红、好用」到此为止，问题登场。<b>32 题的答案就是这半句</b>（unauthorized ↔ without permission）。</li>
+            <li>attribution 在这里是「署名、注明出处」——学术写作里 proper attribution 就是「规范引用」。</li>
+          </ul>
+          <div class="tr">意：但这些开源程序是靠从互联网上抓取图片建起来的，往往既没有征得艺术家的许可，也没有给出应有的署名。</div>
+        </div>
+
+        <div class="sent" id="l4_1">
+          <div class="src"><b>s4（④❶）</b><img class="strip" src="img/2024_T3/s4_1.png" alt="④❶ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：<code>Rutkowski’s name has been used as a prompt around 93,000 times</code>——现在完成时的被动，<code>be used as</code> 被用作；around 是「大约」。</li>
+            <li>句首 <code>According to the website Lexica</code> 交代数据来源；<code>which tracks over 10 million … images and prompts</code> 是非限制性定语从句，介绍 Lexica 是干什么的（追踪图片和提示词）。</li>
+            <li>track 在这里是「追踪、记录」——33B 拿这个词编出「识别 AI 图像的新方法」，其实 Lexica 只是个统计网站，和他的「发现」无关。</li>
+          </ul>
+          <div class="tr">意：据追踪了 1000 多万张 Stable Diffusion 图像及其提示词的网站 Lexica 统计，鲁特科夫斯基的名字被用作提示词约 9.3 万次。</div>
+        </div>
+
+        <div class="sent" id="l4_3">
+          <div class="src"><b>s5（④❸）</b><img class="strip" src="img/2024_T3/s4_3.png" alt="④❸ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：<code>Then he tried searching for his name</code>——<code>try doing</code> 是「试着做一下（看看效果）」，和 try to do「努力去做」不同。</li>
+            <li><code>to see if …</code> 是目的状语，if 引导宾语从句（看看是否……）；从句里主语 <code>a piece he had worked on</code> 带一个省略了关系词的定语从句（he had worked on 修饰 piece），谓语是 <code>had been published</code>。</li>
+            <li>一句里两个过去完成时：had worked on 早于搜索、had been published 也是相对搜索那一刻而言。</li>
+            <li>句首 <code>Then</code> 是 33 题的分水岭——它前面的「好办法」（④❷）是搜之前的想法，33A 正是从那里偷的料。</li>
+          </ul>
+          <div class="tr">意：后来，他试着搜索自己的名字，想看看自己画过的一幅作品有没有发表出来。</div>
+        </div>
+
+        <div class="sent" id="l4_4">
+          <div class="src"><b>s6（④❹）</b><img class="strip" src="img/2024_T3/s4_4.png" alt="④❹ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：<code>The online search brought back work</code>——<b>物作主语</b>：「搜索带回了作品」＝ 搜出了作品。bring back 这里是「（搜索）返回结果」。</li>
+            <li><code>that had his name attached to it but wasn’t his</code>：that 引导定语从句修饰 work，从句里两个谓语由 but 并列——<code>had his name attached to it</code>（have ＋ 宾语 ＋ 过去分词：名字被挂在上面）和 <code>wasn’t his</code>（不是他的）。</li>
+            <li>33C 的 bearing his name 是 had his name attached to it 的同义改写；bear 在这里是「带有、标着」，不是「熊」也不是「忍受」。</li>
+          </ul>
+          <div class="tr">意：搜索结果里却是一些挂着他的名字、却并非出自他手的作品。</div>
+        </div>
+
+        <div class="sent" id="l6_1">
+          <div class="src"><b>s7（⑥❶）</b><img class="strip" src="img/2024_T3/s6_1.png" alt="⑥❶ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">结构</span>：两个分句由<b>破折号 ＋ and</b> 连接：前句 <code>Other artists besides Rutkowski have been surprised by …</code>，后句 <code>some are now fighting back</code>。破折号把后一句推到重音位置——<b>这才是本段要说的</b>。</li>
+            <li><code>besides</code> 是「除……之外（还有）」——包括他；except 才是把他排除在外。Other artists besides Rutkowski ＝ 不止他一个。</li>
+            <li><code>the apparent popularity of their work in text-to-image generators</code>：apparent 是「明显的、看得出的」；of their work 修饰 popularity，in … generators 是范围。</li>
+            <li>全段只有这一句：<b>过渡段</b>——把文章从一个人的遭遇（①–⑤）切到一群人的行动（⑦⑧），35 题「回应」的主线在这里点明。</li>
+          </ul>
+          <div class="tr">意：除了鲁特科夫斯基，其他艺术家也对自己的作品在文生图工具里明显的走红感到吃惊——而且有些人已经开始反击。</div>
+        </div>
+
+        <div class="sent" id="l7_1">
+          <div class="src"><b>s8（⑦❶）</b><img class="strip" src="img/2024_T3/s7_1.png" alt="⑦❶ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：<code>Karla Ortiz … has been raising awareness about the issues</code>——现在完成进行时，表示一直在做、还在做。</li>
+            <li>主谓之间夹着一长段同位语：<code>an illustrator based in San Francisco</code> ＋ <code>who found her work in … data set</code>——based in 是「常驻于」（过去分词作后置定语），who 从句交代她为什么出来发声：在数据集里<b>发现了自己的作品</b>。读的时候先跳过两个逗号之间的部分，找到 has been raising。</li>
+            <li><code>the issues around AI art and copyright</code>：around 在这里是「关于、围绕」，相当于 about / concerning。</li>
+          </ul>
+          <div class="tr">意：卡拉·奥尔蒂斯是旧金山的一位插画师，她在 Stable Diffusion 的数据集里发现了自己的作品，此后一直在提高人们对 AI 艺术和版权相关问题的认识。</div>
+        </div>
+
+        <div class="sent" id="l7_3">
+          <div class="src"><b>s9（⑦❸）</b><img class="strip" src="img/2024_T3/s7_3.png" alt="⑦❸ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：<code>But it’s also a lot more personal</code>——it 指上句说的这件事（AI 用受保护素材）；a lot 修饰比较级，「还要私人得多」。</li>
+            <li><code>Ortiz says</code> 是插入的引述；<code>arguing that …</code> 是现在分词作伴随状语，引出她的理由。</li>
+            <li>that 宾语从句里又套一个原因状语从句：<code>because art is so closely linked to a person</code>（因为艺术和人联系得如此紧密），主句 <code>it could raise data protection and privacy problems</code>。</li>
+            <li>But 前后是递进不是对立：上一句说的是<b>钱</b>（丢收入），这一句加上<b>人</b>（隐私）。35C 只抓住了这半句的 privacy——全文就这一处，当不了主旨。</li>
+          </ul>
+          <div class="tr">意：但奥尔蒂斯说，这件事还私人得多：她认为，由于艺术和创作者本人联系得如此紧密，这可能引发数据保护和隐私问题。</div>
+        </div>
+
+        <div class="sent" id="l8_2">
+          <div class="src"><b>s10（⑧❷）</b><img class="strip" src="img/2024_T3/s8_2.png" alt="⑧❷ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：<code>The group is in its early days of mobilization</code>——The group 回指❶ 的 coalition（艺术家联盟）；in its early days 处于初期。</li>
+            <li><code>which could involve pushing for new policies or regulation</code>：非限制性定语从句修饰 mobilization；<code>involve doing</code> 涉及、包括做某事；push for 极力争取。</li>
+            <li>本句的主语是<b>联盟</b>——34A 的 campaign for new policies 就是从这里搬过去、再把主语换成 AI companies 的。</li>
+          </ul>
+          <div class="tr">意：这个团体还处在动员的初期，接下来可能会推动出台新的政策或监管措施。</div>
+        </div>
+
+        <div class="sent" id="l8_3">
+          <div class="src"><b>s11（⑧❸）</b><img class="strip" src="img/2024_T3/s8_3.png" alt="⑧❸ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：<code>One suggestion is that …</code>——主系表，that 引导<b>表语从句</b>，从句里由 and 并列两个分句，句末 <code>Ortiz says</code> 交代出处。</li>
+            <li>分句一：<code>AI models could be trained on images in the public domain</code>——train on 在……上训练（机器学习的固定说法）；in the public domain 处于公有领域、不受版权保护。</li>
+            <li>分句二：<code>AI companies could forge partnerships with museums and artists</code>——forge 不是「伪造」，是「建立、缔造」（forge ties / forge a partnership）。</li>
+            <li>两个分句其实指向同一件事：<b>训练数据从哪里来</b>——要么用没有版权的图，要么跟握有作品的博物馆和艺术家合作拿授权。所以 34D「换一种训练策略」把前后两半都兜住了。</li>
+          </ul>
+          <div class="tr">意：奥尔蒂斯说，有一条建议是：AI 模型可以用公有领域的图片来训练，AI 公司也可以和博物馆、艺术家建立合作关系。</div>
+        </div>
+        <div class="flow" style="margin-top:10px"><div class="fi">🔍 <b>和黄皮书对一下</b>：五题答案与书一致，盲做 5/5。两处小商榷——① 34D 书上一处说「结合第七段②句」、另一处说「第七段首句」，copyrighted material 实际在⑦❷，后者是笔误；② 书解 34B 时说合作是「以更好地服务用户」，原文没这层目的——更贴的读法是博物馆和艺术家<b>手里有作品</b>，合作＝拿到授权素材，这样⑧❸ 前后两半都指向「训练数据」，正好一起支持 D。另：34 题干问 AI companies，⑧❸ 前半句主语却是 AI models——模型由公司训练，考场上直接认即可。</div></div>
+      </section>
+
+      <!-- ========== 词汇复盘 ========== -->
+      <section class="card">
+        <h2><span class="n">04</span>词汇复盘（点卡片看详情）</h2>
+        <div class="filters">
+          <button class="fbtn on" data-f="all">全部</button>
+          <button class="fbtn" data-f="core">核心词</button>
+          <button class="fbtn" data-f="phrase">短语</button>
+          <button class="fbtn" data-f="poly">熟词僻义</button>
+          <button class="fbtn" data-f="write">写作可用</button>
+        </div>
+        <div class="vgrid" id="vgrid"></div>
+      </section>
+
+      <!-- ========== 写作素材 ========== -->
+      <section class="card">
+        <h2><span class="n">05</span>可搬进作文/翻译的素材</h2>
+        <p style="font-size:.9rem;margin-bottom:12px">本篇话题——<b>人工智能、版权与原创、技术的两面性、个人权益</b>——正对大作文里的「科技与生活」「AI 与人类」「创新与保护」「网络时代的隐私」类题目，也能给小作文写「倡议书」「给平台的建议信」垫素材。英文例句都是按原文句式自拟的，只借骨架。</p>
+        <div class="wb">
+          <div class="wbi"><div class="p">A …, X has … And he’s become a sudden hit in …</div><div class="u">「X 是一位……，曾……；如今他在……突然走红」——<b>前置同位语介绍人物</b>，开门见山：A retired teacher from a small village, Mr. Li has become a sudden hit on short-video platforms.</div></div>
+          <div class="wbi"><div class="p">…, along with …, allows anyone to …</div><div class="u">「……和……一样，让任何人都能……」——写<b>技术的便利</b>：Online education, along with other digital tools, allows anyone to learn at their own pace.</div></div>
+          <div class="wbi"><div class="p">… looks not a million miles away from …</div><div class="u">「和……相差无几」——比 similar to 生动：The new campus looks not a million miles away from a modern business park.</div></div>
+          <div class="wbi"><div class="p">But …, often without permission and proper attribution. As a result, …</div><div class="u">「但……往往未经许可、也不注明出处。于是……」——<b>由好处转到问题</b>的两句骨架：But many videos are reposted, often without permission. As a result, original creators lose income.</div></div>
+          <div class="wbi"><div class="p">X was initially surprised but thought it might be a good way to …</div><div class="u">「起初吃惊，但觉得这也许是……的好办法」——写<b>态度的转变</b>，后面接 Then … 就是一个完整的小故事：I was initially nervous but thought it might be a good way to make friends.</div></div>
+          <div class="wbi"><div class="p">… and some are now fighting back.</div><div class="u">「……而且有些人已经开始反击」——<b>从现象到行动</b>的过渡句：Many residents have suffered from noise—and some are now fighting back.</div></div>
+          <div class="wbi"><div class="p">… has been raising awareness about the issues around …</div><div class="u">「一直在提高人们对……问题的认识」——写<b>公益倡导</b>：Volunteers have been raising awareness about the issues around food waste.</div></div>
+          <div class="wbi"><div class="p">There is a coalition growing within … to figure out how to tackle or mitigate this.</div><div class="u">「……内部正在形成联盟，想办法解决或缓解这个问题」——<b>写对策段的总起</b>：A coalition is growing among schools to figure out how to tackle student stress.</div></div>
+          <div class="wbi"><div class="p">One suggestion is that …, and …</div><div class="u">「一条建议是……，并且……」——<b>提建议</b>，比 I suggest 客观：One suggestion is that platforms label AI content, and users report suspected copies.</div></div>
+          <div class="wbi"><div class="p">话题词包：copyright · permission · attribution · privacy · regulation · public domain</div><div class="u">写「AI／版权／网络」时直接可用：intellectual property（知识产权）· infringe on copyright（侵犯版权）· give proper credit to（注明出处、致谢）· a double-edged sword（双刃剑）· strike a balance between innovation and protection（在创新与保护之间求平衡）· raise awareness of（提高……意识）。</div></div>
+        </div>
+      </section>
+    </main>
+    <aside>
+      <div id="panel">
+        <button class="close" onclick="document.getElementById('panel').classList.remove('open')">收起</button>
+        <div class="hint">点正文里的<b>黄色高亮词</b>，或下方词汇卡片，这里出详情。</div>
+      </div>
+    </aside>
+  </div>
+</div>
+<button id="yd">查有道</button>
+
+<script>
+const V={
+  digital:{"w": "digital", "ipa": "/ˈdɪdʒɪtl/", "pos": "adj.", "tags": ["core"], "cn": "<b>数字的</b>、数码的；电子的", "en": "using computer technology; stored as numbers", "ex": "A Polish <b>digital</b> artist（①❶）", "mem": "digit（手指 ⟹ 数位）＋ -al。digital artist 数字艺术家（在电脑上作画）；digital age 数字时代 · digital divide 数字鸿沟（写作常用）。", "syn": "electronic · computerized", "conf": "digital（数字的）· digitalize / digitize（使数字化）· digitalization（数字化，见 31D）。"},
+  classical:{"w": "classical", "ipa": "/ˈklæsɪkl/", "pos": "adj.", "tags": ["core"], "cn": "<b>古典的</b>（风格）；经典的", "en": "traditional in style, based on long-established forms", "ex": "uses <b>classical</b> painting styles（①❶）", "mem": "classic（经典的、一流的）＋ -al。classical music 古典音乐 · classical painting 古典绘画。<b>他是用古典画风创作新作品</b>，不是把古典画作数字化（31D 的坑）。", "syn": "traditional · old-master", "conf": "classical（古典风格的）· classic（经典的、典型的：a classic example）——前者讲风格流派，后者讲「一流、典型」。"},
+  dreamy:{"w": "dreamy", "ipa": "/ˈdriːmi/", "pos": "adj.", "tags": ["core"], "cn": "<b>梦幻般的</b>；爱幻想的", "en": "pleasant and unreal, like something in a dream", "ex": "create <b>dreamy</b> fantasy landscapes（①❶）", "mem": "dream ＋ -y（形容词后缀）。dreamy colours 梦幻的色调；说人则是「心不在焉、爱做梦的」。", "syn": "dreamlike · ethereal", "conf": "dreamy（梦幻的）· dreary（沉闷的）——差一个字母，意思相反。"},
+  fantasy:{"w": "fantasy", "ipa": "/ˈfæntəsi/", "pos": "n.", "tags": ["core"], "cn": "<b>奇幻</b>（作品类型）；幻想", "en": "a type of story or art about magic and imaginary worlds", "ex": "dreamy <b>fantasy</b> landscapes（①❶）", "mem": "fantasy novel 奇幻小说 · fantasy game 奇幻游戏；live in a fantasy world 活在幻想里。形容词 fantastic 原义「幻想的」，后引申为「极好的」。", "syn": "imagination · make-believe", "conf": "fantasy（奇幻、幻想）· fancy（想象；喜欢）· fantastic（极好的）。"},
+  landscape:{"w": "landscape", "ipa": "/ˈlændskeɪp/", "pos": "n.", "tags": ["core", "poly"], "cn": "<b>风景（画）</b>；（某领域的）格局、形势", "en": "a picture of countryside; the general situation in an area of activity", "ex": "dreamy fantasy <b>landscapes</b>（①❶）", "mem": "land ＋ -scape（景）。⚠️ 熟词僻义：阅读里常作「格局」——the political landscape 政治格局、the media landscape 媒体生态。本文是本义「风景画」。", "syn": "scenery · scene", "conf": "landscape（风景、格局）· seascape（海景）· cityscape（城市景观）。"},
+  illustration:{"w": "illustration", "ipa": "/ˌɪləˈstreɪʃn/", "pos": "n.", "tags": ["core"], "cn": "<b>插画</b>、插图；例证", "en": "a picture in a book or game; an example that explains something", "ex": "has made <b>illustrations</b> for games（①❶）", "mem": "illustrate（说明；配插图）的名词。for illustration 作为例证。⑦❶ 的 illustrator ＝ 插画师。", "syn": "picture · drawing · example", "conf": "illustration（插画；例证）· illustrator（插画师）· illusion（错觉）。"},
+  hit:{"w": "a sudden hit", "ipa": "/ə ˈsʌdn hɪt/", "pos": "phr.", "tags": ["phrase", "poly"], "cn": "<b>突然走红</b>（hit ＝ 大受欢迎的人或作品）", "en": "someone or something that becomes very popular quickly", "ex": "he’s become <b>a sudden hit</b>（①❷）", "mem": "⚠️ 熟词僻义：hit 作名词＝「轰动一时的人／作品」：a box-office hit 票房大热 · a hit song 热门歌曲 · be a hit with sb 受某人欢迎。<b>31B popular with users 就是它的改写</b>。", "syn": "success · sensation", "conf": "hit（成功之作）· flop（失败之作）——一对反义词。"},
+  texttoimage:{"w": "text-to-image", "ipa": "/ˌtekst tʊ ˈɪmɪdʒ/", "pos": "adj.", "tags": ["core"], "cn": "<b>文生图的</b>（由文字生成图像）", "en": "turning written descriptions into pictures", "ex": "the new world of <b>text-to-image</b> AI generation（①❷）", "mem": "text ＋ to ＋ image 连字符合成形容词。同类：text-to-speech 文字转语音 · speech-to-text 语音转文字。", "syn": "—", "conf": "text-to-image（文生图）· image-to-text（图生文，如看图说话）。"},
+  generation:{"w": "generation", "ipa": "/ˌdʒenəˈreɪʃn/", "pos": "n.", "tags": ["core", "poly"], "cn": "<b>生成</b>、产生；一代人", "en": "the process of producing something; people born around the same time", "ex": "text-to-image AI <b>generation</b>（①❷）", "mem": "⚠️ 熟词僻义：最熟的义项是「一代人」（the younger generation），本文是 generate 的名词「生成」：power generation 发电 · AI generation AI 生成。", "syn": "production · creation", "conf": "generation（生成；代）· generator（生成器；发电机）· generous（慷慨的）。"},
+  distinctive:{"w": "distinctive", "ipa": "/dɪˈstɪŋktɪv/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>独特的</b>、有特色的", "en": "easy to recognize because it is different", "ex": "His <b>distinctive</b> style（②❶）", "mem": "distinct（清楚的、不同的）＋ -ive。写作：a distinctive style 独特风格 · distinctive features 鲜明特点。", "syn": "unique · characteristic", "conf": "distinctive（独特的）· distinct（截然不同的；清晰的）· distinguished（杰出的）。"},
+  prompt:{"w": "prompt", "ipa": "/prɒmpt/", "pos": "n.", "tags": ["core", "poly"], "cn": "<b>提示词</b>（输给 AI 的指令）；（v.）促使", "en": "a short instruction given to an AI system; to cause sth to happen", "ex": "most commonly used <b>prompts</b>（②❶）", "mem": "⚠️ 熟词僻义：prompt 常作动词「促使」（prompt sb to do）、形容词「迅速的」（a prompt reply）。AI 语境里它是名词「提示词」：text prompts 文字提示。", "syn": "cue · instruction", "conf": "prompt（促使；迅速的；提示）· prompted by（由……引发）——阅读里「促使」义出现最多。"},
+  opensource:{"w": "open-source", "ipa": "/ˌəʊpən ˈsɔːs/", "pos": "adj.", "tags": ["core"], "cn": "<b>开源的</b>（源代码公开、人人可用可改）", "en": "with code that anyone can use and change for free", "ex": "the new <b>open-source</b> AI art generator（②❶）", "mem": "open（公开）＋ source（源代码）。开源意味着谁都能拿去改——所以后来「去掉画家风格」也拦不住别人另训模型。", "syn": "—", "conf": "open-source（开源的）· open-ended（开放式的）· open-minded（思想开放的）。"},
+  generator:{"w": "generator", "ipa": "/ˈdʒenəreɪtə/", "pos": "n.", "tags": ["core"], "cn": "<b>生成器</b>；发电机", "en": "a program or machine that produces something", "ex": "AI art <b>generator</b> Stable Diffusion（②❶）", "mem": "generate（生成）＋ -or（物）。image generator 图像生成器；在电力语境是「发电机」。", "syn": "—", "conf": "generator（生成器）· generation（生成；一代）。"},
+  alongwith:{"w": "along with", "ipa": "/əˈlɒŋ wɪð/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>和……一样</b>；连同……一起", "en": "in addition to; together with", "ex": "The tool, <b>along with</b> other popular … models, allows（②❷）", "mem": "⚠️ 语法点：A, along with B, ＋ 谓语——<b>谓语跟 A 走</b>（本句 The tool … allows，单数）。同类：as well as、together with、in addition to 都不改变主语的单复数。", "syn": "together with · as well as", "conf": "along with（连同，主语看前者）· and（并列，主语变复数）。"},
+  allow:{"w": "allow", "ipa": "/əˈlaʊ/", "pos": "v.", "tags": ["core", "write"], "cn": "<b>使能够</b>、允许", "en": "to make it possible for sb to do sth", "ex": "<b>allows</b> anyone to create impressive images（②❷）", "mem": "allow sb to do 使某人能够做——物作主语时多是「让……得以」：The Internet allows us to work from home. 写作中比 make it possible for 简洁。", "syn": "enable · permit · let", "conf": "allow sb to do（让……能）· allow for（考虑到）· allowance（津贴）。"},
+  impressive:{"w": "impressive", "ipa": "/ɪmˈpresɪv/", "pos": "adj.", "tags": ["core"], "cn": "<b>令人印象深刻的</b>、精美的", "en": "good enough to make you admire it", "ex": "create <b>impressive</b> images（②❷）", "mem": "impress（给……留下印象）＋ -ive。impressive results 骄人的成绩 · an impressive performance 精彩的表演。", "syn": "striking · remarkable", "conf": "impressive（令人赞叹的）· impressed（感到赞叹的，说人）。"},
+  basedon:{"w": "based on", "ipa": "/beɪst ɒn/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>基于</b>、以……为依据", "en": "using something as the starting point", "ex": "images <b>based on</b> text prompts（②❷）", "mem": "过去分词短语作后置定语。⑦❷ 又出现一次：images based on copyrighted material。注意和⑦❶ based in（常驻于）区分。", "syn": "founded on · derived from", "conf": "based on（以……为基础）· based in（总部／常驻在某地）——一字之差。"},
+  typein:{"w": "type in", "ipa": "/taɪp ɪn/", "pos": "phr.", "tags": ["phrase"], "cn": "<b>输入</b>（打字输入）", "en": "to put words into a computer using the keyboard", "ex": "For example, <b>type in</b> “Wizard with sword …”（②❸）", "mem": "祈使句开头：type in …, and … ＝「只要输入……，就……」。type 作动词＝打字；type in your password 输入密码。", "syn": "enter · key in", "conf": "type in（输入）· type（类型；打字）· typical（典型的）。"},
+  orb:{"w": "orb", "ipa": "/ɔːb/", "pos": "n.", "tags": ["core"], "cn": "<b>球体</b>、光球", "en": "a ball-shaped object, especially one that shines", "ex": "a glowing <b>orb</b> of magic fire（②❸）", "mem": "文学词，多见于奇幻描写：a glowing orb 发光的球。考研不必主动掌握，读懂即可。", "syn": "sphere · globe", "conf": "orb（球体）· orbit（轨道）——同源。"},
+  fierce:{"w": "fierce", "ipa": "/fɪəs/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>凶猛的</b>；激烈的", "en": "violent and frightening; very strong", "ex": "fights a <b>fierce</b> dragon（②❸）", "mem": "fierce animal 猛兽；阅读里更常见的是「激烈的」：fierce competition 激烈竞争 · fierce debate 激烈的争论（写作可用）。", "syn": "ferocious · intense", "conf": "fierce（凶猛的；激烈的）· fiery（火一般的）· pierce（刺穿）。"},
+  millionmiles:{"w": "not a million miles away from", "ipa": "/nɒt ə ˈmɪljən maɪlz/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>和……相差无几</b>、离……不远", "en": "very similar to; not very different from", "ex": "looks <b>not a million miles away from</b> works in … style（②❸）", "mem": "英式口语里的反语夸张：字面「离……不到一百万英里」⟹ 其实很近、很像。<b>32A／32B 说生成器不灵、风格不可控，正好和这句唱反调</b>。", "syn": "close to · much like", "conf": "not a million miles away（差不多）· a million miles away（相去甚远；走神）。"},
+  scrape:{"w": "scrape", "ipa": "/skreɪp/", "pos": "v.", "tags": ["core", "poly"], "cn": "<b>（从网上）抓取</b>（数据）；刮、擦", "en": "to collect large amounts of data from websites automatically; to rub with sth sharp", "ex": "built by <b>scraping</b> images from the internet（③❶）", "mem": "⚠️ 熟词僻义：本义「刮、擦」（scrape the mud off 刮掉泥），网络语境＝「爬取、抓取」：web scraping 网络抓取。还有 scrape by 勉强度日。", "syn": "collect · harvest · crawl", "conf": "scrape（刮；抓取）· scratch（抓、挠）· scrap（碎片；废弃）。"},
+  permission:{"w": "permission", "ipa": "/pəˈmɪʃn/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>许可</b>、准许", "en": "the act of allowing sb to do sth", "ex": "often without <b>permission</b>（③❶）", "mem": "permit（允许）的名词。without permission 未经许可 · ask for / grant permission 请求／给予许可。<b>32C unauthorized 是它的改写</b>。", "syn": "consent · authorization", "conf": "permission（许可，不可数）· permit（许可证，可数）· admission（准入）。"},
+  attribution:{"w": "attribution", "ipa": "/ˌætrɪˈbjuːʃn/", "pos": "n.", "tags": ["core"], "cn": "<b>署名</b>、注明出处；归因", "en": "saying who created a piece of work; saying what caused sth", "ex": "proper <b>attribution</b> to artists（③❶）", "mem": "attribute A to B（把 A 归于 B）的名词。proper attribution 规范署名——学术写作里就是「规范引用」。", "syn": "credit · acknowledgment", "conf": "attribution（署名；归因）· attribute（属性；归因于）· contribution（贡献）。"},
+  asaresult:{"w": "As a result", "ipa": "/æz ə rɪˈzʌlt/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>因此</b>、结果", "en": "because of what has just been mentioned", "ex": "<b>As a result</b>, they are raising tricky questions（③❷）", "mem": "因果信号词：<b>答案常在它前面那句</b>——32 题的「版权问题」抽象，往前推一句才是可选的具体事实。写作：As a result, …（承上启下，比 So 正式）。", "syn": "consequently · therefore", "conf": "as a result（因此）· as a result of（由于，后接名词）。"},
+  raise:{"w": "raise", "ipa": "/reɪz/", "pos": "v.", "tags": ["core", "poly"], "cn": "<b>引发</b>（问题）；提出；筹集", "en": "to cause sth to be talked about; to collect money", "ex": "they are <b>raising</b> tricky questions（③❷）", "mem": "⚠️ 熟词僻义：raise questions 引发问题 · raise concerns 引发担忧 · raise awareness 提高认识（⑦❶）· raise money 筹款 · raise children 养育孩子。本文三处都用 raise，记住「引发」义。", "syn": "prompt · give rise to", "conf": "raise（及物，举起；引发）· rise（不及物，上升）· arise（出现）。"},
+  tricky:{"w": "tricky", "ipa": "/ˈtrɪki/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>棘手的</b>、难对付的", "en": "difficult to deal with", "ex": "tricky questions about ethics（③❷）", "mem": "trick（诡计）＋ -y。tricky question 棘手问题 · a tricky situation 微妙的局面——比 difficult 更口语、更有「不好处理」的味道。", "syn": "thorny · awkward", "conf": "tricky（棘手的）· trickery（欺骗）。"},
+  ethics:{"w": "ethics", "ipa": "/ˈeθɪks/", "pos": "n.", "tags": ["core"], "cn": "<b>伦理</b>、道德准则", "en": "moral principles about what is right and wrong", "ex": "questions about <b>ethics</b> and copyright（③❷）", "mem": "ethics 作「伦理学」时谓语单数，作「道德准则」时多复数。ethical 合乎道德的 · unethical 不道德的。", "syn": "morality · principles", "conf": "ethics（伦理）· ethnic（民族的）——形近。"},
+  copyright:{"w": "copyright", "ipa": "/ˈkɒpiraɪt/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>版权</b>、著作权", "en": "the legal right to control the copying of a piece of work", "ex": "questions about ethics and <b>copyright</b>（③❷）", "mem": "copy（复制）＋ right（权利）＝复制的权利。copyright infringement 侵犯版权 · hold the copyright 拥有版权。形容词 copyrighted 受版权保护的（⑦❷）。", "syn": "intellectual property", "conf": "copyright（版权）· patent（专利）· trademark（商标）——知识产权三件套。"},
+  haveenough:{"w": "have had enough", "ipa": "/hæv hæd ɪˈnʌf/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>忍无可忍</b>、受够了", "en": "to be unwilling to accept a bad situation any longer", "ex": "artists like Rutkowski <b>have had enough</b>（③❸）", "mem": "have had enough (of sth) 受够了（某事）。<b>31A「他热衷用 AI」被这句直接判死</b>。写作：Many residents have had enough of the noise.", "syn": "be fed up with · be sick of", "conf": "have had enough（受够了）· have enough（足够）——多一个 had，意思全变。"},
+  track:{"w": "track", "ipa": "/træk/", "pos": "v.", "tags": ["core", "poly"], "cn": "<b>追踪</b>、记录", "en": "to follow or record the progress of sth", "ex": "Lexica, which <b>tracks</b> over 10 million … images（④❶）", "mem": "⚠️ 熟词僻义：名词是「轨道、小路」，动词是「追踪」：track progress 跟踪进度 · keep track of 记录、掌握。33B 把 tracks 编成「识别 AI 图像的方法」。", "syn": "monitor · follow", "conf": "track（追踪）· trace（追溯）· trail（踪迹）。"},
+  initially:{"w": "initially", "ipa": "/ɪˈnɪʃəli/", "pos": "adv.", "tags": ["core"], "cn": "<b>起初</b>、最初", "en": "at the beginning", "ex": "Rutkowski was <b>initially</b> surprised（④❷）", "mem": "initial（最初的）＋ -ly。<b>时间信号</b>：initially 后面往往跟一个转变（but / later / then）——④❷ 起初吃惊、以为是好事，❸ Then 之后才发现不对，33 题就卡在这条时间线上。", "syn": "at first · originally", "conf": "initially（起初）· initiative（主动性；倡议）。"},
+  reach:{"w": "reach", "ipa": "/riːtʃ/", "pos": "v.", "tags": ["core", "poly"], "cn": "<b>接触到</b>（受众）；到达；达成", "en": "to communicate with a group of people", "ex": "a good way to <b>reach</b> new audiences（④❷）", "mem": "⚠️ 熟词僻义：reach an audience 触达受众 · reach consumers 触达消费者（营销常用）；reach an agreement 达成协议。", "syn": "attract · connect with", "conf": "reach（触达）· approach（接近；方法）。"},
+  audience:{"w": "audience", "ipa": "/ˈɔːdiəns/", "pos": "n.", "tags": ["core"], "cn": "<b>受众</b>、观众", "en": "the people who watch, read or listen to sth", "ex": "reach new <b>audiences</b>（④❷）", "mem": "audi-（听）＋ -ence。target audience 目标受众 · a wide audience 广大观众。作集体名词可单可复。", "syn": "viewers · public", "conf": "audience（观众）· audio（音频）· auditorium（礼堂）——同根 audi-。"},
+  workon:{"w": "work on", "ipa": "/wɜːk ɒn/", "pos": "phr.", "tags": ["phrase"], "cn": "<b>从事</b>、制作（某作品）", "en": "to spend time making or improving sth", "ex": "a piece he had <b>worked on</b>（④❸）", "mem": "work on a project 做一个项目 · work on one’s English 下功夫提高英语。本句是省略关系词的定语从句：a piece (that) he had worked on。", "syn": "—", "conf": "work on（从事）· work out（算出；锻炼）· work for（为……工作）。"},
+  publish:{"w": "publish", "ipa": "/ˈpʌblɪʃ/", "pos": "v.", "tags": ["core"], "cn": "<b>发表</b>、出版", "en": "to make information or work available to the public", "ex": "had been <b>published</b>（④❸）", "mem": "public（公众的）同源：让公众看到。publish a paper 发表论文 · publisher 出版商。", "syn": "release · issue", "conf": "publish（发表）· publicize（宣传）· punish（惩罚）。"},
+  bringback:{"w": "bring back", "ipa": "/brɪŋ bæk/", "pos": "phr.", "tags": ["phrase", "poly"], "cn": "<b>（搜索）返回</b>结果；带回；恢复", "en": "to return sth as a result; to make sth exist again", "ex": "The online search <b>brought back</b> work（④❹）", "mem": "⚠️ 物作主语：The search brought back … ＝ 搜出了……。另义：bring back memories 勾起回忆 · bring back the death penalty 恢复死刑。", "syn": "return · yield", "conf": "bring back（带回；恢复）· bring about（导致）· bring up（养育；提出）。"},
+  attach:{"w": "attach", "ipa": "/əˈtætʃ/", "pos": "v.", "tags": ["core"], "cn": "<b>附上</b>、贴上", "en": "to fix or join one thing to another", "ex": "had his name <b>attached</b> to it（④❹）", "mem": "attach A to B 把 A 附到 B 上；邮件「附件」＝ attachment。have sth attached ＝ 使某物被附上（have ＋ 宾语 ＋ 过去分词）。<b>33C bearing his name 是它的改写</b>。", "syn": "fix · add", "conf": "attach（附上）· attack（攻击）· detach（分离）。"},
+  justamonth:{"w": "It’s been just a month", "ipa": "/ɪts biːn dʒʌst ə mʌnθ/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>才过了一个月</b>（It has been ＋ 时间段）", "en": "only a month has passed", "ex": "“<b>It’s been just a month</b>.”（⑤❶）", "mem": "句型：It has been ＋ 时间段 (since …) 自……以来已经……。just 强调「才」。写作：It has been three years since I left home.", "syn": "—", "conf": "It’s been（It has been）· It’s（It is）——后接时间段时一定是 has been。"},
+  whatabout:{"w": "What about", "ipa": "/wɒt əˈbaʊt/", "pos": "phr.", "tags": ["phrase"], "cn": "<b>那……呢？</b>（追问、推想）", "en": "used to ask about a further situation", "ex": "<b>What about</b> in a year?（⑤❷）", "mem": "口语追问：What about …? ＝ 那……又会怎样？本句是由「一个月」推到「一年」，情绪递进。", "syn": "How about", "conf": "what about（那……呢；提议）· how about（提议）。"},
+  outthere:{"w": "out there", "ipa": "/aʊt ðeə/", "pos": "adv.", "tags": ["phrase"], "cn": "<b>在外面</b>（这里指在网上、在世界上）", "en": "in the world generally; available to people", "ex": "find my work <b>out there</b>（⑤❸）", "mem": "out there 泛指「外面的世界」：There are many opportunities out there. 本句指网上那片「汪洋」。", "syn": "—", "conf": "out there（外面的世界）· over there（那边）。"},
+  flood:{"w": "flooded with", "ipa": "/ˈflʌdɪd wɪð/", "pos": "phr.", "tags": ["phrase", "poly", "write"], "cn": "<b>充斥着</b>、被……淹没", "en": "full of a very large number of things", "ex": "the internet will be <b>flooded with</b> AI art（⑤❸）", "mem": "⚠️ 熟词僻义：flood 本义「洪水」，be flooded with ＝ 被大量的……涌入：be flooded with complaints 投诉如潮。写作：Our phones are flooded with ads.", "syn": "be filled with · overwhelmed by", "conf": "be flooded with（充斥）· be faced with（面对）。"},
+  concerning:{"w": "concerning", "ipa": "/kənˈsɜːnɪŋ/", "pos": "adj.", "tags": ["core", "poly"], "cn": "<b>令人担忧的</b>；（prep.）关于", "en": "worrying; about", "ex": "“That’s <b>concerning</b>.”（⑤❹）", "mem": "⚠️ 熟词僻义：concerning 最常见的用法是介词「关于」（concerning the matter）；作形容词＝worrying「让人担心的」。concerned（感到担心的）说人。", "syn": "worrying · troubling", "conf": "concerning（令人担忧的；关于）· concerned（担心的；有关的）。"},
+  besides:{"w": "besides", "ipa": "/bɪˈsaɪdz/", "pos": "prep.", "tags": ["core"], "cn": "<b>除……之外（还有）</b>", "en": "in addition to", "ex": "Other artists <b>besides</b> Rutkowski（⑥❶）", "mem": "⚠️ besides 是「包含」：除他以外还有别人；except 是「排除」：除他以外都……。Other artists besides Rutkowski ＝ 不止他一个。", "syn": "in addition to · apart from", "conf": "besides（包括在内）· except（排除在外）· beside（在旁边）。"},
+  apparent:{"w": "apparent", "ipa": "/əˈpærənt/", "pos": "adj.", "tags": ["core", "poly"], "cn": "<b>明显的</b>；表面上的", "en": "easy to see; seeming real but perhaps not", "ex": "the <b>apparent</b> popularity of their work（⑥❶）", "mem": "⚠️ 两个义项方向不同：① 明显的（It is apparent that …）② 表面上的（his apparent calm 他表面上的平静）。本文是①。apparently 多作「看来、据说」。", "syn": "obvious · evident", "conf": "apparent（明显的；表面的）· transparent（透明的）。"},
+  popularity:{"w": "popularity", "ipa": "/ˌpɒpjuˈlærəti/", "pos": "n.", "tags": ["core"], "cn": "<b>受欢迎</b>、走红", "en": "the state of being liked by many people", "ex": "the apparent <b>popularity</b> of their work（⑥❶）", "mem": "popular ＋ -ity。gain popularity 走红 · enjoy great popularity 广受欢迎（写作常用）。", "syn": "fame · appeal", "conf": "popularity（受欢迎）· population（人口）。"},
+  fightback:{"w": "fight back", "ipa": "/faɪt bæk/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>反击</b>、回击", "en": "to defend yourself by attacking those who attack you", "ex": "some are now <b>fighting back</b>（⑥❶）", "mem": "fight back (against sth) 反击。<b>35A responses 的核心就是这个动作</b>。写作：Local shops are fighting back against online giants.", "syn": "resist · hit back", "conf": "fight back（反击）· fight off（击退）· fight for（争取）。"},
+  illustrator:{"w": "illustrator", "ipa": "/ˈɪləstreɪtə/", "pos": "n.", "tags": ["core"], "cn": "<b>插画师</b>", "en": "a person who draws pictures for books, games, etc.", "ex": "Karla Ortiz, an <b>illustrator</b>（⑦❶）", "mem": "illustrate ＋ -or。31C 的 other illustrators 就是从这个词借来的——原文没有同行评价。", "syn": "artist", "conf": "illustrator（插画师）· illustration（插画）。"},
+  basedin:{"w": "based in", "ipa": "/beɪst ɪn/", "pos": "phr.", "tags": ["phrase"], "cn": "<b>常驻于</b>、总部设在", "en": "living or working mainly in a place", "ex": "an illustrator <b>based in</b> San Francisco（⑦❶）", "mem": "过去分词短语作后置定语：a company based in London 一家总部在伦敦的公司。", "syn": "located in", "conf": "based in（常驻某地）· based on（以……为基础）。"},
+  dataset:{"w": "data set", "ipa": "/ˈdeɪtə set/", "pos": "n.", "tags": ["core"], "cn": "<b>数据集</b>", "en": "a collection of data used for a purpose, e.g. training AI", "ex": "found her work in … <b>data set</b>（⑦❶）", "mem": "AI 训练用的数据集，也常写成 dataset。training data 训练数据。", "syn": "—", "conf": "data set（数据集）· database（数据库）。"},
+  raiseawareness:{"w": "raise awareness", "ipa": "/reɪz əˈweənəs/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>提高（公众的）认识</b>", "en": "to help people understand a problem", "ex": "has been <b>raising awareness</b> about the issues（⑦❶）", "mem": "raise awareness of / about sth 提高对……的认识——公益倡导类作文的高频短语：raise public awareness of environmental protection。", "syn": "—", "conf": "raise awareness（提高认识）· raise concerns（引发担忧）。"},
+  issue:{"w": "issues around", "ipa": "/ˈɪʃuːz əˈraʊnd/", "pos": "phr.", "tags": ["phrase", "poly"], "cn": "<b>围绕……的问题</b>", "en": "problems or topics connected with sth", "ex": "the <b>issues around</b> AI art and copyright（⑦❶）", "mem": "around 在这里＝about / concerning：issues around privacy 围绕隐私的问题。⚠️ issue 还有动词「发行、发布」义：issue a statement 发表声明。", "syn": "questions about", "conf": "issue（问题；发行）· tissue（纸巾；组织）。"},
+  risk:{"w": "risk losing", "ipa": "/rɪsk ˈluːzɪŋ/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>冒着……的风险</b>（risk doing）", "en": "to be in a situation where sth bad may happen", "ex": "they <b>risk losing</b> income（⑦❷）", "mem": "⚠️ risk 作动词后接 doing：risk losing one’s job 有丢工作的风险。名词搭配：at risk 处于危险中 · run the risk of doing。", "syn": "—", "conf": "risk doing（冒险做）· risk sth（拿……冒险）· at risk（有危险）。"},
+  income:{"w": "income", "ipa": "/ˈɪnkʌm/", "pos": "n.", "tags": ["core"], "cn": "<b>收入</b>", "en": "money that you earn", "ex": "risk losing <b>income</b>（⑦❷）", "mem": "in（进）＋ come（来）＝进来的钱。low-income families 低收入家庭 · a source of income 收入来源。", "syn": "earnings · revenue", "conf": "income（收入）· outcome（结果）· incoming（进来的）。"},
+  copyrighted:{"w": "copyrighted", "ipa": "/ˈkɒpiraɪtɪd/", "pos": "adj.", "tags": ["core"], "cn": "<b>受版权保护的</b>", "en": "protected by copyright law", "ex": "based on <b>copyrighted</b> material（⑦❷）", "mem": "copyright 作动词＝取得版权，过去分词作形容词。<b>34D 的关键对比</b>：copyrighted material（受保护）↔ ⑧❸ public domain（不受保护）。", "syn": "protected", "conf": "copyrighted（受版权保护）· copyright-free / in the public domain（无版权）。"},
+  material:{"w": "material", "ipa": "/məˈtɪəriəl/", "pos": "n.", "tags": ["core", "poly"], "cn": "<b>素材</b>、资料；材料", "en": "information or content used to create sth", "ex": "copyrighted <b>material</b>（⑦❷）", "mem": "⚠️ 熟词僻义：不只是「布料、原材料」，还指书面／创作「素材」：reading material 读物 · teaching material 教材。", "syn": "content · source", "conf": "material（素材）· materialistic（物质主义的）。"},
+  commercial:{"w": "commercial", "ipa": "/kəˈmɜːʃl/", "pos": "adj.", "tags": ["core", "poly"], "cn": "<b>商业的</b>；（n.）广告", "en": "related to buying and selling for profit", "ex": "for <b>commercial</b> purposes（⑦❷）", "mem": "commerce（商业）＋ -ial。for commercial purposes 用于商业目的 · commercial success 商业成功。⚠️ 名词＝电视广告（a TV commercial）。", "syn": "business · profit-making", "conf": "commercial（商业的；广告）· commerce（商业）。"},
+  personal:{"w": "personal", "ipa": "/ˈpɜːsənl/", "pos": "adj.", "tags": ["core"], "cn": "<b>个人的</b>、私人的", "en": "relating to a particular person and their private life", "ex": "a lot more <b>personal</b>（⑦❸）", "mem": "a lot / much ＋ 比较级 表「……得多」。personal data 个人数据 · personal information 个人信息。", "syn": "private · individual", "conf": "personal（个人的）· personnel（人员）——拼写差一个 n。"},
+  argue:{"w": "argue", "ipa": "/ˈɑːɡjuː/", "pos": "v.", "tags": ["core", "poly"], "cn": "<b>认为</b>、主张（argue that）；争论", "en": "to give reasons for an opinion", "ex": "<b>arguing</b> that because art is so closely linked（⑦❸）", "mem": "⚠️ 熟词僻义：argue that …＝「主张、论证」，不是「吵架」。阅读里引出人物观点的高频动词（同类：claim / contend / maintain）。", "syn": "claim · maintain", "conf": "argue that（主张）· argue with（与……争吵）· argument（论点；争吵）。"},
+  linkedto:{"w": "linked to", "ipa": "/lɪŋkt tə/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>与……相关联</b>", "en": "connected with", "ex": "art is so closely <b>linked to</b> a person（⑦❸）", "mem": "be closely linked to 与……紧密相连。写作：Health is closely linked to lifestyle.", "syn": "connected with · related to", "conf": "linked to（相关）· linked in（连入）。"},
+  dataprotection:{"w": "data protection", "ipa": "/ˈdeɪtə prəˈtekʃn/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>数据保护</b>", "en": "the legal control of how personal information is used", "ex": "could raise <b>data protection</b> and privacy problems（⑦❸）", "mem": "专有搭配：data protection law 数据保护法。和 privacy 并称，写网络与隐私类作文可用。", "syn": "—", "conf": "data protection（数据保护）· data security（数据安全）。"},
+  privacy:{"w": "privacy", "ipa": "/ˈprɪvəsi/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>隐私</b>", "en": "the state of being free from public attention", "ex": "privacy problems（⑦❸）", "mem": "private（私人的）的名词。invade / protect privacy 侵犯／保护隐私。<b>35C 只抓了这一处</b>——全文仅出现一次，当不了主旨。", "syn": "—", "conf": "privacy（隐私）· privilege（特权）· private（私人的）。"},
+  coalition:{"w": "coalition", "ipa": "/ˌkəʊəˈlɪʃn/", "pos": "n.", "tags": ["core"], "cn": "<b>联盟</b>、联合体", "en": "a group of people or organizations working together", "ex": "There is a <b>coalition</b> growing（⑧❶）", "mem": "co-（共同）＋ al（生长）⟹ 一起长成一体。政治语境＝「联合政府」：a coalition government。本文＝艺术家联盟（⑧❷ 用 The group 回指）。", "syn": "alliance · union", "conf": "coalition（联盟）· collision（碰撞）——形近。"},
+  figureout:{"w": "figure out", "ipa": "/ˈfɪɡər aʊt/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>想出</b>、弄清楚", "en": "to find the answer to a problem", "ex": "to <b>figure out</b> how to tackle or mitigate this（⑧❶）", "mem": "figure out ＋ how / what / why 从句。写作：We need to figure out how to reduce food waste.", "syn": "work out · find out", "conf": "figure out（想出）· figure（数字；人物；认为）。"},
+  tackle:{"w": "tackle", "ipa": "/ˈtækl/", "pos": "v.", "tags": ["core", "poly", "write"], "cn": "<b>解决</b>、处理（问题）", "en": "to make an effort to deal with a difficult problem", "ex": "how to <b>tackle</b> or mitigate this（⑧❶）", "mem": "⚠️ 熟词僻义：体育里是「抢断、擒抱」，阅读和写作里是「解决（难题）」：tackle climate change 应对气候变化——比 solve 更有「着手对付」的力度。", "syn": "address · deal with", "conf": "tackle（解决）· tickle（挠痒）。"},
+  mitigate:{"w": "mitigate", "ipa": "/ˈmɪtɪɡeɪt/", "pos": "v.", "tags": ["core", "write"], "cn": "<b>缓解</b>、减轻", "en": "to make sth bad less serious", "ex": "tackle or <b>mitigate</b> this（⑧❶）", "mem": "tackle or mitigate：<b>解决不了就缓解</b>——两个动词由强到弱。mitigate the impact / risk 减轻影响／风险（写作高分词）。", "syn": "alleviate · ease · reduce", "conf": "mitigate（缓解）· militate（产生作用）· migrate（迁移）。"},
+  earlydays:{"w": "early days", "ipa": "/ˈɜːli deɪz/", "pos": "phr.", "tags": ["phrase"], "cn": "<b>初期</b>、早期阶段", "en": "the beginning stage of sth", "ex": "in its <b>early days</b> of mobilization（⑧❷）", "mem": "be in its early days 尚处初期；It’s early days. 现在下结论还太早（英式口语）。", "syn": "initial stage", "conf": "early days（初期）· early on（早期，副词）。"},
+  mobilization:{"w": "mobilization", "ipa": "/ˌməʊbəlaɪˈzeɪʃn/", "pos": "n.", "tags": ["core"], "cn": "<b>动员</b>、组织起来", "en": "organizing people to take action for a cause", "ex": "in its early days of <b>mobilization</b>（⑧❷）", "mem": "mobile（可移动的）⟹ mobilize（动员）⟹ mobilization。mobilize resources 调动资源。", "syn": "organization · campaign", "conf": "mobilization（动员）· mobility（流动性）。"},
+  involve:{"w": "involve", "ipa": "/ɪnˈvɒlv/", "pos": "v.", "tags": ["core"], "cn": "<b>涉及</b>、包括", "en": "to include sth as a necessary part", "ex": "could <b>involve</b> pushing for new policies（⑧❷）", "mem": "involve doing 涉及做某事（后接动名词）。be involved in 参与。", "syn": "include · entail", "conf": "involve doing（涉及）· evolve（进化）· revolve（旋转）。"},
+  pushfor:{"w": "push for", "ipa": "/pʊʃ fɔː/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>极力争取</b>、推动", "en": "to try hard to get sth", "ex": "<b>pushing for</b> new policies or regulation（⑧❷）", "mem": "push for change / reform 推动变革／改革。<b>34A campaign for 是它的改写，但主语被换成了 AI 公司</b>。", "syn": "campaign for · press for", "conf": "push for（争取）· push back（推迟；反对）。"},
+  regulation:{"w": "regulation", "ipa": "/ˌreɡjuˈleɪʃn/", "pos": "n.", "tags": ["core"], "cn": "<b>监管</b>；规章", "en": "official control by rules; an official rule", "ex": "new policies or <b>regulation</b>（⑧❷）", "mem": "regulate（管理）＋ -ion。不可数时＝「监管」，可数时＝「规章」（regulations）。", "syn": "rule · control", "conf": "regulation（监管）· regular（规律的）。"},
+  trainon:{"w": "trained on", "ipa": "/treɪnd ɒn/", "pos": "phr.", "tags": ["phrase", "poly"], "cn": "<b>（用……数据）训练</b>（AI）", "en": "taught using a particular set of examples", "ex": "AI models could be <b>trained on</b> images（⑧❸）", "mem": "⚠️ 熟词新义：train a model on data 用数据训练模型——AI 语境的固定搭配。区别 train for（为……而训练）、train as（受训成为）。", "syn": "—", "conf": "train on（用……训练）· train for（为……受训）。"},
+  publicdomain:{"w": "public domain", "ipa": "/ˈpʌblɪk dəˈmeɪn/", "pos": "n.", "tags": ["core", "poly"], "cn": "<b>公有领域</b>（不受版权保护、人人可用）", "en": "the state of not being protected by copyright", "ex": "images in the <b>public domain</b>（⑧❸）", "mem": "⚠️ 熟词僻义：domain 常作「领域；网域」，in the public domain 是法律术语＝版权已过期或从未受保护、可自由使用。<b>34D 的 different strategy 就是从「受保护素材」换到「公有领域」</b>。", "syn": "copyright-free", "conf": "public domain（公有领域）· domain name（域名）。"},
+  forge:{"w": "forge", "ipa": "/fɔːdʒ/", "pos": "v.", "tags": ["core", "poly", "write"], "cn": "<b>建立</b>（关系）；伪造", "en": "to create a strong relationship; to make an illegal copy", "ex": "<b>forge</b> partnerships with museums and artists（⑧❸）", "mem": "⚠️ 熟词僻义：forge 最熟的是「伪造」（forge a signature）；搭配关系时＝「缔造、建立」：forge ties / links / a partnership。", "syn": "build · establish", "conf": "forge（建立；伪造）· forgery（伪造品）· forget（忘记）。"},
+  partnership:{"w": "partnership", "ipa": "/ˈpɑːtnəʃɪp/", "pos": "n.", "tags": ["core"], "cn": "<b>合作关系</b>、伙伴关系", "en": "a relationship between people or groups working together", "ex": "forge <b>partnerships</b> with museums（⑧❸）", "mem": "partner ＋ -ship（关系）。in partnership with 与……合作。<b>34B 把合作扭成「提供服务」，34C 把对象换成 AI 用户</b>。", "syn": "cooperation · alliance", "conf": "partnership（合作）· ownership（所有权）· membership（会员资格）。"},
+  enthusiastic:{"w": "enthusiastic", "ipa": "/ɪnˌθjuːziˈæstɪk/", "pos": "adj.", "tags": ["core"], "cn": "<b>热衷的</b>、热情的", "en": "showing a lot of interest and excitement", "ex": "He is <b>enthusiastic</b> about using AI models（31A）", "mem": "be enthusiastic about 热衷于。<b>31A 主体错位</b>：热衷用 AI 的是大众，他本人是③❸ have had enough。", "syn": "keen · eager", "conf": "enthusiastic（热情的）· enthusiasm（热情）· enthusiast（爱好者）。"},
+  admiration:{"w": "admiration", "ipa": "/ˌædməˈreɪʃn/", "pos": "n.", "tags": ["core"], "cn": "<b>钦佩</b>、赞赏", "en": "a feeling of respect and approval", "ex": "attracts <b>admiration</b> from other illustrators（31C）", "mem": "admire（钦佩）的名词。win admiration 赢得赞赏。31C 原文无据——只有市场认可，没有同行评价。", "syn": "respect · praise", "conf": "admiration（钦佩）· admission（准入）。"},
+  specialize:{"w": "specialize in", "ipa": "/ˈspeʃəlaɪz ɪn/", "pos": "phr.", "tags": ["phrase"], "cn": "<b>专攻</b>、专门从事", "en": "to concentrate on a particular area", "ex": "He <b>specializes in</b> classical painting digitalization（31D）", "mem": "special ＋ -ize。specialize in 专攻；specialist 专家。", "syn": "focus on", "conf": "specialize in（专攻）· specialty（专长）。"},
+  digitalization:{"w": "digitalization", "ipa": "/ˌdɪdʒɪtəlaɪˈzeɪʃn/", "pos": "n.", "tags": ["core"], "cn": "<b>数字化</b>", "en": "changing sth into digital form", "ex": "classical painting <b>digitalization</b>（31D）", "mem": "digital ＋ -ize ＋ -ation。<b>31D 的偷换</b>：原文是「用古典画风创作数字作品」，选项是「把古典画作数字化」——原创变复制，艺术家变技术员。", "syn": "digitization", "conf": "digitalization（数字化）· digital（数字的）。"},
+  flexibility:{"w": "flexibility", "ipa": "/ˌfleksəˈbɪləti/", "pos": "n.", "tags": ["core"], "cn": "<b>灵活性</b>", "en": "the ability to change or adapt easily", "ex": "lack <b>flexibility</b> in responding to prompts（32A）", "mem": "flexible（灵活的）＋ -ity。32A 与②❸ 相反——输入提示词就能出近似风格的图，说明响应能力强。", "syn": "adaptability", "conf": "flexibility（灵活性）· feasibility（可行性）。"},
+  unpredictable:{"w": "unpredictable", "ipa": "/ˌʌnprɪˈdɪktəbl/", "pos": "adj.", "tags": ["core"], "cn": "<b>不可预测的</b>", "en": "impossible to know in advance", "ex": "produce artworks in <b>unpredictable</b> styles（32B）", "mem": "un-（否）＋ predict（预测）＋ -able。32B 也与②❸ 相反——风格严格跟着提示词走。", "syn": "uncertain · erratic", "conf": "unpredictable（不可预测）· unprecedented（史无前例）。"},
+  unauthorized:{"w": "unauthorized", "ipa": "/ʌnˈɔːθəraɪzd/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>未经授权的</b>", "en": "done without official permission", "ex": "make <b>unauthorized</b> use of online images（32C）", "mem": "un- ＋ authorize（授权）＋ -ed。make unauthorized use of 未经授权使用——<b>③❶ without permission 的改写</b>。", "syn": "unlicensed · unapproved", "conf": "unauthorized（未经授权）· authoritative（权威的）。"},
+  consent:{"w": "consent", "ipa": "/kənˈsent/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>同意</b>、许可", "en": "permission to do sth", "ex": "collect user information without <b>consent</b>（32D）", "mem": "con-（共同）＋ sent（感觉）⟹ 想法一致。without consent 未经同意 · give consent 表示同意。32D 偷换：被抓取的是艺术家作品，不是用户信息。", "syn": "permission · approval", "conf": "consent（同意）· consensus（共识）· content（内容）。"},
+  unique:{"w": "unique", "ipa": "/juˈniːk/", "pos": "adj.", "tags": ["core"], "cn": "<b>独特的</b>、唯一的", "en": "being the only one of its kind", "ex": "a <b>unique</b> way to reach audiences（33A）", "mem": "uni-（一）＋ -que。33A 偷④❷ 搜索之前的想法，时间顺序颠倒。", "syn": "distinctive · one-of-a-kind", "conf": "unique（独一无二）· united（联合的）。"},
+  identify:{"w": "identify", "ipa": "/aɪˈdentɪfaɪ/", "pos": "v.", "tags": ["core"], "cn": "<b>识别</b>、鉴定", "en": "to recognize and name sb or sth", "ex": "a new method to <b>identify</b> AI images（33B）", "mem": "identity（身份）的动词。identify the problem 找出问题 · identify with 认同。33B 窜改④❶ 的 tracks。", "syn": "recognize · detect", "conf": "identify（识别）· identical（完全相同的）。"},
+  bear:{"w": "bear", "ipa": "/beə/", "pos": "v.", "tags": ["core", "poly"], "cn": "<b>带有</b>、标着（名字、标志）；忍受", "en": "to have or show a name, mark, etc.", "ex": "AI-generated work <b>bearing</b> his name（33C）", "mem": "⚠️ 熟词僻义：bear 作动词有「带有」义：bear a name / a signature / a resemblance to。<b>33C bearing his name ＝ ④❹ had his name attached to it</b>。", "syn": "carry · display", "conf": "bear（带有；忍受；承担）· bare（赤裸的）。"},
+  heated:{"w": "heated", "ipa": "/ˈhiːtɪd/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>激烈的</b>（争论）", "en": "full of anger and excitement", "ex": "<b>heated</b> disputes regarding his copyright（33D）", "mem": "heat ＋ -ed。a heated debate / argument 激烈的辩论——写作可用。33D 偷换③段的版权难题，原文没写「激烈争议」。", "syn": "fierce · intense", "conf": "heated（激烈的）· heating（暖气）。"},
+  dispute:{"w": "dispute", "ipa": "/dɪˈspjuːt/", "pos": "n.", "tags": ["core"], "cn": "<b>争端</b>、争议", "en": "a disagreement or argument", "ex": "heated <b>disputes</b> regarding his copyright（33D）", "mem": "dis-（分开）＋ pute（想）⟹ 想法分开。in dispute 有争议 · beyond dispute 无可争议。", "syn": "conflict · controversy", "conf": "dispute（争端）· despite（尽管）。"},
+  campaign:{"w": "campaign for", "ipa": "/kæmˈpeɪn fɔː/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>发起运动争取</b>", "en": "to work in an organized way to achieve sth", "ex": "<b>campaign for</b> new policies or regulation（34A）", "mem": "campaign 作名词＝运动、活动（an advertising campaign）；动词 campaign for / against 为……发起运动。<b>34A 是⑧❷ pushing for 的改写，但主语从「联盟」被换成了 AI 公司</b>。", "syn": "push for · lobby for", "conf": "campaign for（争取）· champion（冠军；拥护）。"},
+  institution:{"w": "institution", "ipa": "/ˌɪnstɪˈtjuːʃn/", "pos": "n.", "tags": ["core", "poly"], "cn": "<b>机构</b>；制度", "en": "a large organization such as a museum or university", "ex": "offer their services to public <b>institutions</b>（34B）", "mem": "institute（设立）＋ -ion。public institutions 公共机构（博物馆、图书馆、学校）；⚠️ 也指「制度、惯例」：the institution of marriage。", "syn": "organization · establishment", "conf": "institution（机构；制度）· institute（研究所）· constitution（宪法）。"},
+  strengthen:{"w": "strengthen", "ipa": "/ˈstreŋθn/", "pos": "v.", "tags": ["core", "write"], "cn": "<b>加强</b>、巩固", "en": "to make sth stronger", "ex": "<b>strengthen</b> their relationships with AI users（34C）", "mem": "strength（力量）＋ -en（使……）。strengthen ties 加强联系。34C 把合作对象 museums and artists 换成了 AI users。", "syn": "reinforce · consolidate", "conf": "strengthen（加强）· lengthen（加长）· widen（加宽）——同一个 -en 后缀。"},
+  strategy:{"w": "strategy", "ipa": "/ˈstrætədʒi/", "pos": "n.", "tags": ["core"], "cn": "<b>策略</b>、战略", "en": "a plan for achieving a goal", "ex": "adopt a different <b>strategy</b> for AI model training（34D）", "mem": "adopt a strategy 采取策略。<b>34D 概括了⑧❸ 前后两半</b>：用公有领域图片、和握有作品的博物馆与艺术家合作——都是换一种获取训练数据的办法。", "syn": "approach · plan", "conf": "strategy（战略）· tactic（战术）——前者大、后者小。"},
+  response:{"w": "response", "ipa": "/rɪˈspɒns/", "pos": "n.", "tags": ["core"], "cn": "<b>回应</b>、反应", "en": "a reaction to sth", "ex": "Artists’ <b>responses</b> to AI art generation（35A）", "mem": "respond（回应）的名词。in response to 作为对……的回应。<b>35A：吃惊、担忧、反击都是艺术家的「回应」</b>。", "syn": "reaction · reply", "conf": "response（回应）· responsibility（责任）。"},
+  expand:{"w": "expanded", "ipa": "/ɪkˈspændɪd/", "pos": "adj.", "tags": ["core"], "cn": "<b>扩大了的</b>", "en": "made larger or more extensive", "ex": "AI’s <b>expanded</b> role in artistic creation（35B）", "mem": "expand（扩大）的过去分词作形容词。35B 只概括了②段，而且把关注点从「问题」偏成了「作用」。", "syn": "enlarged · extended", "conf": "expand（扩大）· expend（花费）· expanse（广阔区域）。"},
+  opposing:{"w": "opposing", "ipa": "/əˈpəʊzɪŋ/", "pos": "adj.", "tags": ["core"], "cn": "<b>对立的</b>、相反的", "en": "completely different from each other", "ex": "<b>Opposing</b> views on AI development（35D）", "mem": "oppose（反对）的现在分词作形容词。opposing views 对立观点。<b>35D 错在两位艺术家立场一致</b>，不构成对立。", "syn": "contrary · conflicting", "conf": "opposing（对立的）· opposite（相反的；对面的）。"}
+};
+const panel=document.getElementById('panel');
+const isMobile=()=>window.innerWidth<=900;
+function badge(t){const m={core:'核心',phrase:'短语',poly:'僻义',write:'写作'};return `<span class="badge b-${t}">${m[t]}</span>`}
+function showCard(k,el){
+  const d=V[k];if(!d)return;
+  document.querySelectorAll('.tk.active').forEach(x=>x.classList.remove('active'));
+  if(el)el.classList.add('active');
+  panel.innerHTML=`<button class="close" onclick="document.getElementById('panel').classList.remove('open')">收起</button>
+    <div class="wcard">
+      <div class="head"><span class="w">${d.w}</span><span class="ipa">${d.ipa}</span><span class="pos">${d.pos}</span>${d.tags.map(badge).join('')}</div>
+      <div class="cn">${d.cn}</div><div class="en-def">${d.en}</div>
+      <div class="row r-ex"><b>原文</b>${d.ex}</div>
+      <div class="row r-mem"><b>怎么记 / 考点</b>${d.mem}</div>
+      <div class="row r-syn"><b>同义 / 同族</b>${d.syn}</div>
+      <div class="row r-conf"><b>易混 / 提醒</b>${d.conf}</div>
+    </div>`;
+  if(isMobile())panel.classList.add('open');
+}
+document.querySelectorAll('.tk').forEach(t=>t.addEventListener('click',e=>{e.stopPropagation();showCard(t.dataset.w,t)}));
+
+function tz(btn){btn.closest('.para').classList.toggle('showzh')}
+let allOn=false;
+function toggleAll(){allOn=!allOn;document.querySelectorAll('.para').forEach(p=>p.classList.toggle('showzh',allOn))}
+function go(id){const s=document.getElementById(id);if(!s)return;s.scrollIntoView({behavior:'smooth',block:'center'});s.style.transition='none';s.style.opacity=.3;setTimeout(()=>{s.style.transition='opacity .8s';s.style.opacity=1},80)}
+
+document.querySelectorAll('.q').forEach(q=>{
+  const ans=+q.dataset.ans;
+  q.querySelectorAll('.opt').forEach((o,i)=>o.addEventListener('click',()=>{
+    if(q.classList.contains('done'))return;
+    q.classList.add('done');
+    if(i!==ans)o.classList.add('wrong');
+    q.querySelectorAll('.opt')[ans].classList.add('right');
+  }));
+});
+
+const vg=document.getElementById('vgrid');
+function renderGrid(f){
+  vg.innerHTML='';
+  Object.keys(V).forEach(k=>{
+    const d=V[k];
+    if(f!=='all'&&!d.tags.includes(f))return;
+    const div=document.createElement('div');div.className='vitem';
+    div.innerHTML=`<span class="badges">${d.tags.map(badge).join('')}</span><div class="w">${d.w}</div><div class="cn">${d.cn}</div>`;
+    div.addEventListener('click',()=>{showCard(k,null);if(!isMobile())window.scrollTo({top:0,behavior:'smooth'})});
+    vg.appendChild(div);
+  });
+}
+renderGrid('all');
+document.querySelectorAll('.fbtn').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.fbtn').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderGrid(b.dataset.f);
+}));
+
+const yd=document.getElementById('yd');let sel='',ydHold=0,ydT=0;
+/* 触屏：点按钮会先把选区清掉 → selectionchange 立刻把按钮藏了 → 点击落空。改成延迟隐藏 ＋ 按下即锁定 */
+const ydTouch=window.matchMedia&&matchMedia('(pointer:coarse)').matches;
+function ydHide(){clearTimeout(ydT);ydHold=0;yd.style.display='none'}
+document.addEventListener('selectionchange',function(){
+  const s=window.getSelection();const t=s?s.toString().trim():'';
+  if(t&&/^[a-zA-Z' -]{2,40}$/.test(t)){
+    sel=t;clearTimeout(ydT);
+    try{const r=s.getRangeAt(0).getBoundingClientRect();
+      yd.style.left=Math.max(8,Math.min(r.left,window.innerWidth-110))+'px';
+      yd.style.top=(r.bottom+(ydTouch?30:8))+'px';yd.style.display='block';}catch(e){}
+  }else if(!ydHold){clearTimeout(ydT);ydT=setTimeout(function(){if(!ydHold)yd.style.display='none'},ydTouch?900:0)}
+});
+['pointerdown','touchstart','mousedown'].forEach(function(ev){yd.addEventListener(ev,function(){ydHold=1;clearTimeout(ydT)},{passive:true})});
+yd.addEventListener('click',function(){
+  const u='https://dict.youdao.com/result?word='+encodeURIComponent(sel)+'&lang=en';
+  let w=null;try{w=window.open(u,'_blank')}catch(e){}
+  if(!w)location.href=u;
+  ydHide()});
+document.addEventListener('click',function(e){if(e.target!==yd&&!window.getSelection().toString())ydHide()});
+
+function imgAll(b){const on=document.body.classList.toggle('stx-allimg');b.textContent=on?'收起原卷':'原卷对照';
+  if(on)document.querySelectorAll('.para img.strip').forEach(im=>im.loading='eager')}
+</script>
+<script src="img/strip_boxes_2024.js?v=3"></script>
+<script src="_strip_lookup.js?v=8"></script>
+<script>window.STX_HYPHEN=['image-generation'];</script>
+<script src="_strip_text.js?v=25"></script>
+<script src="_fault_attr.js"></script>
+</body>
+</html>

@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2024 英一 Text 4 · 切萨皮克湾的湿地保卫战</title>
+<style>
+  :root{
+    --bg:#faf9f6; --card:#ffffff; --ink:#2b2b2b; --muted:#8a8578;
+    --accent:#8b5e34; --accent-soft:#f3e9dd; --line:#e8e3d8;
+    --hl:#fdf3d8; --hl-border:#e0b84d;
+    --green:#3e7a4e; --green-soft:#e8f2ea;
+    --red:#b04a3a; --red-soft:#f9e9e6;
+    --blue:#3d6a8a; --blue-soft:#e7eff5;
+    --purple:#6d5a8e; --purple-soft:#eeeaf5;
+    --serif:"Georgia","Songti SC",serif;
+    --sans:-apple-system,"PingFang SC","Helvetica Neue",sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#1c1a17; --card:#26231f; --ink:#e8e4dc; --muted:#9a948a;
+      --accent:#d0a06a; --accent-soft:#3a3127; --line:#3a362f;
+      --hl:#3d3520; --hl-border:#b08c3a;
+      --green:#7fb98d; --green-soft:#26362b;
+      --red:#d98876; --red-soft:#3d2a26;
+      --blue:#8ab3d0; --blue-soft:#26323d;
+      --purple:#a996c8; --purple-soft:#302a3d;
+    }
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;padding-bottom:120px}
+  .wrap{max-width:1100px;margin:0 auto;padding:24px 20px}
+  .back{font-size:.85rem;color:var(--muted);text-decoration:none}
+  .back:hover{color:var(--accent)}
+  header{margin:14px 0 28px}
+  header h1{font-family:var(--serif);font-size:1.7rem;line-height:1.3}
+  header .sub{color:var(--muted);margin-top:6px;font-size:.9rem}
+  .tags{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+  .tag{font-size:.75rem;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);border:1px solid var(--line)}
+  .tag.warn{background:var(--red-soft);color:var(--red);border-color:var(--red)}
+  .tag.ok{background:var(--green-soft);color:var(--green);border-color:var(--green)}
+
+  .layout{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:24px;align-items:start}
+  main{min-width:0}
+  @media (max-width:900px){.layout{grid-template-columns:minmax(0,1fr)}}
+
+  section.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:24px}
+  h2{font-size:1.05rem;letter-spacing:.05em;color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+  h2 .n{font-size:.72rem;background:var(--accent);color:var(--card);border-radius:6px;padding:1px 7px}
+  h3{font-size:.95rem;color:var(--accent);margin:18px 0 10px}
+
+  .para{margin-bottom:22px}
+  .para .en{font-family:var(--serif);font-size:1.06rem;line-height:1.9}
+  .pno{color:var(--muted);font-size:.75rem;user-select:none;margin-right:6px}
+  .tk{background:var(--hl);border-bottom:2px solid var(--hl-border);border-radius:3px;padding:0 2px;cursor:pointer;transition:filter .15s}
+  .tk:hover{filter:brightness(.93)}
+  .tk.active{outline:2px solid var(--hl-border)}
+  .ls{border-bottom:2px dotted var(--blue);cursor:pointer}
+  .para .zh{display:none;margin-top:10px;padding:10px 14px;background:var(--blue-soft);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:.93rem}
+  .para.showzh .zh{display:block}
+  .zbtn{float:right;margin-left:10px;font-size:.72rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:6px;padding:2px 9px;cursor:pointer}
+  .zbtn:hover{color:var(--accent);border-color:var(--accent)}
+  .allbtn{font-size:.78rem;border:1px solid var(--accent);background:none;color:var(--accent);border-radius:8px;padding:4px 12px;cursor:pointer;margin-left:auto}
+
+  aside{position:sticky;top:20px}
+  #panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;min-height:180px}
+  #panel .hint{color:var(--muted);font-size:.88rem;text-align:center;padding:30px 10px}
+  .wcard .head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .wcard .w{font-family:var(--serif);font-size:1.35rem;font-weight:bold}
+  .wcard .ipa{color:var(--muted);font-size:.85rem}
+  .wcard .pos{font-size:.72rem;color:var(--purple);background:var(--purple-soft);padding:1px 8px;border-radius:999px}
+  .wcard .badge{font-size:.7rem;padding:1px 8px;border-radius:999px}
+  .b-core{background:var(--red-soft);color:var(--red)}
+  .b-phrase{background:var(--blue-soft);color:var(--blue)}
+  .b-poly{background:var(--purple-soft);color:var(--purple)}
+  .b-write{background:var(--green-soft);color:var(--green)}
+  .wcard .cn{margin-top:8px;font-size:1rem;font-weight:600}
+  .wcard .en-def{color:var(--muted);font-size:.86rem;font-style:italic;margin-top:2px}
+  .wcard .row{margin-top:10px;font-size:.86rem;padding:8px 10px;border-radius:8px}
+  .wcard .row>b:first-child{font-size:.72rem;display:block;margin-bottom:2px;letter-spacing:.06em}
+  .r-ex{background:var(--hl)} .r-ex b{color:var(--hl-border)}
+  .r-mem{background:var(--green-soft)} .r-mem b{color:var(--green)}
+  .r-syn{background:var(--blue-soft)} .r-syn b{color:var(--blue)}
+  .r-conf{background:var(--red-soft)} .r-conf b{color:var(--red)}
+  #panel .close{display:none}
+  @media (max-width:900px){
+    aside{position:fixed;left:0;right:0;bottom:0;z-index:50;padding:0 8px 8px}
+    #panel{box-shadow:0 -6px 24px rgba(0,0,0,.18);max-height:55vh;overflow-y:auto;display:none}
+    #panel.open{display:block}
+    #panel .close{display:block;float:right;border:none;background:var(--line);border-radius:8px;padding:2px 10px;cursor:pointer;color:var(--ink)}
+  }
+
+  .q{margin-bottom:22px;padding-bottom:18px;border-bottom:1px dashed var(--line)}
+  .q:last-child{border:none;margin-bottom:0;padding-bottom:0}
+  .q .stem{font-weight:600;font-family:var(--serif)}
+  .qt{font-size:.7rem;color:var(--blue);background:var(--blue-soft);border-radius:999px;padding:1px 8px;margin-right:6px;vertical-align:2px}
+  .opts{margin-top:10px;display:grid;gap:8px}
+  .opt{border:1px solid var(--line);border-radius:10px;padding:8px 12px;cursor:pointer;font-size:.93rem;font-family:var(--serif);transition:all .15s}
+  .opt:hover{border-color:var(--accent)}
+  .q.done .opt{cursor:default}
+  .opt.right{background:var(--green-soft);border-color:var(--green)}
+  .opt.wrong{background:var(--red-soft);border-color:var(--red)}
+  .expl{display:none;margin-top:12px;background:var(--accent-soft);border-radius:10px;padding:12px 14px;font-size:.9rem}
+  .q.done .expl{display:block}
+  .expl b{color:var(--accent)}
+  .expl .loc{font-family:var(--serif);font-style:italic;background:var(--hl);padding:1px 4px;border-radius:3px}
+  .fail{background:var(--red-soft);border:1px solid var(--red);border-radius:10px;padding:10px 13px;margin-bottom:10px;font-size:.89rem}
+  .fail b{color:var(--red)}
+  .waver{background:var(--hl);border:1px solid var(--hl-border);border-radius:10px;padding:10px 13px;margin-bottom:10px;font-size:.89rem}
+
+  .sent{margin-bottom:20px}
+  .sent .src{font-family:var(--serif);font-size:1rem;background:var(--blue-soft);padding:12px 14px;border-radius:10px;border-left:3px solid var(--blue)}
+  .sent .anat{margin-top:8px;font-size:.9rem}
+  .sent .anat li{margin:4px 0 4px 18px}
+  .sent .tr{margin-top:8px;font-size:.92rem;color:var(--muted)}
+  .skel{color:var(--red);font-weight:600}
+
+  .filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+  .fbtn{font-size:.8rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:999px;padding:4px 14px;cursor:pointer}
+  .fbtn.on{background:var(--accent);color:var(--card);border-color:var(--accent)}
+  .vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
+  .vitem{border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer;transition:border-color .15s}
+  .vitem:hover{border-color:var(--accent)}
+  .vitem .w{font-family:var(--serif);font-weight:bold}
+  .vitem .cn{font-size:.85rem;color:var(--muted)}
+  .vitem .badges{float:right}
+
+  .wb{display:grid;gap:10px}
+  .wbi{border-left:3px solid var(--green);background:var(--green-soft);border-radius:0 10px 10px 0;padding:10px 14px;font-size:.92rem}
+  .wbi .p{font-family:var(--serif);font-weight:600}
+  .wbi .u{color:var(--muted);font-size:.85rem}
+
+  .flow{display:grid;gap:8px;font-size:.92rem}
+  .flow .fi{border:1px solid var(--line);border-radius:10px;padding:9px 13px}
+  .flow .fi b{color:var(--accent)}
+
+  .ctab{width:100%;border-collapse:collapse;font-size:.86rem;margin-top:8px}
+  .ctab th,.ctab td{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
+  .ctab th{background:var(--accent-soft);color:var(--accent);font-size:.8rem;white-space:nowrap}
+  .ctab code{background:var(--hl);padding:0 3px;border-radius:3px}
+  .tabwrap{overflow-x:auto}
+  .ok{color:var(--green);font-weight:700}
+  .no{color:var(--red);font-weight:700}
+  .tl{display:grid;gap:10px;margin-top:6px}
+  .tli{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:start;border:1px solid var(--line);border-radius:10px;padding:10px 13px}
+  .tli .mark{font-family:var(--serif);font-weight:700;color:var(--accent);background:var(--accent-soft);border-radius:8px;padding:4px 10px;white-space:nowrap;font-size:.85rem}
+
+  .arrow{display:grid;gap:8px;margin-top:8px}
+  .arrow .ai{border:1px solid var(--line);border-radius:10px;padding:10px 13px;font-size:.9rem}
+  .arrow .ai.old{background:var(--red-soft);border-color:var(--red)}
+  .arrow .ai.new{background:var(--green-soft);border-color:var(--green)}
+  .chain{font-family:var(--serif);font-size:.95rem;background:var(--hl);border:1px solid var(--hl-border);border-radius:10px;padding:10px 14px;margin:8px 0;overflow-x:auto}
+
+  #yd{position:fixed;z-index:60;display:none;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:4px 12px;font-size:.8rem;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+  footer{color:var(--muted);font-size:.8rem;text-align:center;margin-top:30px}
+  .att{display:grid;gap:8px;margin-top:10px}
+  .atti{border:1px solid var(--line);border-radius:10px;padding:9px 13px;font-size:.9rem}
+  .atti b{font-family:var(--serif)}
+  .atti.no2{background:var(--red-soft);border-color:var(--red)}
+  .atti.yes{background:var(--green-soft);border-color:var(--green)}
+  .atti,.expl,.wbi,.zh,.fi,.ai,figcaption,p{overflow-wrap:anywhere}
+
+  /* 2021 起：原文以原卷扫描句条呈现 */
+  .sn{margin:0 0 14px}
+  .sn .pno{display:block;margin-bottom:4px;font-size:.78rem;line-height:1.6}
+  img.strip{display:block;width:100%;max-width:760px;height:auto;background:#fff;border:1px solid var(--line);border-radius:6px;cursor:pointer}
+  .sent .src img.strip{margin-top:6px;cursor:default}
+  .kw{margin-top:5px;font-size:.88rem;line-height:2.1;font-family:var(--serif)}
+  @media (prefers-color-scheme: dark){img.strip{filter:invert(.9) hue-rotate(180deg)}}
+  .sn,.sent .src{overflow-x:auto}
+  @media (max-width:700px){img.strip{width:640px;max-width:none}.sn::after{content:'← 句条可左右滑动 →';display:block;font-size:.7rem;color:var(--muted);margin-top:2px}}
+
+  /* 2023 起：流式版——识别好的句子在段落里连排，像 2007–2020 */
+  .para .en{font-family:var(--serif);font-size:1.02rem;line-height:1.9}
+  .stx-flow .para .en .pno{margin-right:4px}
+  .stx-flow .para .sn:not(.stx-on) .kw{margin-bottom:8px}
+</style>
+
+</head>
+<body class="stx-flow">
+<div class="wrap">
+  <a class="back" href="index.html">◀ 返回英语复盘中心</a>
+  <header>
+    <h1>切萨皮克湾的湿地保卫战</h1>
+    <div class="sub">2024 年英语（一）真题 · Text 4 · 426 词 · 5 段 · 建议做题 18 min · 话题：环境保护×联邦与州的分工×最高法院裁决（来源：《巴尔的摩太阳报》2023-06-01，原题 <i>Protecting Vital U.S. Wetlands Must Remain a Federal Priority</i>，据黄皮书）</div>
+    <div class="tags">
+      <span class="tag">正确答案：36A 37B 38A 39D 40B</span><span class="tag">题型：细节综合 ＋ 事实细节 ＋ 作者态度 ＋ 推理引申 ＋ 作者观点</span><span class="tag">难度：一段一题、严格顺序；坑在「把作者批评的看法当成作者的看法」</span><span class="tag">✅ Claude 盲做 5/5（39 A/D 排过一下）</span><span class="tag">⚠️ 原定冲刺模考卷，已按你的决定开复盘</span>
+    </div>
+  </header>
+
+  <div class="layout">
+    <main>
+      <!-- ========== 全文脉络 ========== -->
+      <section class="card">
+        <h2><span class="n">00</span>读前一分钟 · 全文脉络（做完题再看也行）</h2>
+        <div class="flow">
+          <div class="fi"><b>①段 引子：一个自然奇迹</b>：切萨皮克湾的神奇<b>不在深，而在复杂</b>——淡水咸水交汇、陆地水域交错。浅滩给数百个物种安家，<b>同时</b>蓄洪、滤污、替附近社区挡风暴潮（36 题：一串褒义动作 ⟹ 宝贵的自然环境）。</div>
+          <div class="fi"><b>②段 事件：最高法院一纸裁决</b>：<b>上个月底</b>这一切被置于巨大风险之中——最高法院在爱达荷一案中<b>大大缩小了 EPA 监管湿地和水道的权力</b>：5 比 4 的多数认定，受保护的湿地必须和水体有「连续的地表连接」。这对建筑商、矿业经营者等常与环保规定作对的商业利益集团是胜利；大法官卡瓦诺也说，它对全美水质和防洪影响重大（37 题：weakens ↔ far less authority）。</div>
+          <div class="fi"><b>③段 分析一：州法靠不住</b>：马里兰的「好消息」是本州有不少湿地保护法——<b>But</b> 作者马上说这是<b>非常短视</b>的看法：水和污染物<b>不认州界</b>，海湾的流域横跨六个州级辖区。别的辖区会补上被裁决拿掉的保护吗？「也许有些会，但全部？看来不太可能。」（38 题：作者的担忧）</div>
+          <div class="fi"><b>④段 分析二：EPA 为什么必不可少</b>：把裁决只看成「维护土地所有者权利」既太简单又误导——后果对邻居可能是灾难。这提醒我们：EPA 参与切萨皮克湾计划一向<b>至关重要</b>，它是<b>越过邻州财大气粗的特殊利益集团</b>的手段。例子：宾州农民往地里撒粪肥时不会想马里兰明年的蓝蟹收成，可径流流到下游影响巨大（39 题：跨州统筹 ⟹ 协调保护工作）。</div>
+          <div class="fi"><b>⑤段 呼吁</b>：<b>And so</b>——我们呼吁从里士满到奥尔巴尼（流域两端的州府）的州立法者<b>重新审视本州的湿地保护</b>，亲眼看看事关多大；我们可以请他们去黑水野生动物保护区走一趟，值得一去（40 题：attach due importance to wetlands protections）。</div>
+          <div class="fi" style="border-color:var(--accent)">📌 <b>一句话主旨</b>：最高法院削弱了联邦（EPA）对湿地的监管，而水不认州界、各州保护参差不齐，所以保护切萨皮克湾这样的跨州湿地仍得靠联邦统筹，各州也该补上自己的保护。<br>📌 <b>文体</b>：报纸<b>社论</b>——⑤❶ 的 <span class="loc">we would call on</span> 是编辑部口吻。和同卷 T2（新闻稿）、T3（特稿）都不一样：<b>本篇作者立场鲜明</b>，所以出了态度题（38）和观点题（40），这两种题在 T2/T3 根本出不了。<br>📌 <b>结构：问题—分析—对策</b>：价值（①）→ 威胁（②）→ 为什么州法补不上（③）→ 为什么离不开 EPA（④）→ 呼吁（⑤）。<b>五段五题，一段一题，严格顺序</b>。<br>📌 <b>本篇最值钱的一条规律</b>：社论里作者会先摆出<b>别人的看法</b>再推翻——③❶ the good news（马里兰有州法）→ ❷ <span class="loc">But that’s a very shortsighted view</span>；④❶ 把裁决看成维护地主权利 → <span class="loc">too easy, and misleading</span>。<b>被推翻的那一半，就是干扰项的原料库</b>：38C/D 取③❶，40A 取④❶。做观点题时先问一句：<b>这句话是作者说的，还是作者在驳的？</b></div>
+          <div class="fi">🗞 <b>背景（WebSearch 核过，只帮读、不替原文纠错）</b>：所谓「爱达荷的案子」就是③❺ 点名的 <i>Sackett v. EPA</i>，2023 年 5 月 25 日判决——发稿日 6 月 1 日，所以叫「上个月底」。一个细节值得知道：<b>判决结果其实是 9 比 0</b>（九位大法官都认为萨基特夫妇那块地不归《清洁水法》管），<b>「5 比 4」指的是「连续地表连接」这条新标准</b>——只有五位大法官支持；包括卡瓦诺在内的四位只同意结果、不同意这条标准，卡瓦诺在附议意见里专门警告新标准会让大量湿地失去联邦保护，还点名提到了切萨皮克湾。所以②❹ 引卡瓦诺不是随手引用：<b>连站在判决结果一边的大法官都在担心</b>，作者借他的话加分量。另：切萨皮克湾流域约 6.4 万平方英里，横跨纽约、宾州、特拉华、马里兰、西弗吉尼亚、弗吉尼亚和哥伦比亚特区；⑤段的里士满（弗吉尼亚州府）和奥尔巴尼（纽约州府）正是流域的南北两头。此后弗吉尼亚等州确实表态维持本州较严的湿地保护——③❻ 的「也许有些会」后来应验了一部分。</div>
+        </div>
+      </section>
+
+      <!-- ========== 原文精读 ========== -->
+      <section class="card">
+        <h2><span class="n">01</span>原文精读 <button class="allbtn" onclick="toggleAll()">全文意译 开/关</button> <button class="allbtn" id="imgall" onclick="imgAll(this)">原卷对照</button></h2>
+        <p style="font-size:.8rem;color:var(--muted);margin-bottom:14px">🟡 黄色高亮 = 重难点词/短语，点击右侧出卡片 ｜ 蓝色虚线 = 长难句，点击跳到精析 ｜ 每段「意」= 段落意译 ｜ 选中任意其他单词浮出「查有道」 ｜ 原文由你的浏览器从原卷识别成文字（首次约 3 秒，之后秒开）；「原卷对照」可逐句看扫描原图、改识别错字</p>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">①</span>
+            <div class="sn" data-go="l1_1"><img class="strip" src="img/2024_T4/s1_1.png" alt="①❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="miracle">miracle</span> · <span class="tk" data-w="liein">lies … in</span> · <span class="tk" data-w="depth">depths</span> · <span class="tk" data-w="complexity">complexity</span> · <span class="tk" data-w="construction">construction</span> · <span class="tk" data-w="interaction">interaction</span> · <span class="tk" data-w="fresh">fresh</span> · <span class="tk" data-w="saline">saline</span></div></div>
+            <div class="sn" data-go="l1_2"><img class="strip" src="img/2024_T4/s1_2.png" alt="①❷ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="shallows">shallows</span> · <span class="tk" data-w="species">species</span> · <span class="tk" data-w="floodwater">floodwaters</span> · <span class="tk" data-w="filter">filtering</span> · <span class="tk" data-w="pollutant">pollutants</span> · <span class="tk" data-w="potentially">potentially</span> · <span class="tk" data-w="destructive">destructive</span> · <span class="tk" data-w="stormsurge">storm surges</span></div></div>
+          </div>
+          <div class="zh"><b>①段意：</b>切萨皮克湾的神奇之处不在于水有多深，而在于它天然构造的复杂：淡水与咸水在这里交汇，陆地与水域在这里交错。这片浅滩是数百个物种的家园，同时还能蓄积洪水、滤除水中的污染物，并保护附近的社区免受可能极具破坏力的风暴潮侵袭。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">②</span>
+            <div class="sn" data-go="l2_1"><img class="strip" src="img/2024_T4/s2_1.png" alt="②❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="putatrisk">put at great risk</span> · <span class="tk" data-w="issue">issued</span> · <span class="tk" data-w="ruling">ruling</span> · <span class="tk" data-w="provide">provides</span> · <span class="tk" data-w="authority">authority</span> · <span class="tk" data-w="regulate">regulate</span> · <span class="tk" data-w="wetland">wetlands</span> · <span class="tk" data-w="waterway">waterways</span></div></div>
+            <div class="sn" data-go="l2_2"><img class="strip" src="img/2024_T4/s2_2.png" alt="②❷ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="specifically">Specifically</span> · <span class="tk" data-w="majority">majority</span> · <span class="tk" data-w="continuous">continuous</span> · <span class="tk" data-w="surface">surface</span> · <span class="tk" data-w="connection">connection</span> · <span class="tk" data-w="body">bodies of water</span></div></div>
+            <div class="sn" data-go="l2_3"><img class="strip" src="img/2024_T4/s2_3.png" alt="②❸ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="narrowing">narrowing</span> · <span class="tk" data-w="regulatory">regulatory</span> · <span class="tk" data-w="scope">scope</span> · <span class="tk" data-w="victory">victory</span> · <span class="tk" data-w="mining">mining</span> · <span class="tk" data-w="operator">operators</span> · <span class="tk" data-w="interest">interests</span> · <span class="tk" data-w="atodds">at odds with</span></div></div>
+            <div class="sn"><img class="strip" src="img/2024_T4/s2_4.png" alt="②❹ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="carry">carries</span> · <span class="tk" data-w="repercussion">repercussions</span> · <span class="tk" data-w="floodcontrol">flood control</span> · <span class="tk" data-w="justice">Justice</span> · <span class="tk" data-w="observe">observed</span></div></div>
+          </div>
+          <div class="zh"><b>②段意：</b>上个月底，这一切都被置于巨大的危险之中：美国最高法院就爱达荷州的一起案件作出裁决，使美国环境保护署（EPA）监管湿地和水道的权力大大缩小。具体来说，五比四的多数意见认定，EPA 依据《清洁水法》授权所保护的湿地，必须与水体之间存在「连续的地表连接」。监管范围的这一收窄，是建筑商、矿业经营者以及其他常与环保规定相抵触的商业利益集团的胜利。而正如大法官布雷特·卡瓦诺所说，它将「对全美国的水质和防洪产生重大影响」。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">③</span>
+            <div class="sn"><img class="strip" src="img/2024_T4/s3_1.png" alt="③❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="inplace">in place</span> · <span class="tk" data-w="protection">protections</span></div></div>
+            <div class="sn"><img class="strip" src="img/2024_T4/s3_2.png" alt="③❷ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="shortsighted">shortsighted</span> · <span class="tk" data-w="particularly">particularly</span> · <span class="tk" data-w="whenitcomes">when it comes to</span></div></div>
+            <div class="sn" data-go="l3_3"><img class="strip" src="img/2024_T4/s3_3.png" alt="③❸ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="reality">reality</span> · <span class="tk" data-w="respect">respect</span> · <span class="tk" data-w="boundary">boundaries</span></div></div>
+            <div class="sn"><img class="strip" src="img/2024_T4/s3_4.png" alt="③❹ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="drawfrom">draws from</span> · <span class="tk" data-w="watershed">watershed</span> · <span class="tk" data-w="extendinto">extends into</span></div></div>
+            <div class="sn" data-go="l3_5"><img class="strip" src="img/2024_T4/s3_5.png" alt="③❺ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="jurisdiction">jurisdictions</span> · <span class="tk" data-w="extend">extend</span> · <span class="tk" data-w="deny">denied</span></div></div>
+            <div class="sn"><img class="strip" src="img/2024_T4/s3_6.png" alt="③❻ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="perhaps">Perhaps</span></div></div>
+            <div class="sn"><img class="strip" src="img/2024_T4/s3_7.png" alt="③❼ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="unlikely">unlikely</span></div></div>
+          </div>
+          <div class="zh"><b>③段意：</b>在马里兰州，好消息是本州已有许多现行法律为湿地提供保护。但这是一种非常短视的看法，尤其是涉及切萨皮克湾的时候。现实是，水以及常常随水而来的污染物，是不管州界的。切萨皮克湾的水来自一片面积达 6.4 万平方英里的流域，这片流域延伸到弗吉尼亚、宾夕法尼亚、纽约、西弗吉尼亚、哥伦比亚特区和特拉华。「萨基特诉环保署案」之后被拿掉的那些保护，这些辖区会照样提供吗？也许有一些会，但全部都会吗？看来不太可能。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">④</span>
+            <div class="sn" data-go="l4_1"><img class="strip" src="img/2024_T4/s4_1.png" alt="④❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="misleading">misleading</span> · <span class="tk" data-w="merely">merely</span> · <span class="tk" data-w="standupfor">standing up for</span> · <span class="tk" data-w="landowner">land owners</span> · <span class="tk" data-w="consequence">consequences</span> · <span class="tk" data-w="dire">dire</span></div></div>
+            <div class="sn" data-go="l4_2"><img class="strip" src="img/2024_T4/s4_2.png" alt="④❷ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="reminder">reminder</span> · <span class="tk" data-w="involvement">involvement</span> · <span class="tk" data-w="crucial">crucial</span> · <span class="tk" data-w="means">means</span> · <span class="tk" data-w="transcend">transcend</span> · <span class="tk" data-w="deeppocketed">deep-pocketed</span> · <span class="tk" data-w="specialinterests">special interests</span></div></div>
+            <div class="sn" data-go="l4_3"><img class="strip" src="img/2024_T4/s4_3.png" alt="④❸ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="telling">telling</span> · <span class="tk" data-w="harvest">harvest</span> · <span class="tk" data-w="spread">spread</span> · <span class="tk" data-w="waste">animal waste</span> · <span class="tk" data-w="runoff">runoff</span> · <span class="tk" data-w="creek">creeks</span> · <span class="tk" data-w="downstream">downstream</span></div></div>
+          </div>
+          <div class="zh"><b>④段意：</b>把这类法院裁决仅仅看作是在维护土地所有者的权利，未免太过简单，也会误导人——毕竟其后果对他们的邻居可能是灾难性的。这也提醒我们，长期以来，EPA 参与「切萨皮克湾计划」一直至关重要，因为它是超越邻近各州财大气粗的特殊利益集团影响力的手段。举一个很能说明问题的例子：宾夕法尼亚的农民在决定要不要往地里撒动物粪肥时，不会去想马里兰明年的蓝蟹收成，可流进附近小溪的径流，会对下游造成巨大的影响。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">⑤</span>
+            <div class="sn" data-go="l5_1"><img class="strip" src="img/2024_T4/s5_1.png" alt="⑤❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="callon">call on</span> · <span class="tk" data-w="lawmaker">lawmakers</span> · <span class="tk" data-w="review">reviewing</span> · <span class="tk" data-w="seeforthemselves">see for themselves</span> · <span class="tk" data-w="stakes">stakes</span> · <span class="tk" data-w="involved">involved</span></div></div>
+            <div class="sn" data-go="l5_2"><img class="strip" src="img/2024_T4/s5_2.png" alt="⑤❷ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="refuge">Refuge</span> · <span class="tk" data-w="baldeagle">bald eagles</span> · <span class="tk" data-w="tidal">tidal</span> · <span class="tk" data-w="marsh">marshes</span> · <span class="tk" data-w="paddle">paddle</span> · <span class="tk" data-w="teeming">teaming</span> · <span class="tk" data-w="aquatic">aquatic</span></div></div>
+            <div class="sn"><img class="strip" src="img/2024_T4/s5_3.png" alt="⑤❸ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="worth">worth</span> · <span class="tk" data-w="scenic">scenic</span></div></div>
+          </div>
+          <div class="zh"><b>⑤段意：</b>因此，我们呼吁从里士满到奥尔巴尼的各州立法者，考虑重新审视本州的湿地保护措施，亲眼看看这件事关系有多重大。我们可以请他们去多切斯特县的黑水国家野生动物保护区看看：那里白头海雕飞过潮汐沼泽，沼泽浅得连小船都划不过去，却满是生机勃勃的水生生物。这一路的风景，值得驱车一趟。</div>
+        </div>
+      </section>
+
+      <!-- ========== 题目 ========== -->
+      <section class="card">
+        <h2><span class="n">02</span>题目与解析（点选项即判 · 再看解析）</h2>
+
+        <div class="q" data-ans="0" id="q36">
+          <p class="stem"><span class="qt">细节综合</span>36. The Chesapeake Bay is described in Paragraph 1 as</p>
+          <div class="opts">
+            <div class="opt">[A] a <span class="tk" data-w="valuable">valuable</span> natural environment.</div>
+            <div class="opt">[B] a <span class="tk" data-w="controversial">controversial</span> <span class="tk" data-w="conservation">conservation</span> area.</div>
+            <div class="opt">[C] a place with commercial <span class="tk" data-w="potential">potential</span>.</div>
+            <div class="opt">[D] a <span class="tk" data-w="headache">headache</span> for nearby communities.</div>
+          </div>
+          <div class="expl"><b>答案 A</b>　①段两句都在夸：❶ 开头一个 <span class="loc">The miracle of</span>，接着说奇在构造复杂（淡咸水交汇、水陆交错）；❷ 列出浅滩干的四件好事——<span class="loc">provide homes for hundreds of species</span>、storing floodwaters、filtering pollutants、protecting nearby communities。一个「奇迹」＋ 四项功用 ⟹ valuable；natural environment 概括的是❶ 的 natural construction、fresh and saline waters、land and water ⟹ A。<br><b>干扰项：</b>B 拿❶ 的 complexity 做文章——原文说的是<b>构造复杂</b>，不是<b>看法有争议</b>；②段的裁决才有争议，那是②段的事。C 东拼西凑：❷ 的 potentially 修饰的是「风暴潮可能具破坏性」，②❸ 的 commercial interests 是裁决的受益者——两处都和海湾「有商业潜力」无关。D 把方向弄反：浅滩是<b>保护</b>附近社区免受风暴潮，不是社区的麻烦；nearby communities 原词复现，正是陷阱。<br><b>要害：</b>引子段的细节综合题，先看<b>语义色彩</b>：①段全是褒义词（miracle、provide homes、protecting），带贬义的 B、D 先出局；再想<b>引子为什么这么写</b>——是为后文「湿地必须保护」铺垫价值，所以落在「宝贵的自然环境」，不会落在「商业潜力」。</div>
+        </div>
+
+        <div class="q" data-ans="1" id="q37">
+          <p class="stem"><span class="qt">事实细节</span>37. The U.S. Supreme Court’s ruling in the Idaho case</p>
+          <div class="opts">
+            <div class="opt">[A] <span class="tk" data-w="reinforce">reinforces</span> water pollution control.</div>
+            <div class="opt">[B] <span class="tk" data-w="weaken">weakens</span> the EPA’s regulatory power.</div>
+            <div class="opt">[C] will end <span class="tk" data-w="conflict">conflicts</span> among local residents.</div>
+            <div class="opt">[D] may face <span class="tk" data-w="opposition">opposition</span> from mining operators.</div>
+          </div>
+          <div class="expl"><b>答案 B</b>　②❶ 交代裁决的效果：它给了 EPA <span class="loc">far less authority to regulate wetlands and waterways</span>；②❸ 再用一个名词把它收住——<span class="loc">This narrowing of the regulatory scope</span>。weakens … regulatory power ↔ far less authority to regulate ＋ narrowing of the regulatory scope ⟹ B。<br><b>干扰项：</b>A 方向反：管得更少了，怎么会是「加强水污染管控」？②❹ 还说它对水质和防洪有 significant repercussions（重大的不良影响）。C 拿②❸ 的 <span class="loc">at odds with</span> 编故事：原文说的是商业利益集团<b>常和环保规定作对</b>，不是居民之间有冲突，更没说裁决能结束冲突——主体也被偷换成了 local residents。D 正好反了：②❸ 说裁决是 <span class="loc">a victory for</span> builders, mining operators——矿业经营者是<b>赢家</b>，只会支持，不会反对。<br><b>要害：</b>定位处是几个长句、信息很密，<b>从选项反查更快</b>：抓每个选项的关键事物（water pollution / EPA / local residents / mining operators），回原文看原文怎么说它，A 和段意相反、C 和 D 张冠李戴，剩 B。</div>
+        </div>
+
+        <div class="q" data-ans="0" id="q38">
+          <p class="stem"><span class="qt">作者态度</span>38. How does the author feel about the future of the Chesapeake Bay?</p>
+          <div class="opts">
+            <div class="opt">[A] <span class="tk" data-w="worried">Worried</span>.</div>
+            <div class="opt">[B] <span class="tk" data-w="puzzled">Puzzled</span>.</div>
+            <div class="opt">[C] <span class="tk" data-w="relieved">Relieved</span>.</div>
+            <div class="opt">[D] <span class="tk" data-w="encouraged">Encouraged</span>.</div>
+          </div>
+          <div class="expl"><b>答案 A</b>　题眼是 <b>the future</b>。③段只有❺–❼ 三句在谈未来：别的辖区<b>会</b>补上被拿掉的保护吗？<span class="loc">Perhaps some, but all?</span> <span class="loc">That seems unlikely.</span> ——作者判断「全部补上」不太可能，海湾前景堪忧。再往前看，❷ 直接给马里兰的乐观打了个 <span class="loc">a very shortsighted view</span>，②❶ 一开头就是 <span class="loc">put at great risk</span>。态度是消极的、担心的 ⟹ A。<br><b>干扰项：</b>B 是对❻❼ 的 Perhaps、seems 望文生义——这两个词表达的是<b>可能性低</b>，作者的判断其实很清楚（unlikely），不是「看不懂、拿不准」。C、D 都从❶ 的 <span class="loc">the good news</span> 取料，可那是作者<b>马上用❷ But 推翻</b>的看法；而且❶ 说的是马里兰<b>现在</b>有州法，题问的是海湾的<b>未来</b>，时态也对不上。C 还可能被❻ Perhaps some 带偏——作者强调的是「只有一部分辖区愿意没用，得全部」。<br><b>要害：</b>态度题先找作者亲口给出的评价词（shortsighted、unlikely、put at great risk），定正负，排掉 C、D；再分辨 B 这种「语气词 ≠ 态度模糊」的坑。社论的写法是「提出问题 → 表示担忧 → 呼吁行动」，worried 正好是中间那一环。</div>
+        </div>
+
+        <div class="q" data-ans="3" id="q39">
+          <p class="stem"><span class="qt">推理引申</span>39. What can be <span class="tk" data-w="infer">inferred</span> about the EPA’s involvement in the Chesapeake Bay Program?</p>
+          <div class="opts">
+            <div class="opt">[A] It has <span class="tk" data-w="restore">restored</span> the <span class="tk" data-w="balance">balance</span> among neighboring jurisdictions.</div>
+            <div class="opt">[B] It has <span class="tk" data-w="trigger">triggered</span> a <span class="tk" data-w="radical">radical</span> <span class="tk" data-w="reform">reform</span> in commercial <span class="tk" data-w="fishery">fisheries</span>.</div>
+            <div class="opt">[C] It has <span class="tk" data-w="setexample">set a fine example</span> of respecting state authorities.</div>
+            <div class="opt">[D] It has <span class="tk" data-w="ensure">ensured</span> the <span class="tk" data-w="coordination">coordination</span> of protection efforts.</div>
+          </div>
+          <div class="expl"><b>答案 D</b>　题干原词复现在④❷：EPA 的参与 <span class="loc">has long been crucial</span>，因为它是 <span class="loc">the means to transcend the influence of</span> 邻州那些财大气粗的特殊利益集团的手段。④❸ 马上举例：宾州农民撒粪肥只顾自己，径流却流到下游的马里兰——<b>一个州的利益集团，给另一个州闯祸</b>。再连上③段「水不认州界、各州保护参差不齐」：只有站在各州之上的 EPA，能让上下游一起守同一套规矩 ⟹「确保了保护工作的协调」⟹ D。coordination 扣的是段意（各州不是孤岛，需要外力统筹），protection efforts 扣的是全文主旨（湿地保护）。<br><b>干扰项：</b>A 最像，排的时候要细看：transcend the influence 是「<b>越过</b>各州利益集团的影响」，选项改成「<b>恢复</b>各辖区之间的平衡」——原文没说过各辖区之间失衡、更没说 EPA 把平衡恢复了，是把 EPA 的作用说大了、说偏了。B 从④❸ 的 blue crab harvest 和②❸ 的 commercial interests 拼出「渔业彻底改革」，原文没有。C 反了：EPA 的价值恰恰在于它<b>不受</b>各州利益左右、能越过州一级；「尊重州权的榜样」和全文论证方向相反。<br><b>要害：</b>推理题的例子（④❸）不好懂时，回到段中的<b>观点句</b>（④❷）和<b>全文主线</b>（③段的「跨州」）去理解例子在证明什么。黄皮书把④❷❸ 读成今昔对比——过去 EPA 管得住，如今裁决之后管不住了——这个「如今」是从②段推出来的，④段字面上只有 has long been，考场上这样串起来理解即可。</div>
+        </div>
+
+        <div class="q" data-ans="1" id="q40">
+          <p class="stem"><span class="qt">作者观点</span>40. The author <span class="tk" data-w="holdthat">holds that</span> the state lawmakers should</p>
+          <div class="opts">
+            <div class="opt">[A] be <span class="tk" data-w="cautious">cautious</span> about the influence of land owners.</div>
+            <div class="opt">[B] <span class="tk" data-w="attach">attach</span> <span class="tk" data-w="due">due</span> importance to wetlands protections.</div>
+            <div class="opt">[C] recognize the need to <span class="tk" data-w="expand">expand</span> wildlife refuges.</div>
+            <div class="opt">[D] improve the <span class="tk" data-w="wellbeing">wellbeing</span> of <span class="tk" data-w="endangered">endangered</span> species.</div>
+          </div>
+          <div class="expl"><b>答案 B</b>　题干的 state lawmakers 原词复现在⑤❶：我们呼吁他们 <span class="loc">consider reviewing their own wetlands protections</span>，并且 <span class="loc">see for themselves the enormous stakes involved</span>。「重新审视本州湿地保护 ＋ 亲眼看看事关多大」＝ 把湿地保护当回事 ⟹ attach due importance to wetlands protections ⟹ B。<br><b>干扰项：</b>A 从④❶ 取料，可④❶ 是作者在<b>驳</b>一种看法（把裁决仅仅看成维护地主权利）——作者批评的是这种看法太简单，不是叫立法者提防土地所有者；何况②❸ 说受益的是 builders、mining operators 等商业利益集团，和 land owners 也不是一回事。C 抓住⑤❷ 的 Wildlife Refuge 和 so shallow 编出「扩建保护区」：⑤❷ 只是请立法者去<b>参观</b>，好让他们亲眼看到⑤❶ 的 stakes，是动员的手段，不是建议本身。D 从⑤❷ 的 bald eagles 和 aquatic life 编出「濒危物种」——原文没有 endangered，作者建议的重心始终是<b>湿地</b>。<br><b>要害：</b>观点题两条路互证：① 找作者的建议句（call on … to …），答案是它的同义概括；② 回扣全文对象——前四段都在讲湿地，末段的呼吁只会落在湿地保护上。A、C、D 都是「原词复现 ＋ 方向跑偏」。</div>
+        </div>
+      </section>
+
+      <!-- ========== 长难句 ========== -->
+      <section class="card" id="sents">
+        <h2><span class="n">03</span>长难句精析（正文蓝色虚线句）</h2>
+
+        <div class="sent" id="l1_1">
+          <div class="src"><b>s1（①❶）</b><img class="strip" src="img/2024_T4/s1_1.png" alt="①❶ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：<code>The miracle … lies not in its depths, but in the complexity of …</code>——<b>lie in</b>（在于）＋ <b>not A but B</b>（不是 A 而是 B）：先否定一个常见想法，再给出真正的答案。</li>
+            <li>but in 后面的 <code>the complexity of its natural construction</code> 是总说，后面两个逗号隔开的 <code>the interaction of fresh and saline waters</code>、<code>the mix of land and water</code> 是<b>同位语</b>，具体说明「复杂」在哪——三个名词短语并列，别误读成三件不同的事。</li>
+            <li>not … but … 是重心标记：<b>but 后面才是作者要说的</b>。这个「否定—肯定」的套路在阅读里极常见，答案总在 but 那一边。</li>
+          </ul>
+          <div class="tr">意：切萨皮克湾的神奇之处不在于水有多深，而在于它天然构造的复杂：淡水与咸水在这里交汇，陆地与水域在这里交错。</div>
+        </div>
+
+        <div class="sent" id="l1_2">
+          <div class="src"><b>s2（①❷）</b><img class="strip" src="img/2024_T4/s1_2.png" alt="①❷ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：<code>The shallows provide homes for hundreds of species</code>——the shallows 是名词「浅滩」（shallow 的名词用法，常用复数）。</li>
+            <li><code>while storing …, filtering …, and protecting …</code>：while ＋ doing 表<b>同时</b>，三个 -ing 并列，主语都是 the shallows。这里的 while 不是转折，是「一边……一边……」。</li>
+            <li><code>protecting nearby communities from potentially destructive storm surges</code>：protect A from B 保护 A 免受 B；potentially 修饰 destructive——「可能具有破坏性的」。</li>
+            <li>36D 偷的就是最后这一截：原文是「保护社区<b>免受</b>风暴潮」，选项变成「社区的麻烦」。</li>
+          </ul>
+          <div class="tr">意：这片浅滩是数百个物种的家园，同时还能蓄积洪水、滤除水中的污染物，并保护附近的社区免受可能极具破坏力的风暴潮侵袭。</div>
+        </div>
+
+        <div class="sent" id="l2_1">
+          <div class="src"><b>s3（②❶）</b><img class="strip" src="img/2024_T4/s2_1.png" alt="②❶ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：<code>All this was put at great risk late last month</code>——All this 回指①段说的一切好处；put at risk 使处于危险中。</li>
+            <li><code>when the U.S. Supreme Court issued a ruling in an Idaho case</code>：when 引导<b>非限制性定语从句</b>，修饰 late last month（上个月底，那时……）；issue a ruling 作出裁决。</li>
+            <li><code>that provides the … Agency (EPA) far less authority to …</code>：that 从句修饰 a ruling（不是 case）——<b>是裁决给了 EPA 少得多的权力</b>。provide sb sth 给某人某物；far 修饰比较级 less。</li>
+            <li>一句话套两层从句，读的时候按「什么时候 → 谁做了什么 → 这个决定有什么效果」三步拆。37B 的答案就在最后一层。</li>
+          </ul>
+          <div class="tr">意：上个月底，这一切都被置于巨大的危险之中：美国最高法院就爱达荷州的一起案件作出裁决，使美国环境保护署（EPA）监管湿地和水道的权力大大缩小。</div>
+        </div>
+
+        <div class="sent" id="l2_2">
+          <div class="src"><b>s4（②❷）</b><img class="strip" src="img/2024_T4/s2_2.png" alt="②❷ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：<code>a 5-4 majority decided that …</code>——a 5-4 majority 指九位大法官里赞成的那五位（多数意见）；decide that 裁定。</li>
+            <li>that 宾语从句：主语 <code>wetlands protected by the EPA under its Clean Water Act authority</code>（过去分词短语作后置定语，by 引出保护者、under 引出依据），谓语 <code>must have a “continuous surface connection” to bodies of water</code>。</li>
+            <li><code>bodies of water</code>：body 在这里是「一片、一大块」——水体（河、湖、海）。熟词僻义。</li>
+            <li>开头的 <code>Specifically</code> 表示「具体说来」：上一句是概括（权力大减），这一句是细节（新标准是什么）。</li>
+          </ul>
+          <div class="tr">意：具体来说，五比四的多数意见认定，EPA 依据《清洁水法》授权所保护的湿地，必须与水体之间存在「连续的地表连接」。</div>
+        </div>
+
+        <div class="sent" id="l2_3">
+          <div class="src"><b>s5（②❸）</b><img class="strip" src="img/2024_T4/s2_3.png" alt="②❸ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：<code>This narrowing of the regulatory scope was a victory for …</code>——This narrowing 是<b>名词化</b>回指：把上两句「权力大减、标准收紧」压成一个名词再作主语，这是英文社论的常用衔接手法。</li>
+            <li><code>for builders, mining operators and other commercial interests</code>：三者并列，other 说明前两者也属于商业利益集团；interests 复数在这里是「利益集团」，熟词僻义。</li>
+            <li><code>often at odds with environmental rules</code>：形容词短语作后置定语，修饰前面的三类人——<b>常与环保规定相抵触</b>。at odds with 与……不一致、有矛盾。</li>
+            <li>37C 拿 at odds with 编出「居民之间的冲突」，37D 把这里的<b>赢家</b> mining operators 说成反对者——一句话养了两个干扰项。</li>
+          </ul>
+          <div class="tr">意：监管范围的这一收窄，是建筑商、矿业经营者以及其他常与环保规定相抵触的商业利益集团的胜利。</div>
+        </div>
+
+        <div class="sent" id="l3_3">
+          <div class="src"><b>s6（③❸）</b><img class="strip" src="img/2024_T4/s3_3.png" alt="③❸ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：<code>The reality is that …</code>——主系表，that 引导<b>表语从句</b>。The reality is that 常用来<b>纠正前面的看法</b>（呼应❷ 的 shortsighted）。</li>
+            <li>表语从句的主语是 <code>water, and the pollutants …</code>，两个逗号把 and the pollutants 隔成插入的并列成分；<code>that so often come with it</code> 是定语从句修饰 pollutants，it 指 water。</li>
+            <li>谓语 <code>don’t respect state boundaries</code>：主语是复数（water 和 pollutants 两样），所以用 don’t。respect 在这里是「遵守、顾及」——水和污染物不会在州界停下来。</li>
+            <li>这句是全文论证的支点：<b>问题是跨州的，所以光靠一个州不够</b>——39D 的 coordination 就是从这里长出来的。</li>
+          </ul>
+          <div class="tr">意：现实是，水以及常常随水而来的污染物，是不管州界的。</div>
+        </div>
+
+        <div class="sent" id="l3_5">
+          <div class="src"><b>s7（③❺）</b><img class="strip" src="img/2024_T4/s3_5.png" alt="③❺ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">结构</span>：一般疑问句 <code>Will those jurisdictions extend the same protections …?</code>——extend 在这里不是「延长」，是「给予、提供」（extend help / thanks / protection to sb）。</li>
+            <li><code>now denied under Sackett v. EPA</code>：过去分词短语作后置定语修饰 protections——「如今在萨基特诉环保署案之下被否定的那些保护」。v. 是 versus 的缩写，判例名「甲诉乙」。</li>
+            <li>接下来❻ <code>Perhaps some, but all?</code> 是省略问句（Perhaps some will, but will all?），❼ 自答 unlikely——<b>设问＋自答</b>是社论表达立场的标准动作，38 题的答案就在这一问一答里。</li>
+          </ul>
+          <div class="tr">意：「萨基特诉环保署案」之后被拿掉的那些保护，这些辖区会照样提供吗？</div>
+        </div>
+
+        <div class="sent" id="l4_1">
+          <div class="src"><b>s8（④❶）</b><img class="strip" src="img/2024_T4/s4_1.png" alt="④❶ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：<code>It is too easy, and misleading, to see …</code>——<b>it 是形式主语</b>，真正的主语是后面的不定式 to see such court rulings as …；and misleading 是插入的第二个表语。</li>
+            <li><code>see A as B</code> 把 A 看作 B：<code>such court rulings</code> 看作 <code>merely standing up for the rights of land owners</code>（仅仅是在维护土地所有者的权利）。</li>
+            <li><code>when the consequences can be so dire for their neighbors</code>：when 在这里不是「当……时」，而是「<b>既然、考虑到</b>」——表示让人不该那么看的理由。their 指 land owners。</li>
+            <li>这是作者<b>在驳</b>一种看法——40A「提防土地所有者」把被驳的看法当成了作者的建议。</li>
+          </ul>
+          <div class="tr">意：既然其后果对他们的邻居可能是灾难性的，把这类法院裁决仅仅看作是在维护土地所有者的权利，就未免太过简单，也会误导人。</div>
+        </div>
+
+        <div class="sent" id="l4_2">
+          <div class="src"><b>s9（④❷）</b><img class="strip" src="img/2024_T4/s4_2.png" alt="④❷ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：<code>it’s a reminder that …</code>——it 回指上一句说的情况；that 引导<b>同位语从句</b>，说明 reminder 的内容。</li>
+            <li>同位语从句：<code>the EPA’s involvement in the Chesapeake Bay Program has long been crucial</code>——现在完成时 ＋ long：<b>一直以来</b>都至关重要。</li>
+            <li><code>as the means to transcend the influence of …</code>：as 表身份「作为」；means 单复同形，「手段」；transcend 超越、凌驾于；deep-pocketed 口袋深的 ⟹ 财大气粗的；special interests 特殊利益集团。</li>
+            <li>39 题就考这一句的引申：EPA 是<b>各州之上</b>的力量 ⟹ 能统筹各州 ⟹ D coordination。A 的 restored the balance 把 transcend 读偏了。</li>
+          </ul>
+          <div class="tr">意：这也提醒我们，长期以来，EPA 参与「切萨皮克湾计划」一直至关重要，因为它是超越邻近各州财大气粗的特殊利益集团影响力的手段。</div>
+        </div>
+
+        <div class="sent" id="l4_3">
+          <div class="src"><b>s10（④❸）</b><img class="strip" src="img/2024_T4/s4_3.png" alt="④❸ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：<code>Pennsylvania farmers … aren’t thinking about next year’s blue crab harvest in Maryland</code> ＋ <code>yet the runoff … can have enormous impact downstream</code>——yet 连接两个分句，表转折。</li>
+            <li><code>to use one telling example</code>：插入语，「举一个很能说明问题的例子」。telling 是形容词「有说服力的、说明问题的」，熟词僻义。</li>
+            <li><code>when they decide whether to spread animal waste on their fields</code>：时间状语从句；whether to do 是否做；animal waste 动物粪便（作肥料）。</li>
+            <li><code>the runoff into nearby creeks</code>：runoff 径流（从地面流进河里的水，带着粪肥里的营养物质）；downstream 副词「在下游」。上游一个州的农民、下游另一个州的蓝蟹——<b>这个例子就是③❸「水不认州界」的具体版</b>。</li>
+          </ul>
+          <div class="tr">意：举一个很能说明问题的例子：宾夕法尼亚的农民在决定要不要往地里撒动物粪肥时，不会去想马里兰明年的蓝蟹收成，可流进附近小溪的径流，会对下游造成巨大的影响。</div>
+        </div>
+
+        <div class="sent" id="l5_1">
+          <div class="src"><b>s11（⑤❶）</b><img class="strip" src="img/2024_T4/s5_1.png" alt="⑤❶ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：<code>we would call on state lawmakers … to consider …</code>——call on sb to do 呼吁某人做某事；would 让语气更委婉。</li>
+            <li><code>from Richmond to Albany</code>：从弗吉尼亚州府到纽约州府——用两个州府指代流域内<b>所有</b>州，修饰 state lawmakers。</li>
+            <li>不定式里两个并列动作：<code>consider reviewing their own wetlands protections</code>（consider doing 考虑做某事）和 <code>see for themselves the enormous stakes involved</code>——see 的宾语 the enormous stakes involved 被挪到了 for themselves 之后（宾语较长，后置）。</li>
+            <li><code>stakes</code> 在这里是「利害关系、风险」（the stakes are high 事关重大），<code>involved</code> 后置作定语「其中涉及的」。40B 就是这一句的概括。</li>
+          </ul>
+          <div class="tr">意：因此，我们呼吁从里士满到奥尔巴尼的各州立法者，考虑重新审视本州的湿地保护措施，亲眼看看这件事关系有多重大。</div>
+        </div>
+
+        <div class="sent" id="l5_2">
+          <div class="src"><b>s12（⑤❷）</b><img class="strip" src="img/2024_T4/s5_2.png" alt="⑤❷ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：<code>We can offer them a visit to …</code>（黑水国家野生动物保护区）——offer sb sth 给某人提供某物。</li>
+            <li><code>where bald eagles fly over tidal marshes</code>：where 引导定语从句修饰 Refuge（在那里……）。</li>
+            <li>两个形容词性成分并列修饰 marshes——<code>so shallow (that) you could not paddle …</code>（so … that 结构省略了 that，浅到划不过船）和 <code>teaming with aquatic life</code>（满是水生生物），由 but 连接：<b>浅，却生机勃勃</b>。</li>
+            <li>⚠️ 拼写：卷面印的是 teaming，标准写法是 <b>teeming</b>（be teeming with 充满）；team 是「组队」，意思对不上。考场上按 teeming 理解即可。</li>
+          </ul>
+          <div class="tr">意：我们可以请他们去多切斯特县的黑水国家野生动物保护区看看：那里白头海雕飞过潮汐沼泽，沼泽浅得连小船都划不过去，却满是生机勃勃的水生生物。</div>
+        </div>
+        <div class="flow" style="margin-top:10px"><div class="fi">🔍 <b>和黄皮书对一下</b>：五题答案与书一致，盲做 5/5。三处小补充——① 38 题书把 C、D 的诱因都归到③❶ good news，更硬的排除是题眼 <b>the future</b>：❶ 讲的是马里兰<b>现在</b>有州法，只有❺–❼ 在谈未来；② 39 题书把④❷❸ 读成「过去管得住、如今管不住」的今昔对比，④段字面上只有 has long been，「如今」是从②段推出来的，理解没问题，别以为原文写了 now；③ 40A 书用「interests ≠ land owners」排除，更直接的理由是④❶ 本身就是作者在<b>批评</b>的看法。另：⑤❷ 卷面印作 teaming，应为 teeming。</div></div>
+      </section>
+
+      <!-- ========== 词汇复盘 ========== -->
+      <section class="card">
+        <h2><span class="n">04</span>词汇复盘（点卡片看详情）</h2>
+        <div class="filters">
+          <button class="fbtn on" data-f="all">全部</button>
+          <button class="fbtn" data-f="core">核心词</button>
+          <button class="fbtn" data-f="phrase">短语</button>
+          <button class="fbtn" data-f="poly">熟词僻义</button>
+          <button class="fbtn" data-f="write">写作可用</button>
+        </div>
+        <div class="vgrid" id="vgrid"></div>
+      </section>
+
+      <!-- ========== 写作素材 ========== -->
+      <section class="card">
+        <h2><span class="n">05</span>可搬进作文/翻译的素材</h2>
+        <p style="font-size:.9rem;margin-bottom:12px">本篇话题——<b>生态保护、个人利益与公共利益、局部与整体、政府监管</b>——正对大作文里的「环境保护」「合作共赢」「眼前与长远」类题目，也能给小作文写「倡议书」「给有关部门的建议信」垫素材；社论的「问题—分析—呼吁」三步本身就是一篇议论文的骨架。英文例句都是按原文句式自拟的，只借骨架。</p>
+        <div class="wb">
+          <div class="wbi"><div class="p">The value of X lies not in …, but in …</div><div class="u">「X 的价值不在于……，而在于……」——<b>开头立论</b>最好用的句式：The value of reading lies not in the number of books, but in the thinking they inspire.</div></div>
+          <div class="wbi"><div class="p">X provides …, while …ing, …ing, and …ing.</div><div class="u">「X 提供……，同时还……」——一句话<b>列举多重好处</b>：Public libraries provide free books while offering quiet space, hosting lectures, and connecting neighbours.</div></div>
+          <div class="wbi"><div class="p">All this was put at great risk when …</div><div class="u">「这一切都因……而岌岌可危」——<b>由好处转到威胁</b>的过渡句：All this was put at great risk when the factory began dumping waste into the river.</div></div>
+          <div class="wbi"><div class="p">The good news is that … But that’s a very shortsighted view.</div><div class="u">「好消息是……但这是一种非常短视的看法」——<b>先立后破</b>，驳论段的开头：The good news is that our city has many parks. But that’s a very shortsighted view of green space.</div></div>
+          <div class="wbi"><div class="p">The reality is that … don’t respect … boundaries.</div><div class="u">「现实是，……不分……界限」——写<b>全球性、跨地区问题</b>（污染、疫情、气候）：The reality is that air pollution doesn’t respect national boundaries.</div></div>
+          <div class="wbi"><div class="p">Perhaps some, but all? That seems unlikely.</div><div class="u">「也许有一些，但全部？似乎不太可能」——<b>设问＋自答</b>，给议论文加节奏：Will every student read after graduation? Perhaps some, but all? That seems unlikely.</div></div>
+          <div class="wbi"><div class="p">It is too easy, and misleading, to see X as merely …</div><div class="u">「把 X 仅仅看作……，既太简单，也会误导人」——<b>纠正片面看法</b>：It is too easy, and misleading, to see online games as merely a waste of time.</div></div>
+          <div class="wbi"><div class="p">…, to use one telling example, …</div><div class="u">「举一个很能说明问题的例子」——<b>插入举例</b>比 for example 地道：Small habits, to use one telling example, decide whether a plan succeeds.</div></div>
+          <div class="wbi"><div class="p">And so we would call on … to consider … and see for themselves …</div><div class="u">「因此，我们呼吁……考虑……，并亲眼看看……」——<b>倡议书／建议信的收尾句</b>：And so we would call on fellow students to consider joining us and see for themselves the joy of volunteering.</div></div>
+          <div class="wbi"><div class="p">话题词包：wetlands · pollutants · regulate · special interests · downstream · stakes</div><div class="u">写「环保／公共利益」时直接可用：ecological balance（生态平衡）· sustainable development（可持续发展）· short-term gains at the expense of long-term interests（以长远利益换眼前好处）· no one is an island（没有人是孤岛）· joint efforts（共同努力）· the stakes are high（事关重大）。</div></div>
+        </div>
+      </section>
+    </main>
+    <aside>
+      <div id="panel">
+        <button class="close" onclick="document.getElementById('panel').classList.remove('open')">收起</button>
+        <div class="hint">点正文里的<b>黄色高亮词</b>，或下方词汇卡片，这里出详情。</div>
+      </div>
+    </aside>
+  </div>
+</div>
+<button id="yd">查有道</button>
+
+<script>
+const V={
+  miracle:{"w": "miracle", "ipa": "/ˈmɪrəkl/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>奇迹</b>；奇事", "en": "a wonderful event or thing that seems impossible", "ex": "The <b>miracle</b> of the Chesapeake Bay（①❶）", "mem": "mir-（惊奇，同 mirror 镜子、admire 钦佩）＋ -acle。a miracle of nature 自然奇迹 · work miracles 创造奇迹。<b>开篇一个 miracle 就定了①段的褒义基调</b>（36A valuable）。", "syn": "wonder · marvel", "conf": "miracle（奇迹）· miraculous（奇迹般的）· mirage（海市蜃楼）。"},
+  liein:{"w": "lie in", "ipa": "/laɪ ɪn/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>在于</b>", "en": "to exist in; to be found in", "ex": "lies not in its depths, but in the complexity（①❶）", "mem": "lie in ＝ consist in ＝ rest in，主语多是 value / problem / secret / difference。写作：The key to success lies in persistence.", "syn": "consist in · rest in", "conf": "lie in（在于）· lie on（躺在……上；取决于）· lie to（对……撒谎）。"},
+  depth:{"w": "depth", "ipa": "/depθ/", "pos": "n.", "tags": ["core"], "cn": "<b>深度</b>；（复数）深处", "en": "the distance from the top to the bottom", "ex": "lies not in its <b>depths</b>（①❶）", "mem": "deep（深的）的名词。in depth 深入地（study in depth）。本句 not in its depths 先否定「深」——切萨皮克湾是浅水湾，奇在构造。", "syn": "deepness", "conf": "depth（深度）· width（宽度）· length（长度）· breadth（广度）。"},
+  complexity:{"w": "complexity", "ipa": "/kəmˈpleksəti/", "pos": "n.", "tags": ["core"], "cn": "<b>复杂</b>（性）", "en": "the state of having many connected parts", "ex": "the <b>complexity</b> of its natural construction（①❶）", "mem": "complex（复杂的）＋ -ity。<b>36B 拿它造「有争议」</b>——原文说的是构造复杂，不是看法有争议。", "syn": "intricacy · complication", "conf": "complexity（复杂性）· complicity（共谋）——差两个字母。"},
+  construction:{"w": "construction", "ipa": "/kənˈstrʌkʃn/", "pos": "n.", "tags": ["core", "poly"], "cn": "<b>构造</b>、结构；建造", "en": "the way something is built or made", "ex": "its natural <b>construction</b>（①❶）", "mem": "con-（一起）＋ struct（建）＋ -ion。⚠️ 最熟的是「建筑工程」（under construction 在建）；本句是「构造、结构」——天然的构造。", "syn": "structure · composition", "conf": "construction（构造；建造）· constructive（建设性的）· destruction（破坏）。"},
+  interaction:{"w": "interaction", "ipa": "/ˌɪntərˈækʃn/", "pos": "n.", "tags": ["core"], "cn": "<b>相互作用</b>、交互", "en": "the way two or more things affect each other", "ex": "the <b>interaction</b> of fresh and saline waters（①❶）", "mem": "inter-（之间）＋ action。interact with 与……互动。", "syn": "interplay · exchange", "conf": "interaction（相互作用）· intersection（交叉口）。"},
+  fresh:{"w": "fresh", "ipa": "/freʃ/", "pos": "adj.", "tags": ["core", "poly"], "cn": "<b>淡的</b>（水）；新鲜的", "en": "not containing salt", "ex": "the interaction of <b>fresh</b> and saline waters（①❶）", "mem": "⚠️ 熟词僻义：fresh water ＝ 淡水（不是「新鲜的水」），和 salt water / saline water（咸水）相对。freshwater fish 淡水鱼。", "syn": "—", "conf": "fresh water（淡水）· freshman（大一新生）· refresh（使清新；刷新）。"},
+  saline:{"w": "saline", "ipa": "/ˈseɪlaɪn/", "pos": "adj.", "tags": ["core"], "cn": "<b>含盐的</b>、咸的", "en": "containing salt", "ex": "fresh and <b>saline</b> waters（①❶）", "mem": "sal-（盐，同 salt、salary——古罗马士兵领盐当薪水）＋ -ine。saline solution 生理盐水。", "syn": "salty · briny", "conf": "saline（含盐的）· salary（薪水）· saliva（唾液）。"},
+  shallows:{"w": "the shallows", "ipa": "/ðə ˈʃæləʊz/", "pos": "n.", "tags": ["core", "poly"], "cn": "<b>浅滩</b>、浅水区", "en": "an area of shallow water", "ex": "The <b>shallows</b> provide homes（①❷）", "mem": "⚠️ shallow 最熟是形容词「浅的；肤浅的」；the shallows 作名词，常用复数＝浅滩。⑤❷ 又用了形容词 so shallow——首尾呼应。", "syn": "shoals", "conf": "shallow（浅的；肤浅的）· swallow（吞咽；燕子）。"},
+  species:{"w": "species", "ipa": "/ˈspiːʃiːz/", "pos": "n.", "tags": ["core"], "cn": "<b>物种</b>", "en": "a group of animals or plants of the same kind", "ex": "homes for hundreds of <b>species</b>（①❷）", "mem": "单复同形：one species / many species。endangered species 濒危物种（40D）。", "syn": "kind · breed", "conf": "species（物种）· specie（硬币，极少用）· special（特别的）。"},
+  floodwater:{"w": "floodwater", "ipa": "/ˈflʌdwɔːtə/", "pos": "n.", "tags": ["core"], "cn": "<b>洪水</b>", "en": "water from a flood", "ex": "while storing <b>floodwaters</b>（①❷）", "mem": "flood ＋ water。store floodwaters 蓄洪——湿地像海绵，涨水时吸、退水时放。flood control 防洪（②❹）。", "syn": "flood", "conf": "flood（洪水）· flush（冲洗）· fluid（流体）。"},
+  filter:{"w": "filter", "ipa": "/ˈfɪltə/", "pos": "v.", "tags": ["core"], "cn": "<b>过滤</b>、滤除", "en": "to remove unwanted things from a liquid or gas", "ex": "<b>filtering</b> pollutants from water（①❷）", "mem": "filter A from B 从 B 中滤除 A。名词「过滤器、滤镜」（拍照的 filter）。", "syn": "purify · strain", "conf": "filter（过滤）· infiltrate（渗透）。"},
+  pollutant:{"w": "pollutant", "ipa": "/pəˈluːtənt/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>污染物</b>", "en": "a substance that makes air, water or soil dirty", "ex": "filtering <b>pollutants</b> from water（①❷）", "mem": "pollute（污染）＋ -ant（物）。③❸ 又出现：水和随水而来的污染物不分州界。", "syn": "contaminant", "conf": "pollutant（污染物）· pollution（污染）· pollute（污染 v.）。"},
+  potentially:{"w": "potentially", "ipa": "/pəˈtenʃəli/", "pos": "adv.", "tags": ["core"], "cn": "<b>可能</b>、潜在地", "en": "possibly, though not yet actually", "ex": "<b>potentially</b> destructive storm surges（①❷）", "mem": "potential（潜在的；潜力）＋ -ly。<b>36C 拿它造「商业潜力」</b>——它修饰的是风暴潮的破坏性，和商业无关。", "syn": "possibly", "conf": "potentially（可能地）· potent（强有力的）。"},
+  destructive:{"w": "destructive", "ipa": "/dɪˈstrʌktɪv/", "pos": "adj.", "tags": ["core"], "cn": "<b>破坏性的</b>", "en": "causing serious damage", "ex": "potentially <b>destructive</b> storm surges（①❷）", "mem": "de-（向下、毁）＋ struct（建）＋ -ive，和 construction 正好反义。", "syn": "damaging · devastating", "conf": "destructive（破坏性的）· constructive（建设性的）。"},
+  stormsurge:{"w": "storm surge", "ipa": "/stɔːm sɜːdʒ/", "pos": "n.", "tags": ["core"], "cn": "<b>风暴潮</b>", "en": "a rise of sea water caused by a strong storm", "ex": "destructive <b>storm surges</b>（①❷）", "mem": "surge（激增；涌动）。surge in prices 物价飞涨。", "syn": "—", "conf": "surge（涌动；激增）· search（搜索）· serge（哔叽布）。"},
+  putatrisk:{"w": "put … at risk", "ipa": "/pʊt ət rɪsk/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>使……处于危险中</b>", "en": "to cause something to be in danger", "ex": "All this was <b>put at great risk</b>（②❶）", "mem": "at risk 有危险；put sth at risk 使某物陷入危险。写作：Overwork puts our health at great risk.", "syn": "endanger · jeopardize", "conf": "at risk（有危险）· at the risk of（冒着……的危险）· run the risk of（冒……之险）。"},
+  issue:{"w": "issue", "ipa": "/ˈɪʃuː/", "pos": "v.", "tags": ["core", "poly"], "cn": "<b>发布</b>、颁布", "en": "to officially announce or give out", "ex": "the Supreme Court <b>issued</b> a ruling（②❶）", "mem": "⚠️ 熟词僻义：最熟的是名词「问题」；作动词＝发布、发行：issue a ruling 作出裁决 · issue a statement 发表声明 · issue passports 签发护照。", "syn": "announce · release", "conf": "issue（问题；发布）· tissue（纸巾；组织）。"},
+  ruling:{"w": "ruling", "ipa": "/ˈruːlɪŋ/", "pos": "n.", "tags": ["core"], "cn": "<b>裁决</b>、判决", "en": "an official decision made by a court", "ex": "issued a <b>ruling</b> in an Idaho case（②❶）", "mem": "rule（裁定）＋ -ing。rule that … 裁定……；the ruling party 执政党（这时是形容词「统治的」）。37 题干原词。", "syn": "decision · verdict · judgment", "conf": "ruling（裁决）· ruler（尺子；统治者）。"},
+  provide:{"w": "provide", "ipa": "/prəˈvaɪd/", "pos": "v.", "tags": ["core", "poly"], "cn": "<b>给予</b>、提供", "en": "to give someone something they need", "ex": "provides the U.S. EPA far less authority（②❶）", "mem": "⚠️ 常见搭配是 provide sb with sth / provide sth for sb；本句是美式的 provide sb sth（双宾语）。<b>给的是「少得多的」权力</b>＝削弱（37B）。", "syn": "give · grant", "conf": "provide（提供）· provided（假如，连词）· province（省）。"},
+  authority:{"w": "authority", "ipa": "/ɔːˈθɒrəti/", "pos": "n.", "tags": ["core"], "cn": "<b>权力</b>、职权；当局", "en": "the power to make decisions or give orders", "ex": "far less <b>authority</b> to regulate wetlands（②❶）", "mem": "author（创造者）＋ -ity ⟹ 有权决定的人。authority to do 做某事的权力；the authorities 当局。39C state authorities ＝ 州政府当局。", "syn": "power · jurisdiction", "conf": "authority（权力）· authorize（授权）· authoritative（权威的）。"},
+  regulate:{"w": "regulate", "ipa": "/ˈreɡjuleɪt/", "pos": "v.", "tags": ["core"], "cn": "<b>管理</b>、监管", "en": "to control an activity by rules", "ex": "authority to <b>regulate</b> wetlands and waterways（②❶）", "mem": "reg-（统治、规则，同 regal、region）＋ -ulate。regulation 规章；regulatory 监管的（②❸）。", "syn": "control · govern", "conf": "regulate（监管）· regular（规律的）· regime（政权）。"},
+  wetland:{"w": "wetland", "ipa": "/ˈwetlənd/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>湿地</b>", "en": "an area of land covered by shallow water", "ex": "regulate <b>wetlands</b> and waterways（②❶）", "mem": "wet ＋ land，常用复数。<b>全文关键词</b>：①段讲它的价值，②–④段讲它的保护，⑤段呼吁 wetlands protections（40B）。", "syn": "marsh · swamp", "conf": "wetland（湿地）· marsh（沼泽）· swamp（沼泽，多树）。"},
+  waterway:{"w": "waterway", "ipa": "/ˈwɔːtəweɪ/", "pos": "n.", "tags": ["core"], "cn": "<b>水道</b>（河流、运河等）", "en": "a river or canal that boats can use", "ex": "regulate wetlands and <b>waterways</b>（②❶）", "mem": "water ＋ way。inland waterways 内河航道。", "syn": "channel", "conf": "waterway（水道）· watershed（流域，③❹）。"},
+  specifically:{"w": "specifically", "ipa": "/spəˈsɪfɪkli/", "pos": "adv.", "tags": ["core"], "cn": "<b>具体来说</b>", "en": "used to give more exact information", "ex": "<b>Specifically</b>, a 5-4 majority decided（②❷）", "mem": "specific（具体的）＋ -ally。句首 Specifically 是「总—分」信号：上句概括、本句给细节。", "syn": "in particular · to be exact", "conf": "specifically（具体地）· specially（特地）· especially（尤其）。"},
+  majority:{"w": "majority", "ipa": "/məˈdʒɒrəti/", "pos": "n.", "tags": ["core"], "cn": "<b>多数</b>；多数票", "en": "the larger number of people in a group", "ex": "a 5-4 <b>majority</b> decided（②❷）", "mem": "major（较大的）＋ -ity。the majority of 大多数；majority opinion 多数意见。<b>5-4 指的是「连续地表连接」这条标准的票数</b>，判决结果本身是 9 比 0（见 00 背景）。", "syn": "most · bulk", "conf": "majority（多数）· minority（少数）。"},
+  continuous:{"w": "continuous", "ipa": "/kənˈtɪnjuəs/", "pos": "adj.", "tags": ["core"], "cn": "<b>连续的</b>、不间断的", "en": "without a break or interruption", "ex": "a “<b>continuous</b> surface connection”（②❷）", "mem": "continue（继续）的形容词。<b>本案的核心标准</b>：湿地必须和水体在地表上连着，中间隔一道堤、一条路就不算——所以大量湿地被划出了联邦保护。", "syn": "unbroken · uninterrupted", "conf": "continuous（不间断的）· continual（反复发生的、频繁的）。"},
+  surface:{"w": "surface", "ipa": "/ˈsɜːfɪs/", "pos": "n.", "tags": ["core"], "cn": "<b>表面</b>、地表", "en": "the outside or top layer of something", "ex": "a continuous <b>surface</b> connection（②❷）", "mem": "sur-（在上）＋ face。surface water 地表水（相对 groundwater 地下水）。", "syn": "exterior", "conf": "surface（表面）· surfing（冲浪）。"},
+  connection:{"w": "connection", "ipa": "/kəˈnekʃn/", "pos": "n.", "tags": ["core"], "cn": "<b>连接</b>、联系", "en": "a link between two things", "ex": "surface <b>connection</b> to bodies of water（②❷）", "mem": "connect ＋ -ion。in connection with 与……有关。", "syn": "link · tie", "conf": "connection（连接）· collection（收集）· correction（改正）。"},
+  body:{"w": "body of water", "ipa": "/ˈbɒdi əv ˈwɔːtə/", "pos": "phr.", "tags": ["phrase", "poly"], "cn": "<b>水体</b>（江河湖海）", "en": "a large area of water such as a lake or sea", "ex": "to <b>bodies of water</b>（②❷）", "mem": "⚠️ 熟词僻义：body 在这里不是「身体」，是「一大片、一个整体」：a body of water 水体 · a body of evidence 大量证据 · student body 全体学生。", "syn": "—", "conf": "body（身体；主体；团体）· embody（体现）· somebody（某人）。"},
+  narrowing:{"w": "narrowing", "ipa": "/ˈnærəʊɪŋ/", "pos": "n.", "tags": ["core"], "cn": "<b>收窄</b>、缩小", "en": "the act of making something narrower", "ex": "This <b>narrowing</b> of the regulatory scope（②❸）", "mem": "narrow（窄的；使变窄）＋ -ing 作名词。<b>名词化回指</b>：把上两句「权力大减、标准收紧」压成一个词。37B weakens 的另一个依据。", "syn": "reduction · limitation", "conf": "narrow（窄的）· narrowly（勉强地，narrowly escape 险些没逃过）。"},
+  regulatory:{"w": "regulatory", "ipa": "/ˈreɡjələtəri/", "pos": "adj.", "tags": ["core"], "cn": "<b>监管的</b>", "en": "relating to official rules and control", "ex": "the <b>regulatory</b> scope（②❸）", "mem": "regulate ＋ -ory。regulatory agency 监管机构 · regulatory power 监管权（37B 原词）。", "syn": "supervisory", "conf": "regulatory（监管的）· regulation（规章）· regular（规律的）。"},
+  scope:{"w": "scope", "ipa": "/skəʊp/", "pos": "n.", "tags": ["core"], "cn": "<b>范围</b>", "en": "the range of things that something deals with", "ex": "the regulatory <b>scope</b>（②❸）", "mem": "-scope（看，同 telescope 望远镜、microscope 显微镜）⟹ 能看到的范围。within / beyond the scope of 在……范围内／外。", "syn": "range · extent", "conf": "scope（范围）· scoop（勺；独家新闻）。"},
+  victory:{"w": "victory", "ipa": "/ˈvɪktəri/", "pos": "n.", "tags": ["core"], "cn": "<b>胜利</b>", "en": "success in a fight, game or competition", "ex": "was a <b>victory</b> for builders（②❸）", "mem": "vict-（征服，同 convict、convince）＋ -ory。a victory for sb 对某人来说是胜利。<b>37D 的反证</b>：矿业经营者是赢家，不会反对。", "syn": "win · triumph", "conf": "victory（胜利）· victim（受害者）。"},
+  mining:{"w": "mining", "ipa": "/ˈmaɪnɪŋ/", "pos": "n.", "tags": ["core"], "cn": "<b>采矿</b>（业）", "en": "the process of getting minerals from the ground", "ex": "<b>mining</b> operators（②❸）", "mem": "mine（矿；开采）＋ -ing。coal mining 采煤；data mining 数据挖掘。", "syn": "—", "conf": "mining（采矿）· mine（矿；我的）· miner（矿工）· minor（次要的）。"},
+  operator:{"w": "operator", "ipa": "/ˈɒpəreɪtə/", "pos": "n.", "tags": ["core", "poly"], "cn": "<b>经营者</b>、运营商；操作员", "en": "a person or company that runs a business", "ex": "mining <b>operators</b>（②❸）", "mem": "operate（运转；经营）＋ -or。⚠️ 熟义「接线员、操作员」；商业语境＝经营者、运营商：tour operator 旅行社 · mobile operator 移动运营商。", "syn": "company · firm", "conf": "operator（经营者）· operation（手术；运营）。"},
+  interest:{"w": "interests", "ipa": "/ˈɪntrəsts/", "pos": "n.", "tags": ["core", "poly"], "cn": "<b>利益集团</b>；利益", "en": "groups with a shared aim, esp. in business", "ex": "other commercial <b>interests</b>（②❸）", "mem": "⚠️ 熟词僻义：interest 的复数可指「有共同利益的集团、势力」：business interests 商界 · special interests 特殊利益集团（④❷）。", "syn": "groups · lobbies", "conf": "interest（兴趣；利息；利益）· interested（感兴趣的）· interesting（有趣的）。"},
+  atodds:{"w": "at odds with", "ipa": "/ət ɒdz wɪð/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>与……相抵触</b>、不一致", "en": "in disagreement or conflict with", "ex": "often <b>at odds with</b> environmental rules（②❸）", "mem": "odds（可能性；不和）。be at odds with 与……不和、有矛盾。<b>37C 拿它编「居民冲突」</b>——原文说商业集团和环保规定作对。写作：His words are at odds with his actions.", "syn": "in conflict with · contrary to", "conf": "at odds with（不一致）· against all odds（尽管困难重重）· odd（奇怪的；奇数的）。"},
+  carry:{"w": "carry", "ipa": "/ˈkæri/", "pos": "v.", "tags": ["core", "poly"], "cn": "<b>带有</b>、具有（后果、意义）", "en": "to have something as a result or quality", "ex": "it <b>carries</b> “significant repercussions”（②❹）", "mem": "⚠️ 熟词僻义：carry 不只是「搬运」——carry a risk 带有风险 · carry weight 有分量 · carry a penalty 可判处刑罚。", "syn": "bring · involve", "conf": "carry（携带；带有）· carry out（执行）· carry on（继续）。"},
+  repercussion:{"w": "repercussion", "ipa": "/ˌriːpəˈkʌʃn/", "pos": "n.", "tags": ["core"], "cn": "<b>（尤指不良的）影响</b>、后果", "en": "an effect, usually bad, of an action", "ex": "significant <b>repercussions</b> for water quality（②❹）", "mem": "re-（回）＋ percuss（敲击）＋ -ion ⟹ 敲一下的回响 ⟹ 连锁后果。常用复数，多含贬义。", "syn": "consequence · aftermath", "conf": "repercussion（不良后果）· percussion（打击乐器）。"},
+  floodcontrol:{"w": "flood control", "ipa": "/flʌd kənˈtrəʊl/", "pos": "n.", "tags": ["core"], "cn": "<b>防洪</b>", "en": "the methods used to stop flooding", "ex": "water quality and <b>flood control</b>（②❹）", "mem": "flood ＋ control。flood control project 防洪工程。和①❷ storing floodwaters 呼应。", "syn": "—", "conf": "flood control（防洪）· flood（洪水）· flood with（使充满）。"},
+  justice:{"w": "Justice", "ipa": "/ˈdʒʌstɪs/", "pos": "n.", "tags": ["core", "poly"], "cn": "<b>大法官</b>；正义", "en": "a judge in a high court", "ex": "as <b>Justice</b> Brett Kavanaugh observed（②❹）", "mem": "⚠️ 熟词僻义：大写放在人名前＝法官的头衔，美国最高法院的九位就是 Justices；首席大法官 Chief Justice。小写才是「正义、公正」。", "syn": "judge", "conf": "justice（正义；法官）· justify（证明……正当）· injustice（不公）。"},
+  observe:{"w": "observe", "ipa": "/əbˈzɜːv/", "pos": "v.", "tags": ["core", "poly"], "cn": "<b>评论说</b>；观察；遵守", "en": "to say something you have noticed", "ex": "as Justice Brett Kavanaugh <b>observed</b>（②❹）", "mem": "⚠️ 熟词僻义三个：① 观察；② 评论、说（引语后＝said）；③ 遵守（observe the law）。本句是②。", "syn": "remark · comment · note", "conf": "observe（观察；评论）· observation（观察；意见）· observer（观察员）。"},
+  inplace:{"w": "in place", "ipa": "/ɪn pleɪs/", "pos": "phr.", "tags": ["phrase"], "cn": "<b>现行的</b>、已就位的", "en": "existing and ready to be used", "ex": "many state laws <b>in place</b>（③❶）", "mem": "in place 已就绪、在实施中；put sth in place 落实。out of place 不合时宜。", "syn": "existing · in force", "conf": "in place（就位）· in place of（代替）· take place（发生）。"},
+  protection:{"w": "protection", "ipa": "/prəˈtekʃn/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>保护</b>（措施）", "en": "the act of keeping someone or something safe", "ex": "provide wetlands <b>protections</b>（③❶）", "mem": "protect ＋ -ion。本文用复数 protections 指一条条具体的保护措施。<b>40B 原词</b>：attach due importance to wetlands protections。", "syn": "safeguard · conservation", "conf": "protection（保护）· protective（保护性的）· protest（抗议）。"},
+  shortsighted:{"w": "shortsighted", "ipa": "/ˌʃɔːtˈsaɪtɪd/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>短视的</b>、目光短浅的", "en": "not thinking about the future effects", "ex": "a very <b>shortsighted</b> view（③❷）", "mem": "short ＋ sight（视力）＋ -ed。本义「近视的」，引申「缺乏远见」。<b>全文最直白的作者评价词</b>——38 题定「担忧」、排 C/D 就靠它。", "syn": "myopic · narrow-minded", "conf": "shortsighted（短视的）· farsighted（有远见的）· insight（洞察）。"},
+  particularly:{"w": "particularly", "ipa": "/pəˈtɪkjələli/", "pos": "adv.", "tags": ["core"], "cn": "<b>尤其</b>、特别", "en": "especially; more than usually", "ex": "<b>particularly</b> when it comes to（③❷）", "mem": "particular（特定的）＋ -ly。in particular 尤其。", "syn": "especially · notably", "conf": "particularly（尤其）· partially（部分地）。"},
+  whenitcomes:{"w": "when it comes to", "ipa": "/wen ɪt kʌmz tuː/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>涉及……时</b>、说到……", "en": "when the subject is", "ex": "<b>when it comes to</b> the Chesapeake Bay（③❷）", "mem": "to 是介词，后接名词／动名词：when it comes to learning English。写作开头万能句。", "syn": "as for · regarding", "conf": "when it comes to doing（to 是介词）· come to do（开始做）。"},
+  reality:{"w": "reality", "ipa": "/riˈæləti/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>现实</b>、实际情况", "en": "the way things actually are", "ex": "<b>The reality is that</b> water …（③❸）", "mem": "real ＋ -ity。The reality is that … 用来<b>纠正前面的看法</b>（呼应❷ shortsighted）。in reality 实际上。", "syn": "fact · truth", "conf": "reality（现实）· realize（意识到；实现）· realm（领域）。"},
+  respect:{"w": "respect", "ipa": "/rɪˈspekt/", "pos": "v.", "tags": ["core", "poly"], "cn": "<b>遵守</b>、顾及；尊重", "en": "to accept and not go beyond a rule or limit", "ex": "don’t <b>respect</b> state boundaries（③❸）", "mem": "⚠️ 熟词僻义：respect 不只是「尊重人」——respect the law / rules / boundaries 遵守、不逾越。水「不尊重州界」＝ 流过去不管州界。<b>39C 的 respecting state authorities 用的是本义「尊重」</b>。", "syn": "observe · abide by", "conf": "respect（尊重；遵守）· respective（各自的）· respectable（体面的）。"},
+  boundary:{"w": "boundary", "ipa": "/ˈbaʊndri/", "pos": "n.", "tags": ["core"], "cn": "<b>边界</b>、界线", "en": "a line that marks the edge of an area", "ex": "state <b>boundaries</b>（③❸）", "mem": "bound（边界；跳）＋ -ary。cross the boundary 越界。", "syn": "border · limit", "conf": "boundary（边界）· border（国界）· bound（必定的；跳跃）。"},
+  drawfrom:{"w": "draw from", "ipa": "/drɔː frəm/", "pos": "phr.", "tags": ["phrase", "poly"], "cn": "<b>从……获取</b>（水源、资源）", "en": "to get or take something from a source", "ex": "The Chesapeake <b>draws from</b> a … watershed（③❹）", "mem": "⚠️ draw 最熟是「画」；draw from / on ＝ 汲取、取自：draw on experience 借鉴经验。本句：海湾的水来自一片流域。", "syn": "take from · obtain from", "conf": "draw from（取自）· draw on（利用）· draw up（起草）。"},
+  watershed:{"w": "watershed", "ipa": "/ˈwɔːtəʃed/", "pos": "n.", "tags": ["core", "poly"], "cn": "<b>流域</b>；分水岭、转折点", "en": "the area of land that drains into a river or lake", "ex": "a 64,000-square-mile <b>watershed</b>（③❹）", "mem": "water ＋ shed（流出）。⚠️ 两个意思：① 流域（美式）；② 转折点（a watershed moment 历史转折点，写作常用）。", "syn": "catchment · turning point", "conf": "watershed（流域；转折点）· waterway（水道）· waterfall（瀑布）。"},
+  extendinto:{"w": "extend into", "ipa": "/ɪkˈstend ˈɪntuː/", "pos": "phr.", "tags": ["phrase"], "cn": "<b>延伸到</b>", "en": "to continue as far as a place", "ex": "a watershed that <b>extends into</b> Virginia…（③❹）", "mem": "extend（延伸）＋ into。同一段❺ extend 又换了个意思（给予），注意区分。", "syn": "stretch into · reach", "conf": "extend into（延伸到）· extend to（给予；延及）。"},
+  jurisdiction:{"w": "jurisdiction", "ipa": "/ˌdʒʊərɪsˈdɪkʃn/", "pos": "n.", "tags": ["core"], "cn": "<b>辖区</b>；管辖权", "en": "an area where a legal authority has power", "ex": "Will those <b>jurisdictions</b> extend…（③❺）", "mem": "juris-（法，同 justice、jury）＋ dict（说）＋ -ion ⟹ 法律说了算的范围。本文指各州和哥伦比亚特区（特区不是州，所以用 jurisdictions 统称）。<b>39A 的 neighboring jurisdictions 原词</b>。", "syn": "territory · authority", "conf": "jurisdiction（辖区）· jury（陪审团）· jurist（法学家）。"},
+  extend:{"w": "extend", "ipa": "/ɪkˈstend/", "pos": "v.", "tags": ["core", "poly"], "cn": "<b>给予</b>、提供", "en": "to offer or give something to someone", "ex": "<b>extend</b> the same protections（③❺）", "mem": "⚠️ 熟词僻义：extend 最熟的是「延长、延伸」；extend help / thanks / an invitation / protection to sb ＝ 给予。同段❹ 的 extends into 才是「延伸」。", "syn": "offer · grant", "conf": "extend（延伸；给予）· extent（程度）· extensive（广泛的）。"},
+  deny:{"w": "deny", "ipa": "/dɪˈnaɪ/", "pos": "v.", "tags": ["core", "poly"], "cn": "<b>拒绝给予</b>；否认", "en": "to refuse to allow someone to have something", "ex": "protections now <b>denied</b> under Sackett v. EPA（③❺）", "mem": "⚠️ 熟义「否认」；deny sb sth ＝ 不给某人某物。本句被动：those protections are now denied（被拿走了）。", "syn": "withhold · refuse", "conf": "deny（否认；拒绝给）· denial（否认）· decline（谢绝）。"},
+  perhaps:{"w": "Perhaps some, but all?", "ipa": "/pəˈhæps sʌm bət ɔːl/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>也许有些会，但全部？</b>（省略问句）", "en": "perhaps some will, but will all of them?", "ex": "<b>Perhaps some, but all?</b>（③❻）", "mem": "完整形式 Perhaps some will, but will all? <b>38B 拿 Perhaps、seems 造「困惑」</b>——这两个词表示可能性低，作者判断明确（unlikely），不是拿不准。写作设问可借：Perhaps some, but all? That seems unlikely.", "syn": "—", "conf": "perhaps（也许，句子层面）· maybe（也许，口语）· may be（可能是，动词）。"},
+  unlikely:{"w": "unlikely", "ipa": "/ʌnˈlaɪkli/", "pos": "adj.", "tags": ["core"], "cn": "<b>不太可能的</b>", "en": "not probable", "ex": "That seems <b>unlikely</b>.（③❼）", "mem": "un- ＋ likely。be unlikely to do 不太可能做。<b>38 题的落点</b>：作者认为各辖区全部补上保护「不太可能」⟹ 担忧。", "syn": "improbable · doubtful", "conf": "unlikely（不太可能的）· unlike（不像）· dislike（不喜欢）。"},
+  misleading:{"w": "misleading", "ipa": "/ˌmɪsˈliːdɪŋ/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>误导人的</b>", "en": "giving a wrong idea", "ex": "too easy, and <b>misleading</b>（④❶）", "mem": "mis-（错）＋ lead（引导）＋ -ing。mislead 的形容词。It is misleading to … ＝「……会误导人」，驳论常用。", "syn": "deceptive · confusing", "conf": "misleading（误导的）· mislead（误导 v.）· misled（过去式）。"},
+  merely:{"w": "merely", "ipa": "/ˈmɪəli/", "pos": "adv.", "tags": ["core"], "cn": "<b>仅仅</b>、只不过", "en": "only; nothing more than", "ex": "as <b>merely</b> standing up for the rights（④❶）", "mem": "mere（仅仅的）＋ -ly。see A as merely B 把 A 仅仅看作 B——<b>批评看法片面</b>的标志词。", "syn": "only · simply", "conf": "merely（仅仅）· mere（仅仅的）· merry（快乐的）。"},
+  standupfor:{"w": "stand up for", "ipa": "/stænd ʌp fə/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>维护</b>、捍卫", "en": "to defend or support something", "ex": "<b>standing up for</b> the rights of land owners（④❶）", "mem": "stand up for one’s rights 维护自身权利。写作：We should stand up for those who cannot speak for themselves.", "syn": "defend · support", "conf": "stand up for（维护）· stand for（代表）· stand out（突出）· stand by（支持；袖手旁观）。"},
+  landowner:{"w": "land owner", "ipa": "/ˈlænd əʊnə/", "pos": "n.", "tags": ["core"], "cn": "<b>土地所有者</b>、地主", "en": "a person who owns land", "ex": "the rights of <b>land owners</b>（④❶）", "mem": "也写 landowner。本案原告萨基特夫妇就是在自家地上填土建房被 EPA 叫停的土地所有者。<b>40A 拿它造「提防土地所有者」</b>——原文是作者在批评「只看到地主权利」的看法。", "syn": "property owner", "conf": "landowner（土地所有者）· landlord（房东）· landmark（地标）。"},
+  consequence:{"w": "consequence", "ipa": "/ˈkɒnsɪkwəns/", "pos": "n.", "tags": ["core"], "cn": "<b>后果</b>", "en": "a result of an action, often a bad one", "ex": "the <b>consequences</b> can be so dire（④❶）", "mem": "con- ＋ sequ（跟随，同 sequence）＋ -ence ⟹ 跟着来的东西。as a consequence 因此；in consequence of 由于。", "syn": "result · repercussion", "conf": "consequence（后果）· consequent（随之发生的）· consequently（因此）。"},
+  dire:{"w": "dire", "ipa": "/ˈdaɪə/", "pos": "adj.", "tags": ["core"], "cn": "<b>极其严重的</b>、可怕的", "en": "extremely serious or bad", "ex": "the consequences can be so <b>dire</b>（④❶）", "mem": "dire consequences 可怕的后果 · in dire need of 急需。", "syn": "terrible · grave · disastrous", "conf": "dire（可怕的）· dirty（脏的）· direct（直接的）。"},
+  reminder:{"w": "reminder", "ipa": "/rɪˈmaɪndə/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>提醒</b>（之物）", "en": "something that makes you remember", "ex": "it’s a <b>reminder</b> that …（④❷）", "mem": "remind（提醒）＋ -er。a reminder that … 后接同位语从句。写作：The accident is a reminder that safety comes first.", "syn": "warning · prompt", "conf": "reminder（提醒）· remainder（剩余部分）——差一个字母。"},
+  involvement:{"w": "involvement", "ipa": "/ɪnˈvɒlvmənt/", "pos": "n.", "tags": ["core"], "cn": "<b>参与</b>、介入", "en": "the act of taking part in something", "ex": "the EPA’s <b>involvement</b> in the Chesapeake Bay Program（④❷）", "mem": "involve（使参与）＋ -ment。involvement in 参与……。<b>39 题干原词</b>。", "syn": "participation · engagement", "conf": "involvement（参与）· involved（参与的；复杂的）· revolve（旋转）。"},
+  crucial:{"w": "crucial", "ipa": "/ˈkruːʃl/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>至关重要的</b>", "en": "extremely important", "ex": "has long been <b>crucial</b>（④❷）", "mem": "cruc-（十字，同 cross）⟹ 十字路口 ⟹ 决定性的。be crucial to / for 对……至关重要。", "syn": "vital · essential · critical", "conf": "crucial（至关重要的）· cruel（残忍的）· crucify（钉在十字架上）。"},
+  means:{"w": "means", "ipa": "/miːnz/", "pos": "n.", "tags": ["core", "poly"], "cn": "<b>手段</b>、方法", "en": "a way of doing something", "ex": "as the <b>means</b> to transcend…（④❷）", "mem": "⚠️ 单复同形：a means / all means。by means of 借助；by no means 绝不。和动词 mean 的三单形式长得一样。", "syn": "method · way · tool", "conf": "means（手段）· meaning（意义）· meanwhile（同时）。"},
+  transcend:{"w": "transcend", "ipa": "/trænˈsend/", "pos": "v.", "tags": ["core"], "cn": "<b>超越</b>、凌驾于", "en": "to go beyond the usual limits of something", "ex": "the means to <b>transcend</b> the influence of…（④❷）", "mem": "trans-（越过）＋ scend（爬，同 ascend 上升、descend 下降）⟹ 爬过去。<b>39A 的坑</b>：transcend the influence 是「越过利益集团的影响」，不是 restore the balance「恢复平衡」。", "syn": "go beyond · rise above · surpass", "conf": "transcend（超越）· ascend（上升）· descend（下降）。"},
+  deeppocketed:{"w": "deep-pocketed", "ipa": "/ˌdiːp ˈpɒkɪtɪd/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>财大气粗的</b>、有钱的", "en": "having a lot of money", "ex": "<b>deep-pocketed</b> special interests（④❷）", "mem": "deep pockets 口袋深 ⟹ 钱多。have deep pockets 很有钱。", "syn": "wealthy · well-funded", "conf": "deep-pocketed（有钱的）· out of pocket（赔钱的）· pocket money（零花钱）。"},
+  specialinterests:{"w": "special interests", "ipa": "/ˌspeʃl ˈɪntrəsts/", "pos": "n.", "tags": ["phrase"], "cn": "<b>特殊利益集团</b>", "en": "groups that try to influence government for their own benefit", "ex": "deep-pocketed <b>special interests</b>（④❷）", "mem": "美国政治常用词：为自身利益游说政府的集团（如农业、矿业团体）。和②❸ commercial interests 是同一伙人的两种叫法。", "syn": "lobby · interest groups", "conf": "special interests（利益集团）· in the interests of（为了……的利益）。"},
+  telling:{"w": "telling", "ipa": "/ˈtelɪŋ/", "pos": "adj.", "tags": ["core", "poly", "write"], "cn": "<b>很能说明问题的</b>、有力的", "en": "showing the truth about something clearly", "ex": "to use one <b>telling</b> example（④❸）", "mem": "⚠️ 熟词僻义：telling 不是「讲述着」，是形容词「说明问题的、有说服力的」：a telling example / detail / sign。写作举例用 to use one telling example 很地道。", "syn": "revealing · striking", "conf": "telling（说明问题的）· tell（讲；分辨）· telltale（泄露秘密的）。"},
+  harvest:{"w": "harvest", "ipa": "/ˈhɑːvɪst/", "pos": "n.", "tags": ["core"], "cn": "<b>收成</b>、收获", "en": "the amount of a crop or catch gathered", "ex": "next year’s blue crab <b>harvest</b>（④❸）", "mem": "本指庄稼收割，也用于渔获：crab harvest 蓝蟹捕获量。<b>39B 拿它造「商业渔业改革」</b>，原文只是举例。", "syn": "crop · yield · catch", "conf": "harvest（收成）· harass（骚扰）。"},
+  spread:{"w": "spread", "ipa": "/spred/", "pos": "v.", "tags": ["core", "poly"], "cn": "<b>撒</b>、施（肥）；传播", "en": "to put a layer of something over a surface", "ex": "decide whether to <b>spread</b> animal waste（④❸）", "mem": "⚠️ 熟义「传播」（spread the news）；这里是「把……撒、铺开」：spread butter on bread · spread fertilizer on fields。", "syn": "scatter · apply", "conf": "spread（撒；传播）· sprint（冲刺）· sprout（发芽）。"},
+  waste:{"w": "animal waste", "ipa": "/ˈænɪml weɪst/", "pos": "n.", "tags": ["core", "poly"], "cn": "<b>动物粪便</b>（作肥料）", "en": "solid waste from animals, used on farms", "ex": "spread <b>animal waste</b> on their fields（④❸）", "mem": "⚠️ waste 熟义「浪费；废物」；animal / human waste 委婉指粪便。农民拿来施肥，营养物随径流入河，会让海湾缺氧、蓝蟹受害。", "syn": "manure · dung", "conf": "waste（浪费；废物；粪便）· waist（腰）——同音。"},
+  runoff:{"w": "runoff", "ipa": "/ˈrʌnɒf/", "pos": "n.", "tags": ["core"], "cn": "<b>径流</b>（从地面流入河中的水）", "en": "water that flows off land into rivers", "ex": "the <b>runoff</b> into nearby creeks（④❸）", "mem": "run ＋ off。agricultural runoff 农业径流——带着化肥、粪肥流进河湖，是切萨皮克湾最大的污染源之一。", "syn": "drainage · overflow", "conf": "runoff（径流；决选）· run off（跑掉；流走）。"},
+  creek:{"w": "creek", "ipa": "/kriːk/", "pos": "n.", "tags": ["core"], "cn": "<b>小溪</b>、小河", "en": "a small stream", "ex": "nearby <b>creeks</b>（④❸）", "mem": "美式「小溪」；英式多指小海湾。up the creek 陷入困境（俚语）。", "syn": "stream · brook", "conf": "creek（小溪）· creak（嘎吱响）——同音。"},
+  downstream:{"w": "downstream", "ipa": "/ˌdaʊnˈstriːm/", "pos": "adv.", "tags": ["core", "write"], "cn": "<b>在下游</b>", "en": "further along a river toward the sea", "ex": "enormous impact <b>downstream</b>（④❸）", "mem": "down ＋ stream。反义 upstream 上游。引申「产业链下游」：downstream industries。<b>宾州在上游、马里兰在下游</b>——这就是③❸「水不认州界」的例子。", "syn": "—", "conf": "downstream（下游）· upstream（上游）· mainstream（主流）。"},
+  callon:{"w": "call on … to do", "ipa": "/kɔːl ɒn … tə duː/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>呼吁</b>（某人做某事）", "en": "to formally ask someone to do something", "ex": "we would <b>call on</b> state lawmakers … to consider（⑤❶）", "mem": "call on sb to do 号召某人做；call on sb 也可以是「拜访某人」。<b>40 题的定位句</b>。写作倡议书收尾：We call on everyone to …", "syn": "urge · appeal to", "conf": "call on（呼吁；拜访）· call for（要求）· call off（取消）。"},
+  lawmaker:{"w": "lawmaker", "ipa": "/ˈlɔːmeɪkə/", "pos": "n.", "tags": ["core"], "cn": "<b>立法者</b>、议员", "en": "a person who makes laws", "ex": "state <b>lawmakers</b>（⑤❶）", "mem": "law ＋ maker。state lawmakers 州议员。<b>40 题干原词</b>。", "syn": "legislator", "conf": "lawmaker（立法者）· lawyer（律师）· lawsuit（诉讼）。"},
+  review:{"w": "review", "ipa": "/rɪˈvjuː/", "pos": "v.", "tags": ["core"], "cn": "<b>审视</b>、复查", "en": "to examine something again to decide if changes are needed", "ex": "consider <b>reviewing</b> their own wetlands protections（⑤❶）", "mem": "re-（再）＋ view（看）。consider doing 考虑做（不是 consider to do）。", "syn": "reexamine · reassess", "conf": "review（复查）· preview（预习）· revise（修订）。"},
+  seeforthemselves:{"w": "see for oneself", "ipa": "/siː fə wʌnˈself/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>亲眼看看</b>", "en": "to look at something personally", "ex": "<b>see for themselves</b> the enormous stakes（⑤❶）", "mem": "for oneself 亲自。see for yourself 你自己去看吧。⑤❷ 请立法者去保护区，就是为了让他们 see for themselves。", "syn": "witness", "conf": "for oneself（亲自）· by oneself（独自）· to oneself（独占）。"},
+  stakes:{"w": "stakes", "ipa": "/steɪks/", "pos": "n.", "tags": ["core", "poly", "write"], "cn": "<b>利害关系</b>、风险", "en": "what can be gained or lost", "ex": "the enormous <b>stakes</b> involved（⑤❶）", "mem": "⚠️ 熟词僻义：stake 本义「桩子；赌注」；复数 stakes ＝ 利害、风险：The stakes are high. 事关重大。have a stake in 与……利害相关。", "syn": "risk · interest", "conf": "stake（赌注；利害）· steak（牛排）——同音。"},
+  involved:{"w": "involved", "ipa": "/ɪnˈvɒlvd/", "pos": "adj.", "tags": ["core", "poly"], "cn": "<b>（后置）涉及的</b>、相关的", "en": "connected with the matter being discussed", "ex": "the enormous stakes <b>involved</b>（⑤❶）", "mem": "⚠️ involved 放在名词<b>后面</b>＝「其中涉及的」：the people involved 相关人员；放在前面或作表语常是「复杂的」（an involved story）。", "syn": "concerned · relevant", "conf": "involved（后置：涉及的；前置：复杂的）· involvement（参与）。"},
+  refuge:{"w": "refuge", "ipa": "/ˈrefjuːdʒ/", "pos": "n.", "tags": ["core"], "cn": "<b>保护区</b>、避难所", "en": "a place that gives protection", "ex": "Blackwater National Wildlife <b>Refuge</b>（⑤❷）", "mem": "re-（回）＋ fug（逃，同 fugitive 逃犯）⟹ 逃回来的地方。wildlife refuge 野生动物保护区；take refuge 避难。<b>40C 拿它编「扩建保护区」</b>。", "syn": "shelter · sanctuary · reserve", "conf": "refuge（避难所）· refugee（难民）· refuse（拒绝）。"},
+  baldeagle:{"w": "bald eagle", "ipa": "/bɔːld ˈiːɡl/", "pos": "n.", "tags": ["core"], "cn": "<b>白头海雕</b>（美国国鸟）", "en": "a large North American bird with a white head", "ex": "where <b>bald eagles</b> fly（⑤❷）", "mem": "bald 秃的——头上的白羽远看像秃顶，所以叫「秃鹰」（书译），学名白头海雕。<b>40D 拿它造「濒危物种」</b>——原文没说濒危。", "syn": "—", "conf": "bald（秃的）· bold（大胆的）· ball（球）。"},
+  tidal:{"w": "tidal", "ipa": "/ˈtaɪdl/", "pos": "adj.", "tags": ["core"], "cn": "<b>潮汐的</b>", "en": "affected by the rise and fall of the sea", "ex": "tidal marshes（⑤❷）", "mem": "tide（潮汐）＋ -al。tidal wave 海啸（旧称）；tidal energy 潮汐能。", "syn": "—", "conf": "tidal（潮汐的）· tidy（整洁的）· tide（潮汐）。"},
+  marsh:{"w": "marsh", "ipa": "/mɑːʃ/", "pos": "n.", "tags": ["core"], "cn": "<b>沼泽</b>", "en": "an area of soft wet land", "ex": "tidal <b>marshes</b>（⑤❷）", "mem": "湿地的一种：marsh 多草、swamp 多树、bog 泥炭。", "syn": "swamp · bog · wetland", "conf": "marsh（沼泽）· march（行军；三月）· mash（捣碎）。"},
+  paddle:{"w": "paddle", "ipa": "/ˈpædl/", "pos": "v.", "tags": ["core"], "cn": "<b>（用桨）划船</b>", "en": "to move a small boat using a paddle", "ex": "you could not <b>paddle</b> a boat across them（⑤❷）", "mem": "名词「短桨」，动词「划桨」。so shallow you could not paddle a boat ＝ so … (that) 省略 that。", "syn": "row", "conf": "paddle（划桨）· puddle（水坑）· pedal（踏板）。"},
+  teeming:{"w": "teeming (teaming)", "ipa": "/ˈtiːmɪŋ/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>充满……的</b>、大量的", "en": "full of people or animals", "ex": "but <b>teaming</b> with aquatic life（⑤❷）", "mem": "⚠️ 卷面印作 teaming，标准拼写是 <b>teeming</b>：be teeming with 充满（The streets were teeming with tourists）。team 是「组队」，意思对不上。写作描写热闹场景很好用。", "syn": "full of · crowded with · abounding in", "conf": "teem（充满）· team（队）——同音不同义。"},
+  aquatic:{"w": "aquatic", "ipa": "/əˈkwætɪk/", "pos": "adj.", "tags": ["core"], "cn": "<b>水生的</b>", "en": "living or growing in water", "ex": "aquatic life（⑤❷）", "mem": "aqua-（水，同 aquarium 水族馆）＋ -tic。aquatic plants 水生植物。", "syn": "water-dwelling · marine", "conf": "aquatic（水生的）· aquarium（水族馆）· aqueduct（引水渠）。"},
+  worth:{"w": "be worth sth", "ipa": "/wɜːθ/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>值得</b>", "en": "good enough to make something worthwhile", "ex": "It’s <b>worth</b> the scenic drive.（⑤❸）", "mem": "be worth ＋ 名词／doing：be worth a visit · be worth visiting。社论用一句轻松的话收尾——邀请立法者亲自来看。", "syn": "worthwhile", "conf": "worth（值得，后接名词）· worthy of（值得，后接名词）· worthwhile（值得的）。"},
+  scenic:{"w": "scenic", "ipa": "/ˈsiːnɪk/", "pos": "adj.", "tags": ["core"], "cn": "<b>风景优美的</b>", "en": "having beautiful natural scenery", "ex": "the <b>scenic</b> drive（⑤❸）", "mem": "scene（景色）＋ -ic。scenic spot 风景区 · scenic route 景观路线。", "syn": "picturesque · beautiful", "conf": "scenic（风景优美的）· scene（场景）· scenery（风景，不可数）。"},
+  valuable:{"w": "valuable", "ipa": "/ˈvæljuəbl/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>宝贵的</b>、有价值的", "en": "very useful or important", "ex": "a <b>valuable</b> natural environment（36A）", "mem": "value ＋ -able。<b>36A 是①段 miracle ＋ 四项功用的概括</b>。", "syn": "precious · invaluable", "conf": "valuable（宝贵的）· invaluable（无价的，不是「没价值」）· valueless（无价值的）。"},
+  controversial:{"w": "controversial", "ipa": "/ˌkɒntrəˈvɜːʃl/", "pos": "adj.", "tags": ["core"], "cn": "<b>有争议的</b>", "en": "causing a lot of disagreement", "ex": "a <b>controversial</b> conservation area（36B）", "mem": "contro-（反对）＋ vers（转）＋ -ial ⟹ 转向对立面。controversy 争议。<b>36B 偷换①❶ complexity</b>：构造复杂 ≠ 看法有争议。", "syn": "disputed · debatable", "conf": "controversial（有争议的）· controversy（争议 n.）。"},
+  conservation:{"w": "conservation", "ipa": "/ˌkɒnsəˈveɪʃn/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>（自然）保护</b>", "en": "the protection of the natural environment", "ex": "a controversial <b>conservation</b> area（36B）", "mem": "con- ＋ serv（保存，同 preserve）＋ -ation。conservation area 保护区；energy conservation 节能。", "syn": "protection · preservation", "conf": "conservation（保护）· conversation（谈话）——字母顺序不同。"},
+  potential:{"w": "potential", "ipa": "/pəˈtenʃl/", "pos": "n.", "tags": ["core"], "cn": "<b>潜力</b>", "en": "qualities that may develop in the future", "ex": "a place with commercial <b>potential</b>（36C）", "mem": "potent（有力的）＋ -ial。have potential 有潜力。<b>36C 拼凑①❷ potentially 和②❸ commercial</b>——两处都和「商业潜力」无关。", "syn": "promise · possibility", "conf": "potential（潜力）· potentially（可能地）。"},
+  headache:{"w": "headache", "ipa": "/ˈhedeɪk/", "pos": "n.", "tags": ["core", "poly"], "cn": "<b>令人头疼的事</b>", "en": "a problem that causes worry", "ex": "a <b>headache</b> for nearby communities（36D）", "mem": "⚠️ 本义「头痛」，引申「麻烦事」。<b>36D 方向反</b>：浅滩是保护附近社区的。", "syn": "nuisance · trouble", "conf": "headache（头痛；麻烦）· heartache（心痛）。"},
+  reinforce:{"w": "reinforce", "ipa": "/ˌriːɪnˈfɔːs/", "pos": "v.", "tags": ["core"], "cn": "<b>加强</b>、巩固", "en": "to make something stronger", "ex": "<b>reinforces</b> water pollution control（37A）", "mem": "re- ＋ in- ＋ force（力）。reinforced concrete 钢筋混凝土。<b>37A 方向反</b>：裁决让 EPA 管得更少，②❹ 还说对水质影响重大。", "syn": "strengthen · bolster", "conf": "reinforce（加强）· enforce（执行）· force（力量）。"},
+  weaken:{"w": "weaken", "ipa": "/ˈwiːkən/", "pos": "v.", "tags": ["core"], "cn": "<b>削弱</b>", "en": "to make something less strong", "ex": "<b>weakens</b> the EPA’s regulatory power（37B）", "mem": "weak ＋ -en（使）。<b>37B ＝ ②❶ far less authority ＋ ②❸ narrowing 的同义改写</b>。", "syn": "undermine · reduce", "conf": "weaken（削弱）· strengthen（加强）· broaden（拓宽）。"},
+  conflict:{"w": "conflict", "ipa": "/ˈkɒnflɪkt/", "pos": "n.", "tags": ["core"], "cn": "<b>冲突</b>", "en": "a serious disagreement", "ex": "end <b>conflicts</b> among local residents（37C）", "mem": "con- ＋ flict（打击）。<b>37C 偷换②❸ at odds with</b>：原文是商业集团和环保规定作对，没有居民冲突。", "syn": "dispute · clash", "conf": "conflict（冲突）· inflict（施加）· afflict（折磨）。"},
+  opposition:{"w": "opposition", "ipa": "/ˌɒpəˈzɪʃn/", "pos": "n.", "tags": ["core"], "cn": "<b>反对</b>", "en": "strong disagreement with a plan", "ex": "face <b>opposition</b> from mining operators（37D）", "mem": "oppose ＋ -ition。face opposition 遭到反对。<b>37D 反了</b>：②❸ 说裁决是矿业经营者的 victory。", "syn": "resistance · objection", "conf": "opposition（反对）· opposite（相反的）· opponent（对手）。"},
+  worried:{"w": "worried", "ipa": "/ˈwʌrid/", "pos": "adj.", "tags": ["core"], "cn": "<b>担忧的</b>", "en": "feeling anxious about a possible problem", "ex": "Worried.（38A）", "mem": "be worried about 担心。态度题的消极词：worried / concerned / anxious。<b>38A ＝ shortsighted ＋ unlikely ＋ put at great risk</b>。", "syn": "concerned · anxious", "conf": "worried（担心的，人）· worrying（令人担心的，事）。"},
+  puzzled:{"w": "puzzled", "ipa": "/ˈpʌzld/", "pos": "adj.", "tags": ["core"], "cn": "<b>困惑的</b>", "en": "confused because you cannot understand", "ex": "Puzzled.（38B）", "mem": "puzzle（谜）＋ -ed。<b>38B 的坑</b>：Perhaps、seems 是说可能性低，作者判断明确，并不困惑。", "syn": "confused · baffled", "conf": "puzzled（困惑的）· puzzling（令人困惑的）。"},
+  relieved:{"w": "relieved", "ipa": "/rɪˈliːvd/", "pos": "adj.", "tags": ["core"], "cn": "<b>放心的</b>、松了一口气的", "en": "happy because a worry has gone", "ex": "Relieved.（38C）", "mem": "relieve（减轻）＋ -ed。<b>38C 取③❶ good news</b>——那是作者马上推翻的看法。", "syn": "reassured", "conf": "relieved（放心的）· relief（缓解；救济）· believe（相信）。"},
+  encouraged:{"w": "encouraged", "ipa": "/ɪnˈkʌrɪdʒd/", "pos": "adj.", "tags": ["core"], "cn": "<b>受鼓舞的</b>", "en": "feeling more hopeful", "ex": "Encouraged.（38D）", "mem": "en- ＋ courage ＋ -ed。态度题积极词；本文整体消极，38C/D 同时出局。", "syn": "heartened · hopeful", "conf": "encouraged（受鼓舞的）· encouraging（鼓舞人心的）· discouraged（泄气的）。"},
+  infer:{"w": "infer", "ipa": "/ɪnˈfɜː/", "pos": "v.", "tags": ["core"], "cn": "<b>推断</b>", "en": "to reach a conclusion from evidence", "ex": "What can be <b>inferred</b> about…（39 题干）", "mem": "in- ＋ fer（带）⟹ 把结论带出来。<b>推理题的标志</b>：答案不在原文字面，要从观点句＋例子推一步。", "syn": "deduce · conclude", "conf": "infer（推断）· imply（暗示）——读者 infer、作者 imply。"},
+  restore:{"w": "restore", "ipa": "/rɪˈstɔː/", "pos": "v.", "tags": ["core"], "cn": "<b>恢复</b>", "en": "to bring back to a former condition", "ex": "It has <b>restored</b> the balance（39A）", "mem": "re- ＋ store。restore order 恢复秩序。<b>39A 的坑</b>：原文是 transcend（越过）利益集团的影响，不是「恢复各辖区之间的平衡」。", "syn": "bring back · reinstate", "conf": "restore（恢复）· restrain（克制）· restrict（限制）。"},
+  balance:{"w": "balance", "ipa": "/ˈbæləns/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>平衡</b>", "en": "a state where things are equal", "ex": "the <b>balance</b> among neighboring jurisdictions（39A）", "mem": "strike a balance between A and B 在 A 与 B 之间求平衡（写作高频）；ecological balance 生态平衡。", "syn": "equilibrium", "conf": "balance（平衡）· ballot（选票）。"},
+  trigger:{"w": "trigger", "ipa": "/ˈtrɪɡə/", "pos": "v.", "tags": ["core"], "cn": "<b>引发</b>", "en": "to make something happen suddenly", "ex": "<b>triggered</b> a radical reform（39B）", "mem": "名词「扳机」⟹ 动词「触发」。trigger a debate 引发争论。", "syn": "spark · set off · cause", "conf": "trigger（引发）· tiger（老虎）。"},
+  radical:{"w": "radical", "ipa": "/ˈrædɪkl/", "pos": "adj.", "tags": ["core", "poly"], "cn": "<b>彻底的</b>、根本的；激进的", "en": "very new and complete; extreme", "ex": "a <b>radical</b> reform（39B）", "mem": "radic-（根，同 radish 萝卜）⟹ 从根上的。⚠️ 两义：radical change 彻底变革；radical views 激进观点。", "syn": "fundamental · drastic", "conf": "radical（彻底的）· radial（放射状的）。"},
+  reform:{"w": "reform", "ipa": "/rɪˈfɔːm/", "pos": "n.", "tags": ["core"], "cn": "<b>改革</b>", "en": "a change made to improve a system", "ex": "a radical <b>reform</b> in commercial fisheries（39B）", "mem": "re- ＋ form（形）⟹ 重塑。reform and opening up 改革开放。", "syn": "change · overhaul", "conf": "reform（改革）· inform（通知）· transform（改变）。"},
+  fishery:{"w": "fishery", "ipa": "/ˈfɪʃəri/", "pos": "n.", "tags": ["core"], "cn": "<b>渔业</b>；渔场", "en": "the business of catching fish; a place for it", "ex": "commercial <b>fisheries</b>（39B）", "mem": "fish ＋ -ery（场所、行业）。<b>39B 拿④❸ blue crab harvest 编出渔业改革</b>，原文没有。", "syn": "—", "conf": "fishery（渔业）· fisherman（渔民）。"},
+  setexample:{"w": "set a fine example", "ipa": "/set ə faɪn ɪɡˈzɑːmpl/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>树立好榜样</b>", "en": "to behave in a way others should copy", "ex": "<b>set a fine example</b> of respecting state authorities（39C）", "mem": "set an example (to / for sb) 树立榜样；fine 在这里是「好的」。<b>39C 方向反</b>：EPA 的价值恰在于能越过州一级。写作：Teachers should set a fine example for students.", "syn": "be a role model", "conf": "set an example（树榜样）· for example（例如）。"},
+  ensure:{"w": "ensure", "ipa": "/ɪnˈʃɔː/", "pos": "v.", "tags": ["core", "write"], "cn": "<b>确保</b>", "en": "to make certain that something happens", "ex": "<b>ensured</b> the coordination of protection efforts（39D）", "mem": "en-（使）＋ sure。ensure that … 确保。", "syn": "guarantee · secure", "conf": "ensure（确保）· insure（投保）· assure（使确信）。"},
+  coordination:{"w": "coordination", "ipa": "/kəʊˌɔːdɪˈneɪʃn/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>协调</b>", "en": "making people or groups work well together", "ex": "the <b>coordination</b> of protection efforts（39D）", "mem": "co-（共同）＋ ordin（顺序）＋ -ation ⟹ 排成一队。<b>39D 的推理</b>：水不认州界（③❸）＋ EPA 越过各州利益集团（④❷）⟹ 只有它能统筹各州。", "syn": "cooperation · organization", "conf": "coordination（协调）· cooperation（合作）· coordinate（坐标；协调）。"},
+  holdthat:{"w": "hold that", "ipa": "/həʊld ðæt/", "pos": "phr.", "tags": ["phrase", "poly"], "cn": "<b>认为</b>、主张", "en": "to believe or state an opinion", "ex": "The author <b>holds that</b> …（40 题干）", "mem": "⚠️ hold 不只是「拿着」——hold that … 认为；hold the view that … 持……观点。观点题的标志题干。", "syn": "believe · maintain", "conf": "hold that（认为）· hold on（等一下）· hold back（抑制）。"},
+  cautious:{"w": "cautious", "ipa": "/ˈkɔːʃəs/", "pos": "adj.", "tags": ["core"], "cn": "<b>谨慎的</b>", "en": "careful to avoid risks", "ex": "be <b>cautious</b> about the influence of land owners（40A）", "mem": "caution（谨慎）＋ -ous。<b>40A 把作者驳的看法（④❶）当成了建议</b>。", "syn": "careful · wary", "conf": "cautious（谨慎的）· conscious（意识到的）。"},
+  attach:{"w": "attach importance to", "ipa": "/əˈtætʃ ɪmˈpɔːtns tuː/", "pos": "phr.", "tags": ["phrase", "poly", "write"], "cn": "<b>重视</b>", "en": "to consider something important", "ex": "<b>attach due importance to</b> wetlands protections（40B）", "mem": "⚠️ attach 本义「附上」；attach importance / significance to 重视。<b>40B ＝ ⑤❶ consider reviewing … and see … the stakes 的概括</b>。写作：We should attach great importance to mental health.", "syn": "value · emphasize", "conf": "attach（附上；重视）· attack（攻击）· detach（分离）。"},
+  due:{"w": "due", "ipa": "/djuː/", "pos": "adj.", "tags": ["core", "poly"], "cn": "<b>应有的</b>、适当的", "en": "appropriate or deserved", "ex": "attach <b>due</b> importance to（40B）", "mem": "⚠️ 熟词僻义：due 熟义「到期的；预定的」（due date 截止日）；作定语＝应有的：with due respect 恕我直言 · give due credit 给予应有的肯定。due to 由于。", "syn": "proper · appropriate", "conf": "due（应有的；到期的）· due to（由于）· dew（露水）。"},
+  expand:{"w": "expand", "ipa": "/ɪkˈspænd/", "pos": "v.", "tags": ["core"], "cn": "<b>扩大</b>", "en": "to become or make larger", "ex": "expand wildlife refuges（40C）", "mem": "ex-（向外）＋ pand（伸展）。<b>40C 无中生有</b>：⑤❷ 只是请立法者去参观保护区。", "syn": "enlarge · extend", "conf": "expand（扩大）· expend（花费）· expanse（广阔区域）。"},
+  wellbeing:{"w": "wellbeing", "ipa": "/ˌwelˈbiːɪŋ/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>健康</b>、福祉", "en": "the state of being healthy and happy", "ex": "improve the <b>wellbeing</b> of endangered species（40D）", "mem": "well ＋ being，也写 well-being。mental wellbeing 心理健康（写作高频）。", "syn": "welfare · health", "conf": "wellbeing（福祉）· welfare（福利）。"},
+  endangered:{"w": "endangered", "ipa": "/ɪnˈdeɪndʒəd/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>濒危的</b>", "en": "at risk of no longer existing", "ex": "endangered species（40D）", "mem": "en- ＋ danger ＋ -ed。endangered species 濒危物种。<b>40D 无据</b>：⑤❷ 只提了白头海雕和水生生物，没说濒危。", "syn": "threatened", "conf": "endangered（濒危的）· dangerous（危险的）· extinct（灭绝的）。"}
+};
+const panel=document.getElementById('panel');
+const isMobile=()=>window.innerWidth<=900;
+function badge(t){const m={core:'核心',phrase:'短语',poly:'僻义',write:'写作'};return `<span class="badge b-${t}">${m[t]}</span>`}
+function showCard(k,el){
+  const d=V[k];if(!d)return;
+  document.querySelectorAll('.tk.active').forEach(x=>x.classList.remove('active'));
+  if(el)el.classList.add('active');
+  panel.innerHTML=`<button class="close" onclick="document.getElementById('panel').classList.remove('open')">收起</button>
+    <div class="wcard">
+      <div class="head"><span class="w">${d.w}</span><span class="ipa">${d.ipa}</span><span class="pos">${d.pos}</span>${d.tags.map(badge).join('')}</div>
+      <div class="cn">${d.cn}</div><div class="en-def">${d.en}</div>
+      <div class="row r-ex"><b>原文</b>${d.ex}</div>
+      <div class="row r-mem"><b>怎么记 / 考点</b>${d.mem}</div>
+      <div class="row r-syn"><b>同义 / 同族</b>${d.syn}</div>
+      <div class="row r-conf"><b>易混 / 提醒</b>${d.conf}</div>
+    </div>`;
+  if(isMobile())panel.classList.add('open');
+}
+document.querySelectorAll('.tk').forEach(t=>t.addEventListener('click',e=>{e.stopPropagation();showCard(t.dataset.w,t)}));
+
+function tz(btn){btn.closest('.para').classList.toggle('showzh')}
+let allOn=false;
+function toggleAll(){allOn=!allOn;document.querySelectorAll('.para').forEach(p=>p.classList.toggle('showzh',allOn))}
+function go(id){const s=document.getElementById(id);if(!s)return;s.scrollIntoView({behavior:'smooth',block:'center'});s.style.transition='none';s.style.opacity=.3;setTimeout(()=>{s.style.transition='opacity .8s';s.style.opacity=1},80)}
+
+document.querySelectorAll('.q').forEach(q=>{
+  const ans=+q.dataset.ans;
+  q.querySelectorAll('.opt').forEach((o,i)=>o.addEventListener('click',()=>{
+    if(q.classList.contains('done'))return;
+    q.classList.add('done');
+    if(i!==ans)o.classList.add('wrong');
+    q.querySelectorAll('.opt')[ans].classList.add('right');
+  }));
+});
+
+const vg=document.getElementById('vgrid');
+function renderGrid(f){
+  vg.innerHTML='';
+  Object.keys(V).forEach(k=>{
+    const d=V[k];
+    if(f!=='all'&&!d.tags.includes(f))return;
+    const div=document.createElement('div');div.className='vitem';
+    div.innerHTML=`<span class="badges">${d.tags.map(badge).join('')}</span><div class="w">${d.w}</div><div class="cn">${d.cn}</div>`;
+    div.addEventListener('click',()=>{showCard(k,null);if(!isMobile())window.scrollTo({top:0,behavior:'smooth'})});
+    vg.appendChild(div);
+  });
+}
+renderGrid('all');
+document.querySelectorAll('.fbtn').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.fbtn').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderGrid(b.dataset.f);
+}));
+
+const yd=document.getElementById('yd');let sel='',ydHold=0,ydT=0;
+/* 触屏：点按钮会先把选区清掉 → selectionchange 立刻把按钮藏了 → 点击落空。改成延迟隐藏 ＋ 按下即锁定 */
+const ydTouch=window.matchMedia&&matchMedia('(pointer:coarse)').matches;
+function ydHide(){clearTimeout(ydT);ydHold=0;yd.style.display='none'}
+document.addEventListener('selectionchange',function(){
+  const s=window.getSelection();const t=s?s.toString().trim():'';
+  if(t&&/^[a-zA-Z' -]{2,40}$/.test(t)){
+    sel=t;clearTimeout(ydT);
+    try{const r=s.getRangeAt(0).getBoundingClientRect();
+      yd.style.left=Math.max(8,Math.min(r.left,window.innerWidth-110))+'px';
+      yd.style.top=(r.bottom+(ydTouch?30:8))+'px';yd.style.display='block';}catch(e){}
+  }else if(!ydHold){clearTimeout(ydT);ydT=setTimeout(function(){if(!ydHold)yd.style.display='none'},ydTouch?900:0)}
+});
+['pointerdown','touchstart','mousedown'].forEach(function(ev){yd.addEventListener(ev,function(){ydHold=1;clearTimeout(ydT)},{passive:true})});
+yd.addEventListener('click',function(){
+  const u='https://dict.youdao.com/result?word='+encodeURIComponent(sel)+'&lang=en';
+  let w=null;try{w=window.open(u,'_blank')}catch(e){}
+  if(!w)location.href=u;
+  ydHide()});
+document.addEventListener('click',function(e){if(e.target!==yd&&!window.getSelection().toString())ydHide()});
+
+function imgAll(b){const on=document.body.classList.toggle('stx-allimg');b.textContent=on?'收起原卷':'原卷对照';
+  if(on)document.querySelectorAll('.para img.strip').forEach(im=>im.loading='eager')}
+</script>
+<script src="img/strip_boxes_2024.js?v=4"></script>
+<script src="_strip_lookup.js?v=8"></script>
+<script src="_strip_text.js?v=25"></script>
+<script src="_fault_attr.js"></script>
+</body>
+</html>

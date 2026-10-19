@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2024 英一 Text 1 · 罗马人的一百万枚钉子：改变世界的是便宜的技术</title>
+<style>
+  :root{
+    --bg:#faf9f6; --card:#ffffff; --ink:#2b2b2b; --muted:#8a8578;
+    --accent:#8b5e34; --accent-soft:#f3e9dd; --line:#e8e3d8;
+    --hl:#fdf3d8; --hl-border:#e0b84d;
+    --green:#3e7a4e; --green-soft:#e8f2ea;
+    --red:#b04a3a; --red-soft:#f9e9e6;
+    --blue:#3d6a8a; --blue-soft:#e7eff5;
+    --purple:#6d5a8e; --purple-soft:#eeeaf5;
+    --serif:"Georgia","Songti SC",serif;
+    --sans:-apple-system,"PingFang SC","Helvetica Neue",sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#1c1a17; --card:#26231f; --ink:#e8e4dc; --muted:#9a948a;
+      --accent:#d0a06a; --accent-soft:#3a3127; --line:#3a362f;
+      --hl:#3d3520; --hl-border:#b08c3a;
+      --green:#7fb98d; --green-soft:#26362b;
+      --red:#d98876; --red-soft:#3d2a26;
+      --blue:#8ab3d0; --blue-soft:#26323d;
+      --purple:#a996c8; --purple-soft:#302a3d;
+    }
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;padding-bottom:120px}
+  .wrap{max-width:1100px;margin:0 auto;padding:24px 20px}
+  .back{font-size:.85rem;color:var(--muted);text-decoration:none}
+  .back:hover{color:var(--accent)}
+  header{margin:14px 0 28px}
+  header h1{font-family:var(--serif);font-size:1.7rem;line-height:1.3}
+  header .sub{color:var(--muted);margin-top:6px;font-size:.9rem}
+  .tags{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+  .tag{font-size:.75rem;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);border:1px solid var(--line)}
+  .tag.warn{background:var(--red-soft);color:var(--red);border-color:var(--red)}
+  .tag.ok{background:var(--green-soft);color:var(--green);border-color:var(--green)}
+
+  .layout{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:24px;align-items:start}
+  main{min-width:0}
+  @media (max-width:900px){.layout{grid-template-columns:minmax(0,1fr)}}
+
+  section.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:24px}
+  h2{font-size:1.05rem;letter-spacing:.05em;color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+  h2 .n{font-size:.72rem;background:var(--accent);color:var(--card);border-radius:6px;padding:1px 7px}
+  h3{font-size:.95rem;color:var(--accent);margin:18px 0 10px}
+
+  .para{margin-bottom:22px}
+  .para .en{font-family:var(--serif);font-size:1.06rem;line-height:1.9}
+  .pno{color:var(--muted);font-size:.75rem;user-select:none;margin-right:6px}
+  .tk{background:var(--hl);border-bottom:2px solid var(--hl-border);border-radius:3px;padding:0 2px;cursor:pointer;transition:filter .15s}
+  .tk:hover{filter:brightness(.93)}
+  .tk.active{outline:2px solid var(--hl-border)}
+  .ls{border-bottom:2px dotted var(--blue);cursor:pointer}
+  .para .zh{display:none;margin-top:10px;padding:10px 14px;background:var(--blue-soft);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:.93rem}
+  .para.showzh .zh{display:block}
+  .zbtn{float:right;margin-left:10px;font-size:.72rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:6px;padding:2px 9px;cursor:pointer}
+  .zbtn:hover{color:var(--accent);border-color:var(--accent)}
+  .allbtn{font-size:.78rem;border:1px solid var(--accent);background:none;color:var(--accent);border-radius:8px;padding:4px 12px;cursor:pointer;margin-left:auto}
+
+  aside{position:sticky;top:20px}
+  #panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;min-height:180px}
+  #panel .hint{color:var(--muted);font-size:.88rem;text-align:center;padding:30px 10px}
+  .wcard .head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .wcard .w{font-family:var(--serif);font-size:1.35rem;font-weight:bold}
+  .wcard .ipa{color:var(--muted);font-size:.85rem}
+  .wcard .pos{font-size:.72rem;color:var(--purple);background:var(--purple-soft);padding:1px 8px;border-radius:999px}
+  .wcard .badge{font-size:.7rem;padding:1px 8px;border-radius:999px}
+  .b-core{background:var(--red-soft);color:var(--red)}
+  .b-phrase{background:var(--blue-soft);color:var(--blue)}
+  .b-poly{background:var(--purple-soft);color:var(--purple)}
+  .b-write{background:var(--green-soft);color:var(--green)}
+  .wcard .cn{margin-top:8px;font-size:1rem;font-weight:600}
+  .wcard .en-def{color:var(--muted);font-size:.86rem;font-style:italic;margin-top:2px}
+  .wcard .row{margin-top:10px;font-size:.86rem;padding:8px 10px;border-radius:8px}
+  .wcard .row>b:first-child{font-size:.72rem;display:block;margin-bottom:2px;letter-spacing:.06em}
+  .r-ex{background:var(--hl)} .r-ex b{color:var(--hl-border)}
+  .r-mem{background:var(--green-soft)} .r-mem b{color:var(--green)}
+  .r-syn{background:var(--blue-soft)} .r-syn b{color:var(--blue)}
+  .r-conf{background:var(--red-soft)} .r-conf b{color:var(--red)}
+  #panel .close{display:none}
+  @media (max-width:900px){
+    aside{position:fixed;left:0;right:0;bottom:0;z-index:50;padding:0 8px 8px}
+    #panel{box-shadow:0 -6px 24px rgba(0,0,0,.18);max-height:55vh;overflow-y:auto;display:none}
+    #panel.open{display:block}
+    #panel .close{display:block;float:right;border:none;background:var(--line);border-radius:8px;padding:2px 10px;cursor:pointer;color:var(--ink)}
+  }
+
+  .q{margin-bottom:22px;padding-bottom:18px;border-bottom:1px dashed var(--line)}
+  .q:last-child{border:none;margin-bottom:0;padding-bottom:0}
+  .q .stem{font-weight:600;font-family:var(--serif)}
+  .qt{font-size:.7rem;color:var(--blue);background:var(--blue-soft);border-radius:999px;padding:1px 8px;margin-right:6px;vertical-align:2px}
+  .opts{margin-top:10px;display:grid;gap:8px}
+  .opt{border:1px solid var(--line);border-radius:10px;padding:8px 12px;cursor:pointer;font-size:.93rem;font-family:var(--serif);transition:all .15s}
+  .opt:hover{border-color:var(--accent)}
+  .q.done .opt{cursor:default}
+  .opt.right{background:var(--green-soft);border-color:var(--green)}
+  .opt.wrong{background:var(--red-soft);border-color:var(--red)}
+  .expl{display:none;margin-top:12px;background:var(--accent-soft);border-radius:10px;padding:12px 14px;font-size:.9rem}
+  .q.done .expl{display:block}
+  .expl b{color:var(--accent)}
+  .expl .loc{font-family:var(--serif);font-style:italic;background:var(--hl);padding:1px 4px;border-radius:3px}
+  .fail{background:var(--red-soft);border:1px solid var(--red);border-radius:10px;padding:10px 13px;margin-bottom:10px;font-size:.89rem}
+  .fail b{color:var(--red)}
+  .waver{background:var(--hl);border:1px solid var(--hl-border);border-radius:10px;padding:10px 13px;margin-bottom:10px;font-size:.89rem}
+
+  .sent{margin-bottom:20px}
+  .sent .src{font-family:var(--serif);font-size:1rem;background:var(--blue-soft);padding:12px 14px;border-radius:10px;border-left:3px solid var(--blue)}
+  .sent .anat{margin-top:8px;font-size:.9rem}
+  .sent .anat li{margin:4px 0 4px 18px}
+  .sent .tr{margin-top:8px;font-size:.92rem;color:var(--muted)}
+  .skel{color:var(--red);font-weight:600}
+
+  .filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+  .fbtn{font-size:.8rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:999px;padding:4px 14px;cursor:pointer}
+  .fbtn.on{background:var(--accent);color:var(--card);border-color:var(--accent)}
+  .vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
+  .vitem{border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer;transition:border-color .15s}
+  .vitem:hover{border-color:var(--accent)}
+  .vitem .w{font-family:var(--serif);font-weight:bold}
+  .vitem .cn{font-size:.85rem;color:var(--muted)}
+  .vitem .badges{float:right}
+
+  .wb{display:grid;gap:10px}
+  .wbi{border-left:3px solid var(--green);background:var(--green-soft);border-radius:0 10px 10px 0;padding:10px 14px;font-size:.92rem}
+  .wbi .p{font-family:var(--serif);font-weight:600}
+  .wbi .u{color:var(--muted);font-size:.85rem}
+
+  .flow{display:grid;gap:8px;font-size:.92rem}
+  .flow .fi{border:1px solid var(--line);border-radius:10px;padding:9px 13px}
+  .flow .fi b{color:var(--accent)}
+
+  .ctab{width:100%;border-collapse:collapse;font-size:.86rem;margin-top:8px}
+  .ctab th,.ctab td{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
+  .ctab th{background:var(--accent-soft);color:var(--accent);font-size:.8rem;white-space:nowrap}
+  .ctab code{background:var(--hl);padding:0 3px;border-radius:3px}
+  .tabwrap{overflow-x:auto}
+  .ok{color:var(--green);font-weight:700}
+  .no{color:var(--red);font-weight:700}
+  .tl{display:grid;gap:10px;margin-top:6px}
+  .tli{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:start;border:1px solid var(--line);border-radius:10px;padding:10px 13px}
+  .tli .mark{font-family:var(--serif);font-weight:700;color:var(--accent);background:var(--accent-soft);border-radius:8px;padding:4px 10px;white-space:nowrap;font-size:.85rem}
+
+  .arrow{display:grid;gap:8px;margin-top:8px}
+  .arrow .ai{border:1px solid var(--line);border-radius:10px;padding:10px 13px;font-size:.9rem}
+  .arrow .ai.old{background:var(--red-soft);border-color:var(--red)}
+  .arrow .ai.new{background:var(--green-soft);border-color:var(--green)}
+  .chain{font-family:var(--serif);font-size:.95rem;background:var(--hl);border:1px solid var(--hl-border);border-radius:10px;padding:10px 14px;margin:8px 0;overflow-x:auto}
+
+  #yd{position:fixed;z-index:60;display:none;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:4px 12px;font-size:.8rem;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+  footer{color:var(--muted);font-size:.8rem;text-align:center;margin-top:30px}
+  .att{display:grid;gap:8px;margin-top:10px}
+  .atti{border:1px solid var(--line);border-radius:10px;padding:9px 13px;font-size:.9rem}
+  .atti b{font-family:var(--serif)}
+  .atti.no2{background:var(--red-soft);border-color:var(--red)}
+  .atti.yes{background:var(--green-soft);border-color:var(--green)}
+  .atti,.expl,.wbi,.zh,.fi,.ai,figcaption,p{overflow-wrap:anywhere}
+
+  /* 2021 起：原文以原卷扫描句条呈现 */
+  .sn{margin:0 0 14px}
+  .sn .pno{display:block;margin-bottom:4px;font-size:.78rem;line-height:1.6}
+  img.strip{display:block;width:100%;max-width:760px;height:auto;background:#fff;border:1px solid var(--line);border-radius:6px;cursor:pointer}
+  .sent .src img.strip{margin-top:6px;cursor:default}
+  .kw{margin-top:5px;font-size:.88rem;line-height:2.1;font-family:var(--serif)}
+  @media (prefers-color-scheme: dark){img.strip{filter:invert(.9) hue-rotate(180deg)}}
+  .sn,.sent .src{overflow-x:auto}
+  @media (max-width:700px){img.strip{width:640px;max-width:none}.sn::after{content:'← 句条可左右滑动 →';display:block;font-size:.7rem;color:var(--muted);margin-top:2px}}
+
+  /* 2023 起：流式版——识别好的句子在段落里连排，像 2007–2020 */
+  .para .en{font-family:var(--serif);font-size:1.02rem;line-height:1.9}
+  .stx-flow .para .en .pno{margin-right:4px}
+  .stx-flow .para .sn:not(.stx-on) .kw{margin-bottom:8px}
+</style>
+
+</head>
+<body class="stx-flow">
+<div class="wrap">
+  <a class="back" href="index.html">◀ 返回英语复盘中心</a>
+  <header>
+    <h1>罗马人的一百万枚钉子：改变世界的是便宜的技术</h1>
+    <div class="sub">2024 年英语（一）真题 · Text 1 · 424 词 · 7 段 · 建议做题 18 min · 话题：技术史×价格×经济学（来源：《金融时报》2023-06-16，原题 <i>What the Price of an Ancient Roman Nail Tells Us About Value</i>，据黄皮书；作者 Tim Harford）</div>
+    <div class="tags">
+      <span class="tag">正确答案：21D 22D 23A 24B 25A</span><span class="tag">题型：因果细节 ×2 ＋ 例子作用 ＋ 段落主旨 ＋ 段群主旨</span><span class="tag">难度：五题一段一题、全顺序；坑全在「让步的前半句」</span><span class="tag">✅ Claude 盲做 5/5（22 题在 B／D 之间排过一下）</span><span class="tag">⚠️ 原定冲刺模考卷，已按你的决定开复盘</span>
+    </div>
+  </header>
+
+  <div class="layout">
+    <main>
+      <!-- ========== 全文脉络 ========== -->
+      <section class="card">
+        <h2><span class="n">00</span>读前一分钟 · 全文脉络（做完题再看也行）</h2>
+        <div class="flow">
+          <div class="fi"><b>①段 一个奇特的发现</b>：近两千年前罗马人撤出苏格兰时，留下了一件怪宝贝——10 吨钉子，差不多一百万枚；1960 年在一个四米深、上面盖着两米砾石的坑里被挖出来。</div>
+          <div class="fi"><b>②段 为什么要埋</b>：先问后答。可能的解释是撤得太急，又不想让当地的喀里多尼亚人拿到这 10 吨<b>能打兵器的铁</b>（21 题：目的＝不让当地人到手）；埋得那么深，以至于近两千年都没人发现。</div>
+          <div class="fi"><b>③段 后来的人更看重什么</b>：后世文明比起原料，更看重铁匠<b>打进一枚钉子里的手艺</b>。17 世纪初的弗吉尼亚人搬家时有时会把自家房子烧掉，好从灰里筛出钉子再用——为了几颗钉子烧一整栋房子，正说明这项<b>看似简单的技术</b>当年多么稀缺、昂贵、珍贵（22 题：例子是给论点作证的）。</div>
+          <div class="fi"><b>④段 钉子降价了 90%</b>：经济学家 Sichel 算过，18 世纪末到 20 世纪中叶钉子价格跌了九成。铁和能源变便宜<b>只是一部分原因</b>，<b>大部分功劳</b>归于制钉厂家找到了把钢变成钉子的更高效办法（23 题：主因＝生产率）。</div>
+          <div class="fi"><b>⑤段 为什么偏偏研究钉子</b>：钉子当然变过，但 Sichel 研究它恰恰因为它<b>没怎么变</b>——罗马的灯、战车和今天的 LED 灯带、跑车天差地别，罗马的钉子却还是钉子。追跑车从 1695 年以来的价格很荒唐，问钉子同样的问题却完全说得通（24 题：基本没变）。</div>
+          <div class="fi"><b>⑥段 作者亮明身份和观点</b>：我痴迷于日常物件的价格，不必道歉——我毕竟是经济学家。写了两本发明史，我学到的一件事是：<b>出尽风头的是那些精妙迷人的技术，改变世界的却是便宜的技术</b>（25 题核心句）。</div>
+          <div class="fi"><b>⑦段 两个例证</b>：古腾堡印刷机改变文明，靠的不是改变书写的本质，而是改变书写的<b>成本</b>——而且要不是纸这项常被忽略的技术让书写材料同步暴跌，它也成不了多大事。太阳能板变便宜之前只有几种小众用途，如今正在改造全球能源体系（25A：廉价技术带来革命性变化）。</div>
+          <div class="fi" style="border-color:var(--accent)">📌 <b>一句话主旨</b>：一枚钉子从「值得烧房子去换」变成「几乎不要钱」——真正改变世界的不是最炫的技术，而是变便宜了的技术。<br>📌 <b>结构套路</b>：奇闻（①②）→ 当年有多贵（③）→ 后来有多便宜、为什么便宜（④）→ 为什么钉子能拿来比（⑤）→ 作者的结论（⑥）→ 例证（⑦）。<b>五题一段一题、严格顺序</b>：21②、22③、23④、24⑤、25⑥⑦——①段是纯引子，不出题。<br>📌 <b>本篇最值钱的一条规律：重心永远在让步的后半句，干扰项专从前半句里取。</b>23 题 <span class="loc">although … partly by</span> 的两个次因各做了一个干扰项（B、D）；24 题⑤段三句都是「前半让一步 ＋ but 后半才是意思」，A 取的正是❶ 的前半句；25 题⑥❸ <span class="loc">while it is …, it’s …</span> 两个强调句对着放，D 取的是被让掉的「精妙技术」那半。<b>读到 although / partly / while / but，先在心里把前半句划掉。</b><br>📌 <b>标题里的双关</b>：原题是「一枚古罗马钉子的<b>价格</b>告诉了我们什么<b>价值</b>」。全文 price 和 value 一路交替出现：③段说钉子 <span class="loc">valuable</span>（贵、稀罕），⑥⑦段说<b>便宜</b>的技术才最有价值——<b>价格低 ≠ 价值低</b>，这是作者真正想说的反差。<br>📌 <b>和 2023 T1 比一比</b>：两年的 Text 1 都出自《金融时报》；2023 是新闻报道（两方＋一位专家，靠引语推进），2024 是<b>专栏随笔</b>——作者第一人称出场（⑥段 <span class="loc">I am an economist, after all</span>），前五段都在铺垫，观点压在倒数第二段。</div>
+          <div class="fi">🗞 <b>背景（WebSearch 核过，只帮读、不替原文纠错）</b>：作者 Tim Harford 是 FT「卧底经济学家」专栏作者——⑥❸ 说的「两本发明史」就是他的《塑造现代经济的 50 项发明》及其续篇。①段的钉子窖藏在苏格兰珀斯郡的 Inchtuthil 罗马军团要塞，1960 年夏天发掘，清点出约 <b>87.5 万枚</b>（⟹ 原文 <span class="loc">nearly a million</span>）；通行解释正是撤离时埋掉、免得当地部落拿铁去打兵器。④段 Sichel 的论文发在 2022 年的《经济展望杂志》上，题目就叫「1695 年以来的钉子价格」（⟹ ⑤❸ 为什么偏偏说 <span class="loc">since 1695</span>）；他自己的结论是降价的<b>最大份额来自制钉业的生产率增长</b>、材料降价居次——与 23A 完全一致。另：他的数据显示 1950 年代以后钉子价格又有回升（材料涨价、美国转产特种钉），所以原文只说到 <span class="loc">mid-1900s</span>。</div>
+        </div>
+      </section>
+
+      <!-- ========== 原文精读 ========== -->
+      <section class="card">
+        <h2><span class="n">01</span>原文精读 <button class="allbtn" onclick="toggleAll()">全文意译 开/关</button> <button class="allbtn" id="imgall" onclick="imgAll(this)">原卷对照</button></h2>
+        <p style="font-size:.8rem;color:var(--muted);margin-bottom:14px">🟡 黄色高亮 = 重难点词/短语，点击右侧出卡片 ｜ 蓝色虚线 = 长难句，点击跳到精析 ｜ 每段「意」= 段落意译 ｜ 选中任意其他单词浮出「查有道」 ｜ 原文由你的浏览器从原卷识别成文字（首次约 3 秒，之后秒开）；「原卷对照」可逐句看扫描原图、改识别错字</p>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">①</span>
+            <div class="sn" data-go="l1_1"><img class="strip" src="img/2024_T1/s1_1.png" alt="①❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="pullout">pull out of</span> · <span class="tk" data-w="leavebehind">left behind</span> · <span class="tk" data-w="curious">curious</span> · <span class="tk" data-w="treasure">treasure</span></div></div>
+            <div class="sn"><img class="strip" src="img/2024_T1/s1_2.png" alt="①❷ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="hoard">hoard</span> · <span class="tk" data-w="pit">pit</span> · <span class="tk" data-w="gravel">gravel</span></div></div>
+          </div>
+          <div class="zh"><b>①段意：</b>近两千年前，罗马人开始撤出苏格兰时，留下了一件奇特的宝贝：10 吨钉子，差不多有一百万枚。这批窖藏的钉子是 1960 年在一个四米深的坑里发现的，坑上还盖着两米厚的砾石。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">②</span>
+            <div class="sn"><img class="strip" src="img/2024_T1/s2_1.png" alt="②❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="bury">buried</span></div></div>
+            <div class="sn" data-go="l2_2"><img class="strip" src="img/2024_T1/s2_2.png" alt="②❷ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="explanation">explanation</span> · <span class="tk" data-w="withdrawal">withdrawal</span> · <span class="tk" data-w="rushed">rushed</span> · <span class="tk" data-w="caledonian">Caledonians</span> · <span class="tk" data-w="gethandson">getting their hands on</span> · <span class="tk" data-w="weapongrade">weapon-grade</span></div></div>
+            <div class="sn"><img class="strip" src="img/2024_T1/s2_3.png" alt="②❸ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="millennium">millennia</span></div></div>
+          </div>
+          <div class="zh"><b>②段意：</b>罗马人为什么要埋掉一百万枚钉子？比较可能的解释是：撤退来得仓促，而他们又不想让当地的喀里多尼亚人拿到这 10 吨可以打造兵器的铁。罗马人把钉子埋得那么深，以至于此后近两千年都没被人发现。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">③</span>
+            <div class="sn" data-go="l3_1"><img class="strip" src="img/2024_T1/s3_1.png" alt="③❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="civilisation">civilisations</span> · <span class="tk" data-w="skilled">skilled</span> · <span class="tk" data-w="blacksmith">blacksmith’s</span> · <span class="tk" data-w="labour">labour</span> · <span class="tk" data-w="rawmaterial">raw material</span></div></div>
+            <div class="sn"><img class="strip" src="img/2024_T1/s3_2.png" alt="③❷ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="delightful">delightful</span> · <span class="tk" data-w="burndown">burn down</span> · <span class="tk" data-w="relocate">relocate</span></div></div>
+            <div class="sn"><img class="strip" src="img/2024_T1/s3_3.png" alt="③❸ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="attempt">attempt</span> · <span class="tk" data-w="recover">recover</span> · <span class="tk" data-w="reuse">reused</span> · <span class="tk" data-w="sift">sifting</span> · <span class="tk" data-w="ash">ashes</span></div></div>
+            <div class="sn" data-go="l3_4"><img class="strip" src="img/2024_T1/s3_4.png" alt="③❹ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="entire">entire</span> · <span class="tk" data-w="reclaim">reclaim</span> · <span class="tk" data-w="underline">underlines</span> · <span class="tk" data-w="scarce">scarce</span> · <span class="tk" data-w="costly">costly</span> · <span class="tk" data-w="simpleseeming">simple-seeming</span></div></div>
+          </div>
+          <div class="zh"><b>③段意：</b>后来的文明更看重的，是铁匠倾注在一枚钉子上的手艺，甚至超过对原材料的看重。正如罗玛·阿格拉沃尔在她那本有趣的新书《螺母与螺栓》里讲的，17 世纪初的弗吉尼亚人要搬家时，有时会把自己的房子烧掉——为的是回收那些值钱的钉子，把灰烬筛一遍，钉子还能再用。为了收回钉子不惜烧掉一整栋房子，这种念头本身就说明：这项看似简单的技术当时是多么稀缺、昂贵而珍贵。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">④</span>
+            <div class="sn"><img class="strip" src="img/2024_T1/s4_1.png" alt="④❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="economist">economist</span> · <span class="tk" data-w="pointout">points out</span></div></div>
+            <div class="sn" data-go="l4_2"><img class="strip" src="img/2024_T1/s4_2.png" alt="④❷ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="driven">driven</span> · <span class="tk" data-w="partly">partly</span> · <span class="tk" data-w="credit">most of the credit goes to</span> · <span class="tk" data-w="manufacturer">manufacturers</span> · <span class="tk" data-w="efficient">efficient</span></div></div>
+          </div>
+          <div class="zh"><b>④段意：</b>经济学家丹尼尔·西奇尔在一篇研究论文中指出，从 18 世纪晚期到 20 世纪中叶，钉子的价格下降了九成。据他分析，钉子降价虽然部分是因为铁和能源变便宜了，但大部分功劳要归于制钉商——他们只不过是找到了把钢变成钉子的更高效的办法。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">⑤</span>
+            <div class="sn"><img class="strip" src="img/2024_T1/s5_1.png" alt="⑤❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="overtheyears">over the years</span></div></div>
+            <div class="sn"><img class="strip" src="img/2024_T1/s5_2.png" alt="⑤❷ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="chariot">chariots</span> · <span class="tk" data-w="strip">strips</span> · <span class="tk" data-w="clearly">clearly</span></div></div>
+            <div class="sn" data-go="l5_3"><img class="strip" src="img/2024_T1/s5_3.png" alt="⑤❸ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="absurd">absurd</span> · <span class="tk" data-w="track">track</span> · <span class="tk" data-w="makesense">makes perfect sense</span></div></div>
+          </div>
+          <div class="zh"><b>⑤段意：</b>钉子本身这些年当然也有变化，但西奇尔之所以研究它，恰恰是因为它变化不大。罗马的灯和战车跟今天的 LED 灯带和跑车截然不同，可罗马的钉子一看就还是钉子。想追踪跑车自 1695 年以来的价格变化是荒唐的，但对钉子问同样的问题却完全合理。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">⑥</span>
+            <div class="sn"><img class="strip" src="img/2024_T1/s6_1.png" alt="⑥❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="makenoapology">make no apology for</span> · <span class="tk" data-w="obsessed">obsessed</span> · <span class="tk" data-w="feature">feature</span></div></div>
+            <div class="sn"><img class="strip" src="img/2024_T1/s6_2.png" alt="⑥❷ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="afterall">after all</span></div></div>
+            <div class="sn" data-go="l6_3"><img class="strip" src="img/2024_T1/s6_3.png" alt="⑥❸ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="invention">inventions</span> · <span class="tk" data-w="enchantingly">enchantingly</span> · <span class="tk" data-w="sophisticated">sophisticated</span> · <span class="tk" data-w="hype">hype</span></div></div>
+          </div>
+          <div class="zh"><b>⑥段意：</b>我痴迷于日常物件的一个特定方面——价格，对此我不觉得需要道歉，毕竟我是个经济学家。写过两本发明史之后，我明白了一件事：虽然出尽风头的总是那些精妙得令人着迷的技术，真正改变世界的却是那些便宜的技术。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">⑦</span>
+            <div class="sn" data-go="l7_1"><img class="strip" src="img/2024_T1/s7_1.png" alt="⑦❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="transform">transformed</span> · <span class="tk" data-w="nature">nature</span> · <span class="tk" data-w="parallel">parallel</span> · <span class="tk" data-w="collapse">collapse</span> · <span class="tk" data-w="surface">surfaces</span> · <span class="tk" data-w="overlooked">often-overlooked</span></div></div>
+            <div class="sn"><img class="strip" src="img/2024_T1/s7_2.png" alt="⑦❷ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="solarpanel">Solar panels</span> · <span class="tk" data-w="niche">niche</span></div></div>
+          </div>
+          <div class="zh"><b>⑦段意：</b>古腾堡印刷机改变了人类文明，靠的不是改变书写的本质，而是改变书写的成本；而且，要不是一项常被忽视的技术——纸——让书写材料的价格同步暴跌，印刷机也成不了多大气候。太阳能电池板在变便宜之前只有寥寥几种小众用途；如今，它们正在改造全球的能源体系。</div>
+        </div>
+      </section>
+
+      <!-- ========== 题目 ========== -->
+      <section class="card">
+        <h2><span class="n">02</span>题目与解析（点选项即判 · 再看解析）</h2>
+
+        <div class="q" data-ans="3" id="q21">
+          <p class="stem"><span class="qt">因果细节</span>21. The Romans buried the nails probably <span class="tk" data-w="forthesakeof">for the sake of</span> ______.</p>
+          <div class="opts">
+            <div class="opt">[A] saving them for future use.</div>
+            <div class="opt">[B] keeping them from <span class="tk" data-w="rust">rusting</span>.</div>
+            <div class="opt">[C] letting them grow in value.</div>
+            <div class="opt">[D] hiding them from the locals.</div>
+          </div>
+          <div class="expl"><b>答案 D</b>　②段先问后答：❶ <span class="loc">Why had the Romans buried a million nails?</span> ❷ <span class="loc">The likely explanation is that</span> …——题干的 probably 就是原文的 likely，答案锁在❷ 的 that 从句里。从句给了<b>两层</b>：撤退仓促（<span class="loc">the withdrawal was rushed</span>）＋ 不想让当地人拿到（<span class="loc">didn’t want the local Caledonians getting their hands on</span> …）。题干问的是 <b>for the sake of</b>（为了……）——问<b>目的</b>；「撤得急」是当时的<b>处境</b>（解释为什么来不及运走），不是目的；能当目的的只有后一层 ⟹ D「藏起来不让当地人拿到」。the locals ↔ the local Caledonians，hiding ↔ ❸ 的 <span class="loc">buried the nails so deep</span>。<br><b>干扰项：</b>A 借的是③❸ <span class="loc">could be reused</span>——那是 17 世纪弗吉尼亚人烧房取钉的目的，不是罗马人的；何况②❸ 说埋到「近两千年都没人发现」，罗马人根本没打算回来取。B 从①❷「四米深坑、上盖两米砾石」脑补出「隔绝氧气防生锈」——原文写埋得深，是为了说明<b>藏得严</b>，一个字没提锈。C 借①❶ <span class="loc">a curious treasure</span>——「珍宝」是今天的人看它的眼光，不是罗马人埋它的动机。<br><b>技巧：</b>见到「Why …? The likely explanation is …」这种<b>自问自答</b>，答案就在自答句里，不用往别处找；再看题干的问法——问「目的」（for the sake of / in order to / so as to），就从原因里挑出<b>主动想达到的那一层</b>，处境、背景不算。<br>📕 <b>与书解析的商榷</b>：书说要「明确罗马人掩埋钉子的两重原因」，对；可以再补一句——两重原因里只有一重能回答「为了什么」，这正是题干用 for the sake of 而不用 because of 的用意。</div>
+        </div>
+
+        <div class="q" data-ans="3" id="q22">
+          <p class="stem"><span class="qt">例子作用</span>22. The example of early 17th-century Virginians is used to ______.</p>
+          <div class="opts">
+            <div class="opt">[A] <span class="tk" data-w="highlight">highlight</span> the <span class="tk" data-w="thriftiness">thriftiness</span> of early American <span class="tk" data-w="colonist">colonists</span>.</div>
+            <div class="opt">[B] <span class="tk" data-w="illustrate">illustrate</span> the high status of blacksmiths in that period.</div>
+            <div class="opt">[C] <span class="tk" data-w="contrast">contrast</span> the attitudes of different civilisations towards nails.</div>
+            <div class="opt">[D] show the <span class="tk" data-w="preciousness">preciousness</span> of nail-making technology at that time.</div>
+          </div>
+          <div class="expl"><b>答案 D</b>　③段是标准的「论点 → 例子 → 点评」夹心：❶ 论点（后世更看重铁匠打进钉子里的手艺）→ ❷❸ 例子（弗吉尼亚人烧房子、筛灰取钉）→ ❹ 作者自己点评这个例子：<span class="loc">underlines how scarce, costly and valuable the simple-seeming technology was</span>。例子题的答案就在<b>点评句</b>里：underlines ↔ show，scarce, costly and valuable ↔ preciousness，the simple-seeming technology ↔ nail-making technology，was（过去时）↔ at that time ⟹ D。<br><b>干扰项：</b>A thriftiness（节俭）是从「回收再用」推出来的常识联想——烧掉一整栋房子恰恰<b>不节俭</b>，作者要说的是钉子贵，不是人省。B 是本题的近邻陷阱：<span class="loc">skilled blacksmith’s labour</span> 就在❶，但「看重铁匠的手艺」≠「铁匠的社会地位高」，例子的落点是<b>钉子</b>，全段没提铁匠的地位。C 有一点原文根据——❶ 的 <span class="loc">Later civilisations</span> 和罗马人确实构成暗中对比（罗马人在乎的是 10 吨铁这种原料，后人在乎的是手艺）；但题问的是<b>弗吉尼亚人这个例子</b>的用途，例子里只有「后人」这一方，<b>没有对比的另一方</b>。<br><b>技巧：</b>例子题先找例子<b>前后</b>的议论句：前一句是论点、后一句常是作者的点评（underlines / shows / suggests / This is why）。本篇连信号词都给了：<span class="loc">The idea that</span> … <span class="loc">underlines</span> ——「这个念头说明了」。<br>⚠️ <b>盲做时 B、D 排过一下</b>：两项都能在③段找到词，判据是<b>例子证明的对象</b>——烧房子是为了钉子，不是为了铁匠。<br>📕 <b>与书解析的商榷</b>：书判 C 为「扭曲①句内涵」，说两种文明都重视钉子、只是侧重不同——这个读法对；但 C 的硬判据不在扭曲，而在<b>偷换了题问的对象</b>：❶ 句确有对比，例子没有。</div>
+        </div>
+
+        <div class="q" data-ans="0" id="q23">
+          <p class="stem"><span class="qt">因果细节</span>23. What played the major role in lowering the price of nails after the late 1700s?</p>
+          <div class="opts">
+            <div class="opt">[A] Increased <span class="tk" data-w="productivity">productivity</span>.</div>
+            <div class="opt">[B] Wider use of new energies.</div>
+            <div class="opt">[C] <span class="tk" data-w="fierce">Fiercer</span> market competition.</div>
+            <div class="opt">[D] Reduced cost of raw materials.</div>
+          </div>
+          <div class="expl"><b>答案 A</b>　题干 the late 1700s 锁④段。④❷ 是一个「让步给次因、主句给主因」的句子：<span class="loc">although</span> 钉价下跌 <span class="loc">was driven partly by cheaper iron and cheaper energy</span>（次因两个），<span class="loc">most of the credit goes to</span> 制钉商——他们 <span class="loc">simply found more efficient ways</span> …（主因）。题干 the major role ↔ most of the credit；主因落在 <b>more efficient ways to turn steel into nails</b>——同样的投入做出更多钉子＝生产率提高 ⟹ A。<br><b>干扰项：</b>B 和 D 正是 although 从句里那两个<b>次因</b>：D 是 cheaper iron 的直接改写（原料降价），B 是 cheaper energy 的变形，还多偷换了一个 <b>new</b>（原文只说能源便宜，没说新能源）——两项都把 partly 偷换成了 major。C 用常识编：制钉商多了 ⟹ 竞争激烈 ⟹ 降价，原文一个字没提竞争；原文的因果链是「制法更高效 → 成本降 → 价格降」。<br><b>技巧：</b>见到 <b>partly by A and B, most of the credit goes to C</b>，题干只要问 major / main / chiefly，答案必在 C；A、B 一定会被做成干扰项——这是命题人现成的两个坑。<br>🗞 <b>出处印证</b>：Sichel 论文原文的结论就是「降价的最大份额来自制钉业的（多要素）生产率增长，材料降价居次」——A 用的正是经济学里的原词 productivity。<br>📕 <b>与书解析的商榷</b>：无分歧。书的「技巧总结」把 was driven partly by X and Y 与 most of the credit goes to Z 并列讲，正是本题的全部要害。</div>
+        </div>
+
+        <div class="q" data-ans="1" id="q24">
+          <p class="stem"><span class="qt">段落主旨</span>24. It can be learned from Paragraph 5 that nails ______.</p>
+          <div class="opts">
+            <div class="opt">[A] have <span class="tk" data-w="undergo">undergone</span> many technological improvements.</div>
+            <div class="opt">[B] have remained basically the same since Roman times.</div>
+            <div class="opt">[C] are less studied than other everyday products.</div>
+            <div class="opt">[D] are one of the world’s most significant inventions.</div>
+          </div>
+          <div class="expl"><b>答案 B</b>　⑤段三句是同一个模子：<b>前半让一步，but 后半才是意思</b>。❶ 钉子这些年也变过，<b>but</b> Sichel 研究它恰恰因为 <span class="loc">they haven’t changed much</span>；❷ 罗马的灯、战车和今天的 LED 灯带、跑车天差地别，<b>but</b> <span class="loc">Roman nails are still clearly nails</span>；❸ 追跑车 1695 年以来的价格很荒唐，<b>but</b> 问钉子同样的问题完全说得通。三个 but 后面合起来：钉子<b>自罗马以来基本没变</b>，所以价格才能跨几百年比 ⟹ B。haven’t changed much ↔ remained basically the same，Roman nails ↔ since Roman times。<br><b>干扰项：</b>A 取的正是❶ 被让掉的前半句 <span class="loc">Nails themselves have changed over the years</span>，又把「有变化」夸大成「经历了许多技术改进」——「变化很大」的是灯和车，不是钉子。C 把研究动机读反：原文说<b>正因为</b>钉子没怎么变才研究它，没有拿它跟别的日常物件比「研究得多不多」。D 把❸ <span class="loc">makes perfect sense</span>（拿钉子追价格<b>说得通</b>）误读成「钉子是最重要的发明」——那是⑥⑦段谈「便宜技术改变世界」时才沾得上的话，而且作者也没这么说钉子。<br><b>技巧：</b>段落主旨题碰到「but 句连排」，只把每个 but 后面的半句串起来读；前半句全是给干扰项准备的原料。<br>📕 <b>与书解析的商榷</b>：书判 A 只说它来自❷ 的灯具和车辆——其实❶ 的前半句（钉子本身<b>也变过</b>）才是 A 最直接的诱因：它让「钉子有技术改进」看上去有原文撑腰。</div>
+        </div>
+
+        <div class="q" data-ans="0" id="q25">
+          <p class="stem"><span class="qt">段群主旨</span>25. Which of the following best <span class="tk" data-w="summarise">summarises</span> the last two paragraphs?</p>
+          <div class="opts">
+            <div class="opt">[A] Cheap technologies bring about <span class="tk" data-w="revolutionary">revolutionary</span> change.</div>
+            <div class="opt">[B] Technological innovation is <span class="tk" data-w="integral">integral</span> to economic success.</div>
+            <div class="opt">[C] Technology <span class="tk" data-w="define">defines</span> people’s understanding of the world.</div>
+            <div class="opt">[D] Sophisticated technologies develop from small inventions.</div>
+          </div>
+          <div class="expl"><b>答案 A</b>　⑥❸ 是全文的观点句，用两个强调句对着放：<span class="loc">while it is the enchantingly sophisticated technologies that get all the hype</span>（让步：出风头的是精妙技术），<span class="loc">it’s the cheap technologies that change the world</span>（主句：改变世界的是便宜技术）。⑦段两个例子给它作证：印刷机靠<b>改变成本</b>改变文明、太阳能板<b>变便宜后</b>改造能源体系。cheap technologies 原词复现，change the world / transformed civilisation / transforming the global energy system ↔ revolutionary change ⟹ A。<br><b>干扰项：</b>B 借⑥❷ <span class="loc">I am an economist</span> 编出「经济成功」——作者是经济学家，不等于他在谈经济效益；他谈的是<b>价格</b>如何决定技术的影响。C 借 change the world 编出「定义人们对世界的认识」——原文是技术改变<b>世界本身</b>（文明、能源体系），不是改变「认识」；而且 C 说的是笼统的 Technology，抹掉了「便宜的」这个关键限定。D 取的是⑥❸ 被 while 让掉的那半——原文只说精妙技术被大肆炒作，没说它们<b>从哪来</b>，更没说由小发明演变而来。<br><b>技巧：</b>段群主旨题先分清<b>谁是观点、谁是例子</b>：⑦段两个例子都在说「变便宜 ⟹ 改变世界」，回头⑥段找到同样意思的那句就是观点句。强调句 it is … that 对着放时，<b>while 后面那一句是让步</b>。<br>📕 <b>与书解析的商榷</b>：无分歧。书指出⑦段是对⑥段观点的「举例论证」，判 C 时点出原文把尖端技术和低价技术区分开、不能一概而论——这条正是 C 的硬伤。</div>
+        </div>
+      </section>
+
+      <!-- ========== 长难句 ========== -->
+      <section class="card" id="sents">
+        <h2><span class="n">03</span>长难句精析（正文蓝色虚线句）</h2>
+
+        <div class="sent" id="l1_1">
+          <div class="src"><b>s1（①❶）</b><img class="strip" src="img/2024_T1/s1_1.png" alt="①❶ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：<code>they left behind a curious treasure</code>——主谓宾俱全；left behind 是「留下、遗留」，宾语太长，所以副词 behind 提到宾语前面。</li>
+            <li>句首两个状语：时间 <code>Nearly 2,000 years ago</code> ＋ <code>as</code> 引导的时间状语从句（「当……时」）。<code>began to pull out of Scotland</code>：pull out of 是「撤出、退出」，和②❷ 的 withdrawal 是同一件事的动词说法与名词说法。</li>
+            <li>冒号后是<b>同位语</b>，揭开「奇特的宝贝」是什么：<code>10 tons of nails</code>；后面再挂一个同位语换个量词说一遍——<code>nearly a million of the things</code>（重量 → 数量）。<b>the things</b> 是口语化的回指，等于 the nails。</li>
+          </ul>
+          <div class="tr">意：近两千年前，罗马人开始撤出苏格兰时，留下了一件奇特的宝贝：10 吨钉子，差不多一百万枚。</div>
+        </div>
+
+        <div class="sent" id="l2_2">
+          <div class="src"><b>s2（②❷）</b><img class="strip" src="img/2024_T1/s2_2.png" alt="②❷ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：<code>The likely explanation is that …</code>——主系表，that 引导<b>表语从句</b>，从句才是信息。</li>
+            <li>表语从句里两个并列分句，用 <code>and</code> 连接：① <code>the withdrawal was rushed</code>（处境）；② <code>they didn’t want</code> 之后的部分（意图）。21 题问 for the sake of（目的），只认②。</li>
+            <li><code>want sb doing sth</code>：「愿意／容忍某人做某事」，否定式多见——didn’t want the locals getting … 带着「不愿眼看着他们……」的意味，比 want sb to do 更强调动作正在发生。</li>
+            <li><code>get one’s hands on sth</code>：习语「弄到手」；<code>weapon-grade iron</code>：「武器级的铁」，复合形容词 名词-grade ＝「……级别的」（如 food-grade 食品级）。</li>
+          </ul>
+          <div class="tr">意：比较可能的解释是：撤退来得仓促，而他们又不想让当地的喀里多尼亚人把这 10 吨可以打造兵器的铁弄到手。</div>
+        </div>
+
+        <div class="sent" id="l3_1">
+          <div class="src"><b>s3（③❶）</b><img class="strip" src="img/2024_T1/s3_1.png" alt="③❶ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：<code>Later civilisations would value A even more than B</code>。A ＝ <code>the skilled blacksmith’s labour in a nail</code>，B ＝ <code>the raw material</code>。</li>
+            <li><b>would</b> 不是虚拟，是「过去惯常／过去将来」：站在罗马时代往后看，「后来的文明<b>会</b>更看重……」。</li>
+            <li><code>labour in a nail</code>：介词 in 很传神——劳动是<b>凝结在</b>钉子里的；对比的另一头 the raw material 指铁。这句埋着一个暗对比：罗马人在乎的是 10 吨<b>铁</b>（原料），后人在乎的是<b>手艺</b>——22C 的诱惑就从这里来。</li>
+          </ul>
+          <div class="tr">意：后来的文明更看重的，是铁匠倾注在一枚钉子上的熟练手艺，甚至超过对原材料的看重。</div>
+        </div>
+
+        <div class="sent" id="l3_4">
+          <div class="src"><b>s4（③❹）</b><img class="strip" src="img/2024_T1/s3_4.png" alt="③❹ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：<code>The idea … underlines how …</code>——主语 idea，谓语 underlines（强调、说明），宾语是 how 引导的宾语从句。</li>
+            <li>主语后紧跟 <code>that one might burn down an entire house</code> 一直到 <code>reclaim the nails</code>：<b>同位语从句</b>，说明 idea 的内容（that 在从句里不作成分）。<code>just to</code>：「仅仅为了」，带着作者的惊讶。</li>
+            <li>宾语从句 <code>how scarce, costly and valuable</code> 后接主语 <code>the simple-seeming technology</code> 和 <code>was</code>：三个形容词前置的感叹式结构，正常语序是 the technology was scarce, costly and valuable。</li>
+            <li><code>simple-seeming</code>：「看似简单的」，形容词-seeming 构词。<b>本句就是 22 题的答案句</b>：technology ↔ nail-making technology，三个形容词 ↔ preciousness。</li>
+          </ul>
+          <div class="tr">意：为了收回钉子竟不惜烧掉一整栋房子，这种念头本身就说明：这项看似简单的技术当时是多么稀缺、昂贵而珍贵。</div>
+        </div>
+
+        <div class="sent" id="l4_2">
+          <div class="src"><b>s5（④❷）</b><img class="strip" src="img/2024_T1/s4_2.png" alt="④❷ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：<code>most of the credit goes to nail manufacturers</code>——句首 <code>According to Sichel</code> 交代出处。</li>
+            <li><code>although</code> 引导让步状语从句：<code>the falling price of nails was driven partly by</code> 两个原因 <code>cheaper iron and cheaper energy</code>。<b>partly</b> 给次因定了级。</li>
+            <li><code>the credit goes to sb</code>：「功劳归于某人」——credit 熟词僻义，不是「信用」。<code>most of</code> 给主因定了级：partly 对 most，命题人的 major role 就从这里来。</li>
+            <li>定语从句 <code>who simply found more efficient ways</code> 修饰制钉商；<code>ways to turn steel into nails</code> 不定式作 ways 的定语，<code>turn A into B</code>「把 A 变成 B」。<b>simply</b>：「只不过是」——作者在强调「没靠什么高深的东西，就是制法更高效」。</li>
+          </ul>
+          <div class="tr">意：据西奇尔分析，钉子降价虽然部分是因为铁和能源变便宜了，但大部分功劳要归于制钉商——他们只不过是找到了把钢变成钉子的更高效的办法。</div>
+        </div>
+
+        <div class="sent" id="l5_3">
+          <div class="src"><b>s6（⑤❸）</b><img class="strip" src="img/2024_T1/s5_3.png" alt="⑤❸ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li>but 连接两个并列分句，结构<b>故意不对称</b>：</li>
+            <li>前半 <code>It would be absurd to try to track …</code>——it 是<b>形式主语</b>，真正的主语是后面的不定式 to try to track the changing price of sports cars since 1695；would 表示「（假如真去做）会是」的推测。</li>
+            <li>后半 <code>to ask the same question of nails</code> 直接放在句首当主语，谓语 <code>makes perfect sense</code>——不定式<b>直接作主语</b>，不再用形式主语。前后一换句式，把对比的重心落在后半。</li>
+            <li><code>ask the same question of nails</code>：<b>ask sth of sb/sth</b>「向……提出（问题）」，这里 of 不是「……的」。</li>
+          </ul>
+          <div class="tr">意：想追踪跑车自 1695 年以来的价格变化是荒唐的，但对钉子问同样的问题却完全合理。</div>
+        </div>
+
+        <div class="sent" id="l6_3">
+          <div class="src"><b>s7（⑥❸）</b><img class="strip" src="img/2024_T1/s6_3.png" alt="⑥❸ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：<code>one thing I’ve learnt is that …</code>——主语 one thing（后接省略 that 的定语从句 I’ve learnt），系动词 is，that 引导表语从句。句首 <code>After writing two books about the history of inventions</code> 是时间状语。</li>
+            <li>表语从句内部：<code>while</code> 引导让步从句 ＋ 主句，两边都是<b>强调句</b> it is … that：让步 <code>it is the enchantingly sophisticated technologies that get all the hype</code>；主句 <code>it’s the cheap technologies that change the world</code>。</li>
+            <li>强调句检验法：去掉 it is 和 that 句子仍完整——the cheap technologies change the world。<b>两个强调句对着放 ＝ 作者在纠正一个流行看法</b>：大家以为是 A，其实是 B。25 题答案取后者，D 取前者。</li>
+            <li><code>get all the hype</code>：「被大肆宣传、出尽风头」；<code>enchantingly</code>：副词修饰形容词，「精妙得令人着迷」。</li>
+          </ul>
+          <div class="tr">意：写过两本发明史之后，我明白了一件事：虽然出尽风头的总是那些精妙得令人着迷的技术，真正改变世界的却是那些便宜的技术。</div>
+        </div>
+
+        <div class="sent" id="l7_1">
+          <div class="src"><b>s8（⑦❶）</b><img class="strip" src="img/2024_T1/s7_1.png" alt="⑦❶ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li>破折号前后是两个并列分句，用 <code>—and</code> 连接。</li>
+            <li>前句 <span class="skel">主干</span> <code>The Gutenberg printing press transformed civilisation</code>，后接方式状语 <code>not by changing …, but by changing its cost</code>——<b>not A but B</b> 结构，重心在 B（成本）。</li>
+            <li>后句 <code>it would have achieved little without …</code>——<b>含蓄虚拟</b>：without 短语相当于条件句「要不是有……」，主句用 would have done 表示与过去事实相反（实际上有纸，所以成事了）。</li>
+            <li><code>a parallel collapse in the price of surfaces to write on</code>：collapse 熟词僻义「（价格）暴跌」；parallel「同步的」；surfaces to write on ＝ 可以在上面写字的东西（不定式作定语，介词 on 不能丢）。后接 <code>thanks to</code> 引出原因：<code>an often-overlooked technology called paper</code>。</li>
+          </ul>
+          <div class="tr">意：古腾堡印刷机改变了人类文明，靠的不是改变书写的本质，而是改变书写的成本；而且，要不是一项常被忽视的技术——纸——让书写材料的价格同步暴跌，印刷机也成不了多大气候。</div>
+        </div>
+      </section>
+
+      <!-- ========== 词汇复盘 ========== -->
+      <section class="card">
+        <h2><span class="n">04</span>词汇复盘（点卡片看详情）</h2>
+        <div class="filters">
+          <button class="fbtn on" data-f="all">全部</button>
+          <button class="fbtn" data-f="core">核心词</button>
+          <button class="fbtn" data-f="phrase">短语</button>
+          <button class="fbtn" data-f="poly">熟词僻义</button>
+          <button class="fbtn" data-f="write">写作可用</button>
+        </div>
+        <div class="vgrid" id="vgrid"></div>
+      </section>
+
+      <!-- ========== 写作素材 ========== -->
+      <section class="card">
+        <h2><span class="n">05</span>可搬进作文/翻译的素材</h2>
+        <p style="font-size:.9rem;margin-bottom:12px">本篇话题——<b>技术、成本、普及才是真正的进步</b>——正对大作文里的「科技改变生活」「小事物大作用」「创新与普惠」类题目；也能给「不要只追求高大上」这类议论垫一个论据。英文例句都是按原文句式自拟的，只借骨架。</p>
+        <div class="wb">
+          <div class="wbi"><div class="p">Why …? The likely explanation is that …</div><div class="u">「为什么……？比较可能的解释是……」——<b>自问自答</b>开段，大作文第二段分析原因时好用：Why do so many students skip breakfast? The likely explanation is that they stay up too late.</div></div>
+          <div class="wbi"><div class="p">The idea that … underlines how …</div><div class="u">「……这种做法／念头本身就说明了……有多……」——用一个极端例子<b>反衬程度</b>：The idea that people would queue overnight for a phone underlines how powerful advertising can be.</div></div>
+          <div class="wbi"><div class="p">Although … was driven partly by A and B, most of the credit goes to C.</div><div class="u">「虽然部分原因是 A 和 B，但大部分功劳要归于 C」——写原因时<b>分主次</b>，显得有分寸：Although the progress was driven partly by luck and timing, most of the credit goes to the volunteers.</div></div>
+          <div class="wbi"><div class="p">It would be absurd to …, but to … makes perfect sense.</div><div class="u">「……是荒唐的，但……却完全合理」——<b>对比论证</b>：It would be absurd to ban phones from campus, but to limit them in class makes perfect sense.</div></div>
+          <div class="wbi"><div class="p">I make no apology for …</div><div class="u">「我并不为……感到抱歉／我坦然承认……」——表态句，语气坚定：I make no apology for valuing honesty above good grades.</div></div>
+          <div class="wbi"><div class="p">While it is A that get all the hype, it’s B that …</div><div class="u">「出尽风头的是 A，真正……的却是 B」——<b>纠正流行看法</b>的万能骨架：While it is star athletes that get all the hype, it’s ordinary coaches that build a nation’s sport.</div></div>
+          <div class="wbi"><div class="p">X transformed … not by changing …, but by changing …</div><div class="u">「X 改变……，靠的不是改变……，而是改变……」——<b>not A but B 讲机制</b>：Mobile payment transformed daily life not by changing what we buy but by changing how easily we pay.</div></div>
+          <div class="wbi"><div class="p">X had a few niche uses until it became …; now it is …</div><div class="u">「X 在变得……之前只有寥寥几种用途；如今……」——<b>今昔对比</b>：Bike-sharing had a few niche users until it became cheap; now it is reshaping how cities move.</div></div>
+          <div class="wbi"><div class="p">话题词包：affordable · accessible · cost-effective · transform · overlooked</div><div class="u">写「科技 / 普及 / 小事物」时直接可用：affordable technology（人人用得起的技术）· bring down the cost（降低成本）· an often-overlooked factor（常被忽视的因素）· transform daily life（改变日常生活）· get all the hype（出尽风头）· most of the credit goes to（功劳主要归于）。</div></div>
+        </div>
+      </section>
+    </main>
+    <aside>
+      <div id="panel">
+        <button class="close" onclick="document.getElementById('panel').classList.remove('open')">收起</button>
+        <div class="hint">点正文里的<b>黄色高亮词</b>，或下方词汇卡片，这里出详情。</div>
+      </div>
+    </aside>
+  </div>
+</div>
+<button id="yd">查有道</button>
+
+<script>
+const V={
+  pullout:{"w": "pull out of", "ipa": "/pʊl aʊt əv/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>撤出</b>、退出（某地／某事）", "en": "to leave a place or stop being involved in something", "ex": "as the Romans began to <b>pull out of</b> Scotland（①❶）", "mem": "pull（拉）＋ out of（出来）⟹ 把队伍拉出来。名词说法就是②❷ 的 withdrawal——同一件事，一个动词说、一个名词说。<br>写作：pull out of the deal 退出交易 · pull out of the race 退出竞选。", "syn": "withdraw from · leave", "conf": "pull out of（撤出）· pull over（靠边停车）· pull through（挺过来）。"},
+  leavebehind:{"w": "leave behind", "ipa": "/liːv bɪˈhaɪnd/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>留下</b>、遗留；落下（某物）", "en": "to leave something in a place when you go away", "ex": "they <b>left behind</b> a curious treasure（①❶）", "mem": "宾语长时 behind 常提到宾语前：left behind a curious treasure。<br>写作：leave behind a legacy 留下遗产 · No child should be left behind. 一个孩子都不能落下。", "syn": "abandon · bequeath", "conf": "leave behind（留下）· leave out（遗漏）· leave off（停止）。"},
+  curious:{"w": "curious", "ipa": "/ˈkjʊəriəs/", "pos": "adj.", "tags": ["core", "poly"], "cn": "<b>奇特的</b>、稀奇的；好奇的", "en": "strange and unusual", "ex": "a <b>curious</b> treasure: 10 tons of nails（①❶）", "mem": "⚠️ 熟词僻义：curious 修饰<b>物</b>时是「奇特的」，修饰<b>人</b>时才是「好奇的」。a curious treasure＝一件怪宝贝（一坑钉子算什么宝贝？——作者在逗读者）。<br>curiosity n. 好奇心；奇物。", "syn": "strange · odd · peculiar", "conf": "curious（奇特的／好奇的）· curly（卷曲的）· furious（狂怒的）。"},
+  treasure:{"w": "treasure", "ipa": "/ˈtreʒə(r)/", "pos": "n./v.", "tags": ["core", "write"], "cn": "<b>宝藏</b>、珍宝；v. 珍视", "en": "a collection of valuable things; to value highly", "ex": "a curious <b>treasure</b>（①❶）", "mem": "动词义写作好用：treasure the time with family 珍惜和家人的时光。<br>21C 的诱惑就来自这个词——「珍宝」是今人的眼光，不是罗马人埋它的动机。", "syn": "fortune · cherish (v.)", "conf": "treasure（宝藏）· measure（措施）· pleasure（乐趣）。"},
+  hoard:{"w": "hoard", "ipa": "/hɔːd/", "pos": "n./v.", "tags": ["core"], "cn": "<b>（钱财、物品的）窖藏</b>、秘藏；v. 囤积", "en": "a store of money or valuable things, often hidden", "ex": "The nail <b>hoard</b> was discovered in 1960（①❷）", "mem": "考古常用：a coin hoard 一批窖藏钱币。动词 hoard ＝ 囤积（贬义）：hoard food during a crisis 危机时囤粮。<br>⚠️ 与 horde（一大群人）同音。", "syn": "stockpile · cache", "conf": "hoard（窖藏、囤积）· horde（一群）· board（木板）。"},
+  pit:{"w": "pit", "ipa": "/pɪt/", "pos": "n.", "tags": ["core"], "cn": "<b>坑</b>、深坑；矿井", "en": "a large hole in the ground", "ex": "a four-metre-deep <b>pit</b>（①❷）", "mem": "four-metre-deep：数词-名词-形容词构成的复合形容词，名词用单数 metre（不是 metres）。<br>熟语：the pits 最糟糕的东西（口语）。", "syn": "hole · hollow", "conf": "pit（坑）· pity（可惜）· pith（要点）。"},
+  gravel:{"w": "gravel", "ipa": "/ˈɡrævl/", "pos": "n.", "tags": ["core"], "cn": "<b>砾石</b>、碎石", "en": "small stones used to make roads and paths", "ex": "covered by two metres of <b>gravel</b>（①❷）", "mem": "不可数：two metres of gravel（两米厚的砾石）。<br>21B 从「深坑 ＋ 砾石」脑补「防锈」——原文只是写藏得严。", "syn": "pebbles · stones", "conf": "gravel（砾石）· grave（坟墓）· travel（旅行）。"},
+  bury:{"w": "bury", "ipa": "/ˈberi/", "pos": "v.", "tags": ["core", "poly"], "cn": "<b>埋</b>、埋葬；隐藏", "en": "to put something in the ground and cover it", "ex": "Why had the Romans <b>buried</b> a million nails?（②❶）", "mem": "⚠️ 发音 /ˈberi/（同 berry），不读 /ˈbjuːri/。<br>引申：bury oneself in work 埋头工作 · bury the hatchet 和解（埋起斧头）。过去完成 had buried：撤离前就埋好了。", "syn": "inter · conceal", "conf": "bury（埋）· busy（忙）· burial（葬礼，n.）。"},
+  explanation:{"w": "explanation", "ipa": "/ˌekspləˈneɪʃn/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>解释</b>、说明", "en": "a reason given for something", "ex": "The likely <b>explanation</b> is that …（②❷）", "mem": "explain v. → explanation n.（拼写去掉 i）。<br>写作：The most likely explanation is that … 最可能的解释是……——分析原因段的开头句。", "syn": "account · reason", "conf": "explanation（解释）· exploration（探索）· exploitation（剥削）。"},
+  withdrawal:{"w": "withdrawal", "ipa": "/wɪðˈdrɔːəl/", "pos": "n.", "tags": ["core", "poly"], "cn": "<b>撤退</b>、撤离；取款；退出", "en": "the act of moving troops away from a place", "ex": "the <b>withdrawal</b> was rushed（②❷）", "mem": "with（向后）＋ draw（拉）⟹ 往回拉。军事语境＝撤军；银行语境＝取款（withdraw money）；也作「戒断（反应）」。<br>和①❶ pull out of 是同一件事。", "syn": "retreat · pull-out", "conf": "withdrawal（撤退、取款）· withhold（扣留）· withstand（经受）。"},
+  rushed:{"w": "rushed", "ipa": "/rʌʃt/", "pos": "adj.", "tags": ["core"], "cn": "<b>仓促的</b>、匆忙的", "en": "done too quickly, without enough time", "ex": "the withdrawal was <b>rushed</b>（②❷）", "mem": "rush v. 冲、催 → rushed adj. 仓促的。a rushed decision 仓促的决定。<br>⚠️ 21 题：rushed 是<b>处境</b>（来不及运走），不是<b>目的</b>。", "syn": "hasty · hurried", "conf": "rushed（仓促的）· crushed（压碎的）· brushed（刷过的）。"},
+  caledonian:{"w": "Caledonian", "ipa": "/ˌkælɪˈdəʊniən/", "pos": "n./adj.", "tags": ["core"], "cn": "<b>喀里多尼亚人（的）</b>——古罗马人对苏格兰北部居民的称呼", "en": "a person from Caledonia, the Roman name for Scotland", "ex": "the local <b>Caledonians</b>（②❷）", "mem": "Caledonia 是罗马人给苏格兰（北部）起的拉丁名，今天仍作苏格兰的雅称。<br>题目里换成 the locals（当地人）——专有名词在选项里一般被换成普通名词。", "syn": "the locals · Scots", "conf": "Caledonian（喀里多尼亚人）· Macedonian（马其顿人）。"},
+  gethandson:{"w": "get one’s hands on", "ipa": "/ɡet wʌnz hændz ɒn/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>把……弄到手</b>、得到", "en": "to obtain something, often with difficulty", "ex": "getting their <b>hands on</b> 10 tons of weapon-grade iron（②❷）", "mem": "字面「把手放到……上」⟹ 拿到手。常带「想方设法」的意味。<br>写作：Students can now get their hands on almost any book online.", "syn": "obtain · acquire · get hold of", "conf": "get one’s hands on（弄到）· have one’s hands full（忙得不可开交）· hands-on（亲手的）。"},
+  weapongrade:{"w": "weapon-grade", "ipa": "/ˈwepən ɡreɪd/", "pos": "adj.", "tags": ["core"], "cn": "<b>武器级的</b>（质量够打造兵器的）", "en": "good enough in quality to be used for making weapons", "ex": "10 tons of <b>weapon-grade</b> iron（②❷）", "mem": "名词-grade ＝「……级别的」：food-grade 食品级 · military-grade 军用级 · medical-grade 医用级。<br>这个词把钉子变回了<b>原料</b>：罗马人在乎的是铁，后人在乎的是手艺（③❶）。", "syn": "military-grade", "conf": "grade（等级）· grace（优雅）· grate（栅栏）。"},
+  millennium:{"w": "millennium", "ipa": "/mɪˈleniəm/", "pos": "n.", "tags": ["core"], "cn": "<b>一千年</b>、千年期（复数 millennia）", "en": "a period of 1,000 years", "ex": "for almost two <b>millennia</b>（②❸）", "mem": "mille（千）＋ ennium（年）。复数 millennia（拉丁变化）或 millenniums。<br>同族：century 世纪 · decade 十年 · annual 每年的（ann＝年）。", "syn": "a thousand years", "conf": "millennium（千年）· million（百万）· millimetre（毫米）。"},
+  civilisation:{"w": "civilisation", "ipa": "/ˌsɪvəlaɪˈzeɪʃn/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>文明</b>；文明社会", "en": "a society with its own culture and way of life", "ex": "<b>Later civilisations</b> would value …（③❶）", "mem": "英式拼写 civilisation，美式 civilization。civil（公民的）→ civilise（使开化）→ civilisation。<br>⑦❶ 又出现：transformed civilisation ＝ 改变了人类文明（不可数，指整体）。", "syn": "culture · society", "conf": "civilisation（文明）· civility（礼貌）· civilian（平民）。"},
+  skilled:{"w": "skilled", "ipa": "/skɪld/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>熟练的</b>、有技能的", "en": "having the ability to do something well", "ex": "the <b>skilled</b> blacksmith’s labour（③❶）", "mem": "skill n. → skilled adj.（≠ skillful：skilled 多修饰工种、劳动，skillful 修饰表现）。skilled workers 技术工人 · skilled labour 熟练劳动。", "syn": "expert · trained", "conf": "skilled（熟练的）· killed（被杀）· spilled（洒出的）。"},
+  blacksmith:{"w": "blacksmith", "ipa": "/ˈblæksmɪθ/", "pos": "n.", "tags": ["core"], "cn": "<b>铁匠</b>", "en": "a person who makes and repairs things made of iron", "ex": "the skilled <b>blacksmith’s</b> labour（③❶）", "mem": "black（黑：铁是「黑金属」）＋ smith（工匠）。同构：goldsmith 金匠 · locksmith 锁匠 · wordsmith 文字匠（写手）。<br>⚠️ 22B 的陷阱：看重铁匠的<b>手艺</b> ≠ 铁匠的<b>地位</b>高。", "syn": "smith · ironworker", "conf": "blacksmith（铁匠）· locksmith（锁匠）· goldsmith（金匠）。"},
+  labour:{"w": "labour", "ipa": "/ˈleɪbə(r)/", "pos": "n.", "tags": ["core", "poly"], "cn": "<b>劳动</b>、（投入的）劳力；劳工", "en": "work, especially physical work", "ex": "value … labour in a nail（③❶）", "mem": "英式拼写 labour，美式 labor。labour in a nail：凝结在钉子里的劳动（经济学「劳动价值」的味道）。<br>熟词僻义：in labour 分娩中 · Labour 英国工党。", "syn": "work · toil · effort", "conf": "labour（劳动）· laboratory（实验室）· laborious（费力的）。"},
+  rawmaterial:{"w": "raw material", "ipa": "/rɔː məˈtɪəriəl/", "pos": "n.", "tags": ["phrase", "write"], "cn": "<b>原材料</b>", "en": "a basic material from which a product is made", "ex": "even more than the <b>raw material</b>（③❶）", "mem": "raw 生的、未加工的：raw data 原始数据 · raw meat 生肉。<br>23D 的 Reduced cost of raw materials 就是④❷ cheaper iron 的改写——次因，不是主因。", "syn": "resource · input", "conf": "raw（生的）· row（排）· draw（画）。"},
+  delightful:{"w": "delightful", "ipa": "/dɪˈlaɪtfl/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>令人愉快的</b>、讨人喜欢的", "en": "very pleasant", "ex": "her new <b>delightful</b> book（③❷）", "mem": "delight n./v. 高兴 → delightful 令人高兴的（修饰物）；delighted 感到高兴的（修饰人）。<br>作者顺手夸了一句同行的书——专栏随笔的口吻。", "syn": "charming · enjoyable", "conf": "delightful（令人愉快的）· delighted（高兴的）· delicate（精致的）。"},
+  burndown:{"w": "burn down", "ipa": "/bɜːn daʊn/", "pos": "phr.", "tags": ["phrase"], "cn": "<b>烧毁</b>、焚毁（建筑）", "en": "to destroy a building by fire", "ex": "burn <b>down</b> their homes（③❷）", "mem": "down 表示「彻底、到底」：burn down 烧光 · tear down 拆毁 · break down 崩溃。<br>⚠️ burn down 用于建筑，burn up 用于纸、燃料等烧尽。", "syn": "raze · destroy by fire", "conf": "burn down（烧毁建筑）· burn out（精疲力竭）· burn up（烧光）。"},
+  relocate:{"w": "relocate", "ipa": "/ˌriːləʊˈkeɪt/", "pos": "v.", "tags": ["core", "write"], "cn": "<b>搬迁</b>、迁移", "en": "to move to a new place to live or work", "ex": "if they were planning to <b>relocate</b>（③❷）", "mem": "re（重新）＋ locate（定位）⟹ 换个地方安顿。relocation n. 搬迁。<br>写作：Many young people relocate to big cities for work.", "syn": "move · resettle", "conf": "relocate（搬迁）· allocate（分配）· dislocate（脱臼）。"},
+  attempt:{"w": "attempt", "ipa": "/əˈtempt/", "pos": "n./v.", "tags": ["core", "write"], "cn": "<b>尝试</b>、企图", "en": "an effort to do something", "ex": "This was an <b>attempt</b> to recover …（③❸）", "mem": "at（去）＋ tempt（试）。an attempt to do sth ＝ 为了做某事的尝试——这里交代烧房子的<b>目的</b>。<br>⚠️ 21A 借的正是这里的目的（回收再用），可那是弗吉尼亚人的，不是罗马人的。", "syn": "try · effort", "conf": "attempt（尝试）· tempt（引诱）· contempt（蔑视）。"},
+  recover:{"w": "recover", "ipa": "/rɪˈkʌvə(r)/", "pos": "v.", "tags": ["core", "poly"], "cn": "<b>找回</b>、回收；恢复（健康）", "en": "to get back something that was lost", "ex": "an attempt to <b>recover</b> the valuable nails（③❸）", "mem": "熟词僻义：recover 不只是「康复」，宾语是物时＝找回、收回：recover stolen goods 追回赃物 · recover costs 收回成本。<br>本段连用三个「收回」：recover · reused · reclaim。", "syn": "retrieve · regain", "conf": "recover（找回）· discover（发现）· uncover（揭开）。"},
+  reuse:{"w": "reuse", "ipa": "/ˌriːˈjuːz/", "pos": "v.", "tags": ["core", "write"], "cn": "<b>再使用</b>、重复利用", "en": "to use something again", "ex": "which could be <b>reused</b> after sifting the ashes（③❸）", "mem": "re（再）＋ use。reduce, reuse, recycle 环保「3R」。<br>21A saving them for future use 就是从这个词借的。", "syn": "recycle · use again", "conf": "reuse（再利用）· recycle（回收）· refuse（拒绝／垃圾）。"},
+  sift:{"w": "sift", "ipa": "/sɪft/", "pos": "v.", "tags": ["core", "poly"], "cn": "<b>筛</b>、过滤；细查", "en": "to put something through a sieve; to examine carefully", "ex": "after <b>sifting</b> the ashes（③❸）", "mem": "本义：用筛子筛（面粉、灰）。引申：sift through the evidence 仔细审查证据。<br>阅读里常见引申义：sift through information 筛选信息。", "syn": "sieve · filter · sort through", "conf": "sift（筛）· shift（转移）· gift（礼物）。"},
+  ash:{"w": "ash", "ipa": "/æʃ/", "pos": "n.", "tags": ["core"], "cn": "<b>灰</b>、灰烬（常用复数 ashes）", "en": "the grey powder left after something has burned", "ex": "after sifting the <b>ashes</b>（③❸）", "mem": "rise from the ashes 浴火重生（写作可用）。<br>ashtray 烟灰缸。", "syn": "cinders · embers", "conf": "ash（灰）· rash（皮疹）· cash（现金）。"},
+  entire:{"w": "entire", "ipa": "/ɪnˈtaɪə(r)/", "pos": "adj.", "tags": ["core"], "cn": "<b>整个的</b>、全部的", "en": "whole; complete", "ex": "burn down an <b>entire</b> house just to …（③❹）", "mem": "比 whole 更强调「一点不剩」。an entire house ＋ just to ⟹ 代价和目的的悬殊对比：整栋房子 vs 几颗钉子。", "syn": "whole · complete", "conf": "entire（整个的）· entice（诱惑）· enquire（询问）。"},
+  reclaim:{"w": "reclaim", "ipa": "/rɪˈkleɪm/", "pos": "v.", "tags": ["core", "poly"], "cn": "<b>收回</b>、取回；开垦（土地）", "en": "to get back something that was yours", "ex": "just to <b>reclaim</b> the nails（③❹）", "mem": "re（回）＋ claim（要）⟹ 要回来。熟词僻义：reclaim land from the sea 填海造地 · reclaimed water 再生水。", "syn": "retrieve · recover", "conf": "reclaim（收回）· proclaim（宣告）· exclaim（惊叫）。"},
+  underline:{"w": "underline", "ipa": "/ˌʌndəˈlaɪn/", "pos": "v.", "tags": ["core", "poly", "write"], "cn": "<b>强调</b>、凸显；在……下面画线", "en": "to show clearly that something is important or true", "ex": "<b>underlines</b> how scarce, costly and valuable …（③❹）", "mem": "熟词僻义：不是「画下划线」，是「凸显、说明」＝ underscore / highlight。<br>⭐ 例子题的信号词：例子后面 underlines / shows / illustrates 一出现，答案就在这句里（22D）。", "syn": "underscore · highlight · emphasise", "conf": "underline（强调）· undermine（削弱）· underlie（构成……的基础）。"},
+  scarce:{"w": "scarce", "ipa": "/skeəs/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>稀缺的</b>、不足的", "en": "not available in large amounts", "ex": "how <b>scarce</b>, costly and valuable …（③❹）", "mem": "scarcity n. 稀缺（经济学核心概念）。scarcely adv. 几乎不（＝hardly）。<br>写作：Water is becoming scarce in many regions.", "syn": "rare · in short supply", "conf": "scarce（稀缺的）· scare（惊吓）· scarf（围巾）。"},
+  costly:{"w": "costly", "ipa": "/ˈkɒstli/", "pos": "adj.", "tags": ["core", "poly"], "cn": "<b>昂贵的</b>；代价高的", "en": "costing a lot of money; causing problems", "ex": "how scarce, <b>costly</b> and valuable …（③❹）", "mem": "⚠️ -ly 结尾却是<b>形容词</b>（同 friendly, lovely）。a costly mistake 代价惨重的错误。", "syn": "expensive · pricey", "conf": "costly（昂贵的，adj.）· cost-effective（划算的）· coastal（沿海的）。"},
+  simpleseeming:{"w": "simple-seeming", "ipa": "/ˈsɪmpl ˈsiːmɪŋ/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>看似简单的</b>", "en": "appearing to be simple, though perhaps not", "ex": "the <b>simple-seeming</b> technology（③❹）", "mem": "形容词-seeming 构词：friendly-seeming 看似友好的 · harmless-seeming 看似无害的。<br>⭐ 22D 的 nail-making technology 就是它的改写——作者暗示：钉子看着简单，当年其实是高价技术。", "syn": "apparently simple", "conf": "seeming（表面上的）· seemly（得体的）· seamless（无缝的）。"},
+  economist:{"w": "economist", "ipa": "/ɪˈkɒnəmɪst/", "pos": "n.", "tags": ["core"], "cn": "<b>经济学家</b>", "en": "an expert in economics", "ex": "as <b>economist</b> Daniel Sichel points out（④❶）", "mem": "economy 经济 → economics 经济学 → economist 经济学家；economical 节约的 · economic 经济的。<br>⑥❷ 作者也自称 economist——25B 借这个身份编出「经济成功」。", "syn": "—", "conf": "economist（经济学家）· economical（节约的）· ecologist（生态学家）。"},
+  pointout:{"w": "point out", "ipa": "/pɔɪnt aʊt/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>指出</b>", "en": "to tell someone about a fact", "ex": "as … Sichel <b>points out</b> in a research paper（④❶）", "mem": "引用他人观点的常用动词：point out · argue · note · observe。<br>写作：As many experts have pointed out, … 正如许多专家指出的……", "syn": "note · indicate", "conf": "point out（指出）· point to（表明）· to the point（切题）。"},
+  driven:{"w": "be driven by", "ipa": "/drɪvn baɪ/", "pos": "phr.", "tags": ["phrase", "poly", "write"], "cn": "<b>由……推动／驱动</b>", "en": "to be caused or influenced by something", "ex": "was <b>driven</b> partly by cheaper iron（④❷）", "mem": "熟词僻义：drive 不只是「开车」，＝ 推动、驱使：market-driven 市场驱动的 · data-driven 数据驱动的。<br>写作：Economic growth is driven by innovation.", "syn": "caused by · propelled by", "conf": "driven（被推动的）· derived（源自的）· deprived（被剥夺的）。"},
+  partly:{"w": "partly", "ipa": "/ˈpɑːtli/", "pos": "adv.", "tags": ["core"], "cn": "<b>部分地</b>、在一定程度上", "en": "to some extent; not completely", "ex": "driven <b>partly</b> by cheaper iron and cheaper energy（④❷）", "mem": "⭐ 主次信号：partly 给的是<b>次因</b>，后面的 most of / mainly / largely 才是主因。23 题的 B、D 全取自 partly 这半句。", "syn": "in part · to some extent", "conf": "partly（部分地）· partially（不完全地）· particularly（尤其）。"},
+  credit:{"w": "the credit goes to", "ipa": "/ðə ˈkredɪt ɡəʊz tə/", "pos": "phr.", "tags": ["phrase", "poly", "write"], "cn": "<b>功劳归于</b>……", "en": "the praise for an achievement belongs to someone", "ex": "most of the <b>credit goes to</b> nail manufacturers（④❷）", "mem": "⚠️ 熟词僻义：credit 不是「信用、学分」，是<b>功劳、赞誉</b>。take credit for 把功劳揽到自己身上 · give sb credit for 认可某人的功劳。<br>⭐ most of the credit ↔ 23 题的 the major role。", "syn": "praise · recognition", "conf": "credit（功劳）· credible（可信的）· creditor（债权人）。"},
+  manufacturer:{"w": "manufacturer", "ipa": "/ˌmænjuˈfæktʃərə(r)/", "pos": "n.", "tags": ["core"], "cn": "<b>制造商</b>、生产厂家", "en": "a company that makes goods in large quantities", "ex": "nail <b>manufacturers</b> who simply found …（④❷）", "mem": "manu（手）＋ fact（做）⟹ 本义「手工制作」。manufacture v. 制造。<br>23C 从「制造商」脑补「市场竞争」——原文一字没提。", "syn": "producer · maker", "conf": "manufacturer（制造商）· manuscript（手稿）· manual（手工的）。"},
+  efficient:{"w": "efficient", "ipa": "/ɪˈfɪʃnt/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>高效的</b>、效率高的", "en": "producing results without wasting time or money", "ex": "found more <b>efficient</b> ways to turn steel into nails（④❷）", "mem": "efficiency n. 效率。⚠️ efficient（效率高）≠ effective（有效果）。<br>⭐ more efficient ways ⟹ 23A Increased productivity（生产率）。", "syn": "productive · economical", "conf": "efficient（高效的）· effective（有效的）· sufficient（足够的）。"},
+  overtheyears:{"w": "over the years", "ipa": "/ˈəʊvə ðə jɪəz/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>这些年来</b>、多年来", "en": "during a long period of time", "ex": "Nails themselves have changed <b>over the years</b>（⑤❶）", "mem": "常配现在完成时。写作：Over the years, our city has changed beyond recognition.<br>⚠️ 本句是 but 前<b>被让掉的</b>前半——24A 取的就是它。", "syn": "through the years · over time", "conf": "over the years（多年来）· in years（多年里，多用于否定）。"},
+  chariot:{"w": "chariot", "ipa": "/ˈtʃæriət/", "pos": "n.", "tags": ["core"], "cn": "<b>（古代的）双轮战车</b>", "en": "a two-wheeled vehicle pulled by horses, used in ancient wars", "ex": "Roman lamps and Roman <b>chariots</b>（⑤❷）", "mem": "和 car、carriage、career 同源（car-＝车）。作者拿战车对跑车、油灯对 LED 灯带：变化巨大的东西没法比价格。", "syn": "war cart", "conf": "chariot（战车）· charity（慈善）· chart（图表）。"},
+  strip:{"w": "strip", "ipa": "/strɪp/", "pos": "n.", "tags": ["core", "poly"], "cn": "<b>条</b>、带状物；（LED）灯带", "en": "a long narrow piece of something", "ex": "LED <b>strips</b> and sports cars（⑤❷）", "mem": "熟词僻义：strip 作名词是「条、带」：LED strips 灯带 · a strip of paper 纸条 · comic strip 连环漫画；动词才是「剥去」。", "syn": "band · stripe", "conf": "strip（条）· stripe（条纹）· script（脚本）。"},
+  clearly:{"w": "clearly", "ipa": "/ˈklɪəli/", "pos": "adv.", "tags": ["core"], "cn": "<b>显然</b>、一看就", "en": "obviously; in a way that is easy to see", "ex": "Roman nails are still <b>clearly</b> nails（⑤❷）", "mem": "still clearly nails ＝ 一看就还是钉子——作者的意思是「基本没变」（24B）。", "syn": "obviously · evidently", "conf": "clearly（显然）· nearly（几乎）· cleanly（干净地）。"},
+  absurd:{"w": "absurd", "ipa": "/əbˈsɜːd/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>荒唐的</b>、荒谬的", "en": "completely unreasonable or silly", "ex": "It would be <b>absurd</b> to try to track …（⑤❸）", "mem": "absurdity n. 荒谬。写作：It would be absurd to judge a person only by their grades.", "syn": "ridiculous · unreasonable", "conf": "absurd（荒唐的）· absorb（吸收）· obscure（模糊的）。"},
+  track:{"w": "track", "ipa": "/træk/", "pos": "v./n.", "tags": ["core", "poly"], "cn": "<b>追踪</b>、跟踪记录；n. 轨道、跑道", "en": "to follow the progress or development of something", "ex": "try to <b>track</b> the changing price（⑤❸）", "mem": "熟词僻义：track 作动词＝追踪：track spending 记录开支 · keep track of 掌握……的情况。<br>on the right track 方向对了。", "syn": "trace · monitor · follow", "conf": "track（追踪）· trace（追溯）· trick（诡计）。"},
+  makesense:{"w": "make sense", "ipa": "/meɪk sens/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>说得通</b>、合乎情理", "en": "to be reasonable or logical", "ex": "to ask the same question of nails <b>makes perfect sense</b>（⑤❸）", "mem": "make perfect sense 完全说得通；make sense of 理解、弄懂。<br>⚠️ 24D 把「说得通」误读成「最重要」——makes sense 评价的是<b>做法</b>，不是钉子本身。", "syn": "be logical · be reasonable", "conf": "make sense（说得通）· make sense of（弄懂）· in a sense（在某种意义上）。"},
+  makenoapology:{"w": "make no apology for", "ipa": "/meɪk nəʊ əˈpɒlədʒi fə(r)/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>不为……道歉</b>、坦然承认……", "en": "to say you are not sorry about something you do", "ex": "I <b>make no apology for</b> being obsessed …（⑥❶）", "mem": "语气坚定的表态句：我就是这样，不觉得有错。后接名词／动名词。<br>写作：I make no apology for putting health first.", "syn": "be unapologetic about", "conf": "apology（道歉）· apologise（道歉，v.）· apologetic（愧疚的）。"},
+  obsessed:{"w": "obsessed", "ipa": "/əbˈsest/", "pos": "adj.", "tags": ["core"], "cn": "<b>着迷的</b>、痴迷的", "en": "thinking about something all the time", "ex": "being <b>obsessed</b> by a particular feature（⑥❶）", "mem": "be obsessed with / by 迷上……。obsession n. 痴迷。<br>作者自嘲：我就是对价格着迷——所以这篇文章处处在讲 price。", "syn": "fixated · preoccupied", "conf": "obsessed（痴迷的）· possessed（着魔的）· obscure（模糊的）。"},
+  feature:{"w": "feature", "ipa": "/ˈfiːtʃə(r)/", "pos": "n.", "tags": ["core", "poly"], "cn": "<b>特征</b>、特点；v. 以……为特色", "en": "an important part or quality of something", "ex": "a particular <b>feature</b> of everyday objects（⑥❶）", "mem": "冒号后揭晓：their price。名词还有「专题报道」「五官」：a feature article 专题文章 · facial features 五官。", "syn": "characteristic · aspect", "conf": "feature（特征）· future（未来）· fixture（固定装置）。"},
+  afterall:{"w": "after all", "ipa": "/ˈɑːftə(r) ɔːl/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>毕竟</b>；（出乎意料地）终究", "en": "used to explain a reason; in spite of expectations", "ex": "I am an economist, <b>after all</b>（⑥❷）", "mem": "两个义项：① 放句尾或句首解释原因「毕竟」（本句）；② 放句尾表示「终究、到底还是」：He came after all.", "syn": "in the end · considering that", "conf": "after all（毕竟）· above all（最重要的是）· at all（根本）。"},
+  invention:{"w": "invention", "ipa": "/ɪnˈvenʃn/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>发明</b>；发明物", "en": "something that has been invented", "ex": "two books about the history of <b>inventions</b>（⑥❸）", "mem": "in（进）＋ vent（来）⟹ 想出来的东西。invent v. · inventor n.。<br>⚠️ 25D small inventions 是拼凑：原文只说写过发明史，没说「精妙技术由小发明演变而来」。", "syn": "creation · innovation", "conf": "invention（发明）· intervention（干预）· convention（惯例）。"},
+  enchantingly:{"w": "enchantingly", "ipa": "/ɪnˈtʃɑːntɪŋli/", "pos": "adv.", "tags": ["core"], "cn": "<b>迷人地</b>、令人着迷地", "en": "in a delightful, almost magical way", "ex": "the <b>enchantingly</b> sophisticated technologies（⑥❸）", "mem": "enchant v. 使着迷（en＋chant 吟唱 ⟹ 念咒）→ enchanting adj. 迷人的。<br>修饰 sophisticated：精妙得令人着迷——作者带着一点调侃：大家都爱炫的。", "syn": "charmingly · fascinatingly", "conf": "enchant（使着迷）· chant（吟唱）· merchant（商人）。"},
+  sophisticated:{"w": "sophisticated", "ipa": "/səˈfɪstɪkeɪtɪd/", "pos": "adj.", "tags": ["core", "poly", "write"], "cn": "<b>精密的</b>、尖端的；老练的", "en": "advanced and complex; having experience of the world", "ex": "the enchantingly <b>sophisticated</b> technologies（⑥❸）", "mem": "修饰技术＝精密的、先进的；修饰人＝老于世故的、有品位的。<br>⚠️ 25D 的 Sophisticated technologies 取自 while 让步半句——被作者让掉的一方。", "syn": "advanced · complex · cutting-edge", "conf": "sophisticated（精密的）· sophomore（大二学生）· philosophy（哲学，soph＝智慧）。"},
+  hype:{"w": "hype", "ipa": "/haɪp/", "pos": "n./v.", "tags": ["core", "write"], "cn": "<b>炒作</b>、大肆宣传", "en": "excessive publicity and excitement", "ex": "get all the <b>hype</b>（⑥❸）", "mem": "get all the hype 出尽风头、被捧上天。hype up 大肆宣传。<br>写作：Don’t believe the hype. 别信那些吹捧。", "syn": "publicity · buzz", "conf": "hype（炒作）· hyper-（超）· hypo-（低于）。"},
+  transform:{"w": "transform", "ipa": "/trænsˈfɔːm/", "pos": "v.", "tags": ["core", "write"], "cn": "<b>彻底改变</b>、改造", "en": "to change something completely", "ex": "The Gutenberg printing press <b>transformed</b> civilisation（⑦❶）", "mem": "trans（转）＋ form（形）⟹ 变形。transformation n.。<br>⑦段两次：transformed civilisation · transforming the global energy system ⟹ 25A revolutionary change。", "syn": "revolutionise · reshape", "conf": "transform（改造）· transfer（转移）· transmit（传送）。"},
+  nature:{"w": "nature", "ipa": "/ˈneɪtʃə(r)/", "pos": "n.", "tags": ["core", "poly"], "cn": "<b>本质</b>、性质；自然", "en": "the basic character of something", "ex": "not by changing the <b>nature</b> of writing（⑦❶）", "mem": "⚠️ 熟词僻义：the nature of sth ＝ 某物的本质、性质，不是「大自然」。by nature 生性 · human nature 人性。", "syn": "essence · character", "conf": "nature（本质）· natural（自然的）· nurture（养育）。"},
+  parallel:{"w": "parallel", "ipa": "/ˈpærəlel/", "pos": "adj.", "tags": ["core", "poly"], "cn": "<b>同时发生的</b>、并行的；平行的", "en": "happening at the same time and connected", "ex": "a <b>parallel</b> collapse in the price（⑦❶）", "mem": "熟词僻义：不只是几何的「平行」，还是「同步的、相应的」。a parallel development 同步出现的发展。", "syn": "simultaneous · concurrent", "conf": "parallel（同步的）· paralyse（使瘫痪）· parameter（参数）。"},
+  collapse:{"w": "collapse", "ipa": "/kəˈlæps/", "pos": "n./v.", "tags": ["core", "poly"], "cn": "<b>（价格）暴跌</b>；倒塌、崩溃", "en": "a sudden fall in price or value", "ex": "a parallel <b>collapse</b> in the price of surfaces（⑦❶）", "mem": "⚠️ 熟词僻义：collapse in price 价格暴跌（不是房子塌了）。经济语境：the collapse of the market 市场崩盘。", "syn": "plunge · crash", "conf": "collapse（暴跌）· relapse（复发）· elapse（流逝）。"},
+  surface:{"w": "surface", "ipa": "/ˈsɜːfɪs/", "pos": "n.", "tags": ["core"], "cn": "<b>表面</b>", "en": "the outside or top layer of something", "ex": "the price of <b>surfaces</b> to write on（⑦❶）", "mem": "surfaces to write on ＝ 可以在上面写字的东西（纸、羊皮等）——不定式作定语，介词 on 不能丢。<br>sur（在上）＋ face（面）。", "syn": "—", "conf": "surface（表面）· surplus（剩余）· surpass（超过）。"},
+  overlooked:{"w": "often-overlooked", "ipa": "/ˈɒfn ˌəʊvəˈlʊkt/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>常被忽视的</b>", "en": "not noticed or given attention", "ex": "an <b>often-overlooked</b> technology called paper（⑦❶）", "mem": "overlook ⚠️ 不是「仔细看」，是「忽视；俯瞰」。an often-overlooked factor 常被忽视的因素——写作高频。", "syn": "neglected · ignored", "conf": "overlook（忽视）· oversee（监督）· overtake（超过）。"},
+  solarpanel:{"w": "solar panel", "ipa": "/ˈsəʊlə(r) ˈpænl/", "pos": "n.", "tags": ["phrase", "write"], "cn": "<b>太阳能电池板</b>", "en": "a device that changes sunlight into electricity", "ex": "<b>Solar panels</b> had a few niche uses（⑦❷）", "mem": "solar 太阳的（sol＝太阳）· lunar 月亮的。panel 面板；也作「专家小组」（a panel of experts）。", "syn": "photovoltaic panel", "conf": "solar（太阳的）· polar（极地的）· sonar（声呐）。"},
+  niche:{"w": "niche", "ipa": "/niːʃ/", "pos": "adj./n.", "tags": ["core", "poly"], "cn": "<b>小众的</b>、利基的；合适的位置", "en": "appealing to a small, specialised group", "ex": "a few <b>niche</b> uses（⑦❷）", "mem": "niche market 小众市场 · find one’s niche 找到适合自己的位置。<br>发音 /niːʃ/ 或 /nɪtʃ/。", "syn": "specialised · narrow", "conf": "niche（小众的）· nice（好的）· nick（刻痕）。"},
+  forthesakeof:{"w": "for the sake of", "ipa": "/fə(r) ðə seɪk əv/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>为了</b>……（的缘故）", "en": "in order to get or keep something", "ex": "buried the nails probably <b>for the sake of</b> …（21 题干）", "mem": "⭐ 问<b>目的</b>，不是问原因——21 题两层原因里只有「不让当地人拿到」能当目的。<br>写作：for the sake of convenience 为了方便 · for the sake of our children 为了孩子们。", "syn": "in order to · for the purpose of", "conf": "for the sake of（为了）· for the sake of argument（假设）。"},
+  rust:{"w": "rust", "ipa": "/rʌst/", "pos": "v./n.", "tags": ["core"], "cn": "<b>生锈</b>；铁锈", "en": "to become covered with rust", "ex": "keeping them from <b>rusting</b>（21B）", "mem": "keep sth from doing 防止……。rusty adj. 生锈的；（技能）生疏的：My French is a bit rusty.", "syn": "corrode", "conf": "rust（锈）· trust（信任）· crust（外壳）。"},
+  highlight:{"w": "highlight", "ipa": "/ˈhaɪlaɪt/", "pos": "v./n.", "tags": ["core", "write"], "cn": "<b>突出</b>、强调；n. 最精彩的部分", "en": "to emphasise something", "ex": "<b>highlight</b> the thriftiness of …（22A）", "mem": "写作高频：This case highlights the importance of … 这个例子凸显了……的重要性。", "syn": "emphasise · underline · stress", "conf": "highlight（突出）· highland（高地）· spotlight（聚光灯）。"},
+  thriftiness:{"w": "thriftiness", "ipa": "/ˈθrɪftinəs/", "pos": "n.", "tags": ["core"], "cn": "<b>节俭</b>", "en": "the quality of being careful with money", "ex": "the <b>thriftiness</b> of early American colonists（22A）", "mem": "thrift n. 节俭 → thrifty adj. → thriftiness n.。thrift store 二手店。<br>⚠️ 22A 是常识陷阱：烧掉整栋房子恰恰<b>不节俭</b>。", "syn": "frugality · economy", "conf": "thrift（节俭）· thrive（繁荣）· drift（漂流）。"},
+  colonist:{"w": "colonist", "ipa": "/ˈkɒlənɪst/", "pos": "n.", "tags": ["core"], "cn": "<b>殖民者</b>、开拓者", "en": "a person who settles in a new colony", "ex": "early American <b>colonists</b>（22A）", "mem": "colony 殖民地 → colonist 殖民者 → colonial 殖民的。17 世纪初的弗吉尼亚＝英国在北美的第一块永久殖民地（1607 詹姆斯敦）——22A 借的就是这个常识。", "syn": "settler · pioneer", "conf": "colonist（殖民者）· columnist（专栏作家）· colonel（上校）。"},
+  illustrate:{"w": "illustrate", "ipa": "/ˈɪləstreɪt/", "pos": "v.", "tags": ["core", "write"], "cn": "<b>说明</b>、举例阐明；给……配插图", "en": "to explain by using examples", "ex": "<b>illustrate</b> the high status of blacksmiths（22B）", "mem": "illustration n. 插图；例证。例子题选项的标配动词：illustrate · show · highlight · prove。", "syn": "demonstrate · exemplify", "conf": "illustrate（说明）· illuminate（照亮）· illusion（幻觉）。"},
+  contrast:{"w": "contrast", "ipa": "/kənˈtrɑːst/", "pos": "v./n.", "tags": ["core", "write"], "cn": "<b>对比</b>、形成对照", "en": "to compare two things to show differences", "ex": "<b>contrast</b> the attitudes of different civilisations（22C）", "mem": "contra（相反）＋ st（站）⟹ 站在对面。in contrast 相比之下 · by contrast 与之相反。<br>⚠️ 22C：③❶ 确有暗对比，可题问的是<b>例子</b>的作用，例子里只有一方。", "syn": "compare · differentiate", "conf": "contrast（对比）· contract（合同）· contrary（相反的）。"},
+  preciousness:{"w": "preciousness", "ipa": "/ˈpreʃəsnəs/", "pos": "n.", "tags": ["core"], "cn": "<b>珍贵</b>、宝贵", "en": "the quality of being valuable", "ex": "show the <b>preciousness</b> of nail-making technology（22D）", "mem": "precious adj. 珍贵的 → preciousness n.。⭐ 22D：preciousness ↔ ③❹ 的 scarce, costly and valuable 三个形容词。", "syn": "value · worth", "conf": "precious（珍贵的）· precise（精确的）· previous（先前的）。"},
+  productivity:{"w": "productivity", "ipa": "/ˌprɒdʌkˈtɪvəti/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>生产率</b>、生产力", "en": "the rate at which goods are produced", "ex": "Increased <b>productivity</b>（23A）", "mem": "product → productive → productivity。⭐ 23A：④❷ more efficient ways to turn steel into nails ＝ 同样投入产出更多 ＝ 生产率提高；Sichel 原论文用的也是这个词。", "syn": "efficiency · output", "conf": "productivity（生产率）· production（生产）· productive（多产的）。"},
+  fierce:{"w": "fierce", "ipa": "/fɪəs/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>激烈的</b>；凶猛的", "en": "very strong or intense", "ex": "<b>Fiercer</b> market competition（23C）", "mem": "fierce competition 激烈的竞争（固定搭配，写作常用）。<br>⚠️ 23C 是常识编造：原文没有一个词谈竞争。", "syn": "intense · keen", "conf": "fierce（激烈的）· pierce（刺穿）· fiery（火热的）。"},
+  undergo:{"w": "undergo", "ipa": "/ˌʌndəˈɡəʊ/", "pos": "v.", "tags": ["core", "write"], "cn": "<b>经历</b>、经受（变化、检查等）", "en": "to experience something, especially a change", "ex": "have <b>undergone</b> many technological improvements（24A）", "mem": "under（在下）＋ go ⟹ 从下面走过去 ⟹ 承受。undergo surgery 接受手术 · undergo great changes 经历巨变。<br>⚠️ 24A：经历巨变的是灯和车，不是钉子。", "syn": "experience · go through", "conf": "undergo（经历）· undertake（承担）· undermine（削弱）。"},
+  summarise:{"w": "summarise", "ipa": "/ˈsʌməraɪz/", "pos": "v.", "tags": ["core"], "cn": "<b>概括</b>、总结", "en": "to give a short account of the main points", "ex": "best <b>summarises</b> the last two paragraphs（25 题干）", "mem": "summary n. 摘要。题干出现 summarise / main idea / best title ⟹ 主旨题：先找观点句，再看例子在证明什么。", "syn": "sum up · outline", "conf": "summarise（概括）· summon（召唤）· summit（顶峰）。"},
+  revolutionary:{"w": "revolutionary", "ipa": "/ˌrevəˈluːʃənəri/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>革命性的</b>、彻底变革的", "en": "involving a great or complete change", "ex": "bring about <b>revolutionary</b> change（25A）", "mem": "revolve（旋转）→ revolution（革命：天翻地覆）→ revolutionary。<br>⭐ 25A：revolutionary change ↔ change the world · transformed civilisation · transforming。", "syn": "radical · groundbreaking", "conf": "revolutionary（革命性的）· evolutionary（进化的）· revolving（旋转的）。"},
+  integral:{"w": "integral", "ipa": "/ˈɪntɪɡrəl/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>不可或缺的</b>、构成整体所必需的", "en": "necessary and important as part of a whole", "ex": "is <b>integral</b> to economic success（25B）", "mem": "be integral to ＝ 对……不可或缺。integrate v. 整合。数学里是「积分」。<br>⚠️ 25B：作者是经济学家 ≠ 文章在谈经济成功。", "syn": "essential · indispensable", "conf": "integral（不可或缺的）· integrity（正直）· integrate（整合）。"},
+  define:{"w": "define", "ipa": "/dɪˈfaɪn/", "pos": "v.", "tags": ["core", "poly"], "cn": "<b>界定</b>、决定（……的性质）；给……下定义", "en": "to describe or determine the nature of something", "ex": "Technology <b>defines</b> people’s understanding of the world（25C）", "mem": "define 不只是「下定义」，还常作「塑造、决定……的本质」：Our choices define us.<br>⚠️ 25C：原文说便宜技术改变<b>世界本身</b>，不是改变「认识」。", "syn": "determine · shape", "conf": "define（界定）· defy（违抗）· refine（提炼）。"}
+};
+const panel=document.getElementById('panel');
+const isMobile=()=>window.innerWidth<=900;
+function badge(t){const m={core:'核心',phrase:'短语',poly:'僻义',write:'写作'};return `<span class="badge b-${t}">${m[t]}</span>`}
+function showCard(k,el){
+  const d=V[k];if(!d)return;
+  document.querySelectorAll('.tk.active').forEach(x=>x.classList.remove('active'));
+  if(el)el.classList.add('active');
+  panel.innerHTML=`<button class="close" onclick="document.getElementById('panel').classList.remove('open')">收起</button>
+    <div class="wcard">
+      <div class="head"><span class="w">${d.w}</span><span class="ipa">${d.ipa}</span><span class="pos">${d.pos}</span>${d.tags.map(badge).join('')}</div>
+      <div class="cn">${d.cn}</div><div class="en-def">${d.en}</div>
+      <div class="row r-ex"><b>原文</b>${d.ex}</div>
+      <div class="row r-mem"><b>怎么记 / 考点</b>${d.mem}</div>
+      <div class="row r-syn"><b>同义 / 同族</b>${d.syn}</div>
+      <div class="row r-conf"><b>易混 / 提醒</b>${d.conf}</div>
+    </div>`;
+  if(isMobile())panel.classList.add('open');
+}
+document.querySelectorAll('.tk').forEach(t=>t.addEventListener('click',e=>{e.stopPropagation();showCard(t.dataset.w,t)}));
+
+function tz(btn){btn.closest('.para').classList.toggle('showzh')}
+let allOn=false;
+function toggleAll(){allOn=!allOn;document.querySelectorAll('.para').forEach(p=>p.classList.toggle('showzh',allOn))}
+function go(id){const s=document.getElementById(id);if(!s)return;s.scrollIntoView({behavior:'smooth',block:'center'});s.style.transition='none';s.style.opacity=.3;setTimeout(()=>{s.style.transition='opacity .8s';s.style.opacity=1},80)}
+
+document.querySelectorAll('.q').forEach(q=>{
+  const ans=+q.dataset.ans;
+  q.querySelectorAll('.opt').forEach((o,i)=>o.addEventListener('click',()=>{
+    if(q.classList.contains('done'))return;
+    q.classList.add('done');
+    if(i!==ans)o.classList.add('wrong');
+    q.querySelectorAll('.opt')[ans].classList.add('right');
+  }));
+});
+
+const vg=document.getElementById('vgrid');
+function renderGrid(f){
+  vg.innerHTML='';
+  Object.keys(V).forEach(k=>{
+    const d=V[k];
+    if(f!=='all'&&!d.tags.includes(f))return;
+    const div=document.createElement('div');div.className='vitem';
+    div.innerHTML=`<span class="badges">${d.tags.map(badge).join('')}</span><div class="w">${d.w}</div><div class="cn">${d.cn}</div>`;
+    div.addEventListener('click',()=>{showCard(k,null);if(!isMobile())window.scrollTo({top:0,behavior:'smooth'})});
+    vg.appendChild(div);
+  });
+}
+renderGrid('all');
+document.querySelectorAll('.fbtn').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.fbtn').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderGrid(b.dataset.f);
+}));
+
+const yd=document.getElementById('yd');let sel='',ydHold=0,ydT=0;
+/* 触屏：点按钮会先把选区清掉 → selectionchange 立刻把按钮藏了 → 点击落空。改成延迟隐藏 ＋ 按下即锁定 */
+const ydTouch=window.matchMedia&&matchMedia('(pointer:coarse)').matches;
+function ydHide(){clearTimeout(ydT);ydHold=0;yd.style.display='none'}
+document.addEventListener('selectionchange',function(){
+  const s=window.getSelection();const t=s?s.toString().trim():'';
+  if(t&&/^[a-zA-Z' -]{2,40}$/.test(t)){
+    sel=t;clearTimeout(ydT);
+    try{const r=s.getRangeAt(0).getBoundingClientRect();
+      yd.style.left=Math.max(8,Math.min(r.left,window.innerWidth-110))+'px';
+      yd.style.top=(r.bottom+(ydTouch?30:8))+'px';yd.style.display='block';}catch(e){}
+  }else if(!ydHold){clearTimeout(ydT);ydT=setTimeout(function(){if(!ydHold)yd.style.display='none'},ydTouch?900:0)}
+});
+['pointerdown','touchstart','mousedown'].forEach(function(ev){yd.addEventListener(ev,function(){ydHold=1;clearTimeout(ydT)},{passive:true})});
+yd.addEventListener('click',function(){
+  const u='https://dict.youdao.com/result?word='+encodeURIComponent(sel)+'&lang=en';
+  let w=null;try{w=window.open(u,'_blank')}catch(e){}
+  if(!w)location.href=u;
+  ydHide()});
+document.addEventListener('click',function(e){if(e.target!==yd&&!window.getSelection().toString())ydHide()});
+
+function imgAll(b){const on=document.body.classList.toggle('stx-allimg');b.textContent=on?'收起原卷':'原卷对照';
+  if(on)document.querySelectorAll('.para img.strip').forEach(im=>im.loading='eager')}
+</script>
+<script src="img/strip_boxes_2024.js?v=1"></script>
+<script src="_strip_lookup.js?v=8"></script>
+<script src="_strip_text.js?v=25"></script>
+<script src="_fault_attr.js"></script>
+</body>
+</html>

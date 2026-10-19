@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2024 英一 新题型 · 网友评博物馆归还文物</title>
+<style>
+  :root{
+    --bg:#faf9f6; --card:#ffffff; --ink:#2b2b2b; --muted:#8a8578;
+    --accent:#8b5e34; --accent-soft:#f3e9dd; --line:#e8e3d8;
+    --hl:#fdf3d8; --hl-border:#e0b84d;
+    --green:#3e7a4e; --green-soft:#e8f2ea;
+    --red:#b04a3a; --red-soft:#f9e9e6;
+    --blue:#3d6a8a; --blue-soft:#e7eff5;
+    --purple:#6d5a8e; --purple-soft:#eeeaf5;
+    --serif:"Georgia","Songti SC",serif;
+    --sans:-apple-system,"PingFang SC","Helvetica Neue",sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#1c1a17; --card:#26231f; --ink:#e8e4dc; --muted:#9a948a;
+      --accent:#d0a06a; --accent-soft:#3a3127; --line:#3a362f;
+      --hl:#3d3520; --hl-border:#b08c3a;
+      --green:#7fb98d; --green-soft:#26362b;
+      --red:#d98876; --red-soft:#3d2a26;
+      --blue:#8ab3d0; --blue-soft:#26323d;
+      --purple:#a996c8; --purple-soft:#302a3d;
+    }
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;padding-bottom:120px}
+  .wrap{max-width:1100px;margin:0 auto;padding:24px 20px}
+  .back{font-size:.85rem;color:var(--muted);text-decoration:none}
+  .back:hover{color:var(--accent)}
+  header{margin:14px 0 28px}
+  header h1{font-family:var(--serif);font-size:1.7rem;line-height:1.3}
+  header .sub{color:var(--muted);margin-top:6px;font-size:.9rem}
+  .tags{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+  .tag{font-size:.75rem;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);border:1px solid var(--line)}
+  .tag.bad{background:var(--red-soft);color:var(--red)}
+  .layout{display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:start}
+  .layout > main{min-width:0}
+  @media (max-width:900px){.layout{grid-template-columns:1fr}}
+  section.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:24px}
+  h2{font-size:1.05rem;letter-spacing:.05em;color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+  h2 .n{font-size:.72rem;background:var(--accent);color:var(--card);border-radius:6px;padding:1px 7px}
+  h3.sh{font-size:.95rem;color:var(--ink);margin:18px 0 8px;padding-left:9px;border-left:3px solid var(--accent)}
+  .para{margin-bottom:14px}
+  .en{font-family:var(--serif);font-size:1.03rem;line-height:1.95}
+  .tk{background:var(--hl);border-bottom:2px solid var(--hl-border);border-radius:3px;padding:0 2px;cursor:pointer;transition:filter .15s}
+  .tk:hover{filter:brightness(.93)}
+  .tk.active{outline:2px solid var(--hl-border)}
+  .clue{border-bottom:2px dotted var(--red)}
+  .zh{display:none;margin-top:8px;padding:10px 14px;background:var(--blue-soft);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:.92rem}
+  .showzh .zh{display:block}
+  .zbtn{float:right;margin-left:10px;font-size:.72rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:6px;padding:2px 9px;cursor:pointer}
+  .zbtn:hover{color:var(--accent);border-color:var(--accent)}
+  .allbtn{font-size:.78rem;border:1px solid var(--accent);background:none;color:var(--accent);border-radius:8px;padding:4px 12px;cursor:pointer;margin-left:auto}
+  aside{position:sticky;top:20px}
+  #panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;min-height:180px}
+  #panel .hint{color:var(--muted);font-size:.88rem;text-align:center;padding:30px 10px}
+  .wcard .head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .wcard .w{font-family:var(--serif);font-size:1.35rem;font-weight:bold}
+  .wcard .ipa{color:var(--muted);font-size:.85rem}
+  .wcard .pos{font-size:.72rem;color:var(--purple);background:var(--purple-soft);padding:1px 8px;border-radius:999px}
+  .wcard .badge{font-size:.7rem;padding:1px 8px;border-radius:999px}
+  .b-core{background:var(--red-soft);color:var(--red)}
+  .b-phrase{background:var(--blue-soft);color:var(--blue)}
+  .b-poly{background:var(--purple-soft);color:var(--purple)}
+  .b-write{background:var(--green-soft);color:var(--green)}
+  .wcard .cn{margin-top:8px;font-size:1rem;font-weight:600}
+  .wcard .en-def{color:var(--muted);font-size:.86rem;font-style:italic;margin-top:2px}
+  .wcard .row{margin-top:10px;font-size:.86rem;padding:8px 10px;border-radius:8px}
+  .wcard .row b{font-size:.72rem;display:block;margin-bottom:2px;letter-spacing:.06em}
+  .r-ex{background:var(--hl)} .r-ex b{color:var(--hl-border)}
+  .r-mem{background:var(--green-soft)} .r-mem b{color:var(--green)}
+  .r-syn{background:var(--blue-soft)} .r-syn b{color:var(--blue)}
+  .r-conf{background:var(--red-soft)} .r-conf b{color:var(--red)}
+  #panel .close{display:none}
+  @media (max-width:900px){
+    aside{position:fixed;left:0;right:0;bottom:0;z-index:50;padding:0 8px 8px}
+    #panel{box-shadow:0 -6px 24px rgba(0,0,0,.18);max-height:55vh;overflow-y:auto;display:none}
+    #panel.open{display:block}
+    #panel .close{display:block;float:right;border:none;background:var(--line);border-radius:8px;padding:2px 10px;cursor:pointer;color:var(--ink)}
+  }
+  /* 选项库 */
+  .optlib{display:grid;gap:8px}
+  .optitem{display:flex;gap:10px;border:1px solid var(--line);border-radius:10px;padding:9px 12px;font-size:.9rem}
+  .optitem .lt{font-weight:700;font-family:var(--serif);color:var(--accent);flex:0 0 18px}
+  .optitem.used{opacity:.45}
+  .optitem.extra{border-color:var(--red);background:var(--red-soft)}
+  .optitem .oen{font-family:var(--serif);font-size:.92rem;line-height:1.75}
+  .optitem .zhx{display:block;color:var(--muted);font-size:.82rem;margin-top:3px}
+  .optitem .kw{display:block;font-size:.78rem;color:var(--blue);margin-top:3px}
+  .optitem .stg{display:inline-block;font-size:.72rem;background:var(--purple-soft);color:var(--purple);border-radius:999px;padding:1px 9px;margin-top:5px}
+  /* 空格题 */
+  .person{margin-bottom:26px;padding-bottom:20px;border-bottom:1px dashed var(--line)}
+  .person:last-child{border:none}
+  .pname{font-family:var(--serif);font-weight:700;font-size:1.05rem;margin-bottom:8px}
+  .pname .qn{color:var(--accent)}
+  .stance{font-size:.72rem;border-radius:999px;padding:1px 9px;margin-left:8px;vertical-align:2px;font-family:var(--sans);font-weight:400}
+  .st-anti{background:var(--red-soft);color:var(--red)}
+  .st-pro{background:var(--green-soft);color:var(--green)}
+  .st-mid{background:var(--blue-soft);color:var(--blue)}
+  .slot{display:inline;background:var(--accent-soft);border-bottom:2px solid var(--accent);border-radius:3px;padding:0 6px;color:var(--accent);font-weight:700;font-family:var(--sans);font-size:.88rem}
+  .slot.filled{background:var(--green-soft);border-color:var(--green);color:var(--ink);font-weight:400;font-family:var(--serif);font-size:1.03rem}
+  .slot.filled .fl{font-family:var(--sans);font-size:.78rem;font-weight:700;color:var(--green);margin-right:5px}
+  .chips{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0 4px}
+  .chips .ch{width:38px;height:34px;border:1px solid var(--line);border-radius:8px;background:none;font-family:var(--serif);font-weight:700;font-size:1rem;color:var(--ink);cursor:pointer;transition:all .15s}
+  .chips .ch:hover{border-color:var(--accent)}
+  .person.done .ch{cursor:default;opacity:.6}
+  .ch.right{background:var(--green-soft);border-color:var(--green);color:var(--green);opacity:1!important}
+  .ch.wrong{background:var(--red-soft);border-color:var(--red);color:var(--red);opacity:1!important}
+  .expl{display:none;margin-top:10px;background:var(--accent-soft);border-radius:10px;padding:12px 14px;font-size:.9rem}
+  .person.done .expl{display:block}
+  .expl b{color:var(--accent)}
+  .loc{font-family:var(--serif);font-style:italic;background:var(--hl);padding:1px 4px;border-radius:3px}
+  .expl .line{margin-top:8px;padding-top:8px;border-top:1px dashed var(--line)}
+  .expl .mine{margin-top:8px;padding:8px 10px;background:var(--red-soft);border-radius:8px;color:var(--red);font-size:.86rem}
+  .wb{display:grid;gap:10px}
+  .wbi{border-left:3px solid var(--green);background:var(--green-soft);border-radius:0 10px 10px 0;padding:10px 14px;font-size:.92rem}
+  .wbi .p{font-family:var(--serif);font-weight:600}
+  .wbi .u{color:var(--muted);font-size:.85rem}
+  /* 表格 */
+  .tbwrap{overflow-x:auto}
+  table.gt{border-collapse:collapse;width:100%;min-width:600px;font-size:.86rem}
+  table.gt th,table.gt td{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
+  table.gt th{background:var(--accent-soft);color:var(--accent);font-weight:600;font-size:.8rem}
+  table.gt td.c{text-align:center;font-family:var(--serif);font-weight:700}
+  table.gt tr.bad td{background:var(--red-soft)}
+  /* 分区带 */
+  .zone{display:grid;grid-template-columns:118px 1fr;gap:12px;padding:9px 0;border-bottom:1px dashed var(--line);font-size:.9rem}
+  .zone:last-child{border:none}
+  .zone .zn{font-size:.82rem;color:var(--accent);font-weight:600}
+  .zone.empty{background:var(--red-soft);border-radius:8px;padding-left:10px}
+  .zone.empty .zn{color:var(--red)}
+  /* 长难句 */
+  .ls{border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:14px}
+  .ls .s{font-family:var(--serif);font-size:.98rem;line-height:1.85}
+  .ls .an{margin-top:10px;font-size:.88rem}
+  .ls .an div{margin-top:4px}
+  .ls .tr{margin-top:8px;padding:8px 12px;background:var(--blue-soft);border-radius:8px;font-size:.88rem}
+  .mk{color:var(--red);font-weight:600}
+  .mk2{color:var(--blue);font-weight:600}
+  .mk3{color:var(--green);font-weight:600}
+  .box{border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:0 10px 10px 0;padding:12px 14px;margin:12px 0;font-size:.92rem;background:var(--accent-soft)}
+  .box.red{border-left-color:var(--red);background:var(--red-soft)}
+  .box.green{border-left-color:var(--green);background:var(--green-soft)}
+  .box .bt{font-weight:700;color:var(--accent);display:block;margin-bottom:6px}
+  .box.red .bt{color:var(--red)} .box.green .bt{color:var(--green)}
+  .en,.zh,.expl,.wbi,.optitem,.ls,.zone,.bd,figcaption,p,li,td,th{overflow-wrap:anywhere}
+  footer{color:var(--muted);font-size:.8rem;text-align:center;margin-top:30px}
+  #yd{position:fixed;z-index:60;display:none;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:4px 12px;font-size:.8rem;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+</style>
+<style>
+  /* selection-insertion page extras */
+  .layout{grid-template-columns:minmax(0,1fr) 340px}
+  @media (max-width:900px){.layout{grid-template-columns:minmax(0,1fr)}}
+  main,aside{min-width:0}
+  .clue2{border-bottom:2px dotted var(--blue)}
+  .optitem .oen{display:block}
+  table.gt td[colspan]{background:var(--accent-soft)}
+</style>
+<style>
+  /* ---- 2021：原卷句条 ---- */
+  .sn{margin:0 0 14px}
+  .sn .pno{display:block;margin-bottom:4px;font-size:.78rem;line-height:1.6}
+  img.strip{display:block;width:100%;max-width:760px;height:auto;background:#fff;border:1px solid var(--line);border-radius:6px;cursor:pointer}
+  .kw{margin-top:5px;font-size:.88rem;line-height:2.1;font-family:var(--serif)}
+  @media (prefers-color-scheme: dark){img.strip{filter:invert(.9) hue-rotate(180deg)}}
+  .sn,.sent .src{overflow-x:auto}
+  @media (max-width:700px){img.strip{width:640px;max-width:none}.sn::after{content:'← 句条可左右滑动 →';display:block;font-size:.7rem;color:var(--muted);margin-top:2px}}
+  .hd{font-family:var(--serif);font-weight:700;font-size:1.02rem;margin:6px 0 10px;padding:4px 10px;border-left:3px solid var(--accent);background:var(--accent-soft);border-radius:0 6px 6px 0}
+  .hd span{font-weight:400;font-size:.74rem;color:var(--muted);margin-left:8px;font-family:inherit}
+  .person .slot{display:inline-block;margin:2px 0 12px}
+  .person .slot.filled{display:block;padding:6px 8px}
+  .optitem>span:last-child{min-width:0;flex:1}
+  .optlib{grid-template-columns:minmax(0,1fr)}
+  .optitem{min-width:0}
+  .ls,.person .slot.filled,.optitem .oen{overflow-x:auto}
+  .ls .lsh{font-weight:700;font-size:.85rem;color:var(--accent);margin-bottom:6px}
+  .ls img.strip{cursor:default}
+</style>
+<style>
+
+  /* 2023 起：流式版——识别好的句子连排成段，像 2007–2020 */
+  .para .en{font-family:var(--serif);font-size:1.02rem;line-height:1.9}
+  .stx-flow .para .en .pno{margin-right:6px;font-family:var(--sans);font-size:.78rem;color:var(--accent);font-weight:700}
+  .stx-flow .para .sn:not(.stx-on) .kw{margin-bottom:8px}
+  /* 选项库与作答槽里的句条：识别后同样连排 */
+  .stx-flow .oen .sn,.stx-flow .slot .sn{display:inline}
+  .stx-flow .oen .sn.stx-on>.stx,.stx-flow .slot .sn.stx-on>.stx{display:inline;margin:0;font-size:inherit;line-height:inherit}
+  .stx-flow.stx-allimg .oen .sn.stx-on,.stx-flow.stx-allimg .slot .sn.stx-on,.stx-flow.stx-allimg .oen .sn.stx-on>.stx,.stx-flow.stx-allimg .slot .sn.stx-on>.stx{display:block}
+  .ls .stx{font-size:1rem}
+  .stx-flow .para .stx.ls{border:none;border-radius:0;padding:0;margin:0;overflow-x:visible}
+  /* 2024 观点匹配：评论段落包在 .person 里 */
+  .person .para{margin:8px 0 6px;padding-right:36px}
+  .person .para .zbtn{display:none}
+  .person .slotrow{margin:4px 0 2px;font-size:.88rem;color:var(--muted)}
+  .ls .an>div{overflow-wrap:anywhere}
+
+</style>
+</head>
+<body class="stx-flow">
+<div class="wrap">
+  <a class="back" href="index.html">◀ 返回英语复盘中心</a>
+  <header>
+    <h1>Readers’ Comments on Museums Returning Artifacts　网友评美国博物馆归还文物</h1>
+    <div class="sub">2024 年英语（一）真题 · Part B 新题型（<b>观点匹配</b>：五位网友的评论 ⇄ 七条概括，<b>两项多余</b>）· 建议做题 <b>6–8 min</b> · 话题：美国博物馆把殖民时代、盗掘得来的文物还给原属国——五个人五个角度：文物的价值在哪儿、复制品行不行、来路正不正、安保算不算理由、反对者的推理站不站得住 · 黄皮书标源：多名网友对《纽约时报》2022-12-13 文章 <i>For U.S. Museums With Looted Art, the Indiana Jones Era Is Over</i> 的评论，书标 <b>669 words</b>（脚本：评论 575 词 ＋ 七项 107 词 ＝ 682，再加五个人名 687，与 669 对不上，照实写）· 五段 27 句 · 正文由你的浏览器从<b>原卷句条</b>识别成文字</div>
+    <div class="tags">
+      <span class="tag">正确答案：41 E　42 C　43 F　44 G　45 B（<b>A、D 多余</b>）</span>
+      <span class="tag">变体：观点匹配第二篇（2022 · <b>2024</b>）</span>
+      <span class="tag">本篇的主刀：<b>五人立场一边倒 ⟹ 立场标签失效，改比「论证抓手」</b></span>
+      <span class="tag">Claude：<b>✅ 完整盲做 5/5</b>（先落盘再看答案；答案页只裁 Part B 一行）</span>
+    </div>
+  </header>
+
+  <div class="layout">
+    <main>
+
+      <section class="card">
+        <h2><span class="n">00</span>开考先认三样：变体 · 立场分布 · 七项的抓手 —— 本篇的主刀是「立场全同，比抓手」</h2>
+        <p style="font-size:.92rem">Directions 里那句 <span class="loc">Read the following comments on a report about</span> ＋ <span class="loc">Choose the best statement from the list A—G for each numbered name</span> ⟹ <b>观点匹配</b>（R32）：一人一项，七项选五，<b>两项多余</b>。<span class="mk">这是十八年里观点匹配第二次出现，上一次就在两年前（2022 动物园之辩）——两篇放一起看，打法差在一个地方：2022 能按立场分堆，2024 不能。</span></p>
+
+        <h3 class="sh">① 两篇观点匹配：同一个变体，两种分法</h3>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:680px">
+          <tr><th style="width:12%">年份</th><th style="width:22%">评论的对象</th><th style="width:24%">五人立场</th><th style="width:16%">多余项</th><th>能用的第一刀</th></tr>
+          <tr><td class="c">2022</td><td>埃玛·马里斯「动物园该不该存在」的观点</td><td>反对 1 · 中间 1 · 支持 3——<b>立场分散</b></td><td class="c">B、E<br><span style="font-size:.78rem">都是无人提及</span></td><td>先给每人贴「支持／反对／中间」，再按立场分堆</td></tr>
+          <tr class="bad"><td class="c"><b>2024</b></td><td>《纽约时报》报道：美国博物馆正在归还盗掘文物（评论区）</td><td><b>五个人全站「该还」</b>——Buck 的复制品方案以归还为前提，Sara 只加了个条件「来路要正」</td><td class="c">A、D<br><span style="font-size:.78rem">无人提及 · 方向反</span></td><td>立场一刀切不开 ⟹ <b>给每人、每项贴「论证抓手」</b>（他拿什么理由说话），抓手一一对上</td></tr>
+        </table>
+        </div>
+        <p style="font-size:.9rem;margin-top:8px">⟹ <b>七项里也只有 A 不表态，其余六项全站「该还」一边</b>（B 驳反对者 · C 还了也不耽误学 · D 替原件说话 · E 价值在原属国 · F 来路要正 · G 安保不是借口）。<span class="mk">立场标签在这里一个都排除不掉；能排除的是「这个人拿什么说事」——Hannah 讲价值、Buck 讲复制品、Sara 讲来路、Victor 讲安保、Julia 讲对方的推理，五个抓手互不重叠。</span>（⟹ <a href="套路库_阅读.html#R318">R318</a>）</p>
+
+        <h3 class="sh">② 先认七项：给每一项贴一个抓手（读选项只要 1 分钟）</h3>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:640px">
+          <tr><th style="width:8%">项</th><th style="width:22%">抓手（话题）</th><th style="width:14%">方向</th><th>扫读时该记下的一点</th></tr>
+          <tr><td class="c">A</td><td>赔偿（钱）</td><td>不表态</td><td>compensated——<b>记住这个词，读五段时看谁提到赔偿</b></td></tr>
+          <tr><td class="c">B</td><td><b>别人的推理</b>（元论证）</td><td>驳反对者</td><td>它不谈文物本身，谈「反对归还的那套推理」⟹ 要找一个<b>有对手</b>的人</td></tr>
+          <tr><td class="c">C</td><td>复制品</td><td>正：照样学得到</td><td rowspan="2"><b>C、D 是七项里唯一共用一个抓手的一对，而且方向相反</b> ⟹ 最多只有一个是答案，另一个多半是多余项</td></tr>
+          <tr><td class="c">D</td><td>复制品</td><td>反：替代不了</td></tr>
+          <tr><td class="c">E</td><td>价值在哪儿</td><td>只在原属国</td><td>only … rather than anywhere else 绝对口气——先别急着划</td></tr>
+          <tr><td class="c">F</td><td>取得方式</td><td>要正当合法</td><td>Ways to get——找谈「怎么来的」的人</td></tr>
+          <tr><td class="c">G</td><td>安保</td><td>不是借口</td><td>is no excuse 要上文先有「有人拿安保当理由」⟹ 找一个先让步、再反驳的人</td></tr>
+        </table>
+        </div>
+
+        <h3 class="sh">③ 做题顺序：抓手最硬的先落</h3>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:640px">
+          <tr><th style="width:7%">步</th><th style="width:20%">动作</th><th>本篇怎么走</th></tr>
+          <tr><td class="c">1</td><td><b>七项贴抓手</b></td><td>如上表；顺手标出 C／D 这一对、A 这个「钱」字</td></tr>
+          <tr><td class="c">2</td><td><b>每人找「和别人不一样的那一句」</b></td><td>五人都说该还 ⟹ 「该还」那句不用看；看<b>转折后</b>（Sara ④ Having said that · Victor ⑤ But）、<b>重复两遍的</b>（Buck ⑤ Again）、<b>最绝对的</b>（Hannah ④ no … except）、<b>反问的潜台词</b>（Julia）</td></tr>
+          <tr><td class="c">3</td><td><b>原词最硬的三个先落</b></td><td>Victor ④ <span class="loc">security</span> → <b>G</b>；Buck ①② <span class="loc">reproductions</span> → C 或 D，按方向定 <b>C</b>；Sara ④ <span class="loc">on loan, legally purchased</span> → <b>F</b></td></tr>
+          <tr><td class="c">4</td><td><b>剩 Hannah、Julia 配 B、E、A</b></td><td>Julia ❶ 点名评论区对手、四句反问 → <b>B</b>；Hannah ④ 在美国只是稀奇物件 → <b>E</b></td></tr>
+          <tr><td class="c">5</td><td><b>验多余</b></td><td>A：五段里找 compensat- 一个都没有（无人提及）；D：正撞 Buck（方向反）⟹ 两项都说得出理由，收工</td></tr>
+        </table>
+        </div>
+
+        <h3 class="sh">④ 背景 6 行（只帮你认话题，不帮你判选项）</h3>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:640px">
+          <tr><th style="width:22%">名字</th><th>是什么（WebSearch 核）</th></tr>
+          <tr><td>那篇报道</td><td>《纽约时报》2022-12-13，作者 Graham Bowley：美国博物馆在执法部门推动、外国政府施压下加快归还盗掘文物；标题借「夺宝奇兵」印第安纳·琼斯说「那个时代结束了」</td></tr>
+          <tr><td>史密森 · 贝宁青铜器</td><td>史密森学会国立非洲艺术博物馆 2022-10-11 把 29 件贝宁青铜器的所有权交还尼日利亚国家博物馆与古迹委员会（Hannah ①、Julia ❶）</td></tr>
+          <tr><td>贝宁王国</td><td>在今尼日利亚南部（不是今天的贝宁共和国）；1897 年英军洗劫其都城，铜器散入欧美博物馆</td></tr>
+          <tr><td>埃尔金石雕</td><td>帕特农神庙的大理石雕刻，19 世纪初被埃尔金伯爵运到英国，藏大英博物馆；希腊长期索还（Julia ❷ 的伦敦 vs 雅典）</td></tr>
+          <tr><td>加德纳博物馆失窃</td><td>1990 年波士顿伊莎贝拉·斯图尔特·加德纳博物馆失窃 13 件（维米尔、伦勃朗、马奈、德加等），估值 5 亿美元以上，至今未破（Victor ⑤）</td></tr>
+          <tr><td>气候抗议者泼画</td><td>2022 年 10–11 月起，伦敦（梵高《向日葵》番茄汤）、波茨坦（莫奈《干草堆》土豆泥）、罗马（梵高《播种者》）等地接连发生；画有玻璃罩、未损（Victor ⑦）</td></tr>
+        </table>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">01</span>七条概括（A–G · 本机识别成文字）· 每项一行「意」，一行「抓手」，一行「归位」</h2>
+        <p style="font-size:.8rem;color:var(--muted);margin-bottom:12px">📄 七项由你的浏览器从原卷第 12 页识别成文字（选中任意单词弹「查有道」）｜ 🔑 一行 ＝ 这一项谈的是什么、方向往哪边 ｜ 紫色标签 ＝ 它最终落在谁身上（<b>作答后</b>对应项会自动置灰）｜ 红框 ＝ 多余项</p>
+        <div class="optlib" id="optlib"></div>
+        <div class="box" style="margin-top:14px">
+          <span class="bt">🚩 七项里有两个「记号」，读完选项就该看见</span>
+          ① <b>C 和 D 共用「复制品」这一个抓手，方向相反</b>——同一个评论者不可能两样都说，<span class="mk">这一对至多一个是答案</span>；② <b>A 是七项里唯一谈钱的</b>（compensated），带着 stolen——读五段时只要盯一件事：<span class="mk">有没有人说过「赔偿」</span>。其余五项抓手各不相同，正好对五个人。
+        </div>
+      </section>
+
+      <section class="card" id="text">
+        <h2><span class="n">02</span>五位评论者 · 点字母作答 <button class="allbtn" onclick="toggleAll()">意译 开/关</button></h2>
+        <p style="font-size:.8rem;color:var(--muted);margin-bottom:14px">📄 五段评论由你的浏览器从原卷第 11–12 页识别成文字（页首「原卷对照」可切回扫描图）｜ <b>选中任意单词弹「查有道」</b> ｜ <b>虚线句</b> ＝ 05 节有长难句精析，点一下跳过去 ｜ <b>虚线词</b> ＝ 本句重难点词，点开出卡片 ｜ 每人下方点 A–G 作答，<b>答后人名下方补上该项原句</b>，并出线索链解析 ＋ 错因标签 ｜「意」＝ 按句意转述，非逐字翻译 <button class="allbtn" onclick="imgAll(this)">原卷对照</button></p>
+        <div class="person q" id="q41" data-ans="E">
+          <div class="pname"><span class="qn">(41)</span> <b>Hannah</b><span class="stance st-pro">立场：<b>该还</b> · 抓手 ＝ <b>价值在原属国</b>（他们看不到自己的历史）</span><button class="zbtn" onclick="tz(this)">意</button></div>
+          <div class="para">
+          <div class="en">
+            <div class="sn"><img class="strip" src="img/2024_新题型/s41_1.png" alt="Hannah❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="smithsonian">Smithsonian Institution</span> · <span class="tk" data-w="represent">represented by</span> · <span class="tk" data-w="beninbronze">Benin Bronzes</span></div></div>
+            <div class="sn"><img class="strip" src="img/2024_新题型/s41_2.png" alt="Hannah❷ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="available">available to</span> · <span class="tk" data-w="heritage">cultural heritage</span> · <span class="tk" data-w="pride">national pride</span></div></div>
+            <div class="sn" data-go="l41_3"><img class="strip" src="img/2024_新题型/s41_3.png" alt="Hannah❸ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="artifact">artifacts</span> · <span class="tk" data-w="beyondreach">beyond the … reach</span> · <span class="tk" data-w="objective">objectives</span> · <span class="tk" data-w="inspiration">inspiration</span> · <span class="tk" data-w="generation">generations</span></div></div>
+            <div class="sn"><img class="strip" src="img/2024_新题型/s41_4.png" alt="Hannah❹ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="servepurpose">serve no purpose</span> · <span class="tk" data-w="elsewhere">elsewhere</span> · <span class="tk" data-w="curious">curious objects</span></div></div>
+            <div class="sn" data-go="l41_5"><img class="strip" src="img/2024_新题型/s41_5.png" alt="Hannah❺ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="compareto">compared to</span> · <span class="tk" data-w="handtohand">from hand to hand</span> · <span class="tk" data-w="purchase">purchase</span></div></div>
+          </div>
+          </div>
+          <div class="zh"><b>（41）Hannah：</b>说白了，尼日利亚有些人没法去史密森学会，看不到贝宁青铜器所代表的那一段他们自己的历史和文化。这些文物本应作为他们文化遗产和历史的一部分、作为民族自豪感的来源，让他们看得到。没有什么正当理由让这些文物离开它们被留给的那几代人——让他们平日里够不着、用不上它们的教育和启迪作用。放在美国或别处的博物馆里，它们除了当个稀奇物件，毫无用处。它们也不能和那些为出售而创作、可以靠买卖辗转易手的艺术品相提并论。</div>
+          <p class="slotrow">⟶ 这一段的概括：<span class="slot" data-n="41">(41) ＿＿＿＿ 点下方字母作答</span></p>
+          <div class="chips"></div>
+          <div class="expl"><b>41 → E　The real value of artifacts … only … in their countries of origin</b>
+            <div class="line">🔗 <b>观点句是 ④</b>：<span class="loc">serve no purpose in a museum</span> … <span class="loc">or elsewhere except as curious objects</span>——在美国、在别处都只是猎奇品 ⟺ E 的 <span class="loc">rather than anywhere else</span>；反过来，「真正的价值」在哪儿？在 ② 那一串：<span class="loc">cultural heritage and history</span> · <span class="loc">a source of national pride</span>——对尼日利亚人才是遗产、才是自豪。<b>E 把 ② 和 ④ 拼成了一句话：价值对本国人才成立。</b></div>
+            <div class="line">🔗 <b>五句是一级级往上推的</b>：① 他们看不到（可及）→ ② 本该属于他们（归属）→ ③ 没理由让后世够不着（用途）→ ④ 在别处只是稀奇物件（价值）→ ⑤ 文物不是能买卖换手的商品（性质）。<b>没有让步、没有转折，五句同一个方向</b>——这种段落，观点在最绝对的那一句（④ 的 no … except）。</div>
+            <div class="line">✂️ <b>为什么不是 B</b>：③ <span class="loc">There is no good reason that</span> 和 B 的 flawed line of reasoning 字面很像，黄皮书也把 B 列为备选。但 B 说的是「<b>反对归还的那套推理</b>有缺陷」——得有一个被拆的推理。Hannah 一个对手都没提，她是正面立论；③ 的意思是「这么做没有理由」，不是「那个人的推理错了」。<b>B 要的「对手」在 Julia ❶：<span class="loc">To those of you in the comments section</span></b>（⟹ <a href="套路库_阅读.html#R319">R319</a>）。</div>
+            <div class="line">⚠️ <b>E 带 only、rather than anywhere else，是绝对口气</b>——做阅读的人看到绝对词会本能地划掉。<b>观点匹配里这个本能不成立</b>：选项概括的是人的口气，Hannah ④ 本身就是 no … except 的绝对句，E 的绝对是照着原文来的。判据永远是原文，不是选项里有没有 only。</div>
+          </div>
+        </div>
+
+        <div class="person q" id="q42" data-ans="C">
+          <div class="pname"><span class="qn">(42)</span> <b>Buck</b><span class="stance st-pro">立场：<b>该还</b>（作前提）· 抓手 ＝ <b>复制品</b>（还原件、留复制品）</span><button class="zbtn" onclick="tz(this)">意</button></div>
+          <div class="para">
+          <div class="en">
+            <div class="sn" data-go="l42_1"><img class="strip" src="img/2024_新题型/s42_1.png" alt="Buck❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="reproduction">reproductions</span> · <span class="tk" data-w="artwork">artwork</span> · <span class="tk" data-w="regularly">regularly</span></div></div>
+            <div class="sn"><img class="strip" src="img/2024_新题型/s42_2.png" alt="Buck❷ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="explore">explore</span> · <span class="tk" data-w="ameansof">as a means of</span> · <span class="tk" data-w="resolve">resolving</span> · <span class="tk" data-w="relatingto">relating to</span> · <span class="tk" data-w="antiquity">antiquities</span></div></div>
+            <div class="sn" data-go="l42_3"><img class="strip" src="img/2024_新题型/s42_3.png" alt="Buck❸ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="context">context</span> · <span class="tk" data-w="exhibit">exhibit</span> · <span class="tk" data-w="display">displayed</span></div></div>
+            <div class="sn"><img class="strip" src="img/2024_新题型/s42_4.png" alt="Buck❹ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="hardtime">have a hard time</span> · <span class="tk" data-w="forgery">forgery</span></div></div>
+            <div class="sn" data-go="l42_5"><img class="strip" src="img/2024_新题型/s42_5.png" alt="Buck❺ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="matter">what matters</span></div></div>
+            <div class="sn"><img class="strip" src="img/2024_新题型/s42_6.png" alt="Buck❻ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="monetary">monetary value</span> · <span class="tk" data-w="ondisplay">on display</span> · <span class="tk" data-w="distantsecond">a distant second</span></div></div>
+          </div>
+          </div>
+          <div class="zh"><b>（42）Buck：</b>我们知道，非常精确的艺术复制品做得出来，而且一直有人在做。也许博物馆和政府可以探讨一下，用近乎精确的复制品来解决艺术品与古物归还的问题。对我来说，一件展品的背景，比它是两千年前的东西还是两个月前做的更重要。很多时候，连专家都很难对「哪件是真品、哪件是赝品」达成一致。还是那句话：重要的是展品想讲的那个故事。展品值多少钱，重要性远远排在后面。</div>
+          <p class="slotrow">⟶ 这一段的概括：<span class="slot" data-n="42">(42) ＿＿＿＿ 点下方字母作答</span></p>
+          <div class="chips"></div>
+          <div class="expl"><b>42 → C　Museum visitors can still learn as much from … copies</b>
+            <div class="line">🔗 <b>C 的两半各有出处</b>：前半 <span class="loc">learn as much from … copies</span> ← ③ 背景比年代重要、④ 真假连专家都分不清、⑤ <span class="loc">Again</span> 故事才重要、⑥ 钱排第二——<b>四句都在说「真不真，不影响你学到什么」</b>；后半 <span class="loc">after the originals are returned</span> ← ② 用复制品 <span class="loc">as a means of resolving issues relating to returning</span>：原件回去，复制品留下来展。</div>
+            <div class="line">🔗 <b>⑤ 的 Again 是观点句的路标</b>：「还是那句话」＝作者把 ③ 再说一遍。一个人肯重复说两遍的，就是他的观点。</div>
+            <div class="line">✂️ <b>为什么不是 D</b>：D 用的正是 Buck 的原词 <span class="loc">Reproductions</span>，authentic objects 也对得上 ④ 的 the real object——<b>词全对，方向反了</b>：D 说复制品替不了真品，Buck 说真假根本不重要。<span class="mk">七项里只有 C、D 共用一个抓手（复制品），而且一正一反——同一个人不可能两样都说 ⟹ 这一对里必有一个多余项</span>（⟹ <a href="套路库_阅读.html#R318">R318</a>）。</div>
+            <div class="line">✂️ <b>为什么不是 E</b>：⑥ <span class="loc">monetary value</span> 和 E 的 real value 都在谈「价值」，但比的东西不一样——E 比「在哪国」，Buck 比「真品 vs 复制品」「故事 vs 钱」。</div>
+          </div>
+        </div>
+
+        <div class="person q" id="q43" data-ans="F">
+          <div class="pname"><span class="qn">(43)</span> <b>Sara</b><span class="stance st-mid">立场：<b>有条件</b> · 抓手 ＝ <b>取得方式</b>（先让步、后转折）</span><button class="zbtn" onclick="tz(this)">意</button></div>
+          <div class="para">
+          <div class="en">
+            <div class="sn"><img class="strip" src="img/2024_新题型/s43_1.png" alt="Sara❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="comeacross">came across</span> · <span class="tk" data-w="magnificent">magnificent</span> · <span class="tk" data-w="sculpture">sculpture</span></div></div>
+            <div class="sn"><img class="strip" src="img/2024_新题型/s43_2.png" alt="Sara❷ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="inspire">inspired</span></div></div>
+            <div class="sn"><img class="strip" src="img/2024_新题型/s43_3.png" alt="Sara❸ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="spark">spark</span> · <span class="tk" data-w="creator">creators</span></div></div>
+            <div class="sn" data-go="l43_4"><img class="strip" src="img/2024_新题型/s43_4.png" alt="Sara❹ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="havingsaid">Having said that</span> · <span class="tk" data-w="findway">find their way</span> · <span class="tk" data-w="infact">in fact</span> · <span class="tk" data-w="sanction">sanctioned</span> · <span class="tk" data-w="onloan">on loan</span> · <span class="tk" data-w="treaty">treaty</span></div></div>
+            <div class="sn"><img class="strip" src="img/2024_新题型/s43_5.png" alt="Sara❺ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="peoples">peoples</span> · <span class="tk" data-w="obscene">obscene</span> · <span class="tk" data-w="rob">robs</span> · <span class="tk" data-w="dignity">dignity</span></div></div>
+          </div>
+          </div>
+          <div class="zh"><b>（43）Sara：</b>我去巴尔的摩艺术博物馆时，偶然看到一尊精美的 15 世纪中国雕塑，它激发我去多了解它所代表的文化。博物馆里的文物有启发人的力量，也许还能点燃人们去了解、理解其创作者的那种渴望。话虽如此，我确实认为：任何进入公共博物馆的文物，都应当被认可为是通过租借、合法购买或条约取得的。从别的民族的文化里偷文物是可耻的——它夺走的不只是实物，还有创作者的尊严和精神。</div>
+          <p class="slotrow">⟶ 这一段的概括：<span class="slot" data-n="43">(43) ＿＿＿＿ 点下方字母作答</span></p>
+          <div class="chips"></div>
+          <div class="expl"><b>43 → F　Ways to get artifacts … must be decent and lawful</b>
+            <div class="line">🔗 <b>先让步、后转折</b>：①–③ 讲她在巴尔的摩看到一尊中国雕塑、受了启发，进而说博物馆里的文物能启发人——<b>这恰恰是「文物留在西方博物馆也有好处」的理由，她先替反方说了</b>；④ <span class="loc">Having said that</span> 一转，<span class="loc">I do feel</span>（强调 do）＋ <span class="loc">in fact</span> 两道加重，观点才出来。</div>
+            <div class="line">🔗 <b>F 是 ④⑤ 的一句话概括</b>：④ 的三种来路 <span class="loc">on loan</span> · <span class="loc">legally purchased</span> · <span class="loc">by treaty</span> ⟹ F 的 Ways to get；<b>lawful</b> ← legally、by treaty（法律）；<b>decent</b> ← ⑤ <span class="loc">is obscene</span> 的反面（道德）。F 一个形容词对一句：decent 管 ⑤、lawful 管 ④。</div>
+            <div class="line">✂️ <b>为什么不是 A</b>：⑤ <span class="loc">Stealing artifacts</span> 给了 A 的 stolen，④ 的 loan、purchased 又带着「钱」味——<b>两头原料都在，可 Sara 只要求来路正，一个字没提赔偿</b>。A 是拿真原料拼出来的假话（⟹ <a href="套路库_阅读.html#R39">R39</a>）。</div>
+            <div class="line">⚠️ <b>最容易被带走的是前三句</b>：读完 ①–③ 以为她主张「文物留在博物馆有教育意义」，回头去七项里找这句——<b>七项里根本没有</b>。让步部分不出选项，选项只概括转折之后（⟹ <a href="套路库_阅读.html#R170">R170</a> 同理：让步几次都不降档，观点在后半）。</div>
+          </div>
+        </div>
+
+        <div class="person q" id="q44" data-ans="G">
+          <div class="pname"><span class="qn">(44)</span> <b>Victor</b><span class="stance st-pro">立场：<b>该还</b> · 抓手 ＝ <b>安保</b>（先让步、后反驳）</span><button class="zbtn" onclick="tz(this)">意</button></div>
+          <div class="para">
+          <div class="en">
+            <div class="sn"><img class="strip" src="img/2024_新题型/s44_1.png" alt="Victor❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="ancient">Ancient</span> · <span class="tk" data-w="byallmeans">by all means</span> · <span class="tk" data-w="original">original country</span></div></div>
+            <div class="sn"><img class="strip" src="img/2024_新题型/s44_2.png" alt="Victor❷ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="holdback">hold back</span> · <span class="tk" data-w="item">items</span></div></div>
+            <div class="sn" data-go="l44_3"><img class="strip" src="img/2024_新题型/s44_3.png" alt="Victor❸ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="askthat">would ask that</span> · <span class="tk" data-w="terms">terms of transfer</span></div></div>
+            <div class="sn" data-go="l44_4"><img class="strip" src="img/2024_新题型/s44_4.png" alt="Victor❹ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="risk">the risk that</span> · <span class="tk" data-w="security">security</span></div></div>
+            <div class="sn"><img class="strip" src="img/2024_新题型/s44_5.png" alt="Victor❺ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="theft">theft</span> · <span class="tk" data-w="masterpiece">masterpieces</span></div></div>
+            <div class="sn"><img class="strip" src="img/2024_新题型/s44_6.png" alt="Victor❻ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="absolutely">absolutely</span></div></div>
+            <div class="sn"><img class="strip" src="img/2024_新题型/s44_7.png" alt="Victor❼ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="agitator">agitators</span> · <span class="tk" data-w="publicly">publicly</span></div></div>
+          </div>
+          </div>
+          <div class="zh"><b>（44）Victor：</b>陈列在外国的古代艺术品无论如何都应当归还原属国。外国无权扣着不还。我希望外国和原属国把移交的条件谈一谈。没错，原属国的安保可能不如外国好。但看看 1990 年波士顿加德纳博物馆失窃案吧——伦勃朗、维米尔、马奈等人的杰作都丢了。没有什么东西是绝对安全的，哪儿都一样。何况如今气候变化的抗议者还在欧洲博物馆里袭击公开展出的作品。</div>
+          <p class="slotrow">⟶ 这一段的概括：<span class="slot" data-n="44">(44) ＿＿＿＿ 点下方字母作答</span></p>
+          <div class="chips"></div>
+          <div class="expl"><b>44 → G　Concern over security is no excuse for refusing …</b>
+            <div class="line">🔗 <b>Victor 七句分两组</b>：①–③ 是立场（<span class="loc">by all means should be returned</span> · <span class="loc">no right to hold back</span> · 商量移交条件）；④–⑦ 是一个「让步 → 反驳」：④ <span class="loc">Yes, there is the risk that</span> … <span class="loc">as good security</span>（承认原属国安保可能差）→ ⑤ <span class="loc">But look at</span> 加德纳博物馆失窃 → ⑥ 没有哪儿绝对安全 → ⑦ 连欧洲博物馆都在被抗议者袭击。</div>
+            <div class="line">🔗 <b>G 概括的是第二组，不是第一组</b>：①–③ 的「该还」五个人都说过，配不出任何一个选项；<b>Victor 和别人不一样的，是他专门回应了「安保」这条反对理由</b>。security 是 ④ 的原词，is no excuse 是 ⑤–⑦ 的结论。</div>
+            <div class="line">✂️ <b>为什么不是 B</b>：② <span class="loc">have no right to hold back returning</span> 也在驳「不还」——但驳的是<b>行为</b>（扣着不还），不是<b>推理</b>（你那套论证有漏洞）；而且 ④–⑦ 回应的是一条具体理由，不是在拆论证结构。B 留给 Julia。</div>
+            <div class="line">⚠️ <b>原词复现在这里是对的</b>：阅读题里「原词复现＝陷阱」（R1），可 G 的 security 恰好是 Victor 的原词。<span class="mk">观点匹配的正确项常带原词，因为它要指认「是谁说的」；陷阱不在于有没有原词，而在于原词在那个人嘴里是不是同一个方向。</span></div>
+          </div>
+        </div>
+
+        <div class="person q" id="q45" data-ans="B">
+          <div class="pname"><span class="qn">(45)</span> <b>Julia</b><span class="stance st-pro">立场：<b>该还</b> · 抓手 ＝ <b>拆对方推理</b>（四句全是反问与假设）</span><button class="zbtn" onclick="tz(this)">意</button></div>
+          <div class="para">
+          <div class="en">
+            <div class="sn" data-go="l45_1"><img class="strip" src="img/2024_新题型/s45_1.png" alt="Julia❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="commentsection">comments section</span> · <span class="tk" data-w="strongfeel">strong feelings</span> · <span class="tk" data-w="remove">removed from</span> · <span class="tk" data-w="origin">countries of origin</span> · <span class="tk" data-w="consider">consider</span> · <span class="tk" data-w="moreofa">more of a right</span> · <span class="tk" data-w="access">access</span></div></div>
+            <div class="sn" data-go="l45_2"><img class="strip" src="img/2024_新题型/s45_2.png" alt="Julia❷ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="daysdrive">a day’s drive</span> · <span class="tk" data-w="entitled">entitled to</span> · <span class="tk" data-w="elgin">Elgin Marbles</span></div></div>
+            <div class="sn" data-go="l45_3"><img class="strip" src="img/2024_新题型/s45_3.png" alt="Julia❸ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="intrinsic">intrinsic</span> · <span class="tk" data-w="suitable">suitable</span> · <span class="tk" data-w="preclude">preclude</span> · <span class="tk" data-w="preserve">preserved</span></div></div>
+            <div class="sn"><img class="strip" src="img/2024_新题型/s45_4.png" alt="Julia❹ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="conclusion">conclusion</span> · <span class="tk" data-w="assume">assuming</span></div></div>
+          </div>
+          </div>
+          <div class="zh"><b>（45）Julia：</b>评论区里那些对「把文物从英美城市移走、归还原属国」情绪激烈的人，我想请你们想一想：凭什么美国人就比尼日利亚人更有权轻松看到贝宁青铜器？凭什么住在离伦敦一天车程以内的人想去就能去看埃尔金石雕，雅典人却不行？西方有什么内在条件，让它成了这些文物的合适归宿、却让原属国没法保存和展出它们？如果你的结论是西方更有能力保存这些文物，那就想想：你凭什么假定这一点是对的。</div>
+          <p class="slotrow">⟶ 这一段的概括：<span class="slot" data-n="45">(45) ＿＿＿＿ 点下方字母作答</span></p>
+          <div class="chips"></div>
+          <div class="expl"><b>45 → B　It is a flawed line of reasoning to argue against returning …</b>
+            <div class="line">🔗 <b>❶ 先点名对手</b>：<span class="loc">To those of you in the comments section</span>（那些 <span class="loc">having strong feelings about</span>） 文物被移走、归还原属国——<b>五个人里只有 Julia 在跟评论区里的另一派说话</b>；她的对手正是「反对归还」的人 ⟺ B 的 <span class="loc">argue against returning</span>。</div>
+            <div class="line">🔗 <b>四句不给一个正面理由，只拆对方</b>：❶❷❸ 三个反问（凭什么美国人更有权 · 凭什么伦敦人能看雅典人不能 · 西方有什么内在条件）＋ ❹ <span class="loc">If your conclusion is that</span> … <span class="loc">think about why you’re assuming</span>——把对方的结论摆出来，再追问它背后的假设 ⟺ B 的 <span class="loc">flawed line of reasoning</span>。<b>B 概括的不是她「说了什么」，是她「在做什么」。</b></div>
+            <div class="line">✂️ <b>为什么不是 G</b>：❹ 的「西方更会保存文物」≈ 安保，黄皮书也把 G 列为备选。但 G 是「安保<b>不是借口</b>」（承认这条理由、再驳倒它），Julia 是「你<b>凭什么假定</b>西方更会保存」（连前提都不认）；何况 security 是 Victor ④ 的原词，G 已经归 44。</div>
+            <div class="line">✂️ <b>为什么不是 E</b>：❶ 的 <span class="loc">Benin Bronzes</span>、Nigeria 和 Hannah 撞名——<b>首尾两人谈的是同一批文物，抓手却不同</b>：Hannah 谈价值在哪儿，Julia 谈对方的推理站不住。同话题 ≠ 同观点。</div>
+          </div>
+        </div>
+
+      </section>
+
+      <section class="card" id="grip">
+        <h2><span class="n">02+</span>本页最值钱：五个抓手 —— 立场全同的时候，比「他拿什么说话」</h2>
+        <p style="font-size:.85rem;color:var(--muted);margin-bottom:10px">抓手 ＝ 这个人支撑观点用的那件事（价值、复制品、来路、安保、对方的推理）。<b>立场回答「该不该还」，抓手回答「凭什么」</b>——五个人对前一个问题答案一样，对后一个问题答案全不一样。</p>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:720px">
+          <tr><th style="width:11%">人</th><th style="width:15%">抓手</th><th style="width:34%">抓手词（原文）</th><th style="width:10%">选项</th><th>同抓手的诱饵</th></tr>
+          <tr><td>41 Hannah</td><td>价值在哪儿</td><td>② <span class="loc">cultural heritage</span> · <span class="loc">national pride</span> ／ ④ <span class="loc">serve no purpose</span> … <span class="loc">except as curious objects</span></td><td class="c"><b>E</b></td><td>—（「价值」只有 E 谈）</td></tr>
+          <tr><td>42 Buck</td><td>复制品</td><td>① ② <span class="loc">reproductions</span> · ④ <span class="loc">a forgery</span> · ③⑤ context／story 才重要</td><td class="c"><b>C</b></td><td><b>D</b>（同抓手、方向反）</td></tr>
+          <tr><td>43 Sara</td><td>取得方式</td><td>④ <span class="loc">on loan, legally purchased, or obtained by treaty</span> · ⑤ <span class="loc">Stealing artifacts</span> … <span class="loc">is obscene</span></td><td class="c"><b>F</b></td><td><b>A</b>（stolen 借了 ⑤ 的原料）</td></tr>
+          <tr><td>44 Victor</td><td>安保</td><td>④ <span class="loc">as good security as</span> · ⑤ theft · ⑥ <span class="loc">Nothing is absolutely safe</span></td><td class="c"><b>G</b></td><td><b>A</b>（stolen 借了 ⑤ theft）</td></tr>
+          <tr><td>45 Julia</td><td>对方的推理</td><td>❶ <span class="loc">To those of you in the comments section</span> · ❹ <span class="loc">If your conclusion is</span> … <span class="loc">assuming</span></td><td class="c"><b>B</b></td><td><b>G</b>（❹ 的 preserve ≈ 安保）</td></tr>
+        </table>
+        </div>
+        <p style="font-size:.9rem;margin-top:8px">⟹ 五个抓手互不重叠，<b>七项里五项各占一个，剩下两项：一个抓手是空的（A 的「赔偿」五个人都没碰），一个抓手撞了车（D 和 C 抢 Buck，方向还反了）</b>。<span class="mk">观点匹配的多余项就这两种来路：要么没人说过，要么有人说过、但说的是反话。</span></p>
+
+        <h3 class="sh">为什么 2022 那把「立场刀」到 2024 就钝了</h3>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:640px">
+          <tr><th style="width:12%">年份</th><th style="width:30%">五人立场</th><th style="width:30%">七项立场</th><th>立场刀能砍掉几项</th></tr>
+          <tr><td class="c">2022</td><td>反对 1 · 中间 1 · 支持 3</td><td>反对动物园、支持动物园、中立的都有</td><td>每人先排掉一半，<b>立场就是第一刀</b></td></tr>
+          <tr class="bad"><td class="c"><b>2024</b></td><td>五人全站「该还」</td><td>六项站「该还」、A 不表态</td><td><b>一项都砍不掉</b>（连多余项 D 也是替原件说话、站在「该还」边上的）</td></tr>
+        </table>
+        </div>
+        <p style="font-size:.9rem;margin-top:8px">⟹ <b>认变体之后还要认「立场分布」</b>：五人立场分散 ⟹ 先按立场分堆（2022）；五人一边倒 ⟹ 立场标签全一样、等于没贴，直接按抓手配（2024）。<span class="mk">开考扫一遍五个人的第一句就知道是哪种——2024 五个第一句里没有一个说「不该还」。</span></p>
+      </section>
+
+      <section class="card" id="where">
+        <h2><span class="n">02++</span>观点句在哪：五个人五种落点 —— 选项概括的是「他和别人不一样的那一步」</h2>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:720px">
+          <tr><th style="width:11%">人</th><th style="width:26%">段落结构</th><th style="width:18%">观点句</th><th>选项概括的是哪一步</th></tr>
+          <tr><td>41 Hannah</td><td>五句一路递进：可及 → 归属 → 用途 → 价值 → 性质，<b>无转折</b></td><td>④（最绝对的一句：no … except）</td><td>E ＝ ② ＋ ④：价值对本国人才成立</td></tr>
+          <tr><td>42 Buck</td><td>提案（①②）→ 理由（③④）→ <b>Again 重申</b>（⑤）→ 补一句钱（⑥）</td><td>② 提案 ＋ ⑤ 重申</td><td>C ＝ 提案（还原件、留复制品）＋ 理由（照样学得到）</td></tr>
+          <tr><td>43 Sara</td><td>让步（①–③ 文物能启发人）→ <b>Having said that</b> 转折（④⑤）</td><td>④</td><td>F ＝ 转折之后；<b>让步部分没有出选项</b></td></tr>
+          <tr class="bad"><td>44 Victor</td><td>立场（①–③）→ <b>Yes</b> 让步（④）→ <b>But</b> 反驳（⑤–⑦）</td><td>④–⑦</td><td>G ＝ 让步 ＋ 反驳那一组；<b>①–③ 的立场句反而没用上</b>——五个人都说该还</td></tr>
+          <tr><td>45 Julia</td><td>三个反问（❶–❸）→ 假设 ＋ 祈使（❹）</td><td>全段的「动作」</td><td>B ＝ 她<b>在做什么</b>（拆对方推理），不是她说了什么</td></tr>
+        </table>
+        </div>
+        <p style="font-size:.9rem;margin-top:8px">⟹ <b>五个人共有的那句「该还」，从来不单独出一个选项</b>（出了也配不上唯一的人）；每个选项都落在这个人独有的那一步上。<span class="mk">所以读每段时，别停在第一句的立场上——Victor 的立场句明明白白写在 ①，答案却在 ④ 以后。</span>两个让步结构（Sara 的 Having said that、Victor 的 Yes … But）和阅读里的规律一样：<b>让步那半不出题，转折后才是本人的话</b>（⟹ <a href="套路库_阅读.html#R170">R170</a>）。</p>
+      </section>
+
+      <section class="card" id="extra">
+        <h2><span class="n">03</span>两个多余项：A 与 D —— 一个没人说过，一个有人说过、说的是反话</h2>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:680px">
+          <tr><th style="width:8%">项</th><th style="width:30%">看起来能去哪</th><th>为什么不行</th></tr>
+          <tr class="bad"><td class="c">A</td><td>43 Sara（⑤ <span class="loc">Stealing artifacts</span>，④ loan、purchased 带钱味）· 44 Victor（⑤ theft、loss）</td><td>① <b>无人提及</b>：compensat- 在五段里一次都没出现；Buck ⑥ 谈的 <span class="loc">monetary value</span> 是展品值多少钱，不是赔谁；② <b>原料拼接</b>：stolen 的原料是真的（两个人都讲到偷），「赔偿」是命题人加上去的（⟹ <a href="套路库_阅读.html#R39">R39</a>）；③ <b>不表态</b>：七项里唯一不站队的一项，五个人却个个在表态</td></tr>
+          <tr class="bad"><td class="c">D</td><td>42 Buck（①② <span class="loc">reproductions</span>，④ the real object ↔ authentic objects）</td><td>① <b>方向反</b>：Buck 说真假不重要（④ 连专家都分不清、③ 两千年和两个月一样），D 说复制品替不了真品——<b>话题对、方向反</b>；② <b>原词照搬</b>：D 用的正是 Buck 的原词 Reproductions，C 反而换成了 copies——<span class="mk">原词多的那项是反的</span>（⟹ <a href="套路库_阅读.html#R81">R81</a>）；③ 五人里也没有第二个谈复制品的人可以接住它</td></tr>
+        </table>
+        </div>
+        <div class="box"><span class="bt">⭐ 两个多余项各占一种老造法</span>
+          A 是「<b>无人提及</b>」——和 2022 的 B、E 同款，观点匹配两篇四个多余项里三个是这种；D 是第三族「<b>方向反</b>」——和 2015 D（逆箭头）、2020 B、2021 A 一样，不是离题，是和某个人对着干。
+          <span class="mk">2024 是观点匹配第一次出「方向反」型多余项：两年前四个多余项全是「没人说过」，今年换了一个「说了反话」。</span>
+        </div>
+
+        <h3 class="sh">📊 十八篇 Part B 的多余项造法总账</h3>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:600px">
+          <tr><th style="width:9%">年份</th><th style="width:14%">变体</th><th style="width:10%">多余项</th><th>造法</th></tr>
+          <tr><td class="c">2007</td><td>标题匹配</td><td class="c">A、G</td><td>两项都有词面呼应（A ↔ 首句 role models，G ↔ responsible 连出两次）</td></tr>
+          <tr><td class="c">2008</td><td>选句填空</td><td class="c">B、F</td><td>B 阶段错位（属于末段之后）· F 与正确项 E 撞专名</td></tr>
+          <tr><td class="c">2009</td><td>选句填空</td><td class="c">D、F</td><td>同属功能论一区，而那一区没有空</td></tr>
+          <tr><td class="c">2010</td><td>排序</td><td class="c">C</td><td>复现词最多，却偏离主线</td></tr>
+          <tr><td class="c">2011</td><td>排序</td><td class="c">—</td><td>零多余项（7 格 7 项）</td></tr>
+          <tr><td class="c">2012</td><td>选句填空</td><td class="c">B、E</td><td>B 先用后定义（属于末段之后）· E 缺前提的 thus（正确项 G 的下家）；两项都有词面呼应</td></tr>
+          <tr><td class="c">2013</td><td>选句填空</td><td class="c">A、D</td><td>A 推测句要 B 的数据（正确项 B 的下家）· D 同区换杠杆；两项都有词面呼应</td></tr>
+          <tr><td class="c">2014</td><td>排序</td><td class="c">—</td><td>零多余项（7 格 7 项）；诱饵换成「位置可挪」</td></tr>
+          <tr><td class="c">2015</td><td>选句填空</td><td class="c">D、F</td><td>D 逆箭头（退回作者本意）＋ 位置满 · F 换主角 ＋ 人称不符 ＋ 词面</td></tr>
+          <tr><td class="c">2016</td><td>标题匹配</td><td class="c">A、C</td><td>A 话题词冒充段落词 · C 全文零出现的心态口号；两项都比正确项「大」</td></tr>
+          <tr><td class="c">2017</td><td>排序</td><td class="c">—</td><td>零多余项；诱饵是「同一阶段的两段」：E、A 都在写作起步</td></tr>
+          <tr><td class="c">2018</td><td>排序</td><td class="c">—</td><td>零多余项；诱饵是「尾首复现」：C 末 historic events ⟶ D 首 historical events</td></tr>
+          <tr><td class="c">2019</td><td>排序</td><td class="c">—</td><td>零多余项；诱饵是「同词镜像」：F ⑤ ⟶ A ①，一段诱饵两个假位置</td></tr>
+          <tr><td class="c">2020</td><td>标题匹配</td><td class="c">B、F</td><td>去条件／全称化：B instinctively、F Most people——全文每条发现都带条件；两项都有词面呼应</td></tr>
+          <tr><td class="c">2021</td><td>选句填空<br><span style="font-size:.78rem">（带小标题）</span></td><td class="c">A、C</td><td>A 撞主旨（replaces 正撞 without replacing，方向反）· C 无说话人（企业口吻，教授的嘴）</td></tr>
+          <tr><td class="c">2022</td><td>观点匹配</td><td class="c">B、E</td><td>没有人说过的话（无人提及型）；E 还偷换了主语</td></tr>
+          <tr><td class="c">2023</td><td>排序</td><td class="c">—</td><td>零多余项（第六次；八段给定三段）；诱饵是 C——和给定段 H 同讲照片的作用，想挨着放</td></tr>
+          <tr class="bad"><td class="c"><b>2024</b></td><td>观点匹配</td><td class="c"><b>A、D</b></td><td><b>A 无人提及</b>（stolen 原料真、赔偿是加的）· <b>D 方向反</b>（与正确项 C 共用「复制品」抓手，正撞 Buck；还照搬了原词 Reproductions）</td></tr>
+        </table>
+        </div>
+        <p style="font-size:.9rem;margin-top:8px">⭐ <b>多余项六族</b>：①「词面像」——2007 A／G · 2008 F · 2010 C · 2012 B、E · 2013 A、D · 2015 F · 2016 A · 2020 B、F · 2021 C · <b>2024 D</b>（照搬原词）；②「位置满」——2008 B · 2009 D／F · 2012 B、E · 2013 A、D · 2015 D；③「方向反」——2015 D · 2020 B · 2021 A · <b>2024 D</b>；④「大而空」——2016 A、C；⑤「去条件」——2020 B、F；⑥「<b>无人提及</b>」——2022 B、E · <b>2024 A</b>（观点匹配的专属造法：五个人说的话就是全部证据，没人说 ＝ 出局）。</p>
+      </section>
+
+      <section class="card" id="book">
+        <h2><span class="n">03+</span>🔍 与黄皮书交叉核对：答案零书误，排除理由商榷三处、字数一处</h2>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:680px">
+          <tr><th style="width:9%">题</th><th style="width:36%">黄皮书主证据（备选项）</th><th>本页补充 / 商榷</th></tr>
+          <tr><td class="c">41 E</td><td>E 是 ④ <span class="loc">serve no purpose</span> … <span class="loc">except as curious objects</span> 的同义转述（备选 B、E）</td><td>同。<b>商榷一</b>：书排 B 的理由是「选项侧重思维有误，本段侧重行动有误」——太虚。<b>硬判据是 B 要一个被拆的推理（一个对手）</b>：Hannah 全段正面立论，没提任何人；对手只在 Julia ❶ 出现（R319）</td></tr>
+          <tr><td class="c">42 C</td><td>先观点（复制品解决归还争议）后理由；originals are returned ↔ ② 隐含建议（备选 C、D、E）</td><td>同。<b>商榷二</b>：书说巴克认为复制品「在金钱价值上比不上原件、但在教育价值上并不亚于原件」——⑥ 只说展品的金钱价值排第二，<b>没有拿复制品和原件比钱</b>，前半句是书的推论。补：⑤ 的 Again 是观点句路标</td></tr>
+          <tr><td class="c">43 F</td><td>Having said that 引发转折；decent and lawful 概括 ④ 的取得方式（备选 A、F）</td><td>同。补：decent 管 ⑤（obscene 的反面，道德）、lawful 管 ④（legally／by treaty，法律）——F 一个词对一句</td></tr>
+          <tr><td class="c">44 G</td><td>①–③ 观点 → ④ Yes 让步 → But 转折（备选 B、G）</td><td>同（排 B 的理由与 41 相同，见商榷一）。补：<b>G 概括的是 ④–⑦，①–③ 的立场句五人都有、配不出选项</b></td></tr>
+          <tr><td class="c">45 B</td><td>前三句反问、末句「假设 ＋ 祈使」（备选 B、G）</td><td>同。<b>商榷三</b>：书排 G 用「正面说明 vs 侧面说明须归还」——也虚。更硬：G 是「承认安保顾虑、再说它不是借口」，Julia 是「连『西方更会保存』这个前提都不认」；且 security 是 Victor ④ 原词，G 已归 44（一项一人）</td></tr>
+          <tr><td class="c">字数</td><td>书标 669 words</td><td>脚本逐框计：评论 575 词 ＋ 七项 107 词 ＝ 682（＋五个人名 687）；单算评论也不是 669。<b>差多少、差在哪，没找到</b>，照实写</td></tr>
+        </table>
+        </div>
+        <p style="font-size:.9rem;margin-top:8px">⟹ 黄皮书的「选项推测 → 锁定答案 → 排除干扰」三步走，<b>备选项列得很全</b>（42 甚至列了 C、D、E 三项），这对考场很有用：<span class="mk">每题先想「哪两三项会来抢」，再说出每项输在哪个词上，比直接找答案稳。</span>排除理由里的「侧重思维 vs 侧重行动」「正面 vs 侧面说明」两种说法，本页都换成了能落到原文的判据。</p>
+      </section>
+
+      <section class="card" id="triage">
+        <h2><span class="n">04</span>Part B 分诊表：四种变体 · 十八篇实做（开考三十秒先认变体）</h2>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:680px">
+          <tr><th style="width:14%">变体</th><th style="width:25%">Directions 里的原话</th><th style="width:14%">考什么</th><th>打法与用时</th></tr>
+          <tr><td><b>选句填空</b><br><span style="font-size:.78rem">2008 · 2009 · 2012 · 2013 · 2015 · 2021</span></td><td><i>some sentences have been removed … two extra choices</i></td><td><b>衔接与连贯</b></td><td>认线 → 先找一把「分区刀」（人称、引号）→ 定空的形态 → 段中空先读下一句、段末空看小标题或下一段首句 → 剩下两项问「是不是撞了主旨、是不是没人说这句话、是不是某个答案的下家」。<b>6–8 min</b>，能自查</td></tr>
+          <tr><td><b>标题匹配</b><br><span style="font-size:.78rem">2007 · 2016 · 2020</span></td><td><i>choose the most suitable heading／subheading</i></td><td><b>段落概括</b></td><td>看七项句式：祈使句 ⟹ 每段一条建议；陈述句 ⟹ 每段一条发现 → 用覆盖表验 → 剩下两项问「是不是总话题」或「是不是把条件删了」。<b>5–8 min</b></td></tr>
+          <tr class="bad"><td><b>观点匹配</b><br><span style="font-size:.78rem">2022 · <b>2024</b></span></td><td><i>comments on … a list of statements … for each numbered name</i></td><td><b>立场 ＋ 抓手</b></td><td>先扫五人第一句认<b>立场分布</b>：分散（2022）⟹ 按立场分堆；<b>一边倒（2024）⟹ 给每人、每项贴抓手，一一对</b> → 每人只看「和别人不一样的那一句」（转折后、重复两遍的、最绝对的、反问的潜台词）→ 剩两项问「有没有人说过」「是不是某人观点的反面」。<b>6–8 min</b>，不能自查，但多余项都说得出理由</td></tr>
+          <tr><td><b>排序题</b><br><span style="font-size:.78rem">2010 · 2011 · 2014 · 2017 · 2018 · 2019 · 2023</span></td><td><i>reorganize these paragraphs into a coherent text</i></td><td><b>篇章顺序</b></td><td>先数格子（有无多余项）→ 认文体 → 给每格数候选，被已给定段锁死的先做 → 通读验闭合。<b>7–10 min</b>，能自查</td></tr>
+        </table>
+        </div>
+        <p style="font-size:.9rem;margin-top:10px">📊 <b>十八篇战绩</b>：2007 标题 5/5 · 2022 观点 5/5 · 2008 选句 5/5 · <b>2009 选句 3/5</b> · 2010 排序 5/5 · 2011 排序 5/5 · 2012 选句 5/5 · 2013 选句 5/5 · 2014 排序 5/5（不计完整盲做）· 2015 选句 5/5（计入 4/4）· 2016 标题 5/5 · 2017 排序 5/5（不计完整盲做）· 2018 排序 5/5 · 2019 排序 5/5 · 2020 标题 5/5 · 2021 选句 5/5 · 2023 排序（非盲，不计）· <b>2024 观点 5/5（✅ 完整盲做）</b>。<span class="mk">两篇观点匹配 10/10；十八篇里唯一的翻车仍是 2009 选句填空（没认线）。</span></p>
+
+        <h3 class="sh">分诊：如果你错了，错在哪一刀</h3>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:640px">
+          <tr><th style="width:10%">错法</th><th style="width:36%">你当时大概是怎么想的</th><th>漏掉的那一刀</th></tr>
+          <tr><td class="c">41 选 B</td><td>③ no good reason 和 flawed line of reasoning 字面很像</td><td><b>元论证要对手</b>：B 拆的是别人的推理，Hannah 没提任何人（R319）</td></tr>
+          <tr><td class="c">42 选 D</td><td>D 里有 Buck 的原词 Reproductions，C 里一个原词都没有</td><td><b>同抓手看方向</b>：C、D 一正一反，Buck 说真假不重要（R318）；原词多的那项反而是反的（R81）</td></tr>
+          <tr><td class="c">43 选 A</td><td>⑤ 讲偷，④ 讲借和买，A 的 stolen 和「钱」都对得上</td><td><b>无人提及</b>：compensat- 全文没有；两头原料都真，组合是假的（R39）</td></tr>
+          <tr><td class="c">43 选 E／C</td><td>①–③ 说博物馆里的文物能启发人，以为她支持「留在博物馆」</td><td><b>让步不出题</b>：Having said that 之后才是她的话（R170）</td></tr>
+          <tr><td class="c">44 选 B</td><td>② have no right to hold back，像在驳反对归还的人</td><td><b>驳行为 ≠ 驳推理</b>；且 Victor 独有的一步在 ④ Yes … ⑤ But（安保）</td></tr>
+          <tr><td class="c">45 选 G</td><td>❹ 西方更会保存 ≈ 安保做得好</td><td><b>质疑前提 ≠ 驳倒理由</b>；security 是 Victor 原词，G 已归 44</td></tr>
+          <tr><td class="c">45 选 E</td><td>❶ 又是贝宁青铜器、尼日利亚，和 Hannah 一模一样</td><td><b>同话题 ≠ 同抓手</b>：首尾两人谈同一批文物，Hannah 谈价值、Julia 谈推理</td></tr>
+        </table>
+        </div>
+        <p style="font-size:.9rem;margin-top:8px">⟹ 本篇新加两张套路卡：<a href="套路库_阅读.html#R318">R318</a>（立场一边倒 ⟹ 按抓手配）与 <a href="套路库_阅读.html#R319">R319</a>（元论证选项只配给有对手的人）；其余几刀都是旧卡（R39 原词拼接 · R81 词面呼应最多的是多余项 · R170 让步不降档）。</p>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">05</span>长难句精析（11 句 · 本篇黄皮书无此栏目，全部原创 · 原句看句条）</h2>
+        <p style="font-size:.8rem;color:var(--muted);margin-bottom:10px">评论区的文字是口语化的议论：句子不算太长，难在<b>省略</b>（Buck ① 两个助动词共用一个分词、⑤ 省关系代词、Julia ❷ but 后省一大截）和<b>倒装</b>（Victor ④ as … as do …）。原句由浏览器识别成文字，分析里只引短语。</p>
+        <div class="ls" id="l41_3"><div class="lsh">长难句 1 · Hannah ③ no good reason that ＋ 介词前置的定语从句（29 词）</div>
+          <img class="strip" src="img/2024_新题型/s41_3.png" alt="Hannah❸ 原卷句条" loading="lazy">
+          <div class="an"><div>① 主干 There is no good reason ＋ that 从句（同位语从句，说明 reason 的内容）</div><div>② 从句谓语 <span class="loc">should be beyond the ordinary reach of</span> ——「落在……平常够不着的地方」；of 后面是两个并列宾语：the educational objectives 与 inspiration</div><div>③ 二者共用后置的 of the generations：「那几代人的教育目标与启迪」</div><div>④ 句尾 <span class="loc">to which they were left</span>：介词 to 提到 which 前，还原＝they were left <b>to</b> the generations（文物被<b>遗留给</b>那几代人）——be left to sb ＝ 遗赠给某人</div></div>
+          <div class="tr">意：这些文物是留给那几代人的；没有什么正当理由，让它们离开这几代人平日能接触到的范围，不能为他们的教育和启迪所用。</div></div>
+
+        <div class="ls" id="l41_5"><div class="lsh">长难句 2 · Hannah ⑤ 后置分词 ＋ which 定语从句 ＋ 两组对举（25 词）</div>
+          <img class="strip" src="img/2024_新题型/s41_5.png" alt="Hannah❺ 原卷句条" loading="lazy">
+          <div class="an"><div>① 主干 They cannot be compared to works of art ——「不能与……相提并论」</div><div>② 过去分词短语 <span class="loc">produced for sale</span> 后置修饰 works of art（为出售而创作的）</div><div>③ which 从句还修饰 works of art：can be passed from hand to hand and place to place by purchase</div><div>④ <b>from hand to hand ／ (from) place to place</b> 同构对举，第二个省了 from；by purchase 是方式</div></div>
+          <div class="tr">意：它们也不能和那些专为出售而创作、能靠买卖从一个人手里转到另一个人手里、从一个地方挪到另一个地方的艺术品相提并论。</div></div>
+
+        <div class="ls" id="l42_1"><div class="lsh">长难句 3 · Buck ① can be and are：两个助动词共用一个过去分词（13 词）</div>
+          <img class="strip" src="img/2024_新题型/s42_1.png" alt="Buck❶ 原卷句条" loading="lazy">
+          <div class="an"><div>① 主干 We know ＋ 宾语从句（省了 that）：very exact reproductions of artwork <b>can be and are</b> regularly produced</div><div>② 还原：can be produced <b>and</b> are regularly produced——「做得出来，而且一直有人在做」</div><div>③ 这种省略在英语里很常见：<i class="own">Mistakes can be and often are made.</i> 读到 can be and 不要停，往后找共用的那个分词</div></div>
+          <div class="tr">意：我们知道，非常精确的艺术复制品既做得出来，而且一直有人在做。</div></div>
+
+        <div class="ls" id="l42_3"><div class="lsh">长难句 4 · Buck ③ more important … than whether …：比较的另一方是一个从句（24 词）</div>
+          <img class="strip" src="img/2024_新题型/s42_3.png" alt="Buck❸ 原卷句条" loading="lazy">
+          <div class="an"><div>① 主干 The context of any exhibit is more important to me</div><div>② than 后不是名词，是 whether 从句：whether the object being displayed is 2,000 years old or 2 months old</div><div>③ <span class="loc">being displayed</span> 现在分词被动，后置修饰 the object（正在展出的那件）</div><div>④ 2,000 years 对 2 months——<b>故意拿极端的数字对比</b>：真古董和刚做的复制品，对他来说一样</div></div>
+          <div class="tr">意：对我来说，一件展品的背景，比正在展出的那件东西到底是两千年前的还是两个月前的更重要。</div></div>
+
+        <div class="ls" id="l42_5"><div class="lsh">长难句 5 · Buck ⑤ 主语里省了关系代词，表语又是 what 从句（12 词）</div>
+          <img class="strip" src="img/2024_新题型/s42_5.png" alt="Buck❺ 原卷句条" loading="lazy">
+          <div class="an"><div>① 主语 the story ＋ 定语从句 an exhibit is trying to tell（省了 that／which：the story <b>that</b> an exhibit is trying to tell）</div><div>② 谓语 is，表语从句 <span class="loc">what matters</span>（重要的东西）</div><div>③ 读法：读到 the story an exhibit 两个名词挨着 ⟹ 中间省了关系代词；找到第二个 is 才是主句谓语</div><div>④ 句首 Again ＝ 重申 ③：Buck 把「背景／故事最重要」说了两遍 ⟹ 观点句</div></div>
+          <div class="tr">意：还是那句话，重要的是一件展品想讲述的那个故事。</div></div>
+
+        <div class="ls" id="l43_4"><div class="lsh">长难句 6 · Sara ④ Having said that ＋ 强调 do ＋ 插入 in fact ＋ 被动完成式（32 词）</div>
+          <img class="strip" src="img/2024_新题型/s43_4.png" alt="Sara❹ 原卷句条" loading="lazy">
+          <div class="an"><div>① 句首 <span class="loc">Having said that</span>：话虽如此——前三句的让步到此为止</div><div>② 主干 I <b>do</b> feel that …：do 强调「我确实认为」</div><div>③ that 从句主语 <span class="loc">whatever artifacts find their way to public museums</span>（whatever 引导名词性从句作主语：「无论哪件文物，只要进了公共博物馆」）</div><div>④ 谓语 should, in fact, be sanctioned as …——in fact 插在 should 和 be 之间，加重语气</div><div>⑤ sanctioned as having been obtained …：as 后接完成式被动的动名词，三种方式并列：on loan · legally purchased · by treaty</div></div>
+          <div class="tr">意：话虽如此，我确实认为：任何文物，只要进了公共博物馆，事实上都应当被认可为是通过租借、合法购买或条约取得的。</div></div>
+
+        <div class="ls" id="l44_3"><div class="lsh">长难句 7 · Victor ③ ask that ＋ 虚拟语气（省 should）（16 词）</div>
+          <img class="strip" src="img/2024_新题型/s44_3.png" alt="Victor❸ 原卷句条" loading="lazy">
+          <div class="an"><div>① 主干 I would ask that …：would 让语气委婉</div><div>② that 从句主语是并列的 the foreign nations and the original country（复数）</div><div>③ 谓语 <b>discuss</b> 用原形——ask／suggest／demand／insist（要求）后的 that 从句用 (should) ＋ 动词原形；主语就算是单数也不加 s</div><div>④ the terms of transfer：terms 复数 ＝「条件」</div></div>
+          <div class="tr">意：我希望外国和原属国把文物移交的条件好好谈一谈。</div></div>
+
+        <div class="ls" id="l44_4"><div class="lsh">长难句 8 · Victor ④ the risk that 同位语从句 ＋ as … as do …（倒装）（20 词）</div>
+          <img class="strip" src="img/2024_新题型/s44_4.png" alt="Victor❹ 原卷句条" loading="lazy">
+          <div class="an"><div>① Yes, … ——<b>先认下对方的理由</b>（让步），下一句 But 才是本人观点</div><div>② the risk ＋ that 同位语从句：说明「什么风险」</div><div>③ <span class="loc">as good security as do the foreign countries</span>：比较的后半 <b>as the foreign countries do</b> 把助动词 do 提到主语前——比较从句里的倒装，主语长时常见</div><div>④ do 替代的是 have（as good security as the foreign countries have）</div></div>
+          <div class="tr">意：没错，原属国的安保确实可能不如外国好。</div></div>
+
+        <div class="ls" id="l45_1"><div class="lsh">长难句 9 · Julia ❶ To those of you … 呼语 ＋ 冒号后的直接问句（58 词，全篇最长）</div>
+          <img class="strip" src="img/2024_新题型/s45_1.png" alt="Julia❶ 原卷句条" loading="lazy">
+          <div class="an"><div>① 句首 To those of you in the comments section：对……说（点名听众）；those 后两层修饰：in the comments section ＋ who are having strong feelings about …</div><div>② about 的宾语是动名词复合结构：artifacts <b>being removed</b> from cities（英美城市）<b>and returned</b> to their countries of origin（两个被动并列，returned 前省了 being）</div><div>③ 主句 I would ask you to consider: ——冒号后直接给出要你考虑的问题</div><div>④ 问句 why do you think …：think 后的宾语从句 Americans have more of a right to easily access …（比较对象 than the people of Nigeria：比的是「谁更有权」）</div></div>
+          <div class="tr">意：评论区里那些一提到「把文物从英美城市移走、归还原属国」就情绪激烈的人，我想请你们想一想：凭什么你们觉得美国人比尼日利亚人更有权轻松看到贝宁青铜器？</div></div>
+
+        <div class="ls" id="l45_2"><div class="lsh">长难句 10 · Julia ❷ 定语从句 ＋ but 后省略（28 词）</div>
+          <img class="strip" src="img/2024_新题型/s45_2.png" alt="Julia❷ 原卷句条" loading="lazy">
+          <div class="an"><div>① 问句主干 Why are people … entitled to go and see the Elgin Marbles</div><div>② people 后的 who 从句：who live within a day’s drive of London（离伦敦一天车程以内）</div><div>③ whenever they want 是 go and see 的时间状语</div><div>④ but the people of Athens <b>aren’t</b>：省了 entitled to go and see them——靠前半句补全</div></div>
+          <div class="tr">意：凭什么住在离伦敦一天车程以内的人想去就能去看埃尔金石雕，雅典人却不行？</div></div>
+
+        <div class="ls" id="l45_3"><div class="lsh">长难句 11 · Julia ❸ make sb sth ＋ preclude sb from doing（25 词）</div>
+          <img class="strip" src="img/2024_新题型/s45_3.png" alt="Julia❸ 原卷句条" loading="lazy">
+          <div class="an"><div>① 主语 What intrinsic factors（疑问词作主语，不倒装）</div><div>② 两个并列谓语：<b>make</b> the West a suitable home for these artifacts（make ＋ 宾语 ＋ 宾补名词）／ but <b>preclude</b> them from being preserved and displayed by their countries of origin</div><div>③ preclude A from doing ＝ 使 A 不能做；them 指 these artifacts，being preserved and displayed 是被动动名词</div><div>④ 反问的潜台词：<b>根本没有这样的「内在条件」</b></div></div>
+          <div class="tr">意：到底是什么内在因素，让西方成了这些文物的合适归宿，却让它们没法由原属国来保存和展出？</div></div>
+
+      </section>
+
+      <section class="card">
+        <h2><span class="n">06</span>可搬进作文的素材（本篇是「文化遗产 / 归还与归属 / 驳论」三个话题的弹药库）</h2>
+        <p style="font-size:.85rem;color:var(--muted);margin-bottom:10px">例句全部自拟，只借原文的句式骨架。</p>
+        <div class="wb">
+          <div class="wbi"><div class="p">… as part of their cultural heritage and as a source of national pride（作为文化遗产的一部分、作为民族自豪感的来源）</div><div class="u">写传统文化：<i class="own">Traditional festivals should be passed on as part of our cultural heritage and as a source of national pride.</i></div></div>
+          <div class="wbi"><div class="p">There is no good reason that …（没有正当理由让……）</div><div class="u">驳论开头：<i class="own">There is no good reason that students should be kept away from the school library at weekends.</i></div></div>
+          <div class="wbi"><div class="p">… serve no purpose except as …（除了当……之外毫无用处）</div><div class="u">批评形式主义：<i class="own">Such meetings serve no purpose except as a show for visitors.</i></div></div>
+          <div class="wbi"><div class="p">X is more important to me than whether …（对我来说，X 比……更重要）</div><div class="u">表态：<i class="own">What I learn is more important to me than whether I get the top score.</i></div></div>
+          <div class="wbi"><div class="p">Having said that, I do feel that …（话虽如此，我确实认为……）</div><div class="u">让步后亮观点（作文第二段的万能转身）：<i class="own">Online classes are convenient. Having said that, I do feel that face-to-face teaching cannot be replaced.</i></div></div>
+          <div class="wbi"><div class="p">Yes, there is the risk that … But … Nothing is absolutely safe.（没错，是有……的风险。但……没有什么是绝对安全的）</div><div class="u">先认风险再反驳：<i class="own">Yes, there is the risk that young people will spend too much online. But no tool is free of risk.</i></div></div>
+          <div class="wbi"><div class="p">If your conclusion is that …, think about why you are assuming that to be true.（如果你的结论是……，想想你凭什么这样假定）</div><div class="u">驳论收尾：<i class="own">If your conclusion is that money brings happiness, think about why you are assuming that to be true.</i></div></div>
+          <div class="wbi"><div class="p">… is no excuse for …（……不是……的借口）</div><div class="u">万能批评句：<i class="own">A heavy workload is no excuse for ignoring your health.</i></div></div>
+        </div>
+        <p style="font-size:.9rem;margin-top:10px">🔁 <b>同卷呼应</b>：2024 T3（艺术家反击 AI 文生图）讲的是「未经许可拿走别人的作品」——和 Sara ⑤「偷走的不只是实物，还有创作者的尊严」是同一个道理，<b>作文写「知识产权／尊重原创」时两篇可以并用</b>：一篇是今天的数字作品，一篇是几百年前的文物。2024 T1 首句的 <span class="loc">a curious treasure</span> 与 Hannah ④ 的 curious objects 同一个义项（稀奇的）。</p>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">07</span>词汇复盘（点卡片看详情 · 共 <span id="vcount"></span> 张，含 <b>21 处熟词僻义</b>）</h2>
+        <p style="font-size:.85rem;color:var(--muted);margin-bottom:10px">本篇熟词僻义的共同规律：<b>博物馆场景把日常词全换了意思</b>——reproduction 是「复制品」不是「繁殖」、exhibit 是「展品」、curious 修饰物是「稀奇的」、sanction 是「认可」（另一个意思恰好相反：制裁）、on loan 是「借来展出」、terms 是「条件」、peoples 是「各民族」、obscene 在评论里是「可憎的」。<b>最危险的是 by all means</b>：它和 by no means 只差一个词，意思完全相反。</p>
+        <div id="vgrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px"></div>
+      </section>
+
+      <footer>2024 英语（一）Part B · 网友评美国博物馆归还文物 ｜ 答案 41E 42C 43F 44G 45B（A、D 多余）｜ Claude 完整盲做 5/5 ｜ 五段评论与七项由读者本机从原卷句条识别成文字 ｜ 黄皮书精讲交叉复核：答案零书误</footer>
+    </main>
+
+    <aside>
+      <div id="panel"><div class="hint">👆 点正文里的<b>虚线词</b>，或下方词汇卡，这里出详解<br><br>选中任意英文可弹出「查词」按钮</div></div>
+    </aside>
+  </div>
+</div>
+<button id="yd">🔍 有道查词</button>
+
+<script>
+function go(id){const s=document.getElementById(id);if(!s)return;s.scrollIntoView({behavior:'smooth',block:'center'});s.style.transition='none';s.style.opacity=.3;setTimeout(()=>{s.style.transition='opacity .8s';s.style.opacity=1},80)}
+const OPTS = {
+  A:["<span class=\"sn\"><img class=\"strip\" src=\"img/2024_新题型/oA.png\" alt=\"A 项原卷句条\" loading=\"lazy\"></span>","显然，原属国从未因被盗文物得到过赔偿。","抓手 ＝ <b>赔偿</b>（钱）｜<span class=\"tk\" data-w=\"compensate\">compensated</span> · <span class=\"tk\" data-w=\"stolen\">stolen</span> —— <b>五个人谁都没谈赔偿</b>：stolen 的原料在 Sara ⑤、Victor ⑤，compensated 全文无出处","⟹ <b>多余</b>（无人提及 · 原料拼接）"],
+  B:["<span class=\"sn\"><img class=\"strip\" src=\"img/2024_新题型/oB.png\" alt=\"B 项原卷句条\" loading=\"lazy\"></span>","以反对归还文物为论点，是一种有缺陷的推理。","抓手 ＝ <b>拆对方的推理</b>（元论证）｜<span class=\"tk\" data-w=\"flawed\">flawed</span> <span class=\"tk\" data-w=\"lineofreasoning\">line of reasoning</span> · <span class=\"tk\" data-w=\"argueagainst\">argue against</span> —— 要有一个被拆的「对手」","⟹ 归位 <b>45 Julia</b> · 唯一点名评论区对手的人"],
+  C:["<span class=\"sn\"><img class=\"strip\" src=\"img/2024_新题型/oC.png\" alt=\"C 项原卷句条\" loading=\"lazy\"></span>","原件归还以后，参观者照样能从文物的复制品里学到同样多的东西。","抓手 ＝ <b>复制品 · 正</b>｜<span class=\"tk\" data-w=\"copy\">copies</span> · learn as much · <span class=\"tk\" data-w=\"original\">originals</span> are returned","⟹ 归位 <b>42 Buck</b> · reproductions 换成 copies"],
+  D:["<span class=\"sn\"><img class=\"strip\" src=\"img/2024_新题型/oD.png\" alt=\"D 项原卷句条\" loading=\"lazy\"></span>","复制品做得再完美，也替代不了真品。","抓手 ＝ <b>复制品 · 反</b>｜Reproductions · <span class=\"tk\" data-w=\"takeplace\">take the place of</span> · <span class=\"tk\" data-w=\"authentic\">authentic</span> —— <b>和 C 共用一个抓手、方向相反</b>","⟹ <b>多余</b>（方向反 · 正撞 Buck）"],
+  E:["<span class=\"sn\"><img class=\"strip\" src=\"img/2024_新题型/oE.png\" alt=\"E 项原卷句条\" loading=\"lazy\"></span>","文物的真正价值只有在原属国才能被认识到，在别处都不行。","抓手 ＝ <b>价值在哪儿</b>｜<span class=\"tk\" data-w=\"recognize\">recognized</span> · only … <span class=\"tk\" data-w=\"ratherthan\">rather than</span> anywhere else —— 绝对口气，原文本来就绝对","⟹ 归位 <b>41 Hannah</b>"],
+  F:["<span class=\"sn\"><img class=\"strip\" src=\"img/2024_新题型/oF.png\" alt=\"F 项原卷句条\" loading=\"lazy\"></span>","从别国获取文物，手段必须正派、合法。","抓手 ＝ <b>取得方式</b>｜Ways to get · <span class=\"tk\" data-w=\"decent\">decent</span> and <span class=\"tk\" data-w=\"lawful\">lawful</span> —— 一个讲道德、一个讲法律","⟹ 归位 <b>43 Sara</b> · 转折之后那一句"],
+  G:["<span class=\"sn\"><img class=\"strip\" src=\"img/2024_新题型/oG.png\" alt=\"G 项原卷句条\" loading=\"lazy\"></span>","担心安保，不是拒不归还文物的借口。","抓手 ＝ <b>安保</b>｜<span class=\"tk\" data-w=\"concernover\">Concern over</span> security · is no <span class=\"tk\" data-w=\"excuse\">excuse</span> for <span class=\"tk\" data-w=\"refuse\">refusing</span> —— security 是 Victor 的原词","⟹ 归位 <b>44 Victor</b> · 让步＋反驳那一组"]
+};
+const EXTRA = ["A", "D"];
+const V={
+  smithsonian:{"w": "Smithsonian Institution", "ipa": "/smɪθˈsəʊniən ˌɪnstɪˈtjuːʃn/", "pos": "n.", "tags": ["core"], "cn": "史密森学会（美国国家博物馆群）", "en": "a group of US national museums and research centres in Washington, D.C.", "ex": "cannot travel to the Smithsonian Institution", "mem": "1846 年用英国科学家史密森的遗赠创立，下辖十几座博物馆。<b>背景</b>：它的国立非洲艺术博物馆 2022 年 10 月把 29 件贝宁青铜器的所有权交还尼日利亚——Hannah 说的「去不了史密森」就在这个当口。", "syn": "national museum · museum complex", "conf": "<b>institution</b> 机构 vs <b>institute</b> 研究所 vs <b>constitution</b> 宪法。"},
+  represent:{"w": "represent", "ipa": "/ˌreprɪˈzent/", "pos": "v.", "tags": ["core", "poly"], "cn": "体现，代表，象征", "en": "to be a sign or example of something", "ex": "their history and culture represented by the Benin Bronzes", "mem": "⚠️ 熟义「代表某人发言」；物作主语＝承载、体现：文物 represent 一段历史。Sara ② <span class=\"loc\">the culture that it represented</span> 同一个用法。", "syn": "embody · symbolize · stand for", "conf": "<b>represent</b> 体现 vs <b>present</b> 呈现 vs <b>resent</b> 怨恨。"},
+  beninbronze:{"w": "Benin Bronzes", "ipa": "/beˈniːn ˈbrɒnzɪz/", "pos": "n.", "tags": ["core"], "cn": "贝宁青铜器", "en": "metal sculptures and plaques from the old Kingdom of Benin, in today’s Nigeria", "ex": "represented by the Benin Bronzes", "mem": "1897 年英军洗劫贝宁王国都城，数千件铜器被掠走、散入欧美博物馆。⚠️ <b>贝宁王国在今尼日利亚南部，不是今天的贝宁共和国</b>——所以 Hannah 和 Julia 说的都是 Nigeria。", "syn": "looted artifacts · colonial loot", "conf": "<b>Kingdom of Benin</b>（古国，今尼日利亚）vs <b>Republic of Benin</b>（邻国）。"},
+  available:{"w": "available", "ipa": "/əˈveɪləbl/", "pos": "adj.", "tags": ["core", "write"], "cn": "可获得的，可利用的", "en": "able to be used or obtained", "ex": "These should be available to them", "mem": "avail（有用）＋ -able。be available to sb ＝ 某人能接触到、用得上——Hannah 谈的是<b>可及性</b>：文物要让本国人看得到。", "syn": "accessible · obtainable", "conf": "<b>available</b> 可得的 vs <b>valuable</b> 贵重的 vs <b>variable</b> 可变的。"},
+  heritage:{"w": "heritage", "ipa": "/ˈherɪtɪdʒ/", "pos": "n.", "tags": ["core", "write"], "cn": "（文化、历史的）遗产，传承", "en": "the history, traditions and objects that a country has had for many years", "ex": "as part of their cultural heritage and history", "mem": "与 heir（继承人）同源。cultural heritage 文化遗产 · world heritage site 世界遗产地。⚠️ 不是钱财遗产（那是 inheritance／legacy）。作文「传统文化」话题必备。", "syn": "legacy · tradition · patrimony", "conf": "<b>heritage</b> 文化遗产 vs <b>inheritance</b> 继承的财产 vs <b>heredity</b> 遗传。"},
+  pride:{"w": "pride", "ipa": "/praɪd/", "pos": "n.", "tags": ["core", "write"], "cn": "自豪，骄傲", "en": "a feeling of satisfaction with what you or your people have", "ex": "as a source of national pride", "mem": "national pride 民族自豪感 · a source of pride 骄傲之源 · take pride in 以……为荣。", "syn": "dignity · self-esteem", "conf": "<b>pride</b> 自豪 vs <b>prize</b> 奖 vs <b>price</b> 价格。"},
+  artifact:{"w": "artifact", "ipa": "/ˈɑːtɪfækt/", "pos": "n.", "tags": ["core"], "cn": "人工制品；文物", "en": "an object made by a person, especially one of historical interest", "ex": "these artifacts should be beyond the ordinary reach", "mem": "arti-（技艺）＋ fact（做）＝「人手做出来的东西」；英式拼作 artefact。博物馆、考古语境＝文物。全篇主角词，七项里五项都带它。", "syn": "relic · antiquity · object", "conf": "<b>artifact</b> 人造物 vs <b>artificial</b> 人工的 vs <b>article</b> 物品。"},
+  beyondreach:{"w": "beyond the reach of", "ipa": "/bɪˈjɒnd ðə riːtʃ əv/", "pos": "phr.", "tags": ["phrase"], "cn": "在……够不着的地方", "en": "impossible for someone to get, use or reach", "ex": "beyond the ordinary reach of the educational objectives", "mem": "reach n.「能够到的范围」：within reach 够得着 · out of reach 够不着。<b>ordinary reach</b> ＝ 平常就能够到——说的是本国人「日常」就该看得到用得上。", "syn": "out of reach · inaccessible to", "conf": "<b>beyond reach</b> 够不着 vs <b>beyond doubt</b> 毫无疑问 vs <b>beyond words</b> 无法形容。"},
+  objective:{"w": "objective", "ipa": "/əbˈdʒektɪv/", "pos": "n.", "tags": ["poly", "core"], "cn": "（此处 n.）目标", "en": "something you plan to achieve", "ex": "the educational objectives or inspiration of the generations", "mem": "⚠️ 熟义 adj.「客观的」；n.＝目标：teaching objectives 教学目标。educational objectives 与 inspiration 并列，共用后面的 of the generations。", "syn": "goal · aim · purpose", "conf": "<b>objective</b> 目标 vs <b>objection</b> 反对 vs <b>object</b> 物体。"},
+  inspiration:{"w": "inspiration", "ipa": "/ˌɪnspəˈreɪʃn/", "pos": "n.", "tags": ["core", "write"], "cn": "启发，鼓舞，灵感", "en": "something that gives you new ideas or makes you want to do something", "ex": "educational objectives or inspiration of the generations", "mem": "in-（进）＋ spir（呼吸）＝「吹进一口气」。动词 inspire 在 Sara ②③ 连用两次——<b>Hannah 和 Sara 都承认文物能启发人，分歧在「启发谁、在哪儿启发」</b>。", "syn": "stimulus · motivation", "conf": "<b>inspiration</b> 灵感 vs <b>aspiration</b> 志向 vs <b>perspiration</b> 汗水。"},
+  generation:{"w": "generation", "ipa": "/ˌdʒenəˈreɪʃn/", "pos": "n.", "tags": ["core"], "cn": "一代人；世代", "en": "all the people of about the same age in a society or family", "ex": "the generations to which they were left", "mem": "to which they were left ＝ they were left <b>to</b> the generations：be left to sb 遗留给某人（遗赠义）——文物是留给这几代人的（05 长难句 1）。", "syn": "posterity · descendants", "conf": "<b>generation</b> 世代 vs <b>generalization</b> 概括。"},
+  servepurpose:{"w": "serve no purpose", "ipa": "/sɜːv nəʊ ˈpɜːpəs/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "毫无用处", "en": "to be useless", "ex": "They serve no purpose in a museum", "mem": "serve a purpose 有用 · serve no purpose 毫无用处。⚠️ serve 不是「服务」。这句 no … except as … 是 Hannah 最绝对的一句，<b>E 的 only … rather than anywhere else 就从这里来</b>。", "syn": "be of no use · be pointless", "conf": "<b>serve a purpose</b> 有用处 vs <b>serve the purpose of</b> 用作。"},
+  elsewhere:{"w": "elsewhere", "ipa": "/ˌelsˈweə(r)/", "pos": "adv.", "tags": ["core"], "cn": "在别处", "en": "in, at or to another place", "ex": "in the United States or elsewhere", "mem": "else ＋ where。E 的 <span class=\"loc\">anywhere else</span> 正是它的改写。", "syn": "somewhere else · anywhere else", "conf": "<b>elsewhere</b> 别处 vs <b>otherwise</b> 否则。"},
+  curious:{"w": "curious", "ipa": "/ˈkjʊəriəs/", "pos": "adj.", "tags": ["poly"], "cn": "（修饰物）稀奇的，古怪的", "en": "strange and unusual", "ex": "except as curious objects", "mem": "⚠️ 熟义「好奇的」（修饰人）；修饰物＝奇特、罕见：curious objects 稀奇物件、猎奇品。<b>同卷 2024 T1 首句的 a curious treasure 是同一义</b>——一张卷子里考了两次。", "syn": "strange · odd · peculiar", "conf": "<b>curious</b> 好奇／奇特 vs <b>curiosity</b> 好奇心；a curiosity ＝ 一件古玩。"},
+  compareto:{"w": "be compared to", "ipa": "/kəmˈpeəd tə/", "pos": "phr.", "tags": ["phrase"], "cn": "与……相提并论", "en": "to be considered as good or important as something else", "ex": "They cannot be compared to works of art", "mem": "cannot be compared to ＝ 不是一类东西、不能相提并论。compare A to B 把 A 比作 B · compare A with B 拿 A 与 B 比较。", "syn": "be likened to · rank with", "conf": "<b>compare to</b> 比作 vs <b>compare with</b> 比较。"},
+  handtohand:{"w": "from hand to hand", "ipa": "/frəm hænd tə hænd/", "pos": "phr.", "tags": ["phrase"], "cn": "从一人手里传到另一人手里", "en": "passed from one person to another", "ex": "passed from hand to hand and place to place", "mem": "from hand to hand ／ (from) place to place 同构对举。Hannah 拿「为出售而创作的艺术品」作对照：<b>文物不是商品，不该靠买卖换手</b>。", "syn": "change hands（易主）", "conf": "<b>hand in hand</b> 手拉手 vs <b>hand to mouth</b> 勉强糊口。"},
+  purchase:{"w": "purchase", "ipa": "/ˈpɜːtʃəs/", "pos": "n./v.", "tags": ["core", "write"], "cn": "购买", "en": "the act of buying something", "ex": "place to place by purchase", "mem": "by purchase 通过购买。🔎 有意思的分歧：<b>Hannah 说文物不该靠买卖流转，Sara ④ 却把 legally purchased 算进正当来路</b>——两人对「买」态度不同，但都不是选项考点。", "syn": "buying · acquisition", "conf": "<b>purchase</b> 购买 vs <b>pursue</b> 追求。"},
+  reproduction:{"w": "reproduction", "ipa": "/ˌriːprəˈdʌkʃn/", "pos": "n.", "tags": ["poly", "core"], "cn": "（艺术品的）复制品", "en": "a copy of a painting or other work of art", "ex": "very exact reproductions of artwork", "mem": "⚠️ 熟义「繁殖、生殖」；艺术语境＝复制品。Buck 段的主角词（①②）。<b>C 把它换成 copies，D 直接用 Reproductions——一个词进了两个选项，必有一个是反的</b>。", "syn": "copy · replica · facsimile", "conf": "<b>reproduction</b> 复制品 vs <b>production</b> 产品 vs <b>reproductive</b> 生殖的。"},
+  artwork:{"w": "artwork", "ipa": "/ˈɑːtwɜːk/", "pos": "n.", "tags": ["core"], "cn": "艺术品", "en": "paintings, sculptures and other works of art", "ex": "very exact reproductions of artwork", "mem": "一般作不可数（集合）。② 换成 works of art，③ 又叫 exhibit／object——<b>同一样东西三四种叫法</b>。", "syn": "work of art · piece", "conf": "<b>artwork</b> 艺术品 vs <b>artisan</b> 工匠。"},
+  regularly:{"w": "regularly", "ipa": "/ˈreɡjələli/", "pos": "adv.", "tags": ["core"], "cn": "经常地，定期地", "en": "often or at regular times", "ex": "can be and are regularly produced", "mem": "can be and are produced：两个助动词共用一个 produced（05 长难句 3）。", "syn": "routinely · frequently", "conf": "<b>regularly</b> 经常 vs <b>regionally</b> 地区性地。"},
+  explore:{"w": "explore", "ipa": "/ɪkˈsplɔː(r)/", "pos": "v.", "tags": ["poly", "core"], "cn": "探讨（可能性）", "en": "to think about something carefully to find out if it is possible", "ex": "might explore some role for the use of", "mem": "⚠️ 熟义「探险、勘探」；explore a role／possibility／option ＝ 探讨某种可能。might ＋ Perhaps 双重委婉：Buck 只是提个方案。", "syn": "look into · examine · consider", "conf": "<b>explore</b> 探讨 vs <b>exploit</b> 利用 vs <b>explode</b> 爆炸。"},
+  ameansof:{"w": "as a means of", "ipa": "/əz ə miːnz əv/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "作为……的手段", "en": "as a way of doing something", "ex": "as a means of resolving issues", "mem": "means 单复同形（a means／all means）。<b>同篇三个 means 短语</b>：as a means of 作为手段（Buck ②）· by all means 务必（Victor ①）· by means of 借助（未出现）。", "syn": "as a way of · by way of", "conf": "<b>as a means of</b> 作为手段 vs <b>by all means</b> 务必 vs <b>by no means</b> 决不。"},
+  resolve:{"w": "resolve", "ipa": "/rɪˈzɒlv/", "pos": "v.", "tags": ["core", "write"], "cn": "解决", "en": "to find an acceptable solution to a problem", "ex": "resolving issues relating to returning works of art", "mem": "resolve a dispute／conflict 解决争端。作文：<i class=\"own\">Dialogue is the best way to resolve such disputes.</i>", "syn": "settle · solve · address", "conf": "<b>resolve</b> 解决 vs <b>revolve</b> 旋转 vs <b>involve</b> 涉及。"},
+  relatingto:{"w": "relating to", "ipa": "/rɪˈleɪtɪŋ tə/", "pos": "phr.", "tags": ["phrase"], "cn": "关于，与……有关", "en": "connected with", "ex": "issues relating to returning works of art", "mem": "to 是介词，后接动名词 returning。= concerning／regarding。", "syn": "concerning · regarding · about", "conf": "<b>relating to</b> 有关 vs <b>related to</b> 与……有亲缘／有关。"},
+  antiquity:{"w": "antiquity", "ipa": "/ænˈtɪkwəti/", "pos": "n.", "tags": ["poly", "core"], "cn": "（复数）古物，古代文物", "en": "an object or building from ancient times", "ex": "works of art and antiquities", "mem": "antique 古董 · antiquity 古代。复数 antiquities ＝ 古代文物；⚠️ 单数常作「古代、古老」：in antiquity 在古代。", "syn": "relic · artifact", "conf": "<b>antiquity</b> 古物／古代 vs <b>antique</b> 古董 vs <b>ancient</b> 古代的。"},
+  context:{"w": "context", "ipa": "/ˈkɒntekst/", "pos": "n.", "tags": ["core", "write"], "cn": "背景，来龙去脉", "en": "the situation or history in which something exists", "ex": "The context of any exhibit is more important", "mem": "con-（一起）＋ text（文本）＝「文字周围的东西」。展品的 context ＝ 它讲的历史文化背景——与 ⑤ <span class=\"loc\">the story an exhibit is trying to tell</span> 是一回事，Buck 说了两遍。", "syn": "background · setting", "conf": "<b>context</b> 语境 vs <b>contest</b> 比赛 vs <b>content</b> 内容。"},
+  exhibit:{"w": "exhibit", "ipa": "/ɪɡˈzɪbɪt/", "pos": "n./v.", "tags": ["poly", "core"], "cn": "展品；展出", "en": "an object shown in a museum", "ex": "The context of any exhibit", "mem": "③⑤ 两次，都是 n. 展品。⚠️ 法庭上 exhibit ＝ 物证（Exhibit A 一号证物）。", "syn": "display · exhibition", "conf": "<b>exhibit</b> 展品 vs <b>exhibition</b> 展览会 vs <b>inhibit</b> 抑制。"},
+  display:{"w": "display", "ipa": "/dɪˈspleɪ/", "pos": "v./n.", "tags": ["core"], "cn": "展示，陈列", "en": "to put something where people can see it", "ex": "the object being displayed", "mem": "being displayed 正在被展出（现在分词被动后置）；⑥ on display 展出中；Victor ① <span class=\"loc\">displayed in foreign countries</span>、⑦ publicly displayed works。", "syn": "exhibit · show", "conf": "<b>display</b> 展示 vs <b>dismay</b> 沮丧。"},
+  hardtime:{"w": "have a hard time doing", "ipa": "/hæv ə hɑːd taɪm/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "做某事很难", "en": "to have difficulty doing something", "ex": "the experts have a hard time agreeing on", "mem": "= have difficulty (in) doing。Buck 用它说「真假连专家都分不清」⟹ 真假不重要——<b>这正是 D 的反面</b>。", "syn": "struggle to · find it hard to", "conf": "<b>have a hard time</b> 很难 vs <b>have a good time</b> 玩得开心。"},
+  forgery:{"w": "forgery", "ipa": "/ˈfɔːdʒəri/", "pos": "n.", "tags": ["core"], "cn": "赝品；伪造", "en": "a copy of a painting or document made to deceive people", "ex": "what is the real object and what is a forgery", "mem": "forge v. 伪造（也是「锻造」）。the real object 与 forgery 对立——<b>D 的 authentic objects ← 这里的 the real object</b>。", "syn": "fake · counterfeit", "conf": "<b>forgery</b> 赝品 vs <b>forge</b> 伪造／锻造 vs <b>forget</b> 忘记。"},
+  matter:{"w": "matter", "ipa": "/ˈmætə(r)/", "pos": "v.", "tags": ["poly", "write"], "cn": "要紧，重要", "en": "to be important", "ex": "the story an exhibit is trying to tell is what matters", "mem": "⚠️ 熟义 n.「事情、物质」；v.＝要紧：It doesn’t matter. · <b>what matters is …</b> 重要的是……。句首 Again 表明这是 Buck 第二次说——<b>重复两遍的就是观点</b>。", "syn": "count · be important", "conf": "<b>what matters</b> 重要的事 vs <b>no matter what</b> 无论什么。"},
+  monetary:{"w": "monetary", "ipa": "/ˈmʌnɪtri/", "pos": "adj.", "tags": ["core"], "cn": "金钱的，货币的", "en": "connected with money", "ex": "The monetary value of the objects on display", "mem": "monetary value 金钱价值 · monetary policy 货币政策。⚠️ <b>A 的 compensated 想借这一句钓鱼</b>：Buck 谈钱，但谈的是展品值多少钱，不是赔偿。", "syn": "financial · pecuniary", "conf": "<b>monetary</b> 货币的 vs <b>momentary</b> 短暂的。"},
+  ondisplay:{"w": "on display", "ipa": "/ɒn dɪˈspleɪ/", "pos": "phr.", "tags": ["phrase"], "cn": "展出中", "en": "in a place where people can look at it", "ex": "the objects on display", "mem": "= on show／on exhibition。", "syn": "on show · on view", "conf": "<b>on display</b> 展出 vs <b>out of sight</b> 看不见。"},
+  distantsecond:{"w": "a distant second", "ipa": "/ə ˈdɪstənt ˈsekənd/", "pos": "phr.", "tags": ["phrase", "poly", "write"], "cn": "远远落后的第二", "en": "second, but far behind the first", "ex": "is a distant second place in importance", "mem": "distant 远的 →「差得远的第二名」。体育报道：finish a distant second。作文：<i class=\"own\">For me, salary comes a distant second to growth.</i>", "syn": "far behind · much less important", "conf": "<b>a distant second</b> 远逊于第一 vs <b>a close second</b> 紧追第一。"},
+  comeacross:{"w": "come across", "ipa": "/kʌm əˈkrɒs/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "偶然遇到，碰见", "en": "to meet or find by chance", "ex": "I came across a magnificent 15th-century Chinese sculpture", "mem": "叙事作文开头好用：<i class=\"own\">Last week I came across an old photo of my school.</i>", "syn": "run into · stumble upon", "conf": "<b>come across</b> 偶遇 vs <b>come across as</b> 给人……的印象。"},
+  magnificent:{"w": "magnificent", "ipa": "/mæɡˈnɪfɪsnt/", "pos": "adj.", "tags": ["core", "write"], "cn": "壮丽的，精美的", "en": "extremely attractive and impressive", "ex": "a magnificent 15th-century Chinese sculpture", "mem": "magni-（大）＋ fic（做）。描写文物、建筑、风景都能用。", "syn": "splendid · impressive · superb", "conf": "<b>magnificent</b> 壮丽 vs <b>magnify</b> 放大。"},
+  sculpture:{"w": "sculpture", "ipa": "/ˈskʌlptʃə(r)/", "pos": "n.", "tags": ["core"], "cn": "雕塑", "en": "a work of art made by carving or shaping stone, wood, metal etc.", "ex": "Chinese sculpture", "mem": "sculpt v. 雕刻。⚠️ 15th- 跨行断开：15th-century 是一个形容词。", "syn": "statue · carving", "conf": "<b>sculpture</b> 雕塑 vs <b>structure</b> 结构。"},
+  inspire:{"w": "inspire", "ipa": "/ɪnˈspaɪə(r)/", "pos": "v.", "tags": ["core", "write"], "cn": "启发，激励", "en": "to give someone the desire or ideas to do something", "ex": "It inspired me to learn more", "mem": "inspire sb to do。⚠️ <b>Sara 前三句说的「文物在博物馆能启发人」，是反方最好的理由——她先替反方说了，④ 才转</b>。", "syn": "motivate · encourage · stimulate", "conf": "<b>inspire</b> 激励 vs <b>aspire</b> 渴望 vs <b>expire</b> 到期。"},
+  spark:{"w": "spark", "ipa": "/spɑːk/", "pos": "v.", "tags": ["poly", "write"], "cn": "引发，激起", "en": "to make something start or develop", "ex": "perhaps spark that need to learn and understand", "mem": "⚠️ 熟义 n.「火花」；v.＝点燃、引发：spark interest／debate／protest。that need 的 that 是指示词：「那种（求知的）渴望」。", "syn": "trigger · arouse · ignite", "conf": "<b>spark</b> 引发 vs <b>sparkle</b> 闪烁。"},
+  creator:{"w": "creator", "ipa": "/kriˈeɪtə(r)/", "pos": "n.", "tags": ["core"], "cn": "创造者，创作者", "en": "a person who has made something", "ex": "the nature of their creators", "mem": "③⑤ 两次。⑤ the dignity and spirit of their creators——<b>偷走的不只是东西，还有创作者的尊严</b>。", "syn": "maker · author · originator", "conf": "<b>creator</b> 创作者 vs <b>creature</b> 生物。"},
+  havingsaid:{"w": "Having said that", "ipa": "/ˈhævɪŋ sed ðæt/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "话虽如此", "en": "despite what has just been said", "ex": "Having said that, I do feel that", "mem": "⭐ 让步转折标记：前面先承认，后面才是本人观点；= That said · Even so · Nevertheless。<b>观点匹配里，转折之后才是选项要概括的句子</b>（Sara ④ ⟹ F）。", "syn": "That said · Even so · Nonetheless", "conf": "<b>Having said that</b> 话虽如此 vs <b>that is to say</b> 也就是说。"},
+  findway:{"w": "find one’s way to", "ipa": "/faɪnd wʌnz weɪ tə/", "pos": "phr.", "tags": ["phrase", "poly"], "cn": "辗转到达", "en": "to arrive somewhere, often by chance or after some time", "ex": "whatever artifacts find their way to public museums", "mem": "本义「找到路」；物作主语＝几经周折流落到某处——<b>暗含「来路说不清」</b>，所以 Sara 接着就要求来路得被认可。", "syn": "end up in · arrive at", "conf": "<b>find one’s way</b> 辗转到达 vs <b>make one’s way</b> 前往。"},
+  infact:{"w": "in fact", "ipa": "/ɪn fækt/", "pos": "phr.", "tags": ["phrase"], "cn": "事实上（此处加强语气）", "en": "used to emphasize what you are saying", "ex": "should, in fact, be sanctioned", "mem": "插在 should 和 be 之间加重 should；连同前面的强调 do（I do feel），<b>Sara 的语气在 ④ 达到最高</b>——观点句的信号。", "syn": "indeed · actually", "conf": "<b>in fact</b> 事实上 vs <b>in effect</b> 实际上（效果上）。"},
+  sanction:{"w": "sanction", "ipa": "/ˈsæŋkʃn/", "pos": "v./n.", "tags": ["poly", "core"], "cn": "批准，认可（v.）；制裁（n.）", "en": "to officially accept or allow something", "ex": "be sanctioned as having been obtained on loan", "mem": "⚠️ <b>一词两反义</b>：v. 批准、认可（此处）／n. 制裁（economic sanctions）。sanctioned as … ＝ 被认定为……。F 的 decent and lawful 是它的改写。", "syn": "approve · authorize · endorse", "conf": "<b>sanction</b> 认可／制裁 vs <b>sanctuary</b> 庇护所。"},
+  onloan:{"w": "on loan", "ipa": "/ɒn ləʊn/", "pos": "phr.", "tags": ["phrase"], "cn": "借来的，租借的", "en": "borrowed for a period of time", "ex": "obtained on loan", "mem": "loan n. 贷款／出借；on loan from ＝ 从……借来展出（博物馆常用：on loan from the British Museum）。⚠️ <b>A 想借 loan 的「贷款」味道钓「赔偿」</b>。", "syn": "borrowed · lent", "conf": "<b>on loan</b> 借来的 vs <b>loan</b> 贷款。"},
+  treaty:{"w": "treaty", "ipa": "/ˈtriːti/", "pos": "n.", "tags": ["core"], "cn": "条约", "en": "a formal written agreement between countries", "ex": "or obtained by treaty", "mem": "sign a treaty 签条约。by treaty ＝ 按国与国的协议取得——与 Victor ③ 「双方谈移交条件」是一路思路。", "syn": "agreement · accord · pact", "conf": "<b>treaty</b> 条约 vs <b>treatment</b> 对待。"},
+  peoples:{"w": "peoples", "ipa": "/ˈpiːplz/", "pos": "n.", "tags": ["poly"], "cn": "（可数）民族", "en": "the people of a particular nation or culture", "ex": "from other peoples’ cultures", "mem": "⚠️ people 作「人们」是集合名词、没有复数；作「民族」可数：a people 一个民族 · peoples 各民族——<b>所以撇号在 s 后面</b>。", "syn": "nations · ethnic groups", "conf": "<b>people</b> 人们 vs <b>a people</b> 一个民族 vs <b>peoples</b> 各民族。"},
+  obscene:{"w": "obscene", "ipa": "/əbˈsiːn/", "pos": "adj.", "tags": ["poly"], "cn": "可憎的，令人作呕的", "en": "morally wrong and offensive", "ex": "is obscene", "mem": "⚠️ 熟义「淫秽的」；评论语境＝道德上令人作呕：obscene profits 暴利。<b>F 的 decent（正派）正是它的反面</b>。", "syn": "outrageous · shameful · disgusting", "conf": "<b>obscene</b> 可憎的 vs <b>obscure</b> 模糊的。"},
+  rob:{"w": "rob", "ipa": "/rɒb/", "pos": "v.", "tags": ["core"], "cn": "抢夺，夺走", "en": "to take something from someone illegally or unfairly", "ex": "it robs not only the physical objects", "mem": "日常 rob 后接被抢的人或地方（rob a bank · rob sb of sth），steal 后接被偷的东西（steal money）；这里 rob 直接接被夺的东西，是作者的写法。not only … but … 递进：实物 → 尊严和精神。", "syn": "deprive · strip", "conf": "<b>rob sb of sth</b> vs <b>steal sth from sb</b>。"},
+  dignity:{"w": "dignity", "ipa": "/ˈdɪɡnəti/", "pos": "n.", "tags": ["core", "write"], "cn": "尊严", "en": "the respect that people deserve", "ex": "the dignity and spirit of their creators", "mem": "human dignity 人的尊严 · with dignity 有尊严地。作文：<i class=\"own\">Every culture deserves to be treated with dignity.</i>", "syn": "respect · honour · self-respect", "conf": "<b>dignity</b> 尊严 vs <b>dignitary</b> 显要人物。"},
+  ancient:{"w": "ancient", "ipa": "/ˈeɪnʃənt/", "pos": "adj.", "tags": ["core"], "cn": "古代的，古老的", "en": "very old; from a long time ago", "ex": "Ancient art that is displayed in foreign countries", "mem": "ancient art 古代艺术品——Victor 不说 artifacts，开口用 ancient art，⑦ 又叫 works、② 叫 items。", "syn": "old · antique", "conf": "<b>ancient</b> 古代的 vs <b>antique</b> 古董。"},
+  byallmeans:{"w": "by all means", "ipa": "/baɪ ɔːl miːnz/", "pos": "phr.", "tags": ["phrase", "poly"], "cn": "务必，无论如何", "en": "certainly; in every possible way", "ex": "by all means should be returned", "mem": "⚠️ 两种用法：① 答话「当然可以」（May I come in? — By all means.）；② 句中＝无论如何、务必（此处）。别和 <b>by no means</b>（决不）弄反。", "syn": "certainly · definitely", "conf": "<b>by all means</b> 务必 vs <b>by no means</b> 决不 vs <b>by means of</b> 借助。"},
+  original:{"w": "original", "ipa": "/əˈrɪdʒənl/", "pos": "adj./n.", "tags": ["poly"], "cn": "原来的；原件", "en": "existing at the beginning; the first one made", "ex": "returned to the original country", "mem": "⚠️ 熟义「原创的」。original country ＝ 原属国（= country of origin）——<b>Victor 三次 original country，Julia 和选项都用 country of origin：同义替换</b>。C 的 the originals 是 n. 原件。", "syn": "first · initial; the real one", "conf": "<b>original</b> 原来的 vs <b>origin</b> 起源 vs <b>originate</b> 起源于。"},
+  holdback:{"w": "hold back", "ipa": "/həʊld bæk/", "pos": "phr.", "tags": ["phrase"], "cn": "阻止；扣着不放", "en": "to stop something from happening; to keep something", "ex": "have no right to hold back returning the items", "mem": "hold back ＝ 扣住不放、拦着；hold back tears 忍住眼泪。hold back returning ＝ 拖着不还——<b>驳的是「行为」</b>，所以 Victor 配不上 B（B 要驳「推理」）。", "syn": "keep · withhold · delay", "conf": "<b>hold back</b> 阻止 vs <b>hold on</b> 等一下 vs <b>hold up</b> 耽搁。"},
+  item:{"w": "item", "ipa": "/ˈaɪtəm/", "pos": "n.", "tags": ["core"], "cn": "物品，一件", "en": "a single thing in a list or collection", "ex": "returning the items", "mem": "Victor 嘴里文物的第三种叫法（art · items · works）。", "syn": "object · piece", "conf": "<b>item</b> 一项 vs <b>items</b> 物品。"},
+  askthat:{"w": "ask that sb (should) do", "ipa": "/ɑːsk ðæt/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "要求某人做……", "en": "to request that something be done", "ex": "I would ask that the foreign nations", "mem": "ask／suggest／demand／insist（要求）后的 that 从句用 (should) ＋ 动词原形：<b>discuss 不加 s</b>（05 长难句 7）。作文建议信必用：<i class=\"own\">I would suggest that the library open later.</i>", "syn": "request · urge", "conf": "<b>ask that</b> 要求 vs <b>ask if</b> 询问是否。"},
+  terms:{"w": "terms", "ipa": "/tɜːmz/", "pos": "n.", "tags": ["poly"], "cn": "（复数）条件，条款", "en": "the conditions of an agreement", "ex": "discuss the terms of transfer", "mem": "⚠️ terms 复数＝条件、条款：terms and conditions 条款 · on equal terms 平等地；不是「术语、学期」。on good terms 关系好。", "syn": "conditions · provisions", "conf": "<b>terms</b> 条件 vs <b>term</b> 学期／术语。"},
+  risk:{"w": "risk", "ipa": "/rɪsk/", "pos": "n.", "tags": ["core"], "cn": "风险", "en": "the possibility of something bad happening", "ex": "there is the risk that the original country", "mem": "the risk that ＋ 同位语从句（说明什么风险）。Yes, there is the risk that … ＝ <b>先认下对方的理由</b>，下一句 But 才是本人观点。", "syn": "danger · chance · possibility", "conf": "<b>risk</b> 风险 vs <b>rescue</b> 营救。"},
+  security:{"w": "security", "ipa": "/sɪˈkjʊərəti/", "pos": "n.", "tags": ["core", "write"], "cn": "安保，安全措施", "en": "actions taken to protect a place or thing", "ex": "will not have as good security as", "mem": "G 的 <span class=\"loc\">Concern over security</span> 正是这句的原词——<b>观点匹配的正确项常带原词，因为它要指认「是谁说的」</b>。as good security as do the foreign countries 是比较倒装（05 长难句 8）。", "syn": "safety · protection", "conf": "<b>security</b> 安保 vs <b>safety</b> 安全（免于事故）。"},
+  theft:{"w": "theft", "ipa": "/θeft/", "pos": "n.", "tags": ["core"], "cn": "盗窃", "en": "the crime of stealing", "ex": "Boston’s Gardner Museum theft in 1990", "mem": "背景：1990 年波士顿伊莎贝拉·斯图尔特·加德纳博物馆失窃 13 件（维米尔、伦勃朗、马奈、德加等），估值 5 亿美元以上，至今未破。<b>A 的 stolen 借了这个词的原料</b>。", "syn": "stealing · robbery", "conf": "<b>theft</b> 盗窃（行为）vs <b>thief</b> 小偷。"},
+  masterpiece:{"w": "masterpiece", "ipa": "/ˈmɑːstəpiːs/", "pos": "n.", "tags": ["core", "write"], "cn": "杰作", "en": "a work of art of the highest quality", "ex": "and other masterpieces", "mem": "master（大师）＋ piece（作品）。", "syn": "classic · masterwork", "conf": "<b>masterpiece</b> 杰作 vs <b>mastermind</b> 策划者。"},
+  absolutely:{"w": "absolutely", "ipa": "/ˈæbsəluːtli/", "pos": "adv.", "tags": ["core"], "cn": "绝对地，完全", "en": "completely", "ex": "Nothing is absolutely safe, nowhere.", "mem": "Nothing … nowhere 双重否定式强调——口语评论的味道，意思是「哪儿都不保险」，不是「哪儿都安全」。", "syn": "completely · totally", "conf": "<b>absolutely</b> 绝对 vs <b>obsoletely</b>（极少用）。"},
+  agitator:{"w": "agitator", "ipa": "/ˈædʒɪteɪtə(r)/", "pos": "n.", "tags": ["core"], "cn": "煽动者；（激进的）抗议者", "en": "a person who tries to make people angry enough to protest", "ex": "Climate Change agitators are attacking", "mem": "agitate v. 搅动、煽动。⚠️ 带贬义，比 activist 更负面——<b>Victor 的措辞暴露他不认同这些人</b>。背景：2022 年 10–11 月起欧洲多国气候抗议者向名画泼汤、泼土豆泥（画有玻璃罩，未损）。", "syn": "activist · protester · troublemaker", "conf": "<b>agitator</b> 煽动者 vs <b>activist</b> 活动家。"},
+  publicly:{"w": "publicly", "ipa": "/ˈpʌblɪkli/", "pos": "adv.", "tags": ["core"], "cn": "公开地", "en": "in a way that everyone can see", "ex": "attacking publicly displayed works", "mem": "publicly displayed works 公开展出的作品——<b>放在欧洲也一样不安全</b>，是 ⑤ 之后的第二个反例。", "syn": "openly · in public", "conf": "<b>publicly</b> 公开地 vs <b>public</b> 公众的。"},
+  commentsection:{"w": "comments section", "ipa": "/ˈkɒments ˌsekʃn/", "pos": "n.", "tags": ["phrase"], "cn": "评论区", "en": "the part of a website where readers write comments", "ex": "To those of you in the comments section", "mem": "Directions 里的 comments 落在这里——<b>Julia 是唯一点名「在评论区回话」的人</b> ⟹ 她在和别的评论者辩论，这就是 B 要的「对手」。", "syn": "comment thread · comment board", "conf": "<b>comment on</b> 评论 vs <b>commentary</b> 解说。"},
+  strongfeel:{"w": "have strong feelings about", "ipa": "/hæv strɒŋ ˈfiːlɪŋz əˈbaʊt/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "对……情绪强烈", "en": "to have firm opinions about something", "ex": "who are having strong feelings about", "mem": "be having 进行时：此刻正情绪激动——Julia 的口气带点讥讽。", "syn": "feel strongly about · be passionate about", "conf": "<b>feelings</b> 情绪 vs <b>feeling</b> 感觉。"},
+  remove:{"w": "remove", "ipa": "/rɪˈmuːv/", "pos": "v.", "tags": ["core"], "cn": "移走，搬走", "en": "to take something away from a place", "ex": "artifacts being removed from cities in the US", "mem": "being removed … and returned：两个被动并列，returned 前省了 being（05 长难句 9）。", "syn": "take away · relocate", "conf": "<b>remove</b> 移走 vs <b>removal</b> 移除。"},
+  origin:{"w": "country of origin", "ipa": "/ˈkʌntri əv ˈɒrɪdʒɪn/", "pos": "n.", "tags": ["core", "phrase"], "cn": "原属国，原产国", "en": "the country something comes from", "ex": "returned to their countries of origin", "mem": "七项里 B、E、G 三项都带它；Victor 说 original country——同义替换。商品标签上的 country of origin ＝ 原产国。", "syn": "homeland · source country", "conf": "<b>origin</b> 起源 vs <b>original</b> 原来的。"},
+  consider:{"w": "consider", "ipa": "/kənˈsɪdə(r)/", "pos": "v.", "tags": ["core"], "cn": "考虑，想一想", "en": "to think about something carefully", "ex": "I would ask you to consider:", "mem": "冒号后直接给问题：Julia 不下结论，<b>请对方自己想</b>——这是她整段的打法。", "syn": "think about · reflect on", "conf": "<b>consider doing</b> 考虑做 vs <b>consider sb to be</b> 认为某人是。"},
+  moreofa:{"w": "more of a right", "ipa": "/mɔːr əv ə raɪt/", "pos": "phr.", "tags": ["phrase"], "cn": "更有权利", "en": "a greater right", "ex": "Americans have more of a right", "mem": "more of a ＋ 名词 ＝ 更算是……：<i class=\"own\">He is more of a teacher than a boss.</i> Julia 用比较反问：凭什么美国人比尼日利亚人更有权。", "syn": "a stronger claim", "conf": "<b>more of a</b> 更像 vs <b>more or less</b> 或多或少。"},
+  access:{"w": "access", "ipa": "/ˈækses/", "pos": "v./n.", "tags": ["core", "write"], "cn": "接触，使用；进入", "en": "to be able to see or use something", "ex": "to easily access the Benin Bronzes", "mem": "to easily access 是分裂不定式（副词插进 to 和动词之间）。have access to 能接触到。<b>Hannah ① 和 Julia ❶ 都谈可及性，首尾呼应</b>。", "syn": "reach · get to · use", "conf": "<b>access</b> 接触 vs <b>assess</b> 评估 vs <b>excess</b> 过量。"},
+  daysdrive:{"w": "within a day’s drive of", "ipa": "/wɪˈðɪn ə deɪz draɪv əv/", "pos": "phr.", "tags": ["phrase"], "cn": "离……一天车程以内", "en": "close enough to drive to in one day", "ex": "within a day’s drive of London", "mem": "within ＋ 时间／距离 ＋ of ＋ 地点：within walking distance of 步行可到 · within an hour’s flight of 一小时航程内。", "syn": "close to · near", "conf": "<b>within reach of</b> 够得着 vs <b>out of reach of</b> 够不着。"},
+  entitled:{"w": "be entitled to", "ipa": "/bi ɪnˈtaɪtld tə/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "有资格，有权", "en": "to have the right to do or have something", "ex": "entitled to go and see the Elgin Marbles", "mem": "entitle v. 给予权利（也是「给书题名」）；= have the right to。<b>Julia 两句反问都在问「权利」</b>：more of a right · entitled to。", "syn": "have the right to · qualify for", "conf": "<b>be entitled to</b> 有权 vs <b>be titled</b> 题为。"},
+  elgin:{"w": "Elgin Marbles", "ipa": "/ˈelɡɪn ˈmɑːblz/", "pos": "n.", "tags": ["core"], "cn": "埃尔金石雕（帕特农神庙雕塑）", "en": "ancient Greek marble sculptures from the Parthenon, kept in the British Museum", "ex": "see the Elgin Marbles", "mem": "19 世纪初英国的埃尔金伯爵把雅典帕特农神庙的大理石雕刻运回英国，现藏大英博物馆；希腊多年要求归还——所以 Julia 拿伦敦人和<b>雅典人</b>对比。", "syn": "Parthenon Marbles / Sculptures", "conf": "<b>marble</b> 大理石；复数 marbles 也指大理石雕塑。"},
+  intrinsic:{"w": "intrinsic", "ipa": "/ɪnˈtrɪnzɪk/", "pos": "adj.", "tags": ["core", "write"], "cn": "内在的，固有的", "en": "belonging to the basic nature of something", "ex": "What intrinsic factors make the West", "mem": "intrinsic value 内在价值；反义 extrinsic 外在的。反问的潜台词：<b>西方哪有什么「天生」的条件</b>。", "syn": "inherent · built-in · essential", "conf": "<b>intrinsic</b> 内在的 vs <b>intricate</b> 复杂的。"},
+  suitable:{"w": "suitable", "ipa": "/ˈsuːtəbl/", "pos": "adj.", "tags": ["core"], "cn": "合适的", "en": "right for a particular purpose", "ex": "a suitable home for these artifacts", "mem": "a suitable home for ＝ 合适的归宿——make the West a suitable home：make ＋ 宾语 ＋ 名词宾补（05 长难句 11）。", "syn": "appropriate · proper · fit", "conf": "<b>suitable</b> 合适 vs <b>suit</b> 适合（v.）。"},
+  preclude:{"w": "preclude", "ipa": "/prɪˈkluːd/", "pos": "v.", "tags": ["core"], "cn": "阻止，使不可能", "en": "to prevent something from happening", "ex": "preclude them from being preserved", "mem": "pre-（预先）＋ clude（关上）＝「事先关门」。preclude A from doing ＝ prevent A from doing。", "syn": "prevent · rule out · stop", "conf": "<b>preclude</b> 排除 vs <b>include</b> 包括 vs <b>exclude</b> 排除在外 vs <b>seclude</b> 隔离。"},
+  preserve:{"w": "preserve", "ipa": "/prɪˈzɜːv/", "pos": "v.", "tags": ["core", "write"], "cn": "保存，保护", "en": "to keep something in its original state", "ex": "being preserved and displayed", "mem": "❸❹ 两次 preserve。⚠️ <b>这是 G 的诱饵</b>：「西方更会保存」≈ 安保？可 Julia 是在质疑这个前提，不是在说「安保不是借口」；security 是 Victor 的词。", "syn": "conserve · protect · keep", "conf": "<b>preserve</b> 保存 vs <b>reserve</b> 预留 vs <b>deserve</b> 应得。"},
+  conclusion:{"w": "conclusion", "ipa": "/kənˈkluːʒn/", "pos": "n.", "tags": ["core", "write"], "cn": "结论", "en": "an opinion you reach after thinking", "ex": "If your conclusion is that the West", "mem": "If your conclusion is that … think about why … ＝ 典型的「拆论证」句式：<b>把对方的结论摆出来，再追问它的前提</b> ⟹ B 的 line of reasoning。", "syn": "judgement · inference", "conf": "<b>conclusion</b> 结论 vs <b>conclude</b> 推断。"},
+  assume:{"w": "assume", "ipa": "/əˈsjuːm/", "pos": "v.", "tags": ["core", "poly"], "cn": "（未经证实地）假定，认为", "en": "to think something is true without proof", "ex": "why you’re assuming that to be true", "mem": "assume sth to be true 认定某事为真；assumption 假设。⚠️ 熟义「承担（责任）」：assume responsibility。<b>Julia 不反驳结论，反驳结论背后的假设</b>——元论证。", "syn": "presume · suppose · take for granted", "conf": "<b>assume</b> 假定 vs <b>resume</b> 恢复 vs <b>consume</b> 消耗。"},
+  compensate:{"w": "compensate", "ipa": "/ˈkɒmpenseɪt/", "pos": "v.", "tags": ["core", "write"], "cn": "赔偿，补偿", "en": "to pay someone money because they have suffered loss", "ex": "have never been compensated for the stolen artifacts", "mem": "com-（一起）＋ pens（称重、付钱）。be compensated for ＝ 因……得到赔偿；compensation n.。⚠️ <b>全文没有一个人谈赔偿</b> ⟹ A 是「无人提及」型多余项。", "syn": "reimburse · make up for", "conf": "<b>compensate</b> 补偿 vs <b>complement</b> 补充 vs <b>compliment</b> 称赞。"},
+  stolen:{"w": "stolen", "ipa": "/ˈstəʊlən/", "pos": "adj.", "tags": ["core"], "cn": "被盗的", "en": "taken without permission", "ex": "the stolen artifacts", "mem": "steal–stole–stolen。原料在 Sara ⑤ Stealing、Victor ⑤ theft——<b>原料真、组合假</b>（R39 原词拼接）。", "syn": "looted · plundered", "conf": "<b>stolen</b> 被盗的 vs <b>swollen</b> 肿的。"},
+  flawed:{"w": "flawed", "ipa": "/flɔːd/", "pos": "adj.", "tags": ["core", "write"], "cn": "有缺陷的，有漏洞的", "en": "having a mistake or weakness", "ex": "It is a flawed line of reasoning", "mem": "flaw n. 瑕疵。a flawed argument 有漏洞的论证——驳论作文常用：<i class=\"own\">This view rests on a flawed assumption.</i>", "syn": "faulty · defective · unsound", "conf": "<b>flawed</b> 有缺陷 vs <b>floored</b> 震惊的。"},
+  lineofreasoning:{"w": "line of reasoning", "ipa": "/laɪn əv ˈriːzənɪŋ/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "推理思路", "en": "a series of reasons used to reach a conclusion", "ex": "a flawed line of reasoning", "mem": "line ＝「思路、路线」：a line of thought／argument。<b>B 评的是「对方的推理」，不是「对方的立场」——必须有人在拆别人的推理才配得上</b>（Julia）。", "syn": "argument · logic · reasoning", "conf": "<b>line of reasoning</b> 推理 vs <b>line of work</b> 行业。"},
+  argueagainst:{"w": "argue against", "ipa": "/ˈɑːɡjuː əˈɡenst/", "pos": "phr.", "tags": ["phrase"], "cn": "反对……，提出理由反对", "en": "to give reasons why something should not be done", "ex": "to argue against returning artifacts", "mem": "argue for 主张 · argue against 反对。B 的主语是「反对归还」这种论证，<b>B 本身站「该还」一边</b>——立场和五人一样，所以立场分不出它，只能看抓手。", "syn": "oppose · object to", "conf": "<b>argue against</b> 反对 vs <b>argue with</b> 与……争吵。"},
+  copy:{"w": "copy", "ipa": "/ˈkɒpi/", "pos": "n.", "tags": ["poly"], "cn": "复制品", "en": "something made to look exactly like something else", "ex": "learn as much from artifacts’ copies", "mem": "⚠️ 熟义「抄写；一本（书）」；此处＝复制品。<b>C 用 copies 改写 Buck 的 reproductions</b>——同义替换，D 则照搬原词。", "syn": "reproduction · replica", "conf": "<b>copy</b> 复制品 vs <b>a copy of the book</b> 一本书。"},
+  authentic:{"w": "authentic", "ipa": "/ɔːˈθentɪk/", "pos": "adj.", "tags": ["core", "write"], "cn": "真正的，原作的", "en": "real, not a copy", "ex": "cannot take the place of the authentic objects", "mem": "与 forgery／copy 相对；authentic food 正宗菜。D 的 authentic objects ← Buck ④ the real object。", "syn": "genuine · original · real", "conf": "<b>authentic</b> 真的 vs <b>authority</b> 权威。"},
+  takeplace:{"w": "take the place of", "ipa": "/teɪk ðə pleɪs əv/", "pos": "phr.", "tags": ["phrase"], "cn": "代替", "en": "to replace", "ex": "cannot take the place of the authentic objects", "mem": "⚠️ take place 发生（没有 the）· take the place of 代替 · take one’s place 就座。<b>D 这个短语正撞 Buck</b>：他就是要让复制品顶替原件展出。", "syn": "replace · substitute for", "conf": "<b>take place</b> 发生 vs <b>take the place of</b> 代替。"},
+  recognize:{"w": "recognize", "ipa": "/ˈrekəɡnaɪz/", "pos": "v.", "tags": ["poly"], "cn": "承认（价值）", "en": "to accept that something is valuable or true", "ex": "can only be recognized in their countries of origin", "mem": "⚠️ 熟义「认出」；the value is recognized ＝ 价值得到承认、得以体现。", "syn": "acknowledge · appreciate", "conf": "<b>recognize</b> 认出／承认 vs <b>realize</b> 意识到。"},
+  ratherthan:{"w": "rather than", "ipa": "/ˈrɑːðə ðæn/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "而不是", "en": "instead of", "ex": "in their countries of origin rather than anywhere else", "mem": "A rather than B：肯定 A、否定 B。E 用它造出绝对口气——<b>可 Hannah ④ 本身就绝对</b>。", "syn": "instead of · not", "conf": "<b>rather than</b> 而不是 vs <b>other than</b> 除了。"},
+  decent:{"w": "decent", "ipa": "/ˈdiːsnt/", "pos": "adj.", "tags": ["poly"], "cn": "正派的，得体的", "en": "honest and morally good", "ex": "must be decent and lawful", "mem": "⚠️ 熟义「像样的、还不错的」（a decent meal）；修饰手段＝正当、得体。<b>decent 讲道德（← Sara ⑤ obscene 的反面），lawful 讲法律（← ④ legally／by treaty）</b>。", "syn": "proper · honest · respectable", "conf": "<b>decent</b> 正派 vs <b>descent</b> 下降 vs <b>recent</b> 最近的。"},
+  lawful:{"w": "lawful", "ipa": "/ˈlɔːfl/", "pos": "adj.", "tags": ["core"], "cn": "合法的", "en": "allowed by law", "ex": "must be decent and lawful", "mem": "= legal。lawful ← Sara ④ legally purchased、by treaty。", "syn": "legal · legitimate", "conf": "<b>lawful</b> 合法 vs <b>lawless</b> 无法无天。"},
+  excuse:{"w": "excuse", "ipa": "/ɪkˈskjuːs/", "pos": "n.", "tags": ["core", "write"], "cn": "借口，理由", "en": "a reason given to explain a fault", "ex": "is no excuse for refusing to return", "mem": "be no excuse for doing ＝ 不是……的理由：<i class=\"own\">Being busy is no excuse for skipping breakfast.</i> G 的意思：承认有安保顾虑，但这条理由不成立——<b>对上 Victor 的 Yes … But</b>。", "syn": "justification · pretext", "conf": "<b>excuse</b> /s/ n. 借口 vs /z/ v. 原谅。"},
+  refuse:{"w": "refuse", "ipa": "/rɪˈfjuːz/", "pos": "v.", "tags": ["core"], "cn": "拒绝", "en": "to say you will not do something", "ex": "refusing to return artifacts", "mem": "refuse to do。← Victor ② hold back returning。", "syn": "decline · reject", "conf": "<b>refuse</b> 拒绝 vs <b>refuse</b> /ˈrefjuːs/ n. 垃圾。"},
+  concernover:{"w": "concern over", "ipa": "/kənˈsɜːn ˈəʊvə(r)/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "对……的担忧", "en": "worry about something", "ex": "Concern over security is no excuse", "mem": "concern n. 担心：concern over／about。← Victor ④ the risk that … not have as good security。", "syn": "worry about · anxiety over", "conf": "<b>concern over</b> 担忧 vs <b>as far as … is concerned</b> 就……而言。"}
+};
+/* 选项库渲染 */
+const lib=document.getElementById('optlib');
+lib.innerHTML=Object.keys(OPTS).map(k=>
+  '<div class="optitem'+(EXTRA.indexOf(k)>=0?' extra':'')+'" id="opt-'+k+'"><span class="lt">'+k+'</span><span>'
+  +'<span class="oen">'+OPTS[k][0]+'</span>'
+  +'<span class="zhx">'+OPTS[k][1]+'</span>'
+  +'<span class="kw">🔑 '+OPTS[k][2]+'</span>'
+  +'<span class="stg">'+OPTS[k][3]+'</span></span></div>').join('');
+
+/* 作答交互：答后就地把空格补全成原文 */
+document.querySelectorAll('.person').forEach(p=>{
+  const ans=p.dataset.ans; if(!ans)return;
+  const chips=p.querySelector('.chips');
+  chips.innerHTML='ABCDEFG'.split('').map(l=>'<button class="ch" data-l="'+l+'">'+l+'</button>').join('');
+  chips.querySelectorAll('.ch').forEach(c=>c.addEventListener('click',()=>{
+    if(p.classList.contains('done'))return;
+    p.classList.add('done');
+    if(c.dataset.l!==ans)c.classList.add('wrong');
+    chips.querySelector('.ch[data-l="'+ans+'"]').classList.add('right');
+    const oi=document.getElementById('opt-'+ans); if(oi)oi.classList.add('used');
+    const slot=p.querySelector('.slot');
+    if(slot){slot.classList.add('filled');slot.innerHTML='<span class="fl">['+ans+']</span>'+OPTS[ans][0];}
+  }));
+});
+
+const panel=document.getElementById('panel');
+const isMobile=()=>window.innerWidth<=900;
+function badge(t){return {core:'<span class="badge b-core">核心词</span>',phrase:'<span class="badge b-phrase">短语</span>',poly:'<span class="badge b-poly">熟词僻义</span>',write:'<span class="badge b-write">写作✍︎</span>'}[t]||''}
+function showCard(k,el){
+  const d=V[k]; if(!d)return;
+  document.querySelectorAll('.tk.active').forEach(e=>e.classList.remove('active'));
+  if(el&&el.classList.contains('tk'))el.classList.add('active');
+  panel.innerHTML='<button class="close" onclick="panel.classList.remove(\'open\')">✕</button>'
+  +'<div class="wcard">'
+  +'<div class="head"><span class="w">'+d.w+'</span><span class="ipa">'+d.ipa+'</span><span class="pos">'+d.pos+'</span>'+d.tags.map(badge).join('')+'</div>'
+  +'<div class="cn">'+d.cn+'</div><div class="en-def">'+d.en+'</div>'
+  +'<div class="row r-ex"><b>原文语境</b>“…'+d.ex+'…”</div>'
+  +'<div class="row r-mem"><b>怎么记</b>'+d.mem+'</div>'
+  +'<div class="row r-syn"><b>同类词</b>'+d.syn+'</div>'
+  +'<div class="row r-conf"><b>易混辨析</b>'+d.conf+'</div>'
+  +'</div>';
+  if(isMobile())panel.classList.add('open');
+}
+document.addEventListener('click',function(e){
+  const t=e.target.closest?e.target.closest('.tk'):null;
+  if(t){e.stopPropagation();showCard(t.dataset.w,t);}
+});
+function tz(btn){btn.closest('.person,.para').classList.toggle('showzh')}
+let allOn=false;
+function toggleAll(){allOn=!allOn;document.querySelectorAll('.person,.para').forEach(p=>p.classList.toggle('showzh',allOn))}
+
+const vg=document.getElementById('vgrid');
+Object.keys(V).forEach(k=>{
+  const d=V[k];
+  const div=document.createElement('div');div.className='vitem';
+  div.style.cssText='border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer';
+  div.innerHTML='<span style="float:right">'+d.tags.map(badge).join('')+'</span>'
+   +'<div style="font-family:var(--serif);font-weight:bold">'+d.w+'</div>'
+   +'<div style="font-size:.85rem;color:var(--muted)">'+d.cn+'</div>';
+  div.addEventListener('click',()=>{showCard(k,null);if(!isMobile())window.scrollTo({top:0,behavior:'smooth'})});
+  vg.appendChild(div);
+});
+document.getElementById('vcount').textContent=Object.keys(V).length;
+
+const yd=document.getElementById('yd');let sel='',ydHold=0,ydT=0;
+/* 触屏：点按钮会先把选区清掉 → selectionchange 立刻把按钮藏了 → 点击落空。改成延迟隐藏 ＋ 按下即锁定 */
+const ydTouch=window.matchMedia&&matchMedia('(pointer:coarse)').matches;
+function ydHide(){clearTimeout(ydT);ydHold=0;yd.style.display='none'}
+document.addEventListener('selectionchange',function(){
+  const s=window.getSelection();const t=s?s.toString().trim():'';
+  if(t&&/^[a-zA-Z' -]{2,40}$/.test(t)){
+    sel=t;clearTimeout(ydT);
+    try{const r=s.getRangeAt(0).getBoundingClientRect();
+      yd.style.left=Math.max(8,Math.min(r.left,window.innerWidth-110))+'px';
+      yd.style.top=(r.bottom+(ydTouch?30:8))+'px';yd.style.display='block';}catch(e){}
+  }else if(!ydHold){clearTimeout(ydT);ydT=setTimeout(function(){if(!ydHold)yd.style.display='none'},ydTouch?900:0)}
+});
+['pointerdown','touchstart','mousedown'].forEach(function(ev){yd.addEventListener(ev,function(){ydHold=1;clearTimeout(ydT)},{passive:true})});
+yd.addEventListener('click',function(){
+  const u='https://dict.youdao.com/result?word='+encodeURIComponent(sel)+'&lang=en';
+  let w=null;try{w=window.open(u,'_blank')}catch(e){}
+  if(!w)location.href=u;
+  ydHide()});
+document.addEventListener('click',function(e){if(e.target!==yd&&!window.getSelection().toString())ydHide()});
+
+/* 原卷对照总开关（流式版） */
+function imgAll(b){const on=document.body.classList.toggle('stx-allimg');document.querySelectorAll('button[onclick^="imgAll"]').forEach(x=>x.textContent=on?'收起原卷':'原卷对照');
+  if(on)document.querySelectorAll('img.strip').forEach(im=>im.loading='eager')}
+</script>
+<script src="img/strip_boxes_2024.js?v=7"></script>
+<script src="_strip_lookup.js?v=8"></script>
+<script>window.STX_HYPHEN=['15th-century'];</script>
+<script src="_strip_text.js?v=26"></script>
+<script src="_fault_attr.js"></script>
+</body>
+</html>
+

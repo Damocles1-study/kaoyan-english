@@ -11,7 +11,7 @@
   'use strict';
   var BOX = window.STRIP_BOXES || {};
   var TESS_URL = 'https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js';
-  var VER = 'stx15';
+  var VER = 'stx17';
 
   var css = ''
     + '.stx{font-family:var(--serif,Georgia,serif);font-size:1.02rem;line-height:1.9;margin:4px 0 2px;overflow-wrap:anywhere}'
@@ -142,8 +142,8 @@
       sc = sc * S; c = c2;
       return worker().then(function(w){
         return w.recognize(c, {}, {blocks:true}).then(function(r){
-          var ws = [];
-          (r.data.blocks || []).forEach(function(bl){ (bl.paragraphs || []).forEach(function(pa){ (pa.lines || []).forEach(function(li){ (li.words || []).forEach(function(wd){ ws.push(wd); }); }); }); });
+          var ws = [], nl = 0;   /* nl：tesseract 的行号 */
+          (r.data.blocks || []).forEach(function(bl){ (bl.paragraphs || []).forEach(function(pa){ (pa.lines || []).forEach(function(li){ (li.words || []).forEach(function(wd){ wd._ln = nl; ws.push(wd); }); nl++; }); }); });
           /* 一个识别词横跨两个以上词框、且框间是正常词距（≥8px）⟹ tesseract 把两个词粘在一起了（Ferraro,an）：
              丢掉这个词，让它压着的框各自补认；框间距很小则是同一个词被词框切开（20｜12），保持合并 */
           var split = ws.map(function(wd){
@@ -166,16 +166,50 @@
               if (cx >= x0-3 && cx <= x1+3){ if (!used[j]){ hit.push(wd); used[j] = true; } }
               else if (ov > 0.6*(x1-x0) && !split[j]) cover = true;
             });
-            return {t: hit.map(function(wd){ return wd.text; }).join(' '), u: ul[k], l: lines.indexOf(b[1]), cover: cover || ink[k] < 15, k: k, bw: b[2], blk: blk[k], x0: b[0], x1: b[0]+b[2]};
+            /* 同一个词框里的词来自 tesseract 的两个不同行：降部字母（g p q y）被单独认成了一行（2024 T4 ②❹ “significant g”）⟹ 清空，整行单行模式重认 */
+            var ghost = hit.length > 1 && hit.some(function(wd){ return wd._ln !== hit[0]._ln; });
+            if (ghost) return {t: '', u: ul[k], l: lines.indexOf(b[1]), cover: false, ghost: true, k: k, bw: b[2], blk: blk[k], x0: b[0], x1: b[0]+b[2]};
+            /* 句首首字下沉（T he）：第一个框里单个大写字母后跟小写词 ⟹ 拼成一个词 */
+            var tx = hit.map(function(wd){ return wd.text; });
+            if (k === 0 && tx.length > 1 && /^[A-Z]$/.test(tx[0]) && /^[a-z]/.test(tx[1])) tx.splice(0, 2, tx[0] + tx[1]);
+            return {t: tx.join(' '), u: ul[k], l: lines.indexOf(b[1]), cover: cover || ink[k] < 15, k: k, bw: b[2], blk: blk[k], x0: b[0], x1: b[0]+b[2]};
           });
           /* 窄框（a、I 一类）整行模式认成两个以上大写字母（2023 完形 a → KS）：当乱认，清空后一起补认 */
           function junk(o){ return o.bw <= 16 && /^[A-Z]{2,}$/.test(o.t.replace(/[^A-Za-z]/g, '')); }
           out.forEach(function(o){ if (o.t && junk(o)){ o.t = ''; o.cover = false; } });
-          /* 没对上任何词、也没被相邻词覆盖的框：单独裁出来按单词模式补认 */
-          var miss = out.filter(function(o){ return !o.t && !o.cover; });
+          /* 空格横线右边紧挨的词（2024 完形 ②❷ They __5__ as：整行模式漏认，单词模式补认成 El）：补认结果是「大写＋小写」两字母时也按乱认重认 */
+          out.forEach(function(o, i){ var p = out[i-1]; o.aftBk = !!(p && p.blk && p.l === o.l && document.querySelector('.bk,.slot[data-n]')); });
+          function junk2(o){ return junk(o) || (o.aftBk && /^[A-Z][a-z]$/.test(o.t)); }
+          /* 有幽灵行的那一整行：裁成单行、用单行模式（PSM 7）重认，按词心落回各框（单词模式 PSM 8 会把 quality 认成 quay，2024 T4） */
+          var gl = []; out.forEach(function(o){ if (o.ghost && gl.indexOf(o.l) < 0) gl.push(o.l); });
           var chain = Promise.resolve();
-          if (miss.length){
-            chain = w.setParameters({tessedit_pageseg_mode:'8'});
+          if (gl.length){
+            chain = w.setParameters({tessedit_pageseg_mode:'7'});
+            gl.forEach(function(li){
+              chain = chain.then(function(){
+                var bs = d.b.filter(function(b){ return lines.indexOf(b[1]) === li; });
+                var y0 = Math.min.apply(null, bs.map(function(b){ return b[1]; })) - 6, y1 = Math.max.apply(null, bs.map(function(b){ return b[1] + b[3]; })) + 6;
+                var cc = document.createElement('canvas'); cc.width = c.width; cc.height = Math.round((y1 - y0 + 40)*sc);
+                var gg = cc.getContext('2d'); gg.fillStyle = '#fff'; gg.fillRect(0,0,cc.width,cc.height);
+                gg.drawImage(c, 0, y0*sc, c.width, (y1-y0)*sc, 0, 20*sc, c.width, (y1-y0)*sc);
+                return w.recognize(cc, {}, {blocks:true}).then(function(r){
+                  var lw = [];
+                  (r.data.blocks || []).forEach(function(bl){ (bl.paragraphs || []).forEach(function(pa){ (pa.lines || []).forEach(function(ln){ (ln.words || []).forEach(function(wd){ lw.push(wd); }); }); }); });
+                  out.forEach(function(o){
+                    if (!o.ghost || o.l !== li) return;
+                    o.t = lw.filter(function(wd){ var cx = (wd.bbox.x0 + wd.bbox.x1)/2; return cx >= o.x0*sc - 3 && cx <= o.x1*sc + 3; })
+                            .map(function(wd){ return wd.text; }).join(' ');
+                  });
+                });
+              });
+            });
+          }
+          /* 没对上任何词、也没被相邻词覆盖的框：单独裁出来按单词模式补认 */
+          var miss;
+          chain = chain.then(function(){ miss = out.filter(function(o){ return !o.t && !o.cover; }); });
+          chain = chain.then(function(){
+            if (!miss.length) return;
+            var chain = w.setParameters({tessedit_pageseg_mode:'8'});
             miss.forEach(function(o){
               chain = chain.then(function(){
                 var b = d.b[o.k], pad = 6, cc = document.createElement('canvas');
@@ -184,15 +218,16 @@
                 gg.drawImage(c, (b[0]-pad)*sc, (b[1]-pad)*sc, (b[2]+2*pad)*sc, (b[3]+2*pad)*sc, 20*sc, 20*sc, (b[2]+2*pad)*sc, (b[3]+2*pad)*sc);
                 return w.recognize(cc).then(function(r2){
                   o.t = ((r2.data && r2.data.text) || '').replace(/\s+/g,' ').trim();
-                  if (!junk(o)) return;
+                  if (!junk2(o)) return;
                   /* 窄框单词模式仍认成两个大写字母 ⟹ 换单字符模式（PSM 10）再认一次 */
                   return w.setParameters({tessedit_pageseg_mode:'10'}).then(function(){ return w.recognize(cc); })
                     .then(function(r3){ o.t = ((r3.data && r3.data.text) || '').replace(/\s+/g,' ').trim(); return w.setParameters({tessedit_pageseg_mode:'8'}); });
                 });
               });
             });
-            chain = chain.then(function(){ return w.setParameters({tessedit_pageseg_mode:'6'}); });
-          }
+            return chain;
+          });
+          chain = chain.then(function(){ return w.setParameters({tessedit_pageseg_mode:'6'}); });
           return chain.then(function(){ return tidy(out); });
         });
       });
@@ -202,7 +237,13 @@
     return t.replace(/[‘’ʼ`]/g, '’').replace(/^’\s*(?=[A-Za-z]{2,}[^’]*’[,.;:!?]?$)/, '‘')   /* ‘ speak’ 同框：开头那个是左引号 */
             .replace(/''/g, '”').replace(/\s*[—–]{1,2}\s*/g, function(m){ return m.trim().length > 1 || /—/.test(m) ? '—' : '–'; })
             .replace(/^(\(?)Al(\)?[,.;:!?’”]*)$/, '$1AI$2')   /* 衬线体的 AI 常被认成 Al（2023 翻译） */
+            .replace(/^(\(?)Al-(?=[a-z])/, '$1AI-')   /* Al-generated ⟹ AI-generated（2024 T3） */
             .replace(/\s+([,.;:!?])/g, '$1').replace(/([“(])\s+/g, '$1').replace(/\s+([”)])/g, '$1').replace(/^\|$/, 'I').replace(/^(?:\[I|I\]|\|I|I\||Il|lI|\[\])$/, 'II').replace(/\s+/g, ' ').trim();
+  }
+  /* 行末断开的是真复合词（image-｜generation）⟹ 保留连字符；页面用 window.STX_HYPHEN = ['image-generation'] 声明（2024 T3） */
+  function keepHy(a, b){
+    var w = (a + b.match(/^[A-Za-z]*/)[0]).toLowerCase();
+    return (window.STX_HYPHEN || []).some(function(h){ return h.toLowerCase() === w; });
   }
   function tidy(out){
     var r = [], carry = '';
@@ -218,9 +259,11 @@
       if (/^[“("]+$/.test(t)){ carry = t; return; }
       var prev = r[r.length-1];
       /* 行末连字符断词：下一行行首小写则拼回 */
-      if (prev && prev.join && prev.l !== o.l && /^[a-z]/.test(t)){ prev.t = prev.t.replace(/-$/, '') + t; prev.u = prev.u || o.u; prev.join = false; return; }
+      if (prev && prev.join && prev.l !== o.l && /^[a-z]/.test(t)){ prev.t = keepHy(prev.t, t) ? prev.t + t : prev.t.replace(/-$/, '') + t; prev.u = prev.u || o.u; prev.join = false; return; }
       /* 数字区间被词框切成两半（3% ｜ –5%）：同一行、前一个以数字或 % 结尾、这一个以破折号起头 ⟹ 拼回，破折号统一成 – */
       if (prev && prev.bl === undefined && prev.l === o.l && /[\d%]$/.test(prev.t) && /^[—–-]\d/.test(t)){ prev.t += '–' + t.slice(1); prev.u = prev.u && o.u; return; }
+      /* 千分位被排版空格切开（64, ｜ 000-square-mile，2024 T4）：同一行、前一个以「数字,」结尾、这一个以三位数字起头 ⟹ 拼回 */
+      if (prev && prev.bl === undefined && prev.l === o.l && /\d,$/.test(prev.t) && /^\d{3}(?!\d)/.test(t)){ prev.t += t; prev.u = prev.u && o.u; return; }
       /* 空格：带下划线、框很宽（≥45px，真单词里的数字框只有二三十 px）的纯编号，如完形 __1__、新题型 “(41)＿＿” */
       if (o.blk && /^[“"(]?[0-9IlOoSBZ|]{1,2}[)”".,]?$/.test(t)) t = t.replace(/[Il|]/g, '1').replace(/[Oo]/g, '0').replace(/S/g, '5').replace(/B/g, '8').replace(/Z/g, '2');
       var bm = BL && ((o.u && o.bw >= 45) || o.blk) && t.match(/^([“"]?)\(?(\d{1,2})\)?([.,;:]?[”"]?)$/);
@@ -252,6 +295,12 @@
     var base = /e$/.test(p) ? p.slice(0, -1) : /y$/.test(p) ? p.slice(0, -1) : p;
     return t.indexOf(base) === 0 && t.length - p.length <= 4 && t.length - p.length >= 0;
   }
+  /* 破折号连写成一个词框（forget”—or · are—even）：只许词组首词对上它的后半、末词对上它的前半 */
+  function dashSame(t, p, first, last){
+    if (t === undefined || t.indexOf('—') < 0) return false;
+    var seg = t.split('—');
+    return (first && same(norm(seg[seg.length - 1]), p)) || (last && same(norm(seg[0]), p));
+  }
   function findPhrase(toks, phrase){
     var parts = phrase.split(/\s*(?:…|\.\.\.)\s*/).map(function(p){ return p.split(/\s+/).map(norm).filter(Boolean); }).filter(function(p){ return p.length; });
     if (!parts.length) return null;
@@ -262,7 +311,7 @@
         var found = -1, lim = p === 0 ? s : Math.min(tn.length - 1, pos + 12);
         for (var q = pos; q <= lim; q++){
           var m = true;
-          for (var z = 0; z < parts[p].length; z++) if (!same(tn[q+z], parts[p][z])){ m = false; break; }
+          for (var z = 0; z < parts[p].length; z++) if (!same(tn[q+z], parts[p][z]) && !dashSame(tn[q+z], parts[p][z], z === 0, z === parts[p].length - 1)){ m = false; break; }
           if (m){ found = q; break; }
         }
         if (found < 0) ok = false; else { if (start < 0) start = found; pos = found + parts[p].length; }
@@ -431,7 +480,7 @@
 
   /* ---------- 调度：按页面顺序逐张识别，同一张图只认一次；之后动态插入的句条（新题型作答槽）也接着处理 ---------- */
   var bySrc = {}, queue = [], busy = false, total = 0, n = 0, failed = false;
-  function cached(k){ var d = boxes(k); return lsGet(VER + 'e|' + k) || lsGet(VER + '|' + k + '|' + d.sig); }
+  function cached(k){ var d = boxes(k); return lsGet(VER + 'e|' + k) || lsGet('stx16e|' + k) || lsGet('stx15e|' + k) || lsGet(VER + '|' + k + '|' + d.sig); }   /* 升 VER 不丢读者以前的校对 */
   function attach(im){
     var k = keyOf(im.getAttribute('src') || ''); if (!boxes(k) || im._stx) return;
     im._stx = 1;

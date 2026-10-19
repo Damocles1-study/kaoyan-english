@@ -1,0 +1,1254 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2024 英一 翻译 · 大象的空间导航</title>
+<style>
+  :root{
+    --bg:#faf9f6; --card:#ffffff; --ink:#2b2b2b; --muted:#8a8578;
+    --accent:#8b5e34; --accent-soft:#f3e9dd; --line:#e8e3d8;
+    --hl:#fdf3d8; --hl-border:#e0b84d;
+    --green:#3e7a4e; --green-soft:#e8f2ea;
+    --red:#b04a3a; --red-soft:#f9e9e6;
+    --blue:#3d6a8a; --blue-soft:#e7eff5;
+    --purple:#6d5a8e; --purple-soft:#eeeaf5;
+    --serif:"Georgia","Songti SC",serif;
+    --sans:-apple-system,"PingFang SC","Helvetica Neue",sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#1c1a17; --card:#26231f; --ink:#e8e4dc; --muted:#9a948a;
+      --accent:#d0a06a; --accent-soft:#3a3127; --line:#3a362f;
+      --hl:#3d3520; --hl-border:#b08c3a;
+      --green:#7fb98d; --green-soft:#26362b;
+      --red:#d98876; --red-soft:#3d2a26;
+      --blue:#8ab3d0; --blue-soft:#26323d;
+      --purple:#a996c8; --purple-soft:#302a3d;
+    }
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;padding-bottom:120px}
+  .wrap{max-width:1100px;margin:0 auto;padding:24px 20px}
+  .back{font-size:.85rem;color:var(--muted);text-decoration:none}
+  .back:hover{color:var(--accent)}
+  header{margin:14px 0 28px}
+  header h1{font-family:var(--serif);font-size:1.7rem;line-height:1.3}
+  header .sub{color:var(--muted);margin-top:6px;font-size:.9rem}
+  .tags{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+  .tag{font-size:.75rem;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);border:1px solid var(--line)}
+  .tag.warn{background:var(--red-soft);color:var(--red)}
+  .layout{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:24px;align-items:start}
+  .layout>main{min-width:0}
+  @media (max-width:900px){.layout{grid-template-columns:minmax(0,1fr)}}
+  section.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:24px}
+  h2{font-size:1.05rem;letter-spacing:.05em;color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  h2 .n{font-size:.72rem;background:var(--accent);color:var(--card);border-radius:6px;padding:1px 7px}
+  h3{font-size:.95rem;margin:18px 0 8px;color:var(--ink)}
+  p{margin-bottom:10px}
+  .para{margin-bottom:16px}
+  .para .en{font-family:var(--serif);font-size:1.02rem;line-height:1.9}
+  .seg{background:var(--hl);border-bottom:2px solid var(--hl-border);border-radius:3px;padding:0 2px;cursor:pointer}
+  .seg:hover{filter:brightness(.94)}
+  .seg .no{font-size:.72rem;color:var(--accent);font-weight:700}
+  .tk{background:var(--hl);border-bottom:2px solid var(--hl-border);border-radius:3px;padding:0 2px;cursor:pointer}
+  .tk:hover{filter:brightness(.93)}
+  .tk.active{outline:2px solid var(--hl-border)}
+  .para .zh{display:none;margin-top:8px;padding:10px 14px;background:var(--blue-soft);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:.92rem}
+  .showzh .zh{display:block}
+  .allbtn{font-size:.78rem;border:1px solid var(--accent);background:none;color:var(--accent);border-radius:8px;padding:4px 12px;cursor:pointer;margin-left:auto}
+  aside{position:sticky;top:20px}
+  #panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;min-height:180px}
+  #panel .hint{color:var(--muted);font-size:.88rem;text-align:center;padding:30px 10px}
+  .wcard .head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .wcard .w{font-family:var(--serif);font-size:1.35rem;font-weight:bold}
+  .wcard .ipa{color:var(--muted);font-size:.85rem}
+  .wcard .pos{font-size:.72rem;color:var(--purple);background:var(--purple-soft);padding:1px 8px;border-radius:999px}
+  .wcard .badge{font-size:.7rem;padding:1px 8px;border-radius:999px}
+  .b-core{background:var(--red-soft);color:var(--red)}
+  .b-phrase{background:var(--blue-soft);color:var(--blue)}
+  .b-poly{background:var(--purple-soft);color:var(--purple)}
+  .b-write{background:var(--green-soft);color:var(--green)}
+  .wcard .cn{margin-top:8px;font-size:1rem;font-weight:600}
+  .wcard .en-def{color:var(--muted);font-size:.86rem;font-style:italic;margin-top:2px}
+  .wcard .row{margin-top:10px;font-size:.86rem;padding:8px 10px;border-radius:8px}
+  .wcard .row>b:first-child{font-size:.72rem;display:block;margin-bottom:2px;letter-spacing:.06em}
+  .r-ex{background:var(--hl)} .r-ex>b:first-child{color:var(--hl-border)}
+  .r-mem{background:var(--green-soft)} .r-mem>b:first-child{color:var(--green)}
+  .r-syn{background:var(--blue-soft)} .r-syn>b:first-child{color:var(--blue)}
+  .r-conf{background:var(--red-soft)} .r-conf>b:first-child{color:var(--red)}
+  #panel .close{display:none}
+  @media (max-width:900px){
+    aside{position:fixed;left:0;right:0;bottom:0;z-index:50;padding:0 8px 8px}
+    #panel{box-shadow:0 -6px 24px rgba(0,0,0,.18);max-height:55vh;overflow-y:auto;display:none}
+    #panel.open{display:block}
+    #panel .close{display:block;float:right;border:none;background:var(--line);border-radius:8px;padding:2px 10px;cursor:pointer;color:var(--ink)}
+  }
+
+  /* ===== 00 脉络 ===== */
+  .flow{display:grid;gap:8px}
+  .fl{display:flex;gap:12px;align-items:flex-start;border:1px solid var(--line);border-radius:10px;padding:10px 14px;font-size:.9rem}
+  .fl .pn{flex:0 0 auto;font-family:var(--serif);font-weight:700;color:var(--accent);background:var(--accent-soft);border-radius:8px;padding:1px 9px;font-size:.8rem}
+  .fl .fx{color:var(--muted);font-size:.82rem;margin-top:2px}
+  .keybox{margin-top:14px;background:var(--purple-soft);border-left:4px solid var(--purple);border-radius:0 10px 10px 0;padding:12px 16px;font-size:.92rem}
+  .keybox b{color:var(--purple)}
+
+  /* ===== 逐句五步 ===== */
+  .sent{margin-bottom:34px;padding-bottom:26px;border-bottom:1px dashed var(--line);scroll-margin-top:76px}
+  .sent:last-child{border:none;padding-bottom:0}
+  .qhead{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+  .sent .qn{font-family:var(--serif);font-size:1.15rem;font-weight:700;color:var(--accent)}
+  .kaodian{font-size:.75rem;background:var(--blue-soft);color:var(--blue);border-radius:999px;padding:2px 10px}
+  .sc{margin-left:auto;font-size:.8rem;color:var(--muted);font-variant-numeric:tabular-nums}
+  .sc b{color:var(--green);font-size:1rem}
+  .sent .src{font-family:var(--serif);font-size:1.02rem;background:var(--blue-soft);padding:12px 14px;border-radius:10px;border-left:3px solid var(--blue)}
+  .skel{color:var(--red);font-weight:600}
+  .steps{display:flex;gap:6px;flex-wrap:wrap;margin:14px 0 10px}
+  .stab{font-size:.8rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:8px;padding:4px 11px;cursor:pointer;font-family:var(--sans)}
+  .stab:hover{border-color:var(--accent);color:var(--accent)}
+  .stab.on{background:var(--accent);color:var(--card);border-color:var(--accent)}
+  .spane{display:none;font-size:.9rem;border:1px solid var(--line);border-radius:10px;padding:14px 16px;overflow-x:auto}
+  .spane.on{display:block}
+  .cut{font-family:var(--serif);font-size:.92rem;display:grid;gap:9px}
+  .cut .ln{border-left:3px solid var(--blue);padding-left:10px}
+  .cut .ln .lb{font-family:var(--sans);font-size:.74rem;color:var(--blue);background:var(--blue-soft);border-radius:5px;padding:1px 7px;margin-right:6px}
+  .cut .ln .gr{font-family:var(--sans);font-size:.76rem;color:var(--muted);display:block;margin-top:2px}
+  .rough{display:grid;gap:6px;font-size:.9rem}
+  .rough .ri{background:var(--hl);border-radius:8px;padding:6px 12px}
+  .rough .merge{margin-top:6px;border:1px dashed var(--hl-border);border-radius:8px;padding:8px 12px;background:none}
+  .rough .merge b{color:var(--hl-border);font-size:.75rem;display:block}
+  .hardl li,.wordl li{margin:6px 0 6px 20px}
+  table.tv{width:100%;border-collapse:collapse;font-size:.86rem;margin-top:8px}
+  table.tv th,table.tv td{border:1px solid var(--line);padding:6px 9px;text-align:left;vertical-align:top}
+  table.tv th{background:var(--accent-soft);color:var(--accent);font-size:.78rem;letter-spacing:.04em}
+  table.tv td.ok{color:var(--green);font-weight:600}
+  table.tv td.no{color:var(--red)}
+  .pts{display:grid;gap:8px;margin-top:14px}
+  .pt{display:flex;gap:10px;align-items:flex-start;font-size:.9rem;border:1px solid var(--line);border-radius:10px;padding:8px 12px;transition:background .15s}
+  .pt.got{background:var(--green-soft);border-color:var(--green)}
+  .pt.lost{background:var(--red-soft);border-color:var(--red)}
+  .pt .half{flex:0 0 auto;font-size:.72rem;background:var(--green-soft);color:var(--green);border-radius:999px;padding:1px 8px;font-weight:700;margin-top:2px}
+  .pt .en2{font-family:var(--serif);font-weight:600}
+  .pt .how{color:var(--muted);font-size:.84rem}
+  .pt .mark{margin-left:auto;flex:0 0 auto;border:1px solid var(--line);background:none;color:var(--muted);border-radius:8px;padding:2px 9px;cursor:pointer;font-size:.8rem;align-self:center}
+  .pt.got .mark{border-color:var(--green);color:var(--green)}
+  .pt.lost .mark{border-color:var(--red);color:var(--red)}
+  .revealbtn{margin-top:12px;font-size:.85rem;border:1px solid var(--accent);background:none;color:var(--accent);border-radius:8px;padding:6px 14px;cursor:pointer}
+  .refzh{display:none;margin-top:10px;background:var(--green-soft);border-left:3px solid var(--green);border-radius:0 10px 10px 0;padding:12px 14px;font-size:.95rem}
+  .refzh.show{display:block}
+  .trap{margin-top:10px;background:var(--red-soft);border-left:3px solid var(--red);border-radius:0 10px 10px 0;padding:10px 14px;font-size:.87rem}
+  .trap b{color:var(--red)}
+  .scorebar{position:sticky;top:0;z-index:20;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 16px;margin-bottom:18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;font-size:.86rem}
+  .scorebar .big{font-family:var(--serif);font-size:1.5rem;font-weight:700;color:var(--green)}
+  .scorebar .tip{color:var(--muted);font-size:.8rem}
+  .scorebar button{font-size:.78rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:8px;padding:3px 10px;cursor:pointer;margin-left:auto}
+
+  /* ===== 熟词僻义清算表 ===== */
+  .polytab{width:100%;min-width:680px;border-collapse:collapse;font-size:.87rem}
+  .polytab td.good{min-width:150px}
+  .polytab th,.polytab td{border:1px solid var(--line);padding:7px 10px;text-align:left;vertical-align:top}
+  .polytab th{background:var(--purple-soft);color:var(--purple);font-size:.78rem}
+  .polytab td.wd{font-family:var(--serif);font-weight:700;white-space:nowrap}
+  .polytab td.bad{color:var(--red);font-size:.84rem}
+  .polytab td.good{color:var(--green);font-weight:600}
+  .hidemode .polytab td.good{color:transparent;background:repeating-linear-gradient(45deg,var(--line),var(--line) 6px,transparent 6px,transparent 12px);cursor:pointer;border-radius:4px}
+  .hidemode .polytab td.good.open{color:var(--green);background:none}
+  .modebtn{font-size:.78rem;border:1px solid var(--purple);background:none;color:var(--purple);border-radius:8px;padding:4px 12px;cursor:pointer;margin-left:auto}
+  .modebtn.on{background:var(--purple);color:var(--card)}
+
+  /* ===== 通用块 ===== */
+  .wb{display:grid;gap:10px}
+  .wbi{border-left:3px solid var(--green);background:var(--green-soft);border-radius:0 10px 10px 0;padding:10px 14px;font-size:.92rem}
+  .wbi .p{font-family:var(--serif);font-weight:600}
+  .wbi .u{color:var(--muted);font-size:.85rem}
+  .lsent{margin-bottom:18px;padding:14px 16px;border:1px solid var(--line);border-radius:12px}
+  .lsent .lt{font-size:.75rem;color:var(--accent);background:var(--accent-soft);border-radius:999px;padding:1px 9px;display:inline-block;margin-bottom:6px}
+  .lsent .le{font-family:var(--serif);font-size:.98rem;line-height:1.85}
+  .lsent .lz{margin-top:8px;font-size:.9rem;color:var(--ink);background:var(--blue-soft);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;padding:8px 12px}
+  .lsent .lp{margin-top:8px;font-size:.86rem;color:var(--muted)}
+  .lsent .lp b{color:var(--red)}
+  ol.proc{counter-reset:s;list-style:none}
+  ol.proc li{position:relative;padding-left:34px;margin:10px 0;font-size:.92rem}
+  ol.proc li:before{counter-increment:s;content:counter(s);position:absolute;left:0;top:1px;width:24px;height:24px;border-radius:50%;background:var(--accent);color:var(--card);font-size:.78rem;display:flex;align-items:center;justify-content:center;font-weight:700}
+  ol.proc li b{color:var(--accent)}
+  #yd{position:fixed;z-index:60;display:none;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:4px 12px;font-size:.8rem;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+  footer{color:var(--muted);font-size:.8rem;text-align:center;margin-top:30px;line-height:1.9}
+</style><style>
+  .frame{background:var(--accent-soft);border-radius:6px;padding:1px 5px;font-weight:bold}
+  main{min-width:0}
+  .tv,.polytab{width:100%}
+  .en2,.how,.hardl li,.wordl li,.trap,.refzh,.keybox,.fx,.ri,.merge{overflow-wrap:anywhere}
+</style>
+</head>
+
+<body class="stx-flow">
+<style>
+  /* 本页专属：00 节的 .fl 是 flex 容器，窄屏下其 min-content = 各内联块之和，会顶出网格（2011 翻译页踩过） */
+  .fl{flex-wrap:wrap;min-width:0}
+  .fl > *{min-width:0}
+  .flow,.keybox,.wbi .u,.lsent .lp,.lsent .le,.lsent .lz,.para .zh,.para .en,.cut .ln{overflow-wrap:anywhere}
+  .ty{font-size:.74rem;border-radius:999px;padding:1px 8px;white-space:nowrap;font-weight:600}
+  .ty1{background:var(--blue-soft);color:var(--blue)}
+  .ty2{background:var(--green-soft);color:var(--green)}
+  .ty3{background:var(--purple-soft);color:var(--purple)}
+  .ty4{background:var(--red-soft);color:var(--red)}
+  .ty5{background:var(--accent-soft);color:var(--accent)}
+  .pos-in{color:var(--muted);white-space:nowrap}
+  .tabwrap{overflow-x:auto;max-width:100%}
+  .tabwrap > table{min-width:100%}
+  /* 2021 起：原文以原卷扫描句条呈现 */
+  .sn{margin:0 0 14px}
+  .sn .pno{display:block;margin-bottom:4px;font-size:.78rem;line-height:1.6}
+  img.strip{display:block;width:100%;max-width:760px;height:auto;background:#fff;border:1px solid var(--line);border-radius:6px;cursor:pointer}
+  .sent .src img.strip{margin-top:6px;cursor:default}
+  .kw{margin-top:5px;font-size:.88rem;line-height:2.1;font-family:var(--serif)}
+  @media (prefers-color-scheme: dark){img.strip{filter:invert(.9) hue-rotate(180deg)}}
+  .sn,.sent .src{overflow-x:auto}
+  @media (max-width:700px){img.strip{width:640px;max-width:none}.sn::after{content:'← 句条可左右滑动 →';display:block;font-size:.7rem;color:var(--muted);margin-top:2px}}
+  .zbtn{float:right;margin-left:10px;font-size:.72rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:6px;padding:2px 9px;cursor:pointer}
+  .zbtn:hover{color:var(--accent);border-color:var(--accent)}
+  .le img.strip{margin:4px 0}
+  .lsent .le{overflow-x:auto}
+  @media (max-width:700px){.lsent .le::after{content:'← 句条可左右滑动 →';display:block;font-size:.7rem;color:var(--muted);margin-top:2px;font-family:var(--sans)}}
+  #timetab tr.in{background:var(--hl)}
+  #timetab tr.in td:first-child{white-space:nowrap}
+
+  /* 2023 起：流式版——识别好的句子在段落里连排，像 2007–2020 */
+  .stx-flow .para .en .pno{margin-right:4px;font-family:var(--sans);font-size:.78rem;color:var(--accent);font-weight:700}
+  .stx-flow .para .sn:not(.stx-on) .kw{margin-bottom:8px}
+  .stx-flow .para .sn.hx>.stx.ls{text-decoration:none;background:var(--blue-soft);padding:1px 0;border-radius:3px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+  .stx-flow .para .sn.hx>.stx.ls:hover{outline:1px dashed var(--accent)}
+</style>
+<div class="wrap">
+<header>
+  <h1>大象怎么认路 · 五句十一个代词，单复数一个也帮不上</h1>
+  <div class="sub">2024 英语一 · Part C 翻译（46–50，共 10 分）· 全文七段 19 句（1／7／1／2／3／4／1）· <b>黄皮书标 401 词，逐句计数 396</b>（连字符词 long-distance · well-developed · Free-ranging 各算一词；拆开算也只有 399）· 动物导航科普书<br>
+  源：黄皮书标 David Barrie《超级导航家：探索动物不可思议的寻路本能》<i>Supernavigators: Exploring the Wonders of How Animals Find Their Way</i> 第 25 章 <i>The Human Navigational Brain</i>（人类的导航大脑）；检索核得：2019 年美国版书名即此（英国版叫 <i>Incredible Journeys</i>），作者是英国人、写过航海导航史。<br>
+  📐 平均 20.8 词一句；<b>画线五句恰好就是全文最长的五句</b>（48 39 · 47 33 · 50 31 · 46 30 · 49 27，第六长的②❺ 只有 24）——合计 160 词，占全文 40.4%。<b>2023 正相反</b>：最长的两句都不在画线内。<br>
+  🧪 <b>✅ Claude 完整盲译</b>：只看过原卷第 13 页就先把五句写下落盘（<code>_讲义笔记/2024_翻译_mine.txt</code>），再看答案页 Part C 那一截与黄皮书精讲；<b>自评约 10（最严 9.5）</b>，对照见 04 节。<br>
+  📄 <b>原文由你的浏览器在打开页面时从原卷扫描图识别成文字</b>（第一次要联网、稍等几秒；识别结果存在这台设备上，之后打开直接显示）——能选中、能页内查找，选中单词弹「查有道」，虚线词点开有词卡；01 节标题旁「原卷对照」可逐句切回扫描图、改识别错的字（只存本机）。页面文件里不存原文。</div>
+  <div class="tags">
+    <span class="tag">⭐⭐ <b>本篇性格：谁是 they</b>——五个画线句里有 <b>11 个代词</b>（46 两个 · 47 两个 · <b>48 五个</b> · 49 两个 · 50 零个），<b>候选对象全是复数</b>：46 的 They／they 一个是「大象这一物种」、一个是「其他大象」；49 的 they 前面站着 chemicals 和 plants 两个复数名词。<b>2019 页那把「靠单复数定指代」的刀，今年一次都砍不下去</b>——只能靠「谁是主角」和「后文在解释谁」</span>
+    <span class="tag">🐘 <b>第二性格：主语是大象，人用的动词要换成动物的动作</b>——travel 不是「旅行」是「跋涉」、working out 不是「计算出」是「判断出」、tried out 不是「试用」是「试吃」、take shortcuts 不是「占据捷径」是「抄近道」。<b>黄皮书 46 词义第 (1) 条的判据原话就是「描述的对象是大象」</b></span>
+    <span class="tag">🔁 <b>第三条：形式被动，中文不一定「被」</b>——全文四处 be＋过去分词：②❶ <i>is distributed</i>「分布于」· 47 <i>are convinced</i>「确信」（不是「被说服」）· 49 <i>can be carried</i>「能播散」· ⑤❷ <i>can be detected</i>（黄皮书段落译文留了「被察觉」）。<b>画线的两处都去掉了「被」，留不留只看中文顺不顺</b></span>
+    <span class="tag">📐 <b>采分切法：17 块（14 个 0.5 ＋ 3 个 1）</b>——46、47、49 各一个 1 分块，48、50 各「0.5 × 4」。三个 1 分块各压着一件事：<b>46 中块压 working out 的词义＋where 从句名词化、47 首块压 convinced／precisely／in relation to 三个词、49 首块压 volatile＋后置定语＋被动</b>（脚本数各年 data-v：2023 是 16 块，2017–2021 是 12–14 块）</span>
+    <span class="tag">🔗 <b>站内第一篇以动物为主角的翻译</b>（「大象」此前只在 2008 完形与 2010 T2 的 <i>the elephant in the room</i> 里出现过，都是成语）；脑科学这条线接 <b>2011 翻译「心智是编织大师」</b>、进化这条线接 <b>2008 翻译「达尔文论智力」</b>；<b>同卷 T4 切萨皮克湾湿地</b>正好是②❷ 栖息地清单里的 wetlands，<b>同卷 T2 狩猎采集者</b>与⑥❶ 的 <i>foraging</i> 是同一个词根（forager）</span>
+  </div>
+</header>
+
+<div class="layout">
+<main>
+
+<!-- ============ 00 ============ -->
+<section class="card" id="s0">
+<h2><span class="n">00</span>读前一分钟 · 全文脉络与本篇性格</h2>
+
+<div class="flow">
+  <div class="fl"><span class="pn">①②</span><span class="fx">现象：大象认路 <b>46 · 47</b></span>「大象从不忘事」这句老话看来有点根据。非洲草原象分布在 37 个国家，在森林、草原、湿地、农田之间来回走；<b>46</b>：它们有时为找水找食走出六十多英里，还很会判断<b>别的大象</b>在哪儿——哪怕看不见。追踪设备显示它们有「惊人的空间敏锐度」：一次从约三十英里外出发，方向一点不差；而且几乎总挑最近的水坑。<b>47</b>：研究者确信，大象<b>随时知道自己和所需资源的相对位置</b>，所以除了走熟路，还会抄近道。</div>
+  <div class="fl"><span class="pn">③④⑤</span><span class="fx">线索：不是眼睛，是鼻子 <b>48 · 49</b></span>远距离导航靠什么线索还不清楚，嗅觉很可能是一个。大象挑食，可它们怎么挑，直到最近还没人知道；<b>48</b>：一种可能是<b>只靠眼睛</b>找、找到就尝——那会白费大量时间精力，<b>尤其是它们视力本来就不怎么样</b>。<b>49</b>：植物释放的<b>挥发性</b>化学物质能飘很远，而且各有特点：每种植物都有自己的<b>标志性气味</b>；看不见也闻得到。新研究表明，嗅觉是把大象（也许还有别的食草动物）引向最好食物的关键。</div>
+  <div class="fl"><span class="pn">⑥⑦</span><span class="fx">证据与机制 <b>50</b></span>研究者先弄清大象自由觅食时爱吃、不吃哪些植物，再做「食物站」实验：只凭气味给它们选。<b>50</b>：结果表明，大象很可能<b>先用嗅觉认出哪几片树林好吃，再评估每片里的树好不好</b>；野生大象大概也这么找食物。结尾一句收到标题：发达的海马体让大象像老鼠和人一样能构建<b>认知地图</b>。</div>
+</div>
+
+<div class="keybox" style="margin-top:16px">
+<b>⭐⭐ 本篇性格：<u>谁是 they</u>——十一个代词，单复数一个都帮不上</b><br>
+把五句里的代词逐个圈出来：<br>
+46 <i>They</i> sometimes travel …（<b>大象这一物种</b>，承前句主语）· even when <i>they</i> are out of sight（<b>其他大象</b>——破折号后的 they 管的是前面宾语从句的主语 <i>other elephants</i>）<br>
+47 where <i>they</i> are · the resources <i>they</i> need（两个都是 <b>the elephants</b>，不是 researchers）<br>
+48 that <i>they</i> merely used <i>their</i> eyes · the plants <i>they</i> found · but <i>that</i> would … · <i>their</i> eyesight（<b>同一句里两个 that 身份不同</b>：前一个是表语从句引导词、不译；后一个是指示代词，指「只靠眼睛找」这件事，译「这」）<br>
+49 and <i>they</i> are very characteristic（<b>化学物质</b>，不是离得更近的 plants）· <i>its</i> own（each plant or tree）<br>
+<b style="color:var(--red)">⟹ 动作：每圈一个代词，就在旁边写一个汉字——「象／它／物／这」。凡是两个候选都是复数的，问两件事：① 这句的主角是谁（主语核心词）？② 冒号、破折号后面那半句在解释谁？</b>
+<b>46 与 49 的第二个 they 不能都译「它们」</b>——黄皮书 46 难点 (2) 原话：两个指代词不宜都处理为「它们」，而应有所区分。
+</div>
+
+<div class="keybox" style="margin-top:12px">
+<b>🐘 第二性格：人的动词，大象的动作</b>——五句里四句的主语是大象（49 的主语是化学物质）。英文里这些动词人和动物通用，<b>中文却分得很清</b>：<br>
+<i>travel</i> 人「旅行」、象「<b>跋涉</b>」· <i>working out</i> 人「算出」、象「<b>判断出</b>」· <i>take shortcuts</i>「<b>抄近道</b>」· <i>following familiar routes</i>「<b>走熟路</b>」· <i>tried out the plants</i>「<b>试吃</b>」· ④❶ <i>choosy eaters</i>「<b>挑食</b>」· ⑥❶ <i>foraging</i>「<b>觅食</b>」<br>
+<b style="color:var(--red)">⟹ 检查一句：译文里有没有「旅行」「计算」「试用」「占据」？大象不会做这些事。</b>
+</div>
+
+<div class="keybox" style="margin-top:12px">
+<b>⚠️ 结构只有三处要动刀</b>：① <b>47 的 <i>as well as</i> 要倒过来</b>——「A as well as B」强调 A，中文「除了 B，还 A」：<b>除了能走熟路，还能抄近道</b>（抄近道才是本事）；② <b>48 的两个 that</b>（见上）；③ <b>50 的 <i>secondly</i> 前面没有 first</b>——英文只写了「其次」，中文得补一个「先」：<b>先识别出……，接着再鉴别……</b>。<br>
+其余是送分的：46 是「谓语 1 and 谓语 2 ＋ 破折号让步」；49 是三个分句、过去分词后置定语前置成「植物释放的」；50 的定语从句 <i>that are good to eat</i> 短，前置成「适合食用的」。
+</div>
+
+<div class="keybox" style="margin-top:12px">
+<b>🔗 跨年</b>：<br>
+① <b>2019 翻译</b>立过「数定指代」（which 挂 nonsense 还是 journals，看 generates 带不带 -s）；<b>2016 翻译</b>「小词」清单里有一格「指代与一致」（they ＝ others、allow 无 -s 说明两个主语）——<b>两年都是靠单复数破案</b>。2024 把这一格单独拎出来成了一整篇，而且<b>专挑单复数一致的</b>：候选全是复数，只能看主次与语义。<br>
+② <b>2020 翻译</b>立过「态」六处对照（被动转主动）；本篇四处 be＋过去分词，画线内两处、②❶ 一处都不用「被」，只有⑤❷ 留了——是那张表的续篇。<br>
+③ <b>2011 翻译「心智是编织大师」</b>讲人的心智塑造性格，本篇末句讲<b>海马体与认知地图</b>——同一条脑科学线，一个讲「想」，一个讲「认路」。<br>
+④ <b>同卷</b>：T4 切萨皮克湾讲的正是②❷ 清单里的 <i>wetlands</i>（湿地是栖息地）；T2 狩猎采集者（<i>forager</i>）与⑥❶ <i>foraging</i>「觅食」同根；完形《自动门》靠传感器「感应」人，本篇大象靠鼻子「感应」食物——<b>一张卷子两篇在讲「感知」</b>。
+</div>
+</section>
+
+<!-- ============ 01 ============ -->
+<section class="card" id="s1">
+<h2><span class="n">01</span>原文精读 <button class="allbtn" onclick="toggleAll()">全段意译 开/关</button> <button class="allbtn" id="imgall" onclick="imgAll(this)">原卷对照</button></h2>
+<p style="font-size:.85rem;color:var(--muted);margin-bottom:14px">
+📄 原文是你的浏览器从原卷第 13 页识别出来的文字，<b>下划线就是原卷的画线</b>——考的只有带下划线的五段，<b>淡蓝底的五句点一下跳到 02 节五步精讲</b>；
+蓝色虚线句点一下跳到 05 节长难句精析 ｜ 🟡 黄色虚线词 ＝ 重难点，点开右侧出卡片 ｜ 选中任意其他单词浮出「查有道」 ｜
+每段「意」＝ 本页自写的意译（按句意转述，<b>不是参考答案</b>）｜「原卷对照」逐句看扫描原图、改识别错字。<br>
+⚠️ 先把五句在纸上写完再往下翻——<b>上下文的用处是给代词定人</b>：②❷ 的 <i>They move</i> 告诉你 46 句首的 They 还是「大象这个物种」；②❻ 的 <i>they almost always seem</i> 一路下来都是大象，<b>所以 47 的两个 they 不会是 researchers</b>；⑤❷ 的 <i>they can be detected</i>（能被闻到的只能是气味物质）回头替 49 的 they 作证——<b>49 的 they 是化学物质，不是植物</b>。</p>
+
+<div class="para">
+  <button class="zbtn" onclick="tz(this)">意</button>
+  <p style="font-size:.78rem;color:var(--accent);margin-bottom:6px">① 引子：一句老话 ＋ 两个破折号</p>
+  <div class="en"><span class="pno">①</span>
+    <div class="sn" data-go="l1_1"><img class="strip" src="img/2024_翻译/s1_1.png" alt="①❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="ortheysay">or so they say</span> · <span class="tk" data-w="folklore">piece of folklore</span> · <span class="tk" data-w="foundation">some foundation</span></div></div>
+  </div>
+  <div class="zh"><b>①段意：</b>人们常说「大象从不忘事」——这句民间说法看来并非全无来由。</div>
+</div>
+
+<div class="para">
+  <button class="zbtn" onclick="tz(this)">意</button>
+  <p style="font-size:.78rem;color:var(--accent);margin-bottom:6px">② 现象：分布 → 栖息地 → 走得远、认得清（46）→ 追踪证据 → 方向准 → 挑最近的 → 研究者的结论（47）</p>
+  <div class="en"><span class="pno">②</span>
+    <div class="sn" data-go="l2_1"><img class="strip" src="img/2024_翻译/s2_1.png" alt="②❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="savanna">savanna elephant</span> · <span class="tk" data-w="alsoknown">also known as</span> · <span class="tk" data-w="distribute">distributed across</span></div></div>
+    <div class="sn"><img class="strip" src="img/2024_翻译/s2_2.png" alt="②❷ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="habitat">habitats</span> · <span class="tk" data-w="wetland">wetlands</span> · <span class="tk" data-w="agricultural">agricultural land</span></div></div>
+    <div class="sn hx" data-go="s46"><img class="strip" src="img/2024_翻译/s2_3.png" alt="②❸ 原卷句条（46 画线）" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="travel">travel</span> · <span class="tk" data-w="goodat">very good at</span> · <span class="tk" data-w="workout">working out</span> · <span class="tk" data-w="evenwhen">even when</span> · <span class="tk" data-w="outofsight">out of sight</span></div></div>
+    <div class="sn"><img class="strip" src="img/2024_翻译/s2_4.png" alt="②❹ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="tracking">tracking devices</span> · <span class="tk" data-w="remarkable">remarkable</span> · <span class="tk" data-w="acuity">spatial acuity</span></div></div>
+    <div class="sn" data-go="l2_5"><img class="strip" src="img/2024_翻译/s2_5.png" alt="②❺ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="findway">finding their way</span> · <span class="tk" data-w="waterhole">waterholes</span> · <span class="tk" data-w="headoff">headed off</span> · <span class="tk" data-w="occasion">on one occasion</span> · <span class="tk" data-w="roughly">roughly</span></div></div>
+    <div class="sn"><img class="strip" src="img/2024_翻译/s2_6.png" alt="②❻ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="whatismore">What is more</span> · <span class="tk" data-w="nearest">the nearest waterhole</span></div></div>
+    <div class="sn hx" data-go="s47"><img class="strip" src="img/2024_翻译/s2_7.png" alt="②❼ 原卷句条（47 画线）" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="convinced">are convinced</span> · <span class="tk" data-w="precisely">precisely</span> · <span class="tk" data-w="inrelation">in relation to</span> · <span class="tk" data-w="resource">resources</span> · <span class="tk" data-w="therefore">therefore</span> · <span class="tk" data-w="shortcut">take shortcuts</span> · <span class="tk" data-w="aswellas">as well as</span> · <span class="tk" data-w="route">familiar routes</span></div></div>
+  </div>
+  <div class="zh"><b>②段意：</b>非洲草原象（又叫非洲灌木象）分布在非洲 37 个国家，在森林、草原、林地、湿地和农田等多种栖息地之间来回迁移。<b>（46）</b>它们有时为了找食物和水要走六十多英里，而且很会判断别的大象在什么位置——哪怕那些大象根本不在视线之内。研究人员借助追踪设备证明，大象具有「非凡的空间敏锐度」：去水坑时，它们出发的方向分毫不差，有一次是从约三十英里开外出发的。更难得的是，它们几乎每次都挑最近的那个水坑。<b>（47）</b>研究人员认定，大象随时清楚自己和所需各种资源之间的相对位置，所以不光会走熟路，还会抄近道。</div>
+</div>
+
+<div class="para">
+  <button class="zbtn" onclick="tz(this)">意</button>
+  <p style="font-size:.78rem;color:var(--accent);margin-bottom:6px">③ 过渡：靠什么认路还不清楚 → 嗅觉很可能有份（全文转向「鼻子」）</p>
+  <div class="en"><span class="pno">③</span>
+    <div class="sn" data-go="l3_1"><img class="strip" src="img/2024_翻译/s3_1.png" alt="③❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="cue">cues</span> · <span class="tk" data-w="navigation">long-distance navigation</span> · <span class="tk" data-w="notyet">not yet understood</span> · <span class="tk" data-w="maywell">may well</span> · <span class="tk" data-w="playapart">play a part</span></div></div>
+  </div>
+  <div class="zh"><b>③段意：</b>非洲象长途导航时究竟依靠哪些线索，人们还没弄明白，不过嗅觉很可能是其中之一。</div>
+</div>
+
+<div class="para">
+  <button class="zbtn" onclick="tz(this)">意</button>
+  <p style="font-size:.78rem;color:var(--accent);margin-bottom:6px">④ 问题：挑食却不知道怎么挑 → 「只靠眼睛」这个可能被否掉（48）</p>
+  <div class="en"><span class="pno">④</span>
+    <div class="sn"><img class="strip" src="img/2024_翻译/s4_1.png" alt="④❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="choosy">choosy eaters</span> · <span class="tk" data-w="untilrecently">until recently</span> · <span class="tk" data-w="select">selected</span></div></div>
+    <div class="sn hx" data-go="s48"><img class="strip" src="img/2024_翻译/s4_2.png" alt="④❷ 原卷句条（48 画线）" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="possibility">One possibility</span> · <span class="tk" data-w="merely">merely</span> · <span class="tk" data-w="tryout">tried out</span> · <span class="tk" data-w="resultin">result in</span> · <span class="tk" data-w="wasted">wasted time and energy</span> · <span class="tk" data-w="notleast">not least because</span> · <span class="tk" data-w="eyesight">eyesight</span></div></div>
+  </div>
+  <div class="zh"><b>④段意：</b>大象吃东西非常挑剔，可它们到底怎样挑选食物，直到不久前人们还所知甚少。<b>（48）</b>一种可能是它们只凭眼睛去找、把找到的植物挨个尝一尝；但这样多半会白白耗掉大量时间和精力，何况大象的视力其实并不好。</div>
+</div>
+
+<div class="para">
+  <button class="zbtn" onclick="tz(this)">意</button>
+  <p style="font-size:.78rem;color:var(--accent);margin-bottom:6px">⑤ 答案：气味——飘得远、有特征（49）→ 看不见也闻得到 → 新研究：嗅觉是关键</p>
+  <div class="en"><span class="pno">⑤</span>
+    <div class="sn hx" data-go="s49"><img class="strip" src="img/2024_翻译/s5_1.png" alt="⑤❶ 原卷句条（49 画线）" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="volatile">volatile chemicals</span> · <span class="tk" data-w="produce">produced by</span> · <span class="tk" data-w="carry">carried a long way</span> · <span class="tk" data-w="characteristic">characteristic</span> · <span class="tk" data-w="particular">its own particular</span> · <span class="tk" data-w="signature">odor signature</span></div></div>
+    <div class="sn"><img class="strip" src="img/2024_翻译/s5_2.png" alt="⑤❷ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="detect">detected</span> · <span class="tk" data-w="visible">visible</span></div></div>
+    <div class="sn" data-go="l5_3"><img class="strip" src="img/2024_翻译/s5_3.png" alt="⑤❸ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="crucial">crucial factor</span> · <span class="tk" data-w="guide">guiding</span> · <span class="tk" data-w="herbivore">herbivores</span></div></div>
+  </div>
+  <div class="zh"><b>⑤段意：</b><b>（49）</b>植物释放的挥发性化学物质能飘散到很远的地方，而且各具特色：每一种植物或树木都有自己独有的标志性气味。不仅如此，即便实际上看不见，这些物质也能被察觉到。新的研究表明，在把大象——很可能还有其他食草动物——引向最佳食物来源这件事上，嗅觉是关键因素。</div>
+</div>
+
+<div class="para">
+  <button class="zbtn" onclick="tz(this)">意</button>
+  <p style="font-size:.78rem;color:var(--accent);margin-bottom:6px">⑥ 证据：先摸清口味 → 「食物站」只凭气味选 → 实验结论（50）→ 推到野外</p>
+  <div class="en"><span class="pno">⑥</span>
+    <div class="sn"><img class="strip" src="img/2024_翻译/s6_1.png" alt="⑥❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="establish">first established</span> · <span class="tk" data-w="prefer">preferred</span> · <span class="tk" data-w="forage">foraging freely</span></div></div>
+    <div class="sn" data-go="l6_2"><img class="strip" src="img/2024_翻译/s6_2.png" alt="⑥❷ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="setup">set up</span> · <span class="tk" data-w="station">food station</span> · <span class="tk" data-w="series">a series of</span> · <span class="tk" data-w="basedon">based only on</span></div></div>
+    <div class="sn hx" data-go="s50"><img class="strip" src="img/2024_翻译/s6_3.png" alt="⑥❸ 原卷句条（50 画线）" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="identify">identify</span> · <span class="tk" data-w="patch">patches of trees</span> · <span class="tk" data-w="goodtoeat">good to eat</span> · <span class="tk" data-w="secondly">secondly</span> · <span class="tk" data-w="assess">assess</span> · <span class="tk" data-w="quality">quality</span></div></div>
+    <div class="sn"><img class="strip" src="img/2024_翻译/s6_4.png" alt="⑥❹ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="freeranging">Free-ranging</span> · <span class="tk" data-w="presumably">presumably</span> · <span class="tk" data-w="locate">locate</span></div></div>
+  </div>
+  <div class="zh"><b>⑥段意：</b>研究人员先弄清了大象在野外自由觅食时爱吃哪些植物、避开哪些植物。接着他们设计了一个「食物站」实验，让大象只凭气味在一系列选项中做选择。<b>（50）</b>实验表明，大象很可能先用嗅觉认出哪些树林适合取食，然后再判断每片树林里各棵树的好坏。可以推想，野外自由活动的大象也是凭这些信息找到自己爱吃的食物的。</div>
+</div>
+
+<div class="para">
+  <button class="zbtn" onclick="tz(this)">意</button>
+  <p style="font-size:.78rem;color:var(--accent);margin-bottom:6px">⑦ 收尾：机制落到大脑——海马体与认知地图（呼应章名「人类的导航大脑」）</p>
+  <div class="en"><span class="pno">⑦</span>
+    <div class="sn" data-go="l7_1"><img class="strip" src="img/2024_翻译/s7_1.png" alt="⑦❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="welldeveloped">well-developed</span> · <span class="tk" data-w="hippocampal">hippocampal structures</span> · <span class="tk" data-w="enable">enable</span> · <span class="tk" data-w="cognitive">cognitive maps</span></div></div>
+  </div>
+  <div class="zh"><b>⑦段意：</b>大象发达的海马体结构，或许让它们能像老鼠和人一样，在脑子里构建出认知地图。</div>
+</div>
+</section>
+
+<!-- ============ 02 ============ -->
+<section class="card">
+<h2><span class="n">02</span>逐句五步精讲 · 切分 → 初译 → 难点 → 词义 → 导出</h2>
+<p style="font-size:.9rem;color:var(--muted)">
+每句五个标签页按考场上真实的动作顺序排；下方<b>采分点</b>逐个自评（点一次「得分」、再点一次「丢分」），
+右上角实时结算本句得分，本页总分见下。<b>参考译文默认折叠——先写完再翻。</b><br>
+📐 <b>本年五句切 17 个采分块：14 个 0.5 分块 ＋ 3 个 1 分块</b>（2023 是 16 块 ＝ 12 × 0.5 ＋ 4 × 1）。46 是「0.5 ＋ 1 ＋ 0.5」，47 是「1 ＋ 0.5 ＋ 0.5」，<b>48、50 都是「0.5 × 4」</b>，49 是「1 ＋ 0.5 ＋ 0.5」。<b>三个 1 分块各压着一样东西</b>：46 中块压 working out 的词义与 where 从句名词化、47 首块压 convinced／precisely／in relation to 三个词、49 首块压 volatile、后置定语与被动三件事。<br>
+⭐ <b>代词压着 3 块 1.5 分</b>：46 末块（第二个 they ＝ 其他大象）· 48 第三块（but that ＝ 这）· 49 第二块（they ＝ 化学物质）。<br>
+采分块的英文按结构关节用「｜」隔开（完整原句见每句上方的原卷句条）。「② 初译」页引自黄皮书的「初译试水」——<b>本篇书上的初译几乎每句都留着一个「人的动词」或一个直译的被动</b>（旅行 · 计算出 · 被说服 · 被携带），正好当反面教材；「⑤ 导出」页与折叠的参考译文以黄皮书为准。</p>
+
+<div class="scorebar">本页自评总分：<b id="total">0</b> / 10 分　<button class="allbtn" onclick="resetScore()">清空重判</button></div>
+
+<!-- ---------- 46 ---------- -->
+<div class="sent" id="s46" data-q="46">
+  <div class="qhead"><span class="qn">46</span><span class="kaodian">并列谓语 · 宾语从句名词化 · 破折号让步 · 两个 they 两个人</span><span class="sc">得分 <b class="qsc">0</b> / 2</span></div>
+  <div class="src"><span class="skel">They ＋ 谓语 1（＋ 目的不定式）and 谓语 2（be good at doing ＋ where 宾语从句）— even when 让步状语从句</span><img class="strip" src="img/2024_翻译/s2_3.png" alt="46 原卷句条" loading="lazy"></div>
+
+  <div class="steps">
+    <button class="stab on" onclick="tab(this,0)">① 切分</button>
+    <button class="stab" onclick="tab(this,1)">② 初译</button>
+    <button class="stab" onclick="tab(this,2)">③ 难点</button>
+    <button class="stab" onclick="tab(this,3)">④ 词义</button>
+    <button class="stab" onclick="tab(this,4)">⑤ 导出</button>
+  </div>
+
+  <div class="spane on">
+    <div class="cut">
+      <div class="ln"><span class="lb">主句</span>They｜sometimes travel more than sixty miles｜and｜are very good at working out ＋ 宾从 <span class="gr">主语 ｜ 谓语 1 ｜ 连词 ｜ 谓语 2</span></div>
+      <div class="ln"><span class="lb">目的</span>to find food or water <span class="gr">修饰 travel：走那么远图什么</span></div>
+      <div class="ln"><span class="lb">宾从</span>where｜other elephants｜are <span class="gr">引导词 ｜ 主语 ｜ 系动词——working out 的宾语</span></div>
+      <div class="ln"><span class="lb">让步</span>even when｜they｜are｜out of sight <span class="gr">引导词 ｜ 主语 ｜ 系动词 ｜ 表语</span></div>
+    </div>
+    <p style="margin-top:10px;font-size:.87rem;color:var(--muted)">
+    <b style="color:var(--red)">切分眼</b>：<b>where 不是地点状语</b>——它前面的 working out 是及物的「弄清、判断出」，缺宾语，<i>where other elephants are</i> 整块就是那个宾语。<br>
+    ⚠️ <b>破折号后的 they 往回找谁</b>：离它最近的复数名词是 <i>other elephants</i>，而且「看不见」只能说别的大象（自己总看得见自己）⟹ they ＝ 其他大象。<br>
+    📐 <b>三块 0.5／1／0.5</b>：「谓语 1 ＋ 目的」一块 · 「谓语 2 ＋ 宾从」一块（1 分：词义 ＋ 名词化两件事）· 「让步」一块（压第二个 they）。</p>
+  </div>
+
+  <div class="spane">
+    <div class="rough">
+      <div class="ri">①「它们有时会旅行超过 60 英里，而且非常善于计算出」②「为了寻找食物或水」③「其他大象在哪里」④「甚至当它们不在视野之中时」</div>
+      <div class="ri">整合成句：「它们有时为了寻找食物或水会旅行超过 60 英里，而且非常善于计算出其他大象在哪里——甚至当它们不在视野之中时。」</div>
+      <div class="merge"><b>病在哪</b>：① <b>「旅行」</b>——大象不旅行；② <b>「计算出」</b>——working out 的本义，大象不算数；③ 末尾的 <b>「它们」</b>——读者会以为是句首那群「它们」，<b>两个 they 指的不是同一群</b>；④「甚至当……时」是英文语序，「即便……」更顺。</div>
+    </div>
+    <p style="margin-top:10px;font-size:.87rem;color:var(--muted)"><b>这份初译是黄皮书自己的「试水稿」</b>：结构全对，<b>丢分全在「人的动词」和「它们」上</b>——正是本篇两个性格。</p>
+  </div>
+
+  <div class="spane">
+    <ul class="hardl">
+      <li><b>⭐⭐ 两个代词不能都写「它们」：句首 They ＝ 非洲草原象这一物种；破折号后的 they ＝ 其他大象。</b>
+        <span style="color:var(--muted)">📕 难点 (2)：前者处于句首，承前指代 <i>The African savanna elephant</i> 这一物种；后者居于破折号后，其所属部分为谓语部分 2 的解释说明内容，故应指代谓语部分 2 中宾语从句的主语 <i>other elephants</i> ⟹ 后者处理为「<b>其他／那些大象</b>」。</span></li>
+      <li><b>⭐ where 宾语从句短，名词化：「其他大象的位置」。</b>
+        <span style="color:var(--muted)">📕 难点 (1)：where 从句不是地点状语而是 working out 的宾语，且相对简短 ⟹ 译为名词性短语。「判断出其他大象在哪里」意思也对，但「确定其他大象的位置」更紧。</span></li>
+      <li><b>even when 让步：「即便……」；out of sight 固定表达「不在视野中」。</b>
+        <span style="color:var(--muted)">📕 难点 (3)：even when 引出看似被排除在外、实际包含在内的情况，近似固定搭配「即使当／在……时」⟹「即便那些大象不在它们的视野中」。</span></li>
+      <li><b>目的状语提前：「为找到食物或水，它们有时……」。</b>
+        <span style="color:var(--muted)">📕 导出把 to find food or water 提到句首——中文先说目的、再说动作。放后面写「……走六十多英里去找食物或水」也通，不扣分。</span></li>
+    </ul>
+  </div>
+
+  <div class="spane">
+    <ul class="wordl">
+      <li><b>travel</b> —— 📕 常用以表达（人）旅行、游历，<b>此处描述的对象是大象</b> ⟹「<b>跋涉；行进</b>」。误译栏：「旅行；游历」。</li>
+      <li><b>working out</b> —— 📕 本义「计算；算出」，强调经计算得出准确结果，可引申为「找出……的答案；解决（某问题）」；宾语是位置（where）⟹ 灵活译「<b>（精确）判断／确定……的位置</b>」。误译栏：「计算出；产出」。</li>
+      <li><b>be very good at</b> —— 「非常善于／很擅长」，后接动名词。</li>
+      <li><b>out of sight</b> —— 固定表达「在视野之外；看不见」。反义 <i>in sight</i>「在视野之内」。</li>
+      <li><b>more than sixty miles</b> —— 「六十多英里」，<b>中文「多」放在数字后</b>；约 97 公里，不必换算。</li>
+    </ul>
+    <div class="tabwrap">
+    <table class="tv">
+      <tr><th>疑难点</th><th>正译</th><th>误译</th></tr>
+      <tr><td>travel</td><td class="ok">跋涉；行走</td><td class="no">旅行；游历</td></tr>
+      <tr><td>working out</td><td class="ok">（精确）判断／确定</td><td class="no">计算出；产出</td></tr>
+    </table></div>
+  </div>
+
+  <div class="spane">
+    <p style="font-size:.95rem">为找到食物或水，它们有时跋涉六十多英里，而且它们非常善于确定其他大象的位置，即便那些大象不在它们的视野中。</p>
+    <p style="margin-top:8px;font-size:.87rem;color:var(--muted)">
+    <b>导出动作三个</b>：① <b>两个 they 分开</b>：句首「它们」、末尾「那些大象」；② <b>两个动词换成大象的动作</b>：跋涉 · 确定位置；③ <b>where 从句名词化</b>：「其他大象的位置」。<br>
+    <b style="color:var(--red)">检查一句：译文末尾的主语写的是「它们」还是「那些大象」？写「它们」，读者就会读成「大象自己看不见自己」。</b></p>
+  </div>
+
+  <div class="pts">
+    <div class="pt" data-v="0.5"><span class="half">0.5</span><div><div class="en2">They｜sometimes travel more than sixty miles｜to find food or water,</div><div class="how">为找到食物或水，它们有时跋涉六十多英里；<b>「旅行」危险</b>，「超过 60 英里」可以</div></div><button class="mark" onclick="mk(this)">未判</button></div>
+    <div class="pt" data-v="1"><span class="half">1</span><div><div class="en2">and are very good at working out｜where other elephants are</div><div class="how">而且非常善于确定其他大象的位置；<b>「计算出」即丢</b>，「判断出其他大象在哪里」可以</div></div><button class="mark" onclick="mk(this)">未判</button></div>
+    <div class="pt" data-v="0.5"><span class="half">0.5</span><div><div class="en2">—even when they are out of sight.</div><div class="how">即便那些大象不在它们的视野中；<b>they 写成「它们」而读不出是别的大象，危险</b></div></div><button class="mark" onclick="mk(this)">未判</button></div>
+  </div>
+
+  <button class="revealbtn" onclick="this.nextElementSibling.classList.toggle('show')">▸ 参考译文</button>
+  <div class="refzh">为找到食物或水，它们有时跋涉六十多英里，而且它们非常善于确定其他大象的位置，即便那些大象不在它们的视野中。<br><span style="color:var(--muted);font-size:.85rem">🧪 Claude 盲译：它们有时会跋涉六十多英里去找食物或水，而且非常善于判断出其他大象在哪里——即使那些大象不在视线之内。</span></div>
+  <div class="trap"><b>常见扣分</b>：① <b>where 当地点状语</b>，写成「在其他大象所在的地方很擅长计算」；② <b>两个 they 不分</b>，末尾写成「即使它们不在视野中」，意思变成大象自己看不见；③ <b>working out 写「计算出」「锻炼」</b>（work out 健身那一路）；④ <b>漏 sometimes</b>，变成「它们跋涉六十多英里」——频率副词一丢，事实就夸大了。</div>
+</div>
+
+<!-- ---------- 47 ---------- -->
+<div class="sent" id="s47" data-q="47">
+  <div class="qhead"><span class="qn">47</span><span class="kaodian">be＋表语形容词＋that 从句 · 宾从套宾从 · as well as 倒序</span><span class="sc">得分 <b class="qsc">0</b> / 2</span></div>
+  <div class="src"><span class="skel">The researchers are convinced ＋ that 从句〔the elephants 谓语 1（know ＋ where 从句）and 谓语 2（can take …），as well as doing〕</span><img class="strip" src="img/2024_翻译/s2_7.png" alt="47 原卷句条" loading="lazy"></div>
+
+  <div class="steps">
+    <button class="stab on" onclick="tab(this,0)">① 切分</button>
+    <button class="stab" onclick="tab(this,1)">② 初译</button>
+    <button class="stab" onclick="tab(this,2)">③ 难点</button>
+    <button class="stab" onclick="tab(this,3)">④ 词义</button>
+    <button class="stab" onclick="tab(this,4)">⑤ 导出</button>
+  </div>
+
+  <div class="spane on">
+    <div class="cut">
+      <div class="ln"><span class="lb">主句</span>The researchers｜are｜convinced ＋ 宾从 <span class="gr">主语 ｜ 系动词 ｜ 表语</span></div>
+      <div class="ln"><span class="lb">convinced 的宾从</span>that｜the elephants｜always know ＋ 宾从｜and｜can therefore take shortcuts <span class="gr">引导词 ｜ 主语 ｜ 谓语 1 ｜ 连词 ｜ 谓语 2</span></div>
+      <div class="ln"><span class="lb">know 的宾从</span>precisely｜where｜they｜are｜in relation to all the resources they need <span class="gr">状语 ｜ 引导词 ｜ 主语 ｜ 系动词 ｜ 介词短语作状语</span></div>
+      <div class="ln"><span class="lb">谓语 2 的状语</span>as well as｜following familiar routes <span class="gr">复合介词 ｜ 动名词短语作宾语</span></div>
+    </div>
+    <p style="margin-top:10px;font-size:.87rem;color:var(--muted)">
+    <b style="color:var(--red)">切分眼</b>：<b>are convinced 不是被动</b>——convinced 是表语形容词「确信的」，和 <i>be sure／aware／afraid that</i> 一样，后面的 that 从句相当于宾语。<br>
+    ⚠️ <b>两个 they 都是 the elephants</b>：know 的主语是大象，where they are 是「大象自己在哪」；resources they need 是「大象需要的资源」——<b>不是研究者</b>。<br>
+    ⚠️ <b>as well as 后面接动名词</b>（following），它是介词，不是连接两个谓语的 and。<br>
+    📐 <b>三块 1／0.5／0.5</b>：首块一口气装了 convinced、precisely、in relation to 三个词——1 分；后两块各半分，压在 take 与 following 两个「走路」的动词上。</p>
+  </div>
+
+  <div class="spane">
+    <div class="rough">
+      <div class="ri">①「研究人员被说服……」②「这些大象总是知道……，因此能够选择捷径」③「究竟它们在哪里，相对于它们所需要的所有资源而言」④「除了沿着熟悉的路线行走之外」</div>
+      <div class="ri">整合成句：「研究人员被说服，这些大象总是知道相对于所需的所有资源而言它们究竟在哪里，因此它们除了沿着熟悉的路线行走之外，还能够选择捷径。」</div>
+      <div class="merge"><b>病在哪</b>：①「<b>被说服</b>」——把表语形容词当了被动，中文读出来像有人去劝研究者；②「相对于……而言它们究竟在哪里」——<b>定语一长串挤在前面，「位置」这个核心词没出现</b>；③「选择捷径」——take 取了「拿、选」的字面，路是「走」的、近道是「抄」的。</div>
+    </div>
+    <p style="margin-top:10px;font-size:.87rem;color:var(--muted)">好在 as well as 的顺序初译就倒对了（「除了……之外，还……」）——<b>这是本句唯一不用改的一处</b>。</p>
+  </div>
+
+  <div class="spane">
+    <ul class="hardl">
+      <li><b>⭐⭐ be convinced that：「确信／坚信」，不是「被说服」。</b>
+        <span style="color:var(--muted)">📕 难点 (1)：某些表示主观判断与感受的表语形容词（afraid、aware、sure 等）后可接 that 引导的名词性从句，意义上相当于「动词＋宾语从句」；convinced 为表语形容词「确信的；坚信的」，而非表达被动意义 ⟹「坚信／确信……」。</span></li>
+      <li><b>⭐ precisely 是焦点副词，强调 where 从句：「确切／精确（的位置）」或移位「精确地（知道……位置）」。</b>
+        <span style="color:var(--muted)">📕 难点 (2)：precisely 相当于 exactly，对 where 从句起强调作用，以凸显定位的准确性。导出选了移位：「<b>精确地知道</b>」。</span></li>
+      <li><b>⭐ A as well as B：强调 A ⟹「除了 B 之外，还 A」——中文顺序与英文相反。</b>
+        <span style="color:var(--muted)">📕 难点 (3)：走熟路（B）相较抄近道（A）难度系数更小，整体译作「<b>除了能走熟路，还能抄近道</b>」。<b>写成「能抄近道，也能走熟路」意思对、重心丢了</b>——「抄近道」才是 47 要证明的本事（②❻ 刚说过它们总挑最近的水坑）。</span></li>
+      <li><b>「它们与自己所需要的一切资源的相对位置」：where 从句同样名词化。</b>
+        <span style="color:var(--muted)">与 46 是同一个动作：where ＋ 主系表 的短从句，落成「……的位置」，in relation to 让它变成「相对位置」。</span></li>
+    </ul>
+  </div>
+
+  <div class="spane">
+    <ul class="wordl">
+      <li><b>in relation to</b> —— 📕 既可指「关于；涉及（某事物）」（如 <i>latest developments in relation to the disease</i>「这种疾病的最新进展」），又可指「相对于……而言」（显示两者的联系或比较）；句中描述大象（A）与所需资源（B）的位置对应关系 ⟹ 取第二义「<b>A 相对于 B 的位置</b>」或「<b>A 与 B 的相对位置</b>」。</li>
+      <li><b>take ／ following</b> —— 📕 两个常见多义词经 as well as 相连，且都与路径词（shortcuts、routes）搭配 ⟹ 对仗译「<b>走捷径／抄近道</b>」「<b>走熟路</b>」。</li>
+      <li><b>therefore</b> —— 「因此」，夹在 can 和 take 之间，中文提到最前：「<b>因此</b>除了……还能……」。</li>
+      <li><b>resources</b> —— 「资源」：上文的食物、水、水坑都是。</li>
+    </ul>
+    <div class="tabwrap">
+    <table class="tv">
+      <tr><th>疑难点</th><th>正译</th><th>误译</th></tr>
+      <tr><td>are convinced</td><td class="ok">确信；相信</td><td class="no">被说服；被劝说</td></tr>
+      <tr><td>take shortcuts</td><td class="ok">走捷径；抄近道</td><td class="no">占据捷径；拥有捷径</td></tr>
+      <tr><td>following familiar routes</td><td class="ok">走熟路；沿着熟悉的路线走</td><td class="no">跟随熟悉的路线；听从熟悉的路线</td></tr>
+    </table></div>
+  </div>
+
+  <div class="spane">
+    <p style="font-size:.95rem">研究人员确信，大象总能精确地知道它们与自己所需要的一切资源的相对位置，因此除了能走熟路，还能抄近道。</p>
+    <p style="margin-top:8px;font-size:.87rem;color:var(--muted)">
+    <b>导出动作三个</b>：① <b>convinced 落「确信」</b>，不加「被」；② <b>where 从句落「相对位置」</b>，precisely 移到动词前「精确地知道」；③ <b>as well as 倒序</b>：先熟路、后近道。<br>
+    <b style="color:var(--red)">检查一句：句子里有没有「被」字？有，就是首块那 1 分悬了。</b></p>
+  </div>
+
+  <div class="pts">
+    <div class="pt" data-v="1"><span class="half">1</span><div><div class="en2">The researchers are convinced｜that the elephants always know precisely｜where they are｜in relation to all the resources they need,</div><div class="how">研究人员确信，大象总能精确地知道它们与自己所需要的一切资源的相对位置；<b>「被说服」即丢</b>，「相对于……而言它们在哪里」可以但别丢「精确」</div></div><button class="mark" onclick="mk(this)">未判</button></div>
+    <div class="pt" data-v="0.5"><span class="half">0.5</span><div><div class="en2">and can therefore take shortcuts,</div><div class="how">因此……还能抄近道；<b>「占据／拥有捷径」即丢</b></div></div><button class="mark" onclick="mk(this)">未判</button></div>
+    <div class="pt" data-v="0.5"><span class="half">0.5</span><div><div class="en2">as well as following familiar routes.</div><div class="how">除了能走熟路；<b>「跟随／听从熟悉的路线」危险</b></div></div><button class="mark" onclick="mk(this)">未判</button></div>
+  </div>
+
+  <button class="revealbtn" onclick="this.nextElementSibling.classList.toggle('show')">▸ 参考译文</button>
+  <div class="refzh">研究人员确信，大象总能精确地知道它们与自己所需要的一切资源的相对位置，因此除了能走熟路，还能抄近道。<br><span style="color:var(--muted);font-size:.85rem">🧪 Claude 盲译：研究人员确信，大象总是确切地知道自己相对于所需的一切资源处在什么位置，因此除了沿熟悉的路线走以外，还能抄近道。</span></div>
+  <div class="trap"><b>常见扣分</b>：① <b>「研究人员被说服」</b>；② <b>they 挂到研究者身上</b>：「研究人员确信大象总知道他们在哪里」——差一个偏旁就是另一群人；③ <b>in relation to 译「关于」</b>：「知道关于所需资源的位置」，比较义丢了；④ <b>as well as 顺序照搬</b>，「能抄近道和走熟路」——两件事被说成一样重。</div>
+</div>
+
+<!-- ---------- 48 ---------- -->
+<div class="sent" id="s48" data-q="48">
+  <div class="qhead"><span class="qn">48</span><span class="kaodian">表语从句 · 省略 that 的定语从句 · 两个 that 两种身份 · not least because</span><span class="sc">得分 <b class="qsc">0</b> / 2</span></div>
+  <div class="src"><span class="skel">One possibility was ＋ that 表语从句（they 谓语 1 and 谓语 2 ＋ 定从）, but that（代词）would … , not least because ＋ 原因状语从句</span><img class="strip" src="img/2024_翻译/s4_2.png" alt="48 原卷句条" loading="lazy"></div>
+
+  <div class="steps">
+    <button class="stab on" onclick="tab(this,0)">① 切分</button>
+    <button class="stab" onclick="tab(this,1)">② 初译</button>
+    <button class="stab" onclick="tab(this,2)">③ 难点</button>
+    <button class="stab" onclick="tab(this,3)">④ 词义</button>
+    <button class="stab" onclick="tab(this,4)">⑤ 导出</button>
+  </div>
+
+  <div class="spane on">
+    <div class="cut">
+      <div class="ln"><span class="lb">分句 1</span>One possibility｜was｜表语从句 <span class="gr">主语 ｜ 系动词 ｜ 表语</span></div>
+      <div class="ln"><span class="lb">表语从句</span>that｜they｜merely｜used their eyes｜and｜tried out the plants <span class="gr">引导词 ｜ 主语 ｜ 状语 ｜ 谓语 1 ＋ 宾语 1 ｜ 连词 ｜ 谓语 2 ＋ 宾语 2</span></div>
+      <div class="ln"><span class="lb">定从</span>(that)｜they｜found <span class="gr">省略的引导词 ｜ 主语 ｜ 谓语——修饰 the plants</span></div>
+      <div class="ln"><span class="lb">分句 2</span>but｜that｜would probably result in｜a lot of wasted time and energy <span class="gr">连词 ｜ 主语（代词）｜ 状语＋谓语 ｜ 宾语</span></div>
+      <div class="ln"><span class="lb">原因</span>not least because｜their eyesight｜is actually not｜very good <span class="gr">状语 ＋ 引导词 ｜ 主语 ｜ 系动词＋状语 ｜ 表语</span></div>
+    </div>
+    <p style="margin-top:10px;font-size:.87rem;color:var(--muted)">
+    <b style="color:var(--red)">切分眼</b>：<b>一句里两个 that</b>——第一个在 was 后面，引出表语从句，本身不当成分、不译；第二个在 but 后面、紧跟 would，<b>它就是主语</b>，指前面说的那种做法。<br>
+    ⚠️ <b>五个代词全是大象一方</b>：they × 2、their × 2 都是大象；but that 是那件事。<br>
+    ⚠️ <b>merely 管两个谓语</b>：只用眼睛（不用鼻子）去找、去尝——它在给⑤段的「气味」让位置。<br>
+    📐 <b>四块各 0.5</b>：分句 1 主干 · 表语从句 · 分句 2 · 原因从句——<b>结构的每一节一块</b>。全文最长的一句（39 词），却是切得最均匀的一句。</p>
+  </div>
+
+  <div class="spane">
+    <div class="rough">
+      <div class="ri">①「一种可能是」②「它们仅仅利用眼睛并尝试植物」③「它们发现」④「但是那可能会产生大量白费的时间和精力」⑤「尤其是因为它们的视力实际上并不怎么好」</div>
+      <div class="ri">整合成句：「一种可能是，它们仅仅利用眼睛并尝试它们发现的植物，但是那可能会产生大量白费的时间和精力，尤其是因为它们的视力实际上并不怎么好。」</div>
+      <div class="merge"><b>病在哪</b>：①「利用眼睛」——<b>用眼睛干什么没说</b>，used their eyes 是「用眼睛去找」；②「尝试植物」——tried out 的本义，大象是「试吃」；③「产生大量白费的时间和精力」——字面照搬 result in，中文没人这么说，「<b>会浪费大量的时间和精力</b>」；④「那」——指代对了，但「这」更顺。</div>
+    </div>
+    <p style="margin-top:10px;font-size:.87rem;color:var(--muted)">本句初译的「尤其是因为」恰好就在黄皮书疑难表的正译栏里——<b>导出改成「相当重要的原因是」是风格，不是纠错</b>。</p>
+  </div>
+
+  <div class="spane">
+    <ul class="hardl">
+      <li><b>⭐⭐ 引导词 that 与指代词 that 混用：前者不译，后者译「这／这种情况」。</b>
+        <span style="color:var(--muted)">📕 难点 (1)：句子难在引导词 that、指代词 that 混合使用。前者为表语从句的引导词，在从句中不充当语法成分；后者为代词，承前指代表语从句所述情况 ⟹「这／这种情况」。</span></li>
+      <li><b>⭐ 两个并列谓语补出动作：「用／靠眼睛来寻找／寻觅并试吃所找到的植物」。</b>
+        <span style="color:var(--muted)">📕 难点 (2)：used their eyes 意指「利用眼睛（来寻找／寻觅食物）」，tried out the plants they found 意指「尝试／试吃它们所找到的植物」——<b>「寻找」是增译</b>，英文没写 find，但下一个分句 the plants they found 已经说了。</span></li>
+      <li><b>result in 不直译：「可能会浪费大量的时间和精力」。</b>
+        <span style="color:var(--muted)">📕 难点 (3)：字面含义为「可能会产生大量浪费掉的时间和精力」，可根据汉语表达习惯意译。<b>名词短语 wasted time and energy 落成动宾「浪费……时间和精力」</b>。</span></li>
+    </ul>
+  </div>
+
+  <div class="spane">
+    <ul class="wordl">
+      <li><b>possibility</b> —— 📕 本义「可能；可能性」，此处承前「对大象如何挑选食物不够了解」，指其中一种猜想／可能正确的解释 ⟹「<b>可能</b>」。<b>注意 One possibility was …（过去时）——这个猜想后文被否掉了</b>。</li>
+      <li><b>tried out</b> —— 📕 本义「试用；测试」，结合上句 <i>choosy eaters</i>「挑食的人／动物」、<i>selected their food</i>「挑选食物」及宾语 the plants（大象的食物）⟹ 意译「<b>试吃</b>」。误译栏：「试图；设法」——那是 <i>try to do</i>。</li>
+      <li><b>not least</b> —— 📕 固定搭配「尤其是；相当重要地是」，not＋least 的双重否定意味加强语气、表强调 ⟹ 强调原因可译「<b>相当重要的（原因）是</b>」。⚠️ 与 <i>not the least</i>（一点也不；完全不）区别：多一个 the，意思反过来。误译栏：「完全不是因为」。</li>
+      <li><b>merely</b> —— 「只；仅仅」，强调手段单一。</li>
+      <li><b>eyesight</b> —— 「视力」；<i>actually not very good</i>「其实并不怎么好」，actually 是「其实」，不是「实际上地」。</li>
+    </ul>
+    <div class="tabwrap">
+    <table class="tv">
+      <tr><th>疑难点</th><th>正译</th><th>误译</th></tr>
+      <tr><td>tried out</td><td class="ok">尝试；试吃</td><td class="no">试图；设法</td></tr>
+      <tr><td>not least because</td><td class="ok">尤其是因为；相当重要的（原因）是</td><td class="no">完全不是因为</td></tr>
+    </table></div>
+  </div>
+
+  <div class="spane">
+    <p style="font-size:.95rem">一种可能是，它们只用眼睛寻找并试吃所找到的植物，但这很可能会浪费大量的时间和精力，相当重要的原因是它们的视力其实并不怎么好。</p>
+    <p style="margin-top:8px;font-size:.87rem;color:var(--muted)">
+    <b>导出动作三个</b>：① <b>两个 that 分家</b>：第一个不译，第二个落「这」；② <b>补出动作</b>：用眼睛「寻找」、植物「试吃」；③ <b>not least 落「相当重要的原因是／尤其是因为」</b>。<br>
+    <b style="color:var(--red)">检查一句：「not least」那里写的是肯定的「尤其是」，还是否定的「完全不是」？写反了，整句的逻辑就倒了。</b></p>
+  </div>
+
+  <div class="pts">
+    <div class="pt" data-v="0.5"><span class="half">0.5</span><div><div class="en2">One possibility was</div><div class="how">一种可能是；「一种可能性是」也可以</div></div><button class="mark" onclick="mk(this)">未判</button></div>
+    <div class="pt" data-v="0.5"><span class="half">0.5</span><div><div class="en2">that they merely used their eyes｜and tried out the plants they found,</div><div class="how">它们只用眼睛寻找并试吃所找到的植物；<b>「试图」即丢</b>，merely 不能丢</div></div><button class="mark" onclick="mk(this)">未判</button></div>
+    <div class="pt" data-v="0.5"><span class="half">0.5</span><div><div class="en2">but that would probably result in｜a lot of wasted time and energy,</div><div class="how">但这很可能会浪费大量的时间和精力；<b>that 当成引导词、漏掉主语，危险</b></div></div><button class="mark" onclick="mk(this)">未判</button></div>
+    <div class="pt" data-v="0.5"><span class="half">0.5</span><div><div class="en2">not least because｜their eyesight is actually not very good.</div><div class="how">相当重要的原因是／尤其是因为它们的视力其实并不怎么好；<b>「完全不是因为」即丢</b></div></div><button class="mark" onclick="mk(this)">未判</button></div>
+  </div>
+
+  <button class="revealbtn" onclick="this.nextElementSibling.classList.toggle('show')">▸ 参考译文</button>
+  <div class="refzh">一种可能是，它们只用眼睛寻找并试吃所找到的植物，但这很可能会浪费大量的时间和精力，相当重要的原因是它们的视力其实并不怎么好。<br><span style="color:var(--muted);font-size:.85rem">🧪 Claude 盲译：一种可能是它们只是用眼睛看，再把找到的植物尝一尝，但那样很可能会浪费大量的时间和精力，尤其是因为它们的视力其实并不太好。</span></div>
+  <div class="trap"><b>常见扣分</b>：① <b>not least 译成否定</b>「并不是因为视力不好」——把 not 当成否定整句；② <b>but that 当成连词</b>，写成「但是这样会导致……」的主语丢了还好，写成「但是因为……」就错了层次；③ <b>tried out 写「试图」</b>，后面接不上「植物」；④ <b>merely 漏译</b>——「它们用眼睛找」，这个假设被否掉的理由（不用鼻子）就看不出来了。</div>
+</div>
+
+<!-- ---------- 49 ---------- -->
+<div class="sent" id="s49" data-q="49">
+  <div class="qhead"><span class="qn">49</span><span class="kaodian">被动语态 · 过去分词后置定语 · they 不就近 · 冒号解释</span><span class="sc">得分 <b class="qsc">0</b> / 2</span></div>
+  <div class="src"><span class="skel">The volatile chemicals ＋ 过去分词后置定语 ＋ can be carried …, and they are …: 主语 has 宾语.</span><img class="strip" src="img/2024_翻译/s5_1.png" alt="49 原卷句条" loading="lazy"></div>
+
+  <div class="steps">
+    <button class="stab on" onclick="tab(this,0)">① 切分</button>
+    <button class="stab" onclick="tab(this,1)">② 初译</button>
+    <button class="stab" onclick="tab(this,2)">③ 难点</button>
+    <button class="stab" onclick="tab(this,3)">④ 词义</button>
+    <button class="stab" onclick="tab(this,4)">⑤ 导出</button>
+  </div>
+
+  <div class="spane on">
+    <div class="cut">
+      <div class="ln"><span class="lb">分句 1</span>The volatile chemicals｜can be carried｜a long way <span class="gr">主语 ｜ 被动态谓语 ｜ 地点状语</span></div>
+      <div class="ln"><span class="lb">后置定语</span>produced｜by plants <span class="gr">过去分词 ｜ 施事状语——修饰 chemicals</span></div>
+      <div class="ln"><span class="lb">分句 2</span>and｜they｜are｜very characteristic: <span class="gr">连词 ｜ 主语 ｜ 系动词 ｜ 表语</span></div>
+      <div class="ln"><span class="lb">分句 3</span>Each plant or tree｜has｜its own particular odor signature <span class="gr">主语 ｜ 谓语 ｜ 宾语——冒号后解释分句 2</span></div>
+    </div>
+    <p style="margin-top:10px;font-size:.87rem;color:var(--muted)">
+    <b style="color:var(--red)">切分眼</b>：<b>they 前面有两个复数名词</b>——chemicals 和 plants，plants 离得更近。<b>单复数帮不了你</b>，两个判据：① chemicals 是分句 1 的主语核心词，plants 只在修饰成分 <i>produced by plants</i> 里；② 冒号后说「每种植物都有自己的气味」——<b>说的是气味（化学物质）有特点</b>。<br>
+    ⚠️ <b>Each … its</b>：each 后单数，its 指 each plant or tree，没有悬念。<br>
+    📐 <b>三块 1／0.5／0.5</b>：首块 1 分装着 volatile 的词义、produced by 的位置、can be carried 的态——三件事；第二块半分只压一个 they。</p>
+  </div>
+
+  <div class="spane">
+    <div class="rough">
+      <div class="ri">①「易变的化学物质可以被携带很远的距离」②「植物所产生的」③「而且它们极为典型」④「每种植物或树木都有自己独特的气味签名」</div>
+      <div class="ri">整合成句：「植物所产生的易变的化学物质可以被携带很远的距离，而且它们还极为典型：每种植物或树木都有自己独特的气味签名。」</div>
+      <div class="merge"><b>病在哪</b>：①「<b>易变的</b>」——volatile 的常见义，跟化学物质、气味放在一起是「<b>挥发性的</b>」；②「<b>被携带</b>」——被动直译，气味是「播散／扩散」；③「<b>极为典型</b>」——顺译与后文脱节，冒号后在说「各有各的」，是「<b>特点鲜明</b>」；④「<b>气味签名</b>」——signature 的本义，植物不签字，是「<b>标志性气味</b>」。</div>
+    </div>
+    <p style="margin-top:10px;font-size:.87rem;color:var(--muted)"><b>四处翻车，一处结构问题都没有</b>——全是词义与态。这句的结构在五句里最简单，丢分却可能最多。</p>
+  </div>
+
+  <div class="spane">
+    <ul class="hardl">
+      <li><b>⭐⭐ they 不「就近指代」：指 chemicals，译「它们／这些物质」。</b>
+        <span style="color:var(--muted)">📕 难点 (2)：they 前有两个复数名词 chemicals 和 plants，但此处并非「就近指代」。判断线索有二：一、全句重点描述的对象为分句 1 的主语（核心词 chemicals），而 plants 位于次要的修饰成分中；二、冒号后内容是对分句 2 的整体解释，说明植物／树木散发的挥发性物质所带来的特定气味 ⟹ they 指向挥发性化学物质。</span></li>
+      <li><b>⭐ 被动转主动，后置定语前置成「的」字结构：「植物释放的挥发性化学物质能播散到……」。</b>
+        <span style="color:var(--muted)">📕 难点 (1)：被动语态实际可转为汉语中比较常见的主动语态；过去分词短语作后置定语译作「的」字短语置于核心名词之前。导出把 produced 落成「释放」。</span></li>
+      <li><b>分句 2 意译：「它们特点鲜明」。</b>
+        <span style="color:var(--muted)">📕 难点 (3)：主系表结构直接顺译为「它们是非常典型的／独特的」，与后文语义脱节，可结合后文语义重心转译为「它们特点鲜明」。</span></li>
+    </ul>
+  </div>
+
+  <div class="spane">
+    <ul class="wordl">
+      <li><b>volatile</b> —— 📕 常见义「易变的；不稳定的」，此处据修饰对象 chemicals 及后文 odor 不难判断应取引申义「<b>易挥发的／挥发性的</b>」。（<i>a volatile market</i> 才是「动荡的市场」。）</li>
+      <li><b>carry</b> —— 📕 本义「携带；传送」，被动 be carried 说明挥发性化学物质／气味被（空气、风等）传送 ⟹ 意译「<b>播散／扩散</b>」；can be carried a long way ⟹「可以播散／扩散很远的距离」。</li>
+      <li><b>signature</b> —— 📕 本义「签名；署名」，还可引申为「（人或物的）识别标志；明显特征」；characteristic、its own particular 都在强调独特 ⟹ 译为「<b>标志</b>」。导出把 odor signature 调成「<b>标志性气味</b>」。</li>
+      <li><b>characteristic</b> —— 这里是形容词「有特色的」，不是名词「特征」——看它前面的 very。</li>
+      <li><b>its own particular</b> —— own 与 particular 两层强调「自己的、独有的」⟹「其特有的」。</li>
+    </ul>
+    <div class="tabwrap">
+    <table class="tv">
+      <tr><th>疑难点</th><th>正译</th><th>误译</th></tr>
+      <tr><td>volatile chemicals</td><td class="ok">挥发性化学物质</td><td class="no">易变的化学制品</td></tr>
+      <tr><td>can be carried a long way</td><td class="ok">可以播散／扩散很远的距离</td><td class="no">可以被携带很远的距离</td></tr>
+    </table></div>
+  </div>
+
+  <div class="spane">
+    <p style="font-size:.95rem">植物释放的挥发性化学物质能播散到很远的地方，而且它们特点鲜明：每一种植物或树木都有其特有的标志性气味。</p>
+    <p style="margin-top:8px;font-size:.87rem;color:var(--muted)">
+    <b>导出动作三个</b>：① <b>态</b>：被携带 → 能播散；② <b>定语前置</b>：植物释放的；③ <b>四个词换义</b>：挥发性 · 播散 · 特点鲜明 · 标志性气味。<br>
+    <b style="color:var(--red)">检查一句：「它们特点鲜明」的「它们」，读者会读成植物还是化学物质？如果怕读岔，写「这些物质」最稳。</b></p>
+  </div>
+
+  <div class="pts">
+    <div class="pt" data-v="1"><span class="half">1</span><div><div class="en2">The volatile chemicals｜produced by plants｜can be carried a long way,</div><div class="how">植物释放的挥发性化学物质能播散到很远的地方；<b>「易变的」「被携带」各丢一半</b></div></div><button class="mark" onclick="mk(this)">未判</button></div>
+    <div class="pt" data-v="0.5"><span class="half">0.5</span><div><div class="en2">and they are very characteristic:</div><div class="how">而且它们特点鲜明；<b>they 落成「植物」即丢</b>，「极具特色」可以</div></div><button class="mark" onclick="mk(this)">未判</button></div>
+    <div class="pt" data-v="0.5"><span class="half">0.5</span><div><div class="en2">Each plant or tree｜has its own particular odor signature.</div><div class="how">每一种植物或树木都有其特有的标志性气味；<b>「气味签名」危险</b>，「气味特征／气味标记」可以</div></div><button class="mark" onclick="mk(this)">未判</button></div>
+  </div>
+
+  <button class="revealbtn" onclick="this.nextElementSibling.classList.toggle('show')">▸ 参考译文</button>
+  <div class="refzh">植物释放的挥发性化学物质能播散到很远的地方，而且它们特点鲜明：每一种植物或树木都有其特有的标志性气味。<br><span style="color:var(--muted);font-size:.85rem">🧪 Claude 盲译：植物产生的挥发性化学物质能传播很远，而且极具特色：每种植物或树木都有自己独特的气味标记。</span></div>
+  <div class="trap"><b>常见扣分</b>：① <b>they 就近挂 plants</b>：「而且这些植物很有特点」——看着也通，可冒号后在讲气味，主角换人了；② <b>volatile 写「易变的」「不稳定的」</b>；③ <b>produced by plants 挂错</b>：「化学物质可以被植物带走很远」——把 by 的施事挪给了 carried；④ <b>signature 写「签名」「署名」</b>。</div>
+</div>
+
+<!-- ---------- 50 ---------- -->
+<div class="sent" id="s50" data-q="50">
+  <div class="qhead"><span class="qn">50</span><span class="kaodian">宾语从句 · 定语从句 · 两个并列目的状语 · secondly 补「先」</span><span class="sc">得分 <b class="qsc">0</b> / 2</span></div>
+  <div class="src"><span class="skel">The experiment showed ＋ that 从句〔elephants may well use smell ＋ to do ①（＋ 定从）and secondly ＋ to do ②（＋ 介词短语后置定语）〕</span><img class="strip" src="img/2024_翻译/s6_3.png" alt="50 原卷句条" loading="lazy"></div>
+
+  <div class="steps">
+    <button class="stab on" onclick="tab(this,0)">① 切分</button>
+    <button class="stab" onclick="tab(this,1)">② 初译</button>
+    <button class="stab" onclick="tab(this,2)">③ 难点</button>
+    <button class="stab" onclick="tab(this,3)">④ 词义</button>
+    <button class="stab" onclick="tab(this,4)">⑤ 导出</button>
+  </div>
+
+  <div class="spane on">
+    <div class="cut">
+      <div class="ln"><span class="lb">主干</span>The experiment｜showed <span class="gr">主语 ｜ 谓语</span></div>
+      <div class="ln"><span class="lb">showed 的宾从</span>that｜elephants｜may well use｜smell <span class="gr">引导词 ｜ 主语 ｜ 谓语 ｜ 宾语</span></div>
+      <div class="ln"><span class="lb">目的 1</span>to identify patches of trees <span class="gr">修饰 use smell：用嗅觉干什么</span></div>
+      <div class="ln"><span class="lb">定从</span>that｜are｜good｜to eat <span class="gr">引导词 ｜ 系动词 ｜ 表语 ｜ 状语——修饰 patches of trees</span></div>
+      <div class="ln"><span class="lb">目的 2</span>and｜secondly｜to assess the quality｜of the trees within each patch <span class="gr">连词 ｜ 连接性状语 ｜ 不定式 ｜ quality 的后置定语</span></div>
+    </div>
+    <p style="margin-top:10px;font-size:.87rem;color:var(--muted)">
+    <b style="color:var(--red)">切分眼</b>：<b>两个 to 是一层的</b>（都挂在 use smell 上），和 2023·46 那两个 to 分两层不一样——这里用 <i>and secondly</i> 把它们排成先后两步。<br>
+    ⚠️ <b>secondly 前面没有 firstly</b>：英文只标了第二步，中文要在第一步前补「先」。<br>
+    ⚠️ <b>good to eat 不是「好吃」</b>的字面——<i>be good to do</i>「适合做某事」，说的是「能吃、值得吃」。<br>
+    📐 <b>四块各 0.5</b>：showed · that 从句主干 · 目的 1＋定从 · 目的 2——和 48 一样一节一块。<b>本句是五句里唯一没有代词的</b>，主语直接写 elephants。</p>
+  </div>
+
+  <div class="spane">
+    <div class="rough">
+      <div class="ri">①「实验表明」②「大象很可能使用嗅觉来辨别成片树木并评估每片树丛内树木的质量」③「好吃的」</div>
+      <div class="ri">整合成句：「实验表明，大象很可能使用嗅觉来辨别好吃的成片树木并评估每片区域内树木的质量。」</div>
+      <div class="merge"><b>病在哪</b>：①「<b>并</b>」——两步变成同时，secondly 的先后顺序丢了；②「成片树木」——patches of trees 是一片一片的<b>树林</b>，不是「树木」本身；③「好吃的」——意思不算错，但 <i>good to eat</i> 是「适合食用」；④「每片区域」与前面的「成片树木」对不上——<b>前后要用同一个量词</b>（树林 ／ 每片树林）。</div>
+    </div>
+    <p style="margin-top:10px;font-size:.87rem;color:var(--muted)">这份初译结构没错，<b>丢的是「顺序」与「前后一致」</b>——两个都是中文一侧的毛病。</p>
+  </div>
+
+  <div class="spane">
+    <ul class="hardl">
+      <li><b>⭐⭐ secondly：据前后两个不定式处理为「（先……，）接着……」。</b>
+        <span style="color:var(--muted)">📕 难点：最大难点在于定语从句中 are good to eat 以及序列词 secondly 的译法——后者字面义为「第二；其次」，宜根据其前后的两个不定式短语处理为「（先……，）接着……」。<b>「先」是增译</b>，英文里没有 first。</span></li>
+      <li><b>⭐ 定从视长短处理：短的前置成「的」字结构——「适合食用的那些树林」。</b>
+        <span style="color:var(--muted)">📕 难点：宾语从句以及目的状语通常按照正常语序译出即可，而定语从句需视长短而处理为「的」字结构或者小句。are good to eat 的核心是 be good to do sth 结构，表示「适合做某事」。</span></li>
+      <li><b>may well 选「很可能」：陈述实验结果。</b>
+        <span style="color:var(--muted)">📕 词义 (1)：may well 为固定词组，既表「很可能」，也表「完全可以」，鉴于句中用以陈述实验结果，故宜选用「很可能」。<b>③❶ 的 <i>smell may well play a part</i> 也是这个意思——③段的猜测，⑥段用实验坐实到「很可能」</b>。</span></li>
+    </ul>
+  </div>
+
+  <div class="spane">
+    <ul class="wordl">
+      <li><b>patch</b> —— 📕 本义「小块；小片」，与 trees 搭配表示由茂密树木覆盖的小片区域 ⟹ patches of trees「<b>树林／树丛</b>」，each patch「<b>每片树林／树丛</b>」。</li>
+      <li><b>identify</b> —— 「识别；认出」：从一堆里认出是哪几片。</li>
+      <li><b>assess</b> —— 「评估；鉴别」：已经认出的那几片里，再看每棵树的好坏。<b>identify 是「是不是」，assess 是「好不好」</b>——两步的分工就在这两个动词上。</li>
+      <li><b>quality</b> —— 「质量；品质」，导出用「品质」。</li>
+      <li><b>may well</b> —— 「很可能」；别跟 <i>may as well</i>（不妨）混。</li>
+    </ul>
+    <div class="tabwrap">
+    <table class="tv">
+      <tr><th>疑难点</th><th>正译</th><th>误译</th></tr>
+      <tr><td>may well use</td><td class="ok">很可能利用</td><td class="no">可能熟练地使用</td></tr>
+      <tr><td>trees within each patch</td><td class="ok">每片树林／树丛中的树木</td><td class="no">树木的每一块</td></tr>
+    </table></div>
+  </div>
+
+  <div class="spane">
+    <p style="font-size:.95rem">实验表明，大象很可能利用嗅觉先识别出适合食用的那些树林，接着再鉴别每片树林中树木的品质。</p>
+    <p style="margin-top:8px;font-size:.87rem;color:var(--muted)">
+    <b>导出动作三个</b>：① <b>补「先」、secondly 落「接着再」</b>；② <b>定从前置</b>：适合食用的那些树林；③ <b>量词前后一致</b>：树林 → 每片树林。<br>
+    <b style="color:var(--red)">检查一句：两步之间是「并」还是「先……接着……」？写「并」，第四块的 secondly 就没译。</b></p>
+  </div>
+
+  <div class="pts">
+    <div class="pt" data-v="0.5"><span class="half">0.5</span><div><div class="en2">The experiment showed</div><div class="how">实验表明；「实验显示」也可以</div></div><button class="mark" onclick="mk(this)">未判</button></div>
+    <div class="pt" data-v="0.5"><span class="half">0.5</span><div><div class="en2">that elephants may well use smell</div><div class="how">大象很可能利用嗅觉；<b>「熟练地使用」即丢</b></div></div><button class="mark" onclick="mk(this)">未判</button></div>
+    <div class="pt" data-v="0.5"><span class="half">0.5</span><div><div class="en2">to identify patches of trees｜that are good to eat,</div><div class="how">先识别出适合食用的那些树林；「好吃的树丛」可以</div></div><button class="mark" onclick="mk(this)">未判</button></div>
+    <div class="pt" data-v="0.5"><span class="half">0.5</span><div><div class="en2">and secondly to assess the quality｜of the trees within each patch.</div><div class="how">接着再鉴别每片树林中树木的品质；<b>secondly 漏译、「树木的每一块」危险</b></div></div><button class="mark" onclick="mk(this)">未判</button></div>
+  </div>
+
+  <button class="revealbtn" onclick="this.nextElementSibling.classList.toggle('show')">▸ 参考译文</button>
+  <div class="refzh">实验表明，大象很可能利用嗅觉先识别出适合食用的那些树林，接着再鉴别每片树林中树木的品质。<br><span style="color:var(--muted);font-size:.85rem">🧪 Claude 盲译：实验表明，大象很可能是用嗅觉先辨认出哪些树丛好吃，其次再评估每片树丛里树木的质量。</span></div>
+  <div class="trap"><b>常见扣分</b>：① <b>may well 写「可以很好地」</b>——把 well 当成「好」；② <b>secondly 漏译</b>，两个动作并列；③ <b>patch 写「块、补丁」</b>：「识别好吃的树木块」；④ <b>that are good to eat 挂到 trees 上而丢了 patches</b>：「识别好吃的树」——第一步认的是一片一片的林子，第二步才看单棵树。</div>
+</div>
+</section>
+
+
+<!-- ============ 03 ============ -->
+<section class="card" id="s3">
+<h2><span class="n">03</span>⚠️ 本篇内核：「谁是 they」与「大象的动作」清算表（50 处）<button class="modebtn" id="pmbtn" onclick="polyMode()">✍️ 默写模式</button></h2>
+<p style="font-size:.9rem;color:var(--muted)">
+黄皮书<b>五张</b>「正译 vs 误译」表（<b>11 行</b>）＋ 五节「难点突破／词义确定」＋ 段落对照译文里的关键词全部收进——<b>49 行的「正译」全部能在书上找到出处</b>（判据栏标 📕：疑难表／难点／词义／导出／段落对照译文）；「误译」栏书上没列的格子，是本页补的最常见错法。
+<b>点「默写模式」把「正译」栏盖住</b>，逐格点开自查。<br>
+⚠️ <b style="color:var(--red)">这张表有两种行</b>：<b>代词行</b>（「它们」写给谁）和<b>动词行</b>（人的动作换成象的动作）。前者错了是意思错，后者错了是「中文没人这么说」——两种都扣分。<br>
+📌 <b>本表最值得记的一组</b>：<b>What is more 一词两译</b>——②❻ 书译「更重要的是」、⑤❷ 书译「另外」：前一处是递进（挑最近的水坑比方向准更难），后一处只是补充（看不见也闻得到）。<b>同一个连接词，译法看它连着的两件事谁重谁轻</b>。</p>
+<div class="tabwrap">
+<table class="polytab">
+  <tr><th>词／表达</th><th>正译（本文语境）</th><th>误译（最常见）</th><th>判据</th></tr>
+  <tr><td class="wd">travel</td><td class="good">跋涉；行走</td><td class="bad">旅行；游历</td><td>46 📕 疑难表：描述的对象是大象</td></tr>
+  <tr><td class="wd">working out</td><td class="good">（精确）判断／确定</td><td class="bad">计算出；产出</td><td>46 📕 疑难表</td></tr>
+  <tr><td class="wd">They（46 句首）</td><td class="good">它们（非洲草原象这一物种）</td><td class="bad">他们</td><td>46 📕 难点 (2)：承前指物种</td></tr>
+  <tr><td class="wd">they（46 破折号后）</td><td class="good">那些大象；其他大象</td><td class="bad">它们（读成大象自己）</td><td>46 📕 难点 (2)：指宾从主语 other elephants</td></tr>
+  <tr><td class="wd">where other elephants are</td><td class="good">其他大象的位置</td><td class="bad">在其他大象在的地方</td><td>46 📕 难点 (1)：宾从短，名词化</td></tr>
+  <tr><td class="wd">even when … out of sight</td><td class="good">即便……不在视野中</td><td class="bad">甚至当……视力之外</td><td>46 📕 难点 (3)</td></tr>
+  <tr><td class="wd">are convinced</td><td class="good">确信；相信</td><td class="bad">被说服；被劝说</td><td>47 📕 疑难表：表语形容词，非被动</td></tr>
+  <tr><td class="wd">precisely</td><td class="good">精确地（知道）；确切的（位置）</td><td class="bad">精密地；恰好</td><td>47 📕 难点 (2)：焦点副词</td></tr>
+  <tr><td class="wd">in relation to</td><td class="good">相对于……而言；与……的相对位置</td><td class="bad">关于；涉及</td><td>47 📕 词义 (1)：取第二义</td></tr>
+  <tr><td class="wd">where they are（47）</td><td class="good">它们（大象）的位置</td><td class="bad">他们（研究人员）在哪</td><td>47 主语是 the elephants</td></tr>
+  <tr><td class="wd">take shortcuts</td><td class="good">走捷径；抄近道</td><td class="bad">占据捷径；拥有捷径</td><td>47 📕 疑难表</td></tr>
+  <tr><td class="wd">following familiar routes</td><td class="good">走熟路；沿着熟悉的路线走</td><td class="bad">跟随熟悉的路线；听从熟悉的路线</td><td>47 📕 疑难表</td></tr>
+  <tr><td class="wd">A as well as B</td><td class="good">除了 B 之外，还 A</td><td class="bad">A 以及 B（重心丢失）</td><td>47 📕 难点 (3)：强调 A</td></tr>
+  <tr><td class="wd">possibility</td><td class="good">（一种）可能</td><td class="bad">可能性很大</td><td>48 📕 词义 (1)：一种猜想</td></tr>
+  <tr><td class="wd">used their eyes</td><td class="good">用眼睛寻找</td><td class="bad">利用眼睛（不知干什么）</td><td>48 📕 难点 (2)：增译「寻找」</td></tr>
+  <tr><td class="wd">tried out</td><td class="good">尝试；试吃</td><td class="bad">试图；设法</td><td>48 📕 疑难表</td></tr>
+  <tr><td class="wd">but that（48）</td><td class="good">这；这种情况</td><td class="bad">但是（当连词，丢了主语）</td><td>48 📕 难点 (1)：指示代词</td></tr>
+  <tr><td class="wd">result in … wasted time and energy</td><td class="good">浪费大量的时间和精力</td><td class="bad">产生大量白费的时间和精力</td><td>48 📕 难点 (3)：意译</td></tr>
+  <tr><td class="wd">not least because</td><td class="good">尤其是因为；相当重要的（原因）是</td><td class="bad">完全不是因为</td><td>48 📕 疑难表；≠ not the least</td></tr>
+  <tr><td class="wd">volatile chemicals</td><td class="good">挥发性化学物质</td><td class="bad">易变的化学制品</td><td>49 📕 疑难表</td></tr>
+  <tr><td class="wd">produced by plants</td><td class="good">植物释放的</td><td class="bad">被植物生产的</td><td>49 📕 导出：后置定语前置</td></tr>
+  <tr><td class="wd">can be carried a long way</td><td class="good">可以播散／扩散很远的距离</td><td class="bad">可以被携带很远的距离</td><td>49 📕 疑难表</td></tr>
+  <tr><td class="wd">they（49）</td><td class="good">它们；这些物质</td><td class="bad">这些植物</td><td>49 📕 难点 (2)：不就近指代</td></tr>
+  <tr><td class="wd">very characteristic</td><td class="good">特点鲜明</td><td class="bad">非常典型的</td><td>49 📕 难点 (3)：重心转译</td></tr>
+  <tr><td class="wd">odor signature</td><td class="good">标志性气味；气味标志</td><td class="bad">气味签名</td><td>49 📕 词义 (3)</td></tr>
+  <tr><td class="wd">may well use</td><td class="good">很可能利用</td><td class="bad">可能熟练地使用</td><td>50 📕 疑难表</td></tr>
+  <tr><td class="wd">patches of trees</td><td class="good">树林；树丛</td><td class="bad">成片树木；补丁</td><td>50 📕 词义 (2)</td></tr>
+  <tr><td class="wd">trees within each patch</td><td class="good">每片树林／树丛中的树木</td><td class="bad">树木的每一块</td><td>50 📕 疑难表</td></tr>
+  <tr><td class="wd">good to eat</td><td class="good">适合食用</td><td class="bad">好的去吃</td><td>50 📕 难点：be good to do</td></tr>
+  <tr><td class="wd">secondly</td><td class="good">（先……，）接着……</td><td class="bad">第二；并且</td><td>50 📕 难点：补「先」</td></tr>
+  <tr><td class="wd">assess the quality</td><td class="good">鉴别……的品质</td><td class="bad">估税；评定价格</td><td>50 📕 导出</td></tr>
+  <tr><td class="wd">or so they say</td><td class="good">据说如此</td><td class="bad">或者他们这么说</td><td>①❶ 📕 段落译文</td></tr>
+  <tr><td class="wd">piece of folklore</td><td class="good">（这句）谚语；民间说法</td><td class="bad">一片民俗</td><td>①❶ 📕 段落译文「这句谚语」</td></tr>
+  <tr><td class="wd">foundation</td><td class="good">依据</td><td class="bad">基金会；地基</td><td>①❶ 📕 段落译文「一定的依据」</td></tr>
+  <tr><td class="wd">is distributed across</td><td class="good">分布于</td><td class="bad">被分配到</td><td>②❶ 📕 段落译文</td></tr>
+  <tr><td class="wd">spatial acuity</td><td class="good">空间敏锐度</td><td class="bad">空间尖锐度</td><td>②❹ 📕 段落译文「非凡的空间敏锐度」</td></tr>
+  <tr><td class="wd">headed off</td><td class="good">（朝……方向）前进</td><td class="bad">拦截；阻止</td><td>②❺ 📕 段落译文「精准地朝着正确的方向前进」</td></tr>
+  <tr><td class="wd">What is more（②❻）</td><td class="good">更重要的是</td><td class="bad">什么是更多的</td><td>②❻ 📕 段落译文：递进</td></tr>
+  <tr><td class="wd">What is more（⑤❷）</td><td class="good">另外</td><td class="bad">更重要的是（过重）</td><td>⑤❷ 📕 段落译文：补充</td></tr>
+  <tr><td class="wd">cues</td><td class="good">线索</td><td class="bad">提示；台词</td><td>③❶ 📕 段落译文</td></tr>
+  <tr><td class="wd">may well play a part</td><td class="good">很可能起了作用</td><td class="bad">可以很好地扮演角色</td><td>③❶ 📕 段落译文</td></tr>
+  <tr><td class="wd">choosy eaters</td><td class="good">对食物非常挑剔</td><td class="bad">选择的吃家</td><td>④❶ 📕 段落译文</td></tr>
+  <tr><td class="wd">crucial factor</td><td class="good">关键因素</td><td class="bad">十字形的因素</td><td>⑤❸ 📕 段落译文</td></tr>
+  <tr><td class="wd">herbivores</td><td class="good">食草动物</td><td class="bad">草药师</td><td>⑤❸ 📕 段落译文</td></tr>
+  <tr><td class="wd">foraging freely</td><td class="good">（大范围地）自由觅食</td><td class="bad">自由地搜刮</td><td>⑥❶ 📕 段落译文</td></tr>
+  <tr><td class="wd">based only on smell</td><td class="good">只能根据嗅觉来辨别</td><td class="bad">只建立在气味上</td><td>⑥❷ 📕 段落译文</td></tr>
+  <tr><td class="wd">Free-ranging elephants</td><td class="good">野生大象</td><td class="bad">自由放养的大象</td><td>⑥❹ 📕 段落译文</td></tr>
+  <tr><td class="wd">presumably</td><td class="good">很可能；想必</td><td class="bad">推定地</td><td>⑥❹ 📕 段落译文「很可能也是」</td></tr>
+  <tr><td class="wd">hippocampal structures</td><td class="good">海马结构</td><td class="bad">河马的结构</td><td>⑦❶ 📕 段落译文：hippocampus ≠ hippopotamus</td></tr>
+  <tr><td class="wd">cognitive maps</td><td class="good">认知地图</td><td class="bad">认识的地图</td><td>⑦❶ 📕 段落译文</td></tr>
+</table></div>
+</section>
+
+
+<!-- ============ 04 ============ -->
+<section class="card" id="s4">
+<h2><span class="n">04</span>考场流程：翻译五步法（20 分钟怎么花）＋ 盲译对照</h2>
+<ol class="proc">
+  <li><b>通读全文 ＋ 定主角</b>（2 分钟）—— 七段读一遍，<b>给每一段标主语</b>：①② 大象 · ③④ 大象 · ⑤ 化学物质／嗅觉 · ⑥ 研究者→大象 · ⑦ 海马体。<b>⑤段的主语换了</b>，49 的 they 就该往化学物质上想。
+    <span style="color:var(--muted)">这一步多花 20 秒，在草稿纸角上写「象／物」两个字，后面每个 they 都先对着它问一遍。</span></li>
+  <li><b><span style="color:var(--red)">结构切分（顺手圈代词）</span></b>—— 先找<u>谓语动词</u>定主干，<b>同时把 they／their／that／its 全部圈出来</b>。本篇五句共 11 个代词，48 一句就占 5 个。
+    <span style="color:var(--muted)">结构本身不难：46 两个谓语、47 宾从套宾从、48 表从＋两个 that、49 三个分句、50 两个目的不定式。</span></li>
+  <li><b>初译试水</b>（每句 45 秒）—— 按块直译。<b>每个代词先写成括号里的名词</b>：「（其他大象）不在视野中」「（化学物质）特点鲜明」——导出时再决定写「它们」还是写名词。</li>
+  <li><b>词义确定</b>（每句 1 分钟）—— 专查<b>动词</b>：travel · working out · take · following · tried out · carried · identify／assess。<b>判据只有一条：大象能做这件事吗？</b>（会旅行、会计算、会占据吗？）</li>
+  <li><b>译文导出</b>（每句 45 秒）—— 46 末尾写「那些大象」；47 去「被」、as well as 倒序；48 第二个 that 落「这」；49 they 落「它们／这些物质」、被动转主动；50 补「先」。</li>
+</ol>
+
+<div class="wb" style="margin-top:18px">
+  <div class="wbi"><div class="p">本篇专属第 1 条 · 两个候选都是复数时，用「主角」和「解释」定指代</div>
+  <div class="u">2019 页的刀是「看谓语带不带 -s」；2016 页的刀是「看 allow 有没有 -s」——<b>都是用单复数破案</b>。本篇专门把这把刀废了：46 的 elephants 和 other elephants、49 的 chemicals 和 plants，<b>全是复数</b>。<br>
+  剩下两把刀：<b>① 主角刀</b>——候选里谁是句子主语的核心词（49 的 chemicals 是主语，plants 只在 by 短语里）；<b>② 解释刀</b>——冒号、破折号后面那半句在说谁（49 冒号后说气味，46 破折号后说「看不见」——只能是别的大象）。<br>
+  <b style="color:var(--red)">⟹ 动作：遇到 they，先数候选；只有一个复数就放心写「它们」，有两个就动用两把刀，然后把名词写出来（「那些大象」「这些物质」），别留「它们」让阅卷人猜。</b></div></div>
+
+  <div class="wbi"><div class="p">本篇专属第 2 条 · 动物当主语：英文动词人畜通用，中文动词分人畜</div>
+  <div class="u"><i>travel</i> 人「旅行」象「跋涉」；<i>work out</i> 人「算出」象「判断出」；<i>try out</i> 人「试用」象「试吃」；<i>eat</i> 人「吃饭」象「取食」；<i>forage</i> 人「搜寻」象「觅食」。<br>
+  黄皮书 46 词义 (1) 的判据原话就是「此处其描述的对象是大象」——<b>主语一换，动词跟着换</b>。<br>
+  <b style="color:var(--red)">⟹ 动作：译完每句，把主语和动词单独连起来念一遍：「大象旅行」「大象计算」——念着别扭，就是要换词的地方。</b></div></div>
+
+  <div class="wbi"><div class="p">本篇专属第 3 条 · 英文只标「第二」，中文要补「先」</div>
+  <div class="u">50 的 <i>and secondly to assess</i>：英文用一个序数词就交代了顺序，第一步没有标记；中文没有这个习惯，<b>第二步前写「接着」，第一步前就得补一个「先」</b>，否则读着像两件同时做的事。<br>
+  同理 47 的 <i>as well as</i>：英文把重的放前面，中文「除了……还……」把重的放后面。<br>
+  <b style="color:var(--red)">⟹ 动作：凡是英文用一个小词标顺序或轻重（secondly · as well as · not least），中文都要问一句：另一头要不要补一个字？</b></div></div>
+
+  <div class="wbi"><div class="p">🧪 盲译对照（只看过原卷第 13 页，先落盘再看答案）</div>
+  <div class="u"><b>自评约 10（最严 9.5）</b>——五句的结构判断、11 个代词的指向全部写对；两处风格差：<br>
+  ① 46 写「判断出其他大象在哪里」——working out 的义项对（📕 正译栏「判断」），<b>where 从句没名词化</b>；按黄皮书难点 (1) 的口径，「其他大象的位置」更紧，不扣分；<br>
+  ② 48 写「只是用眼睛看」——书解为「用眼睛<b>寻找</b>」（难点 (2) 增译），「看」意思不错但没点出动作目的；<br>
+  另：49 省掉了分句 2 的主语（「而且极具特色」），指代没有写错，但<b>省掉等于让阅卷人自己去猜</b>——按本页第 1 条，写出「它们」更稳；50 写「哪些树丛好吃」＝ 把定从改成了宾语从句，意思等价。<br>
+  <span style="color:var(--muted)">盲译犹豫过的五处（mine 里照实写了）：48 tried out 取「尝一尝」还是「试吃」、49 odor signature 取「标记」还是「特征」——书分别取「试吃」「标志性气味」；其余三处（in relation to、as well as、secondly）与书一致。</span></div></div>
+
+  <div class="wbi"><div class="p">🔍 商榷与背景（WebSearch 核）</div>
+  <div class="u"><b>商榷 1 · 字数</b>：黄皮书标 401 词，逐句计数 396（连字符词算一词），把三个连字符词拆开也只有 399——<b>书上的数偏多</b>，与 2014 页「书标 415、脚本 441」方向相反。<br>
+  <b>商榷 2 · What is more 一词两译</b>（见 03 表）——不是书的错，是书在<b>按轻重落词</b>；但书没有点出这件事，自学的人容易以为是随手换的。<br>
+  <b>背景 1 · 追踪研究</b>：②❹–❻ 对应 Polansky 等 2015 年发表在《英国皇家学会会报 B》的研究（纳米比亚埃托沙国家公园，GPS 项圈）：直奔水坑的定向移动平均从 4.59 公里外开始、<b>最远 49.97 公里</b>（≈ 31 英里，即文中 roughly thirty miles），<b>90% 的时候去的是最近的水坑</b>（即 almost always … the nearest）。同期评论还指出，导航精度不随干湿季变化，说明<b>这项研究里大象找水靠的不是气味</b>——所以③❶ 才说长途导航的线索「尚未可知」、嗅觉只是「很可能」。<br>
+  <b>背景 2 · 嗅觉实验</b>：⑥段的「食物站」实验出自南非比勒陀利亚大学 Shrader 团队：Schmitt 等 2018（<i>Animal Behaviour</i> 141）发现大象<b>在两个空间尺度上</b>都按气味挑选偏爱的植物——<b>片区之间、取食站之内</b>；McArthur 等 2019（同刊 155）再证明背景气味再杂也挑得出来。<b>50 的「先认树林、再评每片里的树」正是那两个尺度</b>。</div></div>
+</div>
+</section>
+
+
+
+<!-- ============ 05 ============ -->
+<section class="card" id="s5">
+<h2><span class="n">05</span>非画线长难句 7 句（画线句之外，这几句也是考点）</h2>
+<p style="font-size:.9rem;color:var(--muted)">
+黄皮书本篇<b>没有长难句栏目</b>（2024 四篇阅读与新题型的精讲也都没有），以下 100% 自选自撰，译文为本页自译（黄皮书段落对照译文只作交叉参考）。选的标准：<b>这一句要么给画线句定了指代或义项，要么自己就是一个结构样本</b>。原句与 01 节同一条（本机识别成文字，可切回原卷）。<br>
+📌 <b>画线五句恰好是全文最长的五句</b>；非画线句里最长的是②❺（24 词），平均只有 17 词——所以这一节选的不是「长」，是「难」：插入语、破折号、介词＋which、enable 中间夹插入语。</p>
+
+<div class="lsent" id="l1_1">
+  <div class="lt">①❶ · 引语 ＋ 两个破折号插入语 ＋ and 并列（17 词）</div>
+  <div class="le"><img class="strip" src="img/2024_翻译/s1_1.png" alt="①❶ 原卷句条" loading="lazy"></div>
+  <div class="lz">人们常说「大象从不忘事」——这句老话看来并非全无根据。</div>
+  <div class="lp"><b>结构</b>：引语 <i>“Elephants never forget”</i> ＋ 插入语 <i>—or so they say—</i> ＋ <i>and</i> ＋ 主句 <i>that piece of folklore seems to have some foundation</i>。<br>
+  ⭐ <b>or so they say ＝「据说如此」</b>：so 代前面那句引语，they 是泛指「人们」——<b>全文第一个 they 就不是大象</b>，46 之前先给你上了一课。<br>
+  ⭐ <i>that piece of folklore</i> 回指引语：folklore 不可数，用 a piece of 计量，📕 段落译文直接落「这句谚语」。<i>seems to have some foundation</i>「似乎有一定的依据」——seems 与 some 两层留余地，<b>开篇就把语气定在「有点道理」而不是「完全证实」</b>。</div>
+</div>
+
+<div class="lsent" id="l2_1">
+  <div class="lt">②❶ · 主语 ＋ also known as 插入同位 ＋ 被动「分布于」（17 词）</div>
+  <div class="le"><img class="strip" src="img/2024_翻译/s2_1.png" alt="②❶ 原卷句条" loading="lazy"></div>
+  <div class="lz">非洲草原象，又称非洲灌木象，分布于非洲 37 个国家。</div>
+  <div class="lp"><b>结构</b>：主语 <i>The African savanna elephant</i> ＋ 插入的过去分词短语 <i>also known as the African bush elephant</i> ＋ 谓语 <i>is distributed across 37 African countries</i>。<br>
+  ⭐ <b>这一句定了 46 句首 They 的身份</b>：主语是单数 <i>The … elephant</i>（定冠词＋单数＝泛指一个物种），②❷ 起换成复数 They——<b>英文单数说物种、复数说成员，中文都是「大象／它们」</b>。黄皮书 46 难点 (2) 说的「这一物种」就从这里来。<br>
+  ⚠️ <i>is distributed across</i> 是形式被动，<b>中文「分布于」本身就是主动</b>，写「被分布」反而不通。</div>
+</div>
+
+<div class="lsent" id="l2_5">
+  <div class="lt">②❺ · When ＋ 现在分词作时间状语 ＋ 主句 ＋ on one occasion 补充（24 词）</div>
+  <div class="le"><img class="strip" src="img/2024_翻译/s2_5.png" alt="②❺ 原卷句条" loading="lazy"></div>
+  <div class="lz">在找路去水坑时，它们出发的方向分毫不差；有一次，它们是从大约三十英里外出发的。</div>
+  <div class="lp"><b>结构</b>：<i>When finding their way to waterholes</i>（连词＋现在分词，省略了 they were）＋ 主句 <i>they headed off in exactly the right direction</i> ＋ 逗号后的补充状语 <i>on one occasion from a distance of roughly thirty miles</i>。<br>
+  ⭐ <b>逗号后那半截没有谓语</b>，是挂在 headed off 上的两个状语（时间 ＋ 起点）——中文拆成第二句「有一次是从……外出发的」，比硬塞进前一句顺。<br>
+  ⚠️ <i>headed off</i> 在这里是「出发、朝……走」，<b>不是 head off「拦截、阻止」</b>——后面紧跟 in … direction 就是判据。时态是过去时：这是在讲研究里的一次观察记录。</div>
+</div>
+
+<div class="lsent" id="l3_1">
+  <div class="lt">③❶ · Although 让步 ＋ 过去分词后置定语 ＋ may well 推测（20 词）</div>
+  <div class="le"><img class="strip" src="img/2024_翻译/s3_1.png" alt="③❶ 原卷句条" loading="lazy"></div>
+  <div class="lz">非洲象长途导航时靠的是哪些线索，目前还不清楚，但嗅觉很可能是其中之一。</div>
+  <div class="lp"><b>结构</b>：让步状语从句 <i>Although the cues used by … for long-distance navigation are not yet understood</i>（主语 cues ＋ 过去分词后置定语 <i>used by … for …</i>）＋ 主句 <i>smell may well play a part</i>。<br>
+  ⭐ <b>这是 49 的同款结构</b>：<i>the cues used by elephants</i> ＝ <i>the chemicals produced by plants</i>——名词 ＋ 过去分词 ＋ by，中文一律前置成「大象使用的线索」「植物释放的化学物质」。<br>
+  ⭐ <b>may well 第一次出现</b>：这里是猜测「很可能起作用」，到 50 用实验坐实时还是 may well——<b>措辞没升级，研究者一直留着余地</b>。</div>
+</div>
+
+<div class="lsent" id="l5_3">
+  <div class="lt">⑤❸ · 宾语从句 ＋ 破折号插入 and probably other herbivores（21 词）</div>
+  <div class="le"><img class="strip" src="img/2024_翻译/s5_3.png" alt="⑤❸ 原卷句条" loading="lazy"></div>
+  <div class="lz">新的研究表明，在把大象——很可能还有其他食草动物——引向最好的食物资源这件事上，嗅觉是一个关键因素。</div>
+  <div class="lp"><b>结构</b>：<i>New research suggests that</i> ＋ 宾语从句 <i>smell is a crucial factor in guiding elephants … to the best food resources</i>；破折号把 <i>and probably other herbivores</i> 插在 guiding 的宾语和 to 之间。<br>
+  ⭐ <b>破折号插入语要原样保留</b>：📕 段落译文写「指引大象——可能也是（指引）其他食草动物——获取……」，<b>补了一个「指引」</b>，让插入语自己成句。<br>
+  ⚠️ <i>guide sb to sth</i>「把某人引向某物」——插入语一挡，to 就离 guiding 很远了，切分时先把破折号里的拿掉。</div>
+</div>
+
+<div class="lsent" id="l6_2">
+  <div class="lt">⑥❷ · 主句 ＋ 介词＋which 定语从句 ＋ 过去分词 based on（22 词）</div>
+  <div class="le"><img class="strip" src="img/2024_翻译/s6_2.png" alt="⑥❷ 原卷句条" loading="lazy"></div>
+  <div class="lz">接着他们做了一个「食物站」实验：给大象一系列选项，让它们只能凭气味来挑。</div>
+  <div class="lp"><b>结构</b>：主句 <i>They then set up a “food station” experiment</i> ＋ 非限制性定语从句 <i>in which they gave the elephants a series of choices</i> ＋ 过去分词短语 <i>based only on smell</i> 修饰 choices。<br>
+  ⭐ <b>in which ＝ in the experiment</b>，引出实验内容；中文用冒号或「在这个实验中」另起。<br>
+  ⭐ <b>本句两个 they 都是研究者</b>（They then set up · they gave the elephants）——<b>除了①❶ 泛指「人们」的 they，全文只有这一处 they 不指大象、也不指化学物质</b>；紧跟着 50 的主语就写明了 elephants，不给你再猜一次的机会。<br>
+  ⚠️ <i>based only on smell</i>：only 的位置管的是 smell——「只凭气味」，不是「只提供选择」。</div>
+</div>
+
+<div class="lsent" id="l7_1">
+  <div class="lt">⑦❶ · enable sb to do 中间夹 like 插入语（15 词）</div>
+  <div class="le"><img class="strip" src="img/2024_翻译/s7_1.png" alt="⑦❶ 原卷句条" loading="lazy"></div>
+  <div class="lz">大象发达的海马体结构，或许使它们能像老鼠和人类一样构建认知地图。</div>
+  <div class="lp"><b>结构</b>：主语 <i>Their well-developed hippocampal structures</i> ＋ <i>may enable</i> ＋ 宾语 <i>elephants</i> ＋ 插入 <i>like rats and people</i> ＋ 宾补 <i>to construct cognitive maps</i>。<br>
+  ⭐ <b>无灵主语 ＋ enable</b>：英文让「结构」当主语去「使」大象做事，中文可以保留「……使它们能……」，也可以把主语变成原因「由于海马体发达，大象或许能……」。<br>
+  ⭐ <b>收到章名</b>：原书第 25 章叫「人类的导航大脑」——rats and people 一出现，就是在把大象接到人脑上。<i>hippocampal</i> 是 hippocampus（海马体）的形容词，<b>和 hippopotamus（河马）同一个希腊词根 hippos（马）</b>，别译成「河马」。</div>
+</div>
+</section>
+
+<!-- ============ 06 ============ -->
+<section class="card" id="s6">
+<h2><span class="n">06</span>写作素材抽取（话题：俗语与证据 · 科学研究 · 动物与自然 · 先猜后证的论证）</h2>
+<p style="font-size:.9rem;color:var(--muted)">
+本篇是<b>一段教科书式的「俗语 → 现象 → 假设 → 否掉一个 → 证据 → 机制」</b>，正好是大作文「论证段」的现成骨架。
+每组给「本文短语 → 可迁移骨架 → 自拟例句」；<b>例句全部自拟，只借骨架</b>。⚠️ 本年作文题本轮未看（作文仍全盲），翻译与大作文撞不撞题留到作文页核。</p>
+
+<div class="wb">
+  <div class="wbi"><div class="p">① 引一句俗语开头，再说它有根据（<b>最值钱的一条，背下来</b>）</div>
+  <div class="u">本文：<i>“…”—or so they say—and that piece of folklore seems to have some foundation.</i><br>
+  <b>骨架</b>：<i class="own">“X”—or so they say—and that old saying seems to have some foundation.</i><br>
+  <b>自拟</b>：<i class="own">“Practice makes perfect”—or so they say—and that old saying seems to have some foundation.</i>（「熟能生巧」——人们都这么说——这句老话看来确有几分道理。）<br>
+  <span style="color:var(--muted)">大作文第一段的开头句：<b>俗语一句、插入语一句、表态一句</b>，比 As the saying goes 更活。seems to have some 留余地，后文再用证据坐实。</span></div></div>
+
+  <div class="wbi"><div class="p">② 先摆一种可能，再说它站不住</div>
+  <div class="u">本文：<i>One possibility was that …, but that would …, not least because …</i><br>
+  <b>骨架</b>：<i class="own">One possibility is that X, but that would Y, not least because Z.</i><br>
+  <b>自拟</b>：<i class="own">One possibility is that students simply study harder, but that would only make them more tired, not least because they already sleep too little.</i>（一种办法是学生更加用功，但这只会让他们更累，尤其是因为他们本来就睡得太少。）<br>
+  <span style="color:var(--muted)">「让步 → 否定 → 理由」一句完成，是反驳一种常见看法的利器；<b>but that 的 that 指前面整件事</b>，别漏了它。</span></div></div>
+
+  <div class="wbi"><div class="p">③ 虽然还不清楚……，但……很可能起了作用</div>
+  <div class="u">本文：<i>Although … are not yet understood, smell may well play a part.</i><br>
+  <b>骨架</b>：<i class="own">Although the reasons for X are not yet fully understood, Y may well play a part.</i><br>
+  <b>自拟</b>：<i class="own">Although the reasons for this trend are not yet fully understood, social media may well play a part.</i>（虽然这一趋势的原因还没完全弄清，社交媒体很可能起了作用。）<br>
+  <span style="color:var(--muted)">分析原因段的第一句：<b>不把话说死</b>（not yet · may well），阅卷人喜欢有分寸的论证。</span></div></div>
+
+  <div class="wbi"><div class="p">④ ……是引导……走向……的关键因素</div>
+  <div class="u">本文：<i>smell is a crucial factor in guiding elephants … to the best food resources</i><br>
+  <b>骨架</b>：<i class="own">X is a crucial factor in guiding Y to Z.</i><br>
+  <b>自拟</b>：<i class="own">Curiosity is a crucial factor in guiding young people to a career they love.</i>（好奇心是引导年轻人找到热爱的职业的关键因素。）</div></div>
+
+  <div class="wbi"><div class="p">⑤ 更重要的是／另外（What is more 的两种分量）</div>
+  <div class="u">本文：②❻ 与⑤❷ 各一次 <i>What is more,</i>——前一处递进，后一处补充。<br>
+  <b>自拟</b>：<i class="own">Reading widens our horizons. What is more, it teaches us to think for ourselves.</i>（阅读开阔眼界。更重要的是，它教会我们独立思考。）<br>
+  <span style="color:var(--muted)">作文里用它时，<b>后一句要比前一句更重</b>，否则换成 Besides。</span></div></div>
+
+  <div class="wbi"><div class="p">⑥ ……使……能像……一样……（enable 中间夹比较）</div>
+  <div class="u">本文：<i>may enable elephants, like rats and people, to construct …</i><br>
+  <b>骨架</b>：<i class="own">X may enable Y, like Z, to do W.</i><br>
+  <b>自拟</b>：<i class="own">Online courses may enable rural students, like their peers in cities, to learn from top teachers.</i>（网课或许能让农村学生像城里的同龄人一样，向顶尖老师学习。）<br>
+  <span style="color:var(--muted)">「公平／机会」类话题的现成句；like 插入语把比较对象放在中间，一句话就有对照。</span></div></div>
+
+  <div class="wbi"><div class="p">⑦ 话题词块（科学研究 × 动物与自然）</div>
+  <div class="u"><i>tracking devices</i>（追踪设备）· <i>remarkable</i>（非凡的）· <i>researchers are convinced that</i>（研究人员确信）· <i>new research suggests that</i>（新研究表明）· <i>the experiment showed that</i>（实验表明）· <i>habitats</i>（栖息地）· <i>herbivores</i>（食草动物）· <i>a crucial factor</i>（关键因素）<br>
+  <span style="color:var(--muted)">⚠️ 三个「表明」各有分量：<i>suggest</i> 最弱（提示）、<i>show</i> 中（表明）、<i>be convinced</i> 最强（确信）——<b>作文引用研究时按证据强弱挑</b>：<i class="own">New research suggests that a short walk after dinner can improve sleep.</i>（新研究表明，饭后散步片刻能改善睡眠。）</span></div></div>
+</div>
+</section>
+
+<!-- ============ 07 ============ -->
+<section class="card" id="s7">
+<h2><span class="n">07</span>词汇卡<span style="margin-left:auto;font-size:.78rem;color:var(--muted)" id="vcount"></span></h2>
+<p style="font-size:.9rem;color:var(--muted)">点任意一张出详卡（释义 · 原文语境 · 怎么记 · 同类词 · 易混辨析）。
+<b>熟词僻义</b>与<b>短语</b>标签的那些才是本篇真正的失分点；<b>写作✍︎</b>标签的可直接进作文。
+正文里带虚线的词也可直接点；选中任意单词可查有道。</p>
+<div class="vgrid" id="vgrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px"></div>
+</section>
+
+</main>
+<aside><div id="panel"><div class="hint">点正文里<b>带虚线</b>的词<br>或下方词卡</div></div></aside>
+</div>
+
+<footer>2024 英语一 Part C · 大象的空间导航能力 · 五句 10 分 · 17 个采分块 · ✅ Claude 完整盲译，自评约 10（最严 9.5）<br>
+先读全文 → 给每段标主语、在草稿纸角上写「象／物」→ 圈出 11 个代词 → 自译 → 自评采分点 → 对照参考译文 → 03 清算表默写</footer>
+</div>
+<button id="yd">查有道 ↗</button>
+
+<script>
+const V = {
+  ortheysay:{w:"or so they say",ipa:"/ɔː səʊ ðeɪ seɪ/",pos:"phr.",tags:["phrase", "write"],cn:"据说如此；人们都这么说",en:"used to show that you are repeating what others say",ex:"or so they say",mem:"⭐ so 代前面那句话，they 泛指「人们」——<b>全文第一个 they 就不是大象</b>。📕 段落译文「据说如此」。插在破折号里，表示「我只是转述」。",syn:"so it is said · or so I am told",conf:"or so they say（据说）vs so they say（他们这么说，可能实指某些人）——前面多一个 or，就是在给自己留余地。"},
+  folklore:{w:"piece of folklore",ipa:"/ˈfəʊklɔː/",pos:"n.",tags:["core"],cn:"民间传说；俗语",en:"traditional beliefs and stories of a community",ex:"that piece of folklore seems to have some foundation",mem:"folk（民间）＋ lore（学问、传说）。不可数，用 <b>a piece of</b> 计量。📕 段落译文把这里落成「这句谚语」——因为回指的是一句话。",syn:"legend · myth · popular belief",conf:"folklore（民间传说，整体）vs proverb（谚语，一句）——本文用 folklore 指一句话，中文就落「谚语」。"},
+  foundation:{w:"some foundation",ipa:"/faʊnˈdeɪʃn/",pos:"n.",tags:["poly"],cn:"根据；依据",en:"a basis or reason that supports something",ex:"seems to have some foundation",mem:"熟词：「地基；基金会」。<b>have some foundation ＝ 有一定依据</b>（事出有因）。反义 <i>without foundation</i>「毫无根据」。",syn:"basis · grounds",conf:"foundation（依据；地基）vs fundation（拼错）；foundation 是 found（创建）的名词。"},
+  savanna:{w:"savanna elephant",ipa:"/səˈvænə/",pos:"n.",tags:["core"],cn:"（热带）稀树草原 ⟹ 草原象",en:"a grassy plain in hot regions with few trees",ex:"The African savanna elephant",mem:"📕 段落译文「非洲稀树草原象」。也拼 savannah。<b>2021 年起非洲象分成两个物种</b>：草原象（濒危）与森林象（极危）。",syn:"grassland · plain",conf:"savanna（热带稀树草原）vs prairie（北美大草原）vs steppe（欧亚草原）。"},
+  alsoknown:{w:"also known as",ipa:"/ˈɔːlsəʊ nəʊn æz/",pos:"phr.",tags:["phrase"],cn:"又名；也叫",en:"used to give another name",ex:"also known as the African bush elephant",mem:"过去分词短语作插入语，省略了 which is。<b>中文「又名」「又称」</b>，放在两个逗号之间照译。缩写 a.k.a.",syn:"otherwise called · alias",conf:"also known as（又名）vs known for（因……而出名）。"},
+  distribute:{w:"distributed across",ipa:"/dɪˈstrɪbjuːt/",pos:"v.",tags:["poly"],cn:"分布（于）",en:"to spread over an area",ex:"is distributed across 37 African countries",mem:"熟词「分发；分配」。<b>be distributed across／in ＋ 地方 ＝ 分布于</b>——形式被动，中文「分布」本身是主动，不加「被」。",syn:"spread · scatter",conf:"distribute（分配，主动给人）vs be distributed（分布，状态）。"},
+  habitat:{w:"habitats",ipa:"/ˈhæbɪtæt/",pos:"n.",tags:["core", "write"],cn:"栖息地",en:"the natural home of an animal or plant",ex:"They move between a variety of habitats",mem:"habit-（居住，同 inhabit）＋ -at。📕 段落译文「各种栖息地」。<b>环保作文高频词</b>：habitat loss 栖息地丧失。",syn:"home · environment · range",conf:"habitat（栖息地）vs habit（习惯）——多一个 at 就是「住的地方」。"},
+  wetland:{w:"wetlands",ipa:"/ˈwetlənd/",pos:"n.",tags:["core"],cn:"湿地",en:"an area of land covered by shallow water",ex:"woodlands, wetlands and agricultural land",mem:"⭐ 同卷 T4 整篇讲切萨皮克湾的湿地保护——<b>那篇里湿地是栖息地、蓄洪池、滤污器</b>，这里是大象来回走的地方之一。",syn:"marsh · swamp",conf:"wetland（湿地）vs woodland（林地）——同一个清单里挨着出现。"},
+  agricultural:{w:"agricultural land",ipa:"/ˌæɡrɪˈkʌltʃərəl/",pos:"adj.",tags:["core"],cn:"农业的 ⟹ 农田",en:"relating to farming",ex:"wetlands and agricultural land",mem:"agri-（田地）＋ cultur（耕种）＋ -al。📕 段落译文「农地」。",syn:"farming · rural",conf:"agricultural（农业的）vs agrarian（土地的；农民的，偏社会制度）。"},
+  travel:{w:"travel",ipa:"/ˈtrævl/",pos:"v.",tags:["poly"],cn:"（动物）跋涉；行走",en:"to move from one place to another",ex:"They sometimes travel more than sixty miles",mem:"⭐⭐ 📕 疑难表：常用以表达「（人）旅行，游历」，<b>此处描述的对象是大象</b> ⟹「跋涉；行进」。主语一换，动词跟着换。",syn:"trek · journey · roam",conf:"travel（移动、跋涉）vs tour（观光游览）——大象不观光。"},
+  goodat:{w:"very good at",ipa:"/ɡʊd æt/",pos:"phr.",tags:["phrase", "write"],cn:"擅长；善于",en:"skilful at doing something",ex:"are very good at working out",mem:"be good at doing ＝ 善于做某事。与 50 的 <b>be good to do</b>（适合做）只差一个介词，意思完全不同。",syn:"be skilled at · excel at",conf:"good at doing（擅长）vs good to eat（适合吃）vs good for（对……有益）。"},
+  workout:{w:"working out",ipa:"/ˈwɜːkɪŋ aʊt/",pos:"phr.",tags:["poly", "phrase"],cn:"弄清；判断出",en:"to find the answer to something by thinking",ex:"working out where other elephants are",mem:"⭐⭐ 📕 work out 本义「计算；算出」，强调经计算得出准确结果，引申「找出答案；解决」；宾语是位置 ⟹「<b>（精确）判断／确定……的位置</b>」。误译栏：「计算出；产出」。",syn:"figure out · determine",conf:"work out（弄清；健身；结果是）vs workout（名词，锻炼）。"},
+  evenwhen:{w:"even when",ipa:"/ˈiːvn wen/",pos:"conj.",tags:["phrase"],cn:"即使（在……时）",en:"used to say something is true in an unlikely situation",ex:"even when they are out of sight",mem:"📕 难点 (3)：even when 引导让步状语从句，引出看似被排除在外但实际包含在内的情况，近似固定搭配「即使当／在……时」。",syn:"even if · although",conf:"even when（即使在……时，实有其事）vs even if（即使，假设）。"},
+  outofsight:{w:"out of sight",ipa:"/aʊt əv saɪt/",pos:"phr.",tags:["phrase"],cn:"在视野之外；看不见",en:"not able to be seen",ex:"even when they are out of sight",mem:"📕 固定表达「在视野之外；不在视野之中」。<b>这里的 they 是其他大象</b>——自己看不见的是别的象。反义 in sight。俗语 <i>Out of sight, out of mind</i>「眼不见心不念」。",syn:"invisible · hidden",conf:"out of sight（看不见）vs out of one’s sight（离开某人视线）vs short-sighted（近视的）。"},
+  tracking:{w:"tracking devices",ipa:"/ˈtrækɪŋ/",pos:"n.",tags:["core", "write"],cn:"追踪（设备）",en:"following the movement of something",ex:"Using tracking devices, researchers have shown",mem:"track（踪迹；追踪）。背景：研究者给大象戴 GPS 项圈。📕 段落译文「借助追踪设备」。",syn:"monitoring · GPS collar",conf:"track（追踪）vs trace（痕迹；追溯）。"},
+  remarkable:{w:"remarkable",ipa:"/rɪˈmɑːkəbl/",pos:"adj.",tags:["core", "write"],cn:"非凡的；了不起的",en:"unusual and worth noticing",ex:"remarkable spatial acuity",mem:"re-（加强）＋ mark（注意）＋ -able ＝ 值得注意的。📕 段落译文「非凡的」。作文万能形容词。",syn:"extraordinary · striking",conf:"remarkable（非凡的，褒）vs remarked（被评论过的）。"},
+  acuity:{w:"spatial acuity",ipa:"/əˈkjuːəti/",pos:"n.",tags:["core"],cn:"（空间）敏锐度",en:"sharpness of a sense or of the mind",ex:"remarkable spatial acuity",mem:"acu-（尖，同 acute、acupuncture）＋ -ity。<b>spatial acuity ＝ 空间敏锐度</b>（📕 段落译文）。spatial 是 space 的形容词。",syn:"sharpness · keenness",conf:"acuity（敏锐度）vs acidity（酸度）——形近；spatial（空间的）vs special（特别的）。"},
+  findway:{w:"finding their way",ipa:"/faɪnd ðeə weɪ/",pos:"phr.",tags:["phrase", "write"],cn:"找路；认路",en:"to reach a place by discovering the route",ex:"When finding their way to waterholes",mem:"find one’s way to ＝ 设法到达。<b>When ＋ doing</b> 是省略了 they were 的时间状语。本篇主题词：原书就叫「动物怎样找到路」。",syn:"navigate · make one’s way",conf:"find one’s way（找到路）vs lose one’s way（迷路）vs make one’s way（前往）。"},
+  waterhole:{w:"waterholes",ipa:"/ˈwɔːtəhəʊl/",pos:"n.",tags:["core"],cn:"水坑；水塘",en:"a pool where animals go to drink",ex:"When finding their way to waterholes",mem:"water ＋ hole。干旱草原上动物饮水的地方。背景研究在纳米比亚埃托沙国家公园做，那里只有终年不干的水坑可去。",syn:"pond · water source",conf:"waterhole（水坑）vs watershed（分水岭）。"},
+  headoff:{w:"headed off",ipa:"/hed ɒf/",pos:"phr.",tags:["poly", "phrase"],cn:"出发；朝……走去",en:"to start going towards a place",ex:"they headed off in exactly the right direction",mem:"⭐ head 作动词＝「朝……去」。<b>head off ＋ in a direction ＝ 出发前往</b>；📕 段落译文「朝着正确的方向前进」。另一义 head off sth「拦截、阻止」——后面跟方向时不是这个。",syn:"set off · set out",conf:"head off（出发；拦截）vs head for（前往）vs ahead of（在……之前）。"},
+  occasion:{w:"on one occasion",ipa:"/əˈkeɪʒn/",pos:"n.",tags:["phrase"],cn:"（某）一次",en:"a particular time when something happens",ex:"on one occasion from a distance of roughly thirty miles",mem:"on one occasion ＝ 有一次（不是「在一个场合」）。中文拆成「有一次……」另起一句。",syn:"once · at one time",conf:"occasion（场合；时刻）vs occasionally（偶尔）。"},
+  roughly:{w:"roughly",ipa:"/ˈrʌfli/",pos:"adv.",tags:["poly"],cn:"大约",en:"approximately",ex:"a distance of roughly thirty miles",mem:"熟词 rough「粗糙的」⟹ roughly「粗略地 ＝ 大约」。约 30 英里 ≈ 48 公里；背景研究里最远一次是 49.97 公里。",syn:"about · approximately · around",conf:"roughly（大约）vs rudely（粗鲁地）。"},
+  whatismore:{w:"What is more",ipa:"/wɒt ɪz mɔː/",pos:"phr.",tags:["phrase", "write"],cn:"更重要的是；另外",en:"used to add a more important point",ex:"What is more, they almost always seem to choose",mem:"⭐⭐ 本文出现两次、📕 两种译法：②❻「更重要的是」（递进：挑最近的比方向准更难）· ⑤❷「另外」（补充）——<b>按两件事的轻重落词</b>。",syn:"moreover · furthermore · besides",conf:"What is more（递进，后者更重）vs Besides（平行补充）。"},
+  nearest:{w:"the nearest waterhole",ipa:"/ˈnɪərɪst/",pos:"adj.",tags:["core"],cn:"最近的",en:"closest in distance",ex:"they almost always seem to choose the nearest waterhole",mem:"背景研究：90% 的时候去的是最近的水坑——<b>almost always 就是这个 90%</b>。这一句是 47「抄近道」的证据。",syn:"closest",conf:"nearest（距离最近）vs next（下一个）。"},
+  convinced:{w:"are convinced",ipa:"/kənˈvɪnst/",pos:"adj.",tags:["poly", "phrase"],cn:"确信的；坚信的",en:"completely certain about something",ex:"The researchers are convinced that the elephants",mem:"⭐⭐ 📕 难点 (1)：convinced 是<b>表语形容词</b>，与 afraid／aware／sure 同类，be convinced that ≈ 动词＋宾语从句 ⟹「确信／坚信」。误译栏：「被说服；被劝说」。",syn:"certain · sure · persuaded",conf:"be convinced（确信，状态）vs be persuaded to do（被说服去做，动作）。"},
+  precisely:{w:"precisely",ipa:"/prɪˈsaɪsli/",pos:"adv.",tags:["core"],cn:"精确地；确切地",en:"exactly",ex:"always know precisely where they are",mem:"📕 难点 (2)：焦点副词（相当于 exactly），强调 where 从句 ⟹「确切（的位置）」或移位「精确地（知道）」。",syn:"exactly · accurately",conf:"precisely（精确地）vs concisely（简洁地）——形近。"},
+  inrelation:{w:"in relation to",ipa:"/ɪn rɪˈleɪʃn tə/",pos:"phr.",tags:["poly", "phrase", "write"],cn:"相对于；与……相比",en:"in comparison with",ex:"in relation to all the resources they need",mem:"⭐⭐ 📕 词义 (1)：既可指「关于；涉及」（in relation to the disease），又可指「相对于……而言」；描述大象与资源的位置对应 ⟹ 取后者「<b>相对位置</b>」。",syn:"relative to · compared with",conf:"in relation to（相对于／关于）vs in relations with（与……的关系中）。"},
+  resource:{w:"resources",ipa:"/rɪˈsɔːs/",pos:"n.",tags:["core"],cn:"资源",en:"a supply of something useful",ex:"all the resources they need",mem:"上文的食物、水、水坑都是 resources。<b>they need 的 they 是大象</b>。",syn:"supplies · means",conf:"resource（资源）vs source（来源）。"},
+  therefore:{w:"therefore",ipa:"/ˈðeəfɔː/",pos:"adv.",tags:["core"],cn:"因此",en:"as a result",ex:"and can therefore take shortcuts",mem:"夹在 can 与 take 之间；中文提前：「因此……还能……」。",syn:"thus · hence",conf:"therefore（因此）vs therefor（为此，法律旧词）。"},
+  shortcut:{w:"take shortcuts",ipa:"/ˈʃɔːtkʌt/",pos:"n.",tags:["phrase"],cn:"走捷径；抄近道",en:"a quicker way to get somewhere",ex:"and can therefore take shortcuts",mem:"⭐ 📕 疑难表：take 与路径词搭配 ⟹「走捷径／抄近道」。误译栏：「占据捷径；拥有捷径」——take 取了「拿」的字面。",syn:"short cut · quicker route",conf:"take a shortcut（抄近道）vs cut corners（偷工减料）——后者是贬义比喻。"},
+  aswellas:{w:"as well as",ipa:"/əz wel əz/",pos:"prep.",tags:["phrase", "write"],cn:"除……之外（还）；以及",en:"in addition to",ex:"as well as following familiar routes",mem:"⭐⭐ 📕 难点 (3)：A as well as B 强调 A ⟹「<b>除了 B 之外，还 A</b>」。这里是介词，后接动名词 following。",syn:"in addition to · besides",conf:"as well as（强调前者）vs both … and（两者并重）vs as well（也，放句末）。"},
+  route:{w:"familiar routes",ipa:"/ruːt/",pos:"n.",tags:["phrase"],cn:"路线 ⟹ 熟路",en:"a way from one place to another",ex:"following familiar routes",mem:"📕 疑难表：following familiar routes ＝「走熟路；沿着熟悉的路线走」。误译栏：「跟随熟悉的路线；听从熟悉的路线」。",syn:"path · way · track",conf:"route（路线）vs root（根）vs rout（溃败）——三个同音／近音。"},
+  cue:{w:"cues",ipa:"/kjuː/",pos:"n.",tags:["poly"],cn:"线索；提示",en:"a signal for action",ex:"the cues used by African elephants",mem:"熟词「（演员的）提示；台词」。📕 段落译文「线索」。<b>the cues used by …</b> 是名词＋过去分词＋by，和 49 的 chemicals produced by 同款。",syn:"clue · signal · hint",conf:"cue（提示信号）vs queue（排队）——同音。"},
+  navigation:{w:"long-distance navigation",ipa:"/ˌnævɪˈɡeɪʃn/",pos:"n.",tags:["core"],cn:"导航；（远程）认路",en:"finding the way from one place to another",ex:"for long-distance navigation",mem:"nav-（船，同 navy）＋ -igation。<b>原书主题词</b>：第 25 章叫「人类的导航大脑」。",syn:"way-finding · orientation",conf:"navigation（导航）vs navy（海军）——同根。"},
+  notyet:{w:"not yet understood",ipa:"/nɒt jet/",pos:"phr.",tags:["phrase", "write"],cn:"尚未（弄清）",en:"not until now",ex:"are not yet understood",mem:"not yet ＝ 到目前为止还没有（暗示以后会）。📕 段落译文「尚未可知」。作文分析原因段的好帮手。",syn:"still not · so far not",conf:"not yet（尚未）vs not still（错误搭配）。"},
+  maywell:{w:"may well",ipa:"/meɪ wel/",pos:"phr.",tags:["poly", "phrase", "write"],cn:"很可能",en:"used to say something is likely",ex:"smell may well play a part",mem:"⭐⭐ 📕 50 词义 (1)：固定词组，既表「很可能」也表「完全可以」，陈述结果时选「很可能」。<b>③❶ 与 50 各一次</b>：猜测与实验结论用的是同一个词。",syn:"probably · quite possibly",conf:"may well（很可能）vs may as well（不妨）vs might as well（还不如）。"},
+  playapart:{w:"play a part",ipa:"/pleɪ ə pɑːt/",pos:"phr.",tags:["phrase", "write"],cn:"起作用",en:"to be involved in something",ex:"smell may well play a part",mem:"play a part／role in ＝ 在……中起作用。📕 段落译文「很可能起了作用」——不是「扮演角色」。",syn:"contribute · be involved",conf:"play a part（起作用）vs take part（参加）。"},
+  choosy:{w:"choosy eaters",ipa:"/ˈtʃuːzi/",pos:"adj.",tags:["core"],cn:"挑剔的 ⟹ 挑食",en:"difficult to please; selective",ex:"Elephants are very choosy eaters",mem:"choose ＋ -y。📕 48 词义 (2) 引它当 tried out 的语境证据：「挑食的人／动物」。段落译文「对于食物非常挑剔」。",syn:"picky · fussy · selective",conf:"choosy（挑剔的）vs chosen（被选中的）。"},
+  untilrecently:{w:"until recently",ipa:"/ənˈtɪl ˈriːsntli/",pos:"phr.",tags:["phrase"],cn:"直到不久前",en:"up to a short time ago",ex:"until recently little was known",mem:"until recently little was known ＝ 直到不久前还知之甚少（言下之意：现在知道了）——<b>这是④段的翻转信号</b>，后面会给答案。",syn:"until lately",conf:"until recently（直到最近，之后变了）vs recently（最近）。"},
+  select:{w:"selected",ipa:"/sɪˈlekt/",pos:"v.",tags:["core"],cn:"挑选",en:"to choose carefully",ex:"how they selected their food",mem:"📕 48 词义 (2)：selected their food「挑选食物」——和 choosy eaters 一起，把 48 的 tried out 锁定为「试吃」。",syn:"choose · pick",conf:"select（精挑细选）vs elect（选举）。"},
+  possibility:{w:"One possibility",ipa:"/ˌpɒsəˈbɪləti/",pos:"n.",tags:["core"],cn:"（一种）可能",en:"something that might be true",ex:"One possibility was that they merely used their eyes",mem:"📕 词义 (1)：承前「对挑食方式不够了解」，指其中一种猜想 ⟹「可能」。<b>过去时 was</b>：这个猜想后文被否掉了。",syn:"option · chance",conf:"possibility（可能，有没有）vs probability（概率，有多大）。"},
+  merely:{w:"merely",ipa:"/ˈmɪəli/",pos:"adv.",tags:["core"],cn:"仅仅；只",en:"only",ex:"they merely used their eyes",mem:"<b>merely 管两个谓语</b>：只用眼睛找、找到就尝——没有鼻子的事。它给⑤段的「气味」留了位置。",syn:"only · just · simply",conf:"merely（仅仅）vs mere（形容词，仅仅的）。"},
+  tryout:{w:"tried out",ipa:"/traɪ aʊt/",pos:"phr.",tags:["poly", "phrase"],cn:"尝试；试吃",en:"to test something to see if it is good",ex:"tried out the plants they found",mem:"⭐⭐ 📕 本义「试用；测试」，结合 choosy eaters、selected their food 与宾语 the plants ⟹「<b>试吃</b>」。误译栏：「试图；设法」——那是 try to do。",syn:"test · sample · taste",conf:"try out（试用、试吃）vs try to do（试图）vs try on（试穿）。"},
+  resultin:{w:"result in",ipa:"/rɪˈzʌlt ɪn/",pos:"phr.",tags:["phrase", "write"],cn:"导致",en:"to cause something to happen",ex:"would probably result in a lot of wasted time",mem:"📕 难点 (3)：字面「可能会产生大量浪费掉的时间」⟹ 意译「<b>可能会浪费大量的时间和精力</b>」。",syn:"lead to · cause",conf:"result in（导致，接结果）vs result from（由……引起，接原因）。"},
+  wasted:{w:"wasted time and energy",ipa:"/ˈweɪstɪd/",pos:"adj.",tags:["phrase", "write"],cn:"浪费掉的（时间和精力）",en:"used without a useful result",ex:"a lot of wasted time and energy",mem:"形容词 ＋ 名词 ⟹ 中文动宾「浪费时间和精力」。作文现成词块。",syn:"squandered · lost",conf:"wasted（浪费的）vs wasteful（浪费成性的）。"},
+  notleast:{w:"not least because",ipa:"/nɒt liːst/",pos:"phr.",tags:["poly", "phrase", "write"],cn:"尤其是因为；相当重要的（原因）是",en:"used to emphasize an important reason",ex:"not least because their eyesight is actually not very good",mem:"⭐⭐ 📕 固定搭配「尤其是；相当重要地是」，not＋least 双重否定加强语气。误译栏：「完全不是因为」。⚠️ 与 <b>not the least</b>（一点也不）区别——多一个 the，意思反过来。",syn:"especially because · particularly as",conf:"not least（尤其）vs not in the least（一点也不）vs at least（至少）。"},
+  eyesight:{w:"eyesight",ipa:"/ˈaɪsaɪt/",pos:"n.",tags:["core"],cn:"视力",en:"the ability to see",ex:"their eyesight is actually not very good",mem:"eye ＋ sight。大象视力差，这是「只靠眼睛」被否掉的理由。",syn:"vision · sight",conf:"eyesight（视力）vs insight（洞察力）。"},
+  volatile:{w:"volatile chemicals",ipa:"/ˈvɒlətaɪl/",pos:"adj.",tags:["poly"],cn:"挥发性的",en:"easily changing into a gas",ex:"The volatile chemicals produced by plants",mem:"⭐⭐ 📕 常见义「易变的；不稳定的」，据修饰对象 chemicals 及后文 odor ⟹「<b>易挥发的／挥发性的</b>」。误译栏：「易变的化学制品」。vol-（飞）：会「飞」走的物质。",syn:"evaporating · gaseous",conf:"volatile（挥发性的；动荡的）vs volatile market（动荡的市场）——义项看搭配。"},
+  produce:{w:"produced by",ipa:"/prəˈdjuːs/",pos:"v.",tags:["core"],cn:"产生；释放",en:"to make or create",ex:"chemicals produced by plants",mem:"过去分词作后置定语，📕 导出前置为「<b>植物释放的</b>」。by 短语是施事——别把它挪到 can be carried 上。",syn:"release · emit · give off",conf:"produce（产生）vs product（产品）vs production（生产）。"},
+  carry:{w:"carried a long way",ipa:"/ˈkæri/",pos:"v.",tags:["poly"],cn:"（气味）播散；扩散",en:"to be moved by air over a distance",ex:"can be carried a long way",mem:"⭐ 📕 本义「携带；传送」，被动说明气味被（空气、风）传送 ⟹「<b>播散／扩散</b>」。误译栏：「可以被携带很远的距离」。",syn:"spread · travel · drift",conf:"carry（携带；传播）vs carry out（执行）。"},
+  characteristic:{w:"characteristic",ipa:"/ˌkærəktəˈrɪstɪk/",pos:"adj.",tags:["poly"],cn:"有特色的 ⟹ 特点鲜明",en:"typical of a particular thing",ex:"they are very characteristic",mem:"📕 难点 (3)：顺译「它们是非常典型的」与后文脱节 ⟹ 转译「<b>它们特点鲜明</b>」。这里是形容词（前面有 very），不是名词「特征」。",syn:"distinctive · typical",conf:"characteristic（有特点的，形；特征，名）vs character（性格；字符）。"},
+  particular:{w:"its own particular",ipa:"/pəˈtɪkjələ/",pos:"adj.",tags:["core"],cn:"特有的；特定的",en:"belonging to one specific thing",ex:"its own particular odor signature",mem:"own 与 particular 两层强调 ⟹「其特有的」。<b>its 指 each plant or tree</b>——each 后用单数代词。",syn:"specific · distinctive",conf:"particular（特定的；挑剔的）vs in particular（尤其）。"},
+  signature:{w:"odor signature",ipa:"/ˈsɪɡnətʃə/",pos:"n.",tags:["poly"],cn:"标志；（独特的）标志性气味",en:"a distinctive mark or pattern",ex:"its own particular odor signature",mem:"⭐⭐ 📕 本义「签名；署名」，引申「（人或物的）识别标志；明显特征」⟹「<b>标志</b>」；导出 odor signature ⟹「标志性气味」。odor 美式拼法，英式 odour。",syn:"trademark · hallmark",conf:"signature（签名；标志）vs signal（信号）——signature dish「招牌菜」。"},
+  detect:{w:"detected",ipa:"/dɪˈtekt/",pos:"v.",tags:["core"],cn:"察觉；探测到",en:"to notice something hard to see or smell",ex:"they can be detected even when they are not",mem:"📕 段落译文「也仍可以被察觉出来」——<b>本文四处 be＋过去分词里，只有这一处书上留了「被」</b>。they 仍是化学物质。",syn:"sense · perceive · notice",conf:"detect（察觉）vs detective（侦探）。"},
+  visible:{w:"visible",ipa:"/ˈvɪzəbl/",pos:"adj.",tags:["core"],cn:"可见的",en:"able to be seen",ex:"when they are not actually visible",mem:"vis-（看）＋ -ible。看不见也闻得到——气味压过视觉，正好回答 48 的「视力不好」。",syn:"seen · observable",conf:"visible（看得见的）vs visual（视觉的）。"},
+  crucial:{w:"crucial factor",ipa:"/ˈkruːʃl/",pos:"adj.",tags:["core", "write"],cn:"关键的；至关重要的",en:"extremely important",ex:"smell is a crucial factor in guiding elephants",mem:"cruc-（十字，同 cross）：在十字路口决定方向的。📕 段落译文「关键因素」。作文高频。",syn:"vital · key · essential",conf:"crucial（关键的）vs critical（关键的；批判的）。"},
+  guide:{w:"guiding",ipa:"/ɡaɪd/",pos:"v.",tags:["core"],cn:"引导；指引",en:"to lead someone to a place",ex:"guiding elephants—and probably other herbivores—to the best",mem:"guide sb to sth ＝ 把某人引向某处。破折号插入语把 to 推远了，切分先拿掉破折号里的。",syn:"lead · direct · steer",conf:"guide（引导）vs guard（守卫）。"},
+  herbivore:{w:"herbivores",ipa:"/ˈhɜːbɪvɔː/",pos:"n.",tags:["core"],cn:"食草动物",en:"an animal that eats only plants",ex:"and probably other herbivores",mem:"herb（草）＋ -vore（吃，同 devour）。对照 carnivore 食肉动物、omnivore 杂食动物。",syn:"plant-eater",conf:"herbivore（食草动物）vs herbalist（草药师）。"},
+  establish:{w:"first established",ipa:"/ɪˈstæblɪʃ/",pos:"v.",tags:["poly"],cn:"查明；确定",en:"to discover facts that prove something",ex:"The researchers first established what kinds of plant",mem:"熟词「建立」。<b>establish ＋ what／whether 从句 ＝ 查明、确定</b>（📕 段落译文「首先确定了」）。first 与 50 的 secondly 不是一对——这是实验的步骤。",syn:"determine · find out",conf:"establish（建立；查明）vs establishment（机构；权势集团）。"},
+  prefer:{w:"preferred",ipa:"/prɪˈfɜː/",pos:"v.",tags:["core"],cn:"更喜欢",en:"to like one thing more than another",ex:"the elephants preferred either to eat or avoid",mem:"这里 preferred 后接 either to eat or avoid——爱吃哪些、不吃哪些。⑥❹ 又有 their preferred food（作形容词）。",syn:"favour · choose",conf:"prefer A to B（喜欢 A 胜过 B）vs prefer to do。"},
+  forage:{w:"foraging freely",ipa:"/ˈfɒrɪdʒ/",pos:"v.",tags:["core"],cn:"觅食",en:"to search for food",ex:"when foraging freely",mem:"📕 段落译文「在大范围地自由觅食时」。⭐ 同卷 T2 的狩猎采集者 <i>forager</i> 是同一个词根——人「采集」、象「觅食」。",syn:"search for food · graze",conf:"forage（觅食；草料）vs forge（锻造；伪造）。"},
+  setup:{w:"set up",ipa:"/set ʌp/",pos:"phr.",tags:["phrase", "write"],cn:"设立；安排（实验）",en:"to arrange or organize",ex:"They then set up a “food station” experiment",mem:"set up an experiment ＝ 设计／开展一个实验。<b>本句两个 they 是研究者</b>——全文 they 换人的少数几处之一。",syn:"arrange · organize",conf:"set up（建立）vs setup（名词，设置）vs upset（使不安）。"},
+  station:{w:"food station",ipa:"/ˈsteɪʃn/",pos:"n.",tags:["core"],cn:"（食物）站",en:"a place set up for a purpose",ex:"a “food station” experiment",mem:"实验里让大象只凭气味挑选植物的地方。背景：南非 Shrader 团队的实验，大象在「片区之间」与「取食站之内」两个尺度都按气味挑。",syn:"post · stand",conf:"station（站点）vs stationary（静止的）vs stationery（文具）。"},
+  series:{w:"a series of",ipa:"/ˈsɪəriːz/",pos:"n.",tags:["phrase", "write"],cn:"一系列",en:"several things of the same kind",ex:"a series of choices based only on smell",mem:"a series of ＋ 复数名词，谓语按 series 用单数。单复数同形。",syn:"a sequence of · a set of",conf:"series（系列，单复同形）vs serial（连载的）。"},
+  basedon:{w:"based only on",ipa:"/beɪst ɒn/",pos:"phr.",tags:["phrase", "write"],cn:"仅基于；只凭",en:"using only something as the reason",ex:"a series of choices based only on smell",mem:"过去分词短语修饰 choices。<b>only 管 smell</b>：只凭气味（看不见、摸不着）。📕 段落译文「只能根据嗅觉来辨别的」。",syn:"relying solely on",conf:"based on（基于）vs base on（以……为基础，主动）。"},
+  identify:{w:"identify",ipa:"/aɪˈdentɪfaɪ/",pos:"v.",tags:["core"],cn:"识别；认出",en:"to recognize and name",ex:"use smell to identify patches of trees",mem:"📕 导出「识别出」。<b>identify 是「是不是」，assess 是「好不好」</b>——两步分工就在这两个动词上。",syn:"recognize · pick out",conf:"identify（识别）vs identity（身份）。"},
+  patch:{w:"patches of trees",ipa:"/pætʃ/",pos:"n.",tags:["poly"],cn:"（一小片）树林；树丛",en:"a small area of something",ex:"to identify patches of trees",mem:"⭐ 📕 本义「小块；小片」，与 trees 搭配表示茂密树木覆盖的小片区域 ⟹「<b>树林／树丛</b>」，each patch「每片树林」。熟词还有「补丁」。",syn:"grove · clump · stand",conf:"patch（小片；补丁）vs batch（一批）。"},
+  goodtoeat:{w:"good to eat",ipa:"/ɡʊd tə iːt/",pos:"phr.",tags:["phrase"],cn:"适合食用",en:"suitable for eating",ex:"patches of trees that are good to eat",mem:"⭐ 📕 难点：be good to do sth ＝「适合做某事」⟹ 定从前置「<b>适合食用的</b>那些树林」。比较 46 的 good at doing（擅长）。",syn:"edible · fit to eat",conf:"good to eat（适合吃）vs good at eating（很能吃）。"},
+  secondly:{w:"secondly",ipa:"/ˈsekəndli/",pos:"adv.",tags:["core", "write"],cn:"其次 ⟹（先……）接着",en:"used to introduce the second point",ex:"and secondly to assess the quality",mem:"⭐⭐ 📕 难点：字面「第二；其次」，据前后两个不定式处理为「（先……，）接着……」——<b>英文没有 first，中文要补「先」</b>。",syn:"next · then",conf:"secondly（其次）vs second（第二的）vs in the second place。"},
+  assess:{w:"assess",ipa:"/əˈses/",pos:"v.",tags:["core", "write"],cn:"评估；鉴别",en:"to judge the quality of something",ex:"to assess the quality of the trees",mem:"📕 导出「鉴别」。熟词还有「估税、估价」（assess the damage）。",syn:"evaluate · judge",conf:"assess（评估）vs access（进入）vs assets（资产）。"},
+  quality:{w:"quality",ipa:"/ˈkwɒləti/",pos:"n.",tags:["core"],cn:"质量；品质",en:"how good something is",ex:"the quality of the trees within each patch",mem:"📕 导出「品质」。of the trees within each patch 是 quality 的后置定语。",syn:"standard · grade",conf:"quality（质）vs quantity（量）。"},
+  freeranging:{w:"Free-ranging",ipa:"/ˌfriː ˈreɪndʒɪŋ/",pos:"adj.",tags:["core"],cn:"野生的；自由活动的",en:"able to move freely, not kept in a pen",ex:"Free-ranging elephants presumably also use this information",mem:"📕 段落译文「野生大象」——与实验里的大象相对。free-range eggs 是「散养鸡蛋」，用在野象身上译「野生」。",syn:"wild · roaming",conf:"free-ranging（自由活动的）vs wide-ranging（范围广的）。"},
+  presumably:{w:"presumably",ipa:"/prɪˈzjuːməbli/",pos:"adv.",tags:["core", "write"],cn:"大概；想必",en:"used to say what you think is probably true",ex:"presumably also use this information",mem:"presume（推测）＋ -ably。📕 段落译文「很可能也是」。从实验推到野外——又一层留余地。",syn:"probably · supposedly",conf:"presumably（想必）vs presumptuously（放肆地）。"},
+  locate:{w:"locate",ipa:"/ləʊˈkeɪt/",pos:"v.",tags:["core"],cn:"找到（位置）",en:"to find the exact position of",ex:"to locate their preferred food",mem:"loc-（地方，同 local）＋ -ate。全文的导航主题词：find one’s way · working out where · locate。",syn:"find · track down",conf:"locate（找到）vs relocate（搬迁）。"},
+  welldeveloped:{w:"well-developed",ipa:"/ˌwel dɪˈveləpt/",pos:"adj.",tags:["core"],cn:"发达的",en:"fully grown or advanced",ex:"Their well-developed hippocampal structures",mem:"well-＋过去分词构成复合形容词（well-known、well-paid）。📕 段落译文「发达的」。",syn:"advanced · mature",conf:"well-developed（发达的）vs developing（发展中的）。"},
+  hippocampal:{w:"hippocampal structures",ipa:"/ˌhɪpəˈkæmpl/",pos:"adj.",tags:["core"],cn:"海马体的 ⟹ 海马结构",en:"relating to the hippocampus, a brain area for memory",ex:"Their well-developed hippocampal structures",mem:"⭐ hippocampus（海马体，大脑里管记忆与空间导航的部位，形似海马）的形容词。<b>与 hippopotamus（河马）同根 hippos（马）</b>——别译成「河马」。📕 段落译文「海马结构」。",syn:"hippocampus",conf:"hippocampal（海马体的）vs hippopotamus（河马）vs campus（校园）。"},
+  enable:{w:"enable",ipa:"/ɪˈneɪbl/",pos:"v.",tags:["core", "write"],cn:"使能够",en:"to make it possible for someone to do something",ex:"may enable elephants, like rats and people, to construct",mem:"enable sb to do ＝ 使某人能够做。中间夹 like rats and people，切分先拿掉插入语。无灵主语（结构）＋ enable 是英文科普的常见句式。",syn:"allow · empower",conf:"enable（使能够）vs unable（不能）。"},
+  cognitive:{w:"cognitive maps",ipa:"/ˈkɒɡnətɪv/",pos:"adj.",tags:["core"],cn:"认知的 ⟹ 认知地图",en:"relating to thinking and knowing",ex:"to construct cognitive maps",mem:"cogn-（知道，同 recognize）＋ -itive。cognitive map ＝ 动物在脑中形成的环境地图——<b>47 的「知道相对位置」就是它的表现</b>。",syn:"mental · intellectual",conf:"cognitive（认知的）vs cognate（同源的）。"},
+};
+
+
+const panel=document.getElementById('panel');
+const isMobile=()=>window.innerWidth<=900;
+function badge(t){return {core:'<span class="badge b-core">核心词</span>',phrase:'<span class="badge b-phrase">短语</span>',poly:'<span class="badge b-poly">熟词僻义</span>',write:'<span class="badge b-write">写作✍︎</span>'}[t]||''}
+function showCard(k,el){
+  const d=V[k]; if(!d)return;
+  document.querySelectorAll('.tk.active').forEach(e=>e.classList.remove('active'));
+  if(el&&el.classList.contains('tk'))el.classList.add('active');
+  panel.innerHTML='<button class="close" onclick="panel.classList.remove(\'open\')">✕</button>'+
+  '<div class="wcard">'+
+    '<div class="head"><span class="w">'+d.w+'</span><span class="ipa">'+d.ipa+'</span><span class="pos">'+d.pos+'</span>'+d.tags.map(badge).join('')+'</div>'+
+    '<div class="cn">'+d.cn+'</div><div class="en-def">'+d.en+'</div>'+
+    '<div class="row r-ex"><b>原文语境</b>「…'+d.ex+'…」</div>'+
+    '<div class="row r-mem"><b>怎么记</b>'+d.mem+'</div>'+
+    '<div class="row r-syn"><b>同类词</b>'+d.syn+'</div>'+
+    '<div class="row r-conf"><b>易混辨析</b>'+d.conf+'</div>'+
+  '</div>';
+  if(isMobile())panel.classList.add('open');
+}
+document.querySelectorAll('.tk').forEach(t=>t.addEventListener('click',e=>{e.stopPropagation();showCard(t.dataset.w,t)}));
+
+let allOn=false;
+function toggleAll(){allOn=!allOn;document.querySelectorAll('.para').forEach(p=>p.classList.toggle('showzh',allOn))}
+function go(id){document.getElementById(id).scrollIntoView({behavior:'smooth',block:'center'})}
+function tz(btn){btn.closest('.para').classList.toggle('showzh')}
+
+/* ---- 五步切换 ---- */
+function tab(btn,i){
+  const sent=btn.closest('.sent');
+  sent.querySelectorAll('.stab').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  sent.querySelectorAll('.spane').forEach((p,j)=>p.classList.toggle('on',j===i));
+}
+
+/* ---- 采分点自评 ---- */
+const KEY='en2024fanyi_score_v1';
+function mk(btn){
+  const pt=btn.closest('.pt');
+  if(pt.classList.contains('got')){pt.classList.remove('got');pt.classList.add('lost');btn.textContent='✘ 丢分'}
+  else if(pt.classList.contains('lost')){pt.classList.remove('lost');btn.textContent='未判'}
+  else{pt.classList.add('got');btn.textContent='✔ 得分'}
+  calc();save();
+}
+function calc(){
+  let total=0;
+  document.querySelectorAll('.sent').forEach(s=>{
+    let sub=0;
+    s.querySelectorAll('.pt.got').forEach(p=>sub+=parseFloat(p.dataset.v));
+    const b=s.querySelector('.qsc'); if(b)b.textContent=sub;
+    total+=sub;
+  });
+  document.getElementById('total').textContent=total;
+}
+function save(){
+  const st=[];
+  document.querySelectorAll('.pt').forEach(p=>st.push(p.classList.contains('got')?1:(p.classList.contains('lost')?2:0)));
+  try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}
+}
+function load(){
+  let st=null;
+  try{st=JSON.parse(localStorage.getItem(KEY))}catch(e){}
+  if(!st)return;
+  document.querySelectorAll('.pt').forEach((p,i)=>{
+    const b=p.querySelector('.mark');
+    if(st[i]===1){p.classList.add('got');b.textContent='✔ 得分'}
+    else if(st[i]===2){p.classList.add('lost');b.textContent='✘ 丢分'}
+  });
+  calc();
+}
+function resetScore(){
+  document.querySelectorAll('.pt').forEach(p=>{p.classList.remove('got','lost');p.querySelector('.mark').textContent='未判'});
+  calc();save();
+}
+load();
+
+/* ---- 熟词僻义默写模式 ---- */
+let hide=false;
+function polyMode(){
+  hide=!hide;
+  const sec=document.getElementById('pmbtn').closest('.card');
+  sec.classList.toggle('hidemode',hide);
+  document.getElementById('pmbtn').classList.toggle('on',hide);
+  document.getElementById('pmbtn').textContent=hide?'👁 显示全部':'✍️ 默写模式';
+  if(!hide)sec.querySelectorAll('.polytab td.good').forEach(td=>td.classList.remove('open'));
+}
+document.querySelectorAll('.polytab td.good').forEach(td=>{
+  td.addEventListener('click',()=>{if(hide)td.classList.toggle('open')});
+});
+
+/* ---- 词卡网格 ---- */
+const vg=document.getElementById('vgrid');
+Object.keys(V).forEach(k=>{
+  const d=V[k];
+  const div=document.createElement('div');
+  div.style.cssText='border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer';
+  div.innerHTML='<span style="float:right">'+d.tags.map(badge).join('')+'</span><div style="font-family:var(--serif);font-weight:bold">'+d.w+'</div><div style="font-size:.85rem;color:var(--muted)">'+d.cn+'</div>';
+  div.addEventListener('click',()=>{showCard(k,null);if(!isMobile())window.scrollTo({top:0,behavior:'smooth'})});
+  vg.appendChild(div);
+});
+document.getElementById('vcount').textContent='共 '+Object.keys(V).length+' 张';
+
+/* ---- 划词查有道 ---- */
+const yd=document.getElementById('yd');let sel='',ydHold=0,ydT=0;
+/* 触屏：点按钮会先把选区清掉 → selectionchange 立刻把按钮藏了 → 点击落空。改成延迟隐藏 ＋ 按下即锁定 */
+const ydTouch=window.matchMedia&&matchMedia('(pointer:coarse)').matches;
+function ydHide(){clearTimeout(ydT);ydHold=0;yd.style.display='none'}
+document.addEventListener('selectionchange',function(){
+  const s=window.getSelection();const t=s?s.toString().trim():'';
+  if(t&&/^[a-zA-Z' -]{2,40}$/.test(t)){
+    sel=t;clearTimeout(ydT);
+    try{const r=s.getRangeAt(0).getBoundingClientRect();
+      yd.style.left=Math.max(8,Math.min(r.left,window.innerWidth-110))+'px';
+      yd.style.top=(r.bottom+(ydTouch?30:8))+'px';yd.style.display='block';}catch(e){}
+  }else if(!ydHold){clearTimeout(ydT);ydT=setTimeout(function(){if(!ydHold)yd.style.display='none'},ydTouch?900:0)}
+});
+['pointerdown','touchstart','mousedown'].forEach(function(ev){yd.addEventListener(ev,function(){ydHold=1;clearTimeout(ydT)},{passive:true})});
+yd.addEventListener('click',function(){
+  const u='https://dict.youdao.com/result?word='+encodeURIComponent(sel)+'&lang=en';
+  let w=null;try{w=window.open(u,'_blank')}catch(e){}
+  if(!w)location.href=u;
+  ydHide()});
+document.addEventListener('click',function(e){if(e.target!==yd&&!window.getSelection().toString())ydHide()});
+
+function imgAll(b){const on=document.body.classList.toggle('stx-allimg');b.textContent=on?'收起原卷':'原卷对照';
+  if(on)document.querySelectorAll('img.strip').forEach(im=>im.loading='eager')}
+</script>
+<script src="img/strip_boxes_2024.js?v=8"></script>
+<script src="_strip_lookup.js?v=8"></script>
+<script src="_strip_text.js?v=27"></script>
+</body>
+</html>
