@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2023 英一 Text 2 · 短租热与住房荒：症结不在短租，在伪装成短租的酒店</title>
+<style>
+  :root{
+    --bg:#faf9f6; --card:#ffffff; --ink:#2b2b2b; --muted:#8a8578;
+    --accent:#8b5e34; --accent-soft:#f3e9dd; --line:#e8e3d8;
+    --hl:#fdf3d8; --hl-border:#e0b84d;
+    --green:#3e7a4e; --green-soft:#e8f2ea;
+    --red:#b04a3a; --red-soft:#f9e9e6;
+    --blue:#3d6a8a; --blue-soft:#e7eff5;
+    --purple:#6d5a8e; --purple-soft:#eeeaf5;
+    --serif:"Georgia","Songti SC",serif;
+    --sans:-apple-system,"PingFang SC","Helvetica Neue",sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#1c1a17; --card:#26231f; --ink:#e8e4dc; --muted:#9a948a;
+      --accent:#d0a06a; --accent-soft:#3a3127; --line:#3a362f;
+      --hl:#3d3520; --hl-border:#b08c3a;
+      --green:#7fb98d; --green-soft:#26362b;
+      --red:#d98876; --red-soft:#3d2a26;
+      --blue:#8ab3d0; --blue-soft:#26323d;
+      --purple:#a996c8; --purple-soft:#302a3d;
+    }
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;padding-bottom:120px}
+  .wrap{max-width:1100px;margin:0 auto;padding:24px 20px}
+  .back{font-size:.85rem;color:var(--muted);text-decoration:none}
+  .back:hover{color:var(--accent)}
+  header{margin:14px 0 28px}
+  header h1{font-family:var(--serif);font-size:1.7rem;line-height:1.3}
+  header .sub{color:var(--muted);margin-top:6px;font-size:.9rem}
+  .tags{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+  .tag{font-size:.75rem;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);border:1px solid var(--line)}
+  .tag.warn{background:var(--red-soft);color:var(--red);border-color:var(--red)}
+  .tag.ok{background:var(--green-soft);color:var(--green);border-color:var(--green)}
+
+  .layout{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:24px;align-items:start}
+  main{min-width:0}
+  @media (max-width:900px){.layout{grid-template-columns:minmax(0,1fr)}}
+
+  section.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:24px}
+  h2{font-size:1.05rem;letter-spacing:.05em;color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+  h2 .n{font-size:.72rem;background:var(--accent);color:var(--card);border-radius:6px;padding:1px 7px}
+  h3{font-size:.95rem;color:var(--accent);margin:18px 0 10px}
+
+  .para{margin-bottom:22px}
+  .para .en{font-family:var(--serif);font-size:1.06rem;line-height:1.9}
+  .pno{color:var(--muted);font-size:.75rem;user-select:none;margin-right:6px}
+  .tk{background:var(--hl);border-bottom:2px solid var(--hl-border);border-radius:3px;padding:0 2px;cursor:pointer;transition:filter .15s}
+  .tk:hover{filter:brightness(.93)}
+  .tk.active{outline:2px solid var(--hl-border)}
+  .ls{border-bottom:2px dotted var(--blue);cursor:pointer}
+  .para .zh{display:none;margin-top:10px;padding:10px 14px;background:var(--blue-soft);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:.93rem}
+  .para.showzh .zh{display:block}
+  .zbtn{float:right;margin-left:10px;font-size:.72rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:6px;padding:2px 9px;cursor:pointer}
+  .zbtn:hover{color:var(--accent);border-color:var(--accent)}
+  .allbtn{font-size:.78rem;border:1px solid var(--accent);background:none;color:var(--accent);border-radius:8px;padding:4px 12px;cursor:pointer;margin-left:auto}
+
+  aside{position:sticky;top:20px}
+  #panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;min-height:180px}
+  #panel .hint{color:var(--muted);font-size:.88rem;text-align:center;padding:30px 10px}
+  .wcard .head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .wcard .w{font-family:var(--serif);font-size:1.35rem;font-weight:bold}
+  .wcard .ipa{color:var(--muted);font-size:.85rem}
+  .wcard .pos{font-size:.72rem;color:var(--purple);background:var(--purple-soft);padding:1px 8px;border-radius:999px}
+  .wcard .badge{font-size:.7rem;padding:1px 8px;border-radius:999px}
+  .b-core{background:var(--red-soft);color:var(--red)}
+  .b-phrase{background:var(--blue-soft);color:var(--blue)}
+  .b-poly{background:var(--purple-soft);color:var(--purple)}
+  .b-write{background:var(--green-soft);color:var(--green)}
+  .wcard .cn{margin-top:8px;font-size:1rem;font-weight:600}
+  .wcard .en-def{color:var(--muted);font-size:.86rem;font-style:italic;margin-top:2px}
+  .wcard .row{margin-top:10px;font-size:.86rem;padding:8px 10px;border-radius:8px}
+  .wcard .row>b:first-child{font-size:.72rem;display:block;margin-bottom:2px;letter-spacing:.06em}
+  .r-ex{background:var(--hl)} .r-ex b{color:var(--hl-border)}
+  .r-mem{background:var(--green-soft)} .r-mem b{color:var(--green)}
+  .r-syn{background:var(--blue-soft)} .r-syn b{color:var(--blue)}
+  .r-conf{background:var(--red-soft)} .r-conf b{color:var(--red)}
+  #panel .close{display:none}
+  @media (max-width:900px){
+    aside{position:fixed;left:0;right:0;bottom:0;z-index:50;padding:0 8px 8px}
+    #panel{box-shadow:0 -6px 24px rgba(0,0,0,.18);max-height:55vh;overflow-y:auto;display:none}
+    #panel.open{display:block}
+    #panel .close{display:block;float:right;border:none;background:var(--line);border-radius:8px;padding:2px 10px;cursor:pointer;color:var(--ink)}
+  }
+
+  .q{margin-bottom:22px;padding-bottom:18px;border-bottom:1px dashed var(--line)}
+  .q:last-child{border:none;margin-bottom:0;padding-bottom:0}
+  .q .stem{font-weight:600;font-family:var(--serif)}
+  .qt{font-size:.7rem;color:var(--blue);background:var(--blue-soft);border-radius:999px;padding:1px 8px;margin-right:6px;vertical-align:2px}
+  .opts{margin-top:10px;display:grid;gap:8px}
+  .opt{border:1px solid var(--line);border-radius:10px;padding:8px 12px;cursor:pointer;font-size:.93rem;font-family:var(--serif);transition:all .15s}
+  .opt:hover{border-color:var(--accent)}
+  .q.done .opt{cursor:default}
+  .opt.right{background:var(--green-soft);border-color:var(--green)}
+  .opt.wrong{background:var(--red-soft);border-color:var(--red)}
+  .expl{display:none;margin-top:12px;background:var(--accent-soft);border-radius:10px;padding:12px 14px;font-size:.9rem}
+  .q.done .expl{display:block}
+  .expl b{color:var(--accent)}
+  .expl .loc{font-family:var(--serif);font-style:italic;background:var(--hl);padding:1px 4px;border-radius:3px}
+  .fail{background:var(--red-soft);border:1px solid var(--red);border-radius:10px;padding:10px 13px;margin-bottom:10px;font-size:.89rem}
+  .fail b{color:var(--red)}
+  .waver{background:var(--hl);border:1px solid var(--hl-border);border-radius:10px;padding:10px 13px;margin-bottom:10px;font-size:.89rem}
+
+  .sent{margin-bottom:20px}
+  .sent .src{font-family:var(--serif);font-size:1rem;background:var(--blue-soft);padding:12px 14px;border-radius:10px;border-left:3px solid var(--blue)}
+  .sent .anat{margin-top:8px;font-size:.9rem}
+  .sent .anat li{margin:4px 0 4px 18px}
+  .sent .tr{margin-top:8px;font-size:.92rem;color:var(--muted)}
+  .skel{color:var(--red);font-weight:600}
+
+  .filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+  .fbtn{font-size:.8rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:999px;padding:4px 14px;cursor:pointer}
+  .fbtn.on{background:var(--accent);color:var(--card);border-color:var(--accent)}
+  .vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
+  .vitem{border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer;transition:border-color .15s}
+  .vitem:hover{border-color:var(--accent)}
+  .vitem .w{font-family:var(--serif);font-weight:bold}
+  .vitem .cn{font-size:.85rem;color:var(--muted)}
+  .vitem .badges{float:right}
+
+  .wb{display:grid;gap:10px}
+  .wbi{border-left:3px solid var(--green);background:var(--green-soft);border-radius:0 10px 10px 0;padding:10px 14px;font-size:.92rem}
+  .wbi .p{font-family:var(--serif);font-weight:600}
+  .wbi .u{color:var(--muted);font-size:.85rem}
+
+  .flow{display:grid;gap:8px;font-size:.92rem}
+  .flow .fi{border:1px solid var(--line);border-radius:10px;padding:9px 13px}
+  .flow .fi b{color:var(--accent)}
+
+  .ctab{width:100%;border-collapse:collapse;font-size:.86rem;margin-top:8px}
+  .ctab th,.ctab td{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
+  .ctab th{background:var(--accent-soft);color:var(--accent);font-size:.8rem;white-space:nowrap}
+  .ctab code{background:var(--hl);padding:0 3px;border-radius:3px}
+  .tabwrap{overflow-x:auto}
+  .ok{color:var(--green);font-weight:700}
+  .no{color:var(--red);font-weight:700}
+  .tl{display:grid;gap:10px;margin-top:6px}
+  .tli{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:start;border:1px solid var(--line);border-radius:10px;padding:10px 13px}
+  .tli .mark{font-family:var(--serif);font-weight:700;color:var(--accent);background:var(--accent-soft);border-radius:8px;padding:4px 10px;white-space:nowrap;font-size:.85rem}
+
+  .arrow{display:grid;gap:8px;margin-top:8px}
+  .arrow .ai{border:1px solid var(--line);border-radius:10px;padding:10px 13px;font-size:.9rem}
+  .arrow .ai.old{background:var(--red-soft);border-color:var(--red)}
+  .arrow .ai.new{background:var(--green-soft);border-color:var(--green)}
+  .chain{font-family:var(--serif);font-size:.95rem;background:var(--hl);border:1px solid var(--hl-border);border-radius:10px;padding:10px 14px;margin:8px 0;overflow-x:auto}
+
+  #yd{position:fixed;z-index:60;display:none;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:4px 12px;font-size:.8rem;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+  footer{color:var(--muted);font-size:.8rem;text-align:center;margin-top:30px}
+  .att{display:grid;gap:8px;margin-top:10px}
+  .atti{border:1px solid var(--line);border-radius:10px;padding:9px 13px;font-size:.9rem}
+  .atti b{font-family:var(--serif)}
+  .atti.no2{background:var(--red-soft);border-color:var(--red)}
+  .atti.yes{background:var(--green-soft);border-color:var(--green)}
+  .atti,.expl,.wbi,.zh,.fi,.ai,figcaption,p{overflow-wrap:anywhere}
+
+  /* 2021 起：原文以原卷扫描句条呈现 */
+  .sn{margin:0 0 14px}
+  .sn .pno{display:block;margin-bottom:4px;font-size:.78rem;line-height:1.6}
+  img.strip{display:block;width:100%;max-width:760px;height:auto;background:#fff;border:1px solid var(--line);border-radius:6px;cursor:pointer}
+  .sent .src img.strip{margin-top:6px;cursor:default}
+  .kw{margin-top:5px;font-size:.88rem;line-height:2.1;font-family:var(--serif)}
+  @media (prefers-color-scheme: dark){img.strip{filter:invert(.9) hue-rotate(180deg)}}
+  .sn,.sent .src{overflow-x:auto}
+  @media (max-width:700px){img.strip{width:640px;max-width:none}.sn::after{content:'← 句条可左右滑动 →';display:block;font-size:.7rem;color:var(--muted);margin-top:2px}}
+
+  /* 2023 起：流式版——识别好的句子在段落里连排，像 2007–2020 */
+  .para .en{font-family:var(--serif);font-size:1.02rem;line-height:1.9}
+  .stx-flow .para .en .pno{margin-right:4px}
+  .stx-flow .para .sn:not(.stx-on) .kw{margin-bottom:8px}
+</style>
+
+</head>
+<body class="stx-flow">
+<div class="wrap">
+  <a class="back" href="index.html">◀ 返回英语复盘中心</a>
+  <header>
+    <h1>短租热与住房荒：症结不在短租，在伪装成短租的酒店</h1>
+    <div class="sub">2023 年英语（一）真题 · Text 2 · 418 词 · 7 段 · 建议做题 18 min · 话题：住房×短租监管（来源：boston.com 2022-06-15，原题 <i>“We Are at a Crisis Level …” Experts Discuss the Impact of Short-Term Rentals</i>，据黄皮书）</div>
+    <div class="tags">
+      <span class="tag">正确答案：26A 27D 28B 29C 30D</span><span class="tag">题型：首段事实 ＋ 议案目的 ＋ 两人对比 ＋ 人物观点 ＋ 态度评价</span><span class="tag">难度：27 双重否定、30 让步转折是两道拦路题</span><span class="tag">⚠️ 原定冲刺模考卷，已按你的决定提前开复盘</span>
+    </div>
+  </header>
+
+  <div class="layout">
+    <main>
+      <!-- ========== 全文脉络 ========== -->
+      <section class="card">
+        <h2><span class="n">00</span>读前一分钟 · 全文脉络（做完题再看也行）</h2>
+        <div class="flow">
+          <div class="fi"><b>①段 问题</b>：Airbnb 兴起以后，新英格兰各地一直想管住短租；如今<b>房价创历史新高、房源存量跌到历史低位</b>，监管更急了——尤其怕开发商成片买房、转手做短租大赚一笔（26 题）。</div>
+          <div class="fi"><b>②段 一个州的例子</b>：新罕布什尔出租房空置率跌破 1%，住房倡导者担心放任短租会让本就紧张的市场雪上加霜。州议会刚刚<b>否决</b>了一项议案——那项议案本想<b>禁止城镇出台限制短租的法规</b>（27 题：议案要的是放开，议会没让它通过）。</div>
+          <div class="fi"><b>③④段 两种声音</b>：Taylor（劳工住房联盟）——出租房供给到了危机水平，雇主招不到人、工人找不到住处；<b>However</b>，Castle（地产经纪人协会 CEO）——短租给游客住，游客撑起旅游业，旅游业养活工人，是个循环（28 题）。</div>
+          <div class="fi"><b>⑤段 专家定性</b>：Horn——短租本身不是症结，个人把闲置的第二套房拿来出租无可厚非；<b>however</b>，开发商盖大规模短租设施（实为酒店）来绕开税收和监管，才是问题 ⟹ 该按酒店征税、监管（29 题）。</div>
+          <div class="fi"><b>⑥⑦段 办法与评价</b>：马萨诸塞州 2018 年底立法，要求房东登记、投保，并可在州税之外加征地方税；波士顿管得更严。Horn 的评价：登记对困境中的城镇有帮助，<b>但要真正改变住房市场，根本办法是多建房</b>（30 题）。</div>
+          <div class="fi" style="border-color:var(--accent)">📌 <b>一句话主旨</b>：住房紧缺之下，短租该不该管？——个人短租无妨，开发商借短租之名开酒店才要管；而登记一类监管只能治标，治本靠多建房。<br>📌 <b>结构套路</b>：问题 → 一州之例 → 正反两人 → 专家定性 → 对策＋评价。<b>五道题顺序出题</b>：26①、27②、28③④、29⑤、30⑦（⑥段是 30 题干扰项的原料）。<br>📌 <b>与同卷 T1 同一副骨架</b>：T1 是 Hardy 对 Quinn、再请出专家 Branch；本篇是 Taylor 对 Castle、再请出专家 Horn。两篇的人物题都考<b>「谁说的」</b>——T1 22A 把 Hardy 的话安到 Quinn 头上，本篇 28A 把 Castle 的话安到 Taylor 头上。</div>
+        </div>
+      </section>
+
+      <!-- ========== 原文精读 ========== -->
+      <section class="card">
+        <h2><span class="n">01</span>原文精读 <button class="allbtn" onclick="toggleAll()">全文意译 开/关</button> <button class="allbtn" id="imgall" onclick="imgAll(this)">原卷对照</button></h2>
+        <p style="font-size:.8rem;color:var(--muted);margin-bottom:14px">🟡 黄色高亮 = 重难点词/短语，点击右侧出卡片 ｜ 蓝色虚线 = 长难句，点击跳到精析 ｜ 每段「意」= 段落意译 ｜ 选中任意其他单词浮出「查有道」 ｜ 原文由你的浏览器从原卷识别成文字（首次约 3 秒，之后秒开）；「原卷对照」可逐句看扫描原图、改识别错字</p>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">①</span>
+            <div class="sn"><img class="strip" src="img/2023_T2/s1_1.png" alt="①❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="regulate">regulate</span> · <span class="tk" data-w="shortterm">short-term</span> · <span class="tk" data-w="takeoff">took off</span></div></div>
+            <div class="sn" data-go="l1_2"><img class="strip" src="img/2023_T2/s1_2.png" alt="①❷ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="recordhigh">record-high</span> · <span class="tk" data-w="inventory">inventory</span> · <span class="tk" data-w="urgency">urgency</span> · <span class="tk" data-w="regulate">regulation</span> · <span class="tk" data-w="swath">swaths of</span> · <span class="tk" data-w="flip">flip for a fortune</span></div></div>
+          </div>
+          <div class="zh"><b>①段意：</b>自从 Airbnb 一类网站在 2010 年代火起来，新英格兰各地的社区就一直想管住短租。如今房价创下历史新高、房源存量处在历史低位，管短租就更急了——尤其在那些担心开发商会涌进来、成片买下住房、转手投进短租市场大赚一笔的人看来。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">②</span>
+            <div class="sn" data-go="l2_1"><img class="strip" src="img/2023_T2/s2_1.png" alt="②❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="vacancy">vacancy rate</span> · <span class="tk" data-w="advocate">advocates</span> · <span class="tk" data-w="unchecked">unchecked</span> · <span class="tk" data-w="strained">strained</span></div></div>
+            <div class="sn" data-go="l2_2"><img class="strip" src="img/2023_T2/s2_2.png" alt="②❷ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="legislature">Legislature</span> · <span class="tk" data-w="voteagainst">voted against</span> · <span class="tk" data-w="legislation">legislation</span> · <span class="tk" data-w="restrict">restricting</span></div></div>
+          </div>
+          <div class="zh"><b>②段意：</b>新罕布什尔州的出租房空置率已跌破 1%，为住房问题奔走的人担心，放任短租会让本已紧张的市场压力更大。该州议会最近投票否决了一项议案——按那项议案，城镇出台限制短租的法规将属违法。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">③</span>
+            <div class="sn"><img class="strip" src="img/2023_T2/s3_1.png" alt="③❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="crisis">crisis level</span> · <span class="tk" data-w="executive">executive director</span> · <span class="tk" data-w="coalition">Coalition</span></div></div>
+            <div class="sn" data-go="l3_2"><img class="strip" src="img/2023_T2/s3_2.png" alt="③❷ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="affordable">affordable housing</span> · <span class="tk" data-w="hardtime">having a hard time</span></div></div>
+          </div>
+          <div class="zh"><b>③段意：</b>「出租房的供给已经到了危机的地步。」大海岸地区劳工住房联盟的执行主任尼克·泰勒说。新罕布什尔南部的城镇缺少负担得起的住房，泰勒说：「雇主很难招到员工，工人也很难找到住处。」</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">④</span>
+            <div class="sn"><img class="strip" src="img/2023_T2/s4_1.png" alt="④❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="pointout">pointed out</span> · <span class="tk" data-w="realtor">realtors</span></div></div>
+            <div class="sn" data-go="l4_2"><img class="strip" src="img/2023_T2/s4_2.png" alt="④❷ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="service">servicing</span> · <span class="tk" data-w="service">serviced</span> · <span class="tk" data-w="cyclical">cyclical effect</span></div></div>
+          </div>
+          <div class="zh"><b>④段意：</b>不过，当地一家房地产经纪人协会的首席执行官瑞恩·卡斯尔指出，短租也给游客提供了住处。「很多工人在为旅游业干活，而旅游业又靠那些来短住的人撑着，」卡斯尔说，「所以这是个循环。」</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">⑤</span>
+            <div class="sn"><img class="strip" src="img/2023_T2/s5_1.png" alt="⑤❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="crux">crux of the issue</span> · <span class="tk" data-w="affordable">affordable</span></div></div>
+            <div class="sn"><img class="strip" src="img/2023_T2/s5_2.png" alt="⑤❷ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="rentout">rent out</span></div></div>
+            <div class="sn"><img class="strip" src="img/2023_T2/s5_3.png" alt="⑤❸ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="vacation">vacation home</span> · <span class="tk" data-w="makemoney">make money off</span></div></div>
+            <div class="sn" data-go="l5_4"><img class="strip" src="img/2023_T2/s5_4.png" alt="⑤❹ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="arise">arise</span> · <span class="tk" data-w="largescale">large-scale</span> · <span class="tk" data-w="facility">facilities</span> · <span class="tk" data-w="defacto">facto hotels</span> · <span class="tk" data-w="bypass">bypass</span></div></div>
+            <div class="sn" data-go="l5_5"><img class="strip" src="img/2023_T2/s5_5.png" alt="⑤❺ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="disguise">disguising</span> · <span class="tk" data-w="tax">taxed</span> · <span class="tk" data-w="regulate">regulated</span></div></div>
+          </div>
+          <div class="zh"><b>⑤段意：</b>可负担住房政策专家克伦·霍恩说，短租本身并不是问题的症结。「我觉得个人能把自己的第二套房租出去是好事。反正那是他们的度假屋，空着也是空着，为什么不能拿来赚点钱呢？」霍恩说。可是，当开发商试图修建大规模的短租设施——实际上就是酒店——来绕开税收和监管时，问题就来了。「我觉得问题在于：一个开发商明明在盖酒店，却把它伪装成不是酒店，难道不该像对待酒店那样对待它、向它征税、对它监管吗？」霍恩说。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">⑥</span>
+            <div class="sn"><img class="strip" src="img/2023_T2/s6_1.png" alt="⑥❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="governor">Governor</span> · <span class="tk" data-w="reinin">rein in</span> · <span class="tk" data-w="investor">investor-buyers</span></div></div>
+            <div class="sn" data-go="l6_2"><img class="strip" src="img/2023_T2/s6_2.png" alt="⑥❷ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="register">register</span> · <span class="tk" data-w="mandate">mandates</span> · <span class="tk" data-w="insurance">insurance</span> · <span class="tk" data-w="ontopof">on top of</span> · <span class="tk" data-w="levy">levy</span></div></div>
+            <div class="sn"><img class="strip" src="img/2023_T2/s6_3.png" alt="⑥❸ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="renter">renters</span></div></div>
+          </div>
+          <div class="zh"><b>⑥段意：</b>2018 年底，马萨诸塞州州长查理·贝克签署了一项法案，要约束那些潜在的投资型买家。法案要求每一位出租房东都到州里登记，规定他们必须投保，还为在新开征的州税之外再加征地方税开了口子。波士顿走得更远，要求出租人到市检查服务局登记。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">⑦</span>
+            <div class="sn" data-go="l7_1"><img class="strip" src="img/2023_T2/s7_1.png" alt="⑦❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="requirement">requirements</span> · <span class="tk" data-w="struggling">struggling</span></div></div>
+          </div>
+          <div class="zh"><b>⑦段意：</b>霍恩说，类似的登记要求能让处境艰难的城镇受益，但「如果我们想让住房市场真正有所改变，最主要的一条是：必须多建房，建很多房。」</div>
+        </div>
+      </section>
+
+      <!-- ========== 题目 ========== -->
+      <section class="card">
+        <h2><span class="n">02</span>题目与解析（点选项即判 · 再看解析）</h2>
+
+        <div class="q" data-ans="0" id="q26">
+          <p class="stem"><span class="qt">首段事实</span>26. Which of the following is true of New England?</p>
+          <div class="opts">
+            <div class="opt">[A] Its housing supply is at a very low level.</div>
+            <div class="opt">[B] Its communities are in need of <span class="tk" data-w="funding">funding</span>.</div>
+            <div class="opt">[C] Its rental vacancy rate is going up slowly.</div>
+            <div class="opt">[D] Its home prices are under strict control.</div>
+          </div>
+          <div class="expl"><b>答案 A</b>　题干只给 New England ⟹ 首段。①❷ 交代背景：<span class="loc">record-high home prices and historically low inventory</span>——inventory 在房地产语境里是<b>市面上可买可租的房源</b>，historically low 即「历史低位」⟹ A「住房供给处于很低水平」是同义改写。<br><b>干扰项：</b>B 由 urgency（紧迫）、flip for a fortune（大赚一笔）联想出「社区缺钱」——急的是<b>监管</b>，不是资金。C 方向反：②❶ 新罕布什尔（新英格兰的一个州）空置率<b>跌破</b> 1%，不是上升。D 两处错：房价是 record-high，谈不上受控；且偷换了监管对象——①段要管的是<b>短租</b>（①❷ such regulation 回指①❶ regulate short-term rentals），不是房价。<br><b>技巧：</b>首段事实题先抓首段主旨（「各地急着管短租」），再逐项比对。<b>不认识 inventory 也能做</b>：B、C、D 都能凭原文排除；再拿②段的例子反推——空置率不到 1%、市场 already strained ⟹ 房源少，A 成立。</div>
+        </div>
+
+        <div class="q" data-ans="3" id="q27">
+          <p class="stem"><span class="qt">议案目的</span>27. The bill mentioned in Paragraph 2 was intended to ______.</p>
+          <div class="opts">
+            <div class="opt">[A] <span class="tk" data-w="curb">curb</span> short-term rental <span class="tk" data-w="speculation">speculation</span>.</div>
+            <div class="opt">[B] <span class="tk" data-w="ensure">ensure</span> the supply of cheap housing.</div>
+            <div class="opt">[C] punish illegal <span class="tk" data-w="dealing">dealings</span> in housing.</div>
+            <div class="opt">[D] allow a free short-term rental market.</div>
+          </div>
+          <div class="expl"><b>答案 D</b>　②❷ 一句两个主体：<b>议会</b> voted against（否决）——这是议会的态度；<b>议案</b>本身的内容在 that 从句里：<span class="loc">made it illegal for towns to create legislation restricting short-term rentals</span>。拆开是两层否定：「出台<b>限制</b>短租的法规」被定为「<b>违法</b>」⟹ 不许限制 ＝ <b>放开短租</b>（D）。<br><b>干扰项：</b>A 只看到 restricting 一个否定，漏了 made it illegal 那一层，方向整个反了；何况遏制投机的是⑥段马萨诸塞的法案。B 原料在③❶ Taylor 说的 supply of rental housing——别段、别人的话，议案根本没谈供给。C 借了 illegal 一词捏造「惩罚非法住房交易」——被定为违法的是城镇的<b>立法行为</b>，不是房屋买卖。<br><b>技巧：</b>题干问 the bill，就把 The state Legislature voted against 先拿开，只读 a bill that … 的从句；从句里有几个否定就数几个，<b>负负得正</b>。顺手核一下上下文：议会否决了「禁止限制短租」的议案 ⟹ 城镇仍可以限制短租——正好接①段「各地都想管短租」，逻辑通。</div>
+        </div>
+
+        <div class="q" data-ans="1" id="q28">
+          <p class="stem"><span class="qt">两人对比</span>28. Compared with Castle, Taylor is more likely to support ______.</p>
+          <div class="opts">
+            <div class="opt">[A] further investment in local tourism.</div>
+            <div class="opt">[B] an increase in affordable housing.</div>
+            <div class="opt">[C] strict management of real estate agents.</div>
+            <div class="opt">[D] a <span class="tk" data-w="favorable">favorable</span> policy for short-term workers.</div>
+          </div>
+          <div class="expl"><b>答案 B</b>　先看身份：Taylor 是<b>劳工住房联盟</b>的执行主任，Castle 是<b>地产经纪人协会</b>的 CEO——一个替工人的住处说话，一个替房产生意说话。再看话：③段 Taylor 说出租房供给到了 crisis level，<span class="loc">Without enough affordable housing</span> 雇主招不到人、工人找不到住处；④段以 <b>However</b> 转折，Castle 说短租给游客住、带动旅游业、养活工人，是 <span class="loc">cyclical effect</span>。两人对立 ⟹ Taylor 要的是<b>更多负担得起的住房</b>（B，affordable housing 原词复现）。<br><b>干扰项：</b>A 是 Castle 的思路（短租→旅游业），被安到了 Taylor 头上——<b>人物—观点错配</b>（与同卷 T1 22A 同一招）。C「严管地产经纪人」是把 Taylor 的不满和 Castle 的身份硬拼在一起，文中没有。D 两人都提到「对工人有好处」，那是<b>共同点</b>，题干问的是 Compared with Castle 的<b>不同点</b>；况且④❷ coming in short term 说的是来短住的游客，不是「短期工」。<br><b>技巧：</b>两人对比题三步——① 用身份推站位；② 找两段之间的转折词（However）确认对立；③ 选项里原词复现、又只属于一方的那个就是答案。</div>
+        </div>
+
+        <div class="q" data-ans="2" id="q29">
+          <p class="stem"><span class="qt">人物观点</span>29. What does Horn emphasize in Paragraph 5?</p>
+          <div class="opts">
+            <div class="opt">[A] The urgency to <span class="tk" data-w="upgrade">upgrade</span> short-term rental facilities.</div>
+            <div class="opt">[B] The <span class="tk" data-w="efficient">efficient</span> operation of the local housing market.</div>
+            <div class="opt">[C] The necessity to stop developers from <span class="tk" data-w="evade">evading</span> taxes.</div>
+            <div class="opt">[D] The proper <span class="tk" data-w="procedure">procedures</span> for renting out spare houses.</div>
+          </div>
+          <div class="expl"><b>答案 C</b>　⑤段是一个完整的「让步—转折」：❶–❸ 让步——短租本身<b>不是症结</b>，个人出租第二套房是好事；❹ <b>however</b> 转折——开发商建大规模短租设施（<span class="loc">de facto hotels</span>）是为了 <span class="loc">bypass taxes and regulations</span>；❺ 用反问加重：明明在盖酒店，难道不该<b>按酒店征税、监管</b>？反问＝强烈主张 ⟹ 要阻止开发商借短租逃税（C；bypass ≈ evade）。<br><b>干扰项：</b>A 照搬 facilities、又由 large-scale 联想出「升级」——开发商建这些设施是为了逃税，Horn 没说要升级。B 把⑤❸「度假屋空着也是空着」扭成「市场高效运转」，Horn 讲的是个人出租的<b>合理性</b>，不是市场效率。D 照搬 rent out，但 Horn 只说这是好事，没提任何<b>出租流程</b>。<br><b>技巧：</b>「强调」题找段内的转折与反问。本段 however 插在句中，容易读漏——<b>前三句都在铺垫，越往前的选项（B、D 的原料在❷❸）越可能是让步区里的干扰</b>。</div>
+        </div>
+
+        <div class="q" data-ans="3" id="q30">
+          <p class="stem"><span class="qt">态度评价</span>30. Horn holds that <span class="tk" data-w="impose">imposing</span> registration requirements is ______.</p>
+          <div class="opts">
+            <div class="opt">[A] an <span class="tk" data-w="irrational">irrational</span> decision.</div>
+            <div class="opt">[B] an <span class="tk" data-w="unfeasible">unfeasible</span> proposal.</div>
+            <div class="opt">[C] an unnecessary measure.</div>
+            <div class="opt">[D] an <span class="tk" data-w="inadequate">inadequate</span> solution.</div>
+          </div>
+          <div class="expl"><b>答案 D</b>　题干 Horn ＋ registration requirements ⟹ 末段。⑦❶ 也是让步—转折：先肯定 <span class="loc">could benefit struggling cities and towns</span>（有用），<b>but</b> 要真正改变住房市场，<span class="loc">the main one is we have to build a lot more</span>（根本办法在别处）。⟹ 登记<b>有帮助、但不够</b> ＝ inadequate solution。<br><b>干扰项：</b>A 来自⑥❷ requires every rental host 这种「一律」的说法——但⑥段是对法案的<b>客观介绍</b>，不是 Horn 的评价，更谈不上不理智。B 误读转折：Horn 没说登记<b>办不到</b>，她说的是办到了也<b>治不了本</b>。C 把<b>主次关系</b>（the main one）误读成<b>取舍关系</b>（不必登记、改去建房）——but 前后两件事都要，只是一主一次。<br><b>技巧：</b>人物评价题先分清<b>「客观介绍」与「人物看法」</b>：⑥段讲法案是什么，⑦段才是 Horn 怎么看。再看 could … but … the main one 的分寸——肯定一半、保留一半的态度，选项里只有 inadequate 两头都照顾到。也可以结合⑤段：Horn 本就主张管住开发商，不会说登记不必要（C）或不理智（A）。<br>📕 <b>本题与 T1 24C 同一类</b>：T1 是 Branch 说州标准 only one limited benchmark（作用有限），本题是 Horn 说登记 could benefit … but（不够）——<b>两篇都考「有用但有限」</b>，正确项都是概括词（limited / inadequate）。</div>
+        </div>
+      </section>
+
+      <!-- ========== 长难句 ========== -->
+      <section class="card" id="sents">
+        <h2><span class="n">03</span>长难句精析（正文蓝色虚线句）</h2>
+
+        <div class="sent" id="l1_2">
+          <div class="src"><b>s1（①❷）</b><img class="strip" src="img/2023_T2/s1_2.png" alt="①❷ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：<code>there’s an increased urgency in such regulation</code>——there be 句型，主语 an increased urgency；<b>such regulation 回指①❶ 的 regulate short-term rentals</b>（26D 偷换对象的地方）。</li>
+            <li>句首 <code>Now, with record-high home prices and historically low inventory</code>——with 复合结构作<b>原因状语</b>：在房价……、存量……的情况下。</li>
+            <li><code>particularly among those who worry that …</code>——补充说明紧迫感「在谁那里最强」；who 定语从句修饰 those，that 宾语从句作 worry 的宾语。</li>
+            <li>that 从句里三个动作串成一条链：<code>come in</code>（涌入）→ <code>buy up swaths of housing</code>（成片买下）→ <code>to flip for a fortune</code>（目的：转手大赚）。</li>
+          </ul>
+          <div class="tr">意：如今，房价创历史新高、房源存量处于历史低位，对短租的监管显得更加紧迫——尤其在那些担心开发商涌入、成片买下住房、转手投进短租市场牟取暴利的人看来。</div>
+        </div>
+
+        <div class="sent" id="l2_1">
+          <div class="src"><b>s2（②❶）</b><img class="strip" src="img/2023_T2/s2_1.png" alt="②❶ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：<code>housing advocates fear (that) unchecked short-term rentals will put …</code>——fear 后省略了 that。</li>
+            <li>句首 <code>In New Hampshire, where …</code>——where 引导非限制性定语从句，交代背景数据：空置率跌破 1%。</li>
+            <li><code>put further pressure on an already strained market</code>——put pressure on 给……施压；<b>further 与 already 一呼一应</b>＝本来就紧，还要更紧（雪上加霜）。</li>
+            <li>⭐ 26C 说空置率「缓慢上升」，与 has dropped below 方向相反。</li>
+          </ul>
+          <div class="tr">意：在出租房空置率已跌破 1% 的新罕布什尔州，住房倡导者担心，放任短租会给本已紧张的市场进一步加压。</div>
+        </div>
+
+        <div class="sent" id="l2_2">
+          <div class="src"><b>s3（②❷）</b><img class="strip" src="img/2023_T2/s2_2.png" alt="②❷ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">两个主体</span>：主句 <code>The state Legislature recently voted against a bill</code>（议会否决议案）；定语从句 <code>that would’ve made it illegal …</code>（议案的内容）。</li>
+            <li><b>would’ve made</b> ＝ would have made，虚拟语气：<b>假如议案通过，本会</b>使……违法——正因为被否决了，所以没生效。</li>
+            <li><code>made it illegal for towns to create legislation …</code>——it 是形式宾语，真正的宾语是 for towns to create …；<b>restricting short-term rentals</b> 是现在分词作后置定语，修饰 legislation。</li>
+            <li>⭐⭐ 27 题：数否定——illegal（不许）× restricting（限制）＝ 不许限制 ⟹ 放开（D）。voted against 是第三个否定，但属于议会，题干问的是议案，<b>不能算进去</b>。</li>
+          </ul>
+          <div class="tr">意：该州议会最近投票否决了一项议案，该议案若获通过，城镇制定限制短租的法规就将属于违法。</div>
+        </div>
+
+        <div class="sent" id="l3_2">
+          <div class="src"><b>s4（③❷）</b><img class="strip" src="img/2023_T2/s3_2.png" alt="③❷ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">间接条件＋直接引语</span>：句首 <code>Without enough affordable housing in …</code> 是条件状语（没有足够的……），引语在中间，<code>Taylor said</code> 收尾。</li>
+            <li>引语是两个<b>完全对称</b>的分句：<code>employers are having a hard time attracting employees</code> ／ <code>workers are having a hard time finding a place to live</code>——employers 对 workers、attracting employees 对 finding a place。</li>
+            <li>have a hard time doing ＝ 做……很困难（后接 doing）。</li>
+            <li>⭐ 28B：这句话的落点是 affordable housing——Taylor 要的是更多负担得起的房子。</li>
+          </ul>
+          <div class="tr">意：新罕布什尔南部城镇缺乏足够的可负担住房，泰勒说：「雇主难以招到员工，工人也难以找到住处。」</div>
+        </div>
+
+        <div class="sent" id="l4_2">
+          <div class="src"><b>s5（④❷）</b><img class="strip" src="img/2023_T2/s4_2.png" alt="④❷ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">被拆开的引语</span>：<code>“A lot of workers … short term,” Castle said, “and so it’s a cyclical effect.”</code>——说话人插在引语中间，两段引语是一句话。</li>
+            <li>前半是<b>主动、被动交错</b>的对称句：<code>workers are servicing the tourist industry</code>（工人服务旅游业）／ <code>the tourism industry is serviced by those people …</code>（旅游业靠短住的人撑着）——service 作动词「为……服务」。</li>
+            <li><code>those people coming in short term</code>——现在分词短语作后置定语；in short term ＝ 短期地 ⟹ <b>来短住的游客</b>，不是 28D 的「短期工」。</li>
+            <li>and so 引出结论：工人—旅游业—游客首尾相接 ⟹ cyclical effect。</li>
+          </ul>
+          <div class="tr">意：「很多工人在为旅游业干活，而旅游业又依赖那些来短期停留的人，」卡斯尔说，「所以这是一种循环效应。」</div>
+        </div>
+
+        <div class="sent" id="l5_4">
+          <div class="src"><b>s6（⑤❹）</b><img class="strip" src="img/2023_T2/s5_4.png" alt="⑤❹ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">主干极短</span>：<code>Issues arise</code>——主谓两个词就完了；<b>however 插在中间</b>，是本段的转折点，读快了最容易漏。</li>
+            <li><code>when developers attempt to create …</code>——when 引导时间（条件）状语从句；<code>to bypass taxes and regulations</code> 是不定式作<b>目的状语</b>。</li>
+            <li>两个破折号夹着同位语 <code>de facto hotels</code>：给「大规模短租设施」下定性——名义上是短租，实际上是酒店。</li>
+            <li>⭐ 29C：bypass taxes ⟹ evading taxes（同义替换）。</li>
+          </ul>
+          <div class="tr">意：然而，当开发商试图修建大规模的短租设施——实际上就是酒店——来绕开税收和监管时，问题就出现了。</div>
+        </div>
+
+        <div class="sent" id="l5_5">
+          <div class="src"><b>s7（⑤❺）</b><img class="strip" src="img/2023_T2/s5_5.png" alt="⑤❺ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">表语是一个问句</span>：<code>I think the question is, shouldn’t a developer … be treated …?</code>——the question is 后直接接问句（口语，不改语序），整句是<b>反问</b>：难道不该……吗？＝ 当然应该。</li>
+            <li>问句主语 <code>a developer</code> 后跟 who 定语从句：<code>who’s really building a hotel, but disguising it as not a hotel</code>——building 与 disguising 两个进行时并列，<b>really（实为）对 disguising（伪装）</b>。</li>
+            <li>谓语 <code>be treated and taxed and regulated like a hotel</code>——三个被动谓语连用 and，口语里的加重。</li>
+            <li>⭐ 29 题：反问＝本段最强的主张 ⟹ C「阻止开发商逃税」。</li>
+          </ul>
+          <div class="tr">意：「我认为问题在于：一个明明在建酒店、却把它伪装成不是酒店的开发商，难道不应该被当作酒店来对待、征税和监管吗？」霍恩说。</div>
+        </div>
+
+        <div class="sent" id="l6_2">
+          <div class="src"><b>s8（⑥❷）</b><img class="strip" src="img/2023_T2/s6_2.png" alt="⑥❷ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">三个并列谓语</span>：<code>The bill requires … , mandates … , and opens …</code>——一个主语带三个动作，A, B, and C。</li>
+            <li><code>requires every rental host to register with the state</code>——require sb to do；register with 向……登记。</li>
+            <li><code>mandates (that) they carry insurance</code>——省略 that 的宾语从句；carry insurance ＝ 投保。</li>
+            <li><code>opens the potential for local taxes on top of a new state levy</code>——为……开了口子；on top of ＝ 在……之外再加。</li>
+            <li>⭐ 30A：requires every … 是法案的<b>客观内容</b>，不代表 Horn 的看法。</li>
+          </ul>
+          <div class="tr">意：该法案要求每一位出租房东到州政府登记，规定他们必须投保，并为在新开征的州税之外加征地方税提供了可能。</div>
+        </div>
+
+        <div class="sent" id="l7_1">
+          <div class="src"><b>s9（⑦❶）</b><img class="strip" src="img/2023_T2/s7_1.png" alt="⑦❶ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">间接引语 but 直接引语</span>：<code>Horn said (that) similar registration requirements could benefit …</code>（转述）<b>but</b> 后接直接引语——一句话里先转述、再原话。</li>
+            <li>引语里 <code>if we want to make a change in the housing market</code> 是条件状语从句；主句 <code>the main one is (that) we have to build a lot more</code>——the main one 的 one 指代 change（「最主要的那个改变」），is 后接表语从句。</li>
+            <li><b>could</b> 是委婉的可能：「能有好处」——语气本身就留了余地。</li>
+            <li>⭐ 30 题：could benefit（肯定一半）＋ the main one（根本在别处）⟹ inadequate。</li>
+          </ul>
+          <div class="tr">意：霍恩说，类似的登记要求能让困境中的城镇受益，但「如果我们想真正改变住房市场，最主要的一条就是必须多建房。」</div>
+        </div>
+      </section>
+
+      <!-- ========== 词汇复盘 ========== -->
+      <section class="card">
+        <h2><span class="n">04</span>词汇复盘（点卡片看详情）</h2>
+        <div class="filters">
+          <button class="fbtn on" data-f="all">全部</button>
+          <button class="fbtn" data-f="core">核心词</button>
+          <button class="fbtn" data-f="phrase">短语</button>
+          <button class="fbtn" data-f="poly">熟词僻义</button>
+          <button class="fbtn" data-f="write">写作可用</button>
+        </div>
+        <div class="vgrid" id="vgrid"></div>
+      </section>
+
+      <!-- ========== 写作素材 ========== -->
+      <section class="card">
+        <h2><span class="n">05</span>可搬进作文/翻译的素材</h2>
+        <p style="font-size:.9rem;margin-bottom:12px">本篇话题——<b>住房、民生、监管与市场、问题的「标」与「本」</b>——正对大作文里的「社会问题」「政府与市场」「城市发展」类题目。英文例句都是按原文句式自拟的，只借骨架。</p>
+        <div class="wb">
+          <div class="wbi"><div class="p">X themselves are not the crux of the issue; problems arise when …</div><div class="u">「X 本身不是症结，问题出在……的时候」——<b>先替对象开脱、再点出真问题</b>，论证段的高级开头：Smartphones themselves are not the crux of the issue; problems arise when they replace face-to-face talk.</div></div>
+          <div class="wbi"><div class="p">With A and B, there’s an increased urgency in …</div><div class="u">「在 A、B 的情况下，……更加紧迫」——描述背景、引出话题：With rising living costs and fewer jobs, there is an increased urgency in helping young graduates.</div></div>
+          <div class="wbi"><div class="p">put further pressure on an already strained …</div><div class="u">「给本已紧张的……再加压」——写后果的雪上加霜句：Overuse of antibiotics puts further pressure on an already strained health system.</div></div>
+          <div class="wbi"><div class="p">Without enough X, A are having a hard time doing …, and B are having a hard time doing …</div><div class="u">「缺了 X，A 和 B 两头受罪」——<b>对称句</b>写一个缺口的双重影响：Without enough childcare, parents are having a hard time keeping jobs, and employers are having a hard time keeping staff.</div></div>
+          <div class="wbi"><div class="p">A is serving B, and B is served by C — it’s a cyclical effect.</div><div class="u">「A 服务 B、B 又靠 C 撑着——这是个循环」——写良性循环：Volunteers serve the community, and the community in turn supports its volunteers; it is a cyclical effect.</div></div>
+          <div class="wbi"><div class="p">Shouldn’t X that is really Y, but disguised as not Y, be treated like Y?</div><div class="u">「明明是 Y、却装成不是 Y，难道不该按 Y 对待？」——<b>名实之辩</b>的反问句，批评钻空子：Shouldn’t an advert that is really a sales pitch, but disguised as advice, be regulated like an advert?</div></div>
+          <div class="wbi"><div class="p">rein in … · take things even further</div><div class="u">「约束…… · 更进一步」——写政策力度递进：The city reined in noisy night markets, and some districts took things even further by banning loudspeakers.</div></div>
+          <div class="wbi"><div class="p">X could benefit …, but if we want to make a real change, the main one is …</div><div class="u">「X 有好处，但要真正改变，关键在……」——<b>肯定一半、指出根本</b>的让步式结论段：Online courses could benefit rural students, but if we want to make a real change, the main one is to train more local teachers.</div></div>
+          <div class="wbi"><div class="p">话题词包：affordable housing · housing supply · speculation · tackle the root cause</div><div class="u">写「住房 / 民生 / 治标与治本」时直接可用：affordable housing（可负担住房）· housing supply（住房供给）· property speculation（炒房）· a band-aid solution（治标之策）↔ tackle the root cause（治本）。</div></div>
+        </div>
+      </section>
+    </main>
+    <aside>
+      <div id="panel">
+        <button class="close" onclick="document.getElementById('panel').classList.remove('open')">收起</button>
+        <div class="hint">点正文里的<b>黄色高亮词</b>，或下方词汇卡片，这里出详情。</div>
+      </div>
+    </aside>
+  </div>
+</div>
+<button id="yd">查有道</button>
+
+<script>
+const V={
+  regulate:{"w": "regulate", "ipa": "/ˈreɡjuleɪt/", "pos": "v.", "tags": ["core", "write"], "cn": "<b>监管、管控</b>；调节", "en": "to control something by rules", "ex": "attempting to <b>regulate</b> short-term rentals（①❶）", "mem": "regulation n. 监管、法规（①❷ such <b>regulation</b> 回指本句）；deregulate 放松管制。<br>⭐ 26D 的偷换：原文管的是<b>短租</b>，选项变成管<b>房价</b>——such regulation 回指的是 regulate short-term rentals，不是 home prices。<br>⑤❺ be treated and taxed and <b>regulated</b> like a hotel 再用一次。", "syn": "control · govern · supervise", "conf": "regulate（监管）· regular（规律的）· regulator（监管者）。"},
+  shortterm:{"w": "short-term rental", "ipa": "/ˌʃɔːt tɜːm ˈrentl/", "pos": "n.", "tags": ["phrase", "write"], "cn": "<b>短租</b>（房）", "en": "a home rented to visitors for a few days or weeks", "ex": "regulate <b>short-term rentals</b>（①❶）", "mem": "全文主题词：short-term rental(s) 出现 7 次，④❷ 还有一个 short term。Airbnb 一类平台上按天、按周出租的房子。<br>对照：long-term rental 长租；rental housing 出租房。<br>⚠️ 28D 的 short-term workers（短期工）是借这个词造的——原文 short term 说的是来短住的<b>游客</b>。", "syn": "holiday let · vacation rental", "conf": "short-term（短期的）↔ long-term（长期的）。"},
+  takeoff:{"w": "take off", "ipa": "/teɪk ɒf/", "pos": "phr.", "tags": ["phrase", "poly"], "cn": "（事业、产品）<b>突然兴起、走红</b>；起飞", "en": "to suddenly become successful or popular", "ex": "since sites like Airbnb <b>took off</b> in the 2010s（①❶）", "mem": "⚠️ 熟词僻义：take off 不只是「起飞、脱下」，说生意、网站、潮流时＝<b>迅速火起来</b>。<br>写作：Online shopping has really taken off in recent years.", "syn": "boom · catch on · soar", "conf": "take off（兴起）· take on（承担）· take over（接管）。"},
+  recordhigh:{"w": "record-high", "ipa": "/ˌrekɔːd ˈhaɪ/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>创纪录高的</b>、历史最高的", "en": "higher than ever before", "ex": "<b>record-high</b> home prices（①❷）", "mem": "record 作定语＝创纪录的：a record low 历史低点 · break the record 打破纪录。<br>⭐ 与后面的 historically low 正好一高一低：<b>价格历史最高、存量历史最低</b>——26A、26D 都从这一对里出。", "syn": "all-time high · unprecedented", "conf": "record-high（价高）↔ record-low / historically low（存量低）。"},
+  inventory:{"w": "inventory", "ipa": "/ˈɪnvəntri/", "pos": "n.", "tags": ["core", "poly"], "cn": "（房市）<b>在售房源量、存量</b>；库存", "en": "the number of homes available for sale or rent", "ex": "historically low <b>inventory</b>（①❷）", "mem": "⭐⭐⭐ 26 题正源：inventory 本义「库存清单」，放在房地产语境里＝<b>市面上可买可租的房源</b> ⟹ 26A housing supply is at a very low level 的同义改写。<br>书上技巧：认不出 inventory 也能做——B、C、D 都能先排掉，再由②段「空置率跌破 1%」反证 A。", "syn": "stock · supply", "conf": "inventory（库存）· invention（发明）。"},
+  urgency:{"w": "urgency", "ipa": "/ˈɜːdʒənsi/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>紧迫性</b>", "en": "the need to deal with something quickly", "ex": "an increased <b>urgency</b> in such regulation（①❷）", "mem": "urgent adj. 紧急的 · a sense of urgency 紧迫感（写作高频）。<br>⚠️ 26B 由 urgency 捏造出「社区急需资金」——急的是<b>监管</b>，不是钱。", "syn": "pressure · necessity", "conf": "urgency（紧迫）· emergency（紧急情况）。"},
+  swath:{"w": "swaths of", "ipa": "/swɒθs əv/", "pos": "phr.", "tags": ["phrase", "poly"], "cn": "<b>大片的</b>、成片的", "en": "a large area or amount of something", "ex": "buy up <b>swaths of</b> housing（①❷）", "mem": "swath 原指镰刀割过的一长条 ⟹ 引申为「一大片」：large swaths of land / the population 大片土地 / 大部分人口。<br>buy up ＝ 全部买下、大量收购（up 表「尽」）。", "syn": "large areas of · tracts of", "conf": "swath（一大片）· swathe（包裹，也可作「一大片」）。"},
+  flip:{"w": "flip … for a fortune", "ipa": "/flɪp/", "pos": "phr.", "tags": ["phrase", "poly"], "cn": "<b>（房产）倒手、炒卖</b>，大赚一笔", "en": "to buy a property and sell or rent it quickly for profit", "ex": "housing to <b>flip for a fortune</b>（①❷）", "mem": "⚠️ 熟词僻义：flip 本义「翻转、轻抛」；房地产里 flip a house ＝ <b>低买高卖、快速倒手</b>（house flipping 炒房）。<br>for a fortune ＝ 赚一大笔；make a fortune 发大财。<br>⭐ 27A 的 speculation（投机）、⑥❶ investor-buyers（投资型买家）说的都是这群人。", "syn": "resell · speculate", "conf": "flip（倒手）· flipper（炒房客）。"},
+  vacancy:{"w": "vacancy rate", "ipa": "/ˈveɪkənsi reɪt/", "pos": "n.", "tags": ["phrase", "core"], "cn": "<b>空置率</b>", "en": "the percentage of homes that are empty and available", "ex": "the rental <b>vacancy rate</b> has dropped below 1 percent（②❶）", "mem": "vacancy ① 空房、空位（No vacancies 客满）② 职位空缺。<br>⭐ 26C 说空置率「缓慢上升」，原文是「跌破 1%」——方向反。<br>⚠️ 空置率低 ＝ 几乎没有空房可租 ＝ 房源紧张。", "syn": "occupancy rate（反义角度）", "conf": "vacancy（空置）· vacation（假期，⑤❸）· vacant adj.。"},
+  advocate:{"w": "advocate", "ipa": "/ˈædvəkət/", "pos": "n./v.", "tags": ["core", "write"], "cn": "<b>倡导者</b>、拥护者；倡导", "en": "a person who publicly supports a cause", "ex": "housing <b>advocates</b> fear …（②❶）", "mem": "housing advocates ＝ 为（平民）住房问题发声的人。<br>名词读 /-kət/，动词读 /-keɪt/。<br>写作：advocate a low-carbon lifestyle 倡导低碳生活。", "syn": "supporter · champion · campaigner", "conf": "advocate（倡导者）· lawyer（律师）——advocate 也可指辩护律师。"},
+  unchecked:{"w": "unchecked", "ipa": "/ˌʌnˈtʃekt/", "pos": "adj.", "tags": ["core"], "cn": "<b>不受约束的、放任的</b>", "en": "not controlled or stopped", "ex": "<b>unchecked</b> short-term rentals（②❶）", "mem": "check 作动词＝遏制（check the spread 遏制蔓延）⟹ unchecked ＝ 没人管的、放任自流的。<br>⭐ 与⑥❶ rein in（勒住）是一对：一个是放任的后果，一个是收紧的办法。", "syn": "unrestrained · uncontrolled", "conf": "unchecked（失控的）· checked（格子的；受控的）。"},
+  strained:{"w": "strained", "ipa": "/streɪnd/", "pos": "adj.", "tags": ["core", "poly"], "cn": "<b>（资源、关系）紧张的</b>；勉强的", "en": "under too much pressure", "ex": "an <b>already strained</b> market（②❶）", "mem": "strain n./v. 压力、使紧张：put a strain on 给……造成压力。<br>本句 put further pressure on an already strained market ＝ <b>雪上加霜</b>（further 与 already 呼应）。", "syn": "tense · stretched · overburdened", "conf": "strained（紧张）· restrained（克制的）· sprained（扭伤的）。"},
+  legislature:{"w": "legislature", "ipa": "/ˈledʒɪsleɪtʃə/", "pos": "n.", "tags": ["core"], "cn": "<b>立法机构</b>、（州）议会", "en": "the group of people who make laws", "ex": "The state <b>Legislature</b>（②❷）", "mem": "legis-（法）家族：legislature 立法机构 · legislation 法规（同句后半）· legislator 立法者。<br>⭐ 27 题陷阱：本句两个主体——<b>议会</b>投了反对票，<b>议案</b>本身要干什么另说；题干问的是 the bill。", "syn": "parliament · congress · assembly", "conf": "legislature（机构）· legislation（法规）· legislative adj.。"},
+  voteagainst:{"w": "vote against", "ipa": "/vəʊt əˈɡenst/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>投票反对、否决</b>", "en": "to vote to reject something", "ex": "recently <b>voted against</b> a bill（②❷）", "mem": "vote for / in favour of 投赞成票；vote down 投票否决。<br>⭐ 27 题的第一层否定在这里，但它属于<b>议会</b>，不属于<b>议案</b>——做题时先把它拿开。", "syn": "reject · vote down", "conf": "vote against（反对）↔ vote for（赞成）。"},
+  legislation:{"w": "legislation", "ipa": "/ˌledʒɪsˈleɪʃn/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>法规、立法</b>（不可数）", "en": "laws, or the process of making laws", "ex": "create <b>legislation</b> restricting short-term rentals（②❷）", "mem": "不可数：a piece of legislation 一项法规。<br>⭐ 27 题：made it illegal for towns to create legislation restricting … ＝ 「<b>禁止</b>城镇<b>出台限制</b>短租的法规」——两个否定相乘 ⟹ 放开短租（27D）。", "syn": "law · statute · regulation", "conf": "legislation（法规）· legislature（议会）。"},
+  restrict:{"w": "restrict", "ipa": "/rɪˈstrɪkt/", "pos": "v.", "tags": ["core", "write"], "cn": "<b>限制</b>", "en": "to put a limit on something", "ex": "legislation <b>restricting</b> short-term rentals（②❷）", "mem": "restriction n. 限制；restrictive adj. 限制性的。<br>⭐ 27A curb short-term rental speculation 只看到了 restricting 这一个否定——<b>漏掉 made it illegal 那一层</b>，方向就整个反了。", "syn": "limit · curb · control", "conf": "restrict（限制）· strict（严格的）· district（区）。"},
+  crisis:{"w": "crisis", "ipa": "/ˈkraɪsɪs/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>危机</b>", "en": "a time of great difficulty", "ex": "at a <b>crisis level</b> on the supply of rental housing（③❶）", "mem": "复数 crises /-siːz/。housing crisis 住房危机。<br>本句就是原刊标题（书上来源一栏）——编者把 Taylor 这句话拎出来做了标题。", "syn": "emergency · predicament", "conf": "crisis（危机）· critical（关键的、危急的）。"},
+  executive:{"w": "executive director", "ipa": "/ɪɡˈzekjətɪv dəˈrektə/", "pos": "n.", "tags": ["phrase"], "cn": "<b>执行董事</b>、执行主任", "en": "the person who manages an organization", "ex": "<b>executive director</b> of the Workforce Housing Coalition（③❶）", "mem": "executive adj. 执行的 n. 高管（chief executive ＝ CEO，④❶ 的 Castle 就是 CEO）。<br>⭐ 人物身份＝立场：Taylor 管的是「劳工住房联盟」，开口自然替<b>工人住房</b>说话（28B）。", "syn": "director · head", "conf": "executive（执行的）· execute（执行；处决）。"},
+  coalition:{"w": "coalition", "ipa": "/ˌkəʊəˈlɪʃn/", "pos": "n.", "tags": ["core"], "cn": "<b>联盟</b>、联合体", "en": "a group of organizations working together", "ex": "the Workforce Housing <b>Coalition</b>（③❶）", "mem": "co-（共同）+ al-（生长）⟹ 长到一起 ⟹ 联合。coalition government 联合政府。<br>workforce housing ＝ 给普通工薪层住的、负担得起的住房。", "syn": "alliance · union · league", "conf": "coalition（联盟）· collision（碰撞）。"},
+  affordable:{"w": "affordable", "ipa": "/əˈfɔːdəbl/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>（价格）负担得起的</b>、平价的", "en": "cheap enough for people to buy or rent", "ex": "enough <b>affordable housing</b>（③❷）· <b>affordable</b> housing policy（⑤❶）", "mem": "afford v. 买得起 ⟹ affordable housing 可负担住房（写作高频）。<br>⭐⭐ 28 题正源：28B an increase in affordable housing 几乎原词照搬 Taylor 的话。<br>⚠️ 27B 的 cheap housing 是它的近义说法，但原料在③段，与②段议案无关。", "syn": "reasonably priced · inexpensive", "conf": "affordable（买得起）· available（可获得的）。"},
+  hardtime:{"w": "have a hard time doing", "ipa": "/hɑːd taɪm/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>做……很困难</b>", "en": "to find it difficult to do something", "ex": "employers are <b>having a hard time</b> attracting employees（③❷）", "mem": "have a hard time (in) doing ＝ have difficulty (in) doing（后接 doing，不接 to do）。<br>本句用两次，搭成工整的对称句：雇主招不到人 · 工人租不到房——<b>同一个缺口，两头受罪</b>。", "syn": "struggle to · have trouble doing", "conf": "have a hard time（做事难）· give sb a hard time（刁难某人）。"},
+  realtor:{"w": "realtor", "ipa": "/ˈriːəltə/", "pos": "n.", "tags": ["core"], "cn": "<b>房地产经纪人</b>（美）", "en": "a person who sells houses and land for others", "ex": "a local association of <b>realtors</b>（④❶）", "mem": "美式；英式说 estate agent。real estate 房地产（28C real estate agents）。<br>⭐ 人物身份＝立场：经纪人协会的 CEO 自然替<b>短租生意</b>说话——与 Taylor 立场对立（28 题）。", "syn": "estate agent · real estate agent", "conf": "realtor（经纪人）· realty（不动产）。"},
+  pointout:{"w": "point out", "ipa": "/pɔɪnt aʊt/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>指出</b>", "en": "to tell someone about a fact", "ex": "<b>pointed out</b> Ryan Castle（④❶）", "mem": "本句是倒装的引述：观点在前，pointed out + 人名在后——外刊惯例，<b>说话人藏在句中或句尾</b>。<br>写作：As experts point out, …", "syn": "indicate · note · remark", "conf": "point out（指出）· point to（表明、指向）。"},
+  service:{"w": "service", "ipa": "/ˈsɜːvɪs/", "pos": "v.", "tags": ["core", "poly"], "cn": "<b>为……提供服务</b>；维修", "en": "to provide what a person or industry needs", "ex": "workers are <b>servicing</b> the tourist industry · is <b>serviced</b> by those people（④❷）", "mem": "⚠️ 熟词僻义：service 作<b>动词</b>——service the industry 为行业出力；service a car 保养汽车。<br>⭐ 本句主动、被动各用一次：工人<b>服务</b>旅游业，旅游业又<b>靠</b>短住的游客撑着 ⟹ 首尾相接成一个圈 ＝ cyclical effect。", "syn": "serve · support · cater for", "conf": "service（服务；保养）· serve（服务；供应）。"},
+  cyclical:{"w": "cyclical", "ipa": "/ˈsaɪklɪkl/", "pos": "adj.", "tags": ["core"], "cn": "<b>循环的</b>、周期性的", "en": "happening in cycles", "ex": "a <b>cyclical effect</b>（④❷）", "mem": "cycle n. 循环 ⟹ cyclical。经济学：cyclical unemployment 周期性失业。<br>⭐ Castle 的逻辑链：短租 → 游客来 → 旅游业兴 → 工人有活干。⟹ 他<b>支持</b>短租，与 Taylor 对立。", "syn": "circular · recurring", "conf": "cyclical（循环的）· cynical（愤世嫉俗的）。"},
+  crux:{"w": "crux", "ipa": "/krʌks/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>症结、关键</b>", "en": "the most important or difficult part of a problem", "ex": "not the <b>crux of the issue</b>（⑤❶）", "mem": "the crux of the matter / problem ＝ 问题的核心。<br>⭐ 本句是 Horn 一段的<b>让步开头</b>：短租本身<b>不是</b>症结——真正的症结要等到⑤❹ however 之后（29C）。<br>写作：The crux of the issue is not … but …", "syn": "core · heart · key point", "conf": "crux（症结）· crucial（关键的）——同源（拉丁「十字路口」）。"},
+  rentout:{"w": "rent out", "ipa": "/rent aʊt/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>出租</b>（自己的房子）", "en": "to let someone use your property for money", "ex": "being able to <b>rent out</b> their second home（⑤❷）", "mem": "rent out（房东出租）vs rent（租入、租出均可）；let（英式出租）。<br>⭐ 29D 的 renting out spare houses 照搬了这个词，但 Horn 只说「这是好事」，没谈<b>出租流程</b>（procedures）。", "syn": "let · lease", "conf": "rent out（出租）· rent from（向……租）。"},
+  vacation:{"w": "vacation home", "ipa": "/vəˈkeɪʃn həʊm/", "pos": "n.", "tags": ["phrase"], "cn": "<b>度假屋</b>", "en": "a second house used for holidays", "ex": "their <b>vacation home</b> anyway（⑤❸）", "mem": "＝ second home（⑤❷ 同指）。<br>⑤❸ 是反问：闲着也是闲着，为什么不能拿来赚钱？⟹ Horn 对<b>个人</b>短租是支持的——她反对的是开发商（29C）。", "syn": "holiday home · second home", "conf": "vacation（假期）· vacancy（空置）。"},
+  makemoney:{"w": "make money off", "ipa": "/meɪk ˈmʌni ɒf/", "pos": "phr.", "tags": ["phrase"], "cn": "<b>靠……赚钱</b>", "en": "to earn money from something", "ex": "why can’t you <b>make money off</b> it?（⑤❸）", "mem": "口语：make money off / from sth。<br>反问句 why can’t you …? ＝ 当然可以 ⟹ <b>反问＝强烈肯定</b>。29B 把这句扭成「住房市场高效运营」，与原意无关。", "syn": "profit from · earn from", "conf": "make money（赚钱）· make a fortune（发大财，①❷ flip for a fortune）。"},
+  arise:{"w": "arise", "ipa": "/əˈraɪz/", "pos": "v.", "tags": ["core", "write"], "cn": "<b>出现、产生</b>（问题、机会）", "en": "to happen or begin to exist", "ex": "Issues <b>arise</b>, however, when …（⑤❹）", "mem": "arise – arose – arisen。problems / difficulties arise ＝ 问题出现（写作高频）。<br>⭐ 插入的 however ＝ 本段的<b>转折点</b>：前三句让步，此后才是 Horn 的重点。", "syn": "emerge · occur · come up", "conf": "arise（出现，不及物）· arouse（激起，及物）· rise（上升）。"},
+  largescale:{"w": "large-scale", "ipa": "/ˌlɑːdʒ ˈskeɪl/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>大规模的</b>", "en": "involving many people or things", "ex": "<b>large-scale</b> short-term rental facilities（⑤❹）", "mem": "on a large scale 大规模地；small-scale 小规模的。<br>⭐ 与⑤❷ individuals 是一对：<b>个人</b>出租闲置房＝好事，<b>开发商</b>大规模建短租＝问题。", "syn": "massive · extensive", "conf": "large-scale（大规模）· full-scale（全面的）。"},
+  facility:{"w": "facility", "ipa": "/fəˈsɪləti/", "pos": "n.", "tags": ["core", "poly"], "cn": "<b>（建造的）场所、设施</b>", "en": "a building or place built for a purpose", "ex": "short-term rental <b>facilities</b>（⑤❹）", "mem": "常用复数：sports facilities 体育设施；medical facilities 医疗机构。<br>⭐ 29A upgrade short-term rental facilities 照搬了这个词，但原文没说要<b>升级</b>——开发商建它们是为了逃税。", "syn": "establishment · premises", "conf": "facility（设施）· facilitate（促进）。"},
+  defacto:{"w": "de facto", "ipa": "/ˌdeɪ ˈfæktəʊ/", "pos": "adj.", "tags": ["core", "phrase"], "cn": "<b>事实上的</b>、实际存在的", "en": "existing in fact although not officially", "ex": "<b>de facto hotels</b>（⑤❹）", "mem": "拉丁语：de facto（事实上）↔ de jure（法律上）。a de facto ban 实质性禁令。<br>⭐ 夹在两个破折号之间，作者给「大规模短租设施」<b>下定性</b>：名叫短租，实为酒店 ⟹ ⑤❺ 的反问就从这里来。", "syn": "actual · in effect · real", "conf": "de facto（事实上）· defect（缺陷）。"},
+  bypass:{"w": "bypass", "ipa": "/ˈbaɪpɑːs/", "pos": "v.", "tags": ["core", "write"], "cn": "<b>绕过、规避</b>（规定）", "en": "to avoid a rule or system", "ex": "to <b>bypass</b> taxes and regulations（⑤❹）", "mem": "by-（旁边）+ pass（经过）＝ 从旁边绕过去。n. 旁路、绕行道。<br>⭐⭐⭐ 29 题正源：bypass taxes ⟹ 29C evading taxes（evade ＝ 逃避）。", "syn": "evade · avoid · get around · circumvent", "conf": "bypass（绕过）· overpass（天桥）。"},
+  disguise:{"w": "disguise", "ipa": "/dɪsˈɡaɪz/", "pos": "v.", "tags": ["core", "write"], "cn": "<b>伪装、掩饰</b>", "en": "to hide what something really is", "ex": "<b>disguising</b> it as not a hotel（⑤❺）", "mem": "disguise A as B ＝ 把 A 伪装成 B；in disguise 伪装的（a blessing in disguise 因祸得福）。<br>⭐ 句子骨架：a developer who’s <b>really</b> building a hotel, but <b>disguising</b> it as not a hotel——「实为」与「伪装」相对 ⟹ 名不副实就该按实处理。", "syn": "mask · camouflage · dress up", "conf": "disguise（伪装）· disgust（厌恶）。"},
+  tax:{"w": "tax", "ipa": "/tæks/", "pos": "v./n.", "tags": ["core", "poly"], "cn": "<b>对……征税</b>；税", "en": "to charge a tax on something", "ex": "be treated and <b>taxed</b> and regulated like a hotel（⑤❺）", "mem": "tax 作动词：tax the rich 对富人征税；tax sb’s patience 考验耐心（熟词僻义）。<br>⭐ 三个 and 连用（treated and taxed and regulated）是口语里的加重——Horn 的语气很强。", "syn": "levy · charge", "conf": "tax（税）· taxation（征税）· tax-free（免税的）。"},
+  governor:{"w": "governor", "ipa": "/ˈɡʌvənə/", "pos": "n.", "tags": ["core"], "cn": "<b>州长</b>；（机构）主管", "en": "the elected head of a US state", "ex": "Governor Charlie Baker of Massachusetts（⑥❶）", "mem": "govern v. 管理 ⟹ governor。the Board of Governors 理事会。<br>新英格兰六州：缅因、新罕布什尔、佛蒙特、马萨诸塞、罗得岛、康涅狄格——②段新罕布什尔、⑥段马萨诸塞都属其中。", "syn": "head of state", "conf": "governor（州长）· government（政府）。"},
+  reinin:{"w": "rein in", "ipa": "/reɪn ɪn/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>约束、控制</b>", "en": "to start to control something more strictly", "ex": "to <b>rein in</b> those potential investor-buyers（⑥❶）", "mem": "rein 缰绳 ⟹ rein in 勒紧缰绳 ⟹ 加以控制。rein in spending 控制开支。<br>⭐ 呼应①❷ 那群想 flip for a fortune 的开发商、②❶ 的 unchecked（放任）。", "syn": "curb · restrain · control", "conf": "rein（缰绳）· reign（统治）· rain（雨）——同音。"},
+  investor:{"w": "investor-buyer", "ipa": "/ɪnˈvestə ˈbaɪə/", "pos": "n.", "tags": ["core"], "cn": "<b>投资型买家</b>（买房为赚钱而非自住）", "en": "a person who buys property to make a profit", "ex": "those potential <b>investor-buyers</b>（⑥❶）", "mem": "those 回指①❷ 那些 come in and buy up swaths of housing 的 developers。<br>⭐ 27A 的 speculation（投机）说的也是这群人——但②段的议案不是冲他们来的。", "syn": "speculator · property investor", "conf": "investor（投资者）· investigator（调查员）。"},
+  register:{"w": "register", "ipa": "/ˈredʒɪstə/", "pos": "v.", "tags": ["core", "write"], "cn": "<b>登记、注册</b>", "en": "to put your name on an official list", "ex": "requires every rental host to <b>register</b> with the state（⑥❷）", "mem": "register with + 机构 ＝ 向……登记；registration n.（⑦ registration requirements）。<br>⭐ 30 题的「登记要求」出处：⑥段是<b>客观介绍</b>法案内容，⑦段才是 Horn 的<b>评价</b>。", "syn": "enrol · sign up · record", "conf": "register（登记）· registrar（教务主任、登记员）。"},
+  mandate:{"w": "mandate", "ipa": "/ˈmændeɪt/", "pos": "v.", "tags": ["core", "poly"], "cn": "<b>强制要求</b>、规定", "en": "to officially order something", "ex": "<b>mandates</b> they carry insurance（⑥❷）", "mem": "mandate (that) sb do ＝ 强制要求某人做（本句省了 that）；n. 授权、任期。mandatory adj. 强制的。<br>carry insurance ＝ 投保（carry 熟词僻义：持有）。", "syn": "require · order · oblige", "conf": "mandate（强制）· mandatory（强制的）· optional（可选的）。"},
+  insurance:{"w": "insurance", "ipa": "/ɪnˈʃʊərəns/", "pos": "n.", "tags": ["core"], "cn": "<b>保险</b>", "en": "an agreement to pay for loss or damage", "ex": "carry <b>insurance</b>（⑥❷）", "mem": "insure v. 投保；ensure（确保，27B）；assure（使放心）——三个形近词。", "syn": "coverage · protection", "conf": "insure（投保）· ensure（确保）· assure（保证）。"},
+  levy:{"w": "levy", "ipa": "/ˈlevi/", "pos": "n./v.", "tags": ["core", "poly"], "cn": "<b>税款</b>；征（税）", "en": "an amount of money paid as tax", "ex": "on top of a new state <b>levy</b>（⑥❷）", "mem": "impose a levy on 对……征税；levy a tax 征税。<br>⑥❷ 一句里三个动作并列：requires（登记）· mandates（保险）· opens the potential（加税）——<b>A, B, and C</b> 的并列谓语。", "syn": "tax · duty · charge", "conf": "levy（税）· lever（杠杆）。"},
+  ontopof:{"w": "on top of", "ipa": "/ɒn tɒp əv/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>除……之外（还）</b>；在……之上", "en": "in addition to", "ex": "local taxes <b>on top of</b> a new state levy（⑥❷）", "mem": "⚠️ 熟词僻义：on top of 不只是「在顶上」，还表<b>叠加</b>——州税之外再加地方税。<br>写作：On top of that, …（此外还有……）。", "syn": "in addition to · besides", "conf": "on top of（之外）· on the top of（在……的顶部）。"},
+  renter:{"w": "renter", "ipa": "/ˈrentə/", "pos": "n.", "tags": ["core"], "cn": "<b>出租人</b>（短租语境）；承租人", "en": "a person who rents property to others, or from others", "ex": "requiring <b>renters</b> to register with the city’s …（⑥❸）", "mem": "renter 两头都能指：租房的人 / 出租的人，要靠上下文。本句接 took things even further ⟹ 是把⑥❷「房东登记」管得更严 ⟹ 书上译「出租人」。<br>took things even further ＝ 更进一步。", "syn": "tenant（承租人）· landlord（房东）", "conf": "renter（租客或出租人）· rental（租赁的）。"},
+  requirement:{"w": "requirement", "ipa": "/rɪˈkwaɪəmənt/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>要求、规定</b>", "en": "something that must be done", "ex": "similar registration <b>requirements</b>（⑦❶）", "mem": "require v. ⟹ requirement。meet the requirements 达到要求。<br>⭐ 30 题干 imposing registration requirements 原词复现于此 ⟹ 定位末段。", "syn": "demand · rule · condition", "conf": "requirement（要求）· requisite（必需的）。"},
+  struggling:{"w": "struggling", "ipa": "/ˈstrʌɡlɪŋ/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>处境艰难的</b>、苦苦挣扎的", "en": "having difficulties", "ex": "benefit <b>struggling</b> cities and towns（⑦❶）", "mem": "struggle v./n. 挣扎、奋斗。struggling families 困难家庭。<br>⭐ 30 题：could benefit struggling cities（让步，承认有用）＋ but … the main one is …（转折，指出根本）⟹ <b>有用但不够</b> ＝ 30D inadequate。", "syn": "troubled · hard-pressed", "conf": "struggling（挣扎的）· striking（显著的）。"},
+  funding:{"w": "funding", "ipa": "/ˈfʌndɪŋ/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>资金</b>、拨款", "en": "money provided for a purpose", "ex": "in need of <b>funding</b>（26B）", "mem": "fund v./n. 资助、基金。<br>26B 由 urgency、flip for a fortune 联想到「缺钱」——原文急的是<b>监管</b>。", "syn": "finance · money · support", "conf": "funding（资金）· founding（建立）。"},
+  curb:{"w": "curb", "ipa": "/kɜːb/", "pos": "v.", "tags": ["core", "write"], "cn": "<b>遏制、控制</b>", "en": "to control or limit something bad", "ex": "<b>curb</b> short-term rental speculation（27A）", "mem": "curb inflation / spending 遏制通胀 / 开支；n. 路缘（美式拼法）。<br>⭐ 27A 方向反：议案是要<b>禁止城镇限制</b>短租，不是遏制短租。", "syn": "restrain · rein in · check", "conf": "curb（遏制）· curve（曲线）。"},
+  speculation:{"w": "speculation", "ipa": "/ˌspekjuˈleɪʃn/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>投机</b>；推测", "en": "buying something to sell it for profit", "ex": "short-term rental <b>speculation</b>（27A）", "mem": "speculate v. 投机；推测。property speculation 炒房。<br>原文对应的是①❷ flip for a fortune、⑥❶ investor-buyers——<b>原文有这个意思，但不在题干问的那一段、那个议案上</b>。", "syn": "gambling · profiteering", "conf": "speculation（投机）· spectator（观众）。"},
+  ensure:{"w": "ensure", "ipa": "/ɪnˈʃʊə/", "pos": "v.", "tags": ["core", "write"], "cn": "<b>确保</b>", "en": "to make certain that something happens", "ex": "<b>ensure</b> the supply of cheap housing（27B）", "mem": "ensure that … / ensure sth。<br>27B 原料在③❶ the supply of rental housing——Taylor 的话，不是②段议案。", "syn": "guarantee · secure", "conf": "ensure（确保）· insure（投保）· assure（保证）。"},
+  dealing:{"w": "dealings", "ipa": "/ˈdiːlɪŋz/", "pos": "n.", "tags": ["core"], "cn": "<b>交易、往来</b>（常复数）", "en": "business activities or relations", "ex": "punish illegal <b>dealings</b> in housing（27C）", "mem": "have dealings with 与……有往来。<br>27C 借了原文的 illegal：被定为违法的是城镇<b>立法限制短租</b>这件事，不是房屋交易。", "syn": "transactions · trade", "conf": "dealing（交易）· dwelling（住所）。"},
+  favorable:{"w": "favorable", "ipa": "/ˈfeɪvərəbl/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>有利的</b>、赞成的", "en": "giving an advantage", "ex": "a <b>favorable</b> policy for short-term workers（28D）", "mem": "美式拼写（英式 favourable）。favorable conditions 有利条件。<br>28D：Taylor 和 Castle 都说到「对工人好」，这是<b>共同点</b>，题干问的却是<b>不同点</b>（Compared with Castle）。", "syn": "beneficial · advantageous", "conf": "favorable（有利的）· favorite（最喜欢的）。"},
+  upgrade:{"w": "upgrade", "ipa": "/ʌpˈɡreɪd/", "pos": "v.", "tags": ["core", "write"], "cn": "<b>升级、改善</b>", "en": "to improve something", "ex": "<b>upgrade</b> short-term rental facilities（29A）", "mem": "upgrade n./v.；downgrade 降级。<br>29A 照搬 facilities，又由 large-scale 联想到「升级」——原文没有。", "syn": "improve · modernise", "conf": "upgrade（升级）· update（更新）。"},
+  efficient:{"w": "efficient", "ipa": "/ɪˈfɪʃnt/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>高效的</b>", "en": "working well without waste", "ex": "the <b>efficient</b> operation of the local housing market（29B）", "mem": "efficiency n.；effective（有效果的）≠ efficient（效率高的）。<br>29B 把⑤❸「空着也是空着」扭成「市场高效运转」——Horn 说的是个人出租的<b>合理性</b>，不是市场效率。", "syn": "productive · well-run", "conf": "efficient（高效）· effective（有效）· sufficient（足够）。"},
+  evade:{"w": "evade", "ipa": "/ɪˈveɪd/", "pos": "v.", "tags": ["core", "write"], "cn": "<b>逃避、规避</b>（税、责任）", "en": "to avoid something you should do", "ex": "stop developers from <b>evading</b> taxes（29C）", "mem": "tax evasion 逃税（违法）vs tax avoidance 避税（合法钻空子）。<br>⭐ 29C evading taxes ＝ ⑤❹ bypass taxes 的同义替换——<b>正确项改写原文动词</b>。", "syn": "dodge · avoid · bypass", "conf": "evade（逃避）· invade（入侵）· pervade（遍及）。"},
+  procedure:{"w": "procedure", "ipa": "/prəˈsiːdʒə/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>程序</b>、步骤", "en": "the official way of doing something", "ex": "the proper <b>procedures</b> for renting out spare houses（29D）", "mem": "proceed v. 进行 ⟹ procedure。follow the procedure 按程序办。<br>spare 熟词僻义：多余的、闲置的（spare room 空房间、spare time 业余时间）。", "syn": "process · steps", "conf": "procedure（程序）· proceeding（诉讼）。"},
+  impose:{"w": "impose", "ipa": "/ɪmˈpəʊz/", "pos": "v.", "tags": ["core", "write"], "cn": "<b>强加、施加</b>（规定、税）", "en": "to force a rule or tax on people", "ex": "<b>imposing</b> registration requirements（30 题干）", "mem": "impose A on B 把 A 强加给 B；impose a tax / ban 征税 / 下禁令。<br>30 题干的 imposing ＝ ⑥❷ requires / mandates 的概括。", "syn": "enforce · introduce · levy", "conf": "impose（强加）· expose（暴露）· compose（组成）。"},
+  irrational:{"w": "irrational", "ipa": "/ɪˈræʃənl/", "pos": "adj.", "tags": ["core"], "cn": "<b>不合理的</b>、不理智的", "en": "not based on reason", "ex": "an <b>irrational</b> decision（30A）", "mem": "ir- + rational。<br>30A 是从⑥❷ every rental host（全都要登记）这种绝对化表述联想来的——但那是法案内容，不是 Horn 的评价。", "syn": "unreasonable · illogical", "conf": "irrational（不合理）· irregular（不规则）。"},
+  unfeasible:{"w": "unfeasible", "ipa": "/ʌnˈfiːzəbl/", "pos": "adj.", "tags": ["core"], "cn": "<b>不可行的</b>", "en": "not possible to do", "ex": "an <b>unfeasible</b> proposal（30B）", "mem": "feasible 可行的（feasibility study 可行性研究）。<br>30B 误读转折：Horn 没说登记<b>办不到</b>，她说的是<b>办到了也不够</b>。", "syn": "impractical · unworkable", "conf": "unfeasible（不可行）· infeasible（同义）。"},
+  inadequate:{"w": "inadequate", "ipa": "/ɪnˈædɪkwət/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>不充分的、不够的</b>", "en": "not good enough", "ex": "an <b>inadequate</b> solution（30D）", "mem": "⭐⭐⭐ 30 题正源：could benefit（有用）＋ but the main one is we have to build（根本在别处）⟹ 有用但不足以解决问题 ＝ inadequate。<br>与 T1 的 23A insufficient 同一类：<b>原文没有这个词，正确项是概括词</b>。", "syn": "insufficient · not enough", "conf": "inadequate（不够）· inappropriate（不恰当）。"}
+};
+const panel=document.getElementById('panel');
+const isMobile=()=>window.innerWidth<=900;
+function badge(t){const m={core:'核心',phrase:'短语',poly:'僻义',write:'写作'};return `<span class="badge b-${t}">${m[t]}</span>`}
+function showCard(k,el){
+  const d=V[k];if(!d)return;
+  document.querySelectorAll('.tk.active').forEach(x=>x.classList.remove('active'));
+  if(el)el.classList.add('active');
+  panel.innerHTML=`<button class="close" onclick="document.getElementById('panel').classList.remove('open')">收起</button>
+    <div class="wcard">
+      <div class="head"><span class="w">${d.w}</span><span class="ipa">${d.ipa}</span><span class="pos">${d.pos}</span>${d.tags.map(badge).join('')}</div>
+      <div class="cn">${d.cn}</div><div class="en-def">${d.en}</div>
+      <div class="row r-ex"><b>原文</b>${d.ex}</div>
+      <div class="row r-mem"><b>怎么记 / 考点</b>${d.mem}</div>
+      <div class="row r-syn"><b>同义 / 同族</b>${d.syn}</div>
+      <div class="row r-conf"><b>易混 / 提醒</b>${d.conf}</div>
+    </div>`;
+  if(isMobile())panel.classList.add('open');
+}
+document.querySelectorAll('.tk').forEach(t=>t.addEventListener('click',e=>{e.stopPropagation();showCard(t.dataset.w,t)}));
+
+function tz(btn){btn.closest('.para').classList.toggle('showzh')}
+let allOn=false;
+function toggleAll(){allOn=!allOn;document.querySelectorAll('.para').forEach(p=>p.classList.toggle('showzh',allOn))}
+function go(id){const s=document.getElementById(id);if(!s)return;s.scrollIntoView({behavior:'smooth',block:'center'});s.style.transition='none';s.style.opacity=.3;setTimeout(()=>{s.style.transition='opacity .8s';s.style.opacity=1},80)}
+
+document.querySelectorAll('.q').forEach(q=>{
+  const ans=+q.dataset.ans;
+  q.querySelectorAll('.opt').forEach((o,i)=>o.addEventListener('click',()=>{
+    if(q.classList.contains('done'))return;
+    q.classList.add('done');
+    if(i!==ans)o.classList.add('wrong');
+    q.querySelectorAll('.opt')[ans].classList.add('right');
+  }));
+});
+
+const vg=document.getElementById('vgrid');
+function renderGrid(f){
+  vg.innerHTML='';
+  Object.keys(V).forEach(k=>{
+    const d=V[k];
+    if(f!=='all'&&!d.tags.includes(f))return;
+    const div=document.createElement('div');div.className='vitem';
+    div.innerHTML=`<span class="badges">${d.tags.map(badge).join('')}</span><div class="w">${d.w}</div><div class="cn">${d.cn}</div>`;
+    div.addEventListener('click',()=>{showCard(k,null);if(!isMobile())window.scrollTo({top:0,behavior:'smooth'})});
+    vg.appendChild(div);
+  });
+}
+renderGrid('all');
+document.querySelectorAll('.fbtn').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.fbtn').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderGrid(b.dataset.f);
+}));
+
+const yd=document.getElementById('yd');let sel='',ydHold=0,ydT=0;
+/* 触屏：点按钮会先把选区清掉 → selectionchange 立刻把按钮藏了 → 点击落空。改成延迟隐藏 ＋ 按下即锁定 */
+const ydTouch=window.matchMedia&&matchMedia('(pointer:coarse)').matches;
+function ydHide(){clearTimeout(ydT);ydHold=0;yd.style.display='none'}
+document.addEventListener('selectionchange',function(){
+  const s=window.getSelection();const t=s?s.toString().trim():'';
+  if(t&&/^[a-zA-Z' -]{2,40}$/.test(t)){
+    sel=t;clearTimeout(ydT);
+    try{const r=s.getRangeAt(0).getBoundingClientRect();
+      yd.style.left=Math.max(8,Math.min(r.left,window.innerWidth-110))+'px';
+      yd.style.top=(r.bottom+(ydTouch?30:8))+'px';yd.style.display='block';}catch(e){}
+  }else if(!ydHold){clearTimeout(ydT);ydT=setTimeout(function(){if(!ydHold)yd.style.display='none'},ydTouch?900:0)}
+});
+['pointerdown','touchstart','mousedown'].forEach(function(ev){yd.addEventListener(ev,function(){ydHold=1;clearTimeout(ydT)},{passive:true})});
+yd.addEventListener('click',function(){
+  const u='https://dict.youdao.com/result?word='+encodeURIComponent(sel)+'&lang=en';
+  let w=null;try{w=window.open(u,'_blank')}catch(e){}
+  if(!w)location.href=u;
+  ydHide()});
+document.addEventListener('click',function(e){if(e.target!==yd&&!window.getSelection().toString())ydHide()});
+
+function imgAll(b){const on=document.body.classList.toggle('stx-allimg');b.textContent=on?'收起原卷':'原卷对照';
+  if(on)document.querySelectorAll('.para img.strip').forEach(im=>im.loading='eager')}
+</script>
+<script src="img/strip_boxes_2023.js?v=2"></script>
+<script src="_strip_lookup.js?v=8"></script>
+<script src="_strip_text.js?v=19"></script>
+<script src="_fault_attr.js"></script>
+</body>
+</html>

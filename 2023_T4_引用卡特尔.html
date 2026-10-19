@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2023 英一 Text 4 · 引用卡特尔：科学界的通货被人做了手脚</title>
+<style>
+  :root{
+    --bg:#faf9f6; --card:#ffffff; --ink:#2b2b2b; --muted:#8a8578;
+    --accent:#8b5e34; --accent-soft:#f3e9dd; --line:#e8e3d8;
+    --hl:#fdf3d8; --hl-border:#e0b84d;
+    --green:#3e7a4e; --green-soft:#e8f2ea;
+    --red:#b04a3a; --red-soft:#f9e9e6;
+    --blue:#3d6a8a; --blue-soft:#e7eff5;
+    --purple:#6d5a8e; --purple-soft:#eeeaf5;
+    --serif:"Georgia","Songti SC",serif;
+    --sans:-apple-system,"PingFang SC","Helvetica Neue",sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#1c1a17; --card:#26231f; --ink:#e8e4dc; --muted:#9a948a;
+      --accent:#d0a06a; --accent-soft:#3a3127; --line:#3a362f;
+      --hl:#3d3520; --hl-border:#b08c3a;
+      --green:#7fb98d; --green-soft:#26362b;
+      --red:#d98876; --red-soft:#3d2a26;
+      --blue:#8ab3d0; --blue-soft:#26323d;
+      --purple:#a996c8; --purple-soft:#302a3d;
+    }
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;padding-bottom:120px}
+  .wrap{max-width:1100px;margin:0 auto;padding:24px 20px}
+  .back{font-size:.85rem;color:var(--muted);text-decoration:none}
+  .back:hover{color:var(--accent)}
+  header{margin:14px 0 28px}
+  header h1{font-family:var(--serif);font-size:1.7rem;line-height:1.3}
+  header .sub{color:var(--muted);margin-top:6px;font-size:.9rem}
+  .tags{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+  .tag{font-size:.75rem;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);border:1px solid var(--line)}
+  .tag.warn{background:var(--red-soft);color:var(--red);border-color:var(--red)}
+  .tag.ok{background:var(--green-soft);color:var(--green);border-color:var(--green)}
+
+  .layout{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:24px;align-items:start}
+  main{min-width:0}
+  @media (max-width:900px){.layout{grid-template-columns:minmax(0,1fr)}}
+
+  section.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:24px}
+  h2{font-size:1.05rem;letter-spacing:.05em;color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+  h2 .n{font-size:.72rem;background:var(--accent);color:var(--card);border-radius:6px;padding:1px 7px}
+  h3{font-size:.95rem;color:var(--accent);margin:18px 0 10px}
+
+  .para{margin-bottom:22px}
+  .para .en{font-family:var(--serif);font-size:1.06rem;line-height:1.9}
+  .pno{color:var(--muted);font-size:.75rem;user-select:none;margin-right:6px}
+  .tk{background:var(--hl);border-bottom:2px solid var(--hl-border);border-radius:3px;padding:0 2px;cursor:pointer;transition:filter .15s}
+  .tk:hover{filter:brightness(.93)}
+  .tk.active{outline:2px solid var(--hl-border)}
+  .ls{border-bottom:2px dotted var(--blue);cursor:pointer}
+  .para .zh{display:none;margin-top:10px;padding:10px 14px;background:var(--blue-soft);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:.93rem}
+  .para.showzh .zh{display:block}
+  .zbtn{float:right;margin-left:10px;font-size:.72rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:6px;padding:2px 9px;cursor:pointer}
+  .zbtn:hover{color:var(--accent);border-color:var(--accent)}
+  .allbtn{font-size:.78rem;border:1px solid var(--accent);background:none;color:var(--accent);border-radius:8px;padding:4px 12px;cursor:pointer;margin-left:auto}
+
+  aside{position:sticky;top:20px}
+  #panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;min-height:180px}
+  #panel .hint{color:var(--muted);font-size:.88rem;text-align:center;padding:30px 10px}
+  .wcard .head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .wcard .w{font-family:var(--serif);font-size:1.35rem;font-weight:bold}
+  .wcard .ipa{color:var(--muted);font-size:.85rem}
+  .wcard .pos{font-size:.72rem;color:var(--purple);background:var(--purple-soft);padding:1px 8px;border-radius:999px}
+  .wcard .badge{font-size:.7rem;padding:1px 8px;border-radius:999px}
+  .b-core{background:var(--red-soft);color:var(--red)}
+  .b-phrase{background:var(--blue-soft);color:var(--blue)}
+  .b-poly{background:var(--purple-soft);color:var(--purple)}
+  .b-write{background:var(--green-soft);color:var(--green)}
+  .wcard .cn{margin-top:8px;font-size:1rem;font-weight:600}
+  .wcard .en-def{color:var(--muted);font-size:.86rem;font-style:italic;margin-top:2px}
+  .wcard .row{margin-top:10px;font-size:.86rem;padding:8px 10px;border-radius:8px}
+  .wcard .row>b:first-child{font-size:.72rem;display:block;margin-bottom:2px;letter-spacing:.06em}
+  .r-ex{background:var(--hl)} .r-ex b{color:var(--hl-border)}
+  .r-mem{background:var(--green-soft)} .r-mem b{color:var(--green)}
+  .r-syn{background:var(--blue-soft)} .r-syn b{color:var(--blue)}
+  .r-conf{background:var(--red-soft)} .r-conf b{color:var(--red)}
+  #panel .close{display:none}
+  @media (max-width:900px){
+    aside{position:fixed;left:0;right:0;bottom:0;z-index:50;padding:0 8px 8px}
+    #panel{box-shadow:0 -6px 24px rgba(0,0,0,.18);max-height:55vh;overflow-y:auto;display:none}
+    #panel.open{display:block}
+    #panel .close{display:block;float:right;border:none;background:var(--line);border-radius:8px;padding:2px 10px;cursor:pointer;color:var(--ink)}
+  }
+
+  .q{margin-bottom:22px;padding-bottom:18px;border-bottom:1px dashed var(--line)}
+  .q:last-child{border:none;margin-bottom:0;padding-bottom:0}
+  .q .stem{font-weight:600;font-family:var(--serif)}
+  .qt{font-size:.7rem;color:var(--blue);background:var(--blue-soft);border-radius:999px;padding:1px 8px;margin-right:6px;vertical-align:2px}
+  .opts{margin-top:10px;display:grid;gap:8px}
+  .opt{border:1px solid var(--line);border-radius:10px;padding:8px 12px;cursor:pointer;font-size:.93rem;font-family:var(--serif);transition:all .15s}
+  .opt:hover{border-color:var(--accent)}
+  .q.done .opt{cursor:default}
+  .opt.right{background:var(--green-soft);border-color:var(--green)}
+  .opt.wrong{background:var(--red-soft);border-color:var(--red)}
+  .expl{display:none;margin-top:12px;background:var(--accent-soft);border-radius:10px;padding:12px 14px;font-size:.9rem}
+  .q.done .expl{display:block}
+  .expl b{color:var(--accent)}
+  .expl .loc{font-family:var(--serif);font-style:italic;background:var(--hl);padding:1px 4px;border-radius:3px}
+  .fail{background:var(--red-soft);border:1px solid var(--red);border-radius:10px;padding:10px 13px;margin-bottom:10px;font-size:.89rem}
+  .fail b{color:var(--red)}
+  .waver{background:var(--hl);border:1px solid var(--hl-border);border-radius:10px;padding:10px 13px;margin-bottom:10px;font-size:.89rem}
+
+  .sent{margin-bottom:20px}
+  .sent .src{font-family:var(--serif);font-size:1rem;background:var(--blue-soft);padding:12px 14px;border-radius:10px;border-left:3px solid var(--blue)}
+  .sent .anat{margin-top:8px;font-size:.9rem}
+  .sent .anat li{margin:4px 0 4px 18px}
+  .sent .tr{margin-top:8px;font-size:.92rem;color:var(--muted)}
+  .skel{color:var(--red);font-weight:600}
+
+  .filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+  .fbtn{font-size:.8rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:999px;padding:4px 14px;cursor:pointer}
+  .fbtn.on{background:var(--accent);color:var(--card);border-color:var(--accent)}
+  .vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
+  .vitem{border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer;transition:border-color .15s}
+  .vitem:hover{border-color:var(--accent)}
+  .vitem .w{font-family:var(--serif);font-weight:bold}
+  .vitem .cn{font-size:.85rem;color:var(--muted)}
+  .vitem .badges{float:right}
+
+  .wb{display:grid;gap:10px}
+  .wbi{border-left:3px solid var(--green);background:var(--green-soft);border-radius:0 10px 10px 0;padding:10px 14px;font-size:.92rem}
+  .wbi .p{font-family:var(--serif);font-weight:600}
+  .wbi .u{color:var(--muted);font-size:.85rem}
+
+  .flow{display:grid;gap:8px;font-size:.92rem}
+  .flow .fi{border:1px solid var(--line);border-radius:10px;padding:9px 13px}
+  .flow .fi b{color:var(--accent)}
+
+  .ctab{width:100%;border-collapse:collapse;font-size:.86rem;margin-top:8px}
+  .ctab th,.ctab td{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
+  .ctab th{background:var(--accent-soft);color:var(--accent);font-size:.8rem;white-space:nowrap}
+  .ctab code{background:var(--hl);padding:0 3px;border-radius:3px}
+  .tabwrap{overflow-x:auto}
+  .ok{color:var(--green);font-weight:700}
+  .no{color:var(--red);font-weight:700}
+  .tl{display:grid;gap:10px;margin-top:6px}
+  .tli{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:start;border:1px solid var(--line);border-radius:10px;padding:10px 13px}
+  .tli .mark{font-family:var(--serif);font-weight:700;color:var(--accent);background:var(--accent-soft);border-radius:8px;padding:4px 10px;white-space:nowrap;font-size:.85rem}
+
+  .arrow{display:grid;gap:8px;margin-top:8px}
+  .arrow .ai{border:1px solid var(--line);border-radius:10px;padding:10px 13px;font-size:.9rem}
+  .arrow .ai.old{background:var(--red-soft);border-color:var(--red)}
+  .arrow .ai.new{background:var(--green-soft);border-color:var(--green)}
+  .chain{font-family:var(--serif);font-size:.95rem;background:var(--hl);border:1px solid var(--hl-border);border-radius:10px;padding:10px 14px;margin:8px 0;overflow-x:auto}
+
+  #yd{position:fixed;z-index:60;display:none;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:4px 12px;font-size:.8rem;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+  footer{color:var(--muted);font-size:.8rem;text-align:center;margin-top:30px}
+  .att{display:grid;gap:8px;margin-top:10px}
+  .atti{border:1px solid var(--line);border-radius:10px;padding:9px 13px;font-size:.9rem}
+  .atti b{font-family:var(--serif)}
+  .atti.no2{background:var(--red-soft);border-color:var(--red)}
+  .atti.yes{background:var(--green-soft);border-color:var(--green)}
+  .atti,.expl,.wbi,.zh,.fi,.ai,figcaption,p{overflow-wrap:anywhere}
+
+  /* 2021 起：原文以原卷扫描句条呈现 */
+  .sn{margin:0 0 14px}
+  .sn .pno{display:block;margin-bottom:4px;font-size:.78rem;line-height:1.6}
+  img.strip{display:block;width:100%;max-width:760px;height:auto;background:#fff;border:1px solid var(--line);border-radius:6px;cursor:pointer}
+  .sent .src img.strip{margin-top:6px;cursor:default}
+  .kw{margin-top:5px;font-size:.88rem;line-height:2.1;font-family:var(--serif)}
+  @media (prefers-color-scheme: dark){img.strip{filter:invert(.9) hue-rotate(180deg)}}
+  .sn,.sent .src{overflow-x:auto}
+  @media (max-width:700px){img.strip{width:640px;max-width:none}.sn::after{content:'← 句条可左右滑动 →';display:block;font-size:.7rem;color:var(--muted);margin-top:2px}}
+
+  /* 2023 起：流式版——识别好的句子在段落里连排，像 2007–2020 */
+  .para .en{font-family:var(--serif);font-size:1.02rem;line-height:1.9}
+  .stx-flow .para .en .pno{margin-right:4px}
+  .stx-flow .para .sn:not(.stx-on) .kw{margin-bottom:8px}
+</style>
+
+</head>
+<body class="stx-flow">
+<div class="wrap">
+  <a class="back" href="index.html">◀ 返回英语复盘中心</a>
+  <header>
+    <h1>引用卡特尔：科学界的通货被人做了手脚</h1>
+    <div class="sub">2023 年英语（一）真题 · Text 4 · 441 词 · 5 段 · 建议做题 18 min · 话题：学术出版×引用量×学术不端（来源：The Scientist《科学家》2020-12-01，原题 <i>Citations Are the Currency of Science</i>，据黄皮书）</div>
+    <div class="tags">
+      <span class="tag">正确答案：36B 37C 38A 39B 40D</span><span class="tag">题型：事实细节 ×2 ＋ 比喻含义 ＋ 细节概括 ＋ 建议</span><span class="tag">难度：五题全顺序、全在原句里，难在「谁引谁」的方向</span><span class="tag">⚠️ 原定冲刺模考卷，已按你的决定提前开复盘</span>
+    </div>
+  </header>
+
+  <div class="layout">
+    <main>
+      <!-- ========== 全文脉络 ========== -->
+      <section class="card">
+        <h2><span class="n">00</span>读前一分钟 · 全文脉络（做完题再看也行）</h2>
+        <div class="flow">
+          <div class="fi"><b>①段 引用量为什么值钱</b>：论文是科研进展的记录；学界衡量一篇论文好不好，看两样——发在哪本刊（影响因子）、被别人引了多少次。科学家的前途和所在机构的名声，靠论文的数量和分量，<b>更靠论文的被引量</b>（36 题：even more so 落在被引量上）。</div>
+          <div class="fi"><b>②段 引用卡特尔</b>：期刊、作者、机构合谋抬高引用数——这种「引用卡特尔」由来已久。2016 年有人写出算法，专抓两种可疑模式：作者群互引过多、期刊群频繁互引。<b>最近又冒出新花样</b>：给作者和期刊做语言润色的「支持服务咨询公司」，有时会建议投稿人在文章里<b>加上若干引用</b>（37 题）。</div>
+          <div class="fi"><b>③段 「奶牛」期刊</b>：电子出版兴起、作者急需发表渠道 ⟹ 新期刊成千上万，掠夺性期刊紧跟着就来了。这些期刊像<b>奶牛</b>：一期里每篇文章都去引同一篇或同一组论文，有时引用和内容毫不相干；怪就怪在期刊自己一分钱不赚，<b>只是给别的期刊供引用</b>——一篇文章发表当年就能攒下 150 多次被引（38 题：奶挤给了别人）。</div>
+          <div class="fi"><b>④段 有多隐蔽、有多猖獗</b>：一个人身兼作者、编辑、顾问三职，动用至少 15 本期刊，给三所大学五位科学家的文章供引用。问题在引文数据库 <b>Scopus</b> 里最猖獗——它收录了大量新办的「国际」期刊；被 Scopus 收录，几乎成了被盯上的条件（39 题前半）。</div>
+          <div class="fi"><b>⑤段 怎么办</b>：Scopus <b>自己就有查出这种不端行为所需的全部数据</b>（39B）；警示信号之一是一篇文章发表第一年就被大量引用。给作者的建议：编辑、审稿人或支持服务机构要你加不恰当的参考文献时，<b>别答应，并且一定要向期刊举报</b>（40D）。</div>
+          <div class="fi" style="border-color:var(--accent)">📌 <b>一句话主旨</b>：引用量是科学界的硬通货，于是有人造假币——卡特尔、咨询公司、奶牛期刊合伙刷引用；数据库查得出，作者要敢拒、敢报。<br>📌 <b>结构套路</b>：价值（①）→ 问题（②）→ 新形态（②❸ ③）→ 危害与温床（④）→ 对策（⑤）。<b>五道题严格顺序出题</b>：36①、37②、38③、39④⑤、40⑤。<br>📌 <b>和同卷 T1–T3 比一比</b>：前三篇都是<b>新闻报道</b>——正反两方＋一位专家，靠引语推进，观点题考「谁说了什么」；本篇是<b>评论文</b>（作者是大学校长），<b>全篇零引语</b>，观点全是作者自己的判断句和祈使句 ⟹ 40 题的答案就在最后一句祈使句里。<br>📌 <b>本篇真正的坑是「方向」</b>：引用有施引方和被引方——36A 把「被引」换成「引别人」、37D 把「引卡特尔成员」换成「投稿人互引」、38A 的受益者是被引的作者而不是奶牛期刊自己。<b>读到 cite / citation 就问一句：谁引谁、谁得好处。</b></div>
+          <div class="fi">🗞 <b>背景（WebSearch 核过，只帮读、不替原文纠错）</b>：作者 Sibrandes Poppema 是荷兰格罗宁根大学前校长（2008–2018），写这篇时在马来西亚双威大学任教授，后任该校校长——一个<b>管大学的人</b>在说大学排名靠的引用量被人做了手脚。杂志印刷版的标题更直白：<i>The Problem With Citation Cartels</i>。②❷ 的 2016 年算法出自 Fister 父子与 Perc 发在《物理学前沿》上的论文；作者自己也说，算法只能<b>标出嫌疑</b>，不能直接认定谁是卡特尔——这正对应⑤❷ 的措辞 <span class="loc">Red flags</span>（警示信号，不是定罪证据）。另：一篇正常的论文通常要过一两年才陆续被人引用，所以<b>发表头一年就被猛引</b>本身就反常——这就是⑤❷ 说的警示信号，也是③❻「当年 150 多次」为什么扎眼。</div>
+        </div>
+      </section>
+
+      <!-- ========== 原文精读 ========== -->
+      <section class="card">
+        <h2><span class="n">01</span>原文精读 <button class="allbtn" onclick="toggleAll()">全文意译 开/关</button> <button class="allbtn" id="imgall" onclick="imgAll(this)">原卷对照</button></h2>
+        <p style="font-size:.8rem;color:var(--muted);margin-bottom:14px">🟡 黄色高亮 = 重难点词/短语，点击右侧出卡片 ｜ 蓝色虚线 = 长难句，点击跳到精析 ｜ 每段「意」= 段落意译 ｜ 选中任意其他单词浮出「查有道」 ｜ 原文由你的浏览器从原卷识别成文字（首次约 3 秒，之后秒开）；「原卷对照」可逐句看扫描原图、改识别错字</p>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">①</span>
+            <div class="sn"><img class="strip" src="img/2023_T4/s1_1.png" alt="①❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="recordkeeper">recordkeepers</span> · <span class="tk" data-w="progress">progress</span></div></div>
+            <div class="sn"><img class="strip" src="img/2023_T4/s1_2.png" alt="①❷ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="journal">journals</span></div></div>
+            <div class="sn" data-go="l1_3"><img class="strip" src="img/2023_T4/s1_3.png" alt="①❸ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="community">scientific community</span> · <span class="tk" data-w="perceived">perceived</span> · <span class="tk" data-w="reflect">reflected by</span> · <span class="tk" data-w="title">title</span> · <span class="tk" data-w="impactfactor">impact factor</span> · <span class="tk" data-w="citation">citations</span> · <span class="tk" data-w="accumulate">accumulates</span></div></div>
+            <div class="sn" data-go="l1_4"><img class="strip" src="img/2023_T4/s1_4.png" alt="①❹ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="reputation">reputation</span> · <span class="tk" data-w="institution">institutions</span> · <span class="tk" data-w="dependon">depend on</span> · <span class="tk" data-w="prestige">prestige</span> · <span class="tk" data-w="evenmoreso">even more so</span> · <span class="tk" data-w="attract">attracted</span></div></div>
+          </div>
+          <div class="zh"><b>①段意：</b>科学论文是记录科研进展的载体。研究者每年在三万多种期刊上发表数以百万计的论文。科学界衡量这些论文的质量有多种办法，其中包括人们心目中那本期刊的水平（体现为该刊的影响因子），以及某篇论文累计被引用的次数。科学家的前途和他们所在机构的声誉，取决于他们发表论文的数量和分量，但更取决于这些论文的被引次数。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">②</span>
+            <div class="sn" data-go="l2_1"><img class="strip" src="img/2023_T4/s2_1.png" alt="②❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="cartel">cartels</span> · <span class="tk" data-w="conspire">conspire</span> · <span class="tk" data-w="inflate">inflate</span></div></div>
+            <div class="sn" data-go="l2_2"><img class="strip" src="img/2023_T4/s2_2.png" alt="②❷ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="algorithm">algorithm</span> · <span class="tk" data-w="suspicious">suspicious</span> · <span class="tk" data-w="pattern">patterns</span> · <span class="tk" data-w="disproportionately">disproportionately</span></div></div>
+            <div class="sn" data-go="l2_3"><img class="strip" src="img/2023_T4/s2_3.png" alt="②❸ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="expression">expression</span> · <span class="tk" data-w="predatory">predatory</span> · <span class="tk" data-w="emerge">emerged</span> · <span class="tk" data-w="socalled">so-called</span> · <span class="tk" data-w="consultancy">consultancies</span> · <span class="tk" data-w="editorial">editorial</span> · <span class="tk" data-w="contributor">contributors</span></div></div>
+          </div>
+          <div class="zh"><b>②段意：</b>期刊、作者和机构合谋抬高引用数的「引用卡特尔」由来已久。2016 年，研究者开发出一种算法来识别可疑的引用模式，包括互相引用多得不成比例的作者群，以及为抬高刊物影响因子而频繁互引的期刊群。最近，这种掠夺行为又有了新的表现形式：所谓的「支持服务咨询公司」——它们给个人作者和期刊提供语言润色等编辑支持——有时会建议投稿人在文章里加上若干引用。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">③</span>
+            <div class="sn"><img class="strip" src="img/2023_T4/s3_1.png" alt="③❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="advent">advent</span> · <span class="tk" data-w="outlet">outlets</span> · <span class="tk" data-w="resultin">resulted in</span></div></div>
+            <div class="sn"><img class="strip" src="img/2023_T4/s3_2.png" alt="③❷ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="farbehind">far behind</span></div></div>
+            <div class="sn" data-go="l3_3"><img class="strip" src="img/2023_T4/s3_3.png" alt="③❸ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="actas">act as</span> · <span class="tk" data-w="milkcow">milk cows</span> · <span class="tk" data-w="issue">issue</span> · <span class="tk" data-w="series">a series of</span></div></div>
+            <div class="sn"><img class="strip" src="img/2023_T4/s3_4.png" alt="③❹ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="instance">In some instances</span> · <span class="tk" data-w="absolutely">absolutely</span></div></div>
+            <div class="sn" data-go="l3_5"><img class="strip" src="img/2023_T4/s3_5.png" alt="③❺ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="peculiar">peculiar</span> · <span class="tk" data-w="supposedly">supposedly</span> · <span class="tk" data-w="profit">profiting</span></div></div>
+            <div class="sn"><img class="strip" src="img/2023_T4/s3_6.png" alt="③❻ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="practice">practices</span> · <span class="tk" data-w="accrue">accrue</span></div></div>
+          </div>
+          <div class="zh"><b>③段意：</b>电子出版兴起，作者又需要发表论文的渠道，于是冒出成千上万种新期刊。掠夺性期刊随即诞生。这些期刊可以充当「奶牛」：一期里的每一篇文章都可能去引用某一篇或某一组论文。有时，文章内容和所引文献毫无关系。奇怪的是，编辑名义上为之效力的那本期刊自己根本不赚钱——它只是在给别的期刊提供引用。这类做法能让一篇文章在发表当年就累计获得 150 多次引用。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">④</span>
+            <div class="sn"><img class="strip" src="img/2023_T4/s4_1.png" alt="④❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="insidious">insidious</span> · <span class="tk" data-w="manipulation">manipulation</span></div></div>
+            <div class="sn" data-go="l4_2"><img class="strip" src="img/2023_T4/s4_2.png" alt="④❷ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="consultant">consultant</span> · <span class="tk" data-w="provider">providers</span></div></div>
+            <div class="sn"><img class="strip" src="img/2023_T4/s4_3.png" alt="④❸ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="rampant">rampant</span> · <span class="tk" data-w="database">database</span></div></div>
+            <div class="sn"><img class="strip" src="img/2023_T4/s4_4.png" alt="④❹ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="listing">listing</span> · <span class="tk" data-w="criterion">criterion</span> · <span class="tk" data-w="target">targeted</span></div></div>
+          </div>
+          <div class="zh"><b>④段意：</b>这种引用操纵有多隐蔽？举一个例子：一个人同时充当作者、编辑和顾问，竟能动用至少 15 本期刊，给三所大学五位科学家发表的文章「供应」引用。这个问题在引文数据库 Scopus 里最为猖獗——该库收录了大量新办的「国际」期刊。事实上，被 Scopus 收录，似乎成了被这类引用操纵盯上的一条标准。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">⑤</span>
+            <div class="sn"><img class="strip" src="img/2023_T4/s5_1.png" alt="⑤❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="necessary">necessary</span> · <span class="tk" data-w="detect">detect</span> · <span class="tk" data-w="malpractice">malpractice</span></div></div>
+            <div class="sn"><img class="strip" src="img/2023_T4/s5_2.png" alt="⑤❷ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="redflag">Red flags</span></div></div>
+            <div class="sn" data-go="l5_3"><img class="strip" src="img/2023_T4/s5_3.png" alt="⑤❸ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="steerclear">steer clear of</span> · <span class="tk" data-w="reviewer">reviewer</span> · <span class="tk" data-w="inappropriate">inappropriate</span> · <span class="tk" data-w="reference">references</span> · <span class="tk" data-w="oblige">oblige</span> · <span class="tk" data-w="report">report</span></div></div>
+          </div>
+          <div class="zh"><b>⑤段意：</b>Scopus 自己就掌握查出这种不端行为所需的全部数据。警示信号之一，是一篇文章在发表第一年内就被大量引用。至于想避开引用卡特尔的作者：当编辑、审稿人或支持服务机构要你添加不恰当的参考文献时，别答应，而且一定要把这一要求报告给期刊。</div>
+        </div>
+      </section>
+
+      <!-- ========== 题目 ========== -->
+      <section class="card">
+        <h2><span class="n">02</span>题目与解析（点选项即判 · 再看解析）</h2>
+
+        <div class="q" data-ans="1" id="q36">
+          <p class="stem"><span class="qt">事实细节</span>36. According to Paragraph 1, the careers of scientists can be determined by ______.</p>
+          <div class="opts">
+            <div class="opt">[A] how many citations their works contain.</div>
+            <div class="opt">[B] how many times their papers are cited.</div>
+            <div class="opt">[C] the prestige of the people they work with.</div>
+            <div class="opt">[D] the <span class="tk" data-w="status">status</span> they have in scientific <span class="tk" data-w="circle">circles</span>.</div>
+          </div>
+          <div class="expl"><b>答案 B</b>　题干 the careers of scientists ＋ be determined by ↔ ①❹ 的 <span class="loc">The careers of scientists</span> … <span class="loc">depend on</span>。这句的骨架是「W 和 X 取决于 Y，<b>但更取决于</b> Z」：Y＝论文的数量与分量，Z＝<span class="loc">the citations attracted by these papers</span>（论文<b>招来的</b>引用）。B「论文被引的次数」就是 Z 的改写：attracted citations ↔ are cited。<br><b>干扰项：</b>A 方向反——works <b>contain</b> citations 是论文里<b>引了别人</b>多少（施引），原文说的是论文<b>被别人</b>引了多少（被引）；①❸ 的 <span class="loc">citations a specific paper accumulates</span> 也是被引。C 把并列关系读成了依附关系：「科学家的前途」和「所在机构的声誉」是并列主语，一起取决于论文，不是前者取决于同事或机构的名声；何况原文说的是 institutions（机构），C 偷换成了 people。D status 看着像 reputation / prestige，但原文这两个词一个属于机构、一个属于论文，<b>没有一个属于科学家本人</b>；而且「地位」决定「前途」本身是循环论证。<br><b>技巧：</b>见到 <b>but even more so on</b>，命题人几乎一定把答案放在 more so 后面——这是作者自己加的重音。再核一遍<b>引用的方向</b>：attracted / accumulates 都是「收进来」，contain 是「放出去」。<br>📕 <b>与书解析的商榷</b>：书判 D 时说两个词「分别指向机构的声誉、论文的声誉」，判据对；可以再补一句——D 换了<b>主人</b>，这是本卷最常见的错法（T3 的 34C 也是换主人）。</div>
+        </div>
+
+        <div class="q" data-ans="2" id="q37">
+          <p class="stem"><span class="qt">事实细节</span>37. The support service consultancies tend to ______.</p>
+          <div class="opts">
+            <div class="opt">[A] recommend journals to their <span class="tk" data-w="client">clients</span>.</div>
+            <div class="opt">[B] list citation patterns for their clients.</div>
+            <div class="opt">[C] ask authors to include <span class="tk" data-w="extra">extra</span> citations.</div>
+            <div class="opt">[D] advise contributors to cite each other.</div>
+          </div>
+          <div class="expl"><b>答案 C</b>　题干原词复现在②❸ 冒号后：咨询公司 <span class="loc">sometimes advise contributors to add a number of citations</span>。advise ↔ ask，contributors（投稿人）↔ authors，add a number of citations ↔ include extra citations ⟹ C 是逐词同义改写。<br><b>干扰项：</b>A 把关系弄反——原文是咨询公司给个人作者<b>和期刊</b>提供编辑支持，期刊是它的<b>客户</b>，不是它推荐给客户的东西。B 拼接：citation patterns 在②❷（2016 年算法要识别的东西），clients 是②❸ 的事，两句说的是两件事。D 也是拼接②❷：互相引用（cite one another / cite each other）是<b>作者群、期刊群</b>的老模式；②❸ 的新模式是让投稿人去引<b>卡特尔想抬的那些文章</b>，不是投稿人之间互引。<br><b>技巧：</b>②❸ 是本篇最长的一句，冒号前 <span class="loc">another expression of this predatory behavior</span> 只是承上启下，<b>信息在冒号后</b>；冒号后主干是「X sometimes advise Y to do sth」，中间那个 that 从句（提供语言润色）是 X 的身份介绍，是包装、不是罪状。<br>📕 <b>与书解析的商榷</b>：题干 tend to（倾向于、往往）比原文 sometimes（有时）说得重——严格说题干对咨询公司有点「放大」。但这是题干措辞，选项只管和原文对得上；四个选项里只有 C 有原文支撑，不影响答案。</div>
+        </div>
+
+        <div class="q" data-ans="0" id="q38">
+          <p class="stem"><span class="qt">比喻含义</span>38. The function of the “milk cow” journals is to ______.</p>
+          <div class="opts">
+            <div class="opt">[A] <span class="tk" data-w="boost">boost</span> citation counts for certain authors.</div>
+            <div class="opt">[B] help scholars publish articles at low cost.</div>
+            <div class="opt">[C] <span class="tk" data-w="instruct">instruct</span> first-time contributors in citation.</div>
+            <div class="opt">[D] increase the <span class="tk" data-w="readership">readership</span> of new journals.</div>
+          </div>
+          <div class="expl"><b>答案 A</b>　milk cows 在③❸，要把③❸–❻ 当一个句群读：每篇文章都去引同一篇或同一组论文（❸）→ 引用和内容毫不相干（❹）→ 期刊自己<b>不赚钱</b>，只给别的期刊供引用（❺）→ 一篇文章当年攒下 150 多次被引（❻）。奶挤出来给了谁？给了<b>被引的那些论文的作者</b> ⟹ A「为某些作者抬高被引数」。boost ↔ accrue more than 150，certain authors ↔ a specific paper or a series of papers 背后的人。<br><b>干扰项：</b>B 从③❶ electronic publishing、outlets 编出「低成本发表」——③❶ 讲的是新期刊为什么多，那时还没说到奶牛，全文也没提成本。C first-time 无中生有，「指导」又是中性偏正面的词，而奶牛期刊干的是操纵。D 抓③❶ new journals，但奶牛期刊的引用是供给<b>别的</b>期刊的，它自己读者多不多原文一字没提。<br><b>技巧：</b>比喻题别用中文习惯猜——中文「奶牛」「摇钱树」通常指<b>给主人赚钱</b>，但作者特意用 <span class="loc">The peculiar part is that</span> 提醒：这头奶牛<b>自己不赚钱</b>。所以要问的不是「谁养它」而是「奶给了谁」。Such practices（这类做法）是总括回指，它后面的「结果」就是功能。<br>📕 <b>与书解析的商榷</b>：书的语义链（These journals → where → In some instances → The peculiar part → Such practices）讲得很好；可以再强调一点——本题的难点正在「peculiar」一词：它把常识里的「奶牛＝自己获利」翻了个面，B（省钱）就是给按常识想的人准备的。</div>
+        </div>
+
+        <div class="q" data-ans="1" id="q39">
+          <p class="stem"><span class="qt">细节概括</span>39. What can be learned about Scopus from the last two paragraphs?</p>
+          <div class="opts">
+            <div class="opt">[A] It <span class="tk" data-w="foster">fosters</span> competition among citation providers.</div>
+            <div class="opt">[B] It has the <span class="tk" data-w="capability">capability</span> to identify suspicious citations.</div>
+            <div class="opt">[C] It <span class="tk" data-w="hinder">hinders</span> the growth of “international” journals.</div>
+            <div class="opt">[D] It is <span class="tk" data-w="establish">established</span> to prevent citation manipulation.</div>
+          </div>
+          <div class="expl"><b>答案 B</b>　Scopus 出现两次：④❸ 问题在 Scopus 里<b>最猖獗</b>（它收录了大量新「国际」期刊），⑤❶ <span class="loc">Scopus itself has all the data necessary to detect this malpractice</span>。has the data necessary to detect ↔ has the capability to identify，this malpractice（回指④段的引用操纵）↔ suspicious citations ⟹ B。<br><b>干扰项：</b>A citation providers 原词在④❷，但那是一个人动用 15 本期刊「供引用」的例子，没有任何「竞争」，更没说 Scopus 促成了什么。C 方向反：④❸ 说 Scopus <b>收录了大量</b>「国际」期刊——是收进来，不是阻碍；引号是作者在讥讽这些期刊名不副实，跟发展快慢无关。D 两处偷换：① 把「<b>能</b>查出」换成「<b>为</b>防范而<b>建</b>」——能力变成了创建目的；② 把「事后识别已发生的」换成「事前防止」。Scopus 是引文数据库，本来就不是为打假建的。<br><b>技巧：</b>⑤❶ 里的 <b>itself</b> 很值钱：上一段刚说问题在 Scopus 里最猖獗，这一段说<b>Scopus 自己</b>手里就有破案的数据——病灶和药方在同一个地方。作者的言外之意是「它有能力查，却没查」——B 只说 has the capability，恰好不多说一步；D 多说了一步（is established to prevent），就错。<br>📕 <b>与书解析的商榷</b>：书判 C 时说「国际」期刊里「不乏充当奶牛的期刊」——这是推测，原文没把两者连起来；C 的硬判据是 hinders 毫无原料、且与「收录大量」方向相反。</div>
+        </div>
+
+        <div class="q" data-ans="3" id="q40">
+          <p class="stem"><span class="qt">建议</span>40. What should an author do to <span class="tk" data-w="dealwith">deal with</span> citation manipulators?</p>
+          <div class="opts">
+            <div class="opt">[A] Take <span class="tk" data-w="legalaction">legal action</span>.</div>
+            <div class="opt">[B] Demand an <span class="tk" data-w="apology">apology</span>.</div>
+            <div class="opt">[C] Seek professional advice.</div>
+            <div class="opt">[D] <span class="tk" data-w="reveal">Reveal</span> their <span class="tk" data-w="misconduct">misconduct</span>.</div>
+          </div>
+          <div class="expl"><b>答案 D</b>　建议在⑤❸ 冒号后，是两个祈使句：<span class="loc">do not oblige</span>（别照办）<b>and</b> <span class="loc">do report the request to the journal</span>（一定要向期刊举报）。report ↔ reveal，the request（要你加不当参考文献的要求）↔ their misconduct ⟹ D。<br><b>干扰项：</b>A 由 malpractice、inappropriate 夸大成违法——原文只说「不当、不端」，没有一个词涉及法律。B「要对方道歉」常识上说得通，但原文没有。C 最阴：<b>professional advice</b> 恰恰是②❸ 咨询公司卖的东西（advise contributors），而⑤❸ 把 a support service 列在「提不当要求的人」里——去找专业人士讨主意，等于回头去问出主意的人；原文的动作是<b>举报</b>，不是<b>求助</b>。<br><b>技巧：</b>建议题找<b>祈使句</b>，再找<b>强调</b>：do not oblige and <b>do</b> report——第二个 do 是助动词强调（一定要），作者把重音放在「举报」上。本篇是评论文、全篇零引语，作者的建议只会以这种形式出现在结尾。<br>📕 <b>与书解析的商榷</b>：书说期刊「是解决方」——原文只说向期刊举报，没说期刊一定清白（③段的奶牛期刊就是问题方）；C 的硬判据是动作不同：seek advice 是求助，report 是举报。</div>
+        </div>
+      </section>
+
+      <!-- ========== 长难句 ========== -->
+      <section class="card" id="sents">
+        <h2><span class="n">03</span>长难句精析（正文蓝色虚线句）</h2>
+
+        <div class="sent" id="l1_3">
+          <div class="src"><b>s1（①❸）</b><img class="strip" src="img/2023_T4/s1_3.png" alt="①❸ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：<code>The scientific community measures the quality of those papers</code>，后接方式状语 <code>in a number of ways</code>。</li>
+            <li><code>including …</code> 列举两种方式：<code>the perceived quality of the journal</code>（人们心目中期刊的水平）<b>和</b> <code>the number of citations a specific paper accumulates</code>（某篇论文累计的被引次数）。</li>
+            <li>括号 <code>as reflected by the title’s impact factor</code>——as 引导的省略结构，补充「期刊水平靠什么体现」：影响因子。⚠️ title 在这里是<b>刊名、刊物</b>，不是标题（熟词僻义）。</li>
+            <li><code>citations a specific paper accumulates</code>——省略关系代词的定语从句；accumulate 是「攒进来」⟹ 被引。36A 的 contain 方向正相反。</li>
+          </ul>
+          <div class="tr">意：科学界用多种方式衡量这些论文的质量，其中包括人们心目中所发期刊的水平（体现为该刊的影响因子），以及某篇论文累计获得的被引次数。</div>
+        </div>
+
+        <div class="sent" id="l1_4">
+          <div class="src"><b>s2（①❹）</b><img class="strip" src="img/2023_T4/s1_4.png" alt="①❹ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：并列主语 <code>The careers of scientists</code>（科学家的前途）与 <code>the reputation of their institutions</code>（所在机构的声誉）＋ 谓语 <code>depend on</code>。</li>
+            <li>宾语一：<code>the number and prestige of the papers they produce</code>——论文的数量与分量（prestige 本指声望，这里指论文的影响力）。</li>
+            <li><b>but even more so on</b> ＝ but they depend even more on——so 替代 depend on，even more 加重 ⟹ 宾语二 <code>the citations attracted by these papers</code> 才是重点。</li>
+            <li>⭐ 36 题：答案落在 more so 后面；C 把两个并列主语拆成「前者取决于后者」。</li>
+          </ul>
+          <div class="tr">意：科学家的前途和他们所在机构的声誉，取决于他们发表论文的数量和分量，但更取决于这些论文的被引次数。</div>
+        </div>
+
+        <div class="sent" id="l2_1">
+          <div class="src"><b>s3（②❶）</b><img class="strip" src="img/2023_T4/s2_1.png" alt="②❶ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：<code>Citation cartels … have existed for a long time</code>——主语和谓语被一个长插入隔开。</li>
+            <li>插入的 <code>where journals, authors, and institutions conspire to inflate citation numbers</code>——where 引导非限制性定语从句修饰 cartels，相当于给这个新词<b>下定义</b>：三方合谋、抬高引用数。</li>
+            <li>⭐ cartel 本是经济词「卡特尔」（同行企业串通定价，如石油输出国组织）；inflate 本义「充气」，引申为人为抬高（inflation 通货膨胀）——标题说引用是科学的<b>通货</b>，这里就是在说「引用通胀」。</li>
+          </ul>
+          <div class="tr">意：「引用卡特尔」——期刊、作者和机构合谋抬高引用数——由来已久。</div>
+        </div>
+
+        <div class="sent" id="l2_2">
+          <div class="src"><b>s4（②❷）</b><img class="strip" src="img/2023_T4/s2_2.png" alt="②❷ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：<code>In 2016, researchers developed an algorithm</code>，<code>to recognize suspicious citation patterns</code> 是不定式作目的或定语。</li>
+            <li><code>including …</code> 列举两类模式，<b>结构完全对称</b>：<code>groups of authors that disproportionately cite one another</code>（作者群）和 <code>groups of journals that cite each other frequently</code>（期刊群），各带一个 that 定语从句。</li>
+            <li>末尾 <code>to increase the impact factors of their publications</code>——目的状语，只修饰期刊群：互引是为了抬<b>影响因子</b>。</li>
+            <li>⭐ 37D 的「互引」就出自这一句——这是 2016 年的<b>旧</b>模式，主体是作者群、期刊群；题干问的是下一句的<b>新</b>模式。</li>
+          </ul>
+          <div class="tr">意：2016 年，研究者开发出一种算法，用来识别可疑的引用模式，包括互引多得不成比例的作者群，以及为抬高刊物影响因子而频繁互引的期刊群。</div>
+        </div>
+
+        <div class="sent" id="l2_3">
+          <div class="src"><b>s5（②❸）</b><img class="strip" src="img/2023_T4/s2_3.png" alt="②❸ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">冒号分两层</span>：前半 <code>another expression of this predatory behavior has emerged</code>——承上（this 回指卡特尔）、启下（又一种表现）；<b>信息全在冒号后</b>。</li>
+            <li>冒号后主干：<code>so-called support service consultancies</code>（主语）……<code>sometimes advise contributors to add …</code>（谓语）——是一个完整的句子，不是同位语。</li>
+            <li>主谓之间夹着定语从句 <code>that provide language and other editorial support</code>，后面 <code>to individual authors and to journals</code> 交代服务对象（两个 to 并列）——37A 的「期刊是客户」就从这里来。</li>
+            <li>⭐ so-called（所谓的）带讥讽：名义上做语言润色，实际在教人塞引用。expression 是熟词僻义「表现形式」，不是「表达」。</li>
+          </ul>
+          <div class="tr">意：最近，这种掠夺行为又有了新的表现形式：给个人作者和期刊提供语言等编辑支持的所谓「支持服务咨询公司」，有时会建议投稿人在文章里加上若干引用。</div>
+        </div>
+
+        <div class="sent" id="l3_3">
+          <div class="src"><b>s6（③❸）</b><img class="strip" src="img/2023_T4/s3_3.png" alt="③❸ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：<code>These journals can act as milk cows</code>——These 回指③❷ 的掠夺性期刊。</li>
+            <li><code>where every single article in an issue may cite …</code>——where 引导定语从句修饰 milk cows，<b>解释比喻</b>：一期里的每一篇文章都可能引同一篇或同一组论文。</li>
+            <li>⚠️ issue 在期刊语境是「（一）期」，不是「问题」；<code>a series of papers</code>＝一组论文。</li>
+            <li>⭐ 38 题：比喻的意思由 where 从句给出，但<b>受益者</b>要等到❺❻才说清——引用都流向了「某一篇／某一组」论文。</li>
+          </ul>
+          <div class="tr">意：这些期刊可以充当「奶牛」：一期里的每一篇文章都可能去引用某一篇或某一组论文。</div>
+        </div>
+
+        <div class="sent" id="l3_5">
+          <div class="src"><b>s7（③❺）</b><img class="strip" src="img/2023_T4/s3_5.png" alt="③❺ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：<code>The peculiar part is that …</code>——表语从句，作者先说「怪就怪在」。</li>
+            <li>that 从句的主语很长：<code>the journal that the editor is supposedly working for</code>——定语从句修饰 journal，介词 for 留在句尾（work for the journal）；supposedly＝名义上、按说。</li>
+            <li>谓语 <code>is not profiting at all</code>；破折号后 <code>it is just providing citations to other journals</code> 解释：它只是给<b>别的</b>期刊供引用。</li>
+            <li>⭐ 这句就是 38 题的钥匙：奶牛<b>自己不得利</b>，奶给了别人。supposedly 暗示编辑其实在为别人效力。</li>
+          </ul>
+          <div class="tr">意：奇怪的是，编辑名义上为之效力的那本期刊自己根本不赚钱——它只是在给别的期刊提供引用。</div>
+        </div>
+
+        <div class="sent" id="l4_2">
+          <div class="src"><b>s8（④❷）</b><img class="strip" src="img/2023_T4/s4_2.png" alt="④❷ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：<code>an individual … was able to use at least 15 journals as citation providers</code>——use A as B：把 A 当作 B 来用。</li>
+            <li>两个破折号之间 <code>acting as author, editor, and consultant</code>——现在分词短语作插入语：<b>一人三职</b>，正好对上②❶ 的三方（作者、期刊、机构）和②❸ 的咨询公司。</li>
+            <li><code>to articles published by five scientists at three universities</code>——to 接 citation providers（给……供引用）；published by 是过去分词作定语。</li>
+            <li>⭐ ④❶ 刚问「有多隐蔽」，这个例子回答：一个人就能伪装成整个网络。39A 借了这里的 citation providers。</li>
+          </ul>
+          <div class="tr">意：举个例子，一个人同时充当作者、编辑和顾问，竟能动用至少 15 本期刊，为三所大学五位科学家发表的文章「供应」引用。</div>
+        </div>
+
+        <div class="sent" id="l5_3">
+          <div class="src"><b>s9（⑤❸）</b><img class="strip" src="img/2023_T4/s5_3.png" alt="⑤❸ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">冒号前</span>：<code>And for authors who wish to steer clear of citation cartel activities</code>——只是一个状语（对于想……的作者），<b>没有谓语</b>；冒号后才是正句。</li>
+            <li>冒号后：when 状语从句——主语三选一 <code>an editor, a reviewer, or a support service</code>，谓语 <code>asks you to add inappropriate references</code>；主句是两个祈使句 <code>do not oblige</code> ＋ <code>do report the request to the journal</code>。</li>
+            <li>⭐ 第二个 do 是<b>助动词强调</b>（一定要报告），与前面的 do not 对仗：一个不照办，一个要举报。40D 的 reveal 对应 report。</li>
+            <li>⚠️ oblige 这里是不及物「答应、帮忙」（I’m happy to oblige），不是常见的 be obliged to「不得不」。</li>
+          </ul>
+          <div class="tr">意：至于想避开引用卡特尔的作者：当编辑、审稿人或支持服务机构要你添加不恰当的参考文献时，别答应，而且一定要把这一要求报告给期刊。</div>
+        </div>
+      </section>
+
+      <!-- ========== 词汇复盘 ========== -->
+      <section class="card">
+        <h2><span class="n">04</span>词汇复盘（点卡片看详情）</h2>
+        <div class="filters">
+          <button class="fbtn on" data-f="all">全部</button>
+          <button class="fbtn" data-f="core">核心词</button>
+          <button class="fbtn" data-f="phrase">短语</button>
+          <button class="fbtn" data-f="poly">熟词僻义</button>
+          <button class="fbtn" data-f="write">写作可用</button>
+        </div>
+        <div class="vgrid" id="vgrid"></div>
+      </section>
+
+      <!-- ========== 写作素材 ========== -->
+      <section class="card">
+        <h2><span class="n">05</span>可搬进作文/翻译的素材</h2>
+        <p style="font-size:.9rem;margin-bottom:12px">本篇话题——<b>诚信、指标被人钻空子、评价体系的副作用</b>——正对大作文里的「诚信」「急功近利」「唯分数论」类题目。英文例句都是按原文句式自拟的，只借骨架。</p>
+        <div class="wb">
+          <div class="wbi"><div class="p">X depends on A, but even more so on B.</div><div class="u">「X 取决于 A，但更取决于 B」——<b>递进比较</b>，把重点放在后面：Success depends on talent, but even more so on persistence.</div></div>
+          <div class="wbi"><div class="p">… , where … conspire to …, have existed for a long time.</div><div class="u">「……（某某合谋干某事的现象）由来已久」——用 where 从句给一个<b>现象下定义</b>：Fake reviews, where sellers and paid writers work together to mislead buyers, have existed for a long time.</div></div>
+          <div class="wbi"><div class="p">Recently, another expression of this … has emerged: …</div><div class="u">「最近，这种……又有了新的表现形式：」——写<b>问题翻新</b>，冒号后举新例：Recently, another expression of this pressure has emerged: parents hiring tutors for kindergarteners.</div></div>
+          <div class="wbi"><div class="p">The peculiar part is that …</div><div class="u">「奇怪的是／耐人寻味的是……」——引出<b>反常识的细节</b>，比 Strangely 更有分量：The peculiar part is that the most connected generation feels the loneliest.</div></div>
+          <div class="wbi"><div class="p">How … is this …? In one example, …</div><div class="u">「这有多……？举个例子……」——<b>设问＋例证</b>，大作文第二段开头好用：How serious is food waste on campus? In one example, a single canteen throws away 200 kilograms a day.</div></div>
+          <div class="wbi"><div class="p">X itself has all the … necessary to …</div><div class="u">「X 自己就具备……所需的一切」——<b>点出现成的解决条件</b>：Our school itself has all the resources necessary to run a reading club.</div></div>
+          <div class="wbi"><div class="p">When … asks you to …, do not oblige and do …</div><div class="u">「当……要你……时，别答应，一定要……」——<b>祈使句＋强调 do</b>，建议信里给读者支招：When a stranger asks for your password, do not oblige and do tell the bank at once.</div></div>
+          <div class="wbi"><div class="p">话题词包：integrity · manipulation · malpractice · inflate · red flags</div><div class="u">写「诚信 / 造假 / 评价体系」时直接可用：academic integrity（学术诚信）· manipulate the numbers（操纵数字）· inflate scores（抬高分数）· red flags（警示信号）· steer clear of（避开）· report misconduct（举报不端）。</div></div>
+        </div>
+      </section>
+    </main>
+    <aside>
+      <div id="panel">
+        <button class="close" onclick="document.getElementById('panel').classList.remove('open')">收起</button>
+        <div class="hint">点正文里的<b>黄色高亮词</b>，或下方词汇卡片，这里出详情。</div>
+      </div>
+    </aside>
+  </div>
+</div>
+<button id="yd">查有道</button>
+
+<script>
+const V={
+  recordkeeper:{"w": "recordkeeper", "ipa": "/ˈrekɔːdˌkiːpə(r)/", "pos": "n.", "tags": ["core"], "cn": "<b>记录者</b>、记录保管者", "en": "a person or thing that keeps records", "ex": "the <b>recordkeepers</b> of progress in research（①❶）", "mem": "record（记录）＋ keeper（保管者）。本篇拟人：论文就是科研进展的「账本」。<br>同构词：timekeeper 计时员 · goalkeeper 守门员 · bookkeeper 簿记员。", "syn": "record · archive", "conf": "recordkeeper（记录者）· bookkeeper（会计）· gatekeeper（把关人）。"},
+  progress:{"w": "progress", "ipa": "/ˈprəʊɡres/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>进展</b>、进步", "en": "development towards a better state", "ex": "the recordkeepers of <b>progress</b> in research（①❶）", "mem": "pro（向前）＋ gress（走）⟹ 向前走。make progress 取得进步（不可数，不说 a progress）。<br>同根：congress 国会（走到一起）· aggressive 进攻的。", "syn": "advance · development", "conf": "progress（进展）· process（过程）· prospect（前景）。"},
+  journal:{"w": "journal", "ipa": "/ˈdʒɜːnl/", "pos": "n.", "tags": ["core", "poly"], "cn": "<b>期刊</b>、学术杂志；日志", "en": "a serious magazine about a subject, especially an academic one", "ex": "papers in more than 30,000 <b>journals</b>（①❷）", "mem": "⚠️ 本篇 journal 全是<b>学术期刊</b>，不是日记。journalist 是记者，journalism 新闻业。<br>同一篇里期刊还被叫作 title（刊名）、publication（刊物）、outlet（发表渠道）。", "syn": "periodical · publication", "conf": "journal（期刊）· journey（旅程）· journalist（记者）。"},
+  community:{"w": "the scientific community", "ipa": "/ðə ˌsaɪənˈtɪfɪk kəˈmjuːnəti/", "pos": "n.", "tags": ["phrase", "poly", "write"], "cn": "<b>科学界</b>、学界", "en": "all the scientists considered as a group", "ex": "The <b>scientific community</b> measures the quality（①❸）", "mem": "⚠️ community 不只是「社区」：the business community 商界 · the international community 国际社会 · the academic community 学术界。<br>写作：The medical community has warned against …", "syn": "scientific circles · academia", "conf": "community（群体、界）· commodity（商品）· commonality（共性）。"},
+  perceived:{"w": "perceived", "ipa": "/pəˈsiːvd/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>（人们）认为的</b>、感知到的", "en": "believed or noticed by people, whether or not true", "ex": "the <b>perceived</b> quality of the journal（①❸）", "mem": "perceive v. 察觉、认为 → perception n. 看法。<br>perceived quality＝<b>名声上的</b>质量，不一定是真质量——作者用这个词已暗示：指标可以被操纵。", "syn": "supposed · apparent", "conf": "perceive（认为）· receive（收到）· deceive（欺骗）。"},
+  reflect:{"w": "as reflected by", "ipa": "/æz rɪˈflektɪd baɪ/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>正如……所体现的</b>", "en": "as shown by", "ex": "(<b>as reflected by</b> the title’s impact factor)（①❸）", "mem": "reflect 本义反射 → 引申「体现、反映」。<br>写作：The change in attitude, as reflected by the survey, is significant.", "syn": "as shown by · as indicated by", "conf": "reflect（反映）· reflex（反射动作）· deflect（转向）。"},
+  title:{"w": "title", "ipa": "/ˈtaɪtl/", "pos": "n.", "tags": ["core", "poly"], "cn": "<b>刊物</b>、书目；标题；头衔", "en": "a book, magazine or journal as a product", "ex": "the <b>title</b>’s impact factor（①❸）", "mem": "⚠️ 熟词僻义：出版业里 title＝一种出版物（一本书、一份刊）。2023 T3 的 PRH titles＝企鹅兰登的书，本篇 title＝刊物——<b>同一卷连考两次</b>。", "syn": "publication · journal", "conf": "title（刊物、标题）· titled（有头衔的）· entitle（使有权）。"},
+  impactfactor:{"w": "impact factor", "ipa": "/ˈɪmpækt ˌfæktə(r)/", "pos": "n.", "tags": ["phrase"], "cn": "<b>影响因子</b>", "en": "a measure of how often a journal’s articles are cited", "ex": "the title’s <b>impact factor</b>（①❸）", "mem": "学术界衡量期刊的常用指标：按前两年所发文章被引的平均次数算。②❷ 的期刊群互引，就是为了抬它。", "syn": "—", "conf": "impact（影响）· impart（传授）· compact（紧凑的）。"},
+  citation:{"w": "citation", "ipa": "/saɪˈteɪʃn/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>引用</b>、被引；引文", "en": "a reference to a book or article in another piece of writing", "ex": "the number of <b>citations</b> a specific paper accumulates（①❸）", "mem": "cite v. 引用 → citation n.。<br>⚠️ 本篇核心是方向：cite X（引别人）vs be cited（被引）。36A 的 citations their works contain 是<b>引别人</b>，原文要的是<b>被引</b>。", "syn": "reference · quotation", "conf": "cite（引用）· site（地点）· sight（视野）。"},
+  accumulate:{"w": "accumulate", "ipa": "/əˈkjuːmjəleɪt/", "pos": "v.", "tags": ["core", "write"], "cn": "<b>积累</b>、累计获得", "en": "to gradually get more of something", "ex": "citations a specific paper <b>accumulates</b>（①❸）", "mem": "ac（加强）＋ cumul（堆）⟹ 越堆越多。accumulation n.。<br>与③❻ accrue 同义——「攒」都是<b>收进来</b>，所以都指被引。", "syn": "accrue · build up", "conf": "accumulate（积累）· accurate（准确的）· acclimate（适应）。"},
+  reputation:{"w": "reputation", "ipa": "/ˌrepjuˈteɪʃn/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>声誉</b>、名声", "en": "the opinion people have about someone or something", "ex": "the <b>reputation</b> of their institutions（①❹）", "mem": "build / damage one’s reputation 树立／损害名声。<br>⚠️ 本篇 reputation 属于<b>机构</b>，36D 把它挪给科学家本人（status）就错。", "syn": "fame · prestige", "conf": "reputation（声誉）· repetition（重复）· reputable（声誉好的）。"},
+  institution:{"w": "institution", "ipa": "/ˌɪnstɪˈtjuːʃn/", "pos": "n.", "tags": ["core", "poly"], "cn": "<b>机构</b>（大学、研究所）；制度", "en": "a large organization such as a university or bank", "ex": "the reputation of their <b>institutions</b>（①❹）", "mem": "institute v./n. 设立；研究所。<br>⚠️ 熟词僻义：the institution of marriage 婚姻制度。本篇＝科学家所在的大学、研究所。", "syn": "organization · establishment", "conf": "institution（机构）· institute（研究所）· constitution（宪法）。"},
+  dependon:{"w": "depend on", "ipa": "/dɪˈpend ɒn/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>取决于</b>；依靠", "en": "to be decided by", "ex": "careers … <b>depend on</b> the number and prestige（①❹）", "mem": "⚠️ 36 题干 be determined by 就是它的改写。<br>写作：Whether we succeed depends on how well we prepare.", "syn": "be determined by · hinge on", "conf": "depend on（取决于）· rely on（依靠）· count on（指望）。"},
+  prestige:{"w": "prestige", "ipa": "/preˈstiːʒ/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>声望</b>、威望；影响力", "en": "respect and admiration from being successful or important", "ex": "the number and <b>prestige</b> of the papers（①❹）", "mem": "prestigious adj. 有声望的：a prestigious university 名校。<br>本篇 prestige 修饰<b>论文</b>＝论文的分量、影响力；36C 拿它去修饰「共事的人」。", "syn": "status · reputation", "conf": "prestige（声望）· prestigious（有声望的）· presage（预兆）。"},
+  evenmoreso:{"w": "even more so", "ipa": "/ˈiːvn mɔː səʊ/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>更是如此</b>、更甚", "en": "to an even greater degree", "ex": "but <b>even more so</b> on the citations（①❹）", "mem": "so 替代前面的谓语（depend）；even more 加重。⟹ 作者的<b>重音</b>在这后面，36 题答案就在这里。<br>写作：Health matters for everyone, and even more so for the elderly.", "syn": "particularly · all the more", "conf": "even more so（更是如此）· even so（即便如此）· more or less（或多或少）。"},
+  attract:{"w": "attract", "ipa": "/əˈtrækt/", "pos": "v.", "tags": ["core"], "cn": "<b>吸引</b>、引来", "en": "to make something come towards it", "ex": "the citations <b>attracted</b> by these papers（①❹）", "mem": "at（向）＋ tract（拉）⟹ 拉过来。attract attention / investment / criticism 引起注意／吸引投资／招致批评。<br>⟹ citations attracted ＝ 被引（36B are cited）。", "syn": "draw · bring in", "conf": "attract（吸引）· distract（分心）· extract（提取）。"},
+  cartel:{"w": "cartel", "ipa": "/kɑːˈtel/", "pos": "n.", "tags": ["core"], "cn": "<b>卡特尔</b>、同业联盟（串通操纵）", "en": "a group of companies that agree to control prices", "ex": "<b>Citation cartels</b>, where journals, authors, and institutions conspire（②❶）", "mem": "本是经济词：同行企业串通定价、瓜分市场（如石油输出国组织 OPEC 常被称作卡特尔）。<br>本篇借来：<b>串通刷引用</b>的小圈子。drug cartel 贩毒集团。", "syn": "ring · syndicate", "conf": "cartel（卡特尔）· cartoon（漫画）· carton（纸盒）。"},
+  conspire:{"w": "conspire", "ipa": "/kənˈspaɪə(r)/", "pos": "v.", "tags": ["core"], "cn": "<b>密谋</b>、合谋", "en": "to secretly plan with others to do something wrong", "ex": "institutions <b>conspire</b> to inflate citation numbers（②❶）", "mem": "con（共同）＋ spire（呼吸）⟹ 一起喘气 → 串通。conspiracy n. 阴谋：conspiracy theory 阴谋论。", "syn": "plot · collude", "conf": "conspire（合谋）· inspire（鼓舞）· perspire（出汗）。"},
+  inflate:{"w": "inflate", "ipa": "/ɪnˈfleɪt/", "pos": "v.", "tags": ["core", "write"], "cn": "<b>人为抬高</b>、夸大；充气", "en": "to make something larger or higher than it should be", "ex": "conspire to <b>inflate</b> citation numbers（②❶）", "mem": "in（进）＋ flate（吹）⟹ 吹进气 → 膨胀。inflation 通货膨胀 · grade inflation 分数膨胀。<br>标题说引用是「通货」，inflate 就是让它<b>通胀、贬值</b>。", "syn": "exaggerate · boost artificially", "conf": "inflate（抬高）· deflate（放气）· inflame（激怒）。"},
+  algorithm:{"w": "algorithm", "ipa": "/ˈælɡərɪðəm/", "pos": "n.", "tags": ["core"], "cn": "<b>算法</b>", "en": "a set of rules a computer follows to solve a problem", "ex": "researchers developed an <b>algorithm</b>（②❷）", "mem": "来自九世纪数学家花剌子模的名字。<br>⚠️ 背景：2016 年那篇论文的作者自己说，算法只能标出<b>嫌疑</b>——呼应⑤❷ red flags。", "syn": "procedure · formula", "conf": "algorithm（算法）· logarithm（对数）· rhythm（节奏）。"},
+  suspicious:{"w": "suspicious", "ipa": "/səˈspɪʃəs/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>可疑的</b>；怀疑的", "en": "making you think something illegal or dishonest is happening", "ex": "recognize <b>suspicious</b> citation patterns（②❷）", "mem": "suspect v. 怀疑 → suspicion n. → suspicious adj.。<br>be suspicious of 对……起疑。39B 的 suspicious citations 回扣这里。", "syn": "questionable · doubtful", "conf": "suspicious（可疑的）· auspicious（吉利的）· superstitious（迷信的）。"},
+  pattern:{"w": "pattern", "ipa": "/ˈpætn/", "pos": "n.", "tags": ["core"], "cn": "<b>模式</b>、规律", "en": "a regular way in which something happens", "ex": "suspicious citation <b>patterns</b>（②❷）", "mem": "behaviour patterns 行为模式 · weather patterns 天气规律。<br>⚠️ 37B 把这个词（②❷）硬拼到咨询公司（②❸）身上。", "syn": "model · trend", "conf": "pattern（模式）· patent（专利）· patron（赞助人）。"},
+  disproportionately:{"w": "disproportionately", "ipa": "/ˌdɪsprəˈpɔːʃənətli/", "pos": "adv.", "tags": ["core", "write"], "cn": "<b>不成比例地</b>（多得或少得过分）", "en": "too much or too little compared with others", "ex": "<b>disproportionately</b> cite one another（②❷）", "mem": "dis（不）＋ proportion（比例）⟹ 不成比例。<br>写作：The poor are disproportionately affected by rising prices.", "syn": "excessively · unequally", "conf": "disproportionate（不成比例的）· proportional（成比例的）。"},
+  expression:{"w": "expression", "ipa": "/ɪkˈspreʃn/", "pos": "n.", "tags": ["core", "poly"], "cn": "<b>表现形式</b>、体现；表达", "en": "a sign or form that shows something", "ex": "another <b>expression</b> of this predatory behavior（②❸）", "mem": "⚠️ 熟词僻义：an expression of …＝……的一种表现。<br>写作：Volunteering is an expression of social responsibility.", "syn": "form · manifestation", "conf": "expression（表现）· impression（印象）· depression（萧条）。"},
+  predatory:{"w": "predatory", "ipa": "/ˈpredətri/", "pos": "adj.", "tags": ["core"], "cn": "<b>掠夺性的</b>、捕食的", "en": "trying to take advantage of others", "ex": "this <b>predatory</b> behavior（②❸）", "mem": "predator n. 捕食者。<br>predatory journals 掠夺性期刊：收钱就发、不认真审稿的期刊——③❷ 正式登场。", "syn": "exploitative · greedy", "conf": "predatory（掠夺性的）· predator（捕食者）· predecessor（前任）。"},
+  emerge:{"w": "emerge", "ipa": "/iˈmɜːdʒ/", "pos": "v.", "tags": ["core", "write"], "cn": "<b>出现</b>、浮现", "en": "to appear or become known", "ex": "another expression … has <b>emerged</b>（②❸）", "mem": "e（出）＋ merge（沉）⟹ 从水里冒出来。emerging markets 新兴市场 · emergency 紧急情况（突然冒出来的事）。", "syn": "appear · arise", "conf": "emerge（出现）· merge（合并）· immerse（沉浸）。"},
+  socalled:{"w": "so-called", "ipa": "/ˌsəʊ ˈkɔːld/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>所谓的</b>（常带怀疑、讥讽）", "en": "used to show you think a name is not suitable", "ex": "<b>so-called</b> support service consultancies（②❸）", "mem": "⚠️ 带态度：作者不认同这个名号——名为「支持服务」，实为教人塞引用。<br>写作：These so-called experts know little about the subject.", "syn": "supposed · alleged", "conf": "so-called（所谓的）· well-known（著名的）。"},
+  consultancy:{"w": "consultancy", "ipa": "/kənˈsʌltənsi/", "pos": "n.", "tags": ["core"], "cn": "<b>咨询公司</b>；咨询服务", "en": "a company that gives expert advice", "ex": "support service <b>consultancies</b>（②❸）", "mem": "consult v. 咨询 → consultant n. 顾问（④❷）→ consultancy n. 咨询公司。<br>⚠️ 37 题主角。它卖的就是 advice——40C「寻求专业建议」正好绕回它身上。", "syn": "advisory firm", "conf": "consultancy（咨询公司）· consultant（顾问）· consultation（商议）。"},
+  editorial:{"w": "editorial", "ipa": "/ˌedɪˈtɔːriəl/", "pos": "adj.", "tags": ["core", "poly"], "cn": "<b>编辑的</b>；n. 社论", "en": "relating to preparing texts for publication", "ex": "language and other <b>editorial</b> support（②❸）", "mem": "editor 编辑 → edit 编辑 → editorial。<br>⚠️ n. 社论：the newspaper’s editorial 报社社论。", "syn": "—", "conf": "editorial（编辑的）· edition（版本）· editor（编辑）。"},
+  contributor:{"w": "contributor", "ipa": "/kənˈtrɪbjətə(r)/", "pos": "n.", "tags": ["core", "poly"], "cn": "<b>投稿人</b>；贡献者", "en": "a person who writes articles for a publication", "ex": "advise <b>contributors</b> to add a number of citations（②❸）", "mem": "⚠️ 熟词僻义：期刊语境里 contributor＝投稿人＝author（37C 就这样改写）。contribute to a magazine 给杂志投稿。", "syn": "writer · author", "conf": "contributor（投稿人）· distributor（分销商）· attribute（归因）。"},
+  advent:{"w": "advent", "ipa": "/ˈædvent/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>出现</b>、到来", "en": "the arrival of an important thing", "ex": "The <b>advent</b> of electronic publishing（③❶）", "mem": "ad（向）＋ vent（来）⟹ 来到。the advent of the Internet 互联网的出现——写科技话题的高频开头。", "syn": "arrival · emergence", "conf": "advent（到来）· adventure（冒险）· event（事件）。"},
+  outlet:{"w": "outlet", "ipa": "/ˈaʊtlet/", "pos": "n.", "tags": ["core", "poly"], "cn": "<b>（发表）渠道</b>；出口；门店", "en": "a way of expressing or publishing something", "ex": "authors’ need to find <b>outlets</b> for their papers（③❶）", "mem": "⚠️ 熟词僻义：outlet 本义出口、插座；media outlet 媒体 · retail outlet 零售店 · an outlet for emotions 情绪宣泄口。本篇＝能发论文的地方。", "syn": "channel · platform", "conf": "outlet（渠道）· output（产出）· outline（大纲）。"},
+  resultin:{"w": "result in", "ipa": "/rɪˈzʌlt ɪn/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>导致</b>", "en": "to cause something to happen", "ex": "need … <b>resulted in</b> thousands of new journals（③❶）", "mem": "⚠️ result in ＋ 结果；result from ＋ 原因，方向相反。<br>写作：Lack of sleep can result in poor concentration.", "syn": "lead to · bring about", "conf": "result in（导致）· result from（由……引起）。"},
+  farbehind:{"w": "wasn’t far behind", "ipa": "/ˈwɒznt fɑː bɪˈhaɪnd/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>紧随其后</b>（没落后多少）", "en": "happened soon after", "ex": "The birth of predatory journals wasn’t <b>far behind</b>（③❷）", "mem": "not far behind＝紧跟着。<br>写作：Smartphones arrived, and social media addiction wasn’t far behind.", "syn": "soon followed · close behind", "conf": "far behind（落后很多）· not far behind（紧随其后）。"},
+  actas:{"w": "act as", "ipa": "/ækt æz/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>充当</b>、起……作用", "en": "to do the job of something", "ex": "These journals can <b>act as</b> milk cows（③❸）", "mem": "④❷ acting as author, editor, and consultant 也是它：一人充当三种角色。<br>写作：Parents act as their children’s first teachers.", "syn": "serve as · function as", "conf": "act as（充当）· act on（按……行事）· act out（表演出）。"},
+  milkcow:{"w": "milk cow", "ipa": "/mɪlk kaʊ/", "pos": "n.", "tags": ["phrase", "poly"], "cn": "<b>奶牛</b>（比喻被不断挤取的来源）", "en": "a source that others keep taking from", "ex": "These journals can act as <b>milk cows</b>（③❸）", "mem": "比喻：一直被挤奶的对象。⚠️ 本篇的关键是 ③❺——这头奶牛<b>自己不得利</b>，奶全给了别人 ⟹ 38A 受益者是被引的作者。<br>近义俗语：cash cow 摇钱树（给主人赚钱），方向不同。", "syn": "cash cow（近）", "conf": "milk cow（被挤奶的）· cash cow（摇钱树）。"},
+  issue:{"w": "issue", "ipa": "/ˈɪʃuː/", "pos": "n.", "tags": ["core", "poly"], "cn": "<b>（报刊的）一期</b>；问题；发行", "en": "one edition of a magazine or journal", "ex": "every single article in an <b>issue</b>（③❸）", "mem": "⚠️ 熟词僻义：the latest issue 最新一期 · back issues 过刊。<br>v. 发行、发布：issue a statement 发表声明。", "syn": "edition · number", "conf": "issue（期、问题）· tissue（组织、纸巾）。"},
+  series:{"w": "a series of", "ipa": "/ə ˈsɪəriːz ɒv/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>一系列</b>、一组", "en": "several things of the same kind", "ex": "a specific paper or <b>a series of</b> papers（③❸）", "mem": "series 单复数同形；a series of ＋ 复数名词，谓语常用单数。<br>写作：The city has taken a series of measures to cut traffic.", "syn": "a set of · a string of", "conf": "series（系列）· serious（严肃的）· serial（连续的）。"},
+  instance:{"w": "in some instances", "ipa": "/ɪn sʌm ˈɪnstənsɪz/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>在某些情况下</b>", "en": "in some cases", "ex": "<b>In some instances</b>, there is absolutely no relationship（③❹）", "mem": "instance＝example / case：for instance 例如。<br>写作：In some instances, online classes work better than face-to-face ones.", "syn": "in some cases", "conf": "instance（实例）· instant（瞬间）· distance（距离）。"},
+  absolutely:{"w": "absolutely", "ipa": "/ˈæbsəluːtli/", "pos": "adv.", "tags": ["core"], "cn": "<b>完全地</b>、绝对", "en": "completely", "ex": "there is <b>absolutely</b> no relationship（③❹）", "mem": "absolutely no ＝ 一点也没有，语气比 no 强得多。<br>口语回答 Absolutely! ＝ 当然！", "syn": "completely · totally", "conf": "absolutely（完全）· obsoletely（过时地）。"},
+  peculiar:{"w": "peculiar", "ipa": "/pɪˈkjuːliə(r)/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>奇怪的</b>；特有的", "en": "strange or unusual", "ex": "The <b>peculiar</b> part is that（③❺）", "mem": "⚠️ peculiar to ＝ ……特有的：customs peculiar to this region。<br>本篇＝奇怪：作者用它提醒读者——奶牛期刊<b>不赚钱</b>，这违背常识（38 题的钥匙）。", "syn": "strange · odd", "conf": "peculiar（奇怪的）· particular（特定的）· popular（流行的）。"},
+  supposedly:{"w": "supposedly", "ipa": "/səˈpəʊzɪdli/", "pos": "adv.", "tags": ["core"], "cn": "<b>据说</b>、名义上", "en": "according to what is believed, though it may not be true", "ex": "the editor is <b>supposedly</b> working for（③❺）", "mem": "suppose v. → supposed adj. 被认为的 → supposedly。<br>⚠️ 带怀疑：「按说他在为这本刊工作」——实际上在为别的刊效力。", "syn": "allegedly · apparently", "conf": "supposedly（据说）· supposing（假如）。"},
+  profit:{"w": "profit", "ipa": "/ˈprɒfɪt/", "pos": "v.", "tags": ["core", "write"], "cn": "<b>获利</b>、得益；n. 利润", "en": "to get money or an advantage from something", "ex": "is not <b>profiting</b> at all（③❺）", "mem": "profit from sth 从……获益。profitable adj. 有利可图的 · non-profit 非营利的。<br>⚠️ not profiting at all ⟹ 奶牛期刊自己不得利（38A 的关键）。", "syn": "benefit · gain", "conf": "profit（利润）· prophet（先知）——同音。"},
+  practice:{"w": "practice", "ipa": "/ˈpræktɪs/", "pos": "n.", "tags": ["core", "poly"], "cn": "<b>做法</b>、惯例；练习；（医生、律师的）业务", "en": "a usual way of doing something", "ex": "Such <b>practices</b> can lead an article to accrue（③❻）", "mem": "⚠️ 熟词僻义：common practice 惯常做法 · in practice 实际上 · a medical practice 诊所。<br>Such practices 是<b>总括回指</b>，后面的结果就是奶牛的功能。", "syn": "custom · method", "conf": "practice（做法）· practise（英式动词：练习）· malpractice（不端行为）。"},
+  accrue:{"w": "accrue", "ipa": "/əˈkruː/", "pos": "v.", "tags": ["core"], "cn": "<b>积累</b>、逐渐增加", "en": "to increase gradually over time", "ex": "lead an article to <b>accrue</b> more than 150 citations（③❻）", "mem": "ac（加）＋ crue（长）⟹ 长出来。常用于利息、利益：interest accrues 利息累积。<br>与①❸ accumulate 同义。", "syn": "accumulate · build up", "conf": "accrue（积累）· accrual（应计）· crew（船员）。"},
+  insidious:{"w": "insidious", "ipa": "/ɪnˈsɪdiəs/", "pos": "adj.", "tags": ["core"], "cn": "<b>隐伏的</b>、暗中为害的", "en": "spreading gradually and secretly with harmful effects", "ex": "How <b>insidious</b> is this type of citation manipulation?（④❶）", "mem": "in（里）＋ sid（坐）⟹ 坐在里面不动声色 → 暗中为害。an insidious disease 潜伏性疾病。<br>④❷ 的例子就是在答「有多隐蔽」。", "syn": "sneaky · subtle", "conf": "insidious（隐伏的）· invidious（招人嫉妒的）· hideous（丑陋的）。"},
+  manipulation:{"w": "manipulation", "ipa": "/məˌnɪpjuˈleɪʃn/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>操纵</b>、摆布", "en": "dishonest control of something for your own advantage", "ex": "this type of citation <b>manipulation</b>（④❶）", "mem": "manipulate v. → manipulator n.（40 题干 citation manipulators）。<br>mani（手）＋ pul（满）⟹ 用手摆弄。写作：manipulate public opinion 操纵舆论。", "syn": "rigging · tampering", "conf": "manipulation（操纵）· manufacture（制造）· manuscript（手稿）。"},
+  consultant:{"w": "consultant", "ipa": "/kənˈsʌltənt/", "pos": "n.", "tags": ["core"], "cn": "<b>顾问</b>", "en": "a person who gives expert advice", "ex": "acting as author, editor, and <b>consultant</b>（④❷）", "mem": "一人三职：作者（写）、编辑（发）、顾问（教人怎么引）——一个人就能伪装成一个网络。<br>consult → consultant → consultancy（②❸）。", "syn": "adviser · counsellor", "conf": "consultant（顾问）· constant（恒定的）· consonant（辅音）。"},
+  provider:{"w": "provider", "ipa": "/prəˈvaɪdə(r)/", "pos": "n.", "tags": ["core"], "cn": "<b>提供者</b>", "en": "a person or company that supplies something", "ex": "15 journals as citation <b>providers</b>（④❷）", "mem": "provide v. → provider：service provider 服务提供商。<br>⚠️ 39A 借了 citation providers，但原文没有「竞争」。", "syn": "supplier · source", "conf": "provider（提供者）· divider（隔板）。"},
+  rampant:{"w": "rampant", "ipa": "/ˈræmpənt/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>猖獗的</b>、泛滥的", "en": "spreading in an uncontrolled way", "ex": "The problem is <b>rampant</b> in Scopus（④❸）", "mem": "rampant crime / corruption 猖獗的犯罪／腐败。<br>写作：Plagiarism is rampant on some campuses.", "syn": "widespread · unchecked", "conf": "rampant（猖獗的）· ramp（坡道）· rampart（城墙）。"},
+  database:{"w": "database", "ipa": "/ˈdeɪtəbeɪs/", "pos": "n.", "tags": ["core"], "cn": "<b>数据库</b>", "en": "a large set of data stored in a computer", "ex": "Scopus, a citation <b>database</b>（④❸）", "mem": "背景：Scopus 是爱思唯尔（Elsevier）旗下的文摘与引文数据库。<br>⚠️ 它是数据库，不是为打假而建——39D 说它 established to prevent 就错。", "syn": "—", "conf": "database（数据库）· data（数据）· debase（贬低）。"},
+  listing:{"w": "listing", "ipa": "/ˈlɪstɪŋ/", "pos": "n.", "tags": ["core", "poly"], "cn": "<b>（被）收录</b>、列入名单；上市", "en": "an entry on a list", "ex": "a <b>listing</b> in Scopus seems to be a criterion（④❹）", "mem": "⚠️ 熟词僻义：a stock-market listing 上市 · TV listings 电视节目表。本篇＝被数据库收录。", "syn": "inclusion · entry", "conf": "listing（收录）· listening（听）。"},
+  criterion:{"w": "criterion", "ipa": "/kraɪˈtɪəriən/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>标准</b>、准则（复数 criteria）", "en": "a standard used for judging something", "ex": "seems to be a <b>criterion</b> to be targeted（④❹）", "mem": "⚠️ 单数 criterion，复数 criteria（不加 s）。同类：phenomenon → phenomena。<br>写作：Grades should not be the only criterion for judging students.", "syn": "standard · benchmark", "conf": "criterion（标准）· critic（批评家）· criticism（批评）。"},
+  target:{"w": "target", "ipa": "/ˈtɑːɡɪt/", "pos": "v.", "tags": ["core", "write"], "cn": "<b>把……作为目标</b>、针对；n. 目标", "en": "to choose someone to attack or aim at", "ex": "a criterion to be <b>targeted</b>（④❹）", "mem": "be targeted ＝ 被盯上。target audience 目标受众。<br>④❹ 的意思：被 Scopus 收录 ⟹ 引用才「算数」⟹ 反而成了造假的靶子。", "syn": "aim at · single out", "conf": "target（目标）· tarnish（玷污）。"},
+  necessary:{"w": "necessary", "ipa": "/ˈnesəsəri/", "pos": "adj.", "tags": ["core"], "cn": "<b>必要的</b>、必需的", "en": "needed in order to do something", "ex": "all the data <b>necessary</b> to detect（⑤❶）", "mem": "the data necessary to do ＝ 做……所需的数据，necessary 后置作定语。<br>⚠️ 39B 用 has the capability 改写 has all the data necessary。", "syn": "required · essential", "conf": "necessary（必要的）· necessity（必需品）。"},
+  detect:{"w": "detect", "ipa": "/dɪˈtekt/", "pos": "v.", "tags": ["core", "write"], "cn": "<b>查出</b>、察觉", "en": "to discover or notice something hidden", "ex": "the data necessary to <b>detect</b> this malpractice（⑤❶）", "mem": "de（去掉）＋ tect（盖）⟹ 揭开盖子。detective 侦探 · detector 探测器。<br>39B identify ↔ detect。", "syn": "identify · spot", "conf": "detect（查出）· protect（保护）· deter（威慑）。"},
+  malpractice:{"w": "malpractice", "ipa": "/ˌmælˈpræktɪs/", "pos": "n.", "tags": ["core"], "cn": "<b>不端行为</b>、渎职", "en": "careless, wrong or illegal behaviour by a professional", "ex": "detect this <b>malpractice</b>（⑤❶）", "mem": "mal（坏）＋ practice（做法）。medical malpractice 医疗事故。<br>⚠️ 40A 由它推出「打官司」——原文只说不端，没说违法。", "syn": "misconduct · wrongdoing", "conf": "malpractice（不端）· malnutrition（营养不良）· malfunction（故障）。"},
+  redflag:{"w": "red flag", "ipa": "/red flæɡ/", "pos": "n.", "tags": ["phrase", "write"], "cn": "<b>危险信号</b>、警示信号", "en": "a sign that something may be wrong", "ex": "<b>Red flags</b> include a large number of citations（⑤❷）", "mem": "红旗＝警告。raise a red flag 引起警觉。<br>⚠️ 只是「信号」，不是定罪证据（背景：2016 年算法也只标嫌疑）。", "syn": "warning sign", "conf": "red flag（警示）· white flag（投降）· red tape（官僚作风）。"},
+  steerclear:{"w": "steer clear of", "ipa": "/stɪə klɪər ɒv/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>避开</b>、绕开", "en": "to avoid someone or something", "ex": "authors who wish to <b>steer clear of</b> citation cartel activities（⑤❸）", "mem": "steer 驾驶、操控方向 ⟹ 把方向盘打开、绕过去。<br>写作：Students should steer clear of essay-writing services.", "syn": "avoid · keep away from", "conf": "steer（驾驶）· stare（盯）· steel（钢）。"},
+  reviewer:{"w": "reviewer", "ipa": "/rɪˈvjuːə(r)/", "pos": "n.", "tags": ["core"], "cn": "<b>审稿人</b>；评论者", "en": "a person who evaluates a paper before publication", "ex": "an editor, a <b>reviewer</b>, or a support service（⑤❸）", "mem": "peer review 同行评审——学术期刊的把关环节。<br>⚠️ 本句把编辑、审稿人都列进「可能提不当要求的人」——把关人也会出问题。", "syn": "referee · assessor", "conf": "reviewer（审稿人）· viewer（观众）· revise（修改）。"},
+  inappropriate:{"w": "inappropriate", "ipa": "/ˌɪnəˈprəʊpriət/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>不恰当的</b>", "en": "not suitable", "ex": "add <b>inappropriate</b> references（⑤❸）", "mem": "in（不）＋ appropriate（恰当的）。<br>⚠️ 只是「不恰当」——40A 把它夸大成要打官司。", "syn": "unsuitable · improper", "conf": "inappropriate（不当的）· appropriate（恰当的；v. 挪用）。"},
+  reference:{"w": "reference", "ipa": "/ˈrefrəns/", "pos": "n.", "tags": ["core", "poly"], "cn": "<b>参考文献</b>；提及；推荐信", "en": "a book or article mentioned in a piece of writing", "ex": "add inappropriate <b>references</b>（⑤❸）", "mem": "⚠️ 熟词僻义：a letter of reference 推荐信 · with reference to 关于。<br>本篇 references ＝ citations（换词不换义）。", "syn": "citation · source", "conf": "reference（参考文献）· preference（偏好）· inference（推论）。"},
+  oblige:{"w": "oblige", "ipa": "/əˈblaɪdʒ/", "pos": "v.", "tags": ["core", "poly"], "cn": "<b>答应</b>、照办；迫使", "en": "to do what someone asks", "ex": "do not <b>oblige</b>（⑤❸）", "mem": "⚠️ 两个意思：be obliged to ＝ 不得不（被迫）；单用 oblige ＝ 帮忙、照办：I’m happy to oblige.<br>本篇＝别照办。obligation n. 义务。", "syn": "comply · go along", "conf": "oblige（照办）· obligation（义务）· oblique（倾斜的）。"},
+  report:{"w": "report", "ipa": "/rɪˈpɔːt/", "pos": "v.", "tags": ["core", "poly"], "cn": "<b>举报</b>、报告；报道", "en": "to tell someone in authority about wrongdoing", "ex": "do <b>report</b> the request to the journal（⑤❸）", "mem": "⚠️ report sth to sb ＝ 向某人举报某事；report a crime 报案。<br>do report 中 do 是强调助动词 ⟹ <b>一定要</b>举报（40D reveal）。", "syn": "reveal · expose", "conf": "report（举报）· support（支持）· import（进口）。"},
+  status:{"w": "status", "ipa": "/ˈsteɪtəs/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>地位</b>、身份；状态", "en": "social or professional position", "ex": "the <b>status</b> they have in scientific circles（36D）", "mem": "social status 社会地位 · status quo 现状。<br>⚠️ 36D 错：原文的 reputation 属机构、prestige 属论文，没有一个属于科学家本人。", "syn": "standing · rank", "conf": "status（地位）· statue（雕像）· stature（身材、声望）。"},
+  circle:{"w": "circles", "ipa": "/ˈsɜːklz/", "pos": "n.", "tags": ["core", "poly"], "cn": "<b>界</b>、圈子", "en": "a group of people with the same interest or job", "ex": "the status they have in scientific <b>circles</b>（36D）", "mem": "⚠️ 熟词僻义：用复数，academic circles 学术界 · in political circles 在政界。＝ community。", "syn": "community · world", "conf": "circle（圈子）· cycle（循环）· circus（马戏团）。"},
+  client:{"w": "client", "ipa": "/ˈklaɪənt/", "pos": "n.", "tags": ["core"], "cn": "<b>客户</b>、委托人", "en": "a person who pays for professional services", "ex": "recommend journals to their <b>clients</b>（37A）", "mem": "顾问、律师的「客户」用 client；商店的顾客用 customer。<br>⚠️ 原文里期刊本身就是咨询公司的客户（37A 关系反）。", "syn": "customer", "conf": "client（客户）· clinic（诊所）· climate（气候）。"},
+  extra:{"w": "extra", "ipa": "/ˈekstrə/", "pos": "adj.", "tags": ["core"], "cn": "<b>额外的</b>", "en": "more than is usual or necessary", "ex": "ask authors to include <b>extra</b> citations（37C）", "mem": "37C extra citations ↔ ②❸ add a number of citations（加上若干引用）。", "syn": "additional", "conf": "extra（额外的）· extract（提取）· extreme（极端的）。"},
+  boost:{"w": "boost", "ipa": "/buːst/", "pos": "v.", "tags": ["core", "write"], "cn": "<b>提高</b>、推动", "en": "to increase or improve something", "ex": "<b>boost</b> citation counts for certain authors（38A）", "mem": "boost confidence / sales / the economy。名词 a boost to …。<br>⚠️ 38A：③❻ 一篇文章当年 150 多次被引 ＝ boost。", "syn": "raise · increase", "conf": "boost（提高）· boast（自夸）· booth（摊位）。"},
+  instruct:{"w": "instruct", "ipa": "/ɪnˈstrʌkt/", "pos": "v.", "tags": ["core"], "cn": "<b>指导</b>、教；指示", "en": "to teach or tell someone how to do something", "ex": "<b>instruct</b> first-time contributors in citation（38C）", "mem": "instruct sb in sth 教某人某事；instruct sb to do 指示某人做。<br>⚠️ 38C 错：first-time 无据，且「指导」偏正面，原文是操纵。", "syn": "teach · guide", "conf": "instruct（指导）· construct（建造）· obstruct（阻碍）。"},
+  readership:{"w": "readership", "ipa": "/ˈriːdəʃɪp/", "pos": "n.", "tags": ["core"], "cn": "<b>读者人数</b>、读者群", "en": "the number or type of people who read a publication", "ex": "increase the <b>readership</b> of new journals（38D）", "mem": "-ship 表集体：membership 会员人数 · viewership 观众数。<br>⚠️ 38D：奶牛期刊的引用是给别人的，它自己读者多少原文没提。", "syn": "audience · circulation", "conf": "readership（读者群）· leadership（领导）。"},
+  foster:{"w": "foster", "ipa": "/ˈfɒstə(r)/", "pos": "v.", "tags": ["core", "write"], "cn": "<b>促进</b>、培养；收养", "en": "to encourage something to develop", "ex": "It <b>fosters</b> competition among citation providers（39A）", "mem": "foster creativity / cooperation 促进创造力／合作。foster parents 养父母。<br>写作好词：Reading clubs foster a love of books.", "syn": "promote · encourage", "conf": "foster（促进）· fester（溃烂）· faster（更快）。"},
+  capability:{"w": "capability", "ipa": "/ˌkeɪpəˈbɪləti/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>能力</b>、潜能", "en": "the ability to do something", "ex": "It has the <b>capability</b> to identify suspicious citations（39B）", "mem": "capable adj. → capability。<br>⚠️ 39B 只说<b>有能力</b>，不说它已经在做——与⑤❶ has all the data necessary 分寸一致。", "syn": "ability · capacity", "conf": "capability（能力）· capacity（容量）· capable（能干的）。"},
+  hinder:{"w": "hinder", "ipa": "/ˈhɪndə(r)/", "pos": "v.", "tags": ["core", "write"], "cn": "<b>阻碍</b>", "en": "to make it difficult for something to happen", "ex": "It <b>hinders</b> the growth of “international” journals（39C）", "mem": "hinder sb from doing ＝ 阻止。hindrance n.。<br>⚠️ 39C 方向反：④❸ Scopus 收录了大量「国际」期刊。", "syn": "hamper · obstruct", "conf": "hinder（阻碍）· hind（后面的）· behind（后面）。"},
+  establish:{"w": "establish", "ipa": "/ɪˈstæblɪʃ/", "pos": "v.", "tags": ["core", "write"], "cn": "<b>建立</b>、创立；确立", "en": "to start an organization or system", "ex": "It is <b>established</b> to prevent citation manipulation（39D）", "mem": "establishment n. 机构；建立。<br>⚠️ 39D 把「有能力查出」偷换成「为防范而建立」——能力 ≠ 目的。", "syn": "set up · found", "conf": "establish（建立）· estimate（估计）· establishment（机构）。"},
+  dealwith:{"w": "deal with", "ipa": "/diːl wɪð/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>应对</b>、处理", "en": "to take action to solve a problem", "ex": "to <b>deal with</b> citation manipulators（40 题干）", "mem": "deal with ＝ cope with ＝ handle。<br>写作：Governments must deal with the problem of ageing.", "syn": "cope with · handle", "conf": "deal with（处理）· deal in（经营）。"},
+  legalaction:{"w": "take legal action", "ipa": "/teɪk ˈliːɡl ˈækʃn/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>采取法律行动</b>、起诉", "en": "to start a court case", "ex": "<b>Take legal action</b>（40A）", "mem": "= sue sb / take sb to court。<br>⚠️ 40A 错：原文 malpractice、inappropriate 都只是「不端、不当」，没说违法。", "syn": "sue · go to court", "conf": "legal（合法的）· illegal（违法的）· legitimate（正当的）。"},
+  apology:{"w": "apology", "ipa": "/əˈpɒlədʒi/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>道歉</b>", "en": "a statement saying you are sorry", "ex": "Demand an <b>apology</b>（40B）", "mem": "apologize v.：apologize to sb for sth。<br>⚠️ 40B 常识上说得通，原文没有——建议题只认原文。", "syn": "—", "conf": "apology（道歉）· anthology（文集）· apologetic（愧疚的）。"},
+  reveal:{"w": "reveal", "ipa": "/rɪˈviːl/", "pos": "v.", "tags": ["core", "write"], "cn": "<b>揭露</b>、透露", "en": "to make something known that was secret", "ex": "<b>Reveal</b> their misconduct（40D）", "mem": "re（反）＋ veal（面纱）⟹ 揭开面纱。revelation n.。<br>⚠️ 40D reveal ↔ ⑤❸ report。", "syn": "expose · disclose", "conf": "reveal（揭露）· revel（狂欢）· review（复习）。"},
+  misconduct:{"w": "misconduct", "ipa": "/ˌmɪsˈkɒndʌkt/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>不端行为</b>", "en": "bad or dishonest behaviour, especially by a professional", "ex": "Reveal their <b>misconduct</b>（40D）", "mem": "mis（错）＋ conduct（行为）。academic misconduct 学术不端。<br>40D 的 their misconduct 回指⑤❸ 那个「要你加不当参考文献」的请求。", "syn": "malpractice · wrongdoing", "conf": "misconduct（不端）· conduct（行为；指挥）· misconception（误解）。"}
+};
+const panel=document.getElementById('panel');
+const isMobile=()=>window.innerWidth<=900;
+function badge(t){const m={core:'核心',phrase:'短语',poly:'僻义',write:'写作'};return `<span class="badge b-${t}">${m[t]}</span>`}
+function showCard(k,el){
+  const d=V[k];if(!d)return;
+  document.querySelectorAll('.tk.active').forEach(x=>x.classList.remove('active'));
+  if(el)el.classList.add('active');
+  panel.innerHTML=`<button class="close" onclick="document.getElementById('panel').classList.remove('open')">收起</button>
+    <div class="wcard">
+      <div class="head"><span class="w">${d.w}</span><span class="ipa">${d.ipa}</span><span class="pos">${d.pos}</span>${d.tags.map(badge).join('')}</div>
+      <div class="cn">${d.cn}</div><div class="en-def">${d.en}</div>
+      <div class="row r-ex"><b>原文</b>${d.ex}</div>
+      <div class="row r-mem"><b>怎么记 / 考点</b>${d.mem}</div>
+      <div class="row r-syn"><b>同义 / 同族</b>${d.syn}</div>
+      <div class="row r-conf"><b>易混 / 提醒</b>${d.conf}</div>
+    </div>`;
+  if(isMobile())panel.classList.add('open');
+}
+document.querySelectorAll('.tk').forEach(t=>t.addEventListener('click',e=>{e.stopPropagation();showCard(t.dataset.w,t)}));
+
+function tz(btn){btn.closest('.para').classList.toggle('showzh')}
+let allOn=false;
+function toggleAll(){allOn=!allOn;document.querySelectorAll('.para').forEach(p=>p.classList.toggle('showzh',allOn))}
+function go(id){const s=document.getElementById(id);if(!s)return;s.scrollIntoView({behavior:'smooth',block:'center'});s.style.transition='none';s.style.opacity=.3;setTimeout(()=>{s.style.transition='opacity .8s';s.style.opacity=1},80)}
+
+document.querySelectorAll('.q').forEach(q=>{
+  const ans=+q.dataset.ans;
+  q.querySelectorAll('.opt').forEach((o,i)=>o.addEventListener('click',()=>{
+    if(q.classList.contains('done'))return;
+    q.classList.add('done');
+    if(i!==ans)o.classList.add('wrong');
+    q.querySelectorAll('.opt')[ans].classList.add('right');
+  }));
+});
+
+const vg=document.getElementById('vgrid');
+function renderGrid(f){
+  vg.innerHTML='';
+  Object.keys(V).forEach(k=>{
+    const d=V[k];
+    if(f!=='all'&&!d.tags.includes(f))return;
+    const div=document.createElement('div');div.className='vitem';
+    div.innerHTML=`<span class="badges">${d.tags.map(badge).join('')}</span><div class="w">${d.w}</div><div class="cn">${d.cn}</div>`;
+    div.addEventListener('click',()=>{showCard(k,null);if(!isMobile())window.scrollTo({top:0,behavior:'smooth'})});
+    vg.appendChild(div);
+  });
+}
+renderGrid('all');
+document.querySelectorAll('.fbtn').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.fbtn').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderGrid(b.dataset.f);
+}));
+
+const yd=document.getElementById('yd');let sel='',ydHold=0,ydT=0;
+/* 触屏：点按钮会先把选区清掉 → selectionchange 立刻把按钮藏了 → 点击落空。改成延迟隐藏 ＋ 按下即锁定 */
+const ydTouch=window.matchMedia&&matchMedia('(pointer:coarse)').matches;
+function ydHide(){clearTimeout(ydT);ydHold=0;yd.style.display='none'}
+document.addEventListener('selectionchange',function(){
+  const s=window.getSelection();const t=s?s.toString().trim():'';
+  if(t&&/^[a-zA-Z' -]{2,40}$/.test(t)){
+    sel=t;clearTimeout(ydT);
+    try{const r=s.getRangeAt(0).getBoundingClientRect();
+      yd.style.left=Math.max(8,Math.min(r.left,window.innerWidth-110))+'px';
+      yd.style.top=(r.bottom+(ydTouch?30:8))+'px';yd.style.display='block';}catch(e){}
+  }else if(!ydHold){clearTimeout(ydT);ydT=setTimeout(function(){if(!ydHold)yd.style.display='none'},ydTouch?900:0)}
+});
+['pointerdown','touchstart','mousedown'].forEach(function(ev){yd.addEventListener(ev,function(){ydHold=1;clearTimeout(ydT)},{passive:true})});
+yd.addEventListener('click',function(){
+  const u='https://dict.youdao.com/result?word='+encodeURIComponent(sel)+'&lang=en';
+  let w=null;try{w=window.open(u,'_blank')}catch(e){}
+  if(!w)location.href=u;
+  ydHide()});
+document.addEventListener('click',function(e){if(e.target!==yd&&!window.getSelection().toString())ydHide()});
+
+function imgAll(b){const on=document.body.classList.toggle('stx-allimg');b.textContent=on?'收起原卷':'原卷对照';
+  if(on)document.querySelectorAll('.para img.strip').forEach(im=>im.loading='eager')}
+</script>
+<script src="img/strip_boxes_2023.js?v=4"></script>
+<script src="_strip_lookup.js?v=8"></script>
+<script src="_strip_text.js?v=19"></script>
+<script src="_fault_attr.js"></script>
+</body>
+</html>

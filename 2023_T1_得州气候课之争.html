@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2023 英一 Text 1 · 得州的气候课之争：天气转凉，会场升温</title>
+<style>
+  :root{
+    --bg:#faf9f6; --card:#ffffff; --ink:#2b2b2b; --muted:#8a8578;
+    --accent:#8b5e34; --accent-soft:#f3e9dd; --line:#e8e3d8;
+    --hl:#fdf3d8; --hl-border:#e0b84d;
+    --green:#3e7a4e; --green-soft:#e8f2ea;
+    --red:#b04a3a; --red-soft:#f9e9e6;
+    --blue:#3d6a8a; --blue-soft:#e7eff5;
+    --purple:#6d5a8e; --purple-soft:#eeeaf5;
+    --serif:"Georgia","Songti SC",serif;
+    --sans:-apple-system,"PingFang SC","Helvetica Neue",sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#1c1a17; --card:#26231f; --ink:#e8e4dc; --muted:#9a948a;
+      --accent:#d0a06a; --accent-soft:#3a3127; --line:#3a362f;
+      --hl:#3d3520; --hl-border:#b08c3a;
+      --green:#7fb98d; --green-soft:#26362b;
+      --red:#d98876; --red-soft:#3d2a26;
+      --blue:#8ab3d0; --blue-soft:#26323d;
+      --purple:#a996c8; --purple-soft:#302a3d;
+    }
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;padding-bottom:120px}
+  .wrap{max-width:1100px;margin:0 auto;padding:24px 20px}
+  .back{font-size:.85rem;color:var(--muted);text-decoration:none}
+  .back:hover{color:var(--accent)}
+  header{margin:14px 0 28px}
+  header h1{font-family:var(--serif);font-size:1.7rem;line-height:1.3}
+  header .sub{color:var(--muted);margin-top:6px;font-size:.9rem}
+  .tags{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+  .tag{font-size:.75rem;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);border:1px solid var(--line)}
+  .tag.warn{background:var(--red-soft);color:var(--red);border-color:var(--red)}
+  .tag.ok{background:var(--green-soft);color:var(--green);border-color:var(--green)}
+
+  .layout{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:24px;align-items:start}
+  main{min-width:0}
+  @media (max-width:900px){.layout{grid-template-columns:minmax(0,1fr)}}
+
+  section.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:24px}
+  h2{font-size:1.05rem;letter-spacing:.05em;color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+  h2 .n{font-size:.72rem;background:var(--accent);color:var(--card);border-radius:6px;padding:1px 7px}
+  h3{font-size:.95rem;color:var(--accent);margin:18px 0 10px}
+
+  .para{margin-bottom:22px}
+  .para .en{font-family:var(--serif);font-size:1.06rem;line-height:1.9}
+  .pno{color:var(--muted);font-size:.75rem;user-select:none;margin-right:6px}
+  .tk{background:var(--hl);border-bottom:2px solid var(--hl-border);border-radius:3px;padding:0 2px;cursor:pointer;transition:filter .15s}
+  .tk:hover{filter:brightness(.93)}
+  .tk.active{outline:2px solid var(--hl-border)}
+  .ls{border-bottom:2px dotted var(--blue);cursor:pointer}
+  .para .zh{display:none;margin-top:10px;padding:10px 14px;background:var(--blue-soft);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:.93rem}
+  .para.showzh .zh{display:block}
+  .zbtn{float:right;margin-left:10px;font-size:.72rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:6px;padding:2px 9px;cursor:pointer}
+  .zbtn:hover{color:var(--accent);border-color:var(--accent)}
+  .allbtn{font-size:.78rem;border:1px solid var(--accent);background:none;color:var(--accent);border-radius:8px;padding:4px 12px;cursor:pointer;margin-left:auto}
+
+  aside{position:sticky;top:20px}
+  #panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;min-height:180px}
+  #panel .hint{color:var(--muted);font-size:.88rem;text-align:center;padding:30px 10px}
+  .wcard .head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .wcard .w{font-family:var(--serif);font-size:1.35rem;font-weight:bold}
+  .wcard .ipa{color:var(--muted);font-size:.85rem}
+  .wcard .pos{font-size:.72rem;color:var(--purple);background:var(--purple-soft);padding:1px 8px;border-radius:999px}
+  .wcard .badge{font-size:.7rem;padding:1px 8px;border-radius:999px}
+  .b-core{background:var(--red-soft);color:var(--red)}
+  .b-phrase{background:var(--blue-soft);color:var(--blue)}
+  .b-poly{background:var(--purple-soft);color:var(--purple)}
+  .b-write{background:var(--green-soft);color:var(--green)}
+  .wcard .cn{margin-top:8px;font-size:1rem;font-weight:600}
+  .wcard .en-def{color:var(--muted);font-size:.86rem;font-style:italic;margin-top:2px}
+  .wcard .row{margin-top:10px;font-size:.86rem;padding:8px 10px;border-radius:8px}
+  .wcard .row>b:first-child{font-size:.72rem;display:block;margin-bottom:2px;letter-spacing:.06em}
+  .r-ex{background:var(--hl)} .r-ex b{color:var(--hl-border)}
+  .r-mem{background:var(--green-soft)} .r-mem b{color:var(--green)}
+  .r-syn{background:var(--blue-soft)} .r-syn b{color:var(--blue)}
+  .r-conf{background:var(--red-soft)} .r-conf b{color:var(--red)}
+  #panel .close{display:none}
+  @media (max-width:900px){
+    aside{position:fixed;left:0;right:0;bottom:0;z-index:50;padding:0 8px 8px}
+    #panel{box-shadow:0 -6px 24px rgba(0,0,0,.18);max-height:55vh;overflow-y:auto;display:none}
+    #panel.open{display:block}
+    #panel .close{display:block;float:right;border:none;background:var(--line);border-radius:8px;padding:2px 10px;cursor:pointer;color:var(--ink)}
+  }
+
+  .q{margin-bottom:22px;padding-bottom:18px;border-bottom:1px dashed var(--line)}
+  .q:last-child{border:none;margin-bottom:0;padding-bottom:0}
+  .q .stem{font-weight:600;font-family:var(--serif)}
+  .qt{font-size:.7rem;color:var(--blue);background:var(--blue-soft);border-radius:999px;padding:1px 8px;margin-right:6px;vertical-align:2px}
+  .opts{margin-top:10px;display:grid;gap:8px}
+  .opt{border:1px solid var(--line);border-radius:10px;padding:8px 12px;cursor:pointer;font-size:.93rem;font-family:var(--serif);transition:all .15s}
+  .opt:hover{border-color:var(--accent)}
+  .q.done .opt{cursor:default}
+  .opt.right{background:var(--green-soft);border-color:var(--green)}
+  .opt.wrong{background:var(--red-soft);border-color:var(--red)}
+  .expl{display:none;margin-top:12px;background:var(--accent-soft);border-radius:10px;padding:12px 14px;font-size:.9rem}
+  .q.done .expl{display:block}
+  .expl b{color:var(--accent)}
+  .expl .loc{font-family:var(--serif);font-style:italic;background:var(--hl);padding:1px 4px;border-radius:3px}
+  .fail{background:var(--red-soft);border:1px solid var(--red);border-radius:10px;padding:10px 13px;margin-bottom:10px;font-size:.89rem}
+  .fail b{color:var(--red)}
+  .waver{background:var(--hl);border:1px solid var(--hl-border);border-radius:10px;padding:10px 13px;margin-bottom:10px;font-size:.89rem}
+
+  .sent{margin-bottom:20px}
+  .sent .src{font-family:var(--serif);font-size:1rem;background:var(--blue-soft);padding:12px 14px;border-radius:10px;border-left:3px solid var(--blue)}
+  .sent .anat{margin-top:8px;font-size:.9rem}
+  .sent .anat li{margin:4px 0 4px 18px}
+  .sent .tr{margin-top:8px;font-size:.92rem;color:var(--muted)}
+  .skel{color:var(--red);font-weight:600}
+
+  .filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+  .fbtn{font-size:.8rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:999px;padding:4px 14px;cursor:pointer}
+  .fbtn.on{background:var(--accent);color:var(--card);border-color:var(--accent)}
+  .vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
+  .vitem{border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer;transition:border-color .15s}
+  .vitem:hover{border-color:var(--accent)}
+  .vitem .w{font-family:var(--serif);font-weight:bold}
+  .vitem .cn{font-size:.85rem;color:var(--muted)}
+  .vitem .badges{float:right}
+
+  .wb{display:grid;gap:10px}
+  .wbi{border-left:3px solid var(--green);background:var(--green-soft);border-radius:0 10px 10px 0;padding:10px 14px;font-size:.92rem}
+  .wbi .p{font-family:var(--serif);font-weight:600}
+  .wbi .u{color:var(--muted);font-size:.85rem}
+
+  .flow{display:grid;gap:8px;font-size:.92rem}
+  .flow .fi{border:1px solid var(--line);border-radius:10px;padding:9px 13px}
+  .flow .fi b{color:var(--accent)}
+
+  .ctab{width:100%;border-collapse:collapse;font-size:.86rem;margin-top:8px}
+  .ctab th,.ctab td{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
+  .ctab th{background:var(--accent-soft);color:var(--accent);font-size:.8rem;white-space:nowrap}
+  .ctab code{background:var(--hl);padding:0 3px;border-radius:3px}
+  .tabwrap{overflow-x:auto}
+  .ok{color:var(--green);font-weight:700}
+  .no{color:var(--red);font-weight:700}
+  .tl{display:grid;gap:10px;margin-top:6px}
+  .tli{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:start;border:1px solid var(--line);border-radius:10px;padding:10px 13px}
+  .tli .mark{font-family:var(--serif);font-weight:700;color:var(--accent);background:var(--accent-soft);border-radius:8px;padding:4px 10px;white-space:nowrap;font-size:.85rem}
+
+  .arrow{display:grid;gap:8px;margin-top:8px}
+  .arrow .ai{border:1px solid var(--line);border-radius:10px;padding:10px 13px;font-size:.9rem}
+  .arrow .ai.old{background:var(--red-soft);border-color:var(--red)}
+  .arrow .ai.new{background:var(--green-soft);border-color:var(--green)}
+  .chain{font-family:var(--serif);font-size:.95rem;background:var(--hl);border:1px solid var(--hl-border);border-radius:10px;padding:10px 14px;margin:8px 0;overflow-x:auto}
+
+  #yd{position:fixed;z-index:60;display:none;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:4px 12px;font-size:.8rem;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+  footer{color:var(--muted);font-size:.8rem;text-align:center;margin-top:30px}
+  .att{display:grid;gap:8px;margin-top:10px}
+  .atti{border:1px solid var(--line);border-radius:10px;padding:9px 13px;font-size:.9rem}
+  .atti b{font-family:var(--serif)}
+  .atti.no2{background:var(--red-soft);border-color:var(--red)}
+  .atti.yes{background:var(--green-soft);border-color:var(--green)}
+  .atti,.expl,.wbi,.zh,.fi,.ai,figcaption,p{overflow-wrap:anywhere}
+
+  /* 2021 起：原文以原卷扫描句条呈现 */
+  .sn{margin:0 0 14px}
+  .sn .pno{display:block;margin-bottom:4px;font-size:.78rem;line-height:1.6}
+  img.strip{display:block;width:100%;max-width:760px;height:auto;background:#fff;border:1px solid var(--line);border-radius:6px;cursor:pointer}
+  .sent .src img.strip{margin-top:6px;cursor:default}
+  .kw{margin-top:5px;font-size:.88rem;line-height:2.1;font-family:var(--serif)}
+  @media (prefers-color-scheme: dark){img.strip{filter:invert(.9) hue-rotate(180deg)}}
+  .sn,.sent .src{overflow-x:auto}
+  @media (max-width:700px){img.strip{width:640px;max-width:none}.sn::after{content:'← 句条可左右滑动 →';display:block;font-size:.7rem;color:var(--muted);margin-top:2px}}
+
+  /* 2023 起：流式版——识别好的句子在段落里连排，像 2007–2020 */
+  .para .en{font-family:var(--serif);font-size:1.02rem;line-height:1.9}
+  .stx-flow .para .en .pno{margin-right:4px}
+  .stx-flow .para .sn:not(.stx-on) .kw{margin-bottom:8px}
+</style>
+
+</head>
+<body class="stx-flow">
+<div class="wrap">
+  <a class="back" href="index.html">◀ 返回英语复盘中心</a>
+  <header>
+    <h1>得州的气候课之争：天气转凉，会场升温</h1>
+    <div class="sub">2023 年英语（一）真题 · Text 1 · 408 词 · 8 段 · 建议做题 18 min · 话题：教育×气候变化（来源：<i>Financial Times</i>《金融时报》2021-11-01，原题 <i>Schools Face Calls to Boost Environmental Teaching</i>，据黄皮书）</div>
+    <div class="tags">
+      <span class="tag">正确答案：21C 22B 23A 24C 25D</span><span class="tag">题型：写作目的 ＋ 人物观点 ＋ 研究结论 ＋ 人物观点 ＋ 末段推理</span><span class="tag">难度：文章好读，22／25 两题拼「谁说的、说谁」</span><span class="tag">⚠️ 原定冲刺模考卷，已按你的决定提前开复盘</span>
+    </div>
+  </header>
+
+  <div class="layout">
+    <main>
+      <!-- ========== 全文脉络 ========== -->
+      <section class="card">
+        <h2><span class="n">00</span>读前一分钟 · 全文脉络（做完题再看也行）</h2>
+        <div class="flow">
+          <div class="fi"><b>①段 引子</b>：得州天气刚从酷热里转凉，州教育委员会的会场却要「升温」——官员们要争论学校怎么教气候变化。<b>天气是幌子，会议的火药味才是正题</b>（21 题）。</div>
+          <div class="fi"><b>②③段 两个人、两种立场</b>：委员 Hardy 站能源业一边，反对修改针对十一二岁孩子的科学标准，理由是「得州靠能源吃饭」；Quinn（监督公共教育的非营利组织）反驳：这类委员把学者一辈子的研究<b>随手当成又一种错误观点打发掉</b>（22 题）。</div>
+          <div class="fi"><b>④段 由点到面</b>：得州的争论只是全国的缩影——研究者、政策制定者、师生都在加紧要求学校多讲气候变化的事实。</div>
+          <div class="fi"><b>⑤段 数据</b>：一项研究给各州气候教育打分，<b>只有勉强一半的州拿到 B+ 以上</b>；得州垫底拿 F，而且它的教材卖到全国，坏影响被放大（23 题）。</div>
+          <div class="fi"><b>⑥⑦⑧段 三个问题</b>：① 州标准只是个作用有限的基准——决定权在地方，标准写得再好也不等于课堂会教（24 题）；② 气候变化在低龄课程和生物、化学等大科目里体现不足；③ 官方教材体现了科学共识，可<b>能源行业协会赞助的非官方教材</b>正被发到老师手里（25 题）。</div>
+          <div class="fi" style="border-color:var(--accent)">📌 <b>一句话主旨</b>：借得州一场会议引出全国性的问题——美国学校的气候变化教育不够，且容易被利益方左右。<br>📌 <b>结构套路</b>：新闻事件引入 → 正反人物对垒 → 扩到全国 → 数据定性 → 逐条列问题。<b>五道题一段一题、顺序出题</b>，读一段做一题即可。</div>
+        </div>
+      </section>
+
+      <!-- ========== 原文精读 ========== -->
+      <section class="card">
+        <h2><span class="n">01</span>原文精读 <button class="allbtn" onclick="toggleAll()">全文意译 开/关</button> <button class="allbtn" id="imgall" onclick="imgAll(this)">原卷对照</button></h2>
+        <p style="font-size:.8rem;color:var(--muted);margin-bottom:14px">🟡 黄色高亮 = 重难点词/短语，点击右侧出卡片 ｜ 蓝色虚线 = 长难句，点击跳到精析 ｜ 每段「意」= 段落意译 ｜ 选中任意其他单词浮出「查有道」 ｜ 原文由你的浏览器从原卷识别成文字（首次约 3 秒，之后秒开）；「原卷对照」可逐句看扫描原图、改识别错字</p>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">①</span>
+            <div class="sn" data-go="l1_1"><img class="strip" src="img/2023_T1/s1_1.png" alt="①❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="cool">cooled</span> · <span class="tk" data-w="extreme">extreme heat</span> · <span class="tk" data-w="temperature">temperature</span> · <span class="tk" data-w="board">Board</span> · <span class="tk" data-w="debate">debate</span></div></div>
+          </div>
+          <div class="zh"><b>①段意：</b>得州的天气在前阵子的酷热之后也许已经转凉，可本月在奥斯汀召开的州教育委员会会议上，气氛会很热烈——官员们要争论得州学校该怎样讲授气候变化。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">②</span>
+            <div class="sn"><img class="strip" src="img/2023_T1/s2_1.png" alt="②❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="sympathise">sympathises with</span> · <span class="tk" data-w="sector">sector</span> · <span class="tk" data-w="resist">resisting</span> · <span class="tk" data-w="preteen">pre-teen</span></div></div>
+            <div class="sn" data-go="l2_2"><img class="strip" src="img/2023_T1/s2_2.png" alt="②❷ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="panic">panic</span> · <span class="tk" data-w="push">pushing</span></div></div>
+            <div class="sn"><img class="strip" src="img/2023_T1/s2_3.png" alt="②❸ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="recognise">recognise</span></div></div>
+            <div class="sn"><img class="strip" src="img/2023_T1/s2_4.png" alt="②❹ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="bread">where your bread is buttered</span></div></div>
+          </div>
+          <div class="zh"><b>②段意：</b>帕特·哈代赞同能源行业的看法，正在抵制针对十一二岁学生的科学教育标准修改提案。她说，反对全球气候变化恐慌的科学家，和推波助澜的科学家一样多；得州是能源大州，大家得认清这一点——要记住自己的饭碗在哪儿。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">③</span>
+            <div class="sn"><img class="strip" src="img/2023_T1/s3_1.png" alt="③❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="dispute">sharply dispute</span></div></div>
+            <div class="sn" data-go="l3_2"><img class="strip" src="img/2023_T1/s3_2.png" alt="③❷ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="board">Board members</span> · <span class="tk" data-w="casually">casually</span> · <span class="tk" data-w="dismiss">dismiss</span> · <span class="tk" data-w="scholar">scholars</span> · <span class="tk" data-w="misguided">misguided</span> · <span class="tk" data-w="strategist">strategist</span> · <span class="tk" data-w="nonprofit">non-profit</span> · <span class="tk" data-w="monitor">monitors</span></div></div>
+          </div>
+          <div class="zh"><b>③段意：</b>大多数科学家和专家强烈反对哈代的观点。得州自由网络（一个监督公共教育的非营利组织）的资深传播策略师丹·奎因说，像她这样的委员，随随便便就把学者和科学家毕生的研究成果当成又一种误入歧途的观点，不予理会。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">④</span>
+            <div class="sn" data-go="l4_1"><img class="strip" src="img/2023_T1/s4_1.png" alt="④❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="reflect">reflect</span> · <span class="tk" data-w="fierce">fierce</span> · <span class="tk" data-w="policymaker">policymakers</span> · <span class="tk" data-w="stepup">step up</span></div></div>
+          </div>
+          <div class="zh"><b>④段意：</b>这类争论折射出全美范围的激烈讨论：研究者、政策制定者、教师和学生都在加紧呼吁，要求学校更加重视讲授气候变化的事实。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">⑤</span>
+            <div class="sn" data-go="l5_1"><img class="strip" src="img/2023_T1/s5_1.png" alt="⑤❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="nonprofit">non-profit</span> · <span class="tk" data-w="address">address</span> · <span class="tk" data-w="barely">barely half</span> · <span class="tk" data-w="grade">grade</span></div></div>
+            <div class="sn" data-go="l5_2"><img class="strip" src="img/2023_T1/s5_2.png" alt="⑤❷ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="performer">performers</span> · <span class="tk" data-w="populous">populous</span> · <span class="tk" data-w="disproportionate">disproportionate influence</span></div></div>
+          </div>
+          <div class="zh"><b>⑤段意：</b>美国国家科学教育中心（由科学家和教师组成的非营利组织）去年做了一项研究，考察全美各州公立学校在科学课上如何处理气候变化这一主题，结果只有勉强一半的州拿到 B+ 或更高的评分。表现最差的十个州里有几个人口大州，得州就在其中——它拿了最低的 F；又因为得州的教材在外州也卖得很广，它的影响力大得与之不相称。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">⑥</span>
+            <div class="sn" data-go="l6_1"><img class="strip" src="img/2023_T1/s6_1.png" alt="⑥❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="caution">cautions</span> · <span class="tk" data-w="benchmark">limited benchmark</span> · <span class="tk" data-w="decentralise">decentralises</span> · <span class="tk" data-w="board">school boards</span></div></div>
+            <div class="sn"><img class="strip" src="img/2023_T1/s6_2.png" alt="⑥❷ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="performer">performer</span></div></div>
+          </div>
+          <div class="zh"><b>⑥段意：</b>该中心副主任格伦·布兰奇提醒说，在一个把决策权下放给地方学校委员会的国家，制定州一级的科学标准只是一个作用有限的基准。他说，即便某个州的科学标准被评为出色，「也不等于课堂上就会教」。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">⑦</span>
+            <div class="sn" data-go="l7_1"><img class="strip" src="img/2023_T1/s7_1.png" alt="⑦❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="integrate">integrated into</span> · <span class="tk" data-w="represent">represented</span> · <span class="tk" data-w="curricula">curricula</span></div></div>
+            <div class="sn"><img class="strip" src="img/2023_T1/s7_2.png" alt="⑦❷ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="prominent">prominent</span> · <span class="tk" data-w="socialstudies">social studies</span></div></div>
+          </div>
+          <div class="zh"><b>⑦段意：</b>另一个问题是：气候变化虽然已很好地融进了某些科目和某些年龄段（比如高中的地球与空间科学），在低龄儿童的课程里、在生物和化学这类覆盖面更广的科目里，却没有得到同样充分的体现；在许多社会学科课程中，它的分量也不突出。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">⑧</span>
+            <div class="sn" data-go="l8_1"><img class="strip" src="img/2023_T1/s8_1.png" alt="⑧❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="guideline">guidelines</span> · <span class="tk" data-w="consensus">consensus</span> · <span class="tk" data-w="convey">convey</span> · <span class="tk" data-w="biased">biased</span> · <span class="tk" data-w="perspective">perspectives</span> · <span class="tk" data-w="distribute">distributed</span></div></div>
+            <div class="sn"><img class="strip" src="img/2023_T1/s8_2.png" alt="⑧❷ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="sponsor">sponsored by</span> · <span class="tk" data-w="association">associations</span></div></div>
+          </div>
+          <div class="zh"><b>⑧段意：</b>布兰奇指出，尽管越来越多的官方指南和教科书反映了关于气候变化的科学共识，观点更带倾向性的非官方教学材料却正被分发到教师手中，其中就有能源行业协会赞助的材料。</div>
+        </div>
+      </section>
+
+      <!-- ========== 题目 ========== -->
+      <section class="card">
+        <h2><span class="n">02</span>题目与解析（点选项即判 · 再看解析）</h2>
+
+        <div class="q" data-ans="2" id="q21">
+          <p class="stem"><span class="qt">写作目的</span>21. In Paragraph 1, the weather in Texas is mentioned to ______.</p>
+          <div class="opts">
+            <div class="opt">[A] <span class="tk" data-w="forecast">forecast</span> a policy shift in Texas schools.</div>
+            <div class="opt">[B] stress the consequences of climate change.</div>
+            <div class="opt">[C] indicate the <span class="tk" data-w="atmosphere">atmosphere</span> at the board meeting.</div>
+            <div class="opt">[D] draw the public’s attention to energy <span class="tk" data-w="shortage">shortages</span>.</div>
+          </div>
+          <div class="expl"><b>答案 C</b>　①段只有一句，骨架是「天气<b>may have cooled</b>……<b>but</b> 会议上 <span class="loc">the temperature will be high</span>」。may 让步、but 转折，重心在后半句；<b>temperature 一词两用</b>——前半句暗指天气的温度，后半句说的是会场的火药味（激烈程度）。as 引出原因：官员们要争论气候变化怎么教。所以提天气是为了<b>反衬</b>会议之「热」，即 atmosphere（气氛）。<br><b>干扰项：</b>A 由「天气」联想到「预报」（forecast），又把 change 的主体从气候偷换成学校政策——文中没有任何政策转向的预告。B 首段关注的是「怎么教气候变化」，没讲气候变化的后果。D 把②段的 energy sector 联想成「能源短缺」，shortages 在文中无出处。<br><b>技巧：</b>开篇事例题，答案一律往<b>上一层</b>找：事例本身不是答案，它引出的话题才是。先看段内的转折词（but）锁定重心，再看事例与重心之间的<b>相似点</b>——这里是「温度」：天气降温 vs 会场升温。正确项往往是对原文修辞的直白翻译（temperature → atmosphere）。</div>
+        </div>
+
+        <div class="q" data-ans="1" id="q22">
+          <p class="stem"><span class="qt">人物观点</span>22. What does Quinn think of Hardy?</p>
+          <div class="opts">
+            <div class="opt">[A] She <span class="tk" data-w="exaggerate">exaggerates</span> the existing panic.</div>
+            <div class="opt">[B] She denies the value of scientific work.</div>
+            <div class="opt">[C] She shows no concern for pre-teens.</div>
+            <div class="opt">[D] She expresses <span class="tk" data-w="contradictory">self-contradictory</span> views.</div>
+          </div>
+          <div class="expl"><b>答案 B</b>　题干问 <b>Quinn</b> 怎么看 Hardy ⟹ 只看 Quinn 开口的③❷：委员们 <span class="loc">casually dismiss the career work of scholars and scientists</span>，把它当作 <span class="loc">just another misguided opinion</span>。dismiss…as（当作……打发掉）、misguided（误入歧途的）、casually（随手）三处全是否定 ⟹ 她<b>否认科学研究的价值</b>。<br><b>干扰项：</b>A <b>人物—观点错配</b>——②❷ 是 Hardy 说「有科学家在<b>推动</b>恐慌」，选项变成 Quinn 说 Hardy「<b>夸大</b>恐慌」。C 曲解②❶：Hardy 反对修改针对 pre-teen 学生的标准，恰恰说明她在关注这个群体（只是立场不同），谈不上漠不关心。D 断章取义：sympathises with（支持能源业）和 resisting（反对修改标准）对象不同——<b>改标准对能源业不利，所以她反对</b>，前后一致。<br><b>技巧：</b>人物观点题先看<b>题干里的人名是谁</b>，再只去<b>这个人说话的地方</b>找。本题 A、C、D 的原料全来自第②段（Hardy 的话），题干问的却是 Quinn（第③段）——<b>定位段之外的选项可以先排</b>。找到位置后，抓情感词（dismiss、misguided）定方向。</div>
+        </div>
+
+        <div class="q" data-ans="0" id="q23">
+          <p class="stem"><span class="qt">研究结论</span>23. The study mentioned in Paragraph 5 shows that ______.</p>
+          <div class="opts">
+            <div class="opt">[A] climate education is <span class="tk" data-w="insufficient">insufficient</span> at state public schools.</div>
+            <div class="opt">[B] policymakers have little <span class="tk" data-w="drive">drive</span> for science education.</div>
+            <div class="opt">[C] Texas is <span class="tk" data-w="reluctant">reluctant</span> to rewrite its science textbooks.</div>
+            <div class="opt">[D] environmental teaching in some states lacks <span class="tk" data-w="supervision">supervision</span>.</div>
+          </div>
+          <div class="expl"><b>答案 A</b>　⑤❶ 给研究结果：<span class="loc">gave barely half of US states a grade B+ or higher</span>——barely half 是带态度的「才一半」；⑤❷ 举例：得州拿了最低分 F，而且教材卖到外州，坏影响被放大。<b>总体结果＋最差的例子</b> ⟹ 州立公立学校的气候教育整体不够（insufficient）。A 是对两句的<b>概括</b>，原文没有 insufficient 这个词。<br><b>干扰项：</b>B 与④段相反——policymakers 是「加紧要求」的一方，不是没动力。C 过度推断：⑤❷ 只说得州教材<b>卖得广</b>，没说它<b>不愿改写</b>。D 把⑥❶ 的「决策权下放」曲解成「缺乏监督」，而且⑥段已经不是题干问的那项研究。<br><b>技巧：</b>研究／数据题，正确项多是<b>结论的概括词</b>（insufficient、limited、mixed），干扰项爱<b>借别段的词</b>（B 借④、D 借⑥）——先确认选项的原料是不是来自题干给的那一段。</div>
+        </div>
+
+        <div class="q" data-ans="2" id="q24">
+          <p class="stem"><span class="qt">人物观点</span>24. According to Branch, state-level science standards in the US ______.</p>
+          <div class="opts">
+            <div class="opt">[A] call for regular <span class="tk" data-w="revision">revision</span>.</div>
+            <div class="opt">[B] require urgent application.</div>
+            <div class="opt">[C] have limited influence.</div>
+            <div class="opt">[D] <span class="tk" data-w="cater">cater to</span> local needs.</div>
+          </div>
+          <div class="expl"><b>答案 C</b>　⑥❶ Branch 用 <b>cautions</b>（告诫）开口：州级标准 <span class="loc">is only one limited benchmark</span>，原因是 <span class="loc">decentralises decisions to local school boards</span>（决策权在地方学校委员会）。⑥❷ 再补一刀：标准评得再好，<span class="loc">that does not mean it will be taught</span>。两句合起来 ⟹ 州标准<b>影响力有限</b>；limited 原词复现。<br><b>干扰项：</b>A「定期修订」文中未提，是从「标准有问题」主观推出的对策。B 把「标准好也未必落实」偷换成「标准迫切需要实施」——原文说的是<b>落实不了</b>，不是<b>急着落实</b>。D 把 local school boards（地方学校委员会）换成 local needs（地方需求）：<b>同一个 local，换了中心词</b>；何况文中也没说标准是否迎合地方。<br><b>技巧：</b>人物话里的抽象词（limited benchmark）看不透时，<b>往后读一句</b>——作者通常会马上换个说法解释（Even if … does not mean …）。看到 caution / warn 开口，后面多半是「别高估」。</div>
+        </div>
+
+        <div class="q" data-ans="3" id="q25">
+          <p class="stem"><span class="qt">末段推理</span>25. It is implied in the last paragraph that climate change teaching in some schools ______.</p>
+          <div class="opts">
+            <div class="opt">[A] agrees to major public demands.</div>
+            <div class="opt">[B] reflects teachers’ personal biases.</div>
+            <div class="opt">[C] may <span class="tk" data-w="misrepresent">misrepresent</span> the energy sector.</div>
+            <div class="opt">[D] can be <span class="tk" data-w="sway">swayed by</span> external forces.</div>
+          </div>
+          <div class="expl"><b>答案 D</b>　⑧❶ 是让步—转折：<b>even if</b> 官方指南和教材反映了科学共识（让步，不是重点），主句才是重点——观点<span class="loc">more biased</span>的<b>非官方</b>教材正被发到老师手里。⑧❷ 点出来源：<span class="loc">sponsored by energy industry associations</span>。推理链：能源行业出钱 → 带倾向的教材进课堂 → 教学会受<b>外部力量</b>影响。<br><b>干扰项：</b>A 把⑧❶ 让步部分「体现科学共识」曲解为「顺应公众需求」，public demands 无出处。B <b>偏见的主人被换了</b>——带偏见的是非官方<b>教材</b>，不是教师。C <b>因果倒置</b>：原文是能源业影响教学，选项成了教学歪曲能源业。<br><b>技巧：</b>末段推理题先把段内逻辑理顺：<b>even if 后是让步，主句才是作者要说的</b>；再把具体的人／物往上抽象一层（energy industry associations → external forces）。另外，②❹ Hardy 那句「记住你的饭碗在哪」早已埋下伏笔：<b>利益会左右教学</b>——首尾呼应时，答案方向最稳。</div>
+        </div>
+      </section>
+
+      <!-- ========== 长难句 ========== -->
+      <section class="card" id="sents">
+        <h2><span class="n">03</span>长难句精析（正文蓝色虚线句）</h2>
+
+        <div class="sent" id="l1_1">
+          <div class="src"><b>s1（①❶）</b><img class="strip" src="img/2023_T1/s1_1.png" alt="①❶ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">让步—转折</span>：<code>The weather … may have cooled …, but the temperature will be high …</code>——may have done 是对过去的推测（「也许已经转凉」），<b>may 本身就带让步味</b>，but 后才是重心。</li>
+            <li><b>since</b> 在这里是介词「自……以来」：since the recent extreme heat ＝ 自前阵子的酷热以来。</li>
+            <li><b>as</b> 引导原因状语从句：as officials debate …（因为官员们要争论……），as 后的 how 从句作 debate 的宾语。</li>
+            <li>⭐ <b>temperature 双关</b>：前半句的「天气」让读者以为说温度，后半句落到「会议」上 ⟹ 是情绪的热度。21 题 C 的 atmosphere 就是这层意思的直译。</li>
+          </ul>
+          <div class="tr">意：得州天气在前阵子的酷热之后也许已经转凉，但本月奥斯汀的州教育委员会会议将会气氛火热，因为官员们要争论得州学校该如何讲授气候变化。</div>
+        </div>
+
+        <div class="sent" id="l2_2">
+          <div class="src"><b>s2（②❷）</b><img class="strip" src="img/2023_T1/s2_2.png" alt="②❷ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">as many A as B</span>：<code>There are as many scientists working against … as there are those who are pushing it</code>——<b>同级比较</b>：反对恐慌的科学家「和」推动恐慌的科学家「一样多」。</li>
+            <li><b>working against …</b> 是现在分词作后置定语，修饰 scientists；<b>those who …</b> 里的 those ＝ those scientists。</li>
+            <li><b>it</b> 指代前面的 the panic（of global climate change）——push it ＝ 推波助澜。</li>
+            <li>⭐ 22A 的陷阱就从这句来：<b>说话人是 Hardy，说的是「别的科学家」</b>。选项把它改成「Quinn 认为 Hardy 夸大恐慌」，观点的主人与对象全换了。</li>
+          </ul>
+          <div class="tr">意：她声称，反对全球气候变化恐慌的科学家，与推动这种恐慌的科学家一样多。</div>
+        </div>
+
+        <div class="sent" id="l3_2">
+          <div class="src"><b>s3（③❷）</b><img class="strip" src="img/2023_T1/s3_2.png" alt="③❷ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">倒装的引语句</span>：直接引语在前，<code>says Dan Quinn</code> 主谓倒装在后——外刊引语的标准格式，<b>说话人在句末</b>，做题时要往后找人名。</li>
+            <li>引语的主干：<code>Board members like her casually dismiss A as B</code>——dismiss A as B ＝「把 A 当作 B 打发掉」。like her 是介词短语修饰 members（像她这样的委员）。</li>
+            <li><b>Dan Quinn 之后两层同位语</b>：senior communications strategist at …（他的职位），a non-profit group that monitors public education（解释那个组织）——<b>人物身份就是立场</b>：监督公共教育的人自然站在科学一边。</li>
+            <li>⭐ 22 题正源：casually、dismiss、misguided 三处否定 ⟹ B denies the value of scientific work。</li>
+          </ul>
+          <div class="tr">意：得州自由网络（一个监督公共教育的非营利组织）的资深传播策略师丹·奎因说，像她这样的委员会成员，随随便便就把学者和科学家毕生的研究当作又一种误入歧途的观点，不屑一顾。</div>
+        </div>
+
+        <div class="sent" id="l4_1">
+          <div class="src"><b>s4（④❶）</b><img class="strip" src="img/2023_T1/s4_1.png" alt="④❶ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：<code>Such debates reflect fierce discussions across the US</code>——<b>Such debates 回指①–③段</b>的得州之争，本句是全文「由点到面」的转折点。</li>
+            <li><b>as</b> 引导原因（或伴随）状语从句：as researchers, policymakers, teachers and students step up demands …——四个并列主语，谓语 step up。</li>
+            <li><code>demands for a greater focus on teaching about …</code>：demand for ＋ 名词（对……的要求）；focus on ＋ doing。</li>
+            <li>⭐ 23B 与本句相反：policymakers 是<b>加紧要求</b>的一方，不是 little drive。</li>
+          </ul>
+          <div class="tr">意：这类争论折射出全美范围的激烈讨论，因为研究者、政策制定者、教师和学生都在加紧要求学校更加重视讲授气候变化的事实。</div>
+        </div>
+
+        <div class="sent" id="l5_1">
+          <div class="src"><b>s5（⑤❶）</b><img class="strip" src="img/2023_T1/s5_1.png" alt="⑤❶ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：<code>A study … gave barely half of US states a grade B+ or higher</code>——give sb sth 双宾语：给一半的州打出 B+ 以上。<b>主语和谓语之间隔了二十多个词</b>，先找到 gave 再回头。</li>
+            <li>主语的三层修饰：① last year（时间）② by the National Center for Science Education（执行者）＋ 同位语 a non-profit group of scientists and teachers ③ looking at how … address climate change …（现在分词作后置定语，说明研究内容）。</li>
+            <li>looking at 后的 how 从句：how state public schools across the country address climate change in science classes——address ＝ 应对、处理（熟词僻义）。</li>
+            <li>⭐ <b>barely half</b>：「才一半」，带说话人的不满 ⟹ 23A insufficient 的根。</li>
+          </ul>
+          <div class="tr">意：美国国家科学教育中心（一个由科学家和教师组成的非营利组织）去年开展的一项研究，考察了全美各州公立学校在科学课上如何处理气候变化问题，结果只给勉强一半的州打出了 B+ 或更高的分数。</div>
+        </div>
+
+        <div class="sent" id="l5_2">
+          <div class="src"><b>s6（⑤❷）</b><img class="strip" src="img/2023_T1/s5_2.png" alt="⑤❷ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">完全倒装</span>：<code>Among the 10 worst performers were some of the most populous states</code>——介词短语 Among … 提前，谓语 were 放到主语前；<b>真正的主语是 some of the most populous states</b>，所以 were 用复数。</li>
+            <li><b>including Texas</b>，后接非限制性定语从句 which <b>was given</b> … <b>and has</b> …——一个 which 管两个谓语（被打 F；影响不相称）。</li>
+            <li><b>because</b> 引出原因：its textbooks are widely sold elsewhere——<b>影响力大的原因是教材卖得广</b>，不是「不愿改教材」（23C 过度推断）。</li>
+          </ul>
+          <div class="tr">意：表现最差的 10 个州里有几个人口大州，其中就有得州——它拿到了最低分 F，又因教材在外州广泛销售而具有不相称的影响力。</div>
+        </div>
+
+        <div class="sent" id="l6_1">
+          <div class="src"><b>s7（⑥❶）</b><img class="strip" src="img/2023_T1/s6_1.png" alt="⑥❶ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：<code>Glenn Branch … cautions that …</code>——caution that ＝ 告诫说；the centre’s deputy director 是同位语。</li>
+            <li>that 宾语从句里，<b>动名词短语作主语</b>：<code>setting state-level science standards is only one limited benchmark</code>，谓语 is 用单数。</li>
+            <li><code>in a country that decentralises decisions to local school boards</code>——that 定语从句修饰 country；decentralise A to B ＝ 把 A 下放给 B。<b>这个定语从句交代了 limited 的原因</b>。</li>
+            <li>⭐ 24 题正源 limited benchmark；D 项把 local school boards 换成 local needs。</li>
+          </ul>
+          <div class="tr">意：该中心副主任格伦·布兰奇提醒说，在一个把决策权下放给地方学校委员会的国家，制定州一级的科学标准只是一个作用有限的基准。</div>
+        </div>
+
+        <div class="sent" id="l7_1">
+          <div class="src"><b>s8（⑦❶）</b><img class="strip" src="img/2023_T1/s7_1.png" alt="⑦❶ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">表语从句套让步从句</span>：<code>Another issue is that while …, it is not as well represented in …</code>——that 引导表语从句；从句里 while 引导让步（虽然），主句是 it is not as well represented。</li>
+            <li><b>两个破折号</b>夹着插入语：such as earth and space sciences in high schools，举例说明「融入得好」的科目——读的时候先跳过。</li>
+            <li><b>not as well represented in A and in B</b>：两个 in 并列——A＝curricula for younger children，B＝subjects that are more widely taught（that 定语从句），后面 such as biology and chemistry 再举例。</li>
+            <li>本句是「三个问题」里的第二个：<b>气候变化讲得好的地方少，覆盖面最广的地方反而讲得少</b>。</li>
+          </ul>
+          <div class="tr">意：另一个问题是，尽管气候变化已很好地融入某些科目和某些年龄段（比如高中的地球与空间科学），但在面向低龄儿童的课程中、在生物和化学这类更普遍开设的科目中，它没有得到同样充分的体现。</div>
+        </div>
+
+        <div class="sent" id="l8_1">
+          <div class="src"><b>s9（⑧❶）</b><img class="strip" src="img/2023_T1/s8_1.png" alt="⑧❶ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：<code>Branch points out that …</code>；that 从句里先插一个 <b>even if</b> 让步从句（逗号隔开），再接主句。</li>
+            <li>让步部分：<code>even if a growing number of … reflect …</code>（越来越多的官方指南和教材体现了科学共识）——<b>a growing number of ＋ 复数名词</b>，谓语 reflect 用复数。</li>
+            <li>主句：<code>unofficial educational materials … are being distributed to teachers</code>——现在进行时的被动，「正在被分发」；that convey more biased perspectives 是定语从句修饰 materials。</li>
+            <li>⭐ 25 题：让步部分（官方教材体现共识）是 A 项的原料；主句里偏见的主人是 <b>materials</b>，不是 teachers（B 项）。</li>
+          </ul>
+          <div class="tr">意：布兰奇指出，即便越来越多的官方指南和教科书体现了关于气候变化的科学共识，观点更带倾向性的非官方教学材料却正被分发到教师手中。</div>
+        </div>
+      </section>
+
+      <!-- ========== 词汇复盘 ========== -->
+      <section class="card">
+        <h2><span class="n">04</span>词汇复盘（点卡片看详情）</h2>
+        <div class="filters">
+          <button class="fbtn on" data-f="all">全部</button>
+          <button class="fbtn" data-f="core">核心词</button>
+          <button class="fbtn" data-f="phrase">短语</button>
+          <button class="fbtn" data-f="poly">熟词僻义</button>
+          <button class="fbtn" data-f="write">写作可用</button>
+        </div>
+        <div class="vgrid" id="vgrid"></div>
+      </section>
+
+      <!-- ========== 写作素材 ========== -->
+      <section class="card">
+        <h2><span class="n">05</span>可搬进作文/翻译的素材</h2>
+        <p style="font-size:.9rem;margin-bottom:12px">本篇话题——<b>教育改革、环境保护、利益集团与公共利益</b>——正对大作文里的「教育」「环保」「社会责任」类题目。英文例句都是按原文句式自拟的，只借骨架。</p>
+        <div class="wb">
+          <div class="wbi"><div class="p">X may have cooled, but the temperature will be high at Y.</div><div class="u">「X 也许已经降温，但 Y 那边要升温了」——用一个具体场景引出争论的<b>开篇双关</b>。可套：The summer heat may have faded, but the debate over online classes is only heating up.</div></div>
+          <div class="wbi"><div class="p">There are as many A as there are B.</div><div class="u">「A 和 B 一样多」——写正反两派「势均力敌」时用：There are as many people who welcome remote work as there are those who resent it.</div></div>
+          <div class="wbi"><div class="p">dismiss A as just another B</div><div class="u">「把 A 当成又一个 B 打发掉」——批评轻视某事的态度：We should not dismiss young people’s concerns as just another passing trend.</div></div>
+          <div class="wbi"><div class="p">Such debates reflect fierce discussions across …</div><div class="u">「这类争论折射出更大范围的激烈讨论」——<b>由个案扩到全社会</b>的过渡句，放在第二段开头：Such debates reflect fierce discussions across society about how to balance screen time and study.</div></div>
+          <div class="wbi"><div class="p">step up demands / efforts for …</div><div class="u">「加紧呼吁 / 加大力度」——建议段必备：The government should step up efforts to promote garbage sorting.</div></div>
+          <div class="wbi"><div class="p">X is only one limited benchmark; a high score does not mean …</div><div class="u">「X 只是作用有限的基准，分数高不等于……」——<b>反驳唯指标论</b>：Exam scores are only one limited benchmark; a high score does not mean a student can think independently.</div></div>
+          <div class="wbi"><div class="p">while A is well integrated into …, it is not as well represented in …</div><div class="u">「A 在某处融入得好，在另一处却没有充分体现」——写「发展不平衡」的对照句：While digital tools are well integrated into city schools, they are not as well represented in rural classrooms.</div></div>
+          <div class="wbi"><div class="p">Even if …, materials that convey biased perspectives are being …</div><div class="u">「即便……，带偏见的内容仍在……」——让步后亮出隐忧：Even if most platforms ban false advertising, content that conveys misleading claims is still being spread.</div></div>
+          <div class="wbi"><div class="p">话题词包：climate education · scientific consensus · vested interests</div><div class="u">写「环保教育 / 利益集团影响公共决策」时直接可用：vested interests（既得利益）＝ ②❹ 那句「饭碗在哪」的书面说法；scientific consensus 科学共识；sponsored materials 赞助材料。</div></div>
+        </div>
+      </section>
+    </main>
+    <aside>
+      <div id="panel">
+        <button class="close" onclick="document.getElementById('panel').classList.remove('open')">收起</button>
+        <div class="hint">点正文里的<b>黄色高亮词</b>，或下方词汇卡片，这里出详情。</div>
+      </div>
+    </aside>
+  </div>
+</div>
+<button id="yd">查有道</button>
+
+<script>
+const V={
+  cool:{"w": "cool", "ipa": "/kuːl/", "pos": "v.", "tags": ["core", "poly"], "cn": "（天气）<b>变凉</b>；（情绪、局势）冷却、降温", "en": "to become less hot; to become calmer", "ex": "The weather … may have <b>cooled</b>（①）", "mem": "may have cooled＝对过去的推测「可能已经转凉了」。<br>⭐ 本句与 temperature 是一对：天气在 cool，会议在 heat up——21 题 C 就是从这对反差里出的。<br>▸ 引申：Tensions have cooled. 紧张局势缓和了。", "syn": "chill · calm down · ease", "conf": "cool（变凉）↔ heat up（升温）；cool off（冷静下来）。"},
+  extreme:{"w": "extreme", "ipa": "/ɪkˈstriːm/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>极端的</b>、极度的", "en": "very great in degree", "ex": "the recent <b>extreme heat</b>（①）", "mem": "extreme weather 极端天气 · extreme poverty 赤贫 · go to extremes 走极端。<br>写作：气候、环保类作文的高频词。", "syn": "severe · intense · drastic", "conf": "extreme（程度极端）vs extremist（极端分子）。"},
+  temperature:{"w": "temperature", "ipa": "/ˈtemprətʃə/", "pos": "n.", "tags": ["core", "poly"], "cn": "温度；<b>（争论、情绪的）热度、激烈程度</b>", "en": "the degree of heat; the level of excitement or tension", "ex": "the <b>temperature</b> will be high at the … meeting（①）", "mem": "⭐⭐⭐ 21 题题眼：<b>同一个词前半句管天气、后半句管会场</b>——作者用 but 把「天气的温度」换成「会议的火药味」。<br>▸ 外刊常见：raise / lower the temperature of the debate 让辩论升温 / 降温。", "syn": "heat · intensity · tension", "conf": "熟词僻义：看到 temperature 出现在「会议、辩论」后面，就是比喻义。"},
+  board:{"w": "board", "ipa": "/bɔːd/", "pos": "n.", "tags": ["core", "poly"], "cn": "<b>委员会</b>、董事会（≠木板）", "en": "a group of people who manage an organization", "ex": "the State <b>Board</b> of Education（①）· <b>Board members</b> like her（③）", "mem": "State Board of Education 州教育委员会；board of directors 董事会；school board 学校委员会（⑥ local school boards）。<br>⚠️ on board 在船上 / 参与其中。", "syn": "committee · council · panel", "conf": "board（委员会）· aboard（在船上）· abroad（国外）。"},
+  debate:{"w": "debate", "ipa": "/dɪˈbeɪt/", "pos": "v./n.", "tags": ["core", "write"], "cn": "<b>辩论、争论</b>；仔细考虑", "en": "to discuss a subject with different opinions", "ex": "as officials <b>debate</b> how climate change is taught（①）", "mem": "debate 后可直接接 how/whether 从句：debate whether to …。<br>④ Such <b>debates</b> 用名词回指前三段——<b>such + 名词＝本段承上的接口</b>。", "syn": "argue · discuss · dispute", "conf": "debate（正式辩论）· argue（争吵、主张）· dispute（质疑、争端）。"},
+  sympathise:{"w": "sympathise with", "ipa": "/ˈsɪmpəθaɪz/", "pos": "phr.", "tags": ["phrase", "poly"], "cn": "<b>赞同、支持</b>（某种观点）；同情", "en": "to support or agree with an opinion", "ex": "who <b>sympathises with</b> the views of the energy sector（②❶）", "mem": "⚠️ 熟词僻义：sympathise with + 观点／事业 ＝「赞同、站在……一边」，不是「同情」。<br>英式拼写 -ise（美式 -ize）。<br>⭐ 22 题 D 的陷阱就在这里：赞同能源业 + 反对修改标准，是同一立场的两面，不矛盾。", "syn": "side with · support · agree with", "conf": "sympathy（同情）vs empathy（共情）。"},
+  sector:{"w": "sector", "ipa": "/ˈsektə/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>行业、领域</b>；部门", "en": "a part of an economy or society", "ex": "the energy <b>sector</b>（②❶）", "mem": "the public / private sector 公共 / 私营部门；the service sector 服务业。", "syn": "industry · field · branch", "conf": "sector（行业）· section（部分）· segment（片段）。"},
+  resist:{"w": "resist", "ipa": "/rɪˈzɪst/", "pos": "v.", "tags": ["core"], "cn": "<b>抵制、反对</b>；抵抗", "en": "to oppose or refuse to accept", "ex": "is <b>resisting</b> proposed changes to science standards（②❶）", "mem": "resist + 名词 / doing；resistance n. 抵制；resistant adj. 有抵抗力的。<br>⭐ 选项里 reluctant（23C）与 resist 意思相近，但主体换成了 Texas、对象换成了 textbooks——主体不对，词再像也不选。", "syn": "oppose · reject · fight against", "conf": "resist（抵制）· insist（坚持）· persist（坚持不懈）。"},
+  preteen:{"w": "pre-teen", "ipa": "/ˌpriːˈtiːn/", "pos": "adj./n.", "tags": ["core"], "cn": "<b>十一二岁的</b>（孩子）", "en": "a child aged 11 or 12", "ex": "science standards for <b>pre-teen</b> pupils（②❶）", "mem": "pre-（之前）+ teen（十几岁）＝ 进入 13–19 岁之前 ⟹ 书上译作「十一二岁」。<br>22 题 C 曲解了这里：Hardy 反对修改针对这群孩子的标准，<b>恰恰说明她在关注</b>这群孩子，谈不上 no concern。", "syn": "tween · preadolescent", "conf": "teen（13–19）· teenager · adolescent（青春期）。"},
+  panic:{"w": "panic", "ipa": "/ˈpænɪk/", "pos": "n./v.", "tags": ["core"], "cn": "<b>恐慌</b>", "en": "sudden strong fear", "ex": "all the <b>panic</b> of global climate change（②❷）", "mem": "⭐ 22A 的原料：说「有科学家在<b>助推恐慌</b>」的是 Hardy，选项却说 Hardy <b>夸大恐慌</b>——观点的主人被换了。<br>panic-buying 恐慌性抢购；in a panic 惊慌失措。", "syn": "alarm · fear · hysteria", "conf": "panic（恐慌）· panicked（过去式要加 k）。"},
+  push:{"w": "push", "ipa": "/pʊʃ/", "pos": "v.", "tags": ["core", "poly"], "cn": "<b>推动、鼓吹</b>（某种主张）", "en": "to try hard to make people accept something", "ex": "those who are <b>pushing</b> it（②❷）", "mem": "push it 的 it 指 the panic——「推波助澜」。<br>▸ push for 力争；push an agenda 推销某种议程。", "syn": "promote · advocate · drive", "conf": "push（推动）· pushy（咄咄逼人的）。"},
+  recognise:{"w": "recognise", "ipa": "/ˈrekəɡnaɪz/", "pos": "v.", "tags": ["core"], "cn": "<b>承认、认识到</b>；认出", "en": "to accept that something is true", "ex": "we need to <b>recognise</b> that（②❸）", "mem": "英式 -ise。recognise that … ＝ 承认……这一事实；recognition n. 承认、认可。", "syn": "acknowledge · accept · realise", "conf": "recognise（承认）· realise（意识到）· identify（识别）。"},
+  bread:{"w": "know where one’s bread is buttered", "ipa": "—", "pos": "idiom", "tags": ["phrase", "write"], "cn": "<b>知道自己的利益在哪</b>（谁给饭吃就向着谁）", "en": "to know who can help you and act to please them", "ex": "remember where your <b>bread is buttered</b>（②❹）", "mem": "⭐ 字面「面包哪一面抹了黄油」⟹ 好处从哪来。Hardy 这句话把立场亮得很直白：<b>得州靠能源吃饭</b>，所以别跟能源业对着干。<br>⟹ 这句话就是 25 题 D「外部力量」的伏笔：利益会左右教学内容。", "syn": "know which side one’s bread is buttered on", "conf": "同类习语：bite the hand that feeds you（恩将仇报）。"},
+  dispute:{"w": "dispute", "ipa": "/dɪˈspjuːt/", "pos": "v./n.", "tags": ["core", "write"], "cn": "<b>反驳、质疑</b>；争端", "en": "to say that something is not true", "ex": "<b>sharply dispute</b> Hardy’s views（③❶）", "mem": "sharply dispute ＝ 强烈反对（sharply 加强语气）。<br>beyond dispute 无可争辩；a trade dispute 贸易争端。", "syn": "challenge · contest · question", "conf": "dispute（质疑）· despise（鄙视）· dispose（处理）。"},
+  casually:{"w": "casually", "ipa": "/ˈkæʒuəli/", "pos": "adv.", "tags": ["core"], "cn": "<b>随意地、漫不经心地</b>", "en": "without care or serious thought", "ex": "<b>casually dismiss</b> the career work of scholars（③❷）", "mem": "casual adj. 随便的、非正式的（casual clothes 便装）。<br>⭐ casually 给 dismiss 又加了一层轻蔑：不是论证后反驳，是<b>看都不看就打发掉</b> ⟹ 22B denies the value。", "syn": "carelessly · offhandedly", "conf": "casual（随便的）· causal（因果的，注意字母顺序）。"},
+  dismiss:{"w": "dismiss … as …", "ipa": "/dɪsˈmɪs/", "pos": "phr.", "tags": ["phrase", "core", "write"], "cn": "<b>把……视为……而不予理会</b>", "en": "to treat something as unimportant", "ex": "dismiss the career work of scholars … <b>as</b> just another misguided opinion（③❷）", "mem": "⭐⭐⭐ 22 题正源：dismiss A as B ＝「把 A 当作 B 打发掉」——<b>否定 A 的价值</b>。<br>▸ 另义：解雇（dismiss an employee）；驳回（dismiss a case）。<br>写作：Some people dismiss reading as a waste of time.", "syn": "reject · brush aside · write off", "conf": "dismiss（不予理会）· dismay（沮丧）。"},
+  scholar:{"w": "scholar", "ipa": "/ˈskɒlə/", "pos": "n.", "tags": ["core"], "cn": "<b>学者</b>", "en": "a person who studies a subject in depth", "ex": "the career work of <b>scholars</b> and scientists（③❷）", "mem": "scholarship ① 奖学金 ② 学术成就。scholarly adj. 学术的。", "syn": "academic · researcher", "conf": "scholar（学者）· scholarship（奖学金）。"},
+  misguided:{"w": "misguided", "ipa": "/ˌmɪsˈɡaɪdɪd/", "pos": "adj.", "tags": ["core"], "cn": "<b>误入歧途的、判断错误的</b>", "en": "based on wrong ideas", "ex": "just another <b>misguided</b> opinion（③❷）", "mem": "mis-（错）+ guided（被引导）＝ 被引错了路。<br>⭐ 与 dismiss 一起构成 Quinn 的双重否定——这两个词才是 22 题要找的情感词。", "syn": "mistaken · wrong-headed · ill-judged", "conf": "mis- 家族：misrepresent（25C）· misinterpret · mislead。"},
+  strategist:{"w": "strategist", "ipa": "/ˈstrætədʒɪst/", "pos": "n.", "tags": ["core"], "cn": "<b>策略师</b>、战略家", "en": "an expert in planning", "ex": "senior communications <b>strategist</b>（③❷）", "mem": "strategy 策略 → strategic adj. 战略的 → strategist 制定策略的人。<br>人物身份信息：题目常在人物身份里藏立场——Quinn 所在组织「监督公共教育」，他自然站在科学家一边。", "syn": "planner · tactician", "conf": "strategy（战略）· tactic（战术）。"},
+  nonprofit:{"w": "non-profit", "ipa": "/ˌnɒnˈprɒfɪt/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>非营利的</b>", "en": "not intended to make money", "ex": "a <b>non-profit group</b> that monitors public education（③❷）", "mem": "本文出现两次（③ Texas Freedom Network、⑤ National Center for Science Education），都用来给信息源「背书」：非营利 ⟹ 立场相对中立。<br>写作：non-profit organizations 公益组织。", "syn": "charitable · not-for-profit", "conf": "non-profit（非营利）· NGO（非政府组织）。"},
+  monitor:{"w": "monitor", "ipa": "/ˈmɒnɪtə/", "pos": "v.", "tags": ["core", "write"], "cn": "<b>监督、监测</b>", "en": "to watch and check something over time", "ex": "a non-profit group that <b>monitors</b> public education（③❷）", "mem": "monitor 作名词是「显示器、班长」，作动词是「监测」。<br>⭐ 23D 的 supervision（监督）就是从 monitor 这类词「借」来的——但原文的监督主体是 Quinn 的组织，跟题干那项研究无关。", "syn": "supervise · oversee · track", "conf": "monitor（监测）· mentor（导师）。"},
+  reflect:{"w": "reflect", "ipa": "/rɪˈflekt/", "pos": "v.", "tags": ["core", "poly"], "cn": "<b>反映、体现</b>", "en": "to show or be a sign of something", "ex": "Such debates <b>reflect</b> fierce discussions across the US（④）", "mem": "④ 与 ⑧❶ 各用一次 reflect：辩论「反映」全国讨论；官方教材「体现」科学共识。<br>⚠️ 25B 的 reflects teachers’ personal biases 借了这个词，但把偏见的主人从「非官方教材」换成了「教师」。", "syn": "mirror · indicate · show", "conf": "reflect（反映）· reflect on（反思）。"},
+  fierce:{"w": "fierce", "ipa": "/fɪəs/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>激烈的</b>、凶猛的", "en": "very strong or intense", "ex": "<b>fierce</b> discussions（④）", "mem": "fierce competition 激烈竞争（写作高频）；fierce debate / opposition。<br>与①的 temperature will be high 呼应：<b>从得州一场会的「热」扩到全国的「激烈」</b>——这就是④段「由点到面」的接口。", "syn": "intense · heated · fiery", "conf": "fierce（激烈）· pierce（刺穿）。"},
+  policymaker:{"w": "policymaker", "ipa": "/ˈpɒləsimeɪkə/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>政策制定者</b>", "en": "a person responsible for making policies", "ex": "researchers, <b>policymakers</b>, teachers and students（④）", "mem": "⭐ 23B 说 policymakers have little drive，正好与④段相反——他们是「加紧要求」的一方。<br>写作：Policymakers should …（作文里替代 the government 的好词）。", "syn": "lawmaker · legislator · official", "conf": "policy（政策）· politics（政治）。"},
+  stepup:{"w": "step up", "ipa": "/step ʌp/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>加紧、加大</b>（力度）", "en": "to increase the amount or speed of something", "ex": "<b>step up</b> demands for a greater focus on …（④）", "mem": "step up efforts / pressure / demands 加大努力 / 压力 / 要求。<br>写作：The government should step up efforts to protect the environment.", "syn": "intensify · increase · ramp up", "conf": "step up（加大）· step down（辞职）· step in（介入）。"},
+  address:{"w": "address", "ipa": "/əˈdres/", "pos": "v.", "tags": ["core", "poly"], "cn": "<b>处理、应对</b>（问题）", "en": "to deal with a problem", "ex": "how state public schools … <b>address</b> climate change in science classes（⑤❶）", "mem": "⚠️ 熟词僻义：address a problem / an issue ＝ 解决、应对；不是「地址」，也不只是「演讲」。<br>本句里 address climate change ＝ 在课堂上「怎么讲」气候变化。", "syn": "tackle · deal with · handle", "conf": "address（应对）· addressee（收件人）。"},
+  barely:{"w": "barely", "ipa": "/ˈbeəli/", "pos": "adv.", "tags": ["core"], "cn": "<b>仅仅、勉强</b>；几乎不", "en": "only just; hardly", "ex": "gave <b>barely half</b> of US states a grade B+ or higher（⑤❶）", "mem": "⭐⭐ 23A 的根：barely half 是带态度的「才一半」——说话人嫌少。<br>同类：only / merely / scarcely；barely 修饰数量时「勉强够到」。", "syn": "only just · scarcely · hardly", "conf": "barely（勉强）· bare（光秃的）。"},
+  grade:{"w": "grade", "ipa": "/ɡreɪd/", "pos": "n./v.", "tags": ["core"], "cn": "<b>等级、分数</b>；评分", "en": "a mark showing quality", "ex": "a <b>grade</b> B+ or higher · the lowest <b>grade</b> (F)（⑤）", "mem": "美国 A–F 评分制：F＝Fail 不及格。<br>grade v. 打分；the fifth grade 五年级。", "syn": "mark · score · rating", "conf": "grade（等级）· degree（程度、学位）。"},
+  performer:{"w": "performer", "ipa": "/pəˈfɔːmə/", "pos": "n.", "tags": ["core", "poly"], "cn": "<b>表现者</b>（某方面表现如何的人／机构）", "en": "a person or thing that does well or badly", "ex": "the 10 worst <b>performers</b>（⑤❷）· a high <b>performer</b>（⑥❷）", "mem": "⚠️ 熟词僻义：不是「演员」——这里指评比里的<b>州</b>：worst performers 表现最差的州，a high performer 表现出色的州。", "syn": "achiever · competitor", "conf": "perform（表现）· performance（表现、业绩）。"},
+  populous:{"w": "populous", "ipa": "/ˈpɒpjələs/", "pos": "adj.", "tags": ["core"], "cn": "<b>人口多的</b>", "en": "having many people", "ex": "some of the most <b>populous</b> states（⑤❷）", "mem": "popul-（人民）+ -ous ＝ 人口众多的。<br>⚠️ 别和 popular（受欢迎的）混。", "syn": "densely populated · crowded", "conf": "populous（人多）· popular（流行）· population（人口）。"},
+  disproportionate:{"w": "disproportionate", "ipa": "/ˌdɪsprəˈpɔːʃənət/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>不成比例的</b>、过大的", "en": "too large or too small compared with something else", "ex": "has a <b>disproportionate influence</b>（⑤❷）", "mem": "dis-（否定）+ proportion（比例）＝ 不成比例。<br>⭐ 本句因果链：得州教材卖遍全国 ⟹ 它分数最低，影响却超出它该有的份额 ⟹ <b>差的影响被放大</b>。<br>写作：have a disproportionate impact on the poor 对穷人的影响格外大。", "syn": "excessive · undue · out of proportion", "conf": "proportion（比例）· portion（部分）。"},
+  caution:{"w": "caution", "ipa": "/ˈkɔːʃn/", "pos": "v.", "tags": ["core", "poly"], "cn": "<b>告诫、提醒</b>", "en": "to warn someone", "ex": "<b>cautions</b> that setting state-level science standards is only …（⑥❶）", "mem": "⚠️ caution 常作名词「谨慎」，作动词是「告诫」：caution that … / caution sb against doing。<br>⭐ 人物用 caution 开口 ⟹ 后面一定是「别高估……」——正对 24C limited influence。", "syn": "warn · alert · advise", "conf": "caution（告诫）· cautious（谨慎的）。"},
+  benchmark:{"w": "benchmark", "ipa": "/ˈbentʃmɑːk/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>基准、标杆</b>", "en": "a standard used for comparison", "ex": "only one <b>limited benchmark</b>（⑥❶）", "mem": "⭐⭐⭐ 24 题正源：only one limited benchmark ＝「只是一个作用有限的基准」⟹ have limited influence（limited 原词复现）。<br>set a benchmark 树立标杆。", "syn": "standard · yardstick · reference point", "conf": "benchmark（基准）· landmark（地标、里程碑）。"},
+  decentralise:{"w": "decentralise", "ipa": "/ˌdiːˈsentrəlaɪz/", "pos": "v.", "tags": ["core"], "cn": "<b>（权力）下放</b>、分散", "en": "to move power from the centre to local areas", "ex": "a country that <b>decentralises decisions</b> to local school boards（⑥❶）", "mem": "de-（去）+ central（中心）＋ ise ＝ 去中心化。<br>⭐ 这是 limited 的原因：决定权在地方学校委员会，州标准管不到课堂。<br>⚠️ 24D「迎合地方需求」和 23D「缺乏监督」都是从这个词胡乱引申出来的。", "syn": "devolve · delegate", "conf": "decentralise（分权）↔ centralise（集权）。"},
+  integrate:{"w": "integrate", "ipa": "/ˈɪntɪɡreɪt/", "pos": "v.", "tags": ["core", "write"], "cn": "<b>融入、结合</b>", "en": "to combine one thing with another", "ex": "well <b>integrated into</b> some subjects（⑦❶）", "mem": "integrate A into B 把 A 融入 B；integration n.。<br>⑦❶ 用 while 把「融入得好」与「体现得差」放在一句里对照。", "syn": "incorporate · merge · combine", "conf": "integrate（融合）· integrity（正直、完整）。"},
+  represent:{"w": "represent", "ipa": "/ˌreprɪˈzent/", "pos": "v.", "tags": ["core", "poly"], "cn": "<b>体现、（在……中）有所反映</b>；代表", "en": "to be present or included in something", "ex": "not as well <b>represented in</b> curricula for younger children（⑦❶）", "mem": "⚠️ be (well) represented in ＝ 在……里<b>占有一席、得到充分体现</b>。<br>▸ under-represented 代表不足（写作：women are under-represented in politics）。", "syn": "feature · be included in", "conf": "represent（体现）· misrepresent（歪曲，25C）。"},
+  curricula:{"w": "curricula", "ipa": "/kəˈrɪkjələ/", "pos": "n.", "tags": ["core"], "cn": "<b>课程</b>（curriculum 的复数）", "en": "the subjects taught in a school", "ex": "represented in <b>curricula</b> for younger children（⑦❶）", "mem": "拉丁词复数：curriculum → curricula（也作 curriculums）。同类：criterion→criteria，phenomenon→phenomena，datum→data。", "syn": "syllabus · course of study", "conf": "curriculum（课程体系）· course（一门课）。"},
+  prominent:{"w": "prominent", "ipa": "/ˈprɒmɪnənt/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>突出的、显著的</b>；著名的", "en": "important or easy to notice", "ex": "also less <b>prominent</b> in many social studies courses（⑦❷）", "mem": "a prominent figure 知名人物；play a prominent role 发挥突出作用。", "syn": "notable · conspicuous · leading", "conf": "prominent（突出）· predominant（占主导的）。"},
+  socialstudies:{"w": "social studies", "ipa": "/ˈsəʊʃl ˈstʌdiz/", "pos": "n.", "tags": ["phrase"], "cn": "<b>社会学科</b>（中小学科目）", "en": "a school subject about history, geography and society", "ex": "many <b>social studies</b> courses（⑦❷）", "mem": "美国中小学科目，含历史、地理、公民等。<br>⑦段提到的科目：earth and space sciences（地球与空间科学）· biology · chemistry · social studies。", "syn": "humanities", "conf": "social studies（中小学科目）· sociology（社会学）。"},
+  guideline:{"w": "guideline", "ipa": "/ˈɡaɪdlaɪn/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>指导方针、指南</b>", "en": "official advice about how to do something", "ex": "a growing number of official <b>guidelines</b>（⑧❶）", "mem": "常用复数。issue guidelines 发布指南；follow the guidelines 遵守方针。", "syn": "guidance · rules · principles", "conf": "guideline（方针）· deadline（截止日期）。"},
+  consensus:{"w": "consensus", "ipa": "/kənˈsensəs/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>共识</b>", "en": "general agreement", "ex": "reflect scientific <b>consensus</b> on climate change（⑧❶）", "mem": "reach a consensus 达成共识；scientific consensus 科学共识。<br>⚠️ 拼写：con-sen-sus，不是 concensus。", "syn": "agreement · accord · unanimity", "conf": "consensus（共识）· census（人口普查）。"},
+  convey:{"w": "convey", "ipa": "/kənˈveɪ/", "pos": "v.", "tags": ["core", "write"], "cn": "<b>传达、表达</b>；运送", "en": "to communicate an idea or feeling", "ex": "materials that <b>convey</b> more biased perspectives（⑧❶）", "mem": "convey a message / an idea 传达信息；conveyor belt 传送带。", "syn": "communicate · express · transmit", "conf": "convey（传达）· convoy（护航队）。"},
+  biased:{"w": "biased", "ipa": "/ˈbaɪəst/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>有偏见的、偏向一方的</b>", "en": "unfairly favouring one side", "ex": "more <b>biased perspectives</b>（⑧❶）", "mem": "bias n. 偏见；be biased against / towards 对……有偏见 / 偏向……。<br>⭐ 25 题：偏见在<b>教材</b>上，不在教师身上（25B 换了主语）。", "syn": "prejudiced · partial · one-sided", "conf": "biased（有偏见）↔ unbiased / impartial（公正的）。"},
+  perspective:{"w": "perspective", "ipa": "/pəˈspektɪv/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>观点、视角</b>", "en": "a way of thinking about something", "ex": "biased <b>perspectives</b>（⑧❶）", "mem": "from a … perspective 从……角度看（写作必备）；put things in perspective 正确看待。", "syn": "viewpoint · standpoint · angle", "conf": "perspective（视角）· prospective（未来的、预期的）。"},
+  distribute:{"w": "distribute", "ipa": "/dɪˈstrɪbjuːt/", "pos": "v.", "tags": ["core"], "cn": "<b>分发</b>、分配", "en": "to give things to a number of people", "ex": "are being <b>distributed to</b> teachers（⑧❶）", "mem": "现在进行时的被动：are being distributed ⟹ <b>正在发生</b>。<br>distribution n. 分配；distributor 经销商。", "syn": "hand out · circulate · give out", "conf": "distribute（分发）· contribute（贡献）· attribute（归因）。"},
+  sponsor:{"w": "sponsor", "ipa": "/ˈspɒnsə/", "pos": "v./n.", "tags": ["core", "write"], "cn": "<b>赞助、资助</b>；赞助者", "en": "to pay for something, often for advertising", "ex": "materials <b>sponsored by</b> energy industry associations（⑧❷）", "mem": "⭐⭐⭐ 25 题正源：谁出钱，谁的观点就进了教材 ⟹ 教学会被<b>外部力量</b>左右（D swayed by external forces）。<br>sponsorship n. 赞助。", "syn": "fund · finance · back", "conf": "sponsor（赞助）· spokesman（发言人）。"},
+  association:{"w": "association", "ipa": "/əˌsəʊsiˈeɪʃn/", "pos": "n.", "tags": ["core"], "cn": "<b>协会</b>、社团；联系", "en": "an organization of people with a common purpose", "ex": "energy industry <b>associations</b>（⑧❷）", "mem": "in association with 与……合作；association 另义「联想」（word association）。", "syn": "organization · society · federation", "conf": "association（协会）· associate（同事、联想）。"},
+  atmosphere:{"w": "atmosphere", "ipa": "/ˈætməsfɪə/", "pos": "n.", "tags": ["core", "poly"], "cn": "<b>气氛</b>；大气", "en": "the mood of a place or situation", "ex": "indicate the <b>atmosphere</b> at the board meeting（21C）", "mem": "⭐ 21C 用 atmosphere 接住了原文的双关：天气（大气）→ 会场气氛。正确项往往是对原文修辞的<b>直白翻译</b>。", "syn": "mood · ambience · climate", "conf": "atmosphere（气氛）· climate（气候；风气）。"},
+  forecast:{"w": "forecast", "ipa": "/ˈfɔːkɑːst/", "pos": "v.", "tags": ["core"], "cn": "<b>预测</b>、预报", "en": "to say what will happen", "ex": "<b>forecast</b> a policy shift（21A）", "mem": "weather forecast 天气预报——21A 故意借「天气」的联想：说到天气就说到「预报」，但文中没有任何政策变化的预告。", "syn": "predict · foresee · project", "conf": "forecast（预测）· foresee（预见）。"},
+  shortage:{"w": "shortage", "ipa": "/ˈʃɔːtɪdʒ/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>短缺</b>", "en": "a lack of something needed", "ex": "energy <b>shortages</b>（21D）", "mem": "energy shortage 能源短缺 · water shortage 缺水。<br>21D 由 energy sector 联想而来，文中没有「短缺」的信息。", "syn": "lack · scarcity · deficit", "conf": "shortage（短缺）· shortcoming（缺点）。"},
+  exaggerate:{"w": "exaggerate", "ipa": "/ɪɡˈzædʒəreɪt/", "pos": "v.", "tags": ["core"], "cn": "<b>夸大</b>", "en": "to make something seem bigger than it is", "ex": "She <b>exaggerates</b> the existing panic（22A）", "mem": "⚠️ 拼写两个 g。exaggeration n.。<br>22A：原文是 Hardy 说别人在「推动恐慌」，选项变成 Quinn 说 Hardy 在「夸大恐慌」——<b>人物—观点错配</b>。", "syn": "overstate · magnify · inflate", "conf": "exaggerate（夸大）↔ understate（轻描淡写）。"},
+  contradictory:{"w": "self-contradictory", "ipa": "/ˌself kɒntrəˈdɪktəri/", "pos": "adj.", "tags": ["core"], "cn": "<b>自相矛盾的</b>", "en": "containing ideas that do not agree", "ex": "expresses <b>self-contradictory</b> views（22D）", "mem": "contra-（反）+ dict（说）＝ 说反话。<br>22D 的陷阱：看到 sympathises（支持）与 resisting（反对）同在一句，就以为「又支持又反对」——其实支持和反对的对象不同。", "syn": "inconsistent · paradoxical", "conf": "contradict（反驳）· contradiction（矛盾）。"},
+  insufficient:{"w": "insufficient", "ipa": "/ˌɪnsəˈfɪʃnt/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>不足的、不够的</b>", "en": "not enough", "ex": "climate education is <b>insufficient</b>（23A）", "mem": "⭐ 23A 是对 barely half + lowest grade 的<b>概括</b>——原文没有 insufficient 这个词，正确项常常是这样的「总结词」。", "syn": "inadequate · lacking · deficient", "conf": "insufficient（不足）↔ sufficient（充足）。"},
+  drive:{"w": "drive", "ipa": "/draɪv/", "pos": "n.", "tags": ["core", "poly"], "cn": "<b>动力、干劲</b>；（有组织的）运动", "en": "energy and determination", "ex": "have little <b>drive</b> for science education（23B）", "mem": "⚠️ 名词熟词僻义：drive ＝ 干劲（He lacks drive.）；a recycling drive 回收运动。", "syn": "motivation · ambition · push", "conf": "drive（动力）· driven（有干劲的）。"},
+  reluctant:{"w": "reluctant", "ipa": "/rɪˈlʌktənt/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>不情愿的</b>", "en": "unwilling", "ex": "Texas is <b>reluctant</b> to rewrite its science textbooks（23C）", "mem": "be reluctant to do ＝ 不愿意做。23C 把「教材广泛销售」引申成「不愿改写教材」——<b>过度推断</b>。", "syn": "unwilling · hesitant · averse", "conf": "reluctant（不情愿）· relevant（相关的）。"},
+  supervision:{"w": "supervision", "ipa": "/ˌsuːpəˈvɪʒn/", "pos": "n.", "tags": ["core"], "cn": "<b>监督</b>、管理", "en": "the act of watching over", "ex": "lacks <b>supervision</b>（23D）", "mem": "supervise v.；supervisor 导师、主管。<br>23D：权力下放 ≠ 缺乏监督，且这是⑥段内容，不是题干问的⑤段研究。", "syn": "oversight · monitoring", "conf": "supervision（监督）· vision（视野）。"},
+  revision:{"w": "revision", "ipa": "/rɪˈvɪʒn/", "pos": "n.", "tags": ["core"], "cn": "<b>修订</b>；复习（英）", "en": "a change to improve something", "ex": "call for regular <b>revision</b>（24A）", "mem": "revise v. 修改、复习。24A：原文只说标准作用有限，没提「定期修订」。", "syn": "amendment · update", "conf": "revision（修订）· review（复查）。"},
+  cater:{"w": "cater to", "ipa": "/ˈkeɪtə tuː/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>迎合、满足</b>（需要）", "en": "to provide what someone wants", "ex": "<b>cater to</b> local needs（24D）", "mem": "cater to / for sb’s needs 满足需求（写作好词）。<br>24D：local school boards（地方学校委员会）≠ local needs（地方需求）——<b>同一个 local，换了中心词</b>。", "syn": "meet · satisfy · serve", "conf": "cater（迎合；承办酒席）· caterer（宴席承办人）。"},
+  misrepresent:{"w": "misrepresent", "ipa": "/ˌmɪsreprɪˈzent/", "pos": "v.", "tags": ["core"], "cn": "<b>歪曲、误传</b>", "en": "to describe falsely", "ex": "may <b>misrepresent</b> the energy sector（25C）", "mem": "mis- + represent。25C 把因果倒过来：原文是能源业影响教学，选项成了教学歪曲能源业。", "syn": "distort · falsify · twist", "conf": "misrepresent（歪曲）· represent（体现，⑦❶）。"},
+  sway:{"w": "sway", "ipa": "/sweɪ/", "pos": "v.", "tags": ["core", "poly"], "cn": "<b>左右、影响</b>（看法）；摇摆", "en": "to influence someone’s opinion", "ex": "can be <b>swayed by</b> external forces（25D）", "mem": "⭐⭐⭐ 25D：be swayed by ＝ 被……左右。external forces ＝ ⑧❷ 的 energy industry associations。<br>▸ 写作：Young people are easily swayed by advertising.", "syn": "influence · affect · move", "conf": "sway（左右）· swing（摇摆）。"}
+};
+const panel=document.getElementById('panel');
+const isMobile=()=>window.innerWidth<=900;
+function badge(t){const m={core:'核心',phrase:'短语',poly:'僻义',write:'写作'};return `<span class="badge b-${t}">${m[t]}</span>`}
+function showCard(k,el){
+  const d=V[k];if(!d)return;
+  document.querySelectorAll('.tk.active').forEach(x=>x.classList.remove('active'));
+  if(el)el.classList.add('active');
+  panel.innerHTML=`<button class="close" onclick="document.getElementById('panel').classList.remove('open')">收起</button>
+    <div class="wcard">
+      <div class="head"><span class="w">${d.w}</span><span class="ipa">${d.ipa}</span><span class="pos">${d.pos}</span>${d.tags.map(badge).join('')}</div>
+      <div class="cn">${d.cn}</div><div class="en-def">${d.en}</div>
+      <div class="row r-ex"><b>原文</b>${d.ex}</div>
+      <div class="row r-mem"><b>怎么记 / 考点</b>${d.mem}</div>
+      <div class="row r-syn"><b>同义 / 同族</b>${d.syn}</div>
+      <div class="row r-conf"><b>易混 / 提醒</b>${d.conf}</div>
+    </div>`;
+  if(isMobile())panel.classList.add('open');
+}
+document.querySelectorAll('.tk').forEach(t=>t.addEventListener('click',e=>{e.stopPropagation();showCard(t.dataset.w,t)}));
+
+function tz(btn){btn.closest('.para').classList.toggle('showzh')}
+let allOn=false;
+function toggleAll(){allOn=!allOn;document.querySelectorAll('.para').forEach(p=>p.classList.toggle('showzh',allOn))}
+function go(id){const s=document.getElementById(id);if(!s)return;s.scrollIntoView({behavior:'smooth',block:'center'});s.style.transition='none';s.style.opacity=.3;setTimeout(()=>{s.style.transition='opacity .8s';s.style.opacity=1},80)}
+
+document.querySelectorAll('.q').forEach(q=>{
+  const ans=+q.dataset.ans;
+  q.querySelectorAll('.opt').forEach((o,i)=>o.addEventListener('click',()=>{
+    if(q.classList.contains('done'))return;
+    q.classList.add('done');
+    if(i!==ans)o.classList.add('wrong');
+    q.querySelectorAll('.opt')[ans].classList.add('right');
+  }));
+});
+
+const vg=document.getElementById('vgrid');
+function renderGrid(f){
+  vg.innerHTML='';
+  Object.keys(V).forEach(k=>{
+    const d=V[k];
+    if(f!=='all'&&!d.tags.includes(f))return;
+    const div=document.createElement('div');div.className='vitem';
+    div.innerHTML=`<span class="badges">${d.tags.map(badge).join('')}</span><div class="w">${d.w}</div><div class="cn">${d.cn}</div>`;
+    div.addEventListener('click',()=>{showCard(k,null);if(!isMobile())window.scrollTo({top:0,behavior:'smooth'})});
+    vg.appendChild(div);
+  });
+}
+renderGrid('all');
+document.querySelectorAll('.fbtn').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.fbtn').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderGrid(b.dataset.f);
+}));
+
+const yd=document.getElementById('yd');let sel='',ydHold=0,ydT=0;
+/* 触屏：点按钮会先把选区清掉 → selectionchange 立刻把按钮藏了 → 点击落空。改成延迟隐藏 ＋ 按下即锁定 */
+const ydTouch=window.matchMedia&&matchMedia('(pointer:coarse)').matches;
+function ydHide(){clearTimeout(ydT);ydHold=0;yd.style.display='none'}
+document.addEventListener('selectionchange',function(){
+  const s=window.getSelection();const t=s?s.toString().trim():'';
+  if(t&&/^[a-zA-Z' -]{2,40}$/.test(t)){
+    sel=t;clearTimeout(ydT);
+    try{const r=s.getRangeAt(0).getBoundingClientRect();
+      yd.style.left=Math.max(8,Math.min(r.left,window.innerWidth-110))+'px';
+      yd.style.top=(r.bottom+(ydTouch?30:8))+'px';yd.style.display='block';}catch(e){}
+  }else if(!ydHold){clearTimeout(ydT);ydT=setTimeout(function(){if(!ydHold)yd.style.display='none'},ydTouch?900:0)}
+});
+['pointerdown','touchstart','mousedown'].forEach(function(ev){yd.addEventListener(ev,function(){ydHold=1;clearTimeout(ydT)},{passive:true})});
+yd.addEventListener('click',function(){
+  const u='https://dict.youdao.com/result?word='+encodeURIComponent(sel)+'&lang=en';
+  let w=null;try{w=window.open(u,'_blank')}catch(e){}
+  if(!w)location.href=u;
+  ydHide()});
+document.addEventListener('click',function(e){if(e.target!==yd&&!window.getSelection().toString())ydHide()});
+
+function imgAll(b){const on=document.body.classList.toggle('stx-allimg');b.textContent=on?'收起原卷':'原卷对照';
+  if(on)document.querySelectorAll('.para img.strip').forEach(im=>im.loading='eager')}
+</script>
+<script src="img/strip_boxes_2023.js?v=1"></script>
+<script src="_strip_lookup.js?v=8"></script>
+<script src="_strip_text.js?v=19"></script>
+<script src="_fault_attr.js"></script>
+</body>
+</html>

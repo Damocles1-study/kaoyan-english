@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2023 英一 新题型 · 拯救黄石公园的照片</title>
+<style>
+  :root{
+    --bg:#faf9f6; --card:#ffffff; --ink:#2b2b2b; --muted:#8a8578;
+    --accent:#8b5e34; --accent-soft:#f3e9dd; --line:#e8e3d8;
+    --hl:#fdf3d8; --hl-border:#e0b84d;
+    --green:#3e7a4e; --green-soft:#e8f2ea;
+    --red:#b04a3a; --red-soft:#f9e9e6;
+    --blue:#3d6a8a; --blue-soft:#e7eff5;
+    --purple:#6d5a8e; --purple-soft:#eeeaf5;
+    --serif:"Georgia","Songti SC",serif;
+    --sans:-apple-system,"PingFang SC","Helvetica Neue",sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#1c1a17; --card:#26231f; --ink:#e8e4dc; --muted:#9a948a;
+      --accent:#d0a06a; --accent-soft:#3a3127; --line:#3a362f;
+      --hl:#3d3520; --hl-border:#b08c3a;
+      --green:#7fb98d; --green-soft:#26362b;
+      --red:#d98876; --red-soft:#3d2a26;
+      --blue:#8ab3d0; --blue-soft:#26323d;
+      --purple:#a996c8; --purple-soft:#302a3d;
+    }
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;padding-bottom:120px}
+  .wrap{max-width:1100px;margin:0 auto;padding:24px 20px}
+  .back{font-size:.85rem;color:var(--muted);text-decoration:none}
+  .back:hover{color:var(--accent)}
+  header{margin:14px 0 28px}
+  header h1{font-family:var(--serif);font-size:1.7rem;line-height:1.3}
+  header .sub{color:var(--muted);margin-top:6px;font-size:.9rem}
+  .tags{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+  .tag{font-size:.75rem;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);border:1px solid var(--line)}
+  .tag.bad{background:var(--red-soft);color:var(--red)}
+  .layout{display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:start}
+  .layout > main{min-width:0}
+  @media (max-width:900px){.layout{grid-template-columns:1fr}}
+  section.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:24px}
+  h2{font-size:1.05rem;letter-spacing:.05em;color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+  h2 .n{font-size:.72rem;background:var(--accent);color:var(--card);border-radius:6px;padding:1px 7px}
+  h3.sh{font-size:.95rem;color:var(--ink);margin:18px 0 8px;padding-left:9px;border-left:3px solid var(--accent)}
+  .para{margin-bottom:14px}
+  .en{font-family:var(--serif);font-size:1.03rem;line-height:1.95}
+  .tk{background:var(--hl);border-bottom:2px solid var(--hl-border);border-radius:3px;padding:0 2px;cursor:pointer;transition:filter .15s}
+  .tk:hover{filter:brightness(.93)}
+  .tk.active{outline:2px solid var(--hl-border)}
+  .clue{border-bottom:2px dotted var(--red)}
+  .zh{display:none;margin-top:8px;padding:10px 14px;background:var(--blue-soft);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:.92rem}
+  .showzh .zh{display:block}
+  .zbtn{float:right;margin-left:10px;font-size:.72rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:6px;padding:2px 9px;cursor:pointer}
+  .zbtn:hover{color:var(--accent);border-color:var(--accent)}
+  .allbtn{font-size:.78rem;border:1px solid var(--accent);background:none;color:var(--accent);border-radius:8px;padding:4px 12px;cursor:pointer;margin-left:auto}
+  aside{position:sticky;top:20px}
+  #panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;min-height:180px}
+  #panel .hint{color:var(--muted);font-size:.88rem;text-align:center;padding:30px 10px}
+  .wcard .head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .wcard .w{font-family:var(--serif);font-size:1.35rem;font-weight:bold}
+  .wcard .ipa{color:var(--muted);font-size:.85rem}
+  .wcard .pos{font-size:.72rem;color:var(--purple);background:var(--purple-soft);padding:1px 8px;border-radius:999px}
+  .wcard .badge{font-size:.7rem;padding:1px 8px;border-radius:999px}
+  .b-core{background:var(--red-soft);color:var(--red)}
+  .b-phrase{background:var(--blue-soft);color:var(--blue)}
+  .b-poly{background:var(--purple-soft);color:var(--purple)}
+  .b-write{background:var(--green-soft);color:var(--green)}
+  .wcard .cn{margin-top:8px;font-size:1rem;font-weight:600}
+  .wcard .en-def{color:var(--muted);font-size:.86rem;font-style:italic;margin-top:2px}
+  .wcard .row{margin-top:10px;font-size:.86rem;padding:8px 10px;border-radius:8px}
+  .wcard .row b{font-size:.72rem;display:block;margin-bottom:2px;letter-spacing:.06em}
+  .r-ex{background:var(--hl)} .r-ex b{color:var(--hl-border)}
+  .r-mem{background:var(--green-soft)} .r-mem b{color:var(--green)}
+  .r-syn{background:var(--blue-soft)} .r-syn b{color:var(--blue)}
+  .r-conf{background:var(--red-soft)} .r-conf b{color:var(--red)}
+  #panel .close{display:none}
+  @media (max-width:900px){
+    aside{position:fixed;left:0;right:0;bottom:0;z-index:50;padding:0 8px 8px}
+    #panel{box-shadow:0 -6px 24px rgba(0,0,0,.18);max-height:55vh;overflow-y:auto;display:none}
+    #panel.open{display:block}
+    #panel .close{display:block;float:right;border:none;background:var(--line);border-radius:8px;padding:2px 10px;cursor:pointer;color:var(--ink)}
+  }
+  /* 选项库 */
+  .optlib{display:grid;gap:8px}
+  .optitem{display:flex;gap:10px;border:1px solid var(--line);border-radius:10px;padding:9px 12px;font-size:.9rem}
+  .optitem .lt{font-weight:700;font-family:var(--serif);color:var(--accent);flex:0 0 18px}
+  .optitem.used{opacity:.45}
+  .optitem.extra{border-color:var(--red);background:var(--red-soft)}
+  .optitem .oen{font-family:var(--serif);font-size:.92rem;line-height:1.75}
+  .optitem .zhx{display:block;color:var(--muted);font-size:.82rem;margin-top:3px}
+  .optitem .kw{display:block;font-size:.78rem;color:var(--blue);margin-top:3px}
+  .optitem .stg{display:inline-block;font-size:.72rem;background:var(--purple-soft);color:var(--purple);border-radius:999px;padding:1px 9px;margin-top:5px}
+  /* 空格题 */
+  .person{margin-bottom:26px;padding-bottom:20px;border-bottom:1px dashed var(--line)}
+  .person:last-child{border:none}
+  .pname{font-family:var(--serif);font-weight:700;font-size:1.05rem;margin-bottom:8px}
+  .pname .qn{color:var(--accent)}
+  .stance{font-size:.72rem;border-radius:999px;padding:1px 9px;margin-left:8px;vertical-align:2px;font-family:var(--sans);font-weight:400}
+  .st-anti{background:var(--red-soft);color:var(--red)}
+  .st-pro{background:var(--green-soft);color:var(--green)}
+  .st-mid{background:var(--blue-soft);color:var(--blue)}
+  .slot{display:inline;background:var(--accent-soft);border-bottom:2px solid var(--accent);border-radius:3px;padding:0 6px;color:var(--accent);font-weight:700;font-family:var(--sans);font-size:.88rem}
+  .slot.filled{background:var(--green-soft);border-color:var(--green);color:var(--ink);font-weight:400;font-family:var(--serif);font-size:1.03rem}
+  .slot.filled .fl{font-family:var(--sans);font-size:.78rem;font-weight:700;color:var(--green);margin-right:5px}
+  .chips{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0 4px}
+  .chips .ch{width:38px;height:34px;border:1px solid var(--line);border-radius:8px;background:none;font-family:var(--serif);font-weight:700;font-size:1rem;color:var(--ink);cursor:pointer;transition:all .15s}
+  .chips .ch:hover{border-color:var(--accent)}
+  .person.done .ch{cursor:default;opacity:.6}
+  .ch.right{background:var(--green-soft);border-color:var(--green);color:var(--green);opacity:1!important}
+  .ch.wrong{background:var(--red-soft);border-color:var(--red);color:var(--red);opacity:1!important}
+  .expl{display:none;margin-top:10px;background:var(--accent-soft);border-radius:10px;padding:12px 14px;font-size:.9rem}
+  .person.done .expl{display:block}
+  .expl b{color:var(--accent)}
+  .loc{font-family:var(--serif);font-style:italic;background:var(--hl);padding:1px 4px;border-radius:3px}
+  .expl .line{margin-top:8px;padding-top:8px;border-top:1px dashed var(--line)}
+  .expl .mine{margin-top:8px;padding:8px 10px;background:var(--red-soft);border-radius:8px;color:var(--red);font-size:.86rem}
+  .wb{display:grid;gap:10px}
+  .wbi{border-left:3px solid var(--green);background:var(--green-soft);border-radius:0 10px 10px 0;padding:10px 14px;font-size:.92rem}
+  .wbi .p{font-family:var(--serif);font-weight:600}
+  .wbi .u{color:var(--muted);font-size:.85rem}
+  /* 表格 */
+  .tbwrap{overflow-x:auto}
+  table.gt{border-collapse:collapse;width:100%;min-width:600px;font-size:.86rem}
+  table.gt th,table.gt td{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
+  table.gt th{background:var(--accent-soft);color:var(--accent);font-weight:600;font-size:.8rem}
+  table.gt td.c{text-align:center;font-family:var(--serif);font-weight:700}
+  table.gt tr.bad td{background:var(--red-soft)}
+  /* 分区带 */
+  .zone{display:grid;grid-template-columns:118px 1fr;gap:12px;padding:9px 0;border-bottom:1px dashed var(--line);font-size:.9rem}
+  .zone:last-child{border:none}
+  .zone .zn{font-size:.82rem;color:var(--accent);font-weight:600}
+  .zone.empty{background:var(--red-soft);border-radius:8px;padding-left:10px}
+  .zone.empty .zn{color:var(--red)}
+  /* 长难句 */
+  .ls{border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:14px}
+  .ls .s{font-family:var(--serif);font-size:.98rem;line-height:1.85}
+  .ls .an{margin-top:10px;font-size:.88rem}
+  .ls .an div{margin-top:4px}
+  .ls .tr{margin-top:8px;padding:8px 12px;background:var(--blue-soft);border-radius:8px;font-size:.88rem}
+  .mk{color:var(--red);font-weight:600}
+  .mk2{color:var(--blue);font-weight:600}
+  .mk3{color:var(--green);font-weight:600}
+  .box{border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:0 10px 10px 0;padding:12px 14px;margin:12px 0;font-size:.92rem;background:var(--accent-soft)}
+  .box.red{border-left-color:var(--red);background:var(--red-soft)}
+  .box.green{border-left-color:var(--green);background:var(--green-soft)}
+  .box .bt{font-weight:700;color:var(--accent);display:block;margin-bottom:6px}
+  .box.red .bt{color:var(--red)} .box.green .bt{color:var(--green)}
+  .en,.zh,.expl,.wbi,.optitem,.ls,.zone,.bd,figcaption,p,li,td,th{overflow-wrap:anywhere}
+  footer{color:var(--muted);font-size:.8rem;text-align:center;margin-top:30px}
+  #yd{position:fixed;z-index:60;display:none;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:4px 12px;font-size:.8rem;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+</style>
+<style>
+  /* selection-insertion page extras */
+  .layout{grid-template-columns:minmax(0,1fr) 340px}
+  @media (max-width:900px){.layout{grid-template-columns:minmax(0,1fr)}}
+  main,aside{min-width:0}
+  .clue2{border-bottom:2px dotted var(--blue)}
+  .optitem .oen{display:block}
+  table.gt td[colspan]{background:var(--accent-soft)}
+</style>
+<style>
+  /* ---- 2021：原卷句条 ---- */
+  .sn{margin:0 0 14px}
+  .sn .pno{display:block;margin-bottom:4px;font-size:.78rem;line-height:1.6}
+  img.strip{display:block;width:100%;max-width:760px;height:auto;background:#fff;border:1px solid var(--line);border-radius:6px;cursor:pointer}
+  .kw{margin-top:5px;font-size:.88rem;line-height:2.1;font-family:var(--serif)}
+  @media (prefers-color-scheme: dark){img.strip{filter:invert(.9) hue-rotate(180deg)}}
+  .sn,.sent .src{overflow-x:auto}
+  @media (max-width:700px){img.strip{width:640px;max-width:none}.sn::after{content:'← 句条可左右滑动 →';display:block;font-size:.7rem;color:var(--muted);margin-top:2px}}
+  .hd{font-family:var(--serif);font-weight:700;font-size:1.02rem;margin:6px 0 10px;padding:4px 10px;border-left:3px solid var(--accent);background:var(--accent-soft);border-radius:0 6px 6px 0}
+  .hd span{font-weight:400;font-size:.74rem;color:var(--muted);margin-left:8px;font-family:inherit}
+  .person .slot{display:inline-block;margin:2px 0 12px}
+  .person .slot.filled{display:block;padding:6px 8px}
+  .optitem>span:last-child{min-width:0;flex:1}
+  .optlib{grid-template-columns:minmax(0,1fr)}
+  .optitem{min-width:0}
+  .ls,.person .slot.filled,.optitem .oen{overflow-x:auto}
+  .ls .lsh{font-weight:700;font-size:.85rem;color:var(--accent);margin-bottom:6px}
+  .ls img.strip{cursor:default}
+</style>
+<style>
+  .chainbar{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:16px 0 4px;padding:12px;background:var(--accent-soft);border-radius:12px}
+  .chainbar .cb{min-width:44px;height:36px;display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--accent);border-radius:8px;font-family:var(--serif);font-weight:700;color:var(--accent);background:var(--card)}
+  .chainbar .cb.given{background:var(--green-soft);border-color:var(--green);color:var(--green)}
+  .chainbar .ar{color:var(--muted)}
+  .ctx{font-size:.84rem;color:var(--muted);background:var(--blue-soft);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;padding:7px 12px;margin-bottom:10px}
+  .ctx i{font-family:var(--serif)}
+  /* 2023 起：流式版——识别好的句子连排成段，像 2007–2020 */
+  .para .en{font-family:var(--serif);font-size:1.02rem;line-height:1.9}
+  .stx-flow .para .en .pno{margin-right:6px;font-family:var(--sans);font-size:.78rem;color:var(--accent);font-weight:700}
+  .stx-flow .para .sn:not(.stx-on) .kw{margin-bottom:8px}
+  /* 选项库与作答槽里的句条：识别后同样连排 */
+  .stx-flow .oen .sn,.stx-flow .slot .sn{display:inline}
+  .stx-flow .oen .sn.stx-on>.stx,.stx-flow .slot .sn.stx-on>.stx{display:inline;margin:0;font-size:inherit;line-height:inherit}
+  .stx-flow.stx-allimg .oen .sn.stx-on,.stx-flow.stx-allimg .slot .sn.stx-on,.stx-flow.stx-allimg .oen .sn.stx-on>.stx,.stx-flow.stx-allimg .slot .sn.stx-on>.stx{display:block}
+  .optitem.gv{border-color:var(--green);background:var(--green-soft)}
+  .optitem.gv .lt{color:var(--green)}
+  .ls .stx{font-size:1rem}
+  .stx-flow .para .stx.ls{border:none;border-radius:0;padding:0;margin:0;overflow-x:visible}   /* 正文里可跳 05 的句子不要套长难句块的框 */
+
+</style>
+</head>
+<body class="stx-flow">
+<div class="wrap">
+  <a class="back" href="index.html">◀ 返回英语复盘中心</a>
+  <header>
+    <h1>The Pictures That Saved Yellowstone　拯救黄石公园的照片</h1>
+    <div class="sub">2023 年英语（一）真题 · Part B 新题型（<b>段落排序</b>：八段 A–H，<b>A、E、H 三段已给定</b>，剩下五段填进 41–45，<b>零多余项</b>）· 建议做题 <b>8–10 min</b> · 话题：两百年前「保护自然」对美国人还是新鲜事；1871 年海登带队考察黄石，摄影师杰克逊一路拍照，照片印成大幅分发给每位国会议员，一年不到黄石就成了世界上第一座国家公园 · 黄皮书标源 <i>Discover</i>《发现》2021-07-08 <i>The Pictures That Saved Yellowstone</i>，书标 <b>581 words</b>（脚本切词框 580 个 ＋ 4 处破折号连写 − 3 个单独的标点框 ＝ 581，与书一致）· 八段 25 句 · 正文由你的浏览器从<b>原卷句条</b>识别成文字</div>
+    <div class="tags">
+      <span class="tag">正确答案：41 B　42 F　43 D　44 C　45 G（全文 B A F E D H C G）</span>
+      <span class="tag">变体：段落排序第七篇（2010 · 2011 · 2014 · 2017 · 2018 · 2019 · <b>2023</b>），<b>第一次八段、第一次给定三段</b></span>
+      <span class="tag">文章线：<b>时间线</b>·考察前 → 考察中 → 考察后 → 立法</span>
+      <span class="tag">Claude：<b>非盲</b>（做完形核答案时答案页未裁，41–45 已入眼；判据照样先写后对）</span>
+    </div>
+  </header>
+
+  <div class="layout">
+    <main>
+
+      <section class="card">
+        <h2><span class="n">00</span>开考先数格子：八段给三，三个给定段隔一格一个 —— 本篇的主刀是「称呼链 ＋ 时间轴」</h2>
+        <p style="font-size:.92rem">Directions 里那句 <span class="loc">reorganize these paragraphs into a coherent text</span> ＋ <span class="loc">Paragraphs A, E, and H have been correctly placed</span> ⟹ <b>排序题</b>（R32）。数格子：八段 − 三个给定 ＝ 五段，正好填满 41–45 ⟹ <b>零多余项</b>（R107），七篇排序题里第六次零多余。<span class="mk">零多余的好处是能自查：五个字母填完，八段必须一段不剩、连成一条线；有一处接不上，就是哪儿排错了。</span></p>
+
+        <div class="chainbar"><span class="cb">41</span><span class="ar">→</span><span class="cb given">A</span><span class="ar">→</span><span class="cb">42</span><span class="ar">→</span><span class="cb given">E</span><span class="ar">→</span><span class="cb">43</span><span class="ar">→</span><span class="cb given">H</span><span class="ar">→</span><span class="cb">44</span><span class="ar">→</span><span class="cb">45</span></div>
+
+        <h3 class="sh">① 认形态：七篇排序题，2023 是给定段最多的一年</h3>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:640px">
+          <tr><th style="width:9%">年份</th><th style="width:34%">链条（绿＝给定）</th><th style="width:12%">段数</th><th style="width:12%">给定</th><th>多余</th></tr>
+          <tr><td class="c">2010</td><td>41 → 42 → 43 → 44 → <b>E</b> → 45</td><td class="c">7</td><td class="c">1</td><td>C 多余</td></tr>
+          <tr><td class="c">2011</td><td><b>G</b> → 41 → 42 → <b>E</b> → 43 → 44 → 45</td><td class="c">7</td><td class="c">2</td><td>零多余</td></tr>
+          <tr><td class="c">2014</td><td>41 → <b>A</b> → 42 → <b>E</b> → 43 → 44 → 45</td><td class="c">7</td><td class="c">2</td><td>零多余</td></tr>
+          <tr><td class="c">2017</td><td><b>D</b> → 41 → 42 → 43 → 44 → <b>B</b> → 45</td><td class="c">7</td><td class="c">2</td><td>零多余</td></tr>
+          <tr><td class="c">2018</td><td>41 → <b>C</b> → 42 → 43 → <b>F</b> → 44 → 45</td><td class="c">7</td><td class="c">2</td><td>零多余</td></tr>
+          <tr><td class="c">2019</td><td>41 → 42 → <b>F</b> → 43 → 44 → <b>C</b> → 45</td><td class="c">7</td><td class="c">2</td><td>零多余</td></tr>
+          <tr class="bad"><td class="c"><b>2023</b></td><td>41 → <b>A</b> → 42 → <b>E</b> → 43 → <b>H</b> → 44 → 45</td><td class="c"><b>8</b></td><td class="c"><b>3</b></td><td>零多余（第六次）</td></tr>
+        </table>
+        </div>
+        <p style="font-size:.9rem;margin-top:8px">⟹ <b>2023 的链条就是 2014 的骨架在 43 和 44 之间插进一个给定段 H</b>——连给定段的字母（A 在第 2、E 在第 4）都一样。给定段多一个，难度反而降了：<span class="mk">41、42、43 三格都贴着给定段（41 只有下家 A，42 夹在 A、E 之间，43 夹在 E、H 之间），只有 44、45 两格连在 H 后面、要自己排先后。</span>（顺带：41B 42F 43D 与 2010 的前三个字母一模一样——字母是巧合，别背。）</p>
+
+        <h3 class="sh">② 认文体：讲一段历史的新闻特稿，骨架是「引子 → 考察前 → 考察中 → 考察后 → 立法」</h3>
+        <p style="font-size:.92rem">八段里有六段带硬时间：<span class="loc">Two centuries ago</span>（B）· <span class="loc">Last year marked the 150th anniversary</span>（A）· <span class="loc">June 8, 1871</span>（E）· <span class="loc">Throughout the trip</span>（D）· <span class="loc">Weeks after completing the expedition</span>（H）· <span class="loc">in early 1872</span>／<span class="loc">That March</span>（G）。只有 C、F 两段没写时间，但它们各有一个人名钩：<span class="mk">F 第一次给出画家的全名 <span class="loc">Painter Thomas Moran</span>，C 只说 <span class="loc">Moran’s paintings</span> ⟹ C 在 F 后；F 又只叫 <span class="loc">Hayden’s expedition</span>，全名在 A ⟹ F 在 A 后。</span>这和 2018（建筑史，R248 先分层再排序）、2017（人物传记，R231 称呼由全到简）是一个家族：<b>叙事文排序，时间管大方向，称呼管相邻两段。</b></p>
+
+        <h3 class="sh">③ 做题顺序：41 → 42 → 43 → 44/45 一起</h3>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:640px">
+          <tr><th style="width:7%">步</th><th style="width:18%">动作</th><th>本篇怎么走</th></tr>
+          <tr><td class="c">1</td><td><b>五段头尾各扫一眼</b></td><td>B 头 <span class="loc">Two centuries ago</span>（零回指）· C 头 <span class="loc">Hayden sensed</span>（只有姓）· D 头 <span class="loc">Throughout the trip</span>（the 回指）· F 头 <span class="loc">the area’s riches</span>（the 回指）· G 头 <span class="loc">The bill</span>（the 回指）⟹ 01 节表</td></tr>
+          <tr><td class="c">2</td><td><b>41 用首段排除法</b></td><td>五段里四段开口就欠上文（D、F、G 带 the，C 只有姓），<b>只剩 B</b>（R79）；B 末 <span class="loc">vivid photographs</span> 是全文题眼</td></tr>
+          <tr><td class="c">3</td><td><b>42 夹在 A、E 之间</b></td><td>A 末列了四种科学家 → 要找「<b>还有</b>谁」：F ③ <span class="loc">In addition to the entourage of scientists, the team also included artists</span>；E 头 <span class="loc">The journey officially began</span> 是出发 ⟹ 42 必须是「出发前」的段 ⟹ <b>F</b></td></tr>
+          <tr><td class="c">4</td><td><b>43 夹在 E、H 之间</b></td><td>E 讲完整趟行程 → 要找「途中」；H 头 <span class="loc">these images</span> 要上家刚说过照片 ⟹ D（<span class="loc">Throughout the trip</span> ＋ 末句 <span class="loc">these vivid photographs</span>）</td></tr>
+          <tr><td class="c">5</td><td><b>44、45 排先后</b></td><td>剩 C、G。C 印照片、发给每位议员；G 法案通过、总统签字 ⟹ <b>先游说、后立法</b>：44 C、45 G</td></tr>
+          <tr><td class="c">6</td><td><b>通读验闭合</b></td><td>B A F E D H C G：保护自然在当年是新鲜事、转折点是照片 → 150 年前那次考察 → 为什么考察、带了谁 → 走了哪条路 → 途中怎么拍 → 照片成了证据、写成报告 → 印给议员 → 法案通过 ⟹ 首段那句「转折点是照片」在末段 <span class="loc">played a key role</span> 收回</td></tr>
+        </table>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">01</span>八段 A–H · 先给每一段标出「头路标 / 尾预示」</h2>
+        <p style="font-size:.8rem;color:var(--muted);margin-bottom:12px">📄 八段原文由你的浏览器从原卷第 11–12 页识别成文字（选中任意单词弹「查有道」）｜ 🔑 一行 ＝ 这一段的两个接口 ｜ 紫色标签 ＝ 它最终落在哪一环（<b>作答后</b>对应项会自动置灰）｜ 本篇<b>没有红框</b>——八段全部有位置；绿色字母的 A、E、H 是题目给定的</p>
+        <div class="optlib" id="optlib"></div>
+        <div class="box" style="margin-top:14px">
+          <span class="bt">🚩 五个待排段的段首，四个「欠上文一样东西」</span>
+          C <span class="loc"><b>Hayden</b> sensed</span>（欠全名：海登是谁？）· D <span class="loc">Throughout <b>the trip</b></span>（欠「哪趟旅程」）· F <span class="loc">recognized <b>the area’s</b> riches</span>（欠「哪片地方」）· G <span class="loc"><b>The bill</b> proved largely popular</span>（欠「哪份议案」）—— 只有 B 一样不欠：<span class="loc">Two centuries ago, the idea of preserving nature</span> 从零讲起。<span class="mk">⟹ 41 一步到位（R79）。黄皮书同此，并且专门写了一句：首段出现的人物「一定以全名出现」，C 开口就是姓 ⟹ 排除。</span>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">02</span>链条作答 · 点字母 <button class="allbtn" onclick="toggleAll()">意译 开/关</button></h2>
+        <p style="font-size:.8rem;color:var(--muted);margin-bottom:14px">每格下方点 A–H 作答，<b>答后格子会就地补全成整段原文</b>，并出线索链解析 ＋ 错因标签。「意」＝ 按句意转述，非逐字翻译。<span class="mk">建议顺序 41 → 42 → 43 → 44 → 45（三个给定段把前三格各夹住一边或两边，最后两格只排 C、G 先后）。</span></p>
+
+        <div class="person q" id="q41" data-ans="B">
+          <div class="pname"><span class="qn">(41)</span> 链条第 1 格 · <b>首段</b><span class="stance st-pro">证据 ＝ 五段里唯一「开口不欠上文」→ 立题眼「照片」</span><button class="zbtn" onclick="tz(this)">意</button></div>
+          <p class="ctx">↑ 上文：<b>无</b>（全文开头）　↓ 下文：<b>A（已给定）</b>——去年是杰克逊黄石系列照片 150 周年；介绍 19 世纪末那次考察与海登</p>
+          <p class="en"><span class="slot" data-n="41">(41) ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿</span></p>
+          <div class="zh"><b>（41）</b>两百年前，「保护自然而不是开发自然」这种想法，对许多美国定居者来说还很新鲜。公众转向支持土地保护——尤其是认识到黄石地区的壮美——有一个转折点，它是以一组生动的照片的形式到来的。</div>
+          <div class="chips"></div>
+          <div class="expl"><b>41 → B　Two centuries ago, the idea of preserving nature …</b>
+            <div class="line">🔗 <b>决定性一击：五个待排段，只有 B 开口不欠上文</b>。C 开口是光秃秃的姓 <span class="loc">Hayden</span>，D 的 <span class="loc">the trip</span>、F 的 <span class="loc">the area’s</span>、G 的 <span class="loc">The bill</span> 都带定冠词回指——<b>四段一开口就指望读者已经知道点什么</b>（⟹ <a href="套路库_阅读.html#R79">R79</a>）。B 从「两百年前」「保护自然这个想法」讲起，一个人名、一个回指词都没有。</div>
+            <div class="line">🔗 <b>向下的钩：B 末给了一个没兑现的名词</b>。② <span class="loc">came in the form of vivid photographs</span>——哪些照片？谁拍的？B 不说。<b>下家必须把照片落到具体的人和事上</b>：A ① <span class="loc">a series of Yellowstone photographs by the renowned landscape photographer</span>——照片、黄石、摄影师全名一次交齐。黄皮书叫它「引出话题 → 借事件具体说明」。</div>
+            <div class="line">🔗 <b>首尾呼应验收</b>：B 说照片是公众转向保护的「转折点之一」，末段 G ④ <span class="loc">Jackson’s photos played a key role</span> 把同一句话落成结局。<b>B 的 One of the turning points 是全文的论点，其余七段都是在讲这一个转折点怎么发生的。</b></div>
+            <div class="line">✂️ <b>为什么不是 C</b>：C 的 <span class="loc">An effective Washington operator, Hayden</span> 读着像人物特写的开头，但<b>人物第一次出场要给全名</b>，海登的全名 <span class="loc">Ferdinand V. Hayden</span> 和头衔都在 A 里（⟹ <a href="套路库_阅读.html#R231">R231</a>）。<br>
+              ✂️ <b>为什么不是 F</b>：F 的 Though 让步句（原住民早就知道这里富饶、多数美国人不知道）也像开头，但 <span class="loc">the area’s riches</span> 的 the area 是哪儿？<b>F 第一句就说 the area，「黄石」要到第二句才出现</b>——先用 the 再给地名，说明这片地方上文已经交代过（A ② <span class="loc">the Yellowstone Basin</span>）。</div>
+          </div>
+        </div>
+
+        <div class="person q" id="q42" data-ans="F">
+          <div class="pname"><span class="qn">(42)</span> 链条第 3 格 · <b>夹在给定段 A、E 之间</b><span class="stance st-pro">证据 ＝ also included ＋ In addition to the scientists ← A 末的四种科学家</span><button class="zbtn" onclick="tz(this)">意</button></div>
+          <p class="ctx">↑ 上文：<b>A（已给定）</b>——150 周年；海登带队考察；团队里有气象、动物、矿物学家和农业统计员　↓ 下文：<b>E（已给定）</b>——旅程 1871 年 6 月 8 日在犹他州奥格登正式出发</p>
+          <p class="en"><span class="slot" data-n="42">(42) ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿</span></p>
+          <div class="zh"><b>（42）</b>虽然美洲原住民（以及后来的矿工和皮毛猎人）早就知道这片地方物产丰饶，大多数美国人却不知道。这正是海登考察的目的：让人们对黄石河一带有更完整的认识——从温泉、瀑布到各种各样的动植物。除了随行的一众科学家，考察队还带上了艺术家：画家托马斯·莫兰和摄影师杰克逊负责记录这片令人惊叹的自然美景，并把它分享给世界。</div>
+          <div class="chips"></div>
+          <div class="expl"><b>42 → F　Though Native Americans … had long recognized the area’s riches …</b>
+            <div class="line">🔗 <b>决定性一击：A 末是一张名单，F 末接着报名单</b>。A ③ <span class="loc">The team included a meteorologist, a zoologist, a mineralogist</span>…（四种科学家）⟹ F ③ <span class="loc">In addition to the entourage of scientists, the team <b>also</b> included artists</span>。<b>In addition to the scientists 是对 A ③ 的整句复述，also 要求上家已经报过一批人</b>——这两个词全文只有 A 能兑现。黄皮书同此：「The team included … 与 the team also included 成递进」。</div>
+            <div class="line">🔗 <b>向上的钩二：称呼链</b>。F ② <span class="loc">That’s why <b>Hayden’s</b> expedition aimed to</span>——只用姓 ⟹ 上家必须给过全名：A ② <span class="loc">Ferdinand V. Hayden</span>（还带「美国领土地质与地理调查局局长」的头衔）。F ③ 的 <span class="loc">photographer Jackson</span> 也只用姓，全名 William Henry Jackson 同样在 A ①（⟹ <a href="套路库_阅读.html#R231">R231</a>）。</div>
+            <div class="line">🔗 <b>向下的钩：F 讲的是「为什么去、带谁去」，E 讲的是「怎么走」</b>。E ① <span class="loc">The journey <b>officially began</b></span>——officially began 要求上文是「还没出发」的准备阶段。F 交代考察的动机（多数美国人不了解这片地方）和人员（科学家之外还有画家、摄影师）⟹ <b>出发前</b>，恰好卡在 E 之前。</div>
+            <div class="line">🔮 <b>F 还埋了一个人名，两段之后才用</b>：③ <span class="loc">Painter Thomas Moran</span>——全文唯一一次给出画家的全名。C ② <span class="loc">reproductions of Moran’s paintings</span> 只叫他 Moran ⟹ <b>C 一定在 F 之后</b>。黄皮书没用这一条，但它是 44 题最硬的旁证（见 02++ 节）。</div>
+            <div class="line">✂️ <b>为什么不是 D</b>：D 也讲杰克逊、也讲考察，但开口 <span class="loc">Throughout the trip</span>（整个旅途中）——<b>人还没出发，就谈不上「旅途中」</b>；D 必须在 E（出发）之后。<br>
+              ✂️ <b>为什么不是 C</b>：C 讲的是考察拍回来的东西怎么用（<span class="loc">capitalize on the expedition’s stunning visuals</span>）——<b>考察结束后</b>的事，放在出发前时间倒流。</div>
+          </div>
+        </div>
+
+        <div class="person q" id="q43" data-ans="D">
+          <div class="pname"><span class="qn">(43)</span> 链条第 5 格 · <b>夹在给定段 E、H 之间</b><span class="stance st-pro">证据 ＝ Throughout the trip ← E 的整趟行程；末句 these vivid photographs → H 的 these images</span><button class="zbtn" onclick="tz(this)">意</button></div>
+          <p class="ctx">↑ 上文：<b>E（已给定）</b>——近四个月骑马进蒙大拿、沿黄石河绕黄石湖；那年秋天在怀俄明的布里杰堡结束　↓ 下文：<b>H（已给定）</b>——「也许最重要的是，这些照片提供了文献证据」</p>
+          <p class="en"><span class="slot" data-n="43">(43) ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿</span></p>
+          <div class="zh"><b>（43）</b>整个旅途中，杰克逊要同时摆弄好几台相机和不同尺寸的底片，用的是火棉胶工艺：先给底片涂上一层化学混合物，曝光，再用便携暗房把影像冲洗出来。这种粗糙的技术要凭经验估算曝光时间，器材又重又笨——得好几个人帮忙搬运。尽管困难重重，杰克逊还是拍下了几十张引人注目的照片，既有他那张如今广为人知的「老忠实泉」这样的壮丽景象，也有考察队员在营地的随手合影。以往考察队的老队员虽然也曾长篇累牍地描写过那些令人惊叹的景色，这些生动的照片却完全是另一回事。</div>
+          <div class="chips"></div>
+          <div class="expl"><b>43 → D　Throughout the trip, Jackson juggled multiple cameras …</b>
+            <div class="line">🔗 <b>决定性一击：H 开口的 these images 要上家刚刚亮出照片</b>。H ① <span class="loc">Perhaps most importantly, <b>these images</b> provided documentary evidence</span>——these 是近指，所指要在紧挨的上一段。D 末 ④ <span class="loc">these vivid photographs were another thing entirely</span>，<b>images ← photographs 同义替换，these ← these 原样接力</b>。黄皮书同此。</div>
+            <div class="line">🔗 <b>向上的钩：the trip 回指 E 的 the journey</b>。E 把行程从出发写到结束（began → over nearly four months → concluded），D ① <span class="loc">Throughout the trip</span> 把镜头拉回旅途中间 ⟹ 「概述行程 → 细述途中的事」。<b>E 是时间线，D 是这条线上的一个人</b>。</div>
+            <div class="line">🔗 <b>most importantly 是比较级的结论，要上家先给出「不那么重要」的意义</b>。D 末给的是第一层意义：文字描写过的风景，照片让人<b>亲眼看到</b>（another thing entirely）。H 接着说「也许最重要的是」——照片还能当<b>证据</b>递到政府手里。<span class="mk">一个讲「看」，一个讲「用」，这就是 Perhaps most importantly 递进的两级台阶</span>（⟹ <a href="套路库_阅读.html#R271">R271</a> 段首比较预设基准）。</div>
+            <div class="line">✂️ <b>为什么不是 C（全题唯一像样的干扰）</b>：C 也在说照片有用，而且是「最有用」的那种——印出来发给议员。但 C ① <span class="loc">capitalize on the expedition’s stunning visuals</span> 是把东西<b>拿去用</b>，H 才刚说到照片「后来送到政府官员手里」；<b>先有 H 的「照片成了证据」，才有 C 的「海登怎样利用证据」</b>。C 放 43，H 的 most importantly 就成了在 C 之后再说一遍同一件事，递进断了。黄皮书的排除理由与此相同：C、H 同属「实用价值」，体现不出 most importantly。</div>
+          </div>
+        </div>
+
+        <div class="person q" id="q44" data-ans="C">
+          <div class="pname"><span class="qn">(44)</span> 链条第 7 格 · <b>紧挨给定段 H 之后</b><span class="stance st-pro">证据 ＝ H 说「照片送到官员手里」→ C 讲「怎么送」：印大幅、发给每位议员</span><button class="zbtn" onclick="tz(this)">意</button></div>
+          <p class="ctx">↑ 上文：<b>H（已给定）</b>——照片成了文献证据；考察结束几周后，海登把观察结果汇成一份长篇报告，想说服参众两院议员与内政部同僚：黄石应当保护　↓ 下文：45</p>
+          <p class="en"><span class="slot" data-n="44">(44) ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿</span></p>
+          <div class="zh"><b>（44）</b>海登是个精明能干、深谙华盛顿门道的人，他意识到可以好好利用考察带回来的那些震撼人心的影像。他让杰克逊把照片印成大幅副本，连同莫兰画作的复制品一起，分发给每一位国会议员。「这些可视化的东西，尤其是那些照片，真正让人们深刻地意识到：这是必须保护的。」黄石国家公园的历史学家艾丽西亚·墨菲这样说。</div>
+          <div class="chips"></div>
+          <div class="expl"><b>44 → C　An effective Washington operator, Hayden sensed …</b>
+            <div class="line">🔗 <b>决定性一击：H 是「总」，C 是「分」</b>。H ① 只说照片 <span class="loc">later made its way to government officials</span>（后来到了政府官员手里）——<b>怎么到的？</b>H ② 先交代报告，C 接着交代照片：<span class="loc">print out large copies and distributed them … to each member of Congress</span>。黄皮书同此：C 是对 H 那句话的「具体明确」。</div>
+            <div class="line">🔗 <b>同一个对象一路收窄</b>：H ① government officials（政府官员）→ H ② <span class="loc">senators and representatives</span>（参议员、众议员）→ C ② <span class="loc">each member of Congress</span>（每一位国会议员）→ G ① <span class="loc">sailed through Congress</span>。<b>H 定了「游说谁」，C 写「拿什么游说」，G 写「游说成了」</b>。</div>
+            <div class="line">🔗 <b>称呼链再验一次：C 在 F 之后</b>。C ② <span class="loc">reproductions of Moran’s paintings</span>——只有姓；画家的全名与身份（<span class="loc">Painter Thomas Moran</span>）只在 F 出现过一次 ⟹ C 必须排在 F 后面。<b>F 在 42，所以 C 不可能去 41；这条旁证黄皮书没提</b>（⟹ <a href="套路库_阅读.html#R231">R231</a>）。</div>
+            <div class="line">✂️ <b>为什么不是 G</b>：G 讲的是结果——议案大受欢迎、两院先后通过、总统 3 月签字。<b>结果不能跑到原因前面</b>：照片得先发到议员手上（C），议员才会投票（G）。若 G 放 44，C 只能当末段，全文就停在「照片发出去了」，议员怎么表态、黄石有没有保住都没交代——首段那句「照片是转折点」也收不回来。黄皮书同此。</div>
+          </div>
+        </div>
+
+        <div class="person q" id="q45" data-ans="G">
+          <div class="pname"><span class="qn">(45)</span> 链条第 8 格 · <b>末段</b><span class="stance st-pro">证据 ＝ 立法落地（1872 年 3 月）＋ 照片「起了关键作用」收回首段的「转折点」</span><button class="zbtn" onclick="tz(this)">意</button></div>
+          <p class="ctx">↑ 上文：44（＝C）——海登把照片印给每位议员；历史学家说照片让人们意识到必须保护　↓ 下文：<b>无</b>（全文结尾）</p>
+          <p class="en"><span class="slot" data-n="45">(45) ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿</span></p>
+          <div class="zh"><b>（45）</b>事实证明这份议案大受欢迎，以压倒性多数顺利通过国会。1872 年初，参众两院接连通过了保护黄石的立法。同年 3 月，尤利西斯·S. 格兰特总统签署了一项法案，把黄石确立为世界上第一座国家公园。虽然一些当地人反对这一认定，但这个决定总体上是被接受的——而杰克逊的照片在这场保护黄石的斗争中起了关键作用。「我不认为，没有那些照片，法律保护会在那个时间框架内实现。」记者、《先知与大亨、护林员与流氓、野牛与熊：国家公园管理局的一百年》一书的作者希瑟·汉森这样说。</div>
+          <div class="chips"></div>
+          <div class="expl"><b>45 → G　The bill proved largely popular and sailed through Congress …</b>
+            <div class="line">🔗 <b>决定性一击：时间轴走到头</b>。E 1871 年 6 月出发、秋天结束 → H「考察结束几周后」写报告 → C 印照片发议员 → G ② <span class="loc">in early 1872</span>、③ <span class="loc">That March</span>。<b>八段里最晚的时间点在 G</b>，而且是一件事的终点（总统签字、世界上第一座国家公园）。</div>
+            <div class="line">🔗 <b>向上的钩：Congress 原词接力</b>。C ② <span class="loc">each member of Congress</span> ⟹ G ① <span class="loc">sailed through Congress</span>——<b>上段把照片送进国会，下段国会投票</b>。C ③ 历史学家说照片让人意识到 <span class="loc">has to be protected</span>，G ② 两院就通过了 <span class="loc">legislation protecting Yellowstone</span>：protected → protecting，从「应当」走到「做到」。</div>
+            <div class="line">🔗 <b>首尾成圈</b>：B ② 照片是公众支持土地保护的 <span class="loc">One of the turning points</span> ⟹ G ④ <span class="loc">Jackson’s photos played a key role</span>、⑤ 作者说没有这些照片法律保护不会那么快到来。<b>首段立论、末段落地</b>（⟹ <a href="套路库_阅读.html#R111">R111</a> 先认文体，首尾两格常常白送）。</div>
+            <div class="line">⚠️ <b>G 开口的 The bill 在考卷里没有先行词</b>——八段里没有一处说「有人提出了一份议案」。所以 G 不能靠「the bill 回指谁」来定位，只能靠时间和 Congress 接力。<span class="mk">遇到这种「定冠词找不到上家」的段首，别硬找：它只说明这段<b>不可能是首段</b>，位置要用别的钩来定。</span>（原刊这里是否删了一段，未核，不下结论。）</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">02+</span>七个接缝：五处硬、两处中——每一处都说得出「凭哪个词」</h2>
+        <p style="font-size:.85rem;color:var(--muted);margin-bottom:10px">硬 ＝ 换一段就接不上（回指词、全名→姓、名单续报）；中 ＝ 换一段读着别扭但语法上不报错（时间顺序、话题推进）。<span class="mk">零多余的排序题，七个接缝都得说出理由才算做完。</span></p>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:720px">
+          <tr><th style="width:9%">接缝</th><th style="width:30%">上段末（尾钩）</th><th style="width:30%">下段首（头钩）</th><th style="width:9%">强度</th><th>缝法</th></tr>
+          <tr><td class="c">B → A</td><td><span class="loc">came in the form of vivid photographs</span></td><td><span class="loc">a series of Yellowstone photographs by</span> … 全名</td><td class="c">中</td><td>泛指 → 具体：「照片」落到「哪组照片、谁拍的」</td></tr>
+          <tr><td class="c">A → F</td><td><span class="loc">The team included a meteorologist, a zoologist</span>…</td><td>③ <span class="loc">In addition to the entourage of scientists</span> ＋ <b>also</b></td><td class="c">硬</td><td><b>名单续报</b>：先报科学家，再报艺术家；also 要求上家报过一批人</td></tr>
+          <tr><td class="c">A → F</td><td>② 全名 <span class="loc">Ferdinand V. Hayden</span></td><td>② <span class="loc">Hayden’s expedition</span></td><td class="c">硬</td><td><b>全名 → 姓</b>（R231）</td></tr>
+          <tr><td class="c">F → E</td><td>考察的动机、人员（出发前）</td><td><span class="loc">The journey officially began</span></td><td class="c">中</td><td>准备 → 出发：officially began 要上文是「还没出发」</td></tr>
+          <tr><td class="c">E → D</td><td><span class="loc">they concluded the survey</span>（整趟行程）</td><td><span class="loc">Throughout the trip</span></td><td class="c">硬</td><td><b>the trip ← the journey</b> 同义回指；概述行程 → 细述途中</td></tr>
+          <tr><td class="c">D → H</td><td><span class="loc">these vivid photographs were another thing entirely</span></td><td><span class="loc">Perhaps most importantly, these images</span></td><td class="c">硬</td><td><b>these ← these</b>、photographs → images；「好看」→「最重要的是有用」（比较级要基准，R271）</td></tr>
+          <tr><td class="c">H → C</td><td><span class="loc">convincing senators and representatives</span></td><td><span class="loc">to each member of Congress</span>（C ②）</td><td class="c">硬</td><td><b>总 → 分</b>：H 说照片到了官员手里，C 说怎么到的；对象收窄到「每一位议员」</td></tr>
+          <tr><td class="c">C → G</td><td><span class="loc">something that has to be protected</span></td><td><span class="loc">sailed through Congress</span> · <span class="loc">legislation protecting</span></td><td class="c">中</td><td>游说 → 立法：Congress 原词接力，protected → protecting 从「应当」到「做到」</td></tr>
+        </table>
+        </div>
+        <p style="font-size:.9rem;margin-top:8px">⟹ 八段七缝，列出来是八行（A → F 有两条钩，名单与称呼各一条）。<b>三处「中」缝都在时间轴上</b>：B → A 是「现在说回过去」，F → E 是「准备到出发」，C → G 是「游说到立法」——单看词面不硬，但时间不能倒着走。<span class="mk">叙事文的排序题就是这样：硬钩定相邻两段，时间轴把相邻的小块串成一条。</span></p>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">02++</span>两条暗线：称呼链 · 时间轴（排完序拿来验收）</h2>
+        <h3 class="sh">① 称呼链：三个人，全名各出现一次，此后只用姓</h3>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:640px">
+          <tr><th style="width:16%">人物</th><th style="width:30%">全名首现</th><th>之后的称呼</th></tr>
+          <tr><td>摄影师杰克逊</td><td>A ① <span class="loc">photographer William Henry Jackson</span></td><td>A ② Jackson · F ③ <span class="loc">photographer Jackson</span> · D ① Jackson · C ② Jackson · G ④ <span class="loc">Jackson’s photos</span></td></tr>
+          <tr><td>考察队长海登</td><td>A ② <span class="loc">Ferdinand V. Hayden</span>（＋ 地质与地理调查局局长）</td><td>F ② <span class="loc">Hayden’s expedition</span> · H ② Hayden · C ① <span class="loc">An effective Washington operator, Hayden</span></td></tr>
+          <tr class="bad"><td>画家莫兰</td><td>F ③ <span class="loc">Painter Thomas Moran</span></td><td>C ② <span class="loc">Moran’s paintings</span> —— <b>全文只有这一处姓，它把 C 钉在 F 之后</b></td></tr>
+          <tr><td>两位受访者</td><td>C ③ Alicia Murphy（公园历史学家）· G ⑤ Heather Hansen（记者、作者）</td><td>各只出现一次，身份当场交代 ⟹ 不提供排序信息</td></tr>
+        </table>
+        </div>
+        <p style="font-size:.9rem;margin-top:8px">⟹ 拿这张表验收：B 零人名（首段）→ A 两个全名 → 之后只有 F 再给一个全名 → C 用到 F 的人。<span class="mk">称呼链在这篇里能直接排除 C 去 41、C 去 42、F 去 41 三种错排</span>（⟹ <a href="套路库_阅读.html#R231">R231</a>，2017 狄更斯小传那篇也是这把刀）。</p>
+
+        <h3 class="sh">② 时间轴：八段里六段带时间，两段靠人名</h3>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:640px">
+          <tr><th style="width:10%">顺序</th><th style="width:10%">段</th><th style="width:34%">时间标记</th><th>这一段在时间轴上的位置</th></tr>
+          <tr><td class="c">1</td><td class="c">B</td><td><span class="loc">Two centuries ago</span></td><td>大背景：保护自然还是新想法</td></tr>
+          <tr><td class="c">2</td><td class="c">A</td><td><span class="loc">Last year marked the 150th anniversary</span> · <span class="loc">a late 19th-century expedition</span></td><td>从「去年」回望 150 年前的考察（借今说古）</td></tr>
+          <tr><td class="c">3</td><td class="c">F</td><td>（无 · 讲动机与人员）</td><td>出发前</td></tr>
+          <tr><td class="c">4</td><td class="c">E</td><td><span class="loc">June 8, 1871</span> · <span class="loc">Over nearly four months</span> · <span class="loc">That fall</span></td><td>出发 → 行进 → 结束</td></tr>
+          <tr><td class="c">5</td><td class="c">D</td><td><span class="loc">Throughout the trip</span></td><td>途中（镜头拉回 E 那四个月里）</td></tr>
+          <tr><td class="c">6</td><td class="c">H</td><td><span class="loc">Weeks after completing the expedition</span></td><td>结束后几周：写报告</td></tr>
+          <tr><td class="c">7</td><td class="c">C</td><td>（无 · 讲印照片、发议员）</td><td>游说</td></tr>
+          <tr><td class="c">8</td><td class="c">G</td><td><span class="loc">in early 1872</span> · <span class="loc">That March</span></td><td>立法、签字</td></tr>
+        </table>
+        </div>
+        <p style="font-size:.9rem;margin-top:8px">⟹ 和 2018 那篇（艾森豪威尔行政办公楼，R248）不同，<b>这篇没有「总述层」包住「叙事层」</b>：只有首段 B 是总论，其余七段一路按时间往下走。<span class="mk">所以首段一定、其余顺着时间排——这是七篇排序题里时间线最干净的一篇。</span>唯一要小心的是 D：它的时间是「途中」，比 E 的「结束」早，却排在 E 后面——<b>D 不是「下一件事」，是把 E 那四个月放大来看</b>，排序看的是叙述顺序，不是事件发生的先后。</p>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">03</span>🔍 与黄皮书交叉核对：答案零书误，补两条硬钩、商榷一处</h2>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:640px">
+          <tr><th style="width:10%">题</th><th style="width:38%">黄皮书主证据</th><th>本页补充 / 商榷</th></tr>
+          <tr><td class="c">41 B</td><td>F、D、G 段首有回指；C 首人物非全名；B 对比式开篇、末句概括</td><td>同。补：B 末 vivid photographs 与 G ④ played a key role 首尾成圈</td></tr>
+          <tr><td class="c">42 F</td><td>the area ← A ② Yellowstone Basin；the team included → the team also included 递进</td><td>同。<b>补一</b>：F ② <span class="loc">Hayden’s expedition</span> 只有姓，全名在 A ⟹ F 必在 A 后（书未用）</td></tr>
+          <tr><td class="c">43 D</td><td>Throughout the trip ← E 整趟行程；these images ← D 末 vivid photographs；排 C：与 H 同属实用价值、体现不出 most importantly</td><td>同</td></tr>
+          <tr><td class="c">44 C</td><td>H 总、C 分（照片怎样到了官员手里）；排 G：C 应在 G 前</td><td>同。<b>补二</b>：C ② <span class="loc">Moran’s paintings</span> 只有姓，全名在 F ⟹ C 必在 F 后（书未用；它让 C 连 41、42 两个位置都去不了）</td></tr>
+          <tr><td class="c">45 G</td><td>末段常讲影响或意义；与首段「照片是转折点」呼应</td><td><b>商榷</b>：书在 G 的「路标推引」里说 The bill「提示上文可能提及议案相关内容」——考卷八段里<b>没有任何一处提到议案</b>，这条路标指向的东西不存在；G 的定位只能靠时间（1872）和 Congress 接力</td></tr>
+        </table>
+        </div>
+        <p style="font-size:.9rem;margin-top:8px">📎 <b>背景（WebSearch 核）</b>：原刊发表于 2021 年 7 月 8 日——海登考察（1871）150 周年正是那一年；考卷用于 2022 年 12 月，「去年」正好是 2021，时间词和考试年份对得上（原刊原话没核，不下结论）。黄石国家公园法案 1872 年 3 月 1 日由格兰特总统签署；众议院 2 月 27 日以 115 比 65 通过参议院版议案；国家档案馆的介绍里也提到海登把杰克逊的黄石照片编成相册送给议员游说。<span class="mk">这些只帮你读懂背景，判题只按考卷里剩下的字（⟹ <a href="套路库_阅读.html#R255">R255</a>）。</span></p>
+      </section>
+
+      <section class="card" id="text">
+        <h2><span class="n">03+</span>复原后的全文（B — A — F — E — D — H — C — G）· 逐段精读 <button class="allbtn" onclick="toggleAll()">意译 开/关</button> <button class="allbtn" onclick="imgAll(this)">原卷对照</button></h2>
+        <p style="font-size:.8rem;color:var(--muted);margin-bottom:14px">📄 原文由你的浏览器从原卷识别成文字（「原卷对照」可切回扫描图并逐句校对）｜ <b>选中任意单词弹「查有道」</b>（触屏长按选词）｜ <b>虚线词</b> ＝ 本句重难点词，点开出卡片（没在正文里认出来的留在段末 🟡 行）｜ <b>蓝色虚线句</b> ＝ 点一下跳到 05 长难句精析 ｜「意」＝ 按句意转述</p>
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">[B　<span style="font-weight:400">→ 41</span>]</span>
+            <div class="sn"><img class="strip" src="img/2023_新题型/sB_1.png" alt="B① 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="preserve">preserving nature</span> · <span class="tk" data-w="exploit">exploiting</span> · <span class="tk" data-w="novel">novel</span> · <span class="tk" data-w="settler">settlers</span></div></div>
+            <div class="sn" data-go="l_b2"><img class="strip" src="img/2023_新题型/sB_2.png" alt="B② 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="turningpoint">turning points</span> · <span class="tk" data-w="conservation">conservation</span> · <span class="tk" data-w="magnificence">magnificence</span> · <span class="tk" data-w="inparticular">in particular</span> · <span class="tk" data-w="intheformof">in the form of</span> · <span class="tk" data-w="vivid">vivid</span></div></div>
+          </div>
+          <div class="zh"><b>[B] 段意：</b>两百年前，「保护自然而不是开发自然」这种想法，对许多美国定居者来说还很新鲜。公众转向支持土地保护——尤其是认识到黄石地区的壮美——有一个转折点，它是以一组生动的照片的形式到来的。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">[A　<span style="font-weight:400">已给定 · 第 2 段</span>]</span>
+            <div class="sn"><img class="strip" src="img/2023_新题型/sA_1.png" alt="A① 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="mark">marked</span> · <span class="tk" data-w="anniversary">anniversary</span> · <span class="tk" data-w="renowned">renowned</span> · <span class="tk" data-w="landscape">landscape</span></div></div>
+            <div class="sn" data-go="l_a2"><img class="strip" src="img/2023_新题型/sA_2.png" alt="A② 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="snap">snapped</span> · <span class="tk" data-w="firstever">first-ever</span> · <span class="tk" data-w="iconic">iconic</span> · <span class="tk" data-w="landmark">landmarks</span> · <span class="tk" data-w="expedition">expedition</span> · <span class="tk" data-w="conduct">conducted by</span> · <span class="tk" data-w="survey">Survey</span> · <span class="tk" data-w="territory">Territories</span></div></div>
+            <div class="sn"><img class="strip" src="img/2023_新题型/sA_3.png" alt="A③ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="meteorologist">meteorologist</span> · <span class="tk" data-w="zoologist">zoologist</span> · <span class="tk" data-w="mineralogist">mineralogist</span> · <span class="tk" data-w="statistician">statistician</span></div></div>
+          </div>
+          <div class="zh"><b>[A] 段意：</b>去年是著名风景摄影师威廉·亨利·杰克逊那组黄石系列照片拍摄 150 周年。19 世纪末，美国领土地质与地理调查局局长费迪南德·V. 海登带队穿越黄石盆地考察，杰克逊在途中拍下了提顿山、老忠实泉、科罗拉多落基山脉等标志性地标有史以来的第一批照片。考察队成员包括一名气象学家、一名动物学家、一名矿物学家和一名农业统计员。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">[F　<span style="font-weight:400">→ 42</span>]</span>
+            <div class="sn" data-go="l_f1"><img class="strip" src="img/2023_新题型/sF_1.png" alt="F① 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="nativeamerican">Native Americans</span> · <span class="tk" data-w="trapper">trappers</span> · <span class="tk" data-w="riches">riches</span></div></div>
+            <div class="sn"><img class="strip" src="img/2023_新题型/sF_2.png" alt="F② 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="thatswhy">That’s why</span> · <span class="tk" data-w="aimto">aimed to</span> · <span class="tk" data-w="hotspring">hot springs</span> · <span class="tk" data-w="florafauna">flora and fauna</span></div></div>
+            <div class="sn" data-go="l_f3"><img class="strip" src="img/2023_新题型/sF_3.png" alt="F③ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="inadditionto">In addition to</span> · <span class="tk" data-w="entourage">entourage</span> · <span class="tk" data-w="chargedwith">charged with</span> · <span class="tk" data-w="astounding">astounding</span></div></div>
+          </div>
+          <div class="zh"><b>[F] 段意：</b>虽然美洲原住民（以及后来的矿工和皮毛猎人）早就知道这片地方物产丰饶，大多数美国人却不知道。这正是海登考察的目的：让人们对黄石河一带有更完整的认识——从温泉、瀑布到各种各样的动植物。除了随行的一众科学家，考察队还带上了艺术家：画家托马斯·莫兰和摄影师杰克逊负责记录这片令人惊叹的自然美景，并把它分享给世界。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">[E　<span style="font-weight:400">已给定 · 第 4 段</span>]</span>
+            <div class="sn"><img class="strip" src="img/2023_新题型/sE_1.png" alt="E① 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="officially">officially</span></div></div>
+            <div class="sn"><img class="strip" src="img/2023_新题型/sE_2.png" alt="E② 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="makeway">made their way</span> · <span class="tk" data-w="horseback">horseback</span> · <span class="tk" data-w="traverse">traversed</span></div></div>
+            <div class="sn"><img class="strip" src="img/2023_新题型/sE_3.png" alt="E③ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="conclude">concluded</span> · <span class="tk" data-w="survey">survey</span></div></div>
+          </div>
+          <div class="zh"><b>[E] 段意：</b>1871 年 6 月 8 日，旅程在犹他州奥格登正式出发。在将近四个月的时间里，几十个人骑马进入蒙大拿，沿着黄石河、绕着黄石湖穿行。那年秋天，他们在怀俄明州的布里杰堡结束了勘察。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">[D　<span style="font-weight:400">→ 43</span>]</span>
+            <div class="sn" data-go="l_d1"><img class="strip" src="img/2023_新题型/sD_1.png" alt="D① 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="throughout">Throughout</span> · <span class="tk" data-w="juggle">juggled</span> · <span class="tk" data-w="plate">plate</span> · <span class="tk" data-w="collodion">collodion</span> · <span class="tk" data-w="coat">coating</span> · <span class="tk" data-w="mixture">mixture</span> · <span class="tk" data-w="expose">exposing</span> · <span class="tk" data-w="develop">developing</span> · <span class="tk" data-w="portable">portable</span> · <span class="tk" data-w="darkroom">darkroom</span></div></div>
+            <div class="sn"><img class="strip" src="img/2023_新题型/sD_2.png" alt="D② 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="crude">crude</span> · <span class="tk" data-w="educatedguess">educated guesses</span> · <span class="tk" data-w="exposure">exposure</span> · <span class="tk" data-w="awkward">awkward</span> · <span class="tk" data-w="assist">assist in</span> · <span class="tk" data-w="transportation">transportation</span></div></div>
+            <div class="sn"><img class="strip" src="img/2023_新题型/sD_3.png" alt="D③ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="despite">Despite</span> · <span class="tk" data-w="striking">striking</span> · <span class="tk" data-w="rangefrom">ranging from</span> · <span class="tk" data-w="majestic">majestic</span> · <span class="tk" data-w="nowfamous">now-famous</span> · <span class="tk" data-w="snapshot">snapshot</span> · <span class="tk" data-w="casual">casual</span> · <span class="tk" data-w="portrait">portraits</span></div></div>
+            <div class="sn" data-go="l_d4"><img class="strip" src="img/2023_新题型/sD_4.png" alt="D④ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="veteran">veterans</span> · <span class="tk" data-w="atlength">at length</span> · <span class="tk" data-w="anotherthing">another thing entirely</span></div></div>
+          </div>
+          <div class="zh"><b>[D] 段意：</b>整个旅途中，杰克逊要同时摆弄好几台相机和不同尺寸的底片，用的是火棉胶工艺：先给底片涂上一层化学混合物，曝光，再用便携暗房把影像冲洗出来。这种粗糙的技术要凭经验估算曝光时间，器材又重又笨——得好几个人帮忙搬运。尽管困难重重，杰克逊还是拍下了几十张引人注目的照片，既有他那张如今广为人知的「老忠实泉」这样的壮丽景象，也有考察队员在营地的随手合影。以往考察队的老队员虽然也曾长篇累牍地描写过那些令人惊叹的景色，这些生动的照片却完全是另一回事。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">[H　<span style="font-weight:400">已给定 · 第 6 段</span>]</span>
+            <div class="sn"><img class="strip" src="img/2023_新题型/sH_1.png" alt="H① 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="mostimportantly">most importantly</span> · <span class="tk" data-w="documentary">documentary</span> · <span class="tk" data-w="evidence">evidence</span> · <span class="tk" data-w="makeway">made its way</span></div></div>
+            <div class="sn" data-go="l_h2"><img class="strip" src="img/2023_新题型/sH_2.png" alt="H② 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="extensive">extensive</span> · <span class="tk" data-w="aimedat">aimed at</span> · <span class="tk" data-w="convince">convincing</span> · <span class="tk" data-w="senator">senators</span> · <span class="tk" data-w="representative">representatives</span> · <span class="tk" data-w="alongwith">along with</span> · <span class="tk" data-w="interior">Interior</span> · <span class="tk" data-w="oughtto">ought to</span> · <span class="tk" data-w="preserve">preserved</span></div></div>
+          </div>
+          <div class="zh"><b>[H] 段意：</b>也许最重要的是，这些照片提供了文献证据，后来被送到了政府官员手中。考察结束几周后，海登把队员们的观察结果汇编成一份详尽的报告，意在说服参议员和众议员，以及内政部等政府部门的同僚：黄石应当得到保护。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">[C　<span style="font-weight:400">→ 44</span>]</span>
+            <div class="sn" data-go="l_c1"><img class="strip" src="img/2023_新题型/sC_1.png" alt="C① 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="operator">operator</span> · <span class="tk" data-w="sense">sensed</span> · <span class="tk" data-w="capitalizeon">capitalize on</span> · <span class="tk" data-w="stunning">stunning</span> · <span class="tk" data-w="visual">visuals</span></div></div>
+            <div class="sn"><img class="strip" src="img/2023_新题型/sC_2.png" alt="C② 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="printout">print out</span> · <span class="tk" data-w="distribute">distributed</span> · <span class="tk" data-w="reproduction">reproductions</span> · <span class="tk" data-w="congress">Congress</span></div></div>
+            <div class="sn" data-go="l_c3"><img class="strip" src="img/2023_新题型/sC_3.png" alt="C③ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="visualization">visualization</span> · <span class="tk" data-w="hithome">hit home</span> · <span class="tk" data-w="historian">historian</span></div></div>
+          </div>
+          <div class="zh"><b>[C] 段意：</b>海登是个精明能干、深谙华盛顿门道的人，他意识到可以好好利用考察带回来的那些震撼人心的影像。他让杰克逊把照片印成大幅副本，连同莫兰画作的复制品一起，分发给每一位国会议员。「这些可视化的东西，尤其是那些照片，真正让人们深刻地意识到：这是必须保护的。」黄石国家公园的历史学家艾丽西亚·墨菲这样说。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">[G　<span style="font-weight:400">→ 45</span>]</span>
+            <div class="sn"><img class="strip" src="img/2023_新题型/sG_1.png" alt="G① 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="bill">bill</span> · <span class="tk" data-w="prove">proved</span> · <span class="tk" data-w="sailthrough">sailed through</span> · <span class="tk" data-w="majority">majorities</span> · <span class="tk" data-w="infavor">in favor</span></div></div>
+            <div class="sn"><img class="strip" src="img/2023_新题型/sG_2.png" alt="G② 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="succession">In quick succession</span> · <span class="tk" data-w="senate">Senate</span> · <span class="tk" data-w="house">House</span> · <span class="tk" data-w="legislation">legislation</span></div></div>
+            <div class="sn"><img class="strip" src="img/2023_新题型/sG_3.png" alt="G③ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="signintolaw">signed an act into law</span> · <span class="tk" data-w="establish">established</span></div></div>
+            <div class="sn"><img class="strip" src="img/2023_新题型/sG_4.png" alt="G④ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="oppose">opposed</span> · <span class="tk" data-w="designation">designation</span> · <span class="tk" data-w="largely">largely</span> · <span class="tk" data-w="keyrole">played a key role</span></div></div>
+            <div class="sn" data-go="l_g5"><img class="strip" src="img/2023_新题型/sG_5.png" alt="G⑤ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="timeframe">timeframe</span> · <span class="tk" data-w="journalist">journalist</span> · <span class="tk" data-w="mogul">Moguls</span> · <span class="tk" data-w="rogue">Rogues</span> · <span class="tk" data-w="bison">Bison</span></div></div>
+          </div>
+          <div class="zh"><b>[G] 段意：</b>事实证明这份议案大受欢迎，以压倒性多数顺利通过国会。1872 年初，参众两院接连通过了保护黄石的立法。同年 3 月，尤利西斯·S. 格兰特总统签署了一项法案，把黄石确立为世界上第一座国家公园。虽然一些当地人反对这一认定，但这个决定总体上是被接受的——而杰克逊的照片在这场保护黄石的斗争中起了关键作用。「我不认为，没有那些照片，法律保护会在那个时间框架内实现。」记者、《先知与大亨、护林员与流氓、野牛与熊：国家公园管理局的一百年》一书的作者希瑟·汉森这样说。</div>
+        </div>
+
+      </section>
+
+      <section class="card">
+        <h2><span class="n">04</span>分诊：如果你错了，错在哪一刀</h2>
+        <div class="tbwrap">
+        <table class="gt" style="min-width:640px">
+          <tr><th style="width:9%">错法</th><th style="width:34%">你当时大概是怎么想的</th><th>漏掉的那一刀</th></tr>
+          <tr><td class="c">41 选 C</td><td>「精明的华盛顿操盘手海登」像人物特写的开头</td><td><b>称呼链</b>：首次出场要全名，全名在 A（R231）</td></tr>
+          <tr><td class="c">41 选 F</td><td>Though 让步开头、讲「多数美国人不知道」，像引子</td><td><b>定冠词</b>：the area’s 要上家先交代地方（R79）</td></tr>
+          <tr><td class="c">42 选 D</td><td>A 讲考察、D 也讲考察和杰克逊，话题连得上</td><td><b>时间</b>：D 是「旅途中」，人还没出发（E 才出发）</td></tr>
+          <tr><td class="c">43 选 C</td><td>H 讲照片的作用，C 也讲照片的作用，挨着放</td><td><b>递进方向</b>：H 的 most importantly 要上家先给「次重要」；C 是在 H 之后展开 H（R271）</td></tr>
+          <tr><td class="c">44 选 G</td><td>H 末是游说议员，G 首是议案通过国会，因果直接</td><td><b>零多余验收</b>：G 放 44，C 只能当末段，全文停在「照片发出去了」——首段的「转折点」收不回来（R107）</td></tr>
+        </table>
+        </div>
+        <p style="font-size:.9rem;margin-top:8px">⟹ 本篇五个空，每个空的错法都对应一把<b>以前用过的刀</b>（R79 首段 · R231 称呼 · R271 比较基准 · R107 零多余验收），没有新刀——<span class="mk">2023 这一篇是排序题的「综合复习卷」：七篇里的工具，叙事文能用上的这篇全用上了。</span>本篇不加新套路卡。</p>
+      </section>
+
+      <section class="card" id="long">
+        <h2><span class="n">05</span>长难句精析（10 句 · 本篇黄皮书无此栏目，全部原创）</h2>
+        <p style="font-size:.8rem;color:var(--muted);margin-bottom:10px">本篇句子长在三处：<b>后置修饰一层套一层</b>（A ②、D ①）、<b>破折号插入把主语和谓语隔开</b>（B ②）、<b>convince sb that 中间夹着 along with</b>（H ②）。原句由浏览器识别成文字，分析里只引短语。</p>
+
+        <div class="ls" id="l_b2"><div class="lsh">长难句 1 · B ② 破折号插入隔开主谓（29 词）</div>
+          <img class="strip" src="img/2023_新题型/sB_2.png" alt="B② 原卷句条" loading="lazy">
+          <div class="an"><div>① 主语 <span class="loc">One of the turning points</span> ＋ 后置 in public support for land conservation efforts（「在公众支持土地保护这件事上」）</div>
+            <div>② 两道破折号中间是插入：and recognizing the magnificence of the Yellowstone region in particular——和 public support 并列，作 in 的宾语（「以及在认识黄石壮美这件事上」）</div>
+            <div>③ 谓语直到破折号后才出现：<span class="loc">came in the form of vivid photographs</span>——<b>读到 came 要回头找主语 One</b>（单数），不是 efforts</div></div>
+          <div class="tr">意：公众转向支持土地保护——尤其是认识到黄石地区的壮美——有一个转折点，是以一组生动的照片的形式到来的。</div></div>
+
+        <div class="ls" id="l_a2"><div class="lsh">长难句 2 · A ② 地点 ＋ 时间 ＋ 后置分词 ＋ 同位语，一层套一层（44 词）</div>
+          <img class="strip" src="img/2023_新题型/sA_2.png" alt="A② 原卷句条" loading="lazy">
+          <div class="an"><div>① 主干极短：Jackson snapped the first-ever shots of iconic landmarks</div>
+            <div>② such as 列三处地标：the Tetons, Old Faithful and the Colorado Rockies</div>
+            <div>③ 时间地点状语：on a late 19th-century expedition through the Yellowstone Basin</div>
+            <div>④ 过去分词短语 <span class="loc">conducted by the head of</span> … 修饰 expedition（不是修饰 Basin）</div>
+            <div>⑤ 句末 Ferdinand V. Hayden 是 the head of … Territories 的<b>同位语</b>：头衔在前、人名在后</div></div>
+          <div class="tr">意：19 世纪末，美国领土地质与地理调查局局长费迪南德·V. 海登带队穿越黄石盆地考察，杰克逊在途中拍下了提顿山、老忠实泉和科罗拉多落基山脉等标志性地标史上第一批照片。</div></div>
+
+        <div class="ls" id="l_f1"><div class="lsh">长难句 3 · F ① 让步 ＋ 括号 ＋ 省略（19 词）</div>
+          <img class="strip" src="img/2023_新题型/sF_1.png" alt="F① 原卷句条" loading="lazy">
+          <div class="an"><div>① Though 引让步从句，主语 Native Americans 后括号补充 and later miners and fur trappers（later＝后来才到的）</div>
+            <div>② 从句谓语 had long recognized（过去完成：早在考察之前就知道了）</div>
+            <div>③ 主句 <span class="loc">most Americans did not</span>——did not 后<b>省略了 recognize the area’s riches</b></div>
+            <div>④ 「少数人早知道 ↔ 多数人不知道」的对比，正是下句 That’s why 考察的动机</div></div>
+          <div class="tr">意：虽然美洲原住民（以及后来的矿工和皮毛猎人）早就知道这片地方物产丰饶，大多数美国人却不知道。</div></div>
+
+        <div class="ls" id="l_f3"><div class="lsh">长难句 4 · F ③ 42 题的钩子所在（32 词）</div>
+          <img class="strip" src="img/2023_新题型/sF_3.png" alt="F③ 原卷句条" loading="lazy">
+          <div class="an"><div>① 句首 <span class="loc">In addition to the entourage of scientists</span>——介词短语，「除了随行的科学家」，<b>the entourage 是已知信息</b></div>
+            <div>② 主句 the team also included artists ＋ 冒号</div>
+            <div>③ 冒号后是对 artists 的具体说明，自成一句：Painter Thomas Moran and photographer Jackson were charged with capturing … and sharing it with the world</div>
+            <div>④ be charged with ＋ 两个并列动名词 capturing / sharing；it 指 this astounding natural beauty</div></div>
+          <div class="tr">意：除了随行的一众科学家，考察队还带上了艺术家：画家托马斯·莫兰和摄影师杰克逊负责记录这片令人惊叹的自然美景，并把它分享给世界。</div></div>
+
+        <div class="ls" id="l_d1"><div class="lsh">长难句 5 · D ① 三个动名词挂在 involved 后面（34 词）</div>
+          <img class="strip" src="img/2023_新题型/sD_1.png" alt="D① 原卷句条" loading="lazy">
+          <div class="an"><div>① 主干：Jackson juggled multiple cameras and plate sizes</div>
+            <div>② using the collodion process——现在分词作方式状语</div>
+            <div>③ that involved ＋ 三个并列动名词：<b>coating</b> the plates with a chemical mixture（涂药）, <b>exposing</b> them（曝光）and <b>developing</b> the resulting images（冲洗）with a portable darkroom——<b>涂药 → 曝光 → 冲洗</b>，正好是湿版摄影的三步</div>
+            <div>④ them 指 the plates；the resulting images＝冲出来的影像</div></div>
+          <div class="tr">意：整个旅途中，杰克逊要同时摆弄好几台相机和不同尺寸的底片，用的是火棉胶工艺：先给底片涂上化学药液，再曝光，最后用便携暗房把影像冲洗出来。</div></div>
+
+        <div class="ls" id="l_d4"><div class="lsh">长难句 6 · D ④ While 对比 ＋ 过去完成（19 词）</div>
+          <img class="strip" src="img/2023_新题型/sD_4.png" alt="D④ 原卷句条" loading="lazy">
+          <div class="an"><div>① While 在这里是<b>对比</b>（「虽然……而」），不是「当……时」</div>
+            <div>② 从句 veterans of previous expeditions had written at length about stunning sights——过去完成，比这次考察更早</div>
+            <div>③ 主句 <span class="loc">these vivid photographs were another thing entirely</span>：文字 vs 照片，<b>these vivid photographs 正是 H 开口 these images 的所指</b></div></div>
+          <div class="tr">意：以往考察队的老队员虽然也曾长篇累牍地描写过那些令人惊叹的景色，这些生动的照片却完全是另一回事。</div></div>
+
+        <div class="ls" id="l_h2"><div class="lsh">长难句 7 · H ② convince sb … that，中间夹着 along with（38 词）</div>
+          <img class="strip" src="img/2023_新题型/sH_2.png" alt="H② 原卷句条" loading="lazy">
+          <div class="an"><div>① 时间状语 <span class="loc">Weeks after completing the expedition</span></div>
+            <div>② 主干：Hayden collected his team’s observations into an extensive report</div>
+            <div>③ 后置分词短语 aimed at convincing ＋ <b>宾语</b> senators and representatives</div>
+            <div>④ 插入 along with colleagues at government agencies like the Department of the Interior——<b>仍是 convincing 的宾语的一部分</b>（连同政府部门的同僚）</div>
+            <div>⑤ 句末 <span class="loc">that Yellowstone ought to be preserved</span>——convince sb that 的 that 从句，<b>隔了一整个 along with 短语才出现</b></div></div>
+          <div class="tr">意：考察结束几周后，海登把队员们的观察结果汇编成一份详尽的报告，意在让参议员、众议员以及内政部等政府部门的同僚相信：黄石应当得到保护。</div></div>
+
+        <div class="ls" id="l_c1"><div class="lsh">长难句 8 · C ① 句首名词短语作同位语（15 词）</div>
+          <img class="strip" src="img/2023_新题型/sC_1.png" alt="C① 原卷句条" loading="lazy">
+          <div class="an"><div>① <span class="loc">An effective Washington operator</span>，逗号后才是主语 Hayden——<b>句首名词短语是 Hayden 的同位语</b>（「作为一个……的人，海登……」），带一点原因意味：正因为他懂华盛顿，才想到利用照片</div>
+            <div>② sensed that ＋ 宾语从句 he could capitalize on the expedition’s stunning visuals</div>
+            <div>③ 排序信号：主语只有姓 ⟹ 不是首段；capitalize on 拍回来的影像 ⟹ 考察已结束</div></div>
+          <div class="tr">意：海登是个精明能干、深谙华盛顿门道的人，他意识到可以好好利用考察带回来的那些震撼人心的影像。</div></div>
+
+        <div class="ls" id="l_c3"><div class="lsh">长难句 9 · C ③ 引语 ＋ 倒装 ＋ hit home that（23 词）</div>
+          <img class="strip" src="img/2023_新题型/sC_3.png" alt="C③ 原卷句条" loading="lazy">
+          <div class="an"><div>① 引语主语 The visualization ＋ 插入 particularly those photographs</div>
+            <div>② 谓语 <span class="loc">really hit home</span> ＋ that 从句：this is something that has to be protected——hit home 后接 that 从句，表示「让人深刻地意识到……」</div>
+            <div>③ 引语后倒装 says Alicia Murphy ＋ 同位语 Yellowstone’s park historian</div></div>
+          <div class="tr">意：「这些可视化的东西，尤其是那些照片，真正让人们深刻意识到：这是必须保护的。」黄石国家公园的历史学家艾丽西亚·墨菲这样说。</div></div>
+
+        <div class="ls" id="l_g5"><div class="lsh">长难句 10 · G ⑤ without 引出的含蓄虚拟（42 词含书名）</div>
+          <img class="strip" src="img/2023_新题型/sG_5.png" alt="G⑤ 原卷句条" loading="lazy">
+          <div class="an"><div>① 引语主干 I don’t believe that ＋ 宾语从句</div>
+            <div>② 从句 the legal protection <b>would have happened</b> … <b>without those images</b>——没有 if，<b>without 短语就是虚拟条件</b>（＝if there had not been those images），对过去的假设用 would have done</div>
+            <div>③ in the timeframe that it did——did 替代 happened：「在它实际发生的那个时间框架内」</div>
+            <div>④ 否定前移：I don’t believe that … would have ＝ 我认为不会……</div>
+            <div>⑤ 引语后倒装 says Heather Hansen ＋ 两个同位语 journalist and author of 一个四段长的书名</div></div>
+          <div class="tr">意：「我认为，要是没有那些照片，法律保护不会在那个时间内实现。」记者、《先知与大亨、护林员与流氓、野牛与熊：国家公园管理局的一百年》一书的作者希瑟·汉森这样说。</div></div>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">06</span>可搬进作文的素材（本篇是「环境保护 / 图像与传播 / 证据与说服」三个话题的弹药库）</h2>
+        <p style="font-size:.85rem;color:var(--muted);margin-bottom:10px">例句全部自拟，只借原文的句式骨架。</p>
+        <div class="wb">
+          <div class="wbi"><div class="p">… was a novel one to many …（某想法当时还很新鲜）</div><div class="u">写「观念变迁」开头：<i class="own">A decade ago, the idea of paying with a phone was a novel one to many shoppers.</i></div></div>
+          <div class="wbi"><div class="p">One of the turning points in … came in the form of …（转折点以……的形式到来）</div><div class="u">抽象变化落到具体事物：<i class="own">One of the turning points in public attitudes toward recycling came in the form of a short documentary.</i></div></div>
+          <div class="wbi"><div class="p">… range from A to B（从 A 到 B 不等）</div><div class="u">列举范围：<i class="own">Volunteer activities range from teaching children to cleaning up riverbanks.</i></div></div>
+          <div class="wbi"><div class="p">While X had …, Y was another thing entirely（X 早已……，Y 却完全是另一回事）</div><div class="u">新旧对比：<i class="own">While teachers had long explained the danger of plastic, the photos of the polluted beach were another thing entirely.</i></div></div>
+          <div class="wbi"><div class="p">Perhaps most importantly, …（也许最重要的是）</div><div class="u">递进收束：<i class="own">Perhaps most importantly, reading teaches us to see the world through others’ eyes.</i></div></div>
+          <div class="wbi"><div class="p">… really hit home that …（让人真切地意识到）</div><div class="u">写感悟：<i class="own">The empty shelves really hit home that food should never be taken for granted.</i></div></div>
+          <div class="wbi"><div class="p">… played a key role in …（在……中起了关键作用）</div><div class="u">图画作文结论段：<i class="own">Public awareness plays a key role in protecting endangered species.</i></div></div>
+          <div class="wbi"><div class="p">I don’t believe … would have happened … without …（没有……就不会……，含蓄虚拟）</div><div class="u">强调某因素不可或缺：<i class="own">I don’t believe I would have passed the exam without my roommate’s help.</i></div></div>
+        </div>
+        <p style="font-size:.88rem;margin-top:10px">🔁 <b>跨篇联动</b>：同卷 <a href="2023_T4_引用卡特尔.html">Text 4</a> 讲「论文被引次数被人做了手脚」——<b>证据可以被操纵</b>；本篇讲「照片成了说服国会的证据」——<b>证据可以推动立法</b>。写「信息与真相」类作文时，两篇正好是一正一反：好证据能改变决策，所以证据本身更需要被守护。</p>
+      </section>
+
+      <section class="card">
+        <h2><span class="n">07</span>词汇复盘（点卡片看详情 · 共 <span id="vcount"></span> 张，含 <b>37 处熟词僻义</b>）</h2>
+        <p style="font-size:.85rem;color:var(--muted);margin-bottom:10px">本篇熟词僻义的共同规律：<b>换了场景，熟词全换了意思</b>——摄影场景里 plate 是「底片」、coat 是「涂」、expose 是「曝光」、develop 是「冲洗」；议会场景里 bill 是「议案」、House 是「众议院」、representative 是「众议员」、sail through 是「顺利通过」；人物描写里 operator 是「有手腕的人」、veteran 是「老队员」。<b>最危险的是 D ①</b>：一句话里四个摄影义熟词，按熟义读就成了「杂耍盘子、穿外套、暴露、发展」。</p>
+        <div id="vgrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px"></div>
+      </section>
+
+      <footer>2023 英语（一）Part B · 拯救黄石公园的照片 ｜ 答案 41B 42F 43D 44C 45G（全文 B A F E D H C G）｜ Claude 非盲（答案页已见）｜ 正文与八段由读者本机从原卷句条识别成文字 ｜ 黄皮书精讲交叉复核：答案零书误</footer>
+    </main>
+
+    <aside>
+      <div id="panel"><div class="hint">👆 点正文里的<b>虚线词</b>，或下方词汇卡，这里出详解<br><br>选中任意英文可弹出「查词」按钮</div></div>
+    </aside>
+  </div>
+</div>
+<button id="yd">🔍 有道查词</button>
+
+<script>
+function go(id){const s=document.getElementById(id);if(!s)return;s.scrollIntoView({behavior:'smooth',block:'center'});s.style.transition='none';s.style.opacity=.3;setTimeout(()=>{s.style.transition='opacity .8s';s.style.opacity=1},80)}
+const NS={"A": 3, "B": 2, "C": 3, "D": 4, "E": 3, "F": 3, "G": 5, "H": 2};
+const GIVEN=["A", "E", "H"];
+const IMG=k=>Array.from({length:NS[k]},(_,i)=>'<span class="sn"><img class="strip" src="img/2023_新题型/s'+k+'_'+(i+1)+'.png" alt="'+k+' 段原卷句条" loading="lazy"></span>').join('');
+const OPTS = {
+  A:[IMG("A"),"去年是杰克逊黄石系列照片 150 周年；他在 19 世纪末海登带队的考察中拍下提顿山、老忠实泉等地标的第一批照片；考察队有气象、动物、矿物学家和农业统计员。","头：<b>Last year marked the 150th anniversary</b> —— 从「现在」回望，两个全名首次出场｜尾：<b>The team included</b> 四种科学家 —— 一张没报完的名单","⟹ 已给定 · 第 2 段"],
+  B:[IMG("B"),"两百年前，保护自然对许多美国定居者还是新想法；公众转向支持土地保护的转折点之一，是一组生动的照片。","头：<b>Two centuries ago, the idea of</b> —— 零回指、零人名｜尾：<b>in the form of vivid photographs</b> —— 抛出全文题眼「照片」","⟹ 归位 41（首段）· 五个待排段里唯一开口不欠上文"],
+  C:[IMG("C"),"精明的海登想利用考察的影像：让杰克逊印出大幅照片，连同莫兰画作的复制品发给每位国会议员；历史学家说照片让人意识到必须保护。","头：<b>An effective Washington operator, Hayden</b> —— 只有姓（欠全名）｜尾：<b>has to be protected</b> —— 指向立法；②里 <b>Moran’s</b> 也只有姓","⟹ 归位 44 · 接 H 的「照片到了官员手里」，讲怎么送到的"],
+  D:[IMG("D"),"整个旅途中杰克逊用火棉胶工艺、多台相机拍摄，器材笨重要几个人搬；仍拍下几十张照片；以往考察只有文字，这些照片完全是另一回事。","头：<b>Throughout the trip</b> —— the trip 回指一趟已讲过的旅程｜尾：<b>these vivid photographs were another thing entirely</b> —— 交棒给 H 的 these images","⟹ 归位 43 · 夹在 E（行程）与 H（these images）之间"],
+  E:[IMG("E"),"1871 年 6 月 8 日旅程在犹他州奥格登正式出发；近四个月骑马进蒙大拿、沿黄石河绕黄石湖；秋天在怀俄明的布里杰堡结束勘察。","头：<b>The journey officially began</b> —— 上文是「出发前」｜尾：<b>they concluded the survey</b> —— 行程讲完，等人放大「途中」","⟹ 已给定 · 第 4 段"],
+  F:[IMG("F"),"原住民早知这片地方富饶，多数美国人却不知道，所以海登考察要让人更完整地认识黄石河一带；除了科学家，队里还有画家莫兰和摄影师杰克逊。","头：<b>the area’s riches</b> —— the area 回指已交代的地方；②<b>Hayden’s</b> 只有姓｜尾：<b>In addition to the entourage of scientists … also</b> —— 续报 A 末的名单；<b>Thomas Moran</b> 全名首现","⟹ 归位 42 · 夹在 A（名单）与 E（出发）之间"],
+  G:[IMG("G"),"议案大受欢迎、顺利通过国会；1872 年初两院通过保护立法，3 月格兰特总统签署，黄石成为世界第一座国家公园；杰克逊的照片起了关键作用。","头：<b>The bill proved largely popular</b> —— The bill 在考卷里找不到先行词，只说明不是首段｜尾：<b>without those images</b> —— 收回首段「照片是转折点」","⟹ 归位 45（末段）· 时间轴最晚的一段（1872）"],
+  H:[IMG("H"),"也许最重要的是，这些照片成了后来送到政府官员手里的文献证据；考察结束几周后，海登写成长篇报告，想说服两院议员和内政部的同僚：黄石应当保护。","头：<b>Perhaps most importantly, these images</b> —— 要上家刚亮出照片、刚说过一层「不那么重要」的意义｜尾：<b>convincing senators and representatives</b> —— 游说对象出场","⟹ 已给定 · 第 6 段"]
+};
+const EXTRA = [];
+const V={
+  preserve:{"w": "preserve", "ipa": "/prɪˈzɜːv/", "pos": "v.", "tags": ["core", "write"], "cn": "保护，保存", "en": "to keep something safe from harm or loss", "ex": "the idea of preserving nature, rather than exploiting it", "mem": "pre-（预先）＋ serve（保持）。B 的 preserving 与 H 末 ought to be preserved 首尾同词：<b>全文从「保护自然是新想法」走到「黄石应当被保护」</b>。", "syn": "protect · conserve · safeguard", "conf": "<b>preserve</b> 保存原状 vs <b>reserve</b> 预留 vs <b>conserve</b> 节约使用。"},
+  exploit:{"w": "exploit", "ipa": "/ɪkˈsplɔɪt/", "pos": "v.", "tags": ["core", "write"], "cn": "开发，利用；剥削", "en": "to use land, resources etc. for profit", "ex": "preserving nature, rather than exploiting it", "mem": "对资源＝开发、开采；对人＝剥削。A rather than B 把 preserve 与 exploit 摆成一对反义：<b>保护 vs 开发</b>，是环保话题的基本对子。", "syn": "develop · tap · make use of", "conf": "<b>exploit</b> 开发／剥削 vs <b>explore</b> 探索 vs <b>explode</b> 爆炸。"},
+  novel:{"w": "novel", "ipa": "/ˈnɒvl/", "pos": "adj.", "tags": ["poly", "core"], "cn": "（此处 adj.）新奇的，新颖的", "en": "new and unusual", "ex": "was a novel one to many U.S. settlers", "mem": "⚠️ 熟义 n.「小说」；adj.＝前所未有的：a novel idea／approach。one 替代 idea ⟹ 「保护自然在当时是个新想法」。", "syn": "new · original · unprecedented", "conf": "<b>novel</b> 新颖的 vs <b>noble</b> 高贵的 vs <b>naval</b> 海军的。"},
+  settler:{"w": "settler", "ipa": "/ˈsetlə(r)/", "pos": "n.", "tags": ["core"], "cn": "定居者，移民", "en": "a person who goes to live in a new country or area", "ex": "many U.S. settlers", "mem": "settle（定居）＋ -er。美国史语境：向西部拓殖的白人移民。F 的 Native Americans（原住民）与它相对。", "syn": "colonist · pioneer · immigrant", "conf": "<b>settler</b> 定居者 vs <b>settlement</b> 定居点／和解。"},
+  turningpoint:{"w": "turning point", "ipa": "/ˈtɜːnɪŋ pɔɪnt/", "pos": "n.", "tags": ["phrase", "write"], "cn": "转折点", "en": "a time when an important change happens", "ex": "One of the turning points in public support", "mem": "B 的论点就挂在这个词上：照片是公众态度的<b>转折点之一</b>（One of 是限定，别读成「唯一原因」）。", "syn": "watershed · milestone · breakthrough", "conf": "<b>turning point</b> 转折点 vs <b>starting point</b> 起点 vs <b>breaking point</b> 极限。"},
+  conservation:{"w": "conservation", "ipa": "/ˌkɒnsəˈveɪʃn/", "pos": "n.", "tags": ["core", "write"], "cn": "（自然环境、资源的）保护", "en": "the protection of the natural environment", "ex": "public support for land conservation efforts", "mem": "conserve 的名词。land conservation（土地保护）· wildlife conservation（野生动物保护）。与 preserve 同场，写环保作文可互换。", "syn": "protection · preservation", "conf": "<b>conservation</b> 保护 vs <b>conversation</b> 谈话（字母换位，常看串）。"},
+  magnificence:{"w": "magnificence", "ipa": "/mæɡˈnɪfɪsns/", "pos": "n.", "tags": ["core"], "cn": "壮丽，宏伟", "en": "the quality of being extremely impressive and beautiful", "ex": "recognizing the magnificence of the Yellowstone region", "mem": "magnificent 的名词。magni-（大，同 magnify）。", "syn": "grandeur · splendor · majesty", "conf": "<b>magnificence</b> 壮丽 vs <b>significance</b> 意义。"},
+  inparticular:{"w": "in particular", "ipa": "/ɪn pəˈtɪkjələ(r)/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "尤其，特别", "en": "especially", "ex": "the Yellowstone region in particular", "mem": "放在名词后面强调：……尤其是……。写作里替换 especially 的高频短语。原卷此处后接破折号连写，识别层可能挂不上，留在段末 🟡 行。", "syn": "especially · particularly · notably", "conf": "<b>in particular</b> 尤其 vs <b>in general</b> 总体上 vs <b>in detail</b> 详细地。"},
+  intheformof:{"w": "in the form of", "ipa": "/ɪn ðə fɔːm əv/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "以……的形式", "en": "as a particular kind of thing", "ex": "came in the form of vivid photographs", "mem": "主语 One of the turning points … came in the form of …：<b>转折点以照片的形式到来</b>——抽象的「转折」落到具体的物。", "syn": "as · by way of", "conf": "<b>in the form of</b> 以……形式 vs <b>in form</b> 状态好。"},
+  vivid:{"w": "vivid", "ipa": "/ˈvɪvɪd/", "pos": "adj.", "tags": ["core", "write"], "cn": "生动的，逼真的", "en": "producing very clear, powerful images in the mind", "ex": "came in the form of vivid photographs", "mem": "B 末与 D 末两次 vivid photographs：<b>同一个形容词出现在首段末和 43 段末</b>，是全文的题眼词。", "syn": "lively · striking · graphic", "conf": "<b>vivid</b> 生动的 vs <b>valid</b> 有效的 vs <b>avid</b> 热衷的。"},
+  mark:{"w": "mark", "ipa": "/mɑːk/", "pos": "v.", "tags": ["poly", "core"], "cn": "（此处）标志，纪念（周年）", "en": "to celebrate or recognize an important event", "ex": "Last year marked the 150th anniversary", "mem": "⚠️ 熟义「做记号、打分」；时间作主语 ＋ mark ＋ anniversary＝「某年是……周年」：This year marks the 100th anniversary of …（写作可用）。", "syn": "commemorate · celebrate · observe", "conf": "<b>mark</b> 标志 vs <b>remark</b> 评论 vs <b>market</b> 市场。"},
+  anniversary:{"w": "anniversary", "ipa": "/ˌænɪˈvɜːsəri/", "pos": "n.", "tags": ["core"], "cn": "周年纪念", "en": "the date on which an event took place in a previous year", "ex": "the 150th anniversary of a series of", "mem": "anni-（年，同 annual）＋ vers（转）——一年转一圈。150th anniversary＝150 周年。", "syn": "jubilee · commemoration", "conf": "<b>anniversary</b> 周年 vs <b>annual</b> 每年的 vs <b>adversary</b> 对手。"},
+  renowned:{"w": "renowned", "ipa": "/rɪˈnaʊnd/", "pos": "adj.", "tags": ["core", "write"], "cn": "著名的，有声望的", "en": "famous and respected", "ex": "the renowned landscape photographer", "mem": "re- ＋ nown（名，同 noun）。比 famous 更书面，常带褒义。", "syn": "famous · celebrated · eminent", "conf": "<b>renowned</b> 著名的 vs <b>notorious</b> 臭名昭著的 vs <b>renounced</b> 放弃的。"},
+  landscape:{"w": "landscape", "ipa": "/ˈlændskeɪp/", "pos": "n.", "tags": ["core"], "cn": "风景，景观", "en": "everything you can see in an area of land", "ex": "landscape photographer", "mem": "land ＋ -scape（景）。landscape photographer＝风景摄影师。同族 seascape（海景）、cityscape（城市景观）。", "syn": "scenery · view · terrain", "conf": "<b>landscape</b> 风景 vs <b>landslide</b> 山体滑坡／压倒性胜利。"},
+  snap:{"w": "snap", "ipa": "/snæp/", "pos": "v.", "tags": ["poly"], "cn": "（此处）拍快照", "en": "to take a photograph quickly", "ex": "Jackson snapped the first-ever shots", "mem": "⚠️ 熟义「啪地折断」；snap a photo＝拍照。同句 shots 也是「照片、镜头」（熟词 shot＝射击）；D 的 snapshot 是名词。", "syn": "take · shoot · photograph", "conf": "<b>snap</b> 拍 vs <b>shot</b> 照片／射击 vs <b>snapshot</b> 快照。"},
+  firstever:{"w": "first-ever", "ipa": "/ˌfɜːstˈevə(r)/", "pos": "adj.", "tags": ["core", "write"], "cn": "有史以来第一次的", "en": "happening for the first time", "ex": "the first-ever shots of iconic landmarks", "mem": "first 加 ever 强调「从来没有过」。first-ever shots＝这些地标<b>有史以来的第一批照片</b>——照片价值的第一层。", "syn": "pioneering · unprecedented", "conf": "<b>first-ever</b> 史上首次 vs <b>first-hand</b> 第一手的。"},
+  iconic:{"w": "iconic", "ipa": "/aɪˈkɒnɪk/", "pos": "adj.", "tags": ["core", "write"], "cn": "标志性的", "en": "very famous and seen as a symbol of something", "ex": "iconic landmarks such as the Tetons", "mem": "icon（图标、偶像）的形容词。iconic landmark／building／image，写作描写城市名片常用。", "syn": "symbolic · emblematic · celebrated", "conf": "<b>iconic</b> 标志性的 vs <b>ironic</b> 讽刺的（一字之差）。"},
+  landmark:{"w": "landmark", "ipa": "/ˈlændmɑːk/", "pos": "n.", "tags": ["poly", "core"], "cn": "地标；里程碑", "en": "a building or feature that is easy to see and recognize", "ex": "iconic landmarks", "mem": "本义地标；比喻义＝里程碑：a landmark decision（划时代的判决）。G 里黄石成为世界第一座国家公园，正是一个 landmark。", "syn": "monument · milestone", "conf": "<b>landmark</b> 地标 vs <b>landscape</b> 风景。"},
+  expedition:{"w": "expedition", "ipa": "/ˌekspəˈdɪʃn/", "pos": "n.", "tags": ["core"], "cn": "远征，考察（队）", "en": "an organized journey for a particular purpose", "ex": "a late 19th-century expedition through the Yellowstone Basin", "mem": "ex-（出）＋ ped（脚，同 pedal）。全文对这次考察有四种叫法：expedition · trip · journey · survey——<b>排序时它们互相回指</b>（E 的 journey ⟹ D 的 the trip）。", "syn": "journey · trip · survey", "conf": "<b>expedition</b> 考察 vs <b>exhibition</b> 展览 vs <b>expenditure</b> 开支。"},
+  conduct:{"w": "conduct", "ipa": "/kənˈdʌkt/", "pos": "v.", "tags": ["poly", "core"], "cn": "组织，实施", "en": "to organize and do a particular activity", "ex": "conducted by the head of the", "mem": "conduct a survey／an experiment／research＝开展。过去分词作后置定语修饰 expedition：「由……主持的考察」。", "syn": "carry out · organize · lead", "conf": "⚠️ <b>conduct</b> n.＝行为（code of conduct）；也作「传导」：conduct heat。"},
+  survey:{"w": "survey", "ipa": "/ˈsɜːveɪ/", "pos": "n.", "tags": ["poly", "core"], "cn": "勘察，测量；（此处专名）调查局", "en": "an act of examining land; an official department that does this", "ex": "Geological and Geographical Survey of the Territories", "mem": "⚠️ 熟义「问卷调查」；地理语境＝<b>勘察、测绘</b>。A 里大写 Survey 是机构名（地质与地理调查局），E 末 concluded the survey 是「结束勘察」。", "syn": "inspection · study · examination", "conf": "<b>survey</b> 勘察 vs <b>surveillance</b> 监视。"},
+  territory:{"w": "territory", "ipa": "/ˈterətri/", "pos": "n.", "tags": ["poly", "core"], "cn": "领土；（美国史）领地", "en": "land under the control of a government; an area not yet a state", "ex": "Survey of the Territories", "mem": "terr（土地，同 terrain）。美国史专名 Territory＝<b>尚未建州的领地</b>（当年的蒙大拿、怀俄明都还是 Territory）。", "syn": "region · domain · land", "conf": "<b>territory</b> 领土 vs <b>terrain</b> 地形 vs <b>terrace</b> 梯田。"},
+  meteorologist:{"w": "meteorologist", "ipa": "/ˌmiːtiəˈrɒlədʒɪst/", "pos": "n.", "tags": ["core"], "cn": "气象学家", "en": "a scientist who studies the weather", "ex": "a meteorologist, a zoologist", "mem": "meteor（流星、天象）＋ -ologist（……学家）。A 末四种科学家整整齐齐一张名单，F 的 scientists 一词统称它们。", "syn": "weather scientist", "conf": "<b>meteorologist</b> 气象学家 vs <b>meteor</b> 流星。"},
+  zoologist:{"w": "zoologist", "ipa": "/zuˈɒlədʒɪst/", "pos": "n.", "tags": ["core"], "cn": "动物学家", "en": "a scientist who studies animals", "ex": "a zoologist, a mineralogist", "mem": "zoo（动物）＋ -ologist。对应 F 里考察要看的 fauna（动物）。", "syn": "biologist · naturalist", "conf": "<b>zoology</b> 动物学 vs <b>ecology</b> 生态学。"},
+  mineralogist:{"w": "mineralogist", "ipa": "/ˌmɪnəˈrælədʒɪst/", "pos": "n.", "tags": ["core"], "cn": "矿物学家", "en": "a scientist who studies minerals", "ex": "a mineralogist, and an agricultural statistician", "mem": "mineral（矿物）＋ -ogist。对应 F 里 miners（矿工）早已发现的 riches（物产）。", "syn": "geologist", "conf": "<b>mineral</b> 矿物 vs <b>miner</b> 矿工 vs <b>minor</b> 次要的。"},
+  statistician:{"w": "statistician", "ipa": "/ˌstætɪˈstɪʃn/", "pos": "n.", "tags": ["core"], "cn": "统计学家，统计员", "en": "a person who works with statistics", "ex": "an agricultural statistician", "mem": "statistic（统计）＋ -ian（人）。agricultural statistician＝农业统计员——考察要评估这片地能不能种。", "syn": "analyst", "conf": "<b>statistician</b> 统计员 vs <b>statistics</b> 统计学。"},
+  nativeamerican:{"w": "Native American", "ipa": "/ˌneɪtɪv əˈmerɪkən/", "pos": "n.", "tags": ["phrase"], "cn": "美洲原住民", "en": "a member of one of the peoples who lived in America before Europeans arrived", "ex": "Though Native Americans … had long recognized", "mem": "native＝本地的、土生的。F ① Though 让步：原住民早就知道 ⟹ 但多数美国人不知道 ⟹ 所以要考察。", "syn": "Indigenous peoples", "conf": "<b>native</b> 本地的 vs <b>naive</b> 天真的。"},
+  trapper:{"w": "trapper", "ipa": "/ˈtræpə(r)/", "pos": "n.", "tags": ["core"], "cn": "设陷阱捕兽者", "en": "a person who traps animals, especially for their fur", "ex": "later miners and fur trappers", "mem": "trap（陷阱）＋ -er。fur trapper＝捕兽取皮的猎人，美国西部开发史的常见人物。括号里的 later 说明他们比原住民晚到。", "syn": "hunter", "conf": "<b>trapper</b> 捕兽者 vs <b>trap</b> 陷阱 vs <b>wrapper</b> 包装纸。"},
+  riches:{"w": "riches", "ipa": "/ˈrɪtʃɪz/", "pos": "n.", "tags": ["poly"], "cn": "财富；（此处）丰富的物产", "en": "a large amount of money or valuable things; natural resources", "ex": "had long recognized the area’s riches", "mem": "⚠️ 常用复数，指一个地方的<b>富饶物产</b>，不是「有钱」。the area’s 回指上文已交代的黄石——F 开口就欠上文。", "syn": "wealth · resources · treasures", "conf": "<b>riches</b> 财富 vs <b>richness</b> 丰富程度。"},
+  thatswhy:{"w": "that’s why", "ipa": "/ðæts waɪ/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "这就是……的原因", "en": "used to introduce a result of something just mentioned", "ex": "That’s why Hayden’s expedition aimed to", "mem": "That’s why ＋ 结果，前句是原因（多数美国人不了解）。注意与 That’s because ＋ 原因相反，写作常写反。", "syn": "therefore · hence · this is why", "conf": "<b>That’s why</b> 后接结果 vs <b>That’s because</b> 后接原因。"},
+  aimto:{"w": "aim to", "ipa": "/eɪm tuː/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "旨在，力求", "en": "to intend to do something", "ex": "aimed to produce a fuller understanding", "mem": "aim to do＝aim at doing（H 末 aimed at convincing 是后者）。同一篇两个结构各用一次。", "syn": "intend to · seek to · set out to", "conf": "<b>aim to do</b> vs <b>aim at doing</b>——意思相同，介词后接动名词。"},
+  hotspring:{"w": "hot spring", "ipa": "/hɒt sprɪŋ/", "pos": "n.", "tags": ["poly"], "cn": "温泉", "en": "a natural spring of hot water", "ex": "from its hot springs and waterfalls", "mem": "⚠️ spring 熟义「春天、弹簧」；地理上＝<b>泉</b>。黄石以温泉、间歇泉闻名（老忠实泉 Old Faithful 就是间歇泉）。", "syn": "geyser · thermal spring", "conf": "<b>spring</b> 泉 vs <b>sprint</b> 冲刺。"},
+  florafauna:{"w": "flora and fauna", "ipa": "/ˈflɔːrə ənd ˈfɔːnə/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "动植物（群）", "en": "the plants and animals of a particular area", "ex": "to its variety of flora and fauna", "mem": "flora＝植物群（花神 Flora）、fauna＝动物群（牧神 Faunus）。固定搭配，写生态环保作文可用。", "syn": "plant and animal life · wildlife", "conf": "<b>flora</b> 植物 vs <b>fauna</b> 动物（别记反：f<b>l</b>ora 带 l 像 leaf）。"},
+  inadditionto:{"w": "in addition to", "ipa": "/ɪn əˈdɪʃn tuː/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "除……之外（还）", "en": "as well as", "ex": "In addition to the entourage of scientists", "mem": "in addition to ＋ 名词＝「除了 X 还有 Y」，<b>X 必须是上文已经说过的</b>——所以它是 42 题最硬的回指钩（X＝A 末的四种科学家）。", "syn": "besides · apart from · as well as", "conf": "<b>in addition to</b> 加上 vs <b>instead of</b> 代替 vs <b>except</b> 除去不算。"},
+  entourage:{"w": "entourage", "ipa": "/ˈɒntʊrɑːʒ/", "pos": "n.", "tags": ["core"], "cn": "随行人员", "en": "a group of people who travel with an important person", "ex": "the entourage of scientists", "mem": "法语借词，en-（在内）＋ tour（周围）。the entourage of scientists＝随行的那一队科学家，<b>定冠词 the 说明这批人上文出现过</b>。", "syn": "retinue · team · party", "conf": "<b>entourage</b> 随从 vs <b>encourage</b> 鼓励。"},
+  chargedwith:{"w": "be charged with", "ipa": "/tʃɑːdʒd wɪð/", "pos": "phr.", "tags": ["poly", "phrase"], "cn": "（此处）负责，受托", "en": "to be given a duty or responsibility", "ex": "were charged with capturing this astounding natural beauty", "mem": "⚠️ 熟义「被指控」（be charged with murder）；对任务＝<b>被委以……职责</b>。本句主语是画家和摄影师，后接 capturing … and sharing，只能是「负责」。", "syn": "be responsible for · be tasked with", "conf": "<b>be charged with</b> 负责／被控 vs <b>be in charge of</b> 主管。"},
+  astounding:{"w": "astounding", "ipa": "/əˈstaʊndɪŋ/", "pos": "adj.", "tags": ["core", "write"], "cn": "令人震惊的，惊人的", "en": "extremely surprising or impressive", "ex": "this astounding natural beauty", "mem": "比 surprising 强得多。全文描写黄石／照片的形容词一串：astounding · stunning · striking · majestic · vivid——<b>同一个意思换五个词</b>，可直接搬进写作。", "syn": "astonishing · amazing · stunning", "conf": "<b>astounding</b> 惊人的 vs <b>astounded</b> 感到震惊的。"},
+  officially:{"w": "officially", "ipa": "/əˈfɪʃəli/", "pos": "adv.", "tags": ["core"], "cn": "正式地", "en": "formally and publicly", "ex": "The journey officially began in Ogden", "mem": "officially began＝「正式」出发：<b>暗示之前已经有准备阶段</b>（F 讲的动机与人员），是 F → E 的接缝词。", "syn": "formally · publicly", "conf": "<b>officially</b> 正式地 vs <b>officiously</b> 爱管闲事地。"},
+  makeway:{"w": "make one’s way", "ipa": "/meɪk wəʊz weɪ/", "pos": "phr.", "tags": ["phrase"], "cn": "前往，行进；（物）到达", "en": "to move or travel towards a place", "ex": "made their way on horseback into Montana", "mem": "E ② 人 made their way（骑马行进）；H ① 照片 made its way to government officials（辗转到了官员手里）——<b>同一个短语，主语一人一物</b>。", "syn": "travel · proceed · reach", "conf": "<b>make one’s way</b> 前往 vs <b>make way for</b> 给……让路。"},
+  horseback:{"w": "on horseback", "ipa": "/ˈhɔːsbæk/", "pos": "phr.", "tags": ["phrase"], "cn": "骑马", "en": "riding a horse", "ex": "on horseback into Montana", "mem": "horse ＋ back。on horseback／on foot／by car——交通方式的介词各不相同。", "syn": "riding", "conf": "<b>on horseback</b> 骑马 vs <b>by horse</b>（少用）。"},
+  traverse:{"w": "traverse", "ipa": "/trəˈvɜːs/", "pos": "v.", "tags": ["core"], "cn": "穿越，横跨", "en": "to travel across an area", "ex": "traversed along the Yellowstone River", "mem": "trans-（穿过）＋ vers（转）。traverse 本身就是及物动词「穿越」，原卷写 traversed along，along 加强「沿着」。", "syn": "cross · travel through · pass over", "conf": "<b>traverse</b> 穿越 vs <b>transverse</b> 横向的 vs <b>reverse</b> 倒转。"},
+  conclude:{"w": "conclude", "ipa": "/kənˈkluːd/", "pos": "v.", "tags": ["poly", "core"], "cn": "结束；得出结论", "en": "to end; to decide something after thinking", "ex": "they concluded the survey in Fort Bridger", "mem": "⚠️ 阅读题里常见义「得出结论」；接活动名词＝<b>结束</b>：conclude a meeting／the survey。E 三句：began → over four months → concluded，一头一尾。", "syn": "end · finish · complete", "conf": "<b>conclude</b> 结束 vs <b>include</b> 包括 vs <b>exclude</b> 排除。"},
+  throughout:{"w": "throughout", "ipa": "/θruːˈaʊt/", "pos": "prep.", "tags": ["core", "write"], "cn": "自始至终，遍及", "en": "during the whole period of time", "ex": "Throughout the trip, Jackson juggled", "mem": "Throughout the trip＝在整个旅途中：<b>一个回指 the trip ＋ 一个时间范围</b>，把镜头拉回 E 的那四个月。", "syn": "during · all through", "conf": "<b>throughout</b> 自始至终 vs <b>through</b> 穿过 vs <b>thorough</b> 彻底的。"},
+  juggle:{"w": "juggle", "ipa": "/ˈdʒʌɡl/", "pos": "v.", "tags": ["poly"], "cn": "（此处）同时应付，忙着摆弄", "en": "to try to deal with several things at the same time", "ex": "Jackson juggled multiple cameras and plate sizes", "mem": "⚠️ 熟义「抛球杂耍」；比喻义＝<b>同时应付好几件事</b>：juggle work and family。本句是杰克逊同时摆弄好几台相机和几种底片。", "syn": "handle · manage · balance", "conf": "<b>juggle</b> 同时应付 vs <b>jungle</b> 丛林 vs <b>struggle</b> 挣扎。"},
+  plate:{"w": "plate", "ipa": "/pleɪt/", "pos": "n.", "tags": ["poly"], "cn": "（此处）（摄影）底片，感光板", "en": "a thin sheet of glass or metal coated with chemicals, used in early photography", "ex": "multiple cameras and plate sizes", "mem": "⚠️ 熟义「盘子」；早期摄影用涂了感光药液的<b>玻璃板</b>当底片。下句 coating the plates 就是往板上涂药。", "syn": "negative · glass plate", "conf": "<b>plate</b> 底片／盘子 vs <b>plait</b> 辫子。"},
+  collodion:{"w": "collodion process", "ipa": "/kəˈləʊdiən ˈprəʊses/", "pos": "n.", "tags": ["core"], "cn": "火棉胶（湿版）工艺", "en": "an early photographic method using wet glass plates", "ex": "using the collodion process that involved coating", "mem": "19 世纪中叶的湿版摄影：涂药 → 趁湿曝光 → 当场冲洗，所以必须<b>随身带暗房</b>（portable darkroom）。不用背，读懂流程即可。", "syn": "wet-plate process", "conf": "process 此处＝工艺、流程（熟义「过程」）。"},
+  coat:{"w": "coat", "ipa": "/kəʊt/", "pos": "v.", "tags": ["poly"], "cn": "（此处 v.）给……涂上一层", "en": "to cover something with a thin layer", "ex": "coating the plates with a chemical mixture", "mem": "⚠️ 熟义 n.「外套」；v.＝涂层：coat A with B（给 A 涂上 B）。与后面 exposing、developing 三个动名词并列，是 involved 的宾语。", "syn": "cover · layer · spread", "conf": "<b>coat</b> 涂 vs <b>coating</b> n. 涂层。"},
+  mixture:{"w": "mixture", "ipa": "/ˈmɪkstʃə(r)/", "pos": "n.", "tags": ["core"], "cn": "混合物", "en": "a substance made by mixing other substances together", "ex": "a chemical mixture", "mem": "mix ＋ -ture。chemical mixture＝化学混合药液。", "syn": "blend · compound", "conf": "<b>mixture</b> 混合物 vs <b>moisture</b> 湿气。"},
+  expose:{"w": "expose", "ipa": "/ɪkˈspəʊz/", "pos": "v.", "tags": ["poly", "core"], "cn": "（此处）使（底片）曝光", "en": "to allow light onto film or a plate when taking a photograph", "ex": "exposing them and developing the resulting images", "mem": "⚠️ 熟义「暴露、揭露」；摄影义＝<b>曝光</b>。下句 exposure times＝曝光时间。", "syn": "—", "conf": "<b>expose</b> 曝光 vs <b>exposure</b> n. 曝光／接触。"},
+  develop:{"w": "develop", "ipa": "/dɪˈveləp/", "pos": "v.", "tags": ["poly", "core"], "cn": "（此处）冲洗（照片）", "en": "to treat film with chemicals to make a photograph appear", "ex": "developing the resulting images with a portable darkroom", "mem": "⚠️ 熟义「发展」；摄影义＝<b>冲洗、显影</b>。本句一串摄影术语：plate · coat · expose · develop · darkroom——<b>熟词全换了意思</b>，读时要整体切换场景。", "syn": "process · print", "conf": "develop 还可＝开发（地产）、患上（疾病）。"},
+  portable:{"w": "portable", "ipa": "/ˈpɔːtəbl/", "pos": "adj.", "tags": ["core", "write"], "cn": "便携的", "en": "easy to carry or move", "ex": "a portable darkroom", "mem": "port（携带，同 porter 搬运工）＋ -able。portable darkroom＝便携暗房（湿版必须当场冲洗）。", "syn": "mobile · handheld", "conf": "<b>portable</b> 便携的 vs <b>potable</b> 可饮用的。"},
+  darkroom:{"w": "darkroom", "ipa": "/ˈdɑːkruːm/", "pos": "n.", "tags": ["core"], "cn": "暗房", "en": "a room with no light, used for developing photographs", "ex": "with a portable darkroom", "mem": "dark ＋ room。早期摄影要随身拖着暗房帐篷走，难怪下句说器材笨重、要好几个人帮忙。", "syn": "—", "conf": "—"},
+  crude:{"w": "crude", "ipa": "/kruːd/", "pos": "adj.", "tags": ["poly", "core"], "cn": "粗糙的，简陋的", "en": "simple and not very skilful or advanced", "ex": "The crude technique required educated guesses", "mem": "⚠️ 常见搭配 crude oil（原油）＝「未加工的」；修饰技术＝<b>简陋、不成熟</b>。D ② 一句讲难处，D ③ Despite these challenges 转回成果。", "syn": "primitive · rough · basic", "conf": "<b>crude</b> 粗糙的 vs <b>cruel</b> 残忍的 vs <b>rude</b> 粗鲁的。"},
+  educatedguess:{"w": "educated guess", "ipa": "/ˈedʒukeɪtɪd ɡes/", "pos": "n.", "tags": ["phrase", "write"], "cn": "有根据的推测", "en": "a guess based on knowledge and experience", "ex": "required educated guesses on exposure times", "mem": "⚠️ educated 不是「受过教育的」，而是<b>有知识依据的</b>：凭经验估算曝光时间。写作可用：make an educated guess。", "syn": "informed estimate", "conf": "<b>educated guess</b> 有依据的推测 vs <b>wild guess</b> 瞎猜。"},
+  exposure:{"w": "exposure", "ipa": "/ɪkˈspəʊʒə(r)/", "pos": "n.", "tags": ["poly", "core"], "cn": "（摄影）曝光", "en": "the amount of light allowed onto film", "ex": "educated guesses on exposure times", "mem": "⚠️ 阅读常见义「接触、暴露」（exposure to risk）；摄影义＝曝光。exposure time＝曝光时长。", "syn": "—", "conf": "<b>exposure</b> 曝光 vs <b>exposition</b> 阐述／博览会。"},
+  awkward:{"w": "awkward", "ipa": "/ˈɔːkwəd/", "pos": "adj.", "tags": ["poly", "core"], "cn": "（此处）笨重难用的", "en": "difficult to use or carry because of its shape or size", "ex": "heavy, awkward equipment", "mem": "⚠️ 熟义「尴尬的」；修饰物＝<b>不好拿、不顺手</b>。heavy, awkward 两个形容词并列 ⟹ 破折号后补一句：要好几个人搬。", "syn": "clumsy · unwieldy · cumbersome", "conf": "<b>awkward</b> 笨拙的／尴尬的 vs <b>awful</b> 可怕的。"},
+  assist:{"w": "assist in", "ipa": "/əˈsɪst ɪn/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "协助（做某事）", "en": "to help with something", "ex": "several men had to assist in its transportation", "mem": "assist in sth／in doing sth。its 指 equipment。", "syn": "help with · aid in", "conf": "<b>assist</b> 协助 vs <b>insist</b> 坚持 vs <b>resist</b> 抵抗。"},
+  transportation:{"w": "transportation", "ipa": "/ˌtrænspɔːˈteɪʃn/", "pos": "n.", "tags": ["core"], "cn": "运输，搬运", "en": "the act of moving people or goods", "ex": "assist in its transportation", "mem": "trans-（跨）＋ port（运）。", "syn": "carrying · haulage", "conf": "<b>transportation</b> 运输 vs <b>transformation</b> 转变。"},
+  despite:{"w": "despite", "ipa": "/dɪˈspaɪt/", "pos": "prep.", "tags": ["core", "write"], "cn": "尽管", "en": "without being affected by something", "ex": "Despite these challenges, Jackson captured", "mem": "介词，后接名词：Despite these challenges（不能接从句，接从句用 although）。these challenges 总结 D ①② 的两条难处。", "syn": "in spite of · notwithstanding", "conf": "<b>despite</b>（无 of）vs <b>in spite of</b>（有 of）——despite of 是错的。"},
+  striking:{"w": "striking", "ipa": "/ˈstraɪkɪŋ/", "pos": "adj.", "tags": ["poly", "core"], "cn": "引人注目的", "en": "very noticeable or attractive", "ex": "dozens of striking photos", "mem": "⚠️ 熟义 strike「打击、罢工」；striking＝<b>醒目的、惊人的</b>。", "syn": "remarkable · impressive · eye-catching", "conf": "<b>striking</b> 醒目的 vs <b>strike</b> n. 罢工。"},
+  rangefrom:{"w": "range from … to …", "ipa": "/reɪndʒ frəm … tə/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "从……到……不等", "en": "to include a variety of things between two limits", "ex": "ranging from majestic images … to casual portraits", "mem": "两端要是同类的两极：壮丽风景（majestic）↔ 营地随手合影（casual）。写作列举范围的万能句式。", "syn": "vary from … to … · extend from … to …", "conf": "<b>range from A to B</b> vs <b>vary in</b>（在……方面不同）。"},
+  majestic:{"w": "majestic", "ipa": "/məˈdʒestɪk/", "pos": "adj.", "tags": ["core", "write"], "cn": "雄伟的，壮丽的", "en": "very beautiful and impressive", "ex": "majestic images like his now-famous snapshot", "mem": "majesty（陛下、威严）的形容词。与 casual（随意的）构成 range from … to 的两端。", "syn": "grand · magnificent · splendid", "conf": "<b>majestic</b> 雄伟的 vs <b>magnetic</b> 有吸引力的。"},
+  nowfamous:{"w": "now-famous", "ipa": "/naʊ ˈfeɪməs/", "pos": "adj.", "tags": ["core"], "cn": "如今很有名的", "en": "famous at the present time", "ex": "his now-famous snapshot of Old Faithful", "mem": "now ＋ famous：「当时不出名、如今出名」。类似 now-defunct（如今已停办的）。", "syn": "celebrated · well-known", "conf": "—"},
+  snapshot:{"w": "snapshot", "ipa": "/ˈsnæpʃɒt/", "pos": "n.", "tags": ["poly", "core"], "cn": "快照；（比喻）简要介绍", "en": "a photograph taken quickly; a short description", "ex": "his now-famous snapshot of Old Faithful", "mem": "本篇是本义「快照」；阅读里常见比喻义：a snapshot of the economy（经济概况）。Old Faithful＝老忠实泉（黄石最有名的间歇泉）。", "syn": "photo · shot · picture", "conf": "<b>snapshot</b> 快照 vs <b>screenshot</b> 截图。"},
+  casual:{"w": "casual", "ipa": "/ˈkæʒuəl/", "pos": "adj.", "tags": ["core"], "cn": "随意的，非正式的", "en": "relaxed and informal", "ex": "casual portraits of expedition members", "mem": "casual portraits＝随手拍的合影，与 majestic images 一正式一随意。", "syn": "informal · relaxed · candid", "conf": "<b>casual</b> 随意的 vs <b>causal</b> 因果的（字母换位，阅读常看串）。"},
+  portrait:{"w": "portrait", "ipa": "/ˈpɔːtreɪt/", "pos": "n.", "tags": ["core"], "cn": "肖像，人像（照）", "en": "a painting or photograph of a person", "ex": "casual portraits of expedition members at the camp", "mem": "portray（描绘）的名词。", "syn": "picture · likeness", "conf": "<b>portrait</b> 肖像 vs <b>portray</b> v. 描绘 vs <b>landscape</b> 风景。"},
+  veteran:{"w": "veteran", "ipa": "/ˈvetərən/", "pos": "n.", "tags": ["poly", "core"], "cn": "老手；（此处）老队员", "en": "a person with long experience in an activity", "ex": "veterans of previous expeditions", "mem": "⚠️ 熟义「退伍老兵」；veteran of X＝<b>参加过 X 的老手</b>。D ④ 拿以往考察的老队员（只有文字）对比这次的照片。", "syn": "old hand · experienced member", "conf": "<b>veteran</b> 老手 vs <b>veterinarian</b> 兽医（vet 两者都可缩写）。"},
+  atlength:{"w": "at length", "ipa": "/ət leŋθ/", "pos": "phr.", "tags": ["poly", "phrase"], "cn": "（此处）详尽地，长篇地", "en": "for a long time and in detail", "ex": "had written at length about stunning sights", "mem": "⚠️ 两个义项：① 详尽地（本句）② 最终、终于（at length he agreed）。看动词：write／talk at length＝长篇大论。", "syn": "in detail · extensively", "conf": "<b>at length</b> 详尽地 vs <b>at last</b> 终于。"},
+  anotherthing:{"w": "another thing entirely", "ipa": "/əˈnʌðə θɪŋ ɪnˈtaɪəli/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "完全是另一回事", "en": "something completely different", "ex": "these vivid photographs were another thing entirely", "mem": "While 对比句：老队员写过文字，<b>照片完全不同</b>——照片价值的第一层（让人亲眼看见）。H 的 Perhaps most importantly 在它之上再升一级。", "syn": "a different matter · something else", "conf": "<b>another thing entirely</b> vs <b>the same thing</b>。"},
+  mostimportantly:{"w": "most importantly", "ipa": "/məʊst ɪmˈpɔːtntli/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "最重要的是", "en": "used to introduce the most important point", "ex": "Perhaps most importantly, these images", "mem": "<b>比较级的结论</b>：说「最重要」之前，上文必须已经说过「重要」的几条——D 末 another thing entirely 就是那条「次重要」。Perhaps 是作者的谨慎。", "syn": "above all · crucially · first and foremost", "conf": "<b>most importantly</b>（句首副词）vs <b>more important</b>（形容词）。"},
+  documentary:{"w": "documentary", "ipa": "/ˌdɒkjuˈmentri/", "pos": "adj.", "tags": ["poly", "core"], "cn": "（此处 adj.）文献的，书面证明的", "en": "consisting of documents or records", "ex": "provided documentary evidence", "mem": "⚠️ 熟义 n.「纪录片」；adj.＝<b>文件形式的、作为记录的</b>：documentary evidence（书面证据、实证）。照片从「好看」变成「证据」，这是 H 递进的关键词。", "syn": "documented · recorded · written", "conf": "<b>documentary</b> 文献的／纪录片 vs <b>documented</b> 有记录的。"},
+  evidence:{"w": "evidence", "ipa": "/ˈevɪdəns/", "pos": "n.", "tags": ["core", "write"], "cn": "证据", "en": "facts or signs that show something is true", "ex": "documentary evidence", "mem": "不可数。provide evidence that …＝提供证据证明……；写作论证常用。", "syn": "proof · testimony", "conf": "<b>evidence</b> 证据（不可数）vs <b>evident</b> 明显的。"},
+  extensive:{"w": "extensive", "ipa": "/ɪkˈstensɪv/", "pos": "adj.", "tags": ["core", "write"], "cn": "详尽的，广泛的", "en": "large in amount or detail", "ex": "an extensive report", "mem": "extend（扩展）的形容词。extensive report＝详尽的报告，extensive research＝大量研究。", "syn": "comprehensive · thorough · detailed", "conf": "<b>extensive</b> 广泛的 vs <b>intensive</b> 密集的 vs <b>expensive</b> 昂贵的。"},
+  aimedat:{"w": "aimed at", "ipa": "/eɪmd æt/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "旨在，针对", "en": "intended to achieve or influence", "ex": "an extensive report aimed at convincing senators", "mem": "过去分词短语作后置定语修饰 report。aimed at ＋ doing。F 用的是 aim to do，同一意思两种结构。", "syn": "intended to · designed to", "conf": "<b>aimed at doing</b> vs <b>aim to do</b>。"},
+  convince:{"w": "convince", "ipa": "/kənˈvɪns/", "pos": "v.", "tags": ["core", "write"], "cn": "说服，使相信", "en": "to make someone believe something is true", "ex": "convincing senators and representatives … that Yellowstone", "mem": "convince sb that …＝使某人相信。本句 sb 与 that 从句中间夹着 along with 短语，<b>要跳过插入成分才找得到 that</b>（05 长难句）。", "syn": "persuade · assure · satisfy", "conf": "<b>convince</b> 使相信 vs <b>persuade</b> 劝说（去做）。"},
+  senator:{"w": "senator", "ipa": "/ˈsenətə(r)/", "pos": "n.", "tags": ["core"], "cn": "参议员", "en": "a member of a senate", "ex": "convincing senators and representatives", "mem": "senate（参议院）＋ -or。G 的 the Senate and House 与它对应。", "syn": "—", "conf": "<b>senator</b> 参议员 vs <b>senior</b> 年长的。"},
+  representative:{"w": "representative", "ipa": "/ˌreprɪˈzentətɪv/", "pos": "n.", "tags": ["poly", "core"], "cn": "（此处）众议员；代表", "en": "a member of the House of Representatives in the US", "ex": "senators and representatives", "mem": "⚠️ 熟义「代表」；与 senators 并列＝<b>众议员</b>（美国众议院叫 House of Representatives）。G ② 的 House 就是它。", "syn": "congressman", "conf": "<b>representative</b> 众议员／代表 vs <b>representation</b> 代表权。"},
+  alongwith:{"w": "along with", "ipa": "/əˈlɒŋ wɪð/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "连同，和……一起", "en": "together with", "ex": "along with colleagues at government agencies", "mem": "H ② 与 C ② 各用一次 along with：H 连同政府部门的同僚，C 连同莫兰画作的复制品。<b>along with 短语是插入成分，不改变主干</b>。", "syn": "together with · as well as", "conf": "<b>along with</b> 连同 vs <b>get along with</b> 与……相处。"},
+  interior:{"w": "the Department of the Interior", "ipa": "/ɪnˈtɪəriə(r)/", "pos": "n.", "tags": ["poly"], "cn": "（美国）内政部", "en": "the US government department that manages federal land and natural resources", "ex": "the Department of the Interior", "mem": "⚠️ interior 熟义「内部、室内」；美国 the Department of the Interior＝<b>内政部</b>，管联邦土地、国家公园（国家公园管理局就隶属内政部）。", "syn": "—", "conf": "<b>interior</b> 内部的 vs <b>inferior</b> 低劣的。"},
+  oughtto:{"w": "ought to", "ipa": "/ˈɔːt tə/", "pos": "modal", "tags": ["phrase", "write"], "cn": "应当", "en": "used to say what is the right thing to do", "ex": "that Yellowstone ought to be preserved", "mem": "比 should 更书面、更强调道义上的应当。ought to be preserved 收回首段的 preserving nature。", "syn": "should · must", "conf": "<b>ought to</b> 应当 vs <b>have to</b> 不得不。"},
+  operator:{"w": "operator", "ipa": "/ˈɒpəreɪtə(r)/", "pos": "n.", "tags": ["poly"], "cn": "（此处）精明圆滑的人，会办事的人", "en": "a person who is skilful at getting what they want, often by persuading others", "ex": "An effective Washington operator, Hayden", "mem": "⚠️ 熟义「操作员、运营商」；修饰人＝<b>手腕高明、门路广的人</b>（smooth operator）。Washington operator＝深谙华盛顿政界门道的人，句首名词短语作同位语说明 Hayden。", "syn": "dealmaker · fixer · insider", "conf": "<b>operator</b> 有手腕的人 vs <b>operation</b> 手术／运作。"},
+  sense:{"w": "sense", "ipa": "/sens/", "pos": "v.", "tags": ["poly", "core"], "cn": "（此处 v.）意识到，觉察到", "en": "to become aware of something without being told", "ex": "Hayden sensed that he could capitalize on", "mem": "⚠️ 熟义 n.「感觉、意义」；v.＋that 从句＝<b>敏锐地意识到</b>。", "syn": "realize · perceive · detect", "conf": "<b>sense</b> v. 觉察 vs <b>sensible</b> 明智的 vs <b>sensitive</b> 敏感的。"},
+  capitalizeon:{"w": "capitalize on", "ipa": "/ˈkæpɪtəlaɪz ɒn/", "pos": "phr.", "tags": ["poly", "phrase", "write"], "cn": "利用，从……中获益", "en": "to use a situation to gain an advantage", "ex": "capitalize on the expedition’s stunning visuals", "mem": "⚠️ capitalize 熟义「大写；使资本化」；capitalize on＝<b>充分利用</b>（take advantage of）。C 开口就讲「利用」⟹ 东西已经拍回来了，考察已结束。", "syn": "take advantage of · exploit · make the most of", "conf": "<b>capitalize on</b> 利用 vs <b>capital</b> 首都／资本。"},
+  stunning:{"w": "stunning", "ipa": "/ˈstʌnɪŋ/", "pos": "adj.", "tags": ["core", "write"], "cn": "令人惊叹的，极美的", "en": "extremely attractive or impressive", "ex": "the expedition’s stunning visuals", "mem": "stun（使震惊）。D ④ 文字里写过 stunning sights，C ① 换成 stunning visuals：<b>从文字到影像，同一个形容词搬家</b>。", "syn": "astounding · striking · gorgeous", "conf": "<b>stunning</b> 惊艳的 vs <b>stunned</b> 惊呆的。"},
+  visual:{"w": "visual", "ipa": "/ˈvɪʒuəl/", "pos": "n.", "tags": ["poly", "core"], "cn": "（此处 n.）影像，视觉材料", "en": "a picture, photograph, film etc. used to show something", "ex": "the expedition’s stunning visuals", "mem": "⚠️ 熟义 adj.「视觉的」；复数名词 visuals＝<b>图像资料</b>，统称照片与画作（下句 photographs ＋ paintings）。", "syn": "images · pictures · graphics", "conf": "<b>visual</b> n. 图像 vs <b>visualization</b> 可视化。"},
+  printout:{"w": "print out", "ipa": "/prɪnt aʊt/", "pos": "phr.", "tags": ["phrase"], "cn": "印出，打印", "en": "to produce a printed copy", "ex": "asked Jackson to print out large copies", "mem": "ask sb to do。注意原卷 asked … to print out … and distributed them——distributed 与 asked 并列（海登自己发），不与 print 并列。", "syn": "print · reproduce", "conf": "<b>print out</b> 印出 vs <b>point out</b> 指出。"},
+  distribute:{"w": "distribute", "ipa": "/dɪˈstrɪbjuːt/", "pos": "v.", "tags": ["core", "write"], "cn": "分发，分配", "en": "to give things to a number of people", "ex": "distributed them … to each member of Congress", "mem": "dis-（分开）＋ tribute（给予）。distribute A to B＝把 A 分发给 B。", "syn": "hand out · give out · circulate", "conf": "<b>distribute</b> 分发 vs <b>contribute</b> 贡献 vs <b>attribute</b> 归因。"},
+  reproduction:{"w": "reproduction", "ipa": "/ˌriːprəˈdʌkʃn/", "pos": "n.", "tags": ["poly", "core"], "cn": "（此处）复制品，复印件", "en": "a copy of a work of art", "ex": "reproductions of Moran’s paintings", "mem": "⚠️ 熟义「繁殖、生殖」；艺术品语境＝<b>复制品</b>。Moran’s 只有姓 ⟹ 全名在 F，C 必在 F 后。", "syn": "copy · replica · print", "conf": "<b>reproduction</b> 复制品 vs <b>production</b> 生产。"},
+  congress:{"w": "Congress", "ipa": "/ˈkɒŋɡres/", "pos": "n.", "tags": ["core"], "cn": "（美国）国会", "en": "the US law-making body, made up of the Senate and the House of Representatives", "ex": "each member of Congress", "mem": "国会＝参议院（Senate）＋ 众议院（House）。C ② each member of Congress → G ① sailed through Congress：Congress 原词接力。", "syn": "legislature · parliament", "conf": "<b>Congress</b>（美国）vs <b>Parliament</b>（英国）。"},
+  visualization:{"w": "visualization", "ipa": "/ˌvɪʒuəlaɪˈzeɪʃn/", "pos": "n.", "tags": ["core"], "cn": "可视化（的东西）", "en": "the act of making something visible as a picture", "ex": "The visualization, particularly those photographs", "mem": "visualize（使可视化）的名词；particularly those photographs 是插入的补充，限定到照片。", "syn": "depiction · imagery", "conf": "—"},
+  hithome:{"w": "hit home", "ipa": "/hɪt həʊm/", "pos": "phr.", "tags": ["poly", "phrase", "write"], "cn": "（话、事）被深刻领会，击中要害", "en": "to make someone fully understand something", "ex": "really hit home that this is something", "mem": "⚠️ 不是「打到家」。主语 visualization ＋ hit home that …＝<b>让人真切地意识到……</b>。写作「某件事让人警醒」可用：The news really hit home.", "syn": "sink in · strike a chord", "conf": "<b>hit home</b> 深刻领会 vs <b>bring home</b> 使认清。"},
+  historian:{"w": "historian", "ipa": "/hɪˈstɔːriən/", "pos": "n.", "tags": ["core"], "cn": "历史学家", "en": "a person who studies or writes about history", "ex": "Yellowstone’s park historian", "mem": "park historian＝公园的历史学家（专职研究黄石历史）。新闻特稿的套路：讲完事件，请一位专家下判断。", "syn": "—", "conf": "<b>historian</b> 历史学家 vs <b>historic</b> 有历史意义的 vs <b>historical</b> 历史上的。"},
+  bill:{"w": "bill", "ipa": "/bɪl/", "pos": "n.", "tags": ["poly", "core"], "cn": "（此处）议案，法案", "en": "a written proposal for a new law", "ex": "The bill proved largely popular", "mem": "⚠️ 熟义「账单、钞票」；议会语境＝<b>议案</b>（通过后成为 act／law）。考卷八段里没有一处提出议案，所以 The bill 不能拿来找上家，只说明 G 不是首段。", "syn": "proposal · measure · legislation", "conf": "<b>bill</b> 议案 vs <b>act</b> 法令（已通过）vs <b>law</b> 法律。"},
+  prove:{"w": "prove", "ipa": "/pruːv/", "pos": "v.", "tags": ["poly", "core"], "cn": "（此处 系动词）结果是，证明是", "en": "to be shown to be", "ex": "The bill proved largely popular", "mem": "⚠️ 熟义「证明」；prove ＋ 形容词＝<b>结果表明……</b>（系动词，无被动）。", "syn": "turn out · be shown to be", "conf": "<b>prove popular</b>（系动词）vs <b>prove that</b>（证明）。"},
+  sailthrough:{"w": "sail through", "ipa": "/seɪl θruː/", "pos": "phr.", "tags": ["poly", "phrase"], "cn": "顺利通过", "en": "to succeed easily in a test or vote", "ex": "sailed through Congress with large majorities", "mem": "⚠️ sail 熟义「航行」；sail through＝<b>一帆风顺地通过</b>（考试、表决）。", "syn": "pass easily · breeze through", "conf": "<b>sail through</b> 顺利通过 vs <b>go through</b> 经历。"},
+  majority:{"w": "majority", "ipa": "/məˈdʒɒrəti/", "pos": "n.", "tags": ["core", "write"], "cn": "多数；（表决）多数票", "en": "the larger number of votes in an election", "ex": "with large majorities in favor", "mem": "with large majorities＝以压倒性多数票。", "syn": "most · bulk", "conf": "<b>majority</b> 多数 vs <b>minority</b> 少数 vs <b>maturity</b> 成熟。"},
+  infavor:{"w": "in favor (of)", "ipa": "/ɪn ˈfeɪvə(r)/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "赞成", "en": "supporting something", "ex": "large majorities in favor", "mem": "in favor of sth＝支持；本句省了 of the bill。", "syn": "in support of · for", "conf": "<b>in favor of</b> 赞成 vs <b>in favour</b>（英式拼法）。"},
+  succession:{"w": "in quick succession", "ipa": "/səkˈseʃn/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "接连地，一个接一个地", "en": "happening one after another quickly", "ex": "In quick succession, the Senate and House passed", "mem": "succeed（接续）的名词。in quick succession＝紧接着先后。G 的时间推进词：in early 1872 → That March。", "syn": "one after another · consecutively", "conf": "<b>succession</b> 接续 vs <b>success</b> 成功（同源不同义）。"},
+  senate:{"w": "Senate", "ipa": "/ˈsenət/", "pos": "n.", "tags": ["core"], "cn": "参议院", "en": "the smaller, upper part of the US Congress", "ex": "the Senate and House passed legislation", "mem": "H 的 senators 的机构。", "syn": "—", "conf": "<b>Senate</b> 参议院 vs <b>senator</b> 参议员。"},
+  house:{"w": "House", "ipa": "/haʊs/", "pos": "n.", "tags": ["poly"], "cn": "（此处）众议院", "en": "the House of Representatives in the US Congress", "ex": "the Senate and House passed legislation", "mem": "⚠️ 熟义「房子」；与 Senate 并列且大写＝<b>众议院</b>（House of Representatives 的简称）。", "syn": "House of Representatives", "conf": "—"},
+  legislation:{"w": "legislation", "ipa": "/ˌledʒɪsˈleɪʃn/", "pos": "n.", "tags": ["core", "write"], "cn": "立法；法律", "en": "a law or set of laws", "ex": "passed legislation protecting Yellowstone", "mem": "legis（法）＋ lation。不可数。C 末 has to be protected → G legislation protecting：从「应当」到「立法做到」。", "syn": "law · statute · act", "conf": "<b>legislation</b> 立法 vs <b>legislature</b> 立法机关。"},
+  signintolaw:{"w": "sign … into law", "ipa": "/saɪn ˈɪntə lɔː/", "pos": "phr.", "tags": ["phrase"], "cn": "签署（使议案）成为法律", "en": "to sign a bill so that it becomes law", "ex": "signed an act into law", "mem": "美国立法流程最后一步：总统签署。G ③ 时间 That March（1872 年 3 月 1 日）。", "syn": "enact", "conf": "<b>sign into law</b> 签署成法 vs <b>sign up</b> 报名。"},
+  establish:{"w": "establish", "ipa": "/ɪˈstæblɪʃ/", "pos": "v.", "tags": ["core", "write"], "cn": "确立，设立", "en": "to start or create an organization, system etc.", "ex": "established Yellowstone as the world’s first national park", "mem": "establish A as B＝把 A 确立为 B。", "syn": "set up · found · designate", "conf": "<b>establish</b> 确立 vs <b>estimate</b> 估计。"},
+  oppose:{"w": "oppose", "ipa": "/əˈpəʊz/", "pos": "v.", "tags": ["core", "write"], "cn": "反对", "en": "to disagree with and try to stop something", "ex": "some locals opposed the designation", "mem": "While 让步：一些当地人反对 ⟹ 但整体被接受。oppose sth（及物，不加 to）；be opposed to sth。", "syn": "object to · resist · be against", "conf": "<b>oppose</b> 反对 vs <b>opposite</b> 对面的 vs <b>propose</b> 提议。"},
+  designation:{"w": "designation", "ipa": "/ˌdezɪɡˈneɪʃn/", "pos": "n.", "tags": ["core"], "cn": "认定，指定", "en": "the act of officially choosing something for a purpose", "ex": "opposed the designation", "mem": "designate（指定）的名词。the designation＝把黄石认定为国家公园这件事。", "syn": "naming · classification", "conf": "<b>designation</b> 认定 vs <b>destination</b> 目的地。"},
+  largely:{"w": "largely", "ipa": "/ˈlɑːdʒli/", "pos": "adv.", "tags": ["poly", "core"], "cn": "大体上，主要地", "en": "mostly", "ex": "the decision was largely accepted", "mem": "⚠️ 不是「大大地」，而是「<b>在很大程度上</b>」＝mostly。G ① proved largely popular、④ largely accepted——两个 largely 都是作者的谨慎限定。", "syn": "mostly · mainly · generally", "conf": "<b>largely</b> 大体上 vs <b>greatly</b> 极大地。"},
+  keyrole:{"w": "play a key role", "ipa": "/pleɪ ə kiː rəʊl/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "起关键作用", "en": "to be very important in making something happen", "ex": "Jackson’s photos played a key role", "mem": "play a key／vital／crucial role in sth。G ④ 把首段 B 的「照片是转折点之一」落成结局——首尾成圈。写作高频。", "syn": "be instrumental in · contribute greatly to", "conf": "<b>play a role</b> 起作用 vs <b>role model</b> 榜样。"},
+  timeframe:{"w": "timeframe", "ipa": "/ˈtaɪmfreɪm/", "pos": "n.", "tags": ["core"], "cn": "时间框架，期限", "en": "the period of time in which something happens", "ex": "in the timeframe that it did", "mem": "in the timeframe that it did＝在它（法律保护）实际发生的那个时间范围内；did 替代 happened。", "syn": "time period · schedule", "conf": "—"},
+  journalist:{"w": "journalist", "ipa": "/ˈdʒɜːnəlɪst/", "pos": "n.", "tags": ["core"], "cn": "记者", "en": "a person who writes news for newspapers, magazines etc.", "ex": "journalist and author of", "mem": "两位受访者：C 是公园历史学家（内部人）、G 是记者兼作者（外部人）——<b>一里一外两个声音都说照片起了作用</b>。", "syn": "reporter · correspondent", "conf": "<b>journalist</b> 记者 vs <b>journal</b> 期刊。"},
+  mogul:{"w": "mogul", "ipa": "/ˈməʊɡl/", "pos": "n.", "tags": ["core"], "cn": "大亨，巨头", "en": "a very rich and powerful person in business", "ex": "Prophets and Moguls", "mem": "书名四对头韵、对仗词，不必细究：Prophets and Moguls（先知与大亨）· Rangers and Rogues（护林员与流氓）· Bison and Bears（野牛与熊）。", "syn": "tycoon · magnate", "conf": "—"},
+  rogue:{"w": "rogue", "ipa": "/rəʊɡ/", "pos": "n.", "tags": ["core"], "cn": "流氓，无赖", "en": "a dishonest or badly behaved person", "ex": "Rangers and Rogues", "mem": "书名里与 rangers（公园护林员）配对。rogue 也作 adj.：a rogue state（流氓国家）。", "syn": "rascal · scoundrel", "conf": "<b>rogue</b> 流氓 vs <b>rouge</b> 胭脂。"},
+  bison:{"w": "bison", "ipa": "/ˈbaɪsn/", "pos": "n.", "tags": ["core"], "cn": "野牛", "en": "a large wild animal of the cow family", "ex": "Bison and Bears", "mem": "单复数同形。黄石的标志性动物，与 F 的 fauna 呼应。", "syn": "buffalo", "conf": "—"}
+};
+/* 选项库渲染 */
+const lib=document.getElementById('optlib');
+lib.innerHTML=Object.keys(OPTS).map(k=>
+  '<div class="optitem'+(EXTRA.indexOf(k)>=0?' extra':'')+'" id="opt-'+k+'"><span class="lt">'+k+'</span><span>'
+  +'<span class="oen">'+OPTS[k][0]+'</span>'
+  +'<span class="zhx">'+OPTS[k][1]+'</span>'
+  +'<span class="kw">🔑 '+OPTS[k][2]+'</span>'
+  +'<span class="stg">'+OPTS[k][3]+'</span></span></div>').join('');
+
+/* 作答交互：答后就地把空格补全成原文 */
+document.querySelectorAll('.person').forEach(p=>{
+  const ans=p.dataset.ans; if(!ans)return;
+  const chips=p.querySelector('.chips');
+  chips.innerHTML='ABCDEFGH'.split('').map(l=>'<button class="ch" data-l="'+l+'">'+l+'</button>').join('');
+  chips.querySelectorAll('.ch').forEach(c=>c.addEventListener('click',()=>{
+    if(p.classList.contains('done'))return;
+    p.classList.add('done');
+    if(c.dataset.l!==ans)c.classList.add('wrong');
+    chips.querySelector('.ch[data-l="'+ans+'"]').classList.add('right');
+    const oi=document.getElementById('opt-'+ans); if(oi)oi.classList.add('used');
+    const slot=p.querySelector('.slot');
+    if(slot){slot.classList.add('filled');slot.innerHTML='<span class="fl">['+ans+']</span>'+OPTS[ans][0];}
+  }));
+});
+
+const panel=document.getElementById('panel');
+const isMobile=()=>window.innerWidth<=900;
+function badge(t){return {core:'<span class="badge b-core">核心词</span>',phrase:'<span class="badge b-phrase">短语</span>',poly:'<span class="badge b-poly">熟词僻义</span>',write:'<span class="badge b-write">写作✍︎</span>'}[t]||''}
+function showCard(k,el){
+  const d=V[k]; if(!d)return;
+  document.querySelectorAll('.tk.active').forEach(e=>e.classList.remove('active'));
+  if(el&&el.classList.contains('tk'))el.classList.add('active');
+  panel.innerHTML='<button class="close" onclick="panel.classList.remove(\'open\')">✕</button>'
+  +'<div class="wcard">'
+  +'<div class="head"><span class="w">'+d.w+'</span><span class="ipa">'+d.ipa+'</span><span class="pos">'+d.pos+'</span>'+d.tags.map(badge).join('')+'</div>'
+  +'<div class="cn">'+d.cn+'</div><div class="en-def">'+d.en+'</div>'
+  +'<div class="row r-ex"><b>原文语境</b>“…'+d.ex+'…”</div>'
+  +'<div class="row r-mem"><b>怎么记</b>'+d.mem+'</div>'
+  +'<div class="row r-syn"><b>同类词</b>'+d.syn+'</div>'
+  +'<div class="row r-conf"><b>易混辨析</b>'+d.conf+'</div>'
+  +'</div>';
+  if(isMobile())panel.classList.add('open');
+}
+document.addEventListener('click',function(e){
+  const t=e.target.closest?e.target.closest('.tk'):null;
+  if(t){e.stopPropagation();showCard(t.dataset.w,t);}
+});
+function tz(btn){btn.closest('.person,.para').classList.toggle('showzh')}
+let allOn=false;
+function toggleAll(){allOn=!allOn;document.querySelectorAll('.person,.para').forEach(p=>p.classList.toggle('showzh',allOn))}
+
+const vg=document.getElementById('vgrid');
+Object.keys(V).forEach(k=>{
+  const d=V[k];
+  const div=document.createElement('div');div.className='vitem';
+  div.style.cssText='border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer';
+  div.innerHTML='<span style="float:right">'+d.tags.map(badge).join('')+'</span>'
+   +'<div style="font-family:var(--serif);font-weight:bold">'+d.w+'</div>'
+   +'<div style="font-size:.85rem;color:var(--muted)">'+d.cn+'</div>';
+  div.addEventListener('click',()=>{showCard(k,null);if(!isMobile())window.scrollTo({top:0,behavior:'smooth'})});
+  vg.appendChild(div);
+});
+document.getElementById('vcount').textContent=Object.keys(V).length;
+
+const yd=document.getElementById('yd');let sel='',ydHold=0,ydT=0;
+/* 触屏：点按钮会先把选区清掉 → selectionchange 立刻把按钮藏了 → 点击落空。改成延迟隐藏 ＋ 按下即锁定 */
+const ydTouch=window.matchMedia&&matchMedia('(pointer:coarse)').matches;
+function ydHide(){clearTimeout(ydT);ydHold=0;yd.style.display='none'}
+document.addEventListener('selectionchange',function(){
+  const s=window.getSelection();const t=s?s.toString().trim():'';
+  if(t&&/^[a-zA-Z' -]{2,40}$/.test(t)){
+    sel=t;clearTimeout(ydT);
+    try{const r=s.getRangeAt(0).getBoundingClientRect();
+      yd.style.left=Math.max(8,Math.min(r.left,window.innerWidth-110))+'px';
+      yd.style.top=(r.bottom+(ydTouch?30:8))+'px';yd.style.display='block';}catch(e){}
+  }else if(!ydHold){clearTimeout(ydT);ydT=setTimeout(function(){if(!ydHold)yd.style.display='none'},ydTouch?900:0)}
+});
+['pointerdown','touchstart','mousedown'].forEach(function(ev){yd.addEventListener(ev,function(){ydHold=1;clearTimeout(ydT)},{passive:true})});
+yd.addEventListener('click',function(){
+  const u='https://dict.youdao.com/result?word='+encodeURIComponent(sel)+'&lang=en';
+  let w=null;try{w=window.open(u,'_blank')}catch(e){}
+  if(!w)location.href=u;
+  ydHide()});
+document.addEventListener('click',function(e){if(e.target!==yd&&!window.getSelection().toString())ydHide()});
+
+/* 已给定段 A、E、H 在选项库里标绿 */
+GIVEN.forEach(k=>{const o=document.getElementById('opt-'+k);if(o)o.classList.add('gv')});
+/* 原卷对照总开关（流式版） */
+function imgAll(b){const on=document.body.classList.toggle('stx-allimg');document.querySelectorAll('button[onclick^="imgAll"]').forEach(x=>x.textContent=on?'收起原卷':'原卷对照');
+  if(on)document.querySelectorAll('img.strip').forEach(im=>im.loading='eager')}
+</script>
+<script src="img/strip_boxes_2023.js?v=8"></script>
+<script src="_strip_lookup.js?v=8"></script>
+<script src="_strip_text.js?v=22"></script>
+<script src="_fault_attr.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,1202 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2023 英一 完形 · 商旅客栈</title>
+<style>
+  :root{
+    --bg:#faf9f6; --card:#ffffff; --ink:#2b2b2b; --muted:#8a8578;
+    --accent:#8b5e34; --accent-soft:#f3e9dd; --line:#e8e3d8;
+    --hl:#fdf3d8; --hl-border:#e0b84d;
+    --green:#3e7a4e; --green-soft:#e8f2ea;
+    --red:#b04a3a; --red-soft:#f9e9e6;
+    --blue:#3d6a8a; --blue-soft:#e7eff5;
+    --purple:#6d5a8e; --purple-soft:#eeeaf5;
+    --serif:"Georgia","Songti SC",serif;
+    --sans:-apple-system,"PingFang SC","Helvetica Neue",sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#1c1a17; --card:#26231f; --ink:#e8e4dc; --muted:#9a948a;
+      --accent:#d0a06a; --accent-soft:#3a3127; --line:#3a362f;
+      --hl:#3d3520; --hl-border:#b08c3a;
+      --green:#7fb98d; --green-soft:#26362b;
+      --red:#d98876; --red-soft:#3d2a26;
+      --blue:#8ab3d0; --blue-soft:#26323d;
+      --purple:#a996c8; --purple-soft:#302a3d;
+    }
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;padding-bottom:120px}
+  .wrap{max-width:1100px;margin:0 auto;padding:24px 20px}
+  .back{font-size:.85rem;color:var(--muted);text-decoration:none}
+  .back:hover{color:var(--accent)}
+  header{margin:14px 0 28px}
+  header h1{font-family:var(--serif);font-size:1.7rem;line-height:1.3}
+  header .sub{color:var(--muted);margin-top:6px;font-size:.9rem}
+  .tags{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+  .tag{font-size:.75rem;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);border:1px solid var(--line)}
+  .tag.spoiler{cursor:pointer;background:var(--card);color:var(--muted)}
+  .tag.spoiler .hid{filter:blur(5px)}
+  .tag.spoiler.open .hid{filter:none;color:var(--accent)}
+
+  .layout{display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:start}
+  @media (max-width:900px){.layout{grid-template-columns:1fr}}
+
+  section.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:24px}
+  h2{font-size:1.05rem;letter-spacing:.05em;color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  h2 .n{font-size:.72rem;background:var(--accent);color:var(--card);border-radius:6px;padding:1px 7px}
+  .note{font-size:.82rem;color:var(--muted);margin-bottom:14px}
+
+  .para{margin-bottom:22px}
+  .para .en{font-family:var(--serif);font-size:1.06rem;line-height:2.15}
+  .pno{color:var(--muted);font-size:.75rem;user-select:none;margin-right:6px}
+  .tk{background:var(--hl);border-bottom:2px solid var(--hl-border);border-radius:3px;padding:0 2px;cursor:pointer;transition:filter .15s}
+  .tk:hover{filter:brightness(.93)}
+  .tk.active{outline:2px solid var(--hl-border)}
+  .ls{border-bottom:2px dotted var(--blue);cursor:pointer}
+  .para .zh{display:none;margin-top:10px;padding:10px 14px;background:var(--blue-soft);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:.93rem}
+  .para.showzh .zh{display:block}
+  .zbtn{float:right;margin-left:10px;font-size:.72rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:6px;padding:2px 9px;cursor:pointer}
+  .zbtn:hover{color:var(--accent);border-color:var(--accent)}
+  .allbtn{font-size:.78rem;border:1px solid var(--accent);background:none;color:var(--accent);border-radius:8px;padding:4px 12px;cursor:pointer}
+
+  /* 完形空格 */
+  .bk{display:inline-block;min-width:64px;text-align:center;background:var(--hl);border-bottom:2px solid var(--hl-border);border-radius:4px;padding:0 6px;cursor:pointer;font-weight:600;color:var(--accent);transition:all .15s;font-family:var(--sans);font-size:.95rem}
+  .bk:hover{filter:brightness(.93)}
+  .bk.filled{background:var(--green-soft);border-bottom-color:var(--green);color:var(--green);font-family:var(--serif)}
+  .bk.miss{background:var(--red-soft);border-bottom-color:var(--red);color:var(--red);font-family:var(--serif)}
+  .bk.active{outline:2px solid var(--hl-border)}
+  .bk .idx{font-size:.7rem;color:var(--muted);margin-right:3px}
+
+  aside{position:sticky;top:20px}
+  #panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;min-height:180px}
+  #panel .hint{color:var(--muted);font-size:.88rem;text-align:center;padding:30px 10px}
+  .wcard .head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .wcard .w{font-family:var(--serif);font-size:1.35rem;font-weight:bold}
+  .wcard .ipa{color:var(--muted);font-size:.85rem}
+  .wcard .pos{font-size:.72rem;color:var(--purple);background:var(--purple-soft);padding:1px 8px;border-radius:999px}
+  .wcard .badge{font-size:.7rem;padding:1px 8px;border-radius:999px}
+  .b-core{background:var(--red-soft);color:var(--red)}
+  .b-phrase{background:var(--blue-soft);color:var(--blue)}
+  .b-poly{background:var(--purple-soft);color:var(--purple)}
+  .b-write{background:var(--green-soft);color:var(--green)}
+  .wcard .cn{margin-top:8px;font-size:1rem;font-weight:600}
+  .wcard .en-def{color:var(--muted);font-size:.86rem;font-style:italic;margin-top:2px}
+  .wcard .row{margin-top:10px;font-size:.86rem;padding:8px 10px;border-radius:8px}
+  .wcard .row>b:first-child{font-size:.72rem;display:block;margin-bottom:2px;letter-spacing:.06em}
+  .r-ex{background:var(--hl)} .r-ex b{color:var(--hl-border)}
+  .r-mem{background:var(--green-soft)} .r-mem b{color:var(--green)}
+  .r-syn{background:var(--blue-soft)} .r-syn b{color:var(--blue)}
+  .r-conf{background:var(--red-soft)} .r-conf b{color:var(--red)}
+  #panel .close{display:none}
+  @media (max-width:900px){
+    aside{position:fixed;left:0;right:0;bottom:0;z-index:50;padding:0 8px 8px}
+    #panel{box-shadow:0 -6px 24px rgba(0,0,0,.18);max-height:55vh;overflow-y:auto;display:none}
+    #panel.open{display:block}
+    #panel .close{display:block;float:right;border:none;background:var(--line);border-radius:8px;padding:2px 10px;cursor:pointer;color:var(--ink)}
+  }
+
+  /* 逐空精解 */
+  .q{margin-bottom:22px;padding-bottom:18px;border-bottom:1px dashed var(--line);scroll-margin-top:20px}
+  .q:last-child{border:none;margin-bottom:0;padding-bottom:0}
+  .q .stem{font-family:var(--serif);font-size:.98rem;background:var(--hl);border-radius:8px;padding:8px 12px;display:block}
+  .q .stem em{font-style:normal;font-weight:700;color:var(--accent);border-bottom:2px solid var(--hl-border);padding:0 4px}
+  .qhead{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+  .qno{font-family:var(--serif);font-size:1.2rem;font-weight:700;color:var(--accent)}
+  .qt{font-size:.7rem;border-radius:999px;padding:1px 9px}
+  .c-logic{background:var(--blue-soft);color:var(--blue)}
+  .c-collo{background:var(--green-soft);color:var(--green)}
+  .c-word{background:var(--red-soft);color:var(--red)}
+  .c-context{background:var(--purple-soft);color:var(--purple)}
+  .qpos{font-size:.7rem;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:1px 9px}
+  .opts{margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  @media (max-width:640px){.opts{grid-template-columns:1fr}}
+  .opt{border:1px solid var(--line);border-radius:10px;padding:7px 12px;cursor:pointer;font-size:.92rem;font-family:var(--serif);transition:all .15s}
+  .opt .gl{font-family:var(--sans);font-size:.8rem;color:var(--muted);margin-left:6px}
+  .opt:hover{border-color:var(--accent)}
+  .q.done .opt{cursor:default}
+  .opt.right{background:var(--green-soft);border-color:var(--green)}
+  .opt.wrong{background:var(--red-soft);border-color:var(--red)}
+  .expl{display:none;margin-top:12px;background:var(--accent-soft);border-radius:10px;padding:12px 14px;font-size:.9rem}
+  .q.done .expl{display:block}
+  .expl b{color:var(--accent)}
+  .expl .lbl{font-size:.74rem;letter-spacing:.06em;color:var(--muted);display:block;margin:10px 0 2px}
+  .expl .lbl:first-child{margin-top:0}
+  .expl code{font-family:var(--serif);background:var(--hl);border-radius:4px;padding:1px 5px}
+  .wrongs{margin-top:6px;display:grid;gap:5px}
+  .wr{font-size:.86rem;background:var(--card);border-radius:8px;padding:6px 10px;border-left:3px solid var(--red)}
+  .wr .l{font-family:var(--serif);font-weight:700;color:var(--red);margin-right:5px}
+
+  /* 计分条 */
+  .score{display:flex;gap:14px;flex-wrap:wrap;align-items:center;background:var(--hl);border-radius:12px;padding:10px 16px;margin-bottom:18px;font-size:.88rem}
+  .score .v{font-family:var(--serif);font-size:1.25rem;font-weight:700;color:var(--accent);margin-right:4px}
+  .score .rst{margin-left:auto;font-size:.78rem;border:1px solid var(--line);background:var(--card);color:var(--muted);border-radius:8px;padding:3px 10px;cursor:pointer}
+
+  /* 考点统计 */
+  .catbar{display:flex;height:26px;border-radius:8px;overflow:hidden;margin:10px 0 16px;border:1px solid var(--line)}
+  .catseg{display:flex;align-items:center;justify-content:center;font-size:.72rem;color:#fff;font-weight:600}
+  .catlegend{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px}
+  .cl{display:flex;gap:8px;align-items:center;font-size:.85rem;cursor:pointer;padding:6px 8px;border-radius:8px;border:1px solid var(--line)}
+  .cl:hover{border-color:var(--accent)}
+  .dot{width:12px;height:12px;border-radius:3px;flex:0 0 12px}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+  .chip{font-size:.78rem;background:var(--accent-soft);color:var(--accent);border-radius:6px;padding:2px 8px;cursor:pointer}
+  .chip:hover{filter:brightness(.94)}
+
+  /* 打法 / 搭配 */
+  .flow{display:grid;gap:10px;font-size:.92rem}
+  .flow .fi{border:1px solid var(--line);border-radius:10px;padding:10px 14px}
+  .flow .fi b{color:var(--accent)}
+  .flow .fi .ev{display:block;margin-top:4px;font-size:.85rem;color:var(--muted);border-left:3px solid var(--hl-border);padding-left:9px}
+  .wb{display:grid;gap:10px}
+  .wbi{border-left:3px solid var(--green);background:var(--green-soft);border-radius:0 10px 10px 0;padding:10px 14px;font-size:.92rem}
+  .wbi .p{font-family:var(--serif);font-weight:600}
+  .wbi .u{color:var(--muted);font-size:.85rem}
+
+  /* 长难句 */
+  .sent{margin-bottom:20px}
+  .sent .src{font-family:var(--serif);font-size:1rem;background:var(--blue-soft);padding:12px 14px;border-radius:10px;border-left:3px solid var(--blue)}
+  .sent .anat{margin-top:8px;font-size:.9rem}
+  .sent .anat li{margin:4px 0 4px 18px}
+  .sent .tr{margin-top:8px;font-size:.92rem;color:var(--muted)}
+  .skel{color:var(--red);font-weight:600}
+
+  /* 80词表 */
+  .otab{width:100%;border-collapse:collapse;font-size:.86rem}
+  .otab th,.otab td{border:1px solid var(--line);padding:5px 8px;vertical-align:top}
+  .otab th{background:var(--accent-soft);color:var(--accent);font-size:.78rem}
+  .otab td.n{text-align:center;font-family:var(--serif);color:var(--muted);width:38px}
+  .otab .ow{font-family:var(--serif)}
+  .otab .oc{color:var(--muted);font-size:.82rem;display:block}
+  .otab td.hit{background:var(--green-soft)}
+  .otab td.hit .ow{color:var(--green);font-weight:700}
+  .hidecn .oc{filter:blur(4px);cursor:pointer}
+  .hidecn .oc.show{filter:none}
+  .tabwrap{overflow-x:auto}
+
+  #yd{position:fixed;z-index:60;display:none;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:4px 12px;font-size:.8rem;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+  .fail{background:var(--red-soft);border:1px solid var(--red);border-radius:10px;padding:10px 13px;margin-bottom:10px;font-size:.89rem;line-height:1.75}
+  .fail b{color:var(--red)}
+  .expl .fail{margin-top:0}
+  footer{color:var(--muted);font-size:.8rem;text-align:center;margin-top:30px}
+  /* 修：.layout 是 grid，grid 项默认 min-width:auto ⟹ 06 的 80 词表（min-content 425px）会把整个左栏撑到 475px，
+     窄屏下页面 scrollWidth 超出视口（2007–2009 三篇完形页同源、同病）。min-width:0 后 .tabwrap 才真正接管横滚。 */
+  main,aside{min-width:0}
+
+  /* ---- 2021：原卷句条 ---- */
+  .ctab{width:100%;border-collapse:collapse;font-size:.86rem;margin-top:8px}
+  .ctab th,.ctab td{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
+  .ctab th{background:var(--accent-soft);color:var(--accent);font-size:.8rem;white-space:nowrap}
+  .ctab code{background:var(--hl);padding:0 3px;border-radius:3px}
+  .sn{margin:0 0 14px}
+  .sn .pno{display:block;margin-bottom:4px;font-size:.78rem;line-height:1.6}
+  img.strip{display:block;width:100%;max-width:760px;height:auto;background:#fff;border:1px solid var(--line);border-radius:6px;cursor:pointer}
+  .sent .src img.strip{margin-top:6px;cursor:default}
+  .kw{margin-top:5px;font-size:.88rem;line-height:2.1;font-family:var(--serif)}
+  @media (prefers-color-scheme: dark){img.strip{filter:invert(.9) hue-rotate(180deg)}}
+  .sn,.sent .src{overflow-x:auto}
+  @media (max-width:700px){img.strip{width:640px;max-width:none}.sn::after{content:'← 句条可左右滑动 →';display:block;font-size:.7rem;color:var(--muted);margin-top:2px}}
+  .bkrow{margin-top:6px;font-size:.85rem;color:var(--muted);font-family:var(--serif);line-height:2.1}
+  .bkrow .bk{margin:0 6px}
+  .sent .src b{display:block;font-family:var(--sans,inherit);font-size:.8rem;color:var(--muted);font-weight:600}
+
+  /* ---- 2023 起：流式版——识别好的句子在段落里连排，像 2007–2020 ---- */
+  .para .en{font-family:var(--serif);font-size:1.02rem;line-height:1.9}
+  .stx-flow .para .en .pno{margin-right:4px}
+  .stx-flow .para .sn:not(.stx-on) .kw{margin-bottom:8px}
+  .stx-flow .para .sn:not(.stx-on) .bkrow{margin-bottom:4px}
+</style>
+</head>
+<body class="stx-flow">
+<div class="wrap">
+  <a class="back" href="index.html">◀ 返回英语复盘中心</a>
+  <header>
+    <h1>商旅客栈：丝绸之路上的路边大院</h1>
+    <div class="sub">2023 年英语（一）真题 · Section I 完形填空（Use of English）· 黄皮书标 287 词 · 5 段 12 句 · 建议 15 min · 话题：历史（百科式说明文）（来源：<i>All About History</i>《关于历史的一切》2021-12-02，原题 <i>Caravanserai</i>，据黄皮书）</div>
+    <div class="tags">
+      <span class="tag spoiler" onclick="this.classList.toggle('open')">🙈 答案（点击显示）：<span class="hid">1C 2A 3D 4C 5C 6A 7B 8B 9A 10D 11D 12C 13C 14B 15A 16B 17D 18A 19D 20A</span></span>
+      <span class="tag">难度：偏易（话题直白、句子不长；<b>坎在两处</b>——六个逻辑空六种关系各考一次，要分清「举例 / 目的 / 结果 / 并列 / 坐实 / 让步」；五道题四个选项都能进同一个框架，搭配知识帮不上忙）</span>
+      <span class="tag">Claude 盲做：20/20（只看原卷正文与选项作答、先落盘，再核答案）</span>
+      <span class="tag">⚠️ 原定冲刺模考卷，已按你的决定提前开复盘</span>
+    </div>
+  </header>
+
+  <div class="layout">
+    <main>
+
+      <!-- ========== 00 脉络 ========== -->
+      <section class="card">
+        <h2><span class="n">00</span>读前一分钟 · 全文脉络（完形先读首句，再看结构）</h2>
+        <p class="note">完形的<b>首句从不设空</b>。本篇首句是一个<b>定义句</b>：Caravanserais were roadside inns that were built along the Silk Road …——「X were Y that …」一句话交代了<b>是什么</b>（路边客栈）、<b>在哪儿</b>（丝路沿线、中国到中东）、<b>文体</b>（百科词条式说明文：没有人物、没有引语、没有作者立场）。⟹ 后面二十个空<b>没有一个在表态</b>，全是「这东西的某个事实该怎么说」——方向几乎不会反，难点在<b>关系</b>和<b>搭配</b>。</p>
+        <div class="flow">
+          <div class="fi"><b>① 段 · 是什么、谁出钱</b>：客栈通常<b>坐落在</b>城墙或村子外（1 located），一般由地方政府或<b>私人</b>出资（2 privately）。
+            <span class="ev">两个空都是「事实信息」：1 定方位（outside 是方位词，不是空间名词），2 定出资方（<code>or</code> 两边说的都是「谁出钱」）。</span></div>
+          <div class="fi"><b>② 段 · 叫什么</b>：这个词是两个波斯词的<b>组合</b>（3 combination）——kārvān（一群旅人、商队）＋ sarāy（宫殿、围合建筑）；caravan 一词用来<b>指称</b>出于安全结伴穿行丝路的人群（4 describe），<b>例如</b>商人、旅人、朝圣者（5 such as）。
+            <span class="ev">词源段：3 看「A＋B＝C」、4 看「这个词用来指谁」、5 看后面三种人与 groups of people 是<b>包含</b>关系。</span></div>
+          <div class="fi"><b>③ 段 · 为什么建、建在哪</b>：从 10 世纪起商路发达，客栈的<b>修建</b>随之增多（6 construction），给人夜里歇脚；旅人<b>面临</b>被贼袭击或<b>遭受</b>极端天气的可能（7 faced · 8 subjected）；所以客栈有意布点，<b>以便</b>一天行程就能走到（9 so that）。
+            <span class="ev">一条因果链：路线发达 → 客栈增多 → 路上危险（For this reason）→ 布点一日可达。<b>四个空全挂在这条链上</b>，6 看前因、7 看后果、9 看目的。</span></div>
+          <div class="fi"><b>④ 段 · 文化功能</b>：客栈是各色人等随意碰头的<b>聚集地</b>（10 meeting），<b>因此</b>成了文化<b>交流</b>与互动的中心（11 As a result · 12 exchange），旅人分享文化、思想、信仰，<b>也</b>把知识带走（13 as well as），大大<b>影响</b>了几个文明的发展（14 influencing）。
+            <span class="ev">「聚集地 → 交流中心 → 带走知识 → 影响文明」，越往后影响越大；五个空方向全正面。</span></div>
+          <div class="fi"><b>⑤ 段 · 贸易功能 ＋ 现状</b>：客栈也是重要集市，<b>有助于</b>商品买卖（15 aided）；<b>事实上</b>它常是商人卖货、<b>囤</b>补给的第一站（16 Indeed · 17 stock up on）。<b>据信</b>丝路沿线建过 12 000 到 15 000 座客栈，<b>虽然</b>今天已知只剩约 3 000 座，其中许多已成<b>废墟</b>（18 believed · 19 although · 20 ruins）。
+            <span class="ev">前半段承接④段的「功能」，最后一句突然转到「现在」：<b>建了多少 vs 剩下多少</b>——数字一大一小，19 只能是让步。</span></div>
+          <div class="fi" style="border-color:var(--accent)">📌 <b>一句话主旨</b>：商旅客栈是丝路上的路边大院——给商队过夜、让文化交流、帮商品买卖，如今只剩几千座。<br>📌 <b>结构套路</b>：是什么（①）→ 叫什么（②）→ 为什么建、建在哪（③）→ 有什么用：文化（④）、贸易（⑤❶❷）→ 还剩多少（⑤❸）——<b>百科词条的标准五件套</b>，读完首句就能预判下一段写什么。<br>📌 <b>④⑤两段同构，但第二句的逻辑词不同</b>：两段都是「首句总述功能（④❶ meeting point · ⑤❶ marketplace）→ 第二句句首逻辑空 → 后面展开」。<b>11 填 As a result、16 填 Indeed</b>——④❷ 是由聚集<b>推出</b>的新结果（交流中心），⑤❷ 是把集市<b>说具体</b>（第一站卖货进货）。位置一样、关系不一样，判据是「第二句说的是<b>新东西</b>还是<b>同一件事的细节</b>」。<br>📌 <b>本篇的两个「多」</b>：① 逻辑空 6 个（与 2011、2016 并列十七年最多），而且<b>六个空六种关系</b>：举例 5 · 目的 9 · 结果 11 · 并列 13 · 坐实 16 · 让步 19；② <b>五道题四个选项都能进同一个框架</b>（8 都接 to · 10 都能接 point · 15 都接 in · 18 都能进 It is ___ that · 20 都能跟在 in 后面），搭配知识只能帮你确认「能说」，选哪个还得靠语境。</div>
+          <div class="fi">🗞 <b>背景（WebSearch 核过，只帮读、不替原文纠错）</b>：<i>All About History</i> 是一本英国通俗历史杂志——所以全文用英式拼写（travellers、centres、civilisations）。caravanserai 的词源与②段一致：波斯语 kārvān（结伴旅行的商人或朝圣者）＋ sarāy（宫殿、带围墙的院落）；韦氏词典记它最早进入英语是 1599 年。客栈的典型样子是<b>四面围墙、中间一个大院</b>，门只开一个、夜里关上——这正是③段说的「防贼」「安全过夜」。2023 年 9 月，伊朗 54 座客栈以「波斯商旅客栈」之名列入联合国教科文组织世界遗产名录（在这份真题之后）。⚠️ ⑤❸「建过 12 000–15 000 座、剩约 3 000 座」这组数字没查到可靠出处，照原文理解即可——原文本身也用 It is believed（据信）留了余地。</div>
+        </div>
+        <p class="note" style="margin-top:14px">📌 <b>完形不是 20 道独立小题，是一条语义链。</b>本篇这条链几乎是直的（说明文没有转折立场），所以<b>每一个空都先问「它和谁是什么关系」</b>：和同句的谁并列、和上一句是因果还是举例、和下一句是让步还是坐实。</p>
+      </section>
+
+      <!-- ========== 01 正文 ========== -->
+      <section class="card">
+        <h2><span class="n">01</span>完形正文（20 空 · 点空格跳到该题）
+          <button class="allbtn" onclick="toggleAll()" style="margin-left:auto">意译 开/关</button>
+          <button class="allbtn" onclick="revealAll()">显示全部答案</button>
+          <button class="allbtn" id="imgall" onclick="imgAll(this)">原卷对照</button>
+        </h2>
+        <p class="note">🟨 点<b>空格</b>＝跳到下面对应的解析卡（先自己选，再看解析；答过的空会就地填上答案词）｜ 🟡 黄底词＝重难点词，点开看词根／辨析 ｜ 蓝色虚线＝长难句，点击跳到 07 精析 ｜ 每段「意」＝该段意译 ｜ 选中任意其他单词浮出「查有道」｜ 原文由你的浏览器从原卷识别成文字（首次约 3 秒，之后秒开）；「原卷对照」可逐句看扫描原图、改识别错字</p>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">①</span>
+            <div class="sn"><img class="strip" src="img/2023_完形/s1_1.png" alt="①❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="caravanserai">Caravanserais</span> · <span class="tk" data-w="roadside">roadside inns</span> · <span class="tk" data-w="silkroad">Silk Road</span></div></div>
+            <div class="sn"><img class="strip" src="img/2023_完形/s1_2.png" alt="①❷ 原卷句条" loading="lazy"><div class="bkrow">空格：<span class="bk" data-n="1"><span class="idx">1</span>___</span> <span class="bk" data-n="2"><span class="idx">2</span>___</span></div><div class="kw">🟡 <span class="tk" data-w="fund">funded</span></div></div>
+          </div>
+          <div class="zh"><b>①段意：</b>商旅客栈是沿丝绸之路修建的路边客栈，分布在中国、北非和中东等地区。它们通常<b>坐落在</b>城镇或村庄的城墙外，一般由地方政府或<b>私人</b>出资修建。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">②</span>
+            <div class="sn" data-go="l2_1"><img class="strip" src="img/2023_完形/s2_1.png" alt="②❶ 原卷句条" loading="lazy"><div class="bkrow">空格：<span class="bk" data-n="3"><span class="idx">3</span>___</span></div><div class="kw">🟡 <span class="tk" data-w="caravan">caravan</span> · <span class="tk" data-w="enclosed">enclosed building</span></div></div>
+            <div class="sn" data-go="l2_2"><img class="strip" src="img/2023_完形/s2_2.png" alt="②❷ 原卷句条" loading="lazy"><div class="bkrow">空格：<span class="bk" data-n="4"><span class="idx">4</span>___</span> <span class="bk" data-n="5"><span class="idx">5</span>___</span></div><div class="kw">🟡 <span class="tk" data-w="term">term</span> · <span class="tk" data-w="network">ancient network</span> · <span class="tk" data-w="merchant">merchants</span> · <span class="tk" data-w="pilgrim">pilgrims</span></div></div>
+          </div>
+          <div class="zh"><b>②段意：</b>caravanserai 这个词是两个波斯语词的<b>组合</b>：kārvān 指一群旅行者，也就是商队；sarāy 指宫殿或带围墙的建筑。caravan 一词过去用来<b>指称</b>那些为安全起见结伴穿行这片古老商路网的人群，<b>比如</b>商人、旅人或朝圣者。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">③</span>
+            <div class="sn" data-go="l3_1"><img class="strip" src="img/2023_完形/s3_1.png" alt="③❶ 原卷句条" loading="lazy"><div class="bkrow">空格：<span class="bk" data-n="6"><span class="idx">6</span>___</span></div><div class="kw">🟡 <span class="tk" data-w="onwards">onwards</span> · <span class="tk" data-w="route">routes</span></div></div>
+            <div class="sn" data-go="l3_2"><img class="strip" src="img/2023_完形/s3_2.png" alt="③❷ 原卷句条" loading="lazy"><div class="bkrow">空格：<span class="bk" data-n="7"><span class="idx">7</span>___</span> <span class="bk" data-n="8"><span class="idx">8</span>___</span></div><div class="kw">🟡 <span class="tk" data-w="thief">thieves</span> · <span class="tk" data-w="extreme">extreme weather conditions</span></div></div>
+            <div class="sn"><img class="strip" src="img/2023_完形/s3_3.png" alt="③❸ 原卷句条" loading="lazy"><div class="bkrow">空格：<span class="bk" data-n="9"><span class="idx">9</span>___</span></div><div class="kw">🟡 <span class="tk" data-w="strategically">strategically placed</span></div></div>
+          </div>
+          <div class="zh"><b>③段意：</b>从 10 世纪起，随着商路和旅行路线日益发达，客栈的<b>修建</b>也越来越多，成了人们夜间歇脚的安全场所。丝路上的旅人<b>面临着</b>被盗贼袭击、<b>遭受</b>极端天气的风险。正因如此，客栈的选址经过了精心安排，<b>好让</b>旅人走一天就能到达一处。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">④</span>
+            <div class="sn"><img class="strip" src="img/2023_完形/s4_1.png" alt="④❶ 原卷句条" loading="lazy"><div class="bkrow">空格：<span class="bk" data-n="10"><span class="idx">10</span>___</span></div><div class="kw">🟡 <span class="tk" data-w="serveas">served as</span> · <span class="tk" data-w="informal">informal</span></div></div>
+            <div class="sn" data-go="l4_2"><img class="strip" src="img/2023_完形/s4_2.png" alt="④❷ 原卷句条" loading="lazy"><div class="bkrow">空格：<span class="bk" data-n="11"><span class="idx">11</span>___</span> <span class="bk" data-n="12"><span class="idx">12</span>___</span> <span class="bk" data-n="13"><span class="idx">13</span>___</span> <span class="bk" data-n="14"><span class="idx">14</span>___</span></div><div class="kw">🟡 <span class="tk" data-w="structure">structures</span> · <span class="tk" data-w="interaction">interaction</span> · <span class="tk" data-w="civilisation">civilisations</span></div></div>
+          </div>
+          <div class="zh"><b>④段意：</b>对穿行丝路的各色人等来说，客栈是一个随意轻松的<b>聚集地</b>。<b>因此</b>，这些建筑成了文化<b>交流</b>与互动的重要中心：旅人在这里分享各自的文化、思想和信仰，<b>也</b>把知识随身带走，极大地<b>影响</b>了好几个文明的发展。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">⑤</span>
+            <div class="sn"><img class="strip" src="img/2023_完形/s5_1.png" alt="⑤❶ 原卷句条" loading="lazy"><div class="bkrow">空格：<span class="bk" data-n="15"><span class="idx">15</span>___</span></div><div class="kw">🟡 <span class="tk" data-w="marketplace">marketplace</span> · <span class="tk" data-w="commodity">commodities</span></div></div>
+            <div class="sn"><img class="strip" src="img/2023_完形/s5_2.png" alt="⑤❷ 原卷句条" loading="lazy"><div class="bkrow">空格：<span class="bk" data-n="16"><span class="idx">16</span>___</span> <span class="bk" data-n="17"><span class="idx">17</span>___</span></div><div class="kw">🟡 <span class="tk" data-w="firststop">first stop</span> · <span class="tk" data-w="wares">wares</span> · <span class="tk" data-w="supplies">supplies</span></div></div>
+            <div class="sn" data-go="l5_3"><img class="strip" src="img/2023_完形/s5_3.png" alt="⑤❸ 原卷句条" loading="lazy"><div class="bkrow">空格：<span class="bk" data-n="18"><span class="idx">18</span>___</span> <span class="bk" data-n="19"><span class="idx">19</span>___</span> <span class="bk" data-n="20"><span class="idx">20</span>___</span></div><div class="kw">🟡 <span class="tk" data-w="remain">remain</span></div></div>
+          </div>
+          <div class="zh"><b>⑤段意：</b>客栈也是重要的商品集市，<b>有助于</b>丝路沿线的货物买卖。<b>事实上</b>，对想卖掉货物、并为自己的旅程<b>囤些</b>补给的商人来说，客栈往往是第一站。<b>据信</b>丝路沿线曾修建了约 12 000 到 15 000 座客栈，<b>不过</b>如今已知留存的只有约 3 000 座，其中许多已<b>破败不堪</b>。</div>
+        </div>
+      </section>
+
+      <!-- ========== 02 逐空精解 ========== -->
+      <section class="card">
+        <h2><span class="n">02</span>逐空精解（点选项即判 · 再看解析）</h2>
+        <div class="score">
+          <span><span class="v" id="sDone">0</span>/20 已答</span>
+          <span><span class="v" id="sRight">0</span> 对</span>
+          <span>折合 <span class="v" id="sPt">0</span> 分 / 10</span>
+          <button class="rst" onclick="location.reload()">↺ 重做</button>
+        </div>
+        <p class="note">每空 0.5 分。题干只引空格所在的<b>短语</b>，完整句子看 01。本篇是<b>百科式说明文</b>，二十个空方向都不难定，真正要动脑的是两件事：<b>① 逻辑空先说出关系名</b>——六个逻辑空恰好六种关系（举例 5 · 目的 9 · 结果 11 · 并列 13 · 坐实 16 · 让步 19），先在心里说「这里是 X 关系」再看选项，四选一立刻变一选一；<b>② 「四个都是真搭配」时别靠语感</b>——10 的 talking／starting／breaking／meeting point、12 的 cultural heritage／revival／exchange／status、20 的 in ruins／debt／fashion／series，四个都是地道说法，只能回到句子里问「这儿说的是什么」。</p>
+
+        <div class="q" id="q1" data-ans="2">
+          <div class="qhead"><span class="qno">1</span><span class="qt c-word">词义辨析 · outside 是方位词，要一个「坐落于」</span><span class="qpos">They were typically ___ outside the walls</span></div>
+          <span class="stem">They were typically <em>1</em> outside the walls of a city or village</span>
+          <div class="opts">
+            <div class="opt">A displayed<span class="gl">陈列；显露</span></div>
+            <div class="opt">B occupied<span class="gl">占据，占用</span></div>
+            <div class="opt">C located<span class="gl">坐落于</span></div>
+            <div class="opt">D equipped<span class="gl">配备</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>过去分词，与 were 构成被动谓语；主语 They＝客栈；后面紧跟方位短语 <code>outside the walls of a city or village</code>。
+            <span class="lbl">🔗 线索</span>① 首句刚说了大范围（built along the Silk Road · in areas including China …），本句收窄到<b>具体方位</b>（城墙外、村子外）——从「大致在哪一片」到「具体在哪个位置」；② 空格后面是<b>方位介词 outside</b>，不是一个名词宾语 ⟹ 要的是「be ___ ＋ 地点」框架。
+            <span class="lbl">✅ C located</span>be located ＋ 地点＝「坐落于、位于」：客栈通常<b>坐落在</b>城墙或村庄之外。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>displayed：被陈列、被展示的是<b>给人看的东西</b>（展品、商品、才能），客栈是房子，不是展品。</div>
+              <div class="wr"><span class="l">B</span>occupied：「占据」要有<b>空间作宾语</b>——主动句「物 occupies 空间」、被动句「空间 is occupied by 物」；这里主语是客栈、后面是方位短语，主宾关系对不上（黄皮书同此）。</div>
+              <div class="wr"><span class="l">D</span>equipped：be equipped <b>with</b> sth＝配备某物，要接 with 和设备名词；outside the walls 不是设备。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>空格后面是方位介词（outside／near／in／on）⟹ 先想 be located／situated／based</b>。四个选项里只有它能「零宾语 ＋ 方位短语」。✍️ <i>The new library is located near the main gate.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q2" data-ans="0">
+          <div class="qhead"><span class="qno">2</span><span class="qt c-context">上下文语义 · or 两边说的都是「谁出钱」</span><span class="qpos">funded by local governments or ___.</span></div>
+          <span class="stem">… were usually funded by local governments or <em>2</em>.</span>
+          <div class="opts">
+            <div class="opt">A privately<span class="gl">私人地</span></div>
+            <div class="opt">B regularly<span class="gl">定期地</span></div>
+            <div class="opt">C respectively<span class="gl">分别地</span></div>
+            <div class="opt">D permanently<span class="gl">永久地</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>副词，与 <code>by local governments</code> 被 or 连成并列，共同修饰 funded。
+            <span class="lbl">🔗 线索</span><b>or 是并列连词，两边必须回答同一个问题</b>。by local governments 回答的是「<b>谁</b>出钱」⟹ 空格也要回答「谁出钱」——不是政府，就是私人（publicly vs privately）。
+            <span class="lbl">✅ A privately</span>由地方政府出资，<b>或由私人</b>出资——or 两边一公一私，正好穷尽「谁出钱」。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>regularly：回答「多久出一次钱」（频率），和 by local governments 不是同一个问题。</div>
+              <div class="wr"><span class="l">C</span>respectively：「分别地」用在 A and B … respectively 里给多个对象逐一配对；前面是 or，没有可以「分别」配的两组东西（黄皮书同此）。</div>
+              <div class="wr"><span class="l">D</span>permanently：回答「出钱出多久」（时长），同 B 答非所问。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>并列结构里的空，先问「另一边在回答什么问题」</b>——by sb 回答「谁」，就填另一个「谁」（privately／publicly／jointly）。⟹ <a href="套路库_阅读.html#R77" style="color:var(--accent)">R77</a>（结构连词是免费的方向指示器）。✍️ <i>The museum is funded partly by the city and partly privately.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q3" data-ans="3">
+          <div class="qhead"><span class="qno">3</span><span class="qt c-word">词义辨析 · A ＋ B ＝ C 的合成词</span><span class="qpos">is a ___ of the Persian words</span></div>
+          <span class="stem">The word ‘caravanserai’ is a <em>3</em> of the Persian words ‘kārvān’ …</span>
+          <div class="opts">
+            <div class="opt">A definition<span class="gl">定义，释义</span></div>
+            <div class="opt">B transition<span class="gl">过渡，转变</span></div>
+            <div class="opt">C substitution<span class="gl">替代（品）</span></div>
+            <div class="opt">D combination<span class="gl">组合，结合</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>表语中心名词：caravanserai is a ___ <b>of</b> 词 1 <b>and</b> 词 2。
+            <span class="lbl">🔗 线索</span>① 后面<b>两个</b>波斯词用 and 连着（kārvān …, and sarāy …）——一个词「是两个词的什么」；② 看拼写：kārvān 近 caravan、sarāy 近 serai ⟹ <b>caravan ＋ serai ＝ caravanserai</b>；③ 意思也对得上：一群旅人 ＋ 围合大院 ＝ 给商队住的大院。
+            <span class="lbl">✅ D combination</span>C is a combination of A and B＝「C 由 A 和 B 组合而成」——拼写、意思两路都成立。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>definition：方向反了——两个波斯词后面各有自己的释义（which means … · a palace or …），<b>它们是被解释的对象</b>，不是 caravanserai 的「定义」。</div>
+              <div class="wr"><span class="l">B</span>transition：「过渡」要 from A to B 或 between A and B，表示一个变成另一个；这里是两个词<b>合在一起</b>，不是谁变成谁。</div>
+              <div class="wr"><span class="l">C</span>substitution：「替代品」要能和 A、B <b>互换</b>；caravanserai 既不等于商队也不等于宫殿，是两者叠加出来的新词。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ 后面出现「of ＋ 两个并列名词」，先想<b>合成、混合、兼具</b>：a combination／mixture／blend of A and B。✍️ <i>Success is often a combination of talent and hard work.</i>（大作文现成句）
+          </div>
+        </div>
+
+        <div class="q" id="q4" data-ans="2">
+          <div class="qhead"><span class="qno">4</span><span class="qt c-word">词义辨析 · 「这个词被用来指……」</span><span class="qpos">The term caravan was used to ___ groups of people</span></div>
+          <span class="stem">The term caravan was used to <em>4</em> groups of people who travelled together …</span>
+          <div class="opts">
+            <div class="opt">A classify<span class="gl">把……分类</span></div>
+            <div class="opt">B record<span class="gl">记录</span></div>
+            <div class="opt">C describe<span class="gl">描述；指称</span></div>
+            <div class="opt">D connect<span class="gl">连接</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>不定式动词，主语是 The term caravan（「caravan 这个<b>词</b>」），宾语 groups of people who …。
+            <span class="lbl">🔗 线索</span>① 主语是一个<b>词</b>（term，熟词僻义「术语、名称」），一个词能对一群人做的事只有一件：<b>指称、命名</b>它们；② 上一句刚说 kārvān means a group of travellers ——本句接着说「caravan 这个词用来指谁」，词源段的标准口吻。
+            <span class="lbl">✅ C describe</span>the term X is used to describe Y＝「X 这个词被用来指 Y」——辞书、百科里最常见的句型。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>classify：诱饵是空格后面的商人、旅人、朝圣者三类人，好像在「分类」；可 caravan 是这群人的<b>统称</b>，统称不负责分类（黄皮书同此）。</div>
+              <div class="wr"><span class="l">B</span>record：「记录」是存档手段（文字、录音），一个称呼不能「记录」一群人。</div>
+              <div class="wr"><span class="l">D</span>connect：「连接」要把两样东西连起来；一个词不会把人连起来——真正把人连起来的是④段的客栈。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>主语是 term／word／name／label，谓语空先想 describe／refer to／denote</b>——「词」只会指称。✍️ <i>The term “digital natives” is used to describe people who grew up online.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q5" data-ans="2">
+          <div class="qhead"><span class="qno">5</span><span class="qt c-logic">逻辑关系 · 三种人在「人群」之内 ⟹ 举例</span><span class="qpos">for safety reasons, ___ merchants, travellers or pilgrims</span></div>
+          <span class="stem">… for safety reasons, <em>5</em> merchants, travellers or pilgrims.</span>
+          <div class="opts">
+            <div class="opt">A apart from<span class="gl">除了（排除；另加）</span></div>
+            <div class="opt">B instead of<span class="gl">而不是</span></div>
+            <div class="opt">C such as<span class="gl">例如</span></div>
+            <div class="opt">D along with<span class="gl">连同</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>逗号后的介词短语，连接 groups of people who travelled together 与三种具体的人。
+            <span class="lbl">🔗 线索</span>商人、旅人、朝圣者<b>本身就是</b>「结伴穿行丝路的人群」——两边是<b>包含</b>关系（大类 → 成员），要的是举例。四个选项里另外三个都把两边当成<b>两拨不同的人</b>。
+            <span class="lbl">✅ C such as</span>caravan 指结伴穿行的人群，<b>比如</b>商人、旅人或朝圣者——举例说明大类。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>apart from：要么「除……之外（排除）」，要么「除……之外还有（另加）」，两种都预设三种人<b>不在</b>那群人里——可商人恰恰是丝路上最主要的旅人。</div>
+              <div class="wr"><span class="l">B</span>instead of：「而不是」是二选一的替代关系，说成「指那群人而不是商人」就把成员踢出了大类。</div>
+              <div class="wr"><span class="l">D</span>along with：「连同」是在一拨人之外<b>再加一拨</b>，同样把包含说成了并列。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐⭐ <b>三缺一</b>：apart from／instead of／along with 都把两边当「两拨」，只有 such as 是「一拨里挑几个」——成 3＋1 就先赌那个 1（⟹ <a href="套路库_阅读.html#R74" style="color:var(--accent)">R74</a>）。判据只有一句：<b>后面的东西是不是前面那个大类的成员</b>。
+          </div>
+        </div>
+
+        <div class="q" id="q6" data-ans="0">
+          <div class="qhead"><span class="qno">6</span><span class="qt c-context">上下文语义 · as 因果链：路线发达 ⟹ 越建越多</span><span class="qpos">the ___ of caravanserais increased</span></div>
+          <span class="stem">… as merchant and travel routes became more developed, the <em>6</em> of caravanserais increased …</span>
+          <div class="opts">
+            <div class="opt">A construction<span class="gl">修建，建造</span></div>
+            <div class="opt">B restoration<span class="gl">修复，整修</span></div>
+            <div class="opt">C impression<span class="gl">印象；影响</span></div>
+            <div class="opt">D evaluation<span class="gl">评价；估价</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>主句主语中心名词，the ___ of caravanserais increased（客栈的什么增加了）。
+            <span class="lbl">🔗 线索</span>① <b>as 引出原因</b>：商路越来越发达 ⟹ 结果该是客栈「数量／规模」上去；② 时间轴：From the 10th century onwards（从 10 世纪起）——这正是客栈<b>大量兴建</b>的阶段；③ 同句后半：they served as a safe place for people to rest——建得多了，才有地方歇脚。
+            <span class="lbl">✅ A construction</span>商路发达 → 客栈<b>修建</b>增多 → 给人提供夜宿之所，因果顺畅。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>restoration：「修复」预设已经有一批客栈建好又坏掉了；从 10 世纪起正是开建期，上文也没提过荒废（黄皮书同此）。⚠️ 诱饵是⑤段末尾的 in ruins——<b>今天</b>的废墟，不是 10 世纪的事。</div>
+              <div class="wr"><span class="l">C</span>impression：中文「影响越来越大」的陷阱——impression 是「给人的印象」（make an impression on sb），不是客栈自身的作用。</div>
+              <div class="wr"><span class="l">D</span>evaluation：「评价／估价越来越高」和「商路发达」之间没有直接因果，也接不上后半句的「提供夜宿」。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>as ＋ 比较级（became more developed）＋ 主句 increased</b>＝「随着 A，B 也……」的同向变化句，主句的空一定是能「随之增多」的东西。✍️ <i>As cities grew, the construction of high-rise flats increased.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q7" data-ans="1">
+          <div class="qhead"><span class="qno">7</span><span class="qt c-context">上下文语义 · 下一句 For this reason 回头确认「有危险」</span><span class="qpos">Travellers on the Silk Road ___ the possibility of</span></div>
+          <span class="stem">Travellers on the Silk Road <em>7</em> the possibility of being attacked …</span>
+          <div class="opts">
+            <div class="opt">A doubted<span class="gl">怀疑</span></div>
+            <div class="opt">B faced<span class="gl">面临</span></div>
+            <div class="opt">C accepted<span class="gl">接受；容忍</span></div>
+            <div class="opt">D reduced<span class="gl">减少</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>谓语动词，主语旅人，宾语 the possibility of being attacked … or being ___ …（被袭击、遭天气的可能）。
+            <span class="lbl">🔗 线索</span><b>跨句</b>：下一句 <code>For this reason</code>, caravanserais were strategically placed —— this reason 回指本句，「因为这个原因才精心布点」⟹ 本句必须说「<b>危险是真实存在的</b>」。
+            <span class="lbl">✅ B faced</span>旅人<b>面临</b>被盗贼袭击、遭受极端天气的可能 ⟹ 所以客栈要布点一日可达。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>doubted：旅人「怀疑有危险」⟹ 危险不存在，那下一句的 For this reason 就没了根据。</div>
+              <div class="wr"><span class="l">C</span>accepted：「接受／认命」带着无奈、不作为的味道，和下一句「为此采取了布点措施」相悖（黄皮书同此）。</div>
+              <div class="wr"><span class="l">D</span>reduced：把客栈的功劳安在了旅人身上——是客栈让路上更安全，不是旅人自己把被袭击的可能「减少」了；而且主语换成旅人，句意成了「旅人降低了自己被袭的可能」，下一句又何必布点。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>下一句句首是 For this reason／Therefore／That is why，本句就是「原因」</b>——空格必须让原因成立。face the possibility／risk／challenge of 是一组现成搭配。✍️ <i>Small farmers face the risk of losing their land.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q8" data-ans="1">
+          <div class="qhead"><span class="qno">8</span><span class="qt c-collo">固定搭配 · 四个都接 to，只有一个是「遭受」</span><span class="qpos">or being ___ to extreme weather conditions</span></div>
+          <span class="stem">… attacked by thieves or being <em>8</em> to extreme weather conditions.</span>
+          <div class="opts">
+            <div class="opt">A assigned<span class="gl">被指派</span></div>
+            <div class="opt">B subjected<span class="gl">遭受</span></div>
+            <div class="opt">C accustomed<span class="gl">习惯于</span></div>
+            <div class="opt">D opposed<span class="gl">反对</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>being ＋ 过去分词 ＋ to，与 being attacked by thieves 由 or 并列。
+            <span class="lbl">🔗 线索</span>① <b>四个选项后面都能接 to</b>（assign sb to · be subjected to · be accustomed to · be opposed to）——介词一点忙也帮不上，<b>结构失效</b>；② 只能看并列：or 前面是「被贼袭击」（坏事落到头上），后面也该是坏事落到头上 ⟹ 遭受。
+            <span class="lbl">✅ B subjected</span>be subjected to＋坏事＝「遭受」：被盗贼袭击，或<b>遭受</b>极端天气——两样都是旅人躲不开的危险。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>assigned：assign sb to＋工作／岗位＝「指派某人去做」；天气不是一份差事。</div>
+              <div class="wr"><span class="l">C</span>accustomed：be accustomed to＝「习惯了」——旅人对极端天气习以为常，就谈不上「危险」，也不需要客栈庇护了（黄皮书同此）。</div>
+              <div class="wr"><span class="l">D</span>opposed：be opposed to＋观点、政策＝「反对」；人不会「反对」天气，而且和「被袭击」不是一路。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>四个选项接同一个介词 ⟹ 介词作废，回到并列项找方向</b>（⟹ <a href="套路库_阅读.html#R157" style="color:var(--accent)">R157</a>）。be subjected to 一族：be exposed to（暴露于）· be vulnerable to（易受）· be prone to（易于）——都指「坏事落到头上」。✍️ <i>Children should not be subjected to such pressure.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q9" data-ans="0">
+          <div class="qhead"><span class="qno">9</span><span class="qt c-logic">逻辑关系 · 布点是手段，一天能到是目的</span><span class="qpos">strategically placed ___ they could be reached</span></div>
+          <span class="stem">… strategically placed <em>9</em> they could be reached in a day’s travel time.</span>
+          <div class="opts">
+            <div class="opt">A so that<span class="gl">以便，为了</span></div>
+            <div class="opt">B even if<span class="gl">即使</span></div>
+            <div class="opt">C now that<span class="gl">既然</span></div>
+            <div class="opt">D in case<span class="gl">以防，万一</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>从句引导词，连接主句「客栈被精心布点」与从句「一天行程就能走到」。
+            <span class="lbl">🔗 线索</span>① strategically（有谋划地）本身就在说「为了某个目的」；② 从句里有 <b>could</b>——so that 引导的目的状语从句标配情态动词（can／could／may）；③ 顺序：先布点，<b>才</b>一天能到——从句是主句要达到的效果。
+            <span class="lbl">✅ A so that</span>客栈精心布点，<b>好让</b>旅人走一天就能到一处。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>even if：让步「即使一天能到也要布点」——一天能到正是布点的结果，不是阻力。</div>
+              <div class="wr"><span class="l">C</span>now that：「既然一天能到，所以布点」——倒因为果，先有布点才有一天能到。</div>
+              <div class="wr"><span class="l">D</span>in case：「以防万一一天能到」——in case 后面接要提防的事，一天能到是好事，不用防。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>从句里有 can／could／may ＋ 主句是一个有意的安排（placed／designed／arranged）⟹ so that</b>。✍️ <i>The timetable was changed so that students could have lunch earlier.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q10" data-ans="3">
+          <div class="qhead"><span class="qno">10</span><span class="qt c-collo">固定搭配 · 四个 ___ point 都是真搭配，informal 只配聚集地</span><span class="qpos">served as an informal ___ point for the various people</span></div>
+          <span class="stem">Caravanserais served as an informal <em>10</em> point for the various people …</span>
+          <div class="opts">
+            <div class="opt">A talking<span class="gl">talking point 话题</span></div>
+            <div class="opt">B starting<span class="gl">starting point 起点</span></div>
+            <div class="opt">C breaking<span class="gl">breaking point 极限</span></div>
+            <div class="opt">D meeting<span class="gl">meeting point 会合处</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>-ing 形式作定语，与 point 组成复合名词；serve as 后面是客栈充当的「场所」。
+            <span class="lbl">🔗 线索</span>① <b>四个都是真搭配</b>（talking／starting／breaking／meeting point 词典里都有），搭配知识只能告诉你「都能说」；② 往两头看：informal（随意的）＋ for the various people who travelled the Silk Road（给各色人等）＋ 下一句 cultural ___ and interaction（交流互动）⟹ <b>各色人等随意碰头的地方</b>。
+            <span class="lbl">✅ D meeting</span>meeting point＝会合处、聚集地：客栈是穿行丝路的各色人等随意碰头的地方——这才接得上下一句的「文化交流中心」。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>talking：talking point 是「话题、谈资」（被人谈论的事），说客栈是大家的话题——它就只是被谈论的对象，不是人们聚在一起的地方。</div>
+              <div class="wr"><span class="l">B</span>starting：starting point 是旅程的起点；各色人等从各自家乡出发，客栈是路上的落脚处。诱饵是⑤❷ the first stop（第一站）——<b>第一站 ≠ 起点</b>。</div>
+              <div class="wr"><span class="l">C</span>breaking：breaking point 是「忍耐的极限、崩溃点」，和 informal（轻松随意）正相冲突。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐⭐ <b>四个选项都能和空格后的词组成真搭配时，搭配知识作废，回到定语和下一句</b>——和 2021 的「单边搭配」正好相反：那年干扰项只搭得上一边（⟹ <a href="2021_完形_腹部脂肪与大脑.html#oneside" style="color:var(--accent)">2021 单边搭配</a>），这年四个全搭得上。✍️ <i>The square has long been a meeting point for local residents.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q11" data-ans="3">
+          <div class="qhead"><span class="qno">11</span><span class="qt c-logic">逻辑关系 · 聚集地 ⟹ 交流中心：推出了一个新结果</span><span class="qpos">___, these structures became important centres</span></div>
+          <span class="stem"><em>11</em>, these structures became important centres for cultural <em>12</em> and interaction …</span>
+          <div class="opts">
+            <div class="opt">A By the way<span class="gl">顺便说一句</span></div>
+            <div class="opt">B On occasion<span class="gl">偶尔，有时</span></div>
+            <div class="opt">C In comparison<span class="gl">相比之下</span></div>
+            <div class="opt">D As a result<span class="gl">因此，结果</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>句首插入语，逗号隔开，连接④❶与④❷。
+            <span class="lbl">🔗 线索</span>① 两句主语是同一个东西（Caravanserais → these structures）；② ④❶ 说它是「各色人等的聚集地」，④❷ 说它「<b>成了</b>文化交流中心」——became 标出一个<b>变化的结果</b>：人聚到一起 ⟹ 文化就交流起来了。
+            <span class="lbl">✅ D As a result</span>客栈是各色人等的聚集地，<b>因此</b>成了重要的文化交流与互动中心。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>By the way：「顺便说」用来岔开话题；④❷ 正是④❶ 的延续，没有换话题。</div>
+              <div class="wr"><span class="l">B</span>On occasion：「偶尔」——文化交流中心是长期的历史地位，不是偶尔才是。</div>
+              <div class="wr"><span class="l">C</span>In comparison：比较要有<b>两个对象</b>；两句的主语是同一批客栈，没东西可比。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐⭐ <b>和 16 题对照着做</b>：两题都在「段首总述句之后的第二句句首」。<b>第二句里有 became／led to 这类「变成」的动词，说的是新结果 ⟹ As a result</b>；第二句只是把首句说得更具体 ⟹ Indeed（16）。四个选项的分组也一样：By the way／On occasion／In comparison 都不表因果，As a result 是唯一的因果项（⟹ <a href="套路库_阅读.html#R74" style="color:var(--accent)">R74</a>）。
+          </div>
+        </div>
+
+        <div class="q" id="q12" data-ans="2">
+          <div class="qhead"><span class="qno">12</span><span class="qt c-collo">固定搭配 · cultural ___ and interaction：and 两边要同类</span><span class="qpos">centres for cultural ___ and interaction</span></div>
+          <span class="stem">… important centres for cultural <em>12</em> and interaction, with travellers sharing their cultures …</span>
+          <div class="opts">
+            <div class="opt">A heritage<span class="gl">遗产</span></div>
+            <div class="opt">B revival<span class="gl">复兴</span></div>
+            <div class="opt">C exchange<span class="gl">交流</span></div>
+            <div class="opt">D status<span class="gl">地位</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>名词，与 interaction 并列，共同受 cultural 修饰，作 for 的宾语。
+            <span class="lbl">🔗 线索</span>① cultural heritage／revival／exchange／status <b>四个都是真搭配</b>；② <b>and 两边要同类</b>：interaction 是「双向的交往活动」，并列项也得是一种<b>活动</b>；③ 后面 with 结构把这个「中心」具体说了一遍——travellers sharing their cultures, ideas and beliefs（互相分享）⟹ 交流。
+            <span class="lbl">✅ C exchange</span>cultural exchange and interaction＝文化交流与互动——两个词都是双向活动，with 结构里的「分享文化、思想、信仰」正是它们的内容。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>heritage：「文化遗产」是一种静态的存留物，不是活动，和 interaction 并列不搭；with 结构说的也是活人互相分享，不是遗存。</div>
+              <div class="wr"><span class="l">B</span>revival：「复兴」预设文化先衰落过，文中没有任何衰落的信息。</div>
+              <div class="wr"><span class="l">D</span>status：「文化地位的中心」说不通；with 结构也只解释了交流，没解释地位。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ 搭配全真时，<b>看并列项的「性质」：动作配动作、状态配状态</b>。✍️ 写文化交流类作文：<i>The festival promotes cultural exchange and mutual understanding.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q13" data-ans="2">
+          <div class="qhead"><span class="qno">13</span><span class="qt c-logic">逻辑关系 · 分享 ＋ 带走：两个同向的动作</span><span class="qpos">sharing their cultures, ideas and beliefs, ___ taking knowledge</span></div>
+          <span class="stem">… sharing their cultures, ideas and beliefs, <em>13</em> taking knowledge with them …</span>
+          <div class="opts">
+            <div class="opt">A with regard to<span class="gl">关于</span></div>
+            <div class="opt">B in spite of<span class="gl">尽管</span></div>
+            <div class="opt">C as well as<span class="gl">以及，也</span></div>
+            <div class="opt">D in line with<span class="gl">与……一致</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>连接两个 -ing 短语：with travellers <b>sharing</b> … ___ <b>taking</b> knowledge with them——两个动作的逻辑主语都是 travellers。
+            <span class="lbl">🔗 线索</span>空格两边是<b>同一批人、同一个场所里的两个动作</b>：在客栈里分享自己的东西，同时把别人的知识带走——一给一拿，方向一致，都属「文化交流」。要的是<b>并列</b>。
+            <span class="lbl">✅ C as well as</span>旅人分享各自的文化、思想和信仰，<b>也</b>把知识随身带走。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>with regard to：「关于带走知识」——它引出话题，不能连接两个并列动作。</div>
+              <div class="wr"><span class="l">B</span>in spite of：让步「尽管带走了知识，还是分享文化」——两件事并不冲突。</div>
+              <div class="wr"><span class="l">D</span>in line with：「与……一致」说的是一件事随另一件事而变（in line with inflation），这里没有谁跟着谁。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ 三缺一：with regard to／in spite of／in line with 都是「介词＋名词＋介词」的关系短语，只有 as well as 表并列（⟹ <a href="套路库_阅读.html#R74" style="color:var(--accent)">R74</a>）。as well as 后面跟 -ing 与前面的 -ing 平行，是写作里连两个动作的稳妥方式。✍️ <i>Volunteers gain experience as well as making new friends.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q14" data-ans="1">
+          <div class="qhead"><span class="qno">14</span><span class="qt c-word">词义辨析 · greatly 只能修饰有程度的动作</span><span class="qpos">greatly ___ the development of several civilisations</span></div>
+          <span class="stem">… taking knowledge with them, greatly <em>14</em> the development of several civilisations.</span>
+          <div class="opts">
+            <div class="opt">A completing<span class="gl">使完整</span></div>
+            <div class="opt">B influencing<span class="gl">影响</span></div>
+            <div class="opt">C resuming<span class="gl">（中断后）继续</span></div>
+            <div class="opt">D pioneering<span class="gl">开创</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>现在分词作结果状语，逻辑主语是前面整件事（客栈成了交流中心、旅人互通有无）；受 greatly 修饰。
+            <span class="lbl">🔗 线索</span>① <b>greatly</b> 要求动词<b>有程度可言</b>（影响大小）；② 常识：文化交流会推动文明发展 ⟹ 「影响、促进」；③ 本段递进：聚集地 → 交流中心 → 带走知识 → <b>影响文明</b>，一步比一步大。
+            <span class="lbl">✅ B influencing</span>极大地<b>影响</b>了几个文明的发展——greatly influence 是现成的程度搭配。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>completing：「使完整」——文明的发展没有终点，谈不上「完成」；completing 也没法受 greatly 修饰。</div>
+              <div class="wr"><span class="l">C</span>resuming：「重新开始」预设文明的发展中断过，文中没有。</div>
+              <div class="wr"><span class="l">D</span>pioneering：「开创」——这几个文明在丝路客栈出现之前早就存在；而且 pioneer 的主语应是开路的人，这里的逻辑主语是整件事（黄皮书同此）。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>副词是选动词的筛子</b>：greatly／significantly／deeply 只配有程度的动词（influence／affect／improve），配不了「完成、开始、开创」这类一次性动作。✍️ <i>The Internet has greatly influenced the way we learn.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q15" data-ans="0">
+          <div class="qhead"><span class="qno">15</span><span class="qt c-context">上下文语义 · 四个都接 in，主语是客栈</span><span class="qpos">marketplace for commodities and ___ in the trade of goods</span></div>
+          <span class="stem">… an important marketplace for commodities and <em>15</em> in the trade of goods …</span>
+          <div class="opts">
+            <div class="opt">A aided<span class="gl">帮助</span></div>
+            <div class="opt">B invested<span class="gl">投资</span></div>
+            <div class="opt">C failed<span class="gl">失败</span></div>
+            <div class="opt">D competed<span class="gl">竞争</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>与 were 并列的第二个谓语（主语 Caravanserais），后接 in the trade of goods。
+            <span class="lbl">🔗 线索</span>① <b>四个选项都接 in</b>（aid in · invest in · fail in · compete in），介词又作废；② and 前面是「客栈是重要的集市」（正面），后面方向一致；③ <b>主语是客栈这种建筑</b>——它能「帮」买卖，不能自己去投资、竞争；④ 下一句「事实上它常是商人卖货进货的第一站」把「帮了贸易」坐实。
+            <span class="lbl">✅ A aided</span>客栈是重要的商品集市，<b>有助于</b>丝路沿线的货物买卖。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>invested：投资要有<b>出钱的人</b>；客栈是场所，不是投资人。</div>
+              <div class="wr"><span class="l">C</span>failed：「在贸易中失败」方向反，和 important marketplace 撞车。</div>
+              <div class="wr"><span class="l">D</span>competed：参与贸易竞争的是商人，客栈只是他们做买卖的地方（黄皮书同此）。</div>
+            </div>
+            <span class="lbl">📕 黄皮书</span>排 invested 给了两条理由。第一条「商品买卖是商业活动、不是可盈利的项目，所以不能被投资」站不住——invest in trade 在英语里完全能说；<b>第二条才是硬判据：主语</b>——只有人和机构才能投资，客栈这种建筑不能。
+            <span class="lbl">💡 迁移</span>⭐ <b>结构失效时先问「主语是什么东西」</b>：建筑、场所只能被用来做事、帮人做事（aid／facilitate／host），不能自己投资、竞争、失败。✍️ <i>Good roads aided in the growth of local business.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q16" data-ans="1">
+          <div class="qhead"><span class="qno">16</span><span class="qt c-logic">逻辑关系 · 集市 ⟹ 第一站：同一件事说具体</span><span class="qpos">___, it was frequently the first stop for merchants</span></div>
+          <span class="stem"><em>16</em>, it was frequently the first stop for merchants …</span>
+          <div class="opts">
+            <div class="opt">A Rather<span class="gl">而是，反而</span></div>
+            <div class="opt">B Indeed<span class="gl">事实上，确实</span></div>
+            <div class="opt">C Otherwise<span class="gl">否则；除此之外</span></div>
+            <div class="opt">D However<span class="gl">然而</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>句首插入语，连接⑤❶与⑤❷。
+            <span class="lbl">🔗 线索</span>⑤❶ 总说「客栈是重要的集市」，⑤❷ 具体说「它常是商人卖货、进货的第一站」——<b>第二句没有新结果，只是把第一句说具体、给出证据</b>；it 回指客栈，方向完全一致。要的是「补充坐实」。
+            <span class="lbl">✅ B Indeed</span>客栈是重要集市——<b>事实上</b>，它常是商人做买卖的第一站。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>Rather：「（不是……）而是」——前面要先有被否定的说法；⑤❶ 是肯定句，没有东西可以「而是」。</div>
+              <div class="wr"><span class="l">C</span>Otherwise：「否则」或「除此之外（在其他方面）」——都暗含「前一句不算数」；两句说的正是同一件事（黄皮书同此）。</div>
+              <div class="wr"><span class="l">D</span>However：两句方向一致，没有转折。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐⭐ 三缺一：Rather／Otherwise／However <b>都带「对着干」的味道</b>，Indeed 是唯一顺着说的（⟹ <a href="套路库_阅读.html#R74" style="color:var(--accent)">R74</a>）。再和 11 对照：<b>第二句是「新东西」填结果（As a result），是「同一件事的细节」填坐实（Indeed）</b>。✍️ <i>Reading matters. Indeed, it is the first step towards independent thinking.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q17" data-ans="3">
+          <div class="qhead"><span class="qno">17</span><span class="qt c-collo">固定搭配 · 卖货 and 进货：stock up on supplies</span><span class="qpos">sell their wares and ___ supplies for their own journeys</span></div>
+          <span class="stem">… looking to sell their wares and <em>17</em> supplies for their own journeys.</span>
+          <div class="opts">
+            <div class="opt">A go in for<span class="gl">参加；爱好；从事</span></div>
+            <div class="opt">B stand up for<span class="gl">支持，维护</span></div>
+            <div class="opt">C close in on<span class="gl">逼近，包围</span></div>
+            <div class="opt">D stock up on<span class="gl">储备，囤</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>与 sell 并列的动词短语，都接在 looking to 后面；宾语 supplies（复数＝补给品）。
+            <span class="lbl">🔗 线索</span>① and 前面是 <b>sell</b> their wares（卖货），后面自然是<b>买</b>——卖一批、买一批，客栈作为集市正好两头都占；② 宾语 supplies for their own journeys（自己旅途的补给）——补给是要<b>囤着</b>路上用的。
+            <span class="lbl">✅ D stock up on</span>商人在客栈卖掉货物，再<b>囤些</b>自己路上用的补给——stock up on supplies 是现成搭配。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>go in for：「参加（比赛、考试）／爱好／从事（某行）」，宾语是活动或职业，不是一批物资。</div>
+              <div class="wr"><span class="l">B</span>stand up for：「维护、捍卫」，宾语是人或权利、原则；中文「保护补给」的陷阱。</div>
+              <div class="wr"><span class="l">C</span>close in on：「逼近、包围（敌人、猎物）」——攻击的语义，和买卖无关。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>短语动词四选一，先看宾语是什么东西</b>：物资 → stock up on；人／权利 → stand up for；目标 → close in on；活动 → go in for。supplies（复数）＝补给，是本篇最值钱的熟词僻义。✍️ <i>Families stocked up on food before the storm.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q18" data-ans="0">
+          <div class="qhead"><span class="qno">18</span><span class="qt c-word">词义辨析 · It is ___ that：四个都能进框架，看时态和来源</span><span class="qpos">It is ___ that around 12,000 to 15,000 caravanserais were built</span></div>
+          <span class="stem">It is <em>18</em> that around 12,000 to 15,000 caravanserais were built …</span>
+          <div class="opts">
+            <div class="opt">A believed<span class="gl">相信，认为</span></div>
+            <div class="opt">B predicted<span class="gl">预测</span></div>
+            <div class="opt">C recalled<span class="gl">回忆起</span></div>
+            <div class="opt">D implied<span class="gl">暗示</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>形式主语 It ＋ is ＋ 过去分词 ＋ that 主语从句。
+            <span class="lbl">🔗 线索</span>① <b>四个都能进 It is ___ that 框架</b>，框架作废；② 从句是<b>过去时 were built</b>、数字是<b>约数</b>（around 12,000 to 15,000）——一个久远的、没法精确统计的过去事实 ⟹ 这是一个「<b>一般认为</b>」的估计。
+            <span class="lbl">✅ A believed</span>It is believed that＝「据信、一般认为」：据信丝路沿线曾建过约一万二到一万五千座客栈——约数配「据信」。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>predicted：预测的是<b>将来</b>，从句却是过去时 were built，时态打架（黄皮书同此）。</div>
+              <div class="wr"><span class="l">C</span>recalled：「据回忆」要有亲历者——几百上千年前建的客栈，今天没人能「回忆」。</div>
+              <div class="wr"><span class="l">D</span>implied：「言下之意是……」要承接上文某句话的潜台词；⑤❷ 讲第一站，和客栈总数没有引申关系。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>It is ___ that 四选一，先看从句的时态</b>：过去时 → believed／said／estimated／reported；将来 → predicted／expected。✍️ <i>It is estimated that over half of the city’s trees were planted after 1990.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q19" data-ans="3">
+          <div class="qhead"><span class="qno">19</span><span class="qt c-logic">逻辑关系 · 建了一万多 vs 只剩三千：让步</span><span class="qpos">along the Silk Road, ___ only about 3,000 are known to remain today</span></div>
+          <span class="stem"><em>19</em> only about 3,000 are known to remain today …</span>
+          <div class="opts">
+            <div class="opt">A until<span class="gl">直到</span></div>
+            <div class="opt">B because<span class="gl">因为</span></div>
+            <div class="opt">C unless<span class="gl">除非</span></div>
+            <div class="opt">D although<span class="gl">虽然，不过</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>状语从句引导词，连接「据信建了一万二到一万五千座」与「已知只剩约三千座」。
+            <span class="lbl">🔗 线索</span>① 两个数字<b>一大一小</b>，<b>only</b> 专门强调少；② 时间一前一后（were built 过去 vs remain today 现在）——「建了那么多，今天却只剩这么点」，是<b>让步／对比</b>，不是因果、条件、时间终点。
+            <span class="lbl">✅ D although</span>据信建过一万多座，<b>不过</b>如今已知留存的只有约三千座——although 放在句中，常译「不过、然而」。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>until：「直到」要接一个时间终点，「只剩三千座」不是时间点。</div>
+              <div class="wr"><span class="l">B</span>because：剩得少不是建得多的原因，两者之间没有因果。</div>
+              <div class="wr"><span class="l">C</span>unless：「除非」是唯一条件，只剩三千座不是建一万多座的条件。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ 三缺一：until／because／unless 都是「时间、原因、条件」，只有 although 是让步（⟹ <a href="套路库_阅读.html#R74" style="color:var(--accent)">R74</a>）。<b>两个数字一大一小、中间有 only ⟹ 让步或转折</b>。✍️ <i>Thousands of people signed up, although only a few hundred finished the course.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q20" data-ans="0">
+          <div class="qhead"><span class="qno">20</span><span class="qt c-collo">固定搭配 · in ___ 四个都是真短语，客栈只能 in ruins</span><span class="qpos">many of which are in ___.</span></div>
+          <span class="stem">… many of which are in <em>20</em>.</span>
+          <div class="opts">
+            <div class="opt">A ruins<span class="gl">in ruins 成为废墟</span></div>
+            <div class="opt">B debt<span class="gl">in debt 负债</span></div>
+            <div class="opt">C fashion<span class="gl">in fashion 流行</span></div>
+            <div class="opt">D series<span class="gl">in series 依次排列</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>非限制性定语从句的表语 in ___，which 指那约三千座留存的客栈，描述它们<b>今天的状态</b>。
+            <span class="lbl">🔗 线索</span>① in ruins／debt／fashion／series <b>四个都是真短语</b>；② 上文：建了一万多、只剩三千——<b>都在说客栈消失、衰败</b>；③ 主语是建筑物，建筑物的「状态」只能是完好或破败。
+            <span class="lbl">✅ A ruins</span>如今留存的约三千座中，许多已<b>破败不堪</b>——in ruins 接着「剩得少」再往下说一层：剩下的也多半残了。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>debt：「负债」——全文没有提客栈的经营和账目，而且古迹不会「欠债」。</div>
+              <div class="wr"><span class="l">C</span>fashion：「流行」——全文讲的是古代丝路上的客栈，从没说它们在今天受欢迎；「一带一路」的联想是题外话。</div>
+              <div class="wr"><span class="l">D</span>series：「依次排列」描述的是排列方式，不是一座建筑的状态。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>末空回扣同一句的数字</b>：只剩三千 → 剩下的也残了，<b>顺着「消失」的方向再推一步</b>。末空又不是逻辑空——2013 年以来十一年里十年如此（只有 2016 是 while；2022 是 poor、2023 是 ruins），末空逻辑题怎么判见 <a href="套路库_阅读.html#R103" style="color:var(--accent)">R103</a>。in ruins 一族：in good condition（完好）· in disrepair（失修）· fall into ruin（荒废）。✍️ <i>Many old temples in the area are now in ruins.</i>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========== 03 考点分类 ========== -->
+      <section class="card">
+        <h2><span class="n">03</span>考点分类（完形不背单个空，要看「这题在考什么」）</h2>
+        <div class="catbar" id="catbar"></div>
+        <div class="catlegend" id="catlegend"></div>
+        <p class="note" style="margin-top:14px">点某一类 → 下方列出该类所有空、正文里同步高亮 → 点小格跳到解析卡。（分类依据不是「空格里填的是什么词」，而是<b>「解这一题你得做什么动作」</b>——10 meeting、12 exchange、20 ruins 四个选项都是真搭配，但你得先认得这些搭配才谈得上挑，<b>归「固定搭配」</b>；15 aided 四个都接 in，定它的是主语和 and 前面的正面方向，<b>归「上下文语义」</b>；18 believed 四个都能进 It is ___ that，定它的是动词本身的时间指向，<b>归「词义辨析」</b>。）</p>
+        <div class="chips" id="chips"></div>
+        <p class="note" style="margin-top:14px">⭐ <b>十七年对照：2023 的 5／5／6／4 是新组合——十七年十五种</b>（重样仍只有两次：2016 撞 2011、2020 撞 2014）。逻辑 6 个，与 2011、2016 并列最多。</p>
+        <div class="tabwrap"><table class="otab">
+          <tr><th>年份</th><th>词义</th><th>搭配</th><th>逻辑</th><th>语境</th><th>这一年压在哪</th></tr>
+          <tr><td>2007</td><td>9</td><td>5</td><td>4</td><td>2</td><td>词义（占 45%）</td></tr>
+          <tr><td>2008</td><td>9</td><td>6</td><td>2</td><td>3</td><td>实义动词的主语适配</td></tr>
+          <tr><td>2009</td><td>6</td><td>5</td><td>5</td><td>4</td><td>四类几乎持平</td></tr>
+          <tr><td>2010</td><td>9</td><td>4</td><td>4</td><td>3</td><td>形容词与副词的方向</td></tr>
+          <tr><td>2011</td><td>6</td><td>3</td><td><b>6</b></td><td>5</td><td>一根因果箭头的方向</td></tr>
+          <tr><td>2012</td><td>5</td><td>4</td><td>3</td><td>8</td><td>作者的应然立场</td></tr>
+          <tr><td>2013</td><td>3</td><td>7</td><td>4</td><td>6</td><td>空格后的介词短语</td></tr>
+          <tr><td>2014</td><td>5</td><td>6</td><td>3</td><td>6</td><td>按段定正负</td></tr>
+          <tr><td>2015</td><td>6</td><td>6</td><td>3</td><td>5</td><td>研究报道的槽位套话</td></tr>
+          <tr><td>2016</td><td>6</td><td>3</td><td><b>6</b></td><td>5</td><td>流程时间轴</td></tr>
+          <tr><td>2017</td><td>7</td><td>4</td><td>3</td><td>6</td><td>因果链的扣环词</td></tr>
+          <tr><td>2018</td><td>5</td><td>4</td><td>4</td><td>7</td><td>两本账的翻账键</td></tr>
+          <tr><td>2019</td><td>4</td><td>4</td><td>4</td><td>8</td><td>清单编号 ＋ 替身链</td></tr>
+          <tr><td>2020</td><td>5</td><td>6</td><td>3</td><td>6</td><td>三声部 ＋ 让步档位</td></tr>
+          <tr><td>2021</td><td>3</td><td>7</td><td>2</td><td>8</td><td>同句搭档 ＋ 单边搭配</td></tr>
+          <tr><td>2022</td><td>6</td><td>4</td><td>3</td><td>7</td><td>让步转折信号词</td></tr>
+          <tr><td><b>2023</b></td><td><b>5</b></td><td><b>5</b></td><td><b>6</b></td><td><b>4</b></td><td><b>六种逻辑关系 ＋ 全真搭配</b></td></tr>
+        </table></div>
+        <p class="note">⚠️ <b>口径说明</b>：18 若按 It is believed that 现成句型归搭配，就成了 4／6／6／4；12 若按「and 两边同类」归语境，就成了 5／4／6／5；10 若按下一句的交流归语境，就成了 5／4／6／5。三种口径下<b>「逻辑 6」都不变</b>。2022 一行取自 2022 样板页的分类（那一页写得早、口径偏宽，仅供参照）。</p>
+        <p class="note">📌 <b>结构失效：硬的三道 ＋ 框架全通三道。</b> <b>8</b> assigned／subjected／accustomed／opposed 全接 to · <b>15</b> aided／invested／failed／competed 全接 in · <b>20</b> ruins／debt／fashion／series 全跟在 in 后面——介词一点忙帮不上；另有 <b>10</b>（四个都能接 point）、<b>12</b>（四个都能接在 cultural 后面）、<b>18</b>（四个都能进 It is ___ that），框架本身也帮不上。按往年「四个选项接同一个小词」的口径：2017 四道、2018 三道、2019 两道、2020 两道、2021 两道，<b>2023 三道</b>；连框架全通的算上是六道，<b>十七年最多</b>。⟹ 救回它们的是三样东西：<b>并列项的方向</b>（8 与「被贼袭击」同为坏事）、<b>主语是什么</b>（15 建筑不能投资）、<b>从句的时态</b>（18 过去时不能「预测」）（⟹ <a href="套路库_阅读.html#R157" style="color:var(--accent)">R157</a>）。</p>
+        <p class="note">📐 <b>线索位置（判据＝关键线索是否落在同一个句号之内）：句内自足 17 空／跨句 3 空 ＝ 85%。</b> 跨句：<b>7</b>（下一句 For this reason 回指）· <b>11</b>（④❶ 聚集地）· <b>16</b>（⑤❶ 集市）。⚠️ 口径：10 若按「要读到下一句的交流才定」算跨句，则 16／4＝80%。（往年：2019 60% → 2020 85% → 2021 90% → <b>2023 85%</b>。）</p>
+        <p class="note">📌 <b>位置预判：句首空 2 个，都是逻辑空（11、16）；但这一年句内也有 4 个逻辑空。</b> 5 such as（逗号后的短语首）· 9 so that（从句首）· 13 as well as（逗号后的短语首）· 19 although（从句首）——六个逻辑空<b>全在意群之首</b>，只是不全在句首。⟹ <a href="套路库_阅读.html#R76" style="color:var(--accent)">R76</a>「句首的空几乎一定考逻辑」这半句依旧成立；「句内的空考词义与搭配」这半句要补一句：<b>逗号后、从句首的空，也先当逻辑空看</b>。</p>
+        <p class="note">📌 <b>三缺一：干脆成立 6 次（2 · 5 · 11 · 13 · 16 · 19），全是答案。</b> 2：regularly／respectively／permanently 说频率、分配、时长 ＋ privately 唯一说「谁出钱」· 5：apart from／instead of／along with 都把两边当两拨人 ＋ such as 唯一说「一拨里挑几个」· 11：By the way／On occasion／In comparison 都不表因果 ＋ As a result · 13：with regard to／in spite of／in line with 都是关系短语 ＋ as well as 唯一并列 · 16：Rather／Otherwise／However 都对着干 ＋ Indeed 唯一顺着说 · 19：until／because／unless 时间、原因、条件 ＋ although 唯一让步。⚠️ 照实说：六次里五次是逻辑空——<b>逻辑空的选项天然按「关系」分组，最容易成 3＋1</b>（⟹ <a href="套路库_阅读.html#R74" style="color:var(--accent)">R74</a>）。</p>
+      </section>
+
+      <!-- ========== 04 打法 ========== -->
+      <section class="card">
+        <h2><span class="n">04</span>完形六大打法（本篇取证）</h2>
+        <div class="flow">
+          <div class="fi"><b>① 首句定文体：定义句 ⟹ 百科说明文 ⟹ 二十个空不表态</b>：先判断这篇有没有「作者立场」。没有立场的文章，正负方向几乎不会反，难点全在<b>关系</b>和<b>搭配</b>。
+            <span class="ev">首句「X were Y that …」是词条式定义；全文没有人物、没有引语、没有 should——<b>二十个空只有 19 一处方向「转」</b>（建了多少 vs 剩下多少），而且是数字对照，不是立场转折。</span></div>
+          <div class="fi"><b>② 逻辑空先说出关系名，再看选项</b>：举例、目的、结果、并列、坐实、让步——说得出名字，四选一就是一选一。
+            <span class="ev">本篇六个逻辑空恰好六种关系：5 举例（三种人在「人群」之内）· 9 目的（could ＋ 有意布点）· 11 结果（became）· 13 并列（同一批人的两个动作）· 16 坐实（同一件事说具体）· 19 让步（一大一小两个数）。</span></div>
+          <div class="fi"><b>③ 同一个位置，问「第二句是新东西还是细节」</b>：段首总述之后的第二句句首，最容易混的是「因此」和「事实上」。
+            <span class="ev">④❷ 有 became——聚集地<b>变成</b>交流中心，是新结果 ⟹ 11 As a result；⑤❷ 只是把「集市」说成「卖货进货的第一站」，是细节 ⟹ 16 Indeed。<b>④⑤两段同构，这一刀是本篇最值钱的一刀。</b></span></div>
+          <div class="fi"><b>④ 四个选项都能进同一个框架时，框架作废——问主语、问并列、问时态</b>：别在「哪个搭配我见过」上耗时间，四个你都见过。
+            <span class="ev">8 并列项「被贼袭击」是坏事 ⟹ subjected · 15 主语是建筑 ⟹ aided（不能 invested）· 18 从句过去时 ⟹ believed（不能 predicted）· 10 定语 informal ⟹ meeting · 20 主语是建筑、上文在说消失 ⟹ ruins。</span></div>
+          <div class="fi"><b>⑤ 并列结构：另一边在回答什么问题，空格就回答同一个问题</b>：or、and、as well as 两边同类同向。
+            <span class="ev">2 by local governments 答「谁出钱」⟹ privately · 12 interaction 是双向活动 ⟹ exchange · 17 sell their wares 是卖 ⟹ 另一边是买：stock up on。</span></div>
+          <div class="fi"><b>⑥ 数字对照找让步，末空顺着同一句往下推</b>：一大一小两个数中间有 only，是让步；末空常在同一句里把这层意思再推一步。
+            <span class="ev">19 建了 12 000–15 000 座 vs 只剩约 3 000 座 ⟹ although；20 剩下的「许多已……」⟹ 顺着「消失」再推一步：in ruins。</span></div>
+        </div>
+        <p class="note" style="margin-top:14px">🔁 与 <a href="2021_完形_腹部脂肪与大脑.html" style="color:var(--accent)">2021 完形</a> 对照：2021 的干扰项是<b>单边搭配</b>（只和空格一侧搭得上，左右一起念就散）；2023 反过来，<b>四个选项全是真搭配</b>（10、12、20），搭配知识只能排除「不能说」，排除不了「说得通但不对」。两年合起来就是一条规矩：<b>搭配先验两头，两头都通再回语境</b>。与 <a href="2007_完形_拉美独立后的理想与分歧.html" style="color:var(--accent)">2007 完形</a> 对照：同样是历史题材、同样首句不设空，2007 靠「共识 → 分歧 → 打折」三段方向解题；2023 没有方向起伏，<b>只能靠关系</b>——历史文章不一定有立场，先看是叙事还是词条。</p>
+      </section>
+
+      <!-- ========== 05 固定搭配 ========== -->
+      <section class="card">
+        <h2><span class="n">05</span>固定搭配 &amp; 熟词僻义（这些是死记就得分的）</h2>
+        <div class="wb">
+          <div class="wbi"><div class="p">be located ＋ 方位（outside／near／in）　坐落于（1 题）</div><div class="u">空格后面紧跟方位介词，先想 be located／situated／based。别和 be occupied by（被占据）、be equipped with（配备）混。</div></div>
+          <div class="wbi"><div class="p">be funded publicly／privately／by sb　公费／私人出资／由某人出资（2 题）</div><div class="u">publicly funded 公费的 · privately owned 私有的 · state-funded 国家出资的。⭐ fund（出资）≠ found（创办）。</div></div>
+          <div class="wbi"><div class="p">a combination of A and B　A 与 B 的结合（3 题）</div><div class="u">近亲：a mixture／blend of A and B。写作现成句：success is a combination of talent and effort。</div></div>
+          <div class="wbi"><div class="p">the term X is used to describe Y　X 这个词用来指 Y（4 题）</div><div class="u">⭐ term 熟词僻义＝「术语、说法」。同类：refer to · denote · be known as。</div></div>
+          <div class="wbi"><div class="p">from … onwards　从……起（6 题）</div><div class="u">from the 10th century onwards · from now onwards。比 since 灵活：since 要配完成时，from … onwards 不挑时态。</div></div>
+          <div class="wbi"><div class="p">face the possibility／risk of doing　面临……的可能／风险（7 题）</div><div class="u">possibility of being attacked——of 后接被动动名词 being done，表示「被……的可能」。</div></div>
+          <div class="wbi"><div class="p">be subjected to sth　遭受（坏事）（8 题）</div><div class="u">一族：be exposed to · be vulnerable to · be prone to。别混 be accustomed to（习惯于）、be opposed to（反对）、assign sb to（指派）。</div></div>
+          <div class="wbi"><div class="p">so that ＋ can／could　以便（9 题）</div><div class="u">目的从句的标配情态动词。对照：in case（以防）· now that（既然）· even if（即使）。</div></div>
+          <div class="wbi"><div class="p">serve as an informal meeting point　充当一个随意的聚集地（10 题）</div><div class="u">___ point 四兄弟：talking point 话题 · starting point 起点 · breaking point 极限 · meeting point 聚集地。</div></div>
+          <div class="wbi"><div class="p">cultural exchange and interaction　文化交流与互动（12 题）</div><div class="u">cultural ___ 四兄弟：heritage 遗产 · revival 复兴 · exchange 交流 · status 地位——四个都能说，看语境挑。</div></div>
+          <div class="wbi"><div class="p">aid in sth　有助于（15 题）</div><div class="u">in 一族：invest in 投资于 · fail in 在……失败 · compete in 参与竞争。主语是物时只能 aid in（facilitate 同义）。</div></div>
+          <div class="wbi"><div class="p">stock up on sth　储备，囤（17 题）</div><div class="u">stock up on food／supplies。四个短语动词按宾语分：物资 stock up on · 人或权利 stand up for · 目标 close in on · 活动 go in for。</div></div>
+          <div class="wbi"><div class="p">It is believed that …　据信（18 题）</div><div class="u">同类：It is said／estimated／reported that（配过去事实）· It is predicted／expected that（配将来）。</div></div>
+          <div class="wbi"><div class="p">in ruins　成为废墟（20 题）</div><div class="u">in ___ 四兄弟：in ruins 破败 · in debt 负债 · in fashion 流行 · in series 依次。近亲：fall into ruin · in disrepair（失修）。</div></div>
+          <div class="wbi"><div class="p">🔑 熟词僻义四个：term · structure · wares · supplies</div><div class="u"><b>term</b> 术语（不是学期）· <b>structure</b> 建筑物（不是结构）· <b>wares</b> 货物（单数只当后缀）· <b>supplies</b> 补给品（不是「供应」）。</div></div>
+          <div class="wbi"><div class="p">🔑 结构信号 · 段首总述后的第二句句首　＝ As a result 还是 Indeed（11／16 题）</div><div class="u">第二句有 became／led to ⟹ 新结果 ⟹ As a result；第二句只是把首句说具体 ⟹ Indeed。</div></div>
+        </div>
+      </section>
+
+      <!-- ========== 06 80 词 ========== -->
+      <section class="card">
+        <h2><span class="n">06</span>80 个选项词速查（完形的真正词汇量）
+          <button class="allbtn" id="btnHide" style="margin-left:auto" onclick="toggleHide()">✍️ 默写模式</button>
+        </h2>
+        <p class="note">完形一篇＝<b>80 个高频词的辨析现场</b>，绿底是正确项。<b>默写模式</b>会糊住中文释义——先自己说出意思，点单个格子可单独揭开。本篇有 <b>20 个是短语</b>——5、9、11、13、17 五道题四个选项全是短语（such as · so that · As a result · as well as · stock up on …），短语题比往年多，这张表值得多过一遍。</p>
+        <div class="tabwrap"><table class="otab" id="otab"></table></div>
+      </section>
+
+      <!-- ========== 07 长难句 ========== -->
+      <section class="card">
+        <h2><span class="n">07</span>长难句精析（正文蓝色虚线句）</h2>
+
+        <div class="sent" id="l2_1">
+          <div class="src"><b>②❶ 词源句 · 两个同位释义套在一起</b><img class="strip" src="img/2023_完形/s2_1.png" alt="②❶ 原卷句条" loading="lazy"></div>
+          <div class="anat">
+            <ul>
+              <li><b>主干</b>：<span class="skel">The word ‘caravanserai’ is a ___ of the Persian words A and B</span>——「C is a combination of A and B」。</li>
+              <li><b>A 后面挂定语从句</b>：kārvān, <code>which means</code> a group of travellers or a caravan——这里的 or 是「换个说法」（一群旅人，也就是商队），不是二选一。</li>
+              <li><b>B 后面挂同位语</b>：sarāy, a palace or enclosed building——<b>省掉了 which means</b>，直接用逗号把释义贴在后面。⚠️ 读的时候要看出 and 连的是 kārvān 和 sarāy 两个词，中间那一大串只是 kārvān 的释义。</li>
+            </ul>
+          </div>
+          <div class="tr">意：caravanserai 一词由波斯语 kārvān（一群旅行者，即商队）和 sarāy（宫殿或带围墙的建筑）组合而成。</div>
+        </div>
+
+        <div class="sent" id="l2_2">
+          <div class="src"><b>②❷ 指称句 · who 从句 ＋ 举例短语</b><img class="strip" src="img/2023_完形/s2_2.png" alt="②❷ 原卷句条" loading="lazy"></div>
+          <div class="anat">
+            <ul>
+              <li><b>主干</b>：<span class="skel">The term caravan was used to describe groups of people</span>——被动 ＋ 不定式表目的。</li>
+              <li><b>who 定语从句</b>修饰 groups of people：who travelled together（结伴）＋ across the ancient network（路线）＋ for safety reasons（原因）——三个状语交代了「怎么走、走哪儿、为什么结伴」。</li>
+              <li><b>句尾举例</b>：逗号后 such as merchants, travellers or pilgrims，举例的对象是 groups of people，不是 network。</li>
+            </ul>
+          </div>
+          <div class="tr">意：caravan 一词过去用来指那些为安全起见、结伴穿行这片古老商路网的人群，比如商人、旅人或朝圣者。</div>
+        </div>
+
+        <div class="sent" id="l3_1">
+          <div class="src"><b>③❶ 时间 ＋ 原因 ＋ 两个并列主句</b><img class="strip" src="img/2023_完形/s3_1.png" alt="③❶ 原卷句条" loading="lazy"></div>
+          <div class="anat">
+            <ul>
+              <li><b>句首两层状语</b>：From the 10th century onwards（时间起点）＋ <code>as</code> merchant and travel routes became more developed（as＝随着，伴随的原因）。</li>
+              <li><b>两个并列主句</b>：<span class="skel">the ___ of caravanserais increased</span> <b>and</b> <span class="skel">they served as a safe place</span>——第二个主句的 they＝caravanserais。</li>
+              <li>place 后面的 <code>for people to rest at night</code> 是「for sb to do」不定式作定语：供人夜里歇脚的地方。</li>
+            </ul>
+          </div>
+          <div class="tr">意：从 10 世纪起，随着商路和旅行路线日益发达，客栈越建越多，成了供人夜间歇脚的安全场所。</div>
+        </div>
+
+        <div class="sent" id="l3_2">
+          <div class="src"><b>③❷ possibility of ＋ 两个被动动名词并列</b><img class="strip" src="img/2023_完形/s3_2.png" alt="③❷ 原卷句条" loading="lazy"></div>
+          <div class="anat">
+            <ul>
+              <li><b>主干</b>：<span class="skel">Travellers on the Silk Road faced the possibility</span>——on the Silk Road 是后置定语，不是状语。</li>
+              <li><b>of 后面两个动名词并列</b>：of <code>being attacked</code> by thieves <b>or</b> <code>being subjected</code> to extreme weather conditions——两个都是 being done（被动动名词），表示「被……」。</li>
+              <li>⚠️ 看清 or 连的是两个 being，第 8 空的身份就清楚了：和 attacked 平行的被动过去分词 ⟹ 落到头上的坏事。</li>
+            </ul>
+          </div>
+          <div class="tr">意：丝路上的旅人面临着被盗贼袭击、遭受极端天气的风险。</div>
+        </div>
+
+        <div class="sent" id="l4_2">
+          <div class="src"><b>④❷ 主句 ＋ with 复合结构 ＋ 结果状语（本篇最长句）</b><img class="strip" src="img/2023_完形/s4_2.png" alt="④❷ 原卷句条" loading="lazy"></div>
+          <div class="anat">
+            <ul>
+              <li><b>主干</b>：<span class="skel">these structures became important centres</span> for cultural ___ and interaction——these structures 回指 caravanserais（structure 熟词僻义「建筑物」）。</li>
+              <li><b>with 复合结构</b>：with ＋ travellers ＋ <code>sharing</code> their cultures, ideas and beliefs ＋ as well as <code>taking</code> knowledge with them——travellers 是两个 -ing 的逻辑主语，解释「交流中心」里具体发生什么。</li>
+              <li><b>句尾结果状语</b>：greatly ___ the development of several civilisations——逻辑主语是前面整件事，不是 travellers，所以说「这一切大大影响了文明」。</li>
+            </ul>
+          </div>
+          <div class="tr">意：因此，这些建筑成了文化交流与互动的重要中心——旅人在这里分享各自的文化、思想和信仰，也把知识随身带走，这极大地影响了好几个文明的发展。</div>
+        </div>
+
+        <div class="sent" id="l5_3">
+          <div class="src"><b>⑤❸ 形式主语 ＋ 让步从句 ＋ 非限制性定语从句</b><img class="strip" src="img/2023_完形/s5_3.png" alt="⑤❸ 原卷句条" loading="lazy"></div>
+          <div class="anat">
+            <ul>
+              <li><b>主干</b>：<span class="skel">It is believed that</span> around 12,000 to 15,000 caravanserais were built——It 是形式主语，真正的主语是 that 从句。</li>
+              <li><b>让步从句</b>：although only about 3,000 <code>are known to remain</code> today——be known to do＝「已知……」，比直接说 remain 更谨慎（只算有记录的）。</li>
+              <li><b>非限制性定语从句</b>：many of which are in ruins——which 指那约 3 000 座留存的客栈，「代词 ＋ of which」是写作里的好句型。</li>
+            </ul>
+          </div>
+          <div class="tr">意：据信丝路沿线曾修建了约 12 000 到 15 000 座客栈，不过如今已知留存的只有约 3 000 座，其中许多已破败不堪。</div>
+        </div>
+      </section>
+
+      <!-- ========== 08 素材 ========== -->
+      <section class="card">
+        <h2><span class="n">08</span>可搬进作文/翻译的表达</h2>
+        <p class="note">本篇是一篇<b>介绍一样历史事物</b>的说明文，最能搬的是四类句子：<b>下定义</b>（X is a combination of A and B）、<b>讲功能</b>（serve as · become a centre for）、<b>讲影响</b>（greatly influence the development of）、<b>讲今昔</b>（It is believed that … although only …）。话题上，「文化交流」「传统文化保护」「一带一路」都能接上。下面例句全部自拟，只借句式骨架。</p>
+        <div class="wb">
+          <div class="wbi"><div class="p">X is a combination of A and B　X 是 A 与 B 的结合</div><div class="u">⭐⭐ <b>下定义、立论点</b>：<i>A good education is a combination of knowledge and character.</i></div></div>
+          <div class="wbi"><div class="p">From … onwards, as A became more …, B increased　从……起，随着 A，B 也增多</div><div class="u">⭐ <b>图表作文的趋势原因句</b>：<i>From 2015 onwards, as online shopping became more popular, the number of delivery workers increased.</i></div></div>
+          <div class="wbi"><div class="p">X was placed／designed … so that …could …　X 被安排在……，好让……</div><div class="u"><i>Benches were placed along the river so that the elderly could rest on their walks.</i></div></div>
+          <div class="wbi"><div class="p">serve as an informal meeting point for …　充当……随意碰头的地方</div><div class="u">⭐ <b>写社区、图书馆、广场</b>：<i>The village square serves as an informal meeting point for young and old.</i></div></div>
+          <div class="wbi"><div class="p">become an important centre for cultural exchange and interaction　成为文化交流与互动的重要中心</div><div class="u">⭐⭐ <b>文化类作文的万能句</b>：<i>Universities have become important centres for cultural exchange and interaction.</i></div></div>
+          <div class="wbi"><div class="p">…, greatly influencing the development of …　……，极大地影响了……的发展</div><div class="u"><b>句尾结果状语</b>，比 and it greatly influenced 更紧凑：<i>The printing press spread knowledge quickly, greatly influencing the development of modern science.</i></div></div>
+          <div class="wbi"><div class="p">It is believed that …, although only …　据信……，不过只有……</div><div class="u">⭐ <b>讲今昔对比、引出保护问题</b>：<i>It is believed that the town once had fifty temples, although only six remain today.</i></div></div>
+          <div class="wbi"><div class="p">…, many of which are in ruins　……，其中许多已成废墟</div><div class="u"><b>传统文化保护话题的开头</b>：<i>The region has hundreds of old bridges, many of which are in urgent need of repair.</i></div></div>
+        </div>
+      </section>
+
+    </main>
+
+    <aside>
+      <div id="panel"><div class="hint">👆 点正文里的<b>黄底词</b><br>词卡会出现在这里<br><br>点<b>空格</b>则跳到对应解析卡</div></div>
+    </aside>
+  </div>
+
+  <footer>2023 英语一 · 完形填空复盘页 · 盲做口径：只看原卷正文与选项作答，答案先落盘 <code>_讲义笔记/2023_完形_mine.txt</code>，再核答案页——<b>20/20</b> · 解析由 Claude 独立写成并与黄皮书精讲（书内 1–15）逐空交叉核对（答案零书误；商榷一处：15 题排 invested 的第一条理由）· 来源：<i>All About History</i> 2021-12-02 <i>Caravanserai</i>（据黄皮书）；词源与世界遗产背景经 WebSearch 核对 · 正文由读者浏览器从原卷识别成文字，不转录全文 · 2023 起回到 2007 式版面</footer>
+</div>
+
+<button id="yd">🔍 查有道</button>
+
+<script>
+/* ============ V ============ */
+const V = {
+  caravanserai:{w:"caravanserai",ipa:"/ˌkærəˈvænsəraɪ/",pos:"n.",tags:["core"],cn:"<b>商队客栈，商旅驿站</b>（丝路沿线带大院子的旅店）",en:"an inn with a central courtyard where travellers could rest at night",ex:"Caravanserais were roadside inns",mem:"⭐ 本篇②段自己就在讲词源：caravan（商队）＋ serai（宫殿、围合的大院）⟹ <b>给商队住的大院</b>。复数直接加 -s。考场不认识也不慌——首句 were roadside inns 就是它的定义。",syn:"inn 客栈 · hostel 旅舍 · lodge 小旅馆 · motel 汽车旅馆（作者口中「古代的公路服务区」）",conf:"caravan（商队；房车）≠ caravanserai（商队住的客栈）——一个是人，一个是房子"},
+  roadside:{w:"roadside inn",ipa:"/ˈrəʊdsaɪd ɪn/",pos:"n. phrase",tags:["phrase"],cn:"<b>路边客栈</b>",en:"a small hotel beside a main road",ex:"roadside inns that were built along the Silk Road",mem:"roadside 作定语＝「路边的」：roadside stall 路边摊 · roadside assistance 道路救援。inn 是有住宿的小旅店，比 hotel 古旧、乡土。",syn:"wayside 路边的 · along the road 沿路",conf:"inn（可住宿的小客栈）· pub（只喝酒吃饭）· tavern（旧时的酒馆，常兼住宿）"},
+  silkroad:{w:"the Silk Road",ipa:"/ðə sɪlk rəʊd/",pos:"n.",tags:["core","write"],cn:"<b>丝绸之路</b>",en:"the ancient trade routes linking China with the Middle East and Europe",ex:"built along the Silk Road",mem:"专有名词，首字母大写、带 the。✍️ 写「一带一路」相关话题：the Belt and Road Initiative · revive the ancient Silk Road（复兴古丝路）。",syn:"trade route 商路 · ancient network（本篇②❷的替身）",conf:"本篇丝路有三个替身：the Silk Road · the ancient network（②❷）· merchant and travel routes（③❶）——认出替身，②③段就不会读断"},
+  fund:{w:"fund",ipa:"/fʌnd/",pos:"v. / n.",tags:["core","write"],cn:"<b>v. 出资，资助</b>；n. 资金，基金",en:"to provide money for something",ex:"were usually funded by local governments or",mem:"⭐ 2 题的钥匙：be funded <b>by sb</b>（谁出钱）or <b>privately</b>（私人出）——<b>or 两边说的都是「谁出钱」</b>。publicly funded 公费的 · privately funded 私人资助的 · state-funded schools 公立学校。",syn:"finance 为……融资 · sponsor 赞助 · subsidise 补贴",conf:"fund（出钱让事情办成）· found（创办，过去式 founded）——两个词的过去式只差一个字母，阅读里极易看串"},
+  caravan:{w:"caravan",ipa:"/ˈkærəvæn/",pos:"n.",tags:["core","poly"],cn:"<b>（沙漠里的）商队，旅行队</b>；英式：房车",en:"a group of people travelling together, especially across a desert",ex:"a group of travellers or a caravan",mem:"本篇②❶用同位释义告诉你：kārvān means a group of travellers <b>or</b> a caravan——这个 or 是「换个说法」，不是「二选一」（2 题的 or 才是二选一，同一篇两个 or 两种用法）。",syn:"convoy 车队 · procession 队伍 · troupe 戏班",conf:"英式 caravan＝美式 trailer（房车）；本篇是古义「商队」"},
+  enclosed:{w:"enclosed",ipa:"/ɪnˈkləʊzd/",pos:"adj.",tags:["core"],cn:"<b>围起来的，封闭的</b>",en:"surrounded by walls, fences, etc.",ex:"a palace or enclosed building",mem:"en-（使）＋ close（关）⟹ 围起来。⭐ <b>这就是「客栈长什么样」的线索</b>：sarāy＝宫殿或围合建筑 ⟹ caravanserai 是带围墙的大院（防贼，正接③❷ attacked by thieves）。enclose 也作「随信附上」：Please find enclosed my CV.",syn:"walled 有围墙的 · fenced 有栅栏的",conf:"enclosed（被围起来的）· closed（关着的，不营业）· exclusive（排外的）"},
+  term:{w:"term",ipa:"/tɜːm/",pos:"n.",tags:["core","poly"],cn:"<b>术语，名称，说法</b>",en:"a word or phrase used as the name of something",ex:"The term caravan was used to",mem:"⭐⭐ <b>熟词僻义</b>：term 不止「学期、期限」。the term X is used to describe Y＝「X 这个词被用来指 Y」——4 题 describe 的现成句型。另：in terms of 就……而言 · on good terms 关系好 · come to terms with 接受（坏事）。",syn:"word 词 · expression 说法 · name 名称",conf:"term（术语）· terminology（一门学科的整套术语）· terminal（终点站；晚期的）"},
+  network:{w:"ancient network",ipa:"/ˈeɪnʃənt ˈnetwɜːk/",pos:"n. phrase",tags:["phrase"],cn:"<b>古老的（道路）网络</b>＝丝绸之路",en:"the old system of connected routes",ex:"across the ancient network for safety reasons",mem:"network 本义「网」，这里指<b>纵横交错的商路</b>——丝路不是一条路而是一张网。考研阅读常见 a network of＝一张由……组成的网：a network of railways。",syn:"web 网 · system 系统 · grid 网格",conf:"network（网络、关系网）· net（网，具体的网兜）· netting（网状织物）"},
+  merchant:{w:"merchant",ipa:"/ˈmɜːtʃənt/",pos:"n.",tags:["core"],cn:"<b>商人</b>（尤指批发、跨地区贸易的）",en:"a person who buys and sells goods in large quantities",ex:"merchants, travellers or pilgrims",mem:"merc-（交易）同根：commerce 商业 · market 市场 · mercenary 雇佣兵（为钱打仗）。⭐ 本篇 merchant 出现三次：②❷ 三类人之一 · ③❶ merchant routes · ⑤❷ 卖货又进货的人——⑤段整段都是商人的视角。",syn:"trader 商人 · dealer 经销商 · vendor 小贩",conf:"merchant（贸易商）· businessman（生意人，泛称）· retailer（零售商）"},
+  pilgrim:{w:"pilgrim",ipa:"/ˈpɪlɡrɪm/",pos:"n.",tags:["core"],cn:"<b>朝圣者</b>",en:"a person who travels to a holy place for religious reasons",ex:"merchants, travellers or pilgrims",mem:"pilgrimage 朝圣之旅。⭐ 5 题：merchants, travellers or pilgrims 是 groups of people 的<b>举例</b>——三种人都在「结伴穿行丝路的人群」之内 ⟹ such as。",syn:"devotee 信徒 · worshipper 礼拜者",conf:"pilgrim（朝圣者）· pioneer（先驱，14 题选项 pioneering 的词根）"},
+  onwards:{w:"from … onwards",ipa:"/ˈɒnwədz/",pos:"phrase",tags:["phrase","write"],cn:"<b>从……起（一直往后）</b>",en:"starting from a particular time and continuing",ex:"From the 10th century onwards",mem:"⭐ 6 题的钥匙：<b>从 10 世纪起</b>才大量出现 ⟹ 此时客栈在「修建、增多」，不是「修复」（restoration 要先有一批建好又坏掉的）。from now onwards 从今以后 · from childhood onwards 从小。英式 onwards，美式 onward。",syn:"from … on · since（但 since 要配完成时）",conf:"from 2010 onwards（从 2010 年起）· since 2010（自 2010 年以来，配现在完成时）"},
+  route:{w:"route",ipa:"/ruːt/",pos:"n.",tags:["core"],cn:"<b>路线，路径</b>",en:"a way from one place to another",ex:"as merchant and travel routes became more developed",mem:"⭐ 6 题因果链的「因」：<b>路线越来越发达（as … became more developed）⟹ 客栈越建越多</b>。trade route 贸易路线 · a direct route 直达路线 · en route（法语）在途中。",syn:"path 小路 · course 路线 · itinerary 行程",conf:"route（路线）· root（根）· rout（溃败）——三个词读音接近，拼写各不同"},
+  thief:{w:"thief",ipa:"/θiːf/",pos:"n.（复数 thieves）",tags:["core"],cn:"<b>贼，小偷</b>",en:"a person who steals",ex:"being attacked by thieves",mem:"复数 f→ves：thief → thieves（同 leaf → leaves · knife → knives）。⭐ 7、8 两题的危险清单：<b>被贼袭击 or 遭受极端天气</b>——两样都是「躲不开的坏事」⟹ 7 faced、8 subjected。",syn:"robber 强盗（当面抢）· bandit 土匪 · burglar 入室窃贼",conf:"thief（偷，不一定动手）· robber（抢，当面用暴力）——原文 attacked by thieves，路上的「贼」其实更接近 bandits"},
+  extreme:{w:"extreme weather conditions",ipa:"/ɪkˈstriːm ˈweðə kənˈdɪʃnz/",pos:"n. phrase",tags:["phrase","write"],cn:"<b>极端天气</b>",en:"very severe weather such as storms or extreme heat",ex:"to extreme weather conditions",mem:"⭐ 8 题的宾语：be subjected to＋坏事（遭受）。✍️ 环保作文现成搭配：<i>Cities are increasingly exposed to extreme weather.</i> condition 复数＝「状况、环境」：living conditions 生活条件 · working conditions 工作条件。",syn:"severe weather 恶劣天气 · harsh climate 严酷气候",conf:"extreme weather（极端天气，事件）· climate change（气候变化，长期趋势）"},
+  strategically:{w:"strategically placed",ipa:"/strəˈtiːdʒɪkli pleɪst/",pos:"adj. phrase",tags:["phrase","write"],cn:"<b>（经过谋划）选址得当的，位置关键的</b>",en:"put in a particular place for a clear purpose",ex:"caravanserais were strategically placed",mem:"⭐ 9 题：strategically placed（有意布点）＋ ___ they could be reached in a day’s travel ⟹ 布点是手段、一天能到是<b>目的</b> ⟹ so that。strategically located 也常见：a strategically located city 战略要地。",syn:"well located 位置好 · carefully positioned 精心安置",conf:"strategic（战略的，长远全局）· tactical（战术的，眼前具体）"},
+  serveas:{w:"serve as",ipa:"/sɜːv æz/",pos:"phrase",tags:["phrase","write"],cn:"<b>充当，用作</b>",en:"to be used as or to have the function of",ex:"Caravanserais served as an informal",mem:"⭐ 本篇功能段的标准开头：③❶ they served as a safe place · ④❶ served as an informal meeting point。✍️ <i>Libraries can serve as a quiet place for study.</i> 比 be used as 更像「本身就承担这个功能」。",syn:"act as 充当 · function as 起……作用 · work as",conf:"serve as（充当）· serve（服务；上菜；服刑 serve a sentence）"},
+  informal:{w:"informal",ipa:"/ɪnˈfɔːml/",pos:"adj.",tags:["core"],cn:"<b>非正式的，随意的</b>",en:"relaxed and friendly; not official",ex:"an informal ___ point for the various people",mem:"⭐ 10 题的定语：informal ＋ 各色人等 ＋ 下一句的文化交流 ⟹ <b>大家随意碰头的地方</b>＝meeting point。informal 一来，starting point（起点）、breaking point（极限）都不搭。",syn:"casual 随便的 · relaxed 轻松的 · unofficial 非官方的",conf:"informal（非正式）· formal（正式）· informative（信息量大的）"},
+  structure:{w:"structure",ipa:"/ˈstrʌktʃə(r)/",pos:"n.",tags:["core","poly"],cn:"<b>建筑物</b>；结构",en:"a building or something built",ex:"these structures became important centres",mem:"⭐ <b>熟词僻义</b>：structure 在这里不是「结构」，是「建筑物」——these structures 回指 caravanserais（11 题 In comparison 错就错在同一主语没法比）。a wooden structure 木结构建筑。",syn:"building 建筑 · construction 建筑物（6 题的答案也有这个义项）· edifice 大厦",conf:"本篇主语的替身链：Caravanserais → roadside inns → these structures → it（⑤❷）——同一个东西换四种叫法"},
+  interaction:{w:"interaction",ipa:"/ˌɪntərˈækʃn/",pos:"n.",tags:["core","write"],cn:"<b>互动，相互交往</b>",en:"the activity of communicating with each other",ex:"cultural ___ and interaction",mem:"inter-（相互）＋ action ⟹ 互相作用。⭐ 12 题：cultural ___ and interaction——<b>and 两边要同类</b>，interaction 是双向的「交往」，配 exchange（交流）正合适；heritage（遗产）是静态的东西，接不上。",syn:"communication 交流 · contact 接触 · exchange 交流",conf:"interaction（互动）· intersection（交叉口）· interference（干涉）"},
+  civilisation:{w:"civilisation",ipa:"/ˌsɪvəlaɪˈzeɪʃn/",pos:"n.",tags:["core"],cn:"<b>文明</b>",en:"a society with its own culture and way of life",ex:"the development of several civilisations",mem:"英式拼写 -isation（美式 civilization）——本篇用 travellers、centres、civilisations，<b>全是英式拼法</b>，出处是英国杂志。⭐ 14 题：greatly ___ the development of several civilisations ⟹ influencing（影响）；文明早已存在，谈不上 pioneering（开创）。",syn:"culture 文化 · society 社会",conf:"civilisation（文明，整体成就）· civility（礼貌）· civilian（平民）"},
+  marketplace:{w:"marketplace",ipa:"/ˈmɑːkɪtpleɪs/",pos:"n.",tags:["core"],cn:"<b>集市，市场</b>",en:"an open area where a market is held; a place for trading",ex:"an important marketplace for commodities",mem:"⭐ 15、16 两题的「总述」：⑤❶ 客栈是重要的集市 ⟹ ⑤❷ 第一站卖货进货是<b>具体说明</b>（16 Indeed）；15 aided 与 were … marketplace 并列，方向都是「帮了贸易」。",syn:"market 市场 · bazaar 集市（中东）· trading post 交易站",conf:"marketplace（交易场所，也引申为「市场竞争」）· market（市场，更泛）"},
+  commodity:{w:"commodity",ipa:"/kəˈmɒdəti/",pos:"n.",tags:["core"],cn:"<b>商品，货物</b>",en:"a product that can be bought and sold",ex:"marketplace for commodities",mem:"com-（共同）＋ mod（方式、尺度）⟹ 大家都按一个标准交易的东西。经济类阅读高频：commodity prices 大宗商品价格。",syn:"goods 货物 · merchandise 商品 · wares（⑤❷，小贩卖的货）",conf:"commodity（大宗、标准化的商品）· goods（泛指货物）· wares（摆出来卖的货）"},
+  firststop:{w:"the first stop",ipa:"/ðə fɜːst stɒp/",pos:"n. phrase",tags:["phrase","write"],cn:"<b>第一站</b>",en:"the first place you visit on a journey",ex:"it was frequently the first stop for merchants",mem:"⭐ 10 题干扰项 starting point（起点）的诱饵就在这：「第一站」≠「起点」——商人从家出发，客栈是路上的第一站。✍️ <i>For many students, the library is the first stop for research.</i>",syn:"the first port of call（首先要去的地方）",conf:"stop（停靠站）· start（出发点）"},
+  wares:{w:"wares",ipa:"/weəz/",pos:"n. pl.",tags:["core","poly"],cn:"<b>（摆出来卖的）货物，商品</b>",en:"things that someone is selling",ex:"looking to sell their wares and",mem:"⭐ 熟词僻义：ware 单数作后缀才常见（software · hardware · kitchenware 厨具），<b>wares 复数单用＝摊上卖的货</b>。sell one’s wares 叫卖货物。17 题：sell their wares（卖）and ___ supplies（买）⟹ stock up on。",syn:"goods 货物 · merchandise 商品 · products",conf:"wares（货物）· wears（穿，wear 的三单）· aware（意识到的）"},
+  supplies:{w:"supplies",ipa:"/səˈplaɪz/",pos:"n. pl.",tags:["core","poly"],cn:"<b>补给品，生活物资</b>（食物、水等）",en:"food, water and other things needed for a journey",ex:"___ supplies for their own journeys",mem:"⭐⭐ <b>熟词僻义</b>：supply 动词「供应」人人认识，<b>复数名词 supplies＝补给</b>（军队、探险队、旅人带的东西）。stock up on supplies 囤补给 · medical supplies 医疗物资 · office supplies 办公用品。",syn:"provisions 食物储备 · stores 储备品 · necessities 必需品",conf:"supplies（补给品）· supply（供给量：supply and demand 供与求）"},
+  remain:{w:"remain",ipa:"/rɪˈmeɪn/",pos:"v.",tags:["core"],cn:"<b>留存，仍然存在</b>",en:"to still exist after other parts have gone",ex:"are known to remain today",mem:"⭐ 19、20 题的轴：建了一万多（were built）vs 只剩约三千（only about 3,000 … remain today）⟹ 19 although 让步；剩下的很多 in ruins（20）。remains 名词＝遗迹、遗体：Roman remains 罗马遗迹。",syn:"survive 幸存 · be left 剩下 · endure 持久",conf:"remain（留存）· remind（提醒）· retain（保留，及物）"}
+};
+const panel=document.getElementById('panel');
+const isMobile=()=>window.innerWidth<=900;
+function badge(t){return {core:'<span class="badge b-core">核心词</span>',phrase:'<span class="badge b-phrase">短语</span>',poly:'<span class="badge b-poly">熟词僻义</span>',write:'<span class="badge b-write">写作✍︎</span>'}[t]||''}
+function showCard(k,el){
+  const d=V[k]; if(!d)return;
+  document.querySelectorAll('.tk.active').forEach(e=>e.classList.remove('active'));
+  if(el&&el.classList.contains('tk'))el.classList.add('active');
+  panel.innerHTML='<button class="close" onclick="panel.classList.remove(\'open\')">✕</button>'+
+  '<div class="wcard"><div class="head"><span class="w">'+d.w+'</span><span class="ipa">'+d.ipa+'</span><span class="pos">'+d.pos+'</span>'+d.tags.map(badge).join('')+'</div>'+
+  '<div class="cn">'+d.cn+'</div><div class="en-def">'+d.en+'</div>'+
+  '<div class="row r-ex"><b>原文语境</b>「…'+d.ex+'…」</div>'+
+  '<div class="row r-mem"><b>怎么记</b>'+d.mem+'</div>'+
+  '<div class="row r-syn"><b>同类词</b>'+d.syn+'</div>'+
+  '<div class="row r-conf"><b>易混辨析</b>'+d.conf+'</div></div>';
+  if(isMobile())panel.classList.add('open');
+}
+document.querySelectorAll('.tk').forEach(t=>t.addEventListener('click',e=>{e.stopPropagation();showCard(t.dataset.w,t)}));
+
+/* ============ 译文开关 ============ */
+function tz(btn){btn.closest('.para').classList.toggle('showzh')}
+let allOn=false;
+function toggleAll(){allOn=!allOn;document.querySelectorAll('.para').forEach(p=>p.classList.toggle('showzh',allOn))}
+function go(id){const s=document.getElementById(id);if(!s)return;s.scrollIntoView({behavior:'smooth',block:'center'});s.style.transition='none';s.style.opacity=.3;setTimeout(function(){s.style.transition='opacity .8s';s.style.opacity=1},80)}
+
+/* ============ 20 空数据（类别 + 正确词） ============ */
+const CAT={
+  logic:{name:"逻辑关系",cls:"c-logic",color:"#3d6a8a"},
+  collo:{name:"固定搭配",cls:"c-collo",color:"#3e7a4e"},
+  word:{name:"词义辨析",cls:"c-word",color:"#b04a3a"},
+  context:{name:"上下文语义",cls:"c-context",color:"#6d5a8e"}
+};
+const B={
+  1:{w:"located",cat:"word"},           2:{w:"privately",cat:"context"},
+  3:{w:"combination",cat:"word"},       4:{w:"describe",cat:"word"},
+  5:{w:"such as",cat:"logic"},          6:{w:"construction",cat:"context"},
+  7:{w:"faced",cat:"context"},          8:{w:"subjected",cat:"collo"},
+  9:{w:"so that",cat:"logic"},          10:{w:"meeting",cat:"collo"},
+  11:{w:"As a result",cat:"logic"},     12:{w:"exchange",cat:"collo"},
+  13:{w:"as well as",cat:"logic"},      14:{w:"influencing",cat:"word"},
+  15:{w:"aided",cat:"context"},         16:{w:"Indeed",cat:"logic"},
+  17:{w:"stock up on",cat:"collo"},     18:{w:"believed",cat:"word"},
+  19:{w:"although",cat:"logic"},        20:{w:"ruins",cat:"collo"}
+};
+
+
+
+
+/* ============ 点空格 → 跳到解析卡 ============ */
+document.querySelectorAll('.bk').forEach(function(b){
+  b.addEventListener('click',function(){
+    document.querySelectorAll('.bk.active').forEach(function(e){e.classList.remove('active')});
+    b.classList.add('active');
+    go('q'+b.dataset.n);
+  });
+});
+function fillBlank(n,ok){
+  const el=document.querySelector('.bk[data-n="'+n+'"]');
+  if(!el)return;
+  el.classList.remove('miss');
+  el.classList.add(ok===false?'miss':'filled');
+  el.innerHTML='<span class="idx">'+n+'</span>'+B[n].w;
+}
+
+/* ============ 即点即判 + 计分 ============ */
+let done=0,right=0;
+function updScore(){
+  document.getElementById('sDone').textContent=done;
+  document.getElementById('sRight').textContent=right;
+  document.getElementById('sPt').textContent=(right*0.5).toFixed(1);
+}
+document.querySelectorAll('.q').forEach(function(q){
+  const ans=+q.dataset.ans, n=q.id.replace('q','');
+  q.querySelectorAll('.opt').forEach(function(o,i){
+    o.addEventListener('click',function(){
+      if(q.classList.contains('done'))return;
+      q.classList.add('done');
+      const ok=(i===ans);
+      if(!ok)o.classList.add('wrong');
+      q.querySelectorAll('.opt')[ans].classList.add('right');
+      done++; if(ok)right++; updScore();
+      fillBlank(n,ok);
+    });
+  });
+});
+function revealAll(){
+  document.querySelectorAll('.q').forEach(function(q){
+    const n=q.id.replace('q','');
+    if(!q.classList.contains('done')){
+      q.classList.add('done');
+      q.querySelectorAll('.opt')[+q.dataset.ans].classList.add('right');
+      done++; updScore();
+    }
+    fillBlank(n,true);
+  });
+  document.querySelectorAll('.bk.miss').forEach(function(e){e.classList.remove('miss');e.classList.add('filled')});
+}
+
+/* ============ 考点统计 ============ */
+const counts={};Object.keys(B).forEach(function(k){counts[B[k].cat]=(counts[B[k].cat]||0)+1});
+const order=["word","collo","context","logic"];
+document.getElementById('catbar').innerHTML=order.map(function(k){
+  return '<div class="catseg" style="flex:'+counts[k]+';background:'+CAT[k].color+'">'+CAT[k].name+' '+counts[k]+'</div>'}).join('');
+const legend=document.getElementById('catlegend');
+legend.innerHTML=order.map(function(k){
+  return '<div class="cl" data-cat="'+k+'"><span class="dot" style="background:'+CAT[k].color+'"></span>'+CAT[k].name+' · '+counts[k]+' 题</div>'}).join('');
+const chips=document.getElementById('chips');
+function renderChips(cat){
+  chips.innerHTML=Object.keys(B).filter(function(n){return !cat||B[n].cat===cat})
+    .map(function(n){return '<span class="chip" data-n="'+n+'">'+n+'. '+B[n].w+'</span>'}).join('');
+  chips.querySelectorAll('.chip').forEach(function(c){
+    c.addEventListener('click',function(){go('q'+c.dataset.n)});
+  });
+}
+renderChips(null);
+legend.querySelectorAll('.cl').forEach(function(l){
+  l.addEventListener('click',function(){
+    const cat=l.dataset.cat;
+    document.querySelectorAll('.cl').forEach(function(x){x.style.borderColor=''});
+    l.style.borderColor=CAT[cat].color;
+    renderChips(cat);
+    document.querySelectorAll('.bk').forEach(function(b){
+      b.style.outline=(B[b.dataset.n].cat===cat?'2px solid '+CAT[cat].color:'')});
+  });
+});
+
+/* ============ 80 选项词表 ============ */
+const OPTS={
+ 1:[["displayed","陈列；显露（给人看的东西）"],["occupied","占据（要「空间 be occupied by 物」）"],["located","坐落于（be located ＋ 方位）"],["equipped","配备（A is equipped with B）"]],
+ 2:[["privately","私人地（出资方式，对 publicly）"],["regularly","定期地（频率）"],["respectively","分别地（前面有 or 就不通）"],["permanently","永久地（时长）"]],
+ 3:[["definition","定义（把合成词说成释义）"],["transition","过渡（from A to B）"],["substitution","替代品（与 A、B 可互换）"],["combination","组合（a combination of A and B）"]],
+ 4:[["classify","分类（由后面三类人捏出来的）"],["record","记录（存档手段）"],["describe","描述，指称（the term is used to ~）"],["connect","连接（把人连起来）"]],
+ 5:[["apart from","除了（排除或另加）"],["instead of","而不是（替代）"],["such as","例如（包含关系）"],["along with","连同（另加一批）"]],
+ 6:[["construction","修建（路线发达 ⟹ 建得多）"],["restoration","修复（先得有坏的）"],["impression","印象；影响（中文陷阱）"],["evaluation","评价；估价"]],
+ 7:[["doubted","怀疑（不信有危险）"],["faced","面临（危险的可能）"],["accepted","接受；容忍（认命）"],["reduced","减少（把客栈的功劳安给旅人）"]],
+ 8:[["assigned","被指派（assign sb to 工作）"],["subjected","遭受（be subjected to）"],["accustomed","习惯于（be accustomed to）"],["opposed","反对（be opposed to 观点）"]],
+ 9:[["so that","以便（目的）"],["even if","即使（让步）"],["now that","既然（原因，倒因果）"],["in case","以防（倒因果）"]],
+ 10:[["talking","talking point 话题"],["starting","starting point 起点"],["breaking","breaking point 极限"],["meeting","meeting point 会合处，聚集地"]],
+ 11:[["By the way","顺便说（换话题）"],["On occasion","偶尔（频率）"],["In comparison","相比之下（要两个对象）"],["As a result","因此（结果）"]],
+ 12:[["heritage","cultural heritage 文化遗产（静态）"],["revival","cultural revival 文化复兴（先得衰落）"],["exchange","cultural exchange 文化交流"],["status","cultural status 文化地位"]],
+ 13:[["with regard to","关于（引出话题）"],["in spite of","尽管（让步）"],["as well as","以及，也（并列）"],["in line with","与……一致"]],
+ 14:[["completing","使完整（文明没有终点）"],["influencing","影响（可受 greatly 修饰）"],["resuming","（中断后）重新开始"],["pioneering","开创（文明早已有之）"]],
+ 15:[["aided","aid in 有助于（主语是客栈）"],["invested","invest in 投资于（客栈不是投资人）"],["failed","fail in 在……失败（方向反）"],["competed","compete in 参与竞争（竞争的是商人）"]],
+ 16:[["Rather","而是（先否后立）"],["Indeed","事实上（补充、坐实）"],["Otherwise","否则；除此之外"],["However","然而（转折）"]],
+ 17:[["go in for","参加；爱好；从事"],["stand up for","支持，维护（人、权利）"],["close in on","逼近，包围"],["stock up on","囤，储备（supplies）"]],
+ 18:[["believed","It is believed that 据信"],["predicted","It is predicted that 据预测（将来）"],["recalled","It is recalled that 据回忆"],["implied","It is implied that 言下之意是"]],
+ 19:[["until","直到（时间终点）"],["because","因为（因果）"],["unless","除非（条件）"],["although","虽然（让步：建了很多 vs 只剩少数）"]],
+ 20:[["ruins","in ruins 成了废墟"],["debt","in debt 负债"],["fashion","in fashion 流行"],["series","in series 依次排列"]]
+};
+const ANS={1:2,2:0,3:3,4:2,5:2,6:0,7:1,8:1,9:0,10:3,11:3,12:2,13:2,14:1,15:0,16:1,17:3,18:0,19:3,20:0};
+(function(){
+  let h='<tr><th>空</th><th>A</th><th>B</th><th>C</th><th>D</th></tr>';
+  for(let n=1;n<=20;n++){
+    h+='<tr><td class="n">'+n+'</td>';
+    OPTS[n].forEach(function(o,i){
+      h+='<td'+(i===ANS[n]?' class="hit"':'')+'><span class="ow">'+o[0]+'</span><span class="oc">'+o[1]+'</span></td>';
+    });
+    h+='</tr>';
+  }
+  document.getElementById('otab').innerHTML=h;
+  document.querySelectorAll('#otab .oc').forEach(function(c){
+    c.addEventListener('click',function(){c.classList.toggle('show')});
+  });
+})();
+function toggleHide(){
+  const t=document.getElementById('otab');
+  const on=t.classList.toggle('hidecn');
+  document.getElementById('btnHide').textContent=on?'👁 显示释义':'✍️ 默写模式';
+  if(!on)t.querySelectorAll('.oc.show').forEach(function(c){c.classList.remove('show')});
+}
+
+/* ============ 查有道 ============ */
+const yd=document.getElementById('yd');let sel='',ydHold=0,ydT=0;
+/* 触屏：点按钮会先把选区清掉 → selectionchange 立刻把按钮藏了 → 点击落空。改成延迟隐藏 ＋ 按下即锁定 */
+const ydTouch=window.matchMedia&&matchMedia('(pointer:coarse)').matches;
+function ydHide(){clearTimeout(ydT);ydHold=0;yd.style.display='none'}
+document.addEventListener('selectionchange',function(){
+  const s=window.getSelection();const t=s?s.toString().trim():'';
+  if(t&&/^[a-zA-Z' -]{2,40}$/.test(t)){
+    sel=t;clearTimeout(ydT);
+    try{const r=s.getRangeAt(0).getBoundingClientRect();
+      yd.style.left=Math.max(8,Math.min(r.left,window.innerWidth-110))+'px';
+      yd.style.top=(r.bottom+(ydTouch?30:8))+'px';yd.style.display='block';}catch(e){}
+  }else if(!ydHold){clearTimeout(ydT);ydT=setTimeout(function(){if(!ydHold)yd.style.display='none'},ydTouch?900:0)}
+});
+['pointerdown','touchstart','mousedown'].forEach(function(ev){yd.addEventListener(ev,function(){ydHold=1;clearTimeout(ydT)},{passive:true})});
+yd.addEventListener('click',function(){
+  const u='https://dict.youdao.com/result?word='+encodeURIComponent(sel)+'&lang=en';
+  let w=null;try{w=window.open(u,'_blank')}catch(e){}
+  if(!w)location.href=u;
+  ydHide()});
+document.addEventListener('click',function(e){if(e.target!==yd&&!window.getSelection().toString())ydHide()});
+/* ============ 原卷对照总开关（流式版） ============ */
+function imgAll(b){const on=document.body.classList.toggle('stx-allimg');b.textContent=on?'收起原卷':'原卷对照';
+  if(on)document.querySelectorAll('.para img.strip').forEach(im=>im.loading='eager')}
+</script>
+<script src="img/strip_boxes_2023.js?v=5"></script>
+<script src="_strip_lookup.js?v=8"></script>
+<script src="_strip_text.js?v=22"></script>
+<script src="_fault_attr.js"></script>
+</body>
+</html>

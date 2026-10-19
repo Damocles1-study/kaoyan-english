@@ -27,6 +27,18 @@
     + '.stx-on.stx-img::after{display:block!important}'
     + '.stx .bk{display:inline-block;margin:0 2px}'
     + '.stx-blank{display:inline-block;padding:0 4px;margin:0 2px;border-bottom:1.5px solid currentColor;color:var(--accent,#c60);cursor:pointer;font-family:var(--sans,sans-serif);font-size:.85em}'
+    /* 流式版（2023 起，body.stx-flow）：识别好的句子在段落里连排成一段文字，像 2007–2020 的页面；每句的「原卷/校对」收进页首总开关「原卷对照」 */
+    + '.stx-flow .para .sn{margin:0}'
+    + '.stx-flow .para .sn.stx-on{display:inline}'
+    + '.stx-flow .para .sn.stx-on>.stx{display:inline;margin:0}'
+    + '.stx-flow .para .sn.stx-on>.kw,.stx-flow .para .sn.stx-on>.sgo{display:none}'
+    + '.stx-flow .stx-tools{display:none}'
+    + '.stx-flow .stx.ls{border-bottom:none;text-decoration:underline dotted var(--blue,#36c) 2px;text-underline-offset:4px}'
+    + '.stx-flow .kwrest{margin-top:6px;font-size:.85rem;line-height:2}'
+    + '.stx-flow.stx-allimg .para .sn.stx-on{display:block;margin:0 0 12px}'
+    + '.stx-flow.stx-allimg .stx-on>.swrap,.stx-flow.stx-allimg .stx-on>img.strip{display:block;margin-top:4px}'
+    + '.stx-flow.stx-allimg .para .sn.stx-on>.stx{display:block}'
+    + '.stx-flow.stx-allimg .stx-tools{display:inline-flex}'
     + '#stxbar{position:fixed;right:12px;bottom:12px;z-index:70;font-size:.75rem;padding:5px 12px;border-radius:14px;background:var(--card,#fff);color:var(--muted,#666);border:1px solid var(--line,#ccc);box-shadow:0 2px 10px rgba(0,0,0,.15);display:none;max-width:70vw}';
   var st = document.createElement('style'); st.textContent = css; document.head.appendChild(st);
 
@@ -156,6 +168,9 @@
             });
             return {t: hit.map(function(wd){ return wd.text; }).join(' '), u: ul[k], l: lines.indexOf(b[1]), cover: cover || ink[k] < 15, k: k, bw: b[2], blk: blk[k], x0: b[0], x1: b[0]+b[2]};
           });
+          /* 窄框（a、I 一类）整行模式认成两个以上大写字母（2023 完形 a → KS）：当乱认，清空后一起补认 */
+          function junk(o){ return o.bw <= 16 && /^[A-Z]{2,}$/.test(o.t.replace(/[^A-Za-z]/g, '')); }
+          out.forEach(function(o){ if (o.t && junk(o)){ o.t = ''; o.cover = false; } });
           /* 没对上任何词、也没被相邻词覆盖的框：单独裁出来按单词模式补认 */
           var miss = out.filter(function(o){ return !o.t && !o.cover; });
           var chain = Promise.resolve();
@@ -167,7 +182,13 @@
                 cc.width = Math.round((b[2]+2*pad+40)*sc); cc.height = Math.round((b[3]+2*pad+40)*sc);
                 var gg = cc.getContext('2d'); gg.fillStyle = '#fff'; gg.fillRect(0,0,cc.width,cc.height);
                 gg.drawImage(c, (b[0]-pad)*sc, (b[1]-pad)*sc, (b[2]+2*pad)*sc, (b[3]+2*pad)*sc, 20*sc, 20*sc, (b[2]+2*pad)*sc, (b[3]+2*pad)*sc);
-                return w.recognize(cc).then(function(r2){ o.t = ((r2.data && r2.data.text) || '').replace(/\s+/g,' ').trim(); });
+                return w.recognize(cc).then(function(r2){
+                  o.t = ((r2.data && r2.data.text) || '').replace(/\s+/g,' ').trim();
+                  if (!junk(o)) return;
+                  /* 窄框单词模式仍认成两个大写字母 ⟹ 换单字符模式（PSM 10）再认一次 */
+                  return w.setParameters({tessedit_pageseg_mode:'10'}).then(function(){ return w.recognize(cc); })
+                    .then(function(r3){ o.t = ((r3.data && r3.data.text) || '').replace(/\s+/g,' ').trim(); return w.setParameters({tessedit_pageseg_mode:'8'}); });
+                });
               });
             });
             chain = chain.then(function(){ return w.setParameters({tessedit_pageseg_mode:'6'}); });
@@ -178,14 +199,21 @@
     });
   }
   function fix(t){
-    return t.replace(/[‘’ʼ`]/g, '’').replace(/''/g, '”').replace(/\s*[—–]{1,2}\s*/g, function(m){ return m.trim().length > 1 || /—/.test(m) ? '—' : '–'; })
+    return t.replace(/[‘’ʼ`]/g, '’').replace(/^’\s*(?=[A-Za-z]{2,}[^’]*’[,.;:!?]?$)/, '‘')   /* ‘ speak’ 同框：开头那个是左引号 */
+            .replace(/''/g, '”').replace(/\s*[—–]{1,2}\s*/g, function(m){ return m.trim().length > 1 || /—/.test(m) ? '—' : '–'; })
+            .replace(/^(\(?)Al(\)?[,.;:!?’”]*)$/, '$1AI$2')   /* 衬线体的 AI 常被认成 Al（2023 翻译） */
             .replace(/\s+([,.;:!?])/g, '$1').replace(/([“(])\s+/g, '$1').replace(/\s+([”)])/g, '$1').replace(/^\|$/, 'I').replace(/^(?:\[I|I\]|\|I|I\||Il|lI|\[\])$/, 'II').replace(/\s+/g, ' ').trim();
   }
   function tidy(out){
     var r = [], carry = '';
+    /* 只有页面上有空格按钮（完形 .bk）或作答槽（新题型 .slot）才识别空格；翻译页画线下的窄词 a 不能当空格（2023 翻译） */
+    var BL = !!document.querySelector('.bk,.slot[data-n]');
     out.forEach(function(o, i){
       if (!o.t) return;
+      if (!BL) o.blk = false;
       var t = carry + fix(o.t), nx = out[i+1]; carry = '';
+      /* 单独的引号：后一个词以右引号收尾（‘ speak’），或离后一个词比离前一个词近 ⟹ 左引号（fix 把 ‘ 统一成了 ’，这里还原）：贴到下一个词上 */
+      if (t === '’' && nx && nx.l === o.l && (/[’']$/.test(fix(nx.t || '')) || !out[i-1] || out[i-1].l !== o.l || o.x0 - out[i-1].x1 > nx.x0 - o.x1)){ carry = '‘'; return; }
       /* 单独的左引号、左括号：贴到下一个词上 */
       if (/^[“("]+$/.test(t)){ carry = t; return; }
       var prev = r[r.length-1];
@@ -195,7 +223,7 @@
       if (prev && prev.bl === undefined && prev.l === o.l && /[\d%]$/.test(prev.t) && /^[—–-]\d/.test(t)){ prev.t += '–' + t.slice(1); prev.u = prev.u && o.u; return; }
       /* 空格：带下划线、框很宽（≥45px，真单词里的数字框只有二三十 px）的纯编号，如完形 __1__、新题型 “(41)＿＿” */
       if (o.blk && /^[“"(]?[0-9IlOoSBZ|]{1,2}[)”".,]?$/.test(t)) t = t.replace(/[Il|]/g, '1').replace(/[Oo]/g, '0').replace(/S/g, '5').replace(/B/g, '8').replace(/Z/g, '2');
-      var bm = ((o.u && o.bw >= 45) || o.blk) && t.match(/^([“"]?)\(?(\d{1,2})\)?([.,;:]?[”"]?)$/);
+      var bm = BL && ((o.u && o.bw >= 45) || o.blk) && t.match(/^([“"]?)\(?(\d{1,2})\)?([.,;:]?[”"]?)$/);
       /* 横线上方的窄框（≤20px，如被切成两半的 1｜1）认成什么都当空格；编号未知记 0，渲染时按先后配对 */
       if (!bm && o.blk && o.bw <= 20) bm = ['', '', '0', ''];
       if (bm){
@@ -330,6 +358,11 @@
       ph.replaceWith(a);
     });
     if (bkrow) bkrow.style.display = bkrow.querySelector('.bk') ? '' : 'none';
+    var FLOW = document.body.classList.contains('stx-flow');
+    if (FLOW && host.dataset.go){
+      box.classList.add('ls');
+      box.onclick = function(e){ if (box.isContentEditable || e.target.closest('.tk,.stx-tools') || String(window.getSelection() || '')) return; if (typeof window.go === 'function') window.go(host.dataset.go); };
+    }
     var tools = document.createElement('span'); tools.className = 'stx-tools'; tools.contentEditable = 'false';
     tools.innerHTML = '<button type="button" class="b-img">原卷</button><button type="button" class="b-ed">校对</button>';
     box.appendChild(tools);
@@ -353,6 +386,20 @@
         kw.appendChild(document.createTextNode('🟡 '));
         rest.forEach(function(s, n){ if (n) kw.appendChild(document.createTextNode(' · ')); kw.appendChild(s); });
         hit.forEach(function(s){ s.style.display = 'none'; kw.appendChild(s); });
+      }
+      var para = FLOW && host.closest('.para');
+      if (para){
+        var hid = host._stxId || (host._stxId = 'h' + Math.random().toString(36).slice(2, 8));
+        para.querySelectorAll('.kwrest [data-host="' + hid + '"]').forEach(function(e){ e.remove(); });
+        if (rest.length){
+          var line = para.querySelector('.kwrest');
+          if (!line){ line = document.createElement('div'); line.className = 'kwrest'; line.textContent = '🟡 '; para.appendChild(line); }
+          rest.forEach(function(s){
+            var c = s.cloneNode(true); c.dataset.host = hid; c.style.display = ''; c.style.marginRight = '8px';
+            c.addEventListener('click', function(e){ e.stopPropagation(); if (typeof window.showCard === 'function') window.showCard(c.dataset.w, c); });
+            line.appendChild(c);
+          });
+        }
       }
     }
   }

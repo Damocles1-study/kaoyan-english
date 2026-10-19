@@ -1,0 +1,1205 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2023 英一 翻译 · 人工智能与数字营销</title>
+<style>
+  :root{
+    --bg:#faf9f6; --card:#ffffff; --ink:#2b2b2b; --muted:#8a8578;
+    --accent:#8b5e34; --accent-soft:#f3e9dd; --line:#e8e3d8;
+    --hl:#fdf3d8; --hl-border:#e0b84d;
+    --green:#3e7a4e; --green-soft:#e8f2ea;
+    --red:#b04a3a; --red-soft:#f9e9e6;
+    --blue:#3d6a8a; --blue-soft:#e7eff5;
+    --purple:#6d5a8e; --purple-soft:#eeeaf5;
+    --serif:"Georgia","Songti SC",serif;
+    --sans:-apple-system,"PingFang SC","Helvetica Neue",sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#1c1a17; --card:#26231f; --ink:#e8e4dc; --muted:#9a948a;
+      --accent:#d0a06a; --accent-soft:#3a3127; --line:#3a362f;
+      --hl:#3d3520; --hl-border:#b08c3a;
+      --green:#7fb98d; --green-soft:#26362b;
+      --red:#d98876; --red-soft:#3d2a26;
+      --blue:#8ab3d0; --blue-soft:#26323d;
+      --purple:#a996c8; --purple-soft:#302a3d;
+    }
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;padding-bottom:120px}
+  .wrap{max-width:1100px;margin:0 auto;padding:24px 20px}
+  .back{font-size:.85rem;color:var(--muted);text-decoration:none}
+  .back:hover{color:var(--accent)}
+  header{margin:14px 0 28px}
+  header h1{font-family:var(--serif);font-size:1.7rem;line-height:1.3}
+  header .sub{color:var(--muted);margin-top:6px;font-size:.9rem}
+  .tags{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+  .tag{font-size:.75rem;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);border:1px solid var(--line)}
+  .tag.warn{background:var(--red-soft);color:var(--red)}
+  .layout{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:24px;align-items:start}
+  .layout>main{min-width:0}
+  @media (max-width:900px){.layout{grid-template-columns:minmax(0,1fr)}}
+  section.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:24px}
+  h2{font-size:1.05rem;letter-spacing:.05em;color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  h2 .n{font-size:.72rem;background:var(--accent);color:var(--card);border-radius:6px;padding:1px 7px}
+  h3{font-size:.95rem;margin:18px 0 8px;color:var(--ink)}
+  p{margin-bottom:10px}
+  .para{margin-bottom:16px}
+  .para .en{font-family:var(--serif);font-size:1.02rem;line-height:1.9}
+  .seg{background:var(--hl);border-bottom:2px solid var(--hl-border);border-radius:3px;padding:0 2px;cursor:pointer}
+  .seg:hover{filter:brightness(.94)}
+  .seg .no{font-size:.72rem;color:var(--accent);font-weight:700}
+  .tk{background:var(--hl);border-bottom:2px solid var(--hl-border);border-radius:3px;padding:0 2px;cursor:pointer}
+  .tk:hover{filter:brightness(.93)}
+  .tk.active{outline:2px solid var(--hl-border)}
+  .para .zh{display:none;margin-top:8px;padding:10px 14px;background:var(--blue-soft);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:.92rem}
+  .showzh .zh{display:block}
+  .allbtn{font-size:.78rem;border:1px solid var(--accent);background:none;color:var(--accent);border-radius:8px;padding:4px 12px;cursor:pointer;margin-left:auto}
+  aside{position:sticky;top:20px}
+  #panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;min-height:180px}
+  #panel .hint{color:var(--muted);font-size:.88rem;text-align:center;padding:30px 10px}
+  .wcard .head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .wcard .w{font-family:var(--serif);font-size:1.35rem;font-weight:bold}
+  .wcard .ipa{color:var(--muted);font-size:.85rem}
+  .wcard .pos{font-size:.72rem;color:var(--purple);background:var(--purple-soft);padding:1px 8px;border-radius:999px}
+  .wcard .badge{font-size:.7rem;padding:1px 8px;border-radius:999px}
+  .b-core{background:var(--red-soft);color:var(--red)}
+  .b-phrase{background:var(--blue-soft);color:var(--blue)}
+  .b-poly{background:var(--purple-soft);color:var(--purple)}
+  .b-write{background:var(--green-soft);color:var(--green)}
+  .wcard .cn{margin-top:8px;font-size:1rem;font-weight:600}
+  .wcard .en-def{color:var(--muted);font-size:.86rem;font-style:italic;margin-top:2px}
+  .wcard .row{margin-top:10px;font-size:.86rem;padding:8px 10px;border-radius:8px}
+  .wcard .row>b:first-child{font-size:.72rem;display:block;margin-bottom:2px;letter-spacing:.06em}
+  .r-ex{background:var(--hl)} .r-ex>b:first-child{color:var(--hl-border)}
+  .r-mem{background:var(--green-soft)} .r-mem>b:first-child{color:var(--green)}
+  .r-syn{background:var(--blue-soft)} .r-syn>b:first-child{color:var(--blue)}
+  .r-conf{background:var(--red-soft)} .r-conf>b:first-child{color:var(--red)}
+  #panel .close{display:none}
+  @media (max-width:900px){
+    aside{position:fixed;left:0;right:0;bottom:0;z-index:50;padding:0 8px 8px}
+    #panel{box-shadow:0 -6px 24px rgba(0,0,0,.18);max-height:55vh;overflow-y:auto;display:none}
+    #panel.open{display:block}
+    #panel .close{display:block;float:right;border:none;background:var(--line);border-radius:8px;padding:2px 10px;cursor:pointer;color:var(--ink)}
+  }
+
+  /* ===== 00 脉络 ===== */
+  .flow{display:grid;gap:8px}
+  .fl{display:flex;gap:12px;align-items:flex-start;border:1px solid var(--line);border-radius:10px;padding:10px 14px;font-size:.9rem}
+  .fl .pn{flex:0 0 auto;font-family:var(--serif);font-weight:700;color:var(--accent);background:var(--accent-soft);border-radius:8px;padding:1px 9px;font-size:.8rem}
+  .fl .fx{color:var(--muted);font-size:.82rem;margin-top:2px}
+  .keybox{margin-top:14px;background:var(--purple-soft);border-left:4px solid var(--purple);border-radius:0 10px 10px 0;padding:12px 16px;font-size:.92rem}
+  .keybox b{color:var(--purple)}
+
+  /* ===== 逐句五步 ===== */
+  .sent{margin-bottom:34px;padding-bottom:26px;border-bottom:1px dashed var(--line);scroll-margin-top:76px}
+  .sent:last-child{border:none;padding-bottom:0}
+  .qhead{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+  .sent .qn{font-family:var(--serif);font-size:1.15rem;font-weight:700;color:var(--accent)}
+  .kaodian{font-size:.75rem;background:var(--blue-soft);color:var(--blue);border-radius:999px;padding:2px 10px}
+  .sc{margin-left:auto;font-size:.8rem;color:var(--muted);font-variant-numeric:tabular-nums}
+  .sc b{color:var(--green);font-size:1rem}
+  .sent .src{font-family:var(--serif);font-size:1.02rem;background:var(--blue-soft);padding:12px 14px;border-radius:10px;border-left:3px solid var(--blue)}
+  .skel{color:var(--red);font-weight:600}
+  .steps{display:flex;gap:6px;flex-wrap:wrap;margin:14px 0 10px}
+  .stab{font-size:.8rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:8px;padding:4px 11px;cursor:pointer;font-family:var(--sans)}
+  .stab:hover{border-color:var(--accent);color:var(--accent)}
+  .stab.on{background:var(--accent);color:var(--card);border-color:var(--accent)}
+  .spane{display:none;font-size:.9rem;border:1px solid var(--line);border-radius:10px;padding:14px 16px;overflow-x:auto}
+  .spane.on{display:block}
+  .cut{font-family:var(--serif);font-size:.92rem;display:grid;gap:9px}
+  .cut .ln{border-left:3px solid var(--blue);padding-left:10px}
+  .cut .ln .lb{font-family:var(--sans);font-size:.74rem;color:var(--blue);background:var(--blue-soft);border-radius:5px;padding:1px 7px;margin-right:6px}
+  .cut .ln .gr{font-family:var(--sans);font-size:.76rem;color:var(--muted);display:block;margin-top:2px}
+  .rough{display:grid;gap:6px;font-size:.9rem}
+  .rough .ri{background:var(--hl);border-radius:8px;padding:6px 12px}
+  .rough .merge{margin-top:6px;border:1px dashed var(--hl-border);border-radius:8px;padding:8px 12px;background:none}
+  .rough .merge b{color:var(--hl-border);font-size:.75rem;display:block}
+  .hardl li,.wordl li{margin:6px 0 6px 20px}
+  table.tv{width:100%;border-collapse:collapse;font-size:.86rem;margin-top:8px}
+  table.tv th,table.tv td{border:1px solid var(--line);padding:6px 9px;text-align:left;vertical-align:top}
+  table.tv th{background:var(--accent-soft);color:var(--accent);font-size:.78rem;letter-spacing:.04em}
+  table.tv td.ok{color:var(--green);font-weight:600}
+  table.tv td.no{color:var(--red)}
+  .pts{display:grid;gap:8px;margin-top:14px}
+  .pt{display:flex;gap:10px;align-items:flex-start;font-size:.9rem;border:1px solid var(--line);border-radius:10px;padding:8px 12px;transition:background .15s}
+  .pt.got{background:var(--green-soft);border-color:var(--green)}
+  .pt.lost{background:var(--red-soft);border-color:var(--red)}
+  .pt .half{flex:0 0 auto;font-size:.72rem;background:var(--green-soft);color:var(--green);border-radius:999px;padding:1px 8px;font-weight:700;margin-top:2px}
+  .pt .en2{font-family:var(--serif);font-weight:600}
+  .pt .how{color:var(--muted);font-size:.84rem}
+  .pt .mark{margin-left:auto;flex:0 0 auto;border:1px solid var(--line);background:none;color:var(--muted);border-radius:8px;padding:2px 9px;cursor:pointer;font-size:.8rem;align-self:center}
+  .pt.got .mark{border-color:var(--green);color:var(--green)}
+  .pt.lost .mark{border-color:var(--red);color:var(--red)}
+  .revealbtn{margin-top:12px;font-size:.85rem;border:1px solid var(--accent);background:none;color:var(--accent);border-radius:8px;padding:6px 14px;cursor:pointer}
+  .refzh{display:none;margin-top:10px;background:var(--green-soft);border-left:3px solid var(--green);border-radius:0 10px 10px 0;padding:12px 14px;font-size:.95rem}
+  .refzh.show{display:block}
+  .trap{margin-top:10px;background:var(--red-soft);border-left:3px solid var(--red);border-radius:0 10px 10px 0;padding:10px 14px;font-size:.87rem}
+  .trap b{color:var(--red)}
+  .scorebar{position:sticky;top:0;z-index:20;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 16px;margin-bottom:18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;font-size:.86rem}
+  .scorebar .big{font-family:var(--serif);font-size:1.5rem;font-weight:700;color:var(--green)}
+  .scorebar .tip{color:var(--muted);font-size:.8rem}
+  .scorebar button{font-size:.78rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:8px;padding:3px 10px;cursor:pointer;margin-left:auto}
+
+  /* ===== 熟词僻义清算表 ===== */
+  .polytab{width:100%;min-width:680px;border-collapse:collapse;font-size:.87rem}
+  .polytab td.good{min-width:150px}
+  .polytab th,.polytab td{border:1px solid var(--line);padding:7px 10px;text-align:left;vertical-align:top}
+  .polytab th{background:var(--purple-soft);color:var(--purple);font-size:.78rem}
+  .polytab td.wd{font-family:var(--serif);font-weight:700;white-space:nowrap}
+  .polytab td.bad{color:var(--red);font-size:.84rem}
+  .polytab td.good{color:var(--green);font-weight:600}
+  .hidemode .polytab td.good{color:transparent;background:repeating-linear-gradient(45deg,var(--line),var(--line) 6px,transparent 6px,transparent 12px);cursor:pointer;border-radius:4px}
+  .hidemode .polytab td.good.open{color:var(--green);background:none}
+  .modebtn{font-size:.78rem;border:1px solid var(--purple);background:none;color:var(--purple);border-radius:8px;padding:4px 12px;cursor:pointer;margin-left:auto}
+  .modebtn.on{background:var(--purple);color:var(--card)}
+
+  /* ===== 通用块 ===== */
+  .wb{display:grid;gap:10px}
+  .wbi{border-left:3px solid var(--green);background:var(--green-soft);border-radius:0 10px 10px 0;padding:10px 14px;font-size:.92rem}
+  .wbi .p{font-family:var(--serif);font-weight:600}
+  .wbi .u{color:var(--muted);font-size:.85rem}
+  .lsent{margin-bottom:18px;padding:14px 16px;border:1px solid var(--line);border-radius:12px}
+  .lsent .lt{font-size:.75rem;color:var(--accent);background:var(--accent-soft);border-radius:999px;padding:1px 9px;display:inline-block;margin-bottom:6px}
+  .lsent .le{font-family:var(--serif);font-size:.98rem;line-height:1.85}
+  .lsent .lz{margin-top:8px;font-size:.9rem;color:var(--ink);background:var(--blue-soft);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;padding:8px 12px}
+  .lsent .lp{margin-top:8px;font-size:.86rem;color:var(--muted)}
+  .lsent .lp b{color:var(--red)}
+  ol.proc{counter-reset:s;list-style:none}
+  ol.proc li{position:relative;padding-left:34px;margin:10px 0;font-size:.92rem}
+  ol.proc li:before{counter-increment:s;content:counter(s);position:absolute;left:0;top:1px;width:24px;height:24px;border-radius:50%;background:var(--accent);color:var(--card);font-size:.78rem;display:flex;align-items:center;justify-content:center;font-weight:700}
+  ol.proc li b{color:var(--accent)}
+  #yd{position:fixed;z-index:60;display:none;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:4px 12px;font-size:.8rem;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+  footer{color:var(--muted);font-size:.8rem;text-align:center;margin-top:30px;line-height:1.9}
+</style><style>
+  .frame{background:var(--accent-soft);border-radius:6px;padding:1px 5px;font-weight:bold}
+  main{min-width:0}
+  .tv,.polytab{width:100%}
+  .en2,.how,.hardl li,.wordl li,.trap,.refzh,.keybox,.fx,.ri,.merge{overflow-wrap:anywhere}
+</style>
+</head>
+
+<body class="stx-flow">
+<style>
+  /* 本页专属：00 节的 .fl 是 flex 容器，窄屏下其 min-content = 各内联块之和，会顶出网格（2011 翻译页踩过） */
+  .fl{flex-wrap:wrap;min-width:0}
+  .fl > *{min-width:0}
+  .flow,.keybox,.wbi .u,.lsent .lp,.lsent .le,.lsent .lz,.para .zh,.para .en,.cut .ln{overflow-wrap:anywhere}
+  .ty{font-size:.74rem;border-radius:999px;padding:1px 8px;white-space:nowrap;font-weight:600}
+  .ty1{background:var(--blue-soft);color:var(--blue)}
+  .ty2{background:var(--green-soft);color:var(--green)}
+  .ty3{background:var(--purple-soft);color:var(--purple)}
+  .ty4{background:var(--red-soft);color:var(--red)}
+  .ty5{background:var(--accent-soft);color:var(--accent)}
+  .pos-in{color:var(--muted);white-space:nowrap}
+  .tabwrap{overflow-x:auto;max-width:100%}
+  .tabwrap > table{min-width:100%}
+  /* 2021 起：原文以原卷扫描句条呈现 */
+  .sn{margin:0 0 14px}
+  .sn .pno{display:block;margin-bottom:4px;font-size:.78rem;line-height:1.6}
+  img.strip{display:block;width:100%;max-width:760px;height:auto;background:#fff;border:1px solid var(--line);border-radius:6px;cursor:pointer}
+  .sent .src img.strip{margin-top:6px;cursor:default}
+  .kw{margin-top:5px;font-size:.88rem;line-height:2.1;font-family:var(--serif)}
+  @media (prefers-color-scheme: dark){img.strip{filter:invert(.9) hue-rotate(180deg)}}
+  .sn,.sent .src{overflow-x:auto}
+  @media (max-width:700px){img.strip{width:640px;max-width:none}.sn::after{content:'← 句条可左右滑动 →';display:block;font-size:.7rem;color:var(--muted);margin-top:2px}}
+  .zbtn{float:right;margin-left:10px;font-size:.72rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:6px;padding:2px 9px;cursor:pointer}
+  .zbtn:hover{color:var(--accent);border-color:var(--accent)}
+  .le img.strip{margin:4px 0}
+  .lsent .le{overflow-x:auto}
+  @media (max-width:700px){.lsent .le::after{content:'← 句条可左右滑动 →';display:block;font-size:.7rem;color:var(--muted);margin-top:2px;font-family:var(--sans)}}
+  #timetab tr.in{background:var(--hl)}
+  #timetab tr.in td:first-child{white-space:nowrap}
+
+  /* 2023 起：流式版——识别好的句子在段落里连排，像 2007–2020 */
+  .stx-flow .para .en .pno{margin-right:4px;font-family:var(--sans);font-size:.78rem;color:var(--accent);font-weight:700}
+  .stx-flow .para .sn:not(.stx-on) .kw{margin-bottom:8px}
+  .stx-flow .para .sn.hx>.stx.ls{text-decoration:none;background:var(--blue-soft);padding:1px 0;border-radius:3px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+  .stx-flow .para .sn.hx>.stx.ls:hover{outline:1px dashed var(--accent)}
+</style>
+<div class="wrap">
+<header>
+  <h1>人工智能在数字营销中的应用 · 词都认识，义项要从营销这一行里取</h1>
+  <div class="sub">2023 英语一 · Part C 翻译（46–50，共 10 分）· 全文三段 14 句（4／4／6）· <b>黄皮书标 409 词，逐句计数 409——一词不差</b> · 营销学入门读物<br>
+  源：黄皮书标 <i>Marketing: A Very Short Introduction</i>（《市场营销极简入门》）第八章 <i>The Changing Nature of Marketing</i>（市场营销的变化内涵）——<b>书上没写作者</b>；检索核得作者是英国东英吉利大学的 <b>Kenneth Le Meunier-FitzHugh</b>，牛津大学出版社「牛津通识读本」系列，2021 年出版，第八章章名与黄皮书一致。<br>
+  📐 平均 29.2 词一句；<b>最长的两句 ②❶ 与 ③❺ 各 41 词，都不在画线内</b>。画线五句合计 158 词，占全文 38.6%（46 31 · 47 33 · 48 30 · 49 34 · 50 30）。<br>
+  📄 <b>原文由你的浏览器在打开页面时从原卷扫描图识别成文字</b>（第一次要联网、稍等几秒；识别结果存在这台设备上，之后打开直接显示）——能选中、能页内查找，选中单词弹「查有道」，虚线词点开有词卡；01 节标题旁「原卷对照」可逐句切回扫描图、改识别错的字（只存本机）。页面文件里不存原文。</div>
+  <div class="tags">
+    <span class="tag">⭐⭐ <b>本篇性格：营销行话</b>——五个画线句没有一个生词，<b>黄皮书五张疑难表共 11 行，其中 10 行的「误译」就是这个词最常见的那个意思</b>（市场者 · 关注 · 创造 · 雇用 · 挨饿 · 严重 · 体恤 · 清除 · 看待 · 移动工作），只有 simulate 一行是形近词。<b>分数不压在「认不认识」，压在「这个词在营销这一行里是什么意思」</b></span>
+    <span class="tag">⚠️ <b>结构上只有一个真坑：四个 used to 长得一样、身份只有两种</b>——①❷ ①❸(46) ①❹ 都是 <i>can (also) be used to</i>「可用于」，<b>48 的 <i>Algorithms used to simulate</i> 是过去分词作后置定语 ＋ 目的不定式</b>（用于模拟……的算法），不是「过去常常」，也不是谓语</span>
+    <span class="tag">📐 <b>采分切法：16 块（12 个 0.5 ＋ 4 个 1）——与 2014 一模一样</b>（脚本逐页数 data-v）；2017–2021 都是 12–14 块，2023 又切细了。46、47 各四个 0.5，<b>48 是「1 ＋ 1」</b>，49 是「0.5 ＋ 0.5 ＋ 1」，50 是「0.5 ＋ 1 ＋ 0.5」</span>
+    <span class="tag">🔗 <b>站内第五篇讲 AI、翻译格第一篇</b>：2018 T1 机器人与中产 · 2018 T3 患者数据与科技垄断 · 2019 T3 赋予 AI 以良知 · 2021 新题型 AI 助益企业；<b>同卷 T4 引用卡特尔</b>讲的也是「数据库和指标怎样反过来左右人」</span>
+    <span class="tag">⚠️ <b>本格非盲</b>：完形那一轮看答案页时没裁切，46–50 的参考译文已经入眼——本页不做盲译自评，只按黄皮书的五步法逐块拆。<b>黄皮书本篇只有五节精讲与段落对照译文，没有长难句栏</b>；05 节的长难句全部自选</span>
+  </div>
+</header>
+
+<div class="layout">
+<main>
+
+<!-- ============ 00 ============ -->
+<section class="card" id="s0">
+<h2><span class="n">00</span>读前一分钟 · 全文脉络与本篇性格</h2>
+
+<div class="flow">
+  <div class="fl"><span class="pn">①</span><span class="fx">能做什么 <b>46</b></span>人工智能已经开始进入数字营销。比如它能从大数据里看出流行趋势和用户偏好，判断哪类广告内容、哪种<b>文案</b>适合去「打动」某一个目标客户群；<b>46</b>：它还能识别客户在爱好、喜欢的名人、时尚这些方面的生活方式选择，好在社交媒体推送的营销信息里给每一类人<b>量身定做</b>内容；同时它也能直接替社交媒体和聊天网站<b>写帖子</b>。</div>
+  <div class="fl"><span class="pn">②</span><span class="fx">担心什么 <b>47 · 48</b></span>拿 AI 去应对客户，最大的缺点是：人们不放心<b>把人和人之间的互动交给机器</b>——这可能让人际联系越来越少，也可能让营销人员越来越少。<b>47</b>：有人认为 AI 让创造力下降、岗位消失，削弱了营销人员的作用，<b>但他们也承认它能降成本、能生成新信息</b>。让 AI 去写内容，有的品牌营销人员会发现自己<b>管不住品牌讲的故事</b>了；<b>48</b>：这些担忧很多是<b>模拟人类互动的算法</b>引起的，尤其是谁也说不准让 AI 去和客户打交道会是什么结果。</div>
+  <div class="fl"><span class="pn">③</span><span class="fx">卡在哪 · 往哪走 <b>49 · 50</b></span>AI 要管用就得拿得到数据，可个人数据的使用<b>管得越来越严</b>、数据的自动共享越来越难；<b>49</b>：客户不愿共享数据，AI 就缺基本信息、转不起来，也没法用机器学习改进营销内容和沟通方式。所以除非客户愿意签<b>数据授权协议</b>，AI 的使用以后可能会受限。但 AI 不只能写内容，还能<b>不扰人地</b>把内容送到目标客户手里：按客户在哪儿、用什么设备、上过哪些网站，以合适的形式（邮件、帖子、弹窗、横幅）和合适的频率展示营销信息；<b>50</b>：<b>体察目标客户的需要、不扰人地推送营销信息，是数字营销人员面对的关键挑战之一</b>。</div>
+</div>
+
+<div class="keybox" style="margin-top:16px">
+<b>⭐⭐ 本篇性格：<u>营销行话</u>——五句主干都不难，分数压在「这个熟词在营销这一行里取哪个义项」上</b><br>
+把画线句里的「本行词」挑出来，<b>每一个都有一个日常义在等你上当</b>：<br>
+46 <i>marketing messages</i> 营销信息（不是「市场消息」）· <i>put out</i> 推送（不是「扑灭／清除」）· <i>unique content</i> 特定的内容（量身定做，不是「独一无二」）· <i>regarding</i> 在……方面（不是「把……看作」）<br>
+47 <i>the marketer</i> 营销人员（不是「市场者」）· <i>role</i> 作用（不是「角色」）· <i>removing jobs</i> 岗位消失（不是「移动工作」）· <i>creating new information</i> 生成新信息<br>
+48 <i>simulate</i> 模拟（不是形近的 stimulate「刺激」）· <i>creating … concerns</i> 引起担忧（不是「创造关注」）<br>
+49 <i>be starved of</i> 缺乏（不是「挨饿」）· <i>employ machine learning</i> 采用机器学习（不是「雇用」）· <i>communication</i> 沟通方式（与「营销内容」对仗）<br>
+50 <i>non-intrusive delivery</i> 不扰人地推送（不是「无干扰的交付」）· <i>sensitive to the needs</i> 敏锐感知需求 · <i>critical challenges</i> 关键挑战（不是「严重挑战」）· <i>the digital marketer</i> 数字营销人员<br>
+<b style="color:var(--red)">⟹ 动作：动笔前先认定「这是一篇营销学的书」，然后每遇到一个熟词问一句：营销人员平时说这件事用什么词？</b>
+「推送」「文案」「目标客户」「品牌叙事」「授权协议」——<b>这些都是中文营销圈的现成说法，用上了就是采分点，用字面就是丢分点</b>。
+</div>
+
+<div class="keybox" style="margin-top:12px">
+<b>⚠️ 结构只有两处要动刀</b>：① <b>48 的 <i>used</i> 不是谓语</b>——谓语是后面的 <i>are creating</i>，<i>used to simulate human interactions</i> 整块是 Algorithms 的后置定语，中文前置成「用于模拟人类互动的算法」；② <b>50 的主语里藏着一个动作</b>——<i>The non-intrusive delivery of the marketing messages</i> 是「（以不扰人的方式）推送营销信息」，<i>in a way that …</i> 是这个动作的方式；黄皮书把 way 省掉、把 delivery 还原成动词「推送」，整个主语变成两个并列的动词短语。<br>
+其余三句的结构是送分的：46 两个不定式一个「用于」一个「以便」，47 是 but 连起来的两个宾语从句，49 是 If 条件句加两个并列谓语。
+</div>
+
+<div class="keybox" style="margin-top:12px">
+<b>🔗 跨年</b>：<br>
+① <b>2018 翻译</b>立过「词场」四类清单（熟词换身份 · <b>本行词</b> · 进过头 · 定国别年代），2020 是词场重演；<b>2023 整篇几乎只剩「本行词」这一类</b>——不过这一行不是戏剧、宗教，而是营销。<br>
+② <b>2018 T3 患者数据与科技垄断</b>讲的就是 ③❶ 那句「个人数据管得越来越严、自动共享越来越难」的另一面：数据被谁拿走、要不要病人同意——③❸ 的 <i>release agreements</i> 就是那个「同意」。<br>
+③ <b>2021 新题型 AI 助益企业</b>只讲 AI 能做什么；本篇三段正好是「能做什么 → 担心什么 → 卡在哪」，<b>是一篇现成的辩证结构</b>（见 06 节）。<br>
+④ <b>同卷 T4 引用卡特尔</b>：Scopus 这样的数据库和「被引次数」这个指标，反过来改变了科学家的行为；本篇是算法和数据反过来改变营销人员的饭碗——<b>2023 一张卷子里有两篇在讲「工具反客为主」</b>。
+</div>
+</section>
+
+<!-- ============ 01 ============ -->
+<section class="card" id="s1">
+<h2><span class="n">01</span>原文精读 <button class="allbtn" onclick="toggleAll()">全段意译 开/关</button> <button class="allbtn" id="imgall" onclick="imgAll(this)">原卷对照</button></h2>
+<p style="font-size:.85rem;color:var(--muted);margin-bottom:14px">
+📄 原文是你的浏览器从原卷第 13 页识别出来的文字，<b>下划线就是原卷的画线</b>——考的只有带下划线的五段，<b>淡蓝底的五句点一下跳到 02 节五步精讲</b>；
+蓝色虚线句点一下跳到 05 节长难句精析 ｜ 🟡 黄色虚线词 ＝ 重难点，点开右侧出卡片 ｜ 选中任意其他单词浮出「查有道」 ｜
+每段「意」＝ 本页自写的意译（按句意转述，<b>不是参考答案</b>）｜「原卷对照」逐句看扫描原图、改识别错字。<br>
+⚠️ 先把五句在纸上写完再往下翻——<b>上下文的用处是给义项定行</b>：①❷ 的 <i>copy</i>、<i>target customer group</i> 一出现，就该知道这是营销书，46 的 <i>messages</i> 是「营销信息」；②❶ 的 <i>marketing personnel</i> 告诉你 47 的 <i>the marketer</i> 是人不是市场；③❹ 的 <i>non-intrusive way of delivering</i> 是 50 的预演——<b>50 的主语在前一句已经说过一遍了</b>。</p>
+
+<div class="para">
+  <button class="zbtn" onclick="tz(this)">意</button>
+  <p style="font-size:.78rem;color:var(--accent);margin-bottom:6px">① 能做什么：分析该用哪种文案打动哪群客户 → 识别生活方式、量身定做内容 → 直接生成帖子</p>
+  <div class="en"><span class="pno">①</span>
+    <div class="sn"><img class="strip" src="img/2023_翻译/s1_1.png" alt="①❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="exploration">exploration around</span> · <span class="tk" data-w="digital">digital marketing</span></div></div>
+    <div class="sn" data-go="l1_2"><img class="strip" src="img/2023_翻译/s1_2.png" alt="①❷ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="copy">copy</span> · <span class="tk" data-w="speak">‘speak’ to</span> · <span class="tk" data-w="target">target customer group</span> · <span class="tk" data-w="reveal">revealing</span> · <span class="tk" data-w="preference">preferences</span> · <span class="tk" data-w="bigdata">big data</span></div></div>
+    <div class="sn hx" data-go="s46"><img class="strip" src="img/2023_翻译/s1_3.png" alt="①❸ 原卷句条（46 画线）" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="identify">identify</span> · <span class="tk" data-w="lifestyle">lifestyle choices</span> · <span class="tk" data-w="regarding">regarding</span> · <span class="tk" data-w="celebrity">celebrities</span> · <span class="tk" data-w="unique">unique content</span> · <span class="tk" data-w="message">marketing messages</span> · <span class="tk" data-w="putout">put out</span> · <span class="tk" data-w="socialmedia">social media</span></div></div>
+    <div class="sn"><img class="strip" src="img/2023_翻译/s1_4.png" alt="①❹ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="generate">generate content</span> · <span class="tk" data-w="post">posts</span> · <span class="tk" data-w="chatsite">chat sites</span></div></div>
+  </div>
+  <div class="zh"><b>①段意：</b>人们已经在摸索怎样把人工智能用到数字营销里。比如，它可以借大数据分析揭示流行趋势和用户偏好，从而判断哪类广告内容或文案适合去「打动」某个特定的目标客户群。<b>（46）</b>它还能识别客户在爱好、喜欢的名人、时尚等方面的生活方式选择，好在通过社交媒体推送的营销信息里提供有针对性的内容。与此同时，它也能为社交媒体帖子和聊天网站生成内容。</div>
+</div>
+
+<div class="para">
+  <button class="zbtn" onclick="tz(this)">意</button>
+  <p style="font-size:.78rem;color:var(--accent);margin-bottom:6px">② 担心什么：人际互动交给机器 → 有人说抢饭碗、也承认省钱 → 品牌故事失控 → 算法让人更不放心</p>
+  <div class="en"><span class="pno">②</span>
+    <div class="sn" data-go="l2_1"><img class="strip" src="img/2023_翻译/s2_1.png" alt="②❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="disadvantage">main disadvantage</span> · <span class="tk" data-w="respond">respond to customers</span> · <span class="tk" data-w="trust">trusting … to machines</span> · <span class="tk" data-w="interaction">personal interactions</span> · <span class="tk" data-w="leadto">lead not only to</span> · <span class="tk" data-w="subsequent">subsequent</span> · <span class="tk" data-w="interpersonal">interpersonal connections</span> · <span class="tk" data-w="personnel">marketing personnel</span></div></div>
+    <div class="sn hx" data-go="s47"><img class="strip" src="img/2023_翻译/s2_2.png" alt="②❷ 原卷句条（47 画线）" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="believe">Some believe</span> · <span class="tk" data-w="impact">negatively impacting on</span> · <span class="tk" data-w="marketer">marketer’s</span> · <span class="tk" data-w="role">role</span> · <span class="tk" data-w="creativity">creativity</span> · <span class="tk" data-w="remove">removing jobs</span> · <span class="tk" data-w="aware">aware</span> · <span class="tk" data-w="away">a way of</span></div></div>
+    <div class="sn"><img class="strip" src="img/2023_翻译/s2_3.png" alt="②❸ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="allow">By allowing</span> · <span class="tk" data-w="develop">develop content</span> · <span class="tk" data-w="brand">brand marketers</span> · <span class="tk" data-w="control">losing control over</span> · <span class="tk" data-w="narrative">brand narrative</span></div></div>
+    <div class="sn hx" data-go="s48"><img class="strip" src="img/2023_翻译/s2_4.png" alt="②❹ 原卷句条（48 画线）" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="algorithm">Algorithms</span> · <span class="tk" data-w="usedto">used to simulate</span> · <span class="tk" data-w="simulate">simulate</span> · <span class="tk" data-w="create">are creating</span> · <span class="tk" data-w="concern">concerns</span> · <span class="tk" data-w="especiallyas">especially as</span> · <span class="tk" data-w="sure">quite sure</span> · <span class="tk" data-w="outcome">outcomes</span> · <span class="tk" data-w="interact">interact with</span></div></div>
+  </div>
+  <div class="zh"><b>②段意：</b>用人工智能来应对客户，最大的缺点在于：人们对把人与人之间的互动交托给机器心存顾虑——这不仅可能让人际联系随之减少，还可能让营销人员减少。<b>（47）</b>有人认为，人工智能让创造力下降、让岗位消失，削弱了营销人员的作用；但他们也明白，它是降低成本、生成新信息的一种手段。让人工智能去开发内容，一些品牌营销人员可能会发现自己正在失去对品牌叙事的掌控。<b>（48）</b>这些担忧里有不少是那些用来模拟人际互动的算法引起的，尤其是因为让人工智能去和客户打交道会有什么结果，谁也说不准。</div>
+</div>
+
+<div class="para">
+  <button class="zbtn" onclick="tz(this)">意</button>
+  <p style="font-size:.78rem;color:var(--accent);margin-bottom:6px">③ 卡在哪 · 往哪走：数据越来越难拿 → 客户不给数据 AI 就转不动 → 除非签授权 → 但 AI 还能不扰人地推送 → 怎么推 → 这是关键挑战</p>
+  <div class="en"><span class="pno">③</span>
+    <div class="sn" data-go="l3_1"><img class="strip" src="img/2023_翻译/s3_1.png" alt="③❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="accessible">accessible</span> · <span class="tk" data-w="regulate">more regulated</span> · <span class="tk" data-w="automated">automated sharing</span></div></div>
+    <div class="sn hx" data-go="s49"><img class="strip" src="img/2023_翻译/s3_2.png" alt="③❷ 原卷句条（49 画线）" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="willing">not willing to</span> · <span class="tk" data-w="share">share data</span> · <span class="tk" data-w="starve">starved of</span> · <span class="tk" data-w="essential">essential information</span> · <span class="tk" data-w="function">function effectively</span> · <span class="tk" data-w="employ">employ</span> · <span class="tk" data-w="ml">machine learning</span> · <span class="tk" data-w="communication">communication</span></div></div>
+    <div class="sn" data-go="l3_3"><img class="strip" src="img/2023_翻译/s3_3.png" alt="③❸ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="unless">unless</span> · <span class="tk" data-w="prepared">prepared to</span> · <span class="tk" data-w="release">release agreements</span> · <span class="tk" data-w="somewhat">somewhat</span> · <span class="tk" data-w="restrict">restricted</span></div></div>
+    <div class="sn" data-go="l3_4"><img class="strip" src="img/2023_翻译/s3_4.png" alt="③❹ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="notonly">Not only can</span> · <span class="tk" data-w="intrusive">non-intrusive</span> · <span class="tk" data-w="deliver">delivering</span></div></div>
+    <div class="sn" data-go="l3_5"><img class="strip" src="img/2023_翻译/s3_5.png" alt="③❺ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="gather">gathered on</span> · <span class="tk" data-w="engage">engaged</span> · <span class="tk" data-w="device">devices used</span> · <span class="tk" data-w="display">display</span> · <span class="tk" data-w="popup">pop-up advertisements</span> · <span class="tk" data-w="banner">banners</span> · <span class="tk" data-w="frequency">appropriate frequency</span></div></div>
+    <div class="sn hx" data-go="s50"><img class="strip" src="img/2023_翻译/s3_6.png" alt="③❻ 原卷句条（50 画线）" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="delivery">delivery</span> · <span class="tk" data-w="inaway">in a way that</span> · <span class="tk" data-w="sensitive">sensitive to</span> · <span class="tk" data-w="critical">critical challenges</span> · <span class="tk" data-w="digital">digital marketer</span></div></div>
+  </div>
+  <div class="zh"><b>③段意：</b>人工智能要成功，数据就得拿得到；可个人数据的使用正受到越来越多的监管，数据的自动共享也越来越难。<b>（49）</b>客户若不愿共享数据，人工智能就会缺少必要的信息，既无法有效运转，也无法借助机器学习改进营销内容和沟通方式。因此，除非客户愿意签署数据授权协议，否则人工智能今后的使用可能会多少受到限制。人工智能不仅能帮着生成营销内容，还能提供一种不打扰人的方式把内容送到目标客户手中：它可以收集客户在哪些场合可能参与互动的数据——所在位置、使用的设备、在网站上的交互、访问过的网站——从而以恰当的形式（电子邮件、社交媒体帖子、弹窗广告、横幅广告）和恰当的频率展示营销信息。<b>（50）</b>以体察目标客户需求的方式、不打扰人地推送营销信息，是数字营销人员面临的关键挑战之一。</div>
+</div>
+</section>
+
+
+<!-- ============ 02 ============ -->
+<section class="card">
+<h2><span class="n">02</span>逐句五步精讲 · 切分 → 初译 → 难点 → 词义 → 导出</h2>
+<p style="font-size:.9rem;color:var(--muted)">
+每句五个标签页按考场上真实的动作顺序排；下方<b>采分点</b>逐个自评（点一次「得分」、再点一次「丢分」），
+右上角实时结算本句得分，本页总分见下。<b>参考译文默认折叠——先写完再翻。</b><br>
+📐 <b>本年五句切 16 个采分块：12 个 0.5 分块 ＋ 4 个 1 分块，和 2014 的切法完全一样</b>（2017–2021 都只切 12–14 块）。46、47 各「0.5 × 4」，<b>48 是「1 ＋ 1」</b>，49 是「0.5 ＋ 0.5 ＋ 1」，50 是「0.5 ＋ 1 ＋ 0.5」。<b>四个 1 分块各压着一样东西</b>：48 前半压 used to 的身份和三个本行词、48 后半压 as 与 sure 后的宾语从句、49 末块压 employ 和省略的 to、50 中块压「方式」怎么落成中文。<br>
+采分块的英文按结构关节用「｜」隔开（完整原句见每句上方的原卷句条）。「② 初译」页引自黄皮书的「初译试水」——<b>本篇书上的初译几乎每句都故意留了一个本行词的字面义</b>（市场者 · 关注 · 雇用 · 严重挑战），正好当反面教材；「⑤ 导出」页与折叠的参考译文是<b>本页口径</b>，关键词取法与黄皮书一致。</p>
+
+<div class="scorebar">本页自评总分：<b id="total">0</b> / 10 分　<button class="allbtn" onclick="resetScore()">清空重判</button></div>
+
+<!-- ---------- 46 ---------- -->
+<div class="sent" id="s46" data-q="46">
+  <div class="qhead"><span class="qn">46</span><span class="kaodian">不定式作目的状语 × 2 · 介词／分词短语作后置定语 × 2</span><span class="sc">得分 <b class="qsc">0</b> / 2</span></div>
+  <div class="src"><span class="skel">主语 ＋ can also be used（被动）＋ to do ①（＋ 宾语 ＋ 介词后置定语）＋ to do ②（＋ 宾语 ＋ in 短语 ＋ 过去分词后置定语）</span><img class="strip" src="img/2023_翻译/s1_3.png" alt="46 原卷句条" loading="lazy"></div>
+
+  <div class="steps">
+    <button class="stab on" onclick="tab(this,0)">① 切分</button>
+    <button class="stab" onclick="tab(this,1)">② 初译</button>
+    <button class="stab" onclick="tab(this,2)">③ 难点</button>
+    <button class="stab" onclick="tab(this,3)">④ 词义</button>
+    <button class="stab" onclick="tab(this,4)">⑤ 导出</button>
+  </div>
+
+  <div class="spane on">
+    <div class="cut">
+      <div class="ln"><span class="lb">主干</span>AI｜can also be used <span class="gr">主语 ｜ 被动态谓语</span></div>
+      <div class="ln"><span class="lb">目的 1</span>to identify｜the lifestyle choices of customers <span class="gr">修饰 used：用来干什么</span></div>
+      <div class="ln"><span class="lb">后置定语 1</span>regarding｜their hobbies, favourite celebrities, and fashions <span class="gr">修饰 the lifestyle choices：哪些方面的选择</span></div>
+      <div class="ln"><span class="lb">目的 2</span>to provide｜unique content｜in marketing messages <span class="gr">修饰 identify：识别出来是为了什么</span></div>
+      <div class="ln"><span class="lb">后置定语 2</span>put out｜through social media <span class="gr">修饰 marketing messages：过去分词表被动</span></div>
+    </div>
+    <p style="margin-top:10px;font-size:.87rem;color:var(--muted)">
+    <b style="color:var(--red)">切分眼</b>：<b>两个 to 不是一层的</b>——<i>to identify</i> 挂在 used 上（AI 能拿来做什么），<i>to provide</i> 挂在 identify 上（识别之后图什么）。一层译「用于」、一层译「以便」，中文自然就分出了先后。<br>
+    ⚠️ <b>regarding 不是动词</b>：它前面的 <i>customers</i> 后面没有谓语接，regarding 是「现在分词演变来的介词」，整块修饰 <i>the lifestyle choices</i>，不修饰 customers。<br>
+    ⚠️ <b>put out 前面没有 be</b>：<i>messages put out through social media</i> ＝ 被推送出去的信息，不是「信息发布出去了」。<br>
+    📐 <b>本句四块各 0.5</b>：主干＋目的 1 · regarding 定语 · 目的 2 · put out 定语——<b>结构的每一节一块，切法和切分页完全对应</b>。</p>
+  </div>
+
+  <div class="spane">
+    <div class="rough">
+      <div class="ri">①「AI 也可被使用」②「确认客户的生活方式选择」③「关于他们的爱好、喜欢的名人和时尚的」④「为了在市场信息中提供独特的内容」⑤「通过社交媒体放出去的」</div>
+      <div class="ri">整合成句：「AI 也可被用来确认客户的有关其爱好、喜欢的名人和时尚的生活方式选择，为了在通过社交媒体放出去的市场信息中提供独特的内容。」</div>
+      <div class="merge"><b>病在哪</b>：①「客户的有关其……的生活方式选择」——<b>定语前置后挤成一团，「选择」要等二十个字才出现</b>；②「为了……」放句末是英文语序，中文目的放后面要用「以便」；③ <b>「市场信息」「放出去」「独特的内容」三个字面义</b>——营销圈的说法是「营销信息」「推送」「（针对性的）特定内容」。</div>
+    </div>
+    <p style="margin-top:10px;font-size:.87rem;color:var(--muted)"><b>这份初译是黄皮书自己的「试水稿」</b>，翻车点正是本篇的性格：结构大致对，<b>义项全停在日常义</b>。</p>
+  </div>
+
+  <div class="spane">
+    <ul class="hardl">
+      <li><b>⭐⭐ 两个不定式两种落法：to identify ⟹「用于识别……」；to provide ⟹「以便提供……」。</b>
+        <span style="color:var(--muted)">📕 难点 1：第一个修饰 used，说明 AI 能实现的作用，整体译「用于识别……」；第二个修饰 identify，说明识别的目的，<b>可增添表示目的的「以便」</b>。</span></li>
+      <li><b>⭐ regarding 定语：把「方面」放到后面——「客户在……等生活方式上的选择」。</b>
+        <span style="color:var(--muted)">📕 难点 2：regarding 列举客户生活方式选择的方方面面，宜译为「客户在……等生活方式上的选择」。<b>英文是「选择 ＋ 哪些方面」，中文是「在哪些方面 ＋ 的选择」</b>——三个并列名词夹在「在」和「上」中间，不挤。</span></li>
+      <li><b>⭐ put out 定语：过去分词表被动、短，前置——「通过社交媒体推送的（营销信息）」。</b>
+        <span style="color:var(--muted)">📕 难点 2：put out through social media 为过去分词短语，修饰 marketing messages，表达被动含义，即后者「通过社交媒体被推送」，可结合营销语境前置。</span></li>
+      <li><b>「向他们」是增译：provide 的对象（客户）英文没写，中文补上更顺。</b>
+        <span style="color:var(--muted)">📕 导出「以便在……营销信息中<b>向他们</b>提供特定的内容」。不补也不扣分，补了句子有着落。</span></li>
+    </ul>
+  </div>
+
+  <div class="spane">
+    <ul class="wordl">
+      <li><b>regarding</b> —— 📕 现在分词演变而来的介词，「关于；至于」⟹ 结合上下文「<b>在……方面</b>」。误译栏：「把……看作；看待」——<b>那是 regard A as B 的意思</b>，这里后面没有 as。</li>
+      <li><b>unique content</b> —— 📕 unique 本义「独特的；独有的」；人工智能识别客户喜好、<b>为不同的目标客户群量身打造营销内容</b> ⟹「<b>特定的内容</b>」或「<b>专属的内容</b>」。「独一无二的内容」意思跑偏：重点不是内容稀罕，是<b>对得上这群人</b>。</li>
+      <li><b>marketing messages</b> —— 📕 marketing 是动词 market 派生的名词「营销」⟹「<b>营销信息</b>」。「市场信息」是另一个东西（行情）。</li>
+      <li><b>put out</b> —— 📕「公布；出版；广播」⟹ 营销语境「<b>推送</b>」。误译栏：「清除；删除」——<b>put out a fire（灭火）那一路</b>。</li>
+      <li><b>identify</b> —— 「识别；确认」。书导出用「<b>识别</b>」：AI 是从数据里认出来，不是去核实。</li>
+      <li><b>lifestyle choices</b> —— 「生活方式（上的）选择」——爱好、追哪个明星、穿什么，都是一种选择。</li>
+    </ul>
+    <div class="tabwrap">
+    <table class="tv">
+      <tr><th>疑难点</th><th>正译</th><th>误译</th></tr>
+      <tr><td>regarding</td><td class="ok">在……方面；包括</td><td class="no">把……看作；看待</td></tr>
+      <tr><td>put out</td><td class="ok">推送；投放</td><td class="no">清除；删除</td></tr>
+    </table></div>
+  </div>
+
+  <div class="spane">
+    <p style="font-size:.95rem">人工智能还可用于识别客户在爱好、喜欢的名人、时尚等方面的生活方式选择，以便在通过社交媒体推送的营销信息中向他们提供特定的内容。</p>
+    <p style="margin-top:8px;font-size:.87rem;color:var(--muted)">
+    <b>导出动作三个</b>：① <b>两个 to 分层</b>：「用于识别」＋「以便提供」；② <b>两个后置定语各归各位</b>：regarding 落「在……等方面的」放「选择」前，put out 落「推送的」放「营销信息」前；③ <b>三个本行词</b>：营销信息 · 推送 · 特定内容。<br>
+    <b style="color:var(--red)">检查一句：译文里有没有「市场」「放出」「独特」？有一个，就是那一块丢了。</b></p>
+  </div>
+
+  <div class="pts">
+    <div class="pt" data-v="0.5"><span class="half">0.5</span><div><div class="en2">AI can also be used to identify the lifestyle choices of customers</div><div class="how">人工智能还可用于识别客户……的生活方式选择；<b>「确认」可以接受，「被使用来」拖沓</b></div></div><button class="mark" onclick="mk(this)">未判</button></div>
+    <div class="pt" data-v="0.5"><span class="half">0.5</span><div><div class="en2"> regarding their hobbies, favourite celebrities, and fashions</div><div class="how">在爱好、喜欢的名人、时尚等方面；<b>写成「把……看作」即丢</b></div></div><button class="mark" onclick="mk(this)">未判</button></div>
+    <div class="pt" data-v="0.5"><span class="half">0.5</span><div><div class="en2"> to provide unique content in marketing messages</div><div class="how">以便在营销信息中提供特定的内容；<b>「市场信息」「独一无二」危险</b></div></div><button class="mark" onclick="mk(this)">未判</button></div>
+    <div class="pt" data-v="0.5"><span class="half">0.5</span><div><div class="en2"> put out through social media.</div><div class="how">通过社交媒体推送的；<b>「清除」「扑灭」即丢</b></div></div><button class="mark" onclick="mk(this)">未判</button></div>
+  </div>
+
+  <button class="revealbtn" onclick="this.nextElementSibling.classList.toggle('show')">▸ 参考译文</button>
+  <div class="refzh">人工智能还可用于识别客户在爱好、喜欢的名人、时尚等方面的生活方式选择，以便在通过社交媒体推送的营销信息中向他们提供特定的内容。<br><span style="color:var(--muted);font-size:.85rem">黄皮书导出：人工智能还可用于识别客户在爱好、喜欢的名人、时尚等生活方式上的选择，以便在通过社交媒体推送的营销信息中向他们提供特定的内容。</span></div>
+  <div class="trap"><b>常见扣分</b>：① <b>regarding 当成动词</b>，写成「客户的生活方式选择看待他们的爱好……」；② <b>两个 to 都译「为了」</b>，后一个「为了」挂不上去；③ <b>put out 前置后忘了被动</b>，写成「社交媒体放出的」还算能懂，写成「通过社交媒体清除」就整块丢；④ <b>regarding 定语挂到 customers 上</b>：「关于爱好的客户」——修饰对象错了。</div>
+</div>
+
+<!-- ---------- 47 ---------- -->
+<div class="sent" id="s47" data-q="47">
+  <div class="qhead"><span class="qn">47</span><span class="kaodian">两个宾语从句（believe that · aware that）· 方式状语 by doing · it 指代还原</span><span class="sc">得分 <b class="qsc">0</b> / 2</span></div>
+  <div class="src"><span class="skel">Some believe ＋ that 宾从（主语 ＋ is negatively impacting on ＋ 对象 ＋ by doing…）＋ but ＋ they are aware ＋ that 宾从（it is a way of doing…）</span><img class="strip" src="img/2023_翻译/s2_2.png" alt="47 原卷句条" loading="lazy"></div>
+
+  <div class="steps">
+    <button class="stab on" onclick="tab(this,0)">① 切分</button>
+    <button class="stab" onclick="tab(this,1)">② 初译</button>
+    <button class="stab" onclick="tab(this,2)">③ 难点</button>
+    <button class="stab" onclick="tab(this,3)">④ 词义</button>
+    <button class="stab" onclick="tab(this,4)">⑤ 导出</button>
+  </div>
+
+  <div class="spane on">
+    <div class="cut">
+      <div class="ln"><span class="lb">分句 1</span>Some｜believe｜＋ 宾语从句 <span class="gr">主语 ｜ 谓语</span></div>
+      <div class="ln"><span class="lb">宾从 1</span>that｜AI｜is negatively impacting｜on the marketer’s role <span class="gr">引导词 ｜ 主语 ｜ 谓语＋状语 ｜ 状语（表对象）</span></div>
+      <div class="ln"><span class="lb">方式状语</span>by｜reducing creativity｜and｜removing jobs <span class="gr">怎么产生影响：两个动名词并列</span></div>
+      <div class="ln"><span class="lb">分句 2</span>but｜they｜are｜aware｜＋ 宾语从句 <span class="gr">连词 ｜ 主语 ｜ 系动词 ｜ 表语</span></div>
+      <div class="ln"><span class="lb">宾从 2</span>that｜it｜is｜a way｜of reducing costs and creating new information <span class="gr">引导词 ｜ 主语 ｜ 系动词 ｜ 表语 ｜ a way 的后置定语</span></div>
+    </div>
+    <p style="margin-top:10px;font-size:.87rem;color:var(--muted)">
+    <b style="color:var(--red)">切分眼</b>：<b>两个代词，各回指一个东西</b>——<i>they</i> ＝ 句首的 Some（同一批人），<i>it</i> ＝ AI。<b>it 在中文里要还原成「人工智能」</b>，否则「这是一种降低成本的方式」的「这」会被读成「这件事（抢饭碗）」。<br>
+    ⚠️ <b>but 前后是同一批人在说两面话</b>：前面「认为有害」，后面「也承认有用」——中文用「但他们<b>也</b>认识到」，「也」字把让步的味道带出来（📕 导出就加了「也」）。<br>
+    📐 <b>本句四块各 0.5</b>：主句＋第一层宾从 · by 方式状语 · but they are aware · 第二层宾从。<b>「but they are aware」四个词单独一块</b>——别嫌它短，<i>aware</i> 写成「意识到」「认识到」「明白」都行，写成「担心」就丢。</p>
+  </div>
+
+  <div class="spane">
+    <div class="rough">
+      <div class="ri">①「有些人相信」②「AI 通过减少创新和去除工作正在负面影响着市场者的角色」③「但他们意识到」④「这是一种降低成本和创造新信息的方式」</div>
+      <div class="ri">整合成句：「有些人相信，AI 通过减少创新和去除工作正在负面影响着市场者的角色，但他们意识到这是一种降低成本和创造新信息的方式。」</div>
+      <div class="merge"><b>病在哪</b>：①「负面影响着」——<b>副词 negatively 硬译成状语，中文没有这个说法</b>；② <b>「市场者的角色」两个字面义叠在一起</b>：marketer 是营销人员，role 在这里是作用；③「去除工作」「减少创新」——岗位消失、创造力下降才是中文的说法；④「这是」的「这」指代不明。</div>
+    </div>
+    <p style="margin-top:10px;font-size:.87rem;color:var(--muted)"><b>这份初译是黄皮书自己的「试水稿」</b>——把 marketer 字面译成「市场者」，正是书上疑难表要纠正的那一格。</p>
+  </div>
+
+  <div class="spane">
+    <ul class="hardl">
+      <li><b>⭐⭐ by 方式状语提前：「人工智能（通过）……从而对……产生负面影响」。</b>
+        <span style="color:var(--muted)">📕 难点 1：宾从主结构 <i>AI is … impacting on … by …</i>，方式状语 by 位于句末，<b>按汉语表达习惯将其提至所修饰词之前</b>。⟹「人工智能使创造力下降、工作岗位消失，<b>从而</b>对营销人员的作用产生负面影响」——先说怎么做，再说结果。</span></li>
+      <li><b>⭐ negatively impacting on：副词转形容词——「对（……）产生负面影响」。</b>
+        <span style="color:var(--muted)">📕 难点 2：副词 negatively 修饰现在进行时谓语 is … impacting on，强调影响的性质是负面的，<b>翻译时可转为形容词</b>。（进行时不必硬译「正在」，书导出没有。）</span></li>
+      <li><b>⭐ it is a way of doing：of 引后置定语 ⟹「做某事的手段」。</b>
+        <span style="color:var(--muted)">📕 难点 3：介词 of 引导后置定语修饰 a way，说明是「做某事的手段」；of 后两个动作分别译「降低成本」「生成新信息」。</span></li>
+      <li><b>by 后两个动名词：转成两个主谓短语「创造力下降、工作岗位消失」。</b>
+        <span style="color:var(--muted)">英文是「AI 减少创造力、去掉工作」（AI 作逻辑主语），📕 导出改成「<b>使</b>创造力下降、工作岗位消失」——<b>主语换成被影响的东西</b>，读起来更像中文。</span></li>
+    </ul>
+  </div>
+
+  <div class="spane">
+    <ul class="wordl">
+      <li><b>believe</b> —— 📕 这里用于引出部分人的观点 ⟹「<b>认为</b>」。「相信」也不算错，但「有些人相信」后面接一个负面判断，语气偏了。</li>
+      <li><b>role</b> —— 📕 常见义「角色；地位」，此处用于<b>强调 marketer 的功能和表现，而非其身份</b> ⟹ 僻义「<b>作用</b>」。</li>
+      <li><b>creating</b>（new information）—— 📕 基础义「创造；创作」，结合「人工智能」语境 ⟹「<b>生成；开发</b>」。<b>本篇三处 create 两种译法</b>：47 creating new information「生成」新信息 · ③❹ create the marketing content 📕 也是「生成」营销内容 · <b>只有 48 creating concerns 是「引起」担忧</b>——跟「信息、内容」搭配是生成，跟「担忧」搭配是引起，见 03 节。</li>
+      <li><b>marketer</b> —— 📕 疑难表：正「<b>营销人员</b>」，误「市场者」。②❶ 刚说过 <i>marketing personnel</i>（营销人员），这里是同一批人。</li>
+      <li><b>removing jobs</b> —— 📕 疑难表：正「<b>取消工作岗位；使工作岗位消失</b>」，误「移动工作」（remove 的「搬走」义）。（书表头印作 removing job，原卷是复数 jobs。）</li>
+      <li><b>creativity</b> —— 「创造力」，不是「创新」（innovation）。</li>
+    </ul>
+    <div class="tabwrap">
+    <table class="tv">
+      <tr><th>疑难点</th><th>正译</th><th>误译</th></tr>
+      <tr><td>marketer</td><td class="ok">营销人员</td><td class="no">市场者</td></tr>
+      <tr><td>removing jobs</td><td class="ok">取消工作岗位；使工作岗位消失</td><td class="no">移动工作</td></tr>
+    </table></div>
+  </div>
+
+  <div class="spane">
+    <p style="font-size:.95rem">有些人认为，人工智能使创造力下降、工作岗位消失，从而削弱了营销人员的作用；但他们也认识到，人工智能是一种降低成本、生成新信息的手段。</p>
+    <p style="margin-top:8px;font-size:.87rem;color:var(--muted)">
+    <b>导出动作四个</b>：① <b>by 状语提前</b>，用「从而」接结果；② <b>negatively impacting on 落「削弱／产生负面影响」</b>；③ <b>it 还原成「人工智能」</b>；④ but 后加「也」。<br>
+    「削弱了……的作用」与书的「对……的作用产生负面影响」等价，前者更短。<br>
+    <b style="color:var(--red)">检查一句：「市场者」「角色」「移动」有没有出现？后半句的主语是不是「人工智能」而不是「这」？</b></p>
+  </div>
+
+  <div class="pts">
+    <div class="pt" data-v="0.5"><span class="half">0.5</span><div><div class="en2">Some believe that AI is negatively impacting on the marketer’s role</div><div class="how">有些人认为人工智能对营销人员的作用产生负面影响；<b>「市场者的角色」即丢</b></div></div><button class="mark" onclick="mk(this)">未判</button></div>
+    <div class="pt" data-v="0.5"><span class="half">0.5</span><div><div class="en2"> by reducing creativity and removing jobs,</div><div class="how">（通过）使创造力下降、工作岗位消失；<b>「移动工作」即丢</b></div></div><button class="mark" onclick="mk(this)">未判</button></div>
+    <div class="pt" data-v="0.5"><span class="half">0.5</span><div><div class="en2"> but they are aware</div><div class="how">但他们也认识到（意识到）</div></div><button class="mark" onclick="mk(this)">未判</button></div>
+    <div class="pt" data-v="0.5"><span class="half">0.5</span><div><div class="en2"> that it is a way of reducing costs and creating new information.</div><div class="how">人工智能是一种降低成本和生成新信息的手段；<b>it 指代含混、「创造信息」都危险</b></div></div><button class="mark" onclick="mk(this)">未判</button></div>
+  </div>
+
+  <button class="revealbtn" onclick="this.nextElementSibling.classList.toggle('show')">▸ 参考译文</button>
+  <div class="refzh">有些人认为，人工智能使创造力下降、工作岗位消失，从而削弱了营销人员的作用；但他们也认识到，人工智能是一种降低成本、生成新信息的手段。<br><span style="color:var(--muted);font-size:.85rem">黄皮书导出：有些人认为，人工智能使创造力下降、工作岗位消失，从而对营销人员的作用产生负面影响；但他们也认识到，人工智能是一种降低成本和生成新信息的手段。</span></div>
+  <div class="trap"><b>常见扣分</b>：① <b>marketer 译「市场」「市场者」「营销商」</b>——这里是人（营销人员）；② <b>role 译「角色」</b>，「营销人员的角色产生负面影响」不通；③ <b>by 状语留在句末</b>：「……产生负面影响，通过减少创造力和……」，读起来像两件事；④ <b>they 写成「人工智能」</b>——they 是 Some，那批持保留意见的人。</div>
+</div>
+
+<!-- ---------- 48 ---------- -->
+<div class="sent" id="s48" data-q="48">
+  <div class="qhead"><span class="qn">48</span><span class="kaodian">过去分词后置定语（used to do ≠ 过去常常）· 熟词僻义 · as 引原因状语 · sure 后的宾语从句</span><span class="sc">得分 <b class="qsc">0</b> / 2</span></div>
+  <div class="src"><span class="skel">主语（＋ used to do 后置定语）＋ are creating ＋ 宾语 ＋ especially as 原因状从（no-one is sure ＋ what 宾从）</span><img class="strip" src="img/2023_翻译/s2_4.png" alt="48 原卷句条" loading="lazy"></div>
+
+  <div class="steps">
+    <button class="stab on" onclick="tab(this,0)">① 切分</button>
+    <button class="stab" onclick="tab(this,1)">② 初译</button>
+    <button class="stab" onclick="tab(this,2)">③ 难点</button>
+    <button class="stab" onclick="tab(this,3)">④ 词义</button>
+    <button class="stab" onclick="tab(this,4)">⑤ 导出</button>
+  </div>
+
+  <div class="spane on">
+    <div class="cut">
+      <div class="ln"><span class="lb">主句</span>Algorithms｜are creating｜many of these concerns <span class="gr">主语 ｜ 谓语 ｜ 宾语</span></div>
+      <div class="ln"><span class="lb">后置定语</span>used｜to simulate human interactions <span class="gr">修饰 Algorithms：过去分词 ｜ used 的目的状语</span></div>
+      <div class="ln"><span class="lb">原因状从</span>especially｜as｜no-one｜is｜quite｜sure <span class="gr">状语（强调）｜ 引导词 ｜ 主语 ｜ 系动词 ｜ 状语（程度）｜ 表语</span></div>
+      <div class="ln"><span class="lb">sure 的宾从</span>what｜the outcomes｜of using AI｜to interact with customers｜will be <span class="gr">引导词 ｜ 主语 ｜ 后置定语 ｜ using 的目的状语 ｜ 系动词</span></div>
+    </div>
+    <p style="margin-top:10px;font-size:.87rem;color:var(--muted)">
+    <b style="color:var(--red)">切分眼</b>：<b>谓语是 are creating，不是 used</b>。<i>Algorithms used to simulate …</i> 如果把 used 当谓语，读成「算法过去常常模拟人类互动」，后面的 are creating 就没处放了——<b>一个句子出现两个谓语形式，先确认哪个是真的</b>。<br>
+    ⚠️ <b>四个 used to 只有两种身份</b>：①❷ ①❸ ①❹ 都是 <i>can (also) be used to do</i>（可用于），<b>48 是 <i>名词 ＋ used to do</i>（用于……的名词）</b>；第三种 <i>used to do</i>（过去常常）和第四种 <i>be used to doing</i>（习惯于）本篇都没出现。<br>
+    ⚠️ <b>what 从句是倒装吗？不是</b>——<i>what the outcomes … will be</i> 是正常语序的名词性从句，what 作表语，主语是长长的 <i>the outcomes of using AI to interact with customers</i>，系动词 will be 被挤到最后。<br>
+    📐 <b>本句两块各 1 分</b>：逗号前一整块、逗号后一整块——<b>前一块压着 used to 的身份 ＋ simulate／creating／concerns 三个词</b>，任何一个翻车这 1 分都悬。</p>
+  </div>
+
+  <div class="spane">
+    <div class="rough">
+      <div class="ri">①「算法正在创造许多这样的关注」②「被用于模拟人类互动的」③「尤其是因为没有人能十分确定」④「使用人工智能与客户互动的结果将会是什么」</div>
+      <div class="ri">整合成句：「被用于模拟人类互动的算法正在创造许多这样的关注，尤其是因为没有人能十分确定使用人工智能与客户互动的结果会是什么。」</div>
+      <div class="merge"><b>病在哪</b>：<b>「创造……关注」——两个词都停在日常义</b>。creating 跟 concerns 搭配是「引起」，concerns 跟上文「负面影响」接是「担忧」——<b>「引起担忧」一个中文搭配同时管住两个英文词</b>。结构上这份初译是对的（定语前置、as 译「因为」），翻车全在词上。</div>
+    </div>
+    <p style="margin-top:10px;font-size:.87rem;color:var(--muted)"><b>这份初译是黄皮书自己的「试水稿」</b>——本篇最典型的一份：<b>结构满分、词义一挂就错</b>。</p>
+  </div>
+
+  <div class="spane">
+    <ul class="hardl">
+      <li><b>⭐⭐ used to simulate …：看作省略了 that are 的定语从句，前置——「用于模拟人类互动的（算法）」。</b>
+        <span style="color:var(--muted)">📕 难点 1：后置定语也可看作省略了引导词 that 和 be 动词的定语从句（that are used to simulate …），翻译时可将其前置于被修饰的核心名词「算法」之前，译为「的」字结构。</span></li>
+      <li><b>⭐⭐ especially as … sure what …：⟹「尤其是（因为）对于……还没人有十足的把握」。</b>
+        <span style="color:var(--muted)">📕 难点 2：由主从句语义可知，状语从句实际在阐述主句「算法引起担忧」的原因，故<b>引导词 as 应表示原因，可译为「因为」或省译</b>；系表结构 is … sure 加名词性从句 what … will be 为部分形容词（sure、certain、curious 等）的特殊用法，名词性从句可视为形容词后接的逻辑宾语。</span></li>
+      <li><b>⭐ 宾从主语太长：先把它译成一个整体「使用人工智能与客户互动的结果」，再接「如何」。</b>
+        <span style="color:var(--muted)">📕 难点 3：the outcomes 由较长的介词短语 of using AI to interact with customers 修饰；what the outcomes … will be 可译为「……结果会是什么／结果如何」。</span></li>
+      <li><b>quite 管的是 sure 的程度：no-one is quite sure ＝「谁也没有十足的把握」，不是「没有人很确定」。</b>
+        <span style="color:var(--muted)">否定词 no-one ＋ quite ＝ 部分否定的味道：不是完全不知道，是<b>拿不准</b>。📕 用「还没人有十足的把握」正好。</span></li>
+    </ul>
+  </div>
+
+  <div class="spane">
+    <ul class="wordl">
+      <li><b>simulate</b> —— 📕「<b>模拟；模仿</b>」，注意不要与形近词 <b>stimulate（刺激；激励）</b>混淆。误译栏：「促进；激励」。<b>本篇疑难表 11 行里唯一一行是形近词错，其余全是熟词错</b>。</li>
+      <li><b>creating</b> —— 📕 此处用于描述人工智能使人们产生的反应，应取其<b>僻义「引起，产生（感觉或印象）」</b>。误译栏：「创造；创建」。</li>
+      <li><b>concerns</b> —— 📕 名词 concern 的复数，可表「关心；关注」或「担忧；顾虑」；结合前文「人工智能正产生负面影响」⟹「<b>担忧；顾虑</b>」。<b>these concerns 回指 ②❶ 的 there are concerns about trusting …</b>——第一次出现就是「担忧」。</li>
+      <li><b>especially as</b> —— 「尤其是因为」。as 在这里不是「当……时」「正如」——<b>它后面是一个解释原因的完整句子</b>。</li>
+      <li><b>outcomes</b> —— 「结果；后果」。</li>
+      <li><b>interact with</b> —— 「与……互动；与……交互」。书正文用「互动」、导出用「交互」，都行。</li>
+    </ul>
+    <div class="tabwrap">
+    <table class="tv">
+      <tr><th>疑难点</th><th>正译</th><th>误译</th></tr>
+      <tr><td>simulate</td><td class="ok">模拟；模仿</td><td class="no">促进；激励</td></tr>
+      <tr><td>creating</td><td class="ok">引起；产生</td><td class="no">创造；创建</td></tr>
+      <tr><td>concerns</td><td class="ok">担忧；顾虑</td><td class="no">关心；关注</td></tr>
+    </table></div>
+  </div>
+
+  <div class="spane">
+    <p style="font-size:.95rem">用于模拟人类互动的算法正在引起许多这样的担忧，尤其是因为对于使用人工智能与客户互动会有怎样的结果，还没有人有十足的把握。</p>
+    <p style="margin-top:8px;font-size:.87rem;color:var(--muted)">
+    <b>导出动作三个</b>：① <b>used 定语前置</b>「用于模拟……的算法」；② <b>creating concerns 落「引起担忧」</b>；③ <b>as 译「因为」（或省）、sure 后的从句提到「对于……」里</b>，句末收在「把握」上。<br>
+    本页留了「因为」——📕 导出省掉了（「尤其是对于……」），两种都对；<b>考场上留着更保险</b>：阅卷人一眼看见原因关系。<br>
+    <b style="color:var(--red)">检查一句：主语前面是不是「用于……的」？如果写成「算法过去常常……」，整句结构塌了。</b></p>
+  </div>
+
+  <div class="pts">
+    <div class="pt" data-v="1"><span class="half">1</span><div><div class="en2">Algorithms used to simulate human interactions｜are creating many of these concerns,</div><div class="how">用于模拟人类互动的算法正在引起许多这样的担忧；<b>used 当谓语、stimulate 看走眼、「创造关注」——三个坑一个都不能踩</b></div></div><button class="mark" onclick="mk(this)">未判</button></div>
+    <div class="pt" data-v="1"><span class="half">1</span><div><div class="en2"> especially as no-one is quite sure｜what the outcomes of using AI to interact with customers will be.</div><div class="how">尤其是（因为）对于使用人工智能与客户互动的结果如何，还没人有十足的把握；<b>as 译「当……时」、what 从句拆散都危险</b></div></div><button class="mark" onclick="mk(this)">未判</button></div>
+  </div>
+
+  <button class="revealbtn" onclick="this.nextElementSibling.classList.toggle('show')">▸ 参考译文</button>
+  <div class="refzh">用于模拟人类互动的算法正在引起许多这样的担忧，尤其是因为对于使用人工智能与客户互动会有怎样的结果，还没有人有十足的把握。<br><span style="color:var(--muted);font-size:.85rem">黄皮书导出：用于模拟人类互动的算法正在引起许多这样的担忧，尤其是对于使用人工智能与客户交互的结果如何，还没人有十足的把握。</span></div>
+  <div class="trap"><b>常见扣分</b>：① <b>used to 读成「过去常常」</b>：「算法过去常常模拟人类互动，正在创造……」——一句两个谓语；② <b>simulate 看成 stimulate</b>：「刺激人类互动」；③ <b>creating concerns 直译「创造关注」</b>；④ <b>as 译「当……时」「正如」</b>，丢了原因；⑤ what 从句译成问句「结果会是什么？」——宾语从句不是疑问句。</div>
+</div>
+
+<!-- ---------- 49 ---------- -->
+<div class="sent" id="s49" data-q="49">
+  <div class="qhead"><span class="qn">49</span><span class="kaodian">条件状语从句 · 并列结构（暗含递进 · 省略 to）· 熟词僻义 × 2 · 固定搭配</span><span class="sc">得分 <b class="qsc">0</b> / 2</span></div>
+  <div class="src"><span class="skel">If 条件状从 ＋ 主语 ＋ will be starved of …（谓语 1）＋ and ＋ will not be able to do … or (to) do …（谓语 2）＋ to do（目的）</span><img class="strip" src="img/2023_翻译/s3_2.png" alt="49 原卷句条" loading="lazy"></div>
+
+  <div class="steps">
+    <button class="stab on" onclick="tab(this,0)">① 切分</button>
+    <button class="stab" onclick="tab(this,1)">② 初译</button>
+    <button class="stab" onclick="tab(this,2)">③ 难点</button>
+    <button class="stab" onclick="tab(this,3)">④ 词义</button>
+    <button class="stab" onclick="tab(this,4)">⑤ 导出</button>
+  </div>
+
+  <div class="spane on">
+    <div class="cut">
+      <div class="ln"><span class="lb">条件状从</span>If｜customers｜are not｜willing｜to share data <span class="gr">引导词 ｜ 主语 ｜ 系动词 ｜ 表语 ｜ 状语（表方面）</span></div>
+      <div class="ln"><span class="lb">主句 谓语 1</span>AI｜will be starved｜of essential information <span class="gr">主语 ｜ 被动态谓语 ｜ 状语</span></div>
+      <div class="ln"><span class="lb">主句 谓语 2</span>and｜will not be｜able｜to function effectively <span class="gr">连词 1 ｜ 系动词 ｜ 表语 ｜ 状语 1（表方面）</span></div>
+      <div class="ln"><span class="lb">并列 to</span>or｜(to) employ machine learning <span class="gr">连词 2 ｜ 状语 2（省略了 to）</span></div>
+      <div class="ln"><span class="lb">目的</span>to improve｜its marketing content and communication <span class="gr">employ 的目的状语</span></div>
+    </div>
+    <p style="margin-top:10px;font-size:.87rem;color:var(--muted)">
+    <b style="color:var(--red)">切分眼</b>：<b>两层并列，各管一层</b>——and 连两个谓语（will be starved … and will not be able …），or 连 able 后面的两个不定式（function … or employ …）。<b>employ 前面省了 to</b>：它和 function 平级，都受 not be able to 管——<b>所以 employ 也要否定</b>：「也无法采用」，不是「或者采用」。<br>
+    ⚠️ <b>or 在否定句里落「也不」</b>：not able to A or B ＝ 既不能 A 也不能 B。书的初译「无法有效运行，<b>或者</b>雇用机器学习」——or 照字面译成「或者」，否定被丢了，意思变成「或者可以雇用」。<br>
+    📐 <b>本句三块：0.5 ＋ 0.5 ＋ 1</b>——<b>末块 1 分整整压在 and 之后</b>：省略的 to、否定的范围、employ 的义项、communication 的增译，全在这一块。</p>
+  </div>
+
+  <div class="spane">
+    <div class="rough">
+      <div class="ri">①「如果客户不愿分享数据」②「人工智能会失去基本信息，无法有效运行，或者雇用机器学习来改进它的营销内容和传播」</div>
+      <div class="ri">整合成句：「如果客户不愿分享数据，人工智能会失去基本信息，无法有效运行，或者雇用机器学习来改进它的营销内容和传播。」</div>
+      <div class="merge"><b>病在哪</b>：①「<b>雇用</b>机器学习」——employ 停在「雇人」；②「<b>或者</b>」——否定范围断了，读成「或者能够雇用」；③「传播」——communication 与 content 并列，营销语境是「沟通（方式）」；④「失去」比原文重：starved of 是「缺」，不是「丢了」。</div>
+    </div>
+    <p style="margin-top:10px;font-size:.87rem;color:var(--muted)"><b>这份初译是黄皮书自己的「试水稿」</b>。</p>
+  </div>
+
+  <div class="spane">
+    <ul class="hardl">
+      <li><b>⭐⭐ 条件句的衔接：主句增「便／就」——「如果……就……」。</b>
+        <span style="color:var(--muted)">📕 难点 1：本句由 If 引导的条件状语从句引出某种假设，再由主句表示基于这种假设下的反馈，构成条件句；为了体现这种条件关联，<b>主句的翻译中应增译表示顺承的「便；就」</b>。</span></li>
+      <li><b>⭐⭐ 两组并列：第一组暗含递进 ⟹「就会缺乏……就会无法……」；第二组省 to ⟹「无法有效运行，也无法采用……」。</b>
+        <span style="color:var(--muted)">📕 难点 2：第一组 will be starved … and will not be able … <b>暗含递进关系</b>（先缺信息，因而转不动）；第二组 to function effectively or (to) employ machine learning … <b>省略了相同的 to</b>，阐述人工智能在哪两个方面无法实现其功用，可与 not be able 合译为「<b>无法有效运行，也无法采用机器学习……</b>」。</span></li>
+      <li><b>its 回指 AI：「改善其营销内容」——「其」比「它的」更书面。</b></li>
+    </ul>
+  </div>
+
+  <div class="spane">
+    <ul class="wordl">
+      <li><b>be starved of …</b> —— 📕 starve 常见义「（使）挨饿，饿死」，此处取<b>僻义「使极其缺乏；使迫切需要」</b> ⟹「<b>缺乏……</b>」。误译栏：「使……挨饿；断绝……」。⭐ 这个比喻接着 ③❶ 的 <i>data needs to be accessible</i>：<b>数据是 AI 的口粮</b>。</li>
+      <li><b>employ</b> —— 📕 常见义「雇用」，此处与「机器学习」这一复杂技术搭配，取僻义「<b>采用；利用</b>」。employ a method／technique／strategy 都是「采用」。</li>
+      <li><b>communication</b> —— 📕 为了行文工整，与 marketing content「营销内容」这一表述形成对仗，可适当<b>增译为「沟通方式」</b>。</li>
+      <li><b>essential information</b> —— 「基本信息」（📕）或「必要信息」。essential ＝ 少了不行，两种都对。</li>
+      <li><b>function effectively</b> —— 「有效运行；有效运转」。function 作动词，不是「功能」。</li>
+      <li><b>be willing to</b> —— 「愿意」；not willing ＝ 不愿。</li>
+    </ul>
+    <div class="tabwrap">
+    <table class="tv">
+      <tr><th>疑难点</th><th>正译</th><th>误译</th></tr>
+      <tr><td>be starved of …</td><td class="ok">缺乏……</td><td class="no">使……挨饿；断绝……</td></tr>
+      <tr><td>employ</td><td class="ok">运用；利用</td><td class="no">雇用</td></tr>
+    </table></div>
+  </div>
+
+  <div class="spane">
+    <p style="font-size:.95rem">如果客户不愿分享数据，人工智能就会缺乏必要的信息，从而无法有效运行，也无法采用机器学习来改善其营销内容和沟通方式。</p>
+    <p style="margin-top:8px;font-size:.87rem;color:var(--muted)">
+    <b>导出动作四个</b>：① <b>主句加「就」</b>；② <b>starved of 落「缺乏」</b>，employ 落「采用」；③ <b>or 在否定里落「也无法」</b>；④ communication 增译「沟通方式」与「营销内容」对仗。<br>
+    📕 导出写「就会缺乏……，就会无法……，也无法……」两个「就会」把递进写成了排比；本页把第二个换成「从而」，<b>递进（缺信息 ⟹ 转不动）更明</b>。两种都不影响得分。<br>
+    <b style="color:var(--red)">检查一句：employ 前面有没有「无法」管着？「或者」「雇用」出现了没有？</b></p>
+  </div>
+
+  <div class="pts">
+    <div class="pt" data-v="0.5"><span class="half">0.5</span><div><div class="en2">If customers are not willing to share data,</div><div class="how">如果客户不愿分享数据</div></div><button class="mark" onclick="mk(this)">未判</button></div>
+    <div class="pt" data-v="0.5"><span class="half">0.5</span><div><div class="en2"> AI will be starved of essential information</div><div class="how">人工智能就会缺乏基本（必要）信息；<b>「挨饿」即丢</b></div></div><button class="mark" onclick="mk(this)">未判</button></div>
+    <div class="pt" data-v="1"><span class="half">1</span><div><div class="en2"> and will not be able to function effectively｜or employ machine learning｜to improve its marketing content and communication.</div><div class="how">无法有效运行，也无法采用机器学习来改善其营销内容和沟通方式；<b>「雇用」「或者」任一出现都危险</b></div></div><button class="mark" onclick="mk(this)">未判</button></div>
+  </div>
+
+  <button class="revealbtn" onclick="this.nextElementSibling.classList.toggle('show')">▸ 参考译文</button>
+  <div class="refzh">如果客户不愿分享数据，人工智能就会缺乏必要的信息，从而无法有效运行，也无法采用机器学习来改善其营销内容和沟通方式。<br><span style="color:var(--muted);font-size:.85rem">黄皮书导出：如果客户不愿分享数据，人工智能就会缺乏基本信息，就会无法有效运行，也无法采用机器学习来改善其营销内容和沟通方式。</span></div>
+  <div class="trap"><b>常见扣分</b>：① <b>starved 译「挨饿」「饿死」</b>；② <b>employ 译「雇用」</b>——「雇用机器学习」；③ <b>or 译「或者」，否定断掉</b>，意思变成「无法有效运行，或者（可以）采用机器学习……」；④ to improve 挂到 function 上：「无法有效运行来改善……」——目的状语只修饰 employ。</div>
+</div>
+
+<!-- ---------- 50 ---------- -->
+<div class="sent" id="s50" data-q="50">
+  <div class="qhead"><span class="qn">50</span><span class="kaodian">名词化主语还原成动作 · 介词短语作后置定语 × 2 · 定语从句修饰 way · 固定搭配</span><span class="sc">得分 <b class="qsc">0</b> / 2</span></div>
+  <div class="src"><span class="skel">主语（delivery ＋ of 短语 ＋ in a way ＋ that 定从）＋ is ＋ one of the critical challenges ＋ to 对象</span><img class="strip" src="img/2023_翻译/s3_6.png" alt="50 原卷句条" loading="lazy"></div>
+
+  <div class="steps">
+    <button class="stab on" onclick="tab(this,0)">① 切分</button>
+    <button class="stab" onclick="tab(this,1)">② 初译</button>
+    <button class="stab" onclick="tab(this,2)">③ 难点</button>
+    <button class="stab" onclick="tab(this,3)">④ 词义</button>
+    <button class="stab" onclick="tab(this,4)">⑤ 导出</button>
+  </div>
+
+  <div class="spane on">
+    <div class="cut">
+      <div class="ln"><span class="lb">主语</span>The non-intrusive delivery <span class="gr">名词，内含动作「推送」</span></div>
+      <div class="ln"><span class="lb">后置定语 1</span>of the marketing messages <span class="gr">delivery 的对象（推送什么）</span></div>
+      <div class="ln"><span class="lb">后置定语 2</span>in a way <span class="gr">delivery 的方式（怎样推送）</span></div>
+      <div class="ln"><span class="lb">way 的定从</span>that｜is｜sensitive｜to the needs｜of the target customer <span class="gr">引导词（作主语）｜ 系动词 ｜ 表语 ｜ 状语（表对象）｜ needs 的后置定语</span></div>
+      <div class="ln"><span class="lb">谓语＋表语</span>is｜one of the critical challenges｜to the digital marketer <span class="gr">系动词 ｜ 表语 ｜ 状语（表对象）</span></div>
+    </div>
+    <p style="margin-top:10px;font-size:.87rem;color:var(--muted)">
+    <b style="color:var(--red)">切分眼</b>：<b>谓语 is 要一直等到第 21 个词才出现</b>——主语一口气挂了 of 短语、in 短语、that 定从三层。<b>先找 is，再往回切</b>，就不会把 that 从句的 is sensitive 当成主句谓语。<br>
+    ⭐ <b>delivery 是「藏着动词的名词」</b>：<i>The non-intrusive delivery of the marketing messages</i> ＝ deliver the marketing messages non-intrusively（不扰人地推送营销信息）——形容词 non-intrusive 跟着变成副词，of 后面变成宾语。<b>这是名词化还原</b>（2011 页的老机制）。<br>
+    ⚠️ <b>③❹ 已经说过一遍</b>：<i>a non-intrusive way of delivering the content to the target customers</i>——<b>同一件事，前一句用动名词，50 换成名词</b>。前一句读懂了，50 的主语就不用猜。<br>
+    📐 <b>本句三块：0.5 ＋ 1 ＋ 0.5</b>——<b>中间那 1 分是「方式」</b>：in a way that is sensitive to … 怎么落成中文，是本句唯一需要动刀的地方。</p>
+  </div>
+
+  <div class="spane">
+    <div class="rough">
+      <div class="ri">①「对营销信息进行没有干扰的传递要通过一种方式，这是对于数字营销人员的严重挑战之一」②「对目标客户的需求是体贴的」</div>
+      <div class="ri">整合成句：「对营销信息进行无干扰传递要通过一种体恤目标客户需求的方式，这是对于数字营销人员的严重挑战之一。」</div>
+      <div class="merge"><b>病在哪</b>：① <b>名词照译成「进行……传递」</b>——「对营销信息进行无干扰传递」是翻译腔，动作没有还原成动词；②「<b>严重</b>挑战」——critical 在这里是「关键」；③「体恤」偏情感；④ 主语被拆成「……要通过一种方式，这是……」两截，原句的一个主语变成了两个分句。</div>
+    </div>
+    <p style="margin-top:10px;font-size:.87rem;color:var(--muted)"><b>这份初译是黄皮书自己的「试水稿」</b>——「严重挑战」与「体恤需求」正是书上疑难表的两格误译。</p>
+  </div>
+
+  <div class="spane">
+    <ul class="hardl">
+      <li><b>⭐⭐ 主语还原成动作：delivery ⟹「推送」，of 短语 ⟹ 宾语，in a way ⟹ 方式状语——「（通过……的方式，）从而不扰人地推送营销信息」。</b>
+        <span style="color:var(--muted)">📕 难点 1：主语 The non-intrusive delivery 由两个后置定语 of the marketing messages、in a way … 共同修饰，其中 <b>delivery 具有动作含义，宜按汉语表达习惯转译为动词「推送」</b>，两个后置定语可分别处理为动词的宾语和方式状语。</span></li>
+      <li><b>⭐⭐ 定语从句译成动词短语，way 省掉：「敏锐感知目标客户需求」。</b>
+        <span style="color:var(--muted)">📕 难点 2：引导词 that 在从句中充当主语，指代 way；从句具体说明以怎样的方式推送信息，可将其译为动词短语「敏锐感知目标客户需求」，<b>并相应将其前概括性名词 way 省译</b>。</span></li>
+      <li><b>主语译成动词短语后，「是」直接接上：「……，是数字营销人员面临的关键挑战之一」。</b>
+        <span style="color:var(--muted)">中文允许动词短语作主语（「按时完成任务是……」），不必加「对……进行……」把它名词化回去。to the digital marketer 落「（数字营销人员）面临的」。</span></li>
+    </ul>
+  </div>
+
+  <div class="spane">
+    <ul class="wordl">
+      <li><b>non-intrusive</b> —— 📕 借前文 <i>in appropriate forms</i>、<i>at an appropriate frequency</i> 可大致推出：前缀 non-（表否定）＋ intrusive ⟹「没有侵扰的」，简洁译为「<b>不扰人的</b>」。⭐ <b>③❹ 已出现过一次</b>（a non-intrusive way of delivering），本句是第二次。</li>
+      <li><b>sensitive to the needs</b> —— 📕 sensitive to sth 可表「体恤某事」或「对某事敏感」，但在营销语境下宜译「<b>对需求敏感</b>」或「<b>敏锐感知需求</b>」。</li>
+      <li><b>critical challenges</b> —— 📕 critical 可表「极重要的；关键的」或「严重的；危急的」，文中意在强调这些挑战对数字营销领域的未来发展有重要影响 ⟹「<b>关键挑战</b>」。</li>
+      <li><b>delivery</b> —— 「递送；交付」⟹ 营销信息语境「<b>推送</b>」。和 46 的 put out 落到同一个中文词——<b>本篇两处「推送」，英文换了两个说法</b>。</li>
+      <li><b>the digital marketer</b> —— 「数字营销人员」。单数 ＋ the 是泛指这一类人。</li>
+      <li><b>target customer</b> —— 「目标客户」，营销学的固定说法。</li>
+    </ul>
+    <div class="tabwrap">
+    <table class="tv">
+      <tr><th>疑难点</th><th>正译</th><th>误译</th></tr>
+      <tr><td>sensitive to the needs</td><td class="ok">对需求敏感；敏锐感知需求</td><td class="no">体恤需求</td></tr>
+      <tr><td>critical challenges</td><td class="ok">关键挑战</td><td class="no">严重挑战</td></tr>
+    </table></div>
+  </div>
+
+  <div class="spane">
+    <p style="font-size:.95rem">以敏锐感知目标客户需求的方式不扰人地推送营销信息，是数字营销人员面临的关键挑战之一。</p>
+    <p style="margin-top:8px;font-size:.87rem;color:var(--muted)">
+    <b>导出动作三个</b>：① <b>delivery 还原成动词「推送」</b>，non-intrusive 落成状语「不扰人地」；② <b>in a way that … 落成方式状语</b>；③ critical 落「关键」。<br>
+    📕 导出写「敏锐感知目标客户需求，<b>从而</b>不扰人地推送营销信息」——<b>本页商榷这个「从而」</b>：原文 <i>in a way that is sensitive to …</i> 是推送的<b>方式</b>（怎样推），「从而」把它写成了<b>因果</b>（先感知、所以不扰人）。意思相去不远、采分不受影响，但「以……的方式」更贴原文。<br>
+    <b style="color:var(--red)">检查一句：译文里还有没有「对……进行……传递」？有，就是名词没还原。</b></p>
+  </div>
+
+  <div class="pts">
+    <div class="pt" data-v="0.5"><span class="half">0.5</span><div><div class="en2">The non-intrusive delivery of the marketing messages</div><div class="how">不扰人地推送营销信息；<b>「无干扰的交付」能懂，「侵入性的」即丢</b></div></div><button class="mark" onclick="mk(this)">未判</button></div>
+    <div class="pt" data-v="1"><span class="half">1</span><div><div class="en2"> in a way｜that is sensitive to the needs of the target customer</div><div class="how">以敏锐感知（对……敏感）目标客户需求的方式；<b>拆成独立一句、way 和 that 从句脱钩都危险</b></div></div><button class="mark" onclick="mk(this)">未判</button></div>
+    <div class="pt" data-v="0.5"><span class="half">0.5</span><div><div class="en2"> is one of the critical challenges｜to the digital marketer.</div><div class="how">是数字营销人员面临的关键挑战之一；<b>「严重／危急挑战」危险</b></div></div><button class="mark" onclick="mk(this)">未判</button></div>
+  </div>
+
+  <button class="revealbtn" onclick="this.nextElementSibling.classList.toggle('show')">▸ 参考译文</button>
+  <div class="refzh">以敏锐感知目标客户需求的方式不扰人地推送营销信息，是数字营销人员面临的关键挑战之一。<br><span style="color:var(--muted);font-size:.85rem">黄皮书导出：敏锐感知目标客户需求，从而不扰人地推送营销信息，是数字营销人员面临的关键挑战之一。</span></div>
+  <div class="trap"><b>常见扣分</b>：① <b>把 that 从句的 is sensitive 当主句谓语</b>：「营销信息的推送方式对目标客户的需求很敏感，是……」——两个「是」打架；② <b>non-intrusive 译反</b>成「侵入式的」（漏看 non-）；③ <b>critical 译「严重的」「批判性的」</b>；④ to the digital marketer 译「给数字营销人员的」，「挑战……给」不通。</div>
+</div>
+</section>
+
+
+<!-- ============ 03 ============ -->
+<section class="card" id="s3">
+<h2><span class="n">03</span>⚠️ 本篇内核：营销行话清算表（45 处）<button class="modebtn" id="pmbtn" onclick="polyMode()">✍️ 默写模式</button></h2>
+<p style="font-size:.9rem;color:var(--muted)">
+黄皮书<b>五张</b>「正译 vs 误译」表（<b>11 行</b>）＋ 五节「词义确定」＋ 段落对照译文里的关键词全部收进——<b>45 行的「正译」全部能在书上找到出处</b>（判据栏标 📕：疑难表／词义确定／难点／导出／段落对照译文），画线句之外的本行词取自段落对照译文；「误译」栏书上没列的格子，是本页补的最常见错法。
+<b>点「默写模式」把「正译」栏盖住</b>，逐格点开自查。<br>
+⚠️ <b style="color:var(--red)">本表几乎每一行的「误译」都不是生词错，是日常义</b>：市场者、关注、创造、雇用、挨饿、严重……——自查时先遮住中文，<b>先问「营销人员会怎么说这件事」，再说中文</b>。<br>
+📌 <b>本表最值得记的一组</b>：<b>put out ／ delivery ／ delivering ＝ 推送</b>（同一件事三种英文）· <b>create 三处两译</b>（生成信息 · 生成内容 · 引起担忧）· <b>employ machine learning ＝ 采用</b>。</p>
+<div class="tabwrap">
+<table class="polytab">
+  <tr><th>词／表达</th><th>正译（本文语境）</th><th>误译（最常见）</th><th>判据</th></tr>
+  <tr><td class="wd">marketer</td><td class="good">营销人员</td><td class="bad">市场者；营销商</td><td>47 📕 疑难表；②❶ 已说 marketing personnel</td></tr>
+  <tr><td class="wd">the digital marketer</td><td class="good">数字营销人员</td><td class="bad">数字市场</td><td>50 📕 导出；单数＋the 泛指一类人</td></tr>
+  <tr><td class="wd">marketing messages</td><td class="good">营销信息</td><td class="bad">市场消息</td><td>46 📕 词义 (3)</td></tr>
+  <tr><td class="wd">put out</td><td class="good">推送；投放</td><td class="bad">清除；删除；扑灭</td><td>46 📕 疑难表</td></tr>
+  <tr><td class="wd">regarding</td><td class="good">在……方面；包括</td><td class="bad">把……看作；看待</td><td>46 📕 疑难表；后面没有 as</td></tr>
+  <tr><td class="wd">unique content</td><td class="good">特定的内容；专属的内容</td><td class="bad">独一无二的内容</td><td>46 📕 词义 (2)：为不同客户群量身打造</td></tr>
+  <tr><td class="wd">identify</td><td class="good">识别</td><td class="bad">鉴定；认同</td><td>46 📕 导出</td></tr>
+  <tr><td class="wd">role</td><td class="good">作用</td><td class="bad">角色；地位</td><td>47 📕 词义 (2)：强调功能而非身份</td></tr>
+  <tr><td class="wd">removing jobs</td><td class="good">使工作岗位消失；取消岗位</td><td class="bad">移动工作</td><td>47 📕 疑难表（书印 removing job）</td></tr>
+  <tr><td class="wd">believe</td><td class="good">认为</td><td class="bad">相信；信仰</td><td>47 📕 词义 (1)：引出部分人的观点</td></tr>
+  <tr><td class="wd">creating new information</td><td class="good">生成新信息</td><td class="bad">创作新信息</td><td>47 📕 词义 (3)</td></tr>
+  <tr><td class="wd">negatively impacting on</td><td class="good">对……产生负面影响；削弱</td><td class="bad">负面地影响着</td><td>47 📕 难点 (2)：副词转形容词</td></tr>
+  <tr><td class="wd">simulate</td><td class="good">模拟；模仿</td><td class="bad">促进；激励（看成 stimulate）</td><td>48 📕 疑难表——本篇唯一的形近词错</td></tr>
+  <tr><td class="wd">creating … concerns</td><td class="good">引起担忧</td><td class="bad">创造；创建</td><td>48 📕 疑难表：僻义「引起，产生（感觉）」</td></tr>
+  <tr><td class="wd">concerns</td><td class="good">担忧；顾虑</td><td class="bad">关心；关注</td><td>48 📕 疑难表；回指 ②❶ there are concerns</td></tr>
+  <tr><td class="wd">Algorithms used to …</td><td class="good">用于……的算法</td><td class="bad">算法过去常常……</td><td>48 📕 结构：过去分词后置定语</td></tr>
+  <tr><td class="wd">especially as</td><td class="good">尤其是因为（可省）</td><td class="bad">尤其是当……时</td><td>48 📕 难点 (2)：as 表原因</td></tr>
+  <tr><td class="wd">no-one is quite sure</td><td class="good">还没人有十足的把握</td><td class="bad">没有人很确定</td><td>48 📕 导出：quite 管程度</td></tr>
+  <tr><td class="wd">be starved of</td><td class="good">缺乏</td><td class="bad">使……挨饿；断绝</td><td>49 📕 疑难表：僻义「使极其缺乏」</td></tr>
+  <tr><td class="wd">employ</td><td class="good">采用；运用；利用</td><td class="bad">雇用</td><td>49 📕 疑难表：与「机器学习」搭配</td></tr>
+  <tr><td class="wd">communication</td><td class="good">沟通方式</td><td class="bad">传播；交流</td><td>49 📕 词义 (3)：与「营销内容」对仗而增译</td></tr>
+  <tr><td class="wd">function effectively</td><td class="good">有效运行</td><td class="bad">有效的功能</td><td>49 📕 导出；function 作动词</td></tr>
+  <tr><td class="wd">not able to A or B</td><td class="good">既无法 A，也无法 B</td><td class="bad">无法 A，或者 B</td><td>49 📕 难点 (2)：省略 to、否定管到底</td></tr>
+  <tr><td class="wd">non-intrusive</td><td class="good">不扰人的</td><td class="bad">侵入式的；无干扰的</td><td>50 📕 词义 (1)：non- 表否定</td></tr>
+  <tr><td class="wd">delivery (of the messages)</td><td class="good">推送</td><td class="bad">交付；分娩</td><td>50 📕 难点 (1)：名词还原成动词</td></tr>
+  <tr><td class="wd">sensitive to the needs</td><td class="good">对需求敏感；敏锐感知需求</td><td class="bad">体恤需求</td><td>50 📕 疑难表</td></tr>
+  <tr><td class="wd">critical challenges</td><td class="good">关键挑战</td><td class="bad">严重挑战；批判性挑战</td><td>50 📕 疑难表</td></tr>
+  <tr><td class="wd">target customer (group)</td><td class="good">目标客户（群体）</td><td class="bad">目标顾客团</td><td>①❷ 📕 段落译文「特定的目标客户群体」</td></tr>
+  <tr><td class="wd">copy</td><td class="good">文案</td><td class="bad">复制；副本</td><td>①❷ 📕 段落译文「广告内容或文案」</td></tr>
+  <tr><td class="wd">‘speak’ to</td><td class="good">与……「对话」；打动</td><td class="bad">对……说话</td><td>①❷ 📕 段落译文保留引号「对话」</td></tr>
+  <tr><td class="wd">preferences</td><td class="good">（用户）偏好</td><td class="bad">优先权</td><td>①❷ 📕 段落译文「用户偏好」</td></tr>
+  <tr><td class="wd">posts</td><td class="good">帖文；帖子</td><td class="bad">邮件；职位</td><td>①❹ 📕 段落译文「社交媒体帖文」</td></tr>
+  <tr><td class="wd">respond to customers</td><td class="good">回应客户</td><td class="bad">对客户负责</td><td>②❶ 📕 段落译文</td></tr>
+  <tr><td class="wd">trusting … to machines</td><td class="good">把……交托给机器</td><td class="bad">信任……对机器</td><td>②❶ 📕 段落译文「将人际互动交托于机器」：trust A to B ＝ 托付</td></tr>
+  <tr><td class="wd">marketing personnel</td><td class="good">营销人员</td><td class="bad">市场个人</td><td>②❶ 📕 段落译文「营销人员的减少」</td></tr>
+  <tr><td class="wd">brand narrative</td><td class="good">品牌叙事</td><td class="bad">品牌故事书</td><td>②❸ 📕 段落译文「对品牌叙事的掌控」</td></tr>
+  <tr><td class="wd">develop content</td><td class="good">开发内容</td><td class="bad">发展内容</td><td>②❸ 📕 段落译文</td></tr>
+  <tr><td class="wd">accessible</td><td class="good">（数据）可访问的；拿得到的</td><td class="bad">无障碍的</td><td>③❶ 📕 段落译文「具有可访问性」</td></tr>
+  <tr><td class="wd">more regulated</td><td class="good">受到愈发严格的监管</td><td class="bad">更有规律</td><td>③❶ 📕 段落译文</td></tr>
+  <tr><td class="wd">release agreements</td><td class="good">数据授权协议</td><td class="bad">释放协议；发布协议</td><td>③❸ 📕 段落译文：release ＝ 放行、授权</td></tr>
+  <tr><td class="wd">somewhat restricted</td><td class="good">受到一定程度的限制</td><td class="bad">有些被禁止</td><td>③❸ 📕 段落译文</td></tr>
+  <tr><td class="wd">create the marketing content</td><td class="good">生成营销内容</td><td class="bad">创造营销内容</td><td>③❹ 📕 段落译文「帮助生成营销内容」</td></tr>
+  <tr><td class="wd">where the customer can be engaged</td><td class="good">客户何种情况下可能参与（品牌）互动</td><td class="bad">客户在哪里订婚／被雇用</td><td>③❺ 📕 段落译文：engage ＝ 吸引参与</td></tr>
+  <tr><td class="wd">pop-up advertisements · banners</td><td class="good">弹出式广告 · 横幅广告</td><td class="bad">跳出的广告 · 旗帜</td><td>③❺ 📕 段落译文</td></tr>
+  <tr><td class="wd">at an appropriate frequency</td><td class="good">以适当的频率</td><td class="bad">在合适的频道</td><td>③❺ 📕 段落译文</td></tr>
+</table></div>
+</section>
+
+<!-- ============ 04 ============ -->
+<section class="card" id="s4">
+<h2><span class="n">04</span>考场流程：翻译五步法（20 分钟怎么花）</h2>
+<ol class="proc">
+  <li><b>通读全文 ＋ 定行</b>（2 分钟）—— 三段读一遍，<b>圈本行词</b>：①❷ 一句就有 advertising content · copy · target customer group · big data——<b>四个词连在一起，这是营销书</b>。往下再圈 social media · marketing personnel · brand narrative · release agreements · pop-up advertisements——全篇就是一张营销圈的词表。
+    <span style="color:var(--muted)"><b>这一步多花 30 秒，在草稿纸上写一句「营销」</b>，后面每碰到一个熟词，先对着这两个字问一遍。</span></li>
+  <li><b><span style="color:var(--red)">结构切分（顺手找真谓语）</span></b>—— 先找<u>谓语动词</u>定主干。<b>本篇只有两句的谓语要找</b>：48 的 are creating（used 不是）、50 的第二个 is（第一个 is 在 that 从句里）。
+    <span style="color:var(--muted)">其余三句：46 两个 to 分层、47 两个 that 宾从、49 If ＋ 两层并列（and 连谓语、or 连不定式）。</span></li>
+  <li><b>初译试水</b>（每句 45 秒）—— 按块直译。<b>本篇初译阶段允许字面</b>，但要在每个熟词下面点一个点，标记「这里待定」。
+    <span style="color:var(--muted)">黄皮书五句初译里每句都留着一个字面义：市场者（47）· 创造关注（48）· 雇用机器学习（49）· 严重挑战（50）· 市场信息／放出去（46）——<b>点了点的地方，就是下一步要换的地方</b>。</span></li>
+  <li><b>词义确定</b>（每句 1 分钟）—— <b>专查点了点的熟词</b>：marketer · role · simulate · creating · concerns · starved · employ · communication · critical · sensitive。<b>判据只有一条：营销人员平时这么说吗？</b></li>
+  <li><b>译文导出</b>（每句 45 秒）—— 两个 to 分层（46）；by 状语提前、it 还原（47）；used 定语前置（48）；主句加「就」、or 落「也无法」（49）；delivery 还原成「推送」（50）。</li>
+</ol>
+
+<div class="wb" style="margin-top:18px">
+  <div class="wbi"><div class="p">本篇专属第 1 条 · 先定「行」，再定义项</div>
+  <div class="u">一个熟词有五六个义项，<b>挑哪一个由这篇文章属于哪一行决定</b>：<i>delivery</i> 在物流是「交付」、在医院是「分娩」、在演讲是「表达」、在营销信息这里是「推送」；<i>copy</i> 在办公室是「复印」、在报社是「稿子」、在广告公司是「文案」。<br>
+  本篇第二句（①❷）就把行亮出来了：advertising content or copy · target customer group。<br>
+  <b style="color:var(--red)">⟹ 动作：读第一遍时找出「这一行的三个标志词」写在草稿纸角上；之后每个熟词都先过这三个词的「滤镜」。</b>
+  （2018 页「词场」讲的是同一件事；本篇只剩「本行词」一类，所以更纯。）</div></div>
+
+  <div class="wbi"><div class="p">本篇专属第 2 条 · 同一件事，英文换着说、中文用同一个词</div>
+  <div class="u">46 <i>put out through social media</i> · ③❹ <i>delivering the content</i> · 50 <i>the non-intrusive delivery of the marketing messages</i>——<b>英文为了不重复换了三个说法，中文全是「推送」</b>。<br>
+  反过来也成立：<b>英文同一个 create，中文两个词</b>（信息、内容是「生成」，担忧是「引起」）。<br>
+  <b style="color:var(--red)">⟹ 动作：英文换词不等于中文换词，中文换词也不等于英文换词——每次只看这个词在这句里跟谁搭配（推送「信息」、引起「担忧」）。</b></div></div>
+
+  <div class="wbi"><div class="p">本篇专属第 3 条 · 藏着动词的名词，还原成动作</div>
+  <div class="u">50 的主语 <i>The non-intrusive delivery of the marketing messages in a way that …</i> 是一个名词短语，但里面藏着一件事：<b>（以……的方式）不扰人地推送营销信息</b>。中文用动词短语作主语毫无问题，硬保留名词就成了「对营销信息进行无干扰的传递」。<br>
+  ③❹ <i>a non-intrusive way of delivering the content</i> 是它的动名词版——<b>考卷把答案提前一句给你了</b>。<br>
+  <b style="color:var(--red)">⟹ 动作：主语是「形容词 ＋ 动作名词 ＋ of ＋ 名词」时，一律改成「副词 ＋ 动词 ＋ 宾语」再往下译</b>（2011 页「名词化」的老规矩）。</div></div>
+
+  <div class="wbi"><div class="p">流程之外 · 20 分钟的分配与最后一分钟的检查</div>
+  <div class="u">通读＋圈本行词 2.5 分钟 ＋ 五句 × 每句约 3.3 分钟 ＝ 19 分钟，留 1 分钟<b>通读检查</b>。本篇的检查只看三样：<br>
+  ① <b>「字面义」黑名单</b>：市场者 · 角色 · 移动工作 · 创造关注 · 刺激 · 挨饿 · 雇用 · 严重挑战 · 清除——<b>出现一个改一个</b>；<br>
+  ② <b>结构两处</b>：48 有没有写成「算法过去常常」；49 employ 前面有没有「无法」；<br>
+  ③ <b>指代一处</b>：47 后半句的「它／这」是不是人工智能。</div></div>
+</div>
+</section>
+
+
+<!-- ============ 05 ============ -->
+<section class="card" id="s5">
+<h2><span class="n">05</span>非画线长难句 6 句（画线句之外，这几句也是考点）</h2>
+<p style="font-size:.9rem;color:var(--muted)">
+黄皮书本篇<b>没有长难句栏目</b>，以下 100% 自选自撰，译文为本页自译（黄皮书段落对照译文只作交叉参考）。选的标准：<b>这一句要么给画线句定了义项或指代，要么自己就是一个结构样本</b>。原句与 01 节同一条（本机识别成文字，可切回原卷）。<br>
+📌 <b>本篇最长的两句 ②❶ 与 ③❺ 各 41 词，都不在画线内</b>；画线句里最长的是 49（34 词）——全文 14 句，平均 29.2 词一句。</p>
+
+<div class="lsent" id="l1_2">
+  <div class="lt">①❷ · what 宾语从句 ＋ by doing 方式状语 ＋ through 介词短语（39 词）</div>
+  <div class="le"><img class="strip" src="img/2023_翻译/s1_2.png" alt="①❷ 原卷句条" loading="lazy"></div>
+  <div class="lz">例如，人工智能可以借大数据分析揭示流行趋势和用户偏好，从而判断哪类广告内容或文案适合去「打动」某个特定的目标客户群体。</div>
+  <div class="lp"><b>结构</b>：主干 <i>AI can be used to analyse</i> ＋ 宾语从句 <i>what type of advertising content or copy would be appropriate to ‘speak’ to …</i> ＋ 方式状语 <i>by revealing information about trends and preferences</i> ＋ <i>through the analysis of big data</i>。<br>
+  ⭐ <b>by 和 through 是两层手段</b>：大数据分析 → 揭示趋势与偏好 → 判断文案适不适合。中文按先后排：<b>「借大数据分析揭示……，从而判断……」</b>——和 47 的 by 一样，<b>手段提前、结果殿后</b>。<br>
+  ⚠️ <i>‘speak’ to</i> 带引号：不是真的说话，是「对上胃口、打动」——📕 段落译文保留引号译「对话」。这一句是全文的「定行句」：<b>copy、target customer group 一出现，后面每个熟词都该往营销上靠</b>。</div>
+</div>
+
+<div class="lsent" id="l2_1">
+  <div class="lt">②❶ · 表语从句 ＋ 非限制性 which ＋ not only … but also（41 词）</div>
+  <div class="le"><img class="strip" src="img/2023_翻译/s2_1.png" alt="②❶ 原卷句条" loading="lazy"></div>
+  <div class="lz">用人工智能来应对客户，最大的缺点在于：人们对把人际互动交托给机器心存顾虑，因为这不仅可能导致人际联系随之减少，还可能导致营销人员减少。</div>
+  <div class="lp"><b>结构</b>：主语 <i>The main disadvantage of using AI to respond to customers</i> ＋ 系动词 <i>is</i> ＋ 表语从句 <i>that there are concerns about trusting personal interactions to machines</i> ＋ 非限制性定语从句 <i>which could lead not only to … but also to …</i>。<br>
+  ⭐ <b>which 指代整件事</b>（把人际互动交给机器），不是 machines——📕 段落译文译成「<b>因为</b>这不仅可能导致……」，把非限制性定语从句处理成原因分句。<br>
+  ⭐ <b>这一句给 47、48 定了两个词</b>：<i>concerns</i> 第一次出现就是「顾虑」（48 的 these concerns 回指它）；<i>marketing personnel</i> 是「营销人员」（47 的 the marketer 是同一批人）。<br>
+  ⚠️ <i>trust A to B</i> ＝「把 A 托付给 B」，不是「信任 A 对 B」。</div>
+</div>
+
+<div class="lsent" id="l3_1">
+  <div class="lt">③❶ · 不定式作条件状语 ＋ but 连两个进行时被动（30 词）</div>
+  <div class="le"><img class="strip" src="img/2023_翻译/s3_1.png" alt="③❶ 原卷句条" loading="lazy"></div>
+  <div class="lz">人工智能要想取得成功，就必须拿得到数据；可个人数据的使用正受到越来越严格的监管，数据的自动共享也变得越来越难。</div>
+  <div class="lp"><b>结构</b>：<i>For AI to be successful</i>（for ＋ 逻辑主语 ＋ 不定式，作条件／目的状语）＋ 主句 <i>data needs to be accessible</i> ＋ <i>but</i> ＋ 两个并列的 <i>is becoming more …</i>。<br>
+  ⭐ <i>For AI to be successful</i> ＝「人工智能要想成功」——<b>for sb to do 放句首表条件</b>，中文落「要想……就……」。<br>
+  ⭐ <b>这一句是 49 的前提</b>：数据「得拿得到」→ 但「越来越难拿」→（49）客户不给，AI 就缺信息。<i>is becoming more regulated</i> 是「越来越受监管」，进行时 ＋ 比较级 ＝ 一个正在加剧的趋势。</div>
+</div>
+
+<div class="lsent" id="l3_3">
+  <div class="lt">③❸ · unless 条件句 ＋ 推测语气 may（20 词）</div>
+  <div class="le"><img class="strip" src="img/2023_翻译/s3_3.png" alt="③❸ 原卷句条" loading="lazy"></div>
+  <div class="lz">因此，除非客户愿意签署数据授权协议，否则人工智能今后的使用可能会受到一定程度的限制。</div>
+  <div class="lp"><b>结构</b>：<i>Therefore</i> ＋ 条件状语从句 <i>unless customers are prepared to sign release agreements</i> ＋ 主句 <i>the use of AI may become somewhat restricted in the future</i>。<br>
+  ⭐ <b>unless 落「除非……否则……」</b>，📕 段落译文就是这么配的；<i>may</i> 与 <i>somewhat</i> 两个词一起把语气压软——「<b>可能会</b>受到<b>一定程度</b>的限制」，两个护栏都要译出来（2017 页「刻度」的老规矩）。<br>
+  ⚠️ <i>release agreements</i> 不是「释放协议」——release 是「放行、授权（使用个人数据）」，📕 译「数据授权协议」。</div>
+</div>
+
+<div class="lsent" id="l3_4">
+  <div class="lt">③❹ · Not only 句首倒装 ＋ but … also（26 词）</div>
+  <div class="le"><img class="strip" src="img/2023_翻译/s3_4.png" alt="③❹ 原卷句条" loading="lazy"></div>
+  <div class="lz">人工智能不仅能帮着生成营销内容，还能提供一种不打扰人的方式，把内容送到目标客户手里。</div>
+  <div class="lp"><b>结构</b>：<i>Not only can AI help to create …</i>（Not only 放句首，<b>情态动词 can 提到主语前——部分倒装</b>）＋ <i>but it can also provide</i> ＋ 宾语 <i>a non-intrusive way of delivering the content to the target customers</i>。<br>
+  ⭐ <b>这是 50 的预演</b>：<i>a non-intrusive way of delivering</i> ＝ 50 的 <i>the non-intrusive delivery … in a way</i>。<b>考卷把 50 主语的意思提前一句用动名词说了一遍</b>——先在这里把「不扰人地推送」想好，50 就只剩搬过去。<br>
+  ⚠️ 倒装不影响翻译：中文照常「人工智能不仅……还……」。</div>
+</div>
+
+<div class="lsent" id="l3_5">
+  <div class="lt">③❺ · where 宾语从句 ＋ such as 列举 ＋ 目的不定式 ＋ including 列举（41 词）</div>
+  <div class="le"><img class="strip" src="img/2023_翻译/s3_5.png" alt="③❺ 原卷句条" loading="lazy"></div>
+  <div class="lz">它可以收集客户在哪些场合可能参与品牌互动的数据——比如所在位置、使用的设备、网站上的交互和访问过的网站——从而以恰当的形式（包括电子邮件、社交媒体帖文、弹出式广告和横幅广告）、以恰当的频率展示营销信息。</div>
+  <div class="lp"><b>结构</b>：主干 <i>Data can be gathered</i> ＋ <i>on where the customer can be engaged</i>（on ＋ where 从句：关于……的数据）＋ <i>such as …</i>（四项列举）＋ 目的状语 <i>to display marketing messages in appropriate forms</i> ＋ <i>including …</i>（四项列举）＋ <i>at an appropriate frequency</i>。<br>
+  ⭐ <b>两个四项列举是这句的骨头</b>：such as 列「数据是什么」，including 列「形式有哪些」——中文用破折号或括号把列举收起来，主线「收集数据 → 展示信息」才不被打断（📕 段落译文给第二个列举加了括号）。<br>
+  ⚠️ <i>at an appropriate frequency</i> 修饰 display，不修饰 banners——「以适当的频率展示」；<i>engaged</i> 是营销词「被吸引参与互动」，不是「订婚」「被雇用」。</div>
+</div>
+</section>
+
+<!-- ============ 06 ============ -->
+<section class="card" id="s6">
+<h2><span class="n">06</span>写作素材抽取（话题：人工智能 · 科技与就业 · 数据隐私 · 技术的两面性）</h2>
+<p style="font-size:.9rem;color:var(--muted)">
+本篇是<b>一段教科书式的利弊分析</b>：能做什么 → 担心什么 → 卡在哪 → 怎么做好，<b>正好是大作文「辩证段」的现成骨架</b>。
+每组给「本文短语 → 可迁移骨架 → 自拟例句」；<b>例句全部自拟，只借骨架</b>。⚠️ 本年作文题本轮未看（作文仍全盲），翻译与大作文撞不撞题留到作文页核。</p>
+
+<div class="wb">
+  <div class="wbi"><div class="p">① 承认它有用，同时说出顾虑（<b>最值钱的一条，背下来</b>）</div>
+  <div class="u">本文：<i>Some believe that … , but they are aware that …</i><br>
+  <b>骨架</b>：<i class="own">Some believe that X is doing harm to Y, but they are aware that it is a way of doing Z.</i><br>
+  <b>自拟</b>：<i class="own">Some believe that short videos are harming our ability to concentrate, but they are aware that they are a cheap way of learning new skills.</i>（有人认为短视频在损害我们的专注力，但他们也承认，短视频是学习新技能的一种廉价途径。）<br>
+  <span style="color:var(--muted)">用在「新事物利弊」类大作文的第二段：<b>一句话同时摆出正反两面</b>，比 On the one hand … on the other hand 更自然。</span></div></div>
+
+  <div class="wbi"><div class="p">② 最大的缺点在于……</div>
+  <div class="u">本文：<i>The main disadvantage of … is that …</i><br>
+  <b>骨架</b>：<i>The main disadvantage of doing X is that …, which could lead not only to A but also to B.</i><br>
+  <b>自拟</b>：<i class="own">The main disadvantage of online classes is that students lack face-to-face contact, which could lead not only to poor concentration but also to loneliness.</i>（网课最大的缺点是学生缺少面对面的交流，这不仅可能导致注意力下降，还可能导致孤独感。）<br>
+  <span style="color:var(--muted)">which 指代前面整件事，后接 not only … but also 一口气给两个后果——<b>一句话就是一个完整的「缺点 ＋ 后果」论证</b>。</span></div></div>
+
+  <div class="wbi"><div class="p">③ 要想……就得……（条件 → 前提）</div>
+  <div class="u">本文：<i>For AI to be successful, data needs to be accessible …</i><br>
+  <b>骨架</b>：<i>For X to be successful, Y needs to be …</i><br>
+  <b>自拟</b>：<i class="own">For a reading plan to be successful, it needs to be realistic.</i>（一个读书计划要想成功，就得切实可行。）<br>
+  <span style="color:var(--muted)">for sb／sth to do 放句首，<b>比 If X wants to succeed 更紧凑、更书面</b>；作文「提建议」段的开头句。</span></div></div>
+
+  <div class="wbi"><div class="p">④ 除非……否则……（给出路设条件）</div>
+  <div class="u">本文：<i>unless customers are prepared to …, the use of AI may become somewhat restricted</i><br>
+  <b>骨架</b>：<i>Unless X is prepared to do Y, Z may become somewhat …</i><br>
+  <b>自拟</b>：<i class="own">Unless parents are prepared to put down their phones, family dinners may become somewhat silent.</i>（除非父母愿意放下手机，否则家里的晚饭可能会变得有些沉默。）<br>
+  <span style="color:var(--muted)">be prepared to do ＝「愿意（做出让步）」；may ＋ somewhat 两个护栏让结论不说死——<b>阅卷人喜欢有分寸的句子</b>。</span></div></div>
+
+  <div class="wbi"><div class="p">⑤ 不仅能……还能……（倒装加分）</div>
+  <div class="u">本文：<i>Not only can AI help to …, but it can also provide …</i><br>
+  <b>骨架</b>：<i class="own">Not only can X help to do A, but it can also do B.</i><br>
+  <b>自拟</b>：<i class="own">Not only can volunteering help to build a community, but it can also teach young people responsibility.</i>（志愿服务不仅能帮助建设社区，还能教会年轻人担当。）<br>
+  <span style="color:var(--muted)">Not only 句首倒装是大作文最稳的「高级句」之一，<b>记住倒装只倒一个助动词（can）</b>，后半 but … also 照常语序。</span></div></div>
+
+  <div class="wbi"><div class="p">⑥ ……是……面临的关键挑战之一（收尾句）</div>
+  <div class="u">本文：<i>… is one of the critical challenges to the digital marketer.</i><br>
+  <b>骨架</b>：<i class="own">Doing X in a way that is sensitive to Y is one of the critical challenges to Z.</i><br>
+  <b>自拟</b>：<i class="own">Caring for the elderly in a way that is sensitive to their dignity is one of the critical challenges to an ageing society.</i>（以顾及老人尊严的方式照料他们，是老龄化社会面临的关键挑战之一。）<br>
+  <span style="color:var(--muted)">作文最后一段的总括句；<b>动名词作主语 ＋ in a way that is sensitive to …</b> 一下子把「要做什么」和「怎么做」都交代了。</span></div></div>
+
+  <div class="wbi"><div class="p">⑦ 话题词块（科技 × 就业 × 隐私）</div>
+  <div class="u"><i>remove jobs</i>（让岗位消失）· <i>reduce costs</i>（降低成本）· <i>lose control over</i>（失去对……的掌控）· <i>be starved of</i>（缺乏）· <i>personal data</i>（个人数据）· <i>become more regulated</i>（受到更严的监管）· <i>interpersonal connections</i>（人际联系）· <i>target customers</i>（目标客户）<br>
+  <span style="color:var(--muted)">⚠️ <i>be starved of</i> 是比喻，<b>作文里用一次就够</b>：<i class="own">Many rural schools are starved of good teachers.</i>（许多乡村学校缺少好老师。）</span></div></div>
+</div>
+</section>
+
+<!-- ============ 07 ============ -->
+<section class="card" id="s7">
+<h2><span class="n">07</span>词汇卡<span style="margin-left:auto;font-size:.78rem;color:var(--muted)" id="vcount"></span></h2>
+<p style="font-size:.9rem;color:var(--muted)">点任意一张出详卡（释义 · 原文语境 · 怎么记 · 同类词 · 易混辨析）。
+<b>熟词僻义</b>与<b>短语</b>标签的那些才是本篇真正的失分点；<b>写作✍︎</b>标签的可直接进作文。
+正文里带虚线的词也可直接点；选中任意单词可查有道。</p>
+<div class="vgrid" id="vgrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px"></div>
+</section>
+
+</main>
+<aside><div id="panel"><div class="hint">点正文里<b>带虚线</b>的词<br>或下方词卡</div></div></aside>
+</div>
+
+<footer>2023 英语一 Part C · 人工智能在数字营销中的应用 · 五句 10 分 · 16 个采分块 · 非盲（参考译文已入眼，不做自评）<br>
+先读全文 → 圈出本行词、在草稿纸角上写「营销」→ 找 48、50 的真谓语 → 自译 → 自评采分点 → 对照参考译文 → 03 清算表默写</footer>
+</div>
+<button id="yd">查有道 ↗</button>
+
+<script>
+const V = {
+  exploration:{w:"exploration around",ipa:"/ˌekspləˈreɪʃn/",pos:"n.",tags:["core"],cn:"探索；探究",en:"the act of trying to find out more about something",ex:"There has been some exploration around the use of artificial intelligence",mem:"explore（探索）＋ -ation。<b>exploration around ＝ 围绕……的探索</b>，around 在这里是「关于」。📕 段落译文「已有一些探索」。",syn:"investigation · inquiry",conf:"exploration（探索未知）vs exploitation（开发利用；剥削）——形近，一字之差意思相反。"},
+  digital:{w:"digital marketing",ipa:"/ˈdɪdʒɪtl/",pos:"adj.",tags:["core", "write"],cn:"数字的；数码的 ⟹ 数字营销",en:"using computer technology",ex:"the use of artificial intelligence (AI) in digital marketing",mem:"⭐ 首句就把「行」亮出来：<b>digital marketing 数字营销</b>。50 的 <i>the digital marketer</i> ＝ 数字营销人员。",syn:"online marketing · e-marketing",conf:"digital（数字的）vs digit（数字；手指）——digital 不是「数位的手指」。"},
+  copy:{w:"copy",ipa:"/ˈkɒpi/",pos:"n.",tags:["poly"],cn:"（广告）文案",en:"the words written for an advertisement",ex:"what type of advertising content or copy would be appropriate",mem:"⭐⭐ 熟词僻义：copy 日常是「复印件、一份」，在广告业是「<b>文案</b>」（copywriter ＝ 文案撰稿人）。📕 段落译文「广告内容或文案」。<b>这个词一出现，就该知道这是营销书</b>。",syn:"text · advertising text",conf:"copy（文案）vs copyright（版权）——copywriter 写文案，不是管版权。"},
+  speak:{w:"‘speak’ to",ipa:"/spiːk/",pos:"v.",tags:["poly", "phrase"],cn:"（带引号）与……「对话」；打动",en:"to appeal to or connect with a group",ex:"would be appropriate to ‘speak’ to a specific target customer group",mem:"原文加了引号：不是真的说话，是<b>对上胃口、打动</b>。📕 段落译文保留引号译「对话」。",syn:"appeal to · resonate with",conf:"speak to sb（打动某人；跟某人谈）vs speak for sb（替某人说话）。"},
+  target:{w:"target customer group",ipa:"/ˈtɑːɡɪt/",pos:"n.",tags:["core", "write"],cn:"目标客户群体",en:"the particular group of customers a product is aimed at",ex:"speak to a specific target customer group",mem:"⭐ 营销学固定说法：<b>目标客户（群）</b>。50 的 <i>the target customer</i> 同。",syn:"target audience · target market",conf:"target（目标）vs aim（目的；瞄准）——营销圈只说「目标客户」，不说「目的客户」。"},
+  reveal:{w:"revealing",ipa:"/rɪˈviːl/",pos:"v.",tags:["core"],cn:"揭示；显示",en:"to make something known",ex:"by revealing information about trends and preferences",mem:"re-（反）＋ veil（面纱）⟹ 揭开面纱。📕 段落译文「通过揭示……的信息」。",syn:"disclose · show · uncover",conf:"reveal（揭示原本看不到的）vs release（放出；发布）。"},
+  preference:{w:"preferences",ipa:"/ˈprefrəns/",pos:"n.",tags:["core", "poly"],cn:"偏好；喜爱",en:"a greater liking for one thing than another",ex:"information about trends and preferences",mem:"prefer 的名词。📕 段落译文「<b>用户偏好</b>」——营销圈的说法；别译「优先权」（那是 preference 的法律义）。",syn:"liking · taste",conf:"preference（偏好）vs priority（优先权）。"},
+  bigdata:{w:"big data",ipa:"/bɪɡ ˈdeɪtə/",pos:"n.",tags:["core", "write"],cn:"大数据",en:"extremely large sets of data analysed by computers",ex:"through the analysis of big data",mem:"固定说法，「大数据」。作文写科技话题常用。",syn:"large-scale data",conf:"data 本是复数（datum 的复数），但口语和本文都当不可数（data needs to be …）。"},
+  identify:{w:"identify",ipa:"/aɪˈdentɪfaɪ/",pos:"v.",tags:["core"],cn:"识别；确认",en:"to recognize and name something",ex:"AI can also be used to identify the lifestyle choices of customers",mem:"📕 导出「<b>识别</b>」：AI 从数据里认出来。identity（身份）同根。",syn:"recognize · pinpoint",conf:"identify（识别出）vs identify with（认同）——后者带 with。"},
+  lifestyle:{w:"lifestyle choices",ipa:"/ˈlaɪfstaɪl/",pos:"n.",tags:["core", "write"],cn:"生活方式（上的）选择",en:"the choices people make about how they live",ex:"identify the lifestyle choices of customers",mem:"life ＋ style。📕 难点：regarding 列举「生活方式选择」的方方面面 ⟹「客户在……等生活方式上的选择」。",syn:"way of life",conf:"lifestyle（生活方式）vs life span（寿命）。"},
+  regarding:{w:"regarding",ipa:"/rɪˈɡɑːdɪŋ/",pos:"prep.",tags:["poly"],cn:"关于；至于 ⟹ 在……方面",en:"concerning; about",ex:"the lifestyle choices of customers regarding their hobbies",mem:"⭐⭐ 📕 现在分词演变来的介词，「关于；至于」⟹ 本句「<b>在……方面</b>」。误译栏「把……看作；看待」——那是 <b>regard A as B</b>，这里后面没有 as。",syn:"concerning · as regards · with regard to",conf:"regarding（介词：关于）vs regardless of（不管）——别看成后者。"},
+  celebrity:{w:"celebrities",ipa:"/səˈlebrəti/",pos:"n.",tags:["core"],cn:"名人；明星",en:"a famous person",ex:"their hobbies, favourite celebrities, and fashions",mem:"celebrate（庆祝）同根：被人「捧着」的人。",syn:"star · famous person",conf:"celebrity（名人）vs celebration（庆祝）。"},
+  unique:{w:"unique content",ipa:"/juˈniːk/",pos:"adj.",tags:["poly"],cn:"（本文）特定的；专属的",en:"designed for one particular group",ex:"to provide unique content in marketing messages",mem:"⭐⭐ 📕 unique 本义「独特的；独有的」，但这里是<b>为不同目标客户群量身打造</b>的内容 ⟹「<b>特定的内容</b>／<b>专属的内容</b>」。「独一无二」跑偏：重点是对得上这群人。",syn:"tailored · customized · personalized",conf:"unique（独特；专属）vs unusual（不寻常）——unique 不一定奇怪。"},
+  message:{w:"marketing messages",ipa:"/ˈmesɪdʒɪz/",pos:"n.",tags:["core", "poly"],cn:"营销信息",en:"information given to customers to promote a product",ex:"unique content in marketing messages put out through social media",mem:"⭐ 📕 marketing 是动词 market 派生的名词「营销」⟹「<b>营销信息</b>」。⚠️「市场信息」是另一个意思（行情）。",syn:"advertising · promotional content",conf:"marketing（营销）vs market（市场）——marketing messages 不是「市场消息」。"},
+  putout:{w:"put out",ipa:"/pʊt aʊt/",pos:"phr. v.",tags:["phrase", "poly"],cn:"发布；播出 ⟹ 推送",en:"to publish or broadcast",ex:"marketing messages put out through social media",mem:"⭐⭐ 📕「公布；出版；广播」⟹ 营销语境「<b>推送</b>」。误译栏「清除；删除」——put out a fire（扑灭）那一路。⚠️ 这里是过去分词作后置定语（没有 be），译「推送的」。",syn:"publish · release · send out",conf:"put out（发布；扑灭）vs put off（推迟）vs put up with（忍受）。"},
+  socialmedia:{w:"social media",ipa:"/ˌsəʊʃl ˈmiːdiə/",pos:"n.",tags:["core", "write"],cn:"社交媒体",en:"websites and apps for sharing content",ex:"put out through social media",mem:"media 是 medium 的复数。本篇出现四次：46 · ①❹ · ③❺。",syn:"social networks",conf:"media（媒体）vs medium（媒介；中等的）。"},
+  generate:{w:"generate content",ipa:"/ˈdʒenəreɪt/",pos:"v.",tags:["core", "write"],cn:"生成；产生",en:"to produce or create",ex:"AI can also be used to generate content for social media posts",mem:"gen-（生）。📕 段落译文「为……<b>生成</b>内容」。AI 语境的「生成」就用它（生成式 AI ＝ generative AI）。",syn:"produce · create",conf:"generate（产生）vs generation（一代人；产生）。"},
+  post:{w:"posts",ipa:"/pəʊsts/",pos:"n.",tags:["poly"],cn:"（社交媒体）帖子；帖文",en:"a message published online",ex:"generate content for social media posts and chat sites",mem:"熟词僻义：post 日常是「邮政；职位；柱子」，网络语境是「<b>帖子</b>」。📕「社交媒体帖文」。",syn:"update · entry",conf:"post（帖子；职位）vs poster（海报）。"},
+  chatsite:{w:"chat sites",ipa:"/tʃæt saɪts/",pos:"n.",tags:["core"],cn:"聊天网站",en:"websites where people talk online",ex:"social media posts and chat sites",mem:"📕 段落译文「聊天网站」。",syn:"chat rooms · forums",conf:"site（网站；场所）vs sight（视力；景象）vs cite（引用）。"},
+  disadvantage:{w:"main disadvantage",ipa:"/ˌdɪsədˈvɑːntɪdʒ/",pos:"n.",tags:["core", "write"],cn:"主要缺点",en:"the biggest problem or weakness",ex:"The main disadvantage of using AI to respond to customers",mem:"dis-（否）＋ advantage。<b>The main disadvantage of … is that …</b> 是现成的作文句架（06 节 ②）。",syn:"drawback · downside",conf:"disadvantage（缺点）vs disadvantaged（处境不利的，形容人群）。"},
+  respond:{w:"respond to customers",ipa:"/rɪˈspɒnd/",pos:"v.",tags:["core"],cn:"回应（客户）",en:"to reply or react to",ex:"using AI to respond to customers",mem:"📕 段落译文「使用人工智能来回应客户」。",syn:"reply to · deal with",conf:"respond to（回应）vs be responsible for（对……负责）——形近。"},
+  trust:{w:"trusting … to machines",ipa:"/trʌst/",pos:"v.",tags:["poly", "phrase"],cn:"把……托付给（机器）",en:"to give something to someone to look after",ex:"concerns about trusting personal interactions to machines",mem:"⭐ <b>trust A to B ＝ 把 A 托付给 B</b>（不是「信任 A」）。📕 段落译文「将人际互动交托于机器」。",syn:"entrust A to B · hand over",conf:"trust sb（信任某人）vs trust sth to sb（把某物托付给某人）。"},
+  interaction:{w:"personal interactions",ipa:"/ˌɪntərˈækʃn/",pos:"n.",tags:["core"],cn:"人际互动",en:"communication between people",ex:"trusting personal interactions to machines",mem:"inter-（相互）＋ action。本篇四次：②❶ · 48 human interactions · ③❺ website interactions（网站交互）。",syn:"contact · communication",conf:"interaction（互动）vs intersection（交叉口）。"},
+  leadto:{w:"lead not only to",ipa:"/liːd tuː/",pos:"phr. v.",tags:["phrase", "write"],cn:"不仅导致……（还导致……）",en:"to cause something to happen",ex:"which could lead not only to the subsequent loss",mem:"⭐ <b>lead to A … but also to B</b>：to 跟着 not only 和 but also 各出现一次。which 指代前面整件事。",syn:"result in · bring about",conf:"lead to（导致）vs lead（带领）——前者是因果。"},
+  subsequent:{w:"subsequent",ipa:"/ˈsʌbsɪkwənt/",pos:"adj.",tags:["core"],cn:"随后的；后来的",en:"happening after something else",ex:"the subsequent loss of interpersonal connections",mem:"sub-（在后）＋ sequ-（跟随）。📕 段落译文「日后人际关系的缺失」。",syn:"later · following",conf:"subsequent（随后的）vs consequent（作为结果的）。"},
+  interpersonal:{w:"interpersonal connections",ipa:"/ˌɪntəˈpɜːsənl/",pos:"adj.",tags:["core", "write"],cn:"人际的 ⟹ 人际联系",en:"between people",ex:"the subsequent loss of interpersonal connections",mem:"inter-（之间）＋ personal。作文写「科技疏远人际关系」可用。",syn:"social · human",conf:"interpersonal（人际的）vs impersonal（冷漠的；非个人的）。"},
+  personnel:{w:"marketing personnel",ipa:"/ˌpɜːsəˈnel/",pos:"n.",tags:["core"],cn:"（全体）人员；员工",en:"the people employed in an organization",ex:"a decrease in marketing personnel",mem:"⭐ 📕 段落译文「营销人员的减少」——<b>47 的 the marketer 就是这批人</b>。重音在最后。",syn:"staff · employees",conf:"personnel（人员，集合名词）vs personal（个人的）——一个字母之差。"},
+  believe:{w:"Some believe",ipa:"/bɪˈliːv/",pos:"v.",tags:["core"],cn:"认为",en:"to think something is true",ex:"Some believe that AI is negatively impacting",mem:"📕 这里用于引出部分人的观点 ⟹「<b>认为</b>」。",syn:"think · hold",conf:"believe（认为；相信）vs believe in（信仰；信任）。"},
+  impact:{w:"negatively impacting on",ipa:"/ɪmˈpækt/",pos:"v.",tags:["core", "phrase"],cn:"对……产生（负面）影响",en:"to have a bad effect on",ex:"AI is negatively impacting on the marketer’s role",mem:"⭐ 📕 副词 negatively 修饰进行时谓语，可转为形容词 ⟹「对（……）产生<b>负面</b>影响」。impact on 作动词带 on 是常见用法。",syn:"affect · harm · undermine",conf:"impact on（影响，动词）vs have an impact on（产生影响，名词）。"},
+  marketer:{w:"marketer’s",ipa:"/ˈmɑːkɪtə/",pos:"n.",tags:["core", "poly"],cn:"营销人员",en:"a person whose job is marketing",ex:"negatively impacting on the marketer’s role",mem:"⭐⭐ 📕 疑难表：正「营销人员」，误「市场者」。market（营销）＋ -er（人）。",syn:"marketing professional",conf:"marketer（营销人员）vs marketplace（市场）vs merchant（商人）。"},
+  role:{w:"role",ipa:"/rəʊl/",pos:"n.",tags:["poly"],cn:"（本文）作用",en:"the function something has",ex:"negatively impacting on the marketer’s role",mem:"⭐⭐ 📕 常见义「角色；地位」，此处强调 marketer 的<b>功能和表现</b>，取僻义「<b>作用</b>」。play a role in ＝ 起作用。",syn:"function · part",conf:"role（作用；角色）vs roll（滚；名单）——同音。"},
+  creativity:{w:"creativity",ipa:"/ˌkriːeɪˈtɪvəti/",pos:"n.",tags:["core", "write"],cn:"创造力",en:"the ability to make new things",ex:"by reducing creativity and removing jobs",mem:"📕 导出「使<b>创造力</b>下降」。⚠️ 不是「创新」（innovation）。",syn:"imagination · originality",conf:"creativity（创造力）vs creation（创造物）。"},
+  remove:{w:"removing jobs",ipa:"/rɪˈmuːv/",pos:"v.",tags:["poly", "phrase"],cn:"（本文）使岗位消失；取消岗位",en:"to take away jobs",ex:"by reducing creativity and removing jobs",mem:"⭐⭐ 📕 疑难表：正「取消工作岗位；使工作岗位消失」，误「移动工作」（remove 的「搬走」义）。",syn:"cut jobs · eliminate jobs",conf:"remove（去除）vs move（移动）——remove jobs 是「去掉」不是「挪」。"},
+  aware:{w:"aware",ipa:"/əˈweə/",pos:"adj.",tags:["core"],cn:"意识到的；知道的",en:"knowing that something exists",ex:"but they are aware that it is a way",mem:"📕 导出「但他们<b>也认识到</b>」——加「也」，带出让步。be aware that ＋ 从句。",syn:"conscious · realize",conf:"aware（意识到）vs beware（当心）。"},
+  away:{w:"a way of",ipa:"/ə weɪ əv/",pos:"n.",tags:["phrase", "write"],cn:"……的手段；……的方式",en:"a method of doing something",ex:"it is a way of reducing costs and creating new information",mem:"📕 难点：of 引后置定语修饰 a way ⟹「<b>做某事的手段</b>」。③❹ 也有 a non-intrusive way of delivering。",syn:"means of · method of",conf:"a way of doing（做……的方式）vs on the way（在路上）vs by the way（顺便）。"},
+  allow:{w:"By allowing",ipa:"/əˈlaʊ/",pos:"v.",tags:["core"],cn:"允许；让",en:"to let something happen",ex:"By allowing AI to develop content",mem:"📕 段落译文「通过允许人工智能开发内容」。allow sb to do。",syn:"let · permit",conf:"allow（允许）vs allowance（零用钱；津贴）。"},
+  develop:{w:"develop content",ipa:"/dɪˈveləp/",pos:"v.",tags:["poly"],cn:"开发（内容）",en:"to create something new",ex:"By allowing AI to develop content",mem:"📕 段落译文「开发内容」。develop 跟内容、产品搭配是「开发」，不是「发展」。",syn:"create · produce",conf:"develop（开发；发展）vs envelope（信封）——形近。"},
+  brand:{w:"brand marketers",ipa:"/brænd/",pos:"n.",tags:["core"],cn:"品牌营销人员",en:"people who market a brand",ex:"some brand marketers may find that they are losing control",mem:"📕 段落译文「一些品牌营销人员」。brand narrative ＝ 品牌叙事。",syn:"label · trademark",conf:"brand（品牌）vs bland（平淡的）。"},
+  control:{w:"losing control over",ipa:"/kənˈtrəʊl/",pos:"n.",tags:["phrase", "write"],cn:"失去对……的掌控",en:"no longer being able to decide something",ex:"they are losing control over the brand narrative",mem:"⭐ lose control over ＝ 失去对……的掌控。📕「正失去对品牌叙事的掌控」。作文写「沉迷手机」可用。",syn:"lose one’s grip on",conf:"control over（对……的控制）vs control of（掌控权）——都可，over 更常跟 lose。"},
+  narrative:{w:"brand narrative",ipa:"/ˈnærətɪv/",pos:"n.",tags:["core", "poly"],cn:"（品牌）叙事",en:"the story a brand tells about itself",ex:"losing control over the brand narrative",mem:"📕 段落译文「品牌叙事」——营销圈的现成说法。narrate（讲述）同根。",syn:"story · storytelling",conf:"narrative（叙事）vs narration（旁白；讲述行为）。"},
+  algorithm:{w:"Algorithms",ipa:"/ˈælɡərɪðəm/",pos:"n.",tags:["core", "write"],cn:"算法",en:"a set of rules a computer follows",ex:"Algorithms used to simulate human interactions are creating many of these concerns",mem:"⭐ 48 的主语。源自数学家花剌子米（al-Khwarizmi）的名字。站内 2018 T3、2019 T3 都出现过。",syn:"procedure · formula",conf:"algorithm（算法）vs logarithm（对数）——字母几乎一样。"},
+  usedto:{w:"used to simulate",ipa:"/juːzd tə/",pos:"phr.",tags:["phrase"],cn:"（过去分词）用于……的",en:"that are used in order to",ex:"Algorithms used to simulate human interactions",mem:"⭐⭐ 本篇最大的结构坑：<b>名词 ＋ used to do ＝ 用于做……的名词</b>（＝ that are used to do）。谓语是后面的 are creating。<b>别读成 used to do「过去常常」</b>，也不是 be used to doing「习惯于」。①段三次 can be used to 是「可用于」。",syn:"employed to · designed to",conf:"used to do（过去常常）· be used to do（被用来）· be used to doing（习惯于）· 名词 ＋ used to do（用于……的）。"},
+  simulate:{w:"simulate",ipa:"/ˈsɪmjuleɪt/",pos:"v.",tags:["core"],cn:"模拟；模仿",en:"to copy the way something behaves",ex:"used to simulate human interactions",mem:"⭐⭐ 📕 注意不要与形近词 <b>stimulate</b>（刺激；激励）混淆。误译栏「促进；激励」。simil-（相似）同根：similar。",syn:"imitate · mimic · replicate",conf:"simulate（模拟）vs stimulate（刺激）vs stipulate（规定）。"},
+  create:{w:"are creating",ipa:"/kriˈeɪtɪŋ/",pos:"v.",tags:["poly"],cn:"（本句）引起；产生（感觉）",en:"to cause a feeling",ex:"are creating many of these concerns",mem:"⭐⭐ 📕 此处描述人工智能使人们产生的反应，取僻义「<b>引起，产生（感觉或印象）</b>」。误译栏「创造；创建」。本篇 47 creating new information 是「生成」。",syn:"cause · give rise to · raise",conf:"create concerns（引起担忧）vs create content（生成内容）——看搭配。"},
+  concern:{w:"concerns",ipa:"/kənˈsɜːnz/",pos:"n.",tags:["poly"],cn:"担忧；顾虑",en:"worries",ex:"are creating many of these concerns",mem:"⭐⭐ 📕 可表「关心；关注」或「担忧；顾虑」；结合前文「负面影响」⟹「<b>担忧</b>」。these concerns 回指 ②❶ there are concerns about …",syn:"worries · anxieties",conf:"concern（担忧）vs concerned with（与……有关）vs concerning（关于）。"},
+  especiallyas:{w:"especially as",ipa:"/ɪˈspeʃəli æz/",pos:"conj.",tags:["phrase"],cn:"尤其是因为",en:"particularly because",ex:"especially as no-one is quite sure",mem:"⭐ 📕 状语从句在阐述主句的原因 ⟹ as 译「<b>因为</b>」或省译。别译「当……时」。",syn:"particularly since · above all because",conf:"as（因为）· as（当……时）· as（正如）——看后面是不是一个解释原因的完整句子。"},
+  sure:{w:"quite sure",ipa:"/kwaɪt ʃʊə/",pos:"adj.",tags:["phrase"],cn:"（no-one is quite sure）谁也没有十足的把握",en:"completely certain",ex:"no-one is quite sure what the outcomes of using AI",mem:"📕 形容词 sure 后接名词性从句作逻辑宾语（certain、curious 同）。no-one ＋ quite ⟹ 拿不准，📕「还没人有十足的把握」。",syn:"certain · confident",conf:"not quite sure（不太确定）vs not sure at all（完全不确定）。"},
+  outcome:{w:"outcomes",ipa:"/ˈaʊtkʌmz/",pos:"n.",tags:["core", "write"],cn:"结果；后果",en:"results",ex:"what the outcomes of using AI to interact with customers will be",mem:"out ＋ come：出来的东西。📕「……的结果如何」。",syn:"results · consequences",conf:"outcome（结果）vs income（收入）。"},
+  interact:{w:"interact with",ipa:"/ˌɪntərˈækt/",pos:"v.",tags:["phrase"],cn:"与……互动；交互",en:"to communicate with",ex:"using AI to interact with customers",mem:"📕 正文「互动」、导出「交互」。",syn:"communicate with · engage with",conf:"interact with（互动）vs react to（对……作出反应）。"},
+  accessible:{w:"accessible",ipa:"/əkˈsesəbl/",pos:"adj.",tags:["poly"],cn:"（数据）可访问的；拿得到的",en:"able to be reached or used",ex:"data needs to be accessible",mem:"📕 段落译文「数据必须具有<b>可访问性</b>」。日常还有「无障碍的；易懂的」义。",syn:"available · obtainable",conf:"accessible（可获得的）vs acceptable（可接受的）。"},
+  regulate:{w:"more regulated",ipa:"/ˈreɡjuleɪtɪd/",pos:"v.",tags:["core"],cn:"受（更严的）监管",en:"controlled by rules",ex:"the use of personal data is becoming more regulated",mem:"📕「正受到愈发严格的监管」。进行时 ＋ 比较级 ＝ 一个正在加剧的趋势。",syn:"controlled · restricted",conf:"regulated（受监管的）vs regular（规律的）。"},
+  automated:{w:"automated sharing",ipa:"/ˈɔːtəmeɪtɪd/",pos:"adj.",tags:["core"],cn:"自动的 ⟹ 自动共享",en:"done by machines without people",ex:"the automated sharing of data is becoming more difficult",mem:"auto-（自）。📕「数据的自动共享也变得愈发困难」。",syn:"automatic",conf:"automated（自动化的，强调用机器）vs autonomous（自主的）。"},
+  willing:{w:"not willing to",ipa:"/ˈwɪlɪŋ/",pos:"adj.",tags:["phrase"],cn:"（不）愿意",en:"ready to do something",ex:"If customers are not willing to share data",mem:"be willing to do ＝ 愿意。",syn:"ready · prepared",conf:"willing（愿意的）vs willful（任性的；故意的）。"},
+  share:{w:"share data",ipa:"/ʃeə/",pos:"v.",tags:["core", "write"],cn:"分享（数据）；共享",en:"to let others use something",ex:"not willing to share data",mem:"📕「分享数据」。③❶ 的名词 sharing ＝「共享」。",syn:"give access to · disclose",conf:"share（分享）vs shared（共同的）。"},
+  starve:{w:"starved of",ipa:"/stɑːvd əv/",pos:"phr.",tags:["poly", "phrase", "write"],cn:"缺乏",en:"not having enough of something needed",ex:"AI will be starved of essential information",mem:"⭐⭐ 📕 starve 常见义「（使）挨饿，饿死」，取僻义「<b>使极其缺乏</b>」⟹ be starved of ＝「缺乏」。比喻：数据是 AI 的口粮。误译栏「使……挨饿；断绝」。",syn:"lack · be deprived of",conf:"be starved of（缺乏）vs starve to death（饿死）vs be starving（饿极了）。"},
+  essential:{w:"essential information",ipa:"/ɪˈsenʃl/",pos:"adj.",tags:["core"],cn:"基本的；必要的",en:"absolutely necessary",ex:"starved of essential information",mem:"essence（本质）的形容词。📕「基本信息」；「必要的信息」也对。",syn:"necessary · vital · basic",conf:"essential（必不可少的）vs essence（本质；精华）。"},
+  function:{w:"function effectively",ipa:"/ˈfʌŋkʃn/",pos:"v.",tags:["poly"],cn:"（动词）运行；运转",en:"to work properly",ex:"will not be able to function effectively",mem:"📕「无法有效运行」。⚠️ function 在这里是动词，不是「功能」。",syn:"work · operate · run",conf:"function（运转）vs functional（实用的；起作用的）。"},
+  employ:{w:"employ",ipa:"/ɪmˈplɔɪ/",pos:"v.",tags:["poly"],cn:"（本文）采用；运用",en:"to use a method or skill",ex:"or employ machine learning to improve its marketing content",mem:"⭐⭐ 📕 常见义「雇用」，与「机器学习」这一复杂技术搭配，取僻义「<b>采用；利用</b>」。employ a method／strategy 同。⚠️ 前面省了 to，仍受 not be able to 管。",syn:"use · apply · adopt",conf:"employ（采用；雇用）vs deploy（部署）——形近。"},
+  ml:{w:"machine learning",ipa:"/məˈʃiːn ˈlɜːnɪŋ/",pos:"n.",tags:["core", "write"],cn:"机器学习",en:"computers learning from data",ex:"or employ machine learning to improve its marketing content",mem:"固定术语「机器学习」。",syn:"AI training",conf:"machine learning（机器学习）vs deep learning（深度学习，前者的一种）。"},
+  communication:{w:"communication",ipa:"/kəˌmjuːnɪˈkeɪʃn/",pos:"n.",tags:["poly"],cn:"（营销）沟通方式",en:"the way a company talks to customers",ex:"to improve its marketing content and communication",mem:"⭐ 📕 为了行文工整，与 marketing content「营销内容」形成对仗，<b>增译为「沟通方式」</b>。初译「传播」不准。",syn:"messaging · contact",conf:"communication（沟通）vs community（社区；共同体）。"},
+  unless:{w:"unless",ipa:"/ənˈles/",pos:"conj.",tags:["core", "write"],cn:"除非",en:"except if",ex:"unless customers are prepared to sign release agreements",mem:"📕 段落译文「除非……否则……」。unless ＝ if not。",syn:"if … not · except if",conf:"unless（除非）vs until（直到）。"},
+  prepared:{w:"prepared to",ipa:"/prɪˈpeəd/",pos:"adj.",tags:["phrase", "write"],cn:"愿意（做出让步）",en:"willing to do something",ex:"unless customers are prepared to sign release agreements",mem:"⭐ be prepared to do ＝「愿意……」（不只是「准备好」）。📕「除非客户愿意签署……」。",syn:"willing to · ready to",conf:"be prepared to do（愿意做）vs be prepared for（为……做好准备）。"},
+  release:{w:"release agreements",ipa:"/rɪˈliːs/",pos:"n.",tags:["poly"],cn:"（数据）授权协议",en:"documents giving permission to use data",ex:"sign release agreements",mem:"⭐⭐ 📕 段落译文「<b>数据授权协议</b>」。release 是「放行、授权（让对方使用）」，不是「释放」「发布」。",syn:"consent forms · permission",conf:"release（授权；发布；释放）vs relief（缓解）。"},
+  somewhat:{w:"somewhat",ipa:"/ˈsʌmwɒt/",pos:"adv.",tags:["core", "write"],cn:"有点；在一定程度上",en:"to some degree",ex:"the use of AI may become somewhat restricted in the future",mem:"📕「受到<b>一定程度</b>的限制」——和 may 一起把语气压软，两个护栏都要译出来。",syn:"rather · slightly · to some extent",conf:"somewhat（有点）vs somehow（不知怎么地）。"},
+  restrict:{w:"restricted",ipa:"/rɪˈstrɪktɪd/",pos:"v.",tags:["core"],cn:"限制",en:"to limit",ex:"may become somewhat restricted in the future",mem:"📕「受到……限制」。",syn:"limit · constrain",conf:"restrict（限制范围）vs prohibit（禁止）——限制不等于禁止。"},
+  notonly:{w:"Not only can",ipa:"/nɒt ˈəʊnli/",pos:"phr.",tags:["phrase", "write"],cn:"不仅能（句首倒装）",en:"not just",ex:"Not only can AI help to create the marketing content",mem:"⭐ Not only 放句首 ⟹ 部分倒装（can 提前）。后半 but it can also 照常语序。作文高级句。",syn:"not just",conf:"Not only can AI …（倒装）vs AI can not only …（不倒装）——意思一样。"},
+  intrusive:{w:"non-intrusive",ipa:"/ˌnɒn ɪnˈtruːsɪv/",pos:"adj.",tags:["core"],cn:"不扰人的",en:"not annoying or disturbing people",ex:"a non-intrusive way of delivering the content",mem:"⭐⭐ 📕 前缀 non-（表否定）＋ intrusive（侵扰的）⟹「<b>不扰人的</b>」。in-（入）＋ trude（推）：硬闯进来。<b>③❹ 与 50 各一次</b>。",syn:"unobtrusive · discreet",conf:"intrusive（侵扰的）vs intrude（闯入）vs extrude（挤出）。"},
+  deliver:{w:"delivering",ipa:"/dɪˈlɪvə/",pos:"v.",tags:["poly"],cn:"递送 ⟹ 推送",en:"to bring something to someone",ex:"a non-intrusive way of delivering the content to the target customers",mem:"📕 段落译文「将内容推送给目标客户」。<b>50 的 delivery 是它的名词版</b>。",syn:"send · distribute",conf:"deliver（推送；递送；发表演讲；接生）——一词多义，看宾语。"},
+  gather:{w:"gathered on",ipa:"/ˈɡæðə/",pos:"v.",tags:["core"],cn:"收集（关于……的数据）",en:"to collect",ex:"Data can be gathered on where the customer can be engaged",mem:"📕「收集有关……的数据」。gather data on ＝ 收集关于……的数据，on ＝ 关于。",syn:"collect · compile",conf:"gather（收集）vs gathering（聚会）。"},
+  engage:{w:"engaged",ipa:"/ɪnˈɡeɪdʒd/",pos:"v.",tags:["poly"],cn:"（营销）吸引参与互动",en:"to attract someone’s interest",ex:"where the customer can be engaged",mem:"⭐ 📕 段落译文「客户何种情况下可能<b>参与品牌互动</b>」。营销里的 engagement ＝ 用户参与度。⚠️ 不是「订婚」「被雇用」。",syn:"attract · involve",conf:"engaged（参与的；订婚的；忙的）——三义看语境。"},
+  device:{w:"devices used",ipa:"/dɪˈvaɪsɪz/",pos:"n.",tags:["core"],cn:"（使用的）设备",en:"machines such as phones",ex:"such as location, devices used, website interactions",mem:"📕「使用的设备」。devices used ＝ 过去分词后置。",syn:"gadgets · equipment",conf:"device（设备，名词）vs devise（设计，动词）。"},
+  display:{w:"display",ipa:"/dɪˈspleɪ/",pos:"v.",tags:["core"],cn:"展示；显示",en:"to show",ex:"to display marketing messages in appropriate forms",mem:"📕「以恰当的形式……展示营销信息」。",syn:"show · present",conf:"display（展示）vs deploy（部署）。"},
+  popup:{w:"pop-up advertisements",ipa:"/ˈpɒp ʌp/",pos:"n.",tags:["core"],cn:"弹出式广告",en:"ads that suddenly appear on screen",ex:"pop-up advertisements, and banners",mem:"📕「弹出式广告」。pop up ＝ 突然冒出来。",syn:"pop-ups",conf:"pop-up（弹窗）vs pop music（流行音乐）。"},
+  banner:{w:"banners",ipa:"/ˈbænəz/",pos:"n.",tags:["poly"],cn:"横幅广告",en:"long ads across the top of a web page",ex:"and banners at an appropriate frequency",mem:"📕「横幅广告」。日常义「横幅；旗帜」，网页语境专指 banner ad。",syn:"banner ads",conf:"banner（横幅）vs banning（禁止）。"},
+  frequency:{w:"appropriate frequency",ipa:"/ˈfriːkwənsi/",pos:"n.",tags:["core"],cn:"（适当的）频率",en:"how often something happens",ex:"at an appropriate frequency",mem:"📕「以适当的频率」。⚠️ 修饰 display，不修饰 banners。at a … frequency ＝ 以……频率。",syn:"rate · regularity",conf:"frequency（频率）vs frequent（频繁的）。"},
+  delivery:{w:"delivery",ipa:"/dɪˈlɪvəri/",pos:"n.",tags:["poly"],cn:"（营销信息的）推送",en:"the act of sending messages to people",ex:"The non-intrusive delivery of the marketing messages",mem:"⭐⭐ 📕 delivery 具有动作含义，宜转为动词「<b>推送</b>」：The non-intrusive delivery of the messages ＝ 不扰人地推送信息。名词化还原。",syn:"distribution · transmission",conf:"delivery（推送；交付；分娩）——本文跟 messages 搭配。"},
+  inaway:{w:"in a way that",ipa:"/ɪn ə weɪ ðæt/",pos:"phr.",tags:["phrase", "write"],cn:"以……的方式",en:"by a method that",ex:"in a way that is sensitive to the needs of the target customer",mem:"⭐ 📕 定从具体说明以怎样的方式推送，可译为动词短语，并将概括性名词 way 省译。作文：in a way that is …",syn:"in a manner that",conf:"in a way（在某种程度上）vs in a way that …（以……的方式）——后面有没有从句两回事。"},
+  sensitive:{w:"sensitive to",ipa:"/ˈsensətɪv/",pos:"adj.",tags:["poly", "phrase"],cn:"对……敏感；敏锐感知",en:"quick to notice and respond to",ex:"sensitive to the needs of the target customer",mem:"⭐⭐ 📕 sensitive to sth 可表「体恤某事」或「对某事敏感」，营销语境宜译「<b>对需求敏感</b>」或「<b>敏锐感知需求</b>」。疑难表误译「体恤需求」。",syn:"responsive to · attentive to",conf:"sensitive（敏感的；体贴的）vs sensible（明智的）。"},
+  critical:{w:"critical challenges",ipa:"/ˈkrɪtɪkl/",pos:"adj.",tags:["poly"],cn:"关键的",en:"extremely important",ex:"one of the critical challenges to the digital marketer",mem:"⭐⭐ 📕 critical 可表「极重要的；关键的」或「严重的；危急的」；文中强调挑战对数字营销未来的重要影响 ⟹「<b>关键挑战</b>」。误译「严重挑战」。",syn:"key · crucial · vital",conf:"critical（关键的；批判的；危急的）vs critic（评论家）vs criticism（批评）。"},
+};
+
+
+const panel=document.getElementById('panel');
+const isMobile=()=>window.innerWidth<=900;
+function badge(t){return {core:'<span class="badge b-core">核心词</span>',phrase:'<span class="badge b-phrase">短语</span>',poly:'<span class="badge b-poly">熟词僻义</span>',write:'<span class="badge b-write">写作✍︎</span>'}[t]||''}
+function showCard(k,el){
+  const d=V[k]; if(!d)return;
+  document.querySelectorAll('.tk.active').forEach(e=>e.classList.remove('active'));
+  if(el&&el.classList.contains('tk'))el.classList.add('active');
+  panel.innerHTML='<button class="close" onclick="panel.classList.remove(\'open\')">✕</button>'+
+  '<div class="wcard">'+
+    '<div class="head"><span class="w">'+d.w+'</span><span class="ipa">'+d.ipa+'</span><span class="pos">'+d.pos+'</span>'+d.tags.map(badge).join('')+'</div>'+
+    '<div class="cn">'+d.cn+'</div><div class="en-def">'+d.en+'</div>'+
+    '<div class="row r-ex"><b>原文语境</b>「…'+d.ex+'…」</div>'+
+    '<div class="row r-mem"><b>怎么记</b>'+d.mem+'</div>'+
+    '<div class="row r-syn"><b>同类词</b>'+d.syn+'</div>'+
+    '<div class="row r-conf"><b>易混辨析</b>'+d.conf+'</div>'+
+  '</div>';
+  if(isMobile())panel.classList.add('open');
+}
+document.querySelectorAll('.tk').forEach(t=>t.addEventListener('click',e=>{e.stopPropagation();showCard(t.dataset.w,t)}));
+
+let allOn=false;
+function toggleAll(){allOn=!allOn;document.querySelectorAll('.para').forEach(p=>p.classList.toggle('showzh',allOn))}
+function go(id){document.getElementById(id).scrollIntoView({behavior:'smooth',block:'center'})}
+function tz(btn){btn.closest('.para').classList.toggle('showzh')}
+
+/* ---- 五步切换 ---- */
+function tab(btn,i){
+  const sent=btn.closest('.sent');
+  sent.querySelectorAll('.stab').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  sent.querySelectorAll('.spane').forEach((p,j)=>p.classList.toggle('on',j===i));
+}
+
+/* ---- 采分点自评 ---- */
+const KEY='en2023fanyi_score_v1';
+function mk(btn){
+  const pt=btn.closest('.pt');
+  if(pt.classList.contains('got')){pt.classList.remove('got');pt.classList.add('lost');btn.textContent='✘ 丢分'}
+  else if(pt.classList.contains('lost')){pt.classList.remove('lost');btn.textContent='未判'}
+  else{pt.classList.add('got');btn.textContent='✔ 得分'}
+  calc();save();
+}
+function calc(){
+  let total=0;
+  document.querySelectorAll('.sent').forEach(s=>{
+    let sub=0;
+    s.querySelectorAll('.pt.got').forEach(p=>sub+=parseFloat(p.dataset.v));
+    const b=s.querySelector('.qsc'); if(b)b.textContent=sub;
+    total+=sub;
+  });
+  document.getElementById('total').textContent=total;
+}
+function save(){
+  const st=[];
+  document.querySelectorAll('.pt').forEach(p=>st.push(p.classList.contains('got')?1:(p.classList.contains('lost')?2:0)));
+  try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}
+}
+function load(){
+  let st=null;
+  try{st=JSON.parse(localStorage.getItem(KEY))}catch(e){}
+  if(!st)return;
+  document.querySelectorAll('.pt').forEach((p,i)=>{
+    const b=p.querySelector('.mark');
+    if(st[i]===1){p.classList.add('got');b.textContent='✔ 得分'}
+    else if(st[i]===2){p.classList.add('lost');b.textContent='✘ 丢分'}
+  });
+  calc();
+}
+function resetScore(){
+  document.querySelectorAll('.pt').forEach(p=>{p.classList.remove('got','lost');p.querySelector('.mark').textContent='未判'});
+  calc();save();
+}
+load();
+
+/* ---- 熟词僻义默写模式 ---- */
+let hide=false;
+function polyMode(){
+  hide=!hide;
+  const sec=document.getElementById('pmbtn').closest('.card');
+  sec.classList.toggle('hidemode',hide);
+  document.getElementById('pmbtn').classList.toggle('on',hide);
+  document.getElementById('pmbtn').textContent=hide?'👁 显示全部':'✍️ 默写模式';
+  if(!hide)sec.querySelectorAll('.polytab td.good').forEach(td=>td.classList.remove('open'));
+}
+document.querySelectorAll('.polytab td.good').forEach(td=>{
+  td.addEventListener('click',()=>{if(hide)td.classList.toggle('open')});
+});
+
+/* ---- 词卡网格 ---- */
+const vg=document.getElementById('vgrid');
+Object.keys(V).forEach(k=>{
+  const d=V[k];
+  const div=document.createElement('div');
+  div.style.cssText='border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer';
+  div.innerHTML='<span style="float:right">'+d.tags.map(badge).join('')+'</span><div style="font-family:var(--serif);font-weight:bold">'+d.w+'</div><div style="font-size:.85rem;color:var(--muted)">'+d.cn+'</div>';
+  div.addEventListener('click',()=>{showCard(k,null);if(!isMobile())window.scrollTo({top:0,behavior:'smooth'})});
+  vg.appendChild(div);
+});
+document.getElementById('vcount').textContent='共 '+Object.keys(V).length+' 张';
+
+/* ---- 划词查有道 ---- */
+const yd=document.getElementById('yd');let sel='',ydHold=0,ydT=0;
+/* 触屏：点按钮会先把选区清掉 → selectionchange 立刻把按钮藏了 → 点击落空。改成延迟隐藏 ＋ 按下即锁定 */
+const ydTouch=window.matchMedia&&matchMedia('(pointer:coarse)').matches;
+function ydHide(){clearTimeout(ydT);ydHold=0;yd.style.display='none'}
+document.addEventListener('selectionchange',function(){
+  const s=window.getSelection();const t=s?s.toString().trim():'';
+  if(t&&/^[a-zA-Z' -]{2,40}$/.test(t)){
+    sel=t;clearTimeout(ydT);
+    try{const r=s.getRangeAt(0).getBoundingClientRect();
+      yd.style.left=Math.max(8,Math.min(r.left,window.innerWidth-110))+'px';
+      yd.style.top=(r.bottom+(ydTouch?30:8))+'px';yd.style.display='block';}catch(e){}
+  }else if(!ydHold){clearTimeout(ydT);ydT=setTimeout(function(){if(!ydHold)yd.style.display='none'},ydTouch?900:0)}
+});
+['pointerdown','touchstart','mousedown'].forEach(function(ev){yd.addEventListener(ev,function(){ydHold=1;clearTimeout(ydT)},{passive:true})});
+yd.addEventListener('click',function(){
+  const u='https://dict.youdao.com/result?word='+encodeURIComponent(sel)+'&lang=en';
+  let w=null;try{w=window.open(u,'_blank')}catch(e){}
+  if(!w)location.href=u;
+  ydHide()});
+document.addEventListener('click',function(e){if(e.target!==yd&&!window.getSelection().toString())ydHide()});
+
+function imgAll(b){const on=document.body.classList.toggle('stx-allimg');b.textContent=on?'收起原卷':'原卷对照';
+  if(on)document.querySelectorAll('img.strip').forEach(im=>im.loading='eager')}
+</script>
+<script src="img/strip_boxes_2023.js?v=9"></script>
+<script src="_strip_lookup.js?v=8"></script>
+<script src="_strip_text.js?v=23"></script>
+</body>
+</html>

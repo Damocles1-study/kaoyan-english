@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2023 英一 Text 3 · 书店与出版商之战：没有赢家，作者先输</title>
+<style>
+  :root{
+    --bg:#faf9f6; --card:#ffffff; --ink:#2b2b2b; --muted:#8a8578;
+    --accent:#8b5e34; --accent-soft:#f3e9dd; --line:#e8e3d8;
+    --hl:#fdf3d8; --hl-border:#e0b84d;
+    --green:#3e7a4e; --green-soft:#e8f2ea;
+    --red:#b04a3a; --red-soft:#f9e9e6;
+    --blue:#3d6a8a; --blue-soft:#e7eff5;
+    --purple:#6d5a8e; --purple-soft:#eeeaf5;
+    --serif:"Georgia","Songti SC",serif;
+    --sans:-apple-system,"PingFang SC","Helvetica Neue",sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#1c1a17; --card:#26231f; --ink:#e8e4dc; --muted:#9a948a;
+      --accent:#d0a06a; --accent-soft:#3a3127; --line:#3a362f;
+      --hl:#3d3520; --hl-border:#b08c3a;
+      --green:#7fb98d; --green-soft:#26362b;
+      --red:#d98876; --red-soft:#3d2a26;
+      --blue:#8ab3d0; --blue-soft:#26323d;
+      --purple:#a996c8; --purple-soft:#302a3d;
+    }
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;padding-bottom:120px}
+  .wrap{max-width:1100px;margin:0 auto;padding:24px 20px}
+  .back{font-size:.85rem;color:var(--muted);text-decoration:none}
+  .back:hover{color:var(--accent)}
+  header{margin:14px 0 28px}
+  header h1{font-family:var(--serif);font-size:1.7rem;line-height:1.3}
+  header .sub{color:var(--muted);margin-top:6px;font-size:.9rem}
+  .tags{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+  .tag{font-size:.75rem;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);border:1px solid var(--line)}
+  .tag.warn{background:var(--red-soft);color:var(--red);border-color:var(--red)}
+  .tag.ok{background:var(--green-soft);color:var(--green);border-color:var(--green)}
+
+  .layout{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:24px;align-items:start}
+  main{min-width:0}
+  @media (max-width:900px){.layout{grid-template-columns:minmax(0,1fr)}}
+
+  section.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:24px}
+  h2{font-size:1.05rem;letter-spacing:.05em;color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+  h2 .n{font-size:.72rem;background:var(--accent);color:var(--card);border-radius:6px;padding:1px 7px}
+  h3{font-size:.95rem;color:var(--accent);margin:18px 0 10px}
+
+  .para{margin-bottom:22px}
+  .para .en{font-family:var(--serif);font-size:1.06rem;line-height:1.9}
+  .pno{color:var(--muted);font-size:.75rem;user-select:none;margin-right:6px}
+  .tk{background:var(--hl);border-bottom:2px solid var(--hl-border);border-radius:3px;padding:0 2px;cursor:pointer;transition:filter .15s}
+  .tk:hover{filter:brightness(.93)}
+  .tk.active{outline:2px solid var(--hl-border)}
+  .ls{border-bottom:2px dotted var(--blue);cursor:pointer}
+  .para .zh{display:none;margin-top:10px;padding:10px 14px;background:var(--blue-soft);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:.93rem}
+  .para.showzh .zh{display:block}
+  .zbtn{float:right;margin-left:10px;font-size:.72rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:6px;padding:2px 9px;cursor:pointer}
+  .zbtn:hover{color:var(--accent);border-color:var(--accent)}
+  .allbtn{font-size:.78rem;border:1px solid var(--accent);background:none;color:var(--accent);border-radius:8px;padding:4px 12px;cursor:pointer;margin-left:auto}
+
+  aside{position:sticky;top:20px}
+  #panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;min-height:180px}
+  #panel .hint{color:var(--muted);font-size:.88rem;text-align:center;padding:30px 10px}
+  .wcard .head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .wcard .w{font-family:var(--serif);font-size:1.35rem;font-weight:bold}
+  .wcard .ipa{color:var(--muted);font-size:.85rem}
+  .wcard .pos{font-size:.72rem;color:var(--purple);background:var(--purple-soft);padding:1px 8px;border-radius:999px}
+  .wcard .badge{font-size:.7rem;padding:1px 8px;border-radius:999px}
+  .b-core{background:var(--red-soft);color:var(--red)}
+  .b-phrase{background:var(--blue-soft);color:var(--blue)}
+  .b-poly{background:var(--purple-soft);color:var(--purple)}
+  .b-write{background:var(--green-soft);color:var(--green)}
+  .wcard .cn{margin-top:8px;font-size:1rem;font-weight:600}
+  .wcard .en-def{color:var(--muted);font-size:.86rem;font-style:italic;margin-top:2px}
+  .wcard .row{margin-top:10px;font-size:.86rem;padding:8px 10px;border-radius:8px}
+  .wcard .row>b:first-child{font-size:.72rem;display:block;margin-bottom:2px;letter-spacing:.06em}
+  .r-ex{background:var(--hl)} .r-ex b{color:var(--hl-border)}
+  .r-mem{background:var(--green-soft)} .r-mem b{color:var(--green)}
+  .r-syn{background:var(--blue-soft)} .r-syn b{color:var(--blue)}
+  .r-conf{background:var(--red-soft)} .r-conf b{color:var(--red)}
+  #panel .close{display:none}
+  @media (max-width:900px){
+    aside{position:fixed;left:0;right:0;bottom:0;z-index:50;padding:0 8px 8px}
+    #panel{box-shadow:0 -6px 24px rgba(0,0,0,.18);max-height:55vh;overflow-y:auto;display:none}
+    #panel.open{display:block}
+    #panel .close{display:block;float:right;border:none;background:var(--line);border-radius:8px;padding:2px 10px;cursor:pointer;color:var(--ink)}
+  }
+
+  .q{margin-bottom:22px;padding-bottom:18px;border-bottom:1px dashed var(--line)}
+  .q:last-child{border:none;margin-bottom:0;padding-bottom:0}
+  .q .stem{font-weight:600;font-family:var(--serif)}
+  .qt{font-size:.7rem;color:var(--blue);background:var(--blue-soft);border-radius:999px;padding:1px 8px;margin-right:6px;vertical-align:2px}
+  .opts{margin-top:10px;display:grid;gap:8px}
+  .opt{border:1px solid var(--line);border-radius:10px;padding:8px 12px;cursor:pointer;font-size:.93rem;font-family:var(--serif);transition:all .15s}
+  .opt:hover{border-color:var(--accent)}
+  .q.done .opt{cursor:default}
+  .opt.right{background:var(--green-soft);border-color:var(--green)}
+  .opt.wrong{background:var(--red-soft);border-color:var(--red)}
+  .expl{display:none;margin-top:12px;background:var(--accent-soft);border-radius:10px;padding:12px 14px;font-size:.9rem}
+  .q.done .expl{display:block}
+  .expl b{color:var(--accent)}
+  .expl .loc{font-family:var(--serif);font-style:italic;background:var(--hl);padding:1px 4px;border-radius:3px}
+  .fail{background:var(--red-soft);border:1px solid var(--red);border-radius:10px;padding:10px 13px;margin-bottom:10px;font-size:.89rem}
+  .fail b{color:var(--red)}
+  .waver{background:var(--hl);border:1px solid var(--hl-border);border-radius:10px;padding:10px 13px;margin-bottom:10px;font-size:.89rem}
+
+  .sent{margin-bottom:20px}
+  .sent .src{font-family:var(--serif);font-size:1rem;background:var(--blue-soft);padding:12px 14px;border-radius:10px;border-left:3px solid var(--blue)}
+  .sent .anat{margin-top:8px;font-size:.9rem}
+  .sent .anat li{margin:4px 0 4px 18px}
+  .sent .tr{margin-top:8px;font-size:.92rem;color:var(--muted)}
+  .skel{color:var(--red);font-weight:600}
+
+  .filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+  .fbtn{font-size:.8rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:999px;padding:4px 14px;cursor:pointer}
+  .fbtn.on{background:var(--accent);color:var(--card);border-color:var(--accent)}
+  .vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
+  .vitem{border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer;transition:border-color .15s}
+  .vitem:hover{border-color:var(--accent)}
+  .vitem .w{font-family:var(--serif);font-weight:bold}
+  .vitem .cn{font-size:.85rem;color:var(--muted)}
+  .vitem .badges{float:right}
+
+  .wb{display:grid;gap:10px}
+  .wbi{border-left:3px solid var(--green);background:var(--green-soft);border-radius:0 10px 10px 0;padding:10px 14px;font-size:.92rem}
+  .wbi .p{font-family:var(--serif);font-weight:600}
+  .wbi .u{color:var(--muted);font-size:.85rem}
+
+  .flow{display:grid;gap:8px;font-size:.92rem}
+  .flow .fi{border:1px solid var(--line);border-radius:10px;padding:9px 13px}
+  .flow .fi b{color:var(--accent)}
+
+  .ctab{width:100%;border-collapse:collapse;font-size:.86rem;margin-top:8px}
+  .ctab th,.ctab td{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
+  .ctab th{background:var(--accent-soft);color:var(--accent);font-size:.8rem;white-space:nowrap}
+  .ctab code{background:var(--hl);padding:0 3px;border-radius:3px}
+  .tabwrap{overflow-x:auto}
+  .ok{color:var(--green);font-weight:700}
+  .no{color:var(--red);font-weight:700}
+  .tl{display:grid;gap:10px;margin-top:6px}
+  .tli{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:start;border:1px solid var(--line);border-radius:10px;padding:10px 13px}
+  .tli .mark{font-family:var(--serif);font-weight:700;color:var(--accent);background:var(--accent-soft);border-radius:8px;padding:4px 10px;white-space:nowrap;font-size:.85rem}
+
+  .arrow{display:grid;gap:8px;margin-top:8px}
+  .arrow .ai{border:1px solid var(--line);border-radius:10px;padding:10px 13px;font-size:.9rem}
+  .arrow .ai.old{background:var(--red-soft);border-color:var(--red)}
+  .arrow .ai.new{background:var(--green-soft);border-color:var(--green)}
+  .chain{font-family:var(--serif);font-size:.95rem;background:var(--hl);border:1px solid var(--hl-border);border-radius:10px;padding:10px 14px;margin:8px 0;overflow-x:auto}
+
+  #yd{position:fixed;z-index:60;display:none;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:4px 12px;font-size:.8rem;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+  footer{color:var(--muted);font-size:.8rem;text-align:center;margin-top:30px}
+  .att{display:grid;gap:8px;margin-top:10px}
+  .atti{border:1px solid var(--line);border-radius:10px;padding:9px 13px;font-size:.9rem}
+  .atti b{font-family:var(--serif)}
+  .atti.no2{background:var(--red-soft);border-color:var(--red)}
+  .atti.yes{background:var(--green-soft);border-color:var(--green)}
+  .atti,.expl,.wbi,.zh,.fi,.ai,figcaption,p{overflow-wrap:anywhere}
+
+  /* 2021 起：原文以原卷扫描句条呈现 */
+  .sn{margin:0 0 14px}
+  .sn .pno{display:block;margin-bottom:4px;font-size:.78rem;line-height:1.6}
+  img.strip{display:block;width:100%;max-width:760px;height:auto;background:#fff;border:1px solid var(--line);border-radius:6px;cursor:pointer}
+  .sent .src img.strip{margin-top:6px;cursor:default}
+  .kw{margin-top:5px;font-size:.88rem;line-height:2.1;font-family:var(--serif)}
+  @media (prefers-color-scheme: dark){img.strip{filter:invert(.9) hue-rotate(180deg)}}
+  .sn,.sent .src{overflow-x:auto}
+  @media (max-width:700px){img.strip{width:640px;max-width:none}.sn::after{content:'← 句条可左右滑动 →';display:block;font-size:.7rem;color:var(--muted);margin-top:2px}}
+
+  /* 2023 起：流式版——识别好的句子在段落里连排，像 2007–2020 */
+  .para .en{font-family:var(--serif);font-size:1.02rem;line-height:1.9}
+  .stx-flow .para .en .pno{margin-right:4px}
+  .stx-flow .para .sn:not(.stx-on) .kw{margin-bottom:8px}
+</style>
+
+</head>
+<body class="stx-flow">
+<div class="wrap">
+  <a class="back" href="index.html">◀ 返回英语复盘中心</a>
+  <header>
+    <h1>书店与出版商之战：没有赢家，作者先输</h1>
+    <div class="sub">2023 年英语（一）真题 · Text 3 · 428 词 · 7 段 · 建议做题 18 min · 话题：出版业×商业纠纷×行业集中（来源：The Telegraph 2021-06-04，原题 <i>No One Wins in the War Between Bookshops and Publishers …</i>，据黄皮书）</div>
+    <div class="tags">
+      <span class="tag">正确答案：31A 32C 33B 34A 35D</span><span class="tag">题型：例子作用 ＋ 动作原因 ＋ 言外之意 ＋ 后果推断 ＋ 人物观点</span><span class="tag">难度：33 是本篇唯一「原文没有、要推出来」的正确项</span><span class="tag">⚠️ 原定冲刺模考卷，已按你的决定提前开复盘</span>
+    </div>
+  </header>
+
+  <div class="layout">
+    <main>
+      <!-- ========== 全文脉络 ========== -->
+      <section class="card">
+        <h2><span class="n">00</span>读前一分钟 · 全文脉络（做完题再看也行）</h2>
+        <div class="flow">
+          <div class="fi"><b>①段 现象</b>：想去英国最大的连锁书店水石（Waterstones）买梅根的童书《长椅》、克林顿与帕特森合写的惊悚小说《总统的女儿》？可能得在店里找上一阵——这两本书都由企鹅兰登（PRH）出版，而 PRH 正和水石<b>僵持不下</b>（31 题：两本书是引子，引出的是这场对峙）。</div>
+          <div class="fi"><b>②段 起因</b>：去年底 PRH 先动手——给水石设了<b>赊购额度限制</b>，而且限得很死；随后水石各分店把 PRH 的书从桌台、展区、橱窗这些显眼处撤下，悄悄放回书架上的所属分区（32 题：先发制人 → 反制）。</div>
+          <div class="fi"><b>③段 一方的声音</b>：PRH 拒绝置评，只有水石发言人说话——PRH 是全英唯一限制我们进货的出版商；我们没抵制它的书，库存少了也尽力保证供应；如今门店重开，<b>希望一切恢复正常、能按正常方式进货</b>；店里生意火爆，5 月「月度之书」销量创 2018 年来新高（33 题：言外之意＝该把限制撤了）。</div>
+          <div class="fi"><b>④段 输家</b>：吃亏的是 PRH 的作者——大牌作者影响不大，靠水石店员热心推荐的<b>中游作者</b>才盼着纠纷快点结束（34 题：没人推，销量就掉）。</div>
+          <div class="fi"><b>⑤⑥⑦段 更大的担忧</b>：这场纠纷来得不是时候——作者们本就担心 PRH 与西蒙与舒斯特的<b>拟议合并</b>：独立出版商变少，竞价少了、预付款低了、出的书更雷同。经纪人 Lownie：这是<b>权力集中</b>大趋势的一部分；出版业不光要作者和员工多元，还要出书渠道多元——好书多出自小出版社（35 题）。作者收尾：多元会不会成为「做大才能通吃」的牺牲品，拭目以待。</div>
+          <div class="fi" style="border-color:var(--accent)">📌 <b>一句话主旨</b>：书店和出版商斗气，作者（尤其不出名的）先受伤；而出版商合并、做大，会让出版的多样性付出更大代价。<br>📌 <b>结构套路</b>：现象 → 起因 → 一方表态 → 受害者 → 更大的同类隐患 → 专家定性 → 留白收尾。<b>五道题顺序出题</b>：31①、32②、33③、34④、35⑥（⑤段是 35 题 This 的回指对象）。<br>📌 <b>和同卷 T1、T2 比一比</b>：前两篇都是「正反两人＋一位专家」；本篇也是两方加一位专家，<b>但有一方不开口</b>（PRH declined to comment）——只听到水石一方的话，33 题正是在考：<b>纠纷一方的公开表态，真正想说的是什么</b>。</div>
+          <div class="fi">🗞 <b>背景（WebSearch 核过，只帮读、不替原文纠错）</b>：PRH 在 2020 年第四季度给水石设了赊购限制；《书商》（The Bookseller）报道水石因此不再给 PRH 的书做推广——它的「月度之书」从年初起<b>一本 PRH 的书都没有</b>。⟹ ③❺ 那句「5 月月度之书销量创新高」其实是在说：<b>没有 PRH，我们照样卖得很好</b>——底气十足地要对方松绑（33B）。两家在 <b>2021 年 6 月 4 日</b>发联合声明宣布「恢复正常」，恰好是本文见报当天。至于⑤段的合并：2022 年 10 月 31 日美国联邦法官以「削弱竞争」为由裁定阻止，当年 11 月交易告吹——Lownie 担心的事，法院也担心。</div>
+        </div>
+      </section>
+
+      <!-- ========== 原文精读 ========== -->
+      <section class="card">
+        <h2><span class="n">01</span>原文精读 <button class="allbtn" onclick="toggleAll()">全文意译 开/关</button> <button class="allbtn" id="imgall" onclick="imgAll(this)">原卷对照</button></h2>
+        <p style="font-size:.8rem;color:var(--muted);margin-bottom:14px">🟡 黄色高亮 = 重难点词/短语，点击右侧出卡片 ｜ 蓝色虚线 = 长难句，点击跳到精析 ｜ 每段「意」= 段落意译 ｜ 选中任意其他单词浮出「查有道」 ｜ 原文由你的浏览器从原卷识别成文字（首次约 3 秒，之后秒开）；「原卷对照」可逐句看扫描原图、改识别错字</p>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">①</span>
+            <div class="sn" data-go="l1_1"><img class="strip" src="img/2023_T3/s1_1.png" alt="①❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="headfor">heading for</span> · <span class="tk" data-w="branch">branch</span> · <span class="tk" data-w="retailer">book retailer</span> · <span class="tk" data-w="insearch">in search of</span> · <span class="tk" data-w="duchess">Duchess of Sussex</span> · <span class="tk" data-w="huntaround">hunt around a bit</span> · <span class="tk" data-w="thriller">thriller</span></div></div>
+            <div class="sn"><img class="strip" src="img/2023_T3/s1_2.png" alt="①❷ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="involved">involved in</span> · <span class="tk" data-w="standoff">stand-off</span></div></div>
+          </div>
+          <div class="zh"><b>①段意：</b>如果你正要去离家最近的水石书店（英国最大的图书零售商），想找苏塞克斯公爵夫人的新童书《长椅》，可能得做好在店里翻找一阵的准备；找克林顿与詹姆斯·帕特森合写的新惊悚小说《总统的女儿》，恐怕也一样。这两本书下周都由企鹅兰登书屋（PRH）出版——而这家公司眼下正和水石僵持不下。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">②</span>
+            <div class="sn"><img class="strip" src="img/2023_T3/s2_1.png" alt="②❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="confirm">confirmed</span> · <span class="tk" data-w="introduce">introduced</span> · <span class="tk" data-w="creditlimit">credit limit</span> · <span class="tk" data-w="significant">significant level</span></div></div>
+            <div class="sn" data-go="l2_2"><img class="strip" src="img/2023_T3/s2_2.png" alt="②❷ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="trademag">trade magazine</span> · <span class="tk" data-w="prominent">prominent</span> · <span class="tk" data-w="display">display spaces</span> · <span class="tk" data-w="retire">retiring</span> · <span class="tk" data-w="relevant">relevant sections</span></div></div>
+          </div>
+          <div class="zh"><b>②段意：</b>事情始于去年年底：PRH 证实，它对水石设了赊购额度限制，而且限得「非常狠」。行业杂志《书商》报道，水石各分店经理接到指示，把 PRH 的书从桌台、展示区、橱窗这些显眼位置撤下，「悄悄把它们退回书架上的所属分区」。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">③</span>
+            <div class="sn" data-go="l3_1"><img class="strip" src="img/2023_T3/s3_1.png" alt="③❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="decline">declined to comment</span> · <span class="tk" data-w="spokesperson">spokesperson</span> · <span class="tk" data-w="operate">operating</span> · <span class="tk" data-w="creditterms">credit terms</span> · <span class="tk" data-w="limitation">limitations</span></div></div>
+            <div class="sn" data-go="l3_2"><img class="strip" src="img/2023_T3/s3_2.png" alt="③❷ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="boycott">boycotting</span> · <span class="tk" data-w="title">titles</span> · <span class="tk" data-w="utmost">doing our utmost</span> · <span class="tk" data-w="availability">availability</span> · <span class="tk" data-w="stock">stock</span></div></div>
+            <div class="sn" data-go="l3_3"><img class="strip" src="img/2023_T3/s3_3.png" alt="③❸ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="hopeful">hopeful</span> · <span class="tk" data-w="normality">normality</span> · <span class="tk" data-w="appropriately">appropriately</span></div></div>
+            <div class="sn"><img class="strip" src="img/2023_T3/s3_4.png" alt="③❹ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="exceptionally">exceptionally</span></div></div>
+            <div class="sn"><img class="strip" src="img/2023_T3/s3_5.png" alt="③❺ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="surpass">surpassed</span></div></div>
+          </div>
+          <div class="zh"><b>③段意：</b>PRH 对此不予置评，但水石的一位发言人告诉我：「PRH 缩短了给我们的赊购账期，我们眼下就是在这种条件下经营——在英国，它是唯一一家限制我们进货能力的出版商。我们没有抵制 PRH 的书，尽管整体库存水平降了，我们仍在尽最大努力保证顾客买得到。如今门店重新开张，我们希望一切回归正常，希望我们能按正常的方式进货。可以肯定的是，我们的门店生意格外红火：5 月『月度之书』的销量超过了 2018 年以来的任何一个月。」</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">④</span>
+            <div class="sn"><img class="strip" src="img/2023_T3/s4_1.png" alt="④❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="meantime">In the meantime</span> · <span class="tk" data-w="loser">losers</span></div></div>
+            <div class="sn" data-go="l4_2"><img class="strip" src="img/2023_T3/s4_2.png" alt="④❷ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="bigname">Big-name</span> · <span class="tk" data-w="midlist">mid-list</span> · <span class="tk" data-w="relyon">rely on</span> · <span class="tk" data-w="passion">passion</span> · <span class="tk" data-w="promote">promoting</span> · <span class="tk" data-w="lesserknown">lesser-known</span> · <span class="tk" data-w="prayfor">praying for</span> · <span class="tk" data-w="dispute">dispute</span></div></div>
+          </div>
+          <div class="zh"><b>④段意：</b>与此同时，吃亏的是 PRH 旗下的作者。大牌作者也许只受点小影响；真正盼着纠纷早日结束的，是那些中游作者——平时全靠水石店员热心推荐不太出名的作家的书。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">⑤</span>
+            <div class="sn" data-go="l5_1"><img class="strip" src="img/2023_T3/s5_1.png" alt="⑤ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="comesat">It comes at a time when</span> · <span class="tk" data-w="consequence">consequences</span> · <span class="tk" data-w="merger">proposed merger</span> · <span class="tk" data-w="unaligned">unaligned</span> · <span class="tk" data-w="bidding">bidding wars</span> · <span class="tk" data-w="advance">advances</span> · <span class="tk" data-w="conformity">conformity</span> · <span class="tk" data-w="intermsof">in terms of</span></div></div>
+          </div>
+          <div class="zh"><b>⑤段意：</b>这场纠纷来得正不是时候：作者们本就在担心 PRH 与另一家大出版商西蒙与舒斯特拟议合并的后果——英国独立出版商一少，抢稿子的竞价就少，给作者的预付款就低，出版的书也会越来越千篇一律。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">⑥</span>
+            <div class="sn"><img class="strip" src="img/2023_T3/s6_1.png" alt="⑥❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="concentration">concentration of power</span> · <span class="tk" data-w="agent">literary agent</span></div></div>
+            <div class="sn" data-go="l6_2"><img class="strip" src="img/2023_T3/s6_2.png" alt="⑥❷ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="diversity">diversity</span> · <span class="tk" data-w="plurality">plurality</span> · <span class="tk" data-w="deliver">delivering</span> · <span class="tk" data-w="intellectual">intellectual</span></div></div>
+            <div class="sn"><img class="strip" src="img/2023_T3/s6_3.png" alt="⑥❸ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="afterall">After all</span></div></div>
+          </div>
+          <div class="zh"><b>⑥段意：</b>「这都是权力日趋集中这一更大变化的一部分。」作品经纪人安德鲁·劳尼说，「出版业总在谈作者和员工的多元，可它同样需要多种多样的渠道，把思想、选择和不同的声音送到读者面前。毕竟，近些年最有意思的书里，很多出自小出版社。」</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">⑦</span>
+            <div class="sn" data-go="l7_1"><img class="strip" src="img/2023_T3/s7_1.png" alt="⑦ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="weshallsee">We shall see whether</span> · <span class="tk" data-w="casualty">casualty</span> · <span class="tk" data-w="takeon">take on all-comers</span></div></div>
+          </div>
+          <div class="zh"><b>⑦段意：</b>出版商们眼下都觉得必须做大、大到什么对手都接得住——这种多元会不会因此成为牺牲品，我们拭目以待。</div>
+        </div>
+      </section>
+
+      <!-- ========== 题目 ========== -->
+      <section class="card">
+        <h2><span class="n">02</span>题目与解析（点选项即判 · 再看解析）</h2>
+
+        <div class="q" data-ans="0" id="q31">
+          <p class="stem"><span class="qt">例子作用</span>31. The author mentions two books in Paragraph 1 to present ______.</p>
+          <div class="opts">
+            <div class="opt">[A] an <span class="tk" data-w="ongoing">ongoing</span> conflict.</div>
+            <div class="opt">[B] an intellectual concept.</div>
+            <div class="opt">[C] a <span class="tk" data-w="prevailing">prevailing</span> <span class="tk" data-w="sentiment">sentiment</span>.</div>
+            <div class="opt">[D] a literary <span class="tk" data-w="phenomenon">phenomenon</span>.</div>
+          </div>
+          <div class="expl"><b>答案 A</b>　①❶ 只说「这两本书在水石不好找」，没说为什么；①❷ 点出原因：两本书都是 PRH 出的，而 PRH <span class="loc">currently involved in a stand-off with Waterstones</span>。currently ≈ ongoing，stand-off ≈ conflict ⟹ A。<br><b>干扰项：</b>B 只能靠 thriller（惊悚小说）一个词硬凑「概念」——两本书是具体的商品，段里没有任何抽象概念；何况《长椅》是童书。C「盛行的情绪」——①❶ 说的是找书要费点工夫，是一件事实，不是一种普遍情绪。D 照搬 children's book、thriller 的「文学」色彩——这两本书恰好一童一惊悚，作者选它们是因为<b>名人＋同一出版商</b>，不是为了说明什么文学现象。<br><b>技巧：</b>例子题问「为了什么」，答案在例子<b>后面</b>：例子在①❶，用意在①❷。再往后看三段的开头——②❶ The problem began、③❶ on the issue，都在接这个 stand-off ⟹ 全文要讲的就是这场纠纷。<br>📕 <b>与书解析的商榷</b>：书排除 B 说「第一段并非重在介绍这一概念」，其实 B 连原料都没有，排除得更干脆。</div>
+        </div>
+
+        <div class="q" data-ans="2" id="q32">
+          <p class="stem"><span class="qt">动作原因</span>32. Why did Waterstones shops retire PRH books to their relevant sections?</p>
+          <div class="opts">
+            <div class="opt">[A] To make them easily <span class="tk" data-w="noticeable">noticeable</span>.</div>
+            <div class="opt">[B] To <span class="tk" data-w="comply">comply with</span> PRH’s requirement.</div>
+            <div class="opt">[C] To respond to PRH’s business move.</div>
+            <div class="opt">[D] To arrange them in a <span class="tk" data-w="systematic">systematic</span> way.</div>
+          </div>
+          <div class="expl"><b>答案 C</b>　题干动作在②❷：分店把 PRH 的书<span class="loc">quietly retiring them to their relevant sections</span>。原因要往前一句找：②❶ <span class="loc">The problem began late last year</span>，PRH <b>先</b>设了 <span class="loc">credit limit</span>（had introduced 用过去完成时，动作在前）。先有 PRH 卡进货，后有水石撤展位 ⟹ 一来一回，C「回应 PRH 的商业举动」。<br><b>干扰项：</b>A 方向反：书是从 prominent areas（显眼处）<b>撤走</b>的，正是为了让它们<b>不</b>显眼。B 原文没有任何「PRH 要求水石这样做」的字样——PRH 只管赊购额度，撤展位是水石自己的动作。D 只看了 relevant sections「所属分区」的字面，把一场对抗读成了整理书架。<br><b>技巧：</b>问「为什么做某事」，先找<b>谁先动的手</b>。本段两句的时态就是线索：had introduced（过去完成）在前，were being told（过去进行）在后。再用 quietly 一词核对——悄悄撤掉，是不想声张的反制，不是例行整理。<br>📕 <b>与书解析的商榷</b>：书说 B 错在「发令者实为水石（总部）」——原文 were being told to 是被动，<b>没写发令者</b>（《书商》也只是转述）；更稳的判据是：PRH 的举动原文只写了 credit limit 一件，「PRH 的要求」无从说起。</div>
+        </div>
+
+        <div class="q" data-ans="1" id="q33">
+          <p class="stem"><span class="qt">言外之意</span>33. What message does the spokesperson for Waterstones seem to convey?</p>
+          <div class="opts">
+            <div class="opt">[A] Their customers remain <span class="tk" data-w="loyal">loyal</span>.</div>
+            <div class="opt">[B] The credit limit will be removed.</div>
+            <div class="opt">[C] Their stock is <span class="tk" data-w="underestimate">underestimated</span>.</div>
+            <div class="opt">[D] The book market is rather <span class="tk" data-w="slack">slack</span>.</div>
+          </div>
+          <div class="expl"><b>答案 B</b>　seem to convey ＝ 问<b>言外之意</b>，正确项在原文找不到原词，要推。发言人五句话分三层：<br>① 诉苦（❶❷）：PRH 是全英<b>唯一</b>限制我们进货的出版商；我们<b>没有抵制</b>它的书，库存少了也尽力供货——先摆出「我们没错」的姿态。<br>② 提要求（❸）：门店重开了，希望 <span class="loc">normality will return</span>、希望 <span class="loc">we will be allowed to buy appropriately</span>——「被允许正常进货」，就是盼 PRH 解除限制。<br>③ 亮底牌（❹❺）：店里格外忙，5 月月度之书销量创 2018 年来新高——生意好、付得起钱，没有理由再限我们的额度。<br>三层合起来：<b>该把赊购限制撤了</b>（而且看样子会撤）⟹ B。<br><b>干扰项：</b>A 两种误读：把 availability for customers（<b>对</b>顾客的供货）读成顾客的态度；或把 we will be allowed to buy 的 we 当成顾客。全段没一个字谈顾客忠不忠诚。C 偷换：原文是 lower overall levels of stock（库存<b>降了</b>），不是「被低估」。D 与❹❺ 直接相反——店里忙、销量创新高，市场一点不萧条；何况说的只是水石自家门店。<br><b>技巧：</b>推理题三步——① 看说话人<b>身份</b>（纠纷的一方，说话必有目的）；② 看<b>背景</b>（our shops now open again ⟹ 疫情封锁后重开）；③ 把几句话串成一个<b>诉求</b>。Certainly 一词也在提示：前面是请求，后面是撑腰的事实。<br>🗞 <b>背景佐证</b>：据《书商》，水石的「月度之书」从年初起已不再选 PRH 的书 ⟹ ❺ 的销量新高是<b>在没有 PRH 的情况下</b>创下的——这句话是摆给 PRH 看的筹码。<br>📕 <b>与书解析的商榷</b>：书说 B 是「合理推理」，但 will be removed 是很确定的说法，原文只是 hopeful。更准确的理解：这是发言人<b>想传达</b>的信息（题干 convey），不是事实判断——题干问的是 message，所以确定语气也成立。</div>
+        </div>
+
+        <div class="q" data-ans="0" id="q34">
+          <p class="stem"><span class="qt">后果推断</span>34. What can be one consequence of the current dispute?</p>
+          <div class="opts">
+            <div class="opt">[A] Sales of books by mid-list PRH writers <span class="tk" data-w="falloff">fall off</span> considerably.</div>
+            <div class="opt">[B] Lesser-known PRH writers become the target of criticism.</div>
+            <div class="opt">[C] Waterstones staff <span class="tk" data-w="hesitate">hesitate</span> to promote big-name authors’ books.</div>
+            <div class="opt">[D] Waterstones branches suffer a severe reduction in <span class="tk" data-w="revenue">revenue</span>.</div>
+          </div>
+          <div class="expl"><b>答案 A</b>　题干没给段落 ⟹ 按题文同序到④段，consequence ↔ ④❶ <span class="loc">PRH authors have been the losers</span>。④❷ 分两类：大牌作者 <span class="loc">may suffer a bit</span>（受点小影响）；中游作者<b>平时靠水石店员热心推荐</b>——现在店员不推 PRH 的书了（②段撤展位）⟹ 他们的书卖不动 ⟹ 才会 <span class="loc">praying for an end to the dispute</span>。A「中游作者的书销量大幅下滑」是这条因果链的结论。<br><b>干扰项：</b>B 由 losers、praying 的负面气氛捏造出「被批评」——他们是<b>受损</b>，不是受批评。C 把对象换了：原文说店员热心推荐的是<b>不太出名的</b>作者，C 换成了大牌作者；况且大牌作者只是 suffer a bit。D 换了受害者：受损的是 <b>PRH 的作者</b>，不是水石的门店——③❹❺ 刚说完门店生意火爆。<br><b>技巧：</b>后果题盯住「谁受损、受损多少」：本段是「总（作者是输家）—分（大牌一点点 vs 中游很严重）」，<b>对比句里程度重的那一方</b>就是答案所在。题干 can be 允许推一步（没人推荐 ⟹ 销量下滑），但不能换主体。</div>
+        </div>
+
+        <div class="q" data-ans="3" id="q35">
+          <p class="stem"><span class="qt">人物观点</span>35. Which of the following statements best represents Lownie’s view?</p>
+          <div class="opts">
+            <div class="opt">[A] Small publishers ought to <span class="tk" data-w="sticktogether">stick together</span>.</div>
+            <div class="opt">[B] Big publishers will lose their <span class="tk" data-w="dominance">dominance</span>.</div>
+            <div class="opt">[C] The publishing industry is having a hard time.</div>
+            <div class="opt">[D] The merger of publishers is a worrying trend.</div>
+          </div>
+          <div class="expl"><b>答案 D</b>　⑥❶ 开头的 <b>This</b> 要先回指⑤段：PRH 与西蒙与舒斯特拟议合并，后果是竞价少、预付款低、出书雷同。Lownie 把它定性为 <span class="loc">a wider change towards concentration of power</span>——合并是<b>趋势</b>（wider change）；❷ 出版业需要 <span class="loc">a plurality of ways</span>，❸ 好书多出自小出版社——集中会伤害多元，所以<b>令人担忧</b>。trend ↔ change，worrying ↔ ⑤段 already worried ⟹ D。<br><b>干扰项：</b>A 由❸ small publishers 编出「应该抱团」——Lownie 只说好书多出自小出版社，没给小出版社出任何主意。B 方向反：合并是让大出版商<b>更</b>大、权力<b>更</b>集中，不是失去主导。C 把 it also needs a plurality（它<b>也需要</b>多元）夸大成「行业日子不好过」——Lownie 谈的是结构问题，不是行业景气。<br><b>技巧：</b>人物观点题若定位句以 This / It 开头，<b>先回读上一段</b>，弄清 This 指什么，再看人物给它贴了什么标签（concentration of power）。末段作者的话可以反证：⑦段担心多元会成为 casualty（牺牲品）——作者与 Lownie 立场一致，都在担心。<br>📕 <b>与书解析的商榷</b>：书说合并「增强了其主导地位」——原文是 proposed merger（<b>拟议</b>中的合并），当时还没发生（后来在 2022 年被美国法院叫停）；D 用 trend（趋势）而不是 fact，措辞恰好留了这个余地。</div>
+        </div>
+      </section>
+
+      <!-- ========== 长难句 ========== -->
+      <section class="card" id="sents">
+        <h2><span class="n">03</span>长难句精析（正文蓝色虚线句）</h2>
+
+        <div class="sent" id="l1_1">
+          <div class="src"><b>s1（①❶）</b><img class="strip" src="img/2023_T3/s1_1.png" alt="①❶ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">两个分句</span>：分号前 <code>If you’re heading for …, you might have to be prepared to hunt around a bit</code>；分号后 <code>the same may be true of The President’s Daughter</code>——the same 指「也得找一阵」。</li>
+            <li>if 从句里两个同位语：<code>Waterstones, the biggest book retailer in the UK</code>（水石＝英国最大图书零售商）；后半 <code>The President’s Daughter, the new thriller by …</code>（书名＝谁写的新惊悚小说）。</li>
+            <li><code>in search of …</code> 作目的状语：去找……；<code>hunt around a bit</code>——hunt 不是打猎，是<b>四处翻找</b>，a bit 把语气放轻。</li>
+            <li>⭐ 31 题：这一整句只交代「找书难」，<b>不说原因</b>——原因留给下一句的 stand-off。</li>
+          </ul>
+          <div class="tr">意：如果你正要去最近的水石分店（英国最大的图书零售商）找苏塞克斯公爵夫人的新童书《长椅》，可能得做好在店里翻找一阵的准备；找克林顿和帕特森合写的新惊悚小说《总统的女儿》，恐怕也是如此。</div>
+        </div>
+
+        <div class="sent" id="l2_2">
+          <div class="src"><b>s2（②❷）</b><img class="strip" src="img/2023_T3/s2_2.png" alt="②❷ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：<code>The trade magazine The Bookseller reported that …</code>——that 宾语从句里是主体。</li>
+            <li>从句主语 <code>Waterstones branch managers</code>，带两个并列谓语：<code>were being told to remove PRH books from prominent areas</code> ＋ <code>were “quietly retiring them to …”</code>。</li>
+            <li><code>such as tables, display spaces and windows</code>——列举 prominent areas（桌台、展区、橱窗）。</li>
+            <li>⭐ were being told 是被动，<b>没说谁下的令</b>；remove … from prominent areas 与 retire … to relevant sections 是同一个动作的两种说法——<b>一个是「从哪撤」，一个是「放回哪」</b>（32A 的方向错就在这）。</li>
+          </ul>
+          <div class="tr">意：行业杂志《书商》报道，水石各分店经理接到指示，要把 PRH 的书从桌台、展区、橱窗等显眼位置撤下，他们正「悄悄把这些书退回书架上的所属分区」。</div>
+        </div>
+
+        <div class="sent" id="l3_1">
+          <div class="src"><b>s3（③❶）</b><img class="strip" src="img/2023_T3/s3_1.png" alt="③❶ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">but 连接两方</span>：<code>PRH declined to comment on the issue</code>（PRH 不说）<b>but</b> <code>a spokesperson for Waterstones told me</code>（水石说）——全文只有一方发声。</li>
+            <li>引语主干：<code>Waterstones are currently operating with reduced credit terms from PRH</code>——operate with … 在……条件下经营；Waterstones 作公司名、谓语用复数 are（英式用法，把公司看成一群人）。</li>
+            <li><code>PRH, the only publisher in the UK to place any limitations on …</code>——同位语 ＋ 不定式后置定语：<b>唯一一家</b>限制我们的出版商。only ＋ any 一起用，语气很重。</li>
+          </ul>
+          <div class="tr">意：PRH 对此拒绝评论，但水石的一位发言人告诉我：「PRH 缩短了给我们的赊购账期，我们目前正在这种条件下经营——在英国，它是唯一一家限制我们进货能力的出版商。」</div>
+        </div>
+
+        <div class="sent" id="l3_2">
+          <div class="src"><b>s4（③❷）</b><img class="strip" src="img/2023_T3/s3_2.png" alt="③❷ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">not … but …</span>：<code>We are not boycotting PRH titles</code>（先否认）<b>but</b>（再表功）<code>we are doing our utmost to ensure that …</code>。</li>
+            <li>that 从句：<code>availability for customers remains good</code>——availability <b>for</b> customers ＝（书）对顾客的可得性，即「顾客买得到」；33A 把它读成了顾客对书店的态度。</li>
+            <li><code>despite the lower overall levels of stock</code>——让步状语：尽管总体库存水平降低（33C 偷换成「被低估」）。</li>
+          </ul>
+          <div class="tr">意：我们并没有抵制 PRH 的书，相反，尽管整体库存水平降低，我们仍在尽最大努力保证顾客买得到。</div>
+        </div>
+
+        <div class="sent" id="l3_3">
+          <div class="src"><b>s5（③❸）</b><img class="strip" src="img/2023_T3/s3_3.png" alt="③❸ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：<code>We are hopeful … that normality will return and that we will be allowed to …</code>——be hopeful that 后接<b>两个并列的 that 从句</b>，第二个 that 不能省，否则意思会含混。</li>
+            <li><code>with our shops now open again</code>——with 复合结构作背景状语：既然门店已经重开（疫情封锁之后）。</li>
+            <li>⭐ <code>be allowed to buy appropriately</code>——被<b>允许</b>正常进货 ⟹ 现在不被允许 ⟹ 盼对方松绑：33B 的推理起点。</li>
+          </ul>
+          <div class="tr">意：如今门店已经重新开张，我们希望一切回归正常，也希望我们能被允许以恰当的方式进货。</div>
+        </div>
+
+        <div class="sent" id="l4_2">
+          <div class="src"><b>s6（④❷）</b><img class="strip" src="img/2023_T3/s4_2.png" alt="④❷ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">but 对比</span>：<code>Big-name PRH authors may suffer a bit</code> <b>but</b> 后面是强调句。</li>
+            <li>强调句 <code>it’s those mid-list authors … who will be praying for an end to the dispute</code>——it is X who …，强调<b>正是</b>中游作者（不是大牌作者）在盼纠纷结束。</li>
+            <li>中间插入 <code>who normally rely on Waterstones staff’s passion for promoting books by lesser-known writers</code>——非限制性定语从句，交代中游作者为何受伤最重：<b>平时靠店员热心推荐</b>。两个 who 一个是定语从句、一个是强调句的 who，别混。</li>
+            <li>⭐ 34A：店员不推了 ⟹ 他们的书卖不动。</li>
+          </ul>
+          <div class="tr">意：PRH 的大牌作者也许只受点小影响，真正在祈祷纠纷早日结束的，是那些中游作者——平时他们全靠水石店员热心推荐不太出名的作家的书。</div>
+        </div>
+
+        <div class="sent" id="l5_1">
+          <div class="src"><b>s7（⑤）</b><img class="strip" src="img/2023_T3/s5_1.png" alt="⑤ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：<code>It comes at a time when authors are already worried about …</code>——It 指这场纠纷；when 引导定语从句修饰 a time：「它来的时候，正赶上……」。already 暗示<b>雪上加霜</b>。</li>
+            <li>worried about 的宾语：<code>the consequences of the proposed merger</code>（拟议合并的后果），合并双方是 <code>PRH and another big publisher</code>——后者与 Simon &amp; Schuster 同位。</li>
+            <li>破折号后解释 consequences：<code>the reduction in … is likely to lead to</code> 三个并列结果——<code>fewer bidding wars</code>（竞价少）· <code>lower advances</code>（预付款低）· <code>more conformity in terms of what is published</code>（出书更雷同）。</li>
+            <li>⭐ unaligned＝不隶属于大集团的、独立的；35 题 This 回指的就是这一整段。</li>
+          </ul>
+          <div class="tr">意：这场纠纷来得不巧——作者们本就担心 PRH 与另一大出版商西蒙与舒斯特拟议合并的后果：英国独立出版商的数量一减少，就可能导致抢稿竞价变少、预付款降低、所出版的书越来越千篇一律。</div>
+        </div>
+
+        <div class="sent" id="l6_2">
+          <div class="src"><b>s8（⑥❷）</b><img class="strip" src="img/2023_T3/s6_2.png" alt="⑥❷ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">but also 递进</span>：前半 <code>The publishing industry talks about diversity</code>（谈的是作者和员工的多元），后半 <b>but it also needs</b>（同样需要）<code>a plurality of ways</code>。</li>
+            <li><code>a plurality of ways of delivering intellectual contact, choice and different voices</code>——ways 后的 of doing 作定语；delivering 带三个宾语：intellectual contact（思想内容）· choice（选择）· different voices（不同声音）。</li>
+            <li>⭐ diversity 与 plurality 一对：前者是人的多元（作者、员工），后者是<b>渠道的多元</b>（出版商多）。35C 把 also needs 夸大成「急需、困难」。</li>
+          </ul>
+          <div class="tr">意：「出版业总在谈论作者和员工的多元，但它同样需要多种多样的渠道，来传递思想内容、提供选择、发出不同的声音。」</div>
+        </div>
+
+        <div class="sent" id="l7_1">
+          <div class="src"><b>s9（⑦）</b><img class="strip" src="img/2023_T3/s7_1.png" alt="⑦ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：<code>We shall see whether that plurality is a casualty of …</code>——whether 宾语从句；that plurality 回指⑥❷。</li>
+            <li><code>the current need among publishers to be big enough to take on all-comers</code>——need 后接不定式作定语；be big enough to …：大到足以……；take on all-comers：迎战所有来者。</li>
+            <li>⭐ We shall see 是「拭目以待」式收尾，但 casualty（牺牲品）这个词已经把作者的担忧写出来了——与 35D worrying 同向。</li>
+          </ul>
+          <div class="tr">意：出版商眼下都想做大、大到能迎战一切对手——这种多元会不会因此成为牺牲品，我们拭目以待。</div>
+        </div>
+      </section>
+
+      <!-- ========== 词汇复盘 ========== -->
+      <section class="card">
+        <h2><span class="n">04</span>词汇复盘（点卡片看详情）</h2>
+        <div class="filters">
+          <button class="fbtn on" data-f="all">全部</button>
+          <button class="fbtn" data-f="core">核心词</button>
+          <button class="fbtn" data-f="phrase">短语</button>
+          <button class="fbtn" data-f="poly">熟词僻义</button>
+          <button class="fbtn" data-f="write">写作可用</button>
+        </div>
+        <div class="vgrid" id="vgrid"></div>
+      </section>
+
+      <!-- ========== 写作素材 ========== -->
+      <section class="card">
+        <h2><span class="n">05</span>可搬进作文/翻译的素材</h2>
+        <p style="font-size:.9rem;margin-bottom:12px">本篇话题——<b>行业竞争、垄断与多元、强者博弈中受伤的是弱者</b>——正对大作文里的「竞争与合作」「文化多样性」「市场与公平」类题目。英文例句都是按原文句式自拟的，只借骨架。</p>
+        <div class="wb">
+          <div class="wbi"><div class="p">X has been the loser. Big names may suffer a bit, but it is those … who …</div><div class="u">「输家是 X；强者只受点小影响，真正受伤的是……」——<b>总分＋强调句</b>，写「冲突的代价落在弱者头上」：In the price war, small farmers have been the losers; big growers may suffer a bit, but it is family farms that struggle to survive.</div></div>
+          <div class="wbi"><div class="p">It comes at a time when … are already worried about …</div><div class="u">「它来得不巧，正赶上……本就担心……」——写<b>雪上加霜</b>的背景句：The fee rise comes at a time when students are already worried about rising rents.</div></div>
+          <div class="wbi"><div class="p">is likely to lead to fewer …, lower …, and more …</div><div class="u">「可能导致……更少、……更低、……更多」——<b>三连后果</b>，比较级排比：Closing local libraries is likely to lead to fewer reading spaces, lower literacy, and more screen time.</div></div>
+          <div class="wbi"><div class="p">This is all part of a wider change towards …</div><div class="u">「这都是……大趋势的一部分」——把个别现象<b>上升到趋势</b>，大作文第二段开头好用：Cashless payment is all part of a wider change towards a digital society.</div></div>
+          <div class="wbi"><div class="p">We talk about A in terms of …, but we also need B …</div><div class="u">「我们常谈 A，但同样需要 B」——<b>补一个被忽视的角度</b>：Schools talk about excellence in terms of exam scores, but they also need room for curiosity.</div></div>
+          <div class="wbi"><div class="p">After all, many of the most … have come from …</div><div class="u">「毕竟，许多最……的东西都出自……」——用事实给观点<b>兜底</b>：After all, many of the most useful inventions have come from small workshops.</div></div>
+          <div class="wbi"><div class="p">We shall see whether X is a casualty of …</div><div class="u">「X 会不会成为……的牺牲品，拭目以待」——<b>留白式结尾</b>，含蓄表达担忧：We shall see whether quiet reading is a casualty of the race for faster information.</div></div>
+          <div class="wbi"><div class="p">We are not doing X, but we are doing our utmost to …</div><div class="u">「我们不是在做 X，而是在尽最大努力……」——<b>先澄清、后表态</b>，书信（道歉信、回复投诉）里很好用：We are not ignoring your complaint, but we are doing our utmost to solve the problem.</div></div>
+          <div class="wbi"><div class="p">话题词包：concentration of power · diversity · plurality · conformity · monopoly</div><div class="u">写「垄断 / 多元 / 竞争」时直接可用：concentration of power（权力集中）· a plurality of voices（多元声音）· conformity（千篇一律）↔ diversity（多样）· merger（合并）· fair competition（公平竞争）。</div></div>
+        </div>
+      </section>
+    </main>
+    <aside>
+      <div id="panel">
+        <button class="close" onclick="document.getElementById('panel').classList.remove('open')">收起</button>
+        <div class="hint">点正文里的<b>黄色高亮词</b>，或下方词汇卡片，这里出详情。</div>
+      </div>
+    </aside>
+  </div>
+</div>
+<button id="yd">查有道</button>
+
+<script>
+const V={
+  headfor:{"w": "head for", "ipa": "/hed fɔː/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>前往</b>、朝……走去；（趋势上）走向", "en": "to move towards a place", "ex": "If you’re <b>heading for</b> your nearest branch（①❶）", "mem": "head 作动词＝朝某方向去：head home 回家 · head north 向北。<br>引申：be heading for trouble 要出麻烦了 · The economy is heading for recession.", "syn": "make for · go towards", "conf": "head for（前往）· head off（出发／拦截）· ahead（在前）。"},
+  branch:{"w": "branch", "ipa": "/brɑːntʃ/", "pos": "n.", "tags": ["core", "poly"], "cn": "<b>分店</b>、分支机构；树枝；分科", "en": "a local office or shop of a large company", "ex": "your nearest <b>branch</b> of Waterstones（①❶）", "mem": "⚠️ 熟词僻义：branch 本义树枝，考研里多是<b>分店、分行、分支</b>：branch managers（②❷ 分店经理）· a branch of science 学科分支。", "syn": "outlet · division", "conf": "branch（分店）· brand（品牌）· bench（长椅，本篇童书名）。"},
+  retailer:{"w": "retailer", "ipa": "/ˈriːteɪlə(r)/", "pos": "n.", "tags": ["core"], "cn": "<b>零售商</b>", "en": "a business that sells goods to the public", "ex": "the biggest book <b>retailer</b> in the UK（①❶）", "mem": "retail n./v. 零售 ↔ wholesale 批发。<br>本篇的产业链：publisher（出版商 PRH）→ retailer（零售商 水石）→ customer。纠纷就卡在<b>前两环之间</b>。", "syn": "seller · store", "conf": "retailer（零售商）· wholesaler（批发商）· publisher（出版商）。"},
+  insearch:{"w": "in search of", "ipa": "/ɪn sɜːtʃ ɒv/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>寻找</b>、为寻求……", "en": "looking for something", "ex": "<b>in search of</b> the Duchess of Sussex’s new children’s book（①❶）", "mem": "介词短语作目的状语；写作：Many young people move to big cities in search of better jobs.", "syn": "looking for · seeking", "conf": "in search of（寻找）· in favour of（支持）· in charge of（负责）。"},
+  duchess:{"w": "the Duchess of Sussex", "ipa": "/ðə ˈdʌtʃəs əv ˈsʌsɪks/", "pos": "n.", "tags": ["phrase"], "cn": "<b>苏塞克斯公爵夫人</b>（梅根·马克尔）", "en": "Meghan Markle, wife of Prince Harry", "ex": "the <b>Duchess of Sussex</b>’s new children’s book（①❶）", "mem": "背景：哈里王子之妻梅根，2021 年 6 月出版童书《长椅》（The Bench）。原文标题副题正是「连公爵夫人也不能幸免」——名人新书也被这场纠纷拖累。<br>duke 公爵 ↔ duchess 公爵夫人。", "syn": "—", "conf": "duchess（公爵夫人）· princess（公主）· countess（伯爵夫人）。"},
+  huntaround:{"w": "hunt around", "ipa": "/hʌnt əˈraʊnd/", "pos": "phr.", "tags": ["phrase", "poly"], "cn": "<b>四处翻找</b>", "en": "to search in many places", "ex": "be prepared to <b>hunt around a bit</b>（①❶）", "mem": "⚠️ hunt 不只是打猎：hunt for a job 找工作 · house-hunting 找房子 · job hunter 求职者。<br>a bit 把语气放轻＝要找上一会儿。", "syn": "search · look around", "conf": "hunt（搜寻）· haunt（萦绕、常去）。"},
+  thriller:{"w": "thriller", "ipa": "/ˈθrɪlə(r)/", "pos": "n.", "tags": ["core"], "cn": "<b>惊悚小说</b>（电影）", "en": "an exciting story about crime or danger", "ex": "the new <b>thriller</b> by Bill Clinton（①❶）", "mem": "thrill v./n. 激动、震颤 → thrilling 令人激动的 → thriller 惊悚作品。<br>⚠️ 31B 只能拿这个词凑「知识性概念」——一个体裁词撑不起整段的用意。", "syn": "suspense novel", "conf": "thriller（惊悚片）· thrilled（兴奋的）· threat（威胁）。"},
+  involved:{"w": "be involved in", "ipa": "/ɪnˈvɒlvd ɪn/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>卷入、参与</b>（某事）", "en": "taking part in or affected by something", "ex": "currently <b>involved in</b> a stand-off（①❷）", "mem": "过去分词短语作后置定语：a company (which is) currently involved in …。<br>⭐ currently（眼下）→ 31A ongoing（正在进行的）的原料。", "syn": "engaged in · caught up in", "conf": "involve（牵涉）· evolve（演化）· revolve（旋转）。"},
+  standoff:{"w": "stand-off", "ipa": "/ˈstænd ɒf/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>僵持、对峙</b>", "en": "a situation in which neither side will give way", "ex": "a <b>stand-off</b> with Waterstones（①❷）", "mem": "⭐⭐ 31 题正源：stand-off ≈ conflict，currently ≈ ongoing。<br>全文的同义链：stand-off（①）→ the problem（②）→ the issue（③）→ the dispute（④⑤，「the current dispute」见 34 题干）。", "syn": "deadlock · impasse · dispute", "conf": "stand-off（对峙）· stand out（突出）· standpoint（立场）。"},
+  confirm:{"w": "confirm", "ipa": "/kənˈfɜːm/", "pos": "v.", "tags": ["core"], "cn": "<b>证实</b>、确认", "en": "to say that something is true", "ex": "PRH <b>confirmed</b> that it had introduced …（②❶）", "mem": "confirmation n.；confirm a booking 确认预订。<br>⭐ confirmed that it <b>had</b> introduced——过去完成时：PRH 的限制在先，是 32 题「回应」关系的起点。", "syn": "verify · acknowledge", "conf": "confirm（证实）· conform（遵从，本篇有 conformity）。"},
+  introduce:{"w": "introduce", "ipa": "/ˌɪntrəˈdjuːs/", "pos": "v.", "tags": ["core", "poly"], "cn": "<b>推行、实施</b>（新规定）；介绍；引进", "en": "to bring in a new rule or system", "ex": "it had <b>introduced</b> a credit limit（②❶）", "mem": "⚠️ 熟词僻义：introduce 不只是「介绍」，跟 rule / law / limit / measure 搭配时＝<b>出台、实施</b>。<br>写作：The government introduced new rules to protect consumers.", "syn": "bring in · impose · implement", "conf": "introduce（实施）· induce（诱发）· reduce（减少）。"},
+  creditlimit:{"w": "credit limit", "ipa": "/ˈkredɪt ˌlɪmɪt/", "pos": "n.", "tags": ["phrase", "core"], "cn": "<b>赊购（信用）额度限制</b>", "en": "the most a buyer may owe a supplier", "ex": "introduced a <b>credit limit</b> with Waterstones（②❶）", "mem": "书业惯例：书店先拿货、过一段时间再付款（赊账）。credit limit 就是<b>最多能赊多少</b>——额度一砍，书店能进的货就少了（③❷ lower overall levels of stock）。<br>⭐ 33B The credit limit will be removed 的主语就是它。", "syn": "credit cap", "conf": "credit limit（额度）· credit terms（账期，③❶）。"},
+  significant:{"w": "at a significant level", "ipa": "/sɪɡˈnɪfɪkənt/", "pos": "adj.", "tags": ["core"], "cn": "<b>相当大的</b>、显著的；重要的", "en": "large enough to be important", "ex": "“at a very <b>significant level</b>”（②❶）", "mem": "significant 两义：① 重要的 ② <b>（数量、程度）可观的</b>——这里是后者：限得很狠。<br>significance n. 意义。", "syn": "considerable · substantial", "conf": "significant（显著的）· signify（表示）· magnificent（壮丽的）。"},
+  trademag:{"w": "trade magazine", "ipa": "/treɪd ˌmæɡəˈziːn/", "pos": "n.", "tags": ["phrase", "poly"], "cn": "<b>行业杂志</b>", "en": "a magazine for people in one industry", "ex": "The <b>trade magazine</b> The Bookseller（②❷）", "mem": "⚠️ trade 作定语＝<b>某个行业的</b>：trade association 行业协会 · trade fair 商品交易会。③❶ ability to <b>trade</b>＝做生意、进货。", "syn": "industry journal", "conf": "trade（行业／贸易）· tread（踩）。"},
+  prominent:{"w": "prominent", "ipa": "/ˈprɒmɪnənt/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>显眼的</b>；著名的、重要的", "en": "easily seen; important", "ex": "remove PRH books from <b>prominent</b> areas（②❷）", "mem": "两义：① 显眼的（本句：桌台、展区、橱窗）② 杰出的、知名的（a prominent scientist）。<br>⭐ 32A easily noticeable 方向反：书是<b>从</b>显眼处撤走的。", "syn": "conspicuous · noticeable · eminent", "conf": "prominent（显眼）· dominant（主导，见 35B dominance）· permanent（永久）。"},
+  display:{"w": "display", "ipa": "/dɪˈspleɪ/", "pos": "n./v.", "tags": ["core"], "cn": "<b>陈列、展示</b>", "en": "an arrangement of things for people to see", "ex": "tables, <b>display spaces</b> and windows（②❷）", "mem": "display space 展示位；on display 在展出；window display 橱窗陈列。<br>书店里展示位就是广告位——撤展位等于不给推广。", "syn": "exhibit · show", "conf": "display（展示）· dismay（沮丧）· deploy（部署）。"},
+  retire:{"w": "retire", "ipa": "/rɪˈtaɪə(r)/", "pos": "v.", "tags": ["core", "poly"], "cn": "（把东西）<b>撤下、收回</b>；退休", "en": "to take something out of use or view", "ex": "quietly <b>retiring</b> them to their relevant sections（②❷）", "mem": "⚠️⚠️ 熟词僻义：retire 及物＝<b>使退下、撤回</b>，不是「退休」。retire a product 让产品退市 · retire a jersey 球衣退役。<br>32 题干原词复现：retire PRH books。quietly＝悄悄地，不声张的反制。", "syn": "withdraw · remove", "conf": "retire（撤下）· retreat（撤退）· retain（保留）。"},
+  relevant:{"w": "relevant", "ipa": "/ˈreləvənt/", "pos": "adj.", "tags": ["core"], "cn": "<b>相应的、相关的</b>", "en": "connected with the subject", "ex": "to their <b>relevant sections</b>（②❷）", "mem": "relevant sections＝书按类别各归其位（小说区、童书区……），也就是普通书架。<br>反义 irrelevant 无关的。⚠️ 32D「系统地摆放」只看了这个词的字面。", "syn": "appropriate · related", "conf": "relevant（相关）· relative（相对的；亲戚）· reliant（依赖的）。"},
+  decline:{"w": "decline to comment", "ipa": "/dɪˈklaɪn tə ˈkɒment/", "pos": "phr.", "tags": ["phrase", "poly", "write"], "cn": "<b>拒绝置评</b>", "en": "to refuse to say anything", "ex": "PRH <b>declined to comment</b> on the issue（③❶）", "mem": "⚠️ decline 两义：① 下降（n./v.）② <b>（礼貌地）拒绝</b>（decline to do / decline an invitation）。<br>新闻固定说法：declined to comment / did not respond to requests for comment。<br>⭐ 全文只有水石一方发声——33 题考的就是这一方的潜台词。", "syn": "refuse · turn down", "conf": "decline（拒绝）· recline（斜倚）· incline（倾向）。"},
+  spokesperson:{"w": "spokesperson", "ipa": "/ˈspəʊkspɜːsn/", "pos": "n.", "tags": ["core"], "cn": "<b>发言人</b>", "en": "a person who speaks for an organization", "ex": "a <b>spokesperson</b> for Waterstones（③❶）", "mem": "spoke（speak 的过去式）＋ person；也作 spokesman / spokeswoman。<br>33 题干原词复现。", "syn": "representative", "conf": "spokesperson（发言人）· spectator（观众）。"},
+  operate:{"w": "operate", "ipa": "/ˈɒpəreɪt/", "pos": "v.", "tags": ["core", "poly"], "cn": "<b>经营、运作</b>；操作；动手术", "en": "to work or do business", "ex": "currently <b>operating</b> with reduced credit terms（③❶）", "mem": "operate with/under … 在……条件下经营；operation n. 运营。<br>⚠️ operate on sb. 给某人动手术。", "syn": "run · function", "conf": "operate（经营）· cooperate（合作）。"},
+  creditterms:{"w": "credit terms", "ipa": "/ˈkredɪt tɜːmz/", "pos": "n.", "tags": ["phrase", "poly"], "cn": "<b>赊购条件、账期</b>", "en": "the agreed time and amount a buyer may owe", "ex": "reduced <b>credit terms</b> from PRH（③❶）", "mem": "⚠️ terms 复数＝<b>条件、条款</b>（not 术语、学期）：terms and conditions · on equal terms 平等地。<br>reduced credit terms：账期缩短 / 额度降低——和②❶ credit limit 说的是同一件事，只是水石的措辞更委婉。", "syn": "payment terms", "conf": "terms（条款）· term（学期／术语）· in terms of（就……而言）。"},
+  limitation:{"w": "limitation", "ipa": "/ˌlɪmɪˈteɪʃn/", "pos": "n.", "tags": ["core"], "cn": "<b>限制</b>；局限", "en": "a rule that controls what is possible", "ex": "place any <b>limitations</b> on our ability to trade（③❶）", "mem": "place limitations on …＝对……加以限制。<br>⭐ the only publisher … to place <b>any</b> limitations——only＋any，<b>「全英唯一」</b>的指控很重。", "syn": "restriction · constraint", "conf": "limitation（限制）· imitation（模仿）。"},
+  boycott:{"w": "boycott", "ipa": "/ˈbɔɪkɒt/", "pos": "v./n.", "tags": ["core", "write"], "cn": "<b>抵制</b>", "en": "to refuse to buy or deal with something as a protest", "ex": "We are not <b>boycotting</b> PRH titles（③❷）", "mem": "来自 19 世纪爱尔兰地主代理人 Boycott，因被佃户集体孤立而得名。<br>⭐ 水石先否认「抵制」，再表功「尽力供货」——摆出「我们没错」的姿态，为❸ 的请求铺路。", "syn": "shun · reject", "conf": "boycott（抵制）· ban（禁止）· embargo（禁运）。"},
+  title:{"w": "title", "ipa": "/ˈtaɪtl/", "pos": "n.", "tags": ["core", "poly"], "cn": "（出版物的）<b>一种书、书目</b>；标题；头衔", "en": "a particular book or publication", "ex": "boycotting PRH <b>titles</b>（③❷）", "mem": "⚠️⚠️ 熟词僻义：出版业里 titles＝<b>书（按品种算）</b>：The publisher released 300 titles last year（出了 300 种书）。", "syn": "book · publication", "conf": "title（书目）· tile（瓷砖）· tittle（一点点）。"},
+  utmost:{"w": "do one’s utmost", "ipa": "/ˈʌtməʊst/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>竭尽全力</b>", "en": "to try as hard as possible", "ex": "we are doing our <b>utmost</b> to ensure that …（③❷）", "mem": "utmost adj./n. 最大限度（的）：of the utmost importance 极其重要。<br>写作：We will do our utmost to meet your needs.（回复信常用）", "syn": "do one’s best · go all out", "conf": "utmost（极度）· almost（几乎）· foremost（首要的）。"},
+  availability:{"w": "availability", "ipa": "/əˌveɪləˈbɪləti/", "pos": "n.", "tags": ["core"], "cn": "<b>可获得性</b>、（商品）有货", "en": "the fact that something can be bought or used", "ex": "<b>availability</b> for customers remains good（③❷）", "mem": "available adj. 可得的 → availability n.。<br>⚠️ 33A 的陷阱：availability <b>for</b> customers＝<b>对顾客</b>而言书买得到，不是顾客的忠诚度。", "syn": "supply · access", "conf": "availability（可得性）· ability（能力）· liability（责任）。"},
+  stock:{"w": "stock", "ipa": "/stɒk/", "pos": "n.", "tags": ["core", "poly"], "cn": "<b>库存</b>；股票；储备", "en": "goods kept in a shop to sell", "ex": "the lower overall levels of <b>stock</b>（③❷）", "mem": "in stock 有货 · out of stock 缺货 · stock market 股市。<br>⭐ 33C 偷换：库存<b>降低</b>（lower）≠ 被<b>低估</b>（underestimated）。", "syn": "inventory · supply", "conf": "stock（库存）· stack（堆）· stuck（卡住）。"},
+  hopeful:{"w": "hopeful", "ipa": "/ˈhəʊpfl/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>抱有希望的</b>", "en": "believing that something you want will happen", "ex": "We are <b>hopeful</b> … that normality will return（③❸）", "mem": "be hopeful that … / about …。<br>⭐ 33 题：hopeful 是请求的软说法——「希望能被允许正常进货」＝请对方撤限制。", "syn": "optimistic", "conf": "hopeful（抱希望）· helpful（有帮助）。"},
+  normality:{"w": "normality", "ipa": "/nɔːˈmæləti/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>常态</b>、正常状态", "en": "the situation when everything is normal", "ex": "that <b>normality</b> will return（③❸）", "mem": "英式 normality ＝ 美式 normalcy。疫情语境常见：a return to normality 恢复常态 · the new normal 新常态。<br>写作：Life slowly returned to normality after the storm.", "syn": "normalcy · regularity", "conf": "normality（常态）· formality（形式）· morality（道德）。"},
+  appropriately:{"w": "appropriately", "ipa": "/əˈprəʊpriətli/", "pos": "adv.", "tags": ["core"], "cn": "<b>恰当地</b>、合宜地", "en": "in a suitable way", "ex": "be allowed to buy <b>appropriately</b>（③❸）", "mem": "appropriate adj. 恰当的；⚠️ appropriate v. 挪用、拨款（/əˈprəʊprieɪt/）。<br>buy appropriately＝按应有的规模、正常的条件进货 ⟹ 现在不正常 ⟹ 33B。", "syn": "properly · suitably", "conf": "appropriate（恰当）· approximate（大约的）。"},
+  exceptionally:{"w": "exceptionally", "ipa": "/ɪkˈsepʃənəli/", "pos": "adv.", "tags": ["core"], "cn": "<b>格外地</b>、异常地", "en": "unusually; to a great degree", "ex": "our shops are <b>exceptionally</b> busy（③❹）", "mem": "exception 例外 → exceptional 杰出的、罕见的 → exceptionally 极其。<br>⭐ 33D 与此相反：店里格外忙，市场一点不 slack。", "syn": "extremely · unusually", "conf": "exceptionally（格外）· excessively（过度地）。"},
+  surpass:{"w": "surpass", "ipa": "/səˈpɑːs/", "pos": "v.", "tags": ["core", "write"], "cn": "<b>超过</b>、胜过", "en": "to be greater or better than", "ex": "sales … <b>surpassed</b> any month since 2018（③❺）", "mem": "sur-（超）＋ pass（越过）。surpass expectations 超出预期。<br>🗞 背景：水石的月度之书那时已不选 PRH 的书——销量新高是<b>没有 PRH 也创下的</b>，这句话是亮给对方看的筹码。", "syn": "exceed · outstrip · top", "conf": "surpass（超过）· bypass（绕过）· trespass（擅闯）。"},
+  meantime:{"w": "in the meantime", "ipa": "/ɪn ðə ˈmiːntaɪm/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>在此期间</b>、与此同时", "en": "while something else is happening", "ex": "<b>In the meantime</b>, PRH authors have been the losers（④❶）", "mem": "＝meanwhile。写作过渡词：In the meantime, we should …。<br>⭐ 34 题干无段落提示，靠这个衔接词 ＋ 题文同序找到④段。", "syn": "meanwhile · at the same time", "conf": "meantime（同时）· meanwhile（同时）· mean（意味着）。"},
+  loser:{"w": "loser", "ipa": "/ˈluːzə(r)/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>受损者</b>、输家", "en": "a person who is worse off because of something", "ex": "PRH authors have been the <b>losers</b>（④❶）", "mem": "呼应原文标题「No One Wins」——书店和出版商斗，<b>作者</b>输。<br>⚠️ 34B 由 losers 的负面色彩编出「被批评」——受损 ≠ 受批评。", "syn": "victim · casualty", "conf": "loser（输家）· looser（更松的）。"},
+  bigname:{"w": "big-name", "ipa": "/ˈbɪɡ neɪm/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>知名的</b>、大牌的", "en": "famous", "ex": "<b>Big-name</b> PRH authors may suffer a bit（④❷）", "mem": "↔ lesser-known（不太出名的）。a big name 名人。<br>⚠️ 34C 把店员热心推荐的对象从「不出名的作者」换成了「大牌作者」。", "syn": "famous · celebrated · leading", "conf": "big-name（知名）· big-headed（自负的）。"},
+  midlist:{"w": "mid-list", "ipa": "/ˈmɪd lɪst/", "pos": "adj.", "tags": ["core"], "cn": "（作家）<b>中游的</b>、销量中等的", "en": "selling moderately, neither bestselling nor tiny", "ex": "those <b>mid-list</b> authors（④❷）", "mem": "出版业术语：front list 新书主推 · backlist 常销旧书 · mid-list 中间那批——不是畅销大户、也不是新人。<br>⭐ 34A 原词复现：mid-list PRH writers。", "syn": "midlist writer", "conf": "mid-list（中游）· mid-term（期中）。"},
+  relyon:{"w": "rely on", "ipa": "/rɪˈlaɪ ɒn/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>依赖</b>、依靠", "en": "to need someone or something in order to succeed", "ex": "who normally <b>rely on</b> Waterstones staff’s passion（④❷）", "mem": "reliance n. 依赖 · reliable adj. 可靠的。<br>⭐ 34 题的因果链就藏在这个 rely on 里：平时靠店员推 ⟹ 店员不推 ⟹ 销量掉。", "syn": "depend on · count on", "conf": "rely on（依赖）· relay（传递）。"},
+  passion:{"w": "passion", "ipa": "/ˈpæʃn/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>热情</b>、激情", "en": "a very strong feeling of enthusiasm", "ex": "staff’s <b>passion</b> for promoting books（④❷）", "mem": "passion for (doing) sth. 对……的热情；passionate adj.。<br>写作：Teachers’ passion for their subject inspires students.", "syn": "enthusiasm · zeal", "conf": "passion（热情）· patience（耐心）· passive（被动的）。"},
+  promote:{"w": "promote", "ipa": "/prəˈməʊt/", "pos": "v.", "tags": ["core", "poly"], "cn": "<b>推销、宣传</b>；促进；提拔", "en": "to help sell something by advertising it", "ex": "passion for <b>promoting</b> books（④❷）", "mem": "三义：① 推销（promote a book）② 促进（promote growth）③ 提拔（be promoted to manager）。promotion n. 促销。", "syn": "market · advertise · publicize", "conf": "promote（推销）· prompt（促使）· protest（抗议）。"},
+  lesserknown:{"w": "lesser-known", "ipa": "/ˌlesə ˈnəʊn/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>不太出名的</b>", "en": "not as famous as others", "ex": "books by <b>lesser-known</b> writers（④❷）", "mem": "lesser（较少的、次要的，只作定语）＋ known。<br>⚠️ 34B 的主语 Lesser-known PRH writers 原词照搬，错在谓语「被批评」。", "syn": "little-known · obscure", "conf": "lesser-known（不太出名）· less（较少）· lessen（减少）。"},
+  prayfor:{"w": "pray for", "ipa": "/preɪ fɔː/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>祈祷、盼望</b>", "en": "to hope very strongly for something", "ex": "will be <b>praying for</b> an end to the dispute（④❷）", "mem": "比 hope for 更迫切：只能干等、自己做不了主——中游作者在这场纠纷里<b>没有发言权</b>。", "syn": "long for · hope for", "conf": "pray（祈祷）· prey（猎物）。"},
+  dispute:{"w": "dispute", "ipa": "/dɪˈspjuːt/", "pos": "n./v.", "tags": ["core", "write"], "cn": "<b>纠纷、争端</b>；对……提出异议", "en": "a serious disagreement", "ex": "an end to the <b>dispute</b>（④❷）", "mem": "trade dispute 贸易争端；beyond dispute 无可争议。<br>34 题干 the current dispute 原词复现。同义链：stand-off → problem → issue → dispute。", "syn": "conflict · quarrel · row", "conf": "dispute（纠纷）· despite（尽管）· dispose（处置）。"},
+  comesat:{"w": "It comes at a time when …", "ipa": "/ɪt kʌmz ət ə taɪm wen/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "（某事）<b>发生之时恰逢……</b>", "en": "this happens during a period when …", "ex": "<b>It comes at a time when</b> authors are already worried（⑤）", "mem": "when 引导定语从句修饰 a time。常与 already 连用表示<b>雪上加霜</b>。<br>写作：The price rise comes at a time when families are already struggling.", "syn": "—", "conf": "at a time when（在……之时）· at times（有时）。"},
+  consequence:{"w": "consequence", "ipa": "/ˈkɒnsɪkwəns/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>后果</b>、结果", "en": "a result of something, often bad", "ex": "the <b>consequences</b> of the proposed merger（⑤）", "mem": "as a consequence 结果；consequent adj.；consequently adv. 因此。<br>34 题干 one consequence of the current dispute——但⑤段说的是<b>合并</b>的后果，别混。", "syn": "result · effect · outcome", "conf": "consequence（后果）· sequence（顺序）· consensus（共识）。"},
+  merger:{"w": "merger", "ipa": "/ˈmɜːdʒə(r)/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>（公司）合并</b>", "en": "the joining of two companies into one", "ex": "the <b>proposed merger</b> between PRH and …（⑤）", "mem": "merge v. 合并：mergers and acquisitions（M&amp;A 并购）。<br>⭐ proposed＝<b>拟议的</b>、还没完成——2022 年被美国法院以削弱竞争为由叫停。35D 原词复现：The merger of publishers。", "syn": "amalgamation · union", "conf": "merger（合并）· merge（v.）· emerge（出现）。"},
+  unaligned:{"w": "unaligned", "ipa": "/ˌʌnəˈlaɪnd/", "pos": "adj.", "tags": ["core"], "cn": "<b>独立的</b>、不结盟的", "en": "not belonging to a larger group", "ex": "unaligned UK publishers（⑤）", "mem": "un- ＋ aligned（结盟的、对齐的）。原指冷战中的不结盟国家；这里＝<b>不隶属于大出版集团的独立出版商</b>。", "syn": "independent · non-aligned", "conf": "unaligned（不结盟）· aligned（结盟的）· maligned（遭诽谤的）。"},
+  bidding:{"w": "bidding war", "ipa": "/ˈbɪdɪŋ wɔː(r)/", "pos": "n.", "tags": ["phrase"], "cn": "<b>竞价战</b>、抢购", "en": "competition to buy something by offering more money", "ex": "fewer <b>bidding wars</b>（⑤）", "mem": "bid v./n. 出价、投标。出版业：好书稿会有几家出版商竞价争抢——出版商少了，抢的人就少，作者拿到的钱就少。", "syn": "auction battle", "conf": "bid（出价）· bit（一点）· bidding（吩咐；竞价）。"},
+  advance:{"w": "advance", "ipa": "/ədˈvɑːns/", "pos": "n.", "tags": ["core", "poly"], "cn": "（稿酬）<b>预付款</b>；进步；前进", "en": "money paid to a writer before a book is published", "ex": "lower <b>advances</b>（⑤）", "mem": "⚠️⚠️ 熟词僻义：出版语境 advance＝<b>版税预付金</b>。in advance 提前；advances in technology 技术进步。", "syn": "prepayment · down payment", "conf": "advance（预付／进步）· advantage（优势）· advent（到来）。"},
+  conformity:{"w": "conformity", "ipa": "/kənˈfɔːməti/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>趋同、雷同</b>；遵从", "en": "being the same as others; following rules", "ex": "more <b>conformity</b> in terms of what is published（⑤）", "mem": "conform v. 遵从、一致 → conformity n.。<br>⭐ 与⑥段 diversity / plurality 正好相反：合并 ⟹ 出书千篇一律。写作：Blind conformity kills creativity.", "syn": "uniformity · sameness", "conf": "conformity（一致）· confirm（证实）· comfort（舒适）。"},
+  intermsof:{"w": "in terms of", "ipa": "/ɪn tɜːmz əv/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>就……而言</b>、在……方面", "en": "regarding; with regard to", "ex": "in terms of what is published（⑤）", "mem": "⑥❷ 又用一次：diversity in terms of authors and staff。<br>写作万能短语：in terms of cost / efficiency。", "syn": "regarding · as regards", "conf": "in terms of（就……而言）· on good terms（关系好）· terms（条款，见 credit terms）。"},
+  concentration:{"w": "concentration of power", "ipa": "/ˌkɒnsnˈtreɪʃn əv ˈpaʊə(r)/", "pos": "n.", "tags": ["phrase", "write"], "cn": "<b>权力集中</b>", "en": "the situation in which a few people or firms control a lot", "ex": "a wider change towards <b>concentration of power</b>（⑥❶）", "mem": "⚠️ concentration 熟义「专注」，这里＝<b>集中、聚集</b>（concentration of wealth 财富集中）。<br>⭐ 35 题：Lownie 给⑤段的合并贴上的标签——<b>趋势＋集中</b> ⟹ D worrying trend。", "syn": "centralization · consolidation", "conf": "concentration（集中）· consecration（献祭）。"},
+  agent:{"w": "literary agent", "ipa": "/ˈlɪtərəri ˈeɪdʒənt/", "pos": "n.", "tags": ["phrase"], "cn": "<b>作品（版权）经纪人</b>", "en": "a person who sells writers’ work to publishers", "ex": "says <b>literary agent</b> Andrew Lownie（⑥❶）", "mem": "agent 代理人：travel agent 旅行社 · real estate agent 房产中介。<br>经纪人站在作者一边——他担心合并，因为竞价少了作者的预付款就低。", "syn": "—", "conf": "agent（代理人）· agency（机构）· urgent（紧急的）。"},
+  diversity:{"w": "diversity", "ipa": "/daɪˈvɜːsəti/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>多样性</b>、多元", "en": "a range of many different things or people", "ex": "talks about <b>diversity</b> in terms of authors and staff（⑥❷）", "mem": "diverse adj. 多样的；cultural diversity 文化多样性 · biodiversity 生物多样性。<br>⭐ 本段对比：diversity（人的多元）vs plurality（渠道的多元）。", "syn": "variety · plurality", "conf": "diversity（多样）· diversion（转移）· adversity（逆境）。"},
+  plurality:{"w": "plurality", "ipa": "/plʊəˈræləti/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>多元、多样</b>；大量", "en": "a large number of different things", "ex": "a <b>plurality</b> of ways of delivering …（⑥❷）", "mem": "plural 复数的 → plurality；pluralism 多元主义。<br>⑦段 that plurality 回指——全文落脚点：<b>多元会不会成为牺牲品</b>。", "syn": "diversity · multiplicity", "conf": "plurality（多元）· purity（纯洁）· priority（优先）。"},
+  deliver:{"w": "deliver", "ipa": "/dɪˈlɪvə(r)/", "pos": "v.", "tags": ["core", "poly"], "cn": "<b>提供、传递</b>；递送；发表（演讲）", "en": "to provide or bring something to people", "ex": "ways of <b>delivering</b> intellectual contact（⑥❷）", "mem": "⚠️ deliver 多义：deliver a parcel 送货 · deliver a speech 发表演讲 · deliver results 兑现成果 · deliver a baby 接生。这里＝<b>把（思想、选择）送到读者面前</b>。", "syn": "provide · supply · convey", "conf": "deliver（传递）· delivery（n.）· liver（肝）。"},
+  intellectual:{"w": "intellectual", "ipa": "/ˌɪntəˈlektʃuəl/", "pos": "adj./n.", "tags": ["core"], "cn": "<b>智力的、思想的</b>；知识分子", "en": "relating to ideas and thinking", "ex": "delivering <b>intellectual</b> contact（⑥❷）", "mem": "intellectual property 知识产权 · intellectual life 精神生活。<br>⚠️ 31B an intellectual concept 借了本段这个词，搬到第一段去。", "syn": "mental · academic", "conf": "intellectual（智力的）· intelligent（聪明的）· intelligible（可理解的）。"},
+  afterall:{"w": "after all", "ipa": "/ˈɑːftər ɔːl/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>毕竟</b>（补充理由）；终究", "en": "used to give a reason for what you just said", "ex": "<b>After all</b>, many of the most interesting books …（⑥❸）", "mem": "句首 after all＝<b>毕竟</b>，引出支撑上句的理由；句末 after all＝终究、到底（He came after all）。<br>⭐ 句首用法：⑥❸ 是给「需要多元」兜底的事实。", "syn": "because · considering that", "conf": "after all（毕竟）· above all（最重要的是）· all in all（总之）。"},
+  weshallsee:{"w": "We shall see whether …", "ipa": "/wi ʃæl siː ˈweðə(r)/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>……与否，拭目以待</b>", "en": "we will find out later whether …", "ex": "<b>We shall see whether</b> that plurality is a casualty（⑦）", "mem": "留白式结尾，作者不下结论，但用词（casualty）已带态度。<br>写作结尾：Whether this trend will last, we shall see.", "syn": "time will tell", "conf": "we shall see（拭目以待）· we shall overcome（我们终将胜利）。"},
+  casualty:{"w": "casualty", "ipa": "/ˈkæʒuəlti/", "pos": "n.", "tags": ["core", "poly", "write"], "cn": "<b>牺牲品</b>、受害者；伤亡人员", "en": "someone or something harmed as a result of an event", "ex": "a <b>casualty</b> of the current need（⑦）", "mem": "⚠️ 熟词僻义：casualty 本义战争、事故的<b>伤亡者</b>，引申为<b>（某趋势的）牺牲品</b>：Small shops were the first casualties of the recession.<br>⭐ 作者和 Lownie 一样在担心 ⟹ 反证 35D。", "syn": "victim · loss", "conf": "casualty（牺牲品）· casual（随意的）· causality（因果）。"},
+  takeon:{"w": "take on", "ipa": "/teɪk ɒn/", "pos": "phr.", "tags": ["phrase", "poly"], "cn": "<b>与……较量、迎战</b>；承担；雇用", "en": "to compete or fight against someone", "ex": "big enough to <b>take on all-comers</b>（⑦）", "mem": "⚠️ take on 多义：take on responsibility 承担 · take on staff 雇人 · take on a rival 迎战对手。all-comers＝所有来挑战的人。", "syn": "compete with · face", "conf": "take on（迎战）· take off（兴起）· take over（接管）。"},
+  ongoing:{"w": "ongoing", "ipa": "/ˈɒnɡəʊɪŋ/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>正在进行的</b>、持续的", "en": "continuing; still happening", "ex": "an <b>ongoing</b> conflict（31A）", "mem": "⭐ 31A 正确项：ongoing ↔ ①❷ currently；conflict ↔ stand-off。<br>写作：an ongoing debate 持续的争论。", "syn": "continuing · current", "conf": "ongoing（进行中）· outgoing（外向的；离任的）。"},
+  prevailing:{"w": "prevailing", "ipa": "/prɪˈveɪlɪŋ/", "pos": "adj.", "tags": ["core"], "cn": "<b>盛行的</b>、普遍的", "en": "existing or most common at a particular time", "ex": "a <b>prevailing</b> sentiment（31C）", "mem": "prevail v. 盛行；占上风（prevail over）。prevalent adj. 流行的。", "syn": "widespread · dominant", "conf": "prevailing（盛行）· prevalent（流行）· prevail（占上风）。"},
+  sentiment:{"w": "sentiment", "ipa": "/ˈsentɪmənt/", "pos": "n.", "tags": ["core"], "cn": "<b>情绪</b>、看法；感伤", "en": "a feeling or opinion", "ex": "a prevailing <b>sentiment</b>（31C）", "mem": "public sentiment 公众情绪 · market sentiment 市场情绪；sentimental adj. 多愁善感的。<br>⚠️ 31C 错：①段讲的是「找书费劲」这件事，不是某种普遍情绪。", "syn": "feeling · mood", "conf": "sentiment（情绪）· sediment（沉淀物）· statement（陈述）。"},
+  phenomenon:{"w": "phenomenon", "ipa": "/fəˈnɒmɪnən/", "pos": "n.", "tags": ["core"], "cn": "<b>现象</b>", "en": "something that happens or exists", "ex": "a literary <b>phenomenon</b>（31D）", "mem": "复数 phenomena。<br>⚠️ 31D 错在「文学」：两本书一童一惊悚，作者提它们是因为都由 PRH 出版。", "syn": "occurrence · event", "conf": "phenomenon（现象，复数 phenomena）· criterion（标准，复数 criteria）。"},
+  noticeable:{"w": "noticeable", "ipa": "/ˈnəʊtɪsəbl/", "pos": "adj.", "tags": ["core"], "cn": "<b>显眼的</b>、引人注意的", "en": "easy to see or notice", "ex": "To make them easily <b>noticeable</b>（32A）", "mem": "notice v. 注意到 → noticeable。<br>⚠️ 32A 方向反：书是从 prominent areas（显眼处）<b>撤走</b>的。", "syn": "conspicuous · prominent", "conf": "noticeable（显眼）· notable（著名的）· notorious（臭名昭著的）。"},
+  comply:{"w": "comply with", "ipa": "/kəmˈplaɪ wɪð/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>遵守、服从</b>", "en": "to obey a rule or request", "ex": "To <b>comply with</b> PRH’s requirement（32B）", "mem": "compliance n.；comply with the law 守法。<br>⚠️ 32B 错：原文没有任何「PRH 要求水石撤展位」的话；PRH 只做了 credit limit 一件事。", "syn": "obey · conform to · abide by", "conf": "comply（遵守）· compile（汇编）· imply（暗示）。"},
+  systematic:{"w": "systematic", "ipa": "/ˌsɪstəˈmætɪk/", "pos": "adj.", "tags": ["core"], "cn": "<b>系统的</b>、有条理的", "en": "done according to a careful plan", "ex": "in a <b>systematic</b> way（32D）", "mem": "system 系统 → systematic；systematically adv.。<br>⚠️ 32D 只看了 relevant sections 的字面，把一场反制读成了整理书架。", "syn": "methodical · orderly", "conf": "systematic（系统的）· systemic（全身的、制度性的）。"},
+  loyal:{"w": "loyal", "ipa": "/ˈlɔɪəl/", "pos": "adj.", "tags": ["core"], "cn": "<b>忠实的</b>、忠诚的", "en": "giving steady support", "ex": "Their customers remain <b>loyal</b>（33A）", "mem": "loyalty n. 忠诚：brand loyalty 品牌忠诚度。<br>⚠️ 33A 误读 availability for customers——全段没谈顾客的态度。", "syn": "faithful · devoted", "conf": "loyal（忠诚）· royal（王室的）· legal（合法的）。"},
+  underestimate:{"w": "underestimate", "ipa": "/ˌʌndərˈestɪmeɪt/", "pos": "v.", "tags": ["core"], "cn": "<b>低估</b>", "en": "to think something is smaller than it is", "ex": "Their stock is <b>underestimated</b>（33C）", "mem": "under-（不足）＋ estimate（估计）↔ overestimate 高估。<br>⚠️ 33C 偷换：原文是库存<b>降低</b>（lower levels of stock），不是被低估。", "syn": "underrate · undervalue", "conf": "underestimate（低估）· understate（轻描淡写）。"},
+  slack:{"w": "slack", "ipa": "/slæk/", "pos": "adj.", "tags": ["core", "poly"], "cn": "（生意）<b>萧条的、清淡的</b>；松弛的", "en": "with little business activity", "ex": "The book market is rather <b>slack</b>（33D）", "mem": "⚠️ 熟词僻义：slack 本义「松弛的」，说生意＝<b>不景气</b>：a slack season 淡季。<br>33D 与 ③❹❺ 相反：店里 exceptionally busy、销量创新高。", "syn": "sluggish · quiet · stagnant", "conf": "slack（萧条）· slick（光滑的）· lack（缺乏）。"},
+  falloff:{"w": "fall off", "ipa": "/fɔːl ɒf/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "（数量）<b>下降、减少</b>；跌落", "en": "to decrease in amount", "ex": "Sales … <b>fall off</b> considerably（34A）", "mem": "⭐ 34A 正确项：没人推荐 ⟹ 卖不动。<br>写作：Visitor numbers fell off sharply after the scandal.", "syn": "decline · drop · decrease", "conf": "fall off（下降）· fall out（吵翻）· fall through（落空）。"},
+  hesitate:{"w": "hesitate", "ipa": "/ˈhezɪteɪt/", "pos": "v.", "tags": ["core"], "cn": "<b>犹豫</b>", "en": "to pause before doing something", "ex": "staff <b>hesitate</b> to promote big-name authors’ books（34C）", "mem": "hesitation n.；Don’t hesitate to contact me.（书信结尾常用）<br>⚠️ 34C 换了对象：店员热心推荐的是<b>不太出名</b>的作者。", "syn": "waver · be reluctant", "conf": "hesitate（犹豫）· hesitant（犹豫的）。"},
+  revenue:{"w": "revenue", "ipa": "/ˈrevənjuː/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>收入</b>、营收；税收", "en": "money a company or government receives", "ex": "a severe reduction in <b>revenue</b>（34D）", "mem": "tax revenue 税收 · advertising revenue 广告收入。<br>⚠️ 34D 换了受害者：受损的是 PRH 的作者，水石门店反而生意火爆。", "syn": "income · earnings", "conf": "revenue（收入）· avenue（大道）· venue（场所）。"},
+  sticktogether:{"w": "stick together", "ipa": "/stɪk təˈɡeðə(r)/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>团结一致</b>、抱团", "en": "to stay loyal and support each other", "ex": "Small publishers ought to <b>stick together</b>（35A）", "mem": "stick to 坚持 · stick out 突出。<br>⚠️ 35A 错：Lownie 只说好书多出自小出版社，没给小出版社出主意。", "syn": "unite · band together", "conf": "stick together（团结）· stick to（坚持）· stick out（突出）。"},
+  dominance:{"w": "dominance", "ipa": "/ˈdɒmɪnəns/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>主导地位</b>、支配", "en": "power or control over others", "ex": "Big publishers will lose their <b>dominance</b>（35B）", "mem": "dominate v. → dominant adj. → dominance n.。<br>⚠️ 35B 方向反：合并让大出版商<b>更</b>强，Lownie 担心的正是 concentration of power。", "syn": "supremacy · control", "conf": "dominance（主导）· prominence（显著）。"}
+};
+const panel=document.getElementById('panel');
+const isMobile=()=>window.innerWidth<=900;
+function badge(t){const m={core:'核心',phrase:'短语',poly:'僻义',write:'写作'};return `<span class="badge b-${t}">${m[t]}</span>`}
+function showCard(k,el){
+  const d=V[k];if(!d)return;
+  document.querySelectorAll('.tk.active').forEach(x=>x.classList.remove('active'));
+  if(el)el.classList.add('active');
+  panel.innerHTML=`<button class="close" onclick="document.getElementById('panel').classList.remove('open')">收起</button>
+    <div class="wcard">
+      <div class="head"><span class="w">${d.w}</span><span class="ipa">${d.ipa}</span><span class="pos">${d.pos}</span>${d.tags.map(badge).join('')}</div>
+      <div class="cn">${d.cn}</div><div class="en-def">${d.en}</div>
+      <div class="row r-ex"><b>原文</b>${d.ex}</div>
+      <div class="row r-mem"><b>怎么记 / 考点</b>${d.mem}</div>
+      <div class="row r-syn"><b>同义 / 同族</b>${d.syn}</div>
+      <div class="row r-conf"><b>易混 / 提醒</b>${d.conf}</div>
+    </div>`;
+  if(isMobile())panel.classList.add('open');
+}
+document.querySelectorAll('.tk').forEach(t=>t.addEventListener('click',e=>{e.stopPropagation();showCard(t.dataset.w,t)}));
+
+function tz(btn){btn.closest('.para').classList.toggle('showzh')}
+let allOn=false;
+function toggleAll(){allOn=!allOn;document.querySelectorAll('.para').forEach(p=>p.classList.toggle('showzh',allOn))}
+function go(id){const s=document.getElementById(id);if(!s)return;s.scrollIntoView({behavior:'smooth',block:'center'});s.style.transition='none';s.style.opacity=.3;setTimeout(()=>{s.style.transition='opacity .8s';s.style.opacity=1},80)}
+
+document.querySelectorAll('.q').forEach(q=>{
+  const ans=+q.dataset.ans;
+  q.querySelectorAll('.opt').forEach((o,i)=>o.addEventListener('click',()=>{
+    if(q.classList.contains('done'))return;
+    q.classList.add('done');
+    if(i!==ans)o.classList.add('wrong');
+    q.querySelectorAll('.opt')[ans].classList.add('right');
+  }));
+});
+
+const vg=document.getElementById('vgrid');
+function renderGrid(f){
+  vg.innerHTML='';
+  Object.keys(V).forEach(k=>{
+    const d=V[k];
+    if(f!=='all'&&!d.tags.includes(f))return;
+    const div=document.createElement('div');div.className='vitem';
+    div.innerHTML=`<span class="badges">${d.tags.map(badge).join('')}</span><div class="w">${d.w}</div><div class="cn">${d.cn}</div>`;
+    div.addEventListener('click',()=>{showCard(k,null);if(!isMobile())window.scrollTo({top:0,behavior:'smooth'})});
+    vg.appendChild(div);
+  });
+}
+renderGrid('all');
+document.querySelectorAll('.fbtn').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.fbtn').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderGrid(b.dataset.f);
+}));
+
+const yd=document.getElementById('yd');let sel='',ydHold=0,ydT=0;
+/* 触屏：点按钮会先把选区清掉 → selectionchange 立刻把按钮藏了 → 点击落空。改成延迟隐藏 ＋ 按下即锁定 */
+const ydTouch=window.matchMedia&&matchMedia('(pointer:coarse)').matches;
+function ydHide(){clearTimeout(ydT);ydHold=0;yd.style.display='none'}
+document.addEventListener('selectionchange',function(){
+  const s=window.getSelection();const t=s?s.toString().trim():'';
+  if(t&&/^[a-zA-Z' -]{2,40}$/.test(t)){
+    sel=t;clearTimeout(ydT);
+    try{const r=s.getRangeAt(0).getBoundingClientRect();
+      yd.style.left=Math.max(8,Math.min(r.left,window.innerWidth-110))+'px';
+      yd.style.top=(r.bottom+(ydTouch?30:8))+'px';yd.style.display='block';}catch(e){}
+  }else if(!ydHold){clearTimeout(ydT);ydT=setTimeout(function(){if(!ydHold)yd.style.display='none'},ydTouch?900:0)}
+});
+['pointerdown','touchstart','mousedown'].forEach(function(ev){yd.addEventListener(ev,function(){ydHold=1;clearTimeout(ydT)},{passive:true})});
+yd.addEventListener('click',function(){
+  const u='https://dict.youdao.com/result?word='+encodeURIComponent(sel)+'&lang=en';
+  let w=null;try{w=window.open(u,'_blank')}catch(e){}
+  if(!w)location.href=u;
+  ydHide()});
+document.addEventListener('click',function(e){if(e.target!==yd&&!window.getSelection().toString())ydHide()});
+
+function imgAll(b){const on=document.body.classList.toggle('stx-allimg');b.textContent=on?'收起原卷':'原卷对照';
+  if(on)document.querySelectorAll('.para img.strip').forEach(im=>im.loading='eager')}
+</script>
+<script src="img/strip_boxes_2023.js?v=3"></script>
+<script src="_strip_lookup.js?v=8"></script>
+<script src="_strip_text.js?v=19"></script>
+<script src="_fault_attr.js"></script>
+</body>
+</html>
