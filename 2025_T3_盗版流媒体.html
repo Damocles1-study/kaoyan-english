@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2025 英一 Text 3 · 盗版流媒体：好莱坞的新反派</title>
+<style>
+  :root{
+    --bg:#faf9f6; --card:#ffffff; --ink:#2b2b2b; --muted:#8a8578;
+    --accent:#8b5e34; --accent-soft:#f3e9dd; --line:#e8e3d8;
+    --hl:#fdf3d8; --hl-border:#e0b84d;
+    --green:#3e7a4e; --green-soft:#e8f2ea;
+    --red:#b04a3a; --red-soft:#f9e9e6;
+    --blue:#3d6a8a; --blue-soft:#e7eff5;
+    --purple:#6d5a8e; --purple-soft:#eeeaf5;
+    --serif:"Georgia","Songti SC",serif;
+    --sans:-apple-system,"PingFang SC","Helvetica Neue",sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#1c1a17; --card:#26231f; --ink:#e8e4dc; --muted:#9a948a;
+      --accent:#d0a06a; --accent-soft:#3a3127; --line:#3a362f;
+      --hl:#3d3520; --hl-border:#b08c3a;
+      --green:#7fb98d; --green-soft:#26362b;
+      --red:#d98876; --red-soft:#3d2a26;
+      --blue:#8ab3d0; --blue-soft:#26323d;
+      --purple:#a996c8; --purple-soft:#302a3d;
+    }
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;padding-bottom:120px}
+  .wrap{max-width:1100px;margin:0 auto;padding:24px 20px}
+  .back{font-size:.85rem;color:var(--muted);text-decoration:none}
+  .back:hover{color:var(--accent)}
+  header{margin:14px 0 28px}
+  header h1{font-family:var(--serif);font-size:1.7rem;line-height:1.3}
+  header .sub{color:var(--muted);margin-top:6px;font-size:.9rem}
+  .tags{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+  .tag{font-size:.75rem;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);border:1px solid var(--line)}
+  .tag.warn{background:var(--red-soft);color:var(--red);border-color:var(--red)}
+  .tag.ok{background:var(--green-soft);color:var(--green);border-color:var(--green)}
+
+  .layout{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:24px;align-items:start}
+  main{min-width:0}
+  @media (max-width:900px){.layout{grid-template-columns:minmax(0,1fr)}}
+
+  section.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:24px}
+  h2{font-size:1.05rem;letter-spacing:.05em;color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+  h2 .n{font-size:.72rem;background:var(--accent);color:var(--card);border-radius:6px;padding:1px 7px}
+  h3{font-size:.95rem;color:var(--accent);margin:18px 0 10px}
+
+  .para{margin-bottom:22px}
+  .para .en{font-family:var(--serif);font-size:1.06rem;line-height:1.9}
+  .pno{color:var(--muted);font-size:.75rem;user-select:none;margin-right:6px}
+  .tk{background:var(--hl);border-bottom:2px solid var(--hl-border);border-radius:3px;padding:0 2px;cursor:pointer;transition:filter .15s}
+  .tk:hover{filter:brightness(.93)}
+  .tk.active{outline:2px solid var(--hl-border)}
+  .ls{border-bottom:2px dotted var(--blue);cursor:pointer}
+  .para .zh{display:none;margin-top:10px;padding:10px 14px;background:var(--blue-soft);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:.93rem}
+  .para.showzh .zh{display:block}
+  .zbtn{float:right;margin-left:10px;font-size:.72rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:6px;padding:2px 9px;cursor:pointer}
+  .zbtn:hover{color:var(--accent);border-color:var(--accent)}
+  .allbtn{font-size:.78rem;border:1px solid var(--accent);background:none;color:var(--accent);border-radius:8px;padding:4px 12px;cursor:pointer;margin-left:auto}
+
+  aside{position:sticky;top:20px}
+  #panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;min-height:180px}
+  #panel .hint{color:var(--muted);font-size:.88rem;text-align:center;padding:30px 10px}
+  .wcard .head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .wcard .w{font-family:var(--serif);font-size:1.35rem;font-weight:bold}
+  .wcard .ipa{color:var(--muted);font-size:.85rem}
+  .wcard .pos{font-size:.72rem;color:var(--purple);background:var(--purple-soft);padding:1px 8px;border-radius:999px}
+  .wcard .badge{font-size:.7rem;padding:1px 8px;border-radius:999px}
+  .b-core{background:var(--red-soft);color:var(--red)}
+  .b-phrase{background:var(--blue-soft);color:var(--blue)}
+  .b-poly{background:var(--purple-soft);color:var(--purple)}
+  .b-write{background:var(--green-soft);color:var(--green)}
+  .wcard .cn{margin-top:8px;font-size:1rem;font-weight:600}
+  .wcard .en-def{color:var(--muted);font-size:.86rem;font-style:italic;margin-top:2px}
+  .wcard .row{margin-top:10px;font-size:.86rem;padding:8px 10px;border-radius:8px}
+  .wcard .row>b:first-child{font-size:.72rem;display:block;margin-bottom:2px;letter-spacing:.06em}
+  .r-ex{background:var(--hl)} .r-ex b{color:var(--hl-border)}
+  .r-mem{background:var(--green-soft)} .r-mem b{color:var(--green)}
+  .r-syn{background:var(--blue-soft)} .r-syn b{color:var(--blue)}
+  .r-conf{background:var(--red-soft)} .r-conf b{color:var(--red)}
+  #panel .close{display:none}
+  @media (max-width:900px){
+    aside{position:fixed;left:0;right:0;bottom:0;z-index:50;padding:0 8px 8px}
+    #panel{box-shadow:0 -6px 24px rgba(0,0,0,.18);max-height:55vh;overflow-y:auto;display:none}
+    #panel.open{display:block}
+    #panel .close{display:block;float:right;border:none;background:var(--line);border-radius:8px;padding:2px 10px;cursor:pointer;color:var(--ink)}
+  }
+
+  .q{margin-bottom:22px;padding-bottom:18px;border-bottom:1px dashed var(--line)}
+  .q:last-child{border:none;margin-bottom:0;padding-bottom:0}
+  .q .stem{font-weight:600;font-family:var(--serif)}
+  .qt{font-size:.7rem;color:var(--blue);background:var(--blue-soft);border-radius:999px;padding:1px 8px;margin-right:6px;vertical-align:2px}
+  .opts{margin-top:10px;display:grid;gap:8px}
+  .opt{border:1px solid var(--line);border-radius:10px;padding:8px 12px;cursor:pointer;font-size:.93rem;font-family:var(--serif);transition:all .15s}
+  .opt:hover{border-color:var(--accent)}
+  .q.done .opt{cursor:default}
+  .opt.right{background:var(--green-soft);border-color:var(--green)}
+  .opt.wrong{background:var(--red-soft);border-color:var(--red)}
+  .expl{display:none;margin-top:12px;background:var(--accent-soft);border-radius:10px;padding:12px 14px;font-size:.9rem}
+  .q.done .expl{display:block}
+  .expl b{color:var(--accent)}
+  .expl .loc{font-family:var(--serif);font-style:italic;background:var(--hl);padding:1px 4px;border-radius:3px}
+  .fail{background:var(--red-soft);border:1px solid var(--red);border-radius:10px;padding:10px 13px;margin-bottom:10px;font-size:.89rem}
+  .fail b{color:var(--red)}
+  .waver{background:var(--hl);border:1px solid var(--hl-border);border-radius:10px;padding:10px 13px;margin-bottom:10px;font-size:.89rem}
+
+  .sent{margin-bottom:20px}
+  .sent .src{font-family:var(--serif);font-size:1rem;background:var(--blue-soft);padding:12px 14px;border-radius:10px;border-left:3px solid var(--blue)}
+  .sent .anat{margin-top:8px;font-size:.9rem}
+  .sent .anat li{margin:4px 0 4px 18px}
+  .sent .tr{margin-top:8px;font-size:.92rem;color:var(--muted)}
+  .skel{color:var(--red);font-weight:600}
+
+  .filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+  .fbtn{font-size:.8rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:999px;padding:4px 14px;cursor:pointer}
+  .fbtn.on{background:var(--accent);color:var(--card);border-color:var(--accent)}
+  .vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
+  .vitem{border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer;transition:border-color .15s}
+  .vitem:hover{border-color:var(--accent)}
+  .vitem .w{font-family:var(--serif);font-weight:bold}
+  .vitem .cn{font-size:.85rem;color:var(--muted)}
+  .vitem .badges{float:right}
+
+  .wb{display:grid;gap:10px}
+  .wbi{border-left:3px solid var(--green);background:var(--green-soft);border-radius:0 10px 10px 0;padding:10px 14px;font-size:.92rem}
+  .wbi .p{font-family:var(--serif);font-weight:600}
+  .wbi .u{color:var(--muted);font-size:.85rem}
+
+  .flow{display:grid;gap:8px;font-size:.92rem}
+  .flow .fi{border:1px solid var(--line);border-radius:10px;padding:9px 13px}
+  .flow .fi b{color:var(--accent)}
+
+  .ctab{width:100%;border-collapse:collapse;font-size:.86rem;margin-top:8px}
+  .ctab th,.ctab td{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
+  .ctab th{background:var(--accent-soft);color:var(--accent);font-size:.8rem;white-space:nowrap}
+  .ctab code{background:var(--hl);padding:0 3px;border-radius:3px}
+  .tabwrap{overflow-x:auto}
+  .ok{color:var(--green);font-weight:700}
+  .no{color:var(--red);font-weight:700}
+  .tl{display:grid;gap:10px;margin-top:6px}
+  .tli{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:start;border:1px solid var(--line);border-radius:10px;padding:10px 13px}
+  .tli .mark{font-family:var(--serif);font-weight:700;color:var(--accent);background:var(--accent-soft);border-radius:8px;padding:4px 10px;white-space:nowrap;font-size:.85rem}
+
+  .arrow{display:grid;gap:8px;margin-top:8px}
+  .arrow .ai{border:1px solid var(--line);border-radius:10px;padding:10px 13px;font-size:.9rem}
+  .arrow .ai.old{background:var(--red-soft);border-color:var(--red)}
+  .arrow .ai.new{background:var(--green-soft);border-color:var(--green)}
+  .chain{font-family:var(--serif);font-size:.95rem;background:var(--hl);border:1px solid var(--hl-border);border-radius:10px;padding:10px 14px;margin:8px 0;overflow-x:auto}
+
+  #yd{position:fixed;z-index:60;display:none;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:4px 12px;font-size:.8rem;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+  footer{color:var(--muted);font-size:.8rem;text-align:center;margin-top:30px}
+  .att{display:grid;gap:8px;margin-top:10px}
+  .atti{border:1px solid var(--line);border-radius:10px;padding:9px 13px;font-size:.9rem}
+  .atti b{font-family:var(--serif)}
+  .atti.no2{background:var(--red-soft);border-color:var(--red)}
+  .atti.yes{background:var(--green-soft);border-color:var(--green)}
+  .atti,.expl,.wbi,.zh,.fi,.ai,figcaption,p{overflow-wrap:anywhere}
+
+  /* 2021 起：原文以原卷扫描句条呈现 */
+  .sn{margin:0 0 14px}
+  .sn .pno{display:block;margin-bottom:4px;font-size:.78rem;line-height:1.6}
+  img.strip{display:block;width:100%;max-width:760px;height:auto;background:#fff;border:1px solid var(--line);border-radius:6px;cursor:pointer}
+  .sent .src img.strip{margin-top:6px;cursor:default}
+  .kw{margin-top:5px;font-size:.88rem;line-height:2.1;font-family:var(--serif)}
+  @media (prefers-color-scheme: dark){img.strip{filter:invert(.9) hue-rotate(180deg)}}
+  .sn,.sent .src{overflow-x:auto}
+  @media (max-width:700px){img.strip{width:640px;max-width:none}.sn::after{content:'← 句条可左右滑动 →';display:block;font-size:.7rem;color:var(--muted);margin-top:2px}}
+
+  /* 2023 起：流式版——识别好的句子在段落里连排，像 2007–2020 */
+  .para .en{font-family:var(--serif);font-size:1.02rem;line-height:1.9}
+  .stx-flow .para .en .pno{margin-right:4px}
+  .stx-flow .para .sn:not(.stx-on) .kw{margin-bottom:8px}
+</style>
+
+</head>
+<body class="stx-flow">
+<div class="wrap">
+  <a class="back" href="index.html">◀ 返回英语复盘中心</a>
+  <header>
+    <h1>盗版流媒体：好莱坞的新反派</h1>
+    <div class="sub">2025 年英语（一）真题 · Text 3 · 约 415 词 · 6 段 · 建议做题 18 min · 话题：流媒体×盗版×版权执法（来源：《彭博社》2024-01-24，原题 <i>Streaming Pirates Are Hollywood’s New Villains</i>（盗版流媒体：好莱坞的新反派），据黄皮书）</div>
+    <div class="tags">
+      <span class="tag">正确答案：31D 32A 33A 34C 35D</span><span class="tag">题型：事实细节 ×2 ＋ 细节推理 ＋ 人物观点 ＋ 文章主旨</span><span class="tag">难度：五题全部顺序；坑在「身份」（MPA 是谁的人）与「档位」（plateau 不是 decline）</span><span class="tag">✅ Claude 盲做 5/5（先落盘再对答案；犹豫 33 A、35 B／D）</span>
+    </div>
+  </header>
+
+  <div class="layout">
+    <main>
+      <!-- ========== 全文脉络 ========== -->
+      <section class="card">
+        <h2><span class="n">00</span>读前一分钟 · 全文脉络（做完题再看也行）</h2>
+        <div class="flow">
+          <div class="fi"><b>①段 输家和意外的赢家</b>：老好莱坞自从在流媒体上跟 Netflix 正面开打，就一直赚不到钱——Disney+、Peacock、Paramount+ 每年亏几十亿美元，大家担心流媒体永远赶不上当年有线电视那么赚钱。<b>But</b>，流媒体时代却便宜了一群<b>意想不到的赢家</b>：盗版者用软件几秒钟就从正版平台上扒下一部片子，挂到自己的非法平台上，靠广告和订阅一年进账约 20 亿美元（31 题：正版平台面临真实威胁）。</div>
+          <div class="fi"><b>②段 为什么这么赚</b>：不用花一分钱拍片，非法流媒体网站的利润率接近 90%——这是美国电影协会（MPA）说的。MPA 是<b>代表好莱坞制片厂的行业组织</b>，正在严打近年冒出来的几千个非法平台（⚠️ 这句身份介绍是 33 题的钥匙）。</div>
+          <div class="fi"><b>③段 一串损失数字</b>：<b>起初</b>，Netflix 这类正版在线业务的兴起其实<b>帮忙遏制了</b>数字盗版——那时的盗版主要靠文件上传（32 题）。<b>But now</b>，非法流媒体加上文件共享，让美国经济每年损失约 300 亿美元收入、约 25 万个工作岗位；全球损失每年约 710 亿美元。</div>
+          <div class="fi"><b>④段 反制者登场</b>：MPA 首席执行官里夫金说，偷电影、开盗版站的不是夫妻小店，「这是有组织犯罪」。他 2017 年加入 MPA，此前五年（2012 年），MPA 没能在好莱坞和硅谷之间<b>谈拢共识</b>、推动国会通过反盗版立法（33 题）。2017 年，MPA 组建了「创意与娱乐联盟」（ACE）——一支约 100 名侦探的执法队，满世界帮地方当局抓盗版者。</div>
+          <div class="fi"><b>⑤段 战果</b>：ACE 说，北美非法流媒体服务从 2018 年的 1,400 多家降到了 126 家，部分得益于 MPA 支持的一部 2020 年联邦法律——它把大规模播放盗版内容定为重罪。</div>
+          <div class="fi"><b>⑥段 前景：还早</b>：咨询公司 Parks Associates 预测，美国正版流媒体自 2022 年以来被盗版造成的累计损失，未来两年将达 1,130 亿美元。分析师霍利说：<b>虽然</b>有人乐观，觉得新的反制措施和最佳实践可能让盗版<b>到 2027 年不再增长</b>，<b>但</b>它什么时候开始<b>下降</b>，各方毫无共识（34 题）。</div>
+          <div class="fi" style="border-color:var(--accent)">📌 <b>一句话主旨</b>：盗版流媒体是流媒体时代的意外赢家，给好莱坞和整个经济造成了巨大损失；打击有进展，但短期内不会好转。<br>📌 <b>结构套路</b>：<b>问题</b>（①② 谁赢谁输、为什么赚）→ <b>数字</b>（③ 损失多大）→ <b>对策</b>（④⑤ MPA、ACE、立法）→ <b>前景</b>（⑥ 还会更糟一阵）——标准的<b>问题报道</b>，作者几乎不发表议论，靠数字和引语推进。五题完全顺序：31①、32③、33④、34⑥、35 全文。<br>📌 <b>本篇最值钱的两条规律</b>：① <b>先给机构贴身份标签</b>——②段一句同位语交代了 MPA 是「代表好莱坞制片厂的行业组织」，到④段「没能在好莱坞和硅谷之间促成共识」，三方其实只有两方：MPA 就是好莱坞的嘴，谈不拢 ＝ 硅谷不配合 ⟹ 33A（<a href="套路库_阅读.html#R117">R117</a>）。② <b>趋势词分三档</b>：涨 → 平（plateau）→ 降（decline）。霍利的让步从句里，乐观派最多只敢说到「平」；主句说「降」何时开始没人知道 ⟹ 近期不会减少（34C）；A 说「遏制不住」，把「平」读成了「涨」；B 说「压垮正版」，又往「涨」那头再拔一级 ⟹ 新立 <a href="套路库_阅读.html#R322">R322</a>。<br>📌 <b>和 2025 T1、T2 比一比</b>：T1 研究报道、T2 第一人称评论、T3 数字型问题报道。三篇的作者声音一篇比一篇弱：T2 作者全程表态，T3 作者一个评价词都没给，<b>态度全藏在材料的排法里</b>——开头是亏损、中间是损失、结尾是更大的损失，所以 35 题的主旨只能是「经济危害」（D），不是某一段里的「犯罪性质」（B）。</div>
+          <div class="fi">🗞 <b>背景（WebSearch 核过，只帮读、不替原文纠错）</b>：原文是彭博《商业周刊》记者 Thomas Buckley 的报道（彭博法律频道转载题作 <i>Video Streaming Pirates Are …</i>）。④❸ 的「五年前」就是 <b>2012 年的 SOPA／PIPA</b>：两部好莱坞力推的反网络盗版法案，2012 年 1 月 18 日维基百科、谷歌等发起 24 小时「断网」抗议，议员纷纷撤回联署，法案搁浅；时任 MPAA 主席多德事后请白宫出面撮合好莱坞与硅谷，也没成——<b>反对方正是硅谷</b>，这就是 33A「被硅谷拒绝合作」的现实底色。⑤段的 2020 年联邦法律是 <b>Protecting Lawful Streaming Act</b>（《保护合法流媒体法》）：2020 年 12 月由参议员蒂利斯提出、并入年底拨款法签署，把商业性的大规模非法流媒体从轻罪升为重罪（最高 10 年），只针对运营者、不针对观众。里夫金 2017 年起任 MPA 主席兼 CEO，同时是 ACE 主席。</div>
+        </div>
+      </section>
+
+      <!-- ========== 原文精读 ========== -->
+      <section class="card">
+        <h2><span class="n">01</span>原文精读 <button class="allbtn" onclick="toggleAll()">全文意译 开/关</button> <button class="allbtn" id="imgall" onclick="imgAll(this)">原卷对照</button></h2>
+        <p style="font-size:.8rem;color:var(--muted);margin-bottom:14px">🟡 黄色高亮 = 重难点词/短语，点击右侧出卡片 ｜ 蓝色虚线 = 长难句，点击跳到精析 ｜ 每段「意」= 段落意译 ｜ 选中任意其他单词浮出「查有道」 ｜ 原文由你的浏览器从原卷识别成文字（首次约 3 秒，之后秒开）；「原卷对照」可逐句看扫描原图、改识别错字</p>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">①</span>
+            <div class="sn" data-go="l1_1"><img class="strip" src="img/2025_T3/s1_1.png" alt="①❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="takeon">taking on</span> · <span class="tk" data-w="atitsowngame">at its own game</span> · <span class="tk" data-w="turnaprofit">turn a profit</span> · <span class="tk" data-w="streaming">streaming</span> · <span class="tk" data-w="thelikesof">the likes of</span> · <span class="tk" data-w="spark">sparking</span> · <span class="tk" data-w="profitable">profitable</span> · <span class="tk" data-w="cable">cable</span></div></div>
+            <div class="sn" data-go="l1_2"><img class="strip" src="img/2025_T3/s1_2.png" alt="①❷ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="boon">boon</span> · <span class="tk" data-w="unintended">unintended</span> · <span class="tk" data-w="pirate">pirates</span> · <span class="tk" data-w="rip">rip</span> · <span class="tk" data-w="legitimate">legitimate</span> · <span class="tk" data-w="platform">platforms</span> · <span class="tk" data-w="host">host</span> · <span class="tk" data-w="title">titles</span> · <span class="tk" data-w="illegitimate">illegitimate</span> · <span class="tk" data-w="rakein">rake in</span> · <span class="tk" data-w="annually">annually</span> · <span class="tk" data-w="subscription">subscriptions</span></div></div>
+          </div>
+          <div class="zh"><b>①段意：</b>自从在流媒体这块地盘上跟 Netflix 正面较量以来，老牌好莱坞一直很难在流媒体上赚到钱：Disney+、Peacock、Paramount+ 之类的平台每年亏损数十亿美元，人们担心这些服务永远不会像当年的有线电视那样赚钱。然而，流媒体时代却成了一些意想不到的赢家的福音：盗版者用软件几秒钟就能从正版在线视频平台上扒下一部电影或一档电视节目，再挂到他们自己的非法平台上，靠广告和订阅每年进账约 20 亿美元。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">②</span>
+            <div class="sn" data-go="l2_1"><img class="strip" src="img/2025_T3/s2_1.png" alt="② 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="production">production</span> · <span class="tk" data-w="profitmargin">profit margins</span> · <span class="tk" data-w="approach">approaching</span> · <span class="tk" data-w="tradegroup">trade group</span> · <span class="tk" data-w="represent">representing</span> · <span class="tk" data-w="crackdown">crack down on</span> · <span class="tk" data-w="cropup">cropped up</span></div></div>
+          </div>
+          <div class="zh"><b>②段意：</b>美国电影协会（MPA）称，由于没有任何视频制作成本，非法流媒体网站的利润率已接近 90%。MPA 是代表好莱坞各制片厂的行业组织，正致力于严厉打击近年来冒出来的成千上万个非法平台。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">③</span>
+            <div class="sn" data-go="l3_1"><img class="strip" src="img/2025_T3/s3_1.png" alt="③❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="initially">Initially</span> · <span class="tk" data-w="curb">curb</span> · <span class="tk" data-w="piracy">piracy</span> · <span class="tk" data-w="largely">largely</span> · <span class="tk" data-w="upload">uploads</span></div></div>
+            <div class="sn" data-go="l3_2"><img class="strip" src="img/2025_T3/s3_2.png" alt="③❷ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="involve">involving</span> · <span class="tk" data-w="filesharing">file-sharing</span> · <span class="tk" data-w="revenue">revenue</span> · <span class="tk" data-w="estimate">estimates</span> · <span class="tk" data-w="chamber">Chamber</span></div></div>
+            <div class="sn"><img class="strip" src="img/2025_T3/s3_3.png" alt="③❸ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="impact">impact</span></div></div>
+          </div>
+          <div class="zh"><b>③段意：</b>起初，像 Netflix 这样的正版在线业务的兴起，其实帮助遏制了数字盗版——那时的盗版主要靠文件上传。但据美国商会全球创新政策中心估计，如今涉及非法流媒体服务和文件共享的盗版，每年让美国经济损失约 300 亿美元收入和约 25 万个工作岗位。全球范围的损失每年约 710 亿美元。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">④</span>
+            <div class="sn"><img class="strip" src="img/2025_T3/s4_1.png" alt="④❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="steal">stealing</span> · <span class="tk" data-w="mompop">mom and pop operations</span> · <span class="tk" data-w="ceo">chief executive officer</span></div></div>
+            <div class="sn"><img class="strip" src="img/2025_T3/s4_2.png" alt="④❷ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="organizedcrime">organized crime</span></div></div>
+            <div class="sn" data-go="l4_3"><img class="strip" src="img/2025_T3/s4_3.png" alt="④❸ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="consensus">consensus</span> · <span class="tk" data-w="passage">passage</span> · <span class="tk" data-w="legislation">legislation</span> · <span class="tk" data-w="aimedat">aimed at</span></div></div>
+            <div class="sn" data-go="l4_4"><img class="strip" src="img/2025_T3/s4_4.png" alt="④❹ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="alliance">Alliance</span> · <span class="tk" data-w="enforcement">enforcement</span> · <span class="tk" data-w="taskforce">task force</span> · <span class="tk" data-w="detective">detectives</span> · <span class="tk" data-w="circle">circling</span> · <span class="tk" data-w="authority">authorities</span> · <span class="tk" data-w="arrest">arrest</span></div></div>
+          </div>
+          <div class="zh"><b>④段意：</b>「偷我们的电影和电视节目、经营盗版网站的人，可不是什么夫妻小店，」MPA 首席执行官查理·里夫金说，「这是有组织犯罪。」里夫金 2017 年加入 MPA，在那之前五年，该组织没能在好莱坞和硅谷之间达成共识，从而推动国会通过一项旨在制止网络盗版的立法。2017 年，该协会成立了「创意与娱乐联盟」（ACE）——一支由约 100 名侦探组成的执法特遣队，奔走全球，协助各地当局抓捕流媒体盗版者。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">⑤</span>
+            <div class="sn" data-go="l5_1"><img class="strip" src="img/2025_T3/s5_1.png" alt="⑤ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="shrink">shrink</span> · <span class="tk" data-w="aidedby">aided in part by</span> · <span class="tk" data-w="federal">federal</span> · <span class="tk" data-w="largescale">large-scale</span> · <span class="tk" data-w="copyrighted">copyrighted</span></div></div>
+          </div>
+          <div class="zh"><b>⑤段意：</b>ACE 说，它已帮助把北美的非法流媒体服务从 2018 年的 1,400 多家减少到 126 家；这在一定程度上也得益于 MPA 对一部 2020 年联邦法律的支持——该法把大规模播放受版权保护的内容定为重罪。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">⑥</span>
+            <div class="sn"><img class="strip" src="img/2025_T3/s6_1.png" alt="⑥❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="consulting">Consulting</span> · <span class="tk" data-w="predict">predicts</span> · <span class="tk" data-w="cumulative">cumulative</span></div></div>
+            <div class="sn" data-go="l6_2"><img class="strip" src="img/2025_T3/s6_2.png" alt="⑥❷ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="optimism">optimism</span> · <span class="tk" data-w="emerging">emerging</span> · <span class="tk" data-w="countermeasure">countermeasures</span> · <span class="tk" data-w="bestpractice">best practices</span> · <span class="tk" data-w="plateau">plateau</span> · <span class="tk" data-w="stakeholder">stakeholders</span> · <span class="tk" data-w="asto">as to</span> · <span class="tk" data-w="decline">decline</span></div></div>
+          </div>
+          <div class="zh"><b>⑥段意：</b>咨询公司 Parks Associates 预测，美国正版流媒体服务自 2022 年以来因盗版遭受的累计损失，将在未来两年达到 1,130 亿美元。「虽然有人乐观地认为，新出现的反制措施和最佳实践可能让盗版到 2027 年趋于平稳，但对于盗版何时会开始减少，各利益相关方并没有共识，」分析师史蒂夫·霍利说。</div>
+        </div>
+      </section>
+
+      <!-- ========== 题目 ========== -->
+      <section class="card">
+        <h2><span class="n">02</span>题目与解析（点选项即判 · 再看解析）</h2>
+
+        <div class="q" data-ans="3" id="q31">
+          <p class="stem"><span class="qt">事实细节</span>31. According to Paragraph 1, <span class="tk" data-w="legitimate">legitimate</span> streaming services ______.</p>
+          <div class="opts">
+            <div class="opt">[A] have <span class="tk" data-w="drawlessons">drawn lessons from</span> Hollywood.</div>
+            <div class="opt">[B] have <span class="tk" data-w="surpass">surpassed</span> cable in revenue.</div>
+            <div class="opt">[C] are unpopular with <span class="tk" data-w="advertiser">advertisers</span>.</div>
+            <div class="opt">[D] are <span class="tk" data-w="confront">confronted with</span> a real threat.</div>
+          </div>
+          <div class="expl"><b>答案 D</b>　题干的 legitimate 是个<b>对立信号</b>：说「正版」，是因为后面有「盗版」。①段两句正好一输一赢：❶ 老好莱坞的流媒体（Disney+ 等）<span class="loc">struggled to turn a profit</span>、每年亏几十亿；❷ <b>But</b> 一转——流媒体时代成了 <span class="loc">a boon for some unintended winners</span>，赢家就是从 <span class="loc">legitimate online video platforms</span> 上扒片子、挂到 <span class="loc">illegitimate services</span> 上一年赚 20 亿的盗版者。正版这边在亏，盗版那边拿正版的内容去赚 ⟹ 正版平台面临<b>真实的威胁</b> ⟹ D。<br><b>干扰项：</b>A 从❶ <span class="loc">taking on Netflix Inc. at its own game</span> 编出「向好莱坞学习」——可题干的「正版流媒体」指的恰恰就是好莱坞自家的 Disney+、Peacock 们，自己向自己学什么？而且「吸取了经验」暗示混得不错，和「年年巨亏」正相反。B 与❶ 正面冲突：大家担心的正是它们 <span class="loc">will never be as profitable as cable once was</span>。C 把❶ 的 profitable 和❷ 的 ads 拼起来，脑补出「广告商不喜欢它们」——文中广告是<b>盗版站</b>的收入来源，和广告商对正版平台的态度毫无关系。<br><b>技巧：</b>首段题若首段是「❶ 现状 ＋ ❷ But 转出新角色」，答案总在<b>转折之后的那个新角色对题干对象意味着什么</b>。这里 unintended winners 一出场，题干里的 legitimate 就成了「被抢了饭碗的一方」。<br>📕 <b>与书解析的商榷</b>：无分歧。书的技巧总结也是先抓❷ 的 legitimate 与 pirates 的对立，再用冒号后的解释坐实 pirates ＝ unintended winners。</div>
+        </div>
+
+        <div class="q" data-ans="0" id="q32">
+          <p class="stem"><span class="qt">事实细节</span>32. It can be learned that <span class="tk" data-w="streamer">streamers</span> like Netflix ______.</p>
+          <div class="opts">
+            <div class="opt">[A] <span class="tk" data-w="playapart">played a part in</span> the fight against illegal file-sharing.</div>
+            <div class="opt">[B] <span class="tk" data-w="reap">reaped</span> benefits from the war with digital pirates.</div>
+            <div class="opt">[C] promised to become big <span class="tk" data-w="jobcreator">job creators</span> in the US.</div>
+            <div class="opt">[D] used to <span class="tk" data-w="collaborate">collaborate</span> with file-uploading platforms.</div>
+          </div>
+          <div class="expl"><b>答案 A</b>　Netflix 再出现是在③❶：正版在线业务的兴起 <span class="loc">actually helped curb digital piracy</span>。选项里没有 curb digital piracy 的原词，要靠后面的<b>定语从句</b>换算：<span class="loc">which had largely been based on file uploads</span>——当年的数字盗版主要就是「上传文件」，即<b>文件共享</b>。于是：helped ＝ played a part in，curb ＝ the fight against，（当年的）digital piracy ＝ illegal file-sharing ⟹ A。<br><b>干扰项：</b>B 把「帮着打击盗版」改成了「从和盗版的斗争中<b>获益</b>」——原文只说起了作用，没说谁得了好处；③❷ 起反而在讲如今大家都损失惨重。C 从③❷ 的 250,000 jobs 反推：盗版<b>毁掉</b>工作岗位，不等于正版平台<b>承诺创造</b>岗位，promised 更是无中生有。D 把③❶ 的 file uploads 和③❷ 的 <span class="loc">as well as file-sharing</span> 拼起来，编出「过去和文件上传平台合作」——方向完全反了：Netflix 是那些平台的<b>对手</b>，上传平台本身就是盗版。<br><b>技巧：</b>原文给的是「上位词」（digital piracy），选项给的是「下位词」（file-sharing）时，回原文找<b>那个限定它的从句</b>——作者往往自己就交代了「当时的 X 主要是 Y」。注意时态：had largely been 是<b>过去完成</b>，说的是「当时」，和 now 的流媒体盗版分开 ⟹ 选项用一般过去时 played 正对上。<br>📕 <b>与书解析的商榷</b>：无分歧。书在「选项定位」里把原文印成了 illegal <b>fire</b>-sharing，是排印笔误（原文与选项都是 file-sharing）。</div>
+        </div>
+
+        <div class="q" data-ans="0" id="q33">
+          <p class="stem"><span class="qt">细节推理</span>33. It can be inferred from Paragraph 4 that the MPA ______.</p>
+          <div class="opts">
+            <div class="opt">[A] was <span class="tk" data-w="deny">denied</span> cooperation by Silicon Valley.</div>
+            <div class="opt">[B] led a national <span class="tk" data-w="protest">protest</span> against online piracy.</div>
+            <div class="opt">[C] was <span class="tk" data-w="urge">urged</span> to form an enforcement task force.</div>
+            <div class="opt">[D] failed to win support from local authorities.</div>
+          </div>
+          <div class="expl"><b>答案 A</b>　推理题先把题干对象的<b>身份</b>找出来：②段同位语早就交代了——MPA 是 <span class="loc">a trade group representing Hollywood studios</span>，<b>好莱坞的代言人</b>。再看④❸：MPA <span class="loc">failed five years earlier to build consensus between Hollywood and Silicon Valley</span>，目的是推动反盗版立法。表面上是三方（MPA、好莱坞、硅谷），实际只有两方：MPA 本来就站在好莱坞那边，它要「在好莱坞和硅谷之间促成共识」，就是<b>去争取硅谷的支持</b>；没成 ⟹ 硅谷没配合 ⟹ A。<br><b>干扰项：</b>C 把④❹ 的主动换成了被动：原文是 <span class="loc">the association formed</span> ACE（MPA 自己组建的），C 写成「被敦促组建」——主动 ⟹ 被动，是推理题最常见的「改语态」陷阱。D 把④❹ 的 <span class="loc">to help local authorities arrest streaming pirates</span>（<b>帮</b>地方当局）反写成「没得到地方当局的支持」；没通过的是<b>国会立法</b>，跟地方当局无关。B 的 national 和 protest 都无据：ACE 的侦探 <span class="loc">circling the globe</span>，是<b>全球</b>；做的是执法抓人，不是<b>抗议</b>——protest 是表达不满，MPA 的办法是立法、组队、抓人。<br><b>技巧：</b>多方关系的推理题，先在卷边画栏：<b>每个机构住在哪一栏</b>（<a href="套路库_阅读.html#R117">R117</a>）。只要发现「中间人」其实是某一方的代言人，三方就塌成两方，「X 与 Y 之间谈不拢」就等于「Y 不肯跟 X 合作」。<br>⚠️ <b>盲做时犹豫过</b>：A 要推一步（failed to build consensus ⟹ denied cooperation），容易担心「推过头」。可另外三项要么改语态（C）、要么方向反（D）、要么无据（B），排到最后只剩 A；而推的这一步正是②段那句身份介绍给的。<br>📕 <b>与书解析的商榷</b>：无分歧，书的技巧总结同样是「先明确 MPA 的身份」「三方实为两方」。补一条背景（见 00）：五年前那次失败就是 2012 年的 SOPA／PIPA，反对方正是以谷歌、维基百科为首的硅谷——现实与推理完全吻合。</div>
+        </div>
+
+        <div class="q" data-ans="2" id="q34">
+          <p class="stem"><span class="qt">人物观点</span>34. According to Hawley, digital piracy ______.</p>
+          <div class="opts">
+            <div class="opt">[A] cannot be <span class="tk" data-w="check">checked</span> in spite of new legislation.</div>
+            <div class="opt">[B] will possibly <span class="tk" data-w="overwhelm">overwhelm</span> legitimate streamers.</div>
+            <div class="opt">[C] is unlikely to <span class="tk" data-w="diminish">diminish</span> in the near future.</div>
+            <div class="opt">[D] has been <span class="tk" data-w="underestimate">underestimated</span> by some analysts.</div>
+          </div>
+          <div class="expl"><b>答案 C</b>　霍利的话在⑥❷，<b>While</b> 让步 ＋ 主句：让步从句里乐观派最多只说到 <span class="loc">may see piracy begin to plateau by 2027</span>——<b>停止增长、趋于平稳</b>；主句才是霍利的落点：<span class="loc">there is no consensus</span> … <span class="loc">as to when it may begin to decline</span>——什么时候开始<b>下降</b>，谁也说不准。乐观的最好情况是「到 2027 年不再涨」，「降」更是遥遥无期 ⟹ 短期内不太可能减少 ⟹ C；unlikely 对应原文的不确定语气，in the near future 对应 by 2027 这个近期时间窗。<br><b>干扰项：</b>把盗版的走势画成三档——<b>涨 → 平 → 降</b>——四个选项各落在哪一档就一清二楚。A「尽管有新法也<b>遏制不住</b>」：遏制不住 ＝ 一直在涨，可原文的乐观派说的是「会趋平」，主句也只是说「降」的时间没共识，没人说它停不下来——把<b>「何时降不确定」</b>偷换成了<b>「绝不会被控制」</b>，档位错、语气也从委婉变成了绝对。B「可能压垮正版平台」：比「涨」还多拔一级，料来自⑥❶ 的 1,130 亿美元，但那是霍利之外的咨询公司的数字，霍利本人没这么说。D「被一些分析师低估」：霍利并没有反驳乐观派（他承认 there is some optimism），只是说下降的时间没有共识——让步不等于驳斥。<br><b>技巧：</b>人物观点题遇到「While A, B」，观点取主句 B（<a href="套路库_阅读.html#R260">R260</a>）；再把原文的趋势词放上<b>涨—平—降</b>的阶梯：让步里乐观到哪一档、主句不确定的是哪一档，正确项就落在两者之间 ⟹ 新立 <a href="套路库_阅读.html#R322">R322</a>。<br>📕 <b>与书解析的商榷</b>：无分歧。书在两处「选项定位」里把原文的 piracy 印成了 <b>privacy</b>（may see privacy begin to …），排印笔误。书说 A、C 的区别是「A 绝对、C 委婉」，再补一个更硬的判据：<b>A 的「遏制不住」与让步从句里的 plateau 冲突</b>——连乐观派都只敢说「趋平」，而「趋平」本身就是被遏制住了增长。</div>
+        </div>
+
+        <div class="q" data-ans="3" id="q35">
+          <p class="stem"><span class="qt">文章主旨</span>35. Which of the following is <span class="tk" data-w="emphasize">emphasized</span> in the text?</p>
+          <div class="opts">
+            <div class="opt">[A] The need to <span class="tk" data-w="coordinate">coordinate</span> anti-piracy action.</div>
+            <div class="opt">[B] The criminal nature of copyright <span class="tk" data-w="violation">violation</span>.</div>
+            <div class="opt">[C] The <span class="tk" data-w="prospect">prospect</span> of <span class="tk" data-w="eliminate">eliminating</span> online piracy.</div>
+            <div class="opt">[D] The economic harm from illegal streaming.</div>
+          </div>
+          <div class="expl"><b>答案 D</b>　「emphasized in the text」问的是<b>贯穿全文</b>的东西。把全文的数字串起来：① 正版每年亏数十亿、盗版一年赚 20 亿 → ② 盗版利润率近 90% → ③ 美国每年损失 300 亿美元收入和 25 万个岗位、全球 710 亿 → ⑥ 两年内累计损失将达 1,130 亿。<b>六段里有四段在报损失账</b>，开头、中间、结尾都是钱 ⟹ 非法流媒体造成的经济损害 ⟹ D。<br><b>干扰项：</b>B 是最像的一项：④❷ <span class="loc">This is organized crime</span>、⑤ <span class="loc">a serious crime</span>，「犯罪」确实出现了两次。但这两句都在<b>对策</b>部分，作用是说明问题有多严峻、为反制行动铺垫；它们只占④⑤两段，而经济损失的数字从①一直排到⑥。A 拿④❸ 的 consensus 和⑥❷ 的 no consensus 拼出「需要协调」——两个 consensus 一个讲 2012 年的立法、一个讲盗版何时下降，都不是在呼吁协调；作者也从没写过「应该」。C 与⑥❷ 正相反：连「下降」都说不准，何谈<b>消灭</b>（eliminating）？<br><b>技巧：</b>主旨题干扰项多半是<b>局部信息</b>：两项都在文中出现过、甚至出现过两次时，比的是<b>覆盖段数</b>——哪一项从首段排到末段，哪一项才是 emphasized。数字型报道尤其如此：把每段的数字列成一张单子，给整张单子起个上位名（<a href="套路库_阅读.html#R191">R191</a>）。<br>⚠️ <b>盲做时 B／D 犹豫过</b>：B 的 organized crime 是里夫金的原话、语气最重，读完④段容易被它带走。判据就是覆盖度：「犯罪」只活在④⑤，「钱」活在①②③⑥。<br>📕 <b>与书解析的商榷</b>：无分歧。书在 A 项「选项定位」里把原文的 stakeholders（利益相关方）印成了 <b>shareholders</b>（股东），C 项又一次把 piracy 印成 privacy，都是排印笔误。</div>
+        </div>
+      </section>
+
+      <!-- ========== 长难句 ========== -->
+      <section class="card" id="sents">
+        <h2><span class="n">03</span>长难句精析（正文蓝色虚线句）</h2>
+
+        <div class="sent" id="l1_1">
+          <div class="src"><b>s1（①❶）</b><img class="strip" src="img/2025_T3/s1_1.png" alt="①❶ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li>句首 <code>Ever since taking on Netflix Inc. at its own game</code>：<b>ever since ＋ 动名词</b>作时间状语，逻辑主语是主句的 old Hollywood；主句用现在完成时 has struggled，「从那时起一直……」。</li>
+            <li><code>take on sb at its own game</code>：在对方擅长的领域跟它较量——流媒体是 Netflix 的老本行，好莱坞跑去它的主场开打。</li>
+            <li><span class="skel">主干</span>：<code>old Hollywood has struggled to turn a profit in streaming</code>。</li>
+            <li><code>with the likes of Disney+ … losing billions</code>：<b>with 复合结构</b>（with ＋ 宾语 ＋ 现在分词），给主干补「具体表现」。</li>
+            <li>句尾 <code>sparking concerns that …</code>：现在分词作<b>结果状语</b>（亏钱 ⟹ 引发担忧）；that 引导 concerns 的<b>同位语从句</b>，内容是 never be as profitable as cable once was（as … as 比较，once was 指「当年」）。</li>
+          </ul>
+          <div class="tr">意：自从在流媒体这块地盘上跟 Netflix 正面较量以来，老牌好莱坞一直很难在流媒体上赚到钱：Disney+、Peacock、Paramount+ 之类的平台每年亏损数十亿美元，人们担心这些服务永远不会像当年的有线电视那样赚钱。</div>
+        </div>
+
+        <div class="sent" id="l1_2">
+          <div class="src"><b>s2（①❷）</b><img class="strip" src="img/2025_T3/s1_2.png" alt="①❷ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：<code>the age of streaming has been a boon for some unintended winners</code>，冒号后解释 winners 是谁。</li>
+            <li>冒号后的核心词 <code>pirates</code> 带一个 that 定语从句，从句里一个主语带两个并列谓语：<code>use software to rip</code> a film or television show … 和 <code>host the titles</code> on their own, illegitimate services。</li>
+            <li>句尾 <code>which rake in about $2 billion annually</code>：非限制性定语从句，先行词是 services（复数，所以 rake 不加 s）。</li>
+            <li>⭐ <b>legitimate ↔ illegitimate</b> 在一句里各出现一次：从「正版」平台扒、挂到「非法」平台上——31 题题干的 legitimate 就是冲这组对立来的。</li>
+          </ul>
+          <div class="tr">意：然而，流媒体时代却成了一些意想不到的赢家的福音：盗版者用软件几秒钟就能从正版在线视频平台上扒下一部电影或一档电视节目，再挂到他们自己的非法平台上，靠广告和订阅每年进账约 20 亿美元。</div>
+        </div>
+
+        <div class="sent" id="l2_1">
+          <div class="src"><b>s3（②）</b><img class="strip" src="img/2025_T3/s2_1.png" alt="② 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li>句首 <code>With no video production costs</code>：with 短语作<b>原因</b>状语——「因为不用花拍片的钱」。</li>
+            <li><span class="skel">主干</span>：<code>illegal streaming sites have achieved profit margins</code>，<code>approaching 90%</code> 是现在分词作后置定语。</li>
+            <li><code>according to the Motion Picture Association (MPA)</code> 后紧跟<b>同位语</b> <code>a trade group representing Hollywood studios</code>，studios 后又挂一个 that’s working to … 的定语从句。</li>
+            <li>⭐ 这条同位语是全文唯一一处交代 MPA 身份的地方：<b>代表好莱坞</b>。读的时候顺手在卷边写「MPA ＝ 好莱坞」——33 题就靠它。</li>
+            <li>句尾 <code>platforms that have cropped up in recent years</code>：crop up 「突然冒出」，配现在完成时。</li>
+          </ul>
+          <div class="tr">意：美国电影协会（MPA）称，由于没有任何视频制作成本，非法流媒体网站的利润率已接近 90%。MPA 是代表好莱坞各制片厂的行业组织，正致力于严厉打击近年来冒出来的成千上万个非法平台。</div>
+        </div>
+
+        <div class="sent" id="l3_1">
+          <div class="src"><b>s4（③❶）</b><img class="strip" src="img/2025_T3/s3_1.png" alt="③❶ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：<code>the rise of legitimate online businesses … actually helped curb digital piracy</code>——主语是 the rise（兴起），不是 businesses；help do 省略 to。</li>
+            <li><code>actually</code>：「其实、出人意料地」——提示这件事和读者的预期相反（正版兴起，本该和盗版无关，结果反而压住了盗版）。</li>
+            <li>句尾 <code>which had largely been based on file uploads</code>：非限制性定语从句修饰 digital piracy，<b>过去完成时</b>交代「那时的盗版主要靠文件上传」——这一笔把 digital piracy 换算成了 file-sharing ⟹ 32 题 A。</li>
+            <li>Initially（❶）与 But now（❷）首尾对照：<b>当时</b>帮了忙，<b>如今</b>损失惨重。</li>
+          </ul>
+          <div class="tr">意：起初，像 Netflix 这样的正版在线业务的兴起，其实帮助遏制了数字盗版——那时的盗版主要靠文件上传。</div>
+        </div>
+
+        <div class="sent" id="l3_2">
+          <div class="src"><b>s5（③❷）</b><img class="strip" src="img/2025_T3/s3_2.png" alt="③❷ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li>主语很长：<code>piracy involving illegal streaming services as well as file-sharing</code>——involving 现在分词作后置定语，as well as 连接两个宾语（流媒体 ＋ 文件共享）。</li>
+            <li>谓语 <code>costs</code>：<b>cost sb sth</b>「使某人损失某物」，双宾语——the US economy 是人，后面两个是物：about $30 billion in lost revenue a year 和 some 250,000 jobs。</li>
+            <li>句尾 <code>estimates the US Chamber of Commerce’s …</code>：<b>引述倒装</b>（主谓倒装的信息来源），等于「据……估计」。新闻里 says X、estimates X 放句尾很常见。</li>
+            <li>⚠️ as well as 是「和」，不是「与……合作」——32 题 D 就借它造干扰。</li>
+          </ul>
+          <div class="tr">意：但据美国商会全球创新政策中心估计，如今涉及非法流媒体服务和文件共享的盗版，每年让美国经济损失约 300 亿美元收入和约 25 万个工作岗位。</div>
+        </div>
+
+        <div class="sent" id="l4_3">
+          <div class="src"><b>s6（④❸）</b><img class="strip" src="img/2025_T3/s4_3.png" alt="④❸ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：<code>Rivkin joined the MPA in 2017</code>，after 引导时间状语从句。</li>
+            <li>after 从句：<code>the organization failed five years earlier to build consensus between A and B</code>——five years earlier 插在 failed 和不定式之间，是「在 2017 年之前五年」＝ 2012 年。</li>
+            <li>第二个不定式 <code>to win passage of legislation in Congress</code> 表<b>目的</b>：促成共识，是为了推动国会通过立法；legislation 后接过去分词短语 aimed at stopping online piracy 作定语。</li>
+            <li>⭐ 推理链：MPA ＝ 好莱坞（②）⟹「在好莱坞和硅谷之间促成共识」＝ 争取硅谷 ⟹ 失败 ＝ 硅谷没配合 ⟹ 33 题 A。</li>
+          </ul>
+          <div class="tr">意：里夫金 2017 年加入 MPA，在那之前五年，该组织没能在好莱坞和硅谷之间达成共识，从而推动国会通过一项旨在制止网络盗版的立法。</div>
+        </div>
+
+        <div class="sent" id="l4_4">
+          <div class="src"><b>s7（④❹）</b><img class="strip" src="img/2025_T3/s4_4.png" alt="④❹ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：<code>the association formed the Alliance for Creativity and Entertainment (ACE)</code>——<b>主动语态</b>，是 MPA 自己组建的（33 题 C 改成被动 was urged）。</li>
+            <li>逗号后 <code>an enforcement task force of about 100 detectives</code> 是 ACE 的<b>同位语</b>。</li>
+            <li>detectives 后接现在分词短语 <code>circling the globe</code>（满世界跑），再接不定式 <code>to help local authorities arrest streaming pirates</code> 表目的；help sb do。</li>
+            <li>⚠️ local authorities 是被<b>帮助</b>的对象，33 题 D 把它反写成「不支持 MPA」的一方；circling the globe 是<b>全球</b>，33 题 B 的 national 对不上。</li>
+          </ul>
+          <div class="tr">意：2017 年，该协会成立了「创意与娱乐联盟」（ACE）——一支由约 100 名侦探组成的执法特遣队，奔走全球，协助各地当局抓捕流媒体盗版者。</div>
+        </div>
+
+        <div class="sent" id="l5_1">
+          <div class="src"><b>s8（⑤）</b><img class="strip" src="img/2025_T3/s5_1.png" alt="⑤ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：<code>ACE says (that) it’s helped shrink the number of …</code>——it’s ＝ it has；help (to) do 省略 to。</li>
+            <li><code>to 126, from more than 1,400 in 2018</code>：先说结果、再说起点，to 和 from 的顺序和中文习惯相反，读数字时别弄反。</li>
+            <li><code>aided in part by the MPA’s support for a 2020 federal law</code>：过去分词短语作<b>原因</b>状语（in part：部分地）。</li>
+            <li>law 后接定语从句 <code>that made large-scale streaming … a serious crime</code>——<b>make ＋ 宾语 ＋ 宾补</b>：宾语是 large-scale streaming of copyrighted material，宾补是 a serious crime。宾语很长，要一直读到 a serious crime 才收住。</li>
+          </ul>
+          <div class="tr">意：ACE 说，它已帮助把北美的非法流媒体服务从 2018 年的 1,400 多家减少到 126 家；这在一定程度上也得益于 MPA 对一部 2020 年联邦法律的支持——该法把大规模播放受版权保护的内容定为重罪。</div>
+        </div>
+
+        <div class="sent" id="l6_2">
+          <div class="src"><b>s9（⑥❷）</b><img class="strip" src="img/2025_T3/s6_2.png" alt="⑥❷ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li>整句是一句引语 ＋ 句尾 <code>says analyst Steve Hawley</code>（引述倒装）。</li>
+            <li>引语内部：<b>While 让步从句 ＋ 主句</b>。让步：<code>there is some optimism that …</code>，that 引导 optimism 的<b>同位语从句</b>：emerging countermeasures and best practices <code>may see piracy begin to plateau by 2027</code>——see sth do「使……发生、见证……」，主语是物。</li>
+            <li>主句：<code>there is no consensus among stakeholders</code>，<code>as to</code>（关于）后接 when 引导的宾语从句 when it may begin to decline。</li>
+            <li>⭐ 两个 begin to 对仗：<b>begin to plateau</b>（开始趋平）vs <b>begin to decline</b>（开始下降）——同一个动词结构，前者是乐观派的上限，后者是没人敢预测的下一档 ⟹ 34 题 C。</li>
+            <li>两个 may 都在打折：乐观派自己也只说「可能」趋平。</li>
+          </ul>
+          <div class="tr">意：「虽然有人乐观地认为，新出现的反制措施和最佳实践可能让盗版到 2027 年趋于平稳，但对于盗版何时会开始减少，各利益相关方并没有共识，」分析师史蒂夫·霍利说。</div>
+        </div>
+      </section>
+
+      <!-- ========== 词汇复盘 ========== -->
+      <section class="card">
+        <h2><span class="n">04</span>词汇复盘（点卡片看详情）</h2>
+        <div class="filters">
+          <button class="fbtn on" data-f="all">全部</button>
+          <button class="fbtn" data-f="core">核心词</button>
+          <button class="fbtn" data-f="phrase">短语</button>
+          <button class="fbtn" data-f="poly">熟词僻义</button>
+          <button class="fbtn" data-f="write">写作可用</button>
+        </div>
+        <div class="vgrid" id="vgrid"></div>
+      </section>
+
+      <!-- ========== 写作素材 ========== -->
+      <section class="card">
+        <h2><span class="n">05</span>可搬进作文/翻译的素材</h2>
+        <p style="font-size:.9rem;margin-bottom:12px">本篇话题——<b>知识产权、网络治理、新技术的副作用</b>——正对大作文里的「网络利弊」「诚信与规则」「保护原创」类题目；「用数字说话 ＋ 问题—对策—前景」的骨架则适合图表作文与议论文的论证段。英文例句都是按原文句式自拟的，只借骨架。</p>
+        <div class="wb">
+          <div class="wbi"><div class="p">Ever since …, X has struggled to …</div><div class="u">「自从……以来，X 一直难以……」——开篇交代一个持续的困境：Ever since moving online, many local bookstores have struggled to survive.</div></div>
+          <div class="wbi"><div class="p">But … has been a boon for some unintended winners: …</div><div class="u">「但……却成了一些意想不到的赢家的福音：……」——写新事物的<b>副作用</b>，冒号后点名受益者：But the rise of food delivery has been a boon for some unintended winners: packaging makers.</div></div>
+          <div class="wbi"><div class="p">Initially … actually helped …. But now …</div><div class="u">「起初……其实帮了……的忙。但如今……」——<b>今昔对比</b>，重心在 now：Initially, social media actually helped people stay in touch. But now it often keeps them apart.</div></div>
+          <div class="wbi"><div class="p">X costs the economy about … a year and some … jobs.</div><div class="u">「X 每年让经济损失约……、约……个岗位」——用数字写危害，图表作文直接可用：Traffic jams cost the city about two billion yuan a year.</div></div>
+          <div class="wbi"><div class="p">… are not mom and pop operations. This is organized crime.</div><div class="u">「这些不是小打小闹，这是有组织的……」——先否定轻描淡写的看法，再给定性：Online fraud is not a small-time trick; it is an organized industry.</div></div>
+          <div class="wbi"><div class="p">…, aided in part by …</div><div class="u">「……，在一定程度上得益于……」——给成绩找原因，句尾补充：Air quality has improved, aided in part by stricter rules on factories.</div></div>
+          <div class="wbi"><div class="p">While there is some optimism that …, there is no consensus as to when …</div><div class="u">「虽然有人乐观地认为……，但……何时……，并无定论」——<b>审慎收尾</b>，既承认进展又不盲目乐观：While there is some optimism that the problem may ease, there is no consensus as to when it will end.</div></div>
+          <div class="wbi"><div class="p">话题词包：piracy · copyright · intellectual property · crack down on · legitimate</div><div class="u">写「网络治理 / 保护原创 / 诚信」时直接可用：crack down on piracy（打击盗版）· copyrighted material（受版权保护的作品）· intellectual property rights（知识产权）· legitimate platforms（正规平台）· take effective countermeasures（采取有效的反制措施）· a serious crime（重罪）· cumulative loss（累计损失）。</div></div>
+        </div>
+      </section>
+    </main>
+    <aside>
+      <div id="panel">
+        <button class="close" onclick="document.getElementById('panel').classList.remove('open')">收起</button>
+        <div class="hint">点正文里的<b>黄色高亮词</b>，或下方词汇卡片，这里出详情。</div>
+      </div>
+    </aside>
+  </div>
+</div>
+<button id="yd">查有道</button>
+
+<script>
+const V={
+  takeon:{"w": "take on", "ipa": "/teɪk ɒn/", "pos": "phr.", "tags": ["phrase", "poly", "core"], "cn": "<b>与……较量</b>、跟……对着干；（另）承担、雇用", "en": "to compete against or fight someone", "ex": "Ever since <b>taking on</b> Netflix Inc.（①❶）", "mem": "⚠️ take on 一词多义：take on a job（承担）· take on staff（雇用）· take on a new look（呈现）· <b>take on a rival（与对手较量）</b>。宾语是对手 ⟹ 较量。", "syn": "compete with · challenge · fight", "conf": "take on（较量；承担）· take over（接管）· take off（起飞；走红）。"},
+  atitsowngame:{"w": "at its own game", "ipa": "/ət ɪts əʊn ɡeɪm/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "在对方<b>擅长的领域</b>（与之较量）", "en": "in the area where a rival is strongest", "ex": "taking on Netflix <b>at its own game</b>（①❶）", "mem": "beat sb at their own game＝用对方的招数打败对方。流媒体是 Netflix 的看家本领，好莱坞偏要在这里跟它比。<br>⚠️ 31 题 A 从这里编出「向好莱坞学习」。", "syn": "on its home turf", "conf": "at one’s own game（在对方的强项上）· the name of the game（关键所在）。"},
+  turnaprofit:{"w": "turn a profit", "ipa": "/tɜːn ə ˈprɒfɪt/", "pos": "phr.", "tags": ["phrase", "core", "write"], "cn": "<b>盈利</b>、赚到钱", "en": "to make money after costs are paid", "ex": "has struggled to <b>turn a profit</b>（①❶）", "mem": "turn 在这里是「产出、获得」：turn a profit＝make a profit。<br>反义：run at a loss（亏本经营）。", "syn": "make a profit · break even（保本）", "conf": "turn a profit（盈利）· profitable（赚钱的）· profit margin（利润率）。"},
+  streaming:{"w": "streaming", "ipa": "/ˈstriːmɪŋ/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>流媒体</b>（在线播放）", "en": "watching or listening to content online without downloading it", "ex": "to turn a profit in <b>streaming</b>（①❶）", "mem": "stream 本义「小溪、流」⟹ 数据像水流一样边传边播。streaming service（流媒体服务）· streamer（流媒体平台，32 题）。全文主题词。", "syn": "online video · on-demand", "conf": "stream（溪流；流播）· streamline（精简）· mainstream（主流）。"},
+  thelikesof:{"w": "the likes of", "ipa": "/ðə laɪks əv/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>像……之类的</b>（人或物）", "en": "people or things such as", "ex": "with <b>the likes of</b> Disney+, Peacock …（①❶）", "mem": "like 作名词「同类」，复数 the likes of＝such as，口语和新闻里很常见。<br>写作：platforms <b>the likes of</b> TikTok。", "syn": "such as · including", "conf": "the likes of（诸如）· likewise（同样）· likelihood（可能性）。"},
+  spark:{"w": "spark", "ipa": "/spɑːk/", "pos": "v.", "tags": ["core", "write", "poly"], "cn": "<b>引发</b>、激起（担忧、争论）", "en": "to cause something to start", "ex": "<b>sparking</b> concerns that …（①❶）", "mem": "本义「火花」⟹ 点燃 ⟹ 引发。spark concerns / debate / protests 是新闻高频搭配。⚠️ 本句是现在分词作结果状语。", "syn": "trigger · prompt · give rise to", "conf": "spark（引发）· sparkle（闪耀）· spur（激励）。"},
+  profitable:{"w": "profitable", "ipa": "/ˈprɒfɪtəbl/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>赚钱的</b>、有利可图的", "en": "making money", "ex": "never be as <b>profitable</b> as cable once was（①❶）", "mem": "profit ＋ -able。⟹ 31 题 B「收入超过有线电视」与它正面冲突：大家担心的正是永远赶不上。", "syn": "lucrative · money-making", "conf": "profitable（赚钱的）· profit（利润）· non-profit（非营利的）。"},
+  cable:{"w": "cable", "ipa": "/ˈkeɪbl/", "pos": "n.", "tags": ["core", "poly"], "cn": "<b>有线电视</b>（本义：电缆）", "en": "cable television", "ex": "as profitable as <b>cable</b> once was（①❶）", "mem": "⚠️ 熟词僻义：传媒语境里 cable＝cable TV，与 streaming 相对——流媒体之前的「旧王」。", "syn": "cable television · pay TV", "conf": "cable（有线电视；电缆）· cab（出租车）· capable（有能力的）。"},
+  boon:{"w": "boon", "ipa": "/buːn/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>福音</b>、恩惠、好处", "en": "something that is very helpful", "ex": "has been a <b>boon</b> for some unintended winners（①❷）", "mem": "a boon for / to sb＝对某人是件大好事。反义 bane（祸根）：a boon or a bane（是福是祸）。", "syn": "blessing · benefit · godsend", "conf": "boon（福音）· boom（繁荣）· bane（祸根）。"},
+  unintended:{"w": "unintended", "ipa": "/ˌʌnɪnˈtendɪd/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>意想不到的</b>、非有意的", "en": "not planned or meant", "ex": "some <b>unintended</b> winners（①❷）", "mem": "un- ＋ intend（打算）＋ -ed。固定搭配 unintended consequences（意外后果）——写「新技术副作用」时好用。", "syn": "unexpected · accidental", "conf": "unintended（非本意的）· intended（预定的）· intense（强烈的）。"},
+  pirate:{"w": "pirate", "ipa": "/ˈpaɪrət/", "pos": "n.", "tags": ["core", "poly"], "cn": "<b>盗版者</b>（本义：海盗）", "en": "a person who illegally copies and sells films, music, etc.", "ex": "<b>pirates</b> that use software to rip a film（①❷）", "mem": "⚠️ 熟词僻义：版权语境里 pirate＝盗版者，piracy＝盗版。题目 34、35 都围绕它。", "syn": "copyright infringer", "conf": "pirate（盗版者；海盗）· piracy（盗版）· private（私人的）· privacy（隐私——书上把 piracy 印成了它）。"},
+  rip:{"w": "rip", "ipa": "/rɪp/", "pos": "v.", "tags": ["poly"], "cn": "<b>（用软件）抓取、扒取</b>（光盘或网络上的音视频）", "en": "to copy audio or video onto a computer", "ex": "use software to <b>rip</b> a film（①❷）", "mem": "⚠️ 熟词僻义：rip 本义「撕」，电脑语境里是「把音视频扒下来存成文件」。另：rip off＝敲竹杠、剽窃。", "syn": "copy · extract", "conf": "rip（撕；扒取）· rip off（敲诈）· ripe（成熟的）。"},
+  legitimate:{"w": "legitimate", "ipa": "/lɪˈdʒɪtɪmət/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>合法的</b>、正当的；正规的", "en": "allowed by law; real and proper", "ex": "from <b>legitimate</b> online video platforms（①❷）", "mem": "legi-（法，同 legal、legislation）＋ -ate。⭐ 本篇和 illegitimate 一句内对立出现；31 题题干、34 题选项都用它指「正版平台」。", "syn": "legal · lawful · authorized", "conf": "legitimate（合法的）· illegitimate（非法的）· legislation（立法）。"},
+  platform:{"w": "platform", "ipa": "/ˈplætfɔːm/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>（网络）平台</b>", "en": "a website or service where people share content", "ex": "legitimate online video <b>platforms</b>（①❷）", "mem": "plat（平）＋ form（形）⟹ 平台。online platform、video platform、social media platform。", "syn": "service · site", "conf": "platform（平台）· plateau（高原；平稳期，⑥❷）· plot（情节）。"},
+  host:{"w": "host", "ipa": "/həʊst/", "pos": "v.", "tags": ["poly", "core"], "cn": "<b>托管、存放</b>（网站内容）；主持", "en": "to store content on a website so people can access it", "ex": "<b>host</b> the titles on their own …（①❷）", "mem": "⚠️ 熟词僻义：网络语境里 host＝把内容放在服务器上供人访问（web hosting 网站托管）。不是「主持」。", "syn": "store · put up", "conf": "host（托管；主持）· hostile（敌对的）· hostage（人质）。"},
+  title:{"w": "title", "ipa": "/ˈtaɪtl/", "pos": "n.", "tags": ["poly"], "cn": "<b>（一部）作品</b>、影片、节目", "en": "a film, book, TV show, etc.", "ex": "host the <b>titles</b>（①❷）", "mem": "⚠️ 熟词僻义：出版、影视业把一部作品叫 a title——「片单」就是 a list of titles。不是「标题、头衔」。", "syn": "work · film · show", "conf": "title（作品；标题；头衔）· entitle（使有权）· subtitle（字幕）。"},
+  illegitimate:{"w": "illegitimate", "ipa": "/ˌɪləˈdʒɪtəmət/", "pos": "adj.", "tags": ["core"], "cn": "<b>非法的</b>、不正当的", "en": "not allowed by law", "ex": "their own, <b>illegitimate</b> services（①❷）", "mem": "il- ＋ legitimate。本文非法一族：illegitimate · illegal（②、③）· piracy。", "syn": "illegal · unlawful · unauthorized", "conf": "illegitimate（非法的）· illiterate（文盲的）· illegible（难辨认的）。"},
+  rakein:{"w": "rake in", "ipa": "/reɪk ɪn/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>大把赚进</b>（钱）", "en": "to earn a lot of money easily", "ex": "which <b>rake in</b> about $2 billion annually（①❷）", "mem": "rake 本义「耙子、耙」⟹ 把钱像落叶一样耙进来 ⟹ 赚得多又容易。", "syn": "earn · make a fortune", "conf": "rake in（大把赚钱）· rake up（翻旧账）· rack up（累积）。"},
+  annually:{"w": "annually", "ipa": "/ˈænjuəli/", "pos": "adv.", "tags": ["core", "write"], "cn": "<b>每年</b>、一年一度地", "en": "every year", "ex": "about $2 billion <b>annually</b>（①❷）", "mem": "annu-（年，同 anniversary、annual）。本文的「年」三种说法：each year（①❶）· annually（①❷、③❸）· a year（③❷）。", "syn": "yearly · per year · each year", "conf": "annually（每年）· annual（年度的）· annul（宣告无效）。"},
+  subscription:{"w": "subscription", "ipa": "/səbˈskrɪpʃn/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>订阅</b>（费）", "en": "money paid regularly to receive a service", "ex": "from ads and <b>subscriptions</b>（①❷）", "mem": "sub-（下）＋ script（写）⟹ 在下面签名 ⟹ 签约订阅。subscribe to（订阅）· subscriber（订户）。", "syn": "membership fee", "conf": "subscription（订阅）· prescription（处方）· description（描述）。"},
+  production:{"w": "production", "ipa": "/prəˈdʌkʃn/", "pos": "n.", "tags": ["core"], "cn": "<b>制作</b>、生产", "en": "the process of making a film, show, etc.", "ex": "With no video <b>production</b> costs（②）", "mem": "影视语境：production＝拍摄制作；a production＝一部作品；production company（制片公司）。<br>⟹ 盗版站零制作成本 ⟹ 利润率近 90%。", "syn": "making · filming", "conf": "production（制作）· productive（多产的）· product（产品）。"},
+  profitmargin:{"w": "profit margin", "ipa": "/ˈprɒfɪt ˌmɑːdʒɪn/", "pos": "n.", "tags": ["phrase", "core", "write"], "cn": "<b>利润率</b>", "en": "the percentage of income left as profit", "ex": "have achieved <b>profit margins</b> approaching 90%（②）", "mem": "margin 本义「边缘」⟹ 收入减成本后剩下的那圈「边」＝利润。<br>⚠️ approaching 90%＝接近 90%，不是「达到」。", "syn": "profitability", "conf": "margin（利润；边缘；差额）· marginal（微不足道的）。"},
+  approach:{"w": "approach", "ipa": "/əˈprəʊtʃ/", "pos": "v.", "tags": ["core", "poly"], "cn": "<b>接近</b>（某数值）；处理", "en": "to come close to an amount or level", "ex": "profit margins <b>approaching</b> 90%（②）", "mem": "approach 后接数字＝「逼近」。名词 approach＝方法（a new approach to …）。", "syn": "near · come close to", "conf": "approach（接近；方法）· reproach（责备）· approve（批准）。"},
+  tradegroup:{"w": "trade group", "ipa": "/treɪd ɡruːp/", "pos": "n.", "tags": ["phrase", "core"], "cn": "<b>行业组织</b>、同业公会", "en": "an organization that represents companies in one industry", "ex": "a <b>trade group</b> representing Hollywood studios（②）", "mem": "trade 这里是「行业」不是「贸易」：trade association / trade body / trade union（工会）。<br>⭐ 这一同位语给了 MPA 的身份——33 题的钥匙。", "syn": "trade association · industry body", "conf": "trade group（行业组织）· trade union（工会）· trademark（商标）。"},
+  represent:{"w": "represent", "ipa": "/ˌreprɪˈzent/", "pos": "v.", "tags": ["core", "write"], "cn": "<b>代表</b>（某群体的利益）", "en": "to act or speak officially for a group", "ex": "a trade group <b>representing</b> Hollywood studios（②）", "mem": "re- ＋ present（出现）⟹ 替别人出面 ⟹ 代表。<br>⭐ 读到 representing X，就在卷边写「它 ＝ X 的嘴」（<a href=\"套路库_阅读.html#R117\">R117</a>）。", "syn": "speak for · act for", "conf": "represent（代表）· representative（代表人）· presentation（展示）。"},
+  crackdown:{"w": "crack down on", "ipa": "/kræk daʊn ɒn/", "pos": "phr.", "tags": ["phrase", "core", "write"], "cn": "<b>严厉打击</b>、整治", "en": "to deal with a problem very strictly", "ex": "working to <b>crack down on</b> the thousands …（②）", "mem": "crack 本义「啪地猛击」⟹ 狠狠压下去。名词 a crackdown on（严打）。写作：crack down on fake products / online fraud。", "syn": "clamp down on · tackle", "conf": "crack down on（严打）· crack（裂缝；破解）· break down（崩溃）。"},
+  cropup:{"w": "crop up", "ipa": "/krɒp ʌp/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>（突然）冒出来</b>、涌现", "en": "to appear suddenly", "ex": "platforms that have <b>cropped up</b>（②）", "mem": "crop 本义「庄稼」⟹ 像庄稼一样从地里冒出来。和 2025 T2 的 mushrooming（像蘑菇一样冒出来）是一对：都把「激增」写成植物生长。", "syn": "spring up · emerge · pop up", "conf": "crop up（冒出）· crop（庄稼；剪裁）· drop（落下）。"},
+  initially:{"w": "initially", "ipa": "/ɪˈnɪʃəli/", "pos": "adv.", "tags": ["core", "write"], "cn": "<b>起初</b>、最初", "en": "at the beginning", "ex": "<b>Initially</b> the rise of legitimate online businesses …（③❶）", "mem": "initial（最初的）＋ -ly。⭐ 信号词：Initially … But now … ＝ 今昔对比，重心在 now。", "syn": "at first · originally", "conf": "initially（起初）· initial（首字母；最初的）· initiate（发起）。"},
+  curb:{"w": "curb", "ipa": "/kɜːb/", "pos": "v.", "tags": ["core", "write"], "cn": "<b>遏制</b>、抑制", "en": "to control or limit something bad", "ex": "actually helped <b>curb</b> digital piracy（③❶）", "mem": "本义「马嚼子、路缘」⟹ 拉住 ⟹ 遏制。curb inflation / pollution / spending。⟹ 32 题 A 的 the fight against。", "syn": "restrain · check · rein in", "conf": "curb（遏制）· curve（曲线）· kerb（英式路缘）。"},
+  piracy:{"w": "piracy", "ipa": "/ˈpaɪrəsi/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>盗版</b>（行为）；海盗行为", "en": "illegally copying and selling films, music, etc.", "ex": "helped curb digital <b>piracy</b>（③❶）", "mem": "pirate 的名词。digital / online piracy（数字／网络盗版）· anti-piracy（反盗版）。<br>⚠️ 黄皮书两处把它印成 privacy（隐私），读精讲时别被带偏。", "syn": "copyright infringement", "conf": "piracy（盗版）· privacy（隐私）· primacy（首要）。"},
+  largely:{"w": "largely", "ipa": "/ˈlɑːdʒli/", "pos": "adv.", "tags": ["core", "write"], "cn": "<b>主要地</b>、大部分", "en": "mostly; mainly", "ex": "had <b>largely</b> been based on file uploads（③❶）", "mem": "⚠️ 不是「大大地」：largely＝mainly / mostly。", "syn": "mainly · mostly · chiefly", "conf": "largely（主要地）· greatly（大大地）· large（大的）。"},
+  upload:{"w": "upload", "ipa": "/ˈʌpləʊd/", "pos": "n.", "tags": ["core"], "cn": "<b>上传</b>（的文件）", "en": "a file sent from your computer to the internet", "ex": "based on file <b>uploads</b>（③❶）", "mem": "up ＋ load（装载）。反义 download。⟹ 当年盗版的主要形式＝文件上传 ⟹ 32 题把 digital piracy 换算成 illegal file-sharing。", "syn": "posting", "conf": "upload（上传）· download（下载）· overload（超载）。"},
+  involve:{"w": "involve", "ipa": "/ɪnˈvɒlv/", "pos": "v.", "tags": ["core"], "cn": "<b>涉及</b>、包含", "en": "to include something as a part", "ex": "piracy <b>involving</b> illegal streaming services（③❷）", "mem": "in- ＋ volv（卷，同 revolve）⟹ 卷进来 ⟹ 涉及。本句现在分词作后置定语：涉及……的盗版。", "syn": "include · concern", "conf": "involve（涉及）· evolve（进化）· revolve（旋转）。"},
+  filesharing:{"w": "file-sharing", "ipa": "/ˈfaɪl ʃeərɪŋ/", "pos": "n.", "tags": ["core"], "cn": "<b>文件共享</b>（常指非法传播版权内容）", "en": "sharing files with others over the internet", "ex": "as well as <b>file-sharing</b>（③❷）", "mem": "本文「旧盗版」＝文件上传、文件共享；「新盗版」＝非法流媒体。32 题 A 的 illegal file-sharing 就是③❶ 的旧盗版。", "syn": "peer-to-peer sharing", "conf": "file-sharing（文件共享）· profile（简介）· fire（火——书上笔误印成 fire-sharing）。"},
+  revenue:{"w": "revenue", "ipa": "/ˈrevənjuː/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>收入</b>、税收", "en": "money that a business or government receives", "ex": "about $30 billion in lost <b>revenue</b> a year（③❷）", "mem": "re-（回）＋ ven（来，同 venue、advent）⟹ 回来的钱 ⟹ 收入。lost revenue＝损失的收入。", "syn": "income · earnings", "conf": "revenue（收入）· revenge（报复）· avenue（大街）。"},
+  estimate:{"w": "estimate", "ipa": "/ˈestɪmeɪt/", "pos": "v.", "tags": ["core", "write"], "cn": "<b>估计</b>、估算", "en": "to guess an amount using available information", "ex": "<b>estimates</b> the US Chamber of Commerce’s …（③❷）", "mem": "⚠️ 句尾 estimates X 是<b>引述倒装</b>（＝据 X 估计）。动词 /-meɪt/，名词 /-mət/。<br>⟹ 35 题 D：全文数字多是机构的估算与预测。", "syn": "calculate · reckon", "conf": "estimate（估计）· underestimate（低估，34 题 D）· overestimate（高估）。"},
+  chamber:{"w": "Chamber of Commerce", "ipa": "/ˈtʃeɪmbər əv ˈkɒmɜːs/", "pos": "n.", "tags": ["phrase"], "cn": "<b>商会</b>", "en": "an association of business owners", "ex": "the US <b>Chamber</b> of Commerce’s …（③❷）", "mem": "chamber 本义「房间、议院」：the upper chamber（上院）。Chamber of Commerce＝商会（美国最大的商业游说团体）。", "syn": "business association", "conf": "chamber（房间；议院）· champion（冠军）· commerce（商业）。"},
+  impact:{"w": "impact", "ipa": "/ˈɪmpækt/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>影响</b>；冲击", "en": "a strong effect", "ex": "The global <b>impact</b> is about $71 billion（③❸）", "mem": "im- ＋ pact（压，同 compact）⟹ 压上去 ⟹ 冲击。本句的 impact 落在钱上：全球影响＝全球损失。", "syn": "effect · influence · toll", "conf": "impact（影响）· compact（紧凑的）· impart（传授）。"},
+  steal:{"w": "steal", "ipa": "/stiːl/", "pos": "v.", "tags": ["core"], "cn": "<b>偷</b>、窃取", "en": "to take something without permission", "ex": "people who are <b>stealing</b> our movies（④❶）", "mem": "里夫金故意不说 copy（复制）、而说 steal（偷）——把盗版<b>定性为盗窃</b>，与下一句 organized crime 连成一线。", "syn": "pirate · take illegally", "conf": "steal（偷）· steel（钢）· stale（不新鲜的）。"},
+  mompop:{"w": "mom and pop operations", "ipa": "/ˌmɒm ən ˈpɒp ˌɒpəˈreɪʃnz/", "pos": "phr.", "tags": ["phrase", "poly"], "cn": "<b>夫妻店</b>、家庭小作坊", "en": "small businesses run by a family", "ex": "are not <b>mom and pop operations</b>（④❶）", "mem": "mom-and-pop（爸妈开的）＝小本经营。operation 熟词僻义：「企业、经营单位」。<br>里夫金先否定「小打小闹」，再定性「有组织犯罪」。", "syn": "small family business · small-time outfit", "conf": "operation（企业；手术；运作）· mom-and-pop store（夫妻店）。"},
+  ceo:{"w": "chief executive officer", "ipa": "/tʃiːf ɪɡˈzekjətɪv ˈɒfɪsə/", "pos": "n.", "tags": ["phrase"], "cn": "<b>首席执行官</b>（CEO）", "en": "the person with the most power in a company", "ex": "Charlie Rivkin, <b>chief executive officer</b> of the MPA（④❶）", "mem": "缩写 CEO。chief（首席）· executive（执行的）· officer（官员）。", "syn": "CEO · head", "conf": "executive（执行的；高管）· executor（遗嘱执行人）· execute（执行；处决）。"},
+  organizedcrime:{"w": "organized crime", "ipa": "/ˌɔːɡənaɪzd ˈkraɪm/", "pos": "n.", "tags": ["phrase", "write"], "cn": "<b>有组织犯罪</b>", "en": "crime done by large, well-organized groups", "ex": "This is <b>organized crime</b>.（④❷）", "mem": "⚠️ 35 题 B「侵权的犯罪性质」的料就在这里和⑤ 的 a serious crime——只覆盖④⑤两段，不是全文主旨。", "syn": "gang crime · racketeering", "conf": "organized（有组织的）· organic（有机的）· orchestrated（精心策划的）。"},
+  consensus:{"w": "consensus", "ipa": "/kənˈsensəs/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>共识</b>、一致意见", "en": "general agreement", "ex": "failed … to build <b>consensus</b> between …（④❸）", "mem": "con-（共同）＋ sens（感觉）⟹ 感觉一致 ⟹ 共识。build / reach consensus（达成共识）。<br>⭐ 全文两次：④❸（2012 立法谈不拢）· ⑥❷（何时下降没共识）。35 题 A 把两次拼成「需要协调」。", "syn": "agreement · accord", "conf": "consensus（共识）· census（人口普查）· consent（同意）。"},
+  passage:{"w": "passage", "ipa": "/ˈpæsɪdʒ/", "pos": "n.", "tags": ["poly", "core"], "cn": "<b>（法案的）通过</b>；段落；通道", "en": "the process of making a bill into law", "ex": "to win <b>passage</b> of legislation in Congress（④❸）", "mem": "⚠️ 熟词僻义：passage of a bill / law＝法案的通过。win passage of＝争取让……通过。", "syn": "approval · enactment", "conf": "passage（通过；段落）· passenger（乘客）· message（消息）。"},
+  legislation:{"w": "legislation", "ipa": "/ˌledʒɪsˈleɪʃn/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>立法</b>；法规（不可数）", "en": "a law or set of laws", "ex": "passage of <b>legislation</b> in Congress（④❸）", "mem": "legis（法）＋ lat（带来）⟹ 制定法律。legislate（立法）· legislature（立法机关）· legislator（立法者）。⟹ 34 题 A 的 new legislation。", "syn": "law · statute", "conf": "legislation（立法）· legitimate（合法的）· litigation（诉讼）。"},
+  aimedat:{"w": "aimed at", "ipa": "/eɪmd æt/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>旨在</b>、针对", "en": "intended to achieve or affect", "ex": "legislation … <b>aimed at</b> stopping online piracy（④❸）", "mem": "过去分词短语作后置定语。be aimed at doing＝旨在。写作：measures <b>aimed at</b> reducing waste。", "syn": "intended to · designed to", "conf": "aim at（瞄准；旨在）· aim to do（打算）· aimless（漫无目的的）。"},
+  alliance:{"w": "alliance", "ipa": "/əˈlaɪəns/", "pos": "n.", "tags": ["core"], "cn": "<b>联盟</b>", "en": "a group formed to work together for a shared aim", "ex": "the <b>Alliance</b> for Creativity and Entertainment（④❹）", "mem": "ally（盟友）的名词。ACE＝Alliance for Creativity and Entertainment（创意与娱乐联盟），2017 年成立，由 MPA 牵头。", "syn": "coalition · union", "conf": "alliance（联盟）· reliance（依赖）· allowance（零用钱）。"},
+  enforcement:{"w": "enforcement", "ipa": "/ɪnˈfɔːsmənt/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>执法</b>、强制执行", "en": "making sure a law is obeyed", "ex": "an <b>enforcement</b> task force（④❹）", "mem": "en-（使）＋ force（力）⟹ 用力使之生效。law enforcement（执法部门）。", "syn": "policing · implementation", "conf": "enforcement（执法）· reinforcement（加强）· enforce（实施）。"},
+  taskforce:{"w": "task force", "ipa": "/ˈtɑːsk fɔːs/", "pos": "n.", "tags": ["phrase", "core"], "cn": "<b>特遣队</b>、专项小组", "en": "a group formed for a special job", "ex": "an enforcement <b>task force</b> of about 100 detectives（④❹）", "mem": "原是军事用语「特遣部队」，现泛指为某项任务成立的专班。33 题 C 把它挪成「被敦促组建」。", "syn": "special unit · working group", "conf": "task force（专班）· workforce（劳动力）· air force（空军）。"},
+  detective:{"w": "detective", "ipa": "/dɪˈtektɪv/", "pos": "n.", "tags": ["core"], "cn": "<b>侦探</b>、调查员", "en": "a person whose job is to investigate crimes", "ex": "about 100 <b>detectives</b>（④❹）", "mem": "detect（侦查）＋ -ive。", "syn": "investigator", "conf": "detective（侦探）· detector（探测器）· defective（有缺陷的）。"},
+  circle:{"w": "circle", "ipa": "/ˈsɜːkl/", "pos": "v.", "tags": ["poly"], "cn": "<b>绕着……转</b>、奔走于", "en": "to move around something", "ex": "<b>circling</b> the globe（④❹）", "mem": "circle 作动词：绕行。circle the globe＝满世界跑 ⟹ 全球行动，33 题 B 的 national 对不上。", "syn": "travel around · go around", "conf": "circle（绕圈）· circulate（流通）· circuit（电路）。"},
+  authority:{"w": "authority", "ipa": "/ɔːˈθɒrəti/", "pos": "n.", "tags": ["core", "poly"], "cn": "<b>（复数）当局</b>、官方；权威", "en": "the people with official power in a place", "ex": "help local <b>authorities</b> arrest …（④❹）", "mem": "⚠️ 复数 the authorities＝当局；单数＝权力、权威。<br>33 题 D 把「帮地方当局」反写成「没获得地方当局支持」。", "syn": "officials · government", "conf": "authority（当局；权威）· authorize（授权）· authentic（真实的）。"},
+  arrest:{"w": "arrest", "ipa": "/əˈrest/", "pos": "v.", "tags": ["core"], "cn": "<b>逮捕</b>；（另）阻止", "en": "to take someone away by legal power", "ex": "arrest streaming pirates（④❹）", "mem": "a- ＋ rest（停）⟹ 使停下 ⟹ 逮捕；也有「阻止」义：arrest the decline（遏止下滑）。", "syn": "detain · catch", "conf": "arrest（逮捕）· rest（休息）· wrest（夺取）。"},
+  shrink:{"w": "shrink", "ipa": "/ʃrɪŋk/", "pos": "v.", "tags": ["core", "write"], "cn": "<b>（使）缩小</b>、减少", "en": "to become or make smaller", "ex": "helped <b>shrink</b> the number of …（⑤）", "mem": "shrink-shrank-shrunk。⑤ 是 shrink 的及物用法（使减少）。⟹ 打击有成效，但⑥ 说总损失还在涨。", "syn": "reduce · cut · diminish", "conf": "shrink（缩小）· shrimp（虾）· sink（下沉）。"},
+  aidedby:{"w": "aided in part by", "ipa": "/ˈeɪdɪd ɪn pɑːt baɪ/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>在一定程度上得益于</b>", "en": "helped partly by", "ex": "<b>aided in part by</b> the MPA’s support（⑤）", "mem": "过去分词作原因状语；in part＝partly（部分地）。写作给成绩补原因好用。", "syn": "partly thanks to · helped partly by", "conf": "in part（部分地）· in particular（尤其）· part with（舍弃）。"},
+  federal:{"w": "federal", "ipa": "/ˈfedərəl/", "pos": "adj.", "tags": ["core"], "cn": "<b>联邦的</b>", "en": "relating to the national government of the US", "ex": "a 2020 <b>federal</b> law（⑤）", "mem": "federal law（联邦法）与 state law（州法）相对。⑤ 这部法＝Protecting Lawful Streaming Act（《保护合法流媒体法》），2020 年 12 月签署。", "syn": "national", "conf": "federal（联邦的）· federation（联邦）· feudal（封建的）。"},
+  largescale:{"w": "large-scale", "ipa": "/ˌlɑːdʒ ˈskeɪl/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>大规模的</b>", "en": "involving many people or things", "ex": "made <b>large-scale</b> streaming … a serious crime（⑤）", "mem": "反义 small-scale。该法只针对商业性大规模盗播的运营者，不针对普通观众。", "syn": "massive · extensive", "conf": "large-scale（大规模）· scale back（缩减，2025 T2）· scale（规模；刻度）。"},
+  copyrighted:{"w": "copyrighted", "ipa": "/ˈkɒpiraɪtɪd/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>受版权保护的</b>", "en": "protected by copyright", "ex": "streaming of <b>copyrighted</b> material（⑤）", "mem": "copy（复制）＋ right（权）⟹ 复制权 ⟹ 版权。copyright violation / infringement（侵犯版权，35 题 B）。", "syn": "protected", "conf": "copyright（版权）· copywriter（广告文案）· right（权利）。"},
+  consulting:{"w": "consulting firm", "ipa": "/kənˈsʌltɪŋ fɜːm/", "pos": "n.", "tags": ["phrase", "core"], "cn": "<b>咨询公司</b>", "en": "a company that gives expert advice", "ex": "<b>Consulting</b> firm Parks Associates predicts …（⑥❶）", "mem": "firm 熟词僻义：「公司」（law firm 律所）。consult（咨询）· consultant（顾问）。", "syn": "consultancy", "conf": "consult（咨询）· insult（侮辱）· result（结果）。"},
+  predict:{"w": "predict", "ipa": "/prɪˈdɪkt/", "pos": "v.", "tags": ["core", "write"], "cn": "<b>预测</b>", "en": "to say what will happen in the future", "ex": "Parks Associates <b>predicts</b> that …（⑥❶）", "mem": "pre-（先）＋ dict（说）⟹ 预先说。⚠️ ⑥❶ 的 1,130 亿是咨询公司的预测，不是霍利说的——34 题 B 借它造干扰。", "syn": "forecast · project", "conf": "predict（预测）· dictate（口述；命令）· verdict（裁决）。"},
+  cumulative:{"w": "cumulative", "ipa": "/ˈkjuːmjələtɪv/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>累计的</b>、累积的", "en": "increasing by adding over time", "ex": "<b>cumulative</b> loss from piracy since 2022（⑥❶）", "mem": "cumul-（堆积，同 accumulate）。cumulative loss / effect（累计损失／效应）。", "syn": "accumulated · total", "conf": "cumulative（累计的）· accumulate（积累）· cumbersome（笨重的）。"},
+  optimism:{"w": "optimism", "ipa": "/ˈɒptɪmɪzəm/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>乐观</b>（情绪）", "en": "a feeling that good things will happen", "ex": "there is some <b>optimism</b> that …（⑥❷）", "mem": "opti-（最好，同 optimal）。⚠️ 本句 optimism 在 While 让步从句里：乐观派的观点，不是霍利的落点。<br>反义 pessimism。", "syn": "hope · confidence", "conf": "optimism（乐观）· optimal（最佳的）· option（选择）。"},
+  emerging:{"w": "emerging", "ipa": "/iˈmɜːdʒɪŋ/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>新兴的</b>、新出现的", "en": "starting to exist or become known", "ex": "<b>emerging</b> countermeasures（⑥❷）", "mem": "emerge（浮现）的现在分词作形容词。emerging markets（新兴市场）· emerging technologies。", "syn": "new · developing", "conf": "emerging（新兴的）· emergency（紧急情况）· merge（合并）。"},
+  countermeasure:{"w": "countermeasure", "ipa": "/ˈkaʊntəmeʒə/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>反制措施</b>、对策", "en": "an action taken against a danger or threat", "ex": "emerging <b>countermeasures</b> and best practices（⑥❷）", "mem": "counter-（反）＋ measure（措施）。写作：take effective countermeasures（采取有效对策）。", "syn": "response · remedy", "conf": "countermeasure（对策）· counterpart（对应方）· counterfeit（伪造的）。"},
+  bestpractice:{"w": "best practices", "ipa": "/best ˈpræktɪsɪz/", "pos": "n.", "tags": ["phrase", "write"], "cn": "<b>最佳实践</b>、最佳做法", "en": "the most effective ways of doing something", "ex": "countermeasures and <b>best practices</b>（⑥❷）", "mem": "商业／管理术语：经验证最有效的做法。practice 熟词僻义：「做法、惯例」（不是「练习」）。", "syn": "proven methods", "conf": "practice（做法；练习；（律师）业务）· practise（英式动词）。"},
+  plateau:{"w": "plateau", "ipa": "/ˈplætəʊ/", "pos": "v.", "tags": ["core", "poly", "write"], "cn": "<b>趋于平稳</b>、停滞（不再增长）", "en": "to stop increasing and stay at the same level", "ex": "may see piracy begin to <b>plateau</b> by 2027（⑥❷）", "mem": "⚠️ 熟词僻义：名词「高原」⟹ 曲线爬到顶后的平台 ⟹ 动词「不再上涨」。⭐ 趋势三档：rise（涨）→ <b>plateau（平）</b>→ decline（降）。乐观派只敢说到「平」 ⟹ 34 题 C（<a href=\"套路库_阅读.html#R322\">R322</a>）。", "syn": "level off · stabilize", "conf": "plateau（趋平；高原）· platform（平台）· plate（盘子）。"},
+  stakeholder:{"w": "stakeholder", "ipa": "/ˈsteɪkhəʊldə/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>利益相关方</b>", "en": "a person or group with an interest in something", "ex": "no consensus among <b>stakeholders</b>（⑥❷）", "mem": "stake（利害关系）＋ holder（持有者）。⚠️ 不是 shareholder（股东）——黄皮书在 35 题解析里印混了。", "syn": "interested party", "conf": "stakeholder（利益相关方）· shareholder（股东）· stake（赌注；股份）。"},
+  asto:{"w": "as to", "ipa": "/æz tuː/", "pos": "prep.", "tags": ["phrase", "write"], "cn": "<b>关于</b>、至于", "en": "about; concerning", "ex": "no consensus … <b>as to</b> when it may begin to decline（⑥❷）", "mem": "as to 后常接 wh- 从句：as to when / whether / how。写作里比 about 正式。", "syn": "about · regarding · concerning", "conf": "as to（关于）· as for（至于，常放句首）· so as to（为了）。"},
+  decline:{"w": "decline", "ipa": "/dɪˈklaɪn/", "pos": "v.", "tags": ["core", "poly", "write"], "cn": "<b>下降</b>、减少；（另）婉拒", "en": "to become less", "ex": "when it may begin to <b>decline</b>（⑥❷）", "mem": "de-（向下）＋ clin（倾斜）⟹ 往下斜 ⟹ 下降。另义「婉拒」：decline an invitation。<br>⭐ 和 plateau 对仗：begin to plateau（乐观派的上限）vs begin to decline（没人敢预测）⟹ 34 题 C 的 diminish。", "syn": "fall · drop · diminish", "conf": "decline（下降；婉拒）· incline（倾向）· recline（斜靠）。"},
+  drawlessons:{"w": "draw lessons from", "ipa": "/drɔː ˈlesnz frəm/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>从……中吸取教训</b>", "en": "to learn from something", "ex": "have <b>drawn lessons from</b> Hollywood（31 题 A）", "mem": "draw 熟词僻义：「得出、引出」（draw a conclusion）。<br>31A 错：正版流媒体本身就是好莱坞的；「吸取经验」又暗示混得好，与巨亏相反。", "syn": "learn from", "conf": "draw lessons（吸取教训）· draw a conclusion（得出结论）· draw on（利用）。"},
+  surpass:{"w": "surpass", "ipa": "/səˈpɑːs/", "pos": "v.", "tags": ["core", "write"], "cn": "<b>超过</b>、胜过", "en": "to be better or greater than", "ex": "have <b>surpassed</b> cable in revenue（31 题 B）", "mem": "sur-（超）＋ pass。31B 与①❶ never be as profitable as cable 正面冲突。", "syn": "exceed · outdo", "conf": "surpass（超过）· surplus（过剩）· bypass（绕过）。"},
+  advertiser:{"w": "advertiser", "ipa": "/ˈædvətaɪzə/", "pos": "n.", "tags": ["core"], "cn": "<b>广告商</b>", "en": "a company that pays for advertisements", "ex": "are unpopular with <b>advertisers</b>（31 题 C）", "mem": "31C 把❶ profitable 和❷ ads 拼起来——可广告是盗版站的收入，文中没提广告商对正版的态度。", "syn": "sponsor", "conf": "advertiser（广告商）· advertisement（广告）· adviser（顾问）。"},
+  confront:{"w": "be confronted with", "ipa": "/kənˈfrʌntɪd wɪð/", "pos": "phr.", "tags": ["phrase", "core", "write"], "cn": "<b>面临</b>（困难、威胁）", "en": "to have to deal with a problem", "ex": "are <b>confronted with</b> a real threat（31 题 D）", "mem": "con-（共同）＋ front（前面）⟹ 面对面。be confronted with＝be faced with。写作：We are confronted with a choice.", "syn": "face · be faced with", "conf": "confront（面对）· confrontation（对抗）· comfort（安慰）。"},
+  streamer:{"w": "streamer", "ipa": "/ˈstriːmə/", "pos": "n.", "tags": ["core", "poly"], "cn": "<b>流媒体平台</b>；（另）主播", "en": "a company that offers streaming services", "ex": "<b>streamers</b> like Netflix（32 题）", "mem": "⚠️ 一词两义：streamer 指平台（Netflix）或做直播的人（主播）。本题指平台。", "syn": "streaming service", "conf": "streamer（流媒体平台；主播）· steamer（轮船）· stream（溪流）。"},
+  playapart:{"w": "play a part in", "ipa": "/pleɪ ə pɑːt ɪn/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>在……中起作用</b>", "en": "to be involved in and help something happen", "ex": "<b>played a part in</b> the fight against …（32 题 A）", "mem": "⟹ 对应③❶ actually helped curb：helped ＝ played a part in。写作：play an important part / role in。", "syn": "contribute to · play a role in", "conf": "play a part（起作用）· take part in（参加）· part with（舍弃）。"},
+  reap:{"w": "reap", "ipa": "/riːp/", "pos": "v.", "tags": ["core", "write"], "cn": "<b>获得</b>（好处）；收割", "en": "to get something good as a result of actions", "ex": "<b>reaped</b> benefits from the war …（32 题 B）", "mem": "本义「收割庄稼」⟹ reap the benefits / rewards（收获好处）。32B 把「帮着打击」改成「获益」，文中没说。", "syn": "gain · obtain", "conf": "reap（收获）· leap（跳）· weep（哭泣）。"},
+  jobcreator:{"w": "job creator", "ipa": "/dʒɒb kriˈeɪtə/", "pos": "n.", "tags": ["phrase"], "cn": "<b>就业创造者</b>", "en": "a company that creates many jobs", "ex": "big <b>job creators</b> in the US（32 题 C）", "mem": "32C 从③❷「盗版毁掉 25 万岗位」反推「正版会创造岗位」——推过头，promised 更是无中生有。", "syn": "employer", "conf": "create jobs（创造就业）· job seeker（求职者）。"},
+  collaborate:{"w": "collaborate", "ipa": "/kəˈlæbəreɪt/", "pos": "v.", "tags": ["core", "write"], "cn": "<b>合作</b>", "en": "to work together with someone", "ex": "used to <b>collaborate</b> with file-uploading platforms（32 题 D）", "mem": "col-（共同）＋ labor（劳动）。32D 把③❷ as well as（和）曲解成「合作」，方向反了：上传平台本身就是盗版。", "syn": "cooperate · work with", "conf": "collaborate（合作）· elaborate（详细说明）· corroborate（证实）。"},
+  deny:{"w": "deny", "ipa": "/dɪˈnaɪ/", "pos": "v.", "tags": ["core", "poly"], "cn": "<b>拒绝给予</b>；否认", "en": "to refuse to give or allow something", "ex": "was <b>denied</b> cooperation by Silicon Valley（33 题 A）", "mem": "deny sb sth＝不给某人某物；被动 be denied sth。⟹ 33A：MPA ＝ 好莱坞的代言人，「在好莱坞与硅谷之间谈不拢」＝ 硅谷不配合。", "syn": "refuse · withhold", "conf": "deny（拒绝给；否认）· denial（否认）· defy（违抗）。"},
+  protest:{"w": "protest", "ipa": "/ˈprəʊtest/", "pos": "n.", "tags": ["core"], "cn": "<b>抗议</b>", "en": "a strong public complaint or demonstration", "ex": "led a national <b>protest</b>（33 题 B）", "mem": "protest 是表达不满；MPA 做的是立法、组队、抓人——实质措施不是抗议。何况 ACE circling the globe 是全球，不是 national。", "syn": "demonstration · objection", "conf": "protest（抗议）· protect（保护）· prospect（前景，35 题 C）。"},
+  urge:{"w": "urge", "ipa": "/ɜːdʒ/", "pos": "v.", "tags": ["core", "write"], "cn": "<b>敦促</b>、力劝", "en": "to strongly advise someone to do something", "ex": "was <b>urged</b> to form an enforcement task force（33 题 C）", "mem": "33C 把④❹ the association formed（主动组建）改成被动「被敦促组建」——主动 ⟹ 被动是推理题经典陷阱。", "syn": "press · push", "conf": "urge（敦促）· urgent（紧急的）· surge（激增）。"},
+  check:{"w": "check", "ipa": "/tʃek/", "pos": "v.", "tags": ["poly", "core"], "cn": "<b>遏制</b>、阻止（不良事物）", "en": "to stop something bad from increasing", "ex": "cannot be <b>checked</b> in spite of new legislation（34 题 A）", "mem": "⚠️ 熟词僻义：check＝curb（遏制），不是「检查」。check the spread of disease。<br>34A 错：乐观派说会 plateau（趋平）＝ 增长被遏住；霍利只说「降」的时间没共识。", "syn": "curb · contain · rein in", "conf": "check（遏制；检查）· keep sth in check（控制住）。"},
+  overwhelm:{"w": "overwhelm", "ipa": "/ˌəʊvəˈwelm/", "pos": "v.", "tags": ["core", "write"], "cn": "<b>压垮</b>、击溃；使不知所措", "en": "to defeat completely", "ex": "will possibly <b>overwhelm</b> legitimate streamers（34 题 B）", "mem": "over-（在上）＋ whelm（淹没）⟹ 淹没 ⟹ 压倒。34B 比「遏制不住」再往「涨」那头拔一级；料来自⑥❶ 咨询公司的 1,130 亿，不是霍利的话。", "syn": "crush · defeat", "conf": "overwhelm（压垮）· overwhelming（压倒性的）· overlook（忽视）。"},
+  diminish:{"w": "diminish", "ipa": "/dɪˈmɪnɪʃ/", "pos": "v.", "tags": ["core", "write"], "cn": "<b>减少</b>、减小", "en": "to become smaller or less", "ex": "is unlikely to <b>diminish</b> in the near future（34 题 C）", "mem": "di- ＋ mini（小，同 minimum）⟹ 变小。⟹ 34C 的 diminish ＝ ⑥❷ 的 decline。", "syn": "decline · decrease · lessen", "conf": "diminish（减少）· diminutive（微小的）· minimize（最小化）。"},
+  underestimate:{"w": "underestimate", "ipa": "/ˌʌndərˈestɪmeɪt/", "pos": "v.", "tags": ["core", "write"], "cn": "<b>低估</b>", "en": "to think something is smaller than it is", "ex": "has been <b>underestimated</b> by some analysts（34 题 D）", "mem": "under-（不足）＋ estimate。34D 错：霍利承认 there is some optimism，并没反驳乐观派——让步不等于驳斥。", "syn": "underrate", "conf": "underestimate（低估）· overestimate（高估）· understate（轻描淡写）。"},
+  emphasize:{"w": "emphasize", "ipa": "/ˈemfəsaɪz/", "pos": "v.", "tags": ["core", "write"], "cn": "<b>强调</b>", "en": "to give special importance to something", "ex": "Which … is <b>emphasized</b> in the text?（35 题）", "mem": "emphasis（强调）的动词。⚠️ 「emphasized in the text」问的是<b>贯穿全文</b>的东西——比覆盖段数，不比语气轻重。", "syn": "stress · highlight", "conf": "emphasize（强调）· emphatic（断然的）· empathize（共情）。"},
+  coordinate:{"w": "coordinate", "ipa": "/kəʊˈɔːdɪneɪt/", "pos": "v.", "tags": ["core", "write"], "cn": "<b>协调</b>", "en": "to organize people or things to work together", "ex": "The need to <b>coordinate</b> anti-piracy action（35 题 A）", "mem": "co-（共同）＋ ordin（顺序）⟹ 排成一致。35A 把④❸ 和⑥❷ 的两个 consensus 拼成「需要协调」，作者从没呼吁过。", "syn": "organize · harmonize", "conf": "coordinate（协调）· subordinate（下属）· ordinary（普通的）。"},
+  violation:{"w": "violation", "ipa": "/ˌvaɪəˈleɪʃn/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>违反</b>、侵犯", "en": "an action that breaks a law or rule", "ex": "copyright <b>violation</b>（35 题 B）", "mem": "violate（违反）的名词。copyright violation / infringement（侵犯版权）。35B 的「犯罪性质」只在④⑤ 两段——局部。", "syn": "infringement · breach", "conf": "violation（违反）· violence（暴力）· violin（小提琴）。"},
+  prospect:{"w": "prospect", "ipa": "/ˈprɒspekt/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>前景</b>、可能性", "en": "the possibility that something will happen", "ex": "The <b>prospect</b> of eliminating online piracy（35 题 C）", "mem": "pro-（向前）＋ spect（看）⟹ 往前看 ⟹ 前景。the prospect of doing＝做……的可能。", "syn": "outlook · possibility", "conf": "prospect（前景）· perspective（视角）· inspect（检查）。"},
+  eliminate:{"w": "eliminate", "ipa": "/ɪˈlɪmɪneɪt/", "pos": "v.", "tags": ["core", "write"], "cn": "<b>消除</b>、根除", "en": "to remove completely", "ex": "eliminating online piracy（35 题 C）", "mem": "e-（出）＋ limin（门槛）⟹ 赶出门 ⟹ 消除。35C 与⑥❷ 相反：连「下降」都说不准，何谈「根除」。", "syn": "eradicate · wipe out", "conf": "eliminate（消除）· illuminate（照亮）· limit（限制）。"}
+};
+const panel=document.getElementById('panel');
+const isMobile=()=>window.innerWidth<=900;
+function badge(t){const m={core:'核心',phrase:'短语',poly:'僻义',write:'写作'};return `<span class="badge b-${t}">${m[t]}</span>`}
+function showCard(k,el){
+  const d=V[k];if(!d)return;
+  document.querySelectorAll('.tk.active').forEach(x=>x.classList.remove('active'));
+  if(el)el.classList.add('active');
+  panel.innerHTML=`<button class="close" onclick="document.getElementById('panel').classList.remove('open')">收起</button>
+    <div class="wcard">
+      <div class="head"><span class="w">${d.w}</span><span class="ipa">${d.ipa}</span><span class="pos">${d.pos}</span>${d.tags.map(badge).join('')}</div>
+      <div class="cn">${d.cn}</div><div class="en-def">${d.en}</div>
+      <div class="row r-ex"><b>原文</b>${d.ex}</div>
+      <div class="row r-mem"><b>怎么记 / 考点</b>${d.mem}</div>
+      <div class="row r-syn"><b>同义 / 同族</b>${d.syn}</div>
+      <div class="row r-conf"><b>易混 / 提醒</b>${d.conf}</div>
+    </div>`;
+  if(isMobile())panel.classList.add('open');
+}
+document.querySelectorAll('.tk').forEach(t=>t.addEventListener('click',e=>{e.stopPropagation();showCard(t.dataset.w,t)}));
+
+function tz(btn){btn.closest('.para').classList.toggle('showzh')}
+let allOn=false;
+function toggleAll(){allOn=!allOn;document.querySelectorAll('.para').forEach(p=>p.classList.toggle('showzh',allOn))}
+function go(id){const s=document.getElementById(id);if(!s)return;s.scrollIntoView({behavior:'smooth',block:'center'});s.style.transition='none';s.style.opacity=.3;setTimeout(()=>{s.style.transition='opacity .8s';s.style.opacity=1},80)}
+
+document.querySelectorAll('.q').forEach(q=>{
+  const ans=+q.dataset.ans;
+  q.querySelectorAll('.opt').forEach((o,i)=>o.addEventListener('click',()=>{
+    if(q.classList.contains('done'))return;
+    q.classList.add('done');
+    if(i!==ans)o.classList.add('wrong');
+    q.querySelectorAll('.opt')[ans].classList.add('right');
+  }));
+});
+
+const vg=document.getElementById('vgrid');
+function renderGrid(f){
+  vg.innerHTML='';
+  Object.keys(V).forEach(k=>{
+    const d=V[k];
+    if(f!=='all'&&!d.tags.includes(f))return;
+    const div=document.createElement('div');div.className='vitem';
+    div.innerHTML=`<span class="badges">${d.tags.map(badge).join('')}</span><div class="w">${d.w}</div><div class="cn">${d.cn}</div>`;
+    div.addEventListener('click',()=>{showCard(k,null);if(!isMobile())window.scrollTo({top:0,behavior:'smooth'})});
+    vg.appendChild(div);
+  });
+}
+renderGrid('all');
+document.querySelectorAll('.fbtn').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.fbtn').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderGrid(b.dataset.f);
+}));
+
+const yd=document.getElementById('yd');let sel='',ydHold=0,ydT=0;
+/* 触屏：点按钮会先把选区清掉 → selectionchange 立刻把按钮藏了 → 点击落空。改成延迟隐藏 ＋ 按下即锁定 */
+const ydTouch=window.matchMedia&&matchMedia('(pointer:coarse)').matches;
+function ydHide(){clearTimeout(ydT);ydHold=0;yd.style.display='none'}
+document.addEventListener('selectionchange',function(){
+  const s=window.getSelection();const t=s?s.toString().trim():'';
+  if(t&&/^[a-zA-Z' -]{2,40}$/.test(t)){
+    sel=t;clearTimeout(ydT);
+    try{const r=s.getRangeAt(0).getBoundingClientRect();
+      yd.style.left=Math.max(8,Math.min(r.left,window.innerWidth-110))+'px';
+      yd.style.top=(r.bottom+(ydTouch?30:8))+'px';yd.style.display='block';}catch(e){}
+  }else if(!ydHold){clearTimeout(ydT);ydT=setTimeout(function(){if(!ydHold)yd.style.display='none'},ydTouch?900:0)}
+});
+['pointerdown','touchstart','mousedown'].forEach(function(ev){yd.addEventListener(ev,function(){ydHold=1;clearTimeout(ydT)},{passive:true})});
+yd.addEventListener('click',function(){
+  const u='https://dict.youdao.com/result?word='+encodeURIComponent(sel)+'&lang=en';
+  let w=null;try{w=window.open(u,'_blank')}catch(e){}
+  if(!w)location.href=u;
+  ydHide()});
+document.addEventListener('click',function(e){if(e.target!==yd&&!window.getSelection().toString())ydHide()});
+
+function imgAll(b){const on=document.body.classList.toggle('stx-allimg');b.textContent=on?'收起原卷':'原卷对照';
+  if(on)document.querySelectorAll('.para img.strip').forEach(im=>im.loading='eager')}
+</script>
+<script src="img/strip_boxes_2025.js?v=4"></script>
+<script src="_strip_lookup.js?v=8"></script>
+<script src="_strip_text.js?v=27"></script>
+<script src="_fault_attr.js"></script>
+</body>
+</html>

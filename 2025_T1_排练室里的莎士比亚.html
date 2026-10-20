@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2025 英一 Text 1 · 排练室里的莎士比亚：演出来才学得进</title>
+<style>
+  :root{
+    --bg:#faf9f6; --card:#ffffff; --ink:#2b2b2b; --muted:#8a8578;
+    --accent:#8b5e34; --accent-soft:#f3e9dd; --line:#e8e3d8;
+    --hl:#fdf3d8; --hl-border:#e0b84d;
+    --green:#3e7a4e; --green-soft:#e8f2ea;
+    --red:#b04a3a; --red-soft:#f9e9e6;
+    --blue:#3d6a8a; --blue-soft:#e7eff5;
+    --purple:#6d5a8e; --purple-soft:#eeeaf5;
+    --serif:"Georgia","Songti SC",serif;
+    --sans:-apple-system,"PingFang SC","Helvetica Neue",sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#1c1a17; --card:#26231f; --ink:#e8e4dc; --muted:#9a948a;
+      --accent:#d0a06a; --accent-soft:#3a3127; --line:#3a362f;
+      --hl:#3d3520; --hl-border:#b08c3a;
+      --green:#7fb98d; --green-soft:#26362b;
+      --red:#d98876; --red-soft:#3d2a26;
+      --blue:#8ab3d0; --blue-soft:#26323d;
+      --purple:#a996c8; --purple-soft:#302a3d;
+    }
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;padding-bottom:120px}
+  .wrap{max-width:1100px;margin:0 auto;padding:24px 20px}
+  .back{font-size:.85rem;color:var(--muted);text-decoration:none}
+  .back:hover{color:var(--accent)}
+  header{margin:14px 0 28px}
+  header h1{font-family:var(--serif);font-size:1.7rem;line-height:1.3}
+  header .sub{color:var(--muted);margin-top:6px;font-size:.9rem}
+  .tags{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+  .tag{font-size:.75rem;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);border:1px solid var(--line)}
+  .tag.warn{background:var(--red-soft);color:var(--red);border-color:var(--red)}
+  .tag.ok{background:var(--green-soft);color:var(--green);border-color:var(--green)}
+
+  .layout{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:24px;align-items:start}
+  main{min-width:0}
+  @media (max-width:900px){.layout{grid-template-columns:minmax(0,1fr)}}
+
+  section.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:24px}
+  h2{font-size:1.05rem;letter-spacing:.05em;color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+  h2 .n{font-size:.72rem;background:var(--accent);color:var(--card);border-radius:6px;padding:1px 7px}
+  h3{font-size:.95rem;color:var(--accent);margin:18px 0 10px}
+
+  .para{margin-bottom:22px}
+  .para .en{font-family:var(--serif);font-size:1.06rem;line-height:1.9}
+  .pno{color:var(--muted);font-size:.75rem;user-select:none;margin-right:6px}
+  .tk{background:var(--hl);border-bottom:2px solid var(--hl-border);border-radius:3px;padding:0 2px;cursor:pointer;transition:filter .15s}
+  .tk:hover{filter:brightness(.93)}
+  .tk.active{outline:2px solid var(--hl-border)}
+  .ls{border-bottom:2px dotted var(--blue);cursor:pointer}
+  .para .zh{display:none;margin-top:10px;padding:10px 14px;background:var(--blue-soft);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:.93rem}
+  .para.showzh .zh{display:block}
+  .zbtn{float:right;margin-left:10px;font-size:.72rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:6px;padding:2px 9px;cursor:pointer}
+  .zbtn:hover{color:var(--accent);border-color:var(--accent)}
+  .allbtn{font-size:.78rem;border:1px solid var(--accent);background:none;color:var(--accent);border-radius:8px;padding:4px 12px;cursor:pointer;margin-left:auto}
+
+  aside{position:sticky;top:20px}
+  #panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;min-height:180px}
+  #panel .hint{color:var(--muted);font-size:.88rem;text-align:center;padding:30px 10px}
+  .wcard .head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .wcard .w{font-family:var(--serif);font-size:1.35rem;font-weight:bold}
+  .wcard .ipa{color:var(--muted);font-size:.85rem}
+  .wcard .pos{font-size:.72rem;color:var(--purple);background:var(--purple-soft);padding:1px 8px;border-radius:999px}
+  .wcard .badge{font-size:.7rem;padding:1px 8px;border-radius:999px}
+  .b-core{background:var(--red-soft);color:var(--red)}
+  .b-phrase{background:var(--blue-soft);color:var(--blue)}
+  .b-poly{background:var(--purple-soft);color:var(--purple)}
+  .b-write{background:var(--green-soft);color:var(--green)}
+  .wcard .cn{margin-top:8px;font-size:1rem;font-weight:600}
+  .wcard .en-def{color:var(--muted);font-size:.86rem;font-style:italic;margin-top:2px}
+  .wcard .row{margin-top:10px;font-size:.86rem;padding:8px 10px;border-radius:8px}
+  .wcard .row>b:first-child{font-size:.72rem;display:block;margin-bottom:2px;letter-spacing:.06em}
+  .r-ex{background:var(--hl)} .r-ex b{color:var(--hl-border)}
+  .r-mem{background:var(--green-soft)} .r-mem b{color:var(--green)}
+  .r-syn{background:var(--blue-soft)} .r-syn b{color:var(--blue)}
+  .r-conf{background:var(--red-soft)} .r-conf b{color:var(--red)}
+  #panel .close{display:none}
+  @media (max-width:900px){
+    aside{position:fixed;left:0;right:0;bottom:0;z-index:50;padding:0 8px 8px}
+    #panel{box-shadow:0 -6px 24px rgba(0,0,0,.18);max-height:55vh;overflow-y:auto;display:none}
+    #panel.open{display:block}
+    #panel .close{display:block;float:right;border:none;background:var(--line);border-radius:8px;padding:2px 10px;cursor:pointer;color:var(--ink)}
+  }
+
+  .q{margin-bottom:22px;padding-bottom:18px;border-bottom:1px dashed var(--line)}
+  .q:last-child{border:none;margin-bottom:0;padding-bottom:0}
+  .q .stem{font-weight:600;font-family:var(--serif)}
+  .qt{font-size:.7rem;color:var(--blue);background:var(--blue-soft);border-radius:999px;padding:1px 8px;margin-right:6px;vertical-align:2px}
+  .opts{margin-top:10px;display:grid;gap:8px}
+  .opt{border:1px solid var(--line);border-radius:10px;padding:8px 12px;cursor:pointer;font-size:.93rem;font-family:var(--serif);transition:all .15s}
+  .opt:hover{border-color:var(--accent)}
+  .q.done .opt{cursor:default}
+  .opt.right{background:var(--green-soft);border-color:var(--green)}
+  .opt.wrong{background:var(--red-soft);border-color:var(--red)}
+  .expl{display:none;margin-top:12px;background:var(--accent-soft);border-radius:10px;padding:12px 14px;font-size:.9rem}
+  .q.done .expl{display:block}
+  .expl b{color:var(--accent)}
+  .expl .loc{font-family:var(--serif);font-style:italic;background:var(--hl);padding:1px 4px;border-radius:3px}
+  .fail{background:var(--red-soft);border:1px solid var(--red);border-radius:10px;padding:10px 13px;margin-bottom:10px;font-size:.89rem}
+  .fail b{color:var(--red)}
+  .waver{background:var(--hl);border:1px solid var(--hl-border);border-radius:10px;padding:10px 13px;margin-bottom:10px;font-size:.89rem}
+
+  .sent{margin-bottom:20px}
+  .sent .src{font-family:var(--serif);font-size:1rem;background:var(--blue-soft);padding:12px 14px;border-radius:10px;border-left:3px solid var(--blue)}
+  .sent .anat{margin-top:8px;font-size:.9rem}
+  .sent .anat li{margin:4px 0 4px 18px}
+  .sent .tr{margin-top:8px;font-size:.92rem;color:var(--muted)}
+  .skel{color:var(--red);font-weight:600}
+
+  .filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+  .fbtn{font-size:.8rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:999px;padding:4px 14px;cursor:pointer}
+  .fbtn.on{background:var(--accent);color:var(--card);border-color:var(--accent)}
+  .vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
+  .vitem{border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer;transition:border-color .15s}
+  .vitem:hover{border-color:var(--accent)}
+  .vitem .w{font-family:var(--serif);font-weight:bold}
+  .vitem .cn{font-size:.85rem;color:var(--muted)}
+  .vitem .badges{float:right}
+
+  .wb{display:grid;gap:10px}
+  .wbi{border-left:3px solid var(--green);background:var(--green-soft);border-radius:0 10px 10px 0;padding:10px 14px;font-size:.92rem}
+  .wbi .p{font-family:var(--serif);font-weight:600}
+  .wbi .u{color:var(--muted);font-size:.85rem}
+
+  .flow{display:grid;gap:8px;font-size:.92rem}
+  .flow .fi{border:1px solid var(--line);border-radius:10px;padding:9px 13px}
+  .flow .fi b{color:var(--accent)}
+
+  .ctab{width:100%;border-collapse:collapse;font-size:.86rem;margin-top:8px}
+  .ctab th,.ctab td{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
+  .ctab th{background:var(--accent-soft);color:var(--accent);font-size:.8rem;white-space:nowrap}
+  .ctab code{background:var(--hl);padding:0 3px;border-radius:3px}
+  .tabwrap{overflow-x:auto}
+  .ok{color:var(--green);font-weight:700}
+  .no{color:var(--red);font-weight:700}
+  .tl{display:grid;gap:10px;margin-top:6px}
+  .tli{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:start;border:1px solid var(--line);border-radius:10px;padding:10px 13px}
+  .tli .mark{font-family:var(--serif);font-weight:700;color:var(--accent);background:var(--accent-soft);border-radius:8px;padding:4px 10px;white-space:nowrap;font-size:.85rem}
+
+  .arrow{display:grid;gap:8px;margin-top:8px}
+  .arrow .ai{border:1px solid var(--line);border-radius:10px;padding:10px 13px;font-size:.9rem}
+  .arrow .ai.old{background:var(--red-soft);border-color:var(--red)}
+  .arrow .ai.new{background:var(--green-soft);border-color:var(--green)}
+  .chain{font-family:var(--serif);font-size:.95rem;background:var(--hl);border:1px solid var(--hl-border);border-radius:10px;padding:10px 14px;margin:8px 0;overflow-x:auto}
+
+  #yd{position:fixed;z-index:60;display:none;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:4px 12px;font-size:.8rem;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+  footer{color:var(--muted);font-size:.8rem;text-align:center;margin-top:30px}
+  .att{display:grid;gap:8px;margin-top:10px}
+  .atti{border:1px solid var(--line);border-radius:10px;padding:9px 13px;font-size:.9rem}
+  .atti b{font-family:var(--serif)}
+  .atti.no2{background:var(--red-soft);border-color:var(--red)}
+  .atti.yes{background:var(--green-soft);border-color:var(--green)}
+  .atti,.expl,.wbi,.zh,.fi,.ai,figcaption,p{overflow-wrap:anywhere}
+
+  /* 2021 起：原文以原卷扫描句条呈现 */
+  .sn{margin:0 0 14px}
+  .sn .pno{display:block;margin-bottom:4px;font-size:.78rem;line-height:1.6}
+  img.strip{display:block;width:100%;max-width:760px;height:auto;background:#fff;border:1px solid var(--line);border-radius:6px;cursor:pointer}
+  .sent .src img.strip{margin-top:6px;cursor:default}
+  .kw{margin-top:5px;font-size:.88rem;line-height:2.1;font-family:var(--serif)}
+  @media (prefers-color-scheme: dark){img.strip{filter:invert(.9) hue-rotate(180deg)}}
+  .sn,.sent .src{overflow-x:auto}
+  @media (max-width:700px){img.strip{width:640px;max-width:none}.sn::after{content:'← 句条可左右滑动 →';display:block;font-size:.7rem;color:var(--muted);margin-top:2px}}
+
+  /* 2023 起：流式版——识别好的句子在段落里连排，像 2007–2020 */
+  .para .en{font-family:var(--serif);font-size:1.02rem;line-height:1.9}
+  .stx-flow .para .en .pno{margin-right:4px}
+  .stx-flow .para .sn:not(.stx-on) .kw{margin-bottom:8px}
+</style>
+
+</head>
+<body class="stx-flow">
+<div class="wrap">
+  <a class="back" href="index.html">◀ 返回英语复盘中心</a>
+  <header>
+    <h1>排练室里的莎士比亚：演出来，才学得进</h1>
+    <div class="sub">2025 年英语（一）真题 · Text 1 · 411 词 · 7 段 · 建议做题 18 min · 话题：教育研究×戏剧×儿童读写（来源：《泰晤士报》2024-02-22，原题 <i>Shakespeare Really Does Improve Children’s English, Study Finds</i>，据黄皮书）</div>
+    <div class="tags">
+      <span class="tag">正确答案：21C 22A 23A 24B 25A</span><span class="tag">题型：条件细节 ＋ 研究目的 ＋ 对比推断 ＋ 因果观点 ＋ 末段推断</span><span class="tag">难度：五题顺序、④段不单独出题；坑全在「这句话说的是哪一组」</span><span class="tag">✅ Claude 盲做 5/5（24 题在 A／B、23 题在 A／B 之间排过一下）</span><span class="tag">⚠️ 原定冲刺模考卷，已按你的决定开复盘</span>
+    </div>
+  </header>
+
+  <div class="layout">
+    <main>
+      <!-- ========== 全文脉络 ========== -->
+      <section class="card">
+        <h2><span class="n">00</span>读前一分钟 · 全文脉络（做完题再看也行）</h2>
+        <div class="flow">
+          <div class="fi"><b>①段 结论先行 ＋ 一个条件</b>：「斯特拉特福来的那个文法学校男孩」（＝莎士比亚）在学术界打了漂亮一拳——开创性研究表明，莎剧<b>确实</b>有益于儿童的读写和情感发展。<b>但前提是：你得把他演出来</b>（21 题：只有这个 only if 是答案的根）。</div>
+          <div class="fi"><b>②段 研究说了什么、谁请人做的</b>：用「排练室」法教莎剧，孩子的词汇量、写作复杂度、情感素养都上去了。RSC 的奥汉隆说：<b>演员的工作方式</b>，对孩子怎么用语言、怎么看自己，影响很大——这项研究正是 RSC 委托的。</div>
+          <div class="fi"><b>③段 研究怎么做</b>：随机对照试验，45 所<b>从没接触过 RSC 教法</b>的公立小学、数百名五年级学生；分成<b>目标组</b>和<b>对照组</b>，都写同一个任务（比如以《暴风雨》里斐迪南的身份写一封漂流瓶信）。<b>两组唯一的差别</b>：目标组写之前多一个 30 分钟的戏剧活动（22 题：分两组就是为了测这个差别）。</div>
+          <div class="fi"><b>④段 发现一：词汇与「入戏」</b>：目标组词汇更广、用的词更复杂罕见、写得更长；在角色里写得更自如——<b>对照组想的是「换我自己遇到船难会怎样」，目标组是把自己放进剧中人的处境，替他表达情感</b>（这一句同时给 23、24 两题埋了料）。</div>
+          <div class="fi"><b>⑤段 发现二：描写</b>：对照组靠「荒岛老套」——棕榈树之类；目标组写得洋洋洒洒，天空、大海、天气都有（23 题：对照组描写弱）。</div>
+          <div class="fi"><b>⑥段 发现三：情感，以及为什么</b>：最让奥汉隆意外的是目标组的<b>情感素养</b>——写得更有韧劲、更有希望。她的解释：跟排练室的过程有关，你在里面要<b>设身处地想象自己会怎么走过来</b>，戏剧本来就是「把自己放进别人的鞋里」（24 题）。研究说明了艺术进课堂的重要。</div>
+          <div class="fi"><b>⑦段 自问自答的展望</b>：换随便哪个老剧作家也能复制这个结果吗？她说还要更多研究，<b>但</b>认为莎翁两万词对日常两千词，给孩子带来语言的大扩展，再加上「用整个身体让词活起来」（25 题：莎剧可能最适合这套教法）。</div>
+          <div class="fi" style="border-color:var(--accent)">📌 <b>一句话主旨</b>：莎剧不是读出来的，是演出来的——让孩子在排练室里入戏再写，词汇、描写和情感表达都比只读只写的同龄人强。<br>📌 <b>结构套路</b>：结论（①②）→ 方法（③）→ 三条发现（④⑤⑥）→ 局限与展望（⑦）——标准的<b>研究报道型新闻</b>。五题顺序：21①②、22③（答案要看④–⑥）、23⑤、24⑥、25⑦；<b>④段不单独出题，却同时是 23 和 24 的伏笔</b>。<br>📌 <b>本篇最值钱的一条规律：对照实验的文章，每个特征词先标「目标组」还是「对照组」。</b>记者甚至替你标好了——引语里的方括号 <span class="loc">[control]</span>、<span class="loc">[target]</span> 就是记者补进去的组别。五题里三题的干扰项都在「组别」上做手脚：23C、23D 把<b>目标组</b>的「入戏自如」「复杂罕见词」挪给了对照组；24A 的 imagine 在④❷ 里恰恰是<b>对照组</b>的做法；22B、22C 把<b>结果</b>（词汇、情感）挪成了<b>原因</b>。⟹ 2008·T1 立过的 <a href="套路库_阅读.html#R19">R19</a>「对比段先给每个特征词标主语」，今年原样再考一次。<br>📌 <b>和 2024 T1 比一比</b>：两年的 Text 1 都是英国大报（2024《金融时报》专栏、2025《泰晤士报》新闻）；2024 是作者亮观点的专栏，坑在「让步的前半句」；2025 是零作者观点的研究报道，靠一个说话人（奥汉隆）的引语推进，坑在「哪一组」。</div>
+          <div class="fi">🗞 <b>背景（WebSearch 核过，只帮读、不替原文纠错）</b>：研究就是 RSC 的 <b>Time to Act</b>（2024）——45 所此前<b>从未与 RSC 合作过</b>的公立小学（⟹ ③❶ 那句引语），五年级老师先到斯特拉特福受训，再给学生上约 20 小时莎剧课；③❸ 的 30 分钟，是每次写作任务前那段戏剧活动。RSC 自己的报告里，「复杂词」的口径是<b>最常用 2,000 词以外的词</b>——⑦❷ 的 <span class="loc">the everyday 2,000 words</span> 就从这里来；干预组复杂词多约 13.8%、罕见动词多约 24.3%，42 项写作指标赢了 41 项。另：「莎翁用了两万词」是流传很广的估计，口径有争议（按词形算近三万、按词目算不到两万），也有学者认为把他的作品量算进去后，他的词汇量和同时代剧作家相差不大——所以⑦❷ 只用 <span class="loc">suggested</span>，25A 也只敢说 <b>may</b>。</div>
+        </div>
+      </section>
+
+      <!-- ========== 原文精读 ========== -->
+      <section class="card">
+        <h2><span class="n">01</span>原文精读 <button class="allbtn" onclick="toggleAll()">全文意译 开/关</button> <button class="allbtn" id="imgall" onclick="imgAll(this)">原卷对照</button></h2>
+        <p style="font-size:.8rem;color:var(--muted);margin-bottom:14px">🟡 黄色高亮 = 重难点词/短语，点击右侧出卡片 ｜ 蓝色虚线 = 长难句，点击跳到精析 ｜ 每段「意」= 段落意译 ｜ 选中任意其他单词浮出「查有道」 ｜ 原文由你的浏览器从原卷识别成文字（首次约 3 秒，之后秒开）；「原卷对照」可逐句看扫描原图、改识别错字</p>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">①</span>
+            <div class="sn" data-go="l1_1"><img class="strip" src="img/2025_T1/s1_1.png" alt="①❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="grammarschool">grammar school</span> · <span class="tk" data-w="land">landed</span> · <span class="tk" data-w="scholarly">scholarly</span> · <span class="tk" data-w="punch">punch</span> · <span class="tk" data-w="groundbreaking">groundbreaking</span> · <span class="tk" data-w="benefit">benefit</span> · <span class="tk" data-w="literacy">literacy</span></div></div>
+            <div class="sn"><img class="strip" src="img/2025_T1/s1_2.png" alt="①❷ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="onlyif">only if</span> · <span class="tk" data-w="actout">act him out</span></div></div>
+          </div>
+          <div class="zh"><b>①段意：</b>来自埃文河畔斯特拉特福的那位文法学校男孩，在学术界漂亮地打出了一拳：一项开创性的研究表明，莎士比亚确实有益于儿童的读写能力和情感发展。但前提是，你得把他演出来。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">②</span>
+            <div class="sn"><img class="strip" src="img/2025_T1/s2_1.png" alt="②❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="rehearsalroom">rehearsal room</span> · <span class="tk" data-w="approach">approach</span> · <span class="tk" data-w="broaden">broadened</span> · <span class="tk" data-w="complexity">complexity</span> · <span class="tk" data-w="emotionalliteracy">emotional literacy</span></div></div>
+            <div class="sn" data-go="l2_2"><img class="strip" src="img/2025_T1/s2_2.png" alt="②❷ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="makedifference">makes a big difference</span> · <span class="tk" data-w="commission">commissioned</span></div></div>
+          </div>
+          <div class="zh"><b>②段意：</b>一项研究发现，用「排练室」的方法教莎士比亚，能扩大孩子的词汇量、提高他们写作的复杂程度，也能提升他们的情感素养。「研究表明，演员的工作方式，对孩子如何使用语言、如何看待自己，影响都很大。」委托开展这项研究的皇家莎士比亚剧团（RSC）的杰奎·奥汉隆说。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">③</span>
+            <div class="sn" data-go="l3_1"><img class="strip" src="img/2025_T1/s3_1.png" alt="③❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="rct">randomised control trial</span> · <span class="tk" data-w="stateschool">state primary schools</span> · <span class="tk" data-w="expose">exposed to</span> · <span class="tk" data-w="pedagogy">pedagogy</span></div></div>
+            <div class="sn"><img class="strip" src="img/2025_T1/s3_2.png" alt="③❷ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="split">split into</span> · <span class="tk" data-w="target">target</span> · <span class="tk" data-w="control">control groups</span> · <span class="tk" data-w="bottle">a message in a bottle</span> · <span class="tk" data-w="shipwreck">shipwreck</span></div></div>
+            <div class="sn"><img class="strip" src="img/2025_T1/s3_3.png" alt="③❸ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="dramabased">drama-based</span> · <span class="tk" data-w="accompany">accompany</span> · <span class="tk" data-w="passage">passage</span></div></div>
+          </div>
+          <div class="zh"><b>③段意：</b>这项随机对照试验覆盖了 45 所公立小学的数百名五年级学生（九到十岁），这些学校此前从未「接触过 RSC 的教学法」。学生被分成目标组和对照组，都要完成写作任务，比如以《暴风雨》中斐迪南的身份，在船只失事后写一封装进漂流瓶的信。目标组在写这段文字之前，会先做一个 30 分钟的戏剧活动。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">④</span>
+            <div class="sn"><img class="strip" src="img/2025_T1/s4_1.png" alt="④❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="peerreviewed">peer-reviewed</span> · <span class="tk" data-w="drawon">drew on</span> · <span class="tk" data-w="classas">classed as</span> · <span class="tk" data-w="sophisticated">sophisticated</span> · <span class="tk" data-w="atlength">at greater length</span></div></div>
+            <div class="sn" data-go="l4_2"><img class="strip" src="img/2025_T1/s4_2.png" alt="④❷ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="inrole">in role</span> · <span class="tk" data-w="react">react</span> · <span class="tk" data-w="intheshoes">put themselves in the shoes of</span> · <span class="tk" data-w="literary">literary</span></div></div>
+          </div>
+          <div class="zh"><b>④段意：</b>经同行评审的结果显示，目标组的学生用词范围更广，用了更多「被归为更复杂或更少见」的词，写得也更长。他们还「似乎更擅长在角色中写作……对照组的学生想象的是自己遇到船难会作何反应，而目标组的孩子则把自己放进文学人物的处境，表达这个人物的情感」。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">⑤</span>
+            <div class="sn" data-go="l5_1"><img class="strip" src="img/2025_T1/s5_1.png" alt="⑤❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="relyon">relied on</span> · <span class="tk" data-w="cliche">clichés</span> · <span class="tk" data-w="palm">palm trees</span> · <span class="tk" data-w="expansive">expansive</span> · <span class="tk" data-w="atmospheric">atmospheric</span></div></div>
+          </div>
+          <div class="zh"><b>⑤段意：</b>这项名为「表演时刻」的研究还发现，对照组的学生依赖棕榈树之类的「荒岛套话」，而目标组的学生则写得「更加舒展，对天空、大海和天气状况描绘出更开阔的画面」。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">⑥</span>
+            <div class="sn"><img class="strip" src="img/2025_T1/s6_1.png" alt="⑥❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="evident">evident</span> · <span class="tk" data-w="resilient">resilient</span> · <span class="tk" data-w="hopeful">hopeful</span></div></div>
+            <div class="sn" data-go="l6_2"><img class="strip" src="img/2025_T1/s6_2.png" alt="⑥❷ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="relatedto">related to</span> · <span class="tk" data-w="usedto">used to</span> · <span class="tk" data-w="imagineway">imagine your way through</span></div></div>
+            <div class="sn" data-go="l6_3"><img class="strip" src="img/2025_T1/s6_3.png" alt="⑥❸ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="comfortable">comfortable</span> · <span class="tk" data-w="state">states</span></div></div>
+            <div class="sn"><img class="strip" src="img/2025_T1/s6_4.png" alt="⑥❹ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="embed">embedding</span></div></div>
+          </div>
+          <div class="zh"><b>⑥段意：</b>奥汉隆说，最让她意外的是「（目标组）孩子作文里显而易见的情感素养」，以及他们「写作中更有韧劲、更有希望」。她补充说：「对情感的理解非常明显，这很可能和（排练室的过程）有关——在那个过程里，你习惯于努力想象自己会怎样一步步应对。他们描写各种情绪状态时很自如，而戏剧里要做的事，有一部分就是设身处地站到别人的位置上。」她说，这项研究说明了把艺术融入教育的重要性。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">⑦</span>
+            <div class="sn"><img class="strip" src="img/2025_T1/s7_1.png" alt="⑦❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="replicate">replicated</span> · <span class="tk" data-w="anyold">any old</span> · <span class="tk" data-w="dramatist">dramatist</span></div></div>
+            <div class="sn" data-go="l7_2"><img class="strip" src="img/2025_T1/s7_2.png" alt="⑦❷ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="expansion">massive expansion</span> · <span class="tk" data-w="combine">combined with</span> · <span class="tk" data-w="bringtolife">bring words to life</span></div></div>
+          </div>
+          <div class="zh"><b>⑦段意：</b>可是，换成随便哪一位老剧作家，这些结果也能复现吗？奥汉隆说还需要更多研究，但她认为，莎士比亚用了两万个词，而日常只用两千个，这给孩子的生活带来了「语言的巨大扩展」，再加上孩子们「用整个身体让词语活起来」。</div>
+        </div>
+      </section>
+
+      <!-- ========== 题目 ========== -->
+      <section class="card">
+        <h2><span class="n">02</span>题目与解析（点选项即判 · 再看解析）</h2>
+
+        <div class="q" data-ans="2" id="q21">
+          <p class="stem"><span class="qt">条件细节</span>21. The “rehearsal room” approach <span class="tk" data-w="require">requires</span> pupils to ______.</p>
+          <div class="opts">
+            <div class="opt">[A] rewrite the <span class="tk" data-w="lines">lines</span> from Shakespeare.</div>
+            <div class="opt">[B] watch RSC actors’ performances.</div>
+            <div class="opt">[C] play the roles in Shakespeare.</div>
+            <div class="opt">[D] study drama under RSC artists.</div>
+          </div>
+          <div class="expl"><b>答案 C</b>　题干 requires（要求学生做什么）问的是<b>条件</b>，①❷ 恰好是全文唯一的条件句：<span class="loc">But only if you act him out</span>——「但前提是你得把他演出来」。两个代词先还原：<b>you ＝ 孩子</b>，<b>him ＝ 莎士比亚（的剧作）</b>；act sb out ＝ 把……表演出来 ⟹ 孩子要<b>扮演</b>莎剧里的角色 ⟹ C。②❷ 再补一刀：起作用的是 <span class="loc">the way actors work</span>——「演员工作的方式」，也就是让孩子像演员一样入戏；③❸ 目标组多出来的正是 <span class="loc">a 30-minute drama-based activity</span>。<br><b>干扰项：</b>A 从②❶ <span class="loc">the complexity of their writing</span> 联想到「写」，再拼上 Shakespeare，编出「改写莎剧台词」——研究测的是孩子自己的写作，任务是以剧中人身份写信，不是改写原文；⚠️ lines 在这里是「台词」（熟词僻义）。B 把 the way actors work 读成「看演员演」——<b>演员的工作方式 ≠ 演员的演出</b>，排练室法是让孩子<b>自己</b>演，不是当观众。D 拼的是②段的零散词：teaching Shakespeare ＋ RSC ＋ commissioned——RSC 只是<b>委托做研究</b>的机构，原文没说 RSC 艺术家亲自教孩子（实际授课的是受过训的学校老师，见背景）。<br><b>技巧：</b>题干动词是 requires / depends on / is necessary for，就去找原文的<b>条件标记</b>：only if / only when / unless / as long as；本篇这个条件放在第一段最后一句、还是个三词的短句，最容易一眼带过。条件题的干扰项常是「和条件<b>同一个场景</b>、但做事的人换了」——B 换成演员、D 换成艺术家（参见 <a href="套路库_阅读.html#R123">R123</a>「条件题」）。<br>📕 <b>与书解析的商榷</b>：无分歧。书在「技巧总结」里把三个句子并成「方式 X → 结果 Y」（Y but only if X · X broadened Y · X makes a big difference to Y），三处的 X 都指向「学生结合角色扮演学莎剧」——这正是本题最省力的读法。</div>
+        </div>
+
+        <div class="q" data-ans="0" id="q22">
+          <p class="stem"><span class="qt">研究目的</span>22. The study divided the pupils into two groups to find whether ______.</p>
+          <div class="opts">
+            <div class="opt">[A] the change in <span class="tk" data-w="instruction">instruction</span> <span class="tk" data-w="enhance">enhances</span> learning <span class="tk" data-w="outcome">outcomes</span>.</div>
+            <div class="opt">[B] expanding vocabulary helps develop reading <span class="tk" data-w="fluency">fluency</span>.</div>
+            <div class="opt">[C] emotion affects understanding of sophisticated works.</div>
+            <div class="opt">[D] the classroom activity <span class="tk" data-w="stimulate">stimulates</span> interest in the arts.</div>
+          </div>
+          <div class="expl"><b>答案 A</b>　分两组（③❷ <span class="loc">split into target and control groups</span>）是为了比出<b>一个差别</b>带来的<b>结果</b>。差别在③❸：两组写同样的东西，只有目标组多一个 <span class="loc">30-minute drama-based activity</span> ⟹ X ＝ 教法变了；结果在④⑤⑥：词汇更广、用词更复杂、写得更长、描写更开阔、情感素养更明显 ⟹ Y ＝ 学习成果。<b>把四个选项都拆成「X → Y」</b>：A 的 X 是 the change in instruction（正是两组唯一的差别），Y 是 learning outcomes（罩得住④–⑥全部发现）⟹ A。<br><b>干扰项（每个都错在 X 或 Y 上）：</b>B 的 X「扩大词汇」本是研究的<b>结果</b>（④❶ wider vocabulary），被挪到了原因的位置；Y「阅读流畅度」研究根本没测——测的都是<b>写</b>。C 同理：「情感」是结果（⑥❶ emotional literacy），被挪成原因；「理解复杂作品」也没测（④❶ 的 sophisticated 修饰的是孩子<b>用的词</b>，不是读的作品）。D 的 Y「对艺术的兴趣」没测；它的料来自⑥❹ <span class="loc">the importance of embedding arts in education</span>，原文是「艺术 → 进教育」，D 写成「课堂活动 → 激发艺术兴趣」，<b>箭头反了</b>；而且那句是研究做完后的<b>意义</b>，不是分组时的<b>目的</b>。<br><b>技巧：</b>对照实验的「目的题」只问一件事——<b>两组唯一的差别（X）是否带来了被测的结果（Y）</b>。正确项往往写得最抽象（the change in instruction / learning outcomes），因为它要罩住全部发现；具体的选项反而多半是把某个<b>结果</b>搬到了原因位上。⟹ 新立 <a href="套路库_阅读.html#R320">R320</a>；与 <a href="套路库_阅读.html#R67">R67</a>「方法句列候选、结论句给胜出项」同源。<br>📕 <b>与书解析的商榷</b>：书判 D 为「颠倒因果」，对；可以再补一层——⑥❹ 是奥汉隆对研究<b>意义</b>的引申，题干问的是分两组时的<b>目的</b>，即便方向不反，「研究意义」也答不了「为什么分组」。</div>
+        </div>
+
+        <div class="q" data-ans="0" id="q23">
+          <p class="stem"><span class="qt">对比推断</span>23. Control pupils’ <span class="tk" data-w="reliance">reliance</span> on “desert island clichés” shows their ______.</p>
+          <div class="opts">
+            <div class="opt">[A] weakness in description.</div>
+            <div class="opt">[B] <span class="tk" data-w="omission">omission</span> of small details.</div>
+            <div class="opt">[C] <span class="tk" data-w="casual">casual</span> style of writing.</div>
+            <div class="opt">[D] preference for big words.</div>
+          </div>
+          <div class="expl"><b>答案 A</b>　⑤❶ 一个 while 把两组摆在天平两头：对照组 <span class="loc">relied on “desert island clichés” such as palm trees</span>——一写荒岛就是棕榈树，<b>套话</b>；目标组 <span class="loc">“more expansive [giving] a broader picture</span> …”——天空、大海、天气都写到了。题问「对照组依赖套话说明了什么」：拿它和目标组一比，就是对照组<b>描写不够开阔、不够具体、没有自己的东西</b> ⟹ weakness in description（描写上的不足）。<b>weakness 是对整段比较结果的概括</b>，所以选项写得很抽象；回看④段，对照组词汇窄、写得短、入不了戏，也都指向「写不出来」。<br><b>干扰项：</b>B 把两组的对比读成了同一组的两面——「只顾套话大场面、漏了小细节」；原文对照组的毛病是<b>套</b>，目标组的长处是<b>广</b>（broader picture），没人提「小细节」，方向也不对。C 和 D 都是<b>组别错位</b>：C 的料是④❷ <span class="loc">more comfortable writing in role</span>——那是<b>目标组</b>入戏自如，被曲解成对照组「文风随意」；D 的料是④❶ <span class="loc">“classed as more sophisticated or rarer”</span>——用复杂罕见词的也是<b>目标组</b>，被偷换成对照组「偏爱大词」，正好说反。<br><b>技巧：</b>对比段读的时候在旁边画两栏，给每个特征词标「目标组」还是「对照组」（<a href="套路库_阅读.html#R19">R19</a>）；本篇记者已经用方括号替你标好了——④❷ 引语里的 [control]、[target]，⑤❶ 的 control pupils / target pupils。再看比较标记：wider、more sophisticated、greater length、more expansive、broader 全是比较级，<b>比较级的主语永远是目标组</b>。<br>⚠️ <b>盲做时 A、B 排过一下</b>：B 的「小细节」看着像在解释「套话」，判据是<b>它和目标组的长处对不上</b>——目标组赢在「广」，不是赢在「细」。<br>📕 <b>与书解析的商榷</b>：书把本题标为「事实细节＋写作目的」；严格说题干 shows their ___ 问的是「说明了什么」，属<b>推断概括</b>——答案在原文里没有原词，要把三重比较的结果归纳出来（书的「技巧总结」本身也是这么讲的）。</div>
+        </div>
+
+        <div class="q" data-ans="1" id="q24">
+          <p class="stem"><span class="qt">因果观点</span>24. What can <span class="tk" data-w="promote">promote</span> children’s emotional literacy according to O’Hanlon?</p>
+          <div class="opts">
+            <div class="opt">[A] Writing in an imaginative manner.</div>
+            <div class="opt">[B] <span class="tk" data-w="identifywith">Identifying with</span> literary characters.</div>
+            <div class="opt">[C] <span class="tk" data-w="drawinspiration">Drawing inspiration from</span> nature.</div>
+            <div class="opt">[D] <span class="tk" data-w="concentrate">Concentrating on</span> real-life situations.</div>
+          </div>
+          <div class="expl"><b>答案 B</b>　题干 promote ＋ according to O’Hanlon ⟹ 找奥汉隆对「情感素养从哪来」的<b>因果解释</b>：⑥❷ <span class="loc">it is probably related to the [rehearsal room process]</span>，接着 where 从句说这个过程里 <span class="loc">you are used to trying to imagine your way through</span>；⑥❸ 再点题：<span class="loc">part of what you do in drama is put yourself in different shoes</span>。put yourself in someone’s shoes ＝ 设身处地站到别人的位置上；④❷ 说得更具体：<span class="loc">put themselves in the shoes of a literary character</span> ⟹ identifying with literary characters（与文学人物产生认同、共情）⟹ B。<br><b>干扰项：</b>A 是本题最像的一项，抓的是⑥❷ 的 imagine。但⑥❷ 的「想象」是<b>想象自己作为剧中人怎么走过这一程</b>，落点在「入戏」，不在「怎么写」；更硬的一条在④❷：<span class="loc">[control] pupils imagine how they themselves would react</span>——<b>对照组也在「想象」</b>，想的是「换我自己会怎样」；两组的分水岭不是想不想象，而是<b>代入的是自己还是角色</b>。所以「以想象的方式写作」恰恰是对照组也在做、却没换来情感素养的那件事。C 借⑤❶ 天空、大海、天气——那是描写的广度（23 题），和情感无关，更没说灵感来自自然。D 把 put yourself in different shoes 望文生义成「关注现实生活」——鞋子是<b>角色</b>的鞋，正好不是现实生活；⑦❷ 的 whole bodies 讲的是学词的方式，也不是现实情境。<br><b>技巧：</b>人物观点题先找<b>说话人自己的解释句</b>（related to / because / it is due to），再沿着 where 从句、下一句的具体说法一路落到最具体的那个动作；遇到在两组身上都出现的动作（本篇的 imagine），它<b>一定不是</b>区分两组的原因。<br>⚠️ <b>盲做时 A、B 排过一下</b>：imagine 在⑥❷ 原词复现，A 看着「有原文」——判据就是④❷ 那个 [control]。<br>📕 <b>与书解析的商榷</b>：无分歧，且书判 A 用的正是④❷「[control] pupils imagine」这一句——这是本题最漂亮的一条排除依据，值得记住。</div>
+        </div>
+
+        <div class="q" data-ans="0" id="q25">
+          <p class="stem"><span class="qt">末段推断</span>25. It can be <span class="tk" data-w="infer">inferred</span> from the last paragraph that ______.</p>
+          <div class="opts">
+            <div class="opt">[A] the new teaching method may work best with Shakespeare.</div>
+            <div class="opt">[B] the language of Shakespeare may be <span class="tk" data-w="formidable">formidable</span> for pupils.</div>
+            <div class="opt">[C] other old dramatists may be included in primary education.</div>
+            <div class="opt">[D] pupils may be <span class="tk" data-w="reluctant">reluctant</span> to work on other old dramatists.</div>
+          </div>
+          <div class="expl"><b>答案 A</b>　⑦段是一问一答。❶ 问：<span class="loc">could the results be replicated with any old dramatist?</span>——换个剧作家也行吗？❷ 答，前半先让一步 <span class="loc">more research would be needed</span>（还说不准），<b>but</b> 后面才是她的倾向：莎翁两万词 vs 日常两千词，带来 <span class="loc">“massive expansion of language</span> …”，再加上 <span class="loc">“using their whole bodies</span> …”。<b>她回答「换人行不行」，给出的却全是莎翁独有的理由</b> ⟹ 言外之意：这套方法用在莎剧上可能最有效 ⟹ A。may 对 suggested，语气也对等。<br><b>干扰项：</b>B 把「两万词」读成了负担——原文说的是<b>扩展</b>（massive expansion of language into children’s lives），是好处不是吓人；formidable 方向反。C 从❶ 的 any old dramatist 编出「其他老剧作家可能进入小学课堂」——❶ 只是个问题，❷ 的回答没有往这个方向走一步。D 也从❶ 编：「学生可能不愿学别的老剧作家」——原文只谈<b>莎剧</b>的特点，一个字没提学生愿不愿意、也没谈别的剧作家难不难。<br><b>技巧：</b>末段「设问 ＋ 回答」，答案在回答里；回答里有 but，就只读 but 之后。再问一句「她给的理由是普遍的，还是这个对象独有的」——理由全是独有的，结论就是「最适合这一个」。<br>📕 <b>与书解析的商榷</b>：⑦❶ 的 <span class="loc">any old dramatist</span>，书译作「任何一位古老剧作家」。英式口语里 <b>any old ＋ 名词</b> 是固定说法，意思是「随便哪个、无论哪个」，old 不一定是「古老」——这句更自然的读法是「随便换个剧作家行不行」。不过 C、D 两项都写作 other old dramatists，命题人是按字面「老剧作家」处理的；两种读法都不改变答案。</div>
+        </div>
+      </section>
+
+      <!-- ========== 长难句 ========== -->
+      <section class="card" id="sents">
+        <h2><span class="n">03</span>长难句精析（正文蓝色虚线句）</h2>
+
+        <div class="sent" id="l1_1">
+          <div class="src"><b>s1（①❶）</b><img class="strip" src="img/2025_T1/s1_1.png" alt="①❶ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：<code>The grammar school boy … has landed a scholarly punch</code>——主谓宾；主语是个<b>借代</b>：「斯特拉特福来的文法学校男孩」＝莎士比亚（他生在埃文河畔斯特拉特福、上过当地文法学校）。新闻开头不点名、先让读者猜，是英国报纸的常见开法。</li>
+            <li><code>land a punch</code>：拳击用语「打中一拳」；<code>scholarly</code> 把它挪到学术圈——「在学术上漂亮地赢了一回」。</li>
+            <li><code>after</code> 引导时间状语从句，从句里 <code>showed that</code> 再带一个宾语从句：<code>Shakespeare does benefit …</code>——<b>does ＋ 动词原形</b>是强调，「<b>确实</b>有益」，暗含「以前有人怀疑过」。</li>
+          </ul>
+          <div class="tr">意：来自埃文河畔斯特拉特福的那位文法学校男孩，在学术界漂亮地打出了一拳：一项开创性的研究表明，莎士比亚确实有益于儿童的读写能力和情感发展。</div>
+        </div>
+
+        <div class="sent" id="l2_2">
+          <div class="src"><b>s2（②❷）</b><img class="strip" src="img/2025_T1/s2_2.png" alt="②❷ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li>直接引语在前、说话人在后：<code>“…,” Jacqui O’Hanlon … said</code>——<b>引语后置、主谓在最后</b>，读的时候先跳到句末找 said 的主语，再回头读引语。</li>
+            <li>引语内 <span class="skel">主干</span>：<code>The research shows that …</code>，宾语从句的主语是 <code>the way actors work</code>（省略了 in which 的定语从句），谓语 <code>makes a big difference to</code>。</li>
+            <li>difference to 后面接两个并列宾语：<code>the way children use language</code> 和 <code>how they think about themselves</code>，用 <code>and also</code> 连——一个名词短语、一个 how 从句，形式不对称但意思并列。</li>
+            <li>说话人后挂一个<b>非限制性定语从句</b>：<code>which commissioned the study</code>，先行词是 RSC 而不是奥汉隆本人——<b>委托研究的是剧团</b>（21D 就是把这个机构的角色夸大成「亲自教学」）。</li>
+          </ul>
+          <div class="tr">意：「研究表明，演员的工作方式，对孩子如何使用语言、如何看待自己，影响都很大。」委托开展这项研究的皇家莎士比亚剧团（RSC）的杰奎·奥汉隆说。</div>
+        </div>
+
+        <div class="sent" id="l3_1">
+          <div class="src"><b>s3（③❶）</b><img class="strip" src="img/2025_T1/s3_1.png" alt="③❶ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：<code>The randomised control trial involved hundreds of year 5 pupils</code>——involve 在这里是「涉及、有……参加」。</li>
+            <li>两个破折号之间 <code>aged nine and ten</code>：插入的同位说明，交代年龄；读的时候可先跳过。</li>
+            <li><code>at 45 state primary schools</code> 后接 <code>that had not been “previously exposed to …”</code>：定语从句修饰 schools，<b>过去完成时被动</b>——「此前从未接触过 RSC 教学法」。这个条件是对照实验的关键：<b>排除「本来就熟悉这套方法」的干扰</b>。</li>
+            <li>英式拼写与学制：<code>randomised</code>（美式 randomized）· <code>year 5</code>（英国学制五年级）· <code>state school</code>（公立学校）。</li>
+          </ul>
+          <div class="tr">意：这项随机对照试验覆盖了 45 所公立小学的数百名五年级学生（九到十岁），这些学校此前从未「接触过 RSC 的教学法」。</div>
+        </div>
+
+        <div class="sent" id="l4_2">
+          <div class="src"><b>s4（④❷）</b><img class="strip" src="img/2025_T1/s4_2.png" alt="④❷ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：<code>They also “appear to be more comfortable writing in role …”</code>——<code>be comfortable (in) doing</code>「做……很自如」；<code>in role</code>「以角色身份」。</li>
+            <li>省略号后是引语里另一段：<code>while [control] pupils imagine how …, [target] children put themselves in the shoes of …</code>——<b>while 表对比</b>，前后两组各一个分句。</li>
+            <li>方括号是<b>记者补进引语的词</b>：原报告里大概只写 pupils / children，记者怕读者分不清，补上组别。⟹ <b>读对照实验的引语，先看方括号定组别</b>。</li>
+            <li>两组的分水岭就在这两个分句的宾语上：对照组 <code>how they themselves would react</code>（代入<b>自己</b>）vs 目标组 <code>the shoes of a literary character</code>（代入<b>角色</b>）。24 题的答案和 A 项的排除，都在这一句。</li>
+          </ul>
+          <div class="tr">意：他们还「似乎更擅长在角色中写作……对照组的学生想象的是自己遭遇船难会作何反应，而目标组的孩子则把自己放进文学人物的处境，表达这个人物的情感」。</div>
+        </div>
+
+        <div class="sent" id="l5_1">
+          <div class="src"><b>s5（⑤❶）</b><img class="strip" src="img/2025_T1/s5_1.png" alt="⑤❶ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：<code>The Time to Act study also found that …</code>——Time to Act 是研究的名字（双关：「该行动了」／「表演的时刻」）。</li>
+            <li>宾语从句内部又是 <b>while 对比</b>：<code>while control pupils relied on …</code>（对照组）, <code>target pupils were “more expansive …”</code>（目标组）。</li>
+            <li><code>such as palm trees</code> 举例说明「荒岛套话」；方括号 <code>[giving]</code> 又是记者补的词，把形容词 expansive 和后面的 picture 接起来——没有它，引语读不通。</li>
+            <li>本句是 23 题的唯一出处：两组一贬一褒，答案 weakness in description 是把这组对比<b>概括</b>出来的。</li>
+          </ul>
+          <div class="tr">意：「表演时刻」研究还发现，对照组的学生依赖棕榈树之类的「荒岛套话」，而目标组的学生则写得「更舒展，对天空、大海和天气状况描绘出更开阔的画面」。</div>
+        </div>
+
+        <div class="sent" id="l6_2">
+          <div class="src"><b>s6（⑥❷）</b><img class="strip" src="img/2025_T1/s6_2.png" alt="⑥❷ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li>引语内两个并列分句，<code>and</code> 连接：① <code>The emotional understanding was very evident</code>；② <code>it is probably related to the [rehearsal room process]</code>——probably 是她的<b>推测</b>，不是研究结论。</li>
+            <li><code>where</code> 引导定语从句修饰 process（「在这个过程中」）：<code>you are used to trying to imagine …</code>——⚠️ <b>be used to doing</b>「习惯于做」，to 是介词，后接 trying；别和 used to do（过去常常）混。</li>
+            <li><code>imagine your way through</code>：仿 <b>动词 ＋ one’s way ＋ 介词</b> 句式（make one’s way through 挤过去、fight one’s way out 杀出来）——「靠想象一步步走过（那个处境）」。</li>
+          </ul>
+          <div class="tr">意：她补充说：「对情感的理解非常明显，这很可能和（排练室的过程）有关——在那个过程里，你习惯于努力想象自己会怎样一步步应对。」</div>
+        </div>
+
+        <div class="sent" id="l6_3">
+          <div class="src"><b>s7（⑥❸）</b><img class="strip" src="img/2025_T1/s6_3.png" alt="⑥❸ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li>两个并列分句：① <code>They were comfortable in describing different emotional states</code>；② <code>part of what you do in drama is put yourself in different shoes</code>。</li>
+            <li>第二个分句的主语是 <code>part of what you do in drama</code>（what 从句作 of 的宾语）；系动词 is 后的表语 <code>put yourself …</code> 是<b>省略 to 的不定式</b>——主语里有 do 时，表语不定式常省 to（All I did was ask a question.）。</li>
+            <li><code>put yourself in different shoes</code>：习语 put oneself in sb’s shoes 的变体，「设身处地」——24B identifying with 的直接出处。</li>
+          </ul>
+          <div class="tr">意：「他们描写各种情绪状态时很自如，而戏剧里要做的事，有一部分就是设身处地站到别人的位置上。」</div>
+        </div>
+
+        <div class="sent" id="l7_2">
+          <div class="src"><b>s8（⑦❷）</b><img class="strip" src="img/2025_T1/s7_2.png" alt="⑦❷ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：<code>O’Hanlon said … but suggested that …</code>——两个谓语 said / suggested 由 but 连接，<b>语义重心在 but 之后</b>（said 后是让步：还需更多研究）。</li>
+            <li>suggested 的宾语从句：主语 <code>Shakespeare’s use of 20,000 words</code>，插入比较状语 <code>compared with the everyday 2,000 words</code>，谓语 <code>gave a “massive expansion …”</code>——主谓被插入语撑开。</li>
+            <li>末尾 <code>which was combined with …</code>：非限制性定语从句，先行词是前面整件事（大词汇量带来的扩展）；<code>children “using their whole bodies …”</code> 是 <b>with ＋ 名词 ＋ doing</b> 的复合结构（孩子们用整个身体……）。</li>
+            <li>⚠️ suggest that 在这里是「表明、认为」，<b>不是「建议」</b>——所以从句用陈述语气 gave，不用虚拟（should give）。</li>
+          </ul>
+          <div class="tr">意：奥汉隆说还需要更多研究，但她认为，莎士比亚用了两万个词，而日常只用两千个，这给孩子的生活带来了「语言的巨大扩展」，再加上孩子们「用整个身体让词语活起来」。</div>
+        </div>
+      </section>
+
+      <!-- ========== 词汇复盘 ========== -->
+      <section class="card">
+        <h2><span class="n">04</span>词汇复盘（点卡片看详情）</h2>
+        <div class="filters">
+          <button class="fbtn on" data-f="all">全部</button>
+          <button class="fbtn" data-f="core">核心词</button>
+          <button class="fbtn" data-f="phrase">短语</button>
+          <button class="fbtn" data-f="poly">熟词僻义</button>
+          <button class="fbtn" data-f="write">写作可用</button>
+        </div>
+        <div class="vgrid" id="vgrid"></div>
+      </section>
+
+      <!-- ========== 写作素材 ========== -->
+      <section class="card">
+        <h2><span class="n">05</span>可搬进作文/翻译的素材</h2>
+        <p style="font-size:.9rem;margin-bottom:12px">本篇话题——<b>做中学、艺术教育、共情能力</b>——正对大作文里的「教育方式」「实践与理论」「美育」「换位思考」类题目，也能给小作文里「推荐课程／活动」垫理由。英文例句都是按原文句式自拟的，只借骨架。</p>
+        <div class="wb">
+          <div class="wbi"><div class="p">X does benefit … But only if …</div><div class="u">「X 确实有好处——但前提是……」——先肯定再加条件，议论显得有分寸：Reading does benefit young people. But only if they read beyond their screens.</div></div>
+          <div class="wbi"><div class="p">The way … makes a big difference to …</div><div class="u">「……的方式，对……影响很大」——把重点从「做不做」移到「怎么做」：The way teachers give feedback makes a big difference to how students see their own mistakes.</div></div>
+          <div class="wbi"><div class="p">While A relied on …, B were more …</div><div class="u">「A 依赖……，而 B 则更……」——<b>对比两组</b>的现成骨架：While some students relied on ready-made templates, others were more willing to find their own words.</div></div>
+          <div class="wbi"><div class="p">put oneself in someone’s shoes</div><div class="u">「设身处地、换位思考」——写人际、志愿服务、沟通类题目的高频地道表达：Volunteering teaches young people to put themselves in other people’s shoes.</div></div>
+          <div class="wbi"><div class="p">It is probably related to …, where you are used to …</div><div class="u">「这很可能和……有关，在那里人们习惯于……」——解释原因时带一点推测语气：Their confidence is probably related to the debate club, where they are used to speaking in public.</div></div>
+          <div class="wbi"><div class="p">The study showed the importance of embedding X in Y.</div><div class="u">「研究表明把 X 融入 Y 很重要」——结尾段升华：These programmes show the importance of embedding practical skills in everyday teaching.</div></div>
+          <div class="wbi"><div class="p">More research would be needed, but … suggested that …</div><div class="u">「还需要更多研究，但……表明……」——<b>先留余地、再给倾向</b>，适合写趋势与预测：More evidence would be needed, but early results suggest that short breaks improve concentration.</div></div>
+          <div class="wbi"><div class="p">bring … to life</div><div class="u">「让……活起来」——写传统文化、博物馆、历史课：Digital exhibitions bring ancient paintings to life for young visitors.</div></div>
+          <div class="wbi"><div class="p">话题词包：learning by doing · hands-on · emotional literacy · empathy · arts education</div><div class="u">写「教育方式 / 美育 / 实践」时直接可用：learning by doing（做中学）· a hands-on approach（动手实践的方法）· emotional literacy（情感素养）· broaden one’s vocabulary（扩大词汇量）· embed arts in education（把艺术融入教育）· make a big difference to（对……影响很大）。</div></div>
+        </div>
+      </section>
+    </main>
+    <aside>
+      <div id="panel">
+        <button class="close" onclick="document.getElementById('panel').classList.remove('open')">收起</button>
+        <div class="hint">点正文里的<b>黄色高亮词</b>，或下方词汇卡片，这里出详情。</div>
+      </div>
+    </aside>
+  </div>
+</div>
+<button id="yd">查有道</button>
+
+<script>
+const V={
+  grammarschool:{"w": "grammar school", "ipa": "/ˈɡræmə skuːl/", "pos": "n.", "tags": ["core", "poly"], "cn": "<b>（英国）文法学校</b>：注重学术的中学", "en": "in Britain, a secondary school for academically able children", "ex": "The <b>grammar school</b> boy from Stratford-upon-Avon（①❶）", "mem": "⚠️ 不是「语法学校」：grammar 在这里是历史义（拉丁文法），英国的 grammar school 是重学术、要考试入学的中学。<br>「斯特拉特福来的文法学校男孩」＝莎士比亚——新闻开头的<b>借代</b>，先不点名。", "syn": "selective school", "conf": "grammar school（文法学校）· state school（公立学校）· public school（英：私立名校）。"},
+  land:{"w": "land", "ipa": "/lænd/", "pos": "v.", "tags": ["core", "poly"], "cn": "<b>（成功地）获得；打中</b>", "en": "to succeed in getting or delivering something", "ex": "has <b>landed</b> a scholarly punch（①❶）", "mem": "⚠️ 熟词僻义：land 作及物动词常是「拿下、获得」：land a job 找到工作 · land a contract 拿下合同 · land a punch 打中一拳。<br>本句是拳击比喻：莎翁在学术上「打赢了一回合」。", "syn": "secure · win · deliver (a blow)", "conf": "land a job（拿下工作）· land on（降落在）· land in trouble（陷入麻烦）。"},
+  scholarly:{"w": "scholarly", "ipa": "/ˈskɒləli/", "pos": "adj.", "tags": ["core"], "cn": "<b>学术的</b>；有学问的", "en": "relating to serious academic study", "ex": "landed a <b>scholarly</b> punch（①❶）", "mem": "scholar（学者）＋ -ly（形容词后缀，不是副词！）⟹ 学术的。同类：friendly、lovely、costly 都是形容词。<br>a scholarly journal 学术期刊。", "syn": "academic · learned", "conf": "scholarly（学术的，adj.）· scholarship（奖学金；学问）· scholar（学者）。"},
+  punch:{"w": "punch", "ipa": "/pʌntʃ/", "pos": "n./v.", "tags": ["core"], "cn": "<b>一拳</b>；力量、冲击力", "en": "a hit with the fist; strong effect", "ex": "landed a scholarly <b>punch</b>（①❶）", "mem": "引申：pack a punch（很有力、很有冲击力）· beat sb to the punch（抢先一步）。", "syn": "blow · hit · impact", "conf": "punch（一拳）· punctual（准时的）· pinch（捏）。"},
+  groundbreaking:{"w": "groundbreaking", "ipa": "/ˈɡraʊndbreɪkɪŋ/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>开创性的</b>、突破性的", "en": "new and important, making a big change in an area of knowledge", "ex": "after <b>groundbreaking</b> research showed …（①❶）", "mem": "ground（地）＋ breaking（破）⟹ 破土动工 ⟹ 开创。<br>写作：a groundbreaking discovery / technology（突破性发现／技术）。", "syn": "pioneering · innovative · revolutionary", "conf": "groundbreaking（开创性的）· breakthrough（n. 突破）· earth-shattering（惊天动地的）。"},
+  benefit:{"w": "benefit", "ipa": "/ˈbenɪfɪt/", "pos": "v./n.", "tags": ["core", "write"], "cn": "<b>有益于</b>；n. 好处", "en": "to be useful or helpful to someone", "ex": "Shakespeare does <b>benefit</b> children’s literacy（①❶）", "mem": "does benefit：does ＋ 原形＝<b>强调</b>「确实有益」。<br>两种用法：A benefits B（A 对 B 有好处）· B benefits from A（B 从 A 受益）——主宾别弄反。", "syn": "help · do good to", "conf": "benefit sb（有益于）· benefit from（受益于）· beneficial（adj. 有益的）。"},
+  literacy:{"w": "literacy", "ipa": "/ˈlɪtərəsi/", "pos": "n.", "tags": ["core", "poly"], "cn": "<b>读写能力</b>；（某领域的）素养", "en": "the ability to read and write; knowledge of a particular subject", "ex": "children’s <b>literacy</b> and emotional development（①❶）", "mem": "literate（识字的）→ literacy。<br>⚠️ 后来扩展成「某领域的基本素养」：digital literacy 数字素养 · media literacy 媒介素养 · <b>emotional literacy 情感素养</b>（本篇②❶、⑥❶）。<br>反义 illiteracy 文盲。", "syn": "reading and writing ability", "conf": "literacy（读写能力）· literary（文学的）· literal（字面的）· literate（识字的）。"},
+  onlyif:{"w": "only if", "ipa": "/ˈəʊnli ɪf/", "pos": "conj.", "tags": ["phrase", "write"], "cn": "<b>只有在……的情况下才</b>（必要条件）", "en": "used to say that something can happen in one situation and no other", "ex": "But <b>only if</b> you act him out.（①❷）", "mem": "⚠️ 条件题的头号标记：only if ＝「必要条件」，答案就锁在它后面。本篇 21 题 requires 正对这句。<br>放句首时主句倒装：Only if you practise will you improve.", "syn": "provided that · on condition that", "conf": "only if（只有……才）· if only（但愿）· even if（即使）。"},
+  actout:{"w": "act out", "ipa": "/ækt aʊt/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>把……表演出来</b>；（情绪）发泄出来", "en": "to perform a story or situation with actions", "ex": "But only if you <b>act him out</b>.（①❷）", "mem": "act sb/sth out：把……演出来；him ＝ 莎士比亚（借指他的剧作），you ＝ 孩子 ⟹ 21C play the roles。<br>另义：act out（孩子）用行为发泄情绪、捣乱。", "syn": "perform · role-play · dramatize", "conf": "act out（演出来）· act up（出毛病；捣乱）· act on（按……行事）。"},
+  rehearsalroom:{"w": "rehearsal room", "ipa": "/rɪˈhɜːsl ruːm/", "pos": "n.", "tags": ["core"], "cn": "<b>排练室</b>", "en": "a room where actors practise a play before performing it", "ex": "a “<b>rehearsal room</b>” approach to teaching Shakespeare（②❶）", "mem": "rehearse（排练、预演）→ rehearsal。<br>RSC 的「排练室教法」：让学生像演员排戏一样，用身体、声音、走位去体会剧本，再落到读写上。<br>a dress rehearsal 彩排。", "syn": "practice room", "conf": "rehearse（排练）· research（研究）· reverse（反转）。"},
+  approach:{"w": "approach", "ipa": "/əˈprəʊtʃ/", "pos": "n./v.", "tags": ["core", "write"], "cn": "<b>方法</b>、途径；v. 接近；着手处理", "en": "a way of dealing with something", "ex": "a “rehearsal room” <b>approach</b> to teaching Shakespeare（②❶）", "mem": "⚠️ <b>approach to ＋ doing／名词</b>：to 是介词——an approach to teaching，不是 to teach。<br>写作：adopt a new approach（采用新方法）。", "syn": "method · way · strategy", "conf": "approach to doing（……的方法）· access to（接近……的途径）· attitude to（对……的态度）。"},
+  broaden:{"w": "broaden", "ipa": "/ˈbrɔːdn/", "pos": "v.", "tags": ["core", "write"], "cn": "<b>扩大</b>、拓宽", "en": "to make something wider or include more", "ex": "<b>broadened</b> children’s vocabulary（②❶）", "mem": "broad（宽）＋ -en（使……）⟹ 拓宽。同类：widen、deepen、strengthen。<br>写作：broaden one’s horizons（开阔眼界）· broaden one’s vocabulary（扩大词汇量）。", "syn": "widen · expand · enlarge", "conf": "broaden（拓宽）· broadcast（广播）· abroad（在国外）。"},
+  complexity:{"w": "complexity", "ipa": "/kəmˈpleksəti/", "pos": "n.", "tags": ["core"], "cn": "<b>复杂性</b>、复杂程度", "en": "the state of having many parts and being difficult", "ex": "the <b>complexity</b> of their writing（②❶）", "mem": "complex（复杂的）→ complexity。<br>写作中「复杂度提高」＝ more complex sentences、a richer structure；④❶ 的 sophisticated 和 greater length 是它的具体表现。", "syn": "intricacy · sophistication", "conf": "complexity（复杂）· complexion（肤色）· complicity（同谋）。"},
+  emotionalliteracy:{"w": "emotional literacy", "ipa": "/ɪˈməʊʃənl ˈlɪtərəsi/", "pos": "n.", "tags": ["phrase", "write"], "cn": "<b>情感素养</b>：识别、理解、表达情绪的能力", "en": "the ability to understand and express feelings", "ex": "as well as their <b>emotional literacy</b>（②❶）", "mem": "literacy 从「读写」扩展到「素养」：能读懂自己和别人的情绪、能用语言说出来。⑥❶ 再次出现，24 题直接问它。<br>近义：emotional intelligence（情商）。", "syn": "emotional intelligence", "conf": "emotional literacy（情感素养）· emotional development（情感发展）· emotional state（情绪状态）。"},
+  makedifference:{"w": "make a difference", "ipa": "/meɪk ə ˈdɪfrəns/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>有影响</b>、起作用", "en": "to have an important effect", "ex": "the way actors work <b>makes a big difference</b> to …（②❷）", "mem": "make a (big／huge) difference to sth：对……影响很大；make no difference：没影响。<br>写作高频：Every small act of kindness can make a difference.", "syn": "matter · have an effect on", "conf": "make a difference（有影响）· tell the difference（分辨）· split the difference（折中）。"},
+  commission:{"w": "commission", "ipa": "/kəˈmɪʃn/", "pos": "v./n.", "tags": ["core", "poly"], "cn": "<b>委托（做）</b>、正式委托；n. 佣金；委员会", "en": "to formally ask someone to do a piece of work for you", "ex": "the RSC, which <b>commissioned</b> the study（②❷）", "mem": "⚠️ 熟词僻义：动词 commission ＝ 出钱请人做（研究、画作、报告）：commission a portrait / a report。<br>名词：佣金（work on commission 拿提成）· 委员会（the European Commission）。<br>21D 把「委托研究」夸大成「RSC 艺术家亲自教」。", "syn": "order · engage", "conf": "commission（委托；佣金）· omission（遗漏）· permission（允许）。"},
+  rct:{"w": "randomised control trial", "ipa": "/ˈrændəmaɪzd kənˈtrəʊl ˈtraɪəl/", "pos": "n.", "tags": ["phrase"], "cn": "<b>随机对照试验</b>", "en": "a study in which people are randomly put into groups to compare a treatment with no treatment", "ex": "The <b>randomised control trial</b> involved …（③❶）", "mem": "检验「某个干预有没有效」的标准方法：随机分组 → 一组施加干预（target／treatment group）、一组不加（control group）→ 比结果。<br>22 题就是问这个设计的目的：<b>两组唯一的差别</b>是否带来了结果。英式拼写 randomised＝美式 randomized。", "syn": "RCT · controlled experiment", "conf": "control group（对照组）· target / experimental group（实验组）· placebo（安慰剂）。"},
+  stateschool:{"w": "state school", "ipa": "/steɪt skuːl/", "pos": "n.", "tags": ["core", "poly"], "cn": "<b>（英国）公立学校</b>", "en": "a school paid for by the government", "ex": "at 45 <b>state primary schools</b>（③❶）", "mem": "⚠️ state 这里不是「州、状态」，而是「国家（的）」：state school 公立学校 · state pension 国家养老金。<br>⚠️ 英国的 public school 反而是<b>私立名校</b>（如伊顿），别按字面翻。", "syn": "public school (US)", "conf": "state school（英：公立学校）· public school（英：私立名校；美：公立学校）· private school（私立学校）。"},
+  expose:{"w": "be exposed to", "ipa": "/ɪkˈspəʊzd tə/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>接触到</b>、受到……影响；暴露于", "en": "to have experience of something", "ex": "not been “previously <b>exposed to</b> RSC pedagogy”（③❶）", "mem": "ex-（向外）＋ pose（放）⟹ 摆出来 ⟹ 暴露、接触。<br>写作：expose children to different cultures（让孩子接触多元文化）· early exposure to music（早期接触音乐）。", "syn": "come into contact with · experience", "conf": "be exposed to（接触）· be opposed to（反对）· be disposed to（倾向于）。"},
+  pedagogy:{"w": "pedagogy", "ipa": "/ˈpedəɡɒdʒi/", "pos": "n.", "tags": ["core"], "cn": "<b>教学法</b>、教育学", "en": "the methods and theory of teaching", "ex": "“previously exposed to RSC <b>pedagogy</b>”（③❶）", "mem": "ped-（儿童，同 pediatrics 儿科）＋ agogy（引导）⟹ 引导孩子 ⟹ 教学法。<br>形容词 pedagogical（教学法的）。", "syn": "teaching method · didactics", "conf": "pedagogy（教学法）· pediatrics（儿科）· pedestrian（行人，ped- 是「脚」）。"},
+  split:{"w": "split into", "ipa": "/splɪt ˈɪntuː/", "pos": "phr.", "tags": ["phrase"], "cn": "<b>（把……）分成</b>", "en": "to divide into groups or parts", "ex": "They were <b>split into</b> target and control groups（③❷）", "mem": "split 过去式、过去分词同形 split。<br>be split into two groups ＝ be divided into two groups（22 题题干的改写）。<br>另：split the bill（分摊账单）· a split second（一瞬间）。", "syn": "divide into · separate into", "conf": "split（分开）· splint（夹板）· spilt（spill 的过去式）。"},
+  target:{"w": "target group", "ipa": "/ˈtɑːɡɪt ɡruːp/", "pos": "n.", "tags": ["core", "poly"], "cn": "<b>目标组</b>、实验组（接受干预的一组）", "en": "the group in a study that receives the new treatment", "ex": "split into <b>target</b> and control groups（③❷）", "mem": "⚠️ 熟词僻义：target 常见义「目标、靶子」；在实验报道里 target group ＝ 被施加干预的那一组（也叫 experimental / treatment group）。<br>本篇读法：<b>比较级的主语永远是目标组</b>。", "syn": "experimental group · treatment group", "conf": "target group（实验组）· control group（对照组）· target audience（目标受众）。"},
+  control:{"w": "control group", "ipa": "/kənˈtrəʊl ɡruːp/", "pos": "n.", "tags": ["core", "poly"], "cn": "<b>对照组</b>", "en": "the group in a study that does not receive the treatment, used for comparison", "ex": "target and <b>control groups</b>（③❷）", "mem": "⚠️ control 在这里不是「控制」，而是「作为比较基准的」。<br>④❷ 引语里的 [control] 是记者补的——读对照实验时，先给每个特征标「哪一组」（23C/D、24A 都在组别上做手脚）。", "syn": "comparison group", "conf": "control group（对照组）· under control（受控）· out of control（失控）。"},
+  bottle:{"w": "a message in a bottle", "ipa": "/ə ˈmesɪdʒ ɪn ə ˈbɒtl/", "pos": "n.", "tags": ["phrase"], "cn": "<b>漂流瓶里的信</b>", "en": "a note put in a sealed bottle and thrown into the sea", "ex": "write … <b>a message in a bottle</b> as Ferdinand（③❷）", "mem": "写作任务：以《暴风雨》里斐迪南的身份，在船难后写一封漂流瓶信——天然要求「代入角色」，两组的差别就在能不能入戏（④❷）。", "syn": "—", "conf": "message in a bottle（漂流瓶信）· bottleneck（瓶颈）。"},
+  shipwreck:{"w": "shipwreck", "ipa": "/ˈʃɪprek/", "pos": "n./v.", "tags": ["core"], "cn": "<b>船只失事</b>、海难；v. 使遭海难", "en": "the destruction of a ship at sea", "ex": "after the <b>shipwreck</b> in <i>The Tempest</i>（③❷）", "mem": "ship（船）＋ wreck（残骸、毁坏）。④❷ 用了被动：being shipwrecked（遭遇船难）。<br>《暴风雨》开场就是一场海难，斐迪南（Ferdinand）是那不勒斯王子，被冲上普洛斯彼罗的岛。", "syn": "wreck · disaster at sea", "conf": "shipwreck（海难）· wreckage（残骸）· shipment（装运）。"},
+  dramabased:{"w": "drama-based", "ipa": "/ˈdrɑːmə beɪst/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>以戏剧为基础的</b>", "en": "using drama as the main method", "ex": "a 30-minute <b>drama-based</b> activity（③❸）", "mem": "名词-based 构成复合形容词：evidence-based（循证的）· community-based（社区的）· web-based（网页版的）。<br>⚠️ 这就是两组<b>唯一的差别</b>——22 题答案的 the change in instruction。", "syn": "—", "conf": "drama-based（以戏剧为基础的）· evidence-based（以证据为基础的）。"},
+  accompany:{"w": "accompany", "ipa": "/əˈkʌmpəni/", "pos": "v.", "tags": ["core"], "cn": "<b>伴随</b>、配合；陪同", "en": "to happen or exist together with something", "ex": "to <b>accompany</b> the passage（③❸）", "mem": "ac-（加强）＋ company（同伴）⟹ 陪伴。被动常用：be accompanied by。<br>本句：戏剧活动「配合」那段写作任务。", "syn": "go with · come with", "conf": "accompany（伴随）· accomplish（完成）· company（陪伴；公司）。"},
+  passage:{"w": "passage", "ipa": "/ˈpæsɪdʒ/", "pos": "n.", "tags": ["core", "poly"], "cn": "<b>（一段）文字</b>；通道；（时间的）流逝", "en": "a short section of writing", "ex": "to accompany the <b>passage</b>（③❸）", "mem": "⚠️ 熟词僻义：考研题干里 passage 是「文章」，这里是孩子要写的那<b>段文字</b>（漂流瓶信）。<br>另：a narrow passage 窄过道 · the passage of time 时光流逝 · safe passage 安全通行。", "syn": "text · piece of writing", "conf": "passage（段落；通道）· passenger（乘客）· message（信息）。"},
+  peerreviewed:{"w": "peer-reviewed", "ipa": "/ˌpɪə rɪˈvjuːd/", "pos": "adj.", "tags": ["core"], "cn": "<b>经同行评审的</b>", "en": "checked by other experts before being published", "ex": "The <b>peer-reviewed</b> results showed …（④❶）", "mem": "peer（同等地位的人、同行）＋ reviewed（审阅）⟹ 由同行专家审阅过 ⟹ 可信度高。<br>peer 另见：peer pressure（同伴压力）。", "syn": "refereed", "conf": "peer（同行）· pier（码头）· pear（梨）。"},
+  drawon:{"w": "draw on", "ipa": "/drɔː ɒn/", "pos": "phr.", "tags": ["phrase", "write", "poly"], "cn": "<b>利用</b>、动用（知识、经验、资源）", "en": "to use knowledge, experience or a supply of something", "ex": "pupils <b>drew on</b> a wider vocabulary（④❶）", "mem": "⚠️ 不是「画在……上」：draw on one’s experience（借鉴经验）· draw on savings（动用积蓄）。<br>写作：Good writers draw on their own lives.", "syn": "make use of · use · tap into", "conf": "draw on（利用）· draw up（起草）· draw in（吸引参与）· draw back（退缩）。"},
+  classas:{"w": "class as", "ipa": "/klɑːs æz/", "pos": "phr.", "tags": ["phrase", "poly"], "cn": "<b>把……归类为</b>", "en": "to put someone or something in a particular group", "ex": "words “<b>classed as</b> more sophisticated or rarer”（④❶）", "mem": "⚠️ 熟词僻义：class 作动词 ＝ classify（分类、归入）。<br>RSC 报告的口径：常用 2,000 词以外的词被归为「复杂词」——⑦❷ 的 everyday 2,000 words 就从这里来。", "syn": "classify as · categorize as · regard as", "conf": "class as（归为）· classic（经典的）· classical（古典的）。"},
+  sophisticated:{"w": "sophisticated", "ipa": "/səˈfɪstɪkeɪtɪd/", "pos": "adj.", "tags": ["core", "poly"], "cn": "<b>复杂的</b>、高级的；老练的", "en": "complex and advanced; having a lot of knowledge of the world", "ex": "“classed as more <b>sophisticated</b> or rarer”（④❶）", "mem": "⚠️ 修饰<b>物</b>：复杂精密的（sophisticated technology）；修饰<b>人</b>：见多识广的、老练的。<br>本句修饰孩子用的<b>词</b>——22C 把它偷换成「复杂作品」，23D 把它挪到对照组身上。", "syn": "complex · advanced · refined", "conf": "sophisticated（复杂的）· sophistry（诡辩）· sophomore（大二学生）。"},
+  atlength:{"w": "at length", "ipa": "/æt leŋθ/", "pos": "phr.", "tags": ["phrase", "poly"], "cn": "<b>详尽地、长篇地</b>；终于", "en": "for a long time and in detail; finally", "ex": "wrote <b>at greater length</b>（④❶）", "mem": "⚠️ 两义：① 详细地、篇幅长地（write / talk at length）；② 终于（At length, he agreed.）。<br>at greater length ＝ 写得更长——目标组的第三个优势。", "syn": "in detail · at last (②)", "conf": "at length（详细地；终于）· at large（逍遥法外；整体上）· at last（终于）。"},
+  inrole:{"w": "in role", "ipa": "/ɪn rəʊl/", "pos": "phr.", "tags": ["phrase"], "cn": "<b>以角色身份</b>、入戏地", "en": "acting as a particular character", "ex": "more comfortable writing <b>in role</b>（④❷）", "mem": "戏剧教育术语：writing in role ＝ 以剧中人的口吻写作。对照组 out of role（以自己的身份想），目标组 in role（以角色的身份想）——24 题的分水岭。<br>role-play 角色扮演。", "syn": "in character", "conf": "in role（入戏）· role model（榜样）· play a role in（在……中起作用）。"},
+  react:{"w": "react", "ipa": "/riˈækt/", "pos": "v.", "tags": ["core"], "cn": "<b>作出反应</b>", "en": "to behave in a particular way in response to something", "ex": "how they themselves would <b>react</b>（④❷）", "mem": "re-（回）＋ act（做）⟹ 回应。react to sth：对……作出反应；reaction n.<br>本句主语 they themselves ＝ 对照组的孩子<b>自己</b>——代入的是自己，不是角色。", "syn": "respond", "conf": "react（反应）· enact（制定；扮演）· reactor（反应堆）。"},
+  intheshoes:{"w": "put oneself in sb’s shoes", "ipa": "/pʊt wʌnˈself ɪn ʃuːz/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>设身处地</b>、站在别人的立场", "en": "to imagine how you would feel in someone else’s situation", "ex": "<b>put themselves in the shoes of</b> a literary character（④❷）", "mem": "「穿上别人的鞋」⟹ 换位思考。⑥❸ 又出现一次：put yourself in different shoes。<br>24B identifying with literary characters 的直接出处。<br>写作高频：Try to put yourself in your parents’ shoes.", "syn": "empathize with · identify with", "conf": "in sb’s shoes（设身处地）· fill sb’s shoes（接替某人）· shoe-string（小本经营）。"},
+  literary:{"w": "literary", "ipa": "/ˈlɪtərəri/", "pos": "adj.", "tags": ["core"], "cn": "<b>文学的</b>", "en": "connected with literature", "ex": "the shoes of a <b>literary</b> character（④❷）", "mem": "literature → literary。<br>⚠️ 三兄弟：literary（文学的）· literal（字面的）· literate（识字的）——加上 literacy（读写能力），本篇正好出现两个。", "syn": "—", "conf": "literary（文学的）· literal（字面的）· literate（识字的）· literacy（读写能力）。"},
+  relyon:{"w": "rely on", "ipa": "/rɪˈlaɪ ɒn/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>依赖</b>、依靠", "en": "to need or depend on something", "ex": "control pupils <b>relied on</b> “desert island clichés”（⑤❶）", "mem": "名词 reliance on（23 题题干）· 形容词 reliable（可靠的）。<br>本句的「依赖」是贬义：只会用现成的套话。", "syn": "depend on · count on", "conf": "rely on（依赖）· relieve（缓解）· relay（传递）。"},
+  cliche:{"w": "cliché", "ipa": "/ˈkliːʃeɪ/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>陈词滥调</b>、老套的说法", "en": "an idea or phrase used so often that it has become boring", "ex": "“desert island <b>clichés</b>” such as palm trees（⑤❶）", "mem": "法语借词，é 读 /eɪ/。desert island clichés：一写荒岛就是棕榈树、椰子、沙滩——套话。<br>写作提醒自己：开头别写 With the development of society…，那就是作文里的 cliché。", "syn": "stereotype · commonplace · platitude", "conf": "cliché（陈词滥调）· clique（小圈子）· click（点击）。"},
+  palm:{"w": "palm tree", "ipa": "/pɑːm triː/", "pos": "n.", "tags": ["core", "poly"], "cn": "<b>棕榈树</b>；（palm）手掌", "en": "a tall tropical tree with large leaves at the top", "ex": "such as <b>palm trees</b>（⑤❶）", "mem": "⚠️ palm 两义：棕榈 · 手掌（read sb’s palm 看手相；palm off 骗卖）。l 不发音。", "syn": "—", "conf": "palm（棕榈；手掌）· psalm（圣歌）· balm（香膏）。"},
+  expansive:{"w": "expansive", "ipa": "/ɪkˈspænsɪv/", "pos": "adj.", "tags": ["core", "poly"], "cn": "<b>（写得）舒展的、详尽的</b>；广阔的；健谈的", "en": "covering a wide range; talking freely", "ex": "target pupils were “more <b>expansive</b> …”（⑤❶）", "mem": "expand（扩展）→ expansive。修饰写作／说话：放得开、写得多；修饰地方：辽阔的（an expansive view）。<br>⚠️ 别和 expensive（昂贵）看混。", "syn": "extensive · detailed · broad", "conf": "expansive（舒展的）· expensive（昂贵的）· extensive（广泛的）。"},
+  atmospheric:{"w": "atmospheric", "ipa": "/ˌætməsˈferɪk/", "pos": "adj.", "tags": ["core"], "cn": "<b>大气的</b>；有气氛的", "en": "relating to the air or weather", "ex": "the <b>atmospheric</b> conditions（⑤❶）", "mem": "atmosphere（大气；气氛）→ atmospheric。atmospheric conditions ＝ 天气状况。<br>另义：an atmospheric old town（很有氛围的老城）。", "syn": "weather-related", "conf": "atmospheric（大气的）· atmosphere（大气；氛围）· stratosphere（平流层）。"},
+  evident:{"w": "evident", "ipa": "/ˈevɪdənt/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>明显的</b>、显而易见的", "en": "clear and easy to see", "ex": "“emotional literacy that was <b>evident</b> in …”（⑥❶）", "mem": "e-（出）＋ vid（看）⟹ 看得出来的。evidence（证据）同根。<br>写作：It is evident that…（显然……）· be evident in（在……中显而易见）。", "syn": "obvious · clear · apparent", "conf": "evident（明显的）· evidence（证据）· eventual（最终的）。"},
+  resilient:{"w": "resilient", "ipa": "/rɪˈzɪliənt/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>有韧性的</b>、能迅速恢复的", "en": "able to recover quickly from difficulties", "ex": "“more <b>resilient</b> in their writing”（⑥❶）", "mem": "re-（回）＋ sil（跳）⟹ 弹回来 ⟹ 有韧性。名词 resilience。<br>写作热词：build resilience in children（培养孩子的抗挫力）。", "syn": "tough · strong · adaptable", "conf": "resilient（有韧性的）· resident（居民）· reluctant（不情愿的）。"},
+  hopeful:{"w": "hopeful", "ipa": "/ˈhəʊpfl/", "pos": "adj.", "tags": ["core"], "cn": "<b>怀有希望的</b>；有希望的", "en": "feeling or giving hope", "ex": "“more <b>hopeful</b>”（⑥❶）", "mem": "hope ＋ -ful。孩子写漂流瓶信时更有希望——情感素养的表现之一。<br>hopefully adv. 但愿。", "syn": "optimistic · positive", "conf": "hopeful（有希望的）· hopeless（绝望的）· helpful（有帮助的）。"},
+  relatedto:{"w": "be related to", "ipa": "/rɪˈleɪtɪd tə/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>与……有关</b>", "en": "to be connected with something", "ex": "it is probably <b>related to</b> the …（⑥❷）", "mem": "24 题的「因果标记」：O’Hanlon 用 probably related to 给出她对情感素养来源的解释。<br>写作：Many health problems are related to lack of sleep.", "syn": "be connected with · be linked to", "conf": "be related to（与……有关）· relate to（理解、认同）· relative（亲戚；相对的）。"},
+  usedto:{"w": "be used to doing", "ipa": "/biː juːst tə ˈduːɪŋ/", "pos": "phr.", "tags": ["phrase"], "cn": "<b>习惯于做</b>", "en": "to be familiar with doing something", "ex": "you are <b>used to</b> trying to imagine …（⑥❷）", "mem": "⚠️ 三个长得像的结构：<br>be used to doing（习惯于做，to 是介词）· used to do（过去常常做）· be used to do（被用来做）。<br>本句后接 trying ⟹ 习惯于。", "syn": "be accustomed to doing", "conf": "be used to doing（习惯）· used to do（过去常常）· be used to do（被用来）。"},
+  imagineway:{"w": "imagine one’s way through", "ipa": "/ɪˈmædʒɪn wʌnz weɪ θruː/", "pos": "phr.", "tags": ["phrase", "poly"], "cn": "<b>靠想象一步步走过</b>（某个处境）", "en": "to imagine yourself going through a situation step by step", "ex": "trying to <b>imagine your way through</b>（⑥❷）", "mem": "仿 <b>动词 ＋ one’s way ＋ 介词</b>：make one’s way through（挤过去）· talk one’s way out（靠嘴脱身）。<br>⚠️ 24A 抓的就是这个 imagine——但④❷ 说<b>对照组也在 imagine</b>，区分两组的是「代入角色」，不是「想象」。", "syn": "—", "conf": "imagine one’s way through · work one’s way up（一步步升上去）· find one’s way（找到路）。"},
+  comfortable:{"w": "comfortable", "ipa": "/ˈkʌmftəbl/", "pos": "adj.", "tags": ["core", "poly"], "cn": "<b>自如的</b>、得心应手的；舒适的", "en": "confident and relaxed about doing something", "ex": "They were <b>comfortable</b> in describing …（⑥❸）", "mem": "⚠️ 修饰人做事：「得心应手、不拘束」：be comfortable (in) doing sth。④❷ 也用过：more comfortable writing in role。<br>23C 把目标组的「自如」曲解成对照组的「随意」（casual）。", "syn": "at ease · confident", "conf": "comfortable（自如的）· comforting（令人宽慰的）· convenient（方便的）。"},
+  state:{"w": "state", "ipa": "/steɪt/", "pos": "n.", "tags": ["core", "poly"], "cn": "<b>状态</b>、情形", "en": "the condition of someone or something at a particular time", "ex": "describing different emotional <b>states</b>（⑥❸）", "mem": "⚠️ 一篇里两个 state：③❶ state primary schools（公立的）· ⑥❸ emotional states（情绪状态）。<br>另：v. 陈述（state one’s view）。", "syn": "condition · mood", "conf": "state（状态；国家；陈述）· statement（声明）· status（地位）。"},
+  embed:{"w": "embed", "ipa": "/ɪmˈbed/", "pos": "v.", "tags": ["core", "write"], "cn": "<b>把……嵌入</b>、融入", "en": "to make something an integral part of something else", "ex": "the importance of <b>embedding</b> arts in education（⑥❹）", "mem": "em-（进入）＋ bed（床、底座）⟹ 嵌进去。embed A in B：把 A 融入 B。<br>⚠️ 22D 把「艺术 → 融入教育」倒成「课堂 → 激发艺术兴趣」。<br>写作：embed values in daily life。", "syn": "integrate · incorporate", "conf": "embed（嵌入）· embark（登船；着手）· embrace（拥抱）。"},
+  replicate:{"w": "replicate", "ipa": "/ˈreplɪkeɪt/", "pos": "v.", "tags": ["core"], "cn": "<b>（在别处）复现</b>、重复（实验结果）", "en": "to repeat a study to get the same result", "ex": "could the results be <b>replicated</b> …?（⑦❶）", "mem": "re-（再）＋ plic（折叠）⟹ 再折一次 ⟹ 复制。科研语境：可复现性（replicability）是检验研究可靠性的关键。<br>replica n. 复制品。", "syn": "reproduce · repeat · duplicate", "conf": "replicate（复现）· replace（替换）· reply（回复）。"},
+  anyold:{"w": "any old", "ipa": "/ˈeni əʊld/", "pos": "phr.", "tags": ["phrase", "poly"], "cn": "<b>（口语）随便哪个</b>、无论哪个", "en": "any; it does not matter which", "ex": "with <b>any old</b> dramatist?（⑦❶）", "mem": "⚠️ 熟词僻义：英式口语 any old ＋ 名词 ＝「随便哪个」，old 不一定是「老」：Don’t just wear any old thing.（别随便穿件衣服就出门。）<br>书译「任何一位古老剧作家」；C、D 两项也按字面写 other old dramatists——两种读法都不影响 25 题答案。", "syn": "any … at all · whatever", "conf": "any old（随便哪个）· old-fashioned（过时的）· for old times’ sake（为了旧日情分）。"},
+  dramatist:{"w": "dramatist", "ipa": "/ˈdræmətɪst/", "pos": "n.", "tags": ["core"], "cn": "<b>剧作家</b>", "en": "a person who writes plays", "ex": "with any old <b>dramatist</b>?（⑦❶）", "mem": "drama ＋ -ist。近义 playwright（注意是 wright「工匠」，不是 write）。", "syn": "playwright", "conf": "dramatist（剧作家）· dramatic（戏剧性的）· dramatize（改编成剧）。"},
+  expansion:{"w": "expansion", "ipa": "/ɪkˈspænʃn/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>扩大</b>、扩展", "en": "the act of becoming larger", "ex": "a “<b>massive expansion</b> of language”（⑦❷）", "mem": "expand → expansion；与⑤❶ 的 expansive 同根。<br>⚠️ 25B 把这个「扩展」读成负担（formidable）——原文是好处。", "syn": "growth · enlargement", "conf": "expansion（扩展）· expansive（舒展的）· extension（延长）。"},
+  combine:{"w": "be combined with", "ipa": "/kəmˈbaɪnd wɪð/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>与……结合</b>", "en": "to be joined together with", "ex": "which was <b>combined with</b> children “using …”（⑦❷）", "mem": "combine A with B：把 A 和 B 结合。<br>写作：Theory should be combined with practice.（理论应与实践相结合。）——大作文现成句。", "syn": "be coupled with · go together with", "conf": "combine with（结合）· combination（组合）· compile（编纂）。"},
+  bringtolife:{"w": "bring … to life", "ipa": "/brɪŋ tə laɪf/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>使……活起来</b>、使生动", "en": "to make something more interesting or real", "ex": "“using their whole bodies to <b>bring words to life</b>”（⑦❷）", "mem": "bring sth to life：让（故事、历史、词语）变得鲜活。<br>写作：Good teachers bring history to life. · come to life（活跃起来）。", "syn": "animate · enliven · vivify", "conf": "bring to life（使鲜活）· come to life（活起来）· bring to light（揭露）。"},
+  require:{"w": "require", "ipa": "/rɪˈkwaɪə(r)/", "pos": "v.", "tags": ["core"], "cn": "<b>要求</b>、需要", "en": "to need or demand something", "ex": "The “rehearsal room” approach <b>requires</b> pupils to …（21 题）", "mem": "require sb to do sth（要求某人做）· requirement n.<br>⚠️ 题干出现 requires / is necessary for ⟹ 是<b>条件题</b>，去原文找 only if / only when / unless。", "syn": "demand · need · call for", "conf": "require（要求）· acquire（获得）· inquire（询问）。"},
+  lines:{"w": "lines", "ipa": "/laɪnz/", "pos": "n.", "tags": ["core", "poly"], "cn": "<b>台词</b>", "en": "the words spoken by an actor in a play", "ex": "rewrite the <b>lines</b> from Shakespeare（21A）", "mem": "⚠️ 熟词僻义：戏剧语境里 lines ＝ 台词：learn one’s lines（背台词）· forget one’s lines（忘词）。也指诗行。<br>21A 编的是「改写莎剧台词」——研究里孩子写的是自己的作文。", "syn": "script · words", "conf": "lines（台词）· line up（排队）· read between the lines（体会言外之意）。"},
+  instruction:{"w": "instruction", "ipa": "/ɪnˈstrʌkʃn/", "pos": "n.", "tags": ["core", "poly"], "cn": "<b>教学</b>、教授；指令；（复数）说明书", "en": "teaching; detailed information on how to do something", "ex": "the change in <b>instruction</b>（22A）", "mem": "⚠️ 熟词僻义：不可数时常指「教学」：classroom instruction（课堂教学）· instruction in English（用英语授课）。<br>22A 的 the change in instruction ＝ 排练室教法带来的教学改变。", "syn": "teaching · education", "conf": "instruction（教学；指令）· instructor（教练）· construction（建造）。"},
+  enhance:{"w": "enhance", "ipa": "/ɪnˈhɑːns/", "pos": "v.", "tags": ["core", "write"], "cn": "<b>提高</b>、增强", "en": "to improve the quality or value of something", "ex": "<b>enhances</b> learning outcomes（22A）", "mem": "en-（使）＋ hance（高）⟹ 提高。写作高频：enhance efficiency / one’s competitiveness。", "syn": "improve · boost · strengthen", "conf": "enhance（提高）· enhancement（提升）· advance（推进）。"},
+  outcome:{"w": "outcome", "ipa": "/ˈaʊtkʌm/", "pos": "n.", "tags": ["core"], "cn": "<b>结果</b>、成果", "en": "the result of an action or process", "ex": "learning <b>outcomes</b>（22A）", "mem": "out ＋ come ⟹ 出来的东西 ⟹ 结果。learning outcomes：学习成果——<b>抽象到能罩住④–⑥全部发现</b>，所以是正确项。", "syn": "result · effect · consequence", "conf": "outcome（结果）· income（收入）· outcast（被遗弃者）。"},
+  fluency:{"w": "fluency", "ipa": "/ˈfluːənsi/", "pos": "n.", "tags": ["core"], "cn": "<b>流利</b>、流畅", "en": "the ability to speak or read easily and well", "ex": "reading <b>fluency</b>（22B）", "mem": "flu-（流）⟹ fluent（流利的）· fluid（流体）。<br>⚠️ 22B 的「阅读流畅度」研究根本没测——测的都是写。", "syn": "smoothness · ease", "conf": "fluency（流利）· fluid（流体）· influence（影响）。"},
+  stimulate:{"w": "stimulate", "ipa": "/ˈstɪmjuleɪt/", "pos": "v.", "tags": ["core", "write"], "cn": "<b>激发</b>、刺激", "en": "to encourage something to develop", "ex": "<b>stimulates</b> interest in the arts（22D）", "mem": "stimulus n.（刺激物）。写作：stimulate interest / creativity / economic growth。<br>⚠️ 22D 把⑥❹「艺术融入教育」倒成「课堂激发艺术兴趣」——箭头反了。", "syn": "arouse · spark · encourage", "conf": "stimulate（激发）· simulate（模拟）· stipulate（规定）。"},
+  reliance:{"w": "reliance", "ipa": "/rɪˈlaɪəns/", "pos": "n.", "tags": ["core"], "cn": "<b>依赖</b>、依靠", "en": "dependence on someone or something", "ex": "Control pupils’ <b>reliance</b> on …（23 题）", "mem": "rely on → reliance on → reliable。23 题干把⑤❶ 的动词 relied on 改成名词。", "syn": "dependence", "conf": "reliance（依赖）· reliability（可靠性）· alliance（联盟）。"},
+  omission:{"w": "omission", "ipa": "/əˈmɪʃn/", "pos": "n.", "tags": ["core"], "cn": "<b>遗漏</b>、省略", "en": "something left out", "ex": "<b>omission</b> of small details（23B）", "mem": "omit（省略）→ omission。<br>⚠️ 23B 把两组的对比读成一组的两面——对照组的问题是<b>套</b>，不是<b>漏</b>。", "syn": "exclusion · neglect", "conf": "omission（遗漏）· emission（排放）· commission（委托）。"},
+  casual:{"w": "casual", "ipa": "/ˈkæʒuəl/", "pos": "adj.", "tags": ["core", "poly"], "cn": "<b>随意的</b>、漫不经心的；非正式的", "en": "relaxed and not careful; informal", "ex": "<b>casual</b> style of writing（23C）", "mem": "⚠️ casual 两面：随便的（casual attitude）· 非正式的（casual clothes 便装）· 临时的（casual work 零工）。<br>23C 把目标组的「comfortable 自如」曲解成对照组的「casual 随意」。", "syn": "careless · informal", "conf": "casual（随意的）· casualty（伤亡者）· causal（因果的）。"},
+  promote:{"w": "promote", "ipa": "/prəˈməʊt/", "pos": "v.", "tags": ["core", "write"], "cn": "<b>促进</b>；提拔；宣传", "en": "to help something develop; to advertise", "ex": "What can <b>promote</b> children’s emotional literacy …?（24 题）", "mem": "pro-（向前）＋ mote（移动）⟹ 推动。<br>⚠️ 题干 promote ＝ 因果题，找原文的 related to / lead to / result from。", "syn": "boost · foster · advance", "conf": "promote（促进）· promotion（升职；促销）· remote（遥远的）。"},
+  identifywith:{"w": "identify with", "ipa": "/aɪˈdentɪfaɪ wɪð/", "pos": "phr.", "tags": ["phrase", "write", "poly"], "cn": "<b>认同</b>、与……产生共鸣", "en": "to feel that you understand and share someone’s feelings", "ex": "<b>Identifying with</b> literary characters（24B）", "mem": "⚠️ identify 常见义「识别、确认」；identify with sb ＝ 把自己代入某人、与之共情——正是 put oneself in sb’s shoes 的同义改写。<br>写作：Young readers easily identify with the hero.", "syn": "empathize with · relate to", "conf": "identify with（认同）· identify as（认定为）· identity（身份）。"},
+  drawinspiration:{"w": "draw inspiration from", "ipa": "/drɔː ˌɪnspəˈreɪʃn frəm/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>从……中汲取灵感</b>", "en": "to get ideas from something", "ex": "<b>Drawing inspiration from</b> nature（24C）", "mem": "写作好用：Many artists draw inspiration from everyday life.<br>⚠️ 24C 借的是⑤❶ 天空、大海——那是描写的广度，与情感无关。", "syn": "be inspired by · get ideas from", "conf": "draw inspiration from（汲取灵感）· draw on（利用）· draw conclusions（得出结论）。"},
+  concentrate:{"w": "concentrate on", "ipa": "/ˈkɒnsntreɪt ɒn/", "pos": "phr.", "tags": ["phrase"], "cn": "<b>专注于</b>", "en": "to give all your attention to something", "ex": "<b>Concentrating on</b> real-life situations（24D）", "mem": "con-（共同）＋ centr（中心）⟹ 聚到中心。<br>⚠️ 24D 把「put yourself in different shoes（站进角色的鞋里）」读成「关注现实生活」——鞋子是<b>角色</b>的，恰恰不是现实生活。", "syn": "focus on · pay attention to", "conf": "concentrate（专注）· concentration（浓度；专注）· consecrate（奉献）。"},
+  infer:{"w": "infer", "ipa": "/ɪnˈfɜː(r)/", "pos": "v.", "tags": ["core"], "cn": "<b>推断</b>、推论", "en": "to form an opinion from evidence", "ex": "It can be <b>inferred</b> from the last paragraph that …（25 题）", "mem": "in（进）＋ fer（带）⟹ 把结论带进来。inference n.<br>⚠️ 推断题答案常是「理由全是 X 独有的 ⟹ 最适合 X」这类<b>言外之意</b>，但不能超出原文语气（may ↔ suggested）。", "syn": "deduce · conclude", "conf": "infer（推断）· imply（暗示）· inflict（施加）。"},
+  formidable:{"w": "formidable", "ipa": "/fəˈmɪdəbl/", "pos": "adj.", "tags": ["core"], "cn": "<b>令人生畏的</b>、难对付的；（实力）强大的", "en": "difficult to deal with; very impressive", "ex": "may be <b>formidable</b> for pupils（25B）", "mem": "⚠️ 两面：令人望而生畏（a formidable task）· 实力惊人（a formidable opponent）。<br>25B 把「两万词带来语言扩展」读成「莎剧语言吓人」——方向反。", "syn": "daunting · intimidating", "conf": "formidable（令人生畏的）· formal（正式的）· forbidden（被禁止的）。"},
+  reluctant:{"w": "reluctant", "ipa": "/rɪˈlʌktənt/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>不情愿的</b>、勉强的", "en": "unwilling to do something", "ex": "pupils may be <b>reluctant</b> to work on …（25D）", "mem": "be reluctant to do sth。reluctance n.<br>写作：Some students are reluctant to ask questions in class.", "syn": "unwilling · hesitant", "conf": "reluctant（不情愿的）· resilient（有韧性的）· relevant（相关的）。"}
+};
+const panel=document.getElementById('panel');
+const isMobile=()=>window.innerWidth<=900;
+function badge(t){const m={core:'核心',phrase:'短语',poly:'僻义',write:'写作'};return `<span class="badge b-${t}">${m[t]}</span>`}
+function showCard(k,el){
+  const d=V[k];if(!d)return;
+  document.querySelectorAll('.tk.active').forEach(x=>x.classList.remove('active'));
+  if(el)el.classList.add('active');
+  panel.innerHTML=`<button class="close" onclick="document.getElementById('panel').classList.remove('open')">收起</button>
+    <div class="wcard">
+      <div class="head"><span class="w">${d.w}</span><span class="ipa">${d.ipa}</span><span class="pos">${d.pos}</span>${d.tags.map(badge).join('')}</div>
+      <div class="cn">${d.cn}</div><div class="en-def">${d.en}</div>
+      <div class="row r-ex"><b>原文</b>${d.ex}</div>
+      <div class="row r-mem"><b>怎么记 / 考点</b>${d.mem}</div>
+      <div class="row r-syn"><b>同义 / 同族</b>${d.syn}</div>
+      <div class="row r-conf"><b>易混 / 提醒</b>${d.conf}</div>
+    </div>`;
+  if(isMobile())panel.classList.add('open');
+}
+document.querySelectorAll('.tk').forEach(t=>t.addEventListener('click',e=>{e.stopPropagation();showCard(t.dataset.w,t)}));
+
+function tz(btn){btn.closest('.para').classList.toggle('showzh')}
+let allOn=false;
+function toggleAll(){allOn=!allOn;document.querySelectorAll('.para').forEach(p=>p.classList.toggle('showzh',allOn))}
+function go(id){const s=document.getElementById(id);if(!s)return;s.scrollIntoView({behavior:'smooth',block:'center'});s.style.transition='none';s.style.opacity=.3;setTimeout(()=>{s.style.transition='opacity .8s';s.style.opacity=1},80)}
+
+document.querySelectorAll('.q').forEach(q=>{
+  const ans=+q.dataset.ans;
+  q.querySelectorAll('.opt').forEach((o,i)=>o.addEventListener('click',()=>{
+    if(q.classList.contains('done'))return;
+    q.classList.add('done');
+    if(i!==ans)o.classList.add('wrong');
+    q.querySelectorAll('.opt')[ans].classList.add('right');
+  }));
+});
+
+const vg=document.getElementById('vgrid');
+function renderGrid(f){
+  vg.innerHTML='';
+  Object.keys(V).forEach(k=>{
+    const d=V[k];
+    if(f!=='all'&&!d.tags.includes(f))return;
+    const div=document.createElement('div');div.className='vitem';
+    div.innerHTML=`<span class="badges">${d.tags.map(badge).join('')}</span><div class="w">${d.w}</div><div class="cn">${d.cn}</div>`;
+    div.addEventListener('click',()=>{showCard(k,null);if(!isMobile())window.scrollTo({top:0,behavior:'smooth'})});
+    vg.appendChild(div);
+  });
+}
+renderGrid('all');
+document.querySelectorAll('.fbtn').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.fbtn').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderGrid(b.dataset.f);
+}));
+
+const yd=document.getElementById('yd');let sel='',ydHold=0,ydT=0;
+/* 触屏：点按钮会先把选区清掉 → selectionchange 立刻把按钮藏了 → 点击落空。改成延迟隐藏 ＋ 按下即锁定 */
+const ydTouch=window.matchMedia&&matchMedia('(pointer:coarse)').matches;
+function ydHide(){clearTimeout(ydT);ydHold=0;yd.style.display='none'}
+document.addEventListener('selectionchange',function(){
+  const s=window.getSelection();const t=s?s.toString().trim():'';
+  if(t&&/^[a-zA-Z' -]{2,40}$/.test(t)){
+    sel=t;clearTimeout(ydT);
+    try{const r=s.getRangeAt(0).getBoundingClientRect();
+      yd.style.left=Math.max(8,Math.min(r.left,window.innerWidth-110))+'px';
+      yd.style.top=(r.bottom+(ydTouch?30:8))+'px';yd.style.display='block';}catch(e){}
+  }else if(!ydHold){clearTimeout(ydT);ydT=setTimeout(function(){if(!ydHold)yd.style.display='none'},ydTouch?900:0)}
+});
+['pointerdown','touchstart','mousedown'].forEach(function(ev){yd.addEventListener(ev,function(){ydHold=1;clearTimeout(ydT)},{passive:true})});
+yd.addEventListener('click',function(){
+  const u='https://dict.youdao.com/result?word='+encodeURIComponent(sel)+'&lang=en';
+  let w=null;try{w=window.open(u,'_blank')}catch(e){}
+  if(!w)location.href=u;
+  ydHide()});
+document.addEventListener('click',function(e){if(e.target!==yd&&!window.getSelection().toString())ydHide()});
+
+function imgAll(b){const on=document.body.classList.toggle('stx-allimg');b.textContent=on?'收起原卷':'原卷对照';
+  if(on)document.querySelectorAll('.para img.strip').forEach(im=>im.loading='eager')}
+</script>
+<script src="img/strip_boxes_2025.js?v=1"></script>
+<script src="_strip_lookup.js?v=8"></script>
+<script src="_strip_text.js?v=27"></script>
+<script src="_fault_attr.js"></script>
+</body>
+</html>

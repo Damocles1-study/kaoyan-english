@@ -1,0 +1,1214 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2025 英一 完形 · 海底古城</title>
+<style>
+  :root{
+    --bg:#faf9f6; --card:#ffffff; --ink:#2b2b2b; --muted:#8a8578;
+    --accent:#8b5e34; --accent-soft:#f3e9dd; --line:#e8e3d8;
+    --hl:#fdf3d8; --hl-border:#e0b84d;
+    --green:#3e7a4e; --green-soft:#e8f2ea;
+    --red:#b04a3a; --red-soft:#f9e9e6;
+    --blue:#3d6a8a; --blue-soft:#e7eff5;
+    --purple:#6d5a8e; --purple-soft:#eeeaf5;
+    --serif:"Georgia","Songti SC",serif;
+    --sans:-apple-system,"PingFang SC","Helvetica Neue",sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#1c1a17; --card:#26231f; --ink:#e8e4dc; --muted:#9a948a;
+      --accent:#d0a06a; --accent-soft:#3a3127; --line:#3a362f;
+      --hl:#3d3520; --hl-border:#b08c3a;
+      --green:#7fb98d; --green-soft:#26362b;
+      --red:#d98876; --red-soft:#3d2a26;
+      --blue:#8ab3d0; --blue-soft:#26323d;
+      --purple:#a996c8; --purple-soft:#302a3d;
+    }
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;padding-bottom:120px}
+  .wrap{max-width:1100px;margin:0 auto;padding:24px 20px}
+  .back{font-size:.85rem;color:var(--muted);text-decoration:none}
+  .back:hover{color:var(--accent)}
+  header{margin:14px 0 28px}
+  header h1{font-family:var(--serif);font-size:1.7rem;line-height:1.3}
+  header .sub{color:var(--muted);margin-top:6px;font-size:.9rem}
+  .tags{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+  .tag{font-size:.75rem;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);border:1px solid var(--line)}
+  .tag.spoiler{cursor:pointer;background:var(--card);color:var(--muted)}
+  .tag.spoiler .hid{filter:blur(5px)}
+  .tag.spoiler.open .hid{filter:none;color:var(--accent)}
+
+  .layout{display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:start}
+  @media (max-width:900px){.layout{grid-template-columns:1fr}}
+
+  section.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:24px}
+  h2{font-size:1.05rem;letter-spacing:.05em;color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  h2 .n{font-size:.72rem;background:var(--accent);color:var(--card);border-radius:6px;padding:1px 7px}
+  .note{font-size:.82rem;color:var(--muted);margin-bottom:14px}
+
+  .para{margin-bottom:22px}
+  .para .en{font-family:var(--serif);font-size:1.06rem;line-height:2.15}
+  .pno{color:var(--muted);font-size:.75rem;user-select:none;margin-right:6px}
+  .tk{background:var(--hl);border-bottom:2px solid var(--hl-border);border-radius:3px;padding:0 2px;cursor:pointer;transition:filter .15s}
+  .tk:hover{filter:brightness(.93)}
+  .tk.active{outline:2px solid var(--hl-border)}
+  .ls{border-bottom:2px dotted var(--blue);cursor:pointer}
+  .para .zh{display:none;margin-top:10px;padding:10px 14px;background:var(--blue-soft);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:.93rem}
+  .para.showzh .zh{display:block}
+  .zbtn{float:right;margin-left:10px;font-size:.72rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:6px;padding:2px 9px;cursor:pointer}
+  .zbtn:hover{color:var(--accent);border-color:var(--accent)}
+  .allbtn{font-size:.78rem;border:1px solid var(--accent);background:none;color:var(--accent);border-radius:8px;padding:4px 12px;cursor:pointer}
+
+  /* 完形空格 */
+  .bk{display:inline-block;min-width:64px;text-align:center;background:var(--hl);border-bottom:2px solid var(--hl-border);border-radius:4px;padding:0 6px;cursor:pointer;font-weight:600;color:var(--accent);transition:all .15s;font-family:var(--sans);font-size:.95rem}
+  .bk:hover{filter:brightness(.93)}
+  .bk.filled{background:var(--green-soft);border-bottom-color:var(--green);color:var(--green);font-family:var(--serif)}
+  .bk.miss{background:var(--red-soft);border-bottom-color:var(--red);color:var(--red);font-family:var(--serif)}
+  .bk.active{outline:2px solid var(--hl-border)}
+  .bk .idx{font-size:.7rem;color:var(--muted);margin-right:3px}
+
+  aside{position:sticky;top:20px}
+  #panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;min-height:180px}
+  #panel .hint{color:var(--muted);font-size:.88rem;text-align:center;padding:30px 10px}
+  .wcard .head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .wcard .w{font-family:var(--serif);font-size:1.35rem;font-weight:bold}
+  .wcard .ipa{color:var(--muted);font-size:.85rem}
+  .wcard .pos{font-size:.72rem;color:var(--purple);background:var(--purple-soft);padding:1px 8px;border-radius:999px}
+  .wcard .badge{font-size:.7rem;padding:1px 8px;border-radius:999px}
+  .b-core{background:var(--red-soft);color:var(--red)}
+  .b-phrase{background:var(--blue-soft);color:var(--blue)}
+  .b-poly{background:var(--purple-soft);color:var(--purple)}
+  .b-write{background:var(--green-soft);color:var(--green)}
+  .wcard .cn{margin-top:8px;font-size:1rem;font-weight:600}
+  .wcard .en-def{color:var(--muted);font-size:.86rem;font-style:italic;margin-top:2px}
+  .wcard .row{margin-top:10px;font-size:.86rem;padding:8px 10px;border-radius:8px}
+  .wcard .row>b:first-child{font-size:.72rem;display:block;margin-bottom:2px;letter-spacing:.06em}
+  .r-ex{background:var(--hl)} .r-ex b{color:var(--hl-border)}
+  .r-mem{background:var(--green-soft)} .r-mem b{color:var(--green)}
+  .r-syn{background:var(--blue-soft)} .r-syn b{color:var(--blue)}
+  .r-conf{background:var(--red-soft)} .r-conf b{color:var(--red)}
+  #panel .close{display:none}
+  @media (max-width:900px){
+    aside{position:fixed;left:0;right:0;bottom:0;z-index:50;padding:0 8px 8px}
+    #panel{box-shadow:0 -6px 24px rgba(0,0,0,.18);max-height:55vh;overflow-y:auto;display:none}
+    #panel.open{display:block}
+    #panel .close{display:block;float:right;border:none;background:var(--line);border-radius:8px;padding:2px 10px;cursor:pointer;color:var(--ink)}
+  }
+
+  /* 逐空精解 */
+  .q{margin-bottom:22px;padding-bottom:18px;border-bottom:1px dashed var(--line);scroll-margin-top:20px}
+  .q:last-child{border:none;margin-bottom:0;padding-bottom:0}
+  .q .stem{font-family:var(--serif);font-size:.98rem;background:var(--hl);border-radius:8px;padding:8px 12px;display:block}
+  .q .stem em{font-style:normal;font-weight:700;color:var(--accent);border-bottom:2px solid var(--hl-border);padding:0 4px}
+  .qhead{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+  .qno{font-family:var(--serif);font-size:1.2rem;font-weight:700;color:var(--accent)}
+  .qt{font-size:.7rem;border-radius:999px;padding:1px 9px}
+  .c-logic{background:var(--blue-soft);color:var(--blue)}
+  .c-collo{background:var(--green-soft);color:var(--green)}
+  .c-word{background:var(--red-soft);color:var(--red)}
+  .c-context{background:var(--purple-soft);color:var(--purple)}
+  .qpos{font-size:.7rem;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:1px 9px}
+  .opts{margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  @media (max-width:640px){.opts{grid-template-columns:1fr}}
+  .opt{border:1px solid var(--line);border-radius:10px;padding:7px 12px;cursor:pointer;font-size:.92rem;font-family:var(--serif);transition:all .15s}
+  .opt .gl{font-family:var(--sans);font-size:.8rem;color:var(--muted);margin-left:6px}
+  .opt:hover{border-color:var(--accent)}
+  .q.done .opt{cursor:default}
+  .opt.right{background:var(--green-soft);border-color:var(--green)}
+  .opt.wrong{background:var(--red-soft);border-color:var(--red)}
+  .expl{display:none;margin-top:12px;background:var(--accent-soft);border-radius:10px;padding:12px 14px;font-size:.9rem}
+  .q.done .expl{display:block}
+  .expl b{color:var(--accent)}
+  .expl .lbl{font-size:.74rem;letter-spacing:.06em;color:var(--muted);display:block;margin:10px 0 2px}
+  .expl .lbl:first-child{margin-top:0}
+  .expl code{font-family:var(--serif);background:var(--hl);border-radius:4px;padding:1px 5px}
+  .wrongs{margin-top:6px;display:grid;gap:5px}
+  .wr{font-size:.86rem;background:var(--card);border-radius:8px;padding:6px 10px;border-left:3px solid var(--red)}
+  .wr .l{font-family:var(--serif);font-weight:700;color:var(--red);margin-right:5px}
+
+  /* 计分条 */
+  .score{display:flex;gap:14px;flex-wrap:wrap;align-items:center;background:var(--hl);border-radius:12px;padding:10px 16px;margin-bottom:18px;font-size:.88rem}
+  .score .v{font-family:var(--serif);font-size:1.25rem;font-weight:700;color:var(--accent);margin-right:4px}
+  .score .rst{margin-left:auto;font-size:.78rem;border:1px solid var(--line);background:var(--card);color:var(--muted);border-radius:8px;padding:3px 10px;cursor:pointer}
+
+  /* 考点统计 */
+  .catbar{display:flex;height:26px;border-radius:8px;overflow:hidden;margin:10px 0 16px;border:1px solid var(--line)}
+  .catseg{display:flex;align-items:center;justify-content:center;font-size:.72rem;color:#fff;font-weight:600}
+  .catlegend{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px}
+  .cl{display:flex;gap:8px;align-items:center;font-size:.85rem;cursor:pointer;padding:6px 8px;border-radius:8px;border:1px solid var(--line)}
+  .cl:hover{border-color:var(--accent)}
+  .dot{width:12px;height:12px;border-radius:3px;flex:0 0 12px}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+  .chip{font-size:.78rem;background:var(--accent-soft);color:var(--accent);border-radius:6px;padding:2px 8px;cursor:pointer}
+  .chip:hover{filter:brightness(.94)}
+
+  /* 打法 / 搭配 */
+  .flow{display:grid;gap:10px;font-size:.92rem}
+  .flow .fi{border:1px solid var(--line);border-radius:10px;padding:10px 14px}
+  .flow .fi b{color:var(--accent)}
+  .flow .fi .ev{display:block;margin-top:4px;font-size:.85rem;color:var(--muted);border-left:3px solid var(--hl-border);padding-left:9px}
+  .wb{display:grid;gap:10px}
+  .wbi{border-left:3px solid var(--green);background:var(--green-soft);border-radius:0 10px 10px 0;padding:10px 14px;font-size:.92rem}
+  .wbi .p{font-family:var(--serif);font-weight:600}
+  .wbi .u{color:var(--muted);font-size:.85rem}
+
+  /* 长难句 */
+  .sent{margin-bottom:20px}
+  .sent .src{font-family:var(--serif);font-size:1rem;background:var(--blue-soft);padding:12px 14px;border-radius:10px;border-left:3px solid var(--blue)}
+  .sent .anat{margin-top:8px;font-size:.9rem}
+  .sent .anat li{margin:4px 0 4px 18px}
+  .sent .tr{margin-top:8px;font-size:.92rem;color:var(--muted)}
+  .skel{color:var(--red);font-weight:600}
+
+  /* 80词表 */
+  .otab{width:100%;border-collapse:collapse;font-size:.86rem}
+  .otab th,.otab td{border:1px solid var(--line);padding:5px 8px;vertical-align:top}
+  .otab th{background:var(--accent-soft);color:var(--accent);font-size:.78rem}
+  .otab td.n{text-align:center;font-family:var(--serif);color:var(--muted);width:38px}
+  .otab .ow{font-family:var(--serif)}
+  .otab .oc{color:var(--muted);font-size:.82rem;display:block}
+  .otab td.hit{background:var(--green-soft)}
+  .otab td.hit .ow{color:var(--green);font-weight:700}
+  .hidecn .oc{filter:blur(4px);cursor:pointer}
+  .hidecn .oc.show{filter:none}
+  .tabwrap{overflow-x:auto}
+
+  #yd{position:fixed;z-index:60;display:none;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:4px 12px;font-size:.8rem;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+  .fail{background:var(--red-soft);border:1px solid var(--red);border-radius:10px;padding:10px 13px;margin-bottom:10px;font-size:.89rem;line-height:1.75}
+  .fail b{color:var(--red)}
+  .expl .fail{margin-top:0}
+  footer{color:var(--muted);font-size:.8rem;text-align:center;margin-top:30px}
+  /* 修：.layout 是 grid，grid 项默认 min-width:auto ⟹ 06 的 80 词表（min-content 425px）会把整个左栏撑到 475px，
+     窄屏下页面 scrollWidth 超出视口（2007–2009 三篇完形页同源、同病）。min-width:0 后 .tabwrap 才真正接管横滚。 */
+  main,aside{min-width:0}
+
+  /* ---- 2021：原卷句条 ---- */
+  .ctab{width:100%;border-collapse:collapse;font-size:.86rem;margin-top:8px}
+  .ctab th,.ctab td{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
+  .ctab th{background:var(--accent-soft);color:var(--accent);font-size:.8rem;white-space:nowrap}
+  .ctab code{background:var(--hl);padding:0 3px;border-radius:3px}
+  .sn{margin:0 0 14px}
+  .sn .pno{display:block;margin-bottom:4px;font-size:.78rem;line-height:1.6}
+  img.strip{display:block;width:100%;max-width:760px;height:auto;background:#fff;border:1px solid var(--line);border-radius:6px;cursor:pointer}
+  .sent .src img.strip{margin-top:6px;cursor:default}
+  .kw{margin-top:5px;font-size:.88rem;line-height:2.1;font-family:var(--serif)}
+  @media (prefers-color-scheme: dark){img.strip{filter:invert(.9) hue-rotate(180deg)}}
+  .sn,.sent .src{overflow-x:auto}
+  @media (max-width:700px){img.strip{width:640px;max-width:none}.sn::after{content:'← 句条可左右滑动 →';display:block;font-size:.7rem;color:var(--muted);margin-top:2px}}
+  .bkrow{margin-top:6px;font-size:.85rem;color:var(--muted);font-family:var(--serif);line-height:2.1}
+  .bkrow .bk{margin:0 6px}
+  .sent .src b{display:block;font-family:var(--sans,inherit);font-size:.8rem;color:var(--muted);font-weight:600}
+
+  /* ---- 2023 起：流式版——识别好的句子在段落里连排，像 2007–2020 ---- */
+  .para .en{font-family:var(--serif);font-size:1.02rem;line-height:1.9}
+  .stx-flow .para .en .pno{margin-right:4px}
+  .stx-flow .para .sn:not(.stx-on) .kw{margin-bottom:8px}
+  .stx-flow .para .sn:not(.stx-on) .bkrow{margin-bottom:4px}
+</style>
+</head>
+<body class="stx-flow">
+<div class="wrap">
+  <a class="back" href="index.html">◀ 返回英语复盘中心</a>
+  <header>
+    <h1>帕夫洛彼特里：沉下去，又被找回来的古城</h1>
+    <div class="sub">2025 年英语（一）真题 · Section I 完形填空（Use of English）· 黄皮书标 289 词 · 3 段 16 句 · 建议 15 min · 话题：历史考古（发现史叙事）（来源：<i>National Geographic</i>《国家地理》2024-07-25 一文中「Pavlopetri: the oldest sunken city」一节，据黄皮书）</div>
+    <div class="tags">
+      <span class="tag spoiler" onclick="this.classList.toggle('open')">🙈 答案（点击显示）：<span class="hid">1B 2C 3B 4C 5B 6A 7D 8A 9A 10D 11D 12A 13D 14C 15D 16C 17B 18B 19B 20A</span></span>
+      <span class="tag">难度：中等偏易（全文是一条时间线，几乎每句都有时间状语；<b>坎在两处</b>——13 要分清「没人知道」和「没人动过」，17 要认得 bring … to light 这个现成说法）</span>
+      <span class="tag">Claude 盲做：20/20（只看原卷正文与选项作答、先落盘，再核答案）</span>
+      <span class="tag">⚠️ 原定冲刺模考卷，已按你的决定开复盘</span>
+    </div>
+  </header>
+
+  <div class="layout">
+    <main>
+
+      <!-- ========== 00 脉络 ========== -->
+      <section class="card">
+        <h2><span class="n">00</span>读前一分钟 · 全文脉络（完形先读首句，再看结构）</h2>
+        <p class="note">完形的<b>首句从不设空</b>。本篇首句是一张<b>身份证</b>：在哪（伯罗奔尼撒半岛南部）· 叫什么（Pavlopetri，遗址的现代名字）· 什么时候出现（约公元前 3500 年，新石器时代的定居点）· 后来变成什么（迈锡尼时期的重要贸易中心）。⟹ 两件事一句话定死：<b>话题</b>是一座古城，<b>写法</b>是按年代往下讲。后面十五句里<b>十一句带时间状语</b>，二十个空几乎都挂在这根时间轴上——拿到一个空，先问「这是时间线上的哪一站」。</p>
+        <div class="flow">
+          <div class="fi"><b>① 段 · 它是怎么沉下去的</b>：这片爱琴海海域<b>易发</b>地震和海啸（1 prone），导致城市<b>逐渐</b>下沉（2 gradually）；三千多年前，地中海缓慢上升的海平面<b>淹没</b>了它（3 submerged）。
+            <span class="ev">一条因果链：地震海啸 → 城市慢慢下沉 → 海平面慢慢上升把它淹掉。⭐ <b>2 的答案在下一句</b>：The <b>slow</b> sea level rise——「慢」字已经写在那里，gradually 只是把它提前说了一遍。</span></div>
+          <div class="fi"><b>② 段 · 第一次被找到（1967–1968），然后又被晾了几十年</b>：几千年里，城市的<b>遗迹</b>沉在约 13 英尺深的水下无人看见（4 remains），上面盖着一层厚沙——沙来自拉科尼亚<b>近海</b>（5 off）；近几十年，不断变化的<b>洋流</b>和气候变化侵蚀了那道<b>保护</b>古城的天然屏障（6 currents · 7 protected）。1967 年，一次伯罗奔尼撒海岸的科学考察正在<b>收集</b>数据、分析海平面变化，<b>就在这时</b>英国海洋学家弗莱明首次发现了这些沉没的<b>建筑</b>（8 gathering · 9 when · 10 structures）；一年后他带学生回来<b>考察</b>并测绘（11 examine），找出约 15 座建筑、庭院、街道网和两座墓室。<b>尽管</b>初步发现令人兴奋（12 Despite），遗址此后几十年<b>无人触动</b>（13 undisturbed），直到考古学家回来。
+            <span class="ev">本段是一个「<b>藏 → 现 → 又放下</b>」的小循环：lay unseen（藏）→ first spotted（现）→ examine and map（看清）→ lie undisturbed（放下）。⭐ <b>4 remains 和 10 structures 是同一样东西的两个名字</b>，下文 15 buildings、courtyards、streets、tombs 是它们的清单。</span></div>
+          <div class="fi"><b>③ 段 · 第二次被找回来（2009–2013）</b>：2009 年，考古学家加卢和亨德森与希腊文化部合作，<b>重启</b>了发掘（14 resumed）；从 20 世纪 60 年代起，水下考古的<b>技术</b>和工具大有进步（15 techniques），团队<b>采用</b>机器人、声呐测绘和最先进的图像技术勘测遗址（16 employed），四年里让这座水下城镇<b>重见天日</b>（17 light）。三条主路<b>连接</b>着约 50 座长方形建筑（18 connected）；大量米诺斯风格的织布机坠子<b>表明</b>（19 suggesting），这里曾是繁荣的贸易中心，有<b>兴旺</b>的纺织业（20 robust）。
+            <span class="ev">②段的「放下」在这里接回来：would return（②末）→ resumed（③首），中间隔着「几十年」。后半段是<b>成果清单</b>：路、房、织机坠子 → 推出结论「繁荣的贸易中心」——正好回扣首句的 an important trading center。</span></div>
+          <div class="fi" style="border-color:var(--accent)">📌 <b>一句话主旨</b>：帕夫洛彼特里因地震海啸与海平面上升沉入海底，1967 年首次被发现，沉寂几十年后于 2009–2013 年借新技术重新发掘，证实它曾是繁荣的贸易中心。<br>📌 <b>结构套路</b>：身份与沉没（①）→ 第一次发现（②）→ 第二次发掘与成果（③）——<b>「发现史」的标准写法</b>：按年份往下走，每个年份配一个动作。<br>📌 <b>本篇最大的规律：两条线别混</b>。古城在文中有两种「没被碰」：<b>没被看见</b>（4 lay unseen · 10 first spotted · 17 bring to light）和<b>没被动过</b>（13 lie undisturbed · 14 resumed the excavation）。1967 年以后它<b>已经被看见了</b>，只是没人来挖——所以 13 是 undisturbed 不是 unknown，14 是「恢复」挖掘不是「首次发现」。⟹ 新卡 <a href="套路库_阅读.html#R324" style="color:var(--accent)">R324</a>。<br>📌 <b>同指链（换名字说同一样东西）</b>：Pavlopetri → the city（①）→ the city’s remains → They → the sunken structures → the location／the site → the exciting initial finds → the site → the underwater town → Pavlopetri（③）——<b>十次换名，说的都是那座城</b>。4、10、17 三个空都在这条链上：先认出「这是在叫那座城的哪个名字」，再挑词。</div>
+          <div class="fi">🗞 <b>背景（WebSearch 核过，只帮读、不替原文纠错）</b>：帕夫洛彼特里位于希腊拉科尼亚南岸、正对埃拉福尼索斯岛（Elafonisos）的浅海里，常被称作世界上最古老的水下城镇。1967 年英国国家海洋研究所的尼古拉斯·弗莱明发现了它，<b>1968 年</b>剑桥的一支小队只靠浮潜和卷尺把它测绘出来——正是②❺ 的「一年后带几个学生回来测绘」。2009 年起，希腊水下文物局与英国诺丁汉大学（项目负责人之一即乔恩·亨德森）合作了一个五年项目，用声呐与水下摄影测量重建遗址；大量织布机坠子被视为纺织业兴旺的证据。⚠️ 两处原文与地理不完全吻合：拉科尼亚是伯罗奔尼撒的一个州而不是岛；起始年代各家说法不一（公元前 3500 年左右的陶片是一说）。读题照原文走，不影响任何一空。</div>
+        </div>
+        <p class="note" style="margin-top:14px">📌 <b>完形不是 20 道独立小题，是一条语义链。</b>本篇这条链是<b>一根时间轴</b>：先沉没（①）、再被看见（②）、再被挖出来（③）。拿到一个空，<b>先问「这是时间轴上的哪一站」</b>——沉没那一站要「慢」（2、3），看见那一站要「首次、意外」（8、9、10），放下那一站要「没人动」（12、13），挖掘那一站要「恢复、技术、揭开」（14–17），成果那一站要「推出结论」（19、20）。</p>
+      </section>
+
+      <!-- ========== 01 正文 ========== -->
+      <section class="card">
+        <h2><span class="n">01</span>完形正文（20 空 · 点空格跳到该题）
+          <button class="allbtn" onclick="toggleAll()" style="margin-left:auto">意译 开/关</button>
+          <button class="allbtn" onclick="revealAll()">显示全部答案</button>
+          <button class="allbtn" id="imgall" onclick="imgAll(this)">原卷对照</button>
+        </h2>
+        <p class="note">🟨 点<b>空格</b>＝跳到下面对应的解析卡（先自己选，再看解析；答过的空会就地填上答案词）｜ 🟡 黄底词＝重难点词，点开看词根／辨析 ｜ 蓝色虚线＝长难句，点击跳到 07 精析 ｜ 每段「意」＝该段意译 ｜ 选中任意其他单词浮出「查有道」｜ 原文由你的浏览器从原卷识别成文字（首次约 3 秒，之后秒开）；「原卷对照」可逐句看扫描原图、改识别错字</p>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">①</span>
+            <div class="sn" data-go="l1_1"><img class="strip" src="img/2025_完形/s1_1.png" alt="①❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="neolithic">Neolithic</span> · <span class="tk" data-w="settlement">settlement</span></div></div>
+            <div class="sn" data-go="l1_2"><img class="strip" src="img/2025_完形/s1_2.png" alt="①❷ 原卷句条" loading="lazy"><div class="bkrow">空格：<span class="bk" data-n="1"><span class="idx">1</span>___</span> <span class="bk" data-n="2"><span class="idx">2</span>___</span></div><div class="kw">🟡 <span class="tk" data-w="tsunami">tsunamis</span></div></div>
+            <div class="sn"><img class="strip" src="img/2025_完形/s1_3.png" alt="①❸ 原卷句条" loading="lazy"><div class="bkrow">空格：<span class="bk" data-n="3"><span class="idx">3</span>___</span></div><div class="kw">🟡 <span class="tk" data-w="sealevel">sea level rise</span></div></div>
+          </div>
+          <div class="zh"><b>①段意：</b>帕夫洛彼特里（这处遗址的现代名称）位于伯罗奔尼撒半岛南部，约公元前 3500 年作为新石器时代的定居点出现，后来成为迈锡尼时期希腊（公元前 1650–前 1180 年）的重要贸易中心。爱琴海的这片海域<b>易发</b>地震和海啸，它们导致这座城市<b>逐渐</b>下沉。三千多年前，地中海缓慢上升的海平面<b>淹没</b>了这座城市。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">②</span>
+            <div class="sn"><img class="strip" src="img/2025_完形/s2_1.png" alt="②❶ 原卷句条" loading="lazy"><div class="bkrow">空格：<span class="bk" data-n="4"><span class="idx">4</span>___</span></div><div class="kw">🟡 <span class="tk" data-w="millennia">millennia</span> · <span class="tk" data-w="unseen">unseen</span></div></div>
+            <div class="sn"><img class="strip" src="img/2025_完形/s2_2.png" alt="②❷ 原卷句条" loading="lazy"><div class="bkrow">空格：<span class="bk" data-n="5"><span class="idx">5</span>___</span></div></div>
+            <div class="sn" data-go="l2_3"><img class="strip" src="img/2025_完形/s2_3.png" alt="②❸ 原卷句条" loading="lazy"><div class="bkrow">空格：<span class="bk" data-n="6"><span class="idx">6</span>___</span> <span class="bk" data-n="7"><span class="idx">7</span>___</span></div><div class="kw">🟡 <span class="tk" data-w="shifting">shifting</span> · <span class="tk" data-w="erode">eroded</span> · <span class="tk" data-w="barrier">natural barrier</span></div></div>
+            <div class="sn" data-go="l2_4"><img class="strip" src="img/2025_完形/s2_4.png" alt="②❹ 原卷句条" loading="lazy"><div class="bkrow">空格：<span class="bk" data-n="8"><span class="idx">8</span>___</span> <span class="bk" data-n="9"><span class="idx">9</span>___</span> <span class="bk" data-n="10"><span class="idx">10</span>___</span></div><div class="kw">🟡 <span class="tk" data-w="survey">survey</span> · <span class="tk" data-w="sunken">sunken</span></div></div>
+            <div class="sn"><img class="strip" src="img/2025_完形/s2_5.png" alt="②❺ 原卷句条" loading="lazy"><div class="bkrow">空格：<span class="bk" data-n="11"><span class="idx">11</span>___</span></div><div class="kw">🟡 <span class="tk" data-w="map">map the site</span></div></div>
+            <div class="sn"><img class="strip" src="img/2025_完形/s2_6.png" alt="②❻ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="courtyard">courtyards</span> · <span class="tk" data-w="chamber">chamber tombs</span></div></div>
+            <div class="sn" data-go="l2_7"><img class="strip" src="img/2025_完形/s2_7.png" alt="②❼ 原卷句条" loading="lazy"><div class="bkrow">空格：<span class="bk" data-n="12"><span class="idx">12</span>___</span> <span class="bk" data-n="13"><span class="idx">13</span>___</span></div><div class="kw">🟡 <span class="tk" data-w="finds">initial finds</span></div></div>
+          </div>
+          <div class="zh"><b>②段意：</b>数千年来，这座城市的<b>遗迹</b>一直沉在约 13 英尺深的水下，无人得见。它们被拉科尼亚<b>近海</b>一层厚厚的沙子覆盖着。近几十年，不断变化的<b>洋流</b>和气候变化侵蚀了一道<b>保护</b>帕夫洛彼特里的天然屏障。1967 年，一次对伯罗奔尼撒海岸的科学考察正在<b>收集</b>数据、分析海平面变化，<b>就在这时</b>，英国海洋学家尼古拉斯·弗莱明首次发现了这些沉没的<b>建筑</b>。一年后，他带着几名学生回来<b>考察</b>这个地点并绘制遗址地图。研究小组确认了约 15 座建筑、几处庭院、一个街道网和两座墓室。<b>尽管</b>初步发现令人兴奋，这处遗址却在此后几十年里一直<b>无人触动</b>，直到考古学家重返。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">③</span>
+            <div class="sn"><img class="strip" src="img/2025_完形/s3_1.png" alt="③❶ 原卷句条" loading="lazy"><div class="bkrow">空格：<span class="bk" data-n="14"><span class="idx">14</span>___</span></div><div class="kw">🟡 <span class="tk" data-w="excavation">excavation</span></div></div>
+            <div class="sn"><img class="strip" src="img/2025_完形/s3_2.png" alt="③❷ 原卷句条" loading="lazy"><div class="bkrow">空格：<span class="bk" data-n="15"><span class="idx">15</span>___</span></div><div class="kw">🟡 <span class="tk" data-w="archaeology">underwater archaeology</span> · <span class="tk" data-w="advance">huge advances</span></div></div>
+            <div class="sn"><img class="strip" src="img/2025_完形/s3_3.png" alt="③❸ 原卷句条" loading="lazy"><div class="bkrow">空格：<span class="bk" data-n="16"><span class="idx">16</span>___</span></div><div class="kw">🟡 <span class="tk" data-w="sonar">sonar mapping</span> · <span class="tk" data-w="stateoftheart">state-of-the-art</span></div></div>
+            <div class="sn" data-go="l3_4"><img class="strip" src="img/2025_完形/s3_4.png" alt="③❹ 原卷句条" loading="lazy"><div class="bkrow">空格：<span class="bk" data-n="17"><span class="idx">17</span>___</span></div></div>
+            <div class="sn" data-go="l3_5"><img class="strip" src="img/2025_完形/s3_5.png" alt="③❺ 原卷句条" loading="lazy"><div class="bkrow">空格：<span class="bk" data-n="18"><span class="idx">18</span>___</span></div><div class="kw">🟡 <span class="tk" data-w="acre">acres</span> · <span class="tk" data-w="rectangular">rectangular</span></div></div>
+            <div class="sn" data-go="l3_6"><img class="strip" src="img/2025_完形/s3_6.png" alt="③❻ 原卷句条" loading="lazy"><div class="bkrow">空格：<span class="bk" data-n="19"><span class="idx">19</span>___</span> <span class="bk" data-n="20"><span class="idx">20</span>___</span></div><div class="kw">🟡 <span class="tk" data-w="loom">loom weights</span> · <span class="tk" data-w="thriving">thriving</span> · <span class="tk" data-w="textile">textile industry</span></div></div>
+          </div>
+          <div class="zh"><b>③段意：</b>2009 年，考古学家赫里桑蒂·加卢和乔恩·亨德森与希腊文化部合作，<b>重启</b>了帕夫洛彼特里的发掘。自 20 世纪 60 年代以来，水下考古的<b>技术</b>和工具已有了长足进步。团队<b>采用</b>机器人、声呐测绘和最先进的图像技术来勘测遗址。从 2009 年到 2013 年，他们终于让这座水下城镇<b>重见天日</b>。帕夫洛彼特里占地约两英亩半，三条主干道<b>连接</b>着约 50 座长方形建筑，每座都带开放式庭院。发掘出土了大量米诺斯风格的织布机坠子，<b>表明</b>帕夫洛彼特里曾是一个繁荣的贸易中心，拥有<b>兴旺</b>的纺织业。</div>
+        </div>
+      </section>
+      <!-- ========== 02 逐空精解 ========== -->
+      <section class="card">
+        <h2><span class="n">02</span>逐空精解（点选项即判 · 再看解析）</h2>
+        <div class="score">
+          <span><span class="v" id="sDone">0</span>/20 已答</span>
+          <span><span class="v" id="sRight">0</span> 对</span>
+          <span>折合 <span class="v" id="sPt">0</span> 分 / 10</span>
+          <button class="rst" onclick="location.reload()">↺ 重做</button>
+        </div>
+        <p class="note">每空 0.5 分。题干只引空格所在的<b>短语</b>，完整句子看 01。本篇是<b>按年份往下讲的发现史</b>，没有作者立场，方向几乎不会反；真正要动脑的是三件事：<b>① 先定这一空在时间轴的哪一站</b>（沉没 · 被看见 · 被晾着 · 被挖出来 · 推出结论）；<b>② 分清「没被看见」和「没被动过」两条线</b>——13、14 都在后一条线上；<b>③ 动词空先问主语能不能做</b>——3、7、8、11、16、18 六个动词空，四个选项都能接给出的宾语，形式一点忙帮不上。</p>
+
+        <div class="q" id="q1" data-ans="1">
+          <div class="qhead"><span class="qno">1</span><span class="qt c-collo">固定搭配 · be ___ to ＋ 坏事</span><span class="qpos">is ___ to earthquakes and tsunamis</span></div>
+          <span class="stem">… Sea is <em>1</em> to earthquakes and tsunamis, which caused …</span>
+          <div class="opts">
+            <div class="opt">A relevant<span class="gl">相关的；切题的</span></div>
+            <div class="opt">B prone<span class="gl">易于遭受的</span></div>
+            <div class="opt">C available<span class="gl">可获得的</span></div>
+            <div class="opt">D alien<span class="gl">陌生的；不相容的</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>形容词作表语，<code>be ___ to</code> 后接名词（earthquakes and tsunamis），不是动词原形。
+            <span class="lbl">🔗 线索</span>① 后半句 <code>which caused the city to … sink</code>：地震海啸是城市下沉的<b>原因</b> ⟹ 这片海域「常遭受」它们；② 地震、海啸都是坏事，而 be prone to 专门接坏事（prone to injury／error）。
+            <span class="lbl">✅ B prone</span>be prone to ＝ 易于遭受（不好的事）——点出这片海域的地质特点，正好接上「导致城市下沉」。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>relevant：be relevant to 只说「与……有关」，太弱，说不出「常发生」，接不住 which caused 的因果（黄皮书同此）。</div>
+              <div class="wr"><span class="l">C</span>available：「这片海可以被地震海啸获得」不通；available to 的主语是资源、服务。</div>
+              <div class="wr"><span class="l">D</span>alien：be alien to 是「对……陌生、与……格格不入」——海域与地震谈不上陌生不陌生。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>形容词 ＋ to 的「倾向」一族：prone to · subject to · vulnerable to · susceptible to · liable to——<b>都接坏事</b>。⚠️ 本题四个选项都能接 to（relevant to · available to · alien to），<b>介词帮不上忙，只能看语义</b>——和 2021 的「单边搭配」正好相反，四个都是真搭配（⟹ <a href="套路库_阅读.html#R310" style="color:var(--accent)">R310</a>）。✍️ <i>Teenagers who sleep too little are prone to mood swings.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q2" data-ans="2">
+          <div class="qhead"><span class="qno">2</span><span class="qt c-context">上下文语义 · 下一句已经写好了「慢」</span><span class="qpos">caused the city to ___ sink</span></div>
+          <span class="stem">… which caused the city to <em>2</em> sink.</span>
+          <div class="opts">
+            <div class="opt">A accidentally<span class="gl">偶然地，意外地</span></div>
+            <div class="opt">B frequently<span class="gl">频繁地</span></div>
+            <div class="opt">C gradually<span class="gl">逐渐地</span></div>
+            <div class="opt">D temporarily<span class="gl">暂时地</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>副词，插在 to 和 sink 之间修饰下沉的<b>方式</b>（分裂不定式）。
+            <span class="lbl">🔗 线索</span>下一句开头 <code>The slow sea level rise</code>——同一件事（城市被水吞没）下一句说「慢」，本句的空就是「慢慢地」。地质沉降本身也是一个过程，不是一瞬间。
+            <span class="lbl">✅ C gradually</span>逐渐下沉——与下句 slow 同义复现。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>accidentally：意外——前面刚交代了原因（这片海易发地震海啸），下沉是可以预见的，不是意外。</div>
+              <div class="wr"><span class="l">B</span>frequently：频繁——城市沉没是一次性的、不可逆的结果，不能反复沉。</div>
+              <div class="wr"><span class="l">D</span>temporarily：暂时——暗示以后还会浮起来，可②段说它在水下躺了几千年。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>三缺一</b>：accidentally／frequently／temporarily 都把下沉当成<b>一件事件</b>来描述（偶然发生、多次发生、短暂发生），只有 gradually 把它当成<b>一个过程</b>——三个一边、一个一边（⟹ <a href="套路库_阅读.html#R74" style="color:var(--accent)">R74</a>）。⭐ 副词空先往<b>下一句</b>找同义词：完形里「本句说一次、下句换个词再说一次」是最常见的复现。✍️ <i>The town’s population declined gradually over the decade.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q3" data-ans="1">
+          <div class="qhead"><span class="qno">3</span><span class="qt c-word">词义辨析 · 海平面能对城市做什么</span><span class="qpos">sea level rise … ___ the city</span></div>
+          <span class="stem">The slow sea level rise … <em>3</em> the city more than 3,000 years ago.</span>
+          <div class="opts">
+            <div class="opt">A disguised<span class="gl">伪装；掩饰</span></div>
+            <div class="opt">B submerged<span class="gl">淹没</span></div>
+            <div class="opt">C relocated<span class="gl">使搬迁</span></div>
+            <div class="opt">D isolated<span class="gl">使孤立</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>谓语动词（过去式），主语 sea level rise，宾语 the city。四个选项都是及物动词，都能接 the city——<b>形式全通</b>，只能问「海平面上升能对城市做什么」。
+            <span class="lbl">🔗 线索</span>上句 sink（下沉）、下段首句 below some 13 feet of water（在 13 英尺深的水下）⟹ 城被水盖住了。
+            <span class="lbl">✅ B submerged</span>淹没——sub-（在下）＋ merge（沉入）；与上句 sink 同义。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>disguised：伪装、掩饰——宾语通常是外表、声音、情感（disguise one’s feelings），「海平面伪装了城市」不通。</div>
+              <div class="wr"><span class="l">C</span>relocated：搬迁——主语通常是人或公司；海平面不会把城市搬走，城还在原地，只是到了水下。</div>
+              <div class="wr"><span class="l">D</span>isolated：孤立——讲与外界断开联系，不是沉到水下（黄皮书同此）。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>主语是自然力（sea level rise、floods、sand）时，动词空只选「自然力能做的」：submerge · flood · bury · erode · cover。词根 merge：merge 合并 · <b>emerge</b> 浮现 · <b>submerge</b> 淹没——⭐ <b>本篇首尾就是这一对</b>：①❶ 城作为定居点 emerged（冒出来），①❸ 又被海 submerged（淹下去）。
+          </div>
+        </div>
+
+        <div class="q" id="q4" data-ans="2">
+          <div class="qhead"><span class="qno">4</span><span class="qt c-context">上下文语义 · 城的「什么」躺在水下</span><span class="qpos">the city’s ___ lay unseen</span></div>
+          <span class="stem">… the city’s <em>4</em> lay unseen below some 13 feet of water.</span>
+          <div class="opts">
+            <div class="opt">A legends<span class="gl">传说</span></div>
+            <div class="opt">B programs<span class="gl">计划，项目</span></div>
+            <div class="opt">C remains<span class="gl">遗迹，遗址</span></div>
+            <div class="opt">D surroundings<span class="gl">周围环境</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>名词，主语中心词，前有所有格 the city’s；谓语 lay unseen（lay 是 lie 的过去式：处于无人看见的状态）。
+            <span class="lbl">🔗 线索</span>① 下一句 <code>They were covered by a thick layer of sand</code>——They 回指本空，能被沙盖住 ⟹ <b>实体</b>；② 同段 the sunken ___（10）和随后的 15 buildings, courtyards, streets, tombs 说的是同一样东西 ⟹ 遗留下来的建筑实体。
+            <span class="lbl">✅ C remains</span>遗迹、遗址（常用复数）——几千年沉在水下无人看见，后被沙覆盖。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>legends：传说是无形的，不会「躺在水下」，更不会被沙盖住。</div>
+              <div class="wr"><span class="l">B</span>programs：计划、项目——「城市的规划躺在水下」违背常理。</div>
+              <div class="wr"><span class="l">D</span>surroundings：周围环境——范围太宽，而且周围环境不会「无人看见」地躺在水下；本段聚焦的是城留下来的实物（黄皮书同此）。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>remains 是熟词僻义：动词 remain「保持」→ 复数名词 <b>remains 遗迹、遗骸、剩余物</b>（the remains of a Roman fort · human remains）。⭐ 名词空先找两样东西：<b>回指它的代词</b>（下句的 They）和<b>总括它的清单</b>（buildings, courtyards, streets, tombs）。
+          </div>
+        </div>
+
+        <div class="q" id="q5" data-ans="1">
+          <div class="qhead"><span class="qno">5</span><span class="qt c-collo">固定搭配 · 方位介词：沙层在哪</span><span class="qpos">sand ___ the island of Laconia</span></div>
+          <span class="stem">… covered by a thick layer of sand <em>5</em> the island of Laconia.</span>
+          <div class="opts">
+            <div class="opt">A across<span class="gl">横跨；遍及</span></div>
+            <div class="opt">B off<span class="gl">在……近海；离开</span></div>
+            <div class="opt">C under<span class="gl">在……下面</span></div>
+            <div class="opt">D via<span class="gl">经由</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>介词，与 the island of Laconia 组成介词短语，作 sand 的后置定语（「哪里的沙」）。
+            <span class="lbl">🔗 线索</span>古城在海里（below some 13 feet of water），拉科尼亚在陆上 ⟹ 盖住遗迹的沙层位于「拉科尼亚<b>近海</b>」。off 的方位义：off the coast of … ＝ 在……附近的海面上、离岸不远。
+            <span class="lbl">✅ B off</span>在……近海。⚠️ 黄皮书把 off 讲成「从……移开、来源于」——沙从岛上被风浪带下来盖住了遗迹。两种读法都选 B，但<b>方位义更常见、也更贴原句</b>：off the coast／off the island 是报道沉船、水下遗址位置的套话。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>across：横跨、遍布——「遍布全岛的沙」与古城在海底不合。</div>
+              <div class="wr"><span class="l">C</span>under：偷上句 below 和 cover 的上下关系——「岛下面的沙」不合常理（黄皮书同此）。</div>
+              <div class="wr"><span class="l">D</span>via：经由，表路径或手段，不表位置。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>off 的方位义要会：an island off the coast of Italy · two miles off shore · a shipwreck off Cornwall。🗺 背景：拉科尼亚其实是伯罗奔尼撒的一个州，古城正对的岛叫埃拉福尼索斯——原文写 the island of Laconia，照读即可，不影响作答。
+          </div>
+        </div>
+
+        <div class="q" id="q6" data-ans="0">
+          <div class="qhead"><span class="qno">6</span><span class="qt c-word">词义辨析 · 能侵蚀「海底屏障」的是什么</span><span class="qpos">shifting ___ and climate change have eroded</span></div>
+          <span class="stem">… shifting <em>6</em> and climate change have eroded a natural barrier …</span>
+          <div class="opts">
+            <div class="opt">A currents<span class="gl">水流，洋流</span></div>
+            <div class="opt">B rivers<span class="gl">河流</span></div>
+            <div class="opt">C seasons<span class="gl">季节</span></div>
+            <div class="opt">D winds<span class="gl">风</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>名词，被 shifting 修饰，与 climate change 并列作主语，谓语 have eroded（侵蚀）。
+            <span class="lbl">🔗 线索</span>被侵蚀的「天然屏障」就是盖在遗迹上的那层沙——<b>在海底</b>。能在海底把沙一点点冲走的，只有海里的东西。shifting（不断变动的）也最常修饰 currents／sands。
+            <span class="lbl">✅ A currents</span>洋流——shifting currents 不断变化的洋流，与气候变化一起侵蚀了沙层。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>rivers：河流在陆上，改道也冲不到 13 英尺深的海底。</div>
+              <div class="wr"><span class="l">C</span>seasons：偷 climate 的近义——可季节更替年年如此，是常态，不是「近几十年」才有的新变化。</div>
+              <div class="wr"><span class="l">D</span>winds：风在海面以上，主要作用于地面环境，够不着海底的沙层（黄皮书同此）。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>三缺一</b>：rivers 在陆上、winds 在空中、seasons 是时间——<b>只有 currents 在海里</b>（⟹ <a href="套路库_阅读.html#R74" style="color:var(--accent)">R74</a>）。⭐ 盲做时我在 currents／winds 之间停过：判据不是「谁能侵蚀」（风也能），而是<b>被侵蚀的东西在哪</b>——先定位置，再挑力量。current 熟词僻义：「当前的」→ 名词<b>水流、气流、电流</b>（current affairs 才是时事）。
+          </div>
+        </div>
+
+        <div class="q" id="q7" data-ans="3">
+          <div class="qhead"><span class="qno">7</span><span class="qt c-word">词义辨析 · 屏障的本职，与 eroded 对着干</span><span class="qpos">a natural barrier that ___ Pavlopetri</span></div>
+          <span class="stem">… eroded a natural barrier that <em>7</em> Pavlopetri.</span>
+          <div class="opts">
+            <div class="opt">A elevated<span class="gl">抬高；提升</span></div>
+            <div class="opt">B separated<span class="gl">分开，隔开</span></div>
+            <div class="opt">C comprised<span class="gl">包含；构成</span></div>
+            <div class="opt">D protected<span class="gl">保护</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>定语从句的谓语，that 指 a natural barrier，宾语 Pavlopetri。
+            <span class="lbl">🔗 线索</span>barrier 的功能是「挡」——挡住外力 ＝ 护住里面的东西；主句的 eroded 是在破坏它 ⟹ 坏的力量（洋流、气候变化）侵蚀了一道好的屏障，这道屏障在「保护」古城。
+            <span class="lbl">✅ D protected</span>保护——覆在遗迹上的沙层让古城保存了几千年。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>elevated：抬高——屏障是盖在上面的一层沙，不会把城抬高。</div>
+              <div class="wr"><span class="l">B</span>separated：偷 barrier「隔开」的本义；但 separate 要接两方（separate A from B）或复数宾语，单个 Pavlopetri 隔开什么？</div>
+              <div class="wr"><span class="l">C</span>comprised：包含、组成——屏障和古城不是整体与部分的关系。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>框架对空格有正负要求</b>：坏动作 eroded ＋ a barrier that ___ X ⟹ 空是正面动词 protect／shield／guard（⟹ <a href="套路库_阅读.html#R230" style="color:var(--accent)">R230</a>）。✍️ <i>Wetlands act as a natural barrier that protects the coast from storms.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q8" data-ans="0">
+          <div class="qhead"><span class="qno">8</span><span class="qt c-context">上下文语义 · 「首次」考察的第一步</span><span class="qpos">was ___ data to analyze</span></div>
+          <span class="stem">… was <em>8</em> data to analyze changes in sea levels …</span>
+          <div class="opts">
+            <div class="opt">A gathering<span class="gl">收集</span></div>
+            <div class="opt">B restoring<span class="gl">恢复，修复</span></div>
+            <div class="opt">C updating<span class="gl">更新</span></div>
+            <div class="opt">D supplying<span class="gl">提供，供应</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>过去进行时 was ___ing 的动词，宾语 data，后接目的状语 to analyze。四个选项都能接 data（gather／restore／update／supply data），<b>形式全通</b>。
+            <span class="lbl">🔗 线索</span>① 目的状语：为了分析 ⟹ 先要「采集」；② 同一句后半 <code>first spotted</code> ⟹ 这片海岸此前<b>没被认真考察过</b>，没有旧数据可恢复、可更新。
+            <span class="lbl">✅ A gathering</span>收集数据以分析海平面变化——科考的第一步。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>restoring：恢复——预设数据曾经存在、后来损坏，原文没提。</div>
+              <div class="wr"><span class="l">C</span>updating：更新——预设之前考察过、有旧版本，与 first spotted 矛盾（黄皮书同此）。</div>
+              <div class="wr"><span class="l">D</span>supplying：提供——方向反：是把数据给别人，可这次考察是自己采、自己分析。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>用预设排除</b>：restore 预设「曾经有、坏了」，update 预设「已有旧版」——同一句里一个 first，同时砍掉两个。科研流程四步：gather data → analyze → find → publish。
+          </div>
+        </div>
+
+        <div class="q" id="q9" data-ans="0">
+          <div class="qhead"><span class="qno">9</span><span class="qt c-logic">逻辑关系 · 正在进行，突然撞见</span><span class="qpos">was gathering … ___ … first spotted</span></div>
+          <span class="stem">… sea levels <em>9</em> British oceanographer Nicholas Flemming first spotted …</span>
+          <div class="opts">
+            <div class="opt">A when<span class="gl">当……时（就在这时）</span></div>
+            <div class="opt">B until<span class="gl">直到</span></div>
+            <div class="opt">C after<span class="gl">在……之后</span></div>
+            <div class="opt">D once<span class="gl">一旦；一……就</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>从属连词，引出时间状语从句；主句 was gathering（<b>过去进行时</b>），从句 first spotted（一般过去时）。
+            <span class="lbl">🔗 线索</span>⭐ 经典句型 <b>was doing … when …</b>：一个动作正在进行，另一个动作突然发生——考察正在采数据，发现是意外收获；first spotted 也说明这是「撞上的」，不是计划好的终点。
+            <span class="lbl">✅ A when</span>就在这时——两件事同时，后一件打断前一件。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>until：直到——意味着一发现，考察就结束了；可一年后他还带学生回来接着测绘（②❺）。</div>
+              <div class="wr"><span class="l">C</span>after：顺序反了——成了「先发现，后考察」，而原文是在考察中发现（黄皮书同此）。</div>
+              <div class="wr"><span class="l">D</span>once：一旦——表条件，或「一……就」的紧接先后；两件事不是条件与结果，也不是一前一后。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>三缺一</b>：until／after／once 都把两件事排成<b>一前一后</b>，只有 when 能表示<b>进行中被打断</b>的同时关系（⟹ <a href="套路库_阅读.html#R74" style="color:var(--accent)">R74</a>）。看到主句是 was／were doing，先想 when。✍️ <i>I was reading in the library when the fire alarm went off.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q10" data-ans="3">
+          <div class="qhead"><span class="qno">10</span><span class="qt c-context">上下文语义 · 同一样东西的第二个名字</span><span class="qpos">first spotted the sunken ___</span></div>
+          <span class="stem">… Nicholas Flemming first spotted the sunken <em>10</em>.</span>
+          <div class="opts">
+            <div class="opt">A belongings<span class="gl">个人财物</span></div>
+            <div class="opt">B resources<span class="gl">资源</span></div>
+            <div class="opt">C products<span class="gl">产品</span></div>
+            <div class="opt">D structures<span class="gl">建筑物；结构</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>名词，被 sunken（沉没的）修饰，作 spotted 的宾语。
+            <span class="lbl">🔗 线索</span>本段首句 the city’s remains lay <b>unseen</b>（藏）→ 本句 first <b>spotted</b> the sunken ___（现）——「藏」和「现」说的是同一样东西 ⟹ 与 remains 同义；下文 some 15 buildings, courtyards … 是它的清单 ⟹ 建筑物。
+            <span class="lbl">✅ D structures</span>建筑物、构筑物——上承 remains，下启 15 buildings。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>belongings：个人随身财物——沉船、事故里的「个人物品」，不是一座城。</div>
+              <div class="wr"><span class="l">B</span>resources：资源（水、土地、资金）——和 sunken 搭不上，也脱离科考语境。</div>
+              <div class="wr"><span class="l">C</span>products：产品、制品，用于商业语境（黄皮书同此）。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>structure 熟词僻义：结构 → <b>建筑物</b>（a wooden structure 木结构建筑）。⭐ 本篇同指链：remains（4）＝ structures（10）＝ the location／the site ＝ the exciting initial finds ＝ the underwater town（17）——<b>换名说同一样东西</b>，名词空先认「这是第几次换名」。
+          </div>
+        </div>
+
+        <div class="q" id="q11" data-ans="3">
+          <div class="qhead"><span class="qno">11</span><span class="qt c-word">词义辨析 · 回来干什么：与 map 同类</span><span class="qpos">to ___ the location and map the site</span></div>
+          <span class="stem">… to <em>11</em> the location and map the site.</span>
+          <div class="opts">
+            <div class="opt">A preserve<span class="gl">保护，保存</span></div>
+            <div class="opt">B select<span class="gl">挑选</span></div>
+            <div class="opt">C display<span class="gl">展示，陈列</span></div>
+            <div class="opt">D examine<span class="gl">仔细察看，考察</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>目的不定式的动词，与 map the site 并列（to ___ A and map B），宾语 the location。四个都能接 the location，<b>形式全通</b>。
+            <span class="lbl">🔗 线索</span>① and 并列：「___ 地点」与「测绘遗址」同类同向 ⟹ 都是<b>弄清楚它</b>的科考动作；② 顺承：下一句 The team identified some 15 buildings ⟹ 考察 → 测绘 → 认出建筑，顺理成章。
+            <span class="lbl">✅ D examine</span>仔细考察——先看清，再画图，再一一认出建筑。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>preserve：偷「文物保护」——可下句讲的是找到了什么，不是护住了什么；刚发现、还没摸清，谈不上保护。</div>
+              <div class="wr"><span class="l">B</span>select：挑选——预设有多处候选，可地点早定了，就是 1967 年发现的那一处。</div>
+              <div class="wr"><span class="l">C</span>display：展示——给公众看；刚发现的水下遗址无从展示。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>考古／科考动词链：survey 勘测 → spot 发现 → examine 考察 → map 测绘 → identify 确认 → excavate 发掘 → reveal 揭示。⚠️ 盲做时 preserve 让我停了一下，随即被 and map 排掉：<b>and 两边要同类</b>，map 是「看清楚」，preserve 是「护起来」。
+          </div>
+        </div>
+
+        <div class="q" id="q12" data-ans="0">
+          <div class="qhead"><span class="qno">12</span><span class="qt c-logic">逻辑关系 · 令人兴奋 vs 晾了几十年</span><span class="qpos">___ the exciting initial finds</span></div>
+          <span class="stem"><em>12</em> the exciting initial finds, the site would lie …</span>
+          <div class="opts">
+            <div class="opt">A Despite<span class="gl">尽管</span></div>
+            <div class="opt">B Unlike<span class="gl">与……不同</span></div>
+            <div class="opt">C Besides<span class="gl">除……之外（还）</span></div>
+            <div class="opt">D Among<span class="gl">在……之中</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>介词（四个都是介词），后接名词短语，句首作状语；逗号后才是主句。
+            <span class="lbl">🔗 线索</span>前半「初步发现令人兴奋」（照理该乘胜追击）↔ 后半「此后几十年没人动它，直到考古学家回来」（实际被晾着）——<b>预期和结果相反</b> ⟹ 让步。
+            <span class="lbl">✅ A Despite</span>尽管初步发现令人兴奋，遗址却沉寂了几十年。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>Unlike：对比两样同类的东西——「发现」和「遗址」不是同类，没得比。</div>
+              <div class="wr"><span class="l">C</span>Besides：递进——后面应再列一项发现，可主句讲的是遗址此后的状态。</div>
+              <div class="wr"><span class="l">D</span>Among：表范围——「在令人兴奋的发现之中，遗址沉寂了」不通。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>三缺一</b>：Unlike（对比）／Besides（递进）／Among（范围）都不是让步，只有 Despite 是（⟹ <a href="套路库_阅读.html#R74" style="color:var(--accent)">R74</a>）。⭐ <b>句首空 ＝ 逻辑空</b>：本篇<b>唯一的句首空就是这一道</b>（⟹ <a href="套路库_阅读.html#R76" style="color:var(--accent)">R76</a>）。✍️ <i>Despite the early success, the project stalled for years.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q13" data-ans="3">
+          <div class="qhead"><span class="qno">13</span><span class="qt c-context">上下文语义 · 没人知道 ≠ 没人动过</span><span class="qpos">the site would lie ___ for decades</span></div>
+          <span class="stem">… the site would lie <em>13</em> for decades before archaeologists would return.</span>
+          <div class="opts">
+            <div class="opt">A unchallenged<span class="gl">未受质疑的</span></div>
+            <div class="opt">B unknown<span class="gl">不为人知的</span></div>
+            <div class="opt">C unorganized<span class="gl">杂乱无章的</span></div>
+            <div class="opt">D undisturbed<span class="gl">未被打扰的，未被动过的</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>形容词作 lie 的表语（lie ＋ 形容词 ＝ 处于某种状态：lie empty · lie idle）。
+            <span class="lbl">🔗 线索</span>⭐ <b>两条线</b>：1967 年它已<b>被发现</b>（first spotted），1968 年已<b>被测绘</b>（map the site）⟹ 它不再「不为人知」；「几十年……直到考古学家回来」说的是<b>没人来挖、没人动它</b> ⟹ 这一空在「动手」那条线上。
+            <span class="lbl">✅ D undisturbed</span>未被动过——几十年无人来发掘（an undisturbed tomb 未被盗掘的墓）。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>unchallenged：未受质疑——修饰观点、权威、纪录，不修饰一处遗址。</div>
+              <div class="wr"><span class="l">B</span>unknown：⭐ 偷段首的 unseen——可那是 1967 年以前；发现、测绘之后再说「不为人知」，与 first spotted 矛盾（黄皮书同此）。</div>
+              <div class="wr"><span class="l">C</span>unorganized：杂乱无章——遗址乱不乱，与「几十年没人来」无关。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>发现史分两条线</b>：<b>知道线</b>（unseen → spotted → known → bring to light）与<b>动手线</b>（undisturbed → excavate → resume）。干扰项最爱把一条线的词塞进另一条线的空——先问「此时它已经被看见了吗」（⟹ 新卡 <a href="套路库_阅读.html#R324" style="color:var(--accent)">R324</a>）。✍️ <i>The letters lay undisturbed in the attic for fifty years.</i>
+          </div>
+        </div>
+
+        <div class="q" id="q14" data-ans="2">
+          <div class="qhead"><span class="qno">14</span><span class="qt c-context">上下文语义 · 晾了几十年之后：接上</span><span class="qpos">In 2009 archaeologists … ___ the excavation</span></div>
+          <span class="stem">In 2009 archaeologists … <em>14</em> the excavation of Pavlopetri …</span>
+          <div class="opts">
+            <div class="opt">A suspended<span class="gl">暂停</span></div>
+            <div class="opt">B transferred<span class="gl">转移</span></div>
+            <div class="opt">C resumed<span class="gl">（中断后）恢复</span></div>
+            <div class="opt">D canceled<span class="gl">取消</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>谓语动词，主语是两位考古学家，宾语 the excavation of Pavlopetri。
+            <span class="lbl">🔗 线索</span>上段末：几十年无人动，before archaeologists <b>would return</b>（考古学家终将回来）→ 本段首 In 2009 ⟹ 就是「回来」的那一刻，把中断的工作接上；下文 2009–2013 成果累累，也说明发掘在进行，没停。
+            <span class="lbl">✅ C resumed</span>重启发掘——上接 would return，下接四年的成果。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>suspended：暂停——与下文 2009–2013 年取得成果矛盾。</div>
+              <div class="wr"><span class="l">B</span>transferred：转移——发掘不是能从一处挪到另一处的东西。</div>
+              <div class="wr"><span class="l">D</span>canceled：取消——同 A，下文明明挖出了东西。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>三缺一</b>：suspended／transferred／canceled 都让发掘<b>不在这里进行</b>（停、挪、撤），只有 resumed 让它<b>继续</b>（⟹ <a href="套路库_阅读.html#R74" style="color:var(--accent)">R74</a>）。⭐ <b>段尾段首接力</b>：would <b>re</b>turn（②末）↔ <b>re</b>sumed（③首）——时间轴上的同一个点换了个说法（⟹ <a href="套路库_阅读.html#R312" style="color:var(--accent)">R312</a>）。
+          </div>
+        </div>
+
+        <div class="q" id="q15" data-ans="3">
+          <div class="qhead"><span class="qno">15</span><span class="qt c-context">上下文语义 · 下一句就是清单</span><span class="qpos">underwater archaeology ___ and tools</span></div>
+          <span class="stem">Since the 1960s, underwater archaeology <em>15</em> and tools had made huge advances.</span>
+          <div class="opts">
+            <div class="opt">A policies<span class="gl">政策</span></div>
+            <div class="opt">B theories<span class="gl">理论</span></div>
+            <div class="opt">C documents<span class="gl">文件，文献</span></div>
+            <div class="opt">D techniques<span class="gl">技术，方法</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>名词，与 tools 并列，共同被 underwater archaeology 修饰，作主语。
+            <span class="lbl">🔗 线索</span>① and 并列：与 tools 同类 ⟹ 实践层面的东西；② 下一句 robotics, sonar mapping, state-of-the-art graphics 就是「技术与工具」的清单——<b>下义词在下一句</b>。
+            <span class="lbl">✅ D techniques</span>技术——机器人、声呐测绘、先进图像技术的上位词。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>policies：政策——政府层面的，和 tools 不同类，也接不上下句的技术清单。</div>
+              <div class="wr"><span class="l">B</span>theories：偷「理论与实践两方面都进步了」——可下句列的全是实践手段。</div>
+              <div class="wr"><span class="l">C</span>documents：文件、文献——不会「取得巨大进步」。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>总括词空</b>：往下一句找清单，空里填清单的上位词（robotics, sonar, graphics → techniques）。technique（具体技术、技巧，可数）· technology（技术整体）· technical（形容词）——三个形近词顺手分清。
+          </div>
+        </div>
+
+        <div class="q" id="q16" data-ans="2">
+          <div class="qhead"><span class="qno">16</span><span class="qt c-word">词义辨析 · 手段 → 目的</span><span class="qpos">The team ___ robotics … to survey the site</span></div>
+          <span class="stem">The team <em>16</em> robotics, sonar mapping … to survey the site.</span>
+          <div class="opts">
+            <div class="opt">A ordered<span class="gl">订购；命令</span></div>
+            <div class="opt">B provided<span class="gl">提供</span></div>
+            <div class="opt">C employed<span class="gl">使用，采用</span></div>
+            <div class="opt">D adjusted<span class="gl">调整</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>谓语动词，宾语是三样技术，后接目的不定式 to survey the site。四个都能接名词宾语，<b>形式全通</b>。
+            <span class="lbl">🔗 线索</span>「对技术做了什么」＋「为了勘测遗址」⟹ <b>手段—目的</b>：用这些技术去勘测；上一句刚说技术进步巨大 ⟹ 团队把它们<b>用上</b>了。
+            <span class="lbl">✅ C employed</span>采用——employ ＋ 物 ＝ use；employ ＋ 人 ＝ 雇用。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>ordered：订购、命令——技术不是订购来的实物，更不能被「命令」。</div>
+              <div class="wr"><span class="l">B</span>provided：提供——方向反：是给别人用，可这些是团队自己用来勘测的。</div>
+              <div class="wr"><span class="l">D</span>adjusted：调整——暗示技术不够好要改，与 state-of-the-art（最先进的）矛盾（黄皮书同此）。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>employ 熟词僻义：雇用 → <b>使用</b>（employ a method／strategy／technique）。⭐ 本篇三个「手段—目的」：8 was gathering data <b>to analyze</b> · 11 returned <b>to examine</b> · 16 employed robotics <b>to survey</b>——动词空后面跟 to do 时，<b>先读 to do，再回头挑手段</b>。
+          </div>
+        </div>
+
+        <div class="q" id="q17" data-ans="1">
+          <div class="qhead"><span class="qno">17</span><span class="qt c-collo">固定搭配 · bring sth to ___</span><span class="qpos">bring the underwater town to ___</span></div>
+          <span class="stem">… they were able to bring the underwater town to <em>17</em>.</span>
+          <div class="opts">
+            <div class="opt">A effect<span class="gl">效果；生效</span></div>
+            <div class="opt">B light<span class="gl">光，光亮</span></div>
+            <div class="opt">C reality<span class="gl">现实</span></div>
+            <div class="opt">D mind<span class="gl">头脑；记忆</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span><code>bring sth to ___</code> 框架里的名词，在句末。
+            <span class="lbl">🔗 线索</span>① 现成习语 <b>bring … to light</b>：使重见天日、揭露出来；② 与②段首的 lay <b>unseen</b> 首尾相反——藏了几千年 → 被带到光亮处；③ 下一句开始列成果（路、房、织机坠子）＝「揭开」的内容。
+            <span class="lbl">✅ B light</span>bring the underwater town to light ＝ 让水下城镇重见天日。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>effect：现成说法是 bring … <b>into</b> effect（使生效），介词不对，对象也是法规政策（黄皮书同此）。</div>
+              <div class="wr"><span class="l">C</span>reality：城镇本来就真实存在，不需要「变成现实」——bring sth to reality 的预设是「原来只是构想」。</div>
+              <div class="wr"><span class="l">D</span>mind：bring … to mind 使想起——预设它被遗忘过，可原文是「没被看见」，不是「被忘了」。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ 四个都是 bring 的搭档，要<b>整串念</b>：bring to light 揭开 · bring to mind 想起 · bring into effect 生效 · bring to life 使生动、复活（本题没给，却最容易被想到）（⟹ <a href="套路库_阅读.html#R310" style="color:var(--accent)">R310</a>）。⭐ 盲做时我在 light／reality 间停过：reality 预设「原来只是想法」。light 一族：come to light 被发现 · shed light on 阐明。
+          </div>
+        </div>
+
+        <div class="q" id="q18" data-ans="1">
+          <div class="qhead"><span class="qno">18</span><span class="qt c-word">词义辨析 · 路对房子能做什么</span><span class="qpos">three main roads ___ some 50 rectangular buildings</span></div>
+          <span class="stem">… Pavlopetri’s three main roads <em>18</em> some 50 rectangular buildings …</span>
+          <div class="opts">
+            <div class="opt">A crossed<span class="gl">穿过；交叉</span></div>
+            <div class="opt">B connected<span class="gl">连接</span></div>
+            <div class="opt">C blocked<span class="gl">堵塞</span></div>
+            <div class="opt">D altered<span class="gl">改变，改建</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>谓语动词，主语 three main roads，宾语 some 50 rectangular buildings。
+            <span class="lbl">🔗 线索</span>路和房子最正常的关系：路把房子<b>连起来</b>；下一句的结论「繁荣的贸易中心」也需要四通八达的路网。
+            <span class="lbl">✅ B connected</span>三条主路连通约 50 座长方形建筑。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>crossed：穿过——路穿过的是城、是区域，不是一栋栋房子；cross 作「交叉」说的是路与路（黄皮书同此）。</div>
+              <div class="wr"><span class="l">C</span>blocked：堵塞——被堵的应该是路，不是房子。</div>
+              <div class="wr"><span class="l">D</span>altered：改变、改建——路是无生命的，不会去改建房屋。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ 动词空主语是物：先问「这个物能对宾语做什么」——sea level rise <b>submerges</b> a city（3）· a barrier <b>protects</b> a city（7）· roads <b>connect</b> buildings（18）。本篇这类题三道，判据完全一样。
+          </div>
+        </div>
+
+        <div class="q" id="q19" data-ans="1">
+          <div class="qhead"><span class="qno">19</span><span class="qt c-logic">逻辑关系 · 证据 → 推论</span><span class="qpos">loom weights, ___ Pavlopetri was a thriving trade center</span></div>
+          <span class="stem">… loom weights, <em>19</em> Pavlopetri was a thriving trade center …</span>
+          <div class="opts">
+            <div class="opt">A expecting<span class="gl">预料，期待</span></div>
+            <div class="opt">B suggesting<span class="gl">表明，暗示</span></div>
+            <div class="opt">C predicting<span class="gl">预测</span></div>
+            <div class="opt">D recalling<span class="gl">回想起</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>现在分词作结果状语，后面省略了宾语从句的 that；逻辑主语是前面整件事——发掘出了大量织机坠子。
+            <span class="lbl">🔗 线索</span>前半是<b>证据</b>（出土大量米诺斯风格的织机坠子），后半是<b>结论</b>（这里曾是繁荣的贸易中心）——证据 → 推论 ⟹「表明」。
+            <span class="lbl">✅ B suggesting</span>表明——物（证据）可以作主语：The evidence suggests that …
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">A</span>expecting：预期——要人作主语；而且后面是已经发生的事实，不是期待（黄皮书同此）。</div>
+              <div class="wr"><span class="l">C</span>predicting：预测——指向未来，可从句用的是过去时 was。</div>
+              <div class="wr"><span class="l">D</span>recalling：回想——要人作主语，且预设「早就知道、只是忘了」，与全文「几千年无人知晓」不符。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>三缺一</b>：expecting／predicting／recalling 都是<b>人脑里的活动</b>，要人作主语；只有 suggesting 能让<b>证据</b>当主语（⟹ <a href="套路库_阅读.html#R74" style="color:var(--accent)">R74</a>）。「证据 → 结论」动词一族：suggest · indicate · show · reveal · point to。⚠️ 口径：本页按「证据 → 推论」这层关系归逻辑；若只把连接词算逻辑空，本题改归词义，见 03。
+          </div>
+        </div>
+
+        <div class="q" id="q20" data-ans="0">
+          <div class="qhead"><span class="qno">20</span><span class="qt c-word">词义辨析 · 与 thriving 同向</span><span class="qpos">with a ___ textile industry</span></div>
+          <span class="stem">… a thriving trade center with a <em>20</em> textile industry.</span>
+          <div class="opts">
+            <div class="opt">A robust<span class="gl">强劲的，兴旺的</span></div>
+            <div class="opt">B diverse<span class="gl">多样的</span></div>
+            <div class="opt">C marginal<span class="gl">边缘的，次要的</span></div>
+            <div class="opt">D dependent<span class="gl">依赖的</span></div>
+          </div>
+          <div class="expl">
+            <span class="lbl">🧭 空格身份</span>形容词，修饰 textile industry；with 短语补充说明 a thriving trade center。
+            <span class="lbl">🔗 线索</span>① 同句 <b>thriving</b>（繁荣的）——with 后的补充应与它同向；② 证据是 <b>a large number of</b> loom weights（数量多）——量大 ⟹ 产业强。
+            <span class="lbl">✅ A robust</span>强劲的、兴旺的（a robust economy）——与 thriving 同向。
+            <span class="lbl">❌ 另外三个错在哪</span>
+            <div class="wrongs">
+              <div class="wr"><span class="l">B</span>diverse：多样——讲种类多，不讲强不强；织机坠子多只说明织得多，说明不了品种多。⚠️ 黄皮书还给了一条形式理由「diverse 后接复数名词，空后是单数」——<b>这条不成立</b>：a diverse economy／a diverse population 都是单数，只能靠语义排。</div>
+              <div class="wr"><span class="l">C</span>marginal：边缘的、次要的——与 thriving 方向反。</div>
+              <div class="wr"><span class="l">D</span>dependent：依赖他人的——「依赖型产业」撑不起繁荣的贸易中心，同样方向反。</div>
+            </div>
+            <span class="lbl">💡 迁移</span>⭐ <b>末空又不是逻辑空——2013 年以来十三年里十二年如此</b>（只有 2016 是 while；2023 ruins、2024 appropriate、2025 robust），末空怎么判见 <a href="套路库_阅读.html#R103" style="color:var(--accent)">R103</a>。经济形容词一把尺：robust／booming／thriving／flourishing（强）vs sluggish／stagnant／marginal（弱）。✍️ <i>A robust tourism industry has brought jobs to the region.</i>
+          </div>
+        </div>
+      </section>
+      <!-- ========== 03 考点分类 ========== -->
+      <section class="card">
+        <h2><span class="n">03</span>考点分类（完形不背单个空，要看「这题在考什么」）</h2>
+        <div class="catbar" id="catbar"></div>
+        <div class="catlegend" id="catlegend"></div>
+        <p class="note" style="margin-top:14px">点某一类 → 下方列出该类所有空、正文里同步高亮 → 点小格跳到解析卡。（分类依据不是「空格里填的是什么词」，而是<b>「解这一题你得做什么动作」</b>——1 prone to、5 off the island、17 bring to light 得先认得现成说法，<b>归「固定搭配」</b>；3、7、11、16、18 五个动词空四个选项结构全通，定它们的是「主语能不能对宾语做这件事」，连同 6 currents（先定沙层在海底）、20 robust（同句 thriving 同向），<b>归「词义辨析」</b>；2 要看下一句的 slow、4／10 要认同指链、13 要回到 first spotted、14 要回到上段末的 would return、15 要看下一句的技术清单、8 要用同句的 first 排掉两个预设，<b>归「上下文语义」</b>。）</p>
+        <div class="chips" id="chips"></div>
+        <p class="note" style="margin-top:14px">⭐ <b>十九年对照：2025 的 7／3／3／7 是新组合——十九年第十六种</b>（重样仍是三次：2016 撞 2011、2020 撞 2014、2024 撞 2018）。逻辑 3 个，与 2012、2014、2015、2017、2020、2022 并列低位（只有 2008、2021 更少）；词义与语境<b>各 7 个、两头重</b>，搭配只有 3 个——<b>这是一篇靠「读懂故事」而不是靠「背短语」的完形</b>。</p>
+        <div class="tabwrap"><table class="otab">
+          <tr><th>年份</th><th>词义</th><th>搭配</th><th>逻辑</th><th>语境</th><th>这一年压在哪</th></tr>
+          <tr><td>2007</td><td>9</td><td>5</td><td>4</td><td>2</td><td>词义（占 45%）</td></tr>
+          <tr><td>2008</td><td>9</td><td>6</td><td>2</td><td>3</td><td>实义动词的主语适配</td></tr>
+          <tr><td>2009</td><td>6</td><td>5</td><td>5</td><td>4</td><td>四类几乎持平</td></tr>
+          <tr><td>2010</td><td>9</td><td>4</td><td>4</td><td>3</td><td>形容词与副词的方向</td></tr>
+          <tr><td>2011</td><td>6</td><td>3</td><td>6</td><td>5</td><td>一根因果箭头的方向</td></tr>
+          <tr><td>2012</td><td>5</td><td>4</td><td>3</td><td>8</td><td>作者的应然立场</td></tr>
+          <tr><td>2013</td><td>3</td><td>7</td><td>4</td><td>6</td><td>空格后的介词短语</td></tr>
+          <tr><td>2014</td><td>5</td><td>6</td><td>3</td><td>6</td><td>按段定正负</td></tr>
+          <tr><td>2015</td><td>6</td><td>6</td><td>3</td><td>5</td><td>研究报道的槽位套话</td></tr>
+          <tr><td>2016</td><td>6</td><td>3</td><td>6</td><td>5</td><td>流程时间轴</td></tr>
+          <tr><td>2017</td><td>7</td><td>4</td><td>3</td><td>6</td><td>因果链的扣环词</td></tr>
+          <tr><td>2018</td><td>5</td><td>4</td><td>4</td><td>7</td><td>两本账的翻账键</td></tr>
+          <tr><td>2019</td><td>4</td><td>4</td><td>4</td><td>8</td><td>清单编号 ＋ 替身链</td></tr>
+          <tr><td>2020</td><td>5</td><td>6</td><td>3</td><td>6</td><td>三声部 ＋ 让步档位</td></tr>
+          <tr><td>2021</td><td>3</td><td>7</td><td>2</td><td>8</td><td>同句搭档 ＋ 单边搭配</td></tr>
+          <tr><td>2022</td><td>6</td><td>4</td><td>3</td><td>7</td><td>让步转折信号词</td></tr>
+          <tr><td>2023</td><td>5</td><td>5</td><td>6</td><td>4</td><td>六种逻辑关系 ＋ 全真搭配</td></tr>
+          <tr><td>2024</td><td>5</td><td>4</td><td>4</td><td>7</td><td>一个意思说三遍（四组同义复现）</td></tr>
+          <tr><td><b>2025</b></td><td><b>7</b></td><td><b>3</b></td><td><b>3</b></td><td><b>7</b></td><td><b>时间轴上的两条线（被看见 vs 被动手）</b></td></tr>
+        </table></div>
+        <p class="note">⚠️ <b>口径说明</b>：19 若只把连接词算逻辑空、改归词义，就成了 8／3／2／7；8 若按「gather data 主谓搭配」归词义，就成了 8／3／3／6；6 若按 shifting currents 现成搭配归搭配，就成了 6／4／3／7。三种口径下<b>「逻辑不超过 3、词义与语境两头重」都不变</b>；前两种组合在前十八年同样没出现过，第三种会撞上 2022（6／4／3／7）——所以「新组合」这个说法取的是本页口径。</p>
+        <p class="note">📌 <b>结构失效：动词空六道全失效。</b> <b>3</b> disguised／submerged／relocated／isolated 全能接 the city · <b>7</b> 四个全能接 Pavlopetri · <b>8</b> 四个全能接 data · <b>11</b> 四个全能接 the location · <b>16</b> 四个全能接 robotics · <b>18</b> 四个全能接 buildings；另有 <b>13</b>（四个 un- 形容词都能接在 lie 后）、<b>20</b>（四个形容词都能修饰 industry——黄皮书拿「diverse 只接复数」排 B 是错的）。⟹ 救回它们的只有两样：<b>主语能不能对宾语做这件事</b>（3、7、18），和<b>后面的 to do 要什么手段</b>（8、11、16）。</p>
+        <p class="note">📐 <b>线索位置（判据＝关键线索是否落在同一个句号之内）：句内自足 14 空／跨句 6 空 ＝ 70%。</b> 跨句：<b>2</b>（下句 slow）· <b>4</b>（下句 They were covered；后文 buildings 清单）· <b>10</b>（段首 remains）· <b>13</b>（上文 first spotted、map the site）· <b>14</b>（上段末 would return）· <b>15</b>（下句技术清单）。⚠️ 口径：6 若按「要回上句才知道屏障是沙」算跨句，则 13／7＝65%。（往年：2019 60% → 2020 85% → 2021 90% → 2023 85% → 2024 75% → <b>2025 70%</b>——连续两年下降：<b>叙事文的空，线索常在上一站或下一站</b>。）</p>
+        <p class="note">📌 <b>位置预判：句首空只有 1 个（12 Despite），它就是逻辑空</b> ⟹ <a href="套路库_阅读.html#R76" style="color:var(--accent)">R76</a>「句首的空几乎一定考逻辑」本年 1／1 成立；另外两个逻辑空 9 when、19 suggesting 都在句中——<b>一个在从句开头、一个在分词开头</b>，都是「从句／状语的门口」。</p>
+        <p class="note">📌 <b>三缺一：干脆成立 6 次（2 · 6 · 9 · 12 · 14 · 19），全是答案</b>——连续三年都是 6 次。2：accidentally／frequently／temporarily 把下沉当事件 ＋ gradually 唯一当过程 · 6：rivers 陆上、winds 空中、seasons 时间 ＋ currents 唯一在海里 · 9：until／after／once 一前一后 ＋ when 唯一同时 · 12：Unlike／Besides／Among 都不让步 ＋ Despite 唯一让步 · 14：suspended／transferred／canceled 都让发掘不在这儿进行 ＋ resumed 唯一让它继续 · 19：expecting／predicting／recalling 都要人当主语 ＋ suggesting 唯一能让证据当主语。⚠️ 对照：2023 六次里五次是逻辑空、2024 三次是动词空，<b>2025 三次逻辑空、三次实义词（副词、名词、动词各一）</b>——<b>三缺一不挑词性</b>，凡是四个选项能按「方向／极性」分组的空，都先分组（⟹ <a href="套路库_阅读.html#R74" style="color:var(--accent)">R74</a>）。</p>
+      </section>
+
+      <!-- ========== 04 打法 ========== -->
+      <section class="card">
+        <h2><span class="n">04</span>完形六大打法（本篇取证）</h2>
+        <div class="flow">
+          <div class="fi"><b>① 首句看写法：身份证 ＋ 年份 ⟹ 按时间往下讲</b>：Located in … · the modern name of the site · around 3500 B.C. · 1650–1180 B.C.——首句一口气给了地点、名字、两个年代。
+            <span class="ev">后面十五句里十一句带时间状语：more than 3,000 years ago · For millennia · In recent decades · In 1967 · A year later · for decades · In 2009 · Since the 1960s · From 2009 to 2013……<b>这种文章的每个空，都是时间轴上某一站发生的事</b>（⟹ <a href="套路库_阅读.html#R312" style="color:var(--accent)">R312</a>）。</span></div>
+          <div class="fi"><b>② 先定「这是哪一站」，再定那一站该有什么样的词</b>：
+            <span class="ev">沉没站要「慢」（2 gradually · 3 submerged）· 被看见站要「首次、意外」（8 gathering · 9 when · 10 structures）· 被晾着站要「没人动」（12 Despite · 13 undisturbed）· 挖掘站要「恢复、技术、揭开」（14 resumed · 15 techniques · 16 employed · 17 light）· 成果站要「推出结论」（19 suggesting · 20 robust）。</span></div>
+          <div class="fi"><b>③ 发现史有两条线：「被看见了没有」和「被动过没有」</b>：两条线的时间点不一样，干扰项专门把一条线的词塞到另一条线上。
+            <span class="ev">知道线：lay unseen（①前）→ first spotted（1967）→ bring to light（2009–13）｜动手线：examine and map（1968）→ lie undisturbed（几十年）→ resumed the excavation（2009）。⟹ 13 的 unknown 是知道线的词、塞进了动手线的空（⟹ 新卡 <a href="套路库_阅读.html#R324" style="color:var(--accent)">R324</a>）。</span></div>
+          <div class="fi"><b>④ 名词空先认同指链：这是那座城的第几个名字</b>：
+            <span class="ev">the city → the city’s remains（4）→ They → the sunken structures（10）→ the location／the site → the exciting initial finds → the underwater town（17）。4 和 10 是同一样东西，下文 15 buildings, courtyards, streets, tombs 是它们的清单——<b>名词空往后找清单、往回找代词</b>。</span></div>
+          <div class="fi"><b>⑤ 动词空：主语能不能做 ＋ to do 要什么手段</b>：六个动词空结构全通，只剩这两把刀。
+            <span class="ev">主语刀：sea level rise <b>submerges</b>（3）· a barrier <b>protects</b>（7）· roads <b>connect</b>（18）｜目的刀：gathering data <b>to analyze</b>（8）· returned <b>to examine</b> and map（11）· employed robotics <b>to survey</b>（16）。</span></div>
+          <div class="fi"><b>⑥ 答案常写在下一句</b>：本句先填，下句马上换个词再说一遍。
+            <span class="ev">2 gradually ← 下句 The <b>slow</b> sea level rise · 4 remains ← 下句 <b>They</b> were covered by sand · 15 techniques ← 下句 robotics, sonar mapping, graphics · 17 light ← 下句起开始列成果。<b>拿不准时，先读完下一句再回来。</b></span></div>
+        </div>
+        <p class="note" style="margin-top:14px">🔁 三年说明文对照：<a href="2023_完形_商旅客栈.html" style="color:var(--accent)">2023 完形</a> 是百科词条，靠<b>关系</b>（六个逻辑空六种关系）；<a href="2024_完形_自动门.html" style="color:var(--accent)">2024 完形</a> 是产品原理，靠<b>复现</b>（四组同义说法）；<b>2025 是发现史，靠时间轴</b>（先定是哪一站，再分两条线）。三年都没有作者立场，方向都不会反——<b>说明文的完形，难点从来不在正负，在「这一空在结构里的位置」</b>。与 <a href="2016_完形_柬埔寨的婚俗.html" style="color:var(--accent)">2016 完形</a> 对照：那年是婚礼的<b>流程</b>时间轴（一天之内，一步接一步），本年是<b>历史</b>时间轴（几千年，中间断了几十年）——流程轴不会「断档」，历史轴会，13、14 就出在断档处。</p>
+      </section>
+
+      <!-- ========== 05 固定搭配 ========== -->
+      <section class="card">
+        <h2><span class="n">05</span>固定搭配 &amp; 熟词僻义（这些是死记就得分的）</h2>
+        <div class="wb">
+          <div class="wbi"><div class="p">be prone to sth　易于遭受（坏事）（1 题）</div><div class="u">一族：subject to · vulnerable to · susceptible to · liable to——都接坏事。⚠️ be prone to do 也行：be prone to make mistakes。</div></div>
+          <div class="wbi"><div class="p">cause sth to (gradually) do　导致……（逐渐）怎样（2 题）</div><div class="u">cause 后接 sb/sth to do，不接 doing。副词插在 to 和动词之间（分裂不定式）在新闻英语里很常见。</div></div>
+          <div class="wbi"><div class="p">emerge as ／ be submerged　作为……出现 ／ 被淹没（①❶、3 题）</div><div class="u">词根 merge（沉）：emerge 冒出 · submerge 淹没 · merge 合并。本篇首尾一对。</div></div>
+          <div class="wbi"><div class="p">lie unseen ／ lie undisturbed　处于无人得见 ／ 无人触动的状态（②❶、13 题）</div><div class="u">lie ＋ 形容词 ＝ 处于某状态：lie empty · lie idle · lie dormant。⚠️ lie（躺；过去式 lay）· lay（放置；过去式 laid）——②❶ 的 lay 是 lie 的过去式。</div></div>
+          <div class="wbi"><div class="p">off the coast ／ off the island　在……近海（5 题）</div><div class="u">报道沉船、遗址、海难的位置套话：a wreck found off the coast of Sicily。</div></div>
+          <div class="wbi"><div class="p">a natural barrier that protects X　保护 X 的天然屏障（7 题）</div><div class="u">barrier 的功能动词：protect · shield · guard · block（挡住外来的东西）。</div></div>
+          <div class="wbi"><div class="p">was doing … when …　正在……这时……（9 题）</div><div class="u">⭐ 最常考的 when：主句过去进行时 ＋ when 从句一般过去时 ＝ 进行中被打断。</div></div>
+          <div class="wbi"><div class="p">Despite ＋ 名词短语, …　尽管……（12 题）</div><div class="u">despite 是介词，后接名词／动名词，不接从句；接从句用 although。in spite of 同义。</div></div>
+          <div class="wbi"><div class="p">in cooperation with　与……合作（③❶）</div><div class="u">同类：in collaboration with · in partnership with · in conjunction with。</div></div>
+          <div class="wbi"><div class="p">resume sth ／ make huge advances　恢复 ／ 取得巨大进步（14、15 题）</div><div class="u">resume work／talks／the excavation（中断后继续）· ⚠️ résumé 是简历。advance 名词：取得进步 make advances in。</div></div>
+          <div class="wbi"><div class="p">employ X to do Y　用 X 来做 Y（16 题）</div><div class="u">employ ＋ 物 ＝ use；employ ＋ 人 ＝ 雇用。同类：use／adopt／apply X to do Y。</div></div>
+          <div class="wbi"><div class="p">bring sth to light　使重见天日；揭露（17 题）</div><div class="u">bring 四兄弟：bring to light 揭开 · bring to mind 想起 · bring into effect 生效 · bring to life 使生动。come to light 被发现。</div></div>
+          <div class="wbi"><div class="p">…, suggesting (that) …　……，这表明……（19 题）</div><div class="u">分词作结果状语，逻辑主语是前面整件事。同类：…, indicating that … · …, which shows that …</div></div>
+          <div class="wbi"><div class="p">🔑 熟词僻义五个：remains · structures · current · finds · map</div><div class="u"><b>remains</b> 遗迹（不是「保持」）· <b>structures</b> 建筑物（不只是「结构」）· <b>currents</b> 洋流（不是「当前的」）· <b>initial finds</b> 初步发现物（find 作名词）· <b>map the site</b> 测绘遗址（map 作动词）。</div></div>
+        </div>
+      </section>
+
+      <!-- ========== 06 80 词 ========== -->
+      <section class="card">
+        <h2><span class="n">06</span>80 个选项词速查（完形的真正词汇量）
+          <button class="allbtn" id="btnHide" style="margin-left:auto" onclick="toggleHide()">✍️ 默写模式</button>
+        </h2>
+        <p class="note">完形一篇＝<b>80 个高频词的辨析现场</b>，绿底是正确项。<b>默写模式</b>会糊住中文释义——先自己说出意思，点单个格子可单独揭开。本篇<b>一个短语选项都没有</b>（对照 2024 有 20 个），全是单词——难点转到了<b>词义的细分</b>：13 题四个 un- 形容词（unchallenged／unknown／unorganized／undisturbed）、19 题四个「心理／推断」动词（expecting／suggesting／predicting／recalling）、14 题四个「停／续」动词，值得在这张表里成组过一遍。</p>
+        <div class="tabwrap"><table class="otab" id="otab"></table></div>
+      </section>
+
+      <!-- ========== 07 长难句 ========== -->
+      <section class="card">
+        <h2><span class="n">07</span>长难句精析（正文蓝色虚线句）</h2>
+
+        <div class="sent" id="l1_1">
+          <div class="src"><b>①❶ 过去分词作状语 ＋ 括号同位语 ＋ 两个并列谓语</b><img class="strip" src="img/2025_完形/s1_1.png" alt="①❶ 原卷句条" loading="lazy"></div>
+          <div class="anat">
+            <ul>
+              <li><b>句首状语</b>：<code>Located in the southern Peloponnesian peninsula</code>——过去分词短语，逻辑主语是 Pavlopetri；be located in ＝ 位于（不译「被定位」）。</li>
+              <li><b>主语 ＋ 同位语</b>：Pavlopetri（the modern name of the site）——括号交代这只是<b>今天</b>给遗址起的名字，古名不详。</li>
+              <li><b>两个并列谓语</b>：<span class="skel">emerged as a Neolithic settlement around 3500 B.C.</span> and <span class="skel">became an important trading center for Mycenaean Greece</span>——一个讲「怎么出现的」，一个讲「后来成了什么」；括号里 1650–1180 B.C. 是迈锡尼时期的年代。</li>
+              <li><b>首尾呼应</b>：本句 an important trading center ↔ ③❻ a thriving trade center——全文最后用考古证据回证了首句的身份。</li>
+            </ul>
+          </div>
+          <div class="tr">意：帕夫洛彼特里（这处遗址的现代名称）位于伯罗奔尼撒半岛南部，约公元前 3500 年作为新石器时代的定居点出现，后来成为迈锡尼时期希腊的重要贸易中心。</div>
+        </div>
+
+        <div class="sent" id="l1_2">
+          <div class="src"><b>①❷ 非限制性定语从句 ＋ cause sth to do（分裂不定式）</b><img class="strip" src="img/2025_完形/s1_2.png" alt="①❷ 原卷句条" loading="lazy"></div>
+          <div class="anat">
+            <ul>
+              <li><b>主干</b>：<span class="skel">This area of the Aegean Sea is ___ to earthquakes and tsunamis</span>——be prone to ＋ 名词。</li>
+              <li><b>定语从句</b>：<code>which caused the city to ___ sink</code>——which 指 earthquakes and tsunamis（逗号后的非限制性从句，补充结果）；cause sth to do。</li>
+              <li><b>分裂不定式</b>：to ___ sink——副词插在 to 和动词之间；读的时候把副词摘出来，主干是 caused the city to sink。</li>
+            </ul>
+          </div>
+          <div class="tr">意：爱琴海的这片海域易发地震和海啸，它们使这座城市逐渐下沉。</div>
+        </div>
+
+        <div class="sent" id="l2_3">
+          <div class="src"><b>②❸ 并列主语 ＋ 现在完成时 ＋ that 定语从句</b><img class="strip" src="img/2025_完形/s2_3.png" alt="②❸ 原卷句条" loading="lazy"></div>
+          <div class="anat">
+            <ul>
+              <li><b>时间状语</b>：In recent decades ＋ 现在完成时 have eroded——「近几十年来一直在侵蚀」，影响延续到现在。</li>
+              <li><b>并列主语</b>：<span class="skel">shifting ___ and climate change</span>——一个自然力 ＋ 一个人类相关的变化，两样一起侵蚀。</li>
+              <li><b>宾语 ＋ 定从</b>：<code>a natural barrier that ___ Pavlopetri</code>——that 指 barrier；从句给屏障下定义：它是干什么的。主句「侵蚀」与从句「保护」一坏一好，构成张力。</li>
+            </ul>
+          </div>
+          <div class="tr">意：近几十年来，不断变化的洋流和气候变化侵蚀了一道保护帕夫洛彼特里的天然屏障。</div>
+        </div>
+
+        <div class="sent" id="l2_4">
+          <div class="src"><b>②❹ was doing … when … 进行中被打断 ＋ 目的不定式</b><img class="strip" src="img/2025_完形/s2_4.png" alt="②❹ 原卷句条" loading="lazy"></div>
+          <div class="anat">
+            <ul>
+              <li><b>时间状语</b>：In 1967。</li>
+              <li><b>主句</b>：<span class="skel">a scientific survey of the Peloponnesian coast was ___ data</span>——主语是「考察」这件事（物作主语，等于「考察队」）；过去进行时 was ___ing。</li>
+              <li><b>目的状语</b>：<code>to analyze changes in sea levels</code>——采数据是为了分析海平面变化；这次考察本来不是来找古城的。</li>
+              <li><b>when 从句</b>：<code>___ British oceanographer Nicholas Flemming first spotted the sunken ___</code>——一般过去时 ＋ first：正在做 A 时意外撞上 B。</li>
+            </ul>
+          </div>
+          <div class="tr">意：1967 年，一次对伯罗奔尼撒海岸的科学考察正在收集数据以分析海平面变化，就在这时，英国海洋学家尼古拉斯·弗莱明首次发现了这些沉没的建筑。</div>
+        </div>
+
+        <div class="sent" id="l2_7">
+          <div class="src"><b>②❼ Despite 让步 ＋ 两个 would（过去将来）</b><img class="strip" src="img/2025_完形/s2_7.png" alt="②❼ 原卷句条" loading="lazy"></div>
+          <div class="anat">
+            <ul>
+              <li><b>让步状语</b>：<code>___ the exciting initial finds</code>——介词短语，finds 是名词「发现物」。</li>
+              <li><b>主干</b>：<span class="skel">the site would lie ___ for decades</span>——lie ＋ 形容词 ＝ 处于某状态。</li>
+              <li><b>两个 would</b>：would lie、would return 都是<b>过去将来时</b>——站在 1968 年往后看：「它将沉寂几十年，然后考古学家才会回来」。这是叙事文的「预告」笔法，把下一段（2009）提前埋了钩子。</li>
+            </ul>
+          </div>
+          <div class="tr">意：尽管初步发现令人兴奋，这处遗址此后几十年却一直无人触动，直到考古学家重返。</div>
+        </div>
+
+        <div class="sent" id="l3_4">
+          <div class="src"><b>③❹ From … to … ＋ were able to ＋ bring sth to light</b><img class="strip" src="img/2025_完形/s3_4.png" alt="③❹ 原卷句条" loading="lazy"></div>
+          <div class="anat">
+            <ul>
+              <li><b>时间状语</b>：From 2009 to 2013——一段时间，配合下文的成果清单。</li>
+              <li><b>主干</b>：<span class="skel">they were able to bring the underwater town to ___</span>——⚠️ were able to 表示过去<b>成功做成了</b>某事（＝ managed to），不能换成 could（could 只说能力）。</li>
+              <li><b>习语</b>：bring sth to light——宾语 the underwater town 插在 bring 和 to 中间，所以读的时候要把 bring … to light 拼回来。</li>
+            </ul>
+          </div>
+          <div class="tr">意：从 2009 年到 2013 年，他们终于让这座水下城镇重见天日。</div>
+        </div>
+
+        <div class="sent" id="l3_5">
+          <div class="src"><b>③❺ 现在分词作状语（逻辑主语的松动）＋ all of which</b><img class="strip" src="img/2025_完形/s3_5.png" alt="③❺ 原卷句条" loading="lazy"></div>
+          <div class="anat">
+            <ul>
+              <li><b>句首状语</b>：<code>Covering about two and a half acres</code>——「占地约两英亩半」。⚠️ 严格按语法，分词的逻辑主语应是主句主语 three main roads；可语义上占地 2.5 英亩的是<b>整座城</b>（藏在所有格 Pavlopetri’s 里）——新闻英语常见的宽松写法，读懂即可，作文里别学。</li>
+              <li><b>主干</b>：<span class="skel">Pavlopetri’s three main roads ___ some 50 rectangular buildings</span>——some ＋ 数字 ＝ 大约。</li>
+              <li><b>非限制性定从</b>：<code>all of which had open courtyards</code>——which 指那 50 座建筑；「代词 ＋ of which」是写作里很好用的结构。</li>
+            </ul>
+          </div>
+          <div class="tr">意：帕夫洛彼特里占地约两英亩半，三条主干道连接着约 50 座长方形建筑，每座都带开放式庭院。</div>
+        </div>
+
+        <div class="sent" id="l3_6">
+          <div class="src"><b>③❻ 分词作结果状语 ＋ 省略 that 的宾语从句 ＋ with 短语</b><img class="strip" src="img/2025_完形/s3_6.png" alt="③❻ 原卷句条" loading="lazy"></div>
+          <div class="anat">
+            <ul>
+              <li><b>主干</b>：<span class="skel">Excavations revealed a large number of Minoan-style loom weights</span>——证据。</li>
+              <li><b>结果状语</b>：<code>___ (that) Pavlopetri was a thriving trade center</code>——现在分词，逻辑主语是前面整件事（发掘出大量织机坠子）；宾语从句省了 that——结论。</li>
+              <li><b>with 短语</b>：<code>with a ___ textile industry</code>——补充说明 trade center「带着怎样的产业」，与 thriving 同向。</li>
+              <li><b>收束</b>：「证据 → 结论」一句写完，回扣首句的 trading center——全文到此闭环。</li>
+            </ul>
+          </div>
+          <div class="tr">意：发掘出土了大量米诺斯风格的织布机坠子，表明帕夫洛彼特里曾是一个繁荣的贸易中心，拥有兴旺的纺织业。</div>
+        </div>
+      </section>
+
+      <!-- ========== 08 素材 ========== -->
+      <section class="card">
+        <h2><span class="n">08</span>可搬进作文/翻译的表达</h2>
+        <p class="note">本篇是一篇<b>按年份讲「一样东西怎么被埋没、又被找回来」</b>的叙事说明文，最能搬的是四类句子：<b>讲原因链</b>（be prone to …, which caused …）、<b>讲沉寂与转机</b>（lay unseen for …／Despite …, X would lie undisturbed …）、<b>讲技术推动</b>（Since …, X had made huge advances · employ X to do Y）、<b>讲证据推结论</b>（…, suggesting that …）。话题上，「文化遗产保护」「科技助力考古」「被遗忘的传统重新走红」都能接上。下面例句全部自拟，只借句式骨架。</p>
+        <div class="wb">
+          <div class="wbi"><div class="p">X is prone to A, which causes B　X 易受 A 影响，进而导致 B</div><div class="u">⭐ <b>原因分析段</b>：<i>Young people are prone to stress, which often leads to poor sleep.</i></div></div>
+          <div class="wbi"><div class="p">For decades, X lay unseen／undisturbed …　几十年来，X 一直无人知晓／无人问津</div><div class="u">⭐⭐ <b>文化遗产话题的开头</b>：<i>For decades, the old letters lay undisturbed in a drawer.</i></div></div>
+          <div class="wbi"><div class="p">Despite the exciting initial results, X would …　尽管最初的成果令人振奋，X 却……</div><div class="u">⭐ <b>转折叙事</b>：<i>Despite the promising start, the plan would stall for years.</i></div></div>
+          <div class="wbi"><div class="p">… was doing A when B first …　正在做 A 时，B 首次……</div><div class="u"><i>She was volunteering at a museum when she found her calling.</i></div></div>
+          <div class="wbi"><div class="p">Since …, X has made huge advances.　自……以来，X 取得了巨大进步</div><div class="u">⭐⭐ <b>图表作文／科技话题的背景句</b>：<i>Since 2010, online education has made huge advances.</i></div></div>
+          <div class="wbi"><div class="p">employ X to do Y　运用 X 来做 Y</div><div class="u">⭐ <b>建议信／措施段</b>：<i>Schools could employ digital tools to make lessons more engaging.</i></div></div>
+          <div class="wbi"><div class="p">bring X to light　让 X 重见天日／为人所知</div><div class="u"><i>The documentary brought the forgotten craft to light.</i></div></div>
+          <div class="wbi"><div class="p">…, suggesting that …　……，这表明……</div><div class="u">⭐⭐ <b>图表作文的数据解读句</b>：<i>The number of visitors doubled, suggesting that the campaign worked.</i></div></div>
+        </div>
+      </section>
+
+    </main>
+
+    <aside>
+      <div id="panel"><div class="hint">👆 点正文里的<b>黄底词</b><br>词卡会出现在这里<br><br>点<b>空格</b>则跳到对应解析卡</div></div>
+    </aside>
+  </div>
+
+  <footer>2025 英语一 · 完形填空复盘页 · 盲做口径：只看原卷正文与选项作答，答案先落盘 <code>_讲义笔记/2025_完形_mine.txt</code>，再核答案页（只裁 Section I 四行）——<b>20/20</b> · 解析由 Claude 独立写成并与黄皮书精讲（书内 1–13）逐空交叉核对（答案零书误；商榷两处：20 题书以「diverse 只接复数名词」排 B，形式理由不成立，应靠语义排 · 5 题书把 off 讲成「来源于」，方位义「在……近海」更常见更贴）· 来源：<i>National Geographic</i> 2024-07-25（据黄皮书）；遗址背景经 WebSearch 核对 · 正文由读者浏览器从原卷识别成文字，不转录全文 · 2023 起回到 2007 式版面</footer>
+
+</div>
+
+<button id="yd">🔍 查有道</button>
+
+<script>
+/* ============ V ============ */
+const V = {
+  neolithic:{w:"Neolithic",ipa:"/ˌniːəˈlɪθɪk/",pos:"adj.",tags:["core"],cn:"<b>新石器时代的</b>",en:"relating to the later part of the Stone Age",ex:"emerged as a Neolithic settlement around 3500 B.C.",mem:"neo-（新）＋ lith（石）＋ -ic ⟹ 新石器的。同根：Paleolithic 旧石器时代的 · monolith 巨石 · lithium 锂（「石」元素）。neo- 一族：neon 霓虹 · neoliberal 新自由主义的。",syn:"Stone Age 石器时代 · prehistoric 史前的",conf:"Neolithic（新石器）· Paleolithic（旧石器）· Mesolithic（中石器）"},
+  settlement:{w:"settlement",ipa:"/ˈsetlmənt/",pos:"n.",tags:["core","poly"],cn:"<b>定居点，聚落</b>；解决，和解",en:"a place where people have come to live; an official agreement that ends a dispute",ex:"a Neolithic settlement",mem:"settle（定居；解决）＋ -ment。本篇＝「人聚居的地方」。⚠️ 熟词僻义：reach a settlement 达成和解 · the settlement of a debt 清偿债务——阅读里两个意思都常见。",syn:"community 社区 · village 村落 · colony 殖民地",conf:"settlement（定居点；和解）· settler（定居者）· settle down（安顿下来）"},
+  tsunami:{w:"tsunami",ipa:"/tsuːˈnɑːmi/",pos:"n.",tags:["core"],cn:"<b>海啸</b>",en:"a very large wave caused by an earthquake under the sea",ex:"earthquakes and tsunamis, which caused the city to … sink",mem:"日语借词（津波）。和 earthquake 常成对出现：earthquakes and tsunamis。比喻用法：a tsunami of complaints 投诉潮。",syn:"tidal wave 海啸（旧称）",conf:"tsunami（海啸）· typhoon（台风）· hurricane（飓风）· tornado（龙卷风）"},
+  sealevel:{w:"sea level rise",ipa:"/ˈsiː ˌlevl raɪz/",pos:"n. phrase",tags:["phrase","write"],cn:"<b>海平面上升</b>",en:"the increase in the average height of the sea",ex:"The slow sea level rise in the Mediterranean",mem:"三个名词连用作一个名词：sea level（海平面）＋ rise（上升，名词）。⭐ 本句的 slow 回头照亮上一句的 2 题。✍️ 环保作文必备：<i>Rising sea levels threaten coastal cities.</i>",syn:"rising sea levels 海平面上升 · coastal flooding 沿海洪水",conf:"rise（不及物，n. 上升）· raise（及物，抬高；n. 加薪）· arise（出现）"},
+  millennia:{w:"millennia",ipa:"/mɪˈleniə/",pos:"n.（复数）",tags:["core"],cn:"<b>数千年</b>（millennium 的复数）",en:"periods of a thousand years",ex:"For millennia, the city’s … lay unseen",mem:"mill（千）＋ enn（年，同 annual）＋ -ium ⟹ 千年。拉丁复数 -ium → -ia：millennium → millennia（同类 medium → media、bacterium → bacteria）。for millennia ＝ for thousands of years。",syn:"for thousands of years 数千年来 · for ages 很久",conf:"millennium（千年）· century（百年）· decade（十年）——本篇三个都出现了：millennia ②❶ · decades ②❸／②❼"},
+  unseen:{w:"unseen",ipa:"/ˌʌnˈsiːn/",pos:"adj.",tags:["core"],cn:"<b>未被看见的，无人知晓的</b>",en:"not seen or noticed",ex:"lay unseen below some 13 feet of water",mem:"⭐ 本篇「知道线」的起点：lay unseen（1967 年前）→ first spotted（1967）→ 2009–13 年终于公之于众。读到后文时随时问一句：此时它还是 unseen 吗？",syn:"hidden 隐藏的 · unnoticed 未被注意的 · invisible 看不见的",conf:"unseen（没被看见）· unknown（没人知道）· unnoticed（没被注意）"},
+  shifting:{w:"shifting",ipa:"/ˈʃɪftɪŋ/",pos:"adj.",tags:["core","write"],cn:"<b>不断变化的，变动的</b>",en:"changing position or direction",ex:"In recent decades, shifting … and climate change",mem:"shift（移动，转变）＋ -ing。常见搭配：shifting sands 流沙 · shifting winds 风向多变 · shifting attitudes 不断变化的态度。✍️ <i>Shifting consumer habits have hit high-street shops.</i>",syn:"changing 变化的 · moving 移动的 · fluctuating 波动的",conf:"shift（v./n. 转变；轮班 night shift）· shiftwork 轮班工作"},
+  erode:{w:"erode",ipa:"/ɪˈrəʊd/",pos:"v.",tags:["core","write"],cn:"<b>侵蚀</b>；（逐渐）削弱",en:"to gradually damage or destroy the surface of something; to weaken gradually",ex:"have eroded a natural barrier",mem:"e-（出）＋ rode（咬，同 rodent 啮齿动物）⟹ 一点点咬掉。⭐ 阅读高频比喻义：erode trust／confidence／profits（削弱信任、信心、利润）。名词 erosion：soil erosion 水土流失。",syn:"wear away 磨损 · undermine 削弱 · weaken 减弱",conf:"erode（侵蚀，慢）· corrode（腐蚀，化学）· explode（爆炸）"},
+  barrier:{w:"natural barrier",ipa:"/ˈnætʃrəl ˈbæriə(r)/",pos:"n. phrase",tags:["core","write"],cn:"<b>天然屏障</b>",en:"a natural feature that blocks or protects",ex:"have eroded a natural barrier",mem:"barrier 的本职是「挡」——挡住外力，护住里面的东西（⟹ 7 题）。本篇的屏障＝盖在遗迹上的那层沙。比喻义：language barrier 语言障碍 · trade barriers 贸易壁垒。",syn:"obstacle 障碍 · shield 盾 · buffer 缓冲",conf:"barrier（屏障，阻挡物）· barricade（路障）· border（边界）"},
+  survey:{w:"survey",ipa:"/ˈsɜːveɪ/",pos:"n./v.",tags:["core","poly"],cn:"<b>勘测，考察</b>；调查",en:"a careful look at an area; a set of questions for many people",ex:"a scientific survey of the Peloponnesian coast",mem:"sur-（在上）＋ vey（看，同 view）⟹ 从上往下看全貌。⚠️ 熟词僻义：考研里最熟的是「问卷调查」，本篇两次都是<b>实地勘测</b>：②❹ a scientific survey of the coast · ③❸ to survey the site。",syn:"inspect 检查 · explore 探查 · map 测绘",conf:"survey（勘测；调查）· surveillance（监视）· surveyor（测量员）"},
+  sunken:{w:"sunken",ipa:"/ˈsʌŋkən/",pos:"adj.",tags:["core"],cn:"<b>沉没的</b>；凹陷的",en:"lying at the bottom of the sea; lower than the surrounding area",ex:"first spotted the sunken …",mem:"sink 的旧过去分词，现在只作形容词用：a sunken ship 沉船 · sunken cheeks 凹陷的脸颊。动词完成式用 sunk：The ship has sunk。",syn:"underwater 水下的 · drowned 淹没的",conf:"sank（过去式）· sunk（过去分词）· sunken（形容词，放名词前）"},
+  map:{w:"map the site",ipa:"/mæp ðə saɪt/",pos:"v. phrase",tags:["phrase","poly"],cn:"<b>绘制遗址地图，测绘遗址</b>",en:"to make a map of a place",ex:"returned with a few students … and map the site",mem:"⚠️ 熟词僻义：map 作<b>动词</b>＝测绘、绘制地图。⭐ 11 题的锚：空格与 map 用 and 并列，必须是同一类的科考动作。同族：sonar mapping 声呐测绘（③❸）· map out 规划。",syn:"chart 绘制海图 · survey 勘测 · plot 标绘",conf:"map（v. 测绘）· map out（详细规划）· mapping（n. 测绘）"},
+  courtyard:{w:"courtyard",ipa:"/ˈkɔːtjɑːd/",pos:"n.",tags:["core"],cn:"<b>庭院，院子</b>",en:"an open space surrounded by walls or buildings",ex:"some 15 buildings, courtyards, a network of streets",mem:"court（院子；法院；球场）＋ yard（院子）。本篇出现两次：②❻ 清单里、③❺ all of which had open courtyards。",syn:"yard 院子 · patio 天井 · quadrangle 方庭",conf:"court（法院；球场；宫廷）· courtyard（庭院）· courtesy（礼貌）"},
+  chamber:{w:"chamber tombs",ipa:"/ˈtʃeɪmbə tuːmz/",pos:"n. phrase",tags:["phrase"],cn:"<b>墓室（有墓室的坟墓）</b>",en:"tombs with a room built for burial",ex:"two chamber tombs",mem:"chamber（房间，室）＋ tomb（坟墓，b 不发音）。chamber 熟词僻义：议院（the upper chamber 上议院）· 腔（heart chambers 心腔）。",syn:"burial chamber 墓室 · grave 坟墓",conf:"tomb（坟墓）· womb（子宫）· comb（梳子）——b 都不发音"},
+  finds:{w:"initial finds",ipa:"/ɪˈnɪʃl faɪndz/",pos:"n. phrase",tags:["phrase","poly"],cn:"<b>初步发现（物）</b>",en:"the first things that are discovered",ex:"the exciting initial finds",mem:"⚠️ 熟词僻义：find 作<b>可数名词</b>＝发现物（a rare find 难得的发现）。initial（最初的）＋ finds。⭐ 本句是同指链的一环：finds ＝ 前一句的 15 buildings…tombs。",syn:"discoveries 发现 · findings 研究结果",conf:"finds（发现的东西，考古）· findings（研究结论，科研）"},
+  excavation:{w:"excavation",ipa:"/ˌekskəˈveɪʃn/",pos:"n.",tags:["core"],cn:"<b>发掘，挖掘</b>",en:"the process of digging to find old objects",ex:"the excavation of Pavlopetri",mem:"ex-（出）＋ cav（洞，同 cave）＋ -ate ⟹ 挖出洞来。本篇两次：③❶ ___ the excavation · ③❻ Excavations revealed …（复数＝各次发掘）。⭐ 「动手线」的核心词。",syn:"dig 发掘 · unearthing 出土",conf:"excavate（v. 发掘）· evacuate（v. 疏散）——形近别看串"},
+  archaeology:{w:"underwater archaeology",ipa:"/ˌʌndəˈwɔːtər ˌɑːkiˈɒlədʒi/",pos:"n. phrase",tags:["core"],cn:"<b>水下考古（学）</b>",en:"the study of past human life using objects found under water",ex:"Since the 1960s, underwater archaeology … and tools",mem:"archae-（古）＋ -ology（学）。archaeologist 考古学家（②❼、③❶）。⚠️ 美式也拼 archeology。",syn:"marine archaeology 海洋考古 · excavation 发掘",conf:"archaeology（考古学）· anthropology（人类学）· architecture（建筑学）"},
+  advance:{w:"huge advances",ipa:"/hjuːdʒ ədˈvɑːnsɪz/",pos:"n. phrase",tags:["phrase","write"],cn:"<b>巨大进步</b>",en:"important progress in something",ex:"had made huge advances",mem:"advance 作可数名词＝进展、进步：make advances in ＋ 领域。⚠️ 过去完成时 had made：在 2009 年开工之前，技术已经进步了——为下句「用上新技术」作铺垫。✍️ <i>Medicine has made huge advances in the past century.</i>",syn:"progress 进步（不可数）· breakthrough 突破 · development 发展",conf:"advance（n. 进步；v. 推进）· in advance（提前）· advanced（先进的）"},
+  sonar:{w:"sonar mapping",ipa:"/ˈsəʊnɑː ˈmæpɪŋ/",pos:"n. phrase",tags:["phrase"],cn:"<b>声呐测绘</b>",en:"making maps of the sea floor using sound waves",ex:"robotics, sonar mapping, and state-of-the-art graphics",mem:"sonar ＝ <b>so</b>und <b>na</b>vigation and <b>r</b>anging 的缩写（声音导航与测距）。同类缩写词：radar（雷达）· laser（激光）。",syn:"echo sounding 回声测深",conf:"sonar（声呐，水下用声音）· radar（雷达，空中用电波）"},
+  stateoftheart:{w:"state-of-the-art",ipa:"/ˌsteɪt əv ði ˈɑːt/",pos:"adj.",tags:["core","write"],cn:"<b>最先进的，最新式的</b>",en:"using the newest and best methods or technology",ex:"state-of-the-art graphics",mem:"字面「艺术（技术）的当前状态」⟹ 最先进的。⭐ 16 题：既然已是最先进的，团队对它做的就不会是「修修补补」。✍️ 作文好词：<i>The library is equipped with state-of-the-art facilities.</i>",syn:"cutting-edge 尖端的 · advanced 先进的 · up-to-date 最新的",conf:"state-of-the-art（最先进的）· the state of the art（名词：最高水平）"},
+  acre:{w:"acres",ipa:"/ˈeɪkəz/",pos:"n.",tags:["core"],cn:"<b>英亩</b>（约 4047 平方米）",en:"a unit for measuring area, about 4,047 square metres",ex:"Covering about two and a half acres",mem:"two and a half acres ＝ 2.5 英亩 ≈ 1 公顷。⚠️ 句首的 Covering 逻辑上指整座城（见 07）。cover 作「占地」：The park covers 50 acres。",syn:"hectare 公顷 · square mile 平方英里",conf:"acre（英亩）· acreage（面积）"},
+  rectangular:{w:"rectangular",ipa:"/rekˈtæŋɡjələ(r)/",pos:"adj.",tags:["core"],cn:"<b>长方形的，矩形的</b>",en:"shaped like a rectangle",ex:"some 50 rectangular buildings",mem:"rect-（直，同 correct、direct）＋ angle（角）⟹ 直角的 ⟹ 长方形。形状形容词一组：circular 圆的 · triangular 三角的 · square 方的。",syn:"oblong 长方形的",conf:"rectangle（n. 长方形）· rectangular（adj.）· rectify（纠正）"},
+  loom:{w:"loom weights",ipa:"/luːm weɪts/",pos:"n. phrase",tags:["phrase","poly"],cn:"<b>织布机坠子</b>（挂在经线下端的重物）",en:"weights hung from threads on an ancient loom",ex:"Minoan-style loom weights",mem:"loom 名词＝织布机。⚠️ 熟词僻义：loom 动词＝隐约出现、逼近（a crisis looms 危机迫在眉睫）——阅读里动词义更常见。坠子多 ⟹ 织得多 ⟹ 20 题的证据。",syn:"weaving 纺织 · spindle 纺锤",conf:"loom（n. 织机；v. 逼近）· looming（迫在眉睫的）"},
+  thriving:{w:"thriving",ipa:"/ˈθraɪvɪŋ/",pos:"adj.",tags:["core","write"],cn:"<b>繁荣的，兴旺的</b>",en:"growing and successful",ex:"a thriving trade center",mem:"thrive（繁荣，茁壮成长）＋ -ing。⭐ 20 题的锚：同句 thriving ⟹ with 后的形容词与它同向。✍️ <i>The town has a thriving tourism industry.</i>",syn:"flourishing 繁荣的 · booming 兴旺的 · prosperous 富裕的",conf:"thrive（繁荣）· strive（努力）· drive（驱动）"},
+  textile:{w:"textile industry",ipa:"/ˈtekstaɪl ˈɪndəstri/",pos:"n. phrase",tags:["phrase"],cn:"<b>纺织业</b>",en:"the industry that makes cloth",ex:"a thriving trade center with a … textile industry",mem:"text-（编织，同 text 文本＝编织起来的文字、texture 质地）＋ -ile。textile 纺织品；textiles 纺织业。",syn:"fabric 织物 · cloth 布 · garment industry 服装业",conf:"textile（纺织品）· texture（质地）· context（上下文，「编在一起」）"}
+};
+const panel=document.getElementById('panel');
+const isMobile=()=>window.innerWidth<=900;
+function badge(t){return {core:'<span class="badge b-core">核心词</span>',phrase:'<span class="badge b-phrase">短语</span>',poly:'<span class="badge b-poly">熟词僻义</span>',write:'<span class="badge b-write">写作✍︎</span>'}[t]||''}
+function showCard(k,el){
+  const d=V[k]; if(!d)return;
+  document.querySelectorAll('.tk.active').forEach(e=>e.classList.remove('active'));
+  if(el&&el.classList.contains('tk'))el.classList.add('active');
+  panel.innerHTML='<button class="close" onclick="panel.classList.remove(\'open\')">✕</button>'+
+  '<div class="wcard"><div class="head"><span class="w">'+d.w+'</span><span class="ipa">'+d.ipa+'</span><span class="pos">'+d.pos+'</span>'+d.tags.map(badge).join('')+'</div>'+
+  '<div class="cn">'+d.cn+'</div><div class="en-def">'+d.en+'</div>'+
+  '<div class="row r-ex"><b>原文语境</b>「…'+d.ex+'…」</div>'+
+  '<div class="row r-mem"><b>怎么记</b>'+d.mem+'</div>'+
+  '<div class="row r-syn"><b>同类词</b>'+d.syn+'</div>'+
+  '<div class="row r-conf"><b>易混辨析</b>'+d.conf+'</div></div>';
+  if(isMobile())panel.classList.add('open');
+}
+document.querySelectorAll('.tk').forEach(t=>t.addEventListener('click',e=>{e.stopPropagation();showCard(t.dataset.w,t)}));
+
+/* ============ 译文开关 ============ */
+function tz(btn){btn.closest('.para').classList.toggle('showzh')}
+let allOn=false;
+function toggleAll(){allOn=!allOn;document.querySelectorAll('.para').forEach(p=>p.classList.toggle('showzh',allOn))}
+function go(id){const s=document.getElementById(id);if(!s)return;s.scrollIntoView({behavior:'smooth',block:'center'});s.style.transition='none';s.style.opacity=.3;setTimeout(function(){s.style.transition='opacity .8s';s.style.opacity=1},80)}
+
+/* ============ 20 空数据（类别 + 正确词） ============ */
+const CAT={
+  logic:{name:"逻辑关系",cls:"c-logic",color:"#3d6a8a"},
+  collo:{name:"固定搭配",cls:"c-collo",color:"#3e7a4e"},
+  word:{name:"词义辨析",cls:"c-word",color:"#b04a3a"},
+  context:{name:"上下文语义",cls:"c-context",color:"#6d5a8e"}
+};
+const B={
+  1:{w:"prone",cat:"collo"},            2:{w:"gradually",cat:"context"},
+  3:{w:"submerged",cat:"word"},         4:{w:"remains",cat:"context"},
+  5:{w:"off",cat:"collo"},              6:{w:"currents",cat:"word"},
+  7:{w:"protected",cat:"word"},         8:{w:"gathering",cat:"context"},
+  9:{w:"when",cat:"logic"},             10:{w:"structures",cat:"context"},
+  11:{w:"examine",cat:"word"},          12:{w:"Despite",cat:"logic"},
+  13:{w:"undisturbed",cat:"context"},   14:{w:"resumed",cat:"context"},
+  15:{w:"techniques",cat:"context"},    16:{w:"employed",cat:"word"},
+  17:{w:"light",cat:"collo"},           18:{w:"connected",cat:"word"},
+  19:{w:"suggesting",cat:"logic"},      20:{w:"robust",cat:"word"}
+};
+
+
+
+
+
+
+/* ============ 点空格 → 跳到解析卡 ============ */
+document.querySelectorAll('.bk').forEach(function(b){
+  b.addEventListener('click',function(){
+    document.querySelectorAll('.bk.active').forEach(function(e){e.classList.remove('active')});
+    b.classList.add('active');
+    go('q'+b.dataset.n);
+  });
+});
+function fillBlank(n,ok){
+  const el=document.querySelector('.bk[data-n="'+n+'"]');
+  if(!el)return;
+  el.classList.remove('miss');
+  el.classList.add(ok===false?'miss':'filled');
+  el.innerHTML='<span class="idx">'+n+'</span>'+B[n].w;
+}
+
+/* ============ 即点即判 + 计分 ============ */
+let done=0,right=0;
+function updScore(){
+  document.getElementById('sDone').textContent=done;
+  document.getElementById('sRight').textContent=right;
+  document.getElementById('sPt').textContent=(right*0.5).toFixed(1);
+}
+document.querySelectorAll('.q').forEach(function(q){
+  const ans=+q.dataset.ans, n=q.id.replace('q','');
+  q.querySelectorAll('.opt').forEach(function(o,i){
+    o.addEventListener('click',function(){
+      if(q.classList.contains('done'))return;
+      q.classList.add('done');
+      const ok=(i===ans);
+      if(!ok)o.classList.add('wrong');
+      q.querySelectorAll('.opt')[ans].classList.add('right');
+      done++; if(ok)right++; updScore();
+      fillBlank(n,ok);
+    });
+  });
+});
+function revealAll(){
+  document.querySelectorAll('.q').forEach(function(q){
+    const n=q.id.replace('q','');
+    if(!q.classList.contains('done')){
+      q.classList.add('done');
+      q.querySelectorAll('.opt')[+q.dataset.ans].classList.add('right');
+      done++; updScore();
+    }
+    fillBlank(n,true);
+  });
+  document.querySelectorAll('.bk.miss').forEach(function(e){e.classList.remove('miss');e.classList.add('filled')});
+}
+
+/* ============ 考点统计 ============ */
+const counts={};Object.keys(B).forEach(function(k){counts[B[k].cat]=(counts[B[k].cat]||0)+1});
+const order=["word","collo","context","logic"];
+document.getElementById('catbar').innerHTML=order.map(function(k){
+  return '<div class="catseg" style="flex:'+counts[k]+';background:'+CAT[k].color+'">'+CAT[k].name+' '+counts[k]+'</div>'}).join('');
+const legend=document.getElementById('catlegend');
+legend.innerHTML=order.map(function(k){
+  return '<div class="cl" data-cat="'+k+'"><span class="dot" style="background:'+CAT[k].color+'"></span>'+CAT[k].name+' · '+counts[k]+' 题</div>'}).join('');
+const chips=document.getElementById('chips');
+function renderChips(cat){
+  chips.innerHTML=Object.keys(B).filter(function(n){return !cat||B[n].cat===cat})
+    .map(function(n){return '<span class="chip" data-n="'+n+'">'+n+'. '+B[n].w+'</span>'}).join('');
+  chips.querySelectorAll('.chip').forEach(function(c){
+    c.addEventListener('click',function(){go('q'+c.dataset.n)});
+  });
+}
+renderChips(null);
+legend.querySelectorAll('.cl').forEach(function(l){
+  l.addEventListener('click',function(){
+    const cat=l.dataset.cat;
+    document.querySelectorAll('.cl').forEach(function(x){x.style.borderColor=''});
+    l.style.borderColor=CAT[cat].color;
+    renderChips(cat);
+    document.querySelectorAll('.bk').forEach(function(b){
+      b.style.outline=(B[b.dataset.n].cat===cat?'2px solid '+CAT[cat].color:'')});
+  });
+});
+
+/* ============ 80 选项词表 ============ */
+const OPTS={
+ 1:[["relevant","相关的（be relevant to 只说「有关」）"],["prone","be prone to 易遭受（坏事）"],["available","可获得的"],["alien","陌生的；格格不入的"]],
+ 2:[["accidentally","偶然地（把沉没当意外）"],["frequently","频繁地（沉没不能反复发生）"],["gradually","逐渐地（≈下句 slow）"],["temporarily","暂时地（暗示还会浮起来）"]],
+ 3:[["disguised","伪装；掩饰"],["submerged","淹没（≈sink）"],["relocated","搬迁（主语该是人）"],["isolated","使孤立"]],
+ 4:[["legends","传说（无形）"],["programs","计划，项目"],["remains","遗迹（≈10 structures）"],["surroundings","周围环境"]],
+ 5:[["across","横跨；遍及"],["off","在……近海，离岸"],["under","在……下面（偷 below）"],["via","经由"]],
+ 6:[["currents","洋流（唯一在海里）"],["rivers","河流（在陆上）"],["seasons","季节（偷 climate）"],["winds","风（在海面以上）"]],
+ 7:[["elevated","抬高；提升"],["separated","分开（偷 barrier「隔开」）"],["comprised","包含；构成"],["protected","保护（与 eroded 对立）"]],
+ 8:[["gathering","收集（首次考察先采数据）"],["restoring","恢复（数据曾损坏？）"],["updating","更新（此前考察过？）"],["supplying","提供给别人"]],
+ 9:[["when","当……时（进行中被打断）"],["until","直到（先后）"],["after","在……之后（先后）"],["once","一旦（条件／先后）"]],
+ 10:[["belongings","随身财物"],["resources","资源"],["products","产品"],["structures","建筑物（≈4 remains）"]],
+ 11:[["preserve","保护（偷「文物保护」）"],["select","挑选（暗示有多处可选）"],["display","展示（给公众看）"],["examine","考察（与 map 顺承）"]],
+ 12:[["Despite","尽管（唯一让步）"],["Unlike","与……不同（对比）"],["Besides","除……之外（递进）"],["Among","在……之中（范围）"]],
+ 13:[["unchallenged","未受质疑的（修饰观点、地位）"],["unknown","不为人知（偷 unseen，已被发现）"],["unorganized","杂乱无章的"],["undisturbed","未被动过的（无人来挖）"]],
+ 14:[["suspended","暂停（让发掘停下）"],["transferred","转移（让发掘挪走）"],["resumed","恢复（唯一让它继续）"],["canceled","取消（让发掘没了）"]],
+ 15:[["policies","政策"],["theories","理论（偷「理论与实践」）"],["documents","文件，文献"],["techniques","技术（下句三样都是）"]],
+ 16:[["ordered","订购；命令"],["provided","提供（给别人）"],["employed","使用，采用"],["adjusted","调整（暗示技术有缺陷）"]],
+ 17:[["effect","bring into effect 使生效"],["light","bring to light 使重见天日"],["reality","现实（城镇本来就是真的）"],["mind","bring to mind 使想起"]],
+ 18:[["crossed","穿过；交叉"],["connected","连接（路连房）"],["blocked","堵住（对象该是路）"],["altered","改变，改建"]],
+ 19:[["expecting","预期（要人作主语）"],["suggesting","表明（物可作主语：证据→推论）"],["predicting","预测（指向未来）"],["recalling","回想（要人、要先有记忆）"]],
+ 20:[["robust","强劲的，兴旺的（≈thriving）"],["diverse","多样的（种类多≠兴旺）"],["marginal","边缘的，次要的"],["dependent","依赖他人的"]]
+};
+const ANS={1:1,2:2,3:1,4:2,5:1,6:0,7:3,8:0,9:0,10:3,11:3,12:0,13:3,14:2,15:3,16:2,17:1,18:1,19:1,20:0};
+(function(){
+  let h='<tr><th>空</th><th>A</th><th>B</th><th>C</th><th>D</th></tr>';
+  for(let n=1;n<=20;n++){
+    h+='<tr><td class="n">'+n+'</td>';
+    OPTS[n].forEach(function(o,i){
+      h+='<td'+(i===ANS[n]?' class="hit"':'')+'><span class="ow">'+o[0]+'</span><span class="oc">'+o[1]+'</span></td>';
+    });
+    h+='</tr>';
+  }
+  document.getElementById('otab').innerHTML=h;
+  document.querySelectorAll('#otab .oc').forEach(function(c){
+    c.addEventListener('click',function(){c.classList.toggle('show')});
+  });
+})();
+function toggleHide(){
+  const t=document.getElementById('otab');
+  const on=t.classList.toggle('hidecn');
+  document.getElementById('btnHide').textContent=on?'👁 显示释义':'✍️ 默写模式';
+  if(!on)t.querySelectorAll('.oc.show').forEach(function(c){c.classList.remove('show')});
+}
+
+/* ============ 查有道 ============ */
+const yd=document.getElementById('yd');let sel='',ydHold=0,ydT=0;
+/* 触屏：点按钮会先把选区清掉 → selectionchange 立刻把按钮藏了 → 点击落空。改成延迟隐藏 ＋ 按下即锁定 */
+const ydTouch=window.matchMedia&&matchMedia('(pointer:coarse)').matches;
+function ydHide(){clearTimeout(ydT);ydHold=0;yd.style.display='none'}
+document.addEventListener('selectionchange',function(){
+  const s=window.getSelection();const t=s?s.toString().trim():'';
+  if(t&&/^[a-zA-Z' -]{2,40}$/.test(t)){
+    sel=t;clearTimeout(ydT);
+    try{const r=s.getRangeAt(0).getBoundingClientRect();
+      yd.style.left=Math.max(8,Math.min(r.left,window.innerWidth-110))+'px';
+      yd.style.top=(r.bottom+(ydTouch?30:8))+'px';yd.style.display='block';}catch(e){}
+  }else if(!ydHold){clearTimeout(ydT);ydT=setTimeout(function(){if(!ydHold)yd.style.display='none'},ydTouch?900:0)}
+});
+['pointerdown','touchstart','mousedown'].forEach(function(ev){yd.addEventListener(ev,function(){ydHold=1;clearTimeout(ydT)},{passive:true})});
+yd.addEventListener('click',function(){
+  const u='https://dict.youdao.com/result?word='+encodeURIComponent(sel)+'&lang=en';
+  let w=null;try{w=window.open(u,'_blank')}catch(e){}
+  if(!w)location.href=u;
+  ydHide()});
+document.addEventListener('click',function(e){if(e.target!==yd&&!window.getSelection().toString())ydHide()});
+/* ============ 原卷对照总开关（流式版） ============ */
+function imgAll(b){const on=document.body.classList.toggle('stx-allimg');b.textContent=on?'收起原卷':'原卷对照';
+  if(on)document.querySelectorAll('.para img.strip').forEach(im=>im.loading='eager')}
+</script>
+<script src="img/strip_boxes_2025.js?v=7"></script>
+<script src="_strip_lookup.js?v=8"></script>
+<script src="_strip_text.js?v=27"></script>
+<script src="_fault_attr.js"></script>
+</body>
+</html>

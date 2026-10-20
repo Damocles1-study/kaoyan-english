@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2025 英一 Text 4 · 数字史料谁来存：图书馆员的夜惊</title>
+<style>
+  :root{
+    --bg:#faf9f6; --card:#ffffff; --ink:#2b2b2b; --muted:#8a8578;
+    --accent:#8b5e34; --accent-soft:#f3e9dd; --line:#e8e3d8;
+    --hl:#fdf3d8; --hl-border:#e0b84d;
+    --green:#3e7a4e; --green-soft:#e8f2ea;
+    --red:#b04a3a; --red-soft:#f9e9e6;
+    --blue:#3d6a8a; --blue-soft:#e7eff5;
+    --purple:#6d5a8e; --purple-soft:#eeeaf5;
+    --serif:"Georgia","Songti SC",serif;
+    --sans:-apple-system,"PingFang SC","Helvetica Neue",sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#1c1a17; --card:#26231f; --ink:#e8e4dc; --muted:#9a948a;
+      --accent:#d0a06a; --accent-soft:#3a3127; --line:#3a362f;
+      --hl:#3d3520; --hl-border:#b08c3a;
+      --green:#7fb98d; --green-soft:#26362b;
+      --red:#d98876; --red-soft:#3d2a26;
+      --blue:#8ab3d0; --blue-soft:#26323d;
+      --purple:#a996c8; --purple-soft:#302a3d;
+    }
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;padding-bottom:120px}
+  .wrap{max-width:1100px;margin:0 auto;padding:24px 20px}
+  .back{font-size:.85rem;color:var(--muted);text-decoration:none}
+  .back:hover{color:var(--accent)}
+  header{margin:14px 0 28px}
+  header h1{font-family:var(--serif);font-size:1.7rem;line-height:1.3}
+  header .sub{color:var(--muted);margin-top:6px;font-size:.9rem}
+  .tags{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+  .tag{font-size:.75rem;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);border:1px solid var(--line)}
+  .tag.warn{background:var(--red-soft);color:var(--red);border-color:var(--red)}
+  .tag.ok{background:var(--green-soft);color:var(--green);border-color:var(--green)}
+
+  .layout{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:24px;align-items:start}
+  main{min-width:0}
+  @media (max-width:900px){.layout{grid-template-columns:minmax(0,1fr)}}
+
+  section.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:24px}
+  h2{font-size:1.05rem;letter-spacing:.05em;color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+  h2 .n{font-size:.72rem;background:var(--accent);color:var(--card);border-radius:6px;padding:1px 7px}
+  h3{font-size:.95rem;color:var(--accent);margin:18px 0 10px}
+
+  .para{margin-bottom:22px}
+  .para .en{font-family:var(--serif);font-size:1.06rem;line-height:1.9}
+  .pno{color:var(--muted);font-size:.75rem;user-select:none;margin-right:6px}
+  .tk{background:var(--hl);border-bottom:2px solid var(--hl-border);border-radius:3px;padding:0 2px;cursor:pointer;transition:filter .15s}
+  .tk:hover{filter:brightness(.93)}
+  .tk.active{outline:2px solid var(--hl-border)}
+  .ls{border-bottom:2px dotted var(--blue);cursor:pointer}
+  .para .zh{display:none;margin-top:10px;padding:10px 14px;background:var(--blue-soft);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:.93rem}
+  .para.showzh .zh{display:block}
+  .zbtn{float:right;margin-left:10px;font-size:.72rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:6px;padding:2px 9px;cursor:pointer}
+  .zbtn:hover{color:var(--accent);border-color:var(--accent)}
+  .allbtn{font-size:.78rem;border:1px solid var(--accent);background:none;color:var(--accent);border-radius:8px;padding:4px 12px;cursor:pointer;margin-left:auto}
+
+  aside{position:sticky;top:20px}
+  #panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;min-height:180px}
+  #panel .hint{color:var(--muted);font-size:.88rem;text-align:center;padding:30px 10px}
+  .wcard .head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .wcard .w{font-family:var(--serif);font-size:1.35rem;font-weight:bold}
+  .wcard .ipa{color:var(--muted);font-size:.85rem}
+  .wcard .pos{font-size:.72rem;color:var(--purple);background:var(--purple-soft);padding:1px 8px;border-radius:999px}
+  .wcard .badge{font-size:.7rem;padding:1px 8px;border-radius:999px}
+  .b-core{background:var(--red-soft);color:var(--red)}
+  .b-phrase{background:var(--blue-soft);color:var(--blue)}
+  .b-poly{background:var(--purple-soft);color:var(--purple)}
+  .b-write{background:var(--green-soft);color:var(--green)}
+  .wcard .cn{margin-top:8px;font-size:1rem;font-weight:600}
+  .wcard .en-def{color:var(--muted);font-size:.86rem;font-style:italic;margin-top:2px}
+  .wcard .row{margin-top:10px;font-size:.86rem;padding:8px 10px;border-radius:8px}
+  .wcard .row>b:first-child{font-size:.72rem;display:block;margin-bottom:2px;letter-spacing:.06em}
+  .r-ex{background:var(--hl)} .r-ex b{color:var(--hl-border)}
+  .r-mem{background:var(--green-soft)} .r-mem b{color:var(--green)}
+  .r-syn{background:var(--blue-soft)} .r-syn b{color:var(--blue)}
+  .r-conf{background:var(--red-soft)} .r-conf b{color:var(--red)}
+  #panel .close{display:none}
+  @media (max-width:900px){
+    aside{position:fixed;left:0;right:0;bottom:0;z-index:50;padding:0 8px 8px}
+    #panel{box-shadow:0 -6px 24px rgba(0,0,0,.18);max-height:55vh;overflow-y:auto;display:none}
+    #panel.open{display:block}
+    #panel .close{display:block;float:right;border:none;background:var(--line);border-radius:8px;padding:2px 10px;cursor:pointer;color:var(--ink)}
+  }
+
+  .q{margin-bottom:22px;padding-bottom:18px;border-bottom:1px dashed var(--line)}
+  .q:last-child{border:none;margin-bottom:0;padding-bottom:0}
+  .q .stem{font-weight:600;font-family:var(--serif)}
+  .qt{font-size:.7rem;color:var(--blue);background:var(--blue-soft);border-radius:999px;padding:1px 8px;margin-right:6px;vertical-align:2px}
+  .opts{margin-top:10px;display:grid;gap:8px}
+  .opt{border:1px solid var(--line);border-radius:10px;padding:8px 12px;cursor:pointer;font-size:.93rem;font-family:var(--serif);transition:all .15s}
+  .opt:hover{border-color:var(--accent)}
+  .q.done .opt{cursor:default}
+  .opt.right{background:var(--green-soft);border-color:var(--green)}
+  .opt.wrong{background:var(--red-soft);border-color:var(--red)}
+  .expl{display:none;margin-top:12px;background:var(--accent-soft);border-radius:10px;padding:12px 14px;font-size:.9rem}
+  .q.done .expl{display:block}
+  .expl b{color:var(--accent)}
+  .expl .loc{font-family:var(--serif);font-style:italic;background:var(--hl);padding:1px 4px;border-radius:3px}
+  .fail{background:var(--red-soft);border:1px solid var(--red);border-radius:10px;padding:10px 13px;margin-bottom:10px;font-size:.89rem}
+  .fail b{color:var(--red)}
+  .waver{background:var(--hl);border:1px solid var(--hl-border);border-radius:10px;padding:10px 13px;margin-bottom:10px;font-size:.89rem}
+
+  .sent{margin-bottom:20px}
+  .sent .src{font-family:var(--serif);font-size:1rem;background:var(--blue-soft);padding:12px 14px;border-radius:10px;border-left:3px solid var(--blue)}
+  .sent .anat{margin-top:8px;font-size:.9rem}
+  .sent .anat li{margin:4px 0 4px 18px}
+  .sent .tr{margin-top:8px;font-size:.92rem;color:var(--muted)}
+  .skel{color:var(--red);font-weight:600}
+
+  .filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+  .fbtn{font-size:.8rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:999px;padding:4px 14px;cursor:pointer}
+  .fbtn.on{background:var(--accent);color:var(--card);border-color:var(--accent)}
+  .vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
+  .vitem{border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer;transition:border-color .15s}
+  .vitem:hover{border-color:var(--accent)}
+  .vitem .w{font-family:var(--serif);font-weight:bold}
+  .vitem .cn{font-size:.85rem;color:var(--muted)}
+  .vitem .badges{float:right}
+
+  .wb{display:grid;gap:10px}
+  .wbi{border-left:3px solid var(--green);background:var(--green-soft);border-radius:0 10px 10px 0;padding:10px 14px;font-size:.92rem}
+  .wbi .p{font-family:var(--serif);font-weight:600}
+  .wbi .u{color:var(--muted);font-size:.85rem}
+
+  .flow{display:grid;gap:8px;font-size:.92rem}
+  .flow .fi{border:1px solid var(--line);border-radius:10px;padding:9px 13px}
+  .flow .fi b{color:var(--accent)}
+
+  .ctab{width:100%;border-collapse:collapse;font-size:.86rem;margin-top:8px}
+  .ctab th,.ctab td{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
+  .ctab th{background:var(--accent-soft);color:var(--accent);font-size:.8rem;white-space:nowrap}
+  .ctab code{background:var(--hl);padding:0 3px;border-radius:3px}
+  .tabwrap{overflow-x:auto}
+  .ok{color:var(--green);font-weight:700}
+  .no{color:var(--red);font-weight:700}
+  .tl{display:grid;gap:10px;margin-top:6px}
+  .tli{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:start;border:1px solid var(--line);border-radius:10px;padding:10px 13px}
+  .tli .mark{font-family:var(--serif);font-weight:700;color:var(--accent);background:var(--accent-soft);border-radius:8px;padding:4px 10px;white-space:nowrap;font-size:.85rem}
+
+  .arrow{display:grid;gap:8px;margin-top:8px}
+  .arrow .ai{border:1px solid var(--line);border-radius:10px;padding:10px 13px;font-size:.9rem}
+  .arrow .ai.old{background:var(--red-soft);border-color:var(--red)}
+  .arrow .ai.new{background:var(--green-soft);border-color:var(--green)}
+  .chain{font-family:var(--serif);font-size:.95rem;background:var(--hl);border:1px solid var(--hl-border);border-radius:10px;padding:10px 14px;margin:8px 0;overflow-x:auto}
+
+  #yd{position:fixed;z-index:60;display:none;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:4px 12px;font-size:.8rem;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+  footer{color:var(--muted);font-size:.8rem;text-align:center;margin-top:30px}
+  .att{display:grid;gap:8px;margin-top:10px}
+  .atti{border:1px solid var(--line);border-radius:10px;padding:9px 13px;font-size:.9rem}
+  .atti b{font-family:var(--serif)}
+  .atti.no2{background:var(--red-soft);border-color:var(--red)}
+  .atti.yes{background:var(--green-soft);border-color:var(--green)}
+  .atti,.expl,.wbi,.zh,.fi,.ai,figcaption,p{overflow-wrap:anywhere}
+
+  /* 2021 起：原文以原卷扫描句条呈现 */
+  .sn{margin:0 0 14px}
+  .sn .pno{display:block;margin-bottom:4px;font-size:.78rem;line-height:1.6}
+  img.strip{display:block;width:100%;max-width:760px;height:auto;background:#fff;border:1px solid var(--line);border-radius:6px;cursor:pointer}
+  .sent .src img.strip{margin-top:6px;cursor:default}
+  .kw{margin-top:5px;font-size:.88rem;line-height:2.1;font-family:var(--serif)}
+  @media (prefers-color-scheme: dark){img.strip{filter:invert(.9) hue-rotate(180deg)}}
+  .sn,.sent .src{overflow-x:auto}
+  @media (max-width:700px){img.strip{width:640px;max-width:none}.sn::after{content:'← 句条可左右滑动 →';display:block;font-size:.7rem;color:var(--muted);margin-top:2px}}
+
+  /* 2023 起：流式版——识别好的句子在段落里连排，像 2007–2020 */
+  .para .en{font-family:var(--serif);font-size:1.02rem;line-height:1.9}
+  .stx-flow .para .en .pno{margin-right:4px}
+  .stx-flow .para .sn:not(.stx-on) .kw{margin-bottom:8px}
+</style>
+
+</head>
+<body class="stx-flow">
+<div class="wrap">
+  <a class="back" href="index.html">◀ 返回英语复盘中心</a>
+  <header>
+    <h1>数字史料谁来存：图书馆员的夜惊</h1>
+    <div class="sub">2025 年英语（一）真题 · Text 4 · 书标 443 词 · 5 段 · 建议做题 18 min · 话题：数字保存×图书馆×历史记录（来源：《书单》<i>Booklist</i> 2023-09-01，原题 <i>Trade Secrets: The Challenges of Digital History</i>，据黄皮书）</div>
+    <div class="tags">
+      <span class="tag">正确答案：36C 37B 38B 39C 40D</span><span class="tag">题型：写作目的 ×2 ＋ 对比细节 ＋ 因果细节 ＋ 文章主旨</span><span class="tag">难度：五题全部顺序；坑在 37——四个选项都是比较级，只有一项是原文真比过的</span><span class="tag">⚠️ 非盲：36–39 的答案在做 T1 定位答案行时误见；40 独立作答，落盘为 D 且对（犹豫过 A／D）</span>
+    </div>
+  </header>
+
+  <div class="layout">
+    <main>
+      <!-- ========== 全文脉络 ========== -->
+      <section class="card">
+        <h2><span class="n">00</span>读前一分钟 · 全文脉络（做完题再看也行）</h2>
+        <div class="flow">
+          <div class="fi"><b>①段 古董店里的「短命之物」</b>：随便走进一家古董店，都能看到过去的人工制品——照片、信件、一本介绍 1964–65 年世博会辛克莱恐龙展的小册子，都是「历史的短时藏品」（ephemera）。<b>Yet</b> 它们并不真的短命：几十年、几百年后还在。为什么？<b>因为它们是有形的</b>（36 题：举旧物是为引出「保存」）。</div>
+          <div class="fi"><b>②段 有形的东西为什么能活下来</b>：设问一句把话题从「有形」拉到<b>「无形格式」——数字信息</b>：造它的人很少替它的长期保存做打算，它的生命周期会怎样？几千年来，我们靠留下来的人工制品知道过去，哪怕造它们的人<b>根本没管</b>；因为<b>实物本身就是传递信息的媒介</b>（37 题）。创造时没人刻意保存，模拟材料照样有机会留下来、成为传记作家和历史学家依赖的记录。图书馆和档案馆向来负责整理、保存、提供信息；馆员把有形的东西数字化，全世界的研究者都能迅速检索——结果史料多到难以选择，又生出「大海捞针」的麻烦。</div>
+          <div class="fi"><b>③段 好心反被看轻</b>：馆员无私的付出<b>反过来害了自己</b>——用户举起手机说「全在这里了」，拿「随处可得」当证据，说图书馆对研究者没那么重要了（38 题：图书馆被低估）。可这份「随处可得」是怎么来的、又靠谁维持？谁来筛选保存什么？到了<b>原生数字信息</b>这里，答案很吓人：馆员和档案员不管，就<b>没人管</b>。数字信息比模拟信息需要多得多的照料。</div>
+          <div class="fi"><b>④段 留下了载体，丢了信息</b>：数字对象即便保存下来，留住的也可能只是<b>载体</b>，不是信息本身；技术一进步、格式一过时，对象就没用了。你有没有对着一张 ZIP 盘发呆：文件怎么弄出来（39 题）？不持续迁移数字资产，历史学家就会夜不能寐——数字取代模拟之处，历史记录<b>戛然而止</b>。</div>
+          <div class="fi"><b>⑤段 作者现身：困难，但不是不可能</b>：作者自己就是管特藏和数字资产的馆员，和历史学家一样睡不着，也承认眼下没有全面的保存方案。<b>Yet</b> 研究者可以稍感安慰：有许多馆员在为当下和未来的研究者发现、整理、保存数字信息。未来的研究者也许会觉得数字领域难做，但不会做不成。</div>
+          <div class="fi" style="border-color:var(--accent)">📌 <b>一句话主旨</b>：有形的旧物没人管也能留下来，数字信息却必须有人持续照料；格式一过时，信息就可能连同历史记录一起断档——保存数字史料是个挑战（40D）。<br>📌 <b>结构套路</b>：<b>引子</b>（① 古董店的旧物 ⟹ 有形）→ <b>转题</b>（②❶ 设问：那无形的呢？）→ <b>对比</b>（②❷–❹ 有形为什么活得下来）→ <b>难点</b>（③ 没人管 · ④ 格式过时）→ <b>作者表态</b>（⑤ 难但可为）。五题完全顺序：36①、37②、38③、39④、40 全文。和 T3 一样一题一段，但这篇的作者到⑤段才现身，前四段全靠<b>设问</b>（Why? · Have you pondered…? · Who curates…? · Have you ever stared…?）推进——<b>每个问号后面都是作者要说的话</b>。<br>📌 <b>本篇最值钱的一条规律</b>：<b>对比题的四个比较级，先查「原文比过没有」</b>。37 题四项全是比较级（less subject · more direct · more intentional · less likely），可②段对有形制品只说了两件事：<b>造它的人疏于保存</b>、<b>它本身就是信息的载体</b>。给每个选项写出比较维度，回原文给「有形」「数字」两栏各填一格：A（被疏忽程度）两栏都没比；C（需要刻意保存）方向反——有形的偏偏<b>没被刻意保存</b>也留下来了，需要更多照料的是数字（③❺）；D（易损程度）原文没说；只有 B（传递信息的方式）两栏都有料：实物 ＝ 媒介，数字 ＝ 只是载体（④❶）⟹ 新立 <a href="套路库_阅读.html#R323">R323</a>。<br>📌 <b>和 2025 T1–T3 比一比</b>：T1 研究报道、T2 第一人称评论、T3 数字型问题报道、T4 <b>从业者的现身说法</b>。T4 的作者声音是「先藏后露」：前四段用设问和「我们」把读者拉进来，到⑤❶ 才说「我就是馆员」——所以 38 题的 us 指的是图书馆这一方，不是读者，更不是研究者。</div>
+          <div class="fi">🗞 <b>背景（WebSearch 核过，只帮读、不替原文纠错）</b>：①❶ 那本小册子是真有其物——辛克莱石油公司在 1964–65 年纽约世博会搭了恐龙展馆 <b>Sinclair Dinoland</b>：雕塑家 Louis Paul Jonas 造了 9 只真尺寸恐龙，用驳船沿哈德逊河运到会场，其中 3 只能动，展期参观者据公司估计超过 5,000 万；配套小册子 <i>The Exciting World of Dinosaurs</i> 14 页彩图，今天进了地图馆的收藏——「原本只图一时之用、后来成了藏品」，正是 ephemera 的标准样本。④❸ 的 <b>ZIP disk</b> 是 Iomega 公司 1994–95 年推出的 Zip 盘：初版 100MB，当时的 3.5 英寸软盘只有 1.44MB，后来又有 250MB、750MB；被 CD-R／CD-RW 取代后，2003 年前后停产——今天手里有盘、身边却很难找到能读它的驱动器，这就是④❷「格式过时、对象没用」。黄皮书把它译作「压缩磁盘」，其实 Zip 是品牌名，不是「压缩」。原文作者的名字两次检索都没查到；⑤❶ 作者自述是管特藏与数字资产的图书馆员。</div>
+        </div>
+      </section>
+
+      <!-- ========== 原文精读 ========== -->
+      <section class="card">
+        <h2><span class="n">01</span>原文精读 <button class="allbtn" onclick="toggleAll()">全文意译 开/关</button> <button class="allbtn" id="imgall" onclick="imgAll(this)">原卷对照</button></h2>
+        <p style="font-size:.8rem;color:var(--muted);margin-bottom:14px">🟡 黄色高亮 = 重难点词/短语，点击右侧出卡片 ｜ 蓝色虚线 = 长难句，点击跳到精析 ｜ 每段「意」= 段落意译 ｜ 选中任意其他单词浮出「查有道」 ｜ 原文由你的浏览器从原卷识别成文字（首次约 3 秒，之后秒开）；「原卷对照」可逐句看扫描原图、改识别错字</p>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">①</span>
+            <div class="sn" data-go="l1_1"><img class="strip" src="img/2025_T4/s1_1.png" alt="①❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="antique">antiques</span> · <span class="tk" data-w="encounter">encounter</span> · <span class="tk" data-w="artifact">artifacts</span> · <span class="tk" data-w="brochure">brochure</span> · <span class="tk" data-w="detail">detailing</span> · <span class="tk" data-w="exhibit">exhibit</span> · <span class="tk" data-w="ephemera">ephemera</span></div></div>
+            <div class="sn" data-go="l1_2"><img class="strip" src="img/2025_T4/s1_2.png" alt="①❷ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="ephemeral">ephemeral</span> · <span class="tk" data-w="decade">decades</span> · <span class="tk" data-w="century">centuries</span></div></div>
+            <div class="sn"><img class="strip" src="img/2025_T4/s1_3.png" alt="①❸ 原卷句条" loading="lazy"></div>
+            <div class="sn"><img class="strip" src="img/2025_T4/s1_4.png" alt="①❹ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="tangible">tangible</span></div></div>
+          </div>
+          <div class="zh"><b>①段意：</b>随便走进一家古董店，你都会碰到过去的人工制品：照片、信件、一本详细介绍 1964–65 年世界博览会上辛克莱恐龙展的小册子——这些都是历史上原本只图一时之用的小物件。然而这些东西并不真的短命，因为几十年、甚至几百年之后，它们依然还在。为什么？因为它们是有形的。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">②</span>
+            <div class="sn" data-go="l2_1"><img class="strip" src="img/2025_T4/s2_1.png" alt="②❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="ponder">pondered</span> · <span class="tk" data-w="lifecycle">life cycle</span> · <span class="tk" data-w="intangible">intangible</span> · <span class="tk" data-w="format">formats</span> · <span class="tk" data-w="giventhat">given that</span> · <span class="tk" data-w="seldom">seldom</span> · <span class="tk" data-w="makeprovision">make provision for</span> · <span class="tk" data-w="longterm">long-term</span> · <span class="tk" data-w="preservation">preservation</span></div></div>
+            <div class="sn" data-go="l2_2"><img class="strip" src="img/2025_T4/s2_2.png" alt="②❷ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="millennia">millennia</span> · <span class="tk" data-w="dueto">due to</span> · <span class="tk" data-w="survive">survived</span> · <span class="tk" data-w="despite">despite</span> · <span class="tk" data-w="creator">creators</span> · <span class="tk" data-w="neglect">neglect</span></div></div>
+            <div class="sn"><img class="strip" src="img/2025_T4/s2_3.png" alt="②❸ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="medium">medium</span> · <span class="tk" data-w="deliver">delivers</span></div></div>
+            <div class="sn" data-go="l2_4"><img class="strip" src="img/2025_T4/s2_4.png" alt="②❹ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="attempt">attempts</span> · <span class="tk" data-w="intentional">intentional</span> · <span class="tk" data-w="analog">analog</span> · <span class="tk" data-w="serveas">serving as</span> · <span class="tk" data-w="biographer">biographers</span> · <span class="tk" data-w="novelist">novelists</span> · <span class="tk" data-w="relyon">rely on</span></div></div>
+            <div class="sn"><img class="strip" src="img/2025_T4/s2_5.png" alt="②❺ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="archive">archives</span> · <span class="tk" data-w="traditionally">traditionally</span> · <span class="tk" data-w="shoulder">shouldered</span> · <span class="tk" data-w="responsibility">responsibility</span> · <span class="tk" data-w="access">access</span></div></div>
+            <div class="sn"><img class="strip" src="img/2025_T4/s2_6.png" alt="②❻ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="digitize">digitize</span> · <span class="tk" data-w="theworldover">the world over</span> · <span class="tk" data-w="holdings">holdings</span></div></div>
+            <div class="sn" data-go="l2_7"><img class="strip" src="img/2025_T4/s2_7.png" alt="②❼ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="embarrassment">embarrassment of … riches</span> · <span class="tk" data-w="needlehaystack">needle-and-haystack</span></div></div>
+          </div>
+          <div class="zh"><b>②段意：</b>制造这些东西的人很少为它们的长期保存做打算——那么，你有没有想过无形的格式，也就是数字信息，会有怎样的生命周期？几千年来，我们之所以知道过去的事，靠的是那些留存下来的人工制品，而它们往往是在创造者根本没管的情况下活下来的。东西本身就是传递信息的媒介。创造之初，没有人有意去保存它们，可模拟材料仍有机会留下来，成为传记作家、历史学家和小说家所依赖的历史记录。图书馆和档案馆历来承担着整理、保存和提供信息的责任。馆员把有形的东西数字化，让全世界的研究者都能快速检索和使用馆藏。结果是史料多得让人挑花了眼，而这本身又带来了大海捞针的麻烦。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">③</span>
+            <div class="sn" data-go="l3_1"><img class="strip" src="img/2025_T4/s3_1.png" alt="③❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="selfless">selfless</span> · <span class="tk" data-w="devotion">devotion</span> · <span class="tk" data-w="actagainst">act against</span> · <span class="tk" data-w="pointto">point to</span> · <span class="tk" data-w="universality">universality</span> · <span class="tk" data-w="holdup">holding up</span> · <span class="tk" data-w="evidence">evidence</span> · <span class="tk" data-w="vital">vital</span></div></div>
+            <div class="sn"><img class="strip" src="img/2025_T4/s3_2.png" alt="③❷ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="maintain">maintained</span></div></div>
+            <div class="sn"><img class="strip" src="img/2025_T4/s3_3.png" alt="③❸ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="curate">curates</span></div></div>
+            <div class="sn" data-go="l3_4"><img class="strip" src="img/2025_T4/s3_4.png" alt="③❹ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="whenitcomesto">When it comes to</span> · <span class="tk" data-w="borndigital">born-digital</span> · <span class="tk" data-w="terrifying">terrifying</span> · <span class="tk" data-w="archivist">archivists</span></div></div>
+            <div class="sn"><img class="strip" src="img/2025_T4/s3_5.png" alt="③❺ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="agreatdeal">a great deal more</span></div></div>
+          </div>
+          <div class="zh"><b>③段意：</b>馆员的无私付出也可能反过来对我们不利：用户举起手机说一句「全在这里了」，拿信息随处可得当证据，说如今图书馆对研究者没那么重要了。可这种随处可得是怎么实现的？也许更要紧的是，它靠什么维持？由谁来挑选保存哪些东西？说到原生数字信息，答案可能很吓人：如果不是图书馆员和档案员，那就没人管。数字信息比模拟信息需要多得多的照料。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">④</span>
+            <div class="sn" data-go="l4_1"><img class="strip" src="img/2025_T4/s4_1.png" alt="④❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="carrier">carrier</span></div></div>
+            <div class="sn"><img class="strip" src="img/2025_T4/s4_2.png" alt="④❷ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="advance">advances</span> · <span class="tk" data-w="obsolete">obsolete</span></div></div>
+            <div class="sn"><img class="strip" src="img/2025_T4/s4_3.png" alt="④❸ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="stare">stared</span> · <span class="tk" data-w="helplessly">helplessly</span> · <span class="tk" data-w="zipdisk">ZIP disk</span> · <span class="tk" data-w="getoff">get the files off</span></div></div>
+            <div class="sn" data-go="l4_4"><img class="strip" src="img/2025_T4/s4_4.png" alt="④❹ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="constant">constant</span> · <span class="tk" data-w="migration">migration</span> · <span class="tk" data-w="asset">assets</span> · <span class="tk" data-w="nightmare">nightmare</span> · <span class="tk" data-w="foreseeable">foreseeable</span> · <span class="tk" data-w="keepup">keeps historians up at night</span> · <span class="tk" data-w="abruptly">abruptly</span> · <span class="tk" data-w="replace">replaces</span></div></div>
+          </div>
+          <div class="zh"><b>④段意：</b>即便一件数字对象被保存了下来，保住的也可能只是载体，而不是信息本身。随着技术进步、某种格式被淘汰，这件对象就没用了。你有没有无助地盯着一张 ZIP 盘想：我怎么才能把里面的文件弄出来？如果不持续迁移数字资产，一场关于可预见未来的噩梦就会让历史学家夜不能寐：数字一取代模拟，历史记录就戛然而止。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">⑤</span>
+            <div class="sn" data-go="l5_1"><img class="strip" src="img/2025_T4/s5_1.png" alt="⑤❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="dayjob">day job</span> · <span class="tk" data-w="revolvearound">revolves around</span> · <span class="tk" data-w="specialcollections">special collections</span> · <span class="tk" data-w="nightterrors">night terrors</span> · <span class="tk" data-w="lying">be lying if I said</span> · <span class="tk" data-w="comprehensive">comprehensive</span> · <span class="tk" data-w="solution">solution</span></div></div>
+            <div class="sn"><img class="strip" src="img/2025_T4/s5_2.png" alt="⑤❷ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="takecomfort">take some comfort in</span> · <span class="tk" data-w="multitude">a multitude of</span> · <span class="tk" data-w="devotedto">devoted to</span></div></div>
+            <div class="sn" data-go="l5_3"><img class="strip" src="img/2025_T4/s5_3.png" alt="⑤❸ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="realm">realm</span> · <span class="tk" data-w="challenging">challenging</span> · <span class="tk" data-w="plytrade">ply their trade</span></div></div>
+          </div>
+          <div class="zh"><b>⑤段意：</b>作为一名日常工作围绕特藏和数字资产打转的图书馆员，我和历史学家一样夜里睡不着；要是我说眼下已经有了一套全面的保存方案，那是在撒谎。不过研究者可以从这样一个事实里得到些许安慰：有许许多多的图书馆员，正致力于为当下和未来的研究者发现、整理和保存数字信息。未来的研究者也许会觉得，在数字领域干这一行很有挑战，但他们不会觉得这是不可能完成的事。</div>
+        </div>
+      </section>
+
+      <!-- ========== 题目 ========== -->
+      <section class="card">
+        <h2><span class="n">02</span>题目与解析（点选项即判 · 再看解析）</h2>
+
+        <div class="q" data-ans="2" id="q36">
+          <p class="stem"><span class="qt">写作目的</span>36. The author mentions the artifacts from the past to ______.</p>
+          <div class="opts">
+            <div class="opt">[A] introduce the collection of antiques.</div>
+            <div class="opt">[B] <span class="tk" data-w="contrast">contrast</span> them with everyday items.</div>
+            <div class="opt">[C] <span class="tk" data-w="bringup">bring up</span> the issue of preservation.</div>
+            <div class="opt">[D] <span class="tk" data-w="commenton">comment on</span> their historical value.</div>
+          </div>
+          <div class="expl"><b>答案 C</b>　首段的旧物是<b>配角</b>，要看它把谁引出来。①段自己就是一条小论证链：❶ 古董店里的照片、信件、小册子是 <span class="loc">the ephemera of history</span>（短时藏品）→ ❷ <b>Yet</b> <span class="loc">these objects aren’t truly ephemeral</span>，几十年、几百年后还在 → ❸❹ 为什么？<span class="loc">Because they’re tangible</span>。整段只回答了一个问题：<b>它们为什么能留存</b>。紧接着②❶ 一个设问把镜头转到<b>无形的数字信息</b>及其 <span class="loc">long-term preservation</span>——旧物是拿来做对照、引出「保存」这个话题的 ⟹ C。<br><b>干扰项：</b>A 借❶ 的 antiques store 造「介绍古董收藏」——古董店只是取景地，文章一句都没谈收藏本身。B 借❶ 那串 photographs, letters, a brochure 造「与日常物品对比」——这些东西在文中是<b>有史料价值的人工制品</b>，不是被拿来跟日常用品比的另一方；全文真正的对比是<b>有形 vs 数字</b>。D 借 <span class="loc">the ephemera of history</span> 造「评论历史价值」——可❷ 马上用 aren’t truly ephemeral 把重心拧到了<b>「短暂 vs 长存」</b>，讲的是留不留得住，不是值不值钱。<br><b>技巧：</b>首段旧物、轶事题，答案不在旧物身上，在<b>它被拿来引出的那个话题</b>（<a href="套路库_阅读.html#R16">R16</a>）：顺着①的 Yet … because … Why? Because … 走到底，再看下一段段首接了什么。<br>💡 <b>ephemera 一词四用</b>：它兼有「短命之物」「原本只图一时之用、后来成了藏品的纪念品」「（不值钱的）日用品」几层意思——A 吃「收藏」、B 吃「日用品」、D 吃「历史」、C 吃「（留不留得）存」，四个选项都能从这一个词里找到出处，只有 C 是作者用 Yet 句拧过去的那层。<br>📕 <b>与书解析的商榷</b>：无分歧。书用「论据（❶）—论点（❷）—论据（❸❹）」来划分，结论相同。</div>
+        </div>
+
+        <div class="q" data-ans="1" id="q37">
+          <p class="stem"><span class="qt">对比细节</span>37. Compared with digital objects, tangible artifacts ______.</p>
+          <div class="opts">
+            <div class="opt">[A] are less <span class="tk" data-w="subjectto">subject to</span> their creators’ neglect.</div>
+            <div class="opt">[B] <span class="tk" data-w="convey">convey</span> information in a more direct way.</div>
+            <div class="opt">[C] require more intentional preservation.</div>
+            <div class="opt">[D] are less likely to suffer serious damage.</div>
+          </div>
+          <div class="expl"><b>答案 B</b>　四个选项<b>全是比较级</b>，每一项比的东西不一样：A 比「被疏忽的程度」、B 比「传递信息的方式」、C 比「需要刻意保存的程度」、D 比「受损的可能」。回原文给<b>有形</b>和<b>数字</b>两栏各填一格，只有一维两栏都有料：②❸ <span class="loc">The thing itself is the medium that delivers the information</span>——实物<b>本身</b>就是媒介，信息就印在东西上；④❶ 数字对象即便保住了，<span class="loc">it may only be the carrier that’s saved, not the information itself</span>——数字这边载体和信息是<b>两层</b>，保住一层不等于保住另一层。一个是「东西即信息」，一个是「东西只是装信息的壳」⟹ 有形制品传递信息的方式更直接 ⟹ B。<br><b>干扰项（逐栏核）：</b>A「更少被创造者疏忽」：②❷ 说有形制品 <span class="loc">often despite their original creators’ neglect</span> 而留存——它们<b>照样被疏忽了</b>，只是被疏忽了也活了下来；原文没比两者谁更受冷落，「有形」那格甚至写着「被疏忽」。C「需要更多刻意保存」：<b>方向反</b>——②❹ <span class="loc">no attempts were made at intentional preservation</span>，有形的东西恰恰是<b>没被刻意保存</b>也留下来了；需要更多照料的是数字（③❺ <span class="loc">requires a great deal more care than analog</span>）。D「更不容易严重受损」：两栏都空——原文讲的是<b>信息</b>会不会随格式过时而丢，从没比过实物和数字谁更容易<b>坏</b>；把「数字信息容易丢」脑补成「数字物品容易损坏」，是偷换了对象。<br><b>技巧：</b>Compared with X, Y ___ 这类题，四个比较级先各写出<b>比较维度</b>，再回原文给 X、Y 两栏填格——<b>一栏空着 ＝ 原文没比</b>，<b>两栏有料但方向反 ＝ 反着用</b>，两栏都有料、方向也对的才是答案；它往往就是原文那句<b>「本质差别句」</b>（The thing itself is the medium）的改写 ⟹ 新立 <a href="套路库_阅读.html#R323">R323</a>。定位难时用题文同序：36 在①、38 在③，37 只能在②。<br>📕 <b>与书解析的商榷</b>：结论相同。书用「文中并未对比……的程度」同时排除 A 和 C；对 C 补一条更硬的判据：它不只是「没比」，而是<b>方向反</b>——原文明说有形的东西没被刻意保存也留下来了，需要更多照料的是数字（③❺），C 恰好把两栏对调了。</div>
+        </div>
+
+        <div class="q" data-ans="1" id="q38">
+          <p class="stem"><span class="qt">因果细节</span>38. According to Paragraph 3, librarians’ work may <span class="tk" data-w="resultin">result in</span> ______.</p>
+          <div class="opts">
+            <div class="opt">[A] <span class="tk" data-w="oversupply">oversupply</span> of materials.</div>
+            <div class="opt">[B] <span class="tk" data-w="undervaluation">undervaluation</span> of libraries.</div>
+            <div class="opt">[C] researchers’ <span class="tk" data-w="underperformance">underperformance</span>.</div>
+            <div class="opt">[D] users’ <span class="tk" data-w="overreliance">overreliance</span> on technology.</div>
+          </div>
+          <div class="expl"><b>答案 B</b>　题干问「馆员的工作<b>导致</b>什么」，③❶ 开头就是一个反常的结果：<span class="loc">Librarians’ selfless devotion can act against us</span>——好心反倒<b>对自己不利</b>。怎么个不利？when 从句说清楚了：用户举起手机，拿 <span class="loc">universality of access</span>（随处可得）当证据，证明 <span class="loc">libraries are less vital for researchers today</span>。因果链走到底：馆员把馆藏数字化（②❻）→ 信息随处可得 → 用户觉得图书馆没那么重要 ⟹ <b>图书馆的价值被低估</b> ⟹ B。下文三个反问（谁实现的？谁维持？谁筛选？）正是在替被低估的图书馆鸣不平。<br><b>干扰项：</b>A 借②段末 <span class="loc">an embarrassment of historical riches</span> 造「资料供应过剩」——一来不在题干限定的第三段；二来 embarrassment of riches 是「好东西多到挑花眼」，带着褒义，oversupply 是「多到超出需要」，带着贬义，色彩不同。C 拿③❶ less vital for researchers 和③❹ if not librarians …, then no one 望文生义，编出「研究者表现不佳」——原文说的是<b>图书馆</b>对研究者不重要了，不是研究者干得不好；主体从「图书馆」挪到了「研究者」。D 看起来贴着「举起手机」，可原文的意思是用户<b>不再觉得图书馆重要</b>，不是在批评用户离不开技术；overreliance 的贬义在文中无据，作者批评的是「看轻图书馆」这个结论。<br><b>技巧：</b>因果题沿因果链走到<b>末端</b>（<a href="套路库_阅读.html#R5">R5</a>）：can act against us 只是「暗示有坏结果」，as evidence that … 后面才是<b>明示的结果</b>，答案取后者。再核主体：③❶ 吃亏的是 <b>us</b>——作者在⑤❶ 才自报是馆员，回头看，这个 us 就是图书馆这一方。<br>📕 <b>与书解析的商榷</b>：结论相同。书排 C 用的是「两处文意被误读」，更快的判据是<b>主体</b>：题干问馆员工作的后果，③段里受损的是图书馆（us），选项 C 的主语却换成了研究者（<a href="套路库_阅读.html#R21">R21</a>）。</div>
+        </div>
+
+        <div class="q" data-ans="2" id="q39">
+          <p class="stem"><span class="qt">写作目的</span>39. The “ZIP disk” is <span class="tk" data-w="cite">cited</span> as an example to show ______.</p>
+          <div class="opts">
+            <div class="opt">[A] the <span class="tk" data-w="hazard">hazard</span> of <span class="tk" data-w="retrieve">retrieving</span> files through unusual means.</div>
+            <div class="opt">[B] the <span class="tk" data-w="infeasibility">infeasibility</span> of constantly migrating digital assets.</div>
+            <div class="opt">[C] the possibility of losing information in obsolete formats.</div>
+            <div class="opt">[D] the <span class="tk" data-w="inconvenience">inconvenience</span> of storing information on analog devices.</div>
+          </div>
+          <div class="expl"><b>答案 C</b>　例子题找例子<b>服务的论点</b>，论点就在例子前两句：④❶ 数字对象保住的 <span class="loc">may only be the carrier that’s saved, not the information itself</span>；④❷ <span class="loc">As technology advances and a format becomes obsolete, the object is useless</span>。然后❸ 才举例：盯着一张 ZIP 盘发呆——<span class="loc">how do I get the files off this?</span> 盘还在（载体保住了），里面的文件却取不出来（信息丢了），因为能读这种盘的设备已经过时了 ⟹ 例子说明的是<b>过时格式里的信息可能丢失</b> ⟹ C。<br><b>干扰项：</b>A 把「怎么才能把文件弄出来」曲解成「用<b>非常规手段</b>取回文件有风险」——原文的难处在格式<b>过时</b>，不在手段<b>非常规</b>；原文也没说取文件危险，只说取不出来。B 把❹ <span class="loc">Without constant migration of digital assets</span> 读反了：Without … 是<b>条件</b>（不迁移 ⟹ 噩梦），等于说「必须持续迁移」，迁移是出路，不是「不可行」。D 换了对象：原文为之担忧的是<b>数字</b>格式，模拟（analog）在④❹ 里恰恰是那个「被取代后记录就断了」的、更靠得住的一方；「模拟存储不方便」也许是常识，但不是作者在这里要说的。<br><b>技巧：</b>例子题的答案在例子服务的论点句里（<a href="套路库_阅读.html#R41">R41</a>）。论点句的信号这里有两个：Even when … it may only be X, not Y（<b>强调＋取舍</b>：载体，不是信息）和 As … becomes obsolete, … is useless（<b>判断</b>）。选项 C 的 losing information ＝ not the information itself，obsolete formats ＝ a format becomes obsolete，一一对上。<br>📕 <b>与书解析的商榷</b>：无分歧。书把 ZIP disk 译作「压缩磁盘」，严格说 Zip 是 Iomega 公司 1994–95 年推出的可移动磁盘的<b>品牌名</b>（初版 100MB，2003 年前后停产），不是「压缩」的意思——它恰好是「格式过时」最贴切的实物，不影响答案（背景见 00）。</div>
+        </div>
+
+        <div class="q" data-ans="3" id="q40">
+          <p class="stem"><span class="qt">文章主旨</span>40. Which of the following statements best <span class="tk" data-w="summarize">summarizes</span> the text?</p>
+          <div class="opts">
+            <div class="opt">[A] Hard work should be done to preserve artifacts.</div>
+            <div class="opt">[B] Contributions of librarians should be <span class="tk" data-w="recognize">recognized</span>.</div>
+            <div class="opt">[C] Accessing databases is <span class="tk" data-w="essential">essential</span> to researchers.</div>
+            <div class="opt">[D] Keeping digital historical records is a challenge.</div>
+          </div>
+          <div class="expl"><b>答案 D</b>　把全文的问号串起来：② 无形的数字信息生命周期如何？→ ③ 谁来维持、谁来筛选？——<span class="loc">if not librarians and archivists, then no one</span>；数字信息需要多得多的照料 → ④ 格式一过时信息就丢，历史记录会 <span class="loc">abruptly stops when digital replaces analog</span> → ⑤ 没有全面的方案，<span class="loc">a challenging place</span>，但 <span class="loc">won’t find it an impossible one</span>。从②到⑤，每一段都在讲<b>数字</b>信息<b>保存</b>之难，作者最后一句给的定性就是 challenging ⟹ D。<br><b>干扰项：</b>A 最像：preserve 是全文高频词，可它的宾语写成了 artifacts（人工制品），一下泛到了①段古董店里那些<b>有形</b>的东西——而文章说的恰恰是有形的东西<b>不用费力</b>也能留下来，要费大力气的是数字的；A 的范围宽了一圈，还把重心放错了地方。B 只抓住⑤❷ 的 <span class="loc">a multitude of librarians devoted to</span>：馆员的付出是作者给研究者的「安慰」，是数字保存这个难题里的一个配角；而且全文没有一句「应当被认可」的呼吁。C 只抓住②❻ 的「研究者能快速检索馆藏」和③❶ 的「随处可得」，数据库连原词都没出现，「访问数据库至关重要」更是作者想反驳的那种看法（「全在手机里」）的变体。<br><b>技巧：</b>主旨题先纵向归纳全文<b>高频词</b>（preservation／preserved／preserving · digital information／born-digital／digital object／digital assets），排掉不含线索的 B、C；剩下 A、D 都含 preserve 时，比<b>宾语的范围</b>：artifacts 泛指一切人工制品，digital historical records 正好是全文的论述对象（<a href="套路库_阅读.html#R125">R125</a>：两项共享话题词时，拆开比中心词后面的那一截）。<br>⚠️ <b>独立作答时 A／D 犹豫过</b>：A 的 hard work … preserve 很贴合「数字信息需要多得多的照料」。判据就是那个宾语——全文的一半篇幅（①②）是在说有形制品<b>不用</b>费力也能活下来，拿 artifacts 当全文对象，等于把作者拿来做对照的那一方当成了主角。<br>📕 <b>与书解析的商榷</b>：无分歧，书也是「保留话题契合的 A、D，A 更宽泛 ⟹ 取 D」。</div>
+        </div>
+      </section>
+
+      <!-- ========== 长难句 ========== -->
+      <section class="card" id="sents">
+        <h2><span class="n">03</span>长难句精析（正文蓝色虚线句）</h2>
+
+        <div class="sent" id="l1_1">
+          <div class="src"><b>s1（①❶）</b><img class="strip" src="img/2025_T4/s1_1.png" alt="①❶ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li>句式 <b>祈使句 ＋ and ＋ 陈述句</b>：<code>Visit any antiques store and you’ll encounter …</code>＝「只要你去……，就会……」，祈使句在这里相当于条件状语（＝ If you visit …）。</li>
+            <li><span class="skel">主干</span>：<code>you’ll encounter artifacts from the past</code>，冒号后列举 artifacts 的具体例子。</li>
+            <li>列举的第三项最长：<code>a brochure detailing …</code>——detailing 是现在分词作后置定语（「详细介绍……的小册子」），一直管到 1964-65 World’s Fair。</li>
+            <li>列举最后一项 <code>the ephemera of history</code> 不是第四样东西，而是给前面三样贴的<b>总标签</b>（同位语）——「这些都是历史的短时藏品」。⭐ 下一句马上用 ephemeral 去否定它，36 题的枢纽就在这里。</li>
+          </ul>
+          <div class="tr">意：随便走进一家古董店，你都会碰到过去的人工制品：照片、信件、一本详细介绍 1964–65 年世界博览会上辛克莱恐龙展的小册子——这些都是历史上原本只图一时之用的小物件。</div>
+        </div>
+
+        <div class="sent" id="l1_2">
+          <div class="src"><b>s2（①❷）</b><img class="strip" src="img/2025_T4/s1_2.png" alt="①❷ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：<code>these objects aren’t truly ephemeral</code>，because 引导原因状语从句。</li>
+            <li>⭐ <b>ephemera → ephemeral</b>：上一句的名词刚给它们贴了「短命」的标签，这一句用同根形容词加 aren’t truly 撕下来——<b>同根词一正一反</b>，是作者拧转话题的手法。</li>
+            <li><code>still here, decades, even centuries later</code>：decades 和 centuries 由 even 递进，later 同时修饰两者——「几十年、甚至几百年之后」。</li>
+            <li>后面 ❸❹ 两句自问自答：Why? Because they’re tangible.——<b>「有形」是全段的答案</b>，也是②段要拿来与「无形」对比的那一端。</li>
+          </ul>
+          <div class="tr">意：然而这些东西并不真的短命，因为几十年、甚至几百年之后，它们依然还在。</div>
+        </div>
+
+        <div class="sent" id="l2_1">
+          <div class="src"><b>s3（②❶）</b><img class="strip" src="img/2025_T4/s2_1.png" alt="②❶ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：<code>Have you pondered the life cycle of intangible formats</code>——一般疑问句，但不是真的问读者，而是<b>设问</b>：作者借它把话题从①的「有形」转到「无形」。</li>
+            <li><code>intangible formats, digital information</code>：逗号后的 digital information 是 intangible formats 的<b>同位语</b>，作者自己解释了「无形的格式」指什么。</li>
+            <li><code>given that …</code>：「考虑到、鉴于」，引导原因状语从句；从句主语 <code>those who produce these artifacts</code> 带一个 who 定语从句，谓语是 <code>seldom make provision for</code>（很少为……做打算）。</li>
+            <li>⚠️ 中文要倒过来译：先译 given that 的原因，再译设问——「鉴于……很少为其长期保存做准备，你是否想过……」。</li>
+          </ul>
+          <div class="tr">意：制造这些东西的人很少为它们的长期保存做打算——那么，你有没有想过无形的格式，也就是数字信息，会有怎样的生命周期？</div>
+        </div>
+
+        <div class="sent" id="l2_2">
+          <div class="src"><b>s4（②❷）</b><img class="strip" src="img/2025_T4/s2_2.png" alt="②❷ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：<code>we’ve known what we’ve known</code>——第一个 known 是谓语，<code>what we’ve known</code> 是宾语从句：「我们已知道我们所知道的」，意思是「我们对过去的全部了解」。</li>
+            <li><code>due to artifacts that have survived</code>：due to 表原因，后接 that 定语从句——「靠的是留存下来的人工制品」。</li>
+            <li><code>often despite their original creators’ neglect</code>：despite 是介词，后接名词 neglect；修饰 survived——「往往是在创造者疏忽的情况下留存的」。</li>
+            <li>⭐ 37 题 A 就出自这里：有形的东西<b>也被疏忽了</b>，只是被疏忽了还活着——原文没比「谁更受疏忽」。</li>
+          </ul>
+          <div class="tr">意：几千年来，我们之所以知道过去的事，靠的是那些留存下来的人工制品，而它们往往是在创造者根本没管的情况下活下来的。</div>
+        </div>
+
+        <div class="sent" id="l2_4">
+          <div class="src"><b>s5（②❹）</b><img class="strip" src="img/2025_T4/s2_4.png" alt="②❹ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li>两个分句由 <b>yet</b> 转折：前一句 <code>no attempts were made at intentional preservation</code>（make an attempt at：尝试做……，这里是被动、主语是 no attempts）；后一句 <code>analog materials have a chance of surviving and serving as …</code>。</li>
+            <li>have a chance of 后接两个并列动名词 <code>surviving</code> 和 <code>serving as the historical record</code>。</li>
+            <li>record 后接定语从句 <code>that biographers, historians, and novelists rely on</code>——that 在从句里作 rely on 的宾语，介词 on 留在句尾。</li>
+            <li>⭐ 37 题 C 的反证就在前一个分句：有形的东西<b>没人刻意保存</b>也留下来了 ⟹ 需要更多刻意保存的是数字，不是有形制品。</li>
+          </ul>
+          <div class="tr">意：创造之初，没有人有意去保存它们，可模拟材料仍有机会留下来，成为传记作家、历史学家和小说家所依赖的历史记录。</div>
+        </div>
+
+        <div class="sent" id="l2_7">
+          <div class="src"><b>s6（②❼）</b><img class="strip" src="img/2025_T4/s2_7.png" alt="②❼ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：<code>The result is an embarrassment of historical riches</code>——系表结构。</li>
+            <li><code>an embarrassment of riches</code> 是固定说法：好东西<b>多到让人不知如何是好</b>，中间插进 historical 限定是「史料」。褒义打底、带点无奈，不是「尴尬」。</li>
+            <li><code>which brings its own needle-and-haystack problems</code>：非限制性定语从句，先行词是前面整个 embarrassment of riches；its own 强调「这份丰富<b>自带</b>的麻烦」。</li>
+            <li>needle-and-haystack 由 look for a needle in a haystack（大海捞针）压缩成复合形容词。⚠️ 38 题 A 把 embarrassment of riches 换成贬义的 oversupply，还挪到了第三段。</li>
+          </ul>
+          <div class="tr">意：结果是史料多得让人挑花了眼，而这本身又带来了大海捞针的麻烦。</div>
+        </div>
+
+        <div class="sent" id="l3_1">
+          <div class="src"><b>s7（③❶）</b><img class="strip" src="img/2025_T4/s3_1.png" alt="③❶ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：<code>Librarians’ selfless devotion can act against us</code>——act against：对……不利。</li>
+            <li>when 从句：<code>when users point to universality of access</code>——point to 「指出、拿……当理由」；<code>by holding up a cell phone and saying, …</code> 是方式状语，引号里是用户的原话。</li>
+            <li>句尾 <code>as evidence that libraries are less vital for researchers today</code>：as evidence 管的是 point to 的宾语（拿「随处可得」当证据）；that 引导 evidence 的<b>同位语从句</b>，说明证据的内容。</li>
+            <li>⭐ 因果链：馆员的付出 → 信息随处可得 → 被当成「图书馆不重要了」的证据 ⟹ 38 题 B「图书馆被低估」。<b>us</b> 是图书馆这一方（作者⑤❶ 才说自己是馆员）。</li>
+          </ul>
+          <div class="tr">意：馆员的无私付出也可能反过来对我们不利：用户举起手机说一句「全在这里了」，拿信息随处可得当证据，说如今图书馆对研究者没那么重要了。</div>
+        </div>
+
+        <div class="sent" id="l3_4">
+          <div class="src"><b>s8（③❹）</b><img class="strip" src="img/2025_T4/s3_4.png" alt="③❹ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><code>When it comes to born-digital information</code>：when it comes to ＋ 名词／动名词，「说到、涉及……」，to 是介词。</li>
+            <li><span class="skel">主干</span>：<code>the terrifying answer can be</code>，冒号后给出答案的内容。</li>
+            <li>冒号后 <code>if not librarians and archivists, then no one</code> 是省略句，补全为 If (it is) not librarians and archivists (who curate it), then (it is) no one——<b>「不是他们，就没人」</b>。</li>
+            <li>born-digital「原生数字的」：一生下来就是数字形式（电子邮件、网页、数码照片），对照②❻ 馆员把有形的东西「数字化」（digitize the tangible）——后者原件还在，前者没有原件，丢了就是真丢了。</li>
+          </ul>
+          <div class="tr">意：说到原生数字信息，答案可能很吓人：如果不是图书馆员和档案员，那就没人管。</div>
+        </div>
+
+        <div class="sent" id="l4_1">
+          <div class="src"><b>s9（④❶）</b><img class="strip" src="img/2025_T4/s4_1.png" alt="④❶ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><code>Even when a digital object is preserved</code>：even when 让步兼时间——「即便……的时候」。</li>
+            <li><span class="skel">主干</span>：<code>it may only be the carrier that’s saved</code>——<b>强调句</b> it is … that … 的变体（插进了 may only），被强调的是 the carrier。</li>
+            <li>句尾 <code>not the information itself</code>：和 the carrier 构成 <b>X, not Y</b> 的取舍——保住的是载体，不是信息。</li>
+            <li>⭐ 这是 37、39 两题共用的一句：与②❸ 的 the thing itself is the medium 对照，有形的「东西即信息」、数字的「东西只是壳」（37B）；格式过时，壳在信息没（39C）。</li>
+          </ul>
+          <div class="tr">意：即便一件数字对象被保存了下来，保住的也可能只是载体，而不是信息本身。</div>
+        </div>
+
+        <div class="sent" id="l4_4">
+          <div class="src"><b>s10（④❹）</b><img class="strip" src="img/2025_T4/s4_4.png" alt="④❹ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li>句首 <code>Without constant migration of digital assets</code>：without 短语表<b>条件</b>（＝ If there is no constant migration …）——39 题 B 把条件读成了「迁移不可行」。</li>
+            <li><span class="skel">主干</span>：<code>a nightmare … is what keeps historians up at night</code>——主语 a nightmare（带 about the foreseeable future 作定语），表语是 what 引导的从句；keep sb up at night：让人夜里睡不着。</li>
+            <li>冒号后 <code>a historical record that abruptly stops …</code>：解释噩梦的内容，是 nightmare 的同位语；that 定语从句里再套一个 when 从句 when digital replaces analog。</li>
+            <li>注意 replace 的方向：<b>digital replaces analog</b>＝数字取代模拟——记录断在「换成数字」的那一刻，所以靠得住的反而是模拟（39 题 D 把对象换反）。</li>
+          </ul>
+          <div class="tr">意：如果不持续迁移数字资产，一场关于可预见未来的噩梦就会让历史学家夜不能寐：数字一取代模拟，历史记录就戛然而止。</div>
+        </div>
+
+        <div class="sent" id="l5_1">
+          <div class="src"><b>s11（⑤❶）</b><img class="strip" src="img/2025_T4/s5_1.png" alt="⑤❶ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li>句首 <code>As a librarian whose day job revolves around …</code>：as 是介词「作为」；whose 引导定语从句修饰 librarian。</li>
+            <li>两个并列分句：<code>I share the night terrors of historians</code>（呼应④❹ 的 keeps historians up at night）和 <code>I’d be lying if I said …</code>。</li>
+            <li><code>I’d be lying if I said a comprehensive preservation solution currently exists</code>：<b>虚拟语气</b>（would be ＋ if 过去式），字面「我要是说……就是在撒谎」⟹ 实际意思是「<b>目前并没有</b>全面的保存方案」——用否定虚拟来坦白。</li>
+            <li>⭐ 作者第一次亮明身份：前面 38 题的 us 至此坐实是图书馆这一方。</li>
+          </ul>
+          <div class="tr">意：作为一名日常工作围绕特藏和数字资产打转的图书馆员，我和历史学家一样夜里睡不着；要是我说眼下已经有了一套全面的保存方案，那是在撒谎。</div>
+        </div>
+
+        <div class="sent" id="l5_3">
+          <div class="src"><b>s12（⑤❸）</b><img class="strip" src="img/2025_T4/s5_3.png" alt="⑤❸ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><b>While 让步 ＋ 主句</b>：让步 <code>future researchers may find the digital realm a challenging place …</code>，主句 <code>they won’t find it an impossible one</code>。</li>
+            <li>两处都是 <b>find ＋ 宾语 ＋ 宾补</b>：find the digital realm a challenging place / find it an impossible one；one 替代 place。</li>
+            <li><code>to ply their trade</code>：不定式作 place 的定语——「从事本行的地方」；ply one’s trade 是固定说法（干自己那一行）。</li>
+            <li>⭐ 全文收尾的定性：<b>challenging, but not impossible</b> ⟹ 40 题 D 的 a challenge 就出自这里；主句的「不是不可能」是给研究者的宽慰，不改变「难」的判断。</li>
+          </ul>
+          <div class="tr">意：未来的研究者也许会觉得，在数字领域干这一行很有挑战，但他们不会觉得这是不可能完成的事。</div>
+        </div>
+      </section>
+
+      <!-- ========== 词汇复盘 ========== -->
+      <section class="card">
+        <h2><span class="n">04</span>词汇复盘（点卡片看详情）</h2>
+        <div class="filters">
+          <button class="fbtn on" data-f="all">全部</button>
+          <button class="fbtn" data-f="core">核心词</button>
+          <button class="fbtn" data-f="phrase">短语</button>
+          <button class="fbtn" data-f="poly">熟词僻义</button>
+          <button class="fbtn" data-f="write">写作可用</button>
+        </div>
+        <div class="vgrid" id="vgrid"></div>
+      </section>
+
+      <!-- ========== 写作素材 ========== -->
+      <section class="card">
+        <h2><span class="n">05</span>可搬进作文/翻译的素材</h2>
+        <p style="font-size:.9rem;margin-bottom:12px">本篇话题——<b>数字时代的代价、传统机构的价值、文化遗产保护</b>——正对大作文里的「数字化利弊」「图书馆／博物馆还有用吗」「传承与创新」类题目；「设问引出 → 对比 → 难点 → 坦白但不悲观」的骨架则适合议论文的开头与收尾。英文例句都是按原文句式自拟的，只借骨架。</p>
+        <div class="wb">
+          <div class="wbi"><div class="p">Visit any … and you’ll …</div><div class="u">「随便去一家……，你都会……」——用祈使句开篇、把读者拉进场景：Visit any city park in the morning and you’ll see retired people practicing tai chi.</div></div>
+          <div class="wbi"><div class="p">Yet these … aren’t truly …, because …</div><div class="u">「然而这些……并不真的……，因为……」——先贴一个常见标签，再撕掉它：Yet these hobbies aren’t truly a waste of time, because they keep people healthy.</div></div>
+          <div class="wbi"><div class="p">Have you ever pondered …, given that …?</div><div class="u">「鉴于……，你有没有想过……？」——设问转入正题：Have you ever pondered where your old phone goes, given that few of us recycle it properly?</div></div>
+          <div class="wbi"><div class="p">The result is an embarrassment of riches, which brings its own problems.</div><div class="u">「结果是选择多得挑花眼，而这本身又带来了麻烦」——写「丰富的副作用」：The result is an embarrassment of online courses, which brings its own problem of choice.</div></div>
+          <div class="wbi"><div class="p">X can act against …, when people point to … as evidence that …</div><div class="u">「X 也可能反过来对……不利：人们拿……当证据，说……」——写<b>好心办坏事</b>、成功反被看轻：Good service can act against a company when customers take it as a sign that it is easy to do.</div></div>
+          <div class="wbi"><div class="p">When it comes to …, the answer can be: if not …, then no one.</div><div class="u">「说到……，答案可能是：不是……，就没人……」——强调某个群体不可替代：When it comes to caring for left-behind children, the answer can be: if not teachers, then no one.</div></div>
+          <div class="wbi"><div class="p">It may only be X that’s saved, not Y itself.</div><div class="u">「保住的可能只是 X，而不是 Y 本身」——区分形式与实质，写「形式主义」「只重外表」很好用：It may only be the old buildings that are saved, not the way of life itself.</div></div>
+          <div class="wbi"><div class="p">I’d be lying if I said … Yet … can take some comfort in the fact that …</div><div class="u">「要是说……那是骗人；不过……可以从……这一事实中得到些许安慰」——<b>坦白困难、再给希望</b>的收尾：I’d be lying if I said the exam was easy. Yet we can take some comfort in the fact that hard work pays off.</div></div>
+          <div class="wbi"><div class="p">While … may find it a challenging …, they won’t find it an impossible one.</div><div class="u">「……也许会觉得很难，但不会觉得做不到」——审慎乐观的结尾句：While young people may find the job market a challenging place, they won’t find it an impossible one.</div></div>
+          <div class="wbi"><div class="p">话题词包：preservation · digitize · obsolete · born-digital · tangible</div><div class="u">写「数字化 / 文化遗产 / 图书馆」时直接可用：digital preservation（数字保存）· digitize old books（把古籍数字化）· become obsolete（被淘汰）· cultural heritage（文化遗产）· universal access to information（信息的普遍可得）· shoulder the responsibility of（承担……的责任）· tangible and intangible heritage（物质与非物质遗产）。</div></div>
+        </div>
+      </section>
+    </main>
+    <aside>
+      <div id="panel">
+        <button class="close" onclick="document.getElementById('panel').classList.remove('open')">收起</button>
+        <div class="hint">点正文里的<b>黄色高亮词</b>，或下方词汇卡片，这里出详情。</div>
+      </div>
+    </aside>
+  </div>
+</div>
+<button id="yd">查有道</button>
+
+<script>
+const V={
+  antique:{"w": "antique", "ipa": "/ænˈtiːk/", "pos": "n./adj.", "tags": ["core"], "cn": "<b>古董</b>；古老的", "en": "an old object that is valuable because of its age", "ex": "Visit any <b>antiques</b> store（①❶）", "mem": "anti-（＝ante 前）＋ -que ⟹「从前的东西」。antiques store／shop＝古董店。<br>⚠️ 36 题 A 借它造「介绍古董收藏」。", "syn": "antiquity（古代）· relic（遗物）", "conf": "antique（古董）· antic（滑稽动作）· ancient（古代的）。"},
+  encounter:{"w": "encounter", "ipa": "/ɪnˈkaʊntə(r)/", "pos": "v./n.", "tags": ["core", "write"], "cn": "<b>偶然遇到</b>、碰到", "en": "to meet or find something, often unexpectedly", "ex": "you’ll <b>encounter</b> artifacts from the past（①❶）", "mem": "en-（进入）＋ counter（对面）⟹ 迎面撞上。写作：encounter difficulties（遇到困难）。", "syn": "come across · run into · meet", "conf": "encounter（遭遇）· counter（反驳；柜台）· account（账户；解释）。"},
+  artifact:{"w": "artifact", "ipa": "/ˈɑːtɪfækt/", "pos": "n.", "tags": ["core"], "cn": "<b>人工制品</b>、手工艺品（尤指有史料价值的）", "en": "an object made by people, especially one of historical interest", "ex": "<b>artifacts</b> from the past（①❶）", "mem": "arti-（＝art 技艺）＋ fact（做）⟹「人做出来的东西」。英式拼作 artefact。全文核心词，37 题题干 tangible artifacts。", "syn": "relic · object · handicraft", "conf": "artifact（人工制品）· artificial（人造的）· artful（狡猾的）。"},
+  brochure:{"w": "brochure", "ipa": "/ˈbrəʊʃə(r)/", "pos": "n.", "tags": ["core"], "cn": "<b>小册子</b>、宣传册", "en": "a thin book with pictures giving information about something", "ex": "a <b>brochure</b> detailing the Sinclair dinosaur exhibit（①❶）", "mem": "法语 brocher（缝订）⟹ 订起来的薄册子。背景：辛克莱恐龙展的小册子真有其物，今藏于地图馆（见 00）。", "syn": "booklet · pamphlet · leaflet", "conf": "brochure（小册子）· leaflet（传单）· catalogue（目录）。"},
+  detail:{"w": "detail", "ipa": "/ˈdiːteɪl/", "pos": "v.", "tags": ["poly", "core"], "cn": "<b>详细介绍</b>、详述（动词用法）", "en": "to give full information about something", "ex": "a brochure <b>detailing</b> the … exhibit（①❶）", "mem": "熟词僻义：detail 常作名词「细节」，这里是<b>动词</b>「详细说明」，现在分词作后置定语。", "syn": "describe · set out · specify", "conf": "detail（详述）· detailed（详细的）· in detail（详细地）。"},
+  exhibit:{"w": "exhibit", "ipa": "/ɪɡˈzɪbɪt/", "pos": "n./v.", "tags": ["core"], "cn": "<b>展览</b>、展品；展出", "en": "a public show of objects; to show in public", "ex": "the Sinclair dinosaur <b>exhibit</b>（①❶）", "mem": "ex-（出）＋ hibit（拿）⟹ 拿出来给人看。美式英语里 exhibit 可作「展览」＝ exhibition。", "syn": "exhibition · display · show", "conf": "exhibit（展出）· inhibit（抑制）· prohibit（禁止）。"},
+  ephemera:{"w": "ephemera", "ipa": "/ɪˈfemərə/", "pos": "n.", "tags": ["core"], "cn": "<b>短时藏品</b>（原本只图一时之用、后被收藏的票证、传单、小册子）；短命之物", "en": "things meant to be used for a short time that people later collect", "ex": "the <b>ephemera</b> of history（①❶）", "mem": "希腊语 ephēmeros「只活一天的」（epi 在 ＋ hēmera 天）⟹ 蜉蝣也叫 ephemera。<br>⭐ 一词兼「短命之物／纪念品／日用品」，36 题四个选项都能从这里找到出处。", "syn": "memorabilia · collectibles", "conf": "ephemera（短时藏品）· ephemeral（短暂的）。"},
+  ephemeral:{"w": "ephemeral", "ipa": "/ɪˈfemərəl/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>短暂的</b>、转瞬即逝的", "en": "lasting only a short time", "ex": "these objects aren’t truly <b>ephemeral</b>（①❷）", "mem": "上一句的名词 ephemera 刚贴上「短命」标签，这一句用同根形容词加 aren’t truly 撕下来——36 题的枢纽。<br>写作：ephemeral fame（昙花一现的名气）。", "syn": "short-lived · fleeting · transient", "conf": "ephemeral（短暂的）· eternal（永恒的）· perennial（长久的）。"},
+  decade:{"w": "decade", "ipa": "/ˈdekeɪd/", "pos": "n.", "tags": ["core"], "cn": "<b>十年</b>", "en": "a period of ten years", "ex": "still here, <b>decades</b>, even centuries later（①❷）", "mem": "deca-（十）⟹ decade。decades later＝几十年后。", "syn": "ten years", "conf": "decade（十年）· century（百年）· millennium（千年）。"},
+  century:{"w": "century", "ipa": "/ˈsentʃəri/", "pos": "n.", "tags": ["core"], "cn": "<b>世纪</b>、百年", "en": "a period of 100 years", "ex": "even <b>centuries</b> later（①❷）", "mem": "cent-（百）：percent（百分之）· centimeter（厘米）。decades, even centuries 用 even 递进。", "syn": "hundred years", "conf": "century（百年）· centennial（百年纪念）。"},
+  tangible:{"w": "tangible", "ipa": "/ˈtændʒəbl/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>有形的</b>、可触摸的；实实在在的", "en": "that can be touched; real and clear", "ex": "Because they’re <b>tangible</b>（①❹）", "mem": "tang-（触）＋ -ible ⟹ 摸得着的。反义 intangible（②❶）。<br>写作：tangible results（实实在在的成果）· tangible benefits。", "syn": "physical · concrete · material", "conf": "tangible（有形的）· intangible（无形的）· tactile（触觉的）。"},
+  ponder:{"w": "ponder", "ipa": "/ˈpɒndə(r)/", "pos": "v.", "tags": ["core", "write"], "cn": "<b>仔细考虑</b>、琢磨", "en": "to think carefully about something", "ex": "Have you <b>pondered</b> the life cycle of …?（②❶）", "mem": "pond-（称重，同 pound）⟹ 在心里掂量。ponder (on／over) sth。", "syn": "consider · reflect on · mull over", "conf": "ponder（思考）· ponderous（笨重的；沉闷的）· wonder（想知道）。"},
+  lifecycle:{"w": "life cycle", "ipa": "/laɪf ˈsaɪkl/", "pos": "n.", "tags": ["phrase", "core"], "cn": "<b>生命周期</b>", "en": "the series of stages something goes through during its life", "ex": "the <b>life cycle</b> of intangible formats（②❶）", "mem": "原是生物学术语（出生 → 成长 → 死亡），借来说数字信息从产生到失效的过程。", "syn": "lifespan · life history", "conf": "life cycle（生命周期）· lifespan（寿命）· lifetime（一生）。"},
+  intangible:{"w": "intangible", "ipa": "/ɪnˈtændʒəbl/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>无形的</b>、触摸不到的", "en": "that cannot be touched; hard to describe exactly", "ex": "the life cycle of <b>intangible</b> formats（②❶）", "mem": "in-（不）＋ tangible。作者紧跟同位语 digital information 解释它指什么。<br>写作：intangible cultural heritage（非物质文化遗产）。", "syn": "immaterial · abstract", "conf": "intangible（无形的）· invisible（看不见的）· insensible（无知觉的）。"},
+  format:{"w": "format", "ipa": "/ˈfɔːmæt/", "pos": "n.", "tags": ["core", "poly"], "cn": "（数据、文件的）<b>格式</b>；版式、形式", "en": "the way data or a document is arranged or stored", "ex": "intangible <b>formats</b> · a <b>format</b> becomes obsolete（②❶ ④❷）", "mem": "form（形式）＋ -at ⟹ 排版样式；数字语境里是「文件格式、存储格式」。④❷ 格式过时 ⟹ 39 题 C。", "syn": "form · layout · file type", "conf": "format（格式）· formation（形成）· formal（正式的）。"},
+  giventhat:{"w": "given that", "ipa": "/ˈɡɪvn ðæt/", "pos": "conj.", "tags": ["phrase", "write"], "cn": "<b>考虑到</b>、鉴于", "en": "considering the fact that", "ex": "<b>given that</b> those who produce these artifacts seldom …（②❶）", "mem": "given 本是 give 的过去分词，「既然给定了这个条件」⟹ 鉴于。<br>写作：Given that time is limited, we must choose wisely.", "syn": "considering that · since · in view of", "conf": "given that（鉴于）· granted that（就算）· provided that（只要）。"},
+  seldom:{"w": "seldom", "ipa": "/ˈseldəm/", "pos": "adv.", "tags": ["core"], "cn": "<b>很少</b>、不常", "en": "not often; rarely", "ex": "those who produce these artifacts <b>seldom</b> make provision（②❶）", "mem": "否定副词，放句首要倒装：Seldom do they …。", "syn": "rarely · hardly ever", "conf": "seldom（很少）· seemly（得体的）。"},
+  makeprovision:{"w": "make provision for", "ipa": "/meɪk prəˈvɪʒn fə(r)/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>为……预先做准备</b>、作出安排", "en": "to prepare for something that may happen in the future", "ex": "seldom <b>make provision for</b> their long-term preservation（②❶）", "mem": "provision：pro-（向前）＋ vis（看）⟹ 往前看 ⟹ 预备。复数 provisions＝食物供应；法律里 provision＝条款。", "syn": "prepare for · plan for", "conf": "make provision for（预先准备）· provide for（供养；规定）· provisional（临时的）。"},
+  longterm:{"w": "long-term", "ipa": "/ˌlɒŋ ˈtɜːm/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>长期的</b>", "en": "lasting or having an effect over a long time", "ex": "their <b>long-term</b> preservation（②❶）", "mem": "反义 short-term。写作：long-term development · in the long term（从长远看）。", "syn": "lasting · enduring", "conf": "long-term（长期的）· long-standing（由来已久的）· lifelong（终身的）。"},
+  preservation:{"w": "preservation", "ipa": "/ˌprezəˈveɪʃn/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>保存</b>、保护", "en": "the act of keeping something in its original state", "ex": "long-term <b>preservation</b> · intentional <b>preservation</b>（②❶ ②❹）", "mem": "pre-（预先）＋ serve（保持）⟹ 预先保住。全文最高频的话题词（preservation／preserved／preserving），40 题主旨就靠它。", "syn": "conservation · protection", "conf": "preserve（保存）· conserve（节约；保护）· reserve（预订；储备）。"},
+  millennia:{"w": "millennia", "ipa": "/mɪˈleniə/", "pos": "n.", "tags": ["core"], "cn": "<b>数千年</b>（millennium 的复数）", "en": "periods of a thousand years", "ex": "For <b>millennia</b>, we’ve known …（②❷）", "mem": "milli-（千）＋ enn（年，同 annual）⟹ 千年。复数可作 millennia 或 millenniums。", "syn": "thousands of years", "conf": "millennium（千年）· millennial（千禧一代）· millionaire（百万富翁）。"},
+  dueto:{"w": "due to", "ipa": "/djuː tə/", "pos": "prep.", "tags": ["phrase", "core"], "cn": "<b>由于</b>、因为", "en": "because of", "ex": "we’ve known what we’ve known <b>due to</b> artifacts（②❷）", "mem": "due to 后接名词，引出原因；考研常与 owing to、thanks to 互换。", "syn": "because of · owing to · thanks to", "conf": "due to（由于）· be due（到期）· due（应得的）。"},
+  survive:{"w": "survive", "ipa": "/səˈvaɪv/", "pos": "v.", "tags": ["core"], "cn": "<b>留存下来</b>、幸存", "en": "to continue to exist", "ex": "artifacts that have <b>survived</b>（②❷）", "mem": "sur-（超过）＋ vive（活）⟹ 活过了某段时间。物作主语时＝「保存至今」。", "syn": "last · endure · remain", "conf": "survive（幸存）· revive（复兴）· vivid（生动的）。"},
+  despite:{"w": "despite", "ipa": "/dɪˈspaɪt/", "pos": "prep.", "tags": ["core"], "cn": "<b>尽管</b>", "en": "without being affected by", "ex": "often <b>despite</b> their original creators’ neglect（②❷）", "mem": "despite 是<b>介词</b>，后接名词或动名词，不接从句；＝ in spite of。", "syn": "in spite of · regardless of", "conf": "despite（尽管，介词）· although（尽管，连词）· despise（鄙视）。"},
+  creator:{"w": "creator", "ipa": "/kriˈeɪtə(r)/", "pos": "n.", "tags": ["core"], "cn": "<b>创造者</b>、制作者", "en": "a person who makes something new", "ex": "their original <b>creators’</b> neglect（②❷）", "mem": "create ＋ -or。②❶ 说 those who produce these artifacts，②❷ 换成 creators，同义复现。", "syn": "maker · producer · author", "conf": "creator（创造者）· creature（生物）· creation（创作）。"},
+  neglect:{"w": "neglect", "ipa": "/nɪˈɡlekt/", "pos": "n./v.", "tags": ["core"], "cn": "<b>疏忽</b>、忽视", "en": "failure to give enough care or attention", "ex": "despite their original creators’ <b>neglect</b>（②❷）", "mem": "neg-（不）＋ lect（选、收拾）⟹ 不去管。<br>⚠️ 37 题 A 拿它造「更少被疏忽」，可原文说的是被疏忽了也活下来，没比。", "syn": "disregard · ignore", "conf": "neglect（疏忽）· negligible（可忽略的）· negligent（玩忽职守的）。"},
+  medium:{"w": "medium", "ipa": "/ˈmiːdiəm/", "pos": "n.", "tags": ["poly", "core"], "cn": "<b>媒介</b>、载体（复数 media）", "en": "a way or means of conveying something", "ex": "The thing itself is the <b>medium</b>（②❸）", "mem": "熟词僻义：medium 常见义「中等的」，这里是名词「媒介」——<b>东西本身就是传递信息的媒介</b>，37 题 B 的出处。", "syn": "means · channel · vehicle", "conf": "medium（媒介；中等的）· media（媒体）· median（中位数）。"},
+  deliver:{"w": "deliver", "ipa": "/dɪˈlɪvə(r)/", "pos": "v.", "tags": ["core"], "cn": "<b>传递</b>、送达", "en": "to take or give something to someone", "ex": "the medium that <b>delivers</b> the information（②❸）", "mem": "de-（离开）＋ liver（自由）⟹ 交出去。37 题 B 的 convey information 正是它的同义替换。", "syn": "convey · transmit · carry", "conf": "deliver（传递；兑现）· delivery（交付）· liberal（自由的）。"},
+  attempt:{"w": "attempt", "ipa": "/əˈtempt/", "pos": "n./v.", "tags": ["core"], "cn": "<b>尝试</b>、企图", "en": "an act of trying to do something", "ex": "no <b>attempts</b> were made at intentional preservation（②❹）", "mem": "make an attempt at／to do。这里是被动：no attempts were made ⟹ 没人尝试。", "syn": "try · effort", "conf": "attempt（尝试）· tempt（引诱）· contempt（蔑视）。"},
+  intentional:{"w": "intentional", "ipa": "/ɪnˈtenʃənl/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>有意的</b>、故意的", "en": "done deliberately", "ex": "no attempts … at <b>intentional</b> preservation（②❹）", "mem": "intention ＋ -al。<br>⚠️ 37 题 C「需要更多刻意保存」恰好方向反：有形的东西是没被刻意保存也留下来了。", "syn": "deliberate · purposeful", "conf": "intentional（有意的）· intense（强烈的）· intensive（密集的）。"},
+  analog:{"w": "analog", "ipa": "/ˈænəlɒɡ/", "pos": "adj./n.", "tags": ["core"], "cn": "<b>模拟的</b>（与数字相对，指实体、非数字的）", "en": "not digital; using physical forms", "ex": "<b>analog</b> materials have a chance of surviving（②❹）", "mem": "本义「类似物」（analogy 类比）；在技术语境里与 digital 相对：胶片、纸张、磁带都是 analog。英式拼作 analogue。<br>⚠️ 39 题 D 把担忧的对象从数字换成了模拟。", "syn": "physical · non-digital", "conf": "analog（模拟的）· analogy（类比）· digital（数字的）。"},
+  serveas:{"w": "serve as", "ipa": "/sɜːv æz/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>充当</b>、起……的作用", "en": "to have a particular function", "ex": "surviving and <b>serving as</b> the historical record（②❹）", "mem": "serve as ＋ 名词：作为、充当。写作：serve as a reminder（成为一种提醒）。", "syn": "act as · function as", "conf": "serve as（充当）· serve for（用作）· serve sb right（活该）。"},
+  biographer:{"w": "biographer", "ipa": "/baɪˈɒɡrəfə(r)/", "pos": "n.", "tags": ["core"], "cn": "<b>传记作家</b>", "en": "a person who writes the story of someone’s life", "ex": "that <b>biographers</b>, historians, and novelists rely on（②❹）", "mem": "bio-（生命）＋ graph（写）＋ -er ⟹ 写别人一生的人。biography＝传记，autobiography＝自传。", "syn": "life writer", "conf": "biographer（传记作家）· biologist（生物学家）· geographer（地理学家）。"},
+  novelist:{"w": "novelist", "ipa": "/ˈnɒvəlɪst/", "pos": "n.", "tags": ["core"], "cn": "<b>小说家</b>", "en": "a person who writes novels", "ex": "historians, and <b>novelists</b> rely on（②❹）", "mem": "novel（小说；新奇的）＋ -ist。", "syn": "fiction writer", "conf": "novelist（小说家）· novel（新颖的）· novice（新手）。"},
+  relyon:{"w": "rely on", "ipa": "/rɪˈlaɪ ɒn/", "pos": "phr.", "tags": ["phrase", "core"], "cn": "<b>依赖</b>、依靠", "en": "to need or trust someone or something", "ex": "the historical record that … <b>rely on</b>（②❹）", "mem": "定语从句 that … rely on 里，that 作 rely on 的宾语，介词 on 留在句尾。", "syn": "depend on · count on", "conf": "rely on（依靠）· reliable（可靠的）· reliance（依赖）。"},
+  archive:{"w": "archive", "ipa": "/ˈɑːkaɪv/", "pos": "n.", "tags": ["core"], "cn": "<b>档案馆</b>；档案", "en": "a place where historical records are kept", "ex": "Libraries and <b>archives</b> have traditionally …（②❺）", "mem": "希腊语 arkhē（政府）⟹ 官署存的文件 ⟹ 档案。数字语境里 archive 也作「存档、归档」。", "syn": "record office · records", "conf": "archive（档案馆）· archivist（档案员）· architect（建筑师）。"},
+  traditionally:{"w": "traditionally", "ipa": "/trəˈdɪʃənəli/", "pos": "adv.", "tags": ["core"], "cn": "<b>传统上</b>、历来", "en": "in a way that has existed for a long time", "ex": "have <b>traditionally</b> shouldered the responsibility（②❺）", "mem": "tradition ＋ -al ＋ -ly。配现在完成时 have shouldered ⟹「一直以来」。", "syn": "customarily · historically", "conf": "traditionally（传统上）· conventionally（按惯例）。"},
+  shoulder:{"w": "shoulder", "ipa": "/ˈʃəʊldə(r)/", "pos": "v.", "tags": ["poly", "phrase", "write"], "cn": "<b>承担</b>（责任、重担）", "en": "to accept a responsibility or burden", "ex": "have traditionally <b>shouldered</b> the responsibility（②❺）", "mem": "熟词僻义：「肩膀」作动词＝扛起来。shoulder the responsibility／burden／cost。<br>写作：Young people should shoulder the responsibility of protecting the environment.", "syn": "bear · take on · assume", "conf": "shoulder（承担）· shoulder to shoulder（并肩）。"},
+  responsibility:{"w": "responsibility", "ipa": "/rɪˌspɒnsəˈbɪləti/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>责任</b>、职责", "en": "a duty to deal with something", "ex": "the <b>responsibility</b> of organization, preservation, and access（②❺）", "mem": "respond（回应）＋ -ible ＋ -ity ⟹ 必须回应的事 ⟹ 责任。", "syn": "duty · obligation", "conf": "responsibility（责任）· responsive（反应快的）· response（回应）。"},
+  access:{"w": "access", "ipa": "/ˈækses/", "pos": "n./v.", "tags": ["core", "write"], "cn": "<b>获取、使用的途径</b>；获取", "en": "the right or means to obtain or use something", "ex": "<b>access</b> to information · <b>access</b> their holdings（②❺ ②❻）", "mem": "ac-（＝ad 向）＋ cess（走）⟹ 走近、够得着。③❶ universality of access＝信息随处可得。", "syn": "entry · availability · retrieve", "conf": "access（获取）· excess（过量）· assess（评估）。"},
+  digitize:{"w": "digitize", "ipa": "/ˈdɪdʒɪtaɪz/", "pos": "v.", "tags": ["core", "write"], "cn": "<b>数字化</b>（把实物转成数字形式）", "en": "to change information into a digital form", "ex": "Librarians <b>digitize</b> the tangible（②❻）", "mem": "digit（数字）＋ -ize。对照 born-digital（③❹）：digitize 是原件在、复制成数字；born-digital 是生来就是数字、没有原件。", "syn": "computerize · scan", "conf": "digitize（数字化）· digital（数字的）· digit（数字；手指）。"},
+  theworldover:{"w": "the world over", "ipa": "/ðə wɜːld ˈəʊvə(r)/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>全世界的</b>、世界各地", "en": "in every part of the world", "ex": "researchers <b>the world over</b>（②❻）", "mem": "over 后置表「遍及」：the world over＝all over the world；同类：the country over。", "syn": "around the world · worldwide", "conf": "the world over（全世界）· all over the world（世界各地）。"},
+  holdings:{"w": "holdings", "ipa": "/ˈhəʊldɪŋz/", "pos": "n.", "tags": ["poly", "core"], "cn": "（图书馆、博物馆的）<b>馆藏</b>；（个人）持有的财产、股份", "en": "the books, documents, etc. that a library owns", "ex": "quickly search and access their <b>holdings</b>（②❻）", "mem": "熟词僻义：hold（持有）⟹ holdings＝所持有之物；图书馆语境＝馆藏，金融语境＝持股。", "syn": "collection · stock", "conf": "holdings（馆藏）· holding（持有）· household（家庭）。"},
+  embarrassment:{"w": "an embarrassment of riches", "ipa": "/ɪmˈbærəsmənt əv ˈrɪtʃɪz/", "pos": "phr.", "tags": ["phrase", "poly", "write"], "cn": "<b>好东西多到不知如何是好</b>、多得挑花眼", "en": "so many good things that it is hard to choose", "ex": "an <b>embarrassment of</b> historical <b>riches</b>（②❼）", "mem": "熟词僻义：embarrassment 不是「尴尬」，是「过多带来的困窘」。褒义打底、带点无奈。<br>⚠️ 38 题 A 换成贬义的 oversupply（供过于求），色彩不对。", "syn": "abundance · wealth", "conf": "an embarrassment of riches（挑花眼）· oversupply（供应过剩）· surplus（剩余）。"},
+  needlehaystack:{"w": "needle-and-haystack", "ipa": "/ˈniːdl ənd ˈheɪstæk/", "pos": "adj.", "tags": ["phrase", "write"], "cn": "<b>大海捞针的</b>", "en": "very difficult to find among many other things", "ex": "its own <b>needle-and-haystack</b> problems（②❼）", "mem": "由 look for a needle in a haystack（在干草堆里找针）压缩成复合形容词。<br>写作：Finding a good job online can feel like looking for a needle in a haystack.", "syn": "like finding a needle in a haystack", "conf": "haystack（干草堆）· haystack problem（大海捞针）。"},
+  selfless:{"w": "selfless", "ipa": "/ˈselfləs/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>无私的</b>", "en": "caring more about others than about yourself", "ex": "Librarians’ <b>selfless</b> devotion（③❶）", "mem": "self ＋ -less（没有）⟹ 没有自我。写作：selfless dedication（无私奉献）。", "syn": "unselfish · altruistic", "conf": "selfless（无私的）· selfish（自私的）· self-centered（以自我为中心的）。"},
+  devotion:{"w": "devotion", "ipa": "/dɪˈvəʊʃn/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>奉献</b>、投入；忠诚", "en": "great love, care and support for something", "ex": "Librarians’ selfless <b>devotion</b>（③❶）", "mem": "devote（献身）＋ -ion。⑤❷ devoted to 同根复现。", "syn": "dedication · commitment", "conf": "devotion（奉献）· devote … to（把……献给）· devout（虔诚的）。"},
+  actagainst:{"w": "act against", "ipa": "/ækt əˈɡenst/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>对……不利</b>、与……背道而驰", "en": "to have a harmful effect on", "ex": "selfless devotion can <b>act against</b> us（③❶）", "mem": "act against sb／sb’s interests：起反作用。<br>⭐ 38 题的「暗示结果」：好心反而害了自己，后面 as evidence that … 才是明示结果。", "syn": "work against · harm · backfire", "conf": "act against（对……不利）· act on（按……行事）· act for（代理）。"},
+  pointto:{"w": "point to", "ipa": "/pɔɪnt tə/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>指出、拿……当理由</b>", "en": "to mention something as proof of what you think", "ex": "users <b>point to</b> universality of access（③❶）", "mem": "point to sth as evidence that …：拿某事当证据说明……。另义：表明（Signs point to …）。", "syn": "cite · refer to · indicate", "conf": "point to（指出；表明）· point out（指出）· to the point（切题）。"},
+  universality:{"w": "universality", "ipa": "/ˌjuːnɪvɜːˈsæləti/", "pos": "n.", "tags": ["core"], "cn": "<b>普遍性</b>", "en": "the quality of being available to or true for everyone", "ex": "<b>universality</b> of access（③❶）", "mem": "universal（普遍的）＋ -ity。universality of access＝人人随处可得。", "syn": "ubiquity · availability", "conf": "universality（普遍性）· university（大学）· universe（宇宙）。"},
+  holdup:{"w": "hold up", "ipa": "/həʊld ʌp/", "pos": "phr.", "tags": ["phrase", "poly"], "cn": "<b>举起</b>；（另）耽搁、抢劫、经得住考验", "en": "to raise something in the air", "ex": "by <b>holding up</b> a cell phone（③❶）", "mem": "hold up 一词多义：hold up a phone（举起）· be held up in traffic（被耽搁）· hold up a bank（抢劫）· the theory holds up（站得住）。", "syn": "raise · lift", "conf": "hold up（举起；耽搁）· hold on（等一下）· hold back（抑制）。"},
+  evidence:{"w": "evidence", "ipa": "/ˈevɪdəns/", "pos": "n.", "tags": ["core"], "cn": "<b>证据</b>", "en": "facts that show something is true", "ex": "as <b>evidence</b> that libraries are less vital（③❶）", "mem": "e-（出）＋ vid（看）⟹ 看得出来的东西。不可数。evidence that …＝同位语从句。", "syn": "proof · sign", "conf": "evidence（证据）· evident（明显的）· evidently（显然）。"},
+  vital:{"w": "vital", "ipa": "/ˈvaɪtl/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>至关重要的</b>", "en": "very important; necessary", "ex": "libraries are less <b>vital</b> for researchers（③❶）", "mem": "vit-（生命）⟹ 关乎性命的 ⟹ 必不可少的。vitamin 同根。<br>写作：play a vital role in。", "syn": "essential · crucial · indispensable", "conf": "vital（至关重要的）· vitality（活力）· fatal（致命的）。"},
+  maintain:{"w": "maintain", "ipa": "/meɪnˈteɪn/", "pos": "v.", "tags": ["core", "poly"], "cn": "<b>维持</b>、维护；（另）坚持认为", "en": "to keep something in good condition", "ex": "how is it <b>maintained</b>?（③❷）", "mem": "main（手）＋ tain（握）⟹ 握在手里不放 ⟹ 维持。熟词僻义：maintain that …＝坚称。", "syn": "sustain · keep up · preserve", "conf": "maintain（维持）· maintenance（维护）· retain（保留）。"},
+  curate:{"w": "curate", "ipa": "/kjʊəˈreɪt/", "pos": "v.", "tags": ["core", "poly"], "cn": "<b>筛选、策划</b>（展品、馆藏、内容）", "en": "to select and organize items for a collection", "ex": "Who <b>curates</b> what is preserved?（③❸）", "mem": "cur-（照料，同 cure）⟹ 照管藏品；curator＝策展人。数字语境：curate content（筛选内容）。", "syn": "select · organize · manage", "conf": "curate（策划）· curator（策展人）· accurate（准确的）。"},
+  whenitcomesto:{"w": "when it comes to", "ipa": "/wen ɪt kʌmz tə/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>说到、涉及……</b>", "en": "when the subject is", "ex": "<b>When it comes to</b> born-digital information（③❹）", "mem": "to 是介词，后接名词或动名词：when it comes to saving money。写作高频转题句。", "syn": "as for · regarding · in terms of", "conf": "when it comes to（说到）· come to（共计；苏醒）。"},
+  borndigital:{"w": "born-digital", "ipa": "/ˌbɔːn ˈdɪdʒɪtl/", "pos": "adj.", "tags": ["core"], "cn": "<b>原生数字的</b>（一开始就以数字形式产生的）", "en": "created in digital form, not copied from paper", "ex": "<b>born-digital</b> information（③❹）", "mem": "born ＋ digital ⟹「生来就是数字」：电子邮件、网页、数码照片。对照 digitize the tangible（②❻）——后者有原件，前者没有，丢了就真丢了。", "syn": "digital-native", "conf": "born-digital（原生数字的）· digitized（被数字化的）。"},
+  terrifying:{"w": "terrifying", "ipa": "/ˈterɪfaɪɪŋ/", "pos": "adj.", "tags": ["core"], "cn": "<b>令人恐惧的</b>、吓人的", "en": "making you very frightened", "ex": "the <b>terrifying</b> answer can be: …（③❹）", "mem": "terrify（使恐惧）＋ -ing（令人……的）。与 terrified（感到害怕的）区分。", "syn": "frightening · alarming", "conf": "terrifying（吓人的）· terrific（极好的）· terrible（糟糕的）。"},
+  archivist:{"w": "archivist", "ipa": "/ˈɑːkɪvɪst/", "pos": "n.", "tags": ["core"], "cn": "<b>档案管理员</b>", "en": "a person who looks after historical records", "ex": "if not librarians and <b>archivists</b>（③❹）", "mem": "archive ＋ -ist。与②❺ Libraries and archives 对应：馆员管图书馆、档案员管档案馆。", "syn": "records keeper", "conf": "archivist（档案员）· archive（档案）· activist（活动人士）。"},
+  agreatdeal:{"w": "a great deal more", "ipa": "/ə ɡreɪt diːl mɔː(r)/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>多得多</b>（修饰比较级）", "en": "much more", "ex": "requires <b>a great deal more</b> care than analog（③❺）", "mem": "a great deal 修饰比较级＝much／far。<br>⭐ 37 题 C 的反证：需要更多照料的是<b>数字</b>，不是有形制品。", "syn": "much more · far more", "conf": "a great deal（大量）· a good deal（划算的交易；许多）。"},
+  carrier:{"w": "carrier", "ipa": "/ˈkæriə(r)/", "pos": "n.", "tags": ["core", "poly"], "cn": "<b>载体</b>；（另）运输公司、携带者", "en": "something that holds or carries something else", "ex": "it may only be the <b>carrier</b> that’s saved（④❶）", "mem": "carry ＋ -er。熟词僻义：airline carrier（航空公司）· carrier of a disease（病原携带者）。<br>⭐ carrier（载体）vs information（信息）：数字的东西只是壳，37 题 B、39 题 C 共用这一句。", "syn": "medium · container · vehicle", "conf": "carrier（载体）· career（职业）· courier（快递员）。"},
+  advance:{"w": "advance", "ipa": "/ədˈvɑːns/", "pos": "v./n.", "tags": ["core"], "cn": "<b>进步</b>、发展", "en": "to develop or improve", "ex": "As technology <b>advances</b>（④❷）", "mem": "adv-（向前）⟹ 前进。名词：technological advances（技术进步）· in advance（提前）。", "syn": "progress · develop", "conf": "advance（进步）· advantage（优势）· adventure（冒险）。"},
+  obsolete:{"w": "obsolete", "ipa": "/ˈɒbsəliːt/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>过时的</b>、被淘汰的", "en": "no longer used because something newer exists", "ex": "a format becomes <b>obsolete</b>（④❷）", "mem": "ob-（离开）＋ solete（使用）⟹ 不再用的。<br>⭐ 39 题 C 的 obsolete formats 就是这里的原词。写作：become obsolete（被淘汰）。", "syn": "outdated · out of date · outmoded", "conf": "obsolete（过时的）· absolute（绝对的）· obstinate（固执的）。"},
+  stare:{"w": "stare", "ipa": "/steə(r)/", "pos": "v.", "tags": ["core"], "cn": "<b>盯着看</b>、凝视", "en": "to look at something for a long time", "ex": "Have you ever <b>stared</b> helplessly at a ZIP disk（④❸）", "mem": "stare at：带着呆、惊或无奈地盯。比较 glance（瞥）· gaze（凝视，多含欣赏）。", "syn": "gaze · look fixedly", "conf": "stare（盯着）· glare（怒视）· stair（楼梯）。"},
+  helplessly:{"w": "helplessly", "ipa": "/ˈhelpləsli/", "pos": "adv.", "tags": ["core"], "cn": "<b>无助地</b>、无可奈何地", "en": "in a way that shows you cannot do anything", "ex": "stared <b>helplessly</b> at a ZIP disk（④❸）", "mem": "help ＋ -less ＋ -ly。东西在手、却打不开——正是「格式过时」的处境。", "syn": "powerlessly", "conf": "helplessly（无助地）· hopelessly（绝望地）。"},
+  zipdisk:{"w": "ZIP disk", "ipa": "/zɪp dɪsk/", "pos": "n.", "tags": ["core"], "cn": "<b>Zip 盘</b>（Iomega 公司 1994–95 年推出的可移动磁盘）", "en": "a removable storage disk popular in the late 1990s", "ex": "stared helplessly at a <b>ZIP disk</b>（④❸）", "mem": "初版 100MB（软盘才 1.44MB），被 CD-R 取代后 2003 年前后停产。<br>📕 书译「压缩磁盘」——Zip 是品牌名，不是「压缩」（zip 文件那个 zip 是另一回事）。", "syn": "floppy disk（软盘）", "conf": "ZIP disk（Zip 盘）· zip file（压缩文件）· zipper（拉链）。"},
+  getoff:{"w": "get … off", "ipa": "/ɡet ɒf/", "pos": "phr.", "tags": ["phrase", "poly"], "cn": "<b>把……（从某处）弄下来、取出来</b>", "en": "to remove something from a place", "ex": "how do I <b>get the files off</b> this?（④❸）", "mem": "get sth off sth：从……上取下。这里是把文件从盘里「取出来」。另义：get off（下车；下班）。", "syn": "retrieve · remove · extract", "conf": "get off（下车）· get over（克服）· get by（勉强过活）。"},
+  constant:{"w": "constant", "ipa": "/ˈkɒnstənt/", "pos": "adj.", "tags": ["core"], "cn": "<b>持续不断的</b>", "en": "happening all the time", "ex": "Without <b>constant</b> migration of digital assets（④❹）", "mem": "con-（全）＋ stant（站）⟹ 一直站着不变 ⟹ 恒定的、不断的。39 题 B 的 constantly migrating 来自这里。", "syn": "continuous · ongoing", "conf": "constant（持续的）· consistent（一致的）· instant（立即的）。"},
+  migration:{"w": "migration", "ipa": "/maɪˈɡreɪʃn/", "pos": "n.", "tags": ["core", "poly"], "cn": "（数据的）<b>迁移</b>、转移；（人或动物的）迁徙", "en": "moving data from one system or format to another", "ex": "constant <b>migration</b> of digital assets（④❹）", "mem": "熟词僻义：migration 常见义「迁徙、移民」，数字语境里是「把数据从旧格式搬到新格式」。", "syn": "transfer · conversion", "conf": "migration（迁移）· migrant（移民）· emigrate（移居国外）。"},
+  asset:{"w": "asset", "ipa": "/ˈæset/", "pos": "n.", "tags": ["core", "poly"], "cn": "<b>资产</b>；（另）有价值的人或物", "en": "something valuable that a person or organization owns", "ex": "digital <b>assets</b>（④❹ ⑤❶）", "mem": "熟词僻义：an asset to the team（团队里的宝贵人才）。digital assets＝数字资产（数字化的馆藏、文件）。", "syn": "resource · property", "conf": "asset（资产）· assess（评估）· assert（断言）。"},
+  nightmare:{"w": "nightmare", "ipa": "/ˈnaɪtmeə(r)/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>噩梦</b>；可怕的经历", "en": "a very frightening dream or situation", "ex": "a <b>nightmare</b> about the foreseeable future（④❹）", "mem": "night ＋ mare（古英语「梦魇」，不是母马）。⑤❶ night terrors 呼应。", "syn": "bad dream · ordeal", "conf": "nightmare（噩梦）· daydream（白日梦）。"},
+  foreseeable:{"w": "foreseeable", "ipa": "/fɔːˈsiːəbl/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>可预见的</b>", "en": "that can be expected", "ex": "a nightmare about the <b>foreseeable</b> future（④❹）", "mem": "fore-（预先）＋ see ＋ -able。固定搭配 in the foreseeable future（在可预见的将来）。", "syn": "predictable · expected", "conf": "foreseeable（可预见的）· unforeseen（意料之外的）· foresee（预见）。"},
+  keepup:{"w": "keep sb up at night", "ipa": "/kiːp ʌp ət naɪt/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>让某人夜不能寐</b>（非常担忧）", "en": "to make someone too worried to sleep", "ex": "what <b>keeps historians up at night</b>（④❹）", "mem": "keep sb up：让某人熬夜、睡不着。⑤❶ I share the night terrors of historians 接着这句说。<br>写作：The question that keeps me up at night is …", "syn": "worry · trouble", "conf": "keep up（跟上；保持）· keep sb up（使熬夜）· stay up（熬夜）。"},
+  abruptly:{"w": "abruptly", "ipa": "/əˈbrʌptli/", "pos": "adv.", "tags": ["core"], "cn": "<b>突然地</b>、戛然而止地", "en": "suddenly and unexpectedly", "ex": "a historical record that <b>abruptly</b> stops（④❹）", "mem": "ab-（离开）＋ rupt（断）⟹ 一下断开。rupt 同根：interrupt（打断）· bankrupt（破产）。", "syn": "suddenly · sharply", "conf": "abruptly（突然地）· abrupt（突然的）· erupt（爆发）。"},
+  replace:{"w": "replace", "ipa": "/rɪˈpleɪs/", "pos": "v.", "tags": ["core"], "cn": "<b>取代</b>、替换", "en": "to take the place of", "ex": "when digital <b>replaces</b> analog（④❹）", "mem": "⚠️ 看清方向：A replaces B＝A 取代 B——这里是数字取代模拟，记录断在「换成数字」的那一刻。", "syn": "take the place of · supersede", "conf": "replace A with B（用 B 换 A）· A replaces B（A 取代 B）。"},
+  dayjob:{"w": "day job", "ipa": "/deɪ dʒɒb/", "pos": "n.", "tags": ["phrase"], "cn": "<b>本职工作</b>、日常工作", "en": "your main regular job", "ex": "whose <b>day job</b> revolves around …（⑤❶）", "mem": "day job 原指「白天的正经工作」（相对于业余爱好）。作者借它亮明身份：本职就是管数字资产的馆员。", "syn": "regular job · main job", "conf": "day job（本职工作）· don’t give up the day job（还是别改行了，调侃）。"},
+  revolvearound:{"w": "revolve around", "ipa": "/rɪˈvɒlv əˈraʊnd/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>以……为中心</b>、围绕……", "en": "to have something as the main subject", "ex": "whose day job <b>revolves around</b> special collections（⑤❶）", "mem": "revolve：re-（回）＋ volve（转）⟹ 绕着转。写作：Our discussion revolved around …", "syn": "center on · focus on", "conf": "revolve（旋转）· revolution（革命）· evolve（进化）· involve（涉及）。"},
+  specialcollections:{"w": "special collections", "ipa": "/ˈspeʃl kəˈlekʃnz/", "pos": "n.", "tags": ["phrase"], "cn": "（图书馆的）<b>特藏</b>（善本、手稿、档案等）", "en": "rare or unique materials kept separately in a library", "ex": "revolves around <b>special collections</b> and digital assets（⑤❶）", "mem": "special collections 是图书馆的专门部门，管珍本、手稿、地方文献等不外借的藏品。", "syn": "rare books · archives", "conf": "collection（收藏）· collective（集体的）。"},
+  nightterrors:{"w": "night terrors", "ipa": "/naɪt ˈterəz/", "pos": "n.", "tags": ["phrase", "write"], "cn": "<b>夜惊</b>；（此处）让人睡不着的深深忧虑", "en": "sudden fear during sleep; deep worries", "ex": "I share the <b>night terrors</b> of historians（⑤❶）", "mem": "night terrors 原是医学名词（睡眠中突然惊恐），这里接④❹ keeps historians up at night，指同样的担忧。", "syn": "nightmares · anxiety", "conf": "night terrors（夜惊）· terror（恐怖）· terrorist（恐怖分子）。"},
+  lying:{"w": "I’d be lying if I said …", "ipa": "/aɪd bi ˈlaɪɪŋ ɪf aɪ sed/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>要是我说……那就是骗人</b>（＝其实并不……）", "en": "a way of admitting that something is not true", "ex": "I’d <b>be lying if I said</b> a … solution currently exists（⑤❶）", "mem": "虚拟语气：would be ＋ if 过去式，用否定的虚拟来坦白。<br>写作：I’d be lying if I said the task was easy.", "syn": "to be honest · frankly", "conf": "lie, lied, lied（撒谎）· lie, lay, lain（躺）· lying（两者的现在分词）。"},
+  comprehensive:{"w": "comprehensive", "ipa": "/ˌkɒmprɪˈhensɪv/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>全面的</b>、综合的", "en": "including everything that is needed", "ex": "a <b>comprehensive</b> preservation solution（⑤❶）", "mem": "comprehend（理解；包含）＋ -ive。写作：a comprehensive plan · comprehensive quality（综合素质）。", "syn": "complete · thorough · all-round", "conf": "comprehensive（全面的）· comprehensible（能理解的）· comprehension（理解）。"},
+  solution:{"w": "solution", "ipa": "/səˈluːʃn/", "pos": "n.", "tags": ["core"], "cn": "<b>解决办法</b>、方案", "en": "a way of solving a problem", "ex": "a comprehensive preservation <b>solution</b>（⑤❶）", "mem": "solve（解决）＋ -tion。熟词僻义：化学里 solution＝溶液。", "syn": "answer · remedy · fix", "conf": "solution（方案；溶液）· resolution（决心；决议）· solitude（独处）。"},
+  takecomfort:{"w": "take comfort in", "ipa": "/teɪk ˈkʌmfət ɪn/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>从……中得到安慰</b>", "en": "to feel less worried because of something", "ex": "researchers can <b>take some comfort in</b> the fact that …（⑤❷）", "mem": "take comfort in／from sth。some 让语气留余地：「稍感安慰」。<br>写作：We can take comfort in the fact that progress has been made.", "syn": "be comforted by · find relief in", "conf": "take comfort in（得到安慰）· comfortable（舒服的）。"},
+  multitude:{"w": "a multitude of", "ipa": "/ˈmʌltɪtjuːd/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>众多的</b>、大量的", "en": "a very large number of", "ex": "there are <b>a multitude of</b> librarians devoted to …（⑤❷）", "mem": "multi-（多）＋ -tude（状态）。比 many 正式。<br>⚠️ 40 题 B 只抓了这一句：馆员是安慰之词、是配角。", "syn": "a great number of · numerous", "conf": "multitude（众多）· magnitude（量级）· altitude（海拔）。"},
+  devotedto:{"w": "devoted to", "ipa": "/dɪˈvəʊtɪd tə/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>致力于</b>、献身于", "en": "giving a lot of time and effort to", "ex": "librarians <b>devoted to</b> discovering, organizing, …（⑤❷）", "mem": "to 是介词，后接名词或动名词：devoted to discovering。与③❶ devotion 同根呼应。", "syn": "dedicated to · committed to", "conf": "devoted to（致力于）· devote oneself to（献身于）。"},
+  realm:{"w": "realm", "ipa": "/relm/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>领域</b>、范围；王国", "en": "an area of activity or knowledge", "ex": "find the digital <b>realm</b> a challenging place（⑤❸）", "mem": "古法语 reaume（王国）⟹ 比喻「领域」。写作：in the realm of science（在科学领域）。", "syn": "field · domain · sphere", "conf": "realm（领域）· real（真实的）· ream（令，纸张单位）。"},
+  challenging:{"w": "challenging", "ipa": "/ˈtʃælɪndʒɪŋ/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>有挑战性的</b>、艰巨的", "en": "difficult in a way that tests your ability", "ex": "a <b>challenging</b> place to ply their trade（⑤❸）", "mem": "challenge ＋ -ing。⭐ 40 题 D 的 a challenge 就出自这里：全文最后的定性。", "syn": "demanding · tough · difficult", "conf": "challenging（有挑战性的）· challenged（有缺陷的，委婉语）。"},
+  plytrade:{"w": "ply one’s trade", "ipa": "/plaɪ wʌnz treɪd/", "pos": "phr.", "tags": ["phrase", "poly"], "cn": "<b>从事本行</b>、干自己那一行", "en": "to do your job, especially a skilled one", "ex": "a challenging place to <b>ply their trade</b>（⑤❸）", "mem": "熟词僻义：ply 作动词「从事、经营」，也有「定期往返」（ply between two ports）。trade 在这里不是「贸易」，是「行当、手艺」。", "syn": "practise one’s profession · work", "conf": "ply（从事；往返）· apply（申请）· reply（回答）。"},
+  contrast:{"w": "contrast", "ipa": "/kənˈtrɑːst/", "pos": "v./n.", "tags": ["core", "write"], "cn": "<b>对比</b>、对照", "en": "to compare two things to show differences", "ex": "[B] <b>contrast</b> them with everyday items", "mem": "contra-（相反）＋ st（站）⟹ 对着站。contrast A with B。<br>⚠️ 36 题 B：全文真正的对比是「有形 vs 数字」，不是「旧物 vs 日常物品」。", "syn": "compare · set against", "conf": "contrast A with B（对比）· in contrast（相比之下）。"},
+  bringup:{"w": "bring up", "ipa": "/brɪŋ ʌp/", "pos": "phr.", "tags": ["phrase", "poly", "write"], "cn": "<b>提出</b>（话题、问题）；（另）抚养", "en": "to start talking about a subject", "ex": "[C] <b>bring up</b> the issue of preservation", "mem": "bring up 一词多义：bring up a topic（提出）· bring up a child（抚养）。写作目的题常用：bring up／introduce／raise the issue。", "syn": "raise · introduce · mention", "conf": "bring up（提出；抚养）· bring about（导致）· bring out（推出）。"},
+  commenton:{"w": "comment on", "ipa": "/ˈkɒment ɒn/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>评论</b>", "en": "to express an opinion about", "ex": "[D] <b>comment on</b> their historical value", "mem": "comment on sth。写作目的题里 comment on 意味着作者给了评价——要回原文找评价词。", "syn": "remark on · give one’s view", "conf": "comment on（评论）· commentary（解说）· commentator（评论员）。"},
+  subjectto:{"w": "be subject to", "ipa": "/bi ˈsʌbdʒɪkt tə/", "pos": "phr.", "tags": ["phrase", "poly", "write"], "cn": "<b>易受……影响的</b>、受制于", "en": "likely to be affected by", "ex": "[A] are less <b>subject to</b> their creators’ neglect", "mem": "熟词僻义：subject 作形容词，be subject to＝容易遭受、须服从（subject to approval 须经批准）。to 是介词。", "syn": "vulnerable to · exposed to · liable to", "conf": "be subject to（易受）· subject（主题；科目）· subjective（主观的）。"},
+  convey:{"w": "convey", "ipa": "/kənˈveɪ/", "pos": "v.", "tags": ["core", "write"], "cn": "<b>传达</b>、传递", "en": "to communicate or carry", "ex": "[B] <b>convey</b> information in a more direct way", "mem": "con-（共）＋ vey（路，同 via）⟹ 一路带过去。正对②❸ delivers the information。", "syn": "deliver · communicate · transmit", "conf": "convey（传达）· conveyor belt（传送带）· survey（调查）。"},
+  resultin:{"w": "result in", "ipa": "/rɪˈzʌlt ɪn/", "pos": "phr.", "tags": ["phrase", "core"], "cn": "<b>导致</b>", "en": "to cause something to happen", "ex": "librarians’ work may <b>result in</b> ___（38 题干）", "mem": "⚠️ 方向：A result in B（A 导致 B）· B result from A（B 源于 A）。", "syn": "lead to · cause · bring about", "conf": "result in（导致）· result from（源于）。"},
+  oversupply:{"w": "oversupply", "ipa": "/ˌəʊvəsəˈplaɪ/", "pos": "n.", "tags": ["core"], "cn": "<b>供应过剩</b>", "en": "more of something than is needed", "ex": "[A] <b>oversupply</b> of materials", "mem": "over-（过度）＋ supply。<br>⚠️ 贬义；原文②❼ an embarrassment of riches 是褒义的「多到挑花眼」，色彩不对，段落也不对。", "syn": "surplus · glut", "conf": "oversupply（过剩）· shortage（短缺）。"},
+  undervaluation:{"w": "undervaluation", "ipa": "/ˌʌndəˌvæljuˈeɪʃn/", "pos": "n.", "tags": ["core"], "cn": "<b>低估</b>（价值被看低）", "en": "the act of giving something less value than it deserves", "ex": "[B] <b>undervaluation</b> of libraries", "mem": "under-（不足）＋ value ＋ -ation。正对③❶ libraries are less vital。", "syn": "underestimation · disregard", "conf": "undervalue（低估）· overvalue（高估）· invaluable（无价的）。"},
+  underperformance:{"w": "underperformance", "ipa": "/ˌʌndəpəˈfɔːməns/", "pos": "n.", "tags": ["core"], "cn": "<b>表现不佳</b>", "en": "doing less well than expected", "ex": "[C] researchers’ <b>underperformance</b>", "mem": "under- ＋ performance。⚠️ 38 题 C 换了主体：原文说<b>图书馆</b>对研究者不重要，没说研究者干得差。", "syn": "poor performance", "conf": "underperform（表现不佳）· outperform（胜过）。"},
+  overreliance:{"w": "overreliance", "ipa": "/ˌəʊvərɪˈlaɪəns/", "pos": "n.", "tags": ["core"], "cn": "<b>过度依赖</b>", "en": "depending on something too much", "ex": "[D] users’ <b>overreliance</b> on technology", "mem": "over- ＋ reliance（依赖）。⚠️ 贬义在文中无据：作者批评的是「看轻图书馆」这个结论，不是用户用手机。", "syn": "overdependence", "conf": "overreliance（过度依赖）· reliance（依赖）· rely on（依靠）。"},
+  cite:{"w": "cite", "ipa": "/saɪt/", "pos": "v.", "tags": ["core", "write"], "cn": "<b>引用</b>、援引（作为例证）", "en": "to mention something as an example or proof", "ex": "The “ZIP disk” is <b>cited</b> as an example（39 题干）", "mem": "cite 同音词：site（地点）· sight（视力）。be cited as an example to show＝例证题标志。", "syn": "quote · mention · refer to", "conf": "cite（引用）· citation（引文）· excite（激动）。"},
+  hazard:{"w": "hazard", "ipa": "/ˈhæzəd/", "pos": "n.", "tags": ["core"], "cn": "<b>危险</b>、隐患", "en": "something that could be dangerous", "ex": "[A] the <b>hazard</b> of retrieving files", "mem": "阿拉伯语「骰子」⟹ 碰运气 ⟹ 风险。⚠️ 39 题 A：原文说的是取不出来，不是取出来危险。", "syn": "danger · risk · threat", "conf": "hazard（危险）· hazardous（有害的）· haphazard（随意的）。"},
+  retrieve:{"w": "retrieve", "ipa": "/rɪˈtriːv/", "pos": "v.", "tags": ["core"], "cn": "<b>取回</b>、检索（数据）", "en": "to find and bring back information or an object", "ex": "[A] … of <b>retrieving</b> files through unusual means", "mem": "re-（回）＋ trieve（找到）⟹ 找回来。数据语境：retrieve data（读取数据）。", "syn": "recover · get back · regain", "conf": "retrieve（取回）· retrieval（检索）· retreat（撤退）。"},
+  infeasibility:{"w": "infeasibility", "ipa": "/ɪnˌfiːzəˈbɪləti/", "pos": "n.", "tags": ["core"], "cn": "<b>不可行性</b>", "en": "the quality of being impossible to do", "ex": "[B] the <b>infeasibility</b> of constantly migrating …", "mem": "in-（不）＋ feasible（可行的）＋ -ity。⚠️ 39 题 B 把条件 Without constant migration（不迁移就……）读成了「迁移不可行」。", "syn": "impracticality", "conf": "feasible（可行的）· infeasibility（不可行性）· feasibility study（可行性研究）。"},
+  inconvenience:{"w": "inconvenience", "ipa": "/ˌɪnkənˈviːniəns/", "pos": "n.", "tags": ["core"], "cn": "<b>不便</b>、麻烦", "en": "trouble or difficulty", "ex": "[D] the <b>inconvenience</b> of storing … on analog devices", "mem": "in- ＋ convenience。⚠️ 39 题 D 换了对象：原文担心的是数字，模拟反而是更靠得住的那一方。", "syn": "trouble · nuisance", "conf": "inconvenience（不便）· convenient（方便的）。"},
+  summarize:{"w": "summarize", "ipa": "/ˈsʌməraɪz/", "pos": "v.", "tags": ["core"], "cn": "<b>概括</b>、总结", "en": "to give the main points of something", "ex": "Which … best <b>summarizes</b> the text?（40 题干）", "mem": "sum（总和）＋ -ize。主旨题题干标志词。", "syn": "sum up · outline", "conf": "summarize（概括）· summary（摘要）· summit（顶峰）。"},
+  recognize:{"w": "recognize", "ipa": "/ˈrekəɡnaɪz/", "pos": "v.", "tags": ["core", "poly"], "cn": "<b>认可</b>、承认（价值、功劳）；认出", "en": "to accept and praise the value of something", "ex": "[B] Contributions of librarians should be <b>recognized</b>", "mem": "熟词僻义：recognize 常见义「认出」，这里是「认可、表彰」。⚠️ 40 题 B：全文没有呼吁「应当认可」。", "syn": "acknowledge · appreciate", "conf": "recognize（认可；认出）· recognition（认可）。"},
+  essential:{"w": "essential", "ipa": "/ɪˈsenʃl/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>必不可少的</b>、至关重要的", "en": "completely necessary", "ex": "[C] Accessing databases is <b>essential</b> to researchers", "mem": "essence（本质）＋ -ial。be essential to／for。<br>⚠️ 40 题 C：「全在手机里」正是作者想反驳的看法。", "syn": "vital · crucial · indispensable", "conf": "essential（必不可少的）· essence（本质）· essay（论文）。"}
+};
+const panel=document.getElementById('panel');
+const isMobile=()=>window.innerWidth<=900;
+function badge(t){const m={core:'核心',phrase:'短语',poly:'僻义',write:'写作'};return `<span class="badge b-${t}">${m[t]}</span>`}
+function showCard(k,el){
+  const d=V[k];if(!d)return;
+  document.querySelectorAll('.tk.active').forEach(x=>x.classList.remove('active'));
+  if(el)el.classList.add('active');
+  panel.innerHTML=`<button class="close" onclick="document.getElementById('panel').classList.remove('open')">收起</button>
+    <div class="wcard">
+      <div class="head"><span class="w">${d.w}</span><span class="ipa">${d.ipa}</span><span class="pos">${d.pos}</span>${d.tags.map(badge).join('')}</div>
+      <div class="cn">${d.cn}</div><div class="en-def">${d.en}</div>
+      <div class="row r-ex"><b>原文</b>${d.ex}</div>
+      <div class="row r-mem"><b>怎么记 / 考点</b>${d.mem}</div>
+      <div class="row r-syn"><b>同义 / 同族</b>${d.syn}</div>
+      <div class="row r-conf"><b>易混 / 提醒</b>${d.conf}</div>
+    </div>`;
+  if(isMobile())panel.classList.add('open');
+}
+document.querySelectorAll('.tk').forEach(t=>t.addEventListener('click',e=>{e.stopPropagation();showCard(t.dataset.w,t)}));
+
+function tz(btn){btn.closest('.para').classList.toggle('showzh')}
+let allOn=false;
+function toggleAll(){allOn=!allOn;document.querySelectorAll('.para').forEach(p=>p.classList.toggle('showzh',allOn))}
+function go(id){const s=document.getElementById(id);if(!s)return;s.scrollIntoView({behavior:'smooth',block:'center'});s.style.transition='none';s.style.opacity=.3;setTimeout(()=>{s.style.transition='opacity .8s';s.style.opacity=1},80)}
+
+document.querySelectorAll('.q').forEach(q=>{
+  const ans=+q.dataset.ans;
+  q.querySelectorAll('.opt').forEach((o,i)=>o.addEventListener('click',()=>{
+    if(q.classList.contains('done'))return;
+    q.classList.add('done');
+    if(i!==ans)o.classList.add('wrong');
+    q.querySelectorAll('.opt')[ans].classList.add('right');
+  }));
+});
+
+const vg=document.getElementById('vgrid');
+function renderGrid(f){
+  vg.innerHTML='';
+  Object.keys(V).forEach(k=>{
+    const d=V[k];
+    if(f!=='all'&&!d.tags.includes(f))return;
+    const div=document.createElement('div');div.className='vitem';
+    div.innerHTML=`<span class="badges">${d.tags.map(badge).join('')}</span><div class="w">${d.w}</div><div class="cn">${d.cn}</div>`;
+    div.addEventListener('click',()=>{showCard(k,null);if(!isMobile())window.scrollTo({top:0,behavior:'smooth'})});
+    vg.appendChild(div);
+  });
+}
+renderGrid('all');
+document.querySelectorAll('.fbtn').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.fbtn').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderGrid(b.dataset.f);
+}));
+
+const yd=document.getElementById('yd');let sel='',ydHold=0,ydT=0;
+/* 触屏：点按钮会先把选区清掉 → selectionchange 立刻把按钮藏了 → 点击落空。改成延迟隐藏 ＋ 按下即锁定 */
+const ydTouch=window.matchMedia&&matchMedia('(pointer:coarse)').matches;
+function ydHide(){clearTimeout(ydT);ydHold=0;yd.style.display='none'}
+document.addEventListener('selectionchange',function(){
+  const s=window.getSelection();const t=s?s.toString().trim():'';
+  if(t&&/^[a-zA-Z' -]{2,40}$/.test(t)){
+    sel=t;clearTimeout(ydT);
+    try{const r=s.getRangeAt(0).getBoundingClientRect();
+      yd.style.left=Math.max(8,Math.min(r.left,window.innerWidth-110))+'px';
+      yd.style.top=(r.bottom+(ydTouch?30:8))+'px';yd.style.display='block';}catch(e){}
+  }else if(!ydHold){clearTimeout(ydT);ydT=setTimeout(function(){if(!ydHold)yd.style.display='none'},ydTouch?900:0)}
+});
+['pointerdown','touchstart','mousedown'].forEach(function(ev){yd.addEventListener(ev,function(){ydHold=1;clearTimeout(ydT)},{passive:true})});
+yd.addEventListener('click',function(){
+  const u='https://dict.youdao.com/result?word='+encodeURIComponent(sel)+'&lang=en';
+  let w=null;try{w=window.open(u,'_blank')}catch(e){}
+  if(!w)location.href=u;
+  ydHide()});
+document.addEventListener('click',function(e){if(e.target!==yd&&!window.getSelection().toString())ydHide()});
+
+function imgAll(b){const on=document.body.classList.toggle('stx-allimg');b.textContent=on?'收起原卷':'原卷对照';
+  if(on)document.querySelectorAll('.para img.strip').forEach(im=>im.loading='eager')}
+</script>
+<script src="img/strip_boxes_2025.js?v=5"></script>
+<script src="_strip_lookup.js?v=8"></script>
+<script src="_strip_text.js?v=27"></script>
+<script src="_fault_attr.js"></script>
+</body>
+</html>

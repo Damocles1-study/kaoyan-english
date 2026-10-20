@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2025 英一 Text 2 · 科研的碳账：排放是读懂世界的代价</title>
+<style>
+  :root{
+    --bg:#faf9f6; --card:#ffffff; --ink:#2b2b2b; --muted:#8a8578;
+    --accent:#8b5e34; --accent-soft:#f3e9dd; --line:#e8e3d8;
+    --hl:#fdf3d8; --hl-border:#e0b84d;
+    --green:#3e7a4e; --green-soft:#e8f2ea;
+    --red:#b04a3a; --red-soft:#f9e9e6;
+    --blue:#3d6a8a; --blue-soft:#e7eff5;
+    --purple:#6d5a8e; --purple-soft:#eeeaf5;
+    --serif:"Georgia","Songti SC",serif;
+    --sans:-apple-system,"PingFang SC","Helvetica Neue",sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#1c1a17; --card:#26231f; --ink:#e8e4dc; --muted:#9a948a;
+      --accent:#d0a06a; --accent-soft:#3a3127; --line:#3a362f;
+      --hl:#3d3520; --hl-border:#b08c3a;
+      --green:#7fb98d; --green-soft:#26362b;
+      --red:#d98876; --red-soft:#3d2a26;
+      --blue:#8ab3d0; --blue-soft:#26323d;
+      --purple:#a996c8; --purple-soft:#302a3d;
+    }
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;padding-bottom:120px}
+  .wrap{max-width:1100px;margin:0 auto;padding:24px 20px}
+  .back{font-size:.85rem;color:var(--muted);text-decoration:none}
+  .back:hover{color:var(--accent)}
+  header{margin:14px 0 28px}
+  header h1{font-family:var(--serif);font-size:1.7rem;line-height:1.3}
+  header .sub{color:var(--muted);margin-top:6px;font-size:.9rem}
+  .tags{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+  .tag{font-size:.75rem;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);border:1px solid var(--line)}
+  .tag.warn{background:var(--red-soft);color:var(--red);border-color:var(--red)}
+  .tag.ok{background:var(--green-soft);color:var(--green);border-color:var(--green)}
+
+  .layout{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:24px;align-items:start}
+  main{min-width:0}
+  @media (max-width:900px){.layout{grid-template-columns:minmax(0,1fr)}}
+
+  section.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:24px}
+  h2{font-size:1.05rem;letter-spacing:.05em;color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+  h2 .n{font-size:.72rem;background:var(--accent);color:var(--card);border-radius:6px;padding:1px 7px}
+  h3{font-size:.95rem;color:var(--accent);margin:18px 0 10px}
+
+  .para{margin-bottom:22px}
+  .para .en{font-family:var(--serif);font-size:1.06rem;line-height:1.9}
+  .pno{color:var(--muted);font-size:.75rem;user-select:none;margin-right:6px}
+  .tk{background:var(--hl);border-bottom:2px solid var(--hl-border);border-radius:3px;padding:0 2px;cursor:pointer;transition:filter .15s}
+  .tk:hover{filter:brightness(.93)}
+  .tk.active{outline:2px solid var(--hl-border)}
+  .ls{border-bottom:2px dotted var(--blue);cursor:pointer}
+  .para .zh{display:none;margin-top:10px;padding:10px 14px;background:var(--blue-soft);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:.93rem}
+  .para.showzh .zh{display:block}
+  .zbtn{float:right;margin-left:10px;font-size:.72rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:6px;padding:2px 9px;cursor:pointer}
+  .zbtn:hover{color:var(--accent);border-color:var(--accent)}
+  .allbtn{font-size:.78rem;border:1px solid var(--accent);background:none;color:var(--accent);border-radius:8px;padding:4px 12px;cursor:pointer;margin-left:auto}
+
+  aside{position:sticky;top:20px}
+  #panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;min-height:180px}
+  #panel .hint{color:var(--muted);font-size:.88rem;text-align:center;padding:30px 10px}
+  .wcard .head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .wcard .w{font-family:var(--serif);font-size:1.35rem;font-weight:bold}
+  .wcard .ipa{color:var(--muted);font-size:.85rem}
+  .wcard .pos{font-size:.72rem;color:var(--purple);background:var(--purple-soft);padding:1px 8px;border-radius:999px}
+  .wcard .badge{font-size:.7rem;padding:1px 8px;border-radius:999px}
+  .b-core{background:var(--red-soft);color:var(--red)}
+  .b-phrase{background:var(--blue-soft);color:var(--blue)}
+  .b-poly{background:var(--purple-soft);color:var(--purple)}
+  .b-write{background:var(--green-soft);color:var(--green)}
+  .wcard .cn{margin-top:8px;font-size:1rem;font-weight:600}
+  .wcard .en-def{color:var(--muted);font-size:.86rem;font-style:italic;margin-top:2px}
+  .wcard .row{margin-top:10px;font-size:.86rem;padding:8px 10px;border-radius:8px}
+  .wcard .row>b:first-child{font-size:.72rem;display:block;margin-bottom:2px;letter-spacing:.06em}
+  .r-ex{background:var(--hl)} .r-ex b{color:var(--hl-border)}
+  .r-mem{background:var(--green-soft)} .r-mem b{color:var(--green)}
+  .r-syn{background:var(--blue-soft)} .r-syn b{color:var(--blue)}
+  .r-conf{background:var(--red-soft)} .r-conf b{color:var(--red)}
+  #panel .close{display:none}
+  @media (max-width:900px){
+    aside{position:fixed;left:0;right:0;bottom:0;z-index:50;padding:0 8px 8px}
+    #panel{box-shadow:0 -6px 24px rgba(0,0,0,.18);max-height:55vh;overflow-y:auto;display:none}
+    #panel.open{display:block}
+    #panel .close{display:block;float:right;border:none;background:var(--line);border-radius:8px;padding:2px 10px;cursor:pointer;color:var(--ink)}
+  }
+
+  .q{margin-bottom:22px;padding-bottom:18px;border-bottom:1px dashed var(--line)}
+  .q:last-child{border:none;margin-bottom:0;padding-bottom:0}
+  .q .stem{font-weight:600;font-family:var(--serif)}
+  .qt{font-size:.7rem;color:var(--blue);background:var(--blue-soft);border-radius:999px;padding:1px 8px;margin-right:6px;vertical-align:2px}
+  .opts{margin-top:10px;display:grid;gap:8px}
+  .opt{border:1px solid var(--line);border-radius:10px;padding:8px 12px;cursor:pointer;font-size:.93rem;font-family:var(--serif);transition:all .15s}
+  .opt:hover{border-color:var(--accent)}
+  .q.done .opt{cursor:default}
+  .opt.right{background:var(--green-soft);border-color:var(--green)}
+  .opt.wrong{background:var(--red-soft);border-color:var(--red)}
+  .expl{display:none;margin-top:12px;background:var(--accent-soft);border-radius:10px;padding:12px 14px;font-size:.9rem}
+  .q.done .expl{display:block}
+  .expl b{color:var(--accent)}
+  .expl .loc{font-family:var(--serif);font-style:italic;background:var(--hl);padding:1px 4px;border-radius:3px}
+  .fail{background:var(--red-soft);border:1px solid var(--red);border-radius:10px;padding:10px 13px;margin-bottom:10px;font-size:.89rem}
+  .fail b{color:var(--red)}
+  .waver{background:var(--hl);border:1px solid var(--hl-border);border-radius:10px;padding:10px 13px;margin-bottom:10px;font-size:.89rem}
+
+  .sent{margin-bottom:20px}
+  .sent .src{font-family:var(--serif);font-size:1rem;background:var(--blue-soft);padding:12px 14px;border-radius:10px;border-left:3px solid var(--blue)}
+  .sent .anat{margin-top:8px;font-size:.9rem}
+  .sent .anat li{margin:4px 0 4px 18px}
+  .sent .tr{margin-top:8px;font-size:.92rem;color:var(--muted)}
+  .skel{color:var(--red);font-weight:600}
+
+  .filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+  .fbtn{font-size:.8rem;border:1px solid var(--line);background:none;color:var(--muted);border-radius:999px;padding:4px 14px;cursor:pointer}
+  .fbtn.on{background:var(--accent);color:var(--card);border-color:var(--accent)}
+  .vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
+  .vitem{border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer;transition:border-color .15s}
+  .vitem:hover{border-color:var(--accent)}
+  .vitem .w{font-family:var(--serif);font-weight:bold}
+  .vitem .cn{font-size:.85rem;color:var(--muted)}
+  .vitem .badges{float:right}
+
+  .wb{display:grid;gap:10px}
+  .wbi{border-left:3px solid var(--green);background:var(--green-soft);border-radius:0 10px 10px 0;padding:10px 14px;font-size:.92rem}
+  .wbi .p{font-family:var(--serif);font-weight:600}
+  .wbi .u{color:var(--muted);font-size:.85rem}
+
+  .flow{display:grid;gap:8px;font-size:.92rem}
+  .flow .fi{border:1px solid var(--line);border-radius:10px;padding:9px 13px}
+  .flow .fi b{color:var(--accent)}
+
+  .ctab{width:100%;border-collapse:collapse;font-size:.86rem;margin-top:8px}
+  .ctab th,.ctab td{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
+  .ctab th{background:var(--accent-soft);color:var(--accent);font-size:.8rem;white-space:nowrap}
+  .ctab code{background:var(--hl);padding:0 3px;border-radius:3px}
+  .tabwrap{overflow-x:auto}
+  .ok{color:var(--green);font-weight:700}
+  .no{color:var(--red);font-weight:700}
+  .tl{display:grid;gap:10px;margin-top:6px}
+  .tli{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:start;border:1px solid var(--line);border-radius:10px;padding:10px 13px}
+  .tli .mark{font-family:var(--serif);font-weight:700;color:var(--accent);background:var(--accent-soft);border-radius:8px;padding:4px 10px;white-space:nowrap;font-size:.85rem}
+
+  .arrow{display:grid;gap:8px;margin-top:8px}
+  .arrow .ai{border:1px solid var(--line);border-radius:10px;padding:10px 13px;font-size:.9rem}
+  .arrow .ai.old{background:var(--red-soft);border-color:var(--red)}
+  .arrow .ai.new{background:var(--green-soft);border-color:var(--green)}
+  .chain{font-family:var(--serif);font-size:.95rem;background:var(--hl);border:1px solid var(--hl-border);border-radius:10px;padding:10px 14px;margin:8px 0;overflow-x:auto}
+
+  #yd{position:fixed;z-index:60;display:none;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:4px 12px;font-size:.8rem;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+  footer{color:var(--muted);font-size:.8rem;text-align:center;margin-top:30px}
+  .att{display:grid;gap:8px;margin-top:10px}
+  .atti{border:1px solid var(--line);border-radius:10px;padding:9px 13px;font-size:.9rem}
+  .atti b{font-family:var(--serif)}
+  .atti.no2{background:var(--red-soft);border-color:var(--red)}
+  .atti.yes{background:var(--green-soft);border-color:var(--green)}
+  .atti,.expl,.wbi,.zh,.fi,.ai,figcaption,p{overflow-wrap:anywhere}
+
+  /* 2021 起：原文以原卷扫描句条呈现 */
+  .sn{margin:0 0 14px}
+  .sn .pno{display:block;margin-bottom:4px;font-size:.78rem;line-height:1.6}
+  img.strip{display:block;width:100%;max-width:760px;height:auto;background:#fff;border:1px solid var(--line);border-radius:6px;cursor:pointer}
+  .sent .src img.strip{margin-top:6px;cursor:default}
+  .kw{margin-top:5px;font-size:.88rem;line-height:2.1;font-family:var(--serif)}
+  @media (prefers-color-scheme: dark){img.strip{filter:invert(.9) hue-rotate(180deg)}}
+  .sn,.sent .src{overflow-x:auto}
+  @media (max-width:700px){img.strip{width:640px;max-width:none}.sn::after{content:'← 句条可左右滑动 →';display:block;font-size:.7rem;color:var(--muted);margin-top:2px}}
+
+  /* 2023 起：流式版——识别好的句子在段落里连排，像 2007–2020 */
+  .para .en{font-family:var(--serif);font-size:1.02rem;line-height:1.9}
+  .stx-flow .para .en .pno{margin-right:4px}
+  .stx-flow .para .sn:not(.stx-on) .kw{margin-bottom:8px}
+</style>
+
+</head>
+<body class="stx-flow">
+<div class="wrap">
+  <a class="back" href="index.html">◀ 返回英语复盘中心</a>
+  <header>
+    <h1>科研的碳账：排放是读懂世界的代价</h1>
+    <div class="sub">2025 年英语（一）真题 · Text 2 · 422 词 · 7 段 · 建议做题 18 min · 话题：科研×气候×能源（来源：《金融时报》2024-01-03，原题 <i>Carbon Emissions from Research Are the Price We Must Pay …</i>（研究的碳排放是我们读懂世界必须付出的代价），据黄皮书）</div>
+    <div class="tags">
+      <span class="tag">正确答案：26B 27D 28C 29A 30C</span><span class="tag">题型：事实细节 ＋ 作者观点 ＋ 例证目的 ＋ 事实概括 ＋ 全文观点</span><span class="tag">难度：五题一段一题、全部顺序；坑在「让步段里承认的是事实，不是评价」</span><span class="tag">⚠️ 非盲：26–29 的答案在做 T1 定位答案行时误见；30 独立作答，落盘 5/5（28 在 C／D 之间是若盲做会真犹豫的一题）</span>
+    </div>
+  </header>
+
+  <div class="layout">
+    <main>
+      <!-- ========== 全文脉络 ========== -->
+      <section class="card">
+        <h2><span class="n">00</span>读前一分钟 · 全文脉络（做完题再看也行）</h2>
+        <div class="flow">
+          <div class="fi"><b>①段 一个让作者吃惊的消息</b>：有些科学家想<b>缩减自己的研究</b>来减排——「危机就在眼前，得少做耗能的建模；最起码也要让用能更可持续」。作者开口第一个词就是 <b>shocked</b>：他不同意（26 题：吃惊的对象是「打算缩减研究」）。</div>
+          <div class="fi"><b>②段 先认账</b>：<b>毋庸置疑</b>，实验室、仪器、火箭、卫星——这些给地球「把脉」的工具——造的时候、用的时候都很耗能；<b>同样确实</b>，科学对信息的胃口让耗能的数据中心遍地开花，按国际能源署的数据，它们用掉全球约 1% 的电。<b>两次「承认」，一次都没评价</b>（27 题 A、B 的料都在这里）。</div>
+          <div class="fi"><b>③段 However：亮观点</b>：这是我们为了<b>读懂世界必须付的代价</b>。连大气里有多少二氧化碳、从哪来、谁排的都追踪不到，怎么告诉决策者最好的减排办法？科研产生的碳排放<b>花得值</b>：这研究最终会保护地球的未来（27 题 D、30 题 C 都出于此）。</div>
+          <div class="fi"><b>④段 难处与必要</b>：科学家很难替自己辩护——工作复杂、关起门做、不好解释；<b>但</b>要解决人类最大的难题，证明科学有用至关重要。⟹ 下面两段就是作者自己在「证明」。</div>
+          <div class="fi"><b>⑤段 例一：奖项和获奖者</b>：认识到科学与工程能带来<b>希望</b>，才设立了千禧年技术奖（今年第 20 年，颂扬人类的创造力）。往届得主马丁·格林发明了 PERC 电池技术，如今世界上大多数太阳能板都在用——<b>多亏他，我们才真有机会减排</b>（28 题：例子证明科研有回报）。</div>
+          <div class="fi"><b>⑥段 例二：碳负的超算</b>：科学家、技术专家、工程师每天都在找新办法开发可再生能源——<b>不只是更聪明地用电，还要用电驱动智慧</b>。欧洲最大的超算、芬兰的 LUMI 居然是<b>碳负</b>的：建在旧造纸厂里，靠附近的河发电，余热还给卡亚尼镇的居民供暖（29 题）。</div>
+          <div class="fi"><b>⑦段 号召</b>：世界要实现净零目标，就得认真想想怎样做到可持续计算、造出更多 LUMI（29 题 C 把这里的因果倒了过来）。</div>
+          <div class="fi" style="border-color:var(--accent)">📌 <b>一句话主旨</b>：科研确实耗能，但这是读懂世界、保护地球必须付、也值得付的代价——要做的不是少做研究，而是把研究做得更可持续。<br>📌 <b>结构套路</b>：引出对方做法（①）→ <b>让步认事实</b>（②）→ <b>However 亮观点</b>（③）→ 承认难处、提出要求（④）→ 两个例子作证（⑤⑥）→ 号召（⑦）——标准的<b>驳论式评论</b>。五题一段一题：26①、27②③、28⑤、29⑥⑦、30 全文。<br>📌 <b>本篇最值钱的一条规律：让步段里作者「认」的是事实，不是评价。</b>②段用 unarguable 和 equally true 认了两件事实（耗能大、数据中心多），可一个评价词都没给——没说后果严重，也没说担心多余。所以 27A（grave consequences）把事实<b>升级</b>成了评价，27B（groundless worries）干脆<b>否认</b>了事实，两个都错；作者的评价只在 However 之后：代价、花得值、最终保护未来 ⟹ 27D justifiable、30C inevitable。⟹ 新立 <a href="套路库_阅读.html#R321">R321</a>。<br>📌 <b>和 2025 T1 比一比</b>：T1 是零作者观点的研究报道，靠说话人的引语推进，坑在「哪一组」；T2 是作者第一人称亮观点的评论，坑在「哪一句是作者的评价」。T1 问「研究想测什么」，T2 问「例子想证明什么」——两篇都在考<b>读出一段话的功能</b>。</div>
+          <div class="fi">🗞 <b>背景（WebSearch 核过，只帮读、不替原文纠错）</b>：据 Research Professional News（2024-01）的转述，说自己 shocked 于「科学家想缩减研究来减排」、主张科研收益大于环境代价的，是芬兰技术科学院（Technology Academy Finland）主席 <b>Minna Palmroth</b>——<b>千禧年技术奖正是这个科学院颁发的</b>。所以⑤段举这个奖不是随手一举，是作者拿<b>自家的奖</b>当证据：读 28 题时更能体会「例子为论点服务」。千禧年技术奖奖金 100 万欧元，2004 年首颁 ⟹ 2024 年「进入第 20 个年头」。马丁·格林是 <b>2022 年</b>得主，PERC 技术研发于 1983 年，奖方称其约占全球太阳能电池市场九成（⟹ ⑤❷ most of the world’s solar panels）。LUMI 在芬兰卡亚尼一座旧造纸厂里，用 100% 水电，废热接入当地区域供暖、约占卡亚尼地区供暖需求的五分之一；「碳负」是运营方自己的核算口径，非独立审计。</div>
+        </div>
+      </section>
+
+      <!-- ========== 原文精读 ========== -->
+      <section class="card">
+        <h2><span class="n">01</span>原文精读 <button class="allbtn" onclick="toggleAll()">全文意译 开/关</button> <button class="allbtn" id="imgall" onclick="imgAll(this)">原卷对照</button></h2>
+        <p style="font-size:.8rem;color:var(--muted);margin-bottom:14px">🟡 黄色高亮 = 重难点词/短语，点击右侧出卡片 ｜ 蓝色虚线 = 长难句，点击跳到精析 ｜ 每段「意」= 段落意译 ｜ 选中任意其他单词浮出「查有道」 ｜ 原文由你的浏览器从原卷识别成文字（首次约 3 秒，之后秒开）；「原卷对照」可逐句看扫描原图、改识别错字</p>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">①</span>
+            <div class="sn"><img class="strip" src="img/2025_T2/s1_1.png" alt="①❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="scaleback">scale back</span> · <span class="tk" data-w="inaneffort">in an effort to</span> · <span class="tk" data-w="emission">emissions</span></div></div>
+            <div class="sn"><img class="strip" src="img/2025_T2/s1_2.png" alt="①❷ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="crisis">crisis</span> · <span class="tk" data-w="cutbackon">cut back on</span> · <span class="tk" data-w="energyintensive">energy-intensive</span> · <span class="tk" data-w="modelling">modelling</span></div></div>
+            <div class="sn"><img class="strip" src="img/2025_T2/s1_3.png" alt="①❸ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="attheveryleast">At the very least</span> · <span class="tk" data-w="sustainable">sustainable</span></div></div>
+          </div>
+          <div class="zh"><b>①段意：</b>最近我得知，有些科学家为了减少碳排放，想要缩减自己的研究，这让我很震惊。他们说，危机已经来了，我们得削减那些耗能巨大的建模工作；最起码，也得让我们的能源使用变得可持续得多。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">②</span>
+            <div class="sn" data-go="l2_1"><img class="strip" src="img/2025_T2/s2_1.png" alt="②❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="unarguable">unarguable</span> · <span class="tk" data-w="instrument">instruments</span> · <span class="tk" data-w="satellite">satellites</span> · <span class="tk" data-w="pulse">pulse</span> · <span class="tk" data-w="significant">significant</span> · <span class="tk" data-w="construction">construction</span> · <span class="tk" data-w="operation">operation</span></div></div>
+            <div class="sn" data-go="l2_2"><img class="strip" src="img/2025_T2/s2_2.png" alt="②❷ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="equallytrue">equally true</span> · <span class="tk" data-w="unrelenting">unrelenting</span> · <span class="tk" data-w="appetite">appetite</span> · <span class="tk" data-w="mushroom">mushrooming</span> · <span class="tk" data-w="datacentre">data centres</span></div></div>
+            <div class="sn"><img class="strip" src="img/2025_T2/s2_3.png" alt="②❸ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="consume">consume</span></div></div>
+          </div>
+          <div class="zh"><b>②段意：</b>毋庸置疑，我们的实验室、科学仪器、火箭和卫星——这些我们科学家用来给地球「把脉」的工具——无论建造还是运行，都需要大量能源。同样确实的是，科学对信息永不满足的胃口，让耗能巨大的数据中心在全世界遍地开花。据国际能源署统计，这些建筑如今消耗着全球约 1% 的电力。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">③</span>
+            <div class="sn"><img class="strip" src="img/2025_T2/s3_1.png" alt="③❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="price">a price we must pay</span></div></div>
+            <div class="sn" data-go="l3_2"><img class="strip" src="img/2025_T2/s3_2.png" alt="③❷ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="inform">inform</span> · <span class="tk" data-w="decisionmaker">decision makers</span> · <span class="tk" data-w="bringdown">bring down</span> · <span class="tk" data-w="track">track</span> · <span class="tk" data-w="atmosphere">atmosphere</span></div></div>
+            <div class="sn" data-go="l3_3"><img class="strip" src="img/2025_T2/s3_3.png" alt="③❸ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="technological">technological</span> · <span class="tk" data-w="wellspent">well spent</span> · <span class="tk" data-w="ultimately">ultimately</span> · <span class="tk" data-w="safeguard">safeguard</span></div></div>
+          </div>
+          <div class="zh"><b>③段意：</b>然而，这是我们为了读懂世界必须付出的代价。如果我们连大气中有多少二氧化碳、它从哪里来、是谁排放的都追踪不到，又怎么告诉决策者降低碳排放的最好办法？技术研究产生的碳排放是花得值的：这些研究最终会守护我们这颗星球的未来。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">④</span>
+            <div class="sn" data-go="l4_1"><img class="strip" src="img/2025_T2/s4_1.png" alt="④❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="makethecase">make the case</span> · <span class="tk" data-w="complex">complex</span> · <span class="tk" data-w="closeddoors">behind closed doors</span> · <span class="tk" data-w="lenditself">lend itself to</span> · <span class="tk" data-w="interpretation">interpretation</span></div></div>
+            <div class="sn" data-go="l4_2"><img class="strip" src="img/2025_T2/s4_2.png" alt="④❷ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="demonstrate">demonstrating</span> · <span class="tk" data-w="efficacy">efficacy</span> · <span class="tk" data-w="crucial">crucial</span> · <span class="tk" data-w="ifweareto">if we are to</span> · <span class="tk" data-w="humanity">humanity’s</span></div></div>
+          </div>
+          <div class="zh"><b>④段意：</b>科学家要为自己辩护可能很难，因为我们的工作复杂、常常关起门来做，也并不总是三言两语就能解释清楚。但如果我们想解决人类面临的最大难题，证明科学确实有用将至关重要。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">⑤</span>
+            <div class="sn" data-go="l5_1"><img class="strip" src="img/2025_T2/s5_1.png" alt="⑤❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="impetus">impetus</span> · <span class="tk" data-w="millennium">Millennium Technology Prize</span> · <span class="tk" data-w="celebration">celebration</span> · <span class="tk" data-w="ingenuity">ingenuity</span></div></div>
+            <div class="sn" data-go="l5_2"><img class="strip" src="img/2025_T2/s5_2.png" alt="⑤❷ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="inventor">inventor</span> · <span class="tk" data-w="perc">Passivated Emitter and Rear Cell</span> · <span class="tk" data-w="solarpanel">solar panels</span></div></div>
+            <div class="sn"><img class="strip" src="img/2025_T2/s5_3.png" alt="⑤❸ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="thanksto">Thanks to</span> · <span class="tk" data-w="realchance">a real chance</span></div></div>
+          </div>
+          <div class="zh"><b>⑤段意：</b>正是认识到科学和工程能带来希望，才有了千禧年技术奖的设立；这个奖如今进入第 20 个年头，一直在颂扬人类的创造力。往届得主之一、澳大利亚新南威尔士大学的马丁·格林教授，发明了「钝化发射极和背面电池」技术，现在世界上大多数太阳能电池板都在用它。多亏他的发明，我们才真正有机会减少全球的碳排放。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">⑥</span>
+            <div class="sn" data-go="l6_1"><img class="strip" src="img/2025_T2/s6_1.png" alt="⑥❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="technologist">technologists</span> · <span class="tk" data-w="exploit">exploit</span> · <span class="tk" data-w="renewable">renewable</span> · <span class="tk" data-w="technique">techniques</span> · <span class="tk" data-w="power">power</span> · <span class="tk" data-w="intelligence">intelligence</span></div></div>
+            <div class="sn"><img class="strip" src="img/2025_T2/s6_2.png" alt="⑥❷ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="supercomputer">supercomputer</span> · <span class="tk" data-w="astonishingly">astonishingly</span> · <span class="tk" data-w="carbonnegative">carbon-negative</span></div></div>
+            <div class="sn" data-go="l6_3"><img class="strip" src="img/2025_T2/s6_3.png" alt="⑥❸ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="establish">Established</span> · <span class="tk" data-w="papermill">paper mill</span> · <span class="tk" data-w="remoteheat">remote heat</span> · <span class="tk" data-w="warm">warms</span> · <span class="tk" data-w="surrounding">surrounding</span></div></div>
+          </div>
+          <div class="zh"><b>⑥段意：</b>每一天，科学家、技术专家和工程师都在发现开发可再生能源的新办法，开发新技术——不只是为了更聪明地用电，更是为了用电来驱动我们的智慧。一个绝佳的例子是欧洲最大的超级计算机、芬兰的 LUMI，它竟然做到了碳负排放。它建在一座旧造纸厂里，由附近的一条河供电，余热还给周边卡亚尼镇的居民供暖。</div>
+        </div>
+
+        <div class="para">
+          <button class="zbtn" onclick="tz(this)">意</button>
+          <div class="en"><span class="pno">⑦</span>
+            <div class="sn" data-go="l7_1"><img class="strip" src="img/2025_T2/s7_1.png" alt="⑦❶ 原卷句条" loading="lazy"><div class="kw">🟡 <span class="tk" data-w="netzero">net-zero</span> · <span class="tk" data-w="ambition">ambitions</span> · <span class="tk" data-w="thinkhard">think hard about</span> · <span class="tk" data-w="deliver">deliver</span> · <span class="tk" data-w="computing">computing</span></div></div>
+          </div>
+          <div class="zh"><b>⑦段意：</b>世界若想实现净零排放的目标，我们就必须认真思考：怎样做到可持续计算，怎样造出更多像 LUMI 这样的设施。</div>
+        </div>
+      </section>
+
+      <!-- ========== 题目 ========== -->
+      <section class="card">
+        <h2><span class="n">02</span>题目与解析（点选项即判 · 再看解析）</h2>
+
+        <div class="q" data-ans="1" id="q26">
+          <p class="stem"><span class="qt">事实细节</span>26. The author expressed great surprise at some scientists’ ______.</p>
+          <div class="opts">
+            <div class="opt">[A] <span class="tk" data-w="unwillingness">unwillingness</span> to cut carbon emissions.</div>
+            <div class="opt">[B] <span class="tk" data-w="intention">intention</span> to reduce their research.</div>
+            <div class="opt">[C] <span class="tk" data-w="suspicion">suspicions</span> about sustainable energy.</div>
+            <div class="opt">[D] waste of electricity in their projects.</div>
+          </div>
+          <div class="expl"><b>答案 B</b>　great surprise ＝ ①❶ <span class="loc">I was shocked to learn</span>，吃惊的内容是 that 从句：<span class="loc">some scientists want to scale back their research</span>。want to ＝ intention to，scale back their research ＝ reduce their research ⟹ B，一一对词。<br><b>干扰项：</b>①❶ 这句其实有<b>两个信息点</b>——「缩减研究」是<b>手段</b>，<span class="loc">in an effort to decrease carbon emissions</span> 是<b>目的</b>。作者吃惊的是手段，不是目的。A 把目的读反了：这些科学家不是<b>不愿</b>减排，而是太愿意减排，愿意到连研究都肯砍。C 与①❸ 也反：他们<b>主张</b>让用能更可持续，哪来的怀疑。D 把①❷❸ 他们自己说的「耗能的建模」「让用能更可持续」，改写成了「浪费电」——一来主体错了（那是那些科学家对自己工作的看法，不是作者在指责他们），二来原文只说耗能<b>多</b>，没说<b>浪费</b>；作者到③段还说这些耗能「花得值」。<br><b>技巧：</b>首段「I was shocked / surprised to learn that …」是评论文最常见的开头：<b>作者吃惊的东西，就是他后文要驳的东西</b>。这类题先把 that 从句切成「手段」和「目的」两半，再看题干问的是哪一半。<br>📕 <b>与书解析的商榷</b>：无分歧。书在「技巧总结」里也提到：不认识 scale back，可以从名词 scale「规模」推出「缩减规模」，或者借①❷❸ 两句的具体说法反推。</div>
+        </div>
+
+        <div class="q" data-ans="3" id="q27">
+          <p class="stem"><span class="qt">作者观点</span>27. The author believes that carbon emissions from research ______.</p>
+          <div class="opts">
+            <div class="opt">[A] have caused <span class="tk" data-w="grave">grave</span> consequences.</div>
+            <div class="opt">[B] have <span class="tk" data-w="arouse">aroused</span> <span class="tk" data-w="groundless">groundless</span> worries.</div>
+            <div class="opt">[C] are hard to handle at present.</div>
+            <div class="opt">[D] are <span class="tk" data-w="justifiable">justifiable</span> <span class="tk" data-w="inthelongrun">in the long run</span>.</div>
+          </div>
+          <div class="expl"><b>答案 D</b>　题干 The author believes ＝ 找<b>作者自己的评价</b>。②段两句是让步：<span class="loc">It is unarguable that</span> …、<span class="loc">And it is equally true that</span> …——只认事实，不下评价；③❶ 一个 <b>However</b> 转出观点：<span class="loc">this is a price we must pay</span>，③❸ 再坐实：<span class="loc">are well spent: ultimately</span> … <span class="loc">safeguard the future of our planet</span>。「代价、花得值」⟹ justifiable（说得通、正当）；「最终、未来」⟹ in the long run ⟹ D。<br><b>干扰项：</b>A 和 B 都在②段的让步上做手脚，方向正好相反。A 把作者承认的<b>事实</b>（耗能多、数据中心多、用掉 1% 的电）<b>升级</b>成了评价「造成了严重后果」——作者从没说过后果，一个评价词都没给。B 反过来<b>否认</b>了事实：groundless（毫无根据）和 unarguable、equally true 正面冲突——作者不同意那些科学家的<b>结论</b>（缩减研究），但承认他们的<b>担忧有事实依据</b>。C 拿④❶ <span class="loc">It can be hard for scientists to make the case</span> 偷换：hard 难的是「<b>为自己辩护</b>」，不是「<b>处理排放</b>」；④❷ 的 greatest challenges 也是泛指气候一类大难题，不是指科研排放。<br><b>技巧：</b>作者观点题遇到「先认后转」，把定位段分成两层：让步层只装<b>事实</b>，观点层才有<b>评价</b>。选项若是给让步层的事实<b>加评价</b>（升级）或<b>去事实</b>（否认），都是错的；正确项只取 However 之后的评价 ⟹ 新立 <a href="套路库_阅读.html#R321">R321</a>；判断哪边是作者的声音，参见 <a href="套路库_阅读.html#R87">R87</a>。<br>📕 <b>与书解析的商榷</b>：无分歧，书的「解题捷径」正是这条：真实观点在「让步」之后由「转折」引出，It is unarguable … And it is equally true … However, this is a price … 三个词就定了位。</div>
+        </div>
+
+        <div class="q" data-ans="2" id="q28">
+          <p class="stem"><span class="qt">例证目的</span>28. The example of Green in Paragraph 5 is used to <span class="tk" data-w="illustrate">illustrate</span> ______.</p>
+          <div class="opts">
+            <div class="opt">[A] the achievements of great scientists.</div>
+            <div class="opt">[B] the <span class="tk" data-w="urgency">urgency</span> of addressing climate change.</div>
+            <div class="opt">[C] the <span class="tk" data-w="reward">rewards</span> of scientific <span class="tk" data-w="endeavour">endeavours</span>.</div>
+            <div class="opt">[D] the value of <span class="tk" data-w="foster">fostering</span> human ingenuity.</div>
+          </div>
+          <div class="expl"><b>答案 C</b>　例子题先别看例子，去找<b>例子替哪句话作证</b>。⑤段自己就是「论点 → 例子 → 落点」：❶ 设立奖项的动因是 <span class="loc">Recognising the hope that science and engineering can bring</span>——科学与工程<b>能带来</b>希望；❷ 例子：格林发明的 PERC 如今用在大多数太阳能板上；❸ 落点：<span class="loc">Thanks to his invention, we have a real chance</span> to decrease emissions。「科学能带来的东西」＋「多亏他的发明才有真机会」⟹ 科研努力是<b>有回报的</b> ⟹ C；rewards ≈ the hope … can bring，scientific endeavours ≈ science and engineering。再往大处看：④❷ 刚说「证明科学的效用至关重要」，⑤段就是作者在<b>证明</b>——正好接上全文「代价值得付」的主线。<br><b>干扰项：</b>D 是本题最像的一项，料来自⑤❶ <span class="loc">a celebration of human ingenuity</span>。但那是在介绍<b>奖项是什么</b>（颂扬创造力），不是格林这个例子<b>要证明什么</b>；而且 celebration 是「颂扬<b>已有的</b>创造力」，fostering 是「<b>培养</b>创造力」，原文没有「培养」这层意思。A 只停在例子表面：格林的确是位成就卓著的科学家，但作者讲他不是为了表彰个人，而是为了说明他的发明<b>带来了什么</b>。B 的料在⑤❸ decrease the world’s carbon emissions，但原文的语气是 a real chance（<b>希望</b>），不是「必须赶快」（<b>紧迫</b>）。<br><b>技巧：</b>例证题的答案在例子服务的那句论点里（<a href="套路库_阅读.html#R41">R41</a>）；本篇论点在段首、落点在段尾，例子夹在中间——<b>段首的 hope 与段尾的 real chance 首尾呼应</b>，正确项要同时对上这两头。凡是只对上例子中间某个细节（A 的成就、D 的奖项定位）的，都是素材，不是目的。<br>⚠️ <b>若盲做，这题会在 C／D 之间犹豫</b>：D 的 human ingenuity 是原词，看着更「有出处」。判据有两条：① 它出自奖项的同位说明，不是格林例子的落点；② foster 原文无据。<br>📕 <b>与书解析的商榷</b>：无分歧。补一条背景（见 00）：本文作者就是颁发千禧年技术奖的芬兰技术科学院主席——拿自家的奖和自家的得主当证据，目的当然是证明「科研值得」，而不是泛泛地赞美创造力。</div>
+        </div>
+
+        <div class="q" data-ans="0" id="q29">
+          <p class="stem"><span class="qt">事实概括</span>29. It can be learned from the last two paragraphs that LUMI ______.</p>
+          <div class="opts">
+            <div class="opt">[A] is a model of <span class="tk" data-w="sustainability">sustainability</span> efforts.</div>
+            <div class="opt">[B] is a <span class="tk" data-w="triumph">triumph</span> against energy <span class="tk" data-w="shortage">shortage</span>.</div>
+            <div class="opt">[C] <span class="tk" data-w="oweto">owes much to</span> global net-zero <span class="tk" data-w="initiative">initiatives</span>.</div>
+            <div class="opt">[D] aims to explore the power of intelligence.</div>
+          </div>
+          <div class="expl"><b>答案 A</b>　把末两段关于 LUMI 的信息列出来，找<b>共性</b>：⑥❷ <span class="loc">A great example of this</span>（「这」＝⑥❶ 开发可再生能源）、<span class="loc">astonishingly carbon-negative</span>；⑥❸ 靠附近的河供电（水电）、余热给居民供暖；⑦ <span class="loc">deliver sustainable computing and deliver more LUMIs</span>。共性就是<b>节能、减排、可持续</b>，而且作者明说它是「绝佳的例子」、号召「造出更多」⟹ 可持续发展努力的<b>典范</b> ⟹ A；a model ≈ a great example，sustainability ≈ sustainable、renewable、carbon-negative。<br><b>干扰项：</b>B 拿 energy、power、remote heat 这些碎片拼出一个「能源短缺」——文中一字未提短缺，讲的是<b>碳排放</b>。C <b>因果颠倒</b>：⑦ 说的是「要实现净零目标，就得有更多 LUMI」——LUMI 是实现净零的<b>手段</b>；C 写成「LUMI 很大程度上归功于净零倡议」，把净零变成了 LUMI 的<b>原因</b>。D 篡改⑥❶ 的 <span class="loc">to power our intelligence</span>：原文是「<b>用电驱动</b>我们的智慧」（让计算为人类的智力服务），D 写成「探索智能的力量」，power 从动词变成了名词、意思全变；何况⑥❶ 说的是所有科学家的努力方向，不是 LUMI 的目标。<br><b>技巧：</b>「It can be learned from the last two paragraphs」型概括题，先把两段里所有关于题干对象的信息列成清单，提一个<b>共性</b>；选项里与共性无关的（D）先排，再查剩下的有没有<b>无中生有</b>（B）和<b>因果颠倒</b>（C）。遇到 owe … to、result from、be due to 这类因果短语，一定回原文看箭头方向。<br>📕 <b>与书解析的商榷</b>：无分歧。</div>
+        </div>
+
+        <div class="q" data-ans="2" id="q30">
+          <p class="stem"><span class="qt">全文观点</span>30. Which of the following statements would the author agree with?</p>
+          <div class="opts">
+            <div class="opt">[A] Emission-free modelling demands extra <span class="tk" data-w="funding">funding</span>.</div>
+            <div class="opt">[B] The need for supercomputers is difficult to meet.</div>
+            <div class="opt">[C] Energy-intensive research work is <span class="tk" data-w="inevitable">inevitable</span>.</div>
+            <div class="opt">[D] The goals of researchers ought to be <span class="tk" data-w="realistic">realistic</span>.</div>
+          </div>
+          <div class="expl"><b>答案 C</b>　全文观点题，回到全文主线：②段承认科研<b>就是</b>耗能的（实验室、仪器、火箭、卫星、数据中心，<span class="loc">demand significant amounts of energy</span>），③❶ 再说这是 <span class="loc">a price we must pay</span>——「<b>必须</b>付的代价」＝避不开；而作者的结论也不是「少做研究」，是「让研究更可持续」⟹ 耗能的科研工作不可避免 ⟹ C；Energy-intensive 是①❷ 和②❷ 的原词。<br><b>干扰项：</b>A 的两半都有问题：「无排放建模」糅的是①❷ 别的科学家想削减的 energy-intensive modelling 和⑦ 的净零目标，「需要额外资金」全文一个字没提——<b>无中生有</b>。B 糅了⑥❷ supercomputer 和⑦ 的 meet（meet … ambitions 是「实现目标」），拼成「超算的需求难以满足」，文中没有。D「研究者的目标应当切合实际」——全文从没讨论过谁的目标高不高、实不实际；作者不满那些科学家，是因为他们<b>方向错了</b>（为减排砍研究），不是因为目标太高。<br><b>技巧：</b>Which … would the author agree with 一类题，正确项往往就是<b>全文主线换个说法</b>（<a href="套路库_阅读.html#R25">R25</a>）：本篇主线 ＝「科研耗能是必须付、也值得付的代价」，27 题取了「值得」（justifiable），30 题取了「必须」（inevitable）——同一句 <span class="loc">a price we must pay</span> 被命题人拆成了两道题（<a href="套路库_阅读.html#R321">R321</a>）。<br>📕 <b>与书解析的商榷</b>：书排 D 时绕了一圈——从首段反推「作者震惊不是因为目标不切实际」，再到末段「净零是全人类的目标且有实现条件」。其实更省力的判据是：<b>「目标是否现实」这个维度在全文根本没出现过</b>，按无中生有直接排除即可。</div>
+        </div>
+      </section>
+
+      <!-- ========== 长难句 ========== -->
+      <section class="card" id="sents">
+        <h2><span class="n">03</span>长难句精析（正文蓝色虚线句）</h2>
+
+        <div class="sent" id="l2_1">
+          <div class="src"><b>s1（②❶）</b><img class="strip" src="img/2025_T2/s2_1.png" alt="②❶ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：<code>It is unarguable that …</code>——it 是形式主语，真正的主语是 that 从句。</li>
+            <li>that 从句的主语很长：<code>our laboratories, scientific instruments, rockets and satellites</code>，四个名词并列；接着两个破折号夹一个<b>同位语</b>：<code>the tools we scientists need to …</code>（tools 后省略了 that）。</li>
+            <li>破折号收住之后才是谓语 <code>demand significant amounts of energy</code>——⚠️ 主语和谓语被插入语隔开了十来个词，读到 demand 要回头找主语。demand 的主语是物，意思是「需要、消耗」，不是「要求」。</li>
+            <li>句尾 <code>both in their construction and operation</code>：在建造和运行<b>两个环节</b>都耗能。</li>
+          </ul>
+          <div class="tr">意：毋庸置疑，我们的实验室、科学仪器、火箭和卫星——这些我们科学家用来给地球「把脉」的工具——无论建造还是运行，都需要大量能源。</div>
+        </div>
+
+        <div class="sent" id="l2_2">
+          <div class="src"><b>s2（②❷）</b><img class="strip" src="img/2025_T2/s2_2.png" alt="②❷ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li>结构同上一句：<code>And it is equally true that …</code>——形式主语 ＋ that 从句。<b>And ＋ equally</b> 告诉你：这是<b>第二次</b>让步，和❶ 并列。</li>
+            <li>that 从句主干：<code>science’s unrelenting appetite</code> 是主语，谓语 <code>has caused</code>，宾语 <code>a mushrooming of</code> 后接 energy-intensive data centres。</li>
+            <li>两个比喻：appetite（科学像个永远吃不饱的人）· mushrooming（数据中心像雨后蘑菇一样冒出来）。比喻生动，可<b>都是在陈述事实</b>，没有一个评价词 ⟹ 27 题 A、B 的判据。</li>
+          </ul>
+          <div class="tr">意：同样确实的是，科学对信息永不满足的胃口，让耗能巨大的数据中心在全世界遍地开花。</div>
+        </div>
+
+        <div class="sent" id="l3_2">
+          <div class="src"><b>s3（③❷）</b><img class="strip" src="img/2025_T2/s3_2.png" alt="③❷ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><b>反问句</b>：<code>How can we inform decision makers …?</code>——不是真在问，意思是「<b>不可能</b>告诉决策者」。读反问句，直接把它翻成否定陈述。</li>
+            <li><code>about the best ways to bring down carbon emissions</code>：inform sb about sth，to bring down 作 ways 的定语。</li>
+            <li>条件从句 <code>if we can’t track</code> 的宾语是 the amount of carbon dioxide，后面又挂两个并列的 wh- 从句：<code>where it’s coming from</code> 和 <code>who’s producing it</code>——追踪三件事：多少、从哪来、谁排的。</li>
+            <li>这一句是作者的<b>理由</b>：要减排，先得测得到；测，就得做耗能的研究 ⟹ 代价必须付。</li>
+          </ul>
+          <div class="tr">意：如果我们连大气中有多少二氧化碳、它从哪里来、是谁排放的都追踪不到，又怎么能告诉决策者降低碳排放的最好办法呢？</div>
+        </div>
+
+        <div class="sent" id="l3_3">
+          <div class="src"><b>s4（③❸）</b><img class="strip" src="img/2025_T2/s3_3.png" alt="③❸ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li>冒号把句子分成<b>判断 ＋ 理由</b>两半：前半 <code>The carbon emissions … are well spent</code>，后半 <code>ultimately this research will safeguard …</code>。</li>
+            <li><code>well spent</code>：spend 本来说钱和时间，这里说<b>碳排放</b>——把排放当成一笔开支，「这钱花得值」。和③❶ a price we must pay 是同一个<b>记账比喻</b>。</li>
+            <li>ultimately 对应 27 题 D 的 in the long run，the future of our planet 对应「长远」——<b>冒号后面就是 27 题的答案</b>。</li>
+          </ul>
+          <div class="tr">意：技术研究产生的碳排放是花得值的：这些研究最终会守护我们这颗星球的未来。</div>
+        </div>
+
+        <div class="sent" id="l4_1">
+          <div class="src"><b>s5（④❶）</b><img class="strip" src="img/2025_T2/s4_1.png" alt="④❶ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：<code>It can be hard for scientists to make the case</code>——it 形式主语，真主语是 for … to do 不定式。</li>
+            <li>because 从句里，一个主语 <code>our work</code> 带<b>三个并列谓语</b>：is complex · often takes place behind closed doors · does not always lend itself to …，用逗号和 and 连接——三个理由。</li>
+            <li><code>lend itself to</code>：「适合于……」，to 是介词，后接名词 easy interpretation or explanation。</li>
+            <li>⚠️ hard 修饰的是 make the case（<b>为自己辩护</b>），27 题 C 把它挪成了「排放难以处理」。</li>
+          </ul>
+          <div class="tr">意：科学家要为自己辩护可能很难，因为我们的工作复杂、常常关起门来做，也并不总能三言两语解释清楚。</div>
+        </div>
+
+        <div class="sent" id="l4_2">
+          <div class="src"><b>s6（④❷）</b><img class="strip" src="img/2025_T2/s4_2.png" alt="④❷ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：<code>demonstrating the efficacy of science will be crucial</code>——<b>动名词短语作主语</b>，谓语是 will be crucial。</li>
+            <li><code>if we are to solve …</code>：<b>be to do</b> 用在 if 从句里，意思是「<b>如果我们想要</b>做到……」，表目的和条件。⑦ 末句又用了一次（If the world is to meet …）——首尾呼应。</li>
+            <li>But 开头承接❶：难辩护（❶）——但必须证明（❷）。这一句给⑤⑥ 两段的例子定了任务：<b>下面的例子都是在「证明科学有用」</b>（⟹ 28 题）。</li>
+          </ul>
+          <div class="tr">意：但如果我们想解决人类面临的最大难题，证明科学确实有用将至关重要。</div>
+        </div>
+
+        <div class="sent" id="l5_1">
+          <div class="src"><b>s7（⑤❶）</b><img class="strip" src="img/2025_T2/s5_1.png" alt="⑤❶ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：<code>Recognising the hope … was the impetus behind the creation of …</code>——<b>动名词短语作主语</b>，系动词 was，表语 the impetus。</li>
+            <li>主语内部：<code>the hope that science and engineering can bring</code>——that 引导<b>定语从句</b>（bring 的宾语就是 hope），不是同位语从句。判断方法：从句里缺宾语 ⟹ 定语从句。</li>
+            <li>句尾 <code>which is now entering its 20th year</code>：非限制性定语从句修饰 the Prize；<code>as a celebration of human ingenuity</code> 再说明这个奖的身份——⚠️ 这是奖项的介绍，28 题 D 就借它造干扰。</li>
+            <li>读法：倒过来更顺——「设立千禧年技术奖的动因，是认识到科学与工程能带来希望」。</li>
+          </ul>
+          <div class="tr">意：正是认识到科学和工程能带来希望，才有了千禧年技术奖的设立；这个奖如今进入第 20 个年头，一直在颂扬人类的创造力。</div>
+        </div>
+
+        <div class="sent" id="l5_2">
+          <div class="src"><b>s8（⑤❷）</b><img class="strip" src="img/2025_T2/s5_2.png" alt="⑤❷ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：<code>One of the past winners … is the inventor of …</code>——主语后面紧跟<b>同位语</b> Professor Martin Green 和他的单位，读到 is 才是谓语。</li>
+            <li><code>the Passivated Emitter and Rear Cell technology</code>：专有名词，考场上不必懂，认出「一种太阳能电池技术」就够了。</li>
+            <li>句尾 <code>which is now found in most of the world’s solar panels</code>：定语从句修饰 technology——这个「如今到处在用」是例子的分量所在。</li>
+          </ul>
+          <div class="tr">意：往届得主之一、澳大利亚新南威尔士大学的马丁·格林教授，发明了「钝化发射极和背面电池」技术，现在世界上大多数太阳能电池板都在用它。</div>
+        </div>
+
+        <div class="sent" id="l6_1">
+          <div class="src"><b>s9（⑥❶）</b><img class="strip" src="img/2025_T2/s6_1.png" alt="⑥❶ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li><span class="skel">主干</span>：主语是三类人（scientists, technologists and engineers），谓语 <code>are discovering new ways to</code>，后面两个并列不定式：exploit renewable energy sources 和 develop techniques。</li>
+            <li>techniques 后接 <b>not just … but …</b>：<code>not just to use power more intelligently</code>，<code>but to power our intelligence</code>——重心在 but 之后。</li>
+            <li>⭐ <b>同词异性的对仗</b>：前一个 power 是名词「电」，后一个是动词「驱动」；intelligently 与 intelligence 镜像对称。翻成中文就是「不只是更聪明地用电，更要用电驱动智慧」。29 题 D 就是把这个动词 power 偷换成了名词「力量」。</li>
+          </ul>
+          <div class="tr">意：每一天，科学家、技术专家和工程师都在发现开发可再生能源的新办法，开发新技术——不只是为了更聪明地用电，更是为了用电来驱动我们的智慧。</div>
+        </div>
+
+        <div class="sent" id="l6_3">
+          <div class="src"><b>s10（⑥❸）</b><img class="strip" src="img/2025_T2/s6_3.png" alt="⑥❸ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li>句首 <code>Established in an old paper mill</code>：<b>过去分词短语作状语</b>，逻辑主语是主句的 it（＝LUMI），表被动——「（LUMI）建在一座旧造纸厂里」。</li>
+            <li>主句两个并列分句，and 连接：① <code>it is powered by a nearby river</code>（被动，由河流——水电——供能）；② <code>its remote heat warms the people</code>。</li>
+            <li>people 后接定语从句 <code>who live in the surrounding town of Kajaani</code>。</li>
+            <li>三个细节（旧厂房、水电、余热供暖）是同一件事的三个侧面：<b>可持续</b> ⟹ 29 题 A。</li>
+          </ul>
+          <div class="tr">意：它建在一座旧造纸厂里，由附近的一条河供电，余热还给周边卡亚尼镇的居民供暖。</div>
+        </div>
+
+        <div class="sent" id="l7_1">
+          <div class="src"><b>s11（⑦）</b><img class="strip" src="img/2025_T2/s7_1.png" alt="⑦ 原卷句条" loading="lazy"></div>
+          <ul class="anat">
+            <li>条件从句 <code>If the world is to meet its net-zero ambitions</code>：又是 <b>if … be to do</b>（如果想要实现……），与④❷ 呼应。</li>
+            <li>主句 <code>we must think hard about how …</code>，how 从句里一个主语带两个并列谓语：deliver sustainable computing 和 deliver more LUMIs——deliver 重复两次，是<b>号召式收尾</b>的节奏。</li>
+            <li><b>因果方向</b>：净零是<b>目标</b>，更多 LUMI 是<b>手段</b>（「要想达成 A，就得做 B」）。29 题 C 的 owes much to 把方向倒了过来。</li>
+            <li>LUMIs：专有名词加 -s 变成普通名词——「像 LUMI 这样的设施」。</li>
+          </ul>
+          <div class="tr">意：世界若想实现净零排放的目标，我们就必须认真思考：怎样做到可持续计算，怎样造出更多像 LUMI 这样的设施。</div>
+        </div>
+      </section>
+
+      <!-- ========== 词汇复盘 ========== -->
+      <section class="card">
+        <h2><span class="n">04</span>词汇复盘（点卡片看详情）</h2>
+        <div class="filters">
+          <button class="fbtn on" data-f="all">全部</button>
+          <button class="fbtn" data-f="core">核心词</button>
+          <button class="fbtn" data-f="phrase">短语</button>
+          <button class="fbtn" data-f="poly">熟词僻义</button>
+          <button class="fbtn" data-f="write">写作可用</button>
+        </div>
+        <div class="vgrid" id="vgrid"></div>
+      </section>
+
+      <!-- ========== 写作素材 ========== -->
+      <section class="card">
+        <h2><span class="n">05</span>可搬进作文/翻译的素材</h2>
+        <p style="font-size:.9rem;margin-bottom:12px">本篇话题——<b>科技与环保、发展的代价、可持续发展</b>——正对大作文里的「科技利弊」「发展与环境」「绿色生活」类题目；「先承认、再转折」的论证骨架则是任何议论文都用得上的。英文例句都是按原文句式自拟的，只借骨架。</p>
+        <div class="wb">
+          <div class="wbi"><div class="p">It is unarguable that … And it is equally true that … However, …</div><div class="u">「毋庸置疑……；同样确实的是……；然而……」——<b>让步两步、再转折</b>的标准骨架，显得公允：It is unarguable that smartphones distract students. And it is equally true that they waste time. However, banning them outright is not the answer.</div></div>
+          <div class="wbi"><div class="p">This is a price we must pay for …</div><div class="u">「这是我们为……必须付出的代价」——承认坏处、但坚持值得：Some inconvenience is a price we must pay for cleaner air.</div></div>
+          <div class="wbi"><div class="p">How can we … if we can’t …?</div><div class="u">「如果连……都做不到，又怎么能……？」——<b>反问</b>论证，比直接说「必须」更有力：How can we protect wildlife if we do not even know how many species are left?</div></div>
+          <div class="wbi"><div class="p">X are well spent: ultimately …</div><div class="u">「X 花得值：最终……」——冒号后给理由：The hours spent on reading are well spent: ultimately they shape the way we think.</div></div>
+          <div class="wbi"><div class="p">It can be hard to …, but … will be crucial if we are to …</div><div class="u">「……可能很难，但如果我们想要……，……就至关重要」——先认难处、再提要求：It can be hard to change old habits, but small daily steps will be crucial if we are to live a greener life.</div></div>
+          <div class="wbi"><div class="p">not just to … but to …</div><div class="u">「不只是为了……，更是为了……」——递进，重心在后：We read not just to pass exams but to understand the world.</div></div>
+          <div class="wbi"><div class="p">Thanks to …, we have a real chance to …</div><div class="u">「多亏……，我们才真正有机会……」——给例子收尾、点出意义：Thanks to online courses, students in remote villages have a real chance to learn from top teachers.</div></div>
+          <div class="wbi"><div class="p">If … is to …, we must think hard about how …</div><div class="u">「如果……想要……，我们就必须认真想想怎样……」——<b>号召式结尾</b>：If our city is to become greener, we must think hard about how we travel every day.</div></div>
+          <div class="wbi"><div class="p">话题词包：carbon emissions · net-zero · sustainable · renewable energy · carbon footprint</div><div class="u">写「环保 / 科技 / 可持续发展」时直接可用：cut back on（削减）· bring down carbon emissions（降低碳排放）· renewable energy sources（可再生能源）· energy-intensive（高耗能的）· net-zero goals（净零目标）· safeguard the future of our planet（守护地球的未来）· human ingenuity（人类的创造力）。</div></div>
+        </div>
+      </section>
+    </main>
+    <aside>
+      <div id="panel">
+        <button class="close" onclick="document.getElementById('panel').classList.remove('open')">收起</button>
+        <div class="hint">点正文里的<b>黄色高亮词</b>，或下方词汇卡片，这里出详情。</div>
+      </div>
+    </aside>
+  </div>
+</div>
+<button id="yd">查有道</button>
+
+<script>
+const V={
+  scaleback:{"w": "scale back", "ipa": "/skeɪl bæk/", "pos": "phr.", "tags": ["phrase", "core", "write"], "cn": "<b>缩减（规模）</b>、削减", "en": "to make something smaller in size or amount than before", "ex": "some scientists want to <b>scale back</b> their research（①❶）", "mem": "scale 名词是「规模」⟹ scale back＝把规模往回收。不认识也能从名词义推出来（书「技巧总结」原话）。<br>反义：scale up（扩大规模）。⟹ 26 题 B 的 reduce their research 就是它的同义改写。", "syn": "cut back · reduce · downsize", "conf": "scale back（缩减）· scale up（扩大）· scale down（按比例缩小）。"},
+  inaneffort:{"w": "in an effort to", "ipa": "/ɪn ən ˈefət tə/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>为了</b>（努力）做……", "en": "in order to; trying to achieve something", "ex": "in an effort to decrease carbon emissions（①❶）", "mem": "比 in order to 多一层「费了力气、未必做成」。<br>写作：The city has banned old cars <b>in an effort to</b> cut air pollution.", "syn": "in order to · in a bid to · in an attempt to", "conf": "in an effort to（为了）· make an effort（努力）· effortless（毫不费力的）。"},
+  emission:{"w": "emission", "ipa": "/iˈmɪʃn/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>排放</b>；排放物", "en": "gas or other substances sent out into the air", "ex": "to decrease carbon <b>emissions</b>（①❶）", "mem": "e-（出）＋ miss（送，同 mission、missile）⟹ 送出去 ⟹ 排放。动词 emit。<br>本文出现 5 次：carbon emissions 是全篇主题词。", "syn": "discharge · release", "conf": "emission（排放）· omission（遗漏，23 年 T1 选项里刚见过）· admission（承认；入场）。"},
+  crisis:{"w": "crisis", "ipa": "/ˈkraɪsɪs/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>危机</b>（复数 crises）", "en": "a time of great danger or difficulty", "ex": "The <b>crisis</b> is here, they said（①❷）", "mem": "the crisis 在气候话题里默认指<b>气候危机</b>（climate crisis）。复数 crises /ˈkraɪsiːz/，和 analysis → analyses 同规则。", "syn": "emergency · disaster", "conf": "crisis（危机）· critical（关键的；批评的）· criteria（标准，criterion 的复数）。"},
+  cutbackon:{"w": "cut back on", "ipa": "/kʌt bæk ɒn/", "pos": "phr.", "tags": ["phrase", "core", "write"], "cn": "<b>减少、削减</b>（某物的量）", "en": "to reduce the amount of something you use or do", "ex": "cut back on our energy-intensive modelling（①❷）", "mem": "cut back＝剪短 ⟹ 削减；on 接被削减的东西。<br>写作：Many families are <b>cutting back on</b> eating out.", "syn": "reduce · scale back · cut down on", "conf": "cut back on（削减）· cut off（切断）· cut in（插嘴）。"},
+  energyintensive:{"w": "energy-intensive", "ipa": "/ˈenədʒi ɪnˈtensɪv/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>能源密集型的</b>、耗能大的", "en": "needing a lot of energy", "ex": "our <b>energy-intensive</b> modelling（①❷）", "mem": "X-intensive＝「大量需要 X 的」：labour-intensive（劳动密集型）· capital-intensive（资本密集型）· data-intensive。<br>⟹ 30 题 C 的 Energy-intensive research work 原词复现。", "syn": "power-hungry · energy-hungry", "conf": "intensive（密集的）· intense（强烈的）· extensive（广泛的）。"},
+  modelling:{"w": "modelling", "ipa": "/ˈmɒdəlɪŋ/", "pos": "n.", "tags": ["core", "poly"], "cn": "<b>建模</b>（用计算机模拟）", "en": "making computer models to study or predict something", "ex": "energy-intensive <b>modelling</b>（①❷）", "mem": "⚠️ 不是「模特行业」：科研语境里 modelling＝用数学/计算机建模型做模拟（气候模型、流行病模型）。英式双 l，美式 modeling。<br>⟹ 30 题 A 的 Emission-free modelling。", "syn": "simulation", "conf": "modelling（建模）· model（模型；模特）· moderate（适度的）。"},
+  attheveryleast:{"w": "at the very least", "ipa": "/ət ðə ˈveri liːst/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>至少</b>、退一步说", "en": "as the minimum that should happen", "ex": "<b>At the very least</b>, we need to …（①❸）", "mem": "very 加强 least：「最最起码」。前面说了一个高要求（缩减研究），这里退一步给底线（让能源使用更可持续）——<b>让步层递</b>的标志。", "syn": "at least · at a minimum", "conf": "at least（至少）· at the very least（最起码）· not in the least（一点也不）。"},
+  sustainable:{"w": "sustainable", "ipa": "/səˈsteɪnəbl/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>可持续的</b>", "en": "able to continue without harming the environment", "ex": "make our energy use far more <b>sustainable</b>（①❸）", "mem": "sustain（维持）＋ -able ⟹ 能一直维持下去的。<br>本文 3 次：①❸ sustainable · ⑦ sustainable computing；名词 sustainability 在 29 题 A。写作高频：sustainable development（可持续发展）。", "syn": "eco-friendly · green · renewable", "conf": "sustainable（可持续的）· sustained（持续不断的）· maintainable（可维护的）。"},
+  sustainability:{"w": "sustainability", "ipa": "/səˌsteɪnəˈbɪləti/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>可持续性</b>", "en": "the ability to continue without damaging the environment", "ex": "is a model of <b>sustainability</b> efforts（29 题 A）", "mem": "sustainable 的名词。sustainability efforts＝可持续发展方面的努力。", "syn": "green efforts", "conf": "sustainability（可持续性）· sustenance（食物、营养）。"},
+  unarguable:{"w": "unarguable", "ipa": "/ʌnˈɑːɡjuəbl/", "pos": "adj.", "tags": ["core"], "cn": "<b>无可争辩的</b>、毋庸置疑的", "en": "so clearly true that nobody can disagree", "ex": "It is <b>unarguable</b> that our laboratories …（②❶）", "mem": "un-（不）＋ argu(e)（争论）＋ -able ⟹ 争不了的。<br>⚠️ <b>It is unarguable that…</b> 在议论文里常是<b>让步</b>的开头：先把对方说得对的地方认下来，后面必有 However。⟹ 27 题 B（groundless）与它正面冲突。", "syn": "indisputable · undeniable", "conf": "unarguable（无可争辩的）· arguably（可以说，留余地）· argumentative（爱争吵的）。"},
+  instrument:{"w": "instrument", "ipa": "/ˈɪnstrəmənt/", "pos": "n.", "tags": ["core", "poly"], "cn": "<b>仪器</b>、器械；乐器", "en": "a tool for precise scientific work; a musical tool", "ex": "scientific <b>instruments</b>（②❶）", "mem": "熟词：乐器（musical instrument）。科研语境＝仪器；政策语境＝<b>手段、工具</b>（a policy instrument）。", "syn": "device · apparatus · tool", "conf": "instrument（仪器）· instrumental（起重要作用的）· installment（分期付款）。"},
+  satellite:{"w": "satellite", "ipa": "/ˈsætəlaɪt/", "pos": "n.", "tags": ["core"], "cn": "<b>卫星</b>（人造卫星）", "en": "a machine sent into space to go round the earth", "ex": "rockets and <b>satellites</b>（②❶）", "mem": "发音重音在第一音节 SAT-。<br>satellite town＝卫星城（引申：依附大城市的小城）。", "syn": "space probe", "conf": "satellite（卫星）· satellite dish（卫星天线）。"},
+  pulse:{"w": "pulse", "ipa": "/pʌls/", "pos": "n.", "tags": ["core", "poly"], "cn": "<b>脉搏</b>；（引申）动态、状况", "en": "the beat of the heart; the general state of something", "ex": "measure the planet’s <b>pulse</b>（②❶）", "mem": "比喻：把地球当成病人，科学仪器在给它「把脉」。<br>习语：have/keep one’s finger on the pulse（掌握最新动态）。<br>⚠️ 原卷 pulse 和后面的谓语 demand 被破折号连写，紧跟的 <b>demand</b>（主语是物 ⟹「需要、消耗」）见 04 词卡。", "syn": "heartbeat · vital signs", "conf": "pulse（脉搏）· impulse（冲动）· pulse ⟶ pulsate（搏动）。"},
+  demand:{"w": "demand", "ipa": "/dɪˈmɑːnd/", "pos": "v.", "tags": ["core", "poly"], "cn": "<b>需要</b>（大量的）；要求", "en": "to need something such as time, skill or energy", "ex": "tools … <b>demand</b> significant amounts of energy（②❶）", "mem": "⚠️ 熟词僻义：主语是<b>物</b>时，demand 不是「要求」，是「需要、消耗」：The job demands patience.（这工作需要耐心）。<br>本句主语 laboratories … rockets and satellites 被两个破折号撑开，谓语 demand 在破折号之后。", "syn": "require · need · call for", "conf": "demand（需要）· demanding（要求高的、费力的）· command（命令）。"},
+  significant:{"w": "significant", "ipa": "/sɪɡˈnɪfɪkənt/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>大量的</b>、相当的；重要的", "en": "large enough to be noticed; important", "ex": "<b>significant</b> amounts of energy（②❶）", "mem": "两个义项：① 数量上「相当大的」（a significant amount）；② 意义上「重要的」。<br>统计学：statistically significant（统计显著）。", "syn": "considerable · substantial", "conf": "significant（相当大的）· signify（表示）· insignificant（微不足道的）。"},
+  construction:{"w": "construction", "ipa": "/kənˈstrʌkʃn/", "pos": "n.", "tags": ["core"], "cn": "<b>建造</b>、建设", "en": "the process of building something", "ex": "both in their <b>construction</b> and operation（②❶）", "mem": "construct 的名词。both in A and B：在建造和运行两个环节都耗能——<b>全生命周期</b>的账。", "syn": "building · making", "conf": "construction（建造）· constructive（建设性的）· instruction（指导）。"},
+  operation:{"w": "operation", "ipa": "/ˌɒpəˈreɪʃn/", "pos": "n.", "tags": ["core", "poly"], "cn": "<b>运行</b>、运转；手术", "en": "the way something works; the process of running it", "ex": "construction and <b>operation</b>（②❶）", "mem": "熟义：手术。机器、设施语境＝<b>运行</b>（in operation 正在运行）；公司语境＝业务。", "syn": "running · functioning", "conf": "operation（运行；手术）· operational（可使用的）· co-operation（合作）。"},
+  equallytrue:{"w": "it is equally true that", "ipa": "/ˈiːkwəli truː/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>同样确实的是</b>", "en": "it is also correct that …", "ex": "And it is <b>equally true</b> that …（②❷）", "mem": "接在 It is unarguable that… 后面：<b>让步的第二步</b>——再认一件事实。两个「承认」叠完，下一段必然 However。⟹ 书「解题捷径」就靠这三个词定位作者观点。", "syn": "likewise · it is also the case that", "conf": "equally（同样）· equal（相等的）· equality（平等）。"},
+  unrelenting:{"w": "unrelenting", "ipa": "/ˌʌnrɪˈlentɪŋ/", "pos": "adj.", "tags": ["core"], "cn": "<b>无休止的</b>、不减弱的", "en": "continuing strongly without stopping", "ex": "science’s <b>unrelenting</b> appetite for information（②❷）", "mem": "un- ＋ relent（缓和、松劲）＋ -ing ⟹ 毫不松劲的。<br>relent 本身：The rain finally relented.（雨终于小了。）", "syn": "relentless · constant · unceasing", "conf": "unrelenting（无休止的）· relentless（同义）· reluctant（不情愿的）。"},
+  appetite:{"w": "appetite", "ipa": "/ˈæpɪtaɪt/", "pos": "n.", "tags": ["core", "poly"], "cn": "<b>欲望</b>、渴求；食欲", "en": "a strong desire for something", "ex": "science’s unrelenting <b>appetite</b> for information（②❷）", "mem": "熟义：胃口。引申：appetite for risk / information / change＝对……的渴求。把「科学」写成一个永远吃不饱的人——<b>拟人</b>。", "syn": "hunger · desire · thirst", "conf": "appetite（胃口；渴求）· appetizer（开胃菜）· apparent（明显的）。"},
+  mushroom:{"w": "mushrooming", "ipa": "/ˈmʌʃrʊmɪŋ/", "pos": "n./v.", "tags": ["core", "poly"], "cn": "<b>激增</b>、迅速蔓延", "en": "a fast increase in number", "ex": "caused a <b>mushrooming</b> of … data centres（②❷）", "mem": "熟义：蘑菇。蘑菇雨后一夜冒出一大片 ⟹ 动词 mushroom＝<b>迅速增长、遍地开花</b>：Coffee shops have mushroomed in the city.", "syn": "proliferation · boom · surge", "conf": "mushroom（激增）· snowball（滚雪球般增长）· balloon（膨胀）。"},
+  datacentre:{"w": "data centre", "ipa": "/ˈdeɪtə ˌsentə/", "pos": "n.", "tags": ["core"], "cn": "<b>数据中心</b>", "en": "a building full of computers that store and process data", "ex": "energy-intensive <b>data centres</b>（②❷）", "mem": "英式 centre，美式 center。②❸ 用 these buildings 回指它——<b>代词回指</b>：读到 these buildings 先回头找名词。", "syn": "server farm", "conf": "data centre（数据中心）· database（数据库）。"},
+  consume:{"w": "consume", "ipa": "/kənˈsjuːm/", "pos": "v.", "tags": ["core", "write"], "cn": "<b>消耗</b>（能源、时间）；消费", "en": "to use up energy, time or materials", "ex": "these buildings now <b>consume</b> about 1 per cent …（②❸）", "mem": "con-（全部）＋ sume（拿取）⟹ 用光。名词 consumption（消耗量）。", "syn": "use up · eat up", "conf": "consume（消耗）· consumer（消费者）· assume（假定）· resume（恢复）。"},
+  price:{"w": "a price we must pay", "ipa": "/praɪs/", "pos": "phr.", "tags": ["phrase", "poly", "write"], "cn": "<b>（必须付出的）代价</b>", "en": "something unpleasant you accept in order to get something you want", "ex": "this is <b>a price we must pay</b> for understanding the world（③❶）", "mem": "price 熟义「价格」，引申「代价」：the price of success（成功的代价）· at a price（付出代价）。<br>⭐ 本句是<b>全文论点句</b>（书把它做成了标题）：代价＝<b>承认有损失，但必须付、值得付</b> ⟹ 27 题 D（justifiable）与 30 题 C（inevitable）同出于此。", "syn": "cost · sacrifice", "conf": "price（代价）· priceless（无价的）· prize（奖品；⑤段的 Prize）。"},
+  inform:{"w": "inform", "ipa": "/ɪnˈfɔːm/", "pos": "v.", "tags": ["core", "poly"], "cn": "<b>告知</b>；为（决策）提供依据", "en": "to give facts to someone so they can decide", "ex": "How can we <b>inform</b> decision makers …（③❷）", "mem": "inform sb about/of sth＝告知。学术与政策语境里 inform 还有「给……提供依据」：data-informed decisions（基于数据的决策）。", "syn": "tell · advise · brief", "conf": "inform（告知）· informed（有见识的）· informative（信息量大的）。"},
+  decisionmaker:{"w": "decision maker", "ipa": "/dɪˈsɪʒn ˌmeɪkə/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>决策者</b>", "en": "a person with the power to make important decisions", "ex": "inform <b>decision makers</b>（③❷）", "mem": "也写 decision-maker、policymaker（政策制定者）。写作里比 the government 更灵活。", "syn": "policymaker · leader", "conf": "decision maker（决策者）· trendsetter（潮流引领者）。"},
+  bringdown:{"w": "bring down", "ipa": "/brɪŋ daʊn/", "pos": "phr.", "tags": ["phrase", "core"], "cn": "<b>降低</b>、减少", "en": "to reduce the level or amount of something", "ex": "the best ways to <b>bring down</b> carbon emissions（③❷）", "mem": "全文「减少排放」换了四种说法：decrease（①❶）· cut back on（①❷）· bring down（③❷）· decrease（⑤❸）——<b>同义替换链</b>，读到就知道是同一件事。", "syn": "reduce · lower · cut", "conf": "bring down（降低；推翻）· bring about（导致）· bring up（抚养；提出）。"},
+  track:{"w": "track", "ipa": "/træk/", "pos": "v.", "tags": ["core", "poly"], "cn": "<b>追踪</b>、监测", "en": "to follow and record the movement or amount of something", "ex": "if we can’t <b>track</b> the amount of carbon dioxide（③❷）", "mem": "熟义：轨道、跑道。动词：track a package（追踪包裹）· keep track of（掌握……的动态）。", "syn": "monitor · trace · follow", "conf": "track（追踪）· trace（追溯）· truck（卡车）。"},
+  atmosphere:{"w": "atmosphere", "ipa": "/ˈætməsfɪə/", "pos": "n.", "tags": ["core", "poly"], "cn": "<b>大气层</b>；气氛", "en": "the gases around the earth; the mood of a place", "ex": "carbon dioxide in the <b>atmosphere</b>（③❷）", "mem": "atmo（蒸汽）＋ sphere（球体）⟹ 包住地球的气层。熟义「气氛」：a friendly atmosphere。", "syn": "air · mood", "conf": "atmosphere（大气；气氛）· hemisphere（半球）· stratosphere（平流层）。"},
+  technological:{"w": "technological", "ipa": "/ˌteknəˈlɒdʒɪkl/", "pos": "adj.", "tags": ["core"], "cn": "<b>技术的</b>", "en": "relating to technology", "ex": "carbon emissions from <b>technological</b> research（③❸）", "mem": "technology 的形容词。注意本句把 scientific research 换说成 technological research——同指一件事。", "syn": "technical", "conf": "technological（技术的）· technical（技术上的；专业的）· technologist（⑥❶ 技术专家）。"},
+  wellspent:{"w": "well spent", "ipa": "/wel spent/", "pos": "phr.", "tags": ["phrase", "poly"], "cn": "<b>花得值</b>、用得其所", "en": "used in a useful way that is worth the cost", "ex": "… are <b>well spent</b>: ultimately …（③❸）", "mem": "⚠️ spend 本是「花（钱、时间）」：money well spent（钱花得值）。本句把它用到<b>碳排放</b>上——<b>把排放当成一笔开支</b>，和③❶ a price we must pay 是同一个比喻。<br>冒号后面就是「为什么值」：ultimately … safeguard the future。⟹ 27 题 D 的 justifiable in the long run。", "syn": "worthwhile · justified · worth it", "conf": "well spent（值得的）· well off（富裕的）· well-meant（出于好意的）。"},
+  ultimately:{"w": "ultimately", "ipa": "/ˈʌltɪmətli/", "pos": "adv.", "tags": ["core", "write"], "cn": "<b>最终</b>；归根结底", "en": "in the end; finally", "ex": "<b>ultimately</b> this research will safeguard …（③❸）", "mem": "ultimate（最终的）＋ -ly。⟹ 27 题 D 的 <b>in the long run</b> 就对它。", "syn": "in the end · eventually · in the long run", "conf": "ultimately（最终）· ultimatum（最后通牒）· intimately（亲密地）。"},
+  safeguard:{"w": "safeguard", "ipa": "/ˈseɪfɡɑːd/", "pos": "v./n.", "tags": ["core", "write"], "cn": "<b>保护</b>、捍卫；n. 保护措施", "en": "to protect something from harm", "ex": "safeguard the future of our planet（③❸）", "mem": "safe ＋ guard ⟹ 守护安全。<br>写作：safeguard the interests of consumers（维护消费者权益）。", "syn": "protect · preserve · defend", "conf": "safeguard（保护）· safety net（安全网）。"},
+  makethecase:{"w": "make the case", "ipa": "/meɪk ðə keɪs/", "pos": "phr.", "tags": ["phrase", "core", "write"], "cn": "<b>证明……有理</b>、为……辩护", "en": "to give good arguments for something", "ex": "hard for scientists to <b>make the case</b>（④❶）", "mem": "case 在这里是「论据、理由」（a strong case for…）。make the case for X＝摆出理由论证 X 应该做。<br>⚠️ 27 题 C 的 hard to handle 就是把这里的 hard（难以<b>证明</b>）偷换成「难以<b>处理</b>」。", "syn": "argue · justify · prove", "conf": "make the case（论证）· in case（以防）· case study（案例研究）。"},
+  complex:{"w": "complex", "ipa": "/ˈkɒmpleks/", "pos": "adj.", "tags": ["core"], "cn": "<b>复杂的</b>", "en": "having many connected parts; hard to understand", "ex": "our work is <b>complex</b>（④❶）", "mem": "本句 because 后是同一个主语 our work 带<b>三个并列谓语</b>：is complex · often takes place … · does not always lend itself … ——三个理由。", "syn": "complicated · intricate", "conf": "complex（复杂的；综合体）· complexion（肤色）· complexity（复杂性）。"},
+  closeddoors:{"w": "behind closed doors", "ipa": "/bɪˈhaɪnd kləʊzd dɔːz/", "pos": "phr.", "tags": ["phrase", "poly"], "cn": "<b>不公开地</b>、关起门来", "en": "privately, without the public knowing", "ex": "takes place <b>behind closed doors</b>（④❶）", "mem": "字面「在关着的门后面」⟹ 不对外公开。常用于会议、谈判（talks held behind closed doors）。本句指科研在实验室里做、公众看不见——所以<b>难以让人理解</b>。", "syn": "in private · in secret", "conf": "behind closed doors（秘密地）· open-door（开放的）· next door（隔壁）。"},
+  lenditself:{"w": "lend itself to", "ipa": "/lend ɪtˈself tə/", "pos": "phr.", "tags": ["phrase", "poly"], "cn": "<b>适合于</b>、便于", "en": "to be suitable for a particular use", "ex": "does not always <b>lend itself to</b> easy interpretation（④❶）", "mem": "⚠️ lend 熟义「借出」。lend itself to sth＝「（某物）适合于……」：The novel lends itself to film.（这部小说适合拍电影）。to 是介词，后接名词。", "syn": "be suitable for · be suited to", "conf": "lend itself to（适合）· lend a hand（帮忙）· lend weight to（使更有分量）。"},
+  interpretation:{"w": "interpretation", "ipa": "/ɪnˌtɜːprɪˈteɪʃn/", "pos": "n.", "tags": ["core"], "cn": "<b>解释</b>、理解；口译", "en": "an explanation of the meaning of something", "ex": "easy <b>interpretation</b> or explanation（④❶）", "mem": "interpret（解释；口译）的名词。", "syn": "explanation · reading", "conf": "interpretation（解释）· interpreter（口译员）· interruption（打断）。"},
+  demonstrate:{"w": "demonstrate", "ipa": "/ˈdemənstreɪt/", "pos": "v.", "tags": ["core", "write"], "cn": "<b>证明</b>、展示", "en": "to show clearly that something is true", "ex": "But <b>demonstrating</b> the efficacy of science …（④❷）", "mem": "de- ＋ monstr（显示，同 monster 原义「示警之物」）⟹ 摆出来给人看。<br>本句动名词短语 demonstrating … 作主语。", "syn": "show · prove · prove the value of", "conf": "demonstrate（证明；示威）· demonstration（演示；游行）· remonstrate（抗议）。"},
+  efficacy:{"w": "efficacy", "ipa": "/ˈefɪkəsi/", "pos": "n.", "tags": ["core"], "cn": "<b>效力</b>、功效", "en": "the ability to produce the result that is wanted", "ex": "the <b>efficacy</b> of science（④❷）", "mem": "⚠️ 三兄弟别混：efficacy（<b>有没有用</b>，药效）· efficiency（<b>效率</b>，省不省）· effectiveness（效果）。原文这里讲「科学到底有没有用」。", "syn": "effectiveness · value", "conf": "efficacy（功效）· efficiency（效率）· efficient（高效的）。"},
+  crucial:{"w": "crucial", "ipa": "/ˈkruːʃl/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>至关重要的</b>", "en": "extremely important because other things depend on it", "ex": "will be <b>crucial</b> if we are to …（④❷）", "mem": "crux（关键）的形容词。写作替换 important 的头号选择：play a crucial role in …", "syn": "vital · essential · critical", "conf": "crucial（关键的）· cruel（残忍的）· crucible（坩埚）。"},
+  ifweareto:{"w": "if we are to", "ipa": "/ɪf wi ɑː tə/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>如果我们想要</b>（做到）……", "en": "if we want to achieve something", "ex": "if we <b>are to</b> solve humanity’s greatest challenges（④❷）", "mem": "⚠️ <b>be to do</b> 用在 if 从句里＝「如果要想……」，表<b>目的、条件</b>，主句常带 must / will be crucial。<br>⑦ 末段又用一次：If the world <b>is to</b> meet its net-zero ambitions, we must …——全文首尾呼应。", "syn": "if we want to · in order to", "conf": "if … is to（如果要想）· be to do（按计划要；应该）。"},
+  humanity:{"w": "humanity", "ipa": "/hjuːˈmænəti/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>人类</b>；人性", "en": "people in general; the quality of being kind", "ex": "humanity’s greatest challenges（④❷）", "mem": "① 人类（集合名词，不加 the）；② 人道、人性。<br>⚠️ 27 题 C 拿 greatest challenges 造「难以处理」——原文这是泛指气候变化一类大问题，不是指「研究的碳排放」。", "syn": "mankind · humankind", "conf": "humanity（人类）· humanities（人文学科）· humane（人道的）。"},
+  impetus:{"w": "impetus", "ipa": "/ˈɪmpɪtəs/", "pos": "n.", "tags": ["core"], "cn": "<b>动力</b>、推动力", "en": "something that encourages a process to happen", "ex": "was the <b>impetus</b> behind the creation of …（⑤❶）", "mem": "the impetus behind/for X＝X 背后的推动力。本句倒着读：设立千禧年技术奖的<b>动因</b>，是认识到科学与工程能带来希望。⟹ 28 题的论点就在这里。", "syn": "motivation · driving force · stimulus", "conf": "impetus（动力）· impulse（冲动）· impetuous（冲动的）。"},
+  millennium:{"w": "Millennium Technology Prize", "ipa": "/mɪˈleniəm/", "pos": "n.", "tags": ["core"], "cn": "<b>千禧年技术奖</b>（芬兰）", "en": "a large Finnish prize for technology that improves life", "ex": "the <b>Millennium Technology Prize</b>（⑤❶）", "mem": "millennium＝千年（复数 millennia）。该奖由芬兰技术科学院颁发、奖金 100 万欧元，2004 年首颁 ⟹ 2024 年「进入第 20 个年头」。⚠️ 见 00 背景：本文作者正是这个科学院的主席。", "syn": "—", "conf": "millennium（千年）· century（百年）· decade（十年）。"},
+  celebration:{"w": "celebration", "ipa": "/ˌselɪˈbreɪʃn/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>颂扬</b>、赞美；庆祝", "en": "an act of praising something", "ex": "as a <b>celebration</b> of human ingenuity（⑤❶）", "mem": "celebrate 不只是「庆祝节日」，还有「颂扬、赞美」：celebrate diversity（颂扬多样性）。<br>⚠️ 28 题 D 拿 human ingenuity 造干扰：奖项「赞颂」创造力 ≠ 例子要说明「<b>培养</b>（foster）创造力的价值」。", "syn": "praise · tribute", "conf": "celebration（颂扬）· celebrity（名人）· celebrated（著名的）。"},
+  ingenuity:{"w": "ingenuity", "ipa": "/ˌɪndʒəˈnjuːəti/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>创造力</b>、独创性", "en": "skill at inventing new things or solving problems", "ex": "human <b>ingenuity</b>（⑤❶）", "mem": "形容词 ingenious（有独创性的，机灵的）。⚠️ 别和 ingenuous（天真的）混。<br>写作：human ingenuity（人类的智慧与创造力）——科技类作文的高级词。", "syn": "creativity · inventiveness", "conf": "ingenuity（创造力）· ingenious（巧妙的）· ingenuous（天真的）。"},
+  inventor:{"w": "inventor", "ipa": "/ɪnˈventə/", "pos": "n.", "tags": ["core"], "cn": "<b>发明者</b>", "en": "a person who has invented something", "ex": "is the <b>inventor</b> of …（⑤❷）", "mem": "invent ＋ -or。⑤❸ 用 his invention 回指。", "syn": "creator · originator", "conf": "inventor（发明者）· inventory（库存清单）· investor（投资者）。"},
+  perc:{"w": "Passivated Emitter and Rear Cell", "ipa": "/ˈpæsɪveɪtɪd/", "pos": "n.", "tags": ["core"], "cn": "<b>钝化发射极和背面电池</b>（PERC）", "en": "a design of solar cell that turns more light into electricity", "ex": "the <b>Passivated Emitter and Rear Cell</b> technology（⑤❷）", "mem": "专有名词，不必背——考场上只要认出「这是 Green 发明的一种太阳能电池技术」。passivate＝（化学）钝化。<br>据奖方口径，PERC 约占全球太阳能电池市场九成 ⟹ most of the world’s solar panels。", "syn": "—", "conf": "emitter（发射极）· rear（后部的）· cell（电池；细胞）。"},
+  solarpanel:{"w": "solar panel", "ipa": "/ˈsəʊlə ˈpænl/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>太阳能电池板</b>", "en": "a flat piece of equipment that turns sunlight into electricity", "ex": "the world’s <b>solar panels</b>（⑤❷）", "mem": "solar（太阳的）· panel（板；小组）。写作环保话题：install solar panels on roofs。", "syn": "photovoltaic panel", "conf": "solar（太阳的）· lunar（月亮的）· panel（专家小组）。"},
+  thanksto:{"w": "thanks to", "ipa": "/θæŋks tə/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>多亏</b>、由于", "en": "because of (usually something good)", "ex": "<b>Thanks to</b> his invention, we have …（⑤❸）", "mem": "表原因，多用于好结果（反讽时也可用于坏结果）。本句是例子的落点：发明 ⟹ 真机会减排 ⟹ 科研的<b>回报</b>（28 题 C）。", "syn": "because of · owing to · due to", "conf": "thanks to（多亏）· thank-you（致谢）。"},
+  realchance:{"w": "a real chance", "ipa": "/rɪəl tʃɑːns/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>真正的机会</b>", "en": "a genuine possibility", "ex": "we have <b>a real chance</b> to decrease …（⑤❸）", "mem": "⚠️ 28 题 B（urgency 紧迫性）的料从这里来，但原文的语气是<b>希望</b>（a real chance），不是<b>紧迫</b>（must act now）——方向不同。⑤❶ 开头的 hope 与这里首尾呼应。", "syn": "a genuine opportunity", "conf": "chance（机会）· by chance（偶然）· stand a chance（有希望）。"},
+  technologist:{"w": "technologist", "ipa": "/tekˈnɒlədʒɪst/", "pos": "n.", "tags": ["core"], "cn": "<b>技术专家</b>", "en": "an expert in technology", "ex": "scientists, <b>technologists</b> and engineers（⑥❶）", "mem": "technology ＋ -ist。三类人并列：科学家（发现原理）· 技术专家（做技术）· 工程师（造东西）。", "syn": "technician · specialist", "conf": "technologist（技术专家）· technician（技术员）。"},
+  exploit:{"w": "exploit", "ipa": "/ɪkˈsplɔɪt/", "pos": "v.", "tags": ["core", "poly", "write"], "cn": "<b>开发、利用</b>（资源）；剥削", "en": "to use something fully for a benefit", "ex": "<b>exploit</b> renewable energy sources（⑥❶）", "mem": "⚠️ 感情色彩看宾语：exploit resources / opportunities（开发利用，中性偏褒）· exploit workers（剥削，贬）。名词 exploit 还有「功绩、英勇事迹」。", "syn": "make use of · harness · tap", "conf": "exploit（开发）· explode（爆炸）· explore（探索）。"},
+  renewable:{"w": "renewable", "ipa": "/rɪˈnjuːəbl/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>可再生的</b>", "en": "able to be replaced naturally", "ex": "<b>renewable</b> energy sources（⑥❶）", "mem": "re-（再）＋ new ＋ -able。renewable energy（可再生能源）：风、光、水；与 fossil fuels（化石燃料）对。⚠️ 另义：可续期的（a renewable contract）。", "syn": "clean · green", "conf": "renewable（可再生的）· renew（续借、更新）· removable（可移除的）。"},
+  technique:{"w": "technique", "ipa": "/tekˈniːk/", "pos": "n.", "tags": ["core"], "cn": "<b>技术</b>、方法", "en": "a particular way of doing something", "ex": "develop <b>techniques</b>（⑥❶）", "mem": "technique 偏「做法、手法」；technology 偏「整套技术体系」。重音在后 tech-NIQUE。", "syn": "method · approach", "conf": "technique（技巧）· technical（技术的）· technology（科技）。"},
+  power:{"w": "power", "ipa": "/ˈpaʊə/", "pos": "v./n.", "tags": ["core", "poly"], "cn": "<b>为……提供动力</b>、驱动；n. 电力", "en": "to supply energy to a machine", "ex": "not just to use <b>power</b> more intelligently but to <b>power</b> our intelligence（⑥❶）", "mem": "⭐ 本句玩了一个<b>同词异性</b>的对仗：前一个 power 是名词「电力」，后一个是动词「驱动、赋能」；intelligently 与 intelligence 也镜像对称。<br>⟹ 29 题 D 把「为智慧赋能」篡改成「探索智能的力量」。⑥❸ is powered by a river＝由河流（水电）供能。", "syn": "drive · fuel · energise", "conf": "power（v. 驱动）· powerful（强大的）· empower（授权、赋能）。"},
+  intelligence:{"w": "intelligence", "ipa": "/ɪnˈtelɪdʒəns/", "pos": "n.", "tags": ["core", "poly"], "cn": "<b>智慧</b>、智能；情报", "en": "the ability to learn and understand", "ex": "to power our <b>intelligence</b>（⑥❶）", "mem": "① 智力、智慧；② artificial intelligence（人工智能）；③ 情报（intelligence agency 情报机构）。", "syn": "wisdom · intellect", "conf": "intelligence（智慧）· intelligent（聪明的）· intellectual（知识分子）。"},
+  supercomputer:{"w": "supercomputer", "ipa": "/ˈsuːpəkəmpjuːtə/", "pos": "n.", "tags": ["core"], "cn": "<b>超级计算机</b>", "en": "an extremely fast and powerful computer", "ex": "Europe’s largest <b>supercomputer</b>, LUMI（⑥❷）", "mem": "LUMI 在芬兰语里是「雪」。⚠️ 30 题 B 拿 supercomputer ＋ meet（末段 meet … ambitions）糅成「超级计算机的需求难以满足」——文中没有。", "syn": "—", "conf": "supercomputer（超算）· supervisor（主管）。"},
+  astonishingly:{"w": "astonishingly", "ipa": "/əˈstɒnɪʃɪŋli/", "pos": "adv.", "tags": ["core", "write"], "cn": "<b>令人惊讶地</b>", "en": "in a very surprising way", "ex": "which is <b>astonishingly</b> carbon-negative（⑥❷）", "mem": "作者用这个词表态：一台耗电巨大的超算居然<b>碳负</b>——反常识，所以惊讶。和①❶ 作者的 shocked 形成呼应：开头惊的是「有人想缩减研究」，结尾惊的是「研究可以碳负」。", "syn": "amazingly · remarkably", "conf": "astonish（使惊讶）· astonishing（惊人的）· astound（震惊）。"},
+  carbonnegative:{"w": "carbon-negative", "ipa": "/ˈkɑːbən ˈneɡətɪv/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>碳负排放的</b>", "en": "removing more carbon from the air than it produces", "ex": "astonishingly <b>carbon-negative</b>（⑥❷）", "mem": "三档要分清：carbon-neutral（碳中和，排放＝抵消）· net-zero（净零，同义）· carbon-negative（碳负，抵消 > 排放）。LUMI 用水电、余热又替代了城镇的供暖排放 ⟹ 算下来是负的（运营方口径）。", "syn": "climate-positive", "conf": "carbon-negative（碳负）· carbon-neutral（碳中和）· carbon footprint（碳足迹）。"},
+  establish:{"w": "established", "ipa": "/ɪˈstæblɪʃt/", "pos": "v.", "tags": ["core", "poly"], "cn": "<b>建立</b>、设立", "en": "to start a company or organization; to set up", "ex": "<b>Established</b> in an old paper mill, it is …（⑥❸）", "mem": "⚠️ 句首过去分词 Established …＝被动的状语，逻辑主语是后面的 it（LUMI）：「（LUMI）建在一座旧造纸厂里」。别读成「已确立的」。", "syn": "set up · founded · located", "conf": "establish（建立）· establishment（机构；权势集团）· established（公认的）。"},
+  papermill:{"w": "paper mill", "ipa": "/ˈpeɪpə mɪl/", "pos": "n.", "tags": ["core"], "cn": "<b>造纸厂</b>", "en": "a factory that makes paper", "ex": "an old <b>paper mill</b>（⑥❸）", "mem": "mill 熟义「磨坊」，引申「工厂」：steel mill（钢厂）· textile mill（纺织厂）。旧工厂改数据中心＝旧厂房、旧电网再利用，本身就是减碳。", "syn": "factory · plant", "conf": "mill（工厂；磨坊）· million（百万）。"},
+  remoteheat:{"w": "remote heat", "ipa": "/rɪˈməʊt hiːt/", "pos": "phr.", "tags": ["phrase", "poly"], "cn": "<b>（输送到远处的）余热</b>", "en": "heat from a machine that is sent away to warm other places", "ex": "its <b>remote heat</b> warms the people …（⑥❸）", "mem": "⚠️ remote 熟义「遥远的；遥控器」。这里指超算产生、<b>输送到别处</b>的热（书译「余热」）——LUMI 的废热接入卡亚尼的区域供暖管网（约占当地供暖需求的五分之一）。", "syn": "waste heat", "conf": "remote（远程的）· remote control（遥控）· remotely（略微：not remotely 一点也不）。"},
+  warm:{"w": "warm", "ipa": "/wɔːm/", "pos": "v.", "tags": ["core", "poly"], "cn": "<b>使暖和</b>、供暖", "en": "to make someone or something warm", "ex": "its remote heat <b>warms</b> the people …（⑥❸）", "mem": "熟词作动词：warm the people＝给居民供暖。也有「使感动」：warm the heart。", "syn": "heat", "conf": "warm（使暖）· warmth（温暖）· warm up（热身）。"},
+  surrounding:{"w": "surrounding", "ipa": "/səˈraʊndɪŋ/", "pos": "adj.", "tags": ["core"], "cn": "<b>周围的</b>、附近的", "en": "near or around a place", "ex": "the <b>surrounding</b> town of Kajaani（⑥❸）", "mem": "surroundings（复数名词）＝环境：in pleasant surroundings。Kajaani（卡亚尼）是芬兰中部小城。", "syn": "nearby · neighbouring", "conf": "surrounding（周围的）· surroundings（环境）· surround（包围）。"},
+  netzero:{"w": "net-zero", "ipa": "/net ˈzɪərəʊ/", "pos": "adj./n.", "tags": ["core", "write"], "cn": "<b>净零排放的</b>", "en": "producing no more carbon than is removed", "ex": "its <b>net-zero</b> ambitions（⑦）", "mem": "net（净的）＋ zero ⟹ 排放减去吸收＝0。中国说「碳中和」。⚠️ 29 题 C 把净零目标说成 LUMI 的<b>成因</b>（owes much to），原文是反过来：要实现净零，<b>需要</b>更多 LUMI。", "syn": "carbon-neutral", "conf": "net-zero（净零）· net（净的；网）· net income（净收入）。"},
+  ambition:{"w": "ambition", "ipa": "/æmˈbɪʃn/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>目标</b>、抱负", "en": "a strong wish to achieve something", "ex": "meet its net-zero <b>ambitions</b>（⑦）", "mem": "meet one’s ambitions / goals / targets＝实现目标。⚠️ meet 这里是「达到、满足」——30 题 B 的 difficult to meet 就是从这里糅过去的。", "syn": "goal · aim · target", "conf": "ambition（目标；野心）· ambitious（有雄心的）· ambiguous（模棱两可的）。"},
+  thinkhard:{"w": "think hard about", "ipa": "/θɪŋk hɑːd/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>认真思考</b>", "en": "to think carefully and seriously about something", "ex": "we must <b>think hard about</b> how …（⑦）", "mem": "hard 作副词＝努力地、认真地（work hard）。⚠️ 别和 hardly（几乎不）混。", "syn": "consider carefully · reflect on", "conf": "think hard（认真想）· think twice（三思）· think over（仔细考虑）。"},
+  deliver:{"w": "deliver", "ipa": "/dɪˈlɪvə/", "pos": "v.", "tags": ["core", "poly", "write"], "cn": "<b>实现</b>、做出（成果）；递送", "en": "to produce or achieve what is promised", "ex": "<b>deliver</b> sustainable computing and <b>deliver</b> more LUMIs（⑦）", "mem": "⚠️ 熟词僻义：deliver 不止「送货」，更常用的是「<b>兑现、交付成果</b>」：deliver results（拿出成果）· deliver on a promise（兑现承诺）。末句重复两次 deliver，是<b>号召式收尾</b>。", "syn": "achieve · produce · provide", "conf": "deliver（实现；递送）· delivery（交付）· deliverable（可交付成果）。"},
+  computing:{"w": "computing", "ipa": "/kəmˈpjuːtɪŋ/", "pos": "n.", "tags": ["core"], "cn": "<b>计算</b>、计算机运算", "en": "the use of computers", "ex": "sustainable <b>computing</b>（⑦）", "mem": "sustainable computing（可持续计算）：用清洁能源、高能效的方式运行计算设施——呼应①❷ 科学家们担心的 energy-intensive modelling：<b>问题不在算，在怎么算</b>。", "syn": "—", "conf": "computing（计算）· compute（计算）· computation（运算）。"},
+  intention:{"w": "intention", "ipa": "/ɪnˈtenʃn/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>打算</b>、意图", "en": "what you plan to do", "ex": "<b>intention</b> to reduce their research（26 题 B）", "mem": "intend to do 的名词。⟹ 26B 的 intention to ＝ 原文 want to。", "syn": "plan · aim · purpose", "conf": "intention（意图）· intent（意图；专注的）· attention（注意）。"},
+  unwillingness:{"w": "unwillingness", "ipa": "/ʌnˈwɪlɪŋnəs/", "pos": "n.", "tags": ["core"], "cn": "<b>不情愿</b>", "en": "not wanting to do something", "ex": "<b>unwillingness</b> to cut carbon emissions（26 题 A）", "mem": "un- ＋ willing ＋ -ness。26A 方向反：①❶ 那些科学家恰恰是<b>太愿意</b>减排了，愿意到不惜缩减研究。", "syn": "reluctance", "conf": "unwillingness（不情愿）· willpower（意志力）。"},
+  suspicion:{"w": "suspicion", "ipa": "/səˈspɪʃn/", "pos": "n.", "tags": ["core"], "cn": "<b>怀疑</b>", "en": "a feeling that something may be wrong or untrue", "ex": "<b>suspicions</b> about sustainable energy（26 题 C）", "mem": "suspect 的名词。26C 与①❸ 相悖：那些科学家<b>主张</b>更可持续地用能，不是怀疑它。", "syn": "doubt · distrust", "conf": "suspicion（怀疑）· suspicious（可疑的）· suspension（暂停）。"},
+  grave:{"w": "grave", "ipa": "/ɡreɪv/", "pos": "adj.", "tags": ["core", "poly"], "cn": "<b>严重的</b>、严峻的", "en": "very serious and worrying", "ex": "have caused <b>grave</b> consequences（27 题 A）", "mem": "⚠️ 熟词「坟墓」，形容词＝<b>严重的</b>：grave danger · a grave mistake。27A 把②段承认的<b>事实</b>（耗能大）升级成作者的<b>评价</b>（后果严重）——作者没评价过。", "syn": "serious · severe · dire", "conf": "grave（严重的；坟墓）· gravity（重力；严重性）· gravel（碎石）。"},
+  arouse:{"w": "arouse", "ipa": "/əˈraʊz/", "pos": "v.", "tags": ["core"], "cn": "<b>引起</b>、激起", "en": "to cause a feeling or reaction", "ex": "have <b>aroused</b> groundless worries（27 题 B）", "mem": "arouse interest / suspicion / anger。⚠️ 别和 arise（出现，不及物）混。", "syn": "provoke · stir up · trigger", "conf": "arouse（引起）· arise（出现）· rouse（唤醒）。"},
+  groundless:{"w": "groundless", "ipa": "/ˈɡraʊndləs/", "pos": "adj.", "tags": ["core"], "cn": "<b>毫无根据的</b>", "en": "not based on facts or good reasons", "ex": "groundless worries（27 题 B）", "mem": "ground（依据、理由）＋ -less。on the grounds that…＝以……为由。<br>27B 与②❶ unarguable、②❷ equally true 正面冲突：作者<b>承认</b>担忧有事实依据，只是不同意结论。", "syn": "baseless · unfounded", "conf": "groundless（无根据的）· groundbreaking（开创性的，2025·T1）· groundwork（基础工作）。"},
+  justifiable:{"w": "justifiable", "ipa": "/ˈdʒʌstɪfaɪəbl/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>正当的</b>、有理由的", "en": "acceptable because there is a good reason for it", "ex": "are <b>justifiable</b> in the long run（27 题 D）", "mem": "justify（证明……正当）＋ -able。⟹ 正对③❶ a price we must pay ＋ ③❸ well spent：有代价，但<b>值得、说得通</b>。", "syn": "reasonable · defensible · warranted", "conf": "justifiable（正当的）· justify（证明合理）· justice（正义）。"},
+  inthelongrun:{"w": "in the long run", "ipa": "/ɪn ðə lɒŋ rʌn/", "pos": "phr.", "tags": ["phrase", "write"], "cn": "<b>从长远看</b>", "en": "over a long period of time; eventually", "ex": "in the long run（27 题 D）", "mem": "⟹ 对③❸ ultimately ＋ the future of our planet。反义：in the short run / term。写作高频。", "syn": "ultimately · eventually · in the long term", "conf": "in the long run（长远看）· in the short term（短期内）。"},
+  illustrate:{"w": "illustrate", "ipa": "/ˈɪləstreɪt/", "pos": "v.", "tags": ["core", "write"], "cn": "<b>说明</b>、阐明（用例子）", "en": "to explain something by giving examples", "ex": "is used to <b>illustrate</b> …（28 题）", "mem": "be used to illustrate＝<b>例证目的题</b>的标准题干：问的不是例子讲了什么，是例子<b>替哪句论点作证</b>（套路库 R41）。", "syn": "show · demonstrate · exemplify", "conf": "illustrate（举例说明）· illustration（插图；例证）· illuminate（照亮）。"},
+  urgency:{"w": "urgency", "ipa": "/ˈɜːdʒənsi/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>紧迫性</b>", "en": "the need to deal with something quickly", "ex": "the <b>urgency</b> of addressing climate change（28 题 B）", "mem": "urgent 的名词。28B 文中无据：⑤❸ 说的是「有了<b>真机会</b>减排」（希望），不是「必须赶快行动」（紧迫）。", "syn": "pressure · immediacy", "conf": "urgency（紧迫）· urgent（紧急的）· emergency（紧急情况）。"},
+  reward:{"w": "reward", "ipa": "/rɪˈwɔːd/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>回报</b>、报酬", "en": "something good you get because of your effort", "ex": "the <b>rewards</b> of scientific endeavours（28 题 C）", "mem": "⭐ 28 题答案词：Green 发明 PERC ⟹ 全球减排有了真机会＝科学努力的<b>回报</b>；⑤❶ 的 the hope that science … can bring 就是它的抽象版。<br>形容词 rewarding（值得做的、有回报的）。", "syn": "benefit · payoff · return", "conf": "reward（回报）· award（奖项）· rewarding（有意义的）。"},
+  endeavour:{"w": "endeavour", "ipa": "/ɪnˈdevə/", "pos": "n./v.", "tags": ["core", "write"], "cn": "<b>努力</b>、尝试；事业", "en": "a serious attempt to do something difficult", "ex": "scientific <b>endeavours</b>（28 题 C）", "mem": "英式 endeavour、美式 endeavor。scientific endeavour＝科学事业、科研努力——对⑤❶ science and engineering。", "syn": "effort · undertaking · enterprise", "conf": "endeavour（努力）· endure（忍受）· endorse（支持）。"},
+  foster:{"w": "foster", "ipa": "/ˈfɒstə/", "pos": "v.", "tags": ["core", "poly", "write"], "cn": "<b>培养</b>、促进；收养", "en": "to help something develop", "ex": "the value of <b>fostering</b> human ingenuity（28 题 D）", "mem": "熟义：foster parents（养父母）。抽象宾语＝培养、促进：foster creativity / cooperation。<br>⚠️ 28D 的坑就在这个词：⑤❶ 奖项是 celebration（<b>颂扬</b>已有的）创造力，文中没说「<b>培养</b>」。", "syn": "cultivate · nurture · promote", "conf": "foster（培养）· fester（化脓、恶化）· forester（林务员）。"},
+  triumph:{"w": "triumph", "ipa": "/ˈtraɪʌmf/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>胜利</b>、成功", "en": "a great success or victory", "ex": "a <b>triumph</b> against energy shortage（29 题 B）", "mem": "triumph over X＝战胜 X。29B 的「能源短缺」文中一字未提——是拿⑥段 energy、power、remote heat 碎片拼出来的。", "syn": "victory · success", "conf": "triumph（胜利）· triumphant（得意的）· trump（王牌）。"},
+  shortage:{"w": "shortage", "ipa": "/ˈʃɔːtɪdʒ/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>短缺</b>", "en": "a situation where there is not enough of something", "ex": "energy <b>shortage</b>（29 题 B）", "mem": "short ＋ -age。a shortage of water / teachers。", "syn": "lack · scarcity · deficit", "conf": "shortage（短缺）· shortcoming（缺点）· shortcut（捷径）。"},
+  oweto:{"w": "owe … to", "ipa": "/əʊ tə/", "pos": "phr.", "tags": ["phrase", "core"], "cn": "<b>把……归功于</b>", "en": "to have something because of someone or something", "ex": "<b>owes</b> much <b>to</b> global net-zero initiatives（29 题 C）", "mem": "A owes much to B＝A 很大程度上归功于 B（<b>B 是因，A 是果</b>）。29C 把⑦ 的「要实现净零 ⟹ 需要更多 LUMI」（LUMI 是手段）倒过来写成「LUMI 归功于净零倡议」——<b>因果颠倒</b>。", "syn": "be due to · be indebted to", "conf": "owe to（归功于）· owing to（由于）· own（拥有）。"},
+  initiative:{"w": "initiative", "ipa": "/ɪˈnɪʃətɪv/", "pos": "n.", "tags": ["core", "poly", "write"], "cn": "<b>倡议</b>、新举措；主动性", "en": "a new plan for dealing with a problem", "ex": "global net-zero <b>initiatives</b>（29 题 C）", "mem": "① 倡议、计划（a government initiative）；② 主动性（take the initiative 采取主动）。", "syn": "scheme · plan · programme", "conf": "initiative（倡议）· initial（最初的）· initiate（发起）。"},
+  funding:{"w": "funding", "ipa": "/ˈfʌndɪŋ/", "pos": "n.", "tags": ["core", "write"], "cn": "<b>资金</b>、拨款", "en": "money given for a particular purpose", "ex": "demands extra <b>funding</b>（30 题 A）", "mem": "fund 的动名词。30A 全文没提钱——<b>无中生有</b>。", "syn": "financing · money", "conf": "funding（资金）· fund（基金）· fundamental（根本的）。"},
+  inevitable:{"w": "inevitable", "ipa": "/ɪnˈevɪtəbl/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>不可避免的</b>", "en": "certain to happen; impossible to avoid", "ex": "Energy-intensive research work is <b>inevitable</b>.（30 题 C）", "mem": "in-（不）＋ evit（避开）＋ -able。⭐ 30 题答案词：②段承认科研耗能大是事实（unarguable · equally true），③❶ 又说这是 <b>a price we must pay</b>——「必须付」＝不可避免。", "syn": "unavoidable · necessary · inescapable", "conf": "inevitable（不可避免的）· inevitably（必然地）· invaluable（无价的）。"},
+  realistic:{"w": "realistic", "ipa": "/ˌriːəˈlɪstɪk/", "pos": "adj.", "tags": ["core", "write"], "cn": "<b>现实的</b>、切合实际的", "en": "sensible and possible to achieve", "ex": "ought to be <b>realistic</b>（30 题 D）", "mem": "30D 的「目标切不切实际」这个维度，全文从没讨论过——作者对那些科学家的不满是「方向错了」，不是「目标太高」。", "syn": "practical · feasible", "conf": "realistic（现实的）· real（真实的）· realism（现实主义）。"}
+};
+const panel=document.getElementById('panel');
+const isMobile=()=>window.innerWidth<=900;
+function badge(t){const m={core:'核心',phrase:'短语',poly:'僻义',write:'写作'};return `<span class="badge b-${t}">${m[t]}</span>`}
+function showCard(k,el){
+  const d=V[k];if(!d)return;
+  document.querySelectorAll('.tk.active').forEach(x=>x.classList.remove('active'));
+  if(el)el.classList.add('active');
+  panel.innerHTML=`<button class="close" onclick="document.getElementById('panel').classList.remove('open')">收起</button>
+    <div class="wcard">
+      <div class="head"><span class="w">${d.w}</span><span class="ipa">${d.ipa}</span><span class="pos">${d.pos}</span>${d.tags.map(badge).join('')}</div>
+      <div class="cn">${d.cn}</div><div class="en-def">${d.en}</div>
+      <div class="row r-ex"><b>原文</b>${d.ex}</div>
+      <div class="row r-mem"><b>怎么记 / 考点</b>${d.mem}</div>
+      <div class="row r-syn"><b>同义 / 同族</b>${d.syn}</div>
+      <div class="row r-conf"><b>易混 / 提醒</b>${d.conf}</div>
+    </div>`;
+  if(isMobile())panel.classList.add('open');
+}
+document.querySelectorAll('.tk').forEach(t=>t.addEventListener('click',e=>{e.stopPropagation();showCard(t.dataset.w,t)}));
+
+function tz(btn){btn.closest('.para').classList.toggle('showzh')}
+let allOn=false;
+function toggleAll(){allOn=!allOn;document.querySelectorAll('.para').forEach(p=>p.classList.toggle('showzh',allOn))}
+function go(id){const s=document.getElementById(id);if(!s)return;s.scrollIntoView({behavior:'smooth',block:'center'});s.style.transition='none';s.style.opacity=.3;setTimeout(()=>{s.style.transition='opacity .8s';s.style.opacity=1},80)}
+
+document.querySelectorAll('.q').forEach(q=>{
+  const ans=+q.dataset.ans;
+  q.querySelectorAll('.opt').forEach((o,i)=>o.addEventListener('click',()=>{
+    if(q.classList.contains('done'))return;
+    q.classList.add('done');
+    if(i!==ans)o.classList.add('wrong');
+    q.querySelectorAll('.opt')[ans].classList.add('right');
+  }));
+});
+
+const vg=document.getElementById('vgrid');
+function renderGrid(f){
+  vg.innerHTML='';
+  Object.keys(V).forEach(k=>{
+    const d=V[k];
+    if(f!=='all'&&!d.tags.includes(f))return;
+    const div=document.createElement('div');div.className='vitem';
+    div.innerHTML=`<span class="badges">${d.tags.map(badge).join('')}</span><div class="w">${d.w}</div><div class="cn">${d.cn}</div>`;
+    div.addEventListener('click',()=>{showCard(k,null);if(!isMobile())window.scrollTo({top:0,behavior:'smooth'})});
+    vg.appendChild(div);
+  });
+}
+renderGrid('all');
+document.querySelectorAll('.fbtn').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.fbtn').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderGrid(b.dataset.f);
+}));
+
+const yd=document.getElementById('yd');let sel='',ydHold=0,ydT=0;
+/* 触屏：点按钮会先把选区清掉 → selectionchange 立刻把按钮藏了 → 点击落空。改成延迟隐藏 ＋ 按下即锁定 */
+const ydTouch=window.matchMedia&&matchMedia('(pointer:coarse)').matches;
+function ydHide(){clearTimeout(ydT);ydHold=0;yd.style.display='none'}
+document.addEventListener('selectionchange',function(){
+  const s=window.getSelection();const t=s?s.toString().trim():'';
+  if(t&&/^[a-zA-Z' -]{2,40}$/.test(t)){
+    sel=t;clearTimeout(ydT);
+    try{const r=s.getRangeAt(0).getBoundingClientRect();
+      yd.style.left=Math.max(8,Math.min(r.left,window.innerWidth-110))+'px';
+      yd.style.top=(r.bottom+(ydTouch?30:8))+'px';yd.style.display='block';}catch(e){}
+  }else if(!ydHold){clearTimeout(ydT);ydT=setTimeout(function(){if(!ydHold)yd.style.display='none'},ydTouch?900:0)}
+});
+['pointerdown','touchstart','mousedown'].forEach(function(ev){yd.addEventListener(ev,function(){ydHold=1;clearTimeout(ydT)},{passive:true})});
+yd.addEventListener('click',function(){
+  const u='https://dict.youdao.com/result?word='+encodeURIComponent(sel)+'&lang=en';
+  let w=null;try{w=window.open(u,'_blank')}catch(e){}
+  if(!w)location.href=u;
+  ydHide()});
+document.addEventListener('click',function(e){if(e.target!==yd&&!window.getSelection().toString())ydHide()});
+
+function imgAll(b){const on=document.body.classList.toggle('stx-allimg');b.textContent=on?'收起原卷':'原卷对照';
+  if(on)document.querySelectorAll('.para img.strip').forEach(im=>im.loading='eager')}
+</script>
+<script src="img/strip_boxes_2025.js?v=2"></script>
+<script src="_strip_lookup.js?v=8"></script>
+<script src="_strip_text.js?v=27"></script>
+<script src="_fault_attr.js"></script>
+</body>
+</html>

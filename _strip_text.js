@@ -105,6 +105,8 @@
         var x0 = b[0]*sc, x1 = (b[0]+b[2])*sc, yb = (b[1]+b[3])*sc;
         return runs.some(function(r){
           if (r[0] < yb - 12*sc || r[0] > yb + 12*sc) return false;
+          /* 衬线体短词（in）两脚的衬线在基线连成一条 20 多 px 的横线：整段落在词框内、又离框底 5px 以上 ⟹ 不是下划线 */
+          if (r[1] >= x0 - 1 && r[2] <= x1 + 1 && r[0] < yb - 5*sc) return false;
           var ov = Math.min(r[2], x1) - Math.max(r[1], x0);
           return ov >= 0.7*(x1 - x0);
         });
