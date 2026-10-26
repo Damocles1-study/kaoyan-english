@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>真题词汇背诵</title>
+<style>
+  :root{
+    --bg:#faf9f6; --card:#ffffff; --ink:#2b2b2b; --muted:#8a8578;
+    --accent:#8b5e34; --accent-soft:#f3e9dd; --line:#e8e3d8;
+    --green:#3e7a4e; --green-soft:#e8f2ea; --blue:#3d6a8a; --blue-soft:#e7eff5;
+    --purple:#6d5a8e; --purple-soft:#eeeaf5; --amber:#a5732a; --amber-soft:#f6ecd8;
+    --red:#b0413e; --red-soft:#f8e6e4;
+    --serif:"Georgia","Songti SC",serif; --sans:-apple-system,"PingFang SC","Helvetica Neue",sans-serif;
+  }
+  @media (prefers-color-scheme: dark){:root{
+    --bg:#1c1a17; --card:#26231f; --ink:#e8e4dc; --muted:#9a948a;
+    --accent:#d0a06a; --accent-soft:#3a3127; --line:#3a362f;
+    --green:#7fb98d; --green-soft:#26362b; --blue:#8ab3d0; --blue-soft:#26323d;
+    --purple:#a996c8; --purple-soft:#302a3d; --amber:#d9ad61; --amber-soft:#38301f;
+    --red:#e08a83; --red-soft:#3d2523;
+  }}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.75;padding-bottom:70px}
+  .wrap{max-width:900px;margin:0 auto;padding:22px 16px}
+  a{color:var(--accent)}
+  a.back{font-size:.85rem;color:var(--muted);text-decoration:none} a.back:hover{color:var(--accent)}
+  header{margin:10px 0 4px} header h1{font-family:var(--serif);font-size:1.6rem}
+  header .sub{color:var(--muted);margin-top:4px;font-size:.88rem}
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin:16px 0}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 14px}
+  .stat .v{font-size:1.35rem;font-weight:700;font-family:var(--serif);color:var(--accent);line-height:1.3}
+  .stat .k{font-size:.76rem;color:var(--muted)}
+  .tabs{display:flex;gap:6px;position:sticky;top:0;z-index:20;background:var(--bg);padding:8px 0;border-bottom:1px solid var(--line);margin-bottom:14px}
+  .tabs button{font:inherit;font-size:.9rem;font-weight:600;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:5px 16px;cursor:pointer}
+  .tabs button.on{background:var(--accent);border-color:var(--accent);color:#fff}
+  section.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;margin-top:14px}
+  h2{font-size:1rem;color:var(--accent);margin-bottom:10px;letter-spacing:.04em}
+  .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+  select,input[type=search]{font:inherit;font-size:.86rem;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:8px;padding:6px 10px;min-width:0}
+  input[type=search]{flex:1 1 220px}
+  .btn{font:inherit;font-size:.88rem;font-weight:600;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:10px;padding:7px 16px;cursor:pointer}
+  .btn.pri{background:var(--accent);border-color:var(--accent);color:#fff}
+  .btn:disabled{opacity:.45;cursor:default}
+  .note{font-size:.8rem;color:var(--muted)}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
+  .chip{font:inherit;font-size:.8rem;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:3px 11px;cursor:pointer}
+  .chip.on{background:var(--accent-soft);border-color:var(--accent);color:var(--accent);font-weight:700}
+  .chip small{color:var(--muted);margin-left:3px}
+  .badge{display:inline-block;font-size:.7rem;font-weight:700;border-radius:6px;padding:0 6px;margin-left:4px;vertical-align:2px;white-space:nowrap}
+  .b-word{background:var(--blue-soft);color:var(--blue)} .b-phrase{background:var(--purple-soft);color:var(--purple)}
+  .b-poly{background:var(--red-soft);color:var(--red)} .b-write{background:var(--green-soft);color:var(--green)}
+  .b-q{background:var(--amber-soft);color:var(--amber)} .b-fld{background:var(--accent-soft);color:var(--accent)} .b-opt{background:var(--amber-soft);color:var(--amber)}
+  /* 背诵卡 */
+  .prog{height:6px;border-radius:99px;background:var(--line);overflow:hidden;margin:10px 0 4px}
+  .prog i{display:block;height:100%;background:var(--accent);transition:width .3s}
+  .flash{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 20px;margin-top:12px;min-height:260px;box-shadow:0 6px 24px -14px rgba(0,0,0,.25)}
+  .flash .w{font-family:var(--serif);font-size:2rem;font-weight:700;line-height:1.25;word-break:break-word}
+  .flash .ipa{color:var(--muted);font-size:.95rem;margin-right:8px}
+  .flash .pos{color:var(--muted);font-size:.85rem;font-style:italic}
+  .flash .meta{margin-top:6px;font-size:.8rem;color:var(--muted)}
+  .hintex{margin-top:16px;padding:10px 14px;border-left:3px solid var(--accent);background:var(--accent-soft);border-radius:0 8px 8px 0;font-family:var(--serif);font-size:.98rem}
+  .hintex b{color:var(--accent)}
+  .reveal{margin-top:18px}
+  .ans{margin-top:16px;border-top:1px dashed var(--line);padding-top:14px}
+  .blk{margin-top:12px}
+  .blk h4{font-size:.8rem;color:var(--muted);font-weight:700;letter-spacing:.05em;margin-bottom:4px}
+  .ctx{padding:8px 12px;border:1px solid var(--line);border-radius:10px;margin-top:6px}
+  .ctx .cn{font-weight:600} .ctx .cn b{color:var(--accent)}
+  .ctx .ex{font-family:var(--serif);font-size:.92rem;color:var(--ink);opacity:.9}
+  .ctx .src{font-size:.76rem;color:var(--muted)} .ctx .src a{color:var(--muted)}
+  .ox{font-size:.9rem} .ox .ps{display:inline-block;font-size:.72rem;font-style:italic;color:var(--muted);min-width:5.5em}
+  .ox .ind{color:var(--muted);font-size:.78rem} .ox .fld{font-size:.7rem;color:var(--accent);border:1px solid var(--accent);border-radius:4px;padding:0 3px;margin-right:3px}
+  .warn{margin-top:10px;padding:8px 12px;border-radius:10px;background:var(--red-soft);color:var(--red);font-size:.84rem;font-weight:600}
+  .mem{font-size:.88rem}
+  .rate{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:16px;position:sticky;bottom:8px;background:var(--card);padding:8px;border:1px solid var(--line);border-radius:12px;box-shadow:0 6px 20px -8px rgba(0,0,0,.3)}
+  .rate .btn{padding:10px 6px}
+  .rate .r1{border-color:var(--red);color:var(--red)} .rate .r2{border-color:var(--amber);color:var(--amber)} .rate .r3{border-color:var(--green);color:var(--green)}
+  .rate small{display:block;font-weight:400;font-size:.72rem;color:var(--muted)}
+  .done{text-align:center;padding:30px 10px}
+  .done .big{font-family:var(--serif);font-size:1.6rem;color:var(--accent)}
+  /* 词表 */
+  .list{margin-top:10px}
+  .it{border-bottom:1px solid var(--line)}
+  .it>.hd{display:flex;align-items:baseline;gap:8px;padding:8px 4px;cursor:pointer}
+  .it>.hd:hover{background:var(--accent-soft)}
+  .it .hw{font-family:var(--serif);font-weight:700;min-width:8em}
+  .it .gl{flex:1;font-size:.86rem;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .it .st{font-size:.7rem;border-radius:6px;padding:0 6px;white-space:nowrap}
+  .st.s0{color:var(--muted);border:1px solid var(--line)} .st.s1{background:var(--amber-soft);color:var(--amber)} .st.s2{background:var(--green-soft);color:var(--green)}
+  .it .star{border:0;background:none;font-size:1rem;cursor:pointer;color:var(--muted);padding:0 4px}
+  .it .star.on{color:var(--amber)}
+  .it>.bd{display:none;padding:4px 6px 14px}
+  .it.open>.bd{display:block}
+  .more{display:block;margin:14px auto 0}
+  /* 统计 */
+  .chart svg{display:block;width:100%;height:auto}
+  .chart text{fill:var(--muted);font-size:11px}
+  .chart .g line{stroke:var(--line)}
+  .chart .new{fill:var(--accent)} .chart .rev{fill:var(--blue)}
+  .legend{display:flex;gap:14px;font-size:.8rem;color:var(--muted);margin:6px 0}
+  .legend i{display:inline-block;width:11px;height:11px;border-radius:2px;margin-right:4px;vertical-align:-1px}
+  .tip{position:fixed;pointer-events:none;z-index:50;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:6px 10px;font-size:.8rem;box-shadow:0 6px 18px rgba(0,0,0,.18);display:none}
+  kbd{font-family:inherit;font-size:.72rem;border:1px solid var(--line);border-bottom-width:2px;border-radius:4px;padding:0 4px;color:var(--muted)}
+  @media (max-width:600px){ .flash .w{font-size:1.6rem} .it .hw{min-width:6em} .wrap{padding:16px 12px} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">← 英语一复盘中心</a>
+  <header>
+    <h1>真题词汇背诵</h1>
+    <div class="sub" id="sub">正在加载词库……</div>
+  </header>
+  <div class="stats" id="stats"></div>
+  <nav class="tabs" role="tablist">
+    <button data-t="learn" class="on">📅 今日背诵</button><button data-t="list">📚 词表</button><button data-t="stat">📈 记录</button>
+  </nav>
+
+  <div id="v-learn">
+    <section class="card" id="setup">
+      <h2>今天背什么</h2>
+      <div class="chips" id="scope"></div>
+      <div class="row">
+        <label class="note">每天新词</label><select id="perDay"><option>10</option><option selected>20</option><option>30</option><option>50</option><option>80</option></select>
+        <label class="note">新词顺序</label><select id="order"><option value="freq">真题出现次数多的先背</option><option value="year">按年份 2007→2025</option><option value="yearDesc">按年份 2025→2007</option><option value="rand">随机</option></select>
+        <span style="flex:1"></span>
+        <button class="btn pri" id="start">开始</button>
+      </div>
+      <p class="note" style="margin-top:10px">每张卡先看<b>真题原句</b>回想意思，再翻面对答案。翻面后同时给出<b>本题语境义</b>（各篇词卡逐句定的）和<b>牛津英汉常见义</b>——熟词僻义会标红提醒，两层都认得才算背会，不会把僻义当本义背偏。<br>
+      复习按遗忘曲线排：「记得」间隔逐次拉长，「模糊」明天再见，「忘了」本轮稍后再出一次。快捷键：<kbd>空格</kbd> 翻面 · <kbd>1</kbd> 忘了 · <kbd>2</kbd> 模糊 · <kbd>3</kbd> 记得。</p>
+    </section>
+    <div id="session"></div>
+  </div>
+
+  <div id="v-list" hidden>
+    <section class="card">
+      <div class="row"><input type="search" id="q" placeholder="搜英文或中文，如 undermine / 削弱"><select id="lsort"><option value="freq">出现次数</option><option value="az">A→Z</option><option value="year">年份</option></select>
+        <select id="lstate"><option value="">全部状态</option><option value="0">没背过</option><option value="1">学习中</option><option value="2">已掌握（间隔 ≥ 21 天）</option><option value="star">☆ 生词本</option><option value="lapse">忘过的</option></select></div>
+      <div class="chips" id="lscope"></div>
+      <div class="note" id="lcount"></div>
+      <div class="list" id="list"></div>
+      <button class="btn more" id="lmore">再显示 200 个</button>
+    </section>
+  </div>
+
+  <div id="v-stat" hidden>
+    <section class="card"><h2>每天背了多少</h2>
+      <div class="legend"><span><i style="background:var(--accent)"></i>新学</span><span><i style="background:var(--blue)"></i>复习</span></div>
+      <div class="chart" id="chart"></div>
+      <p class="note" id="snote"></p></section>
+    <section class="card"><h2>掌握情况</h2><div class="stats" id="mast"></div>
+      <p class="note">记录只存在当前浏览器。换设备时用下面导出 / 导入（与刷题记录无关，单独一份）。</p>
+      <div class="row" style="margin-top:8px"><button class="btn" id="exp">导出</button><button class="btn" id="imp">导入</button></div>
+      <textarea id="box" style="width:100%;min-height:70px;margin-top:8px;font:12px ui-monospace,monospace;border:1px solid var(--line);border-radius:8px;padding:8px;background:var(--card);color:var(--ink)"></textarea>
+      <p class="note" id="msg"></p></section>
+  </div>
+  <p class="note" style="margin-top:24px" id="foot"></p>
+</div>
+<div class="tip" id="tip"></div>
+<script src="data_vocab.js?v=1"></script>
+<script>
+(function(){
+  'use strict';
+  var D = window.VOCAB; if (!D) { document.getElementById('sub').textContent = '词库没有加载（data_vocab.js）。'; return; }
+  var W = D.words, P = D.pages;
+  var KEY = 'eng_vocab_v1', DAY = 'eng_vocab_daily_v1', PREF = 'eng_vocab_pref_v1';
+  function load(k, d){ try { var v = JSON.parse(localStorage.getItem(k)); return v == null ? d : v; } catch(e){ return d; } }
+  function save(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} }
+  var S = load(KEY, {}), L = load(DAY, {}), pref = load(PREF, {});
+  var $ = function(s){ return document.querySelector(s); };
+  function esc(s){ return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function today(){ var d = new Date(); return Math.floor((d.getTime() - d.getTimezoneOffset()*6e4) / 864e5); }
+  function dayKey(n){ var d = new Date(n*864e5); return d.toISOString().slice(0,10); }
+  var T = today();
+  var CAT = {word:'单词', phrase:'短语', poly:'熟词僻义', q:'题目词汇', fld:'专业词汇', write:'写作可用', opt:'选项生词'};
+  var idOf = function(w){ return w.w.toLowerCase(); };
+  W.forEach(function(w, i){ w.i = i; w.id = idOf(w); });
+  var byId = {}; W.forEach(function(w){ byId[w.id] = w; });
+  function st(w){ return S[w.id]; }
+  function state(w){ var s = st(w); return !s ? 0 : (s.i >= 21 ? 2 : 1); }
+  var FLDS = []; W.forEach(function(w){ (w.f || []).forEach(function(f){ if (FLDS.indexOf(f) < 0) FLDS.push(f); }); });
+
+  /* ---------- 卡面 ---------- */
+  function badges(w){
+    return w.c.map(function(c){ return '<span class="badge b-' + c + '">' + CAT[c] + '</span>'; }).join('')
+      + (w.f || []).map(function(f){ return '<span class="badge b-fld">' + f + '</span>'; }).join('');
+  }
+  function srcLink(x){ var p = P[x[0]]; return '<a href="' + encodeURI(p[3]) + '" target="_blank" rel="noopener">' + p[0] + ' ' + (p[1].charAt(0) === 'T' ? '阅读 ' + p[1] : p[1]) + '《' + esc(p[2]) + '》</a>'; }
+  function markEx(ex, w){
+    var s = esc(ex || '').replace(/&lt;(\/?)b&gt;/g, '<$1b>');
+    if (/<b>/.test(s)) return s;
+    var k = w.w.split(/[\s…\/]+/).filter(function(t){ return t.length > 2 && !/^(one|sb|sth|the|be)$/i.test(t); })[0];
+    if (!k) return s;
+    var re = new RegExp('\\b(' + k.slice(0, Math.max(3, k.length - 2)).replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '[a-z]*)', 'i');
+    return s.replace(re, '<b>$1</b>');
+  }
+  function oxHTML(w){
+    if (!w.o || !w.o.length) return '<div class="note">牛津英汉里没有单列这一条（多为短语或专名），以语境义为准。</div>';
+    return '<div class="ox">' + w.o.map(function(g){
+      return '<div><span class="ps">' + esc(g[0]) + '</span>' + g[1].map(function(s){
+        return (s[1] ? '<span class="fld">' + esc(s[1]) + '</span>' : '') + esc(s[2]) + (s[0] ? ' <span class="ind">(' + esc(s[0]) + ')</span>' : '');
+      }).join('；') + '</div>';
+    }).join('') + '</div>';
+  }
+  function detailHTML(w){
+    var h = '';
+    var ctx = w.x.filter(function(x){ return x[1] || x[2]; });
+    if (w.c.indexOf('poly') >= 0) h += '<div class="warn">⚠️ 熟词僻义：真题里考的是下面的「语境义」，和常见义不一样——两个都要认得，别只背一个。</div>';
+    if (w.c.indexOf('opt') >= 0) h += '<div class="warn" style="background:var(--amber-soft);color:var(--amber)">这是选项里出现的词，各篇词卡没有单独讲，下面给的是牛津词典义，结合原句看取哪一条。</div>';
+    if (ctx.length) h += '<div class="blk"><h4>真题语境义（' + ctx.length + ' 处）</h4>' + ctx.map(function(x){
+      return '<div class="ctx">' + (x[1] ? '<div class="cn">' + x[1] + '</div>' : '') + (x[2] ? '<div class="ex">' + markEx(x[2], w) + '</div>' : '') + '<div class="src">' + srcLink(x) + '</div></div>';
+    }).join('') + (w.n > ctx.length ? '<div class="note">另有 ' + (w.n - ctx.length) + ' 篇也出现过。</div>' : '') + '</div>';
+    h += '<div class="blk"><h4>牛津英汉 · 常见义</h4>' + oxHTML(w) + (w.e ? '<div class="note">英文释义：' + esc(w.e) + '</div>' : '') + '</div>';
+    if (w.m) h += '<div class="blk"><h4>怎么记 / 考点</h4><div class="mem">' + w.m.join('<br>') + '</div></div>';
+    if (w.s) h += '<div class="blk"><h4>同义 / 同族</h4><div class="mem">' + w.s + '</div></div>';
+    if (w.k) h += '<div class="blk"><h4>易混</h4><div class="mem">' + w.k + '</div></div>';
+    return h;
+  }
+
+  /* ---------- 间隔复习 ---------- */
+  function schedule(w, g){   // g: 1 忘了 2 模糊 3 记得
+    var s = S[w.id] || {i:0, e:2.5, r:0, l:0, d:T};
+    var isNew = !S[w.id];
+    if (g === 1){ s.l++; s.e = Math.max(1.3, s.e - 0.2); s.i = 0; s.d = T; }
+    else if (g === 2){ s.e = Math.max(1.3, s.e - 0.15); s.i = 1; s.d = T + 1; }
+    else { s.i = s.i < 1 ? (isNew ? 1 : 2) : Math.max(s.i + 1, Math.round(s.i * s.e)); s.e = Math.min(3, s.e + 0.05); s.d = T + s.i; }
+    s.r++; s.t = Date.now();
+    S[w.id] = s; save(KEY, S);
+    var k = dayKey(T), d = L[k] || (L[k] = {n:0, r:0, ok:0});
+    if (isNew) d.n++; else d.r++; if (g === 3) d.ok++;
+    save(DAY, L);
+    return g === 1;   // true＝本轮稍后再来一次
+  }
+
+  /* ---------- 范围 ---------- */
+  var scope = pref.scope || 'all', perDay = +(pref.perDay || 20), order = pref.order || 'freq';
+  function inScope(w, sc){
+    if (sc === 'all') return w.c.indexOf('opt') < 0;
+    if (sc.indexOf('fld:') === 0) return (w.f || []).indexOf(sc.slice(4)) >= 0;
+    return w.c.indexOf(sc) >= 0;
+  }
+  function scopeChips(el, cur, onPick){
+    var items = [['all','全部（不含选项生词）'], ['word','单词'], ['phrase','短语'], ['poly','熟词僻义'], ['q','题目词汇'], ['fld','专业词汇·全部'], ['write','写作可用'], ['opt','选项生词']]
+      .concat(FLDS.map(function(f){ return ['fld:' + f, '专业·' + f]; }));
+    el.innerHTML = items.map(function(it){
+      var n = W.filter(function(w){ return inScope(w, it[0]); }).length;
+      return '<button class="chip' + (it[0] === cur ? ' on' : '') + '" data-s="' + it[0] + '">' + it[1] + '<small>' + n + '</small></button>';
+    }).join('');
+    el.onclick = function(e){ var b = e.target.closest('.chip'); if (!b) return; el.querySelectorAll('.chip').forEach(function(x){ x.classList.toggle('on', x === b); }); onPick(b.getAttribute('data-s')); };
+  }
+  function newPool(){
+    var pool = W.filter(function(w){ return !S[w.id] && inScope(w, scope); });
+    if (order === 'freq') pool.sort(function(a, b){ return b.n - a.n || a.y[0] - b.y[0]; });
+    else if (order === 'year') pool.sort(function(a, b){ return a.y[0] - b.y[0] || b.n - a.n; });
+    else if (order === 'yearDesc') pool.sort(function(a, b){ return b.y[b.y.length-1] - a.y[a.y.length-1] || b.n - a.n; });
+    else { for (var i = pool.length - 1; i > 0; i--){ var j = Math.floor(Math.random()*(i+1)); var t = pool[i]; pool[i] = pool[j]; pool[j] = t; } }
+    return pool;
+  }
+  function dueList(){ return W.filter(function(w){ var s = S[w.id]; return s && s.d <= T; }).sort(function(a, b){ return S[a.id].d - S[b.id].d; }); }
+  function newToday(){ var d = L[dayKey(T)]; return d ? d.n : 0; }
+
+  /* ---------- 背诵流程 ---------- */
+  var Q = [], cur = null, shown = false, total = 0, doneN = 0;
+  function startSession(extra){
+    var due = dueList(), left = Math.max(0, (extra || perDay) - (extra ? 0 : newToday()));
+    var fresh = newPool().slice(0, left);
+    Q = due.concat(fresh); total = Q.length; doneN = 0;
+    if (!Q.length){ renderDone(true); return; }
+    next();
+  }
+  function next(){
+    cur = Q.shift(); shown = false;
+    if (!cur){ renderDone(false); return; }
+    renderCard();
+  }
+  function frontEx(w){
+    var x = w.x.filter(function(x){ return x[2]; })[0];
+    return x ? '<div class="hintex">' + markEx(x[2], w) + '<div class="note" style="font-family:var(--sans)">—— ' + P[x[0]][0] + ' ' + esc(P[x[0]][1]) + '</div></div>' : '';
+  }
+  function renderCard(){
+    var w = cur, s = S[w.id];
+    var h = '<div class="prog"><i style="width:' + (total ? Math.round(100*doneN/total) : 0) + '%"></i></div>'
+      + '<div class="note">' + (doneN + 1) + ' / ' + total + (s ? ' · 复习（上次间隔 ' + s.i + ' 天' + (s.l ? '，忘过 ' + s.l + ' 次' : '') + '）' : ' · <b>新词</b>') + '</div>'
+      + '<div class="flash" id="flash"><div class="w">' + esc(w.w) + '</div><div><span class="ipa">' + esc(w.ipa) + '</span><span class="pos">' + esc(w.pos) + '</span>' + badges(w) + '</div>'
+      + '<div class="meta">真题出现 ' + w.n + ' 篇 · ' + w.y.join('、') + '</div>' + frontEx(w)
+      + (shown ? '<div class="ans">' + detailHTML(w) + '</div>' : '<div class="reveal"><button class="btn pri" id="flip">想好了，翻面 <kbd>空格</kbd></button> <span class="note">先在心里说出中文意思</span></div>')
+      + (shown ? '<div class="rate"><button class="btn r1" data-g="1">忘了<small>本轮再来一次 · 1</small></button><button class="btn r2" data-g="2">模糊<small>明天再见 · 2</small></button><button class="btn r3" data-g="3">记得<small>' + nextLabel(w) + ' · 3</small></button></div>' : '')
+      + '</div>';
+    $('#session').innerHTML = h;
+    var f = $('#flip'); if (f) f.onclick = flip;
+    document.querySelectorAll('.rate .btn').forEach(function(b){ b.onclick = function(){ rate(+b.getAttribute('data-g')); }; });
+  }
+  function nextLabel(w){ var s = S[w.id]; if (!s) return '明天复习'; var i = s.i < 1 ? 2 : Math.max(s.i + 1, Math.round(s.i * s.e)); return i + ' 天后'; }
+  function flip(){ if (!cur || shown) return; shown = true; renderCard(); }
+  function rate(g){
+    if (!cur || !shown) return;
+    var again = schedule(cur, g);
+    if (again) Q.splice(Math.min(Q.length, 4), 0, cur); else doneN++;
+    if (again) total = Math.max(total, doneN + Q.length);
+    renderStats(); next();
+  }
+  function renderDone(empty){
+    var d = L[dayKey(T)] || {n:0, r:0, ok:0}, pool = newPool().length;
+    $('#session').innerHTML = '<div class="flash done"><div class="big">' + (empty ? '今天的份额已经完成 ✓' : '本轮完成 🎉') + '</div>'
+      + '<p style="margin-top:8px">今天新学 <b>' + d.n + '</b> 个 · 复习 <b>' + d.r + '</b> 次 · 其中「记得」<b>' + d.ok + '</b> 次</p>'
+      + '<p class="note">这个范围还有 ' + pool + ' 个没背过的词。明天到期的复习会自动排进来。</p>'
+      + (pool ? '<p style="margin-top:14px"><button class="btn pri" id="more10">再背 10 个新词</button></p>' : '') + '</div>';
+    var m = $('#more10'); if (m) m.onclick = function(){ startSession(10); };
+    renderStats();
+  }
+  document.addEventListener('keydown', function(e){
+    if (/INPUT|SELECT|TEXTAREA/.test(e.target.tagName) || e.metaKey || e.ctrlKey || $('#v-learn').hidden || !cur) return;
+    if (e.key === ' ' && !shown){ e.preventDefault(); flip(); }
+    else if (shown && '123'.indexOf(e.key) >= 0 && e.key.length === 1){ rate(+e.key); }
+  });
+
+  /* ---------- 词表（点一行原地展开，不跳动） ---------- */
+  var lscope = 'all', lshow = 200;
+  function listData(){
+    var q = $('#q').value.trim().toLowerCase(), stf = $('#lstate').value, so = $('#lsort').value;
+    var a = W.filter(function(w){
+      if (lscope !== 'every' && !inScope(w, lscope)) return false;
+      if (stf === 'star'){ if (!(S[w.id] && S[w.id].star) && !STAR[w.id]) return false; }
+      else if (stf === 'lapse'){ if (!(S[w.id] && S[w.id].l)) return false; }
+      else if (stf !== '' && String(state(w)) !== stf) return false;
+      if (!q) return true;
+      if (w.id.indexOf(q) >= 0) return true;
+      return w.x.some(function(x){ return (x[1] || '').indexOf(q) >= 0; }) || (w.o || []).some(function(g){ return g[1].some(function(s){ return s[2].indexOf(q) >= 0; }); });
+    });
+    if (so === 'az') a.sort(function(x, y){ return x.id < y.id ? -1 : 1; });
+    else if (so === 'year') a.sort(function(x, y){ return x.y[0] - y.y[0] || y.n - x.n; });
+    else a.sort(function(x, y){ return y.n - x.n || (x.id < y.id ? -1 : 1); });
+    return a;
+  }
+  var STAR = load('eng_vocab_star_v1', {});
+  function gloss(w){
+    var x = w.x.filter(function(x){ return x[1]; })[0];
+    var t = x ? x[1].replace(/<[^>]+>/g, '') : (w.o && w.o[0] ? w.o[0][1].map(function(s){ return s[2]; }).join('；') : '');
+    return esc(t.replace(/^[⚠️⭐\s]+/, ''));
+  }
+  function renderList(){
+    var a = listData();
+    $('#lcount').textContent = '共 ' + a.length + ' 个' + (a.length > lshow ? '，先显示前 ' + lshow + ' 个' : '');
+    $('#list').innerHTML = a.slice(0, lshow).map(function(w){
+      var s = state(w);
+      return '<div class="it" data-i="' + w.i + '"><div class="hd"><span class="hw">' + esc(w.w) + '</span><span class="gl">' + gloss(w) + '</span>'
+        + '<span class="st s' + s + '">' + ['没背过','学习中','已掌握'][s] + '</span><button class="star' + (STAR[w.id] ? ' on' : '') + '" title="加入/移出生词本">' + (STAR[w.id] ? '★' : '☆') + '</button></div><div class="bd"></div></div>';
+    }).join('');
+    $('#lmore').hidden = a.length <= lshow;
+  }
+  $('#list').addEventListener('click', function(e){
+    var it = e.target.closest('.it'); if (!it) return;
+    var w = W[+it.getAttribute('data-i')];
+    if (e.target.closest('.star')){
+      if (STAR[w.id]) delete STAR[w.id]; else STAR[w.id] = 1; save('eng_vocab_star_v1', STAR);
+      var b = e.target.closest('.star'); b.classList.toggle('on', !!STAR[w.id]); b.textContent = STAR[w.id] ? '★' : '☆'; return;
+    }
+    if (e.target.closest('a')) return;
+    if (!e.target.closest('.hd')) return;
+    var bd = it.querySelector('.bd');
+    if (!bd.innerHTML) bd.innerHTML = '<div><span class="ipa note">' + esc(w.ipa) + '</span> <i class="note">' + esc(w.pos) + '</i>' + badges(w) + ' <span class="note">· 真题 ' + w.n + ' 篇</span></div>' + detailHTML(w);
+    it.classList.toggle('open');
+  });
+  $('#lmore').onclick = function(){ lshow += 200; renderList(); };
+  var qt; $('#q').oninput = function(){ clearTimeout(qt); qt = setTimeout(function(){ lshow = 200; renderList(); }, 180); };
+  $('#lsort').onchange = $('#lstate').onchange = function(){ lshow = 200; renderList(); };
+
+  /* ---------- 记录 ---------- */
+  function renderStats(){
+    var learned = Object.keys(S).length, due = dueList().length, d = L[dayKey(T)] || {n:0, r:0};
+    var streak = 0, k = T; if (!L[dayKey(k)]) k--; while (L[dayKey(k)] && (L[dayKey(k)].n + L[dayKey(k)].r)){ streak++; k--; }
+    var mastered = W.filter(function(w){ return state(w) === 2; }).length;
+    $('#stats').innerHTML = [
+      [D.meta.n, '词库（' + D.meta.pages + ' 篇真题词卡＋选项）'], [learned, '已背过'], [due, '今天待复习'], [d.n + ' / ' + perDay, '今日新词'], [streak, '连续天数'], [mastered, '已掌握']
+    ].map(function(x){ return '<div class="stat"><div class="v">' + x[0] + '</div><div class="k">' + x[1] + '</div></div>'; }).join('');
+  }
+  function renderChart(){
+    var days = []; for (var i = 29; i >= 0; i--) days.push(T - i);
+    var vals = days.map(function(t){ var d = L[dayKey(t)] || {n:0, r:0}; return [d.n, d.r]; });
+    var max = Math.max(10, Math.max.apply(null, vals.map(function(v){ return v[0] + v[1]; })));
+    max = Math.ceil(max / 10) * 10;
+    var Wd = Math.max(320, $('#chart').clientWidth || 600), H = 180, l = 34, r = 8, t = 10, b = 24, pw = Wd - l - r, ph = H - t - b, bw = pw / days.length;
+    var s = '<svg viewBox="0 0 ' + Wd + ' ' + H + '"><g class="g">';
+    [0, .5, 1].forEach(function(f){ var y = t + ph - ph*f; s += '<line x1="' + l + '" x2="' + (Wd - r) + '" y1="' + y + '" y2="' + y + '"/><text x="' + (l - 6) + '" y="' + (y + 4) + '" text-anchor="end">' + Math.round(max*f) + '</text>'; });
+    s += '</g>';
+    days.forEach(function(dd, i){
+      var v = vals[i], x = l + bw*i + 1, w = Math.max(1, bw - 2), h1 = ph*v[0]/max, h2 = ph*v[1]/max;
+      if (h1) s += '<rect class="new" x="' + x + '" y="' + (t + ph - h1) + '" width="' + w + '" height="' + h1 + '" rx="' + Math.min(3, w/2) + '"/>';
+      if (h2) s += '<rect class="rev" x="' + x + '" y="' + (t + ph - h1 - h2) + '" width="' + w + '" height="' + Math.max(0, h2 - (h1 ? 2 : 0)) + '" rx="' + Math.min(3, w/2) + '"/>';
+      if ((29 - i) % 5 === 0) s += '<text x="' + (x + w/2) + '" y="' + (H - 6) + '" text-anchor="middle">' + dayKey(dd).slice(5).replace('-', '/') + '</text>';
+      s += '<rect data-i="' + i + '" x="' + (l + bw*i) + '" y="' + t + '" width="' + bw + '" height="' + ph + '" fill="transparent"/>';
+    });
+    $('#chart').innerHTML = s + '</svg>';
+    var tip = $('#tip');
+    $('#chart').querySelectorAll('rect[data-i]').forEach(function(rc){
+      var show = function(e){ var i = +rc.getAttribute('data-i'), v = vals[i]; tip.style.display = 'block'; tip.innerHTML = '<b>' + dayKey(days[i]) + '</b><br>新学 ' + v[0] + ' · 复习 ' + v[1]; var p = e.touches ? e.touches[0] : e; tip.style.left = Math.min(innerWidth - 150, p.clientX + 10) + 'px'; tip.style.top = (p.clientY - 50) + 'px'; };
+      rc.addEventListener('mousemove', show); rc.addEventListener('click', show); rc.addEventListener('mouseleave', function(){ tip.style.display = 'none'; });
+    });
+    var tot = Object.keys(L).reduce(function(a, k){ return [a[0] + L[k].n, a[1] + L[k].r]; }, [0, 0]);
+    $('#snote').textContent = '累计新学 ' + tot[0] + ' 个、复习 ' + tot[1] + ' 次。柱子上悬停 / 点一下看当天明细。';
+    var cnt = [0, 0, 0]; W.forEach(function(w){ cnt[state(w)]++; });
+    var lapsed = W.filter(function(w){ return S[w.id] && S[w.id].l; }).length;
+    $('#mast').innerHTML = [[cnt[0], '没背过'], [cnt[1], '学习中'], [cnt[2], '已掌握（间隔 ≥ 21 天）'], [lapsed, '忘过至少一次'], [Object.keys(STAR).length, '生词本']]
+      .map(function(x){ return '<div class="stat"><div class="v">' + x[0] + '</div><div class="k">' + x[1] + '</div></div>'; }).join('');
+  }
+  $('#exp').onclick = function(){ $('#box').value = JSON.stringify({s:S, d:L, star:STAR}); $('#box').select(); $('#msg').textContent = '已导出，复制到另一台设备的这个框里点「导入」。'; };
+  $('#imp').onclick = function(){
+    try { var x = JSON.parse($('#box').value), n = 0;
+      Object.keys(x.s || {}).forEach(function(k){ if (!S[k] || (x.s[k].r || 0) > (S[k].r || 0)){ S[k] = x.s[k]; n++; } });
+      Object.keys(x.d || {}).forEach(function(k){ if (!L[k] || (x.d[k].n + x.d[k].r) > (L[k].n + L[k].r)) L[k] = x.d[k]; });
+      Object.keys(x.star || {}).forEach(function(k){ STAR[k] = 1; });
+      save(KEY, S); save(DAY, L); save('eng_vocab_star_v1', STAR); $('#msg').textContent = '导入完成，更新了 ' + n + ' 个词。'; renderStats(); renderChart();
+    } catch(e){ $('#msg').textContent = '导入失败：不是有效的导出文本。'; }
+  };
+
+  /* ---------- 页面 ---------- */
+  function tab(t, keep){
+    document.querySelectorAll('.tabs button').forEach(function(b){ b.classList.toggle('on', b.getAttribute('data-t') === t); });
+    ['learn', 'list', 'stat'].forEach(function(x){ $('#v-' + x).hidden = x !== t; });
+    if (t === 'list' && !$('#list').innerHTML) renderList();
+    if (t === 'stat') renderChart();
+    if (!keep){ pref.tab = t; save(PREF, pref); }
+  }
+  document.querySelector('.tabs').onclick = function(e){ var b = e.target.closest('button'); if (b) tab(b.getAttribute('data-t')); };
+  scopeChips($('#scope'), scope, function(s){ scope = s; pref.scope = s; save(PREF, pref); });
+  scopeChips($('#lscope'), 'all', function(s){ lscope = s; lshow = 200; renderList(); });
+  $('#perDay').value = String(perDay); $('#order').value = order;
+  $('#perDay').onchange = function(){ perDay = +this.value; pref.perDay = perDay; save(PREF, pref); renderStats(); };
+  $('#order').onchange = function(){ order = this.value; pref.order = order; save(PREF, pref); };
+  $('#start').onclick = function(){ startSession(); $('#session').scrollIntoView({block:'start', behavior:'smooth'}); };
+  var c = D.meta.cat;
+  $('#sub').innerHTML = '2007–2025 十九年真题 ' + D.meta.pages + ' 篇复盘页的 ' + D.meta.cards + ' 张词卡合并去重，共 <b>' + D.meta.n + '</b> 个词条：单词 ' + c.word + ' · 短语 ' + c.phrase + ' · 熟词僻义 ' + c.poly + ' · 题目词汇 ' + c.q + ' · 专业词汇 ' + c.fld + ' · 写作可用 ' + c.write + ' · 选项生词 ' + c.opt + '。';
+  $('#foot').innerHTML = '词库由 <code>_tools/build_vocab.py</code> 从各复盘页的词卡生成（' + esc(D.meta.built) + '）：语境义＝各篇按原句定的义项；常见义＝macOS 自带《牛津英汉汉英词典》。新做一篇复盘页后重跑脚本即可并入。';
+  renderStats();
+  /* 从阅读页「选项词汇」点过来：?q=词 → 打开词表、搜这个词并展开 */
+  var jq = new URLSearchParams(location.search).get('q');
+  if (jq){
+    lscope = 'every'; $('#lscope').querySelectorAll('.chip').forEach(function(x){ x.classList.remove('on'); });
+    $('#q').value = jq; tab('list', true); renderList();
+    var hit = W.filter(function(w){ return w.id === jq.toLowerCase(); })[0];
+    var el = hit && document.querySelector('.it[data-i="' + hit.i + '"] .hd'); if (el) el.click();
+  } else if (pref.tab && pref.tab !== 'learn') tab(pref.tab);
+})();
+</script>
+</body>
+</html>
