@@ -286,32 +286,190 @@
       if(V.fxOn())A(crow,[{transform:'none'},{transform:'translateY(-14px) rotate(-8deg)'},{transform:'none'}],340,'ease-out');
     });
   }
-  V.reg('demon',{
+  /* ---------- 同行的人 ---------- */
+  /* 每一部分由练这门呼吸的人陪：读＝炭治郎（水），做题＝善逸（雷），复盘＝炼狱（炎），词汇＝香奈乎（花），素材＝无一郎（霞）。
+   * 官方站每人一张透明底 PNG：n 是编号，fb 是全身的可见范围（2020×1200），hf 是半身图里脸的中心（1000×700）。 */
+  var WHO={read:'tan',test:'zen',rev:'ren',vocab:'kan',mat:'mui'};
+  var PPL={
+    tan:{name:'炭治郎',n:1,fb:[710,21,524,1165],hf:[532,212],col:'#2f8f6d',hair:'#5a1f1f',robe:'#16704f'},
+    nez:{name:'祢豆子',n:2,fb:[699,56,539,1095],hf:[588,252],col:'#e98aa6',hair:'#1a1420',robe:'#f0a0b4'},
+    zen:{name:'善逸',n:3,fb:[686,56,570,1129],hf:[512,232],col:'#e8c551',hair:'#f0c23a',robe:'#f0a42c'},
+    ino:{name:'伊之助',n:4,fb:[771,20,486,1160],hf:[452,186],col:'#7fa6c9',hair:'#6e7f92',robe:'#6a4a33'},
+    ren:{name:'炼狱',n:9,fb:[636,86,746,1015],hf:[530,262],col:'#ef7f50',hair:'#f3a52a',robe:'#f2ece0'},
+    kan:{name:'香奈乎',n:5,fb:[739,44,483,1113],hf:[512,236],col:'#ef9ab8',hair:'#241a2c',robe:'#f2ece0'},
+    mui:{name:'无一郎',n:14,fb:[697,83,548,1049],hf:[532,238],col:'#8fd0d4',hair:'#16282c',robe:'#1d3d44'}
+  };
+  var HALF='https://kimetsu.com/anime/portal/assets/img/chara/half/img_chara_half_',FULL='https://kimetsu.com/anime/portal/assets/img/chara/full/img_chara_full_';
+  var official=V.get('eng_demon_mode')==='img';
+  /* 把图的一块裁进元素：元素的宽高比要和这块相同 */
+  function crop(u,W0,H0,x,y,w,h,cls){
+    return '<i class="d-im '+(cls||'')+'" style="background-image:url('+u+');background-size:'+(W0/w*100).toFixed(2)+'% '+(H0/h*100).toFixed(2)+'%;background-position:'+(x/(W0-w)*100).toFixed(2)+'% '+(y/(H0-h)*100).toFixed(2)+'%"></i>';
+  }
+  /* 官方图取不到时的矢量小人 */
+  function vec(c,box){
+    var p=PPL[c],head='<circle cx="50" cy="34" r="19" fill="#f7dcc4" stroke="#17141c" stroke-width="1.800"/>',
+      hair='<path d="M30 34C28 12 72 12 70 34 62 24 56 22 50 25 44 22 38 24 30 34z" fill="'+p.hair+'" stroke="#17141c" stroke-width="1.800" stroke-linejoin="round"/>',
+      eye='<g fill="#17141c"><ellipse cx="42" cy="37" rx="2.300" ry="3"/><ellipse cx="58" cy="37" rx="2.300" ry="3"/></g>';
+    if(c==='ino'){head='<path d="M29 20 36 9 42 19H58L64 9 71 20C75 34 68 52 50 54 32 52 25 34 29 20z" fill="'+p.hair+'" stroke="#17141c" stroke-width="1.800" stroke-linejoin="round"/><ellipse cx="50" cy="42" rx="9" ry="6" fill="#d9d4cb" stroke="#17141c" stroke-width="1.400"/>';hair='';eye='<g fill="#f2ece0"><circle cx="40" cy="30" r="4"/><circle cx="60" cy="30" r="4"/></g><g fill="#17141c"><circle cx="40" cy="30" r="1.600"/><circle cx="60" cy="30" r="1.600"/></g>'}
+    if(c==='nez')eye+='<rect x="43" y="44" width="14" height="3.600" rx="1.800" fill="#7ea35a" stroke="#17141c"/>';
+    return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="'+(box||'0 0 100 100')+'" class="d-im"><path d="M34 52 20 97H80L66 52z" fill="'+p.robe+'" stroke="#17141c" stroke-width="1.800" stroke-linejoin="round"/><path d="M50 52V97" stroke="#17141c" stroke-width="1.500"/>'+(c==='tan'?'<path d="M28 66h9v9h-9zM37 75h9v9h-9zM54 66h9v9h-9zM63 75h9v9h-9z" fill="#14151c"/>':'')+head+hair+eye+'</svg>';
+  }
+  /* full＝全身，贴底居中的方形；bust＝探头（3:2）；face＝大头（方形） */
+  function pic(c,kind){
+    var p=PPL[c];
+    if(!official) return vec(c,kind==='bust'?'14 6 72 48':kind==='face'?'20 8 60 60':null);
+    if(kind==='full'){var b=p.fb,S=Math.max(b[2],b[3]);return crop(FULL+p.n+'.png',2020,1200,b[0]+b[2]/2-S/2,b[1]+b[3]-S,S,S)}
+    var h=p.hf;
+    if(kind==='bust') return crop(HALF+p.n+'.png',1000,700,h[0]-225,h[1]-140,450,300);
+    return crop(HALF+p.n+'.png',1000,700,h[0]-120,h[1]-122,240,240);
+  }
+  /* ---------- 阶级：和价值评级无关，这是自己斩了多少篇 ---------- */
+  var LADDER=[['癸',0],['壬',2],['辛',5],['庚',10],['己',18],['戊',28],['丁',42],['丙',60],['乙',80],['甲',105],['柱',130]],TOTAL=152;
+  function doneCount(){var n=0;try{var d=JSON.parse(localStorage.getItem('eng_v2_done'))||{};Object.keys(d).forEach(function(k){if(d[k])n++})}catch(e){}return n}
+  function grade(n){var i=0;while(i<LADDER.length-1&&n>=LADDER[i+1][1])i++;return i}
+  /* ---------- 底部夜路：滚动就是赶路，路过的鬼影被斩掉，原地亮起紫藤花灯 ---------- */
+  var SQUAD=['zen','nez','tan','ino'];
+  var LINES={
+    tan:['闻到破绽的气味了！','看清题干再出刀','全集中，别走神','长男不能放弃！'],
+    nez:['嗯！嗯！','（点点头）','（摸摸你的头）'],
+    zen:['这题好可怕啊啊！','我、我真的会做吗…','睡一觉再读？不行不行','选项在发出不对劲的声音！'],
+    ino:['猪突猛进！！','放马过来！','这个单词归本大爷了！','跟上来！']
+  };
+  var road,squad=[],onis=[],walkT=0,facing=1,reactT=0;
+  var ONI='<svg viewBox="0 0 30 34"><path d="M6 34C3 20 4 11 8 7L6 1l6 4c2-1 4-1 6 0l6-4-2 6c4 4 5 13 2 27z" fill="#05060c" stroke="#3d2233" stroke-width="1"/><path d="M9 15l5 2M21 15l-5 2" stroke="#ff3a4d" stroke-width="2" stroke-linecap="round"/></svg>';
+  var LAMP='<svg viewBox="0 0 24 34"><path d="M12 0V8" stroke="#8f7a48" stroke-width="1.400"/><rect x="5" y="8" width="14" height="18" rx="5" fill="#ffb963" stroke="#5a3a1c"/><path d="M5 17h14M9 8v18M15 8v18" stroke="#c9722e" stroke-width=".8"/><path d="M12 26v6" stroke="#b18fe6" stroke-width="2"/></svg>';
+  function say(el,text,ms){
+    var old=el.querySelector('.d-sb');if(old)old.remove();
+    var b=E('span','d-sb',text);el.appendChild(b);
+    var r=b.getBoundingClientRect();if(r.right>innerWidth-6)b.style.marginLeft=(innerWidth-6-r.right)+'px';if(r.left<6)b.style.marginLeft=(6-r.left)+'px';
+    setTimeout(function(){b.remove()},ms||1800);
+  }
+  function hop(el,h){if(V.fxOn())A(el,[{transform:'translateY(0)'},{transform:'translateY(-'+(h||18)+'px)',offset:.45},{transform:'none'}],380,'ease-out')}
+  function buildRoad(){
+    road=E('div','d-road fxn');
+    road.innerHTML='<svg class="d-ground" viewBox="0 0 1600 60" preserveAspectRatio="none"><path d="M0 16q120-9 260-3t300-2 310 4 340-5 390 5v45H0z" fill="#090b16"/><path class="d-edge" d="M0 16q120-9 260-3t300-2 310 4 340-5 390 5" fill="none"/></svg><div class="d-onis"></div><div class="d-squad"></div>';
+    var w=road.querySelector('.d-onis'),cnt=innerWidth<700?8:16;
+    for(var i=0;i<cnt;i++){
+      var x=(i+.7)/cnt*100,el=E('i','d-oni','<span class="u">'+ONI+'</span><span class="l">'+ONI+'</span><b>'+LAMP+'</b>',{style:'left:'+x+'%'});
+      w.appendChild(el);onis.push([x/100,el]);
+    }
+    var sq=road.querySelector('.d-squad');
+    SQUAD.forEach(function(c){var b=E('button','d-pal d-'+c,pic(c,'full'),{type:'button','aria-label':PPL[c].name,title:PPL[c].name});b.dataset.c=c;sq.appendChild(b);squad.push(b)});
+    sq.addEventListener('click',function(e){
+      var b=e.target.closest('.d-pal');if(!b)return;
+      var c=b.dataset.c,t=pick(LINES[c]);
+      if(window.ENGTIME&&R()<.3){var s=ENGTIME.stats();t='今天已经全集中 '+ENGTIME.fmt(s.today,1)+' 了！'}
+      hop(b,24);say(b,PPL[c].name+'：'+t);
+    });
+    document.body.appendChild(road);
+  }
+  function decorate(){
+    document.querySelectorAll('section.card').forEach(function(s,i){
+      if(s.querySelector(':scope>.d-peek')) return;
+      var g=s.dataset.g,c=WHO[g];if(!c)c=i%2?'nez':'tan';
+      s.appendChild(E('div','d-peek fxn'+(i%2?' alt':''),pic(c,'bust')));
+    });
+    document.querySelectorAll('h2').forEach(function(h){
+      if(h.querySelector(':scope>.d-h2i')) return;
+      var s=h.closest('section.card'),c=(s&&WHO[s.dataset.g])||'tan';
+      h.insertBefore(E('i','d-h2i fxn',pic(c,'face'),{style:'--ring:'+PPL[c].col}),h.firstChild);
+    });
+    var box=document.querySelector('.wrap');
+    if(official&&box&&!box.querySelector('.d-credit')) box.appendChild(E('p','d-credit fxn','角色图片 ©吾峠呼世晴／集英社・アニプレックス・ufotable，显示时直接取自<a href="https://kimetsu.com/anime/" target="_blank" rel="noopener">动画官方站</a>，本站未保存。这是个人备考页面，非官方、非商用。'));
+    var hero=document.querySelector('.hero');
+    if(hero&&!hero.querySelector('.d-hero')){
+      /* 放在最前面：页面按 .hero>div:last-child 排文字栏 */
+      hero.insertBefore(E('div','d-hero fxn','<i>'+pic('nez','full')+'</i><i>'+pic('tan','full')+'</i><i>'+pic('ren','full')+'</i>'),hero.firstChild);
+      var dd=document.getElementById('dd');
+      if(dd){
+        var n=doneCount(),k=grade(n),next=LADDER[k+1],lad='';
+        LADDER.forEach(function(l,i){lad+='<u class="'+(i<k?'on':i===k?'cur':'')+'">'+l[0]+'</u>'});
+        dd.parentNode.insertBefore(E('p','d-rank fxn','<span class="d-lad">'+lad+'</span><span>已斩 <b>'+n+'</b> / '+TOTAL+' 篇'+(next?'，再斩 '+(next[1]-n)+' 篇升「'+next[0]+'」':'，已入柱')+'</span>'),dd);
+      }
+    }
+    var mods=document.querySelectorAll('.mod');
+    ['tan','zen','ren','kan'].forEach(function(c,i){if(mods[i]&&!mods[i].querySelector('.d-modc'))mods[i].appendChild(E('span','d-modc fxn',pic(c,'bust')))});
+  }
+  /* 答题：角色从右下角探出来说一句 */
+  function react(c,line,second){
+    clearTimeout(reactT);var old=document.getElementById('dreact');if(old)old.remove();
+    var r=E('div','d-react fxn',pic(c,'full'),{id:'dreact'});
+    if(second) r.appendChild(E('div','d-pat',pic(second,'full')));
+    var b=E('span','d-sb show',PPL[c].name+'：'+line);r.appendChild(b);
+    document.body.appendChild(r);
+    var br=b.getBoundingClientRect();if(br.right>innerWidth-6)b.style.marginLeft=(innerWidth-6-br.right)+'px';
+    A(r,[{transform:'translateY(115%)'},{transform:'translateY(-6%)',offset:.6},{transform:'none'}],300,'cubic-bezier(.2,.9,.3,1)');
+    reactT=setTimeout(function(){A(r,[{transform:'none'},{transform:'translateY(115%)'}],220,'ease-in').finished.then(function(){r.remove()},function(){r.remove()})},1450);
+  }
+  var RIGHT={tan:'做到了！下一题！',zen:'欸？我、我答对了？！',ino:'哈哈哈！本大爷赢了！',ren:'唔姆！了不起！',kan:'（轻轻点头）',mui:'…嗯，这题不难。',nez:'嗯嗯！'};
+  var WRONG=[['tan','没关系，看清破绽再来！'],['zen','这干扰项太可怕了啊啊！'],['ino','可恶！再来一次！']];
+  var TABS={read:'先闻一闻这篇的气味',test:'要、要拔刀了吗…！',rev:'复盘也要燃烧起来！',vocab:'（抛硬币）正面，背这个',mat:'…这些素材，记下来'};
+  /* 斩完：滅 + 升阶令 + 大家一起跳 */
+  function cert(){
+    var n=doneCount(),k=grade(n),up=k>0&&grade(n-1)<k;
+    var box=E('div','d-cert fxn','<div class="d-order"><small>鬼杀队 · 传令</small><b>'+(up?'晋升「'+LADDER[k][0]+'」':'阶级「'+LADDER[k][0]+'」')+'</b><span>第 '+n+' 篇，斩</span></div><div class="d-dance"><i>'+pic('zen','full')+'</i><i>'+pic('tan','full')+'</i><i>'+pic('ino','full')+'</i></div>');
+    document.body.appendChild(box);
+    A(box.querySelector('.d-order'),[{transform:'translateY(16px) scale(.9)',opacity:0},{transform:'none',opacity:1}],300,'cubic-bezier(.2,.9,.3,1)',260);
+    box.querySelectorAll('.d-dance>i').forEach(function(d,i){A(d,[{transform:'translateY(0)'},{transform:'translateY(-18px)'},{transform:'translateY(0)'},{transform:'translateY(-12px)'},{transform:'translateY(0)'}],900,'ease-in-out',260+i*90)});
+    setTimeout(function(){A(box,[{opacity:1},{opacity:0}],260).finished.then(function(){box.remove()},function(){box.remove()})},2000);
+  }
+  /* 官方站取不到就退回矢量；结果记下来，下次一开始就用对的 */
+  var probed=false;
+  function probe(redo){
+    if(probed) return;probed=true;
+    var i=new Image(),was=official;
+    i.onload=function(){official=i.naturalWidth===1000;V.put('eng_demon_mode',official?'img':'');if(official!==was)redo()};
+    i.onerror=function(){official=false;V.put('eng_demon_mode','');if(was)redo()};
+    i.src=HALF+'1.png';
+  }
+  var self;
+  V.reg('demon',self={
     enter:function(stage,o){
       mount();window.addEventListener('resize',size);
       curKind='water';ROOT.style.setProperty('--breath',COL.water);
       if(o.fx)ambient(stage);
       watch();buildCrow();
+      squad=[];onis=[];buildRoad();decorate();
+      probe(function(){document.querySelectorAll('.d-peek,.d-h2i,.d-road,.d-hero,.d-rank,.d-modc,.d-credit').forEach(function(n){n.remove()});squad=[];onis=[];buildRoad();decorate();self.scroll(scrollY/Math.max(1,document.documentElement.scrollHeight-innerHeight),0)});
+      self.scroll(scrollY/Math.max(1,document.documentElement.scrollHeight-innerHeight),0);
     },
     leave:function(){
       if(ambStop){ambStop.stop();ambStop=null}if(io){io.disconnect();io=null}
       window.removeEventListener('resize',size);live=[];sparks=[];cancelAnimationFrame(raf);raf=0;cv=ctx=null;
       ROOT.style.removeProperty('--breath');var f=document.getElementById('dform');if(f)f.remove();
+      road=null;squad=[];onis=[];
     },
-    relabel:function(){if(cv)watch()},
+    relabel:function(){if(cv){watch();decorate()}},
+    scroll:function(p,sv){
+      if(!road||!squad.length) return;
+      var W0=innerWidth,sz=squad[0].offsetWidth||70,gap=sz*.56,st=W0<760?46:118,span=gap*3,lead=st+span+p*(W0-st-span-sz-6);
+      if(Math.abs(sv)>.5) facing=sv<0?-1:1;
+      squad.forEach(function(b,i){
+        var x=lead-(3-i)*gap*facing;
+        b.style.translate=Math.max(0,Math.min(W0-sz,x)).toFixed(1)+'px 0';b.style.scale=facing<0?'-1 1':'1 1';
+      });
+      onis.forEach(function(w){w[1].classList.toggle('cut',w[0]*W0<lead+sz*.7)});
+      if(Math.abs(sv)>.5){road.classList.add('walk');clearTimeout(walkT);walkT=setTimeout(function(){if(road)road.classList.remove('walk')},260)}
+    },
     click:function(x,y,el){
-      if(!ctx||el.closest('.opt')||el.closest('.vdone'))return false;
+      if(!ctx||el.closest('.opt')||el.closest('.vdone')||el.closest('.d-pal'))return false;
       var g=(el.closest('[data-g]')||{dataset:{}}).dataset.g,k=GROUP[g]||curKind;(MINI[k]||MINI.water)(x,y);return false;
     },
-    tab:function(g){if(!ctx)return;setKind(g);if(g==='all')cast(pick(['sun','wind','beast','insect']));else cast(g==='vocab'&&R()<.5?'insect':GROUP[g]||'water')},
+    tab:function(g){
+      if(!ctx)return;setKind(g);
+      if(g==='all')cast(pick(['sun','wind','beast','insect']));else cast(g==='vocab'&&R()<.5?'insect':GROUP[g]||'water');
+      if(g==='all')react('ino','全部放马过来！');else if(WHO[g])react(WHO[g],TABS[g]);
+    },
     answer:function(ok,o,q){
       if(!ctx)return;
-      if(!ok){bloodArt(q);return}
+      if(!ok){bloodArt(q);var w=pick(WRONG);react(w[0],w[1],'nez');return}
       var s=q.closest('section.card'),g=s&&s.dataset.g,base=GROUP[g]||'thunder';
       /* 大多放这一部分的招，偶尔换一门呼吸，别总是同一招 */
       cast(R()<.6?base:pick(['water','thunder','flame','flower','insect','mist','wind','beast']));
+      /* 同理：大多是这一部分陪读的人夸，偶尔换人 */
+      var c=R()<.6&&WHO[g]?WHO[g]:pick(['tan','zen','ino','nez']);react(c,RIGHT[c]);
     },
-    done:function(){if(ctx)metsu()},
+    done:function(){if(ctx){metsu();cert()}},
     _test:function(k,f){if(f!=null){var n=NAME[k][f];FORM[n[2]]();title(n[0],n[1],COL[k])}else cast(k)}
   });
 })();
