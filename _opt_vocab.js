@@ -2,7 +2,7 @@
  * 数据来自 data_optvocab.js（_tools/build_vocab.py 生成）：
  *   本篇语境义 = 这一篇自己的词卡给的义项（别篇的语境义不搬过来，免得张冠李戴）；
  *   常见义     = 牛津英汉；「⚠️ 本篇考的是熟词僻义」只在本篇词卡就是按僻义讲的时候才标，别篇的僻义只做提示。
- * 点词跳到「真题词汇背诵」词表里看完整卡片（新标签页打开，不打断做题）。 */
+ * 点词先在右栏词卡下方显示这里的意思（_word_aid.js），要看完整卡片再从那里跳词库，同一标签页来回。 */
 (function(){
   var O = window.OPTV; if (!O) return;
   var page = decodeURIComponent(location.pathname.split('/').pop());
@@ -20,10 +20,10 @@
   Object.keys(Q).forEach(function(qid){
     var q = document.getElementById(qid); if (!q) return;
     var opts = q.querySelector('.opts'); if (!opts) return;
-    var rows = Q[qid].map(function(r){
+    var rows = Q[qid].map(function(r,i){
       var w = O.w[r[2]]; if (!w) return '';
       var here = r[3] ? '<div class="here">' + r[3] + '<span class="note" style="font-weight:400;color:var(--muted,#888)">（本篇）</span></div>' : '';
-      return '<tr><td class="wh">' + esc(r[0]) + '</td><td class="w"><a href="词汇背诵.html?q=' + encodeURIComponent(w[0]) + '" target="_blank" rel="noopener">' + esc(r[1]) + '</a>'
+      return '<tr><td class="wh">' + esc(r[0]) + '</td><td class="w"><a href="词汇背诵.html?q=' + encodeURIComponent(w[0]) + '" data-i="' + i + '">' + esc(r[1]) + '</a>'
         + (r[1].toLowerCase() !== w[0].toLowerCase() ? '<span class="ipa">← ' + esc(w[0]) + '</span>' : '') + (w[1] ? '<span class="ipa">' + esc(w[1]) + '</span>' : '') + '</td>'
         + '<td>' + here + (w[3] ? '<div class="ox">常见义：' + esc(w[3]) + '</div>' : '')
         + (r[4] ? '<span class="pl">⚠️ 本篇考的是熟词僻义</span>' : (w[4] ? '<span class="ox" style="font-size:.72rem">（别篇考过它的僻义，点词看全部语境）</span>' : '')) + '</td>'
@@ -33,6 +33,14 @@
     var d = document.createElement('details'); d.className = 'ovbox';
     d.innerHTML = '<summary>🔤 题干 · 选项词汇（' + Q[qid].length + '）</summary><table class="ovt">' + rows + '</table>';
     opts.parentNode.insertBefore(d, opts.nextSibling);
-    d.addEventListener('click', function(e){ e.stopPropagation(); });   // 别触发选项的判题点击
+    d.addEventListener('click', function(e){
+      e.stopPropagation();   // 别触发选项的判题点击
+      var a = e.target.closest && e.target.closest('td.w a');
+      if (!a || !window.WordAid || e.metaKey || e.ctrlKey) return;
+      e.preventDefault();
+      var r = Q[qid][+a.getAttribute('data-i')], w = O.w[r[2]];
+      d.querySelectorAll('td.w a.on').forEach(function(x){ x.classList.remove('on'); }); a.classList.add('on');
+      WordAid.show({word:r[1], lemma:w[0], ipa:w[1], here:r[3], poly:r[4], ox:w[3], n:w[5], qid:qid, href:a.getAttribute('href')});
+    });
   });
 })();

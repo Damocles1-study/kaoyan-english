@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>词库分类 · 英语一</title>
+<link rel="stylesheet" href="v2.css?v=1">
+<style>
+.wrap{max-width:1180px!important;padding-top:10px!important}
+.ht{display:flex;align-items:center;gap:14px;font-size:13.5px;border-bottom:1px solid var(--line);padding:6px 0 9px}.ht a{color:var(--muted);text-decoration:none}.ht b{font-size:15px}.ht .r{margin-left:auto}
+.lay{display:grid;grid-template-columns:172px minmax(0,1fr);gap:22px;margin-top:14px}
+.nav{position:sticky;top:12px;align-self:start;display:grid;gap:2px}.nav button{font:inherit;font-size:14px;text-align:left;background:none;border:0;padding:5px 10px;border-radius:6px;cursor:pointer;color:var(--ink)}.nav button:hover{background:var(--accent-soft)}.nav button.on{background:var(--ink);color:var(--bg);font-weight:700}.nav small{float:right;color:var(--muted);font-size:11.5px}.nav button.on small{color:inherit}
+h1{font-family:var(--serif);font-size:25px;margin:0}.dsc{color:var(--muted);font-size:14px;margin:3px 0 11px}
+.tb{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:10px}.tb input{font:inherit;font-size:14px;padding:3px 10px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:6px;width:190px}.tb button{font:inherit;font-size:13px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:6px;padding:2px 10px;cursor:pointer}.tb button.on{background:var(--accent);border-color:var(--accent);color:#fff}.tb .ct{color:var(--muted);font-size:13px}
+.it{background:var(--card);border:1px solid var(--line);border-radius:8px;margin-bottom:6px;padding:7px 13px;cursor:pointer}.it:hover{border-color:var(--accent)}
+.hd{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}.hd .w{font-family:var(--serif);font-weight:700;font-size:16px}.hd .i{color:var(--muted);font-size:12px}.hd .n{margin-left:auto;color:var(--muted);font-size:12px;white-space:nowrap}.hd .g{font-size:14px;flex-basis:100%}.tg{font-size:11px;border:1px solid var(--line);border-radius:4px;padding:0 5px;color:var(--muted)}
+.bd{display:none;font-size:13.5px;margin-top:6px;padding-top:6px;border-top:1px dashed var(--line);line-height:1.65;cursor:auto}.it.op .bd{display:block}.bd .o small{display:block;color:var(--muted);font-size:11px}.ex{margin-top:5px;font-family:var(--serif)}.ex a{font-family:var(--sans);font-size:12px;color:var(--accent);margin-left:6px;white-space:nowrap}
+.ln{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}.ln a{font-size:12px;border:1px solid var(--line);border-radius:5px;padding:0 8px;color:var(--ink);text-decoration:none}.ln a:hover{border-color:var(--accent)}
+.more{display:block;margin:12px auto;font:inherit;border:1px solid var(--line);background:var(--card);color:var(--ink);padding:4px 22px;border-radius:7px;cursor:pointer}
+@media (max-width:760px){.lay{grid-template-columns:minmax(0,1fr)}.nav{position:static;display:flex;overflow-x:auto;gap:3px;padding-bottom:3px}.nav button{flex:none;white-space:nowrap}.nav small{display:none}}
+</style></head><body><div class="wrap">
+<div class="ht"><a href="index.html">← 新版首页</a><b>词库分类</b><span class="r"><a href="词汇背诵.html">每日背诵</a></span></div>
+<div class="lay"><div class="nav" id="nav"></div><div>
+<h1 id="ti"></h1><p class="dsc" id="ds"></p>
+<div class="tb"><input id="q" placeholder="搜词或中文" type="search"><span id="gs" style="display:contents"></span><span class="ct" id="ct"></span></div>
+<div id="li"></div><button class="more" id="more" hidden>再显示 100 个</button>
+</div></div></div>
+<script src="data_wordbank.js?v=1"></script>
+<script>
+(function(){
+var B=WB.b,O=WB.order,$=function(i){return document.getElementById(i)},cur=O[0],gi=0,lim=100;
+try{var h=decodeURIComponent(location.hash.slice(1));if(B[h])cur=h}catch(e){}
+function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function count(k){return B[k].groups.reduce(function(a,g){return a+g.items.length},0)}
+function nav(){ $('nav').innerHTML=O.map(function(k){return '<button data-k="'+k+'" class="'+(k===cur?'on':'')+'">'+B[k].title+'<small>'+count(k)+'</small></button>'}).join('') }
+function items(){
+  var c=B[cur],q=$('q').value.trim().toLowerCase(),arr=q?[].concat.apply([],c.groups.map(function(g){return g.items})):c.groups[gi].items;
+  if(q)arr=arr.filter(function(i){return (i.w+' '+(i.gl||'')+' '+(i.ox||'')).toLowerCase().indexOf(q)>=0});
+  return arr;
+}
+function row(i,n){
+  var cnt=i.pg?i.pg+' 篇 / '+i.no+' 次':(i.no||i.ns)?(cur==='att'||cur==='emo'?'选项 '+i.no+' · 题干 '+i.ns:cur==='ask'||cur==='optph'?i.no+' 次':'真题 '+i.no+' 篇'):(i.y||'');
+  var tag=i.poly?'<span class="tg" style="color:var(--red);border-color:var(--red)">僻义</span>':i.phrase?'<span class="tg">短语</span>':i.tag?'<span class="tg">'+esc(i.tag)+'</span>':'';
+  var ex=(i.ex||[]).filter(function(e){return e[0]}).map(function(e){return '<div class="ex">'+esc(e[0])+'<a href="'+e[4]+'.html'+(e[3]?'#'+e[3]:'')+'" data-back="1">'+e[1]+' '+e[2]+(e[3]?' '+e[3].replace('q','第 ')+' 题':'')+' →</a></div>'}).join('');
+  var simple=/^[A-Za-z][A-Za-z' -]*$/.test(i.w)&&i.w.split(' ').length<=4;
+  return '<div class="it" data-i="'+n+'"><div class="hd"><span class="w">'+esc(i.w)+'</span>'+(i.ipa?'<span class="i">'+esc(i.ipa)+'</span>':'')+tag+'<span class="n">'+cnt+'</span><span class="g">'+esc(i.gl||'')+'</span></div>'
+   +'<div class="bd">'+(i.ox?'<div class="o"><small>牛津英汉 · 通用义</small>'+esc(i.ox).replace(/ ‖ /g,'<br>')+'</div>':'')+ex
+   +(simple?'<div class="ln"><a href="词汇背诵.html?q='+encodeURIComponent(i.w.toLowerCase())+'" data-back="1">词库完整卡片 →</a><a target="_blank" rel="noopener" href="https://www.oxfordlearnersdictionaries.com/definition/english/'+encodeURIComponent(i.w.toLowerCase().replace(/\s+/g,'-'))+'">Oxford↗</a><a target="_blank" rel="noopener" href="https://dictionary.cambridge.org/dictionary/english-chinese-simplified/'+encodeURIComponent(i.w.toLowerCase().replace(/\s+/g,'-'))+'">Cambridge↗</a></div>':'')+'</div></div>';
+}
+function draw(keep){
+  var c=B[cur];$('ti').textContent=c.title;$('ds').textContent=c.desc;
+  if(!keep)lim=100;
+  $('gs').innerHTML=c.groups.length>1?c.groups.map(function(g,i){return '<button data-g="'+i+'" class="'+(i===gi?'on':'')+'">'+g.name+'（'+g.items.length+'）</button>'}).join(''):'';
+  var a=items();$('ct').textContent=$('q').value?'找到 '+a.length+' 个':'';
+  $('li').innerHTML=a.slice(0,lim).map(row).join('');
+  $('more').hidden=a.length<=lim;
+}
+document.addEventListener('click',function(e){
+  var b;
+  if((b=e.target.closest('[data-k]'))){cur=b.dataset.k;gi=0;$('q').value='';history.replaceState(null,'','#'+cur);nav();draw();window.scrollTo(0,0);return}
+  if((b=e.target.closest('[data-g]'))){gi=+b.dataset.g;draw();return}
+  if((b=e.target.closest('[data-back]'))){try{sessionStorage.setItem('eng_back_v1',JSON.stringify({url:location.pathname+location.search+location.hash,y:window.scrollY,label:'词库分类'}))}catch(x){}return}
+  if(e.target.id==='more'){lim+=100;draw(true);return}
+  if(e.target.closest('.bd'))return;
+  if((b=e.target.closest('.it')))b.classList.toggle('op');
+});
+$('q').addEventListener('input',function(){draw()});
+nav();draw();
+})();
+</script></body></html>
