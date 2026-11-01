@@ -63,13 +63,20 @@
     var own=OFF[c+'_'+(e||'norm')],u=own||OFF[c],ex='';if(!u)return '';
     /* 官方图只有一种站姿：没有专门的哭图时，在眼睛下面叠眼泪 */
     if(!own&&e==='cry'&&EYE[c]){var y=EYE[c][2];EYE[c].slice(0,2).forEach(function(x){ex+='<path d="M'+(x-2.5)+' '+(y+3)+'q-1.500 12 2.500 16q4-4 2.500-16z" fill="#bfe6f8" stroke="#6fb3d6" stroke-width=".9"/>'})}
-    return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="'+box+'"><image href="'+u+'" x="0" y="0" width="100" height="100" preserveAspectRatio="xMidYMax meet"/>'+ex+'</svg>'}
+    var pic;
+    if(typeof u==='string') pic='<image href="'+u+'" x="0" y="0" width="100" height="100" preserveAspectRatio="xMidYMax meet"/>';
+    else{ /* 官方站的拼图：网页打开时直接向官方站取，仓库里不存图。按矩形裁出一个角色，贴底居中 */
+      var S=Math.max(u[2],u[3])/.984,vx=u[0]-(S-u[2])/2,vy=u[1]+u[3]-S*.996;
+      pic='<svg x="0" y="0" width="100" height="100" viewBox="'+vx.toFixed(1)+' '+vy.toFixed(1)+' '+S.toFixed(1)+' '+S.toFixed(1)+'"><clipPath id="spr-'+c+'"><rect x="'+u[0]+'" y="'+u[1]+'" width="'+u[2]+'" height="'+u[3]+'"/></clipPath><image href="'+SPR.u+'" width="'+SPR.w+'" height="'+SPR.h+'" clip-path="url(#spr-'+c+')"/></svg>';
+    }
+    return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="'+box+'">'+pic+ex+'</svg>'}
+  var SPR={u:'https://www.anime-chiikawa.jp/images/characters/img_charapage.png',w:3766,h:463,r:{chii:[1,0,323,359],hachi:[344,0,326,370],usagi:[699,0,310,457],momo:[1032,0,406,388],kuri:[1458,0,307,352]}};
   var EYE={chii:[37,63,37],hachi:[37,63,40],usagi:[42,62,50],momo:[29,58,49],kuri:[36,58,48]};
   function chr(c,e,up,prop,box){var o=offImg(c,e,box||'0 0 100 100');if(o)return o;return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="'+(box||'0 0 100 100')+'">'+CHAR[c](e||'norm',up)+(prop?PROP[prop]:'')+'</svg>'}
   /* 趴在卡片上沿的半身：只露头和两只手 */
   function bust(c,e){var o=offImg(c,e,'0 0 100 66');if(o)return o;return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 66">'+CHAR[c](e||'norm').replace(/<g class="(lg|am)[^]*?<\/g>(<\/g>)?/g,'')+'<g fill="'+(c==='usagi'?'#fbefb4':'#fff')+'" stroke="'+INK+'" stroke-width="2.400"><ellipse cx="30" cy="65" rx="6" ry="4.500"/><ellipse cx="70" cy="65" rx="6" ry="4.500"/></g></svg>'}
   var MOCHI=chr('chii'),PUDDING=chr('hachi','joy'),HOPPER=chr('usagi','norm',true);
-  function setOff(m){OFF=m;MOCHI=chr('chii');PUDDING=chr('hachi','joy');HOPPER=chr('usagi','norm',true);ROOT.style.setProperty('--mochi',OFF.chii?'url("'+OFF.chii+'")':uri(MOCHI))}
+  function setOff(m){OFF=m;MOCHI=chr('chii');PUDDING=chr('hachi','joy');HOPPER=chr('usagi','norm',true);ROOT.style.setProperty('--mochi',typeof OFF.chii==='string'?'url("'+OFF.chii+'")':uri(MOCHI))}
   /* 一台旁轴相机。镜头对焦环带 class，滚动时会转 */
   var CAM='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 150"><defs><linearGradient id="cTop" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#faf7ef"/><stop offset=".5" stop-color="#cbc7bb"/><stop offset=".62" stop-color="#ece8dc"/><stop offset="1" stop-color="#a9a598"/></linearGradient><radialGradient id="cGlass" cx=".38" cy=".32" r=".8"><stop offset="0" stop-color="#7d97b8"/><stop offset=".36" stop-color="#27304a"/><stop offset=".8" stop-color="#0c0d14"/><stop offset="1" stop-color="#3a2332"/></radialGradient><pattern id="cLeath" width="5" height="5" patternUnits="userSpaceOnUse"><rect width="5" height="5" fill="#2b2622"/><circle cx="1.500" cy="1.500" r="1" fill="#3d3731"/><circle cx="4" cy="3.800" r=".8" fill="#1c1916"/></pattern></defs>'
     +'<rect x="30" y="4" width="26" height="14" rx="2" fill="url(#cTop)" stroke="#55514a"/><path d="M33 4v14M38 4v14M43 4v14M48 4v14M53 4v14" stroke="#7d796e" stroke-width=".8"/>'
@@ -106,10 +113,11 @@
   ROOT.dataset.theme=theme;ROOT.dataset.film=filmMode; if(!fxOn) ROOT.classList.add('nofx');
   var incoming=null; try{incoming=sessionStorage.getItem(TR);sessionStorage.removeItem(TR)}catch(e){}
   if(incoming&&fxOn) ROOT.classList.add('tr-in');
-  var link=document.createElement('link');link.rel='stylesheet';link.href=BASE+'theme.css?v=2';document.head.appendChild(link);
+  var link=document.createElement('link');link.rel='stylesheet';link.href=BASE+'theme.css?v=3';document.head.appendChild(link);
   ROOT.style.setProperty('--mochi',uri(MOCHI));
+  if(get('eng_chii_mode')==='sprite') setOff(SPR.r);
   /* 各世界的角色和特效放在自己的文件里，用到才加载 */
-  var FX={},fxCur=null,fxWant=null,FXV='4',FXFILE={chii:1,demon:1,film:1};
+  var FX={},fxCur=null,fxWant=null,FXV='5',FXFILE={chii:1,demon:1,film:1};
   function fxLeave(){if(fxCur){try{fxCur.leave&&fxCur.leave()}catch(e){}fxCur=null}document.querySelectorAll('.fxn').forEach(function(n){n.remove()})}
   function fxEnter(){
     fxLeave();fxWant=theme;
@@ -446,7 +454,7 @@
   }
   window.ENGV2={tabFx:tabFx,relabel:relabel,measure:measure,world:function(){return W[theme]},words:W,
     theme:function(){return theme},fxOn:function(){return fxOn},filmMode:function(){return filmMode},
-    E:E,A:A,uri:uri,chr:chr,bust:bust,CAM:CAM,setOff:setOff,off:function(){return OFF},base:BASE,cur:function(){return fxCur},
+    E:E,A:A,uri:uri,chr:chr,bust:bust,CAM:CAM,setOff:setOff,off:function(){return OFF},base:BASE,SPR:SPR,put:put,get:get,cur:function(){return fxCur},
     reg:function(n,impl){FX[n]=impl;if(fxWant===n&&theme===n)fxEnter()}};
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init); else init();
 })();

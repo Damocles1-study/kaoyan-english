@@ -1,4 +1,4 @@
-/* 小小草原：三个小家伙走在页面底部的草地上，滚动就是拔草；每张卡片上沿趴一个；做题和做完都有反应。 */
+/* 小小草原：四个小家伙走在页面底部的草地上，滚动就是拔草；每张卡片上沿趴一个；做题和做完都有反应。 */
 (function(){
   var V=ENGV2,E=V.E,A=V.A,chr=V.chr,bust=V.bust,uri=V.uri;
   var ROOT=document.documentElement;
@@ -57,6 +57,16 @@
       var g=s.dataset.g||'rev',c=WHO[g]||'chii';
       var p=E('div','c-peek fxn',bust(c,'norm'));if(i%2)p.classList.add('alt');s.appendChild(p);
     });
+    if(V.off().chii){
+      /* 官方拼图不能塞进 CSS 背景，标题前的小头像改成页面元素 */
+      document.querySelectorAll('h2').forEach(function(h){
+        if(h.querySelector(':scope>.c-h2i')) return;
+        var s=h.closest('section.card'),w=(s&&WHO[s.dataset.g])||'chii';
+        h.insertBefore(E('i','c-h2i fxn',chr(w)),h.firstChild);
+      });
+      var box=document.querySelector('.wrap');
+      if(box&&!box.querySelector('.c-credit')) box.appendChild(E('p','c-credit fxn','角色图片 ©ナガノ/ちいかわ製作委員会，显示时直接取自<a href="https://www.anime-chiikawa.jp/chara.html" target="_blank" rel="noopener">官方动画站</a>，本站未保存。这是个人备考页面，非官方、非商用。'));
+    }
     var hero=document.querySelector('.hero');
     if(hero&&!document.querySelector('.c-hero')){
       var cd=hero.querySelector('.cd');
@@ -98,18 +108,28 @@
     for(var i=0;i<4;i++)setTimeout(function(){burst(null,['✿','♡','✦','★'],11,b)},i*170);
     setTimeout(function(){A(box,[{opacity:1},{opacity:0}],300).finished.then(function(){box.remove()},function(){box.remove()})},1900);
   }
-  /* 官方图：放在 themes/art/chii/ 就用（文件名见那里的 README）。先探 chii.png，没有就不再请求 */
+  /* 图的来源：本机 art/chii/ 有图用本机的（可带表情图）；否则网页打开时从官方站取拼图；再不行退回矢量 */
   var probed=false;
+  function useSprite(done){
+    var had=V.get('eng_chii_mode')==='sprite',i=new Image();
+    i.onload=function(){
+      if(i.naturalWidth!==V.SPR.w){i.onerror();return}
+      V.put('eng_chii_mode','sprite');V.setOff(V.SPR.r);if(!had)done();
+    };
+    i.onerror=function(){V.put('eng_chii_mode','');V.setOff({});if(had)done()};
+    i.src=V.SPR.u;
+  }
   function probe(done){
     if(probed) return;probed=true;
     var dir=V.base+'art/chii/',names=[];['chii','hachi','usagi','momo'].forEach(function(c){names.push(c,c+'_joy',c+'_cry')});names.push('kuri');
     var flag=null;try{flag=sessionStorage.getItem('eng_chii_off')}catch(e){}
-    if(flag==='0') return;
-    var head=new Image();head.onerror=function(){try{sessionStorage.setItem('eng_chii_off','0')}catch(e){}};
+    if(flag==='0') return useSprite(done);
+    var head=new Image();
+    head.onerror=function(){try{sessionStorage.setItem('eng_chii_off','0')}catch(e){}useSprite(done)};
     head.onload=function(){
       var m={},left=names.length;
       names.forEach(function(n){var i=new Image();i.onload=function(){m[n]=i.src;fin()};i.onerror=fin;i.src=dir+n+'.png'});
-      function fin(){if(--left)return;V.setOff(m);ROOT.classList.add('chii-official');done()}
+      function fin(){if(--left)return;V.setOff(m);done()}
     };
     head.src=dir+'chii.png';
   }
@@ -118,7 +138,8 @@
     enter:function(){
       probe(function(){document.querySelectorAll('.fxn').forEach(function(n){n.remove()});self.enter();if(self.scroll)self.scroll(0,0)});
       trio=[];weeds=[];WHO.mat=V.off().kuri?'kuri':'hachi';
-      var S=ROOT.style;['read','test','rev','vocab','mat'].forEach(function(g){S.setProperty('--c-'+g,V.off()[WHO[g]]?'url("'+V.off()[WHO[g]]+'")':uri(chr(WHO[g],'norm',false,PROPS[g])))});
+      ROOT.classList.toggle('chii-official',!!V.off().chii);
+      var S=ROOT.style;['read','test','rev','vocab','mat'].forEach(function(g){S.setProperty('--c-'+g,typeof V.off()[WHO[g]]==='string'?'url("'+V.off()[WHO[g]]+'")':uri(chr(WHO[g],'norm',false,PROPS[g])))});
       buildBand();decorate();
     },
     leave:function(){var r=document.getElementById('creact');if(r)r.remove();band=null;trio=[];weeds=[]},

@@ -19,13 +19,13 @@ n=0
 for f in sorted(glob.glob('20*.html')):
     s=open(f,encoding='utf-8').read()
     s=strip_refs(fix_paths(s))
-    s=s.replace('</head>','<link rel="stylesheet" href="v2.css?v=2">\n<script src="themes/theme.js?v=4"></script>\n<script src="data_value.js?v=1"></script>\n</head>',1)
+    s=s.replace('</head>','<link rel="stylesheet" href="v2.css?v=2">\n<script src="themes/theme.js?v=5"></script>\n<script src="data_value.js?v=1"></script>\n</head>',1)
     s=re.sub(r'<body([^>]*)>',lambda m:'<body%s class="v2-wait">'%m.group(1) if 'class=' not in m.group(1) else m.group(0),s,1)
     i=s.rfind('</body>')
     s=s[:i]+'<script>try{if(typeof V!=="undefined")window.__V2V=V}catch(e){}</script><script src="v2.js?v=3"></script>\n'+s[i:]
     open(os.path.join(OUT,f),'w',encoding='utf-8').write(s);n+=1
 for f in ['词汇背诵.html','套路库_阅读.html']:
     s=strip_refs(fix_paths(open(f,encoding='utf-8').read()))
-    s=s.replace('</head>','<link rel="stylesheet" href="v2.css?v=2">\n<script src="themes/theme.js?v=4"></script>\n<style>.wrap{max-width:1040px!important}</style>\n</head>',1)
+    s=s.replace('</head>','<link rel="stylesheet" href="v2.css?v=2">\n<script src="themes/theme.js?v=5"></script>\n<style>.wrap{max-width:1040px!important}</style>\n</head>',1)
     open(os.path.join(OUT,f),'w',encoding='utf-8').write(s)
 print('pages',n)

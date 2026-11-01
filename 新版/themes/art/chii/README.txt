@@ -1,8 +1,11 @@
-这里放 Chiikawa 官方图，主题会自动优先使用；没有图时显示矢量图。
+Chiikawa 主题的角色图来源，优先级从高到低：
 
-自动获取：python3 _tools/fetch_chii_official.py
-  从动画官方站（anime-chiikawa.jp）取吉伊、小八、乌萨奇、飞鼠、栗子馒头。
+1. 本目录的本地图（可带表情图，命名如 chii_joy.png、usagi_cry.png）。
+   python3 _tools/fetch_chii_official.py 可把官方站的图存到这里；白底原图放 raw/ 后跑 _tools/build_chii_art.py。
+   本目录的图片已被 .gitignore 排除，不进公开仓库。
+2. 网页打开时直接从官方动画站取拼图：
+   https://www.anime-chiikawa.jp/images/characters/img_charapage.png
+   图片不存入本仓库。官方站改路径或限制外链时，页面会自动退回 3。
+3. 矢量图（theme.js 的 CHAR）。
 
-也可以自己加：表情图放这里，命名如 chii_joy.png、usagi_cry.png（白底原图可放 raw/ 后跑 _tools/build_chii_art.py）。
-
-图片版权归 ©ナガノ/ちいかわ製作委員会。本目录的图片已被 .gitignore 排除，只在本机显示，不要提交到公开仓库。
+图片版权归 ©ナガノ/ちいかわ製作委員会。本站是个人备考页面，非官方、非商用。
