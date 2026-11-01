@@ -26,18 +26,36 @@
   var sib = ORDER.map(function(k){ var u=go(Y,k); return u?'<a class="'+(k===K?'cur':'')+'" href="'+u+'">'+LB[k]+'</a>':''; }).join('');
   var tabs = ['all','read','test','rev','vocab','mat'].filter(function(g){ return g==='all'||counts[g]; }).map(function(g){ return '<button data-g="'+g+'">'+GN[g]+'</button>'; }).join('');
   bar.innerHTML = '<div class="v2t"><a class="home" href="index.html">英语一 · 新版</a><span class="crumb">'+Y+' · '+LB[K]+' · '+p.slice(2).join('_')+'</span>'
-    + '<span class="pn">'+(go(Y-1,K)?'<a href="'+go(Y-1,K)+'">'+(Y-1)+'</a>':'')+(go(Y+1,K)?'<a href="'+go(Y+1,K)+'">'+(Y+1)+'</a>':'')+'<a href="../'+encodeURIComponent(name)+'.html">旧版</a></span></div>'
-    + '<div class="v2n">'+tabs+'<span class="sep"></span>'+sib+'</div>';
+    + '<span class="pn">'+(go(Y-1,K)?'<a href="'+go(Y-1,K)+'">'+(Y-1)+'</a>':'')+(go(Y+1,K)?'<a href="'+go(Y+1,K)+'">'+(Y+1)+'</a>':'')+'<button class="v2tocb" type="button">目录</button></span></div>'
+    + '<div class="v2n">'+tabs+'<span class="sep"></span>'+sib+'</div><div id="v2prog"></div><div class="v2toc"></div>';
   wrap.insertBefore(bar, wrap.firstChild);
   var LS='eng_v2_tab'; var cg='all';
   function show(g,noScroll){
     cg=g;
     secs.forEach(function(s){ s.classList.toggle('v2hide', g!=='all' && s.dataset.g!==g); });
     bar.querySelectorAll('[data-g]').forEach(function(b){ b.classList.toggle('on', b.dataset.g===g); });
-    if (!noScroll) window.scrollTo({top:Math.min(window.scrollY,(document.querySelector('.layout')||main).offsetTop-96),behavior:'auto'});
+    if (!noScroll) {
+      window.scrollTo({top:Math.min(window.scrollY,(document.querySelector('.layout')||main).offsetTop-96),behavior:'instant'});
+      if (window.ENGV2) ENGV2.tabFx(main);
+    }
+    if (window.ENGV2) setTimeout(ENGV2.measure,30);
   }
   bar.addEventListener('click',function(e){ var b=e.target.closest('[data-g]'); if(b) show(b.dataset.g); });
   show('all',true);
+  /* 每一部分开头打一行小标题，长页读到哪一目了然 */
+  var seen={};
+  secs.forEach(function(s){ var g=s.dataset.g; if(!seen[g]){ seen[g]=1; s.dataset.kickG=g; } });
+  /* 目录 */
+  var toc=bar.querySelector('.v2toc');
+  function drawToc(){
+    var html='',lg='';
+    secs.forEach(function(s,i){ var h=s.querySelector('h2'); if(!h) return; if(!s.id) s.id='sec'+i; var t=h.textContent.replace(/全文(译文|意译)\s*开\/关.*/,'').replace(/^\s*\d*\+*/,'').replace(/（.*/,'').trim();
+      if(s.dataset.g!==lg){ lg=s.dataset.g; html+='<i>'+GN[lg]+'</i>'; }
+      html+='<a href="#'+s.id+'">'+t+'</a>'; });
+    toc.innerHTML=html;
+  }
+  bar.querySelector('.v2tocb').addEventListener('click',function(e){ e.stopPropagation(); drawToc(); toc.classList.toggle('op'); });
+  document.addEventListener('click',function(e){ if(!e.target.closest('.v2toc')) toc.classList.remove('op'); else if(e.target.closest('a')){ show('all',true); toc.classList.remove('op'); } });
   /* 长标题只留主名，后半句放到副标题 */
   var h1=header&&header.querySelector('h1');
   if (h1) {
@@ -50,7 +68,7 @@
     var b=document.createElement('div'); b.className='vbadge';
     b.innerHTML='<span class="vg vg-'+cur[0]+'">'+cur[0]+'</span><span>'+cur[1]+'</span><button class="vdone'+(done[key]?' on':'')+'">'+(done[key]?'已做完':'标记做完')+'</button>';
     header.appendChild(b);
-    b.querySelector('.vdone').onclick=function(){ done[key]=!done[key]; try{localStorage.setItem(dk,JSON.stringify(done));}catch(e){} this.classList.toggle('on',!!done[key]); this.textContent=done[key]?'已做完':'标记做完'; };
+    b.querySelector('.vdone').onclick=function(){ done[key]=!done[key]; try{localStorage.setItem(dk,JSON.stringify(done));}catch(e){} this.classList.toggle('on',!!done[key]); var fl=(this.dataset.fl||'标记做完|已做完').split('|'); this.textContent=done[key]?fl[1]:fl[0]; };
   }
   /* 闲置区：制作过程记录和本机路径提示收起来，内容不删 */
   var JUNK=/Claude|盲做|本中心|按年份\/|图像保真版|翻车|战报|套路库\s*\d+\s*[→>]|第三件事|先说结果/;
@@ -78,6 +96,7 @@
       }
     }
   } catch(e){}
+  if (window.ENGV2) ENGV2.relabel();
   document.body.classList.remove('v2-wait');
   /* 记住读到哪 */
   try { localStorage.setItem('eng_v2_last', JSON.stringify({u:name+'.html',k:key,at:Date.now()})); } catch(e){}
