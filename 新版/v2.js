@@ -36,7 +36,7 @@
     bar.querySelectorAll('[data-g]').forEach(function(b){ b.classList.toggle('on', b.dataset.g===g); });
     if (!noScroll) {
       window.scrollTo({top:Math.min(window.scrollY,(document.querySelector('.layout')||main).offsetTop-96),behavior:'instant'});
-      if (window.ENGV2) ENGV2.tabFx(main);
+      if (window.ENGV2) ENGV2.tabFx(main,g);
     }
     if (window.ENGV2) setTimeout(ENGV2.measure,30);
   }
