@@ -2,10 +2,10 @@
 (function(){
   var V=ENGV2,E=V.E,A=V.A,chr=V.chr,bust=V.bust,uri=V.uri;
   var ROOT=document.documentElement;
-  /* 每一部分由谁陪：读＝吉伊，做题＝小八，复盘＝乌萨奇，词汇＝飞鼠，素材＝小八 */
+  /* 每一部分由谁陪：读＝吉伊，做题＝小八，复盘＝乌萨奇，词汇＝飞鼠，素材＝小八（有官方图时换栗子馒头） */
   var WHO={read:'chii',test:'hachi',rev:'usagi',vocab:'momo',mat:'hachi'};
   var PROPS={read:'book',test:'fork',rev:'stick',vocab:'book',mat:null};
-  var NAME={chii:'吉伊',hachi:'小八',usagi:'乌萨奇',momo:'飞鼠'};
+  var NAME={chii:'吉伊',hachi:'小八',usagi:'乌萨奇',momo:'飞鼠',kuri:'栗子馒头'};
   var LINES={
     chii:['哇…','今天也拔一点点','（紧张地看着选项）','呜…词好多','但是读完了！','这句话看懂了耶'],
     hachi:['总会有办法的！','再读一遍题干吧','一起去讨伐！','S 级先做，很划算','这个干扰项好狡猾'],
@@ -67,7 +67,7 @@
       }
     }
     var mods=document.querySelectorAll('.mod');
-    ['chii','hachi','momo','usagi'].forEach(function(c,i){if(mods[i]&&!mods[i].querySelector('.c-modc'))mods[i].appendChild(E('span','c-modc fxn',chr(c,i?'norm':'joy',i===0)))});
+    [V.off().kuri?'kuri':'chii','hachi','momo','usagi'].forEach(function(c,i){if(mods[i]&&!mods[i].querySelector('.c-modc'))mods[i].appendChild(E('span','c-modc fxn',chr(c,i?'norm':'joy',i===0)))});
   }
   function react(ok,o){
     clearTimeout(reactT);var old=document.getElementById('creact');if(old)old.remove();
@@ -102,14 +102,14 @@
   var probed=false;
   function probe(done){
     if(probed) return;probed=true;
-    var dir=V.base+'art/chii/',names=[];['chii','hachi','usagi','momo'].forEach(function(c){names.push(c,c+'_joy',c+'_cry')});
+    var dir=V.base+'art/chii/',names=[];['chii','hachi','usagi','momo'].forEach(function(c){names.push(c,c+'_joy',c+'_cry')});names.push('kuri');
     var flag=null;try{flag=sessionStorage.getItem('eng_chii_off')}catch(e){}
     if(flag==='0') return;
     var head=new Image();head.onerror=function(){try{sessionStorage.setItem('eng_chii_off','0')}catch(e){}};
     head.onload=function(){
       var m={},left=names.length;
       names.forEach(function(n){var i=new Image();i.onload=function(){m[n]=i.src;fin()};i.onerror=fin;i.src=dir+n+'.png'});
-      function fin(){if(--left)return;V.setOff(m);done()}
+      function fin(){if(--left)return;V.setOff(m);ROOT.classList.add('chii-official');done()}
     };
     head.src=dir+'chii.png';
   }
@@ -117,7 +117,7 @@
   V.reg('chii',self={
     enter:function(){
       probe(function(){document.querySelectorAll('.fxn').forEach(function(n){n.remove()});self.enter();if(self.scroll)self.scroll(0,0)});
-      trio=[];weeds=[];
+      trio=[];weeds=[];WHO.mat=V.off().kuri?'kuri':'hachi';
       var S=ROOT.style;['read','test','rev','vocab','mat'].forEach(function(g){S.setProperty('--c-'+g,V.off()[WHO[g]]?'url("'+V.off()[WHO[g]]+'")':uri(chr(WHO[g],'norm',false,PROPS[g])))});
       buildBand();decorate();
     },

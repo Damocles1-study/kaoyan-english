@@ -59,7 +59,12 @@
     weed:'<g transform="translate(-3 12)" stroke="#5f9b54" stroke-width="3" fill="none" stroke-linecap="round"><path d="M18 46q-4-14-9-20M18 46q0-14 3-24M18 46q4-11 10-16"/></g>',
     cup:'<path d="M30 74h15l-2 10H32z" fill="#fff" stroke="'+INK+'" stroke-width="2.200" stroke-linejoin="round"/>'
   };
-  function offImg(c,e,box){var u=OFF[c+'_'+(e||'norm')]||OFF[c];return u&&'<svg xmlns="http://www.w3.org/2000/svg" viewBox="'+box+'"><image href="'+u+'" x="0" y="0" width="100" height="100" preserveAspectRatio="xMidYMax meet"/></svg>'}
+  function offImg(c,e,box){
+    var own=OFF[c+'_'+(e||'norm')],u=own||OFF[c],ex='';if(!u)return '';
+    /* 官方图只有一种站姿：没有专门的哭图时，在眼睛下面叠眼泪 */
+    if(!own&&e==='cry'&&EYE[c]){var y=EYE[c][2];EYE[c].slice(0,2).forEach(function(x){ex+='<path d="M'+(x-2.5)+' '+(y+3)+'q-1.500 12 2.500 16q4-4 2.500-16z" fill="#bfe6f8" stroke="#6fb3d6" stroke-width=".9"/>'})}
+    return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="'+box+'"><image href="'+u+'" x="0" y="0" width="100" height="100" preserveAspectRatio="xMidYMax meet"/>'+ex+'</svg>'}
+  var EYE={chii:[37,63,37],hachi:[37,63,40],usagi:[42,62,50],momo:[29,58,49],kuri:[36,58,48]};
   function chr(c,e,up,prop,box){var o=offImg(c,e,box||'0 0 100 100');if(o)return o;return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="'+(box||'0 0 100 100')+'">'+CHAR[c](e||'norm',up)+(prop?PROP[prop]:'')+'</svg>'}
   /* 趴在卡片上沿的半身：只露头和两只手 */
   function bust(c,e){var o=offImg(c,e,'0 0 100 66');if(o)return o;return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 66">'+CHAR[c](e||'norm').replace(/<g class="(lg|am)[^]*?<\/g>(<\/g>)?/g,'')+'<g fill="'+(c==='usagi'?'#fbefb4':'#fff')+'" stroke="'+INK+'" stroke-width="2.400"><ellipse cx="30" cy="65" rx="6" ry="4.500"/><ellipse cx="70" cy="65" rx="6" ry="4.500"/></g></svg>'}
@@ -104,7 +109,7 @@
   var link=document.createElement('link');link.rel='stylesheet';link.href=BASE+'theme.css?v=2';document.head.appendChild(link);
   ROOT.style.setProperty('--mochi',uri(MOCHI));
   /* 各世界的角色和特效放在自己的文件里，用到才加载 */
-  var FX={},fxCur=null,fxWant=null,FXV='3',FXFILE={chii:1,demon:1,film:1};
+  var FX={},fxCur=null,fxWant=null,FXV='4',FXFILE={chii:1,demon:1,film:1};
   function fxLeave(){if(fxCur){try{fxCur.leave&&fxCur.leave()}catch(e){}fxCur=null}document.querySelectorAll('.fxn').forEach(function(n){n.remove()})}
   function fxEnter(){
     fxLeave();fxWant=theme;

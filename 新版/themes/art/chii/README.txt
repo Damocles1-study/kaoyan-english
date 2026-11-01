@@ -1,9 +1,8 @@
-把你自己保存的 Chiikawa 官方图放在这个目录，主题会自动换成官方图；没放就用矢量图。
+这里放 Chiikawa 官方图，主题会自动优先使用；没有图时显示矢量图。
 
-必放：chii.png（吉伊）。其余有就用，没有就退回矢量或基础图：
-  hachi.png（小八） usagi.png（乌萨奇） momo.png（飞鼠）
-  各角色的表情可选：chii_joy.png chii_cry.png hachi_joy.png hachi_cry.png
-  usagi_joy.png usagi_cry.png momo_joy.png momo_cry.png
+自动获取：python3 _tools/fetch_chii_official.py
+  从动画官方站（anime-chiikawa.jp）取吉伊、小八、乌萨奇、飞鼠、栗子馒头。
 
-建议透明底、正方形、角色贴底站，500px 左右就够。
-这个目录下的图片已被 .gitignore 排除，只在你自己的电脑上显示，不会进公开仓库。
+也可以自己加：表情图放这里，命名如 chii_joy.png、usagi_cry.png（白底原图可放 raw/ 后跑 _tools/build_chii_art.py）。
+
+图片版权归 ©ナガノ/ちいかわ製作委員会。本目录的图片已被 .gitignore 排除，只在本机显示，不要提交到公开仓库。
