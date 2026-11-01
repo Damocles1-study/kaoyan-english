@@ -34,7 +34,7 @@
   }
   /* 学习时长跟着这个文件走，新旧版每页都有，不用逐页加 */
   var me=document.currentScript, st=document.createElement('script');
-  st.src=(me?me.src.replace(/[^\/]*$/,''):(isNew?'../':''))+'_study_time.js?v=1';document.head.appendChild(st);
+  st.src=(me?me.src.replace(/[^\/]*$/,''):(isNew?'../':''))+'_study_time.js?v=2';document.head.appendChild(st);
   function init(){
     var css=document.createElement('style');
     css.textContent='.ver-sw{display:inline-flex;align-items:stretch;border:1px solid var(--line,#ccc);border-radius:7px;overflow:hidden;font:600 12.5px/1.75 -apple-system,"PingFang SC",sans-serif;text-decoration:none!important;flex:none;background:var(--card,#fff);padding:0!important}'

@@ -58,7 +58,7 @@
   }
   function label(){try{return window.ENGV2&&ENGV2.world().timeName||'学习时长'}catch(e){return '学习时长'}}
   function panel(){
-    var s=stats(),bars='',max=1,ds=[],d=new Date();d.setDate(d.getDate()-13);
+    var s=stats(),bars='',max=1800,ds=[],d=new Date();d.setDate(d.getDate()-13);
     for(var i=0;i<14;i++){var k=day(d),v=s.map[k]||0;ds.push([k,v,WK[d.getDay()]]);if(v>max)max=v;d.setDate(d.getDate()+1)}
     ds.forEach(function(x,i){
       var pct=x[1]?Math.max(4,x[1]/max*100):0,txt=+x[0].slice(5,7)+'/'+ +x[0].slice(8)+' '+x[2]+' '+fmt(x[1],1);
