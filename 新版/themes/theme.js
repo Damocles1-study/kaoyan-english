@@ -111,13 +111,15 @@
   var fxOn=get(LSF)!=='off'&&!RM;
   var LSM='eng_v2_film',filmMode=get(LSM)==='dark'?'dark':'day';
   ROOT.dataset.theme=theme;ROOT.dataset.film=filmMode; if(!fxOn) ROOT.classList.add('nofx');
+  /* 背景护眼（../_eye.js）：Chiikawa 世界先把上次算好的底色刷上，页面一出来就是护眼色，不闪白 */
+  if(theme==='chii'){try{var ep=JSON.parse(get('eng_eye_paint'))||{};if(ep.chii){for(var ev in ep.chii.v)ROOT.style.setProperty(ev,ep.chii.v[ev],'important');ROOT.classList.add('eye-on')}}catch(e){}}
   var incoming=null; try{incoming=sessionStorage.getItem(TR);sessionStorage.removeItem(TR)}catch(e){}
   if(incoming&&fxOn) ROOT.classList.add('tr-in');
-  var link=document.createElement('link');link.rel='stylesheet';link.href=BASE+'theme.css?v=4';document.head.appendChild(link);
+  var link=document.createElement('link');link.rel='stylesheet';link.href=BASE+'theme.css?v=5';document.head.appendChild(link);
   ROOT.style.setProperty('--mochi',uri(MOCHI));
   if(get('eng_chii_mode')==='sprite') setOff(SPR.r);
   /* 各世界的角色和特效放在自己的文件里，用到才加载 */
-  var FX={},fxCur=null,fxWant=null,FXV='6',FXFILE={chii:1,demon:1,film:1};
+  var FX={},fxCur=null,fxWant=null,FXV='7',FXFILE={chii:1,demon:1,film:1};
   function fxLeave(){if(fxCur){try{fxCur.leave&&fxCur.leave()}catch(e){}fxCur=null}document.querySelectorAll('.fxn').forEach(function(n){n.remove()})}
   function fxEnter(){
     fxLeave();fxWant=theme;

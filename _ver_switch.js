@@ -33,8 +33,12 @@
     return a;
   }
   /* 学习时长跟着这个文件走，新旧版每页都有，不用逐页加 */
-  var me=document.currentScript, st=document.createElement('script');
-  st.src=(me?me.src.replace(/[^\/]*$/,''):(isNew?'../':''))+'_study_time.js?v=2';document.head.appendChild(st);
+  var me=document.currentScript, st=document.createElement('script'), dir=me?me.src.replace(/[^\/]*$/,''):(isNew?'../':'');
+  st.src=dir+'_study_time.js?v=2';document.head.appendChild(st);
+  /* 背景护眼也跟着这个文件走。旧版先把上次算好的底色刷上，免得翻页闪一下白（新版由 theme.js 在页首刷）；完整逻辑在 _eye.js */
+  if(!isNew){try{var ep=JSON.parse(localStorage.getItem('eng_eye_paint'))||{},eo=ep[window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches?'old_d':'old_l'];
+    if(eo){for(var ev in eo.v)document.documentElement.style.setProperty(ev,eo.v[ev]);document.documentElement.classList.add('eye-on')}}catch(e){}}
+  var ey=document.createElement('script');ey.src=dir+'_eye.js?v=1';document.head.appendChild(ey);
   function init(){
     var css=document.createElement('style');
     css.textContent='.ver-sw{display:inline-flex;align-items:stretch;border:1px solid var(--line,#ccc);border-radius:7px;overflow:hidden;font:600 12.5px/1.75 -apple-system,"PingFang SC",sans-serif;text-decoration:none!important;flex:none;background:var(--card,#fff);padding:0!important}'
